@@ -1,5 +1,5 @@
 import { AuthService } from '@spryker-oryx/auth';
-import { CheckoutMixin, ContactDetails } from '@spryker-oryx/checkout';
+import { CheckoutMixin, ContactDetails, isValid } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
@@ -7,32 +7,29 @@ import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { UserService } from '@spryker-oryx/user';
 import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { query } from 'lit/decorators.js';
-import { map, Observable } from 'rxjs';
+import { query, state } from 'lit/decorators.js';
 import { CheckoutGuestComponent } from '../guest';
-import { CheckoutAuthComponentOptions } from './auth.model';
-import { styles } from './auth.styles';
+import { CheckoutAuthComponentOptions } from './customer.model';
+import { styles } from './customer.styles';
 
 @defaultOptions({ enableGuestCheckout: true })
 @hydratable('window:load')
-export class CheckoutAuthComponent extends CheckoutMixin(
-  ContentMixin<CheckoutAuthComponentOptions>(LitElement)
-) {
+export class CheckoutCustomerComponent
+  extends CheckoutMixin(ContentMixin<CheckoutAuthComponentOptions>(LitElement))
+  implements isValid
+{
   static styles = [styles];
 
   protected userService = resolve(UserService);
   protected authService = resolve(AuthService);
-
-  protected isAuthenticated = signal(this.authService.isAuthenticated(), false);
-
   protected linkService = resolve(SemanticLinkService);
   protected routerService = resolve(RouterService);
+
+  protected isAuthenticated = signal(this.authService.isAuthenticated(), false);
+  protected customer = signal(this.userService.getUser());
   protected loginRoute = signal(
     this.linkService.get({ type: SemanticLinkType.Login })
   );
-
-  @query('oryx-checkout-guest')
-  protected guest?: CheckoutGuestComponent;
 
   // TODO: we need component cycle integration with effect!
   protected eff = effect(() => {
@@ -42,14 +39,24 @@ export class CheckoutAuthComponent extends CheckoutMixin(
     }
   });
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    this.checkoutService.register({
-      id: 'customer',
-      collectDataCallback: () => this.collectData(),
-      order: 1,
-    });
-  }
+  protected storeCustomer = effect(() => {
+    const customer = this.customer();
+    if (customer) {
+      const { email, salutation, firstName, lastName } =
+        customer as ContactDetails;
+      this.hasCustomerData = true;
+      this.checkoutStateService.set('customer', {
+        valid: this.hasCustomerData,
+        value: { email, salutation, firstName, lastName },
+      });
+    }
+  });
+
+  @state()
+  protected hasCustomerData = false;
+
+  @query('oryx-checkout-guest')
+  protected guest?: CheckoutGuestComponent;
 
   protected override render(): TemplateResult | void {
     if (this.isAuthenticated()) {
@@ -59,11 +66,7 @@ export class CheckoutAuthComponent extends CheckoutMixin(
     }
   }
 
-  protected collectData(): Observable<ContactDetails | null> {
-    return this.userService
-      .getUser()
-      .pipe(
-        map((user) => (user as ContactDetails) ?? this.guest?.collectData())
-      );
+  isValid(report?: boolean): boolean {
+    return this.hasCustomerData || !!this.guest?.isValid(report);
   }
 }

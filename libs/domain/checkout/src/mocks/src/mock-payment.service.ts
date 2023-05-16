@@ -1,4 +1,4 @@
-import { CheckoutPaymentService, PaymentMethod } from '@spryker-oryx/checkout';
+import { PaymentMethod } from '@spryker-oryx/checkout';
 import { Observable, of } from 'rxjs';
 import { mockNormalizedPaymentMethods } from './mock-checkout';
 
@@ -9,7 +9,7 @@ export enum PaymentProviderType {
   NoProvider = 'no-provider',
 }
 
-export class MockPaymentService implements CheckoutPaymentService {
+export class MockPaymentService {
   protected type = PaymentProviderType.Multiple;
 
   changeProviderType(value: PaymentProviderType) {

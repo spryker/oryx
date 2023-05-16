@@ -1,30 +1,25 @@
-import { Address, CheckoutMixin } from '@spryker-oryx/checkout';
+import { CheckoutMixin, isValid } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { AddressService } from '@spryker-oryx/user';
 import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { Observable, of } from 'rxjs';
 import { CheckoutAddressComponent } from '../address';
 import { styles } from './delivery.styles';
 
 @hydratable()
-export class CheckoutDeliveryComponent extends CheckoutMixin(LitElement) {
+export class CheckoutDeliveryComponent
+  extends CheckoutMixin(LitElement)
+  implements isValid
+{
   static styles = [styles];
+
+  protected selected = signal(this.checkoutStateService.get('shippingAddress'));
+  protected addresses = signal(resolve(AddressService).getAddresses());
 
   @query('oryx-checkout-address')
   protected addressComponent?: CheckoutAddressComponent;
-  protected addresses = signal(resolve(AddressService).getAddresses());
-
-  connectedCallback(): void {
-    super.connectedCallback();
-    this.checkoutService.register({
-      id: 'shippingAddress',
-      collectDataCallback: () => this.collectData(),
-      order: 2,
-    });
-  }
 
   protected override render(): TemplateResult {
     return html`
@@ -34,12 +29,21 @@ export class CheckoutDeliveryComponent extends CheckoutMixin(LitElement) {
         () =>
           html`<oryx-checkout-manage-address></oryx-checkout-manage-address>`
       )}
-      <oryx-checkout-address></oryx-checkout-address>
+      <oryx-checkout-address
+        @selectedAddress=${this.onChangeAddress}
+        .address=${this.selected()}
+      ></oryx-checkout-address>
     `;
   }
 
-  protected collectData(): Observable<Address | null> {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return of(this.addressComponent!.collectData());
+  isValid(report: boolean): boolean {
+    return !!this.addressComponent?.isValid(report);
+  }
+
+  protected onChangeAddress(e: CustomEvent): void {
+    this.checkoutStateService.set('shippingAddress', {
+      valid: e.detail.valid,
+      value: e.detail.data,
+    });
   }
 }

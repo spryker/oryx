@@ -1,38 +1,44 @@
-import {
-  CheckoutMixin,
-  CheckoutPaymentService,
-  PaymentMethod,
-} from '@spryker-oryx/checkout';
-import { resolve } from '@spryker-oryx/di';
-import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import { CheckoutMixin, isValid, PaymentMethod } from '@spryker-oryx/checkout';
+import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { map, Observable, tap } from 'rxjs';
+import { query } from 'lit/decorators.js';
 import { styles } from './payment.styles';
 
 @hydratable('window:load')
-export class CheckoutPaymentComponent extends CheckoutMixin(LitElement) {
+export class CheckoutPaymentComponent
+  extends CheckoutMixin(LitElement)
+  implements isValid
+{
   static styles = styles;
 
-  protected paymentService = resolve(CheckoutPaymentService);
+  protected paymentMethods = signal(
+    this.checkoutDataService.get('paymentMethods')
+  );
+  protected selected = signal(this.checkoutStateService.get('payments'));
 
-  protected methods = signal(this.paymentService.getMethods());
-  protected selected = signal(this.paymentService.selected());
+  protected eff = effect(() => {
+    // we set the validity when the data is resolved from storage...
+    if (this.selected())
+      this.checkoutStateService.set('payments', { valid: true });
+  });
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    this.checkoutService.register({
-      id: 'payments',
-      collectDataCallback: () => this.collectData(),
-    });
+  @query('form')
+  protected form?: HTMLFormElement;
+
+  isValid(report: boolean): boolean {
+    if (!this.form?.checkValidity() && report) {
+      this.form?.reportValidity();
+    }
+    return !!this.form?.checkValidity();
   }
 
   protected override render(): TemplateResult | void {
-    const methods = this.methods();
+    const methods = this.paymentMethods();
 
     if (!methods?.length) return this.renderEmpty();
 
     return html`<h3>${i18n('checkout.steps.payment')}</h3>
-      ${methods.map((method) => this.renderMethod(method))}`;
+      <form>${methods.map((method) => this.renderMethod(method))}</form>`;
   }
 
   protected renderMethod(method: PaymentMethod): TemplateResult {
@@ -43,6 +49,7 @@ export class CheckoutPaymentComponent extends CheckoutMixin(LitElement) {
           name="shipment-method"
           type="radio"
           value=${method.id}
+          required
           ?checked=${selected}
           @change=${this.onChange}
         />
@@ -56,39 +63,38 @@ export class CheckoutPaymentComponent extends CheckoutMixin(LitElement) {
     </oryx-tile>`;
   }
 
-  protected renderEmpty(): TemplateResult {
-    return html`<p class="no-methods">
-      ${i18n('checkout.payment.no-methods-available')}
-    </p>`;
-  }
-
+  /**
+   * Evaluates whether the given method id is the seleced method.
+   * If there's no method selected, a method can be auto selected.
+   */
   protected isSelected(methodId: string): boolean {
-    if (!this.selected()) {
-      this.autoSelect(methodId);
-    }
-    return this.selected()?.id === methodId;
-  }
-
-  // TODO: consider fallback strategies: none, first, cheapest, fastest
-  protected autoSelect(methodId: string): void {
-    if (methodId === this.methods()?.[0]?.id) {
-      this.paymentService.select(methodId);
-    }
-  }
-
-  protected collectData(): Observable<PaymentMethod[] | null> {
-    return this.paymentService.selected().pipe(
-      tap((selected) => {
-        if (!selected) {
-          // TODO: how to show invalidation here?
-        }
-      }),
-      map((p) => (p ? [p] : null))
-    );
+    if (!this.selected()) this.autoSelect(methodId);
+    return this.selected()?.[0]?.id === methodId;
   }
 
   protected onChange(e: Event): void {
     const id = (e.target as HTMLInputElement).value;
-    this.paymentService.select(id);
+    this.select(id);
+  }
+
+  protected autoSelect(methodId: string): void {
+    if (methodId === this.paymentMethods()?.[0]?.id) {
+      this.select(methodId);
+    }
+  }
+
+  protected select(id?: string): void {
+    const method = this.paymentMethods()?.find((method) => method.id === id);
+    const value = method ? [method] : null;
+    this.checkoutStateService.set('payments', {
+      valid: !!this.form?.checkValidity,
+      value,
+    });
+  }
+
+  protected renderEmpty(): TemplateResult {
+    return html`<p class="no-methods">
+      ${i18n('checkout.payment.no-methods-available')}
+    </p>`;
   }
 }

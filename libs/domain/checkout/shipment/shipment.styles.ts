@@ -14,6 +14,10 @@ export const styles = css`
     ${headingUtil(HeadingTag.H5)}
   }
 
+  form {
+    display: contents;
+  }
+
   .no-methods {
     --oryx-icon-size: 40px;
 

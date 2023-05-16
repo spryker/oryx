@@ -24,7 +24,7 @@ export class ProductTitleComponent extends ProductMixin(
   protected override render(): TemplateResult | void {
     const { tag, as, asLg, asMd, asSm, maxLines } = this.$options();
 
-    return html`<oryx-heading
+    return html` <oryx-heading
       .tag=${tag}
       .maxLines=${maxLines}
       .as=${as}

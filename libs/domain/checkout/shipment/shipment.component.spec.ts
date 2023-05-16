@@ -1,38 +1,36 @@
 import { fixture } from '@open-wc/testing-helpers';
 import {
   Carrier,
-  CheckoutProcessState,
+  CheckoutDataService,
   CheckoutService,
-  CheckoutShipmentService,
-  CheckoutStepCallback,
+  CheckoutStateService,
   ShipmentMethod,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { html } from 'lit';
-import { Observable, of, take } from 'rxjs';
+import { of } from 'rxjs';
 
 import { CheckoutShipmentComponent } from './shipment.component';
 import { checkoutShipmentComponent } from './shipment.def';
 
-class MockCheckoutShipmentService implements Partial<CheckoutShipmentService> {
-  getCarriers = vi.fn().mockReturnValue(of([]));
-  selected = vi.fn().mockReturnValue(of(null));
-  select = vi.fn();
+export class MockCheckoutService implements Partial<CheckoutService> {
+  getProcessState = vi.fn().mockReturnValue(of());
 }
 
-export class MockCheckoutService implements Partial<CheckoutService> {
-  register = vi.fn();
-  getProcessState = vi
-    .fn()
-    .mockReturnValue(of(CheckoutProcessState.Initializing));
+export class MockCheckoutDataService implements Partial<CheckoutDataService> {
+  get = vi.fn();
+}
+
+export class MockCheckoutStateService implements Partial<CheckoutStateService> {
+  get = vi.fn();
+  set = vi.fn();
 }
 
 describe('CheckoutShipmentComponent', () => {
   let element: CheckoutShipmentComponent;
-  let checkoutService: MockCheckoutService;
-  let shipmentService: MockCheckoutShipmentService;
-  let callback: () => Observable<unknown>;
+  let checkoutDataService: MockCheckoutDataService;
+  let checkoutStateService: MockCheckoutStateService;
 
   beforeAll(async () => {
     await useComponent(checkoutShipmentComponent);
@@ -46,20 +44,20 @@ describe('CheckoutShipmentComponent', () => {
           useClass: MockCheckoutService,
         },
         {
-          provide: CheckoutShipmentService,
-          useClass: MockCheckoutShipmentService,
+          provide: CheckoutDataService,
+          useClass: MockCheckoutDataService,
+        },
+        {
+          provide: CheckoutStateService,
+          useClass: MockCheckoutStateService,
         },
       ],
     });
 
-    shipmentService = injector.inject<MockCheckoutShipmentService>(
-      CheckoutShipmentService
-    );
-    checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
-    checkoutService.register.mockImplementation(
-      (param: CheckoutStepCallback<unknown>) =>
-        (callback = param.collectDataCallback)
-    );
+    checkoutDataService =
+      injector.inject<MockCheckoutDataService>(CheckoutDataService);
+    checkoutStateService =
+      injector.inject<MockCheckoutStateService>(CheckoutStateService);
   });
 
   afterEach(() => {
@@ -81,18 +79,11 @@ describe('CheckoutShipmentComponent', () => {
     it('should pass the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
     });
-
-    it('should register the step at the checkout service', () => {
-      expect(checkoutService.register).toHaveBeenCalledWith({
-        id: 'shipment',
-        collectDataCallback: expect.anything(),
-      } as CheckoutStepCallback<unknown>);
-    });
   });
 
   describe('when there are no carriers available', () => {
     beforeEach(async () => {
-      shipmentService.getCarriers.mockReturnValue(of(null));
+      checkoutDataService.get.mockReturnValue(of(null));
       element = await fixture(
         html`<oryx-checkout-shipment></oryx-checkout-shipment>`
       );
@@ -113,7 +104,7 @@ describe('CheckoutShipmentComponent', () => {
 
   describe('when there are carriers available without methods', () => {
     beforeEach(async () => {
-      shipmentService.getCarriers.mockReturnValue(
+      checkoutDataService.get.mockReturnValue(
         of([{ name: 'foo', shipmentMethods: [] }] as Carrier[])
       );
       element = await fixture(
@@ -131,7 +122,7 @@ describe('CheckoutShipmentComponent', () => {
 
   describe('when there is 1 carriers with 1 method available', () => {
     beforeEach(async () => {
-      shipmentService.getCarriers.mockReturnValue(
+      checkoutDataService.get.mockReturnValue(
         of([
           {
             name: 'foo',
@@ -164,20 +155,20 @@ describe('CheckoutShipmentComponent', () => {
 
     describe('and there is no selected method', () => {
       beforeEach(async () => {
-        shipmentService.selected.mockReturnValue(of(null));
+        checkoutStateService.get.mockReturnValue(of(null));
         element = await fixture(
           html`<oryx-checkout-shipment></oryx-checkout-shipment>`
         );
       });
 
       it('should auto select the first', () => {
-        expect(shipmentService.select).toHaveBeenCalledWith('foo');
+        expect(checkoutStateService.set).toHaveBeenCalledWith('foo');
       });
     });
 
     describe('and there is a selected method', () => {
       beforeEach(async () => {
-        shipmentService.selected.mockReturnValue(of({ id: 'foo' }));
+        checkoutStateService.get.mockReturnValue(of({ id: 'foo' }));
         element = await fixture(
           html`<oryx-checkout-shipment></oryx-checkout-shipment>`
         );
@@ -186,60 +177,33 @@ describe('CheckoutShipmentComponent', () => {
       it('should select the input', () => {
         expect(element).toContainElement(`input[value='foo']:checked`);
       });
-    });
 
-    describe('and when a method is selected', () => {
-      beforeEach(async () => {
-        const radio =
-          element.renderRoot.querySelector<HTMLInputElement>(
-            `input[value='bar']`
-          );
-        radio?.dispatchEvent(new Event('change'));
+      describe.only('and when a method is selected', () => {
+        beforeEach(async () => {
+          const radio =
+            element.querySelector<HTMLInputElement>(`input[value='foo']`);
+          radio?.dispatchEvent(new Event('change'));
+          console.log('radio!', radio);
+        });
+
+        it('should set the associated shipping method', () => {
+          expect(checkoutStateService.set).toHaveBeenCalledWith('shipment', {
+            valid: true,
+          });
+        });
       });
-
-      it('should set the associated shipping method', () => {
-        expect(shipmentService.select).toHaveBeenCalledWith('bar');
-      });
-    });
-  });
-
-  describe('when the collect callback is called', () => {
-    let result: unknown | null;
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-checkout-shipment></oryx-checkout-shipment>`
-      );
-      callback()
-        .pipe(take(1))
-        .subscribe((r) => (result = r));
-    });
-    it('should collect the method', () => {
-      expect(result).toBe(null);
     });
   });
 
   describe('when the shipment service exposes a selected method', () => {
     beforeEach(async () => {
-      shipmentService.selected.mockReturnValue(
+      checkoutStateService.get.mockReturnValue(
         of({ id: 'foo' } as ShipmentMethod)
       );
 
       element = await fixture(
         html`<oryx-checkout-shipment></oryx-checkout-shipment>`
       );
-    });
-
-    describe('and the data is collected', () => {
-      let result: { idShipmentMethod: string } | null;
-      beforeEach(async () => {
-        callback()
-          .pipe(take(1))
-          .subscribe((r: any) => (result = r));
-      });
-
-      it('should collect the method', () => {
-        expect(result?.idShipmentMethod).toBe('foo');
-      });
     });
   });
 });

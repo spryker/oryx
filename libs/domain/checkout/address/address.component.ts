@@ -1,4 +1,4 @@
-import { Address } from '@spryker-oryx/checkout';
+import { Address, isValid } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { AddressService } from '@spryker-oryx/user';
@@ -6,12 +6,16 @@ import { AddressFormComponent } from '@spryker-oryx/user/address-form';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import { signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { query, state } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 
 @signalAware()
-export class CheckoutAddressComponent extends ContentMixin(LitElement) {
-  protected addressService = resolve(AddressService);
+export class CheckoutAddressComponent
+  extends ContentMixin(LitElement)
+  implements isValid
+{
+  @property({ type: Object }) address?: Address;
 
+  protected addressService = resolve(AddressService);
   protected addresses = signal(this.addressService.getAddresses());
 
   @state()
@@ -20,17 +24,6 @@ export class CheckoutAddressComponent extends ContentMixin(LitElement) {
   @query('oryx-address-form')
   protected addressComponent?: AddressFormComponent;
 
-  collectData(): Address | null {
-    const form = this.addressComponent?.getForm();
-    if (!this.selected && !form?.checkValidity()) {
-      form?.reportValidity();
-      return null;
-    }
-    return form
-      ? (Object.fromEntries(new FormData(form).entries()) as unknown as Address)
-      : this.selected;
-  }
-
   protected override render(): TemplateResult | void {
     if (this.addresses()?.length)
       return html`<oryx-address-list
@@ -38,10 +31,27 @@ export class CheckoutAddressComponent extends ContentMixin(LitElement) {
         @oryx.select=${this.onSelect}
       ></oryx-address-list>`;
 
-    return html`<oryx-address-form></oryx-address-form>`;
+    return html`<oryx-address-form
+      .address=${this.address}
+    ></oryx-address-form>`;
   }
 
   protected onSelect(e: CustomEvent): void {
     this.selected = e.detail.address;
+    this.dispatchEvent(
+      new CustomEvent('selectedAddress', {
+        detail: { data: this.selected, valid: true },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  isValid(report: boolean): boolean {
+    const form = this.addressComponent?.getForm();
+    if (!form?.checkValidity() && report) {
+      form?.reportValidity();
+    }
+    return !!form?.checkValidity() || !!this.selected;
   }
 }

@@ -1,37 +1,34 @@
 import { fixture } from '@open-wc/testing-helpers';
 import {
-  CheckoutPaymentService,
-  CheckoutProcessState,
+  CheckoutDataService,
   CheckoutService,
-  CheckoutStepCallback,
-  PaymentMethod,
+  CheckoutStateService,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { html } from 'lit';
-import { Observable, of, take } from 'rxjs';
+import { of } from 'rxjs';
 
 import { CheckoutPaymentComponent } from './payment.component';
 import { checkoutPaymentComponent } from './payment.def';
 
-class MockCheckoutPaymentService implements Partial<CheckoutPaymentService> {
-  getMethods = vi.fn().mockReturnValue(of([]));
-  selected = vi.fn().mockReturnValue(of(null));
-  select = vi.fn();
+export class MockCheckoutService implements Partial<CheckoutService> {
+  getProcessState = vi.fn().mockReturnValue(of());
 }
 
-export class MockCheckoutService implements Partial<CheckoutService> {
-  register = vi.fn();
-  getProcessState = vi
-    .fn()
-    .mockReturnValue(of(CheckoutProcessState.Initializing));
+export class MockCheckoutDataService implements Partial<CheckoutDataService> {
+  get = vi.fn();
+}
+
+export class MockCheckoutStateService implements Partial<CheckoutStateService> {
+  get = vi.fn();
+  set = vi.fn();
 }
 
 describe('CheckoutPaymentComponent', () => {
   let element: CheckoutPaymentComponent;
-  let checkoutService: MockCheckoutService;
-  let paymentService: MockCheckoutPaymentService;
-  let callback: () => Observable<unknown>;
+  let checkoutDataService: MockCheckoutDataService;
+  let checkoutStateService: MockCheckoutStateService;
 
   beforeAll(async () => {
     await useComponent(checkoutPaymentComponent);
@@ -45,20 +42,20 @@ describe('CheckoutPaymentComponent', () => {
           useClass: MockCheckoutService,
         },
         {
-          provide: CheckoutPaymentService,
-          useClass: MockCheckoutPaymentService,
+          provide: CheckoutDataService,
+          useClass: MockCheckoutDataService,
+        },
+        {
+          provide: CheckoutStateService,
+          useClass: MockCheckoutStateService,
         },
       ],
     });
 
-    paymentService = injector.inject<MockCheckoutPaymentService>(
-      CheckoutPaymentService
-    );
-    checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
-    checkoutService.register.mockImplementation(
-      (param: CheckoutStepCallback<unknown>) =>
-        (callback = param.collectDataCallback)
-    );
+    checkoutDataService =
+      injector.inject<MockCheckoutDataService>(CheckoutDataService);
+    checkoutStateService =
+      injector.inject<MockCheckoutStateService>(CheckoutStateService);
   });
 
   afterEach(() => {
@@ -73,25 +70,18 @@ describe('CheckoutPaymentComponent', () => {
       );
     });
 
-    it('should be an instance of ', () => {
+    it('should be an instance of CheckoutPaymentComponent', () => {
       expect(element).toBeInstanceOf(CheckoutPaymentComponent);
     });
 
     it('should pass the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
     });
-
-    it('should register the step at the checkout service', () => {
-      expect(checkoutService.register).toHaveBeenCalledWith({
-        id: 'payments',
-        collectDataCallback: expect.anything(),
-      } as CheckoutStepCallback<unknown>);
-    });
   });
 
   describe('when there are no payment methods available', () => {
     beforeEach(async () => {
-      paymentService.getMethods.mockReturnValue(of([]));
+      checkoutDataService.get.mockReturnValue(of([]));
       element = await fixture(
         html`<oryx-checkout-payment></oryx-checkout-payment>`
       );
@@ -108,7 +98,7 @@ describe('CheckoutPaymentComponent', () => {
 
   describe('when there are payment methods available', () => {
     beforeEach(async () => {
-      paymentService.getMethods.mockReturnValue(
+      checkoutDataService.get.mockReturnValue(
         of([{ id: 'foo' }, { id: 'bar' }])
       );
       element = await fixture(
@@ -132,20 +122,23 @@ describe('CheckoutPaymentComponent', () => {
 
     describe('and there is no selected method', () => {
       beforeEach(async () => {
-        paymentService.selected.mockReturnValue(of(null));
+        checkoutStateService.get.mockReturnValue(of(null));
         element = await fixture(
           html`<oryx-checkout-payment></oryx-checkout-payment>`
         );
       });
 
-      it('should auto select the first', () => {
-        expect(paymentService.select).toHaveBeenCalledWith('foo');
+      it('should auto select the first method', () => {
+        expect(checkoutStateService.set).toHaveBeenCalledWith('payments', {
+          valid: false,
+          value: [{ id: 'foo' }],
+        });
       });
     });
 
     describe('and there is a selected method', () => {
       beforeEach(async () => {
-        paymentService.selected.mockReturnValue(of({ id: 'foo' }));
+        checkoutStateService.get.mockReturnValue(of([{ id: 'foo' }]));
         element = await fixture(
           html`<oryx-checkout-payment></oryx-checkout-payment>`
         );
@@ -164,55 +157,12 @@ describe('CheckoutPaymentComponent', () => {
           radio?.dispatchEvent(new Event('change'));
         });
 
-        it('should set the associated shipping method', () => {
-          expect(paymentService.select).toHaveBeenCalledWith('bar');
+        it('should set the associated payment method', () => {
+          expect(checkoutStateService.set).toHaveBeenCalledWith('payments', {
+            valid: true,
+            value: [{ id: 'bar' }],
+          });
         });
-      });
-    });
-  });
-
-  describe('when the collect callback is called', () => {
-    let result: unknown | null;
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-checkout-payment></oryx-checkout-payment>`
-      );
-      callback()
-        .pipe(take(1))
-        .subscribe((r) => (result = r));
-    });
-
-    it('should call the payment service to get the selected method', () => {
-      expect(paymentService.selected).toHaveBeenCalled();
-    });
-
-    it('should collect the method', () => {
-      expect(result).toBe(null);
-    });
-  });
-
-  describe('when the payment service exposes a selected method', () => {
-    beforeEach(async () => {
-      paymentService.selected.mockReturnValue(
-        of({ id: 'foo' } as PaymentMethod)
-      );
-
-      element = await fixture(
-        html`<oryx-checkout-payment></oryx-checkout-payment>`
-      );
-    });
-
-    describe('and the data is collected', () => {
-      let result: PaymentMethod[] | null;
-      beforeEach(async () => {
-        callback()
-          .pipe(take(1))
-          .subscribe((r) => ((result as unknown) = r));
-      });
-
-      it('should collect the method(s)', () => {
-        expect(result?.length).toBe(1);
-        expect(result?.[0]?.id).toBe('foo');
       });
     });
   });

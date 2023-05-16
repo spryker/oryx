@@ -29,7 +29,9 @@
       "@spryker-oryx/checkout/address": [
         "libs/domain/checkout/address/index.ts"
       ],
-      "@spryker-oryx/checkout/auth": ["libs/domain/checkout/auth/index.ts"],
+      "@spryker-oryx/checkout/customer": [
+        "libs/domain/checkout/customer/index.ts"
+      ],
       "@spryker-oryx/checkout/delivery": [
         "libs/domain/checkout/delivery/index.ts"
       ],

@@ -1,49 +1,61 @@
-import {
-  CheckoutMixin,
-  CheckoutShipmentService,
-  ShipmentMethod,
-} from '@spryker-oryx/checkout';
-import { resolve } from '@spryker-oryx/di';
+import { CheckoutMixin, isValid, ShipmentMethod } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
+import {
+  effect,
+  hydratable,
+  i18n,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { map, Observable, tap } from 'rxjs';
 import { styles } from './shipment.styles';
 
 @signalAware()
 @hydratable('window:load')
-export class CheckoutShipmentComponent extends CheckoutMixin(
-  ContentMixin(LitElement)
-) {
+export class CheckoutShipmentComponent
+  extends CheckoutMixin(ContentMixin(LitElement))
+  implements isValid
+{
   static styles = styles;
 
-  protected shipmentService = resolve(CheckoutShipmentService);
+  protected shipments = signal(this.checkoutDataService.get('shipments'));
+  protected selected = signal(this.checkoutStateService.get('shipment'));
 
-  protected carriers = signal(this.shipmentService.getCarriers());
-  protected selected = signal(this.shipmentService.selected());
+  protected eff = effect(() => {
+    // we set the validity when the data is resolved from storage...
+    if (this.selected())
+      this.checkoutStateService.set('shipment', { valid: true });
+  });
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    this.checkoutService.register({
-      id: 'shipment',
-      collectDataCallback: () => this.collectData(),
-    });
+  @query('form')
+  protected form?: HTMLFormElement;
+
+  isValid(report: boolean): boolean {
+    if (!this.form?.checkValidity() && report) {
+      this.form?.reportValidity();
+    }
+    return !!this.form?.checkValidity();
   }
 
   protected override render(): TemplateResult | void {
-    const carriers = this.carriers();
+    const carriers = this.shipments()?.[0]?.carriers;
 
-    if (!carriers?.find((carrier) => carrier.shipmentMethods?.length > 0))
+    if (!carriers?.find((carrier) => !!carrier.shipmentMethods?.length))
       return this.renderEmpty();
 
     return html`<h3>${i18n('checkout.steps.shipment')}</h3>
-      ${carriers.map(
-        (carrier) => html`
-          ${when(carriers.length > 1, () => html`<p>${carrier.name}</p>`)}
-          ${carrier.shipmentMethods.map((method) => this.renderMethod(method))}
-        `
-      )}`;
+      <form>
+        ${carriers.map(
+          (carrier) => html`
+            ${when(carriers.length > 1, () => html`<p>${carrier.name}</p>`)}
+            ${carrier.shipmentMethods.map((method) =>
+              this.renderMethod(method)
+            )}
+          `
+        )}
+      </form> `;
   }
 
   protected renderMethod(method: ShipmentMethod): TemplateResult {
@@ -54,6 +66,7 @@ export class CheckoutShipmentComponent extends CheckoutMixin(
           name="shipment"
           type="radio"
           value=${method.id}
+          required
           ?checked=${isSelected}
           @change=${this.onChange}
         />
@@ -70,36 +83,34 @@ export class CheckoutShipmentComponent extends CheckoutMixin(
     </oryx-tile>`;
   }
 
+  /**
+   * Evaluates whether the given method id is the selected method.
+   * If there's no method selected, a method can be auto selected.
+   */
   protected isSelected(methodId: string): boolean {
-    if (!this.selected()) {
-      this.autoSelect(methodId);
-    }
-    return this.selected()?.id === methodId;
-  }
-
-  // TODO: consider fallback strategies: none, first, cheapest, fastest
-  protected autoSelect(methodId: string): void {
-    if (methodId === this.carriers()?.[0]?.shipmentMethods?.[0]?.id) {
-      this.shipmentService.select(methodId);
-    }
+    if (!this.selected()) this.autoSelect(methodId);
+    return this.selected()?.idShipmentMethod === methodId;
   }
 
   protected onChange(e: Event): void {
-    const id = (e.target as HTMLInputElement).value;
-    this.shipmentService.select(id);
+    this.select((e.target as HTMLInputElement).value);
   }
 
-  protected collectData(): Observable<{
-    idShipmentMethod: string;
-  } | null> {
-    return this.shipmentService.selected().pipe(
-      tap((selected) => {
-        if (!selected) {
-          // TODO: how to show invalidation here?
-        }
-      }),
-      map((shipment) => (shipment ? { idShipmentMethod: shipment.id } : null))
-    );
+  protected autoSelect(methodId: string): void {
+    if (
+      methodId ===
+      this.shipments()?.[0]?.carriers?.[0]?.shipmentMethods?.[0]?.id
+    ) {
+      this.select(methodId);
+    }
+  }
+
+  protected select(id?: string): void {
+    const value = id ? { idShipmentMethod: id } : null;
+    this.checkoutStateService.set('shipment', {
+      valid: !!this.form?.checkValidity,
+      value,
+    });
   }
 
   protected renderEmpty(): TemplateResult {

@@ -15,28 +15,26 @@ import {
   checkoutSerializer,
 } from './adapter/serializers';
 import { CheckoutService } from './checkout.service';
+import { CheckoutDataService, DefaultCheckoutDataService } from './data';
 import { DefaultCheckoutService } from './default-checkout.service';
-import {
-  CheckoutPaymentService,
-  DefaultCheckoutPaymentService,
-} from './payment/';
-import {
-  CheckoutShipmentService,
-  DefaultCheckoutShipmentService,
-} from './shipment';
+import { CheckoutStateService, DefaultCheckoutStateService } from './state';
 
 export const checkoutProviders = [
   {
+    provide: CheckoutService,
+    useClass: DefaultCheckoutService,
+  },
+  {
+    provide: CheckoutDataService,
+    useClass: DefaultCheckoutDataService,
+  },
+  {
+    provide: CheckoutStateService,
+    useClass: DefaultCheckoutStateService,
+  },
+  {
     provide: CheckoutAdapter,
     useClass: DefaultCheckoutAdapter,
-  },
-  {
-    provide: CheckoutShipmentService,
-    useClass: DefaultCheckoutShipmentService,
-  },
-  {
-    provide: CheckoutPaymentService,
-    useClass: DefaultCheckoutPaymentService,
   },
   {
     provide: ShipmentsNormalizer,
@@ -45,10 +43,6 @@ export const checkoutProviders = [
   {
     provide: PaymentsNormalizer,
     useValue: paymentsNormalizer,
-  },
-  {
-    provide: CheckoutService,
-    useClass: DefaultCheckoutService,
   },
   ...checkoutDataSerializer,
   ...checkoutSerializer,

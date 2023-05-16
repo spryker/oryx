@@ -5,20 +5,42 @@ import {
   FormRenderer,
 } from '@spryker-oryx/form';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
+import {
+  effect,
+  hydratable,
+  i18n,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
-import { ContactDetails } from '../src/models';
+import { isValid } from '../src/models';
+import { CheckoutStateService } from '../src/services';
 
 @signalAware()
 @hydratable('window:load')
-export class CheckoutGuestComponent extends LitElement {
+export class CheckoutGuestComponent extends LitElement implements isValid {
   protected fieldRenderer = resolve(FormRenderer);
   protected linkService = resolve(SemanticLinkService);
 
   protected loginRoute = signal(
     this.linkService.get({ type: SemanticLinkType.Login })
   );
+
+  protected checkoutStateService = resolve(CheckoutStateService);
+  protected selected = signal(this.checkoutStateService.get('customer'));
+
+  protected eff = effect(() => {
+    if (this.selected()) {
+      setTimeout(() => {
+        const input = this.input();
+        if (input) input.value = this.selected()?.email ?? '';
+        this.checkoutStateService.set('customer', {
+          valid: !!this.form?.checkValidity(),
+        });
+      }, 0);
+    }
+  });
 
   @query('form')
   protected form?: HTMLFormElement;
@@ -42,17 +64,27 @@ export class CheckoutGuestComponent extends LitElement {
           </a>
         </oryx-link>
       </p>
-      <form>${this.fieldRenderer.buildForm(this.fields)}</form>
+      <form @change=${this.onChange}>
+        ${this.fieldRenderer.buildForm(this.fields)}
+      </form>
     `;
   }
 
-  collectData(): ContactDetails | null {
-    if (!this.form?.checkValidity()) {
+  isValid(report?: boolean): boolean {
+    if (report) {
       this.form?.reportValidity();
-      return null;
     }
-    return Object.fromEntries(
-      new FormData(this.form).entries()
-    ) as unknown as ContactDetails;
+    return !!this.form?.checkValidity();
+  }
+
+  protected onChange(): void {
+    this.checkoutStateService.set('customer', {
+      valid: !!this.form?.checkValidity(),
+      value: { email: this.input()?.value },
+    });
+  }
+
+  protected input(): HTMLInputElement | undefined | null {
+    return this.form?.querySelector('input');
   }
 }

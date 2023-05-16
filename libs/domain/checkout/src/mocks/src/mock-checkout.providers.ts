@@ -1,11 +1,5 @@
-import {
-  CheckoutPaymentService,
-  CheckoutService,
-  CheckoutShipmentService,
-} from '@spryker-oryx/checkout';
+import { CheckoutService } from '@spryker-oryx/checkout';
 import { Provider } from '@spryker-oryx/di';
-import { MockPaymentService } from './mock-payment.service';
-import { MockShipmentService } from './mock-shipment.service';
 
 import { ExperienceStaticData } from '@spryker-oryx/experience';
 import { MockCheckoutService } from './mock-checkout.service';
@@ -23,14 +17,6 @@ export const checkoutOrchestratorStaticData = [
 ];
 
 export const mockCheckoutProviders: Provider[] = [
-  {
-    provide: CheckoutShipmentService,
-    useClass: MockShipmentService,
-  },
-  {
-    provide: CheckoutPaymentService,
-    useClass: MockPaymentService,
-  },
   {
     provide: CheckoutService,
     useClass: MockCheckoutService,

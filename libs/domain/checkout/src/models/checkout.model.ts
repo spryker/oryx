@@ -1,11 +1,11 @@
 import { OrderData } from '@spryker-oryx/order';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
-export const enum CheckoutProcessState {
-  Initializing = 'initializing',
-  NotAvailable = 'n/a',
+export const enum CheckoutState {
+  Empty = 'empty',
   Ready = 'ready',
   Busy = 'busy',
+  Invalid = 'invalid',
 }
 
 export interface CheckoutStepCallback<T> {
@@ -14,11 +14,22 @@ export interface CheckoutStepCallback<T> {
   order?: number;
 }
 
-export interface CheckoutStep<T = unknown> {
+export interface CheckoutTrigger<T> {
+  id: keyof T;
+  trigger: Subject<unknown>;
+  order?: number;
+}
+
+/**
+ * Contract that helps you write checkout form components that work
+ * with the overall checkout experience.
+ */
+export interface isValid {
   /**
-   * TODO: instructions
+   * Validates the checkout form (typically a checkout step) and reports
+   * the form validity, when requested.
    */
-  collect(): Observable<T | null>;
+  isValid(report: boolean): boolean;
 }
 
 export interface CheckoutData {
@@ -112,6 +123,7 @@ export interface CheckoutResponse {
   orders?: OrderData[];
 }
 
+export const checkoutDataStorageKey = 'oryx.checkout.data';
 export const guestCheckoutStorageKey = 'isGuestCheckout.storageKey';
 export const shipmentCheckoutStorageKey = 'oryx.checkout.shipment';
 export const paymentCheckoutStorageKey = 'oryx.checkout.payment';

@@ -1,28 +1,18 @@
 import { Observable } from 'rxjs';
-import {
-  CheckoutProcessState,
-  CheckoutResponse,
-  CheckoutStepCallback,
-} from '../models';
+import { CheckoutResponse, CheckoutState } from '../models';
 
-export interface CheckoutService<T = Record<string, unknown>> {
-  /**
-   * Each step (or small part) of the checkout can be registered separately.
-   * The registered steps are _called_ when the order got placed, to validate
-   * and collect the checkout data.
-   */
-  register(callback: CheckoutStepCallback<T>): void;
-
+export interface CheckoutService {
   /**
    * Exposes the state of the checkout process so that the process can be
    * controlled in a consistent manner.
    */
-  getProcessState(): Observable<CheckoutProcessState>;
+  getProcessState(): Observable<CheckoutState>;
 
   /**
-   * Validates the checkout data
-   * Submits the order
-   * Do post processing
+   * Reads the checkout data from the checkoutStateService and, when valid,
+   * places the order. The response data contains the redirect URL that should
+   * be used to bring the user to the next page which is typically the payment
+   * landing page or the order confirmation or failure page.
    */
   placeOrder(): Observable<CheckoutResponse>;
 }
