@@ -1,7 +1,7 @@
 import { ContextServiceFallback } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { map, startWith } from 'rxjs';
+import { map } from 'rxjs';
 
 export const enum ProductContext {
   SKU = 'sku',
@@ -12,12 +12,5 @@ export const ProductContextFallback: Provider = {
   useFactory: () =>
     inject(RouterService)
       .currentParams()
-      .pipe(
-        map((params) => params?.sku),
-        startWith(
-          ((str) => (str.match(/\/product\/(\w+)/) || [])[1])(
-            globalThis.location?.pathname
-          )
-        )
-      ),
+      .pipe(map((params) => params?.sku)),
 };

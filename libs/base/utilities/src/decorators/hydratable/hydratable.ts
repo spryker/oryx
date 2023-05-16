@@ -107,21 +107,13 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     [HYDRATE_ON_DEMAND]() {
       if (this[DEFER_HYDRATION] !== 3) return;
-      this[DEFER_HYDRATION] = 2; // pre-hydrating
 
-      // this[SIGNAL_EFFECT] = effect(() => {
-      //   super.render();
-      // });
+      // TODO: here we will need to resolve all data needed for hydration
+      // this[DEFER_HYDRATION] = 2; // pre-hydrating
 
       this[DEFER_HYDRATION] = 1; // hydrating
       super.connectedCallback();
       this.removeAttribute(deferHydrationAttribute);
-      // setTimeout(() => {
-      //   this[DEFER_HYDRATION] = 1; // hydrating
-      //   // we have to call connectedCallback manually, as lit hydration will only call LitElement part
-      //   super.connectedCallback();
-      //   this.removeAttribute(deferHydrationAttribute);
-      // }, 0);
     }
 
     render(): TemplateResult {
