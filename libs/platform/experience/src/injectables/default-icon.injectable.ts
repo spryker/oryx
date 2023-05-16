@@ -24,10 +24,12 @@ export class DefaultIconInjectable implements IconInjectable {
     if (mapper) {
       fontInjectable.get()?.setFont(source.id);
 
-      return html`<style>
-          .${source.id} {${source.styles}}
+      return html`
+        <style>
+          :host {${source.styles}}
         </style>
-        <span class="${source.id}">${unsafeHTML(mapper)}</span> `;
+        ${unsafeHTML(mapper)}
+      `;
     }
 
     const icon = app.findPlugin(ResourcePlugin)?.getIcon(type);

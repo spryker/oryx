@@ -182,8 +182,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
 
     componentClass.styles = innerTheme;
 
-    // eslint-disable-next-line no-prototype-builtins
-    if (componentClass.hasOwnProperty('finalized')) {
+    if (Object.prototype.hasOwnProperty.call(componentClass, 'finalized')) {
       componentClass.elementStyles = componentClass.finalizeStyles?.(
         componentClass.styles
       );

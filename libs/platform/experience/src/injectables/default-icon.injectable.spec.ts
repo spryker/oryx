@@ -78,17 +78,13 @@ describe('DefaultIconInjectable', () => {
       mockTheme.getIcons.mockReturnValue({ resource: mockResource });
       element.icon = 'aIcon';
       await nextFrame();
-      const iconContent = element.renderRoot.querySelector(
-        `.${mockResource.id}`
-      )?.textContent;
       const iconStyles = element.renderRoot.querySelector(`style`)?.textContent;
       expect(mockFontInjectable.setFont).toHaveBeenCalledWith(mockResource.id);
-      expect(element).toContainElement(`.${mockResource.id}`);
       expect(element).toContainElement('style');
-      expect(iconContent).toContain(mockResource.mapping.aIcon);
-      expect(iconStyles).toContain(
-        `.${mockResource.id} {${mockResource.styles}}`
+      expect(element.renderRoot.textContent).toContain(
+        mockResource.mapping.aIcon
       );
+      expect(iconStyles).toContain(`:host {${mockResource.styles}}`);
     });
 
     it('should return icon font from additional resource', async () => {
@@ -115,17 +111,13 @@ describe('DefaultIconInjectable', () => {
       });
       element.icon = 'bIcon';
       await nextFrame();
-      const iconContent = element.renderRoot.querySelector(
-        `.${mockResource.id}`
-      )?.textContent;
       const iconStyles = element.renderRoot.querySelector(`style`)?.textContent;
       expect(mockFontInjectable.setFont).toHaveBeenCalledWith(mockResource.id);
-      expect(element).toContainElement(`.${mockResource.id}`);
       expect(element).toContainElement('style');
-      expect(iconContent).toContain(mockResource.mapping.bIcon);
-      expect(iconStyles).toContain(
-        `.${mockResource.id} {${mockResource.styles}}`
+      expect(element.renderRoot.textContent).toContain(
+        mockResource.mapping.bIcon
       );
+      expect(iconStyles).toContain(`:host {${mockResource.styles}}`);
     });
   });
 

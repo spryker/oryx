@@ -19,6 +19,7 @@ import { I18nFeature } from '@spryker-oryx/i18n';
 import { orderFeature } from '@spryker-oryx/order';
 import {
   commonGraphics,
+  fontIcons,
   storefrontIcons,
 } from '@spryker-oryx/presets/resources';
 import { productFeature } from '@spryker-oryx/product';
@@ -26,7 +27,6 @@ import { RouterFeature } from '@spryker-oryx/router';
 import { searchFeature } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
 import { storefrontTheme } from '@spryker-oryx/themes';
-import { fontAwesomeMapper, materialMapper } from '@spryker-oryx/themes/icons';
 import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import { isServer } from 'lit';
@@ -40,12 +40,7 @@ const isPreview = new URLSearchParams(
 export const b2cResources: Resources = {
   graphics: commonGraphics,
   icons: storefrontIcons,
-  fonts: {
-    [materialMapper.id]:
-      'https://fonts.googleapis.com/icon?family=Material+Icons',
-    [fontAwesomeMapper.id]:
-      'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  },
+  fonts: fontIcons,
 };
 
 export const b2cFeatures: AppFeature[] = [
