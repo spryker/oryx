@@ -12,9 +12,28 @@ export const HeaderTemplate: StaticComponent = {
           type: 'oryx-content-link',
           options: {
             data: {
-              type: 'rawUrl',
-              id: '/contact',
-              text: 'Contact Us',
+              id: '/',
+              text: 'Free delivery & returns',
+              icon: 'mark',
+            },
+          },
+        },
+        {
+          type: 'oryx-content-link',
+          options: {
+            data: {
+              id: '/',
+              text: '100 day return policy',
+              icon: 'mark',
+            },
+          },
+        },
+        {
+          type: 'oryx-content-link',
+          options: {
+            data: {
+              id: '/',
+              text: 'Click & Collect',
               icon: 'mark',
             },
           },

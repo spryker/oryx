@@ -16,9 +16,4 @@ export const styles = css`
   :host(:not([vertical])) {
     width: min(100%, calc(var(--_container-width)));
   }
-
-  :host(:not([howdoesthisnotworkwithout])) {
-    align-items: var(--align, start);
-    align-content: var(--align, start);
-  }
 `;
