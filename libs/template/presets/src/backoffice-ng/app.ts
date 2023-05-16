@@ -5,7 +5,6 @@ import {
   backofficeNgIcons,
   commonGraphics,
 } from '@spryker-oryx/presets/resources';
-import { backofficeNgTheme as theme } from '@spryker-oryx/themes';
 import { uiFeature } from '@spryker-oryx/ui';
 
 export const backofficeNgResources: Resources = {
@@ -22,4 +21,4 @@ export const backofficeNgFeatures: AppFeature[] = [
   },
 ];
 
-export const backofficeNgTheme = { ...theme };
+// export const backofficeNgTheme = { ...theme };

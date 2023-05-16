@@ -1,5 +1,5 @@
 import { ResourceIcons } from '@spryker-oryx/experience';
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { IconTypes } from '../icon.model';
 
 export const storefrontIcons: ResourceIcons = {
   [IconTypes.Loader]: () =>

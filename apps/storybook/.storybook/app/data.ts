@@ -1,13 +1,15 @@
 import {
   b2cResources,
-  b2cTheme,
   backofficeNgResources,
-  backofficeNgTheme,
   backofficeResources,
-  backofficeTheme,
   fulfillmentResources,
-  fulfillmentTheme,
 } from '@spryker-oryx/presets';
+import {
+  backofficeNgTheme,
+  backofficeTheme,
+  fulfillmentTheme,
+  storefrontTheme as b2cTheme,
+} from '@spryker-oryx/themes';
 
 export const theme = {
   default: 'backoffice',

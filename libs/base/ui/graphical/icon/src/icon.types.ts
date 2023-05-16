@@ -1,6 +1,7 @@
 export enum IconTypes {
   Add = 'add',
   Cart = 'cart',
+  CartAdd = 'cart-add',
   Close = 'close',
   Collapse = 'collapse',
   DropUp = 'drop-up',

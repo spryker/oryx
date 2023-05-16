@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
-import { IconTypes } from '@spryker-oryx/themes/icons';
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { asyncState, i18n, Size, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit-html/directives/when.js';
@@ -60,15 +60,11 @@ export class PickingListsComponent extends LitElement {
       >
         <oryx-heading slot="heading">
           <h2>${i18n('picking-lists.customer-note.customer-note')}</h2>
-        </oryx-heading/>
+        </oryx-heading>
         ${this.customerNote}
-        <oryx-button
-          slot="footer"
-          type=${ButtonType.Primary}
-          size=${Size.Md}
-        >
+        <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
           <button @click=${this.closeCustomerNoteModal}>
-            <oryx-icon type=${IconTypes.CheckMark}></oryx-icon>
+            <oryx-icon type=${IconTypes.Mark}></oryx-icon>
             ${i18n('picking-lists.customer-note.got-it')}
           </button>
         </oryx-button>

@@ -1,25 +1,15 @@
 import { ResourceIcons } from '@spryker-oryx/experience';
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { IconTypes } from '../icon.model';
 
 export const fulfillmentIcons: ResourceIcons = {
   [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
-  [IconTypes.AmbientCategory]: () =>
-    import('./icons/ambient-category').then((s) => s.default),
-  [IconTypes.BackArrow]: () =>
-    import('./icons/back-arrow').then((s) => s.default),
+  [IconTypes.Back]: () => import('./icons/back-arrow').then((s) => s.default),
   [IconTypes.Cart]: () => import('./icons/cart').then((s) => s.default),
-  [IconTypes.CheckMark]: () =>
-    import('./icons/check-mark').then((s) => s.default),
-  [IconTypes.ChillerCategory]: () =>
-    import('./icons/chiller-category').then((s) => s.default),
+  [IconTypes.Mark]: () => import('./icons/check-mark').then((s) => s.default),
   [IconTypes.Close]: () => import('./icons/close').then((s) => s.default),
   [IconTypes.Edit]: () => import('./icons/edit').then((s) => s.default),
   [IconTypes.Error]: () => import('./icons/error').then((s) => s.default),
   [IconTypes.Filter]: () => import('./icons/filter').then((s) => s.default),
-  [IconTypes.FreezerCategory]: () =>
-    import('./icons/freezer-category').then((s) => s.default),
-  [IconTypes.FreshCategory]: () =>
-    import('./icons/fresh-category').then((s) => s.default),
   [IconTypes.Info]: () => import('./icons/info').then((s) => s.default),
   [IconTypes.Invisible]: () =>
     import('./icons/invisible').then((s) => s.default),

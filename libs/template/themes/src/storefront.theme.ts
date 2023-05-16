@@ -1,4 +1,9 @@
 import { Theme } from '@spryker-oryx/experience';
+// import {
+//   fontAwesomeIcons,
+//   IconTypes,
+//   materialIcons,
+// } from '@spryker-oryx/presets/resources';
 import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
 
 export const storefrontTheme: Theme = {

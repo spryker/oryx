@@ -33,7 +33,6 @@
     "@spryker-oryx/router": "latest",
     "@spryker-oryx/search": "latest",
     "@spryker-oryx/site": "latest",
-    "@spryker-oryx/themes": "latest",
     "@spryker-oryx/ui": "latest",
     "@spryker-oryx/user": "latest"
   },

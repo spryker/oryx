@@ -24,7 +24,7 @@ export class PickingListsHeaderComponent extends LitElement {
       </oryx-heading>
 
       <oryx-search
-        backIcon="backArrow"
+        backIcon="back"
         xs-floated
         @oryx.open=${() => console.log('open')}
         @oryx.close=${() => console.log('close')}

@@ -15,7 +15,6 @@ import {
 } from '@spryker-oryx/presets/resources';
 import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web';
 import { RouterFeature } from '@spryker-oryx/router';
-import { fulfillmentTheme as theme } from '@spryker-oryx/themes';
 import { uiFeature } from '@spryker-oryx/ui';
 import {
   FulfillmentRootFeature,
@@ -46,7 +45,7 @@ export interface FulfillmentFeaturesConfig {
   i18n?: I18nFeatureOptions;
 }
 
-export const fulfillmentTheme = { ...theme };
+// export const fulfillmentTheme = { ...theme };
 
 export const fulfillmentResources: Resources = {
   graphics: { ...commonGraphics, ...fulfillmentResourceGraphics },

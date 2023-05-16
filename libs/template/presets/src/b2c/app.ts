@@ -26,7 +26,6 @@ import { productFeature } from '@spryker-oryx/product';
 import { RouterFeature } from '@spryker-oryx/router';
 import { searchFeature } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
-import { storefrontTheme } from '@spryker-oryx/themes';
 import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import { isServer } from 'lit';
@@ -70,4 +69,4 @@ export const b2cFeatures: AppFeature[] = [
   StaticExperienceFeature,
 ];
 
-export const b2cTheme = { ...storefrontTheme };
+// export const b2cTheme = { ...storefrontTheme };

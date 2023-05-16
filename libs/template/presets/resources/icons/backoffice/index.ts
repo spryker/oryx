@@ -1,5 +1,5 @@
 import { ResourceIcons } from '@spryker-oryx/experience';
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { IconTypes } from '../icon.model';
 
 export const backofficeIcons: ResourceIcons = {
   [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
@@ -24,31 +24,14 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.Invisible]: () =>
     import('./icons/invisible').then((s) => s.default),
   [IconTypes.Wishlist]: () => import('./icons/wishlist').then((s) => s.default),
-  [IconTypes.Administration]: () =>
-    import('./icons/administration').then((s) => s.default),
-  [IconTypes.Catalog]: () => import('./icons/catalog').then((s) => s.default),
-  [IconTypes.Content]: () => import('./icons/content').then((s) => s.default),
   [IconTypes.Customer]: () => import('./icons/customer').then((s) => s.default),
-  [IconTypes.Dashboard]: () =>
-    import('./icons/dashboard').then((s) => s.default),
-  [IconTypes.Maintenance]: () =>
-    import('./icons/maintenance').then((s) => s.default),
-  [IconTypes.Marketplace]: () =>
-    import('./icons/marketplace').then((s) => s.default),
-  [IconTypes.Merchandising]: () =>
-    import('./icons/merchandising').then((s) => s.default),
-  [IconTypes.MerchantProfile]: () =>
-    import('./icons/merchant-profile').then((s) => s.default),
   [IconTypes.Ratings]: () => import('./icons/ratings').then((s) => s.default),
   [IconTypes.Sales]: () => import('./icons/sales').then((s) => s.default),
   [IconTypes.Users]: () => import('./icons/users').then((s) => s.default),
-  [IconTypes.Dashboards]: () =>
-    import('./icons/dashboards').then((s) => s.default),
   [IconTypes.ModeDark]: () =>
     import('./icons/mode-dark').then((s) => s.default),
   [IconTypes.ModeLight]: () =>
     import('./icons/mode-light').then((s) => s.default),
-  [IconTypes.Merchant]: () => import('./icons/merchant').then((s) => s.default),
   [IconTypes.Orders]: () => import('./icons/orders').then((s) => s.default),
   [IconTypes.Products]: () => import('./icons/products').then((s) => s.default),
   [IconTypes.Profile]: () => import('./icons/profile').then((s) => s.default),
@@ -58,11 +41,7 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.Error]: () => import('./icons/error').then((s) => s.default),
   [IconTypes.Success]: () => import('./icons/success').then((s) => s.default),
   [IconTypes.Warning]: () => import('./icons/warning').then((s) => s.default),
-  [IconTypes.America]: () => import('./icons/america').then((s) => s.default),
-  [IconTypes.France]: () => import('./icons/france').then((s) => s.default),
-  [IconTypes.Germany]: () => import('./icons/germany').then((s) => s.default),
   [IconTypes.Planet]: () => import('./icons/planet').then((s) => s.default),
-  [IconTypes.Spain]: () => import('./icons/spain').then((s) => s.default),
   [IconTypes.Actions]: () => import('./icons/actions').then((s) => s.default),
   [IconTypes.ActionsHorizontal]: () =>
     import('./icons/actions-horizontal').then((s) => s.default),
@@ -86,8 +65,6 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.Imports]: () => import('./icons/imports').then((s) => s.default),
   [IconTypes.InputStepper]: () =>
     import('./icons/input-stepper').then((s) => s.default),
-  [IconTypes.Integration]: () =>
-    import('./icons/integration').then((s) => s.default),
   [IconTypes.Link]: () => import('./icons/link').then((s) => s.default),
   [IconTypes.Loader]: () => import('./icons/loader').then((s) => s.default),
   [IconTypes.Locker]: () => import('./icons/locker').then((s) => s.default),
@@ -96,8 +73,6 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.Minimize]: () => import('./icons/minimize').then((s) => s.default),
   [IconTypes.NavigationArrow]: () =>
     import('./icons/navigation-arrow').then((s) => s.default),
-  [IconTypes.Placeholder]: () =>
-    import('./icons/placeholder').then((s) => s.default),
   [IconTypes.Reset]: () => import('./icons/reset').then((s) => s.default),
   [IconTypes.Settings]: () => import('./icons/settings').then((s) => s.default),
   [IconTypes.Sort]: () => import('./icons/sort').then((s) => s.default),
@@ -106,12 +81,6 @@ export const backofficeIcons: ResourceIcons = {
     import('./icons/text-area-resizable').then((s) => s.default),
   [IconTypes.Top]: () => import('./icons/top').then((s) => s.default),
   [IconTypes.Filter]: () => import('./icons/filter').then((s) => s.default),
-  [IconTypes.GoldPartner]: () =>
-    import('./icons/gold-partner').then((s) => s.default),
-  [IconTypes.Popular]: () => import('./icons/popular').then((s) => s.default),
-  [IconTypes.SilverPartner]: () =>
-    import('./icons/silver-partner').then((s) => s.default),
-
   /** Alias to minus */
   [IconTypes.Decrease]: () => import('./icons/minus').then((s) => s.default),
   /** Alias to add */

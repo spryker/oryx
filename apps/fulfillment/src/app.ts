@@ -1,11 +1,9 @@
 import { appBuilder } from '@spryker-oryx/application';
 import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { ContentBackendUrl, experienceFeature } from '@spryker-oryx/experience';
-import {
-  fulfillmentTheme,
-  offlineFulfillmentFeatures,
-} from '@spryker-oryx/presets';
+import { offlineFulfillmentFeatures } from '@spryker-oryx/presets';
 import { siteFeature } from '@spryker-oryx/site';
+import { fulfillmentTheme } from '@spryker-oryx/themes';
 import { fallbackEnv } from './fallback-env';
 
 appBuilder()

@@ -1,6 +1,7 @@
 import { appBuilder } from '@spryker-oryx/application';
 import { labsFeatures } from '@spryker-oryx/labs';
-import { b2cFeatures, b2cTheme } from '@spryker-oryx/presets';
+import { b2cFeatures } from '@spryker-oryx/presets';
+import { storefrontTheme as b2cTheme } from '@spryker-oryx/themes';
 
 const env = import.meta.env;
 const features = [...b2cFeatures];

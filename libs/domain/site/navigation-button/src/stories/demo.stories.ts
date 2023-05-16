@@ -1,8 +1,10 @@
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { getResourceIcons } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import { NavigationButtonAttributes } from '../navigation-button.model';
+
+const icons = getResourceIcons();
 
 export default {
   title: `${storybookPrefix}/Navigation Button`,
@@ -14,7 +16,7 @@ export default {
   },
   argTypes: {
     icon: {
-      options: ['', ...Object.values(IconTypes)],
+      options: ['', ...icons],
       control: { type: 'select' },
     },
   },

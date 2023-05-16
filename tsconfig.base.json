@@ -172,7 +172,6 @@
       "@spryker-oryx/themes/design-tokens": [
         "libs/template/themes/design-tokens/index.ts"
       ],
-      "@spryker-oryx/themes/icons": ["libs/template/themes/icons/index.ts"],
       "@spryker-oryx/ui": ["libs/base/ui/src/index.ts"],
       "@spryker-oryx/ui/button": ["libs/base/ui/action/button/index.ts"],
       "@spryker-oryx/ui/card": ["libs/base/ui/structure/card/index.ts"],

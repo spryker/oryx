@@ -6,7 +6,6 @@ import {
   commonGraphics,
 } from '@spryker-oryx/presets/resources';
 import { siteFeature } from '@spryker-oryx/site';
-import { backofficeTheme as theme } from '@spryker-oryx/themes';
 import { uiFeature } from '@spryker-oryx/ui';
 
 export const backofficeResources: Resources = {
@@ -24,4 +23,4 @@ export const backofficeFeatures: AppFeature[] = [
   },
 ];
 
-export const backofficeTheme = { ...theme };
+// export const backofficeTheme = { ...theme };
