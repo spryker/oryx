@@ -6,7 +6,8 @@ const mediumSize = unsafeCSS(`[size='${Size.Md}']`);
 
 export const styles = css`
   :host {
-    --_margin: 0;
+    /* stylelint-disable-next-line */
+    --_margin: 0px;
 
     display: flex;
     align-items: center;
