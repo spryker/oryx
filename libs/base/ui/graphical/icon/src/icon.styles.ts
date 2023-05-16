@@ -6,15 +6,12 @@ const mediumSize = unsafeCSS(`[size='${Size.Md}']`);
 
 export const styles = css`
   :host {
-    /* stylelint-disable-next-line */
-    --_margin: 0px;
-
     display: flex;
+    align-items: center;
     height: var(--oryx-icon-size, var(--oryx-icon-size-large, 24px));
     aspect-ratio: 1 / 1;
-    justify-content: center;
     color: var(--oryx-icon-color, inherit);
-    align-self: center;
+    font-size: var(--oryx-icon-size, 24px);
     font-variation-settings: 'FILL' var(--icon-fill, 0),
       'wght' var(--icon-weight, 500), 'GRAD' var(--icon-grad, 0),
       'opsz' var(--icon-optical, 48);
@@ -24,9 +21,9 @@ export const styles = css`
   svg,
   ::slotted(svg) {
     fill: var(--oryx-icon-color, currentColor);
-    width: calc(var(--oryx-icon-size, 24px) - (var(--_margin) * 2));
+    width: calc(var(--oryx-icon-size, 24px) - (var(--_margin, 0) * 2));
     aspect-ratio: 1 / 1;
-    margin: var(--_margin);
+    margin: var(--_margin, 0);
     transition: var(--oryx-transition-time);
   }
 
