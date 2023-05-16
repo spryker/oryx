@@ -45,13 +45,12 @@ describe('ProductCardComponent', () => {
   });
 
   it('should render inner components', () => {
-    expect(element).toContainElement('oryx-content-link');
-    expect(element).toContainElement('oryx-product-media');
-    expect(element).toContainElement('oryx-product-title');
-    expect(element).toContainElement('oryx-product-price');
-    expect(element).toContainElement('oryx-product-average-rating');
-    expect(element).toContainElement('oryx-cart-add');
-    expect(element).toContainElement('oryx-product-labels');
+    expect(element).toContainElement('a oryx-product-media');
+    expect(element).toContainElement('a oryx-product-title');
+    expect(element).toContainElement('a oryx-product-price');
+    expect(element).toContainElement('a oryx-product-average-rating');
+    expect(element).toContainElement('a oryx-cart-add');
+    expect(element).toContainElement('a oryx-product-labels');
 
     //TODO: replace by favorites component
     expect(element).toContainElement('oryx-icon-button');
