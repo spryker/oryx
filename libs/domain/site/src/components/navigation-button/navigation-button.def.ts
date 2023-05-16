@@ -6,6 +6,9 @@ export const navigationButtonComponent = componentDef({
     import('./navigation-button.component').then(
       (m) => m.NavigationButtonComponent
     ),
+  schema: import('./navigation-button.schema').then(
+    (m) => m.siteNavigationButtonSchema
+  ),
   stylesheets: [
     {
       rules: () =>

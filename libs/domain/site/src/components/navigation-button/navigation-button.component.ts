@@ -4,10 +4,9 @@ import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { NavigationButtonAttributes } from './navigation-button.model';
 import { styles } from './navigation-button.styles';
+import { ContentMixin } from "@spryker-oryx/experience";
 
-export class NavigationButtonComponent
-  extends LitElement
-  implements NavigationButtonAttributes
+export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttributes>(LitElement)
 {
   static styles = styles;
 
