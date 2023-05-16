@@ -41,7 +41,9 @@ export class HeaderFragment {
     cy.wait(500);
     this.getLocaleButton().click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    this.getLocaleSelector().find(`oryx-option[value="${locale}"]`).click({ force: true });
+    this.getLocaleSelector()
+      .find(`oryx-option[value="${locale}"]`)
+      .click({ force: true });
     cy.wait('@productRequests');
   };
 
