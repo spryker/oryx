@@ -2,10 +2,10 @@ import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import {
   CheckoutDataService,
-  isValid,
   CheckoutService,
   CheckoutState,
   CheckoutStateService,
+  isValid,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';

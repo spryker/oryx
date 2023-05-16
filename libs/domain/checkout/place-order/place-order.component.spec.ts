@@ -4,7 +4,6 @@ import {
   CheckoutDataService,
   CheckoutResponse,
   CheckoutService,
-  CheckoutState,
   CheckoutStateService,
 } from '@spryker-oryx/checkout';
 import { CheckoutPlaceOrderComponent } from '@spryker-oryx/checkout/place-order';

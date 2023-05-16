@@ -1,9 +1,4 @@
-import {
-  Checkout,
-  CheckoutResponse,
-  CheckoutService,
-  CheckoutState,
-} from '@spryker-oryx/checkout';
+import { CheckoutResponse, CheckoutState } from '@spryker-oryx/checkout';
 import { Observable, of } from 'rxjs';
 
 export class MockCheckoutService {

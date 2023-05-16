@@ -9,7 +9,7 @@ import {
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
 import { SemanticLinkService } from '@spryker-oryx/site';
-import { BehaviorSubject, EMPTY, of, take } from 'rxjs';
+import { BehaviorSubject, of, take } from 'rxjs';
 import { CheckoutAdapter } from './adapter';
 
 class MockCartService implements Partial<CartService> {
