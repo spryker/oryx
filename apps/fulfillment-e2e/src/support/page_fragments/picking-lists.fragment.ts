@@ -1,6 +1,5 @@
 export class PickingListsFragment {
   getWrapper = () => cy.get('oryx-picking-lists');
-  getPickingListItems = () => this.getWrapper().find('oryx-picking-list-item');
   getSearch = () => cy.get('oryx-search');
   getSearchInput = () => this.getSearch().find('input[placeholder="Order ID"]');
   getSearchBackButton = () => this.getSearch().find('.back-button');
