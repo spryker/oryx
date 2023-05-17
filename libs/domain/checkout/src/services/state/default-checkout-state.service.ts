@@ -1,16 +1,13 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { BehaviorSubject, map, Observable, take, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, take, tap } from 'rxjs';
 import { Checkout, checkoutDataStorageKey } from '../../models';
 import { CheckoutStateService } from './checkout-state.service';
 
+type m = { valid?: boolean; value?: Partial<Checkout[keyof Checkout]> | null };
+
 export class DefaultCheckoutStateService implements CheckoutStateService {
-  protected subject = new BehaviorSubject<
-    Map<
-      keyof Checkout,
-      { valid?: boolean; value?: Partial<Checkout[keyof Checkout]> | null }
-    >
-  >(new Map());
+  protected subject = new BehaviorSubject<Map<keyof Checkout, m>>(new Map());
 
   constructor(protected storage = inject(StorageService)) {
     this.restore();
@@ -31,7 +28,7 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     this.subject.next(collected);
     this.storage.set(
       checkoutDataStorageKey,
-      this.merge(collected),
+      Array.from(collected),
       StorageType.SESSION
     );
   }
@@ -53,18 +50,19 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
   getAll(): Observable<Partial<Checkout> | null> {
     return this.subject.pipe(
       map((data) => {
-        let invalid = false;
-        data.forEach((item) => {
-          console.log(item);
-          if (!item.valid) invalid = true;
+        if (Array.from(data).find((item) => !item[1].valid)) return null;
+        const result: Partial<Checkout> = {};
+        data.forEach((item, key) => {
+          Object.assign(result, { [key]: item.value });
         });
-        return invalid ? null : this.populateData(this.merge(data));
+        return this.populateData(result);
       })
     );
   }
 
-  protected populateData(inp: Partial<Checkout>): Partial<Checkout> {
-    const data = { ...inp };
+  protected populateData(data: Partial<Checkout>): Partial<Checkout> {
+    console.log('inp', data);
+    // const data = { ...inp };
     if (data.customer) {
       if (!data.customer.salutation && data.shippingAddress?.salutation)
         data.customer.salutation = data.shippingAddress.salutation;
@@ -81,47 +79,15 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
   }
 
   /**
-   * Restores the data from storage.
-   *
-   * TODO: consider storage strategies
+   * Restores the data from storage
    */
   protected restore(): void {
     this.storage
-      .get<Checkout>(checkoutDataStorageKey, StorageType.SESSION)
+      .get<Map<keyof Checkout, m>>(checkoutDataStorageKey, StorageType.SESSION)
       .pipe(
         take(1),
-        tap((stored) => {
-          if (stored) {
-            const map = new Map<
-              keyof Checkout,
-              { data: Checkout[keyof Checkout] | null; valid: boolean }
-            >();
-            Object.keys(stored).forEach(() => {
-              const entries = Object.entries(stored);
-              for (const [key, value] of entries) {
-                map.set(key as keyof Checkout, {
-                  data: value as Checkout[keyof Checkout] | null,
-                  valid: false,
-                });
-              }
-            });
-            this.subject.next(map);
-          }
-        })
+        tap((stored) => this.subject.next(new Map(stored)))
       )
       .subscribe();
-  }
-
-  protected merge(
-    data: Map<
-      keyof Checkout,
-      { valid?: boolean; value?: Partial<Checkout[keyof Checkout]> | null }
-    >
-  ): Partial<Checkout> {
-    const result: Partial<Checkout> = {};
-    data.forEach((item, key) => {
-      Object.assign(result, { [key]: item.value });
-    });
-    return result;
   }
 }

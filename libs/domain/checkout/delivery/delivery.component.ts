@@ -15,8 +15,10 @@ export class CheckoutDeliveryComponent
 {
   static styles = [styles];
 
+  protected addressService = resolve(AddressService);
+
+  protected addresses = signal(this.addressService.getAddresses());
   protected selected = signal(this.checkoutStateService.get('shippingAddress'));
-  protected addresses = signal(resolve(AddressService).getAddresses());
 
   @query('oryx-checkout-address')
   protected addressComponent?: CheckoutAddressComponent;

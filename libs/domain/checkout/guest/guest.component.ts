@@ -35,9 +35,6 @@ export class CheckoutGuestComponent extends LitElement implements isValid {
       setTimeout(() => {
         const input = this.input();
         if (input) input.value = this.selected()?.email ?? '';
-        this.checkoutStateService.set('customer', {
-          valid: !!this.form?.checkValidity(),
-        });
       }, 0);
     }
   });
@@ -79,8 +76,8 @@ export class CheckoutGuestComponent extends LitElement implements isValid {
 
   protected onChange(): void {
     this.checkoutStateService.set('customer', {
-      valid: !!this.form?.checkValidity(),
       value: { email: this.input()?.value },
+      valid: !!this.form?.checkValidity(),
     });
   }
 

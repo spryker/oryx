@@ -23,12 +23,6 @@ export class CheckoutShipmentComponent
   protected shipments = signal(this.checkoutDataService.get('shipments'));
   protected selected = signal(this.checkoutStateService.get('shipment'));
 
-  protected eff = effect(() => {
-    // we set the validity when the data is resolved from storage...
-    if (this.selected())
-      this.checkoutStateService.set('shipment', { valid: true });
-  });
-
   @query('form')
   protected form?: HTMLFormElement;
 
@@ -108,8 +102,8 @@ export class CheckoutShipmentComponent
   protected select(id?: string): void {
     const value = id ? { idShipmentMethod: id } : null;
     this.checkoutStateService.set('shipment', {
-      valid: !!this.form?.checkValidity,
       value,
+      valid: true,
     });
   }
 

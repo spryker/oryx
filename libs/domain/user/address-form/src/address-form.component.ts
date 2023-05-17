@@ -60,20 +60,20 @@ export class AddressFormComponent
   @property({ type: Boolean }) enableDefaultBilling?: boolean;
   @property({ type: Object }) set address(value: Address) {
     // TODO: introduce generic method to apply form data on form element
-    if (!value) return;
-    setTimeout(() => {
-      let hasChanged = false;
-      Object.keys(value).forEach((key) => {
-        const input = this.formX?.querySelector<HTMLInputElement>(
-          `[name=${key}]`
-        );
-        if (input && input.value !== (value as any)[key]) {
-          input.value = (value as any)[key];
-          hasChanged = true;
-        }
-        if (hasChanged) this.store();
-      });
-    }, 100);
+    // if (!value) return;
+    // setTimeout(() => {
+    //   let hasChanged = false;
+    //   Object.keys(value).forEach((key) => {
+    //     const input = this.formX?.querySelector<HTMLInputElement>(
+    //       `[name=${key}]`
+    //     );
+    //     if (input && input.value !== (value as any)[key]) {
+    //       input.value = (value as any)[key];
+    //       hasChanged = true;
+    //     }
+    //     if (hasChanged) this.store();
+    //   });
+    // }, 100);
   }
 
   @property() country?: string;

@@ -123,12 +123,7 @@ export interface CheckoutResponse {
   orders?: OrderData[];
 }
 
-export const checkoutDataStorageKey = 'oryx.checkout.data';
-export const guestCheckoutStorageKey = 'isGuestCheckout.storageKey';
-export const shipmentCheckoutStorageKey = 'oryx.checkout.shipment';
-export const paymentCheckoutStorageKey = 'oryx.checkout.payment';
-export const contactCheckoutStorageKey = 'contactCheckout.storageKey';
-export const addressCheckoutStorageKey = 'addressCheckout.storageKey';
+export const checkoutDataStorageKey = 'oryx.checkout';
 
 export const defaultSelectedShipmentMethod = {
   deliveryTime: null,

@@ -13,6 +13,7 @@ import {
   switchMap,
   take,
   tap,
+  throwError,
 } from 'rxjs';
 import { Checkout, CheckoutResponse, CheckoutState } from '../models';
 import { CheckoutAdapter } from './adapter';
@@ -65,12 +66,11 @@ export class DefaultCheckoutService implements CheckoutService {
                     tap((response) => this.postCheckout(response))
                   )
                 ),
-
                 finalize(() => this.process.next(CheckoutState.Ready))
               );
           } else {
             this.process.next(CheckoutState.Invalid);
-            return EMPTY;
+            return throwError(() => new Error('Invalid checkout data'));
           }
         })
       )

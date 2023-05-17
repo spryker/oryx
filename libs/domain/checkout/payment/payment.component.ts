@@ -16,12 +16,6 @@ export class CheckoutPaymentComponent
   );
   protected selected = signal(this.checkoutStateService.get('payments'));
 
-  protected eff = effect(() => {
-    // we set the validity when the data is resolved from storage...
-    if (this.selected())
-      this.checkoutStateService.set('payments', { valid: true });
-  });
-
   @query('form')
   protected form?: HTMLFormElement;
 
@@ -87,8 +81,8 @@ export class CheckoutPaymentComponent
     const method = this.paymentMethods()?.find((method) => method.id === id);
     const value = method ? [method] : null;
     this.checkoutStateService.set('payments', {
-      valid: !!this.form?.checkValidity,
       value,
+      valid: true,
     });
   }
 
