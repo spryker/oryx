@@ -1,9 +1,9 @@
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { styles } from './login.styles';
+import { loginComponentStyles } from './login.styles';
 
 export class LoginPageComponent extends LitElement {
-  static styles = styles;
+  static styles = loginComponentStyles;
 
   protected override render(): TemplateResult {
     return html`<oryx-image resource="logo"></oryx-image>

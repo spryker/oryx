@@ -264,8 +264,11 @@ export const buttonStyles = css`
 
 const smallScreen = css`
   :host {
-    font-size: 1.143em;
     font-weight: 600;
+  }
+
+  :host(:not([type='text'])) {
+    font-size: 1.143em;
   }
 `;
 

@@ -4,10 +4,10 @@ import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
-import { styles } from './customer-note.styles';
+import { customerNoteComponentStyles } from './customer-note.styles';
 
 export class CustomerNoteComponent extends PickingListMixin(LitElement) {
-  static styles = styles;
+  static styles = customerNoteComponentStyles;
 
   protected routerService = resolve(RouterService);
 

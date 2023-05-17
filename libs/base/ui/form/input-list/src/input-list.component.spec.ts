@@ -2,8 +2,8 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { Direction } from '../../../src/utilities/model';
 import { ErrorMessageComponent } from '../../error-message';
-import { inputListComponent } from './component';
 import { InputListComponent } from './input-list.component';
+import { inputListComponent } from './input-list.def';
 
 describe('InputListComponent', () => {
   let element: InputListComponent;
