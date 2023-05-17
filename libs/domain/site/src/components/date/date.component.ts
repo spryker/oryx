@@ -1,4 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
 import {
   computed,
@@ -9,12 +10,12 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { DateComponentAttributes } from './date.model';
-import { ContentMixin } from "@spryker-oryx/experience";
 
 @hydratable()
 @signalAware()
-export class DateComponent extends ContentMixin<DateComponentAttributes>(LitElement)
-{
+export class DateComponent extends ContentMixin<DateComponentAttributes>(
+  LitElement
+) {
   protected localeService = resolve(LocaleService);
 
   @signalProperty() stamp?: string | number | Date;

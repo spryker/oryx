@@ -1,4 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
+import { ContentMixin } from '@spryker-oryx/experience';
 import {
   computed,
   hydratable,
@@ -8,16 +9,15 @@ import {
 import { html, LitElement, TemplateResult } from 'lit';
 import { PricingService } from '../../services';
 import { PriceComponentAttributes } from './price.model';
-import {ContentMixin} from "@spryker-oryx/experience";
 
 @hydratable()
 @signalAware()
-export class PriceComponent
-  extends ContentMixin<PriceComponentAttributes>(LitElement)
-{
+export class PriceComponent extends ContentMixin<PriceComponentAttributes>(
+  LitElement
+) {
   protected pricingService = resolve(PricingService);
-  @signalProperty() value?: number;
 
+  @signalProperty() value?: number;
   @signalProperty() currency?: string;
 
   protected price = computed(() =>

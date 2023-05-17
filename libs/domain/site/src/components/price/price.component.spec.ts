@@ -74,7 +74,9 @@ describe('PriceComponent', () => {
 
     describe('and the value is 1234', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-site-price .value=${1234}></oryx-site-price>`);
+        element = await fixture(
+          html`<oryx-site-price .value=${1234}></oryx-site-price>`
+        );
       });
 
       it('should render €12.34', () => {
@@ -85,7 +87,10 @@ describe('PriceComponent', () => {
     describe('and when the currency property is set to "USD"', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-site-price .value=${1234} currency="USD"></oryx-site-price>`
+          html`<oryx-site-price
+            .value=${1234}
+            currency="USD"
+          ></oryx-site-price>`
         );
       });
 
@@ -103,7 +108,9 @@ describe('PriceComponent', () => {
 
     describe('and the value is 1234', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-site-price .value=${1234}></oryx-site-price>`);
+        element = await fixture(
+          html`<oryx-site-price .value=${1234}></oryx-site-price>`
+        );
       });
 
       it('should render 12,34 £', () => {
@@ -114,7 +121,10 @@ describe('PriceComponent', () => {
     describe('and when the currency property is set to "USD"', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-site-price .value=${1234} currency="USD"></oryx-site-price>`
+          html`<oryx-site-price
+            .value=${1234}
+            currency="USD"
+          ></oryx-site-price>`
         );
       });
 

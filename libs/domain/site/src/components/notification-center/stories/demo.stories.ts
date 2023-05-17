@@ -8,8 +8,8 @@ import {
 } from '@spryker-oryx/ui/notification-center';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { SiteNotificationCenterOptions } from '../notification-center.model';
 import { storybookPrefix } from '../../../../.constants';
+import { SiteNotificationCenterOptions } from '../notification-center.model';
 
 export default {
   title: `${storybookPrefix}/Notification Center`,

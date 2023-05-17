@@ -3,7 +3,9 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
 import {
-  hydratable, queryFirstFocusable, signal,
+  hydratable,
+  queryFirstFocusable,
+  signal,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -144,7 +146,8 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
       >
         ${when(
           this.$url(),
-          () => html`<a href=${this.$url()!}> ${this.icon} ${this.$label()} </a>`,
+          () =>
+            html`<a href=${this.$url()!}> ${this.icon} ${this.$label()} </a>`,
           () => html`<button>${this.icon} ${this.$label()}</button>`
         )}
       </oryx-button>

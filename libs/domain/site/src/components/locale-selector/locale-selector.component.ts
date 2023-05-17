@@ -18,11 +18,10 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
   protected localeService = resolve(LocaleService);
 
   protected $locales = signal(this.localeService.getAll());
-
   protected $current = signal(this.localeService.get());
 
   protected override render(): TemplateResult | void {
-    if (!this.$current || !this.$locales?.length || this.$locales.length < 2) {
+    if (!this.$current() || !this.$locales()?.length || this.$locales().length < 2) {
       return;
     }
 
