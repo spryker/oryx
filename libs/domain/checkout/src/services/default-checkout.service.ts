@@ -5,7 +5,6 @@ import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
-  EMPTY,
   finalize,
   map,
   Observable,

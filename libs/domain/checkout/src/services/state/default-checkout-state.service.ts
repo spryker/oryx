@@ -1,6 +1,6 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { BehaviorSubject, map, Observable, of, take, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, take, tap } from 'rxjs';
 import { Checkout, checkoutDataStorageKey } from '../../models';
 import { CheckoutStateService } from './checkout-state.service';
 

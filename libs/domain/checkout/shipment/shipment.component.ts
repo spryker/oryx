@@ -1,12 +1,6 @@
 import { CheckoutMixin, isValid, ShipmentMethod } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
-import {
-  effect,
-  hydratable,
-  i18n,
-  signal,
-  signalAware,
-} from '@spryker-oryx/utilities';
+import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';

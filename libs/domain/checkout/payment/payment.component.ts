@@ -1,5 +1,5 @@
 import { CheckoutMixin, isValid, PaymentMethod } from '@spryker-oryx/checkout';
-import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { styles } from './payment.styles';
