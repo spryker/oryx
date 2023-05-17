@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
-import { NotificationService } from '@spryker-oryx/site';
+import { NotificationService } from '../../services';
 import { AlertType, notificationCenterComponent } from '@spryker-oryx/ui';
 import {
   NotificationCenterComponent,

@@ -1,7 +1,7 @@
 import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { SemanticLinkService} from '../../services';
 import {
   hydratable,
   queryFirstFocusable,
@@ -32,6 +32,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   static styles = styles;
 
   protected tokenResolver = resolve(TokenResolver);
+  protected semanticLinkService = resolve(SemanticLinkService);
 
   protected $label = signal(
     this.options$.pipe(
@@ -64,7 +65,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
           return of(url);
         }
 
-        return resolve(SemanticLinkService).get(url);
+        return this.semanticLinkService.get(url);
       })
     )
   );

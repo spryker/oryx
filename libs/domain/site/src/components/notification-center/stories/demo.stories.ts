@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { NotificationService } from '@spryker-oryx/site';
+import { NotificationService } from '../../../services';
 import { AlertType } from '@spryker-oryx/ui';
 
 import {

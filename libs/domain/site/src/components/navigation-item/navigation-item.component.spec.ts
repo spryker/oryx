@@ -3,9 +3,9 @@ import { TokenResolver } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
-  navigationButtonComponent,
   SemanticLinkService,
-} from '@spryker-oryx/site';
+} from '../../services';
+import { navigationButtonComponent } from '../navigation-button/navigation-button.component';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';

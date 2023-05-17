@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { NotificationService } from '@spryker-oryx/site';
+import { NotificationService } from '../../services';
 import {
   NotificationCenterComponent,
   NotificationPosition,

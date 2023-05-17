@@ -1,4 +1,4 @@
-import { SemanticLink } from '@spryker-oryx/site';
+import { SemanticLink } from '../../services';
 
 export interface SiteNavigationItemOptions {
   icon?: string;

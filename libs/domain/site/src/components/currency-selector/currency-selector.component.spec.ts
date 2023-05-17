@@ -3,10 +3,10 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import {
-  Currency,
-  CurrencyService,
-  siteCurrencySelectorComponent,
-} from '@spryker-oryx/site';
+  siteCurrencySelectorComponent
+} from './currency-selector.def';
+import { Currency } from '../../models';
+import { CurrencyService } from '../../services';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SiteCurrencySelectorComponent } from './currency-selector.component';
