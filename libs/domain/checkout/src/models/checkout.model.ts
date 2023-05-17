@@ -1,23 +1,10 @@
 import { OrderData } from '@spryker-oryx/order';
-import { Observable, Subject } from 'rxjs';
 
 export const enum CheckoutState {
   Empty = 'empty',
   Ready = 'ready',
   Busy = 'busy',
   Invalid = 'invalid',
-}
-
-export interface CheckoutStepCallback<T> {
-  id: keyof T;
-  collectDataCallback: () => Observable<T[keyof T]>;
-  order?: number;
-}
-
-export interface CheckoutTrigger<T> {
-  id: keyof T;
-  trigger: Subject<unknown>;
-  order?: number;
 }
 
 /**
