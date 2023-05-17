@@ -9,7 +9,6 @@ import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
 import {
   commonGraphics,
-  fontIcons,
   fulfillmentIcons,
   fulfillmentResourceGraphics,
 } from '@spryker-oryx/presets/resources';
@@ -48,5 +47,4 @@ export interface FulfillmentFeaturesConfig {
 export const fulfillmentResources: Resources = {
   graphics: { ...commonGraphics, ...fulfillmentResourceGraphics },
   icons: fulfillmentIcons,
-  fonts: fontIcons,
 };

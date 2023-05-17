@@ -51,17 +51,27 @@ export type DesignToken = ThemeToken & {
   color?: ColorDesignTokens;
 };
 
-export interface IconData {
-  tag?: string;
-  text?: string;
-  class?: string;
+export interface IconStyles {
+  font?: string;
+  fill?: number;
+  weight?: number;
+  grad?: number;
+  optical?: number;
+  size?: 'string';
+  rtl?: boolean;
+}
+
+export interface IconProps {
+  text: string;
+  styles?: Exclude<IconStyles, 'font'>;
+  ltr?: boolean;
 }
 
 export interface IconMapper {
   // Uses as default tag class also
   id: string;
-  styles?: string;
-  mapping: Record<string, string>;
+  styles?: Exclude<IconStyles, 'rtl'>;
+  mapping: Record<string, string | IconProps>;
 }
 
 export interface IconSource {

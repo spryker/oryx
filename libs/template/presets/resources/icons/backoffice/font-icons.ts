@@ -1,12 +1,12 @@
-import { IconMapper } from '@spryker-oryx/experience';
+import { IconMapper, ResourceFonts } from '@spryker-oryx/experience';
 import { IconTypes } from '../icon.model';
 
 export const backofficeFontAwesomeIcons: IconMapper = {
   id: 'fa',
-  styles: `
-    --oryx-icon-font: 'Font Awesome 6 Free';
-    --oryx-icon-weight: 900;
-  `,
+  styles: {
+    font: 'Font Awesome 6 Free',
+    weight: 900,
+  },
   mapping: {
     [IconTypes.CartAdd]: '&#xf217;',
     [IconTypes.Cart]: '&#xf07a;',
@@ -96,7 +96,7 @@ export const backofficeFontAwesomeIcons: IconMapper = {
   },
 };
 
-export const backofficeFontIcons = {
+export const backofficeFontIcons: ResourceFonts = {
   [backofficeFontAwesomeIcons.id]:
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
 };
