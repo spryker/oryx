@@ -7,6 +7,7 @@ import { modalComponent } from '@spryker-oryx/ui/modal';
 import { html } from 'lit';
 import { of, throwError } from 'rxjs';
 import { mockPickingListData } from '../../mocks';
+import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { pickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.def';
 import { CustomerNoteComponent } from './customer-note.component';
 import { customerNoteComponent } from './customer-note.def';
@@ -119,10 +120,11 @@ describe('CustomerNoteComponent', () => {
 
       it('should open picking in progress modal', () => {
         expect(
-          element.renderRoot
-            .querySelector('oryx-picking-in-progress-modal')
-            ?.shadowRoot?.querySelector('oryx-modal')
-            ?.hasAttribute('open')
+          (
+            element.renderRoot.querySelector(
+              'oryx-picking-in-progress-modal'
+            ) as PickingInProgressModalComponent
+          )?.open
         ).toBe(true);
       });
 

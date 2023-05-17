@@ -22,10 +22,10 @@ import {
   ProductItemPickedEvent,
 } from '../../models';
 import { PickingProductCardComponent } from '../picking-product-card';
-import { styles } from './picking.styles';
+import { pickingComponentStyles } from './picking.styles';
 
 export class PickingComponent extends PickingListMixin(LitElement) {
-  static styles = styles;
+  static styles = pickingComponentStyles;
 
   protected routerService = resolve(RouterService);
 

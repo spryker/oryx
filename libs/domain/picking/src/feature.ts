@@ -1,8 +1,21 @@
 import { AppFeature, ComponentsInfo } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import * as components from './components';
 import { PickingConfig, providePickingConfig } from './config.provider';
+import {
+  customerNoteComponent,
+  filterButtonComponent,
+  filtersComponent,
+  loginPageComponent,
+  navigateBackComponent,
+  pickingComponent,
+  pickingInProgressModalComponent,
+  pickingListItemComponent,
+  pickingListsComponent,
+  pickingListsHeaderComponent,
+  pickingProductCardComponent,
+  userProfileComponent,
+} from './defs';
 import { defaultPickingRoutes } from './routes';
 import {
   PickingHttpDefaultService,
@@ -13,7 +26,20 @@ import {
   PickingListService,
 } from './services';
 
-export const pickingComponents = Object.values(components);
+export const pickingComponents = [
+  customerNoteComponent,
+  filterButtonComponent,
+  filtersComponent,
+  loginPageComponent,
+  navigateBackComponent,
+  pickingListsComponent,
+  pickingListsHeaderComponent,
+  pickingListItemComponent,
+  pickingProductCardComponent,
+  pickingInProgressModalComponent,
+  pickingComponent,
+  userProfileComponent,
+];
 
 export interface PickingFeatureConfig extends PickingConfig {
   noDefaultRoutes?: boolean;

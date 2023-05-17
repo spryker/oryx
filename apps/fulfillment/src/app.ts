@@ -1,6 +1,7 @@
 import { appBuilder } from '@spryker-oryx/application';
 import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { ContentBackendUrl, experienceFeature } from '@spryker-oryx/experience';
+import { formFeature } from '@spryker-oryx/form';
 import {
   fulfillmentTheme,
   offlineFulfillmentFeatures,
@@ -29,6 +30,7 @@ appBuilder()
     ],
   })
   .withFeature(siteFeature)
+  .withFeature(formFeature)
   .withFeature(
     offlineFulfillmentFeatures({
       picking: {

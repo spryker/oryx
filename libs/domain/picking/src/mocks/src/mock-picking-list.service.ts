@@ -1,12 +1,31 @@
 import {
+  defaultSortingQualifier,
   PickingList,
   PickingListQualifier,
+  PickingListQualifierSortBy,
   PickingListService,
+  SortableQualifier,
 } from '@spryker-oryx/picking';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { mockPickingListData } from './mock-picking-list';
 
 export class MockPickingListService implements Partial<PickingListService> {
+  protected sortingQualifier$ = new BehaviorSubject<
+    SortableQualifier<PickingListQualifierSortBy>
+  >(defaultSortingQualifier);
+
+  getSortingQualifier(): Observable<
+    SortableQualifier<PickingListQualifierSortBy>
+  > {
+    return this.sortingQualifier$;
+  }
+
+  setSortingQualifier(
+    qualifier: SortableQualifier<PickingListQualifierSortBy>
+  ): void {
+    this.sortingQualifier$.next(qualifier);
+  }
+
   get(qualifier?: PickingListQualifier): Observable<PickingList[]> {
     const { id: qId, status: qStatus } = qualifier ?? {};
     const filteredData = mockPickingListData.filter(({ id, status }) => {

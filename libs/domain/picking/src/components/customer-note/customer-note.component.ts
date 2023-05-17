@@ -6,10 +6,10 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { catchError, of, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
-import { styles } from './customer-note.styles';
+import { customerNoteComponentStyles } from './customer-note.styles';
 
 export class CustomerNoteComponent extends PickingListMixin(LitElement) {
-  static styles = styles;
+  static styles = customerNoteComponentStyles;
 
   protected routerService = resolve(RouterService);
 
@@ -31,10 +31,9 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
         ),
         catchError((e) => {
           if (e.status === 409) {
-            (
-              this.pickingInProgressModal
-                .value as PickingInProgressModalComponent
-            )?.open();
+            const modal = this.pickingInProgressModal
+              .value as PickingInProgressModalComponent;
+            modal.open = true;
           }
           return of(undefined);
         })

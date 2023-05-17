@@ -30,7 +30,9 @@ export const enum CompositionLayoutOrientation {
 export interface StyleProperties {
   sticky?: boolean;
   bleed?: boolean;
+  divider?: boolean;
   overlap?: boolean;
+  vertical?: boolean;
 
   /**
    * The column count is based on a calculated count by design tokens, which can be specified
@@ -53,6 +55,7 @@ export interface StyleProperties {
    * or centered.
    */
   align?: LayoutAlign;
+  justify?: LayoutAlign;
 
   /**
    * Makes it possible for an element to span across the given columns or rows.

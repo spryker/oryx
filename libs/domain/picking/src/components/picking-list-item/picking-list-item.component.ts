@@ -9,13 +9,13 @@ import { when } from 'lit/directives/when.js';
 import { catchError, of, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { PickingListItemAttributes } from './picking-list-item.model';
-import { styles } from './picking-list-item.styles';
+import { pickingListItemComponentStyles } from './picking-list-item.styles';
 
 export class PickingListItemComponent
   extends PickingListMixin(LitElement)
   implements PickingListItemAttributes
 {
-  static styles = styles;
+  static styles = pickingListItemComponentStyles;
 
   protected routerService = resolve(RouterService);
   protected localeService = resolve(LocaleService);

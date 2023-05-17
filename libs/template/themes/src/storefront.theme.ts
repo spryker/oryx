@@ -6,4 +6,13 @@ export const storefrontTheme: Theme = {
   breakpoints: defaultBreakpoints,
   designTokens: () =>
     import('../design-tokens/src/storefront').then((s) => s.storefrontTokens),
+  // icons: {
+  //   resource: materialIcons,
+  //   resources: [
+  //     {
+  //       resource: fontAwesomeIcons,
+  //       types: [IconTypes.User],
+  //     },
+  //   ],
+  // },
 };
