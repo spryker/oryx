@@ -21,7 +21,6 @@ export class OfflineDataPlugin extends ExecPlugin {
 
   constructor() {
     super((app) => {
-      console.log('attempt to apply', app);
       const injector = app!.requirePlugin(InjectionPlugin).getInjector();
 
       const authService = injector.inject(OauthService);
