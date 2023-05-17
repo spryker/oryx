@@ -104,13 +104,13 @@ export class LayoutController {
    * ```
    */
   collectStyles(
-    byProps: (keyof LayoutProperties)[],
+    layoutProperties: (keyof LayoutProperties)[],
     rules: StyleRuleSet[] = [],
     uid?: string
   ): string {
     let styles = '';
 
-    if (!this.hasLayout(rules, byProps)) {
+    if (!this.hasLayout(rules, layoutProperties)) {
       styles += ':host {display: contents;}\n';
     }
 
@@ -126,10 +126,10 @@ export class LayoutController {
    */
   protected hasLayout(
     rules: StyleRuleSet[],
-    byProps: (keyof LayoutProperties)[] = []
+    layoutProperties: (keyof LayoutProperties)[] = []
   ): boolean {
     const has = (obj: LayoutAttributes): boolean =>
-      byProps.some(
+      layoutProperties.some(
         (prop) => obj[prop] || sizes.some((size) => obj[size]?.[prop])
       );
 

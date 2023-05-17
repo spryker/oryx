@@ -29,7 +29,7 @@ class MockComponent extends LitElement {
 }
 
 export const mockGraphic = {
-  getGraphicValue: vi.fn(),
+  getGraphic: vi.fn(),
 };
 
 export const mockApp = {
@@ -40,7 +40,6 @@ describe('DefaultGraphicInjectable', () => {
   let element: MockComponent;
 
   beforeEach(async () => {
-    vi.clearAllMocks();
     createInjector({
       providers: [
         {
@@ -53,23 +52,24 @@ describe('DefaultGraphicInjectable', () => {
   });
 
   afterEach(() => {
+    vi.clearAllMocks();
     destroyInjector();
   });
 
   it('should return url from resource plugin', async () => {
-    mockGraphic.getGraphicValue.mockReturnValue('url-content');
+    mockGraphic.getGraphic.mockReturnValue('url-content');
     element.url = 'urlToken';
     await nextFrame();
-    expect(mockGraphic.getGraphicValue).toHaveBeenCalledWith('urlToken', 'url');
+    expect(mockGraphic.getGraphic).toHaveBeenCalledWith('urlToken', 'url');
     expect(element.renderRoot.textContent).toContain('url-content');
   });
 
   it('should return source html from resource plugin', async () => {
-    mockGraphic.getGraphicValue.mockReturnValue('<svg></svg>');
+    mockGraphic.getGraphic.mockReturnValue('<svg></svg>');
     element.url = '';
     element.source = 'sourceToken';
     await nextFrame();
-    expect(mockGraphic.getGraphicValue).toHaveBeenCalledWith(
+    expect(mockGraphic.getGraphic).toHaveBeenCalledWith(
       'sourceToken',
       'source'
     );
