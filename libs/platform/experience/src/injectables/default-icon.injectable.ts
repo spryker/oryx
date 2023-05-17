@@ -2,18 +2,18 @@ import { AppRef } from '@spryker-oryx/core';
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { resolve } from '@spryker-oryx/di';
 import {
-  asyncValue,
   fontInjectable,
   IconInjectable,
   isPromise,
 } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
+import { html, svg, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
+import { map, Observable, of } from 'rxjs';
 import { ResourcePlugin, ThemePlugin } from '../plugins';
 
 export class DefaultIconInjectable implements IconInjectable {
-  render(type: string): TemplateResult | undefined {
+  render(type: string): Observable<TemplateResult | undefined> {
     const mappers = resolve(AppRef).findPlugin(ThemePlugin)?.getIcons();
     const source = mappers?.resource.mapping?.[type]
       ? mappers.resource
@@ -24,7 +24,7 @@ export class DefaultIconInjectable implements IconInjectable {
     if (mapper) {
       fontInjectable.get()?.setFont(source.id);
 
-      return html`
+      return of(html`
         ${when(
           source.styles,
           () => html`<style>
@@ -32,27 +32,25 @@ export class DefaultIconInjectable implements IconInjectable {
           </style>`
         )}
         ${unsafeHTML(mapper)}
-      `;
+      `);
     }
 
     return this.renderResourceIcon(type);
   }
 
-  protected renderResourceIcon(type: string): TemplateResult | undefined {
+  protected renderResourceIcon(
+    type: string
+  ): Observable<TemplateResult | undefined> {
     const icon = resolve(AppRef).findPlugin(ResourcePlugin)?.getIcon(type);
 
     if (icon === undefined) {
-      return;
+      return of(undefined);
     }
 
-    const icon$ = ssrAwaiter(isPromise(icon) ? icon : Promise.resolve(icon));
-
-    return html`
-      ${asyncValue(icon$, (res) =>
-        res
-          ? html`${unsafeHTML(`<svg viewBox="0 0 24 24">${res}</svg>`)}`
-          : html``
-      )}
-    `;
+    return ssrAwaiter(isPromise(icon) ? icon : Promise.resolve(icon)).pipe(
+      map(
+        (_icon) => svg`${unsafeHTML(`<svg viewBox="0 0 24 24">${_icon}</svg>`)}`
+      )
+    );
   }
 }

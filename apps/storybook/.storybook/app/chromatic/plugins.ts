@@ -1,26 +1,23 @@
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import { ResourcePlugin, Resources } from '@spryker-oryx/experience';
-import { graphicInjectable, iconInjectable } from '@spryker-oryx/utilities';
-import {
-  ChromaticGraphicInjectable,
-  ChromaticIconInjectable,
-} from './injectables';
+import { graphicInjectable } from '@spryker-oryx/utilities';
+import { ChromaticGraphicInjectable } from './injectables';
 
 export class ResourcesChromaticPlugin extends ResourcePlugin {
   constructor(resources: Resources) {
     super(resources);
 
-    Promise.all(
-      Object.values(this.resources.icons ?? {}).map(resolveLazyLoadable)
-    ).then((s) => {
-      this.resources.icons = Object.keys(this.resources.icons ?? {}).reduce(
-        (acc, prev, index) => ({
-          ...acc,
-          [prev]: s[index],
-        }),
-        {}
-      );
-    });
+    // Promise.all(
+    //   Object.values(this.resources.icons ?? {}).map(resolveLazyLoadable)
+    // ).then((s) => {
+    //   this.resources.icons = Object.keys(this.resources.icons ?? {}).reduce(
+    //     (acc, prev, index) => ({
+    //       ...acc,
+    //       [prev]: s[index],
+    //     }),
+    //     {}
+    //   );
+    // });
 
     for (const [key, value] of Object.entries(this.resources?.graphics ?? {})) {
       Promise.all(Object.values(value).map(resolveLazyLoadable)).then((s) => {
@@ -39,6 +36,6 @@ export class ResourcesChromaticPlugin extends ResourcePlugin {
     }
 
     graphicInjectable.inject(new ChromaticGraphicInjectable());
-    iconInjectable.inject(new ChromaticIconInjectable());
+    // iconInjectable.inject(new ChromaticIconInjectable());
   }
 }
