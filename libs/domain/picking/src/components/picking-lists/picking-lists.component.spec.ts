@@ -55,9 +55,7 @@ describe('PickingListsComponent', () => {
       element.renderRoot.querySelector('oryx-modal');
 
     const getPickingInProgressModal = (): ModalComponent | null =>
-      element.renderRoot.querySelector(
-        'oryx-picking-in-progress-modal oryx-modal'
-      );
+      element.renderRoot.querySelector('oryx-picking-in-progress-modal');
 
     it('passes the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
@@ -114,7 +112,7 @@ describe('PickingListsComponent', () => {
 
       element.addEventListener('oryx.show-picking-in-progress', () => {
         const pickingInProgressModal = getPickingInProgressModal();
-        expect(pickingInProgressModal?.hasAttribute('open')).toBe(true);
+        expect(pickingInProgressModal?.open).toBe(true);
       });
 
       pickingListCard?.dispatchEvent(
@@ -190,10 +188,10 @@ describe('PickingListsComponent', () => {
 
       element.addEventListener('oryx.show-picking-in-progress', () => {
         const pickingInProgressModal = getPickingInProgressModal();
-        expect(pickingInProgressModal?.hasAttribute('open')).toBe(true);
+        expect(pickingInProgressModal?.open).toBe(true);
 
         pickingInProgressModal?.dispatchEvent(new CustomEvent('oryx.close'));
-        expect(pickingInProgressModal?.hasAttribute('open')).toBe(false);
+        expect(pickingInProgressModal?.open).toBe(false);
       });
 
       pickingListCard?.dispatchEvent(

@@ -31,10 +31,9 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
         ),
         catchError((e) => {
           if (e.status === 409) {
-            (
-              this.pickingInProgressModal
-                .value as PickingInProgressModalComponent
-            )?.open();
+            const modal = this.pickingInProgressModal
+              .value as PickingInProgressModalComponent;
+            modal.open = true;
           }
           return of(undefined);
         })

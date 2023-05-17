@@ -161,9 +161,9 @@ export class PickingListsComponent extends LitElement {
   }
 
   protected openPickingInProgressModal(event: CustomEvent): void {
-    (
-      this.pickingInProgressModal.value as PickingInProgressModalComponent
-    )?.open();
+    const modal = this.pickingInProgressModal
+      .value as PickingInProgressModalComponent;
+    modal.open = true;
   }
 
   private noValueSearchProvided(): boolean {

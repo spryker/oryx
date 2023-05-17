@@ -31,7 +31,7 @@ describe('PickingInProgressModalComponent', () => {
 
   describe('when modal is opened', () => {
     beforeEach(() => {
-      element.open();
+      element.open = true;
     });
 
     it('modal should have opened attribute', () => {
