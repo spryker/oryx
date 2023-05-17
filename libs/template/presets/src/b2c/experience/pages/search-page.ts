@@ -30,18 +30,13 @@ export const SearchPage: StaticComponent = {
     {
       type: 'experience-composition',
       options: {
-        data: { rules: [{ layout: 'list', gap: '20px' }] },
+        data: { rules: [{ layout: 'flex', vertical: true, gap: '20px' }] },
       },
       components: [
         {
           type: 'experience-composition',
-          options: { data: { rules: [{ layout: 'flex' }] } },
-          components: [
-            {
-              type: 'search-product-sort',
-              options: { data: { rules: [{ margin: '0 0 0 auto' }] } },
-            },
-          ],
+          components: [{ type: 'search-product-sort' }],
+          options: { data: { rules: [{ layout: 'flex', justify: 'end' }] } },
         },
         {
           type: 'oryx-product-list',

@@ -12,19 +12,19 @@ import { Graphic, ResourcePlugin } from '../plugins';
 
 export class DefaultGraphicInjectable implements GraphicInjectable {
   getUrl(token: string): DirectiveResult | undefined {
-    return this.getGraphicValue(token, 'url');
+    return this.getGraphic(token, 'url');
   }
 
   getSource(token: string): DirectiveResult | undefined {
-    return this.getGraphicValue(token, 'source');
+    return this.getGraphic(token, 'source');
   }
 
-  protected getGraphicValue(
+  protected getGraphic(
     token: string,
     key: keyof Graphic
   ): DirectiveResult | undefined {
     const resourcesPlugin = resolve(AppRef).findPlugin(ResourcePlugin);
-    const value = resourcesPlugin?.getGraphicValue(token, key);
+    const value = resourcesPlugin?.getGraphic(token, key);
     const render = (v: string): DirectiveResult | string =>
       key === 'source' ? unsafeHTML(v) : v;
 

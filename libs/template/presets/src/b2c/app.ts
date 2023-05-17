@@ -19,6 +19,7 @@ import { I18nFeature } from '@spryker-oryx/i18n';
 import { orderFeature } from '@spryker-oryx/order';
 import {
   commonGraphics,
+  fontIcons,
   storefrontIcons,
 } from '@spryker-oryx/presets/resources';
 import { productFeature } from '@spryker-oryx/product';
@@ -39,6 +40,7 @@ const isPreview = new URLSearchParams(
 export const b2cResources: Resources = {
   graphics: commonGraphics,
   icons: storefrontIcons,
+  fonts: fontIcons,
 };
 
 export const b2cFeatures: AppFeature[] = [

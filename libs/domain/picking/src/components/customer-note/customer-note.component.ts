@@ -6,10 +6,10 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { catchError, of, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
-import { styles } from './customer-note.styles';
+import { customerNoteComponentStyles } from './customer-note.styles';
 
 export class CustomerNoteComponent extends PickingListMixin(LitElement) {
-  static styles = styles;
+  static styles = customerNoteComponentStyles;
 
   protected routerService = resolve(RouterService);
 

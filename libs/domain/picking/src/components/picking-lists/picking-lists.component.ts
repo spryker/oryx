@@ -11,10 +11,10 @@ import { distinctUntilChanged, map, startWith, Subject, switchMap } from 'rxjs';
 import { FallbackType, PickingListStatus } from '../../models';
 import { PickingListService } from '../../services';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
-import { styles } from './picking-lists.styles';
+import { pickingListsComponentStyles } from './picking-lists.styles';
 
 export class PickingListsComponent extends LitElement {
-  static styles = styles;
+  static styles = pickingListsComponentStyles;
   protected pickingListService = resolve(PickingListService);
 
   @state()
@@ -60,6 +60,7 @@ export class PickingListsComponent extends LitElement {
         @oryx.search=${this.searchOrderReference}
       ></oryx-picking-lists-header>
 
+      ${this.renderSorting()}
       ${when(
         !this.pickingLists?.length,
         () => this.renderResultsFallback(),
@@ -133,6 +134,17 @@ export class PickingListsComponent extends LitElement {
         <oryx-image resource="${fallbackType}"></oryx-image>
       </div>
     `;
+  }
+
+  protected renderSorting(): TemplateResult {
+    return html` <div class="filters">
+      <span>
+        ${i18n('picking.filter.<value>-open-orders', {
+          value: this.pickingLists?.length ?? 0,
+        })}
+      </span>
+      <oryx-picking-filter-button></oryx-picking-filter-button>
+    </div>`;
   }
 
   protected renderSearchFallback(): TemplateResult {

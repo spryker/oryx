@@ -1,10 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  pickingListsComponent,
-  PickingListService,
-} from '@spryker-oryx/picking';
+import { PickingListService } from '@spryker-oryx/picking';
 import { ModalComponent } from '@spryker-oryx/ui/modal';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -13,6 +10,7 @@ import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { mockPickingListData } from '../../mocks';
 import { pickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.def';
 import { PickingListsComponent } from './picking-lists.component';
+import { pickingListsComponent } from './picking-lists.def';
 
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of(mockPickingListData));

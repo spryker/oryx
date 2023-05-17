@@ -56,12 +56,12 @@ export class DefaultExperienceDataClientService
     })
   );
   protected graphics$ = of(
-    this.appRef.requirePlugin(ResourcePlugin).getResources()
+    this.appRef.requirePlugin(ResourcePlugin).getGraphics()
   ).pipe(
-    tap((resources) => {
+    tap((graphics) => {
       postMessage({
         type: MessageType.Graphics,
-        data: Object.keys(resources?.graphics ?? {}),
+        data: Object.keys(graphics ?? {}),
       });
     })
   );

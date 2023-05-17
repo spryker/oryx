@@ -14,6 +14,8 @@ const mockLayoutService = {
 const layout = {
   bleed: './styles/bleed.styles',
   sticky: './styles/sticky.styles',
+  divider: './styles/divider.styles',
+  overlap: './styles/overlap.styles',
   [CompositionLayout.Column]: './styles/column-layout.styles',
   [CompositionLayout.Grid]: './styles/grid-layout.styles',
   [CompositionLayout.Carousel]: './styles/carousel-layout.styles',

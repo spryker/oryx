@@ -16,6 +16,7 @@ import { css, isServer, unsafeCSS } from 'lit';
 import { ThemeTokens } from './theme-tokens';
 import {
   Theme,
+  ThemeIcons,
   ThemeStrategies,
   ThemeStyles,
   ThemeStylesCollection,
@@ -30,6 +31,8 @@ export const ThemePluginName = 'oryx.experienceTheme';
  * Resolves breakpoints for all themes.
  */
 export class ThemePlugin extends ThemeTokens implements AppPlugin {
+  protected icons: Partial<ThemeIcons> = {};
+
   constructor(protected themes: Theme[] = []) {
     super();
     this.propertiesCollector(themes);
@@ -41,6 +44,14 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
 
   getBreakpoints(): Breakpoints {
     return this.breakpoints;
+  }
+
+  getIcons(): ThemeIcons | undefined {
+    if (!Object.keys(this.icons).length) {
+      return;
+    }
+
+    return this.icons as ThemeIcons;
   }
 
   beforeApply(app: App): void {
@@ -105,15 +116,26 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
   }
 
   protected propertiesCollector(themes: Theme[]): void {
-    for (const { breakpoints } of themes) {
-      const sortableBP = Object.fromEntries(
-        Object.entries(breakpoints ?? {}).sort(([, a], [, b]) => a.min - b.min)
-      );
+    for (const { breakpoints, icons } of themes) {
+      if (breakpoints) {
+        this.breakpoints = Object.fromEntries(
+          Object.entries({
+            ...this.breakpoints,
+            ...breakpoints,
+          }).sort(([, a], [, b]) => (a.min ?? 0) - (b.min ?? 0))
+        );
+      }
 
-      this.breakpoints = {
-        ...this.breakpoints,
-        ...sortableBP,
-      };
+      if (icons) {
+        // Overrides main resource of the main theme and unshifts types for the additional resources
+        this.icons = {
+          resource: icons.resource,
+          resources: [
+            ...(icons.resources ?? []),
+            ...(this.icons.resources ?? []),
+          ],
+        };
+      }
     }
   }
 
@@ -160,8 +182,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
 
     componentClass.styles = innerTheme;
 
-    // eslint-disable-next-line no-prototype-builtins
-    if (componentClass.hasOwnProperty('finalized')) {
+    if (Object.prototype.hasOwnProperty.call(componentClass, 'finalized')) {
       componentClass.elementStyles = componentClass.finalizeStyles?.(
         componentClass.styles
       );

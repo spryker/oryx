@@ -1,15 +1,12 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import {
-  ItemsFilters,
-  PickingListItem,
-  pickingProductCardComponent,
-} from '@spryker-oryx/picking';
+import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking';
 import { ImageComponent } from '@spryker-oryx/ui/image';
 import { html } from 'lit';
 import { mockPickingListData } from '../../mocks';
 import { PickingProductCardComponent } from './picking-product-card.component';
+import { pickingProductCardComponent } from './picking-product-card.def';
 
 describe('PickingProductCardComponent', () => {
   let element: PickingProductCardComponent;
