@@ -40,7 +40,7 @@ export class FilterButtonComponent extends LitElement {
         <oryx-icon type="filter"></oryx-icon>
         <span>${i18n('picking.filter.sort')}</span>
       </oryx-toggle-icon>
-      
+
       <oryx-picking-filters></oryx-picking-filters>
     `;
   }
