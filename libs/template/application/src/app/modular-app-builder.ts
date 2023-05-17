@@ -88,16 +88,13 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
   }
 
   withResources(resources: Resources): AppBuilderWithModules {
-    this.resources = {
-      graphics: {
-        ...(this.resources?.graphics ?? {}),
-        ...(resources.graphics ?? {}),
-      },
-      icons: {
-        ...(this.resources?.icons ?? {}),
-        ...(resources.icons ?? {}),
-      },
-    };
+    this.resources = Object.entries(resources).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key]: { ...acc[key as keyof Resources], ...value },
+      }),
+      this.resources ?? {}
+    );
     return this;
   }
 

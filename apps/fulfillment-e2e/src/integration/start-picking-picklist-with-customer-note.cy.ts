@@ -10,7 +10,7 @@ describe('Start picking a picklist with customer note', () => {
     cy.clearIndexedDB();
     cy.login();
 
-    pickingListsFragment.getStartPickingButtons().eq(0).click();
+    pickingListsFragment.getStartPickingButtons().eq(1).click();
   });
 
   it('check Customer Note page', () => {

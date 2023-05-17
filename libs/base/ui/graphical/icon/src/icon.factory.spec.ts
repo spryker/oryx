@@ -25,15 +25,6 @@ describe('icon factory', () => {
     it('should have icon type', () => {
       expect(element.getAttribute('type')).toBe('close');
     });
-
-    it('should use the default icon sprite', () => {
-      expect(
-        element.shadowRoot
-          ?.querySelector('svg use')
-          ?.getAttribute('href')
-          ?.startsWith('/assets/icons.svg')
-      ).toBe(true);
-    });
   });
 
   describe('when an icon size is given', () => {

@@ -43,6 +43,10 @@ export interface LayoutProperties {
    * Overlapping elements are rendered in the same grid row/column.
    */
   overlap?: boolean;
+
+  divider?: boolean;
+
+  vertical?: boolean;
 }
 
 type ScreenLayoutProperties = {

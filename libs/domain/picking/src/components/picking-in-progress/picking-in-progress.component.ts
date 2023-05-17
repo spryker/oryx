@@ -1,21 +1,16 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 
 export class PickingInProgressModalComponent extends LitElement {
-  @state()
-  protected pickingInProgress?: boolean;
-
-  open(): void {
-    this.pickingInProgress = true;
-  }
+  @property({ type: Boolean }) open?: boolean;
 
   protected override render(): TemplateResult {
     return html`<oryx-modal
-      ?open=${this.pickingInProgress}
       enableFooter
       footerButtonFullWidth
+      ?open=${this.open}
       @oryx.close=${this.close}
     >
       <oryx-heading slot="heading">
@@ -31,6 +26,6 @@ export class PickingInProgressModalComponent extends LitElement {
   }
 
   protected close(): void {
-    this.pickingInProgress = false;
+    this.open = false;
   }
 }

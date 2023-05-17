@@ -15,7 +15,7 @@ import { ExperienceDataClientService } from './data-client.service';
 import { DefaultExperienceDataClientService } from './default-data-client.service';
 
 const mockAppFn = {
-  getResources: vi.fn(),
+  getGraphics: vi.fn(),
   getComponentClass: vi.fn(),
   getComponentSchemas: vi.fn().mockReturnValue(of([])),
 };
@@ -68,26 +68,24 @@ describe('ExperienceDataClientService', () => {
 
   describe('initialize', () => {
     it('should send `MessageType.Graphics` post message', async () => {
-      const mockResources = {
-        graphics: {
-          a: {},
-          b: {},
-          c: {},
-        },
+      const mockGraphics = {
+        a: {},
+        b: {},
+        c: {},
       };
       const app = getService<MockApp>(AppRef);
-      mockAppFn.getResources.mockReturnValue(mockResources);
+      mockAppFn.getGraphics.mockReturnValue(mockGraphics);
       getInjector()
         .inject(ExperienceDataClientService)
         .initialize()
         .subscribe();
       await nextFrame();
       expect(app.requirePlugin).toHaveBeenCalledWith(ResourcePlugin);
-      expect(mockAppFn.getResources).toHaveBeenCalled();
+      expect(mockAppFn.getGraphics).toHaveBeenCalled();
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {
           type: MessageType.Graphics,
-          data: Object.keys(mockResources.graphics),
+          data: Object.keys(mockGraphics),
         },
         '*'
       );
