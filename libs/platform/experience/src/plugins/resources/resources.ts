@@ -31,17 +31,9 @@ export class ResourcePlugin implements AppPlugin, AppPluginBeforeApply {
   protected app!: App;
 
   constructor(protected resources: Resources) {
-    if (Object.keys(resources.graphics ?? {}).length) {
-      graphicInjectable.inject(new DefaultGraphicInjectable());
-    }
-
-    if (Object.keys(resources.icons ?? {}).length) {
-      iconInjectable.inject(new DefaultIconInjectable());
-    }
-
-    if (Object.keys(resources.fonts ?? {}).length) {
-      fontInjectable.inject(new DefaultFontInjectable());
-    }
+    graphicInjectable.inject(new DefaultGraphicInjectable());
+    iconInjectable.inject(new DefaultIconInjectable());
+    fontInjectable.inject(new DefaultFontInjectable());
   }
 
   getName(): string {
