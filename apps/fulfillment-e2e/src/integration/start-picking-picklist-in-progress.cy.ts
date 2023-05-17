@@ -9,8 +9,8 @@ describe('pick a picking list in progress', () => {
 
     cy.pickingInProgress();
 
-    pickingListsFragment.getStartPickingButtons().eq(1).should('be.visible');
-    pickingListsFragment.getStartPickingButtons().eq(1).click();
+    pickingListsFragment.getStartPickingButtons().eq(0).should('be.visible');
+    pickingListsFragment.getStartPickingButtons().eq(0).click();
   });
 
   it('should stay on the same page and show modal', () => {
