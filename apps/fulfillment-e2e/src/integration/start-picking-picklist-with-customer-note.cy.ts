@@ -76,18 +76,7 @@ describe('Start picking a picklist with customer note', () => {
 
   describe('and picking is already in progress', () => {
     beforeEach(() => {
-      cy.intercept('PATCH', '**/picking-lists/*', {
-        statusCode: 409,
-        body: {
-          errors: [
-            {
-              message: 'Picklist is already being picked by another user.',
-              status: 409,
-              code: '5310',
-            },
-          ],
-        },
-      }).as('picking-in-progress');
+      cy.pickingInProgress();
 
       customerNoteFragment.getProceedToPickingButton().should('be.visible');
       // eslint-disable-next-line cypress/no-unnecessary-waiting
@@ -95,17 +84,11 @@ describe('Start picking a picklist with customer note', () => {
       customerNoteFragment.getProceedToPickingButton().click();
     });
 
-    it('should stay on the same page', () => {
+    it('should show modal and stay on the same page', () => {
       cy.location('pathname').should('to.match', /^\/customer-note-info/);
-    });
-
-    it('should show modal', () => {
       customerNoteFragment.pickingInProgressModal
         .getModal()
         .should('have.attr', 'open');
-    });
-
-    it('should render picking in progress text', () => {
       customerNoteFragment.pickingInProgressModal
         .getModal()
         .should('contain.text', 'Already in progress');

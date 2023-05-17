@@ -7,6 +7,7 @@ declare global {
     interface Chainable {
       login(user?: TestUserData): Chainable<void>;
       clearIndexedDB(): void;
+      pickingInProgress(): void;
     }
   }
 }
@@ -34,5 +35,20 @@ Cypress.Commands.add('clearIndexedDB', () => {
         win.indexedDB.deleteDatabase(db.name);
       });
     });
+  });
+});
+
+Cypress.Commands.add('pickingInProgress', () => {
+  cy.intercept('PATCH', '**/picking-lists/*', {
+    statusCode: 409,
+    body: {
+      errors: [
+        {
+          message: 'Picklist is already being picked by another user.',
+          status: 409,
+          code: '5310',
+        },
+      ],
+    },
   });
 });
