@@ -1,5 +1,5 @@
 import { OauthService, OauthServiceConfig } from '@spryker-oryx/auth';
-import { App, AppPlugin, InjectionPlugin } from '@spryker-oryx/core';
+import { ExecPlugin, InjectionPlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
 import { RouterService } from '@spryker-oryx/router';
@@ -16,43 +16,42 @@ import {
 import { PickingListEntity, PickingProductEntity } from './entities';
 import { PickingListOnlineAdapter } from './services';
 
-export class OfflineDataPlugin implements AppPlugin {
+export class OfflineDataPlugin extends ExecPlugin {
   protected subscription?: Subscription;
 
-  getName(): string {
-    return 'oryx$dataplugin';
-  }
+  constructor() {
+    super((app) => {
+      console.log('attempt to apply', app);
+      const injector = app!.requirePlugin(InjectionPlugin).getInjector();
 
-  apply(app: App): void | Promise<void> {
-    const injector = app!.requirePlugin(InjectionPlugin).getInjector();
+      const authService = injector.inject(OauthService);
+      const routerService = injector.inject(RouterService);
+      const oauthConfig = injector.inject(OauthServiceConfig);
 
-    const authService = injector.inject(OauthService);
-    const routerService = injector.inject(RouterService);
-    const oauthConfig = injector.inject(OauthServiceConfig);
-
-    this.subscription = routerService
-      .route()
-      .pipe(
-        switchMap((currentRoute) => {
-          const redirectUrl = new URL(
-            oauthConfig.providers[0].redirectUrl as string
-          );
-          if (currentRoute.startsWith(redirectUrl.pathname)) {
-            return authService.isAuthenticated();
-          }
-          return of(undefined);
-        }),
-        switchMap((authenticated) => {
-          if (authenticated) {
-            return this.clearDb(injector).pipe(
-              switchMap(() => this.populateDb(injector)),
-              tap(() => routerService.navigate('/'))
+      this.subscription = routerService
+        .route()
+        .pipe(
+          switchMap((currentRoute) => {
+            const redirectUrl = new URL(
+              oauthConfig.providers[0].redirectUrl as string
             );
-          }
-          return of(undefined);
-        })
-      )
-      .subscribe();
+            if (currentRoute.startsWith(redirectUrl.pathname)) {
+              return authService.isAuthenticated();
+            }
+            return of(undefined);
+          }),
+          switchMap((authenticated) => {
+            if (authenticated) {
+              return this.clearDb(injector).pipe(
+                switchMap(() => this.populateDb(injector)),
+                tap(() => routerService.navigate('/'))
+              );
+            }
+            return of(undefined);
+          })
+        )
+        .subscribe();
+    });
   }
 
   destroy(): void {
