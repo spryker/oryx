@@ -15,8 +15,8 @@ export const styles = css`
     height: var(--oryx-icon-size, var(--oryx-icon-size-large, 24px));
     aspect-ratio: 1 / 1;
     color: var(--oryx-icon-color, inherit);
-    font-size: var(--oryx-icon-size, 24px);
-    font-family: var(--oryx-icon-font, 'Material Symbols Outlined');
+    font: var(--oryx-icon-weight, 500) var(--oryx-icon-size, 24px)
+      var(--oryx-icon-font, 'Material Symbols Outlined');
     font-variation-settings: 'FILL' var(--oryx-icon-fill, 0),
       'wght' var(--oryx-icon-weight, 500), 'GRAD' var(--oryx-icon-grad, 0),
       'opsz' var(--oryx-icon-optical, 48);

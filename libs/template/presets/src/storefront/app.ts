@@ -36,13 +36,13 @@ const isPreview = new URLSearchParams(
   new URL(globalThis.location?.href).search
 ).has('ebPreview');
 
-export const b2cResources: Resources = {
+export const storefrontResources: Resources = {
   graphics: commonGraphics,
   icons: storefrontIcons,
   fonts: fontIcons,
 };
 
-export const b2cFeatures: AppFeature[] = [
+export const storefrontFeatures: AppFeature[] = [
   uiFeature,
   coreFeature,
   new SapiAuthFeature(),
@@ -64,7 +64,7 @@ export const b2cFeatures: AppFeature[] = [
   userFeature,
   isServer ? { providers: coreServerProviders } : {},
   {
-    resources: b2cResources,
+    resources: storefrontResources,
   },
   StaticExperienceFeature,
 ];

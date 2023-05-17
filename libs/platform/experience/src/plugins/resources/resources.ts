@@ -1,4 +1,4 @@
-import { AppPlugin } from '@spryker-oryx/core';
+import { App, AppPlugin, AppPluginBeforeApply } from '@spryker-oryx/core';
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import {
   fontInjectable,
@@ -10,6 +10,7 @@ import {
   DefaultGraphicInjectable,
   DefaultIconInjectable,
 } from '../../injectables';
+import { ThemePlugin } from '../theme';
 import {
   Graphic,
   GraphicValue,
@@ -26,7 +27,9 @@ export const ResourcePluginName = 'oryx.experienceResource';
  * Changes rendering of {@link iconInjectable} for custom core implementation.
  * Resolves icons from resource options.
  */
-export class ResourcePlugin implements AppPlugin {
+export class ResourcePlugin implements AppPlugin, AppPluginBeforeApply {
+  protected app!: App;
+
   constructor(protected resources: Resources) {
     if (Object.keys(resources.graphics ?? {}).length) {
       graphicInjectable.inject(new DefaultGraphicInjectable());
@@ -60,11 +63,27 @@ export class ResourcePlugin implements AppPlugin {
   }
 
   getIcons(): ResourceIcons {
-    return this.resources.icons ?? {};
+    const themeIcons = this.app.findPlugin(ThemePlugin)?.getIcons();
+
+    if (!themeIcons) {
+      return this.resources.icons ?? {};
+    }
+
+    return {
+      ...themeIcons.resource.mapping,
+      ...this.resources.icons,
+      ...themeIcons.resources?.reduce(
+        (acc, _resource) => ({
+          ...acc,
+          ..._resource.resource.mapping,
+        }),
+        {}
+      ),
+    };
   }
 
   getIcon(name: string): string | Promise<string> | void {
-    const icon = this.getIcons()[name];
+    const icon = this.resources.icons?.[name];
 
     if (!icon) {
       return;
@@ -75,6 +94,10 @@ export class ResourcePlugin implements AppPlugin {
 
   getFont(id: string): string | undefined {
     return this.resources.fonts?.[id];
+  }
+
+  beforeApply(app: App): void {
+    this.app = app;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

@@ -2,9 +2,9 @@ import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { Resources } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import {
+  backofficeFontIcons,
   backofficeIcons,
   commonGraphics,
-  fontIcons,
 } from '@spryker-oryx/presets/resources';
 import { siteFeature } from '@spryker-oryx/site';
 import { uiFeature } from '@spryker-oryx/ui';
@@ -12,7 +12,7 @@ import { uiFeature } from '@spryker-oryx/ui';
 export const backofficeResources: Resources = {
   graphics: commonGraphics,
   icons: backofficeIcons,
-  fonts: fontIcons,
+  fonts: backofficeFontIcons,
 };
 
 export const backofficeFeatures: AppFeature[] = [
