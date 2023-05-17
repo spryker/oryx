@@ -6,13 +6,13 @@ import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { NavigateBackAttributes } from './navigate-back.model';
-import { styles } from './navigate-back.styles';
+import { navigateBackComponentStyles } from './navigate-back.styles';
 
 export class NavigateBackComponent
   extends LitElement
   implements NavigateBackAttributes
 {
-  static styles = styles;
+  static styles = navigateBackComponentStyles;
 
   @property()
   fallbackUrl = '/';

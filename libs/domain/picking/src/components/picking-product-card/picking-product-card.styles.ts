@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const pickingProductCardComponentStyles = css`
   :host {
     text-align: center;
     margin: 0 20px;

@@ -13,10 +13,10 @@ import {
   ProductItemPickedEvent,
   type PickingListItem,
 } from '../../models';
-import { styles } from './picking-product-card.styles';
+import { pickingProductCardComponentStyles } from './picking-product-card.styles';
 
 export class PickingProductCardComponent extends LitElement {
-  static styles = styles;
+  static styles = pickingProductCardComponentStyles;
 
   @property() productItem?: PickingListItem;
   @property() status?: string;

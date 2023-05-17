@@ -4,16 +4,19 @@ import { SyncSchedulerService } from '@spryker-oryx/offline';
 import {
   PickingListAdapter,
   PickingListQualifier,
+  PickingListQualifierSortBy,
   PickingListStatus,
 } from '@spryker-oryx/picking';
 import { intersectArrays } from '@spryker-oryx/utilities';
 import { Collection, liveQuery, Table } from 'dexie';
 import { combineLatestWith, map, Observable, switchMap } from 'rxjs';
 import {
+  MappedQualifier,
   PickingListEntity,
   PickingListOffline,
   PickingListSerialized,
   PickingProductEntity,
+  QualifiersMapping,
 } from '../../entities';
 import { PickingSyncAction } from '../picking-sync-action-handler.service';
 import { PickingListOnlineAdapter } from './picking-list-online.adapter';
@@ -24,6 +27,11 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
     protected syncSchedulerService = inject(SyncSchedulerService),
     protected onlineAdapter = inject(PickingListOnlineAdapter)
   ) {}
+
+  protected qualifiersMapping: QualifiersMapping = {
+    [PickingListQualifierSortBy.DeliveryDate]: 'requestedDeliveryDate',
+    [PickingListQualifierSortBy.OrderSize]: 'itemsCount',
+  };
 
   get(qualifier: PickingListQualifier): Observable<PickingListEntity[]> {
     return this.indexedDbService.getDb().pipe(
@@ -86,7 +94,9 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
                   }
 
                   if (qualifier.sortBy) {
-                    return collection.sortBy(qualifier.sortBy);
+                    return collection.sortBy(
+                      this.mapQualifier(qualifier.sortBy)
+                    );
                   }
 
                   return collection.toArray();
@@ -269,6 +279,10 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
     }));
 
     return fullData.map((data) => new PickingListEntity(data));
+  }
+
+  protected mapQualifier(qualifier: MappedQualifier): keyof PickingListOffline {
+    return this.qualifiersMapping[qualifier];
   }
 }
 
