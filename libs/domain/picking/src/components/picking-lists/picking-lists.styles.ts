@@ -9,7 +9,7 @@ export const pickingListsComponentStyles = css`
 
   section {
     display: grid;
-    gap: 20px;
+    gap: 25px;
   }
 
   oryx-picking-lists-header {

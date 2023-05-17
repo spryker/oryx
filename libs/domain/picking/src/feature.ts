@@ -1,6 +1,7 @@
 import { AppFeature, ComponentsInfo } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { PickingConfig, providePickingConfig } from './config.provider';
 import {
   customerNoteComponent,
   filterButtonComponent,
@@ -13,8 +14,7 @@ import {
   pickingListsHeaderComponent,
   pickingProductCardComponent,
   userProfileComponent,
-} from './components';
-import { PickingConfig, providePickingConfig } from './config.provider';
+} from './defs';
 import { defaultPickingRoutes } from './routes';
 import {
   PickingHttpDefaultService,

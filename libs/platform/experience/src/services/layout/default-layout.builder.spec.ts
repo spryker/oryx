@@ -98,6 +98,11 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule({ align: LayoutAlign.Stretch }, '--align: stretch');
     expectStyleRule({ align: LayoutAlign.End }, '--align: end');
 
+    expectStyleRule({ justify: LayoutAlign.Center }, '--justify: center');
+    expectStyleRule({ justify: LayoutAlign.Start }, '--justify: start');
+    expectStyleRule({ justify: LayoutAlign.Stretch }, '--justify: stretch');
+    expectStyleRule({ justify: LayoutAlign.End }, '--justify: end');
+
     expectStyleRule({ gap: '10' }, '--column-gap: 10');
     expectStyleRule({ gap: '10%' }, '--column-gap: 10%;--row-gap: 10%');
     expectStyleRule({ gap: '10 5' }, '--column-gap: 5');
@@ -150,47 +155,41 @@ describe('DefaultLayoutBuilder', () => {
   });
 
   describe('classes', () => {
-    describe('bleed', () => {
-      let layoutClasses: string | undefined;
+    let layoutClasses: string | undefined;
 
-      describe('when a bleed is configured', () => {
+    ['vertical', 'bleed', 'overlap', 'sticky', 'divider'].forEach((prop) => {
+      describe(`when ${prop} is configured`, () => {
         beforeEach(() => {
           layoutClasses = service.getLayoutClasses({
-            rules: [{ bleed: true }],
+            rules: [{ [prop]: true }],
           });
         });
-        it('should add the bleed class', () => {
-          expect(layoutClasses).toContain('bleed');
+
+        it(`should add the ${prop} class`, () => {
+          expect(layoutClasses).toContain(prop);
         });
       });
-      describe('when a bleed is not configured', () => {
+
+      [Size.Xs, Size.Sm, Size.Md, Size.Lg, Size.Xl].forEach((size) => {
+        describe(`when ${prop} is configured for ${size}`, () => {
+          beforeEach(() => {
+            layoutClasses = service.getLayoutClasses({
+              rules: [{ [prop]: true, breakpoint: size }],
+            });
+          });
+
+          it(`should add the ${size}-${prop} class`, () => {
+            expect(layoutClasses).toContain(`${size}-${prop}`);
+          });
+        });
+      });
+
+      describe(`when ${prop} is bot configured`, () => {
         beforeEach(() => {
           layoutClasses = service.getLayoutClasses({});
         });
-        it('should not add the bleed class', () => {
-          expect(layoutClasses).toBeUndefined();
-        });
-      });
-    });
 
-    describe('sticky', () => {
-      let layoutClasses: string | undefined;
-      describe('when a sticky = true', () => {
-        beforeEach(() => {
-          layoutClasses = service.getLayoutClasses({
-            rules: [{ sticky: true }],
-          });
-        });
-        it('should add the sticky class', () => {
-          expect(layoutClasses).toContain('sticky');
-        });
-      });
-
-      describe('when sticky position is not provided', () => {
-        beforeEach(() => {
-          layoutClasses = service.getLayoutClasses({ rules: [] });
-        });
-        it('should add the sticky class', () => {
+        it(`should not add the ${prop} class`, () => {
           expect(layoutClasses).toBeUndefined();
         });
       });

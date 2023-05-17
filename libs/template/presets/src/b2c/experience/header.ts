@@ -12,9 +12,28 @@ export const HeaderTemplate: StaticComponent = {
           type: 'oryx-content-link',
           options: {
             data: {
-              type: 'rawUrl',
-              id: '/contact',
-              text: 'Contact Us',
+              id: '/',
+              text: 'Free delivery & returns',
+              icon: 'mark',
+            },
+          },
+        },
+        {
+          type: 'oryx-content-link',
+          options: {
+            data: {
+              id: '/',
+              text: '100 day return policy',
+              icon: 'mark',
+            },
+          },
+        },
+        {
+          type: 'oryx-content-link',
+          options: {
+            data: {
+              id: '/',
+              text: 'Click & Collect',
               icon: 'mark',
             },
           },
@@ -34,7 +53,7 @@ export const HeaderTemplate: StaticComponent = {
           rules: [
             {
               layout: 'flex',
-              background: 'var(--oryx-color-primary-500)',
+              background: 'hsl(0, 0%, 9.0%)',
               padding: '10px 0',
               gap: '10px',
               align: 'center',

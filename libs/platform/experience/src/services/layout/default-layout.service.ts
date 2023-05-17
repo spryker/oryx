@@ -70,6 +70,13 @@ export class DefaultLayoutService implements LayoutService {
           )
         );
 
+      case 'divider':
+        return ssrAwaiter(
+          import('./styles/divider.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
       case CompositionLayout.Column:
         return ssrAwaiter(
           import('./styles/column-layout.styles').then((m) =>

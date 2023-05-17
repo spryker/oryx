@@ -2,6 +2,8 @@ import { ResourceIcons } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/themes/icons';
 
 export const storefrontIcons: ResourceIcons = {
+  [IconTypes.Loader]: () =>
+    import('../backoffice/icons/loader').then((s) => s.default),
   [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
   [IconTypes.Back]: () => import('./icons/back').then((s) => s.default),
   [IconTypes.Carrier]: () => import('./icons/carrier').then((s) => s.default),

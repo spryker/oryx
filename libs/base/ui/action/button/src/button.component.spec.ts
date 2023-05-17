@@ -1,5 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { IconComponent } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { ButtonComponent } from './button.component';
 import { buttonComponent } from './button.def';
@@ -73,6 +74,10 @@ describe('ButtonComponent', () => {
         expect(element?.hasAttribute('loading')).toBe(false);
       });
 
+      it('should not have a loading icon', () => {
+        expect(element).not.toContainElement('oryx-icon');
+      });
+
       it('should not have inert attribute on slot', () => {
         expect(element).not.toContainElement('slot[inert]');
       });
@@ -87,6 +92,13 @@ describe('ButtonComponent', () => {
 
       it('should  reflect the loading attribute on the node', () => {
         expect(element?.hasAttribute('loading')).toBe(true);
+      });
+
+      it('should have a loading icon', () => {
+        const icon = element.renderRoot.querySelector(
+          'oryx-icon'
+        ) as IconComponent;
+        expect(icon.type).toBe('loader');
       });
 
       it('should have inert attribute on slot', () => {
@@ -107,6 +119,13 @@ describe('ButtonComponent', () => {
         expect(element.hasAttribute('confirmed')).toBe(true);
       });
 
+      it('should have a confirmed icon', () => {
+        const icon = element.renderRoot.querySelector(
+          'oryx-icon'
+        ) as IconComponent;
+        expect(icon.type).toBe('mark');
+      });
+
       describe('and the property is set to false afterwards', () => {
         beforeEach(() => {
           element.confirmed = false;
@@ -125,6 +144,10 @@ describe('ButtonComponent', () => {
 
       it('should not reflect the property in the DOM', () => {
         expect(element.hasAttribute('confirmed')).toBe(false);
+      });
+
+      it('should not have a loading icon', () => {
+        expect(element).not.toContainElement('oryx-icon');
       });
 
       describe('and the property is set to true afterwards', () => {

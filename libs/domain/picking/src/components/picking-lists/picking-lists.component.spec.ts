@@ -1,10 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  pickingListsComponent,
-  PickingListService,
-} from '@spryker-oryx/picking';
+import { PickingListService } from '@spryker-oryx/picking';
 import { ModalComponent } from '@spryker-oryx/ui/modal';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -12,6 +9,7 @@ import { of } from 'rxjs';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { mockPickingListData } from '../../mocks';
 import { PickingListsComponent } from './picking-lists.component';
+import { pickingListsComponent } from './picking-lists.def';
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of(mockPickingListData));
 }
@@ -185,6 +183,69 @@ describe('PickingListsComponent', () => {
       expect(
         element.renderRoot.querySelector('.filters span')?.textContent
       ).toContain('0');
+    });
+  });
+
+  describe('when start searching', () => {
+    beforeEach(async () => {
+      const pickingListHeader = element.renderRoot.querySelector(
+        'oryx-picking-lists-header'
+      );
+
+      pickingListHeader?.dispatchEvent(
+        new CustomEvent('oryx.search', {
+          detail: { search: '', open: true },
+        })
+      );
+    });
+
+    it('should render a fallback', () => {
+      expect(
+        element.renderRoot.querySelector('.no-items-fallback')
+      ).not.toBeNull();
+
+      expect(
+        element.renderRoot.querySelector('.no-items-fallback oryx-heading')
+          ?.textContent
+      ).toContain(i18n('picking-lists.search-by-order-ID'));
+
+      expect(
+        element.renderRoot
+          .querySelector('.no-items-fallback oryx-image')
+          ?.getAttribute('resource')
+      ).toBe('searching');
+    });
+  });
+
+  describe('when there is no results while searching', () => {
+    beforeEach(async () => {
+      service.get = vi.fn().mockReturnValue(of([]));
+      const pickingListHeader = element.renderRoot.querySelector(
+        'oryx-picking-lists-header'
+      );
+
+      pickingListHeader?.dispatchEvent(
+        new CustomEvent('oryx.search', {
+          detail: { search: 'ddd', open: true },
+        })
+      );
+    });
+
+    it('should render a fallback', () => {
+      expect(
+        element.renderRoot.querySelector('.no-items-fallback')
+      ).not.toBeNull();
+
+      expect(
+        element.renderRoot.querySelector('.no-items-fallback oryx-heading')
+          ?.textContent
+      ).toContain(i18n('picking-lists.no-picking-results'));
+
+      expect(
+        element.renderRoot
+          .querySelector('.no-items-fallback oryx-image')
+          ?.getAttribute('resource')
+      ).toBe('no-search-results');
     });
   });
 });

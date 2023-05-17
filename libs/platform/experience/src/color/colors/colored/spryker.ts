@@ -2,15 +2,10 @@ import { Color } from '../../color.model';
 
 export const spryker: Color = {
   light: {
-    1: '#F1F8F7',
-    2: 'hsl(40, 100%, 96.5%)',
-    3: 'hsl(44, 100%, 91.7%)',
-    6: '#B4DFC4',
+    3: '#F1F8F7',
     7: '#94DDC0',
-    8: '#5BB98C',
     9: '#11856E',
     10: '#1C6C5C',
-    11: '#1C6C5C',
     12: '#004628',
   },
   dark: {

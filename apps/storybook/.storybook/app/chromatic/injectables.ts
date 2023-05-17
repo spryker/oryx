@@ -2,31 +2,35 @@ import { AppRef } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   DefaultGraphicInjectable,
+  DefaultIconInjectable,
   Graphic,
   ResourcePlugin,
 } from '@spryker-oryx/experience';
-import { IconInjectable } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
-export class ChromaticIconInjectable implements IconInjectable {
-  render(type: string): TemplateResult {
-    const resource = resolve(AppRef).requirePlugin(ResourcePlugin);
+export class ChromaticIconInjectable extends DefaultIconInjectable {
+  protected override renderResourceIcon(
+    type: string
+  ): TemplateResult | undefined {
+    const icon = resolve(AppRef).findPlugin(ResourcePlugin)?.getIcon(type);
 
-    return html`${unsafeHTML(
-      `<svg viewBox="0 0 24 24">${resource.getIcon(type)}</svg>`
-    )}`;
+    if (icon === undefined) {
+      return;
+    }
+
+    return html`${unsafeHTML(`<svg viewBox="0 0 24 24">${icon}</svg>`)}`;
   }
 }
 
 export class ChromaticGraphicInjectable extends DefaultGraphicInjectable {
-  protected getGraphicValue(
+  protected getGraphic(
     token: string,
     key: keyof Graphic
   ): DirectiveResult | undefined {
-    const resourcesPlugin = resolve(AppRef).requirePlugin(ResourcePlugin);
-    const value = resourcesPlugin.getGraphicValue(token, key);
+    const resourcesPlugin = resolve(AppRef).findPlugin(ResourcePlugin);
+    const value = resourcesPlugin?.getGraphic(token, key);
     const render = (v: string): DirectiveResult | string =>
       key === 'source' ? unsafeHTML(v) : v;
 

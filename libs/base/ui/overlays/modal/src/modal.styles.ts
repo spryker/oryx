@@ -35,6 +35,7 @@ export const styles = css`
     width: 100%;
     display: flex;
     gap: 10px;
+    flex: 1 0;
   }
 
   header {
@@ -44,12 +45,6 @@ export const styles = css`
 
   footer {
     justify-content: flex-end;
-  }
-
-  slot[name='heading'],
-  slot[name='footer'] {
-    display: flex;
-    flex: 1 0;
   }
 
   oryx-card::part(body) {

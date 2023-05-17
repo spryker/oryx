@@ -59,7 +59,6 @@ export class FiltersComponent extends LitElement {
 
   protected onClose(): void {
     this.open = false;
-
     this.form?.reset();
   }
 

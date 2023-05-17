@@ -6,14 +6,11 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { combineLatest, of, switchMap } from 'rxjs';
 import { ContentLinkOptions, ContentLinkType } from './link.model';
-import { styles } from './link.styles';
 
 @hydratable(['mouseover', 'focusin'])
 export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
   LitElement
 ) {
-  static styles = styles;
-
   protected contentController = new ContentController(this);
   protected semanticLinkService = resolve(SemanticLinkService);
   protected options$ = this.contentController.getOptions();
@@ -39,23 +36,6 @@ export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
     return [options?.noopener && 'noopener', options?.nofollow && 'nofollow']
       .filter((rel) => !!rel)
       .join(' ');
-  }
-
-  protected renderLink(
-    link: string,
-    options: ContentLinkOptions
-  ): TemplateResult {
-    return html`
-      <a
-        part="link"
-        href="${link}"
-        aria-label="${ifDefined(options.label)}"
-        target="${ifDefined(options.target)}"
-        rel="${ifDefined(this.getRel(options))}"
-        ?disabled=${options?.disabled}
-        ><slot>${options?.text}</slot></a
-      >
-    `;
   }
 
   protected override render(): TemplateResult {
@@ -86,5 +66,21 @@ export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
         ${this.renderLink(link, options)}
       </oryx-link>`;
     })}`;
+  }
+
+  protected renderLink(
+    link: string,
+    options: ContentLinkOptions
+  ): TemplateResult {
+    return html`
+      <a
+        href="${link}"
+        aria-label="${ifDefined(options.label)}"
+        target="${ifDefined(options.target)}"
+        rel="${ifDefined(this.getRel(options))}"
+        ?disabled=${options?.disabled}
+        ><slot>${options?.text}</slot></a
+      >
+    `;
   }
 }

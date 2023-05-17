@@ -1,4 +1,4 @@
-import { OauthService } from '@spryker-oryx/auth';
+import { OauthService, OauthServiceConfig } from '@spryker-oryx/auth';
 import {
   AppEnvironment,
   ExecPlugin,
@@ -6,6 +6,7 @@ import {
 } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
+import { RouterService } from '@spryker-oryx/router';
 import {
   combineLatest,
   map,
@@ -13,6 +14,7 @@ import {
   of,
   Subscription,
   switchMap,
+  tap,
   withLatestFrom,
 } from 'rxjs';
 import { PickingListEntity, PickingProductEntity } from './entities';
@@ -28,14 +30,26 @@ export class OfflineDataPlugin extends ExecPlugin {
       const env = injector.inject(AppEnvironment, {} as AppEnvironment);
 
       const authService = injector.inject(OauthService);
+      const routerService = injector.inject(RouterService);
+      const oauthConfig = injector.inject(OauthServiceConfig);
 
-      this.subscription = authService
-        .isAuthenticated()
+      this.subscription = routerService
+        .route()
         .pipe(
+          switchMap((currentRoute) => {
+            const redirectUrl = new URL(
+              oauthConfig.providers[0].redirectUrl as string
+            );
+            if (currentRoute.startsWith(redirectUrl.pathname)) {
+              return authService.isAuthenticated();
+            }
+            return of(undefined);
+          }),
           switchMap((authenticated) => {
             if (authenticated) {
               return this.clearDb(injector).pipe(
-                switchMap(() => this.populateDb(injector))
+                switchMap(() => this.populateDb(injector)),
+                tap(() => routerService.navigate('/'))
               );
             }
             return of(undefined);

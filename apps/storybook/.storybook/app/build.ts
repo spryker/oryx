@@ -63,8 +63,9 @@ const builder = appBuilder()
 if (isChromatic()) {
   builder
     .withComponents(chromaticStyledComponents)
-    .with([new ResourcesChromaticPlugin(resources)])
-    .create();
+    .with([new ResourcesChromaticPlugin(resources)]);
 } else {
-  builder.withResources(resources).create();
+  builder.withResources(resources);
 }
+
+builder.create();
