@@ -1,13 +1,10 @@
 import { AppRef } from '@spryker-oryx/core';
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { resolve } from '@spryker-oryx/di';
-import {
-  asyncValue,
-  GraphicInjectable,
-  isPromise,
-} from '@spryker-oryx/utilities';
+import { GraphicInjectable, isPromise } from '@spryker-oryx/utilities';
 import { DirectiveResult } from 'lit/directive.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { map } from 'rxjs';
 import { Graphic, ResourcePlugin } from '../plugins';
 
 export class DefaultGraphicInjectable implements GraphicInjectable {
@@ -24,18 +21,12 @@ export class DefaultGraphicInjectable implements GraphicInjectable {
     key: keyof Graphic
   ): DirectiveResult | undefined {
     const resourcesPlugin = resolve(AppRef).findPlugin(ResourcePlugin);
-    const value = resourcesPlugin?.getGraphic(token, key);
-    const render = (v: string): DirectiveResult | string =>
-      key === 'source' ? unsafeHTML(v) : v;
+    const graphic = resourcesPlugin?.getGraphic(token, key);
 
-    if (value === undefined) {
-      return;
-    }
-
-    if (isPromise(value)) {
-      return asyncValue(ssrAwaiter(value), render);
-    }
-
-    return render(value);
+    return ssrAwaiter(
+      isPromise(graphic) ? graphic : Promise.resolve(graphic)
+    ).pipe(
+      map((_graphic) => (key === 'source' ? unsafeHTML(_graphic) : _graphic))
+    );
   }
 }

@@ -39,7 +39,7 @@ export const storefrontMaterialIcons: IconMapper = {
     [IconTypes.Actions]: 'more_vert',
     [IconTypes.User]: 'person',
     [IconTypes.Login]: 'login',
-    [IconTypes.Image]: 'photo_library;',
+    [IconTypes.Image]: 'photo_library',
   },
 };
 
