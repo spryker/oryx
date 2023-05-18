@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const navigateBackComponentStyles = css`
   oryx-icon,
   button {
     color: var(--oryx-color-neutral-400);

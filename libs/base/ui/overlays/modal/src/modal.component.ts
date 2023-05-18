@@ -1,5 +1,5 @@
 import { isFirefox } from '@spryker-oryx/ui';
-import { Size } from '@spryker-oryx/utilities';
+import { i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -136,15 +136,16 @@ export class ModalComponent extends LitElement implements ModalProperties {
         ${when(
           this.enableNavigateBack,
           () => html`
-            <oryx-icon-button>
-              <button
-                type="button"
-                aria-label="navigate back"
-                @click=${this.onGoBack}
-              >
-                <oryx-icon type="back"></oryx-icon>
-              </button>
-            </oryx-icon-button>
+            <slot name="navigate-back" @click=${this.onGoBack}>
+              <oryx-icon-button>
+                <button
+                  type="button"
+                  aria-label="${i18n('oryx.modal.navigate-back')}"
+                >
+                  <oryx-icon type="back"></oryx-icon>
+                </button>
+              </oryx-icon-button>
+            </slot>
           `
         )}
         <slot name="heading">

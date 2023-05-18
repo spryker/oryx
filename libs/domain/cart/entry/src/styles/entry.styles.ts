@@ -18,6 +18,11 @@ const pricing = css`
     display: contents;
   }
 
+  .image {
+    grid-row: span 2;
+    height: auto;
+  }
+
   oryx-site-price {
     font-size: var(--oryx-typography-h6-size);
     font-weight: var(--oryx-typography-h6-weight);

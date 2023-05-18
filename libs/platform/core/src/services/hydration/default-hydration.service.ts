@@ -34,7 +34,7 @@ export class DefaultHydrationService implements HydrationService {
       this.subscription.add(
         initializer.subscribe((value) => {
           if (value instanceof HTMLElement) {
-            this.hydrateOnDemand(value, true);
+            this.hydrateOnDemand(value);
 
             return;
           }
@@ -48,7 +48,7 @@ export class DefaultHydrationService implements HydrationService {
   initHydrateHooks(immediate?: boolean): void {
     this.treewalk(`[${hydratableAttribute}]`).forEach((el) => {
       if (immediate) {
-        this.hydrateOnDemand(el, true);
+        this.hydrateOnDemand(el);
         return;
       }
 
@@ -85,20 +85,17 @@ export class DefaultHydrationService implements HydrationService {
     this.hydrateOnDemand(document.querySelector<LitElement>(this.root)!);
   }
 
-  async hydrateOnDemand(
-    element: HTMLElement,
-    skipMissMatch = false
-  ): Promise<void> {
+  async hydrateOnDemand(element: HTMLElement): Promise<void> {
     if (!element?.hasAttribute(hydratableAttribute)) {
       return;
     }
 
     if (!customElements.get(element.localName)) {
       await this.componentsPlugin.loadComponent(element.localName);
-      customElements.upgrade(element);
+      await customElements.whenDefined(element.localName);
     }
 
-    (element as HydratableLitElement)[HYDRATE_ON_DEMAND]?.(skipMissMatch);
+    (element as HydratableLitElement)[HYDRATE_ON_DEMAND]?.();
   }
 
   onDestroy(): void {

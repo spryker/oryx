@@ -1,8 +1,13 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const pickingListsComponentStyles = css`
+  :host {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
   section {
-    padding: 24px 16px 0;
     display: grid;
     gap: 25px;
   }
@@ -24,5 +29,16 @@ export const styles = css`
   oryx-image {
     margin-inline: 40px;
     display: block;
+  }
+
+  .filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  section,
+  .filters {
+    padding: 0 20px;
   }
 `;
