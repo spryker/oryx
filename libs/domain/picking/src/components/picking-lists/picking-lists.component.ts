@@ -53,7 +53,7 @@ export class PickingListsComponent extends LitElement {
         @oryx.search=${this.searchOrderReference}
       ></oryx-picking-lists-header>
 
-      ${this.renderSorting()}
+      ${this.renderFilters()}
       ${when(
         !this.pickingLists?.length,
         () => this.renderResultsFallback(),
@@ -127,7 +127,7 @@ export class PickingListsComponent extends LitElement {
     `;
   }
 
-  protected renderSorting(): TemplateResult {
+  protected renderFilters(): TemplateResult {
     return html` <div class="filters">
       <span>
         ${i18n('picking.filter.<value>-open-orders', {
