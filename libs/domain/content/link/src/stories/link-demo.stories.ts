@@ -1,5 +1,5 @@
 import { SemanticLinkType } from '@spryker-oryx/site';
-import { getResourceIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
@@ -13,7 +13,7 @@ const Template: Story<ContentLinkOptions> = (options): TemplateResult => {
   return html`<oryx-content-link .options="${options}"></oryx-content-link>`;
 };
 
-const icons = getResourceIcons();
+const icons = getAppIcons();
 
 export const LinkDemo = Template.bind({});
 

@@ -1,4 +1,4 @@
-import { getThemeGraphics } from '@spryker-oryx/ui';
+import { getAppGraphics } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -7,7 +7,7 @@ export default {
   title: `${storybookPrefix}/Graphical/Image`,
 } as Meta;
 
-const graphics = getThemeGraphics();
+const graphics = getAppGraphics();
 
 const Template: Story = (props): TemplateResult => {
   return html`

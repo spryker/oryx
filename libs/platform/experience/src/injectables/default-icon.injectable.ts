@@ -1,6 +1,7 @@
 import { AppRef } from '@spryker-oryx/core';
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { resolve } from '@spryker-oryx/di';
+import { defaultIconFont } from '@spryker-oryx/ui/icon';
 import {
   fontInjectable,
   IconInjectable,
@@ -13,6 +14,24 @@ import { map, Observable, of } from 'rxjs';
 import { IconStyles, ResourcePlugin, ThemePlugin } from '../plugins';
 
 export class DefaultIconInjectable implements IconInjectable {
+  getIcons(): Record<string, unknown> {
+    const app = resolve(AppRef);
+    const mappers = app.findPlugin(ThemePlugin)?.getIcons();
+    const icons = app.findPlugin(ResourcePlugin)?.getIcons();
+
+    return {
+      ...mappers?.resource.mapping,
+      ...icons,
+      ...mappers?.resources?.reduce(
+        (acc, _resource) => ({
+          ...acc,
+          ..._resource.resource.mapping,
+        }),
+        {}
+      ),
+    };
+  }
+
   render(type: string): Observable<TemplateResult | undefined> {
     const icon = this.renderFontIcon(type);
 
@@ -54,21 +73,43 @@ export class DefaultIconInjectable implements IconInjectable {
     const mainStyles = this.generateStyles(source.styles);
     const styles = isText ? null : this.generateStyles(mapper.styles);
     const text = isText ? mapper : mapper.text;
-    fontInjectable.get()?.setFont(source.id);
+    const weight = isText
+      ? source.styles?.weight ?? ''
+      : mapper.styles?.weight ?? '';
+    const family = source.styles?.font ?? defaultIconFont;
+    const font = `${weight} 1rem '${family}'`;
 
-    return of(html`
-      ${when(
-        mainStyles || styles,
-        () => html`<style>
-          /*  */
-          :host {
-            ${mainStyles}
-            ${styles}
-          }
-        </style>`
-      )}
-      ${unsafeHTML(text)}
-    `);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return fontInjectable
+      .get()!
+      .setFont(source.id, font)
+      .pipe(
+        map(
+          (isLoaded: boolean) => html`
+            ${when(
+              mainStyles || styles,
+              () => html`
+                <style>
+                  :host {
+                    ${mainStyles}
+                    ${styles}
+                  }
+                </style>
+              `
+            )}
+            ${when(
+              isLoaded,
+              () => unsafeHTML(text),
+              () =>
+                html`
+                  <span style="visibility: hidden; display: inline;">
+                    ${unsafeHTML(text)}
+                  </span>
+                `
+            )}
+          `
+        )
+      );
   }
 
   protected renderResourceIcon(

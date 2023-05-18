@@ -5,9 +5,13 @@ import { GraphicInjectable, isPromise } from '@spryker-oryx/utilities';
 import { DirectiveResult } from 'lit/directive.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { map } from 'rxjs';
-import { Graphic, ResourcePlugin } from '../plugins';
+import { Graphic, ResourceGraphic, ResourcePlugin } from '../plugins';
 
 export class DefaultGraphicInjectable implements GraphicInjectable {
+  getGraphics(): ResourceGraphic | undefined {
+    return resolve(AppRef).requirePlugin(ResourcePlugin).getGraphics();
+  }
+
   getUrl(token: string): DirectiveResult | undefined {
     return this.getGraphic(token, 'url');
   }
@@ -20,8 +24,9 @@ export class DefaultGraphicInjectable implements GraphicInjectable {
     token: string,
     key: keyof Graphic
   ): DirectiveResult | undefined {
-    const resourcesPlugin = resolve(AppRef).findPlugin(ResourcePlugin);
-    const graphic = resourcesPlugin?.getGraphic(token, key);
+    const graphic = resolve(AppRef)
+      .requirePlugin(ResourcePlugin)
+      .getGraphic(token, key);
 
     return ssrAwaiter(
       isPromise(graphic) ? graphic : Promise.resolve(graphic)

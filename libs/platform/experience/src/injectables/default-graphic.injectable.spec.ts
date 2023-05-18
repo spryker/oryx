@@ -30,7 +30,7 @@ export const mockGraphic = {
 };
 
 export const mockApp = {
-  findPlugin: vi.fn().mockReturnValue(mockGraphic),
+  requirePlugin: vi.fn().mockReturnValue(mockGraphic),
 };
 
 describe('DefaultGraphicInjectable', () => {

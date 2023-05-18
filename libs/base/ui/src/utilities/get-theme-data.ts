@@ -1,17 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { AppRef } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/di';
+import { graphicInjectable, iconInjectable } from '@spryker-oryx/utilities';
 
-// Temporary solution until we found something better
+export const getAppIcons = (): string[] =>
+  Object.keys(iconInjectable.get()?.getIcons() ?? {});
 
-export const getResourceIcons = (): string[] =>
-  Object.keys(
-    (resolve(AppRef).requirePlugin('oryx.experienceResource') as any).getIcons()
-  );
-
-export const getThemeGraphics = (): string[] =>
-  Object.keys(
-    (
-      resolve(AppRef).requirePlugin('oryx.experienceResource') as any
-    ).getGraphics()
-  );
+export const getAppGraphics = (): string[] =>
+  Object.keys(graphicInjectable.get()?.getGraphics() ?? {});

@@ -1,4 +1,4 @@
-import { App, AppPlugin, AppPluginBeforeApply } from '@spryker-oryx/core';
+import { AppPlugin } from '@spryker-oryx/core';
 import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import {
   fontInjectable,
@@ -10,7 +10,6 @@ import {
   DefaultGraphicInjectable,
   DefaultIconInjectable,
 } from '../../injectables';
-import { ThemePlugin } from '../theme';
 import {
   Graphic,
   GraphicValue,
@@ -27,12 +26,14 @@ export const ResourcePluginName = 'oryx.experienceResource';
  * Changes rendering of {@link iconInjectable} for custom core implementation.
  * Resolves icons from resource options.
  */
-export class ResourcePlugin implements AppPlugin, AppPluginBeforeApply {
-  protected app!: App;
-
+export class ResourcePlugin implements AppPlugin {
   constructor(protected resources: Resources) {
     graphicInjectable.inject(new DefaultGraphicInjectable());
-    iconInjectable.inject(new DefaultIconInjectable());
+
+    if (!(iconInjectable.get() instanceof DefaultIconInjectable)) {
+      iconInjectable.inject(new DefaultIconInjectable());
+    }
+
     fontInjectable.inject(new DefaultFontInjectable());
   }
 
@@ -55,27 +56,11 @@ export class ResourcePlugin implements AppPlugin, AppPluginBeforeApply {
   }
 
   getIcons(): ResourceIcons {
-    const themeIcons = this.app.findPlugin(ThemePlugin)?.getIcons();
-
-    if (!themeIcons) {
-      return this.resources.icons ?? {};
-    }
-
-    return {
-      ...themeIcons.resource.mapping,
-      ...this.resources.icons,
-      ...themeIcons.resources?.reduce(
-        (acc, _resource) => ({
-          ...acc,
-          ..._resource.resource.mapping,
-        }),
-        {}
-      ),
-    };
+    return this.resources.icons ?? {};
   }
 
   getIcon(name: string): string | Promise<string> | void {
-    const icon = this.resources.icons?.[name];
+    const icon = this.getIcons()[name];
 
     if (!icon) {
       return;
@@ -86,10 +71,6 @@ export class ResourcePlugin implements AppPlugin, AppPluginBeforeApply {
 
   getFont(id: string): string | undefined {
     return this.resources.fonts?.[id];
-  }
-
-  beforeApply(app: App): void {
-    this.app = app;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

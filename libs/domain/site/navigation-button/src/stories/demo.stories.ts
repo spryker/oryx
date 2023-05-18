@@ -1,10 +1,10 @@
-import { getResourceIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import { NavigationButtonAttributes } from '../navigation-button.model';
 
-const icons = getResourceIcons();
+const icons = getAppIcons();
 
 export default {
   title: `${storybookPrefix}/Navigation Button`,

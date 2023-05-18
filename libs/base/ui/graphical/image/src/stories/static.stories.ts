@@ -1,4 +1,4 @@
-import { getThemeGraphics } from '@spryker-oryx/ui';
+import { getAppGraphics } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -8,7 +8,7 @@ export default {
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  const graphics = getThemeGraphics();
+  const graphics = getAppGraphics();
   const graphic = graphics[0];
   const images = [
     'https://d2s0ynfc62ej12.cloudfront.net/b2c/29889537_4485.jpg',

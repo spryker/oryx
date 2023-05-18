@@ -1,4 +1,3 @@
-import { App } from '@spryker-oryx/core';
 import { isPromise } from '@spryker-oryx/utilities';
 import { ResourcePlugin, ResourcePluginName } from './resources';
 
@@ -20,10 +19,6 @@ const mockResources = {
   fonts: {
     a: 'A',
   },
-};
-
-const mockApp = {
-  findPlugin: vi.fn(),
 };
 
 describe('ResourcePlugin', () => {
@@ -74,41 +69,8 @@ describe('ResourcePlugin', () => {
   });
 
   describe('when getIcons has been called', () => {
-    it('should return the list of provided icons with theme icons', () => {
-      const mockTheme = {
-        resource: {
-          mapping: {
-            a: 'a',
-            b: 'b',
-          },
-        },
-        resources: [
-          {
-            resource: {
-              mapping: {
-                c: 'c',
-              },
-            },
-          },
-          {
-            resource: {
-              mapping: {
-                d: 'd',
-              },
-            },
-          },
-        ],
-      };
-      plugin.beforeApply(mockApp as unknown as App);
-      mockApp.findPlugin.mockReturnValue({
-        getIcons: vi.fn().mockReturnValue(mockTheme),
-      });
-      expect(plugin.getIcons()).toEqual({
-        ...mockTheme.resource.mapping,
-        ...mockResources.icons,
-        ...mockTheme.resources[0].resource.mapping,
-        ...mockTheme.resources[1].resource.mapping,
-      });
+    it('should return the list of provided icons', () => {
+      expect(plugin.getIcons()).toEqual(mockResources.icons);
     });
   });
 

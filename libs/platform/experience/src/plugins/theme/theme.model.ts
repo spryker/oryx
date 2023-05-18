@@ -64,7 +64,6 @@ export interface IconStyles {
 export interface IconProps {
   text: string;
   styles?: Exclude<IconStyles, 'font'>;
-  ltr?: boolean;
 }
 
 export interface IconMapper {
