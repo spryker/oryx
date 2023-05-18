@@ -4,7 +4,7 @@ import {
   NotificationCenterComponent,
   NotificationPosition,
 } from '@spryker-oryx/ui/notification-center';
-import { hydratable, subscribe } from '@spryker-oryx/utilities';
+import {computed, hydratable, signal, subscribe} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { tap } from 'rxjs';

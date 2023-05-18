@@ -27,7 +27,7 @@ export const navigationButtonScreenStyles = screenCss({
   sm: smallScreen,
 });
 
-export const styles = css`
+export const siteNavigationButtonStyles = css`
   :host {
     min-width: 75px;
     min-height: 68px;

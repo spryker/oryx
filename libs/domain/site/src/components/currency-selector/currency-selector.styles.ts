@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const siteLocaleSelectorStyles = css`
+export const siteCurrencySelectorStyles = css`
   button {
     --oryx-icon-color: white;
 

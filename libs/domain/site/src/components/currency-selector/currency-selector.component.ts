@@ -8,13 +8,13 @@ import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
 import { CurrencyService } from '../../services';
 import { SiteCurrencySelectorOptions } from './currency-selector.model';
-import { siteLocaleSelectorStyles } from './currency-selector.styles';
+import { siteCurrencySelectorStyles } from './currency-selector.styles';
 
 @hydratable(['mouseover', 'focusin'])
 export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySelectorOptions>(
   LitElement
 ) {
-  static styles = [siteLocaleSelectorStyles];
+  static styles = [siteCurrencySelectorStyles];
 
   protected currencyService = resolve(CurrencyService);
 

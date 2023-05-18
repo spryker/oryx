@@ -5,13 +5,13 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { NavigationButtonAttributes } from './navigation-button.model';
-import { styles } from './navigation-button.styles';
+import { siteNavigationButtonStyles } from './navigation-button.styles';
 
 @hydratable()
 export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttributes>(
   LitElement
 ) {
-  static styles = styles;
+  static styles = siteNavigationButtonStyles;
 
   @property() url?: string;
   @property() icon?: string;
