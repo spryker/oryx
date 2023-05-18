@@ -21,7 +21,6 @@ export class DefaultIconInjectable implements IconInjectable {
 
     return {
       ...mappers?.resource.mapping,
-      ...icons,
       ...mappers?.resources?.reduce(
         (acc, _resource) => ({
           ...acc,
@@ -29,6 +28,7 @@ export class DefaultIconInjectable implements IconInjectable {
         }),
         {}
       ),
+      ...icons,
     };
   }
 
@@ -85,7 +85,7 @@ export class DefaultIconInjectable implements IconInjectable {
       .setFont(source.id, font)
       .pipe(
         map(
-          (isLoaded: boolean) => html`
+          (isLoaded) => html`
             ${when(
               mainStyles || styles,
               () => html`

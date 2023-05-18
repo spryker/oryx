@@ -1,10 +1,11 @@
 import { Size } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
+export const defaultIconFont = 'Material Symbols Outlined';
+
 const smallSize = unsafeCSS(`[size='${Size.Sm}']`);
 const mediumSize = unsafeCSS(`[size='${Size.Md}']`);
-
-export const defaultIconFont = 'Material Symbols Outlined';
+const font = unsafeCSS(defaultIconFont);
 
 export const styles = css`
   :host {
@@ -18,7 +19,7 @@ export const styles = css`
     aspect-ratio: 1 / 1;
     color: var(--oryx-icon-color, inherit);
     font: var(--oryx-icon-weight, 500) var(--oryx-icon-size, 24px)
-      var(--oryx-icon-font, ${unsafeCSS(defaultIconFont)});
+      var(--oryx-icon-font, ${font});
     font-variation-settings: 'FILL' var(--oryx-icon-fill, 0),
       'wght' var(--oryx-icon-weight, 500), 'GRAD' var(--oryx-icon-grad, 0),
       'opsz' var(--oryx-icon-optical, 48);

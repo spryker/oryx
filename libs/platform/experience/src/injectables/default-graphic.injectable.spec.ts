@@ -25,12 +25,13 @@ class MockComponent extends LitElement {
   }
 }
 
-export const mockGraphic = {
+const mockResource = {
   getGraphic: vi.fn(),
+  getGraphics: vi.fn(),
 };
 
-export const mockApp = {
-  requirePlugin: vi.fn().mockReturnValue(mockGraphic),
+const mockApp = {
+  requirePlugin: vi.fn().mockReturnValue(mockResource),
 };
 
 describe('DefaultGraphicInjectable', () => {
@@ -53,23 +54,37 @@ describe('DefaultGraphicInjectable', () => {
     destroyInjector();
   });
 
-  it('should return url from resource plugin', async () => {
-    mockGraphic.getGraphic.mockReturnValue('url-content');
-    element.url = 'urlToken';
-    await nextFrame();
-    expect(mockGraphic.getGraphic).toHaveBeenCalledWith('urlToken', 'url');
-    expect(element.renderRoot.textContent).toContain('url-content');
+  describe('getUrl', () => {
+    it('should return url from resource plugin', async () => {
+      mockResource.getGraphic.mockReturnValue('url-content');
+      element.url = 'urlToken';
+      await nextFrame();
+      expect(mockResource.getGraphic).toHaveBeenCalledWith('urlToken', 'url');
+      expect(element.renderRoot.textContent).toContain('url-content');
+    });
   });
 
-  it('should return source html from resource plugin', async () => {
-    mockGraphic.getGraphic.mockReturnValue('<svg></svg>');
-    element.url = '';
-    element.source = 'sourceToken';
-    await nextFrame();
-    expect(mockGraphic.getGraphic).toHaveBeenCalledWith(
-      'sourceToken',
-      'source'
-    );
-    expect(element).toContainElement('svg');
+  describe('getSource', () => {
+    it('should return source html from resource plugin', async () => {
+      mockResource.getGraphic.mockReturnValue('<svg></svg>');
+      element.url = '';
+      element.source = 'sourceToken';
+      await nextFrame();
+      expect(mockResource.getGraphic).toHaveBeenCalledWith(
+        'sourceToken',
+        'source'
+      );
+      expect(element).toContainElement('svg');
+    });
+  });
+
+  describe('getGraphics', () => {
+    it('should return the list of graphics from ResourcePlugin', () => {
+      const mockGraphics = { a: 'a', b: 'b' };
+      mockResource.getGraphics.mockReturnValue(mockGraphics);
+      expect(new DefaultGraphicInjectable().getGraphics()).toEqual(
+        mockGraphics
+      );
+    });
   });
 });
