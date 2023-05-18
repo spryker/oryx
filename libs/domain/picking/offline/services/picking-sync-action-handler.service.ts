@@ -72,11 +72,12 @@ export class PickingSyncActionHandlerService
 
   protected handlePush(sync: Sync<PickingSyncAction.Push>): Observable<void> {
     if (sync.payload.entity !== 'picking-lists') {
-      return throwError(() => {
-        new Error(
-          `PickingSyncActionHandlerService: Unknown ${sync.payload.entity} entity`
-        );
-      });
+      return throwError(
+        () =>
+          new Error(
+            `PickingSyncActionHandlerService: Unknown ${sync.payload.entity} entity`
+          )
+      );
     }
 
     //asked BE team to add 'ids'
@@ -85,7 +86,6 @@ export class PickingSyncActionHandlerService
       switchMap(async ([pickingLists, store]) => {
         const addedOrUpdatedKeys = (await store.bulkPut(pickingLists)) as any[];
 
-        console.log('addedOrUpdatedKeys', addedOrUpdatedKeys);
         if (addedOrUpdatedKeys.length !== pickingLists.length) {
           throw new Error(
             `PickingSyncActionHandlerService: Could not add or update all PickingLists after push!`

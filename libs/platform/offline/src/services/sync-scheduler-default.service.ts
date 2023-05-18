@@ -15,17 +15,23 @@ import { SyncSchedulerService } from './sync-scheduler.service';
 
 export const ProcessSyncsBackgroundSyncTag = 'oryx.ProcessSyncs';
 
+declare let self: ServiceWorkerGlobalScope;
+
 export class SyncSchedulerDefaultService implements SyncSchedulerService {
   protected scheduleSyncTimer?: ReturnType<typeof setTimeout>;
 
   constructor(
     protected indexedDbService = inject(IndexedDbService),
-    protected serviceWorker = navigator.serviceWorker
+    // navigator.serviceWorker is available only in main thread and this service is running in SW thread
+    protected serviceWorker:
+      | ServiceWorkerContainer
+      | undefined = navigator.serviceWorker
   ) {}
 
   schedule<TAction extends SyncAction>(
     operation: SyncOperation<TAction>
   ): Observable<Sync<TAction>> {
+    console.log('schedule operation', operation);
     return this.indexedDbService.getStore(SyncEntity).pipe(
       switchMap(async (store) => {
         const sync = await this.createSync<TAction>({
@@ -61,7 +67,7 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
             );
           }
 
-          return new SyncEntity(sync);
+          return await this.createSync(sync);
         })
       )
     ) as Observable<Sync>;
@@ -72,12 +78,12 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
       switchMap((store) =>
         liveQuery(async () => {
           const syncs = await store
-            .where('[status+scheduledAt]')
+            .where('status')
             .anyOf(SyncStatus.Queued, SyncStatus.Processing)
-            .reverse()
-            .sortBy('scheduledAt');
+            .toArray();
 
-          return syncs.map((sync) => new SyncEntity(sync));
+          console.log('pending syncs:', syncs.length);
+          return await Promise.all(syncs.map((sync) => this.createSync(sync)));
         })
       )
     );
@@ -177,7 +183,8 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
     }
 
     this.scheduleSyncTimer = setTimeout(async () => {
-      const swRegistration = await this.serviceWorker.ready;
+      const swRegistration =
+        (await this.serviceWorker?.ready) ?? self.registration;
       //ts does not have this type because it's still experimental
       const sync = (swRegistration as any).sync;
 
