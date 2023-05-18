@@ -1,29 +1,26 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { computed, signalAware, signalProperty } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { DefaultGraphicInjectable } from './default-graphic.injectable';
 
+@signalAware()
 @customElement('mock-component')
 class MockComponent extends LitElement {
-  @property()
-  url?: string;
-
-  @property()
-  source?: string;
+  @signalProperty() url?: string;
+  @signalProperty() source?: string;
 
   protected injectable = new DefaultGraphicInjectable();
+  protected _url = computed(() => this.injectable.getUrl(this.url ?? ''));
+  protected _source = computed(() =>
+    this.injectable.getSource(this.source ?? '')
+  );
 
   render(): TemplateResult {
-    if (this.url) {
-      return html`${this.injectable.getUrl(this.url)}`;
-    }
-
-    if (this.source) {
-      return html`${this.injectable.getSource(this.source)}`;
-    }
-
+    if (this.url) return html`${this._url()}`;
+    if (this.source) return html`${this._source()}`;
     return html``;
   }
 }
