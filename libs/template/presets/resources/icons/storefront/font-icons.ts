@@ -64,7 +64,7 @@ export const storefrontIconSources: IconSource[] = [
 
 export const storefrontFontIcons: ResourceFonts = {
   [storefrontMaterialIcons.id]:
-    'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
+    'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block',
   [storefrontFontAwesomeIcons.id]:
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
 };
