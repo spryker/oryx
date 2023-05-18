@@ -8,6 +8,7 @@ export interface PickingListQualifier
     PageableQualifier,
     SearchQualifier {
   id?: string;
+  ids?: string[];
   status?: PickingListStatus;
   orderReferences?: string[];
 }
