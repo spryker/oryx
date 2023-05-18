@@ -25,11 +25,7 @@ export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySele
   protected override render(): TemplateResult | void {
     const currencies = this.currencies();
 
-    if (
-      !this.current() ||
-      !currencies?.length ||
-      currencies.length < 2
-    ) {
+    if (!this.current() || !currencies?.length || currencies.length < 2) {
       return;
     }
 

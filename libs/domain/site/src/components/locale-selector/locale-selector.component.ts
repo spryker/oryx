@@ -23,11 +23,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
   protected override render(): TemplateResult | void {
     const locales = this.locales();
 
-    if (
-      !this.current() ||
-      !locales?.length ||
-      locales.length < 2
-    ) {
+    if (!this.current() || !locales?.length || locales.length < 2) {
       return;
     }
 
