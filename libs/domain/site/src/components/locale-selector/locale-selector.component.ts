@@ -21,10 +21,12 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
   protected current = signal(this.localeService.get());
 
   protected override render(): TemplateResult | void {
+    const locales = this.locales();
+
     if (
       !this.current() ||
-      !this.locales()?.length ||
-      this.locales().length < 2
+      !locales?.length ||
+      locales.length < 2
     ) {
       return;
     }

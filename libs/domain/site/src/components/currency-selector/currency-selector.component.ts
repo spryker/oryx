@@ -23,10 +23,12 @@ export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySele
   protected currentLocale = signal(resolve(LocaleService).get());
 
   protected override render(): TemplateResult | void {
+    const currencies = this.currencies();
+
     if (
       !this.current() ||
-      !this.currencies()?.length ||
-      this.currencies().length < 2
+      !currencies?.length ||
+      currencies.length < 2
     ) {
       return;
     }
