@@ -146,6 +146,7 @@
       ],
       "@spryker-oryx/search/sort": ["libs/domain/search/sort/index.ts"],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
+      "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
       "@spryker-oryx/testing": ["tools/testing"],
       "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
       "@spryker-oryx/themes/breakpoints": [
