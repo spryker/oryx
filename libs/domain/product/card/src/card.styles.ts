@@ -52,11 +52,11 @@ export const ProductCardStyles = css`
   }
 
   a > *:not(:is(oryx-product-media, div.popover)) {
-    margin-inline: 16px;
+    padding-inline: 16px;
   }
 
   a > *:last-child {
-    margin-block-end: 16px;
+    padding-block-end: 16px;
   }
 
   .popover[has-line-clamp] {
@@ -88,7 +88,7 @@ export const ProductCardStyles = css`
 
   oryx-product-price,
   oryx-cart-add {
-    margin-block-start: 8px;
+    padding-block-start: 8px;
   }
 
   oryx-cart-add {
