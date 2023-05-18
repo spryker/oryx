@@ -45,7 +45,7 @@ export class LayoutController {
       const isLayout = prop === 'layout';
       const mainValue =
         this.host[prop] ??
-        rules.find((rule) => !rule.breakpoint && rule[prop])?.[prop];
+        rules.find((rule) => !rule.query?.breakpoint && rule[prop])?.[prop];
       const mainKey = (isLayout ? mainValue : prop) as string;
       const withMainValue = typeof mainValue !== 'undefined';
 
@@ -58,7 +58,8 @@ export class LayoutController {
           this.host[size]?.[prop] ??
           rules.find(
             (rule) =>
-              rule.breakpoint === size && typeof rule[prop] !== 'undefined'
+              rule.query?.breakpoint === size &&
+              typeof rule[prop] !== 'undefined'
           )?.[prop];
         const sizeKey = (isLayout ? sizeValue : prop) as string;
 
