@@ -6,7 +6,7 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
 import { SemanticLinkService } from '../../services';
-import { navigationButtonComponent } from '../navigation-button/navigation-button.component';
+import { navigationButtonComponent } from '../navigation-button/navigation-button.def';
 import { SiteNavigationItemComponent } from './navigation-item.component';
 import { siteNavigationItemComponent } from './navigation-item.def';
 import {
