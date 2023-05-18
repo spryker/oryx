@@ -14,10 +14,9 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
-import { ExperienceDataClientService } from './data-client';
+import { ExperienceDataClientService, postMessage } from '../data-client';
 import { DefaultExperienceService } from './default-experience.service';
 import { Component } from './models';
-import { postMessage } from './utilities';
 
 export const REQUEST_MESSAGE_TYPE = 'sf-preview-request';
 export const POST_MESSAGE_TYPE = 'experience-builder-preview';

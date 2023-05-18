@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { StaticComponent } from '../static-data';
+import { StaticComponent } from '../experience/static-data';
 
 export const ExperienceDataClientService = 'oryx.ExperienceDataClientService';
 

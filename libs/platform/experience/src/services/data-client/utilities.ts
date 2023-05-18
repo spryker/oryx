@@ -3,7 +3,7 @@ import {
   ExperienceMessageData,
   ExperienceMessageType,
   MessageType,
-} from './data-client';
+} from './data-client.model';
 
 export const postMessage = <T>(
   message: T extends MessageType ? ExperienceMessageData<T> : unknown,

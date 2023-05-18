@@ -9,13 +9,16 @@ import {
   toggleMode,
 } from '@spryker-oryx/ui/color-mode-selector';
 import { from, merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
-import { optionsKey } from '../../../decorators';
-import { ContentComponentSchema } from '../../../models';
-import { ResourcePlugin } from '../../../plugins';
-import { ExperienceStaticData, StaticComponent } from '../static-data';
-import { catchMessage, postMessage } from '../utilities';
+import { optionsKey } from '../../decorators';
+import { ContentComponentSchema } from '../../models';
+import { ResourcePlugin } from '../../plugins';
+import {
+  ExperienceStaticData,
+  StaticComponent,
+} from '../experience/static-data';
 import { MessageType } from './data-client.model';
 import { ExperienceDataClientService } from './data-client.service';
+import { catchMessage, postMessage } from './utilities';
 
 interface ProductsSuggestion {
   products: {

@@ -2,8 +2,10 @@ import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
   DefaultExperienceDataClientService,
-  DefaultExperienceService,
   ExperienceDataClientService,
+} from './data-client';
+import {
+  DefaultExperienceService,
   ExperienceService,
   PreviewExperienceService,
 } from './experience';
