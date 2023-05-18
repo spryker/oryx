@@ -111,8 +111,8 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         @mouseenter=${this.onTriggerHover}
       >
         ${when(
-          this.$url(),
-          () => html`<a href=${this.$url()!}>${this.icon}</a>`,
+          this.url(),
+          () => html`<a href=${this.url()!}>${this.icon}</a>`,
           () => html`<button>${this.icon}</button>`
         )}
       </oryx-icon-button>
