@@ -15,6 +15,9 @@ export class ProductBrandComponent extends ProductMixin(
 
   protected override render(): TemplateResult | void {
     if (!this.brand()) return;
-    return html` <oryx-image .resource=${this.brand()} />`;
+    return html` <oryx-image
+      .resource=${this.brand()}
+      ?skipFallback=${true}
+    />`;
   }
 }
