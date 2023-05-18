@@ -4,7 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { priceComponent } from '../../components';
+import { priceComponent } from './price.def';
 import { CurrencyService, siteProviders } from '../../services';
 import { PriceComponent } from './price.component';
 
