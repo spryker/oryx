@@ -1,12 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { CurrencyService } from '../../services';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { hydratable, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
+import { CurrencyService } from '../../services';
 import { SiteCurrencySelectorOptions } from './currency-selector.model';
 import { siteLocaleSelectorStyles } from './currency-selector.styles';
 

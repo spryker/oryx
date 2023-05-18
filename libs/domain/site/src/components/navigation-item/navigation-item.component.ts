@@ -1,18 +1,16 @@
 import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { SemanticLinkService} from '../../services';
 import {
   computed,
   hydratable,
   queryFirstFocusable,
-  signal,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
-import { of, switchMap } from 'rxjs';
+import { SemanticLinkService } from '../../services';
 import {
   NavigationContentBehavior,
   NavigationTriggerBehavior,
@@ -50,7 +48,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   protected url = computed(() => {
     const url = this.$options().url;
 
-    return (typeof url !== 'object') ? url : this.semanticLinkService.get(url);
+    return typeof url !== 'object' ? url : this.semanticLinkService.get(url);
   });
 
   protected onTriggerClick(): void {
@@ -130,8 +128,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
       >
         ${when(
           this.url(),
-          () =>
-            html`<a href=${this.url()!}> ${this.icon} ${this.label()} </a>`,
+          () => html`<a href=${this.url()!}> ${this.icon} ${this.label()} </a>`,
           () => html`<button>${this.icon} ${this.label()}</button>`
         )}
       </oryx-button>

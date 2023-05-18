@@ -2,11 +2,11 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { dateComponent } from './date.def';
-import { siteProviders } from '../../services';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { siteProviders } from '../../services';
 import { DateComponent } from './date.component';
+import { dateComponent } from './date.def';
 
 class MockLocaleService implements Partial<LocaleService> {
   get = vi.fn().mockReturnValue(of('en'));

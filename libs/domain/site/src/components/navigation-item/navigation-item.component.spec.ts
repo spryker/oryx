@@ -2,13 +2,11 @@ import { fixture } from '@open-wc/testing-helpers';
 import { TokenResolver } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  SemanticLinkService,
-} from '../../services';
-import { navigationButtonComponent } from '../navigation-button/navigation-button.component';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
+import { SemanticLinkService } from '../../services';
+import { navigationButtonComponent } from '../navigation-button/navigation-button.component';
 import { SiteNavigationItemComponent } from './navigation-item.component';
 import { siteNavigationItemComponent } from './navigation-item.def';
 import {
