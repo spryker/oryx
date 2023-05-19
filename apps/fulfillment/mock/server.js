@@ -18,6 +18,9 @@ const components = require('./components.json');
 const BASE_PATH = process.env.ORYX_FULFILLMENT_MOCK_BASE_PATH || '/';
 const PROXY_URL = process.env.ORYX_FULFILLMENT_MOCK_PROXY_URL;
 
+const proxyRoutesToMock = process.env.ORYX_FULLFILMENT_MOCK_ROUTES?.split(', ')
+const filteredProxyRoutes = proxyRoutes.filter(route => !proxyRoutesToMock.includes(route))
+
 exports.createMockServer = function createMockServer() {
   const server = jsonServer.create();
   const router = express.Router();
@@ -30,13 +33,41 @@ exports.createMockServer = function createMockServer() {
   router.post('/token', fixOauthParams);
 
   if (PROXY_URL) {
-    router.use(createProxyRouter(PROXY_URL, proxyRoutes, BASE_PATH));
+    router.use(createProxyRouter(PROXY_URL, filteredProxyRoutes, BASE_PATH));
   }
 
   router.use(jsonServer.defaults({ noCors: true }));
 
   router.post('/authorize', mapRequestToGet);
   router.post('/token', mapRequestToGet);
+  router.post('/push-notification-subscriptions', (req, res) => {
+    res.send({
+      data: {
+        type: 'push-notification-subscriptions',
+        id: 'adf77c5b-17c6-5aa0-bc87-50558d79b03b',
+        attributes: {
+          providerName: 'web-push-php',
+          payload: {
+            endpoint:
+              'https://fcm.googleapis.com/fcm/send/fw-K50y_go4:APA91bFQoYUWAbS36cYTsg1_GoLhNHoiPl2_r6Dm5fZBi9B2-oGYa_6AkbfAlwoxD2SjPihvr2LQMofSAHrHvYTJeF8hxQV715ewNFwIMBSY3P_osGpRf_PSATofMJNl_Qiu8dvdebHg',
+            expirationTime: null,
+            keys: {
+              p256dh:
+                'BISiEJzSwDCNxR3VmUtI940ben6wAghijZWgmzHBLI8ZlFRD7yOUXVfHV8iwcvW1IJC_O0I1b73oDdzqIFOUU6w',
+              auth: 'wkJlpqeBiaHg2wWMdnk4Yw',
+            },
+          },
+          group: {
+            name: 'warehouse',
+            identifier: 'e84b3cb8-a94a-5a7e-9adb-cc5353f7a73f',
+          },
+        },
+        links: {
+          self: '/push-notification-subscriptions/adf77c5b-17c6-5aa0-bc87-50558d79b03b',
+        },
+      },
+    });
+  });
 
   router.patch('/picking-lists/:id/picking-list-items', (req, res) => {
     const { id } = req.params;
@@ -139,6 +170,12 @@ function createProxyRouter(proxyUrl, proxyRoutes, basePath) {
       },
       onProxyRes: responseInterceptor(
         async (responseBuffer, proxyRes, req, res) => {
+          if (proxyRes.statusCode >= 400) {
+            const response = responseBuffer.toString('utf8');
+            // log the error response
+            console.error(`Error from backend for ${req.url}:`, response);
+          }
+
           if (req.url !== '/token') {
             return responseBuffer;
           } else if (res.statusCode === 201) {
