@@ -23,9 +23,10 @@ export class IconComponent extends LitElement implements IconProperties {
   @signalProperty({ reflect: true }) type?: Icons | string;
   @property({ reflect: true }) size?: Size;
   @property() sprite?: string;
+  @property({ reflect: true }) direction?: 'rtl' | 'ltr';
 
   protected renderer = computed(() =>
-    this.iconResolver?.render(this.type as string)
+    this.iconResolver?.render(this.type as string, this)
   );
 
   protected override render(): TemplateResult {

@@ -4,6 +4,7 @@ import { resolve } from '@spryker-oryx/di';
 import { defaultIconFont } from '@spryker-oryx/ui/icon';
 import {
   fontInjectable,
+  IconHost,
   IconInjectable,
   isPromise,
 } from '@spryker-oryx/utilities';
@@ -32,8 +33,11 @@ export class DefaultIconInjectable implements IconInjectable {
     };
   }
 
-  render(type: string): Observable<TemplateResult | undefined> {
-    const icon = this.renderFontIcon(type);
+  render(
+    type: string,
+    host?: IconHost
+  ): Observable<TemplateResult | undefined> {
+    const icon = this.renderFontIcon(type, host);
 
     if (icon) return icon;
 
@@ -56,7 +60,8 @@ export class DefaultIconInjectable implements IconInjectable {
   }
 
   protected renderFontIcon(
-    type: string
+    type: string,
+    host?: IconHost
   ): Observable<TemplateResult> | undefined {
     const mappers = resolve(AppRef).findPlugin(ThemePlugin)?.getIcons();
     const source = mappers?.resource.mapping?.[type]
@@ -70,12 +75,18 @@ export class DefaultIconInjectable implements IconInjectable {
     }
 
     const isText = typeof mapper === 'string';
+
+    if (!isText && host && mapper.styles?.rtl) {
+      host.direction = 'rtl';
+      delete mapper.styles.rtl;
+    }
+
     const mainStyles = this.generateStyles(source.styles);
     const styles = isText ? null : this.generateStyles(mapper.styles);
     const text = isText ? mapper : mapper.text;
     const weight = isText
       ? source.styles?.weight ?? ''
-      : mapper.styles?.weight ?? '';
+      : mapper.styles?.weight ?? source.styles?.weight ?? '';
     const family = source.styles?.font ?? defaultIconFont;
     const font = `${weight} 1rem '${family}'`;
 
