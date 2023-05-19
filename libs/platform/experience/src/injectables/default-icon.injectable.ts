@@ -54,7 +54,9 @@ export class DefaultIconInjectable implements IconInjectable {
 
     return Object.entries(styles).reduce(
       (style, [key, value]) =>
-        `${style}\n--oryx-icon-${key}: ${getValue(key, value)};`,
+        key === 'rtl'
+          ? style
+          : `${style}\n--oryx-icon-${key}: ${getValue(key, value)};`,
       ''
     );
   }
@@ -70,16 +72,11 @@ export class DefaultIconInjectable implements IconInjectable {
           ?.resource;
     const mapper = source?.mapping[type];
 
-    if (!mapper) {
-      return undefined;
-    }
+    if (!mapper) return undefined;
 
     const isText = typeof mapper === 'string';
 
-    if (!isText && host && mapper.styles?.rtl) {
-      host.direction = 'rtl';
-      delete mapper.styles.rtl;
-    }
+    if (!isText && host && mapper.styles?.rtl) host.direction = 'rtl';
 
     const mainStyles = this.generateStyles(source.styles);
     const styles = isText ? null : this.generateStyles(mapper.styles);
