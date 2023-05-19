@@ -6,9 +6,9 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.Cart]: () => import('./icons/cart').then((s) => s.default),
   [IconTypes.Image]: () => import('./icons/image').then((s) => s.default),
   [IconTypes.Info]: () => import('./icons/info').then((s) => s.default),
-  [IconTypes.Error]: () => import('./icons/input-error').then((s) => s.default),
+  [IconTypes.Error]: () => import('./icons/error').then((s) => s.default),
   [IconTypes.InputError]: () =>
-    import('./icons/input-error').then((s) => s.default), // merge with error
+    import('./icons/input-error').then((s) => s.default),
   [IconTypes.Remove]: () => import('./icons/remove').then((s) => s.default),
   [IconTypes.Rocket]: () => import('./icons/rocket').then((s) => s.default),
   [IconTypes.Trash]: () => import('./icons/trash').then((s) => s.default),
