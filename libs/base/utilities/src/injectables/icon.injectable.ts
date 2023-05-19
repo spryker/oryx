@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from './injectable';
 
 export const IconInjectable = 'oryx.IconInjectable';
-export type IconHost = LitElement & { direction?: string };
+export type IconHost = LitElement & { rtl?: boolean };
 
 export interface IconInjectable {
   getIcons(): Record<string, unknown>;
