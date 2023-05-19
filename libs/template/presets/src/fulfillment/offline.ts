@@ -54,11 +54,14 @@ export function offlineServiceWorkerFulfillmentFeatures(
     ...config,
   };
 
+  const offlinePickingFeatures = new OfflinePickingFeature();
+  offlinePickingFeatures.plugins = [];
+
   return [
     coreFeature,
     new I18nFeature(config?.i18n),
     new IndexedDbFeature(config?.indexedDb),
     new OfflineServiceWorkerFeature(),
-    new OfflinePickingFeature(),
+    offlinePickingFeatures,
   ];
 }
