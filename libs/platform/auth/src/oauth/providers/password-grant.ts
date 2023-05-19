@@ -109,7 +109,7 @@ export class OauthPasswordGrantProvider implements OauthProvider {
     this.storage
       .get<OauthResponseSuccess>(
         OauthPasswordGrantProvider.TOKEN_KEY,
-        StorageType.LOCAL
+        StorageType.Local
       )
       .subscribe((token) => this.token$.next(token ?? undefined));
   }
@@ -120,11 +120,11 @@ export class OauthPasswordGrantProvider implements OauthProvider {
         ? this.storage.set(
             OauthPasswordGrantProvider.TOKEN_KEY,
             token,
-            StorageType.LOCAL
+            StorageType.Local
           )
         : this.storage.remove(
             OauthPasswordGrantProvider.TOKEN_KEY,
-            StorageType.LOCAL
+            StorageType.Local
           )
     ).pipe(tap(() => this.token$.next(token)));
   }

@@ -200,7 +200,7 @@ describe('OauthPasswordGrantProvider', () => {
           providerId: 'id',
           state: 'authenticating',
         },
-        StorageType.LOCAL
+        StorageType.Local
       );
     });
 
@@ -421,7 +421,7 @@ describe('OauthPasswordGrantProvider', () => {
           state: 'authenticated',
           token: 'CodeOAuth2Response',
         },
-        StorageType.LOCAL
+        StorageType.Local
       );
     });
   });
@@ -435,7 +435,7 @@ describe('OauthPasswordGrantProvider', () => {
       await nextFrame();
       expect(mockStorage.remove).toHaveBeenCalledWith(
         'oryx.oauth-token',
-        StorageType.LOCAL
+        StorageType.Local
       );
     });
 
@@ -566,7 +566,7 @@ describe('OauthPasswordGrantProvider', () => {
       await nextFrame();
       expect(mockStorage.remove).toHaveBeenCalledWith(
         'oryx.oauth-token',
-        StorageType.LOCAL
+        StorageType.Local
       );
     });
   });
@@ -711,7 +711,7 @@ describe('OauthPasswordGrantProvider', () => {
           state: 'authenticated',
           token: 'mockRefreshToken',
         },
-        StorageType.LOCAL
+        StorageType.Local
       );
     });
   });

@@ -51,7 +51,7 @@ describe('DefaultStorageService', () => {
 
   it('should set data in session storage', () => {
     vi.spyOn(globalThis.sessionStorage.__proto__, 'setItem');
-    service.set('mock', 'sessiondata', StorageType.SESSION);
+    service.set('mock', 'sessiondata', StorageType.Session);
     expect(globalThis.sessionStorage.setItem).toHaveBeenCalledWith(
       'mock',
       JSON.stringify('sessiondata')
@@ -60,14 +60,14 @@ describe('DefaultStorageService', () => {
 
   it('should get data from session storage', async () => {
     vi.spyOn(globalThis.sessionStorage.__proto__, 'getItem');
-    const data = await lastValueFrom(service.get('mock', StorageType.SESSION));
+    const data = await lastValueFrom(service.get('mock', StorageType.Session));
     expect(data).toBe('sessiondata');
     expect(globalThis.sessionStorage.getItem).toHaveBeenCalledWith('mock');
   });
 
   it('should remove data from session storage', () => {
     vi.spyOn(globalThis.sessionStorage.__proto__, 'removeItem');
-    service.remove('mock', StorageType.SESSION);
+    service.remove('mock', StorageType.Session);
     expect(globalThis.sessionStorage.removeItem).toHaveBeenCalledWith('mock');
   });
 });

@@ -53,7 +53,7 @@ export class DefaultCheckoutDataService
   setGuestCheckout(isGuestCheckout = true): Observable<unknown> {
     if (isGuestCheckout) {
       this.isGuestCheckout$.next(true);
-      this.storage.set(guestCheckoutStorageKey, true, StorageType.SESSION);
+      this.storage.set(guestCheckoutStorageKey, true, StorageType.Session);
     } else {
       this.reset();
     }
@@ -67,11 +67,11 @@ export class DefaultCheckoutDataService
     this.contactDetails$.next(null);
     this.shipmentDetails$.next(null);
     this.paymentDetails$.next(null);
-    this.storage.remove(guestCheckoutStorageKey, StorageType.SESSION);
-    this.storage.remove(addressCheckoutStorageKey, StorageType.SESSION);
-    this.storage.remove(contactCheckoutStorageKey, StorageType.SESSION);
-    this.storage.remove(shipmentCheckoutStorageKey, StorageType.SESSION);
-    this.storage.remove(paymentCheckoutStorageKey, StorageType.SESSION);
+    this.storage.remove(guestCheckoutStorageKey, StorageType.Session);
+    this.storage.remove(addressCheckoutStorageKey, StorageType.Session);
+    this.storage.remove(contactCheckoutStorageKey, StorageType.Session);
+    this.storage.remove(shipmentCheckoutStorageKey, StorageType.Session);
+    this.storage.remove(paymentCheckoutStorageKey, StorageType.Session);
   }
 
   getCustomer(): Observable<ContactDetails | null> {
@@ -83,7 +83,7 @@ export class DefaultCheckoutDataService
     return this.storage.set(
       contactCheckoutStorageKey,
       contactDetails,
-      StorageType.SESSION
+      StorageType.Session
     );
   }
 
@@ -96,7 +96,7 @@ export class DefaultCheckoutDataService
     return this.storage.set(
       addressCheckoutStorageKey,
       addressDetails,
-      StorageType.SESSION
+      StorageType.Session
     );
   }
 
@@ -109,7 +109,7 @@ export class DefaultCheckoutDataService
     return this.storage.set(
       shipmentCheckoutStorageKey,
       shipmentDetails,
-      StorageType.SESSION
+      StorageType.Session
     );
   }
 
@@ -122,30 +122,30 @@ export class DefaultCheckoutDataService
     return this.storage.set(
       paymentCheckoutStorageKey,
       paymentDetails,
-      StorageType.SESSION
+      StorageType.Session
     );
   }
 
   protected getPersistedData(): void {
     this.storage
-      .get<string | null>(guestCheckoutStorageKey, StorageType.SESSION)
+      .get<string | null>(guestCheckoutStorageKey, StorageType.Session)
       .subscribe((isGuestCheckout) =>
         this.isGuestCheckout$.next(!!isGuestCheckout)
       );
     this.storage
-      .get<Shipment | null>(shipmentCheckoutStorageKey, StorageType.SESSION)
+      .get<Shipment | null>(shipmentCheckoutStorageKey, StorageType.Session)
       .subscribe((shipment) => this.shipmentDetails$.next(shipment));
     this.storage
-      .get<PaymentMethod | null>(paymentCheckoutStorageKey, StorageType.SESSION)
+      .get<PaymentMethod | null>(paymentCheckoutStorageKey, StorageType.Session)
       .subscribe((paymentMethod) => this.paymentDetails$.next(paymentMethod));
     this.storage
       .get<ContactDetails | null>(
         contactCheckoutStorageKey,
-        StorageType.SESSION
+        StorageType.Session
       )
       .subscribe((contactDetails) => this.contactDetails$.next(contactDetails));
     this.storage
-      .get<Address | null>(addressCheckoutStorageKey, StorageType.SESSION)
+      .get<Address | null>(addressCheckoutStorageKey, StorageType.Session)
       .subscribe((addressDetails) => this.addressDetails$.next(addressDetails));
   }
 

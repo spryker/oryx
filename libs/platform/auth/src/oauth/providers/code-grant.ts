@@ -340,11 +340,11 @@ export class OauthCodeGrantProvider implements OauthProvider {
         ? this.storage.set(
             OauthCodeGrantProvider.STATE_KEY,
             state,
-            StorageType.LOCAL
+            StorageType.Local
           )
         : this.storage.remove(
             OauthCodeGrantProvider.STATE_KEY,
-            StorageType.LOCAL
+            StorageType.Local
           )
     ).pipe(tap(() => this.state$.next(state)));
   }

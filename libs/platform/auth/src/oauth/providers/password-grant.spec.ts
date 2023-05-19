@@ -136,7 +136,7 @@ describe('OauthPasswordGrantProvider', () => {
         .subscribe();
       expect(mockStorage.remove).toHaveBeenCalledWith(
         'oryx.oauth-token',
-        StorageType.LOCAL
+        StorageType.Local
       );
     });
 
@@ -152,7 +152,7 @@ describe('OauthPasswordGrantProvider', () => {
       expect(mockStorage.set).toHaveBeenCalledWith(
         'oryx.oauth-token',
         'token',
-        StorageType.LOCAL
+        StorageType.Local
       );
     });
   });
@@ -199,7 +199,7 @@ describe('OauthPasswordGrantProvider', () => {
       service.refreshToken().subscribe();
       expect(mockStorage.remove).toHaveBeenCalledWith(
         'oryx.oauth-token',
-        StorageType.LOCAL
+        StorageType.Local
       );
     });
 
@@ -215,7 +215,7 @@ describe('OauthPasswordGrantProvider', () => {
       expect(mockStorage.set).toHaveBeenCalledWith(
         'oryx.oauth-token',
         'token',
-        StorageType.LOCAL
+        StorageType.Local
       );
     });
   });
@@ -228,7 +228,7 @@ describe('OauthPasswordGrantProvider', () => {
       service.revoke().subscribe();
       expect(mockStorage.remove).toHaveBeenCalledWith(
         'oryx.oauth-token',
-        StorageType.LOCAL
+        StorageType.Local
       );
     });
   });
@@ -241,7 +241,7 @@ describe('OauthPasswordGrantProvider', () => {
       await nextFrame();
       expect(mockStorage.get).toHaveBeenCalledWith(
         'oryx.oauth-token',
-        StorageType.LOCAL
+        StorageType.Local
       );
       expect(callback).toHaveBeenCalledWith('passwordToken');
     });
@@ -256,7 +256,7 @@ describe('OauthPasswordGrantProvider', () => {
       await nextFrame();
       expect(mockStorage.get).toHaveBeenCalledWith(
         'oryx.oauth-token',
-        StorageType.LOCAL
+        StorageType.Local
       );
       expect(callback).toHaveBeenCalledWith(new Error('Not authenticated!'));
     });

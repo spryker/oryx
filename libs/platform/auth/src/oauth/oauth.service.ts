@@ -188,7 +188,7 @@ export class OauthService implements AuthService, AuthTokenService {
 
   protected restoreState(): void {
     this.storageService
-      .get<OauthServiceState>(OauthService.STATE_KEY, StorageType.LOCAL)
+      .get<OauthServiceState>(OauthService.STATE_KEY, StorageType.Local)
       .subscribe((state) => this.state$.next({ ...state }));
   }
 
@@ -198,7 +198,7 @@ export class OauthService implements AuthService, AuthTokenService {
       : {};
 
     return this.storageService
-      .set(OauthService.STATE_KEY, newState, StorageType.LOCAL)
+      .set(OauthService.STATE_KEY, newState, StorageType.Local)
       .pipe(
         // Delay state update to microtask to let take(1) unsubscribe
         // as getCurrentProvider() will throw as soon as state is updated

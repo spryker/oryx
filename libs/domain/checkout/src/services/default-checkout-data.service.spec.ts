@@ -67,23 +67,23 @@ describe('DefaultCheckoutDataService', () => {
   it('should get persisted data', () => {
     expect(storage.get).toHaveBeenCalledWith(
       guestCheckoutStorageKey,
-      StorageType.SESSION
+      StorageType.Session
     );
     expect(storage.get).toHaveBeenCalledWith(
       shipmentCheckoutStorageKey,
-      StorageType.SESSION
+      StorageType.Session
     );
     expect(storage.get).toHaveBeenCalledWith(
       paymentCheckoutStorageKey,
-      StorageType.SESSION
+      StorageType.Session
     );
     expect(storage.get).toHaveBeenCalledWith(
       contactCheckoutStorageKey,
-      StorageType.SESSION
+      StorageType.Session
     );
     expect(storage.get).toHaveBeenCalledWith(
       addressCheckoutStorageKey,
-      StorageType.SESSION
+      StorageType.Session
     );
   });
 
@@ -126,7 +126,7 @@ describe('DefaultCheckoutDataService', () => {
       it('should clear the checkout data', () => {
         expect(storage.remove).toHaveBeenCalledWith(
           guestCheckoutStorageKey,
-          StorageType.SESSION
+          StorageType.Session
         );
       });
     });
@@ -156,7 +156,7 @@ describe('DefaultCheckoutDataService', () => {
         expect(storage.set).toHaveBeenCalledWith(
           contactCheckoutStorageKey,
           details,
-          StorageType.SESSION
+          StorageType.Session
         );
       });
     });
@@ -197,7 +197,7 @@ describe('DefaultCheckoutDataService', () => {
         expect(storage.set).toHaveBeenCalledWith(
           addressCheckoutStorageKey,
           details,
-          StorageType.SESSION
+          StorageType.Session
         );
       });
     });
@@ -226,7 +226,7 @@ describe('DefaultCheckoutDataService', () => {
         expect(storage.set).toHaveBeenCalledWith(
           shipmentCheckoutStorageKey,
           mockNormalizedShipmentAttributes,
-          StorageType.SESSION
+          StorageType.Session
         );
       });
     });
@@ -255,7 +255,7 @@ describe('DefaultCheckoutDataService', () => {
         expect(storage.set).toHaveBeenCalledWith(
           paymentCheckoutStorageKey,
           mockNormalizedPaymentMethods[0],
-          StorageType.SESSION
+          StorageType.Session
         );
       });
     });
