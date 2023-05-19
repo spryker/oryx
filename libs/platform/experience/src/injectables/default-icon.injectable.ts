@@ -76,7 +76,7 @@ export class DefaultIconInjectable implements IconInjectable {
 
     const isText = typeof mapper === 'string';
 
-    if (!isText && host && mapper.styles?.rtl) host.rtl = true;
+    if (!isText && host && mapper.styles?.direction) host.direction = true;
 
     const mainStyles = this.generateStyles(source.styles);
     const styles = isText ? null : this.generateStyles(mapper.styles);
