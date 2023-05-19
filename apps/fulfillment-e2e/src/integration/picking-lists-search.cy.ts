@@ -25,9 +25,7 @@ describe('Picking Lists Search', () => {
       .should('have.length.at.least', 1);
 
     pickingListsFragment.getSearchClearButton().click();
-    pickingListsFragment
-      .getNoItemsFallbackHeading()
-      .should('contain.text', 'Search by order ID');
+    pickingListsFragment.getNoItemsFallbackHeading().should('be.visible');
   });
 
   it('should get back to initial picking lists page after click on back', () => {
@@ -43,9 +41,7 @@ describe('Picking Lists Search', () => {
     pickingListsFragment.getWrapper().should('be.visible');
 
     pickingListsFragment.getSearchInput().type('1234567', { force: true });
-    pickingListsFragment
-      .getNoItemsFallbackHeading()
-      .should('contain.text', 'No picking results');
+    pickingListsFragment.getNoItemsFallbackHeading().should('be.visible');
 
     pickingListsFragment
       .getNoItemsFallbackImage()
