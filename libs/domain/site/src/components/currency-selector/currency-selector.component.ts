@@ -7,11 +7,10 @@ import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
 import { CurrencyService } from '../../services';
-import { SiteCurrencySelectorOptions } from './currency-selector.model';
 import { siteCurrencySelectorStyles } from './currency-selector.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySelectorOptions>(
+export class SiteCurrencySelectorComponent extends ContentMixin(
   LitElement
 ) {
   static styles = [siteCurrencySelectorStyles];

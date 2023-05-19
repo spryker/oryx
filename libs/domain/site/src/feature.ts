@@ -1,5 +1,5 @@
 import { AppFeature } from '@spryker-oryx/core';
-import * as components from './components.def';
+import * as components from './components/def';
 import { siteProviders } from './services';
 export * from './components.def';
 

@@ -6,11 +6,10 @@ import { hydratable, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
-import { SiteLocaleSelectorOptions } from './locale-selector.model';
 import { siteLocaleSelectorStyles } from './locale-selector.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelectorOptions>(
+export class SiteLocaleSelectorComponent extends ContentMixin(
   LitElement
 ) {
   static styles = [siteLocaleSelectorStyles];
