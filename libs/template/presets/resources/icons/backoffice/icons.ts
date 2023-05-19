@@ -52,4 +52,6 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.Dropdown]: () => import('./icons/dropdown').then((s) => s.default),
   [IconTypes.Maximize]: () => import('./icons/maximize').then((s) => s.default),
   [IconTypes.Minimize]: () => import('./icons/minimize').then((s) => s.default),
+  [IconTypes.Calendar]: () => import('./icons/calendar').then((s) => s.default),
+  [IconTypes.Sort]: () => import('./icons/sort').then((s) => s.default),
 };
