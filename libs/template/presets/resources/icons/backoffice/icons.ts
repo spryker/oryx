@@ -48,4 +48,6 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.Back]: () => import('./icons/back').then((s) => s.default),
   [IconTypes.Front]: () => import('./icons/front').then((s) => s.default),
   [IconTypes.Mark]: () => import('./icons/mark').then((s) => s.default),
+  [IconTypes.DropUp]: () => import('./icons/drop-up').then((s) => s.default),
+  [IconTypes.Dropdown]: () => import('./icons/dropdown').then((s) => s.default),
 };
