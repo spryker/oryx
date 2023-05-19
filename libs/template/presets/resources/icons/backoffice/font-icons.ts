@@ -8,17 +8,9 @@ export const backofficeFontAwesomeIcons: IconMapper = {
     weight: 900,
   },
   mapping: {
-    [IconTypes.Close]: '&#xf00d;',
-    [IconTypes.Add]: '&#x2b;',
-    [IconTypes.Increase]: '&#x2b;', // merge with add
-    [IconTypes.Collapse]: '&#x2b;', // merge with add
     [IconTypes.DropUp]: '&#xf106;',
     [IconTypes.Dropdown]: '&#xf107;',
-    [IconTypes.Minus]: '&#xf068;',
-    [IconTypes.Decrease]: '&#xf068;', // merge with minus
-    [IconTypes.Expand]: '&#xf068;', // merge with minus
     [IconTypes.Mark]: '&#xf00c;',
-    [IconTypes.Search]: '&#xf002;',
     [IconTypes.User]: '&#xf007;',
     [IconTypes.Profile]: '&#xf007;', // merge with user
     [IconTypes.Customer]: '&#xf007;', // merge with user

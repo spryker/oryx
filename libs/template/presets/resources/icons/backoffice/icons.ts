@@ -33,4 +33,12 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.Reset]: () => import('./icons/reset').then((s) => s.default),
   [IconTypes.Settings]: () => import('./icons/settings').then((s) => s.default),
   [IconTypes.Star]: () => import('./icons/star').then((s) => s.default),
+  [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
+  [IconTypes.Increase]: () => import('./icons/add').then((s) => s.default),
+  [IconTypes.Collapse]: () => import('./icons/add').then((s) => s.default), // merge with add
+  [IconTypes.Minus]: () => import('./icons/minus').then((s) => s.default),
+  [IconTypes.Decrease]: () => import('./icons/minus').then((s) => s.default),
+  [IconTypes.Expand]: () => import('./icons/minus').then((s) => s.default), // merge with minus
+  [IconTypes.Close]: () => import('./icons/close').then((s) => s.default),
+  [IconTypes.Search]: () => import('./icons/search').then((s) => s.default),
 };
