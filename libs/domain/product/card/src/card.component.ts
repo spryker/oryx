@@ -1,8 +1,15 @@
+import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMediaContainerSize, ProductMixin } from '@spryker-oryx/product';
-import { SemanticLinkType } from '@spryker-oryx/site';
+import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { hydratable, Size, ssrShim } from '@spryker-oryx/utilities';
+import {
+  computed,
+  hydratable,
+  signalAware,
+  Size,
+  ssrShim,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ProductCardOptions } from './card.model';
@@ -20,10 +27,20 @@ import { ProductCardStyles } from './card.styles';
 })
 @ssrShim('style')
 @hydratable(['mouseover', 'focusin'])
+@signalAware()
 export class ProductCardComponent extends ProductMixin(
   ContentMixin<ProductCardOptions>(LitElement)
 ) {
   static styles = [ProductCardStyles];
+
+  protected semanticLinkService = resolve(SemanticLinkService);
+
+  protected $link = computed(() =>
+    this.semanticLinkService.get({
+      type: SemanticLinkType.Product,
+      id: this.$product()?.sku,
+    })
+  );
 
   protected override render(): TemplateResult | void {
     const product = this.$product();
@@ -33,14 +50,7 @@ export class ProductCardComponent extends ProductMixin(
     const style = titleLineClamp
       ? `--oryx-product-title-max-lines:${titleLineClamp}`
       : undefined;
-    return html`<oryx-content-link
-      .options=${{
-        type: SemanticLinkType.Product,
-        id: product.sku,
-        multiLine: true,
-        label: product.name,
-      }}
-    >
+    return html`<a href=${this.$link()}>
       ${this.renderLabels()} ${this.renderWishlist()} ${this.renderMedia()}
       <div
         class="popover"
@@ -50,7 +60,7 @@ export class ProductCardComponent extends ProductMixin(
         ${this.renderTitle()}
       </div>
       ${this.renderRating()} ${this.renderPrice()} ${this.renderAddToCart()}
-    </oryx-content-link>`;
+    </a>`;
   }
 
   protected renderLabels(): TemplateResult | void {

@@ -14,8 +14,10 @@ export type GraphicValue =
 
 export type ResourceGraphic = Record<string, Graphic>;
 export type ResourceIcons = Record<string, LazyLoadable<string>>;
+export type ResourceFonts = Record<string, string>;
 
 export interface Resources {
   graphics?: ResourceGraphic;
   icons?: ResourceIcons;
+  fonts?: ResourceFonts;
 }

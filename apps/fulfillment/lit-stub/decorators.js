@@ -8,4 +8,6 @@ export const property = noopDecoratorFactory;
 
 export const state = noopDecoratorFactory;
 
+export const query = noopDecoratorFactory;
+
 export const queryAssignedElements = noopDecoratorFactory;

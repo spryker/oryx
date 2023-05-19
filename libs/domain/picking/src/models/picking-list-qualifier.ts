@@ -13,5 +13,11 @@ export interface PickingListQualifier
 }
 
 export enum PickingListQualifierSortBy {
-  deliveryDate = 'deliveryDate',
+  DeliveryDate = 'deliveryDate',
+  OrderSize = 'orderSize',
 }
+
+export const defaultSortingQualifier = {
+  sortBy: PickingListQualifierSortBy.DeliveryDate,
+  sortDesc: true,
+};

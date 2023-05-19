@@ -16,6 +16,7 @@ import {
   ssrShim,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 import { LayoutController } from '../controllers/layout.controller';
 
 export declare class LayoutMixinInterface {
@@ -23,6 +24,8 @@ export declare class LayoutMixinInterface {
   bleed?: boolean;
   sticky?: boolean;
   overlap?: boolean;
+  divider?: boolean;
+  vertical?: boolean;
   xs?: LayoutProperties;
   sm?: LayoutProperties;
   md?: LayoutProperties;
@@ -47,6 +50,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     @signalProperty({ type: Boolean }) bleed?: boolean;
     @signalProperty({ type: Boolean }) sticky?: boolean;
     @signalProperty({ type: Boolean }) overlap?: boolean;
+    @signalProperty({ type: Boolean }) divider?: boolean;
+    @property({ type: Boolean, reflect: true }) vertical?: boolean;
 
     @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
@@ -63,6 +68,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         'sticky',
         'bleed',
         'overlap',
+        'divider',
       ];
       return this.layoutController.getStyles(props, rules);
     });

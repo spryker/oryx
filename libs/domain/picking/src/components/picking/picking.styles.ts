@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const pickingComponentStyles = css`
   .tab-panels {
     min-height: 100vh;
     width: 100%;

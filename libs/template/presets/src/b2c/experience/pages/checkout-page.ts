@@ -34,7 +34,13 @@ export const CheckoutPage: StaticComponent = {
           options: { data: { readonly: true } },
         },
       ],
-      options: { data: { rules: [{ gap: '20px', layout: 'list' }] } },
+      options: {
+        data: {
+          rules: [
+            { gap: '20px', layout: 'flex', vertical: true, align: 'stretch' },
+          ],
+        },
+      },
     },
     {
       type: 'experience-composition',
@@ -42,7 +48,6 @@ export const CheckoutPage: StaticComponent = {
         data: {
           rules: [
             {
-              layout: 'list',
               gap: '20px',
               sticky: true,
               top: '108px',

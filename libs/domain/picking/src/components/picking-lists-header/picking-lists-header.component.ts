@@ -2,10 +2,10 @@ import { resolve } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { styles } from './picking-lists-header.styles';
+import { pickingListsHeaderComponentStyles } from './picking-lists-header.styles';
 
 export class PickingListsHeaderComponent extends LitElement {
-  static styles = styles;
+  static styles = pickingListsHeaderComponentStyles;
 
   protected localeService = resolve(LocaleService);
 

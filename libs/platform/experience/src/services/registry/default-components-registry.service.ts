@@ -35,6 +35,6 @@ export class DefaultComponentsRegistryService
           component.tag ?? type
         )} uid=${uid} class=${styleClasses}></${unsafeStatic(
           component.tag ?? type
-        )}>${null}`;
+        )}>`;
   }
 }

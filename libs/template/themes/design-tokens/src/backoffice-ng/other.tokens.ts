@@ -66,4 +66,9 @@ export const tokens: ThemeToken = {
       padding: '0 10px 12px',
     },
   },
+  modal: {
+    header: {
+      padding: '18px 20px',
+    },
+  },
 };

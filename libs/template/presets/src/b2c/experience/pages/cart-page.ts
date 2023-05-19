@@ -40,7 +40,9 @@ export const CartPage: StaticComponent = {
         data: {
           rules: [
             {
-              layout: 'list',
+              layout: 'flex',
+              vertical: true,
+              align: 'stretch',
               gap: '20px',
               sticky: true,
               top: '108px',

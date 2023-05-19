@@ -1,13 +1,10 @@
 import { DirectiveResult } from 'lit/directive';
 
-export interface FormFieldAttributes {
-  type: string;
-  [key: string]: string | number;
-}
+export type FormFieldAttributes = Record<string, string | number | boolean>;
 
 export interface FormFieldOption {
   value: string;
-  text?: string;
+  text?: DirectiveResult | string;
   icon?: string;
 }
 
@@ -22,18 +19,19 @@ export const enum FormFieldType {
   Boolean = 'boolean',
   Textarea = 'textarea',
   Color = 'color',
+  RadioList = 'radio-list',
 }
 
 export interface FormFieldDefinition<K = string>
   extends Partial<FieldValidationPattern> {
   id: K;
   type?: FormFieldType | string;
-  label?: string;
+  label?: DirectiveResult | string;
   floatLabel?: boolean;
   required?: boolean;
   options?: FormFieldOption[];
   attributes?: FormFieldAttributes;
-  placeholder?: string;
+  placeholder?: DirectiveResult | string;
   max?: number;
   min?: number;
   /**

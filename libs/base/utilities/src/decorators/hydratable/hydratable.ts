@@ -4,31 +4,18 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
-import { html, isServer, LitElement, noChange, TemplateResult } from 'lit';
+import { isServer, LitElement, render, TemplateResult } from 'lit';
 import { Effect, effect } from '../../signals';
-import { asyncStates } from '../async-state';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
-const HYDRATION_CALLS = Symbol('hydrationCalls');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
-export const HYDRATING = '$__HYDRATING';
 export const hydratableAttribute = 'hydratable';
 export const deferHydrationAttribute = 'defer-hydration';
-export const hydrationRender = Symbol('hydrationRender');
-const SIGNAL_META = Symbol('signalMeta');
-
-interface PatchableLitElement extends LitElement {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-new
-  new (...args: any[]): PatchableLitElement;
-  _$needsHydration?: boolean;
-}
+const SIGNAL_EFFECT = Symbol('signalEffect');
 
 export interface HydratableLitElement extends LitElement {
   [HYDRATE_ON_DEMAND](force?: boolean): void;
 }
-
-const whenState = (condition: unknown, trueCase: () => TemplateResult) =>
-  condition ? trueCase() : noChange;
 
 export const hydratable =
   (prop?: string | string[]) =>
@@ -52,7 +39,7 @@ const standardCustomElement = (
   return {
     kind,
     elements,
-    finisher(clazz: Constructor<PatchableLitElement>) {
+    finisher(clazz: Constructor<HydratableLitElement>) {
       return hydratableClass(clazz, prop);
     },
   };
@@ -63,119 +50,79 @@ function hydratableClass<T extends Type<HTMLElement>>(
   mode?: string | string[]
 ): any {
   return class extends (target as any) {
-    static properties = {
-      [hydrationRender]: { type: Boolean, state: true },
-    };
-
-    [DEFER_HYDRATION] = false;
-    private [hydrationRender] = true;
-    private hasSsr?: boolean;
-    private [HYDRATION_CALLS] = 0;
-
-    private [SIGNAL_META]!: {
-      effectRuns: number;
-      renderRuns: number;
-      effect?: Effect;
-    };
+    /**
+     * Internal flag determining hydration state:
+     * 3 - not yet hydrated (hydration deferred)
+     * 2 - pre-hydrating (waiting for data required for hydration)
+     * 1 - hydrating (lit hydration in progress)
+     * 0 - hydrated (hydration complete)
+     */
+    [DEFER_HYDRATION]?: number;
+    private [SIGNAL_EFFECT]?: Effect;
 
     constructor(...args: any[]) {
       super(...args);
 
-      this.hasSsr = !isServer && !!this.shadowRoot;
-
       if (isServer) {
         this.setAttribute(hydratableAttribute, mode ?? '');
-
-        this[SIGNAL_META] = {
-          effectRuns: 0,
-          renderRuns: 0,
-        };
-      }
-
-      if (this.hasSsr) {
-        this[DEFER_HYDRATION] = true;
-        this[hydrationRender] = false;
+      } else if (this.shadowRoot) {
+        this[DEFER_HYDRATION] = 3;
       }
     }
 
     willUpdate(_changedProperties: PropertyValues): void {
       super.willUpdate(_changedProperties);
       if (isServer) {
-        this[SIGNAL_META].effect = effect(() => {
-          this[SIGNAL_META].effectRuns++;
+        // we trigger SSR awaiter on the server, to resolve all asynchronous logic before rendering
+        this[SIGNAL_EFFECT] = effect(() => {
           super.render();
         });
       }
     }
 
     connectedCallback() {
-      if (this[DEFER_HYDRATION]) {
-        return;
-      }
+      if (this[DEFER_HYDRATION]) return;
       super.connectedCallback();
     }
 
     update(changedProperties: PropertyValues) {
-      if (this[DEFER_HYDRATION]) {
-        return;
+      if (this[DEFER_HYDRATION] && this[DEFER_HYDRATION] > 1) return;
+
+      // special case for hydration
+      if (this[DEFER_HYDRATION] === 1) {
+        delete this[DEFER_HYDRATION];
+        try {
+          super.update(changedProperties);
+        } catch (e) {
+          // catch hydration error and recover by clearing and re-rendering
+          // may become obsolete in future versions of lit
+          this.renderRoot.innerHTML =
+            this.renderRoot.innerHTML.split('<!--lit-part ')[0];
+          render(this.render(), this.renderRoot, this.renderOptions);
+        }
+      } else {
+        super.update(changedProperties);
       }
-      if (this._$needsHydration) {
-        this[HYDRATING] = true;
-      }
-      super.update(changedProperties);
-      this[HYDRATING] = false;
     }
 
-    [HYDRATE_ON_DEMAND](skipMissMatch?: boolean) {
-      if (skipMissMatch) {
-        this[hydrationRender] = false;
-      }
+    [HYDRATE_ON_DEMAND]() {
+      if (this[DEFER_HYDRATION] !== 3) return;
 
-      const prototype = Array(this[HYDRATION_CALLS])
-        .fill(null)
-        .reduce(Object.getPrototypeOf, this);
+      // TODO: here we will need to resolve all data needed for hydration
+      // this[DEFER_HYDRATION] = 2; // pre-hydrating
 
-      if (prototype[HYDRATE_ON_DEMAND]) {
-        this[HYDRATION_CALLS]++;
-        prototype[HYDRATE_ON_DEMAND].call(this);
-        this[HYDRATION_CALLS]--;
-      }
-
-      if (this.renderRoot) {
-        return;
-      }
-
-      this[DEFER_HYDRATION] = false;
+      this[DEFER_HYDRATION] = 1; // hydrating
+      super.connectedCallback();
       this.removeAttribute(deferHydrationAttribute);
-      prototype.connectedCallback.call(this);
     }
 
     render(): TemplateResult {
-      if (isServer) {
-        this[SIGNAL_META].renderRuns++;
-        if (this[SIGNAL_META].renderRuns > this[SIGNAL_META].effectRuns) {
-          this[SIGNAL_META].effect?.stop();
-        }
+      const result = super.render();
+      if (this[SIGNAL_EFFECT]) {
+        this[SIGNAL_EFFECT]!.stop();
+        delete this[SIGNAL_EFFECT];
       }
-
-      const states = this[asyncStates];
-
-      if (this.hasSsr && !this[hydrationRender]) {
-        setTimeout(() => {
-          this[hydrationRender] = true;
-        }, 0);
-      }
-
-      if (this.hasSsr && states) {
-        return html`${whenState(
-          Object.values(states).every(Boolean) && this[hydrationRender],
-          () => super.render()
-        )}`;
-      }
-
-      return this.hasSsr || isServer
-        ? html`${whenState(this[hydrationRender], () => super.render())}`
-        : super.render();
+      return result;
     }
   };
 }

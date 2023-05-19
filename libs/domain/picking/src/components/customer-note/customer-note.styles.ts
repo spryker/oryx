@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const customerNoteComponentStyles = css`
   :host {
     padding: 30px;
     display: flex;

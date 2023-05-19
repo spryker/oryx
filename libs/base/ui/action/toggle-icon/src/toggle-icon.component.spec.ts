@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { toggleIconComponent } from './component';
 import { ToggleIconComponent } from './toggle-icon.component';
+import { toggleIconComponent } from './toggle-icon.def';
 
 describe('ToggleIconComponent', () => {
   let element: ToggleIconComponent;
