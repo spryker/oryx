@@ -58,9 +58,10 @@ export class AddressFormComponent
 
   @property({ type: Boolean }) enableDefaultShipping?: boolean;
   @property({ type: Boolean }) enableDefaultBilling?: boolean;
-  @property({ type: Object }) set address(value: Address);
+  @property({ type: Object }) address?: Address;
 
   @property() country?: string;
+  checkout;
 
   @observe()
   protected country$ = new BehaviorSubject(this.country);
