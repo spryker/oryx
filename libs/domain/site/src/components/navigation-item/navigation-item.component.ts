@@ -35,7 +35,6 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected label = computed(() => {
     const label = this.$options().label;
-
     return label ? this.tokenResolver.resolveToken(label) : null;
   });
 
