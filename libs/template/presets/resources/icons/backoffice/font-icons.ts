@@ -24,7 +24,6 @@ export const backofficeFontAwesomeIcons: IconMapper = {
     [IconTypes.Create]: '&#xf0fe;',
     [IconTypes.Disconnect]: '&#xe55e;',
     [IconTypes.File]: '&#xf15b;',
-    [IconTypes.Filter]: '&#xf0dc;',
     [IconTypes.Filters]: '&#xf085;',
     [IconTypes.Imports]: '&#xf019;',
     [IconTypes.InputStepper]: '&#xf0d8;',
