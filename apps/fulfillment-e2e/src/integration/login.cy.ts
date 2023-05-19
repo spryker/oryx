@@ -26,6 +26,11 @@ describe('Login Suite', () => {
   });
   describe('when logging in', () => {
     it('should login successfully', () => {
+      cy.intercept('GET', '**/picking-lists?*', (req) => {
+        req.on('response', (res) => {
+          res.setDelay(1000);
+        });
+      }).as('picking-lists');
       cy.intercept('POST', '**/token').as('token');
 
       loginPage.visit();
@@ -43,7 +48,6 @@ describe('Login Suite', () => {
       oauthHandler.getTitle().should('contain.text', 'Logging you in');
       oauthHandler.getSpinner().should('be.visible');
 
-      cy.intercept('GET', '**/picking-lists?*').as('picking-lists');
       cy.wait('@picking-lists');
 
       cy.location('pathname').should('be.equal', '/');
