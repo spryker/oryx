@@ -41,4 +41,8 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.Expand]: () => import('./icons/minus').then((s) => s.default), // merge with minus
   [IconTypes.Close]: () => import('./icons/close').then((s) => s.default),
   [IconTypes.Search]: () => import('./icons/search').then((s) => s.default),
+  [IconTypes.Edit]: () => import('./icons/edit').then((s) => s.default),
+  [IconTypes.Actions]: () => import('./icons/actions').then((s) => s.default),
+  [IconTypes.ActionsHorizontal]: () =>
+    import('./icons/actions-horizontal').then((s) => s.default),
 };
