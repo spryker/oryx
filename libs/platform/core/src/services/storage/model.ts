@@ -7,9 +7,8 @@ export const enum StorageType {
 export const indexedDbStorageName = 'oryx-local-db-storage';
 export const indexedDbTableName = 'oryx.storage';
 
-
 export interface IndexedDbStorage {
-  getItem(key: string): Promise<string>;
+  getItem(key: string): Promise<string | null>;
   setItem(key: string, value: string): Promise<void>;
   removeItem(key: string): Promise<void>;
   clear(): Promise<void>;

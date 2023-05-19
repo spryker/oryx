@@ -1,35 +1,21 @@
-import { Observable, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { StorageType } from './model';
 import { StorageService } from './storage.service';
 import { DbStorage } from './db-storage';
+import { isPromise } from '@spryker-oryx/utilities';
 
 export class DefaultStorageService implements StorageService {
   protected bdStorage = new DbStorage();
-
-  protected getStorage(type = StorageType.Local): Storage | DbStorage {
-    if (type === StorageType.Session) {
-      return sessionStorage
-    }
-
-    return this.bdStorage;
-
-    // return type === StorageType.Local ? localStorage ?? this.bdStorage : this.bdStorage;
-  }
-
-  constructor(){
-    this.set('test', 'testsValue');
-    this.get('test');
-  }
 
   get<T = unknown>(
     key: string,
     type = StorageType.Local
   ): Observable<T | null> {
-    console.log(key, type);
-    
     try {
-      (this.getStorage(type).getItem(key) as Promise<any>).then((a) => console.log(a))
-      return of(JSON.parse(this.getStorage(type).getItem(key) as string));
+      const value = this.getStorage(type).getItem(key);
+      if (value) {
+        return isPromise(value) ? from(value.then(v => this.parseValue<T>(v))) : of(this.parseValue<T>(value));
+      }
     } catch (e) {
       console.error(e);
     }
@@ -37,8 +23,6 @@ export class DefaultStorageService implements StorageService {
   }
 
   set(key: string, value: unknown, type = StorageType.Local): Observable<void> {
-    console.log(key, value, type);
-    
     this.getStorage(type).setItem(key, JSON.stringify(value));
     return of(undefined);
   }
@@ -51,5 +35,22 @@ export class DefaultStorageService implements StorageService {
   clear(type = StorageType.Local): Observable<void> {
     this.getStorage(type).clear();
     return of(undefined);
+  }
+
+  protected getStorage(type?: StorageType): Storage | DbStorage {
+    // switch(type){
+    //   case StorageType.Db:
+    //     return this.bdStorage;
+    //   case StorageType.Session:
+    //     return sessionStorage;
+    //   default:
+    //     return localStorage;
+    // }
+
+    return this.bdStorage;
+  }
+
+  protected parseValue<T>(value: string | null): T | null {
+    return value ? JSON.parse(value) : null;
   }
 }
