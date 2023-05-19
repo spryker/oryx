@@ -50,7 +50,6 @@ export const storefrontFontAwesomeIcons: IconMapper = {
     weight: 900,
   },
   mapping: {
-    [IconTypes.Loader]: '&#xf110;',
     [IconTypes.Parcel]: '&#xf466;',
   },
 };
@@ -58,7 +57,7 @@ export const storefrontFontAwesomeIcons: IconMapper = {
 export const storefrontIconSources: IconSource[] = [
   {
     resource: storefrontFontAwesomeIcons,
-    types: [IconTypes.Loader, IconTypes.Parcel],
+    types: [IconTypes.Parcel],
   },
 ];
 
