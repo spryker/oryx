@@ -5,11 +5,13 @@ import { DbStorage } from './db-storage';
 import { isPromise } from '@spryker-oryx/utilities';
 
 export class DefaultStorageService implements StorageService {
+  constructor(protected defaultStorageType = StorageType.Local){}
+  
   protected bdStorage = new DbStorage();
 
   get<T = unknown>(
     key: string,
-    type = StorageType.Local
+    type?: StorageType
   ): Observable<T | null> {
     try {
       const value = this.getStorage(type).getItem(key);
@@ -22,32 +24,30 @@ export class DefaultStorageService implements StorageService {
     return of(null);
   }
 
-  set(key: string, value: unknown, type = StorageType.Local): Observable<void> {
+  set(key: string, value: unknown, type?: StorageType): Observable<void> {
     this.getStorage(type).setItem(key, JSON.stringify(value));
     return of(undefined);
   }
 
-  remove(key: string, type = StorageType.Local): Observable<void> {
+  remove(key: string, type?: StorageType): Observable<void> {
     this.getStorage(type).removeItem(key);
     return of(undefined);
   }
 
-  clear(type = StorageType.Local): Observable<void> {
+  clear(type?: StorageType): Observable<void> {
     this.getStorage(type).clear();
     return of(undefined);
   }
 
-  protected getStorage(type?: StorageType): Storage | DbStorage {
-    // switch(type){
-    //   case StorageType.Db:
-    //     return this.bdStorage;
-    //   case StorageType.Session:
-    //     return sessionStorage;
-    //   default:
-    //     return localStorage;
-    // }
-
-    return this.bdStorage;
+  protected getStorage(type = this.defaultStorageType): Storage | DbStorage {
+    switch(type){
+      case StorageType.Db:
+        return this.bdStorage;
+      case StorageType.Session:
+        return sessionStorage;
+      default:
+        return localStorage;
+    }
   }
 
   protected parseValue<T>(value: string | null): T | null {

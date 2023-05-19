@@ -2,6 +2,7 @@ import { indexedDbStorageName, IndexedDbStorage, indexedDbTableName } from './mo
 import { Dexie, PromiseExtended } from 'dexie';
 
 export class DbStorage implements IndexedDbStorage {
+  protected db = this.openDb();
   protected openDb(): PromiseExtended<Dexie> {
     const db = new Dexie(indexedDbStorageName);
     db.version(1).stores({
@@ -12,30 +13,23 @@ export class DbStorage implements IndexedDbStorage {
   }
 
   async getItem(key: string): Promise<string | null> {
-    console.log('get', key);
-    const db = await this.openDb();
+    const db = await this.db;
     const entity = await db.table(indexedDbTableName).get(key);
     return entity?.value ?? null;
   }
 
   async setItem(key: string, value: string): Promise<void> {
-    console.log('set', key, value);
-    const db = await this.openDb();
+    const db = await this.db;
     await db.table(indexedDbTableName).put({key, value});
-    db.close();
   };
 
   async removeItem(key: string): Promise<void> {
-    console.log('remove', key);
-    const db = await this.openDb();
+    const db = await this.db;
     await db.table(indexedDbTableName).delete(key);
-    db.close();
   };
 
   async clear(): Promise<void> {
-    console.log('clear');
-    const db = await this.openDb();
+    const db = await this.db;
     await db.table(indexedDbTableName).clear();
-    db.close();
   };
 }
