@@ -33,7 +33,6 @@ const selfServiceLinks = {
       },
       components: [
         link('Contact us', '/contact'),
-        link('Contact us', '/contact'),
         link('Help center'),
         link('Payment'),
         link('Shipping information'),
