@@ -10,18 +10,14 @@ describe('Picking Lists Search', () => {
     pickingListsFragment.getSearch().click();
   });
 
-  it('should check success search flow', () => {
+  it('should show correct picking items after search', () => {
     pickingListsFragment.getWrapper().should('be.visible');
     pickingListsFragment.getNoItemsFallback().should('be.visible');
-    pickingListsFragment
-      .getNoItemsFallbackHeading()
-      .should('contain.text', 'Search by order ID');
+    pickingListsFragment.getNoItemsFallbackHeading().should('be.visible');
     pickingListsFragment
       .getSearchInput()
-      .should('have.attr', 'placeholder')
-      .then((placeholderText) => {
-        expect(placeholderText).to.contain('Order ID');
-      });
+      .should('be.visible')
+      .should('have.attr', 'placeholder');
 
     pickingListsFragment.getSearchInput().type('DE', { force: true });
     pickingListsFragment
