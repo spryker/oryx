@@ -41,7 +41,6 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected badge = computed(() => {
     const badge = this.$options().badge;
-
     return badge ? this.tokenResolver.resolveToken(badge) : null;
   });
 
