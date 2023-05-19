@@ -45,4 +45,7 @@ export const backofficeIcons: ResourceIcons = {
   [IconTypes.Actions]: () => import('./icons/actions').then((s) => s.default),
   [IconTypes.ActionsHorizontal]: () =>
     import('./icons/actions-horizontal').then((s) => s.default),
+  [IconTypes.Back]: () => import('./icons/back').then((s) => s.default),
+  [IconTypes.Front]: () => import('./icons/front').then((s) => s.default),
+  [IconTypes.Mark]: () => import('./icons/mark').then((s) => s.default),
 };

@@ -8,9 +8,6 @@ export const backofficeFontAwesomeIcons: IconMapper = {
     weight: 900,
   },
   mapping: {
-    [IconTypes.DropUp]: '&#xf106;',
-    [IconTypes.Dropdown]: '&#xf107;',
-    [IconTypes.Mark]: '&#xf00c;',
     [IconTypes.User]: '&#xf007;',
     [IconTypes.Profile]: '&#xf007;', // merge with user
     [IconTypes.Customer]: '&#xf007;', // merge with user
@@ -22,7 +19,6 @@ export const backofficeFontAwesomeIcons: IconMapper = {
     [IconTypes.Desktop]: '&#xf390;',
     [IconTypes.Mobile]: '&#xf3cd;',
     [IconTypes.Tablet]: '&#xf3fa;',
-    [IconTypes.Back]: '&#xf104;',
     [IconTypes.Bottom]: '&#xe4b8;',
     [IconTypes.Calendar]: '&#xf073;',
     [IconTypes.Copy]: '&#xf0c5;',
@@ -31,7 +27,6 @@ export const backofficeFontAwesomeIcons: IconMapper = {
     [IconTypes.File]: '&#xf15b;',
     [IconTypes.Filter]: '&#xf0dc;',
     [IconTypes.Filters]: '&#xf085;',
-    [IconTypes.Front]: '&#xf105;',
     [IconTypes.Imports]: '&#xf019;',
     [IconTypes.InputStepper]: '&#xf0d8;',
     [IconTypes.Link]: '&#xf08e;',
