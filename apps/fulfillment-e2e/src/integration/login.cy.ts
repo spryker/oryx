@@ -43,7 +43,7 @@ describe('Login Suite', () => {
       oauthHandler.getTitle().should('contain.text', 'Logging you in');
       oauthHandler.getSpinner().should('be.visible');
 
-      cy.intercept('GET', '**/picking-lists/*').as('picking-lists');
+      cy.intercept('GET', '**/picking-lists?*').as('picking-lists');
       cy.wait('@picking-lists');
 
       cy.location('pathname').should('be.equal', '/');

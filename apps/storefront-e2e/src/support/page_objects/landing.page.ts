@@ -4,8 +4,7 @@ export class LandingPage extends AbstractSFPage {
   url = '/';
 
   waitForLoadedSSR(): void {
-    cy.intercept('/youtubei/v1/next?*').as('youtubeVideoLoad');
-    cy.wait('@youtubeVideoLoad');
+    this.getVideo().should('be.visible');
   }
 
   waitForLoadedSPA(): void {

@@ -2,10 +2,10 @@ import { resolve } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { styles } from './picking-lists-header.styles';
+import { pickingListsHeaderComponentStyles } from './picking-lists-header.styles';
 
 export class PickingListsHeaderComponent extends LitElement {
-  static styles = styles;
+  static styles = pickingListsHeaderComponentStyles;
 
   protected localeService = resolve(LocaleService);
 
@@ -38,7 +38,9 @@ export class PickingListsHeaderComponent extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <oryx-heading>
-        <h4>${i18n('picking.header.orders-<date>', { date: this.date })}</h4>
+        <h4>
+          ${i18n('picking.header.pick-lists-<date>', { date: this.date })}
+        </h4>
       </oryx-heading>
 
       <oryx-search

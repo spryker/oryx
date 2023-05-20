@@ -44,7 +44,17 @@ export class ToolSelector extends Component {
       return;
     }
 
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const globals = urlSearchParams
+      .get('globals')
+      ?.split(';')
+      .reduce((acc, global) => {
+        const [key, value] = global.split(':');
+        return { ...acc, [key]: value };
+      }, {});
+
     this.props.api.updateGlobals({
+      ...globals,
       [this.getToolIdentifier()]: value,
     });
 

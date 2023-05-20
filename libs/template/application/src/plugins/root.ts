@@ -1,3 +1,4 @@
+import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
 import {
   AppPlugin,
   AppPluginAfterApply,
@@ -9,7 +10,6 @@ import { RouterService } from '@spryker-oryx/router';
 import { rootInjectable } from '@spryker-oryx/utilities';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
 import { LitElement } from 'lit';
-import 'lit/experimental-hydrate-support.js';
 
 declare global {
   function litElementHydrateSupport(param: {
