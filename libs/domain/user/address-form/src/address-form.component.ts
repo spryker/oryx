@@ -61,7 +61,6 @@ export class AddressFormComponent
   @property({ type: Object }) address?: Address;
 
   @property() country?: string;
-  checkout;
 
   @observe()
   protected country$ = new BehaviorSubject(this.country);
