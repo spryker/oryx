@@ -86,13 +86,6 @@ const checkoutLinks = {
           radius: 5,
           ratio: '4/3',
         },
-        // {
-        //   query: {
-        //     childs: true,
-        //     hover: true,
-        //   },
-        //   background: 'red',
-        // },
       ],
     },
   },
@@ -198,7 +191,7 @@ export const FooterTemplate: StaticComponent = {
         },
       },
     },
-    // { type: 'oryx-site-notification-center' },
+    { type: 'oryx-site-notification-center' },
   ],
   options: {
     data: {

@@ -38,7 +38,7 @@ describe('ProductBrandComponent', () => {
       `);
     });
 
-    it('should not render the brand image', () => {
+    it('should render the brand image', () => {
       const image = element.shadowRoot?.querySelector(
         'oryx-image'
       ) as ImageComponent;
