@@ -54,4 +54,4 @@ const Template: Story = (): TemplateResult => {
     </style>
   `;
 };
-export const Brands = Template.bind({});
+export const Static = Template.bind({});
