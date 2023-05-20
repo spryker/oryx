@@ -48,10 +48,14 @@ export class CheckoutAddressComponent
   }
 
   isValid(report: boolean): boolean {
+    if (this.selected) {
+      return true;
+    }
+
     const form = this.addressComponent?.getForm();
     if (!form?.checkValidity() && report) {
       form?.reportValidity();
     }
-    return !!form?.checkValidity() || !!this.selected;
+    return !!form?.checkValidity();
   }
 }

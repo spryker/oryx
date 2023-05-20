@@ -49,7 +49,7 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     return this.subject.pipe(
       map((data) => {
         if (!data.get(key)) this.set(key, {});
-        return data.get(key)?.value as Checkout[K] | null;
+        return (data.get(key)?.value ?? null) as Checkout[K] | null;
       }),
       distinctUntilChanged()
     );

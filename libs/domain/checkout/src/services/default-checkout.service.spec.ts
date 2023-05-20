@@ -1,6 +1,7 @@
 import { Cart, CartService } from '@spryker-oryx/cart';
 import {
   CheckoutDataService,
+  CheckoutResponse,
   CheckoutService,
   CheckoutState,
   CheckoutStateService,
@@ -45,6 +46,7 @@ describe('DefaultCheckoutService', () => {
   let checkoutService: CheckoutService;
   let checkoutStateService: MockCheckoutStateService;
   let cartService: MockCartService;
+  let orderService: MockOrderService;
   let adapter: MockCheckoutAdapter;
   let linkService: MockSemanticLinkService;
 
@@ -63,6 +65,7 @@ describe('DefaultCheckoutService', () => {
 
     adapter = injector.inject<MockCheckoutAdapter>(CheckoutAdapter);
     cartService = injector.inject<MockCartService>(CartService);
+    orderService = injector.inject<MockOrderService>(OrderService);
     cartService.getCart.mockReturnValue(mockCart);
     checkoutService = injector.inject(CheckoutService);
     checkoutStateService =
@@ -157,7 +160,9 @@ describe('DefaultCheckoutService', () => {
 
       beforeEach(() => {
         checkoutStateService.getAll.mockReturnValue(of(state));
-        adapter.placeOrder.mockReturnValue(of({}));
+        adapter.placeOrder.mockReturnValue(
+          of({ orders: [{}] } as CheckoutResponse)
+        );
         checkoutService
           .getProcessState()
           .pipe(take(3))
@@ -179,6 +184,14 @@ describe('DefaultCheckoutService', () => {
 
       it('should clear the state', () => {
         expect(checkoutStateService.clear).toBeCalled();
+      });
+
+      it('should reload the cart', () => {
+        expect(cartService.reload).toBeCalled();
+      });
+
+      it('should store the order', () => {
+        expect(orderService.storeLastOrder).toBeCalled();
       });
     });
 

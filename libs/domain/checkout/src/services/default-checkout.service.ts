@@ -90,9 +90,10 @@ export class DefaultCheckoutService implements CheckoutService {
   }
 
   /**
-   * Stores the order in memory.
-   *
-   * TOOD: consider doing this in a lower layer.
+   * After placing the order we need to do some cleanup:
+   * - clear the checkout state
+   * - clear the cart
+   * - store the placed order
    */
   protected postCheckout(response: CheckoutResponse): void {
     this.stateService.clear();
