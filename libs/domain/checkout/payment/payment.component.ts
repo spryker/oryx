@@ -58,7 +58,7 @@ export class CheckoutPaymentComponent
   }
 
   /**
-   * Evaluates whether the given method id is the seleced method.
+   * Evaluates whether the given method id is the selected method.
    * If there's no method selected, a method can be auto selected.
    */
   protected isSelected(methodId: string): boolean {

@@ -15,6 +15,7 @@ export class CheckoutShipmentComponent
   static styles = styles;
 
   protected shipments = signal(this.checkoutDataService.get('shipments'));
+  protected carriers = signal(this.checkoutDataService.get('carriers'));
   protected selected = signal(this.checkoutStateService.get('shipment'));
 
   @query('form')

@@ -1,15 +1,19 @@
-import { PaymentProviderType } from '@spryker-oryx/checkout/mocks';
+import { CheckoutDataService } from '@spryker-oryx/checkout';
+import { MockCheckoutDataService } from '@spryker-oryx/checkout/mocks';
+import { resolve } from '@spryker-oryx/di';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { renderSelector } from '../helper';
+import { mockPayments } from '../../../src/mocks/src/mock';
 
-export default {
-  title: `${storybookPrefix}/Payment/Static`,
-} as Meta;
+export default { title: `${storybookPrefix}/Payment/Static` } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return html`${renderSelector(PaymentProviderType.TwoProviders)}`;
-};
+  resolve<MockCheckoutDataService>(CheckoutDataService).setMock([
+    mockPayments[0],
+    mockPayments[1],
+  ]);
 
+  return html`<oryx-checkout-payment></oryx-checkout-payment>`;
+};
 export const TwoProvidersMethod = Template.bind({});

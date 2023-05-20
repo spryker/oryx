@@ -1,15 +1,17 @@
-import { PaymentProviderType } from '@spryker-oryx/checkout/mocks';
-import { Meta, Story } from '@storybook/web-components';
-import { TemplateResult } from 'lit';
+import { resolve } from '@spryker-oryx/di';
+import { Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { renderSelector } from './helper';
+import { MockCheckoutDataService } from '../../src/mocks/src';
+import { mockPayments } from '../../src/mocks/src/mock';
+import { CheckoutDataService } from '../../src/services';
 
-export default {
-  title: `${storybookPrefix}/Payment`,
-} as unknown as Meta;
+export default { title: `${storybookPrefix}/Payment` };
 
 const Template: Story = (): TemplateResult => {
-  return renderSelector(PaymentProviderType.Multiple);
+  resolve<MockCheckoutDataService>(CheckoutDataService).setMock(mockPayments);
+
+  return html`<oryx-checkout-payment></oryx-checkout-payment>`;
 };
 
-export const PaymentDemo = Template.bind({});
+export const Demo = Template.bind({});
