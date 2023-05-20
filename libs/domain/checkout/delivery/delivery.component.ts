@@ -32,7 +32,7 @@ export class CheckoutDeliveryComponent
           html`<oryx-checkout-manage-address></oryx-checkout-manage-address>`
       )}
       <oryx-checkout-address
-        @selectedAddress=${this.onChangeAddress}
+        @selectedAddress=${this.onChange}
         .address=${this.selected()}
       ></oryx-checkout-address>
     `;
@@ -42,7 +42,7 @@ export class CheckoutDeliveryComponent
     return !!this.addressComponent?.isValid(report);
   }
 
-  protected onChangeAddress(e: CustomEvent): void {
+  protected onChange(e: CustomEvent): void {
     this.checkoutStateService.set('shippingAddress', {
       valid: e.detail.valid,
       value: e.detail.data,

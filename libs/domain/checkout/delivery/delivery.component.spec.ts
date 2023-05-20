@@ -3,11 +3,13 @@ import {
   CheckoutDataService,
   CheckoutService,
   CheckoutStateService,
+  isValid,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { AddressService } from '@spryker-oryx/user';
-import { html } from 'lit';
+import { html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import { CheckoutDeliveryComponent } from './delivery.component';
 import { checkoutDeliveryComponent } from './delivery.def';
@@ -29,10 +31,16 @@ class MockAddressService implements Partial<AddressService> {
   getAddresses = vi.fn().mockReturnValue(of([]));
 }
 
+const mockReport = vi.fn();
+
+@customElement('oryx-checkout-address')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+class MockComponent extends LitElement implements isValid {
+  isValid = mockReport;
+}
+
 describe('CheckoutDeliveryComponent', () => {
   let element: CheckoutDeliveryComponent;
-  let checkoutService: MockCheckoutService;
-  let checkoutDataService: MockCheckoutDataService;
   let checkoutStateService: MockCheckoutStateService;
   let addressService: MockAddressService;
 
@@ -62,9 +70,6 @@ describe('CheckoutDeliveryComponent', () => {
       ],
     });
 
-    checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
-    checkoutDataService =
-      injector.inject<MockCheckoutDataService>(CheckoutDataService);
     checkoutStateService =
       injector.inject<MockCheckoutStateService>(CheckoutStateService);
     addressService = injector.inject<MockAddressService>(AddressService);
@@ -91,6 +96,23 @@ describe('CheckoutDeliveryComponent', () => {
     });
   });
 
+  describe('if there is a list of addresses', () => {
+    beforeEach(async () => {
+      addressService.getAddresses.mockReturnValue([1, 2, 3]);
+      element = await fixture(
+        html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+      );
+    });
+
+    it('should render oryx-checkout-manage-address', () => {
+      expect(element).toContainElement('oryx-checkout-manage-address');
+    });
+
+    it('should render the oryx-checkout-address', () => {
+      expect(element).toContainElement('oryx-checkout-address');
+    });
+  });
+
   describe('if there is no list of addresses', () => {
     beforeEach(async () => {
       addressService.getAddresses.mockReturnValue([]);
@@ -102,18 +124,39 @@ describe('CheckoutDeliveryComponent', () => {
     it('should not render oryx-checkout-manage-address', () => {
       expect(element).not.toContainElement('oryx-checkout-manage-address');
     });
+
+    it('should render oryx-checkout-address', () => {
+      expect(element).toContainElement('oryx-checkout-address');
+    });
+
+    describe('and the selectedAddress event is dispatched', () => {
+      beforeEach(() => {
+        const addressElement = element.renderRoot.querySelector(
+          'oryx-checkout-address'
+        );
+        addressElement?.dispatchEvent(
+          new CustomEvent('selectedAddress', {
+            detail: { valid: true, value: { foo: 'bar' } },
+          })
+        );
+      });
+
+      it('should dispatch an onchange event', () => {
+        expect(checkoutStateService.set).toHaveBeenCalled();
+      });
+    });
   });
 
-  describe('if there is a list of addresses', () => {
+  describe('when the isValid method is called', () => {
     beforeEach(async () => {
-      addressService.getAddresses.mockReturnValue([1, 2, 3]);
       element = await fixture(
         html`<oryx-checkout-delivery></oryx-checkout-delivery>`
       );
+      element.isValid(true);
     });
 
-    it('should render oryx-checkout-manage-address', () => {
-      expect(element).toContainElement('oryx-checkout-manage-address');
+    it('should call the isValid method on the address component', () => {
+      expect(mockReport).toHaveBeenCalled();
     });
   });
 });

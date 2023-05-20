@@ -36,6 +36,7 @@ export class MockCheckoutStateService implements Partial<CheckoutStateService> {
   getAll = vi.fn();
   get = vi.fn();
   set = vi.fn();
+  clear = vi.fn();
 }
 
 const mockCart = new BehaviorSubject<Cart | null>(null);
@@ -45,6 +46,7 @@ describe('DefaultCheckoutService', () => {
   let checkoutStateService: MockCheckoutStateService;
   let cartService: MockCartService;
   let adapter: MockCheckoutAdapter;
+  let linkService: MockSemanticLinkService;
 
   beforeEach(() => {
     const injector = createInjector({
@@ -65,6 +67,7 @@ describe('DefaultCheckoutService', () => {
     checkoutService = injector.inject(CheckoutService);
     checkoutStateService =
       injector.inject<MockCheckoutStateService>(CheckoutStateService);
+    linkService = injector.inject<MockSemanticLinkService>(SemanticLinkService);
   });
 
   afterEach(() => {
@@ -150,8 +153,8 @@ describe('DefaultCheckoutService', () => {
 
     describe('and a valid state object is returned', () => {
       const result: CheckoutState[] = [];
-
       const state = { foo: 'bar' };
+
       beforeEach(() => {
         checkoutStateService.getAll.mockReturnValue(of(state));
         adapter.placeOrder.mockReturnValue(of({}));
@@ -172,6 +175,45 @@ describe('DefaultCheckoutService', () => {
 
       it('should call the adapter to place the order', () => {
         expect(adapter.placeOrder).toHaveBeenCalledWith({ attributes: state });
+      });
+
+      it('should clear the state', () => {
+        expect(checkoutStateService.clear).toBeCalled();
+      });
+    });
+
+    describe('and a redirectUrl is returned', () => {
+      beforeEach(() => {
+        checkoutStateService.getAll.mockReturnValue(of({}));
+        adapter.placeOrder.mockReturnValue(
+          of({ redirectUrl: 'https://redirect.com' })
+        );
+        checkoutService.placeOrder();
+      });
+
+      it('should not add a redirect', () => {
+        expect(linkService.get).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('and a redirectUrl is not returned', () => {
+      let redirect: any;
+
+      beforeEach(() => {
+        linkService.get.mockReturnValue(of('https://redirect.com'));
+        checkoutStateService.getAll.mockReturnValue(of({}));
+        adapter.placeOrder.mockReturnValue(of({}));
+        checkoutService
+          .placeOrder()
+          .subscribe((response) => (redirect = response.redirectUrl));
+      });
+
+      it('should add a redirect', () => {
+        expect(linkService.get).toHaveBeenCalled();
+      });
+
+      it('should store the redirect in the response', () => {
+        expect(redirect).toBe('https://redirect.com');
       });
     });
   });

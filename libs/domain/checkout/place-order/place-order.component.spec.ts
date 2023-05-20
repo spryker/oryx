@@ -40,8 +40,6 @@ export class MockCheckoutStateService implements Partial<CheckoutStateService> {
 describe('PlaceOrderComponent', () => {
   let element: CheckoutPlaceOrderComponent;
   let checkoutService: MockCheckoutService;
-  let checkoutDataService: MockCheckoutDataService;
-  let checkoutStateService: MockCheckoutStateService;
   let routerService: MockRouterService;
 
   beforeAll(async () => {
@@ -76,10 +74,6 @@ describe('PlaceOrderComponent', () => {
 
     checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
     checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
-    checkoutDataService =
-      injector.inject<MockCheckoutDataService>(CheckoutDataService);
-    checkoutStateService =
-      injector.inject<MockCheckoutStateService>(CheckoutStateService);
     routerService = injector.inject<MockRouterService>(RouterService);
   });
 
