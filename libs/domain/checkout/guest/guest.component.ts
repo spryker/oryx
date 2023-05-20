@@ -5,13 +5,7 @@ import {
   FormRenderer,
 } from '@spryker-oryx/form';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import {
-  effect,
-  hydratable,
-  i18n,
-  signal,
-  signalAware,
-} from '@spryker-oryx/utilities';
+import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { isValid } from '../src/models';
@@ -29,15 +23,6 @@ export class CheckoutGuestComponent extends LitElement implements isValid {
 
   protected checkoutStateService = resolve(CheckoutStateService);
   protected selected = signal(this.checkoutStateService.get('customer'));
-
-  protected eff = effect(() => {
-    if (this.selected()) {
-      setTimeout(() => {
-        const input = this.input();
-        if (input) input.value = this.selected()?.email ?? '';
-      }, 0);
-    }
-  });
 
   @query('form')
   protected form?: HTMLFormElement;
