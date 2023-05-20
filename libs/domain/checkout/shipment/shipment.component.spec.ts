@@ -4,6 +4,7 @@ import {
   CheckoutDataService,
   CheckoutService,
   CheckoutStateService,
+  Shipment,
   ShipmentMethod,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -122,17 +123,22 @@ describe('CheckoutShipmentComponent', () => {
 
   describe('when there is 1 carriers with 1 method available', () => {
     beforeEach(async () => {
+      // this.shipments()?.[0]?.carriers?.[0]?.shipmentMethods?.[0]?.id
       checkoutDataService.get.mockReturnValue(
         of([
           {
-            name: 'foo',
-            shipmentMethods: [{ id: 'foo' }, { id: 'bar' }],
+            carriers: [
+              {
+                name: 'foo',
+                shipmentMethods: [{ id: 'foo' }, { id: 'bar' }],
+              },
+              {
+                name: 'bar',
+                shipmentMethods: [{ id: 'xyz' }],
+              },
+            ],
           },
-          {
-            name: 'bar',
-            shipmentMethods: [{ id: 'xyz' }],
-          },
-        ] as Carrier[])
+        ] as Shipment[])
       );
       element = await fixture(
         html`<oryx-checkout-shipment></oryx-checkout-shipment>`
@@ -161,8 +167,11 @@ describe('CheckoutShipmentComponent', () => {
         );
       });
 
-      it('should auto select the first', () => {
-        expect(checkoutStateService.set).toHaveBeenCalledWith('foo');
+      it('should auto select the first method', () => {
+        expect(checkoutStateService.set).toHaveBeenCalledWith('shipment', {
+          valid: true,
+          value: { idShipmentMethod: 'foo' },
+        });
       });
     });
 
@@ -189,6 +198,7 @@ describe('CheckoutShipmentComponent', () => {
         it('should set the associated shipping method', () => {
           expect(checkoutStateService.set).toHaveBeenCalledWith('shipment', {
             valid: true,
+            value: { idShipmentMethod: 'foo' },
           });
         });
       });

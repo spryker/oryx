@@ -130,7 +130,7 @@ describe('CheckoutPaymentComponent', () => {
 
       it('should auto select the first method', () => {
         expect(checkoutStateService.set).toHaveBeenCalledWith('payments', {
-          valid: false,
+          valid: true,
           value: [{ id: 'foo' }],
         });
       });
