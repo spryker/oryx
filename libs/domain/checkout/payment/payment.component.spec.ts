@@ -166,4 +166,53 @@ describe('CheckoutPaymentComponent', () => {
       });
     });
   });
+
+  describe('when there are payment methods available', () => {
+    beforeEach(async () => {
+      checkoutDataService.get.mockReturnValue(
+        of([{ id: 'foo' }, { id: 'bar' }])
+      );
+      element = await fixture(
+        html`<oryx-checkout-payment></oryx-checkout-payment>`
+      );
+    });
+
+    describe('and isValid() is called', () => {
+      let form: HTMLFormElement;
+
+      beforeEach(() => {
+        form = element.renderRoot.querySelector('form') as HTMLFormElement;
+        form.reportValidity = vi.fn();
+        form.checkValidity = vi.fn();
+      });
+
+      describe('and the report argument is true', () => {
+        beforeEach(async () => {
+          element.isValid(true);
+        });
+
+        it('should call checkValidity', () => {
+          expect(form.checkValidity).toHaveBeenCalled();
+        });
+
+        it('should report form validation', () => {
+          expect(form.reportValidity).toHaveBeenCalled();
+        });
+      });
+
+      describe('and the report argument is false', () => {
+        beforeEach(async () => {
+          element.isValid(false);
+        });
+
+        it('should call checkValidity', () => {
+          expect(form.checkValidity).toHaveBeenCalled();
+        });
+
+        it('should not report form validation', () => {
+          expect(form.reportValidity).not.toHaveBeenCalled();
+        });
+      });
+    });
+  });
 });

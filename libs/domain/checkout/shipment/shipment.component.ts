@@ -93,10 +93,9 @@ export class CheckoutShipmentComponent
     }
   }
 
-  protected select(id?: string): void {
-    const value = id ? { idShipmentMethod: id } : null;
+  protected select(id: string): void {
     this.checkoutStateService.set('shipment', {
-      value,
+      value: { idShipmentMethod: id },
       valid: true,
     });
   }

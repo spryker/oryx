@@ -77,11 +77,10 @@ export class CheckoutPaymentComponent
     }
   }
 
-  protected select(id?: string): void {
+  protected select(id: string): void {
     const method = this.paymentMethods()?.find((method) => method.id === id);
-    const value = method ? [method] : null;
     this.checkoutStateService.set('payments', {
-      value,
+      value: [method],
       valid: true,
     });
   }

@@ -5,7 +5,6 @@ import {
   CheckoutService,
   CheckoutStateService,
   Shipment,
-  ShipmentMethod,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
@@ -123,7 +122,6 @@ describe('CheckoutShipmentComponent', () => {
 
   describe('when there is 1 carriers with 1 method available', () => {
     beforeEach(async () => {
-      // this.shipments()?.[0]?.carriers?.[0]?.shipmentMethods?.[0]?.id
       checkoutDataService.get.mockReturnValue(
         of([
           {
@@ -131,10 +129,6 @@ describe('CheckoutShipmentComponent', () => {
               {
                 name: 'foo',
                 shipmentMethods: [{ id: 'foo' }, { id: 'bar' }],
-              },
-              {
-                name: 'bar',
-                shipmentMethods: [{ id: 'xyz' }],
               },
             ],
           },
@@ -145,14 +139,18 @@ describe('CheckoutShipmentComponent', () => {
       );
     });
 
+    it('should not render the carrier name', () => {
+      expect(element).not.toContainElement('p');
+    });
+
     it('should render a tile for each method', () => {
       const tiles = element.renderRoot.querySelectorAll('oryx-tile');
-      expect(tiles?.length).toBe(3);
+      expect(tiles?.length).toBe(2);
     });
 
     it('should render a radio button for each method', () => {
       const radio = element.renderRoot.querySelectorAll('input');
-      expect(radio?.length).toBe(3);
+      expect(radio?.length).toBe(2);
     });
 
     it('should not render an empty message', () => {
@@ -177,7 +175,9 @@ describe('CheckoutShipmentComponent', () => {
 
     describe('and there is a selected method', () => {
       beforeEach(async () => {
-        checkoutStateService.get.mockReturnValue(of({ id: 'foo' }));
+        checkoutStateService.get.mockReturnValue(
+          of({ idShipmentMethod: 'foo' })
+        );
         element = await fixture(
           html`<oryx-checkout-shipment></oryx-checkout-shipment>`
         );
@@ -186,34 +186,92 @@ describe('CheckoutShipmentComponent', () => {
       it('should select the input', () => {
         expect(element).toContainElement(`input[value='foo']:checked`);
       });
+    });
 
-      describe.only('and when a method is selected', () => {
+    describe('and isValid() is called', () => {
+      let form: HTMLFormElement;
+
+      beforeEach(() => {
+        form = element.renderRoot.querySelector('form') as HTMLFormElement;
+        form.reportValidity = vi.fn();
+        form.checkValidity = vi.fn();
+      });
+
+      describe('and the report argument is true', () => {
         beforeEach(async () => {
-          const radio =
-            element.querySelector<HTMLInputElement>(`input[value='foo']`);
-          radio?.dispatchEvent(new Event('change'));
-          console.log('radio!', radio);
+          element.isValid(true);
         });
 
-        it('should set the associated shipping method', () => {
-          expect(checkoutStateService.set).toHaveBeenCalledWith('shipment', {
-            valid: true,
-            value: { idShipmentMethod: 'foo' },
-          });
+        it('should call checkValidity', () => {
+          expect(form.checkValidity).toHaveBeenCalled();
+        });
+
+        it('should report form validation', () => {
+          expect(form.reportValidity).toHaveBeenCalled();
+        });
+      });
+
+      describe('and the report argument is false', () => {
+        beforeEach(async () => {
+          element.isValid(false);
+        });
+
+        it('should call checkValidity', () => {
+          expect(form.checkValidity).toHaveBeenCalled();
+        });
+
+        it('should not report form validation', () => {
+          expect(form.reportValidity).not.toHaveBeenCalled();
         });
       });
     });
   });
 
-  describe('when the shipment service exposes a selected method', () => {
+  describe('when there are multiple carriers available', () => {
     beforeEach(async () => {
-      checkoutStateService.get.mockReturnValue(
-        of({ id: 'foo' } as ShipmentMethod)
+      checkoutDataService.get.mockReturnValue(
+        of([
+          {
+            carriers: [
+              {
+                name: 'foo',
+                shipmentMethods: [{ id: 'foo' }, { id: 'bar' }],
+              },
+              {
+                name: 'bar',
+                shipmentMethods: [{ id: 'xyz' }],
+              },
+            ],
+          },
+        ] as Shipment[])
       );
-
       element = await fixture(
         html`<oryx-checkout-shipment></oryx-checkout-shipment>`
       );
+    });
+
+    it('should render the carrier names', () => {
+      const carrierHeadings = element.renderRoot.querySelectorAll('p');
+      expect(carrierHeadings.length).toBe(2);
+      expect(carrierHeadings[0].textContent).toBe('foo');
+      expect(carrierHeadings[1].textContent).toBe('bar');
+    });
+
+    describe('and when a method is selected', () => {
+      beforeEach(async () => {
+        const radio =
+          element.renderRoot.querySelector<HTMLInputElement>(
+            `input[value='xyz']`
+          );
+        radio?.dispatchEvent(new Event('change'));
+      });
+
+      it('should set the associated shipping method', () => {
+        expect(checkoutStateService.set).toHaveBeenCalledWith('shipment', {
+          valid: true,
+          value: { idShipmentMethod: 'xyz' },
+        });
+      });
     });
   });
 });
