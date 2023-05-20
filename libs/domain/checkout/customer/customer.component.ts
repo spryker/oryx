@@ -31,7 +31,9 @@ export class CheckoutCustomerComponent
     this.linkService.get({ type: SemanticLinkType.Login })
   );
 
-  // TODO: we need component cycle integration with effect!
+  @state()
+  protected hasCustomerData = false;
+
   protected eff = effect(() => {
     if (!this.$options().enableGuestCheckout && !this.isAuthenticated()) {
       const route = this.loginRoute();
@@ -51,9 +53,6 @@ export class CheckoutCustomerComponent
       });
     }
   });
-
-  @state()
-  protected hasCustomerData = false;
 
   @query('oryx-checkout-guest')
   protected guest?: CheckoutGuestComponent;

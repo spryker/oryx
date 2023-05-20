@@ -33,12 +33,15 @@ export class MockCheckoutStateService implements Partial<CheckoutStateService> {
 }
 
 const mockReport = vi.fn();
+
 @customElement('mock-component')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MockComponent extends LitElement implements isValid {
   isValid = mockReport;
 }
 
 @customElement('experience-composition')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MockComposition extends LitElement {
   render(): TemplateResult {
     return html`<mock-component></mock-component

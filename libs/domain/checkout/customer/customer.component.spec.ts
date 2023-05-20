@@ -5,8 +5,11 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService } from '@spryker-oryx/site';
 import { User, UserService } from '@spryker-oryx/user';
-import { html } from 'lit';
+import { html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
+import { CheckoutGuestComponent } from '../guest';
+import { isValid } from '../src/models';
 import {
   CheckoutDataService,
   CheckoutService,
@@ -45,10 +48,16 @@ export class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
+@customElement('oryx-checkout-guest')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+class MockComponent extends LitElement implements isValid {
+  isValid = vi.fn();
+}
+
 describe('CheckoutAuthComponent', () => {
   let element: CheckoutCustomerComponent;
   let authService: MockAuthService;
-  let checkoutService: MockCheckoutService;
+  // let checkoutService: MockCheckoutService;
   let userService: MockUserService;
   let routerService: MockRouterService;
 
@@ -72,7 +81,7 @@ describe('CheckoutAuthComponent', () => {
     authService = testInjector.inject<MockAuthService>(AuthService);
     userService = testInjector.inject<MockUserService>(UserService);
     routerService = testInjector.inject<MockRouterService>(RouterService);
-    checkoutService = testInjector.inject<MockCheckoutService>(CheckoutService);
+    // checkoutService = testInjector.inject<MockCheckoutService>(CheckoutService);
   });
 
   afterEach(() => {
@@ -113,6 +122,12 @@ describe('CheckoutAuthComponent', () => {
     it('should not render the guest component', () => {
       expect(element).not.toContainElement('oryx-checkout-customer');
     });
+
+    describe('and when the isValid method is called', () => {
+      it('should return true', () => {
+        expect(element.isValid(true)).toEqual(true);
+      });
+    });
   });
 
   describe('when the user is not authenticated', () => {
@@ -134,6 +149,19 @@ describe('CheckoutAuthComponent', () => {
 
       it('should render guest checkout component', () => {
         expect(element).toContainElement('oryx-checkout-guest');
+      });
+
+      describe('and when the isValid method is called', () => {
+        beforeEach(async () => {
+          element.isValid(true);
+        });
+
+        it('should call the isValid method on the guest component', () => {
+          const customerEl = element.renderRoot.querySelector(
+            'oryx-checkout-guest'
+          ) as CheckoutGuestComponent;
+          expect(customerEl.isValid).toHaveBeenCalled();
+        });
       });
     });
 
