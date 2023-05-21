@@ -12,14 +12,14 @@ export const productImagesComponentSchema: ContentComponentSchema<ProductImagesC
     icon: IconTypes.Images,
     options: {
       mediaSet: {
-        type: 'input',
+        type: FormFieldType.Text,
       },
       imageLayout: {
-        type: 'select',
+        type: FormFieldType.Select,
         options: [{ value: 'carousel' }, { value: 'grid' }, { value: 'none' }],
       },
       scrollBehavior: {
-        type: 'select',
+        type: FormFieldType.Select,
         options: [
           { value: ProductImagesScrollBehavior.Auto },
           { value: ProductImagesScrollBehavior.Disable },
@@ -27,7 +27,7 @@ export const productImagesComponentSchema: ContentComponentSchema<ProductImagesC
         ],
       },
       navigationDisplay: {
-        type: 'select',
+        type: FormFieldType.Select,
         options: [
           { value: 'inline' },
           { value: 'floating' },
@@ -35,7 +35,7 @@ export const productImagesComponentSchema: ContentComponentSchema<ProductImagesC
         ],
       },
       navigationPosition: {
-        type: 'select',
+        type: FormFieldType.Select,
         options: [
           { value: 'top' },
           { value: 'bottom' },
@@ -44,21 +44,21 @@ export const productImagesComponentSchema: ContentComponentSchema<ProductImagesC
         ],
       },
       navigationAlignment: {
-        type: 'select',
+        type: FormFieldType.Select,
         options: [{ value: 'start' }, { value: 'center' }, { value: 'end' }],
       },
       navigationLayout: {
-        type: 'select',
+        type: FormFieldType.Select,
         options: [{ value: 'carousel' }, { value: 'grid' }],
       },
       navigationMouseEvent: {
-        type: 'select',
+        type: FormFieldType.Select,
         options: [{ value: 'click' }, { value: 'mouseover' }],
       },
-      imageHeight: { type: 'input' },
-      imageWidth: { type: 'input' },
-      navigationHeight: { type: 'input' },
-      navigationWidth: { type: 'input' },
+      imageHeight: { type: FormFieldType.Text },
+      imageWidth: { type: FormFieldType.Text },
+      navigationHeight: { type: FormFieldType.Text },
+      navigationWidth: { type: FormFieldType.Text },
       navigationObjectFit: {
         type: FormFieldType.Select,
         options: [{ value: 'contain' }, { value: 'cover' }, { value: 'none' }],
@@ -68,10 +68,7 @@ export const productImagesComponentSchema: ContentComponentSchema<ProductImagesC
         options: [{ value: 'contain' }, { value: 'cover' }, { value: 'none' }],
       },
       imagesColumns: {
-        type: 'input',
-        attributes: {
-          type: 'number',
-        },
+        type: FormFieldType.Number,
       },
     },
   };

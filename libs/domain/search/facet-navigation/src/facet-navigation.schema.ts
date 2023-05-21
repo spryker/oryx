@@ -10,7 +10,6 @@ export const searchFacetNavigationSchema: ContentComponentSchema<SearchFacetNavi
     icon: IconTypes.Filters,
     options: {
       expandedItemsCount: {
-        label: 'Expanded items count',
         type: FormFieldType.Number,
       },
       valueRenderLimit: {

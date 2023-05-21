@@ -35,6 +35,6 @@ export const videoComponentSchema: ContentComponentSchema<ContentVideoComponent>
           { value: VideoAspectRatio['4/3'] },
         ],
       },
-      playsInline: { type: FormFieldType.Boolean, label: 'Plays inline' },
+      playsInline: { type: FormFieldType.Boolean },
     },
   };
