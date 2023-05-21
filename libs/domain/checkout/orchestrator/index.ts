@@ -1,3 +1,3 @@
-export * from './checkout.component';
-export * from './checkout.schema';
-export * from './checkout.styles';
+export * from './orchestrator.component';
+export * from './orchestrator.schema';
+export * from './orchestrator.styles';

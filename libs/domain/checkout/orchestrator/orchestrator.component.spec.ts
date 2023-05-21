@@ -12,8 +12,8 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BehaviorSubject, of } from 'rxjs';
-import { CheckoutComponent } from './checkout.component';
-import { checkoutComponent } from './checkout.def';
+import { CheckoutOrchestratorComponent } from './orchestrator.component';
+import { checkoutOrchestratorComponent } from './orchestrator.def';
 
 class MockCartService implements Partial<CartService> {
   getCart = vi.fn().mockReturnValue(of({ id: '123' }));
@@ -50,11 +50,11 @@ class MockComposition extends LitElement {
 }
 
 describe('CheckoutOrchestratorComponent', () => {
-  let element: CheckoutComponent;
+  let element: CheckoutOrchestratorComponent;
   let checkoutService: MockCheckoutService;
 
   beforeAll(async () => {
-    await useComponent(checkoutComponent);
+    await useComponent(checkoutOrchestratorComponent);
   });
 
   beforeEach(async () => {
@@ -77,11 +77,13 @@ describe('CheckoutOrchestratorComponent', () => {
 
   describe('when the component is created', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-checkout></oryx-checkout>`);
+      element = await fixture(
+        html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
+      );
     });
 
     it('should be an instance of ', () => {
-      expect(element).toBeInstanceOf(CheckoutComponent);
+      expect(element).toBeInstanceOf(CheckoutOrchestratorComponent);
     });
 
     it('should pass the a11y audit', async () => {
@@ -92,7 +94,9 @@ describe('CheckoutOrchestratorComponent', () => {
   describe('when the checkout is not available', () => {
     beforeEach(async () => {
       checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Empty));
-      element = await fixture(html`<oryx-checkout></oryx-checkout>`);
+      element = await fixture(
+        html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
+      );
     });
 
     it('should not render the oryx-composition', () => {
@@ -103,7 +107,9 @@ describe('CheckoutOrchestratorComponent', () => {
   describe('when the checkout is Ready', () => {
     beforeEach(async () => {
       checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Ready));
-      element = await fixture(html`<oryx-checkout></oryx-checkout>`);
+      element = await fixture(
+        html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
+      );
     });
 
     it('should render the oryx-composition', () => {
@@ -114,7 +120,9 @@ describe('CheckoutOrchestratorComponent', () => {
   describe('when the checkout is Busy', () => {
     beforeEach(async () => {
       checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Busy));
-      element = await fixture(html`<oryx-checkout></oryx-checkout>`);
+      element = await fixture(
+        html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
+      );
     });
 
     it('should render the oryx-composition', () => {
@@ -132,7 +140,9 @@ describe('CheckoutOrchestratorComponent', () => {
 
       beforeEach(async () => {
         checkoutService.getProcessState.mockReturnValue(state);
-        element = await fixture(html`<oryx-checkout></oryx-checkout>`);
+        element = await fixture(
+          html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
+        );
       });
 
       describe('and the state becomes invalid', () => {
@@ -155,7 +165,9 @@ describe('CheckoutOrchestratorComponent', () => {
 
       beforeEach(async () => {
         checkoutService.getProcessState.mockReturnValue(state);
-        element = await fixture(html`<oryx-checkout></oryx-checkout>`);
+        element = await fixture(
+          html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
+        );
       });
 
       describe('and the state becomes invalid', () => {

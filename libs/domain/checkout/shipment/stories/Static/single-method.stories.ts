@@ -13,17 +13,18 @@ const mock: Partial<Shipment>[] = [
     id: '1',
     carriers: [
       {
-        name: 'Mock Dummy Carrier',
-        shipmentMethods: [mockShipments[0], mockShipments[1]],
+        shipmentMethods: [mockShipments[0]],
       },
     ],
   },
 ];
 
 const Template: Story = (): TemplateResult => {
-  resolve<MockCheckoutDataService>(CheckoutDataService).setMock(mock);
+  resolve<MockCheckoutDataService>(CheckoutDataService).setMock({
+    shipments: mock,
+  });
 
   return html`<oryx-checkout-shipment></oryx-checkout-shipment>`;
 };
 
-export const SingleProviderMultipleMethods = Template.bind({});
+export const SingleMethod = Template.bind({});

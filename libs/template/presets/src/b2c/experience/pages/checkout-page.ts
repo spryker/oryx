@@ -27,7 +27,7 @@ export const CheckoutPage: StaticComponent = {
       type: 'experience-composition',
       components: [
         {
-          type: 'oryx-checkout',
+          type: 'oryx-checkout-orchestrator',
           components: [
             { type: 'oryx-checkout-customer' },
             { type: 'oryx-checkout-delivery' },

@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
-export const compositionStyles = css`
+export const checkoutOrchestratorStyles = css`
   :host {
     display: contents;
   }

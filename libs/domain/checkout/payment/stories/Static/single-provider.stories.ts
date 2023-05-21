@@ -9,9 +9,9 @@ import { mockPayments } from '../../../src/mocks/src/mock';
 export default { title: `${storybookPrefix}/Payment/Static` } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  resolve<MockCheckoutDataService>(CheckoutDataService).setMock([
-    mockPayments[0],
-  ]);
+  resolve<MockCheckoutDataService>(CheckoutDataService).setMock({
+    paymentMethods: [mockPayments[0]],
+  });
 
   return html`<oryx-checkout-payment></oryx-checkout-payment>`;
 };

@@ -16,7 +16,7 @@ export const checkoutOrchestratorStaticData = [
   {
     id: 'singlePage',
     components: [
-      { type: 'oryx-checkout-auth' },
+      { type: 'oryx-checkout-customer' },
       { type: 'oryx-checkout-delivery' },
       { type: 'oryx-checkout-shipment' },
       { type: 'oryx-checkout-payment' },

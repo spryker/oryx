@@ -11,7 +11,7 @@ export const mockShipments = [
     id: '1',
     name: 'Standard Mock',
     price: 490,
-    deliveryTime: 1684568761694,
+    deliveryTime: new Date('2020-10-11').getTime(),
   },
   {
     id: '2',
@@ -27,6 +27,17 @@ export const mockShipments = [
     id: '4',
     name: 'Mock Method',
     price: 300,
-    deliveryTime: 1684568761694 + 86400000,
+    deliveryTime: new Date('2020-11-15').getTime(),
   },
 ] as ShipmentMethod[];
+
+export const mockCarriers = [
+  {
+    name: 'Mock Dummy Carrier',
+    shipmentMethods: [mockShipments[0], mockShipments[1]],
+  },
+  {
+    name: 'Mock Drone Carrier',
+    shipmentMethods: [mockShipments[2], mockShipments[3]],
+  },
+];

@@ -1,4 +1,5 @@
 import { Observable, of } from 'rxjs';
+import { CheckoutData } from '../../models';
 
 export class MockCheckoutDataService {
   protected mock: any;
@@ -7,7 +8,9 @@ export class MockCheckoutDataService {
     this.mock = mock;
   }
 
-  get(): Observable<any> {
-    return of(this.mock);
+  get<K extends keyof CheckoutData>(
+    key: K
+  ): Observable<CheckoutData[K] | undefined> {
+    return of(this.mock?.[key]);
   }
 }

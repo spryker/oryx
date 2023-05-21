@@ -9,7 +9,9 @@ import { CheckoutDataService } from '../../src/services';
 export default { title: `${storybookPrefix}/Payment` };
 
 const Template: Story = (): TemplateResult => {
-  resolve<MockCheckoutDataService>(CheckoutDataService).setMock(mockPayments);
+  resolve<MockCheckoutDataService>(CheckoutDataService).setMock({
+    paymentMethods: mockPayments,
+  });
 
   return html`<oryx-checkout-payment></oryx-checkout-payment>`;
 };
