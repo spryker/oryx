@@ -4,10 +4,7 @@ import { storybookPrefix } from '../../.constants';
 import { CheckoutAuthComponentOptions } from '../customer.model';
 
 export default {
-  title: `${storybookPrefix}/Customer`,
-  args: {
-    enableGuestCheckout: true,
-  },
+  title: `${storybookPrefix}/Customer/Static`,
 } as Meta;
 
 const Template: Story<CheckoutAuthComponentOptions> = (
@@ -18,4 +15,8 @@ const Template: Story<CheckoutAuthComponentOptions> = (
   ></oryx-checkout-customer>`;
 };
 
-export const Demo = Template.bind({});
+export const GuestEnabled = Template.bind({});
+GuestEnabled.args = { enableGuestCheckout: true };
+
+export const GuestDisabled = Template.bind({});
+GuestDisabled.args = { enableGuestCheckout: false };
