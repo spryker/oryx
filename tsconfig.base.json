@@ -107,6 +107,7 @@
       "@spryker-oryx/product/average-rating": [
         "libs/domain/product/average-rating/index.ts"
       ],
+      "@spryker-oryx/product/brand": ["libs/domain/product/brand/index.ts"],
       "@spryker-oryx/product/card": ["libs/domain/product/card/index.ts"],
       "@spryker-oryx/product/description": [
         "libs/domain/product/description/index.ts"
