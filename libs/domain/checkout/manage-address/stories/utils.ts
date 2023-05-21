@@ -15,7 +15,7 @@ export const toggleBehavior = (behavior?: BehaviorType): void => {
   } else if (behavior === 'long-list') {
     addressService.changeMockAddressType(MockAddressType.LongList);
   } else {
-    addressService.changeMockAddressType(MockAddressType.Zero);
+    addressService.changeMockAddressType(MockAddressType.None);
   }
 };
 

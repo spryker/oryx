@@ -1,49 +1,32 @@
-import { BehaviorType, toggleBehavior } from '@spryker-oryx/checkout/mocks';
-import { ContentController, ContentMixin } from '@spryker-oryx/experience';
-import { subscribe } from '@spryker-oryx/utilities';
+import { resolve } from '@spryker-oryx/di';
+import { AddressService } from '@spryker-oryx/user';
+import { MockAddressService, MockAddressType } from '@spryker-oryx/user/mocks';
 import { Meta, Story } from '@storybook/web-components';
-import { html, LitElement, TemplateResult } from 'lit';
-import { customElement } from 'lit/decorators.js';
-import { tap } from 'rxjs';
+import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Delivery`,
+  args: {
+    addresses: MockAddressType.Two,
+  },
   argTypes: {
-    behavior: {
-      options: ['guest', 'no-address', 'with-address'] as BehaviorType[],
+    addresses: {
+      options: Object.values(MockAddressType),
       control: { type: 'select' },
-      table: { category: 'Filtering' },
+      table: { category: 'Demo' },
     },
   },
-} as unknown as Meta;
+} as Meta;
 
 interface Props {
-  behavior: BehaviorType;
-}
-
-@customElement('fake-orchestrator')
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-class FakeOrchestrator extends ContentMixin<Props>(LitElement) {
-  @subscribe()
-  protected toggle = new ContentController(this)
-    .getOptions()
-    .pipe(tap(({ behavior }) => toggleBehavior(behavior)));
-
-  render(): TemplateResult {
-    return html``;
-  }
+  addresses: MockAddressType;
 }
 
 const Template: Story<Props> = (props): TemplateResult => {
-  return html`
-    <fake-orchestrator .options=${props}></fake-orchestrator>
-    <oryx-checkout-delivery></oryx-checkout-delivery>
-  `;
+  const service = resolve<MockAddressService>(AddressService);
+  service.changeMockAddressType(props.addresses);
+  return html`<oryx-checkout-delivery></oryx-checkout-delivery> `;
 };
 
 export const Demo = Template.bind({});
-
-Demo.args = {
-  behavior: 'guest',
-};
