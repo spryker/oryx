@@ -6,8 +6,10 @@ import {
   ProductImagesMainLayout,
   ProductImagesNavigationAlignment as PINA,
   ProductImagesNavigationDisplay as PIND,
+  ProductImagesNavigationDisplay,
   ProductImagesNavigationLayout as PINL,
   ProductImagesNavigationPosition as PINP,
+  ProductImagesNavigationPosition,
 } from '../images.model';
 
 export default {
@@ -142,6 +144,48 @@ const Template: Story<unknown> = (): TemplateResult => {
           })
         )}
       </div>
+
+      <h2>Grid items per column (inline)</h2>
+      <div class="static">
+        ${[3, 4, 5, 6].map((gridItemsPerColumn) =>
+          render(
+            {
+              navigationLayout: PINL.Grid,
+              navigationPosition: ProductImagesNavigationPosition.Start,
+              gridItemsPerColumn,
+              navigationHeight: 40,
+            },
+            '3'
+          )
+        )}
+      </div>
+
+      <h2>Grid items per column (floating)</h2>
+      <div class="static">
+        ${[3, 4, 5, 6].map((gridItemsPerColumn) =>
+          render(
+            {
+              navigationLayout: PINL.Grid,
+              navigationPosition: ProductImagesNavigationPosition.Start,
+              navigationDisplay: ProductImagesNavigationDisplay.Floating,
+              gridItemsPerColumn,
+              navigationHeight: 40,
+            },
+            '3'
+          )
+        )}
+      </div>
+
+      <h2>Fixed width</h2>
+      ${positions.map((navigationPosition) =>
+        render(
+          {
+            navigationPosition,
+            imageWidth: 500,
+          },
+          '1'
+        )
+      )}
     </div>
 
     <style>
