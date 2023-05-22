@@ -3,6 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import {
   ProductImagesComponentOptions,
+  ProductImagesMainLayout,
   ProductImagesNavigationAlignment as PINA,
   ProductImagesNavigationPosition as PINP,
 } from '../images.model';
@@ -43,6 +44,17 @@ const Template: Story<unknown> = (): TemplateResult => {
       <div class="static">
         ${render({}, '1')} ${render({})} ${render({}, 'single-image')}
       </div>
+
+      <h2>Main layout</h2>
+      <div class="static">
+        ${[
+          ProductImagesMainLayout.Carousel,
+          ProductImagesMainLayout.Toggle,
+          ProductImagesMainLayout.None,
+        ].map((mainLayout) => render({ imageLayout: mainLayout }))}
+      </div>
+
+      <h2>Alignment in carousel navigation</h2>
     </div>
 
     <style>
