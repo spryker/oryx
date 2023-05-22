@@ -47,9 +47,11 @@ export class ImageComponent
   }
 
   protected renderImage(): TemplateResult | void {
-    const sourceResult = this.source();
+    if (this.resource) {
+      const sourceResult = this.source();
 
-    if (this.resource && sourceResult) return html`${sourceResult}`;
+      if (sourceResult) return html`${sourceResult}`;
+    }
 
     const src = this.resource ? this.url() : this.src;
 
