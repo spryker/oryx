@@ -38,6 +38,7 @@ const mockTheme = {
 const mockResource = {
   getIcon: vi.fn(),
   getIcons: vi.fn(),
+  getIconTypes: vi.fn(),
 };
 
 const mockFontInjectable = {
@@ -188,6 +189,7 @@ describe('DefaultIconInjectable', () => {
                 b: 'b',
               },
             },
+            types: ['b'],
           },
           {
             resource: {
@@ -195,19 +197,22 @@ describe('DefaultIconInjectable', () => {
                 c: 'c',
               },
             },
+            types: ['c'],
           },
         ],
       };
+      const mockThemeIconTypes = {
+        a: 'a',
+        b: 'b',
+        c: 'c',
+        d: 'd',
+      };
       const mockResourceIcons = { d: 'd' };
       mockTheme.getIcons.mockReturnValue(mockThemeIcons);
+      mockResource.getIconTypes.mockReturnValue(mockThemeIconTypes);
       mockResource.getIcons.mockReturnValue(mockResourceIcons);
       const icons = new DefaultIconInjectable().getIcons();
-      expect(icons).toEqual({
-        ...mockThemeIcons.resource.mapping,
-        ...mockThemeIcons.resources[0].resource.mapping,
-        ...mockThemeIcons.resources[1].resource.mapping,
-        ...mockResourceIcons,
-      });
+      expect(icons).toEqual(Object.values(mockThemeIconTypes));
     });
   });
 });

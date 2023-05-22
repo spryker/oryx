@@ -6,7 +6,6 @@ import { ProductImagesScrollBehavior } from './images.model';
 
 export const productImagesComponentSchema: ContentComponentSchema<ProductImagesComponent> =
   {
-    type: 'oryx-product-images',
     name: 'Product Images',
     group: 'Product',
     icon: IconTypes.Images,

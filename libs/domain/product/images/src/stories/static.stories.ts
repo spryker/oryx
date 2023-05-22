@@ -14,6 +14,11 @@ import {
 
 export default {
   title: `${storybookPrefix}/Images/Static`,
+  parameters: {
+    chromatic: {
+      delay: 2000,
+    },
+  },
 } as Meta;
 
 let renderCount = 0;

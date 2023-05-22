@@ -20,6 +20,7 @@ import { orderFeature } from '@spryker-oryx/order';
 import {
   brandGraphics,
   commonGraphics,
+  IconTypes,
   storefrontFontIcons,
   storefrontIcons,
 } from '@spryker-oryx/presets/resources';
@@ -39,7 +40,10 @@ const isPreview = new URLSearchParams(
 
 export const storefrontResources: Resources = {
   graphics: { ...commonGraphics, ...brandGraphics },
-  icons: storefrontIcons,
+  icons: {
+    list: storefrontIcons,
+    types: IconTypes,
+  },
   fonts: storefrontFontIcons,
 };
 

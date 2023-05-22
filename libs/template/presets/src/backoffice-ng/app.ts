@@ -4,12 +4,16 @@ import { Resources } from '@spryker-oryx/experience';
 import {
   backofficeNgIcons,
   commonGraphics,
+  IconTypes,
 } from '@spryker-oryx/presets/resources';
 import { uiFeature } from '@spryker-oryx/ui';
 
 export const backofficeNgResources: Resources = {
   graphics: commonGraphics,
-  icons: backofficeNgIcons,
+  icons: {
+    list: backofficeNgIcons,
+    types: IconTypes,
+  },
 };
 
 export const backofficeNgFeatures: AppFeature[] = [

@@ -11,6 +11,7 @@ import {
   commonGraphics,
   fulfillmentIcons,
   fulfillmentResourceGraphics,
+  IconTypes,
 } from '@spryker-oryx/presets/resources';
 import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web';
 import { RouterFeature } from '@spryker-oryx/router';
@@ -46,5 +47,8 @@ export interface FulfillmentFeaturesConfig {
 
 export const fulfillmentResources: Resources = {
   graphics: { ...commonGraphics, ...fulfillmentResourceGraphics },
-  icons: fulfillmentIcons,
+  icons: {
+    list: fulfillmentIcons,
+    types: IconTypes,
+  },
 };

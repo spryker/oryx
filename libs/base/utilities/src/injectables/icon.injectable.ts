@@ -6,7 +6,7 @@ export const IconInjectable = 'oryx.IconInjectable';
 export type IconHost = LitElement & { direction?: boolean };
 
 export interface IconInjectable {
-  getIcons(): Record<string, unknown>;
+  getIcons(): string[];
   render(type: string, host?: IconHost): Observable<TemplateResult | undefined>;
 }
 
