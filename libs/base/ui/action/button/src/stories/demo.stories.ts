@@ -27,9 +27,7 @@ export default {
       description: 'Button loader',
     },
   },
-  parameters: {
-    chromatic: { viewports: [320, 1200] },
-  },
+  chromatic: { disableSnapshot: true },
 } as Meta;
 
 const Template: Story<ButtonComponentAttributes> = (

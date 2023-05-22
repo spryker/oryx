@@ -18,6 +18,11 @@ export default {
       control: { type: 'select' },
     },
   },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const Template: Story<PickingListItemAttributes> = ({
@@ -31,9 +36,3 @@ const Template: Story<PickingListItemAttributes> = ({
 };
 
 export const Demo = Template.bind({});
-
-Demo.parameters = {
-  chromatic: {
-    disableSnapshot: true,
-  },
-};

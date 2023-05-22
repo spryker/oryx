@@ -31,7 +31,7 @@ export const Label = Template.bind({});
 
 Label.parameters = {
   chromatic: {
-    delay: 3000,
+    delay: 2000,
     viewports: [
       storybookDefaultViewports.mobile.min,
       storybookDefaultViewports.desktop.min,
