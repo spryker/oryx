@@ -46,7 +46,8 @@ export class DefaultStorageService implements StorageService {
       case StorageType.Session:
         return sessionStorage;
       default:
-        return localStorage;
+        // return localStorage;
+        return this.bdStorage;
     }
   }
 
