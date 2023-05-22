@@ -53,6 +53,20 @@ describe('ImageComponent', () => {
     it('should render the fallback icon', () => {
       expect(element).toContainElement('oryx-icon');
     });
+
+    describe('and the fallback should be skipped', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-image skipFallback></oryx-image>`);
+      });
+
+      it('should not render the img element', () => {
+        expect(element).not.toContainElement('img');
+      });
+
+      it('should not render the fallback icon', () => {
+        expect(element).not.toContainElement('oryx-icon');
+      });
+    });
   });
 
   describe('when the src is causing an error', () => {
