@@ -74,6 +74,7 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
           iconInjectable
             .get()
             ?.getIcons()
+            .sort()
             .map((i) => ({ value: i, text: i })) ?? [],
       },
       noopener: {
