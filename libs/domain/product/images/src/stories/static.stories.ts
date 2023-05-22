@@ -16,7 +16,7 @@ export default {
   title: `${storybookPrefix}/Images/Static`,
   parameters: {
     chromatic: {
-      delay: 2000,
+      delay: 5000,
     },
   },
 } as Meta;
