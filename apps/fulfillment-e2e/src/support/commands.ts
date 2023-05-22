@@ -22,7 +22,7 @@ Cypress.Commands.add('login', (user = defaultUser) => {
 
   cy.wait('@token');
 
-  cy.intercept('GET', '**/picking-lists?*').as('picking-lists');
+  cy.intercept('GET', '**/picking-lists?include*').as('picking-lists');
   cy.wait('@picking-lists');
 });
 
