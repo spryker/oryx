@@ -14,33 +14,27 @@ import {
   checkoutDataSerializer,
   checkoutSerializer,
 } from './adapter/serializers';
-import { CheckoutDataService } from './checkout-data.service';
-import { CheckoutOrchestrationService } from './checkout-orchestration.service';
-import { CheckoutPaymentService } from './checkout-payment.service';
-import { CheckoutShipmentService } from './checkout-shipment.service';
 import { CheckoutService } from './checkout.service';
-import { DefaultCheckoutDataService } from './default-checkout-data.service';
-import { DefaultCheckoutOrchestrationService } from './default-checkout-orchestration.service';
-import { DefaultCheckoutPaymentService } from './default-checkout-payment.service';
-import { DefaultCheckoutShipmentService } from './default-checkout-shipment.service';
+import { CheckoutDataService, DefaultCheckoutDataService } from './data';
 import { DefaultCheckoutService } from './default-checkout.service';
+import { CheckoutStateService, DefaultCheckoutStateService } from './state';
 
 export const checkoutProviders = [
   {
-    provide: CheckoutAdapter,
-    useClass: DefaultCheckoutAdapter,
+    provide: CheckoutService,
+    useClass: DefaultCheckoutService,
   },
   {
     provide: CheckoutDataService,
     useClass: DefaultCheckoutDataService,
   },
   {
-    provide: CheckoutShipmentService,
-    useClass: DefaultCheckoutShipmentService,
+    provide: CheckoutStateService,
+    useClass: DefaultCheckoutStateService,
   },
   {
-    provide: CheckoutPaymentService,
-    useClass: DefaultCheckoutPaymentService,
+    provide: CheckoutAdapter,
+    useClass: DefaultCheckoutAdapter,
   },
   {
     provide: ShipmentsNormalizer,
@@ -49,14 +43,6 @@ export const checkoutProviders = [
   {
     provide: PaymentsNormalizer,
     useValue: paymentsNormalizer,
-  },
-  {
-    provide: CheckoutOrchestrationService,
-    useClass: DefaultCheckoutOrchestrationService,
-  },
-  {
-    provide: CheckoutService,
-    useClass: DefaultCheckoutService,
   },
   ...checkoutDataSerializer,
   ...checkoutSerializer,
