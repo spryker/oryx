@@ -38,7 +38,12 @@ const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <h1>Product images configurations</h1>
     <small>hover over the element to see the configuration</small>
-    <div class="stories">${render({}, '1')}</div>
+    <div class="stories">
+      <h2>Standard behaviour (no config)</h2>
+      <div class="static">
+        ${render({}, '1')} ${render({})} ${render({}, 'single-image')}
+      </div>
+    </div>
 
     <style>
       .stories {
