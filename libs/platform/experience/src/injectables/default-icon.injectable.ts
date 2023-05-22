@@ -58,12 +58,13 @@ export class DefaultIconInjectable implements IconInjectable {
     const additionalFont = mappers?.resources?.find((resource) =>
       resource.types.includes(type)
     )?.resource;
+    const iconType = Object.values(types ?? []).find((t) => t === type);
     const mainSource =
-      mappers?.resource.mapping?.[type] || (mappers && types?.[type])
+      mappers?.resource.mapping?.[type] || (mappers && iconType)
         ? mappers.resource
         : null;
     const source = additionalFont ?? mainSource;
-    const mapper = source?.mapping[type] ?? types?.[type];
+    const mapper = source?.mapping[type] ?? iconType;
 
     if (!mapper || !source) return undefined;
 
