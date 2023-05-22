@@ -14,9 +14,17 @@ const mockCheckoutData: DeserializedCheckout = {
   paymentMethods: mockPaymentMethods,
 };
 
-describe('Payments Normalizer', () => {
-  it('should transform ApiCheckoutModel.PaymentMethods Include into CheckoutData', () => {
-    const normalized = paymentsNormalizer(mockCheckoutData);
-    expect(normalized).toEqual(mockNormalizedPaymentMethods);
+describe('paymentsNormalizer', () => {
+  describe('when no data is provided', () => {
+    it('should return an empty array', () => {
+      expect(paymentsNormalizer()).toEqual([]);
+    });
+  });
+
+  describe('when valid data is provided', () => {
+    it('should transform ApiCheckoutModel.PaymentMethods Include into CheckoutData', () => {
+      const normalized = paymentsNormalizer(mockCheckoutData);
+      expect(normalized).toEqual(mockNormalizedPaymentMethods);
+    });
   });
 });

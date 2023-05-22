@@ -6,7 +6,7 @@ const mockBaseShipment = {
   items: ['mock-product', 'mock-product2'],
   requestedDeliveryDate: null,
   selectedShipmentMethod: {
-    id: 1,
+    id: '1',
     name: 'mock shipment method',
     carrierName: 'mock carrier',
     price: 123,
@@ -36,7 +36,7 @@ const mockBaseShipment = {
 
 const mockShipmentMethods = [
   {
-    id: 2,
+    id: '2',
     name: 'mock shipment method 2',
     carrierName: 'mock carrier',
     price: 123,
@@ -44,7 +44,7 @@ const mockShipmentMethods = [
     deliveryTime: null,
   },
   {
-    id: 1,
+    id: '1',
     name: 'mock shipment method',
     carrierName: 'mock carrier',
     price: 456,
@@ -52,7 +52,7 @@ const mockShipmentMethods = [
     deliveryTime: null,
   },
   {
-    id: 3,
+    id: '3',
     name: 'mock shipment method3',
     carrierName: 'mock carrier 2',
     price: 100,
@@ -83,9 +83,17 @@ const mockNormalizedShipment: Shipment[] = [
   },
 ];
 
-describe('Shipments Normalizer', () => {
-  it('should transform ApiCheckoutModel.ShipmentInclude into CheckoutData', () => {
-    const normalized = shipmentsNormalizer(mockCheckoutData);
-    expect(normalized).toEqual(mockNormalizedShipment);
+describe('shipmentsNormalizer', () => {
+  describe('when no data is provided', () => {
+    it('should return an empty array', () => {
+      expect(shipmentsNormalizer()).toEqual([]);
+    });
+  });
+
+  describe('when valid data is provided', () => {
+    it('should transform ApiCheckoutModel.ShipmentInclude into CheckoutData', () => {
+      const normalized = shipmentsNormalizer(mockCheckoutData);
+      expect(normalized).toEqual(mockNormalizedShipment);
+    });
   });
 });

@@ -24,7 +24,14 @@ export const CheckoutPage: StaticComponent = {
       type: 'experience-composition',
       components: [
         {
-          type: 'oryx-checkout-composition',
+          type: 'oryx-checkout-orchestrator',
+          components: [
+            { type: 'oryx-checkout-customer' },
+            { type: 'oryx-checkout-delivery' },
+            { type: 'oryx-checkout-shipment' },
+            { type: 'oryx-checkout-payment' },
+          ],
+          options: { data: { rules: [{ layout: 'list' }] } },
         },
         {
           type: 'oryx-cart-entries',
@@ -71,7 +78,7 @@ export const CheckoutPage: StaticComponent = {
             { type: 'oryx-cart-totals-total' },
           ],
         },
-        { type: 'checkout-place-order' },
+        { type: 'oryx-checkout-place-order' },
       ],
     },
   ],
