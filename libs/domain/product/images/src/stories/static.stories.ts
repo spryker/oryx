@@ -5,7 +5,6 @@ import {
   ProductImagesComponentOptions,
   ProductImagesMainLayout,
   ProductImagesNavigationAlignment as PINA,
-  ProductImagesNavigationDisplay as PIND,
   ProductImagesNavigationDisplay,
   ProductImagesNavigationLayout as PINL,
   ProductImagesNavigationPosition as PINP,
@@ -36,8 +35,8 @@ const render = (
   `;
 };
 
-const positions = [PINP.Start, PINP.Top];
-const alignments = [PINA.Start, PINA.Center];
+const positions = [PINP.Start, PINP.Top, PINP.End, PINP.Bottom];
+const alignments = [PINA.Start, PINA.Center, PINA.End];
 
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
@@ -87,68 +86,6 @@ const Template: Story<unknown> = (): TemplateResult => {
           </div>
         `
       )}
-
-      <h2>Navigation display (carousel)</h2>
-      <h3>Inline</h3>
-      <div class="static">
-        ${positions.map((navigationPosition) => render({ navigationPosition }))}
-      </div>
-      <h3>Floating</h3>
-      <div class="static">
-        ${positions.map((navigationPosition) =>
-          render({
-            navigationPosition,
-            navigationDisplay: PIND.Floating,
-          })
-        )}
-      </div>
-      <h3>None</h3>
-      <div class="static">
-        ${positions.map((navigationPosition) =>
-          render({
-            navigationPosition,
-            navigationDisplay: PIND.None,
-          })
-        )}
-      </div>
-
-      <h2>Navigation display (grid)</h2>
-      <h3>Inline</h3>
-      <div class="static">
-        ${[PINP.Start, PINP.Top].map((navigationPosition) =>
-          render({
-            navigationPosition,
-            navigationLayout: PINL.Grid,
-          })
-        )}
-      </div>
-      <div class="static">
-        ${[PINP.End, PINP.Bottom].map((navigationPosition) =>
-          render({
-            navigationPosition,
-            navigationLayout: PINL.Grid,
-          })
-        )}
-      </div>
-      <h3>Floating</h3>
-      <div class="static">
-        ${[PINP.Start, PINP.Top].map((navigationPosition) =>
-          render({
-            navigationPosition,
-            navigationLayout: PINL.Grid,
-            navigationDisplay: PIND.Floating,
-          })
-        )}
-      </div>
-      <div class="static">
-        ${[PINP.End, PINP.Bottom].map((navigationPosition) =>
-          render({
-            navigationPosition,
-            navigationLayout: PINL.Grid,
-            navigationDisplay: PIND.Floating,
-          })
-        )}
-      </div>
 
       <h2>Grid items per column (inline)</h2>
       <div class="static">
