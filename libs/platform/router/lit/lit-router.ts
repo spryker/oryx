@@ -1,7 +1,7 @@
-import { RouteConfig, Router } from '@lit-labs/router';
+import { PathRouteConfig, RouteConfig, Router } from '@lit-labs/router';
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { RouteParams, RouterService } from '@spryker-oryx/router';
+import { BASE_ROUTE, RouteParams, RouterService } from '@spryker-oryx/router';
 import { html, ReactiveControllerHost, TemplateResult } from 'lit';
 import { tap } from 'rxjs';
 import { LitRoutesRegistry } from './lit-routes-registry';
@@ -22,7 +22,17 @@ export class LitRouter extends Router {
         .map((registry) => registry.routes)
         .flat(),
       ...routes,
-    ];
+    ] as RouteConfig[];
+
+    const baseRoute = resolve(BASE_ROUTE, null);
+    if (baseRoute) {
+      routes = routes.map((route) => {
+        return (route as PathRouteConfig).path
+          ? { ...route, path: baseRoute + (route as PathRouteConfig).path }
+          : route;
+      });
+    }
+
     super(host, routes);
     this.routerService
       .currentRoute()
