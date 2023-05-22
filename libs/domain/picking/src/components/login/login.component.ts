@@ -1,3 +1,4 @@
+import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { loginComponentStyles } from './login.styles';
@@ -13,7 +14,10 @@ export class LoginPageComponent extends LitElement {
         </h3></oryx-heading
       >
       <oryx-auth-login
-        .options="${{ enableRememberMe: false }}"
+        .options="${{
+          enableRememberMe: false,
+          passwordVisibility: PasswordVisibilityStrategy.Click,
+        }}"
       ></oryx-auth-login>`;
   }
 }
