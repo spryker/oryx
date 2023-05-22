@@ -26,7 +26,7 @@ import {
 } from '@spryker-oryx/presets/resources';
 import { productFeature } from '@spryker-oryx/product';
 import { RouterFeature } from '@spryker-oryx/router';
-import { searchFeature } from '@spryker-oryx/search';
+import { searchFeature, searchPreviewProviders } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
 import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
@@ -68,6 +68,7 @@ export const storefrontFeatures: AppFeature[] = [
   applicationFeature,
   userFeature,
   isServer ? { providers: coreServerProviders } : {},
+  isPreview ? { providers: searchPreviewProviders } : {},
   {
     resources: storefrontResources,
   },

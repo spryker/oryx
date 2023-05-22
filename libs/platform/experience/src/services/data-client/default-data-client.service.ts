@@ -1,119 +1,20 @@
-import {
-  AppRef,
-  ComponentsPlugin,
-  FeatureOptionsService,
-} from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { merge, Observable, shareReplay } from 'rxjs';
 import {
-  EVENT_TOGGLE_COLOR,
-  toggleMode,
-} from '@spryker-oryx/ui/color-mode-selector';
-import { from, merge, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
-import { optionsKey } from '../../decorators';
-import { ContentComponentSchema } from '../../models';
-import { ResourcePlugin } from '../../plugins';
-import {
-  ExperienceStaticData,
-  StaticComponent,
-} from '../experience/static-data';
-import { MessageType } from './data-client.model';
-import { ExperienceDataClientService } from './data-client.service';
-import { catchMessage, postMessage } from './utilities';
-
-interface ProductsSuggestion {
-  products: {
-    name?: string;
-    sku?: string;
-  }[];
-}
+  ExperienceDataClientService,
+  ExperienceDataRevealer,
+} from './data-client.service';
 
 export class DefaultExperienceDataClientService
   implements ExperienceDataClientService
 {
-  constructor(
-    protected appRef = inject(AppRef),
-    protected optionsService = inject(FeatureOptionsService),
-    protected suggestionService = inject('oryx.SuggestionService', null),
-    protected staticData = inject(ExperienceStaticData, [])
-  ) {}
-  protected schemas$ = of(this.appRef.requirePlugin(ComponentsPlugin)).pipe(
-    switchMap((componentPlugin) => componentPlugin.getComponentSchemas()),
-    tap((schemas) => {
-      postMessage({
-        type: MessageType.ComponentSchemas,
-        data: schemas as ContentComponentSchema[],
-      });
-    })
-  );
-  protected options$ = catchMessage(MessageType.ComponentType).pipe(
-    tap((type) => {
-      const componentPlugin = this.appRef.requirePlugin(ComponentsPlugin);
+  constructor(protected revealers = inject(ExperienceDataRevealer, [])) {}
 
-      postMessage({
-        type: MessageType.Options,
-        data: {
-          ...componentPlugin.getComponentClass(type)?.[optionsKey],
-          ...this.optionsService.getFeatureOptions(type),
-        },
-      });
-    })
-  );
-  protected graphics$ = of(
-    this.appRef.requirePlugin(ResourcePlugin).getGraphics()
-  ).pipe(
-    tap((graphics) => {
-      postMessage({
-        type: MessageType.Graphics,
-        data: Object.keys(graphics ?? {}),
-      });
-    })
-  );
-  protected products$ = catchMessage(MessageType.Query).pipe(
-    switchMap<string, Observable<ProductsSuggestion | undefined>>(
-      (query) => this.suggestionService?.get({ query }) ?? of(undefined)
-    ),
-    tap((suggestions) => {
-      postMessage({
-        type: MessageType.Products,
-        data: (suggestions?.products ?? []).map(({ name, sku }) => ({
-          name,
-          sku,
-        })),
-      });
-    })
-  );
-  protected colorMode$ = catchMessage(MessageType.ColorMode).pipe(
-    tap((mode) => {
-      toggleMode(mode);
-      window.dispatchEvent(
-        new CustomEvent(EVENT_TOGGLE_COLOR, {
-          bubbles: true,
-          composed: true,
-          detail: mode,
-        })
-      );
-    })
-  );
-  protected appReady$ = from(this.appRef.whenReady()).pipe(
-    tap(() => postMessage({ type: MessageType.AppReady, data: null }))
-  );
   protected initializer$ = merge(
-    this.options$,
-    this.graphics$,
-    this.products$,
-    this.schemas$,
-    this.colorMode$,
-    this.appReady$
+    ...this.revealers.map((revealer) => revealer.reveal())
   ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   initialize(): Observable<unknown> {
     return this.initializer$;
-  }
-
-  sendStatic(data: StaticComponent[]): void {
-    postMessage({
-      type: MessageType.Static,
-      data,
-    });
   }
 }

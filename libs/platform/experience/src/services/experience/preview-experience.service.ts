@@ -14,7 +14,11 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
-import { ExperienceDataClientService, postMessage } from '../data-client';
+import {
+  ExperienceDataClientService,
+  MessageType,
+  postMessage,
+} from '../data-client';
 import { DefaultExperienceService } from './default-experience.service';
 import { Component } from './models';
 
@@ -37,8 +41,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     protected dataClient = inject(ExperienceDataClientService)
   ) {
     super();
-
-    this.dataClient.sendStatic(this.staticData);
+    this.sendStaticData();
     merge(
       this.dataClient.initialize(),
       this.structureDataEvent$,
@@ -139,6 +142,13 @@ export class PreviewExperienceService extends DefaultExperienceService {
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
       options: uid,
+    });
+  }
+
+  protected sendStaticData(): void {
+    postMessage({
+      type: MessageType.Static,
+      data: this.staticData,
     });
   }
 
