@@ -175,6 +175,17 @@ const Template: Story<unknown> = (): TemplateResult => {
           )
         )}
       </div>
+
+      <h2>Fixed width</h2>
+      ${positions.map((navigationPosition) =>
+        render(
+          {
+            navigationPosition,
+            imageWidth: '500px',
+          },
+          '1'
+        )
+      )}
     </div>
 
     <style>
