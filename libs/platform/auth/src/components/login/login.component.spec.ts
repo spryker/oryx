@@ -101,7 +101,7 @@ describe('AuthLoginComponent', () => {
             'oryx-password-input'
           ) as PasswordInputComponent
         ).strategy
-      ).toBe(PasswordVisibilityStrategy.Mousedown);
+      ).toBe(PasswordVisibilityStrategy.Click);
     });
 
     it('should have a remember me checkbox', () => {
