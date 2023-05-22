@@ -23,7 +23,8 @@ export class PickingListsComponent extends LitElement {
   @state()
   protected customerNote?: string;
 
-  protected pickingInProgressModal = createRef();
+  protected pickingInProgressModal =
+    createRef<PickingInProgressModalComponent>();
 
   @state()
   protected searchValueLength?: number = 0;
@@ -173,9 +174,8 @@ export class PickingListsComponent extends LitElement {
   }
 
   protected openPickingInProgressModal(event: CustomEvent): void {
-    const modal = this.pickingInProgressModal
-      .value as PickingInProgressModalComponent;
-    modal.open = true;
+    const modal = this.pickingInProgressModal.value;
+    modal && (modal.open = true);
   }
 
   private noValueSearchProvided(): boolean {

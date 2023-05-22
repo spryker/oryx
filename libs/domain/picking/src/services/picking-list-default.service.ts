@@ -3,6 +3,7 @@ import {
   BehaviorSubject,
   catchError,
   Observable,
+  of,
   switchMap,
   tap,
   throwError,
@@ -54,7 +55,7 @@ export class PickingListDefaultService implements PickingListService {
     return this.adapter.startPicking(pickingList).pipe(
       catchError((e) => {
         this.upcomingPickingListId$.next(null);
-        return throwError(e);
+        return throwError(() => of(e));
       }),
       tap(() => this.upcomingPickingListId$.next(null))
     );
