@@ -15,7 +15,6 @@ const Template: Story = (): TemplateResult => {
       preventCloseByEscape
       preventCloseByBackdrop
       heading="Without footer"
-      enableCloseButtonInHeader
     >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod

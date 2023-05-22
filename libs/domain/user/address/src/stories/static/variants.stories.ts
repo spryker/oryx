@@ -13,7 +13,7 @@ const Template: Story = (): TemplateResult => {
   const addressService = resolve(
     AddressService
   ) as unknown as MockAddressService;
-  addressService.changeMockAddressType(MockAddressType.WithUncompleted);
+  addressService.changeMockAddressType(MockAddressType.Incomplete);
   return html`
     <h4>Address</h4>
     <oryx-user-address addressId="currentaddressid"></oryx-user-address>

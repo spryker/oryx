@@ -16,7 +16,7 @@ const mockLayoutService = {
 };
 
 describe('DefaultScreenService', () => {
-  const setupControlller = (host: LayoutAttributes) =>
+  const setupController = (host: LayoutAttributes) =>
     new LayoutController(host as LitElement & LayoutAttributes);
 
   beforeEach(() => {
@@ -47,7 +47,7 @@ describe('DefaultScreenService', () => {
 
     describe('when there are layout component properties provided', () => {
       beforeEach(() => {
-        setupControlller({
+        setupController({
           layout: CompositionLayout.Grid,
           bleed: true,
           xs: { layout: CompositionLayout.Column, sticky: true },
@@ -72,7 +72,7 @@ describe('DefaultScreenService', () => {
 
     describe('and there are layout options provided', () => {
       beforeEach(() => {
-        setupControlller({})
+        setupController({})
           .getStyles(
             ['bleed', 'layout', 'sticky'],
             [
@@ -81,21 +81,21 @@ describe('DefaultScreenService', () => {
                 bleed: true,
               },
               {
-                breakpoint: Size.Xs,
+                query: { breakpoint: Size.Xs },
                 layout: CompositionLayout.Column,
                 sticky: true,
               },
               {
-                breakpoint: Size.Lg,
+                query: { breakpoint: Size.Lg },
                 layout: CompositionLayout.Grid,
               },
               {
-                breakpoint: Size.Md,
+                query: { breakpoint: Size.Md },
                 layout: CompositionLayout.Column,
                 bleed: false,
               },
               {
-                breakpoint: Size.Xl,
+                query: { breakpoint: Size.Xl },
                 layout: CompositionLayout.Carousel,
                 sticky: true,
               },
@@ -117,7 +117,7 @@ describe('DefaultScreenService', () => {
 
     describe('and theres a mix of layout component properties and options provided', () => {
       beforeEach(() => {
-        setupControlller({
+        setupController({
           bleed: true,
           md: { layout: CompositionLayout.Column, bleed: false },
           xl: { layout: CompositionLayout.Carousel, sticky: true },
@@ -127,11 +127,14 @@ describe('DefaultScreenService', () => {
             [
               { layout: CompositionLayout.Grid },
               {
-                breakpoint: Size.Xs,
+                query: { breakpoint: Size.Xs },
                 layout: CompositionLayout.Column,
                 sticky: true,
               },
-              { breakpoint: Size.Lg, layout: CompositionLayout.Grid },
+              {
+                query: { breakpoint: Size.Lg },
+                layout: CompositionLayout.Grid,
+              },
             ]
           )
           .subscribe();
@@ -153,7 +156,7 @@ describe('DefaultScreenService', () => {
     describe('when layout exist', () => {
       it('should return result from LayoutBuilder.createStylesFromOptions', () => {
         mockLayoutBuilder.createStylesFromOptions.mockReturnValue('result');
-        const styles = setupControlller({}).collectStyles(
+        const styles = setupController({}).collectStyles(
           ['layout'],
           [{ layout: CompositionLayout.Carousel }],
           'uid'
@@ -174,7 +177,7 @@ describe('DefaultScreenService', () => {
     });
 
     it('should return default styles for hosts', () => {
-      const styles = setupControlller({}).collectStyles(['layout']);
+      const styles = setupController({}).collectStyles(['layout']);
       expect(styles).toBe(':host {display: contents;}\nresult');
     });
   });

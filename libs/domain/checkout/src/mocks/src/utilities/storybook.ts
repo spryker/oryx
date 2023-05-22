@@ -23,6 +23,6 @@ export const toggleBehavior = (behavior?: BehaviorType): void => {
   if (behavior === 'with-address') {
     addressService.changeMockAddressType(MockAddressType.Two);
   } else {
-    addressService.changeMockAddressType(MockAddressType.Zero);
+    addressService.changeMockAddressType(MockAddressType.None);
   }
 };

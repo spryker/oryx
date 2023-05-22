@@ -10,6 +10,7 @@ import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { mockPickingListData } from '../../mocks';
 import { PickingListsComponent } from './picking-lists.component';
 import { pickingListsComponent } from './picking-lists.def';
+
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of(mockPickingListData));
 }

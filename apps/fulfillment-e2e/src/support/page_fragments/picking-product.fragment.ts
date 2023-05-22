@@ -1,5 +1,5 @@
 export class PickingProductFragment {
-  getProducts = () => cy.get('oryx-picking-product-card');
+  getProducts = () => cy.get('oryx-picking-product-card', { timeout: 10000 });
   getQuantityInput = () => this.getProducts().find('oryx-cart-quantity-input');
   getQuantityInputField = () =>
     cy
