@@ -2,6 +2,7 @@ import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LinkType } from '@spryker-oryx/ui/link';
+import { iconInjectable } from '@spryker-oryx/utilities';
 import { ContentLinkComponent } from './link.component';
 
 export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
@@ -69,28 +70,11 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
       },
       icon: {
         type: FormFieldType.Select,
-        options: [
-          {
-            value: 'rocket',
-            text: 'rocket',
-          },
-          {
-            value: 'cart',
-            text: 'cart',
-          },
-          {
-            value: 'add',
-            text: 'add',
-          },
-          {
-            value: 'minus',
-            text: 'minus',
-          },
-          {
-            value: 'mark',
-            text: 'mark',
-          },
-        ],
+        options:
+          iconInjectable
+            .get()
+            ?.getIcons()
+            .map((i) => ({ value: i, text: i })) ?? [],
       },
       noopener: {
         type: FormFieldType.Boolean,
