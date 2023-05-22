@@ -15,9 +15,8 @@ const Template: Story = (): TemplateResult => {
       fullscreen
       preventCloseByEscape
       preventCloseByBackdrop
-      heading="Title"
+      heading="Fullscreen modal"
       enableFooter
-      enableCloseButtonInHeader
     >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod

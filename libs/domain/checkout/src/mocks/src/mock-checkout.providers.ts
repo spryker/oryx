@@ -1,36 +1,48 @@
 import {
   CheckoutDataService,
-  CheckoutOrchestrationService,
-  CheckoutPaymentService,
   CheckoutService,
-  CheckoutShipmentService,
-  DefaultCheckoutDataService,
-  DefaultCheckoutOrchestrationService,
+  CheckoutStateService,
+  DefaultCheckoutStateService,
 } from '@spryker-oryx/checkout';
 import { Provider } from '@spryker-oryx/di';
+
+import { StorageService } from '@spryker-oryx/core';
+import { ExperienceStaticData } from '@spryker-oryx/experience';
+import { MockCheckoutDataService } from './mock-checkout-data.service';
 import { MockCheckoutService } from './mock-checkout.service';
-import { MockPaymentService } from './mock-payment.service';
-import { MockShipmentService } from './mock-shipment.service';
+import { MockStorageService } from './mock-storage.service';
+
+export const checkoutOrchestratorStaticData = [
+  {
+    id: 'singlePage',
+    components: [
+      { type: 'oryx-checkout-customer' },
+      { type: 'oryx-checkout-delivery' },
+      { type: 'oryx-checkout-shipment' },
+      { type: 'oryx-checkout-payment' },
+    ],
+  },
+];
 
 export const mockCheckoutProviders: Provider[] = [
   {
-    provide: CheckoutShipmentService,
-    useClass: MockShipmentService,
-  },
-  {
-    provide: CheckoutPaymentService,
-    useClass: MockPaymentService,
+    provide: CheckoutService,
+    useClass: MockCheckoutService,
   },
   {
     provide: CheckoutDataService,
-    useClass: DefaultCheckoutDataService,
+    useClass: MockCheckoutDataService,
   },
   {
-    provide: CheckoutOrchestrationService,
-    useClass: DefaultCheckoutOrchestrationService,
+    provide: CheckoutStateService,
+    useClass: DefaultCheckoutStateService,
   },
   {
-    provide: CheckoutService,
-    useClass: MockCheckoutService,
+    provide: StorageService,
+    useClass: MockStorageService,
+  },
+  {
+    provide: ExperienceStaticData,
+    useValue: checkoutOrchestratorStaticData,
   },
 ];

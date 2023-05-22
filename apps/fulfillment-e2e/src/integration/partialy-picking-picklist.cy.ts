@@ -16,6 +16,7 @@ describe('Partial picking a picklist', () => {
     cy.clearIndexedDB();
     cy.login();
     pickingPage.visit();
+    pickingPage.pickingProductFragment.getProducts().should('be.visible');
   });
 
   it('should check partial picking', () => {

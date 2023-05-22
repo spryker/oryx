@@ -12,9 +12,9 @@ export const CartPage: StaticComponent = {
       rules: [
         {
           layout: 'split-main',
-          padding: '30px 0 0',
+          padding: '30px 0 20px',
         },
-        { breakpoint: 'sm', gap: '0' },
+        { query: { breakpoint: 'sm' }, gap: '0' },
       ],
     },
   },
@@ -34,7 +34,7 @@ export const CartPage: StaticComponent = {
             { type: 'oryx-cart-totals-total' },
           ],
         },
-        { type: 'checkout-link' },
+        { type: 'oryx-checkout-link' },
       ],
       options: {
         data: {

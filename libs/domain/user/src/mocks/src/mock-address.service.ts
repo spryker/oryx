@@ -4,7 +4,7 @@ import { AddressService } from '../../services';
 import { mockNormalizedAddresses, uncompletedAddress } from './mock-address';
 
 export enum MockAddressType {
-  Zero = 'zero',
+  None = 'none',
   One = 'one',
   OneWithoutDefaults = 'one-without-defaults',
   OneWithDefaults = 'one-with-defaults',
@@ -14,7 +14,7 @@ export enum MockAddressType {
   ThreeWithDefaults = 'three-with-defaults',
   ThreeWithoutDefaults = 'three-without-defaults',
   LongList = 'long-list',
-  WithUncompleted = 'with-uncompleted',
+  Incomplete = 'incomplete',
 }
 
 export class MockAddressService implements Partial<AddressService> {
@@ -86,9 +86,9 @@ export class MockAddressService implements Partial<AddressService> {
               ...this.setAsNoDefaults([...mockNormalizedAddresses]),
               ...this.setAsNoDefaults([...mockNormalizedAddresses]),
             ];
-          case MockAddressType.WithUncompleted:
+          case MockAddressType.Incomplete:
             return [...mockNormalizedAddresses, uncompletedAddress];
-          case MockAddressType.Zero:
+          case MockAddressType.None:
           default:
             return null;
         }
