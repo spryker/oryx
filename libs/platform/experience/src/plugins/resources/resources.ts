@@ -56,7 +56,11 @@ export class ResourcePlugin implements AppPlugin {
   }
 
   getIcons(): ResourceIcons {
-    return this.resources.icons ?? {};
+    return this.resources.icons?.list ?? {};
+  }
+
+  getIconTypes(): Record<string, string> {
+    return this.resources.icons?.types ?? {};
   }
 
   getIcon(name: string): string | Promise<string> | void {

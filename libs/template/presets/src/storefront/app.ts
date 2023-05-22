@@ -19,6 +19,7 @@ import { I18nFeature } from '@spryker-oryx/i18n';
 import { orderFeature } from '@spryker-oryx/order';
 import {
   commonGraphics,
+  IconTypes,
   storefrontFontIcons,
   storefrontIcons,
 } from '@spryker-oryx/presets/resources';
@@ -38,7 +39,10 @@ const isPreview = new URLSearchParams(
 
 export const storefrontResources: Resources = {
   graphics: commonGraphics,
-  icons: storefrontIcons,
+  icons: {
+    list: storefrontIcons,
+    types: IconTypes,
+  },
   fonts: storefrontFontIcons,
 };
 

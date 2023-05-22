@@ -15,33 +15,23 @@ import { map, Observable, of } from 'rxjs';
 import { IconStyles, ResourcePlugin, ThemePlugin } from '../plugins';
 
 export class DefaultIconInjectable implements IconInjectable {
-  getIcons(): Record<string, unknown> {
-    const app = resolve(AppRef);
-    const mappers = app.findPlugin(ThemePlugin)?.getIcons();
-    const icons = app.findPlugin(ResourcePlugin)?.getIcons();
-
-    return {
-      ...mappers?.resource.mapping,
-      ...mappers?.resources?.reduce(
-        (acc, _resource) => ({
-          ...acc,
-          ..._resource.resource.mapping,
-        }),
-        {}
-      ),
-      ...icons,
-    };
+  getIcons(): string[] {
+    return Object.values(
+      resolve(AppRef).findPlugin(ResourcePlugin)?.getIconTypes() ?? {}
+    ).filter(
+      (icon) => this.renderResourceIcon(icon) || this.renderFontIcon(icon)
+    );
   }
 
   render(
     type: string,
     host?: IconHost
   ): Observable<TemplateResult | undefined> {
-    const icon = this.renderFontIcon(type, host);
+    const icon = this.renderResourceIcon(type);
 
     if (icon) return icon;
 
-    return this.renderResourceIcon(type);
+    return this.renderFontIcon(type, host) ?? of(undefined);
   }
 
   protected generateStyles(styles?: IconStyles): string | undefined {
@@ -65,14 +55,22 @@ export class DefaultIconInjectable implements IconInjectable {
     type: string,
     host?: IconHost
   ): Observable<TemplateResult> | undefined {
-    const mappers = resolve(AppRef).findPlugin(ThemePlugin)?.getIcons();
-    const source = mappers?.resource.mapping?.[type]
-      ? mappers.resource
-      : mappers?.resources?.find((resource) => resource.types.includes(type))
-          ?.resource;
-    const mapper = source?.mapping[type];
+    const app = resolve(AppRef);
+    const mappers = app.findPlugin(ThemePlugin)?.getIcons();
+    const types = app.findPlugin(ResourcePlugin)?.getIconTypes();
+    const additionalFont = mappers?.resources?.find((resource) =>
+      resource.types.includes(type)
+    )?.resource;
+    const mainSource =
+      mappers?.resource.mapping?.[type] || (mappers && types?.[type])
+        ? mappers.resource
+        : null;
+    const source = additionalFont ?? mainSource;
+    const mapper = source?.mapping[type] ?? types?.[type];
 
-    if (!mapper) return undefined;
+    if (!mapper || !source) {
+      return undefined;
+    }
 
     const isText = typeof mapper === 'string';
 
@@ -122,11 +120,11 @@ export class DefaultIconInjectable implements IconInjectable {
 
   protected renderResourceIcon(
     type: string
-  ): Observable<TemplateResult | undefined> {
+  ): Observable<TemplateResult> | undefined {
     const icon = resolve(AppRef).findPlugin(ResourcePlugin)?.getIcon(type);
 
     if (icon === undefined) {
-      return of(undefined);
+      return undefined;
     }
 
     return ssrAwaiter(isPromise(icon) ? icon : Promise.resolve(icon)).pipe(
