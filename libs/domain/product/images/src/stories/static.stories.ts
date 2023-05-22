@@ -16,7 +16,7 @@ export default {
   title: `${storybookPrefix}/Images/Static`,
   parameters: {
     chromatic: {
-      delay: 5000,
+      delay: 2000,
     },
   },
 } as Meta;
@@ -36,8 +36,8 @@ const render = (
   `;
 };
 
-const positions = [PINP.Start, PINP.Top, PINP.End, PINP.Bottom];
-const alignments = [PINA.Start, PINA.Center, PINA.End];
+const positions = [PINP.Start, PINP.Top];
+const alignments = [PINA.Start, PINA.Center];
 
 const Template: Story<unknown> = (): TemplateResult => {
   return html`

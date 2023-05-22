@@ -80,15 +80,14 @@ export class DefaultIconInjectable implements IconInjectable {
       : mapper.styles?.weight ?? source.styles?.weight ?? '';
     const family = source.styles?.font ?? defaultIconFont;
     const font = `${weight} 1rem '${family}'`;
-    console.log(font, 'fontfontfont');
+
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return fontInjectable
       .get()!
       .setFont(source.id, font)
       .pipe(
-        map((isLoaded) => {
-          console.log(isLoaded, 'isLoadedisLoaded');
-          return html`
+        map(
+          (isLoaded) => html`
             ${when(
               isLoaded,
               () => unsafeHTML(text),
@@ -99,8 +98,8 @@ export class DefaultIconInjectable implements IconInjectable {
                   </span>
                 `
             )}
-          `;
-        })
+          `
+        )
       );
   }
 
