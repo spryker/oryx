@@ -5,12 +5,14 @@ import {
   signalAware,
   signalProperty,
   Size,
+  ssrShim,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, svg, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { IconProperties, Icons } from './icon.model';
 import { styles } from './icon.styles';
 
+@ssrShim('style')
 @signalAware()
 @hydratable()
 export class IconComponent extends LitElement implements IconProperties {

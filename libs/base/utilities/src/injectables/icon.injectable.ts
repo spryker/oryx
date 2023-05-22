@@ -7,7 +7,7 @@ export type IconHost = LitElement & { direction?: boolean };
 
 export interface IconInjectable {
   getIcons(): string[];
-  render(type: string, host?: IconHost): Observable<TemplateResult | undefined>;
+  render(type: string, host: IconHost): Observable<TemplateResult | undefined>;
 }
 
 export const iconInjectable = new Injectable<IconInjectable | null>(

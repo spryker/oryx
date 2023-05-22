@@ -23,10 +23,7 @@ export class DefaultIconInjectable implements IconInjectable {
     );
   }
 
-  render(
-    type: string,
-    host?: IconHost
-  ): Observable<TemplateResult | undefined> {
+  render(type: string, host: IconHost): Observable<TemplateResult | undefined> {
     const icon = this.renderResourceIcon(type);
 
     if (icon) return icon;
@@ -34,7 +31,7 @@ export class DefaultIconInjectable implements IconInjectable {
     return this.renderFontIcon(type, host) ?? of(undefined);
   }
 
-  protected generateStyles(styles?: IconStyles): string | undefined {
+  protected setStyles(styles: IconStyles | undefined, host: IconHost): void {
     if (!styles) {
       return undefined;
     }
@@ -42,13 +39,13 @@ export class DefaultIconInjectable implements IconInjectable {
     const getValue = (key: string, value: unknown): string =>
       key === 'font' ? `"${value}"` : `${value}`;
 
-    return Object.entries(styles).reduce(
-      (style, [key, value]) =>
-        key === 'rtl'
-          ? style
-          : `${style}\n--oryx-icon-${key}: ${getValue(key, value)};`,
-      ''
-    );
+    for (const [key, value] of Object.entries(styles)) {
+      if (key === 'direction') {
+        continue;
+      }
+
+      host.style.setProperty(`--oryx-icon-${key}`, getValue(key, value));
+    }
   }
 
   protected renderFontIcon(
@@ -68,16 +65,14 @@ export class DefaultIconInjectable implements IconInjectable {
     const source = additionalFont ?? mainSource;
     const mapper = source?.mapping[type] ?? types?.[type];
 
-    if (!mapper || !source) {
-      return undefined;
-    }
+    if (!mapper || !source) return undefined;
 
     const isText = typeof mapper === 'string';
 
     if (!isText && host && mapper.styles?.direction) host.direction = true;
+    if (host) this.setStyles(source.styles, host);
+    if (!isText && host) this.setStyles(mapper.styles, host);
 
-    const mainStyles = this.generateStyles(source.styles);
-    const styles = isText ? null : this.generateStyles(mapper.styles);
     const text = isText ? mapper : mapper.text;
     const weight = isText
       ? source.styles?.weight ?? ''
@@ -92,17 +87,6 @@ export class DefaultIconInjectable implements IconInjectable {
       .pipe(
         map(
           (isLoaded) => html`
-            ${when(
-              mainStyles || styles,
-              () => html`
-                <style>
-                  :host {
-                    ${mainStyles}
-                    ${styles}
-                  }
-                </style>
-              `
-            )}
             ${when(
               isLoaded,
               () => unsafeHTML(text),
