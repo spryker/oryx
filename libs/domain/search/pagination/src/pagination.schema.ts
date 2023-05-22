@@ -16,7 +16,6 @@ export const paginationComponentSchema: ContentComponentSchema<PaginationCompone
       },
       enableControls: {
         type: FormFieldType.Boolean,
-        label: 'Enable controls',
       },
     },
   };

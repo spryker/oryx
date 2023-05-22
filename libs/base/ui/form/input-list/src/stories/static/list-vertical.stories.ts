@@ -1,3 +1,4 @@
+import { storybookDefaultViewports } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -7,6 +8,15 @@ import { input, InputListDecorator, inputs, UxType } from '../util';
 export default {
   title: `${storybookPrefix}/Form/Input List/Static`,
   decorators: [InputListDecorator()],
+  parameters: {
+    chromatic: {
+      delay: 2000,
+      viewports: [
+        storybookDefaultViewports.mobile.min,
+        storybookDefaultViewports.desktop.min,
+      ],
+    },
+  },
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

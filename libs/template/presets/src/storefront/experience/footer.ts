@@ -1,161 +1,211 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 
+const banner = (graphic: string) => ({
+  type: 'oryx-content-banner',
+  content: { data: { graphic } },
+});
+
+const link = (text: string, id = '/', icon?: string) => ({
+  type: 'oryx-content-link',
+  options: { data: { id, text, icon } },
+});
+
+const selfServiceLinks = {
+  type: 'experience-composition',
+  name: 'Links',
+  options: {
+    data: {
+      rules: [
+        {
+          layout: 'column',
+          columnCount: '3',
+          gap: '0',
+        },
+      ],
+    },
+  },
+  components: [
+    {
+      type: 'experience-composition',
+      name: 'Customer support',
+      options: {
+        data: { rules: [{ layout: 'flex', vertical: true, align: 'start' }] },
+      },
+      components: [
+        link('Contact us', '/contact'),
+        link('Help center'),
+        link('Payment'),
+        link('Shipping information'),
+        link('Returns & Exchanges'),
+        link('Withdrawal rights'),
+      ],
+    },
+    {
+      type: 'experience-composition',
+      name: 'Our promises',
+      options: {
+        data: { rules: [{ layout: 'flex', vertical: true, align: 'start' }] },
+      },
+      components: [
+        link('Free delivery', '/', 'carrier'),
+        link('100-day return policy', '/', 'parcel'),
+        link('Click & Collect'),
+      ],
+    },
+    {
+      type: 'experience-composition',
+      name: 'About us',
+      options: {
+        data: { rules: [{ layout: 'flex', vertical: true, align: 'start' }] },
+      },
+      components: [
+        link('Company'),
+        link('Jobs & Career'),
+        link('Our stores'),
+        link('Our brands'),
+        link('Press'),
+        link('Corporate information'),
+      ],
+    },
+  ],
+};
+
+const checkoutLinks = {
+  type: 'experience-composition',
+  name: 'checkout methods',
+  options: {
+    data: {
+      rules: [
+        { layout: 'column', columnCount: '3', gap: '6px' },
+        {
+          query: {
+            childs: true,
+          },
+          background: 'var(--oryx-color-canvas-100)',
+          padding: '8px 15px',
+          radius: 5,
+          ratio: '4/3',
+        },
+      ],
+    },
+  },
+  components: [
+    banner('mastercard'),
+    banner('visa'),
+    banner('paypal'),
+    banner('klarna'),
+    banner('applePay'),
+    banner('googlePay'),
+    banner('dhl'),
+    banner('hermes'),
+    banner('dhlExpress'),
+  ],
+};
+
+const socialLinks = {
+  type: 'experience-composition',
+  name: 'socials',
+  options: { data: { rules: [{ layout: 'list' }] } },
+  components: [
+    {
+      type: 'experience-composition',
+      name: 'native apps',
+      options: {
+        data: {
+          rules: [{ layout: 'column', columnCount: '2', gap: '6px' }],
+        },
+      },
+      components: [banner('playStore'), banner('appleStore')],
+    },
+    {
+      type: 'experience-composition',
+      name: 'socials',
+      options: {
+        data: {
+          rules: [{ layout: 'flex', vertical: false, align: 'center' }],
+        },
+      },
+      components: [
+        banner('pinterest'),
+        banner('youtube'),
+        banner('instagram'),
+        banner('facebook'),
+      ],
+    },
+  ],
+};
+
+const legalLinks = {
+  type: 'experience-composition',
+  name: 'legal links',
+  components: [
+    link('©️ 2023 Spryker'),
+    link('Imprint'),
+    link('Terms & conditions'),
+    link('Privacy Notice'),
+    link('Data preference'),
+    link('Condition of use'),
+  ],
+  options: { data: { rules: [{ layout: 'flex', divider: true }] } },
+};
+
 export const FooterTemplate: StaticComponent = {
   id: 'footer',
   type: 'Page',
   meta: { title: 'Footer', route: '/_footer' },
   components: [
-    { type: 'oryx-site-notification-center' },
     {
       type: 'experience-composition',
+      name: 'footer',
       components: [
         {
           type: 'experience-composition',
+          name: 'Self service',
+          options: {
+            data: { rules: [{ layout: 'split' }] },
+          },
           components: [
+            selfServiceLinks,
             {
               type: 'experience-composition',
-              components: [
-                {
-                  type: 'experience-composition',
-                  components: [
-                    {
-                      type: 'oryx-content-link',
-                      options: { data: { id: '/contact', text: 'Contact us' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: { data: { id: '/', text: 'Help center' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: { data: { id: '/', text: 'Payment' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: {
-                        data: { id: '/', text: 'Shipping information' },
-                      },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: {
-                        data: { id: '/', text: 'Returns & Exchanges' },
-                      },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: { data: { id: '/', text: 'Withdrawal rights' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: { data: { id: '/', text: 'Free delivery' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: {
-                        data: { id: '/', text: '100-day return policy' },
-                      },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: { data: { id: '/', text: 'Click & Collect' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: { data: { id: '/', text: 'Company' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: { data: { id: '/', text: 'Jobs & Career' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: { data: { id: '/', text: 'Our stores' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: { data: { id: '/', text: 'Our brands' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: { data: { id: '/', text: 'Press' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: {
-                        data: { id: '/', text: 'Corporate information' },
-                      },
-                    },
-                  ],
-                  options: {
-                    data: { rules: [{ layout: 'text', columnCount: '3' }] },
-                  },
-                },
-              ],
-              options: { data: { rules: [{ layout: 'split' }] } },
-            },
-
-            {
-              type: 'experience-composition',
-              components: [
-                {
-                  type: 'oryx-content-link',
-                  options: { data: { id: '/', text: '©️ 2023 Spryker' } },
-                },
-                {
-                  type: 'oryx-content-link',
-                  options: { data: { id: '/', text: 'Imprint' } },
-                },
-                {
-                  type: 'oryx-content-link',
-                  options: { data: { id: '/', text: 'Terms & conditions' } },
-                },
-                {
-                  type: 'oryx-content-link',
-                  options: { data: { id: '/', text: 'Privacy Notice' } },
-                },
-                {
-                  type: 'oryx-content-link',
-                  options: { data: { id: '/', text: 'Data preference' } },
-                },
-                {
-                  type: 'oryx-content-link',
-                  options: { data: { id: '/', text: 'Condition of use' } },
-                },
-              ],
-              options: { data: { rules: [{ layout: 'flex', divider: true }] } },
+              name: 'right',
+              options: {
+                data: { rules: [{ layout: 'column', columnCount: 2 }] },
+              },
+              components: [checkoutLinks, socialLinks],
             },
           ],
-          options: {
-            data: {
-              rules: [
-                {
-                  layout: 'flex',
-                  vertical: true,
-                  divider: true,
-                  gap: '40px 18px',
-                },
-              ],
-            },
-          },
         },
+        legalLinks,
       ],
       options: {
         data: {
           rules: [
             {
               layout: 'flex',
+              vertical: true,
               divider: true,
-              align: 'center',
-              top: '100%',
-              background: 'var(--oryx-color-canvas-200)',
-              padding: '30 0',
-              bleed: true,
-              sticky: true,
+              gap: '40px 18px',
             },
           ],
         },
       },
     },
+    { type: 'oryx-site-notification-center' },
   ],
+  options: {
+    data: {
+      rules: [
+        {
+          layout: 'flex',
+          divider: true,
+          top: '100%',
+          background: 'var(--oryx-color-canvas-200)',
+          padding: '30 0',
+          bleed: true,
+          sticky: true,
+        },
+      ],
+    },
+  },
 };

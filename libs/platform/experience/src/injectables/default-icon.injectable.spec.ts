@@ -20,7 +20,9 @@ class MockComponent extends LitElement {
   @signalProperty() icon?: string;
 
   protected injectable = new DefaultIconInjectable();
-  protected renderer = computed(() => this.injectable.render(this.icon ?? ''));
+  protected renderer = computed(() =>
+    this.injectable.render(this.icon ?? '', this)
+  );
 
   render(): TemplateResult {
     if (!this.icon) {
@@ -38,6 +40,7 @@ const mockTheme = {
 const mockResource = {
   getIcon: vi.fn(),
   getIcons: vi.fn(),
+  getIconTypes: vi.fn(),
 };
 
 const mockFontInjectable = {
@@ -95,22 +98,16 @@ describe('DefaultIconInjectable', () => {
         mockTheme.getIcons.mockReturnValue({ resource: mockResource });
         element.icon = 'aIcon';
         await nextFrame();
-        const iconStyles = element.renderRoot
-          .querySelector(`style`)
-          ?.textContent?.replace(/(\r\n|\n|\r)/gm, '')
-          .replace(/\s+/g, ' ')
-          .trim();
-        expect(mockFontInjectable.setFont).toHaveBeenCalledWith(
-          mockResource.id,
-          `${mockResource.mapping.aIcon.styles.weight} 1rem '${mockResource.styles.font}'`
-        );
-        expect(element).toContainElement('style');
+
         expect(element).not.toContainElement('span');
         expect(element.renderRoot.textContent).toContain(
           mockResource.mapping.aIcon.text
         );
-        expect(iconStyles).toContain(
-          `:host { --oryx-icon-font: "${mockResource.styles.font}"; --oryx-icon-weight: ${mockResource.mapping.aIcon.styles.weight}; }`
+        expect(element.style.getPropertyValue('--oryx-icon-font')).toBe(
+          `"${mockResource.styles.font}"`
+        );
+        expect(element.style.getPropertyValue('--oryx-icon-weight')).toBe(
+          `${mockResource.mapping.aIcon.styles.weight}`
         );
       });
 
@@ -141,7 +138,6 @@ describe('DefaultIconInjectable', () => {
           mockResource.id,
           ` 1rem '${defaultIconFont}'`
         );
-        expect(element).not.toContainElement('style');
         expect(element).not.toContainElement('span');
         expect(element.renderRoot.textContent).toContain(
           mockResource.mapping.bIcon
@@ -188,6 +184,7 @@ describe('DefaultIconInjectable', () => {
                 b: 'b',
               },
             },
+            types: ['b'],
           },
           {
             resource: {
@@ -195,19 +192,22 @@ describe('DefaultIconInjectable', () => {
                 c: 'c',
               },
             },
+            types: ['c'],
           },
         ],
       };
+      const mockThemeIconTypes = {
+        a: 'a',
+        b: 'b',
+        c: 'c',
+        d: 'd',
+      };
       const mockResourceIcons = { d: 'd' };
       mockTheme.getIcons.mockReturnValue(mockThemeIcons);
+      mockResource.getIconTypes.mockReturnValue(mockThemeIconTypes);
       mockResource.getIcons.mockReturnValue(mockResourceIcons);
       const icons = new DefaultIconInjectable().getIcons();
-      expect(icons).toEqual({
-        ...mockThemeIcons.resource.mapping,
-        ...mockThemeIcons.resources[0].resource.mapping,
-        ...mockThemeIcons.resources[1].resource.mapping,
-        ...mockResourceIcons,
-      });
+      expect(icons).toEqual(Object.values(mockThemeIconTypes));
     });
   });
 });

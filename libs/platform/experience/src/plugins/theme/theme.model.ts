@@ -58,7 +58,7 @@ export interface IconStyles {
   grad?: number;
   optical?: number;
   size?: 'string';
-  rtl?: boolean;
+  direction?: boolean;
 }
 
 export interface IconProps {
@@ -67,9 +67,8 @@ export interface IconProps {
 }
 
 export interface IconMapper {
-  // Uses as default tag class also
   id: string;
-  styles?: Exclude<IconStyles, 'rtl'>;
+  styles?: Exclude<IconStyles, 'direction'>;
   mapping: Record<string, string | IconProps>;
 }
 

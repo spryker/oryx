@@ -15,10 +15,7 @@ export const CheckoutPage: StaticComponent = {
           layout: 'split-main',
           padding: '30px 0 0',
         },
-        {
-          breakpoint: 'sm',
-          gap: '0',
-        },
+        { query: { breakpoint: 'sm' }, gap: '0' },
       ],
     },
   },

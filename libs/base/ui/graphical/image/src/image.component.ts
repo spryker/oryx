@@ -28,6 +28,7 @@ export class ImageComponent
   @property() srcset?: string;
   @property({ reflect: true }) alt?: string;
   @property() loading?: LoadingStrategy;
+  @property({ type: Boolean }) skipFallback?: boolean;
 
   @state() failed?: string;
 
@@ -39,20 +40,18 @@ export class ImageComponent
     this.graphicResolver?.getUrl(this.resource ?? '')
   );
 
-  protected override render(): TemplateResult {
+  protected override render(): TemplateResult | void {
     if (this.hasFailure()) return this.renderFallback();
 
     return html`<slot>${this.renderImage()}</slot>`;
   }
 
-  protected renderFallback(): TemplateResult {
-    return html`<oryx-icon type="image" part="fallback"></oryx-icon>`;
-  }
+  protected renderImage(): TemplateResult | void {
+    if (this.resource) {
+      const sourceResult = this.source();
 
-  protected renderImage(): TemplateResult {
-    const sourceResult = this.source();
-
-    if (this.resource && sourceResult) return html`${sourceResult}`;
+      if (sourceResult) return html`${sourceResult}`;
+    }
 
     const src = this.resource ? this.url() : this.src;
 
@@ -67,6 +66,11 @@ export class ImageComponent
         @error=${this.onError}
       />
     `;
+  }
+
+  protected renderFallback(): TemplateResult | void {
+    if (this.skipFallback) return;
+    return html`<oryx-icon type="image" part="fallback"></oryx-icon>`;
   }
 
   protected hasFailure(): boolean {

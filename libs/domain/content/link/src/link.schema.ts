@@ -11,7 +11,6 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
     icon: IconTypes.Link,
     options: {
       type: {
-        label: 'Type',
         type: FormFieldType.Select,
         options: [
           {
@@ -33,7 +32,6 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
         ],
       },
       target: {
-        label: 'Target',
         type: FormFieldType.Select,
         options: [
           {
@@ -55,7 +53,6 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
         ],
       },
       text: {
-        label: 'Text',
         type: FormFieldType.Text,
       },
       id: {
@@ -71,7 +68,6 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
         ],
       },
       icon: {
-        label: 'Icon',
         type: FormFieldType.Select,
         options: [
           {
@@ -97,15 +93,12 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
         ],
       },
       noopener: {
-        label: 'noopener',
         type: FormFieldType.Boolean,
       },
       nofollow: {
-        label: 'nofollow',
         type: FormFieldType.Boolean,
       },
       multiLine: {
-        label: 'Multi line',
         type: FormFieldType.Boolean,
       },
     },

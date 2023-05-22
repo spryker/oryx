@@ -21,12 +21,12 @@ export class FiltersComponent extends LitElement {
   @query('form')
   protected form?: HTMLFormElement;
 
-  protected defaultValue = 'deliveryDate.desc';
   protected fieldRenderer = resolve(FormRenderer);
   protected pickingListService = resolve(PickingListService);
 
   protected $selectedSortingValue = signal(
-    this.pickingListService.getSortingQualifier().pipe(map(this.formatValue))
+    this.pickingListService.getSortingQualifier().pipe(map(this.formatValue)),
+    this.formatValue(defaultSortingQualifier)
   );
 
   protected formatValue(
@@ -54,8 +54,7 @@ export class FiltersComponent extends LitElement {
   protected onReset(): void {
     this.pickingListService.setSortingQualifier(defaultSortingQualifier);
 
-    this.open = false;
-    this.form?.reset();
+    this.onClose();
   }
 
   protected onClose(): void {
@@ -94,7 +93,7 @@ export class FiltersComponent extends LitElement {
 
         <form @submit=${this.onSubmit}>
           ${this.fieldRenderer.buildForm(fields, {
-            sortBy: this.$selectedSortingValue() ?? this.defaultValue,
+            sortBy: this.$selectedSortingValue(),
           })}
         </form>
 

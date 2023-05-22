@@ -1,4 +1,4 @@
-import { OverlaysDecorator } from '@spryker-oryx/ui';
+import { OverlaysDecorator, storybookDefaultViewports } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -6,6 +6,15 @@ import { storybookPrefix } from '../../../../../.constants';
 export default {
   title: `${storybookPrefix}/Overlays/Modal/Static`,
   decorators: [OverlaysDecorator()],
+  parameters: {
+    chromatic: {
+      delay: 2000,
+      viewports: [
+        storybookDefaultViewports.mobile.min,
+        storybookDefaultViewports.desktop.min,
+      ],
+    },
+  },
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

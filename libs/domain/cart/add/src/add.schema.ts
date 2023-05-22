@@ -10,7 +10,6 @@ export const cartAddComponentSchema: ContentComponentSchema<CartAddComponent> =
     icon: IconTypes.CartAdd,
     options: {
       hideQuantityInput: {
-        label: 'Hide quantity input',
         type: FormFieldType.Boolean,
       },
       outlined: {

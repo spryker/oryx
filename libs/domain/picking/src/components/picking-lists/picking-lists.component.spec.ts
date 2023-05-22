@@ -10,6 +10,7 @@ import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { mockPickingListData } from '../../mocks';
 import { PickingListsComponent } from './picking-lists.component';
 import { pickingListsComponent } from './picking-lists.def';
+
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of(mockPickingListData));
 }
@@ -55,6 +56,12 @@ describe('PickingListsComponent', () => {
       expect(
         element.renderRoot.querySelectorAll('oryx-picking-list-item').length
       ).toBe(mockPickingListData.length);
+    });
+
+    it(`should render ${mockPickingListData.length} in filters counter`, () => {
+      expect(
+        element.renderRoot.querySelector('.filters span')?.textContent
+      ).toContain(mockPickingListData.length);
     });
 
     it('should open customer note modal', () => {
@@ -152,6 +159,31 @@ describe('PickingListsComponent', () => {
       expect(
         element.renderRoot.querySelector('oryx-heading')?.textContent?.trim()
       ).toBe(i18n('picking.no-results-found'));
+    });
+
+    it(`should render 0 in filters counter`, () => {
+      expect(
+        element.renderRoot.querySelector('.filters span')?.textContent
+      ).toContain('0');
+    });
+  });
+
+  describe('when the list is not provided', () => {
+    beforeEach(async () => {
+      service.get = vi.fn().mockReturnValue(of(null));
+      element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
+    });
+
+    it(`should render fallback text`, () => {
+      expect(
+        element.renderRoot.querySelector('oryx-heading')?.textContent?.trim()
+      ).toBe(i18n('picking.no-results-found'));
+    });
+
+    it(`should render 0 in filters counter`, () => {
+      expect(
+        element.renderRoot.querySelector('.filters span')?.textContent
+      ).toContain('0');
     });
   });
 

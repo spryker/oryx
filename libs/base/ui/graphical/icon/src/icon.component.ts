@@ -5,12 +5,14 @@ import {
   signalAware,
   signalProperty,
   Size,
+  ssrShim,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, svg, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { IconProperties, Icons } from './icon.model';
 import { styles } from './icon.styles';
 
+@ssrShim('style')
 @signalAware()
 @hydratable()
 export class IconComponent extends LitElement implements IconProperties {
@@ -23,9 +25,10 @@ export class IconComponent extends LitElement implements IconProperties {
   @signalProperty({ reflect: true }) type?: Icons | string;
   @property({ reflect: true }) size?: Size;
   @property() sprite?: string;
+  @property({ reflect: true, type: Boolean }) direction?: boolean;
 
   protected renderer = computed(() =>
-    this.iconResolver?.render(this.type as string)
+    this.iconResolver?.render(this.type as string, this)
   );
 
   protected override render(): TemplateResult {

@@ -1,9 +1,5 @@
 import { OauthService, OauthServiceConfig } from '@spryker-oryx/auth';
-import {
-  AppEnvironment,
-  ExecPlugin,
-  InjectionPlugin,
-} from '@spryker-oryx/core';
+import { ExecPlugin, InjectionPlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
 import { RouterService } from '@spryker-oryx/router';
@@ -26,8 +22,6 @@ export class OfflineDataPlugin extends ExecPlugin {
   constructor() {
     super((app) => {
       const injector = app!.requirePlugin(InjectionPlugin).getInjector();
-
-      const env = injector.inject(AppEnvironment, {} as AppEnvironment);
 
       const authService = injector.inject(OauthService);
       const routerService = injector.inject(RouterService);
