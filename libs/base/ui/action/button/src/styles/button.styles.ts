@@ -228,7 +228,6 @@ export const buttonStyles = css`
   :host([loading][type='text']) ::slotted(*) {
     --oryx-icon-color: transparent;
 
-    color: var(--oryx-color-neutral-300);
     background-color: transparent;
     border-color: var(--oryx-color-canvas-100);
   }

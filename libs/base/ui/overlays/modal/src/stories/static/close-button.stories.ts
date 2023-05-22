@@ -1,11 +1,20 @@
+import { OverlaysDecorator, storybookDefaultViewports } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { OverlaysDecorator } from '../../../../../src/utilities';
 
 export default {
   title: `${storybookPrefix}/Overlays/Modal/Static`,
   decorators: [OverlaysDecorator()],
+  parameters: {
+    chromatic: {
+      delay: 2000,
+      viewports: [
+        storybookDefaultViewports.mobile.min,
+        storybookDefaultViewports.desktop.min,
+      ],
+    },
+  },
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
@@ -14,8 +23,9 @@ const Template: Story = (): TemplateResult => {
       open
       preventCloseByEscape
       preventCloseByBackdrop
-      heading="Without close button"
+      heading="With close button"
       enableFooter
+      enableCloseButtonInHeader
     >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -25,4 +35,4 @@ const Template: Story = (): TemplateResult => {
   `;
 };
 
-export const WithoutCloseButton = Template.bind({});
+export const WithCloseButton = Template.bind({});
