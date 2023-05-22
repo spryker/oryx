@@ -15,9 +15,8 @@ const Template: Story = (): TemplateResult => {
       open
       preventCloseByEscape
       preventCloseByBackdrop
-      heading="Title"
+      heading="Custom footer"
       enableFooter
-      enableCloseButtonInHeader
     >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
