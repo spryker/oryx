@@ -5,6 +5,7 @@ import {
   ProductImagesComponentOptions,
   ProductImagesMainLayout,
   ProductImagesNavigationAlignment as PINA,
+  ProductImagesNavigationLayout as PINL,
   ProductImagesNavigationPosition as PINP,
 } from '../images.model';
 
@@ -55,6 +56,34 @@ const Template: Story<unknown> = (): TemplateResult => {
       </div>
 
       <h2>Alignment in carousel navigation</h2>
+
+      ${alignments.map(
+        (navigationAlignment) => html`<h3>${navigationAlignment}</h3>
+          <div class="static">
+            ${positions.map((navigationPosition) =>
+              render({ navigationPosition, navigationAlignment }, '1')
+            )}
+          </div>`
+      )}
+
+      <h2>Alignment in grid navigation</h2>
+      ${alignments.map(
+        (navigationAlignment) => html`
+          <h3>${navigationAlignment}</h3>
+          <div class="static">
+            ${positions.map((navigationPosition) =>
+              render(
+                {
+                  navigationPosition,
+                  navigationAlignment,
+                  navigationLayout: PINL.Grid,
+                },
+                '1'
+              )
+            )}
+          </div>
+        `
+      )}
     </div>
 
     <style>
