@@ -1,5 +1,8 @@
 import { Theme } from '@spryker-oryx/experience';
-import { backofficeFontAwesomeIcons } from '@spryker-oryx/presets/resources';
+import {
+  backofficeFontAwesomeIcons,
+  backofficetIconSources,
+} from '@spryker-oryx/presets/resources';
 import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
 
 export const backofficeTheme: Theme = {
@@ -9,5 +12,6 @@ export const backofficeTheme: Theme = {
     import('../design-tokens/src/backoffice').then((s) => s.backofficeTokens),
   icons: {
     resource: backofficeFontAwesomeIcons,
+    resources: backofficetIconSources,
   },
 };
