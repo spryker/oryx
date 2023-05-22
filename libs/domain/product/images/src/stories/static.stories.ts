@@ -3,12 +3,8 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import {
   ProductImagesComponentOptions,
-  ProductImagesMainLayout,
   ProductImagesNavigationAlignment as PINA,
-  ProductImagesNavigationDisplay,
-  ProductImagesNavigationLayout as PINL,
   ProductImagesNavigationPosition as PINP,
-  ProductImagesNavigationPosition,
 } from '../images.model';
 
 export default {
@@ -42,93 +38,7 @@ const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <h1>Product images configurations</h1>
     <small>hover over the element to see the configuration</small>
-    <div class="stories">
-      <h2>Standard behaviour (no config)</h2>
-      <div class="static">
-        ${render({}, '1')} ${render({})} ${render({}, 'single-image')}
-      </div>
-
-      <h2>Main layout</h2>
-      <div class="static">
-        ${[
-          ProductImagesMainLayout.Carousel,
-          ProductImagesMainLayout.Toggle,
-          ProductImagesMainLayout.None,
-        ].map((mainLayout) => render({ imageLayout: mainLayout }))}
-      </div>
-
-      <h2>Alignment in carousel navigation</h2>
-
-      ${alignments.map(
-        (navigationAlignment) => html`<h3>${navigationAlignment}</h3>
-          <div class="static">
-            ${positions.map((navigationPosition) =>
-              render({ navigationPosition, navigationAlignment }, '1')
-            )}
-          </div>`
-      )}
-
-      <h2>Alignment in grid navigation</h2>
-      ${alignments.map(
-        (navigationAlignment) => html`
-          <h3>${navigationAlignment}</h3>
-          <div class="static">
-            ${positions.map((navigationPosition) =>
-              render(
-                {
-                  navigationPosition,
-                  navigationAlignment,
-                  navigationLayout: PINL.Grid,
-                },
-                '1'
-              )
-            )}
-          </div>
-        `
-      )}
-
-      <h2>Grid items per column (inline)</h2>
-      <div class="static">
-        ${[3, 4, 5, 6].map((gridItemsPerColumn) =>
-          render(
-            {
-              navigationLayout: PINL.Grid,
-              navigationPosition: ProductImagesNavigationPosition.Start,
-              gridItemsPerColumn,
-              navigationHeight: 40,
-            },
-            '3'
-          )
-        )}
-      </div>
-
-      <h2>Grid items per column (floating)</h2>
-      <div class="static">
-        ${[3, 4, 5, 6].map((gridItemsPerColumn) =>
-          render(
-            {
-              navigationLayout: PINL.Grid,
-              navigationPosition: ProductImagesNavigationPosition.Start,
-              navigationDisplay: ProductImagesNavigationDisplay.Floating,
-              gridItemsPerColumn,
-              navigationHeight: 40,
-            },
-            '3'
-          )
-        )}
-      </div>
-
-      <h2>Fixed width</h2>
-      ${positions.map((navigationPosition) =>
-        render(
-          {
-            navigationPosition,
-            imageWidth: 500,
-          },
-          '1'
-        )
-      )}
-    </div>
+    <div class="stories">${render({}, '1')}</div>
 
     <style>
       .stories {
