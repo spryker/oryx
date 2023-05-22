@@ -9,6 +9,7 @@ export interface PickingList {
   cartNote?: string;
   createdAt: Date;
   updatedAt: Date;
+  itemsCount: number;
 }
 
 export enum ItemsFilters {

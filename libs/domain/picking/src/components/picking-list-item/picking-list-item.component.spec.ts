@@ -104,7 +104,7 @@ describe('PickingListItemComponent', () => {
         element.renderRoot.querySelector('.total')?.textContent?.trim()
       ).toBe(
         i18n('picking.picking-list-item.<count>-items', {
-          count: mockPickingListData[0].items.length,
+          count: mockPickingListData[0].itemsCount,
         })
       );
     });
