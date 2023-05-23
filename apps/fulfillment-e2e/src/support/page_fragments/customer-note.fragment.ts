@@ -8,6 +8,5 @@ export class CustomerNoteFragment {
   getNote = () => this.getWrapper().find('p');
   getProceedToPickingButton = () =>
     this.getWrapper().find('oryx-button button').eq(0);
-
   pickingInProgressModal = new PickingInProgressModalFragment();
 }

@@ -1,3 +1,4 @@
+import { storybookDefaultViewports } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -5,6 +6,15 @@ import { buttonTypes } from './util';
 
 export default {
   title: `${storybookPrefix}/Actions/Button/Static`,
+  parameters: {
+    chromatic: {
+      delay: 2000,
+      viewports: [
+        storybookDefaultViewports.mobile.min,
+        storybookDefaultViewports.desktop.min,
+      ],
+    },
+  },
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

@@ -1,6 +1,8 @@
+import { Checkout } from '../../models';
+
 export const mockSelectedShipmentMethod = {
   selectedShipmentMethod: {
-    id: 2,
+    id: '2',
     name: 'mock shipment method',
     carrierName: 'mock carrier',
     price: 590,
@@ -13,7 +15,7 @@ export const mockSelectedShipmentMethod = {
 export const mockShipmentMethods = [
   {
     type: 'shipment-methods',
-    id: 4,
+    id: '4',
     attributes: {
       name: 'Mock Express',
       carrierName: 'Mock Drone Carrier',
@@ -24,7 +26,7 @@ export const mockShipmentMethods = [
   },
   {
     type: 'shipment-methods',
-    id: 3,
+    id: '3',
     attributes: {
       name: 'Mock Method',
       carrierName: 'Mock Drone Carrier',
@@ -35,7 +37,7 @@ export const mockShipmentMethods = [
   },
   {
     type: 'shipment-methods',
-    id: 1,
+    id: '1',
     attributes: {
       name: 'Standard Mock',
       carrierName: 'Mock Dummy Carrier',
@@ -46,7 +48,7 @@ export const mockShipmentMethods = [
   },
   {
     type: 'shipment-methods',
-    id: 2,
+    id: '2',
     attributes: {
       name: 'Express Mock',
       carrierName: 'Mock Dummy Carrier',
@@ -247,7 +249,7 @@ const mockCustomer = {
   lastName: 'last',
 };
 
-export const mockPostCheckoutProps = {
+export const mockPostCheckoutProps: { attributes: Checkout } = {
   attributes: {
     cartId: 'mockcart',
     payments: [{ provider: 'mockProvider', name: 'mock', id: '1' }],

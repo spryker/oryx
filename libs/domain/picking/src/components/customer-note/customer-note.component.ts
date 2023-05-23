@@ -13,7 +13,8 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
 
   protected routerService = resolve(RouterService);
 
-  protected pickingInProgressModal = createRef();
+  protected pickingInProgressModal =
+    createRef<PickingInProgressModalComponent>();
 
   protected onProceed(): void {
     //TODO: provide more complex validation
@@ -31,9 +32,8 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
         ),
         catchError((e) => {
           if (e.status === 409) {
-            const modal = this.pickingInProgressModal
-              .value as PickingInProgressModalComponent;
-            modal.open = true;
+            const modal = this.pickingInProgressModal.value;
+            modal && (modal.open = true);
           }
           return of(undefined);
         })

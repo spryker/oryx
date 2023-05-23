@@ -4,14 +4,23 @@ import { formFeature } from '@spryker-oryx/form';
 import {
   backofficeIcons,
   commonGraphics,
+  fontawesomeLink,
+  IconTypes,
+  materialDesignLink,
 } from '@spryker-oryx/presets/resources';
 import { siteFeature } from '@spryker-oryx/site';
-import { backofficeTheme as theme } from '@spryker-oryx/themes';
 import { uiFeature } from '@spryker-oryx/ui';
 
 export const backofficeResources: Resources = {
   graphics: commonGraphics,
-  icons: backofficeIcons,
+  icons: {
+    list: backofficeIcons,
+    types: IconTypes,
+  },
+  fonts: {
+    ...fontawesomeLink,
+    ...materialDesignLink,
+  },
 };
 
 export const backofficeFeatures: AppFeature[] = [
@@ -23,5 +32,3 @@ export const backofficeFeatures: AppFeature[] = [
     resources: backofficeResources,
   },
 ];
-
-export const backofficeTheme = { ...theme };

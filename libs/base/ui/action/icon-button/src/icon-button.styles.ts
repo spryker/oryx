@@ -48,6 +48,10 @@ export const iconButtonStyles = css`
     background: var(--oryx-color-canvas-100);
   }
 
+  ::slotted(a) {
+    text-decoration: none;
+  }
+
   :host([size='sm']) ::slotted(*:first-child) {
     --oryx-icon-size: var(--oryx-icon-size-small);
 

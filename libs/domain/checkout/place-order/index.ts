@@ -1,1 +1,2 @@
-export * from './src';
+export * from './place-order.component';
+export * from './place-order.schema';

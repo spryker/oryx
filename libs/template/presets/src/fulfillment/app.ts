@@ -9,13 +9,12 @@ import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
 import {
   commonGraphics,
-  fontIcons,
   fulfillmentIcons,
   fulfillmentResourceGraphics,
+  IconTypes,
 } from '@spryker-oryx/presets/resources';
 import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web';
 import { RouterFeature } from '@spryker-oryx/router';
-import { fulfillmentTheme as theme } from '@spryker-oryx/themes';
 import { uiFeature } from '@spryker-oryx/ui';
 import {
   FulfillmentRootFeature,
@@ -46,10 +45,10 @@ export interface FulfillmentFeaturesConfig {
   i18n?: I18nFeatureOptions;
 }
 
-export const fulfillmentTheme = { ...theme };
-
 export const fulfillmentResources: Resources = {
   graphics: { ...commonGraphics, ...fulfillmentResourceGraphics },
-  icons: fulfillmentIcons,
-  fonts: fontIcons,
+  icons: {
+    list: fulfillmentIcons,
+    types: IconTypes,
+  },
 };

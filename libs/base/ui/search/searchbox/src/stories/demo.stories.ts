@@ -1,4 +1,4 @@
-import { getResourceIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@spryker-oryx/ui';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import { Meta, Story } from '@storybook/web-components';
@@ -69,15 +69,15 @@ SearchboxDemo.argTypes = {
     control: { type: 'text' },
   },
   searchIcon: {
-    options: getResourceIcons(),
+    options: getAppIcons(),
     control: { type: 'select' },
   },
   clearIcon: {
-    options: getResourceIcons(),
+    options: getAppIcons(),
     control: { type: 'select' },
   },
   backIcon: {
-    options: getResourceIcons(),
+    options: getAppIcons(),
     control: { type: 'select' },
   },
   searchIconPosition: {

@@ -35,7 +35,7 @@ const Template: Story<Props> = (props): TemplateResult => {
   const addressService = resolve(
     AddressService
   ) as unknown as MockAddressService;
-  addressService.changeMockAddressType(MockAddressType.WithUncompleted);
+  addressService.changeMockAddressType(MockAddressType.Incomplete);
   return html`<oryx-user-address
     .addressId=${props.addressId}
     .options=${props}

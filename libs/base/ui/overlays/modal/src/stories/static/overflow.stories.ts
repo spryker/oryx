@@ -14,9 +14,8 @@ const Template: Story = (): TemplateResult => {
       open
       preventCloseByEscape
       preventCloseByBackdrop
-      heading="Title"
+      heading="Content overflow"
       enableFooter
-      enableCloseButtonInHeader
     >
       <div>
         ${Array.from(Array(30)).map(

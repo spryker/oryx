@@ -54,7 +54,7 @@ export class PickingListDefaultService implements PickingListService {
     return this.adapter.startPicking(pickingList).pipe(
       catchError((e) => {
         this.upcomingPickingListId$.next(null);
-        return throwError(e);
+        return throwError(() => e);
       }),
       tap(() => this.upcomingPickingListId$.next(null))
     );

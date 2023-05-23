@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
-import { IconTypes } from '@spryker-oryx/themes/icons';
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { asyncState, i18n, Size, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -23,7 +23,8 @@ export class PickingListsComponent extends LitElement {
   @state()
   protected customerNote?: string;
 
-  protected pickingInProgressModal = createRef();
+  protected pickingInProgressModal =
+    createRef<PickingInProgressModalComponent>();
 
   @state()
   protected searchValueLength?: number = 0;
@@ -113,7 +114,7 @@ export class PickingListsComponent extends LitElement {
         ${this.customerNote}
         <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
           <button @click=${this.closeCustomerNoteModal}>
-            <oryx-icon type=${IconTypes.CheckMark}></oryx-icon>
+            <oryx-icon type=${IconTypes.Mark}></oryx-icon>
             ${i18n('picking-lists.customer-note.got-it')}
           </button>
         </oryx-button>
@@ -173,9 +174,8 @@ export class PickingListsComponent extends LitElement {
   }
 
   protected openPickingInProgressModal(event: CustomEvent): void {
-    const modal = this.pickingInProgressModal
-      .value as PickingInProgressModalComponent;
-    modal.open = true;
+    const modal = this.pickingInProgressModal.value;
+    modal && (modal.open = true);
   }
 
   private noValueSearchProvided(): boolean {

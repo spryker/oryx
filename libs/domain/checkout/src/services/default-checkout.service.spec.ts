@@ -1,114 +1,76 @@
-import { CartService } from '@spryker-oryx/cart';
+import { Cart, CartService } from '@spryker-oryx/cart';
 import {
-  Address,
   CheckoutDataService,
-  CheckoutOrchestrationService,
+  CheckoutResponse,
   CheckoutService,
-  ContactDetails,
+  CheckoutState,
+  CheckoutStateService,
   DefaultCheckoutService,
-  PaymentMethod,
-  Shipment,
-  Validity,
 } from '@spryker-oryx/checkout';
-import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
+import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
-import { mockOrderData } from '@spryker-oryx/order/mocks';
-import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService } from '@spryker-oryx/site';
-import { firstValueFrom, of } from 'rxjs';
-import { describe } from 'vitest';
-import { CheckoutResponse } from '../models';
+import { BehaviorSubject, of, take } from 'rxjs';
 import { CheckoutAdapter } from './adapter';
 
-class MockCheckoutOrchestrationService
-  implements Partial<CheckoutOrchestrationService>
-{
-  getValidity = vi.fn().mockReturnValue(of([]));
-  submit = vi.fn().mockReturnValue(of([]));
+class MockCartService implements Partial<CartService> {
+  getCart = vi.fn();
+  reload = vi.fn();
 }
 
-class MockCheckoutDataService implements Partial<CheckoutDataService> {
-  isGuestCheckout = vi.fn().mockReturnValue(of(false));
-  getCustomer = vi.fn().mockReturnValue(of({} as ContactDetails));
-  getAddress = vi.fn().mockReturnValue(of({} as Address));
-  getShipment = vi.fn().mockReturnValue(of({} as Shipment));
-  getPayment = vi.fn().mockReturnValue(of({} as PaymentMethod));
-  reset = vi.fn();
+class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
+  placeOrder = vi.fn();
+}
+class MockSemanticLinkService implements Partial<SemanticLinkService> {
+  get = vi.fn().mockReturnValue(of('/link'));
 }
 
 class MockOrderService implements Partial<OrderService> {
   storeLastOrder = vi.fn();
 }
 
-const mockCheckoutResponse = {
-  orderReference: 'test',
-  orders: [mockOrderData],
-};
-
-class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
-  placeOrder = vi.fn().mockReturnValue(of(mockCheckoutResponse));
+export class MockCheckoutDataService implements Partial<CheckoutDataService> {
+  get = vi.fn();
 }
 
-class MockCartService implements Partial<CartService> {
-  getCart = vi.fn().mockReturnValue(of({}));
-  reload = vi.fn();
+export class MockCheckoutStateService implements Partial<CheckoutStateService> {
+  getAll = vi.fn();
+  get = vi.fn();
+  set = vi.fn();
+  clear = vi.fn();
 }
 
-const mockSanitizedResponse = {
-  ...mockOrderData,
-  shippingAddress: {},
-  billingAddress: {},
-};
-
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
-  get = vi.fn().mockReturnValue(of('order/test'));
-}
-
-class MockRouterService implements Partial<RouterService> {
-  navigate = vi.fn();
-}
+const mockCart = new BehaviorSubject<Cart | null>(null);
 
 describe('DefaultCheckoutService', () => {
-  let injector: Injector;
-  const service = () => injector.inject(CheckoutService);
+  let checkoutService: CheckoutService;
+  let checkoutStateService: MockCheckoutStateService;
+  let cartService: MockCartService;
+  let orderService: MockOrderService;
+  let adapter: MockCheckoutAdapter;
+  let linkService: MockSemanticLinkService;
 
   beforeEach(() => {
-    injector = createInjector({
+    const injector = createInjector({
       providers: [
-        {
-          provide: CheckoutOrchestrationService,
-          useClass: MockCheckoutOrchestrationService,
-        },
-        {
-          provide: CheckoutDataService,
-          useClass: MockCheckoutDataService,
-        },
-        {
-          provide: CheckoutAdapter,
-          useClass: MockCheckoutAdapter,
-        },
-        {
-          provide: CartService,
-          useClass: MockCartService,
-        },
-        {
-          provide: SemanticLinkService,
-          useClass: MockSemanticLinkService,
-        },
-        {
-          provide: RouterService,
-          useClass: MockRouterService,
-        },
-        {
-          provide: CheckoutService,
-          useClass: DefaultCheckoutService,
-        },
-        {
-          provide: OrderService,
-          useClass: MockOrderService,
-        },
+        { provide: CheckoutAdapter, useClass: MockCheckoutAdapter },
+        { provide: CartService, useClass: MockCartService },
+        { provide: SemanticLinkService, useClass: MockSemanticLinkService },
+        { provide: CheckoutService, useClass: DefaultCheckoutService },
+        { provide: OrderService, useClass: MockOrderService },
+        { provide: CheckoutDataService, useClass: MockCheckoutDataService },
+        { provide: CheckoutStateService, useClass: MockCheckoutStateService },
       ],
     });
+
+    adapter = injector.inject<MockCheckoutAdapter>(CheckoutAdapter);
+    cartService = injector.inject<MockCartService>(CartService);
+    orderService = injector.inject<MockOrderService>(OrderService);
+    cartService.getCart.mockReturnValue(mockCart);
+    checkoutService = injector.inject(CheckoutService);
+    checkoutStateService =
+      injector.inject<MockCheckoutStateService>(CheckoutStateService);
+    linkService = injector.inject<MockSemanticLinkService>(SemanticLinkService);
   });
 
   afterEach(() => {
@@ -117,62 +79,155 @@ describe('DefaultCheckoutService', () => {
   });
 
   it('should be provided', () => {
-    expect(service()).toBeInstanceOf(DefaultCheckoutService);
+    expect(checkoutService).toBeInstanceOf(DefaultCheckoutService);
   });
 
-  describe('when canCheckout is called', () => {
-    describe('and when canCheckout is valid', () => {
-      beforeEach(() => {
-        (
-          injector.inject(
-            CheckoutOrchestrationService
-          ) as unknown as MockCheckoutOrchestrationService
-        ).getValidity.mockReturnValue(of([{ validity: Validity.Valid }]));
-      });
+  describe('when the cart is empty', () => {
+    let result: CheckoutState;
 
-      it('should return true', async () => {
-        expect(await firstValueFrom(service().canCheckout())).toBe(true);
-      });
+    beforeEach(async () => {
+      mockCart.next(null);
+      checkoutService
+        .getProcessState()
+        .pipe(take(1))
+        .subscribe((state) => (result = state));
     });
 
-    describe('and when checkout data is not valid', () => {
-      beforeEach(() => {
-        (
-          injector.inject(
-            CheckoutOrchestrationService
-          ) as unknown as MockCheckoutOrchestrationService
-        ).getValidity.mockReturnValue(of([{ validity: Validity.Invalid }]));
-      });
+    it('should return an empty state', () => {
+      expect(result).toBe(CheckoutState.Empty);
+    });
 
-      it('should return false', async () => {
-        expect(await firstValueFrom(service().canCheckout())).toBe(false);
+    it('should invalidate the cart Id on state service', () => {
+      expect(checkoutStateService.set).toHaveBeenCalledWith('cartId', {
+        valid: false,
+        value: null,
+      });
+    });
+  });
+
+  describe('when a cart id is available', () => {
+    let result: CheckoutState;
+
+    beforeEach(async () => {
+      mockCart.next({ id: 'foo' } as Cart);
+      checkoutService
+        .getProcessState()
+        .pipe(take(1))
+        .subscribe((state) => (result = state));
+    });
+
+    it('should return an empty state', () => {
+      expect(result).toBe(CheckoutState.Ready);
+    });
+
+    it('should invalidate the cart Id on state service', () => {
+      expect(checkoutStateService.set).toHaveBeenCalledWith('cartId', {
+        valid: true,
+        value: 'foo',
       });
     });
   });
 
   describe('when placeOrder is called', () => {
-    let result: CheckoutResponse;
-    beforeEach(async () => {
-      result = await firstValueFrom(service().placeOrder());
-    });
-    it('should submit the checkout data to the adapter', () => {
-      expect(injector.inject(CheckoutAdapter).placeOrder).toHaveBeenCalled();
+    describe('and no valid state is provided', () => {
+      const result: CheckoutState[] = [];
+
+      beforeEach(() => {
+        checkoutStateService.getAll.mockReturnValue(of(null));
+        checkoutService
+          .getProcessState()
+          .pipe(take(3))
+          .subscribe((state) => result.push(state));
+        checkoutService.placeOrder();
+      });
+
+      it('should change the state to invalid', () => {
+        expect(result).toEqual([
+          CheckoutState.Ready,
+          CheckoutState.Busy,
+          CheckoutState.Invalid,
+        ]);
+      });
+
+      it('should call the adapter to place the order', () => {
+        expect(adapter.placeOrder).not.toHaveBeenCalled();
+      });
     });
 
-    it('should return checkout response', () => {
-      expect(result).toEqual(mockCheckoutResponse);
+    describe('and a valid state object is returned', () => {
+      const result: CheckoutState[] = [];
+      const state = { foo: 'bar' };
+
+      beforeEach(() => {
+        checkoutStateService.getAll.mockReturnValue(of(state));
+        adapter.placeOrder.mockReturnValue(
+          of({ orders: [{}] } as CheckoutResponse)
+        );
+        checkoutService
+          .getProcessState()
+          .pipe(take(3))
+          .subscribe((state) => result.push(state));
+        checkoutService.placeOrder();
+      });
+
+      it('should change the state to Ready', () => {
+        expect(result).toEqual([
+          CheckoutState.Ready,
+          CheckoutState.Busy,
+          CheckoutState.Ready,
+        ]);
+      });
+
+      it('should call the adapter to place the order', () => {
+        expect(adapter.placeOrder).toHaveBeenCalledWith({ attributes: state });
+      });
+
+      it('should clear the state', () => {
+        expect(checkoutStateService.clear).toBeCalled();
+      });
+
+      it('should reload the cart', () => {
+        expect(cartService.reload).toBeCalled();
+      });
+
+      it('should store the order', () => {
+        expect(orderService.storeLastOrder).toBeCalled();
+      });
     });
 
-    it('should redirect to order page', () => {
-      expect(injector.inject(RouterService).navigate).toHaveBeenCalledWith(
-        'order/test'
-      );
+    describe('and a redirectUrl is returned', () => {
+      beforeEach(() => {
+        checkoutStateService.getAll.mockReturnValue(of({}));
+        adapter.placeOrder.mockReturnValue(
+          of({ redirectUrl: 'https://redirect.com' })
+        );
+        checkoutService.placeOrder();
+      });
+
+      it('should not add a redirect', () => {
+        expect(linkService.get).not.toHaveBeenCalled();
+      });
     });
 
-    it('should store the placed order', () => {
-      expect(injector.inject(OrderService).storeLastOrder).toHaveBeenCalledWith(
-        mockOrderData
-      );
+    describe('and a redirectUrl is not returned', () => {
+      let redirect: any;
+
+      beforeEach(() => {
+        linkService.get.mockReturnValue(of('https://redirect.com'));
+        checkoutStateService.getAll.mockReturnValue(of({}));
+        adapter.placeOrder.mockReturnValue(of({}));
+        checkoutService
+          .placeOrder()
+          .subscribe((response) => (redirect = response.redirectUrl));
+      });
+
+      it('should add a redirect', () => {
+        expect(linkService.get).toHaveBeenCalled();
+      });
+
+      it('should store the redirect in the response', () => {
+        expect(redirect).toBe('https://redirect.com');
+      });
     });
   });
 });

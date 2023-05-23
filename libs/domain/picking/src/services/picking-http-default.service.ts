@@ -58,12 +58,11 @@ export class PickingHttpDefaultService implements PickingHttpService {
   protected expandContentType<T = unknown>(
     options?: RequestOptions<T>
   ): RequestOptions<T> {
+    const headers = new Headers(options?.headers);
+    headers.set('Content-Type', 'application/vnd.api+json');
     return {
       ...options,
-      headers: {
-        ...options?.headers,
-        'Content-Type': 'application/vnd.api+json',
-      },
+      headers,
     };
   }
 }

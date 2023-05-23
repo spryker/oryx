@@ -10,7 +10,12 @@ export default {
 
 const Template: Story = (): TemplateResult => {
   return html`
-    <oryx-modal open enableFooter footerButtonFullWidth>
+    <oryx-modal
+      open
+      enableFooter
+      footerButtonFullWidth
+      heading="Full width footer button"
+    >
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua

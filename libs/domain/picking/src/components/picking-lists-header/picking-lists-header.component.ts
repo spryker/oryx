@@ -38,11 +38,13 @@ export class PickingListsHeaderComponent extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <oryx-heading>
-        <h4>${i18n('picking.header.orders-<date>', { date: this.date })}</h4>
+        <h4>
+          ${i18n('picking.header.pick-lists-<date>', { date: this.date })}
+        </h4>
       </oryx-heading>
 
       <oryx-search
-        backIcon="backArrow"
+        backIcon="back"
         xs-floated
         @oryx.open=${(): void => this.onToggleSearch(true)}
         @oryx.close=${(): void => this.onToggleSearch(false)}

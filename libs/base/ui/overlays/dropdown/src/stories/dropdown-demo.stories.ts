@@ -1,4 +1,4 @@
-import { getResourceIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@spryker-oryx/ui';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -100,7 +100,7 @@ DropdownDemo.argTypes = {
     table: { category: 'Slots' },
   },
   icon: {
-    options: getResourceIcons(),
+    options: getAppIcons(),
     control: { type: 'select' },
     table: { category: 'Slots' },
   },
