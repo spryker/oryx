@@ -18,9 +18,6 @@ const components = require('./components.json');
 const BASE_PATH = process.env.ORYX_FULFILLMENT_MOCK_BASE_PATH || '/';
 const PROXY_URL = process.env.ORYX_FULFILLMENT_MOCK_PROXY_URL;
 
-const proxyRoutesToMock = process.env.ORYX_FULLFILMENT_MOCK_ROUTES?.split(', ')
-const filteredProxyRoutes = proxyRoutes.filter(route => !proxyRoutesToMock.includes(route))
-
 exports.createMockServer = function createMockServer() {
   const server = jsonServer.create();
   const router = express.Router();
@@ -33,7 +30,7 @@ exports.createMockServer = function createMockServer() {
   router.post('/token', fixOauthParams);
 
   if (PROXY_URL) {
-    router.use(createProxyRouter(PROXY_URL, filteredProxyRoutes, BASE_PATH));
+    router.use(createProxyRouter(PROXY_URL, proxyRoutes, BASE_PATH));
   }
 
   router.use(jsonServer.defaults({ noCors: true }));
@@ -170,12 +167,6 @@ function createProxyRouter(proxyUrl, proxyRoutes, basePath) {
       },
       onProxyRes: responseInterceptor(
         async (responseBuffer, proxyRes, req, res) => {
-          if (proxyRes.statusCode >= 400) {
-            const response = responseBuffer.toString('utf8');
-            // log the error response
-            console.error(`Error from backend for ${req.url}:`, response);
-          }
-
           if (req.url !== '/token') {
             return responseBuffer;
           } else if (res.statusCode === 201) {
