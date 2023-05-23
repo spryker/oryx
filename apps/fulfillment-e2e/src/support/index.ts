@@ -12,7 +12,9 @@
 import './commands';
 
 Cypress.on('uncaught:exception', (err) => {
-  if (err.message.includes('Registration failed - push service not available')) {
+  if (
+    err.message.includes('Registration failed - push service not available')
+  ) {
     // Ignore the 'push service not available' error
     return false;
   }
