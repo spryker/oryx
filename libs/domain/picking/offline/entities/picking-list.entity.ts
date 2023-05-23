@@ -8,6 +8,7 @@ import {
 import {
   PickingList,
   PickingListItem,
+  PickingListQualifierSortBy,
   PickingListStatus,
 } from '@spryker-oryx/picking';
 import { Table } from 'dexie';
@@ -88,3 +89,10 @@ export interface PickingListSerialized
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PickingListItemSerialized
   extends Omit<PickingListItemOffline, 'product'> {}
+
+export type MappedQualifier = PickingListQualifierSortBy;
+
+export type QualifiersMapping = Record<
+  MappedQualifier,
+  keyof PickingListOffline
+>;

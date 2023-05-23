@@ -1,3 +1,4 @@
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -34,6 +35,7 @@ export const styles = css`
     width: 100%;
     display: flex;
     gap: 10px;
+    flex: 1 0;
   }
 
   header {
@@ -43,11 +45,6 @@ export const styles = css`
 
   footer {
     justify-content: flex-end;
-  }
-
-  slot:not([name]) {
-    display: flex;
-    flex: 1 0;
   }
 
   oryx-card::part(body) {
@@ -60,7 +57,7 @@ export const styles = css`
     flex: 1 0;
   }
 
-  oryx-icon-button:first-child button {
+  slot[name='navigation-back'] button {
     padding: 0;
   }
 
@@ -69,3 +66,15 @@ export const styles = css`
     width: 100%;
   }
 `;
+
+export const screenStyles = screenCss({
+  sm: css`
+    header oryx-icon-button:last-child button {
+      --oryx-icon-size: var(--oryx-icon-size-large);
+
+      padding: 6px;
+      max-height: 38px;
+      margin-block: -7px;
+    }
+  `,
+});

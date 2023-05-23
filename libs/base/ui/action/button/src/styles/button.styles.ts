@@ -228,7 +228,6 @@ export const buttonStyles = css`
   :host([loading][type='text']) ::slotted(*) {
     --oryx-icon-color: transparent;
 
-    color: var(--oryx-color-neutral-300);
     background-color: transparent;
     border-color: var(--oryx-color-canvas-100);
   }
@@ -264,8 +263,11 @@ export const buttonStyles = css`
 
 const smallScreen = css`
   :host {
-    font-size: 1.143em;
     font-weight: 600;
+  }
+
+  :host(:not([type='text'])) {
+    font-size: 1.143em;
   }
 `;
 

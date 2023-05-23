@@ -1,7 +1,7 @@
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
-export const styles = css`
+export const pickingListItemComponentStyles = css`
   oryx-heading {
     justify-content: space-between;
     align-items: center;

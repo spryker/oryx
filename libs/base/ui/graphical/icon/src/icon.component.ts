@@ -1,11 +1,8 @@
 import { hydratable, iconInjectable, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, svg, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { when } from 'lit/directives/when.js';
 import { IconProperties, Icons } from './icon.model';
 import { styles } from './icon.styles';
-
-const DEFAULT_SPRITE = '/assets/icons.svg';
 
 @hydratable()
 export class IconComponent extends LitElement implements IconProperties {
@@ -31,20 +28,18 @@ export class IconComponent extends LitElement implements IconProperties {
     super.willUpdate(changedProperties);
   }
 
-  render(): TemplateResult {
-    return html`
-      <slot>
-        ${when(this.type, () =>
-          this.renderer
-            ? this.renderer
-            : svg`
-                <svg viewBox="0 0 24 24">
-                  <use href="${this.spriteUrl}" />
-                </svg>
-              `
-        )}
-      </slot>
-    `;
+  protected override render(): TemplateResult {
+    if (this.renderer) return this.renderer;
+
+    if (this.spriteUrl) {
+      return svg`
+        <svg viewBox="0 0 24 24">
+          <use href="${this.spriteUrl}" />
+        </svg>
+      `;
+    }
+
+    return html`<slot></slot>`;
   }
 
   /**
@@ -57,7 +52,11 @@ export class IconComponent extends LitElement implements IconProperties {
    *
    * Defaults to use '/assets/icons.svg'.
    */
-  protected get spriteUrl(): string {
-    return `${this.sprite ?? DEFAULT_SPRITE}#${this.type}`;
+  protected get spriteUrl(): string | undefined {
+    if (!this.sprite) {
+      return;
+    }
+
+    return `${this.sprite}#${this.type}`;
   }
 }

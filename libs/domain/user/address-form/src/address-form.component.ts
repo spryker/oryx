@@ -8,7 +8,11 @@ import {
   FormValues,
 } from '@spryker-oryx/form';
 import { CountryService } from '@spryker-oryx/site';
-import { AddressFormService, AddressService } from '@spryker-oryx/user';
+import {
+  Address,
+  AddressFormService,
+  AddressService,
+} from '@spryker-oryx/user';
 import {
   asyncState,
   hydratable,
@@ -17,7 +21,7 @@ import {
   valueType,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, query } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import {
@@ -54,6 +58,7 @@ export class AddressFormComponent
 
   @property({ type: Boolean }) enableDefaultShipping?: boolean;
   @property({ type: Boolean }) enableDefaultBilling?: boolean;
+  @property({ type: Object }) address?: Address;
 
   @property() country?: string;
 
@@ -162,7 +167,7 @@ export class AddressFormComponent
     const form = this.mergeFields();
     const selectedCountry = this.formValues?.iso2Code ?? activeCountry;
 
-    return html`<form>
+    return html`<form @change=${this.onChange}>
       ${when(
         countries.length > 1,
         () => html` <oryx-select
@@ -190,5 +195,30 @@ export class AddressFormComponent
       )}
       ${this.fieldRenderer.buildForm(form, this.formValues as FormValues)}
     </form>`;
+  }
+
+  @query('form')
+  protected formX?: HTMLFormElement;
+
+  protected onChange(ev: Event): void {
+    console.log('on change -> store');
+    // collect data and dispatch it
+    this.store();
+  }
+
+  protected store(): void {
+    if (this.formX) {
+      const data = Object.fromEntries(
+        new FormData(this.formX).entries()
+      ) as unknown as Address;
+      const valid = !!this.shadowRoot?.querySelector('form:valid');
+      this.dispatchEvent(
+        new CustomEvent('selectedAddress', {
+          detail: { data, valid },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
   }
 }

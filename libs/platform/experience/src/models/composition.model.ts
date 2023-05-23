@@ -6,7 +6,14 @@ export interface CompositionProperties {
 }
 
 export interface StyleRuleSet extends StyleProperties, LayoutAttributes {
-  breakpoint?: Breakpoint;
+  /**
+   * Allows to apply a style rule set for specific selectors.
+   */
+  query?: {
+    breakpoint?: Breakpoint;
+    childs?: boolean;
+    hover?: boolean;
+  };
 }
 
 export enum CompositionLayout {
@@ -30,7 +37,9 @@ export const enum CompositionLayoutOrientation {
 export interface StyleProperties {
   sticky?: boolean;
   bleed?: boolean;
+  divider?: boolean;
   overlap?: boolean;
+  vertical?: boolean;
 
   /**
    * The column count is based on a calculated count by design tokens, which can be specified
@@ -53,6 +62,7 @@ export interface StyleProperties {
    * or centered.
    */
   align?: LayoutAlign;
+  justify?: LayoutAlign;
 
   /**
    * Makes it possible for an element to span across the given columns or rows.
@@ -156,6 +166,13 @@ export interface StyleProperties {
   background?: string;
 
   /**
+   * Sets the fill color of SVG resources. SVG resources can use specific colors which can be overridden
+   * with a custom color. For example, a native logo color, say coca-cola red, can be overridden with
+   * a neutral color to make the logo less dominant on the page.
+   */
+  fill?: string;
+
+  /**
    * Sets an element's border, using a width, style and color (e.g. `1px solid red`)
    */
   border?: string;
@@ -164,6 +181,8 @@ export interface StyleProperties {
    * Rounds the corners of an element's outer border edge.
    */
   radius?: string;
+
+  ratio?: string;
 
   style?: string;
 }

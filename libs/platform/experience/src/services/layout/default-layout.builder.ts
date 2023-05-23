@@ -26,20 +26,43 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
   createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string {
     if (!rules?.length) return '';
-    const uidSelector = id ? `:host([uid="${id}"]), [uid="${id}"]` : ':host';
     return rules
       .map((rule) => {
         const styles = this.getLayoutStyles(rule);
-        if (styles) {
-          const breakpoint = rule.breakpoint;
-          if (breakpoint) {
-            const mediaQuery = this.screenService.getScreenMedia(breakpoint);
-            return `${mediaQuery}{ ${uidSelector} {${styles}}}\n`;
-          }
-          return `${uidSelector} {${styles}}\n`;
-        } else return '';
+        return styles ? this.getSelector(rule, styles, id) : '';
       })
       .join('');
+  }
+
+  protected getSelector(
+    rule: StyleRuleSet,
+    styles: string,
+    id?: string
+  ): string {
+    const selectors: string[] = [];
+    if (id) {
+      selectors.push(`:host([uid="${id}"])`);
+      selectors.push(`[uid="${id}"]`);
+    } else {
+      selectors.push(':host');
+    }
+
+    if (rule.query?.childs) {
+      selectors.forEach((_, i) => (selectors[i] += ' > *'));
+    }
+
+    if (rule.query?.hover) {
+      selectors.forEach((_, i) => (selectors[i] += ':hover'));
+    }
+
+    if (rule.query?.breakpoint) {
+      const mediaQuery = this.screenService.getScreenMedia(
+        rule.query.breakpoint
+      );
+      return `${mediaQuery}{\n${selectors.join(', ')} {\n${styles}\n}}`;
+    } else {
+      return `${selectors.join(', ')} {\n${styles}\n}`;
+    }
   }
 
   getLayoutClasses(data?: CompositionProperties): string | undefined {
@@ -48,9 +71,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       ruleSets.push(...this.getClasses(rule));
     });
 
-    if (ruleSets.length === 0) {
-      return;
-    }
+    if (ruleSets.length === 0) return;
 
     return ruleSets.join(' ');
   }
@@ -70,12 +91,16 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     if (!ruleSet) return classes;
 
     const add = (className: string, required = false): void => {
-      const breakpoint = ruleSet.breakpoint ?? this.screenService.getSmallest();
-      if (required) classes.push(`${breakpoint}-${className}`);
+      if (!required) return;
+      const breakpoint = ruleSet.query?.breakpoint;
+      classes.push(breakpoint ? `${breakpoint}-${className}` : className);
     };
 
     add('bleed', ruleSet.bleed);
     add('sticky', ruleSet.sticky);
+    add('vertical', ruleSet.vertical);
+    add('overlap', ruleSet.overlap);
+    add('divider', ruleSet.divider);
 
     return classes;
   }
@@ -91,11 +116,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     const add = (
       rulesObj: { [key: string]: string | number | undefined },
-      options?: { unit?: string; omitUnit?: boolean }
+      options?: { unit?: string; omitUnit?: boolean; emptyValue?: boolean }
     ) => {
       Object.entries(rulesObj).forEach(([rule, value]) => {
-        if (!value) return;
-
+        if ((!value || value === '0') && !options?.emptyValue) return;
         if (!isNaN(Number(value))) {
           if (!options?.omitUnit) {
             value = addUnit(value, options?.unit);
@@ -136,7 +160,6 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add({ rotate: data.rotate }, { unit: 'deg' });
     add({ 'z-index': data.zIndex }, { omitUnit: true });
 
-    // col/row position and span
     if (data.gridColumn && data.colSpan) {
       add({ 'grid-column': `${data.gridColumn} / span ${data.colSpan}` });
     } else {
@@ -151,12 +174,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       if (data.rowSpan) add({ 'grid-row': `span ${data.rowSpan}` });
     }
 
-    // column/row gap
     const gaps = data.gap?.toString().split(' ');
-    add({ '--column-gap': gaps?.[1] ?? gaps?.[0] });
-    add({ '--row-gap': gaps?.[0] });
+    add({ '--column-gap': gaps?.[1] ?? gaps?.[0] }, { emptyValue: true });
+    add({ '--row-gap': gaps?.[0] }, { emptyValue: true });
 
-    // consider moving to sticky layout plugin
     if (data.sticky) {
       add({
         'max-height': `calc(${data.height ?? '100vh'} - ${data.top ?? '0px'})`,
@@ -165,6 +186,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     add({
       '--align': data.align,
+      '--justify': data.justify,
       'inset-block-start': data.top,
       height: data.height,
       width: data.width,
@@ -172,6 +194,8 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       border: data.border,
       'border-radius': data.radius,
       background: data.background,
+      '--oryx-fill': data.fill,
+      'aspect-ratio': data.ratio,
       overflow: data?.overflow,
     });
 

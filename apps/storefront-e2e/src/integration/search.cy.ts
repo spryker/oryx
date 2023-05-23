@@ -24,10 +24,7 @@ describe('Search suite', () => {
       .shadow()
       .should('contain.text', 'Sony NEX-VG20EH');
 
-    search.getSearchResultsContainer().scrollTo('bottom');
-
     search.getViewAllBtn().should('be.visible');
-
     search.clearSearch();
   });
 
@@ -39,7 +36,7 @@ describe('Search suite', () => {
 
     search.search(productData.title);
 
-    search.getSearchProducts().eq(0).find('a').click();
+    search.getSearchProducts().eq(0).click();
 
     pdp.getTitle().should('contain.text', productData.title);
     pdp.getSKU().should('contain.text', productData.id);

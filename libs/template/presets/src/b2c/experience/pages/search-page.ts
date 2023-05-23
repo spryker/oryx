@@ -14,7 +14,7 @@ export const SearchPage: StaticComponent = {
           layout: 'split-aside',
           padding: '30px 0 0',
         },
-        { breakpoint: 'md', splitColumnFactor: 1 / 3 },
+        { query: { breakpoint: 'md' }, splitColumnFactor: 1 / 3 },
       ],
     },
   },
@@ -30,18 +30,13 @@ export const SearchPage: StaticComponent = {
     {
       type: 'experience-composition',
       options: {
-        data: { rules: [{ layout: 'list', gap: '20px' }] },
+        data: { rules: [{ layout: 'flex', vertical: true, gap: '20px' }] },
       },
       components: [
         {
           type: 'experience-composition',
-          options: { data: { rules: [{ layout: 'flex' }] } },
-          components: [
-            {
-              type: 'search-product-sort',
-              options: { data: { rules: [{ margin: '0 0 0 auto' }] } },
-            },
-          ],
+          components: [{ type: 'search-product-sort' }],
+          options: { data: { rules: [{ layout: 'flex', justify: 'end' }] } },
         },
         {
           type: 'oryx-product-list',

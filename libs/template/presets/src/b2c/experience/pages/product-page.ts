@@ -24,7 +24,7 @@ export const ProductPage: StaticComponent = {
       components: [
         {
           type: 'experience-composition',
-          options: { data: { rules: [{ layout: 'list' }] } },
+          options: { data: { rules: [{ layout: 'flex', vertical: true }] } },
           components: [
             {
               type: 'oryx-product-labels',
@@ -39,19 +39,17 @@ export const ProductPage: StaticComponent = {
           type: 'experience-composition',
           options: {
             data: {
-              rules: [
-                {
-                  layout: 'list',
-                  top: '108',
-                  sticky: true,
-                },
-              ],
+              rules: [{ vertical: true, top: '108px', sticky: true }],
             },
           },
           components: [
             {
               type: 'oryx-product-title',
               options: { data: { tag: 'h1' } },
+            },
+            {
+              type: 'oryx-product-brand',
+              options: { data: { rules: [{ width: '70px' }] } },
             },
             { type: 'oryx-product-average-rating' },
             { type: 'oryx-product-id' },

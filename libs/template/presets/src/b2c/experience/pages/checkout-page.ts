@@ -15,10 +15,7 @@ export const CheckoutPage: StaticComponent = {
           layout: 'split-main',
           padding: '30px 0 0',
         },
-        {
-          breakpoint: 'sm',
-          gap: '0',
-        },
+        { query: { breakpoint: 'sm' }, gap: '0' },
       ],
     },
   },
@@ -27,14 +24,27 @@ export const CheckoutPage: StaticComponent = {
       type: 'experience-composition',
       components: [
         {
-          type: 'oryx-checkout-composition',
+          type: 'oryx-checkout-orchestrator',
+          components: [
+            { type: 'oryx-checkout-customer' },
+            { type: 'oryx-checkout-delivery' },
+            { type: 'oryx-checkout-shipment' },
+            { type: 'oryx-checkout-payment' },
+          ],
+          options: { data: { rules: [{ layout: 'list' }] } },
         },
         {
           type: 'oryx-cart-entries',
           options: { data: { readonly: true } },
         },
       ],
-      options: { data: { rules: [{ gap: '20px', layout: 'list' }] } },
+      options: {
+        data: {
+          rules: [
+            { gap: '20px', layout: 'flex', vertical: true, align: 'stretch' },
+          ],
+        },
+      },
     },
     {
       type: 'experience-composition',
@@ -42,7 +52,6 @@ export const CheckoutPage: StaticComponent = {
         data: {
           rules: [
             {
-              layout: 'list',
               gap: '20px',
               sticky: true,
               top: '108px',
@@ -69,7 +78,7 @@ export const CheckoutPage: StaticComponent = {
             { type: 'oryx-cart-totals-total' },
           ],
         },
-        { type: 'checkout-place-order' },
+        { type: 'oryx-checkout-place-order' },
       ],
     },
   ],

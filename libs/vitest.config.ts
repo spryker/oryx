@@ -14,7 +14,7 @@ export default defineConfig({
     coverage: {
       reporter: ['html', 'text', 'text-summary'],
       exclude: [
-        '**/*mock*.ts',
+        '**/*mock*/**.*',
         '**/feature.ts',
         '**/*.def.ts',
         '**/*.stories.ts',

@@ -8,8 +8,8 @@ import {
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
 import { html } from 'lit';
-import { modalComponent } from './component';
 import { ModalComponent } from './modal.component';
+import { modalComponent } from './modal.def';
 
 describe('Modal', () => {
   let element: ModalComponent;
@@ -269,7 +269,7 @@ describe('Modal', () => {
     describe('and the button is clicked', () => {
       beforeEach(() => {
         element.renderRoot
-          .querySelector('oryx-icon-button:first-child button')
+          .querySelector('slot[name="navigate-back"]')
           ?.dispatchEvent(new MouseEvent('click'));
       });
 

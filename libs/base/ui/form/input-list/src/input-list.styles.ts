@@ -1,3 +1,6 @@
+import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
+import { screenCss } from '@spryker-oryx/utilities';
+
 import { css } from 'lit';
 
 export const styles = css`
@@ -8,12 +11,11 @@ export const styles = css`
   }
 
   legend {
+    ${headingUtil(HeadingTag.SubtitleSmall)}
+
     display: none;
     margin-block-end: 8px;
     color: var(--oryx-color-ink);
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 16px;
     text-transform: uppercase;
   }
 
@@ -36,3 +38,13 @@ export const styles = css`
     margin-inline-start: 1px;
   }
 `;
+
+export const screenStyles = screenCss({
+  sm: css`
+    legend {
+      ${headingUtil(HeadingTag.Subtitle)}
+
+      margin-block-end: 20px;
+    }
+  `,
+});

@@ -18,7 +18,7 @@ import { styles } from './address-book.styles';
 export class AddressBookComponent extends ContentMixin(LitElement) {
   static styles = styles;
 
-  @property({ attribute: 'active-state' })
+  @property()
   activeState = AddressBookState.List;
 
   @observe('activeState')

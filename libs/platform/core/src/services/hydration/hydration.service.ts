@@ -5,7 +5,7 @@ export const HydrationService = 'oryx.HydrationService';
 export const HydrationTrigger = 'oryx.HydrationTrigger*';
 
 export interface HydrationService extends OnDestroy {
-  hydrateOnDemand(element: HTMLElement, skipMissMatch?: boolean): Promise<void>;
+  hydrateOnDemand(element: HTMLElement): Promise<void>;
   initHydrateHooks(immediate?: boolean): void;
 }
 

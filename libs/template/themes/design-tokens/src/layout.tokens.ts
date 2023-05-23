@@ -9,6 +9,7 @@ export const layoutTokens: ThemeToken = {
     split: { equal: '6', aside: '3', main: '8' },
   },
   row: { gap: '10px' },
+  divider: { width: '1px' },
 };
 
 export const layoutMdTokens: ThemeToken = {

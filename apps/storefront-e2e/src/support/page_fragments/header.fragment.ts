@@ -40,10 +40,11 @@ export class HeaderFragment {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(500);
     this.getLocaleButton().click();
-    this.getLocaleSelector().find(`oryx-option[value="${locale}"]`).click();
-    cy.wait('@productRequests');
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
+    this.getLocaleSelector()
+      .find(`oryx-option[value="${locale}"]`)
+      .click({ force: true });
+    cy.wait('@productRequests');
   };
 
   changeCurrency = (currency: string) => {

@@ -29,12 +29,8 @@
       "@spryker-oryx/checkout/address": [
         "libs/domain/checkout/address/index.ts"
       ],
-      "@spryker-oryx/checkout/auth": ["libs/domain/checkout/auth/index.ts"],
-      "@spryker-oryx/checkout/composition": [
-        "libs/domain/checkout/composition/index.ts"
-      ],
-      "@spryker-oryx/checkout/contact": [
-        "libs/domain/checkout/contact/index.ts"
+      "@spryker-oryx/checkout/customer": [
+        "libs/domain/checkout/customer/index.ts"
       ],
       "@spryker-oryx/checkout/delivery": [
         "libs/domain/checkout/delivery/index.ts"
@@ -46,6 +42,9 @@
       ],
       "@spryker-oryx/checkout/mocks": [
         "libs/domain/checkout/src/mocks/index.ts"
+      ],
+      "@spryker-oryx/checkout/orchestrator": [
+        "libs/domain/checkout/orchestrator/index.ts"
       ],
       "@spryker-oryx/checkout/payment": [
         "libs/domain/checkout/payment/index.ts"
@@ -107,6 +106,7 @@
       "@spryker-oryx/product/average-rating": [
         "libs/domain/product/average-rating/index.ts"
       ],
+      "@spryker-oryx/product/brand": ["libs/domain/product/brand/index.ts"],
       "@spryker-oryx/product/card": ["libs/domain/product/card/index.ts"],
       "@spryker-oryx/product/description": [
         "libs/domain/product/description/index.ts"

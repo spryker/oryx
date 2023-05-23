@@ -6,8 +6,8 @@ export const styles = css`
     overflow: hidden;
     position: relative;
     color: white;
-    width: var(--width, 100%);
-    height: var(--height, 100%);
+    width: var(--width);
+    height: var(--height);
   }
 
   a {

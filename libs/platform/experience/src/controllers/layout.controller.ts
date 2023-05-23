@@ -45,7 +45,7 @@ export class LayoutController {
       const isLayout = prop === 'layout';
       const mainValue =
         this.host[prop] ??
-        rules.find((rule) => !rule.breakpoint && rule[prop])?.[prop];
+        rules.find((rule) => !rule.query?.breakpoint && rule[prop])?.[prop];
       const mainKey = (isLayout ? mainValue : prop) as string;
       const withMainValue = typeof mainValue !== 'undefined';
 
@@ -58,7 +58,8 @@ export class LayoutController {
           this.host[size]?.[prop] ??
           rules.find(
             (rule) =>
-              rule.breakpoint === size && typeof rule[prop] !== 'undefined'
+              rule.query?.breakpoint === size &&
+              typeof rule[prop] !== 'undefined'
           )?.[prop];
         const sizeKey = (isLayout ? sizeValue : prop) as string;
 
@@ -104,13 +105,13 @@ export class LayoutController {
    * ```
    */
   collectStyles(
-    byProps: (keyof LayoutProperties)[],
+    layoutProperties: (keyof LayoutProperties)[],
     rules: StyleRuleSet[] = [],
     uid?: string
   ): string {
     let styles = '';
 
-    if (!this.hasLayout(rules, byProps)) {
+    if (!this.hasLayout(rules, layoutProperties)) {
       styles += ':host {display: contents;}\n';
     }
 
@@ -126,10 +127,10 @@ export class LayoutController {
    */
   protected hasLayout(
     rules: StyleRuleSet[],
-    byProps: (keyof LayoutProperties)[] = []
+    layoutProperties: (keyof LayoutProperties)[] = []
   ): boolean {
     const has = (obj: LayoutAttributes): boolean =>
-      byProps.some(
+      layoutProperties.some(
         (prop) => obj[prop] || sizes.some((size) => obj[size]?.[prop])
       );
 
