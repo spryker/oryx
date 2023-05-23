@@ -20,8 +20,9 @@ import { orderFeature } from '@spryker-oryx/order';
 import {
   brandGraphics,
   commonGraphics,
+  fontawesomeLink,
   IconTypes,
-  storefrontFontIcons,
+  materialDesignLink,
   storefrontIcons,
 } from '@spryker-oryx/presets/resources';
 import { productFeature } from '@spryker-oryx/product';
@@ -44,7 +45,10 @@ export const storefrontResources: Resources = {
     list: storefrontIcons,
     types: IconTypes,
   },
-  fonts: storefrontFontIcons,
+  fonts: {
+    ...fontawesomeLink,
+    ...materialDesignLink,
+  },
 };
 
 export const storefrontFeatures: AppFeature[] = [

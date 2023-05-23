@@ -1,11 +1,7 @@
-import {
-  IconMapper,
-  IconSource,
-  ResourceFonts,
-} from '@spryker-oryx/experience';
+import { IconMapper } from '@spryker-oryx/experience';
 import { IconTypes } from '../icon.model';
 
-export const backofficeFontAwesomeIcons: IconMapper = {
+export const fontawesomeIcons: IconMapper = {
   id: 'fa',
   styles: {
     font: 'Font Awesome 6 Free',
@@ -54,31 +50,7 @@ export const backofficeFontAwesomeIcons: IconMapper = {
   },
 };
 
-export const backofficeMaterialIcons: IconMapper = {
-  id: 'material-icons',
-  mapping: {
-    [IconTypes.Carrier]: 'local_shipping',
-    [IconTypes.Location]: 'location_on',
-    [IconTypes.Printer]: 'print',
-  },
-};
-
-export const backofficetIconSources: IconSource[] = [
-  {
-    resource: backofficeMaterialIcons,
-    types: [
-      IconTypes.Report,
-      IconTypes.Refresh,
-      IconTypes.Location,
-      IconTypes.Carrier,
-      IconTypes.Printer,
-    ],
-  },
-];
-
-export const backofficeFontIcons: ResourceFonts = {
-  [backofficeFontAwesomeIcons.id]:
+export const fontawesomeLink = {
+  [fontawesomeIcons.id]:
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  [backofficeMaterialIcons.id]:
-    'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block',
 };
