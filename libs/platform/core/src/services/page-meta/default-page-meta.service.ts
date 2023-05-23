@@ -14,7 +14,9 @@ export class DefaultPageMetaService implements PageMetaService {
         continue;
       }
 
-      this.insert(definition);
+      if (!this.get(definition)) {
+        this.insert(definition);
+      }
     }
   }
 
@@ -24,10 +26,10 @@ export class DefaultPageMetaService implements PageMetaService {
     }
 
     for (const definition of definitions) {
-      const existedEl = this.get(definition);
+      const existed = this.get(definition);
 
-      if (existedEl) {
-        existedEl?.remove();
+      if (existed) {
+        existed?.remove();
       }
     }
   }
@@ -36,6 +38,7 @@ export class DefaultPageMetaService implements PageMetaService {
     const element = document.head.querySelector<HTMLElement>(definition.name);
 
     if (!element) {
+      this.remove(definition);
       this.insert(definition);
 
       return;
@@ -71,7 +74,6 @@ export class DefaultPageMetaService implements PageMetaService {
   }
 
   protected insert(definition: ElementDefinition): void {
-    this.remove(definition);
     const name = this.getTagName(definition.name);
     const element = document.createElement(name);
 

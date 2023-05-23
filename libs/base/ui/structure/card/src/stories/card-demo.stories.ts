@@ -1,4 +1,4 @@
-import { getResourceIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
@@ -58,7 +58,7 @@ CardDemo.argTypes = {
     control: { type: 'text' },
   },
   icon: {
-    options: getResourceIcons(),
+    options: getAppIcons(),
     control: { type: 'select' },
   },
   footer: {
