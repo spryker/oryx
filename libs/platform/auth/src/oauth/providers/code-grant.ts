@@ -337,15 +337,8 @@ export class OauthCodeGrantProvider implements OauthProvider {
   protected updateState(state?: OauthCodeGrantState): Observable<void> {
     return (
       state
-        ? this.storage.set(
-            OauthCodeGrantProvider.STATE_KEY,
-            state,
-            StorageType.Local
-          )
-        : this.storage.remove(
-            OauthCodeGrantProvider.STATE_KEY,
-            StorageType.Local
-          )
+        ? this.storage.set(OauthCodeGrantProvider.STATE_KEY,state)
+        : this.storage.remove(OauthCodeGrantProvider.STATE_KEY)
     ).pipe(tap(() => this.state$.next(state)));
   }
 

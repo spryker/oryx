@@ -98,8 +98,7 @@ describe('OauthService', () => {
       );
       getService().isAuthenticated().subscribe(callback);
       expect(mockStorageService.get).toHaveBeenCalledWith(
-        'oryx.oauth-state',
-        StorageType.Local
+        'oryx.oauth-state'
       );
       expect(callback).toHaveBeenCalledWith(false);
       storageTokenTrigger.next({ authorizedBy: 'a' });
@@ -219,8 +218,7 @@ describe('OauthService', () => {
       getService().logout().subscribe();
       expect(mockStorageService.set).toHaveBeenCalledWith(
         'oryx.oauth-state',
-        {},
-        StorageType.Local
+        {}
       );
     });
   });
@@ -246,8 +244,7 @@ describe('OauthService', () => {
       getService().loginWith('a', {});
       expect(mockStorageService.set).toHaveBeenCalledWith(
         'oryx.oauth-state',
-        { authorizedBy: 'a' },
-        StorageType.Local
+        { authorizedBy: 'a' }
       );
     });
   });
@@ -278,8 +275,7 @@ describe('OauthService', () => {
       getService().handleCallback('a');
       expect(mockStorageService.set).toHaveBeenCalledWith(
         'oryx.oauth-state',
-        { authorizedBy: 'a' },
-        StorageType.Local
+        { authorizedBy: 'a' }
       );
     });
   });

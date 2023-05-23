@@ -199,8 +199,7 @@ describe('OauthPasswordGrantProvider', () => {
           codeVerifier: 'AcodeVerifier',
           providerId: 'id',
           state: 'authenticating',
-        },
-        StorageType.Local
+        }
       );
     });
 
@@ -420,8 +419,7 @@ describe('OauthPasswordGrantProvider', () => {
         {
           state: 'authenticated',
           token: 'CodeOAuth2Response',
-        },
-        StorageType.Local
+        }
       );
     });
   });
@@ -434,8 +432,7 @@ describe('OauthPasswordGrantProvider', () => {
       service.revoke().subscribe();
       await nextFrame();
       expect(mockStorage.remove).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        StorageType.Local
+        'oryx.oauth-token'
       );
     });
 
@@ -565,8 +562,7 @@ describe('OauthPasswordGrantProvider', () => {
       service.revoke().subscribe();
       await nextFrame();
       expect(mockStorage.remove).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        StorageType.Local
+        'oryx.oauth-token'
       );
     });
   });
@@ -710,8 +706,7 @@ describe('OauthPasswordGrantProvider', () => {
         {
           state: 'authenticated',
           token: 'mockRefreshToken',
-        },
-        StorageType.Local
+        }
       );
     });
   });

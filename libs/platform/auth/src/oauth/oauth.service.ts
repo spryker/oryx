@@ -40,6 +40,7 @@ export class OauthService implements AuthService, AuthTokenService {
   );
 
   protected token$ = this.state$.pipe(
+    tap(t => console.log(t)),
     switchMap(() =>
       this.oauthToken$.pipe(
         map((token) => ({ token: token.access_token, type: token.token_type }))
@@ -116,6 +117,8 @@ export class OauthService implements AuthService, AuthTokenService {
   }
 
   getToken(): Observable<AuthTokenData> {
+    console.log('token');
+    
     return this.token$;
   }
 
@@ -188,7 +191,7 @@ export class OauthService implements AuthService, AuthTokenService {
 
   protected restoreState(): void {
     this.storageService
-      .get<OauthServiceState>(OauthService.STATE_KEY, StorageType.Local)
+      .get<OauthServiceState>(OauthService.STATE_KEY)
       .subscribe((state) => this.state$.next({ ...state }));
   }
 
@@ -198,7 +201,7 @@ export class OauthService implements AuthService, AuthTokenService {
       : {};
 
     return this.storageService
-      .set(OauthService.STATE_KEY, newState, StorageType.Local)
+      .set(OauthService.STATE_KEY, newState)
       .pipe(
         // Delay state update to microtask to let take(1) unsubscribe
         // as getCurrentProvider() will throw as soon as state is updated

@@ -20,15 +20,11 @@ export class AuthTokenInterceptor implements HttpInterceptor {
     options: RequestOptions,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    console.log('inter');
+    console.log('intercept token');
     
     return this.authTokenService.getToken().pipe(
       take(1),
-      map((token) => {
-        console.log(token);
-        
-        return this.addBearerAuthHeader(token, options)
-      }),
+      map((token) => {console.log('intercept', token); return this.addBearerAuthHeader(token, options)}),
       catchError(() => of(options)),
       switchMap((options) => handle(url, options))
     );

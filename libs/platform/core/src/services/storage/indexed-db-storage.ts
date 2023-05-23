@@ -1,7 +1,8 @@
-import { indexedDbStorageName, IndexedDbStorage, indexedDbTableName } from './model';
-import { Dexie, PromiseExtended } from 'dexie';
+import { Observable, from } from 'rxjs';
+import { indexedDbStorageName, IndexedStorage, indexedDbTableName, StoredValue } from './model';
+import { Dexie, PromiseExtended, liveQuery } from 'dexie';
 
-export class DbStorage implements IndexedDbStorage {
+export class IndexedDbStorage implements IndexedStorage {
   protected db = this.openDb();
   protected openDb(): PromiseExtended<Dexie> {
     const db = new Dexie(indexedDbStorageName);
@@ -12,12 +13,13 @@ export class DbStorage implements IndexedDbStorage {
     return db.open();
   }
 
-  async getItem(key: string): Promise<string | null> {
-    const db = await this.db;
-    const entity = await db.table(indexedDbTableName).get(key);
-    return entity?.value ?? null;
+  getItem(key: string): Observable<StoredValue> {
+    return from(liveQuery<StoredValue>(async () => {
+      const db = await this.db;     
+      return (await db.table(indexedDbTableName).get(key))?.value;
+    }));
   }
-
+  
   async setItem(key: string, value: string): Promise<void> {
     const db = await this.db;
     await db.table(indexedDbTableName).put({key, value});

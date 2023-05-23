@@ -1,13 +1,12 @@
-import { Observable, from, of } from 'rxjs';
-import { StorageType } from './model';
+import { Observable, isObservable, map, of, tap } from 'rxjs';
+import { StorageType, StoredValue } from './model';
 import { StorageService } from './storage.service';
-import { DbStorage } from './db-storage';
-import { isPromise } from '@spryker-oryx/utilities';
+import { IndexedDbStorage } from './indexed-db-storage';
 
 export class DefaultStorageService implements StorageService {
   constructor(protected defaultStorageType = StorageType.Local){}
   
-  protected bdStorage = new DbStorage();
+  protected ibdStorage = new IndexedDbStorage();
 
   get<T = unknown>(
     key: string,
@@ -16,7 +15,9 @@ export class DefaultStorageService implements StorageService {
     try {
       const value = this.getStorage(type).getItem(key);
       if (value) {
-        return isPromise(value) ? from(value.then(v => this.parseValue<T>(v))) : of(this.parseValue<T>(value));
+        return isObservable(value) ?
+          value.pipe(map(v => this.parseValue<T>(v)), tap(t => console.log(key, t))) :
+          of(this.parseValue<T>(value));
       }
     } catch (e) {
       console.error(e);
@@ -25,6 +26,8 @@ export class DefaultStorageService implements StorageService {
   }
 
   set(key: string, value: unknown, type?: StorageType): Observable<void> {
+    console.log(key, value);
+    
     this.getStorage(type).setItem(key, JSON.stringify(value));
     return of(undefined);
   }
@@ -39,19 +42,18 @@ export class DefaultStorageService implements StorageService {
     return of(undefined);
   }
 
-  protected getStorage(type = this.defaultStorageType): Storage | DbStorage {
+  protected getStorage(type = this.defaultStorageType): Storage | IndexedDbStorage {
     switch(type){
-      case StorageType.Db:
-        return this.bdStorage;
+      case StorageType.Idb:
+        return this.ibdStorage;
       case StorageType.Session:
         return sessionStorage;
       default:
-        // return localStorage;
-        return this.bdStorage;
+        return localStorage;
     }
   }
 
-  protected parseValue<T>(value: string | null): T | null {
+  protected parseValue<T>(value: StoredValue): T | null {
     return value ? JSON.parse(value) : null;
   }
 }

@@ -1,4 +1,4 @@
-import { AppFeature, HttpInterceptor, coreFeature, injectEnv } from '@spryker-oryx/core';
+import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import {
   IndexedDbFeature,
@@ -14,11 +14,7 @@ import {
 } from '@spryker-oryx/picking/offline';
 import { fulfillmentFeatures, FulfillmentFeaturesConfig } from './app';
 import { BapiAuthFeature } from '@spryker-oryx/application';
-import { AuthService, AuthTokenInterceptorConfig, AuthTokenService, DefaultOauthProviderFactoryService, OauthFeature, OauthProviderFactoryService, OauthService, OauthServiceConfig, OauthTokenInterceptor } from '@spryker-oryx/auth';
-import urlJoin from 'url-join';
 import { RouterFeature } from '@spryker-oryx/router';
-import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web';
-import { inject } from '@spryker-oryx/di';
 
 export interface SharedOfflineFulfillmentFeaturesConfig {
   indexedDb?: IndexedDbFeatureConfig;
@@ -55,6 +51,8 @@ export interface OfflineServiceWorkerFulfillmentFeaturesConfig
   i18n?: I18nFeatureOptions;
 }
 
+
+
 export function offlineServiceWorkerFulfillmentFeatures(
   config?: OfflineServiceWorkerFulfillmentFeaturesConfig
 ): AppFeature[] {
@@ -63,76 +61,14 @@ export function offlineServiceWorkerFulfillmentFeatures(
     ...config,
   };
 
-  const offlinePickingFeatures = new OfflinePickingFeature();
-  offlinePickingFeatures.plugins = [];
-
   return [
     coreFeature,
     new I18nFeature(config?.i18n),
     new IndexedDbFeature(config?.indexedDb),
-    new OfflineServiceWorkerFeature(),
-    offlinePickingFeatures,
-
-      // new RouterFeature(),
-    // {
-    //   providers: [
-    //     { provide: OauthService, useClass: OauthService },
-    //     { provide: OauthServiceConfig, useFactory: () => ({
-    //         loginRoute: '/login',
-    //         providers: [
-    //           {
-    //             id: 'spryker',
-    //             clientId: 'frontend',
-    //             grantType: 'authorization_code',
-    //             authUrl: new URL('/login', globalThis.location.origin).toString(),
-    //             tokenUrl: urlJoin(
-    //               injectEnv('ORYX_FULFILLMENT_BACKEND_URL') ?? '',
-    //               '/token'
-    //             ),
-    //             redirectUrl: new URL(
-    //               '/oauth/cb/spryker',
-    //               globalThis.location.origin
-    //             ).toString(),
-    //           },
-    //         ],
-    //         defaultProvider: 'spryker',
-    //       }) },
-    //     { provide: AuthService, useFactory: () => inject(OauthService) },
-    //     { provide: AuthTokenService, useFactory: () => inject(OauthService) },
-    //     { provide: HttpInterceptor, useClass: OauthTokenInterceptor },
-    //     {
-    //       provide: OauthProviderFactoryService,
-    //       useClass: DefaultOauthProviderFactoryService,
-    //     },
-    //   //   {
-    //   //     provide: AuthTokenInterceptorConfig,
-    //   //     useFactory: () => configFactory().tokenInterceptor,
-    //   // },
-    //   ],
-    // },
-
-    // new WebPushNotificationFeature(),
-    // new RouterFeature(),
-    // new OauthFeature(() => ({
-    //   loginRoute: '/login',
-    //   providers: [
-    //     {
-    //       id: 'spryker',
-    //       clientId: 'frontend',
-    //       grantType: 'authorization_code',
-    //       authUrl: new URL('/login', globalThis.location.origin).toString(),
-    //       tokenUrl: urlJoin(
-    //         injectEnv('ORYX_FULFILLMENT_BACKEND_URL') ?? '',
-    //         '/token'
-    //       ),
-    //       redirectUrl: new URL(
-    //         '/oauth/cb/spryker',
-    //         globalThis.location.origin
-    //       ).toString(),
-    //     },
-    //   ],
-    //   defaultProvider: 'spryker',
-    // }))
+    new RouterFeature(),
     // new BapiAuthFeature(),
+    new (class extends BapiAuthFeature {plugins = []})(),
+    new OfflineServiceWorkerFeature(),
+    new SwOfflinePickingFeature(),
   ];
 }

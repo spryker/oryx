@@ -3,6 +3,7 @@ import {
   AppPlugin,
   DefaultStorageService,
   StorageService,
+  StorageType,
 } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideIndexedDbEntities } from '@spryker-oryx/indexed-db';
@@ -68,7 +69,7 @@ export class OfflinePickingFeature implements AppFeature {
         useClass: PickingListOnlineDefaultAdapter,
       },
       { provide: PickingHttpService, useClass: PickingHttpDefaultService },
-      { provide: StorageService, useClass: DefaultStorageService },
+      { provide: StorageService, useFactory: () => new DefaultStorageService(StorageType.Idb) },
     ];
   }
 }

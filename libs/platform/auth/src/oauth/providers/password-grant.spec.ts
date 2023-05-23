@@ -135,8 +135,7 @@ describe('OauthPasswordGrantProvider', () => {
         .authenticate({ username: 'name', password: 'password' })
         .subscribe();
       expect(mockStorage.remove).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        StorageType.Local
+        'oryx.oauth-token'
       );
     });
 
@@ -151,8 +150,7 @@ describe('OauthPasswordGrantProvider', () => {
         .subscribe();
       expect(mockStorage.set).toHaveBeenCalledWith(
         'oryx.oauth-token',
-        'token',
-        StorageType.Local
+        'token'
       );
     });
   });
@@ -198,8 +196,7 @@ describe('OauthPasswordGrantProvider', () => {
       const service = setup();
       service.refreshToken().subscribe();
       expect(mockStorage.remove).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        StorageType.Local
+        'oryx.oauth-token'
       );
     });
 
@@ -214,8 +211,7 @@ describe('OauthPasswordGrantProvider', () => {
       service.refreshToken().subscribe();
       expect(mockStorage.set).toHaveBeenCalledWith(
         'oryx.oauth-token',
-        'token',
-        StorageType.Local
+        'token'
       );
     });
   });
@@ -227,8 +223,7 @@ describe('OauthPasswordGrantProvider', () => {
       const service = setup();
       service.revoke().subscribe();
       expect(mockStorage.remove).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        StorageType.Local
+        'oryx.oauth-token'
       );
     });
   });
@@ -240,8 +235,7 @@ describe('OauthPasswordGrantProvider', () => {
       service.getToken().subscribe(callback);
       await nextFrame();
       expect(mockStorage.get).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        StorageType.Local
+        'oryx.oauth-token'
       );
       expect(callback).toHaveBeenCalledWith('passwordToken');
     });
@@ -255,8 +249,7 @@ describe('OauthPasswordGrantProvider', () => {
         .subscribe();
       await nextFrame();
       expect(mockStorage.get).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        StorageType.Local
+        'oryx.oauth-token'
       );
       expect(callback).toHaveBeenCalledWith(new Error('Not authenticated!'));
     });
