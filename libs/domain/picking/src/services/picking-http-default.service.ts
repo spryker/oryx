@@ -25,13 +25,7 @@ export class PickingHttpDefaultService implements PickingHttpService {
 
   get<T = unknown>(url: string, options?: RequestOptions<T>): Observable<T> {
     url = this.createFullUrl(url);
-    return this.httpService.get(url, {
-      ...options,
-      headers: {
-        ...options?.headers,
-        'Content-Type': 'application/vnd.api+json',
-      },
-    });
+    return this.httpService.get(url, this.expandContentType(options));
   }
 
   delete<T = unknown>(url: string, options?: RequestOptions<T>): Observable<T> {
@@ -54,10 +48,21 @@ export class PickingHttpDefaultService implements PickingHttpService {
     options?: RequestOptions<T>
   ): Observable<T> {
     url = this.createFullUrl(url);
-    return this.httpService.patch(url, body, options);
+    return this.httpService.patch(url, body, this.expandContentType(options));
   }
 
   protected createFullUrl(url: string): string {
     return `${this.baseUrl}${url}`;
+  }
+
+  protected expandContentType<T = unknown>(
+    options?: RequestOptions<T>
+  ): RequestOptions<T> {
+    const headers = new Headers(options?.headers);
+    headers.set('Content-Type', 'application/vnd.api+json');
+    return {
+      ...options,
+      headers,
+    };
   }
 }

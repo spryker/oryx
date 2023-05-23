@@ -1,10 +1,13 @@
-import { TemplateResult } from 'lit';
+import { LitElement, TemplateResult } from 'lit';
+import { Observable } from 'rxjs';
 import { Injectable } from './injectable';
 
 export const IconInjectable = 'oryx.IconInjectable';
+export type IconHost = LitElement & { direction?: boolean };
 
 export interface IconInjectable {
-  render(type: string, spriteUrl?: string): TemplateResult | undefined;
+  getIcons(): string[];
+  render(type: string, host: IconHost): Observable<TemplateResult | undefined>;
 }
 
 export const iconInjectable = new Injectable<IconInjectable | null>(

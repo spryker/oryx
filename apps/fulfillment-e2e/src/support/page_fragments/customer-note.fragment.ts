@@ -5,5 +5,5 @@ export class CustomerNoteFragment {
   getNavigateBackButton = () => this.getWrapper().find('oryx-navigate-back');
   getNote = () => this.getWrapper().find('p');
   getProceedToPickingButton = () =>
-    this.getWrapper().find('oryx-button button');
+    this.getWrapper().find('oryx-button button').eq(0);
 }

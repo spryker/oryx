@@ -12,6 +12,11 @@ export interface PickingList {
   itemsCount: number;
 }
 
+export interface PickingListError extends Error {
+  code: string;
+  status: number;
+}
+
 export enum ItemsFilters {
   NotPicked = 'not_picked',
   Picked = 'picked',
