@@ -1,9 +1,10 @@
 import { appBuilder } from '@spryker-oryx/application';
 import { labsFeatures } from '@spryker-oryx/labs';
-import { b2cFeatures, b2cTheme } from '@spryker-oryx/presets';
+import { storefrontFeatures } from '@spryker-oryx/presets';
+import { storefrontTheme } from '@spryker-oryx/themes';
 
 const env = import.meta.env;
-const features = [...b2cFeatures];
+const features = [...storefrontFeatures];
 
 if (env.ORYX_LABS) {
   features.push(...labsFeatures);
@@ -11,6 +12,6 @@ if (env.ORYX_LABS) {
 
 export const app = appBuilder()
   .withFeature(features)
-  .withTheme(b2cTheme)
+  .withTheme(storefrontTheme)
   .withEnvironment(env)
   .create();

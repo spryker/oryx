@@ -13,8 +13,14 @@ const mockResources = {
     },
   },
   icons: {
-    a: 'a',
-    b: (): Promise<string> => Promise.resolve('b'),
+    list: {
+      a: 'a',
+      b: (): Promise<string> => Promise.resolve('b'),
+    },
+    types: {
+      a: 'a',
+      b: 'b',
+    },
   },
   fonts: {
     a: 'A',
@@ -70,7 +76,7 @@ describe('ResourcePlugin', () => {
 
   describe('when getIcons has been called', () => {
     it('should return the list of provided icons', () => {
-      expect(plugin.getIcons()).toBe(mockResources.icons);
+      expect(plugin.getIcons()).toEqual(mockResources.icons.list);
     });
   });
 

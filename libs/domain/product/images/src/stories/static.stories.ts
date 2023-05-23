@@ -48,7 +48,7 @@ const Template: Story<unknown> = (): TemplateResult => {
       <div class="static">
         ${[
           ProductImagesMainLayout.Carousel,
-          ProductImagesMainLayout.Toggle,
+          ProductImagesMainLayout.Grid,
           ProductImagesMainLayout.None,
         ].map((mainLayout) => render({ imageLayout: mainLayout }))}
       </div>
@@ -147,13 +147,13 @@ const Template: Story<unknown> = (): TemplateResult => {
 
       <h2>Grid items per column (inline)</h2>
       <div class="static">
-        ${[3, 4, 5, 6].map((gridItemsPerColumn) =>
+        ${[3, 4, 5, 6].map((imagesColumns) =>
           render(
             {
               navigationLayout: PINL.Grid,
               navigationPosition: ProductImagesNavigationPosition.Start,
-              gridItemsPerColumn,
-              navigationHeight: 40,
+              imagesColumns,
+              navigationHeight: '40px',
             },
             '3'
           )
@@ -162,14 +162,14 @@ const Template: Story<unknown> = (): TemplateResult => {
 
       <h2>Grid items per column (floating)</h2>
       <div class="static">
-        ${[3, 4, 5, 6].map((gridItemsPerColumn) =>
+        ${[3, 4, 5, 6].map((imagesColumns) =>
           render(
             {
               navigationLayout: PINL.Grid,
               navigationPosition: ProductImagesNavigationPosition.Start,
               navigationDisplay: ProductImagesNavigationDisplay.Floating,
-              gridItemsPerColumn,
-              navigationHeight: 40,
+              imagesColumns,
+              navigationHeight: '40px',
             },
             '3'
           )
@@ -181,7 +181,7 @@ const Template: Story<unknown> = (): TemplateResult => {
         render(
           {
             navigationPosition,
-            imageWidth: 500,
+            imageWidth: '500px',
           },
           '1'
         )
