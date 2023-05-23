@@ -10,3 +10,11 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+
+Cypress.on('uncaught:exception', (err) => {
+  if (err.message.includes('Registration failed - push service not available')) {
+    // Ignore the 'push service not available' error
+    return false;
+  }
+  // Throw any other uncaught exceptions
+});

@@ -80,7 +80,6 @@ export class PickingSyncActionHandlerService
       );
     }
 
-    //asked BE team to add 'ids'
     return this.onlineAdapter.get({ ids: sync.payload.ids }).pipe(
       combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
       switchMap(async ([pickingLists, store]) => {

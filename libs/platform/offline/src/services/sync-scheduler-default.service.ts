@@ -81,7 +81,6 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
             .anyOf(SyncStatus.Queued, SyncStatus.Processing)
             .toArray();
 
-          console.log('rrrrr');
           return await Promise.all(syncs.map((sync) => this.createSync(sync)));
         })
       )
