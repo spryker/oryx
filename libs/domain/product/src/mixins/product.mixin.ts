@@ -4,10 +4,10 @@ import {
   Signal,
   signal,
   signalAware,
+  signalProperty,
   valueType,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { property } from 'lit/decorators.js';
 import { ProductController } from '../controllers';
 import type { Product } from '../models';
 import { ProductComponentProperties } from '../models';
@@ -29,7 +29,7 @@ export const ProductMixin = <
 ): Type<ProductMixinInterface> & T => {
   @signalAware()
   class ProductMixinClass extends superClass {
-    @property({ reflect: true }) sku?: string;
+    @signalProperty({ reflect: true }) sku?: string;
 
     protected productController = new ProductController(this);
 
