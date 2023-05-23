@@ -44,7 +44,6 @@ export class BapiPushNotificationDefaultService
   }
 
   unsubscribe(): Observable<void> {
-    // TODO: make unsubscribe call to API when it will be ready
     return this.pushService
       .unsubscribe()
       .pipe(
