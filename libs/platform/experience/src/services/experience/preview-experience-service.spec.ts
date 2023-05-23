@@ -5,15 +5,14 @@ import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
 import { RouterEventType, RouterService } from '@spryker-oryx/router';
 import { NEVER, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
+import { ExperienceDataClientService, postMessage } from '../data-client';
 import { ContentBackendUrl } from '../experience-tokens';
-import { ExperienceDataClientService } from './data-client';
 import { ExperienceService } from './experience.service';
 import {
   POST_MESSAGE_TYPE,
   PreviewExperienceService,
   REQUEST_MESSAGE_TYPE,
 } from './preview-experience.service';
-import { postMessage } from './utilities';
 
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
