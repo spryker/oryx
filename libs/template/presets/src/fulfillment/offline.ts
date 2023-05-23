@@ -66,7 +66,6 @@ export function offlineServiceWorkerFulfillmentFeatures(
     new I18nFeature(config?.i18n),
     new IndexedDbFeature(config?.indexedDb),
     new RouterFeature(),
-    // new BapiAuthFeature(),
     new (class extends BapiAuthFeature {plugins = []})(),
     new OfflineServiceWorkerFeature(),
     new SwOfflinePickingFeature(),

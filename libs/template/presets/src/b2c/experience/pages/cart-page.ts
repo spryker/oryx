@@ -34,7 +34,7 @@ export const CartPage: StaticComponent = {
             { type: 'oryx-cart-totals-total' },
           ],
         },
-        { type: 'checkout-link' },
+        { type: 'oryx-checkout-link' },
       ],
       options: {
         data: {

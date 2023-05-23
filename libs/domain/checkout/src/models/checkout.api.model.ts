@@ -23,7 +23,7 @@ export module ApiCheckoutModel {
     carrierName: string;
     currencyIsoCode: string;
     deliveryTime: number | null;
-    id: number | string;
+    id: string;
     name: string;
     price: number;
     taxRate?: string;
@@ -40,7 +40,7 @@ export module ApiCheckoutModel {
       shipments?: Shipment[];
       shipmentMethods?: ShipmentMethod[];
       shipment?: {
-        idShipmentMethod: number;
+        idShipmentMethod: string;
       };
     };
   }
@@ -54,7 +54,7 @@ export module ApiCheckoutModel {
       shippingAddress?: Address;
       shipments?: Shipment[];
       shipment?: {
-        idShipmentMethod: number;
+        idShipmentMethod: string;
       };
       payments?: PaymentMethod[];
     };

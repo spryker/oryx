@@ -17,7 +17,7 @@ import { styles } from './login.styles';
 @defaultOptions({
   enableRememberMe: true,
   redirectUrl: '/',
-  passwordVisibility: PasswordVisibilityStrategy.Mousedown,
+  passwordVisibility: PasswordVisibilityStrategy.Click,
 })
 @hydratable(['mouseover', 'focus'])
 export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
@@ -53,7 +53,6 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
     switchMap((request) =>
       this.authLoginStrategy.login(request).pipe(
         catchError((e) => {
-          console.error(e);
           this.isLoading = false;
           this.hasError = true;
           return EMPTY;

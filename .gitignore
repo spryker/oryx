@@ -51,3 +51,4 @@ build-storybook.log
 # Ignoring env configuration
 **/.env*
 !**/.env.template
+

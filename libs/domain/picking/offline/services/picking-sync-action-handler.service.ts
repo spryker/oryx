@@ -84,7 +84,7 @@ export class PickingSyncActionHandlerService
     return this.onlineAdapter.get({ ids: sync.payload.ids }).pipe(
       combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
       switchMap(async ([pickingLists, store]) => {
-        // Remove when BE will be able to retrieve the list of picking lists by their "ids"
+        // TODO: Remove filtering when BE will be able to retrieve the list of picking lists by provided "ids" list
         const filteredPickingLists = pickingLists.filter(({ id }) =>
           sync.payload.ids.includes(id)
         );
