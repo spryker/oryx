@@ -7,7 +7,7 @@ export default {
 } as unknown as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return html`<search-product-sort></search-product-sort>`;
+  return html`<oryx-search-product-sort></oryx-search-product-sort>`;
 };
 
 export const Demo = Template.bind({});

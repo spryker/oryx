@@ -1,4 +1,4 @@
-import { branches, getResourceIcons, states } from '@spryker-oryx/ui';
+import { branches, getAppIcons, states } from '@spryker-oryx/ui';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/popover';
 import {
@@ -80,12 +80,12 @@ TypeaheadDemo.argTypes = {
     table: { category: 'Layout' },
   },
   searchIcon: {
-    options: getResourceIcons(),
+    options: getAppIcons(),
     control: { type: 'select' },
     table: { category: 'Layout' },
   },
   clearIcon: {
-    options: getResourceIcons(),
+    options: getAppIcons(),
     control: { type: 'select' },
     table: { category: 'Layout' },
   },

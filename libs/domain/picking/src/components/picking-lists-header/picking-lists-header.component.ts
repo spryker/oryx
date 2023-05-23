@@ -44,7 +44,7 @@ export class PickingListsHeaderComponent extends LitElement {
       </oryx-heading>
 
       <oryx-search
-        backIcon="backArrow"
+        backIcon="back"
         xs-floated
         @oryx.open=${(): void => this.onToggleSearch(true)}
         @oryx.close=${(): void => this.onToggleSearch(false)}

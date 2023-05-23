@@ -198,7 +198,7 @@ describe('SearchFacetNavigationComponent', () => {
     });
 
     element = await fixture(
-      html`<search-facet-navigation></search-facet-navigation>`
+      html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
     );
   });
 
@@ -223,9 +223,9 @@ describe('SearchFacetNavigationComponent', () => {
   describe('when "valueRenderLimit" is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<search-facet-navigation
+        html`<oryx-search-facet-navigation
           .options=${{ valueRenderLimit: 3 }}
-        ></search-facet-navigation>`
+        ></oryx-search-facet-navigation>`
       );
     });
 
@@ -241,9 +241,9 @@ describe('SearchFacetNavigationComponent', () => {
   describe('when "expandedItemsCount" is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<search-facet-navigation
+        html`<oryx-search-facet-navigation
           .options=${{ expandedItemsCount: 1 }}
-        ></search-facet-navigation>`
+        ></oryx-search-facet-navigation>`
       );
     });
 
@@ -264,9 +264,9 @@ describe('SearchFacetNavigationComponent', () => {
   describe('when "expandedItemsCount" is provided as 0', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<search-facet-navigation
+        html`<oryx-search-facet-navigation
           .options=${{ expandedItemsCount: 0 }}
-        ></search-facet-navigation>`
+        ></oryx-search-facet-navigation>`
       );
     });
 
@@ -280,7 +280,7 @@ describe('SearchFacetNavigationComponent', () => {
   describe('when "valueRenderLimit" is not provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<search-facet-navigation></search-facet-navigation>`
+        html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
       );
     });
 
@@ -294,7 +294,9 @@ describe('SearchFacetNavigationComponent', () => {
   describe('when "expandedItemsCount" is not provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<search-facet-navigation .options=${{}}></search-facet-navigation>`
+        html`<oryx-search-facet-navigation
+          .options=${{}}
+        ></oryx-search-facet-navigation>`
       );
     });
 

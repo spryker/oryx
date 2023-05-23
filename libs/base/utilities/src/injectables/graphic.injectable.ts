@@ -4,6 +4,7 @@ import { Injectable } from './injectable';
 export const GraphicInjectable = 'oryx.GraphicInjectable';
 
 export interface GraphicInjectable {
+  getGraphics(): Record<string, unknown> | undefined;
   getUrl(token: string): DirectiveResult | undefined;
   getSource(token: string): DirectiveResult | undefined;
 }

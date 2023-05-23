@@ -90,6 +90,7 @@ export class ServerPageMetaService extends DefaultPageMetaService {
       stream += `\n<${tag}${this.setAttributes(attrs)} />`;
     }
 
-    this.template = this.template.replace('</head>', `${stream}\n</head>`);
+    const marker = this.template.includes('</head') ? '</head' : '<body';
+    this.template = this.template.replace(marker, `${stream}\n${marker}`);
   }
 }

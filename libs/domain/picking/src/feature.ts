@@ -9,6 +9,7 @@ import {
   loginPageComponent,
   navigateBackComponent,
   pickingComponent,
+  pickingInProgressModalComponent,
   pickingListItemComponent,
   pickingListsComponent,
   pickingListsHeaderComponent,
@@ -35,6 +36,7 @@ export const pickingComponents = [
   pickingListsHeaderComponent,
   pickingListItemComponent,
   pickingProductCardComponent,
+  pickingInProgressModalComponent,
   pickingComponent,
   userProfileComponent,
 ];
