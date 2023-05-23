@@ -1,4 +1,3 @@
-export type NullableGeneric<T> = T | null;
 export type MakePropRequired<T, K extends keyof T> = Pick<
   T,
   Exclude<keyof T, K>

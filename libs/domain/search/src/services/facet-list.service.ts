@@ -1,10 +1,9 @@
 import { Facet } from '@spryker-oryx/product';
-import { NullableGeneric } from '@spryker-oryx/utilities';
 import { Observable } from 'rxjs';
 import { FacetQualifier } from '../models';
 
 export interface FacetListService {
-  get(): Observable<NullableGeneric<Facet[]>>;
+  get(): Observable<Facet[] | null>;
   getFacet(options: FacetQualifier): Observable<Facet>;
 }
 

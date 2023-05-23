@@ -1,5 +1,4 @@
 import { ProductListSort } from '@spryker-oryx/product';
-import { NullableGeneric } from '@spryker-oryx/utilities';
 import { Observable, of } from 'rxjs';
 import { SortingService } from '../../../services/sorting.service';
 
@@ -35,7 +34,7 @@ const mock: ProductListSort = {
 };
 
 export class MockSortingService implements SortingService {
-  get(): Observable<NullableGeneric<ProductListSort>> {
+  get(): Observable<ProductListSort | null> {
     return of(mock);
   }
 }

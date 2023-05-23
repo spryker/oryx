@@ -19,7 +19,7 @@ import {
 } from './images.model';
 import { productImageStyles } from './images.styles';
 
-const defaultImagesOptions = {
+const defaultImagesOptions: ProductImagesComponentOptions = {
   imageLayout: ProductImagesMainLayout.Carousel,
   navigationLayout: NavigationLayout.Carousel,
   navigationPosition: NavigationPosition.Bottom,
@@ -27,7 +27,7 @@ const defaultImagesOptions = {
   navigationObjectFit: 'contain',
   imageHeight: '300px',
   navigationHeight: '80px',
-  imageColumns: 1,
+  imagesColumns: 1,
 };
 
 @defaultOptions(defaultImagesOptions)
@@ -74,7 +74,7 @@ export class ProductImagesComponent extends ProductMixin(
     const {
       imageLayout = defaultImagesOptions.imageLayout,
       imageObjectFit: objectFit = defaultImagesOptions.imageObjectFit,
-      imagesColumns: cols = defaultImagesOptions.imageColumns,
+      imagesColumns: cols = defaultImagesOptions.imagesColumns,
       scrollBehavior,
     } = this.$options();
 

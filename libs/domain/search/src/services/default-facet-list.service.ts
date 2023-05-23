@@ -1,6 +1,5 @@
 import { inject } from '@spryker-oryx/di';
 import { Facet, ProductListPageService } from '@spryker-oryx/product';
-import { NullableGeneric } from '@spryker-oryx/utilities';
 import { map, Observable } from 'rxjs';
 import { FacetQualifier } from '../models';
 import { FacetListService } from './facet-list.service';
@@ -8,7 +7,7 @@ import { FacetListService } from './facet-list.service';
 export class DefaultFacetListService implements FacetListService {
   constructor(protected productListService = inject(ProductListPageService)) {}
 
-  get(): Observable<NullableGeneric<Facet[]>> {
+  get(): Observable<Facet[] | null> {
     return this.productListService.get().pipe(map((pl) => pl?.facets ?? []));
   }
 

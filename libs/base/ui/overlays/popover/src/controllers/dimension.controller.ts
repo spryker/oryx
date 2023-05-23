@@ -90,7 +90,7 @@ export class DimensionController implements ReactiveController {
   protected getComputedProperty(
     element: Element,
     propName: string
-  ): number | void {
+  ): number | undefined {
     const property = window
       ?.getComputedStyle(element)
       .getPropertyValue(propName);
