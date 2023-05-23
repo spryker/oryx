@@ -1,10 +1,16 @@
+import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductMediaContainerSize, ProductMixin } from '@spryker-oryx/product';
+import {
+  ProductContext,
+  ProductMediaContainerSize,
+  ProductMixin,
+} from '@spryker-oryx/product';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import {
   computed,
+  effect,
   hydratable,
   signalAware,
   Size,
@@ -42,8 +48,15 @@ export class ProductCardComponent extends ProductMixin(
     })
   );
 
+  protected context = new ContextController(this);
+
+  skuController = effect(() => {
+    this.context.provide(ProductContext.SKU, this.$options().sku ?? this.sku);
+  });
+
   protected override render(): TemplateResult | void {
     const product = this.$product();
+
     if (!product) return;
 
     const { titleLineClamp } = this.$options();
