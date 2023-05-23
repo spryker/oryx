@@ -61,6 +61,7 @@ export const materialDesignIcons: IconMapper = {
     [IconTypes.InputStepper]: 'arrow_drop_up',
     [IconTypes.ViewList]: 'view_list',
     [IconTypes.ArrowsOutward]: 'arrows_outward',
+    [IconTypes.Images]: 'photo_library',
   },
 };
 
