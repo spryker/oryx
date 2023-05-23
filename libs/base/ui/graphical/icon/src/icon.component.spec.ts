@@ -2,8 +2,8 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { a11yConfig, Size } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { iconComponent } from './component';
 import { IconComponent } from './icon.component';
+import { iconComponent } from './icon.def';
 
 describe('Icon', () => {
   let element: IconComponent;

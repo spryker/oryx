@@ -1,9 +1,17 @@
 import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
+  AppReadyExperienceDataRevealer,
+  ColorModeExperienceDataRevealer,
   DefaultExperienceDataClientService,
-  DefaultExperienceService,
   ExperienceDataClientService,
+  ExperienceDataRevealer,
+  GraphicsExperienceDataRevealer,
+  OptionsExperienceDataRevealer,
+  SchemaExperienceDataRevealer,
+} from './data-client';
+import {
+  DefaultExperienceService,
   ExperienceService,
   PreviewExperienceService,
 } from './experience';
@@ -67,5 +75,29 @@ export const experiencePreviewProviders: Provider[] = [
   {
     provide: ExperienceService,
     useClass: PreviewExperienceService,
+  },
+  {
+    provide: ExperienceDataRevealer,
+    useClass: SchemaExperienceDataRevealer,
+  },
+  {
+    provide: ExperienceDataRevealer,
+    useClass: AppReadyExperienceDataRevealer,
+  },
+  {
+    provide: ExperienceDataRevealer,
+    useClass: GraphicsExperienceDataRevealer,
+  },
+  {
+    provide: ExperienceDataRevealer,
+    useClass: OptionsExperienceDataRevealer,
+  },
+  {
+    provide: ExperienceDataRevealer,
+    useClass: ColorModeExperienceDataRevealer,
+  },
+  {
+    provide: ExperienceDataRevealer,
+    useClass: ColorModeExperienceDataRevealer,
   },
 ];

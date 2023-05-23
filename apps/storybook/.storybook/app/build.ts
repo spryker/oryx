@@ -15,10 +15,7 @@ import { mockSiteFeature } from '@spryker-oryx/site/mocks';
 import { uiFeature } from '@spryker-oryx/ui';
 import { mockUserFeature } from '@spryker-oryx/user/mocks';
 import isChromatic from 'chromatic/isChromatic';
-import {
-  chromaticStyledComponents,
-  ResourcesChromaticPlugin,
-} from './chromatic';
+import { chromaticStyledComponents } from './chromatic-styles';
 import { resource, theme } from './data';
 import { StorybookPlugin } from './plugin';
 import {
@@ -57,15 +54,11 @@ const builder = appBuilder()
   .withFeature(mockUserFeature)
   .withFeature(new I18nFeature())
   .withFeature(new MockAuthFeature())
-  .withTheme(themes);
+  .withTheme(themes)
+  .withResources(resources);
 
-// TODO: Find another way without overriding injectables
 if (isChromatic()) {
-  builder
-    .withComponents(chromaticStyledComponents)
-    .with([new ResourcesChromaticPlugin(resources)]);
-} else {
-  builder.withResources(resources);
+  builder.withComponents(chromaticStyledComponents);
 }
 
 builder.create();

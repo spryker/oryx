@@ -18,6 +18,9 @@ export type ResourceFonts = Record<string, string>;
 
 export interface Resources {
   graphics?: ResourceGraphic;
-  icons?: ResourceIcons;
+  icons?: {
+    list: ResourceIcons;
+    types: Record<string, string>;
+  };
   fonts?: ResourceFonts;
 }

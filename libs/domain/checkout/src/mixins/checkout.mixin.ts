@@ -1,14 +1,60 @@
-import { Type } from '@spryker-oryx/di';
+import { resolve, Type } from '@spryker-oryx/di';
 import {
-  ComponentMixin,
-  ContentComponentProperties,
-} from '@spryker-oryx/experience';
+  ConnectableSignal,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
+import { map } from 'rxjs';
+import { CheckoutState } from '../models';
+import {
+  CheckoutDataService,
+  CheckoutService,
+  CheckoutStateService,
+} from '../services';
 
-export const CheckoutComponentMixin = <T>(): Type<
-  LitElement & ContentComponentProperties<T>
-> => {
-  class CheckoutComponent extends ComponentMixin<T>() {}
+export declare class CheckoutMixinInterface {
+  protected checkoutService: CheckoutService;
+  protected checkoutDataService: CheckoutDataService;
+  protected checkoutStateService: CheckoutStateService;
 
-  return CheckoutComponent as Type<LitElement & ContentComponentProperties<T>>;
+  /**
+   * Indicates that the checkout is ready for collecting checkout data.
+   */
+  protected isEmpty: ConnectableSignal<boolean>;
+  protected isInvalid: ConnectableSignal<boolean>;
+  protected isBusy: ConnectableSignal<boolean>;
+}
+
+export const CheckoutMixin = <T extends Type<LitElement>>(
+  superClass: T
+): Type<CheckoutMixinInterface> & T => {
+  @signalAware()
+  class CheckoutMixinClass extends superClass {
+    protected checkoutService = resolve(CheckoutService);
+    protected checkoutDataService = resolve(CheckoutDataService);
+    protected checkoutStateService = resolve(CheckoutStateService);
+
+    protected isEmpty = signal(
+      this.checkoutService
+        .getProcessState()
+        .pipe(map((state) => state === CheckoutState.Empty)),
+      false
+    );
+
+    protected isBusy = signal(
+      this.checkoutService
+        .getProcessState()
+        .pipe(map((state) => state === CheckoutState.Busy)),
+      false
+    );
+
+    protected isInvalid = signal(
+      this.checkoutService
+        .getProcessState()
+        .pipe(map((state) => state === CheckoutState.Invalid)),
+      false
+    );
+  }
+  return CheckoutMixinClass as unknown as Type<CheckoutMixinInterface> & T;
 };

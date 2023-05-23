@@ -1,9 +1,9 @@
-import { getThemeGraphics } from '@spryker-oryx/ui';
+import { getAppGraphics } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 
-const graphics = getThemeGraphics();
+const graphics = getAppGraphics();
 
 export default {
   title: `${storybookPrefix}/Graphical/Image`,

@@ -1,5 +1,5 @@
 import { SemanticLinkType } from '@spryker-oryx/site';
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { getAppIcons } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
@@ -12,6 +12,8 @@ export default {
 const Template: Story<ContentLinkOptions> = (options): TemplateResult => {
   return html`<oryx-content-link .options="${options}"></oryx-content-link>`;
 };
+
+const icons = getAppIcons();
 
 export const LinkDemo = Template.bind({});
 
@@ -28,7 +30,7 @@ LinkDemo.args = {
 
 LinkDemo.argTypes = {
   icon: {
-    options: Object.values(IconTypes),
+    options: icons,
     control: { type: 'select' },
   },
   type: {

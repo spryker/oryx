@@ -1,8 +1,4 @@
-import {
-  Carrier,
-  CheckoutShipmentService,
-  Shipment,
-} from '@spryker-oryx/checkout';
+import { Carrier, Shipment, ShipmentMethod } from '@spryker-oryx/checkout';
 import { map, Observable, of } from 'rxjs';
 import {
   mockFilteredShipmentMethods,
@@ -16,7 +12,7 @@ export enum ShipmentProviderType {
   NoProvider = 'no-provider',
 }
 
-export class MockShipmentService implements Partial<CheckoutShipmentService> {
+export class MockShipmentService {
   protected type = ShipmentProviderType.Multiple;
   static mockShipment: Shipment = {
     items: [],
@@ -28,7 +24,8 @@ export class MockShipmentService implements Partial<CheckoutShipmentService> {
   changeProviderType(value: ShipmentProviderType) {
     this.type = value;
   }
-  getShipment(): Observable<Shipment | null> {
+
+  protected getShipment(): Observable<Shipment | null> {
     switch (this.type) {
       case ShipmentProviderType.SingleProviderMultipleMethods:
         MockShipmentService.mockShipment.carriers = [
@@ -62,17 +59,13 @@ export class MockShipmentService implements Partial<CheckoutShipmentService> {
     return this.getShipment().pipe(map((shipment) => shipment?.carriers ?? []));
   }
 
-  getSelectedShipmentMethod(): Observable<number> {
+  selected(): Observable<ShipmentMethod | null> {
     return this.getShipment().pipe(
-      map((shipment) =>
-        shipment?.selectedShipmentMethod?.id
-          ? Number(shipment.selectedShipmentMethod.id)
-          : 0
-      )
+      map((shipment) => shipment?.selectedShipmentMethod ?? null)
     );
   }
 
-  setShipmentMethod(): Observable<void> {
+  select(): Observable<void> {
     return of(undefined);
   }
 }

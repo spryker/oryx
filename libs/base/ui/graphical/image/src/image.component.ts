@@ -1,10 +1,17 @@
-import { graphicInjectable, hydratable } from '@spryker-oryx/utilities';
+import {
+  computed,
+  graphicInjectable,
+  hydratable,
+  signalAware,
+  signalProperty,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ImageComponentAttributes, LoadingStrategy } from './image.model';
 import { styles } from './image.styles';
 
+@signalAware()
 @hydratable()
 export class ImageComponent
   extends LitElement
@@ -16,14 +23,22 @@ export class ImageComponent
     super();
   }
 
+  @signalProperty({ reflect: true }) resource?: string;
   @property({ reflect: true }) src?: string;
   @property() srcset?: string;
   @property({ reflect: true }) alt?: string;
-  @property({ reflect: true }) resource?: string;
   @property() loading?: LoadingStrategy;
   @property({ type: Boolean }) skipFallback?: boolean;
 
   @state() failed?: string;
+
+  protected source = computed(() =>
+    this.graphicResolver?.getSource(this.resource ?? '')
+  );
+
+  protected url = computed(() =>
+    this.graphicResolver?.getUrl(this.resource ?? '')
+  );
 
   protected override render(): TemplateResult | void {
     if (this.hasFailure()) return this.renderFallback();
@@ -33,16 +48,12 @@ export class ImageComponent
 
   protected renderImage(): TemplateResult | void {
     if (this.resource) {
-      const source = this.graphicResolver?.getSource(this.resource);
+      const sourceResult = this.source();
 
-      if (source) {
-        return html`${source}`;
-      }
+      if (sourceResult) return html`${sourceResult}`;
     }
 
-    const src = this.resource
-      ? this.graphicResolver?.getUrl(this.resource)
-      : this.src;
+    const src = this.resource ? this.url() : this.src;
 
     if (!src) return this.renderFallback();
 
