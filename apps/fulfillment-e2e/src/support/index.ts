@@ -12,11 +12,12 @@
 import './commands';
 
 Cypress.on('uncaught:exception', (err) => {
-  if (
-    err.message.includes('Registration failed - push service not available')
-  ) {
-    // Ignore the 'push service not available' error
+  const ignoreErrors = [
+    'Registration failed - push service not available',
+    'Background Sync is disabled',
+  ];
+
+  if (ignoreErrors.some((ignoreError) => err.message.includes(ignoreError))) {
     return false;
   }
-  // Throw any other uncaught exceptions
 });
