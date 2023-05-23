@@ -62,6 +62,16 @@ export const materialDesignIcons: IconMapper = {
     [IconTypes.ViewList]: 'view_list',
     [IconTypes.ArrowsOutward]: 'arrows_outward',
     [IconTypes.Images]: 'photo_library',
+    [IconTypes.Cart]: 'shopping_cart',
+    [IconTypes.CartAdd]: 'add_shopping_cart',
+    [IconTypes.CartAdd]: 'add_shopping_cart',
+    [IconTypes.ActionsHorizontal]: 'more_horiz',
+    [IconTypes.Drag]: 'apps',
+    [IconTypes.DragSmall]: 'drag_indicator',
+    [IconTypes.Reset]: 'restart_alt',
+    [IconTypes.Front]: 'arrow_forward_ios',
+    [IconTypes.Products]: 'inventory_2',
+    [IconTypes.Loader]: 'cycle',
   },
 };
 
