@@ -13,7 +13,7 @@ import { Size } from '@spryker-oryx/utilities';
  * in non-production environments.
  */
 const fetchUrl = `https://res.cloudinary.com/${
-  (<any>import.meta).env.ORYX_CLOUDINARY_ID
+  (<any>import.meta).env?.ORYX_CLOUDINARY_ID
 }/image/fetch/`;
 
 /**
