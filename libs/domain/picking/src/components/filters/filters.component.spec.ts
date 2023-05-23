@@ -62,7 +62,7 @@ describe('FiltersComponent', () => {
 
   it('should build the form', () => {
     expect(renderer.buildForm).toHaveBeenCalledWith(fields, {
-      sortBy: 'deliveryDate.desc',
+      sortBy: 'deliveryDate.asc',
     });
   });
 
