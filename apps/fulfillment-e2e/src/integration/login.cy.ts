@@ -27,6 +27,7 @@ describe('Login Suite', () => {
   describe('when logging in', () => {
     it('should login successfully', () => {
       cy.intercept('POST', '**/token').as('token');
+      cy.intercept('GET', '**/picking-lists?include*').as('picking-lists');
 
       loginPage.visit();
       loginPage.loginForm.login({
