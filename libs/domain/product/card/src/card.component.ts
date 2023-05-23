@@ -49,8 +49,7 @@ export class ProductCardComponent extends ProductMixin(
   );
 
   protected context = new ContextController(this);
-
-  skuController = effect(() => {
+  protected skuController = effect(() => {
     this.context.provide(ProductContext.SKU, this.$options().sku ?? this.sku);
   });
 
