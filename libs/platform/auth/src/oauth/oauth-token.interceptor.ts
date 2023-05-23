@@ -36,8 +36,6 @@ export class OauthTokenInterceptor
     handle: HttpHandlerFn
   ): Observable<Response> {
     if (this.isOauthRequest(options)) {
-      console.log(url);
-      
       return handle(url, this.removeOauthHeader(options));
     }
 

@@ -14,7 +14,6 @@ export class PushNotificationPlugin extends ExecPlugin {
 
       authService
         .isAuthenticated()
-        .pipe()
         .subscribe((isAuthenticated) => {
           if (isAuthenticated) {
             pushNotificationService.initSubscription().subscribe(() => {

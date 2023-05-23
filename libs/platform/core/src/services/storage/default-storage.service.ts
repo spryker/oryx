@@ -1,5 +1,5 @@
-import { Observable, isObservable, map, of, tap } from 'rxjs';
-import { StorageType, StoredValue } from './model';
+import { Observable, isObservable, map, of } from 'rxjs';
+import { IndexedStorage, StorageType, StoredValue } from './model';
 import { StorageService } from './storage.service';
 import { IndexedDbStorage } from './indexed-db-storage';
 
@@ -16,7 +16,7 @@ export class DefaultStorageService implements StorageService {
       const value = this.getStorage(type).getItem(key);
       if (value) {
         return isObservable(value) ?
-          value.pipe(map(v => this.parseValue<T>(v)), tap(t => console.log(key, t))) :
+          value.pipe(map(v => this.parseValue<T>(v))) :
           of(this.parseValue<T>(value));
       }
     } catch (e) {
@@ -26,8 +26,6 @@ export class DefaultStorageService implements StorageService {
   }
 
   set(key: string, value: unknown, type?: StorageType): Observable<void> {
-    console.log(key, value);
-    
     this.getStorage(type).setItem(key, JSON.stringify(value));
     return of(undefined);
   }
@@ -42,7 +40,7 @@ export class DefaultStorageService implements StorageService {
     return of(undefined);
   }
 
-  protected getStorage(type = this.defaultStorageType): Storage | IndexedDbStorage {
+  protected getStorage(type = this.defaultStorageType): Storage | IndexedStorage {
     switch(type){
       case StorageType.Idb:
         return this.ibdStorage;

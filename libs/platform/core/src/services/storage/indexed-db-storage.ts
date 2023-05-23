@@ -1,37 +1,51 @@
-import { Observable, from } from 'rxjs';
+import { Observable, shareReplay, switchMap } from 'rxjs';
 import { indexedDbStorageName, IndexedStorage, indexedDbTableName, StoredValue } from './model';
-import { Dexie, PromiseExtended, liveQuery } from 'dexie';
+import { Dexie, liveQuery } from 'dexie';
 
 export class IndexedDbStorage implements IndexedStorage {
-  protected db = this.openDb();
-  protected openDb(): PromiseExtended<Dexie> {
+  protected db = new Observable<Dexie>((subscriber) => {
     const db = new Dexie(indexedDbStorageName);
     db.version(1).stores({
       [indexedDbTableName]: '&key,value'
     });
 
-    return db.open();
-  }
+    subscriber.next(db);
+
+    return () => {
+      db.close();
+    };
+  }).pipe(
+    switchMap(async (db) => {
+      await db.open();
+
+      return db;
+    }),
+    shareReplay({ refCount: false, bufferSize: 1 })
+  )
 
   getItem(key: string): Observable<StoredValue> {
-    return from(liveQuery<StoredValue>(async () => {
-      const db = await this.db;     
-      return (await db.table(indexedDbTableName).get(key))?.value;
-    }));
+    return this.db.pipe(
+      switchMap(db => liveQuery<StoredValue>(async () => {
+        return (await db.table(indexedDbTableName).get(key))?.value;
+      }))
+    )
   }
   
-  async setItem(key: string, value: string): Promise<void> {
-    const db = await this.db;
-    await db.table(indexedDbTableName).put({key, value});
+  setItem(key: string, value: string): void {
+    this.db.subscribe(
+      async db => await db.table(indexedDbTableName).put({key, value})
+    )
   };
 
-  async removeItem(key: string): Promise<void> {
-    const db = await this.db;
-    await db.table(indexedDbTableName).delete(key);
+  removeItem(key: string): void {
+    this.db.subscribe(
+      async db => await db.table(indexedDbTableName).delete(key)
+    )
   };
 
-  async clear(): Promise<void> {
-    const db = await this.db;
-    await db.table(indexedDbTableName).clear();
+  clear(): void {
+    this.db.subscribe(
+      async db => await db.table(indexedDbTableName).clear()
+    )
   };
 }

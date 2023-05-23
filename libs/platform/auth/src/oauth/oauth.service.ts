@@ -5,6 +5,7 @@ import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
   catchError,
+  distinctUntilChanged,
   from,
   map,
   Observable,
@@ -40,7 +41,6 @@ export class OauthService implements AuthService, AuthTokenService {
   );
 
   protected token$ = this.state$.pipe(
-    tap(t => console.log(t)),
     switchMap(() =>
       this.oauthToken$.pipe(
         map((token) => ({ token: token.access_token, type: token.token_type }))
@@ -56,6 +56,7 @@ export class OauthService implements AuthService, AuthTokenService {
         catchError(() => of(false))
       )
     ),
+    distinctUntilChanged(),
     shareReplay(1)
   );
 
@@ -116,9 +117,14 @@ export class OauthService implements AuthService, AuthTokenService {
     );
   }
 
+  invokeStoredToken(): void {
+    this.storageService
+      .get<OauthServiceState>(OauthService.STATE_KEY)
+      .pipe(distinctUntilChanged())
+      .subscribe((state) => this.state$.next({ ...state }));
+  }
+
   getToken(): Observable<AuthTokenData> {
-    console.log('token');
-    
     return this.token$;
   }
 

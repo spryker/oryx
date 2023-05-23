@@ -7,6 +7,7 @@ import {
 import {
   OfflineFeature,
   OfflineServiceWorkerFeature,
+  SwAuthPlugin,
 } from '@spryker-oryx/offline';
 import {
   OfflinePickingFeature,
@@ -51,8 +52,6 @@ export interface OfflineServiceWorkerFulfillmentFeaturesConfig
   i18n?: I18nFeatureOptions;
 }
 
-
-
 export function offlineServiceWorkerFulfillmentFeatures(
   config?: OfflineServiceWorkerFulfillmentFeaturesConfig
 ): AppFeature[] {
@@ -66,7 +65,7 @@ export function offlineServiceWorkerFulfillmentFeatures(
     new I18nFeature(config?.i18n),
     new IndexedDbFeature(config?.indexedDb),
     new RouterFeature(),
-    new (class extends BapiAuthFeature {plugins = []})(),
+    new (class extends BapiAuthFeature {plugins = [new SwAuthPlugin()]})(),
     new OfflineServiceWorkerFeature(),
     new SwOfflinePickingFeature(),
   ];
