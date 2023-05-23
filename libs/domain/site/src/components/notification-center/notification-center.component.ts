@@ -4,7 +4,7 @@ import {
   NotificationCenterComponent,
   NotificationPosition,
 } from '@spryker-oryx/ui/notification-center';
-import {effect, hydratable, subscribe} from '@spryker-oryx/utilities';
+import {computed, effect, hydratable, signal, subscribe} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { tap } from 'rxjs';
@@ -23,23 +23,10 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
   protected siteNotificationService = resolve(NotificationService);
   protected centerRef = createRef<NotificationCenterComponent>();
 
-  @subscribe()
-  protected notification$ = this.siteNotificationService.get().pipe(
-    tap(async (notification) => {
-      if (!notification) return;
-      if (!(this.centerRef.value && 'open' in this.centerRef.value)) {
-        await customElements.whenDefined('oryx-notification-center');
-      }
-      if (this.componentOptions?.autoCloseTime) {
-        notification.autoCloseTime ??=
-          this.componentOptions.autoCloseTime * 1000;
-      }
-      this.centerRef.value?.open(notification);
-    })
-  );
-
+  // @subscribe()
   // protected notification$ = this.siteNotificationService.get().pipe(
   //   tap(async (notification) => {
+  //     console.log(notification)
   //     if (!notification) return;
   //     if (!(this.centerRef.value && 'open' in this.centerRef.value)) {
   //       await customElements.whenDefined('oryx-notification-center');
@@ -51,6 +38,21 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
   //     this.centerRef.value?.open(notification);
   //   })
   // );
+
+  protected notification = signal(this.siteNotificationService.get());
+
+  protected notification$ = effect(async() => {
+
+    if (!this.notification()) return;
+    if (!(this.centerRef.value && 'open' in this.centerRef.value)) {
+      await customElements.whenDefined('oryx-notification-center');
+    }
+    if (this.componentOptions?.autoCloseTime) {
+      this.notification().autoCloseTime ??=
+        this.componentOptions.autoCloseTime * 1000;
+    }
+    this.centerRef.value?.open(this.notification());
+  });
 
   protected override render(): TemplateResult {
     const { position, enableStacking } = this.componentOptions ?? {};
