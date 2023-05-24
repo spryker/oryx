@@ -24,6 +24,7 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
   protected centerRef = createRef<NotificationCenterComponent>();
 
   protected notification = signal(
+    //TODO: remove rxjs part when HRZ-2927 is done
     this.siteNotificationService.get().pipe(map((n) => ({ ...n })))
   );
 
