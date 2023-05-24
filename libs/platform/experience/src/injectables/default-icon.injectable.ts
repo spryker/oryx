@@ -16,7 +16,7 @@ import { html, svg, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import { map, Observable, of } from 'rxjs';
-import { IconMapper, IconStyles, ThemePlugin } from '../plugins';
+import { IconMapper, IconProps, IconStyles, ThemePlugin } from '../plugins';
 
 export class DefaultIconInjectable implements IconInjectable {
   getIcons(): string[] {
@@ -59,7 +59,7 @@ export class DefaultIconInjectable implements IconInjectable {
     type: string,
     host?: IconHost
   ): Observable<TemplateResult> {
-    const mapper = source?.mapping?.[type] ?? type;
+    const mapper = (source?.mapping?.[type] ?? type) as IconProps | string;
     const isText = typeof mapper === 'string';
 
     if (!isText && host && mapper.styles?.direction) host.direction = true;
@@ -76,7 +76,7 @@ export class DefaultIconInjectable implements IconInjectable {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return fontInjectable
       .get()!
-      .setFont(source.id, font)
+      .setFont(source.id ?? '', font)
       .pipe(
         map(
           (isLoaded) => html`
