@@ -84,7 +84,9 @@ describe('DefaultSortingService', () => {
     vi.spyOn(mockRouterService, 'getUrl');
     vi.spyOn(mockRouterService, 'navigate');
 
-    element = await fixture(html`<search-product-sort></search-product-sort>`);
+    element = await fixture(
+      html`<oryx-search-product-sort></oryx-search-product-sort>`
+    );
   });
 
   afterEach(() => {

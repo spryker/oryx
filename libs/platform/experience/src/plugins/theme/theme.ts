@@ -10,9 +10,11 @@ import {
   Breakpoints,
   deferHydrationAttribute,
   hydratableAttribute,
+  iconInjectable,
   rootInjectable,
 } from '@spryker-oryx/utilities';
 import { css, isServer, unsafeCSS } from 'lit';
+import { DefaultIconInjectable } from '../../injectables';
 import { ThemeTokens } from './theme-tokens';
 import {
   Theme,
@@ -36,6 +38,10 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
   constructor(protected themes: Theme[] = []) {
     super();
     this.propertiesCollector(themes);
+
+    if (!(iconInjectable.get() instanceof DefaultIconInjectable)) {
+      iconInjectable.inject(new DefaultIconInjectable());
+    }
   }
 
   getName(): string {
