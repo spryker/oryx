@@ -10,9 +10,7 @@ import { CurrencyService } from '../../services';
 import { siteCurrencySelectorStyles } from './currency-selector.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class SiteCurrencySelectorComponent extends ContentMixin(
-  LitElement
-) {
+export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
   static styles = [siteCurrencySelectorStyles];
 
   protected currencyService = resolve(CurrencyService);

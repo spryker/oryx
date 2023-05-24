@@ -9,9 +9,7 @@ import { html } from 'lit/static-html.js';
 import { siteLocaleSelectorStyles } from './locale-selector.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class SiteLocaleSelectorComponent extends ContentMixin(
-  LitElement
-) {
+export class SiteLocaleSelectorComponent extends ContentMixin(LitElement) {
   static styles = [siteLocaleSelectorStyles];
 
   protected localeService = resolve(LocaleService);
