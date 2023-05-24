@@ -25,12 +25,7 @@ describe('AddressComponent', () => {
 
   beforeEach(async () => {
     const testInjector = createInjector({
-      providers: [
-        {
-          provide: AddressService,
-          useClass: MockAddressService,
-        },
-      ],
+      providers: [{ provide: AddressService, useClass: MockAddressService }],
     });
 
     service = testInjector.inject(

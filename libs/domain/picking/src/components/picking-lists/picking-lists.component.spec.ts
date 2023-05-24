@@ -8,8 +8,10 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { mockPickingListData } from '../../mocks';
+import { pickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.def';
 import { PickingListsComponent } from './picking-lists.component';
 import { pickingListsComponent } from './picking-lists.def';
+
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of(mockPickingListData));
 }
@@ -19,7 +21,10 @@ describe('PickingListsComponent', () => {
   let service: MockPickingListService;
 
   beforeAll(async () => {
-    await useComponent(pickingListsComponent);
+    await useComponent([
+      pickingListsComponent,
+      pickingInProgressModalComponent,
+    ]);
   });
 
   beforeEach(async () => {
@@ -47,6 +52,9 @@ describe('PickingListsComponent', () => {
     const getCustomerNoteModal = (): ModalComponent | null =>
       element.renderRoot.querySelector('oryx-modal');
 
+    const getPickingInProgressModal = (): ModalComponent | null =>
+      element.renderRoot.querySelector('oryx-picking-in-progress-modal');
+
     it('passes the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
     });
@@ -55,6 +63,12 @@ describe('PickingListsComponent', () => {
       expect(
         element.renderRoot.querySelectorAll('oryx-picking-list-item').length
       ).toBe(mockPickingListData.length);
+    });
+
+    it(`should render ${mockPickingListData.length} in filters counter`, () => {
+      expect(
+        element.renderRoot.querySelector('.filters span')?.textContent
+      ).toContain(mockPickingListData.length);
     });
 
     it('should open customer note modal', () => {
@@ -73,6 +87,40 @@ describe('PickingListsComponent', () => {
         new CustomEvent('oryx.show-note', {
           detail: { note: customerNoteText },
         })
+      );
+    });
+
+    it('should open customer note modal', () => {
+      const customerNoteText = 'Customer note';
+      const pickingListCard = element.renderRoot.querySelector(
+        'oryx-picking-list-item'
+      );
+
+      element.addEventListener('oryx.show-note', () => {
+        const customerNoteModal = getCustomerNoteModal();
+        expect(customerNoteModal?.hasAttribute('open')).toBe(true);
+        expect(customerNoteModal?.textContent).contains(customerNoteText);
+      });
+
+      pickingListCard?.dispatchEvent(
+        new CustomEvent('oryx.show-note', {
+          detail: { note: customerNoteText },
+        })
+      );
+    });
+
+    it('should open picking in progress modal', () => {
+      const pickingListCard = element.renderRoot.querySelector(
+        'oryx-picking-list-item'
+      );
+
+      element.addEventListener('oryx.show-picking-in-progress', () => {
+        const pickingInProgressModal = getPickingInProgressModal();
+        expect(pickingInProgressModal?.open).toBe(true);
+      });
+
+      pickingListCard?.dispatchEvent(
+        new CustomEvent('oryx.show-picking-in-progress')
       );
     });
 
@@ -136,6 +184,24 @@ describe('PickingListsComponent', () => {
         })
       );
     });
+
+    it('should open and close picking in progress modal', async () => {
+      const pickingListCard = element.renderRoot.querySelector(
+        'oryx-picking-list-item'
+      );
+
+      element.addEventListener('oryx.show-picking-in-progress', () => {
+        const pickingInProgressModal = getPickingInProgressModal();
+        expect(pickingInProgressModal?.open).toBe(true);
+
+        pickingInProgressModal?.dispatchEvent(new CustomEvent('oryx.close'));
+        expect(pickingInProgressModal?.open).toBe(false);
+      });
+
+      pickingListCard?.dispatchEvent(
+        new CustomEvent('oryx.show-picking-in-progress')
+      );
+    });
   });
 
   describe('when picking lists list is empty', () => {
@@ -152,6 +218,31 @@ describe('PickingListsComponent', () => {
       expect(
         element.renderRoot.querySelector('oryx-heading')?.textContent?.trim()
       ).toBe(i18n('picking.no-results-found'));
+    });
+
+    it(`should render 0 in filters counter`, () => {
+      expect(
+        element.renderRoot.querySelector('.filters span')?.textContent
+      ).toContain('0');
+    });
+  });
+
+  describe('when the list is not provided', () => {
+    beforeEach(async () => {
+      service.get = vi.fn().mockReturnValue(of(null));
+      element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
+    });
+
+    it(`should render fallback text`, () => {
+      expect(
+        element.renderRoot.querySelector('oryx-heading')?.textContent?.trim()
+      ).toBe(i18n('picking.no-results-found'));
+    });
+
+    it(`should render 0 in filters counter`, () => {
+      expect(
+        element.renderRoot.querySelector('.filters span')?.textContent
+      ).toContain('0');
     });
   });
 

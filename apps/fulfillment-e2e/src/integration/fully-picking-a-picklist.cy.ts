@@ -14,6 +14,7 @@ describe('Fully pick a picking list', () => {
     cy.clearIndexedDB();
     cy.login();
     pickingPage.visit();
+    pickingPage.pickingProductFragment.getProducts().should('be.visible');
 
     pickingFragment.getProducts().each((product) => {
       cy.wrap(product).within(() => {

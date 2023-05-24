@@ -8,10 +8,10 @@ const stylesMocker = (data: unknown): CSSResult[] => [data] as CSSResult[];
 const mockATheme: Theme = {
   name: 'b',
   icons: {
-    resource: { id: 'a', styles: 'a', mapping: { a: 'a' } },
+    resource: { id: 'a', mapping: { a: 'a' } },
     resources: [
       {
-        resource: { id: 'b', styles: 'b', mapping: { a: 'b' } },
+        resource: { id: 'b', mapping: { a: 'b' } },
         types: ['a', 'b'],
       },
     ],
@@ -21,10 +21,10 @@ const mockATheme: Theme = {
 const mockBTheme: Theme = {
   name: 'a',
   icons: {
-    resource: { id: 'c', styles: 'c', mapping: { a: 'c' } },
+    resource: { id: 'c', mapping: { a: 'c' } },
     resources: [
       {
-        resource: { id: 'd', styles: 'd', mapping: { a: 'd' } },
+        resource: { id: 'd', mapping: { a: 'd' } },
         types: ['a', 'b'],
       },
     ],

@@ -13,7 +13,7 @@
     "build:netlify": "vite build -c vite.config.netlify.ts"
   },
   "dependencies": {
-    "@spryker-oryx/presets": "latest"
+    "@spryker-oryx/themes": "latest"
   },
   "devDependencies": {
     "vite": "^4.0.0",

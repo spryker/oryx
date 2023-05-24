@@ -7,7 +7,7 @@ flowchart TD
 
 CheckoutComposition[oryx-checkout-composition]
 CheckoutAuth[checkout-auth]
-CheckoutDelivery[checkout-delivery]
+CheckoutDelivery[oryx-checkout-delivery]
 CheckoutContact[checkout-contact]
 CheckoutAddress[checkout-address]
 CheckoutShipment[checkout-shipment]
@@ -49,7 +49,7 @@ flowchart TD
 
 CheckoutComposition[oryx-checkout-composition]
 CheckoutAuth[checkout-auth]
-CheckoutDelivery[checkout-delivery]
+CheckoutDelivery[oryx-checkout-delivery]
 CheckoutContact[checkout-contact]
 CheckoutAddress[checkout-address]
 CheckoutShipmentSelector[checkout-shipment]

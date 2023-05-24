@@ -17,7 +17,7 @@ describe('AddressBookComponent', () => {
     vi.clearAllMocks();
   });
 
-  describe('when active-state is not provided', () => {
+  describe('when activeState is not provided', () => {
     beforeEach(async () => {
       element = await fixture(html`
         <oryx-user-address-book></oryx-user-address-book>
@@ -29,12 +29,12 @@ describe('AddressBookComponent', () => {
     });
   });
 
-  describe('when active-state is "list"', () => {
+  describe('when activeState is "list"', () => {
     const callback = vi.fn();
     beforeEach(async () => {
       element = await fixture(html`
         <oryx-user-address-book
-          .active-state=${AddressBookState.List}
+          .activeState=${AddressBookState.List}
           @oryx.change-state=${callback}
         ></oryx-user-address-book>
       `);
@@ -107,7 +107,7 @@ describe('AddressBookComponent', () => {
         });
 
         it('should drop selected address id', async () => {
-          element.setAttribute('active-state', AddressBookState.Add);
+          element.activeState = AddressBookState.Add;
 
           element.requestUpdate();
           await elementUpdated(element);

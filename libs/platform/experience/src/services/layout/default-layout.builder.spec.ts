@@ -1,10 +1,14 @@
 import { App, AppRef } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/utilities';
-import { LayoutAlign, StyleProperties } from '../../models';
+import {
+  CompositionProperties,
+  LayoutAlign,
+  StyleProperties,
+} from '../../models';
 import { Theme, ThemePlugin } from '../../plugins';
+import { Component } from '../experience';
 import { DefaultLayoutBuilder } from './default-layout.builder';
-import { DefaultScreenService } from './default-screen.service';
 import { ScreenService } from './screen.service';
 
 const mockTheme: Theme = {
@@ -26,8 +30,13 @@ class MockApp implements Partial<App> {
   requirePlugin = vi.fn().mockReturnValue(new ThemePlugin([mockTheme]));
 }
 
+class MockScreenService implements Partial<ScreenService> {
+  getScreenMedia = vi.fn();
+}
+
 describe('DefaultLayoutBuilder', () => {
   let service: DefaultLayoutBuilder;
+  let screenService: MockScreenService;
 
   let styles: string | undefined;
 
@@ -71,38 +80,180 @@ describe('DefaultLayoutBuilder', () => {
       },
       {
         provide: ScreenService,
-        useClass: DefaultScreenService,
+        useClass: MockScreenService,
       },
     ]);
 
     service = testInjector.inject('LayoutBuilder');
+    screenService = testInjector.inject<MockScreenService>(ScreenService);
   });
 
   it('should be provided?', () => {
     expect(service).toBeInstanceOf(DefaultLayoutBuilder);
   });
 
+  describe('collectStyles', () => {
+    let styles: string;
+
+    describe('when there are not options', () => {
+      beforeEach(() => {
+        styles = service.collectStyles([
+          {
+            id: 'test',
+            type: 'banner',
+            options: {
+              data: {
+                rules: [{}],
+              },
+            },
+          },
+        ]);
+      });
+
+      it('should not generate empty styles', () => {
+        expect(styles).toBe(``);
+      });
+    });
+
+    describe('when there are style options', () => {
+      describe('and there is no id', () => {
+        beforeEach(() => {
+          styles = service.collectStyles([
+            {
+              type: 'banner',
+              options: {
+                data: {
+                  rules: [{ background: 'red' }],
+                },
+              },
+            },
+          ] as Component<CompositionProperties>[]);
+        });
+
+        it('should generate the style rules', () => {
+          expect(styles).toBe(`:host {\nbackground: red\n}`);
+        });
+      });
+
+      describe('and there is an id', () => {
+        beforeEach(() => {
+          styles = service.collectStyles([
+            {
+              id: 'test',
+              type: 'banner',
+              options: {
+                data: {
+                  rules: [{ background: 'red' }],
+                },
+              },
+            },
+          ]);
+        });
+
+        it('should generate the style rules', () => {
+          expect(styles).toBe(
+            `:host([uid="test"]), [uid="test"] {\nbackground: red\n}`
+          );
+        });
+      });
+    });
+
+    describe('when there is a media query', () => {
+      beforeEach(() => {
+        screenService.getScreenMedia.mockReturnValue('@media foo');
+        styles = service.collectStyles([
+          {
+            id: 'test',
+            type: 'banner',
+            options: {
+              data: {
+                rules: [{ query: { breakpoint: Size.Md }, background: 'red' }],
+              },
+            },
+          },
+        ]);
+      });
+
+      it('should call getScreenMedia', () => {
+        expect(screenService.getScreenMedia).toHaveBeenCalledWith(Size.Md);
+      });
+
+      it('should generate a media query', () => {
+        expect(styles).toBe(
+          `@media foo{\n:host([uid="test"]), [uid="test"] {\nbackground: red\n}}`
+        );
+      });
+    });
+
+    describe('when the query targets the children', () => {
+      beforeEach(() => {
+        styles = service.collectStyles([
+          {
+            id: 'test',
+            type: 'banner',
+            options: {
+              data: {
+                rules: [{ query: { childs: true }, background: 'red' }],
+              },
+            },
+          },
+        ]);
+      });
+
+      it('should call getScreenMedia', () => {
+        expect(screenService.getScreenMedia).not.toHaveBeenCalled();
+      });
+
+      it('should generate a selector for child elements', () => {
+        expect(styles).toBe(
+          `:host([uid="test"]) > *, [uid="test"] > * {\nbackground: red\n}`
+        );
+      });
+    });
+
+    describe('when the query targets the hover event', () => {
+      beforeEach(() => {
+        styles = service.collectStyles([
+          {
+            id: 'test',
+            type: 'banner',
+            options: {
+              data: {
+                rules: [{ query: { hover: true }, background: 'red' }],
+              },
+            },
+          },
+        ]);
+      });
+
+      it('should call getScreenMedia', () => {
+        expect(screenService.getScreenMedia).not.toHaveBeenCalled();
+      });
+
+      it('should generate a selector for child elements', () => {
+        expect(styles).toBe(
+          `:host([uid="test"]):hover, [uid="test"]:hover {\nbackground: red\n}`
+        );
+      });
+    });
+  });
+
   describe('style properties', () => {
     expectStyleRule({ columnCount: 6 }, '--oryx-column-count: 6');
-
     expectStyleRule({ gridColumn: 5 }, 'grid-column: 5');
     expectStyleRule({ colSpan: 2 }, 'grid-column: span 2');
     expectStyleRule({ gridColumn: 5, colSpan: 2 }, 'grid-column: 5 / span 2');
-
     expectStyleRule({ gridRow: 5 }, 'grid-row: 5');
     expectStyleRule({ rowSpan: 2 }, 'grid-row: span 2');
     expectStyleRule({ gridRow: 5, rowSpan: 2 }, 'grid-row: 5 / span 2');
-
     expectStyleRule({ align: LayoutAlign.Center }, '--align: center');
     expectStyleRule({ align: LayoutAlign.Start }, '--align: start');
     expectStyleRule({ align: LayoutAlign.Stretch }, '--align: stretch');
     expectStyleRule({ align: LayoutAlign.End }, '--align: end');
-
     expectStyleRule({ justify: LayoutAlign.Center }, '--justify: center');
     expectStyleRule({ justify: LayoutAlign.Start }, '--justify: start');
     expectStyleRule({ justify: LayoutAlign.Stretch }, '--justify: stretch');
     expectStyleRule({ justify: LayoutAlign.End }, '--justify: end');
-
     expectStyleRule({ gap: '10' }, '--column-gap: 10');
     expectStyleRule({ gap: '10%' }, '--column-gap: 10%;--row-gap: 10%');
     expectStyleRule({ gap: '10 5' }, '--column-gap: 5');
@@ -111,10 +262,8 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule({ gap: '10 5' }, '--row-gap: 10');
     expectStyleRule({ top: '10' }, 'inset-block-start: 10px');
     expectStyleRule({ top: '10vh' }, 'inset-block-start: 10vh');
-
     expectStyleRule({ height: '100px' }, 'height: 100px');
     expectStyleRule({ width: '100px' }, 'width: 100px');
-
     expectStyleRule(
       { sticky: true, height: '100px' },
       'max-height: calc(100px - 0px)'
@@ -128,7 +277,6 @@ describe('DefaultLayoutBuilder', () => {
       'max-height: calc(100vh - 10px)'
     );
     expectStyleRule({ sticky: true }, 'max-height: calc(100vh - 0px)');
-
     expectStyleRule({ margin: '10' }, 'margin: 10px');
     expectStyleRule({ margin: '10%' }, 'margin: 10%');
     expectStyleRule({ padding: '15' }, 'padding-block: 15px');
@@ -137,20 +285,18 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule({ padding: '10px 5px' }, 'scroll-padding: 5px');
     expectStyleRule({ padding: '10px 5px 20px' }, 'scroll-padding: 5px');
     expectStyleRule({ padding: '10px 5px 20px 30px' }, 'scroll-padding: 30px');
-
     expectStyleRule({ border: '15px solid red' }, 'border: 15px solid red');
     expectStyleRule({ radius: '15' }, 'border-radius: 15px');
-
     expectStyleRule({ background: 'red' }, 'background: red');
     expectStyleRule(
       { background: 'url("http://lorempixel.com/1920/1080/nature"' },
       'background: url("http://lorempixel.com/1920/1080/nature"'
     );
-
+    expectStyleRule({ fill: 'red' }, '--oryx-fill: red');
+    expectStyleRule({ ratio: '1/4' }, 'aspect-ratio: 1/4');
     expectStyleRule({ zIndex: 3 }, 'z-index: 3');
     expectStyleRule({ rotate: 3 }, 'rotate: 3deg');
     expectStyleRule({ rotate: -2 }, 'rotate: -2deg');
-
     expectStyleRule({ overflow: 'auto' }, 'overflow: auto');
   });
 
@@ -174,7 +320,7 @@ describe('DefaultLayoutBuilder', () => {
         describe(`when ${prop} is configured for ${size}`, () => {
           beforeEach(() => {
             layoutClasses = service.getLayoutClasses({
-              rules: [{ [prop]: true, breakpoint: size }],
+              rules: [{ [prop]: true, query: { breakpoint: size } }],
             });
           });
 
@@ -184,7 +330,7 @@ describe('DefaultLayoutBuilder', () => {
         });
       });
 
-      describe(`when ${prop} is bot configured`, () => {
+      describe(`when ${prop} is not configured`, () => {
         beforeEach(() => {
           layoutClasses = service.getLayoutClasses({});
         });

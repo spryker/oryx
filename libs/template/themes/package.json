@@ -14,7 +14,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@spryker-oryx/core": "latest",
+    "@spryker-oryx/presets": "latest",
     "@spryker-oryx/utilities": "latest"
   }
 }

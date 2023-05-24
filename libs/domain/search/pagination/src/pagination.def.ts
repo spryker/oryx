@@ -11,4 +11,6 @@ export const paginationComponent = componentDef({
   name: 'oryx-search-pagination',
   impl: () =>
     import('./pagination.component').then((m) => m.PaginationComponent),
+  schema: () =>
+    import('./pagination.schema').then((m) => m.paginationComponentSchema),
 });
