@@ -5,4 +5,5 @@ export const siteCurrencySelectorSchema: ContentComponentSchema<SiteCurrencySele
   {
     name: 'Currency selector',
     group: 'Site',
+    icon: 'euro',
   };
