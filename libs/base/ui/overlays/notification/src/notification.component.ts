@@ -1,4 +1,5 @@
 import { AlertType } from '@spryker-oryx/ui';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -47,7 +48,7 @@ export class NotificationComponent
 
     return html`<oryx-icon-button size=${Size.Sm}>
       <button aria-label=${this.closeButtonAriaLabel} @click=${this.onClose}>
-        <oryx-icon type="close"></oryx-icon>
+        <oryx-icon type=${IconTypes.Close}></oryx-icon>
       </button>
     </oryx-icon-button>`;
   }

@@ -3,6 +3,7 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { OrderMixin } from '@spryker-oryx/order';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   asyncState,
   asyncValue,
@@ -38,12 +39,12 @@ export class OrderSummaryComponent extends OrderMixin(
       <div class="details-container">
         <div class="details summary">
           <div>
-            <oryx-icon type="parcel"></oryx-icon>
+            <oryx-icon type=${IconTypes.Parcel}></oryx-icon>
           </div>
           <div class="title">${i18n('order.order-id')}:</div>
           <div>${this.order?.id}</div>
           <div>
-            <oryx-icon type="calendar"></oryx-icon>
+            <oryx-icon type=${IconTypes.Calendar}></oryx-icon>
           </div>
           <div class="title">${i18n('order.date')}:</div>
           <div>
@@ -54,7 +55,7 @@ export class OrderSummaryComponent extends OrderMixin(
         </div>
         <oryx-button outline>
           <button @click=${this.print}>
-            <oryx-icon type="printer"></oryx-icon>
+            <oryx-icon type=${IconTypes.Printer}></oryx-icon>
             ${i18n('order.print-your-receipt')}
           </button>
         </oryx-button>

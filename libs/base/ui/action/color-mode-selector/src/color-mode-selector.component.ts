@@ -77,7 +77,7 @@ export class ColorModeSelectorComponent extends LitElement {
           aria-label="${i18n('site.change-color-mode')}"
           @click=${this.triggerEvent}
         >
-          <oryx-icon type="${iconType}"></oryx-icon>
+          <oryx-icon type=${iconType}></oryx-icon>
         </button>
       </oryx-icon-button>
     `;

@@ -202,10 +202,10 @@ describe('DefaultIconInjectable', () => {
         c: 'c',
         d: 'd',
       };
-      const mockResourceIcons = { d: 'd' };
+      const mockIconsList = { d: 'd' };
       mockTheme.getIcons.mockReturnValue(mockThemeIcons);
       mockResource.getIconTypes.mockReturnValue(mockThemeIconTypes);
-      mockResource.getIcons.mockReturnValue(mockResourceIcons);
+      mockResource.getIcons.mockReturnValue(mockIconsList);
       const icons = new DefaultIconInjectable().getIcons();
       expect(icons).toEqual(Object.values(mockThemeIconTypes));
     });

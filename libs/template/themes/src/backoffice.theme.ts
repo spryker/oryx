@@ -1,10 +1,11 @@
 import { Theme } from '@spryker-oryx/experience';
 import {
+  backofficeIcons,
   fontawesomeIcons,
-  IconTypes,
   materialDesignIcons,
-} from '@spryker-oryx/presets/resources';
+} from '@spryker-oryx/resources';
 import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 
 export const backofficeTheme: Theme = {
   name: 'backoffice',
@@ -23,6 +24,10 @@ export const backofficeTheme: Theme = {
           IconTypes.Carrier,
           IconTypes.Printer,
         ],
+      },
+      {
+        resource: backofficeIcons,
+        types: Object.keys(backofficeIcons),
       },
     ],
   },

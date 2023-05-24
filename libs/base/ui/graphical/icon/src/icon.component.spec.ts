@@ -4,6 +4,7 @@ import { a11yConfig, Size } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { IconComponent } from './icon.component';
 import { iconComponent } from './icon.def';
+import { IconTypes } from './icon.types';
 
 describe('Icon', () => {
   let element: IconComponent;
@@ -60,7 +61,10 @@ describe('Icon', () => {
       describe(`when size is "${size}"`, () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-icon type="search" size="${size}"></oryx-icon>`
+            html`<oryx-icon
+              type=${IconTypes.Search}
+              size="${size}"
+            ></oryx-icon>`
           );
         });
 

@@ -1,5 +1,5 @@
 import { IconMapper } from '@spryker-oryx/experience';
-import { IconTypes } from '../icon.model';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 
 export const fontawesomeIcons: IconMapper = {
   id: 'fa',

@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -43,7 +44,7 @@ export class DrawerComponent extends LitElement implements DrawerProperties {
           !this.notClosable,
           () => html`
             <button value="cancel" aria-label=${this.closeButtonAriaLabel}>
-              <oryx-icon type="close"></oryx-icon>
+              <oryx-icon type=${IconTypes.Close}></oryx-icon>
             </button>
           `
         )}

@@ -72,13 +72,15 @@ export interface IconMapper {
   mapping: Record<string, string | IconProps>;
 }
 
+export type IconsList = Record<string, LazyLoadable<string>>;
+
 export interface IconSource {
-  resource: IconMapper;
+  resource: IconMapper | IconsList;
   types: string[];
 }
 
 export interface ThemeIcons {
-  resource: IconMapper;
+  resource: IconMapper | IconsList;
   resources?: IconSource[];
 }
 export type ThemeDesignTokens = LazyLoadable<DesignToken[]>;

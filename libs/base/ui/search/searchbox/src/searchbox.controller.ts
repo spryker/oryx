@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AffixController } from '@spryker-oryx/ui/input';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
@@ -48,7 +49,7 @@ export class SearchboxController implements ReactiveController {
         <oryx-icon-button>
           <button title="search">
             <slot name="trigger-icon"
-              ><oryx-icon type="search"></oryx-icon
+              ><oryx-icon type=${IconTypes.Search}></oryx-icon
             ></slot>
           </button>
         </oryx-icon-button>

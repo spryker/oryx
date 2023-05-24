@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -24,11 +25,11 @@ const Template: Story<unknown> = (): TemplateResult => {
             --oryx-icon-size-default: 12px;
           }
         </style>
-        <oryx-icon type="error"></oryx-icon>
+        <oryx-icon type=${IconTypes.Error}></oryx-icon>
         Include at least one number or symbol
       </div>
       <div>
-        <oryx-icon type="error"></oryx-icon>
+        <oryx-icon type=${IconTypes.Error}></oryx-icon>
         Be at least 8 characters long
       </div>
     </div>

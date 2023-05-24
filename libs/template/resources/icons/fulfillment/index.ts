@@ -1,7 +1,7 @@
-import { ResourceIcons } from '@spryker-oryx/experience';
-import { IconTypes } from '../icon.model';
+import { IconsList } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 
-export const fulfillmentIcons: ResourceIcons = {
+export const fulfillmentIcons: IconsList = {
   [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
   [IconTypes.Back]: () => import('./icons/back-arrow').then((s) => s.default),
   [IconTypes.Cart]: () => import('./icons/cart').then((s) => s.default),

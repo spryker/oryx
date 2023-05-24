@@ -1,5 +1,6 @@
 import { ContentController, ContentMixin } from '@spryker-oryx/experience';
 import { AlertType } from '@spryker-oryx/ui';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Address, AddressMixin } from '@spryker-oryx/user';
 import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -75,7 +76,7 @@ export class AddressListItemComponent
               aria-label=${i18n('user.address.edit')}
               @click=${(): void => this.emitEvent(EDIT_EVENT, address)}
             >
-              <oryx-icon type="edit"></oryx-icon>
+              <oryx-icon type=${IconTypes.Edit}></oryx-icon>
             </button>
           </oryx-icon-button>
         `
@@ -88,7 +89,7 @@ export class AddressListItemComponent
               aria-label=${i18n('user.address.remove')}
               @click=${(): void => this.emitEvent(REMOVE_EVENT, address)}
             >
-              <oryx-icon type="trash"></oryx-icon>
+              <oryx-icon type=${IconTypes.Trash}></oryx-icon>
             </button>
           </oryx-icon-button>
         `

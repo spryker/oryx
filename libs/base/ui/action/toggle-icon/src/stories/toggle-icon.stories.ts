@@ -29,7 +29,7 @@ const DemoTemplate: Story<{ disabled: boolean; hasError: boolean }> = ({
             value=${iconType}
             name="device-single"
           />
-          <oryx-icon type="${iconType}"></oryx-icon>
+          <oryx-icon type=${iconType}></oryx-icon>
         </oryx-toggle-icon>
       `
     )}
@@ -45,7 +45,7 @@ const DemoTemplate: Story<{ disabled: boolean; hasError: boolean }> = ({
             value=${iconType}
             name="device-multi"
           />
-          <oryx-icon type="${iconType}"></oryx-icon>
+          <oryx-icon type=${iconType}></oryx-icon>
         </oryx-toggle-icon>
       `
     )}

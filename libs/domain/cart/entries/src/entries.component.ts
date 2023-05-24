@@ -1,6 +1,7 @@
 import { CartComponentMixin } from '@spryker-oryx/cart';
 import { RemoveByQuantity } from '@spryker-oryx/cart/entry';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
@@ -53,7 +54,7 @@ export class CartEntriesComponent extends CartComponentMixin(
   protected renderEmpty(): TemplateResult {
     return html`
       <section class="empty">
-        <oryx-icon type="cart"></oryx-icon>
+        <oryx-icon type=${IconTypes.Cart}></oryx-icon>
         <p>Your shopping cart is empty</p>
         <oryx-button size="large">
           <button>Shop now</button>

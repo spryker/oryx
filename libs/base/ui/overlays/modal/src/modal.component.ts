@@ -160,7 +160,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
           () => html`
             <oryx-icon-button size=${Size.Sm}>
               <button value="cancel" aria-label="close modal">
-                <oryx-icon type="close"></oryx-icon>
+                <oryx-icon type=${IconTypes.Close}></oryx-icon>
               </button>
             </oryx-icon-button>
           `

@@ -1,7 +1,7 @@
-import { ResourceIcons } from '@spryker-oryx/experience';
-import { IconTypes } from '../icon.model';
+import { IconsList } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 
-export const backofficeNgIcons: ResourceIcons = {
+export const backofficeNgIcons: IconsList = {
   [IconTypes.Back]: () => import('./icons/back-arrow').then((s) => s.default),
   [IconTypes.Search]: () => import('./icons/search').then((s) => s.default),
   [IconTypes.Close]: () => import('./icons/close').then((s) => s.default),

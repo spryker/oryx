@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { tagStyles } from './tag.styles';
@@ -19,7 +20,7 @@ export class TagComponent extends LitElement {
         ?disabled=${this.disabled}
         aria-label=${this.removeButtonAriaLabel}
       >
-        <oryx-icon type="close"></oryx-icon>
+        <oryx-icon type=${IconTypes.Close}></oryx-icon>
       </button>
     `;
   }

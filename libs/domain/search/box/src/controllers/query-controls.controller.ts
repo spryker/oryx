@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n, Size } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
@@ -37,7 +38,7 @@ export class QueryControlsController {
           @click=${(e: Event): void => this.dispatchEvent(e, 'oryx.close')}
           @mousedown=${this.muteMousedown}
         >
-          <oryx-icon type="close"></oryx-icon>
+          <oryx-icon type=${IconTypes.Close}></oryx-icon>
         </button>
       </oryx-icon-button>
     `;

@@ -1,4 +1,5 @@
 import { ContentMixin } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Address } from '@spryker-oryx/user';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import {
@@ -72,7 +73,7 @@ export class AddressBookComponent extends ContentMixin(LitElement) {
     return html`
       <oryx-button outline>
         <button @click=${(): void => this.changeState(AddressBookState.Add)}>
-          <oryx-icon type="add"></oryx-icon>
+          <oryx-icon type=${IconTypes.Add}></oryx-icon>
           ${i18n('user.address.add-address')}
         </button>
       </oryx-button>

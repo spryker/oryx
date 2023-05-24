@@ -1,15 +1,10 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { Resources } from '@spryker-oryx/experience';
-import {
-  commonGraphics,
-  IconTypes,
-  materialDesignLink,
-} from '@spryker-oryx/presets/resources';
+import { commonGraphics, materialDesignLink } from '@spryker-oryx/resources';
 import { backofficeFeatures } from '../backoffice';
 
 export const fesResources: Resources = {
   graphics: commonGraphics,
-  icons: { types: IconTypes },
   fonts: materialDesignLink,
 };
 

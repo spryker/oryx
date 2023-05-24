@@ -70,7 +70,7 @@ export class PaginationComponent
     return html`
       <span truncated>
         <slot name="truncated">
-          <oryx-icon type="actions"></oryx-icon>
+          <oryx-icon type=${IconTypes.Actions}></oryx-icon>
         </slot>
       </span>
     `;
