@@ -17,6 +17,7 @@ const mockNotification = {
   type: AlertType.Error,
   content: 'Error',
   subtext: 'Mock error',
+  autoCloseTime: 8000,
 };
 
 const mockNotificationWithoutAutoClose = {
