@@ -69,7 +69,10 @@ export class OfflinePickingFeature implements AppFeature {
         useClass: PickingListOnlineDefaultAdapter,
       },
       { provide: PickingHttpService, useClass: PickingHttpDefaultService },
-      { provide: StorageService, useFactory: () => new DefaultStorageService(StorageType.Idb) },
+      {
+        provide: StorageService,
+        useFactory: () => new DefaultStorageService(StorageType.Idb),
+      },
     ];
   }
 }

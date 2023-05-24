@@ -1,4 +1,4 @@
-import { StorageService, StorageType } from '@spryker-oryx/core';
+import { StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { BehaviorSubject, catchError, of } from 'rxjs';
@@ -97,9 +97,7 @@ describe('OauthService', () => {
         of(mockConfig('A'))
       );
       getService().isAuthenticated().subscribe(callback);
-      expect(mockStorageService.get).toHaveBeenCalledWith(
-        'oryx.oauth-state'
-      );
+      expect(mockStorageService.get).toHaveBeenCalledWith('oryx.oauth-state');
       expect(callback).toHaveBeenCalledWith(false);
       storageTokenTrigger.next({ authorizedBy: 'a' });
       expect(mockOauthProviderFactoryService.create).toHaveBeenCalledWith(
@@ -242,10 +240,9 @@ describe('OauthService', () => {
       mockOauthServiceConfig.providers[0].authenticate.mockReturnValue(of('a'));
       mockStorageService.set.mockReturnValue(of(null));
       getService().loginWith('a', {});
-      expect(mockStorageService.set).toHaveBeenCalledWith(
-        'oryx.oauth-state',
-        { authorizedBy: 'a' }
-      );
+      expect(mockStorageService.set).toHaveBeenCalledWith('oryx.oauth-state', {
+        authorizedBy: 'a',
+      });
     });
   });
 
@@ -273,10 +270,9 @@ describe('OauthService', () => {
       );
       mockStorageService.set.mockReturnValue(of(null));
       getService().handleCallback('a');
-      expect(mockStorageService.set).toHaveBeenCalledWith(
-        'oryx.oauth-state',
-        { authorizedBy: 'a' }
-      );
+      expect(mockStorageService.set).toHaveBeenCalledWith('oryx.oauth-state', {
+        authorizedBy: 'a',
+      });
     });
   });
 

@@ -5,7 +5,7 @@ export class SwAuthPlugin extends ExecPlugin {
   constructor() {
     super((app) => {
       const injector = app!.requirePlugin(InjectionPlugin).getInjector();
-      
+
       injector.inject(OauthService).invokeStoredToken();
     });
   }

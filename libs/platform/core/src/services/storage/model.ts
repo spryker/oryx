@@ -1,9 +1,9 @@
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 
 export const enum StorageType {
   Local = 'local',
   Session = 'session',
-  Idb = 'idb'
+  Idb = 'idb',
 }
 
 export const indexedDbStorageName = 'oryx-local-db-storage';

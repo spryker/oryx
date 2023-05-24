@@ -29,7 +29,7 @@ export class SyncActionRegistryDefaultService
 
   handleSync(sync: Sync<SyncAction>): Observable<void> {
     const handlers = this.actionHandlersMap.get(sync.action);
-    
+
     if (!handlers) {
       return throwError(
         () =>

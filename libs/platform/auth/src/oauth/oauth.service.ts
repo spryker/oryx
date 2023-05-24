@@ -1,4 +1,4 @@
-import { StorageService, StorageType } from '@spryker-oryx/core';
+import { StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { subscribeReplay } from '@spryker-oryx/utilities';
@@ -206,14 +206,12 @@ export class OauthService implements AuthService, AuthTokenService {
       ? { authorizedBy: providerId }
       : {};
 
-    return this.storageService
-      .set(OauthService.STATE_KEY, newState)
-      .pipe(
-        // Delay state update to microtask to let take(1) unsubscribe
-        // as getCurrentProvider() will throw as soon as state is updated
-        switchMap(() => Promise.resolve()),
-        tap(() => this.state$.next(newState))
-      );
+    return this.storageService.set(OauthService.STATE_KEY, newState).pipe(
+      // Delay state update to microtask to let take(1) unsubscribe
+      // as getCurrentProvider() will throw as soon as state is updated
+      switchMap(() => Promise.resolve()),
+      tap(() => this.state$.next(newState))
+    );
   }
 }
 

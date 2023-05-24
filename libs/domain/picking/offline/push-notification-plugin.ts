@@ -12,19 +12,17 @@ export class PushNotificationPlugin extends ExecPlugin {
         BapiPushNotificationService
       );
 
-      authService
-        .isAuthenticated()
-        .subscribe((isAuthenticated) => {
-          if (isAuthenticated) {
-            pushNotificationService.initSubscription().subscribe(() => {
-              console.log('Push notifications subscribed');
-            });
-          } else {
-            pushNotificationService.unsubscribe().subscribe(() => {
-              console.log('Unsubscribed from push notifications');
-            });
-          }
-        });
+      authService.isAuthenticated().subscribe((isAuthenticated) => {
+        if (isAuthenticated) {
+          pushNotificationService.initSubscription().subscribe(() => {
+            console.log('Push notifications subscribed');
+          });
+        } else {
+          pushNotificationService.unsubscribe().subscribe(() => {
+            console.log('Unsubscribed from push notifications');
+          });
+        }
+      });
     });
   }
 }
