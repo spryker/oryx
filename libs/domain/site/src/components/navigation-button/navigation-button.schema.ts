@@ -5,5 +5,4 @@ export const siteNavigationButtonSchema: ContentComponentSchema<NavigationButton
   {
     name: 'Navigation Button',
     group: 'Site',
-    options: {},
   };

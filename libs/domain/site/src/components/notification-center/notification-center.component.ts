@@ -35,8 +35,7 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
       await customElements.whenDefined('oryx-notification-center');
     }
     if (this.componentOptions?.autoCloseTime) {
-      notification.autoCloseTime ??=
-        this.componentOptions.autoCloseTime * 1000;
+      notification.autoCloseTime ??= this.componentOptions.autoCloseTime * 1000;
     }
     this.centerRef.value?.open(notification);
   });

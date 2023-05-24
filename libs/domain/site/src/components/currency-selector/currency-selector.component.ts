@@ -15,9 +15,9 @@ export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
 
   protected currencyService = resolve(CurrencyService);
 
-  protected currencies = signal(this.currencyService.getAll());
+  protected currencies = signal(this.currencyService.getAll(), []);
   protected current = signal(this.currencyService.get());
-  protected currentLocale = signal(resolve(LocaleService).get());
+  protected currentLocale = signal(resolve(LocaleService).get(), 'en');
 
   protected override render(): TemplateResult | void {
     const currencies = this.currencies();
@@ -35,7 +35,7 @@ export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
           </button>
         </oryx-button>
         ${repeat(
-          this.currencies() ?? [],
+          this.currencies(),
           (currency) => currency.code,
           (currency) =>
             html` <oryx-option
@@ -56,12 +56,9 @@ export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
   }
 
   protected getLabel(code: string): string {
-    const currencyNames = new Intl.DisplayNames(
-      [this.currentLocale() ?? 'en'],
-      {
-        type: 'currency',
-      }
-    );
+    const currencyNames = new Intl.DisplayNames([this.currentLocale()], {
+      type: 'currency',
+    });
     return currencyNames.of(code) ?? code;
   }
 }

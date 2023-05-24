@@ -14,7 +14,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin(LitElement) {
 
   protected localeService = resolve(LocaleService);
 
-  protected locales = signal(this.localeService.getAll());
+  protected locales = signal(this.localeService.getAll(), []);
   protected current = signal(this.localeService.get());
 
   protected override render(): TemplateResult | void {
@@ -33,7 +33,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin(LitElement) {
           </button>
         </oryx-button>
         ${repeat(
-          this.locales() ?? [],
+          this.locales(),
           (locale) => locale.code,
           (locale) =>
             html` <oryx-option

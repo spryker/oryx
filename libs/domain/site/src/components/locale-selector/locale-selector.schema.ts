@@ -5,5 +5,4 @@ export const siteLocaleSelectorSchema: ContentComponentSchema<SiteLocaleSelector
   {
     name: 'Locale selector',
     group: 'Site',
-    options: {},
   };
