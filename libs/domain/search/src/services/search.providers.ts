@@ -1,5 +1,6 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { ExperienceDataRevealer } from '@spryker-oryx/experience';
 import { facetProviders } from '../renderers';
 import {
   DefaultSuggestionAdapter,
@@ -13,6 +14,7 @@ import {
   CategoryPageTitleMetaResolver,
   SearchPageTitleMetaResolver,
 } from './resolvers';
+import { ProductsExperienceDataRevealer } from './revealers';
 import { SortingService } from './sorting.service';
 import { DefaultSuggestionService, SuggestionService } from './suggestion';
 
@@ -42,5 +44,12 @@ export const searchProviders: Provider[] = [
   {
     provide: PageMetaResolver,
     useClass: SearchPageTitleMetaResolver,
+  },
+];
+
+export const searchPreviewProviders: Provider[] = [
+  {
+    provide: ExperienceDataRevealer,
+    useClass: ProductsExperienceDataRevealer,
   },
 ];

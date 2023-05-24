@@ -12,8 +12,8 @@ import {
 } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
-import { experienceCompositionComponent } from './composition.def';
 import { ExperienceCompositionComponent } from './experience-composition.component';
+import { experienceCompositionComponent } from './experience-composition.def';
 
 const BASE_COMPONENTS = [
   { id: '1', type: 'oryx-content-banner' },

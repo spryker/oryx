@@ -80,7 +80,7 @@ describe('FilterButtonComponent', () => {
       service.getSortingQualifier = vi.fn().mockReturnValue(
         of({
           ...defaultSortingQualifier,
-          sortDesc: false,
+          sortDesc: true,
         })
       );
       element = await fixture(

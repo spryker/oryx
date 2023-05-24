@@ -2,8 +2,8 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { Size } from '@spryker-oryx/utilities';
 import { svg } from 'lit';
-import { iconComponent } from './component';
 import { IconComponent } from './icon.component';
+import { iconComponent } from './icon.def';
 import { icon } from './icon.factory';
 
 describe('icon factory', () => {

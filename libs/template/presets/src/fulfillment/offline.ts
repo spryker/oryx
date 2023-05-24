@@ -1,5 +1,6 @@
 import { BapiAuthFeature } from '@spryker-oryx/application';
-import { AppFeature, coreFeature } from '@spryker-oryx/core';
+import { AppFeature, coreFeature, PageMetaService } from '@spryker-oryx/core';
+import { ServerPageMetaService } from '@spryker-oryx/core/server';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import {
   IndexedDbFeature,
@@ -70,5 +71,13 @@ export function offlineServiceWorkerFulfillmentFeatures(
     })(),
     new OfflineServiceWorkerFeature(),
     new SwOfflinePickingFeature(),
+    {
+      providers: [
+        {
+          provide: PageMetaService,
+          useClass: ServerPageMetaService,
+        },
+      ],
+    },
   ];
 }

@@ -2,14 +2,19 @@ import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { tap } from 'rxjs';
+import { createRef, ref } from 'lit/directives/ref.js';
+import { catchError, of, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
+import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { customerNoteComponentStyles } from './customer-note.styles';
 
 export class CustomerNoteComponent extends PickingListMixin(LitElement) {
   static styles = customerNoteComponentStyles;
 
   protected routerService = resolve(RouterService);
+
+  protected pickingInProgressModal =
+    createRef<PickingInProgressModalComponent>();
 
   protected onProceed(): void {
     //TODO: provide more complex validation
@@ -24,7 +29,14 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
           this.routerService.navigate(
             `/picking-list/picking/${this.pickingList.id}`
           )
-        )
+        ),
+        catchError((e) => {
+          if (e.status === 409) {
+            const modal = this.pickingInProgressModal.value;
+            modal && (modal.open = true);
+          }
+          return of(undefined);
+        })
       )
       .subscribe();
   }
@@ -46,6 +58,14 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
           ${i18n('picking.proceed-to-picking')}
         </button>
       </oryx-button>
+      <oryx-picking-in-progress-modal
+        @oryx.close=${this.closePickingInProgressModal}
+        ${ref(this.pickingInProgressModal)}
+      ></oryx-picking-in-progress-modal>
     `;
+  }
+
+  protected closePickingInProgressModal(): void {
+    this.routerService.navigate('/');
   }
 }

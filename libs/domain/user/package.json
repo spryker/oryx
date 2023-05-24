@@ -24,7 +24,6 @@
     "@spryker-oryx/experience": "latest",
     "@spryker-oryx/form": "latest",
     "@spryker-oryx/site": "latest",
-    "@spryker-oryx/themes": "latest",
     "@spryker-oryx/ui": "latest",
     "@spryker-oryx/utilities": "latest"
   },

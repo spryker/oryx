@@ -83,11 +83,6 @@ export class PickingListOnlineDefaultAdapter
           ? existingPickingList.localStatus
           : pickingList.status;
 
-      const itemsCount = pickingList.items.reduce(
-        (count, item) => count + item.quantity,
-        0
-      );
-
       const productSkus = pickingList.items.map((item) => item.product.sku);
 
       const items: PickingListItemOffline[] = pickingList.items.map((item) => ({
@@ -99,7 +94,6 @@ export class PickingListOnlineDefaultAdapter
       return new PickingListEntity({
         ...pickingList,
         items,
-        itemsCount,
         productSkus,
         localStatus,
       });

@@ -3,9 +3,9 @@ import {
   BehaviorSubject,
   catchError,
   Observable,
-  of,
   switchMap,
   tap,
+  throwError,
 } from 'rxjs';
 import {
   defaultSortingQualifier,
@@ -52,9 +52,9 @@ export class PickingListDefaultService implements PickingListService {
   startPicking(pickingList: PickingList): Observable<PickingList | null> {
     this.upcomingPickingListId$.next(pickingList.id);
     return this.adapter.startPicking(pickingList).pipe(
-      catchError(() => {
+      catchError((e) => {
         this.upcomingPickingListId$.next(null);
-        return of(null);
+        return throwError(() => e);
       }),
       tap(() => this.upcomingPickingListId$.next(null))
     );

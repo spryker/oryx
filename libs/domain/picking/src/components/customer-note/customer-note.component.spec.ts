@@ -1,11 +1,14 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PickingListService } from '@spryker-oryx/picking';
+import { PickingListError, PickingListService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
+import { modalComponent } from '@spryker-oryx/ui/modal';
 import { html } from 'lit';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { mockPickingListData } from '../../mocks';
+import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
+import { pickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.def';
 import { CustomerNoteComponent } from './customer-note.component';
 import { customerNoteComponent } from './customer-note.def';
 
@@ -25,7 +28,11 @@ describe('CustomerNoteComponent', () => {
   let routerService: MockRouterService;
 
   beforeAll(async () => {
-    await useComponent(customerNoteComponent);
+    await useComponent([
+      customerNoteComponent,
+      pickingInProgressModalComponent,
+      modalComponent,
+    ]);
   });
 
   beforeEach(async () => {
@@ -83,6 +90,56 @@ describe('CustomerNoteComponent', () => {
       expect(routerService.navigate).toHaveBeenCalledWith(
         expect.stringContaining(mockPickingListData[0].id)
       );
+    });
+
+    describe('and picking is already in progress', () => {
+      beforeEach(async () => {
+        routerService.navigate.mockClear();
+        service.startPicking = vi.fn().mockReturnValue(
+          throwError(() => {
+            const error = new Error('mock') as PickingListError;
+            error.status = 409;
+            return error;
+          })
+        );
+
+        element = await fixture(
+          html`<oryx-customer-note pickingListId="id"></oryx-customer-note>`
+        );
+
+        element.renderRoot
+          .querySelector('button')
+          ?.dispatchEvent(new MouseEvent('click'));
+      });
+
+      it('should not navigate route', () => {
+        expect(routerService.navigate).not.toHaveBeenCalledWith(
+          '/picking-list/picking/withCartNote'
+        );
+      });
+
+      it('should open picking in progress modal', () => {
+        expect(
+          (
+            element.renderRoot.querySelector(
+              'oryx-picking-in-progress-modal'
+            ) as PickingInProgressModalComponent
+          )?.open
+        ).toBe(true);
+      });
+
+      describe('and picking in progress modal is closed', () => {
+        beforeEach(() => {
+          element.renderRoot
+            .querySelector('oryx-picking-in-progress-modal')
+            ?.shadowRoot?.querySelector('button')
+            ?.click();
+        });
+
+        it('should navigate to picking lists', () => {
+          expect(routerService.navigate).toHaveBeenCalledWith('/');
+        });
+      });
     });
   });
 });
