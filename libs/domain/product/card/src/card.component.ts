@@ -63,7 +63,9 @@ export class ProductCardComponent extends ProductMixin(
       ? `--oryx-product-title-max-lines:${titleLineClamp}`
       : undefined;
     return html`<a href=${this.$link()}>
-      ${this.renderLabels()} ${this.renderWishlist()} ${this.renderMedia()}
+      ${this.renderLabels()}
+      <!-- this.renderWishlist()  -->
+      ${this.renderMedia()}
       <div
         class="popover"
         ?has-line-clamp=${titleLineClamp}
