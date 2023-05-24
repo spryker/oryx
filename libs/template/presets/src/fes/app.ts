@@ -14,7 +14,7 @@ export const fesResources: Resources = {
 };
 
 export const fesFeatures: AppFeature[] = [
-  ...backofficeFeatures,
+  ...backofficeFeatures.filter((f) => !f.resources),
   {
     resources: fesResources,
   },
