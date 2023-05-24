@@ -11,11 +11,9 @@ export class DefaultStorageService implements StorageService {
   get<T = unknown>(key: string, type?: StorageType): Observable<T | null> {
     try {
       const value = this.getStorage(type).getItem(key);
-      if (value) {
-        return isObservable(value)
-          ? value.pipe(map((v) => this.parseValue<T>(v)))
-          : of(this.parseValue<T>(value));
-      }
+      return isObservable(value)
+        ? value.pipe(map((v) => this.parseValue<T>(v)))
+        : of(this.parseValue<T>(value));
     } catch (e) {
       console.error(e);
     }
@@ -50,7 +48,7 @@ export class DefaultStorageService implements StorageService {
     }
   }
 
-  protected parseValue<T>(value: StoredValue): T | null {
+  protected parseValue<T>(value: StoredValue | null): T | null {
     return value ? JSON.parse(value) : null;
   }
 }

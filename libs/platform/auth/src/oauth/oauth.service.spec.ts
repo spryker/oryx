@@ -49,33 +49,33 @@ const callback = vi.fn();
 let storageTokenTrigger = new BehaviorSubject<unknown>(null);
 
 describe('OauthService', () => {
+  const providers = [
+    {
+      provide: OauthServiceConfig,
+      useValue: mockOauthServiceConfig,
+    },
+    {
+      provide: OauthProviderFactoryService,
+      useValue: mockOauthProviderFactoryService,
+    },
+    {
+      provide: RouterService,
+      useValue: mockRouterService,
+    },
+    {
+      provide: StorageService,
+      useValue: mockStorageService,
+    },
+    {
+      provide: OauthService,
+      useClass: OauthService,
+    },
+  ];
+
   const getService = () => getInjector().inject(OauthService);
 
   beforeEach(() => {
-    createInjector({
-      providers: [
-        {
-          provide: OauthServiceConfig,
-          useValue: mockOauthServiceConfig,
-        },
-        {
-          provide: OauthProviderFactoryService,
-          useValue: mockOauthProviderFactoryService,
-        },
-        {
-          provide: RouterService,
-          useValue: mockRouterService,
-        },
-        {
-          provide: StorageService,
-          useValue: mockStorageService,
-        },
-        {
-          provide: OauthService,
-          useClass: OauthService,
-        },
-      ],
-    });
+    createInjector({ providers });
 
     mockStorageService.set.mockReturnValue(of(null));
     mockStorageService.get.mockReturnValue(storageTokenTrigger);
@@ -297,6 +297,45 @@ describe('OauthService', () => {
       expect(mockRouterService.navigate).toHaveBeenCalledWith(
         mockOauthServiceConfig.loginRoute
       );
+    });
+
+    describe('and config specified default provider', () => {
+      const defaultProvider = 'test';
+
+      beforeEach(() => {
+        destroyInjector();
+        createInjector({
+          providers: [
+            ...providers,
+            {
+              provide: OauthServiceConfig,
+              useValue: {
+                ...mockOauthServiceConfig,
+                defaultProvider,
+              },
+            },
+          ],
+        });
+
+        getService().loginWith = vi.fn();
+        getService().login();
+      });
+
+      it('should login with default provider', () => {
+        expect(getService().loginWith).toHaveBeenCalledWith(defaultProvider);
+      });
+    });
+  });
+
+  describe('invokeStoredToken', () => {
+    const token = { authorizedBy: 'test' };
+    beforeEach(() => {
+      storageTokenTrigger.next(token);
+      getService().invokeStoredToken();
+    });
+
+    it('should invoke the stored token', () => {
+      expect(mockStorageService.get).toBeCalledWith('oryx.oauth-state');
     });
   });
 });
