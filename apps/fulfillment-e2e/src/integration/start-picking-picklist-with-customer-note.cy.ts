@@ -73,4 +73,35 @@ describe('Start picking a picklist with customer note', () => {
       pickingFragment.getProducts().should('have.length.at.least', 1);
     });
   });
+
+  describe('and picking is already in progress', () => {
+    beforeEach(() => {
+      cy.pickingInProgress();
+
+      customerNoteFragment.getProceedToPickingButton().should('be.visible');
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(300);
+      customerNoteFragment.getProceedToPickingButton().click();
+    });
+
+    it('should show modal and stay on the same page', () => {
+      cy.location('pathname').should('to.match', /^\/customer-note-info/);
+      customerNoteFragment.pickingInProgressModal
+        .getModal()
+        .should('have.attr', 'open');
+      customerNoteFragment.pickingInProgressModal
+        .getModal()
+        .should('contain.text', 'Already in progress');
+    });
+
+    describe('and picking in progress modal is closed', () => {
+      beforeEach(() => {
+        customerNoteFragment.pickingInProgressModal.getCloseButton().click();
+      });
+
+      it('should redirect to picking list page', () => {
+        cy.location('pathname').should('be.equal', '/');
+      });
+    });
+  });
 });
