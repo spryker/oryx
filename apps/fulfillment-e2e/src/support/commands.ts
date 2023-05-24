@@ -8,6 +8,7 @@ declare global {
       login(user?: TestUserData): Chainable<void>;
       clearIndexedDB(): void;
       waitForIndexedDB(): void;
+      pickingInProgress(): void;
     }
   }
 }
@@ -91,5 +92,20 @@ Cypress.Commands.add('waitForIndexedDB', () => {
     };
 
     return checkExistenceLoop();
+  });
+});
+
+Cypress.Commands.add('pickingInProgress', () => {
+  cy.intercept('PATCH', '**/picking-lists/*', {
+    statusCode: 409,
+    body: {
+      errors: [
+        {
+          message: 'Picklist is already being picked by another user.',
+          status: 409,
+          code: '5310',
+        },
+      ],
+    },
   });
 });

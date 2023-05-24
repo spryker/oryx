@@ -1,3 +1,5 @@
+import { PickingInProgressModalFragment } from './picking-in-progress-modal.fragment';
+
 export class CustomerNoteFragment {
   getWrapper = () => cy.get('oryx-customer-note');
   getHeadline = () => this.getWrapper().find('oryx-heading');
@@ -6,4 +8,5 @@ export class CustomerNoteFragment {
   getNote = () => this.getWrapper().find('p');
   getProceedToPickingButton = () =>
     this.getWrapper().find('oryx-button button').eq(0);
+  pickingInProgressModal = new PickingInProgressModalFragment();
 }
