@@ -9,7 +9,7 @@ export const LoginPage: StaticComponent = {
   },
   options: {
     data: {
-      rules: [{ layout: 'flex', padding: '30px 0 0' }],
+      rules: [{ layout: 'flex', padding: '30px 0' }],
     },
   },
   components: [
