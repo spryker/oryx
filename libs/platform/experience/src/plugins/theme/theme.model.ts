@@ -67,20 +67,19 @@ export interface IconProps {
 }
 
 export interface IconMapper {
-  id: string;
+  id?: string;
+  svg?: boolean;
   styles?: Exclude<IconStyles, 'direction'>;
-  mapping: Record<string, string | IconProps>;
+  mapping?: Record<string, IconProps | LazyLoadable<string>>;
 }
 
-export type IconsList = Record<string, LazyLoadable<string>>;
-
 export interface IconSource {
-  resource: IconMapper | IconsList;
+  resource: IconMapper;
   types: string[];
 }
 
 export interface ThemeIcons {
-  resource: IconMapper | IconsList;
+  resource: IconMapper;
   resources?: IconSource[];
 }
 export type ThemeDesignTokens = LazyLoadable<DesignToken[]>;

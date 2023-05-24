@@ -23,9 +23,6 @@
       "options": {
         "lintFilePatterns": ["libs/template/themes/**/*.ts"]
       }
-    },
-    "paths": {
-      "executor": "./tools/executors/components-library:paths"
     }
   },
   "tags": ["layer:template", "lib:themes"]

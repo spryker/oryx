@@ -16,7 +16,7 @@ import { html, svg, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import { map, Observable, of } from 'rxjs';
-import { IconMapper, IconsList, IconStyles, ThemePlugin } from '../plugins';
+import { IconMapper, IconStyles, ThemePlugin } from '../plugins';
 
 export class DefaultIconInjectable implements IconInjectable {
   getIcons(): string[] {
@@ -30,13 +30,9 @@ export class DefaultIconInjectable implements IconInjectable {
       mappers?.resources?.find((resource) => resource.types.includes(type))
         ?.resource ?? mappers?.resource;
 
-    if (!source) {
-      return of(undefined);
-    }
-
-    const svgIcon = !source.mapping ? (source as IconsList)[type] : null;
-
-    if (svgIcon) return this.renderSvgIcon(svgIcon);
+    if (!source) return of(undefined);
+    if (source.svg)
+      return this.renderSvgIcon(source.mapping?.[type] as LazyLoadable<string>);
 
     return this.renderFontIcon(source as IconMapper, type, host);
   }
@@ -63,7 +59,7 @@ export class DefaultIconInjectable implements IconInjectable {
     type: string,
     host?: IconHost
   ): Observable<TemplateResult> {
-    const mapper = source?.mapping[type] ?? type;
+    const mapper = source?.mapping?.[type] ?? type;
     const isText = typeof mapper === 'string';
 
     if (!isText && host && mapper.styles?.direction) host.direction = true;
@@ -100,8 +96,12 @@ export class DefaultIconInjectable implements IconInjectable {
   }
 
   protected renderSvgIcon(
-    lazyIcon: LazyLoadable<string>
-  ): Observable<TemplateResult> {
+    lazyIcon?: LazyLoadable<string>
+  ): Observable<TemplateResult | undefined> {
+    if (!lazyIcon) {
+      return of(undefined);
+    }
+
     const icon = resolveLazyLoadable(lazyIcon);
 
     return ssrAwaiter(isPromise(icon) ? icon : Promise.resolve(icon)).pipe(

@@ -1,5 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { a11yConfig, Size } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { spinnerComponent } from './component';
@@ -28,7 +29,7 @@ describe('Spinner', () => {
 
     it('should render loader icon', () => {
       const loader = element?.shadowRoot?.querySelector(
-        'oryx-icon[type="loader"]'
+        `oryx-icon[type="${IconTypes.Loader}"]`
       );
       expect(loader).not.toBeNull();
     });

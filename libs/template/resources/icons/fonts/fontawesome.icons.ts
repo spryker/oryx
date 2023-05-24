@@ -51,6 +51,7 @@ export const fontawesomeIcons: IconMapper = {
 };
 
 export const fontawesomeLink = {
-  [fontawesomeIcons.id]:
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  [fontawesomeIcons.id!]:
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
 };
