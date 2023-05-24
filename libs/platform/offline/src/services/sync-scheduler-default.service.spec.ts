@@ -3,7 +3,7 @@ import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import { mockSync } from '@spryker-oryx/offline/mocks';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Collection, Table } from 'dexie';
-import { of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { SyncEntity } from '../entities';
 import { SyncStatus } from '../models';
 import {
@@ -13,7 +13,7 @@ import {
 import { SyncSchedulerService } from './sync-scheduler.service';
 
 vi.mock('dexie', () => {
-  const liveQuery = vi.fn().mockImplementation((fn: any) => fn());
+  const liveQuery = vi.fn().mockImplementation((fn: any) => from(fn()));
   return { liveQuery };
 });
 
@@ -31,6 +31,7 @@ class MockCollection implements Partial<Collection> {
   anyOf = vi.fn().mockReturnValue(this);
   reverse = vi.fn().mockReturnValue(this);
   sortBy = vi.fn().mockReturnValue([]);
+  toArray = vi.fn().mockReturnValue([]);
   count = vi.fn().mockReturnValue(0);
 }
 
@@ -156,13 +157,12 @@ describe('SyncSchedulerDefaultService', () => {
     });
 
     it('should call store filters', () => {
-      expect(mockTable.where).toHaveBeenCalledWith('[status+scheduledAt]');
+      expect(mockTable.where).toHaveBeenCalledWith('status');
       expect(mockCollection.anyOf).toHaveBeenCalledWith(
         SyncStatus.Queued,
         SyncStatus.Processing
       );
-      expect(mockCollection.reverse).toHaveBeenCalled();
-      expect(mockCollection.sortBy).toHaveBeenCalledWith('scheduledAt');
+      expect(mockCollection.toArray).toHaveBeenCalled();
     });
   });
 

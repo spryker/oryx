@@ -31,7 +31,6 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
   schedule<TAction extends SyncAction>(
     operation: SyncOperation<TAction>
   ): Observable<Sync<TAction>> {
-    console.log('schedule operation', operation);
     return this.indexedDbService.getStore(SyncEntity).pipe(
       switchMap(async (store) => {
         const sync = await this.createSync<TAction>({
@@ -82,7 +81,6 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
             .anyOf(SyncStatus.Queued, SyncStatus.Processing)
             .toArray();
 
-          console.log('pending syncs:', syncs.length);
           return await Promise.all(syncs.map((sync) => this.createSync(sync)));
         })
       )

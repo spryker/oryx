@@ -2,6 +2,7 @@ import {
   AppFeature,
   AppPlugin,
   DefaultStorageService,
+  injectEnv,
   StorageService,
   StorageType,
 } from '@spryker-oryx/core';
@@ -50,8 +51,9 @@ export class OfflinePickingFeature implements AppFeature {
         provide: PushProvider,
         useFactory: () =>
           new WebPushProvider({
-            applicationServerKey:
-              'BGqNWbv0hWM5CQ1-KwAfSQBMC6TMVFyrnh3vQp37oGCNvQ6eG_HyMjxBFJRWeCPTbzDoxcjhxLJS8Ck8r1G2oFw',
+            applicationServerKey: injectEnv(
+              'ORYX_FULFILLMENT_PUBLIC_VAPID_KEY'
+            ),
           }),
       },
       {

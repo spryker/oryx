@@ -70,7 +70,6 @@ export function offlineServiceWorkerFulfillmentFeatures(
       plugins = [new SwAuthPlugin()];
     })(),
     new OfflineServiceWorkerFeature(),
-    new SwOfflinePickingFeature(),
     {
       providers: [
         {
@@ -79,5 +78,6 @@ export function offlineServiceWorkerFulfillmentFeatures(
         },
       ],
     },
+    new SwOfflinePickingFeature(),
   ];
 }
