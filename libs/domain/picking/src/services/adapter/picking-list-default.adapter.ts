@@ -213,6 +213,10 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       createdAt: new Date(data.createdAt),
       updatedAt: new Date(data.updatedAt),
       requestedDeliveryDate: new Date(requestedDeliveryDate),
+      itemsCount: parsedPickingItems.reduce(
+        (count, item) => count + item.quantity,
+        0
+      ),
     };
 
     return pickingList;

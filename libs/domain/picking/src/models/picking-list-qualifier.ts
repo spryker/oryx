@@ -20,5 +20,5 @@ export enum PickingListQualifierSortBy {
 
 export const defaultSortingQualifier = {
   sortBy: PickingListQualifierSortBy.DeliveryDate,
-  sortDesc: true,
+  sortDesc: false,
 };

@@ -81,7 +81,7 @@ export class PickingListItemComponent
         <div class="total">
           <oryx-icon type=${IconTypes.Cart}></oryx-icon>
           ${i18n('picking.picking-list-item.<count>-items', {
-            count: this.pickingList?.items.length,
+            count: this.pickingList?.itemsCount,
           })}
           ${when(
             this.pickingList?.cartNote,

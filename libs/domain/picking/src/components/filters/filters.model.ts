@@ -13,19 +13,19 @@ export const fields: FormFieldDefinition[] = [
     attributes: { direction: 'vertical' },
     options: [
       {
-        value: 'deliveryDate.desc',
+        value: 'deliveryDate.asc',
         text: i18n('picking.filter.earliest-pickup-time'),
       },
       {
-        value: 'deliveryDate.asc',
+        value: 'deliveryDate.desc',
         text: i18n('picking.filter.latest-pickup-time'),
       },
       {
-        value: 'orderSize.asc',
+        value: 'orderSize.desc',
         text: i18n('picking.filter.largest-order-size'),
       },
       {
-        value: 'orderSize.desc',
+        value: 'orderSize.asc',
         text: i18n('picking.filter.smallest-order-size'),
       },
     ],
