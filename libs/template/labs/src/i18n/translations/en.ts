@@ -6,6 +6,9 @@ const cart = {
   'cart.entry.<quantity>-items': 'x {quantity}',
   'cart.entry.confirm-remove-<sku>': 'Do you want to remove "{sku}"?',
   'cart.confirm-removed': 'Item is successfully removed',
+  'login.welcome-please-log-in-to-start-picking':
+    'Welcome! Please log in to start picking.',
+  'oauth.logging-you-in': 'Logging you in...',
 };
 
 const checkout = {

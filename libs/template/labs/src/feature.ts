@@ -3,6 +3,7 @@ import { cloudinaryImageConverter } from './cloudinary';
 import * as components from './components';
 import { labsI18nFeature } from './i18n';
 export * from './components';
+export { labsI18nFeature } from './i18n';
 
 // tmp solution until we've published our packages and we can pull this from core
 type AppFeature = any;
