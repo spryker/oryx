@@ -24,20 +24,21 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
   protected centerRef = createRef<NotificationCenterComponent>();
 
   protected notification = signal(
-    //TODO: remove rxjs part when HRZ-2927 is done
+    // TODO: remove rxjs part when HRZ-2927 is done
     this.siteNotificationService.get().pipe(map((n) => ({ ...n })))
   );
 
   protected notification$ = effect(async () => {
-    if (!this.notification()) return;
+    const notification = this.notification();
+    if (!notification) return;
     if (!(this.centerRef.value && 'open' in this.centerRef.value)) {
       await customElements.whenDefined('oryx-notification-center');
     }
     if (this.componentOptions?.autoCloseTime) {
-      this.notification().autoCloseTime ??=
+      notification.autoCloseTime ??=
         this.componentOptions.autoCloseTime * 1000;
     }
-    this.centerRef.value?.open(this.notification());
+    this.centerRef.value?.open(notification);
   });
 
   protected override render(): TemplateResult {

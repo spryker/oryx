@@ -45,7 +45,6 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected url = computed(() => {
     const url = this.$options().url;
-
     return typeof url !== 'object' ? url : this.semanticLinkService.get(url);
   });
 
