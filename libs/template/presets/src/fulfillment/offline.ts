@@ -1,4 +1,5 @@
-import { AppFeature, coreFeature } from '@spryker-oryx/core';
+import { AppFeature, coreFeature, PageMetaService } from '@spryker-oryx/core';
+import { ServerPageMetaService } from '@spryker-oryx/core/server';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import {
   IndexedDbFeature,
@@ -63,5 +64,13 @@ export function offlineServiceWorkerFulfillmentFeatures(
     new IndexedDbFeature(config?.indexedDb),
     new OfflineServiceWorkerFeature(),
     offlinePickingFeatures,
+    {
+      providers: [
+        {
+          provide: PageMetaService,
+          useClass: ServerPageMetaService,
+        },
+      ],
+    },
   ];
 }
