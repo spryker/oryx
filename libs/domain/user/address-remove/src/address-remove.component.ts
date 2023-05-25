@@ -1,4 +1,5 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Address, AddressMixin } from '@spryker-oryx/user';
 import { asyncValue, hydratable, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -28,7 +29,7 @@ export class AddressRemoveComponent extends AddressMixin(LitElement) {
       return html`
         <oryx-user-address .addressId=${address.id}></oryx-user-address>
         <section>
-          <oryx-icon type="info" size=${Size.Md}></oryx-icon>
+          <oryx-icon .type=${IconTypes.Info} size=${Size.Md}></oryx-icon>
           <span>
             ${i18n(
               'user.address.removing-this-address-will-not-remove-any-pending-orders-being-dispatched-to-this-address'

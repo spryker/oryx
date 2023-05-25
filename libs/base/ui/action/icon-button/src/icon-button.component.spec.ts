@@ -1,5 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { queryFirstAssigned } from '@spryker-oryx/utilities';
 import { IconButtonComponent } from './icon-button.component';
 import { iconButtonComponent } from './icon-button.def';
@@ -20,7 +21,7 @@ describe('IconButtonComponent', () => {
     const id = 'test-button';
     element = await fixture(html`<oryx-icon-button>
       <button id=${id}>
-        <oryx-icon type="close"></oryx-icon>
+        <oryx-icon .type=${IconTypes.Close}></oryx-icon>
       </button>
     </oryx-icon-button>`);
 

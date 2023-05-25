@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -18,7 +19,11 @@ const Template: Story<unknown> = (): TemplateResult => {
 
     ${[Size.Lg, Size.Md, Size.Sm].map(
       (size) => html`<oryx-dropdown>
-        <oryx-icon slot="icon" type="actions" size=${size}></oryx-icon>
+        <oryx-icon
+          slot="icon"
+          .type=${IconTypes.Actions}
+          size=${size}
+        ></oryx-icon>
       </oryx-dropdown>`
     )}
 
@@ -26,21 +31,21 @@ const Template: Story<unknown> = (): TemplateResult => {
     <oryx-dropdown>
       <oryx-icon
         slot="icon"
-        type="actions"
+        .type=${IconTypes.Actions}
         style="--oryx-icon-size: 20px;margin:10px;"
       ></oryx-icon>
     </oryx-dropdown>
     <oryx-dropdown>
       <oryx-icon
         slot="icon"
-        type="actions"
+        .type=${IconTypes.Actions}
         style="--oryx-icon-size: 40px;margin:20px;"
       ></oryx-icon>
     </oryx-dropdown>
     <oryx-dropdown>
       <oryx-icon
         slot="icon"
-        type="actions"
+        .type=${IconTypes.Actions}
         style="--oryx-icon-size: 60px;margin:10px;"
       ></oryx-icon>
     </oryx-dropdown>
