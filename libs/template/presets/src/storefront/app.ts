@@ -17,14 +17,12 @@ import {
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature } from '@spryker-oryx/i18n';
 import { orderFeature } from '@spryker-oryx/order';
+import { productFeature } from '@spryker-oryx/product';
 import {
   brandGraphics,
   commonGraphics,
-  IconTypes,
   materialDesignLink,
-  storefrontIcons,
-} from '@spryker-oryx/presets/resources';
-import { productFeature } from '@spryker-oryx/product';
+} from '@spryker-oryx/resources';
 import { RouterFeature } from '@spryker-oryx/router';
 import { searchFeature, searchPreviewProviders } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
@@ -40,10 +38,6 @@ const isPreview = new URLSearchParams(
 
 export const storefrontResources: Resources = {
   graphics: { ...commonGraphics, ...brandGraphics },
-  icons: {
-    list: storefrontIcons,
-    types: IconTypes,
-  },
   fonts: materialDesignLink,
 };
 

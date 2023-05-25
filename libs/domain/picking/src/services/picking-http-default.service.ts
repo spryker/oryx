@@ -39,7 +39,7 @@ export class PickingHttpDefaultService implements PickingHttpService {
     options?: RequestOptions<T>
   ): Observable<T> {
     url = this.createFullUrl(url);
-    return this.httpService.post(url, body, options);
+    return this.httpService.post(url, body, this.expandContentType(options));
   }
 
   patch<T = unknown>(

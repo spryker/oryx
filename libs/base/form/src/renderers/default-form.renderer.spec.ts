@@ -506,7 +506,7 @@ describe('DefaultFormRenderer', () => {
           const icon = element.querySelector(
             `input[value="${option.value}"] + oryx-icon`
           );
-          expect(icon?.getAttribute('type')).toBe(option.icon);
+          expect(icon).toHaveProperty('type', option.icon);
         });
       });
 

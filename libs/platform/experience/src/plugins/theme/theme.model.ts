@@ -67,9 +67,10 @@ export interface IconProps {
 }
 
 export interface IconMapper {
-  id: string;
+  id?: string;
+  svg?: boolean;
   styles?: Exclude<IconStyles, 'direction'>;
-  mapping: Record<string, string | IconProps>;
+  mapping?: Record<string, IconProps | LazyLoadable<string>>;
 }
 
 export interface IconSource {

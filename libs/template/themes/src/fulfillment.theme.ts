@@ -1,4 +1,5 @@
 import { Theme } from '@spryker-oryx/experience';
+import { fulfillmentIcons } from '@spryker-oryx/resources';
 import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
 
 export const fulfillmentTheme: Theme = {
@@ -8,4 +9,7 @@ export const fulfillmentTheme: Theme = {
     import('../design-tokens/src/backoffice-ng').then(
       (s) => s.backofficeNgTokens
     ),
+  icons: {
+    resource: fulfillmentIcons,
+  },
 };

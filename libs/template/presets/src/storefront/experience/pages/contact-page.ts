@@ -1,4 +1,5 @@
 import { StaticComponent } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 
 export const ContactPage: StaticComponent = {
   type: 'Page',
@@ -28,7 +29,7 @@ export const ContactPage: StaticComponent = {
           type: 'rawUrl',
           id: '/contact',
           text: 'This is Contact Page element. Remove me when the page is implemented',
-          icon: 'mark',
+          icon: IconTypes.Mark,
         },
       },
     },

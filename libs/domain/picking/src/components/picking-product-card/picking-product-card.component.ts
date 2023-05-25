@@ -1,4 +1,5 @@
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -99,7 +100,7 @@ export class PickingProductCardComponent extends LitElement {
 
         <oryx-button>
           <button ?disabled="${!this.isCorrectNumberOfPickedProvided}">
-            <oryx-icon type="mark"></oryx-icon>
+            <oryx-icon .type=${IconTypes.Mark}></oryx-icon>
             ${i18n('picking.product-card.done')}
           </button>
         </oryx-button>
@@ -166,7 +167,7 @@ export class PickingProductCardComponent extends LitElement {
       </div>
       <oryx-button>
         <button @click=${this.editProductPicking}>
-          <oryx-icon type="edit"></oryx-icon>
+          <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
           ${i18n('picking.product-card.edit-items')}
         </button>
       </oryx-button>

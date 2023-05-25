@@ -63,23 +63,6 @@ describe('ResourcePlugin', () => {
     });
   });
 
-  describe('when getIcon has been called', () => {
-    it('should resolve icon by name', async () => {
-      const iconA = await plugin.getIcon('a');
-      expect(iconA).toBe('a');
-      const iconB = await plugin.getIcon('b');
-      expect(iconB).toBe('b');
-      const iconC = await plugin.getIcon('c');
-      expect(iconC).toBeUndefined();
-    });
-  });
-
-  describe('when getIcons has been called', () => {
-    it('should return the list of provided icons', () => {
-      expect(plugin.getIcons()).toEqual(mockResources.icons.list);
-    });
-  });
-
   describe('when getFont has been called', () => {
     it('should return the font of provided fonts', () => {
       expect(plugin.getFont('a')).toBe(mockResources.fonts.a);

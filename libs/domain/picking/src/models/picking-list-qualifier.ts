@@ -7,6 +7,7 @@ export interface PickingListQualifier
   extends SortableQualifier<PickingListQualifierSortBy>,
     PageableQualifier,
     SearchQualifier {
+  //TODO: remove it when BE will support "ids"
   id?: string;
   ids?: string[];
   status?: PickingListStatus;
