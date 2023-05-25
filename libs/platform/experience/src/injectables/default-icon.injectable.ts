@@ -30,7 +30,7 @@ export class DefaultIconInjectable implements IconInjectable {
       mappers?.resources?.find((resource) => resource.types.includes(type))
         ?.resource ?? mappers?.resource;
 
-    if (!source) return of(undefined);
+    if (!source || !type) return of(undefined);
     if (source.svg)
       return this.renderSvgIcon(source.mapping?.[type] as LazyLoadable<string>);
 
