@@ -1,5 +1,6 @@
 import { CheckoutMixin, isValid, ShipmentMethod } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
@@ -101,7 +102,7 @@ export class CheckoutShipmentComponent
   }
 
   protected renderEmpty(): TemplateResult {
-    return html`<oryx-icon type="carrier"></oryx-icon>
+    return html`<oryx-icon .type=${IconTypes.Carrier}></oryx-icon>
       <p class="no-methods">
         ${i18n('checkout.no-shipment-methods-available')}
       </p>`;

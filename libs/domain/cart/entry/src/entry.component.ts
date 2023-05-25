@@ -9,6 +9,7 @@ import {
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LinkType } from '@spryker-oryx/ui/link';
 import {
   computed,
@@ -125,7 +126,7 @@ export class CartEntryComponent
           ?disabled=${this.$isBusy()}
         >
           <button aria-label="remove">
-            <oryx-icon type="trash"></oryx-icon>
+            <oryx-icon .type=${IconTypes.Trash}></oryx-icon>
           </button>
           <span>${i18n('cart.remove')}</span>
         </oryx-icon-button>
@@ -249,7 +250,7 @@ export class CartEntryComponent
   protected decreaseIcon = computed(() =>
     this.$options().removeByQuantity === RemoveByQuantity.ShowBin &&
     this.quantity === 1
-      ? 'trash'
+      ? IconTypes.Trash
       : undefined
   );
 }

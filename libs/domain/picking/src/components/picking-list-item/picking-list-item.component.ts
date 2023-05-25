@@ -79,9 +79,9 @@ export class PickingListItemComponent
         >
 
         <div class="total">
-          <oryx-icon type=${IconTypes.Cart}></oryx-icon>
+          <oryx-icon .type=${IconTypes.Cart}></oryx-icon>
           ${i18n('picking.picking-list-item.<count>-items', {
-            count: this.pickingList?.items.length,
+            count: this.pickingList?.itemsCount,
           })}
           ${when(
             this.pickingList?.cartNote,
@@ -91,7 +91,7 @@ export class PickingListItemComponent
                   aria-label="Show customer note"
                   @click=${this.showCustomerNote}
                 >
-                  <oryx-icon type=${IconTypes.Info}></oryx-icon>
+                  <oryx-icon .type=${IconTypes.Info}></oryx-icon>
                 </button>
               </oryx-icon-button>
             `

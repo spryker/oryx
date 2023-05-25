@@ -3,6 +3,7 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { hydratable, signal } from '@spryker-oryx/utilities';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
@@ -31,7 +32,7 @@ export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
         <oryx-button type=${ButtonType.Text} slot="trigger">
           <button>
             ${this.current()}
-            <oryx-icon type="dropdown"></oryx-icon>
+            <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
           </button>
         </oryx-button>
         ${repeat(

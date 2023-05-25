@@ -1,5 +1,5 @@
 import { Theme } from '@spryker-oryx/experience';
-import { materialDesignIcons } from '@spryker-oryx/presets/resources';
+import { materialDesignIcons } from '@spryker-oryx/resources';
 import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
 
 export const fesTheme: Theme = {

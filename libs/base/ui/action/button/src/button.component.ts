@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -22,7 +23,7 @@ export class ButtonComponent
 
   protected renderLoader(): TemplateResult | void {
     if (!this.loading && !this.confirmed) return;
-    const icon = this.loading ? 'loader' : 'mark';
+    const icon = this.loading ? IconTypes.Loader : IconTypes.Mark;
     return html` <oryx-icon .type=${icon} .size=${Size.Lg}></oryx-icon> `;
   }
 }

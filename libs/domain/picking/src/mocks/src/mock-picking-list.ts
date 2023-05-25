@@ -36,6 +36,7 @@ export const mockPickingListData: PickingList[] = [
         status: ItemsFilters.NotPicked,
       },
     ],
+    itemsCount: 2,
   },
   {
     id: 'withoutCartNote',
@@ -67,5 +68,6 @@ export const mockPickingListData: PickingList[] = [
         status: ItemsFilters.Picked,
       },
     ],
+    itemsCount: 2,
   },
 ];
