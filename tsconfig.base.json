@@ -122,7 +122,7 @@
       "@spryker-oryx/push-notification/web": [
         "libs/platform/push-notification/web/index.ts"
       ],
-      "@spryker-oryx/resources": ["libs/template/resources/index.ts"],
+      "@spryker-oryx/resources": ["libs/template/resources/src/index.ts"],
       "@spryker-oryx/router": ["libs/platform/router/src/index.ts"],
       "@spryker-oryx/router/*": ["libs/platform/router/*/index.ts"],
       "@spryker-oryx/router/lit": ["libs/platform/router/lit/index.ts"],
