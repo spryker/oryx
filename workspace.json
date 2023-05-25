@@ -30,6 +30,7 @@
     "storefront-e2e": "apps/storefront-e2e",
     "storybook": "apps/storybook",
     "themes": "libs/template/themes",
+    "resources": "libs/template/resources",
     "ui": "libs/base/ui",
     "user": "libs/domain/user",
     "utilities": "libs/base/utilities"

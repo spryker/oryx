@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -20,7 +21,7 @@ const Template: Story<Props> = (): TemplateResult => {
         <oryx-tab>Tab 2</oryx-tab>
         <oryx-tab>Tab 3</oryx-tab>
         <oryx-tab>
-          <oryx-icon type="star"></oryx-icon>
+          <oryx-icon .type=${IconTypes.Star}></oryx-icon>
           Tab 4</oryx-tab
         >
         <div slot="panels">Сontent for primary tab 1</div>
@@ -35,7 +36,9 @@ const Template: Story<Props> = (): TemplateResult => {
         <oryx-tab>Tab 1</oryx-tab>
         <oryx-tab>Tab 2</oryx-tab>
         <oryx-tab>Tab 3</oryx-tab>
-        <oryx-tab> <oryx-icon type="star"></oryx-icon>Tab 4</oryx-tab>
+        <oryx-tab>
+          <oryx-icon .type=${IconTypes.Star}></oryx-icon>Tab 4</oryx-tab
+        >
         <div slot="panels">Сontent for secondary tab 1</div>
         <div slot="panels">Сontent for secondary tab 2</div>
         <div slot="panels">Сontent for secondary tab 3</div>

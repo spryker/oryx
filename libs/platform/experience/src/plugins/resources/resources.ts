@@ -14,7 +14,6 @@ import {
   Graphic,
   GraphicValue,
   ResourceGraphic,
-  ResourceIcons,
   Resources,
 } from './resources.model';
 
@@ -53,24 +52,6 @@ export class ResourcePlugin implements AppPlugin {
     }
 
     return resolveLazyLoadable(value);
-  }
-
-  getIcons(): ResourceIcons {
-    return this.resources.icons?.list ?? {};
-  }
-
-  getIconTypes(): Record<string, string> {
-    return this.resources.icons?.types ?? {};
-  }
-
-  getIcon(name: string): string | Promise<string> | void {
-    const icon = this.getIcons()[name];
-
-    if (!icon) {
-      return;
-    }
-
-    return resolveLazyLoadable(icon);
   }
 
   getFont(id: string): string | undefined {

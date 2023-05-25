@@ -1,6 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   asyncState,
   hydratable,
@@ -35,7 +36,7 @@ export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
     return html`
       <oryx-button type="text">
         <button @click=${this.onClick}>
-          <oryx-icon type="login"></oryx-icon>
+          <oryx-icon .type=${IconTypes.Login}></oryx-icon>
           ${i18n(this.isAuthenticated ? 'auth.logout' : 'auth.login')}
         </button>
       </oryx-button>

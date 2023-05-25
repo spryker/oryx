@@ -5,6 +5,7 @@ import {
   PickingListService,
   SortableQualifier,
 } from '@spryker-oryx/picking';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n, signal, signalAware, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
@@ -37,7 +38,7 @@ export class FilterButtonComponent extends LitElement {
           ?checked=${this.$selectedFilters()}
           @click=${(e: Event) => this.onClick(e)}
         />
-        <oryx-icon type="filter"></oryx-icon>
+        <oryx-icon .type=${IconTypes.Filter}></oryx-icon>
         <span>${i18n('picking.filter.sort')}</span>
       </oryx-toggle-icon>
 
