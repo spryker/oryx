@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 
@@ -9,7 +10,7 @@ export enum UxType {
   toggleButton = 'toggleButton',
 }
 
-export const inputs = ['mobile', 'tablet', 'desktop'];
+export const inputs = [IconTypes.Mobile, IconTypes.Tablet, IconTypes.Desktop];
 
 export const input = (
   item: string,

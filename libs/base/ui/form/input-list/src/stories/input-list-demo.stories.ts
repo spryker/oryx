@@ -5,7 +5,7 @@ import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { Direction } from '../../../../src/utilities/model';
 import { InputListComponent } from '../input-list.component';
-import { UxType } from './util';
+import { inputs, UxType } from './util';
 
 interface Props {
   title: string;
@@ -45,8 +45,6 @@ export default {
 } as Meta;
 
 const Template: Story<Props> = (props: Props): TemplateResult => {
-  const inputs = ['mobile', 'tablet', 'desktop'];
-
   const onInput = (): void => {
     const selectAll = document.querySelector('#selectAll') as CheckboxComponent;
     if (!selectAll) return;
