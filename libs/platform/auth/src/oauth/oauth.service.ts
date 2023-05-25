@@ -118,10 +118,7 @@ export class OauthService implements AuthService, AuthTokenService {
   }
 
   invokeStoredToken(): void {
-    this.storageService
-      .get<OauthServiceState>(OauthService.STATE_KEY)
-      .pipe(distinctUntilChanged())
-      .subscribe((state) => this.state$.next({ ...state }));
+    this.restoreState();
   }
 
   getToken(): Observable<AuthTokenData> {
@@ -198,6 +195,7 @@ export class OauthService implements AuthService, AuthTokenService {
   protected restoreState(): void {
     this.storageService
       .get<OauthServiceState>(OauthService.STATE_KEY)
+      .pipe(distinctUntilChanged())
       .subscribe((state) => this.state$.next({ ...state }));
   }
 

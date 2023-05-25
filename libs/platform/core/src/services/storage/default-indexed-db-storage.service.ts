@@ -2,13 +2,13 @@ import { Dexie, liveQuery } from 'dexie';
 import { Observable, shareReplay, switchMap } from 'rxjs';
 import {
   indexedDbStorageName,
+  IndexedDBStorageService,
   indexedDbTableName,
-  IndexedStorage,
-  StoredValue,
-} from './model';
+} from './indexed-db-storage.service';
+import { StoredValue } from './model';
 
-export class IndexedDbStorage implements IndexedStorage {
-  protected db = new Observable<Dexie>((subscriber) => {
+export class DefaultIndexedDBStorageService implements IndexedDBStorageService {
+  protected storage = new Observable<Dexie>((subscriber) => {
     const db = new Dexie(indexedDbStorageName);
     db.version(1).stores({
       [indexedDbTableName]: '&key,value',
@@ -23,34 +23,30 @@ export class IndexedDbStorage implements IndexedStorage {
     switchMap(async (db) => {
       await db.open();
 
-      return db;
+      return db.table(indexedDbTableName);
     }),
     shareReplay({ refCount: false, bufferSize: 1 })
   );
 
   getItem(key: string): Observable<StoredValue> {
-    return this.db.pipe(
-      switchMap((db) =>
+    return this.storage.pipe(
+      switchMap((storage) =>
         liveQuery<StoredValue>(async () => {
-          return (await db.table(indexedDbTableName).get(key))?.value;
+          return (await storage.get(key))?.value;
         })
       )
     );
   }
 
   setItem(key: string, value: string): void {
-    this.db.subscribe(
-      async (db) => await db.table(indexedDbTableName).put({ key, value })
-    );
+    this.storage.subscribe((storage) => storage.put({ key, value }));
   }
 
   removeItem(key: string): void {
-    this.db.subscribe(
-      async (db) => await db.table(indexedDbTableName).delete(key)
-    );
+    this.storage.subscribe((storage) => storage.delete(key));
   }
 
   clear(): void {
-    this.db.subscribe(async (db) => await db.table(indexedDbTableName).clear());
+    this.storage.subscribe((storage) => storage.clear());
   }
 }

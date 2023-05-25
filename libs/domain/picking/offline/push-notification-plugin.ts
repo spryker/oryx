@@ -14,13 +14,9 @@ export class PushNotificationPlugin extends ExecPlugin {
 
       authService.isAuthenticated().subscribe((isAuthenticated) => {
         if (isAuthenticated) {
-          pushNotificationService.initSubscription().subscribe(() => {
-            console.log('Push notifications subscribed');
-          });
+          pushNotificationService.initSubscription().subscribe();
         } else {
-          pushNotificationService.unsubscribe().subscribe(() => {
-            console.log('Unsubscribed from push notifications');
-          });
+          pushNotificationService.unsubscribe().subscribe();
         }
       });
     });

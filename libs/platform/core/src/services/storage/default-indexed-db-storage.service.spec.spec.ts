@@ -1,5 +1,9 @@
-import { IndexedDbStorage } from './indexed-db-storage';
-import { indexedDbTableName } from './model';
+import { createInjector, getInjector } from '@spryker-oryx/di';
+import { DefaultIndexedDBStorageService } from './default-indexed-db-storage.service';
+import {
+  IndexedDBStorageService,
+  indexedDbTableName,
+} from './indexed-db-storage.service';
 
 const mockDexieMethods = {
   open: vi.fn().mockImplementation(() => Promise.resolve),
@@ -25,14 +29,29 @@ vi.mock('dexie', () => ({
   },
 }));
 
-describe('IndexedDbStorage', () => {
+describe('DefaultIndexedDBStorageService', () => {
+  let service: IndexedDBStorageService;
+
+  beforeEach(() => {
+    createInjector({
+      providers: [
+        {
+          provide: IndexedDBStorageService,
+          useClass: DefaultIndexedDBStorageService,
+        },
+      ],
+    });
+
+    service = getInjector().inject(IndexedDBStorageService);
+  });
+
   afterEach(() => {
     vi.clearAllMocks();
   });
 
   it('should open dexie db', () =>
     new Promise<void>((done) => {
-      new IndexedDbStorage().getItem('mockedGet').subscribe(() => {
+      service.getItem('mockedGet').subscribe(() => {
         expect(mockDexieMethods.version.stores).toHaveBeenCalledWith({
           [indexedDbTableName]: '&key,value',
         });
@@ -52,7 +71,7 @@ describe('IndexedDbStorage', () => {
 
       it('should get the value from db', () =>
         new Promise<void>((done) => {
-          new IndexedDbStorage().getItem('mockedGet').subscribe((v) => {
+          service.getItem('mockedGet').subscribe((v) => {
             expect(mockDexieMethods.table.get).toHaveBeenCalledWith(
               'mockedGet'
             );
@@ -71,7 +90,7 @@ describe('IndexedDbStorage', () => {
 
       it('should get the value from db', () =>
         new Promise<void>((done) => {
-          new IndexedDbStorage().getItem('mockedGet').subscribe((v) => {
+          service.getItem('mockedGet').subscribe((v) => {
             expect(mockDexieMethods.table.get).toHaveBeenCalledWith(
               'mockedGet'
             );
@@ -84,7 +103,7 @@ describe('IndexedDbStorage', () => {
 
   describe('setItem', () => {
     beforeEach(() => {
-      new IndexedDbStorage().setItem('mockedKey', 'mockedValue');
+      service.setItem('mockedKey', 'mockedValue');
     });
 
     it('should store the value to the db', () => {
@@ -97,7 +116,7 @@ describe('IndexedDbStorage', () => {
 
   describe('removeItem', () => {
     beforeEach(() => {
-      new IndexedDbStorage().removeItem('mockedKey');
+      service.removeItem('mockedKey');
     });
 
     it('should remove the item', () => {
@@ -107,7 +126,7 @@ describe('IndexedDbStorage', () => {
 
   describe('clear', () => {
     beforeEach(() => {
-      new IndexedDbStorage().clear();
+      service.clear();
     });
 
     it('should remove the item', () => {

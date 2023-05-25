@@ -317,25 +317,13 @@ describe('OauthService', () => {
           ],
         });
 
-        getService().loginWith = vi.fn();
+        vi.spyOn(getService(), 'loginWith');
         getService().login();
       });
 
       it('should login with default provider', () => {
         expect(getService().loginWith).toHaveBeenCalledWith(defaultProvider);
       });
-    });
-  });
-
-  describe('invokeStoredToken', () => {
-    const token = { authorizedBy: 'test' };
-    beforeEach(() => {
-      storageTokenTrigger.next(token);
-      getService().invokeStoredToken();
-    });
-
-    it('should invoke the stored token', () => {
-      expect(mockStorageService.get).toBeCalledWith('oryx.oauth-state');
     });
   });
 });

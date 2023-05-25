@@ -1,17 +1,17 @@
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { lastValueFrom, of } from 'rxjs';
 import { DefaultStorageService } from './default-storage.service';
+import { IndexedDBStorageService } from './indexed-db-storage.service';
 import { StorageType } from './model';
 import { StorageService } from './storage.service';
 
-vi.mock('./indexed-db-storage', () => ({
-  IndexedDbStorage: class {
-    getItem = vi.fn().mockReturnValue(of(JSON.stringify('db data')));
-  },
-}));
+class MockedDBservice implements Partial<IndexedDBStorageService> {
+  getItem = vi.fn().mockReturnValue(of(JSON.stringify('')));
+}
 
 describe('DefaultStorageService', () => {
   let service: StorageService;
+  let dbService: MockedDBservice;
   let data: any;
 
   beforeEach(() => {
@@ -21,10 +21,17 @@ describe('DefaultStorageService', () => {
           provide: StorageService,
           useClass: DefaultStorageService,
         },
+        {
+          provide: IndexedDBStorageService,
+          useClass: MockedDBservice,
+        },
       ],
     });
 
     service = getInjector().inject(StorageService);
+    dbService = getInjector().inject(
+      IndexedDBStorageService
+    ) as unknown as MockedDBservice;
   });
   afterEach(() => {
     destroyInjector();
@@ -67,11 +74,11 @@ describe('DefaultStorageService', () => {
 
     describe('when storage type is indexed db', () => {
       beforeEach(async () => {
-        data = await lastValueFrom(service.get('mock', StorageType.Idb));
+        await lastValueFrom(service.get('mock', StorageType.Idb));
       });
 
       it('should get data from indexed db storage', () => {
-        expect(data).toBe('db data');
+        expect(dbService.getItem).toHaveBeenCalledWith('mock');
       });
     });
 
