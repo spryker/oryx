@@ -83,18 +83,13 @@ export class PickingSyncActionHandlerService
     return this.onlineAdapter.get({ ids: sync.payload.ids }).pipe(
       combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
       switchMap(async ([pickingLists, store]) => {
-        // TODO: Remove filtering when BE will be able to retrieve the list of picking lists by provided "ids" list
-        const filteredPickingLists = pickingLists.filter(({ id }) =>
-          sync.payload.ids.includes(id)
-        );
-
-        const addedOrUpdatedKeys = await store.bulkPut(filteredPickingLists, {
+        const addedOrUpdatedKeys = await store.bulkPut(pickingLists, {
           allKeys: true,
         });
 
-        if (addedOrUpdatedKeys.length !== filteredPickingLists.length) {
+        if (addedOrUpdatedKeys.length !== pickingLists.length) {
           throw new Error(
-            `PickingSyncActionHandlerService: Could not add or update all PickingLists after push!`
+            `PickingSyncActionHandlerService: Could not save ${addedOrUpdatedKeys.length} out of ${pickingLists.length} PickingLists after push!`
           );
         }
       })

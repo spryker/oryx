@@ -14,6 +14,10 @@ export class SwPushInitializerService implements AppInitializer {
 
   initialize(): void | Observable<void> | Promise<void> {
     self.addEventListener('push', (event: PushEvent) => {
+      if (!event.data) {
+        throw new Error('SwPushInitializerService: No data in push event');
+      }
+
       const payload: PushSyncPayload = event.data?.json();
 
       event.waitUntil(

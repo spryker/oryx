@@ -1,11 +1,9 @@
-import { AppFeature, AppInitializer } from '@spryker-oryx/core';
-import { SwPushInitializerService } from './services';
+import { AppFeature } from '@spryker-oryx/core';
+import { OfflinePickingFeature } from './feature';
 
-export class SwOfflinePickingFeature implements AppFeature {
-  providers = [
-    {
-      provide: AppInitializer,
-      useClass: SwPushInitializerService,
-    },
-  ];
+export class SwOfflinePickingFeature
+  extends OfflinePickingFeature
+  implements AppFeature
+{
+  override plugins = [];
 }

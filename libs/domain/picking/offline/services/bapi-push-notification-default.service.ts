@@ -2,8 +2,15 @@ import { StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { BapiPushNotificationService } from '@spryker-oryx/picking/offline';
 import { PushService } from '@spryker-oryx/push-notification';
-import { catchError, filter, Observable, of, switchMap } from 'rxjs';
-import { BapiPushNotificationAdapter } from './adapter/bapi-push-notification.adapter';
+import {
+  catchError,
+  filter,
+  Observable,
+  of,
+  switchMap,
+  throwError,
+} from 'rxjs';
+import { BapiPushNotificationAdapter } from './adapter';
 
 export class BapiPushNotificationDefaultService
   implements BapiPushNotificationService
@@ -34,8 +41,7 @@ export class BapiPushNotificationDefaultService
               return of(undefined);
             }
 
-            this.unsubscribe();
-            throw error;
+            return this.unsubscribe().pipe(switchMap(() => throwError(error)));
           })
         )
       ),

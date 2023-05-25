@@ -1,9 +1,11 @@
 import { StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import {
+  BapiPushNotificationAdapter,
+  BapiPushNotificationDefaultService,
+} from '@spryker-oryx/picking/offline';
 import { PushService } from '@spryker-oryx/push-notification';
-import { of, throwError } from 'rxjs';
-import { BapiPushNotificationAdapter } from './adapter/bapi-push-notification.adapter';
-import { BapiPushNotificationDefaultService } from './bapi-push-notification-default.service';
+import { of, Subscription, throwError } from 'rxjs';
 
 class MockPushService implements Partial<PushService> {
   subscribe = vi.fn().mockImplementation(() => of(null));
@@ -74,10 +76,17 @@ describe('BapiPushNotificationDefaultService', () => {
   });
 
   describe('when initSubscription is called', () => {
+    let subscription: Subscription;
     const callback = vi.fn();
 
     beforeEach(() => {
-      service.initSubscription().subscribe(callback);
+      subscription = service.initSubscription().subscribe(callback);
+    });
+
+    afterEach(() => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
     });
 
     it('should subscribe and send subscription', () => {
@@ -103,9 +112,11 @@ describe('BapiPushNotificationDefaultService', () => {
         throwError(() => error)
       );
 
-      service.initSubscription().subscribe({
+      const errorSubscription = service.initSubscription().subscribe({
         error: (err) => expect(err).toEqual(error),
       });
+
+      errorSubscription.unsubscribe();
     });
   });
 
