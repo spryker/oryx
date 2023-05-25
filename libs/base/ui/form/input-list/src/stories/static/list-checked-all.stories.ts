@@ -34,7 +34,7 @@ const Template: Story<unknown> = (): TemplateResult => {
                 return html`<oryx-toggle-icon>
                   ${input(item, false, true)}
                   <oryx-icon .type=${item}></oryx-icon>
-                  <span>${text[item]}</span>>
+                  <span>${text[item]}</span>
                 </oryx-toggle-icon>`;
               default:
                 return html`<oryx-checkbox>${inputs}</oryx-checkbox>`;
