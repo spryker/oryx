@@ -12,7 +12,8 @@ export const storefrontTheme: Theme = {
     resources: [
       {
         resource: storefrontIcons,
-        types: Object.keys(storefrontIcons),
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        types: Object.keys(storefrontIcons.mapping!),
       },
     ],
   },

@@ -27,7 +27,8 @@ export const backofficeTheme: Theme = {
       },
       {
         resource: backofficeIcons,
-        types: Object.keys(backofficeIcons),
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        types: Object.keys(backofficeIcons.mapping!),
       },
     ],
   },
