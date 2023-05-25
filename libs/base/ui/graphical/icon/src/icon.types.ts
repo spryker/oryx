@@ -38,7 +38,7 @@ export enum IconTypes {
   Mobile = 'phone_iphone',
   Tablet = 'tablet_mac',
   Error = 'error',
-  Success = 'check_circle',
+  Success = 'expand_circle_down',
   Warning = 'warning',
   Planet = 'language',
   Actions = 'more_vert',

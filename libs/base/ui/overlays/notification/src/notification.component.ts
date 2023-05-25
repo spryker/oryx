@@ -39,9 +39,15 @@ export class NotificationComponent
 
   protected renderIcon(): TemplateResult | void {
     if (!this.type) return;
+    const mapper = {
+      [AlertType.Info]: IconTypes.Info,
+      [AlertType.Success]: IconTypes.Success,
+      [AlertType.Warning]: IconTypes.Warning,
+      [AlertType.Error]: IconTypes.Error,
+    };
 
     return html`<oryx-icon
-      .type=${this.type}
+      .type=${mapper[this.type]}
       class="illustrative"
     ></oryx-icon>`;
   }
