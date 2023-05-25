@@ -6,21 +6,33 @@ describe('pick a picking list in progress', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();
+    cy.mockPickingInProgress();
 
-    cy.pickingInProgress();
-
-    pickingListsFragment.getStartPickingButtons().eq(0).should('be.visible');
-    pickingListsFragment.getStartPickingButtons().eq(0).click();
+    // open first picking which is mocked as In Progress
+    pickingListsFragment
+      .getStartPickingButtons()
+      .eq(0)
+      .should('be.visible')
+      .click();
+    // safe the url
+    cy.location('pathname').as('openedPickingUrl');
+    // wait for event handlers initialization
+    // we can't remove this wait in current implementation because we can't detect
+    // if handler was set successfully
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(100);
+    // open Picking in progress modal
+    pickingListsFragment.pickingInProgressModal
+      .getProceedToPickingBtn()
+      .click();
   });
 
   it('should stay on the same page and show modal', () => {
-    cy.location('pathname').should('be.equal', '/');
-    pickingListsFragment.pickingInProgressModal
-      .getModal()
-      .should('have.attr', 'open');
-    pickingListsFragment.pickingInProgressModal
-      .getModal()
-      .should('contain.text', 'Already in progress');
+    cy.get('@openedPickingUrl').then((url) => {
+      cy.location('pathname').should('be.equal', url);
+    });
+
+    pickingListsFragment.pickingInProgressModal.getModal().should('be.visible');
   });
 
   describe('and picking in progress modal is closed', () => {
@@ -28,10 +40,13 @@ describe('pick a picking list in progress', () => {
       pickingListsFragment.pickingInProgressModal.getCloseButton().click();
     });
 
-    it('should hide modal', () => {
+    it('should hide modal and navigate back to the picking list', () => {
       pickingListsFragment.pickingInProgressModal
         .getModal()
-        .should('not.have.attr', 'open');
+        .should('not.be.visible');
+
+      cy.location('pathname').should('be.equal', '/');
+      pickingListsFragment.getPickingListsItems().should('be.visible');
     });
   });
 });
