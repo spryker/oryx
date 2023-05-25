@@ -9,6 +9,7 @@ import {
   SemanticLinkService,
   siteProviders,
 } from '@spryker-oryx/site';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { QuantityInputComponent } from '../../quantity-input/src';
@@ -303,7 +304,7 @@ describe('CartEntryComponent', () => {
           });
 
           it('should have a decreaseIcon icon (trash)', () => {
-            expect(quantityInput().decreaseIcon).toBe('trash');
+            expect(quantityInput().decreaseIcon).toBe(IconTypes.Trash);
           });
         });
 

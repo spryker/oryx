@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -27,9 +28,7 @@ export default {
       description: 'Button loader',
     },
   },
-  parameters: {
-    chromatic: { viewports: [320, 1200] },
-  },
+  chromatic: { disableSnapshot: true },
 } as Meta;
 
 const Template: Story<ButtonComponentAttributes> = (
@@ -65,7 +64,7 @@ const Template: Story<ButtonComponentAttributes> = (
         ?outline=${props.outline}
       >
         <button>
-          <oryx-icon type="rocket"></oryx-icon>
+          <oryx-icon .type=${IconTypes.Rocket}></oryx-icon>
           Button with icon
         </button>
       </oryx-button>

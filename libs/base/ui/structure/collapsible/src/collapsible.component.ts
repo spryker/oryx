@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -46,14 +47,14 @@ export class CollapsibleComponent
       <slot name="collapsed">
         ${when(
           !this.isTextTrigger,
-          () => html`<oryx-icon type="expand"></oryx-icon>`,
+          () => html`<oryx-icon .type=${IconTypes.Expand}></oryx-icon>`,
           () => html`Hide`
         )}
       </slot>
       <slot name="expanded">
         ${when(
           !this.isTextTrigger,
-          () => html`<oryx-icon type="collapse"></oryx-icon>`,
+          () => html`<oryx-icon .type=${IconTypes.Collapse}></oryx-icon>`,
           () => html`Show`
         )}
       </slot>

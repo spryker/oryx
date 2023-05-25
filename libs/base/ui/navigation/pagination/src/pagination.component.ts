@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -52,7 +53,7 @@ export class PaginationComponent
         ?inert=${!nav}
       >
         <slot .name=${direction}>
-          <oryx-icon type="navigationArrow"></oryx-icon>
+          <oryx-icon .type=${IconTypes.NavigationArrow}></oryx-icon>
         </slot>
       </a>
     `;
@@ -69,7 +70,7 @@ export class PaginationComponent
     return html`
       <span truncated>
         <slot name="truncated">
-          <oryx-icon type="actions"></oryx-icon>
+          <oryx-icon .type=${IconTypes.Actions}></oryx-icon>
         </slot>
       </span>
     `;

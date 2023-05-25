@@ -1,39 +1,37 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { computed, signalAware, signalProperty } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { DefaultGraphicInjectable } from './default-graphic.injectable';
 
+@signalAware()
 @customElement('mock-component')
 class MockComponent extends LitElement {
-  @property()
-  url?: string;
-
-  @property()
-  source?: string;
+  @signalProperty() url?: string;
+  @signalProperty() source?: string;
 
   protected injectable = new DefaultGraphicInjectable();
+  protected _url = computed(() => this.injectable.getUrl(this.url ?? ''));
+  protected _source = computed(() =>
+    this.injectable.getSource(this.source ?? '')
+  );
 
   render(): TemplateResult {
-    if (this.url) {
-      return html`${this.injectable.getUrl(this.url)}`;
-    }
-
-    if (this.source) {
-      return html`${this.injectable.getSource(this.source)}`;
-    }
-
+    if (this.url) return html`${this._url()}`;
+    if (this.source) return html`${this._source()}`;
     return html``;
   }
 }
 
-export const mockGraphic = {
+const mockResource = {
   getGraphic: vi.fn(),
+  getGraphics: vi.fn(),
 };
 
-export const mockApp = {
-  findPlugin: vi.fn().mockReturnValue(mockGraphic),
+const mockApp = {
+  requirePlugin: vi.fn().mockReturnValue(mockResource),
 };
 
 describe('DefaultGraphicInjectable', () => {
@@ -56,23 +54,37 @@ describe('DefaultGraphicInjectable', () => {
     destroyInjector();
   });
 
-  it('should return url from resource plugin', async () => {
-    mockGraphic.getGraphic.mockReturnValue('url-content');
-    element.url = 'urlToken';
-    await nextFrame();
-    expect(mockGraphic.getGraphic).toHaveBeenCalledWith('urlToken', 'url');
-    expect(element.renderRoot.textContent).toContain('url-content');
+  describe('getUrl', () => {
+    it('should return url from resource plugin', async () => {
+      mockResource.getGraphic.mockReturnValue('url-content');
+      element.url = 'urlToken';
+      await nextFrame();
+      expect(mockResource.getGraphic).toHaveBeenCalledWith('urlToken', 'url');
+      expect(element.renderRoot.textContent).toContain('url-content');
+    });
   });
 
-  it('should return source html from resource plugin', async () => {
-    mockGraphic.getGraphic.mockReturnValue('<svg></svg>');
-    element.url = '';
-    element.source = 'sourceToken';
-    await nextFrame();
-    expect(mockGraphic.getGraphic).toHaveBeenCalledWith(
-      'sourceToken',
-      'source'
-    );
-    expect(element).toContainElement('svg');
+  describe('getSource', () => {
+    it('should return source html from resource plugin', async () => {
+      mockResource.getGraphic.mockReturnValue('<svg></svg>');
+      element.url = '';
+      element.source = 'sourceToken';
+      await nextFrame();
+      expect(mockResource.getGraphic).toHaveBeenCalledWith(
+        'sourceToken',
+        'source'
+      );
+      expect(element).toContainElement('svg');
+    });
+  });
+
+  describe('getGraphics', () => {
+    it('should return the list of graphics from ResourcePlugin', () => {
+      const mockGraphics = { a: 'a', b: 'b' };
+      mockResource.getGraphics.mockReturnValue(mockGraphics);
+      expect(new DefaultGraphicInjectable().getGraphics()).toEqual(
+        mockGraphics
+      );
+    });
   });
 });

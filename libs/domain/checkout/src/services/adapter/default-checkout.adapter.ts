@@ -63,7 +63,13 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
       );
   }
 
-  protected generateUrl(include?: ApiCheckoutModel.Includes[]): string {
+  protected generateUrl(
+    include: ApiCheckoutModel.Includes[] = [
+      ApiCheckoutModel.Includes.Shipments,
+      ApiCheckoutModel.Includes.ShipmentMethods,
+      ApiCheckoutModel.Includes.PaymentMethods,
+    ]
+  ): string {
     return `${this.SCOS_BASE_URL}/checkout-data${
       include ? `?include=${include.join(',')}` : ''
     }`;

@@ -1,4 +1,5 @@
 import { isFirefox } from '@spryker-oryx/ui';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -142,7 +143,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
                   type="button"
                   aria-label="${i18n('oryx.modal.navigate-back')}"
                 >
-                  <oryx-icon type="back"></oryx-icon>
+                  <oryx-icon .type=${IconTypes.Back}></oryx-icon>
                 </button>
               </oryx-icon-button>
             </slot>
@@ -159,7 +160,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
           () => html`
             <oryx-icon-button size=${Size.Sm}>
               <button value="cancel" aria-label="close modal">
-                <oryx-icon type="close"></oryx-icon>
+                <oryx-icon .type=${IconTypes.Close}></oryx-icon>
               </button>
             </oryx-icon-button>
           `

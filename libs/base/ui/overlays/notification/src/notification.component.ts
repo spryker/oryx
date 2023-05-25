@@ -1,4 +1,5 @@
 import { AlertType } from '@spryker-oryx/ui';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -38,8 +39,17 @@ export class NotificationComponent
 
   protected renderIcon(): TemplateResult | void {
     if (!this.type) return;
+    const mapper = {
+      [AlertType.Info]: IconTypes.Info,
+      [AlertType.Success]: IconTypes.Success,
+      [AlertType.Warning]: IconTypes.Warning,
+      [AlertType.Error]: IconTypes.Error,
+    };
 
-    return html`<oryx-icon type=${this.type} class="illustrative"></oryx-icon>`;
+    return html`<oryx-icon
+      .type=${mapper[this.type]}
+      class="illustrative"
+    ></oryx-icon>`;
   }
 
   protected renderCloseButton(): TemplateResult | void {
@@ -47,7 +57,7 @@ export class NotificationComponent
 
     return html`<oryx-icon-button size=${Size.Sm}>
       <button aria-label=${this.closeButtonAriaLabel} @click=${this.onClose}>
-        <oryx-icon type="close"></oryx-icon>
+        <oryx-icon .type=${IconTypes.Close}></oryx-icon>
       </button>
     </oryx-icon-button>`;
   }

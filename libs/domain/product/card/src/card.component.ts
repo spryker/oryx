@@ -1,10 +1,17 @@
+import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductMediaContainerSize, ProductMixin } from '@spryker-oryx/product';
+import {
+  ProductContext,
+  ProductMediaContainerSize,
+  ProductMixin,
+} from '@spryker-oryx/product';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
+  effect,
   hydratable,
   signalAware,
   Size,
@@ -42,8 +49,14 @@ export class ProductCardComponent extends ProductMixin(
     })
   );
 
+  protected context = new ContextController(this);
+  protected skuController = effect(() => {
+    this.context.provide(ProductContext.SKU, this.$options().sku ?? this.sku);
+  });
+
   protected override render(): TemplateResult | void {
     const product = this.$product();
+
     if (!product) return;
 
     const { titleLineClamp } = this.$options();
@@ -79,7 +92,7 @@ export class ProductCardComponent extends ProductMixin(
             aria-label="add-to-favorites"
             @click=${(e: Event) => e.preventDefault()}
           >
-            <oryx-icon type="wishlist"></oryx-icon>
+            <oryx-icon .type=${IconTypes.Wishlist}></oryx-icon>
           </button>
         </oryx-icon-button>
       </div>`;

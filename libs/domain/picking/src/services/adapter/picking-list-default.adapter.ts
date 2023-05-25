@@ -5,6 +5,7 @@ import { map, Observable, of, switchMap } from 'rxjs';
 import {
   ItemsFilters,
   PickingList,
+  PickingListError,
   PickingListItem,
   PickingListQualifier,
   PickingListStatus,
@@ -41,12 +42,23 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     return this.pickingHttpService
       .patch<StartPickingListResponse>(`/picking-lists/${pickingList.id}`, body)
       .pipe(
-        map(({ data: updatedPickingListData }) => ({
-          ...pickingList,
-          status: updatedPickingListData.status as PickingListStatus,
-          createdAt: new Date(updatedPickingListData.createdAt),
-          updatedAt: new Date(updatedPickingListData.updatedAt),
-        }))
+        map((response) => {
+          if (response.errors) {
+            const error = response.errors[0];
+            const pickingListError = new Error(
+              error.message
+            ) as PickingListError;
+            pickingListError.status = error.status;
+            pickingListError.code = error.code;
+            throw pickingListError;
+          }
+          return {
+            ...pickingList,
+            status: response.data.status as PickingListStatus,
+            createdAt: new Date(response.data.createdAt),
+            updatedAt: new Date(response.data.updatedAt),
+          };
+        })
       );
   }
 
@@ -201,6 +213,10 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       createdAt: new Date(data.createdAt),
       updatedAt: new Date(data.updatedAt),
       requestedDeliveryDate: new Date(requestedDeliveryDate),
+      itemsCount: parsedPickingItems.reduce(
+        (count, item) => count + item.quantity,
+        0
+      ),
     };
 
     return pickingList;
@@ -271,6 +287,7 @@ interface LinksObject {
 interface StartPickingListResponse {
   data: PatchPickingListData;
   links: LinksObject;
+  errors?: PickingListError[];
 }
 
 interface FinishPickingListResponse {

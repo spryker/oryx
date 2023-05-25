@@ -506,7 +506,7 @@ describe('DefaultFormRenderer', () => {
           const icon = element.querySelector(
             `input[value="${option.value}"] + oryx-icon`
           );
-          expect(icon?.getAttribute('type')).toBe(option.icon);
+          expect(icon).toHaveProperty('type', option.icon);
         });
       });
 
@@ -541,7 +541,63 @@ describe('DefaultFormRenderer', () => {
         });
 
         it('should not have a selected option', () => {
-          expect(element).not.toContainElement('option[selected');
+          expect(element).not.toContainElement('option[selected]');
+        });
+      });
+    });
+
+    describe('when a list of radio fields is built', () => {
+      const field = {
+        type: FormFieldType.RadioList,
+        options: [
+          { value: 'a', text: 'text a' },
+          { value: 'b', text: 'text b' },
+          { value: 'c', text: 'text c' },
+        ],
+        label: 'test',
+        attributes: { direction: 'test' },
+      };
+
+      beforeEach(async () => {
+        await setup(field, 'b');
+      });
+
+      expectComponentTag('oryx-input-list');
+
+      it('should have a checked input', () => {
+        const checked =
+          element.querySelector<HTMLInputElement>('input[checked]');
+        expect(checked?.value).toBe('b');
+      });
+
+      it('should set the label', () => {
+        expect(element.getAttribute('heading')).toBe(field.label);
+      });
+
+      it('should set the direction', () => {
+        expect(element.getAttribute('direction')).toBe(
+          field.attributes.direction
+        );
+      });
+
+      it('should render inputs labels', () => {
+        const radio = element.querySelector('oryx-radio');
+        expect(radio?.textContent?.trim()).toContain(field.options[0].text);
+      });
+
+      describe('when texts for inputs are not provided', () => {
+        const field = {
+          type: FormFieldType.RadioList,
+          options: [{ value: 'a' }, { value: 'b' }, { value: 'c' }],
+        };
+
+        beforeEach(async () => {
+          await setup(field, 'b');
+        });
+
+        it('should render inputs values as labels', () => {
+          const radio = element.querySelector('oryx-radio');
+          expect(radio?.textContent?.trim()).toContain(field.options[0].value);
         });
       });
     });

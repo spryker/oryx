@@ -1,5 +1,6 @@
 export * from '../attributes/src/attributes.def';
 export * from '../average-rating/src/average-rating.def';
+export * from '../brand/brand.def';
 export * from '../card/src/card.def';
 export * from '../description/src/description.def';
 export * from '../id/src/id.def';

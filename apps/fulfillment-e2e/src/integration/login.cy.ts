@@ -18,7 +18,7 @@ describe('Login Suite', () => {
       loginPage
         .getTitle()
         .should('be.visible')
-        .and('contain.text', 'Welcome please log in to start picking');
+        .and('contain.text', 'Welcome! Please log in to start picking.');
       loginPage.loginForm
         .getLabelSlot()
         .should('have.css', 'position', 'absolute');
@@ -27,6 +27,7 @@ describe('Login Suite', () => {
   describe('when logging in', () => {
     it('should login successfully', () => {
       cy.intercept('POST', '**/token').as('token');
+      cy.intercept('GET', '**/picking-lists?include*').as('picking-lists');
 
       loginPage.visit();
       loginPage.loginForm.login({
@@ -40,10 +41,9 @@ describe('Login Suite', () => {
 
       oauthHandler.getWrapper().should('be.visible');
       oauthHandler.getLogo().should('be.visible');
-      oauthHandler.getTitle().should('contain.text', 'Logging you in');
+      oauthHandler.getTitle().should('contain.text', 'Logging you in...');
       oauthHandler.getSpinner().should('be.visible');
 
-      cy.intercept('GET', '**/picking-lists?*').as('picking-lists');
       cy.wait('@picking-lists');
 
       cy.location('pathname').should('be.equal', '/');

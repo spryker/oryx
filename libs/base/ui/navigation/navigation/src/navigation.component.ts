@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -24,7 +25,7 @@ export class NavigationComponent extends LitElement {
       <slot></slot>
       <oryx-icon-button size=${Size.Md}>
         <button @click=${this.toggle} aria-label=${this.toggleButtonAriaLabel}>
-          <oryx-icon type="back"></oryx-icon>
+          <oryx-icon .type=${IconTypes.Back}></oryx-icon>
         </button>
       </oryx-icon-button>
     `;

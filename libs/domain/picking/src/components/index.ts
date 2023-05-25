@@ -4,6 +4,7 @@ export * from './filters';
 export * from './login';
 export * from './navigate-back';
 export * from './picking';
+export * from './picking-in-progress';
 export * from './picking-list-item';
 export * from './picking-lists';
 export * from './picking-lists-header';

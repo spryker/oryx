@@ -1,25 +1,35 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { fontInjectable } from '@spryker-oryx/utilities';
+import { defaultIconFont, IconTypes } from '@spryker-oryx/ui/icon';
+import {
+  computed,
+  fontInjectable,
+  signalAware,
+  signalProperty,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
+import { of } from 'rxjs';
 import { ThemePlugin } from '../plugins';
 import { DefaultIconInjectable } from './default-icon.injectable';
 
+@signalAware()
 @customElement('mock-component')
 class MockComponent extends LitElement {
-  @property()
-  icon?: string;
+  @signalProperty() icon?: string;
 
   protected injectable = new DefaultIconInjectable();
+  protected renderer = computed(() =>
+    this.injectable.render(this.icon ?? '', this)
+  );
 
   render(): TemplateResult {
     if (!this.icon) {
       return html``;
     }
 
-    return this.injectable.render(this.icon) ?? html``;
+    return this.renderer() ?? html``;
   }
 }
 
@@ -28,11 +38,11 @@ const mockTheme = {
 };
 
 const mockResource = {
-  getIcon: vi.fn(),
+  getIconTypes: vi.fn(),
 };
 
 const mockFontInjectable = {
-  setFont: vi.fn(),
+  setFont: vi.fn().mockReturnValue(of(true)),
 };
 
 const mockApp = {
@@ -65,30 +75,41 @@ describe('DefaultIconInjectable', () => {
     destroyInjector();
   });
 
-  describe('when icon font has been provided', () => {
+  describe('render', () => {
     it('should return icon font from main resource', async () => {
-      const mockResource = {
+      const mockIcons = {
         id: 'icon',
-        styles: `font: a`,
+        styles: {
+          font: 'a',
+        },
         mapping: {
-          aIcon: 'aIconContent',
+          aIcon: {
+            text: 'aIconContent',
+            styles: {
+              weight: 300,
+            },
+          },
           bIcon: 'bIconContent',
         },
       };
-      mockTheme.getIcons.mockReturnValue({ resource: mockResource });
+      mockTheme.getIcons.mockReturnValue({ resource: mockIcons });
       element.icon = 'aIcon';
       await nextFrame();
-      const iconStyles = element.renderRoot.querySelector(`style`)?.textContent;
-      expect(mockFontInjectable.setFont).toHaveBeenCalledWith(mockResource.id);
-      expect(element).toContainElement('style');
+
+      expect(element).not.toContainElement('span');
       expect(element.renderRoot.textContent).toContain(
-        mockResource.mapping.aIcon
+        mockIcons.mapping.aIcon.text
       );
-      expect(iconStyles).toContain(`:host {${mockResource.styles}}`);
+      expect(element.style.getPropertyValue('--oryx-icon-font')).toBe(
+        `"${mockIcons.styles.font}"`
+      );
+      expect(element.style.getPropertyValue('--oryx-icon-weight')).toBe(
+        `${mockIcons.mapping.aIcon.styles.weight}`
+      );
     });
 
     it('should return icon font from additional resource', async () => {
-      const mockResource = {
+      const mockIcons = {
         id: 'iconB',
         mapping: {
           aIcon: 'aIconContent',
@@ -103,39 +124,43 @@ describe('DefaultIconInjectable', () => {
             types: ['cIcon'],
           },
           {
-            resource: mockResource,
+            resource: mockIcons,
             types: ['bIcon'],
           },
         ],
       });
       element.icon = 'bIcon';
       await nextFrame();
-      expect(mockFontInjectable.setFont).toHaveBeenCalledWith(mockResource.id);
-      expect(element).not.toContainElement('style');
-      expect(element.renderRoot.textContent).toContain(
-        mockResource.mapping.bIcon
+      expect(mockFontInjectable.setFont).toHaveBeenCalledWith(
+        mockIcons.id,
+        ` 1rem '${defaultIconFont}'`
       );
+      expect(element).not.toContainElement('span');
+      expect(element.renderRoot.textContent).toContain(mockIcons.mapping.bIcon);
     });
-  });
 
-  describe('when icon font has not been provided', () => {
-    it('should return svg icon provided from resources', async () => {
-      mockTheme.getIcons.mockReturnValue(undefined);
-      mockResource.getIcon.mockReturnValue('<div class="icon-content"></div>');
+    it('should return svg icon template', async () => {
+      const mockIcons = {
+        id: 'iconSvg',
+        svg: true,
+        mapping: {
+          icon: '<div class="icon-content"></div>',
+        },
+      };
+      mockTheme.getIcons.mockReturnValue({ resource: mockIcons });
+      element.icon = 'aIcon';
       element.icon = 'icon';
       await nextFrame();
-      expect(mockResource.getIcon).toHaveBeenCalledWith('icon');
       expect(element).toContainElement('svg');
       expect(element).toContainElement('.icon-content');
     });
+  });
 
-    it('should return nothing if icon is not exist', async () => {
-      mockTheme.getIcons.mockReturnValue(undefined);
-      mockResource.getIcon.mockReturnValue(undefined);
-      element.icon = 'icon';
-      await nextFrame();
-      expect(mockResource.getIcon).toHaveBeenCalledWith('icon');
-      expect(element).not.toContainElement('svg');
+  describe('getIcons', () => {
+    it('should return the list icon of icons from ThemePlugin and ResourcePlugin', () => {
+      expect(new DefaultIconInjectable().getIcons()).toEqual(
+        Object.values(IconTypes)
+      );
     });
   });
 });

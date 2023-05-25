@@ -29,12 +29,8 @@
       "@spryker-oryx/checkout/address": [
         "libs/domain/checkout/address/index.ts"
       ],
-      "@spryker-oryx/checkout/auth": ["libs/domain/checkout/auth/index.ts"],
-      "@spryker-oryx/checkout/composition": [
-        "libs/domain/checkout/composition/index.ts"
-      ],
-      "@spryker-oryx/checkout/contact": [
-        "libs/domain/checkout/contact/index.ts"
+      "@spryker-oryx/checkout/customer": [
+        "libs/domain/checkout/customer/index.ts"
       ],
       "@spryker-oryx/checkout/delivery": [
         "libs/domain/checkout/delivery/index.ts"
@@ -46,6 +42,9 @@
       ],
       "@spryker-oryx/checkout/mocks": [
         "libs/domain/checkout/src/mocks/index.ts"
+      ],
+      "@spryker-oryx/checkout/orchestrator": [
+        "libs/domain/checkout/orchestrator/index.ts"
       ],
       "@spryker-oryx/checkout/payment": [
         "libs/domain/checkout/payment/index.ts"
@@ -97,9 +96,6 @@
       "@spryker-oryx/picking/*": ["libs/domain/picking/*/index.ts"],
       "@spryker-oryx/picking/offline": ["libs/domain/picking/offline/index.ts"],
       "@spryker-oryx/presets": ["libs/template/presets/src/index.ts"],
-      "@spryker-oryx/presets/resources": [
-        "libs/template/presets/resources/index.ts"
-      ],
       "@spryker-oryx/product": ["libs/domain/product/src/index.ts"],
       "@spryker-oryx/product/attributes": [
         "libs/domain/product/attributes/index.ts"
@@ -107,6 +103,7 @@
       "@spryker-oryx/product/average-rating": [
         "libs/domain/product/average-rating/index.ts"
       ],
+      "@spryker-oryx/product/brand": ["libs/domain/product/brand/index.ts"],
       "@spryker-oryx/product/card": ["libs/domain/product/card/index.ts"],
       "@spryker-oryx/product/description": [
         "libs/domain/product/description/index.ts"
@@ -125,6 +122,7 @@
       "@spryker-oryx/push-notification/web": [
         "libs/platform/push-notification/web/index.ts"
       ],
+      "@spryker-oryx/resources": ["libs/template/resources/src/index.ts"],
       "@spryker-oryx/router": ["libs/platform/router/src/index.ts"],
       "@spryker-oryx/router/*": ["libs/platform/router/*/index.ts"],
       "@spryker-oryx/router/lit": ["libs/platform/router/lit/index.ts"],
@@ -172,7 +170,6 @@
       "@spryker-oryx/themes/design-tokens": [
         "libs/template/themes/design-tokens/index.ts"
       ],
-      "@spryker-oryx/themes/icons": ["libs/template/themes/icons/index.ts"],
       "@spryker-oryx/ui": ["libs/base/ui/src/index.ts"],
       "@spryker-oryx/ui/button": ["libs/base/ui/action/button/index.ts"],
       "@spryker-oryx/ui/card": ["libs/base/ui/structure/card/index.ts"],

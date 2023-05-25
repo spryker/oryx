@@ -2,8 +2,9 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { a11yConfig, Size } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { iconComponent } from './component';
 import { IconComponent } from './icon.component';
+import { iconComponent } from './icon.def';
+import { IconTypes } from './icon.types';
 
 describe('Icon', () => {
   let element: IconComponent;
@@ -35,7 +36,10 @@ describe('Icon', () => {
     describe('and sprite is defined', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-icon sprite="/assets/icons.svg" type="search"></oryx-icon>`
+          html`<oryx-icon
+            sprite="/assets/icons.svg"
+            .type=${IconTypes.Search}
+          ></oryx-icon>`
         );
       });
 
@@ -50,7 +54,9 @@ describe('Icon', () => {
 
       it('should reference an external SVG and include searchbox ID', () => {
         const svg = element?.shadowRoot?.querySelector('svg use');
-        expect(svg?.getAttribute('href')).toBe('/assets/icons.svg#search');
+        expect(svg?.getAttribute('href')).toBe(
+          `/assets/icons.svg#${IconTypes.Search}`
+        );
       });
     });
   });
@@ -60,7 +66,10 @@ describe('Icon', () => {
       describe(`when size is "${size}"`, () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-icon type="search" size="${size}"></oryx-icon>`
+            html`<oryx-icon
+              type=${IconTypes.Search}
+              size="${size}"
+            ></oryx-icon>`
           );
         });
 

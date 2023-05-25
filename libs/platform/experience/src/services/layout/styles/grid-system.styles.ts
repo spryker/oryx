@@ -22,12 +22,17 @@ export const gridSystem = css`
     display: grid;
     max-width: 100%;
     max-height: 100%;
-    align-items: start;
-    align-content: start;
   }
 
-  *,
-  ::slotted(*) {
+  :host(:not([vertical])) {
+    align-items: var(--align, start);
+    align-content: var(--align, start);
+    justify-content: var(--justify);
+    justify-items: var(--justify);
+  }
+
+  *:not(style),
+  ::slotted(*:not(style)) {
     --_np: var(--inline-padding);
 
     max-width: calc(100% - (var(--margin, 0px) * 2));

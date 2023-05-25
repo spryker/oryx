@@ -1,14 +1,16 @@
 import { resolve } from '@spryker-oryx/di';
-import { IconTypes } from '@spryker-oryx/themes/icons';
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { asyncState, i18n, Size, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { distinctUntilChanged, map, startWith, Subject, switchMap } from 'rxjs';
 import { FallbackType, PickingListStatus } from '../../models';
 import { PickingListService } from '../../services';
+import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { pickingListsComponentStyles } from './picking-lists.styles';
 
 export class PickingListsComponent extends LitElement {
@@ -20,6 +22,9 @@ export class PickingListsComponent extends LitElement {
 
   @state()
   protected customerNote?: string;
+
+  protected pickingInProgressModal =
+    createRef<PickingInProgressModalComponent>();
 
   @state()
   protected searchValueLength?: number = 0;
@@ -44,7 +49,10 @@ export class PickingListsComponent extends LitElement {
   protected pickingLists = valueType(this.pickingLists$);
 
   protected override render(): TemplateResult {
-    return html` ${this.renderPickingLists()} ${this.renderCustomerNote()} `;
+    return html` ${this.renderPickingLists()} ${this.renderCustomerNote()}
+      <oryx-picking-in-progress-modal
+        ${ref(this.pickingInProgressModal)}
+      ></oryx-picking-in-progress-modal>`;
   }
 
   protected renderPickingLists(): TemplateResult {
@@ -80,6 +88,8 @@ export class PickingListsComponent extends LitElement {
                     html`<oryx-picking-list-item
                       .pickingListId=${pl.id}
                       @oryx.show-note=${this.openCustomerNoteModal}
+                      @oryx.show-picking-in-progress=${this
+                        .openPickingInProgressModal}
                     ></oryx-picking-list-item>`
                 )}
               </section>
@@ -104,7 +114,7 @@ export class PickingListsComponent extends LitElement {
         ${this.customerNote}
         <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
           <button @click=${this.closeCustomerNoteModal}>
-            <oryx-icon type=${IconTypes.CheckMark}></oryx-icon>
+            <oryx-icon .type=${IconTypes.Mark}></oryx-icon>
             ${i18n('picking-lists.customer-note.got-it')}
           </button>
         </oryx-button>
@@ -161,6 +171,11 @@ export class PickingListsComponent extends LitElement {
 
   protected closeCustomerNoteModal(): void {
     this.customerNote = undefined;
+  }
+
+  protected openPickingInProgressModal(event: CustomEvent): void {
+    const modal = this.pickingInProgressModal.value;
+    modal && (modal.open = true);
   }
 
   private noValueSearchProvided(): boolean {

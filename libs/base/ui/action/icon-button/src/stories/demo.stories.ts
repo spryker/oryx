@@ -1,4 +1,4 @@
-import { getResourceIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@spryker-oryx/ui';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -6,7 +6,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
 import { IconButtonProperties } from '../icon-button.model';
 
-const icons = getResourceIcons();
+const icons = getAppIcons();
 
 export default {
   title: `${storybookPrefix}/Actions/Icon Button`,
@@ -52,7 +52,7 @@ const Template: Story<IconButtonProperties & Props> = ({
   return html`
     <oryx-icon-button size=${ifDefined(size)}>
       <button ?disabled=${disabled} aria-label="story">
-        <oryx-icon type=${ifDefined(icon)}></oryx-icon>
+        <oryx-icon .type=${ifDefined(icon)}></oryx-icon>
       </button>
       ${text}
     </oryx-icon-button>

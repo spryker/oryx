@@ -3,14 +3,18 @@ import { FacetsOptions } from './facet-navigation.model';
 
 declare global {
   interface FeatureOptions {
-    'search-facet-navigation'?: FacetsOptions;
+    'oryx-search-facet-navigation'?: FacetsOptions;
   }
 }
 
 export const facetsComponent = componentDef({
-  name: 'search-facet-navigation',
+  name: 'oryx-search-facet-navigation',
   impl: () =>
     import('./facet-navigation.component').then(
       (m) => m.SearchFacetNavigationComponent
+    ),
+  schema: () =>
+    import('./facet-navigation.schema').then(
+      (m) => m.searchFacetNavigationSchema
     ),
 });

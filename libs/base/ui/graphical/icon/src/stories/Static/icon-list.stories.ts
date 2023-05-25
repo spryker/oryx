@@ -1,4 +1,4 @@
-import { getResourceIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -6,7 +6,7 @@ import { storybookPrefix } from '../../../../../.constants';
 export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  const iconsList = getResourceIcons();
+  const iconsList = getAppIcons();
 
   return html`
     <div class="icon-set">
@@ -14,7 +14,7 @@ const Template: Story<unknown> = (): TemplateResult => {
         (type) =>
           html`
             <div class="icon">
-              <oryx-icon type=${type}></oryx-icon>
+              <oryx-icon .type=${type}></oryx-icon>
               <span>${type}</span>
             </div>
           `

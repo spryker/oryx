@@ -14,7 +14,6 @@ import {
   Graphic,
   GraphicValue,
   ResourceGraphic,
-  ResourceIcons,
   Resources,
 } from './resources.model';
 
@@ -28,17 +27,13 @@ export const ResourcePluginName = 'oryx.experienceResource';
  */
 export class ResourcePlugin implements AppPlugin {
   constructor(protected resources: Resources) {
-    if (Object.keys(resources.graphics ?? {}).length) {
-      graphicInjectable.inject(new DefaultGraphicInjectable());
-    }
+    graphicInjectable.inject(new DefaultGraphicInjectable());
 
-    if (Object.keys(resources.icons ?? {}).length) {
+    if (!(iconInjectable.get() instanceof DefaultIconInjectable)) {
       iconInjectable.inject(new DefaultIconInjectable());
     }
 
-    if (Object.keys(resources.fonts ?? {}).length) {
-      fontInjectable.inject(new DefaultFontInjectable());
-    }
+    fontInjectable.inject(new DefaultFontInjectable());
   }
 
   getName(): string {
@@ -57,20 +52,6 @@ export class ResourcePlugin implements AppPlugin {
     }
 
     return resolveLazyLoadable(value);
-  }
-
-  getIcons(): ResourceIcons {
-    return this.resources.icons ?? {};
-  }
-
-  getIcon(name: string): string | Promise<string> | void {
-    const icon = this.getIcons()[name];
-
-    if (!icon) {
-      return;
-    }
-
-    return resolveLazyLoadable(icon);
   }
 
   getFont(id: string): string | undefined {

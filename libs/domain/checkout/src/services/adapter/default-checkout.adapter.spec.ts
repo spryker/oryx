@@ -84,47 +84,59 @@ describe('DefaultCheckoutService', () => {
   });
 
   describe('get should send `post` request', () => {
-    const mockGetCheckoutDataQualifier = {
-      cartId,
-      include: [ApiCheckoutModel.Includes.Shipments],
-    };
-
-    const mockSerializedGetCheckoutDataProps = {
-      data: {
-        type: 'checkout-data',
-        attributes: {
-          cartId: mockGetCheckoutDataQualifier.cartId,
+    describe('when an include is not provided', () => {
+      const mockSerializedGetCheckoutDataProps = {
+        data: {
+          type: 'checkout-data',
+          attributes: { cartId },
         },
-      },
-    };
+      };
 
-    it('should build url', () => {
-      service.get(mockGetCheckoutDataQualifier).subscribe(() => {
-        expect(http.url).toBe(`${mockApiUrl}/checkout-data?include=shipments`);
+      it('should build the url with standard includes', () => {
+        service.get({ cartId }).subscribe(() => {
+          expect(http.url).toBe(
+            `${mockApiUrl}/checkout-data?include=shipments,shipment-methods,payment-methods`
+          );
+        });
+      });
+
+      it('should provide body', () => {
+        mockTransformer.serialize.mockReturnValue(
+          of(mockSerializedGetCheckoutDataProps)
+        );
+        service.get({ cartId }).subscribe(() => {
+          expect(http.body).toEqual(mockSerializedGetCheckoutDataProps);
+        });
+      });
+
+      it('should call transformer with proper normalizer', () => {
+        http.flush(mockGetShipmentResponse);
+        service.get({ cartId }).subscribe();
+
+        expect(mockTransformer.do).toHaveBeenCalledWith(CheckoutNormalizer);
+      });
+
+      it('should return transformed data', () => {
+        mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
+        service.get({ cartId }).subscribe(callback);
+
+        expect(callback).toHaveBeenCalledWith(mockTransformerData);
       });
     });
 
-    it('should provide body', () => {
-      mockTransformer.serialize.mockReturnValue(
-        of(mockSerializedGetCheckoutDataProps)
-      );
-      service.get(mockGetCheckoutDataQualifier).subscribe(() => {
-        expect(http.body).toEqual(mockSerializedGetCheckoutDataProps);
+    describe('when an include is provided', () => {
+      it('should build the url with standard includes', () => {
+        service
+          .get({
+            cartId,
+            include: [ApiCheckoutModel.Includes.Shipments],
+          })
+          .subscribe(() => {
+            expect(http.url).toBe(
+              `${mockApiUrl}/checkout-data?include=shipments`
+            );
+          });
       });
-    });
-
-    it('should call transformer with proper normalizer', () => {
-      http.flush(mockGetShipmentResponse);
-      service.get(mockGetCheckoutDataQualifier).subscribe();
-
-      expect(mockTransformer.do).toHaveBeenCalledWith(CheckoutNormalizer);
-    });
-
-    it('should return transformed data', () => {
-      mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
-      service.get(mockGetCheckoutDataQualifier).subscribe(callback);
-
-      expect(callback).toHaveBeenCalledWith(mockTransformerData);
     });
   });
 
@@ -133,7 +145,7 @@ describe('DefaultCheckoutService', () => {
       cartId,
       include: [ApiCheckoutModel.Includes.Shipments],
       attributes: {
-        shipments: [{ ...mockShipmentAttributes, idShipmentMethod: 1 }],
+        shipments: [{ ...mockShipmentAttributes, idShipmentMethod: '1' }],
       },
     };
 
@@ -142,7 +154,7 @@ describe('DefaultCheckoutService', () => {
         type: 'checkout-data',
         attributes: {
           cartId,
-          shipments: [{ ...mockShipmentAttributes, idShipmentMethod: 1 }],
+          shipments: [{ ...mockShipmentAttributes, idShipmentMethod: '1' }],
         },
       },
     };
