@@ -11,7 +11,7 @@ export enum IconTypes {
   Image = 'photo_library',
   Decrease = 'remove', // merge with minus
   Info = 'info',
-  InputError = 'error', // merge with error
+  InputError = 'input_error', // merge with error
   Mark = 'check_circle',
   Minus = 'remove',
   Remove = 'remove',
