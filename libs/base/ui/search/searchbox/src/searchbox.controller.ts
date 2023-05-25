@@ -96,7 +96,7 @@ export class SearchboxController implements ReactiveController {
   }
 
   protected get searchButton(): TemplateResult {
-    const { searchIcon: icon = 'search' } = this.host;
+    const { searchIcon: icon = IconTypes.Search } = this.host;
     return html`
       <oryx-icon
         type=${icon}
@@ -107,7 +107,7 @@ export class SearchboxController implements ReactiveController {
   }
 
   protected get backButton(): TemplateResult {
-    const { backIcon: icon = 'back' } = this.host;
+    const { backIcon: icon = IconTypes.Back } = this.host;
     return html`
       <oryx-icon
         type=${icon}
@@ -118,7 +118,8 @@ export class SearchboxController implements ReactiveController {
   }
 
   get clearButton(): TemplateResult {
-    const { clearIcon: icon = 'remove', clearIconAppearance } = this.host;
+    const { clearIcon: icon = IconTypes.Remove, clearIconAppearance } =
+      this.host;
     return html`
       <oryx-icon
         type=${icon}

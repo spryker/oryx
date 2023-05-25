@@ -1,5 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import {
   ClearIconAppearance,
@@ -105,7 +106,7 @@ describe('SelectComponent', () => {
       });
 
       expectOptions(
-        'dropdown',
+        IconTypes.Dropdown,
         SearchIconPosition.None,
         ClearIconPosition.Suffix,
         ClearIconAppearance.Hover
@@ -124,7 +125,7 @@ describe('SelectComponent', () => {
       });
 
       expectOptions(
-        'dropdown',
+        IconTypes.Dropdown,
         SearchIconPosition.None,
         ClearIconPosition.Suffix,
         ClearIconAppearance.Hover
@@ -148,7 +149,7 @@ describe('SelectComponent', () => {
       });
 
       expectOptions(
-        'dropdown',
+        IconTypes.Dropdown,
         SearchIconPosition.None,
         ClearIconPosition.Suffix,
         ClearIconAppearance.Hover
@@ -169,7 +170,7 @@ describe('SelectComponent', () => {
       });
 
       expectOptions(
-        'dropdown',
+        IconTypes.Dropdown,
         SearchIconPosition.None,
         ClearIconPosition.Suffix,
         ClearIconAppearance.Hover
@@ -188,7 +189,7 @@ describe('SelectComponent', () => {
       });
 
       expectOptions(
-        'dropdown',
+        IconTypes.Dropdown,
         SearchIconPosition.None,
         ClearIconPosition.None,
         ClearIconAppearance.Hover

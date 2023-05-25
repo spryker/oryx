@@ -11,6 +11,11 @@ export enum UxType {
 }
 
 export const inputs = [IconTypes.Mobile, IconTypes.Tablet, IconTypes.Desktop];
+export const text: Record<string, string> = {
+  [IconTypes.Mobile]: 'mobile',
+  [IconTypes.Tablet]: 'tablet',
+  [IconTypes.Desktop]: 'desktop',
+};
 
 export const input = (
   item: string,
@@ -18,7 +23,7 @@ export const input = (
   checked = false
 ): TemplateResult => html`
   <input type="checkbox" ?checked=${checked} aria-label=${item} />
-  ${when(hasText, () => html`${item}`)}
+  ${when(hasText, () => html`${text[item]}`)}
 `;
 
 export const InputListDecorator =

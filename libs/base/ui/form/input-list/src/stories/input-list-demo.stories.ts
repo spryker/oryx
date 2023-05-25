@@ -5,7 +5,7 @@ import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { Direction } from '../../../../src/utilities/model';
 import { InputListComponent } from '../input-list.component';
-import { inputs, UxType } from './util';
+import { inputs, text, UxType } from './util';
 
 interface Props {
   title: string;
@@ -77,7 +77,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       value="${item}"
       ?disabled=${props.disabled}
     />
-    ${when(hasText, () => html`${item}`)}
+    ${when(hasText, () => html`${text[item]}`)}
   `;
 
   return html`
@@ -111,7 +111,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
           case UxType.toggleButton:
             return html`<oryx-toggle-icon
               >${input(item, false)}<oryx-icon .type=${item}></oryx-icon>
-              <span>${item}</span>
+              <span>${text[item]}</span>
             </oryx-toggle-icon>`;
           default:
             return html`<oryx-checkbox>${input(item)}</oryx-checkbox>`;

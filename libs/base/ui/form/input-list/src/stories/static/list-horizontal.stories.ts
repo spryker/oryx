@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { Direction } from '../../../../../src/utilities';
-import { input, InputListDecorator, inputs, UxType } from '../util';
+import { input, InputListDecorator, inputs, text, UxType } from '../util';
 
 export default {
   title: `${storybookPrefix}/Form/Input List/Static`,
@@ -27,7 +27,7 @@ const Template: Story<unknown> = (): TemplateResult => {
               case UxType.toggleButton:
                 return html`<oryx-toggle-icon
                   >${input(item, false)}<oryx-icon .type=${item}></oryx-icon>
-                  <span>${item}</span>
+                  <span>${text[item]}</span>
                 </oryx-toggle-icon>`;
               default:
                 return html`<oryx-checkbox>${input(item)}</oryx-checkbox>`;
