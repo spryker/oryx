@@ -47,7 +47,7 @@ export const HomePage: StaticComponent = {
               bleed: true,
               padding: '60px',
               gap: '30px 0px',
-              columnCount: 5,
+              columnCount: 6,
               justify: 'center',
               fill: 'var(--oryx-color-neutral-200)',
             },
