@@ -36,7 +36,10 @@ describe('Icon', () => {
     describe('and sprite is defined', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-icon sprite="/assets/icons.svg" type="search"></oryx-icon>`
+          html`<oryx-icon
+            sprite="/assets/icons.svg"
+            .type=${IconTypes.Search}
+          ></oryx-icon>`
         );
       });
 
@@ -51,7 +54,9 @@ describe('Icon', () => {
 
       it('should reference an external SVG and include searchbox ID', () => {
         const svg = element?.shadowRoot?.querySelector('svg use');
-        expect(svg?.getAttribute('href')).toBe('/assets/icons.svg#search');
+        expect(svg?.getAttribute('href')).toBe(
+          `/assets/icons.svg#${IconTypes.Search}`
+        );
       });
     });
   });
