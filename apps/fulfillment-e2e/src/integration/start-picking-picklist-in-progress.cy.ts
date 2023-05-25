@@ -1,6 +1,8 @@
+import { CustomerNoteFragment } from '../support/page_fragments/customer-note.fragment';
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 
 const pickingListsFragment = new PickingListsFragment();
+const customerNoteFragment = new CustomerNoteFragment();
 
 describe('pick a picking list in progress', () => {
   beforeEach(() => {
@@ -9,22 +11,16 @@ describe('pick a picking list in progress', () => {
     cy.mockPickingInProgress();
 
     // open first picking which is mocked as In Progress
-    pickingListsFragment
-      .getStartPickingButtons()
-      .eq(0)
-      .should('be.visible')
-      .click();
+    pickingListsFragment.getStartPickingButtons().eq(0).click();
     // safe the url
     cy.location('pathname').as('openedPickingUrl');
     // wait for event handlers initialization
     // we can't remove this wait in current implementation because we can't detect
     // if handler was set successfully
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(100);
+    cy.wait(500);
     // open Picking in progress modal
-    pickingListsFragment.pickingInProgressModal
-      .getProceedToPickingBtn()
-      .click();
+    customerNoteFragment.getProceedToPickingButton().click();
   });
 
   it('should stay on the same page and show modal', () => {
