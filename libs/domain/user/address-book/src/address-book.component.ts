@@ -73,7 +73,7 @@ export class AddressBookComponent extends ContentMixin(LitElement) {
     return html`
       <oryx-button outline>
         <button @click=${(): void => this.changeState(AddressBookState.Add)}>
-          <oryx-icon type=${IconTypes.Add}></oryx-icon>
+          <oryx-icon .type=${IconTypes.Add}></oryx-icon>
           ${i18n('user.address.add-address')}
         </button>
       </oryx-button>

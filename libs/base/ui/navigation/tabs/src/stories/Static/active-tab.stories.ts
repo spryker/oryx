@@ -22,7 +22,7 @@ const Template: Story<Props> = (): TemplateResult => {
       <oryx-tab>Tab 2</oryx-tab>
       <oryx-tab>Tab 3</oryx-tab>
       <oryx-tab>
-        <oryx-icon type=${IconTypes.Star}></oryx-icon>
+        <oryx-icon .type=${IconTypes.Star}></oryx-icon>
         Tab 4</oryx-tab
       >
       <oryx-tab>Tab 5</oryx-tab>
@@ -41,7 +41,7 @@ const Template: Story<Props> = (): TemplateResult => {
       <oryx-tab>Tab 2</oryx-tab>
       <oryx-tab>Tab 3</oryx-tab>
       <oryx-tab>
-        <oryx-icon type=${IconTypes.Star}></oryx-icon>
+        <oryx-icon .type=${IconTypes.Star}></oryx-icon>
         Tab 4</oryx-tab
       >
       <oryx-tab>Tab 5</oryx-tab>

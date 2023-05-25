@@ -76,7 +76,7 @@ export class AddressListItemComponent
               aria-label=${i18n('user.address.edit')}
               @click=${(): void => this.emitEvent(EDIT_EVENT, address)}
             >
-              <oryx-icon type=${IconTypes.Edit}></oryx-icon>
+              <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
             </button>
           </oryx-icon-button>
         `
@@ -89,7 +89,7 @@ export class AddressListItemComponent
               aria-label=${i18n('user.address.remove')}
               @click=${(): void => this.emitEvent(REMOVE_EVENT, address)}
             >
-              <oryx-icon type=${IconTypes.Trash}></oryx-icon>
+              <oryx-icon .type=${IconTypes.Trash}></oryx-icon>
             </button>
           </oryx-icon-button>
         `

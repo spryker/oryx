@@ -40,7 +40,10 @@ export class NotificationComponent
   protected renderIcon(): TemplateResult | void {
     if (!this.type) return;
 
-    return html`<oryx-icon type=${this.type} class="illustrative"></oryx-icon>`;
+    return html`<oryx-icon
+      .type=${this.type}
+      class="illustrative"
+    ></oryx-icon>`;
   }
 
   protected renderCloseButton(): TemplateResult | void {
@@ -48,7 +51,7 @@ export class NotificationComponent
 
     return html`<oryx-icon-button size=${Size.Sm}>
       <button aria-label=${this.closeButtonAriaLabel} @click=${this.onClose}>
-        <oryx-icon type=${IconTypes.Close}></oryx-icon>
+        <oryx-icon .type=${IconTypes.Close}></oryx-icon>
       </button>
     </oryx-icon-button>`;
   }

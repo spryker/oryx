@@ -49,7 +49,7 @@ export class SearchboxController implements ReactiveController {
         <oryx-icon-button>
           <button title="search">
             <slot name="trigger-icon"
-              ><oryx-icon type=${IconTypes.Search}></oryx-icon
+              ><oryx-icon .type=${IconTypes.Search}></oryx-icon
             ></slot>
           </button>
         </oryx-icon-button>

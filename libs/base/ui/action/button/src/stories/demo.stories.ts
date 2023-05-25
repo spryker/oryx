@@ -64,7 +64,7 @@ const Template: Story<ButtonComponentAttributes> = (
         ?outline=${props.outline}
       >
         <button>
-          <oryx-icon type=${IconTypes.Rocket}></oryx-icon>
+          <oryx-icon .type=${IconTypes.Rocket}></oryx-icon>
           Button with icon
         </button>
       </oryx-button>

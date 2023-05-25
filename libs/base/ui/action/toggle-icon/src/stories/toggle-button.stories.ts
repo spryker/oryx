@@ -37,7 +37,7 @@ const DemoTemplate: Story<{
             value=${iconType}
             name="device-single"
           />
-          <oryx-icon type=${iconType}></oryx-icon>
+          <oryx-icon .type=${iconType}></oryx-icon>
           <span>${text ?? iconType}</span>
         </oryx-toggle-icon>
       `
@@ -54,7 +54,7 @@ const DemoTemplate: Story<{
             value=${iconType}
             name="device-multi"
           />
-          <oryx-icon type=${iconType}></oryx-icon>
+          <oryx-icon .type=${iconType}></oryx-icon>
           <span>${text ?? iconType}</span>
         </oryx-toggle-icon>
       `

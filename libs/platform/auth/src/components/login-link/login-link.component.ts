@@ -36,7 +36,7 @@ export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
     return html`
       <oryx-button type="text">
         <button @click=${this.onClick}>
-          <oryx-icon type=${IconTypes.Login}></oryx-icon>
+          <oryx-icon .type=${IconTypes.Login}></oryx-icon>
           ${i18n(this.isAuthenticated ? 'auth.logout' : 'auth.login')}
         </button>
       </oryx-button>

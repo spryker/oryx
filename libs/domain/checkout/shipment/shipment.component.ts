@@ -102,7 +102,7 @@ export class CheckoutShipmentComponent
   }
 
   protected renderEmpty(): TemplateResult {
-    return html`<oryx-icon type=${IconTypes.Carrier}></oryx-icon>
+    return html`<oryx-icon .type=${IconTypes.Carrier}></oryx-icon>
       <p class="no-methods">
         ${i18n('checkout.no-shipment-methods-available')}
       </p>`;

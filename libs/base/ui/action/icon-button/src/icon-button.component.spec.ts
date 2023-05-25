@@ -21,7 +21,7 @@ describe('IconButtonComponent', () => {
     const id = 'test-button';
     element = await fixture(html`<oryx-icon-button>
       <button id=${id}>
-        <oryx-icon type=${IconTypes.Close}></oryx-icon>
+        <oryx-icon .type=${IconTypes.Close}></oryx-icon>
       </button>
     </oryx-icon-button>`);
 

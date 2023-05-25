@@ -53,7 +53,7 @@ export class PaginationComponent
         ?inert=${!nav}
       >
         <slot .name=${direction}>
-          <oryx-icon type=${IconTypes.NavigationArrow}></oryx-icon>
+          <oryx-icon .type=${IconTypes.NavigationArrow}></oryx-icon>
         </slot>
       </a>
     `;
@@ -70,7 +70,7 @@ export class PaginationComponent
     return html`
       <span truncated>
         <slot name="truncated">
-          <oryx-icon type=${IconTypes.Actions}></oryx-icon>
+          <oryx-icon .type=${IconTypes.Actions}></oryx-icon>
         </slot>
       </span>
     `;

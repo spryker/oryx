@@ -360,7 +360,7 @@ const Template: Story = (): TemplateResult => html`
             placeholder="make a11y happy"
             checked
           />
-          <oryx-icon type=${IconTypes.Rocket}></oryx-icon>
+          <oryx-icon .type=${IconTypes.Rocket}></oryx-icon>
           <span>Button</span>
         </oryx-toggle-icon>
       `;
@@ -371,7 +371,7 @@ const Template: Story = (): TemplateResult => html`
     <span>Truncated</span>
     <oryx-toggle-icon style="width: 200px">
       <input type="radio" placeholder="make a11y happy" />
-      <oryx-icon type=${IconTypes.Rocket}></oryx-icon>
+      <oryx-icon .type=${IconTypes.Rocket}></oryx-icon>
       <span
         >Truncated text requires an element. Truncated text requires an element.
         Truncated text requires an element.</span

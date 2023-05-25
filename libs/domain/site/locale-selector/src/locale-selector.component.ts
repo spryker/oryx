@@ -34,7 +34,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
         <oryx-button type=${ButtonType.Text} slot="trigger">
           <button>
             ${this.current}
-            <oryx-icon type=${IconTypes.Dropdown}></oryx-icon>
+            <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
           </button>
         </oryx-button>
         ${repeat(

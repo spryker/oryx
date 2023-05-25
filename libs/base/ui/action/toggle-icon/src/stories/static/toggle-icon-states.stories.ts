@@ -126,7 +126,7 @@ const Template: Story = (): TemplateResult =>
           placeholder="make a11y happy"
           ?checked=${checked}
         />
-        <oryx-icon type=${IconTypes.Rocket}></oryx-icon>
+        <oryx-icon .type=${IconTypes.Rocket}></oryx-icon>
       </oryx-toggle-icon>
     `
   );

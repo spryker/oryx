@@ -31,7 +31,7 @@ export class DropdownComponent
         <oryx-icon-button .size=${this.triggerIconSize}>
           <button aria-label=${this.toggleButtonAriaLabel}>
             <slot name="icon"
-              ><oryx-icon type=${IconTypes.Actions}></oryx-icon
+              ><oryx-icon .type=${IconTypes.Actions}></oryx-icon
             ></slot>
           </button>
         </oryx-icon-button>

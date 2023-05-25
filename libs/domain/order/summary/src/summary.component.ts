@@ -39,12 +39,12 @@ export class OrderSummaryComponent extends OrderMixin(
       <div class="details-container">
         <div class="details summary">
           <div>
-            <oryx-icon type=${IconTypes.Parcel}></oryx-icon>
+            <oryx-icon .type=${IconTypes.Parcel}></oryx-icon>
           </div>
           <div class="title">${i18n('order.order-id')}:</div>
           <div>${this.order?.id}</div>
           <div>
-            <oryx-icon type=${IconTypes.Calendar}></oryx-icon>
+            <oryx-icon .type=${IconTypes.Calendar}></oryx-icon>
           </div>
           <div class="title">${i18n('order.date')}:</div>
           <div>
@@ -55,7 +55,7 @@ export class OrderSummaryComponent extends OrderMixin(
         </div>
         <oryx-button outline>
           <button @click=${this.print}>
-            <oryx-icon type=${IconTypes.Printer}></oryx-icon>
+            <oryx-icon .type=${IconTypes.Printer}></oryx-icon>
             ${i18n('order.print-your-receipt')}
           </button>
         </oryx-button>

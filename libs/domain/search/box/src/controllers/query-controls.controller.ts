@@ -38,7 +38,7 @@ export class QueryControlsController {
           @click=${(e: Event): void => this.dispatchEvent(e, 'oryx.close')}
           @mousedown=${this.muteMousedown}
         >
-          <oryx-icon type=${IconTypes.Close}></oryx-icon>
+          <oryx-icon .type=${IconTypes.Close}></oryx-icon>
         </button>
       </oryx-icon-button>
     `;

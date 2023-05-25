@@ -20,7 +20,7 @@ export class TagComponent extends LitElement {
         ?disabled=${this.disabled}
         aria-label=${this.removeButtonAriaLabel}
       >
-        <oryx-icon type=${IconTypes.Close}></oryx-icon>
+        <oryx-icon .type=${IconTypes.Close}></oryx-icon>
       </button>
     `;
   }

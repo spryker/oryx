@@ -100,7 +100,7 @@ export class PickingProductCardComponent extends LitElement {
 
         <oryx-button>
           <button ?disabled="${!this.isCorrectNumberOfPickedProvided}">
-            <oryx-icon type=${IconTypes.Mark}></oryx-icon>
+            <oryx-icon .type=${IconTypes.Mark}></oryx-icon>
             ${i18n('picking.product-card.done')}
           </button>
         </oryx-button>
@@ -167,7 +167,7 @@ export class PickingProductCardComponent extends LitElement {
       </div>
       <oryx-button>
         <button @click=${this.editProductPicking}>
-          <oryx-icon type=${IconTypes.Edit}></oryx-icon>
+          <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
           ${i18n('picking.product-card.edit-items')}
         </button>
       </oryx-button>

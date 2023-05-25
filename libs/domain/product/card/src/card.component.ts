@@ -92,7 +92,7 @@ export class ProductCardComponent extends ProductMixin(
             aria-label="add-to-favorites"
             @click=${(e: Event) => e.preventDefault()}
           >
-            <oryx-icon type=${IconTypes.Wishlist}></oryx-icon>
+            <oryx-icon .type=${IconTypes.Wishlist}></oryx-icon>
           </button>
         </oryx-icon-button>
       </div>`;

@@ -22,11 +22,11 @@ const Template: Story<unknown> = (): TemplateResult => {
                 return html`<oryx-toggle>${input(item)}</oryx-toggle>`;
               case UxType.toggleIcon:
                 return html`<oryx-toggle-icon
-                  >${input(item, false)}<oryx-icon type=${item}></oryx-icon
+                  >${input(item, false)}<oryx-icon .type=${item}></oryx-icon
                 ></oryx-toggle-icon>`;
               case UxType.toggleButton:
                 return html`<oryx-toggle-icon
-                  >${input(item, false)}<oryx-icon type=${item}></oryx-icon>
+                  >${input(item, false)}<oryx-icon .type=${item}></oryx-icon>
                   <span>${item}</span>
                 </oryx-toggle-icon>`;
               default:

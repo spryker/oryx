@@ -42,7 +42,7 @@ export class SiteCurrencySelectorComponent extends ContentMixin<SiteCurrencySele
         <oryx-button type=${ButtonType.Text} slot="trigger">
           <button>
             ${this.current}
-            <oryx-icon type=${IconTypes.Dropdown}></oryx-icon>
+            <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
           </button>
         </oryx-button>
         ${repeat(

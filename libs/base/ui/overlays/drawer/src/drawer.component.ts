@@ -44,7 +44,7 @@ export class DrawerComponent extends LitElement implements DrawerProperties {
           !this.notClosable,
           () => html`
             <button value="cancel" aria-label=${this.closeButtonAriaLabel}>
-              <oryx-icon type=${IconTypes.Close}></oryx-icon>
+              <oryx-icon .type=${IconTypes.Close}></oryx-icon>
             </button>
           `
         )}

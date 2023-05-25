@@ -126,7 +126,7 @@ export class CartEntryComponent
           ?disabled=${this.$isBusy()}
         >
           <button aria-label="remove">
-            <oryx-icon type=${IconTypes.Trash}></oryx-icon>
+            <oryx-icon .type=${IconTypes.Trash}></oryx-icon>
           </button>
           <span>${i18n('cart.remove')}</span>
         </oryx-icon-button>

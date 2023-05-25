@@ -64,7 +64,7 @@ export class TextComponent extends LitElement implements TextProperties {
         () => html` <slot name="toggle">
           <oryx-icon-button size=${Size.Sm}>
             <button aria-label=${this.readMoreLabel} @click="${this.toggle}">
-              <oryx-icon type=${IconTypes.Dropdown}></oryx-icon>
+              <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
             </button>
           </oryx-icon-button>
         </slot>`

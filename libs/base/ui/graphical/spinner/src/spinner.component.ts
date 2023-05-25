@@ -15,7 +15,7 @@ export class SpinnerComponent extends LitElement implements SpinnerProperties {
   protected override render(): TemplateResult {
     return html`
       <slot>
-        <oryx-icon type=${this.icon} size="${this.size}"></oryx-icon>
+        <oryx-icon .type=${this.icon} size="${this.size}"></oryx-icon>
       </slot>
     `;
   }
