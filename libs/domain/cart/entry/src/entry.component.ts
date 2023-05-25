@@ -250,7 +250,7 @@ export class CartEntryComponent
   protected decreaseIcon = computed(() =>
     this.$options().removeByQuantity === RemoveByQuantity.ShowBin &&
     this.quantity === 1
-      ? 'trash'
+      ? IconTypes.Trash
       : undefined
   );
 }
