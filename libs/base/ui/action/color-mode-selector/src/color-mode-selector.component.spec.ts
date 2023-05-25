@@ -10,10 +10,6 @@ import {
 } from './color-mode-selector.component';
 import { colorModeSelectorComponent } from './color-mode-selector.def';
 
-interface IconElement extends Element {
-  type: string;
-}
-
 export class RootMock extends LitElement {
   protected override render(): TemplateResult {
     return html`<root-element><slot></slot></root-element>`;
@@ -70,7 +66,7 @@ describe('ColorModeSelectorComponent', () => {
       expect(element).toContainElement('oryx-icon-button');
       expect(element).toContainElement('button');
       expect(element).toContainElement('oryx-icon');
-      expect((icon as IconElement)?.type).toBe(IconTypes.ModeDark);
+      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
     });
   });
 
@@ -78,13 +74,13 @@ describe('ColorModeSelectorComponent', () => {
     it('should toggle icon type', async () => {
       const button = element.renderRoot.querySelector('button');
       const icon = element.renderRoot.querySelector('oryx-icon');
-      expect((icon as IconElement)?.type).toBe(IconTypes.ModeDark);
+      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
       button?.click();
       await nextFrame();
-      expect((icon as IconElement)?.type).toBe(IconTypes.ModeLight);
+      expect(icon).toHaveProperty('type', IconTypes.ModeLight);
       button?.click();
       await nextFrame();
-      expect((icon as IconElement)?.type).toBe(IconTypes.ModeDark);
+      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
     });
 
     it('should toggle attribute on the root element', async () => {
@@ -102,7 +98,7 @@ describe('ColorModeSelectorComponent', () => {
   describe('when `oryx.toggle-mode` event has been dispatched', () => {
     it('should toggle icon type', async () => {
       const icon = element.renderRoot.querySelector('oryx-icon');
-      expect((icon as IconElement)?.type).toBe(IconTypes.ModeDark);
+      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
       window.dispatchEvent(
         createEvent(
           { type: EVENT_TOGGLE_COLOR },
@@ -110,7 +106,7 @@ describe('ColorModeSelectorComponent', () => {
         )
       );
       await nextFrame();
-      expect((icon as IconElement)?.type).toBe(IconTypes.ModeLight);
+      expect(icon).toHaveProperty('type', IconTypes.ModeLight);
       window.dispatchEvent(
         createEvent(
           { type: EVENT_TOGGLE_COLOR },
@@ -118,7 +114,7 @@ describe('ColorModeSelectorComponent', () => {
         )
       );
       await nextFrame();
-      expect((icon as IconElement)?.type).toBe(IconTypes.ModeDark);
+      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
     });
     it('should toggle attribute on the root element', async () => {
       window.dispatchEvent(
@@ -147,11 +143,11 @@ describe('ColorModeSelectorComponent', () => {
       darkMode.match = false;
       triggerMatcher();
       await nextFrame();
-      expect((icon as IconElement)?.type).toBe(IconTypes.ModeDark);
+      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
       darkMode.match = true;
       triggerMatcher();
       await nextFrame();
-      expect((icon as IconElement)?.type).toBe(IconTypes.ModeLight);
+      expect(icon).toHaveProperty('type', IconTypes.ModeLight);
       darkMode.match = false;
     });
 
@@ -161,11 +157,11 @@ describe('ColorModeSelectorComponent', () => {
       button?.click();
       await nextFrame();
       expect(document.body?.hasAttribute(ColorMode.Dark)).toBe(true);
-      expect((icon as IconElement)?.type).toBe(IconTypes.ModeLight);
+      expect(icon).toHaveProperty('type', IconTypes.ModeLight);
       darkMode.match = false;
       triggerMatcher();
       await nextFrame();
-      expect((icon as IconElement)?.type).toBe(IconTypes.ModeLight);
+      expect(icon).toHaveProperty('type', IconTypes.ModeLight);
     });
   });
 });

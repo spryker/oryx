@@ -4,10 +4,10 @@ export enum IconTypes {
   Cart = 'shopping_cart',
   CartAdd = 'add_shopping_cart',
   Close = 'close',
-  Collapse = 'expand_more',
-  DropUp = 'expand_less', // merge with expand
-  Dropdown = 'expand_more', // merge with Collapse
-  Expand = 'expand_less',
+  Collapse = 'add', // merge with add
+  DropUp = 'expand_less',
+  Dropdown = 'expand_more',
+  Expand = 'remove', // merge with minus
   Image = 'photo_library',
   Decrease = 'remove', // merge with minus
   Info = 'info',

@@ -28,10 +28,9 @@ describe('Spinner', () => {
     });
 
     it('should render loader icon', () => {
-      const loader = element?.shadowRoot?.querySelector(
-        `oryx-icon[type="${IconTypes.Loader}"]`
-      );
+      const loader = element?.shadowRoot?.querySelector(`oryx-icon`);
       expect(loader).not.toBeNull();
+      expect(loader).toHaveProperty('type', IconTypes.Loader);
     });
   });
 
@@ -47,10 +46,9 @@ describe('Spinner', () => {
     });
 
     it('should render the custom icon', () => {
-      const customIcon = element?.shadowRoot?.querySelector(
-        'oryx-icon[type="search"]'
-      );
+      const customIcon = element?.shadowRoot?.querySelector('oryx-icon');
       expect(customIcon).not.toBeNull();
+      expect(customIcon).toHaveProperty('type', IconTypes.Search);
     });
   });
 
