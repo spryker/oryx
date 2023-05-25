@@ -14,7 +14,7 @@ const Template: Story<unknown> = (): TemplateResult => {
         (type) =>
           html`
             <div class="icon">
-              <oryx-icon type=${type}></oryx-icon>
+              <oryx-icon .type=${type}></oryx-icon>
               <span>${type}</span>
             </div>
           `

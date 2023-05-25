@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/template/resources/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build",
+      "options": {
+        "assets": [
+          "*.md",
+          {
+            "input": "public",
+            "glob": "**/*",
+            "output": "/public/"
+          }
+        ],
+        "exclude": ["public"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/template/resources/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["layer:template", "lib:resources"]
+}

@@ -1,4 +1,5 @@
 import { StaticComponent } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 
 const banner = (graphic: string) => ({
   type: 'oryx-content-banner',
@@ -47,8 +48,8 @@ const selfServiceLinks = {
         data: { rules: [{ layout: 'flex', vertical: true, align: 'start' }] },
       },
       components: [
-        link('Free delivery', '/', 'carrier'),
-        link('100-day return policy', '/', 'parcel'),
+        link('Free delivery', '/', IconTypes.Carrier),
+        link('100-day return policy', '/', IconTypes.Parcel),
         link('Click & Collect'),
       ],
     },

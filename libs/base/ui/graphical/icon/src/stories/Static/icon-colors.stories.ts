@@ -11,11 +11,11 @@ const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <h1>Inherited current colors</h1>
     <div class="icon-set" style="color: red;">
-      <oryx-icon type=${icon}></oryx-icon>
-      <oryx-icon type=${icon}></oryx-icon>
-      <oryx-icon type=${icon}></oryx-icon>
-      <oryx-icon type=${icon}></oryx-icon>
-      <oryx-icon type=${icon}></oryx-icon>
+      <oryx-icon .type=${icon}></oryx-icon>
+      <oryx-icon .type=${icon}></oryx-icon>
+      <oryx-icon .type=${icon}></oryx-icon>
+      <oryx-icon .type=${icon}></oryx-icon>
+      <oryx-icon .type=${icon}></oryx-icon>
     </div>
 
     <h1>Current color</h1>
@@ -68,7 +68,7 @@ const Template: Story<unknown> = (): TemplateResult => {
 
     <h1>Custom color</h1>
     <div class="icon-set">
-      <oryx-icon type=${icon} style="color: black"></oryx-icon>
+      <oryx-icon .type=${icon} style="color: black"></oryx-icon>
     </div>
 
     <style>

@@ -67,7 +67,7 @@ const Template: Story = (): TemplateResult => {
                   ?disabled=${isDisabled}
                   class="${state} ${lightDomState}"
                 >
-                  <oryx-icon type=${icon}></oryx-icon>
+                  <oryx-icon .type=${icon}></oryx-icon>
                 </button>
               </oryx-icon-button>
             `
@@ -80,7 +80,7 @@ const Template: Story = (): TemplateResult => {
                   ?disabled=${isDisabled}
                   class="${state} ${lightDomState}"
                 >
-                  <oryx-icon type=${icon}></oryx-icon>
+                  <oryx-icon .type=${icon}></oryx-icon>
                 </button>
                 label
               </oryx-icon-button>
@@ -104,7 +104,7 @@ const Template: Story = (): TemplateResult => {
                   ?disabled=${isDisabled}
                   href="http://www.link.com"
                 >
-                  <oryx-icon type=${icon}></oryx-icon>
+                  <oryx-icon .type=${icon}></oryx-icon>
                 </a>
               </oryx-icon-button>
             `
@@ -117,7 +117,7 @@ const Template: Story = (): TemplateResult => {
                   ?disabled=${isDisabled}
                   href="http://www.link.com"
                 >
-                  <oryx-icon type=${icon}></oryx-icon>
+                  <oryx-icon .type=${icon}></oryx-icon>
                 </a>
                 label
               </oryx-icon-button>
@@ -141,7 +141,7 @@ const Template: Story = (): TemplateResult => {
                   ?disabled=${isDisabled}
                   href="http://www.link.com"
                 >
-                  <oryx-icon type=${icon}></oryx-icon>
+                  <oryx-icon .type=${icon}></oryx-icon>
                 </a>
               </oryx-icon-button>
             `
@@ -154,7 +154,7 @@ const Template: Story = (): TemplateResult => {
                   ?disabled=${isDisabled}
                   href="http://www.link.com"
                 >
-                  <oryx-icon type=${icon}></oryx-icon>
+                  <oryx-icon .type=${icon}></oryx-icon>
                 </a>
                 <span>label</span>
               </oryx-icon-button>

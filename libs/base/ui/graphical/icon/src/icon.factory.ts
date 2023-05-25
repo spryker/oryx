@@ -9,7 +9,7 @@ import { Icon } from './icon.model';
  */
 export const icon = (icon: Icon): TemplateResult => {
   if (icon.source) {
-    return html`<oryx-icon .type=${icon.type}
+    return html`<oryx-icon
       ><svg viewBox="0 0 24 24">${icon.source}</svg></oryx-icon
     >`;
   }

@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
   graphicInjectable,
@@ -70,7 +71,10 @@ export class ImageComponent
 
   protected renderFallback(): TemplateResult | void {
     if (this.skipFallback) return;
-    return html`<oryx-icon type="image" part="fallback"></oryx-icon>`;
+    return html`<oryx-icon
+      type=${IconTypes.Image}
+      part="fallback"
+    ></oryx-icon>`;
   }
 
   protected hasFailure(): boolean {
