@@ -1,12 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
-import { IconTypes } from '@spryker-oryx/themes/icons';
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { asyncValue, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { tap } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { PickingListItemAttributes } from './picking-list-item.model';
 import { pickingListItemComponentStyles } from './picking-list-item.styles';
@@ -33,6 +33,14 @@ export class PickingListItemComponent
           this.routerService.navigate(
             `/picking-list/picking/${this.pickingList.id}`
           );
+        }),
+        catchError((e) => {
+          if (e.status === 409) {
+            this.dispatchEvent(
+              new CustomEvent('oryx.show-picking-in-progress')
+            );
+          }
+          return of(undefined);
         })
       )
       .subscribe();
@@ -73,7 +81,7 @@ export class PickingListItemComponent
         <div class="total">
           <oryx-icon type=${IconTypes.Cart}></oryx-icon>
           ${i18n('picking.picking-list-item.<count>-items', {
-            count: this.pickingList?.items.length,
+            count: this.pickingList?.itemsCount,
           })}
           ${when(
             this.pickingList?.cartNote,

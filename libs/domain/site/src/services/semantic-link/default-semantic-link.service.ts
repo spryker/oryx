@@ -23,6 +23,7 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
       }`,
     [SemanticLinkType.Cart]: (): string => '/cart',
     [SemanticLinkType.Checkout]: (): string => '/checkout',
+    [SemanticLinkType.CheckoutLogin]: (): string => '/checkout',
     [SemanticLinkType.Login]: (): string => '/login',
     [SemanticLinkType.Order]: (link: SemanticLink): string =>
       `/order/${encodeURIComponent(link.id ?? '')}`,

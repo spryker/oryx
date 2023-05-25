@@ -28,17 +28,13 @@ export const ResourcePluginName = 'oryx.experienceResource';
  */
 export class ResourcePlugin implements AppPlugin {
   constructor(protected resources: Resources) {
-    if (Object.keys(resources.graphics ?? {}).length) {
-      graphicInjectable.inject(new DefaultGraphicInjectable());
-    }
+    graphicInjectable.inject(new DefaultGraphicInjectable());
 
-    if (Object.keys(resources.icons ?? {}).length) {
+    if (!(iconInjectable.get() instanceof DefaultIconInjectable)) {
       iconInjectable.inject(new DefaultIconInjectable());
     }
 
-    if (Object.keys(resources.fonts ?? {}).length) {
-      fontInjectable.inject(new DefaultFontInjectable());
-    }
+    fontInjectable.inject(new DefaultFontInjectable());
   }
 
   getName(): string {
@@ -60,7 +56,11 @@ export class ResourcePlugin implements AppPlugin {
   }
 
   getIcons(): ResourceIcons {
-    return this.resources.icons ?? {};
+    return this.resources.icons?.list ?? {};
+  }
+
+  getIconTypes(): Record<string, string> {
+    return this.resources.icons?.types ?? {};
   }
 
   getIcon(name: string): string | Promise<string> | void {

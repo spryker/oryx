@@ -16,11 +16,10 @@ export class DefaultHttpService implements HttpService {
   constructor(protected handler = inject(HttpHandler)) {}
 
   request<T = unknown>(url: string, options: RequestOptions<T> = {}): any {
-    if (!(options.headers as Record<string, string>)?.['Content-Type']) {
-      options.headers = {
-        ...(options.headers ?? {}),
-        'Content-Type': 'application/json',
-      };
+    const headers = new Headers(options.headers);
+    if (!headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
+      options.headers = headers;
     }
 
     return this.handler.handle(url, options).pipe(

@@ -1,9 +1,8 @@
 import { ResourceIcons } from '@spryker-oryx/experience';
-import { IconTypes } from '@spryker-oryx/themes/icons';
+import { IconTypes } from '../icon.model';
 
 export const backofficeNgIcons: ResourceIcons = {
-  [IconTypes.BackArrow]: () =>
-    import('./icons/back-arrow').then((s) => s.default),
+  [IconTypes.Back]: () => import('./icons/back-arrow').then((s) => s.default),
   [IconTypes.Search]: () => import('./icons/search').then((s) => s.default),
   [IconTypes.Close]: () => import('./icons/close').then((s) => s.default),
   [IconTypes.Edit]: () => import('./icons/edit').then((s) => s.default),
@@ -17,18 +16,9 @@ export const backofficeNgIcons: ResourceIcons = {
   [IconTypes.Refresh]: () => import('./icons/refresh').then((s) => s.default),
   [IconTypes.Info]: () => import('./icons/info').then((s) => s.default),
   [IconTypes.Cart]: () => import('./icons/cart').then((s) => s.default),
-  [IconTypes.CheckMark]: () =>
-    import('./icons/check-mark').then((s) => s.default),
+  [IconTypes.Mark]: () => import('./icons/check-mark').then((s) => s.default),
   [IconTypes.Loader]: () => import('./icons/loader').then((s) => s.default),
   [IconTypes.Mark]: () => import('./icons/mark').then((s) => s.default),
-  [IconTypes.FreezerCategory]: () =>
-    import('./icons/freezer-category').then((s) => s.default),
-  [IconTypes.FreshCategory]: () =>
-    import('./icons/fresh-category').then((s) => s.default),
-  [IconTypes.ChillerCategory]: () =>
-    import('./icons/chiller-category').then((s) => s.default),
-  [IconTypes.AmbientCategory]: () =>
-    import('./icons/ambient-category').then((s) => s.default),
   [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
   [IconTypes.Minus]: () => import('./icons/minus').then((s) => s.default),
   /** Alias to minus */

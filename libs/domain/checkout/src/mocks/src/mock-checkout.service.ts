@@ -1,20 +1,12 @@
-import { CheckoutResponse, CheckoutService } from '@spryker-oryx/checkout';
-import { mockOrderData } from '@spryker-oryx/order/mocks';
+import { CheckoutResponse, CheckoutState } from '@spryker-oryx/checkout';
 import { Observable, of } from 'rxjs';
 
-export class MockCheckoutService implements CheckoutService {
-  canCheckout(): Observable<boolean> {
-    return of(true);
-  }
-  placeOrder(): Observable<CheckoutResponse> {
-    return of({ orderReference: 'test' });
+export class MockCheckoutService {
+  getProcessState(): Observable<CheckoutState> {
+    return of(CheckoutState.Ready);
   }
 
-  getLastOrder(): Observable<CheckoutResponse | null> {
-    return of({
-      id: 'mockid',
-      orderReference: 'DE--45',
-      orders: [{ ...mockOrderData, shippingAddress: {}, billingAddress: {} }],
-    });
+  placeOrder(): Observable<CheckoutResponse> {
+    return of({ orderReference: 'test' });
   }
 }
