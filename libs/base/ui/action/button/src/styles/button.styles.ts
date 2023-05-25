@@ -211,7 +211,7 @@ export const buttonStyles = css`
     position: absolute;
   }
 
-  :host([loading]) oryx-icon {
+  :host([loading]:not([confirmed])) oryx-icon {
     animation: spin 2s infinite linear;
   }
 
