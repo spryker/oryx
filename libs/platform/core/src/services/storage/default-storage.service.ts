@@ -1,13 +1,14 @@
-import { resolve } from '@spryker-oryx/di';
+import { inject } from '@spryker-oryx/di';
 import { isObservable, map, Observable, of } from 'rxjs';
 import { IndexedDBStorageService } from './indexed-db-storage.service';
 import { StorageType, StoredValue } from './model';
 import { StorageService } from './storage.service';
 
 export class DefaultStorageService implements StorageService {
-  constructor(protected defaultStorageType = StorageType.Local) {}
-
-  protected ibdStorage = resolve(IndexedDBStorageService);
+  constructor(
+    protected defaultStorageType = StorageType.Local,
+    protected ibdStorage = inject(IndexedDBStorageService)
+  ) {}
 
   get<T = unknown>(key: string, type?: StorageType): Observable<T | null> {
     try {

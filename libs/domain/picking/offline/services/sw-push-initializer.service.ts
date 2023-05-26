@@ -1,6 +1,6 @@
 import { OauthService } from '@spryker-oryx/auth';
 import { AppInitializer } from '@spryker-oryx/core';
-import { inject, resolve } from '@spryker-oryx/di';
+import { inject } from '@spryker-oryx/di';
 import { SyncSchedulerService } from '@spryker-oryx/offline';
 import {
   PickingSyncAction,
@@ -11,11 +11,14 @@ import { firstValueFrom, Observable } from 'rxjs';
 declare let self: ServiceWorkerGlobalScope;
 
 export class SwPushInitializerService implements AppInitializer {
-  constructor(private syncSchedulerService = inject(SyncSchedulerService)) {}
+  constructor(
+    private syncSchedulerService = inject(SyncSchedulerService),
+    private authService = inject(OauthService)
+  ) {}
 
   initialize(): void | Observable<void> | Promise<void> {
     //make subscription on auth token
-    resolve(OauthService).invokeStoredToken();
+    this.authService.invokeStoredToken();
 
     self.addEventListener('push', (event: PushEvent) => {
       if (!event.data) {
