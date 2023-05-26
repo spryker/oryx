@@ -7,7 +7,7 @@ const brand = (name: string, rules?: any) => ({
   options: { data: { link: `/search?q=${name}`, rules } },
 });
 
-export const HomePage: StaticComponent = {
+export const homePage: StaticComponent = {
   type: 'Page',
   meta: {
     title: 'Home Page',
