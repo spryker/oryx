@@ -267,7 +267,7 @@ export class DefaultFormRenderer implements FormRenderer {
                 ?checked=${option.value === value}
                 ?required=${field.required}
               />
-              <oryx-icon type=${ifDefined(option.icon)}></oryx-icon>
+              <oryx-icon .type=${ifDefined(option.icon)}></oryx-icon>
               ${when(option.text, () => html`<span>${option.text}</span>`)}
               <span>${option.value}</span>
             </oryx-toggle-icon>

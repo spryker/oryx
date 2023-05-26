@@ -1,5 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Address, AddressService } from '@spryker-oryx/user';
 import {
   AddressDefaults,
@@ -82,7 +83,7 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
 
   protected renderEmpty(): TemplateResult | void {
     return html`<slot name="empty">
-      <oryx-icon type="location" size=${Size.Lg}></oryx-icon>
+      <oryx-icon .type=${IconTypes.Location} size=${Size.Lg}></oryx-icon>
       ${i18n('user.address.no-addresses')}
     </slot>`;
   }

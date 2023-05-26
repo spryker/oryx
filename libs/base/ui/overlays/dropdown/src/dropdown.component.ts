@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { PopoverController } from '@spryker-oryx/ui/popover';
 import { hydratable, queryFirstFocusable, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -29,7 +30,9 @@ export class DropdownComponent
       <slot name="trigger">
         <oryx-icon-button .size=${this.triggerIconSize}>
           <button aria-label=${this.toggleButtonAriaLabel}>
-            <slot name="icon"><oryx-icon type="actions"></oryx-icon></slot>
+            <slot name="icon"
+              ><oryx-icon .type=${IconTypes.Actions}></oryx-icon
+            ></slot>
           </button>
         </oryx-icon-button>
       </slot>

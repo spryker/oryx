@@ -25,7 +25,7 @@ export class NavigationComponent extends LitElement {
       <slot></slot>
       <oryx-icon-button size=${Size.Md}>
         <button @click=${this.toggle} aria-label=${this.toggleButtonAriaLabel}>
-          <oryx-icon type=${IconTypes.Back}></oryx-icon>
+          <oryx-icon .type=${IconTypes.Back}></oryx-icon>
         </button>
       </oryx-icon-button>
     `;

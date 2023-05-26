@@ -20,7 +20,7 @@ export class NavigationButtonComponent
 
   protected override render(): TemplateResult {
     const innerContent = html`
-      ${when(this.icon, () => html`<oryx-icon type=${this.icon}></oryx-icon>`)}
+      ${when(this.icon, () => html`<oryx-icon .type=${this.icon}></oryx-icon>`)}
       ${when(
         this.text,
         () =>
