@@ -1,4 +1,4 @@
-import { screenCss } from '@spryker-oryx/utilities';
+import { primaryColor, screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 const smallScreen = css`
@@ -56,7 +56,7 @@ export const styles = css`
   }
 
   :is(a, button):hover {
-    background-color: var(--oryx-color-primary-400);
+    background-color: ${primaryColor('dark')};
     box-shadow: none;
   }
 
@@ -67,7 +67,7 @@ export const styles = css`
   }
 
   :is(a, button):active {
-    background-color: var(--oryx-color-primary-500);
+    background-color: ${primaryColor('darker')};
     box-shadow: none;
   }
 
@@ -83,8 +83,8 @@ export const styles = css`
     padding: 1px 6px;
     border-radius: 2px;
     text-align: center;
-    background: var(--oryx-color-secondary-300);
-    color: var(--oryx-color-secondaryA-0, white);
+    background: var(--oryx-color-secondary-9);
+    color: var(--oryx-color-secondary-0, white);
     inset-block-start: 6px;
     inset-inline-end: 8px;
     white-space: nowrap;

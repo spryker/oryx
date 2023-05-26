@@ -11,7 +11,7 @@ export const generateLayoutItems = (
     { length },
     (_, i) =>
       html`<div
-        style="${highlight ? 'background:var(--oryx-color-secondary-300)' : ''}"
+        style="${highlight ? 'background:var(--oryx-color-secondary-9)' : ''}"
       >
         ${prefix}${i + start}
       </div>`
@@ -175,10 +175,10 @@ export const generateNestedLayout = (
     <oryx-layout layout=${layout}>
       <div>1</div>
       <oryx-layout layout="flex" .options=${{ rules: [{ colSpan: 2 }] }}>
-        <div style="background:var(--oryx-color-secondary-300)">
+        <div style="background:var(--oryx-color-secondary-9)">
           N1 - lengthy content
         </div>
-        <div style="width:100px;background:var(--oryx-color-secondary-300)">
+        <div style="width:100px;background:var(--oryx-color-secondary-9)">
           N2 width:100px
         </div>
         ${generateLayoutItems(3, 3, 'N', true)}

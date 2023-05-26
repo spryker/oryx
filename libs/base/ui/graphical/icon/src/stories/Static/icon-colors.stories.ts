@@ -22,23 +22,20 @@ const Template: Story<unknown> = (): TemplateResult => {
     <div class="icon-set">
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-100);"
+        style="color: ${primaryColor('lighter')};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-200);"
+        style="color: ${primaryColor('light')};"
+      ></oryx-icon>
+      <oryx-icon type=${icon} style="color: ${primaryColor()};"></oryx-icon>
+      <oryx-icon
+        type=${icon}
+        style="color: ${primaryColor('dark')};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-300);"
-      ></oryx-icon>
-      <oryx-icon
-        type=${icon}
-        style="color: var(--oryx-color-primary-400);"
-      ></oryx-icon>
-      <oryx-icon
-        type=${icon}
-        style="color: var(--oryx-color-primary-500);"
+        style="color: ${primaryColor('darker')};"
       ></oryx-icon>
     </div>
 
@@ -46,23 +43,33 @@ const Template: Story<unknown> = (): TemplateResult => {
     <div class="icon-set">
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-100);background-color: var(--oryx-color-primary-500);"
+        style="color: ${primaryColor(
+          'lighter'
+        )};background-color: ${primaryColor('darker')};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-200);background-color: var(--oryx-color-primary-400);"
+        style="color: ${primaryColor('light')};background-color: ${primaryColor(
+          'dark'
+        )};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-300);background-color: var(--oryx-color-primary-200);"
+        style="color: ${primaryColor()};background-color: ${primaryColor(
+          'light'
+        )};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-400);background-color: var(--oryx-color-primary-200);"
+        style="color: ${primaryColor('dark')};background-color: ${primaryColor(
+          'light'
+        )};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-500);background-color: var(--oryx-color-primary-100);"
+        style="color: ${primaryColor(
+          'darker'
+        )};background-color: ${primaryColor('lighter')};"
       ></oryx-icon>
     </div>
 

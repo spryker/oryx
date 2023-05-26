@@ -1,3 +1,4 @@
+import { primaryColor } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const previewStyles = css`
@@ -7,7 +8,7 @@ export const previewStyles = css`
 
   .eb-preview-focus::before {
     content: '';
-    outline: 4px solid var(--oryx-color-primary-300);
+    outline: 4px solid ${primaryColor()};
     outline-offset: -4px;
     position: absolute;
     width: 100%;
@@ -23,7 +24,7 @@ export const previewStyles = css`
     color: #fff;
     font: 500 16px/22px Montserrat, sans-serif;
     padding: 2px 5px;
-    background-color: var(--oryx-color-primary-300);
+    background-color: ${primaryColor()};
     z-index: var(--oryx-overlay-z-index, 3);
   }
 `;

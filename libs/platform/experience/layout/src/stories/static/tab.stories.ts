@@ -73,7 +73,7 @@ const Template: Story = (): TemplateResult => {
         display: none;
       }
       [layout='tabular'] input:checked + label {
-        color: var(--oryx-color-primary-300);
+        color: ${primaryColor()};
       }
 
       [layout='tabular'][vertical] *:not(input):not(label) {

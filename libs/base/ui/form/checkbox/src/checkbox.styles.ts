@@ -1,3 +1,4 @@
+import { primaryColor } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const checkboxStyles = css`
@@ -49,14 +50,14 @@ export const checkboxStyles = css`
 
   :host(:not([intermediate])) ::slotted(input:checked)::before {
     background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMS42MjM4IDIuNTgwMzhMNS4wOTMwNiA5LjI4MTAzQzQuODQxNjMgOS41Mzc2OCA0LjUxNDUxIDkuNjY2NjcgNC4xODYxMSA5LjY2NjY3QzMuODU3NzIgOS42NjY2NyAzLjUyOTMyIDkuNTM3NjggMy4yNzkxNyA5LjI4MTAzTDAuMzc2MTgzIDYuMzAyNTJDLTAuMTI1Mzk0IDUuNzg5MjEgLTAuMTI1Mzk0IDQuOTU2MDggMC4zNzYxODMgNC40NDE0NUMwLjg3Nzc1OSAzLjkyNjgzIDEuNjg4NDkgMy45MjY4MyAyLjE5MDA3IDQuNDQxNDVMNC4xODYxMSA2LjQ4OTQyTDkuODA5OTMgMC43MTkzMDVDMTAuMzExNSAwLjIwNDY4IDExLjEyMjIgMC4yMDQ2OCAxMS42MjM4IDAuNzE5MzA1QzEyLjEyNTQgMS4yMzM5MyAxMi4xMjU0IDIuMDY1NzUgMTEuNjIzOCAyLjU4MDM4WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==');
-    background-color: var(--oryx-color-primary-300);
-    border-color: var(--oryx-color-primary-300);
+    background-color: ${primaryColor()};
+    border-color: ${primaryColor()};
   }
 
   :host([intermediate]) ::slotted(input)::before {
     background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEuMzMzNSA4QzEuMzMzNSA3LjI2MzYyIDEuOTMwNDUgNi42NjY2NiAyLjY2NjgzIDYuNjY2NjZIMTMuMzMzNUMxNC4wNjk5IDYuNjY2NjYgMTQuNjY2OCA3LjI2MzYyIDE0LjY2NjggOEMxNC42NjY4IDguNzM2MzggMTQuMDY5OSA5LjMzMzMzIDEzLjMzMzUgOS4zMzMzM0gyLjY2NjgzQzEuOTMwNDUgOS4zMzMzMyAxLjMzMzUgOC43MzYzOCAxLjMzMzUgOFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=');
-    background-color: var(--oryx-color-primary-300);
-    border-color: var(--oryx-color-primary-300);
+    background-color: ${primaryColor()};
+    border-color: ${primaryColor()};
   }
 
   :host(:not([intermediate])) ::slotted(input:disabled)::before {
@@ -85,14 +86,14 @@ export const checkboxStyles = css`
 
   :host(:not([intermediate]):not([hasError]):hover)
     ::slotted(input:checked:not(:disabled))::before {
-    border-color: var(--oryx-color-primary-400);
-    background-color: var(--oryx-color-primary-400);
+    border-color: ${primaryColor('dark')};
+    background-color: ${primaryColor('dark')};
   }
 
   :host([intermediate]:not([hasError]):hover)
     ::slotted(input:not(:disabled))::before {
-    border-color: var(--oryx-color-primary-400);
-    background-color: var(--oryx-color-primary-400);
+    border-color: ${primaryColor('dark')};
+    background-color: ${primaryColor('dark')};
   }
 
   :host(:not([intermediate]):not([hasError]):hover)
@@ -106,7 +107,7 @@ export const checkboxStyles = css`
     width: 18px;
     border: none;
     box-shadow: 0 0 3px var(--oryx-color-focus),
-      inset 0 0 0 2px var(--oryx-color-primary-300);
+      inset 0 0 0 2px ${primaryColor()};
   }
 
   :host(:not([hasError]))

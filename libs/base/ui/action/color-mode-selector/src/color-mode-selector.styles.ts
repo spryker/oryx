@@ -1,7 +1,8 @@
+import { primaryColor } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
   button {
-    color: var(--oryx-color-primary-300);
+    color: ${primaryColor()};
   }
 `;

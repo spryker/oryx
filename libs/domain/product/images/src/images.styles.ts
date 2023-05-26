@@ -1,3 +1,4 @@
+import { primaryColor } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const productImageStyles = css`
@@ -87,7 +88,7 @@ export const productImageStyles = css`
   }
 
   input:focus:not(:focus-visible) {
-    border: 1px solid var(--oryx-color-primary-300);
+    border: 1px solid ${primaryColor()};
     box-shadow: 0 0 4px var(--oryx-color-focus);
   }
 

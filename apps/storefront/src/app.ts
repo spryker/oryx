@@ -12,6 +12,18 @@ if (env.ORYX_LABS) {
 
 export const app = appBuilder()
   .withFeature(features)
-  .withTheme(storefrontTheme)
+  .withTheme([
+    storefrontTheme,
+    {
+      designTokens: [
+        {
+          color: {
+            // primary: colorPalette.colors.sky,
+            // secondary: colorPalette.colors.crimson,
+          },
+        },
+      ],
+    },
+  ])
   .withEnvironment(env)
   .create();
