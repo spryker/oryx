@@ -23,6 +23,7 @@
     "presets": "libs/template/presets",
     "product": "libs/domain/product",
     "push-notification": "libs/platform/push-notification",
+    "resources": "libs/template/resources",
     "router": "libs/platform/router",
     "search": "libs/domain/search",
     "site": "libs/domain/site",
@@ -30,7 +31,6 @@
     "storefront-e2e": "apps/storefront-e2e",
     "storybook": "apps/storybook",
     "themes": "libs/template/themes",
-    "resources": "libs/template/resources",
     "ui": "libs/base/ui",
     "user": "libs/domain/user",
     "utilities": "libs/base/utilities"
