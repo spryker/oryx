@@ -22,5 +22,7 @@ module.exports = defineConfig({
   },
   env: {
     ORYX_FULFILLMENT_BACKEND_URL: process.env.ORYX_FULFILLMENT_BACKEND_URL,
+    ORYX_FULFILLMENT_PUBLIC_VAPID_KEY:
+      process.env.ORYX_FULFILLMENT_PUBLIC_VAPID_KEY,
   },
 });
