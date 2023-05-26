@@ -28,7 +28,7 @@ class MockRouterService implements Partial<RouterService> {
   }
 }
 
-describe('RootAppComponent', () => {
+describe('OryxAppComponent', () => {
   let routerService: MockRouterService;
   let litRouterOutletSpy: SpyInstance;
 
@@ -71,9 +71,9 @@ describe('RootAppComponent', () => {
 
     await new Promise((res) => setTimeout(res));
 
-    const rootApp = document.querySelector('oryx-app');
+    const oryxApp = document.querySelector('oryx-app');
 
-    expect(rootApp).toBeInstanceOf(HTMLElement);
-    expect(rootApp!.shadowRoot?.innerHTML).toContain('mock-lit-router-outlet');
+    expect(oryxApp).toBeInstanceOf(HTMLElement);
+    expect(oryxApp?.shadowRoot?.innerHTML).toContain('mock-lit-router-outlet');
   });
 });
