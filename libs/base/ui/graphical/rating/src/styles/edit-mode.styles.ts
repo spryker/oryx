@@ -1,3 +1,4 @@
+import { secondaryColorDark } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 // Note: the pseudo states in storybook are actual destroying some of the
