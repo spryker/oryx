@@ -17,7 +17,7 @@ export const baseStyles = css`
 
   :host([sticky]) slot:not([name]) {
     position: sticky;
-    inset-block-start: 0;
+    inset-block-start: var(--sticky-offset, 0);
     z-index: 1;
     background-color: var(--oryx-color-canvas-100);
   }

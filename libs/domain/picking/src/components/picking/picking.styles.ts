@@ -1,6 +1,10 @@
 import { css } from 'lit';
 
 export const pickingComponentStyles = css`
+  :host {
+    --sticky-offset: 66px;
+  }
+
   .tab-panels {
     min-height: 100vh;
     width: 100%;
