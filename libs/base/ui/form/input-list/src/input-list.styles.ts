@@ -46,5 +46,9 @@ export const screenStyles = screenCss({
 
       margin-block-end: 20px;
     }
+
+    .content {
+      gap: 20px;
+    }
   `,
 });

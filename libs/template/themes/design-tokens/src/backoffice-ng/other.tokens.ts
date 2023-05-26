@@ -70,5 +70,11 @@ export const tokens: ThemeToken = {
     header: {
       padding: '18px 20px',
     },
+    body: {
+      padding: '20px',
+    },
+    footer: {
+      padding: '0 20px',
+    },
   },
 };
