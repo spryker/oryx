@@ -8,7 +8,7 @@ import { siteProviders } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { rootAppComponent } from './root-app.def';
+import { oryxAppComponent } from './oryx-app.def';
 
 class MockRouterService implements Partial<RouterService> {
   private router$ = new BehaviorSubject('');
@@ -33,7 +33,7 @@ describe('RootAppComponent', () => {
   let litRouterOutletSpy: SpyInstance;
 
   beforeAll(async () => {
-    await useComponent(rootAppComponent);
+    await useComponent(oryxAppComponent);
   });
 
   beforeEach(async () => {
@@ -67,11 +67,11 @@ describe('RootAppComponent', () => {
   });
 
   it('should render `LitRouter.outlet()`', async () => {
-    document.body.innerHTML = '<root-app></root-app>';
+    document.body.innerHTML = '<oryx-app></oryx-app>';
 
     await new Promise((res) => setTimeout(res));
 
-    const rootApp = document.querySelector('root-app');
+    const rootApp = document.querySelector('oryx-app');
 
     expect(rootApp).toBeInstanceOf(HTMLElement);
     expect(rootApp!.shadowRoot?.innerHTML).toContain('mock-lit-router-outlet');
