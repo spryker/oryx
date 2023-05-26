@@ -1,6 +1,6 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 
-export const CategoryPage: StaticComponent = {
+export const categoryPage: StaticComponent = {
   type: 'Page',
   meta: {
     title: 'Category Page',
