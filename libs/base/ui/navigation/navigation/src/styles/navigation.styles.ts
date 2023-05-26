@@ -1,3 +1,4 @@
+import { primaryBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const navigationStyles = css`
