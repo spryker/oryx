@@ -1,3 +1,4 @@
+import { primaryBase, primaryLighter } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const layoutStaticStyles = css`

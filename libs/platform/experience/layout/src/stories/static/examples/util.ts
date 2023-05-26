@@ -1,3 +1,4 @@
+import { primaryBase, primaryLighter } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 
 export const generateHeader = (): TemplateResult => {
