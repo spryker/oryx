@@ -12,6 +12,7 @@
     "platform/i18n",
     "base/di",
     "template/presets",
+    "template/resources",
     "domain/product",
     "domain/picking",
     "domain/order",
