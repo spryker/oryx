@@ -25,7 +25,7 @@ export const cssColorVar = (
 
   if (fallback) fallback = `, ${fallback}`;
 
-  return unsafeCSS(`--oryx-color-${type}-${num()}${fallback}`);
+  return unsafeCSS(`var(--oryx-color-${type}-${num()}${fallback ?? ''})`);
 };
 
 export const primaryColorBase = cssColorVar();
