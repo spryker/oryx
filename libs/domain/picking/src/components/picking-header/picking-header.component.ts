@@ -25,7 +25,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   protected renderCartNoteButton(): TemplateResult {
     return html`${this.cartNote
       ? html` <oryx-icon-button
-          ><button area-label="Show customer note">
+          ><button aria-label="Show customer note">
             <oryx-icon type="info"></oryx-icon></button
         ></oryx-icon-button>`
       : ''}`;
@@ -33,9 +33,14 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
 
   protected override render(): TemplateResult {
     return html`<div class="title">
-        <a class="back" href="#" @click=${this.back}
-          ><oryx-icon type="back"></oryx-icon
-        ></a>
+        <button
+          aria-label="Back to pick lists"
+          class="back"
+          href="#"
+          @click=${this.back}
+        >
+          <oryx-icon type="back"></oryx-icon>
+        </button>
         ${this.pickingListId}
       </div>
       ${this.renderCartNoteButton()}
@@ -50,6 +55,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   }
 
   protected back(): void {
+    //TODO - display discard modal
     this.routerService.back();
   }
 }

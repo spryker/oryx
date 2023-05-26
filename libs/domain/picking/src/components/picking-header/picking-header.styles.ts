@@ -24,5 +24,8 @@ export const styles = css`
   .back {
     --oryx-icon-size: 18px;
     color: var(--oryx-color-neutral-400);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
   }
 `;
