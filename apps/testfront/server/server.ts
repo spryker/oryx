@@ -20,7 +20,7 @@ const config = {
     entry: join(viteConfig.ssr.root, viteConfig.ssr.entry),
     index: viteConfig.index,
   },
-  component: '<root-app></root-app>',
+  component: '<oryx-app></oryx-app>',
   namespace: viteConfig.ssr.namespace,
 };
 
