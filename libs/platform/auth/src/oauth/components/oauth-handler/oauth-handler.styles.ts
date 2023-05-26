@@ -1,11 +1,11 @@
-import { primaryBase } from '@spryker-oryx/utilities';
+import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
   :host {
     display: flex;
     flex-direction: column;
-    background-color: ${primaryBase};
+    background-color: ${primaryColorBase};
     justify-content: center;
     height: 100vh;
     color: var(--oryx-color-canvas-100);
@@ -19,7 +19,7 @@ export const styles = css`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${primaryBase};
+    background-color: ${primaryColorBase};
     z-index: -1;
   }
 

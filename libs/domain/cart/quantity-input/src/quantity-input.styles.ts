@@ -1,4 +1,4 @@
-import { primaryBase } from '@spryker-oryx/utilities';
+import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -66,8 +66,8 @@ export const styles = css`
   }
 
   button:focus-visible {
-    border: 2px solid ${primaryBase};
-    box-shadow: 0 0 3px ${primaryBase};
+    border: 2px solid ${primaryColorBase};
+    box-shadow: 0 0 3px ${primaryColorBase};
     z-index: 1;
   }
 

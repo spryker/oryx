@@ -1,4 +1,7 @@
+import { cssColorVar } from '@spryker-oryx/utilities';
 import { css } from 'lit';
+
+const linkColor = cssColorVar('primary', 'base', 'white');
 
 export const styles = css`
   :host {
@@ -11,7 +14,7 @@ export const styles = css`
   }
 
   a {
-    color: var(--oryx-color-primary-0, 'white');
+    color: ${linkColor};
   }
 
   img {

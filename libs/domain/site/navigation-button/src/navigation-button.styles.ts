@@ -1,5 +1,13 @@
-import { primaryDark, primaryDarker, screenCss } from '@spryker-oryx/utilities';
+import {
+  cssColorVar,
+  primaryColorDark,
+  primaryColorDarker,
+  screenCss,
+  secondaryColorBase,
+} from '@spryker-oryx/utilities';
 import { css } from 'lit';
+
+const markColor = cssColorVar('secondary', 'ink', 'white');
 
 const smallScreen = css`
   :host {
@@ -56,7 +64,7 @@ export const styles = css`
   }
 
   :is(a, button):hover {
-    background-color: ${primaryDark};
+    background-color: ${primaryColorDark};
     box-shadow: none;
   }
 
@@ -67,7 +75,7 @@ export const styles = css`
   }
 
   :is(a, button):active {
-    background-color: ${primaryDarker};
+    background-color: ${primaryColorDarker};
     box-shadow: none;
   }
 
@@ -83,8 +91,8 @@ export const styles = css`
     padding: 1px 6px;
     border-radius: 2px;
     text-align: center;
-    background: var(--oryx-color-secondary-9);
-    color: var(--oryx-color-secondary-0, white);
+    background: ${secondaryColorBase};
+    color: ${markColor};
     inset-block-start: 6px;
     inset-inline-end: 8px;
     white-space: nowrap;

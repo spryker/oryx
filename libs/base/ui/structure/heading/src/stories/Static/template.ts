@@ -1,4 +1,4 @@
-import { primaryBase } from '@spryker-oryx/utilities';
+import { primaryColorBase, secondaryColorBase } from '@spryker-oryx/utilities';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
@@ -295,8 +295,8 @@ export const Template: Story = (): TemplateResult => {
         -webkit-text-fill-color: transparent;
         background-image: linear-gradient(
           45deg,
-          var(--oryx-color-secondary-9),
-          ${primaryBase}
+          ${secondaryColorBase},
+          ${primaryColorBase}
         );
       }
     </style>

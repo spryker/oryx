@@ -1,8 +1,9 @@
 import { CSSResult, unsafeCSS } from 'lit';
 
-export const color = (
+export const cssColorVar = (
   type: 'primary' | 'secondary' | 'neutral' = 'primary',
-  shade: 'ink' | `base` | 'light' | 'lighter' | 'dark' | 'darker' = 'base'
+  shade: 'ink' | `base` | 'light' | 'lighter' | 'dark' | 'darker' = 'base',
+  fallback?: string
 ): CSSResult => {
   const num = () => {
     switch (shade) {
@@ -22,11 +23,17 @@ export const color = (
     }
   };
 
-  return unsafeCSS(`var(--oryx-color-${type}-${num()})`);
+  if (fallback) fallback = `, ${fallback}`;
+
+  return unsafeCSS(`--oryx-color-${type}-${num()}${fallback}`);
 };
 
-export const primaryBase = color();
-export const primaryLight = color('primary', 'light');
-export const primaryLighter = color('primary', 'lighter');
-export const primaryDark = color('primary', 'dark');
-export const primaryDarker = color('primary', 'darker');
+export const primaryColorBase = cssColorVar();
+export const primaryColorInk = cssColorVar('primary', 'ink');
+export const primaryColorLight = cssColorVar('primary', 'light');
+export const primaryColorLighter = cssColorVar('primary', 'lighter');
+export const primaryColorDark = cssColorVar('primary', 'dark');
+export const primaryColorDarker = cssColorVar('primary', 'darker');
+
+export const secondaryColorBase = cssColorVar('secondary');
+export const secondaryColorDark = cssColorVar('secondary', 'dark');

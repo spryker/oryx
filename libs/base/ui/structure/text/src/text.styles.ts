@@ -1,4 +1,4 @@
-import { primaryBase } from '@spryker-oryx/utilities';
+import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const textStyles = css`
@@ -78,7 +78,7 @@ export const textStyles = css`
     align-self: center;
     margin: 10px 0;
     transition: transform var(--oryx-transition-time-long) ease-in-out;
-    color: ${primaryBase};
+    color: ${primaryColorBase};
   }
 
   :host(:not([truncated])) oryx-icon-button {

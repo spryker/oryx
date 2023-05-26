@@ -1,7 +1,7 @@
 import {
-  primaryBase,
-  primaryDark,
-  primaryLighter,
+  primaryColorBase,
+  primaryColorDark,
+  primaryColorLighter,
   Size,
 } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
@@ -95,7 +95,7 @@ export const toggleIconStyles = css`
 
   ::slotted(input:checked:active:not([disabled]))::after,
   ::slotted(input:checked:hover:not([disabled]))::after {
-    border-color: ${primaryDark};
+    border-color: ${primaryColorDark};
   }
 
   ::slotted(input:checked:active:not([disabled]))::after {
@@ -103,28 +103,29 @@ export const toggleIconStyles = css`
   }
 
   ::slotted(input:focus-visible:not(:active))::after {
-    box-shadow: 0 0 3px ${primaryBase},
+    box-shadow: 0 0 3px ${primaryColorBase},
       inset 0 0 0 1px var(--oryx-color-canvas-100),
       inset 0 0 0 2px var(--oryx-color-neutral-200);
     border: none;
   }
 
   ::slotted(input:checked:focus-visible:not(:active))::after {
-    box-shadow: 0 0 3px ${primaryBase}, inset 0 0 0 1px ${primaryLighter},
-      inset 0 0 0 2px ${primaryBase};
+    box-shadow: 0 0 3px ${primaryColorBase},
+      inset 0 0 0 1px ${primaryColorLighter},
+      inset 0 0 0 2px ${primaryColorBase};
     border: none;
   }
 
   :host([hasError]) ::slotted(input:focus-visible:not(:active))::after {
-    box-shadow: 0 0 3px ${primaryBase},
+    box-shadow: 0 0 3px ${primaryColorBase},
       inset 0 0 0 1px var(--oryx-color-error-300),
       inset 0 0 0 2px var(--oryx-color-neutral-200);
   }
 
   :host([hasError]) ::slotted(input:checked:focus-visible:not(:active))::after {
-    box-shadow: 0 0 3px ${primaryBase},
+    box-shadow: 0 0 3px ${primaryColorBase},
       inset 0 0 0 1px var(--oryx-color-error-300),
-      inset 0 0 0 2px ${primaryBase};
+      inset 0 0 0 2px ${primaryColorBase};
   }
 
   ::slotted(input[disabled])::after {
@@ -133,8 +134,8 @@ export const toggleIconStyles = css`
   }
 
   ::slotted(input:checked:not([disabled]))::after {
-    border-color: ${primaryBase};
-    background: ${primaryLighter};
+    border-color: ${primaryColorBase};
+    background: ${primaryColorLighter};
   }
 
   ::slotted(input:checked[disabled])::after {
@@ -158,6 +159,6 @@ export const toggleIconStyles = css`
   }
 
   :host([checked]:not([disabled])) ::slotted(oryx-icon) {
-    color: ${primaryBase};
+    color: ${primaryColorBase};
   }
 `;

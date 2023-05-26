@@ -1,4 +1,4 @@
-import { primaryBase } from '@spryker-oryx/utilities';
+import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -15,6 +15,6 @@ export const styles = css`
   }
 
   button {
-    color: ${primaryBase};
+    color: ${primaryColorBase};
   }
 `;

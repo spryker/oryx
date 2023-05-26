@@ -1,4 +1,7 @@
+import { cssColorVar } from '@spryker-oryx/utilities';
 import { css } from 'lit';
+
+const color = cssColorVar('primary', 'base', 'inherit');
 
 export const styles = css`
   :host {
@@ -8,7 +11,7 @@ export const styles = css`
     display: flex;
     aspect-ratio: 1 / 1;
     justify-content: center;
-    color: var(--oryx-color-primary-9, 'inherit');
+    color: ${color};
   }
 
   oryx-icon,

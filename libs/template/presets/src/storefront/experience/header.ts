@@ -1,6 +1,6 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { primaryBase } from '@spryker-oryx/utilities';
+import { primaryColorBase } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: StaticComponent = {
   id: 'header',
@@ -100,6 +100,7 @@ export const HeaderTemplate: StaticComponent = {
         },
         {
           type: 'oryx-site-navigation-item',
+          id: 'mini-cart',
           options: {
             data: {
               label: 'cart',
@@ -115,7 +116,7 @@ export const HeaderTemplate: StaticComponent = {
           rules: [
             {
               layout: 'flex',
-              background: primaryBase,
+              background: primaryColorBase,
               align: 'center',
               zIndex: '2',
               padding: '5px 0',
