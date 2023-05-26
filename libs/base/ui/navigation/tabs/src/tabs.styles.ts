@@ -1,4 +1,4 @@
-import { primaryColor, screenCss } from '@spryker-oryx/utilities';
+import { primaryBase, screenCss } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 import { TabsAppearance } from './tabs.model';
 
@@ -69,9 +69,9 @@ export const baseStyles = css`
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[selected]) {
-    color: ${primaryColor()};
+    color: ${primaryBase};
     background: none;
-    border-color: ${primaryColor()};
+    border-color: ${primaryBase};
     border-block-end: none;
   }
 

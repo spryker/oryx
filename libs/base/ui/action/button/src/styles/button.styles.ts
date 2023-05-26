@@ -1,12 +1,18 @@
-import { primaryColor, screenCss } from '@spryker-oryx/utilities';
+import {
+  primaryBase,
+  primaryDark,
+  primaryLight,
+  primaryLighter,
+  screenCss,
+} from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const buttonStyles = css`
   :host {
     --oryx-icon-size: 13.3px;
-    --_color-text: ${primaryColor('ink', 'white')};
-    --_color-accent: ${primaryColor()};
-    --_color-active: ${primaryColor('dark')};
+    --_color-text: var(--oryx-color-primary-0, white);
+    --_color-accent: ${primaryBase};
+    --_color-active: ${primaryDark};
 
     display: flex;
     place-content: center;
@@ -69,10 +75,10 @@ export const buttonStyles = css`
   :host([outline]),
   :host([confirmed]),
   :host([loading]) {
-    --oryx-icon-color: ${primaryColor()};
-    --_color-text: ${primaryColor()};
-    --_color-accent: ${primaryColor()};
-    --_color-active: ${primaryColor('lighter')};
+    --oryx-icon-color: ${primaryBase};
+    --_color-text: ${primaryBase};
+    --_color-accent: ${primaryBase};
+    --_color-active: ${primaryLighter};
   }
 
   :host([outline]) ::slotted(*:not([disabled])) {
@@ -147,13 +153,13 @@ export const buttonStyles = css`
   }
 
   :host([type='text']) ::slotted(*:hover) {
-    --oryx-icon-color: ${primaryColor()};
-    --_color-text: ${primaryColor()};
+    --oryx-icon-color: ${primaryBase};
+    --_color-text: ${primaryBase};
   }
 
   :host([type='text']) ::slotted(*:active) {
-    --oryx-icon-color: ${primaryColor('dark')};
-    --_color-text: ${primaryColor('dark')};
+    --oryx-icon-color: ${primaryDark};
+    --_color-text: ${primaryDark};
   }
 
   :host([type='text']) ::slotted([disabled]) {
@@ -164,8 +170,8 @@ export const buttonStyles = css`
 
   :host([type='text']:not([loading]))
     ::slotted(*:focus-visible:not(:active):not([disabled])) {
-    --oryx-icon-color: ${primaryColor()};
-    --_color-text: ${primaryColor()};
+    --oryx-icon-color: ${primaryBase};
+    --_color-text: ${primaryBase};
   }
 
   ::slotted([disabled]) {
@@ -183,13 +189,13 @@ export const buttonStyles = css`
     position: relative;
     pointer-events: none;
     background-color: var(--oryx-color-canvas-100);
-    border-color: ${primaryColor('light')};
+    border-color: ${primaryLight};
     color: transparent;
     user-select: none;
   }
 
   :host([confirmed]) ::slotted(*) {
-    border-color: ${primaryColor('light')};
+    border-color: ${primaryLight};
   }
 
   :host(:is([loading], [confirmed])) ::slotted(*)::before {

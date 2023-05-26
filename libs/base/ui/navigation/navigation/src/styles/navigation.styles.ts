@@ -51,7 +51,7 @@ export const navigationStyles = css`
   }
 
   button:hover {
-    background-color: ${primaryColor()};
+    background-color: ${primaryBase};
     color: var(--oryx-color-canvas-100);
   }
 

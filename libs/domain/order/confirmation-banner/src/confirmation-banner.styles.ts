@@ -1,4 +1,4 @@
-import { primaryColor } from '@spryker-oryx/utilities';
+import { primaryBase, primaryLighter } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -7,14 +7,14 @@ export const styles = css`
     flex-direction: column;
     align-items: center;
     line-height: 24px;
-    background-color: ${primaryColor('lighter')};
+    background-color: ${primaryLighter};
     padding-block-end: 48px;
   }
 
   oryx-heading {
     display: flex;
     align-items: center;
-    color: ${primaryColor()};
+    color: ${primaryBase};
     gap: 40px;
     margin: 40px 0 16px;
   }

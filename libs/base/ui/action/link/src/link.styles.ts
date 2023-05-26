@@ -1,4 +1,4 @@
-import { primaryColor } from '@spryker-oryx/utilities';
+import { primaryBase, primaryDark } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 import { LinkType } from './link.model';
 
@@ -13,7 +13,7 @@ export const linkStyles = css`
   }
 
   :host(:not(${isNeutral})) {
-    color: var(--oryx-link-color, ${primaryColor()});
+    color: var(--oryx-link-color, ${primaryBase});
   }
 
   :host(${isNeutral}) ::slotted(a) {
@@ -54,7 +54,7 @@ export const linkStyles = css`
   }
 
   :host(:hover:not([disabled]):not(${isNeutral})) {
-    color: var(--oryx-link-color-hover, ${primaryColor('dark')});
+    color: var(--oryx-link-color-hover, ${primaryDark});
   }
 
   :host(:not([disabled])) ::slotted(a:active),
@@ -67,7 +67,7 @@ export const linkStyles = css`
   }
 
   :host(:not([disabled])) ::slotted(a:focus-visible) {
-    box-shadow: 0 0 3px ${primaryColor()};
+    box-shadow: 0 0 3px ${primaryBase};
   }
 
   /* additional space at the start whenever an icon is available */

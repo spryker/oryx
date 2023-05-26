@@ -295,7 +295,7 @@ export const Template: Story = (): TemplateResult => {
         background-image: linear-gradient(
           45deg,
           var(--oryx-color-secondary-9),
-          ${primaryColor()}
+          ${primaryBase}
         );
       }
     </style>

@@ -1,6 +1,6 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { primaryColor } from '@spryker-oryx/utilities';
+import { primaryBase } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: StaticComponent = {
   id: 'header',
@@ -115,7 +115,7 @@ export const HeaderTemplate: StaticComponent = {
           rules: [
             {
               layout: 'flex',
-              background: primaryColor(),
+              background: primaryBase,
               align: 'center',
               zIndex: '2',
               padding: '5px 0',

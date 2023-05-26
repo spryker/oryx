@@ -1,4 +1,3 @@
-import { primaryColor } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -12,7 +11,7 @@ export const styles = css`
   }
 
   a {
-    color: ${primaryColor('ink', 'white')};
+    color: var(--oryx-color-primary-0, 'white');
   }
 
   img {

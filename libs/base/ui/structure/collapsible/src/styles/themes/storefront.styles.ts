@@ -1,4 +1,4 @@
-import { primaryColor } from '@spryker-oryx/utilities';
+import { primaryDark } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 import { blockSelector, inlineSelector } from '../base.styles';
 
@@ -36,7 +36,7 @@ const blockAppearance = css`
   }
 
   :host(${blockSelector}:active) {
-    border-color: ${primaryColor('dark')};
+    border-color: ${primaryDark};
   }
 
   :host(${blockSelector}) summary {

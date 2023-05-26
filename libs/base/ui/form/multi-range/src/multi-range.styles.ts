@@ -1,4 +1,4 @@
-import { primaryColor } from '@spryker-oryx/utilities';
+import { primaryBase } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
 const disabledThumbStyles = unsafeCSS(`
@@ -83,12 +83,12 @@ export const multiRangeStyles = css`
   }
 
   input:focus::-webkit-slider-thumb {
-    border: 1px solid ${primaryColor()};
-    box-shadow: 0 0 3px ${primaryColor()};
+    border: 1px solid ${primaryBase};
+    box-shadow: 0 0 3px ${primaryBase};
   }
 
   .active {
-    background-color: ${primaryColor()};
+    background-color: ${primaryBase};
     grid-column: 2 / span 2;
     height: inherit;
   }

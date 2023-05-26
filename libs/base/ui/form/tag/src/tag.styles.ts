@@ -1,4 +1,4 @@
-import { primaryColor } from '@spryker-oryx/utilities';
+import { primaryBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const tagStyles = css`
@@ -47,7 +47,7 @@ export const tagStyles = css`
   button:focus-visible {
     outline: 1px solid var(--oryx-color-canvas-100);
     outline-offset: -1px;
-    box-shadow: 0 0 3px ${primaryColor()};
+    box-shadow: 0 0 3px ${primaryBase};
   }
 
   :host([disabled]) * {

@@ -38,7 +38,7 @@ export const generateHeader = (): TemplateResult => {
 export const pageStyles = html`
   <style>
     oryx-layout div {
-      background: ${primaryColor('lighter')};
+      background: ${primaryLighter};
       padding: 10px;
       outline: solid 1px;
       outline-offset: -1px;
@@ -51,7 +51,7 @@ export const pageStyles = html`
     }
 
     .thumbs div:hover {
-      background: ${primaryColor()};
+      background: ${primaryBase};
     }
   </style>
 `;

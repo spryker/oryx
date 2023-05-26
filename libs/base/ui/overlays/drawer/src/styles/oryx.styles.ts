@@ -1,4 +1,4 @@
-import { primaryColor } from '@spryker-oryx/utilities';
+import { primaryBase } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 import { Position } from '../../../../src/utilities/model/common';
 import { DrawerType } from '../drawer.model';
@@ -48,11 +48,11 @@ export const panelStyles = css`
 
   button:hover {
     color: var(--oryx-color-canvas-100);
-    background: ${primaryColor()};
+    background: ${primaryBase};
   }
 
   button:is(:focus-visible, :focus) {
-    border: 1px solid ${primaryColor()};
+    border: 1px solid ${primaryBase};
   }
 
   button::before {

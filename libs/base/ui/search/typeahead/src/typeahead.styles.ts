@@ -3,7 +3,7 @@ import {
   baseStyles as searchboxBaseStyles,
   screenStyles as searchboxScreenStyles,
 } from '@spryker-oryx/ui/searchbox';
-import { primaryColor, screenCss } from '@spryker-oryx/utilities';
+import { primaryBase, screenCss } from '@spryker-oryx/utilities';
 import { css, unsafeCSS as unsafecss } from 'lit';
 
 export const baseStyles = [
@@ -64,7 +64,7 @@ export const baseStyles = [
     }
 
     slot[name='loading'] oryx-icon {
-      color: ${primaryColor()};
+      color: ${primaryBase};
       animation: rotate 3s linear infinite;
     }
 

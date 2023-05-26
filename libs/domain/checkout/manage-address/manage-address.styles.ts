@@ -1,4 +1,4 @@
-import { primaryColor } from '@spryker-oryx/utilities';
+import { primaryBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -14,6 +14,6 @@ export const styles = css`
 
   button {
     /* TODO: remove as soon as our system supports cta text button  */
-    color: ${primaryColor()};
+    color: ${primaryBase};
   }
 `;

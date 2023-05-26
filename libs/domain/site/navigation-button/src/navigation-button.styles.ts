@@ -1,4 +1,4 @@
-import { primaryColor, screenCss } from '@spryker-oryx/utilities';
+import { primaryDark, primaryDarker, screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 const smallScreen = css`
@@ -56,7 +56,7 @@ export const styles = css`
   }
 
   :is(a, button):hover {
-    background-color: ${primaryColor('dark')};
+    background-color: ${primaryDark};
     box-shadow: none;
   }
 
@@ -67,7 +67,7 @@ export const styles = css`
   }
 
   :is(a, button):active {
-    background-color: ${primaryColor('darker')};
+    background-color: ${primaryDarker};
     box-shadow: none;
   }
 

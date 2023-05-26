@@ -1,4 +1,4 @@
-import { primaryColor } from '@spryker-oryx/utilities';
+import { primaryBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -47,11 +47,11 @@ export const styles = css`
   }
 
   :host([active]) h3::before {
-    background: ${primaryColor()};
+    background: ${primaryBase};
   }
 
   :host([active]) h3 {
-    color: ${primaryColor()};
+    color: ${primaryBase};
   }
 
   :host(:hover) {
@@ -60,7 +60,7 @@ export const styles = css`
 
   :host(:focus-visible) {
     outline: none;
-    border: 1px solid ${primaryColor()};
-    box-shadow: 0 0 3px ${primaryColor()};
+    border: 1px solid ${primaryBase};
+    box-shadow: 0 0 3px ${primaryBase};
   }
 `;

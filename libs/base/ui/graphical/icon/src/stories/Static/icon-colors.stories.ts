@@ -1,8 +1,14 @@
 import { getAppIcons } from '@spryker-oryx/ui';
+import {
+  primaryBase,
+  primaryDark,
+  primaryDarker,
+  primaryLight,
+  primaryLighter,
+} from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-
 export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
@@ -20,56 +26,34 @@ const Template: Story<unknown> = (): TemplateResult => {
 
     <h1>Current color</h1>
     <div class="icon-set">
-      <oryx-icon
-        type=${icon}
-        style="color: ${primaryColor('lighter')};"
-      ></oryx-icon>
-      <oryx-icon
-        type=${icon}
-        style="color: ${primaryColor('light')};"
-      ></oryx-icon>
-      <oryx-icon type=${icon} style="color: ${primaryColor()};"></oryx-icon>
-      <oryx-icon
-        type=${icon}
-        style="color: ${primaryColor('dark')};"
-      ></oryx-icon>
-      <oryx-icon
-        type=${icon}
-        style="color: ${primaryColor('darker')};"
-      ></oryx-icon>
+      <oryx-icon type=${icon} style="color: ${primaryLighter};"></oryx-icon>
+      <oryx-icon type=${icon} style="color: ${primaryLight};"></oryx-icon>
+      <oryx-icon type=${icon} style="color: ${primaryBase};"></oryx-icon>
+      <oryx-icon type=${icon} style="color: ${primaryDark};"></oryx-icon>
+      <oryx-icon type=${icon} style="color: ${primaryDarker};"></oryx-icon>
     </div>
 
     <h1>Background color</h1>
     <div class="icon-set">
       <oryx-icon
         type=${icon}
-        style="color: ${primaryColor(
-          'lighter'
-        )};background-color: ${primaryColor('darker')};"
+        style="color: ${primaryLighter};background-color: ${primaryDarker};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: ${primaryColor('light')};background-color: ${primaryColor(
-          'dark'
-        )};"
+        style="color: ${primaryLight};background-color: ${primaryDark};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: ${primaryColor()};background-color: ${primaryColor(
-          'light'
-        )};"
+        style="color: ${primaryBase};background-color: ${primaryLight};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: ${primaryColor('dark')};background-color: ${primaryColor(
-          'light'
-        )};"
+        style="color: ${primaryDark};background-color: ${primaryLight};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: ${primaryColor(
-          'darker'
-        )};background-color: ${primaryColor('lighter')};"
+        style="color: ${primaryDarker};background-color: ${primaryLighter};"
       ></oryx-icon>
     </div>
 

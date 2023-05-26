@@ -2,8 +2,7 @@ import { CSSResult, unsafeCSS } from 'lit';
 
 export const color = (
   type: 'primary' | 'secondary' | 'neutral' = 'primary',
-  shade: 'ink' | `base` | 'light' | 'lighter' | 'dark' | 'darker' = 'base',
-  fallback = ''
+  shade: 'ink' | `base` | 'light' | 'lighter' | 'dark' | 'darker' = 'base'
 ): CSSResult => {
   const num = () => {
     switch (shade) {
@@ -23,14 +22,11 @@ export const color = (
     }
   };
 
-  if (fallback) fallback = `, ${fallback}`;
-
-  return unsafeCSS(`var(--oryx-color-${type}-${num()}${fallback})`);
+  return unsafeCSS(`var(--oryx-color-${type}-${num()})`);
 };
 
-export const primaryColor = (
-  shade: 'ink' | `base` | 'light' | 'lighter' | 'dark' | 'darker' = 'base',
-  fallback = ''
-): CSSResult => {
-  return color('primary', shade, fallback);
-};
+export const primaryBase = color();
+export const primaryLight = color('primary', 'light');
+export const primaryLighter = color('primary', 'lighter');
+export const primaryDark = color('primary', 'dark');
+export const primaryDarker = color('primary', 'darker');
