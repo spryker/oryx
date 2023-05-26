@@ -32,12 +32,9 @@ const features = [
         ![PageMetaResolver, ContentBackendUrl].includes(feature.provide)
     ),
     components: experienceFeature.components,
+    ...(env.ORYX_LABS ? labsFeatures : []),
   },
 ];
-
-if (env.ORYX_LABS) {
-  features.push(...labsFeatures);
-}
 
 appBuilder()
   .withEnvironment({ ...fallbackEnv, ...(import.meta.env as AppEnvironment) })
