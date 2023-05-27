@@ -62,7 +62,7 @@ export class ProductCardComponent extends ProductMixin(
     const style = titleLineClamp
       ? `--oryx-product-title-max-lines:${titleLineClamp}`
       : undefined;
-    return html`<a href=${this.$link()}>
+    return html`<a href=${this.$link()} aria-label="${product.name}">
       ${this.renderLabels()}
       <!-- this.renderWishlist()  -->
       ${this.renderMedia()}
