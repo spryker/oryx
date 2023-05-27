@@ -79,7 +79,7 @@ export const HeaderTemplate: StaticComponent = {
           },
         },
         {
-          type: 'search-box',
+          type: 'oryx-search-box',
           options: {
             data: {
               rules: [{ margin: 'auto', width: '580px' }],
