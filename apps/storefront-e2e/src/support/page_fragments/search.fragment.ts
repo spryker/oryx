@@ -1,5 +1,5 @@
 export class SearchFragment {
-  getWrapper = () => cy.get('search-box');
+  getWrapper = () => cy.get('oryx-search-box');
 
   getPopover = () => this.getWrapper().find('oryx-popover');
   getTypeahead = () => this.getWrapper().find('oryx-typeahead');
