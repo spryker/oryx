@@ -11,7 +11,7 @@ export const generateLayoutItems = (
   return html`${Array.from(
     { length },
     (_, i) =>
-      html`<div style="${highlight ? 'background:${secondaryColorBase}' : ''}">
+      html`<div style="${highlight ? `background:${secondaryColorBase}` : ''}">
         ${prefix}${i + start}
       </div>`
   )}`;
