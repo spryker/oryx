@@ -1,9 +1,10 @@
 import { ColorDesignTokens, colorPalette } from '@spryker-oryx/experience';
+import { cssColorVar } from '@spryker-oryx/utilities';
 
 export const color: ColorDesignTokens = {
   neutralA: colorPalette.grays.sprykerSfGray,
-  primaryA: colorPalette.colors.spryker,
-  secondaryA: colorPalette.colors.amber,
+  primary: colorPalette.colors.spryker,
+  secondary: colorPalette.colors.amber,
 
   highlightA: colorPalette.colors.red,
   successA: colorPalette.colors.spryker,
@@ -33,7 +34,6 @@ export const color: ColorDesignTokens = {
       500: `var(--oryx-color-neutralA-6)`,
     },
   },
-
   neutral: {
     light: {
       100: `var(--oryx-color-neutralA-7)`,
@@ -48,38 +48,6 @@ export const color: ColorDesignTokens = {
       300: `var(--oryx-color-neutralA-9)`,
       400: `var(--oryx-color-neutralA-11)`,
       500: `var(--oryx-color-neutralA-12)`,
-    },
-  },
-  primary: {
-    light: {
-      100: `var(--oryx-color-primaryA-3)`,
-      200: `var(--oryx-color-primaryA-7)`,
-      300: `var(--oryx-color-primaryA-9)`,
-      400: `var(--oryx-color-primaryA-10)`,
-      500: `var(--oryx-color-primaryA-12)`,
-    },
-    dark: {
-      100: `var(--oryx-color-primaryA-3)`,
-      200: `var(--oryx-color-primaryA-7)`,
-      300: `var(--oryx-color-primaryA-9)`,
-      400: `var(--oryx-color-primaryA-10)`,
-      500: `var(--oryx-color-primaryA-12)`,
-    },
-  },
-  secondary: {
-    light: {
-      100: `var(--oryx-color-secondaryA-3)`,
-      200: `var(--oryx-color-secondaryA-5)`,
-      300: `var(--oryx-color-secondaryA-9)`,
-      400: `var(--oryx-color-secondaryA-10)`,
-      500: `var(--oryx-color-secondaryA-12)`,
-    },
-    dark: {
-      100: `var(--oryx-color-secondaryA-3)`,
-      200: `var(--oryx-color-secondaryA-5)`,
-      300: `var(--oryx-color-secondaryA-9)`,
-      400: `var(--oryx-color-secondaryA-10)`,
-      500: `var(--oryx-color-secondaryA-12)`,
     },
   },
   highlight: {
@@ -162,7 +130,7 @@ export const color: ColorDesignTokens = {
       500: `var(--oryx-color-infoA-12)`,
     },
   },
-  focus: `var(--oryx-color-primaryA-9)`,
+  focus: cssColorVar('primary'),
   placeholder: `var(--oryx-color-neutralA-11)`,
   elevation: `var(--oryx-color-overlay-7)`,
   'elevation-2': `var(--oryx-color-overlay-3)`,

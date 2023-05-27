@@ -12,6 +12,6 @@ const features = [
 
 export const app = appBuilder()
   .withFeature(features)
-  .withTheme(storefrontTheme)
+  .withTheme([storefrontTheme])
   .withEnvironment(env)
   .create();

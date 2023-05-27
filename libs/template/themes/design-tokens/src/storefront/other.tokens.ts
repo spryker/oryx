@@ -46,7 +46,7 @@ export const tokens: ThemeToken = {
   },
   required: {
     asterisk: {
-      color: 'var(--oryx-color-primary-300)',
+      color: '${primaryBase}',
     },
   },
 };

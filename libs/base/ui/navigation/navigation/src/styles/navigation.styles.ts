@@ -1,3 +1,4 @@
+import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const navigationStyles = css`
@@ -51,7 +52,7 @@ export const navigationStyles = css`
   }
 
   button:hover {
-    background-color: var(--oryx-color-primary-300);
+    background-color: ${primaryColorBase};
     color: var(--oryx-color-canvas-100);
   }
 

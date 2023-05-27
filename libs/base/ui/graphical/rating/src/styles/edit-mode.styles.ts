@@ -1,3 +1,4 @@
+import { secondaryColorDark } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 // Note: the pseudo states in storybook are actual destroying some of the
@@ -25,7 +26,7 @@ export const ratingEditModeStyles = css`
 
   input:hover:not(:checked) + slot,
   input:hover:not(:checked) + ::slotted(*) {
-    color: var(--oryx-rating-color-hover, var(--oryx-color-secondary-400));
+    color: var(--oryx-rating-color-hover, ${secondaryColorDark});
   }
 
   fieldset input:valid:hover + slot ~ slot[has-char],
