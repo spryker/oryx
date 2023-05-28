@@ -48,6 +48,8 @@ export const collapsibleBaseStyle = css`
   }
 
   oryx-icon-button {
+    position: relative;
+    inset-inline-start: 8px;
     transition-duration: var(--oryx-transition-time-medium);
     transition-property: transform;
   }

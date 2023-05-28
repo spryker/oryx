@@ -24,4 +24,13 @@ export interface FacetsOptions {
    * @default 13
    */
   minForSearch?: number;
+
+  /**
+   * Excludes the facet from the facet navigation. The exclusions must contain the facet parameters,
+   * such as `price` or `rating`.
+   *
+   * Excluding a facet can be done if there's no (appropriate) facet implementation available or if the
+   * facet should not be used for the current site.
+   */
+  exclusions?: string[];
 }

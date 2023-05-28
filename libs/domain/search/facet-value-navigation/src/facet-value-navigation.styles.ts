@@ -27,7 +27,7 @@ export const FacetControlStyles = css`
 
   .controls {
     width: fit-content;
-    margin-block-start: 10px;
+    padding-block-end: 10px;
   }
 
   .counter {
@@ -41,6 +41,10 @@ export const FacetControlStyles = css`
     border: none;
   }
 
+  oryx-collapsible::part(heading) {
+    padding-block: 10px;
+  }
+
   oryx-collapsible summary,
   oryx-collapsible slot:not([name]) {
     display: block;
@@ -50,5 +54,9 @@ export const FacetControlStyles = css`
 
   oryx-search {
     margin-block-end: 15px;
+  }
+
+  oryx-collapsible slot:not([name])::slotted(*) {
+    padding-block: 2px 10px;
   }
 `;

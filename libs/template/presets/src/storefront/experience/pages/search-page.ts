@@ -23,7 +23,16 @@ export const searchPage: StaticComponent = {
       type: 'oryx-search-facet-navigation',
       options: {
         data: {
-          rules: [{ sticky: true, top: '108' }],
+          rules: [
+            {
+              layout: 'grid',
+              vertical: true,
+              gap: '10px',
+              divider: true,
+              sticky: true,
+              top: '108px',
+            },
+          ],
         },
       },
     },

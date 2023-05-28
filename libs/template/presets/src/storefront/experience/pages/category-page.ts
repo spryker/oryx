@@ -25,7 +25,16 @@ export const categoryPage: StaticComponent = {
       type: 'oryx-search-facet-navigation',
       options: {
         data: {
-          rules: [{ sticky: true, top: '108' }],
+          rules: [
+            {
+              layout: 'grid',
+              vertical: true,
+              gap: '40px',
+              divider: true,
+              sticky: true,
+              top: '108px',
+            },
+          ],
         },
       },
     },
