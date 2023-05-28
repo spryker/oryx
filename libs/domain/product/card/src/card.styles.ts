@@ -11,8 +11,8 @@ export const ProductCardStyles = css`
     display: grid;
     grid-template-columns: auto auto;
     transition: all var(--oryx-transition-time);
-    background-color: var(--oryx-color-canvas-100);
-    border: var(--oryx-border-thin) solid var(--oryx-color-canvas-200);
+    background-color: var(--oryx-color-neutral-1);
+    border: var(--oryx-border-thin) solid var(--oryx-color-neutral-3);
     box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation-2);
   }
 
@@ -20,7 +20,7 @@ export const ProductCardStyles = css`
     --effect: 10;
 
     box-shadow: var(--oryx-elevation-1) var(--oryx-color-elevation-2);
-    border-color: var(--oryx-color-canvas-500);
+    border-color: var(--oryx-color-neutral-6);
   }
 
   a {
@@ -37,7 +37,7 @@ export const ProductCardStyles = css`
     display: block;
     grid-row-start: 1;
     grid-column-start: 1;
-    background-color: var(--oryx-color-canvas-200);
+    background-color: var(--oryx-color-neutral-3);
   }
 
   oryx-product-labels,
@@ -71,7 +71,7 @@ export const ProductCardStyles = css`
   oryx-product-title {
     display: block;
     padding: 16px 16px 5px;
-    background-color: var(--oryx-color-canvas-100);
+    background-color: var(--oryx-color-neutral-1);
   }
 
   oryx-product-price::part(sales) {

@@ -15,7 +15,7 @@ export const styles = css`
 
     display: none;
     margin-block-end: 8px;
-    color: var(--oryx-color-ink);
+    color: var(--oryx-color-neutral-12);
     text-transform: uppercase;
   }
 

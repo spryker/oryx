@@ -29,7 +29,7 @@ export const selectStyles = css`
     background-color: transparent;
     border: none;
     outline: none;
-    color: var(--oryx-color-ink);
+    color: var(--oryx-color-neutral-12);
     pointer-events: none;
     font: inherit;
     text-overflow: ellipsis;

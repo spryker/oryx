@@ -19,7 +19,7 @@ const inlineAppearance = css`
 
 const blockAppearance = css`
   :host(${blockSelector}) {
-    border: solid 1px var(--oryx-color-canvas-500);
+    border: solid 1px var(--oryx-color-neutral-6);
     position: relative;
   }
 
@@ -52,7 +52,7 @@ const blockAppearance = css`
   }
 
   :host(${blockSelector}) oryx-icon-button {
-    color: var(--oryx-color-ink);
+    color: var(--oryx-color-neutral-12);
   }
 
   :host(${blockSelector}) slot[name='header'] {

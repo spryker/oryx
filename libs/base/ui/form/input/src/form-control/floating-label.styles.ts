@@ -19,7 +19,7 @@ const floatingLabelStyles = (attribute = true) => {
       font-weight: 500;
       font-size: 14px;
       line-height: 16px;
-      color: var(--oryx-color-neutral-300);
+      color: var(--oryx-color-neutral-9);
       position: absolute;
       inset-block-start: min(calc(50% - 0.5em), 17px);
       inset-inline-start: calc(var(--float-label-start-gap, 0px) + 13px);
@@ -49,9 +49,9 @@ const floatingLabelStyles = (attribute = true) => {
     }
 
     :host(${floatLabel}:is(:focus-within, [has-value])) slot[name='label'] {
-      --_label-background-color: var(--oryx-color-canvas-100);
+      --_label-background-color: var(--oryx-color-neutral-1);
 
-      color: var(--oryx-color-neutral-400);
+      color: var(--oryx-color-neutral-11);
       font-size: 12px;
       padding: 3px 8px;
       inset-block-start: -10px;
@@ -66,7 +66,7 @@ const floatingLabelStyles = (attribute = true) => {
     }
 
     :host(${floatLabel}[has-value][disabled]) slot[name='label'] {
-      --_label-background-color: var(--oryx-color-canvas-200);
+      --_label-background-color: var(--oryx-color-neutral-3);
     }
   `;
 };

@@ -69,7 +69,7 @@ export const styles = css`
   }
 
   :is(a, button):focus-visible {
-    border-color: var(--oryx-color-canvas-100);
+    border-color: var(--oryx-color-neutral-1);
     outline: solid 1px blue;
     outline-offset: -3px;
   }

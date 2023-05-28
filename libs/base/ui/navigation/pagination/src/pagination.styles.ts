@@ -33,9 +33,9 @@ export const paginationStyles = css`
 
   ::slotted(*),
   a {
-    border: 1px solid var(--oryx-color-canvas-500);
+    border: 1px solid var(--oryx-color-neutral-6);
     border-radius: var(--oryx-border-radius-small);
-    background: var(--oryx-color-canvas-100);
+    background: var(--oryx-color-neutral-1);
     transition: var(--oryx-transition-time);
     overflow: hidden;
     white-space: nowrap;
@@ -54,19 +54,19 @@ export const paginationStyles = css`
   }
 
   ::slotted(*) {
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
   }
 
   ::slotted(*[disabled]) {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   a {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   a[disabled] {
-    color: var(--oryx-color-neutral-200);
+    color: var(--oryx-color-neutral-8);
   }
 
   slot[name='truncated'] * {
@@ -120,7 +120,7 @@ export const paginationStyles = css`
   ::slotted(*:hover),
   a:not([truncated]):hover {
     transition: var(--oryx-transition-time);
-    border-color: var(--oryx-color-neutral-200);
+    border-color: var(--oryx-color-neutral-8);
   }
 
   ::slotted(*[active]),
@@ -140,7 +140,7 @@ export const paginationStyles = css`
   ::slotted(*[active]),
   ::slotted(*:active),
   a:not([truncated]):active {
-    color: var(--oryx-color-canvas-100);
+    color: var(--oryx-color-neutral-1);
     background: ${primaryColorBase};
   }
 
@@ -151,7 +151,7 @@ export const paginationStyles = css`
 
   ::slotted(*[disabled]),
   a[disabled] {
-    background-color: var(--oryx-color-canvas-200);
+    background-color: var(--oryx-color-neutral-3);
   }
 
   slot[name='previous'] oryx-icon {

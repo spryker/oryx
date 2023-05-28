@@ -5,14 +5,14 @@ export const tileStyles = css`
   ::slotted(*) {
     padding: var(--oryx-tile-padding, 20px);
     outline: none;
-    border: var(--oryx-border-thin) solid var(--oryx-color-canvas-500);
+    border: var(--oryx-border-thin) solid var(--oryx-color-neutral-6);
     box-sizing: border-box;
     box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
     border-radius: var(
       --oryx-tile-border-radius,
       var(--oryx-border-radius-small)
     );
-    background-color: var(--oryx-color-canvas-100);
+    background-color: var(--oryx-color-neutral-1);
     transition: var(--oryx-transition-time);
   }
 
@@ -25,7 +25,7 @@ export const tileStyles = css`
   }
 
   ::slotted(*:hover:not(:active)) {
-    border-color: var(--oryx-color-neutral-200);
+    border-color: var(--oryx-color-neutral-8);
     box-shadow: var(--oryx-elevation-1) var(--oryx-color-elevation);
   }
 

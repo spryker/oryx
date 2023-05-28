@@ -3,7 +3,7 @@ import { css } from 'lit';
 
 export const navigationItemStyles = css`
   :host {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
     display: flex;
     box-sizing: border-box;
     padding: 16px 17px;

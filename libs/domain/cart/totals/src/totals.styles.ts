@@ -11,7 +11,7 @@ export const totalStyles = css`
 
   experience-composition {
     display: grid;
-    background-color: var(--oryx-color-canvas-200);
+    background-color: var(--oryx-color-neutral-3);
     padding-block: var(--oryx-space-4);
     border-radius: var(--oryx-border-radius-medium);
   }

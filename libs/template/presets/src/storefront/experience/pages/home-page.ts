@@ -49,7 +49,7 @@ export const homePage: StaticComponent = {
               gap: '30px 0px',
               columnCount: 5,
               justify: 'center',
-              fill: 'var(--oryx-color-neutral-200)',
+              fill: 'var(--oryx-color-neutral-8)',
             },
             { query: { breakpoint: 'md' }, columnCount: 4 },
             { query: { childs: true }, height: '50px', padding: '0px 40px' },

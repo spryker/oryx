@@ -16,7 +16,7 @@ export const ratingReadonlyStyles = css`
   }
 
   :host([readonly]) input {
-    background-color: var(--oryx-color-canvas-500);
+    background-color: var(--oryx-color-neutral-6);
   }
 
   :host([readonly]:not(${smallSize})) input {
@@ -38,7 +38,7 @@ export const ratingReadonlyStyles = css`
   }
 
   .review-count {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
     line-height: var(--oryx-rating-size);
     font-size: 1rem;
   }

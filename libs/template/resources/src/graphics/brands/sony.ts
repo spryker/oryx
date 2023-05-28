@@ -5,7 +5,7 @@ export const resource = `
 <svg
    viewBox="0 0 340 60"
    xmlns="http://www.w3.org/2000/svg">
-   <g style="fill:var(--oryx-fill, var(--oryx-color-ink))"
+   <g style="fill:var(--oryx-fill, var(--oryx-color-neutral-12))"
 
    transform="translate(647.96607,-300.05509)">
 
