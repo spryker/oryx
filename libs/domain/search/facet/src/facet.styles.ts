@@ -2,8 +2,7 @@ import { css } from 'lit';
 
 export const SingleFacetControlStyles = css`
   :host {
-    padding-inline: 1px;
-    padding-block: 4px;
+    padding: 4px 1px;
   }
 
   ul {
