@@ -29,7 +29,7 @@ export const categoryPage: StaticComponent = {
             {
               layout: 'grid',
               vertical: true,
-              gap: '40px',
+              gap: '1px',
               divider: true,
               sticky: true,
               top: '108px',

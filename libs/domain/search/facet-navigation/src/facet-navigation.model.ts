@@ -26,11 +26,9 @@ export interface FacetsOptions {
   minForSearch?: number;
 
   /**
-   * Excludes the facet from the facet navigation. The exclusions must contain the facet parameters,
-   * such as `price` or `rating`.
-   *
-   * Excluding a facet can be done if there's no (appropriate) facet implementation available or if the
-   * facet should not be used for the current site.
+   * Provides a mechanism to bury specific facets, which means that they will not be shown in the
+   * facet navigation. Going forward, we can bury facets for specific categories, by extending this
+   * object with a category.
    */
-  exclusions?: string[];
+  bury?: { facets: string[] }[];
 }

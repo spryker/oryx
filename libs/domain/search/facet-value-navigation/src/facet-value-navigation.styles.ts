@@ -55,8 +55,4 @@ export const FacetControlStyles = css`
   oryx-search {
     margin-block-end: 15px;
   }
-
-  oryx-collapsible slot:not([name])::slotted(*) {
-    padding-block: 2px 10px;
-  }
 `;
