@@ -17,10 +17,10 @@ import { facetNavigation } from './facet-navigation.styles';
 
 @hydratable(['mouseover', 'focusin'])
 @defaultOptions({
-  expandedItemsCount: 2,
+  expandedItemsCount: 5,
   valueRenderLimit: 5,
   minForSearch: 13,
-  exclusions: ['rating', 'price'],
+  bury: [{ facets: ['rating', 'price'] }],
 })
 export class SearchFacetNavigationComponent extends LayoutMixin(
   ContentMixin<FacetsOptions>(LitElement)
@@ -35,17 +35,17 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
 
   protected override render(): TemplateResult | void {
     const {
-      exclusions,
+      bury,
       valueRenderLimit: renderLimit = Infinity,
       expandedItemsCount = 0,
       minForSearch = Infinity,
     } = this.$options();
 
     const facets = this.facets()?.filter(
-      (facet) => !exclusions?.includes(facet.parameter)
+      (facet) => !bury?.find((b) => b.facets.includes(facet.parameter))
     );
 
-    if (!facets) return;
+    if (!facets?.length) return;
 
     return html`${facets.map((facet, index) =>
       this.facetRenderer.renderFacetComponent(
