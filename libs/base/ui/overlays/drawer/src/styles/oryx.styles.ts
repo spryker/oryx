@@ -22,11 +22,11 @@ export const drawerStyles = css`
     height: 100%;
     z-index: 0;
     box-shadow: var(--oryx-elevation-3) var(--oryx-color-elevation-2);
-    background: var(--oryx-color-canvas-200);
+    background: var(--oryx-color-neutral-3);
   }
 
   :host([type='${unsafeCSS(DrawerType.SECONDARY)}']) dialog::before {
-    background: var(--oryx-color-canvas-100);
+    background: var(--oryx-color-neutral-1);
   }
 `;
 
@@ -40,14 +40,14 @@ export const panelStyles = css`
   button {
     width: var(--_drawer-panel-size);
     height: var(--_drawer-panel-size);
-    background: var(--oryx-color-canvas-100);
-    color: var(--oryx-color-neutral-300);
+    background: var(--oryx-color-neutral-1);
+    color: var(--oryx-color-neutral-9);
     transition: color, background var(--oryx-transition-time);
     box-sizing: border-box;
   }
 
   button:hover {
-    color: var(--oryx-color-canvas-100);
+    color: var(--oryx-color-neutral-1);
     background: ${primaryColorBase};
   }
 

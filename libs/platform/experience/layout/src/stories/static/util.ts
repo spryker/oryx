@@ -73,7 +73,7 @@ export const generateNestedLayout = (
           {
             colSpan: 2,
             align: 'center',
-            background: 'var(--oryx-color-canvas-100)',
+            background: 'var(--oryx-color-neutral-1)',
             padding: '10px',
           },
         ],
@@ -117,7 +117,7 @@ export const generateNestedLayout = (
         rules: [
           {
             colSpan: 2,
-            background: 'var(--oryx-color-canvas-100)',
+            background: 'var(--oryx-color-neutral-1)',
             padding: '10px',
           },
         ],

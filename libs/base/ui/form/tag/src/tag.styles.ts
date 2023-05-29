@@ -13,8 +13,8 @@ export const tagStyles = css`
     height: 24px;
     gap: 5px;
     padding-inline-start: 10px;
-    color: var(--oryx-color-ink);
-    background: var(--oryx-color-canvas-500);
+    color: var(--oryx-color-neutral-12);
+    background: var(--oryx-color-neutral-6);
     border-radius: var(--oryx-border-radius-large);
     pointer-events: none;
   }
@@ -34,24 +34,24 @@ export const tagStyles = css`
     height: inherit;
     border-start-end-radius: var(--oryx-border-radius-large);
     border-end-end-radius: var(--oryx-border-radius-large);
-    color: var(--oryx-color-canvas-100);
-    background: var(--oryx-color-neutral-200);
+    color: var(--oryx-color-neutral-1);
+    background: var(--oryx-color-neutral-8);
   }
 
   button:focus-visible,
   button:hover {
-    background: var(--oryx-color-neutral-300);
+    background: var(--oryx-color-neutral-9);
     transition: var(--oryx-transition-time) background;
   }
 
   button:focus-visible {
-    outline: 1px solid var(--oryx-color-canvas-100);
+    outline: 1px solid var(--oryx-color-neutral-1);
     outline-offset: -1px;
     box-shadow: 0 0 3px ${primaryColorBase};
   }
 
   :host([disabled]) * {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   button:disabled {

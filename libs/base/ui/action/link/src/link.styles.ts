@@ -50,7 +50,7 @@ export const linkStyles = css`
 
   :host([disabled]) {
     pointer-events: none;
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   :host(:hover:not([disabled]):not(${isNeutral})) {
@@ -59,11 +59,11 @@ export const linkStyles = css`
 
   :host(:not([disabled])) ::slotted(a:active),
   :host(:not([disabled])) ::slotted(a:focus-visible) {
-    background-color: var(--oryx-color-canvas-200);
+    background-color: var(--oryx-color-neutral-3);
   }
 
   :host(:not([disabled])) ::slotted(a:active) {
-    border: solid 1px var(--oryx-color-canvas-100);
+    border: solid 1px var(--oryx-color-neutral-1);
   }
 
   :host(:not([disabled])) ::slotted(a:focus-visible) {
@@ -77,10 +77,10 @@ export const linkStyles = css`
   }
 
   :host([linktype='external']:not([disabled])) {
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
   }
 
   :host([linktype='external']:hover) {
-    color: var(--oryx-color-ink);
+    color: var(--oryx-color-neutral-12);
   }
 `;

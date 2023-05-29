@@ -105,7 +105,7 @@ const smallScreen = css`
   :host(oryx-search:not([floatDisabled]):not([label])),
   :host(oryx-search:not([floatDisabled]):not([label]))
     ::slotted(select:invalid) {
-    --oryx-color-placeholder: var(--oryx-color-neutral-400);
+    --oryx-color-placeholder: var(--oryx-color-neutral-11);
   }
 `;
 

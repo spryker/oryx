@@ -4,7 +4,7 @@ import { css } from 'lit';
 export const layoutStaticStyles = css`
   oryx-layout {
     --column-gap: 10px;
-    background: var(--oryx-color-canvas-500);
+    background: var(--oryx-color-neutral-6);
   }
 
   oryx-layout div {
@@ -15,7 +15,7 @@ export const layoutStaticStyles = css`
 
   pre {
     display: inline;
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   ul {

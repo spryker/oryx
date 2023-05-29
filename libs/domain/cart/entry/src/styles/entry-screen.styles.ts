@@ -53,13 +53,13 @@ const smallScreen = css`
   .actions {
     grid-column: 1 / span 3;
     grid-row: 3;
-    background: var(--oryx-color-canvas-200);
+    background: var(--oryx-color-neutral-3);
     padding: 16px;
     margin-block-start: 20px;
   }
 
   :host(:first-of-type) {
-    border-block-start: 1px solid var(--oryx-color-canvas-300);
+    border-block-start: 1px solid var(--oryx-color-neutral-4);
   }
 `;
 

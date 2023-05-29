@@ -36,4 +36,7 @@ export const primaryColorDark = cssColorVar('primary', 'dark');
 export const primaryColorDarker = cssColorVar('primary', 'darker');
 
 export const secondaryColorBase = cssColorVar('secondary');
+export const secondaryColorLight = cssColorVar('secondary', 'light');
+export const secondaryColorLighter = cssColorVar('secondary', 'lighter');
 export const secondaryColorDark = cssColorVar('secondary', 'dark');
+export const secondaryColorDarker = cssColorVar('secondary', 'darker');

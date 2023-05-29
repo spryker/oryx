@@ -29,6 +29,6 @@ export const styles = css`
 
   small {
     font-weight: 600;
-    color: var(--oryx-color-neutral-200);
+    color: var(--oryx-color-neutral-8);
   }
 `;

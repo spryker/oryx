@@ -35,7 +35,7 @@ export const optionStyles = css`
 
   :host(:hover),
   :host([highlight]) {
-    background-color: var(--oryx-color-canvas-200);
+    background-color: var(--oryx-color-neutral-3);
   }
 
   :host([active]) {
@@ -43,7 +43,7 @@ export const optionStyles = css`
   }
 
   :host(:not([active]):active) {
-    background-color: var(--oryx-color-canvas-100);
+    background-color: var(--oryx-color-neutral-1);
   }
 
   :host(:active) {

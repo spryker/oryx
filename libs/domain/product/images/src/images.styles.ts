@@ -64,7 +64,7 @@ export const productImageStyles = css`
   label {
     position: relative;
     padding: 10px;
-    background-color: var(--oryx-color-canvas-100);
+    background-color: var(--oryx-color-neutral-1);
     border-radius: 2px;
     aspect-ratio: 1 / 1;
   }

@@ -6,7 +6,7 @@ export const generateHeader = (): TemplateResult => {
     <oryx-layout
       layout="flex"
       bleed
-      .options=${{ rules: [{ background: 'var(--oryx-color-canvas-500)' }] }}
+      .options=${{ rules: [{ background: 'var(--oryx-color-neutral-6)' }] }}
     >
       <div>link</div>
       <div>link</div>
@@ -21,7 +21,7 @@ export const generateHeader = (): TemplateResult => {
       .options=${{
         rules: [
           {
-            background: 'var(--oryx-color-canvas-500)',
+            background: 'var(--oryx-color-neutral-6)',
             align: 'center',
             zIndex: 2,
           },

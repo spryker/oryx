@@ -19,7 +19,7 @@ const inlineAppearance = css`
 
 const blockAppearance = css`
   :host(${blockSelector}) {
-    border: solid 1px var(--oryx-color-canvas-500);
+    border: solid 1px var(--oryx-color-neutral-6);
     position: relative;
   }
 
