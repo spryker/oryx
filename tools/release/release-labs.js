@@ -1,5 +1,5 @@
 const { execSync } = require("child_process");
-const libsVersion = require('../../libs/package.json').version;
+const libsVersion = require('../../libs/lerna.json').version;
 const labsVersion  = require('../../libs/template/labs/package.json').version;
 
 function main() {
