@@ -16,16 +16,16 @@ export class FiltersFragment {
     this.getFiltersModal().find(
       'header oryx-icon-button button[value="cancel"]'
     );
-  getFiltersApply = () =>
+  getFiltersApplyButton = () =>
     this.getFilterButton()
       .find('oryx-picking-filters')
       .find('oryx-button[slot="footer"] button');
   getSortingOption = (eq: number) =>
     this.getFiltersModal().find('input').eq(eq);
-  isPickingListsOrderChanged = (changed = false) =>
+  shouldChangePickingListsOrder = (isChange: boolean) =>
     pickingListsFragment
       .getPickingListsItems()
       .eq(0)
       .find('.total oryx-icon-button button')
-      .should(!changed ? 'exist' : 'not.exist');
+      .should(!isChange ? 'exist' : 'not.exist');
 }

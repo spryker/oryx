@@ -12,7 +12,7 @@ describe('When user interacts with the filters', () => {
     it('should reset unapplied changes', () => {
       //check whether default configuration is applied
       filtersFragment.getFilterButtonTrigger().should('not.be.checked');
-      filtersFragment.isPickingListsOrderChanged();
+      filtersFragment.shouldChangePickingListsOrder(false);
 
       filtersFragment.getFilterButtonTrigger().click();
 
@@ -37,28 +37,28 @@ describe('When user interacts with the filters', () => {
       filtersFragment.getSortingOption(0).should('be.checked');
 
       //should not change the order
-      filtersFragment.isPickingListsOrderChanged();
+      filtersFragment.shouldChangePickingListsOrder(false);
     });
   });
 
   describe('And filters are applied', () => {
-    it('should apply correct sorting configuration', () => {
-      [
-        true, //should change the picking list's order
-        false, //should not change the picking list's order
-        true, //should change the picking list's order
-      ].forEach((isChanged, index) => {
+    [
+      { option: 'Latest pickup time', shouldChangesTheOrder: true },
+      { option: 'Largest order size', shouldChangesTheOrder: false },
+      { option: 'Smallest order size', shouldChangesTheOrder: true },
+    ].forEach(({ option, shouldChangesTheOrder }, index) => {
+      it(`should sort by: ${option}`, () => {
         filtersFragment.getFilterButtonTrigger().click();
 
         filtersFragment.getSortingOption(index + 1).click();
 
-        filtersFragment.getFiltersApply().click();
+        filtersFragment.getFiltersApplyButton().click();
 
         //should close the modal
         filtersFragment.getFiltersModal().should('not.be.visible');
 
         //should apply sorting order
-        filtersFragment.isPickingListsOrderChanged(isChanged);
+        filtersFragment.shouldChangePickingListsOrder(shouldChangesTheOrder);
 
         //should make sort button active
         filtersFragment.getFilterButtonTrigger().should('be.checked');
@@ -72,7 +72,7 @@ describe('When user interacts with the filters', () => {
 
       //preselects second sorting option
       filtersFragment.getSortingOption(1).click();
-      filtersFragment.getFiltersApply().click();
+      filtersFragment.getFiltersApplyButton().click();
       filtersFragment.getFilterButtonTrigger().click();
 
       filtersFragment.getFiltersResetButton().click();
@@ -87,7 +87,7 @@ describe('When user interacts with the filters', () => {
       filtersFragment.getSortingOption(0).should('be.checked');
 
       //should not change the order
-      filtersFragment.isPickingListsOrderChanged();
+      filtersFragment.shouldChangePickingListsOrder(false);
     });
   });
 });
