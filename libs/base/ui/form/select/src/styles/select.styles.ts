@@ -41,7 +41,7 @@ export const selectStyles = css`
   }
 
   oryx-icon[type='dropdown'] {
-    --oryx-icon-size: var(--oryx-icon-size-medium);
+    --oryx-icon-size: var(--oryx-icon-size-md);
   }
 
   ::slotted(select:invalid),

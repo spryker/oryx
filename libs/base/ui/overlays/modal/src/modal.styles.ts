@@ -70,7 +70,7 @@ export const styles = css`
 export const screenStyles = screenCss({
   sm: css`
     header oryx-icon-button:last-child button {
-      --oryx-icon-size: var(--oryx-icon-size-large);
+      --oryx-icon-size: var(--oryx-icon-size-lg);
 
       padding: 6px;
       max-height: 38px;

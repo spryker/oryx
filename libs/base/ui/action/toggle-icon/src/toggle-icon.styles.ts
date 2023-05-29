@@ -12,7 +12,7 @@ const largeSize = unsafeCSS(`[size='${Size.Lg}']`);
 
 export const toggleIconStyles = css`
   :host {
-    --oryx-icon-size: var(--oryx-icon-size-large);
+    --oryx-icon-size: var(--oryx-icon-size-lg);
 
     position: relative;
     display: inline-flex;

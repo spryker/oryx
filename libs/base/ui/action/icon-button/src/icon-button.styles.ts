@@ -53,23 +53,20 @@ export const iconButtonStyles = css`
   }
 
   :host([size='sm']) ::slotted(*:first-child) {
-    --oryx-icon-size: var(--oryx-icon-size-small);
+    --oryx-icon-size: var(--oryx-icon-size-sm, 16px);
 
     padding: 3px;
-    max-height: 24px;
   }
 
   :host([size='md']) ::slotted(*:first-child) {
-    --oryx-icon-size: var(--oryx-icon-size-medium);
+    --oryx-icon-size: var(--oryx-icon-size-md, 20px);
 
     padding: 5px;
-    max-height: 32px;
   }
 
   :host([size='lg']) ::slotted(*:first-child) {
-    --oryx-icon-size: var(--oryx-icon-size-large);
+    --oryx-icon-size: var(--oryx-icon-size-lg, 24px);
 
     padding: 6px;
-    max-height: 38px;
   }
 `;

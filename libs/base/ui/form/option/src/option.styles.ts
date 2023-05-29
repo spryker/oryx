@@ -22,7 +22,7 @@ export const optionStyles = css`
   }
 
   oryx-icon.mark {
-    --oryx-icon-size: var(--oryx-icon-size-small);
+    --oryx-icon-size: var(--oryx-icon-size-sm);
 
     display: none;
     color: ${primaryColorBase};
