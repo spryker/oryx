@@ -1,5 +1,9 @@
 import { inject } from '@spryker-oryx/di';
-import { RouterEventType, RouterService } from '@spryker-oryx/router';
+import {
+  BASE_ROUTE,
+  RouterEventType,
+  RouterService,
+} from '@spryker-oryx/router';
 import { isDefined } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
@@ -58,6 +62,8 @@ export class PreviewExperienceService extends DefaultExperienceService {
       .subscribe();
   }
 
+  protected baseRoute = inject(BASE_ROUTE, null);
+
   protected destroy$ = new Subject<void>();
 
   protected experiencePreviewEvent$ =
@@ -105,6 +111,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     this.experiencePreviewEvent$.pipe(
       map((data) => data.data.route),
       filter(isDefined),
+      map((route) => (this.baseRoute ? this.baseRoute + route : route)),
       tap((route) => this.routerService.navigate(route))
     );
 
@@ -153,6 +160,10 @@ export class PreviewExperienceService extends DefaultExperienceService {
   }
 
   routeChangeHandler(route: string): void {
+    if (this.baseRoute && route.startsWith(this.baseRoute)) {
+      route = route.replace(this.baseRoute, '');
+    }
+
     postMessage({
       type: REQUEST_MESSAGE_TYPE,
       route,
