@@ -72,6 +72,7 @@ function publishToNpm() {
 
 function commitToGit() {
   try {
+    runCmd(`git add .`);
     runCmd(`git commit -m 'chore(release): bump labs version [skip ci]'`);
   } catch (e) {
     throw e;
