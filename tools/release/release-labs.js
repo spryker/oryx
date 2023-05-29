@@ -7,6 +7,9 @@ function main() {
   console.log('Setting new version of labs package');
   setLabsVersion(labsVersion);
 
+  console.log('Commiting to git');
+  commitToGit(labsVersion);
+
   console.log('Creating tag');
   createTag(labsVersion);
 
@@ -61,11 +64,20 @@ function setLabsVersion(labsVersion) {
 
 function publishToNpm() {
   try {
-    runCmd(`npm publish ../dist/libs/template/labs --access=public`);
+    // runCmd(`npm publish ../dist/libs/template/labs --access=public`);
   } catch (e) {
     throw e;
   }
 }
+
+function commitToGit() {
+  try {
+    runCmd(`git commit -m 'chore(release): bump labs version [skip ci]'`);
+  } catch (e) {
+    throw e;
+  }
+}
+
 
 function pushToGit() {
   try {
