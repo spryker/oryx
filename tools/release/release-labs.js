@@ -79,7 +79,6 @@ function commitToGit() {
   }
 }
 
-
 function pushToGit() {
   try {
     runCmd(`git push origin HEAD --tags`);
