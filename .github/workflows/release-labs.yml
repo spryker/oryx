@@ -25,11 +25,11 @@ jobs:
           ref: ${{ env.RELEASE_BRANCH }}
           submodules: recursive
       - uses: actions/cache@v3
-          with:
-            path: ~/.npm
-            key: npm-node-${{ hashFiles('**/package-lock.json') }}
-            restore-keys: |
-              npm-node-
+        with:
+          path: ~/.npm
+          key: npm-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-node-
       - name: Auth NPM
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
