@@ -7,7 +7,7 @@ const handler = builder((event, context) =>
     root: 'file:///var/task/dist/apps/storefront/functions/ssr/index.js',
     index: '../../client/index.html',
     entry: '../../server/render.js',
-    component: '<root-app></root-app>',
+    component: '<oryx-app></oryx-app>',
   })
 );
 

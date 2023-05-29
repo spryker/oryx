@@ -7,8 +7,8 @@
       "@spryker-oryx/application/lambda": [
         "libs/template/application/lambda/index.ts"
       ],
-      "@spryker-oryx/application/root-app": [
-        "libs/template/application/root-app/index.ts"
+      "@spryker-oryx/application/oryx-app": [
+        "libs/template/application/oryx-app/index.ts"
       ],
       "@spryker-oryx/application/server": [
         "libs/template/application/server/index.ts"

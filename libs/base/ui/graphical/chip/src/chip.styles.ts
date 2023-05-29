@@ -5,11 +5,11 @@ import { css, CSSResultGroup, unsafeCSS } from 'lit';
  * we generate the following css variables:
  *
  * :host([appearance='success']:not([invert])) {
- *   --primary: var(--oryx-chip-success-main, primaryColor)
+ *   --primary: var(--oryx-chip-success-main, var(--oryx-color-primary-9))
  *   --secondary: var(--oryx-chip-success-main, secondaryColor)
  * }
  *  :host([appearance='success'][invert]) {
- *    --primary: var(--oryx-chip-success-invert, invertedPrimaryColor)
+ *    --primary: var(--oryx-chip-success-invert, var(--oryx-color-primary-9))
  *  }
  *
  * This will allow to override the chip colors by global CSS (or using the design system tokens):

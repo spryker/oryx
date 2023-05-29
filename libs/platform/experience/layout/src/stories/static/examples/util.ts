@@ -1,3 +1,4 @@
+import { primaryColorBase, primaryColorLighter } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 
 export const generateHeader = (): TemplateResult => {
@@ -38,7 +39,7 @@ export const generateHeader = (): TemplateResult => {
 export const pageStyles = html`
   <style>
     oryx-layout div {
-      background: var(--oryx-color-primary-100);
+      background: ${primaryColorLighter};
       padding: 10px;
       outline: solid 1px;
       outline-offset: -1px;
@@ -51,7 +52,7 @@ export const pageStyles = html`
     }
 
     .thumbs div:hover {
-      background: var(--oryx-color-primary-300);
+      background: ${primaryColorBase};
     }
   </style>
 `;

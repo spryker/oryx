@@ -1,13 +1,21 @@
-import { screenCss } from '@spryker-oryx/utilities';
+import {
+  cssColorVar,
+  primaryColorBase,
+  primaryColorDark,
+  primaryColorLight,
+  primaryColorLighter,
+  screenCss,
+} from '@spryker-oryx/utilities';
 import { css } from 'lit';
+
+const textColor = cssColorVar('primary', 'ink', 'white');
 
 export const buttonStyles = css`
   :host {
     --oryx-icon-size: 13.3px;
-    /* stylelint-disable-next-line */
-    --_color-text: var(--oryx-color-primaryA-0, white);
-    --_color-accent: var(--oryx-color-primary-300);
-    --_color-active: var(--oryx-color-primary-400);
+    --_color-text: ${textColor};
+    --_color-accent: ${primaryColorBase};
+    --_color-active: ${primaryColorDark};
 
     display: flex;
     place-content: center;
@@ -70,10 +78,10 @@ export const buttonStyles = css`
   :host([outline]),
   :host([confirmed]),
   :host([loading]) {
-    --oryx-icon-color: var(--oryx-color-primary-300);
-    --_color-text: var(--oryx-color-primary-300);
-    --_color-accent: var(--oryx-color-primary-300);
-    --_color-active: var(--oryx-color-canvas-200);
+    --oryx-icon-color: ${primaryColorBase};
+    --_color-text: ${primaryColorBase};
+    --_color-accent: ${primaryColorBase};
+    --_color-active: ${primaryColorLighter};
   }
 
   :host([outline]) ::slotted(*:not([disabled])) {
@@ -148,13 +156,13 @@ export const buttonStyles = css`
   }
 
   :host([type='text']) ::slotted(*:hover) {
-    --oryx-icon-color: var(--oryx-color-primary-300);
-    --_color-text: var(--oryx-color-primary-300);
+    --oryx-icon-color: ${primaryColorBase};
+    --_color-text: ${primaryColorBase};
   }
 
   :host([type='text']) ::slotted(*:active) {
-    --oryx-icon-color: var(--oryx-color-primary-400);
-    --_color-text: var(--oryx-color-primary-400);
+    --oryx-icon-color: ${primaryColorDark};
+    --_color-text: ${primaryColorDark};
   }
 
   :host([type='text']) ::slotted([disabled]) {
@@ -165,8 +173,8 @@ export const buttonStyles = css`
 
   :host([type='text']:not([loading]))
     ::slotted(*:focus-visible:not(:active):not([disabled])) {
-    --oryx-icon-color: var(--oryx-color-primary-300);
-    --_color-text: var(--oryx-color-primary-300);
+    --oryx-icon-color: ${primaryColorBase};
+    --_color-text: ${primaryColorBase};
   }
 
   ::slotted([disabled]) {
@@ -184,13 +192,13 @@ export const buttonStyles = css`
     position: relative;
     pointer-events: none;
     background-color: var(--oryx-color-canvas-100);
-    border-color: var(--oryx-color-primary-200);
+    border-color: ${primaryColorLight};
     color: transparent;
     user-select: none;
   }
 
   :host([confirmed]) ::slotted(*) {
-    border-color: var(--oryx-color-primary-200);
+    border-color: ${primaryColorLight};
   }
 
   :host(:is([loading], [confirmed])) ::slotted(*)::before {

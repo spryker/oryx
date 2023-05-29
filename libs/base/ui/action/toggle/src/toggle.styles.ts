@@ -1,5 +1,5 @@
+import { primaryColorBase, primaryColorDark } from '@spryker-oryx/utilities';
 import { css } from 'lit';
-
 export const styles = css`
   :host {
     display: block;
@@ -94,7 +94,7 @@ export const styles = css`
   ::slotted(input:checked:hover),
   ::slotted(input:checked:active),
   ::slotted(input:checked:focus-visible) {
-    background: var(--oryx-color-primary-400);
+    background: ${primaryColorDark};
   }
 
   input:focus-visible,
@@ -107,7 +107,7 @@ export const styles = css`
 
   input:checked,
   ::slotted(input:checked) {
-    background: var(--oryx-color-primary-300);
+    background: ${primaryColorBase};
   }
 
   input:disabled,

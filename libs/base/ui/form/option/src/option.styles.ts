@@ -1,3 +1,4 @@
+import { primaryColorBase, primaryColorLighter } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const optionStyles = css`
@@ -24,7 +25,7 @@ export const optionStyles = css`
     --oryx-icon-size: var(--oryx-icon-size-small);
 
     display: none;
-    color: var(--oryx-color-primary-300);
+    color: ${primaryColorBase};
     margin-inline-start: auto;
   }
 
@@ -38,7 +39,7 @@ export const optionStyles = css`
   }
 
   :host([active]) {
-    background-color: var(--oryx-color-primary-100);
+    background-color: ${primaryColorLighter};
   }
 
   :host(:not([active]):active) {
@@ -46,8 +47,8 @@ export const optionStyles = css`
   }
 
   :host(:active) {
-    border-color: var(--oryx-color-primary-300);
-    box-shadow: var(--oryx-elevation-0) var(--oryx-color-primary-300);
+    border-color: ${primaryColorBase};
+    box-shadow: var(--oryx-elevation-0) ${primaryColorBase};
     transition: box-shadow, border;
     transition-duration: var(--oryx-transition-time);
   }
@@ -66,7 +67,7 @@ export const optionStyles = css`
   ::slotted(mark),
   mark {
     background-color: transparent;
-    color: var(--oryx-color-primary-300);
+    color: ${primaryColorBase};
     display: inline;
   }
 `;

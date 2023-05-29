@@ -1,3 +1,4 @@
+import { primaryColorBase } from '@spryker-oryx/utilities';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../constants';
@@ -73,7 +74,7 @@ const Template: Story = (): TemplateResult => {
         display: none;
       }
       [layout='tabular'] input:checked + label {
-        color: var(--oryx-color-primary-300);
+        color: ${primaryColorBase};
       }
 
       [layout='tabular'][vertical] *:not(input):not(label) {
