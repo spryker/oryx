@@ -31,6 +31,12 @@ export const gridSystem = css`
     justify-items: var(--justify);
   }
 
+  *,
+  ::slotted(*) {
+    justify-self: var(--justify);
+    align-self: var(--align, start);
+  }
+
   *:not(style),
   ::slotted(*:not(style)) {
     --_np: var(--inline-padding);

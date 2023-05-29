@@ -30,7 +30,12 @@ export const homePage: StaticComponent = {
       type: 'oryx-product-list',
       options: {
         data: {
-          rules: [{ layout: 'carousel', padding: '30px 0 0' }],
+          rules: [
+            {
+              layout: 'carousel',
+              padding: '30px 0 0',
+            },
+          ],
           category: '10',
           sort: 'rating',
         },
@@ -44,15 +49,18 @@ export const homePage: StaticComponent = {
           rules: [
             {
               layout: 'grid',
-              bleed: true,
-              padding: '60px',
+              padding: '60px 0',
               gap: '30px 0px',
-              columnCount: 5,
-              justify: 'center',
+              columnCount: 6,
               fill: 'var(--oryx-color-neutral-200)',
             },
             { query: { breakpoint: 'md' }, columnCount: 4 },
-            { query: { childs: true }, height: '50px', padding: '0px 40px' },
+            {
+              query: { childs: true },
+              height: '50px',
+              padding: '0px 40px',
+              justify: 'center',
+            },
             { query: { childs: true, hover: true }, fill: 'initial' },
           ],
         },
