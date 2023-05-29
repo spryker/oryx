@@ -55,7 +55,7 @@ describe('When user interacts with the filters', () => {
         filtersFragment.getFiltersApply().click();
 
         //should close the modal
-        filtersFragment.getFiltersModal().should('be.visible');
+        filtersFragment.getFiltersModal().should('not.be.visible');
 
         //should apply sorting order
         filtersFragment.isPickingListsOrderChanged(isChanged);
@@ -78,7 +78,7 @@ describe('When user interacts with the filters', () => {
       filtersFragment.getFiltersResetButton().click();
 
       //should close the modal
-      filtersFragment.getFiltersModal().should('.not.be.visible');
+      filtersFragment.getFiltersModal().should('not.be.visible');
 
       //should not make sort button active
       filtersFragment.getFilterButtonTrigger().should('not.be.checked');
