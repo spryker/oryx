@@ -34,7 +34,7 @@ export const gridSystem = css`
   *,
   ::slotted(*) {
     justify-self: var(--justify);
-    align-self: var(--align, start);
+    align-self: var(--align);
   }
 
   *:not(style),
