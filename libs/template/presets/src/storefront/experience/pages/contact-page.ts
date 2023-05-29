@@ -1,5 +1,6 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { primaryColorLighter } from '@spryker-oryx/utilities';
 
 export const contactPage: StaticComponent = {
   type: 'Page',
@@ -16,7 +17,7 @@ export const contactPage: StaticComponent = {
           margin: '50 0',
           padding: '10 0',
           bleed: true,
-          background: 'var(--oryx-color-info-200)',
+          background: primaryColorLighter,
         },
       ],
     },

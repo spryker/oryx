@@ -1,4 +1,4 @@
-import { screenCss } from '@spryker-oryx/utilities';
+import { primaryColorBase, screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const searchboxStyles = css`
@@ -16,7 +16,7 @@ export const searchboxStyles = css`
   }
 
   oryx-button[slot='suffix'] {
-    --_color-text: var(--oryx-color-primary-300);
+    --_color-text: ${primaryColorBase};
   }
 
   oryx-icon-button[slot='suffix'] {

@@ -3,12 +3,12 @@ import { SearchBoxOptions } from './box.model';
 
 declare global {
   interface FeatureOptions {
-    'search-box'?: SearchBoxOptions;
+    'oryx-search-box'?: SearchBoxOptions;
   }
 }
 
 export const searchBoxComponent = componentDef({
-  name: 'search-box',
+  name: 'oryx-search-box',
   impl: () => import('./box.component').then((m) => m.SearchBoxComponent),
   stylesheets: [
     {

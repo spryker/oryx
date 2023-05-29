@@ -1,5 +1,6 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { primaryColorBase } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: StaticComponent = {
   id: 'header',
@@ -79,7 +80,7 @@ export const HeaderTemplate: StaticComponent = {
           },
         },
         {
-          type: 'search-box',
+          type: 'oryx-search-box',
           options: {
             data: {
               rules: [{ margin: 'auto', width: '580px' }],
@@ -99,6 +100,7 @@ export const HeaderTemplate: StaticComponent = {
         },
         {
           type: 'oryx-site-navigation-item',
+          id: 'mini-cart',
           options: {
             data: {
               label: 'cart',
@@ -114,7 +116,7 @@ export const HeaderTemplate: StaticComponent = {
           rules: [
             {
               layout: 'flex',
-              background: 'var(--oryx-color-primary-300)',
+              background: primaryColorBase,
               align: 'center',
               zIndex: '2',
               padding: '5px 0',

@@ -1,4 +1,4 @@
-import { Size } from '@spryker-oryx/utilities';
+import { secondaryColorBase, Size } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
 const smallSize = unsafeCSS(`[size='${Size.Sm}']`);
@@ -50,7 +50,7 @@ export const ratingBaseStyles = css`
 
   fieldset slot,
   fieldset ::slotted(*) {
-    color: var(--oryx-rating-color-active, var(--oryx-color-secondary-300));
+    color: var(--oryx-rating-color-active, ${secondaryColorBase});
     font-size: 1em;
   }
 
