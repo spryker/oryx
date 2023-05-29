@@ -40,7 +40,7 @@ const blockAppearance = css`
   }
 
   :host(${blockSelector}) summary {
-    padding-block: 16px 13px;
+    padding-block: 12px;
   }
 
   /*
@@ -52,7 +52,9 @@ const blockAppearance = css`
   }
 
   :host(${blockSelector}) oryx-icon-button {
-    color: var(--oryx-color-neutral-12);
+    color: var(--oryx-color-ink);
+    position: relative;
+    inset-inline-start: 8px;
   }
 
   :host(${blockSelector}) slot[name='header'] {
@@ -62,7 +64,7 @@ const blockAppearance = css`
 
   :host(${blockSelector}) slot:not([name]) {
     display: block;
-    padding-block: 13px;
+    padding-block: 12px;
   }
 `;
 

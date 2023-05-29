@@ -27,7 +27,7 @@ export const FacetControlStyles = css`
 
   .controls {
     width: fit-content;
-    margin-block-start: 10px;
+    padding-block-end: 10px;
   }
 
   .counter {
@@ -39,6 +39,10 @@ export const FacetControlStyles = css`
   oryx-collapsible {
     width: 100%;
     border: none;
+  }
+
+  oryx-collapsible::part(heading) {
+    padding-block: 10px;
   }
 
   oryx-collapsible summary,
