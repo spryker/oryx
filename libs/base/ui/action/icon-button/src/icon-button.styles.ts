@@ -6,7 +6,7 @@ export const iconButtonStyles = css`
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    color: var(--oryx-button-color, --oryx-color-neutral-11);
+    color: var(--oryx-button-color, var(--oryx-color-neutral-11));
   }
 
   ::slotted(*:first-child) {
