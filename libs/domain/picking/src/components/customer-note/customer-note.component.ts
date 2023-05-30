@@ -59,7 +59,7 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
         </button>
       </oryx-button>
       <oryx-picking-in-progress-modal
-        @oryx.close=${this.closePickingInProgressModal}
+        @oryx.close-button=${this.closePickingInProgressModal}
         ${ref(this.pickingInProgressModal)}
       ></oryx-picking-in-progress-modal>
     `;

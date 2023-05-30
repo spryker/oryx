@@ -18,7 +18,7 @@ export class PickingInProgressModalComponent extends LitElement {
       </oryx-heading>
       ${i18n('picking.list.already-in-progress')}
       <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
-        <button @click=${this.close}>
+        <button @click=${this.closeButton}>
           ${i18n('picking.list.back-to-pick-lists')}
         </button>
       </oryx-button>
@@ -27,5 +27,12 @@ export class PickingInProgressModalComponent extends LitElement {
 
   protected close(): void {
     this.open = false;
+  }
+
+  protected closeButton(): void {
+    this.dispatchEvent(
+      new CustomEvent('oryx.close-button', { bubbles: true, composed: true })
+    );
+    this.close();
   }
 }
