@@ -1,11 +1,14 @@
 const { execSync } = require("child_process");
-const libsVersion = require('../../libs/package.json').version;
+const libsVersion = require('../../libs/lerna.json').version;
 const labsVersion  = require('../../libs/template/labs/package.json').version;
 
 function main() {
   const labsVersion = getNewLabsVersion();
   console.log('Setting new version of labs package');
   setLabsVersion(labsVersion);
+
+  console.log('Commiting to git');
+  commitToGit(labsVersion);
 
   console.log('Creating tag');
   createTag(labsVersion);
@@ -62,6 +65,15 @@ function setLabsVersion(labsVersion) {
 function publishToNpm() {
   try {
     runCmd(`npm publish ../dist/libs/template/labs --access=public`);
+  } catch (e) {
+    throw e;
+  }
+}
+
+function commitToGit() {
+  try {
+    runCmd(`git add .`);
+    runCmd(`git commit -m 'chore(release): bump labs version [skip ci]'`);
   } catch (e) {
     throw e;
   }
