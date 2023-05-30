@@ -11,7 +11,9 @@ export const styles = css`
     height: 66px;
     gap: 22px;
     padding: 0 24px;
+
     --oryx-button-color: var(--oryx-color-primary-300);
+
     color: var(--oryx-color-neutral-400);
   }
 
@@ -22,10 +24,11 @@ export const styles = css`
   }
 
   .back {
-    --oryx-icon-size: 18px;
     color: var(--oryx-color-neutral-400);
     background-color: transparent;
     border: none;
     cursor: pointer;
+
+    --oryx-icon-size: 18px;
   }
 `;
