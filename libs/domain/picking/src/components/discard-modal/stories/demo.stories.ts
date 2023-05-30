@@ -1,10 +1,11 @@
+import { OverlaysDecorator } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Discard modal`,
-  parameters: { chromatic: { disableSnapshot: true } },
+  decorators: [OverlaysDecorator()],
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
