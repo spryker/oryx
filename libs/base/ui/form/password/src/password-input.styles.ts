@@ -7,7 +7,7 @@ export const baseStyles = css`
   }
 
   oryx-icon {
-    --oryx-icon-size: var(--oryx-icon-size-medium);
+    --oryx-icon-size: var(--oryx-icon-size-md);
 
     cursor: pointer;
     width: 38px;

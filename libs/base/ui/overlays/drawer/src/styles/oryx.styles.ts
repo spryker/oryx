@@ -32,7 +32,7 @@ export const drawerStyles = css`
 
 export const panelStyles = css`
   nav {
-    --oryx-icon-size: var(--oryx-icon-size-small);
+    --oryx-icon-size: var(--oryx-icon-size-sm);
 
     padding-block-start: 20px;
   }
