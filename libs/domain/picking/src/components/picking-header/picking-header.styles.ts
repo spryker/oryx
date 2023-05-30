@@ -5,16 +5,16 @@ export const styles = css`
     position: sticky;
     inset-block-start: 0;
     z-index: 1;
-    background-color: var(--oryx-color-canvas-100);
+    background-color: var(--oryx-color-neutral-1);
     display: flex;
     align-items: center;
     height: 66px;
     gap: 12px;
     padding: 0 24px;
 
-    --oryx-button-color: var(--oryx-color-primary-300);
+    --oryx-button-color: var(--oryx-color-primary-9);
 
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
   }
 
   .title {
@@ -24,7 +24,7 @@ export const styles = css`
   }
 
   .back {
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
     background-color: transparent;
     border: none;
     cursor: pointer;
