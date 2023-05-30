@@ -1,4 +1,6 @@
 import { StaticComponent } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
+import { primaryColorBase } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: StaticComponent = {
   id: 'header',
@@ -14,7 +16,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: 'Free delivery & returns',
-              icon: 'mark',
+              icon: IconTypes.Mark,
             },
           },
         },
@@ -24,7 +26,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: '100 day return policy',
-              icon: 'mark',
+              icon: IconTypes.Mark,
             },
           },
         },
@@ -34,7 +36,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: 'Click & Collect',
-              icon: 'mark',
+              icon: IconTypes.Mark,
             },
           },
         },
@@ -78,7 +80,7 @@ export const HeaderTemplate: StaticComponent = {
           },
         },
         {
-          type: 'search-box',
+          type: 'oryx-search-box',
           options: {
             data: {
               rules: [{ margin: 'auto', width: '580px' }],
@@ -91,18 +93,19 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               contentBehavior: 'dropdown',
               label: 'USER.NAME',
-              icon: 'user',
+              icon: IconTypes.User,
             },
           },
           components: [{ type: 'oryx-auth-login-link' }],
         },
         {
           type: 'oryx-site-navigation-item',
+          id: 'mini-cart',
           options: {
             data: {
               label: 'cart',
               badge: 'CART.SUMMARY',
-              icon: 'cart',
+              icon: IconTypes.Cart,
               url: { type: 'cart' },
             },
           },
@@ -113,7 +116,7 @@ export const HeaderTemplate: StaticComponent = {
           rules: [
             {
               layout: 'flex',
-              background: 'var(--oryx-color-primary-300)',
+              background: primaryColorBase,
               align: 'center',
               zIndex: '2',
               padding: '5px 0',

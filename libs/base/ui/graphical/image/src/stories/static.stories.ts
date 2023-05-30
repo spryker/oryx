@@ -19,7 +19,10 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <h3>Resources (fill color override)</h3>
-    <oryx-layout .layout=${'grid'} style="--oryx-fill:var(--oryx-color-ink)">
+    <oryx-layout
+      .layout=${'grid'}
+      style="--oryx-fill:var(--oryx-color-neutral-12)"
+    >
       ${resources.map(
         (resource) => html`<oryx-image .resource=${resource}></oryx-image>`
       )}

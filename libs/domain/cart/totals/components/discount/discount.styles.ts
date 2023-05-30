@@ -21,7 +21,7 @@ const cartTotalsDiscountRules = css`
     list-style: none;
     padding: 0;
     margin: var(--oryx-space) 0;
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   li {
@@ -35,7 +35,7 @@ const cartTotalsDiscountRules = css`
 
   span:nth-child(2) {
     margin-inline-start: auto;
-    color: var(--oryx-color-highlight-400);
+    color: var(--oryx-color-highlight-10);
   }
 
   ul span {

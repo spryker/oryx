@@ -76,7 +76,7 @@ describe('Start picking a picklist with customer note', () => {
 
   describe('and picking is already in progress', () => {
     beforeEach(() => {
-      cy.pickingInProgress();
+      cy.mockPickingInProgress();
 
       customerNoteFragment.getProceedToPickingButton().should('be.visible');
       // eslint-disable-next-line cypress/no-unnecessary-waiting

@@ -2,6 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { asyncState, hydratable, valueType } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
@@ -33,7 +34,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<SiteLocaleSelector
         <oryx-button type=${ButtonType.Text} slot="trigger">
           <button>
             ${this.current}
-            <oryx-icon type="dropdown"></oryx-icon>
+            <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
           </button>
         </oryx-button>
         ${repeat(

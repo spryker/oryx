@@ -4,7 +4,7 @@ import { blockSelector } from '../base.styles';
 const styles = [
   css`
     :host(${blockSelector}) {
-      background: var(--oryx-color-canvas-200);
+      background: var(--oryx-color-neutral-3);
       position: relative;
     }
 
@@ -28,11 +28,11 @@ const styles = [
     }
 
     :host(${blockSelector}) details[open] summary {
-      border-block-end: 1px solid var(--oryx-color-canvas-500);
+      border-block-end: 1px solid var(--oryx-color-neutral-6);
     }
 
     :host(${blockSelector}:hover) summary {
-      background: var(--oryx-color-canvas-500);
+      background: var(--oryx-color-neutral-6);
     }
 
     /*
@@ -44,11 +44,11 @@ const styles = [
     }
 
     oryx-icon-button {
-      color: var(--oryx-color-neutral-300);
+      color: var(--oryx-color-neutral-9);
     }
 
     summary:hover oryx-icon-button {
-      color: var(--oryx-color-neutral-400);
+      color: var(--oryx-color-neutral-11);
     }
 
     :host(${blockSelector}) slot:not([name]) {

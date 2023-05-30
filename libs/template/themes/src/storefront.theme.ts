@@ -1,5 +1,5 @@
 import { Theme } from '@spryker-oryx/experience';
-import { materialDesignIcons } from '@spryker-oryx/presets/resources';
+import { materialDesignIcons, storefrontIcons } from '@spryker-oryx/resources';
 import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
 
 export const storefrontTheme: Theme = {
@@ -9,5 +9,11 @@ export const storefrontTheme: Theme = {
     import('../design-tokens/src/storefront').then((s) => s.storefrontTokens),
   icons: {
     resource: materialDesignIcons,
+    resources: [
+      {
+        resource: storefrontIcons,
+        types: Object.keys(storefrontIcons.mapping ?? {}),
+      },
+    ],
   },
 };

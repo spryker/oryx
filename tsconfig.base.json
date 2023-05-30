@@ -7,8 +7,8 @@
       "@spryker-oryx/application/lambda": [
         "libs/template/application/lambda/index.ts"
       ],
-      "@spryker-oryx/application/root-app": [
-        "libs/template/application/root-app/index.ts"
+      "@spryker-oryx/application/oryx-app": [
+        "libs/template/application/oryx-app/index.ts"
       ],
       "@spryker-oryx/application/server": [
         "libs/template/application/server/index.ts"
@@ -96,9 +96,6 @@
       "@spryker-oryx/picking/*": ["libs/domain/picking/*/index.ts"],
       "@spryker-oryx/picking/offline": ["libs/domain/picking/offline/index.ts"],
       "@spryker-oryx/presets": ["libs/template/presets/src/index.ts"],
-      "@spryker-oryx/presets/resources": [
-        "libs/template/presets/resources/index.ts"
-      ],
       "@spryker-oryx/product": ["libs/domain/product/src/index.ts"],
       "@spryker-oryx/product/attributes": [
         "libs/domain/product/attributes/index.ts"
@@ -125,6 +122,7 @@
       "@spryker-oryx/push-notification/web": [
         "libs/platform/push-notification/web/index.ts"
       ],
+      "@spryker-oryx/resources": ["libs/template/resources/src/index.ts"],
       "@spryker-oryx/router": ["libs/platform/router/src/index.ts"],
       "@spryker-oryx/router/*": ["libs/platform/router/*/index.ts"],
       "@spryker-oryx/router/lit": ["libs/platform/router/lit/index.ts"],

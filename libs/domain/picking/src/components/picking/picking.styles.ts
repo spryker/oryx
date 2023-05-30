@@ -44,12 +44,12 @@ export const pickingComponentStyles = css`
     position: sticky;
     inset-block-end: 0;
     padding: 20px;
-    background-color: var(--oryx-color-canvas-100);
+    background-color: var(--oryx-color-neutral-1);
     animation: slide-up 0.5s ease-in-out;
   }
 
   .scroll-shadow {
-    box-shadow: 0 -1px 6px var(--oryx-color-canvas-300);
+    box-shadow: 0 -1px 6px var(--oryx-color-neutral-4);
   }
 
   @keyframes slide-up {

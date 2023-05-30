@@ -9,7 +9,7 @@ export const styles = css`
     display: flex;
     align-items: center;
     height: 66px;
-    gap: 22px;
+    gap: 12px;
     padding: 0 24px;
 
     --oryx-button-color: var(--oryx-color-primary-300);

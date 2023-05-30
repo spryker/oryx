@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ColorMode, i18n, rootInjectable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -68,7 +69,7 @@ export class ColorModeSelectorComponent extends LitElement {
 
   protected override render(): TemplateResult {
     const iconType =
-      this.mode === ColorMode.Light ? ColorMode.Dark : ColorMode.Light;
+      this.mode === ColorMode.Light ? IconTypes.ModeDark : IconTypes.ModeLight;
 
     return html`
       <oryx-icon-button>
@@ -77,7 +78,7 @@ export class ColorModeSelectorComponent extends LitElement {
           aria-label="${i18n('site.change-color-mode')}"
           @click=${this.triggerEvent}
         >
-          <oryx-icon type="${iconType}"></oryx-icon>
+          <oryx-icon .type=${iconType}></oryx-icon>
         </button>
       </oryx-icon-button>
     `;

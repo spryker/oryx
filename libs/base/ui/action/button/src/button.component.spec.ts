@@ -1,6 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { IconComponent } from '@spryker-oryx/ui/icon';
+import { IconComponent, IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { ButtonComponent } from './button.component';
 import { buttonComponent } from './button.def';
@@ -98,7 +98,7 @@ describe('ButtonComponent', () => {
         const icon = element.renderRoot.querySelector(
           'oryx-icon'
         ) as IconComponent;
-        expect(icon.type).toBe('loader');
+        expect(icon.type).toBe(IconTypes.Loader);
       });
 
       it('should have inert attribute on slot', () => {
@@ -123,7 +123,7 @@ describe('ButtonComponent', () => {
         const icon = element.renderRoot.querySelector(
           'oryx-icon'
         ) as IconComponent;
-        expect(icon.type).toBe('mark');
+        expect(icon.type).toBe(IconTypes.Mark);
       });
 
       describe('and the property is set to false afterwards', () => {

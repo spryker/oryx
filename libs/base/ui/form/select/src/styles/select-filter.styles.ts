@@ -13,7 +13,7 @@ export const selectFilterStyles = css`
     outline: none;
     font: inherit;
     line-height: 24px;
-    color: var(--oryx-color-ink);
+    color: var(--oryx-color-neutral-12);
     border-radius: var(--oryx-border-radius);
     white-space: nowrap;
     overflow: hidden;

@@ -1,4 +1,5 @@
 import { StaticComponent } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 
 const banner = (graphic: string) => ({
   type: 'oryx-content-banner',
@@ -47,8 +48,8 @@ const selfServiceLinks = {
         data: { rules: [{ layout: 'flex', vertical: true, align: 'start' }] },
       },
       components: [
-        link('Free delivery', '/', 'carrier'),
-        link('100-day return policy', '/', 'parcel'),
+        link('Free delivery', '/', IconTypes.Carrier),
+        link('100-day return policy', '/', IconTypes.Parcel),
         link('Click & Collect'),
       ],
     },
@@ -81,7 +82,7 @@ const checkoutLinks = {
           query: {
             childs: true,
           },
-          background: 'var(--oryx-color-canvas-100)',
+          background: 'var(--oryx-color-neutral-1)',
           padding: '8px 15px',
           radius: 5,
           ratio: '4/3',
@@ -200,7 +201,7 @@ export const FooterTemplate: StaticComponent = {
           layout: 'flex',
           divider: true,
           top: '100%',
-          background: 'var(--oryx-color-canvas-200)',
+          background: 'var(--oryx-color-neutral-3)',
           padding: '30 0',
           bleed: true,
           sticky: true,

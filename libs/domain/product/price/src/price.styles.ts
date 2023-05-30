@@ -19,7 +19,7 @@ export const ProductPriceStyles = css`
   }
 
   [has-discount] {
-    color: var(--oryx-color-highlight-300);
+    color: var(--oryx-color-highlight-9);
   }
 
   [part='original'] {
@@ -33,7 +33,7 @@ export const ProductPriceStyles = css`
     font-size: var(--oryx-typography-caption-size);
     font-weight: var(--oryx-typography-caption-weight);
     line-height: var(--oryx-typography-caption-line);
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   [part='labels'] {
@@ -48,11 +48,11 @@ export const oldProductPriceStyles = css`
     flex-wrap: wrap;
     align-items: baseline;
     column-gap: 10px;
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
   }
 
   [part='sales'] {
-    color: var(--oryx-color-highlight-300);
+    color: var(--oryx-color-highlight-9);
   }
 
   [part='original'] {
@@ -60,6 +60,6 @@ export const oldProductPriceStyles = css`
     font-weight: var(--oryx-typography-h4-weight);
     line-height: var(--oryx-typography-h4-line);
     text-decoration: line-through;
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
   }
 `;

@@ -1,5 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -39,7 +40,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           href="#"
           @click=${this.back}
         >
-          <oryx-icon type="back"></oryx-icon>
+          <oryx-icon type="${IconTypes.Back}"></oryx-icon>
         </button>
         ${this.pickingListId}
       </div>
@@ -47,7 +48,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
       <oryx-site-navigation-item
         uid="user-profile"
         .options=${{
-          icon: 'profile',
+          icon: IconTypes.Profile,
           triggerType: 'icon',
           contentBehavior: 'modal',
         }}

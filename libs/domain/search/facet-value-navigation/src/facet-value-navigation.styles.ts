@@ -1,3 +1,5 @@
+import { primaryColorBase } from '@spryker-oryx/utilities';
+
 import { css } from 'lit';
 
 export const FacetControlStyles = css`
@@ -16,7 +18,7 @@ export const FacetControlStyles = css`
 
   .header oryx-button button,
   .controls button {
-    color: var(--oryx-color-primary-300);
+    color: ${primaryColorBase};
   }
 
   .header oryx-chip {
@@ -25,7 +27,7 @@ export const FacetControlStyles = css`
 
   .controls {
     width: fit-content;
-    margin-block-start: 10px;
+    padding-block-end: 10px;
   }
 
   .counter {
@@ -37,6 +39,10 @@ export const FacetControlStyles = css`
   oryx-collapsible {
     width: 100%;
     border: none;
+  }
+
+  oryx-collapsible::part(heading) {
+    padding-block: 10px;
   }
 
   oryx-collapsible summary,
