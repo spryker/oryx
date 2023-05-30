@@ -4,7 +4,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { discardModalStyles } from './discard-modal.styles';
 
-export class DiscardModal extends LitElement {
+export class DiscardModalComponent extends LitElement {
   static styles = discardModalStyles;
 
   @property({ type: Boolean }) open?: boolean;
