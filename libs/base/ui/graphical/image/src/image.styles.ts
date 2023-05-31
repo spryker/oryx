@@ -15,7 +15,7 @@ export const styles = css`
   [part='fallback'] {
     --oryx-icon-size: 100px;
 
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
     margin: auto;
     width: 100%;
     height: 100%;

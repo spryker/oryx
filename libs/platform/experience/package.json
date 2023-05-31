@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/experience",
-  "version": "0.9.1",
+  "version": "0.10.1",
   "type": "module",
   "description": "Experience features for Oryx applications",
   "author": "Spryker Systems GmbH",
@@ -28,6 +28,6 @@
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0",
-    "urlpattern-polyfill": "^4.0.0"
+    "urlpattern-polyfill": ">4.0.0"
   }
 }

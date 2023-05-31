@@ -23,7 +23,7 @@ export const styles = css`
     flex-direction: column;
     align-items: center;
     padding: 50px;
-    background: var(--oryx-color-canvas-200);
+    background: var(--oryx-color-neutral-3);
   }
 
   slot[name='empty'] oryx-icon {

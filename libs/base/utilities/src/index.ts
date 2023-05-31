@@ -1,3 +1,4 @@
+export * from './colors';
 export * from './decorators';
 export * from './directives';
 export * from './guards';

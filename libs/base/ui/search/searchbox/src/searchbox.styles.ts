@@ -13,7 +13,7 @@ export const baseStyles = [
     }
 
     .clear-button[type='remove'] {
-      --oryx-icon-size: var(--oryx-icon-size-medium);
+      --oryx-icon-size: var(--oryx-icon-size-md);
     }
 
     .clear-button {
@@ -55,7 +55,7 @@ export const baseStyles = [
 
 const smallScreen = css`
   .clear-button[type='remove'] {
-    --oryx-icon-size: var(--oryx-icon-size-large);
+    --oryx-icon-size: var(--oryx-icon-size-lg);
   }
 
   :host([xs-floated][open]) label {
@@ -105,7 +105,7 @@ const smallScreen = css`
   :host(oryx-search:not([floatDisabled]):not([label])),
   :host(oryx-search:not([floatDisabled]):not([label]))
     ::slotted(select:invalid) {
-    --oryx-color-placeholder: var(--oryx-color-neutral-400);
+    --oryx-color-placeholder: var(--oryx-color-neutral-11);
   }
 `;
 

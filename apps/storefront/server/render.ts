@@ -8,7 +8,7 @@ export const render = (
   renderApp(
     {
       ...config,
-      element: html`<root-app></root-app>`,
+      element: html`<oryx-app></oryx-app>`,
     },
     app
   );

@@ -61,7 +61,7 @@ export const b2cFeatures: AppFeature[] = [
   featureB,
   {
     defaultOptions: {
-      'search-box': {
+      'oryx-search-box': {
         minChars: 2,
         completionsCount: 5,
         productsCount: 5

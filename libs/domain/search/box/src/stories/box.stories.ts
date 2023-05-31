@@ -23,7 +23,7 @@ const Template: Story<SearchBoxOptions> = (
       }
     </style>
 
-    <search-box .options=${options}></search-box>
+    <oryx-search-box .options=${options}></oryx-search-box>
 
     <h4>List of mocked phrases:</h4>
     ${completion.map((c) => html`<small>${c}</small>`)}

@@ -1,3 +1,4 @@
+import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -32,9 +33,9 @@ export const styles = css`
     display: flex;
     align-items: center;
     cursor: pointer;
-    background: var(--oryx-color-canvas-200);
-    color: var(--oryx-color-neutral-300);
-    border: 2px solid var(--oryx-color-canvas-400);
+    background: var(--oryx-color-neutral-3);
+    color: var(--oryx-color-neutral-9);
+    border: 2px solid var(--oryx-color-neutral-5);
     outline: none;
     border-radius: var(--oryx-border-radius-small);
     margin: 0;
@@ -56,22 +57,22 @@ export const styles = css`
   }
 
   button:hover {
-    background: var(--oryx-color-canvas-300);
-    border-color: var(--oryx-color-neutral-100);
+    background: var(--oryx-color-neutral-4);
+    border-color: var(--oryx-color-neutral-7);
   }
 
   button:active {
-    background-color: var(--oryx-color-canvas-500);
+    background-color: var(--oryx-color-neutral-6);
   }
 
   button:focus-visible {
-    border: 2px solid var(--oryx-color-primary-300);
-    box-shadow: 0 0 3px var(--oryx-color-primary-300);
+    border: 2px solid ${primaryColorBase};
+    box-shadow: 0 0 3px ${primaryColorBase};
     z-index: 1;
   }
 
   button[disabled] {
-    color: var(--oryx-color-neutral-100);
+    color: var(--oryx-color-neutral-7);
     cursor: default;
     pointer-events: none;
   }
@@ -87,7 +88,7 @@ export const styles = css`
 
   oryx-input:not([hasError]):hover,
   oryx-input:not([hasError]):active {
-    border-color: var(--oryx-color-canvas-400);
+    border-color: var(--oryx-color-neutral-5);
   }
 
   oryx-input::part(label) {

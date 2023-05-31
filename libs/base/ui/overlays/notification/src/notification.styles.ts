@@ -17,11 +17,11 @@ export const notificationStyles = css`
 
   :host([scheme='${unsafeCSS(Scheme.Light)}']),
   :host(:not([scheme])) {
-    background: var(--oryx-color-canvas-100);
+    background: var(--oryx-color-neutral-1);
   }
 
   :host([scheme='${unsafeCSS(Scheme.Dark)}']) {
-    background: var(--oryx-color-canvas-200);
+    background: var(--oryx-color-neutral-3);
   }
 
   oryx-icon-button {
@@ -41,7 +41,7 @@ export const notificationStyles = css`
   slot[name='subtext']::slotted(*) {
     padding-block-end: 5px;
     grid-row: 2;
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   oryx-icon.illustrative {
@@ -51,34 +51,34 @@ export const notificationStyles = css`
   }
 
   :host([type='info']) {
-    border-color: var(--oryx-color-info-300);
+    border-color: var(--oryx-color-info-9);
   }
 
   :host([type='success']) {
-    border-color: var(--oryx-color-success-300);
+    border-color: var(--oryx-color-success-9);
   }
 
   :host([type='warning']) {
-    border-color: var(--oryx-color-warning-300);
+    border-color: var(--oryx-color-warning-9);
   }
 
   :host([type='error']) {
-    border-color: var(--oryx-color-error-300);
+    border-color: var(--oryx-color-error-9);
   }
 
   :host([type='info']) oryx-icon.illustrative {
-    background: var(--oryx-color-info-100);
+    background: var(--oryx-color-info-3);
   }
 
   :host([type='success']) oryx-icon.illustrative {
-    background: var(--oryx-color-success-100);
+    background: var(--oryx-color-success-3);
   }
 
   :host([type='warning']) oryx-icon.illustrative {
-    background: var(--oryx-color-warning-100);
+    background: var(--oryx-color-warning-3);
   }
 
   :host([type='error']) oryx-icon.illustrative {
-    background: var(--oryx-color-error-100);
+    background: var(--oryx-color-error-3);
   }
 `;
