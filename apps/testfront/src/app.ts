@@ -1,5 +1,5 @@
 import { appBuilder } from '@spryker-oryx/application';
-import { storefrontFeatures } from '@spryker-oryx/presets';
+import { storefrontFeatures } from '@spryker-oryx/presets/storefront';
 import { storefrontTheme } from '@spryker-oryx/themes';
 
 export const app = appBuilder()
