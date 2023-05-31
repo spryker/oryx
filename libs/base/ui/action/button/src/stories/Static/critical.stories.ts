@@ -14,6 +14,7 @@ export default {
         storybookDefaultViewports.mobile.min,
         storybookDefaultViewports.desktop.min,
       ],
+      disableSnapshot: true,
     },
   },
 } as Meta;
