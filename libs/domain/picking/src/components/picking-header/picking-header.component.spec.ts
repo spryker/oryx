@@ -1,10 +1,12 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { CustomerNoteModalComponent } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { beforeEach } from 'vitest';
 import { PickingListService } from '../../services';
 import { PickingHeaderComponent } from './picking-header.component';
 import { pickingHeaderComponent } from './picking-header.def';
@@ -59,7 +61,10 @@ describe('PickingHeaderComponent', () => {
     destroyInjector();
   });
 
-  const getCustomerNote = () => {
+  const getCustomerNoteModal = (): CustomerNoteModalComponent | null =>
+    element.renderRoot.querySelector('oryx-customer-note-modal');
+
+  const getCustomerNoteButton = () => {
     return element.renderRoot.querySelector(
       'oryx-icon-button button[aria-label="Show customer note"]'
     );
@@ -89,14 +94,26 @@ describe('PickingHeaderComponent', () => {
     ).toContain('mockid');
   });
 
-  it('should render customer note', () => {
-    expect(getCustomerNote()).not.toBeNull();
+  it('should render customer note button', () => {
+    expect(getCustomerNoteButton()).not.toBeNull();
   });
 
   it('should render account button', () => {
     expect(
       element.renderRoot.querySelector('oryx-site-navigation-item')
     ).not.toBeNull();
+  });
+
+  describe('when customer note button is clicked', () => {
+    beforeEach(() => {
+      (getCustomerNoteButton() as HTMLButtonElement).click();
+    });
+
+    it('should provide the note text to customer-note-modal component', () => {
+      expect(getCustomerNoteModal()?.getAttribute('note')).toBe(
+        mockPickingListData[0].cartNote
+      );
+    });
   });
 
   describe('when picking list does not have customer note', () => {
@@ -108,9 +125,11 @@ describe('PickingHeaderComponent', () => {
       );
     });
 
-    it('should not render customer note', () => {
-      expect(getCustomerNote()).toBeNull();
+    it('should not render customer note button', () => {
+      expect(getCustomerNoteButton()).toBeNull();
     });
+
+    it('should not ');
   });
 
   describe('when back button is clicked', () => {
