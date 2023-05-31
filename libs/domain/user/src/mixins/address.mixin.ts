@@ -14,9 +14,9 @@ export declare class AddressMixinInterface
 {
   protected addressService: AddressService;
   addressId?: string;
-  addressData?: Address;
-  address: Signal<Address | null>;
-  addresses: Signal<Address[] | null>;
+  address?: Address;
+  $address: Signal<Address | null>;
+  $addresses: Signal<Address[] | null>;
 }
 
 export const AddressMixin = <
@@ -28,17 +28,17 @@ export const AddressMixin = <
     protected addressService = resolve(AddressService);
 
     @signalProperty() addressId?: string;
-    @signalProperty() addressData?: Address;
+    @signalProperty() address?: Address;
 
-    protected address = computed(() => {
-      if (this.addressData) return this.addressData;
+    protected $address = computed(() => {
+      if (this.address) return this.address;
       if (this.addressId) {
         return this.addressService.getAddress(this.addressId);
       }
       return null;
     });
 
-    protected addresses = signal(this.addressService.getAddresses());
+    protected $addresses = signal(this.addressService.getAddresses());
   }
 
   return AddressMixinClass as unknown as Type<AddressMixinInterface> & T;

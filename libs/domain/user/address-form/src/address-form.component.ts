@@ -139,7 +139,6 @@ export class AddressFormComponent
       const data: Address = Object.fromEntries(
         new FormData(this.form).entries()
       );
-      console.log('dispatch selectedAddress', data);
       this.dispatchEvent(
         new CustomEvent('selectedAddress', {
           detail: { data, valid: this.form.checkValidity() },

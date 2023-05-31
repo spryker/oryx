@@ -33,7 +33,7 @@ export class AddressListComponent extends AddressMixin(
   protected selectedAddressId?: string;
 
   protected autoSelectAddress = effect(() => {
-    const addresses = this.addresses();
+    const addresses = this.$addresses();
     if (
       this.$options().selectable &&
       !addresses?.find((address) => address.id === this.selectedAddressId)
@@ -45,7 +45,7 @@ export class AddressListComponent extends AddressMixin(
   });
 
   protected override render(): TemplateResult | void {
-    const addresses = this.addresses();
+    const addresses = this.$addresses();
     if (!addresses?.length) return this.renderEmpty();
 
     return html`
@@ -90,7 +90,7 @@ export class AddressListComponent extends AddressMixin(
   }
 
   protected dispatchSelectedAddress(addressId?: string): void {
-    const address = this.addresses()?.find(
+    const address = this.$addresses()?.find(
       (address) => address.id === addressId
     );
     if (address) {
@@ -130,8 +130,8 @@ export class AddressListComponent extends AddressMixin(
   }
 
   protected createKey(addressId?: string): string {
-    return `${addressId}-${this.addresses()?.findIndex(
+    return `${addressId}-${this.$addresses()?.findIndex(
       (a) => a.id === addressId
-    )}-${this.addresses?.length}`;
+    )}-${this.$addresses?.length}`;
   }
 }

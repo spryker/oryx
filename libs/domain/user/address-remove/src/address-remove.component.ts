@@ -11,7 +11,7 @@ export class AddressRemoveComponent extends AddressMixin(LitElement) {
   static styles = styles;
 
   protected override render(): TemplateResult | void {
-    const address = this.address();
+    const address = this.$address();
     if (!address) return;
 
     return html`

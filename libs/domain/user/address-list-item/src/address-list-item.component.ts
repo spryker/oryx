@@ -22,7 +22,7 @@ export class AddressListItemComponent
   static styles = styles;
 
   protected override render(): TemplateResult | void {
-    if (!this.address()) return;
+    if (!this.$address()) return;
 
     if (this.$options()?.selectable) {
       return html`<oryx-radio>
@@ -36,7 +36,9 @@ export class AddressListItemComponent
   protected renderContent(): TemplateResult | void {
     return html`
       <div>
-        <oryx-user-address .addressId=${this.address()?.id}></oryx-user-address>
+        <oryx-user-address
+          .addressId=${this.$address()?.id}
+        ></oryx-user-address>
         ${this.renderActions()}
       </div>
       ${this.renderDefaults()}
@@ -44,7 +46,7 @@ export class AddressListItemComponent
   }
 
   protected renderActions(): TemplateResult | void {
-    const address = this.address();
+    const address = this.$address();
     const { editable, removable } = this.$options();
     if (!address || (!editable && !removable)) return;
 
@@ -79,7 +81,7 @@ export class AddressListItemComponent
   }
 
   protected renderDefaults(): TemplateResult | void {
-    const address = this.address();
+    const address = this.$address();
     const { addressDefaults } = this.$options();
     if (!address) return;
 
