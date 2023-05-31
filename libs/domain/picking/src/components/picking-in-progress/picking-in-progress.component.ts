@@ -1,4 +1,5 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { BACK_EVENT } from '@spryker-oryx/ui/modal';
 import { i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -31,7 +32,7 @@ export class PickingInProgressModalComponent extends LitElement {
 
   protected closeButton(): void {
     this.dispatchEvent(
-      new CustomEvent('oryx.close-button', { bubbles: true, composed: true })
+      new CustomEvent(BACK_EVENT, { bubbles: true, composed: true })
     );
     this.close();
   }
