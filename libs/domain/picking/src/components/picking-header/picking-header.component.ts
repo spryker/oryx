@@ -33,7 +33,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           <oryx-icon-button>
             <button
               aria-label="Show customer note"
-              @click=${() => (this.isCartNoteVisible = true)}
+              @click=${() => this.isCartNoteVisible}
             >
               <oryx-icon type="info"></oryx-icon>
             </button>
