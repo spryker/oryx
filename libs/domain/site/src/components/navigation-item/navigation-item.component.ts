@@ -76,7 +76,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   }
 
   protected override render(): TemplateResult {
-    switch (this.componentOptions?.contentBehavior) {
+    switch (this.$options()?.contentBehavior) {
       case NavigationContentBehavior.Dropdown:
         return this.renderContentDropdown();
       case NavigationContentBehavior.Modal:
