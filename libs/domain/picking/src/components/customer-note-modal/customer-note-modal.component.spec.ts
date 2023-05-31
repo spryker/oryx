@@ -62,7 +62,9 @@ describe('CustomerNoteModal', () => {
       });
 
       it('should close the modal when on button click', () => {
-        getModal()?.querySelector('oryx-button button')?.click();
+        getModal()
+          ?.querySelector<HTMLButtonElement>('oryx-button button')
+          ?.click();
         expect(spy).toBeCalled();
       });
 
