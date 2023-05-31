@@ -4,6 +4,7 @@ export * from './components/filter-button/filter-button.def';
 export * from './components/filters/filters.def';
 export * from './components/login/login.def';
 export * from './components/navigate-back/navigate-back.def';
+export * from './components/picking-header/picking-header.def';
 export * from './components/picking-in-progress/picking-in-progress.def';
 export * from './components/picking-list-item/picking-list-item.def';
 export * from './components/picking-lists-header/picking-lists-header.def';

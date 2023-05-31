@@ -10,6 +10,7 @@ import {
   loginPageComponent,
   navigateBackComponent,
   pickingComponent,
+  pickingHeaderComponent,
   pickingInProgressModalComponent,
   pickingListItemComponent,
   pickingListsComponent,
@@ -41,6 +42,7 @@ export const pickingComponents = [
   pickingInProgressModalComponent,
   pickingComponent,
   userProfileComponent,
+  pickingHeaderComponent,
 ];
 
 export interface PickingFeatureConfig extends PickingConfig {
