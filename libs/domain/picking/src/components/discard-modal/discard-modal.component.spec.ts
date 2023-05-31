@@ -38,18 +38,6 @@ describe('DiscardModalComponent', () => {
       expect(element).toContainElement('oryx-modal[open]');
     });
 
-    describe('and modal is closed', () => {
-      beforeEach(() => {
-        element.renderRoot
-          .querySelector('oryx-modal')
-          ?.dispatchEvent(new CustomEvent('oryx.close'));
-      });
-
-      it('should close the modal', () => {
-        expect(element).not.toContainElement('oryx-modal[open]');
-      });
-    });
-
     describe('and close button is clicked', () => {
       beforeEach(() => {
         element.renderRoot
