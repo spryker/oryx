@@ -1,1 +1,2 @@
-export * from './src';
+export * from './pagination.component';
+export * from './pagination.model';

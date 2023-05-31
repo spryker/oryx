@@ -2,7 +2,7 @@ import { wait } from '@spryker-oryx/utilities';
 import { expect } from '@storybook/jest';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
+import { storybookPrefix } from '../../../../.constants';
 import { PaginationComponent } from '../../pagination.component';
 import { PaginationProperties } from '../../pagination.model';
 
