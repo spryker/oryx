@@ -56,7 +56,7 @@ const Template: Story<unknown> = (): TemplateResult => {
       variants,
       ({ options: { className, disabled } }) => {
         return html`
-          <oryx-pagination max="3">
+          <oryx-pagination max="3" enableNavigation>
             <a>1</a>
             <a>2</a>
             <a class=${className} ?disabled=${disabled}>3</a>

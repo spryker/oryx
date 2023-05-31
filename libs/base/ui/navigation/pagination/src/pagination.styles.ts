@@ -93,7 +93,7 @@ export const paginationStyles = css`
     display: flex;
   }
 
-  :host([hideNavigation]) span[truncated]:first-of-type {
+  :host(:not([enableNavigation])) span[truncated]:first-of-type {
     inset-inline-start: calc(${navSize} + ${indentSize} + 2px);
   }
 
@@ -101,7 +101,7 @@ export const paginationStyles = css`
     inset-inline-start: calc((${navSize} + ${indentSize} + 2px) * 2);
   }
 
-  :host([hideNavigation]) span[truncated]:last-of-type {
+  :host(:not([enableNavigation])) span[truncated]:last-of-type {
     inset-inline-end: calc(${navSize} + ${indentSize} + 2px);
   }
 

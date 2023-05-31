@@ -14,6 +14,7 @@ const Template: Story<unknown> = (): TemplateResult => {
           <oryx-pagination
             current=${i + 1}
             max="5"
+            enableNavigation
             @click=${(e: PointerEvent): void => e.preventDefault()}
           >
             ${Array.from(new Array(10).keys()).map((key) => {

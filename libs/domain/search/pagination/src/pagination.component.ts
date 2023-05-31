@@ -1,62 +1,59 @@
 import { resolve } from '@spryker-oryx/di';
 import {
-  ComponentMixin,
   ContentController,
+  ContentMixin,
   defaultOptions,
 } from '@spryker-oryx/experience';
 import {
   ProductListPageService,
   ProductListQualifier,
 } from '@spryker-oryx/product';
-import { asyncValue, hydratable } from '@spryker-oryx/utilities';
-import { html } from 'lit';
+import { hydratable, signal } from '@spryker-oryx/utilities';
+import { html, LitElement } from 'lit';
 import { TemplateResult } from 'lit/development';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { combineLatest } from 'rxjs';
+import urlJoin from 'url-join';
 import { PaginationOptions } from './pagination.model';
 
-@hydratable('window:load')
 @defaultOptions({ max: 3, enableControls: true })
-export class PaginationComponent extends ComponentMixin<
+@hydratable('window:load')
+export class PaginationComponent extends ContentMixin<
   PaginationOptions & ProductListQualifier
->() {
+>(LitElement) {
   protected options$ = new ContentController(this).getOptions();
 
   protected productListPageService = resolve(ProductListPageService);
 
-  protected data$ = combineLatest([
-    this.options$,
-    this.productListPageService.getPagination(),
-  ]);
+  protected $pagination = signal(
+    resolve(ProductListPageService).getPagination()
+  );
 
   protected override render(): TemplateResult {
-    return html` ${asyncValue(
-      this.data$,
-      ([options, pagination]) =>
-        html`
-          <oryx-pagination
-            max=${ifDefined(options.max)}
-            current=${ifDefined(pagination?.currentPage)}
-            ?hideNavigation=${!options.enableControls}
-          >
-            ${[...Array(pagination?.maxPage || 1).keys()].map((i) =>
-              this.renderAnchor(i + 1)
-            )}
-          </oryx-pagination>
-        `
-    )}`;
-  }
+    const { max, enableControls } = this.$options();
+    const { currentPage, maxPage } = this.$pagination() ?? {};
 
-  protected renderAnchor(page: number): TemplateResult {
-    return html` <a href=${this.generateLink(page)}>${page}</a>`;
+    return html`
+      <oryx-pagination
+        max=${ifDefined(max)}
+        current=${ifDefined(currentPage)}
+        ?enableNavigation=${enableControls}
+      >
+        ${[...Array(maxPage || 1).keys()].map(
+          (i) => html`<a href=${this.generateLink(i + 1)}>${i + 1}</a>`
+        )}
+      </oryx-pagination>
+    `;
   }
 
   protected generateLink(page: number): string {
     const urlParams = new URLSearchParams(globalThis.location.search);
     urlParams.set('page', page.toString());
+    const stringifiedParams = urlParams.toString();
 
-    return `${globalThis.location.origin}${globalThis.location.pathname}${
-      urlParams.toString() ? `?${urlParams.toString()}` : ''
-    }`;
+    return urlJoin(
+      globalThis.location.origin,
+      globalThis.location.pathname,
+      stringifiedParams ? `?${stringifiedParams}` : ''
+    );
   }
 }

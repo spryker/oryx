@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { PaginationOptions } from '@spryker-oryx/search/pagination';
-import { Meta, Story } from '@storybook/web-components';
+import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
@@ -12,7 +12,7 @@ export default {
     max: 3,
     enableControls: true,
   },
-} as unknown as Meta;
+};
 
 const Template: Story<PaginationOptions> = (
   options: PaginationOptions

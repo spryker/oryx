@@ -6,7 +6,7 @@ import { PaginationProperties } from '../pagination.model';
 export default {
   title: `${storybookPrefix}/Navigations/Pagination`,
   args: {
-    hideNavigation: false,
+    enableNavigation: true,
     current: 1,
     max: 5,
     size: 10,
@@ -23,7 +23,7 @@ interface Props extends PaginationProperties {
 }
 
 const Template: Story<Props> = ({
-  hideNavigation,
+  enableNavigation,
   current,
   max,
   size,
@@ -34,14 +34,14 @@ const Template: Story<Props> = ({
   }
   return html`
     <oryx-pagination
-      ?hideNavigation=${hideNavigation}
+      ?enableNavigation=${enableNavigation}
       current=${current}
       max=${max}
     >
       ${Array.from(new Array(size).keys()).map((key) => {
         return html`<a
           href="/?path=/story/ui-navigations-pagination--pagination-demo&args=current:${key +
-          1};hideNavigation:${hideNavigation};max:${max};size:${size}"
+          1};enableNavigation:${enableNavigation};max:${max};size:${size}"
           >${key + 1}</a
         >`;
       })}

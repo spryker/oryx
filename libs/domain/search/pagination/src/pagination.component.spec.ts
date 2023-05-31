@@ -80,22 +80,14 @@ describe('PaginationComponent', () => {
   });
 
   it('should set current page', () => {
-    const current = element.renderRoot
-      .querySelector('oryx-pagination')
-      ?.getAttribute('current');
-
-    expect(Number(current)).toBe(mockPagination.currentPage);
+    expect(element).toContainElement(
+      `oryx-pagination[current="${mockPagination.currentPage}"]`
+    );
   });
 
   it('should pass the specified options to oryx-pagination component', () => {
-    const max = element.renderRoot
-      .querySelector('oryx-pagination')
-      ?.getAttribute('max');
-    const isHideNavigationAttribute = element.renderRoot
-      .querySelector('oryx-pagination')
-      ?.hasAttribute('hideNavigation');
-
-    expect(Number(max)).toBe(options.max);
-    expect(isHideNavigationAttribute).toBe(true);
+    expect(element).toContainElement(
+      `oryx-pagination[max="${options.max}"]:not([enableNavigation])`
+    );
   });
 });

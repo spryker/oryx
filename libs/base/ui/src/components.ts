@@ -19,7 +19,7 @@ export * from '../navigation/navigation-item/src/component';
 export * from '../navigation/navigation/src/component';
 export * from '../navigation/page-navigation-item/src/component';
 export * from '../navigation/page-navigation/src/component';
-export * from '../navigation/pagination/src/component';
+export * from '../navigation/pagination/src/pagination.def';
 export * from '../navigation/tab/src/tab.def';
 export * from '../navigation/tabs/src/tabs.def';
 export * from '../overlays/drawer/src/component';

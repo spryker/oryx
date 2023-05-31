@@ -1,8 +1,7 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { getShadowElementBySelector } from '@spryker-oryx/testing';
-import { paginationComponent } from './component';
 import { PaginationComponent } from './pagination.component';
+import { paginationComponent } from './pagination.def';
 
 describe('PaginationComponent', () => {
   let element: PaginationComponent;
@@ -27,30 +26,6 @@ describe('PaginationComponent', () => {
       const activeLink = element.querySelector('a[active]');
       expect(activeLink).not.toBeNull();
       expect(activeLink?.textContent).toContain(element.current);
-    });
-  });
-
-  describe('pagination navigation arrows', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-pagination>
-          <a href="/"></a>
-          <a href="/"></a>
-        </oryx-pagination>`
-      );
-    });
-
-    it('should contain disabled prev arrow for initial state', () => {
-      const prevArrow = getShadowElementBySelector(element, 'a:first-child');
-      expect(prevArrow).not.toBeNull();
-      expect(prevArrow?.getAttribute('disabled')).not.toBeNull();
-    });
-
-    it('should contain not disabled next arrow for inital state', () => {
-      const links = element.shadowRoot?.querySelectorAll('a');
-      const nextPage = links?.[links.length - 1];
-      expect(nextPage).not.toBeNull();
-      expect(nextPage?.getAttribute('disabled')).toBeNull();
     });
   });
 
@@ -155,6 +130,37 @@ describe('PaginationComponent', () => {
 
       it('should show the pagination component', () => {
         expect(element.isEmpty).toBe(false);
+      });
+    });
+  });
+
+  describe('when navigation is enabled', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-pagination enableNavigation></oryx-pagination>`
+      );
+    });
+
+    it('should render navigation buttons', () => {
+      expect(element).toContainElement('slot[name="previous"]');
+      expect(element).toContainElement('slot[name="next"]');
+    });
+
+    [null, { ctrlKey: true }, { metaKey: true }].forEach((modifier) => {
+      describe(`and nav buttons are clicked${
+        modifier ? `with modifier ${JSON.stringify(modifier)}` : ''
+      }`, () => {
+        it(`should ${modifier ? 'not ' : ''}prevent events behavior`, () => {
+          element.renderRoot
+            .querySelectorAll('slot[name="next"],slot[name="previous"]')
+            .forEach((el) => {
+              const event = new MouseEvent('click', modifier || {});
+              const spy = vi.spyOn(event, 'preventDefault');
+              el.dispatchEvent(event);
+
+              expect(spy).not.toHaveBeenCalled();
+            });
+        });
       });
     });
   });
