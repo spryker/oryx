@@ -1,9 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
-import { ButtonType } from '@spryker-oryx/ui/button';
-import { IconTypes } from '@spryker-oryx/ui/icon';
-import { asyncState, i18n, Size, valueType } from '@spryker-oryx/utilities';
+import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
@@ -49,10 +48,15 @@ export class PickingListsComponent extends LitElement {
   protected pickingLists = valueType(this.pickingLists$);
 
   protected override render(): TemplateResult {
-    return html` ${this.renderPickingLists()} ${this.renderCustomerNote()}
+    return html` ${this.renderPickingLists()}
       <oryx-picking-in-progress-modal
         ${ref(this.pickingInProgressModal)}
-      ></oryx-picking-in-progress-modal>`;
+      ></oryx-picking-in-progress-modal>
+
+      <oryx-customer-note-modal
+        .note=${ifDefined(this.customerNote)}
+        @oryx.close=${this.closeCustomerNoteModal}
+      ></oryx-customer-note-modal>`;
   }
 
   protected renderPickingLists(): TemplateResult {
@@ -97,28 +101,6 @@ export class PickingListsComponent extends LitElement {
           )}
         `
       )}
-    `;
-  }
-
-  protected renderCustomerNote(): TemplateResult {
-    return html`
-      <oryx-modal
-        ?open=${this.customerNote}
-        enableFooter
-        footerButtonFullWidth
-        @oryx.close=${this.closeCustomerNoteModal}
-      >
-        <oryx-heading slot="heading">
-          <h2>${i18n('picking-lists.customer-note.customer-note')}</h2>
-        </oryx-heading>
-        ${this.customerNote}
-        <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
-          <button @click=${this.closeCustomerNoteModal}>
-            <oryx-icon .type=${IconTypes.Mark}></oryx-icon>
-            ${i18n('picking-lists.customer-note.got-it')}
-          </button>
-        </oryx-button>
-      </oryx-modal>
     `;
   }
 

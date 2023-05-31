@@ -1,3 +1,4 @@
+export * from './components/customer-note-modal/customer-note-modal.def';
 export * from './components/customer-note/customer-note.def';
 export * from './components/filter-button/filter-button.def';
 export * from './components/filters/filters.def';

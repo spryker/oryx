@@ -50,7 +50,7 @@ describe('PickingListsComponent', () => {
 
   describe('when picking lists is not empty', () => {
     const getCustomerNoteModal = (): ModalComponent | null =>
-      element.renderRoot.querySelector('oryx-modal');
+      element.renderRoot.querySelector('oryx-customer-note-modal');
 
     const getPickingInProgressModal = (): ModalComponent | null =>
       element.renderRoot.querySelector('oryx-picking-in-progress-modal');
@@ -69,44 +69,6 @@ describe('PickingListsComponent', () => {
       expect(
         element.renderRoot.querySelector('.filters span')?.textContent
       ).toContain(mockPickingListData.length);
-    });
-
-    it('should open customer note modal', () => {
-      const customerNoteText = 'Customer note';
-      const pickingListCard = element.renderRoot.querySelector(
-        'oryx-picking-list-item'
-      );
-
-      element.addEventListener('oryx.show-note', () => {
-        const customerNoteModal = getCustomerNoteModal();
-        expect(customerNoteModal?.hasAttribute('open')).toBe(true);
-        expect(customerNoteModal?.textContent).contains(customerNoteText);
-      });
-
-      pickingListCard?.dispatchEvent(
-        new CustomEvent('oryx.show-note', {
-          detail: { note: customerNoteText },
-        })
-      );
-    });
-
-    it('should open customer note modal', () => {
-      const customerNoteText = 'Customer note';
-      const pickingListCard = element.renderRoot.querySelector(
-        'oryx-picking-list-item'
-      );
-
-      element.addEventListener('oryx.show-note', () => {
-        const customerNoteModal = getCustomerNoteModal();
-        expect(customerNoteModal?.hasAttribute('open')).toBe(true);
-        expect(customerNoteModal?.textContent).contains(customerNoteText);
-      });
-
-      pickingListCard?.dispatchEvent(
-        new CustomEvent('oryx.show-note', {
-          detail: { note: customerNoteText },
-        })
-      );
     });
 
     it('should open picking in progress modal', () => {
@@ -139,50 +101,20 @@ describe('PickingListsComponent', () => {
         );
       });
 
-      it('should close modal when it emits oryx.close event', () => {
+      it('should show customer note modal', () => {
         element.addEventListener('oryx.show-note', () => {
-          const customerNoteModal = getCustomerNoteModal();
-
-          customerNoteModal?.dispatchEvent(new CustomEvent('oryx.close'));
-          expect(customerNoteModal?.hasAttribute('open')).toBe(false);
-          expect(customerNoteModal?.textContent).contains('');
+          expect(getCustomerNoteModal()?.getAttribute('note')).toBe(
+            customerNoteText
+          );
         });
       });
 
-      it('should close modal when close button is clicked', async () => {
-        const customerNoteModal = getCustomerNoteModal();
-
-        const closeButton: HTMLButtonElement | null =
-          element.renderRoot.querySelector('oryx-modal button');
-        closeButton?.click();
-
-        await element.updateComplete;
-
-        expect(customerNoteModal?.hasAttribute('open')).toBe(false);
+      it('should close modal when it emits oryx.close event', () => {
+        element.addEventListener('oryx.show-note', () => {
+          getCustomerNoteModal()?.dispatchEvent(new CustomEvent('oryx.close'));
+          expect(getCustomerNoteModal()?.getAttribute('note')).toBe(false);
+        });
       });
-    });
-
-    it('should open and close customer note modal', async () => {
-      const customerNoteText = 'Customer note';
-      const pickingListCard = element.renderRoot.querySelector(
-        'oryx-picking-list-item'
-      );
-
-      element.addEventListener('oryx.show-note', () => {
-        const customerNoteModal =
-          element.renderRoot.querySelector('oryx-modal');
-        expect(customerNoteModal?.hasAttribute('open')).toBe(true);
-        expect(customerNoteModal?.textContent).contains(customerNoteText);
-
-        customerNoteModal?.dispatchEvent(new CustomEvent('oryx.close'));
-        expect(customerNoteModal?.hasAttribute('open')).toBe(false);
-      });
-
-      pickingListCard?.dispatchEvent(
-        new CustomEvent('oryx.show-note', {
-          detail: { note: customerNoteText },
-        })
-      );
     });
 
     it('should open and close picking in progress modal', async () => {
