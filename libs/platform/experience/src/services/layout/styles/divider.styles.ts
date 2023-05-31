@@ -13,7 +13,7 @@ export const styles: LayoutStyles = {
       content: '';
       position: absolute;
       inset: 0;
-      background-color: var(--oryx-color-divider, var(--oryx-color-canvas-500));
+      background-color: var(--oryx-color-divider, var(--oryx-color-neutral-6));
     }
 
     :host(:not([vertical]):not([class*='vertical']))

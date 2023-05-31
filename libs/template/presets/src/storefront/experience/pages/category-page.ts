@@ -1,6 +1,6 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 
-export const CategoryPage: StaticComponent = {
+export const categoryPage: StaticComponent = {
   type: 'Page',
   meta: {
     title: 'Category Page',
@@ -25,7 +25,16 @@ export const CategoryPage: StaticComponent = {
       type: 'oryx-search-facet-navigation',
       options: {
         data: {
-          rules: [{ sticky: true, top: '108' }],
+          rules: [
+            {
+              layout: 'grid',
+              vertical: true,
+              gap: '1px',
+              divider: true,
+              sticky: true,
+              top: '108px',
+            },
+          ],
         },
       },
     },

@@ -1,10 +1,10 @@
 import { LitRouter } from '@spryker-oryx/router/lit';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { styles } from './root-app.styles';
+import { styles } from './oryx-app.styles';
 
 @hydratable()
-export class RootAppComponent extends LitElement {
+export class OryxAppComponent extends LitElement {
   static styles = styles;
 
   protected router = new LitRouter(this, []);

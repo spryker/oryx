@@ -14,7 +14,7 @@ import { SiteNotificationCenterOptions } from './notification-center.model';
 @defaultOptions({
   position: NotificationPosition.BottomStart,
   enableStacking: true,
-  defaultAutoCloseTime: 8,
+  autoCloseTime: 8,
 })
 @hydratable('window:oryx-notify')
 export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificationCenterOptions>(

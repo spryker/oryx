@@ -1,8 +1,14 @@
 import { getAppIcons } from '@spryker-oryx/ui';
+import {
+  primaryColorBase,
+  primaryColorDark,
+  primaryColorDarker,
+  primaryColorLight,
+  primaryColorLighter,
+} from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-
 export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
@@ -22,47 +28,35 @@ const Template: Story<unknown> = (): TemplateResult => {
     <div class="icon-set">
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-100);"
+        style="color: ${primaryColorLighter};"
       ></oryx-icon>
-      <oryx-icon
-        type=${icon}
-        style="color: var(--oryx-color-primary-200);"
-      ></oryx-icon>
-      <oryx-icon
-        type=${icon}
-        style="color: var(--oryx-color-primary-300);"
-      ></oryx-icon>
-      <oryx-icon
-        type=${icon}
-        style="color: var(--oryx-color-primary-400);"
-      ></oryx-icon>
-      <oryx-icon
-        type=${icon}
-        style="color: var(--oryx-color-primary-500);"
-      ></oryx-icon>
+      <oryx-icon type=${icon} style="color: ${primaryColorLight};"></oryx-icon>
+      <oryx-icon type=${icon} style="color: ${primaryColorBase};"></oryx-icon>
+      <oryx-icon type=${icon} style="color: ${primaryColorDark};"></oryx-icon>
+      <oryx-icon type=${icon} style="color: ${primaryColorDarker};"></oryx-icon>
     </div>
 
     <h1>Background color</h1>
     <div class="icon-set">
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-100);background-color: var(--oryx-color-primary-500);"
+        style="color: ${primaryColorLighter};background-color: ${primaryColorDarker};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-200);background-color: var(--oryx-color-primary-400);"
+        style="color: ${primaryColorLight};background-color: ${primaryColorDark};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-300);background-color: var(--oryx-color-primary-200);"
+        style="color: ${primaryColorBase};background-color: ${primaryColorLight};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-400);background-color: var(--oryx-color-primary-200);"
+        style="color: ${primaryColorDark};background-color: ${primaryColorLight};"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-500);background-color: var(--oryx-color-primary-100);"
+        style="color: ${primaryColorDarker};background-color: ${primaryColorLighter};"
       ></oryx-icon>
     </div>
 

@@ -6,7 +6,6 @@ import { cartFeature } from '@spryker-oryx/cart';
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { Resources } from '@spryker-oryx/experience';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
-import { labsI18nFeature } from '@spryker-oryx/labs';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
 import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web';
 import {
@@ -27,7 +26,6 @@ export function fulfillmentFeatures(
     uiFeature,
     cartFeature,
     coreFeature,
-    labsI18nFeature,
     new RouterFeature(),
     new I18nFeature(config?.i18n),
     new WebPushNotificationFeature(),

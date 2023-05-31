@@ -7,7 +7,7 @@ export const navigationStyles = css`
     flex-direction: column;
     height: 100%;
     width: 250px;
-    background-color: var(--oryx-color-canvas-100);
+    background-color: var(--oryx-color-neutral-1);
     box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
     transition: all var(--oryx-transition-time);
   }
@@ -24,7 +24,7 @@ export const navigationStyles = css`
 
   oryx-image[resource='logo'] {
     display: block;
-    fill: var(--oryx-color-ink);
+    fill: var(--oryx-color-neutral-12);
     margin: 15px;
     width: 120px;
     transition: inherit;
@@ -54,8 +54,8 @@ export const navigationStyles = css`
   }
 
   oryx-icon-button button {
-    background-color: var(--oryx-color-canvas-100);
-    border-color: var(--oryx-color-neutral-200);
+    background-color: var(--oryx-color-neutral-1);
+    border-color: var(--oryx-color-neutral-8);
   }
 
   :host([collapsed]) oryx-icon-button oryx-icon {

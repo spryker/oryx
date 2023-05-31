@@ -1,6 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { LayoutBuilder, LayoutService } from '@spryker-oryx/experience';
 import { Facet } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import {
@@ -149,6 +150,14 @@ class MockRouterService implements Partial<RouterService> {
   getPathId = vi.fn().mockReturnValue('');
 }
 
+class MockLayoutService implements Partial<LayoutService> {
+  getStyles = vi.fn().mockReturnValue(of(null));
+}
+
+class MockLayoutBuilder implements Partial<LayoutBuilder> {
+  createStylesFromOptions = vi.fn();
+}
+
 describe('SearchFacetNavigationComponent', () => {
   let element: SearchFacetNavigationComponent;
 
@@ -193,6 +202,14 @@ describe('SearchFacetNavigationComponent', () => {
               },
             },
           },
+        },
+        {
+          provide: LayoutService,
+          useClass: MockLayoutService,
+        },
+        {
+          provide: LayoutBuilder,
+          useClass: MockLayoutBuilder,
         },
       ],
     });

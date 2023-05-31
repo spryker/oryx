@@ -75,10 +75,10 @@ The following example shows the usage of design tokens in CSS. The primary color
 
 ```css
 button {
-  background-color: var(--oryx-color-primary-300);
+  background-color: var(--oryx-color-primary-9);
 }
 button:hover {
-  background-color: var(--oryx-color-primary-400);
+  background-color: var(--oryx-color-primary-10);
 }
 ```
 

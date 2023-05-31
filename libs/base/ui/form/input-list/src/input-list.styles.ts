@@ -15,7 +15,6 @@ export const styles = css`
 
     display: none;
     margin-block-end: 8px;
-    color: var(--oryx-color-ink);
     text-transform: uppercase;
   }
 
@@ -45,6 +44,10 @@ export const screenStyles = screenCss({
       ${headingUtil(HeadingTag.Subtitle)}
 
       margin-block-end: 20px;
+    }
+
+    .content {
+      gap: 20px;
     }
   `,
 });

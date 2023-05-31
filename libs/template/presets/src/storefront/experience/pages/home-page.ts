@@ -7,7 +7,7 @@ const brand = (name: string, rules?: any) => ({
   options: { data: { link: `/search?q=${name}`, rules } },
 });
 
-export const HomePage: StaticComponent = {
+export const homePage: StaticComponent = {
   type: 'Page',
   meta: {
     title: 'Home Page',
@@ -30,7 +30,10 @@ export const HomePage: StaticComponent = {
       type: 'oryx-product-list',
       options: {
         data: {
-          rules: [{ layout: 'carousel', padding: '30px 0 0' }],
+          rules: [
+            { layout: 'carousel', padding: '30px 0 0' },
+            { query: { breakpoint: 'sm' }, padding: '20px' },
+          ],
           category: '10',
           sort: 'rating',
         },
@@ -44,15 +47,19 @@ export const HomePage: StaticComponent = {
           rules: [
             {
               layout: 'grid',
-              bleed: true,
-              padding: '60px',
+              padding: '60px 0',
               gap: '30px 0px',
-              columnCount: 5,
-              justify: 'center',
-              fill: 'var(--oryx-color-neutral-200)',
+              columnCount: 6,
+              fill: 'var(--oryx-color-neutral-8)',
             },
             { query: { breakpoint: 'md' }, columnCount: 4 },
-            { query: { childs: true }, height: '50px', padding: '0px 40px' },
+            { query: { breakpoint: 'sm' }, columnCount: 3 },
+            {
+              query: { childs: true },
+              height: '50px',
+              padding: '0px 40px',
+              justify: 'center',
+            },
             { query: { childs: true, hover: true }, fill: 'initial' },
           ],
         },
