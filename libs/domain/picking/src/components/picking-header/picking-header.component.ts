@@ -1,10 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
-import { tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { styles } from './picking-header.styles';
 
@@ -13,18 +10,8 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
 
   protected routerService = resolve(RouterService);
 
-  @state()
-  protected cartNote?: string;
-
-  @subscribe()
-  protected subscription$ = this.pickingList$.pipe(
-    tap((list) => {
-      this.cartNote = list.cartNote;
-    })
-  );
-
   protected renderCartNoteButton(): TemplateResult {
-    return html`${this.cartNote
+    return html`${this.pickingList.cartNote
       ? html` <oryx-icon-button
           ><button aria-label="Show customer note">
             <oryx-icon type="info"></oryx-icon></button

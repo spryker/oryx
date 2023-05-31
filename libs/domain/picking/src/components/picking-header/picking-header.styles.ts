@@ -11,10 +11,12 @@ export const styles = css`
     height: 66px;
     gap: 12px;
     padding: 0 24px;
-
-    --oryx-button-color: var(--oryx-color-primary-9);
-
     color: var(--oryx-color-neutral-11);
+  }
+
+  button:not(.back),
+  oryx-site-navigation-item {
+    --oryx-icon-color: var(--oryx-color-primary-9);
   }
 
   .title {
