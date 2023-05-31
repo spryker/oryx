@@ -1,4 +1,5 @@
 export * from './components/customer-note/customer-note.def';
+export * from './components/discard-modal/discard-modal.def';
 export * from './components/filter-button/filter-button.def';
 export * from './components/filters/filters.def';
 export * from './components/login/login.def';
