@@ -1,6 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { PickingListMixin } from '../../mixins';
 import { styles } from './picking-header.styles';
@@ -13,8 +14,8 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   protected renderCartNoteButton(): TemplateResult {
     return html`${this.pickingList?.cartNote
       ? html` <oryx-icon-button
-          ><button aria-label="Show customer note">
-            <oryx-icon type="${IconTypes.Info}"></oryx-icon></button
+          ><button aria-label=${i18n('oryx.picking.customer-note')}>
+            <oryx-icon type=${IconTypes.Info}></oryx-icon></button
         ></oryx-icon-button>`
       : ''}`;
   }
@@ -22,12 +23,12 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   protected override render(): TemplateResult {
     return html` <oryx-icon-button>
         <button
-          aria-label="Back to pick lists"
+          aria-label=${i18n('oryx.picking.back-to-pick-lists')}
           class="back"
           href="#"
           @click=${this.back}
         >
-          <oryx-icon type="${IconTypes.Back}"></oryx-icon>
+          <oryx-icon type=${IconTypes.Back}></oryx-icon>
         </button>
       </oryx-icon-button>
       <div class="title">${this.pickingListId}</div>
