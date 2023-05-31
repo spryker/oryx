@@ -48,7 +48,7 @@ export class AddressEditComponent extends AddressMixin(
     return html`
       <oryx-address-form
         ${ref(this.formRef)}
-        .values=${this.addressValue}
+        .values=${this.$address()}
         enableDefaultShipping
         enableDefaultBilling
         @oryx.submit=${(e: CustomEvent) => this.onSubmit(e)}

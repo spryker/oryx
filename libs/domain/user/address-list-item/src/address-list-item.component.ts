@@ -1,11 +1,10 @@
-import { ContentController, ContentMixin } from '@spryker-oryx/experience';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { AlertType } from '@spryker-oryx/ui';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Address, AddressMixin } from '@spryker-oryx/user';
-import { asyncValue, hydratable, i18n } from '@spryker-oryx/utilities';
+import { hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { combineLatest } from 'rxjs';
 import {
   AddressDefaults,
   AddressListItemAttributes,
@@ -22,54 +21,38 @@ export class AddressListItemComponent
 {
   static styles = styles;
 
-  protected addressData$ = combineLatest([
-    this.address$,
-    new ContentController(this).getOptions(),
-  ]);
+  protected override render(): TemplateResult | void {
+    if (!this.$address()) return;
 
-  protected emitEvent(event: string, address: Address): void {
-    this.dispatchEvent(
-      new CustomEvent(event, {
-        bubbles: true,
-        composed: true,
-        detail: { address },
-      })
-    );
-  }
-
-  protected override render(): TemplateResult {
-    return html`${asyncValue(this.addressData$, ([address, options]) => {
-      if (!address) {
-        return html``;
-      }
-
-      const content = html`
-        <div>
-          <oryx-user-address .addressId=${address.id}></oryx-user-address>
-          ${this.renderActions(address, options)}
-        </div>
-        ${this.renderDefaults(address, options)}
-      `;
-
-      if (options.selectable) {
-        return html` <oryx-radio><slot></slot>${content}</oryx-radio>`;
-      }
-
-      return html`<section>${content}</section>`;
-    })}`;
-  }
-
-  protected renderActions(
-    address: Address,
-    options: AddressListItemOptions
-  ): TemplateResult {
-    if (!options.editable && !options.removable) {
-      return html``;
+    if (this.$options()?.selectable) {
+      return html`<oryx-radio>
+        <slot></slot>${this.renderContent()}
+      </oryx-radio>`;
+    } else {
+      return html`<section>${this.renderContent()}</section>`;
     }
+  }
+
+  protected renderContent(): TemplateResult | void {
+    return html`
+      <div>
+        <oryx-user-address
+          .addressId=${this.$address()?.id}
+        ></oryx-user-address>
+        ${this.renderActions()}
+      </div>
+      ${this.renderDefaults()}
+    `;
+  }
+
+  protected renderActions(): TemplateResult | void {
+    const address = this.$address();
+    const { editable, removable } = this.$options();
+    if (!address || (!editable && !removable)) return;
 
     return html`<div class="controls">
       ${when(
-        options.editable,
+        editable,
         () => html`
           <oryx-icon-button>
             <button
@@ -82,7 +65,7 @@ export class AddressListItemComponent
         `
       )}
       ${when(
-        options.removable,
+        removable,
         () => html`
           <oryx-icon-button>
             <button
@@ -97,13 +80,14 @@ export class AddressListItemComponent
     </div>`;
   }
 
-  protected renderDefaults(
-    address: Address,
-    options: AddressListItemOptions
-  ): TemplateResult {
-    const showAll = options.addressDefaults === AddressDefaults.All;
-    const showBilling = options.addressDefaults === AddressDefaults.Billing;
-    const showShipping = options.addressDefaults === AddressDefaults.Shipping;
+  protected renderDefaults(): TemplateResult | void {
+    const address = this.$address();
+    const { addressDefaults } = this.$options();
+    if (!address) return;
+
+    const showAll = addressDefaults === AddressDefaults.All;
+    const showBilling = addressDefaults === AddressDefaults.Billing;
+    const showShipping = addressDefaults === AddressDefaults.Shipping;
 
     const defaultBilling = address.isDefaultBilling && (showAll || showBilling);
     const defaultShipping =
@@ -126,5 +110,15 @@ export class AddressListItemComponent
         chip(showAll ? 'user.address.default-billing' : 'user.address.default')
       )}
     </div>`;
+  }
+
+  protected emitEvent(event: string, address: Address): void {
+    this.dispatchEvent(
+      new CustomEvent(event, {
+        bubbles: true,
+        composed: true,
+        detail: { address },
+      })
+    );
   }
 }

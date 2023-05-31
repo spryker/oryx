@@ -1,8 +1,7 @@
-import { ContentController, ContentMixin } from '@spryker-oryx/experience';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { Address, AddressMixin } from '@spryker-oryx/user';
-import { asyncValue, hydratable } from '@spryker-oryx/utilities';
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { combineLatest } from 'rxjs';
 import {
   AddressOptions,
   AddressSchema,
@@ -20,29 +19,20 @@ export class AddressComponent extends AddressMixin(
 ) {
   static styles = styles;
 
-  protected addressData$ = combineLatest([
-    this.address$,
-    new ContentController(this).getOptions(),
-  ]);
+  protected override render():
+    | string
+    | TemplateResult
+    | TemplateResult[]
+    | void {
+    const address = this.$address();
+    if (!address) return;
 
-  protected override render(): TemplateResult {
-    return html`${asyncValue(this.addressData$, ([address, options]) => {
-      if (!address) {
-        return html``;
-      }
+    const { multiline, schema } = this.$options();
 
-      if (options.multiline) {
-        return this.renderMultiline(
-          options.schema ?? defaultMultilineSchema,
-          address
-        );
-      }
+    if (multiline)
+      return this.renderMultiline(schema ?? defaultMultilineSchema, address);
 
-      return html`${this.formatLine(
-        options.schema ?? defaultSinglelineSchema,
-        address
-      )}`;
-    })}`;
+    return this.formatLine(schema ?? defaultSinglelineSchema, address);
   }
 
   protected renderMultiline(
@@ -53,6 +43,28 @@ export class AddressComponent extends AddressMixin(
       const formattedLine = this.formatLine(str, address);
       return formattedLine.trim() ? html`<p>${formattedLine}</p>` : html``;
     });
+  }
+
+  protected formatLine(schema: AddressSchema, address: Address): string {
+    const str = Array.isArray(schema) ? schema.join(' ') : schema;
+    const matches = this.findMatches(str);
+
+    if (!matches.length) {
+      return str;
+    }
+
+    return [
+      ...(matches[0].index ? [str.substring(0, matches[0].index)] : []),
+      ...matches.map(
+        (cfg, i) =>
+          `${this.ensureContent(cfg, address)}${str.substring(
+            cfg.endIndex,
+            matches[i + 1]?.index ?? str.length
+          )}`
+      ),
+    ]
+      .join('')
+      .replace(lineBreaksRe, '');
   }
 
   protected findMatches(str: string): Match[] {
@@ -99,27 +111,5 @@ export class AddressComponent extends AddressMixin(
     }
 
     return template ?? value ?? '';
-  }
-
-  protected formatLine(schema: AddressSchema, address: Address): string {
-    const str = Array.isArray(schema) ? schema.join(' ') : schema;
-    const matches = this.findMatches(str);
-
-    if (!matches.length) {
-      return str;
-    }
-
-    return [
-      ...(matches[0].index ? [str.substring(0, matches[0].index)] : []),
-      ...matches.map(
-        (cfg, i) =>
-          `${this.ensureContent(cfg, address)}${str.substring(
-            cfg.endIndex,
-            matches[i + 1]?.index ?? str.length
-          )}`
-      ),
-    ]
-      .join('')
-      .replace(lineBreaksRe, '');
   }
 }
