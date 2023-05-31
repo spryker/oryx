@@ -3,7 +3,7 @@ import { cssColorVar } from '@spryker-oryx/utilities';
 
 export const color: ColorDesignTokens = {
   neutral: colorPalette.grays.sprykerSfGray,
-  primary: colorPalette.colors.sky,
+  primary: colorPalette.colors.spryker,
   secondary: colorPalette.colors.amber,
 
   highlight: colorPalette.colors.red,
