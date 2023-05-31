@@ -14,13 +14,13 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
     return html`${this.pickingList?.cartNote
       ? html` <oryx-icon-button
           ><button aria-label="Show customer note">
-            <oryx-icon type="info"></oryx-icon></button
+            <oryx-icon type="${IconTypes.Info}"></oryx-icon></button
         ></oryx-icon-button>`
       : ''}`;
   }
 
   protected override render(): TemplateResult {
-    return html`<div class="title">
+    return html` <oryx-icon-button>
         <button
           aria-label="Back to pick lists"
           class="back"
@@ -29,8 +29,8 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
         >
           <oryx-icon type="${IconTypes.Back}"></oryx-icon>
         </button>
-        ${this.pickingListId}
-      </div>
+      </oryx-icon-button>
+      <div class="title">${this.pickingListId}</div>
       ${this.renderCartNoteButton()}
       <oryx-site-navigation-item
         uid="user-profile"

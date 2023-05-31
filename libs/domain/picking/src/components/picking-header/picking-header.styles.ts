@@ -20,17 +20,10 @@ export const styles = css`
   }
 
   .title {
-    display: flex;
     flex: 1;
-    gap: 12px;
   }
 
   .back {
-    color: var(--oryx-color-neutral-11);
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-
     --oryx-icon-size: 18px;
   }
 `;
