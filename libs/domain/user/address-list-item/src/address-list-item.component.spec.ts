@@ -11,6 +11,7 @@ import { AddressDefaults } from './address-list-item.model';
 
 class MockAddressService implements Partial<AddressService> {
   getAddress = vi.fn().mockReturnValue(of(mockCurrentAddress));
+  getAddresses = vi.fn();
 }
 
 describe('AddressListItemComponent', () => {

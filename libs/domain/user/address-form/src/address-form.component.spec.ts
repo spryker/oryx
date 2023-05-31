@@ -207,11 +207,11 @@ describe('AddressFormComponent', () => {
       countryService.getAll.mockReturnValue(of([mockCountries[0]]));
       element = await fixture(html`<oryx-address-form></oryx-address-form>`);
     });
+
     it('should not display country select when only one country is available', () => {
       const select = element.shadowRoot?.querySelector(
         'select[name="iso2Code"]'
       );
-
       expect(select).toBeNull();
     });
   });
@@ -245,6 +245,7 @@ describe('AddressFormComponent', () => {
       addressService.getCurrentAddress.mockReturnValue(of({ iso2Code: 'US' }));
       element = await fixture(html`<oryx-address-form></oryx-address-form>`);
     });
+
     it("should select the country from the user's saved address", () => {
       const selected: HTMLOptionElement | null | undefined =
         element.shadowRoot?.querySelector(

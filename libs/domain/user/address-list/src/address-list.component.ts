@@ -6,8 +6,14 @@ import {
   AddressDefaults,
   AddressListItemOptions,
 } from '@spryker-oryx/user/address-list-item';
-import { hydratable, i18n, signal, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import {
+  effect,
+  hydratable,
+  i18n,
+  signal,
+  Size,
+} from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
@@ -26,19 +32,17 @@ export class AddressListComponent extends AddressMixin(
   @state()
   protected selectedAddressId?: string;
 
-  protected willUpdate(changedProperties: PropertyValues): void {
+  protected autoSelectAddress = effect(() => {
     const addresses = this.addresses();
     if (
-      this.componentOptions?.selectable &&
+      this.$options().selectable &&
       !addresses?.find((address) => address.id === this.selectedAddressId)
     ) {
       this.selectedAddressId =
         addresses?.find((a) => this.isDefault(a))?.id ?? addresses?.[0].id;
       this.dispatchSelectedAddress(this.selectedAddressId);
     }
-
-    super.willUpdate(changedProperties);
-  }
+  });
 
   protected override render(): TemplateResult | void {
     const addresses = this.addresses();
@@ -57,10 +61,10 @@ export class AddressListComponent extends AddressMixin(
     return html`<oryx-tile ?selected=${this.selectedAddressId === address.id}>
       <oryx-address-list-item
         .addressId=${address.id}
-        .options=${this.componentOptions}
+        .options=${this.$options()}
       >
         ${when(
-          this.componentOptions?.selectable,
+          this.$options()?.selectable,
           () => html`<input
             name="address"
             type="radio"
@@ -113,14 +117,12 @@ export class AddressListComponent extends AddressMixin(
    * and the mode is `All` or `Shipping`.
    */
   protected isDefault(address: Address): boolean {
-    const isDefault =
-      this.componentOptions?.addressDefaults === AddressDefaults.All;
+    const { addressDefaults } = this.$options();
+    const isDefault = addressDefaults === AddressDefaults.All;
     const isDefaultBilling =
-      isDefault ||
-      this.componentOptions?.addressDefaults === AddressDefaults.Billing;
+      isDefault || addressDefaults === AddressDefaults.Billing;
     const isDefaultShipping =
-      isDefault ||
-      this.componentOptions?.addressDefaults === AddressDefaults.Shipping;
+      isDefault || addressDefaults === AddressDefaults.Shipping;
     return (
       !!(isDefaultShipping && address.isDefaultShipping) ||
       !!(isDefaultBilling && address.isDefaultBilling)

@@ -2,10 +2,10 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   FormFieldDefinition,
+  FormFieldType,
   FormMixin,
   FormRenderer,
   formStyles,
-  FormValues,
 } from '@spryker-oryx/form';
 import { CountryService } from '@spryker-oryx/site';
 import {
@@ -14,31 +14,18 @@ import {
   AddressService,
 } from '@spryker-oryx/user';
 import {
-  asyncState,
+  computed,
   hydratable,
   i18n,
-  observe,
-  valueType,
+  signal,
+  signalProperty,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
-import { createRef, Ref, ref } from 'lit/directives/ref.js';
-import { when } from 'lit/directives/when.js';
 import {
-  BehaviorSubject,
-  combineLatest,
-  distinctUntilChanged,
-  map,
-  of,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs';
-import {
+  AddressForm,
   AddressFormAttributes,
   AddressFormOptions,
-  defaultBillingField,
-  defaultShippingField,
 } from './address-form.model';
 import { styles } from './address-form.styles';
 
@@ -50,80 +37,96 @@ export class AddressFormComponent
 {
   static styles = [styles, formStyles];
 
-  protected fieldRenderer = resolve(FormRenderer);
   protected countryService = resolve(CountryService);
-  protected formService = resolve(AddressFormService);
   protected addressService = resolve(AddressService);
-  protected selectRef: Ref<LitElement & HTMLSelectElement> = createRef();
+  protected addressFormService = resolve(AddressFormService);
+  protected fieldRenderer = resolve(FormRenderer);
 
   @property({ type: Boolean }) enableDefaultShipping?: boolean;
   @property({ type: Boolean }) enableDefaultBilling?: boolean;
   @property({ type: Object }) address?: Address;
 
-  @property() country?: string;
+  @signalProperty() country?: string;
+  @signalProperty() fallbackCountry?: string;
 
-  @observe()
-  protected country$ = new BehaviorSubject(this.country);
+  protected countries = signal(this.countryService.getAll());
+  protected currentAddress = signal(this.addressService.getCurrentAddress());
+  protected activeCountry = computed(() => {
+    if (this.country) return this.country;
+    return this.currentAddress()?.iso2Code ?? this.countries()?.[0].iso2Code;
+  });
 
-  @property() fallbackCountry?: string;
+  protected formModel = computed(() => {
+    const country = this.activeCountry();
+    const fallbackCountry =
+      this.fallbackCountry ?? this.$options().fallbackCountry;
 
-  @observe()
-  protected fallbackCountry$ = new BehaviorSubject(this.fallbackCountry);
+    if (!country) return;
 
-  protected activeCountry$ = this.country$.pipe(
-    distinctUntilChanged(),
-    switchMap((country) =>
-      country
-        ? of(country)
-        : this.countryService.getAll().pipe(
-            take(1),
-            switchMap((countries) =>
-              countries.length === 1
-                ? of(countries[0].iso2Code)
-                : this.addressService.getCurrentAddress().pipe(
-                    take(1),
-                    map((address) => {
-                      return address?.iso2Code ?? countries[0].iso2Code;
-                    })
-                  )
-            )
-          )
-    )
-  );
+    return this.addressFormService.getForm({ country, fallbackCountry });
+  });
 
-  @asyncState()
-  protected activeCountry = valueType(this.activeCountry$);
+  @query('form')
+  protected form?: HTMLFormElement;
 
-  @asyncState()
-  protected countries = valueType(this.countryService.getAll());
+  protected override render(): TemplateResult | void {
+    return html`<form @change=${this.onChange}>
+      ${this.renderCountrySelector()}
+      ${this.fieldRenderer.buildForm(this.getFormFields(), this.values)}
+    </form>`;
+  }
 
-  protected form$ = combineLatest([
-    this.activeCountry$,
-    this.options$,
-    this.fallbackCountry$,
-  ]).pipe(
-    switchMap(([country, options, fallbackCountry]) =>
-      country
-        ? this.formService
-            .getForm({
-              country,
-              fallbackCountry: fallbackCountry ?? options.fallbackCountry,
-            })
-            .pipe(
-              tap((form) => {
-                this.selectRef.value?.setCustomValidity(
-                  form ? '' : 'Address form for given country not available.'
-                );
-                this.selectRef.value?.reportValidity();
-              }),
-              map((form) => form?.data?.options)
-            )
-        : of([])
-    )
-  );
+  protected getFormFields(): FormFieldDefinition[] {
+    const form = this.formModel();
 
-  @asyncState()
-  protected form = valueType(this.form$);
+    const formFields = (form as unknown as AddressForm)?.data.options ?? [];
+    if (this.enableDefaultShipping) {
+      formFields.push({
+        id: 'isDefaultShipping',
+        type: FormFieldType.Boolean,
+        label: i18n('form.address.default-delivery-address'),
+        width: 100,
+      });
+    }
+    if (this.enableDefaultBilling) {
+      formFields.push({
+        id: 'isDefaultBilling',
+        type: FormFieldType.Boolean,
+        label: i18n('form.address.default-billing-address'),
+        width: 100,
+      });
+    }
+
+    return formFields;
+  }
+
+  protected renderCountrySelector(): TemplateResult | void {
+    const countries = this.countries();
+    const activeCountry = this.activeCountry();
+    if (!countries?.length || countries?.length < 2) return;
+
+    return html` <oryx-select
+      class="w100"
+      label="Country"
+      @oryx.close=${(e: Event): void => e.stopPropagation()}
+    >
+      <select
+        name="iso2Code"
+        .value=${activeCountry}
+        required
+        @change=${this.onCountryChange}
+      >
+        ${countries.map((country) => {
+          return html`<option
+            value=${country.iso2Code}
+            ?selected=${country.iso2Code === activeCountry}
+          >
+            ${country.name}
+          </option>`;
+        })}
+      </select>
+    </oryx-select>`;
+  }
 
   protected onCountryChange(e: Event): void {
     const select = e.target as HTMLSelectElement;
@@ -131,90 +134,15 @@ export class AddressFormComponent
     this.countryService.set(this.country);
   }
 
-  protected processDefaultField(
-    field: FormFieldDefinition
-  ): FormFieldDefinition {
-    return {
-      ...field,
-      label: i18n(field.label as string) as string,
-    };
-  }
-
-  protected mergeFields(): FormFieldDefinition[] {
-    if (!this.form) {
-      return [];
-    }
-
-    return [
-      ...this.form,
-      ...(this.enableDefaultShipping
-        ? [this.processDefaultField(defaultShippingField)]
-        : []),
-      ...(this.enableDefaultBilling
-        ? [this.processDefaultField(defaultBillingField)]
-        : []),
-    ];
-  }
-
-  protected override render(): TemplateResult {
-    const countries = this.countries;
-
-    if (!countries?.length) {
-      return html``;
-    }
-
-    const activeCountry = this.activeCountry ?? '';
-    const form = this.mergeFields();
-    const selectedCountry = this.formValues?.iso2Code ?? activeCountry;
-
-    return html`<form @change=${this.onChange}>
-      ${when(
-        countries.length > 1,
-        () => html` <oryx-select
-          class="w100"
-          label="Country"
-          @oryx.close=${(e: Event): void => e.stopPropagation()}
-        >
-          <select
-            ${ref(this.selectRef)}
-            name="iso2Code"
-            .value=${selectedCountry}
-            required
-            @change=${this.onCountryChange}
-          >
-            ${countries.map((country) => {
-              return html`<option
-                value=${country.iso2Code}
-                ?selected=${country.iso2Code === selectedCountry}
-              >
-                ${country.name}
-              </option>`;
-            })}
-          </select>
-        </oryx-select>`
-      )}
-      ${this.fieldRenderer.buildForm(form, this.formValues as FormValues)}
-    </form>`;
-  }
-
-  @query('form')
-  protected formX?: HTMLFormElement;
-
-  protected onChange(ev: Event): void {
-    console.log('on change -> store');
-    // collect data and dispatch it
-    this.store();
-  }
-
-  protected store(): void {
-    if (this.formX) {
-      const data = Object.fromEntries(
-        new FormData(this.formX).entries()
-      ) as unknown as Address;
-      const valid = !!this.shadowRoot?.querySelector('form:valid');
+  protected onChange(): void {
+    if (this.form) {
+      const data: Address = Object.fromEntries(
+        new FormData(this.form).entries()
+      );
+      console.log('dispatch selectedAddress', data);
       this.dispatchEvent(
         new CustomEvent('selectedAddress', {
-          detail: { data, valid },
+          detail: { data, valid: this.form.checkValidity() },
           bubbles: true,
           composed: true,
         })
