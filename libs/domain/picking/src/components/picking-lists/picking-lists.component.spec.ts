@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
-import { ModalComponent } from '@spryker-oryx/ui/modal';
+import { CLOSE_EVENT, ModalComponent } from '@spryker-oryx/ui/modal';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -109,9 +109,9 @@ describe('PickingListsComponent', () => {
         });
       });
 
-      it('should close modal when it emits oryx.close event', () => {
+      it(`should close modal when it emits ${CLOSE_EVENT} event`, () => {
         element.addEventListener('oryx.show-note', () => {
-          getCustomerNoteModal()?.dispatchEvent(new CustomEvent('oryx.close'));
+          getCustomerNoteModal()?.dispatchEvent(new CustomEvent(CLOSE_EVENT));
           expect(getCustomerNoteModal()?.getAttribute('note')).toBe(false);
         });
       });

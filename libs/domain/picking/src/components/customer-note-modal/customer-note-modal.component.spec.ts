@@ -61,14 +61,14 @@ describe('CustomerNoteModal', () => {
         element.removeEventListener(CLOSE_EVENT, spy);
       });
 
-      it('should close the modal when on button click', () => {
+      it(`should emit ${CLOSE_EVENT} event when on button click`, () => {
         getModal()
           ?.querySelector<HTMLButtonElement>('oryx-button button')
           ?.click();
         expect(spy).toBeCalled();
       });
 
-      it('should close the modal when on modal close event', () => {
+      it(`should emit ${CLOSE_EVENT} event when modal component emitted ${CLOSE_EVENT} event`, () => {
         getModal()?.dispatchEvent(new CustomEvent(CLOSE_EVENT));
         expect(spy).toBeCalled();
       });
