@@ -4,7 +4,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { discardModalStyles } from './discard-modal.styles';
 
-export class DiscardModalComponent extends LitElement {
+export class DiscardPickingComponent extends LitElement {
   static styles = discardModalStyles;
 
   @property({ type: Boolean }) open?: boolean;
@@ -15,6 +15,7 @@ export class DiscardModalComponent extends LitElement {
         ?open=${this.open}
         enableFooter
         preventCloseByBackdrop
+        preventCloseByEscape
         footerButtonFullWidth
         @oryx.close=${this.close}
       >

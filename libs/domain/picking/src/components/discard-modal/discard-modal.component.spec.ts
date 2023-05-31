@@ -1,18 +1,20 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { html } from 'lit';
-import { DiscardModalComponent } from './discard-modal.component';
+import { DiscardPickingComponent } from './discard-modal.component';
 import { discardModalComponent } from './discard-modal.def';
 
 describe('DiscardModalComponent', () => {
-  let element: DiscardModalComponent;
+  let element: DiscardPickingComponent;
 
   beforeAll(async () => {
     await useComponent(discardModalComponent);
   });
 
   beforeEach(async () => {
-    element = await fixture(html`<oryx-discard-modal></oryx-discard-modal>`);
+    element = await fixture(
+      html`<oryx-discard-picking></oryx-discard-picking>`
+    );
   });
 
   afterEach(() => {
@@ -24,7 +26,7 @@ describe('DiscardModalComponent', () => {
   });
 
   it('should render modal', () => {
-    expect(element.renderRoot.querySelector('oryx-modal')).not.toBeNull();
+    expect(element).toContainElement('oryx-modal');
   });
 
   describe('when modal is opened', () => {
@@ -33,34 +35,30 @@ describe('DiscardModalComponent', () => {
     });
 
     it('modal should have opened attribute', () => {
-      expect(
-        element.renderRoot.querySelector('oryx-modal')?.hasAttribute('open')
-      ).toBe(true);
+      expect(element).toContainElement('oryx-modal[open]');
     });
 
-    describe('and when modal is closed', () => {
+    describe('and modal is closed', () => {
       beforeEach(() => {
-        element.dispatchEvent(new CustomEvent('oryx.close'));
+        element.renderRoot
+          .querySelector('oryx-modal')
+          ?.dispatchEvent(new CustomEvent('oryx.close'));
       });
 
-      it('should close modal when it emits oryx.close event', () => {
-        element.addEventListener('oryx.close', () => {
-          expect(
-            element.renderRoot.querySelector('oryx-modal')?.hasAttribute('open')
-          ).toBe(false);
-        });
+      it('should close the modal', () => {
+        expect(element).not.toContainElement('oryx-modal[open]');
+      });
+    });
+
+    describe('and close button is clicked', () => {
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector('button')
+          ?.dispatchEvent(new MouseEvent('click'));
       });
 
-      it('should close modal when close button is clicked', async () => {
-        const closeButton: HTMLButtonElement | null =
-          element.renderRoot?.querySelector('button') ?? null;
-        closeButton?.click();
-
-        await element.updateComplete;
-
-        expect(
-          element.renderRoot.querySelector('oryx-modal')?.hasAttribute('open')
-        ).toBe(false);
+      it('should close the modal', () => {
+        expect(element).not.toContainElement('oryx-modal[open]');
       });
     });
   });
