@@ -94,6 +94,16 @@ describe('Start picking a picklist with customer note', () => {
         .should('contain.text', 'Already in progress');
     });
 
+    describe('and modal is dismissed', () => {
+      beforeEach(() => {
+        customerNoteFragment.pickingInProgressModal.getOverlay().click();
+      });
+
+      it('should stay on the same page', () => {
+        cy.location('pathname').should('to.match', /^\/customer-note-info/);
+      });
+    });
+
     describe('and picking in progress modal is closed', () => {
       beforeEach(() => {
         customerNoteFragment.pickingInProgressModal.getCloseButton().click();
