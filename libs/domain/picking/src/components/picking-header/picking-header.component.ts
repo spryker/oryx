@@ -11,7 +11,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   protected routerService = resolve(RouterService);
 
   protected renderCartNoteButton(): TemplateResult {
-    return html`${this.pickingList.cartNote
+    return html`${this.pickingList?.cartNote
       ? html` <oryx-icon-button
           ><button aria-label="Show customer note">
             <oryx-icon type="info"></oryx-icon></button
