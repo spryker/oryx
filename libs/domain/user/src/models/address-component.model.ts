@@ -9,5 +9,5 @@ export interface AddressComponentProperties {
   /**
    * Address entity
    */
-  address?: Address;
+  addressData?: Address;
 }

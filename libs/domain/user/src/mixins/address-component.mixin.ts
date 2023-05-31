@@ -1,5 +1,10 @@
 import { resolve, Type } from '@spryker-oryx/di';
-import { computed, Signal, signalProperty } from '@spryker-oryx/utilities';
+import {
+  computed,
+  signal,
+  Signal,
+  signalProperty,
+} from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import type { Address, AddressComponentProperties } from '../models';
 import { AddressService } from '../services';
@@ -9,8 +14,9 @@ export declare class AddressMixinInterface
 {
   protected addressService: AddressService;
   addressId?: string;
-  address?: Address;
-  $address: Signal<Address | null>;
+  addressData?: Address;
+  address: Signal<Address | null>;
+  addresses: Signal<Address[] | null>;
 }
 
 export const AddressMixin = <
@@ -22,15 +28,17 @@ export const AddressMixin = <
     protected addressService = resolve(AddressService);
 
     @signalProperty() addressId?: string;
-    @signalProperty() address?: Address;
+    @signalProperty() addressData?: Address;
 
-    protected $address = computed(() => {
-      if (this.address) return this.address;
+    protected address = computed(() => {
+      if (this.addressData) return this.addressData;
       if (this.addressId) {
         return this.addressService.getAddress(this.addressId);
       }
       return null;
     });
+
+    protected addresses = signal(this.addressService.getAddresses());
   }
 
   return AddressMixinClass as unknown as Type<AddressMixinInterface> & T;

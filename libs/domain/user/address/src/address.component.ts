@@ -24,7 +24,7 @@ export class AddressComponent extends AddressMixin(
     | TemplateResult
     | TemplateResult[]
     | void {
-    const address = this.$address();
+    const address = this.address();
     if (!address) return;
 
     const { multiline, schema } = this.$options();

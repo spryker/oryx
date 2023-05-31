@@ -1,18 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Address, AddressService } from '@spryker-oryx/user';
+import { Address, AddressMixin, AddressService } from '@spryker-oryx/user';
 import {
   AddressDefaults,
   AddressListItemOptions,
 } from '@spryker-oryx/user/address-list-item';
-import {
-  asyncState,
-  hydratable,
-  i18n,
-  Size,
-  valueType,
-} from '@spryker-oryx/utilities';
+import { hydratable, i18n, signal, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -22,25 +16,24 @@ import { styles } from './address-list.styles';
 
 @defaultOptions({ addressDefaults: AddressDefaults.All })
 @hydratable('window:load')
-export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
-  LitElement
+export class AddressListComponent extends AddressMixin(
+  ContentMixin<AddressListItemOptions>(LitElement)
 ) {
   static styles = styles;
 
-  @asyncState()
-  protected addresses = valueType(resolve(AddressService).getAddresses());
+  protected add = signal(resolve(AddressService).getAddresses());
 
   @state()
   protected selectedAddressId?: string;
 
   protected willUpdate(changedProperties: PropertyValues): void {
+    const addresses = this.addresses();
     if (
       this.componentOptions?.selectable &&
-      !this.addresses?.find((address) => address.id === this.selectedAddressId)
+      !addresses?.find((address) => address.id === this.selectedAddressId)
     ) {
       this.selectedAddressId =
-        this.addresses?.find((a) => this.isDefault(a))?.id ??
-        this.addresses?.[0].id;
+        addresses?.find((a) => this.isDefault(a))?.id ?? addresses?.[0].id;
       this.dispatchSelectedAddress(this.selectedAddressId);
     }
 
@@ -48,13 +41,12 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
   }
 
   protected override render(): TemplateResult | void {
-    if (!this.addresses?.length) {
-      return this.renderEmpty();
-    }
+    const addresses = this.addresses();
+    if (!addresses?.length) return this.renderEmpty();
 
     return html`
       ${repeat(
-        this.addresses,
+        addresses,
         (address) => this.createKey(address.id),
         (address) => this.renderAddress(address)
       )}
@@ -94,7 +86,9 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
   }
 
   protected dispatchSelectedAddress(addressId?: string): void {
-    const address = this.addresses?.find((address) => address.id === addressId);
+    const address = this.addresses()?.find(
+      (address) => address.id === addressId
+    );
     if (address) {
       this.selectedAddressId = address.id;
       this.dispatchEvent(
@@ -134,7 +128,7 @@ export class AddressListComponent extends ContentMixin<AddressListItemOptions>(
   }
 
   protected createKey(addressId?: string): string {
-    return `${addressId}-${this.addresses?.findIndex(
+    return `${addressId}-${this.addresses()?.findIndex(
       (a) => a.id === addressId
     )}-${this.addresses?.length}`;
   }
