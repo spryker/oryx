@@ -61,7 +61,7 @@ describe('PickingHeaderComponent', () => {
 
   const getCustomerNote = () => {
     return element.renderRoot.querySelector(
-      'oryx-icon-button button[aria-label="Show customer note"]'
+      'oryx-icon-button button[aria-label="Customer note"]'
     );
   };
 
