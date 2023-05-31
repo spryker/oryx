@@ -31,10 +31,8 @@ export const homePage: StaticComponent = {
       options: {
         data: {
           rules: [
-            {
-              layout: 'carousel',
-              padding: '30px 0 0',
-            },
+            { layout: 'carousel', padding: '30px 0 0' },
+            { query: { breakpoint: 'sm' }, padding: '20px' },
           ],
           category: '10',
           sort: 'rating',
@@ -55,6 +53,7 @@ export const homePage: StaticComponent = {
               fill: 'var(--oryx-color-neutral-8)',
             },
             { query: { breakpoint: 'md' }, columnCount: 4 },
+            { query: { breakpoint: 'sm' }, columnCount: 3 },
             {
               query: { childs: true },
               height: '50px',
