@@ -109,7 +109,7 @@ describe('PickingHeaderComponent', () => {
     });
 
     it('should provide the note text to customer-note-modal component', () => {
-      expect(getCustomerNoteModal()?.open).toBe(true);
+      expect(getCustomerNoteModal()?.hasAttribute('open')).toBe(true);
       expect(getCustomerNoteModal()?.textContent?.trim()).toBe(
         mockPickingListData[0].cartNote
       );

@@ -109,7 +109,7 @@ describe('PickingListsComponent', () => {
       it(`should close modal when it emits ${CLOSE_EVENT} event`, () => {
         element.addEventListener('oryx.show-note', () => {
           getCustomerNoteModal()?.dispatchEvent(new CustomEvent(CLOSE_EVENT));
-          expect(getCustomerNoteModal()?.open).toBe(false);
+          expect(getCustomerNoteModal()?.hasAttribute('open')).toBe(false);
         });
       });
     });
@@ -121,10 +121,10 @@ describe('PickingListsComponent', () => {
 
       element.addEventListener('oryx.show-picking-in-progress', () => {
         const pickingInProgressModal = getPickingInProgressModal();
-        expect(pickingInProgressModal?.open).toBe(true);
+        expect(pickingInProgressModal?.hasAttribute('open')).toBe(true);
 
         pickingInProgressModal?.dispatchEvent(new CustomEvent('oryx.close'));
-        expect(pickingInProgressModal?.open).toBe(false);
+        expect(pickingInProgressModal?.hasAttribute('open')).toBe(false);
       });
 
       pickingListCard?.dispatchEvent(
