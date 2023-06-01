@@ -74,16 +74,11 @@ export class TextComponent extends LitElement implements TextProperties {
   }
 
   protected setup(): void {
-    if (!this.truncateAfter && this.resizeObserver) {
+    this.normalizeText();
+
+    if (this.resizeObserver) {
       return;
     }
-
-    const linesCount = this.calcLinesCount(
-      this.container.children[0] as HTMLElement
-    );
-
-    this.truncation = !!this.truncateAfter && this.truncateAfter < linesCount;
-    this.truncated = this.truncation && !this.defaultExpanded;
 
     this.resizeObserver = new ResizeObserver(
       throttle(
@@ -104,7 +99,7 @@ export class TextComponent extends LitElement implements TextProperties {
 
     //make the text truncated when content changes or its size
     if (forcedTruncation || (this.truncation && !prevTruncationState)) {
-      this.truncated = true;
+      this.truncated = this.truncation && !this.defaultExpanded;
     }
 
     this.style.setProperty('--lines-count', String(linesCount));
@@ -122,6 +117,7 @@ export class TextComponent extends LitElement implements TextProperties {
     element.style.lineHeight = `${factor}px`;
     const height = element.scrollHeight;
     element.style.lineHeight = lineHeight;
+
     return Math.floor(height / factor);
   }
 }

@@ -1,6 +1,11 @@
 // organize-imports-ignore
 import './ponyfill';
-import { nextFrame, fixture, html } from '@open-wc/testing-helpers';
+import {
+  nextFrame,
+  fixture,
+  html,
+  elementUpdated,
+} from '@open-wc/testing-helpers';
 import { wait } from '@spryker-oryx/utilities';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { textComponent } from './text.def';
@@ -27,6 +32,22 @@ const text = `Lorem Ipsum is simply dummy text of the printing and typesetting
 
 describe('TextComponent', () => {
   let element: TextComponent;
+  const factor = 1000;
+
+  const simulateResize = async () => {
+    const el = element.renderRoot.querySelector<HTMLElement>('div')!;
+    const slot = element.renderRoot.querySelector<HTMLElement>('div slot')!;
+
+    // JSDOM doesn't support layout
+    vi.spyOn(el, 'clientHeight', 'get').mockImplementation(() => 24);
+    vi.spyOn(el, 'scrollHeight', 'get').mockImplementation(() => 100 * factor);
+    vi.spyOn(slot, 'scrollHeight', 'get').mockImplementation(
+      () => 100 * factor
+    );
+
+    await wait(101);
+    await nextFrame();
+  };
 
   beforeAll(async () => {
     await useComponent(textComponent);
@@ -42,6 +63,7 @@ describe('TextComponent', () => {
           </oryx-text>`
         );
       });
+
       it('should not set attributes', () => {
         expect(element.hasAttribute('truncation')).toBe(false);
         expect(element.hasAttribute('truncated')).toBe(false);
@@ -57,44 +79,32 @@ describe('TextComponent', () => {
           </oryx-text>`
         );
 
-        //simulate resize
-        const textEl = element?.shadowRoot?.querySelector('div') as HTMLElement;
-
-        // JSDOM doesn't support layout
-        vi.spyOn(textEl, 'clientHeight', 'get').mockImplementation(() => 24);
-        vi.spyOn(textEl, 'scrollHeight', 'get').mockImplementation(() => 100);
-
-        await wait(101);
-        await nextFrame();
+        await simulateResize();
       });
+
       it('should set attributes', async () => {
         expect(element.hasAttribute('truncation')).toBe(true);
         expect(element.hasAttribute('truncated')).toBe(true);
       });
-      it('should set --lines-count', () => {
+
+      it('should set --lines-count css property', () => {
         expect(element.style.cssText).toContain('--lines-count');
       });
 
-      describe('when --line-clamp css variable is removed', () => {
+      it('should set --line-clamp css property', () => {
+        expect(element.style.cssText).toContain('--line-clamp');
+      });
+
+      describe('and truncateAfter property is removed', () => {
         beforeEach(async () => {
-          element.truncateAfter = 0;
-          await element.requestUpdate();
+          element.truncateAfter = undefined;
 
-          //simulate resize
-          const textEl = element?.shadowRoot?.querySelector(
-            'div'
-          ) as HTMLElement;
-
-          // JSDOM doesn't support layout
-          vi.spyOn(textEl, 'clientHeight', 'get').mockImplementation(() => 20);
-          vi.spyOn(textEl, 'scrollHeight', 'get').mockImplementation(() => 80);
-
-          await wait(101);
-          await nextFrame();
+          element.requestUpdate();
+          await elementUpdated(element);
         });
 
-        it('should remove truncation attribute', async () => {
-          expect(element.hasAttribute('truncation')).toBe(false);
+        it('should remove --line-clamp css property', async () => {
+          expect(element.style.cssText).not.toContain('--line-clamp');
         });
       });
     });
@@ -130,12 +140,14 @@ describe('TextComponent', () => {
           </oryx-text>`
         );
 
+        await simulateResize();
+
         element.shadowRoot
           ?.querySelector('button')
           ?.dispatchEvent(new Event('click'));
       });
 
-      it('should collapse the text', () => {
+      it('should expand the text', () => {
         expect(element.hasAttribute('truncated')).toBe(false);
       });
 
