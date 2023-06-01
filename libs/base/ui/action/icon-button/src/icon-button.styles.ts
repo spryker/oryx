@@ -2,11 +2,12 @@ import { css } from 'lit';
 
 export const iconButtonStyles = css`
   :host {
+    --oryx-icon-color: var(--oryx-color-neutral-11);
+
     display: inline-flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    color: var(--oryx-color-neutral-11);
   }
 
   ::slotted(*:first-child) {
