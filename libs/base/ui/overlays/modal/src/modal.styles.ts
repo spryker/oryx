@@ -41,6 +41,10 @@ export const styles = css`
   header {
     align-items: center;
     justify-content: space-between;
+    flex-direction: var(--oryx-header-direction);
+    text-align: var(--oryx-header-text-align);
+    font-size: var(--oryx-header-font-size);
+    font-weight: var(--oryx-header-font-weight);
   }
 
   footer {
@@ -64,13 +68,6 @@ export const styles = css`
   :host([footerButtonFullWidth]) footer oryx-button,
   :host([footerButtonFullWidth]) ::slotted(oryx-button) {
     width: 100%;
-  }
-
-  header {
-    flex-direction: var(--oryx-header-direction);
-    text-align: var(--oryx-header-text-align);
-    font-size: var(--oryx-header-font-size);
-    font-weight: var(--oryx-header-font-weight);
   }
 `;
 
