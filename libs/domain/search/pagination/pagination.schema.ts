@@ -1,9 +1,9 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { PaginationComponent } from './pagination.component';
+import { SearchPaginationComponent } from './pagination.component';
 
-export const paginationComponentSchema: ContentComponentSchema<PaginationComponent> =
+export const searchPaginationComponentSchema: ContentComponentSchema<SearchPaginationComponent> =
   {
     name: 'Pagination',
     group: 'Search',

@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
-import { generateVariantsMatrix, Variant } from '../../../../../src/utilities';
+import { storybookPrefix } from '../../../../.constants';
+import { generateVariantsMatrix, Variant } from '../../../../src/utilities';
 
 export default {
   title: `${storybookPrefix}/Navigations/Pagination/Static`,
@@ -56,7 +56,7 @@ const Template: Story<unknown> = (): TemplateResult => {
       variants,
       ({ options: { className, disabled } }) => {
         return html`
-          <oryx-pagination max="3">
+          <oryx-pagination max="3" enableNavigation>
             <a>1</a>
             <a>2</a>
             <a class=${className} ?disabled=${disabled}>3</a>

@@ -9,7 +9,7 @@ export interface PaginationProperties {
    * The pagination navigation provides links to the previous and next
    * pages of the current page.
    */
-  hideNavigation?: boolean;
+  enableNavigation?: boolean;
 
   /**
    * Indicates the number of pages that visible at the same time.
