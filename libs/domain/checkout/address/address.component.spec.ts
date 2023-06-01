@@ -79,8 +79,8 @@ describe('CheckoutAddressComponent', () => {
       expect(element).toContainElement('oryx-address-form');
     });
 
-    it('should not render oryx-address-list', () => {
-      expect(element).not.toContainElement('oryx-address-list');
+    it('should not render oryx-address-user-list', () => {
+      expect(element).not.toContainElement('oryx-address-user-list');
     });
 
     describe('and when the isValid method is called', () => {
@@ -126,15 +126,15 @@ describe('CheckoutAddressComponent', () => {
       expect(element).not.toContainElement('oryx-address-form');
     });
 
-    it('should render the oryx-address-list', () => {
-      expect(element).toContainElement('oryx-address-list');
+    it('should render the oryx-address-user-list', () => {
+      expect(element).toContainElement('oryx-address-user-list');
     });
 
     describe('and when an oryx.select event is dispatched on the list', () => {
       beforeEach(() => {
         element.dispatchEvent = vi.fn();
         const list = element.renderRoot.querySelector(
-          'oryx-address-list'
+          'oryx-address-user-list'
         ) as HTMLElement;
         list.dispatchEvent(
           new CustomEvent('oryx.select', {

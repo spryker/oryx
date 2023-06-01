@@ -26,10 +26,10 @@ export class CheckoutAddressComponent
 
   protected override render(): TemplateResult | void {
     if (this.addresses()?.length)
-      return html`<oryx-address-list
+      return html`<oryx-address-user-list
         .options=${{ selectable: true, addressDefaults: AddressDefaults.All }}
         @oryx.select=${this.onSelect}
-      ></oryx-address-list>`;
+      ></oryx-address-user-list>`;
 
     return html`<oryx-address-form
       .address=${this.address}
