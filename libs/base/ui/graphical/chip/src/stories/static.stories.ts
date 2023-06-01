@@ -1,7 +1,6 @@
-import { generateVariantsMatrix, Variant } from '@spryker-oryx/ui';
+import { AlertType } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 
 export default { title: `${storybookPrefix}/Graphical/Chip/Static` } as Meta;
@@ -9,60 +8,40 @@ export default { title: `${storybookPrefix}/Graphical/Chip/Static` } as Meta;
 const longText =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim';
 
-enum CategoryY {
-  Dense = 'Dense',
-  Standard = 'Standard',
-  Invert = 'Invert',
-  Truncated = 'Truncated',
-}
-
-const generateVariants = (): Variant[] => {
-  const result: Variant[] = [];
-
-  Object.values(CategoryY).forEach((categoryY) => {
-    Object.values(['success', 'info', 'warning', 'error', undefined]).forEach(
-      (categoryX) => {
-        result.push({
-          categoryY,
-          categoryX,
-          options: {},
-        });
-      }
-    );
-  });
-
-  return result;
+const gen = (type?: AlertType) => {
+  return html`
+    <section>
+      <span>${type ?? 'base'}</span>
+      ${[...Array(10).keys()].map(
+        (num) => html`
+          <oryx-chip .appearance=${type} dense> ${num + 1} </oryx-chip>
+        `
+      )}
+      <oryx-chip .appearance=${type}>Standard</oryx-chip>
+      <oryx-chip .appearance=${type} invert>Invert</oryx-chip>
+      <oryx-chip .appearance=${type}>${longText}</oryx-chip>
+    </section>
+  `;
 };
 
 const Template: Story = (): TemplateResult => {
   return html`
-    ${generateVariantsMatrix(
-      generateVariants(),
-      ({ categoryX, categoryY }) => html`
-        ${when(
-          categoryY === CategoryY.Dense,
-          () =>
-            [...Array(10).keys()].map(
-              (num) => html`
-                <oryx-chip .appearance=${categoryX} dense>
-                  ${num + 1}
-                </oryx-chip>
-              `
-            ),
-          () => html`
-            <oryx-chip
-              .appearance=${categoryX}
-              ?dense=${categoryY === CategoryY.Dense}
-              ?invert=${categoryY === CategoryY.Invert}
-            >
-              ${categoryY === CategoryY.Truncated ? longText : categoryY}
-            </oryx-chip>
-          `
-        )}
-      `
-    )}
+    ${gen(AlertType.Success)} ${gen(AlertType.Info)} ${gen(AlertType.Warning)}
+    ${gen(AlertType.Error)} ${gen()}
 
     <style>
+      section {
+        display: grid;
+        grid-auto-columns: min-content;
+        grid-auto-flow: column;
+        gap: 5px;
+        padding: 10px;
+      }
+
+      span {
+        width: 100px;
+      }
+
       oryx-chip {
         max-width: 200px;
       }
