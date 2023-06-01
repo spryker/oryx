@@ -66,7 +66,7 @@ describe('PickingHeaderComponent', () => {
 
   const getCustomerNoteButton = () => {
     return element.renderRoot.querySelector(
-      'oryx-icon-button button[aria-label="Show customer note"]'
+      'oryx-icon-button button[aria-label="Customer note"]'
     );
   };
 
@@ -110,7 +110,7 @@ describe('PickingHeaderComponent', () => {
     });
 
     it('should provide the note text to customer-note-modal component', () => {
-      expect(getCustomerNoteModal()?.getAttribute('note')).toBe(
+      expect(getCustomerNoteModal()?.note).toBe(
         mockPickingListData[0].cartNote
       );
     });
@@ -129,7 +129,9 @@ describe('PickingHeaderComponent', () => {
       expect(getCustomerNoteButton()).toBeNull();
     });
 
-    it('should not ');
+    it('should not render customer note modal', () => {
+      expect(getCustomerNoteModal()).toBeNull();
+    });
   });
 
   describe('when back button is clicked', () => {

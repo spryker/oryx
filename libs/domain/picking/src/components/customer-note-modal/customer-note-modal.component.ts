@@ -20,7 +20,7 @@ export class CustomerNoteModalComponent extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <oryx-modal
-        ?open=${this.note}
+        ?open=${!!this.note}
         enableFooter
         footerButtonFullWidth
         @oryx.close=${this.close}

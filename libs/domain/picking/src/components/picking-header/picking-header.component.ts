@@ -3,9 +3,8 @@ import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { PickingListMixin } from '../../mixins';
 import { state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { PickingListMixin } from '../../mixins';
 import { styles } from './picking-header.styles';
 
 export class PickingHeaderComponent extends PickingListMixin(LitElement) {
@@ -13,25 +12,25 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
 
   protected routerService = resolve(RouterService);
 
-  @state()
-  protected isCartNoteVisible?: boolean;
+  @state() isCartNoteVisible?: boolean;
 
   protected renderCartNoteButton(): TemplateResult {
     return html`${this.pickingList?.cartNote
       ? html`
-        <oryx-icon-button>
-          <button
-            aria-label=${i18n('oryx.picking.customer-note')}
-            @click=${() => this.isCartNoteVisible = true}
+          <oryx-icon-button>
+            <button
+              aria-label=${i18n('oryx.picking.customer-note')}
+              @click=${() => (this.isCartNoteVisible = true)}
+            >
+              <oryx-icon type=${IconTypes.Info}></oryx-icon>
+            </button>
+          </oryx-icon-button>
+          <oryx-customer-note-modal
+            .note=${this.isCartNoteVisible && this.pickingList?.cartNote}
+            @oryx.close=${() => (this.isCartNoteVisible = false)}
           >
-            <oryx-icon type=${IconTypes.Info}></oryx-icon></button>
-        </oryx-icon-button>
-        <oryx-customer-note-modal
-          note=${ifDefined(this.isCartNoteVisible && this.pickingList?.cartNote)}
-          @oryx.close=${() => this.isCartNoteVisible = false}
-        >
-        </oryx-customer-note-modal>
-      `
+          </oryx-customer-note-modal>
+        `
       : ''}`;
   }
 

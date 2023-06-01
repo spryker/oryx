@@ -2,7 +2,6 @@ import { resolve } from '@spryker-oryx/di';
 import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
@@ -54,7 +53,7 @@ export class PickingListsComponent extends LitElement {
       ></oryx-picking-in-progress-modal>
 
       <oryx-customer-note-modal
-        .note=${ifDefined(this.customerNote)}
+        .note=${this.customerNote}
         @oryx.close=${this.closeCustomerNoteModal}
       ></oryx-customer-note-modal>`;
   }

@@ -1,14 +1,16 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PickingListService } from '@spryker-oryx/picking';
+import {
+  CustomerNoteModalComponent,
+  PickingListService,
+} from '@spryker-oryx/picking';
 import { CLOSE_EVENT, ModalComponent } from '@spryker-oryx/ui/modal';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { mockPickingListData } from '../../mocks';
-import { pickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.def';
 import { PickingListsComponent } from './picking-lists.component';
 import { pickingListsComponent } from './picking-lists.def';
 
@@ -21,10 +23,7 @@ describe('PickingListsComponent', () => {
   let service: MockPickingListService;
 
   beforeAll(async () => {
-    await useComponent([
-      pickingListsComponent,
-      pickingInProgressModalComponent,
-    ]);
+    await useComponent([pickingListsComponent]);
   });
 
   beforeEach(async () => {
@@ -49,7 +48,7 @@ describe('PickingListsComponent', () => {
   });
 
   describe('when picking lists is not empty', () => {
-    const getCustomerNoteModal = (): ModalComponent | null =>
+    const getCustomerNoteModal = (): CustomerNoteModalComponent | null =>
       element.renderRoot.querySelector('oryx-customer-note-modal');
 
     const getPickingInProgressModal = (): ModalComponent | null =>
@@ -103,16 +102,14 @@ describe('PickingListsComponent', () => {
 
       it('should show customer note modal', () => {
         element.addEventListener('oryx.show-note', () => {
-          expect(getCustomerNoteModal()?.getAttribute('note')).toBe(
-            customerNoteText
-          );
+          expect(getCustomerNoteModal()?.note).toBe(customerNoteText);
         });
       });
 
       it(`should close modal when it emits ${CLOSE_EVENT} event`, () => {
         element.addEventListener('oryx.show-note', () => {
           getCustomerNoteModal()?.dispatchEvent(new CustomEvent(CLOSE_EVENT));
-          expect(getCustomerNoteModal()?.getAttribute('note')).toBe(false);
+          expect(getCustomerNoteModal()?.note).toBe(false);
         });
       });
     });
