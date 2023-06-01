@@ -4,8 +4,8 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { AddressService } from '@spryker-oryx/user';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { AddressFormComponent } from '../address-form';
-import { AddressEditComponent } from './address-edit.component';
+import { UserAddressFormComponent } from '../address-form';
+import { UserAddressEditComponent } from './address-edit.component';
 import { addressEditComponent } from './address-edit.def';
 
 class MockAddressService implements Partial<AddressService> {
@@ -15,10 +15,10 @@ class MockAddressService implements Partial<AddressService> {
   getAddresses = vi.fn();
 }
 
-describe('AddressEditComponent', () => {
-  let element: AddressEditComponent;
+describe('UserAddressEditComponent', () => {
+  let element: UserAddressEditComponent;
   let addressService: MockAddressService;
-  let form: AddressFormComponent;
+  let form: UserAddressFormComponent;
 
   beforeAll(async () => {
     await useComponent(addressEditComponent);
@@ -67,7 +67,7 @@ describe('AddressEditComponent', () => {
       );
       form = element.renderRoot.querySelector(
         'oryx-address-form'
-      ) as AddressFormComponent;
+      ) as UserAddressFormComponent;
       form.submit = vi.fn();
       element.renderRoot
         .querySelector('oryx-button:not([outline]) button')
@@ -91,7 +91,7 @@ describe('AddressEditComponent', () => {
       );
       form = element.renderRoot.querySelector(
         'oryx-address-form'
-      ) as AddressFormComponent;
+      ) as UserAddressFormComponent;
       form.dispatchEvent(
         new CustomEvent('oryx.submit', { detail: { values } })
       );
@@ -125,7 +125,7 @@ describe('AddressEditComponent', () => {
       );
       form = element.renderRoot.querySelector(
         'oryx-address-form'
-      ) as AddressFormComponent;
+      ) as UserAddressFormComponent;
       form.dispatchEvent(
         new CustomEvent('oryx.submit', { detail: { values } })
       );

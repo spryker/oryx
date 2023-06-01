@@ -1,7 +1,7 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { Address, AddressMixin } from '@spryker-oryx/user';
-import { AddressFormComponent } from '@spryker-oryx/user/address-form';
+import { UserAddressFormComponent } from '@spryker-oryx/user/address-form';
 import { hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
@@ -10,12 +10,12 @@ import { BACK_EVENT, SUCCESS_EVENT } from './address-edit.model';
 import { styles } from './address-edit.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class AddressEditComponent extends AddressMixin(
+export class UserAddressEditComponent extends AddressMixin(
   ContentMixin(LitElement)
 ) {
   static styles = styles;
 
-  protected formRef: Ref<AddressFormComponent> = createRef();
+  protected formRef: Ref<UserAddressFormComponent> = createRef();
 
   protected triggerSubmit(): void {
     this.formRef.value?.submit();

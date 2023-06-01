@@ -22,7 +22,7 @@ import { styles } from './address-list.styles';
 
 @defaultOptions({ addressDefaults: AddressDefaults.All })
 @hydratable('window:load')
-export class AddressListComponent extends AddressMixin(
+export class UserAddressListComponent extends AddressMixin(
   ContentMixin<AddressListItemOptions>(LitElement)
 ) {
   static styles = styles;

@@ -7,7 +7,7 @@ import { CANCEL_EVENT, CONFIRM_EVENT } from './address-remove.model';
 import { styles } from './address-remove.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class AddressRemoveComponent extends AddressMixin(LitElement) {
+export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
   static styles = styles;
 
   protected override render(): TemplateResult | void {

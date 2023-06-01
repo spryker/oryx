@@ -31,7 +31,7 @@ import { styles } from './address-form.styles';
 
 @defaultOptions({ fallbackCountry: 'DE' })
 @hydratable(['mouseover', 'focusin'])
-export class AddressFormComponent
+export class UserAddressFormComponent
   extends FormMixin(ContentMixin<AddressFormOptions>(LitElement))
   implements AddressFormAttributes
 {

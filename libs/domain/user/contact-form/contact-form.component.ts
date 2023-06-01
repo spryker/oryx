@@ -7,7 +7,9 @@ import { fields } from './contact-form.model';
 import { styles } from './contact-form.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class ContactFormComponent extends FormMixin(ContentMixin(LitElement)) {
+export class userContactFormComponent extends FormMixin(
+  ContentMixin(LitElement)
+) {
   static styles = [formStyles, styles];
 
   protected fieldRenderer = resolve(FormRenderer);

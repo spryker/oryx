@@ -6,7 +6,7 @@ import { CountryService } from '@spryker-oryx/site';
 import { AddressFormService, AddressService } from '@spryker-oryx/user';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { AddressFormComponent } from './address-form.component';
+import { UserAddressFormComponent } from './address-form.component';
 import { addressFormComponent } from './address-form.def';
 
 class MockFormRenderer implements Partial<FormRenderer> {
@@ -81,8 +81,8 @@ class MockAddressFormService implements Partial<AddressFormService> {
   getForm = vi.fn().mockReturnValue(of(mockForm));
 }
 
-describe('AddressFormComponent', () => {
-  let element: AddressFormComponent;
+describe('UserAddressFormComponent', () => {
+  let element: UserAddressFormComponent;
   let renderer: MockFormRenderer;
   let formService: MockAddressFormService;
   let countryService: MockCountryService;
@@ -138,7 +138,7 @@ describe('AddressFormComponent', () => {
     });
 
     it('is defined', () => {
-      expect(element).toBeInstanceOf(AddressFormComponent);
+      expect(element).toBeInstanceOf(UserAddressFormComponent);
     });
 
     it('should load json form', () => {

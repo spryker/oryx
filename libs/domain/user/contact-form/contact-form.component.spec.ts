@@ -10,7 +10,7 @@ class MockFormRenderer implements Partial<FormRenderer> {
   buildForm = vi.fn().mockReturnValue(html``);
 }
 
-describe('ContactFormComponent', () => {
+describe('userContactFormComponent', () => {
   let renderer: MockFormRenderer;
 
   beforeAll(async () => {

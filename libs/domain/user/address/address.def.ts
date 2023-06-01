@@ -9,5 +9,5 @@ declare global {
 
 export const addressComponent = componentDef({
   name: 'oryx-user-address',
-  impl: () => import('./address.component').then((m) => m.AddressComponent),
+  impl: () => import('./address.component').then((m) => m.UserAddressComponent),
 });

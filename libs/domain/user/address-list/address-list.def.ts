@@ -10,5 +10,5 @@ declare global {
 export const addressListComponent = componentDef({
   name: 'oryx-user-address-list',
   impl: () =>
-    import('./address-list.component').then((m) => m.AddressListComponent),
+    import('./address-list.component').then((m) => m.UserAddressListComponent),
 });

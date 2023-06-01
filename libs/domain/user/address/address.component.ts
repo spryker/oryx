@@ -14,7 +14,7 @@ import {
 import { styles } from './address.styles';
 
 @hydratable('mouseover')
-export class AddressComponent extends AddressMixin(
+export class UserAddressComponent extends AddressMixin(
   ContentMixin<AddressOptions>(LitElement)
 ) {
   static styles = styles;

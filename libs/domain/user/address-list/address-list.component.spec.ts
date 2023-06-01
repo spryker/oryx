@@ -6,15 +6,15 @@ import { AddressService } from '@spryker-oryx/user';
 import { mockAddress, mockCurrentAddress } from '@spryker-oryx/user/mocks';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { AddressListComponent } from './address-list.component';
+import { UserAddressListComponent } from './address-list.component';
 import { addressListComponent } from './address-list.def';
 
 class MockAddressService implements Partial<AddressService> {
   getAddresses = vi.fn().mockReturnValue(of([mockCurrentAddress, mockAddress]));
 }
 
-describe('AddressListComponent', () => {
-  let element: AddressListComponent;
+describe('UserAddressListComponent', () => {
+  let element: UserAddressListComponent;
   let service: MockAddressService;
 
   beforeAll(async () => {

@@ -14,7 +14,7 @@ import { AddressBookState, CHANGE_STATE_EVENT } from './address-book.model';
 import { styles } from './address-book.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class AddressBookComponent extends ContentMixin(LitElement) {
+export class UserAddressBookComponent extends ContentMixin(LitElement) {
   static styles = styles;
 
   @signalProperty() activeState = AddressBookState.List;

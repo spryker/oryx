@@ -1,13 +1,13 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { html } from 'lit';
-import { AddressEditComponent } from '../address-edit/address-edit.component';
-import { AddressBookComponent } from './address-book.component';
+import { UserAddressEditComponent } from '../address-edit/address-edit.component';
+import { UserAddressBookComponent } from './address-book.component';
 import { addressBookComponent } from './address-book.def';
 import { AddressBookState } from './address-book.model';
 
-describe('AddressBookComponent', () => {
-  let element: AddressBookComponent;
+describe('UserAddressBookComponent', () => {
+  let element: UserAddressBookComponent;
 
   beforeAll(async () => {
     await useComponent(addressBookComponent);
@@ -80,7 +80,7 @@ describe('AddressBookComponent', () => {
       it('should set selected address id', () => {
         const editComponent = element.renderRoot.querySelector(
           'oryx-user-address-edit'
-        ) as AddressEditComponent;
+        ) as UserAddressEditComponent;
         expect(editComponent.addressId).toBe(addressId);
       });
 

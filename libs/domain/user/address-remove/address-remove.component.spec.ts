@@ -5,7 +5,7 @@ import { AddressService } from '@spryker-oryx/user';
 import { mockCurrentAddress } from '@spryker-oryx/user/mocks';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { AddressRemoveComponent } from './address-remove.component';
+import { UserAddressRemoveComponent } from './address-remove.component';
 import { addressRemoveComponent } from './address-remove.def';
 
 class MockAddressService implements Partial<AddressService> {
@@ -13,8 +13,8 @@ class MockAddressService implements Partial<AddressService> {
   getAddresses = vi.fn();
 }
 
-describe('AddressRemoveComponent', () => {
-  let element: AddressRemoveComponent;
+describe('UserAddressRemoveComponent', () => {
+  let element: UserAddressRemoveComponent;
   let service: MockAddressService;
 
   beforeAll(async () => {

@@ -11,6 +11,6 @@ export const addressListItemComponent = componentDef({
   name: 'oryx-user-address-list-item',
   impl: () =>
     import('./address-list-item.component').then(
-      (m) => m.AddressListItemComponent
+      (m) => m.UserAddressListItemComponent
     ),
 });
