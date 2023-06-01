@@ -3,7 +3,7 @@ export interface VariantOptions {
 }
 
 export interface Variant {
-  categoryX: string;
+  categoryX?: string;
   categoryY: string;
   options: VariantOptions;
 }

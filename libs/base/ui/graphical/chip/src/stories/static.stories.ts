@@ -2,7 +2,7 @@ import { generateVariantsMatrix, Variant } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { storybookPrefix } from '../../../../../.constants';
+import { storybookPrefix } from '../../../../.constants';
 
 export default { title: `${storybookPrefix}/Graphical/Chip/Static` } as Meta;
 
@@ -20,7 +20,7 @@ const generateVariants = (): Variant[] => {
   const result: Variant[] = [];
 
   Object.values(CategoryY).forEach((categoryY) => {
-    Object.values(['success', 'info', 'warning', 'error', '(none)']).forEach(
+    Object.values(['success', 'info', 'warning', 'error', undefined]).forEach(
       (categoryX) => {
         result.push({
           categoryY,
