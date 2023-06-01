@@ -1,6 +1,6 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { Address, AddressMixin } from '@spryker-oryx/user';
-import { hydratable } from '@spryker-oryx/utilities';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import {
   AddressOptions,
@@ -19,6 +19,10 @@ export class AddressComponent extends AddressMixin(
 ) {
   static styles = styles;
 
+  protected addressFormat = computed(
+    () => this.$options().schema ?? defaultSinglelineSchema
+  );
+
   protected override render():
     | string
     | TemplateResult
@@ -32,7 +36,7 @@ export class AddressComponent extends AddressMixin(
     if (multiline)
       return this.renderMultiline(schema ?? defaultMultilineSchema, address);
 
-    return this.formatLine(schema ?? defaultSinglelineSchema, address);
+    return this.formatLine(this.addressFormat(), address);
   }
 
   protected renderMultiline(
