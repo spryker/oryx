@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 
@@ -9,7 +10,12 @@ export enum UxType {
   toggleButton = 'toggleButton',
 }
 
-export const inputs = ['mobile', 'tablet', 'desktop'];
+export const inputs = [IconTypes.Mobile, IconTypes.Tablet, IconTypes.Desktop];
+export const text: Record<string, string> = {
+  [IconTypes.Mobile]: 'mobile',
+  [IconTypes.Tablet]: 'tablet',
+  [IconTypes.Desktop]: 'desktop',
+};
 
 export const input = (
   item: string,
@@ -17,7 +23,7 @@ export const input = (
   checked = false
 ): TemplateResult => html`
   <input type="checkbox" ?checked=${checked} aria-label=${item} />
-  ${when(hasText, () => html`${item}`)}
+  ${when(hasText, () => html`${text[item]}`)}
 `;
 
 export const InputListDecorator =

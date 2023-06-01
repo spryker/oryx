@@ -27,6 +27,12 @@ describe('CustomerNoteComponent', () => {
   let service: MockPickingListService;
   let routerService: MockRouterService;
 
+  const getPickingInProgressModal = () => {
+    return element.renderRoot.querySelector(
+      'oryx-picking-in-progress-modal'
+    ) as PickingInProgressModalComponent;
+  };
+
   beforeAll(async () => {
     await useComponent([
       customerNoteComponent,
@@ -119,20 +125,30 @@ describe('CustomerNoteComponent', () => {
       });
 
       it('should open picking in progress modal', () => {
-        expect(
-          (
-            element.renderRoot.querySelector(
-              'oryx-picking-in-progress-modal'
-            ) as PickingInProgressModalComponent
-          )?.open
-        ).toBe(true);
+        expect(getPickingInProgressModal().open).toBe(true);
       });
 
-      describe('and picking in progress modal is closed', () => {
+      describe('and picking in progress modal is dismissed', () => {
         beforeEach(() => {
-          element.renderRoot
-            .querySelector('oryx-picking-in-progress-modal')
-            ?.shadowRoot?.querySelector('button')
+          getPickingInProgressModal()
+            .shadowRoot?.querySelector('oryx-modal')
+            ?.shadowRoot?.querySelector('dialog')
+            ?.click();
+        });
+
+        it('should not navigate to picking lists', () => {
+          expect(routerService.navigate).not.toHaveBeenCalledWith('/');
+        });
+
+        it('should close modal', () => {
+          expect(getPickingInProgressModal().open).toBe(false);
+        });
+      });
+
+      describe('and back to pick lists button is clicked', () => {
+        beforeEach(() => {
+          getPickingInProgressModal()
+            .shadowRoot?.querySelector('button')
             ?.click();
         });
 

@@ -13,7 +13,7 @@ export const applicationFeature: AppFeature = {
   options: {
     components: {
       preload: isServer,
-      root: components.rootAppComponent,
+      root: components.oryxAppComponent,
     },
   },
   providers: applicationProviders,

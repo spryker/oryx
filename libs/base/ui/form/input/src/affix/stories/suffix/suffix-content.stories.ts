@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../../.constants';
@@ -21,7 +22,7 @@ const Template: Story<Props> = ({
   return html`
     <oryx-input ?suffixFill=${suffixFill}>
       <input placeholder="Placeholder..." ?disabled=${disabled} />
-      <oryx-icon slot="suffix" type="search"></oryx-icon>
+      <oryx-icon slot="suffix" .type=${IconTypes.Search}></oryx-icon>
       <span slot="suffix">more...</span>
     </oryx-input>
   `;

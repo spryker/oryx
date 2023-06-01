@@ -4,11 +4,13 @@ import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { PickingConfig, providePickingConfig } from './config.provider';
 import {
   customerNoteComponent,
+  discardModalComponent,
   filterButtonComponent,
   filtersComponent,
   loginPageComponent,
   navigateBackComponent,
   pickingComponent,
+  pickingHeaderComponent,
   pickingInProgressModalComponent,
   pickingListItemComponent,
   pickingListsComponent,
@@ -28,6 +30,7 @@ import {
 
 export const pickingComponents = [
   customerNoteComponent,
+  discardModalComponent,
   filterButtonComponent,
   filtersComponent,
   loginPageComponent,
@@ -39,6 +42,7 @@ export const pickingComponents = [
   pickingInProgressModalComponent,
   pickingComponent,
   userProfileComponent,
+  pickingHeaderComponent,
 ];
 
 export interface PickingFeatureConfig extends PickingConfig {

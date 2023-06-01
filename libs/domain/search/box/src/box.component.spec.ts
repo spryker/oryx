@@ -105,7 +105,7 @@ describe('SearchBoxComponent', () => {
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;
-    element = await fixture(html`<search-box></search-box>`);
+    element = await fixture(html`<oryx-search-box></oryx-search-box>`);
   });
 
   afterEach(() => {
@@ -118,7 +118,9 @@ describe('SearchBoxComponent', () => {
 
   describe('when query is not provided', () => {
     beforeEach(async () => {
-      element = await fixture(html`<search-box query=""></search-box>`);
+      element = await fixture(
+        html`<oryx-search-box query=""></oryx-search-box>`
+      );
 
       vi.useFakeTimers();
     });
@@ -138,7 +140,9 @@ describe('SearchBoxComponent', () => {
 
   describe('when query is containing spaces only', () => {
     beforeEach(async () => {
-      element = await fixture(html`<search-box query="     "></search-box>`);
+      element = await fixture(
+        html`<oryx-search-box query="     "></oryx-search-box>`
+      );
 
       vi.useFakeTimers();
 
@@ -157,7 +161,9 @@ describe('SearchBoxComponent', () => {
 
   describe('when query is to short', () => {
     beforeEach(async () => {
-      element = await fixture(html`<search-box query="p"></search-box>`);
+      element = await fixture(
+        html`<oryx-search-box query="p"></oryx-search-box>`
+      );
 
       vi.useFakeTimers();
 
@@ -180,7 +186,9 @@ describe('SearchBoxComponent', () => {
 
   describe('when query is provided', () => {
     beforeEach(async () => {
-      element = await fixture(html`<search-box query="prod"></search-box>`);
+      element = await fixture(
+        html`<oryx-search-box query="prod"></oryx-search-box>`
+      );
 
       vi.useFakeTimers();
 
@@ -208,7 +216,7 @@ describe('SearchBoxComponent', () => {
   describe('when not found', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<search-box query="abracadabra"></search-box>`
+        html`<oryx-search-box query="abracadabra"></oryx-search-box>`
       );
 
       vi.useFakeTimers();
@@ -230,7 +238,7 @@ describe('SearchBoxComponent', () => {
 
   describe('when typing a query string', () => {
     beforeEach(async () => {
-      element = await fixture(html`<search-box></search-box>`);
+      element = await fixture(html`<oryx-search-box></oryx-search-box>`);
 
       vi.useFakeTimers();
     });
@@ -258,7 +266,7 @@ describe('SearchBoxComponent', () => {
 
   describe('when container with results is scrolled', () => {
     beforeEach(async () => {
-      element = await fixture(html`<search-box></search-box>`);
+      element = await fixture(html`<oryx-search-box></oryx-search-box>`);
 
       vi.useFakeTimers();
 
@@ -290,7 +298,9 @@ describe('SearchBoxComponent', () => {
 
   describe('when oryx.clear event dispatched', () => {
     beforeEach(async () => {
-      element = await fixture(html`<search-box query="123"></search-box>`);
+      element = await fixture(
+        html`<oryx-search-box query="123"></oryx-search-box>`
+      );
     });
 
     it('should clear input value', () => {
@@ -305,7 +315,9 @@ describe('SearchBoxComponent', () => {
 
   describe('when oryx.close event is dispatched', () => {
     beforeEach(async () => {
-      element = await fixture(html`<search-box query="123"></search-box>`);
+      element = await fixture(
+        html`<oryx-search-box query="123"></oryx-search-box>`
+      );
     });
 
     it('should close the dropdown', () => {
@@ -325,7 +337,12 @@ describe('SearchBoxComponent', () => {
     describe('and there are links only', () => {
       beforeEach(async () => {
         element = await fixture(html`
-          <search-box query="pro" .options=${{ productsCount: 0 }}></search-box>
+          <oryx-search-box
+            query="pro"
+            .options=${{
+              productsCount: 0,
+            }}
+          ></oryx-search-box>
         `);
 
         vi.useFakeTimers();
@@ -349,14 +366,14 @@ describe('SearchBoxComponent', () => {
     describe('and there are products only', () => {
       beforeEach(async () => {
         element = await fixture(html`
-          <search-box
+          <oryx-search-box
             query="pro"
             .options=${{
               categoriesCount: 0,
               completionsCount: 0,
               cmsCount: 0,
             }}
-          ></search-box>
+          ></oryx-search-box>
         `);
 
         vi.useFakeTimers();
@@ -381,7 +398,7 @@ describe('SearchBoxComponent', () => {
   describe('when search is submitted', () => {
     describe('and query is empty string', () => {
       beforeEach(async () => {
-        element = await fixture(html`<search-box></search-box>`);
+        element = await fixture(html`<oryx-search-box></oryx-search-box>`);
         element.renderRoot
           .querySelector('oryx-typeahead')
           ?.toggleAttribute('open', true);
@@ -408,7 +425,9 @@ describe('SearchBoxComponent', () => {
     describe('and query is provided', () => {
       const q = 'test';
       beforeEach(async () => {
-        element = await fixture(html`<search-box .query=${q}></search-box>`);
+        element = await fixture(
+          html`<oryx-search-box .query=${q}></oryx-search-box>`
+        );
         element.renderRoot
           .querySelector('form')
           ?.dispatchEvent(new Event('submit'));

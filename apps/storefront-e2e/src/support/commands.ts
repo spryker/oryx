@@ -66,7 +66,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('disableAnimations', () => {
   cy.window().then((window) => {
     const document = window.document;
-    const root = document.querySelector('root-app') as any;
+    const root = document.querySelector('oryx-app') as any;
 
     root.style.setProperty('--oryx-transition-time', 0);
     root.style.setProperty('--oryx-transition-time-medium', 0);

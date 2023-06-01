@@ -52,7 +52,7 @@ const Template: Story<IconButtonProperties & Props> = ({
   return html`
     <oryx-icon-button size=${ifDefined(size)}>
       <button ?disabled=${disabled} aria-label="story">
-        <oryx-icon type=${ifDefined(icon)}></oryx-icon>
+        <oryx-icon .type=${ifDefined(icon)}></oryx-icon>
       </button>
       ${text}
     </oryx-icon-button>

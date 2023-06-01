@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -33,14 +34,14 @@ export const buttonTypes = (
 
       <oryx-button .type=${type} size="md" outline style="width:400px">
         <button>
-          <oryx-icon type="rocket"></oryx-icon>
+          <oryx-icon .type=${IconTypes.Rocket}></oryx-icon>
           medium outline button (400px)
         </button>
       </oryx-button>
 
       <oryx-button .type=${type} size="sm" style="width:33%">
         <button disabled>
-          <oryx-icon type="rocket"></oryx-icon>small disabled (33%)
+          <oryx-icon .type=${IconTypes.Rocket}></oryx-icon>small disabled (33%)
         </button>
       </oryx-button>
 
@@ -144,7 +145,7 @@ const createButtonControl = (
       >
         ${when(
           variant.withIcon,
-          () => html`<oryx-icon type="rocket"></oryx-icon>`
+          () => html`<oryx-icon .type=${IconTypes.Rocket}></oryx-icon>`
         )}
         Link</a
       >`
@@ -157,7 +158,7 @@ const createButtonControl = (
       >
         ${when(
           variant.withIcon,
-          () => html`<oryx-icon type="rocket"></oryx-icon>`
+          () => html`<oryx-icon .type=${IconTypes.Rocket}></oryx-icon>`
         )}
         Button
       </button>

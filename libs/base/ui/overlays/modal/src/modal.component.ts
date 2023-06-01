@@ -143,7 +143,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
                   type="button"
                   aria-label="${i18n('oryx.modal.navigate-back')}"
                 >
-                  <oryx-icon type=${IconTypes.Back}></oryx-icon>
+                  <oryx-icon .type=${IconTypes.Back}></oryx-icon>
                 </button>
               </oryx-icon-button>
             </slot>
@@ -160,7 +160,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
           () => html`
             <oryx-icon-button size=${Size.Sm}>
               <button value="cancel" aria-label="close modal">
-                <oryx-icon type="close"></oryx-icon>
+                <oryx-icon .type=${IconTypes.Close}></oryx-icon>
               </button>
             </oryx-icon-button>
           `

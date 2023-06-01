@@ -5,11 +5,11 @@ import { css, CSSResultGroup, unsafeCSS } from 'lit';
  * we generate the following css variables:
  *
  * :host([appearance='success']:not([invert])) {
- *   --primary: var(--oryx-chip-success-main, primaryColor)
+ *   --primary: var(--oryx-chip-success-main, var(--oryx-color-primary-9))
  *   --secondary: var(--oryx-chip-success-main, secondaryColor)
  * }
  *  :host([appearance='success'][invert]) {
- *    --primary: var(--oryx-chip-success-invert, invertedPrimaryColor)
+ *    --primary: var(--oryx-chip-success-invert, var(--oryx-color-primary-9))
  *  }
  *
  * This will allow to override the chip colors by global CSS (or using the design system tokens):
@@ -49,9 +49,9 @@ const generateChipColorStyles = (
 
 export const chipBaseStyle = css`
   :host {
-    --oryx-chip-primary: var(--oryx-color-neutral-400);
-    --oryx-chip-secondary: var(--oryx-color-canvas-500);
-    --oryx-chip-invert: var(--oryx-color-neutral-300);
+    --oryx-chip-primary: var(--oryx-color-neutral-11);
+    --oryx-chip-secondary: var(--oryx-color-neutral-6);
+    --oryx-chip-invert: var(--oryx-color-neutral-9);
 
     display: inline-block;
     padding-inline: 12px;
@@ -79,34 +79,34 @@ export const chipBaseStyle = css`
   }
 
   :host([invert]) {
-    color: var(--oryx-color-canvas-100);
+    color: var(--oryx-color-neutral-1);
     background-color: var(--primary, var(--oryx-chip-primary));
   }
 
   ${generateChipColorStyles(
     'success',
-    unsafeCSS('var(--oryx-color-success-400)'),
-    unsafeCSS('var(--oryx-color-success-100)'),
-    unsafeCSS('var(--oryx-color-success-300)')
+    unsafeCSS('var(--oryx-color-success-10)'),
+    unsafeCSS('var(--oryx-color-success-3)'),
+    unsafeCSS('var(--oryx-color-success-9)')
   )}
 
   ${generateChipColorStyles(
     'info',
-    unsafeCSS('var(--oryx-color-info-300)'),
-    unsafeCSS('var(--oryx-color-info-100)')
+    unsafeCSS('var(--oryx-color-info-9)'),
+    unsafeCSS('var(--oryx-color-info-3)')
   )}
 
   ${generateChipColorStyles(
     'warning',
-    unsafeCSS('var(--oryx-color-warning-500)'),
-    unsafeCSS('var(--oryx-color-warning-100)'),
-    unsafeCSS('var(--oryx-color-warning-300)')
+    unsafeCSS('var(--oryx-color-warning-12)'),
+    unsafeCSS('var(--oryx-color-warning-3)'),
+    unsafeCSS('var(--oryx-color-warning-9)')
   )}
 
   ${generateChipColorStyles(
     'error',
-    unsafeCSS('var(--oryx-color-error-400)'),
-    unsafeCSS('var(--oryx-color-error-100)'),
-    unsafeCSS('var(--oryx-color-error-300)')
+    unsafeCSS('var(--oryx-color-error-10)'),
+    unsafeCSS('var(--oryx-color-error-3)'),
+    unsafeCSS('var(--oryx-color-error-9)')
   )}
 `;

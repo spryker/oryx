@@ -62,12 +62,13 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   buildForm(
-    data: FormFieldDefinition[],
+    data?: FormFieldDefinition[],
     values?: FormValues,
     keyFn: (field: FormFieldDefinition) => string = (
       field: FormFieldDefinition
     ): string => field.id
-  ): TemplateResult {
+  ): TemplateResult | void {
+    if (!data) return;
     return html`${repeat(
       data,
       keyFn,
@@ -267,7 +268,7 @@ export class DefaultFormRenderer implements FormRenderer {
                 ?checked=${option.value === value}
                 ?required=${field.required}
               />
-              <oryx-icon type=${ifDefined(option.icon)}></oryx-icon>
+              <oryx-icon .type=${ifDefined(option.icon)}></oryx-icon>
               ${when(option.text, () => html`<span>${option.text}</span>`)}
               <span>${option.value}</span>
             </oryx-toggle-icon>

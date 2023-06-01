@@ -10,6 +10,7 @@ import { addressRemoveComponent } from './address-remove.def';
 
 class MockAddressService implements Partial<AddressService> {
   getAddress = vi.fn().mockReturnValue(of(mockCurrentAddress));
+  getAddresses = vi.fn();
 }
 
 describe('AddressRemoveComponent', () => {

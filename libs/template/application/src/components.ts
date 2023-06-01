@@ -1,1 +1,1 @@
-export * from '../root-app/src/root-app.def';
+export * from '../oryx-app/oryx-app.def';

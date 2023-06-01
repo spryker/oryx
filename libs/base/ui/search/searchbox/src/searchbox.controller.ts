@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AffixController } from '@spryker-oryx/ui/input';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
@@ -48,7 +49,7 @@ export class SearchboxController implements ReactiveController {
         <oryx-icon-button>
           <button title="search">
             <slot name="trigger-icon"
-              ><oryx-icon type="search"></oryx-icon
+              ><oryx-icon .type=${IconTypes.Search}></oryx-icon
             ></slot>
           </button>
         </oryx-icon-button>
@@ -95,7 +96,7 @@ export class SearchboxController implements ReactiveController {
   }
 
   protected get searchButton(): TemplateResult {
-    const { searchIcon: icon = 'search' } = this.host;
+    const { searchIcon: icon = IconTypes.Search } = this.host;
     return html`
       <oryx-icon
         type=${icon}
@@ -106,7 +107,7 @@ export class SearchboxController implements ReactiveController {
   }
 
   protected get backButton(): TemplateResult {
-    const { backIcon: icon = 'back' } = this.host;
+    const { backIcon: icon = IconTypes.Back } = this.host;
     return html`
       <oryx-icon
         type=${icon}
@@ -117,7 +118,8 @@ export class SearchboxController implements ReactiveController {
   }
 
   get clearButton(): TemplateResult {
-    const { clearIcon: icon = 'remove', clearIconAppearance } = this.host;
+    const { clearIcon: icon = IconTypes.Remove, clearIconAppearance } =
+      this.host;
     return html`
       <oryx-icon
         type=${icon}

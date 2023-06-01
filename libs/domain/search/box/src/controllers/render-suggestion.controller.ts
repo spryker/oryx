@@ -1,5 +1,6 @@
 import { Product, ProductMediaContainerSize } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive';
@@ -60,7 +61,7 @@ export class RenderSuggestionController {
   renderNothingFound(): TemplateResult {
     return html`
       <div slot="empty">
-        <oryx-icon type="search"></oryx-icon>
+        <oryx-icon .type=${IconTypes.Search}></oryx-icon>
         <span>${i18n('search.box.nothing-found')}</span>
       </div>
     `;

@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   AffixController,
   AffixOptions,
@@ -96,7 +97,7 @@ export class PasswordInputComponent
   }
 
   protected get visibilityIcon(): string {
-    return this.visible ? 'invisible' : 'visible';
+    return this.visible ? IconTypes.Invisible : IconTypes.Visible;
   }
 
   protected toggleVisibility(): void {

@@ -1,4 +1,4 @@
-import { elementUpdated, fixture } from '@open-wc/testing-helpers';
+import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { html } from 'lit';
 import { AddressEditComponent } from '../../address-edit/src/address-edit.component';
@@ -17,31 +17,17 @@ describe('AddressBookComponent', () => {
     vi.clearAllMocks();
   });
 
-  describe('when activeState is not provided', () => {
-    beforeEach(async () => {
-      element = await fixture(html`
-        <oryx-user-address-book></oryx-user-address-book>
-      `);
-    });
-
-    it('should set default list state', () => {
-      expect(element.activeState).toBe(AddressBookState.List);
-    });
-  });
-
   describe('when activeState is "list"', () => {
     const callback = vi.fn();
     beforeEach(async () => {
       element = await fixture(html`
         <oryx-user-address-book
-          .activeState=${AddressBookState.List}
           @oryx.change-state=${callback}
         ></oryx-user-address-book>
       `);
     });
 
-    it('should render address list content', () => {
-      expect(element).toContainElement('oryx-button');
+    it('should render the address list', () => {
       expect(element).toContainElement('oryx-address-list');
     });
 
@@ -62,8 +48,12 @@ describe('AddressBookComponent', () => {
         );
       });
 
-      it('should change the state to "add"', () => {
-        expect(element.activeState).toBe(AddressBookState.Add);
+      it('should not render the address list', () => {
+        expect(element).not.toContainElement('oryx-address-list');
+      });
+
+      it('should render address edit component', () => {
+        expect(element).toContainElement('oryx-user-address-edit');
       });
     });
 
@@ -77,11 +67,11 @@ describe('AddressBookComponent', () => {
         );
       });
 
-      it('should change the state to "edit"', () => {
-        expect(element.activeState).toBe(AddressBookState.Edit);
+      it('should not render the list', () => {
+        expect(element).not.toContainElement('oryx-address-list');
       });
 
-      it('should render address edit content', () => {
+      it('should render address edit component', () => {
         expect(element).toContainElement('oryx-user-address-edit');
       });
 
@@ -97,25 +87,14 @@ describe('AddressBookComponent', () => {
           element.renderRoot
             .querySelector('oryx-user-address-edit')
             ?.dispatchEvent(new CustomEvent('oryx.back'));
-
-          element.requestUpdate();
-          await elementUpdated(element);
         });
 
-        it('should restore "list" state', () => {
-          expect(element.activeState).toBe(AddressBookState.List);
+        it('should render the list', () => {
+          expect(element).toContainElement('oryx-address-list');
         });
 
-        it('should drop selected address id', async () => {
-          element.activeState = AddressBookState.Add;
-
-          element.requestUpdate();
-          await elementUpdated(element);
-
-          const editComponent = element.renderRoot.querySelector(
-            'oryx-user-address-edit'
-          ) as AddressEditComponent;
-          expect(editComponent.addressId).toBeNull();
+        it('should not render the address edit component', () => {
+          expect(element).not.toContainElement('oryx-user-address-edit');
         });
       });
 
@@ -124,13 +103,14 @@ describe('AddressBookComponent', () => {
           element.renderRoot
             .querySelector('oryx-user-address-edit')
             ?.dispatchEvent(new CustomEvent('oryx.success'));
-
-          element.requestUpdate();
-          await elementUpdated(element);
         });
 
-        it('should restore "list" state', () => {
-          expect(element.activeState).toBe(AddressBookState.List);
+        it('should render the list', () => {
+          expect(element).toContainElement('oryx-address-list');
+        });
+
+        it('should not render the address edit component', () => {
+          expect(element).not.toContainElement('oryx-user-address-edit');
         });
       });
     });
