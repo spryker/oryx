@@ -1,4 +1,4 @@
-import { FormFieldDefinition, FormFieldType } from '@spryker-oryx/form';
+import { FormFieldDefinition } from '@spryker-oryx/form';
 
 export interface AddressForm {
   id: string;
@@ -21,17 +21,3 @@ export interface AddressFormAttributes {
   enableDefaultShipping?: boolean;
   enableDefaultBilling?: boolean;
 }
-
-export const defaultShippingField: FormFieldDefinition = {
-  id: 'isDefaultShipping',
-  type: FormFieldType.Boolean,
-  label: 'form.address.set-as-default-delivery-address',
-  width: 100,
-};
-
-export const defaultBillingField: FormFieldDefinition = {
-  id: 'isDefaultBilling',
-  type: FormFieldType.Boolean,
-  label: 'form.address.set-as-default-billing-address',
-  width: 100,
-};

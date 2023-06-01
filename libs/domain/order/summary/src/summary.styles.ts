@@ -53,13 +53,13 @@ export const styles = css`
 
   hr {
     border: none;
-    border-block-start: 1px solid var(--oryx-color-canvas-300);
+    border-block-start: 1px solid var(--oryx-color-neutral-4);
     margin: 20px 0;
     outline: none;
   }
 
   oryx-icon {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 `;
 

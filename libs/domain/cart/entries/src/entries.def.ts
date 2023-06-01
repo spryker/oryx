@@ -21,10 +21,10 @@ export const cartEntriesComponent = componentDef({
           media: { screen: Size.Sm },
           css: css`
             oryx-cart-entry:first-child {
-              border-top: 1px solid var(--oryx-color-canvas-500);
+              border-top: 1px solid var(--oryx-color-neutral-6);
             }
             oryx-cart-entry:last-child {
-              border-bottom: 1px solid var(--oryx-color-canvas-500);
+              border-bottom: 1px solid var(--oryx-color-neutral-6);
             }
           `,
         },

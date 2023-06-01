@@ -5,4 +5,5 @@ export const productBrandSchema: ContentComponentSchema<ProductBrandComponent> =
   {
     name: 'Product Brand',
     group: 'Product',
+    icon: 'diamond',
   };

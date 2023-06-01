@@ -24,4 +24,11 @@ export interface FacetsOptions {
    * @default 13
    */
   minForSearch?: number;
+
+  /**
+   * Provides a mechanism to bury specific facets, which means that they will not be shown in the
+   * facet navigation. Going forward, we can bury facets for specific categories, by extending this
+   * object with a category.
+   */
+  bury?: { facets: string[] }[];
 }

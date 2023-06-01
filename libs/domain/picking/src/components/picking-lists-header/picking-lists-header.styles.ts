@@ -7,7 +7,7 @@ export const pickingListsHeaderComponentStyles = css`
     padding: 22px;
     gap: 12px;
     box-shadow: var(--oryx-elevation-2) var(--oryx-elevation-color-2);
-    background-color: var(--oryx-color-canvas-100);
+    background-color: var(--oryx-color-neutral-1);
     z-index: 2;
   }
 

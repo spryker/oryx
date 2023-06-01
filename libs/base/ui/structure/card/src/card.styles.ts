@@ -7,7 +7,7 @@ export const styles = css`
       --oryx-card-border-radius,
       var(--oryx-border-radius-medium)
     );
-    color: var(--oryx-color-ink);
+    color: var(--oryx-color-neutral-12);
     background-color: var(--background-color);
   }
 
@@ -20,13 +20,13 @@ export const styles = css`
   }
 
   :host(:not([type='secondary'])) {
-    --background-color: var(--oryx-color-canvas-100);
+    --background-color: var(--oryx-color-neutral-1);
 
     box-shadow: 0 1px 3px var(--oryx-color-elevation);
   }
 
   :host([type='secondary']) {
-    --background-color: var(--oryx-color-canvas-200);
+    --background-color: var(--oryx-color-neutral-3);
   }
 
   :host(:not([type='secondary'])) slot[name='heading'] {
@@ -65,10 +65,10 @@ export const styles = css`
     display: flex;
     align-items: center;
     gap: 8px;
-    border-block-end: 1px solid var(--oryx-color-neutral-200);
+    border-block-end: 1px solid var(--oryx-color-neutral-8);
   }
 
   slot[name='heading']::slotted(oryx-icon) {
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
   }
 `;

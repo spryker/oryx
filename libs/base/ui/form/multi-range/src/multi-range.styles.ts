@@ -1,15 +1,16 @@
+import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
 const disabledThumbStyles = unsafeCSS(`
-  border: 1px solid var(--oryx-color-neutral-200);
+  border: 1px solid var(--oryx-color-neutral-8);
   cursor: default;
 `);
 
 const thumbStyles = unsafeCSS(`
   width: var(--_height);
   height: var(--_height);
-  background: var(--oryx-color-canvas-300);
-  border: 1px solid var(--oryx-color-neutral-300);
+  background: var(--oryx-color-neutral-4);
+  border: 1px solid var(--oryx-color-neutral-9);
   border-radius: 50%;
   cursor: pointer;
 `);
@@ -18,7 +19,7 @@ export const multiRangeStyles = css`
   :host {
     --_height: 24px;
 
-    background: var(--oryx-color-neutral-200);
+    background: var(--oryx-color-neutral-8);
     height: 6px;
     display: grid;
     grid-template-columns: var(--_multi-range-min) 1fr 1fr var(
@@ -82,18 +83,18 @@ export const multiRangeStyles = css`
   }
 
   input:focus::-webkit-slider-thumb {
-    border: 1px solid var(--oryx-color-primary-300);
-    box-shadow: 0 0 3px var(--oryx-color-primary-300);
+    border: 1px solid ${primaryColorBase};
+    box-shadow: 0 0 3px ${primaryColorBase};
   }
 
   .active {
-    background-color: var(--oryx-color-primary-300);
+    background-color: ${primaryColorBase};
     grid-column: 2 / span 2;
     height: inherit;
   }
 
   :host([disabled]) .active {
-    background-color: var(--oryx-color-neutral-200);
+    background-color: var(--oryx-color-neutral-8);
   }
 
   input:disabled {

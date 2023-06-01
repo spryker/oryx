@@ -1,4 +1,5 @@
 import { CompositionLayout } from '@spryker-oryx/experience';
+import { secondaryColorBase } from '@spryker-oryx/utilities';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../constants';
@@ -44,13 +45,9 @@ const Template: Story = (): TemplateResult => {
     </ul>
 
     <oryx-layout layout="grid">
-      <div style="border:5px solid var(--oryx-color-secondary-300">1</div>
-      <div style="margin:10px;background:var(--oryx-color-secondary-300)">
-        2
-      </div>
-      <div style="padding:40px;background:var(--oryx-color-secondary-300)">
-        3
-      </div>
+      <div style="border:5px solid var(--oryx-color-secondary-9)">1</div>
+      <div style="margin:10px;background:${secondaryColorBase}">2</div>
+      <div style="padding:40px;background:${secondaryColorBase}">3</div>
       <div style="outline:1px solid blue;outline-offset: 5px;">4</div>
       ${generateLayoutItems(4, 5)}
     </oryx-layout>
@@ -62,18 +59,12 @@ const Template: Story = (): TemplateResult => {
     </ul>
 
     <oryx-layout layout="grid">
-      <div style="height:100px;background:var(--oryx-color-secondary-300)">
-        1
-      </div>
-      <div style="align-self:center;background:var(--oryx-color-secondary-300)">
+      <div style="height:100px;background:${secondaryColorBase}">1</div>
+      <div style="align-self:center;background:${secondaryColorBase}">
         2 (center)
       </div>
-      <div style="align-self:end;background:var(--oryx-color-secondary-300)">
-        3 (end)
-      </div>
-      <div
-        style="align-self:stretch;background:var(--oryx-color-secondary-300)"
-      >
+      <div style="align-self:end;background:${secondaryColorBase}">3 (end)</div>
+      <div style="align-self:stretch;background:${secondaryColorBase}">
         4 (stretch)
       </div>
       ${generateLayoutItems(6, 5)}
@@ -84,9 +75,7 @@ const Template: Story = (): TemplateResult => {
     </ul>
     <oryx-layout layout="grid">
       <div>1</div>
-      <div style="--col-span:2;background:var(--oryx-color-secondary-300)">
-        2
-      </div>
+      <div style="--col-span:2;background:${secondaryColorBase}">2</div>
       ${generateLayoutItems(4, 3)}
     </oryx-layout>
 
