@@ -194,6 +194,8 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         enableCloseButtonInHeader
         enableCloseByEscape
         enableCloseByBackdrop
+        ?fullscreen=${this.componentOptions.fullscreen}
+        heading=${this.componentOptions.heading}
       >
         ${this.renderComposition()}
       </oryx-modal>

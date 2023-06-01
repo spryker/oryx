@@ -56,14 +56,7 @@ export class PickingListsHeaderComponent extends LitElement {
         />
       </oryx-search>
 
-      <oryx-site-navigation-item
-        uid="user-profile"
-        .options=${{
-          icon: IconTypes.Profile,
-          triggerType: 'icon',
-          contentBehavior: 'modal',
-        }}
-      ></oryx-site-navigation-item>
+      <oryx-picking-user-navigation-item></oryx-picking-user-navigation-item>
     `;
   }
 }

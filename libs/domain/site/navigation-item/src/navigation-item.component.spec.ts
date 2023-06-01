@@ -6,6 +6,7 @@ import {
   navigationButtonComponent,
   SemanticLinkService,
 } from '@spryker-oryx/site';
+import { modalComponent } from '@spryker-oryx/ui/modal';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
@@ -34,6 +35,7 @@ describe('SiteNavigationItemComponent', () => {
     await useComponent([
       siteNavigationItemComponent,
       navigationButtonComponent,
+      modalComponent,
     ]);
   });
 
@@ -199,6 +201,44 @@ describe('SiteNavigationItemComponent', () => {
 
     it('should render oryx-dropdown', () => {
       expect(element).toContainElement('oryx-modal');
+    });
+
+    describe('and fullscreen is true', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-site-navigation-item
+            .options=${{
+              fullscreen: true,
+              contentBehavior: NavigationContentBehavior.Modal,
+            }}
+          ></oryx-site-navigation-item>
+        `);
+      });
+
+      it('should render fullscreen modal', () => {
+        expect(element).toContainElement('oryx-modal[fullscreen]');
+      });
+    });
+
+    describe('and heading is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-site-navigation-item
+            .options=${{
+              heading: 'mock',
+              contentBehavior: NavigationContentBehavior.Modal,
+            }}
+          ></oryx-site-navigation-item>
+        `);
+      });
+
+      it('should render heading text', () => {
+        expect(
+          element.renderRoot
+            .querySelector('oryx-modal')
+            ?.shadowRoot?.querySelector('header')?.innerText
+        ).toContain('mock');
+      });
     });
   });
 
