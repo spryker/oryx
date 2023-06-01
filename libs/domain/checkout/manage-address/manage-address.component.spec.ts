@@ -4,11 +4,11 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ModalComponent } from '@spryker-oryx/ui/modal';
 import { AddressService } from '@spryker-oryx/user';
 import {
-  AddressBookComponent,
   AddressBookState,
   CHANGE_STATE_EVENT,
+  UserAddressBookComponent,
 } from '@spryker-oryx/user/address-book';
-import { AddressRemoveComponent } from '@spryker-oryx/user/address-remove';
+import { UserAddressRemoveComponent } from '@spryker-oryx/user/address-remove';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { ManageAddressComponent } from './manage-address.component';
@@ -33,15 +33,15 @@ describe('ManageAddressComponent', () => {
       'oryx-modal + oryx-modal'
     ) as ModalComponent;
 
-  const getAddressBook = (): AddressBookComponent =>
+  const getAddressBook = (): UserAddressBookComponent =>
     element.renderRoot.querySelector(
       'oryx-user-address-book'
-    ) as AddressBookComponent;
+    ) as UserAddressBookComponent;
 
-  const getAddressRemove = (): AddressRemoveComponent =>
+  const getAddressRemove = (): UserAddressRemoveComponent =>
     element.renderRoot.querySelector(
       'oryx-user-address-remove'
-    ) as AddressRemoveComponent;
+    ) as UserAddressRemoveComponent;
 
   beforeAll(async () => {
     await useComponent(manageAddressComponent);
