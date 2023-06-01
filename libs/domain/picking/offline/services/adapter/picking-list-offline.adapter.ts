@@ -45,9 +45,8 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
             'readonly',
             [pickingListStore, productStore],
             async () => {
-              if (qualifier.id) {
-                const data = await pickingListStore.get(qualifier.id);
-
+              if (qualifier.ids?.length) {
+                const data = await pickingListStore.get(qualifier.ids[0]);
                 if (!data) {
                   return [];
                 }

@@ -44,7 +44,7 @@ export const PickingListMixin = <
     protected pickingList$ = this.pickingListId$.pipe(
       distinctUntilChanged(),
       filter(isDefined),
-      switchMap((id) => this.pickingListService.get({ id })),
+      switchMap((id) => this.pickingListService.get({ ids: [id] })),
       map((list) => list?.[0] ?? null)
     );
 
