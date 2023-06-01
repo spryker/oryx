@@ -43,6 +43,10 @@ describe('Login Suite', () => {
 
       cy.location('pathname').should('be.equal', '/');
       pickingListsFragment.getWrapper().should('be.visible');
+      pickingListsFragment.getSearchIcon().should('be.visible');
+      pickingListsFragment.getUserIcon().should('be.visible');
+      pickingListsFragment.getHeadline().should('contain.text', 'Pick lists');
+      pickingListsFragment.getSortButton().should('be.visible');
     });
   });
 

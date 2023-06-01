@@ -3,15 +3,13 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Address } from '@spryker-oryx/user';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import {
-  asyncState,
+  effect,
   hydratable,
   i18n,
-  observe,
-  valueType,
+  signalProperty,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
-import { BehaviorSubject, tap } from 'rxjs';
+import { state } from 'lit/decorators.js';
 import { AddressBookState, CHANGE_STATE_EVENT } from './address-book.model';
 import { styles } from './address-book.styles';
 
@@ -19,50 +17,23 @@ import { styles } from './address-book.styles';
 export class AddressBookComponent extends ContentMixin(LitElement) {
   static styles = styles;
 
-  @property()
-  activeState = AddressBookState.List;
+  @signalProperty() activeState = AddressBookState.List;
+  @state() selected?: string;
 
-  @observe('activeState')
-  protected activeStateTrigger$ = new BehaviorSubject(this.activeState);
-
-  protected activeState$ = this.activeStateTrigger$.pipe(
-    tap((state) => {
-      if (state === AddressBookState.List) {
-        this.selectedAddressId$.next(null);
-      }
-    })
-  );
-
-  @asyncState()
-  protected state = valueType(this.activeState$);
-
-  protected selectedAddressId$ = new BehaviorSubject<string | null>(null);
-
-  @asyncState()
-  protected selectedAddressId = valueType(this.selectedAddressId$);
-
-  protected onEdit(address: Address): void {
-    this.changeState(AddressBookState.Edit);
-    this.selectedAddressId$.next(address.id as string);
-  }
-
-  protected onCancel(): void {
-    this.changeState(AddressBookState.List);
-  }
-
-  protected changeState(state: AddressBookState): void {
-    this.activeState = state;
-    this.dispatchEvent(
-      new CustomEvent(CHANGE_STATE_EVENT, {
-        detail: { state },
-        composed: true,
-        bubbles: true,
-      })
-    );
-  }
+  protected dispatchStateChange = effect(() => {
+    if (this.activeState) {
+      this.dispatchEvent(
+        new CustomEvent(CHANGE_STATE_EVENT, {
+          detail: { state: this.activeState },
+          composed: true,
+          bubbles: true,
+        })
+      );
+    }
+  });
 
   protected override render(): TemplateResult {
-    if (this.state !== AddressBookState.List) {
+    if (this.activeState !== AddressBookState.List) {
       return this.renderForm();
     }
 
@@ -72,7 +43,7 @@ export class AddressBookComponent extends ContentMixin(LitElement) {
   protected renderAddressList(): TemplateResult {
     return html`
       <oryx-button outline>
-        <button @click=${(): void => this.changeState(AddressBookState.Add)}>
+        <button @click=${() => (this.activeState = AddressBookState.Add)}>
           <oryx-icon .type=${IconTypes.Add}></oryx-icon>
           ${i18n('user.address.add-address')}
         </button>
@@ -92,10 +63,19 @@ export class AddressBookComponent extends ContentMixin(LitElement) {
   protected renderForm(): TemplateResult {
     return html`
       <oryx-user-address-edit
-        .addressId=${this.selectedAddressId}
+        .addressId=${this.selected}
         @oryx.success=${this.onCancel}
         @oryx.back=${this.onCancel}
       ></oryx-user-address-edit>
     `;
+  }
+
+  protected onEdit(address: Address): void {
+    this.activeState = AddressBookState.Edit;
+    this.selected = address.id;
+  }
+
+  protected onCancel(): void {
+    this.activeState = AddressBookState.List;
   }
 }
