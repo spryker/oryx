@@ -1,4 +1,3 @@
-import { BapiAuthFeature } from '@spryker-oryx/application';
 import { AppFeature, coreFeature, PageMetaService } from '@spryker-oryx/core';
 import { ServerPageMetaService } from '@spryker-oryx/core/server';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
@@ -12,6 +11,7 @@ import {
 } from '@spryker-oryx/offline';
 import {
   OfflinePickingFeature,
+  SwAuthFeature,
   SwOfflinePickingFeature,
 } from '@spryker-oryx/picking/offline';
 import { RouterFeature } from '@spryker-oryx/router';
@@ -65,9 +65,7 @@ export function offlineServiceWorkerFulfillmentFeatures(
     new I18nFeature(config?.i18n),
     new IndexedDbFeature(config?.indexedDb),
     new RouterFeature(),
-    new (class extends BapiAuthFeature {
-      plugins = [];
-    })(),
+    new SwAuthFeature(),
     new OfflineServiceWorkerFeature(),
     {
       providers: [
