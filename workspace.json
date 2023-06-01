@@ -23,6 +23,7 @@
     "presets": "libs/template/presets",
     "product": "libs/domain/product",
     "push-notification": "libs/platform/push-notification",
+    "resources": "libs/template/resources",
     "router": "libs/platform/router",
     "search": "libs/domain/search",
     "site": "libs/domain/site",

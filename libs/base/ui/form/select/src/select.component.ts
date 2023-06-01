@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   ClearIconAppearance,
   ClearIconPosition,
@@ -35,7 +36,7 @@ export class SelectComponent
   @property() errorMessage?: string;
   @property() prefixIcon?: string;
   @property({ type: Boolean }) prefixFill?: boolean;
-  @property() suffixIcon?: string = 'dropdown';
+  @property() suffixIcon?: string = IconTypes.Dropdown;
   @property({ type: Boolean }) suffixFill?: boolean;
   @property() searchIcon?: string;
   @property() searchIconPosition?: SearchIconPosition = SearchIconPosition.None;

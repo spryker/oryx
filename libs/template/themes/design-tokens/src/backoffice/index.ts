@@ -10,12 +10,14 @@ import {
 
 import { commonTokensSmall } from '../common-tokens';
 import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
+import { iconTokens } from './icon.token';
 
 export const backofficeTokens: DesignToken[] = [
   {
     color,
     ...tokens,
     ...typographyTokens,
+    ...iconTokens,
     ...layoutTokens,
   },
   {

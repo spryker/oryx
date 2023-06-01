@@ -12,6 +12,7 @@ class MockAddressService implements Partial<AddressService> {
   getAddress = vi.fn().mockReturnValue(of({}));
   updateAddress = vi.fn().mockReturnValue(of(null));
   addAddress = vi.fn().mockReturnValue(of(null));
+  getAddresses = vi.fn();
 }
 
 describe('AddressEditComponent', () => {

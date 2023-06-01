@@ -15,7 +15,7 @@ export const sprykerSfGray: Color = {
     9: '#71747C',
     10: '',
     11: '#4C4C4C',
-    12: '#333333',
+    12: '#121212',
   },
   dark: gray.dark,
 };

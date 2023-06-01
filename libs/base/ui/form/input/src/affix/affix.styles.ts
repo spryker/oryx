@@ -38,7 +38,7 @@ export const affixStyles = css`
 
   :host([prefixFill]) slot[name='prefix'],
   :host([suffixFill]) slot[name='suffix'] {
-    background-color: var(--oryx-color-canvas-200);
+    background-color: var(--oryx-color-neutral-3);
     white-space: nowrap;
   }
 

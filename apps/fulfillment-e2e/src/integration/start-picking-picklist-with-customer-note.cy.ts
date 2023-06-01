@@ -76,7 +76,7 @@ describe('Start picking a picklist with customer note', () => {
 
   describe('and picking is already in progress', () => {
     beforeEach(() => {
-      cy.pickingInProgress();
+      cy.mockPickingInProgress();
 
       customerNoteFragment.getProceedToPickingButton().should('be.visible');
       // eslint-disable-next-line cypress/no-unnecessary-waiting
@@ -92,6 +92,16 @@ describe('Start picking a picklist with customer note', () => {
       customerNoteFragment.pickingInProgressModal
         .getModal()
         .should('contain.text', 'Already in progress');
+    });
+
+    describe('and modal is dismissed', () => {
+      beforeEach(() => {
+        customerNoteFragment.pickingInProgressModal.getOverlay().click();
+      });
+
+      it('should stay on the same page', () => {
+        cy.location('pathname').should('to.match', /^\/customer-note-info/);
+      });
     });
 
     describe('and picking in progress modal is closed', () => {

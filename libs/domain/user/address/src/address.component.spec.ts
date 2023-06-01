@@ -13,6 +13,7 @@ import { addressComponent } from './address.def';
 
 class MockAddressService implements Partial<AddressService> {
   getAddress = vi.fn().mockReturnValue(of(mockCurrentAddress));
+  getAddresses = vi.fn();
 }
 
 describe('AddressComponent', () => {

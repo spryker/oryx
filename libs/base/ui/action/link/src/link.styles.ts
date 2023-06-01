@@ -1,3 +1,4 @@
+import { primaryColorBase, primaryColorDark } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 import { LinkType } from './link.model';
 
@@ -12,7 +13,7 @@ export const linkStyles = css`
   }
 
   :host(:not(${isNeutral})) {
-    color: var(--oryx-link-color, var(--oryx-color-primary-300));
+    color: var(--oryx-link-color, ${primaryColorBase});
   }
 
   :host(${isNeutral}) ::slotted(a) {
@@ -49,24 +50,24 @@ export const linkStyles = css`
 
   :host([disabled]) {
     pointer-events: none;
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   :host(:hover:not([disabled]):not(${isNeutral})) {
-    color: var(--oryx-link-color-hover, var(--oryx-color-primary-400));
+    color: var(--oryx-link-color-hover, ${primaryColorDark});
   }
 
   :host(:not([disabled])) ::slotted(a:active),
   :host(:not([disabled])) ::slotted(a:focus-visible) {
-    background-color: var(--oryx-color-canvas-200);
+    background-color: var(--oryx-color-neutral-3);
   }
 
   :host(:not([disabled])) ::slotted(a:active) {
-    border: solid 1px var(--oryx-color-canvas-100);
+    border: solid 1px var(--oryx-color-neutral-1);
   }
 
   :host(:not([disabled])) ::slotted(a:focus-visible) {
-    box-shadow: 0 0 3px var(--oryx-color-primary-300);
+    box-shadow: 0 0 3px ${primaryColorBase};
   }
 
   /* additional space at the start whenever an icon is available */
@@ -76,10 +77,10 @@ export const linkStyles = css`
   }
 
   :host([linktype='external']:not([disabled])) {
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
   }
 
   :host([linktype='external']:hover) {
-    color: var(--oryx-color-ink);
+    color: var(--oryx-color-neutral-12);
   }
 `;

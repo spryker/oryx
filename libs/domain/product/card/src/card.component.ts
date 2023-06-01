@@ -8,6 +8,7 @@ import {
 } from '@spryker-oryx/product';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
   effect,
@@ -93,7 +94,7 @@ export class ProductCardComponent extends ProductMixin(
             aria-label="add-to-favorites"
             @click=${(e: Event) => e.preventDefault()}
           >
-            <oryx-icon type="wishlist"></oryx-icon>
+            <oryx-icon .type=${IconTypes.Wishlist}></oryx-icon>
           </button>
         </oryx-icon-button>
       </div>`;

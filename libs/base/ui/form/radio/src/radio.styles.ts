@@ -1,4 +1,8 @@
-import { screenCss } from '@spryker-oryx/utilities';
+import {
+  primaryColorBase,
+  primaryColorDark,
+  screenCss,
+} from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const baseStyles = css`
@@ -14,14 +18,14 @@ export const baseStyles = css`
     margin: 0;
     padding: 2px;
     border: solid 2px currentColor;
-    color: var(--oryx-color-neutral-200);
+    color: var(--oryx-color-neutral-8);
   }
 
   ::slotted(input:checked) {
     background-clip: content-box;
     /* stylelint-disable-next-line */
     background-image: linear-gradient(currentColor 0%, currentColor 100%);
-    color: var(--oryx-color-primary-300);
+    color: ${primaryColorBase};
   }
 
   :not(slot[name='subtext'])::slotted(*) {
@@ -42,7 +46,7 @@ export const baseStyles = css`
   }
 
   ::slotted(input:hover) {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   ::slotted(input:focus-visible) {
@@ -52,24 +56,24 @@ export const baseStyles = css`
   }
 
   :host([hasError]) ::slotted(input:focus-visible) {
-    border-color: var(--oryx-color-error-300);
+    border-color: var(--oryx-color-error-9);
   }
 
   ::slotted(input:disabled),
   ::slotted(input:checked:disabled) {
-    background-color: var(--oryx-color-canvas-200);
-    color: var(--oryx-color-neutral-300);
-    border-color: var(--oryx-color-canvas-500);
+    background-color: var(--oryx-color-neutral-3);
+    color: var(--oryx-color-neutral-9);
+    border-color: var(--oryx-color-neutral-6);
     pointer-events: none;
   }
 
   ::slotted(input:checked:hover) {
-    color: var(--oryx-color-primary-400);
+    color: ${primaryColorDark};
   }
 
   :host([hasError]) ::slotted(input),
   :host([hasError]) ::slotted(input:checked) {
-    border-color: var(--oryx-color-error-300);
+    border-color: var(--oryx-color-error-9);
   }
 `;
 

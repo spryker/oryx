@@ -1,4 +1,4 @@
-import { screenCss } from '@spryker-oryx/utilities';
+import { primaryColorBase, screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const baseStyles = css`
@@ -7,8 +7,8 @@ export const baseStyles = css`
     flex: 1 0 auto;
     min-height: 46px;
     min-width: 90px;
-    border-block-end: 2px solid var(--oryx-color-canvas-500);
-    color: var(--oryx-color-neutral-300);
+    border-block-end: 2px solid var(--oryx-color-neutral-6);
+    color: var(--oryx-color-neutral-9);
     background: none;
     line-height: var(--oryx-line-height-base);
     padding: 0 24px;
@@ -21,29 +21,29 @@ export const baseStyles = css`
   }
 
   :host(:not([selected]):hover) {
-    color: var(--oryx-color-ink);
-    border-color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-12);
+    border-color: var(--oryx-color-neutral-11);
   }
 
   :host([selected]) {
-    border-color: var(--oryx-color-primary-300);
-    color: var(--oryx-color-primary-300);
+    border-color: ${primaryColorBase};
+    color: ${primaryColorBase};
   }
 
   :host([selected][error]) {
-    border-color: var(--oryx-color-error-300);
-    color: var(--oryx-color-error-300);
+    border-color: var(--oryx-color-error-9);
+    color: var(--oryx-color-error-9);
   }
 
   :host(:not([selected])[error]:hover) {
-    color: var(--oryx-color-error-300);
+    color: var(--oryx-color-error-9);
     background: none;
-    border-color: var(--oryx-color-neutral-400);
+    border-color: var(--oryx-color-neutral-11);
   }
 
   :host(:not([selected])[error]) {
-    border-color: var(--oryx-color-canvas-500);
-    color: var(--oryx-color-error-300);
+    border-color: var(--oryx-color-neutral-6);
+    color: var(--oryx-color-error-9);
   }
 `;
 

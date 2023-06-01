@@ -1,5 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { errorMessageComponent } from './component';
 import { ErrorMessageComponent } from './error-message.component';
@@ -28,10 +29,10 @@ describe('ErrorMessageComponent', () => {
       await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
-    it('should render an error icon', () => {
-      expect(
-        element?.shadowRoot?.querySelector('oryx-icon[type=warning]')
-      ).not.toBeNull();
+    it('should render an IconTypes.Warning icon', () => {
+      const icon = element?.shadowRoot?.querySelector(`oryx-icon`);
+      expect(icon).not.toBeNull();
+      expect(icon).toHaveProperty('type', IconTypes.Warning);
     });
 
     it('should render the message', () => {
