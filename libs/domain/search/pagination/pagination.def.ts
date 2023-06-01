@@ -1,16 +1,18 @@
 import { componentDef } from '@spryker-oryx/core';
-import { PaginationOptions } from './pagination.model';
+import { SearchPaginationOptions } from './pagination.model';
 
 declare global {
   interface FeatureOptions {
-    'oryx-search-pagination'?: PaginationOptions;
+    'oryx-search-pagination'?: SearchPaginationOptions;
   }
 }
 
-export const paginationComponent = componentDef({
+export const searchPaginationComponent = componentDef({
   name: 'oryx-search-pagination',
   impl: () =>
-    import('./pagination.component').then((m) => m.PaginationComponent),
+    import('./pagination.component').then((m) => m.SearchPaginationComponent),
   schema: () =>
-    import('./pagination.schema').then((m) => m.paginationComponentSchema),
+    import('./pagination.schema').then(
+      (m) => m.searchPaginationComponentSchema
+    ),
 });

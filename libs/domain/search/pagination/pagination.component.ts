@@ -1,9 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import {
-  ContentController,
-  ContentMixin,
-  defaultOptions,
-} from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   ProductListPageService,
   ProductListQualifier,
@@ -11,31 +7,26 @@ import {
 import { hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { TemplateResult } from 'lit/development';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import urlJoin from 'url-join';
-import { PaginationOptions } from './pagination.model';
+import { SearchPaginationOptions } from './pagination.model';
 
 @defaultOptions({ max: 3, enableControls: true })
 @hydratable('window:load')
-export class PaginationComponent extends ContentMixin<
-  PaginationOptions & ProductListQualifier
+export class SearchPaginationComponent extends ContentMixin<
+  SearchPaginationOptions & ProductListQualifier
 >(LitElement) {
-  protected options$ = new ContentController(this).getOptions();
-
   protected productListPageService = resolve(ProductListPageService);
 
-  protected $pagination = signal(
-    resolve(ProductListPageService).getPagination()
-  );
+  protected pagination = signal(this.productListPageService.getPagination());
 
   protected override render(): TemplateResult {
     const { max, enableControls } = this.$options();
-    const { currentPage, maxPage } = this.$pagination() ?? {};
+    const { currentPage, maxPage } = this.pagination() ?? {};
 
     return html`
       <oryx-pagination
-        max=${ifDefined(max)}
-        current=${ifDefined(currentPage)}
+        .max=${max}
+        .current=${currentPage}
         ?enableNavigation=${enableControls}
       >
         ${[...Array(maxPage || 1).keys()].map(

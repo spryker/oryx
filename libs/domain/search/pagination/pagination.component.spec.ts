@@ -5,11 +5,11 @@ import { Pagination, ProductListPageService } from '@spryker-oryx/product';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
-import { PaginationComponent } from './pagination.component';
-import { paginationComponent } from './pagination.def';
-import { PaginationOptions } from './pagination.model';
+import { SearchPaginationComponent } from './pagination.component';
+import { searchPaginationComponent } from './pagination.def';
+import { SearchPaginationOptions } from './pagination.model';
 
-const options: PaginationOptions = {
+const options: SearchPaginationOptions = {
   max: 4,
   enableControls: false,
 };
@@ -25,11 +25,11 @@ class MockProductListPageService implements Partial<ProductListPageService> {
   getPagination = vi.fn().mockReturnValue(of(mockPagination));
 }
 
-describe('PaginationComponent', () => {
-  let element: PaginationComponent;
+describe('SearchPaginationComponent', () => {
+  let element: SearchPaginationComponent;
 
   beforeAll(async () => {
-    await useComponent(paginationComponent);
+    await useComponent(searchPaginationComponent);
   });
 
   beforeEach(async () => {
@@ -52,7 +52,7 @@ describe('PaginationComponent', () => {
   });
 
   it('is defined', () => {
-    expect(element).toBeInstanceOf(PaginationComponent);
+    expect(element).toBeInstanceOf(SearchPaginationComponent);
   });
 
   it('passes the a11y audit', async () => {
