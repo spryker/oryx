@@ -145,7 +145,7 @@ describe('PickingListOfflineAdapter', () => {
 
     describe('and qualifier has an id', () => {
       it('should get picking list store by id', () => {
-        adapter.get({ id: 'mockid' }).subscribe();
+        adapter.get({ ids: ['mockid'] }).subscribe();
 
         expect(mockTable.get).toHaveBeenCalledWith('mockid');
       });
@@ -153,7 +153,7 @@ describe('PickingListOfflineAdapter', () => {
       describe('and store is empty', () => {
         beforeEach(() => {
           mockTable.get.mockReturnValue(undefined);
-          adapter.get({ id: 'mockid' }).subscribe(callback);
+          adapter.get({ ids: ['mockid'] }).subscribe(callback);
         });
 
         it('should return empty array', async () => {
