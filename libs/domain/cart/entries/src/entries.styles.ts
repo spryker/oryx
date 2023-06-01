@@ -9,7 +9,7 @@ export const cartEntriesStyles = css`
   }
 
   oryx-cart-entry:not(:last-child) {
-    border-block-end: 1px solid var(--oryx-color-canvas-500);
+    border-block-end: 1px solid var(--oryx-color-neutral-6);
   }
 
   section.empty {
@@ -19,7 +19,7 @@ export const cartEntriesStyles = css`
     flex-direction: column;
     align-items: center;
     padding: var(--oryx-space-4);
-    background: var(--oryx-color-canvas-200);
+    background: var(--oryx-color-neutral-3);
   }
 
   section p {

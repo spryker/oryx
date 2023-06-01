@@ -1,3 +1,4 @@
+export * from '../src/colors';
 export * from '../src/directives';
 export * from '../src/guards';
 export * from '../src/injectables';

@@ -27,12 +27,12 @@ export const pickingProductCardComponentStyles = css`
     font-size: 12px;
     line-height: 16px;
     letter-spacing: 0.01em;
-    color: var(--oryx-color-ink);
+    color: var(--oryx-color-neutral-12);
   }
 
   oryx-image {
     display: block;
-    fill: var(--oryx-color-ink);
+    fill: var(--oryx-color-neutral-12);
     height: 106px;
     margin-block-start: 5px;
     object-fit: cover;
@@ -53,7 +53,7 @@ export const pickingProductCardComponentStyles = css`
     font-size: 12px;
     line-height: 16px;
     letter-spacing: 0.01em;
-    color: var(--oryx-color-ink);
+    color: var(--oryx-color-neutral-12);
   }
 
   p {

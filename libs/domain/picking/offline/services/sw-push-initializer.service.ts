@@ -25,7 +25,7 @@ export class SwPushInitializerService implements AppInitializer {
         throw new Error('SwPushInitializerService: No data in push event');
       }
 
-      const payload: PushSyncPayload = event.data?.json();
+      const payload: PushSyncPayload = event.data.json();
 
       event.waitUntil(
         firstValueFrom(

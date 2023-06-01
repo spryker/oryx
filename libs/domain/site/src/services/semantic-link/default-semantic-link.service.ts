@@ -1,3 +1,5 @@
+import { inject } from '@spryker-oryx/di';
+import { BASE_ROUTE } from '@spryker-oryx/router';
 import { Observable, of, throwError } from 'rxjs';
 import {
   SemanticLink,
@@ -29,11 +31,13 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
       `/order/${encodeURIComponent(link.id ?? '')}`,
   };
 
+  protected baseRoute = inject(BASE_ROUTE, '');
+
   get(link: SemanticLink): Observable<string | undefined> {
     if (!this.types[link.type]) {
       return throwError(() => new Error('Link type is not supported'));
     }
-    return of(this.types[link.type]?.(link));
+    return of(this.baseRoute + this.types[link.type]?.(link));
   }
 
   private getUrlParams(params: Record<string, string>): string {

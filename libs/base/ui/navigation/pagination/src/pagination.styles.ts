@@ -1,3 +1,4 @@
+import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
 const navSize = unsafeCSS('36px');
@@ -32,9 +33,9 @@ export const paginationStyles = css`
 
   ::slotted(*),
   a {
-    border: 1px solid var(--oryx-color-canvas-500);
+    border: 1px solid var(--oryx-color-neutral-6);
     border-radius: var(--oryx-border-radius-small);
-    background: var(--oryx-color-canvas-100);
+    background: var(--oryx-color-neutral-1);
     transition: var(--oryx-transition-time);
     overflow: hidden;
     white-space: nowrap;
@@ -53,19 +54,19 @@ export const paginationStyles = css`
   }
 
   ::slotted(*) {
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
   }
 
   ::slotted(*[disabled]) {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   a {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   a[disabled] {
-    color: var(--oryx-color-neutral-200);
+    color: var(--oryx-color-neutral-8);
   }
 
   slot[name='truncated'] * {
@@ -119,7 +120,7 @@ export const paginationStyles = css`
   ::slotted(*:hover),
   a:not([truncated]):hover {
     transition: var(--oryx-transition-time);
-    border-color: var(--oryx-color-neutral-200);
+    border-color: var(--oryx-color-neutral-8);
   }
 
   ::slotted(*[active]),
@@ -127,7 +128,7 @@ export const paginationStyles = css`
   ::slotted(*:focus-visible),
   a:not([truncated]):active,
   a:not([truncated]):focus-visible {
-    border-color: var(--oryx-color-primary-300);
+    border-color: ${primaryColorBase};
   }
 
   ::slotted(*[active]),
@@ -139,18 +140,18 @@ export const paginationStyles = css`
   ::slotted(*[active]),
   ::slotted(*:active),
   a:not([truncated]):active {
-    color: var(--oryx-color-canvas-100);
-    background: var(--oryx-color-primary-300);
+    color: var(--oryx-color-neutral-1);
+    background: ${primaryColorBase};
   }
 
   ::slotted(*:focus-visible),
   *:focus-visible {
-    box-shadow: 0 0 3px var(--oryx-color-primary-300);
+    box-shadow: 0 0 3px ${primaryColorBase};
   }
 
   ::slotted(*[disabled]),
   a[disabled] {
-    background-color: var(--oryx-color-canvas-200);
+    background-color: var(--oryx-color-neutral-3);
   }
 
   slot[name='previous'] oryx-icon {

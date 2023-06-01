@@ -1,4 +1,4 @@
-import { screenCss } from '@spryker-oryx/utilities';
+import { primaryColorBase, screenCss } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 import { TabsAppearance } from './tabs.model';
 
@@ -17,9 +17,9 @@ export const baseStyles = css`
 
   :host([sticky]) slot:not([name]) {
     position: sticky;
-    inset-block-start: 0;
+    inset-block-start: var(--sticky-offset, 0);
     z-index: 1;
-    background-color: var(--oryx-color-canvas-100);
+    background-color: var(--oryx-color-neutral-1);
   }
 
   slot:not([name])::-webkit-scrollbar {
@@ -27,7 +27,7 @@ export const baseStyles = css`
   }
 
   :host([shadow]) slot:not([name]) {
-    box-shadow: 0 4px 8px var(--oryx-color-canvas-200);
+    box-shadow: 0 4px 8px var(--oryx-color-neutral-3);
   }
 
   input[type='range'] {
@@ -56,42 +56,42 @@ export const baseStyles = css`
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab) {
-    color: var(--oryx-color-ink);
-    background: var(--oryx-color-canvas-200);
+    color: var(--oryx-color-neutral-12);
+    background: var(--oryx-color-neutral-3);
     border-block-start: 2px solid transparent;
     border-block-end: none;
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab:hover) {
-    color: var(--oryx-color-ink);
+    color: var(--oryx-color-neutral-12);
     background: none;
-    border-color: var(--oryx-color-neutral-400);
+    border-color: var(--oryx-color-neutral-11);
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[selected]) {
-    color: var(--oryx-color-primary-300);
+    color: ${primaryColorBase};
     background: none;
-    border-color: var(--oryx-color-primary-300);
+    border-color: ${primaryColorBase};
     border-block-end: none;
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[error]) {
-    color: var(--oryx-color-error-300);
-    background: var(--oryx-color-canvas-200);
+    color: var(--oryx-color-error-9);
+    background: var(--oryx-color-neutral-3);
     border-color: transparent;
     border-block-end: none;
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[error]:hover) {
-    color: var(--oryx-color-error-300);
+    color: var(--oryx-color-error-9);
     background: none;
-    border-color: var(--oryx-color-neutral-400);
+    border-color: var(--oryx-color-neutral-11);
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[error][selected]) {
-    color: var(--oryx-color-error-300);
+    color: var(--oryx-color-error-9);
     background: none;
-    border-color: var(--oryx-color-error-300);
+    border-color: var(--oryx-color-error-9);
     border-block-end: none;
   }
 

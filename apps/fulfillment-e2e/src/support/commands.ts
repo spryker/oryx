@@ -8,7 +8,7 @@ declare global {
       login(user?: TestUserData): Chainable<void>;
       clearIndexedDB(): void;
       waitForIndexedDB(): void;
-      pickingInProgress(): void;
+      mockPickingInProgress(): void;
     }
   }
 }
@@ -95,7 +95,7 @@ Cypress.Commands.add('waitForIndexedDB', () => {
   });
 });
 
-Cypress.Commands.add('pickingInProgress', () => {
+Cypress.Commands.add('mockPickingInProgress', () => {
   cy.intercept('PATCH', '**/picking-lists/*', {
     statusCode: 409,
     body: {

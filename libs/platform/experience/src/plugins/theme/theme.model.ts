@@ -85,7 +85,7 @@ export interface ThemeIcons {
 export type ThemeDesignTokens = LazyLoadable<DesignToken[]>;
 
 export interface Theme {
-  name: string;
+  name?: string;
   breakpoints?: Breakpoints;
   designTokens?: ThemeDesignTokens;
   icons?: ThemeIcons;

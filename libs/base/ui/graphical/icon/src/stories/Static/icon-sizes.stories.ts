@@ -12,7 +12,7 @@ const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <style>
       oryx-icon {
-        border: solid 1px var(--oryx-color-ink);
+        border: solid 1px var(--oryx-color-neutral-12);
       }
     </style>
     <h1>Icon size by attribute</h1>

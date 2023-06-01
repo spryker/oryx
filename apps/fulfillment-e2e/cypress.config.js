@@ -12,7 +12,8 @@ module.exports = defineConfig({
   chromeWebSecurity: false,
   includeShadowDom: true,
   pageLoadTimeout: 180000,
-  viewportWidth: 500,
+  viewportWidth: 390,
+  viewportHeight: 844,
   e2e: {
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
@@ -22,5 +23,7 @@ module.exports = defineConfig({
   },
   env: {
     ORYX_FULFILLMENT_BACKEND_URL: process.env.ORYX_FULFILLMENT_BACKEND_URL,
+    ORYX_FULFILLMENT_PUBLIC_VAPID_KEY:
+      process.env.ORYX_FULFILLMENT_PUBLIC_VAPID_KEY,
   },
 });

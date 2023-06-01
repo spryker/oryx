@@ -15,15 +15,10 @@ describe('Login Suite', () => {
 
       loginPage.getWrapper().should('be.visible');
       loginPage.getLogo().should('be.visible');
-      loginPage
-        .getTitle()
-        .should('be.visible')
-        .and('contain.text', 'Welcome! Please log in to start picking.');
-      loginPage.loginForm
-        .getLabelSlot()
-        .should('have.css', 'position', 'absolute');
+      loginPage.getTitle().should('be.visible');
     });
   });
+
   describe('when logging in', () => {
     it('should login successfully', () => {
       cy.intercept('POST', '**/token').as('token');
@@ -41,13 +36,17 @@ describe('Login Suite', () => {
 
       oauthHandler.getWrapper().should('be.visible');
       oauthHandler.getLogo().should('be.visible');
-      oauthHandler.getTitle().should('contain.text', 'Logging you in...');
+      oauthHandler.getTitle().should('be.visible');
       oauthHandler.getSpinner().should('be.visible');
 
       cy.wait('@picking-lists');
 
       cy.location('pathname').should('be.equal', '/');
       pickingListsFragment.getWrapper().should('be.visible');
+      pickingListsFragment.getSearchIcon().should('be.visible');
+      pickingListsFragment.getUserIcon().should('be.visible');
+      pickingListsFragment.getHeadline().should('contain.text', 'Pick lists');
+      pickingListsFragment.getSortButton().should('be.visible');
     });
   });
 

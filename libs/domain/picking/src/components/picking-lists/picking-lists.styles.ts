@@ -4,7 +4,7 @@ export const pickingListsComponentStyles = css`
   :host {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
   }
 
   section {
