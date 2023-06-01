@@ -32,9 +32,9 @@ describe('CustomerNoteModal', () => {
     const noteText = 'note text';
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-customer-note-modal
-          note=${noteText}
-        ></oryx-customer-note-modal>`
+        html`<oryx-customer-note-modal open>
+          ${noteText}
+        </oryx-customer-note-modal>`
       );
     });
 
@@ -46,8 +46,8 @@ describe('CustomerNoteModal', () => {
       expect(getModal()?.hasAttribute('open')).toBe(true);
     });
 
-    it('should contain the note', () => {
-      expect(getModal()?.textContent).contains(noteText);
+    it('should contain the text', () => {
+      expect(element?.textContent?.trim()).toBe(noteText);
     });
 
     describe('and close event is triggered', () => {

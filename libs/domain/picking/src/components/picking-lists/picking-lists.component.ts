@@ -53,9 +53,11 @@ export class PickingListsComponent extends LitElement {
       ></oryx-picking-in-progress-modal>
 
       <oryx-customer-note-modal
-        .note=${this.customerNote}
+        ?open=${!!this.customerNote}
         @oryx.close=${this.closeCustomerNoteModal}
-      ></oryx-customer-note-modal>`;
+      >
+        ${this.customerNote}
+      </oryx-customer-note-modal>`;
   }
 
   protected renderPickingLists(): TemplateResult {

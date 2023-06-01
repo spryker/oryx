@@ -102,14 +102,14 @@ describe('PickingListsComponent', () => {
 
       it('should show customer note modal', () => {
         element.addEventListener('oryx.show-note', () => {
-          expect(getCustomerNoteModal()?.note).toBe(customerNoteText);
+          expect(getCustomerNoteModal()?.open).toBe(true);
         });
       });
 
       it(`should close modal when it emits ${CLOSE_EVENT} event`, () => {
         element.addEventListener('oryx.show-note', () => {
           getCustomerNoteModal()?.dispatchEvent(new CustomEvent(CLOSE_EVENT));
-          expect(getCustomerNoteModal()?.note).toBe(false);
+          expect(getCustomerNoteModal()?.open).toBe(false);
         });
       });
     });

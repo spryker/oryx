@@ -6,7 +6,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 
 export class CustomerNoteModalComponent extends LitElement {
-  @property() note?: string;
+  @property({ type: Boolean }) open?: boolean;
 
   protected close(): void {
     this.dispatchEvent(
@@ -19,16 +19,11 @@ export class CustomerNoteModalComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-modal
-        ?open=${!!this.note}
-        enableFooter
-        footerButtonFullWidth
-        @oryx.close=${this.close}
-      >
+      <oryx-modal ?open=${this.open} enableFooter footerButtonFullWidth>
         <oryx-heading slot="heading">
           <h2>${i18n('picking-lists.customer-note.customer-note')}</h2>
         </oryx-heading>
-        ${this.note}
+        <slot></slot>
         <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
           <button @click=${this.close}>
             <oryx-icon .type=${IconTypes.Mark}></oryx-icon>

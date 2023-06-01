@@ -26,9 +26,10 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
             </button>
           </oryx-icon-button>
           <oryx-customer-note-modal
-            .note=${this.isCartNoteVisible && this.pickingList?.cartNote}
+            ?open=${this.isCartNoteVisible}
             @oryx.close=${() => (this.isCartNoteVisible = false)}
           >
+            ${this.isCartNoteVisible && this.pickingList?.cartNote}
           </oryx-customer-note-modal>
         `
       : ''}`;

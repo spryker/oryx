@@ -6,7 +6,6 @@ import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { beforeEach } from 'vitest';
 import { PickingListService } from '../../services';
 import { PickingHeaderComponent } from './picking-header.component';
 import { pickingHeaderComponent } from './picking-header.def';
@@ -110,7 +109,8 @@ describe('PickingHeaderComponent', () => {
     });
 
     it('should provide the note text to customer-note-modal component', () => {
-      expect(getCustomerNoteModal()?.note).toBe(
+      expect(getCustomerNoteModal()?.open).toBe(true);
+      expect(getCustomerNoteModal()?.textContent?.trim()).toBe(
         mockPickingListData[0].cartNote
       );
     });
