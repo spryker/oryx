@@ -1,4 +1,5 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -12,13 +13,12 @@ export class PaginationComponent
 {
   static styles = [paginationStyles];
 
-  @property({ type: Boolean, reflect: true }) hideNavigation?: boolean;
+  @property({ type: Boolean, reflect: true }) enableNavigation?: boolean;
   @property({ type: Number }) max = 5;
   @property({ type: Number }) current = 1;
-  @property() previousLabel = 'Previous page';
-  @property() nextLabel = 'Next page';
+  @property() previousLabel = i18n('oryx.pagination.previous-page');
+  @property() nextLabel = i18n('oryx.pagination.next-page');
   @queryAssignedElements({}) pages?: Array<HTMLElement>;
-  protected requiresUpdate = true;
 
   protected controller = new PaginationController(this);
 
@@ -27,13 +27,13 @@ export class PaginationComponent
 
   protected override render(): TemplateResult {
     return html`
-      ${when(!this.hideNavigation, () =>
+      ${when(this.enableNavigation, () =>
         this.renderNav('previous', this.controller.getPrevious(this.pages))
       )}
 
       <slot @slotchange=${this.updatePages}></slot>
 
-      ${when(!this.hideNavigation, () =>
+      ${when(this.enableNavigation, () =>
         this.renderNav('next', this.controller.getNext(this.pages))
       )}
       ${this.renderTruncated()} ${this.renderTruncated()}
@@ -52,8 +52,8 @@ export class PaginationComponent
         ?disabled=${!nav}
         ?inert=${!nav}
       >
-        <slot .name=${direction}>
-          <oryx-icon .type=${IconTypes.NavigationArrow}></oryx-icon>
+        <slot name=${direction}>
+          <oryx-icon type=${IconTypes.NavigationArrow}></oryx-icon>
         </slot>
       </a>
     `;
@@ -77,19 +77,16 @@ export class PaginationComponent
   }
 
   protected onClick(event: MouseEvent, element?: HTMLElement): void {
-    if (!(event.ctrlKey || event.metaKey)) {
-      event.preventDefault();
-      element?.click();
+    if (event.ctrlKey || event.metaKey) {
+      return;
     }
+
+    event.preventDefault();
+    element?.click();
   }
 
   protected updatePages(): void {
     this.isEmpty = !this.pages || this.pages?.length < 2;
-
-    if (this.requiresUpdate) {
-      this.requestUpdate();
-      this.requiresUpdate = false;
-    }
 
     this.controller.paginate(this.pages);
   }

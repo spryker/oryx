@@ -1,4 +1,4 @@
-export interface PaginationOptions {
+export interface SearchPaginationOptions {
   /**
    * The maximum number of items to display per page.
    */

@@ -5,6 +5,7 @@ import { PickingConfig, providePickingConfig } from './config.provider';
 import {
   customerNoteComponent,
   customerNoteModalComponent,
+  discardModalComponent,
   filterButtonComponent,
   filtersComponent,
   loginPageComponent,
@@ -31,6 +32,7 @@ import {
 export const pickingComponents = [
   customerNoteComponent,
   customerNoteModalComponent,
+  discardModalComponent,
   filterButtonComponent,
   filtersComponent,
   loginPageComponent,

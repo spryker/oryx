@@ -2,14 +2,15 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { Pagination, ProductListPageService } from '@spryker-oryx/product';
+import { PaginationComponent } from '@spryker-oryx/ui/pagination';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
-import { PaginationComponent } from './pagination.component';
-import { paginationComponent } from './pagination.def';
-import { PaginationOptions } from './pagination.model';
+import { SearchPaginationComponent } from './pagination.component';
+import { searchPaginationComponent } from './pagination.def';
+import { SearchPaginationOptions } from './pagination.model';
 
-const options: PaginationOptions = {
+const options: SearchPaginationOptions = {
   max: 4,
   enableControls: false,
 };
@@ -25,11 +26,14 @@ class MockProductListPageService implements Partial<ProductListPageService> {
   getPagination = vi.fn().mockReturnValue(of(mockPagination));
 }
 
-describe('PaginationComponent', () => {
-  let element: PaginationComponent;
+describe('SearchPaginationComponent', () => {
+  let element: SearchPaginationComponent;
+
+  const getPagination = () =>
+    element.renderRoot.querySelector<PaginationComponent>('oryx-pagination');
 
   beforeAll(async () => {
-    await useComponent(paginationComponent);
+    await useComponent(searchPaginationComponent);
   });
 
   beforeEach(async () => {
@@ -52,7 +56,7 @@ describe('PaginationComponent', () => {
   });
 
   it('is defined', () => {
-    expect(element).toBeInstanceOf(PaginationComponent);
+    expect(element).toBeInstanceOf(SearchPaginationComponent);
   });
 
   it('passes the a11y audit', async () => {
@@ -80,22 +84,11 @@ describe('PaginationComponent', () => {
   });
 
   it('should set current page', () => {
-    const current = element.renderRoot
-      .querySelector('oryx-pagination')
-      ?.getAttribute('current');
-
-    expect(Number(current)).toBe(mockPagination.currentPage);
+    expect(getPagination()?.current).toBe(mockPagination.currentPage);
   });
 
   it('should pass the specified options to oryx-pagination component', () => {
-    const max = element.renderRoot
-      .querySelector('oryx-pagination')
-      ?.getAttribute('max');
-    const isHideNavigationAttribute = element.renderRoot
-      .querySelector('oryx-pagination')
-      ?.hasAttribute('hideNavigation');
-
-    expect(Number(max)).toBe(options.max);
-    expect(isHideNavigationAttribute).toBe(true);
+    expect(getPagination()?.max).toBe(options.max);
+    expect(getPagination()?.hasAttribute('enableNavigation')).toBe(false);
   });
 });

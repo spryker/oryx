@@ -1,16 +1,17 @@
+import { wait } from '@spryker-oryx/utilities';
 import { expect } from '@storybook/jest';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
-
-import { PaginationComponent, PaginationProperties } from '../../index';
+import { storybookPrefix } from '../../../../.constants';
+import { PaginationComponent } from '../../pagination.component';
+import { PaginationProperties } from '../../pagination.model';
 
 export default {
   title: `${storybookPrefix}/Navigations/Pagination/Interactive`,
 } as Meta;
 
 const Template: Story<PaginationProperties> = (): TemplateResult => {
-  return html`<oryx-pagination>
+  return html`<oryx-pagination enableNavigation>
     ${Array.from(new Array(10).keys()).map((key) => {
       return html`<a tabindex="0">${key + 1}</a>`;
     })}
@@ -23,13 +24,13 @@ PaginationInteractive.play = async (obj: {
   args: PaginationProperties;
   canvasElement: HTMLElement;
 }): Promise<void> => {
-  const wait = (ms: number): Promise<void> =>
-    new Promise((resolve) => setTimeout(resolve, ms));
+  await customElements.whenDefined('oryx-pagination');
 
   const component = obj.canvasElement.querySelector(
     'oryx-pagination'
   ) as PaginationComponent;
 
+  component.requestUpdate();
   await component.updateComplete;
 
   const nextPageArrow = component.shadowRoot?.querySelector(

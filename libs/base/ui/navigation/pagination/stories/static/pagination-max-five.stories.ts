@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
+import { storybookPrefix } from '../../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Navigations/Pagination/Static`,
@@ -14,6 +14,7 @@ const Template: Story<unknown> = (): TemplateResult => {
           <oryx-pagination
             current=${i + 1}
             max="5"
+            enableNavigation
             @click=${(e: PointerEvent): void => e.preventDefault()}
           >
             ${Array.from(new Array(10).keys()).map((key) => {
