@@ -24,10 +24,10 @@ export interface FormRenderer {
    *
    */
   buildForm(
-    data: FormFieldDefinition[],
+    data?: FormFieldDefinition[],
     values?: FormValues,
     keyFn?: (field: FormFieldDefinition) => string
-  ): TemplateResult;
+  ): TemplateResult | void;
 
   buildField(
     field: FormFieldDefinition,

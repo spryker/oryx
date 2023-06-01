@@ -1,10 +1,8 @@
-import {
-  backofficeNgResources,
-  backofficeResources,
-  fesResources,
-  fulfillmentResources,
-  storefrontResources,
-} from '@spryker-oryx/presets';
+import { backofficeResources } from '@spryker-oryx/presets/backoffice';
+import { backofficeNgResources } from '@spryker-oryx/presets/backoffice-ng';
+import { fesResources } from '@spryker-oryx/presets/fes';
+import { fulfillmentResources } from '@spryker-oryx/presets/fulfillment';
+import { storefrontResources } from '@spryker-oryx/presets/storefront';
 import {
   backofficeNgTheme,
   backofficeTheme,

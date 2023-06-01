@@ -21,10 +21,24 @@ export declare class ContentMixinInterface<OptionsType, ContentType>
 
   protected data: { options: OptionsType; content: ContentType };
 
+  /**
+   * @deprecated
+   */
   protected options$: Observable<OptionsType>;
+
+  /**
+   * @deprecated
+   */
   protected content$: Observable<ContentType>;
 
+  /**
+   * @deprecated
+   */
   protected componentOptions: OptionsType;
+
+  /**
+   * @deprecated
+   */
   protected componentContent: ContentType;
 
   protected $options: Signal<OptionsType>;

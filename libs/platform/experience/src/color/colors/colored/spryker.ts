@@ -6,20 +6,15 @@ export const spryker: Color = {
     7: '#94DDC0',
     9: '#11856E',
     10: '#1C6C5C',
+    11: '#1C6C5C', // clone from 10 to satisfy chip component
     12: '#004628',
   },
   dark: {
-    1: '#0D1912',
-    2: '#0C1F17',
     3: '#004628',
-    4: '#004628',
-    5: '#004628',
-    6: '#004628',
     7: '#1C6C5C',
-    8: '#1C6C5C',
     9: '#11856E',
-    10: '#133929',
-    11: '#94DDC0',
+    10: '#94DDC0',
+    11: '#94DDC0', // clone from 10 to satisfy chip component
     12: '#F1F8F7',
   },
 };
