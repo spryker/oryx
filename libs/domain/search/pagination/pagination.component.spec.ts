@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { Pagination, ProductListPageService } from '@spryker-oryx/product';
+import { PaginationComponent } from '@spryker-oryx/ui/pagination';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
@@ -27,6 +28,9 @@ class MockProductListPageService implements Partial<ProductListPageService> {
 
 describe('SearchPaginationComponent', () => {
   let element: SearchPaginationComponent;
+
+  const getPagination = () =>
+    element.renderRoot.querySelector<PaginationComponent>('oryx-pagination');
 
   beforeAll(async () => {
     await useComponent(searchPaginationComponent);
@@ -80,14 +84,11 @@ describe('SearchPaginationComponent', () => {
   });
 
   it('should set current page', () => {
-    expect(element).toContainElement(
-      `oryx-pagination[current="${mockPagination.currentPage}"]`
-    );
+    expect(getPagination()?.current).toBe(mockPagination.currentPage);
   });
 
   it('should pass the specified options to oryx-pagination component', () => {
-    expect(element).toContainElement(
-      `oryx-pagination[max="${options.max}"]:not([enableNavigation])`
-    );
+    expect(getPagination()?.max).toBe(options.max);
+    expect(getPagination()?.hasAttribute('enableNavigation')).toBe(false);
   });
 });
