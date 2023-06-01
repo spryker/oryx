@@ -45,9 +45,9 @@ describe('AddressListItemComponent', () => {
       AddressService
     ) as unknown as MockAddressService;
 
-    element = await fixture(html`<oryx-address-user-list-item
+    element = await fixture(html`<oryx-user-address-list-item
       addressId="currentaddressid"
-    ></oryx-address-user-list-item>`);
+    ></oryx-user-address-list-item>`);
   });
 
   afterEach(() => {
@@ -62,7 +62,7 @@ describe('AddressListItemComponent', () => {
   describe('when address id is not provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-address-user-list-item></oryx-address-user-list-item>`
+        html`<oryx-user-address-list-item></oryx-user-address-list-item>`
       );
     });
 
@@ -76,9 +76,9 @@ describe('AddressListItemComponent', () => {
       service.getAddress.mockReturnValue(of(null));
 
       element = await fixture(
-        html`<oryx-address-user-list-item
+        html`<oryx-user-address-list-item
           addressId="currentaddressid"
-        ></oryx-address-user-list-item>`
+        ></oryx-user-address-list-item>`
       );
     });
 
@@ -90,10 +90,10 @@ describe('AddressListItemComponent', () => {
   describe('when item is selectable', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-address-user-list-item
+        html`<oryx-user-address-list-item
           addressId="currentaddressid"
           .options=${{ selectable: true }}
-        ></oryx-address-user-list-item>`
+        ></oryx-user-address-list-item>`
       );
     });
 
@@ -105,9 +105,9 @@ describe('AddressListItemComponent', () => {
   describe('when item has no controls', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-address-user-list-item
+        html`<oryx-user-address-list-item
           addressId="currentaddressid"
-        ></oryx-address-user-list-item>`
+        ></oryx-user-address-list-item>`
       );
     });
 
@@ -122,12 +122,12 @@ describe('AddressListItemComponent', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-address-user-list-item
+        html`<oryx-user-address-list-item
           addressId="currentaddressid"
           .options=${{ editable: true, removable: true }}
           @oryx.edit=${editCallback}
           @oryx.remove=${removeCallback}
-        ></oryx-address-user-list-item>`
+        ></oryx-user-address-list-item>`
       );
     });
 
@@ -172,10 +172,10 @@ describe('AddressListItemComponent', () => {
     describe('and item is editable only', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-address-user-list-item
+          html`<oryx-user-address-list-item
             addressId="currentaddressid"
             .options=${{ editable: true }}
-          ></oryx-address-user-list-item>`
+          ></oryx-user-address-list-item>`
         );
       });
 
@@ -189,10 +189,10 @@ describe('AddressListItemComponent', () => {
     describe('and item is removable only', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-address-user-list-item
+          html`<oryx-user-address-list-item
             addressId="currentaddressid"
             .options=${{ removable: true }}
-          ></oryx-address-user-list-item>`
+          ></oryx-user-address-list-item>`
         );
       });
 
@@ -207,9 +207,9 @@ describe('AddressListItemComponent', () => {
   describe('when showing of default is not configured', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-address-user-list-item
+        html`<oryx-user-address-list-item
           addressId="currentaddressid"
-        ></oryx-address-user-list-item>`
+        ></oryx-user-address-list-item>`
       );
     });
 
@@ -223,10 +223,10 @@ describe('AddressListItemComponent', () => {
       service.getAddress.mockReturnValue(of(addressWithDefaults(true, true)));
 
       element = await fixture(
-        html`<oryx-address-user-list-item
+        html`<oryx-user-address-list-item
           addressId="currentaddressid"
           .options=${{ addressDefaults: AddressDefaults.All }}
-        ></oryx-address-user-list-item>`
+        ></oryx-user-address-list-item>`
       );
     });
 
@@ -241,10 +241,10 @@ describe('AddressListItemComponent', () => {
         );
 
         element = await fixture(
-          html`<oryx-address-user-list-item
+          html`<oryx-user-address-list-item
             addressId="currentaddressid"
             .options=${{ addressDefaults: AddressDefaults.All }}
-          ></oryx-address-user-list-item>`
+          ></oryx-user-address-list-item>`
         );
       });
 
@@ -258,10 +258,10 @@ describe('AddressListItemComponent', () => {
         service.getAddress.mockReturnValue(of(addressWithDefaults(true)));
 
         element = await fixture(
-          html`<oryx-address-user-list-item
+          html`<oryx-user-address-list-item
             addressId="currentaddressid"
             .options=${{ addressDefaults: AddressDefaults.All }}
-          ></oryx-address-user-list-item>`
+          ></oryx-user-address-list-item>`
         );
       });
 

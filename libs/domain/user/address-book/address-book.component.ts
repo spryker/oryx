@@ -49,14 +49,14 @@ export class AddressBookComponent extends ContentMixin(LitElement) {
         </button>
       </oryx-button>
 
-      <oryx-address-user-list
+      <oryx-user-address-list
         .options=${{
           editable: true,
           removable: true,
           addressDefaults: AddressDefaults.All,
         }}
         @oryx.edit=${(e: CustomEvent): void => this.onEdit(e.detail.address)}
-      ></oryx-address-user-list>
+      ></oryx-user-address-list>
     `;
   }
 

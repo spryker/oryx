@@ -12,7 +12,7 @@ export const renderSelector = (
     AddressService
   ) as unknown as MockAddressService;
   addressService.changeMockAddressType(MockAddressType.OneWithDefaults);
-  return html`<oryx-address-user-list-item
+  return html`<oryx-user-address-list-item
     addressId="currentaddressid"
     .options=${options}
   >
@@ -20,5 +20,5 @@ export const renderSelector = (
       options.selectable,
       () => html`<input type="radio" value="currentaddressid" />`
     )}
-  </oryx-address-user-list-item>`;
+  </oryx-user-address-list-item>`;
 };

@@ -3,12 +3,12 @@ import { AddressListItemOptions } from './address-list-item.model';
 
 declare global {
   interface FeatureOptions {
-    'oryx-address-user-list-item'?: AddressListItemOptions;
+    'oryx-user-address-list-item'?: AddressListItemOptions;
   }
 }
 
 export const addressListItemComponent = componentDef({
-  name: 'oryx-address-user-list-item',
+  name: 'oryx-user-address-list-item',
   impl: () =>
     import('./address-list-item.component').then(
       (m) => m.AddressListItemComponent

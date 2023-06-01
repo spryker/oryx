@@ -36,7 +36,7 @@ describe('AddressListComponent', () => {
     ) as unknown as MockAddressService;
 
     element = await fixture(
-      html`<oryx-address-user-list></oryx-address-user-list>`
+      html`<oryx-user-address-list></oryx-user-address-list>`
     );
   });
 
@@ -53,7 +53,7 @@ describe('AddressListComponent', () => {
     beforeEach(async () => {
       service.getAddresses.mockReturnValue(of(null));
       element = await fixture(
-        html`<oryx-address-user-list></oryx-address-user-list>`
+        html`<oryx-user-address-list></oryx-user-address-list>`
       );
     });
 
@@ -65,11 +65,11 @@ describe('AddressListComponent', () => {
   describe('when "selectable" option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-address-user-list
+        html`<oryx-user-address-list
           .options=${{
             selectable: true,
           }}
-        ></oryx-address-user-list>`
+        ></oryx-user-address-list>`
       );
     });
 
@@ -83,10 +83,10 @@ describe('AddressListComponent', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-address-user-list
+        html`<oryx-user-address-list
           @oryx.select=${callback}
           .options=${{ selectable: true }}
-        ></oryx-address-user-list>`
+        ></oryx-user-address-list>`
       );
     });
 

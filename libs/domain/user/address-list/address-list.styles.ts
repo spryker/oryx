@@ -8,11 +8,11 @@ export const styles = css`
     gap: 10px;
   }
 
-  oryx-address-user-list-item {
+  oryx-user-address-list-item {
     padding: 0;
   }
 
-  :not([selected]) oryx-address-user-list-item {
+  :not([selected]) oryx-user-address-list-item {
     border: var(--oryx-border-thick) solid transparent;
   }
 

@@ -9,9 +9,9 @@ export class CheckoutAddressModalFragment {
 
   getWrapper = () => cy.get(this.wrapperSelector);
   getAddAddressButton = () => this.getWrapper().find('oryx-button');
-  getAddressList = () => this.getWrapper().find('oryx-address-user-list');
+  getAddressList = () => this.getWrapper().find('oryx-user-address-list');
   getAddressListItem = () =>
-    this.getAddressList().find('oryx-address-user-list-item');
+    this.getAddressList().find('oryx-user-address-list-item');
 
   addAddressForm = new CheckoutAddressFormFragment();
   getSaveAddressBtn = () =>

@@ -15,7 +15,7 @@ export const renderSelector = (
     AddressService
   ) as unknown as MockAddressService;
   addressService.changeMockAddressType(type);
-  return html`<oryx-address-user-list
+  return html`<oryx-user-address-list
     .options=${{
       addressDefaults: AddressDefaults.All,
       selectable: false,
@@ -26,5 +26,5 @@ export const renderSelector = (
     @oryx.select=${console.log}
     @oryx.edit=${console.log}
     @oryx.remove=${console.log}
-  ></oryx-address-user-list>`;
+  ></oryx-user-address-list>`;
 };

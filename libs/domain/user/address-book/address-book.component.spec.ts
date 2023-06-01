@@ -28,7 +28,7 @@ describe('AddressBookComponent', () => {
     });
 
     it('should render the address list', () => {
-      expect(element).toContainElement('oryx-address-user-list');
+      expect(element).toContainElement('oryx-user-address-list');
     });
 
     describe('and add new address button is clicked', () => {
@@ -49,7 +49,7 @@ describe('AddressBookComponent', () => {
       });
 
       it('should not render the address list', () => {
-        expect(element).not.toContainElement('oryx-address-user-list');
+        expect(element).not.toContainElement('oryx-user-address-list');
       });
 
       it('should render address edit component', () => {
@@ -61,7 +61,7 @@ describe('AddressBookComponent', () => {
       const addressId = 'testId';
       beforeEach(() => {
         element.renderRoot
-          .querySelector('oryx-address-user-list')
+          .querySelector('oryx-user-address-list')
           ?.dispatchEvent(
             new CustomEvent('oryx.edit', {
               detail: { address: { id: addressId } },
@@ -70,7 +70,7 @@ describe('AddressBookComponent', () => {
       });
 
       it('should not render the list', () => {
-        expect(element).not.toContainElement('oryx-address-user-list');
+        expect(element).not.toContainElement('oryx-user-address-list');
       });
 
       it('should render address edit component', () => {
@@ -92,7 +92,7 @@ describe('AddressBookComponent', () => {
         });
 
         it('should render the list', () => {
-          expect(element).toContainElement('oryx-address-user-list');
+          expect(element).toContainElement('oryx-user-address-list');
         });
 
         it('should not render the address edit component', () => {
@@ -108,7 +108,7 @@ describe('AddressBookComponent', () => {
         });
 
         it('should render the list', () => {
-          expect(element).toContainElement('oryx-address-user-list');
+          expect(element).toContainElement('oryx-user-address-list');
         });
 
         it('should not render the address edit component', () => {

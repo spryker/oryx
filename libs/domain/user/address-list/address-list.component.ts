@@ -59,7 +59,7 @@ export class AddressListComponent extends AddressMixin(
 
   protected renderAddress(address: Address): TemplateResult | void {
     return html`<oryx-tile ?selected=${this.selectedAddressId === address.id}>
-      <oryx-address-user-list-item
+      <oryx-user-address-list-item
         .addressId=${address.id}
         .options=${this.$options()}
       >
@@ -73,7 +73,7 @@ export class AddressListComponent extends AddressMixin(
             @input=${this.onInput}
           />`
         )}
-      </oryx-address-user-list-item>
+      </oryx-user-address-list-item>
     </oryx-tile>`;
   }
 
