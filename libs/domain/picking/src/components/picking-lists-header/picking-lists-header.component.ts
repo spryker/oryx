@@ -62,7 +62,6 @@ export class PickingListsHeaderComponent extends LitElement {
           icon: IconTypes.Profile,
           triggerType: 'icon',
           contentBehavior: 'modal',
-          fullscreen: true,
           label: i18n('oryx.picking.account'),
         }}
       ></oryx-site-navigation-item>
