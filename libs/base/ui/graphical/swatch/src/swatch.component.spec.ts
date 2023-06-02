@@ -11,61 +11,59 @@ useComponent(swatchComponent);
 describe('SwatchComponent', () => {
   let element: SwatchComponent;
 
-  describe('when a AlertType is provided', () => {
-    describe('and the type is Warning', () => {
-      beforeAll(async () => {
-        element = await fixture(
-          html`<oryx-swatch .type=${AlertType.Warning}></oryx-swatch>`
-        );
-      });
-
-      it('should render warning color', () => {
-        expect(element.getAttribute('style')).contain(
-          `--swatch: var(--oryx-color-warning-9)`
-        );
-      });
+  describe('when the type is Warning', () => {
+    beforeAll(async () => {
+      element = await fixture(
+        html`<oryx-swatch .type=${AlertType.Warning}></oryx-swatch>`
+      );
     });
 
-    describe('and the type is Success', () => {
-      beforeAll(async () => {
-        element = await fixture(
-          html`<oryx-swatch .type=${AlertType.Success}></oryx-swatch>`
-        );
-      });
+    it('should render warning color', () => {
+      expect(element.getAttribute('style')).contain(
+        `--swatch: var(--oryx-color-warning-9)`
+      );
+    });
+  });
 
-      it('should render warning color', () => {
-        expect(element.getAttribute('style')).contain(
-          `--swatch: var(--oryx-color-success-9)`
-        );
-      });
+  describe('when the type is Success', () => {
+    beforeAll(async () => {
+      element = await fixture(
+        html`<oryx-swatch .type=${AlertType.Success}></oryx-swatch>`
+      );
     });
 
-    describe('and the type is Error', () => {
-      beforeAll(async () => {
-        element = await fixture(
-          html`<oryx-swatch .type=${AlertType.Error}></oryx-swatch>`
-        );
-      });
+    it('should render warning color', () => {
+      expect(element.getAttribute('style')).contain(
+        `--swatch: var(--oryx-color-success-9)`
+      );
+    });
+  });
 
-      it('should render warning color', () => {
-        expect(element.getAttribute('style')).contain(
-          `--swatch: var(--oryx-color-error-9)`
-        );
-      });
+  describe('when the type is Error', () => {
+    beforeAll(async () => {
+      element = await fixture(
+        html`<oryx-swatch .type=${AlertType.Error}></oryx-swatch>`
+      );
     });
 
-    describe('and the type is Info', () => {
-      beforeAll(async () => {
-        element = await fixture(
-          html`<oryx-swatch .type=${AlertType.Info}></oryx-swatch>`
-        );
-      });
+    it('should render warning color', () => {
+      expect(element.getAttribute('style')).contain(
+        `--swatch: var(--oryx-color-error-9)`
+      );
+    });
+  });
 
-      it('should render warning color', () => {
-        expect(element.getAttribute('style')).contain(
-          `--swatch: var(--oryx-color-info-9)`
-        );
-      });
+  describe('when the type is Info', () => {
+    beforeAll(async () => {
+      element = await fixture(
+        html`<oryx-swatch .type=${AlertType.Info}></oryx-swatch>`
+      );
+    });
+
+    it('should render warning color', () => {
+      expect(element.getAttribute('style')).contain(
+        `--swatch: var(--oryx-color-info-9)`
+      );
     });
   });
 

@@ -224,7 +224,7 @@ describe('ProductAvailabilityComponent', () => {
         productService.get.mockReturnValue(
           of({ availability: { quantity: 10 } })
         );
-        element = await createElement(0, false, true);
+        element = await createElement(5, false, true);
       });
 
       it('should render "Available 10"', () => {

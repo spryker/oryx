@@ -1,4 +1,8 @@
 export interface CartItemAvailabilityOptions {
+  /**
+   * The stock threshold indicates the absolute number of items that must be available till
+   * the stock is indicated as "low stock".
+   */
   threshold?: number;
   enableIndicator?: boolean;
   enableExactStock?: boolean;

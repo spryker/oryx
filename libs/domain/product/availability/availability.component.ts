@@ -19,16 +19,16 @@ export class ProductAvailabilityComponent extends ProductMixin(
   protected status = computed(() => {
     const { isNeverOutOfStock, quantity, availability } =
       this.$product()?.availability ?? {};
-    const { threshold: threshold = Infinity } = this.$options();
+    const { threshold } = this.$options();
     if (
       isNeverOutOfStock ||
       (!quantity && availability) ||
-      (quantity && quantity > threshold)
+      (quantity && threshold && quantity > threshold)
     ) {
       return StockAvailability.InStock;
     }
 
-    if (quantity && quantity <= threshold) {
+    if (quantity && threshold && quantity <= threshold) {
       return StockAvailability.LowStock;
     }
 
@@ -42,16 +42,14 @@ export class ProductAvailabilityComponent extends ProductMixin(
   protected renderIndicator(): TemplateResult | void {
     if (!this.$options().enableIndicator) return;
 
-    const stock = this.status();
-
-    if (stock === StockAvailability.OutOfStock)
-      return html`<oryx-swatch .type=${AlertType.Error}></oryx-swatch>`;
-
-    if (stock === StockAvailability.InStock)
-      return html`<oryx-swatch .type=${AlertType.Success}></oryx-swatch>`;
-
-    if (stock === StockAvailability.LowStock)
-      return html`<oryx-swatch .type=${AlertType.Warning}></oryx-swatch>`;
+    switch (this.status()) {
+      case StockAvailability.InStock:
+        return html`<oryx-swatch .type=${AlertType.Success}></oryx-swatch>`;
+      case StockAvailability.LowStock:
+        return html`<oryx-swatch .type=${AlertType.Warning}></oryx-swatch>`;
+      default:
+        return html`<oryx-swatch .type=${AlertType.Error}></oryx-swatch>`;
+    }
   }
 
   protected renderText(): TemplateResult | void {
@@ -61,7 +59,7 @@ export class ProductAvailabilityComponent extends ProductMixin(
     if (stock === StockAvailability.OutOfStock)
       return html`${i18n('product.availability.none')}`;
 
-    if (this.$options().enableExactStock && availableQuantity !== undefined) {
+    if (this.$options().enableExactStock && availableQuantity) {
       if (stock === StockAvailability.LowStock)
         return html`${i18n('product.availability.limited-<stock>', {
           stock: availableQuantity,
