@@ -61,7 +61,7 @@ class MockTable implements Partial<Table> {
   get = vi.fn().mockReturnValue(mockContent);
   where = vi.fn().mockReturnValue(mockCollection);
   toCollection = vi.fn().mockReturnValue(mockCollection);
-  bulkGet = vi.fn().mockReturnValue(mockContent);
+  bulkGet = vi.fn().mockReturnValue([mockContent]);
   update = vi.fn().mockReturnValue(mockContent);
 }
 
@@ -147,7 +147,7 @@ describe('PickingListOfflineAdapter', () => {
       it('should get picking list store by id', () => {
         adapter.get({ ids: ['mockid'] }).subscribe();
 
-        expect(mockTable.get).toHaveBeenCalledWith('mockid');
+        expect(mockTable.bulkGet).toHaveBeenCalledWith(['mockid']);
       });
 
       describe('and store is empty', () => {

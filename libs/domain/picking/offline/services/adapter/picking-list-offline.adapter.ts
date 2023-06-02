@@ -46,8 +46,10 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
             [pickingListStore, productStore],
             async () => {
               if (qualifier.ids?.length) {
-                const data = await pickingListStore.bulkGet(qualifier.ids)
-                const filteredData = data.filter(pl => !!pl) as PickingListSerialized[]
+                const data = await pickingListStore.bulkGet(qualifier.ids);
+                const filteredData = data.filter(
+                  (pl) => !!pl
+                ) as PickingListSerialized[];
 
                 return this.deserializePickingLists(filteredData, productStore);
               }
