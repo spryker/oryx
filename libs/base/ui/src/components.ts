@@ -33,5 +33,5 @@ export * from '../search/typeahead/src/typeahead.def';
 export * from '../structure/card/src/component';
 export * from '../structure/collapsible/src/collapsible.def';
 export * from '../structure/heading/src/heading.def';
-export * from '../structure/text/src/text.def';
+export * from '../structure/text/text.def';
 export * from '../structure/tile/src/component';

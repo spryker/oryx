@@ -57,7 +57,7 @@ export class TextComponent extends LitElement implements TextProperties {
   protected override render(): TemplateResult {
     return html`
       <div ${ref(this.containerRef)}>
-        <slot></slot>
+        <slot @slotchange=${() => this.normalizeText(true)}></slot>
       </div>
       ${when(
         !this.hideToggle,
@@ -74,12 +74,11 @@ export class TextComponent extends LitElement implements TextProperties {
   }
 
   protected setup(): void {
-    if (!this.truncateAfter && this.resizeObserver) {
+    this.normalizeText();
+
+    if (this.resizeObserver) {
       return;
     }
-
-    this.truncation = true;
-    this.truncated = !this.defaultExpanded;
 
     this.resizeObserver = new ResizeObserver(
       throttle(
@@ -90,14 +89,18 @@ export class TextComponent extends LitElement implements TextProperties {
     this.resizeObserver.observe(this.container);
   }
 
-  protected normalizeText(): void {
-    if (!this.truncateAfter) {
-      this.truncation = false;
-    }
-
+  protected normalizeText(forcedTruncation = false): void {
     const linesCount = this.calcLinesCount(
       this.container.children[0] as HTMLElement
     );
+
+    const prevTruncationState = this.truncation;
+    this.truncation = !!this.truncateAfter && this.truncateAfter < linesCount;
+
+    //make the text truncated when content changes or its size
+    if (forcedTruncation || (this.truncation && !prevTruncationState)) {
+      this.truncated = this.truncation && !this.defaultExpanded;
+    }
 
     this.style.setProperty('--lines-count', String(linesCount));
   }
@@ -112,8 +115,9 @@ export class TextComponent extends LitElement implements TextProperties {
     const lineHeight = element.style.lineHeight;
     const factor = 1000;
     element.style.lineHeight = `${factor}px`;
-    const height = element.getBoundingClientRect().height;
+    const height = element.scrollHeight;
     element.style.lineHeight = lineHeight;
+
     return Math.floor(height / factor);
   }
 }

@@ -4,6 +4,7 @@ import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { PickingConfig, providePickingConfig } from './config.provider';
 import {
   customerNoteComponent,
+  customerNoteModalComponent,
   discardModalComponent,
   filterButtonComponent,
   filtersComponent,
@@ -31,6 +32,7 @@ import {
 
 export const pickingComponents = [
   customerNoteComponent,
+  customerNoteModalComponent,
   discardModalComponent,
   filterButtonComponent,
   filtersComponent,
