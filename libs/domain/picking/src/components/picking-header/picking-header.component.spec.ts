@@ -99,7 +99,7 @@ describe('PickingHeaderComponent', () => {
 
   it('should render account button', () => {
     expect(
-      element.renderRoot.querySelector('oryx-picking-user-navigation-item')
+      element.renderRoot.querySelector('oryx-site-navigation-item')
     ).not.toBeNull();
   });
 

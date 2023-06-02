@@ -8,8 +8,6 @@ export interface SiteNavigationItemOptions {
   triggerType?: NavigationTriggerType;
   triggerBehavior?: NavigationTriggerBehavior;
   contentBehavior?: NavigationContentBehavior;
-  fullscreen?: boolean;
-  heading?: string;
   //TODO: Implement or drop later
   // items?: NavigationListItem[];
 }

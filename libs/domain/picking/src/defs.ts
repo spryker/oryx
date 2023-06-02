@@ -12,5 +12,4 @@ export * from './components/picking-lists-header/picking-lists-header.def';
 export * from './components/picking-lists/picking-lists.def';
 export * from './components/picking-product-card/picking-product-card.def';
 export * from './components/picking/picking.def';
-export * from './components/user-navigation-item/user-navigation-item.def';
 export * from './components/user-profile/user-profile.def';

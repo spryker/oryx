@@ -15,7 +15,7 @@ export const styles = css`
   }
 
   button:not(.back),
-  oryx-picking-user-navigation-item {
+  oryx-site-navigation-item {
     --oryx-icon-color: var(--oryx-color-primary-9);
   }
 

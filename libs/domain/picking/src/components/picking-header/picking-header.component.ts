@@ -48,7 +48,16 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
       </oryx-icon-button>
       <div class="title">${this.pickingListId}</div>
       ${this.renderCartNoteButton()}
-      <oryx-picking-user-navigation-item> </oryx-picking-user-navigation-item>`;
+      <oryx-site-navigation-item
+        uid="user-profile"
+        .options=${{
+          icon: IconTypes.Profile,
+          triggerType: 'icon',
+          contentBehavior: 'modal',
+          fullscreen: true,
+          label: i18n('oryx.picking.account'),
+        }}
+      ></oryx-site-navigation-item>`;
   }
 
   protected back(): void {

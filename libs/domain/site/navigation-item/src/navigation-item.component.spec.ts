@@ -203,29 +203,16 @@ describe('SiteNavigationItemComponent', () => {
       expect(element).toContainElement('oryx-modal');
     });
 
-    describe('and fullscreen is true', () => {
-      beforeEach(async () => {
-        element = await fixture(html`
-          <oryx-site-navigation-item
-            .options=${{
-              fullscreen: true,
-              contentBehavior: NavigationContentBehavior.Modal,
-            }}
-          ></oryx-site-navigation-item>
-        `);
-      });
-
-      it('should render fullscreen modal', () => {
-        expect(element).toContainElement('oryx-modal[fullscreen]');
-      });
+    it('should render fullscreen modal', () => {
+      expect(element).toContainElement('oryx-modal[fullscreen]');
     });
 
-    describe('and heading is provided', () => {
+    describe('and label is provided', () => {
       beforeEach(async () => {
         element = await fixture(html`
           <oryx-site-navigation-item
             .options=${{
-              heading: 'mock',
+              label: 'test',
               contentBehavior: NavigationContentBehavior.Modal,
             }}
           ></oryx-site-navigation-item>
@@ -237,7 +224,7 @@ describe('SiteNavigationItemComponent', () => {
           element.renderRoot
             .querySelector('oryx-modal')
             ?.shadowRoot?.querySelector('header')?.innerText
-        ).toContain('mock');
+        ).toContain('test');
       });
     });
   });

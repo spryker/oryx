@@ -17,7 +17,6 @@ import {
   pickingListsComponent,
   pickingListsHeaderComponent,
   pickingProductCardComponent,
-  userNavigationItemComponent,
   userProfileComponent,
 } from './defs';
 import { defaultPickingRoutes } from './routes';
@@ -46,7 +45,6 @@ export const pickingComponents = [
   pickingComponent,
   userProfileComponent,
   pickingHeaderComponent,
-  userNavigationItemComponent,
 ];
 
 export interface PickingFeatureConfig extends PickingConfig {
