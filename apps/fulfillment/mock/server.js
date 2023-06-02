@@ -37,6 +37,7 @@ exports.createMockServer = function createMockServer() {
 
   router.post('/authorize', mapRequestToGet);
   router.post('/token', mapRequestToGet);
+  router.post('/push-notification-subscriptions', mapRequestToGet);
 
   router.patch('/picking-lists/:id/picking-list-items', (req, res) => {
     const { id } = req.params;
