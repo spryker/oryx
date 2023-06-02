@@ -1,8 +1,10 @@
 import { LitElement } from 'lit';
 
 export const truncateFix = async (host: LitElement): Promise<void> => {
-  function handler() {
-    const container = host.shadowRoot?.querySelector('div > *') as HTMLElement;
+  const slot = host.shadowRoot?.querySelector<HTMLSlotElement>('div > slot');
+
+  function handler(e: Event) {
+    const container = e.target as HTMLSlotElement;
     const lineClampValue = Number(
       getComputedStyle(host).getPropertyValue('--line-clamp')
     );
@@ -25,8 +27,8 @@ export const truncateFix = async (host: LitElement): Promise<void> => {
       host.toggleAttribute('truncation', true);
     }
 
-    document.removeEventListener('DOMContentLoaded', handler);
+    container.removeEventListener('slotchange', handler);
   }
 
-  document.addEventListener('DOMContentLoaded', handler);
+  slot?.addEventListener('slotchange', handler);
 };
