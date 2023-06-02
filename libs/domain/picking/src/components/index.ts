@@ -1,4 +1,5 @@
 export * from './customer-note';
+export * from './customer-note-modal';
 export * from './filter-button';
 export * from './filters';
 export * from './login';

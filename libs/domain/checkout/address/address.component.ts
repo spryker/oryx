@@ -2,7 +2,7 @@ import { Address, isValid } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { AddressService } from '@spryker-oryx/user';
-import { AddressFormComponent } from '@spryker-oryx/user/address-form';
+import { UserAddressFormComponent } from '@spryker-oryx/user/address-form';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import { signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -22,14 +22,14 @@ export class CheckoutAddressComponent
   protected selected: Address | null = null;
 
   @query('oryx-address-form')
-  protected addressComponent?: AddressFormComponent;
+  protected addressComponent?: UserAddressFormComponent;
 
   protected override render(): TemplateResult | void {
     if (this.addresses()?.length)
-      return html`<oryx-address-list
+      return html`<oryx-user-address-list
         .options=${{ selectable: true, addressDefaults: AddressDefaults.All }}
         @oryx.select=${this.onSelect}
-      ></oryx-address-list>`;
+      ></oryx-user-address-list>`;
 
     return html`<oryx-address-form
       .address=${this.address}
