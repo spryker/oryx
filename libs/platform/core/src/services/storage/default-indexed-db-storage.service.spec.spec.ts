@@ -1,4 +1,4 @@
-import { createInjector, getInjector } from '@spryker-oryx/di';
+import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { DefaultIndexedDBStorageService } from './default-indexed-db-storage.service';
 import {
   IndexedDBStorageService,
@@ -46,6 +46,7 @@ describe('DefaultIndexedDBStorageService', () => {
   });
 
   afterEach(() => {
+    destroyInjector();
     vi.clearAllMocks();
   });
 
