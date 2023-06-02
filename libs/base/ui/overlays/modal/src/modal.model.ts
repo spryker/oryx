@@ -29,6 +29,11 @@ export interface ModalProperties {
 
   /**
    * Indicates whether the modal has a back button.
+   *
+   * When the back navigation is enabled, the closing actions, such as escape-key,
+   * backdrop-click, close button and cancel (footer) button will no longer close
+   * the modal. The host component must take care of handling the inner navigation
+   * of the modal content by handling the `oryx.back` event.
    */
   enableNavigateBack?: boolean;
 
