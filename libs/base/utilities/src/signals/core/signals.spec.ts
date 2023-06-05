@@ -1,3 +1,4 @@
+import { wait } from '@spryker-oryx/utilities';
 import { afterEach, describe, Mock } from 'vitest';
 import {
   Computed,
@@ -312,6 +313,48 @@ describe('Effect', () => {
       stateSignal.set(1);
 
       expect(effectFn).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('EffectOptions', () => {
+    describe('defer', () => {
+      it('should not call the effect function upon initialization if defer is true', () => {
+        effectFn = vi.fn(() => stateSignal.value);
+        effect = new Effect(effectFn, { defer: true });
+
+        expect(effectFn).toHaveBeenCalledTimes(0);
+      });
+
+      it('should call the effect function upon initialization if defer is false', () => {
+        effectFn = vi.fn(() => stateSignal.value);
+        effect = new Effect(effectFn, { defer: false });
+
+        expect(effectFn).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('async', () => {
+      it('should call the effect function asynchronously if async is true', async () => {
+        effectFn = vi.fn(() => stateSignal.value);
+        effect = new Effect(effectFn, { async: true });
+
+        expect(effectFn).toHaveBeenCalledTimes(0);
+        await wait(10);
+        expect(effectFn).toHaveBeenCalledTimes(1);
+        stateSignal.set(1);
+        expect(effectFn).toHaveBeenCalledTimes(1);
+        await wait(10);
+        expect(effectFn).toHaveBeenCalledTimes(2);
+      });
+
+      it('should call the effect function synchronously if async is false', () => {
+        effectFn = vi.fn(() => stateSignal.value);
+        effect = new Effect(effectFn, { async: false });
+
+        stateSignal.set(1);
+
+        expect(effectFn).toHaveBeenCalledTimes(2);
+      });
     });
   });
 });
