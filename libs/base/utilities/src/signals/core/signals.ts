@@ -212,6 +212,17 @@ export class Computed<T> extends SignalProducer<T> {
   }
 }
 
+export interface EffectOptions {
+  /**
+   * If true, the effect will not run until the start() method is called.
+   */
+  defer?: boolean;
+  /**
+   * If true, the effect will be run asynchronously using queueMicrotask().
+   */
+  async?: boolean;
+}
+
 /**
  * Effect:
  *
@@ -222,13 +233,24 @@ export class Computed<T> extends SignalProducer<T> {
  */
 export class Effect {
   protected consumer = new SignalConsumer(() => this.run());
+  protected asyncScheduled?: boolean;
 
-  constructor(protected effect: () => void) {
-    this.start();
+  constructor(protected effect: () => void, protected options: EffectOptions = {}) {
+    if (!options.defer) this.start();
   }
 
   protected run(): void {
-    this.consumer.run(this.effect);
+    if (this.options.async) {
+      if (!this.asyncScheduled) {
+        this.asyncScheduled = true;
+        queueMicrotask(() => {
+          this.asyncScheduled = false;
+          this.consumer.run(this.effect);
+        }
+      }
+    } else {
+      this.consumer.run(this.effect);
+    }
   }
 
   start(): void {
