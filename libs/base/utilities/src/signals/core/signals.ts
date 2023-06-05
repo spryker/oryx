@@ -235,7 +235,10 @@ export class Effect {
   protected consumer = new SignalConsumer(() => this.run());
   protected asyncScheduled?: boolean;
 
-  constructor(protected effect: () => void, protected options: EffectOptions = {}) {
+  constructor(
+    protected effect: () => void,
+    protected options: EffectOptions = {}
+  ) {
     if (!options.defer) this.start();
   }
 
@@ -246,7 +249,7 @@ export class Effect {
         queueMicrotask(() => {
           this.asyncScheduled = false;
           this.consumer.run(this.effect);
-        }
+        });
       }
     } else {
       this.consumer.run(this.effect);
