@@ -260,7 +260,7 @@ describe('StateSignal', () => {
       const stateSignal = new StateSignal<number>(5, {
         equal: (a, b) => Math.abs(a - b) <= 2,
       });
-      let testValue: number;
+      let testValue: number | undefined;
 
       const eff = new Effect(() => {
         testValue = stateSignal.value;
@@ -320,7 +320,7 @@ describe('Computed', () => {
       equal: (a, b) => Math.abs(a - b) <= 2,
     });
 
-    let testValue: number;
+    let testValue: number | undefined;
 
     const eff = new Effect(() => {
       testValue = computed.value * 2;

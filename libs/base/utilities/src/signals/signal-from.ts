@@ -63,7 +63,7 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
  * - exposing set() method to allow reusing signal for different observables/promises
  *
  * */
-export function signalFrom<T, K = undefined>(
+export function signalFrom<T, K = T>(
   observable$: Observable<T>,
   options?: ConnectableSignalOptions<T, K>
 ): ConnectableSignal<T | K> {
