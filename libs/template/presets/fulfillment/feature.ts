@@ -1,6 +1,12 @@
 import { ModularAppBuilderOptions } from '@spryker-oryx/application';
-import { AppFeature, ComponentInfo, ComponentsInfo } from '@spryker-oryx/core';
+import {
+  AppFeature,
+  AppPlugin,
+  ComponentInfo,
+  ComponentsInfo,
+} from '@spryker-oryx/core';
 import { fulfillmentRootComponent } from './components';
+import { RouteGuardPlugin } from './plugin';
 
 export interface FulfillmentRootFeatureConfig {
   selector?: string;
@@ -9,6 +15,7 @@ export interface FulfillmentRootFeatureConfig {
 export class FulfillmentRootFeature implements AppFeature {
   options: ModularAppBuilderOptions;
   components: ComponentsInfo;
+  plugins: AppPlugin[] = [new RouteGuardPlugin()];
 
   constructor(config?: FulfillmentRootFeatureConfig) {
     this.options = this.getOptions(config);

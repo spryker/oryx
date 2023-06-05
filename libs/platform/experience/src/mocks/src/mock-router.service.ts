@@ -14,6 +14,10 @@ export class MockRouterService implements Partial<RouterService> {
     //mock
   }
 
+  routeGuard(): Observable<string> {
+    return of('');
+  }
+
   currentQuery(): Observable<RouteParams> {
     return this.params$;
   }

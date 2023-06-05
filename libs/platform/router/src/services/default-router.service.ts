@@ -11,6 +11,7 @@ import {
 } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import {
+  CAN_LEAVE_ROUTE,
   NavigationExtras,
   RouteParams,
   RouterEvent,
@@ -31,6 +32,11 @@ export class DefaultRouterService implements RouterService {
   private storedRoute$ = new BehaviorSubject('');
 
   protected storageService = inject(StorageService);
+  protected routeGuard$ = new BehaviorSubject('');
+
+  routeGuard(): Observable<string> {
+    return this.routeGuard$;
+  }
 
   go(route: string, extras?: NavigationExtras): void {
     const url = route.split('?');
@@ -55,8 +61,9 @@ export class DefaultRouterService implements RouterService {
     this.go(route);
   }
 
-  back(): void {
-    globalThis.history.back();
+  back(skip?: number): void {
+    this.storageService.set(CAN_LEAVE_ROUTE, true, StorageType.SESSION);
+    globalThis.history.go(-1 * (skip ?? 1));
   }
 
   getEvents(type: RouterEventType): Observable<RouterEvent> {

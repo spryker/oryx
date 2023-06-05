@@ -1,10 +1,13 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n } from '@spryker-oryx/utilities';
+import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
+import { map } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
+import { DiscardPickingComponent } from '../discard-modal';
 import { styles } from './picking-header.styles';
 
 export class PickingHeaderComponent extends PickingListMixin(LitElement) {
@@ -12,7 +15,22 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
 
   protected routerService = resolve(RouterService);
 
+  protected discardModal = createRef<DiscardPickingComponent>();
+
   @state() isCartNoteVisible?: boolean;
+
+  @asyncState()
+  shouldOpenModal = valueType(
+    this.routerService
+      .routeGuard()
+      .pipe(map((routeGuard) => routeGuard.startsWith('/picking-list')))
+  );
+
+  override firstUpdated(): void {
+    if (this.shouldOpenModal) {
+      this.openDiscardModal();
+    }
+  }
 
   protected renderCartNoteButton(): TemplateResult {
     return html`${this.pickingList?.cartNote
@@ -41,7 +59,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           aria-label=${i18n('oryx.picking.back-to-pick-lists')}
           class="back"
           href="#"
-          @click=${this.back}
+          @click=${this.openDiscardModal}
         >
           <oryx-icon type=${IconTypes.Back}></oryx-icon>
         </button>
@@ -55,12 +73,20 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           triggerType: 'icon',
           contentBehavior: 'modal',
         }}
-      ></oryx-site-navigation-item>`;
+      ></oryx-site-navigation-item>
+      <oryx-discard-picking
+        ${ref(this.discardModal)}
+        @oryx.back=${this.back}
+      ></oryx-discard-modal>`;
+  }
+
+  protected openDiscardModal(): void {
+    const modal = this.discardModal.value;
+    modal && (modal.open = true);
   }
 
   protected back(): void {
-    //TODO - display discard modal
-    this.routerService.back();
+    this.routerService.back(this.pickingList?.cartNote ? 2 : 1);
   }
 }
 

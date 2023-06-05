@@ -1,4 +1,5 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { BACK_EVENT } from '@spryker-oryx/ui/modal';
 import { i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -13,8 +14,8 @@ export class DiscardPickingComponent extends LitElement {
     return html`
       <oryx-modal
         ?open=${this.open}
+        @oryx.close=${this.close}
         enableFooter
-        preventCloseByBackdrop
         preventCloseByEscape
         footerButtonFullWidth
       >
@@ -37,7 +38,9 @@ export class DiscardPickingComponent extends LitElement {
         </oryx-button>
 
         <oryx-button slot="footer" type=${ButtonType.Critical} size=${Size.Md}>
-          <button>${i18n('picking-lists.discard')}</button>
+          <button @click=${this.discard}>
+            ${i18n('picking-lists.discard')}
+          </button>
         </oryx-button>
       </oryx-modal>
     `;
@@ -45,5 +48,11 @@ export class DiscardPickingComponent extends LitElement {
 
   protected close(): void {
     this.open = false;
+  }
+
+  protected discard(): void {
+    this.dispatchEvent(
+      new CustomEvent(BACK_EVENT, { bubbles: true, composed: true })
+    );
   }
 }
