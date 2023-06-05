@@ -47,10 +47,9 @@ export const CartComponentMixin = <
     protected $totals = signal(this.cartController.getTotals(), {
       initialValue: null,
     });
-    protected $totalQuantity = signal(
-      this.cartController.getTotalQuantity(),
-      null
-    );
+    protected $totalQuantity = signal(this.cartController.getTotalQuantity(), {
+      initialValue: null,
+    });
   }
   return CartMixinClass as unknown as Type<CartMixinInterface> & T;
 };
