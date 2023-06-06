@@ -1,5 +1,5 @@
-export * from '../address-add-trigger/address-add-trigger.def';
-export * from '../address-edit-trigger/address-edit-trigger.def';
+export * from '../address-add-button/address-add-button.def';
+export * from '../address-edit-button/address-edit-button.def';
 export * from '../address-edit/address-edit.def';
 export * from '../address-form/address-form.def';
 export * from '../address-list-item/address-list-item.def';

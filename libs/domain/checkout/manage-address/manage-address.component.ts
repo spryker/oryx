@@ -5,7 +5,7 @@ import {
   AddressMixin,
   CrudState,
 } from '@spryker-oryx/user';
-import { Target } from '@spryker-oryx/user/address-add-trigger';
+import { Target } from '@spryker-oryx/user/address-add-button';
 import {
   SaveOption,
   UserAddressEditComponent,

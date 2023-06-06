@@ -4,6 +4,6 @@ export const enum Target {
   Inline = 'inline',
 }
 
-export interface UserAddressAddTriggerOptions {
+export interface UserAddressAddButtonOptions {
   target?: Target;
 }

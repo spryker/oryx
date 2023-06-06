@@ -26,12 +26,11 @@ export class CheckoutDeliveryComponent
 
   protected autoSelect = effect(() => {
     const addresses = this.addresses();
+    if (!addresses?.length) return;
     const selected = this.selected();
-    if (
-      !selected ||
-      (addresses && !addresses?.find((address) => selected.id === address.id))
-    ) {
-      if (addresses?.length) this.persist(addresses[0], true);
+
+    if (!selected || !addresses.find((address) => selected.id === address.id)) {
+      this.persist(addresses[0], true);
     }
   });
 

@@ -7,10 +7,7 @@ import { resolve } from '@spryker-oryx/di';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { AddressMixin } from '../src/mixins';
 import { CrudState } from '../src/models';
-import {
-  AddressEditTriggerOptions,
-  Target,
-} from './address-edit-trigger.model';
+import { AddressEditTriggerOptions, Target } from './address-edit-button.model';
 
 @defaultOptions({ target: Target.Link })
 @hydratable(['mouseover', 'focusin'])

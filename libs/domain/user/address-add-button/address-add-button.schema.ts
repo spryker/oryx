@@ -1,10 +1,10 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
-import { UserAddressAddTriggerComponent } from './address-add-trigger.component';
+import { UserAddressAddButtonComponent } from './address-add-button.component';
 
-export const userAddressAddTriggerSchema: ContentComponentSchema<UserAddressAddTriggerComponent> =
+export const userAddressAddButtonSchema: ContentComponentSchema<UserAddressAddButtonComponent> =
   {
-    name: 'Address Add Trigger',
+    name: 'Address Add Button',
     group: 'User',
     icon: 'add',
     options: {

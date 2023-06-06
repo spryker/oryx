@@ -9,13 +9,13 @@ import { AddressMixin } from '../src/mixins';
 import { CrudState } from '../src/models';
 import {
   Target,
-  UserAddressAddTriggerOptions,
-} from './address-add-trigger.model';
+  UserAddressAddButtonOptions,
+} from './address-add-button.model';
 
 @defaultOptions({ target: Target.Link })
 @hydratable(['mouseover', 'focusin'])
-export class UserAddressAddTriggerComponent extends AddressMixin(
-  ContentMixin<UserAddressAddTriggerOptions>(LitElement)
+export class UserAddressAddButtonComponent extends AddressMixin(
+  ContentMixin<UserAddressAddButtonOptions>(LitElement)
 ) {
   protected semanticLinkService = resolve(SemanticLinkService);
 

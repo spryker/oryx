@@ -3,11 +3,11 @@ import { componentDef } from '@spryker-oryx/core';
 export const addressAddTriggerComponent = componentDef({
   name: 'oryx-user-address-add-trigger',
   impl: () =>
-    import('./address-add-trigger.component').then(
-      (m) => m.UserAddressAddTriggerComponent
+    import('./address-add-button.component').then(
+      (m) => m.UserAddressAddButtonComponent
     ),
   schema: () =>
-    import('./address-add-trigger.schema').then(
-      (m) => m.userAddressAddTriggerSchema
+    import('./address-add-button.schema').then(
+      (m) => m.userAddressAddButtonSchema
     ),
 });

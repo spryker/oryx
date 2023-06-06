@@ -41,7 +41,7 @@ export class UserAddressEditComponent extends AddressMixin(
   submit(): Observable<unknown> {
     this.loading = true;
     if (!this.preselected?.address || !this.preselected?.valid) {
-      this.addressForm?.shadowRoot?.querySelector('form')?.checkValidity();
+      this.addressForm?.getForm()?.checkValidity();
       return of({});
     }
 

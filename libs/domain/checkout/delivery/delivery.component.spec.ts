@@ -29,14 +29,6 @@ class MockAddressService implements Partial<AddressService> {
   getAddresses = vi.fn().mockReturnValue(of([]));
 }
 
-const mockReport = vi.fn();
-
-// @customElement('oryx-checkout-address')
-// // eslint-disable-next-line @typescript-eslint/no-unused-vars
-// class MockComponent extends LitElement implements isValid {
-//   isValid = mockReport;
-// }
-
 const mockAddress = { id: 'foo' };
 const mockValid = false;
 

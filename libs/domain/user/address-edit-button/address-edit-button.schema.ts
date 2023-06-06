@@ -1,5 +1,5 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { UserAddressEditTriggerComponent } from './address-edit-trigger.component';
+import { UserAddressEditTriggerComponent } from './address-edit-button.component';
 
 export const userAddressEditTriggerSchema: ContentComponentSchema<UserAddressEditTriggerComponent> =
   {
