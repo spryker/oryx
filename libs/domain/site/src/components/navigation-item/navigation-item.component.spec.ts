@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { TokenResolver } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { modalComponent } from '@spryker-oryx/ui/modal';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
@@ -32,6 +33,7 @@ describe('SiteNavigationItemComponent', () => {
     await useComponent([
       siteNavigationItemComponent,
       navigationButtonComponent,
+      modalComponent,
     ]);
   });
 
@@ -197,6 +199,31 @@ describe('SiteNavigationItemComponent', () => {
 
     it('should render oryx-dropdown', () => {
       expect(element).toContainElement('oryx-modal');
+    });
+
+    it('should render fullscreen modal', () => {
+      expect(element).toContainElement('oryx-modal[fullscreen]');
+    });
+
+    describe('and label is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-site-navigation-item
+            .options=${{
+              label: 'test',
+              contentBehavior: NavigationContentBehavior.Modal,
+            }}
+          ></oryx-site-navigation-item>
+        `);
+      });
+
+      it('should render heading text', () => {
+        expect(
+          element.renderRoot
+            .querySelector('oryx-modal')
+            ?.shadowRoot?.querySelector('header')?.innerText
+        ).toContain('test');
+      });
     });
   });
 

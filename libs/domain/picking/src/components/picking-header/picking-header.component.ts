@@ -54,6 +54,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           icon: IconTypes.Profile,
           triggerType: 'icon',
           contentBehavior: 'modal',
+          label: i18n('oryx.picking.account'),
         }}
       ></oryx-site-navigation-item>`;
   }
