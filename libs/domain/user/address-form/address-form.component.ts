@@ -45,7 +45,6 @@ export class UserAddressFormComponent
 
   @property({ type: Boolean }) enableDefaultShipping?: boolean;
   @property({ type: Boolean }) enableDefaultBilling?: boolean;
-  // @property({ type: Object }) address?: Address;
 
   @signalProperty() country?: string;
   @signalProperty() fallbackCountry?: string;
