@@ -1,4 +1,10 @@
-import { Computed, Effect, EffectOptions, StateSignal } from './signals';
+import {
+  Computed,
+  Effect,
+  EffectOptions,
+  SignalOptions,
+  StateSignal,
+} from './signals';
 
 export interface Signal<T = unknown> {
   (): T;
