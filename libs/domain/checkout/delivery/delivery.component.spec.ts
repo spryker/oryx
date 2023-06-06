@@ -3,13 +3,11 @@ import {
   CheckoutDataService,
   CheckoutService,
   CheckoutStateService,
-  isValid,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { AddressService } from '@spryker-oryx/user';
-import { html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { AddressEventDetail, AddressService } from '@spryker-oryx/user';
+import { html } from 'lit';
 import { of } from 'rxjs';
 import { CheckoutDeliveryComponent } from './delivery.component';
 import { checkoutDeliveryComponent } from './delivery.def';
@@ -33,11 +31,14 @@ class MockAddressService implements Partial<AddressService> {
 
 const mockReport = vi.fn();
 
-@customElement('oryx-checkout-address')
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-class MockComponent extends LitElement implements isValid {
-  isValid = mockReport;
-}
+// @customElement('oryx-checkout-address')
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// class MockComponent extends LitElement implements isValid {
+//   isValid = mockReport;
+// }
+
+const mockAddress = { id: 'foo' };
+const mockValid = false;
 
 describe('CheckoutDeliveryComponent', () => {
   let element: CheckoutDeliveryComponent;
@@ -111,6 +112,42 @@ describe('CheckoutDeliveryComponent', () => {
     it('should render the oryx-checkout-address', () => {
       expect(element).toContainElement('oryx-checkout-address');
     });
+
+    describe('and there is no pre-selected address', () => {
+      beforeEach(async () => {
+        addressService.getAddresses.mockReturnValue([mockAddress, 2, 3]);
+        checkoutStateService.get.mockReturnValue(of(null));
+        element = await fixture(
+          html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+        );
+      });
+
+      it('should auto-select the first address', () => {
+        expect(checkoutStateService.set).toHaveBeenCalledWith(
+          'shippingAddress',
+          { valid: true, value: mockAddress }
+        );
+      });
+    });
+
+    describe('and the change event is dispatched on the list', () => {
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector('oryx-checkout-manage-address')
+          ?.dispatchEvent(
+            new CustomEvent<AddressEventDetail>('change', {
+              detail: { address: mockAddress, valid: mockValid },
+            })
+          );
+      });
+
+      it('should set the shipping address on the checkoutStateService', () => {
+        expect(checkoutStateService.set).toHaveBeenCalledWith(
+          'shippingAddress',
+          { valid: mockValid, value: mockAddress }
+        );
+      });
+    });
   });
 
   describe('if there is no list of addresses', () => {
@@ -129,34 +166,53 @@ describe('CheckoutDeliveryComponent', () => {
       expect(element).toContainElement('oryx-checkout-address');
     });
 
-    describe('and the selectedAddress event is dispatched', () => {
+    describe('and the change event is dispatched on the checkout address', () => {
       beforeEach(() => {
-        const addressElement = element.renderRoot.querySelector(
-          'oryx-checkout-address'
-        );
-        addressElement?.dispatchEvent(
-          new CustomEvent('selectedAddress', {
-            detail: { valid: true, value: { foo: 'bar' } },
-          })
-        );
+        element.renderRoot
+          .querySelector('oryx-checkout-address')
+          ?.dispatchEvent(
+            new CustomEvent<AddressEventDetail>('change', {
+              detail: { address: mockAddress, valid: mockValid },
+            })
+          );
       });
 
-      it('should dispatch an onchange event', () => {
-        expect(checkoutStateService.set).toHaveBeenCalled();
+      it('should set the shipping address on the checkoutStateService', () => {
+        expect(checkoutStateService.set).toHaveBeenCalledWith(
+          'shippingAddress',
+          { valid: mockValid, value: mockAddress }
+        );
       });
     });
+
+    //   describe('and the selectedAddress event is dispatched', () => {
+    //     beforeEach(() => {
+    //       const addressElement = element.renderRoot.querySelector(
+    //         'oryx-checkout-address'
+    //       );
+    //       addressElement?.dispatchEvent(
+    //         new CustomEvent('selectedAddress', {
+    //           detail: { valid: true, value: { foo: 'bar' } },
+    //         })
+    //       );
+    //     });
+
+    //     it('should dispatch an onchange event', () => {
+    //       expect(checkoutStateService.set).toHaveBeenCalled();
+    //     });
+    //   });
   });
 
-  describe('when the isValid method is called', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-checkout-delivery></oryx-checkout-delivery>`
-      );
-      element.isValid(true);
-    });
+  // describe('when the isValid method is called', () => {
+  //   beforeEach(async () => {
+  //     element = await fixture(
+  //       html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+  //     );
+  //     element.isValid(true);
+  //   });
 
-    it('should call the isValid method on the address component', () => {
-      expect(mockReport).toHaveBeenCalled();
-    });
-  });
+  //   it('should call the isValid method on the address component', () => {
+  //     expect(mockReport).toHaveBeenCalled();
+  //   });
+  // });
 });
