@@ -1,3 +1,4 @@
+import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -5,7 +6,7 @@ export const styles = css`
     text-align: start;
     margin-block-end: 10px;
     text-decoration: none;
-    border: 1px solid var(--oryx-color-canvas-500);
+    border: 1px solid var(--oryx-color-neutral-6);
     border-radius: 9px;
     position: relative;
     display: block;
@@ -21,7 +22,7 @@ export const styles = css`
     border-radius: 50%;
     width: 8px;
     height: 8px;
-    background: var(--oryx-color-canvas-500);
+    background: var(--oryx-color-neutral-6);
     position: absolute;
     inset-block-start: 17px;
     inset-inline-start: 20px;
@@ -31,7 +32,7 @@ export const styles = css`
     line-height: 22px;
     text-transform: uppercase;
     font-weight: 500;
-    color: var(--oryx-color-ink);
+    color: var(--oryx-color-neutral-12);
     margin: 0;
     font-size: 14px;
     white-space: nowrap;
@@ -40,17 +41,17 @@ export const styles = css`
   }
 
   slot[name='content'] {
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
     text-transform: none;
     font-size: 14px;
   }
 
   :host([active]) h3::before {
-    background: var(--oryx-color-primary-300);
+    background: ${primaryColorBase};
   }
 
   :host([active]) h3 {
-    color: var(--oryx-color-primary-300);
+    color: ${primaryColorBase};
   }
 
   :host(:hover) {
@@ -59,7 +60,7 @@ export const styles = css`
 
   :host(:focus-visible) {
     outline: none;
-    border: 1px solid var(--oryx-color-primary-300);
-    box-shadow: 0 0 3px var(--oryx-color-primary-300);
+    border: 1px solid ${primaryColorBase};
+    box-shadow: 0 0 3px ${primaryColorBase};
   }
 `;

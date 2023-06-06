@@ -11,7 +11,7 @@ export const styles = css`
   section {
     display: flex;
     gap: 4px;
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
     margin-block: var(--oryx-space-2) var(--oryx-space-6);
     font-size: 12px;
     line-height: 1.333em;
@@ -29,7 +29,7 @@ export const styles = css`
   oryx-icon {
     --oryx-icon-size: 16px;
     --_margin: 0;
-    --oryx-icon-color: var(--oryx-color-neutral-300);
+    --oryx-icon-color: var(--oryx-color-neutral-9);
   }
 `;
 

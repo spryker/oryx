@@ -1,6 +1,10 @@
 import { css } from 'lit';
 
 export const SingleFacetControlStyles = css`
+  :host {
+    padding: 4px 1px;
+  }
+
   ul {
     display: flex;
     flex-direction: column;
@@ -17,6 +21,13 @@ export const SingleFacetControlStyles = css`
 
   .label {
     display: flex;
+    gap: 10px;
+  }
+
+  .label > *:first-child {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .counter {

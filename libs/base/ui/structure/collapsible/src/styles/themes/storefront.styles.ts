@@ -1,3 +1,4 @@
+import { primaryColorDark } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 import { blockSelector, inlineSelector } from '../base.styles';
 
@@ -18,7 +19,7 @@ const inlineAppearance = css`
 
 const blockAppearance = css`
   :host(${blockSelector}) {
-    border: solid 1px var(--oryx-color-canvas-500);
+    border: solid 1px var(--oryx-color-neutral-6);
     position: relative;
   }
 
@@ -35,11 +36,11 @@ const blockAppearance = css`
   }
 
   :host(${blockSelector}:active) {
-    border-color: var(--oryx-color-primary-400);
+    border-color: ${primaryColorDark};
   }
 
   :host(${blockSelector}) summary {
-    padding-block: 16px 13px;
+    padding-block: 12px;
   }
 
   /*
@@ -52,6 +53,8 @@ const blockAppearance = css`
 
   :host(${blockSelector}) oryx-icon-button {
     color: var(--oryx-color-ink);
+    position: relative;
+    inset-inline-start: 8px;
   }
 
   :host(${blockSelector}) slot[name='header'] {
@@ -61,7 +64,7 @@ const blockAppearance = css`
 
   :host(${blockSelector}) slot:not([name]) {
     display: block;
-    padding-block: 13px;
+    padding-block: 12px;
   }
 `;
 

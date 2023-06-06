@@ -1,6 +1,7 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/utilities';
 import { SearchboxComponent } from './searchbox.component';
 import { searchboxComponent } from './searchbox.def';
@@ -32,7 +33,9 @@ describe('SearchComponent', () => {
         });
 
         it('should render the default search icon', () => {
-          expect(element).toContainElement('.search-button[type=search]');
+          expect(element).toContainElement(
+            `.search-button[type=${IconTypes.Search}]`
+          );
         });
       });
 
@@ -311,7 +314,9 @@ describe('SearchComponent', () => {
         });
 
         it('should render the default clear icon', () => {
-          expect(element).toContainElement('.clear-button[type=remove]');
+          expect(element).toContainElement(
+            `.clear-button[type=${IconTypes.Remove}]`
+          );
         });
       });
 

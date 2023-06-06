@@ -44,10 +44,8 @@ const Template: Story = (): TemplateResult => {
     </ul>
 
     <oryx-layout layout="column">
-      <div style="border:5px solid var(--oryx-color-secondary-300">1</div>
-      <div style="padding:20px;background:var(--oryx-color-secondary-300">
-        2
-      </div>
+      <div style="border:5px solid var(--oryx-color-secondary-9)">1</div>
+      <div style="padding:20px;background:var(--oryx-color-secondary-9)">2</div>
       <div style="outline:1px solid blue;outline-offset: 5px;">4</div>
       ${generateLayoutItems(4, 4)}
     </oryx-layout>
@@ -60,16 +58,14 @@ const Template: Story = (): TemplateResult => {
     </ul>
 
     <oryx-layout layout="column">
-      <div style="height:100px;background:var(--oryx-color-secondary-300">
-        1
-      </div>
-      <div style="align-self:center;background:var(--oryx-color-secondary-300">
+      <div style="height:100px;background:var(--oryx-color-secondary-9)">1</div>
+      <div style="align-self:center;background:var(--oryx-color-secondary-9)">
         2 (center)
       </div>
-      <div style="align-self:end;background:var(--oryx-color-secondary-300">
+      <div style="align-self:end;background:var(--oryx-color-secondary-9)">
         3 (end)
       </div>
-      <div style="align-self:stretch;background:var(--oryx-color-secondary-300">
+      <div style="align-self:stretch;background:var(--oryx-color-secondary-9)">
         4 (str)
       </div>
       ${generateLayoutItems(6, 5)}
@@ -80,7 +76,7 @@ const Template: Story = (): TemplateResult => {
     </ul>
     <oryx-layout layout="column">
       <div>1</div>
-      <div style="--col-span:2;background:var(--oryx-color-secondary-300">
+      <div style="--col-span:2;background:var(--oryx-color-secondary-9)">
         2/3
       </div>
       ${generateLayoutItems(4, 4)}

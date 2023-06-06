@@ -21,7 +21,7 @@ export const groupItemStyles = css`
 
     display: block;
     grid-column: 2 / span 1;
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
     margin-block-start: 4px;
   }
 

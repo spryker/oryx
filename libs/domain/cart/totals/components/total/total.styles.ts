@@ -10,7 +10,7 @@ const cartTotalsTotalRules = css`
     justify-content: space-between;
     padding-inline: var(--oryx-space-4);
     padding-block-start: var(--oryx-space-2);
-    border-block-start: solid 1px var(--oryx-color-canvas-500);
+    border-block-start: solid 1px var(--oryx-color-neutral-6);
   }
 
   span:not(:last-child) {
@@ -34,7 +34,7 @@ const cartTotalsTotalRules = css`
 
     flex: 100%;
     text-align: end;
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 `;
 
@@ -45,7 +45,7 @@ const cartTotalsTotalSmallStyles = css`
     justify-content: space-between;
     padding-inline: var(--oryx-space-4);
     padding-block-start: var(--oryx-space-2);
-    border-block-start: solid 1px var(--oryx-color-canvas-500);
+    border-block-start: solid 1px var(--oryx-color-neutral-6);
   }
 
   span:first-child {
@@ -61,7 +61,7 @@ const cartTotalsTotalSmallStyles = css`
 
     flex: 100%;
     text-align: end;
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 `;
 
