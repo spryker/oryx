@@ -1,7 +1,6 @@
-import {resolve} from '@spryker-oryx/di';
-import {ReactiveController, ReactiveControllerHost} from 'lit';
-import {Effect} from "../core";
-
+import { resolve } from '@spryker-oryx/di';
+import { ReactiveController, ReactiveControllerHost } from 'lit';
+import { Effect } from '../core';
 
 export class EffectController implements ReactiveController {
   protected effects = new Map<string, Effect>();
@@ -12,7 +11,9 @@ export class EffectController implements ReactiveController {
   constructor(public host: ReactiveControllerHost) {
     (this.host = host).addController(this);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (this.context as any)?.rendered$?.subscribe?.(() => this.hostDisconnected());
+    (this.context as any)?.rendered$?.subscribe?.(() =>
+      this.hostDisconnected()
+    );
   }
 
   hostConnected(): void {
@@ -36,7 +37,7 @@ export class EffectController implements ReactiveController {
       effect = new Effect(effect);
     }
 
-    // add some logic to check if it is an effect, allow for specyfing full effect
+    // add some logic to check if it is an effect, allow for specifying full effect
     this.effects.set(key, effect);
   }
 
