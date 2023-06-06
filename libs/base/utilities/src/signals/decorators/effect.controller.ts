@@ -34,7 +34,7 @@ export class EffectController implements ReactiveController {
     }
 
     if (typeof effect === 'function') {
-      effect = new Effect(effect);
+      effect = new Effect(effect, { defer: true });
     }
 
     // add some logic to check if it is an effect, allow for specifying full effect
