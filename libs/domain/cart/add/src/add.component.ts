@@ -38,6 +38,7 @@ export class CartAddComponent extends ProductMixin(
     return html`<oryx-cart-quantity-input
       .min=${this.min()}
       .max=${this.max()}
+      value="1"
       @update=${this.onUpdate}
       @submit=${this.onSubmit}
     ></oryx-cart-quantity-input>`;
