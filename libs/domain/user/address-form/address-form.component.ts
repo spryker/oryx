@@ -64,7 +64,10 @@ export class UserAddressFormComponent
 
     if (!country) return;
 
-    return this.addressFormService.getForm({ country, fallbackCountry });
+    return this.addressFormService.getForm({
+      country,
+      fallbackCountry,
+    }) as unknown as AddressForm;
   });
 
   @query('form')
@@ -80,9 +83,7 @@ export class UserAddressFormComponent
   protected getFormFields(): FormFieldDefinition[] {
     const form = this.formModel();
 
-    const formFields = [
-      ...((form as unknown as AddressForm)?.data.options ?? []),
-    ];
+    const formFields = [...(form?.data.options ?? [])];
     if (this.enableDefaultShipping) {
       formFields.push({
         id: 'isDefaultShipping',
