@@ -1,5 +1,5 @@
+import { storybookDefaultViewports } from '@/tools/storybook';
 import { resolve } from '@spryker-oryx/di';
-import { storybookDefaultViewports } from '@spryker-oryx/ui';
 import { AddressService } from '@spryker-oryx/user';
 import { MockAddressService, MockAddressType } from '@spryker-oryx/user/mocks';
 import { Meta, Story } from '@storybook/web-components';

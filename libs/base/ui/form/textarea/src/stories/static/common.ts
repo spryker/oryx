@@ -1,4 +1,4 @@
-import { initMutationObserverForComponent } from '../../../../../../../../tools/storybook';
+import { initMutationObserverForComponent } from '@/tools/storybook';
 
 export const setTextAreaMutationObserver = (): void => {
   initMutationObserverForComponent({
