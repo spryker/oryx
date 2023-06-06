@@ -3,10 +3,12 @@ import { AppRef, InjectionPlugin } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { SyncSchedulerService } from '@spryker-oryx/offline';
 import { RouterService } from '@spryker-oryx/router';
-import { asyncState, valueType } from '@spryker-oryx/utilities';
+import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
+import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { switchMap } from 'rxjs';
+import { delay, switchMap, tap } from 'rxjs';
 import { OfflineDataPlugin } from '../../../offline/data-plugin';
 import { userProfileComponentStyles } from './user-profile.styles';
 
@@ -16,6 +18,9 @@ export class UserProfileComponent extends LitElement {
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
   protected syncSchedulerService = resolve(SyncSchedulerService);
+
+  @state()
+  protected loading: boolean | null = null;
 
   @asyncState()
   protected currentRoute = valueType(this.routerService.currentRoute());
@@ -33,7 +38,7 @@ export class UserProfileComponent extends LitElement {
     return html`
       <div class="info-block">
         <dl>
-          <dt class="info-label">Employee ID</dt>
+          <dt class="info-label">${i18n('user.profile.employee-id')}</dt>
           <dd class="info-value">admin@spryker.com</dd>
         </dl>
       </div>
@@ -43,7 +48,9 @@ export class UserProfileComponent extends LitElement {
         () =>
           html`
             <oryx-notification type="info" scheme="dark">
-              You can’t log out because of a pending synchronization.
+              ${i18n(
+                'user.profile.you-can’t-log-out-because-of-a-pending-synchronization'
+              )}.
             </oryx-notification>
           `
       )}
@@ -52,29 +59,35 @@ export class UserProfileComponent extends LitElement {
         () =>
           html`
             <oryx-notification type="info" scheme="dark">
-              You can’t log out because picking is in progress.
+              ${i18n(
+                'user.profile.you-can’t-log-out-because-picking-is-in-progress'
+              )}.
             </oryx-notification>
           `
       )}
 
-      <oryx-button type="secondary" outline="true">
-        <button
-          ?disabled="${isPicking || this.pendingSyncs}"
-          @click=${this.onLogOut}
-        >
-          Log Out
-        </button>
-      </oryx-button>
+      <div class="info-footer">
+        <oryx-button type="secondary" outline="true">
+          <button
+            ?disabled="${isPicking || this.pendingSyncs}"
+            @click=${this.onLogOut}
+          >
+            ${i18n('user.profile.log-Out')}
+          </button>
+        </oryx-button>
 
-      ${when(
-        isMainPage,
-        () =>
-          html`
-            <oryx-button type="primary">
-              <button @click=${this.onReceiveData}>Receive Data</button>
-            </oryx-button>
-          `
-      )}
+        ${when(
+          isMainPage,
+          () =>
+            html`
+              <oryx-button ?loading=${this.loading} type="primary">
+                <button @click=${this.onReceiveData}>
+                  ${i18n('user.profile.receive-Data')}
+                </button>
+              </oryx-button>
+            `
+        )}
+      </div>
     `;
   }
 
@@ -85,8 +98,20 @@ export class UserProfileComponent extends LitElement {
 
     injectorDataPlugin
       .clearDb(injector)
-      .pipe(switchMap(() => injectorDataPlugin.populateDb(injector)))
+      .pipe(
+        tap(() => (this.loading = true)),
+        delay(500),
+        switchMap(() => injectorDataPlugin.populateDb(injector))
+      )
       .subscribe(() => {
+        this.dispatchEvent(
+          new CustomEvent(CLOSE_EVENT, {
+            bubbles: true,
+            composed: true,
+          })
+        );
+
+        this.loading = false;
         this.routerService.navigate('/');
       });
   }

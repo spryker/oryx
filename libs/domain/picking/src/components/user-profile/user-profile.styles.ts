@@ -2,14 +2,13 @@ import { css } from 'lit';
 
 export const userProfileComponentStyles = css`
   :host {
-    display: grid;
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   .info-block {
-    display: grid;
-    text-align: start;
-    min-height: 400px;
+    flex-grow: 1;
 
     .info-label {
       font-size: 12px;
@@ -25,6 +24,11 @@ export const userProfileComponentStyles = css`
       font-size: 16px;
       line-height: 22px;
     }
+  }
+
+  .info-footer {
+    display: grid;
+    gap: 10px;
   }
 
   oryx-notification {
