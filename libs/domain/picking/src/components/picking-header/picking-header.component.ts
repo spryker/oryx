@@ -77,7 +77,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
       <oryx-discard-picking
         ${ref(this.discardModal)}
         @oryx.back=${this.back}
-      ></oryx-discard-modal>`;
+      ></oryx-discard-picking>`;
   }
 
   protected openDiscardModal(): void {

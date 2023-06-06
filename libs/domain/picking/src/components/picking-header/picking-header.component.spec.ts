@@ -7,6 +7,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { PickingListService } from '../../services';
+import { DiscardPickingComponent } from '../discard-modal';
 import { PickingHeaderComponent } from './picking-header.component';
 import { pickingHeaderComponent } from './picking-header.def';
 
@@ -17,6 +18,7 @@ class MockPickingListService implements Partial<PickingListService> {
 
 class MockRouterService implements Partial<RouterService> {
   back = vi.fn();
+  routeGuard = vi.fn().mockReturnValue(of(''));
 }
 
 describe('PickingHeaderComponent', () => {
@@ -75,6 +77,9 @@ describe('PickingHeaderComponent', () => {
     );
   };
 
+  const getDiscardModal = (): DiscardPickingComponent | null =>
+    element.renderRoot.querySelector('oryx-discard-picking');
+
   it('is defined', () => {
     expect(element).toBeInstanceOf(PickingHeaderComponent);
   });
@@ -95,6 +100,14 @@ describe('PickingHeaderComponent', () => {
 
   it('should render customer note button', () => {
     expect(getCustomerNoteButton()).not.toBeNull();
+  });
+
+  it('should render discard modal', () => {
+    expect(getDiscardModal()).not.toBeNull();
+  });
+
+  it('should not show discard modal', () => {
+    expect(getDiscardModal()?.open).not.toBe(true);
   });
 
   it('should render account button', () => {
@@ -138,9 +151,23 @@ describe('PickingHeaderComponent', () => {
     beforeEach(() => {
       (getBackButton() as HTMLButtonElement).click();
     });
-    //TODO - check that modal is opened first
-    it('should call router service', () => {
-      expect(routerService.back).toHaveBeenCalled();
+
+    it('should open discard modal', () => {
+      expect(getDiscardModal()?.open).toBe(true);
+    });
+  });
+
+  describe('when route is guarded', () => {
+    beforeEach(async () => {
+      routerService.routeGuard.mockReturnValue(of('/picking-list'));
+
+      element = await fixture(
+        html`<oryx-picking-header pickingListId="mockid"></oryx-picking-header>`
+      );
+    });
+
+    it('should open discard modal', () => {
+      expect(getDiscardModal()?.open).toBe(true);
     });
   });
 });
