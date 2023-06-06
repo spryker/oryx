@@ -57,8 +57,12 @@ const standardElementEffect = (
   };
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function elementEffect(): any {
+/**
+ * Decorator to easily tie effects to component lifecycles:
+ *   - effect will start when component is connected to DOM
+ *   - effect will stop when component is disconnected from DOM
+ */
+export function elementEffect() {
   return (
     context: DecoratorContext | TargetDecorator,
     name?: PropertyKey
