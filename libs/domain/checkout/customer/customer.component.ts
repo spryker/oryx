@@ -42,7 +42,7 @@ export class CheckoutCustomerComponent
   protected hasCustomerData = false;
 
   @elementEffect()
-  protected eff = () => {
+  protected eff = (): void => {
     if (!this.$options().enableGuestCheckout && !this.isAuthenticated()) {
       const route = this.loginRoute();
       if (route) this.routerService.navigate(route);
@@ -50,7 +50,7 @@ export class CheckoutCustomerComponent
   };
 
   @elementEffect()
-  protected storeCustomer = () => {
+  protected storeCustomer = (): void => {
     const customer = this.customer();
     if (customer) {
       const { email, salutation, firstName, lastName } =

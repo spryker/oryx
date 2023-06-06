@@ -3,8 +3,9 @@ import { Effect } from '../core';
 import { EffectController } from './effect.controller';
 
 class MockHost implements Partial<ReactiveControllerHost> {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   addController() {}
-
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   requestUpdate() {}
   updateComplete = Promise.resolve(true);
 }
@@ -60,6 +61,7 @@ describe('EffectController', () => {
   });
 
   it('should create and add an effect if a function is passed', () => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     const func = () => {};
 
     controller.add(func, 'testEffect');

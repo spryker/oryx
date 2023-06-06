@@ -11,7 +11,7 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
   static styles = [checkoutOrchestratorStyles];
 
   @elementEffect()
-  protected eff = () => {
+  protected eff = (): void => {
     if (this.isInvalid()) this.report();
   };
 

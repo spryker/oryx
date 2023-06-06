@@ -21,7 +21,7 @@ export class UserAddressBookComponent extends ContentMixin(LitElement) {
   @state() selected?: string;
 
   @elementEffect()
-  protected dispatchStateChange = () => {
+  protected dispatchStateChange = (): void => {
     if (this.activeState) {
       this.dispatchEvent(
         new CustomEvent(CHANGE_STATE_EVENT, {

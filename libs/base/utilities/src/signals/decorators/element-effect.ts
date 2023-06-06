@@ -63,16 +63,21 @@ const standardElementEffect = (
  *   - effect will stop when component is disconnected from DOM
  */
 export function elementEffect() {
-  return (
-    context: DecoratorContext | TargetDecorator,
+  return <T extends LitElement>(
+    context: T | DecoratorContext,
     name?: PropertyKey
-  ): DecoratorContext | void => {
+  ): any => {
     const propName = (
-      isLegacyDecorator(context, name) ? name : context.key
+      isLegacyDecorator(context as DecoratorContext, name)
+        ? name
+        : (context as DecoratorContext).key
     ) as string;
 
-    return isLegacyDecorator(context, name)
-      ? legacyElementEffect(context, propName)
-      : (standardElementEffect(context, propName) as unknown as void);
+    return isLegacyDecorator(context as DecoratorContext, name)
+      ? legacyElementEffect(context as T, propName)
+      : (standardElementEffect(
+          context as DecoratorContext,
+          propName
+        ) as unknown as void);
   };
 }

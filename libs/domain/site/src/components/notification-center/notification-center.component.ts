@@ -29,7 +29,7 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
   );
 
   @elementEffect()
-  protected notification$ = async () => {
+  protected notification$ = async (): Promise<void> => {
     const notification = this.notification();
 
     if (!notification || Object.keys(notification).length === 0) return;
