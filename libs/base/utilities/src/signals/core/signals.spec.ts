@@ -56,6 +56,23 @@ describe('SignalProducer', () => {
       expect(notifySpy).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('.equals()', () => {
+    it('should correctly compare values using the default comparison', () => {
+      const signal = new SignalProducer<number>();
+      expect(signal.equals(5, 5)).toBe(true);
+      expect(signal.equals(5, 10)).toBe(false);
+    });
+
+    it('should correctly compare values using a custom comparison', () => {
+      const signal = new SignalProducer<number>({
+        equal: (a, b) => Math.abs(a - b) <= 2,
+      });
+      expect(signal.equals(5, 5)).toBe(true);
+      expect(signal.equals(5, 6)).toBe(true);
+      expect(signal.equals(5, 8)).toBe(false);
+    });
+  });
 });
 
 describe('SignalConsumer', () => {
@@ -237,6 +254,27 @@ describe('StateSignal', () => {
       expect(accessedSpy).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('StateSignal', () => {
+    it('should trigger a change notification when state changes according to a custom comparison', () => {
+      const stateSignal = new StateSignal<number>(5, {
+        equal: (a, b) => Math.abs(a - b) <= 2,
+      });
+      let testValue: number | undefined;
+
+      const eff = new Effect(() => {
+        testValue = stateSignal.value;
+      });
+
+      expect(testValue).toBe(5);
+      stateSignal.set(6);
+      expect(testValue).toBe(5); // change within tolerance, so no change notification
+
+      stateSignal.set(9);
+      expect(testValue).toBe(9); // change outside tolerance, so a change notification is expected
+      eff.stop();
+    });
+  });
 });
 
 describe('Computed', () => {
@@ -274,6 +312,28 @@ describe('Computed', () => {
 
       expect(computeSpy).toHaveBeenCalledTimes(2);
     });
+  });
+
+  it('should trigger a change notification when computed value changes according to a custom comparison', () => {
+    const state = new StateSignal<number>(5);
+    const computed = new Computed<number>(() => state.value, {
+      equal: (a, b) => Math.abs(a - b) <= 2,
+    });
+
+    let testValue: number | undefined;
+
+    const eff = new Effect(() => {
+      testValue = computed.value * 2;
+    });
+
+    expect(testValue).toBe(10);
+    state.set(6);
+    expect(testValue).toBe(10); // change within tolerance, so no change notification
+
+    state.set(9);
+    expect(testValue).toBe(18); // change within tolerance, so no change notification
+
+    eff.stop();
   });
 });
 

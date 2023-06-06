@@ -39,21 +39,21 @@ export const CheckoutMixin = <T extends Type<LitElement>>(
       this.checkoutService
         .getProcessState()
         .pipe(map((state) => state === CheckoutState.Empty)),
-      false
+      { initialValue: false }
     );
 
     protected isBusy = signal(
       this.checkoutService
         .getProcessState()
         .pipe(map((state) => state === CheckoutState.Busy)),
-      false
+      { initialValue: false }
     );
 
     protected isInvalid = signal(
       this.checkoutService
         .getProcessState()
         .pipe(map((state) => state === CheckoutState.Invalid)),
-      false
+      { initialValue: false }
     );
   }
   return CheckoutMixinClass as unknown as Type<CheckoutMixinInterface> & T;
