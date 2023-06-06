@@ -1,4 +1,4 @@
-import { BehaviorSubject, delay, of } from 'rxjs';
+import { BehaviorSubject, delay, of, ReplaySubject } from 'rxjs';
 import { SignalConsumer } from './core/signals';
 import { signalFrom, SignalObservable } from './signal-from';
 
@@ -39,6 +39,24 @@ describe('signalFrom', () => {
     expect(signal()).toBe(42);
     observable.next(43);
     expect(signal()).toBe(43);
+  });
+
+  it('should respect a custom comparison function', () => {
+    const observable = new ReplaySubject<number>(1);
+    const signal = signalFrom<number>(observable, {
+      equal: (a, b) => Math.abs(a - b) <= 2,
+      initialValue: 5,
+    });
+
+    signal.connect();
+    expect(signal()).toBe(5);
+    observable.next(6);
+    expect(signal()).toBe(5); // change within tolerance, so no change notification
+
+    observable.next(8);
+    expect(signal()).toBe(8); // change outside tolerance, so a change notification is expected
+
+    signal.disconnect();
   });
 });
 

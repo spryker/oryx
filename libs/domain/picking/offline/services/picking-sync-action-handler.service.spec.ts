@@ -1,15 +1,15 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
-import { SyncStatus } from '@spryker-oryx/offline';
+import { Sync, SyncStatus } from '@spryker-oryx/offline';
 import { PickingListStatus } from '@spryker-oryx/picking';
 import {
   PickingListEntity,
   PickingSyncAction,
+  PickingSyncActionHandlerService,
 } from '@spryker-oryx/picking/offline';
 import { Table } from 'dexie';
 import { of } from 'rxjs';
 import { PickingListOnlineAdapter } from './adapter';
-import { PickingSyncActionHandlerService } from './picking-sync-action-handler.service';
 
 class MockIndexedDbService implements Partial<IndexedDbService> {
   getStore = vi.fn().mockImplementation(() => of(mockTable));
@@ -18,12 +18,14 @@ class MockIndexedDbService implements Partial<IndexedDbService> {
 class MockPickingListOnlineAdapter
   implements Partial<PickingListOnlineAdapter>
 {
+  get = vi.fn().mockReturnValue(of([]));
   finishPicking = vi.fn().mockReturnValue(of([]));
 }
 
 const mockContent = { items: [] };
 
 class MockTable implements Partial<Table> {
+  bulkPut = vi.fn().mockReturnValue([]);
   update = vi.fn().mockReturnValue(mockContent);
 }
 
@@ -109,7 +111,7 @@ describe('PickingSyncActionHandlerService', () => {
     describe('and store is not updated', () => {
       const callback = vi.fn();
       beforeEach(() => {
-        mockTable.update.mockReturnValue(0);
+        mockTable.update.mockReturnValue(Promise.resolve(0));
 
         service.handleSync(mockSync).subscribe({ error: callback });
       });
@@ -117,7 +119,59 @@ describe('PickingSyncActionHandlerService', () => {
       it('should throw error', () => {
         expect(callback).toHaveBeenCalledWith(
           new Error(
-            `PickingSyncActionHandlerService: Could not update PickingList(mock) after finishing picking!`
+            `PickingSyncActionHandlerService: Could not update PickingList(${mockSync.payload.id}) after finishing picking!`
+          )
+        );
+      });
+    });
+  });
+
+  describe('when Push action is handled', () => {
+    const mockPickingLists = [{ id: 'id1' }, { id: 'id2' }];
+
+    const mockSyncPush: Sync<PickingSyncAction.Push> = {
+      ...mockSync,
+      action: PickingSyncAction.Push,
+      payload: {
+        action: 'create',
+        entity: 'picking-lists',
+        ids: mockPickingLists.map((pl) => pl.id),
+      },
+    };
+
+    const callback = vi.fn();
+
+    beforeEach(() => {
+      adapter.get.mockReturnValue(of(mockPickingLists));
+      mockTable.bulkPut.mockReturnValue(
+        Promise.resolve(mockSyncPush.payload.ids)
+      );
+      service.handleSync(mockSyncPush).subscribe(callback);
+    });
+
+    it('should call online adapter and update indexedDB', async () => {
+      expect(adapter.get).toHaveBeenCalledWith({
+        ids: mockSyncPush.payload.ids,
+      });
+      expect(indexeddb.getStore).toHaveBeenCalledWith(PickingListEntity);
+      expect(mockTable.bulkPut).toHaveBeenCalledWith(mockPickingLists, {
+        allKeys: true,
+      });
+      expect(callback).toHaveBeenCalled();
+    });
+
+    describe('and store is not updated properly', () => {
+      beforeEach(() => {
+        mockTable.bulkPut.mockReturnValue(
+          Promise.resolve([mockSyncPush.payload.ids[0]])
+        );
+        service.handleSync(mockSyncPush).subscribe({ error: callback });
+      });
+
+      it('should throw error', () => {
+        expect(callback).toHaveBeenCalledWith(
+          new Error(
+            `PickingSyncActionHandlerService: Could not save 1 out of ${mockPickingLists.length} PickingLists after push!`
           )
         );
       });

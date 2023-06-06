@@ -154,7 +154,7 @@ export class CartEntryComponent
     return html`
       <section class="pricing">
         ${qtyTemplate}
-        <oryx-price .value=${this.price}></oryx-price>
+        <oryx-site-price .value=${this.price}></oryx-site-price>
         ${when(
           this.$options()?.enableItemPrice,
           () =>

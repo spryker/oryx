@@ -7,7 +7,7 @@ export interface PickingListQualifier
   extends SortableQualifier<PickingListQualifierSortBy>,
     PageableQualifier,
     SearchQualifier {
-  id?: string;
+  ids?: string[];
   status?: PickingListStatus;
   orderReferences?: string[];
 }

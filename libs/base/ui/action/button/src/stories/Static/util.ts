@@ -45,7 +45,13 @@ export const buttonTypes = (
         </button>
       </oryx-button>
 
-      <oryx-button .type=${type} size="sm" loading style="flex:auto">
+      <oryx-button
+        .type=${type}
+        size="sm"
+        loading
+        style="flex:auto"
+        class="chromatic-ignore"
+      >
         <button>loading</button>
       </oryx-button>
     </section>

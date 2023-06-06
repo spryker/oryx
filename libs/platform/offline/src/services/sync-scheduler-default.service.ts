@@ -15,13 +15,18 @@ import { SyncSchedulerService } from './sync-scheduler.service';
 
 export const ProcessSyncsBackgroundSyncTag = 'oryx.ProcessSyncs';
 
+declare let self: ServiceWorkerGlobalScope;
+
 export class SyncSchedulerDefaultService implements SyncSchedulerService {
   protected scheduleSyncTimer?: ReturnType<typeof setTimeout>;
 
-  constructor(
-    protected indexedDbService = inject(IndexedDbService),
-    protected serviceWorker = navigator.serviceWorker
-  ) {}
+  constructor(protected indexedDbService = inject(IndexedDbService)) {}
+
+  protected async getServiceWorker(): Promise<ServiceWorkerRegistration> {
+    return navigator.serviceWorker
+      ? await navigator.serviceWorker.ready
+      : self.registration;
+  }
 
   schedule<TAction extends SyncAction>(
     operation: SyncOperation<TAction>
@@ -61,7 +66,7 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
             );
           }
 
-          return new SyncEntity(sync);
+          return await this.createSync(sync);
         })
       )
     ) as Observable<Sync>;
@@ -72,12 +77,11 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
       switchMap((store) =>
         liveQuery(async () => {
           const syncs = await store
-            .where('[status+scheduledAt]')
+            .where('status')
             .anyOf(SyncStatus.Queued, SyncStatus.Processing)
-            .reverse()
-            .sortBy('scheduledAt');
+            .toArray();
 
-          return syncs.map((sync) => new SyncEntity(sync));
+          return await Promise.all(syncs.map((sync) => this.createSync(sync)));
         })
       )
     );
@@ -177,9 +181,7 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
     }
 
     this.scheduleSyncTimer = setTimeout(async () => {
-      const swRegistration = await this.serviceWorker.ready;
-      //ts does not have this type because it's still experimental
-      const sync = (swRegistration as any).sync;
+      const sync = (await this.getServiceWorker()).sync;
 
       if (!sync) {
         throw new Error(

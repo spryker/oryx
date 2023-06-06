@@ -5,7 +5,12 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { UserService } from '@spryker-oryx/user';
-import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import {
+  elementEffect,
+  hydratable,
+  i18n,
+  signal,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { CheckoutGuestComponent } from '../guest';
@@ -25,7 +30,9 @@ export class CheckoutCustomerComponent
   protected linkService = resolve(SemanticLinkService);
   protected routerService = resolve(RouterService);
 
-  protected isAuthenticated = signal(this.authService.isAuthenticated(), false);
+  protected isAuthenticated = signal(this.authService.isAuthenticated(), {
+    initialValue: false,
+  });
   protected customer = signal(this.userService.getUser());
   protected loginRoute = signal(
     this.linkService.get({ type: SemanticLinkType.Login })
@@ -34,14 +41,16 @@ export class CheckoutCustomerComponent
   @state()
   protected hasCustomerData = false;
 
-  protected eff = effect(() => {
+  @elementEffect()
+  protected eff = (): void => {
     if (!this.$options().enableGuestCheckout && !this.isAuthenticated()) {
       const route = this.loginRoute();
       if (route) this.routerService.navigate(route);
     }
-  });
+  };
 
-  protected storeCustomer = effect(() => {
+  @elementEffect()
+  protected storeCustomer = (): void => {
     const customer = this.customer();
     if (customer) {
       const { email, salutation, firstName, lastName } =
@@ -52,7 +61,7 @@ export class CheckoutCustomerComponent
         value: { email, salutation, firstName, lastName },
       });
     }
-  });
+  };
 
   @query('oryx-checkout-guest')
   protected guest?: CheckoutGuestComponent;

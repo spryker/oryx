@@ -51,9 +51,6 @@ describe('ProductCardComponent', () => {
     expect(element).toContainElement('a oryx-product-average-rating');
     expect(element).toContainElement('a oryx-cart-add');
     expect(element).toContainElement('a oryx-product-labels');
-
-    //TODO: replace by favorites component
-    expect(element).toContainElement('oryx-icon-button');
   });
 
   describe('when enableTitle = false', () => {

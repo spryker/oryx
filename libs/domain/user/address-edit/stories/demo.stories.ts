@@ -1,0 +1,13 @@
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../.constants';
+
+export default {
+  title: `${storybookPrefix}/Address Edit`,
+} as Meta;
+
+const Template: Story = (): TemplateResult => {
+  return html`<oryx-user-address-edit></oryx-user-address-edit>`;
+};
+
+export const Demo = Template.bind({});

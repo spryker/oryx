@@ -97,6 +97,19 @@
       "@spryker-oryx/picking/*": ["libs/domain/picking/*/index.ts"],
       "@spryker-oryx/picking/offline": ["libs/domain/picking/offline/index.ts"],
       "@spryker-oryx/presets": ["libs/template/presets/src/index.ts"],
+      "@spryker-oryx/presets/backoffice": [
+        "libs/template/presets/backoffice/index.ts"
+      ],
+      "@spryker-oryx/presets/backoffice-ng": [
+        "libs/template/presets/backoffice-ng/index.ts"
+      ],
+      "@spryker-oryx/presets/fes": ["libs/template/presets/fes/index.ts"],
+      "@spryker-oryx/presets/fulfillment": [
+        "libs/template/presets/fulfillment/index.ts"
+      ],
+      "@spryker-oryx/presets/storefront": [
+        "libs/template/presets/storefront/index.ts"
+      ],
       "@spryker-oryx/product": ["libs/domain/product/src/index.ts"],
       "@spryker-oryx/product/attributes": [
         "libs/domain/product/attributes/index.ts"
@@ -145,24 +158,7 @@
       ],
       "@spryker-oryx/search/sort": ["libs/domain/search/sort/index.ts"],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
-      "@spryker-oryx/site/currency-selector": [
-        "libs/domain/site/currency-selector/index.ts"
-      ],
-      "@spryker-oryx/site/date": ["libs/domain/site/date/index.ts"],
-      "@spryker-oryx/site/locale-selector": [
-        "libs/domain/site/locale-selector/index.ts"
-      ],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
-      "@spryker-oryx/site/navigation-button": [
-        "libs/domain/site/navigation-button/index.ts"
-      ],
-      "@spryker-oryx/site/navigation-item": [
-        "libs/domain/site/navigation-item/index.ts"
-      ],
-      "@spryker-oryx/site/notification-center": [
-        "libs/domain/site/notification-center/index.ts"
-      ],
-      "@spryker-oryx/site/price": ["libs/domain/site/price/index.ts"],
       "@spryker-oryx/testing": ["tools/testing"],
       "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
       "@spryker-oryx/themes/breakpoints": [

@@ -62,12 +62,13 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   buildForm(
-    data: FormFieldDefinition[],
+    data?: FormFieldDefinition[],
     values?: FormValues,
     keyFn: (field: FormFieldDefinition) => string = (
       field: FormFieldDefinition
     ): string => field.id
-  ): TemplateResult {
+  ): TemplateResult | void {
+    if (!data) return;
     return html`${repeat(
       data,
       keyFn,
