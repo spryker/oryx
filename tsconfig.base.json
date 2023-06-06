@@ -259,14 +259,11 @@
       "@spryker-oryx/user/address-add-trigger": [
         "libs/domain/user/address-add-trigger/index.ts"
       ],
-      "@spryker-oryx/user/address-edit-trigger": [
-        "libs/domain/user/address-edit-trigger/index.ts"
-      ],
-      "@spryker-oryx/user/address-book": [
-        "libs/domain/user/address-book/index.ts"
-      ],
       "@spryker-oryx/user/address-edit": [
         "libs/domain/user/address-edit/index.ts"
+      ],
+      "@spryker-oryx/user/address-edit-trigger": [
+        "libs/domain/user/address-edit-trigger/index.ts"
       ],
       "@spryker-oryx/user/address-form": [
         "libs/domain/user/address-form/index.ts"
