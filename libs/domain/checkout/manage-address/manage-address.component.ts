@@ -51,9 +51,6 @@ export class ManageAddressComponent extends AddressMixin(
   @query('oryx-user-address-edit') editComponent?: UserAddressEditComponent;
 
   protected override render(): TemplateResult | void {
-    // did cause issues when evaluating this inline (<oryx-user-address-list .selected=${this.selected()?.id})>
-    const addressId = this.selected()?.id;
-    const action = this.$action();
     return html`
       <oryx-button .type=${ButtonType.Text} .size=${Size.Sm}>
         <button @click=${this.onOpen}>
@@ -70,65 +67,71 @@ export class ManageAddressComponent extends AddressMixin(
             @oryx.close=${this.onClose}
             .heading=${this.getHeading()}
             enableCloseButtonInHeader
-            ?enableNavigateBack=${action !== CrudState.Read}
+            ?enableNavigateBack=${this.$action() !== CrudState.Read}
             enableFooter
           >
-            ${when(
-              action === CrudState.Read || action === CrudState.Delete,
-              () => html`<oryx-user-address-add-trigger
-                  .addressId=${addressId}
-                  .options=${{ target: Target.Inline }}
-                ></oryx-user-address-add-trigger>
-
-                <oryx-user-address-list
-                  .addressId=${addressId}
-                  .options=${{
-                    selectable: true,
-                    editable: true,
-                    removable: true,
-                    editTarget: EditTarget.Inline,
-                  }}
-                  @change=${this.onChange}
-                ></oryx-user-address-list> `
-            )}
-            ${when(
-              action === CrudState.Create || action === CrudState.Update,
-              () =>
-                html`
-                  <oryx-user-address-edit
-                    .options=${{ save: SaveOption.None }}
-                    @change=${this.onEdit}
-                  ></oryx-user-address-edit>
-                `
-            )}
-
-            <oryx-button slot="footer-more" .size=${Size.Md}>
-              ${when(
-                action === CrudState.Read,
-                () => html`
-                  <button @click=${this.onSelect}>
-                    ${i18n('checkout.address.select')}
-                  </button>
-                `
-              )}
-            </oryx-button>
-
-            ${when(
-              action === CrudState.Create || action === CrudState.Update,
-              () => html`<oryx-button
-                slot="footer-more"
-                .size=${Size.Md}
-                .loading=${this.loading}
-              >
-                <button @click=${this.onSave}>
-                  ${i18n('user.address.save')}
-                </button>
-              </oryx-button>`
-            )}
+            ${[this.renderList(), this.renderEditor(), this.renderFooter()]}
           </oryx-modal>
         `
       )}
     `;
+  }
+
+  protected renderList(): TemplateResult | void {
+    const addressId = this.selected()?.id;
+    const action = this.$action();
+    if (action !== CrudState.Read && action !== CrudState.Delete) return;
+
+    return html`<oryx-user-address-add-trigger
+        .addressId=${addressId}
+        .options=${{ target: Target.Inline }}
+      ></oryx-user-address-add-trigger>
+
+      <oryx-user-address-list
+        .addressId=${addressId}
+        .options=${{
+          selectable: true,
+          editable: true,
+          removable: true,
+          editTarget: EditTarget.Inline,
+        }}
+        @change=${this.onChange}
+      ></oryx-user-address-list> `;
+  }
+
+  protected renderEditor(): TemplateResult | void {
+    const action = this.$action();
+    if (action !== CrudState.Create && action !== CrudState.Update) return;
+
+    return html`
+      <oryx-user-address-edit
+        .options=${{ save: SaveOption.None }}
+        @change=${this.onEdit}
+      ></oryx-user-address-edit>
+    `;
+  }
+
+  protected renderFooter(): TemplateResult | void {
+    const action = this.$action();
+    if (action === CrudState.Read) {
+      return html`<oryx-button slot="footer-more" .size=${Size.Md}>
+        <button @click=${this.onSelect}>
+          ${i18n('checkout.address.select')}
+        </button>
+      </oryx-button>`;
+    }
+
+    if (action === CrudState.Create || action === CrudState.Update) {
+      return html`<oryx-button
+        slot="footer-more"
+        .size=${Size.Md}
+        .loading=${this.loading}
+      >
+        <button @click=${this.onSave}>
+          ${i18n(['save', 'user.address.save'])}
+        </button>
+      </oryx-button>`;
+    }
   }
 
   protected onEdit(e: Event): void {
