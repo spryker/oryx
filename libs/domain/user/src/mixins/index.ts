@@ -1,1 +1,1 @@
-export * from './address-component.mixin';
+export * from './address.mixin';

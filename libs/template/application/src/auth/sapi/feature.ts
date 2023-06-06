@@ -18,7 +18,6 @@ import {
   AppFeature,
   ComponentsInfo,
   HttpInterceptor,
-  injectEnv,
 } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
 import { SapiIdentityService } from './sapi-identity.service';
@@ -38,7 +37,7 @@ export class SapiAuthFeature extends OauthFeature implements AppFeature {
           id: 'spryker',
           clientId: '',
           grantType: 'password',
-          tokenUrl: new URL('/token', injectEnv('SCOS_BASE_URL')).toString(),
+          tokenUrl: new URL('/token', inject('SCOS_BASE_URL')).toString(),
         },
       ],
     };
@@ -69,7 +68,7 @@ export class SapiAuthFeature extends OauthFeature implements AppFeature {
         provide: AuthTokenInterceptorConfig,
         useFactory: () =>
           ({
-            baseUrl: injectEnv('SCOS_BASE_URL'),
+            baseUrl: inject('SCOS_BASE_URL'),
             ...configFactory().tokenInterceptor,
           } as AuthTokenInterceptorConfig),
       },
@@ -77,7 +76,7 @@ export class SapiAuthFeature extends OauthFeature implements AppFeature {
         provide: AnonTokenInterceptorConfig,
         useFactory: () =>
           ({
-            baseUrl: injectEnv('SCOS_BASE_URL'),
+            baseUrl: inject('SCOS_BASE_URL'),
             headerName: 'X-Anonymous-Customer-Unique-Id',
             ...configFactory().anonTokenInterceptor,
           } as AnonTokenInterceptorConfig),
