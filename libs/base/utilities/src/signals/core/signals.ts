@@ -218,7 +218,7 @@ export interface EffectOptions {
    */
   defer?: boolean;
   /**
-   * If true, the effect will be run asynchronously using queueMicrotask().
+   * If true, the effect will be run asynchronously
    */
   async?: boolean;
 }
