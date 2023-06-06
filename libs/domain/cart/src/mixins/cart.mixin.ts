@@ -35,14 +35,21 @@ export const CartComponentMixin = <
 
     protected cartController = new CartController(this);
 
-    protected $isEmpty = signal(this.cartController.isEmpty(), false);
-    protected $isBusy = signal(this.cartController.isBusy(), false);
-    protected $entries = signal(this.cartController.getEntries(), []);
-    protected $totals = signal(this.cartController.getTotals(), null);
-    protected $totalQuantity = signal(
-      this.cartController.getTotalQuantity(),
-      null
-    );
+    protected $isEmpty = signal(this.cartController.isEmpty(), {
+      initialValue: false,
+    });
+    protected $isBusy = signal(this.cartController.isBusy(), {
+      initialValue: false,
+    });
+    protected $entries = signal(this.cartController.getEntries(), {
+      initialValue: [],
+    });
+    protected $totals = signal(this.cartController.getTotals(), {
+      initialValue: null,
+    });
+    protected $totalQuantity = signal(this.cartController.getTotalQuantity(), {
+      initialValue: null,
+    });
   }
   return CartMixinClass as unknown as Type<CartMixinInterface> & T;
 };

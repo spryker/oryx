@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
-import { Signal } from './core';
+import { Signal, SignalOptions } from './core';
 import { SignalConsumer, StateSignal } from './core/signals';
 
 export interface ConnectableSignal<T> extends Signal<T> {
@@ -7,11 +7,18 @@ export interface ConnectableSignal<T> extends Signal<T> {
   disconnect(): void;
 }
 
+export interface ConnectableSignalOptions<T, K> extends SignalOptions<T | K> {
+  initialValue?: K;
+}
+
 export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
   subscription?: Subscription;
 
-  constructor(protected observable: Observable<T>, initialValue?: K) {
-    super(initialValue as K);
+  constructor(
+    protected observable: Observable<T>,
+    options?: ConnectableSignalOptions<T, K>
+  ) {
+    super(options?.initialValue as K, options);
   }
 
   get value(): T | K {
@@ -19,7 +26,10 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
     if (!this.subscription) {
       let syncResult: T | undefined;
       this.observable.subscribe((value) => (syncResult = value)).unsubscribe();
-      return syncResult ?? this.initialValue;
+      return (
+        syncResult ??
+        ((this.options as ConnectableSignalOptions<T, K>).initialValue as K)
+      );
     }
     return this.state;
   }
@@ -53,11 +63,11 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
  * - exposing set() method to allow reusing signal for different observables/promises
  *
  * */
-export function signalFrom<T, K = undefined>(
+export function signalFrom<T, K = T>(
   observable$: Observable<T>,
-  initialValue?: K
+  options?: ConnectableSignalOptions<T, K>
 ): ConnectableSignal<T | K> {
-  const obsSignal = new SignalObservable(observable$, initialValue);
+  const obsSignal = new SignalObservable(observable$, options);
 
   const signal = () => obsSignal.value;
   signal.connect = () => {
