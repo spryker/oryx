@@ -6,6 +6,10 @@ import { EffectController } from './effect.controller';
 
 const EFFECT_CONTROLLER = Symbol('effectController');
 
+interface ElementWithController extends LitElement {
+  [EFFECT_CONTROLLER]?: EffectController;
+}
+
 function controllerCreation(target: TargetDecorator): void {
   if (!target[EFFECT_CONTROLLER]) {
     const descriptor = {
@@ -18,7 +22,10 @@ function controllerCreation(target: TargetDecorator): void {
   }
 }
 
-const legacyElementEffect = (context: TargetDecorator, name: string): void => {
+const legacyElementEffect = (
+  context: ElementWithController,
+  name: string
+): void => {
   const constructor = context.constructor as typeof LitElement;
   const willUpdate = context['willUpdate'];
 
