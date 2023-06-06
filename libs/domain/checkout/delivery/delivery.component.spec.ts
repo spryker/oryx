@@ -7,8 +7,10 @@ import {
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { AddressEventDetail, AddressService } from '@spryker-oryx/user';
-import { html } from 'lit';
+import { html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
+import { CheckoutAddressComponent } from '../address';
 import { CheckoutDeliveryComponent } from './delivery.component';
 import { checkoutDeliveryComponent } from './delivery.def';
 
@@ -31,6 +33,12 @@ class MockAddressService implements Partial<AddressService> {
 
 const mockAddress = { id: 'foo' };
 const mockValid = false;
+
+@customElement('oryx-checkout-address')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+class MockComponent extends LitElement {
+  isValid = vi.fn();
+}
 
 describe('CheckoutDeliveryComponent', () => {
   let element: CheckoutDeliveryComponent;
@@ -195,16 +203,20 @@ describe('CheckoutDeliveryComponent', () => {
     //   });
   });
 
-  // describe('when the isValid method is called', () => {
-  //   beforeEach(async () => {
-  //     element = await fixture(
-  //       html`<oryx-checkout-delivery></oryx-checkout-delivery>`
-  //     );
-  //     element.isValid(true);
-  //   });
+  describe('when the isValid method is called', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+      );
+      element.isValid(true);
+    });
 
-  //   it('should call the isValid method on the address component', () => {
-  //     expect(mockReport).toHaveBeenCalled();
-  //   });
-  // });
+    it('should call the isValid method on the address component', () => {
+      expect(
+        element.renderRoot.querySelector<CheckoutAddressComponent>(
+          'oryx-checkout-address'
+        )?.isValid
+      ).toHaveBeenCalled();
+    });
+  });
 });

@@ -35,7 +35,7 @@ export class CheckoutDeliveryComponent
   });
 
   @query('oryx-checkout-address')
-  protected addressComponent?: CheckoutAddressComponent;
+  protected checkoutAddress?: CheckoutAddressComponent;
 
   protected override render(): TemplateResult {
     return html`
@@ -55,7 +55,7 @@ export class CheckoutDeliveryComponent
   }
 
   isValid(report: boolean): boolean {
-    return !!this.addressComponent?.isValid(report);
+    return !!this.checkoutAddress?.isValid(report);
   }
 
   protected onChange(e: CustomEvent<AddressEventDetail>): void {

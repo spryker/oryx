@@ -160,11 +160,8 @@ export class ManageAddressComponent extends AddressMixin(
   }
 
   protected onClose(): void {
-    if (this.$action() !== CrudState.Read) {
-      this.addressStateService.setAction(CrudState.Read);
-    } else {
-      this.open = false;
-    }
+    this.addressStateService.setAction(CrudState.Read);
+    this.open = false;
   }
 
   protected onBack(): void {

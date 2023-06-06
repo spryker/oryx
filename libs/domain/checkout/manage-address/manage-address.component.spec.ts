@@ -9,6 +9,7 @@ import {
   AddressStateService,
   CrudState,
 } from '@spryker-oryx/user';
+import { UserAddressEditComponent } from '@spryker-oryx/user/address-edit';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { CheckoutState } from '../src/models';
@@ -212,6 +213,12 @@ describe('ManageAddressComponent', () => {
       it('should close the modal open', () => {
         expect(element).not.toContainElement('oryx-modal');
       });
+
+      it('should set the address crud state to Read', () => {
+        expect(addressStateService.setAction).toHaveBeenCalledWith(
+          CrudState.Read
+        );
+      });
     });
 
     [CrudState.Create, CrudState.Update].forEach((action) => {
@@ -247,6 +254,27 @@ describe('ManageAddressComponent', () => {
           expect(saveButton?.textContent?.trim()).toBe('Save');
         });
 
+        describe('when the change event is dispatched', () => {
+          const mockAddress: Address = { id: '123' };
+          const event = new CustomEvent('change', {
+            bubbles: true,
+            composed: true,
+            detail: { address: mockAddress },
+          });
+          event.stopPropagation = vi.fn();
+
+          beforeEach(() => {
+            const editor = element.renderRoot.querySelector(
+              'oryx-user-address-edit'
+            );
+            editor?.dispatchEvent(event);
+          });
+
+          it('should prevent the event from bubbling up', () => {
+            expect(event.stopPropagation).toHaveBeenCalled();
+          });
+        });
+
         describe('when the oryx.back event is dispatched', () => {
           beforeEach(() => {
             const modal = element.renderRoot.querySelector('oryx-modal');
@@ -261,6 +289,26 @@ describe('ManageAddressComponent', () => {
 
           it('should keep the modal open', () => {
             expect(element).toContainElement('oryx-modal[open]');
+          });
+        });
+
+        describe('and when the save button is clicked', () => {
+          let button: HTMLButtonElement;
+          let addressEditComponent: UserAddressEditComponent;
+
+          beforeEach(async () => {
+            addressEditComponent = element.renderRoot.querySelector(
+              'oryx-user-address-edit'
+            ) as UserAddressEditComponent;
+            addressEditComponent.submit = vi.fn().mockReturnValue(of({}));
+            button = element.renderRoot.querySelector(
+              `oryx-button[slot='footer-more'] button`
+            ) as HTMLButtonElement;
+            button?.click();
+          });
+
+          it('should submit the editComponent', () => {
+            expect(addressEditComponent.submit).toHaveBeenCalled();
           });
         });
       });
