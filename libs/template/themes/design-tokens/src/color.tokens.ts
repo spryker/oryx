@@ -1,10 +1,9 @@
 import { ColorDesignTokens, colorPalette } from '@spryker-oryx/experience';
-import { cssColorVar } from '@spryker-oryx/utilities';
 
 export const color: ColorDesignTokens = {
   neutral: colorPalette.grays.sprykerSfGray,
   primary: colorPalette.colors.spryker,
-  secondary: colorPalette.colors.amber,
+  secondary: colorPalette.colors.crimson,
 
   highlight: colorPalette.colors.red,
   success: colorPalette.colors.spryker,
@@ -12,7 +11,7 @@ export const color: ColorDesignTokens = {
   error: colorPalette.colors.red,
   info: colorPalette.colors.blue,
 
-  focus: cssColorVar('primary'),
+  focus: 'var(--oryx-color-primary-9)',
   placeholder: `var(--oryx-color-neutral-11)`,
 
   overlay: colorPalette.overlays.black,

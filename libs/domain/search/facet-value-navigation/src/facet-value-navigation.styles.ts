@@ -1,5 +1,3 @@
-import { primaryColorBase } from '@spryker-oryx/utilities';
-
 import { css } from 'lit';
 
 export const FacetControlStyles = css`
@@ -18,7 +16,7 @@ export const FacetControlStyles = css`
 
   .header oryx-button button,
   .controls button {
-    color: ${primaryColorBase};
+    color: var('--oryx-color-primary-9');
   }
 
   .header oryx-chip {
