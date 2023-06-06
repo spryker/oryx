@@ -37,7 +37,7 @@ export class ProductPriceComponent extends ProductMixin(
     this.productController
       .getProduct()
       .pipe(switchMap((product) => this.formatPrices(product?.price))),
-    {}
+    { initialValue: {} as Prices }
   );
 
   protected override render(): TemplateResult | void {

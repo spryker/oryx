@@ -10,7 +10,7 @@ import {
 import { isDefined } from '@spryker-oryx/utilities';
 // Add full import because of issue with naming exports from cjs.
 import * as jsonapi from 'jsonapi-serializer';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom, map, Observable } from 'rxjs';
 import {
   PickingListEntity,
   PickingListItemOffline,
@@ -34,7 +34,18 @@ export class PickingListOnlineDefaultAdapter
   }
 
   get(qualifier: PickingListQualifier): Observable<PickingListEntity[]> {
-    return super.get(qualifier) as Observable<PickingListEntity[]>;
+    return super.get(qualifier).pipe(
+      // TODO: Remove filtering when BE will be able to retrieve the list of picking lists by provided "ids" list
+      map((pickingListEntities) => {
+        if (qualifier.ids) {
+          return pickingListEntities.filter((entity) =>
+            qualifier.ids?.includes(entity.id)
+          );
+        }
+
+        return pickingListEntities;
+      })
+    ) as Observable<PickingListEntity[]>;
   }
 
   startPicking(pickingList: PickingListEntity): Observable<PickingListEntity> {

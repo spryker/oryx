@@ -9,11 +9,19 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface OryxSyncActions {
     [PickingSyncAction.FinishPicking]: PickingListEntity;
+    [PickingSyncAction.Push]: PushSyncPayload;
   }
 }
 
 export enum PickingSyncAction {
   FinishPicking = 'oryx.picking:finish-picking',
+  Push = 'oryx.picking:push',
+}
+
+export interface PushSyncPayload {
+  action: 'create' | 'update';
+  entity: string;
+  ids: string[];
 }
 
 export class PickingSyncActionHandlerService
@@ -30,6 +38,8 @@ export class PickingSyncActionHandlerService
         return this.handleFinishPicking(
           sync as Sync<PickingSyncAction.FinishPicking>
         );
+      case PickingSyncAction.Push:
+        return this.handlePush(sync as Sync<PickingSyncAction.Push>);
       default:
         return throwError(
           () =>
@@ -54,6 +64,32 @@ export class PickingSyncActionHandlerService
         if (updatedObjects === 0) {
           throw new Error(
             `PickingSyncActionHandlerService: Could not update PickingList(${sync.payload.id}) after finishing picking!`
+          );
+        }
+      })
+    );
+  }
+
+  protected handlePush(sync: Sync<PickingSyncAction.Push>): Observable<void> {
+    if (sync.payload.entity !== 'picking-lists') {
+      return throwError(
+        () =>
+          new Error(
+            `PickingSyncActionHandlerService: Unknown ${sync.payload.entity} entity`
+          )
+      );
+    }
+
+    return this.onlineAdapter.get({ ids: sync.payload.ids }).pipe(
+      combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
+      switchMap(async ([pickingLists, store]) => {
+        const addedOrUpdatedKeys = await store.bulkPut(pickingLists, {
+          allKeys: true,
+        });
+
+        if (addedOrUpdatedKeys.length !== pickingLists.length) {
+          throw new Error(
+            `PickingSyncActionHandlerService: Could not save ${addedOrUpdatedKeys.length} out of ${pickingLists.length} PickingLists after push!`
           );
         }
       })
