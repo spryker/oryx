@@ -30,7 +30,9 @@ export class CheckoutCustomerComponent
   protected linkService = resolve(SemanticLinkService);
   protected routerService = resolve(RouterService);
 
-  protected isAuthenticated = signal(this.authService.isAuthenticated(), false);
+  protected isAuthenticated = signal(this.authService.isAuthenticated(), {
+    initialValue: false,
+  });
   protected customer = signal(this.userService.getUser());
   protected loginRoute = signal(
     this.linkService.get({ type: SemanticLinkType.Login })

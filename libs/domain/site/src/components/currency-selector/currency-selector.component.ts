@@ -16,9 +16,13 @@ export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
 
   protected currencyService = resolve(CurrencyService);
 
-  protected currencies = signal(this.currencyService.getAll(), []);
+  protected currencies = signal(this.currencyService.getAll(), {
+    initialValue: [],
+  });
   protected current = signal(this.currencyService.get());
-  protected currentLocale = signal(resolve(LocaleService).get(), 'en');
+  protected currentLocale = signal(resolve(LocaleService).get(), {
+    initialValue: 'en',
+  });
 
   protected override render(): TemplateResult | void {
     const currencies = this.currencies();
