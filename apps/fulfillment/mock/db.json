@@ -979,5 +979,30 @@
         }
       }
     ]
+  },
+
+  "push-notification-subscriptions": {
+    "data": {
+      "type": "push-notification-subscriptions",
+      "id": "id",
+      "attributes": {
+        "providerName": "web-push-php",
+        "payload": {
+          "endpoint": "",
+          "expirationTime": null,
+          "keys": {
+            "p256dh": "p256dh",
+            "auth": "auth"
+          }
+        },
+        "group": {
+          "name": "warehouse",
+          "identifier": "identifier"
+        }
+      },
+      "links": {
+        "self": "/push-notification-subscriptions/id"
+      }
+    }
   }
 }
