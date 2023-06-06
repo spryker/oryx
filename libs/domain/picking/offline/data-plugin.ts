@@ -57,7 +57,7 @@ export class OfflineDataPlugin extends ExecPlugin {
     this.subscription?.unsubscribe();
   }
 
-  protected clearDb(injector: Injector): Observable<void> {
+  clearDb(injector: Injector): Observable<void> {
     const dexieIdbService = injector.inject(DexieIndexedDbService);
 
     return combineLatest([
@@ -72,7 +72,7 @@ export class OfflineDataPlugin extends ExecPlugin {
     );
   }
 
-  protected populateDb(injector: Injector): Observable<void> {
+  populateDb(injector: Injector): Observable<void> {
     const onlineAdapter = injector.inject(PickingListOnlineAdapter);
     const dexieIdbService = injector.inject(DexieIndexedDbService);
 
