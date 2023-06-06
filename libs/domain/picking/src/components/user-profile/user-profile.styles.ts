@@ -19,7 +19,7 @@ export const userProfileComponentStyles = css`
     }
 
     .info-value {
-      margin-top: 6px;
+      margin-block-start: 6px;
       margin-inline-start: 0;
       font-weight: 500;
       font-size: 16px;
@@ -28,6 +28,6 @@ export const userProfileComponentStyles = css`
   }
 
   oryx-notification {
-    margin-bottom: 10px;
+    margin-block-end: 10px;
   }
 `;
