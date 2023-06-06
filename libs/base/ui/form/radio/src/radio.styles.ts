@@ -21,7 +21,7 @@ export const baseStyles = css`
     background-clip: content-box;
     /* stylelint-disable-next-line */
     background-image: linear-gradient(currentColor 0%, currentColor 100%);
-    color: var('--oryx-color-primary-9');
+    color: var(--oryx-color-primary-9);
   }
 
   :not(slot[name='subtext'])::slotted(*) {
@@ -64,7 +64,7 @@ export const baseStyles = css`
   }
 
   ::slotted(input:checked:hover) {
-    color: var('--oryx-color-primary-10');
+    color: var(--oryx-color-primary-10);
   }
 
   :host([hasError]) ::slotted(input),

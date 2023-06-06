@@ -24,9 +24,7 @@ const Template: Story = (): TemplateResult => {
     <oryx-layout layout="list">
       <div>1</div>
       <oryx-layout sticky>
-        <div style="background:var('--oryx-color-secondary-9');">
-          2 (sticky)
-        </div>
+        <div style="background:var(--oryx-color-secondary-9);">2 (sticky)</div>
       </oryx-layout>
       ${generateLayoutItems(5)}
     </oryx-layout>

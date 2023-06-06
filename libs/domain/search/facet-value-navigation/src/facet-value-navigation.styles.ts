@@ -16,7 +16,7 @@ export const FacetControlStyles = css`
 
   .header oryx-button button,
   .controls button {
-    color: var('--oryx-color-primary-9');
+    color: var(--oryx-color-primary-9);
   }
 
   .header oryx-chip {

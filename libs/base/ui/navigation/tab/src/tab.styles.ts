@@ -26,8 +26,8 @@ export const baseStyles = css`
   }
 
   :host([selected]) {
-    border-color: var('--oryx-color-primary-9');
-    color: var('--oryx-color-primary-9');
+    border-color: var(--oryx-color-primary-9);
+    color: var(--oryx-color-primary-9);
   }
 
   :host([selected][error]) {

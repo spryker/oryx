@@ -46,7 +46,7 @@ export const tagStyles = css`
   button:focus-visible {
     outline: 1px solid var(--oryx-color-neutral-1);
     outline-offset: -1px;
-    box-shadow: 0 0 3px var('--oryx-color-primary-9');
+    box-shadow: 0 0 3px var(--oryx-color-primary-9);
   }
 
   :host([disabled]) * {

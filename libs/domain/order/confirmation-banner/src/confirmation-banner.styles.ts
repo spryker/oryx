@@ -6,14 +6,14 @@ export const styles = css`
     flex-direction: column;
     align-items: center;
     line-height: 24px;
-    background-color: var('--oryx-color-primary-3');
+    background-color: var(--oryx-color-primary-3);
     padding-block-end: 48px;
   }
 
   oryx-heading {
     display: flex;
     align-items: center;
-    color: var('--oryx-color-primary-9');
+    color: var(--oryx-color-primary-9);
     gap: 40px;
     margin: 40px 0 16px;
   }

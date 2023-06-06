@@ -56,7 +56,7 @@ export const siteNavigationButtonStyles = css`
   }
 
   :is(a, button):hover {
-    background-color: var('--oryx-color-primary-10');
+    background-color: var(--oryx-color-primary-10);
     box-shadow: none;
   }
 
@@ -67,7 +67,7 @@ export const siteNavigationButtonStyles = css`
   }
 
   :is(a, button):active {
-    background-color: var('--oryx-color-primary-12');
+    background-color: var(--oryx-color-primary-12);
     box-shadow: none;
   }
 
@@ -83,7 +83,7 @@ export const siteNavigationButtonStyles = css`
     padding: 1px 6px;
     border-radius: 2px;
     text-align: center;
-    background: var('--oryx-color-secondary-9');
+    background: var(--oryx-color-secondary-9);
     color: var(--oryx-color-secondary-0, white);
     inset-block-start: 6px;
     inset-inline-end: 8px;

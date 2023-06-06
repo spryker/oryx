@@ -7,7 +7,7 @@ export const previewStyles = css`
 
   .eb-preview-focus::before {
     content: '';
-    outline: 4px solid var('--oryx-color-primary-9');
+    outline: 4px solid var(--oryx-color-primary-9);
     outline-offset: -4px;
     position: absolute;
     width: 100%;
@@ -23,7 +23,7 @@ export const previewStyles = css`
     color: #fff;
     font: 500 16px/22px Montserrat, sans-serif;
     padding: 2px 5px;
-    background-color: var('--oryx-color-primary-9');
+    background-color: var(--oryx-color-primary-9);
     z-index: var(--oryx-overlay-z-index, 3);
   }
 `;

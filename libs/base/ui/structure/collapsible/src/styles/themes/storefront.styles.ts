@@ -35,7 +35,7 @@ const blockAppearance = css`
   }
 
   :host(${blockSelector}:active) {
-    border-color: var('--oryx-color-primary-10');
+    border-color: var(--oryx-color-primary-10);
   }
 
   :host(${blockSelector}) summary {

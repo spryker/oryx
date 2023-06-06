@@ -127,7 +127,7 @@ export const paginationStyles = css`
   ::slotted(*:focus-visible),
   a:not([truncated]):active,
   a:not([truncated]):focus-visible {
-    border-color: var('--oryx-color-primary-9');
+    border-color: var(--oryx-color-primary-9);
   }
 
   ::slotted(*[active]),
@@ -140,12 +140,12 @@ export const paginationStyles = css`
   ::slotted(*:active),
   a:not([truncated]):active {
     color: var(--oryx-color-neutral-1);
-    background: var('--oryx-color-primary-9');
+    background: var(--oryx-color-primary-9);
   }
 
   ::slotted(*:focus-visible),
   *:focus-visible {
-    box-shadow: 0 0 3px var('--oryx-color-primary-9');
+    box-shadow: 0 0 3px var(--oryx-color-primary-9);
   }
 
   ::slotted(*[disabled]),

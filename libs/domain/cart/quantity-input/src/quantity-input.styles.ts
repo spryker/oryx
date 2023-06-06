@@ -65,8 +65,8 @@ export const styles = css`
   }
 
   button:focus-visible {
-    border: 2px solid var('--oryx-color-primary-9');
-    box-shadow: 0 0 3px var('--oryx-color-primary-9');
+    border: 2px solid var(--oryx-color-primary-9);
+    box-shadow: 0 0 3px var(--oryx-color-primary-9);
     z-index: 1;
   }
 

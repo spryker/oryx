@@ -47,11 +47,11 @@ export const panelStyles = css`
 
   button:hover {
     color: var(--oryx-color-neutral-1);
-    background: var('--oryx-color-primary-9');
+    background: var(--oryx-color-primary-9);
   }
 
   button:is(:focus-visible, :focus) {
-    border: 1px solid var('--oryx-color-primary-9');
+    border: 1px solid var(--oryx-color-primary-9);
   }
 
   button::before {

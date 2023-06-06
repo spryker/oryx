@@ -16,7 +16,7 @@ export const searchboxStyles = css`
   }
 
   oryx-button[slot='suffix'] {
-    --_color-text: var('--oryx-color-primary-9');
+    --_color-text: var(--oryx-color-primary-9);
   }
 
   oryx-icon-button[slot='suffix'] {

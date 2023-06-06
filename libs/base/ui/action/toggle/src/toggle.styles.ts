@@ -93,7 +93,7 @@ export const styles = css`
   ::slotted(input:checked:hover),
   ::slotted(input:checked:active),
   ::slotted(input:checked:focus-visible) {
-    background: var('--oryx-color-primary-10');
+    background: var(--oryx-color-primary-10);
   }
 
   input:focus-visible,
@@ -106,7 +106,7 @@ export const styles = css`
 
   input:checked,
   ::slotted(input:checked) {
-    background: var('--oryx-color-primary-9');
+    background: var(--oryx-color-primary-9);
   }
 
   input:disabled,

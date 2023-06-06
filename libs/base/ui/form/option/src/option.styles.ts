@@ -24,7 +24,7 @@ export const optionStyles = css`
     --oryx-icon-size: var(--oryx-icon-size-sm);
 
     display: none;
-    color: var('--oryx-color-primary-9');
+    color: var(--oryx-color-primary-9);
     margin-inline-start: auto;
   }
 
@@ -38,7 +38,7 @@ export const optionStyles = css`
   }
 
   :host([active]) {
-    background-color: var('--oryx-color-primary-3');
+    background-color: var(--oryx-color-primary-3);
   }
 
   :host(:not([active]):active) {
@@ -46,8 +46,8 @@ export const optionStyles = css`
   }
 
   :host(:active) {
-    border-color: var('--oryx-color-primary-9');
-    box-shadow: var(--oryx-elevation-0) var('--oryx-color-primary-9');
+    border-color: var(--oryx-color-primary-9);
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-primary-9);
     transition: box-shadow, border;
     transition-duration: var(--oryx-transition-time);
   }
@@ -66,7 +66,7 @@ export const optionStyles = css`
   ::slotted(mark),
   mark {
     background-color: transparent;
-    color: var('--oryx-color-primary-9');
+    color: var(--oryx-color-primary-9);
     display: inline;
   }
 `;

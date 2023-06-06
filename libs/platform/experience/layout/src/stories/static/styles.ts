@@ -7,8 +7,8 @@ export const layoutStaticStyles = css`
   }
 
   oryx-layout div {
-    color: var('--oryx-color-primary-9');
-    background: var('--oryx-color-primary-3');
+    color: var(--oryx-color-primary-9);
+    background: var(--oryx-color-primary-3);
     padding: 10px;
   }
 

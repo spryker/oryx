@@ -13,6 +13,6 @@ export const styles = css`
 
   button {
     /* TODO: remove as soon as our system supports cta text button  */
-    color: var('--oryx-color-primary-9');
+    color: var(--oryx-color-primary-9);
   }
 `;

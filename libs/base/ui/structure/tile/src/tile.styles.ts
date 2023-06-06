@@ -20,7 +20,7 @@ export const tileStyles = css`
   }
 
   ::slotted(*:active) {
-    border-color: var('--oryx-color-primary-10');
+    border-color: var(--oryx-color-primary-10);
   }
 
   ::slotted(*:hover:not(:active)) {
@@ -29,14 +29,14 @@ export const tileStyles = css`
   }
 
   ::slotted(*:focus-visible) {
-    border-color: var('--oryx-color-primary-9');
-    box-shadow: 0 0 3px var('--oryx-color-primary-9');
+    border-color: var(--oryx-color-primary-9);
+    box-shadow: 0 0 3px var(--oryx-color-primary-9);
   }
 
   :host([selected]) ::slotted(*) {
     border-width: 2px;
     padding: calc(var(--oryx-tile-padding, 20px) - 1px);
-    border: var(--oryx-border-thick) solid var('--oryx-color-primary-9');
+    border: var(--oryx-border-thick) solid var(--oryx-color-primary-9);
     box-shadow: var(--oryx-elevation-0) var(--oryx-color-elevation);
   }
 
@@ -45,6 +45,6 @@ export const tileStyles = css`
   }
 
   :host([selected]) ::slotted(*:focus-visible) {
-    box-shadow: 0 0 3px var('--oryx-color-primary-9');
+    box-shadow: 0 0 3px var(--oryx-color-primary-9);
   }
 `;

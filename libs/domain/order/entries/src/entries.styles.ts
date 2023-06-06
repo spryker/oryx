@@ -14,6 +14,6 @@ export const styles = css`
   }
 
   button {
-    color: var('--oryx-color-primary-9');
+    color: var(--oryx-color-primary-9);
   }
 `;

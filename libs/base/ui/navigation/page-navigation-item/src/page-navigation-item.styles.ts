@@ -46,11 +46,11 @@ export const styles = css`
   }
 
   :host([active]) h3::before {
-    background: var('--oryx-color-primary-9');
+    background: var(--oryx-color-primary-9);
   }
 
   :host([active]) h3 {
-    color: var('--oryx-color-primary-9');
+    color: var(--oryx-color-primary-9);
   }
 
   :host(:hover) {
@@ -59,7 +59,7 @@ export const styles = css`
 
   :host(:focus-visible) {
     outline: none;
-    border: 1px solid var('--oryx-color-primary-9');
-    box-shadow: 0 0 3px var('--oryx-color-primary-9');
+    border: 1px solid var(--oryx-color-primary-9);
+    box-shadow: 0 0 3px var(--oryx-color-primary-9);
   }
 `;

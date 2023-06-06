@@ -69,9 +69,9 @@ export const baseStyles = css`
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[selected]) {
-    color: var('--oryx-color-primary-9');
+    color: var(--oryx-color-primary-9);
     background: none;
-    border-color: var('--oryx-color-primary-9');
+    border-color: var(--oryx-color-primary-9);
     border-block-end: none;
   }
 

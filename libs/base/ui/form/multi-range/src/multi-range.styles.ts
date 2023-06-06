@@ -82,12 +82,12 @@ export const multiRangeStyles = css`
   }
 
   input:focus::-webkit-slider-thumb {
-    border: 1px solid var('--oryx-color-primary-9');
-    box-shadow: 0 0 3px var('--oryx-color-primary-9');
+    border: 1px solid var(--oryx-color-primary-9);
+    box-shadow: 0 0 3px var(--oryx-color-primary-9);
   }
 
   .active {
-    background-color: var('--oryx-color-primary-9');
+    background-color: var(--oryx-color-primary-9);
     grid-column: 2 / span 2;
     height: inherit;
   }
