@@ -4,4 +4,4 @@ export * from '../facet-navigation/src/facet-navigation.def';
 export * from '../facet-value-navigation/src/facet-value-navigation.def';
 export * from '../facet/src/facet.def';
 export * from '../pagination/pagination.def';
-export * from '../sort/src/sort.def';
+export * from '../product-sort/product-sort.def';
