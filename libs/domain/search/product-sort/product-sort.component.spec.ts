@@ -99,7 +99,7 @@ describe('SearchSortComponent', () => {
 
   it('should render an option for every sort parameter', () => {
     expect(
-      element.renderRoot.querySelectorAll('option:not([disabled])').length
+      element.renderRoot.querySelectorAll('option:not([hidden])').length
     ).toBe(mockSort.sortValues.length);
   });
 

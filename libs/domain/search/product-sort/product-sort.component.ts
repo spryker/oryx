@@ -32,7 +32,7 @@ export class SearchProductSortComponent extends LitElement {
           @change=${this.sortingNavigation}
           aria-label="${i18n('oryx.search.select-sorting')}"
         >
-          <option value="" disabled>
+          <option value="" hidden>
             ${i18n('oryx.search.select-sort-parameter')}
           </option>
 
