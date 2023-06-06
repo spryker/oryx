@@ -1,10 +1,9 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
+import { i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
-import { createRef, ref } from 'lit/directives/ref.js';
+import { query, state } from 'lit/decorators.js';
 import { map } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { DiscardPickingComponent } from '../discard-modal';
@@ -15,19 +14,19 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
 
   protected routerService = resolve(RouterService);
 
-  protected discardModal = createRef<DiscardPickingComponent>();
+  @query('oryx-discard-picking')
+  protected discardModal?: DiscardPickingComponent;
 
   @state() isCartNoteVisible?: boolean;
 
-  @asyncState()
-  shouldOpenModal = valueType(
+  $shouldOpenModal = signal(
     this.routerService
       .routeGuard()
       .pipe(map((routeGuard) => routeGuard.startsWith('/picking-list')))
   );
 
   override firstUpdated(): void {
-    if (this.shouldOpenModal) {
+    if (this.$shouldOpenModal()) {
       this.openDiscardModal();
     }
   }
@@ -74,15 +73,11 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           contentBehavior: 'modal',
         }}
       ></oryx-site-navigation-item>
-      <oryx-discard-picking
-        ${ref(this.discardModal)}
-        @oryx.back=${this.back}
-      ></oryx-discard-picking>`;
+      <oryx-discard-picking @oryx.back=${this.back}></oryx-discard-picking>`;
   }
 
   protected openDiscardModal(): void {
-    const modal = this.discardModal.value;
-    modal && (modal.open = true);
+    this.discardModal?.toggleAttribute('open', true);
   }
 
   protected back(): void {

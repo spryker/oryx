@@ -107,7 +107,7 @@ describe('PickingHeaderComponent', () => {
   });
 
   it('should not show discard modal', () => {
-    expect(getDiscardModal()?.open).not.toBe(true);
+    expect(getDiscardModal()?.hasAttribute('open')).toBe(false);
   });
 
   it('should render account button', () => {
@@ -153,7 +153,7 @@ describe('PickingHeaderComponent', () => {
     });
 
     it('should open discard modal', () => {
-      expect(getDiscardModal()?.open).toBe(true);
+      expect(getDiscardModal()?.hasAttribute('open')).toBe(true);
     });
   });
 
@@ -167,7 +167,7 @@ describe('PickingHeaderComponent', () => {
     });
 
     it('should open discard modal', () => {
-      expect(getDiscardModal()?.open).toBe(true);
+      expect(getDiscardModal()?.hasAttribute('open')).toBe(true);
     });
   });
 });
