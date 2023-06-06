@@ -4,6 +4,7 @@ import { EffectController } from './effect.controller';
 
 class MockHost implements Partial<ReactiveControllerHost> {
   addController() {}
+
   requestUpdate() {}
   updateComplete = Promise.resolve(true);
 }

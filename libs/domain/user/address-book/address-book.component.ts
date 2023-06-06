@@ -3,7 +3,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Address } from '@spryker-oryx/user';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import {
-  effect,
+  elementEffect,
   hydratable,
   i18n,
   signalProperty,
@@ -20,7 +20,8 @@ export class UserAddressBookComponent extends ContentMixin(LitElement) {
   @signalProperty() activeState = AddressBookState.List;
   @state() selected?: string;
 
-  protected dispatchStateChange = effect(() => {
+  @elementEffect()
+  protected dispatchStateChange = () => {
     if (this.activeState) {
       this.dispatchEvent(
         new CustomEvent(CHANGE_STATE_EVENT, {
@@ -30,7 +31,7 @@ export class UserAddressBookComponent extends ContentMixin(LitElement) {
         })
       );
     }
-  });
+  };
 
   protected override render(): TemplateResult {
     if (this.activeState !== AddressBookState.List) {
