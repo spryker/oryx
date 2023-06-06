@@ -66,7 +66,7 @@ describe('UserAddressEditComponent', () => {
         html`<oryx-user-address-edit></oryx-user-address-edit>`
       );
       form = element.renderRoot.querySelector(
-        'oryx-address-form'
+        'oryx-user-address-form'
       ) as UserAddressFormComponent;
       form.submit = vi.fn();
       element.renderRoot
@@ -90,7 +90,7 @@ describe('UserAddressEditComponent', () => {
         ></oryx-user-address-edit>`
       );
       form = element.renderRoot.querySelector(
-        'oryx-address-form'
+        'oryx-user-address-form'
       ) as UserAddressFormComponent;
       form.dispatchEvent(
         new CustomEvent('oryx.submit', { detail: { values } })
@@ -124,7 +124,7 @@ describe('UserAddressEditComponent', () => {
         ></oryx-user-address-edit>`
       );
       form = element.renderRoot.querySelector(
-        'oryx-address-form'
+        'oryx-user-address-form'
       ) as UserAddressFormComponent;
       form.dispatchEvent(
         new CustomEvent('oryx.submit', { detail: { values } })

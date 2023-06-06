@@ -9,14 +9,11 @@ export interface AddressListItemOptions {
   selectable?: boolean;
   editable?: boolean;
   removable?: boolean;
+  editTarget?: EditTarget;
 }
 
-export interface AddressListItemAttributes {
-  addressId?: string;
-}
-
-export const EDIT_EVENT = 'oryx.edit';
-export const REMOVE_EVENT = 'oryx.remove';
-export interface RemoveEvent {
-  groupKey: string;
+export const enum EditTarget {
+  Inline = 'inline',
+  Link = 'link',
+  Modal = 'modal',
 }

@@ -1,70 +1,132 @@
-import { ContentMixin } from '@spryker-oryx/experience';
-import { ButtonType } from '@spryker-oryx/ui/button';
-import { Address, AddressMixin } from '@spryker-oryx/user';
+import { resolve } from '@spryker-oryx/di';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
+import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import {
+  Address,
+  AddressEventDetail,
+  AddressMixin,
+  CrudState,
+} from '@spryker-oryx/user';
 import { UserAddressFormComponent } from '@spryker-oryx/user/address-form';
-import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { createRef, Ref, ref } from 'lit/directives/ref.js';
-import { tap } from 'rxjs';
-import { BACK_EVENT, SUCCESS_EVENT } from './address-edit.model';
+import { query, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
+import { Observable, of, take, tap } from 'rxjs';
+import {
+  SaveOption,
+  UserAddressEditComponentOptions,
+} from './address-edit.model';
 import { styles } from './address-edit.styles';
 
+@defaultOptions({ save: SaveOption.Save, inline: false })
 @hydratable(['mouseover', 'focusin'])
 export class UserAddressEditComponent extends AddressMixin(
-  ContentMixin(LitElement)
+  ContentMixin<UserAddressEditComponentOptions>(LitElement)
 ) {
   static styles = styles;
 
-  protected formRef: Ref<UserAddressFormComponent> = createRef();
+  protected routerService = resolve(RouterService);
+  protected semanticLinkService = resolve(SemanticLinkService);
+  protected listPageRoute = signal(
+    this.semanticLinkService.get({ type: SemanticLinkType.AddressList })
+  );
 
-  protected triggerSubmit(): void {
-    this.formRef.value?.submit();
-  }
+  @state() loading = false;
 
-  protected ensureAddress(address: Address): Address {
-    return {
-      ...address,
-      isDefaultShipping: !!address.isDefaultShipping,
-      isDefaultBilling: !!address.isDefaultBilling,
-      ...(this.addressId ? { id: this.addressId } : {}),
-    };
-  }
+  @query('oryx-user-address-form')
+  protected addressForm?: UserAddressFormComponent;
 
-  protected onSubmit(e: CustomEvent): void {
-    this.addressService[this.addressId ? 'updateAddress' : 'addAddress'](
-      this.ensureAddress(e.detail.values as Address)
-    )
-      .pipe(tap(() => this.emitEvent(SUCCESS_EVENT)))
-      .subscribe();
-  }
+  submit(): Observable<unknown> {
+    this.loading = true;
+    if (!this.preselected?.address || !this.preselected?.valid) {
+      this.addressForm?.shadowRoot?.querySelector('form')?.checkValidity();
+      return of({});
+    }
 
-  protected emitEvent(event: string): void {
-    this.dispatchEvent(
-      new CustomEvent(event, { composed: true, bubbles: true })
+    const address = this.populateAddressData();
+    return this.addressService[address.id ? 'updateAddress' : 'addAddress'](
+      address
+    ).pipe(
+      take(1),
+      tap(() => {
+        this.loading = false;
+        if (!this.$options().inline)
+          this.addressStateService.setAction(CrudState.Read);
+      })
     );
   }
 
-  protected override render(): TemplateResult {
+  protected override render(): TemplateResult | void {
+    if (
+      this.$options().inline &&
+      this.$action() !== CrudState.Create &&
+      this.$action() !== CrudState.Update
+    ) {
+      return;
+    }
+
     return html`
-      <oryx-address-form
-        ${ref(this.formRef)}
+      <oryx-user-address-form
         .values=${this.$address()}
         enableDefaultShipping
         enableDefaultBilling
-        @oryx.submit=${(e: CustomEvent) => this.onSubmit(e)}
-      ></oryx-address-form>
+        @change=${this.onChange}
+      ></oryx-user-address-form>
 
-      <oryx-button outline type=${ButtonType.Secondary}>
-        <button @click=${(): void => this.emitEvent(BACK_EVENT)}>
-          ${i18n('user.address.back')}
-        </button>
-      </oryx-button>
-
-      <oryx-button>
-        <button @click=${this.triggerSubmit}>
-          ${i18n('user.address.save')}
-        </button>
-      </oryx-button>
+      ${when(
+        this.$options().save === SaveOption.Save,
+        () => html`
+          <oryx-button outline>
+            <button @click=${this.onClose}>
+              ${i18n(['cancel', 'user.address.cancel'])}
+            </button>
+          </oryx-button>
+          <oryx-button ?loading=${this.loading}>
+            <button @click=${this.onSave}>
+              ${i18n(['save', 'user.address.save'])}
+            </button>
+          </oryx-button>
+        `
+      )}
     `;
+  }
+
+  protected preselected?: AddressEventDetail;
+
+  protected onChange(e: CustomEvent<AddressEventDetail>): void {
+    this.preselected = e.detail;
+    if (this.$options().save === SaveOption.Instant) {
+      this.submit().subscribe();
+    }
+  }
+
+  protected onClose(): void {
+    this.addressStateService.setAction(CrudState.Read);
+    this.addressStateService.select(null);
+
+    const route = this.listPageRoute();
+    if (route) this.routerService.navigate(route);
+  }
+
+  protected onSave(): void {
+    this.submit()
+      .pipe(
+        tap(() => {
+          if (!this.$options().inline) this.onClose();
+        })
+      )
+      .subscribe();
+  }
+
+  protected populateAddressData(): Address {
+    const id = this.$addressId();
+    return {
+      ...this.preselected?.address,
+      ...(id ? { id } : {}),
+      isDefaultShipping: !!this.preselected?.address?.isDefaultShipping,
+      isDefaultBilling: !!this.preselected?.address?.isDefaultBilling,
+    };
   }
 }

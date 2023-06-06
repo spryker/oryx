@@ -11,4 +11,6 @@ export const addressListComponent = componentDef({
   name: 'oryx-user-address-list',
   impl: () =>
     import('./address-list.component').then((m) => m.UserAddressListComponent),
+  schema: () =>
+    import('./address-list.schema').then((m) => m.userAddressListSchema),
 });

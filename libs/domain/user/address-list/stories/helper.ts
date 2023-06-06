@@ -23,7 +23,6 @@ export const renderSelector = (
       removable: true,
       ...props,
     }}
-    @oryx.select=${console.log}
     @oryx.edit=${console.log}
     @oryx.remove=${console.log}
   ></oryx-user-address-list>`;

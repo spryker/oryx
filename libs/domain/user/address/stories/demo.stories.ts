@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { AddressComponentProperties, AddressService } from '@spryker-oryx/user';
+import { AddressService } from '@spryker-oryx/user';
 import {
   MockAddressService,
   MockAddressType,
@@ -11,7 +11,8 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
 import { AddressOptions } from '../address.model';
 
-interface Props extends AddressComponentProperties, AddressOptions {}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface Props extends AddressOptions {}
 
 const addressesIds = [mockCurrentAddress, uncompletedAddress].map(
   ({ id }) => id

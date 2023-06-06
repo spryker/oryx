@@ -17,6 +17,24 @@ export const defaultExperienceRoutes: RouteConfig[] = [
     name: 'Product test',
   },
   {
+    path: '/login',
+    render: (): TemplateResult => html`<experience-composition
+      route="/login"
+    ></experience-composition>`,
+  },
+  {
+    path: '/cart',
+    render: (): TemplateResult => html`<experience-composition
+      route="/cart"
+    ></experience-composition>`,
+  },
+  {
+    path: '/checkout',
+    render: (): TemplateResult => html`<experience-composition
+      route="/checkout"
+    ></experience-composition>`,
+  },
+  {
     path: '/category/:id',
     render: (): TemplateResult => html`<experience-composition
       route="/category/:id"
@@ -31,11 +49,37 @@ export const defaultExperienceRoutes: RouteConfig[] = [
     name: 'Order',
   },
   {
-    path: '/:page',
-    render: ({ page }): TemplateResult => html`<experience-composition
-      route="/${page}"
+    path: '/:child1',
+    render: ({ child }): TemplateResult => html`<experience-composition
+      route="/${child}"
     ></experience-composition>`,
     name: 'Page',
+  },
+  {
+    path: '/:child1/:child2',
+    render: ({ child1, child2 }): TemplateResult => html`<experience-composition
+      route="/${child1}/${child2}"
+    ></experience-composition>`,
+  },
+  {
+    path: '/:child1/:child2/:child3',
+    render: ({
+      child1,
+      child2,
+      child3,
+    }): TemplateResult => html`<experience-composition
+      route="/${child1}/${child2}/${child3}"
+    ></experience-composition>`,
+  },
+  {
+    path: '/:child1/:child2/:child3/:addressId',
+    render: ({
+      child1,
+      child2,
+      child3,
+    }): TemplateResult => html`<experience-composition
+      route="/${child1}/${child2}/${child3}/:id"
+    ></experience-composition>`,
   },
   {
     path: '/*',

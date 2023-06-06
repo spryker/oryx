@@ -96,7 +96,19 @@ export const HeaderTemplate: StaticComponent = {
               icon: IconTypes.User,
             },
           },
-          components: [{ type: 'oryx-auth-login-link' }],
+          components: [
+            { type: 'oryx-auth-login-link' },
+            {
+              type: 'oryx-content-link',
+              options: {
+                data: {
+                  id: '/my-account/addresses',
+                  text: 'Address book',
+                  icon: 'import_contacts',
+                },
+              },
+            },
+          ],
         },
         {
           type: 'oryx-site-navigation-item',

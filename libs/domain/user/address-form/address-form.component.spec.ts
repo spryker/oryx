@@ -134,7 +134,9 @@ describe('UserAddressFormComponent', () => {
 
   describe('when the address form is rendered', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-address-form></oryx-address-form>`);
+      element = await fixture(
+        html`<oryx-user-address-form></oryx-user-address-form>`
+      );
     });
 
     it('is defined', () => {
@@ -164,10 +166,10 @@ describe('UserAddressFormComponent', () => {
   describe('when the selected country does not exist, but fallback country does exist', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-address-form
+        html`<oryx-user-address-form
           country="FR"
           fallbackCountry="PT"
-        ></oryx-address-form>`
+        ></oryx-user-address-form>`
       );
     });
 
@@ -188,7 +190,9 @@ describe('UserAddressFormComponent', () => {
 
   describe('when selected country changes', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-address-form></oryx-address-form>`);
+      element = await fixture(
+        html`<oryx-user-address-form></oryx-user-address-form>`
+      );
       selectElement = element.shadowRoot?.querySelector('select');
 
       if (selectElement) {
@@ -205,7 +209,9 @@ describe('UserAddressFormComponent', () => {
   describe('when only one country is available', () => {
     beforeEach(async () => {
       countryService.getAll.mockReturnValue(of([mockCountries[0]]));
-      element = await fixture(html`<oryx-address-form></oryx-address-form>`);
+      element = await fixture(
+        html`<oryx-user-address-form></oryx-user-address-form>`
+      );
     });
 
     it('should not display country select when only one country is available', () => {
@@ -219,7 +225,7 @@ describe('UserAddressFormComponent', () => {
   describe('when country attribute is defined', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-address-form country="US"></oryx-address-form>`
+        html`<oryx-user-address-form country="US"></oryx-user-address-form>`
       );
     });
 
@@ -243,7 +249,9 @@ describe('UserAddressFormComponent', () => {
   describe('when a logged in user has an address', () => {
     beforeEach(async () => {
       addressService.getCurrentAddress.mockReturnValue(of({ iso2Code: 'US' }));
-      element = await fixture(html`<oryx-address-form></oryx-address-form>`);
+      element = await fixture(
+        html`<oryx-user-address-form></oryx-user-address-form>`
+      );
     });
 
     it("should select the country from the user's saved address", () => {
@@ -258,9 +266,9 @@ describe('UserAddressFormComponent', () => {
 
   describe('when isDefaultShipping prop is provided', () => {
     beforeEach(async () => {
-      element = await fixture(html` <oryx-address-form
+      element = await fixture(html` <oryx-user-address-form
         enableDefaultShipping
-      ></oryx-address-form>`);
+      ></oryx-user-address-form>`);
     });
 
     it('should merge the field with the form schema', () => {
@@ -275,9 +283,9 @@ describe('UserAddressFormComponent', () => {
 
   describe('when enableDefaultBilling prop is provided', () => {
     beforeEach(async () => {
-      element = await fixture(html` <oryx-address-form
+      element = await fixture(html` <oryx-user-address-form
         enableDefaultBilling
-      ></oryx-address-form>`);
+      ></oryx-user-address-form>`);
     });
 
     it('should merge the field with the form schema', () => {
@@ -294,7 +302,7 @@ describe('UserAddressFormComponent', () => {
     const values = { mockField: 'test' };
     beforeEach(async () => {
       element = await fixture(html`
-        <oryx-address-form .values=${values}></oryx-address-form>
+        <oryx-user-address-form .values=${values}></oryx-user-address-form>
       `);
     });
 

@@ -17,7 +17,7 @@ const form = {
   reportValidity: vi.fn(),
 };
 
-@customElement('oryx-address-form')
+@customElement('oryx-user-address-form')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MockComponent extends LitElement {
   getForm() {
@@ -75,8 +75,8 @@ describe('CheckoutAddressComponent', () => {
       );
     });
 
-    it('should render the oryx-address-form', () => {
-      expect(element).toContainElement('oryx-address-form');
+    it('should render the oryx-user-address-form', () => {
+      expect(element).toContainElement('oryx-user-address-form');
     });
 
     it('should not render oryx-user-address-list', () => {
@@ -122,8 +122,8 @@ describe('CheckoutAddressComponent', () => {
       );
     });
 
-    it('should not render the oryx-address-form', () => {
-      expect(element).not.toContainElement('oryx-address-form');
+    it('should not render the oryx-user-address-form', () => {
+      expect(element).not.toContainElement('oryx-user-address-form');
     });
 
     it('should render the oryx-user-address-list', () => {
