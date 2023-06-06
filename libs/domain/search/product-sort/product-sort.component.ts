@@ -1,50 +1,47 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
+import { SortingService } from '@spryker-oryx/search';
 import {
-  asyncState,
+  computed,
   hydratable,
   i18n,
-  valueType,
+  signal,
+  signalAware,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs/operators';
-import { SortingService } from '../../src/services/sorting.service';
 
 @hydratable(['mouseover', 'focus'])
-export class SortComponent extends LitElement {
+@signalAware()
+export class SearchProductSortComponent extends LitElement {
   protected routerService = resolve(RouterService);
   protected sortingService = resolve(SortingService);
 
-  @asyncState()
-  protected sortingOptions = valueType(this.sortingService.get());
+  protected sortingOptions = signal(this.sortingService.get());
+  protected hasOptions = computed(
+    () => !!this.sortingOptions()?.sortValues?.length
+  );
 
-  @asyncState()
-  protected querySortValue = valueType(this.routerService.currentQuery());
+  protected querySortValue = signal(this.routerService.currentQuery());
 
   protected override render(): TemplateResult {
-    return this.renderSorting();
-  }
-
-  protected renderSorting(): TemplateResult {
-    const hasOptions = !!this.sortingOptions?.sortValues?.length;
-
     return html`
       <oryx-select>
         <select
           @change=${this.sortingNavigation}
-          aria-label="${i18n('search.select-sorting')}"
+          aria-label="${i18n('oryx.search.select-sorting')}"
         >
-          <option value="" hidden>
-            ${i18n('search.select-search-parameter')}
+          <option value="" disabled>
+            ${i18n('oryx.search.select-sort-parameter')}
           </option>
 
-          ${when(hasOptions, () =>
-            this.sortingOptions?.sortValues.map(
+          ${when(this.hasOptions(), () =>
+            this.sortingOptions()!.sortValues.map(
               ({ sortKey, sortName }) =>
                 html`<option
                   value="${sortKey}"
-                  ?selected="${this.querySortValue?.sort === sortKey}"
+                  ?selected="${this.querySortValue()?.sort === sortKey}"
                 >
                   ${sortName}
                 </option>`
@@ -55,7 +52,7 @@ export class SortComponent extends LitElement {
     `;
   }
 
-  protected sortingNavigation(e: Event): void {
+  protected sortingNavigation(e: InputEvent): void {
     this.routerService
       .getUrl('', {
         queryParams: {

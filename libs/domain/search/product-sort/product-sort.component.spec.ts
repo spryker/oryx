@@ -2,11 +2,11 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
+import { SortingService } from '@spryker-oryx/search';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { SortingService } from '../../src/services/sorting.service';
-import { SortComponent } from './sort.component';
-import { sortComponent } from './sort.def';
+import { SearchProductSortComponent } from './product-sort.component';
+import { searchProductSortComponent } from './product-sort.def';
 
 const mockSort = {
   sortOrder: null,
@@ -49,13 +49,13 @@ class MockRouterService implements Partial<RouterService> {
   currentQuery = vi.fn().mockReturnValue(of(''));
 }
 
-describe('DefaultSortingService', () => {
-  let element: SortComponent;
+describe('SearchSortComponent', () => {
+  let element: SearchProductSortComponent;
   let mockSortingService: MockSortingService;
   let mockRouterService: MockRouterService;
 
   beforeAll(async () => {
-    await useComponent(sortComponent);
+    await useComponent(searchProductSortComponent);
   });
 
   beforeEach(async () => {
@@ -80,10 +80,6 @@ describe('DefaultSortingService', () => {
       RouterService
     ) as unknown as MockRouterService;
 
-    vi.spyOn(mockSortingService, 'get');
-    vi.spyOn(mockRouterService, 'getUrl');
-    vi.spyOn(mockRouterService, 'navigate');
-
     element = await fixture(
       html`<oryx-search-product-sort></oryx-search-product-sort>`
     );
@@ -91,10 +87,6 @@ describe('DefaultSortingService', () => {
 
   afterEach(() => {
     destroyInjector();
-  });
-
-  it('is defined', () => {
-    expect(element).toBeInstanceOf(SortComponent);
   });
 
   it('passes the a11y audit', async () => {
@@ -106,28 +98,26 @@ describe('DefaultSortingService', () => {
   });
 
   it('should render an option for every sort parameter', () => {
-    expect(element.shadowRoot?.querySelectorAll('option').length).toBe(
-      mockSort.sortValues.length + 1
-    );
+    expect(
+      element.renderRoot.querySelectorAll('option:not([disabled])').length
+    ).toBe(mockSort.sortValues.length);
   });
 
-  describe('select handling', () => {
-    let changeEvent: Event;
-
+  describe('when option is selected', () => {
     beforeEach(() => {
-      changeEvent = new Event('change', {
-        bubbles: true,
-        cancelable: true,
-      });
+      element.renderRoot.querySelector('option')?.dispatchEvent(
+        new InputEvent('change', {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
     });
 
-    it('It should resolve url from router', () => {
-      element.shadowRoot?.querySelector('option')?.dispatchEvent(changeEvent);
+    it('should resolve url from router', () => {
       expect(mockRouterService.getUrl).toHaveBeenCalled();
     });
 
-    it('It should navigate using router', () => {
-      element.shadowRoot?.querySelector('option')?.dispatchEvent(changeEvent);
+    it('should navigate using router', () => {
       expect(mockRouterService.navigate).toHaveBeenCalled();
     });
   });
