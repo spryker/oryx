@@ -107,10 +107,10 @@ Cypress.Commands.add('mockPickingInProgress', () => {
 async function indexedDbExists(dbName) {
   const dbs = await indexedDB.databases();
   if (!dbs.map((db) => db.name).includes(dbName)) {
-    throw 'DB not found';
+    throw `DB "${dbName}" not found`;
   }
 
-  console.log('DB found');
+  console.log(`DB "${dbName}" exists`);
 }
 
 function clearIndexedDb(win, dbName) {
