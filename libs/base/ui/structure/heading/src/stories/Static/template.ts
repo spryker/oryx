@@ -294,8 +294,8 @@ export const Template: Story = (): TemplateResult => {
         -webkit-text-fill-color: transparent;
         background-image: linear-gradient(
           45deg,
-          var(--oryx-color-secondary-9) ;,
-          var(--oryx-color-primary-9) ;
+          var(--oryx-color-secondary-9),
+          var(--oryx-color-primary-9)
         );
       }
     </style>
