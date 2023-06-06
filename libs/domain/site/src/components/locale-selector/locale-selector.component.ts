@@ -15,7 +15,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin(LitElement) {
 
   protected localeService = resolve(LocaleService);
 
-  protected locales = signal(this.localeService.getAll(), []);
+  protected locales = signal(this.localeService.getAll(), { initialValue: [] });
   protected current = signal(this.localeService.get());
 
   protected override render(): TemplateResult | void {
