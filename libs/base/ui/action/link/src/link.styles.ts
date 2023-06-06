@@ -12,7 +12,7 @@ export const linkStyles = css`
   }
 
   :host(:not(${isNeutral})) {
-    color: var(--oryx-link-color, var(--oryx-color-primary-9) ;);
+    color: var(--oryx-link-color, var(--oryx-color-primary-9));
   }
 
   :host(${isNeutral}) ::slotted(a) {
@@ -53,7 +53,7 @@ export const linkStyles = css`
   }
 
   :host(:hover:not([disabled]):not(${isNeutral})) {
-    color: var(--oryx-link-color-hover, var(--oryx-color-primary-10) ;);
+    color: var(--oryx-link-color-hover, var(--oryx-color-primary-10));
   }
 
   :host(:not([disabled])) ::slotted(a:active),

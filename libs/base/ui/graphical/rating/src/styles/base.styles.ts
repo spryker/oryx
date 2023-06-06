@@ -50,7 +50,7 @@ export const ratingBaseStyles = css`
 
   fieldset slot,
   fieldset ::slotted(*) {
-    color: var(--oryx-rating-color-active, var(--oryx-color-secondary-9) ;);
+    color: var(--oryx-rating-color-active, var(--oryx-color-secondary-9));
     font-size: 1em;
   }
 
