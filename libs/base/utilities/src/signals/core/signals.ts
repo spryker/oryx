@@ -1,5 +1,9 @@
 let currentConsumer: SignalConsumer | undefined = undefined;
 
+export interface SignalOptions<T> {
+  equal?: (a: T, b: T) => boolean;
+}
+
 /**
  *
  *  SignalProducer represents a data source that can emit signals when its underlying value changes.
@@ -14,6 +18,12 @@ let currentConsumer: SignalConsumer | undefined = undefined;
 export class SignalProducer<T> {
   version = 0;
   protected consumers = new Set<SignalConsumer>();
+
+  constructor(protected options: SignalOptions<T> = {}) {}
+
+  equals(a: T, b: T): boolean {
+    return this.options.equal ? this.options.equal(a, b) : a === b;
+  }
 
   accessed(): void {
     currentConsumer?.reveal(this);
@@ -138,13 +148,13 @@ export class SignalConsumer {
 export class StateSignal<T> extends SignalProducer<T> {
   protected state: T;
 
-  constructor(protected initialValue: T) {
-    super();
+  constructor(protected initialValue: T, options?: SignalOptions<T>) {
+    super(options);
     this.state = initialValue;
   }
 
   set(value: T): void {
-    if (value !== this.state) {
+    if (!this.equals(value, this.state)) {
       this.state = value;
       this.changed();
     }
@@ -168,8 +178,8 @@ export class Computed<T> extends SignalProducer<T> {
 
   protected consumer = new SignalConsumer(() => this.compute());
 
-  constructor(protected computation: () => T) {
-    super();
+  constructor(protected computation: () => T, options?: SignalOptions<T>) {
+    super(options);
     this.version = -1;
   }
 
@@ -187,7 +197,7 @@ export class Computed<T> extends SignalProducer<T> {
   compute(notify = true): void {
     const newValue = this.consumer.run(() => this.computation());
 
-    if (this.result !== newValue) {
+    if (!this.equals(this.result, newValue)) {
       this.result = newValue;
       this.version++;
       if (notify) this.changed();
@@ -212,6 +222,17 @@ export class Computed<T> extends SignalProducer<T> {
   }
 }
 
+export interface EffectOptions {
+  /**
+   * If true, the effect will not run until the start() method is called.
+   */
+  defer?: boolean;
+  /**
+   * If true, the effect will be run asynchronously
+   */
+  async?: boolean;
+}
+
 /**
  * Effect:
  *
@@ -222,13 +243,27 @@ export class Computed<T> extends SignalProducer<T> {
  */
 export class Effect {
   protected consumer = new SignalConsumer(() => this.run());
+  protected asyncScheduled?: boolean;
 
-  constructor(protected effect: () => void) {
-    this.start();
+  constructor(
+    protected effect: () => void,
+    protected options: EffectOptions = {}
+  ) {
+    if (!options.defer) this.start();
   }
 
   protected run(): void {
-    this.consumer.run(this.effect);
+    if (this.options.async) {
+      if (!this.asyncScheduled) {
+        this.asyncScheduled = true;
+        queueMicrotask(() => {
+          this.asyncScheduled = false;
+          this.consumer.run(this.effect);
+        });
+      }
+    } else {
+      this.consumer.run(this.effect);
+    }
   }
 
   start(): void {
