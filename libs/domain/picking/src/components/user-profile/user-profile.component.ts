@@ -1,10 +1,10 @@
 import { AuthService } from '@spryker-oryx/auth';
-import { AppRef, InjectionPlugin } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/di';
+import { AppRef } from '@spryker-oryx/core';
+import { INJECTOR, resolve } from '@spryker-oryx/di';
 import { SyncSchedulerService } from '@spryker-oryx/offline';
 import { RouterService } from '@spryker-oryx/router';
 import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
-import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
+import { i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -12,6 +12,7 @@ import { delay, tap } from 'rxjs';
 import { OfflineDataPlugin } from '../../../offline/data-plugin';
 import { userProfileComponentStyles } from './user-profile.styles';
 
+signalAware();
 export class UserProfileComponent extends LitElement {
   static styles = userProfileComponentStyles;
 
@@ -19,27 +20,21 @@ export class UserProfileComponent extends LitElement {
   protected authService = resolve(AuthService);
   protected syncSchedulerService = resolve(SyncSchedulerService);
 
-  protected injector = resolve(AppRef)
-    .requirePlugin(InjectionPlugin)
-    .getInjector();
+  protected injector = resolve(INJECTOR);
   protected injectorDataPlugin =
     resolve(AppRef).requirePlugin(OfflineDataPlugin);
 
   @state()
   protected loading: boolean | null = null;
 
-  @asyncState()
-  protected currentRoute = valueType(this.routerService.currentRoute());
-
-  @asyncState()
-  protected route = valueType(this.routerService.route());
-
-  @asyncState()
-  protected pendingSyncs = valueType(this.syncSchedulerService.hasPending());
+  protected route = signal(this.routerService.route());
+  protected pendingSyncs = signal(
+    this.syncSchedulerService.hasPending().subscribe()
+  );
 
   protected override render(): TemplateResult {
-    const isPicking = this.route?.includes('/picking/');
-    const isMainPage = this.route === '/';
+    const isPicking = this.route()?.includes('/picking/');
+    const isMainPage = this.route() === '/';
 
     return html`
       <div class="info-block">
@@ -50,7 +45,7 @@ export class UserProfileComponent extends LitElement {
       </div>
 
       ${when(
-        this.pendingSyncs && !isPicking,
+        this.pendingSyncs() && !isPicking,
         () =>
           html`
             <oryx-notification type="info" scheme="dark">
@@ -75,7 +70,7 @@ export class UserProfileComponent extends LitElement {
       <div class="info-footer">
         <oryx-button type="secondary" outline>
           <button
-            ?disabled="${isPicking || this.pendingSyncs}"
+            ?disabled="${isPicking || this.pendingSyncs()}"
             @click=${this.onLogOut}
           >
             ${i18n('user.profile.log-Out')}
