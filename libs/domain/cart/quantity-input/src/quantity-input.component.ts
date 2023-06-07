@@ -117,9 +117,7 @@ export class QuantityInputComponent
   }
 
   protected isMinDisabled(): boolean {
-    return (
-      this.disabled || (this.value !== undefined && this.value <= this.min)
-    );
+    return this.disabled || (this.value ?? this.min) <= this.min;
   }
 
   protected isMaxDisabled(): boolean {
