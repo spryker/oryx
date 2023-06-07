@@ -8,7 +8,7 @@ import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { delay, switchMap, tap } from 'rxjs';
+import { delay, tap } from 'rxjs';
 import { OfflineDataPlugin } from '../../../offline/data-plugin';
 import { userProfileComponentStyles } from './user-profile.styles';
 
@@ -18,6 +18,12 @@ export class UserProfileComponent extends LitElement {
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
   protected syncSchedulerService = resolve(SyncSchedulerService);
+
+  protected injector = resolve(AppRef)
+    .requirePlugin(InjectionPlugin)
+    .getInjector();
+  protected injectorDataPlugin =
+    resolve(AppRef).requirePlugin(OfflineDataPlugin);
 
   @state()
   protected loading: boolean | null = null;
@@ -92,16 +98,11 @@ export class UserProfileComponent extends LitElement {
   }
 
   protected onReceiveData(): void {
-    const app = resolve(AppRef);
-    const injector = app?.requirePlugin(InjectionPlugin).getInjector();
-    const injectorDataPlugin = app?.requirePlugin(OfflineDataPlugin);
-
-    injectorDataPlugin
-      .clearDb(injector)
+    this.injectorDataPlugin
+      .refreshData(this.injector)
       .pipe(
         tap(() => (this.loading = true)),
-        delay(500),
-        switchMap(() => injectorDataPlugin.populateDb(injector))
+        delay(500)
       )
       .subscribe(() => {
         this.dispatchEvent(
@@ -117,8 +118,6 @@ export class UserProfileComponent extends LitElement {
   }
 
   protected onLogOut(): void {
-    this.authService.logout().subscribe(() => {
-      this.routerService.navigate('/login');
-    });
+    this.authService.logout();
   }
 }
