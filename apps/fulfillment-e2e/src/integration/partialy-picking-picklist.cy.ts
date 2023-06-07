@@ -1,3 +1,5 @@
+import { CustomerNoteModalFragment } from '../support/page_fragments/customer-note-modal.fragment';
+import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 import { PickingProductFragment } from '../support/page_fragments/picking-product.fragment';
 import { PickingFragment } from '../support/page_fragments/picking.fragment';
@@ -10,6 +12,8 @@ const pickingPage = new PickingPage(pickingListId);
 const pickingListsFragment = new PickingListsFragment();
 const pickingProductFragment = new PickingProductFragment();
 const pickingFragment = new PickingFragment();
+const pickingHeaderFragment = new PickingHeaderFragment();
+const customerNoteModalFragment = new CustomerNoteModalFragment();
 
 describe('Partial picking a picklist', () => {
   beforeEach(() => {
@@ -20,6 +24,26 @@ describe('Partial picking a picklist', () => {
   });
 
   it('should check partial picking', () => {
+    // See picking lists id
+    pickingHeaderFragment
+      .getPickingListsTitle()
+      .should('be.visible')
+      .and('contain', 'DE--19');
+
+    // See customer note
+    pickingHeaderFragment.getCustomerNoteIcon().should('be.visible').click();
+    customerNoteModalFragment.getModal().should('be.visible');
+    customerNoteModalFragment.getCloseButton().click();
+
+    // See user profile modal
+    pickingHeaderFragment.getUserIcon().should('be.visible').click();
+    pickingHeaderFragment.getUserProfileModal().should('be.visible');
+    pickingHeaderFragment
+      .getUserProfileModalCloseButton()
+      .should('be.visible')
+      .click();
+    pickingHeaderFragment.getUserProfileModal().should('not.be.visible');
+
     // Setting initial number of products in each tab
     pickingPage
       .getNotPickedProductsNumber()
