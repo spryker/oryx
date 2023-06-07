@@ -67,12 +67,10 @@ export class UserAddressListItemComponent extends AddressMixin(
     const defaultShipping =
       address.isDefaultShipping && (showAll || showShipping);
 
-    if (!defaultBilling && !defaultShipping) {
-      return html``;
-    }
+    if (!defaultBilling && !defaultShipping) return;
 
     const chip = (token: string) =>
-      html`<oryx-chip appearance=${AlertType.Success}
+      html`<oryx-chip .appearance=${AlertType.Success}
         >${i18n(token)}</oryx-chip
       >`;
 

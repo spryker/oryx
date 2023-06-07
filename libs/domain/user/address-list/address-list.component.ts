@@ -101,28 +101,10 @@ export class UserAddressListComponent extends AddressMixin(
     }
   }
 
-  protected isDefault(address: Address): boolean {
-    const { addressDefaults } = this.$options();
-    const isDefault = addressDefaults === AddressDefaults.All;
-    const isDefaultBilling =
-      isDefault || addressDefaults === AddressDefaults.Billing;
-    const isDefaultShipping =
-      isDefault || addressDefaults === AddressDefaults.Shipping;
-    return (
-      !!(isDefaultShipping && address.isDefaultShipping) ||
-      !!(isDefaultBilling && address.isDefaultBilling)
-    );
-  }
-
   protected createKey(addressId?: string): string {
     return `${addressId}-${this.$addresses()?.findIndex(
       (a) => a.id === addressId
     )}-${this.$addresses?.length}`;
-  }
-
-  protected onClose(e: Event): void {
-    e.stopPropagation();
-    this.addressStateService.setAction(CrudState.Read);
   }
 
   protected renderModal(): TemplateResult | void {
@@ -132,11 +114,16 @@ export class UserAddressListComponent extends AddressMixin(
     ) {
       return html`<oryx-modal
         open
-        .heading=${i18n('checkout.address.Edit-address')}
+        .heading=${i18n('checkout.address.edit-address')}
         @oryx.close=${this.onClose}
       >
         <oryx-user-address-edit></oryx-user-address-edit>
       </oryx-modal>`;
     }
+  }
+
+  protected onClose(e: Event): void {
+    e.stopPropagation();
+    this.addressStateService.setAction(CrudState.Read);
   }
 }

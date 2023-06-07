@@ -11,7 +11,7 @@ import { styles } from './address-remove.styles';
 export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
   static styles = styles;
 
-  @state() protected confirm = false;
+  @state() protected requestsConfirmation = false;
   @state() protected loading = false;
 
   protected override render(): TemplateResult | void {
@@ -29,11 +29,11 @@ export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
   }
 
   protected onConfirm(): void {
-    this.confirm = true;
+    this.requestsConfirmation = true;
   }
 
   protected renderRemoveConfirmationModal(): TemplateResult | void {
-    if (!this.confirm) return;
+    if (!this.requestsConfirmation) return;
 
     return html`<oryx-modal
       open
@@ -41,7 +41,7 @@ export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
       @oryx.close=${this.onClose}
       enableFooter
     >
-      <oryx-user-address .addressId=${this.$address()?.id}></oryx-user-address>
+      <oryx-user-address .addressId=${this.$addressId()}></oryx-user-address>
       <section>
         <oryx-icon .type=${IconTypes.Info} size=${Size.Md}></oryx-icon>
         <span> ${i18n('user.address.remove-info')} </span>
@@ -57,15 +57,17 @@ export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
   }
 
   protected onRemove(): void {
+    console.log('onRemove...');
     this.loading = true;
     const address = this.$address();
+    console.log('address', address);
     if (address) {
       this.addressService
         .deleteAddress(address)
         .pipe(
           tap(() => {
             this.loading = false;
-            this.confirm = false;
+            this.requestsConfirmation = false;
           })
         )
         .subscribe();
@@ -74,6 +76,6 @@ export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
 
   protected onClose(e: Event): void {
     e.stopPropagation();
-    this.confirm = false;
+    this.requestsConfirmation = false;
   }
 }
