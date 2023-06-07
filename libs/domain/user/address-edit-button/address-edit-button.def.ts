@@ -1,10 +1,10 @@
 import { componentDef } from '@spryker-oryx/core';
 
-export const userAddressEditTriggerComponent = componentDef({
-  name: 'oryx-user-address-edit-trigger',
+export const userAddressEditButtonComponent = componentDef({
+  name: 'oryx-user-address-edit-button',
   impl: () =>
     import('./address-edit-button.component').then(
-      (m) => m.UserAddressEditTriggerComponent
+      (m) => m.UserAddressEditButtonComponent
     ),
   schema: () =>
     import('./address-edit-button.schema').then(

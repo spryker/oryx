@@ -1,7 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { UserAddressEditTriggerComponent } from './address-edit-button.component';
+import { UserAddressEditButtonComponent } from './address-edit-button.component';
 
-export const userAddressEditTriggerSchema: ContentComponentSchema<UserAddressEditTriggerComponent> =
+export const userAddressEditTriggerSchema: ContentComponentSchema<UserAddressEditButtonComponent> =
   {
     name: 'Address Edit trigger',
     group: 'User',

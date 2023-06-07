@@ -7,12 +7,12 @@ import { resolve } from '@spryker-oryx/di';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { AddressMixin } from '../src/mixins';
 import { CrudState } from '../src/models';
-import { AddressEditTriggerOptions, Target } from './address-edit-button.model';
+import { AddressEditButtonOptions, Target } from './address-edit-button.model';
 
 @defaultOptions({ target: Target.Link })
 @hydratable(['mouseover', 'focusin'])
-export class UserAddressEditTriggerComponent extends AddressMixin(
-  ContentMixin<AddressEditTriggerOptions>(LitElement)
+export class UserAddressEditButtonComponent extends AddressMixin(
+  ContentMixin<AddressEditButtonOptions>(LitElement)
 ) {
   protected semanticLinkService = resolve(SemanticLinkService);
 
