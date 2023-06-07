@@ -24,7 +24,12 @@ import {
   PageMetaService,
 } from './page-meta';
 import { DefaultQueryService, QueryService } from './query';
-import { DefaultStorageService, StorageService } from './storage';
+import {
+  DefaultIndexedDBStorageService,
+  DefaultStorageService,
+  IndexedDBStorageService,
+  StorageService,
+} from './storage';
 import { DefaultTokenService, TokenResolver } from './token-resolver';
 import {
   DefaultJsonAPITransformerService,
@@ -53,6 +58,10 @@ export const coreProviders: Provider[] = [
   {
     provide: TransformerService,
     useClass: DefaultTransformerService,
+  },
+  {
+    provide: IndexedDBStorageService,
+    useClass: DefaultIndexedDBStorageService,
   },
   {
     provide: StorageService,
