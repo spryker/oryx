@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../.constants';
+import { storybookPrefix } from '../../.constants';
 import { FacetValueNavigationComponentAttributes } from '../facet-value-navigation.model';
 
 export default {

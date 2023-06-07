@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../.constants';
+import { storybookPrefix } from '../../.constants';
 import { FacetValueNavigationComponentAttributes } from '../facet-value-navigation.model';
 
 export default {
@@ -11,12 +11,13 @@ const Template: Story<FacetValueNavigationComponentAttributes> = (
   attrs: FacetValueNavigationComponentAttributes
 ): TemplateResult => {
   return html`<oryx-search-facet-value-navigation
-    .heading=${attrs.heading}
-    .valuesLength=${attrs.valuesLength}
-    .selectedLength=${attrs.selectedLength}
-    .enableToggle=${attrs.enableToggle}
-    .enableSearch=${attrs.enableSearch}
-    .open=${attrs.open}
+    heading=${attrs.heading}
+    valuesLength=${attrs.valuesLength}
+    selectedLength=${attrs.selectedLength}
+    ?enableToggle=${attrs.enableToggle}
+    ?enableSearch=${attrs.enableSearch}
+    ?open=${attrs.open}
+    ?enableClearAction=${attrs.enableClearAction}
   >
     Any value
   </oryx-search-facet-value-navigation>`;
@@ -31,4 +32,5 @@ Demo.args = {
   enableToggle: false,
   enableSearch: false,
   open: true,
+  enableClearAction: false
 };

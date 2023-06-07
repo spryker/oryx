@@ -9,13 +9,14 @@ import {
   FACET_TOGGLE_EVENT,
   ShowFacet,
 } from './facet-value-navigation.model';
-import { FacetControlStyles } from './facet-value-navigation.styles';
+import { facetValueNavigationStyles } from './facet-value-navigation.styles';
+import { DirectiveResult } from 'lit/async-directive';
 
 export class SearchFacetValueNavigationComponent
   extends LitElement
   implements FacetValueNavigationComponentAttributes
 {
-  static styles = FacetControlStyles;
+  static styles = facetValueNavigationStyles;
 
   @property() heading?: string;
   @property({ type: Number }) valuesLength?: number;
@@ -52,16 +53,15 @@ export class SearchFacetValueNavigationComponent
       ?open=${this.open}
       ?nonTabbable=${allowClear}
     >
-      <span class="header" slot="header">
-        <slot name="title">
-          ${when(this.heading, () => html`${this.heading}`)}
-          ${when(
-            this.selectedLength,
-            () => html` <oryx-chip dense appearance=${AlertType.Success}
-              >${this.selectedLength}</oryx-chip
-            >`
-          )}
-        </slot>
+      <section slot="header">
+        <slot name="title">${this.heading}</slot>
+
+        ${when(
+          this.selectedLength,
+          () => html` <oryx-chip dense appearance=${AlertType.Success}
+            >${this.selectedLength}</oryx-chip
+          >`
+        )}
 
         ${when(
           allowClear,
@@ -74,13 +74,13 @@ export class SearchFacetValueNavigationComponent
               </oryx-button>
             `
         )}
-      </span>
+      </section>
 
       ${when(
         this.enableSearch,
         () =>
           html`<oryx-search>
-            <input placeholder="Search ${this?.heading?.toLowerCase() ?? ''}" />
+            <input .placeholder=${this.searchPlaceholder} />
           </oryx-search>`
       )}
 
@@ -88,7 +88,7 @@ export class SearchFacetValueNavigationComponent
 
       ${when(
         this.enableToggle,
-        () => html`<div class="controls">
+        () => html`
           <oryx-button type="text" size=${Size.Lg}>
             <button @click=${this.onToggle}>
               ${when(
@@ -101,9 +101,12 @@ export class SearchFacetValueNavigationComponent
                 () => html`(${this.valuesLength})`
               )}
             </button>
-          </oryx-button>
-        </div>`
+          </oryx-button>`
       )}
     </oryx-collapsible>`;
+  }
+
+  protected get searchPlaceholder(): DirectiveResult {
+    return i18n('oryx.search.search-<heading>', {heading: this?.heading?.toLowerCase() ?? ''})
   }
 }

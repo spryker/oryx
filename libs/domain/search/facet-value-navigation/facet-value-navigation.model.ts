@@ -34,4 +34,6 @@ export interface FacetValueNavigationComponentAttributes {
    * Indicates that collapsible is open or close by default.
    */
   open?: boolean;
+
+  enableClearAction?: boolean;
 }
