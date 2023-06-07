@@ -1,15 +1,11 @@
 export const FACET_TOGGLE_EVENT = 'oryx.toggle';
 export const FACET_CLEAR_EVENT = 'oryx.clear';
 
-export interface SearchFacet {
-  value: string;
+export interface ToggleFacetPayload {
+  expanded: boolean;
 }
 
-export interface ShowFacet {
-  isShowed: boolean;
-}
-
-export interface FacetValueNavigationComponentAttributes {
+export interface SearchFacetValueNavigationComponentAttributes {
   /**
    * Name of the facet which should be rendered.
    */
@@ -34,6 +30,8 @@ export interface FacetValueNavigationComponentAttributes {
    * Indicates that collapsible is open or close by default.
    */
   open?: boolean;
-
-  enableClearAction?: boolean;
+  /**
+   * Show the clear button at the facet's header
+   */
+  enableClear?: boolean;
 }

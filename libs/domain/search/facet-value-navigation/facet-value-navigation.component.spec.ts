@@ -3,10 +3,6 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { html } from 'lit';
 import { SearchFacetValueNavigationComponent } from './facet-value-navigation.component';
 import { searchFacetValueNavigationComponent } from './facet-value-navigation.def';
-import {
-  FACET_CLEAR_EVENT,
-  FACET_TOGGLE_EVENT,
-} from './facet-value-navigation.model';
 
 const mockHeading = 'mockHeading';
 const mockValuesLength = 5;
@@ -22,13 +18,7 @@ describe('SearchFacetValueNavigationComponent', () => {
   beforeEach(async () => {
     element = await fixture(
       html`<oryx-search-facet-value-navigation
-        .heading=${mockHeading}
-        .valuesLength=${mockValuesLength}
-        .selectedLength=${mockSelectedLength}
-        ?enableClearAction=${true}
-        ?enableToggle=${true}
-        ?enableSearch=${true}
-        ?open=${true}
+        open
       ></oryx-search-facet-value-navigation>`
     );
   });
@@ -41,134 +31,194 @@ describe('SearchFacetValueNavigationComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  it('should use collapsible', () => {
-    expect(element.renderRoot.querySelector('oryx-collapsible')).not.toBe(null);
+  it('should expand the collapsible', async () => {
+    await expect(element).toContainElement('oryx-collapsible[open]');
   });
 
-  describe('attributes', () => {
-    describe('heading', () => {
-      it('should render as a part of collapsible heading', () => {
-        const titleSlot = element.renderRoot.querySelector(
-          '*[name="title"]'
-        ) as HTMLElement;
-
-        expect(titleSlot.innerText).toContain(mockHeading);
-      });
+  describe('when heading is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-facet-value-navigation
+          .heading=${mockHeading}
+          open
+        ></oryx-search-facet-value-navigation>`
+      );
     });
 
-    describe('valuesLength', () => {
-      it('should render as a part of show/hide button', () => {
-        const button = element.renderRoot.querySelector(
-          '.controls button'
-        ) as HTMLElement;
+    it('should render heading in the slot', () => {
+      const slot = element.renderRoot.querySelector(
+        'slot[name="heading"]'
+      ) as HTMLElement;
 
-        expect(button.innerText).toContain(mockValuesLength);
-      });
-    });
-
-    describe('selectedLength', () => {
-      it('should render as a part of collapsible heading', () => {
-        const titleSlot = element.renderRoot.querySelector(
-          '*[name="title"]'
-        ) as HTMLElement;
-
-        expect(titleSlot.innerText).toContain(mockSelectedLength);
-      });
-    });
-
-    describe('enableToggle', () => {
-      it('should render show/hide button', () => {
-        expect(element).toContainElement('.controls button');
-      });
-    });
-
-    describe('enableSearch', () => {
-      it('should render input field for facet values search', () => {
-        expect(element).toContainElement('oryx-search');
-      });
-    });
-
-    describe('open', () => {
-      it('should provide to the oryx-collapsible', () => {
-        const collapsible =
-          element.renderRoot.querySelector('oryx-collapsible');
-
-        expect(collapsible?.hasAttribute('open')).toBe(true);
-      });
+      expect(slot.innerText).toContain(mockHeading);
     });
   });
 
-  describe('events', () => {
-    const callback = vi.fn();
+  describe('when toggling is enabled', () => {
+    let button: HTMLElement | null;
 
-    afterEach(() => {
-      vi.clearAllMocks();
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-facet-value-navigation
+          enableToggle
+          open
+        ></oryx-search-facet-value-navigation>`
+      );
+
+      button = element.renderRoot.querySelector(
+        'slot:not([name]) + oryx-button button'
+      );
     });
 
-    describe('when clear action is enabled', () => {
-      it('should emit oryx.clear event on button click', () => {
-        document.addEventListener(FACET_CLEAR_EVENT, callback);
-
-        const button = element.renderRoot.querySelector(
-          '.header button'
-        ) as HTMLButtonElement;
-
-        button.click();
-        expect(callback).toHaveBeenCalled();
-      });
-
-      it('should add nonTabbable attribute', () => {
-        expect(element).toContainElement('oryx-collapsible[nonTabbable]');
-      });
+    it('should render toggle button with "collapsed" title', () => {
+      expect(button?.textContent).toContain('Show all');
     });
 
-    describe('when clear action is disabled', () => {
+    describe('and valuesLength is provided', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-search-facet-value-navigation
-            .heading=${mockHeading}
             .valuesLength=${mockValuesLength}
+            enableToggle
+            open
+          ></oryx-search-facet-value-navigation>`
+        );
+
+        button = element.renderRoot.querySelector(
+          'slot:not([name]) + oryx-button button'
+        );
+      });
+
+      it('should render toggle button with amount of values', () => {
+        expect(button?.textContent).toContain(`Show all (${mockValuesLength})`);
+      });
+    });
+
+    describe('and toggle button is clicked', () => {
+      const callback = vi.fn();
+
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-search-facet-value-navigation
+            .valuesLength=${mockValuesLength}
+            enableToggle
+            open
+            @oryx.toggle=${callback}
+          ></oryx-search-facet-value-navigation>`
+        );
+
+        button = element.renderRoot.querySelector(
+          'slot:not([name]) + oryx-button button'
+        );
+        button?.dispatchEvent(new MouseEvent('click'));
+      });
+
+      it('should dispatch oryx.toggle event with correct value', () => {
+        expect(callback).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: expect.objectContaining({
+              expanded: true,
+            }),
+          })
+        );
+      });
+
+      it('should render toggle button with "expanded" title', () => {
+        expect(button?.textContent).toContain('Show less');
+      });
+    });
+  });
+
+  describe('when selectedLength is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-facet-value-navigation
+          .selectedLength=${mockSelectedLength}
+        ></oryx-search-facet-value-navigation>`
+      );
+    });
+
+    it('should render chip with selected value', () => {
+      const chip = element.renderRoot.querySelector('oryx-chip');
+      expect(chip?.textContent).toContain(String(mockSelectedLength));
+    });
+  });
+
+  describe('when clear is enabled without selectedLength', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-facet-value-navigation
+          enableClear
+        ></oryx-search-facet-value-navigation>`
+      );
+    });
+
+    it('should not render clear button', () => {
+      expect(element).not.toContainElement('section oryx-button');
+    });
+
+    describe('and selectedLength is provided', () => {
+      const callback = vi.fn();
+
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-search-facet-value-navigation
+            enableClear
             .selectedLength=${mockSelectedLength}
-            ?enableClearAction=${false}
-            ?enableToggle=${true}
-            ?enableSearch=${true}
-            ?open=${true}
+            @oryx.clear=${callback}
           ></oryx-search-facet-value-navigation>`
         );
       });
 
-      it('сlear button should not exist', () => {
-        const button = element.renderRoot.querySelector(
-          '.header button'
-        ) as HTMLButtonElement;
-
-        expect(button).toBeNull();
+      it('should render clear button', () => {
+        expect(element).toContainElement('section oryx-button');
       });
 
-      it('should not add nonTabbable attribute', () => {
-        expect(element).not.toContainElement('oryx-collapsible[nonTabbable]');
+      describe('and clear button is clicked', () => {
+        beforeEach(() => {
+          element.renderRoot
+            .querySelector('section oryx-button button')
+            ?.dispatchEvent(new MouseEvent('click'));
+        });
+
+        it('should dispatch oryx.clear event', () => {
+          expect(callback).toHaveBeenCalled();
+        });
       });
     });
+  });
 
-    describe('toggle', () => {
-      it('should emit oryx.toggle event on show/hide button click', () => {
-        document.addEventListener(FACET_TOGGLE_EVENT, callback);
+  describe('when search is enabled', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-facet-value-navigation
+          enableSearch
+          open
+        ></oryx-search-facet-value-navigation>`
+      );
+    });
 
-        const button = element.renderRoot.querySelector(
-          '.controls button'
-        ) as HTMLButtonElement;
+    it('should render search input with default placeholder', () => {
+      expect(element).toContainElement(
+        'oryx-search input[placeholder="Search"]'
+      );
+    });
 
-        button.click();
-        expect(callback).toHaveBeenCalledTimes(1);
-        expect(callback.mock.calls[0][0].detail).toStrictEqual({
-          isShowed: true,
-        });
+    describe('and heading is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-search-facet-value-navigation
+            .heading=${mockHeading}
+            enableSearch
+            open
+          ></oryx-search-facet-value-navigation>`
+        );
+      });
 
-        button.click();
-        expect(callback).toHaveBeenCalledTimes(2);
-        expect(callback.mock.calls[1][0].detail).toStrictEqual({
-          isShowed: false,
-        });
+      it('should add heading to the input`s placeholder', () => {
+        expect(element).toContainElement(
+          `oryx-search input[placeholder="Search ${mockHeading.toLowerCase()}"]`
+        );
       });
     });
   });

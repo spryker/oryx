@@ -1,20 +1,20 @@
 import { AlertType } from '@spryker-oryx/ui';
 import { i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { DirectiveResult } from 'lit/async-directive';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import {
-  FacetValueNavigationComponentAttributes,
   FACET_CLEAR_EVENT,
   FACET_TOGGLE_EVENT,
-  ShowFacet,
+  SearchFacetValueNavigationComponentAttributes,
+  ToggleFacetPayload,
 } from './facet-value-navigation.model';
 import { facetValueNavigationStyles } from './facet-value-navigation.styles';
-import { DirectiveResult } from 'lit/async-directive';
 
 export class SearchFacetValueNavigationComponent
   extends LitElement
-  implements FacetValueNavigationComponentAttributes
+  implements SearchFacetValueNavigationComponentAttributes
 {
   static styles = facetValueNavigationStyles;
 
@@ -24,37 +24,19 @@ export class SearchFacetValueNavigationComponent
   @property({ type: Boolean }) enableToggle?: boolean;
   @property({ type: Boolean }) enableSearch?: boolean;
   @property({ type: Boolean }) open?: boolean;
-  @property({ type: Boolean }) enableClearAction?: boolean;
+  @property({ type: Boolean }) enableClear?: boolean;
 
-  @state() protected _isShowed = false;
-
-  protected onToggle(): void {
-    this._isShowed = !this._isShowed;
-
-    this.dispatchEvent(
-      new CustomEvent<ShowFacet>(FACET_TOGGLE_EVENT, {
-        bubbles: true,
-        composed: true,
-        detail: { isShowed: this._isShowed },
-      })
-    );
-  }
-
-  protected onClear(): void {
-    this.dispatchEvent(
-      new CustomEvent(FACET_CLEAR_EVENT, { bubbles: true, composed: true })
-    );
-  }
+  @state() protected expanded = false;
 
   protected override render(): TemplateResult {
-    const allowClear = this.enableClearAction && this.selectedLength;
+    const allowClear = this.enableClear && this.selectedLength;
 
     return html` <oryx-collapsible
       ?open=${this.open}
       ?nonTabbable=${allowClear}
     >
-      <section slot="header">
-        <slot name="title">${this.heading}</slot>
+      <section slot="heading">
+        <slot name="heading">${this.heading}</slot>
 
         ${when(
           this.selectedLength,
@@ -62,14 +44,13 @@ export class SearchFacetValueNavigationComponent
             >${this.selectedLength}</oryx-chip
           >`
         )}
-
         ${when(
           allowClear,
           () =>
             html`
               <oryx-button type="text" size=${Size.Sm}>
                 <button @click=${this.onClear}>
-                  ${i18n('search.facet-value-navigation.clear')}
+                  ${i18n('oryx.search.facets.clear')}
                 </button>
               </oryx-button>
             `
@@ -88,25 +69,43 @@ export class SearchFacetValueNavigationComponent
 
       ${when(
         this.enableToggle,
-        () => html`
-          <oryx-button type="text" size=${Size.Lg}>
-            <button @click=${this.onToggle}>
-              ${when(
-                this._isShowed,
-                () => i18n('search.facet-value-navigation.show-less'),
-                () => i18n('search.facet-value-navigation.show-all')
-              )}
-              ${when(
-                this.valuesLength && !this._isShowed,
-                () => html`(${this.valuesLength})`
-              )}
-            </button>
-          </oryx-button>`
+        () => html` <oryx-button type="text" size=${Size.Lg}>
+          <button @click=${this.onToggle}>
+            ${when(
+              this.expanded,
+              () => i18n('oryx.search.facets.show-less'),
+              () =>
+                i18n('oryx.search.facets.show-all-<length>', {
+                  length: this.valuesLength ? `(${this.valuesLength})` : '',
+                })
+            )}
+          </button>
+        </oryx-button>`
       )}
     </oryx-collapsible>`;
   }
 
+  protected onToggle(): void {
+    this.expanded = !this.expanded;
+
+    this.dispatchEvent(
+      new CustomEvent<ToggleFacetPayload>(FACET_TOGGLE_EVENT, {
+        bubbles: true,
+        composed: true,
+        detail: { expanded: this.expanded },
+      })
+    );
+  }
+
+  protected onClear(): void {
+    this.dispatchEvent(
+      new CustomEvent(FACET_CLEAR_EVENT, { bubbles: true, composed: true })
+    );
+  }
+
   protected get searchPlaceholder(): DirectiveResult {
-    return i18n('oryx.search.search-<heading>', {heading: this?.heading?.toLowerCase() ?? ''})
+    return i18n('oryx.search.search-<heading>', {
+      heading: this?.heading?.toLowerCase() ?? '',
+    });
   }
 }

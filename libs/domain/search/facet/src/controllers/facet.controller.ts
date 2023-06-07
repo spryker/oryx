@@ -4,7 +4,7 @@ import { FacetListService } from '@spryker-oryx/search';
 import {
   FACET_CLEAR_EVENT,
   FACET_TOGGLE_EVENT,
-  ShowFacet,
+  ToggleFacetPayload,
 } from '@spryker-oryx/search/facet-value-navigation';
 import { ObserveController } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
@@ -194,7 +194,7 @@ export class FacetController implements ReactiveController {
   }
 
   protected onToggle(e: Event): void {
-    this.showAll$.next((e as CustomEvent<ShowFacet>).detail.isShowed);
+    this.showAll$.next((e as CustomEvent<ToggleFacetPayload>).detail.expanded);
   }
 
   protected onSearch(e: Event): void {
