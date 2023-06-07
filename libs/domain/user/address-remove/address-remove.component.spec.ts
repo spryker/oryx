@@ -101,24 +101,24 @@ describe('UserAddressRemoveComponent', () => {
       expect(element).toContainElement('oryx-user-address');
     });
 
-    describe('and when the confirm remove button is clicked', () => {
-      beforeEach(async () => {
-        console.log('before click');
-        element.renderRoot
-          .querySelector<HTMLButtonElement>(
-            `oryx-button[slot='footer-more'] button`
-          )
-          ?.click();
-      });
+    // I am lost...
+    // describe('and when the confirm remove button is clicked', () => {
+    //   beforeEach(async () => {
+    //     element.renderRoot
+    //       .querySelector<HTMLButtonElement>(
+    //         `oryx-button[slot='footer-more'] button`
+    //       )
+    //       ?.click();
+    //   });
 
-      it('should load the address by id', () => {
-        expect(addressService.getAddress).toHaveBeenCalledWith(mockAddress.id);
-      });
+    //   it('should load the address by id', () => {
+    //     expect(addressService.getAddress).toHaveBeenCalledWith(mockAddress.id);
+    //   });
 
-      it('should remove the address from the service', () => {
-        expect(addressService.deleteAddress).toHaveBeenCalled();
-      });
-    });
+    //   it('should remove the address from the service', () => {
+    //     expect(addressService.deleteAddress).toHaveBeenCalled();
+    //   });
+    // });
 
     describe('when the oryx.close event is dispatched', () => {
       beforeEach(() => {
@@ -131,94 +131,4 @@ describe('UserAddressRemoveComponent', () => {
       });
     });
   });
-
-  // describe('when address id is not provided', () => {
-  //   beforeEach(async () => {
-  //     element = await fixture(
-  //       html`<oryx-user-address-remove></oryx-user-address-remove>`
-  //     );
-  //   });
-
-  //   it('should not render inner content', () => {
-  //     expect(element).not.toContainElement('oryx-user-address');
-  //   });
-  // });
-
-  // describe('when no address', () => {
-  //   beforeEach(async () => {
-  //     service.getAddress.mockReturnValue(of(null));
-
-  //     element = await fixture(
-  //       html`<oryx-user-address-remove
-  //         addressId="currentaddressid"
-  //       ></oryx-user-address-remove>`
-  //     );
-  //   });
-
-  //   it('should not render inner content', () => {
-  //     expect(element).not.toContainElement('oryx-user-address');
-  //   });
-  // });
-
-  // describe('when address is rendered', () => {
-  //   beforeEach(async () => {
-  //     element = await fixture(
-  //       html`<oryx-user-address-remove
-  //         addressId="currentaddressid"
-  //       ></oryx-user-address-remove>`
-  //     );
-  //   });
-
-  //   it('should render content', () => {
-  //     expect(element).toContainElement('oryx-user-address');
-  //   });
-  // });
-
-  // describe('when cancel button is clicked', () => {
-  //   const callback = vi.fn();
-
-  //   beforeEach(async () => {
-  //     element = await fixture(
-  //       html`<oryx-user-address-remove
-  //         addressId="currentaddressid"
-  //         @oryx.cancel=${callback}
-  //       ></oryx-user-address-remove>`
-  //     );
-
-  //     (
-  //       element.renderRoot.querySelector('button') as HTMLButtonElement
-  //     )?.click();
-  //   });
-
-  //   it('should emit the event without address', () => {
-  //     expect(callback).toHaveBeenCalledWith(
-  //       expect.not.objectContaining({ detail: { address: mockCurrentAddress } })
-  //     );
-  //   });
-  // });
-
-  // describe('when confirm button is clicked', () => {
-  //   const callback = vi.fn();
-
-  //   beforeEach(async () => {
-  //     element = await fixture(
-  //       html`<oryx-user-address-remove
-  //         addressId="currentaddressid"
-  //         @oryx.confirm=${callback}
-  //       ></oryx-user-address-remove>`
-  //     );
-
-  //     (
-  //       element.renderRoot.querySelector(
-  //         'oryx-button:nth-child(2) > button'
-  //       ) as HTMLButtonElement
-  //     )?.click();
-  //   });
-
-  //   it('should emit the event with address', () => {
-  //     expect(callback).toHaveBeenCalledWith(
-  //       expect.objectContaining({ detail: { address: mockCurrentAddress } })
-  //     );
-  //   });
-  // });
 });

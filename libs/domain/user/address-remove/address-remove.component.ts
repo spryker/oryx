@@ -57,10 +57,8 @@ export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
   }
 
   protected onRemove(): void {
-    console.log('onRemove...');
     this.loading = true;
     const address = this.$address();
-    console.log('address', address);
     if (address) {
       this.addressService
         .deleteAddress(address)

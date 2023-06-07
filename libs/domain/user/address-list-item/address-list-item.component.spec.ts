@@ -101,6 +101,10 @@ describe('UserAddressListItemComponent', () => {
       );
     });
 
+    it('should be an instance of UserAddressListItemComponent', () => {
+      expect(element).toBeInstanceOf(UserAddressListItemComponent);
+    });
+
     it('passes the a11y audit', async () => {
       await expect(element).shadowDom.to.be.accessible();
     });
