@@ -67,7 +67,7 @@ export class UserProfileComponent extends LitElement {
       )}
 
       <div class="info-footer">
-        <oryx-button type="secondary" outline="true">
+        <oryx-button type="secondary" outline>
           <button
             ?disabled="${isPicking || this.pendingSyncs}"
             @click=${this.onLogOut}
@@ -80,7 +80,7 @@ export class UserProfileComponent extends LitElement {
           isMainPage,
           () =>
             html`
-              <oryx-button ?loading=${this.loading} type="primary">
+              <oryx-button ?loading=${this.loading} type="secondary" outline>
                 <button @click=${this.onReceiveData}>
                   ${i18n('user.profile.receive-Data')}
                 </button>
