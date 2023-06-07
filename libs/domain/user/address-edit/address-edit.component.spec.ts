@@ -13,7 +13,6 @@ import {
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BehaviorSubject, of } from 'rxjs';
-import { UserAddressFormComponent } from '../address-form';
 import { UserAddressEditComponent } from './address-edit.component';
 import { addressEditComponent } from './address-edit.def';
 import {
@@ -31,12 +30,17 @@ class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
   navigate = vi.fn();
 }
-const mockAction = new BehaviorSubject<CrudState>(CrudState.Read);
+const mockState = new BehaviorSubject<{
+  action: CrudState;
+  selected?: Address | null;
+}>({
+  action: CrudState.Read,
+  selected: null,
+});
 class MockAddressStateService implements Partial<AddressStateService> {
-  getAction = vi.fn().mockReturnValue(mockAction);
-  setAction = vi.fn();
-  select = vi.fn();
-  selected = vi.fn();
+  set = vi.fn();
+  get = vi.fn().mockReturnValue(mockState);
+  clear = vi.fn();
 }
 class MockSemanticLinkService implements Partial<SemanticLinkService> {
   get = vi.fn().mockReturnValue(of('/link'));
@@ -51,7 +55,6 @@ describe('UserAddressEditComponent', () => {
   let element: UserAddressEditComponent;
   let addressService: MockAddressService;
   let addressStateService: MockAddressStateService;
-  let form: UserAddressFormComponent;
 
   beforeAll(async () => {
     await useComponent(addressEditComponent);
@@ -107,7 +110,7 @@ describe('UserAddressEditComponent', () => {
 
   describe('when the action state is Read', () => {
     beforeEach(() => {
-      addressStateService.getAction.mockReturnValue(CrudState.Read);
+      mockState.next({ action: CrudState.Read });
     });
 
     describe('and the inline option = true', () => {
@@ -141,7 +144,7 @@ describe('UserAddressEditComponent', () => {
 
   describe('when the action state is Create', () => {
     beforeEach(() => {
-      addressStateService.getAction.mockReturnValue(CrudState.Create);
+      mockState.next({ action: CrudState.Create });
     });
 
     describe('and the inline option = true', () => {
@@ -208,6 +211,10 @@ describe('UserAddressEditComponent', () => {
             isDefaultShipping: false,
           });
         });
+
+        it('should clear the state', () => {
+          expect(addressStateService.clear).toHaveBeenCalled();
+        });
       });
     });
 
@@ -238,6 +245,10 @@ describe('UserAddressEditComponent', () => {
             isDefaultBilling: false,
             isDefaultShipping: false,
           });
+        });
+
+        it('should clear the state', () => {
+          expect(addressStateService.clear).toHaveBeenCalled();
         });
       });
     });
@@ -327,6 +338,10 @@ describe('UserAddressEditComponent', () => {
           isDefaultShipping: false,
         });
       });
+
+      it('should clear the state', () => {
+        expect(addressStateService.clear).toHaveBeenCalled();
+      });
     });
 
     describe('and the change event is dispatched with a valid existing address', () => {
@@ -347,6 +362,10 @@ describe('UserAddressEditComponent', () => {
           isDefaultBilling: false,
           isDefaultShipping: false,
         });
+      });
+
+      it('should clear the state', () => {
+        expect(addressStateService.clear).toHaveBeenCalled();
       });
     });
   });

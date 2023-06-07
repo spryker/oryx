@@ -3,6 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import {
+  Address,
   AddressService,
   AddressStateService,
   CrudState,
@@ -23,12 +24,18 @@ class MockAddressService implements Partial<AddressService> {
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
 }
-const mockAction = new BehaviorSubject<CrudState>(CrudState.Read);
+
+const mockState = new BehaviorSubject<{
+  action: CrudState;
+  selected?: Address | null;
+}>({
+  action: CrudState.Read,
+  selected: null,
+});
 class MockAddressStateService implements Partial<AddressStateService> {
-  getAction = vi.fn().mockReturnValue(mockAction);
-  setAction = vi.fn();
-  select = vi.fn();
-  selected = vi.fn();
+  set = vi.fn();
+  get = vi.fn().mockReturnValue(mockState);
+  clear = vi.fn();
 }
 
 describe('UserAddressComponent', () => {

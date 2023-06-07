@@ -67,7 +67,8 @@ export class ManageAddressComponent extends AddressMixin(
             @oryx.close=${this.onClose}
             .heading=${this.getHeading()}
             enableCloseButtonInHeader
-            ?enableNavigateBack=${this.$action() !== CrudState.Read}
+            ?enableNavigateBack=${this.$addressState().action !==
+            CrudState.Read}
             enableFooter
           >
             ${[this.renderList(), this.renderEditor(), this.renderFooter()]}
@@ -79,7 +80,7 @@ export class ManageAddressComponent extends AddressMixin(
 
   protected renderList(): TemplateResult | void {
     const addressId = this.selected()?.id;
-    const action = this.$action();
+    const action = this.$addressState().action;
     if (action !== CrudState.Read && action !== CrudState.Delete) return;
 
     return html`<oryx-user-address-add-trigger
@@ -100,7 +101,7 @@ export class ManageAddressComponent extends AddressMixin(
   }
 
   protected renderEditor(): TemplateResult | void {
-    const action = this.$action();
+    const action = this.$addressState().action;
     if (action !== CrudState.Create && action !== CrudState.Update) return;
 
     return html`
@@ -112,7 +113,7 @@ export class ManageAddressComponent extends AddressMixin(
   }
 
   protected renderFooter(): TemplateResult | void {
-    const action = this.$action();
+    const action = this.$addressState().action;
     if (action === CrudState.Read) {
       return html`<oryx-button slot="footer-more" .size=${Size.Md}>
         <button @click=${this.onSelect}>
@@ -144,7 +145,7 @@ export class ManageAddressComponent extends AddressMixin(
   }
 
   protected getHeading(): DirectiveResult {
-    const action = this.$action();
+    const action = this.$addressState().action;
     if (action === CrudState.Create)
       return i18n('checkout.address.add-address');
     if (action === CrudState.Update)
@@ -154,18 +155,17 @@ export class ManageAddressComponent extends AddressMixin(
   }
 
   protected onOpen(): void {
-    this.addressStateService.setAction(CrudState.Read);
-    this.addressStateService.select(null);
+    this.addressStateService.clear();
     this.open = true;
   }
 
   protected onClose(): void {
-    this.addressStateService.setAction(CrudState.Read);
+    this.addressStateService.clear();
     this.open = false;
   }
 
   protected onBack(): void {
-    this.addressStateService.setAction(CrudState.Read);
+    this.addressStateService.clear();
   }
 
   protected onChange(e: CustomEvent<AddressEventDetail>): void {

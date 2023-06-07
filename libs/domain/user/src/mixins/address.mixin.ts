@@ -22,16 +22,17 @@ export declare class AddressMixinInterface {
    * Computed address Id, provided by a property, URL parameter or state.
    */
   protected $addressId: Signal<string | null>;
-
   /**
    * Computed address based on the current address. The current address is either
    * dictated by the address id or the give data.
    */
   protected $address: Signal<Address | null>;
-
-  protected $action: Signal<CrudState>;
-
   protected $addresses: Signal<Address[] | null>;
+
+  protected $addressState: Signal<{
+    action: CrudState;
+    selected: string | null;
+  }>;
 }
 
 export const AddressMixin = <T extends Type<LitElement>>(
@@ -47,7 +48,7 @@ export const AddressMixin = <T extends Type<LitElement>>(
 
     protected $addresses = signal(this.addressService.getAddresses());
 
-    protected $action = signal(this.addressStateService.getAction());
+    protected $addressState = signal(this.addressStateService.get());
 
     protected $addressParamId = signal<string>(
       this.routerService
@@ -55,9 +56,12 @@ export const AddressMixin = <T extends Type<LitElement>>(
         .pipe(map((params) => params.addressId as string))
     );
 
-    protected $selected = signal(this.addressStateService.selected());
     protected $addressId = computed(() => {
-      return this.addressId || this.$addressParamId() || this.$selected();
+      return (
+        this.addressId ||
+        this.$addressParamId() ||
+        this.$addressState().selected
+      );
     });
 
     protected $address = computed(() => {

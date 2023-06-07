@@ -47,14 +47,13 @@ export class UserAddressAddButtonComponent extends AddressMixin(
   }
 
   protected onCreate(): void {
-    this.addressStateService.select(null);
-    this.addressStateService.setAction(CrudState.Create);
+    this.addressStateService.clear();
   }
 
   protected renderModal(): TemplateResult | void {
     if (
       this.$options().target === Target.Modal &&
-      this.$action() === CrudState.Create
+      this.$addressState().action === CrudState.Create
     ) {
       return html`<oryx-modal
         open
@@ -67,6 +66,6 @@ export class UserAddressAddButtonComponent extends AddressMixin(
   }
 
   protected onClose(): void {
-    this.addressStateService.setAction(CrudState.Read);
+    this.addressStateService.clear();
   }
 }

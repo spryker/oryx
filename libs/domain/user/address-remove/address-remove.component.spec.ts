@@ -6,10 +6,9 @@ import {
   Address,
   AddressService,
   AddressStateService,
-  CrudState,
 } from '@spryker-oryx/user';
 import { html } from 'lit';
-import { BehaviorSubject, of } from 'rxjs';
+import { of } from 'rxjs';
 import { UserAddressRemoveComponent } from './address-remove.component';
 import { addressRemoveComponent } from './address-remove.def';
 
@@ -22,12 +21,10 @@ class MockAddressService implements Partial<AddressService> {
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
 }
-const mockAction = new BehaviorSubject<CrudState>(CrudState.Read);
+
 class MockAddressStateService implements Partial<AddressStateService> {
-  getAction = vi.fn().mockReturnValue(mockAction);
-  setAction = vi.fn();
-  select = vi.fn();
-  selected = vi.fn();
+  get = vi.fn();
+  set = vi.fn();
 }
 
 describe('UserAddressRemoveComponent', () => {

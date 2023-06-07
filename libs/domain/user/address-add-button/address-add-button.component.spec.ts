@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
+  Address,
   addressAddButtonComponent,
   AddressService,
   AddressStateService,
@@ -26,12 +27,18 @@ class MockAddressService implements Partial<AddressService> {
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
 }
-const mockAction = new BehaviorSubject<CrudState>(CrudState.Read);
+
+const mockState = new BehaviorSubject<{
+  action: CrudState;
+  selected?: Address | null;
+}>({
+  action: CrudState.Read,
+  selected: null,
+});
 class MockAddressStateService implements Partial<AddressStateService> {
-  getAction = vi.fn().mockReturnValue(mockAction);
-  setAction = vi.fn();
-  select = vi.fn();
-  selected = vi.fn();
+  set = vi.fn();
+  get = vi.fn().mockReturnValue(mockState);
+  clear = vi.fn();
 }
 class MockSemanticLinkService implements Partial<SemanticLinkService> {
   get = vi.fn();
@@ -114,14 +121,12 @@ describe('UserAddressAddButtonComponent', () => {
         element.renderRoot.querySelector('a')?.click();
       });
 
-      it('should change the action state to Create', () => {
-        expect(addressStateService.setAction).toHaveBeenCalledWith(
-          CrudState.Create
-        );
+      it('should clear the state', () => {
+        expect(addressStateService.clear).toHaveBeenCalled();
       });
 
-      it('should change the selected to null', () => {
-        expect(addressStateService.select).toHaveBeenCalledWith(null);
+      it('should clear the selected state', () => {
+        expect(addressStateService.clear).toHaveBeenCalled();
       });
     });
   });
@@ -148,14 +153,8 @@ describe('UserAddressAddButtonComponent', () => {
         element.renderRoot.querySelector('button')?.click();
       });
 
-      it('should change the action state to Create', () => {
-        expect(addressStateService.setAction).toHaveBeenCalledWith(
-          CrudState.Create
-        );
-      });
-
-      it('should change the selected to null', () => {
-        expect(addressStateService.select).toHaveBeenCalledWith(null);
+      it('should clear the state', () => {
+        expect(addressStateService.clear).toHaveBeenCalled();
       });
     });
   });
@@ -182,20 +181,14 @@ describe('UserAddressAddButtonComponent', () => {
         element.renderRoot.querySelector('button')?.click();
       });
 
-      it('should change the action state to Create', () => {
-        expect(addressStateService.setAction).toHaveBeenCalledWith(
-          CrudState.Create
-        );
-      });
-
-      it('should change the selected to null', () => {
-        expect(addressStateService.select).toHaveBeenCalledWith(null);
+      it('should clear the state', () => {
+        expect(addressStateService.clear).toHaveBeenCalled();
       });
     });
 
     describe('and the action state = Create', () => {
       beforeEach(() => {
-        mockAction.next(CrudState.Create);
+        mockState.next({ action: CrudState.Create });
       });
 
       it('should render the modal', () => {
@@ -209,10 +202,8 @@ describe('UserAddressAddButtonComponent', () => {
             ?.dispatchEvent(new Event('oryx.close'));
         });
 
-        it('should change the action state to Read', () => {
-          expect(addressStateService.setAction).toHaveBeenCalledWith(
-            CrudState.Read
-          );
+        it('should clear the state', () => {
+          expect(addressStateService.clear).toHaveBeenCalled();
         });
       });
     });

@@ -48,6 +48,6 @@ export class UserAddressEditButtonComponent extends AddressMixin(
   }
 
   protected onEdit(): void {
-    this.addressStateService.setAction(CrudState.Update);
+    this.addressStateService.set(CrudState.Update);
   }
 }

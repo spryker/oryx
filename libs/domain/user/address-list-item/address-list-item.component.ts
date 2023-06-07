@@ -130,7 +130,6 @@ export class UserAddressListItemComponent extends AddressMixin(
   protected onEdit(): void {
     const address = this.$address();
     if (!address?.id) return;
-    this.addressStateService.setAction(CrudState.Update);
-    this.addressStateService.select(address.id);
+    this.addressStateService.set(CrudState.Update, address.id);
   }
 }

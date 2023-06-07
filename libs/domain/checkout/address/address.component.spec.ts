@@ -29,12 +29,13 @@ class MockCheckoutService implements Partial<CheckoutService> {
   getProcessState = vi.fn().mockReturnValue(of(CheckoutState.Ready));
 }
 class MockCheckoutDataService implements Partial<CheckoutDataService> {}
-const mockAction = new BehaviorSubject<CrudState>(CrudState.Read);
+const mockState = new BehaviorSubject({
+  action: CrudState.Read,
+  selected: null,
+});
 class MockAddressStateService implements Partial<AddressStateService> {
-  getAction = vi.fn().mockReturnValue(mockAction);
-  setAction = vi.fn();
-  select = vi.fn();
-  selected = vi.fn();
+  set = vi.fn();
+  get = vi.fn().mockReturnValue(mockState);
 }
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
@@ -180,7 +181,7 @@ describe('CheckoutAddressComponent', () => {
         });
 
         it('should set the address to the state service', () => {
-          expect(addressStateService.select).toHaveBeenCalled();
+          expect(addressStateService.set).toHaveBeenCalled();
         });
       });
     });

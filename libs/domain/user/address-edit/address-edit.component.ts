@@ -52,8 +52,7 @@ export class UserAddressEditComponent extends AddressMixin(
       take(1),
       tap(() => {
         this.loading = false;
-        if (!this.$options().inline)
-          this.addressStateService.setAction(CrudState.Read);
+        if (!this.$options().inline) this.addressStateService.clear();
       })
     );
   }
@@ -61,8 +60,8 @@ export class UserAddressEditComponent extends AddressMixin(
   protected override render(): TemplateResult | void {
     if (
       this.$options().inline &&
-      this.$action() !== CrudState.Create &&
-      this.$action() !== CrudState.Update
+      this.$addressState().action !== CrudState.Create &&
+      this.$addressState().action !== CrudState.Update
     ) {
       return;
     }
@@ -103,8 +102,7 @@ export class UserAddressEditComponent extends AddressMixin(
   }
 
   protected onClose(): void {
-    this.addressStateService.setAction(CrudState.Read);
-    this.addressStateService.select(null);
+    this.addressStateService.clear();
 
     const route = this.listPageRoute();
     if (route) this.routerService.navigate(route);

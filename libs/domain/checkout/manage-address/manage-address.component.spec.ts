@@ -31,13 +31,17 @@ class MockCheckoutService implements Partial<CheckoutService> {
   getProcessState = vi.fn().mockReturnValue(of(CheckoutState.Ready));
 }
 class MockCheckoutDataService implements Partial<CheckoutDataService> {}
-const mockAction = new BehaviorSubject<CrudState>(CrudState.Read);
+
+const mockState = new BehaviorSubject({
+  action: CrudState.Read,
+  selected: null,
+});
 class MockAddressStateService implements Partial<AddressStateService> {
-  getAction = vi.fn().mockReturnValue(mockAction);
-  setAction = vi.fn();
-  select = vi.fn();
-  selected = vi.fn();
+  set = vi.fn();
+  get = vi.fn().mockReturnValue(mockState);
+  clear = vi.fn();
 }
+
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
 }
@@ -126,8 +130,8 @@ describe('ManageAddressComponent', () => {
       expect(element).toContainElement('oryx-modal');
     });
 
-    it('should deselect the selected item state', () => {
-      expect(addressStateService.select).toHaveBeenCalledWith(null);
+    it('should clear the selected item state', () => {
+      expect(addressStateService.clear).toHaveBeenCalled();
     });
 
     it('should render a specific modal heading', () => {
@@ -205,9 +209,7 @@ describe('ManageAddressComponent', () => {
       });
 
       it('should change the action state to Read', () => {
-        expect(addressStateService.setAction).toHaveBeenCalledWith(
-          CrudState.Read
-        );
+        expect(addressStateService.clear).toHaveBeenCalled();
       });
 
       it('should close the modal open', () => {
@@ -215,16 +217,14 @@ describe('ManageAddressComponent', () => {
       });
 
       it('should set the address crud state to Read', () => {
-        expect(addressStateService.setAction).toHaveBeenCalledWith(
-          CrudState.Read
-        );
+        expect(addressStateService.clear).toHaveBeenCalled();
       });
     });
 
     [CrudState.Create, CrudState.Update].forEach((action) => {
       describe(`when the action state = ${action}`, () => {
         beforeEach(() => {
-          mockAction.next(action);
+          mockState.next({ action, selected: null });
         });
 
         it('should render a specific modal heading', () => {
@@ -282,9 +282,7 @@ describe('ManageAddressComponent', () => {
           });
 
           it('should change the action state to Read', () => {
-            expect(addressStateService.setAction).toHaveBeenCalledWith(
-              CrudState.Read
-            );
+            expect(addressStateService.clear).toHaveBeenCalledWith();
           });
 
           it('should keep the modal open', () => {

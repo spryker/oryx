@@ -1,6 +1,10 @@
 import { isValid } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { AddressEventDetail, AddressMixin } from '@spryker-oryx/user';
+import {
+  AddressEventDetail,
+  AddressMixin,
+  CrudState,
+} from '@spryker-oryx/user';
 import { UserAddressFormComponent } from '@spryker-oryx/user/address-form';
 import { AddressListOptions } from '@spryker-oryx/user/address-list';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
@@ -33,7 +37,7 @@ export class CheckoutAddressComponent
   }
 
   protected onChange(e: CustomEvent<AddressEventDetail>): void {
-    this.addressStateService.select(e.detail.address?.id ?? null);
+    this.addressStateService.set(CrudState.Read, e.detail.address?.id);
   }
 
   isValid(report: boolean): boolean {

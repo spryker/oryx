@@ -31,12 +31,18 @@ class MockAddressService implements Partial<AddressService> {
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
 }
-const mockAction = new BehaviorSubject<CrudState>(CrudState.Read);
+
+const mockState = new BehaviorSubject<{
+  action: CrudState;
+  selected?: Address | null;
+}>({
+  action: CrudState.Read,
+  selected: null,
+});
 class MockAddressStateService implements Partial<AddressStateService> {
-  getAction = vi.fn().mockReturnValue(mockAction);
-  setAction = vi.fn();
-  select = vi.fn();
-  selected = vi.fn();
+  set = vi.fn();
+  get = vi.fn().mockReturnValue(mockState);
+  clear = vi.fn();
 }
 
 describe('UserAddressListComponent', () => {
@@ -91,10 +97,8 @@ describe('UserAddressListComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('should set the address crud state to Read', () => {
-      expect(addressStateService.setAction).toHaveBeenCalledWith(
-        CrudState.Read
-      );
+    it('should clear the state', () => {
+      expect(addressStateService.clear).toHaveBeenCalled();
     });
   });
 
@@ -165,7 +169,7 @@ describe('UserAddressListComponent', () => {
 
       describe('and when an address is selected', () => {
         beforeEach(async () => {
-          addressStateService.selected.mockReturnValue(of('shipping'));
+          addressStateService.get.mockReturnValue(of({ selected: 'shipping' }));
           element = await fixture(
             html`<oryx-user-address-list
               .options=${{ selectable: true }}
@@ -189,7 +193,7 @@ describe('UserAddressListComponent', () => {
         });
 
         it('should set the selected item in the address state service', () => {
-          expect(addressStateService.select).toHaveBeenCalled();
+          expect(addressStateService.set).toHaveBeenCalled();
         });
 
         it('should dispatch a custom change event', () => {
@@ -206,7 +210,9 @@ describe('UserAddressListComponent', () => {
 
     describe('when the address state = Update', () => {
       beforeEach(async () => {
-        addressStateService.getAction.mockReturnValue(of(CrudState.Update));
+        addressStateService.get.mockReturnValue(
+          of({ action: CrudState.Update })
+        );
       });
 
       describe('and the editTarget is modal', () => {
@@ -238,10 +244,8 @@ describe('UserAddressListComponent', () => {
             expect(event.stopPropagation).toHaveBeenCalled();
           });
 
-          it('should change the crud state to readd', () => {
-            expect(addressStateService.setAction).toHaveBeenCalledWith(
-              CrudState.Read
-            );
+          it('should clear the state', () => {
+            expect(addressStateService.clear).toHaveBeenCalled();
           });
         });
       });

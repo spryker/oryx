@@ -31,7 +31,7 @@ export class UserAddressListComponent extends AddressMixin(
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.addressStateService.setAction(CrudState.Read);
+    this.addressStateService.clear();
   }
 
   protected selectRadioElements = effect(() => {
@@ -88,7 +88,7 @@ export class UserAddressListComponent extends AddressMixin(
   }
 
   protected select(id: string): void {
-    this.addressStateService.select(id);
+    this.addressStateService.set(CrudState.Read, id);
     const address = this.$addresses()?.find((address) => address.id === id);
     if (address) {
       this.dispatchEvent(
@@ -110,7 +110,7 @@ export class UserAddressListComponent extends AddressMixin(
   protected renderModal(): TemplateResult | void {
     if (
       this.$options().editTarget === EditTarget.Modal &&
-      this.$action() === CrudState.Update
+      this.$addressState().action === CrudState.Update
     ) {
       return html`<oryx-modal
         open
@@ -124,6 +124,6 @@ export class UserAddressListComponent extends AddressMixin(
 
   protected onClose(e: Event): void {
     e.stopPropagation();
-    this.addressStateService.setAction(CrudState.Read);
+    this.addressStateService.clear();
   }
 }

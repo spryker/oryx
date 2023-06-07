@@ -11,7 +11,6 @@ import {
   AddressStateService,
   CrudState,
 } from '@spryker-oryx/user';
-import { mockCurrentAddress } from '@spryker-oryx/user/mocks';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { UserAddressListItemComponent } from './address-list-item.component';
@@ -33,13 +32,20 @@ class MockAddressService implements Partial<AddressService> {
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
 }
-const mockAction = new BehaviorSubject<CrudState>(CrudState.Read);
+
+const mockState = new BehaviorSubject<{
+  action: CrudState;
+  selected?: Address | null;
+}>({
+  action: CrudState.Read,
+  selected: null,
+});
 class MockAddressStateService implements Partial<AddressStateService> {
-  getAction = vi.fn().mockReturnValue(mockAction);
-  setAction = vi.fn();
-  select = vi.fn();
-  selected = vi.fn();
+  set = vi.fn();
+  get = vi.fn().mockReturnValue(mockState);
+  clear = vi.fn();
 }
+
 class MockSemanticLinkService implements Partial<SemanticLinkService> {
   get = vi.fn().mockReturnValue(of('/link'));
 }
@@ -48,15 +54,6 @@ describe('UserAddressListItemComponent', () => {
   let element: UserAddressListItemComponent;
   let addressService: MockAddressService;
   let addressStateService: MockAddressStateService;
-
-  const addressWithDefaults = (
-    isDefaultShipping = false,
-    isDefaultBilling = false
-  ): Address => ({
-    ...mockCurrentAddress,
-    isDefaultShipping,
-    isDefaultBilling,
-  });
 
   beforeAll(async () => {
     await useComponent(addressListItemComponent);
@@ -190,14 +187,11 @@ describe('UserAddressListItemComponent', () => {
           ?.click();
       });
 
-      it('should set the action state to Update', () => {
-        expect(addressStateService.setAction).toHaveBeenCalledWith(
-          CrudState.Update
+      it('should set the state', () => {
+        expect(addressStateService.set).toHaveBeenCalledWith(
+          CrudState.Update,
+          mockAddress.id
         );
-      });
-
-      it('should select address', () => {
-        expect(addressStateService.select).toHaveBeenCalledWith(mockAddress.id);
       });
     });
   });
