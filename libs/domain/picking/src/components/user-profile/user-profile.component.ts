@@ -2,6 +2,7 @@ import { AuthService } from '@spryker-oryx/auth';
 import { AppRef } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
 import { SyncSchedulerService } from '@spryker-oryx/offline';
+import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import { RouterService } from '@spryker-oryx/router';
 import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
 import { i18n, signal, signalAware } from '@spryker-oryx/utilities';
@@ -9,7 +10,6 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { delay, tap } from 'rxjs';
-import { OfflineDataPlugin } from '../../../offline/data-plugin';
 import { userProfileComponentStyles } from './user-profile.styles';
 
 signalAware();
