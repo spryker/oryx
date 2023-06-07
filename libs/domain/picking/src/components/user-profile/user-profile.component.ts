@@ -25,11 +25,17 @@ export class UserProfileComponent extends LitElement {
     resolve(AppRef).requirePlugin(OfflineDataPlugin);
 
   @state()
+  protected hasPendingSyncs: boolean | null = null;
+
+  @state()
   protected loading: boolean | null = null;
 
   protected route = signal(this.routerService.route());
   protected pendingSyncs = signal(
-    this.syncSchedulerService.hasPending().subscribe()
+    this.syncSchedulerService
+      .hasPending()
+      .pipe(tap((pending) => (this.hasPendingSyncs = pending)))
+      .subscribe()
   );
 
   protected override render(): TemplateResult {
@@ -45,7 +51,7 @@ export class UserProfileComponent extends LitElement {
       </div>
 
       ${when(
-        this.pendingSyncs() && !isPicking,
+        this.hasPendingSyncs && !isPicking,
         () =>
           html`
             <oryx-notification type="info" scheme="dark">
@@ -70,7 +76,7 @@ export class UserProfileComponent extends LitElement {
       <div class="info-footer">
         <oryx-button type="secondary" outline>
           <button
-            ?disabled="${isPicking || this.pendingSyncs()}"
+            ?disabled="${isPicking || this.hasPendingSyncs}"
             @click=${this.onLogOut}
           >
             ${i18n('user.profile.log-Out')}
