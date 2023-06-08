@@ -120,6 +120,10 @@ describe('UserAddressRemoveComponent', () => {
       it('should delete the address', () => {
         expect(addressService.deleteAddress).toHaveBeenCalledWith(mockAddress);
       });
+
+      it('should close the modal', () => {
+        expect(element).not.toContainElement('oryx-modal');
+      });
     });
 
     describe('when the oryx.close event is dispatched', () => {
