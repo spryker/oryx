@@ -15,6 +15,6 @@ export class SwatchComponent extends LitElement implements SwatchAttributes {
 
   @property()
   set color(value: string) {
-    this.color = `--swatch: ${value}`;
+    this.setAttribute('style', `--swatch: ${value}`);
   }
 }
