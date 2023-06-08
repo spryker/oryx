@@ -3,19 +3,12 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ProductService } from '@spryker-oryx/product';
 import { AlertType } from '@spryker-oryx/ui';
-import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import { ProductAvailabilityComponent } from './availability.component';
 import { productAvailabilityComponent } from './availability.def';
 
 class MockProductService implements Partial<ProductService> {
   get = vi.fn();
-}
-
-@customElement('oryx-swatch')
-export class MockComponent extends LitElement {
-  @property({ reflect: true }) type?: AlertType;
 }
 
 const createElement = async (
@@ -35,7 +28,7 @@ describe('ProductAvailabilityComponent', () => {
   let productService: MockProductService;
 
   beforeAll(async () => {
-    await useComponent([productAvailabilityComponent]);
+    await useComponent(productAvailabilityComponent);
   });
 
   beforeEach(() => {
@@ -75,6 +68,12 @@ describe('ProductAvailabilityComponent', () => {
           of({ availability: { quantity: 5 } })
         );
         element = await createElement(4);
+      });
+
+      it('should render oryx-swatch with type success', () => {
+        expect(element).toContainElement(
+          `oryx-swatch[type=${AlertType.Success}]`
+        );
       });
 
       it('should render oryx-swatch with type success', () => {
