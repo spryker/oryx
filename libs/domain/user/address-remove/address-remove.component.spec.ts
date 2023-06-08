@@ -23,7 +23,7 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 class MockAddressStateService implements Partial<AddressStateService> {
-  get = vi.fn();
+  get = vi.fn().mockReturnValue(of(null));
   set = vi.fn();
 }
 
@@ -32,7 +32,7 @@ describe('UserAddressRemoveComponent', () => {
   let addressService: MockAddressService;
 
   beforeAll(async () => {
-    await useComponent(addressRemoveComponent);
+    await useComponent([addressRemoveComponent]);
   });
 
   beforeEach(async () => {
@@ -85,37 +85,42 @@ describe('UserAddressRemoveComponent', () => {
     });
   });
 
-  describe('when the user clicks the button', () => {
+  describe('when the user clicks the remove button', () => {
     beforeEach(() => {
-      element.renderRoot.querySelector('button')?.click();
+      element.renderRoot
+        .querySelector('oryx-icon-button button')
+        ?.dispatchEvent(new MouseEvent('click'));
+    });
+
+    beforeEach(async () => {
+      element = await fixture(html`<oryx-user-address-remove
+        .addressId=${mockAddress.id}
+      ></oryx-user-address-remove>`);
+
+      element.renderRoot
+        .querySelector('oryx-icon-button button')
+        ?.dispatchEvent(new MouseEvent('click'));
     });
 
     it('should open the confirmation modal', () => {
-      expect(element).toContainElement('oryx-modal');
+      expect(element).toContainElement('oryx-modal[open]');
     });
 
-    it('should render the user address', () => {
-      expect(element).toContainElement('oryx-user-address');
+    describe('and the confirm remove button is clicked', () => {
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector<HTMLButtonElement>('oryx-button button')
+          ?.dispatchEvent(new MouseEvent('click'));
+      });
+
+      it('should load the address by id', () => {
+        expect(addressService.getAddress).toHaveBeenCalledWith(mockAddress.id);
+      });
+
+      it('should delete the address', () => {
+        expect(addressService.deleteAddress).toHaveBeenCalledWith(mockAddress);
+      });
     });
-
-    // I am lost...
-    // describe('and when the confirm remove button is clicked', () => {
-    //   beforeEach(async () => {
-    //     element.renderRoot
-    //       .querySelector<HTMLButtonElement>(
-    //         `oryx-button[slot='footer-more'] button`
-    //       )
-    //       ?.click();
-    //   });
-
-    //   it('should load the address by id', () => {
-    //     expect(addressService.getAddress).toHaveBeenCalledWith(mockAddress.id);
-    //   });
-
-    //   it('should remove the address from the service', () => {
-    //     expect(addressService.deleteAddress).toHaveBeenCalled();
-    //   });
-    // });
 
     describe('when the oryx.close event is dispatched', () => {
       beforeEach(() => {
