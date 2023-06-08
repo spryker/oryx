@@ -3,6 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ProductService } from '@spryker-oryx/product';
 import { AlertType } from '@spryker-oryx/ui';
+import { SwatchComponent } from 'libs/base/ui/graphical/swatch/src/swatch.component';
 import { of } from 'rxjs';
 import { ProductAvailabilityComponent } from './availability.component';
 import { productAvailabilityComponent } from './availability.def';
@@ -71,15 +72,9 @@ describe('ProductAvailabilityComponent', () => {
       });
 
       it('should render oryx-swatch with type success', () => {
-        expect(element).toContainElement(
-          `oryx-swatch[type=${AlertType.Success}]`
-        );
-      });
-
-      it('should render oryx-swatch with type success', () => {
-        expect(element).toContainElement(
-          `oryx-swatch[type=${AlertType.Success}]`
-        );
+        expect(
+          element.renderRoot.querySelector<SwatchComponent>('oryx-swatch')?.type
+        ).toBe(AlertType.Success);
       });
 
       it('should render "Available"', () => {
@@ -94,11 +89,10 @@ describe('ProductAvailabilityComponent', () => {
         );
         element = await createElement(5);
       });
-
-      it('should render oryx-swatch with type warning', () => {
-        expect(element).toContainElement(
-          `oryx-swatch[type=${AlertType.Warning}]`
-        );
+      it('should render oryx-swatch with type success', () => {
+        expect(
+          element.renderRoot.querySelector<SwatchComponent>('oryx-swatch')?.type
+        ).toBe(AlertType.Warning);
       });
 
       it('should render "Limited"', () => {
@@ -114,10 +108,10 @@ describe('ProductAvailabilityComponent', () => {
         element = await createElement(6);
       });
 
-      it('should render oryx-swatch with type warning', () => {
-        expect(element).toContainElement(
-          `oryx-swatch[type=${AlertType.Warning}]`
-        );
+      it('should render oryx-swatch with type success', () => {
+        expect(
+          element.renderRoot.querySelector<SwatchComponent>('oryx-swatch')?.type
+        ).toBe(AlertType.Warning);
       });
 
       it('should render "Limited"', () => {
@@ -133,10 +127,10 @@ describe('ProductAvailabilityComponent', () => {
         element = await createElement(5);
       });
 
-      it('should render oryx-swatch with type warning', () => {
-        expect(element).toContainElement(
-          `oryx-swatch[type=${AlertType.Error}]`
-        );
+      it('should render oryx-swatch with type success', () => {
+        expect(
+          element.renderRoot.querySelector<SwatchComponent>('oryx-swatch')?.type
+        ).toBe(AlertType.Error);
       });
 
       it('should render "None"', () => {
@@ -155,9 +149,9 @@ describe('ProductAvailabilityComponent', () => {
       });
 
       it('should render oryx-swatch with type success', () => {
-        expect(element).toContainElement(
-          `oryx-swatch[type=${AlertType.Success}]`
-        );
+        expect(
+          element.renderRoot.querySelector<SwatchComponent>('oryx-swatch')?.type
+        ).toBe(AlertType.Success);
       });
 
       it('should render "Available"', () => {
@@ -174,9 +168,9 @@ describe('ProductAvailabilityComponent', () => {
       });
 
       it('should render oryx-swatch with type success', () => {
-        expect(element).toContainElement(
-          `oryx-swatch[type=${AlertType.Success}]`
-        );
+        expect(
+          element.renderRoot.querySelector<SwatchComponent>('oryx-swatch')?.type
+        ).toBe(AlertType.Success);
       });
 
       it('should render "Available"', () => {
@@ -193,9 +187,9 @@ describe('ProductAvailabilityComponent', () => {
       });
 
       it('should render oryx-swatch with type success', () => {
-        expect(element).toContainElement(
-          `oryx-swatch[type=${AlertType.Success}]`
-        );
+        expect(
+          element.renderRoot.querySelector<SwatchComponent>('oryx-swatch')?.type
+        ).toBe(AlertType.Success);
       });
 
       it('should render "Available"', () => {
@@ -217,7 +211,7 @@ describe('ProductAvailabilityComponent', () => {
     });
   });
 
-  describe.only('when enableExactStock is true', () => {
+  describe('when enableExactStock is true', () => {
     describe('and the product is in stock', () => {
       beforeEach(async () => {
         productService.get.mockReturnValue(
