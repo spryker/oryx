@@ -2,15 +2,13 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { generateFacet } from '@spryker-oryx/product/mocks';
-import {
-  FacetListService,
-  searchColorFacetComponent,
-} from '@spryker-oryx/search';
 import { SearchFacetComponent } from '@spryker-oryx/search/facet';
 import { mockFacetColors } from '@spryker-oryx/search/mocks';
 import { of } from 'rxjs';
+import { FacetListService } from '../src/services';
 import { FacetColorsMapping } from './facet-color-colors.mapping';
 import { SearchColorFacetComponent } from './facet-color.component';
+import { searchColorFacetComponent } from './facet-color.def';
 
 const mockRenderLimit = Object.keys(mockFacetColors).length;
 const mockFacet = generateFacet('Color', 'color', mockRenderLimit);

@@ -9,7 +9,7 @@ import {
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { take } from 'rxjs';
-import { storybookPrefix } from '../../../.constants';
+import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Facet Color`,
