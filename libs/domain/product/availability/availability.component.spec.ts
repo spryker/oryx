@@ -3,7 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ProductService } from '@spryker-oryx/product';
 import { AlertType } from '@spryker-oryx/ui';
-import { SwatchComponent } from 'libs/base/ui/graphical/swatch/src/swatch.component';
+import { SwatchComponent } from '@spryker-oryx/ui/swatch';
 import { of } from 'rxjs';
 import { ProductAvailabilityComponent } from './availability.component';
 import { productAvailabilityComponent } from './availability.def';
