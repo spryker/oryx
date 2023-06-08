@@ -33,6 +33,7 @@ export const collapsibleBaseStyle = css`
     align-items: center;
     gap: 7px;
     cursor: pointer;
+    user-select: none;
   }
 
   :host(${blockSelector}) summary::after {
@@ -55,7 +56,7 @@ export const collapsibleBaseStyle = css`
   :is(oryx-icon-button, oryx-button) {
     display: flex;
     align-items: center;
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
   }
 
   :host(:not(${inlineSelector})) :is(oryx-icon-button, oryx-button) {

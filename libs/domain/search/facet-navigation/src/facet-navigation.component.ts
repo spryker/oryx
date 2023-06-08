@@ -1,16 +1,15 @@
 import { resolve } from '@spryker-oryx/di';
 import {
-  ComponentMixin,
-  ContentController,
+  ContentMixin,
   defaultOptions,
+  LayoutMixin,
 } from '@spryker-oryx/experience';
-import { Facet } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import { FacetListService } from '@spryker-oryx/search';
 import { FacetSelect } from '@spryker-oryx/search/facet';
-import { asyncValue, hydratable } from '@spryker-oryx/utilities';
-import { html, TemplateResult } from 'lit';
-import { combineLatest } from 'rxjs';
+import { hydratable, signal } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { take, tap } from 'rxjs/operators';
 import { FacetComponentRegistryService } from '../../src/renderers';
 import { FacetsOptions } from './facet-navigation.model';
@@ -21,19 +20,50 @@ import { facetNavigation } from './facet-navigation.styles';
   expandedItemsCount: 5,
   valueRenderLimit: 5,
   minForSearch: 13,
+  bury: [{ facets: ['rating', 'price'] }],
 })
-export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions>() {
+export class SearchFacetNavigationComponent extends LayoutMixin(
+  ContentMixin<FacetsOptions>(LitElement)
+) {
   static styles = [facetNavigation];
 
-  protected options$ = new ContentController(this).getOptions();
   protected facetListService = resolve(FacetListService);
-  protected routerService = resolve(RouterService);
   protected facetRenderer = resolve(FacetComponentRegistryService);
+  protected routerService = resolve(RouterService);
 
-  protected facets$ = combineLatest([
-    this.facetListService.get(),
-    this.options$,
-  ]);
+  protected facets = signal(this.facetListService.get());
+
+  protected override render(): TemplateResult | void {
+    const {
+      bury,
+      valueRenderLimit: renderLimit = Infinity,
+      expandedItemsCount = 0,
+      minForSearch = Infinity,
+    } = this.$options();
+
+    const facets = this.facets()?.filter(
+      (facet) => !bury?.find((b) => b.facets.includes(facet.parameter))
+    );
+
+    if (!facets?.length) return;
+
+    return html`${facets.map((facet, index) =>
+      this.facetRenderer.renderFacetComponent(
+        facet,
+        {
+          renderLimit,
+          open: index < expandedItemsCount,
+          minForSearch,
+          enableClear: !(
+            this.routerService.getPathId('category') &&
+            facet.parameter === 'category'
+          ),
+        },
+        this.applyFilters.bind(this)
+      )
+    )}
+    ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)} `;
+  }
 
   protected applyFilters(e: CustomEvent<FacetSelect>): void {
     const { name, value: selectedFacetValue } = e.detail;
@@ -81,34 +111,5 @@ export class SearchFacetNavigationComponent extends ComponentMixin<FacetsOptions
       })
       .pipe(tap((url) => this.routerService.navigate(url)))
       .subscribe();
-  }
-
-  protected override render(): TemplateResult {
-    return html`
-      ${asyncValue(this.facets$, ([facets, options]) => {
-        return this.renderFacets(facets, options);
-      })}
-    `;
-  }
-
-  protected renderFacets(
-    facets: Facet[] | null,
-    options: FacetsOptions
-  ): TemplateResult {
-    return html`${(facets ?? []).map((facet, index) => {
-      return this.facetRenderer.renderFacetComponent(
-        facet,
-        {
-          renderLimit: options.valueRenderLimit!,
-          open: index < (options.expandedItemsCount ?? 0),
-          minForSearch: options.minForSearch!,
-          enableClearAction: !(
-            this.routerService.getPathId('category') &&
-            facet.parameter === 'category'
-          ),
-        },
-        this.applyFilters.bind(this)
-      );
-    })}`;
   }
 }

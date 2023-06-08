@@ -1,6 +1,6 @@
 import { CheckoutMixin, isValid } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { effect, hydratable } from '@spryker-oryx/utilities';
+import { elementEffect, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { checkoutOrchestratorStyles } from './orchestrator.styles';
 
@@ -10,9 +10,10 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
 ) {
   static styles = [checkoutOrchestratorStyles];
 
-  protected eff = effect(() => {
+  @elementEffect()
+  protected eff = (): void => {
     if (this.isInvalid()) this.report();
-  });
+  };
 
   protected override render(): TemplateResult | void {
     if (this.isEmpty()) return;

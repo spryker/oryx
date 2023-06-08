@@ -73,10 +73,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
 
   close(): void {
     this.dispatchEvent(
-      new CustomEvent(CLOSE_EVENT, {
-        bubbles: true,
-        composed: true,
-      })
+      new CustomEvent(CLOSE_EVENT, { bubbles: true, composed: true })
     );
     this.removeAttribute('open');
   }
@@ -86,21 +83,27 @@ export class ModalComponent extends LitElement implements ModalProperties {
   }
 
   protected onBackdropClick(e: MouseEvent): void {
+    e.stopImmediatePropagation();
     e.stopPropagation();
-    if (this.preventCloseByBackdrop) {
-      return;
-    }
+    if (this.preventCloseByBackdrop) return;
 
     const target = e.composedPath()[0] as HTMLElement;
     if (target.tagName.toLowerCase() === this.backdropTargetTag) {
-      this.close();
+      if (this.enableNavigateBack) {
+        this.onGoBack();
+      } else {
+        this.close();
+      }
     }
   }
 
   protected onCancel(e: Event): void {
     e.preventDefault();
-    e.stopImmediatePropagation();
 
+    if (this.enableNavigateBack) {
+      this.onGoBack();
+      return;
+    }
     if (!this.preventCloseByEscape) {
       this.close();
     }
@@ -126,9 +129,18 @@ export class ModalComponent extends LitElement implements ModalProperties {
         @cancel=${(e: Event): void => this.onCancel(e)}
         @close=${this.close}
       >
-        <form method="dialog">${this.renderBody()}</form>
+        <form method="dialog" @submit=${this.onSubmit}>
+          ${this.renderBody()}
+        </form>
       </dialog>
     `;
+  }
+
+  protected onSubmit(e: Event): void {
+    if (this.enableNavigateBack) {
+      this.onGoBack();
+      e.preventDefault();
+    }
   }
 
   protected renderHeading(): TemplateResult {
@@ -182,7 +194,11 @@ export class ModalComponent extends LitElement implements ModalProperties {
             <footer slot="footer">
               <slot name="footer">
                 <oryx-button type="secondary" outline .size=${Size.Md}>
-                  <button value="cancel">Cancel</button>
+                  <button value="cancel">
+                    ${i18n(
+                      this.enableNavigateBack ? 'modal.back' : 'modal.cancel'
+                    )}
+                  </button>
                 </oryx-button>
                 <slot name="footer-more"></slot>
               </slot>

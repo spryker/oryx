@@ -4,10 +4,10 @@ export const styles = css`
   :host {
     display: flex;
     flex-direction: column;
-    background-color: var(--oryx-color-primary-300);
+    background-color: var(--oryx-color-primary-9);
     justify-content: center;
     height: 100vh;
-    color: var(--oryx-color-canvas-100);
+    color: var(--oryx-color-neutral-1);
     --oryx-icon-size: 32px;
   }
 
@@ -18,7 +18,7 @@ export const styles = css`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--oryx-color-primary-300);
+    background-color: var(--oryx-color-primary-9);
     z-index: -1;
   }
 
@@ -40,6 +40,6 @@ export const styles = css`
   oryx-spinner {
     flex-basis: 0;
     margin-top: 134px;
-    color: var(--oryx-color-canvas-100);
+    color: var(--oryx-color-neutral-1);
   }
 `;

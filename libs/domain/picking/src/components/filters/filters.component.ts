@@ -26,7 +26,7 @@ export class FiltersComponent extends LitElement {
 
   protected $selectedSortingValue = signal(
     this.pickingListService.getSortingQualifier().pipe(map(this.formatValue)),
-    this.formatValue(defaultSortingQualifier)
+    { initialValue: this.formatValue(defaultSortingQualifier) }
   );
 
   protected formatValue(

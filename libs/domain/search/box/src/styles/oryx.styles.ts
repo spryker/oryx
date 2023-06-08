@@ -3,11 +3,11 @@ import { css } from 'lit';
 
 export const searchboxStyles = css`
   [slot='prefix'] {
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
   }
 
   input::placeholder {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   input {
@@ -16,11 +16,11 @@ export const searchboxStyles = css`
   }
 
   oryx-button[slot='suffix'] {
-    --_color-text: var(--oryx-color-primary-300);
+    --_color-text: var(--oryx-color-primary-9);
   }
 
   oryx-icon-button[slot='suffix'] {
-    --oryx-icon-button-color: var(--oryx-color-neutral-400);
+    --oryx-icon-button-color: var(--oryx-color-neutral-11);
   }
 
   oryx-icon-button[slot='suffix'] oryx-icon {
@@ -51,11 +51,11 @@ export const searchboxStyles = css`
   .product {
     transition: background var(--oryx-transition-time);
     background: transparent;
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   .product:hover {
-    background: var(--oryx-color-canvas-200);
+    background: var(--oryx-color-neutral-3);
   }
 
   .product oryx-product-title {

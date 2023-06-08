@@ -7,7 +7,7 @@ const largeSize = unsafeCSS(`[size='${Size.Lg}']`);
 
 export const toggleIconStyles = css`
   :host {
-    --oryx-icon-size: var(--oryx-icon-size-large);
+    --oryx-icon-size: var(--oryx-icon-size-lg);
 
     position: relative;
     display: inline-flex;
@@ -25,7 +25,7 @@ export const toggleIconStyles = css`
 
   :host([hasError])
     ::slotted(:is(input, input:hover, input:checked, input:checked:hover))::after {
-    border-color: var(--oryx-color-error-300);
+    border-color: var(--oryx-color-error-9);
   }
 
   :host,
@@ -73,68 +73,68 @@ export const toggleIconStyles = css`
     width: 100%;
     box-sizing: border-box;
     border-radius: var(--oryx-border-radius-small);
-    background: var(--oryx-color-canvas-100);
-    border: 1px solid var(--oryx-color-canvas-500);
+    background: var(--oryx-color-neutral-1);
+    border: 1px solid var(--oryx-color-neutral-6);
   }
 
   ::slotted(input:hover:not([disabled]))::after {
-    background: var(--oryx-color-canvas-200);
-    border-color: var(--oryx-color-neutral-200);
+    background: var(--oryx-color-neutral-3);
+    border-color: var(--oryx-color-neutral-8);
     box-shadow: 0 1px 3px 0 var(--oryx-color-elevation-2);
   }
 
   ::slotted(input:active:not([disabled]))::after {
-    background: var(--oryx-color-canvas-200);
-    border-color: var(--oryx-color-neutral-300);
+    background: var(--oryx-color-neutral-3);
+    border-color: var(--oryx-color-neutral-9);
   }
 
   ::slotted(input:checked:active:not([disabled]))::after,
   ::slotted(input:checked:hover:not([disabled]))::after {
-    border-color: var(--oryx-color-primary-400);
+    border-color: var(--oryx-color-primary-10);
   }
 
   ::slotted(input:checked:active:not([disabled]))::after {
-    background: var(--oryx-color-canvas-200);
+    background: var(--oryx-color-neutral-3);
   }
 
   ::slotted(input:focus-visible:not(:active))::after {
-    box-shadow: 0 0 3px var(--oryx-color-primary-300),
-      inset 0 0 0 1px var(--oryx-color-canvas-100),
-      inset 0 0 0 2px var(--oryx-color-neutral-200);
+    box-shadow: 0 0 3px var(--oryx-color-primary-9),
+      inset 0 0 0 1px var(--oryx-color-neutral-1),
+      inset 0 0 0 2px var(--oryx-color-neutral-8);
     border: none;
   }
 
   ::slotted(input:checked:focus-visible:not(:active))::after {
-    box-shadow: 0 0 3px var(--oryx-color-primary-300),
-      inset 0 0 0 1px var(--oryx-color-primary-100),
-      inset 0 0 0 2px var(--oryx-color-primary-300);
+    box-shadow: 0 0 3px var(--oryx-color-primary-9),
+      inset 0 0 0 1px var(--oryx-color-primary-3),
+      inset 0 0 0 2px var(--oryx-color-primary-9);
     border: none;
   }
 
   :host([hasError]) ::slotted(input:focus-visible:not(:active))::after {
-    box-shadow: 0 0 3px var(--oryx-color-primary-300),
-      inset 0 0 0 1px var(--oryx-color-error-300),
-      inset 0 0 0 2px var(--oryx-color-neutral-200);
+    box-shadow: 0 0 3px var(--oryx-color-primary-9),
+      inset 0 0 0 1px var(--oryx-color-error-9),
+      inset 0 0 0 2px var(--oryx-color-neutral-8);
   }
 
   :host([hasError]) ::slotted(input:checked:focus-visible:not(:active))::after {
-    box-shadow: 0 0 3px var(--oryx-color-primary-300),
-      inset 0 0 0 1px var(--oryx-color-error-300),
-      inset 0 0 0 2px var(--oryx-color-primary-300);
+    box-shadow: 0 0 3px var(--oryx-color-primary-9),
+      inset 0 0 0 1px var(--oryx-color-error-9),
+      inset 0 0 0 2px var(--oryx-color-primary-9);
   }
 
   ::slotted(input[disabled])::after {
-    background: var(--oryx-color-canvas-200);
-    border-color: var(--oryx-color-neutral-200);
+    background: var(--oryx-color-neutral-3);
+    border-color: var(--oryx-color-neutral-8);
   }
 
   ::slotted(input:checked:not([disabled]))::after {
-    border-color: var(--oryx-color-primary-300);
-    background: var(--oryx-color-primary-100);
+    border-color: var(--oryx-color-primary-9);
+    background: var(--oryx-color-primary-3);
   }
 
   ::slotted(input:checked[disabled])::after {
-    border-color: var(--oryx-color-neutral-300);
+    border-color: var(--oryx-color-neutral-9);
   }
 
   ::slotted(oryx-icon),
@@ -150,10 +150,10 @@ export const toggleIconStyles = css`
   }
 
   ::slotted(oryx-icon) {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   :host([checked]:not([disabled])) ::slotted(oryx-icon) {
-    color: var(--oryx-color-primary-300);
+    color: var(--oryx-color-primary-9);
   }
 `;

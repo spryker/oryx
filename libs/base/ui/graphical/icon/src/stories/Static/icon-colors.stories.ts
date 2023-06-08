@@ -2,7 +2,6 @@ import { getAppIcons } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-
 export default { title: `${storybookPrefix}/Graphical/Icon/Static` } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
@@ -22,23 +21,23 @@ const Template: Story<unknown> = (): TemplateResult => {
     <div class="icon-set">
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-100);"
+        style="color: var(--oryx-color-primary-3);"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-200);"
+        style="color: var(--oryx-color-primary-7);"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-300);"
+        style="color: var(--oryx-color-primary-9);"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-400);"
+        style="color: var(--oryx-color-primary-10);"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-500);"
+        style="color: var(--oryx-color-primary-12);"
       ></oryx-icon>
     </div>
 
@@ -46,23 +45,23 @@ const Template: Story<unknown> = (): TemplateResult => {
     <div class="icon-set">
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-100);background-color: var(--oryx-color-primary-500);"
+        style="color: var(--oryx-color-primary-3);background-color: var(--oryx-color-primary-12);"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-200);background-color: var(--oryx-color-primary-400);"
+        style="color: var(--oryx-color-primary-7);background-color: var(--oryx-color-primary-10);"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-300);background-color: var(--oryx-color-primary-200);"
+        style="color: var(--oryx-color-primary-9);background-color: var(--oryx-color-primary-7);"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-400);background-color: var(--oryx-color-primary-200);"
+        style="color: var(--oryx-color-primary-10);background-color: var(--oryx-color-primary-7);"
       ></oryx-icon>
       <oryx-icon
         type=${icon}
-        style="color: var(--oryx-color-primary-500);background-color: var(--oryx-color-primary-100);"
+        style="color: var(--oryx-color-primary-12);background-color: var(--oryx-color-primary-3);"
       ></oryx-icon>
     </div>
 

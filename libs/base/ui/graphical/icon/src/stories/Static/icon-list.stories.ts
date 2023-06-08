@@ -38,7 +38,7 @@ const Template: Story<unknown> = (): TemplateResult => {
 
       .icon span {
         text-align: center;
-        color: var(--oryx-color-ink);
+        color: var(--oryx-color-neutral-12);
         padding: 10px 0;
         height: 35px;
         font-size: 12px;

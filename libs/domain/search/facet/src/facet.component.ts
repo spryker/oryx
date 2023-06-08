@@ -19,11 +19,9 @@ export class SearchFacetComponent extends FacetComponentMixin() {
     });
   }
 
-  protected override render(): TemplateResult {
+  protected override render(): TemplateResult | void {
     return html`${asyncValue(this.facet$, ([facet, props]) => {
-      if (!facet) {
-        return html``;
-      }
+      if (!facet) return;
 
       const valuesLength =
         facet?.filteredValueLength ?? facet?.valuesTreeLength ?? 0;
@@ -42,7 +40,7 @@ export class SearchFacetComponent extends FacetComponentMixin() {
         .heading=${props.name}
         .selectedLength=${facet.selectedValues?.length}
         .valuesLength=${valuesLength}
-        ?enableclearaction="${props.enableClearAction}"
+        ?enableClear="${props.enableClear}"
       >
         ${when(
           valuesLength,

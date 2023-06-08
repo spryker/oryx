@@ -12,6 +12,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
   effect,
+  elementEffect,
   hydratable,
   signalAware,
   Size,
@@ -50,6 +51,8 @@ export class ProductCardComponent extends ProductMixin(
   );
 
   protected context = new ContextController(this);
+
+  @elementEffect()
   protected skuController = effect(() => {
     this.context.provide(ProductContext.SKU, this.$options().sku ?? this.sku);
   });
@@ -63,8 +66,10 @@ export class ProductCardComponent extends ProductMixin(
     const style = titleLineClamp
       ? `--oryx-product-title-max-lines:${titleLineClamp}`
       : undefined;
-    return html`<a href=${this.$link()}>
-      ${this.renderLabels()} ${this.renderWishlist()} ${this.renderMedia()}
+    return html`<a href=${this.$link()} aria-label="${product.name}">
+      ${this.renderLabels()}
+      <!-- this.renderWishlist()  -->
+      ${this.renderMedia()}
       <div
         class="popover"
         ?has-line-clamp=${titleLineClamp}

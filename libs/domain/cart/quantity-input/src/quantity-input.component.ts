@@ -72,7 +72,7 @@ export class QuantityInputComponent
           ${ref(this.inputRef)}
           aria-label=${i18n('cart.quantity')}
           type="number"
-          value=${this.getValue()}
+          .value=${this.getValue()}
           min=${this.min}
           max=${ifDefined(this.max)}
           step=${this.step}
@@ -117,9 +117,7 @@ export class QuantityInputComponent
   }
 
   protected isMinDisabled(): boolean {
-    return (
-      this.disabled || (this.value !== undefined && this.value <= this.min)
-    );
+    return this.disabled || (this.value ?? this.min) <= this.min;
   }
 
   protected isMaxDisabled(): boolean {

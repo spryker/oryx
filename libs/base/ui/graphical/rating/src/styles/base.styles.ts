@@ -50,7 +50,7 @@ export const ratingBaseStyles = css`
 
   fieldset slot,
   fieldset ::slotted(*) {
-    color: var(--oryx-rating-color-active, var(--oryx-color-secondary-300));
+    color: var(--oryx-rating-color-active, var(--oryx-color-secondary-9));
     font-size: 1em;
   }
 
@@ -60,7 +60,7 @@ export const ratingBaseStyles = css`
 
   input:focus-visible + slot {
     border-radius: 4px;
-    background-color: var(--oryx-color-canvas-200);
+    background-color: var(--oryx-color-neutral-3);
     box-shadow: var(--oryx-box-shadow-focus);
   }
 

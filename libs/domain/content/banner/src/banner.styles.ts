@@ -11,8 +11,7 @@ export const styles = css`
   }
 
   a {
-    /* stylelint-disable-next-line */
-    color: var(--oryx-color-primaryA-0, white);
+    color: var(--oryx-color-primary-0, white);
   }
 
   img {

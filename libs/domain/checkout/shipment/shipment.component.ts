@@ -61,7 +61,7 @@ export class CheckoutShipmentComponent
         />
         <div>
           <span>${method.name}</span>
-          <oryx-price .value=${method.price}></oryx-price>
+          <oryx-site-price .value=${method.price}></oryx-site-price>
         </div>
         <oryx-date
           slot="subtext"

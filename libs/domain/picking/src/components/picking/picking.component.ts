@@ -174,6 +174,9 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     const tabs = this.buildTabs();
 
     return html`
+      <oryx-picking-header
+        pickingListId="${this.pickingListId}"
+      ></oryx-picking-header>
       <oryx-tabs
         appearance="${TabsAppearance.Secondary}"
         sticky

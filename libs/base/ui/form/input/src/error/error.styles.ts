@@ -5,10 +5,10 @@ import { css } from 'lit';
  */
 export const errorStyles = css`
   :host([hasError]) {
-    border-color: var(--oryx-color-error-300);
+    border-color: var(--oryx-color-error-9);
   }
 
   :host([disabled]) slot[name='error'] ::slotted(oryx-icon) {
-    color: var(--oryx-color-neutral-200);
+    color: var(--oryx-color-neutral-8);
   }
 `;

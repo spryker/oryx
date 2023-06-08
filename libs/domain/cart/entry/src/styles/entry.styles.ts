@@ -23,7 +23,7 @@ const pricing = css`
     height: auto;
   }
 
-  oryx-price {
+  oryx-site-price {
     font-size: var(--oryx-typography-h6-size);
     font-weight: var(--oryx-typography-h6-weight);
     line-height: var(--oryx-typography-h6-line);
@@ -34,7 +34,7 @@ const pricing = css`
     font-size: var(--oryx-typography-small-size);
     font-weight: var(--oryx-typography-small-weight);
     line-height: var(--oryx-typography-small-line);
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
     display: grid;
     align-items: center;
     grid-auto-flow: column;
@@ -83,7 +83,7 @@ export const cartEntryStyles = css`
     gap: 4px;
     grid-row: 1;
     grid-column: 2;
-    color: var(--oryx-color-neutral-400);
+    color: var(--oryx-color-neutral-11);
   }
 
   oryx-product-id {
@@ -93,7 +93,7 @@ export const cartEntryStyles = css`
   }
 
   oryx-product-id::part(prefix) {
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 
   section {

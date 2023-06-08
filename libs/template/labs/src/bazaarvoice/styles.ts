@@ -807,7 +807,7 @@ export const bzRatingStyles = css`
       rgba(255, 255, 255, 0.1) 0,
       rgba(255, 255, 255, 0) 100%
     ) !important;
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     padding-top: 0.5em !important;
@@ -845,8 +845,8 @@ export const bzRatingStyles = css`
     text-transform: none !important;
     text-shadow: none !important;
     background-image: none !important;
-    background-color: var(--oryx-color-primary-300) !important;
-    border-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
+    border-color: var(--oryx-color-primary-9); !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     border-top-width: 0 !important;
@@ -1993,7 +1993,7 @@ export const bzRatingStyles = css`
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-rating-stars-on {
     font-size: 20px !important;
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     margin-top: -1em !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-rating-stars-off {
@@ -2029,7 +2029,7 @@ export const bzRatingStyles = css`
     .bv-core-container-39
     .bv-primarySummary-rating-container
     .bv-rating-stars-on {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     margin-top: -1em !important;
   }
   .bv-cv2-cleanslate
@@ -2077,7 +2077,7 @@ export const bzRatingStyles = css`
     .bv-core-container-39
     .bv-primarySummary-rating-container
     a.bv-qa-stats {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2091,7 +2091,7 @@ export const bzRatingStyles = css`
     .bv-core-container-39
     .bv-primarySummary-rating-container
     a.bv-qa-stats:hover {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2105,7 +2105,7 @@ export const bzRatingStyles = css`
     .bv-core-container-39
     .bv-primarySummary-rating-container
     a.bv-qa-stats:visited {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2119,7 +2119,7 @@ export const bzRatingStyles = css`
     .bv-core-container-39
     .bv-primarySummary-rating-container
     a.bv-qa-stats:active {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2166,7 +2166,7 @@ export const bzRatingStyles = css`
     .bv-masthead-product
     .bv-stars-container
     .bv-rating-stars-on {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     margin-top: -1em !important;
   }
   .bv-cv2-cleanslate
@@ -2185,7 +2185,7 @@ export const bzRatingStyles = css`
     .bv-content-item
     .bv-content-author-name
     .bv-author {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 12px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
     font-style: normal !important;
@@ -2211,13 +2211,13 @@ export const bzRatingStyles = css`
     .bv-content-author-name
     .bv-author
     .bv-avatar-author-name {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     text-decoration: none !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
     .bv-author.bv-fullprofile-popup-target {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 12px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
     font-style: normal !important;
@@ -2230,7 +2230,7 @@ export const bzRatingStyles = css`
   .bv-cv2-cleanslate
     .bv-core-container-39
     button.bv-author.bv-fullprofile-popup-target:hover {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     text-decoration: none !important;
     text-transform: none !important;
   }
@@ -2294,7 +2294,7 @@ export const bzRatingStyles = css`
     text-transform: none !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-summary-bar .bv-rating {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2307,7 +2307,7 @@ export const bzRatingStyles = css`
     color: #333 !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-summary-bar .bv-rating:hover {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2318,7 +2318,7 @@ export const bzRatingStyles = css`
     text-transform: none !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-summary-bar .bv-rating:visited {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2329,7 +2329,7 @@ export const bzRatingStyles = css`
     text-transform: none !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-summary-bar .bv-rating:active {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2343,7 +2343,7 @@ export const bzRatingStyles = css`
     .bv-core-container-39
     .bv-summary-bar
     .bv-rating.bv-text-link {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2357,7 +2357,7 @@ export const bzRatingStyles = css`
     .bv-core-container-39
     .bv-summary-bar
     .bv-rating.bv-text-link:hover {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2371,7 +2371,7 @@ export const bzRatingStyles = css`
     .bv-core-container-39
     .bv-summary-bar
     .bv-rating.bv-text-link:visited {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2385,7 +2385,7 @@ export const bzRatingStyles = css`
     .bv-core-container-39
     .bv-summary-bar
     .bv-rating.bv-text-link:active {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2396,7 +2396,7 @@ export const bzRatingStyles = css`
     text-transform: none !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-text-link {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2408,7 +2408,7 @@ export const bzRatingStyles = css`
     cursor: pointer !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-text-link:hover {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2419,7 +2419,7 @@ export const bzRatingStyles = css`
     text-transform: none !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-text-link:visited {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2430,7 +2430,7 @@ export const bzRatingStyles = css`
     text-transform: none !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-text-link:active {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2441,7 +2441,7 @@ export const bzRatingStyles = css`
     text-transform: none !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-text-link:visited {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2452,7 +2452,7 @@ export const bzRatingStyles = css`
     text-transform: none !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-text-link.bv-fake-visited {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2463,7 +2463,7 @@ export const bzRatingStyles = css`
     text-transform: none !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-text-link:hover {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2474,7 +2474,7 @@ export const bzRatingStyles = css`
     text-transform: none !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-text-link:active {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -2527,7 +2527,7 @@ export const bzRatingStyles = css`
       rgba(255, 255, 255, 0.1) 0,
       rgba(255, 255, 255, 0) 100%
     ) !important;
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     padding-top: 0.5em !important;
@@ -2568,8 +2568,8 @@ export const bzRatingStyles = css`
     text-transform: none !important;
     text-shadow: none !important;
     background-image: none !important;
-    background-color: var(--oryx-color-primary-300) !important;
-    border-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
+    border-color: var(--oryx-color-primary-9); !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     border-top-width: 0 !important;
@@ -2604,8 +2604,8 @@ export const bzRatingStyles = css`
     text-transform: none !important;
     text-shadow: none !important;
     background-image: none !important;
-    background-color: var(--oryx-color-primary-300) !important;
-    border-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
+    border-color: var(--oryx-color-primary-9); !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     border-top-width: 0 !important;
@@ -3154,7 +3154,7 @@ export const bzRatingStyles = css`
     font-weight: 700 !important;
     text-decoration: none !important;
     text-transform: none !important;
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     outline-offset: 2px !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-button:hover,
@@ -3165,7 +3165,7 @@ export const bzRatingStyles = css`
     font-weight: 700 !important;
     text-decoration: none !important;
     text-transform: none !important;
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-submission .bv-form-header {
     font-size: 26px !important;
@@ -3231,7 +3231,7 @@ export const bzRatingStyles = css`
     .bv-inline-rating-container
     .bv-rating-stars-on {
     font-size: 20px !important;
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     margin-top: -1em !important;
   }
   .bv-cv2-cleanslate
@@ -3494,7 +3494,7 @@ export const bzRatingStyles = css`
   .bv-cv2-cleanslate .bv-core-container-39 .bv-secondary-rating-summary-value,
   .bv-cv2-cleanslate .bv-core-container-39 .bv-secondary-slider-summary-value,
   .bv-cv2-cleanslate .bv-core-container-39 .bv-content-slider-value {
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     background-image: -webkit-gradient(
       linear,
       left top,
@@ -3635,7 +3635,7 @@ export const bzRatingStyles = css`
     .bv-tc-footer
     .bv-accept-tc-button:focus {
     outline-width: 2px !important;
-    outline-color: var(--oryx-color-primary-300) !important;
+    outline-color: var(--oryx-color-primary-9); !important;
     outline-style: solid !important;
   }
   .bv-cv2-cleanslate
@@ -3664,7 +3664,7 @@ export const bzRatingStyles = css`
     .bv-core-container-39
     .bv-stats-highlight
     .bv-content-data-summary {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -3806,7 +3806,7 @@ export const bzRatingStyles = css`
     padding-left: 0 !important;
     padding-right: 0 !important;
     margin-right: 15px !important;
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -3836,7 +3836,7 @@ export const bzRatingStyles = css`
     .bv-summary-bar-minimalist
     .bv-read-container
     .bv-read-reviews-button:hover {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -3866,7 +3866,7 @@ export const bzRatingStyles = css`
     .bv-summary-bar-minimalist
     .bv-read-container
     .bv-read-reviews-button:visited {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -3896,7 +3896,7 @@ export const bzRatingStyles = css`
     .bv-summary-bar-minimalist
     .bv-read-container
     .bv-read-reviews-button:active {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -4381,7 +4381,7 @@ export const bzRatingStyles = css`
     .bv-summary-bar
     .bv-rating-ratio-count {
     font-size: 13px !important;
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -4619,7 +4619,7 @@ export const bzRatingStyles = css`
     .bv-content-header
     .bv-content-title
     a {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     cursor: pointer !important;
   }
   .bv-cv2-cleanslate
@@ -4632,7 +4632,7 @@ export const bzRatingStyles = css`
     .bv-search-content
     .bv-content-header
     .bv-avatar-author-name {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-search-content .bv-content-item {
     margin-bottom: 10px !important;
@@ -4694,7 +4694,7 @@ export const bzRatingStyles = css`
     .bv-content-title
     a
     * {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     text-decoration: none !important;
     cursor: pointer !important;
   }
@@ -4731,7 +4731,7 @@ export const bzRatingStyles = css`
     font-size: 20px !important;
     float: left !important;
     padding: 0 5px !important;
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-badge .bv-badge-label {
     float: left !important;
@@ -4879,7 +4879,7 @@ export const bzRatingStyles = css`
     cursor: pointer !important;
   }
   .bv-cv2-cleanslate .bv-core-container-39 .bv-content-question .bv-outline {
-    outline-color: var(--oryx-color-primary-300) !important;
+    outline-color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -5033,7 +5033,7 @@ export const bzRatingStyles = css`
     .bv-content-pagination-pages
     .bv-content-pagination-pages-item:hover
     a {
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     color: #fff !important;
     cursor: pointer !important;
   }
@@ -5319,7 +5319,7 @@ export const bzRatingStyles = css`
     .bv-dropdown
     ul
     .bv-dropdown-item-hover {
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     color: #fff !important;
     cursor: pointer !important;
   }
@@ -5372,7 +5372,7 @@ export const bzRatingStyles = css`
     .bv-dropdown
     ul.bv-dropdown-active
     .bv-dropdown-item-hover {
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     color: #fff !important;
   }
   .bv-cv2-cleanslate
@@ -6889,7 +6889,7 @@ export const bzRatingStyles = css`
     .bv-content-data-label {
     cursor: default !important;
     text-decoration: none !important;
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -8138,7 +8138,7 @@ export const bzRatingStyles = css`
     .bv-rating-ratio-count
     .bv-rating-label
     span {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -8147,7 +8147,7 @@ export const bzRatingStyles = css`
     .bv-rating-ratio-count
     .bv-rating-label:hover
     span {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -9349,7 +9349,7 @@ export const bzRatingStyles = css`
     .bv-content-meta
     .bv-badge-user
     .bv-badge-icon {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -10819,7 +10819,7 @@ export const bzRatingStyles = css`
     .bv-content-data-label {
     cursor: default !important;
     text-decoration: none !important;
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -12410,7 +12410,7 @@ export const bzRatingStyles = css`
     .bv-submission
     .bv-fieldsets
     .bv-submit:focus {
-    outline: 2px var(--oryx-color-primary-300) solid !important;
+    outline: 2px var(--oryx-color-primary-9); solid !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -12581,7 +12581,7 @@ export const bzRatingStyles = css`
     .bv-review-field-content-wrapper {
     outline-width: 2px !important;
     color: #000 !important;
-    outline-color: var(--oryx-color-primary-300) !important;
+    outline-color: var(--oryx-color-primary-9); !important;
     outline-style: solid !important;
   }
   .bv-cv2-cleanslate
@@ -12860,7 +12860,7 @@ export const bzRatingStyles = css`
       rgba(255, 255, 255, 0.1) 0,
       rgba(255, 255, 255, 0) 100%
     ) !important;
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     padding-top: 0.5em !important;
@@ -12918,8 +12918,8 @@ export const bzRatingStyles = css`
     text-transform: none !important;
     text-shadow: none !important;
     background-image: none !important;
-    background-color: var(--oryx-color-primary-300) !important;
-    border-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
+    border-color: var(--oryx-color-primary-9); !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     border-top-width: 0 !important;
@@ -14146,7 +14146,7 @@ export const bzRatingStyles = css`
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     background-image: none !important;
-    border-color: var(--oryx-color-primary-300) !important;
+    border-color: var(--oryx-color-primary-9); !important;
     border-width: 1.5px !important;
   }
   .bv-cv2-cleanslate
@@ -14397,7 +14397,7 @@ export const bzRatingStyles = css`
     .bv-fieldset.bv-fieldset-tags
     .bv-radio-group
     .bv-radio-wrapper-label-focused {
-    outline: 2px var(--oryx-color-primary-300) solid !important;
+    outline: 2px var(--oryx-color-primary-9); solid !important;
     border-color: #aaa #aaa #999 #aaa !important;
     background-color: #444 !important;
     background-image: none !important;
@@ -14515,7 +14515,7 @@ export const bzRatingStyles = css`
     .bv-fieldsets
     .bv-fieldset-active
     .bv-fieldset-isrecommended-group {
-    outline: 1px var(--oryx-color-primary-300) dotted !important;
+    outline: 1px var(--oryx-color-primary-9); dotted !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -15427,7 +15427,7 @@ export const bzRatingStyles = css`
     .bv-submission-star-rating-control.bv-heat-map-off
     .bv-submission-star-rating-on
     .bv-rating-link {
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     background-image: -webkit-gradient(
       linear,
       left top,
@@ -15968,7 +15968,7 @@ export const bzRatingStyles = css`
     li.bv-radio-container-li
     .bv-radio-wrapper-label-focused
     .bv-sliderdot {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     text-shadow: 0 0 1px #000 !important;
   }
   .bv-cv2-cleanslate
@@ -16032,7 +16032,7 @@ export const bzRatingStyles = css`
     .bv-submission
     .bv-autocomplete
     li.active:hover {
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     color: #fff !important;
     text-decoration: none !important;
     text-shadow: none !important;
@@ -19373,7 +19373,7 @@ export const bzRatingStyles = css`
       rgba(255, 255, 255, 0.3) 0,
       rgba(255, 255, 255, 0) 100%
     ) !important;
-    border: 1px solid var(--oryx-color-primary-300) !important;
+    border: 1px solid var(--oryx-color-primary-9); !important;
     color: #fff !important;
     text-shadow: none !important;
     margin: 0 !important;
@@ -19416,7 +19416,7 @@ export const bzRatingStyles = css`
       rgba(255, 255, 255, 0.1) 0,
       rgba(255, 255, 255, 0) 100%
     ) !important;
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     padding-top: 0.5em !important;
@@ -19456,8 +19456,8 @@ export const bzRatingStyles = css`
     text-transform: none !important;
     text-shadow: none !important;
     background-image: none !important;
-    background-color: var(--oryx-color-primary-300) !important;
-    border-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
+    border-color: var(--oryx-color-primary-9); !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     border-top-width: 0 !important;
@@ -20347,7 +20347,7 @@ export const bzRatingStyles = css`
     .bv-content-product-stats-item
     .bv-content-data-count
     .bv-content-data-label {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -20379,7 +20379,7 @@ export const bzRatingStyles = css`
     .bv-content-product-stats-item
     .bv-content-data-count
     .bv-content-data-label:hover {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -20405,7 +20405,7 @@ export const bzRatingStyles = css`
     .bv-content-product-stats-item
     .bv-content-data-count
     .bv-content-data-label:visited {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -20431,7 +20431,7 @@ export const bzRatingStyles = css`
     .bv-content-product-stats-item
     .bv-content-data-count
     .bv-content-data-label:active {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 19.5px !important;
     font-family: 'Arial', 'Helvetica', sans-serif !important;
@@ -21076,7 +21076,7 @@ export const bzRatingStyles = css`
     .bv-product-list
     .bv-content-media-container
     .bv-media-item-name {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
     font-size: 13px !important;
     line-height: 1.5em !important;
     font-family: Arial, Helvetica, Helvetica Neue, sans-serif !important;
@@ -21095,7 +21095,7 @@ export const bzRatingStyles = css`
     .bv-product-list
     .bv-content-media-container
     .bv-media-item-name:hover {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -21103,7 +21103,7 @@ export const bzRatingStyles = css`
     .bv-product-list
     .bv-content-media-container
     .bv-media-item-name:visited {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
@@ -21111,14 +21111,14 @@ export const bzRatingStyles = css`
     .bv-product-list
     .bv-content-media-container
     .bv-media-item-name:active {
-    color: var(--oryx-color-primary-300) !important;
+    color: var(--oryx-color-primary-9); !important;
   }
   .bv-cv2-cleanslate
     .bv-core-container-39
     .bv-generic-submission
     .bv-product-list
     .bv-product-item:hover {
-    border-color: var(--oryx-color-primary-300) !important;
+    border-color: var(--oryx-color-primary-9); !important;
   }
   @media screen and (max-width: 736px) {
     .bv-cv2-cleanslate
@@ -21855,7 +21855,7 @@ export const bzRatingStyles = css`
       rgba(255, 255, 255, 0.1) 0,
       rgba(255, 255, 255, 0) 100%
     ) !important;
-    background-color: var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     padding-top: 0.5em !important;
@@ -22367,7 +22367,7 @@ export const bzRatingStyles = css`
     .bv-core-container-39
     .bv-textdropdown.bv-dropdown-style-sliderTextOverflow
     .bv-fieldset-arrow-icon {
-    border-bottom-color: var(--oryx-color-primary-300) !important;
+    border-bottom-color: var(--oryx-color-primary-9); !important;
     -webkit-transform: rotate(180deg) !important;
     -moz-transform: rotate(180deg) !important;
     -o-transform: rotate(180deg) !important;
@@ -22381,8 +22381,8 @@ export const bzRatingStyles = css`
     padding: 10px !important;
     color: #fff !important;
     text-align: center !important;
-    background-color: var(--oryx-color-primary-300) !important;
-    border: 1px solid var(--oryx-color-primary-300) !important;
+    background-color: var(--oryx-color-primary-9); !important;
+    border: 1px solid var(--oryx-color-primary-9); !important;
   }
   .bv-popup-in.bv-popup-in-sliderTextOverflow {
     -webkit-transition: none !important;

@@ -10,3 +10,14 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+
+Cypress.on('uncaught:exception', (err) => {
+  const ignoreErrors = [
+    'Registration failed - push service not available',
+    'Background Sync is disabled',
+  ];
+
+  if (ignoreErrors.some((ignoreError) => err.message.includes(ignoreError))) {
+    return false;
+  }
+});

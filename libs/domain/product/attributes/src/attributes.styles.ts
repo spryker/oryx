@@ -14,6 +14,6 @@ export const productAttributeStyles = css`
     break-before: avoid-column;
     margin-inline: 0;
     margin-block: 10px 20px;
-    color: var(--oryx-color-neutral-300);
+    color: var(--oryx-color-neutral-9);
   }
 `;

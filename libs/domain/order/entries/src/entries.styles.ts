@@ -6,7 +6,7 @@ export const styles = css`
   }
 
   oryx-cart-entry:not(:last-child) {
-    border-block-end: 1px solid var(--oryx-color-canvas-500);
+    border-block-end: 1px solid var(--oryx-color-neutral-6);
   }
 
   oryx-button {
@@ -14,6 +14,6 @@ export const styles = css`
   }
 
   button {
-    color: var(--oryx-color-primary-300);
+    color: var(--oryx-color-primary-9);
   }
 `;
