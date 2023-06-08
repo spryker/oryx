@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
-export const FacetControlStyles = css`
-  .header {
+export const facetValueNavigationStyles = css`
+  section {
     display: flex;
     align-items: center;
     flex-grow: 1;
@@ -9,29 +9,23 @@ export const FacetControlStyles = css`
     font-weight: normal;
   }
 
-  .header oryx-button {
+  section oryx-button {
     font-size: 14px;
     margin-inline-start: auto;
   }
 
-  .header oryx-button button,
-  .controls button {
+  section button,
+  slot:not([name]) + oryx-button button {
     color: var(--oryx-color-primary-9);
   }
 
-  .header oryx-chip {
+  oryx-chip {
     margin-inline-start: 10px;
   }
 
-  .controls {
+  slot:not([name]) + oryx-button {
     width: fit-content;
     padding-block-end: 10px;
-  }
-
-  .counter {
-    padding-inline-start: 10px;
-    display: block;
-    color: #71747c;
   }
 
   oryx-collapsible {
@@ -43,8 +37,7 @@ export const FacetControlStyles = css`
     padding-block: 10px;
   }
 
-  oryx-collapsible summary,
-  oryx-collapsible slot:not([name]) {
+  slot:not([name]) {
     display: block;
     padding-inline: var(--inline-padding);
     padding-block: var(--block-padding);

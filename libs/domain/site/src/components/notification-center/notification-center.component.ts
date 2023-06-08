@@ -4,7 +4,7 @@ import {
   NotificationCenterComponent,
   NotificationPosition,
 } from '@spryker-oryx/ui/notification-center';
-import { effect, hydratable, signal } from '@spryker-oryx/utilities';
+import { elementEffect, hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { map } from 'rxjs';
@@ -28,7 +28,8 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
     this.siteNotificationService.get().pipe(map((n) => ({ ...n })))
   );
 
-  protected notification$ = effect(async () => {
+  @elementEffect()
+  protected notification$ = async (): Promise<void> => {
     const notification = this.notification();
 
     if (!notification || Object.keys(notification).length === 0) return;
@@ -40,7 +41,7 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
     }
 
     this.centerRef.value?.open(notification);
-  });
+  };
 
   protected override render(): TemplateResult {
     const { position, enableStacking } = this.$options();

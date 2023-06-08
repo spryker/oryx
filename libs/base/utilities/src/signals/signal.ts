@@ -1,7 +1,11 @@
 import { isObservable, Observable } from 'rxjs';
-import { Computed } from './core';
+import { Computed, SignalOptions } from './core';
 import { createSignal, SettableSignal, Signal } from './core/factories';
-import { ConnectableSignal, signalFrom } from './signal-from';
+import {
+  ConnectableSignal,
+  ConnectableSignalOptions,
+  signalFrom,
+} from './signal-from';
 
 export { effect } from './core/factories';
 export type { Signal } from './core/factories';
@@ -14,22 +18,25 @@ export { Effect } from './core/signals';
  */
 export function signal<T>(
   observable: Observable<T>,
-  initialValue: T
+  options?: ConnectableSignalOptions<T, undefined>
 ): ConnectableSignal<T>;
 export function signal<T, K = undefined>(
   observable: Observable<T>,
-  initialValue?: K
+  options?: ConnectableSignalOptions<T, K>
 ): ConnectableSignal<T | K>;
-export function signal<T>(value: T): SettableSignal<T>;
+export function signal<T>(
+  value: T,
+  options?: SignalOptions<T>
+): SettableSignal<T>;
 export function signal<T>(
   value: T | Observable<T>,
-  options?: any
+  options?: SignalOptions<T> | ConnectableSignalOptions<T, undefined>
 ): SettableSignal<T> | ConnectableSignal<T | any> {
   if (isObservable(value)) {
-    return signalFrom(value, options);
+    return signalFrom(value, options as ConnectableSignalOptions<T, undefined>);
   }
 
-  return createSignal(value);
+  return createSignal(value, options as SignalOptions<T>);
 }
 
 /**
@@ -37,23 +44,31 @@ export function signal<T>(
  * - If computed result is an observable, a transparent signal will be created from the observable.
  */
 export function computed<T>(
-  computation: () => Observable<T>
+  computation: () => Observable<T>,
+  options?: SignalOptions<T>
 ): ConnectableSignal<T | undefined>;
 export function computed<T>(computation: () => T): Signal<T>;
 export function computed<T>(
-  computation: () => T | Observable<T>
+  computation: () => T | Observable<T>,
+  options?: ConnectableSignalOptions<T, undefined>
 ): Signal<T> | ConnectableSignal<T | undefined> {
-  const instance = new Computed(computation);
+  const instance = new Computed(
+    computation as () => T,
+    options as SignalOptions<T>
+  );
 
   let last: undefined | T | Observable<T>;
-  let observableSignal: undefined | ConnectableSignal<T>;
+  let observableSignal: undefined | ConnectableSignal<T | undefined>;
 
   function getValue() {
     const value = instance.value;
     if (isObservable(value)) {
       if (value !== last) {
         last = value;
-        observableSignal = signalFrom(value);
+        observableSignal = signalFrom(
+          value as Observable<T>,
+          options as ConnectableSignalOptions<T, undefined>
+        );
       }
       return observableSignal!();
     }

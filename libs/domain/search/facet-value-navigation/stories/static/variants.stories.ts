@@ -1,21 +1,21 @@
-import { Meta } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { FacetValueNavigationComponentAttributes } from '../facet-value-navigation.model';
+import { SearchFacetValueNavigationComponentAttributes } from '../../facet-value-navigation.model';
 
 export default {
   title: `${storybookPrefix}/Facet Value Navigation/Static`,
-} as unknown as Meta;
+};
 
 const facetNavigationComponent = (
-  attrs: FacetValueNavigationComponentAttributes
+  attrs: SearchFacetValueNavigationComponentAttributes
 ): TemplateResult => html`<oryx-search-facet-value-navigation
   heading="Heading"
-  .valuesLength=${attrs.valuesLength}
-  .selectedLength=${attrs.selectedLength}
-  .enableToggle=${attrs.enableToggle}
-  .enableSearch=${attrs.enableSearch}
-  .open=${attrs.open}
+  valuesLength=${attrs.valuesLength}
+  selectedLength=${attrs.selectedLength}
+  ?enableToggle=${attrs.enableToggle}
+  ?enableSearch=${attrs.enableSearch}
+  ?open=${attrs.open}
+  ?enableClear=${attrs.enableClear}
 >
   Any value
 </oryx-search-facet-value-navigation>`;
@@ -46,10 +46,10 @@ const Template = (): TemplateResult => {
       ${facetNavigationComponent({ open: true, enableToggle: true })}
     </div>
 
-    <h3>Without/With toggle button</h3>
+    <h3>Without/With clear button</h3>
     <div class="row">
-      ${facetNavigationComponent({ open: true })}
-      ${facetNavigationComponent({ open: true, enableToggle: true })}
+      ${facetNavigationComponent({ selectedLength: 10 })}
+      ${facetNavigationComponent({ selectedLength: 10, enableClear: true })}
     </div>
 
     <h3>Without/With values length</h3>
@@ -70,4 +70,4 @@ const Template = (): TemplateResult => {
   `;
 };
 
-export const Static = Template.bind({});
+export const Variants = Template.bind({});

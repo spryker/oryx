@@ -1,4 +1,4 @@
-import { StorageService, StorageType } from '@spryker-oryx/core';
+import { StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { BehaviorSubject, catchError, of } from 'rxjs';
@@ -49,33 +49,33 @@ const callback = vi.fn();
 let storageTokenTrigger = new BehaviorSubject<unknown>(null);
 
 describe('OauthService', () => {
+  const providers = [
+    {
+      provide: OauthServiceConfig,
+      useValue: mockOauthServiceConfig,
+    },
+    {
+      provide: OauthProviderFactoryService,
+      useValue: mockOauthProviderFactoryService,
+    },
+    {
+      provide: RouterService,
+      useValue: mockRouterService,
+    },
+    {
+      provide: StorageService,
+      useValue: mockStorageService,
+    },
+    {
+      provide: OauthService,
+      useClass: OauthService,
+    },
+  ];
+
   const getService = () => getInjector().inject(OauthService);
 
   beforeEach(() => {
-    createInjector({
-      providers: [
-        {
-          provide: OauthServiceConfig,
-          useValue: mockOauthServiceConfig,
-        },
-        {
-          provide: OauthProviderFactoryService,
-          useValue: mockOauthProviderFactoryService,
-        },
-        {
-          provide: RouterService,
-          useValue: mockRouterService,
-        },
-        {
-          provide: StorageService,
-          useValue: mockStorageService,
-        },
-        {
-          provide: OauthService,
-          useClass: OauthService,
-        },
-      ],
-    });
+    createInjector({ providers });
 
     mockStorageService.set.mockReturnValue(of(null));
     mockStorageService.get.mockReturnValue(storageTokenTrigger);
@@ -97,10 +97,7 @@ describe('OauthService', () => {
         of(mockConfig('A'))
       );
       getService().isAuthenticated().subscribe(callback);
-      expect(mockStorageService.get).toHaveBeenCalledWith(
-        'oryx.oauth-state',
-        StorageType.LOCAL
-      );
+      expect(mockStorageService.get).toHaveBeenCalledWith('oryx.oauth-state');
       expect(callback).toHaveBeenCalledWith(false);
       storageTokenTrigger.next({ authorizedBy: 'a' });
       expect(mockOauthProviderFactoryService.create).toHaveBeenCalledWith(
@@ -219,8 +216,7 @@ describe('OauthService', () => {
       getService().logout().subscribe();
       expect(mockStorageService.set).toHaveBeenCalledWith(
         'oryx.oauth-state',
-        {},
-        StorageType.LOCAL
+        {}
       );
     });
   });
@@ -244,11 +240,9 @@ describe('OauthService', () => {
       mockOauthServiceConfig.providers[0].authenticate.mockReturnValue(of('a'));
       mockStorageService.set.mockReturnValue(of(null));
       getService().loginWith('a', {});
-      expect(mockStorageService.set).toHaveBeenCalledWith(
-        'oryx.oauth-state',
-        { authorizedBy: 'a' },
-        StorageType.LOCAL
-      );
+      expect(mockStorageService.set).toHaveBeenCalledWith('oryx.oauth-state', {
+        authorizedBy: 'a',
+      });
     });
   });
 
@@ -276,11 +270,9 @@ describe('OauthService', () => {
       );
       mockStorageService.set.mockReturnValue(of(null));
       getService().handleCallback('a');
-      expect(mockStorageService.set).toHaveBeenCalledWith(
-        'oryx.oauth-state',
-        { authorizedBy: 'a' },
-        StorageType.LOCAL
-      );
+      expect(mockStorageService.set).toHaveBeenCalledWith('oryx.oauth-state', {
+        authorizedBy: 'a',
+      });
     });
   });
 
@@ -305,6 +297,33 @@ describe('OauthService', () => {
       expect(mockRouterService.navigate).toHaveBeenCalledWith(
         mockOauthServiceConfig.loginRoute
       );
+    });
+
+    describe('and config specified default provider', () => {
+      const defaultProvider = 'test';
+
+      beforeEach(() => {
+        destroyInjector();
+        createInjector({
+          providers: [
+            ...providers,
+            {
+              provide: OauthServiceConfig,
+              useValue: {
+                ...mockOauthServiceConfig,
+                defaultProvider,
+              },
+            },
+          ],
+        });
+
+        vi.spyOn(getService(), 'loginWith');
+        getService().login();
+      });
+
+      it('should login with default provider', () => {
+        expect(getService().loginWith).toHaveBeenCalledWith(defaultProvider);
+      });
     });
   });
 });

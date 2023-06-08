@@ -12,6 +12,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
   effect,
+  elementEffect,
   hydratable,
   signalAware,
   Size,
@@ -50,6 +51,8 @@ export class ProductCardComponent extends ProductMixin(
   );
 
   protected context = new ContextController(this);
+
+  @elementEffect()
   protected skuController = effect(() => {
     this.context.provide(ProductContext.SKU, this.$options().sku ?? this.sku);
   });

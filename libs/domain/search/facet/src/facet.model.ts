@@ -54,5 +54,5 @@ export interface FacetComponentAttributes {
    *
    * @default false
    */
-  enableClearAction?: boolean;
+  enableClear?: boolean;
 }

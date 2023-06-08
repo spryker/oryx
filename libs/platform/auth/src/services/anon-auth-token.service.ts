@@ -38,7 +38,7 @@ export class AnonAuthTokenService implements AuthTokenService {
 
   protected getAnonToken(): Observable<AuthTokenData> {
     return this.storage
-      .get<string>(this.ANONYMOUS_USER_IDENTIFIER, StorageType.SESSION)
+      .get<string>(this.ANONYMOUS_USER_IDENTIFIER, StorageType.Session)
       .pipe(
         switchMap((userId) => {
           return userId ? of(userId) : this.createAnonymousId();
@@ -50,13 +50,13 @@ export class AnonAuthTokenService implements AuthTokenService {
   protected createAnonymousId(): Observable<string> {
     const userId = generateID(8);
     return this.storage
-      .set(this.ANONYMOUS_USER_IDENTIFIER, userId, StorageType.SESSION)
+      .set(this.ANONYMOUS_USER_IDENTIFIER, userId, StorageType.Session)
       .pipe(map(() => userId));
   }
 
   protected clearAnonymousId(): void {
     this.storage
-      .remove(this.ANONYMOUS_USER_IDENTIFIER, StorageType.SESSION)
+      .remove(this.ANONYMOUS_USER_IDENTIFIER, StorageType.Session)
       .subscribe();
   }
 }

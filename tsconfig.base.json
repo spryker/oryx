@@ -155,7 +155,9 @@
       "@spryker-oryx/search/pagination": [
         "libs/domain/search/pagination/index.ts"
       ],
-      "@spryker-oryx/search/sort": ["libs/domain/search/sort/index.ts"],
+      "@spryker-oryx/search/product-sort": [
+        "libs/domain/search/product-sort/index.ts"
+      ],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
       "@spryker-oryx/testing": ["tools/testing"],
