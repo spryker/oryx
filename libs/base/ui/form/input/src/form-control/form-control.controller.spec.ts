@@ -31,7 +31,7 @@ describe('FormControlController', () => {
       });
 
       it('should throw an error', () => {
-        expect(() => getControl(element)).toThrow();
+        expect(() => getControl(element)).toThrowError();
       });
     });
 
