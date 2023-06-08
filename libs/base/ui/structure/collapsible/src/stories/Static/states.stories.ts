@@ -96,7 +96,7 @@ const collapsible = (section: any, open = false): TemplateResult => html`
     .toggleControlType=${section.toggleControlType}
     ?open=${open}
   >
-    <span slot="header">Header</span>
+    <span slot="heading">Heading</span>
     ${when(
       section.expanded,
       () => html`<span slot="expanded">${section.expanded}</span>`

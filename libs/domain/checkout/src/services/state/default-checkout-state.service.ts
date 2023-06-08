@@ -41,7 +41,7 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     this.storage.set(
       checkoutDataStorageKey,
       Array.from(collected),
-      StorageType.SESSION
+      StorageType.Session
     );
   }
 
@@ -56,7 +56,7 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
   }
 
   clear(): void {
-    this.storage.remove(checkoutDataStorageKey, StorageType.SESSION);
+    this.storage.remove(checkoutDataStorageKey, StorageType.Session);
     this.subject.next(new Map());
   }
 
@@ -96,7 +96,7 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     this.storage
       .get<Map<keyof Checkout, CheckoutValue>>(
         checkoutDataStorageKey,
-        StorageType.SESSION
+        StorageType.Session
       )
       .pipe(
         take(1),
