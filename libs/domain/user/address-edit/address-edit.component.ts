@@ -29,10 +29,12 @@ export class UserAddressEditComponent extends AddressMixin(
 
   protected routerService = resolve(RouterService);
   protected semanticLinkService = resolve(SemanticLinkService);
-  protected listPageRoute = signal(
+
+  protected $listPageRoute = signal(
     this.semanticLinkService.get({ type: SemanticLinkType.AddressList })
   );
 
+  // TODO: move to central place
   @state() loading = false;
 
   @query('oryx-user-address-form')
@@ -104,7 +106,7 @@ export class UserAddressEditComponent extends AddressMixin(
   protected onClose(): void {
     this.addressStateService.clear();
 
-    const route = this.listPageRoute();
+    const route = this.$listPageRoute();
     if (route) this.routerService.navigate(route);
   }
 

@@ -135,7 +135,7 @@ describe('CheckoutAddressComponent', () => {
       expect(element).not.toContainElement('oryx-user-address-list');
     });
 
-    describe('and when the isValid method is called', () => {
+    describe('and the isValid method is called', () => {
       describe('and the report = true', () => {
         beforeEach(async () => {
           element.isValid(true);
@@ -167,7 +167,7 @@ describe('CheckoutAddressComponent', () => {
         expect(element).toContainElement('oryx-user-address-list');
       });
 
-      describe('and when an change event is dispatched on the list', () => {
+      describe('and an change event is dispatched on the list', () => {
         beforeEach(() => {
           element.dispatchEvent = vi.fn();
           const list = element.renderRoot.querySelector(

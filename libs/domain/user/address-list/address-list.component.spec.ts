@@ -1,6 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
 import {
   Address,
   AddressEventDetail,
@@ -8,10 +9,9 @@ import {
   AddressStateService,
   CrudState,
 } from '@spryker-oryx/user';
-
-import { RouterService } from '@spryker-oryx/router';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
+import { SpyInstance } from 'vitest';
 import { UserAddressEditComponentOptions } from '../address-edit';
 import { EditTarget } from '../address-list-item';
 import { UserAddressListComponent } from './address-list.component';
@@ -137,7 +137,7 @@ describe('UserAddressListComponent', () => {
         expect(element).not.toContainElement('slot[name="empty"]');
       });
 
-      it('should render t4o address items', () => {
+      it('should render 2 address items', () => {
         const items = element.renderRoot.querySelectorAll(
           'oryx-tile oryx-user-address-list-item'
         );
@@ -167,7 +167,7 @@ describe('UserAddressListComponent', () => {
         expect(element).not.toContainElement('input[checked]');
       });
 
-      describe('and when an address is selected', () => {
+      describe('and an address is selected', () => {
         beforeEach(async () => {
           addressStateService.get.mockReturnValue(of({ selected: 'shipping' }));
           element = await fixture(
@@ -184,9 +184,10 @@ describe('UserAddressListComponent', () => {
         });
       });
 
-      describe('and when an address is selected', () => {
+      describe('and an address is selected', () => {
+        let spy: SpyInstance<Event[]>;
         beforeEach(() => {
-          element.dispatchEvent = vi.fn();
+          spy = vi.spyOn(element, 'dispatchEvent');
           element.renderRoot
             .querySelector<HTMLInputElement>(`input[value='shipping']`)
             ?.click();
@@ -197,7 +198,7 @@ describe('UserAddressListComponent', () => {
         });
 
         it('should dispatch a custom change event', () => {
-          expect(element.dispatchEvent).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             new CustomEvent('change', {
               bubbles: true,
               composed: true,
@@ -232,7 +233,7 @@ describe('UserAddressListComponent', () => {
 
         describe('and the close event is dispatched', () => {
           const event = new CustomEvent<AddressEventDetail>('oryx.close');
-          event.stopPropagation = vi.fn();
+          const spy = vi.spyOn(event, 'stopPropagation');
 
           beforeEach(() => {
             element.renderRoot
@@ -241,7 +242,7 @@ describe('UserAddressListComponent', () => {
           });
 
           it('should stop propagating the event', () => {
-            expect(event.stopPropagation).toHaveBeenCalled();
+            expect(spy).toHaveBeenCalled();
           });
 
           it('should clear the state', () => {

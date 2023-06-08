@@ -120,7 +120,7 @@ describe('UserAddressRemoveComponent', () => {
     describe('when the oryx.close event is dispatched', () => {
       beforeEach(() => {
         const modal = element.renderRoot.querySelector('oryx-modal');
-        modal?.dispatchEvent(new CustomEvent('oryx.close', {}));
+        modal?.dispatchEvent(new CustomEvent('oryx.close'));
       });
 
       it('should close the modal', () => {

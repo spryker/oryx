@@ -191,7 +191,7 @@ describe('UserAddressAddButtonComponent', () => {
         expect(element).toContainElement('oryx-modal oryx-user-address-edit');
       });
 
-      describe('and when the close event is dispatched', () => {
+      describe('and the close event is dispatched', () => {
         beforeEach(() => {
           element.renderRoot
             .querySelector('oryx-modal')

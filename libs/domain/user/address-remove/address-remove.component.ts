@@ -12,6 +12,7 @@ export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
   static styles = styles;
 
   @state() protected requestsConfirmation = false;
+  // TODO: resolve loading state from central place
   @state() protected loading = false;
 
   protected override render(): TemplateResult | void {

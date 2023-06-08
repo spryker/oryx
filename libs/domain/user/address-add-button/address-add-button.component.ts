@@ -1,10 +1,9 @@
+import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-
-import { resolve } from '@spryker-oryx/di';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { AddressMixin } from '../src/mixins';
 import { CrudState } from '../src/models';
 import {
@@ -19,7 +18,7 @@ export class UserAddressAddButtonComponent extends AddressMixin(
 ) {
   protected semanticLinkService = resolve(SemanticLinkService);
 
-  protected createLink = signal(
+  protected $createLink = signal(
     this.semanticLinkService.get({ type: SemanticLinkType.AddressBookCreate })
   );
 
@@ -27,7 +26,7 @@ export class UserAddressAddButtonComponent extends AddressMixin(
     if (this.$options().target === Target.Link) {
       return html`
         <oryx-button outline>
-          <a href=${this.createLink()} @click=${this.onCreate}>
+          <a href=${this.$createLink()} @click=${this.onCreate}>
             <oryx-icon .type=${IconTypes.Add}></oryx-icon>
             ${i18n(['add', 'user.address.add'])}
           </a>

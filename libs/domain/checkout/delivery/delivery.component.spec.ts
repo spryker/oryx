@@ -184,23 +184,6 @@ describe('CheckoutDeliveryComponent', () => {
         );
       });
     });
-
-    //   describe('and the selectedAddress event is dispatched', () => {
-    //     beforeEach(() => {
-    //       const addressElement = element.renderRoot.querySelector(
-    //         'oryx-checkout-address'
-    //       );
-    //       addressElement?.dispatchEvent(
-    //         new CustomEvent('selectedAddress', {
-    //           detail: { valid: true, value: { foo: 'bar' } },
-    //         })
-    //       );
-    //     });
-
-    //     it('should dispatch an onchange event', () => {
-    //       expect(checkoutStateService.set).toHaveBeenCalled();
-    //     });
-    //   });
   });
 
   describe('when the isValid method is called', () => {

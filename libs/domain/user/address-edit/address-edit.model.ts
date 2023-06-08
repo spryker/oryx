@@ -1,6 +1,3 @@
-export const BACK_EVENT = 'oryx.back';
-export const SUCCESS_EVENT = 'oryx.success';
-
 export interface UserAddressEditComponentOptions {
   /**
    * Allows to configure the component to use an explicit save button, instant

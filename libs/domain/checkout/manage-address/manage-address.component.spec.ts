@@ -140,8 +140,8 @@ describe('ManageAddressComponent', () => {
       expect(modal?.heading).toBe('Addresses');
     });
 
-    it('should render the address-add-trigger', () => {
-      expect(element).toContainElement('oryx-user-address-add-trigger');
+    it('should render the address-add-button', () => {
+      expect(element).toContainElement('oryx-user-address-add-button');
     });
 
     it('should render the address list', () => {
@@ -177,7 +177,7 @@ describe('ManageAddressComponent', () => {
         expect(event.stopPropagation).toHaveBeenCalled();
       });
 
-      describe('and when the select button is clicked', () => {
+      describe('and the select button is clicked', () => {
         beforeEach(async () => {
           const button = element.renderRoot.querySelector<HTMLButtonElement>(
             `oryx-button[slot='footer-more'] button`
@@ -239,8 +239,8 @@ describe('ManageAddressComponent', () => {
           expect(element).not.toContainElement('oryx-user-address-list');
         });
 
-        it('should render the address-add-trigger', () => {
-          expect(element).not.toContainElement('oryx-user-address-add-trigger');
+        it('should render the address-add-button', () => {
+          expect(element).not.toContainElement('oryx-user-address-add-button');
         });
 
         it('should render the editor', () => {
@@ -290,7 +290,7 @@ describe('ManageAddressComponent', () => {
           });
         });
 
-        describe('and when the save button is clicked', () => {
+        describe('and the save button is clicked', () => {
           let button: HTMLButtonElement;
           let addressEditComponent: UserAddressEditComponent;
 

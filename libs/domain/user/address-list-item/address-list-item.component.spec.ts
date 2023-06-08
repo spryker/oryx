@@ -148,7 +148,7 @@ describe('UserAddressListItemComponent', () => {
     });
   });
 
-  describe('when the is selectable option = true', () => {
+  describe('when the selectable option = true', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-user-address-list-item
@@ -158,12 +158,12 @@ describe('UserAddressListItemComponent', () => {
       );
     });
 
-    it('should render a oryx-radio', () => {
+    it('should render an oryx-radio', () => {
       expect(element).toContainElement('oryx-radio');
     });
   });
 
-  describe('when the is editable option = true', () => {
+  describe('when the editable option = true', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-user-address-list-item
@@ -196,7 +196,7 @@ describe('UserAddressListItemComponent', () => {
     });
   });
 
-  describe('when the is removable option = true', () => {
+  describe('when the removable option = true', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-user-address-list-item
@@ -268,6 +268,10 @@ describe('UserAddressListItemComponent', () => {
         );
       });
 
+      it('should render a single  chip', () => {
+        expect(element.renderRoot.querySelectorAll('oryx-chip').length).toBe(1);
+      });
+
       it('should render the default chip', () => {
         const chip = element.renderRoot.querySelector(
           '[slot=subtext] oryx-chip'
@@ -289,7 +293,7 @@ describe('UserAddressListItemComponent', () => {
       });
 
       it('should not render any chips', () => {
-        expect(element).not.toContainElement('[slot=subchip');
+        expect(element).not.toContainElement('[slot=subchip]');
       });
     });
   });
@@ -354,7 +358,7 @@ describe('UserAddressListItemComponent', () => {
       });
 
       it('should not render any chips', () => {
-        expect(element).not.toContainElement('[slot=subchip');
+        expect(element).not.toContainElement('[slot=subchip]');
       });
     });
   });

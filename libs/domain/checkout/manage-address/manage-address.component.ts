@@ -37,14 +37,14 @@ export class ManageAddressComponent extends AddressMixin(
   @state() protected loading?: boolean;
   @state() protected preselected?: Address;
 
-  protected selectedShippingAddress = signal(
+  protected $selectedShippingAddress = signal(
     this.checkoutStateService.get('shippingAddress')
   );
 
   protected selected = computed(() => {
     return (
       this.$addresses()?.find((address) => address.id === this.$addressId()) ||
-      this.selectedShippingAddress()
+      this.$selectedShippingAddress()
     );
   });
 
@@ -83,10 +83,10 @@ export class ManageAddressComponent extends AddressMixin(
     const action = this.$addressState().action;
     if (action !== CrudState.Read && action !== CrudState.Delete) return;
 
-    return html`<oryx-user-address-add-trigger
+    return html`<oryx-user-address-add-button
         .addressId=${addressId}
         .options=${{ target: Target.Inline }}
-      ></oryx-user-address-add-trigger>
+      ></oryx-user-address-add-button>
 
       <oryx-user-address-list
         .addressId=${addressId}

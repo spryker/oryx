@@ -9,15 +9,19 @@ import {
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { AddressOptions } from '../address.model';
+import { UserAddressAddButtonOptions } from '../address-add-button.model';
 
 export default {
-  title: `${storybookPrefix}/Address`,
+  title: `${storybookPrefix}/Address Add Button`,
   args: {
-    multiline: false,
+    target: 'modal',
     addressId: 'currentaddressid',
   },
   argTypes: {
+    target: {
+      control: { type: 'select' },
+      options: ['link', 'modal', 'inline'],
+    },
     addressId: {
       options: [mockCurrentAddress, uncompletedAddress].map(({ id }) => id),
       control: { type: 'select' },
@@ -25,16 +29,15 @@ export default {
   },
 } as Meta;
 
-const Template: Story<AddressOptions & { addressId?: string }> = (
+const Template: Story<UserAddressAddButtonOptions & { addressId?: string }> = (
   props
 ): TemplateResult => {
   resolve<MockAddressService>(AddressService).changeMockAddressType(
     MockAddressType.Incomplete
   );
-  return html`<oryx-user-address
-    .addressId=${props.addressId}
+  return html`<oryx-user-address-add-button
     .options=${props}
-  ></oryx-user-address>`;
+  ></oryx-user-address-add-button>`;
 };
 
 export const Demo = Template.bind({});
