@@ -121,12 +121,8 @@ describe('UserAddressAddButtonComponent', () => {
         element.renderRoot.querySelector('a')?.click();
       });
 
-      it('should clear the state', () => {
-        expect(addressStateService.clear).toHaveBeenCalled();
-      });
-
-      it('should clear the selected state', () => {
-        expect(addressStateService.clear).toHaveBeenCalled();
+      it('should set the state to Create', () => {
+        expect(addressStateService.set).toHaveBeenCalledWith(CrudState.Create);
       });
     });
   });
@@ -153,8 +149,8 @@ describe('UserAddressAddButtonComponent', () => {
         element.renderRoot.querySelector('button')?.click();
       });
 
-      it('should clear the state', () => {
-        expect(addressStateService.clear).toHaveBeenCalled();
+      it('should set the state to Create', () => {
+        expect(addressStateService.set).toHaveBeenCalledWith(CrudState.Create);
       });
     });
   });
@@ -181,8 +177,8 @@ describe('UserAddressAddButtonComponent', () => {
         element.renderRoot.querySelector('button')?.click();
       });
 
-      it('should clear the state', () => {
-        expect(addressStateService.clear).toHaveBeenCalled();
+      it('should set the state to Create', () => {
+        expect(addressStateService.set).toHaveBeenCalledWith(CrudState.Create);
       });
     });
 
