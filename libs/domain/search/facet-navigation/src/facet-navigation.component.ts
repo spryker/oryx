@@ -54,7 +54,7 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
           renderLimit,
           open: index < expandedItemsCount,
           minForSearch,
-          enableClearAction: !(
+          enableClear: !(
             this.routerService.getPathId('category') &&
             facet.parameter === 'category'
           ),
