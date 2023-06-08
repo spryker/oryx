@@ -12,7 +12,7 @@ export default {
   args: {
     appearance: CollapsibleAppearance.Block,
     toggleControlType: CollapsibleToggleControlType.IconButton,
-    header: 'header',
+    heading: 'heading',
     nonTabbable: false,
   },
   argTypes: {
@@ -43,7 +43,7 @@ const Template: Story<CollapsibleAttributes> = (props): TemplateResult => {
       ?open=${props.open}
       .appearance=${props.appearance}
       .toggleControlType=${props.toggleControlType}
-      .header=${props.header}
+      .heading=${props.heading}
       ?nonTabbable=${props.nonTabbable}
     >
       Content with <button>accessible</button> elements.
