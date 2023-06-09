@@ -20,6 +20,7 @@ export const styles = css`
     color: var(--oryx-icon-color, inherit);
     font: var(--oryx-icon-weight, 500) var(--oryx-icon-size, 24px)
       var(--oryx-icon-font, ${font});
+    font-size: var(--oryx-icon-size, var(--_oryx-icon-size, 24px));
     font-variation-settings: 'FILL' var(--oryx-icon-fill, 0),
       'wght' var(--oryx-icon-weight, 500), 'GRAD' var(--oryx-icon-grad, 0),
       'opsz' var(--oryx-icon-optical, 48);
@@ -37,9 +38,11 @@ export const styles = css`
 
   :host(${mediumSize}) {
     --_margin: 2px;
+    --_oryx-icon-size: 20px;
   }
 
   :host(${smallSize}) {
     --_margin: 4px;
+    --_oryx-icon-size: 13.3px;
   }
 `;

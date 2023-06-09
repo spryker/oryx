@@ -1,4 +1,5 @@
 import { Icons, IconTypes } from '@spryker-oryx/ui/icon';
+import { Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -19,7 +20,11 @@ export class OptionComponent extends LitElement {
         () => html`<oryx-icon .type=${this.icon}></oryx-icon>`
       )}
       <slot>${this.value}</slot>
-      <oryx-icon class="mark" .type=${IconTypes.Mark}></oryx-icon>`;
+      <oryx-icon
+        class="mark"
+        .type=${IconTypes.Check}
+        .size=${Size.Md}
+      ></oryx-icon>`;
   }
 
   protected _value?: string;
