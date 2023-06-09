@@ -10,7 +10,7 @@ import {
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { UserAddressRemoveComponent } from './address-remove.component';
-import { addressRemoveComponent } from './address-remove.def';
+import { userAddressRemoveComponent } from './address-remove.def';
 
 const mockAddress: Address = { id: 'foo' };
 class MockAddressService implements Partial<AddressService> {
@@ -32,7 +32,7 @@ describe('UserAddressRemoveComponent', () => {
   let addressService: MockAddressService;
 
   beforeAll(async () => {
-    await useComponent([addressRemoveComponent]);
+    await useComponent(userAddressRemoveComponent);
   });
 
   beforeEach(async () => {
