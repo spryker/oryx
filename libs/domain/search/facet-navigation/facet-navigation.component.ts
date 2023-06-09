@@ -11,9 +11,9 @@ import { hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { take, tap } from 'rxjs/operators';
-import { FacetComponentRegistryService } from '../../src/renderers';
-import { FacetsOptions } from './facet-navigation.model';
-import { facetNavigation } from './facet-navigation.styles';
+import { FacetComponentRegistryService } from '@spryker-oryx/search';
+import { SearchFacetNavigationOptions } from './facet-navigation.model';
+import { userFacetNavigationStyles} from './facet-navigation.styles';
 
 @hydratable(['mouseover', 'focusin'])
 @defaultOptions({
@@ -23,9 +23,9 @@ import { facetNavigation } from './facet-navigation.styles';
   bury: [{ facets: ['rating', 'price'] }],
 })
 export class SearchFacetNavigationComponent extends LayoutMixin(
-  ContentMixin<FacetsOptions>(LitElement)
+  ContentMixin<SearchFacetNavigationOptions>(LitElement)
 ) {
-  static styles = [facetNavigation];
+  static styles = [userFacetNavigationStyles];
 
   protected facetListService = resolve(FacetListService);
   protected facetRenderer = resolve(FacetComponentRegistryService);
@@ -48,21 +48,22 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
     if (!facets?.length) return;
 
     return html`${facets.map((facet, index) =>
-      this.facetRenderer.renderFacetComponent(
-        facet,
-        {
-          renderLimit,
-          open: index < expandedItemsCount,
-          minForSearch,
-          enableClear: !(
-            this.routerService.getPathId('category') &&
-            facet.parameter === 'category'
-          ),
-        },
-        this.applyFilters.bind(this)
-      )
-    )}
-    ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)} `;
+        this.facetRenderer.renderFacetComponent(
+          facet,
+          {
+            renderLimit,
+            open: index < expandedItemsCount,
+            minForSearch,
+            enableClear: !(
+              this.routerService.getPathId('category') &&
+              facet.parameter === 'category'
+            ),
+          },
+          this.applyFilters.bind(this)
+        )
+      )}
+      <style>${this.layoutStyles()}</style>
+    `;
   }
 
   protected applyFilters(e: CustomEvent<FacetSelect>): void {

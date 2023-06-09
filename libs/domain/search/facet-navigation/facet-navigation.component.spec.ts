@@ -16,7 +16,7 @@ import { FacetSelect } from '@spryker-oryx/search/facet';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchFacetNavigationComponent } from './facet-navigation.component';
-import { facetsComponent } from './facet-navigation.def';
+import { searchFacetNavigationComponent } from './facet-navigation.def';
 
 const mockFacetList = [
   {
@@ -162,7 +162,7 @@ describe('SearchFacetNavigationComponent', () => {
   let element: SearchFacetNavigationComponent;
 
   beforeAll(async () => {
-    await useComponent(facetsComponent);
+    await useComponent(searchFacetNavigationComponent);
   });
 
   beforeEach(async () => {
