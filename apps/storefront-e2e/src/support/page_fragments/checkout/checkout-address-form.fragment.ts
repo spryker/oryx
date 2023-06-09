@@ -1,7 +1,7 @@
 import { defaultAddress } from '../../../../src/test-data/default-address';
 
 export class CheckoutAddressFormFragment {
-  getAddressForm = () => cy.get('oryx-address-form');
+  getAddressForm = () => cy.get('oryx-user-address-form');
   getCountrySelect = () => cy.get('oryx-select[label="Country"]');
   getSalutationSelect = () => cy.get('oryx-select[label="Salutation"]');
   getFirstNameInput = () =>

@@ -31,9 +31,15 @@ const order = {
     'Products ({count, plural, one {{count} item} other {{count} items}})',
 };
 
+const user = {
+  'user.address.remove-info':
+    'Removing this address will not remove any pending orders being dispatched to this address',
+};
+
 export default {
   ...product,
   ...cart,
   ...checkout,
   ...order,
+  ...user,
 };

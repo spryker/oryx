@@ -244,11 +244,14 @@
       "@spryker-oryx/ui/video": ["libs/base/ui/graphical/video/index.ts"],
       "@spryker-oryx/user": ["libs/domain/user/src/index.ts"],
       "@spryker-oryx/user/address": ["libs/domain/user/address/index.ts"],
-      "@spryker-oryx/user/address-book": [
-        "libs/domain/user/address-book/index.ts"
+      "@spryker-oryx/user/address-add-button": [
+        "libs/domain/user/address-add-button/index.ts"
       ],
       "@spryker-oryx/user/address-edit": [
         "libs/domain/user/address-edit/index.ts"
+      ],
+      "@spryker-oryx/user/address-edit-button": [
+        "libs/domain/user/address-edit-button/index.ts"
       ],
       "@spryker-oryx/user/address-form": [
         "libs/domain/user/address-form/index.ts"

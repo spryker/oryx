@@ -17,3 +17,18 @@ export interface Address {
   salutation?: string;
   zipCode?: string;
 }
+
+export interface AddressEventDetail {
+  // action?: CrudState;
+  address?: Address;
+  valid?: boolean;
+}
+
+// TODO: move elsewhere
+export const enum CrudState {
+  Create = 'create',
+  Read = 'read',
+  Update = 'update',
+  Delete = 'delete',
+  // Select = 'select',
+}
