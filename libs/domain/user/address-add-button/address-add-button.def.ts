@@ -1,6 +1,6 @@
 import { componentDef } from '@spryker-oryx/core';
 
-export const addressAddButtonComponent = componentDef({
+export const userAddressAddButtonComponent = componentDef({
   name: 'oryx-user-address-add-button',
   impl: () =>
     import('./address-add-button.component').then(

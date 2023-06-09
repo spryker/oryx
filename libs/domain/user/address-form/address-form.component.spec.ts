@@ -7,7 +7,7 @@ import { AddressFormService, AddressService } from '@spryker-oryx/user';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { UserAddressFormComponent } from './address-form.component';
-import { addressFormComponent } from './address-form.def';
+import { userAddressFormComponent } from './address-form.def';
 
 class MockFormRenderer implements Partial<FormRenderer> {
   buildForm = vi.fn().mockReturnValue(html``);
@@ -91,7 +91,7 @@ describe('UserAddressFormComponent', () => {
   let selectElement: HTMLSelectElement | undefined | null;
 
   beforeAll(async () => {
-    await useComponent(addressFormComponent);
+    await useComponent(userAddressFormComponent);
   });
 
   beforeEach(async () => {

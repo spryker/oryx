@@ -3,7 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { FormRenderer } from '@spryker-oryx/form';
 import { html } from 'lit';
-import { contactFormComponent } from './contact-form.def';
+import { userContactFormComponent } from './contact-form.def';
 import { fields } from './contact-form.model';
 
 class MockFormRenderer implements Partial<FormRenderer> {
@@ -14,7 +14,7 @@ describe('UserContactFormComponent', () => {
   let renderer: MockFormRenderer;
 
   beforeAll(async () => {
-    await useComponent(contactFormComponent);
+    await useComponent(userContactFormComponent);
   });
 
   beforeEach(async () => {

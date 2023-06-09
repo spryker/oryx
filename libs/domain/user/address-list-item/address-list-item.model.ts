@@ -4,7 +4,7 @@ export enum AddressDefaults {
   Shipping = 'shipping',
 }
 
-export interface AddressListItemOptions {
+export interface UserAddressListItemOptions {
   addressDefaults?: AddressDefaults;
   selectable?: boolean;
   editable?: boolean;

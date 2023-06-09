@@ -24,14 +24,14 @@ import { DirectiveResult } from 'lit/async-directive';
 import { query, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { CheckoutMixin } from '../src/mixins';
-import { styles } from './manage-address.styles';
+import { checkoutManageAddressStyles } from './manage-address.styles';
 
 @signalAware()
 @hydratable(['mouseover', 'focusin'])
-export class ManageAddressComponent extends AddressMixin(
+export class CheckoutManageAddressComponent extends AddressMixin(
   CheckoutMixin(LitElement)
 ) {
-  static styles = styles;
+  static styles = checkoutManageAddressStyles;
 
   @state() protected open?: boolean;
   @state() protected loading?: boolean;

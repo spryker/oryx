@@ -14,7 +14,7 @@ import { effect, hydratable, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { queryAll } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { AddressListOptions } from './address-list.model';
+import { UserAddressListOptions } from './address-list.model';
 import { styles } from './address-list.styles';
 
 @defaultOptions({
@@ -23,7 +23,7 @@ import { styles } from './address-list.styles';
 })
 @hydratable('window:load')
 export class UserAddressListComponent extends AddressMixin(
-  ContentMixin<AddressListOptions>(LitElement)
+  ContentMixin<UserAddressListOptions>(LitElement)
 ) {
   static styles = styles;
 

@@ -1,3 +1,3 @@
-import { AddressListItemOptions } from '../address-list-item';
+import { UserAddressListItemOptions } from '../address-list-item';
 
-export type AddressListOptions = AddressListItemOptions;
+export type UserAddressListOptions = UserAddressListItemOptions;

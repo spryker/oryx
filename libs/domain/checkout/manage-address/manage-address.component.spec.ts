@@ -18,8 +18,8 @@ import {
   CheckoutService,
   CheckoutStateService,
 } from '../src/services';
-import { ManageAddressComponent } from './manage-address.component';
-import { manageAddressComponent } from './manage-address.def';
+import { CheckoutManageAddressComponent } from './manage-address.component';
+import { checkoutManageAddressComponent } from './manage-address.def';
 
 class MockAddressService implements Partial<AddressService> {
   getAddresses = vi.fn();
@@ -46,12 +46,12 @@ class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
 }
 
-describe('ManageAddressComponent', () => {
-  let element: ManageAddressComponent;
+describe('CheckoutManageAddressComponent', () => {
+  let element: CheckoutManageAddressComponent;
   let addressStateService: MockAddressStateService;
 
   beforeAll(async () => {
-    await useComponent(manageAddressComponent);
+    await useComponent(checkoutManageAddressComponent);
   });
 
   beforeEach(async () => {
@@ -101,7 +101,7 @@ describe('ManageAddressComponent', () => {
     });
 
     it('should be a class of ManageAddressComponent', async () => {
-      expect(element).toBeInstanceOf(ManageAddressComponent);
+      expect(element).toBeInstanceOf(CheckoutManageAddressComponent);
     });
 
     it('passes the a11y audit', async () => {
