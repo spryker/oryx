@@ -59,7 +59,6 @@ export class FormControlController implements ReactiveController {
             @slotchange=${(): void => this.handleSlotChange()}
             @input=${(): void => this.toggleHasValueAttribute()}
           >
-            <input />
           </slot>
           ${content.after}
         </div>
