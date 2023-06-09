@@ -7,9 +7,8 @@ import {
 import { RouterService } from '@spryker-oryx/router';
 import { FacetListService } from '@spryker-oryx/search';
 import { FacetSelect } from '@spryker-oryx/search/facet';
-import { hydratable, signal } from '@spryker-oryx/utilities';
+import { computed, hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { take, tap } from 'rxjs/operators';
 import { FacetComponentRegistryService } from '@spryker-oryx/search';
 import { SearchFacetNavigationOptions } from './facet-navigation.model';
@@ -31,21 +30,25 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
   protected facetRenderer = resolve(FacetComponentRegistryService);
   protected routerService = resolve(RouterService);
 
-  protected facets = signal(this.facetListService.get());
+  protected $facets = signal(this.facetListService.get());
+  protected filteredFacets = computed(() => {
+    const { bury } = this.$options();
+
+    return this.$facets()?.filter(
+      (facet) => !bury?.find((b) => b.facets.includes(facet.parameter))
+    );
+  });
 
   protected override render(): TemplateResult | void {
+    const facets = this.filteredFacets();
+
+    if (!facets?.length) return;
+
     const {
-      bury,
       valueRenderLimit: renderLimit = Infinity,
       expandedItemsCount = 0,
       minForSearch = Infinity,
     } = this.$options();
-
-    const facets = this.facets()?.filter(
-      (facet) => !bury?.find((b) => b.facets.includes(facet.parameter))
-    );
-
-    if (!facets?.length) return;
 
     return html`${facets.map((facet, index) =>
         this.facetRenderer.renderFacetComponent(
