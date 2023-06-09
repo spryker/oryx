@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const userFacetNavigationStyles = css`
+export const searchFacetNavigationStyles = css`
   :host {
     align-items: stretch;
     max-height: 100vh;

@@ -9,10 +9,10 @@ import { FacetListService } from '@spryker-oryx/search';
 import { FacetSelect } from '@spryker-oryx/search/facet';
 import { computed, hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { take, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { FacetComponentRegistryService } from '@spryker-oryx/search';
 import { SearchFacetNavigationOptions } from './facet-navigation.model';
-import { userFacetNavigationStyles} from './facet-navigation.styles';
+import { searchFacetNavigationStyles} from './facet-navigation.styles';
 
 @hydratable(['mouseover', 'focusin'])
 @defaultOptions({
@@ -24,7 +24,7 @@ import { userFacetNavigationStyles} from './facet-navigation.styles';
 export class SearchFacetNavigationComponent extends LayoutMixin(
   ContentMixin<SearchFacetNavigationOptions>(LitElement)
 ) {
-  static styles = [userFacetNavigationStyles];
+  static styles = [searchFacetNavigationStyles];
 
   protected facetListService = resolve(FacetListService);
   protected facetRenderer = resolve(FacetComponentRegistryService);
@@ -71,36 +71,32 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
 
   protected applyFilters(e: CustomEvent<FacetSelect>): void {
     const { name, value: selectedFacetValue } = e.detail;
+    
+    const facet = this.$facets()?.find((facet) => facet.name === name);
 
-    this.facetListService
-      .get()
-      .pipe(take(1))
-      .subscribe((facets) => {
-        const facet = facets?.find((facet) => facet.name === name);
-        if (!facet) return;
-        if (!selectedFacetValue) {
-          this.facetNavigation(facet.parameter, []);
-          return;
-        }
+    if (!facet) return;
+    if (!selectedFacetValue) {
+      this.facetNavigation(facet.parameter);
+      return;
+    }
 
-        const values = facet.multiValued
-          ? [
-              ...(facet.selectedValues ?? []),
-              ...(selectedFacetValue.selected
-                ? [selectedFacetValue.value]
-                : []),
-            ].filter(
-              (selectedValue) =>
-                selectedFacetValue.selected ||
-                selectedValue !== selectedFacetValue.value
-            )
-          : [selectedFacetValue.value];
+    const values = facet.multiValued
+      ? [
+          ...(facet.selectedValues ?? []),
+          ...(selectedFacetValue.selected
+            ? [selectedFacetValue.value]
+            : []),
+        ].filter(
+          (selectedValue) =>
+            selectedFacetValue.selected ||
+            selectedValue !== selectedFacetValue.value
+        )
+      : [selectedFacetValue.value];
 
-        this.facetNavigation(facet.parameter, values as string[]);
-      });
+    this.facetNavigation(facet.parameter, values as string[]);
   }
 
-  protected facetNavigation(parameter: string, values: string[]): void {
+  protected facetNavigation(parameter: string, values: string[] = []): void {
     const pathId = this.routerService.getPathId(parameter);
 
     this.routerService

@@ -2,15 +2,10 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LayoutBuilder, LayoutService } from '@spryker-oryx/experience';
-import { Facet } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import {
-  DefaultFacetComponentRegistryService,
   FacetComponentRegistryService,
   FacetListService,
-  FacetMappingOptions,
-  FacetParams,
-  FacetValueRenderer,
 } from '@spryker-oryx/search';
 import { FacetSelect } from '@spryker-oryx/search/facet';
 import { html } from 'lit';
@@ -18,136 +13,79 @@ import { of } from 'rxjs';
 import { SearchFacetNavigationComponent } from './facet-navigation.component';
 import { searchFacetNavigationComponent } from './facet-navigation.def';
 
-const mockFacetList = [
-  {
-    name: 'Categories',
-    parameter: 'category',
-    values: [
-      {
-        value: 2,
-        selected: false,
-        count: 28,
-        name: 'Cameras & Camcorders',
-        children: [
-          {
-            value: 4,
-            selected: false,
-            count: 27,
-            name: 'Digital Cameras',
-            children: [],
-          },
-          {
-            value: 3,
-            selected: false,
-            count: 1,
-            name: 'Camcorders',
-            children: [],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    name: 'Color',
-    parameter: 'color',
-    count: null,
-    values: [
-      {
-        value: 'Black',
-        selected: false,
-        count: 11,
-      },
-      {
-        value: 'Silver',
-        selected: false,
-        count: 7,
-      },
-      {
-        value: 'Red',
-        selected: false,
-        count: 6,
-      },
-      {
-        value: 'Blue',
-        selected: false,
-        count: 2,
-      },
-      {
-        value: 'Brown',
-        selected: false,
-        count: 1,
-      },
-      {
-        value: 'Purple',
-        selected: false,
-        count: 1,
-      },
-      {
-        value: 'White',
-        selected: false,
-        count: 1,
-      },
-    ],
-  },
-  {
-    name: 'Mock',
-    parameter: 'mock',
-    count: null,
-    values: [
-      {
-        value: 'Black',
-        selected: false,
-        count: 11,
-      },
-    ],
-  },
-  {
-    name: 'Mock1',
-    parameter: 'mock1',
-    count: null,
-    values: [
-      {
-        value: 'Black',
-        selected: false,
-        count: 11,
-      },
-    ],
-  },
-  {
-    name: 'Mock2',
-    parameter: 'mock2',
-    count: null,
-    values: [
-      {
-        value: 'Black',
-        selected: false,
-        count: 11,
-      },
-    ],
-  },
-  {
-    name: 'Mock3',
-    parameter: 'mock3',
-    count: null,
-    values: [
-      {
-        value: 'Black',
-        selected: false,
-        count: 11,
-      },
-    ],
-  },
-];
+const mockCategoryFacet =  {
+  name: 'Categories',
+  parameter: 'category',
+  values: [
+    {
+      value: 2,
+      selected: false,
+      count: 28,
+      name: 'Cameras & Camcorders',
+      children: [
+        {
+          value: 4,
+          selected: false,
+          count: 27,
+          name: 'Digital Cameras',
+          children: [],
+        },
+        {
+          value: 3,
+          selected: false,
+          count: 1,
+          name: 'Camcorders',
+          children: [],
+        },
+      ],
+    },
+  ],
+};
+
+const mockMultiValuedFacet = {
+  name: 'Color',
+  parameter: 'color',
+  multiValued: true,
+  values: [
+    {
+      value: 'Black',
+      selected: false,
+      count: 11,
+    },
+    {
+      value: 'Silver',
+      selected: false,
+      count: 7,
+    },
+    {
+      value: 'Red',
+      selected: false,
+      count: 6,
+    },
+  ],
+};
+
+const mockFacet = {
+  name: 'Mock',
+  parameter: 'mock',
+  count: null,
+  values: [
+    {
+      value: 'Mock',
+      selected: false,
+      count: 11,
+    },
+  ],
+};
 
 class MockFacetListService implements Partial<FacetListService> {
-  get = vi.fn().mockReturnValue(of(mockFacetList));
+  get = vi.fn().mockReturnValue(of(null));
 }
 
 class MockRouterService implements Partial<RouterService> {
-  currentQuery = vi.fn().mockReturnValue(of({}));
-  currentRoute = vi.fn().mockReturnValue(of({}));
   getUrl = vi.fn().mockReturnValue(of(''));
   getPathId = vi.fn().mockReturnValue('');
+  navigate = vi.fn();
 }
 
 class MockLayoutService implements Partial<LayoutService> {
@@ -158,15 +96,23 @@ class MockLayoutBuilder implements Partial<LayoutBuilder> {
   createStylesFromOptions = vi.fn();
 }
 
+class MockFacetComponentRegistryService implements Partial<FacetComponentRegistryService> {
+  renderFacetComponent = vi.fn().mockReturnValue(html``);
+}
+
 describe('SearchFacetNavigationComponent', () => {
   let element: SearchFacetNavigationComponent;
+  let listService: MockFacetListService;
+  let renderService: MockFacetComponentRegistryService;
+  let layoutService: MockLayoutService;
+  let routerService: MockRouterService;
 
   beforeAll(async () => {
     await useComponent(searchFacetNavigationComponent);
   });
 
   beforeEach(async () => {
-    createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: FacetListService,
@@ -178,30 +124,7 @@ describe('SearchFacetNavigationComponent', () => {
         },
         {
           provide: FacetComponentRegistryService,
-          useClass: DefaultFacetComponentRegistryService,
-        },
-        {
-          provide: FacetValueRenderer,
-          useValue: {
-            [`${FacetParams.Default}`]: {
-              template: (
-                facet: Facet,
-                options: FacetMappingOptions,
-                selectListener: (e: CustomEvent<FacetSelect>) => void
-              ) => {
-                return html`
-                  <oryx-search-facet
-                    @oryx.select=${selectListener}
-                    .name=${facet.name}
-                    .renderLimit=${options.renderLimit}
-                    .open=${options.open}
-                    .multi=${facet.multiValued}
-                  >
-                  </oryx-search-facet>
-                `;
-              },
-            },
-          },
+          useClass: MockFacetComponentRegistryService,
         },
         {
           provide: LayoutService,
@@ -214,6 +137,11 @@ describe('SearchFacetNavigationComponent', () => {
       ],
     });
 
+    listService = testInjector.inject(FacetListService) as unknown as MockFacetListService;
+    renderService = testInjector.inject(FacetComponentRegistryService) as unknown as MockFacetComponentRegistryService;
+    layoutService = testInjector.inject(LayoutService) as unknown as MockLayoutService;
+    routerService = testInjector.inject(RouterService) as unknown as MockRouterService;
+    
     element = await fixture(
       html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
     );
@@ -221,112 +149,320 @@ describe('SearchFacetNavigationComponent', () => {
 
   afterEach(() => {
     destroyInjector();
+    vi.resetAllMocks();
   });
 
   it('is defined', () => {
     expect(element).toBeInstanceOf(SearchFacetNavigationComponent);
   });
 
-  it('passes the a11y audit', async () => {
-    await expect(element).shadowDom.to.be.accessible();
+  it('should not render the content', () => {
+    expect(renderService.renderFacetComponent).not.toHaveBeenCalled();
+    expect(layoutService.getStyles).not.toHaveBeenCalled();
   });
 
-  it('should render oryx-facet element for every mock facet', () => {
-    expect(
-      element.renderRoot.querySelectorAll('oryx-search-facet').length
-    ).toBe(6);
-  });
-
-  describe('when "valueRenderLimit" is provided', () => {
+  describe('when facets list is empty', () => {
     beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-facet-navigation
-          .options=${{ valueRenderLimit: 3 }}
-        ></oryx-search-facet-navigation>`
-      );
-    });
-
-    it('should render the specified amount in the option', () => {
-      const facet = <Element & { renderLimit: number }>(
-        element.renderRoot.querySelectorAll('oryx-search-facet')[1]
-      );
-
-      expect(facet.renderLimit).toBe(3);
-    });
-  });
-
-  describe('when "expandedItemsCount" is provided', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-facet-navigation
-          .options=${{ expandedItemsCount: 1 }}
-        ></oryx-search-facet-navigation>`
-      );
-    });
-
-    it('should expand collapsible items with specified amount in the option', () => {
-      expect(
-        (<Element & { open: boolean }>(
-          element.renderRoot.querySelectorAll('oryx-search-facet')[0]
-        )).open
-      ).toBe(true);
-      expect(
-        (<Element & { open: boolean }>(
-          element.renderRoot.querySelectorAll('oryx-search-facet')[1]
-        )).open
-      ).not.toBe(true);
-    });
-  });
-
-  describe('when "expandedItemsCount" is provided as 0', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-facet-navigation
-          .options=${{ expandedItemsCount: 0 }}
-        ></oryx-search-facet-navigation>`
-      );
-    });
-
-    it('all collapsible should be closed', () => {
-      element.renderRoot.querySelectorAll('oryx-collapsible').forEach((c) => {
-        expect(c.getAttribute('open')).toBeNull();
-      });
-    });
-  });
-
-  describe('when "valueRenderLimit" is not provided', () => {
-    beforeEach(async () => {
+      listService.get = vi.fn().mockReturnValue(of([]));
       element = await fixture(
         html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
       );
     });
 
-    it('should render the default amount in the option', () => {
-      element.renderRoot.querySelectorAll('oryx-collapsible').forEach((c) => {
-        expect(c.shadowRoot?.querySelectorAll('li')).toBeLessThanOrEqual(5);
+    it('should not render the content', () => {
+      expect(renderService.renderFacetComponent).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when facets are provided', () => {
+    beforeEach(async () => {
+      listService.get = vi.fn().mockReturnValue(of([mockFacet]));
+      element = await fixture(
+        html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
+      );
+    });
+
+    it('should render the facet component with default config', () => {
+      expect(renderService.renderFacetComponent).toHaveBeenCalledWith(mockFacet, {
+        renderLimit: 5,
+        open: true,
+        minForSearch: 13,
+        enableClear: true,
+      }, expect.any(Function))
+    });
+
+    it('should should render layout styles', () => {
+      expect(layoutService.getStyles).toHaveBeenCalled();
+    });
+
+    describe('and "expandedItemsCount" is less then facets count', () => {
+      beforeEach(async () => {
+        listService.get = vi.fn().mockReturnValue(of([mockFacet]));
+        element = await fixture(
+          html`<oryx-search-facet-navigation .options=${{expandedItemsCount: 0}}></oryx-search-facet-navigation>`
+        );
+      });
+  
+      it('should render the facet in "closed" state', () => {
+        expect(renderService.renderFacetComponent).toHaveBeenCalledWith(mockFacet, expect.objectContaining({
+          open: false,
+        }), expect.any(Function))
+      });
+    });
+
+    describe('and facet has parameter equals to "category"', () => {
+      beforeEach(async () => {
+        listService.get = vi.fn().mockReturnValue(of([mockCategoryFacet]));
+        element = await fixture(
+          html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
+        );
+      });
+  
+      it('should not prevent clear', () => {
+        expect(renderService.renderFacetComponent).toHaveBeenCalledWith(mockCategoryFacet, expect.objectContaining({
+          enableClear: true,
+        }), expect.any(Function))
+      });
+
+      describe('and route`s pathId equals to "category"', () => {
+        beforeEach(async () => {
+          listService.get = vi.fn().mockReturnValue(of([mockCategoryFacet]));
+          routerService.getPathId = vi.fn().mockReturnValue('category');
+          element = await fixture(
+            html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
+          );
+        });
+    
+        it('should prevent clear', () => {
+          expect(renderService.renderFacetComponent).toHaveBeenCalledWith(mockCategoryFacet, expect.objectContaining({
+            enableClear: false,
+          }), expect.any(Function))
+        });
+      });
+    });
+
+    describe('and valueRenderLimit is provided', () => {
+      const valueRenderLimit = 2;
+      beforeEach(async () => {
+        listService.get = vi.fn().mockReturnValue(of([mockFacet]));
+        element = await fixture(
+          html`<oryx-search-facet-navigation .options=${{valueRenderLimit}}></oryx-search-facet-navigation>`
+        );
+      });
+  
+      it('should pass the limit to the render function', () => {
+        expect(renderService.renderFacetComponent).toHaveBeenCalledWith(mockFacet, expect.objectContaining({
+          renderLimit: valueRenderLimit,
+        }), expect.any(Function))
+      });
+    });
+
+    describe('and minForSearch is provided', () => {
+      const minForSearch = 2;
+      beforeEach(async () => {
+        listService.get = vi.fn().mockReturnValue(of([mockFacet]));
+        element = await fixture(
+          html`<oryx-search-facet-navigation .options=${{minForSearch}}></oryx-search-facet-navigation>`
+        );
+      });
+  
+      it('should pass the min search value to the render function', () => {
+        expect(renderService.renderFacetComponent).toHaveBeenCalledWith(mockFacet, expect.objectContaining({
+          minForSearch,
+        }), expect.any(Function))
+      });
+    });
+
+    describe('and bury options is provided', () => {
+      beforeEach(async () => {
+        listService.get = vi.fn().mockReturnValue(of([mockCategoryFacet, mockFacet]));
+        element = await fixture(
+          html`<oryx-search-facet-navigation .options=${{bury: [{ facets: [mockFacet.parameter] }]}}></oryx-search-facet-navigation>`
+        );
+      });
+  
+      it('should render filtered facets', async () => {
+        expect(renderService.renderFacetComponent).toHaveBeenLastCalledWith(mockCategoryFacet, expect.any(Object), expect.any(Function));
       });
     });
   });
 
-  describe('when "expandedItemsCount" is not provided', () => {
+  describe('when filters are applied', () => {
+    let listener: (e: CustomEvent<FacetSelect>) => void;
+
+    const setupListener = () => {
+      renderService.renderFacetComponent = vi.fn().mockImplementation((
+        facet,
+        options,
+        selectListener: (e: CustomEvent<FacetSelect>) => void
+      ) => {
+        listener = selectListener;
+        return html``
+      });
+    };
+
+    const callListener = (detail: FacetSelect) => {
+      const mockedEvent = new CustomEvent<FacetSelect>('event', { detail });
+      listener(mockedEvent);
+    }
+
     beforeEach(async () => {
+      setupListener();
+      listService.get = vi.fn().mockReturnValue(of([mockFacet]));
       element = await fixture(
-        html`<oryx-search-facet-navigation
-          .options=${{}}
-        ></oryx-search-facet-navigation>`
+        html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
       );
     });
 
-    it('should expand default amount of items', () => {
-      element.renderRoot
-        .querySelectorAll('oryx-collapsible')
-        .forEach((c, index) => {
-          if (index < 5) {
-            expect(c.hasAttribute('open')).toBeTruthy();
-          } else {
-            expect(c.hasAttribute('open')).toBeFalsy();
-          }
+    describe('and there is no pathId for selected facet', () => {
+      beforeEach(() => {
+        callListener({
+          name: mockFacet.name, value: mockFacet.values[0]
         });
+      });
+  
+      it('should get route pathId based on facet parameter', () => {
+        expect(routerService.getPathId).toHaveBeenCalledWith(mockFacet.parameter);
+      });
+  
+      it('should get the url and navigate to it', () => {
+        expect(routerService.getUrl).toHaveBeenCalledWith(
+          '', 
+          expect.objectContaining({
+            queryParams: {
+              [mockFacet.parameter.toLowerCase()]: [mockFacet.values[0].value],
+            },
+          })
+        );
+        expect(routerService.navigate).toHaveBeenCalled();
+      });
+    })
+
+    describe('and pathId is existing for facet parameter', () => {
+      beforeEach(() => {
+        routerService.getPathId = vi.fn().mockReturnValue('test');
+        callListener({
+          name: mockFacet.name, value: mockFacet.values[0]
+        });
+      });
+  
+      it('should pass the correct params to the getUrl method', () => {
+        expect(routerService.getUrl).toHaveBeenCalledWith(
+          `/${mockFacet.parameter}/${mockFacet.values[0].value}`, 
+          expect.objectContaining({
+            queryParams: undefined,
+          })
+        );
+        expect(routerService.navigate).toHaveBeenCalled();
+      });
+    });
+
+    describe('and facet`s name is not correct', () => {
+      beforeEach(() => {
+        callListener({
+          name: 'test', value: mockFacet.values[0]
+        });
+      });
+
+      it('should skip navigation', () => {
+        expect(routerService.getUrl).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('and there is no value', () => {
+      beforeEach(() => {
+        callListener({
+          name: mockFacet.name
+        });
+      });
+
+      it('should build the url with empty params', () => {
+        expect(routerService.getUrl).toHaveBeenCalledWith(
+          '', 
+          expect.objectContaining({
+            queryParams: {
+              [mockFacet.parameter.toLowerCase()]: [],
+            },
+          })
+        );
+      });
+    });
+
+    describe('and facet is multi-valued', () => {
+      const value = 'test';
+
+      beforeEach(async () => {
+        listService.get = vi.fn().mockReturnValue(of([mockMultiValuedFacet]));
+        element = await fixture(
+          html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
+        );
+        callListener({
+          name: mockMultiValuedFacet.name, value: {selected: true, value}
+        });
+      });
+
+      it('should pass applied value to the parameters', () => {
+        expect(routerService.getUrl).toHaveBeenCalledWith(
+          '', 
+          expect.objectContaining({
+            queryParams: {
+              [mockMultiValuedFacet.parameter.toLowerCase()]: [value],
+            },
+          })
+        );
+      });
+
+      describe('and facet has selected values', () => {
+        const selectedValues = ['selected1', 'selected2'];
+
+        beforeEach(async () => {
+          listService.get = vi.fn().mockReturnValue(of([
+            { 
+              ...mockMultiValuedFacet,
+              selectedValues
+            }
+          ]));
+          element = await fixture(
+            html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
+          );
+          callListener({
+            name: mockMultiValuedFacet.name, value: {selected: true, value}
+          });
+        });
+  
+        it('should pass merged selected values to the params', () => {
+          expect(routerService.getUrl).toHaveBeenCalledWith(
+            '', 
+            expect.objectContaining({
+              queryParams: {
+                [mockMultiValuedFacet.parameter.toLowerCase()]: [...selectedValues, value],
+              },
+            })
+          );
+        });
+
+        describe('and there is no selected values', () => {
+          beforeEach(async () => {
+            element = await fixture(
+              html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
+            );
+            callListener({
+              name: mockMultiValuedFacet.name, value: { selected: false, value: selectedValues[0] }
+            });
+          });
+    
+          it('should pass filtered values to the url params', () => { 
+            expect(routerService.getUrl).toHaveBeenCalledWith(
+              '', 
+              expect.objectContaining({
+                queryParams: {
+                  [mockMultiValuedFacet.parameter.toLowerCase()]: [selectedValues[1]],
+                },
+              })
+            );
+          });
+        });
+      });
     });
   });
 });
