@@ -3,7 +3,7 @@ import { css } from 'lit';
 
 export const buttonStyles = css`
   :host {
-    --oryx-icon-size: 13.3px;
+    --oryx-icon-size: 20px;
     --_color-text: var(--oryx-color-primary-0, white);
     --_color-accent: var(--oryx-color-primary-9);
     --_color-active: var(--oryx-color-primary-10);
@@ -32,12 +32,13 @@ export const buttonStyles = css`
     position: relative;
   }
 
-  :host([size='md']) {
-    --_margin: 8px 19px;
-  }
-
   :host([size='sm']) {
     --_margin: 6px 15px;
+    --oryx-icon-size: 13.3px;
+  }
+
+  :host([size='md']) {
+    --_margin: 8px 19px;
   }
 
   :host([size='lg'][icon]:not([type='text'])) {
