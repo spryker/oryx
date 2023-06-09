@@ -5,7 +5,7 @@ import {
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
 import { isServer, LitElement, render, TemplateResult } from 'lit';
-import { Effect, effect } from '../../signals';
+import { Effect, effect, resolvingSignals } from '../../signals';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
@@ -108,20 +108,48 @@ function hydratableClass<T extends Type<HTMLElement>>(
     [HYDRATE_ON_DEMAND]() {
       if (this[DEFER_HYDRATION] !== 3) return;
 
-      // TODO: here we will need to resolve all data needed for hydration
-      // this[DEFER_HYDRATION] = 2; // pre-hydrating
+      // if (this[DEFER_HYDRATION] === 3) {
+      //   this[DEFER_HYDRATION] = 1; // hydrating
+      //   super.connectedCallback();
+      //   this.removeAttribute(deferHydrationAttribute);
+      //   return;
+      // }
 
-      this[DEFER_HYDRATION] = 1; // hydrating
-      super.connectedCallback();
-      this.removeAttribute(deferHydrationAttribute);
+      // TODO: here we will need to resolve all data needed for hydration
+      this[DEFER_HYDRATION] = 2; // pre-hydrating
+
+      console.log('starting effect', this.tagName);
+
+      this[SIGNAL_EFFECT] = effect(() => {
+        console.log('render pass', this.tagName);
+        const hasResolving = resolvingSignals();
+        super.render();
+
+        if (!hasResolving()) {
+          console.log('hydration', this.tagName);
+          this[DEFER_HYDRATION] = 1; // hydrating
+          super.connectedCallback();
+          this.removeAttribute(deferHydrationAttribute);
+        }
+      });
+
+      // setTimeout(() => {
+      //   console.log('hydration', this.tagName);
+      //   this[DEFER_HYDRATION] = 1; // hydrating
+      //   super.connectedCallback();
+      //   this.removeAttribute(deferHydrationAttribute);
+      // }, 3000);
     }
 
     render(): TemplateResult {
       const result = super.render();
+      // setTimeout(() => {
+      //   console.log('stopping effect', this.tagName);
       if (this[SIGNAL_EFFECT]) {
         this[SIGNAL_EFFECT]!.stop();
         delete this[SIGNAL_EFFECT];
       }
+      // }, 3000);
       return result;
     }
   };
