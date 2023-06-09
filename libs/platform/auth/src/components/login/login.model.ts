@@ -14,7 +14,7 @@ export interface LoginOptions {
   /**
    * Keeps the user at the current route when disableRedirect is `true`.
    */
-  disableRedirect?: boolean;
+  enableRedirect?: boolean;
 
   /**
    * Render forgot password link in the UI.

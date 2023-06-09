@@ -12,7 +12,7 @@ export const loginComponentSchema: ContentComponentSchema<AuthLoginComponent> =
     options: {
       enableRememberMe: { type: FormFieldType.Boolean },
       forgotPasswordLink: { type: FormFieldType.Boolean },
-      disableRedirect: { type: FormFieldType.Boolean },
+      enableRedirect: { type: FormFieldType.Boolean },
       passwordVisibility: {
         type: FormFieldType.Select,
         options: [

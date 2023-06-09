@@ -61,7 +61,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
     ),
     tap(() => (this.isLoading = false)),
     switchMap(() => {
-      if (this.componentOptions?.disableRedirect) {
+      if (!this.componentOptions?.enableRedirect) {
         return EMPTY;
       }
       if (this.componentOptions?.redirectUrl) {
@@ -102,7 +102,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         </oryx-input>
 
         <oryx-password-input
-          .strategy="${this.componentOptions?.passwordVisibility}"
+          .strategy="${this.$options()?.passwordVisibility}"
           .label=${i18n('login.password')}
           required
           ?hasError="${this.hasError}"
@@ -126,15 +126,15 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
   protected renderLoginOptions(): TemplateResult | void {
     if (
-      !this.componentOptions?.forgotPasswordLink &&
-      !this.componentOptions?.enableRememberMe
+      !this.$options()?.forgotPasswordLink &&
+      !this.$options()?.enableRememberMe
     ) {
       return;
     }
     return html`
       <div class="options">
         ${when(
-          this.componentOptions?.enableRememberMe,
+          this.$options()?.enableRememberMe,
           () => html`<oryx-checkbox>
             <input
               type="checkbox"
@@ -146,9 +146,9 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
           </oryx-checkbox>`
         )}
         ${when(
-          this.componentOptions?.forgotPasswordLink,
+          this.$options()?.forgotPasswordLink,
           () => html`<oryx-link>
-            <a href=${this.componentOptions?.forgotPasswordLink}
+            <a href=${this.$options()?.forgotPasswordLink}
               >${i18n('user.login.forgot-password?')}</a
             >
           </oryx-link>`

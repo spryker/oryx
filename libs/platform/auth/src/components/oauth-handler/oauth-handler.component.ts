@@ -3,7 +3,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { OauthService } from '../../oauth.service';
+import { OauthService } from '../../../src/oauth/oauth.service';
 import { styles } from './oauth-handler.styles';
 
 export class OauthHandlerComponent extends LitElement {
