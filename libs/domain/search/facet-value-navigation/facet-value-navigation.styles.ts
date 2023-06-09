@@ -1,5 +1,3 @@
-import { primaryColorBase } from '@spryker-oryx/utilities';
-
 import { css } from 'lit';
 
 export const facetValueNavigationStyles = css`
@@ -18,7 +16,7 @@ export const facetValueNavigationStyles = css`
 
   section button,
   slot:not([name]) + oryx-button button {
-    color: ${primaryColorBase};
+    color: var(--oryx-color-primary-9);
   }
 
   oryx-chip {
