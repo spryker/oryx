@@ -113,6 +113,9 @@
       "@spryker-oryx/product/attributes": [
         "libs/domain/product/attributes/index.ts"
       ],
+      "@spryker-oryx/product/availability": [
+        "libs/domain/product/availability/index.ts"
+      ],
       "@spryker-oryx/product/average-rating": [
         "libs/domain/product/average-rating/index.ts"
       ],
