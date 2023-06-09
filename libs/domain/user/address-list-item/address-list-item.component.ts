@@ -9,14 +9,14 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {
   AddressDefaults,
-  AddressListItemOptions,
   EditTarget,
+  UserAddressListItemOptions,
 } from './address-list-item.model';
 import { styles } from './address-list-item.styles';
 
 @hydratable('window:load')
 export class UserAddressListItemComponent extends AddressMixin(
-  ContentMixin<AddressListItemOptions>(LitElement)
+  ContentMixin<UserAddressListItemOptions>(LitElement)
 ) {
   static styles = styles;
 

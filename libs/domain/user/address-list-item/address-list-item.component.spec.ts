@@ -14,10 +14,10 @@ import {
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { UserAddressListItemComponent } from './address-list-item.component';
-import { addressListItemComponent } from './address-list-item.def';
+import { userAddressListItemComponent } from './address-list-item.def';
 import {
   AddressDefaults,
-  AddressListItemOptions,
+  UserAddressListItemOptions,
 } from './address-list-item.model';
 
 const mockAddress: Address = {
@@ -56,7 +56,7 @@ describe('UserAddressListItemComponent', () => {
   let addressStateService: MockAddressStateService;
 
   beforeAll(async () => {
-    await useComponent(addressListItemComponent);
+    await useComponent(userAddressListItemComponent);
   });
 
   beforeEach(async () => {
@@ -153,7 +153,7 @@ describe('UserAddressListItemComponent', () => {
       element = await fixture(
         html`<oryx-user-address-list-item
           .addressId=${mockAddress.id}
-          .options=${{ selectable: true } as AddressListItemOptions}
+          .options=${{ selectable: true } as UserAddressListItemOptions}
         ></oryx-user-address-list-item>`
       );
     });
@@ -168,7 +168,7 @@ describe('UserAddressListItemComponent', () => {
       element = await fixture(
         html`<oryx-user-address-list-item
           .addressId=${mockAddress.id}
-          .options=${{ editable: true } as AddressListItemOptions}
+          .options=${{ editable: true } as UserAddressListItemOptions}
         ></oryx-user-address-list-item>`
       );
     });
@@ -201,7 +201,7 @@ describe('UserAddressListItemComponent', () => {
       element = await fixture(
         html`<oryx-user-address-list-item
           .addressId=${mockAddress.id}
-          .options=${{ removable: true } as AddressListItemOptions}
+          .options=${{ removable: true } as UserAddressListItemOptions}
         ></oryx-user-address-list-item>`
       );
     });
@@ -219,7 +219,7 @@ describe('UserAddressListItemComponent', () => {
           .options=${{
             removable: false,
             editable: false,
-          } as AddressListItemOptions}
+          } as UserAddressListItemOptions}
         ></oryx-user-address-list-item>`
       );
     });
@@ -243,7 +243,7 @@ describe('UserAddressListItemComponent', () => {
             .addressId=${mockAddress.id}
             .options=${{
               addressDefaults: AddressDefaults.All,
-            } as AddressListItemOptions}
+            } as UserAddressListItemOptions}
           ></oryx-user-address-list-item>`
         );
       });
@@ -263,7 +263,7 @@ describe('UserAddressListItemComponent', () => {
             .addressId=${mockAddress.id}
             .options=${{
               addressDefaults: AddressDefaults.Billing,
-            } as AddressListItemOptions}
+            } as UserAddressListItemOptions}
           ></oryx-user-address-list-item>`
         );
       });
@@ -287,7 +287,7 @@ describe('UserAddressListItemComponent', () => {
             .addressId=${mockAddress.id}
             .options=${{
               addressDefaults: AddressDefaults.Shipping,
-            } as AddressListItemOptions}
+            } as UserAddressListItemOptions}
           ></oryx-user-address-list-item>`
         );
       });
@@ -312,7 +312,7 @@ describe('UserAddressListItemComponent', () => {
             .addressId=${mockAddress.id}
             .options=${{
               addressDefaults: AddressDefaults.All,
-            } as AddressListItemOptions}
+            } as UserAddressListItemOptions}
           ></oryx-user-address-list-item>`
         );
       });
@@ -332,7 +332,7 @@ describe('UserAddressListItemComponent', () => {
             .addressId=${mockAddress.id}
             .options=${{
               addressDefaults: AddressDefaults.Shipping,
-            } as AddressListItemOptions}
+            } as UserAddressListItemOptions}
           ></oryx-user-address-list-item>`
         );
       });
@@ -352,7 +352,7 @@ describe('UserAddressListItemComponent', () => {
             .addressId=${mockAddress.id}
             .options=${{
               addressDefaults: AddressDefaults.Billing,
-            } as AddressListItemOptions}
+            } as UserAddressListItemOptions}
           ></oryx-user-address-list-item>`
         );
       });

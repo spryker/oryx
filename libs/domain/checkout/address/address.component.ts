@@ -6,7 +6,7 @@ import {
   CrudState,
 } from '@spryker-oryx/user';
 import { UserAddressFormComponent } from '@spryker-oryx/user/address-form';
-import { AddressListOptions } from '@spryker-oryx/user/address-list';
+import { UserAddressListOptions } from '@spryker-oryx/user/address-list';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import { signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -27,7 +27,7 @@ export class CheckoutAddressComponent
         .options=${{
           selectable: true,
           addressDefaults: AddressDefaults.All,
-        } as AddressListOptions}
+        } as UserAddressListOptions}
         @change=${this.onChange}
       ></oryx-user-address-list>`;
 

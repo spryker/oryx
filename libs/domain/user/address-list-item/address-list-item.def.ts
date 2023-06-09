@@ -1,13 +1,13 @@
 import { componentDef } from '@spryker-oryx/core';
-import { AddressListItemOptions } from './address-list-item.model';
+import { UserAddressListItemOptions } from './address-list-item.model';
 
 declare global {
   interface FeatureOptions {
-    'oryx-user-address-list-item'?: AddressListItemOptions;
+    'oryx-user-address-list-item'?: UserAddressListItemOptions;
   }
 }
 
-export const addressListItemComponent = componentDef({
+export const userAddressListItemComponent = componentDef({
   name: 'oryx-user-address-list-item',
   impl: () =>
     import('./address-list-item.component').then(

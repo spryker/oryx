@@ -1,16 +1,15 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import {
   Address,
-  addressAddButtonComponent,
   AddressService,
   AddressStateService,
   CrudState,
+  userAddressAddButtonComponent,
 } from '@spryker-oryx/user';
-
-import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { UserAddressAddButtonComponent } from './address-add-button.component';
@@ -49,7 +48,7 @@ describe('UserAddressAddButtonComponent', () => {
   let addressStateService: MockAddressStateService;
 
   beforeAll(async () => {
-    await useComponent(addressAddButtonComponent);
+    await useComponent(userAddressAddButtonComponent);
   });
 
   beforeEach(async () => {

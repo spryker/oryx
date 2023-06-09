@@ -15,7 +15,7 @@ import { SpyInstance } from 'vitest';
 import { UserAddressEditComponentOptions } from '../address-edit';
 import { EditTarget } from '../address-list-item';
 import { UserAddressListComponent } from './address-list.component';
-import { addressListComponent } from './address-list.def';
+import { userAddressListComponent } from './address-list.def';
 
 const mockBillingAddress: Address = { id: 'billing' };
 const mockShippingAddress: Address = {
@@ -51,7 +51,7 @@ describe('UserAddressListComponent', () => {
   let addressStateService: MockAddressStateService;
 
   beforeAll(async () => {
-    await useComponent(addressListComponent);
+    await useComponent(userAddressListComponent);
   });
 
   beforeEach(async () => {
