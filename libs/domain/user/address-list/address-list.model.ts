@@ -1,1 +1,3 @@
-export const SELECT_EVENT = 'oryx.select';
+import { UserAddressListItemOptions } from '../address-list-item';
+
+export type UserAddressListOptions = UserAddressListItemOptions;

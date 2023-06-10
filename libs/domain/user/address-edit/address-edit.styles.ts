@@ -5,9 +5,10 @@ export const styles = css`
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
+    width: 100%;
   }
 
-  oryx-address-form {
+  oryx-user-address-form {
     flex-basis: 100%;
   }
 

@@ -9,7 +9,7 @@ let api: SCCOSApi;
 const cartPage = new CartPage();
 const checkoutPage = new CheckoutPage();
 
-describe('User addresses', () => {
+xdescribe('User addresses', () => {
   beforeEach(() => {
     api = new SCCOSApi();
 

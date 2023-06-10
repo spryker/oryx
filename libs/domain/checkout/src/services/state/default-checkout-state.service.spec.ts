@@ -76,7 +76,7 @@ describe('DefaultCheckoutStateService', () => {
       expect(storageService.set).toHaveBeenCalledWith(
         checkoutDataStorageKey,
         expect.anything(),
-        StorageType.SESSION
+        StorageType.Session
       );
     });
 
@@ -97,7 +97,7 @@ describe('DefaultCheckoutStateService', () => {
       it('should remove the data from storage', () => {
         expect(storageService.remove).toBeCalledWith(
           checkoutDataStorageKey,
-          StorageType.SESSION
+          StorageType.Session
         );
       });
     });

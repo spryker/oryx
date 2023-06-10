@@ -24,7 +24,7 @@ describe('SearchComponent', () => {
       describe('when no searchIcon is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-search label="some label"></oryx-search>`
+            html`<oryx-search label="some label"><input /></oryx-search>`
           );
         });
 
@@ -46,7 +46,8 @@ describe('SearchComponent', () => {
               label="some label"
               searchIcon="custom-search-icon"
               }}
-            ></oryx-search>`
+              ><input
+            /></oryx-search>`
           );
         });
 
@@ -73,7 +74,7 @@ describe('SearchComponent', () => {
       describe('when the position is undefined', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-search label="some label"></oryx-search>`
+            html`<oryx-search label="some label"><input /></oryx-search>`
           );
         });
 
@@ -96,7 +97,8 @@ describe('SearchComponent', () => {
             html`<oryx-search
               .searchIconPosition=${SearchIconPosition.Prefix}
               label="some label"
-            ></oryx-search>`
+              ><input
+            /></oryx-search>`
           );
         });
 
@@ -116,8 +118,9 @@ describe('SearchComponent', () => {
           beforeEach(async () => {
             element = await fixture(
               html`<oryx-search label="some label"
-                ><div slot="prefix">custom prefix content</div></oryx-search
-              >`
+                ><div slot="prefix">custom prefix content</div>
+                <input
+              /></oryx-search>`
             );
           });
 
@@ -137,7 +140,8 @@ describe('SearchComponent', () => {
             html`<oryx-search
               .searchIconPosition=${SearchIconPosition.Suffix}
               label="some label"
-            ></oryx-search>`
+              ><input
+            /></oryx-search>`
           );
         });
 
@@ -157,7 +161,8 @@ describe('SearchComponent', () => {
           beforeEach(async () => {
             element = await fixture(
               html`<oryx-search label="some label"
-                ><div slot="suffix">custom prefix content</div></oryx-search
+                ><input />
+                <div slot="suffix">custom prefix content</div></oryx-search
               >`
             );
           });
@@ -178,7 +183,8 @@ describe('SearchComponent', () => {
             html`<oryx-search
               .searchIconPosition=${SearchIconPosition.None}
               label="some label"
-            ></oryx-search>`
+              ><input
+            /></oryx-search>`
           );
         });
 
@@ -218,7 +224,7 @@ describe('SearchComponent', () => {
 
     describe('when no custom input control is given', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-search></oryx-search>`);
+        element = await fixture(html`<oryx-search><input /></oryx-search>`);
       });
 
       describe('and the search icon is clicked', () => {
@@ -244,10 +250,7 @@ describe('SearchComponent', () => {
 
       describe('and when the value is changed ', () => {
         beforeEach(async () => {
-          const input = getShadowElementBySelector(
-            element,
-            'input'
-          ) as HTMLInputElement;
+          const input = element.querySelector('input') as HTMLInputElement;
           if (input) {
             input.value = 'foo-bar';
           }
@@ -305,7 +308,7 @@ describe('SearchComponent', () => {
       describe('when no clearIcon is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-search label="some label"></oryx-search>`
+            html`<oryx-search label="some label"><input /></oryx-search>`
           );
         });
 
@@ -327,7 +330,8 @@ describe('SearchComponent', () => {
               clearIcon="custom-clear-icon"
               label="some label"
               }}
-            ></oryx-search>`
+              ><input
+            /></oryx-search>`
           );
         });
 
@@ -354,7 +358,7 @@ describe('SearchComponent', () => {
       describe('when the position is undefined', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-search label="some label"></oryx-search>`
+            html`<oryx-search label="some label"><input /></oryx-search>`
           );
         });
 
@@ -381,7 +385,8 @@ describe('SearchComponent', () => {
             html`<oryx-search
               .clearIconPosition=${ClearIconPosition.After}
               label="some label"
-            ></oryx-search>`
+              ><input
+            /></oryx-search>`
           );
         });
 
@@ -408,7 +413,8 @@ describe('SearchComponent', () => {
             html`<oryx-search
               .clearIconPosition=${ClearIconPosition.Suffix}
               label="some label"
-            ></oryx-search>`
+              ><input
+            /></oryx-search>`
           );
         });
 
@@ -437,7 +443,8 @@ describe('SearchComponent', () => {
             html`<oryx-search
               .clearIconPosition=${ClearIconPosition.None}
               label="some label"
-            ></oryx-search>`
+              ><input
+            /></oryx-search>`
           );
         });
 
@@ -465,7 +472,7 @@ describe('SearchComponent', () => {
       describe('when the appearance is undefined', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-search label="some label"></oryx-search>`
+            html`<oryx-search label="some label"><input /></oryx-search>`
           );
         });
 
@@ -486,7 +493,8 @@ describe('SearchComponent', () => {
             html`<oryx-search
               .clearIconAppearance=${ClearIconAppearance.Hover}
               label="some label"
-            ></oryx-search>`
+              ><input
+            /></oryx-search>`
           );
         });
 
@@ -506,7 +514,7 @@ describe('SearchComponent', () => {
     describe('when the input is empty', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-search label="some label"></oryx-search>`
+          html`<oryx-search label="some label"><input /></oryx-search>`
         );
       });
 

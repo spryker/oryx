@@ -1,19 +1,41 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { AddressService } from '@spryker-oryx/user';
+import { RouterService } from '@spryker-oryx/router';
+import {
+  Address,
+  AddressService,
+  AddressStateService,
+  CrudState,
+} from '@spryker-oryx/user';
 import {
   mockCurrentAddress,
   uncompletedAddress,
 } from '@spryker-oryx/user/mocks';
 import { html } from 'lit';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { UserAddressComponent } from './address.component';
 import { addressComponent } from './address.def';
 
 class MockAddressService implements Partial<AddressService> {
   getAddress = vi.fn().mockReturnValue(of(mockCurrentAddress));
   getAddresses = vi.fn();
+}
+class MockRouterService implements Partial<RouterService> {
+  currentParams = vi.fn().mockReturnValue(of());
+}
+
+const mockState = new BehaviorSubject<{
+  action: CrudState;
+  selected?: Address | null;
+}>({
+  action: CrudState.Read,
+  selected: null,
+});
+class MockAddressStateService implements Partial<AddressStateService> {
+  set = vi.fn();
+  get = vi.fn().mockReturnValue(mockState);
+  clear = vi.fn();
 }
 
 describe('UserAddressComponent', () => {
@@ -26,7 +48,18 @@ describe('UserAddressComponent', () => {
 
   beforeEach(async () => {
     const testInjector = createInjector({
-      providers: [{ provide: AddressService, useClass: MockAddressService }],
+      providers: [
+        { provide: AddressService, useClass: MockAddressService },
+
+        {
+          provide: AddressStateService,
+          useClass: MockAddressStateService,
+        },
+        {
+          provide: RouterService,
+          useClass: MockRouterService,
+        },
+      ],
     });
 
     service = testInjector.inject(

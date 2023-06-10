@@ -140,7 +140,7 @@ describe('CartEntryComponent', () => {
       describe('when available is not provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html` <oryx-cart-entry sku="3"></oryx-cart-entry>`
+            html` <oryx-cart-entry sku="4"></oryx-cart-entry>`
           );
         });
 

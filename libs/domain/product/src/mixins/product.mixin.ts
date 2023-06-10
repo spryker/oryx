@@ -16,6 +16,9 @@ export declare class ProductMixinInterface
   implements ProductComponentProperties
 {
   sku?: string;
+  /**
+   * @deprecated
+   */
   product?: Product | null;
   $product: Signal<Product | null>;
 
