@@ -10,9 +10,8 @@ export class LoginFragment {
   getBEValidationError = () => this.getWrapper().find('oryx-notification');
 
   login = (user: TestUserData) => {
-    // this.getEmailInput().focus();
-    this.getEmailInput().type(user.email); // , { delay: 10, force: true }
-    this.getPasswordInput().type(user.password); // , { delay: 10, force: true }
+    this.getEmailInput().type(user.email); 
+    this.getPasswordInput().type(user.password);
     this.getRememberMeCheckbox().click();
     this.getLoginButton().click();
   };
