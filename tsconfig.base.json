@@ -4,6 +4,7 @@
     "baseUrl": ".",
     "paths": {
       "@/tools/storybook": ["tools/storybook/index.ts"],
+      "@/tools/testing": ["tools/testing"],
       "@spryker-oryx/application": ["libs/template/application/src/index.ts"],
       "@spryker-oryx/application/lambda": [
         "libs/template/application/lambda/index.ts"
@@ -164,7 +165,6 @@
       ],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
-      "@/tools/testing": ["tools/testing"],
       "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
       "@spryker-oryx/themes/breakpoints": [
         "libs/template/themes/breakpoints/index.ts"

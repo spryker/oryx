@@ -1,8 +1,5 @@
+import { dispatchKeydown, userAgentSafariMacOsX154 } from '@/tools/testing';
 import { fixture } from '@open-wc/testing-helpers';
-import {
-  dispatchKeydown,
-  userAgentSafariMacOsX154,
-} from '@/tools/testing';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
 import { html, LitElement, TemplateResult } from 'lit';

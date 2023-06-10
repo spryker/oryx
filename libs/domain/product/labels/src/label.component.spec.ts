@@ -1,8 +1,8 @@
+import '@/tools/testing';
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
-import '@/tools/testing';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { mockProductProviders } from '../../src/mocks';
