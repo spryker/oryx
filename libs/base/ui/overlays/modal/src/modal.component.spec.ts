@@ -4,7 +4,7 @@ import {
   checkSlots,
   getShadowElementBySelector,
   userAgentFirefox109,
-} from '@spryker-oryx/testing';
+} from '@/tools/testing';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
 import { html } from 'lit';

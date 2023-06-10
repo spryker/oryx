@@ -1,6 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { getShadowElementBySelector } from '@spryker-oryx/testing';
+import { getShadowElementBySelector } from '@/tools/testing';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { SearchEvent } from '@spryker-oryx/ui/searchbox';
 import { a11yConfig } from '@spryker-oryx/utilities';

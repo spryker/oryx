@@ -1,6 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { getShadowElementBySelector } from '@spryker-oryx/testing';
+import { getShadowElementBySelector } from '@/tools/testing';
 import { tagComponent } from './component';
 import { TagComponent } from './tag.component';
 

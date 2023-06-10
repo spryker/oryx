@@ -4,7 +4,7 @@ import { getControl } from '../../../../form/utilities';
 import {
   isSafari,
   nonFocusableOnClickInSafari,
-} from '../../../../src/utilities';
+} from '@spryker-oryx/ui';
 import { PopoverComponent } from '../popover.component';
 import {
   CLOSE_EVENT,
