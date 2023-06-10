@@ -28,6 +28,7 @@ export const checkoutPage: StaticComponent = {
           components: [
             { type: 'oryx-checkout-customer' },
             { type: 'oryx-checkout-delivery' },
+            { type: 'oryx-checkout-billing-address' },
             { type: 'oryx-checkout-shipment' },
             { type: 'oryx-checkout-payment' },
           ],

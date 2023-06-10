@@ -6,7 +6,11 @@ import {
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { AddressEventDetail, AddressService } from '@spryker-oryx/user';
+import {
+  Address,
+  AddressEventDetail,
+  AddressService,
+} from '@spryker-oryx/user';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
@@ -114,19 +118,42 @@ describe('CheckoutDeliveryComponent', () => {
     });
 
     describe('and there is no pre-selected address', () => {
-      beforeEach(async () => {
-        addressService.getAddresses.mockReturnValue([mockAddress, 2, 3]);
-        checkoutStateService.get.mockReturnValue(of(null));
-        element = await fixture(
-          html`<oryx-checkout-delivery></oryx-checkout-delivery>`
-        );
+      describe('and there is a default shipping address', () => {
+        beforeEach(async () => {
+          addressService.getAddresses.mockReturnValue([
+            mockAddress,
+            { id: 'bar', isDefaultShipping: true } as Address,
+            3,
+          ]);
+          checkoutStateService.get.mockReturnValue(of(null));
+          element = await fixture(
+            html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+          );
+        });
+
+        it('should auto-select the default shipping address', () => {
+          expect(checkoutStateService.set).toHaveBeenCalledWith(
+            'shippingAddress',
+            { valid: true, value: { id: 'bar', isDefaultShipping: true } }
+          );
+        });
       });
 
-      it('should auto-select the first address', () => {
-        expect(checkoutStateService.set).toHaveBeenCalledWith(
-          'shippingAddress',
-          { valid: true, value: mockAddress }
-        );
+      describe('and there is no default shipping address', () => {
+        beforeEach(async () => {
+          addressService.getAddresses.mockReturnValue([mockAddress, 2, 3]);
+          checkoutStateService.get.mockReturnValue(of(null));
+          element = await fixture(
+            html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+          );
+        });
+
+        it('should auto-select the first address', () => {
+          expect(checkoutStateService.set).toHaveBeenCalledWith(
+            'shippingAddress',
+            { valid: true, value: mockAddress }
+          );
+        });
       });
     });
 
