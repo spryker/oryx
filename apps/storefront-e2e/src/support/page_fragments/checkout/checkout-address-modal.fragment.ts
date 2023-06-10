@@ -8,7 +8,8 @@ export class CheckoutAddressModalFragment {
   }
 
   getWrapper = () => cy.get(this.wrapperSelector);
-  getAddAddressButton = () => this.getWrapper().find('oryx-button');
+  getAddAddressButton = () =>
+    this.getWrapper().find('oryx-user-address-add-button');
   getAddressList = () => this.getWrapper().find('oryx-user-address-list');
   getAddressListItem = () =>
     this.getAddressList().find('oryx-user-address-list-item');
@@ -17,7 +18,10 @@ export class CheckoutAddressModalFragment {
   getSaveAddressBtn = () =>
     this.getWrapper().find('oryx-button').contains('button', 'Save');
   getCloseModalBtn = () =>
-    this.getWrapper().find('dialog').find('button[value="cancel"]');
+    this.getWrapper()
+      .find('dialog')
+      .find('header')
+      .find('button[value="cancel"]');
 
   closeModal = () => {
     this.getCloseModalBtn().click();
