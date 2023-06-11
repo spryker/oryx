@@ -10,14 +10,14 @@ import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { CheckoutAddressComponent } from '../address';
-import { billingAddressStyles } from './billing-address.styles';
+import { checkoutBillingAddressStyles } from './billing-address.styles';
 
 @hydratable()
 export class CheckoutBillingAddressComponent
   extends CheckoutMixin(LitElement)
   implements isValid
 {
-  static styles = [billingAddressStyles];
+  static styles = [checkoutBillingAddressStyles];
 
   protected addressService = resolve(AddressService);
 
@@ -42,7 +42,11 @@ export class CheckoutBillingAddressComponent
 
   protected persistCopy = effect(() => {
     const deliveryAddress = this.shippingAddress();
-    if (this.sameAsShippingAddress() && deliveryAddress) {
+    if (
+      deliveryAddress &&
+      this.sameAsShippingAddress() &&
+      !this.addresses()?.length
+    ) {
       this.checkoutStateService.set('billingAddress', {
         valid: true,
         value: deliveryAddress,

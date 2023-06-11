@@ -26,7 +26,7 @@ interface Props {
 const Template: Story<Props> = (props): TemplateResult => {
   const service = resolve<MockAddressService>(AddressService);
   service.changeMockAddressType(props.addresses);
-  return html`<oryx-checkout-delivery></oryx-checkout-delivery> `;
+  return html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address> `;
 };
 
 export const Demo = Template.bind({});

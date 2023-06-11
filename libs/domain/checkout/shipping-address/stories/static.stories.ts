@@ -14,7 +14,7 @@ const Template: Story<{ type: MockAddressType }> = (args: {
 }): TemplateResult => {
   const service = resolve<MockAddressService>(AddressService);
   service.changeMockAddressType(args.type);
-  return html`<oryx-checkout-delivery></oryx-checkout-delivery> `;
+  return html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address> `;
 };
 
 export const None = Template.bind({});

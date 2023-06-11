@@ -10,14 +10,14 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { CheckoutAddressComponent } from '../address';
-import { checkoutDeliveryStyles } from './delivery.styles';
+import { checkoutShippingAddressStyles } from './shipping-address.styles';
 
 @hydratable()
-export class CheckoutDeliveryComponent
+export class CheckoutShippingAddressComponent
   extends CheckoutMixin(LitElement)
   implements isValid
 {
-  static styles = [checkoutDeliveryStyles];
+  static styles = [checkoutShippingAddressStyles];
 
   protected addressService = resolve(AddressService);
 

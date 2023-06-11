@@ -15,8 +15,8 @@ import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import { CheckoutAddressComponent } from '../address';
-import { CheckoutDeliveryComponent } from './delivery.component';
-import { checkoutDeliveryComponent } from './delivery.def';
+import { CheckoutShippingAddressComponent } from './shipping-address.component';
+import { checkoutShippingAddressComponent } from './shipping-address.def';
 
 export class MockCheckoutService implements Partial<CheckoutService> {
   getProcessState = vi.fn().mockReturnValue(of());
@@ -44,13 +44,13 @@ class MockComponent extends LitElement {
   isValid = vi.fn();
 }
 
-describe('CheckoutDeliveryComponent', () => {
-  let element: CheckoutDeliveryComponent;
+describe('CheckoutShippingAddressComponent', () => {
+  let element: CheckoutShippingAddressComponent;
   let checkoutStateService: MockCheckoutStateService;
   let addressService: MockAddressService;
 
   beforeAll(async () => {
-    await useComponent(checkoutDeliveryComponent);
+    await useComponent(checkoutShippingAddressComponent);
   });
 
   beforeEach(async () => {
@@ -88,12 +88,12 @@ describe('CheckoutDeliveryComponent', () => {
   describe('when the component is created', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+        html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address>`
       );
     });
 
     it('should be an instance of ', () => {
-      expect(element).toBeInstanceOf(CheckoutDeliveryComponent);
+      expect(element).toBeInstanceOf(CheckoutShippingAddressComponent);
     });
 
     it('should pass the a11y audit', async () => {
@@ -105,7 +105,7 @@ describe('CheckoutDeliveryComponent', () => {
     beforeEach(async () => {
       addressService.getAddresses.mockReturnValue([1, 2, 3]);
       element = await fixture(
-        html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+        html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address>`
       );
     });
 
@@ -127,7 +127,7 @@ describe('CheckoutDeliveryComponent', () => {
           ]);
           checkoutStateService.get.mockReturnValue(of(null));
           element = await fixture(
-            html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+            html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address>`
           );
         });
 
@@ -144,7 +144,7 @@ describe('CheckoutDeliveryComponent', () => {
           addressService.getAddresses.mockReturnValue([mockAddress, 2, 3]);
           checkoutStateService.get.mockReturnValue(of(null));
           element = await fixture(
-            html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+            html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address>`
           );
         });
 
@@ -181,7 +181,7 @@ describe('CheckoutDeliveryComponent', () => {
     beforeEach(async () => {
       addressService.getAddresses.mockReturnValue([]);
       element = await fixture(
-        html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+        html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address>`
       );
     });
 
@@ -216,7 +216,7 @@ describe('CheckoutDeliveryComponent', () => {
   describe('when the isValid method is called', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-checkout-delivery></oryx-checkout-delivery>`
+        html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address>`
       );
       element.isValid(true);
     });

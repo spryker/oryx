@@ -1,7 +1,7 @@
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
-export const billingAddressStyles = css`
+export const checkoutBillingAddressStyles = css`
   :host {
     display: grid;
     gap: 12px;
