@@ -13,7 +13,6 @@ export enum IconTypes {
   Decrease = 'remove', // merge with minus
   Info = 'info',
   InputError = 'report', // merge with error
-  Mark = 'check_circle',
   Minus = 'remove',
   Remove = 'delete_forever',
   Report = 'report',
