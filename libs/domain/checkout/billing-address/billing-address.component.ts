@@ -9,7 +9,6 @@ import {
 import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
-import { when } from 'lit/directives/when.js';
 import { CheckoutAddressComponent } from '../address';
 import { billingAddressStyles } from './billing-address.styles';
 
@@ -28,7 +27,7 @@ export class CheckoutBillingAddressComponent
     this.checkoutStateService.get('shippingAddress')
   );
 
-  protected same = signal(true);
+  protected sameAsShippingAddress = signal(true);
 
   protected autoSelect = effect(() => {
     const addresses = this.addresses();
@@ -43,7 +42,7 @@ export class CheckoutBillingAddressComponent
 
   protected persistCopy = effect(() => {
     const deliveryAddress = this.shippingAddress();
-    if (this.same() && deliveryAddress) {
+    if (this.sameAsShippingAddress() && deliveryAddress) {
       this.checkoutStateService.set('billingAddress', {
         valid: true,
         value: deliveryAddress,
@@ -55,40 +54,45 @@ export class CheckoutBillingAddressComponent
   protected checkoutAddress?: CheckoutAddressComponent;
 
   protected override render(): TemplateResult {
-    return html`
-      <h3>${i18n('checkout.steps.billing-address')}</h3>
-      ${when(
-        this.addresses()?.length,
-        () =>
-          html`<oryx-checkout-manage-address
-            @change=${this.onChange}
-            .selected=${this.selected()}
-          ></oryx-checkout-manage-address>`,
-        () =>
-          html`<oryx-button .type=${ButtonType.Text}>
-            <button @click=${this.doSame}>
-              ${i18n(
-                this.same()
-                  ? 'checkout.billing-address.change'
-                  : 'checkout.billing-address.same-as-delivery-address'
-              )}
-            </button></oryx-button
-          >`
-      )}
-      ${when(
-        this.same(),
-        () =>
-          html`${i18n('checkout.billing-address.same-as-delivery-address')}`,
-        () => html`<oryx-checkout-address
-          .addressId=${this.selected()?.id}
-          @change=${this.onChange}
-        ></oryx-checkout-address>`
-      )}
-    `;
+    return html`${this.renderHeading()}${this.renderBody()}`;
   }
 
-  protected doSame(): void {
-    this.same.set(!this.same());
+  protected renderHeading(): TemplateResult[] {
+    const templates = [
+      html`<h3>${i18n('checkout.steps.billing-address')}</h3>`,
+    ];
+    if (this.addresses()?.length) {
+      templates.push(html`<oryx-checkout-manage-address
+        @change=${this.onChange}
+        .selected=${this.selected()}
+      ></oryx-checkout-manage-address>`);
+    } else {
+      templates.push(html`<oryx-button .type=${ButtonType.Text}>
+        <button @click=${this.reuseShippingAddress}>
+          ${i18n(
+            this.sameAsShippingAddress()
+              ? 'checkout.billing-address.change'
+              : 'checkout.billing-address.same-as-shipping-address'
+          )}
+        </button></oryx-button
+      >`);
+    }
+    return templates;
+  }
+
+  protected renderBody(): TemplateResult {
+    if (!this.addresses()?.length && this.sameAsShippingAddress()) {
+      return html`${i18n('checkout.billing-address.same-as-shipping-address')}`;
+    } else {
+      return html`<oryx-checkout-address
+        .addressId=${this.selected()?.id}
+        @change=${this.onChange}
+      ></oryx-checkout-address>`;
+    }
+  }
+
+  protected reuseShippingAddress(): void {
+    this.sameAsShippingAddress.set(!this.sameAsShippingAddress());
   }
 
   isValid(report: boolean): boolean {
@@ -96,8 +100,7 @@ export class CheckoutBillingAddressComponent
   }
 
   protected onChange(e: CustomEvent<AddressEventDetail>): void {
-    // only persist when it's not the same
-    if (!this.same()) {
+    if (!this.sameAsShippingAddress() || this.addresses()?.length) {
       if (e.detail?.address) this.persist(e.detail.address, e.detail.valid);
     }
   }

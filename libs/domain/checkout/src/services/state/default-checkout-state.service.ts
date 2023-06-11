@@ -82,10 +82,6 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
       if (!data.customer.firstName && data.shippingAddress?.firstName)
         data.customer.firstName = data.shippingAddress.firstName;
     }
-    // tmp: copy the billing address from the shipping address for
-    // as long as we have not implemented the component
-    data.billingAddress = data.shippingAddress;
-
     return data;
   }
 
