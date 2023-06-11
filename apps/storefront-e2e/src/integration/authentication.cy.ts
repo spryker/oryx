@@ -45,9 +45,6 @@ describe('Authentication suite', () => {
       cy.login(defaultUser);
 
       cy.location('pathname').should('be.eq', landingPage.url);
-      // there is no other way to detect that hydration is finished
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(2000);
 
       landingPage.header.logout();
 
