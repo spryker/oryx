@@ -21,7 +21,7 @@ export const backofficeTokens: DesignToken[] = [
     ...layoutTokens,
     button: {
       icon: {
-        xs: '13.3px',
+        sm: '13.3px',
         md: '13.3px',
         lg: '13.3px',
       },
