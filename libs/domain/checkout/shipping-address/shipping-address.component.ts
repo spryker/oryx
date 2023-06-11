@@ -40,7 +40,7 @@ export class CheckoutShippingAddressComponent
 
   protected override render(): TemplateResult {
     return html`
-      <h3>${i18n('checkout.steps.delivery')}</h3>
+      <h3>${i18n('checkout.steps.shipping-address')}</h3>
       ${when(
         this.addresses()?.length,
         () =>

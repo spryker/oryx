@@ -6,7 +6,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Shipping address`,
+  title: `${storybookPrefix}/Billing address`,
   args: {
     addresses: MockAddressType.Two,
   },
@@ -26,7 +26,7 @@ interface Props {
 const Template: Story<Props> = (props): TemplateResult => {
   const service = resolve<MockAddressService>(AddressService);
   service.changeMockAddressType(props.addresses);
-  return html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address> `;
+  return html`<oryx-checkout-billing-address></oryx-checkout-billing-address> `;
 };
 
 export const Demo = Template.bind({});
