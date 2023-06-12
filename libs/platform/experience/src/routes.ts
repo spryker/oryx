@@ -17,6 +17,13 @@ export const defaultExperienceRoutes: RouteConfig[] = [
     name: 'Product test',
   },
   {
+    path: '/category/9',
+    render: (): TemplateResult => html`<experience-composition
+      route="/category/9"
+    ></experience-composition>`,
+    name: 'Category test',
+  },
+  {
     path: '/category/:id',
     render: (): TemplateResult => html`<experience-composition
       route="/category/:id"

@@ -6,135 +6,16 @@ const banner = (graphic: string) => ({
   content: { data: { graphic } },
 });
 
-const link = (text: string, id = '/', icon?: string) => ({
-  type: 'oryx-content-link',
-  options: { data: { id, text, icon } },
+const heading = (text: string, rules = {}) => ({
+  type: 'oryx-content-text',
+  content: { data: { text } },
+  options: { data: { tag: 'button', rules: [rules] } },
 });
 
-const selfServiceLinks = {
-  type: 'experience-composition',
-  name: 'Links',
-  options: {
-    data: {
-      rules: [
-        {
-          layout: 'column',
-          columnCount: '3',
-          gap: '0',
-        },
-      ],
-    },
-  },
-  components: [
-    {
-      type: 'experience-composition',
-      name: 'Customer support',
-      options: {
-        data: { rules: [{ layout: 'flex', vertical: true, align: 'start' }] },
-      },
-      components: [
-        link('Contact us', '/contact'),
-        link('Help center'),
-        link('Payment'),
-        link('Shipping information'),
-        link('Returns & Exchanges'),
-        link('Withdrawal rights'),
-      ],
-    },
-    {
-      type: 'experience-composition',
-      name: 'Our promises',
-      options: {
-        data: { rules: [{ layout: 'flex', vertical: true, align: 'start' }] },
-      },
-      components: [
-        link('Free delivery', '/', IconTypes.Carrier),
-        link('100-day return policy', '/', IconTypes.Parcel),
-        link('Click & Collect'),
-      ],
-    },
-    {
-      type: 'experience-composition',
-      name: 'About us',
-      options: {
-        data: { rules: [{ layout: 'flex', vertical: true, align: 'start' }] },
-      },
-      components: [
-        link('Company'),
-        link('Jobs & Career'),
-        link('Our stores'),
-        link('Our brands'),
-        link('Press'),
-        link('Corporate information'),
-      ],
-    },
-  ],
-};
-
-const checkoutLinks = {
-  type: 'experience-composition',
-  name: 'checkout methods',
-  options: {
-    data: {
-      rules: [
-        { layout: 'column', columnCount: '3', gap: '6px' },
-        {
-          query: {
-            childs: true,
-          },
-          background: 'var(--oryx-color-neutral-1)',
-          padding: '8px 15px',
-          radius: 5,
-          ratio: '4/3',
-        },
-      ],
-    },
-  },
-  components: [
-    banner('mastercard'),
-    banner('visa'),
-    banner('paypal'),
-    banner('klarna'),
-    banner('applePay'),
-    banner('googlePay'),
-    banner('dhl'),
-    banner('hermes'),
-    banner('dhlExpress'),
-  ],
-};
-
-const socialLinks = {
-  type: 'experience-composition',
-  name: 'socials',
-  options: { data: { rules: [{ layout: 'list' }] } },
-  components: [
-    {
-      type: 'experience-composition',
-      name: 'native apps',
-      options: {
-        data: {
-          rules: [{ layout: 'column', columnCount: '2', gap: '6px' }],
-        },
-      },
-      components: [banner('playStore'), banner('appleStore')],
-    },
-    {
-      type: 'experience-composition',
-      name: 'socials',
-      options: {
-        data: {
-          rules: [{ layout: 'flex', vertical: false, align: 'center' }],
-        },
-      },
-      components: [
-        banner('pinterest'),
-        banner('youtube'),
-        banner('instagram'),
-        banner('facebook'),
-      ],
-    },
-  ],
-};
+const link = (text: string, id = '/', icon?: string) => ({
+  type: 'oryx-content-link',
+  options: { data: { id, text, icon, multiLine: true } },
+});
 
 const legalLinks = {
   type: 'experience-composition',
@@ -163,17 +44,185 @@ export const FooterTemplate: StaticComponent = {
           type: 'experience-composition',
           name: 'Self service',
           options: {
-            data: { rules: [{ layout: 'split' }] },
+            data: { rules: [{ layout: 'column' }] },
           },
           components: [
-            selfServiceLinks,
             {
               type: 'experience-composition',
-              name: 'right',
               options: {
-                data: { rules: [{ layout: 'column', columnCount: 2 }] },
+                data: {
+                  rules: [{ layout: 'list', gap: 0, colSpan: 2, rowSpan: 2 }],
+                },
               },
-              components: [checkoutLinks, socialLinks],
+              components: [
+                heading('Customer Support'),
+                link('Contact us', '/contact'),
+                link('Help center'),
+                link('Payment'),
+                link('Shipping information'),
+                link('Returns & Exchanges'),
+                link('Withdrawal rights'),
+              ],
+            },
+
+            {
+              type: 'experience-composition',
+              options: {
+                data: {
+                  rules: [{ layout: 'list', gap: 0, colSpan: 2, rowSpan: 2 }],
+                },
+              },
+              components: [
+                heading('Our promises'),
+                link('Free delivery', '/', IconTypes.Carrier),
+                link('100-day return policy', '/', IconTypes.Parcel),
+                link('Click & Collect', '/', 'storefront'),
+              ],
+            },
+
+            {
+              type: 'experience-composition',
+              options: {
+                data: {
+                  rules: [{ layout: 'list', gap: 0, colSpan: 2, rowSpan: 2 }],
+                },
+              },
+              components: [
+                heading('About Us'),
+                link('Company'),
+                link('Jobs & Career'),
+                link('Our stores'),
+                link('Our brands'),
+                link('Press'),
+                link('Corporate information'),
+              ],
+            },
+
+            {
+              type: 'experience-composition',
+              options: {
+                data: { rules: [{ layout: 'list', gap: 0, colSpan: 2 }] },
+              },
+              components: [
+                heading('Safe Payment methods'),
+                {
+                  type: 'experience-composition',
+                  options: {
+                    data: {
+                      rules: [
+                        { layout: 'flex', gap: 10, margin: '12px 0' },
+                        {
+                          query: { childs: true },
+                          width: 'calc(33% - 30px)',
+                          padding: '8px 10px',
+                          ratio: '4/3',
+                          background: 'var(--oryx-color-neutral-1)',
+                          radius: 5,
+                        },
+                      ],
+                    },
+                  },
+                  components: [
+                    banner('mastercard'),
+                    banner('visa'),
+                    banner('paypal'),
+                    banner('klarna'),
+                    banner('applePay'),
+                    banner('googlePay'),
+                  ],
+                },
+              ],
+            },
+
+            {
+              type: 'experience-composition',
+              options: {
+                data: {
+                  rules: [
+                    { layout: 'list', gap: 0, colSpan: 2, gridColumn: 11 },
+                  ],
+                },
+              },
+              components: [
+                heading('Spryker Apps'),
+                {
+                  type: 'experience-composition',
+                  options: {
+                    data: {
+                      rules: [{ layout: 'flex', gap: '6px', margin: '12px 0' }],
+                    },
+                  },
+                  components: [banner('playStore'), banner('appleStore')],
+                },
+              ],
+            },
+
+            {
+              type: 'experience-composition',
+              options: {
+                data: { rules: [{ layout: 'list', gap: 0, colSpan: 2 }] },
+              },
+              components: [
+                heading('Shipping partners'),
+                {
+                  type: 'experience-composition',
+                  options: {
+                    data: {
+                      rules: [
+                        { layout: 'flex', gap: 10, margin: '12px 0' },
+                        {
+                          query: { childs: true },
+                          width: 'calc(33% - 30px)',
+                          padding: '8px 10px',
+                          ratio: '4/3',
+                          background: 'var(--oryx-color-neutral-1)',
+                          radius: 5,
+                        },
+                      ],
+                    },
+                  },
+                  components: [
+                    banner('dhl'),
+                    banner('hermes'),
+                    banner('dhlExpress'),
+                  ],
+                },
+              ],
+            },
+
+            {
+              type: 'experience-composition',
+              options: {
+                data: {
+                  rules: [
+                    { layout: 'list', gap: 0, colSpan: 2, gridColumn: 11 },
+                  ],
+                },
+              },
+              components: [
+                heading('You can also find us on'),
+                {
+                  type: 'experience-composition',
+                  options: {
+                    data: {
+                      rules: [
+                        {
+                          layout: 'flex',
+                          align: 'center',
+                          gap: '25px',
+                          margin: '12px 0',
+                        },
+                      ],
+                    },
+                  },
+                  components: [
+                    banner('pinterest'),
+                    banner('youtube'),
+                    banner('instagram'),
+                    banner('facebook'),
+                  ],
+                },
+              ],
             },
           ],
         },

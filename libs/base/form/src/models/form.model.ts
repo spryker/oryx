@@ -20,6 +20,7 @@ export const enum FormFieldType {
   Textarea = 'textarea',
   Color = 'color',
   RadioList = 'radio-list',
+  Wysiwyg = 'wysiwyg',
 }
 
 export interface FormFieldDefinition<K = string>

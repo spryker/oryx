@@ -41,7 +41,7 @@ export declare class ContentMixinInterface<OptionsType, ContentType>
    */
   protected componentContent: ContentType;
 
-  protected $options: Signal<OptionsType>;
+  $options: Signal<OptionsType>;
   protected $content: Signal<ContentType>;
 }
 
@@ -74,8 +74,12 @@ export const ContentMixin = <
     @asyncState()
     protected componentContent = valueType(this.content$);
 
-    protected $options = signal(this.contentController.getOptions(), {});
-    protected $content = signal(this.contentController.getContent(), {});
+    $options = signal(this.contentController.getOptions(), {
+      initialValue: {},
+    });
+    protected $content = signal(this.contentController.getContent(), {
+      initialValue: {},
+    });
   }
   return ContentMixinClass as unknown as Type<
     ContentMixinInterface<OptionsType, ContentType>

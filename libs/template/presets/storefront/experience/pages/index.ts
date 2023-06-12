@@ -1,4 +1,5 @@
 export * from './cart-page';
+export * from './category-9-page';
 export * from './category-page';
 export * from './checkout-page';
 export * from './contact-page';
