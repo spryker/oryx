@@ -4,18 +4,18 @@ import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import {
-  FacetComponentAttributes,
+  SearchFacetComponentAttributes,
   FacetController,
   SingleMultiFacet,
 } from './index';
 
 export declare class FacetComponent {
   controller: FacetController;
-  facet$: Observable<[SingleMultiFacet | null, FacetComponentAttributes]>;
+  facet$: Observable<[SingleMultiFacet | null, SearchFacetComponentAttributes]>;
 }
 
 export const FacetComponentMixin = (): Type<
-  LitElement & FacetComponent & FacetComponentAttributes
+  LitElement & FacetComponent & SearchFacetComponentAttributes
 > => {
   class FacetComponent extends LitElement {
     controller = new FacetController(this);

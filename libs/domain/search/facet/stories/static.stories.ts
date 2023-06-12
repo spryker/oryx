@@ -3,7 +3,7 @@ import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { Meta } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../.constants';
+import { storybookPrefix } from '../../.constants';
 import { FacetComponentAttributes } from '../facet.model';
 
 const facetComponent = (attrs: FacetComponentAttributes): TemplateResult => {

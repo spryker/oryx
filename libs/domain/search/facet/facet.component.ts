@@ -1,15 +1,14 @@
 import { FacetValue } from '@spryker-oryx/product';
 import { asyncValue, i18n } from '@spryker-oryx/utilities';
-import { CSSResultGroup, html, TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { SingleMultiFacet } from './facet.model';
-import { SingleFacetControlStyles } from './facet.styles';
-
+import { searchFacetStyles } from './facet.styles';
 import { FacetComponentMixin } from './facet.mixin';
 
 export class SearchFacetComponent extends FacetComponentMixin() {
-  static styles: CSSResultGroup = SingleFacetControlStyles;
+  static styles = searchFacetStyles;
 
   protected onChange(e: InputEvent): void {
     const { value, checked } = e.target as HTMLInputElement;

@@ -5,7 +5,7 @@ import { FacetListService } from '@spryker-oryx/search';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { take } from 'rxjs';
-import { storybookPrefix } from '../../../.constants';
+import { storybookPrefix } from '../../.constants';
 import { FacetComponentAttributes, FacetSelect } from '../facet.model';
 
 export default {

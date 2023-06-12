@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const SingleFacetControlStyles = css`
+export const searchFacetStyles = css`
   :host {
     padding: 4px 1px;
   }

@@ -18,7 +18,7 @@ export interface SingleMultiFacet extends Omit<Facet, 'values'> {
   filteredValueLength?: number;
 }
 
-export interface FacetComponentAttributes {
+export interface SearchFacetComponentAttributes {
   /**
    * Name of the facet which should be rendered.
    */
