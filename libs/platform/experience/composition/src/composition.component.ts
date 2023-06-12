@@ -30,7 +30,7 @@ import {
 } from 'rxjs';
 
 @hydratable()
-export class ExperienceCompositionComponent extends LayoutMixin(
+export class CompositionComponent extends LayoutMixin(
   ContentMixin<CompositionProperties>(LitElement)
 ) {
   static styles: CSSResult[] = [];
