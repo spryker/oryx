@@ -34,7 +34,7 @@ export class CheckoutManageAddressComponent extends AddressMixin(
 
   @state() protected open?: boolean;
   @state() protected loading?: boolean;
-  @state() protected preselected?: Address;
+  @state() protected preselected: Address | null = null;
 
   @query('oryx-user-address-edit') editComponent?: UserAddressEditComponent;
 
@@ -147,7 +147,7 @@ export class CheckoutManageAddressComponent extends AddressMixin(
 
   protected onClose(): void {
     this.addressStateService.clear();
-    this.preselected = undefined;
+    this.preselected = null;
     this.open = false;
   }
 
@@ -157,7 +157,7 @@ export class CheckoutManageAddressComponent extends AddressMixin(
 
   protected onChange(e: CustomEvent<AddressEventDetail>): void {
     e.stopPropagation();
-    this.preselected = e.detail.address;
+    this.preselected = e.detail.address ?? null;
   }
 
   protected onSelect(): void {
