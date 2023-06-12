@@ -1,6 +1,6 @@
 import { inject } from '@spryker-oryx/di';
-import { PickingHttpService } from '@spryker-oryx/picking';
 import { Observable } from 'rxjs';
+import { PickingHttpService } from '../../../src/services';
 import { BapiPushNotificationAdapter } from './bapi-push-notification.adapter';
 
 export class BapiPushNotificationDefaultAdapter

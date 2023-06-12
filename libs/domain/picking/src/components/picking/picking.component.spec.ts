@@ -1,7 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PickingListService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { tabsComponent } from '@spryker-oryx/ui/tabs';
@@ -9,6 +8,7 @@ import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { mockPickingListData } from '../../mocks';
+import { PickingListService } from '../../services';
 import { PickingComponent } from './picking.component';
 import { pickingComponent } from './picking.def';
 

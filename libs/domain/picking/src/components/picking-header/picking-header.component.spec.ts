@@ -1,12 +1,12 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { CustomerNoteModalComponent } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { PickingListService } from '../../services';
+import { CustomerNoteModalComponent } from '../customer-note-modal';
 import { PickingHeaderComponent } from './picking-header.component';
 import { pickingHeaderComponent } from './picking-header.def';
 

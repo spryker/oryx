@@ -29,6 +29,10 @@
     "./*": {
       "types": "./*/index.d.ts",
       "default": "./*/index.js"
+    },
+    "./mocks": {
+      "types": "./src/mocks/index.d.ts",
+      "default": "./src/mocks/index.js"
     }
   }
 }

@@ -1,16 +1,14 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  CustomerNoteModalComponent,
-  PickingListService,
-} from '@spryker-oryx/picking';
 import { CLOSE_EVENT, ModalComponent } from '@spryker-oryx/ui/modal';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { mockPickingListData } from '../../mocks';
+import { PickingListService } from '../../services';
+import { CustomerNoteModalComponent } from '../customer-note-modal';
 import { PickingListsComponent } from './picking-lists.component';
 import { pickingListsComponent } from './picking-lists.def';
 

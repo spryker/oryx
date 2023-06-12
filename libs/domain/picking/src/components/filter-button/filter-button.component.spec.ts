@@ -1,10 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { defaultSortingQualifier } from '@spryker-oryx/picking';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
+import { defaultSortingQualifier } from '../../models';
 import { PickingListService } from '../../services';
 import { FilterButtonComponent } from './filter-button.component';
 import { filterButtonComponent } from './filter-button.def';

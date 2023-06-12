@@ -1,15 +1,15 @@
 import { resolve } from '@spryker-oryx/di';
 import { FormRenderer } from '@spryker-oryx/form';
-import {
-  defaultSortingQualifier,
-  PickingListQualifierSortBy,
-  PickingListService,
-  SortableQualifier,
-} from '@spryker-oryx/picking';
 import { i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { map } from 'rxjs';
+import {
+  defaultSortingQualifier,
+  PickingListQualifierSortBy,
+  SortableQualifier,
+} from '../../models';
+import { PickingListService } from '../../services';
 import { fields } from './filters.model';
 import { filtersComponentStyles } from './filters.styles';
 

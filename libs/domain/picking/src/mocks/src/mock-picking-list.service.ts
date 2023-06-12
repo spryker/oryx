@@ -1,12 +1,12 @@
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import {
   defaultSortingQualifier,
   PickingList,
   PickingListQualifier,
   PickingListQualifierSortBy,
-  PickingListService,
   SortableQualifier,
-} from '@spryker-oryx/picking';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+} from '../../models';
+import { PickingListService } from '../../services';
 import { mockPickingListData } from './mock-picking-list';
 
 export class MockPickingListService implements Partial<PickingListService> {

@@ -2,7 +2,6 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { PickingListService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -10,6 +9,7 @@ import { of, throwError } from 'rxjs';
 import { afterEach } from 'vitest';
 import { mockPickingListData } from '../../mocks';
 import { PickingListError } from '../../models';
+import { PickingListService } from '../../services';
 import { PickingListItemComponent } from './picking-list-item.component';
 import { pickingListItemComponent } from './picking-list-item.def';
 class MockRouterService implements Partial<RouterService> {
