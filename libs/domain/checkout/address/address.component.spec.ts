@@ -18,6 +18,7 @@ import {
 } from '../src/services';
 import { CheckoutAddressComponent } from './address.component';
 import { checkoutAddressComponent } from './address.def';
+import { CheckoutAddressOptions } from './address.model';
 
 class MockAddressService implements Partial<AddressService> {
   getAddresses = vi.fn();
@@ -154,34 +155,67 @@ describe('CheckoutAddressComponent', () => {
     describe('when there is an address list', () => {
       beforeEach(async () => {
         addressService.getAddresses.mockReturnValue(of([{}]));
-        element = await fixture(
-          html`<oryx-checkout-address></oryx-checkout-address>`
-        );
       });
 
-      it('should not render the oryx-user-address-form', () => {
-        expect(element).not.toContainElement('oryx-user-address-form');
-      });
-
-      it('should render the oryx-user-address-list', () => {
-        expect(element).toContainElement('oryx-user-address-list');
-      });
-
-      describe('and an change event is dispatched on the list', () => {
-        beforeEach(() => {
-          element.dispatchEvent = vi.fn();
-          const list = element.renderRoot.querySelector(
-            'oryx-user-address-list'
-          ) as HTMLElement;
-          list.dispatchEvent(
-            new CustomEvent('change', {
-              detail: { address: { foo: 'bar' } },
-            })
+      describe('and the enableList option is false', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-checkout-address
+              .options=${{ enableList: false } as CheckoutAddressOptions}
+            ></oryx-checkout-address>`
           );
         });
 
-        it('should set the address to the state service', () => {
-          expect(addressStateService.set).toHaveBeenCalled();
+        it('should not render the oryx-user-address-form', () => {
+          expect(element).not.toContainElement('oryx-user-address-form');
+        });
+
+        it('should not render the oryx-user-address-list', () => {
+          expect(element).not.toContainElement('oryx-user-address-list');
+        });
+
+        it('should render the oryx-user-address', () => {
+          expect(element).toContainElement('oryx-user-address');
+        });
+      });
+
+      describe('and the enableList option is true', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-checkout-address
+              .options=${{ enableList: true } as CheckoutAddressOptions}
+            ></oryx-checkout-address>`
+          );
+        });
+
+        it('should not render the oryx-user-address-form', () => {
+          expect(element).not.toContainElement('oryx-user-address-form');
+        });
+
+        it('should render the oryx-user-address-list', () => {
+          expect(element).toContainElement('oryx-user-address-list');
+        });
+
+        it('should not render the oryx-user-address', () => {
+          expect(element).not.toContainElement('oryx-user-address');
+        });
+
+        describe('and an change event is dispatched on the list', () => {
+          beforeEach(() => {
+            element.dispatchEvent = vi.fn();
+            const list = element.renderRoot.querySelector(
+              'oryx-user-address-list'
+            ) as HTMLElement;
+            list.dispatchEvent(
+              new CustomEvent('change', {
+                detail: { address: { foo: 'bar' } },
+              })
+            );
+          });
+
+          it('should set the address to the state service', () => {
+            expect(addressStateService.set).toHaveBeenCalled();
+          });
         });
       });
     });
