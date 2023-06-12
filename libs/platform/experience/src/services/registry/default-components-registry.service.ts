@@ -1,7 +1,6 @@
 import { inject } from '@spryker-oryx/di';
-import { TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { html } from 'lit/static-html.js';
 import { ComponentMapping } from '../experience-tokens';
 import { ComponentsRegistryService } from './components-registry.service';
 
@@ -33,6 +32,6 @@ export class DefaultComponentsRegistryService
 
     return component.template
       ? component.template(uid, markers)
-      : html`${unsafeHTML(`<${tag} uid=${uid} ${markers ?? ''}></${tag}>`)} `;
+      : html`${unsafeHTML(`<${tag} uid=${uid} ${markers ?? ''}></${tag}>`)}`;
   }
 }

@@ -3,8 +3,8 @@ import { ComponentMapping } from '../experience-tokens';
 import { ComponentsRegistryService } from './components-registry.service';
 import { DefaultComponentsRegistryService } from './default-components-registry.service';
 
-vi.mock('lit/static-html.js', async () => ({
-  ...((await vi.importActual('lit/static-html.js')) as Array<unknown>),
+vi.mock('lit', async () => ({
+  ...((await vi.importActual('lit')) as Array<unknown>),
   html: (svg: string[], ...values: string[]): string => {
     const template = [svg[0]];
 
@@ -15,7 +15,13 @@ vi.mock('lit/static-html.js', async () => ({
 
     return template.join('');
   },
-  unsafeStatic: (value: TemplateStringsArray) => value,
+}));
+
+vi.mock('lit/directives/unsafe-html.js', async () => ({
+  ...((await vi.importActual(
+    'lit/directives/unsafe-html.js'
+  )) as Array<unknown>),
+  unsafeHTML: (value: TemplateStringsArray) => value,
 }));
 
 const mockMapper = {
@@ -76,13 +82,13 @@ describe('DefaultComponentsRegistryService', () => {
     it('should return generated template if it is not existed in the mapper', () => {
       const template = service.resolveTemplate('typeA', 'uidA', 'styleClassA');
       expect(template).toBe(
-        '<custom-tag-A uid=uidA class=styleClassA></custom-tag-A>'
+        '<custom-tag-A uid=uidA styleClassA></custom-tag-A>'
       );
     });
 
     it('should generate tag and return generated template if it is not existed in the mapper', () => {
       const template = service.resolveTemplate('typeC', 'uidA', 'styleClassA');
-      expect(template).toBe('<typeC uid=uidA class=styleClassA></typeC>');
+      expect(template).toBe('<typeC uid=uidA styleClassA></typeC>');
     });
   });
 });

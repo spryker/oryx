@@ -77,7 +77,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   getLayoutMarkers(data?: CompositionProperties): string | undefined {
     const markerPrefix = 'oryx-layout-';
 
-    const markers = data?.rules?.reduce((acc, ruleSet) => {
+    return data?.rules?.reduce((acc, ruleSet) => {
       if (!ruleSet) return acc;
 
       const ruleMarkers = layoutKeys.reduce((acc, key) => {
@@ -97,8 +97,6 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
       return `${acc}${ruleMarkers}`;
     }, '');
-
-    return markers;
   }
 
   getLayoutStyles(data?: StyleProperties): string | undefined {
