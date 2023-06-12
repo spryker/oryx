@@ -1,6 +1,5 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { primaryColorLighter } from '@spryker-oryx/utilities';
 
 export const contactPage: StaticComponent = {
   type: 'Page',
@@ -17,7 +16,7 @@ export const contactPage: StaticComponent = {
           margin: '50 0',
           padding: '10 0',
           bleed: true,
-          background: primaryColorLighter,
+          background: 'var(--oryx-color-primary-3)',
         },
       ],
     },
@@ -30,7 +29,7 @@ export const contactPage: StaticComponent = {
           type: 'rawUrl',
           id: '/contact',
           text: 'This is Contact Page element. Remove me when the page is implemented',
-          icon: IconTypes.Mark,
+          icon: IconTypes.Check,
         },
       },
     },

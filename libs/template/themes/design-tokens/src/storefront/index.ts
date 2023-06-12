@@ -18,6 +18,7 @@ export const storefrontTokens: DesignToken[] = [
     ...typographyTokens,
     ...iconTokens,
     ...layoutTokens,
+    button: { icon: { sm: '13.3px' } },
   },
   {
     media: {

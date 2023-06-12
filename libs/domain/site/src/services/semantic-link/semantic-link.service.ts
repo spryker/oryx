@@ -16,6 +16,9 @@ export enum SemanticLinkType {
   Order = 'Order',
   Cart = 'cart',
   Login = 'login',
+  AddressList = 'address-list',
+  AddressBookCreate = 'address-book-create',
+  AddressBookEdit = 'address-book-edit',
 }
 
 export interface SemanticLinkService {

@@ -3,7 +3,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
 import {
   AddressDefaults,
-  AddressListItemOptions,
+  UserAddressListItemOptions,
 } from '../address-list-item.model';
 import { renderSelector } from './helper';
 
@@ -23,7 +23,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<AddressListItemOptions> = (props): TemplateResult => {
+const Template: Story<UserAddressListItemOptions> = (props): TemplateResult => {
   return html`${renderSelector(props)}`;
 };
 

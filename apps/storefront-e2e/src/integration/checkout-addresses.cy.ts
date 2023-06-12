@@ -42,9 +42,24 @@ describe('User addresses', () => {
           cartPage.checkout();
         });
 
-        it('then default address form is shown', () => {
-          checkoutPage.addressForm.getAddressForm().should('be.visible');
-          checkoutPage.addressList.getAddressList().should('not.exist');
+        it('then shipping address form is shown', () => {
+          checkoutPage.shipping.addAddressForm
+            .getAddressForm()
+            .should('be.visible');
+          checkoutPage.shipping.addressesList
+            .getAddressList()
+            .should('not.exist');
+
+          checkoutPage.billing.addAddressForm
+            .getAddressForm()
+            .should('not.exist');
+          checkoutPage.billing.addressesList
+            .getAddressList()
+            .should('not.exist');
+          checkoutPage.billing.addAddressForm
+            .getWrapper()
+            .shadow()
+            .should('contain.text', 'Same as shipping address');
         });
       });
     });
@@ -64,64 +79,89 @@ describe('User addresses', () => {
           checkCheckoutAddressesList(2);
         });
 
-        describe('and user wants to change addresses', () => {
-          beforeEach(() => {
-            checkoutPage.openChangeAddressesModal();
-          });
-
-          it('then the addresses modal is open', () => {
-            checkAddressesListInModal(2);
-          });
-
-          describe('and user adds new address', () => {
+        [
+          {
+            type: checkoutPage.shipping,
+            name: 'shipping address',
+          },
+          {
+            type: checkoutPage.billing,
+            name: 'billing address',
+          },
+        ].forEach((address) => {
+          describe(`and user wants to change ${address.name}`, () => {
             beforeEach(() => {
-              checkoutPage.addressChangeModal.addAddress();
+              address.type.addressesList.getChangeAddressesButton().click();
             });
 
-            it('new address appears in both addresses lists', () => {
-              checkAddressesListInModal(3);
-              checkoutPage.addressChangeModal.closeModal();
-              checkCheckoutAddressesList(3);
-            });
-          });
-
-          describe('and user edits existing address', () => {
-            const newCompany = 'Edited Company';
-
-            beforeEach(() => {
-              checkoutPage.addressChangeModal.editCompanyInAddress(newCompany);
+            it('then the addresses modal is open', () => {
+              checkAddressesListInModal(address.type, 2);
             });
 
-            it('edited address appears in both addresses lists', () => {
-              checkAddressesListInModal(2);
-              checkoutPage.addressChangeModal
-                .getAddressListItem()
-                .eq(0)
-                .find('oryx-user-address')
-                .shadow()
-                .should('contain.text', newCompany);
+            describe('and user adds new address', () => {
+              beforeEach(() => {
+                address.type.addressChangeModal.addAddress();
+              });
 
-              checkoutPage.addressChangeModal.closeModal();
-
-              checkCheckoutAddressesList(2);
-              checkoutPage.addressList
-                .getAddressListItem()
-                .eq(0)
-                .find('oryx-user-address')
-                .shadow()
-                .should('contain.text', newCompany);
-            });
-          });
-
-          describe('and user removes existing address', () => {
-            beforeEach(() => {
-              checkoutPage.addressChangeModal.removeAddress();
+              it('new address appears in all 3 addresses lists', () => {
+                checkAddressesListInModal(address.type, 3);
+                address.type.addressChangeModal.closeModal();
+                checkCheckoutAddressesList(3);
+              });
             });
 
-            it('removed address dissapeares in both address lists', () => {
-              checkAddressesListInModal(1);
-              checkoutPage.addressChangeModal.closeModal();
-              checkCheckoutAddressesList(1);
+            describe('and user edits existing address', () => {
+              const newCompany = 'Edited Company';
+
+              beforeEach(() => {
+                address.type.addressChangeModal.editCompanyInAddress(
+                  newCompany
+                );
+              });
+
+              it('edited address appears in all 3 addresses lists', () => {
+                // check addresses in modal after edit
+                checkAddressesListInModal(address.type, 2);
+
+                address.type.addressChangeModal.addressesList
+                  .getAddressListItem()
+                  .eq(0)
+                  .find('oryx-user-address')
+                  .shadow()
+                  .should('contain.text', newCompany);
+
+                // close modal
+                address.type.addressChangeModal.closeModal();
+
+                // check addresses in billing and shipping lists
+                checkCheckoutAddressesList(2);
+
+                checkoutPage.shipping.addressesList
+                  .getAddressListItem()
+                  .eq(0)
+                  .find('oryx-user-address')
+                  .shadow()
+                  .should('contain.text', newCompany);
+
+                checkoutPage.billing.addressesList
+                  .getAddressListItem()
+                  .eq(0)
+                  .find('oryx-user-address')
+                  .shadow()
+                  .should('contain.text', newCompany);
+              });
+            });
+
+            describe('and user removes existing address', () => {
+              beforeEach(() => {
+                address.type.addressChangeModal.removeAddress();
+              });
+
+              it('removed address dissapeares from all 3 addresses lists', () => {
+                checkAddressesListInModal(address.type, 1);
+                address.type.addressChangeModal.closeModal();
+                checkCheckoutAddressesList(1);
+              });
             });
           });
         });
@@ -131,18 +171,35 @@ describe('User addresses', () => {
 });
 
 function checkCheckoutAddressesList(numberOfAddresses: number) {
-  checkoutPage.addressForm.getAddressForm().should('not.exist');
-  checkoutPage.getChangeAddressesButton().should('be.visible');
-  checkoutPage.addressList.getAddressList().should('be.visible');
-  checkoutPage.addressList
+  // check shipping addresses
+  checkoutPage.shipping.addAddressForm.getAddressForm().should('not.exist');
+
+  checkoutPage.shipping.addressesList
+    .getChangeAddressesButton()
+    .should('be.visible');
+  checkoutPage.shipping.addressesList.getAddressList().should('be.visible');
+  checkoutPage.shipping.addressesList
+    .getAddressListItem()
+    .should('have.length', numberOfAddresses);
+
+  // check billing addresses
+  checkoutPage.billing.addAddressForm.getAddressForm().should('not.exist');
+
+  checkoutPage.shipping.addressesList
+    .getChangeAddressesButton()
+    .should('be.visible');
+  checkoutPage.billing.addressesList.getAddressList().should('be.visible');
+  checkoutPage.billing.addressesList
     .getAddressListItem()
     .should('have.length', numberOfAddresses);
 }
 
-function checkAddressesListInModal(numberOfAddresses: number) {
-  checkoutPage.addressChangeModal.getAddAddressButton().should('be.visible');
-  checkoutPage.addressChangeModal.getAddressList().should('be.visible');
-  checkoutPage.addressChangeModal
+function checkAddressesListInModal(addressType, numberOfAddresses: number) {
+  addressType.addressChangeModal.getAddAddressButton().should('be.visible');
+  addressType.addressChangeModal.addressesList
+    .getAddressList()
+    .should('be.visible');
+  addressType.addressChangeModal.addressesList
     .getAddressListItem()
     .should('have.length', numberOfAddresses);
 }

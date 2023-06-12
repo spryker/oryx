@@ -1,4 +1,3 @@
-import { secondaryColorBase } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { CompositionLayout } from '../../../../src/models';
 
@@ -11,7 +10,9 @@ export const generateLayoutItems = (
   return html`${Array.from(
     { length },
     (_, i) =>
-      html`<div style="${highlight ? `background:${secondaryColorBase}` : ''}">
+      html`<div
+        style="${highlight ? `background:var(--oryx-color-secondary-9);` : ''}"
+      >
         ${prefix}${i + start}
       </div>`
   )}`;
@@ -174,10 +175,10 @@ export const generateNestedLayout = (
     <oryx-layout layout=${layout}>
       <div>1</div>
       <oryx-layout layout="flex" .options=${{ rules: [{ colSpan: 2 }] }}>
-        <div style="background:${secondaryColorBase}">
+        <div style="background:var(--oryx-color-secondary-9);">
           N1 - lengthy content
         </div>
-        <div style="width:100px;background:${secondaryColorBase}">
+        <div style="width:100px;background:var(--oryx-color-secondary-9);">
           N2 width:100px
         </div>
         ${generateLayoutItems(3, 3, 'N', true)}

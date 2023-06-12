@@ -1,4 +1,7 @@
-import { OverlaysDecorator, storybookDefaultViewports } from '@spryker-oryx/ui';
+import {
+  OverlaysDecorator,
+  storybookDefaultViewports,
+} from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';

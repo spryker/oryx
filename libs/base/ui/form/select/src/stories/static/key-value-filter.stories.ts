@@ -1,8 +1,8 @@
+import { sideBySide } from '@/tools/storybook';
+import { FilterStrategyType } from '@spryker-oryx/ui/typeahead';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { FilterStrategyType } from '../../../../../search/typeahead';
-import { sideBySide } from '../../../../../src/utilities/storybook';
 import { keyValueSelectOptions } from './common';
 
 export default {

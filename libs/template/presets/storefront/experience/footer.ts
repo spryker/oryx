@@ -50,7 +50,7 @@ const selfServiceLinks = {
       components: [
         link('Free delivery', '/', IconTypes.Carrier),
         link('100-day return policy', '/', IconTypes.Parcel),
-        link('Click & Collect'),
+        link('Click & Collect', '/', 'storefront'),
       ],
     },
     {

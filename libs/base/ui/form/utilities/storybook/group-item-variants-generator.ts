@@ -1,4 +1,4 @@
-import { extendVariants, PseudoStates, Variant } from '@spryker-oryx/ui';
+import { extendVariants, PseudoStates, Variant } from '@/tools/storybook';
 
 export enum CategoryX {
   DEFAULT = 'Default',

@@ -1,4 +1,3 @@
-import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const navigationItemStyles = css`
@@ -29,13 +28,13 @@ export const navigationItemStyles = css`
   }
 
   :host([active]:not([active='false'])) {
-    color: ${primaryColorBase};
+    color: var(--oryx-color-primary-9);
     pointer-events: none;
   }
 
   :host([active]:not([active='false']))::before {
     content: '';
-    background-color: ${primaryColorBase};
+    background-color: var(--oryx-color-primary-9);
     position: absolute;
     inset-inline-start: 0;
     height: 36px;

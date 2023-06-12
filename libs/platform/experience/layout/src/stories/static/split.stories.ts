@@ -1,8 +1,7 @@
 import { CompositionLayout } from '@spryker-oryx/experience';
-import { secondaryColorBase } from '@spryker-oryx/utilities';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../constants';
+import { storybookPrefix } from '../../../../.constants';
 import { layoutStaticStyles } from './styles';
 import { generateLayoutItems, generateNestedLayout } from './util';
 
@@ -68,7 +67,7 @@ const Template: Story = (): TemplateResult => {
     <oryx-layout layout="split-main">
       <div style="grid-column:span 2">1</div>
       <oryx-layout sticky>
-        <div style="background:${secondaryColorBase}">2 (sticky)</div>
+        <div style="background:var(--oryx-color-secondary-9);">2 (sticky)</div>
       </oryx-layout>
       ${generateLayoutItems(3, 3)}
     </oryx-layout>

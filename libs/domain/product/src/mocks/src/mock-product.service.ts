@@ -155,6 +155,11 @@ export class MockProductService implements Partial<ProductService> {
         brand: 'Brand',
         color: 'Color',
       },
+      availability: {
+        isNeverOutOfStock: false,
+        quantity: 10,
+        availability: true,
+      },
     },
     {
       sku: '4',
