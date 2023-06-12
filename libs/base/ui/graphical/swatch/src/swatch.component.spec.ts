@@ -13,7 +13,6 @@ describe('SwatchComponent', () => {
     await useComponent(swatchComponent);
   });
 
-
   describe('when the type is Warning', () => {
     beforeEach(async () => {
       element = await fixture(
