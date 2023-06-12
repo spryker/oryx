@@ -1,4 +1,4 @@
-import { getAppIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@/tools/storybook';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import { Meta, Story } from '@storybook/web-components';

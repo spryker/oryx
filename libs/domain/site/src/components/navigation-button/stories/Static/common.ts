@@ -1,4 +1,4 @@
-import { generateVariantsMatrix, Variant } from '@spryker-oryx/ui';
+import { generateVariantsMatrix, Variant } from '@/tools/storybook';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 

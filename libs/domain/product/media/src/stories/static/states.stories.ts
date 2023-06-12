@@ -1,4 +1,4 @@
-import { OverlaysDecorator } from '@spryker-oryx/ui';
+import { OverlaysDecorator } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -17,12 +17,12 @@ const Template: Story = (): TemplateResult => {
     <oryx-product-media sku="1" .options=${{
       mediaIndex: 1,
     }} /></oryx-product-media>
-    
+
     <h3>Third image</h3>
     <oryx-product-media sku="1" .options=${{
       mediaIndex: 2,
     }} /></oryx-product-media>
-    
+
     <h3>4th (non existing) image</h3>
     <oryx-product-media sku="1" .options=${{
       mediaIndex: 3,

@@ -1,5 +1,5 @@
+import { getShadowElementBySelector } from '@/tools/testing';
 import { fixtureCleanup } from '@open-wc/testing-helpers';
-import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { LitElement } from 'lit';
 
 const { getComputedStyle } = window;
