@@ -274,8 +274,7 @@
       ],
       "@spryker-oryx/user/mocks": ["libs/domain/user/src/mocks/index.ts"],
       "@spryker-oryx/utilities": ["libs/base/utilities/src/index.ts"],
-      "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"],
-      "@spryker-oryx/utilities/no-lit": ["libs/base/utilities/no-lit/index.ts"]
+      "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"]
     }
   }
 }
