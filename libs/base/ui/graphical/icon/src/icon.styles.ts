@@ -18,9 +18,9 @@ export const styles = css`
     height: var(--oryx-icon-size, var(--oryx-icon-size-lg, 24px));
     aspect-ratio: 1 / 1;
     color: var(--oryx-icon-color, inherit);
-    font: var(--oryx-icon-weight, 500) var(--oryx-icon-size, 24px)
+    font: var(--oryx-icon-weight, 500)
+      var(--oryx-icon-size, var(--_oryx-icon-size, 24px))
       var(--oryx-icon-font, ${font});
-    font-size: var(--oryx-icon-size, var(--_oryx-icon-size, 24px));
     font-variation-settings: 'FILL' var(--oryx-icon-fill, 0),
       'wght' var(--oryx-icon-weight, 500), 'GRAD' var(--oryx-icon-grad, 0),
       'opsz' var(--oryx-icon-optical, 48);
