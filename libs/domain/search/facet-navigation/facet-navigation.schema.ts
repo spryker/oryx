@@ -13,11 +13,9 @@ export const searchFacetNavigationSchema: ContentComponentSchema<SearchFacetNavi
         type: FormFieldType.Number,
       },
       valueRenderLimit: {
-        label: 'Maximum values for render',
         type: FormFieldType.Number,
       },
       minForSearch: {
-        label: 'Minimum values to enable search',
         type: FormFieldType.Number,
       },
     },

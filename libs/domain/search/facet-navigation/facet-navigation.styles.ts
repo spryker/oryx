@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const facetNavigation = css`
+export const searchFacetNavigationStyles = css`
   :host {
     align-items: stretch;
     max-height: 100vh;

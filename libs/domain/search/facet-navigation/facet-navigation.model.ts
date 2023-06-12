@@ -1,4 +1,4 @@
-export interface FacetsOptions {
+export interface SearchFacetNavigationOptions {
   /**
    * Indicates the number of facets that are visible on the page. This is useful when
    * the page comes with a lot of facets, which would create a very busy facet navigation.
