@@ -2,23 +2,20 @@ import { resolve } from '@spryker-oryx/di';
 import { FacetValue } from '@spryker-oryx/product';
 import { FacetColorsMapping } from '@spryker-oryx/search';
 import { html, TemplateResult } from 'lit';
+import { SingleFacetControlStyles } from '../facet/src';
 // use relative path for dev ssr server, SearchFacetComponent is undefined
-import { SearchFacetComponent } from '../../facet/src/facet.component';
+import { SearchFacetComponent } from '../facet/src/facet.component';
 import { styles } from './facet-color.styles';
 
 export class SearchColorFacetComponent extends SearchFacetComponent {
-  static styles = styles;
+  static styles = [SingleFacetControlStyles, styles];
 
-  protected colorsMapping = resolve(FacetColorsMapping).reduce(
+  protected facetColorsMapping = resolve(FacetColorsMapping);
+
+  protected colors = this.facetColorsMapping.reduce(
     (acc, colors) => ({ ...acc, ...colors }),
     {}
   );
-
-  protected getColor(val: string | number): string {
-    const value = String(val);
-
-    return this.colorsMapping[value.toLowerCase()] ?? value;
-  }
 
   protected override renderValueControlLabel(
     facetValue: FacetValue
@@ -29,5 +26,10 @@ export class SearchColorFacetComponent extends SearchFacetComponent {
         ${facetValue.name ?? facetValue.value}
       </div>
     `;
+  }
+
+  protected getColor(val: string | number): string {
+    const value = String(val);
+    return this.colors[value.toLowerCase()] ?? value;
   }
 }

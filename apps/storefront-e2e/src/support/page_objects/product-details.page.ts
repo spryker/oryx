@@ -62,6 +62,8 @@ export class ProductDetailsPage extends AbstractSFPage {
   getAttributeTerms = () =>
     this.getWrapper().find('oryx-product-attributes').find('dt');
 
+  getAvailability = () => this.getWrapper().find('oryx-product-availability');
+
   addItemsToTheCart = (numberOfItems = 1) => {
     if (numberOfItems === 1) {
       this.getAddToCartBtn().click();

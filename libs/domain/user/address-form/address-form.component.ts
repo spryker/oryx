@@ -10,6 +10,7 @@ import {
 import { CountryService } from '@spryker-oryx/site';
 import {
   Address,
+  AddressEventDetail,
   AddressFormService,
   AddressService,
 } from '@spryker-oryx/user';
@@ -44,7 +45,6 @@ export class UserAddressFormComponent
 
   @property({ type: Boolean }) enableDefaultShipping?: boolean;
   @property({ type: Boolean }) enableDefaultBilling?: boolean;
-  @property({ type: Object }) address?: Address;
 
   @signalProperty() country?: string;
   @signalProperty() fallbackCountry?: string;
@@ -63,7 +63,10 @@ export class UserAddressFormComponent
 
     if (!country) return;
 
-    return this.addressFormService.getForm({ country, fallbackCountry });
+    return this.addressFormService.getForm({
+      country,
+      fallbackCountry,
+    }) as unknown as AddressForm;
   });
 
   @query('form')
@@ -79,7 +82,7 @@ export class UserAddressFormComponent
   protected getFormFields(): FormFieldDefinition[] {
     const form = this.formModel();
 
-    const formFields = (form as unknown as AddressForm)?.data.options ?? [];
+    const formFields = [...(form?.data.options ?? [])];
     if (this.enableDefaultShipping) {
       formFields.push({
         id: 'isDefaultShipping',
@@ -136,12 +139,13 @@ export class UserAddressFormComponent
 
   protected onChange(): void {
     if (this.form) {
-      const data: Address = Object.fromEntries(
+      const address: Address = Object.fromEntries(
         new FormData(this.form).entries()
       );
+      address.id = this.values?.id;
       this.dispatchEvent(
-        new CustomEvent('selectedAddress', {
-          detail: { data, valid: this.form.checkValidity() },
+        new CustomEvent<AddressEventDetail>('change', {
+          detail: { address, valid: this.form.checkValidity() },
           bubbles: true,
           composed: true,
         })

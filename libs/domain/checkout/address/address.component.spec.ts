@@ -1,15 +1,44 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { AddressService } from '@spryker-oryx/user';
+import { RouterService } from '@spryker-oryx/router';
+import {
+  AddressService,
+  AddressStateService,
+  CrudState,
+} from '@spryker-oryx/user';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
+import { CheckoutState } from '../src/models';
+import {
+  CheckoutDataService,
+  CheckoutService,
+  CheckoutStateService,
+} from '../src/services';
 import { CheckoutAddressComponent } from './address.component';
 import { checkoutAddressComponent } from './address.def';
 
 class MockAddressService implements Partial<AddressService> {
   getAddresses = vi.fn();
+}
+class MockCheckoutStateService implements Partial<CheckoutStateService> {
+  get = vi.fn();
+}
+class MockCheckoutService implements Partial<CheckoutService> {
+  getProcessState = vi.fn().mockReturnValue(of(CheckoutState.Ready));
+}
+class MockCheckoutDataService implements Partial<CheckoutDataService> {}
+const mockState = new BehaviorSubject({
+  action: CrudState.Read,
+  selected: null,
+});
+class MockAddressStateService implements Partial<AddressStateService> {
+  set = vi.fn();
+  get = vi.fn().mockReturnValue(mockState);
+}
+class MockRouterService implements Partial<RouterService> {
+  currentParams = vi.fn().mockReturnValue(of());
 }
 
 const form = {
@@ -17,7 +46,7 @@ const form = {
   reportValidity: vi.fn(),
 };
 
-@customElement('oryx-address-form')
+@customElement('oryx-user-address-form')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MockComponent extends LitElement {
   getForm() {
@@ -28,6 +57,7 @@ class MockComponent extends LitElement {
 describe('CheckoutAddressComponent', () => {
   let element: CheckoutAddressComponent;
   let addressService: MockAddressService;
+  let addressStateService: MockAddressStateService;
 
   beforeAll(async () => {
     await useComponent(checkoutAddressComponent);
@@ -37,13 +67,35 @@ describe('CheckoutAddressComponent', () => {
     const testInjector = createInjector({
       providers: [
         {
+          provide: CheckoutService,
+          useClass: MockCheckoutService,
+        },
+        {
+          provide: CheckoutStateService,
+          useClass: MockCheckoutStateService,
+        },
+        {
+          provide: CheckoutDataService,
+          useClass: MockCheckoutDataService,
+        },
+        {
           provide: AddressService,
           useClass: MockAddressService,
+        },
+        {
+          provide: AddressStateService,
+          useClass: MockAddressStateService,
+        },
+        {
+          provide: RouterService,
+          useClass: MockRouterService,
         },
       ],
     });
 
     addressService = testInjector.inject<MockAddressService>(AddressService);
+    addressStateService =
+      testInjector.inject<MockAddressStateService>(AddressStateService);
   });
 
   afterEach(() => {
@@ -75,15 +127,15 @@ describe('CheckoutAddressComponent', () => {
       );
     });
 
-    it('should render the oryx-address-form', () => {
-      expect(element).toContainElement('oryx-address-form');
+    it('should render the oryx-user-address-form', () => {
+      expect(element).toContainElement('oryx-user-address-form');
     });
 
     it('should not render oryx-user-address-list', () => {
       expect(element).not.toContainElement('oryx-user-address-list');
     });
 
-    describe('and when the isValid method is called', () => {
+    describe('and the isValid method is called', () => {
       describe('and the report = true', () => {
         beforeEach(async () => {
           element.isValid(true);
@@ -94,66 +146,42 @@ describe('CheckoutAddressComponent', () => {
         });
 
         it('should report the form validity', () => {
-          expect(form.reportValidity).toHaveBeenCalled();
+          expect(form?.reportValidity).toHaveBeenCalled();
         });
       });
     });
 
-    describe('and the report = false', () => {
+    describe('when there is an address list', () => {
       beforeEach(async () => {
-        element.isValid(false);
-      });
-
-      it('should check the form validity', () => {
-        expect(form.checkValidity).toHaveBeenCalled();
-      });
-
-      it('should report the form validity', () => {
-        expect(form.reportValidity).not.toHaveBeenCalled();
-      });
-    });
-  });
-
-  describe('when there is an address list', () => {
-    beforeEach(async () => {
-      addressService.getAddresses.mockReturnValue(of([{}]));
-      element = await fixture(
-        html`<oryx-checkout-address></oryx-checkout-address>`
-      );
-    });
-
-    it('should not render the oryx-address-form', () => {
-      expect(element).not.toContainElement('oryx-address-form');
-    });
-
-    it('should render the oryx-user-address-list', () => {
-      expect(element).toContainElement('oryx-user-address-list');
-    });
-
-    describe('and when an oryx.select event is dispatched on the list', () => {
-      beforeEach(() => {
-        element.dispatchEvent = vi.fn();
-        const list = element.renderRoot.querySelector(
-          'oryx-user-address-list'
-        ) as HTMLElement;
-        list.dispatchEvent(
-          new CustomEvent('oryx.select', {
-            detail: { address: { foo: 'bar' } },
-          })
+        addressService.getAddresses.mockReturnValue(of([{}]));
+        element = await fixture(
+          html`<oryx-checkout-address></oryx-checkout-address>`
         );
       });
 
-      it('should dispatch a selectedAddress event', () => {
-        expect(element.dispatchEvent).toHaveBeenCalled();
+      it('should not render the oryx-user-address-form', () => {
+        expect(element).not.toContainElement('oryx-user-address-form');
       });
 
-      describe('and when the isValid method is called', () => {
-        beforeEach(async () => {
-          element.isValid(true);
+      it('should render the oryx-user-address-list', () => {
+        expect(element).toContainElement('oryx-user-address-list');
+      });
+
+      describe('and an change event is dispatched on the list', () => {
+        beforeEach(() => {
+          element.dispatchEvent = vi.fn();
+          const list = element.renderRoot.querySelector(
+            'oryx-user-address-list'
+          ) as HTMLElement;
+          list.dispatchEvent(
+            new CustomEvent('change', {
+              detail: { address: { foo: 'bar' } },
+            })
+          );
         });
 
-        it('should not check validity on the address form', () => {
-          expect(form.checkValidity).not.toHaveBeenCalled();
+        it('should set the address to the state service', () => {
+          expect(addressStateService.set).toHaveBeenCalled();
         });
       });
     });
