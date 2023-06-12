@@ -6,7 +6,7 @@ export interface ComponentsRegistryService {
   resolveTemplate(
     type: string,
     uid: string,
-    layoutClasses?: string
+    markers?: string
   ): TemplateResult | undefined;
   resolveTag(type: string): string;
 }

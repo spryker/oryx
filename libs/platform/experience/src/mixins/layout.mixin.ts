@@ -2,6 +2,7 @@ import { Type } from '@spryker-oryx/di';
 import {
   CompositionLayout,
   ContentMixin,
+  layoutKeys,
   StyleRuleSet,
 } from '@spryker-oryx/experience';
 import {
@@ -61,17 +62,12 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected layoutController = new LayoutController(this);
 
-    protected layoutStyles = computed(() => {
-      const { rules } = this.$options();
-      const props: (keyof LayoutProperties)[] = [
-        'layout',
-        'sticky',
-        'bleed',
-        'overlap',
-        'divider',
-      ];
-      return this.layoutController.getStyles(props, rules);
-    });
+    protected layoutStyles = computed(() =>
+      this.layoutController.getStyles(
+        ['layout', ...layoutKeys],
+        this.$options().rules
+      )
+    );
   }
 
   // Cast return type to your mixin's interface intersected with the superClass type

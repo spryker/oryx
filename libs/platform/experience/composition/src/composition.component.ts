@@ -101,7 +101,7 @@ export class CompositionComponent extends LayoutMixin(
     const template = this.registryService.resolveTemplate(
       component.type,
       component.id,
-      this.getLayoutClasses(component)
+      this.getLayoutMarkers(component)
     );
     if (this.$options()?.rules?.[0]?.layout === CompositionLayout.Tabular) {
       return html`
@@ -136,13 +136,11 @@ export class CompositionComponent extends LayoutMixin(
     }
   }
 
-  /**
-   * returns the CSS classes for the given composition.
-   */
-  protected getLayoutClasses(component: Component): string | undefined {
+  protected getLayoutMarkers(component: Component): string | undefined {
     if (!component.options?.data) {
       return undefined;
     }
-    return this.layoutBuilder.getLayoutClasses(component.options.data);
+
+    return this.layoutBuilder.getLayoutMarkers(component.options.data);
   }
 }
