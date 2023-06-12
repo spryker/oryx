@@ -6,62 +6,65 @@ import { swatchComponent } from './swatch.def';
 
 const mockColor = 'red';
 
-useComponent(swatchComponent);
-
 describe('SwatchComponent', () => {
   let element: SwatchComponent;
 
+  beforeAll(async () => {
+    await useComponent(swatchComponent);
+  });
+
+
   describe('when the type is Warning', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
       element = await fixture(
         html`<oryx-swatch .type=${AlertType.Warning}></oryx-swatch>`
       );
     });
 
     it('should render warning color', () => {
-      expect(element.getAttribute('style')).contain(
+      expect(element.getAttribute('style')).toContain(
         `--swatch: var(--oryx-color-warning-9)`
       );
     });
   });
 
   describe('when the type is Success', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
       element = await fixture(
         html`<oryx-swatch .type=${AlertType.Success}></oryx-swatch>`
       );
     });
 
     it('should render warning color', () => {
-      expect(element.getAttribute('style')).contain(
+      expect(element.getAttribute('style')).toContain(
         `--swatch: var(--oryx-color-success-9)`
       );
     });
   });
 
   describe('when the type is Error', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
       element = await fixture(
         html`<oryx-swatch .type=${AlertType.Error}></oryx-swatch>`
       );
     });
 
     it('should render warning color', () => {
-      expect(element.getAttribute('style')).contain(
+      expect(element.getAttribute('style')).toContain(
         `--swatch: var(--oryx-color-error-9)`
       );
     });
   });
 
   describe('when the type is Info', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
       element = await fixture(
         html`<oryx-swatch .type=${AlertType.Info}></oryx-swatch>`
       );
     });
 
     it('should render warning color', () => {
-      expect(element.getAttribute('style')).contain(
+      expect(element.getAttribute('style')).toContain(
         `--swatch: var(--oryx-color-info-9)`
       );
     });
