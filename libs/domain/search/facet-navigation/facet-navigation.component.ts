@@ -5,14 +5,16 @@ import {
   LayoutMixin,
 } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
-import { FacetListService } from '@spryker-oryx/search';
+import {
+  FacetComponentRegistryService,
+  FacetListService,
+} from '@spryker-oryx/search';
 import { FacetSelect } from '@spryker-oryx/search/facet';
 import { computed, hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { tap } from 'rxjs/operators';
-import { FacetComponentRegistryService } from '@spryker-oryx/search';
 import { SearchFacetNavigationOptions } from './facet-navigation.model';
-import { searchFacetNavigationStyles} from './facet-navigation.styles';
+import { searchFacetNavigationStyles } from './facet-navigation.styles';
 
 @hydratable(['mouseover', 'focusin'])
 @defaultOptions({
@@ -65,13 +67,14 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
           this.applyFilters.bind(this)
         )
       )}
-      <style>${this.layoutStyles()}</style>
-    `;
+      <style>
+        ${this.layoutStyles()}
+      </style> `;
   }
 
   protected applyFilters(e: CustomEvent<FacetSelect>): void {
     const { name, value: selectedFacetValue } = e.detail;
-    
+
     const facet = this.$facets()?.find((facet) => facet.name === name);
 
     if (!facet) return;
@@ -83,9 +86,7 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
     const values = facet.multiValued
       ? [
           ...(facet.selectedValues ?? []),
-          ...(selectedFacetValue.selected
-            ? [selectedFacetValue.value]
-            : []),
+          ...(selectedFacetValue.selected ? [selectedFacetValue.value] : []),
         ].filter(
           (selectedValue) =>
             selectedFacetValue.selected ||
