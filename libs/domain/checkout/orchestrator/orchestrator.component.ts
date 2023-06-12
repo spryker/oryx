@@ -32,7 +32,7 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
   protected components(): (isValid & HTMLElement)[] {
     return Array.from(
       this.shadowRoot
-        ?.querySelector('experience-composition')
+        ?.querySelector('oryx-composition')
         ?.shadowRoot?.querySelectorAll('*:not(style)') ?? []
     );
   }

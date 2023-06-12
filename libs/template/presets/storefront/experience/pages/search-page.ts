@@ -37,13 +37,13 @@ export const searchPage: StaticComponent = {
       },
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       options: {
         data: { rules: [{ layout: 'flex', vertical: true, gap: '20px' }] },
       },
       components: [
         {
-          type: 'experience-composition',
+          type: 'oryx-composition',
           components: [{ type: 'oryx-search-product-sort' }],
           options: { data: { rules: [{ layout: 'flex', justify: 'end' }] } },
         },

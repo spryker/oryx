@@ -39,13 +39,13 @@ export const categoryPage: StaticComponent = {
       },
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       options: {
         data: { rules: [{ layout: 'list', gap: '20px' }] },
       },
       components: [
         {
-          type: 'experience-composition',
+          type: 'oryx-composition',
           options: { data: { rules: [{ layout: 'flex' }] } },
           components: [
             {

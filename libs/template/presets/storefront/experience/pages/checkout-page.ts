@@ -21,7 +21,7 @@ export const checkoutPage: StaticComponent = {
   },
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       components: [
         {
           type: 'oryx-checkout-orchestrator',
@@ -47,7 +47,7 @@ export const checkoutPage: StaticComponent = {
       },
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       options: {
         data: {
           rules: [
