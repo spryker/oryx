@@ -6,21 +6,21 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { take } from 'rxjs';
 import { storybookPrefix } from '../../.constants';
-import { FacetComponentAttributes, FacetSelect } from '../facet.model';
+import { SearchFacetComponentAttributes, SelectFacetPayload } from '../facet.model';
 
 export default {
   title: `${storybookPrefix}/Facet`,
 } as unknown as Meta;
 
-const Template: Story<FacetComponentAttributes> = (
-  attrs: FacetComponentAttributes
+const Template: Story<SearchFacetComponentAttributes> = (
+  attrs
 ): TemplateResult => {
   const router = resolve(RouterService) as unknown as MockRouterService;
   const service = resolve(FacetListService);
 
   router.params$.next({});
 
-  const onSelect = (e: CustomEvent<FacetSelect>) => {
+  const onSelect = (e: CustomEvent<SelectFacetPayload>) => {
     const { name, value: selectedFacetValue } = e.detail;
 
     service

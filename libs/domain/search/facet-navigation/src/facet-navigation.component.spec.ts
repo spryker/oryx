@@ -12,7 +12,7 @@ import {
   FacetParams,
   FacetValueRenderer,
 } from '@spryker-oryx/search';
-import { FacetSelect } from '@spryker-oryx/search/facet';
+import { SelectFacetPayload } from '@spryker-oryx/search/facet';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchFacetNavigationComponent } from './facet-navigation.component';
@@ -187,7 +187,7 @@ describe('SearchFacetNavigationComponent', () => {
               template: (
                 facet: Facet,
                 options: FacetMappingOptions,
-                selectListener: (e: CustomEvent<FacetSelect>) => void
+                selectListener: (e: CustomEvent<SelectFacetPayload>) => void
               ) => {
                 return html`
                   <oryx-search-facet

@@ -1,5 +1,5 @@
 import { Facet } from '@spryker-oryx/product';
-import { FacetSelect } from '@spryker-oryx/search/facet';
+import { SelectFacetPayload } from '@spryker-oryx/search/facet';
 import { TemplateResult } from 'lit';
 
 export const FacetValueRenderer = 'oryx.FacetValueRenderer*';
@@ -21,7 +21,7 @@ export interface FacetRendererMapping {
     template: (
       facet: Facet,
       options: FacetMappingOptions,
-      selectListener: (e: CustomEvent<FacetSelect>) => void
+      selectListener: (e: CustomEvent<SelectFacetPayload>) => void
     ) => TemplateResult;
   };
 }

@@ -20,7 +20,7 @@ import {
 } from 'rxjs';
 import {
   FacetComponentAttributes,
-  FacetSelect,
+  SelectFacetPayload,
   FACET_SELECT_EVENT,
   SingleMultiFacet,
 } from '../facet.model';

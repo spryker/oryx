@@ -6,7 +6,7 @@ import {
 } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { FacetListService } from '@spryker-oryx/search';
-import { FacetSelect } from '@spryker-oryx/search/facet';
+import { SelectFacetPayload } from '@spryker-oryx/search/facet';
 import { hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
@@ -65,7 +65,7 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
     ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)} `;
   }
 
-  protected applyFilters(e: CustomEvent<FacetSelect>): void {
+  protected applyFilters(e: CustomEvent<SelectFacetPayload>): void {
     const { name, value: selectedFacetValue } = e.detail;
 
     this.facetListService
