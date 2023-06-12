@@ -29,7 +29,9 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
   static styles = [searchFacetNavigationStyles];
 
   protected facetListService = resolve(FacetListService);
-  protected facetRenderer = resolve(FacetComponentRegistryService);
+  protected facetComponentRegistryService = resolve(
+    FacetComponentRegistryService
+  );
   protected routerService = resolve(RouterService);
 
   protected $facets = signal(this.facetListService.get());
@@ -53,7 +55,7 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
     } = this.$options();
 
     return html`${facets.map((facet, index) =>
-        this.facetRenderer.renderFacetComponent(
+        this.facetComponentRegistryService.renderFacetComponent(
           facet,
           {
             renderLimit,
@@ -79,7 +81,7 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
 
     if (!facet) return;
     if (!selectedFacetValue) {
-      this.facetNavigation(facet.parameter);
+      this.navigate(facet.parameter);
       return;
     }
 
@@ -94,10 +96,10 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
         )
       : [selectedFacetValue.value];
 
-    this.facetNavigation(facet.parameter, values as string[]);
+    this.navigate(facet.parameter, values as string[]);
   }
 
-  protected facetNavigation(parameter: string, values: string[] = []): void {
+  protected navigate(parameter: string, values: string[] = []): void {
     const pathId = this.routerService.getPathId(parameter);
 
     this.routerService
