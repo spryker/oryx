@@ -10,14 +10,14 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { CheckoutAddressComponent } from '../address';
-import { styles } from './delivery.styles';
+import { checkoutShippingAddressStyles } from './shipping-address.styles';
 
 @hydratable()
-export class CheckoutDeliveryComponent
+export class CheckoutShippingAddressComponent
   extends CheckoutMixin(LitElement)
   implements isValid
 {
-  static styles = [styles];
+  static styles = [checkoutShippingAddressStyles];
 
   protected addressService = resolve(AddressService);
 
@@ -30,7 +30,8 @@ export class CheckoutDeliveryComponent
     const selected = this.selected();
 
     if (!selected || !addresses.find((address) => selected.id === address.id)) {
-      this.persist(addresses[0], true);
+      const defaultAddress = addresses.find((a) => a.isDefaultShipping);
+      this.persist(defaultAddress ?? addresses[0], true);
     }
   });
 
@@ -39,12 +40,13 @@ export class CheckoutDeliveryComponent
 
   protected override render(): TemplateResult {
     return html`
-      <h3>${i18n('checkout.steps.delivery')}</h3>
+      <h3>${i18n('checkout.steps.shipping-address')}</h3>
       ${when(
         this.addresses()?.length,
         () =>
           html`<oryx-checkout-manage-address
             @change=${this.onChange}
+            .selected=${this.selected()}
           ></oryx-checkout-manage-address>`
       )}
       <oryx-checkout-address
