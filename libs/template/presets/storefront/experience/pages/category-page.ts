@@ -33,6 +33,7 @@ export const categoryPage: StaticComponent = {
               divider: true,
               sticky: true,
               top: '108px',
+              margin: '0 0 30px',
             },
           ],
         },
@@ -40,12 +41,14 @@ export const categoryPage: StaticComponent = {
     },
     {
       type: 'experience-composition',
+      name: 'Product listing',
       options: {
         data: { rules: [{ layout: 'list', gap: '20px' }] },
       },
       components: [
         {
           type: 'experience-composition',
+          name: 'Product list header',
           options: { data: { rules: [{ layout: 'flex' }] } },
           components: [
             {
