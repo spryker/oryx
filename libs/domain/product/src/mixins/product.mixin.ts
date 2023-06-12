@@ -1,11 +1,9 @@
 import { Type } from '@spryker-oryx/di';
 import {
-  asyncState,
   Signal,
   signal,
   signalAware,
   signalProperty,
-  valueType,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { ProductController } from '../controllers';
@@ -16,12 +14,7 @@ export declare class ProductMixinInterface
   implements ProductComponentProperties
 {
   sku?: string;
-  /**
-   * @deprecated
-   */
-  product?: Product | null;
-  $product: Signal<Product | null>;
-
+  protected $product: Signal<Product | null>;
   protected productController: ProductController;
 }
 
@@ -36,13 +29,9 @@ export const ProductMixin = <
 
     protected productController = new ProductController(this);
 
-    @asyncState()
-    protected product = valueType(this.productController.getProduct());
-
     protected $product = signal(this.productController.getProduct(), {
       initialValue: null,
     });
   }
-  // Cast return type to your mixin's interface intersected with the superClass type
   return ProductMixinClass as unknown as Type<ProductMixinInterface> & T;
 };

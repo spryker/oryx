@@ -39,11 +39,13 @@ export class ProductMediaComponent extends ProductMixin(
   }
 
   protected renderImage(src?: string, srcSet?: string): TemplateResult | void {
+    const { name } = this.$product() ?? {};
+    const { alt = name, loading } = this.$options();
     return html`<oryx-image
       .src=${src}
       .srcset=${srcSet}
-      .alt=${this.componentOptions?.alt || this.product?.name}
-      .loading=${this.componentOptions?.loading}
+      .alt=${alt}
+      .loading=${loading}
     ></oryx-image>`;
   }
 
