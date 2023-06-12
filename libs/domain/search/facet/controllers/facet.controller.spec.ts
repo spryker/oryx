@@ -4,7 +4,7 @@ import { FacetValue } from '@spryker-oryx/product';
 import { generateFacet, generateValues } from '@spryker-oryx/product/mocks';
 import { FacetListService } from '@spryker-oryx/search';
 import {
-  FacetComponentAttributes,
+  SearchFacetComponentAttributes,
   FACET_SELECT_EVENT,
 } from '@spryker-oryx/search/facet';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -24,7 +24,7 @@ class MockFacetListService implements Partial<FacetListService> {
 }
 
 @customElement('fake-el')
-class FakeElement extends LitElement implements FacetComponentAttributes {
+class FakeElement extends LitElement implements SearchFacetComponentAttributes {
   @property() name = mockFacet.name;
   @property({ type: Number }) renderLimit?: number;
 

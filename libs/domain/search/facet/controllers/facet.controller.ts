@@ -19,20 +19,20 @@ import {
   switchMap,
 } from 'rxjs';
 import {
-  FacetComponentAttributes,
+  SearchFacetComponentAttributes,
   SelectFacetPayload,
   FACET_SELECT_EVENT,
   SingleMultiFacet,
 } from '../facet.model';
 
 export class FacetController implements ReactiveController {
-  protected observe: ObserveController<LitElement & FacetComponentAttributes>;
+  protected observe: ObserveController<LitElement & SearchFacetComponentAttributes>;
   protected facetListService = resolve(FacetListService);
   protected facet$: Observable<Facet | null>;
   protected showAll$ = new BehaviorSubject(false);
   protected searchedValue$ = new BehaviorSubject('');
 
-  constructor(protected host: LitElement & FacetComponentAttributes) {
+  constructor(protected host: LitElement & SearchFacetComponentAttributes) {
     this.host.addController(this);
     this.observe = new ObserveController(host);
     this.facet$ = this.observe.get('name').pipe(
@@ -121,7 +121,7 @@ export class FacetController implements ReactiveController {
     const name = this.host.name;
     if (name) {
       this.host.dispatchEvent(
-        new CustomEvent<FacetSelect>(FACET_SELECT_EVENT, {
+        new CustomEvent<SelectFacetPayload>(FACET_SELECT_EVENT, {
           detail: { name, value },
           bubbles: true,
           composed: true,
