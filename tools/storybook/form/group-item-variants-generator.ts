@@ -1,4 +1,4 @@
-import { extendVariants, PseudoStates, Variant } from '@/tools/storybook';
+import { extendVariants, PseudoStates, Variant } from '../index';
 
 export enum CategoryX {
   DEFAULT = 'Default',
