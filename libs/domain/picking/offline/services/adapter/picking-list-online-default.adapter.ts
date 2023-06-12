@@ -1,16 +1,15 @@
 import { inject } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
-import {
-  GetPickingListResponse,
-  PickingHttpService,
-  PickingList,
-  PickingListDefaultAdapter,
-  PickingListQualifier,
-} from '@spryker-oryx/picking';
 import { isDefined } from '@spryker-oryx/utilities';
 // Add full import because of issue with naming exports from cjs.
 import * as jsonapi from 'jsonapi-serializer';
 import { firstValueFrom, map, Observable } from 'rxjs';
+import { PickingList, PickingListQualifier } from '../../../src/models';
+import {
+  GetPickingListResponse,
+  PickingHttpService,
+  PickingListDefaultAdapter,
+} from '../../../src/services';
 import {
   PickingListEntity,
   PickingListItemOffline,
