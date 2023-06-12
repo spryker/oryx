@@ -15,7 +15,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: 'Free delivery & returns',
-              icon: IconTypes.Mark,
+              icon: 'check_circle',
             },
           },
         },
@@ -25,7 +25,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: '100 day return policy',
-              icon: IconTypes.Mark,
+              icon: 'check_circle',
             },
           },
         },
@@ -35,7 +35,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: 'Click & Collect',
-              icon: IconTypes.Mark,
+              icon: 'check_circle',
             },
           },
         },

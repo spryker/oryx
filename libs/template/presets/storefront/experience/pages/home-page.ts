@@ -50,6 +50,7 @@ export const homePage: StaticComponent = {
               padding: '60px 0',
               gap: '30px 0px',
               columnCount: 6,
+              justify: 'center',
               fill: 'var(--oryx-color-neutral-8)',
             },
             { query: { breakpoint: 'md' }, columnCount: 4 },
