@@ -7,6 +7,7 @@ import {
 } from '@spryker-oryx/product';
 import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ProductListOptions } from './list.model';
 
@@ -26,7 +27,9 @@ export class ProductListComponent extends LayoutMixin(
 
   protected override render(): TemplateResult {
     return html`
-      ${this.list()?.products?.map(
+      ${repeat(
+        this.list()?.products || [],
+        (p) => p.sku,
         (p) => html`<oryx-product-card .sku=${p.sku}></oryx-product-card>`
       )}
       ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}

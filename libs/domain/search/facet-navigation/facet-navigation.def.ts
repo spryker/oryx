@@ -1,13 +1,13 @@
 import { componentDef } from '@spryker-oryx/core';
-import { FacetsOptions } from './facet-navigation.model';
+import { SearchFacetNavigationOptions } from './facet-navigation.model';
 
 declare global {
   interface FeatureOptions {
-    'oryx-search-facet-navigation'?: FacetsOptions;
+    'oryx-search-facet-navigation'?: SearchFacetNavigationOptions;
   }
 }
 
-export const facetsComponent = componentDef({
+export const searchFacetNavigationComponent = componentDef({
   name: 'oryx-search-facet-navigation',
   impl: () =>
     import('./facet-navigation.component').then(

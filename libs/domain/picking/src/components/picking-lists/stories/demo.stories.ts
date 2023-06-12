@@ -1,4 +1,7 @@
-import { MockDateDecorator, storybookDefaultViewports } from '@spryker-oryx/ui';
+import {
+  MockDateDecorator,
+  storybookDefaultViewports,
+} from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html } from 'lit';
 import { TemplateResult } from 'lit/development';

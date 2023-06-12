@@ -1,6 +1,6 @@
+import { getShadowElementBySelector } from '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig, queryAssignedElements } from '@spryker-oryx/utilities';
 import { TypeaheadComponent } from './typeahead.component';
 import { typeheadComponent } from './typeahead.def';
