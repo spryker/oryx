@@ -1,21 +1,24 @@
-import { Type } from '@spryker-oryx/di';
+import { ContextController } from '@spryker-oryx/core';
+import { resolve, Type } from '@spryker-oryx/di';
 import {
+  computed,
+  effect,
   Signal,
   signal,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { ProductController } from '../controllers';
+import { of } from 'rxjs';
 import type { Product } from '../models';
 import { ProductComponentProperties } from '../models';
+import { ProductContext, ProductService } from '../services';
 
 export declare class ProductMixinInterface
   implements ProductComponentProperties
 {
   sku?: string;
   protected $product: Signal<Product | null>;
-  protected productController: ProductController;
 }
 
 export const ProductMixin = <
@@ -27,10 +30,22 @@ export const ProductMixin = <
   class ProductMixinClass extends superClass {
     @signalProperty({ reflect: true }) sku?: string;
 
-    protected productController = new ProductController(this);
+    protected productService = resolve(ProductService, null);
+    protected contextController = new ContextController(this);
 
-    protected $product = signal(this.productController.getProduct(), {
-      initialValue: null,
+    protected $context = signal(
+      this.contextController.get<string>(ProductContext.SKU)
+    );
+
+    protected setProductContext = effect(() => {
+      if (this.sku && !this.$context()) {
+        this.contextController.provide(ProductContext.SKU, this.sku);
+      }
+    });
+
+    protected $product = computed(() => {
+      const sku = this.$context();
+      return sku ? this.productService?.get({ sku }) : of(null);
     });
   }
   return ProductMixinClass as unknown as Type<ProductMixinInterface> & T;

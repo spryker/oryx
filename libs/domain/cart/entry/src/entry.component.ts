@@ -53,9 +53,7 @@ export class CartEntryComponent
 {
   static styles = [cartEntryStyles];
 
-  @property() sku?: string;
-  @signalProperty({ type: Number })
-  quantity?: number;
+  @signalProperty({ type: Number }) quantity?: number;
   @property() key?: string;
   @property({ type: Number }) price?: number;
   @property({ type: Boolean }) readonly?: boolean;
