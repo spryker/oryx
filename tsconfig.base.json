@@ -4,7 +4,7 @@
     "baseUrl": ".",
     "paths": {
       "@/tools/storybook": ["tools/storybook/index.ts"],
-      "@/tools/testing": ["tools/testing"],
+      "@/tools/testing": ["tools/testing/index.ts"],
       "@spryker-oryx/application": ["libs/template/application/src/index.ts"],
       "@spryker-oryx/application/lambda": [
         "libs/template/application/lambda/index.ts"
