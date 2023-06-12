@@ -2,14 +2,14 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import { Sync, SyncStatus } from '@spryker-oryx/offline';
 import { PickingListStatus } from '@spryker-oryx/picking';
-import {
-  PickingListEntity,
-  PickingSyncAction,
-  PickingSyncActionHandlerService,
-} from '@spryker-oryx/picking/offline';
 import { Table } from 'dexie';
 import { of } from 'rxjs';
+import { PickingListEntity } from '../entities';
 import { PickingListOnlineAdapter } from './adapter';
+import {
+  PickingSyncAction,
+  PickingSyncActionHandlerService,
+} from './picking-sync-action-handler.service';
 
 class MockIndexedDbService implements Partial<IndexedDbService> {
   getStore = vi.fn().mockImplementation(() => of(mockTable));
