@@ -1,5 +1,4 @@
 import { ColorDesignTokens, colorPalette } from '@spryker-oryx/experience';
-import { cssColorVar } from '@spryker-oryx/utilities';
 
 export const color: ColorDesignTokens = {
   neutral: colorPalette.grays.sprykerSfGray,
@@ -12,7 +11,7 @@ export const color: ColorDesignTokens = {
   error: colorPalette.colors.red,
   info: colorPalette.colors.blue,
 
-  focus: cssColorVar('primary'),
+  focus: 'var(--oryx-color-primary-9)',
   placeholder: `var(--oryx-color-neutral-11)`,
 
   overlay: colorPalette.overlays.black,

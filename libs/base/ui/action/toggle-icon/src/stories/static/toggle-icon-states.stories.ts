@@ -1,8 +1,8 @@
+import { generateVariantsMatrix, Variant } from '@/tools/storybook';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { generateVariantsMatrix, Variant } from '../../../../../src/utilities';
 
 export default {
   title: `${storybookPrefix}/Actions/Toggle Icon/Static`,

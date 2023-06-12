@@ -6,9 +6,9 @@ export interface CollapsibleAttributes {
 
   /**
    * text for title label can be provided as an attribute
-   * and as a content for named slot (slot="header")
+   * and as a content for named slot (slot="heading")
    */
-  header?: string;
+  heading?: string;
 
   /**
    * Drives the UX of the collapsible.

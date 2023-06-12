@@ -60,7 +60,7 @@ export class QuantityInputComponent
       >
         <oryx-icon
           .type=${this.decreaseIcon ?? IconTypes.Decrease}
-          size=${Size.Sm}
+          size=${Size.Md}
         ></oryx-icon>
       </button>
       <oryx-input
@@ -94,7 +94,7 @@ export class QuantityInputComponent
       >
         <oryx-icon
           .type=${this.increaseIcon ?? IconTypes.Increase}
-          size=${Size.Sm}
+          size=${Size.Md}
         ></oryx-icon>
       </button>
     `;
@@ -117,9 +117,7 @@ export class QuantityInputComponent
   }
 
   protected isMinDisabled(): boolean {
-    return (
-      this.disabled || (this.value !== undefined && this.value <= this.min)
-    );
+    return this.disabled || (this.value ?? this.min) <= this.min;
   }
 
   protected isMaxDisabled(): boolean {

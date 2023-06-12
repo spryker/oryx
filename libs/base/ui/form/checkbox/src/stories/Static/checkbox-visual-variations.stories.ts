@@ -1,4 +1,4 @@
-import { generateVariantsMatrix, Variant } from '@spryker-oryx/ui';
+import { generateVariantsMatrix, Variant } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';

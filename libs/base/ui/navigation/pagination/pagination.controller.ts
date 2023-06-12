@@ -19,7 +19,7 @@ export class PaginationController implements ReactiveController {
   paginate(pages: HTMLElement[] = []): void {
     if (pages.length === 0) return;
 
-    this.validate(pages);
+    this.ensureCurrent(pages);
     this.setActive(pages);
 
     const range = this.getRange(pages.length);
@@ -74,8 +74,8 @@ export class PaginationController implements ReactiveController {
     pages[this.host.current - 1].toggleAttribute('inert');
   }
 
-  protected validate(pages: HTMLElement[]): void {
-    if (this.host.current < 1) {
+  protected ensureCurrent(pages: HTMLElement[]): void {
+    if (!this.host.current || this.host.current < 1) {
       this.host.current = 1;
     }
 

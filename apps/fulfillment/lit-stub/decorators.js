@@ -11,3 +11,5 @@ export const state = noopDecoratorFactory;
 export const query = noopDecoratorFactory;
 
 export const queryAssignedElements = noopDecoratorFactory;
+
+export const customElement = noopDecoratorFactory;

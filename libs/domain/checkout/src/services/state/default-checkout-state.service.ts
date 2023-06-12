@@ -41,7 +41,7 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     this.storage.set(
       checkoutDataStorageKey,
       Array.from(collected),
-      StorageType.SESSION
+      StorageType.Session
     );
   }
 
@@ -56,7 +56,7 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
   }
 
   clear(): void {
-    this.storage.remove(checkoutDataStorageKey, StorageType.SESSION);
+    this.storage.remove(checkoutDataStorageKey, StorageType.Session);
     this.subject.next(new Map());
   }
 
@@ -82,10 +82,6 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
       if (!data.customer.firstName && data.shippingAddress?.firstName)
         data.customer.firstName = data.shippingAddress.firstName;
     }
-    // tmp: copy the billing address from the shipping address for
-    // as long as we have not implemented the component
-    data.billingAddress = data.shippingAddress;
-
     return data;
   }
 
@@ -96,7 +92,7 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     this.storage
       .get<Map<keyof Checkout, CheckoutValue>>(
         checkoutDataStorageKey,
-        StorageType.SESSION
+        StorageType.Session
       )
       .pipe(
         take(1),

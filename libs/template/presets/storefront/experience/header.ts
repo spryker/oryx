@@ -1,6 +1,5 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { primaryColorBase } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: StaticComponent = {
   id: 'header',
@@ -16,7 +15,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: 'Free delivery & returns',
-              icon: IconTypes.Mark,
+              icon: 'check_circle',
             },
           },
         },
@@ -26,7 +25,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: '100 day return policy',
-              icon: IconTypes.Mark,
+              icon: 'check_circle',
             },
           },
         },
@@ -36,7 +35,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: 'Click & Collect',
-              icon: IconTypes.Mark,
+              icon: 'check_circle',
             },
           },
         },
@@ -116,7 +115,7 @@ export const HeaderTemplate: StaticComponent = {
           rules: [
             {
               layout: 'flex',
-              background: primaryColorBase,
+              background: 'var(--oryx-color-primary-9)',
               align: 'center',
               zIndex: '2',
               padding: '5px 0',

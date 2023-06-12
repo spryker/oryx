@@ -1,10 +1,11 @@
-import { StorageService, StorageType } from '@spryker-oryx/core';
+import { StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
   catchError,
+  distinctUntilChanged,
   from,
   map,
   Observable,
@@ -55,6 +56,7 @@ export class OauthService implements AuthService, AuthTokenService {
         catchError(() => of(false))
       )
     ),
+    distinctUntilChanged(),
     shareReplay(1)
   );
 
@@ -113,6 +115,10 @@ export class OauthService implements AuthService, AuthTokenService {
         switchMap((provider) => provider.refreshToken?.() ?? of(undefined))
       )
     );
+  }
+
+  invokeStoredToken(): void {
+    this.restoreState();
   }
 
   getToken(): Observable<AuthTokenData> {
@@ -188,7 +194,8 @@ export class OauthService implements AuthService, AuthTokenService {
 
   protected restoreState(): void {
     this.storageService
-      .get<OauthServiceState>(OauthService.STATE_KEY, StorageType.LOCAL)
+      .get<OauthServiceState>(OauthService.STATE_KEY)
+      .pipe(distinctUntilChanged())
       .subscribe((state) => this.state$.next({ ...state }));
   }
 
@@ -197,14 +204,12 @@ export class OauthService implements AuthService, AuthTokenService {
       ? { authorizedBy: providerId }
       : {};
 
-    return this.storageService
-      .set(OauthService.STATE_KEY, newState, StorageType.LOCAL)
-      .pipe(
-        // Delay state update to microtask to let take(1) unsubscribe
-        // as getCurrentProvider() will throw as soon as state is updated
-        switchMap(() => Promise.resolve()),
-        tap(() => this.state$.next(newState))
-      );
+    return this.storageService.set(OauthService.STATE_KEY, newState).pipe(
+      // Delay state update to microtask to let take(1) unsubscribe
+      // as getCurrentProvider() will throw as soon as state is updated
+      switchMap(() => Promise.resolve()),
+      tap(() => this.state$.next(newState))
+    );
   }
 }
 

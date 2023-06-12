@@ -1,4 +1,4 @@
-import { primaryColorBase, screenCss } from '@spryker-oryx/utilities';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const baseStyles = css`
@@ -26,8 +26,8 @@ export const baseStyles = css`
   }
 
   :host([selected]) {
-    border-color: ${primaryColorBase};
-    color: ${primaryColorBase};
+    border-color: var(--oryx-color-primary-9);
+    color: var(--oryx-color-primary-9);
   }
 
   :host([selected][error]) {

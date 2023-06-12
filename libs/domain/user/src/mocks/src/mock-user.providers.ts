@@ -6,7 +6,9 @@ import {
   addressNormalizer,
   addressSerializers,
   AddressService,
+  AddressStateService,
   DefaultAddressAdapter,
+  DefaultAddressStateService,
   DefaultUserService,
   UserAdapter,
   UserService,
@@ -19,6 +21,10 @@ export const mockUserProviders: Provider[] = [
   {
     provide: AddressService,
     useClass: MockAddressService,
+  },
+  {
+    provide: AddressStateService,
+    useClass: DefaultAddressStateService,
   },
   {
     provide: AddressAdapter,

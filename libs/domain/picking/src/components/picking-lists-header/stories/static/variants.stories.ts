@@ -1,4 +1,7 @@
-import { MockDateDecorator, storybookDefaultViewports } from '@spryker-oryx/ui';
+import {
+  MockDateDecorator,
+  storybookDefaultViewports,
+} from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, LitElement, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -11,7 +14,7 @@ export default {
       viewports: [storybookDefaultViewports.mobile.min],
     },
   },
-  decorators: [MockDateDecorator(new Date('March 20, 2020 20:00:00'))],
+  decorators: [MockDateDecorator()],
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

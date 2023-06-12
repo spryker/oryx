@@ -1,3 +1,13 @@
+const product = {
+  'product.availability.none': 'Not available',
+  'product.availability.limited': 'Limited availability',
+  'product.availability.limited-<stock>':
+    'Limited availability ({stock, plural, one {one product} other {{stock} products}})',
+  'product.availability.available': 'Available online',
+  'product.availability.available-<stock>':
+    'Available online ({stock, plural, one {one product} other {{stock} products}})',
+};
+
 const cart = {
   'cart.totals.<count>-items':
     'My cart ({count, plural, one {one item} other {{count} items}})',
@@ -21,8 +31,15 @@ const order = {
     'Products ({count, plural, one {{count} item} other {{count} items}})',
 };
 
+const user = {
+  'user.address.remove-info':
+    'Removing this address will not remove any pending orders being dispatched to this address',
+};
+
 export default {
+  ...product,
   ...cart,
   ...checkout,
   ...order,
+  ...user,
 };

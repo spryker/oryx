@@ -58,6 +58,7 @@ export const productPage: StaticComponent = {
               options: { data: { enableSalesLabel: true } },
             },
             { type: 'oryx-cart-add' },
+            { type: 'oryx-product-availability' },
           ],
         },
       ],
