@@ -50,7 +50,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected onTriggerClick(): void {
     if (
-      this.componentOptions?.contentBehavior === NavigationContentBehavior.Modal
+      this.$options().contentBehavior === NavigationContentBehavior.Modal
     ) {
       this.renderRoot
         .querySelector('oryx-modal')
@@ -60,7 +60,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected onTriggerHover(e: MouseEvent): void {
     if (
-      this.componentOptions?.triggerBehavior !== NavigationTriggerBehavior.Hover
+      this.$options().triggerBehavior !== NavigationTriggerBehavior.Hover
     ) {
       return;
     }
@@ -95,9 +95,9 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   }
 
   protected get icon(): TemplateResult | void {
-    if (!this.componentOptions?.icon) return;
+    if (!this.$options()?.icon) return;
 
-    return html`<oryx-icon .type=${this.componentOptions?.icon}></oryx-icon>`;
+    return html`<oryx-icon .type=${this.$options()?.icon}></oryx-icon>`;
   }
 
   protected renderIconButton(): TemplateResult {
@@ -137,7 +137,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
       <oryx-site-navigation-button
         slot="trigger"
         .url=${this.url()}
-        .icon=${this.componentOptions?.icon}
+        .icon=${this.$options()?.icon}
         .text=${this.label()}
         .badge=${this.badge()}
         @click=${this.onTriggerClick}
@@ -147,7 +147,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   }
 
   protected renderTrigger(): TemplateResult {
-    switch (this.componentOptions?.triggerType) {
+    switch (this.$options().triggerType) {
       case NavigationTriggerType.Icon:
         return this.renderIconButton();
       case NavigationTriggerType.Button:
@@ -170,7 +170,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         enableCloseByEscape
         enableCloseByBackdrop
         fullscreen
-        heading=${this.componentOptions.label}
+        heading=${this.$options().label}
       >
         ${this.renderComposition()}
       </oryx-modal>
