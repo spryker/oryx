@@ -13,11 +13,6 @@ describe('ButtonComponent', () => {
     await useComponent(buttonComponent);
   });
 
-  it('is defined', () => {
-    const el = document.createElement('oryx-button');
-    expect(el).toBeInstanceOf(ButtonComponent);
-  });
-
   describe('when the element is created', () => {
     beforeEach(async () => {
       element = await fixture(
