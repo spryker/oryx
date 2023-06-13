@@ -50,6 +50,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   ): string {
     const selectors: string[] = [];
     if (id) {
+      selectors.push(`:host([uid="${id}"])`);
       selectors.push(`[uid="${id}"]`);
     } else {
       selectors.push(':host');

@@ -60,16 +60,16 @@ export class CompositionComponent extends LayoutMixin(
 
     if (!components.length) return;
 
-    const layoutStyles = this.layoutStyles();
     const inlineStyles = this.layoutBuilder.collectStyles(components);
+    const layoutStyles = this.layoutStyles() ?? '';
+    const styles = inlineStyles + layoutStyles;
 
     return html`${repeat(
       components,
       (component) => component.id,
       (component, index) => this.renderComponent(component, index)
     )}
-    ${when(layoutStyles, () => unsafeHTML(`<style>${layoutStyles}</style>`))}
-    ${when(inlineStyles, () => unsafeHTML(`<style>${inlineStyles}</style>`))} `;
+    ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))} `;
   }
 
   protected renderComponent(

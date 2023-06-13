@@ -1,5 +1,6 @@
 import { PreviewExperienceService } from '@spryker-oryx/experience';
 import { computed, effect, signal } from '@spryker-oryx/utilities';
+import { query } from 'lit/decorators.js';
 import { previewStyles } from './composition-preview.styles';
 import { CompositionComponent } from './composition.component';
 
@@ -7,6 +8,9 @@ const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
 export class CompositionPreviewComponent extends CompositionComponent {
   static styles = [previewStyles];
+
+  @query(`.${EB_PREVIEW_FOCUS_CLASS}`)
+  protected focusedComponent?: HTMLElement;
 
   protected $interaction = signal(
     (this.experienceService as PreviewExperienceService)?.getInteractionData()
@@ -21,9 +25,7 @@ export class CompositionPreviewComponent extends CompositionComponent {
     }
 
     const focusedNameAttr = 'name';
-    const root = this.shadowRoot;
-    const focusedComponent = root?.querySelector(`.${EB_PREVIEW_FOCUS_CLASS}`);
-    const targetComponent = root?.querySelector(
+    const targetComponent = this.shadowRoot?.querySelector(
       ` [uid='${interaction.component.id}']`
     );
 
@@ -34,9 +36,9 @@ export class CompositionPreviewComponent extends CompositionComponent {
       (targetComponent as HTMLElement)?.style.setProperty('display', 'block');
     }
 
-    focusedComponent?.classList.remove(EB_PREVIEW_FOCUS_CLASS);
-    focusedComponent?.removeAttribute(focusedNameAttr);
-    (focusedComponent as HTMLElement)?.style.removeProperty('display');
+    this.focusedComponent?.classList.remove(EB_PREVIEW_FOCUS_CLASS);
+    this.focusedComponent?.removeAttribute(focusedNameAttr);
+    this.focusedComponent?.style.removeProperty('display');
 
     if (interaction.action !== 'mouseout') {
       targetComponent?.classList.add(EB_PREVIEW_FOCUS_CLASS);
