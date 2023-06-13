@@ -1,6 +1,6 @@
 import { Component, PreviewExperienceService } from '@spryker-oryx/experience';
-import { subscribe } from '@spryker-oryx/utilities';
-import { combineLatest, filter, map, merge, of, switchMap, tap } from 'rxjs';
+import { signal, subscribe } from '@spryker-oryx/utilities';
+import { catchError, filter, map, merge, of, switchMap, tap } from 'rxjs';
 import { previewStyles } from './experience-composition-preview.styles';
 import { ExperienceCompositionComponent } from './experience-composition.component';
 
@@ -68,30 +68,39 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
 
   // TODO: temporary solution, hiding header and footer for header or footer editing
   // The whole override may be dropped when we will have proper template extensibility mechanism
-  protected override components$ = combineLatest([this.uid$, this.route$]).pipe(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    tap(([uid, route]) => {
+
+  protected routeDriven = false;
+
+  @subscribe()
+  protected $uidFromRoute2 = this.route$.pipe(
+    filter((route) => !!route),
+    tap((route) => {
       const headerEdit$ = (this.experienceService as PreviewExperienceService)
         .headerEdit$;
-
       if (route) {
         if (route === '/_header' || route === '/_footer') {
           if (!headerEdit$.value) {
+            this.routeDriven = true;
             headerEdit$.next(true);
           }
         } else if (headerEdit$.value) {
+          this.routeDriven = false;
           headerEdit$.next(false);
         }
       }
-    }),
-    switchMap(([uid, route]) => {
+    })
+  );
+
+  protected components$ = this.uid$.pipe(
+    switchMap((uid) => {
       const headerEdit$ = (this.experienceService as PreviewExperienceService)
         .headerEdit$;
 
-      const component =
-        this.experienceService?.getComponent({ uid, route }) ||
-        of({} as Component);
-      if (uid === 'header' || uid === 'footer') {
+      const component = this.experienceService
+        .getComponent({ uid })
+        .pipe(catchError(() => of({} as Component)));
+
+      if (!this.routeDriven && (uid === 'header' || uid === 'footer')) {
         return component.pipe(
           switchMap((component) =>
             headerEdit$.pipe(
@@ -102,9 +111,8 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
       }
       return component;
     }),
-    tap((component) => {
-      this.uid = component?.id;
-    }),
     map((component: Component) => component?.components ?? [])
   );
+
+  protected override $components = signal(this.components$);
 }
