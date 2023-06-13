@@ -7,7 +7,7 @@ export const HeaderTemplate: StaticComponent = {
   meta: { title: 'Header', route: '/_header' },
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       components: [
         {
           type: 'oryx-content-link',
@@ -65,7 +65,7 @@ export const HeaderTemplate: StaticComponent = {
       },
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'Composition',
       components: [
         {

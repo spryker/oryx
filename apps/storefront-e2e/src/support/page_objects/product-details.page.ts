@@ -34,11 +34,11 @@ export class ProductDetailsPage extends AbstractSFPage {
     cy.wait(2000);
   };
 
-  getWrapper = () => cy.get('experience-composition[route="/product/:sku"]');
+  getWrapper = () => cy.get('oryx-composition[route="/product/:sku"]');
   getDetailsWrapper = () =>
-    this.getWrapper().find('experience-composition:first-child');
+    this.getWrapper().find('oryx-composition:first-child');
   getInfoWrapper = () =>
-    this.getWrapper().find('experience-composition:nth-child(2)');
+    this.getWrapper().find('oryx-composition:nth-child(2)');
   getTitle = () =>
     this.getInfoWrapper().find('oryx-product-title').find('oryx-heading');
   getRating = () => this.getInfoWrapper().find('oryx-product-average-rating');

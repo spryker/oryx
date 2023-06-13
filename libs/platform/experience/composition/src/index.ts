@@ -1,3 +1,3 @@
-export * from './experience-composition-preview.component';
-export * from './experience-composition-preview.styles';
-export * from './experience-composition.component';
+export * from './composition-preview.component';
+export * from './composition-preview.styles';
+export * from './composition.component';

@@ -2,6 +2,7 @@ import { Type } from '@spryker-oryx/di';
 import {
   CompositionLayout,
   ContentMixin,
+  layoutKeys,
   StyleRuleSet,
 } from '@spryker-oryx/experience';
 import {
@@ -16,7 +17,6 @@ import {
   ssrShim,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { property } from 'lit/decorators.js';
 import { LayoutController } from '../controllers/layout.controller';
 
 export declare class LayoutMixinInterface {
@@ -47,11 +47,32 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     superClass
   ) {
     @signalProperty() layout?: CompositionLayout;
-    @signalProperty({ type: Boolean }) bleed?: boolean;
-    @signalProperty({ type: Boolean }) sticky?: boolean;
-    @signalProperty({ type: Boolean }) overlap?: boolean;
-    @signalProperty({ type: Boolean }) divider?: boolean;
-    @property({ type: Boolean, reflect: true }) vertical?: boolean;
+    @signalProperty({ type: Boolean, reflect: true, attribute: 'layout-bleed' })
+    bleed?: boolean;
+    @signalProperty({
+      type: Boolean,
+      reflect: true,
+      attribute: 'layout-sticky',
+    })
+    sticky?: boolean;
+    @signalProperty({
+      type: Boolean,
+      reflect: true,
+      attribute: 'layout-overlap',
+    })
+    overlap?: boolean;
+    @signalProperty({
+      type: Boolean,
+      reflect: true,
+      attribute: 'layout-divider',
+    })
+    divider?: boolean;
+    @signalProperty({
+      type: Boolean,
+      reflect: true,
+      attribute: 'layout-vertical',
+    })
+    vertical?: boolean;
 
     @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
@@ -61,17 +82,12 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected layoutController = new LayoutController(this);
 
-    protected layoutStyles = computed(() => {
-      const { rules } = this.$options();
-      const props: (keyof LayoutProperties)[] = [
-        'layout',
-        'sticky',
-        'bleed',
-        'overlap',
-        'divider',
-      ];
-      return this.layoutController.getStyles(props, rules);
-    });
+    protected layoutStyles = computed(() =>
+      this.layoutController.getStyles(
+        ['layout', ...layoutKeys],
+        this.$options().rules
+      )
+    );
   }
 
   // Cast return type to your mixin's interface intersected with the superClass type

@@ -6,14 +6,15 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   Component,
   ComponentsRegistryService,
+  ComponentTemplate,
   ExperienceService,
   LayoutBuilder,
   LayoutService,
 } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
-import { ExperienceCompositionComponent } from './experience-composition.component';
-import { experienceCompositionComponent } from './experience-composition.def';
+import { CompositionPreviewComponent } from './composition-preview.component';
+import { previewCompositionComponent } from './composition.def';
 
 const BASE_COMPONENTS = [
   { id: '1', type: 'oryx-content-banner' },
@@ -29,8 +30,9 @@ class MockExperienceService implements Partial<ExperienceService> {
       type: '',
       components: this.components,
     });
-  getOptions = <T>(): Observable<T> => of({} as T);
-  getContent = <T>(): Observable<T> => of({} as T);
+  getOptions = (): Observable<any> => of({});
+  getContent = (): Observable<any> => of({});
+  getInteractionData = (): Observable<any> => of({});
 }
 
 class MockLayoutBuilder implements Partial<LayoutBuilder> {
@@ -51,8 +53,8 @@ class MockComponentsRegistryService
     return of(type);
   }
 
-  resolveTemplate(type: string, uid: string): TemplateResult {
-    return html`<oryx-content-banner uid="${uid}"></oryx-content-banner>`;
+  resolveTemplate(data: ComponentTemplate): TemplateResult {
+    return html`<oryx-content-banner uid="${data.uid}"></oryx-content-banner>`;
   }
 }
 
@@ -60,11 +62,11 @@ class MockLayoutService implements Partial<LayoutService> {
   getStyles = vi.fn().mockReturnValue(of(null));
 }
 
-describe('Experience Composition', () => {
-  let element: ExperienceCompositionComponent;
+describe('Composition', () => {
+  let element: CompositionPreviewComponent;
 
   beforeAll(async () => {
-    await useComponent(experienceCompositionComponent);
+    await useComponent(previewCompositionComponent);
   });
 
   beforeEach(async () => {
@@ -94,7 +96,7 @@ describe('Experience Composition', () => {
     });
 
     element = await fixture(
-      html`<experience-composition uid="1"></experience-composition>`
+      html`<oryx-composition uid="1"></oryx-composition>`
     );
   });
 
@@ -103,7 +105,7 @@ describe('Experience Composition', () => {
   });
 
   it('is defined', () => {
-    expect(element).toBeInstanceOf(ExperienceCompositionComponent);
+    expect(element).toBeInstanceOf(CompositionPreviewComponent);
   });
 
   it('should render oryx-content-banner', () => {

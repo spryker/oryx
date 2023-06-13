@@ -40,7 +40,7 @@ class MockComponent extends LitElement implements isValid {
   isValid = mockReport;
 }
 
-@customElement('experience-composition')
+@customElement('oryx-composition')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MockComposition extends LitElement {
   render(): TemplateResult {
@@ -100,7 +100,7 @@ describe('CheckoutOrchestratorComponent', () => {
     });
 
     it('should not render the oryx-composition', () => {
-      expect(element).not.toContainElement('experience-composition');
+      expect(element).not.toContainElement('oryx-composition');
     });
   });
 
@@ -113,7 +113,7 @@ describe('CheckoutOrchestratorComponent', () => {
     });
 
     it('should render the oryx-composition', () => {
-      expect(element).toContainElement('experience-composition');
+      expect(element).toContainElement('oryx-composition');
     });
   });
 
@@ -126,7 +126,7 @@ describe('CheckoutOrchestratorComponent', () => {
     });
 
     it('should render the oryx-composition', () => {
-      expect(element).toContainElement('experience-composition');
+      expect(element).toContainElement('oryx-composition');
     });
   });
 
