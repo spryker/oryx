@@ -48,7 +48,7 @@ export class DefaultRouterService implements RouterService {
     this.router$.next(url[0]);
     this.urlSearchParams$.next(queryParams);
     this.routerEvents$.next({ route, type: RouterEventType.NavigationEnd });
-    window.scrollTo(0, 0);
+    globalThis.scrollTo?.(0, 0);
   }
 
   navigate(route: string): void {
