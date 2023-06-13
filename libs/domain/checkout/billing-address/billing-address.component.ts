@@ -45,7 +45,7 @@ export class CheckoutBillingAddressComponent
     if (
       deliveryAddress &&
       this.$isSameAsShippingAddress() &&
-      !this.$addresses()?.length
+      this.$addresses()?.length === 0
     ) {
       this.checkoutStateService.set('billingAddress', {
         valid: true,
