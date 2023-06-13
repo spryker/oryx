@@ -38,7 +38,7 @@
     "visual-regression-pr": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "chromatic --ci --exit-zero-on-changes"
+        "command": "chromatic --ci --only-changed --exit-zero-on-changes"
       }
     },
     "visual-regression-branch": {
