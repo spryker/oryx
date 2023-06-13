@@ -1,8 +1,8 @@
-import {Component, PreviewExperienceService} from '@spryker-oryx/experience';
-import {signal, subscribe} from '@spryker-oryx/utilities';
-import {catchError, filter, map, merge, of, switchMap, tap} from 'rxjs';
-import {previewStyles} from './experience-composition-preview.styles';
-import {ExperienceCompositionComponent} from './experience-composition.component';
+import { Component, PreviewExperienceService } from '@spryker-oryx/experience';
+import { signal, subscribe } from '@spryker-oryx/utilities';
+import { catchError, filter, map, merge, of, switchMap, tap } from 'rxjs';
+import { previewStyles } from './experience-composition-preview.styles';
+import { ExperienceCompositionComponent } from './experience-composition.component';
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
@@ -74,7 +74,7 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
   @subscribe()
   protected $uidFromRoute2 = this.route$.pipe(
     filter((route) => !!route),
-    tap(( route) => {
+    tap((route) => {
       const headerEdit$ = (this.experienceService as PreviewExperienceService)
         .headerEdit$;
       if (route) {
@@ -88,33 +88,31 @@ export class ExperienceCompositionPreviewComponent extends ExperienceComposition
           headerEdit$.next(false);
         }
       }
-    }),
+    })
   );
 
   protected components$ = this.uid$.pipe(
     switchMap((uid) => {
-        const headerEdit$ = (this.experienceService as PreviewExperienceService)
-          .headerEdit$;
+      const headerEdit$ = (this.experienceService as PreviewExperienceService)
+        .headerEdit$;
 
-        const component = this.experienceService
-            .getComponent({uid})
-            .pipe(catchError(() => of({} as Component)));
+      const component = this.experienceService
+        .getComponent({ uid })
+        .pipe(catchError(() => of({} as Component)));
 
-        if (!this.routeDriven && (uid === 'header' || uid === 'footer')) {
-          return component.pipe(
-            switchMap((component) =>
-              headerEdit$.pipe(
-                map((edit) => (edit ? ({} as Component) : component))
-              )
+      if (!this.routeDriven && (uid === 'header' || uid === 'footer')) {
+        return component.pipe(
+          switchMap((component) =>
+            headerEdit$.pipe(
+              map((edit) => (edit ? ({} as Component) : component))
             )
-          );
-        }
-        return component;
+          )
+        );
       }
-    ),
+      return component;
+    }),
     map((component: Component) => component?.components ?? [])
   );
 
-
-  protected override    $components = signal(this.components$);
+  protected override $components = signal(this.components$);
 }
