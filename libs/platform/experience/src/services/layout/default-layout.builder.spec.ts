@@ -151,9 +151,7 @@ describe('DefaultLayoutBuilder', () => {
         });
 
         it('should generate the style rules', () => {
-          expect(styles).toBe(
-            `:host([uid="test"]), [uid="test"] {\nbackground: red\n}`
-          );
+          expect(styles).toBe(`[uid="test"] {\nbackground: red\n}`);
         });
       });
     });
@@ -179,9 +177,7 @@ describe('DefaultLayoutBuilder', () => {
       });
 
       it('should generate a media query', () => {
-        expect(styles).toBe(
-          `@media foo{\n:host([uid="test"]), [uid="test"] {\nbackground: red\n}}`
-        );
+        expect(styles).toBe(`@media foo{\n[uid="test"] {\nbackground: red\n}}`);
       });
     });
 
@@ -205,9 +201,7 @@ describe('DefaultLayoutBuilder', () => {
       });
 
       it('should generate a selector for child elements', () => {
-        expect(styles).toBe(
-          `:host([uid="test"]) > *, [uid="test"] > * {\nbackground: red\n}`
-        );
+        expect(styles).toBe(`[uid="test"] > * {\nbackground: red\n}`);
       });
     });
 
@@ -231,9 +225,7 @@ describe('DefaultLayoutBuilder', () => {
       });
 
       it('should generate a selector for child elements', () => {
-        expect(styles).toBe(
-          `:host([uid="test"]):hover, [uid="test"]:hover {\nbackground: red\n}`
-        );
+        expect(styles).toBe(`[uid="test"]:hover {\nbackground: red\n}`);
       });
     });
   });
