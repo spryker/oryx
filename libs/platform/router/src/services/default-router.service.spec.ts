@@ -124,19 +124,11 @@ describe('DefaultRouterService', () => {
   });
 
   it('should navigate back in history', () => {
-    const historyBackSpy = vi.spyOn(globalThis.history, 'go');
+    const historyBackSpy = vi.spyOn(globalThis.history, 'back');
 
     service.back();
 
-    expect(historyBackSpy).toHaveBeenCalledWith(-1);
-  });
-
-  it('should skip back in history', () => {
-    const historyBackSpy = vi.spyOn(globalThis.history, 'go');
-
-    service.back(2);
-
-    expect(historyBackSpy).toHaveBeenCalledWith(-2);
+    expect(historyBackSpy).toHaveBeenCalled();
   });
 
   it('should get events on navigation', () => {

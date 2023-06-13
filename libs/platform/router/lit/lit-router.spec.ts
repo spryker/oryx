@@ -62,8 +62,8 @@ const mockRouter = {
   outlet: vi.fn(),
 };
 
-vi.mock('@lit-labs/router', async () => ({
-  Router: class {
+vi.mock('./lit-routes', async () => ({
+  Routes: class {
     params = 'routerParams';
     async goto(pathname: string) {
       mockRouter.goto(pathname);
@@ -114,11 +114,6 @@ describe('DefaultRouterService', () => {
   });
 
   describe('goto', () => {
-    it('should call extended router with proper params', async () => {
-      await router.goto('/newGoPath');
-      expect(mockRouter.goto).toHaveBeenCalledWith('/newGoPath');
-    });
-
     it('should call RouterService.go with proper params', async () => {
       globalThis.location.search = '?q=query';
       await router.goto('/newGoPath');

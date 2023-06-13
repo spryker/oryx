@@ -1,4 +1,4 @@
-import { RouteConfig } from '@lit-labs/router';
+import { RouteConfig } from '@spryker-oryx/router/lit';
 import { html } from 'lit';
 
 export const defaultBapiRoutes = (

@@ -4,6 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { CustomerNoteModalComponent } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
 import { RouterService } from '@spryker-oryx/router';
+import { ROUTE_GUARDED_EVENT } from '@spryker-oryx/router/lit';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { PickingListService } from '../../services';
@@ -18,7 +19,6 @@ class MockPickingListService implements Partial<PickingListService> {
 
 class MockRouterService implements Partial<RouterService> {
   back = vi.fn();
-  routeGuard = vi.fn().mockReturnValue(of(''));
 }
 
 describe('PickingHeaderComponent', () => {
@@ -159,11 +159,7 @@ describe('PickingHeaderComponent', () => {
 
   describe('when route is guarded', () => {
     beforeEach(async () => {
-      routerService.routeGuard.mockReturnValue(of('/picking-list'));
-
-      element = await fixture(
-        html`<oryx-picking-header pickingListId="mockid"></oryx-picking-header>`
-      );
+      dispatchEvent(new CustomEvent(ROUTE_GUARDED_EVENT));
     });
 
     it('should open discard modal', () => {

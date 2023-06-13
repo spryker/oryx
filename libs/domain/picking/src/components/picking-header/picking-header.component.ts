@@ -1,10 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
+import { ROUTE_GUARDED_EVENT } from '@spryker-oryx/router/lit';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n, signal } from '@spryker-oryx/utilities';
+import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
-import { map } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { DiscardPickingComponent } from '../discard-modal';
 import { styles } from './picking-header.styles';
@@ -19,16 +19,12 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
 
   @state() isCartNoteVisible?: boolean;
 
-  $shouldOpenModal = signal(
-    this.routerService
-      .routeGuard()
-      .pipe(map((routeGuard) => routeGuard.startsWith('/picking-list')))
-  );
+  override connectedCallback(): void {
+    super.connectedCallback();
 
-  override firstUpdated(): void {
-    if (this.$shouldOpenModal()) {
+    window.addEventListener(ROUTE_GUARDED_EVENT, () => {
       this.openDiscardModal();
-    }
+    });
   }
 
   protected renderCartNoteButton(): TemplateResult {
@@ -74,11 +70,18 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           label: i18n('oryx.picking.account'),
         }}
       ></oryx-site-navigation-item>
-      <oryx-discard-picking @oryx.back=${this.back}></oryx-discard-picking>`;
+      <oryx-discard-picking
+        @oryx.close=${this.closeDiscardModal}
+        @oryx.back=${this.back}
+      ></oryx-discard-picking>`;
   }
 
   protected openDiscardModal(): void {
     this.discardModal?.toggleAttribute('open', true);
+  }
+
+  protected closeDiscardModal(): void {
+    this.discardModal?.toggleAttribute('open', false);
   }
 
   protected back(): void {

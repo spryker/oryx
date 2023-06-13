@@ -1,7 +1,5 @@
 import { Observable } from 'rxjs';
 
-export const CAN_LEAVE_ROUTE = 'canLeaveRoute';
-
 export interface RouterService {
   go(route: string, extras?: NavigationExtras): void;
   back(skip?: number): void;
@@ -15,7 +13,7 @@ export interface RouterService {
   acceptParams(params: RouteParams): void;
   getUrl(route?: string, extras?: NavigationExtras): Observable<string>;
   getPathId(id: string): string | undefined;
-  routeGuard(): Observable<string>;
+  shouldGuardRoute(): Observable<boolean>;
 }
 
 export const RouterService = 'oryx.RouterService';

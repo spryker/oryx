@@ -1,5 +1,4 @@
-import { RouteConfig } from '@lit-labs/router';
-import { LitRouter } from '@spryker-oryx/router/lit';
+import { LitRouter, RouteConfig } from '@spryker-oryx/router/lit';
 import { LitElement, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { styles } from './fulfillment-root.styles';
