@@ -1,13 +1,13 @@
-import { Component, PreviewExperienceService } from '@spryker-oryx/experience';
+import { PreviewExperienceService } from '@spryker-oryx/experience';
 import { subscribe } from '@spryker-oryx/utilities';
-import { combineLatest, filter, map, merge, of, switchMap, tap } from 'rxjs';
+import { filter, merge, tap } from 'rxjs';
 import { previewStyles } from './composition-preview.styles';
 import { CompositionComponent } from './composition.component';
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
 export class CompositionPreviewComponent extends CompositionComponent {
-  static override styles = [previewStyles];
+  static styles = [previewStyles];
 
   protected interaction$ = (
     this.experienceService as PreviewExperienceService
@@ -68,43 +68,43 @@ export class CompositionPreviewComponent extends CompositionComponent {
 
   // TODO: temporary solution, hiding header and footer for header or footer editing
   // The whole override may be dropped when we will have proper template extensibility mechanism
-  protected override components$ = combineLatest([this.uid$, this.route$]).pipe(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    tap(([uid, route]) => {
-      const headerEdit$ = (this.experienceService as PreviewExperienceService)
-        .headerEdit$;
+  // protected override components$ = combineLatest([this.uid$, this.route$]).pipe(
+  //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //   tap(([uid, route]) => {
+  //     const headerEdit$ = (this.experienceService as PreviewExperienceService)
+  //       .headerEdit$;
 
-      if (route) {
-        if (route === '/_header' || route === '/_footer') {
-          if (!headerEdit$.value) {
-            headerEdit$.next(true);
-          }
-        } else if (headerEdit$.value) {
-          headerEdit$.next(false);
-        }
-      }
-    }),
-    switchMap(([uid, route]) => {
-      const headerEdit$ = (this.experienceService as PreviewExperienceService)
-        .headerEdit$;
+  //     if (route) {
+  //       if (route === '/_header' || route === '/_footer') {
+  //         if (!headerEdit$.value) {
+  //           headerEdit$.next(true);
+  //         }
+  //       } else if (headerEdit$.value) {
+  //         headerEdit$.next(false);
+  //       }
+  //     }
+  //   }),
+  //   switchMap(([uid, route]) => {
+  //     const headerEdit$ = (this.experienceService as PreviewExperienceService)
+  //       .headerEdit$;
 
-      const component =
-        this.experienceService?.getComponent({ uid, route }) ||
-        of({} as Component);
-      if (uid === 'header' || uid === 'footer') {
-        return component.pipe(
-          switchMap((component) =>
-            headerEdit$.pipe(
-              map((edit) => (edit ? ({} as Component) : component))
-            )
-          )
-        );
-      }
-      return component;
-    }),
-    tap((component) => {
-      this.uid = component?.id;
-    }),
-    map((component: Component) => component?.components ?? [])
-  );
+  //     const component =
+  //       this.experienceService?.getComponent({ uid, route }) ||
+  //       of({} as Component);
+  //     if (uid === 'header' || uid === 'footer') {
+  //       return component.pipe(
+  //         switchMap((component) =>
+  //           headerEdit$.pipe(
+  //             map((edit) => (edit ? ({} as Component) : component))
+  //           )
+  //         )
+  //       );
+  //     }
+  //     return component;
+  //   }),
+  //   tap((component) => {
+  //     this.uid = component?.id;
+  //   }),
+  //   map((component: Component) => component?.components ?? [])
+  // );
 }

@@ -10,66 +10,50 @@ import {
   LayoutMixin,
 } from '@spryker-oryx/experience';
 import {
+  computed,
+  effect,
   hydratable,
-  observe,
   signal,
-  subscribe,
+  signalAware,
+  signalProperty,
 } from '@spryker-oryx/utilities';
-import { CSSResult, html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import {
-  BehaviorSubject,
-  catchError,
-  filter,
-  map,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
 
+@signalAware()
 @hydratable()
 export class CompositionComponent extends LayoutMixin(
   ContentMixin<CompositionProperties>(LitElement)
 ) {
-  static styles: CSSResult[] = [];
-
-  @property() uid?: string;
-  @property({ reflect: true }) route?: string;
-
-  @observe()
-  protected uid$ = new BehaviorSubject<string | undefined>(this.uid);
-
-  @observe()
-  protected route$ = new BehaviorSubject<string | undefined>(this.route);
-
-  @subscribe()
-  protected $uidFromRoute = this.route$.pipe(
-    filter((route) => !!route),
-    switchMap((route) =>
-      this.experienceService
-        .getComponent({ route })
-        .pipe(catchError(() => of({} as Component)))
-    ),
-    tap((component) => (this.uid = component.id))
-  );
-
-  protected components$ = this.uid$.pipe(
-    switchMap((uid) =>
-      this.experienceService
-        .getComponent({ uid })
-        .pipe(catchError(() => of({} as Component)))
-    ),
-    map((component: Component) => component?.components ?? [])
-  );
+  @signalProperty({ reflect: true }) uid?: string;
+  @signalProperty({ reflect: true }) route?: string;
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
 
-  protected $components = signal(this.components$);
+  protected $uidFromRoute = effect(() => {
+    if (!this.route) {
+      return;
+    }
+
+    this.uid = (
+      signal(this.experienceService.getComponent({ route: this.route }))() ?? {}
+    ).id;
+  });
+
+  protected $components = computed(() => {
+    if (!this.uid) {
+      return [];
+    }
+
+    return (
+      signal(this.experienceService.getComponent({ uid: this.uid }))()
+        ?.components ?? []
+    );
+  });
 
   protected override render(): TemplateResult | void {
     const components = this.$components();
