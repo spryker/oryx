@@ -25,16 +25,14 @@ export default {
   },
 } as Meta;
 
-interface Props {
+interface Props extends CheckoutAddressOptions {
   addressId: MockAddressType;
 }
 
 const service = resolve<MockAddressService>(AddressService);
 service.changeMockAddressType(MockAddressType.ThreeWithDefaults);
 
-const Template: Story<Props & CheckoutAddressOptions> = (
-  props
-): TemplateResult => {
+const Template: Story<Props> = (props): TemplateResult => {
   return html`<oryx-checkout-address
     .options=${props}
     .addressId=${props.addressId}
