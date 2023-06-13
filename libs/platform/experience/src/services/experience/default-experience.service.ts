@@ -94,7 +94,7 @@ export class DefaultExperienceService implements ExperienceService {
     if (route) {
       return this.getComponentByRoute(route);
     }
-    console.log(uid, route, 'getComponent');
+
     return throwError(() => {
       return new Error('Invalid qualifier for getComponent');
     });
