@@ -34,12 +34,13 @@ export class UserProfileComponent extends LitElement {
     resolve(SyncSchedulerService)
       .hasPending()
       .pipe(tap((pending) => (this.hasPendingSyncs = pending)))
-      .subscribe()
   );
 
   protected override render(): TemplateResult {
     const isPicking = this.route()?.includes('/picking/');
     const isMainPage = this.route() === '/';
+
+    this.pendingSyncs();
 
     return html`
       <div class="info-block">
