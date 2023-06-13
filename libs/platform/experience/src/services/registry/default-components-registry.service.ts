@@ -2,7 +2,10 @@ import { inject } from '@spryker-oryx/di';
 import { html, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ComponentMapping } from '../experience-tokens';
-import { ComponentsRegistryService } from './components-registry.service';
+import {
+  ComponentsRegistryService,
+  ComponentTemplate,
+} from './components-registry.service';
 
 export class DefaultComponentsRegistryService
   implements ComponentsRegistryService
@@ -22,11 +25,8 @@ export class DefaultComponentsRegistryService
     return this.componentMapping?.[type]?.tag ?? type;
   }
 
-  resolveTemplate(
-    type: string,
-    uid: string,
-    markers?: string
-  ): TemplateResult | undefined {
+  resolveTemplate(data: ComponentTemplate): TemplateResult | undefined {
+    const { type, uid, markers } = data;
     const component = this.componentMapping?.[type] ?? { tag: type };
     const tag = component.tag ?? type;
 

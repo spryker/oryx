@@ -19,6 +19,7 @@ import { CSSResult, html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { when } from 'lit/directives/when.js';
 import {
   BehaviorSubject,
   catchError,
@@ -35,7 +36,7 @@ export class CompositionComponent extends LayoutMixin(
 ) {
   static styles: CSSResult[] = [];
 
-  @property({ reflect: true }) uid?: string;
+  @property() uid?: string;
   @property({ reflect: true }) route?: string;
 
   @observe()
@@ -71,38 +72,33 @@ export class CompositionComponent extends LayoutMixin(
   protected $components = signal(this.components$);
 
   protected override render(): TemplateResult | void {
-    return this.renderComponents(this.$components());
-  }
+    const components = this.$components();
 
-  protected renderComponents(
-    components?: Component<CompositionProperties>[]
-  ): TemplateResult | void {
-    if (!components) return;
+    if (!components?.length) return;
 
-    return html`${this.renderChildComponents(components)}
-    ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)} `;
-  }
+    const layoutStyles = this.layoutStyles();
+    const inlineStyles = this.layoutBuilder.collectStyles(components);
 
-  protected renderChildComponents(
-    components: Component<CompositionProperties>[]
-  ): TemplateResult | void {
     return html`${repeat(
       components,
       (component) => component.id,
       (component, index) => this.renderComponent(component, index)
     )}
-    ${this.addInlineStyles(components)} `;
+    ${when(layoutStyles, () => unsafeHTML(`<style>${layoutStyles}</style>`))}
+    ${when(inlineStyles, () => unsafeHTML(`<style>${inlineStyles}</style>`))} `;
   }
 
   protected renderComponent(
     component: Component<CompositionProperties>,
     index: number
   ): TemplateResult | undefined {
-    const template = this.registryService.resolveTemplate(
-      component.type,
-      component.id,
-      this.getLayoutMarkers(component)
-    );
+    const template = this.registryService.resolveTemplate({
+      type: component.type,
+      uid: component.id,
+      markers: component.options?.data
+        ? this.layoutBuilder.getLayoutMarkers(component.options.data)
+        : undefined,
+    });
     if (this.$options()?.rules?.[0]?.layout === CompositionLayout.Tabular) {
       return html`
         <input
@@ -117,30 +113,5 @@ export class CompositionComponent extends LayoutMixin(
     }
 
     return html`${template}`;
-  }
-
-  /**
-   * collects the inline styles for the components and writes them
-   * in a `<style>` tag.
-   * The styles are unique to the component and are not reusable, hence it's
-   * ok to render them inline. Rendering them inline will improve loading them
-   * as additional resources, which would cause a layout shift.
-   */
-  protected addInlineStyles(
-    components: Component[] | void
-  ): TemplateResult | void {
-    if (!components) return;
-    const styles = this.layoutBuilder.collectStyles(components);
-    if (styles) {
-      return html`${unsafeHTML(`<style>${styles}</style>`)}`;
-    }
-  }
-
-  protected getLayoutMarkers(component: Component): string | undefined {
-    if (!component.options?.data) {
-      return undefined;
-    }
-
-    return this.layoutBuilder.getLayoutMarkers(component.options.data);
   }
 }
