@@ -12,13 +12,12 @@ import { when } from 'lit/directives/when.js';
 import { delay, tap } from 'rxjs';
 import { userProfileComponentStyles } from './user-profile.styles';
 
-signalAware();
+@signalAware()
 export class UserProfileComponent extends LitElement {
   static styles = userProfileComponentStyles;
 
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
-  protected syncSchedulerService = resolve(SyncSchedulerService);
 
   protected injector = resolve(INJECTOR);
   protected injectorDataPlugin =
@@ -32,7 +31,7 @@ export class UserProfileComponent extends LitElement {
 
   protected route = signal(this.routerService.route());
   protected pendingSyncs = signal(
-    this.syncSchedulerService
+    resolve(SyncSchedulerService)
       .hasPending()
       .pipe(tap((pending) => (this.hasPendingSyncs = pending)))
       .subscribe()
