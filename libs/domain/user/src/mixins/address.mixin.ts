@@ -4,6 +4,7 @@ import {
   computed,
   signal,
   Signal,
+  signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
@@ -38,6 +39,7 @@ export declare class AddressMixinInterface {
 export const AddressMixin = <T extends Type<LitElement>>(
   superClass: T
 ): Type<AddressMixinInterface> & T => {
+  @signalAware()
   class AddressMixinClass extends superClass {
     protected addressService = resolve(AddressService);
     protected addressStateService = resolve(AddressStateService);
