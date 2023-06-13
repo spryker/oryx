@@ -8,12 +8,12 @@ export const styles: LayoutStyles = {
       flex-wrap: wrap;
     }
 
-    :host(:not([oryx-layout-vertical])) {
+    :host(:not([layout-vertical])) {
       align-items: var(--align, start);
       justify-content: var(--justify, start);
     }
 
-    :host([oryx-layout-vertical]) {
+    :host([layout-vertical]) {
       flex-direction: column;
     }
   `,

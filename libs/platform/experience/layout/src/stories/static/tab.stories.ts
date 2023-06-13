@@ -55,7 +55,7 @@ const Template: Story = (): TemplateResult => {
       </div>
     </oryx-layout>
 
-    <oryx-layout layout="tabular" oryx-layout-vertical container>
+    <oryx-layout layout="tabular" layout-vertical container>
       <input type="radio" name="group4" id="tab-7" checked />
       <label for="tab-7">heading 1</label>
       <div>content 1</div>
@@ -69,7 +69,7 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <style>
-      [layout='tabular']:not([oryx-layout-vertical])
+      [layout='tabular']:not([layout-vertical])
         input:not(:checked)
         + label
         + * {
@@ -79,13 +79,13 @@ const Template: Story = (): TemplateResult => {
         color: var(--oryx-color-primary-9);
       }
 
-      [layout='tabular'][oryx-layout-vertical] *:not(input):not(label) {
+      [layout='tabular'][layout-vertical] *:not(input):not(label) {
         transition: max-height 0.3s;
         overflow: hidden;
         max-height: 100px;
       }
 
-      [layout='tabular'][oryx-layout-vertical] input:not(:checked) + label + * {
+      [layout='tabular'][layout-vertical] input:not(:checked) + label + * {
         max-height: 0;
       }
     </style>

@@ -10,11 +10,11 @@ export const styles: LayoutStyles = {
       --oryx-column-count: var(--oryx-column-grid);
     }
 
-    :host(:not([oryx-layout-vertical])) {
+    :host(:not([layout-vertical])) {
       grid-template-columns: repeat(auto-fill, var(--_item-size));
     }
 
-    :host([oryx-layout-vertical]) {
+    :host([layout-vertical]) {
       grid-auto-flow: column;
       grid-template-rows: repeat(auto-fill, var(--_item-size));
       grid-auto-columns: var(--_item-size);

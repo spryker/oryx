@@ -311,8 +311,8 @@ describe('DefaultLayoutBuilder', () => {
           });
         });
 
-        it(`should add the oryx-layout-${prop} marker`, () => {
-          expect(layoutMarkers).toContain(`oryx-layout-${prop}`);
+        it(`should add the layout-${prop} marker`, () => {
+          expect(layoutMarkers).toContain(`layout-${prop}`);
         });
       });
 
@@ -324,8 +324,8 @@ describe('DefaultLayoutBuilder', () => {
             });
           });
 
-          it(`should add the oryx-layout-${size}-${prop} marker`, () => {
-            expect(layoutMarkers).toContain(`oryx-layout-${size}-${prop}`);
+          it(`should add the layout-${size}-${prop} marker`, () => {
+            expect(layoutMarkers).toContain(`layout-${size}-${prop}`);
           });
         });
       });

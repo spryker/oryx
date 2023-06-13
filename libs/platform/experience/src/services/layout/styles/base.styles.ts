@@ -13,7 +13,7 @@ export const styles = css`
     margin-inline: auto;
   }
 
-  :host(:not([oryx-layout-vertical])) {
+  :host(:not([layout-vertical])) {
     width: min(100%, calc(var(--_container-width)));
   }
 `;

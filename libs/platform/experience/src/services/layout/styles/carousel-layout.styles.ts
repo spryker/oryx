@@ -17,12 +17,12 @@ export const styles: LayoutStyles = {
       grid-auto-columns: var(--_item-size);
     }
 
-    :host(:not([oryx-layout-vertical])) {
+    :host(:not([layout-vertical])) {
       grid-auto-flow: column;
       overflow: auto hidden;
     }
 
-    :host([oryx-layout-vertical]) {
+    :host([layout-vertical]) {
       grid-auto-flow: row;
       overflow: hidden auto;
     }
