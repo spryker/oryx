@@ -22,7 +22,7 @@ export class RouteGuardPlugin implements AppPlugin {
         resolve(RouterService).currentRoute(),
         resolve(StorageService).get<string>(
           CAN_LEAVE_ROUTE,
-          StorageType.SESSION
+          StorageType.Session
         ),
       ])
         .pipe(
@@ -33,7 +33,7 @@ export class RouteGuardPlugin implements AppPlugin {
               ).next('');
               resolve(StorageService).remove(
                 CAN_LEAVE_ROUTE,
-                StorageType.SESSION
+                StorageType.Session
               );
               return;
             }

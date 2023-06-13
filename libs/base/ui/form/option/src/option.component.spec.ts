@@ -1,6 +1,6 @@
+import { getShadowElementBySelector } from '@/tools/testing';
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { optionComponent } from './component';

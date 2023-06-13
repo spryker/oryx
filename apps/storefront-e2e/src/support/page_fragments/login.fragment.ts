@@ -10,13 +10,8 @@ export class LoginFragment {
   getBEValidationError = () => this.getWrapper().find('oryx-notification');
 
   login = (user: TestUserData) => {
-    this.getEmailInput().focus();
-    // there is no other way to detect that hydration is finished
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(2000);
-
-    this.getEmailInput().type(user.email, { delay: 10, force: true });
-    this.getPasswordInput().type(user.password, { delay: 10, force: true });
+    this.getEmailInput().type(user.email, { force: true });
+    this.getPasswordInput().type(user.password, { force: true });
     this.getRememberMeCheckbox().click();
     this.getLoginButton().click();
   };

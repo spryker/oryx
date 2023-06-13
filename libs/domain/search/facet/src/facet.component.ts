@@ -40,7 +40,7 @@ export class SearchFacetComponent extends FacetComponentMixin() {
         .heading=${props.name}
         .selectedLength=${facet.selectedValues?.length}
         .valuesLength=${valuesLength}
-        ?enableclearaction="${props.enableClearAction}"
+        ?enableClear="${props.enableClear}"
       >
         ${when(
           valuesLength,

@@ -13,7 +13,7 @@ export interface FacetMappingOptions {
   renderLimit: number;
   open: boolean;
   minForSearch: number;
-  enableClearAction?: boolean;
+  enableClear?: boolean;
 }
 
 export interface FacetRendererMapping {

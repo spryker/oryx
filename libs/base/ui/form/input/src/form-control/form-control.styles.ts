@@ -1,4 +1,4 @@
-import { primaryColorBase, screenCss } from '@spryker-oryx/utilities';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const formControlBaseStyles = css`
@@ -79,7 +79,7 @@ export const formControlBaseStyles = css`
 
   /* visible focus effect */
   :host([visible-focus]:not([hasError])) .control:focus-within {
-    box-shadow: var(--oryx-elevation-0) ${primaryColorBase};
+    box-shadow: var(--oryx-elevation-0) var(--oryx-color-primary-9);
     transition-property: box-shadow, border;
   }
 

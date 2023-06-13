@@ -1,8 +1,4 @@
-import {
-  primaryColorBase,
-  primaryColorDark,
-  screenCss,
-} from '@spryker-oryx/utilities';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const baseStyles = css`
@@ -25,7 +21,7 @@ export const baseStyles = css`
     background-clip: content-box;
     /* stylelint-disable-next-line */
     background-image: linear-gradient(currentColor 0%, currentColor 100%);
-    color: ${primaryColorBase};
+    color: var(--oryx-color-primary-9);
   }
 
   :not(slot[name='subtext'])::slotted(*) {
@@ -68,7 +64,7 @@ export const baseStyles = css`
   }
 
   ::slotted(input:checked:hover) {
-    color: ${primaryColorDark};
+    color: var(--oryx-color-primary-10);
   }
 
   :host([hasError]) ::slotted(input),

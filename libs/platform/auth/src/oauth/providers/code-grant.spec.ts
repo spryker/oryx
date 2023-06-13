@@ -1,5 +1,5 @@
 import { nextFrame } from '@open-wc/testing-helpers';
-import { StorageService, StorageType } from '@spryker-oryx/core';
+import { StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { skipStateCheck } from 'oauth4webapi';
 import { catchError, of } from 'rxjs';
@@ -193,15 +193,11 @@ describe('OauthPasswordGrantProvider', () => {
       const service = setup(mockConfig);
       service.authenticate().subscribe();
       await nextFrame();
-      expect(mockStorage.set).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        {
-          codeVerifier: 'AcodeVerifier',
-          providerId: 'id',
-          state: 'authenticating',
-        },
-        StorageType.LOCAL
-      );
+      expect(mockStorage.set).toHaveBeenCalledWith('oryx.oauth-token', {
+        codeVerifier: 'AcodeVerifier',
+        providerId: 'id',
+        state: 'authenticating',
+      });
     });
 
     it('should redirect to proper url', async () => {
@@ -415,14 +411,10 @@ describe('OauthPasswordGrantProvider', () => {
       const service = setup();
       service.handleCallback(new URL(mockConfig.authUrl)).subscribe();
       await nextFrame();
-      expect(mockStorage.set).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        {
-          state: 'authenticated',
-          token: 'CodeOAuth2Response',
-        },
-        StorageType.LOCAL
-      );
+      expect(mockStorage.set).toHaveBeenCalledWith('oryx.oauth-token', {
+        state: 'authenticated',
+        token: 'CodeOAuth2Response',
+      });
     });
   });
 
@@ -433,10 +425,7 @@ describe('OauthPasswordGrantProvider', () => {
       const service = setup();
       service.revoke().subscribe();
       await nextFrame();
-      expect(mockStorage.remove).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        StorageType.LOCAL
-      );
+      expect(mockStorage.remove).toHaveBeenCalledWith('oryx.oauth-token');
     });
 
     it('should throw error if token is not `authenticated`', async () => {
@@ -564,10 +553,7 @@ describe('OauthPasswordGrantProvider', () => {
       });
       service.revoke().subscribe();
       await nextFrame();
-      expect(mockStorage.remove).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        StorageType.LOCAL
-      );
+      expect(mockStorage.remove).toHaveBeenCalledWith('oryx.oauth-token');
     });
   });
 
@@ -705,14 +691,10 @@ describe('OauthPasswordGrantProvider', () => {
       const service = setup();
       service.refreshToken().subscribe();
       await nextFrame();
-      expect(mockStorage.set).toHaveBeenCalledWith(
-        'oryx.oauth-token',
-        {
-          state: 'authenticated',
-          token: 'mockRefreshToken',
-        },
-        StorageType.LOCAL
-      );
+      expect(mockStorage.set).toHaveBeenCalledWith('oryx.oauth-token', {
+        state: 'authenticated',
+        token: 'mockRefreshToken',
+      });
     });
   });
 

@@ -6,11 +6,11 @@ import {
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonComponent, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { computed, hydratable, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
+import { query, state } from 'lit/decorators.js';
 import { CartAddOptions } from './add.model';
 import { styles } from './add.styles';
 
@@ -20,11 +20,10 @@ export class CartAddComponent extends ProductMixin(
 ) {
   static styles = styles;
 
-  @state() protected confirmed = false;
-  @state() protected isInvalid = false;
-  @state() protected loading = false;
-
   protected cartService = resolve(CartService);
+  @state() protected isInvalid = false;
+  @query('oryx-button') protected button?: ButtonComponent;
+  @query('oryx-cart-quantity-input') protected input?: QuantityInputComponent;
 
   protected override render(): TemplateResult | void {
     if (!this.$product()?.sku) return;
@@ -47,9 +46,7 @@ export class CartAddComponent extends ProductMixin(
     return html` <oryx-button
       size=${Size.Sm}
       type=${ButtonType.Primary}
-      ?loading=${this.$isBusy() && this.loading}
       ?outline=${this.$options().outlined}
-      ?confirmed=${this.confirmed}
     >
       <button
         ?disabled=${this.isInvalid || this.max() < this.min()}
@@ -89,24 +86,25 @@ export class CartAddComponent extends ProductMixin(
   protected onSubmit(e: Event | CustomEvent<QuantityEventDetail>): void {
     e.preventDefault();
     const sku = this.$product()?.sku;
-    if (!sku) return;
+    if (!sku || !this.button) return;
 
     const quantity =
-      (e as CustomEvent).detail?.quantity ??
-      this.shadowRoot?.querySelector<QuantityInputComponent>(
-        'oryx-cart-quantity-input'
-      )?.value ??
-      this.min();
+      (e as CustomEvent).detail?.quantity ?? this.input?.value ?? this.min();
+    const button = this.button;
 
-    this.loading = true;
+    this.button.loading = true;
     this.cartService.addEntry({ sku, quantity }).subscribe({
       next: () => {
-        this.confirmed = true;
-        this.loading = false;
-        setTimeout(() => (this.confirmed = false), 800);
+        button.confirmed = true;
+        setTimeout(() => {
+          button.confirmed = false;
+        }, 800);
       },
       error: () => {
-        this.loading = false;
+        button.confirmed = false;
+      },
+      complete: () => {
+        button.loading = false;
       },
     });
   }

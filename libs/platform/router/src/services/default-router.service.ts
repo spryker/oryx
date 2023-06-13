@@ -62,7 +62,7 @@ export class DefaultRouterService implements RouterService {
   }
 
   back(skip?: number): void {
-    this.storageService.set(CAN_LEAVE_ROUTE, true, StorageType.SESSION);
+    this.storageService.set(CAN_LEAVE_ROUTE, true, StorageType.Session);
     globalThis.history.go(-1 * (skip ?? 1));
   }
 
@@ -71,7 +71,7 @@ export class DefaultRouterService implements RouterService {
   }
 
   previousRoute(): Observable<string | null> {
-    return this.storageService.get<string>(PREVIOUS_PAGE, StorageType.SESSION);
+    return this.storageService.get<string>(PREVIOUS_PAGE, StorageType.Session);
   }
 
   route(): Observable<string> {
@@ -86,7 +86,7 @@ export class DefaultRouterService implements RouterService {
           this.storageService.set(
             PREVIOUS_PAGE,
             currentPage,
-            StorageType.SESSION
+            StorageType.Session
           );
         }
         this.storeRoute(route);
@@ -158,7 +158,7 @@ export class DefaultRouterService implements RouterService {
   }
 
   protected storeRoute(value: string): void {
-    this.storageService.set(CURRENT_PAGE, value, StorageType.SESSION);
+    this.storageService.set(CURRENT_PAGE, value, StorageType.Session);
     this.storedRoute$.next(value);
   }
 

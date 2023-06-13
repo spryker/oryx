@@ -1,4 +1,4 @@
-import { HttpService, StorageService, StorageType } from '@spryker-oryx/core';
+import { HttpService, StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   Observable,
@@ -107,25 +107,15 @@ export class OauthPasswordGrantProvider implements OauthProvider {
 
   protected restoreToken(): void {
     this.storage
-      .get<OauthResponseSuccess>(
-        OauthPasswordGrantProvider.TOKEN_KEY,
-        StorageType.LOCAL
-      )
+      .get<OauthResponseSuccess>(OauthPasswordGrantProvider.TOKEN_KEY)
       .subscribe((token) => this.token$.next(token ?? undefined));
   }
 
   protected updateToken(token?: OauthResponseSuccess): Observable<void> {
     return (
       token
-        ? this.storage.set(
-            OauthPasswordGrantProvider.TOKEN_KEY,
-            token,
-            StorageType.LOCAL
-          )
-        : this.storage.remove(
-            OauthPasswordGrantProvider.TOKEN_KEY,
-            StorageType.LOCAL
-          )
+        ? this.storage.set(OauthPasswordGrantProvider.TOKEN_KEY, token)
+        : this.storage.remove(OauthPasswordGrantProvider.TOKEN_KEY)
     ).pipe(tap(() => this.token$.next(token)));
   }
 }

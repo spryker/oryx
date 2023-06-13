@@ -1,18 +1,27 @@
 import { defaultAddress } from '../../../../src/test-data/default-address';
 
 export class CheckoutAddressFormFragment {
-  getAddressForm = () => cy.get('oryx-address-form');
-  getCountrySelect = () => cy.get('oryx-select[label="Country"]');
-  getSalutationSelect = () => cy.get('oryx-select[label="Salutation"]');
+  private wrapperSelector: string;
+
+  constructor(selector: string) {
+    this.wrapperSelector = selector;
+  }
+
+  getWrapper = () => cy.get(this.wrapperSelector);
+  getAddressForm = () => this.getWrapper().find('oryx-user-address-form');
+  getCountrySelect = () =>
+    this.getWrapper().find('oryx-select[label="Country"]');
+  getSalutationSelect = () =>
+    this.getWrapper().find('oryx-select[label="Salutation"]');
   getFirstNameInput = () =>
     this.getAddressForm().find('input[name="firstName"]');
   getLastNameInput = () => this.getAddressForm().find('input[name="lastName"]');
-  getCompanyInput = () => cy.get('input[name="company"]');
-  getAddress1Input = () => cy.get('input[name="address1"]');
-  getAddress2Input = () => cy.get('input[name="address2"]');
-  getZipInput = () => cy.get('input[name="zipCode"]');
-  getCityInput = () => cy.get('input[name="city"]');
-  getPhoneInput = () => cy.get('input[name="phone"]');
+  getCompanyInput = () => this.getWrapper().find('input[name="company"]');
+  getAddress1Input = () => this.getWrapper().find('input[name="address1"]');
+  getAddress2Input = () => this.getWrapper().find('input[name="address2"]');
+  getZipInput = () => this.getWrapper().find('input[name="zipCode"]');
+  getCityInput = () => this.getWrapper().find('input[name="city"]');
+  getPhoneInput = () => this.getWrapper().find('input[name="phone"]');
 
   selectCoutry = (isoCode: string) => {
     this.getCountrySelect().click();

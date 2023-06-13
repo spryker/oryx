@@ -153,7 +153,7 @@ describe('DefaultRouterService', () => {
       expect(storageService.set).toHaveBeenCalledWith(
         'currentPage',
         '/last',
-        StorageType.SESSION
+        StorageType.Session
       );
     });
 
@@ -163,12 +163,12 @@ describe('DefaultRouterService', () => {
     expect(storageService.set).toHaveBeenCalledWith(
       'previousPage',
       '/last',
-      StorageType.SESSION
+      StorageType.Session
     );
     expect(storageService.set).toHaveBeenCalledWith(
       'currentPage',
       '/current',
-      StorageType.SESSION
+      StorageType.Session
     );
   });
 
@@ -184,7 +184,7 @@ describe('DefaultRouterService', () => {
     service.previousRoute();
     expect(storageService.get).toHaveBeenCalledWith(
       'previousPage',
-      StorageType.SESSION
+      StorageType.Session
     );
   });
 

@@ -91,9 +91,6 @@ describe('Cart summary suite', () => {
           cartPage.header.getCartCount().should('not.exist');
         });
       });
-
-      // TODO: add test case
-      xit('order is placed and there is no cart anymore');
     });
   });
 });

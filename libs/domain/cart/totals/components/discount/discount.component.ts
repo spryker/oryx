@@ -48,7 +48,7 @@ export class CartTotalsDiscountComponent extends CartComponentMixin(
       appearance="${CollapsibleAppearance.Inline}"
       ?open=${discountRowsAppearance !== DiscountRowsAppearance.Collapsed}
     >
-      <span slot="header">
+      <span slot="heading">
         ${i18n('cart.totals.<count>-discounts', {
           count: totals.discounts.length,
         })}
