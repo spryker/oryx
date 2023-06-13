@@ -80,7 +80,6 @@ export class CompositionPreviewComponent extends CompositionComponent {
       .headerEdit$;
 
     if (!this.routeDriven && (this.uid === 'header' || this.uid === 'footer')) {
-      console.log(signal(headerEdit$));
       if (headerEdit$.getValue()) {
         return [];
       }
