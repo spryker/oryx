@@ -37,7 +37,7 @@ describe('User addresses', () => {
     });
 
     describe('and user does not have addresses yet', () => {
-      describe('and user goes to chechout', () => {
+      describe('and user goes to checkout', () => {
         beforeEach(() => {
           cartPage.checkout();
         });
@@ -70,13 +70,13 @@ describe('User addresses', () => {
         api.addresses.post(defaultUser.id);
       });
 
-      describe('and user goes to chechout', () => {
+      describe('and user goes to checkout', () => {
         beforeEach(() => {
           cartPage.checkout();
         });
 
-        it('then the list of addresses is shown', () => {
-          checkCheckoutAddressesList(2);
+        it('then the selected address is shown', () => {
+          checkCheckoutAddresses();
         });
 
         [
@@ -103,10 +103,10 @@ describe('User addresses', () => {
                 address.type.addressChangeModal.addAddress();
               });
 
-              it('new address appears in all 3 addresses lists', () => {
+              it('new address appears', () => {
                 checkAddressesListInModal(address.type, 3);
                 address.type.addressChangeModal.closeModal();
-                checkCheckoutAddressesList(3);
+                checkCheckoutAddresses();
               });
             });
 
@@ -119,7 +119,7 @@ describe('User addresses', () => {
                 );
               });
 
-              it('edited address appears in all 3 addresses lists', () => {
+              it('edited address appears', () => {
                 // check addresses in modal after edit
                 checkAddressesListInModal(address.type, 2);
 
@@ -134,7 +134,7 @@ describe('User addresses', () => {
                 address.type.addressChangeModal.closeModal();
 
                 // check addresses in billing and shipping lists
-                checkCheckoutAddressesList(2);
+                checkCheckoutAddresses();
 
                 checkoutPage.shipping.addressesList
                   .getAddressListItem()
@@ -157,10 +157,10 @@ describe('User addresses', () => {
                 address.type.addressChangeModal.removeAddress();
               });
 
-              it('removed address dissapeares from all 3 addresses lists', () => {
+              it('removed address disappears', () => {
                 checkAddressesListInModal(address.type, 1);
                 address.type.addressChangeModal.closeModal();
-                checkCheckoutAddressesList(1);
+                checkCheckoutAddresses();
               });
             });
           });
@@ -170,17 +170,16 @@ describe('User addresses', () => {
   });
 });
 
-function checkCheckoutAddressesList(numberOfAddresses: number) {
+function checkCheckoutAddresses() {
   // check shipping addresses
   checkoutPage.shipping.addAddressForm.getAddressForm().should('not.exist');
 
   checkoutPage.shipping.addressesList
     .getChangeAddressesButton()
     .should('be.visible');
-  checkoutPage.shipping.addressesList.getAddressList().should('be.visible');
   checkoutPage.shipping.addressesList
-    .getAddressListItem()
-    .should('have.length', numberOfAddresses);
+    .getMultiLineAddress()
+    .should('be.visible');
 
   // check billing addresses
   checkoutPage.billing.addAddressForm.getAddressForm().should('not.exist');
@@ -188,10 +187,7 @@ function checkCheckoutAddressesList(numberOfAddresses: number) {
   checkoutPage.shipping.addressesList
     .getChangeAddressesButton()
     .should('be.visible');
-  checkoutPage.billing.addressesList.getAddressList().should('be.visible');
-  checkoutPage.billing.addressesList
-    .getAddressListItem()
-    .should('have.length', numberOfAddresses);
+  checkoutPage.billing.addressesList.getMultiLineAddress().should('be.visible');
 }
 
 function checkAddressesListInModal(addressType, numberOfAddresses: number) {
