@@ -3,8 +3,8 @@ import { FacetValue } from '@spryker-oryx/product';
 import { FacetColorsMapping } from '@spryker-oryx/search';
 import { html, TemplateResult } from 'lit';
 // use relative path for dev ssr server. SearchFacetComponent and SingleFacetControlStyles are undefined
-import { SingleFacetControlStyles } from '../facet/src/facet.styles';
 import { SearchFacetComponent } from '../facet/src/facet.component';
+import { SingleFacetControlStyles } from '../facet/src/facet.styles';
 import { styles } from './facet-color.styles';
 
 export class SearchColorFacetComponent extends SearchFacetComponent {
