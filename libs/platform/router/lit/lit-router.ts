@@ -88,7 +88,7 @@ export class LitRouter extends Routes {
       .subscribe();
   }
 
-  override hostConnected() {
+  override hostConnected(): void {
     super.hostConnected();
     window.addEventListener('click', this._onClick);
     this.subscription = fromEvent(window, 'popstate')
@@ -110,7 +110,7 @@ export class LitRouter extends Routes {
     this.goto(window.location.pathname);
   }
 
-  override hostDisconnected() {
+  override hostDisconnected(): void {
     super.hostDisconnected();
     window.removeEventListener('click', this._onClick);
     this.subscription?.unsubscribe();

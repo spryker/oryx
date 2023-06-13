@@ -121,12 +121,6 @@ export class Routes implements ReactiveController {
     [key: string]: string | undefined;
   } = {};
 
-  private _previousPathname: string | undefined;
-  private _previousRoute: RouteConfig | undefined;
-  private _previousParams: {
-    [key: string]: string | undefined;
-  } = {};
-
   /**
    * Callback to call when this controller is disconnected.
    *
@@ -169,7 +163,7 @@ export class Routes implements ReactiveController {
    * navigation API. It does navigate child routes if pathname matches a
    * pattern with a tail wildcard pattern (`/*`).
    */
-  async goto(pathname: string) {
+  async goto(pathname: string): Promise<void> {
     // TODO (justinfagnani): handle absolute vs relative paths separately.
     // TODO (justinfagnani): do we need to detect when goto() is called while
     // a previous goto() call is still pending?
@@ -206,10 +200,6 @@ export class Routes implements ReactiveController {
       }
 
       // Only update route state if the enter handler completes successfully
-      this._previousRoute = this._currentRoute;
-      this._previousParams = this._currentParams;
-      this._previousPathname = this._currentPathname;
-
       this._currentRoute = route;
       this._currentParams = params;
       this._currentPathname =
@@ -227,7 +217,7 @@ export class Routes implements ReactiveController {
     this._host.requestUpdate();
   }
 
-  handleRouteLeave() {
+  handleRouteLeave(): Observable<boolean> {
     if (this._currentRoute && typeof this._currentRoute.leave === 'function') {
       return this._currentRoute.leave(this._currentParams);
     }
@@ -237,14 +227,16 @@ export class Routes implements ReactiveController {
   /**
    * The result of calling the current route's render() callback.
    */
-  outlet() {
+  outlet(): unknown {
     return this._currentRoute?.render?.(this._currentParams);
   }
 
   /**
    * The current parsed route parameters.
    */
-  get params() {
+  get params(): {
+    [key: string]: string | undefined;
+  } {
     return this._currentParams;
   }
 
@@ -266,7 +258,7 @@ export class Routes implements ReactiveController {
     return undefined;
   }
 
-  hostConnected() {
+  hostConnected(): void {
     this._host.addEventListener(
       RoutesConnectedEvent.eventName,
       this._onRoutesConnected as EventListener
@@ -276,7 +268,7 @@ export class Routes implements ReactiveController {
     this._onDisconnect = event.onDisconnect;
   }
 
-  hostDisconnected() {
+  hostDisconnected(): void {
     // When this child routes controller is disconnected because a parent
     // outlet rendered a different template, disconnecting will ensure that
     // this controller doesn't receive a tail match meant for another route.
