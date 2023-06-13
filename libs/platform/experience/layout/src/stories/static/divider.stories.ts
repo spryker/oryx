@@ -18,7 +18,7 @@ const Template: Story = (): TemplateResult => {
     </oryx-layout>
 
     <h2>Divided flex items (vertical)</h2>
-    <oryx-layout layout="flex" divider vertical>
+    <oryx-layout layout="flex" divider oryx-layout-vertical>
       <div>a</div>
       <div>b</div>
       <div>c</div>

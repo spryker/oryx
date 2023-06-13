@@ -11,9 +11,9 @@ export const styles = css`
     column-gap: var(--column-gap, var(--oryx-column-gap, 0));
     row-gap: var(--row-gap, var(--oryx-row-gap));
     margin-inline: auto;
-    width: min(100%, calc(var(--_container-width)));
   }
 
-  /* :host(:not([oryx-layout-vertical])) {
-  } */
+  :host(:not([oryx-layout-vertical])) {
+    width: min(100%, calc(var(--_container-width)));
+  }
 `;
