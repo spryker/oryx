@@ -1,6 +1,21 @@
-import { PreviewExperienceService } from '@spryker-oryx/experience';
-import { computed, effect, signal } from '@spryker-oryx/utilities';
+import { Component, PreviewExperienceService } from '@spryker-oryx/experience';
+import {
+  effect,
+  elementEffect,
+  observe,
+  signal,
+  subscribe,
+} from '@spryker-oryx/utilities';
 import { query } from 'lit/decorators.js';
+import {
+  BehaviorSubject,
+  catchError,
+  filter,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { previewStyles } from './composition-preview.styles';
 import { CompositionComponent } from './composition.component';
 
@@ -16,6 +31,7 @@ export class CompositionPreviewComponent extends CompositionComponent {
     (this.experienceService as PreviewExperienceService)?.getInteractionData()
   );
 
+  @elementEffect()
   protected $selectedComponent = effect(() => {
     const actions = ['mouseover', 'click', 'mouseout', 'add'];
     const interaction = this.$interaction();
@@ -51,45 +67,56 @@ export class CompositionPreviewComponent extends CompositionComponent {
 
   // TODO: temporary solution, hiding header and footer for header or footer editing
   // The whole override may be dropped when we will have proper template extensibility mechanism
+  @observe()
+  protected uid$ = new BehaviorSubject<string | undefined>(this.uid);
+
+  @observe()
+  protected route$ = new BehaviorSubject<string | undefined>(this.route);
 
   protected routeDriven = false;
 
-  protected $uidFromRoute = effect(() => {
-    if (!this.route) {
-      return;
-    }
-
-    const headerEdit$ = (this.experienceService as PreviewExperienceService)
-      .headerEdit$;
-
-    if (this.route === '/_header' || this.route === '/_footer') {
-      if (!headerEdit$.getValue()) {
-        this.routeDriven = true;
-        headerEdit$.next(true);
+  @subscribe()
+  protected $uidFromRoute2 = this.route$.pipe(
+    filter((route) => !!route),
+    tap((route) => {
+      const headerEdit$ = (this.experienceService as PreviewExperienceService)
+        .headerEdit$;
+      if (route) {
+        if (route === '/_header' || route === '/_footer') {
+          if (!headerEdit$.value) {
+            this.routeDriven = true;
+            headerEdit$.next(true);
+          }
+        } else if (headerEdit$.value) {
+          this.routeDriven = false;
+          headerEdit$.next(false);
+        }
       }
-    } else if (headerEdit$.getValue()) {
-      this.routeDriven = false;
-      headerEdit$.next(false);
-    }
-  });
+    })
+  );
 
-  protected override $components = computed(() => {
-    if (!this.uid) {
-      return [];
-    }
+  protected components$ = this.uid$.pipe(
+    switchMap((uid) => {
+      const headerEdit$ = (this.experienceService as PreviewExperienceService)
+        .headerEdit$;
 
-    const headerEdit$ = (this.experienceService as PreviewExperienceService)
-      .headerEdit$;
+      const component = this.experienceService
+        .getComponent({ uid })
+        .pipe(catchError(() => of({} as Component)));
 
-    if (!this.routeDriven && (this.uid === 'header' || this.uid === 'footer')) {
-      if (headerEdit$.getValue()) {
-        return [];
+      if (!this.routeDriven && (uid === 'header' || uid === 'footer')) {
+        return component.pipe(
+          switchMap((component) =>
+            headerEdit$.pipe(
+              map((edit) => (edit ? ({} as Component) : component))
+            )
+          )
+        );
       }
-    }
+      return component;
+    }),
+    map((component: Component) => component?.components ?? [])
+  );
 
-    return (
-      signal(this.experienceService.getComponent({ uid: this.uid }))()
-        ?.components ?? []
-    );
-  });
+  protected override $components = signal(this.components$);
 }
