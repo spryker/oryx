@@ -58,7 +58,7 @@ export class CompositionComponent extends LayoutMixin(
   protected override render(): TemplateResult | void {
     const components = this.$components();
 
-    if (!components?.length) return;
+    if (!components.length) return;
 
     const layoutStyles = this.layoutStyles();
     const inlineStyles = this.layoutBuilder.collectStyles(components);
