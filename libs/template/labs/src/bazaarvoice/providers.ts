@@ -1,7 +1,7 @@
 import { Provider } from '@spryker-oryx/di';
 import { ComponentMapping } from '@spryker-oryx/experience';
+import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { html } from 'lit/static-html.js';
 
 export const bazaarVoiceComponentMapping: Provider = {
   provide: ComponentMapping,
