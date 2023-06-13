@@ -14,7 +14,7 @@ export enum IconTypes {
   Info = 'info',
   InputError = 'report', // merge with error
   Minus = 'remove',
-  Remove = 'delete_forever',
+  Remove = 'close',
   Report = 'report',
   Rocket = 'rocket',
   Search = 'search',
