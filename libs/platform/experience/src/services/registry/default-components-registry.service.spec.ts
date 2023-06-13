@@ -71,7 +71,11 @@ describe('DefaultComponentsRegistryService', () => {
   describe('resolveTemplate', () => {
     it('should return template', () => {
       mockMapper.typeB.template.mockReturnValue('templateB');
-      const template = service.resolveTemplate('typeB', 'uidB', 'styleClassB');
+      const template = service.resolveTemplate({
+        type: 'typeB',
+        uid: 'uidB',
+        markers: 'styleClassB',
+      });
       expect(mockMapper.typeB.template).toHaveBeenCalledWith(
         'uidB',
         'styleClassB'
@@ -80,14 +84,22 @@ describe('DefaultComponentsRegistryService', () => {
     });
 
     it('should return generated template if it is not existed in the mapper', () => {
-      const template = service.resolveTemplate('typeA', 'uidA', 'styleClassA');
+      const template = service.resolveTemplate({
+        type: 'typeA',
+        uid: 'uidA',
+        markers: 'styleClassA',
+      });
       expect(template).toBe(
         '<custom-tag-A uid=uidA styleClassA></custom-tag-A>'
       );
     });
 
     it('should generate tag and return generated template if it is not existed in the mapper', () => {
-      const template = service.resolveTemplate('typeC', 'uidA', 'styleClassA');
+      const template = service.resolveTemplate({
+        type: 'typeC',
+        uid: 'uidA',
+        markers: 'styleClassA',
+      });
       expect(template).toBe('<typeC uid=uidA styleClassA></typeC>');
     });
   });

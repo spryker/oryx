@@ -6,6 +6,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   Component,
   ComponentsRegistryService,
+  ComponentTemplate,
   ExperienceService,
   LayoutBuilder,
   LayoutService,
@@ -52,8 +53,8 @@ class MockComponentsRegistryService
     return of(type);
   }
 
-  resolveTemplate(type: string, uid: string): TemplateResult {
-    return html`<oryx-content-banner uid="${uid}"></oryx-content-banner>`;
+  resolveTemplate(data: ComponentTemplate): TemplateResult {
+    return html`<oryx-content-banner uid="${data.uid}"></oryx-content-banner>`;
   }
 }
 
