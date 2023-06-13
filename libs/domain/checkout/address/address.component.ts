@@ -22,8 +22,7 @@ export class CheckoutAddressComponent
 
   protected override render(): TemplateResult | void {
     if (this.$addresses()?.length) {
-      const { enableList } = this.$options();
-      if (enableList) {
+      if (this.$options().enableList) {
         return html`<oryx-user-address-list
           .addressId=${this.$addressId()}
           .options=${{ selectable: true, addressDefaults: AddressDefaults.All }}

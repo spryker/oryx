@@ -202,7 +202,6 @@ describe('CheckoutAddressComponent', () => {
 
         describe('and an change event is dispatched on the list', () => {
           beforeEach(() => {
-            element.dispatchEvent = vi.fn();
             const list = element.renderRoot.querySelector(
               'oryx-user-address-list'
             ) as HTMLElement;

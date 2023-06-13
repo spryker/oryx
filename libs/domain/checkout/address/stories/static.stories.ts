@@ -18,24 +18,24 @@ service.changeMockAddressType(MockAddressType.ThreeWithDefaults);
 
 const Template: Story = (): TemplateResult => {
   return html`
-    <h3>(multiline)</h3>
+    <h3>Multiline</h3>
     <oryx-checkout-address
       .options=${{ enableList: false }}
       .addressId=${mockNormalizedAddresses[0].id}
     ></oryx-checkout-address>
 
-    <h3>(multiline - no addressId)</h3>
+    <h3>Multiline - no addressId</h3>
     <oryx-checkout-address
       .options=${{ enableList: false }}
     ></oryx-checkout-address>
 
-    <h3>(list)</h3>
+    <h3>List</h3>
     <oryx-checkout-address
       .options=${{ enableList: true }}
       .addressId=${mockNormalizedAddresses[0].id}
     ></oryx-checkout-address>
 
-    <h3>(list - no addressId)</h3>
+    <h3>List - no addressId</h3>
     <oryx-checkout-address
       .options=${{ enableList: true }}
     ></oryx-checkout-address>
