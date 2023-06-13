@@ -1,5 +1,5 @@
 import { isValid } from '@spryker-oryx/checkout';
-import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { ContentMixin } from '@spryker-oryx/experience';
 import {
   AddressEventDetail,
   AddressMixin,
@@ -12,7 +12,6 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { CheckoutAddressOptions } from './address.model';
 
-@defaultOptions({ enableList: false })
 @signalAware()
 export class CheckoutAddressComponent
   extends AddressMixin(ContentMixin<CheckoutAddressOptions>(LitElement))
