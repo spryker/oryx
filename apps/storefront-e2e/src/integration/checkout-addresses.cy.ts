@@ -76,7 +76,7 @@ describe('User addresses', () => {
         });
 
         it('then the selected address is shown', () => {
-          checkCheckoutAddresses();
+          verifyAddressesVisibility();
         });
 
         [
@@ -95,72 +95,68 @@ describe('User addresses', () => {
             });
 
             it('then the addresses modal is open', () => {
-              checkAddressesListInModal(address.type, 2);
+              verifyAddressesListInModal(address.type, 2);
             });
 
             describe('and user adds new address', () => {
+              const addressData = {
+                lastName: `User ${Math.random()}`,
+              };
+
               beforeEach(() => {
-                address.type.addressChangeModal.addAddress();
+                address.type.addressChangeModal.addAddress(addressData);
               });
 
-              it('new address appears', () => {
-                checkAddressesListInModal(address.type, 3);
-                address.type.addressChangeModal.closeModal();
-                checkCheckoutAddresses();
+              it('new address appears in the list', () => {
+                verifyAddressesListInModal(address.type, 3);
+              });
+
+              describe('and when user selects new address', () => {
+                beforeEach(() => {
+                  address.type.addressChangeModal.selectAddress(2);
+                });
+
+                it('new address is visible on checkout page', () => {
+                  verifyAddressesVisibility();
+                  // verify that new address was selected successfully and is visible
+                  address.type.addressesList
+                    .getMultiLineAddress()
+                    .shadow()
+                    .should('contain.text', addressData.lastName);
+                });
               });
             });
 
             describe('and user edits existing address', () => {
-              const newCompany = 'Edited Company';
+              const newAddress1 = 'New Address 1';
+              const changedAddressEq = 0;
 
               beforeEach(() => {
-                address.type.addressChangeModal.editCompanyInAddress(
-                  newCompany
+                address.type.addressChangeModal.editAddress1InAddress(
+                  newAddress1,
+                  changedAddressEq
                 );
               });
 
-              it('edited address appears', () => {
-                // check addresses in modal after edit
-                checkAddressesListInModal(address.type, 2);
+              it('edited address appears in the list', () => {
+                verifyAddressesListInModal(address.type, 2);
 
                 address.type.addressChangeModal.addressesList
                   .getAddressListItem()
-                  .eq(0)
+                  .eq(changedAddressEq)
                   .find('oryx-user-address')
                   .shadow()
-                  .should('contain.text', newCompany);
-
-                // close modal
-                address.type.addressChangeModal.closeModal();
-
-                // check addresses in billing and shipping lists
-                checkCheckoutAddresses();
-
-                checkoutPage.shipping.addressesList
-                  .getAddressListItem()
-                  .eq(0)
-                  .find('oryx-user-address')
-                  .shadow()
-                  .should('contain.text', newCompany);
-
-                checkoutPage.billing.addressesList
-                  .getAddressListItem()
-                  .eq(0)
-                  .find('oryx-user-address')
-                  .shadow()
-                  .should('contain.text', newCompany);
+                  .should('contain.text', newAddress1);
               });
             });
 
             describe('and user removes existing address', () => {
               beforeEach(() => {
-                address.type.addressChangeModal.removeAddress();
+                address.type.addressChangeModal.removeAddress(0);
               });
 
-              it('removed address disappears', () => {
-                checkAddressesListInModal(address.type, 1);
-                address.type.addressChangeModal.closeModal();
-                checkCheckoutAddresses();
+              it('removed address disappears from the list', () => {
+                verifyAddressesListInModal(address.type, 1);
               });
             });
           });
@@ -170,7 +166,7 @@ describe('User addresses', () => {
   });
 });
 
-function checkCheckoutAddresses() {
+function verifyAddressesVisibility() {
   // check shipping addresses
   checkoutPage.shipping.addAddressForm.getAddressForm().should('not.exist');
 
@@ -190,7 +186,7 @@ function checkCheckoutAddresses() {
   checkoutPage.billing.addressesList.getMultiLineAddress().should('be.visible');
 }
 
-function checkAddressesListInModal(addressType, numberOfAddresses: number) {
+function verifyAddressesListInModal(addressType, numberOfAddresses: number) {
   addressType.addressChangeModal.getAddAddressButton().should('be.visible');
   addressType.addressChangeModal.addressesList
     .getAddressList()
