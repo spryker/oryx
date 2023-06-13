@@ -6,7 +6,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Delivery/Static`,
+  title: `${storybookPrefix}/Billing address/Static`,
 } as Meta;
 
 const Template: Story<{ type: MockAddressType }> = (args: {
@@ -14,7 +14,7 @@ const Template: Story<{ type: MockAddressType }> = (args: {
 }): TemplateResult => {
   const service = resolve<MockAddressService>(AddressService);
   service.changeMockAddressType(args.type);
-  return html`<oryx-checkout-delivery></oryx-checkout-delivery> `;
+  return html`<oryx-checkout-billing-address></oryx-checkout-billing-address> `;
 };
 
 export const None = Template.bind({});

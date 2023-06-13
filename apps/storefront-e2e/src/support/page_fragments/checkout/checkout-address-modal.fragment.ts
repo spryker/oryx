@@ -1,20 +1,21 @@
+import { AddressesListFragment } from '../addresses-list.fragment';
 import { CheckoutAddressFormFragment } from './checkout-address-form.fragment';
 
 export class CheckoutAddressModalFragment {
   private wrapperSelector: string;
 
+  addressesList: AddressesListFragment;
+
   constructor(selector: string) {
     this.wrapperSelector = selector;
+    this.addressesList = new AddressesListFragment('oryx-modal');
   }
 
-  getWrapper = () => cy.get(this.wrapperSelector);
+  getWrapper = () => cy.get(this.wrapperSelector).find('oryx-modal');
   getAddAddressButton = () =>
     this.getWrapper().find('oryx-user-address-add-button');
-  getAddressList = () => this.getWrapper().find('oryx-user-address-list');
-  getAddressListItem = () =>
-    this.getAddressList().find('oryx-user-address-list-item');
 
-  addAddressForm = new CheckoutAddressFormFragment();
+  addAddressForm = new CheckoutAddressFormFragment('oryx-user-address-edit');
   getSaveAddressBtn = () =>
     this.getWrapper().find('oryx-button').contains('button', 'Save');
   getCloseModalBtn = () =>
@@ -35,7 +36,7 @@ export class CheckoutAddressModalFragment {
 
   editCompanyInAddress = (newCompany: string) => {
     // edit icon-button click
-    this.getAddressListItem().eq(0).find('button').eq(0).click();
+    this.addressesList.getAddressListItem().eq(0).find('button').eq(0).click();
     this.addAddressForm
       .getCompanyInput()
       .clear()
@@ -45,7 +46,7 @@ export class CheckoutAddressModalFragment {
 
   removeAddress = () => {
     // remove icon-button click
-    this.getAddressListItem().eq(0).find('button').eq(1).click();
+    this.addressesList.getAddressListItem().eq(0).find('button').eq(1).click();
     // remove button in remove address modal click
     cy.get('oryx-user-address-remove').find('button').eq(1).click();
   };
