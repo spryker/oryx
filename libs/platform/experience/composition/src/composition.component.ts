@@ -12,6 +12,7 @@ import {
 import {
   computed,
   effect,
+  elementEffect,
   hydratable,
   signal,
   signalAware,
@@ -34,14 +35,19 @@ export class CompositionComponent extends LayoutMixin(
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
 
+  @elementEffect()
   protected $uidFromRoute = effect(() => {
     if (!this.route) {
       return;
     }
 
-    this.uid = (
-      signal(this.experienceService.getComponent({ route: this.route }))() ?? {}
-    ).id;
+    const component =
+      signal(this.experienceService.getComponent({ route: this.route }))() ??
+      ({} as Component);
+
+    if (this.uid !== component.id) {
+      this.uid = component.id;
+    }
   });
 
   protected $components = computed(() => {
@@ -58,7 +64,7 @@ export class CompositionComponent extends LayoutMixin(
   protected override render(): TemplateResult | void {
     const components = this.$components();
 
-    if (!components.length) return;
+    if (!components?.length) return;
 
     const inlineStyles = this.layoutBuilder.collectStyles(components);
     const layoutStyles = this.layoutStyles() ?? '';
