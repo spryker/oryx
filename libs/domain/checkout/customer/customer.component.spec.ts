@@ -111,6 +111,7 @@ describe('CheckoutAuthComponent', () => {
       lastName: 'Bar',
       email: 'foo@bar.com',
     } as User;
+
     beforeEach(async () => {
       authService.isAuthenticated.mockReturnValue(of(true));
       userService.getUser.mockReturnValue(of(user));
@@ -119,7 +120,7 @@ describe('CheckoutAuthComponent', () => {
       );
     });
 
-    it('should render the user name', () => {
+    it('should render the user data', () => {
       const customerData = element.renderRoot.querySelector('p')?.textContent;
       expect(customerData).toContain(`${user.firstName} ${user.lastName}`);
       expect(customerData).toContain(user.email);
