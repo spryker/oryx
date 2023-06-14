@@ -11,15 +11,12 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { CheckoutAddressComponent } from '../address';
-import { checkoutBillingAddressStyles } from './billing-address.styles';
 
 @hydratable()
 export class CheckoutBillingAddressComponent
   extends CheckoutMixin(LitElement)
   implements isValid
 {
-  static styles = [checkoutBillingAddressStyles];
-
   protected addressService = resolve(AddressService);
 
   protected $addresses = signal(this.addressService.getAddresses());
@@ -62,7 +59,8 @@ export class CheckoutBillingAddressComponent
   }
 
   protected renderHeading(): TemplateResult {
-    return html`<h3>${i18n('checkout.steps.billing-address')}</h3>
+    return html`<oryx-checkout-header>
+      <h3>${i18n('checkout.steps.billing-address')}</h3>
       ${when(
         this.$addresses()?.length,
         () => html`<oryx-checkout-manage-address
@@ -78,7 +76,8 @@ export class CheckoutBillingAddressComponent
             )}
           </button></oryx-button
         >`
-      )} `;
+      )}
+    </oryx-checkout-header>`;
   }
 
   protected renderBody(): TemplateResult {

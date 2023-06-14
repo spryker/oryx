@@ -10,10 +10,13 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { isValid } from '../src/models';
 import { CheckoutStateService } from '../src/services';
+import { checkoutGuestStyles } from './guest.styles';
 
 @signalAware()
 @hydratable('window:load')
 export class CheckoutGuestComponent extends LitElement implements isValid {
+  static styles = checkoutGuestStyles;
+
   protected fieldRenderer = resolve(FormRenderer);
   protected linkService = resolve(SemanticLinkService);
 
@@ -37,15 +40,13 @@ export class CheckoutGuestComponent extends LitElement implements isValid {
 
   protected override render(): TemplateResult | void {
     return html`
-      <h1>${i18n('checkout.checkout-as-guest')}</h1>
-      <p class="have-an-account">
-        ${i18n('checkout.guest.have-an-account')}
+      <oryx-checkout-header>
+        <h1>${i18n('checkout.checkout-as-guest')}</h1>
+        <p class="have-an-account">${i18n('checkout.guest.have-an-account')}</p>
         <oryx-link>
-          <a href=${this.loginRoute()}>
-            ${i18n('checkout.guest.login-to-your-account')}
-          </a>
+          <a href=${this.loginRoute()}> ${i18n('checkout.guest.login')} </a>
         </oryx-link>
-      </p>
+      </oryx-checkout-header>
       <form @change=${this.onChange}>
         ${this.fieldRenderer.buildForm(this.fields)}
       </form>
