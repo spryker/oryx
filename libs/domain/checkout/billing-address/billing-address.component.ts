@@ -6,7 +6,13 @@ import {
   AddressEventDetail,
   AddressService,
 } from '@spryker-oryx/user';
-import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import {
+  effect,
+  elementEffect,
+  hydratable,
+  i18n,
+  signal,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -29,7 +35,8 @@ export class CheckoutBillingAddressComponent
   );
   protected $isSameAsShippingAddress = signal(true);
 
-  protected autoSelect = effect(() => {
+  @elementEffect()
+  protected autoSelect = (): void => {
     const addresses = this.$addresses();
     if (!addresses?.length) return;
     const selected = this.$selected();
@@ -38,7 +45,7 @@ export class CheckoutBillingAddressComponent
       const defaultAddress = addresses.find((a) => a.isDefaultBilling);
       this.persist(defaultAddress ?? addresses[0], true);
     }
-  });
+  };
 
   protected persistCopy = effect(() => {
     const deliveryAddress = this.$shippingAddress();
@@ -58,6 +65,7 @@ export class CheckoutBillingAddressComponent
   protected checkoutAddress?: CheckoutAddressComponent;
 
   protected override render(): TemplateResult {
+    if (this.$addresses() === undefined) return;
     return html`${this.renderHeading()}${this.renderBody()}`;
   }
 

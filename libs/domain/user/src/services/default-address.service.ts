@@ -1,10 +1,10 @@
-import {IdentityService} from '@spryker-oryx/auth';
-import {inject} from '@spryker-oryx/di';
-import {map, Observable, skip,} from 'rxjs';
-import {Address} from '../models';
-import {AddressAdapter} from './adapter';
-import {AddressService} from './address.service';
-import {createCommand, createQuery} from "@spryker-oryx/core";
+import { IdentityService } from '@spryker-oryx/auth';
+import { createCommand, createQuery } from '@spryker-oryx/core';
+import { inject } from '@spryker-oryx/di';
+import { map, Observable, skip } from 'rxjs';
+import { Address } from '../models';
+import { AddressAdapter } from './adapter';
+import { AddressService } from './address.service';
 
 const AddressModificationSuccess = 'AddressModifiedSuccess';
 
@@ -15,14 +15,16 @@ export class DefaultAddressService implements AddressService {
     refreshOn: [AddressModificationSuccess],
   });
 
-  protected currentAddress$ = this.addressesQuery$.get(undefined).pipe(
-    map(
-      (addresses) =>
-        addresses?.find(
-          (address) => address.isDefaultBilling || address.isDefaultShipping
-        ) ?? null
-    )
-  );
+  protected currentAddress$ = this.addressesQuery$
+    .get(undefined)
+    .pipe(
+      map(
+        (addresses) =>
+          addresses?.find(
+            (address) => address.isDefaultBilling || address.isDefaultShipping
+          ) ?? null
+      )
+    );
 
   constructor(
     protected adapter = inject(AddressAdapter),
@@ -46,24 +48,21 @@ export class DefaultAddressService implements AddressService {
   protected addAddressCommand$ = createCommand({
     onSuccess: [AddressModificationSuccess],
     action: (qualifier: Address) => {
-      return this.adapter
-        .add(qualifier);
+      return this.adapter.add(qualifier);
     },
   });
 
   protected updateAddressCommand$ = createCommand({
     onSuccess: [AddressModificationSuccess],
     action: (qualifier: Address) => {
-      return this.adapter
-        .update(qualifier);
+      return this.adapter.update(qualifier);
     },
   });
 
   protected deleteAddressCommand$ = createCommand({
     onSuccess: [AddressModificationSuccess],
     action: (qualifier: Address) => {
-      return this.adapter
-        .delete(qualifier);
+      return this.adapter.delete(qualifier);
     },
   });
 
