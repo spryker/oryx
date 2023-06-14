@@ -85,23 +85,23 @@ export class UserAddressFormComponent
     const values = this.values ?? {};
     const { firstName, lastName, salutation } = this.$user() ?? {};
 
-    const a = this.$addresses();
+    const addresses = this.$addresses();
     if (
       this.enableDefaultBilling &&
-      !a?.find((address) => address.isDefaultBilling)
+      !addresses?.find((address) => address.isDefaultBilling)
     ) {
       values.isDefaultBilling = true;
     }
     if (
       this.enableDefaultShipping &&
-      !a?.find((address) => address.isDefaultShipping)
+      !addresses?.find((address) => address.isDefaultShipping)
     ) {
       values.isDefaultShipping = true;
     }
 
-    if (firstName) values.firstName ??= firstName;
-    if (lastName) values.lastName ??= lastName;
-    if (salutation) values.salutation ??= salutation;
+    values.firstName ??= firstName;
+    values.lastName ??= lastName;
+    values.salutation ??= salutation;
     return values;
   }
 
