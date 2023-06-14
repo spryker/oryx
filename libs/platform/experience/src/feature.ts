@@ -6,7 +6,7 @@ import { defaultExperienceRoutes } from './routes';
 import { experiencePreviewProviders, experienceProviders } from './services';
 
 export const experienceComponents = [
-  components.experienceCompositionComponent,
+  components.compositionComponent,
   components.layoutComponent,
 ];
 
@@ -22,7 +22,7 @@ export const experienceRoutesFeature: AppFeature = {
 export const experiencePreviewFeature: AppFeature = {
   providers: experiencePreviewProviders,
   components: [
-    components.experiencePreviewCompositionComponent,
+    components.previewCompositionComponent,
     components.layoutComponent,
   ],
   plugins: [new PreviewPlugin()],

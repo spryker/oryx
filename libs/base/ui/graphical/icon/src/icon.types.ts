@@ -3,6 +3,7 @@ export enum IconTypes {
   Increase = 'add', // merge with add
   Cart = 'shopping_cart',
   CartAdd = 'add_shopping_cart',
+  Check = 'check',
   Close = 'close',
   Collapse = 'add', // merge with add
   DropUp = 'expand_less',
@@ -12,7 +13,6 @@ export enum IconTypes {
   Decrease = 'remove', // merge with minus
   Info = 'info',
   InputError = 'report', // merge with error
-  Mark = 'check_circle',
   Minus = 'remove',
   Remove = 'delete_forever',
   Report = 'report',

@@ -21,13 +21,14 @@ export const checkoutPage: StaticComponent = {
   },
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       components: [
         {
           type: 'oryx-checkout-orchestrator',
           components: [
             { type: 'oryx-checkout-customer' },
-            { type: 'oryx-checkout-delivery' },
+            { type: 'oryx-checkout-shipping-address' },
+            { type: 'oryx-checkout-billing-address' },
             { type: 'oryx-checkout-shipment' },
             { type: 'oryx-checkout-payment' },
           ],
@@ -47,7 +48,7 @@ export const checkoutPage: StaticComponent = {
       },
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       options: {
         data: {
           rules: [

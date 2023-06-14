@@ -229,7 +229,6 @@ describe('CartAddComponent', () => {
 
       describe('and when the cart becomes busy', () => {
         beforeEach(() => {
-          busy$.next(true);
           element.renderRoot.querySelector('button')?.click();
         });
 
@@ -239,7 +238,7 @@ describe('CartAddComponent', () => {
 
         describe('and when the cart is no longer busy', () => {
           beforeEach(async () => {
-            busy$.next(false);
+            await wait(800);
           });
 
           it('should no longer have the oryx-button in loading state', () => {

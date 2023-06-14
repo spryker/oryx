@@ -1,4 +1,4 @@
-import { getAppIcons } from '@spryker-oryx/ui';
+import { branches, getAppIcons, states } from '@/tools/storybook';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import {
@@ -16,7 +16,6 @@ import {
   FilterStrategyType,
   TypeaheadOptions,
 } from '../../../../search/typeahead';
-import { branches, states } from '../../../../src/utilities/storybook';
 
 export default {
   title: `${storybookPrefix}/Form/Select`,

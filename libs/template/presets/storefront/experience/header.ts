@@ -7,7 +7,7 @@ export const HeaderTemplate: StaticComponent = {
   meta: { title: 'Header', route: '/_header' },
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       components: [
         {
           type: 'oryx-content-link',
@@ -15,7 +15,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: 'Free delivery & returns',
-              icon: IconTypes.Mark,
+              icon: 'check_circle',
             },
           },
         },
@@ -25,7 +25,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: '100 day return policy',
-              icon: IconTypes.Mark,
+              icon: 'check_circle',
             },
           },
         },
@@ -35,7 +35,7 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               id: '/',
               text: 'Click & Collect',
-              icon: IconTypes.Mark,
+              icon: 'check_circle',
             },
           },
         },
@@ -65,7 +65,7 @@ export const HeaderTemplate: StaticComponent = {
       },
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'Composition',
       components: [
         {

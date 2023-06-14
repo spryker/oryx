@@ -2,9 +2,9 @@ import { resolve } from '@spryker-oryx/di';
 import { FacetValue } from '@spryker-oryx/product';
 import { FacetColorsMapping } from '@spryker-oryx/search';
 import { html, TemplateResult } from 'lit';
-import { searchFacetStyles } from '../facet';
-// use relative path for dev ssr server, SearchFacetComponent is undefined
+// use relative path for dev ssr server, SearchFacetComponent and searchFacetStyles is undefined
 import { SearchFacetComponent } from '../facet/facet.component';
+import { searchFacetStyles } from '../facet/facet.styles';
 import { searchFacetColorStyles } from './facet-color.styles';
 
 export class SearchColorFacetComponent extends SearchFacetComponent {

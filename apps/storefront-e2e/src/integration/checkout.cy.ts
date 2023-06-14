@@ -10,6 +10,9 @@ let thankYouPage: ThankYouPage;
 const cartPage = new CartPage();
 const checkoutPage = new CheckoutPage();
 
+// TODO: refactor tests to make them more readable
+// TODO: add a test for an order with different shipping and billing addresses set
+
 describe('Checkout suite', () => {
   describe('Create a new order by authorized user without addresses', () => {
     beforeEach(() => {
@@ -42,7 +45,7 @@ describe('Checkout suite', () => {
       cy.location('pathname').should('be.eq', checkoutPage.url);
       cy.wait('@addresses');
 
-      checkoutPage.addressForm.fillAddressForm();
+      checkoutPage.shipping.addAddressForm.fillAddressForm();
       checkoutPage.getPlaceOrderBtn().click();
 
       cy.wait('@checkout')
@@ -97,7 +100,7 @@ describe('Checkout suite', () => {
       cy.location('pathname').should('be.eq', checkoutPage.anonymousUrl);
 
       checkoutPage.checkoutAsGuestForm.fillForm();
-      checkoutPage.addressForm.fillAddressForm();
+      checkoutPage.shipping.addAddressForm.fillAddressForm();
       checkoutPage.getPlaceOrderBtn().click();
 
       cy.wait('@checkout')

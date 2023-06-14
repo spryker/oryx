@@ -1,6 +1,6 @@
 export * from '../address/address.def';
+export * from '../billing-address/billing-address.def';
 export * from '../customer/customer.def';
-export * from '../delivery/delivery.def';
 export * from '../guest/guest.def';
 export * from '../link/link.def';
 export * from '../manage-address/manage-address.def';
@@ -8,3 +8,4 @@ export * from '../orchestrator/orchestrator.def';
 export * from '../payment/payment.def';
 export * from '../place-order/place-order.def';
 export * from '../shipment/shipment.def';
+export * from '../shipping-address/shipping-address.def';

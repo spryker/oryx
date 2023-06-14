@@ -12,11 +12,9 @@ import {
 } from '@spryker-oryx/user/address-edit';
 import { EditTarget } from '@spryker-oryx/user/address-list-item';
 import {
-  computed,
   hydratable,
   i18n,
-  signal,
-  signalAware,
+  signalProperty,
   Size,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -26,27 +24,17 @@ import { when } from 'lit/directives/when.js';
 import { CheckoutMixin } from '../src/mixins';
 import { checkoutManageAddressStyles } from './manage-address.styles';
 
-@signalAware()
 @hydratable(['mouseover', 'focusin'])
 export class CheckoutManageAddressComponent extends AddressMixin(
   CheckoutMixin(LitElement)
 ) {
   static styles = checkoutManageAddressStyles;
 
+  @signalProperty() selected?: Address | null;
+
   @state() protected open?: boolean;
   @state() protected loading?: boolean;
-  @state() protected preselected?: Address;
-
-  protected $selectedShippingAddress = signal(
-    this.checkoutStateService.get('shippingAddress')
-  );
-
-  protected selected = computed(() => {
-    return (
-      this.$addresses()?.find((address) => address.id === this.$addressId()) ||
-      this.$selectedShippingAddress()
-    );
-  });
+  @state() protected preselected: Address | null = null;
 
   @query('oryx-user-address-edit') editComponent?: UserAddressEditComponent;
 
@@ -79,17 +67,15 @@ export class CheckoutManageAddressComponent extends AddressMixin(
   }
 
   protected renderList(): TemplateResult | void {
-    const addressId = this.selected()?.id;
     const action = this.$addressState().action;
     if (action !== CrudState.Read && action !== CrudState.Delete) return;
 
     return html`<oryx-user-address-add-button
-        .addressId=${addressId}
         .options=${{ target: Target.Inline }}
       ></oryx-user-address-add-button>
 
       <oryx-user-address-list
-        .addressId=${addressId}
+        .addressId=${this.preselected?.id ?? this.selected?.id}
         .options=${{
           selectable: true,
           editable: true,
@@ -161,6 +147,7 @@ export class CheckoutManageAddressComponent extends AddressMixin(
 
   protected onClose(): void {
     this.addressStateService.clear();
+    this.preselected = null;
     this.open = false;
   }
 
@@ -170,7 +157,7 @@ export class CheckoutManageAddressComponent extends AddressMixin(
 
   protected onChange(e: CustomEvent<AddressEventDetail>): void {
     e.stopPropagation();
-    this.preselected = e.detail.address;
+    this.preselected = e.detail.address ?? null;
   }
 
   protected onSelect(): void {

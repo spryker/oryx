@@ -1,5 +1,5 @@
+import { getAppIcons } from '@/tools/storybook';
 import { SemanticLinkType } from '@spryker-oryx/site';
-import { getAppIcons } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';

@@ -1,7 +1,7 @@
+import { OverlaysDecorator } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { OverlaysDecorator } from '../../../../../src/utilities';
 
 export default {
   title: `${storybookPrefix}/Overlays/Modal/Static`,
