@@ -9,7 +9,7 @@ import {
   ReplaySubject,
   Subject,
 } from 'rxjs';
-import { filter, switchMap, take } from 'rxjs/operators';
+import { filter, switchMap, take, tap } from 'rxjs/operators';
 import {
   NavigationExtras,
   RouteParams,
@@ -82,12 +82,7 @@ export class DefaultRouterService implements RouterService {
   }
 
   currentRoute(): Observable<string> {
-    return this.router$.pipe(
-      map((route) => {
-        this.storeRoute(route);
-        return route;
-      })
-    );
+    return this.router$.pipe(tap((route) => this.storeRoute(route)));
   }
 
   currentParams(): Observable<RouteParams> {
