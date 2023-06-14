@@ -143,7 +143,6 @@ export class FacetController implements ReactiveController {
 
       if (isIncludes) {
         filteredValueLength++;
-        console.log(filteredValueLength, name, 'inc');
         result.push({ ...value });
 
         return result;
@@ -155,7 +154,6 @@ export class FacetController implements ReactiveController {
         if (children.length) {
 
           filteredValueLength += children.length;
-          console.log(filteredValueLength, name, 'chi');
           result.push({ ...value, children });
         }
       }
@@ -164,9 +162,6 @@ export class FacetController implements ReactiveController {
     };
 
     const values = facet.values?.reduce(reducer, []);
-
-    console.log(values, filteredValueLength);
-    
 
     return {
       ...facet,

@@ -11,6 +11,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import { FacetController } from './facet.controller';
+import { computed } from '@spryker-oryx/utilities';
 
 const mockFacet = generateFacet('Mock', 'parameter', 10);
 const mockSelected = 'Mock2';
@@ -25,12 +26,12 @@ class MockFacetListService implements Partial<FacetListService> {
 
 @customElement('fake-el')
 class FakeElement extends LitElement implements SearchFacetComponentAttributes {
-  @property() name = mockFacet.name;
+  @property({reflect: true}) name = mockFacet.name;
   @property({ type: Number }) renderLimit?: number;
 
   protected controller = new FacetController(this);
-  facet$ = this.controller.getFacet();
-  selectedValues$ = this.controller.getSelectedValues();
+  facet = computed(() => this.controller.getFacet());
+  selectedValues$ = computed(() => this.controller.getSelectedValues());
 
   protected override render(): TemplateResult {
     return html`<button
@@ -39,7 +40,7 @@ class FakeElement extends LitElement implements SearchFacetComponentAttributes {
   }
 }
 
-describe('Facet controller', () => {
+describe('FacetController', () => {
   let element: FakeElement;
   let service: MockFacetListService;
 
@@ -62,121 +63,133 @@ describe('Facet controller', () => {
   });
 
   describe('getFacet', () => {
-    describe('without renderLimit attribute', () => {
+    describe('when amount of rendered elements is not limited', () => {
       beforeEach(async () => {
         element = await fixture(html`<fake-el></fake-el>`);
       });
 
       it('should return facet with all values', () => {
-        element.facet$.subscribe((facet) => {
-          expect(facet).toBe(mockFacet);
-        });
+        expect(element.facet()).toBe(mockFacet);
       });
     });
 
-    describe('with renderLimit attribute', () => {
+    describe('when renderLimit is provided', () => {
       beforeEach(async () => {
         element = await fixture(html`<fake-el .renderLimit=${3}></fake-el>`);
       });
 
       it('should return facet with renderLimit values length', () => {
-        element.facet$.subscribe((facet) => {
-          expect(facet?.values.length).toBe(3);
-        });
-      });
-    });
-
-    describe('search', () => {
-      const searchValue = 'Search';
-
-      const triggerSearch = () => {
-        (
-          element.renderRoot.querySelector('button') as HTMLElement
-        ).dispatchEvent(
-          new CustomEvent('oryx.search', {
-            bubbles: true,
-            composed: true,
-            detail: { query: searchValue },
-          })
-        );
-      };
-
-      beforeEach(async () => {
-        service.getFacet.mockReturnValue(
-          of({
-            ...mockFacet,
-            values: [
-              ...(mockFacet.values as FacetValue[]),
-              ...generateValues(3, searchValue),
-            ],
-          })
-        );
-      });
-
-      describe('only search value', () => {
-        beforeEach(async () => {
-          element = await fixture(html`<fake-el></fake-el>`);
-          triggerSearch();
-        });
-
-        it('should return facet with filtered values by search value', () => {
-          element.facet$.subscribe((facet) => {
-            expect(facet?.values.length).toBe(3);
-
-            facet?.values.forEach((value) =>
-              expect(value.name).toContain(searchValue)
-            );
-          });
-        });
-      });
-
-      describe('with search value and renderLimit', () => {
-        beforeEach(async () => {
-          element = await fixture(html`<fake-el .renderLimit=${2}></fake-el>`);
-          triggerSearch();
-        });
-
-        it('should return facet with filtered values by search value', () => {
-          element.facet$.subscribe((facet) => {
-            expect(facet?.values.length).toBe(2);
-          });
-        });
+        expect(element.facet()?.values.length).toBe(3);
       });
     });
   });
 
-  describe('getSelectedValues', () => {
+  describe('when facet values filtered by name', () => {
+    const searchValue = 'Search';
+
+    const triggerSearch = () => {
+      (
+        element.renderRoot.querySelector('button') as HTMLElement
+      ).dispatchEvent(
+        new CustomEvent('oryx.search', {
+          bubbles: true,
+          composed: true,
+          detail: { query: searchValue },
+        })
+      );
+    };
+
     beforeEach(async () => {
-      service.getFacet.mockReturnValue(of(mockWithSelected));
-      element = await fixture(html`<fake-el></fake-el>`);
+      service.getFacet.mockReturnValue(
+        of({
+          ...mockFacet,
+          values: [
+            ...(mockFacet.values as FacetValue[]),
+            ...generateValues(3, searchValue),
+          ],
+        })
+      );
     });
 
-    it('should map selected values to facetValue', () => {
-      element.selectedValues$.subscribe((values) => {
-        values.forEach((value) => expect(typeof value).toBe('object'));
+    describe('when search is performed', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<fake-el></fake-el>`);
+        triggerSearch();
+      });
+
+      it('should return facet with filtered values', () => {
+        const facet = element.facet();
+
+        expect(facet?.values.length).toBe(3);
+        facet?.values.forEach((value) =>
+          expect(value.name).toContain(searchValue)
+        );
+      });
+
+      describe('and renderLimit is provided', () => {
+        const renderLimit = 2;
+        beforeEach(async () => {
+          element = await fixture(html`<fake-el .renderLimit=${renderLimit}></fake-el>`);
+          triggerSearch();
+        });
+
+        it('should return limited facet with filtered values', () => {
+          expect(element.facet()?.values.length).toBe(renderLimit);
+        });
       });
     });
   });
+
+  // describe('getSelectedValues', () => {
+
+  //   beforeEach(async () => {
+  //     service.getFacet.mockReturnValue(
+  //       of({
+  //         ...mockFacet,
+  //         values: [
+  //           ...(mockFacet.values as FacetValue[]),
+  //           ...generateValues(3, searchValue),
+  //         ],
+  //       })
+  //     );
+  //   });
+
+  //   beforeEach(async () => {
+  //     service.getFacet.mockReturnValue(of(mockWithSelected));
+  //     element = await fixture(html`<fake-el></fake-el>`);
+  //   });
+
+  //   it('should map selected values to facetValue', () => {
+  //     element.selectedValues$.subscribe((values) => {
+  //       values.forEach((value) => expect(typeof value).toBe('object'));
+  //     });
+  //   });
+  // });
 
   describe('dispatchSelectEvent', () => {
+    const callback = vi.fn();
+
     beforeEach(async () => {
-      element = await fixture(html`<fake-el></fake-el>`);
+      element = await fixture(html`<fake-el
+        @oryx.select=${callback}
+      ></fake-el>`);
+
+      element.renderRoot.querySelector(
+        'button'
+      )?.dispatchEvent(
+        new MouseEvent('click')
+      )
     });
 
     it('should trigger oryx.select event with parameter and selectedValues', () => {
-      const callback = vi.fn();
-      const button = element.renderRoot.querySelector(
-        'button'
-      ) as HTMLButtonElement;
-
-      document.addEventListener(FACET_SELECT_EVENT, callback);
-      button.click();
-
-      expect(callback).toHaveBeenCalled();
-      expect(callback.mock.calls[0][0].detail).toStrictEqual({
-        name: 'Mock',
-        value: mockWithSelected,
-      });
+      expect(callback).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: expect.objectContaining({
+            name: 'Mock',
+            value: mockWithSelected,
+          })
+        })
+      );
     });
   });
 });

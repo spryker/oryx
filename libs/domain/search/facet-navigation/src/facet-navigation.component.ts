@@ -17,8 +17,8 @@ import { facetNavigation } from './facet-navigation.styles';
 
 @hydratable(['mouseover', 'focusin'])
 @defaultOptions({
-  expandedItemsCount: 1,
-  valueRenderLimit: 1,
+  expandedItemsCount: 5,
+  valueRenderLimit: 5,
   minForSearch: 13,
   bury: [{ facets: ['rating', 'price'] }],
 })

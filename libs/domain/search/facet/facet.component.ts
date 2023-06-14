@@ -15,8 +15,8 @@ export class SearchFacetComponent extends LitElement {
   @signalProperty() name?: string;
   @signalProperty({ type: Boolean }) open = false;
   @signalProperty({ type: Boolean }) multi = false;
-  @signalProperty({ type: Number }) renderLimit = 1;
-  @signalProperty({ type: Number }) minForSearch = 2;
+  @signalProperty({ type: Number }) renderLimit = 5;
+  @signalProperty({ type: Number }) minForSearch = 13;
   @signalProperty({ type: Boolean }) enableClear = true;
 
   protected facet = computed(() => this.controller.getFacet());
