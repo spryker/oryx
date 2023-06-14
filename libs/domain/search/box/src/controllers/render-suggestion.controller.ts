@@ -3,7 +3,7 @@ import { SemanticLinkType } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
-import { DirectiveResult } from 'lit/directive';
+import { DirectiveResult } from 'lit/directive.js';
 import { html } from 'lit/static-html.js';
 import { Suggestion, SuggestionResource } from '../../../src';
 import { SearchBoxProperties } from '../box.model';
