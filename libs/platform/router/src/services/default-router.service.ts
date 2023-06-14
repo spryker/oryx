@@ -1,6 +1,5 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
   combineLatest,
@@ -9,7 +8,7 @@ import {
   ReplaySubject,
   Subject,
 } from 'rxjs';
-import { filter, switchMap, take, tap } from 'rxjs/operators';
+import { filter, take, tap } from 'rxjs/operators';
 import {
   NavigationExtras,
   RouteParams,
@@ -45,15 +44,11 @@ export class DefaultRouterService implements RouterService {
       return;
     }
 
-    subscribeReplay(
-      this.storageService.get(CURRENT_PAGE, StorageType.Session).pipe(
-        take(1),
-        switchMap((prevPage) =>
-          this.storageService.set(PREVIOUS_PAGE, prevPage, StorageType.Session)
-        )
-      )
+    this.storageService.set(
+      PREVIOUS_PAGE,
+      this.router$.getValue(),
+      StorageType.Session
     );
-
     this.router$.next(url[0]);
     this.urlSearchParams$.next(queryParams);
     this.routerEvents$.next({ route, type: RouterEventType.NavigationEnd });
