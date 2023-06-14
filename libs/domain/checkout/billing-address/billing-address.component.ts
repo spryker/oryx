@@ -7,7 +7,6 @@ import {
   AddressService,
 } from '@spryker-oryx/user';
 import {
-  effect,
   elementEffect,
   hydratable,
   i18n,
@@ -47,7 +46,8 @@ export class CheckoutBillingAddressComponent
     }
   };
 
-  protected persistCopy = effect(() => {
+  @elementEffect()
+  protected persistCopy = (): void => {
     const deliveryAddress = this.$shippingAddress();
     if (
       deliveryAddress &&
@@ -59,7 +59,7 @@ export class CheckoutBillingAddressComponent
         value: deliveryAddress,
       });
     }
-  });
+  };
 
   @query('oryx-checkout-address')
   protected checkoutAddress?: CheckoutAddressComponent;

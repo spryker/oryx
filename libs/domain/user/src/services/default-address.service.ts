@@ -5,8 +5,7 @@ import { map, Observable, skip } from 'rxjs';
 import { Address } from '../models';
 import { AddressAdapter } from './adapter';
 import { AddressService } from './address.service';
-
-const AddressModificationSuccess = 'AddressModifiedSuccess';
+import { AddressModificationSuccess } from './state';
 
 export class DefaultAddressService implements AddressService {
   protected addressesQuery$ = createQuery({
