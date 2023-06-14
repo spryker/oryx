@@ -1,47 +1,21 @@
-import { IdentityService } from '@spryker-oryx/auth';
-import { inject, OnDestroy } from '@spryker-oryx/di';
-import {
-  BehaviorSubject,
-  filter,
-  map,
-  merge,
-  Observable,
-  shareReplay,
-  skip,
-  Subject,
-  Subscription,
-  switchMap,
-  take,
-  tap,
-  using,
-} from 'rxjs';
-import { Address } from '../models';
-import { AddressAdapter } from './adapter';
-import { AddressService } from './address.service';
+import {IdentityService} from '@spryker-oryx/auth';
+import {inject} from '@spryker-oryx/di';
+import {map, Observable, skip,} from 'rxjs';
+import {Address} from '../models';
+import {AddressAdapter} from './adapter';
+import {AddressService} from './address.service';
+import {createCommand, createQuery} from "@spryker-oryx/core";
 
-export class DefaultAddressService implements AddressService, OnDestroy {
-  protected addressesState$ = new BehaviorSubject<Address[] | null>(null);
-  protected reloadAddress$ = new Subject();
-  protected resetSubscription?: Subscription;
+const AddressModificationSuccess = 'AddressModifiedSuccess';
 
-  protected addressesLoading$ = merge(
-    this.reloadAddress$,
-    this.addressesState$.pipe(filter((addresses) => addresses === null))
-  ).pipe(
-    switchMap(() => this.adapter.getAll()),
-    tap((addresses) => {
-      this.addressesState$.next(addresses?.length ? addresses : []);
-      // reset address state, when user will log in or log out
-      this.initReset();
-    })
-  );
+export class DefaultAddressService implements AddressService {
+  protected addressesQuery$ = createQuery({
+    loader: () => this.adapter.getAll(),
+    resetOn: [this.identity.get().pipe(skip(1))],
+    refreshOn: [AddressModificationSuccess],
+  });
 
-  protected addresses$ = using(
-    () => this.addressesLoading$.subscribe(),
-    () => this.addressesState$
-  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
-
-  protected currentAddress$ = this.addresses$.pipe(
+  protected currentAddress$ = this.addressesQuery$.get(undefined).pipe(
     map(
       (addresses) =>
         addresses?.find(
@@ -66,42 +40,42 @@ export class DefaultAddressService implements AddressService, OnDestroy {
   }
 
   getAddresses(): Observable<Address[] | null> {
-    return this.addresses$;
+    return this.addressesQuery$.get(undefined);
   }
 
+  protected addAddressCommand$ = createCommand({
+    onSuccess: [AddressModificationSuccess],
+    action: (qualifier: Address) => {
+      return this.adapter
+        .add(qualifier);
+    },
+  });
+
+  protected updateAddressCommand$ = createCommand({
+    onSuccess: [AddressModificationSuccess],
+    action: (qualifier: Address) => {
+      return this.adapter
+        .update(qualifier);
+    },
+  });
+
+  protected deleteAddressCommand$ = createCommand({
+    onSuccess: [AddressModificationSuccess],
+    action: (qualifier: Address) => {
+      return this.adapter
+        .delete(qualifier);
+    },
+  });
+
   addAddress(data: Address): Observable<unknown> {
-    return this.adapter
-      .add(data)
-      .pipe(tap(() => this.reloadAddress$.next(true)));
+    return this.addAddressCommand$.execute(data);
   }
 
   updateAddress(data: Address): Observable<unknown> {
-    return this.adapter
-      .update(data)
-      .pipe(tap(() => this.reloadAddress$.next(true)));
+    return this.updateAddressCommand$.execute(data);
   }
 
   deleteAddress(data: Address): Observable<unknown> {
-    return this.adapter
-      .delete(data)
-      .pipe(tap(() => this.reloadAddress$.next(true)));
-  }
-
-  protected initReset(): void {
-    this.resetSubscription = this.identity
-      .get()
-      .pipe(
-        skip(1),
-        take(1),
-        tap(() => {
-          this.addressesState$.next(null);
-          this.resetSubscription = undefined;
-        })
-      )
-      .subscribe();
-  }
-
-  onDestroy(): void {
-    this.resetSubscription?.unsubscribe();
+    return this.deleteAddressCommand$.execute(data);
   }
 }
