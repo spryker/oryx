@@ -120,7 +120,7 @@ describe('CheckoutAuthComponent', () => {
     });
 
     it('should render the user name', () => {
-      const customerData = element.renderRoot.querySelector('p');
+      const customerData = element.renderRoot.querySelector('p')?.textContent;
       expect(customerData).toContain(`${user.firstName} ${user.lastName}`);
       expect(customerData).toContain(user.email);
     });
