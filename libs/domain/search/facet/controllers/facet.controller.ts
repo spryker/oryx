@@ -24,19 +24,20 @@ export class FacetController implements ReactiveController {
 
   protected facetListService = resolve(FacetListService);
 
-  protected facet$ = defer(() =>
-    this.observe.get('name').pipe(
-      switchMap((name) =>
-        name
-          ? (this.facetListService.getFacet({
-              name,
-            }) as Observable<SingleMultiFacet>)
-          : of(null)
+  protected $facet = signal(
+    defer(() =>
+      this.observe.get('name').pipe(
+        switchMap((name) =>
+          name
+            ? (this.facetListService.getFacet({
+                name,
+              }) as Observable<SingleMultiFacet>)
+            : of(null)
+        )
       )
     )
   );
 
-  protected $facet = signal<SingleMultiFacet | null>(this.facet$);
   protected $showAll = signal(false);
   protected $searchedValue = signal('');
   protected $renderLimit = signal(defer(() => this.observe.get('renderLimit')));
