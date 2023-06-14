@@ -26,7 +26,6 @@ export class ProductListComponent extends LayoutMixin(
   });
 
   protected override render(): TemplateResult {
-    console.log('this.list()?.products', this.list()?.products);
     return html`
       ${repeat(
         this.list()?.products || [],

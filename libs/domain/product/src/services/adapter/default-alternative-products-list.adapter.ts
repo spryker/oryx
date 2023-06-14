@@ -1,7 +1,7 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
-import { ApiProductModel, Product } from '../../models';
+import { ApiProductModel, Product, ProductQualifier } from '../../models';
 import { AlternativeProductsListAdapter } from './alternative-products-list.adapter';
 import { AlternativeProductsListNormalizer } from './normalizers/alternative-products-list';
 
@@ -18,13 +18,13 @@ export class DefaultAlternativeProductsListAdapter
     protected transformer = inject(JsonAPITransformerService)
   ) {}
 
-  get(sku: string): Observable<Product[]> {
+  get({ sku }: ProductQualifier): Observable<Product[]> {
     const include = [ApiProductModel.Includes.ConcreteProductPrices];
 
     return this.http
       .get<ApiProductModel.Response>(
         `${this.SCOS_BASE_URL}/${this.getQueryEndpoint(
-          sku
+          sku!
         )}?include=${include?.join(',')}`
       )
       .pipe(this.transformer.do(AlternativeProductsListNormalizer));

@@ -1,8 +1,8 @@
-import { Product } from '@spryker-oryx/product';
+import { Product, ProductQualifier } from '@spryker-oryx/product';
 import { Observable } from 'rxjs';
 
 export interface AlternativeProductsListService {
-  get(sku: string): Observable<Product[] | undefined>;
+  get(qualifier: ProductQualifier): Observable<Product[] | undefined>;
 }
 
 export const AlternativeProductsListService =

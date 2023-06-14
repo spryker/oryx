@@ -4,6 +4,7 @@ import { LocaleChanged } from '@spryker-oryx/i18n';
 import {
   AlternativeProductsListAdapter,
   Product,
+  ProductQualifier,
   ProductsLoaded,
 } from '@spryker-oryx/product';
 import { CurrencyChanged } from '@spryker-oryx/site';
@@ -14,14 +15,14 @@ export class DefaultAlternativeProductsListService
   implements AlternativeProductsListService
 {
   protected productsListQuery = createQuery({
-    loader: ({ sku }: { sku: string }) => this.adapter.get(sku),
+    loader: (qualifier: ProductQualifier) => this.adapter.get(qualifier),
     onLoad: [ProductsLoaded],
     refreshOn: [LocaleChanged, CurrencyChanged],
   });
 
   constructor(protected adapter = inject(AlternativeProductsListAdapter)) {}
 
-  get(sku: string): Observable<Product[] | undefined> {
-    return this.productsListQuery.get({ sku });
+  get(qualifier: ProductQualifier): Observable<Product[] | undefined> {
+    return this.productsListQuery.get(qualifier);
   }
 }
