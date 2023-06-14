@@ -2,7 +2,7 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
-import { SearchEvent } from '@spryker-oryx/ui/searchbox';
+import { SearchPayload } from '@spryker-oryx/ui/searchbox';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -93,12 +93,12 @@ describe('TypeaheadController', () => {
   });
 
   describe('when an input is dispatched', () => {
-    let result: SearchEvent;
+    let result: SearchPayload;
 
     beforeEach(async () => {
       document.body.appendChild(element);
       element.addEventListener('oryx.typeahead', ((
-        ev: CustomEvent<SearchEvent>
+        ev: CustomEvent<SearchPayload>
       ) => {
         result = ev.detail;
       }) as EventListener);

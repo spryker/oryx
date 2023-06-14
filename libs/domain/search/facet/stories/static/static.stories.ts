@@ -3,10 +3,10 @@ import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { Meta } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../.constants';
-import { FacetComponentAttributes } from '../facet.model';
+import { storybookPrefix } from '../../../.constants';
+import { SearchFacetComponentAttributes } from '../../facet.model';
 
-const facetComponent = (attrs: FacetComponentAttributes): TemplateResult => {
+const facetComponent = (attrs: SearchFacetComponentAttributes): TemplateResult => {
   return html`<oryx-search-facet
     .name=${attrs.name ?? 'Brand'}
     .minForSearch=${attrs.minForSearch}

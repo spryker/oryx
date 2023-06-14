@@ -1,19 +1,15 @@
 import { resolve } from '@spryker-oryx/di';
-import { Facet, FacetValue } from '@spryker-oryx/product';
+import { FacetValue } from '@spryker-oryx/product';
 import { FacetListService } from '@spryker-oryx/search';
 import {
   FACET_CLEAR_EVENT,
   FACET_TOGGLE_EVENT,
   ToggleFacetPayload,
 } from '@spryker-oryx/search/facet-value-navigation';
-import { ObserveController } from '@spryker-oryx/utilities';
+import { ObserveController, computed, signal } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import {
   BehaviorSubject,
-  combineLatest,
-  iif,
-  map,
-  mergeMap,
   Observable,
   of,
   switchMap,
@@ -24,27 +20,56 @@ import {
   FACET_SELECT_EVENT,
   SingleMultiFacet,
 } from '../facet.model';
+import { SearchPayload } from '@spryker-oryx/ui/searchbox';
 
 export class FacetController implements ReactiveController {
-  protected observe: ObserveController<LitElement & SearchFacetComponentAttributes>;
+  protected observe = new ObserveController(this.host);
   protected facetListService = resolve(FacetListService);
-  protected facet$: Observable<Facet | null>;
+
+  protected facet$ = this.observe.get('name').pipe(
+    switchMap((name) =>
+      name
+        ? (this.facetListService.getFacet({
+            name,
+          }) as Observable<SingleMultiFacet>)
+        : of(null)
+    )
+  )
+
   protected showAll$ = new BehaviorSubject(false);
   protected searchedValue$ = new BehaviorSubject('');
 
+  protected $facet = signal<SingleMultiFacet | null>(this.facet$);
+  protected $showAll = signal(false);
+  protected $searchedValue = signal('');
+  protected $renderLimit = signal(this.observe.get('renderLimit'));
+
+  protected computedFacet = computed(() => {
+    const facet = this.$facet();
+    const query = this.$searchedValue();
+    const renderLimit = this.$renderLimit();
+    const showAll = this.$showAll();
+
+    if (facet && Array.isArray(facet.values)) {
+      const filteredValues = this.filterFacetValues(facet, query);
+      const limitedValues = this.cutByRenderLimit(filteredValues, showAll ? Infinity : renderLimit);
+      return limitedValues;
+    }
+
+    return null;
+  });
+
+  protected selectedValues = computed(() => {
+    const facet = this.$facet();
+
+    return facet ? 
+      facet.values.filter(({name}) => (facet.selectedValues ?? []).includes(name as string)):
+      [];
+  });
+
   constructor(protected host: LitElement & SearchFacetComponentAttributes) {
     this.host.addController(this);
-    this.observe = new ObserveController(host);
-    this.facet$ = this.observe.get('name').pipe(
-      switchMap((name) =>
-        name
-          ? (this.facetListService.getFacet({
-              name,
-            }) as Observable<SingleMultiFacet>)
-          : of(null)
-      )
-    );
-
+   
     this.onSearch = this.onSearch.bind(this);
     this.onClearSearch = this.onClearSearch.bind(this);
     this.onToggle = this.onToggle.bind(this);
@@ -68,50 +93,15 @@ export class FacetController implements ReactiveController {
   /**
    * Returns modified data based on searching and cutting by renderLimit.
    */
-  getFacet(): Observable<SingleMultiFacet | null> {
-    return this.facet$.pipe(
-      mergeMap((facet) =>
-        iif(
-          () => facet !== null && Array.isArray(facet.values),
-          of(facet as SingleMultiFacet).pipe(
-            switchMap((facet) =>
-              this.searchedValue$.pipe(
-                map((searchedValue) =>
-                  this.filterFacetValues(facet, searchedValue)
-                )
-              )
-            ),
-            switchMap((facet) =>
-              combineLatest([
-                this.observe.get('renderLimit'),
-                this.showAll$,
-              ]).pipe(
-                map(([limit, showAll]) =>
-                  this.cutByRenderLimit(facet, showAll ? Infinity : limit)
-                )
-              )
-            )
-          ),
-          of(null)
-        )
-      )
-    );
+  getFacet(): SingleMultiFacet | null {
+    return this.computedFacet();
   }
 
   /**
    * Returns an array with all selected facet values
    */
-  getSelectedValues(): Observable<FacetValue[]> {
-    return this.getFacet().pipe(
-      map((facet) =>
-        facet && Array.isArray(facet.selectedValues)
-          ? facet.selectedValues.map(
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              (selVal) => facet.values.find((val) => val.name === selVal)!
-            )
-          : ([] as FacetValue[])
-      )
-    );
+  getSelectedValues(): FacetValue[] {
+    return this.selectedValues();
   }
 
   /**
@@ -131,6 +121,9 @@ export class FacetController implements ReactiveController {
   }
 
   // ToDo: This is temporary filtering implementation.
+  // need to rethink the logic of this method. 
+  // The sum of the matches is not calculated correctly and in general 
+  // the filtering behavior is not intuitive for the end user
   protected filterFacetValues(
     facet: SingleMultiFacet,
     searchedValue: string
@@ -150,6 +143,7 @@ export class FacetController implements ReactiveController {
 
       if (isIncludes) {
         filteredValueLength++;
+        console.log(filteredValueLength, name, 'inc');
         result.push({ ...value });
 
         return result;
@@ -159,8 +153,9 @@ export class FacetController implements ReactiveController {
         const children = value.children.reduce(reducer, []);
 
         if (children.length) {
-          filteredValueLength += children.length;
 
+          filteredValueLength += children.length;
+          console.log(filteredValueLength, name, 'chi');
           result.push({ ...value, children });
         }
       }
@@ -169,6 +164,9 @@ export class FacetController implements ReactiveController {
     };
 
     const values = facet.values?.reduce(reducer, []);
+
+    console.log(values, filteredValueLength);
+    
 
     return {
       ...facet,
@@ -181,38 +179,39 @@ export class FacetController implements ReactiveController {
     facet: SingleMultiFacet,
     renderLimit = Infinity
   ): SingleMultiFacet {
-    if (facet.values.length < renderLimit) {
+    if (!renderLimit || facet.values.length < renderLimit) {
       return facet;
     }
 
     return {
       ...facet,
-      ...(renderLimit && {
-        values: [...facet.values].splice(0, renderLimit),
-      }),
+      values: facet.values.slice(0, renderLimit),
     };
   }
 
   protected onToggle(e: Event): void {
-    this.showAll$.next((e as CustomEvent<ToggleFacetPayload>).detail.expanded);
+    this.$showAll.set(
+      (e as CustomEvent<ToggleFacetPayload>).detail.expanded
+    )
   }
 
   protected onSearch(e: Event): void {
-    this.searchedValue$.next(
-      (e as CustomEvent<{ query: string }>).detail.query
-    );
+    this.$searchedValue.set(
+      (e as CustomEvent<SearchPayload>).detail.query
+    )
   }
 
   protected onClearSearch(): void {
-    this.searchedValue$.next('');
+    this.$searchedValue.set('')
   }
 
   protected onClear(): void {
+    this.onClearSearch();
     this.dispatchSelectEvent();
     this.deselectInputs();
   }
 
-  private deselectInputs() {
+  protected deselectInputs(): void {
     const inputs =
       this.host.renderRoot.querySelectorAll<HTMLInputElement>('input:checked');
 

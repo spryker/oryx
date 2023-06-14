@@ -19,18 +19,18 @@ export const searchFacetStyles = css`
     padding-inline-start: 25px;
   }
 
-  .label {
+  input + div {
     display: flex;
     gap: 10px;
   }
 
-  .label > *:first-child {
+  input + div > *:first-child {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
-  .counter {
+  input + div > *:last-child {
     margin-inline-start: auto;
   }
 `;

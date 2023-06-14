@@ -4,7 +4,7 @@ import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import {
   ClearIconAppearance,
   SearchAttributes,
-  SearchEvent,
+  SearchPayload,
   SearchIconPosition,
 } from '@spryker-oryx/ui/searchbox';
 import { Meta, Story } from '@storybook/web-components';
@@ -34,7 +34,7 @@ interface Props extends TypeaheadOptions, SearchAttributes, AffixOptions {
 const Template: Story<Props> = (props: Props): TemplateResult => {
   const data: string[] = props.dataSet === 'branches' ? branches : states;
 
-  const logTypeahead = (ev: CustomEvent<SearchEvent>): void => {
+  const logTypeahead = (ev: CustomEvent<SearchPayload>): void => {
     console.log('oryx.typeahead event', ev.detail.query);
   };
   const logSelect = (ev: CustomEvent<PopoverSelectEvent>): void => {
@@ -43,7 +43,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       (ev.detail.selected as HTMLOptionElement).value
     );
   };
-  const logSearch = (ev: CustomEvent<SearchEvent>): void => {
+  const logSearch = (ev: CustomEvent<SearchPayload>): void => {
     console.log('oryx.searchbox event', ev.detail.query);
   };
 

@@ -1,5 +1,5 @@
 import { FacetValue } from '@spryker-oryx/product';
-import { i18n, signal, signalAware, signalProperty } from '@spryker-oryx/utilities';
+import { computed, i18n, signalAware, signalProperty } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
@@ -8,18 +8,18 @@ import { FacetController } from './controllers';
 
 @signalAware()
 export class SearchFacetComponent extends LitElement {
-  static styles = searchFacetStyles;
+  static styles = [searchFacetStyles];
 
   protected controller = new FacetController(this);
 
   @signalProperty() name?: string;
   @signalProperty({ type: Boolean }) open = false;
   @signalProperty({ type: Boolean }) multi = false;
-  @signalProperty({ type: Number }) renderLimit = 5;
-  @signalProperty({ type: Number }) minForSearch = 13;
+  @signalProperty({ type: Number }) renderLimit = 1;
+  @signalProperty({ type: Number }) minForSearch = 2;
   @signalProperty({ type: Boolean }) enableClear = true;
 
-  protected $facet = signal(this.controller.getFacet());
+  protected facet = computed(() => this.controller.getFacet());
 
   protected onChange(e: InputEvent): void {
     const { value, checked: selected } = e.target as HTMLInputElement;
@@ -30,7 +30,7 @@ export class SearchFacetComponent extends LitElement {
   }
 
   protected override render(): TemplateResult | void {
-    const facet = this.$facet();
+    const facet = this.facet();
 
     if (!facet) return;
 
@@ -53,6 +53,10 @@ export class SearchFacetComponent extends LitElement {
         () => html`${i18n('search.facet.no-results-found')}`
       )}
     </oryx-search-facet-value-navigation>`;
+  }
+
+  protected renderValueControlLabel(facetValue: FacetValue): TemplateResult {
+    return html`<span>${facetValue.name ?? facetValue.value}</span>`;
   }
 
   protected renderValues(
@@ -78,14 +82,14 @@ export class SearchFacetComponent extends LitElement {
     const label = facetValue.name ?? facetValue.value;
     const control = html`<input
       type=${this.multi ? 'checkbox' : 'radio'}
-      name=${this.$facet()!.parameter}
+      name=${this.facet()!.parameter}
       value=${facetValue.value}
       ?checked=${facetValue.selected}
       @change=${this.onChange}
       aria-label=${label}
     />
     <div>
-      <span>${label}</span>
+      ${this.renderValueControlLabel(facetValue)}
       <span>${facetValue.count}</span>
     </div> `;
 
@@ -96,11 +100,11 @@ export class SearchFacetComponent extends LitElement {
 
   protected get isSearchable(
   ): boolean {
-    return (this.$facet()?.valuesTreeLength ?? 0) > (this.minForSearch ?? Infinity);
+    return (this.facet()?.valuesTreeLength ?? 0) > (this.minForSearch ?? Infinity);
   }
 
   protected get isFoldable(): boolean {
-    const facet = this.$facet();
+    const facet = this.facet();
 
     return (
       (facet?.filteredValueLength ?? facet?.valuesTreeLength ?? 0) >

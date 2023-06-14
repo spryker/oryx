@@ -5,7 +5,7 @@ import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchAttributes,
-  SearchEvent,
+  SearchPayload,
   SearchIconPosition,
 } from '@spryker-oryx/ui/searchbox';
 import { Meta, Story } from '@storybook/web-components';
@@ -27,13 +27,13 @@ interface Props extends TypeaheadOptions, SearchAttributes, AffixOptions {
 const Template: Story<Props> = (props: Props): TemplateResult => {
   const data: string[] = props.dataSet === 'branches' ? branches : states;
 
-  const logTypeahead = (ev: CustomEvent<SearchEvent>): void => {
+  const logTypeahead = (ev: CustomEvent<SearchPayload>): void => {
     console.log('oryx.typeahead event', ev.detail.query);
   };
-  const logSelect = (ev: CustomEvent<SearchEvent>): void => {
+  const logSelect = (ev: CustomEvent<SearchPayload>): void => {
     console.log('oryx.select event', ev.detail.query);
   };
-  const logSearch = (ev: CustomEvent<SearchEvent>): void => {
+  const logSearch = (ev: CustomEvent<SearchPayload>): void => {
     console.log('oryx.search event', ev.detail.query);
   };
 
