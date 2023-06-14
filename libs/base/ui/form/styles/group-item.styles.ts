@@ -19,9 +19,12 @@ export const groupItemStyles = css`
   slot[name='subtext'] {
     ${headingUtil(HeadingTag.Caption)};
 
-    display: block;
+    display: flex;
     grid-column: 2 / span 1;
     color: var(--oryx-color-neutral-9);
+  }
+
+  ::slotted([slot='subtext']:first-of-type) {
     margin-block-start: 4px;
   }
 
