@@ -310,7 +310,7 @@ describe('UserAddressFormComponent', () => {
         ></oryx-user-address-form>`);
       });
 
-      it('should set isDefaultShipping to true in the default values', () => {
+      it('should not set isDefaultShipping to true in the default values', () => {
         expect(renderer.buildForm).toHaveBeenCalledWith(
           expect.anything(),
           expect.not.objectContaining({ isDefaultShipping: true })
@@ -361,7 +361,7 @@ describe('UserAddressFormComponent', () => {
         ></oryx-user-address-form>`);
       });
 
-      it('should set isDefaultBilling to true in the default values', () => {
+      it('should not set isDefaultBilling to true in the default values', () => {
         expect(renderer.buildForm).toHaveBeenCalledWith(
           expect.anything(),
           expect.not.objectContaining({ isDefaultBilling: true })

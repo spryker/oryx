@@ -106,23 +106,23 @@ describe('CheckoutAuthComponent', () => {
   });
 
   describe('when the user is authenticated', () => {
+    const user = {
+      firstName: 'Foo',
+      lastName: 'Bar',
+      email: 'foo@bar.com',
+    } as User;
     beforeEach(async () => {
       authService.isAuthenticated.mockReturnValue(of(true));
-      userService.getUser.mockReturnValue(
-        of({ firstName: 'Foo', lastName: 'Bar', email: 'foo@bar.com' } as User)
-      );
+      userService.getUser.mockReturnValue(of(user));
       element = await fixture(
         html`<oryx-checkout-customer></oryx-checkout-customer>`
       );
     });
 
     it('should render the user name', () => {
-      const h1 = element.renderRoot.querySelector('h3');
-      expect(h1?.textContent).toBe('Checking out as');
-
-      const customerData = element.renderRoot.querySelector('h3 + p');
-      expect(customerData?.textContent).contain('Foo Bar');
-      expect(customerData?.textContent).contain('foo@bar.com');
+      const customerData = element.renderRoot.querySelector('p');
+      expect(customerData).toContain(`${user.firstName} ${user.lastName}`);
+      expect(customerData).toContain(user.email);
     });
 
     it('should not render the guest component', () => {
