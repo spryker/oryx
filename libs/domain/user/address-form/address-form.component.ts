@@ -6,6 +6,7 @@ import {
   FormMixin,
   FormRenderer,
   formStyles,
+  FormValues,
 } from '@spryker-oryx/form';
 import { CountryService } from '@spryker-oryx/site';
 import {
@@ -13,6 +14,7 @@ import {
   AddressEventDetail,
   AddressFormService,
   AddressService,
+  UserService,
 } from '@spryker-oryx/user';
 import {
   computed,
@@ -42,45 +44,69 @@ export class UserAddressFormComponent
   protected addressService = resolve(AddressService);
   protected addressFormService = resolve(AddressFormService);
   protected fieldRenderer = resolve(FormRenderer);
+  protected userService = resolve(UserService);
 
   @property({ type: Boolean }) enableDefaultShipping?: boolean;
   @property({ type: Boolean }) enableDefaultBilling?: boolean;
 
   @signalProperty() country?: string;
-  @signalProperty() fallbackCountry?: string;
 
-  protected countries = signal(this.countryService.getAll());
-  protected currentAddress = signal(this.addressService.getCurrentAddress());
-  protected activeCountry = computed(() => {
+  protected $countries = signal(this.countryService.getAll());
+  protected $currentAddress = signal(this.addressService.getCurrentAddress());
+  protected $user = signal(this.userService.getUser());
+  protected $addresses = signal(this.addressService.getAddresses());
+  protected $currentCountry = computed(() => {
     if (this.country) return this.country;
-    return this.currentAddress()?.iso2Code ?? this.countries()?.[0].iso2Code;
+    return this.$currentAddress()?.iso2Code ?? this.$countries()?.[0].iso2Code;
   });
-
-  protected formModel = computed(() => {
-    const country = this.activeCountry();
-    const fallbackCountry =
-      this.fallbackCountry ?? this.$options().fallbackCountry;
-
+  protected $formModel = computed(() => {
+    const country = this.$currentCountry();
     if (!country) return;
 
     return this.addressFormService.getForm({
       country,
-      fallbackCountry,
+      fallbackCountry: this.$options().fallbackCountry,
     }) as unknown as AddressForm;
   });
 
-  @query('form')
-  protected form?: HTMLFormElement;
+  @query('form') protected form?: HTMLFormElement;
 
   protected override render(): TemplateResult | void {
     return html`<form @change=${this.onChange}>
       ${this.renderCountrySelector()}
-      ${this.fieldRenderer.buildForm(this.getFormFields(), this.values)}
+      ${this.fieldRenderer.buildForm(
+        this.getFormFields(),
+        this.getFormValues()
+      )}
     </form>`;
   }
 
+  protected getFormValues(): FormValues {
+    const values = this.values ?? {};
+    const { firstName, lastName, salutation } = this.$user() ?? {};
+
+    const addresses = this.$addresses();
+    if (
+      this.enableDefaultBilling &&
+      !addresses?.find((address) => address.isDefaultBilling)
+    ) {
+      values.isDefaultBilling = true;
+    }
+    if (
+      this.enableDefaultShipping &&
+      !addresses?.find((address) => address.isDefaultShipping)
+    ) {
+      values.isDefaultShipping = true;
+    }
+
+    values.firstName ??= firstName;
+    values.lastName ??= lastName;
+    values.salutation ??= salutation;
+    return values;
+  }
+
   protected getFormFields(): FormFieldDefinition[] {
-    const form = this.formModel();
+    const form = this.$formModel();
 
     const formFields = [...(form?.data.options ?? [])];
     if (this.enableDefaultShipping) {
@@ -104,8 +130,8 @@ export class UserAddressFormComponent
   }
 
   protected renderCountrySelector(): TemplateResult | void {
-    const countries = this.countries();
-    const activeCountry = this.activeCountry();
+    const countries = this.$countries();
+    const activeCountry = this.$currentCountry();
     if (!countries?.length || countries?.length < 2) return;
 
     return html` <oryx-select
