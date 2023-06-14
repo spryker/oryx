@@ -8,8 +8,8 @@ import { searchboxComponent } from './searchbox.def';
 import {
   ClearIconAppearance,
   ClearIconPosition,
-  SearchPayload,
   SearchIconPosition,
+  SearchPayload,
 } from './searchbox.model';
 
 describe('SearchComponent', () => {

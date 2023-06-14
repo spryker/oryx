@@ -6,7 +6,9 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import { SearchFacetComponentAttributes } from '../../facet.model';
 
-const facetComponent = (attrs: SearchFacetComponentAttributes): TemplateResult => {
+const facetComponent = (
+  attrs: SearchFacetComponentAttributes
+): TemplateResult => {
   return html`<oryx-search-facet
     .name=${attrs.name ?? 'Brand'}
     .minForSearch=${attrs.minForSearch}

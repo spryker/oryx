@@ -6,21 +6,16 @@ import {
   FACET_TOGGLE_EVENT,
   ToggleFacetPayload,
 } from '@spryker-oryx/search/facet-value-navigation';
-import { ObserveController, computed, signal } from '@spryker-oryx/utilities';
+import { SearchPayload } from '@spryker-oryx/ui/searchbox';
+import { computed, ObserveController, signal } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
+import { Observable, of, switchMap } from 'rxjs';
 import {
-  BehaviorSubject,
-  Observable,
-  of,
-  switchMap,
-} from 'rxjs';
-import {
+  FACET_SELECT_EVENT,
   SearchFacetComponentAttributes,
   SelectFacetPayload,
-  FACET_SELECT_EVENT,
   SingleMultiFacet,
 } from '../facet.model';
-import { SearchPayload } from '@spryker-oryx/ui/searchbox';
 
 export class FacetController implements ReactiveController {
   protected observe = new ObserveController(this.host);
@@ -34,10 +29,7 @@ export class FacetController implements ReactiveController {
           }) as Observable<SingleMultiFacet>)
         : of(null)
     )
-  )
-
-  protected showAll$ = new BehaviorSubject(false);
-  protected searchedValue$ = new BehaviorSubject('');
+  );
 
   protected $facet = signal<SingleMultiFacet | null>(this.facet$);
   protected $showAll = signal(false);
@@ -46,13 +38,16 @@ export class FacetController implements ReactiveController {
 
   protected computedFacet = computed(() => {
     const facet = this.$facet();
-    const query = this.$searchedValue();
+    const search = this.$searchedValue();
     const renderLimit = this.$renderLimit();
     const showAll = this.$showAll();
 
     if (facet && Array.isArray(facet.values)) {
-      const filteredValues = this.filterFacetValues(facet, query);
-      const limitedValues = this.cutByRenderLimit(filteredValues, showAll ? Infinity : renderLimit);
+      const filteredValues = this.filterFacetValues(facet, search);
+      const limitedValues = this.cutByRenderLimit(
+        filteredValues,
+        showAll ? Infinity : renderLimit
+      );
       return limitedValues;
     }
 
@@ -62,14 +57,16 @@ export class FacetController implements ReactiveController {
   protected selectedValues = computed(() => {
     const facet = this.$facet();
 
-    return facet ? 
-      facet.values.filter(({name}) => (facet.selectedValues ?? []).includes(name as string)):
-      [];
+    return facet
+      ? facet.values.filter(({ name }) =>
+          (facet.selectedValues ?? []).includes(name as string)
+        )
+      : [];
   });
 
   constructor(protected host: LitElement & SearchFacetComponentAttributes) {
     this.host.addController(this);
-   
+
     this.onSearch = this.onSearch.bind(this);
     this.onClearSearch = this.onClearSearch.bind(this);
     this.onToggle = this.onToggle.bind(this);
@@ -121,8 +118,8 @@ export class FacetController implements ReactiveController {
   }
 
   // ToDo: This is temporary filtering implementation.
-  // need to rethink the logic of this method. 
-  // The sum of the matches is not calculated correctly and in general 
+  // need to rethink the logic of this method.
+  // The sum of the matches is not calculated correctly and in general
   // the filtering behavior is not intuitive for the end user
   protected filterFacetValues(
     facet: SingleMultiFacet,
@@ -152,7 +149,6 @@ export class FacetController implements ReactiveController {
         const children = value.children.reduce(reducer, []);
 
         if (children.length) {
-
           filteredValueLength += children.length;
           result.push({ ...value, children });
         }
@@ -185,19 +181,15 @@ export class FacetController implements ReactiveController {
   }
 
   protected onToggle(e: Event): void {
-    this.$showAll.set(
-      (e as CustomEvent<ToggleFacetPayload>).detail.expanded
-    )
+    this.$showAll.set((e as CustomEvent<ToggleFacetPayload>).detail.expanded);
   }
 
   protected onSearch(e: Event): void {
-    this.$searchedValue.set(
-      (e as CustomEvent<SearchPayload>).detail.query
-    )
+    this.$searchedValue.set((e as CustomEvent<SearchPayload>).detail.query);
   }
 
   protected onClearSearch(): void {
-    this.$searchedValue.set('')
+    this.$searchedValue.set('');
   }
 
   protected onClear(): void {

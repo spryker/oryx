@@ -1,10 +1,15 @@
 import { FacetValue } from '@spryker-oryx/product';
-import { computed, i18n, signalAware, signalProperty } from '@spryker-oryx/utilities';
+import {
+  computed,
+  i18n,
+  signalAware,
+  signalProperty,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { searchFacetStyles } from './facet.styles';
 import { FacetController } from './controllers';
+import { searchFacetStyles } from './facet.styles';
 
 @signalAware()
 export class SearchFacetComponent extends LitElement {
@@ -34,8 +39,7 @@ export class SearchFacetComponent extends LitElement {
 
     if (!facet) return;
 
-    const valuesLength =
-      facet.filteredValueLength ?? facet.valuesTreeLength;
+    const valuesLength = facet.filteredValueLength ?? facet.valuesTreeLength;
     const selectedLength = facet.selectedValues?.length;
 
     return html`<oryx-search-facet-value-navigation
@@ -59,9 +63,7 @@ export class SearchFacetComponent extends LitElement {
     return html`<span>${facetValue.name ?? facetValue.value}</span>`;
   }
 
-  protected renderValues(
-    values?: FacetValue[],
-  ): TemplateResult | void {
+  protected renderValues(values?: FacetValue[]): TemplateResult | void {
     if (!values?.length) return;
 
     return html`<ul>
@@ -76,31 +78,30 @@ export class SearchFacetComponent extends LitElement {
     </ul>`;
   }
 
-  protected renderValueControl(
-    facetValue: FacetValue,
-  ): TemplateResult {
+  protected renderValueControl(facetValue: FacetValue): TemplateResult {
     const label = facetValue.name ?? facetValue.value;
     const control = html`<input
-      type=${this.multi ? 'checkbox' : 'radio'}
-      name=${this.facet()!.parameter}
-      value=${facetValue.value}
-      ?checked=${facetValue.selected}
-      @change=${this.onChange}
-      aria-label=${label}
-    />
-    <div>
-      ${this.renderValueControlLabel(facetValue)}
-      <span>${facetValue.count}</span>
-    </div> `;
+        type=${this.multi ? 'checkbox' : 'radio'}
+        name=${this.facet()!.parameter}
+        value=${facetValue.value}
+        ?checked=${facetValue.selected}
+        @change=${this.onChange}
+        aria-label=${label}
+      />
+      <div>
+        ${this.renderValueControlLabel(facetValue)}
+        <span>${facetValue.count}</span>
+      </div> `;
 
     return this.multi
       ? html` <oryx-checkbox>${control}</oryx-checkbox> `
       : html` <oryx-radio>${control}</oryx-radio> `;
   }
 
-  protected get isSearchable(
-  ): boolean {
-    return (this.facet()?.valuesTreeLength ?? 0) > (this.minForSearch ?? Infinity);
+  protected get isSearchable(): boolean {
+    return (
+      (this.facet()?.valuesTreeLength ?? 0) > (this.minForSearch ?? Infinity)
+    );
   }
 
   protected get isFoldable(): boolean {

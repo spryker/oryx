@@ -5,8 +5,8 @@ import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchAttributes,
-  SearchPayload,
   SearchIconPosition,
+  SearchPayload,
 } from '@spryker-oryx/ui/searchbox';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';

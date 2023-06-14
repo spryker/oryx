@@ -9,8 +9,8 @@ import {
   CLOSE_EVENT,
   OPEN_EVENT,
   SearchAttributes,
-  SearchPayload,
   SearchIconPosition,
+  SearchPayload,
 } from './searchbox.model';
 
 export class SearchboxController implements ReactiveController {

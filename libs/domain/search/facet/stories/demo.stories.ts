@@ -6,7 +6,10 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { take } from 'rxjs';
 import { storybookPrefix } from '../../.constants';
-import { SearchFacetComponentAttributes, SelectFacetPayload } from '../facet.model';
+import {
+  SearchFacetComponentAttributes,
+  SelectFacetPayload,
+} from '../facet.model';
 
 export default {
   title: `${storybookPrefix}/Facet`,

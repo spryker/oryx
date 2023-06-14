@@ -354,7 +354,9 @@ describe('SearchFacetNavigationComponent', () => {
     };
 
     const callListener = (detail: SelectFacetPayload) => {
-      const mockedEvent = new CustomEvent<SelectFacetPayload>('event', { detail });
+      const mockedEvent = new CustomEvent<SelectFacetPayload>('event', {
+        detail,
+      });
       listener(mockedEvent);
     };
 
