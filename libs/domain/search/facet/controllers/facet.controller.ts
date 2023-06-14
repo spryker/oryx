@@ -9,7 +9,7 @@ import {
 import { SearchPayload } from '@spryker-oryx/ui/searchbox';
 import { computed, ObserveController, signal } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
-import { Observable, of, switchMap } from 'rxjs';
+import { defer, Observable, of, switchMap } from 'rxjs';
 import {
   FACET_SELECT_EVENT,
   SearchFacetComponentAttributes,
@@ -18,23 +18,28 @@ import {
 } from '../facet.model';
 
 export class FacetController implements ReactiveController {
-  protected observe = new ObserveController(this.host);
+  protected observe: ObserveController<
+    LitElement & SearchFacetComponentAttributes
+  >;
+
   protected facetListService = resolve(FacetListService);
 
-  protected facet$ = this.observe.get('name').pipe(
-    switchMap((name) =>
-      name
-        ? (this.facetListService.getFacet({
-            name,
-          }) as Observable<SingleMultiFacet>)
-        : of(null)
+  protected facet$ = defer(() =>
+    this.observe.get('name').pipe(
+      switchMap((name) =>
+        name
+          ? (this.facetListService.getFacet({
+              name,
+            }) as Observable<SingleMultiFacet>)
+          : of(null)
+      )
     )
   );
 
   protected $facet = signal<SingleMultiFacet | null>(this.facet$);
   protected $showAll = signal(false);
   protected $searchedValue = signal('');
-  protected $renderLimit = signal(this.observe.get('renderLimit'));
+  protected $renderLimit = signal(defer(() => this.observe.get('renderLimit')));
 
   protected computedFacet = computed(() => {
     const facet = this.$facet();
@@ -63,29 +68,6 @@ export class FacetController implements ReactiveController {
         )
       : [];
   });
-
-  constructor(protected host: LitElement & SearchFacetComponentAttributes) {
-    this.host.addController(this);
-
-    this.onSearch = this.onSearch.bind(this);
-    this.onClearSearch = this.onClearSearch.bind(this);
-    this.onToggle = this.onToggle.bind(this);
-    this.onClear = this.onClear.bind(this);
-  }
-
-  hostConnected(): void {
-    this.host.addEventListener('oryx.search', this.onSearch);
-    this.host.addEventListener('change', this.onClearSearch);
-    this.host.addEventListener(FACET_TOGGLE_EVENT, this.onToggle);
-    this.host.addEventListener(FACET_CLEAR_EVENT, this.onClear);
-  }
-
-  hostDisconnected(): void {
-    this.host.removeEventListener('oryx.search', this.onSearch);
-    this.host.addEventListener('change', this.onClearSearch);
-    this.host.removeEventListener(FACET_TOGGLE_EVENT, this.onToggle);
-    this.host.removeEventListener(FACET_CLEAR_EVENT, this.onClear);
-  }
 
   /**
    * Returns modified data based on searching and cutting by renderLimit.
@@ -208,5 +190,29 @@ export class FacetController implements ReactiveController {
         new InputEvent('input', { bubbles: true, composed: true })
       );
     });
+  }
+
+  constructor(protected host: LitElement & SearchFacetComponentAttributes) {
+    this.host.addController(this);
+    this.observe = new ObserveController(host);
+
+    this.onSearch = this.onSearch.bind(this);
+    this.onClearSearch = this.onClearSearch.bind(this);
+    this.onToggle = this.onToggle.bind(this);
+    this.onClear = this.onClear.bind(this);
+  }
+
+  hostConnected(): void {
+    this.host.addEventListener('oryx.search', this.onSearch);
+    this.host.addEventListener('change', this.onClearSearch);
+    this.host.addEventListener(FACET_TOGGLE_EVENT, this.onToggle);
+    this.host.addEventListener(FACET_CLEAR_EVENT, this.onClear);
+  }
+
+  hostDisconnected(): void {
+    this.host.removeEventListener('oryx.search', this.onSearch);
+    this.host.addEventListener('change', this.onClearSearch);
+    this.host.removeEventListener(FACET_TOGGLE_EVENT, this.onToggle);
+    this.host.removeEventListener(FACET_CLEAR_EVENT, this.onClear);
   }
 }

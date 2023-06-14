@@ -1,7 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { RouterService } from '@spryker-oryx/router';
-import { Meta } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import { SearchFacetComponentAttributes } from '../../facet.model';
@@ -32,7 +31,7 @@ export default {
       },
     },
   },
-} as Meta;
+};
 
 const Template = (): TemplateResult => {
   const router = resolve(RouterService) as unknown as MockRouterService;
@@ -82,7 +81,22 @@ const Template = (): TemplateResult => {
       renderLimit: 5,
       open: true,
     })}
+
+    <h3>With sub-values Single/Multi</h3>
+    <div class="row">
+      ${facetComponent({
+        open: true,
+        name: 'Label',
+        renderLimit: 5,
+      })}
+      ${facetComponent({
+        open: true,
+        name: 'Label',
+        multi: true,
+        renderLimit: 5,
+      })}
+    </div>
   `;
 };
 
-export const Static = Template.bind({});
+export const Variants = Template.bind({});
