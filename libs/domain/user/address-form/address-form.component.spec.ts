@@ -403,21 +403,20 @@ describe('UserAddressFormComponent', () => {
   });
 
   describe('when a registered user creates a new address', () => {
+    const user = {
+      firstName: 'First',
+      lastName: 'Last',
+      salutation: 'Mr',
+    } as User;
     beforeEach(async () => {
-      userService.getUser.mockReturnValue(
-        of({ firstName: 'First', lastName: 'Last', salutation: 'Mr' } as User)
-      );
+      userService.getUser.mockReturnValue(of(user));
       element = await fixture(html`
         <oryx-user-address-form></oryx-user-address-form>
       `);
     });
 
-    it('should feed in the first name, last name and salutation', () => {
-      expect(renderer.buildForm).toHaveBeenCalledWith(expect.anything(), {
-        firstName: 'First',
-        lastName: 'Last',
-        salutation: 'Mr',
-      });
+    it('should feed in the user`s data', () => {
+      expect(renderer.buildForm).toHaveBeenCalledWith(expect.anything(), user);
     });
   });
 });
