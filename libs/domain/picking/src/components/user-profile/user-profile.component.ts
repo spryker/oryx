@@ -9,7 +9,7 @@ import { i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { delay, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { userProfileComponentStyles } from './user-profile.styles';
 
 @signalAware()
@@ -24,23 +24,14 @@ export class UserProfileComponent extends LitElement {
     resolve(AppRef).requirePlugin(OfflineDataPlugin);
 
   @state()
-  protected hasPendingSyncs: boolean | null = null;
-
-  @state()
   protected loading: boolean | null = null;
 
   protected route = signal(this.routerService.route());
-  protected pendingSyncs = signal(
-    resolve(SyncSchedulerService)
-      .hasPending()
-      .pipe(tap((pending) => (this.hasPendingSyncs = pending)))
-  );
+  protected pendingSyncs = signal(resolve(SyncSchedulerService).hasPending());
 
   protected override render(): TemplateResult {
     const isPicking = this.route()?.includes('/picking/');
     const isMainPage = this.route() === '/';
-
-    this.pendingSyncs();
 
     return html`
       <div class="info-block">
@@ -51,7 +42,7 @@ export class UserProfileComponent extends LitElement {
       </div>
 
       ${when(
-        this.hasPendingSyncs && !isPicking,
+        this.pendingSyncs() && !isPicking,
         () =>
           html`
             <oryx-notification type="info" scheme="dark">
@@ -76,7 +67,7 @@ export class UserProfileComponent extends LitElement {
       <div class="info-footer">
         <oryx-button type="secondary" outline>
           <button
-            ?disabled="${isPicking || this.hasPendingSyncs}"
+            ?disabled="${isPicking || this.pendingSyncs()}"
             @click=${this.onLogOut}
           >
             ${i18n('user.profile.log-Out')}
@@ -99,12 +90,11 @@ export class UserProfileComponent extends LitElement {
   }
 
   protected onReceiveData(): void {
+    this.loading = true;
+
     this.injectorDataPlugin
       .refreshData(this.injector)
-      .pipe(
-        tap(() => (this.loading = true)),
-        delay(500)
-      )
+      .pipe(tap(() => (this.loading = false)))
       .subscribe(() => {
         this.dispatchEvent(
           new CustomEvent(CLOSE_EVENT, {
@@ -112,8 +102,6 @@ export class UserProfileComponent extends LitElement {
             composed: true,
           })
         );
-
-        this.loading = false;
         this.routerService.navigate('/');
       });
   }
