@@ -1,5 +1,5 @@
-import { Product } from '@spryker-oryx/product';
 import { Observable } from 'rxjs';
+import { Product } from '../../models/product.model';
 
 export interface AlternativeProductsListAdapter {
   get(sku: string): Observable<Product[]>;
