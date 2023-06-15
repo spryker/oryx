@@ -8,6 +8,7 @@ export const checkoutAccountStyles = css`
 
   p.have-an-account {
     ${headingUtil(HeadingTag.H5)};
+
     margin-inline: auto 10px;
   }
 `;
