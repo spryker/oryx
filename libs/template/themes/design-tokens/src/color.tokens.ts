@@ -14,8 +14,6 @@ export const color: ColorDesignTokens = {
   focus: 'var(--oryx-color-primary-9)',
   placeholder: `var(--oryx-color-neutral-11)`,
 
-  divider: 'var(--oryx-color-neutral-6)',
-
   overlay: colorPalette.overlays.black,
   elevation: `var(--oryx-color-overlay-7)`,
   'elevation-2': `var(--oryx-color-overlay-3)`,

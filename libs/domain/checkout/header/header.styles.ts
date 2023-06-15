@@ -8,7 +8,8 @@ export const checkoutHeaderStyles = css`
     justify-content: space-between;
     padding-block-end: 7px;
     margin-block-end: 20px;
-    border-block-end: solid 2px var(--oryx-color-divider);
+    border-block-end: solid 2px
+      var(--oryx-color-divider, var(--oryx-color-neutral-6));
   }
 
   ::slotted(h1),
