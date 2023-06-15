@@ -13,6 +13,7 @@ export interface ConnectableSignalOptions<T, K> extends SignalOptions<T | K> {
 
 let _resolvingSignals: number | undefined = undefined;
 let _resolvingSignalsNotifier: StateSignal<number> | undefined = undefined;
+let _ss_counter = 0;
 
 function signalResolving(state = true): void {
   if (state) {
@@ -21,19 +22,22 @@ function signalResolving(state = true): void {
   }
 
   if (_resolvingSignalsNotifier) {
-    _resolvingSignalsNotifier.set(0);
-    _resolvingSignalsNotifier = undefined;
+    _resolvingSignalsNotifier.set(_ss_counter++);
   }
 }
 
 export function resolvingSignals(): () => boolean | number {
+  const prevResolving = _resolvingSignals;
   _resolvingSignals = 0;
 
   return () => {
     if (!_resolvingSignals) return false;
     if (!_resolvingSignalsNotifier)
-      _resolvingSignalsNotifier = new StateSignal<number>(_resolvingSignals!);
-    return _resolvingSignalsNotifier.value;
+      _resolvingSignalsNotifier = new StateSignal<number>(_ss_counter++);
+    _resolvingSignalsNotifier.accessed();
+    const result = _resolvingSignals;
+    _resolvingSignals = prevResolving;
+    return result;
   };
 }
 
@@ -79,7 +83,7 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
       this.subscription = this.observable.subscribe((value) => {
         if (this.resolving) {
           this.resolving = false;
-          signalResolving();
+          signalResolving(false);
         }
         this.set(value);
       });
@@ -89,6 +93,10 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
   disconnect(): void {
     this.subscription?.unsubscribe();
     this.subscription = undefined;
+    if (this.resolving) {
+      this.resolving = false;
+      signalResolving(false);
+    }
   }
 }
 

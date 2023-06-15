@@ -105,51 +105,45 @@ function hydratableClass<T extends Type<HTMLElement>>(
       }
     }
 
-    [HYDRATE_ON_DEMAND]() {
+    async [HYDRATE_ON_DEMAND]() {
       if (this[DEFER_HYDRATION] !== 3) return;
 
-      // if (this[DEFER_HYDRATION] === 3) {
-      //   this[DEFER_HYDRATION] = 1; // hydrating
-      //   super.connectedCallback();
-      //   this.removeAttribute(deferHydrationAttribute);
-      //   return;
-      // }
+      this.removeAttribute(hydratableAttribute);
 
-      // TODO: here we will need to resolve all data needed for hydration
       this[DEFER_HYDRATION] = 2; // pre-hydrating
 
-      console.log('starting effect', this.tagName);
+      let resolve;
+      const promise = new Promise(function (res) {
+        resolve = res;
+      });
 
       this[SIGNAL_EFFECT] = effect(() => {
-        console.log('render pass', this.tagName);
         const hasResolving = resolvingSignals();
         super.render();
 
         if (!hasResolving()) {
-          console.log('hydration', this.tagName);
           this[DEFER_HYDRATION] = 1; // hydrating
           super.connectedCallback();
           this.removeAttribute(deferHydrationAttribute);
+          resolve();
         }
       });
 
-      // setTimeout(() => {
-      //   console.log('hydration', this.tagName);
-      //   this[DEFER_HYDRATION] = 1; // hydrating
-      //   super.connectedCallback();
-      //   this.removeAttribute(deferHydrationAttribute);
-      // }, 3000);
+      return promise;
     }
 
     render(): TemplateResult {
       const result = super.render();
-      // setTimeout(() => {
-      //   console.log('stopping effect', this.tagName);
       if (this[SIGNAL_EFFECT]) {
         this[SIGNAL_EFFECT]!.stop();
         delete this[SIGNAL_EFFECT];
       }
-      // }, 3000);
+
+      if (!isServer) {
+        // this.style.border = '1px solid red';
+      }
+
+      this.set;
       return result;
     }
   };
