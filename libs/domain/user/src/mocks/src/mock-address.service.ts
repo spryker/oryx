@@ -55,7 +55,7 @@ export class MockAddressService implements Partial<AddressService> {
     );
   }
 
-  getAddresses(): Observable<Address[] | null> {
+  getAddresses(): Observable<Address[]> {
     return this.type$.pipe(
       map((type) => {
         switch (type) {
@@ -90,7 +90,7 @@ export class MockAddressService implements Partial<AddressService> {
             return [...mockNormalizedAddresses, uncompletedAddress];
           case MockAddressType.None:
           default:
-            return null;
+            return [];
         }
       })
     );
