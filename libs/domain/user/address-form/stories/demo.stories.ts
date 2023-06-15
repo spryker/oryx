@@ -47,7 +47,7 @@ const Template: Story<Props> = (props): TemplateResult => {
     .country="${props.country}"
     .enableDefaultShipping=${props.enableDefaultShipping}
     .enableDefaultBilling=${props.enableDefaultBilling}
-    .fallbackCountry="${props.fallbackCountry}"
+    .options=${{ fallbackCountry: props.fallbackCountry }}
   ></oryx-user-address-form>`;
 };
 

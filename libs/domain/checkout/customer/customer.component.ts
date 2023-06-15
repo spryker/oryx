@@ -68,7 +68,13 @@ export class CheckoutCustomerComponent
 
   protected override render(): TemplateResult | void {
     if (this.isAuthenticated()) {
-      return html`<h1>${i18n('checkout.checkout')}</h1>`;
+      const { email, firstName, lastName } = this.customer() ?? {};
+
+      return html`<h3>${i18n('checkout.checking-out-as')}</h3>
+        <p>
+          ${firstName} ${lastName}<br />
+          ${email}
+        </p>`;
     } else if (this.$options().enableGuestCheckout) {
       return html`<oryx-checkout-guest></oryx-checkout-guest>`;
     }

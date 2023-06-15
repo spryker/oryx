@@ -16,7 +16,6 @@ import { styles } from './login.styles';
 
 @defaultOptions({
   enableRememberMe: true,
-  redirectUrl: '/',
   passwordVisibility: PasswordVisibilityStrategy.Click,
 })
 @hydratable(['mouseover', 'focus'])

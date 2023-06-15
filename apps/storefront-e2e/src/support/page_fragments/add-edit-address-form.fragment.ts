@@ -1,6 +1,6 @@
-import { defaultAddress } from '../../../../src/test-data/default-address';
+import { defaultAddress } from '../../test-data/default-address';
 
-export class CheckoutAddressFormFragment {
+export class AddEditAddressFormFragment {
   private wrapperSelector: string;
 
   constructor(selector: string) {
@@ -23,6 +23,9 @@ export class CheckoutAddressFormFragment {
   getCityInput = () => this.getWrapper().find('input[name="city"]');
   getPhoneInput = () => this.getWrapper().find('input[name="phone"]');
 
+  getSaveAddressBtn = () =>
+    this.getWrapper().find('oryx-button').contains('button', 'Save');
+
   selectCoutry = (isoCode: string) => {
     this.getCountrySelect().click();
     this.getCountrySelect()
@@ -39,21 +42,23 @@ export class CheckoutAddressFormFragment {
       .click({ force: true });
   };
 
-  fillAddressForm = () => {
+  fillAddressForm = (addressData?) => {
+    const address = { ...defaultAddress, ...addressData };
+
     // wait till form is rendered and ready
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(2000);
     cy.disableAnimations();
 
-    this.selectCoutry(defaultAddress.iso2Code);
-    this.selectSalutation(defaultAddress.salutation);
-    this.getFirstNameInput().type(defaultAddress.firstName);
-    this.getLastNameInput().type(defaultAddress.lastName);
-    this.getCompanyInput().type(defaultAddress.company);
-    this.getAddress1Input().type(defaultAddress.address1);
-    this.getAddress2Input().type(defaultAddress.address2);
-    this.getZipInput().type(defaultAddress.zipCode);
-    this.getCityInput().type(defaultAddress.city);
-    this.getPhoneInput().type(defaultAddress.phone);
+    this.selectCoutry(address.iso2Code);
+    this.selectSalutation(address.salutation);
+    this.getFirstNameInput().type(address.firstName);
+    this.getLastNameInput().type(address.lastName);
+    this.getCompanyInput().type(address.company);
+    this.getAddress1Input().type(address.address1);
+    this.getAddress2Input().type(address.address2);
+    this.getZipInput().type(address.zipCode);
+    this.getCityInput().type(address.city);
+    this.getPhoneInput().type(address.phone);
   };
 }

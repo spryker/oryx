@@ -3,8 +3,8 @@ import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { FacetListService } from '@spryker-oryx/search';
 import {
-  FacetComponentAttributes,
-  FacetSelect,
+  SearchFacetComponentAttributes,
+  SelectFacetEventDetail,
 } from '@spryker-oryx/search/facet';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -15,15 +15,18 @@ export default {
   title: `${storybookPrefix}/Facet Color`,
 };
 
-const Template: Story<FacetComponentAttributes> = (
-  attrs: FacetComponentAttributes
+const Template: Story<SearchFacetComponentAttributes> = (
+  attrs
 ): TemplateResult => {
   const router = resolve(RouterService) as unknown as MockRouterService;
   const service = resolve(FacetListService);
 
   router.params$.next({});
 
-  const onSelect = (e: CustomEvent<FacetSelect>, multiValued = true) => {
+  const onSelect = (
+    e: CustomEvent<SelectFacetEventDetail>,
+    multiValued = true
+  ) => {
     const { name, value: selectedFacetValue } = e.detail;
 
     service
@@ -61,7 +64,7 @@ const Template: Story<FacetComponentAttributes> = (
     ?open=${attrs.open}
     ?multi=${attrs.multi}
     @oryx.select=${(e: Event) =>
-      onSelect(e as CustomEvent<FacetSelect>, attrs.multi)}
+      onSelect(e as CustomEvent<SelectFacetEventDetail>, attrs.multi)}
   ></oryx-search-color-facet>`;
 };
 
