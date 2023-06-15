@@ -4,7 +4,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { FacetListService } from '@spryker-oryx/search';
 import {
   SearchFacetComponentAttributes,
-  SelectFacetPayload,
+  SelectFacetEventDetail,
 } from '@spryker-oryx/search/facet';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -23,7 +23,10 @@ const Template: Story<SearchFacetComponentAttributes> = (
 
   router.params$.next({});
 
-  const onSelect = (e: CustomEvent<SelectFacetPayload>, multiValued = true) => {
+  const onSelect = (
+    e: CustomEvent<SelectFacetEventDetail>,
+    multiValued = true
+  ) => {
     const { name, value: selectedFacetValue } = e.detail;
 
     service
@@ -61,7 +64,7 @@ const Template: Story<SearchFacetComponentAttributes> = (
     ?open=${attrs.open}
     ?multi=${attrs.multi}
     @oryx.select=${(e: Event) =>
-      onSelect(e as CustomEvent<SelectFacetPayload>, attrs.multi)}
+      onSelect(e as CustomEvent<SelectFacetEventDetail>, attrs.multi)}
   ></oryx-search-color-facet>`;
 };
 

@@ -2,7 +2,7 @@ import { Facet, FacetValue } from '@spryker-oryx/product';
 
 export const FACET_SELECT_EVENT = 'oryx.select';
 
-export interface SelectFacetPayload {
+export interface SelectFacetEventDetail {
   name: string;
   value?: Pick<FacetValue, 'value' | 'selected'>;
 }

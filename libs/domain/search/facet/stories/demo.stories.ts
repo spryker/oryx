@@ -8,7 +8,7 @@ import { take } from 'rxjs';
 import { storybookPrefix } from '../../.constants';
 import {
   SearchFacetComponentAttributes,
-  SelectFacetPayload,
+  SelectFacetEventDetail,
 } from '../facet.model';
 
 export default {
@@ -39,7 +39,7 @@ const Template: Story<SearchFacetComponentAttributes> = (
 
   router.params$.next({});
 
-  const onSelect = (e: CustomEvent<SelectFacetPayload>) => {
+  const onSelect = (e: CustomEvent<SelectFacetEventDetail>) => {
     const { name, value: selectedFacetValue } = e.detail;
 
     service

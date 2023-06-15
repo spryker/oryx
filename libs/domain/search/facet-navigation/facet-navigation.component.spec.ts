@@ -7,7 +7,7 @@ import {
   FacetComponentRegistryService,
   FacetListService,
 } from '@spryker-oryx/search';
-import { SelectFacetPayload } from '@spryker-oryx/search/facet';
+import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchFacetNavigationComponent } from './facet-navigation.component';
@@ -336,7 +336,7 @@ describe('SearchFacetNavigationComponent', () => {
   });
 
   describe('when filters are applied', () => {
-    let listener: (e: CustomEvent<SelectFacetPayload>) => void;
+    let listener: (e: CustomEvent<SelectFacetEventDetail>) => void;
 
     const setupListener = () => {
       renderService.renderFacetComponent = vi
@@ -345,7 +345,7 @@ describe('SearchFacetNavigationComponent', () => {
           (
             facet,
             options,
-            selectListener: (e: CustomEvent<SelectFacetPayload>) => void
+            selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
           ) => {
             listener = selectListener;
             return html``;
@@ -353,8 +353,8 @@ describe('SearchFacetNavigationComponent', () => {
         );
     };
 
-    const callListener = (detail: SelectFacetPayload) => {
-      const mockedEvent = new CustomEvent<SelectFacetPayload>('event', {
+    const callListener = (detail: SelectFacetEventDetail) => {
+      const mockedEvent = new CustomEvent<SelectFacetEventDetail>('event', {
         detail,
       });
       listener(mockedEvent);

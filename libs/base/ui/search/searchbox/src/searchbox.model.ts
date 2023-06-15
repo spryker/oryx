@@ -12,7 +12,7 @@ export interface SearchAttributes {
   clearIconAppearance?: ClearIconAppearance;
 }
 
-export interface SearchPayload {
+export interface SearchEventDetail {
   query: string;
 }
 

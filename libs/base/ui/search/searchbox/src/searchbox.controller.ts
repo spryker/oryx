@@ -9,8 +9,8 @@ import {
   CLOSE_EVENT,
   OPEN_EVENT,
   SearchAttributes,
+  SearchEventDetail,
   SearchIconPosition,
-  SearchPayload,
 } from './searchbox.model';
 
 export class SearchboxController implements ReactiveController {
@@ -148,7 +148,7 @@ export class SearchboxController implements ReactiveController {
   }
 
   protected search(): void {
-    const event = new CustomEvent<SearchPayload>('oryx.search', {
+    const event = new CustomEvent<SearchEventDetail>('oryx.search', {
       detail: {
         query: this.control.value,
       },

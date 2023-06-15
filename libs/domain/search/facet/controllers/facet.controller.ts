@@ -4,16 +4,16 @@ import { FacetListService } from '@spryker-oryx/search';
 import {
   FACET_CLEAR_EVENT,
   FACET_TOGGLE_EVENT,
-  ToggleFacetPayload,
+  ToggleFacetEventDetail,
 } from '@spryker-oryx/search/facet-value-navigation';
-import { SearchPayload } from '@spryker-oryx/ui/searchbox';
+import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
 import { computed, ObserveController, signal } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import { defer, Observable, of, switchMap } from 'rxjs';
 import {
   FACET_SELECT_EVENT,
   SearchFacetComponentAttributes,
-  SelectFacetPayload,
+  SelectFacetEventDetail,
   SingleMultiFacet,
 } from '../facet.model';
 
@@ -91,7 +91,7 @@ export class FacetController implements ReactiveController {
     const name = this.host.name;
     if (name) {
       this.host.dispatchEvent(
-        new CustomEvent<SelectFacetPayload>(FACET_SELECT_EVENT, {
+        new CustomEvent<SelectFacetEventDetail>(FACET_SELECT_EVENT, {
           detail: { name, value },
           bubbles: true,
           composed: true,
@@ -164,11 +164,13 @@ export class FacetController implements ReactiveController {
   }
 
   protected onToggle(e: Event): void {
-    this.$showAll.set((e as CustomEvent<ToggleFacetPayload>).detail.expanded);
+    this.$showAll.set(
+      (e as CustomEvent<ToggleFacetEventDetail>).detail.expanded
+    );
   }
 
   protected onSearch(e: Event): void {
-    this.$searchedValue.set((e as CustomEvent<SearchPayload>).detail.query);
+    this.$searchedValue.set((e as CustomEvent<SearchEventDetail>).detail.query);
   }
 
   protected onClearSearch(): void {

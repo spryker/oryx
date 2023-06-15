@@ -8,8 +8,8 @@ import { searchboxComponent } from './searchbox.def';
 import {
   ClearIconAppearance,
   ClearIconPosition,
+  SearchEventDetail,
   SearchIconPosition,
-  SearchPayload,
 } from './searchbox.model';
 
 describe('SearchComponent', () => {
@@ -212,7 +212,7 @@ describe('SearchComponent', () => {
     const itShouldDispatchSearchEvent = (value: string): void => {
       it(`should dispatch search event (${value})`, () =>
         new Promise<void>((done) => {
-          const emitter = ((ev: CustomEvent<SearchPayload>) => {
+          const emitter = ((ev: CustomEvent<SearchEventDetail>) => {
             expect(ev.detail?.query).toBe(value);
             done();
           }) as EventListener;
@@ -234,7 +234,7 @@ describe('SearchComponent', () => {
       describe('and the enter key is used', () => {
         it('should trigger the oryx.search event', () =>
           new Promise<void>((done) => {
-            const emitter = ((ev: CustomEvent<SearchPayload>) => {
+            const emitter = ((ev: CustomEvent<SearchEventDetail>) => {
               expect(ev.detail?.query).toBe('');
               done();
             }) as EventListener;
@@ -277,7 +277,7 @@ describe('SearchComponent', () => {
       describe('and the enter key is used', () => {
         it('should trigger the oryx.search event', () =>
           new Promise<void>((done) => {
-            const emitter = ((ev: CustomEvent<SearchPayload>) => {
+            const emitter = ((ev: CustomEvent<SearchEventDetail>) => {
               expect(ev.detail?.query).toBe('value123');
               done();
             }) as EventListener;
