@@ -38,8 +38,4 @@ export const styles = css`
     font-size: 16px;
     margin-inline-start: auto;
   }
-
-  /* p {
-    margin: 0;
-  } */
 `;
