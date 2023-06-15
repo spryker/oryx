@@ -9,7 +9,7 @@ export const totalStyles = css`
     display: var(--oryx-screen-small-hide, block);
   }
 
-  experience-composition {
+  oryx-composition {
     display: grid;
     background-color: var(--oryx-color-neutral-3);
     padding-block: var(--oryx-space-4);

@@ -11,7 +11,7 @@ export const orderPage: StaticComponent = {
   components: [
     { type: 'oryx-order-confirmation-banner' },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       options: {
         data: { rules: [{ layout: 'split-column', splitColumnFactor: 2 / 3 }] },
       },

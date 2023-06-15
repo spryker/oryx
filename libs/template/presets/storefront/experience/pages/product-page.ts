@@ -10,7 +10,7 @@ export const productPage: StaticComponent = {
 
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       options: {
         data: {
           rules: [
@@ -23,7 +23,7 @@ export const productPage: StaticComponent = {
       },
       components: [
         {
-          type: 'experience-composition',
+          type: 'oryx-composition',
           options: { data: { rules: [{ layout: 'flex', vertical: true }] } },
           components: [
             {
@@ -36,7 +36,7 @@ export const productPage: StaticComponent = {
           ],
         },
         {
-          type: 'experience-composition',
+          type: 'oryx-composition',
           options: {
             data: {
               rules: [{ vertical: true, top: '108px', sticky: true }],

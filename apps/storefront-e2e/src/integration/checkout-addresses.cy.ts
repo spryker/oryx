@@ -37,7 +37,7 @@ describe('User addresses', () => {
     });
 
     describe('and user does not have addresses yet', () => {
-      describe('and user goes to chechout', () => {
+      describe('and user goes to checkout', () => {
         beforeEach(() => {
           cartPage.checkout();
         });
@@ -70,13 +70,13 @@ describe('User addresses', () => {
         api.addresses.post(defaultUser.id);
       });
 
-      describe('and user goes to chechout', () => {
+      describe('and user goes to checkout', () => {
         beforeEach(() => {
           cartPage.checkout();
         });
 
-        it('then the list of addresses is shown', () => {
-          checkCheckoutAddressesList(2);
+        it('then the selected address is shown', () => {
+          verifyAddressesVisibility();
         });
 
         [
@@ -95,72 +95,68 @@ describe('User addresses', () => {
             });
 
             it('then the addresses modal is open', () => {
-              checkAddressesListInModal(address.type, 2);
+              verifyAddressesListInModal(address.type, 2);
             });
 
             describe('and user adds new address', () => {
+              const addressData = {
+                lastName: `User ${Math.random()}`,
+              };
+
               beforeEach(() => {
-                address.type.addressChangeModal.addAddress();
+                address.type.addressChangeModal.addAddress(addressData);
               });
 
-              it('new address appears in all 3 addresses lists', () => {
-                checkAddressesListInModal(address.type, 3);
-                address.type.addressChangeModal.closeModal();
-                checkCheckoutAddressesList(3);
+              it('new address appears in the list', () => {
+                verifyAddressesListInModal(address.type, 3);
+              });
+
+              describe('and when user selects new address', () => {
+                beforeEach(() => {
+                  address.type.addressChangeModal.selectAddress(2);
+                });
+
+                it('new address is visible on checkout page', () => {
+                  verifyAddressesVisibility();
+                  // verify that new address was selected successfully and is visible
+                  address.type.addressesList
+                    .getMultiLineAddress()
+                    .shadow()
+                    .should('contain.text', addressData.lastName);
+                });
               });
             });
 
             describe('and user edits existing address', () => {
-              const newCompany = 'Edited Company';
+              const newAddress1 = 'New Address 1';
+              const changedAddressEq = 0;
 
               beforeEach(() => {
-                address.type.addressChangeModal.editCompanyInAddress(
-                  newCompany
+                address.type.addressChangeModal.editAddress1InAddress(
+                  newAddress1,
+                  changedAddressEq
                 );
               });
 
-              it('edited address appears in all 3 addresses lists', () => {
-                // check addresses in modal after edit
-                checkAddressesListInModal(address.type, 2);
+              it('edited address appears in the list', () => {
+                verifyAddressesListInModal(address.type, 2);
 
                 address.type.addressChangeModal.addressesList
                   .getAddressListItem()
-                  .eq(0)
+                  .eq(changedAddressEq)
                   .find('oryx-user-address')
                   .shadow()
-                  .should('contain.text', newCompany);
-
-                // close modal
-                address.type.addressChangeModal.closeModal();
-
-                // check addresses in billing and shipping lists
-                checkCheckoutAddressesList(2);
-
-                checkoutPage.shipping.addressesList
-                  .getAddressListItem()
-                  .eq(0)
-                  .find('oryx-user-address')
-                  .shadow()
-                  .should('contain.text', newCompany);
-
-                checkoutPage.billing.addressesList
-                  .getAddressListItem()
-                  .eq(0)
-                  .find('oryx-user-address')
-                  .shadow()
-                  .should('contain.text', newCompany);
+                  .should('contain.text', newAddress1);
               });
             });
 
             describe('and user removes existing address', () => {
               beforeEach(() => {
-                address.type.addressChangeModal.removeAddress();
+                address.type.addressChangeModal.removeAddress(0);
               });
 
-              it('removed address dissapeares from all 3 addresses lists', () => {
-                checkAddressesListInModal(address.type, 1);
-                address.type.addressChangeModal.closeModal();
-                checkCheckoutAddressesList(1);
+              it('removed address disappears from the list', () => {
+                verifyAddressesListInModal(address.type, 1);
               });
             });
           });
@@ -170,17 +166,16 @@ describe('User addresses', () => {
   });
 });
 
-function checkCheckoutAddressesList(numberOfAddresses: number) {
+function verifyAddressesVisibility() {
   // check shipping addresses
   checkoutPage.shipping.addAddressForm.getAddressForm().should('not.exist');
 
   checkoutPage.shipping.addressesList
     .getChangeAddressesButton()
     .should('be.visible');
-  checkoutPage.shipping.addressesList.getAddressList().should('be.visible');
   checkoutPage.shipping.addressesList
-    .getAddressListItem()
-    .should('have.length', numberOfAddresses);
+    .getMultiLineAddress()
+    .should('be.visible');
 
   // check billing addresses
   checkoutPage.billing.addAddressForm.getAddressForm().should('not.exist');
@@ -188,13 +183,10 @@ function checkCheckoutAddressesList(numberOfAddresses: number) {
   checkoutPage.shipping.addressesList
     .getChangeAddressesButton()
     .should('be.visible');
-  checkoutPage.billing.addressesList.getAddressList().should('be.visible');
-  checkoutPage.billing.addressesList
-    .getAddressListItem()
-    .should('have.length', numberOfAddresses);
+  checkoutPage.billing.addressesList.getMultiLineAddress().should('be.visible');
 }
 
-function checkAddressesListInModal(addressType, numberOfAddresses: number) {
+function verifyAddressesListInModal(addressType, numberOfAddresses: number) {
   addressType.addressChangeModal.getAddAddressButton().should('be.visible');
   addressType.addressChangeModal.addressesList
     .getAddressList()

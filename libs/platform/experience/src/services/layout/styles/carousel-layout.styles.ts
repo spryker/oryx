@@ -17,12 +17,12 @@ export const styles: LayoutStyles = {
       grid-auto-columns: var(--_item-size);
     }
 
-    :host(:not([vertical])) {
+    :host(:not([layout-vertical])) {
       grid-auto-flow: column;
       overflow: auto hidden;
     }
 
-    :host([vertical]) {
+    :host([layout-vertical]) {
       grid-auto-flow: row;
       overflow: hidden auto;
     }

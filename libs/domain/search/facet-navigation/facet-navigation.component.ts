@@ -9,7 +9,7 @@ import {
   FacetComponentRegistryService,
   FacetListService,
 } from '@spryker-oryx/search';
-import { FacetSelect } from '@spryker-oryx/search/facet';
+import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
 import { computed, hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { tap } from 'rxjs/operators';
@@ -74,7 +74,7 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
       </style> `;
   }
 
-  protected applyFilters(e: CustomEvent<FacetSelect>): void {
+  protected applyFilters(e: CustomEvent<SelectFacetEventDetail>): void {
     const { name, value: selectedFacetValue } = e.detail;
 
     const facet = this.$facets()?.find((facet) => facet.name === name);
