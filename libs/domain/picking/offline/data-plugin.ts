@@ -57,6 +57,12 @@ export class OfflineDataPlugin extends ExecPlugin {
     this.subscription?.unsubscribe();
   }
 
+  refreshData(injector: Injector): Observable<void> {
+    return this.clearDb(injector).pipe(
+      switchMap(() => this.populateDb(injector))
+    );
+  }
+
   protected clearDb(injector: Injector): Observable<void> {
     const dexieIdbService = injector.inject(DexieIndexedDbService);
 
