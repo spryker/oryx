@@ -1,4 +1,5 @@
 import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
+import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   mockCurrentAddress,
@@ -53,6 +54,10 @@ describe('DefaultAddressService', () => {
         {
           provide: IdentityService,
           useClass: MockIdentityService,
+        },
+        {
+          provide: QueryService,
+          useClass: DefaultQueryService,
         },
       ],
     });
