@@ -1,4 +1,5 @@
-import { Product, ProductQualifier } from '@spryker-oryx/product';
+import { Product } from '../models/product.model';
+import { ProductQualifier } from '../models/product-qualifier';
 import { Observable } from 'rxjs';
 
 export interface AlternativeProductsListService {
