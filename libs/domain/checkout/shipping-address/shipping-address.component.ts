@@ -46,7 +46,7 @@ export class CheckoutShippingAddressComponent
   @query('oryx-checkout-address')
   protected checkoutAddress?: CheckoutAddressComponent;
 
-  protected override render(): TemplateResult {
+  protected override render(): TemplateResult | undefined {
     if (this.$addresses() === undefined) return;
 
     return html`
