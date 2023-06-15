@@ -87,6 +87,7 @@ describe('ReferencesComponent', () => {
   });
 
   afterEach(() => {
+    vi.clearAllMocks();
     destroyInjector();
   });
 

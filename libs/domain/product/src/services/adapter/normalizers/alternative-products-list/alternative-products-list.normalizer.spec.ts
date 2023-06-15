@@ -1,55 +1,33 @@
-import {map, of} from 'rxjs';
-import { DefaultAlternativeProductsListAdapter } from './default-alternative-products-list.adapter';
-import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
-import {HttpTestService} from "@spryker-oryx/core/testing";
-import {createInjector, destroyInjector} from "@spryker-oryx/di";
-import {AlternativeProductsListAdapter, DefaultProductListAdapter, ProductListAdapter} from "@spryker-oryx/product";
+import { DeserializedProductListIncludes } from '@spryker-oryx/product';
+import { of } from 'rxjs';
+import { ProductNormalizer } from '../product/product.normalizer';
+import { listNormalizer } from './alternative-products-list.normalizer';
 
-const mockApiUrl = 'mockApiUrl';
+describe('Alternative products list Normalizer', () => {
+  const mockDeserializedProducts: DeserializedProductListIncludes[] = [{}, {}];
+  const mockTransformer = {
+    transform: vi.fn(),
+    do: vi.fn(),
+  };
 
-class MockHttpService {
-  get = vi.fn().mockReturnValue(of({}));
-}
+  describe('listNormalizer', () => {
+    it('should call Product Normalizer for each DeserializedProduct', () => {
+      const mockProductsResult = 'mockProductsResult';
+      mockTransformer.transform.mockReturnValue(of(mockProductsResult));
 
-const mockTransformer = {
-  do: vi.fn().mockReturnValue(() => of(null)),
-};
-
-describe('DefaultAlternativeProductsListAdapter', () => {
-  let adapter: AlternativeProductsListAdapter;
-  let http: HttpTestService;
-
-  beforeEach(() => {
-    const testInjector = createInjector({
-      providers: [
-        {
-          provide: HttpService,
-          useClass: HttpTestService,
-        },
-        {
-          provide: AlternativeProductsListAdapter,
-          useClass: DefaultAlternativeProductsListAdapter
-        },
-        {
-          provide: 'SCOS_BASE_URL',
-          useValue: mockApiUrl,
-        },
-        {
-          provide: JsonAPITransformerService,
-          useValue: mockTransformer,
-        },
-      ]
-    })
-
-    adapter = testInjector.inject(AlternativeProductsListAdapter) as DefaultAlternativeProductsListAdapter;
-    http = testInjector.inject(HttpService) as HttpTestService;
-  });
-
-  afterEach(() => {
-    destroyInjector();
-  });
-
-  it('should be provided', () => {
-    expect(adapter).toBeInstanceOf(DefaultAlternativeProductsListAdapter);
+      listNormalizer(mockDeserializedProducts, mockTransformer).subscribe(
+        (result) => {
+          expect(result).toEqual(
+            mockDeserializedProducts.map(() => mockProductsResult)
+          );
+          mockDeserializedProducts.forEach((product) => {
+            expect(mockTransformer.transform).toHaveBeenCalledWith(
+              product,
+              ProductNormalizer
+            );
+          });
+        }
+      );
+    });
   });
 });
