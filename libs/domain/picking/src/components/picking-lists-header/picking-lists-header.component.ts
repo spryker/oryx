@@ -1,6 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
+import { SiteNavigationItemComponent } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { ModalComponent } from '@spryker-oryx/ui/modal';
 import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { pickingListsHeaderComponentStyles } from './picking-lists-header.styles';
@@ -36,6 +38,13 @@ export class PickingListsHeaderComponent extends LitElement {
     );
   }
 
+  protected onUpdatingData(): void {
+    this.shadowRoot
+      ?.querySelector<SiteNavigationItemComponent>('oryx-site-navigation-item')
+      ?.shadowRoot?.querySelector<ModalComponent>('oryx-modal')
+      ?.toggleAttribute('open', false);
+  }
+
   protected override render(): TemplateResult {
     return html`
       <oryx-heading>
@@ -58,6 +67,7 @@ export class PickingListsHeaderComponent extends LitElement {
 
       <oryx-site-navigation-item
         uid="user-profile"
+        @oryx.close=${() => this.onUpdatingData()}
         .options=${{
           icon: IconTypes.Profile,
           triggerType: 'icon',

@@ -8,7 +8,7 @@ import {
   FACET_CLEAR_EVENT,
   FACET_TOGGLE_EVENT,
   SearchFacetValueNavigationComponentAttributes,
-  ToggleFacetPayload,
+  ToggleFacetEventDetail,
 } from './facet-value-navigation.model';
 import { facetValueNavigationStyles } from './facet-value-navigation.styles';
 
@@ -89,7 +89,7 @@ export class SearchFacetValueNavigationComponent
     this.expanded = !this.expanded;
 
     this.dispatchEvent(
-      new CustomEvent<ToggleFacetPayload>(FACET_TOGGLE_EVENT, {
+      new CustomEvent<ToggleFacetEventDetail>(FACET_TOGGLE_EVENT, {
         bubbles: true,
         composed: true,
         detail: { expanded: this.expanded },
