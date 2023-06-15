@@ -36,6 +36,7 @@ export enum FallbackType {
 }
 
 export interface PickingListItem {
+  id: string;
   quantity: number;
   numberOfPicked: number;
   numberOfNotPicked: number;
