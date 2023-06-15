@@ -2,6 +2,7 @@ import { AuthService } from '@spryker-oryx/auth';
 import { CheckoutMixin, ContactDetails, isValid } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { FormFieldType, FormRenderer } from '@spryker-oryx/form';
 import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { UserService } from '@spryker-oryx/user';
@@ -13,7 +14,6 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
-import { CheckoutGuestComponent } from '../guest';
 import { CheckoutAccountComponentOptions } from './account.model';
 import { checkoutAccountStyles } from './account.styles';
 
@@ -27,6 +27,7 @@ export class CheckoutAccountComponent
 {
   static styles = checkoutAccountStyles;
 
+  protected fieldRenderer = resolve(FormRenderer);
   protected userService = resolve(UserService);
   protected authService = resolve(AuthService);
   protected linkService = resolve(SemanticLinkService);
@@ -37,11 +38,13 @@ export class CheckoutAccountComponent
   protected loginRoute = signal(
     this.linkService.get({ type: SemanticLinkType.Login })
   );
+  protected selected = signal(this.checkoutStateService.get('customer'));
 
   @state() protected hasCustomerData = false;
+  @query('form') protected form?: HTMLFormElement;
 
   @elementEffect()
-  protected eff = (): void => {
+  protected redirectEffect = (): void => {
     if (!this.$options().enableGuestCheckout && !this.isAuthenticated()) {
       const route = this.loginRoute();
       if (route) this.routerService.navigate(route);
@@ -62,26 +65,50 @@ export class CheckoutAccountComponent
     }
   };
 
-  @query('oryx-checkout-guest')
-  protected guest?: CheckoutGuestComponent;
-
   protected override render(): TemplateResult | void {
+    const { email, firstName, lastName } = this.customer() ?? {};
     if (this.isAuthenticated()) {
-      const { email, firstName, lastName } = this.customer() ?? {};
-
-      return html`<oryx-checkout-header>
+      return html`
+        <oryx-checkout-header>
           <h1>${i18n('checkout.account')}</h1>
         </oryx-checkout-header>
-        <p>
-          ${firstName} ${lastName}<br />
-          ${email}
-        </p>`;
+        <p>${firstName} ${lastName}<br />${email}</p>
+      `;
     } else if (this.$options().enableGuestCheckout) {
-      return html`<oryx-checkout-guest></oryx-checkout-guest>`;
+      return this.renderGuest();
     }
   }
 
+  protected renderGuest(): TemplateResult {
+    return html`
+      <oryx-checkout-header>
+        <h1>${i18n('checkout.guest-checkout')}</h1>
+        <p class="have-an-account">${i18n('checkout.guest.have-an-account')}</p>
+        <oryx-link>
+          <a href=${this.loginRoute()}> ${i18n('checkout.guest.login')} </a>
+        </oryx-link>
+      </oryx-checkout-header>
+      <form @change=${this.onChange}>
+        ${this.fieldRenderer.buildForm([
+          { id: 'email', type: FormFieldType.Email, required: true },
+        ])}
+      </form>
+    `;
+  }
+
+  protected onChange(): void {
+    this.checkoutStateService.set('customer', {
+      value: { email: this.form?.querySelector('input')?.value },
+      valid: !!this.form?.checkValidity(),
+    });
+  }
+
   isValid(report?: boolean): boolean {
-    return this.hasCustomerData || !!this.guest?.isValid(report);
+    if (this.hasCustomerData) return true;
+
+    if (report) {
+      this.form?.reportValidity();
+    }
+    return !!this.form?.checkValidity();
   }
 }

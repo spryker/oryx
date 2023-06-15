@@ -2,14 +2,12 @@ import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { FormRenderer } from '@spryker-oryx/form';
 import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService } from '@spryker-oryx/site';
 import { User, UserService } from '@spryker-oryx/user';
-import { html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { html } from 'lit';
 import { of } from 'rxjs';
-import { CheckoutGuestComponent } from '../guest';
-import { isValid } from '../src/models';
 import {
   CheckoutDataService,
   CheckoutService,
@@ -25,6 +23,7 @@ export class MockCheckoutService implements Partial<CheckoutService> {
 
 export class MockCheckoutDataService implements Partial<CheckoutDataService> {
   get = vi.fn();
+  set = vi.fn();
 }
 
 export class MockCheckoutStateService implements Partial<CheckoutStateService> {
@@ -48,25 +47,24 @@ export class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-@customElement('oryx-checkout-guest')
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-class MockComponent extends LitElement implements isValid {
-  isValid = vi.fn();
+class MockFormRenderer implements Partial<FormRenderer> {
+  buildForm = vi.fn();
 }
 
 describe('CheckoutAccountComponent', () => {
   let element: CheckoutAccountComponent;
   let authService: MockAuthService;
-  // let checkoutService: MockCheckoutService;
   let userService: MockUserService;
   let routerService: MockRouterService;
+  let formRenderer: MockFormRenderer;
+  let checkoutStateService: MockCheckoutDataService;
 
   beforeAll(async () => {
     await useComponent(checkoutAccountComponent);
   });
 
   beforeEach(() => {
-    const testInjector = createInjector({
+    const injector = createInjector({
       providers: [
         { provide: CheckoutService, useClass: MockCheckoutService },
         { provide: CheckoutDataService, useClass: MockCheckoutDataService },
@@ -75,13 +73,19 @@ describe('CheckoutAccountComponent', () => {
         { provide: SemanticLinkService, useClass: MockSemanticLinkService },
         { provide: AuthService, useClass: MockAuthService },
         { provide: UserService, useClass: MockUserService },
+        { provide: FormRenderer, useClass: MockFormRenderer },
       ],
     });
 
-    authService = testInjector.inject<MockAuthService>(AuthService);
-    userService = testInjector.inject<MockUserService>(UserService);
-    routerService = testInjector.inject<MockRouterService>(RouterService);
-    // checkoutService = testInjector.inject<MockCheckoutService>(CheckoutService);
+    authService = injector.inject<MockAuthService>(AuthService);
+    userService = injector.inject<MockUserService>(UserService);
+    routerService = injector.inject<MockRouterService>(RouterService);
+    checkoutStateService =
+      injector.inject<MockCheckoutStateService>(CheckoutStateService);
+    formRenderer = injector.inject<MockFormRenderer>(FormRenderer);
+    formRenderer.buildForm.mockReturnValue(
+      html`<input type="email" name="email" placeholder="email" required />`
+    );
   });
 
   afterEach(() => {
@@ -120,14 +124,23 @@ describe('CheckoutAccountComponent', () => {
       );
     });
 
+    it('should render account header', () => {
+      const header = element.renderRoot.querySelector(
+        'oryx-checkout-header'
+      )?.textContent;
+      expect(header).toContain('Account');
+    });
+
     it('should render the user data', () => {
       const customerData = element.renderRoot.querySelector('p')?.textContent;
       expect(customerData).toContain(`${user.firstName} ${user.lastName}`);
       expect(customerData).toContain(user.email);
     });
 
-    it('should not render the guest component', () => {
-      expect(element).not.toContainElement('oryx-checkout-account');
+    it('should not render a link to login page', () => {
+      expect(element).not.toContainElement(
+        `oryx-checkout-header a[href='/login']`
+      );
     });
 
     describe('and when the isValid method is called', () => {
@@ -154,20 +167,122 @@ describe('CheckoutAccountComponent', () => {
         );
       });
 
-      it('should render guest checkout component', () => {
-        expect(element).toContainElement('oryx-checkout-guest');
+      it('should render guest checkout header', () => {
+        const header = element.renderRoot.querySelector(
+          'oryx-checkout-header'
+        )?.textContent;
+        expect(header).toContain('Guest checkout');
       });
 
-      describe('and when the isValid method is called', () => {
+      it('should render a link to login page', () => {
+        expect(element).toContainElement(
+          `oryx-checkout-header a[href='/login']`
+        );
+      });
+
+      describe('and the form data is changed', () => {
+        let form: HTMLFormElement;
         beforeEach(async () => {
-          element.isValid(true);
+          form = element.renderRoot.querySelector('form') as HTMLFormElement;
+          form.reportValidity = vi.fn();
         });
 
-        it('should call the isValid method on the guest component', () => {
-          const customerEl = element.renderRoot.querySelector(
-            'oryx-checkout-guest'
-          ) as CheckoutGuestComponent;
-          expect(customerEl.isValid).toHaveBeenCalled();
+        describe('and the form data is invalid', () => {
+          beforeEach(() => {
+            const input = form?.querySelector('input') as HTMLInputElement;
+            input.value = 'invalid';
+            form?.dispatchEvent(new Event('change'));
+          });
+
+          it('should set the invalid customer state', () => {
+            expect(checkoutStateService.set).toHaveBeenCalledWith('customer', {
+              value: { email: 'invalid' },
+              valid: false,
+            });
+          });
+
+          describe('and isValid() is called', () => {
+            beforeEach(() => {
+              form.checkValidity = vi.fn();
+            });
+
+            describe('and the report argument is true', () => {
+              beforeEach(async () => {
+                element.isValid(true);
+              });
+
+              it('should call checkValidity', () => {
+                expect(form.checkValidity).toHaveBeenCalled();
+              });
+
+              it('should report form validation', () => {
+                expect(form.reportValidity).toHaveBeenCalled();
+              });
+            });
+
+            describe('and the report argument is false', () => {
+              beforeEach(async () => {
+                element.isValid(false);
+              });
+
+              it('should call checkValidity', () => {
+                expect(form.checkValidity).toHaveBeenCalled();
+              });
+
+              it('should not report form validation', () => {
+                expect(form.reportValidity).not.toHaveBeenCalled();
+              });
+            });
+          });
+        });
+
+        describe('and the form data is valid', () => {
+          beforeEach(() => {
+            const input = form?.querySelector('input') as HTMLInputElement;
+            input.value = 'valid@mail.com';
+            form?.dispatchEvent(new Event('change'));
+          });
+
+          it('should set the invalid customer state', () => {
+            expect(checkoutStateService.set).toHaveBeenCalledWith('customer', {
+              value: { email: 'valid@mail.com' },
+              valid: true,
+            });
+          });
+
+          describe('and isValid() is called', () => {
+            beforeEach(() => {
+              form.checkValidity = vi.fn();
+            });
+
+            describe('and the report argument is true', () => {
+              beforeEach(async () => {
+                element.isValid(true);
+              });
+
+              it('should call checkValidity', () => {
+                expect(form.checkValidity).toHaveBeenCalled();
+              });
+
+              it('should report form validation', () => {
+                expect(form.reportValidity).toHaveBeenCalled();
+              });
+            });
+
+            describe('and the report argument is false', () => {
+              beforeEach(async () => {
+                element.isValid(false);
+              });
+
+              it('should call checkValidity', () => {
+                expect(form.checkValidity).toHaveBeenCalled();
+              });
+
+              it('should not report form validation', () => {
+                expect(form.reportValidity).not.toHaveBeenCalled();
+              });
+            });
+          });
         });
       });
     });
