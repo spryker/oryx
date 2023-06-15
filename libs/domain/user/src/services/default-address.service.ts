@@ -40,7 +40,7 @@ export class DefaultAddressService implements AddressService {
     );
   }
 
-  getAddresses(): Observable<Address[] | null> {
+  getAddresses(): Observable<Address[] | null | undefined> {
     return this.addressesQuery$.get(undefined);
   }
 
