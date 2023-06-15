@@ -46,7 +46,7 @@ export class UserAddressAddButtonComponent extends AddressMixin(
   }
 
   protected onCreate(): void {
-    this.addressStateService.set(CrudState.Create);
+    this.addressStateService.set(CrudState.Create, null);
   }
 
   protected renderModal(): TemplateResult | void {
