@@ -34,14 +34,14 @@ export class PickingProductCardComponent extends LitElement {
       this.currentNumberOfPicked ?? this.productItem?.numberOfPicked;
 
     this.dispatchPickingEvents(EVENT_SUBMIT, {
-      productId: this.productItem!.product.id,
+      productId: this.productItem!.id,
       numberOfPicked: this.currentNumberOfPicked,
     });
   }
 
   protected editProductPicking(): void {
     this.dispatchPickingEvents(EVENT_EDIT, {
-      productId: this.productItem!.product.id,
+      productId: this.productItem!.id,
     } as ProductItemPickedEvent);
   }
 
