@@ -4,10 +4,10 @@ import {
   GetPickingListResponse,
   PickingHttpService,
   PickingList,
-  PickingListDefaultAdapter,
   PickingListQualifier,
 } from '@spryker-oryx/picking';
 import { isDefined } from '@spryker-oryx/utilities';
+import { PickingListDefaultAdapter } from '../../../src/services';
 // Add full import because of issue with naming exports from cjs.
 import * as jsonapi from 'jsonapi-serializer';
 import { firstValueFrom, map, Observable } from 'rxjs';
@@ -16,7 +16,7 @@ import {
   PickingListItemOffline,
   PickingListSerialized,
   PickingProductEntity,
-} from '../..';
+} from '../../entities';
 import { PickingListOnlineAdapter } from './picking-list-online.adapter';
 
 export class PickingListOnlineDefaultAdapter
