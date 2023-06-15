@@ -9,7 +9,8 @@ import { AddressModificationSuccess } from './state';
 
 export class DefaultAddressService implements AddressService {
   protected addressesQuery$ = createQuery({
-    loader: () => this.adapter.getAll(),
+    loader: () =>
+      this.adapter.getAll().pipe(map((addresses) => addresses ?? [])),
     resetOn: [this.identity.get().pipe(skip(1))],
     refreshOn: [AddressModificationSuccess],
   });
@@ -40,7 +41,7 @@ export class DefaultAddressService implements AddressService {
     );
   }
 
-  getAddresses(): Observable<Address[] | null | undefined> {
+  getAddresses(): Observable<Address[] | undefined> {
     return this.addressesQuery$.get(undefined);
   }
 
