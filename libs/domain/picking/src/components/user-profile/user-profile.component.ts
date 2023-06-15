@@ -26,12 +26,12 @@ export class UserProfileComponent extends LitElement {
   @state()
   protected loading: boolean | null = null;
 
-  protected route = signal(this.routerService.route());
-  protected pendingSyncs = signal(resolve(SyncSchedulerService).hasPending());
+  protected $route = signal(this.routerService.route());
+  protected $pendingSyncs = signal(resolve(SyncSchedulerService).hasPending());
 
   protected override render(): TemplateResult {
-    const isPicking = this.route()?.includes('/picking/');
-    const isMainPage = this.route() === '/';
+    const isPicking = this.$route()?.includes('/picking/');
+    const isMainPage = this.$route() === '/';
 
     return html`
       <div class="info-block">
@@ -42,7 +42,7 @@ export class UserProfileComponent extends LitElement {
       </div>
 
       ${when(
-        this.pendingSyncs() && !isPicking,
+        this.$pendingSyncs() && !isPicking,
         () =>
           html`
             <oryx-notification type="info" scheme="dark">
@@ -67,7 +67,7 @@ export class UserProfileComponent extends LitElement {
       <div class="info-footer">
         <oryx-button type="secondary" outline>
           <button
-            ?disabled="${isPicking || this.pendingSyncs()}"
+            ?disabled="${isPicking || this.$pendingSyncs()}"
             @click=${this.onLogOut}
           >
             ${i18n('user.profile.log-Out')}
