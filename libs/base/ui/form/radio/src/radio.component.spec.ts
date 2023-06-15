@@ -1,6 +1,6 @@
+import { getShadowElementBySelector } from '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { ErrorMessageComponent } from '../../error-message';
 import { RadioComponent } from './radio.component';
 import { radioComponent } from './radio.def';

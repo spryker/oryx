@@ -74,7 +74,7 @@ export const ContentMixin = <
     @asyncState()
     protected componentContent = valueType(this.content$);
 
-    $options = signal(this.contentController.getOptions(), {
+    protected $options = signal(this.contentController.getOptions(), {
       initialValue: {},
     });
     protected $content = signal(this.contentController.getContent(), {

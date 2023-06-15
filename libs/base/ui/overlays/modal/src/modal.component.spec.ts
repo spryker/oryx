@@ -1,10 +1,10 @@
-import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import {
   checkSlots,
   getShadowElementBySelector,
   userAgentFirefox109,
-} from '@spryker-oryx/testing';
+} from '@/tools/testing';
+import { fixture } from '@open-wc/testing-helpers';
+import { useComponent } from '@spryker-oryx/core/utilities';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
 import { html } from 'lit';

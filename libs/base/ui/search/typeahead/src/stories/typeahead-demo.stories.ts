@@ -1,4 +1,4 @@
-import { branches, getAppIcons, states } from '@spryker-oryx/ui';
+import { branches, getAppIcons, states } from '@/tools/storybook';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/popover';
 import {

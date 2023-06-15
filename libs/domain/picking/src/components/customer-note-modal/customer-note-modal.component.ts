@@ -26,7 +26,7 @@ export class CustomerNoteModalComponent extends LitElement {
         <slot></slot>
         <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
           <button @click=${this.close}>
-            <oryx-icon .type=${IconTypes.Mark}></oryx-icon>
+            <oryx-icon .type=${IconTypes.Check}></oryx-icon>
             ${i18n('picking-lists.customer-note.got-it')}
           </button>
         </oryx-button>

@@ -5,7 +5,6 @@ export const searchPage: StaticComponent = {
   meta: {
     title: 'Search',
     route: '/search',
-    description: 'Default Search Page Description',
   },
   options: {
     data: {
@@ -26,7 +25,6 @@ export const searchPage: StaticComponent = {
           rules: [
             {
               layout: 'grid',
-              vertical: true,
               gap: '1px',
               divider: true,
               sticky: true,
@@ -37,13 +35,15 @@ export const searchPage: StaticComponent = {
       },
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
+      name: 'Product listing',
       options: {
         data: { rules: [{ layout: 'flex', vertical: true, gap: '20px' }] },
       },
       components: [
         {
-          type: 'experience-composition',
+          type: 'oryx-composition',
+          name: 'Product listing header',
           components: [{ type: 'oryx-search-product-sort' }],
           options: { data: { rules: [{ layout: 'flex', justify: 'end' }] } },
         },

@@ -63,10 +63,7 @@ export const optionStyles = css`
     display: inline;
   }
 
-  ::slotted(mark),
   mark {
-    background-color: transparent;
     color: var(--oryx-color-primary-9);
-    display: inline;
   }
 `;

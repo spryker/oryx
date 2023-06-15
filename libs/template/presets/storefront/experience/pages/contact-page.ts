@@ -29,7 +29,7 @@ export const contactPage: StaticComponent = {
           type: 'rawUrl',
           id: '/contact',
           text: 'This is Contact Page element. Remove me when the page is implemented',
-          icon: IconTypes.Mark,
+          icon: IconTypes.Check,
         },
       },
     },

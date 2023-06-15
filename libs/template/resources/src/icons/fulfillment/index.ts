@@ -7,7 +7,7 @@ export const fulfillmentIcons: IconMapper = {
     [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
     [IconTypes.Back]: () => import('./icons/back-arrow').then((s) => s.default),
     [IconTypes.Cart]: () => import('./icons/cart').then((s) => s.default),
-    [IconTypes.Mark]: () => import('./icons/check-mark').then((s) => s.default),
+    [IconTypes.Check]: () => import('./icons/check').then((s) => s.default),
     [IconTypes.Close]: () => import('./icons/close').then((s) => s.default),
     [IconTypes.Edit]: () => import('./icons/edit').then((s) => s.default),
     [IconTypes.Error]: () => import('./icons/error').then((s) => s.default),

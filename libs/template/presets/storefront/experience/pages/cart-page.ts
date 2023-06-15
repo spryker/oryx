@@ -21,7 +21,7 @@ export const cartPage: StaticComponent = {
   components: [
     { type: 'oryx-cart-entries' },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       components: [
         {
           type: 'oryx-cart-totals',

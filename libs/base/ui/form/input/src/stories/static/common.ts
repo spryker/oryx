@@ -3,7 +3,7 @@ import {
   initMutationObserverForComponent,
   Variant,
   VariantOptions,
-} from '../../../../../src/utilities';
+} from '@/tools/storybook';
 
 export enum CategoryX {
   DEFAULT = 'Default',

@@ -23,7 +23,8 @@ export class ButtonComponent
 
   protected renderLoader(): TemplateResult | void {
     if (!this.loading && !this.confirmed) return;
-    const icon = this.loading ? IconTypes.Loader : IconTypes.Mark;
+    const icon =
+      this.loading && !this.confirmed ? IconTypes.Loader : IconTypes.Check;
     return html` <oryx-icon .type=${icon} .size=${Size.Lg}></oryx-icon> `;
   }
 }

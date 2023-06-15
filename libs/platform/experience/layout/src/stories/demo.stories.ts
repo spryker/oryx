@@ -103,8 +103,8 @@ const Template: Story<DemoProps & StyleRuleSet> = (
             <oryx-layout
               uid="item-${i + 1}"
               .layout=${props.layout}
-              ?sticky=${props.sticky}
-              ?bleed=${props.bleed}
+              ?layout-sticky=${props.sticky}
+              ?layout-bleed=${props.bleed}
               .options=${innerOptions}
             >
               ${Array.from({ length: 8 }, (_, j) => item(j + 1, ` (n)`))}

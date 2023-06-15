@@ -6,7 +6,7 @@ import {
   VariantOptions,
   VariantsGroup,
   variantsGroupTemplate,
-} from '@spryker-oryx/ui';
+} from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
