@@ -6,6 +6,7 @@ import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { PickingListMixin } from '../../mixins';
+import { PickingHeaderService } from '../../services';
 import { DiscardPickingComponent } from '../discard-modal';
 import { styles } from './picking-header.styles';
 
@@ -13,6 +14,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   static styles = styles;
 
   protected routerService = resolve(RouterService);
+  protected pickingHeaderService = resolve(PickingHeaderService);
 
   @query('oryx-discard-picking')
   protected discardModal?: DiscardPickingComponent;
@@ -85,7 +87,8 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   }
 
   protected back(): void {
-    this.routerService.back(this.pickingList?.cartNote ? 2 : 1);
+    this.pickingHeaderService.setRouteGuard(false);
+    this.routerService.back();
   }
 }
 

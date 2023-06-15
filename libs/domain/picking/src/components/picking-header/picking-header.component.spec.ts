@@ -7,7 +7,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { ROUTE_GUARDED_EVENT } from '@spryker-oryx/router/lit';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { PickingListService } from '../../services';
+import { PickingHeaderService, PickingListService } from '../../services';
 import { DiscardPickingComponent } from '../discard-modal';
 import { PickingHeaderComponent } from './picking-header.component';
 import { pickingHeaderComponent } from './picking-header.def';
@@ -21,10 +21,13 @@ class MockRouterService implements Partial<RouterService> {
   back = vi.fn();
 }
 
+class MockPickingHeaderService implements Partial<PickingHeaderService> {
+  setRouteGuard = vi.fn();
+}
+
 describe('PickingHeaderComponent', () => {
   let element: PickingHeaderComponent;
   let service: MockPickingListService;
-  let routerService: MockRouterService;
 
   beforeAll(async () => {
     await useComponent(pickingHeaderComponent);
@@ -41,6 +44,10 @@ describe('PickingHeaderComponent', () => {
           provide: PickingListService,
           useClass: MockPickingListService,
         },
+        {
+          provide: PickingHeaderService,
+          useClass: MockPickingHeaderService,
+        },
       ],
     });
 
@@ -51,10 +58,6 @@ describe('PickingHeaderComponent', () => {
     service = testInjector.inject(
       PickingListService
     ) as unknown as MockPickingListService;
-
-    routerService = testInjector.inject(
-      RouterService
-    ) as unknown as MockRouterService;
   });
 
   afterEach(() => {

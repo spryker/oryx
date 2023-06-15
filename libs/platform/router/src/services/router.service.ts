@@ -13,7 +13,6 @@ export interface RouterService {
   acceptParams(params: RouteParams): void;
   getUrl(route?: string, extras?: NavigationExtras): Observable<string>;
   getPathId(id: string): string | undefined;
-  shouldGuardRoute(): Observable<boolean>;
 }
 
 export const RouterService = 'oryx.RouterService';

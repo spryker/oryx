@@ -14,10 +14,6 @@ export class MockRouterService implements Partial<RouterService> {
     //mock
   }
 
-  shouldGuardRoute(): Observable<boolean> {
-    return of(true);
-  }
-
   currentParams(): Observable<RouteParams> {
     return this.params$;
   }

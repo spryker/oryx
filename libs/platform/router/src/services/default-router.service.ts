@@ -31,11 +31,6 @@ export class DefaultRouterService implements RouterService {
   private storedRoute$ = new BehaviorSubject('');
 
   protected storageService = inject(StorageService);
-  protected shouldGuardRoute$ = new BehaviorSubject(true);
-
-  shouldGuardRoute(): Observable<boolean> {
-    return this.shouldGuardRoute$;
-  }
 
   go(route: string, extras?: NavigationExtras): void {
     const url = route.split('?');
@@ -50,7 +45,6 @@ export class DefaultRouterService implements RouterService {
       return;
     }
 
-    this.shouldGuardRoute$.next(true);
     this.router$.next(url[0]);
     this.urlSearchParams$.next(queryParams);
     this.routerEvents$.next({ route, type: RouterEventType.NavigationEnd });
@@ -62,7 +56,6 @@ export class DefaultRouterService implements RouterService {
   }
 
   back(): void {
-    this.shouldGuardRoute$.next(false);
     globalThis.history.back();
   }
 
