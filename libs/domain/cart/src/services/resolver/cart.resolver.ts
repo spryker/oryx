@@ -10,6 +10,7 @@ import { CartService } from '..';
 
 export type CartResolvers = {
   SUMMARY: Resolver;
+  EMPTY: Resolver;
 };
 
 export class CartResolver extends BaseResolver<CartResolvers> {
@@ -31,6 +32,11 @@ export class CartResolver extends BaseResolver<CartResolvers> {
           //TODO: Make max quantity to show configurable
           return quantity > 99 ? '99+' : String(quantity);
         })
+      );
+    },
+    EMPTY: (): ResolvedToken => {
+      return this.cartService$.getCart().pipe(
+        map((cart) => !cart?.products?.find(({quantity}) => !!quantity))
       );
     },
   };

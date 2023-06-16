@@ -7,7 +7,8 @@ import {
   TokenResourceResolvers,
 } from './token-resolver.service';
 
-const tokenRE = /^[A-Z_-]+\.[A-Z_-]+$/;
+// const tokenRE = /^[A-Z_-]+\.((NOT\.)?)[A-Z_-]+(?<!NOT)$/;
+const tokenRE = /^[A-Z_-]+\.(!?)[A-Z_-]+$/;
 
 export class DefaultTokenService implements TokenResolver {
   protected resolvers = new Map<string, TokenResourceResolver>();

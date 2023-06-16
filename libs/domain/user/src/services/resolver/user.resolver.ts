@@ -7,9 +7,11 @@ import {
 import { Provider, resolve } from '@spryker-oryx/di';
 import { map } from 'rxjs';
 import { UserService } from '..';
+import { i18n } from '@spryker-oryx/utilities';
 
 export type UserResolvers = {
   NAME: Resolver;
+  AUTHENTICATED: Resolver;
 };
 
 export class UserResolver extends BaseResolver<UserResolvers> {
@@ -18,7 +20,9 @@ export class UserResolver extends BaseResolver<UserResolvers> {
   protected resolvers: UserResolvers = {
     // TODO: drop hardcoded fallback string
     NAME: (): ResolvedToken =>
-      this.user$.pipe(map((user) => user?.firstName ?? 'login')),
+      this.user$.pipe(map((user) => user?.firstName ?? i18n('auth.login'))),
+    AUTHENTICATED: (): ResolvedToken =>
+      this.user$.pipe(map((user) => !!user)),
   };
 }
 
