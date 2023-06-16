@@ -4,7 +4,7 @@ import {
   PopoverOptions,
   PopoverSelectEvent,
 } from '@spryker-oryx/ui/popover';
-import { SearchEvent } from '@spryker-oryx/ui/searchbox';
+import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { OptionComponent } from '../../../../form/option';
@@ -82,7 +82,7 @@ export class TypeaheadController implements ReactiveController {
 
   protected onInput(): void {
     const query = this.typeaheadControl?.value || this.control.value;
-    const event = new CustomEvent<SearchEvent>('oryx.typeahead', {
+    const event = new CustomEvent<SearchEventDetail>('oryx.typeahead', {
       detail: {
         query,
       },

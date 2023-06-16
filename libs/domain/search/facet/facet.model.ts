@@ -2,15 +2,9 @@ import { Facet, FacetValue } from '@spryker-oryx/product';
 
 export const FACET_SELECT_EVENT = 'oryx.select';
 
-export interface FacetSelect {
+export interface SelectFacetEventDetail {
   name: string;
   value?: Pick<FacetValue, 'value' | 'selected'>;
-}
-
-export interface FacetChange {
-  value: string;
-  type: string;
-  checked: boolean;
 }
 
 export interface SingleMultiFacet extends Omit<Facet, 'values'> {
@@ -18,7 +12,7 @@ export interface SingleMultiFacet extends Omit<Facet, 'values'> {
   filteredValueLength?: number;
 }
 
-export interface FacetComponentAttributes {
+export interface SearchFacetComponentAttributes {
   /**
    * Name of the facet which should be rendered.
    */

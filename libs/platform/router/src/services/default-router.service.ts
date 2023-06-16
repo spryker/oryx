@@ -7,9 +7,8 @@ import {
   Observable,
   ReplaySubject,
   Subject,
-  withLatestFrom,
 } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { filter, take, tap } from 'rxjs/operators';
 import {
   NavigationExtras,
   RouteParams,
@@ -45,6 +44,11 @@ export class DefaultRouterService implements RouterService {
       return;
     }
 
+    this.storageService.set(
+      PREVIOUS_PAGE,
+      this.router$.getValue(),
+      StorageType.Session
+    );
     this.router$.next(url[0]);
     this.urlSearchParams$.next(queryParams);
     this.routerEvents$.next({ route, type: RouterEventType.NavigationEnd });
@@ -73,20 +77,7 @@ export class DefaultRouterService implements RouterService {
   }
 
   currentRoute(): Observable<string> {
-    return this.router$.pipe(
-      withLatestFrom(this.storedRoute$),
-      map(([route, currentPage]) => {
-        if (currentPage) {
-          this.storageService.set(
-            PREVIOUS_PAGE,
-            currentPage,
-            StorageType.Session
-          );
-        }
-        this.storeRoute(route);
-        return route;
-      })
-    );
+    return this.router$.pipe(tap((route) => this.storeRoute(route)));
   }
 
   currentParams(): Observable<RouteParams> {

@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const searchFacetColorStyles = css`
   .color-facet-label {
     display: flex;
     align-items: center;

@@ -136,6 +136,9 @@
       "@spryker-oryx/product/media": ["libs/domain/product/media/index.ts"],
       "@spryker-oryx/product/mocks": ["libs/domain/product/src/mocks/index.ts"],
       "@spryker-oryx/product/price": ["libs/domain/product/price/index.ts"],
+      "@spryker-oryx/product/references": [
+        "libs/domain/product/references/index.ts"
+      ],
       "@spryker-oryx/product/title": ["libs/domain/product/title/index.ts"],
       "@spryker-oryx/push-notification": [
         "libs/platform/push-notification/src/index.ts"

@@ -1,4 +1,6 @@
 export * from './adapter';
+export * from './alternative-products-list.service';
+export * from './default-alternative-products-list.service';
 export * from './default-product-list-page.service';
 export * from './default-product-list.service';
 export * from './default-product.service';
