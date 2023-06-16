@@ -7,6 +7,7 @@ import {
   CheckoutStateService,
   DefaultCheckoutService,
 } from '@spryker-oryx/checkout';
+import { QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
 import { SemanticLinkService } from '@spryker-oryx/site';
@@ -40,6 +41,10 @@ export class MockCheckoutStateService implements Partial<CheckoutStateService> {
   clear = vi.fn();
 }
 
+class MockQueryService implements Partial<QueryService> {
+  emit = vi.fn();
+}
+
 const mockCart = new BehaviorSubject<Cart | null>(null);
 
 describe('DefaultCheckoutService', () => {
@@ -60,6 +65,7 @@ describe('DefaultCheckoutService', () => {
         { provide: OrderService, useClass: MockOrderService },
         { provide: CheckoutDataService, useClass: MockCheckoutDataService },
         { provide: CheckoutStateService, useClass: MockCheckoutStateService },
+        { provide: QueryService, useClass: MockQueryService },
       ],
     });
 
