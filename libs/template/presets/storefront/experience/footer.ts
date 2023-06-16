@@ -6,10 +6,10 @@ const banner = (graphic: string) => ({
   content: { data: { graphic } },
 });
 
-const heading = (text: string, rules = {}) => ({
+const heading = (text: string, rule = {}) => ({
   type: 'oryx-content-text',
-  content: { data: { text } },
-  options: { data: { tag: 'button', rules: [rules] } },
+  content: { data: { text: `<b>${text}</b>` } },
+  options: { data: { rules: [rule] } },
 });
 
 const link = (text: string, id = '/', icon?: string) => ({
@@ -37,18 +37,18 @@ export const FooterTemplate: StaticComponent = {
   meta: { title: 'Footer', route: '/_footer' },
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'footer',
       components: [
         {
-          type: 'experience-composition',
+          type: 'oryx-composition',
           name: 'Self service',
           options: {
             data: { rules: [{ layout: 'column' }] },
           },
           components: [
             {
-              type: 'experience-composition',
+              type: 'oryx-composition',
               options: {
                 data: {
                   rules: [{ layout: 'list', gap: 0, colSpan: 2, rowSpan: 2 }],
@@ -66,7 +66,7 @@ export const FooterTemplate: StaticComponent = {
             },
 
             {
-              type: 'experience-composition',
+              type: 'oryx-composition',
               options: {
                 data: {
                   rules: [{ layout: 'list', gap: 0, colSpan: 2, rowSpan: 2 }],
@@ -81,7 +81,7 @@ export const FooterTemplate: StaticComponent = {
             },
 
             {
-              type: 'experience-composition',
+              type: 'oryx-composition',
               options: {
                 data: {
                   rules: [{ layout: 'list', gap: 0, colSpan: 2, rowSpan: 2 }],
@@ -99,14 +99,14 @@ export const FooterTemplate: StaticComponent = {
             },
 
             {
-              type: 'experience-composition',
+              type: 'oryx-composition',
               options: {
                 data: { rules: [{ layout: 'list', gap: 0, colSpan: 2 }] },
               },
               components: [
                 heading('Safe Payment methods'),
                 {
-                  type: 'experience-composition',
+                  type: 'oryx-composition',
                   options: {
                     data: {
                       rules: [
@@ -135,7 +135,7 @@ export const FooterTemplate: StaticComponent = {
             },
 
             {
-              type: 'experience-composition',
+              type: 'oryx-composition',
               options: {
                 data: {
                   rules: [
@@ -146,7 +146,7 @@ export const FooterTemplate: StaticComponent = {
               components: [
                 heading('Spryker Apps'),
                 {
-                  type: 'experience-composition',
+                  type: 'oryx-composition',
                   options: {
                     data: {
                       rules: [{ layout: 'flex', gap: '6px', margin: '12px 0' }],
@@ -158,14 +158,14 @@ export const FooterTemplate: StaticComponent = {
             },
 
             {
-              type: 'experience-composition',
+              type: 'oryx-composition',
               options: {
                 data: { rules: [{ layout: 'list', gap: 0, colSpan: 2 }] },
               },
               components: [
                 heading('Shipping partners'),
                 {
-                  type: 'experience-composition',
+                  type: 'oryx-composition',
                   options: {
                     data: {
                       rules: [
@@ -191,7 +191,7 @@ export const FooterTemplate: StaticComponent = {
             },
 
             {
-              type: 'experience-composition',
+              type: 'oryx-composition',
               options: {
                 data: {
                   rules: [
@@ -202,7 +202,7 @@ export const FooterTemplate: StaticComponent = {
               components: [
                 heading('You can also find us on'),
                 {
-                  type: 'experience-composition',
+                  type: 'oryx-composition',
                   options: {
                     data: {
                       rules: [

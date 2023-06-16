@@ -6,7 +6,13 @@ export const typographyTokens: ThemeToken = {
       face: '"Montserrat", sans-serif',
       size: '14px',
       weight: '500',
+      line: '22px',
     },
+
+    face: '"Montserrat", sans-serif',
+    size: '14px',
+    weight: '500',
+    line: '22px',
   },
 };
 

@@ -1,28 +1,28 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { html, LitElement, TemplateResult } from 'lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { ContentTextContent, ContentTextOptions } from './text.model';
+import { LitElement, TemplateResult } from 'lit';
+import { TextMixin } from './text.mixin';
+import {
+  ContentTextContent,
+  ContentTextOptions,
+  TextAttributes,
+} from './text.model';
 import { contentTextStyles } from './text.styles';
 
+import { property } from 'lit/decorators.js';
+
 @defaultOptions({ autoInstallFont: true })
-export class ContentTextComponent extends ContentMixin<
-  ContentTextOptions,
-  ContentTextContent
->(LitElement) {
+export class ContentTextComponent
+  extends TextMixin(
+    ContentMixin<ContentTextOptions, ContentTextContent>(LitElement)
+  )
+  implements TextAttributes
+{
   static styles = contentTextStyles;
 
-  // protected textController = new TextController(this);
+  @property({ reflect: true }) overflow?: 'clamp' | 'fade';
+  @property({ type: Boolean, reflect: true }) toggle?: boolean;
 
   protected override render(): TemplateResult | void {
-    const { tag } = this.$options();
-    const { text } = this.$content();
-    if (this.isHeading())
-      return html`??${unsafeHTML(`<${tag}>${text}</${tag}>`)}`;
-    return html`!!${unsafeHTML(text)}`;
-  }
-
-  protected isHeading(): boolean {
-    const { tag } = this.$options();
-    return !!tag && !['button', 'subtitle', 'caption', 'small'].includes(tag);
+    return this.renderText();
   }
 }

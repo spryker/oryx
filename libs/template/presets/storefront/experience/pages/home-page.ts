@@ -19,16 +19,7 @@ export const homePage: StaticComponent = {
       type: 'oryx-content-text',
       content: {
         data: {
-          text: 'This is text is <strong style="color:red">strong</strong>!',
-        },
-      },
-      options: {
-        data: {
-          color: 'blue',
-          font: 'Grandiflora One',
-          tag: 'h1',
-          xsize: '90px',
-          lineHeight: '40px',
+          text: `<h1 style="text-align:center;font-family:'M PLUS Rounded 1c'">T<u style='color:red;'>h</u>is</h1><h2 style="font-family:'Grandiflora One', sans-serif;color:blue;">text</h2><h3>gets</h3><h4 style="color:red;font-family:'Bagel Fat One';">smaller</h4><h5>!</h5>`,
         },
       },
     },

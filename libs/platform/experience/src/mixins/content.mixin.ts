@@ -42,7 +42,7 @@ export declare class ContentMixinInterface<OptionsType, ContentType>
   protected componentContent: ContentType;
 
   $options: Signal<OptionsType>;
-  protected $content: Signal<ContentType>;
+  $content: Signal<ContentType>;
 }
 
 export const ContentMixin = <
@@ -74,10 +74,10 @@ export const ContentMixin = <
     @asyncState()
     protected componentContent = valueType(this.content$);
 
-    protected $options = signal(this.contentController.getOptions(), {
+    $options = signal(this.contentController.getOptions(), {
       initialValue: {},
     });
-    protected $content = signal(this.contentController.getContent(), {
+    $content = signal(this.contentController.getContent(), {
       initialValue: {},
     });
   }
