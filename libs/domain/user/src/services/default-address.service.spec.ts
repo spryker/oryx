@@ -82,12 +82,12 @@ describe('DefaultAddressService', () => {
 
   describe('getAddresses', () => {
     it('should return an observable', () => {
-      expect(service.getAddresses()).toBeInstanceOf(Observable);
+      expect(service.getAll()).toBeInstanceOf(Observable);
     });
 
     it('should get no addresses for guest user', () => {
       adapter.getAll.mockReturnValue(of([]));
-      service.getAddresses().subscribe(callback);
+      service.getAll().subscribe(callback);
       expect(callback).toHaveBeenCalledWith([]);
     });
 
@@ -99,9 +99,7 @@ describe('DefaultAddressService', () => {
       it('should get addresses for current user and be cached when subscribed a second time', () => {
         const trigger$ = new Subject();
 
-        trigger$
-          .pipe(mergeMap(() => service.getAddresses()))
-          .subscribe(callback);
+        trigger$.pipe(mergeMap(() => service.getAll())).subscribe(callback);
         trigger$.next('');
 
         expect(callback).toHaveBeenNthCalledWith(1, mockNormalizedAddresses);
@@ -116,7 +114,7 @@ describe('DefaultAddressService', () => {
 
   describe('getAddress', () => {
     it('should return an observable', () => {
-      expect(service.getAddresses()).toBeInstanceOf(Observable);
+      expect(service.getAll()).toBeInstanceOf(Observable);
     });
 
     describe('when address list is empty', () => {
@@ -126,7 +124,7 @@ describe('DefaultAddressService', () => {
       });
 
       it('should return null', () => {
-        service.getAddress('test').subscribe(callback);
+        service.get('test').subscribe(callback);
         expect(callback).toHaveBeenCalledWith(null);
       });
     });
@@ -138,7 +136,7 @@ describe('DefaultAddressService', () => {
       });
 
       it('should return null', () => {
-        service.getAddress('test').subscribe(callback);
+        service.get('test').subscribe(callback);
         expect(callback).toHaveBeenCalledWith(null);
       });
     });
@@ -150,7 +148,7 @@ describe('DefaultAddressService', () => {
       });
 
       it('should return null', () => {
-        service.getAddress(mockCurrentAddress.id as string).subscribe(callback);
+        service.get(mockCurrentAddress.id as string).subscribe(callback);
         expect(callback).toHaveBeenCalledWith(mockCurrentAddress);
       });
     });
@@ -158,12 +156,12 @@ describe('DefaultAddressService', () => {
 
   describe('getCurrentAddress', () => {
     it('should return an observable', () => {
-      expect(service.getCurrentAddress()).toBeInstanceOf(Observable);
+      expect(service.getCurrent()).toBeInstanceOf(Observable);
     });
 
     it('should get no address for a guest user', async () => {
       adapter.getAll.mockReturnValue(of([]));
-      const result = await firstValueFrom(service.getCurrentAddress());
+      const result = await firstValueFrom(service.getCurrent());
 
       expect(result).toEqual(null);
     });
@@ -176,9 +174,7 @@ describe('DefaultAddressService', () => {
       it('should get addresses for current user and be cached when subscribed a second time', () => {
         const trigger$ = new Subject();
 
-        trigger$
-          .pipe(mergeMap(() => service.getCurrentAddress()))
-          .subscribe(callback);
+        trigger$.pipe(mergeMap(() => service.getCurrent())).subscribe(callback);
 
         trigger$.next('');
 
@@ -194,11 +190,11 @@ describe('DefaultAddressService', () => {
 
   describe('addAddress', () => {
     it('should return an observable', () => {
-      expect(service.addAddress(mockCurrentAddress)).toBeInstanceOf(Observable);
+      expect(service.add(mockCurrentAddress)).toBeInstanceOf(Observable);
     });
 
     it('should add address', () => {
-      service.addAddress(mockCurrentAddress).subscribe(callback);
+      service.add(mockCurrentAddress).subscribe(callback);
 
       expect(adapter.add).toHaveBeenCalledWith(mockCurrentAddress);
     });
@@ -206,13 +202,11 @@ describe('DefaultAddressService', () => {
 
   describe('updateAddress', () => {
     it('should return an observable', () => {
-      expect(service.updateAddress(mockCurrentAddress)).toBeInstanceOf(
-        Observable
-      );
+      expect(service.update(mockCurrentAddress)).toBeInstanceOf(Observable);
     });
 
     it('should update address', () => {
-      service.updateAddress(mockCurrentAddress).subscribe(callback);
+      service.update(mockCurrentAddress).subscribe(callback);
 
       expect(adapter.update).toHaveBeenCalledWith(mockCurrentAddress);
     });
@@ -220,9 +214,7 @@ describe('DefaultAddressService', () => {
 
   describe('deleteAddress', () => {
     it('should return an observable', () => {
-      expect(service.deleteAddress(mockCurrentAddress)).toBeInstanceOf(
-        Observable
-      );
+      expect(service.delete(mockCurrentAddress)).toBeInstanceOf(Observable);
     });
   });
 });

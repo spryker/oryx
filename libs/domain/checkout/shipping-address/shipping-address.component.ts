@@ -26,7 +26,7 @@ export class CheckoutShippingAddressComponent
 
   protected addressService = resolve(AddressService);
 
-  protected $addresses = signal(this.addressService.getAddresses());
+  protected $addresses = signal(this.addressService.getAll());
   protected $selected = signal(
     this.checkoutStateService.get('shippingAddress')
   );

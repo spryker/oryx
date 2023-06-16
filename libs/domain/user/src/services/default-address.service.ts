@@ -31,17 +31,17 @@ export class DefaultAddressService implements AddressService {
     protected identity = inject(IdentityService)
   ) {}
 
-  getCurrentAddress(): Observable<Address | null> {
+  getCurrent(): Observable<Address | null> {
     return this.currentAddress$;
   }
 
-  getAddress(addressId: string): Observable<Address | null> {
-    return this.getAddresses().pipe(
+  get(addressId: string): Observable<Address | null> {
+    return this.getAll().pipe(
       map((addresses) => addresses?.find(({ id }) => id === addressId) ?? null)
     );
   }
 
-  getAddresses(): Observable<Address[] | undefined> {
+  getAll(): Observable<Address[] | undefined> {
     return this.addressesQuery$.get(undefined);
   }
 
@@ -66,15 +66,15 @@ export class DefaultAddressService implements AddressService {
     },
   });
 
-  addAddress(data: Address): Observable<unknown> {
+  add(data: Address): Observable<unknown> {
     return this.addAddressCommand$.execute(data);
   }
 
-  updateAddress(data: Address): Observable<unknown> {
+  update(data: Address): Observable<unknown> {
     return this.updateAddressCommand$.execute(data);
   }
 
-  deleteAddress(data: Address): Observable<unknown> {
+  delete(data: Address): Observable<unknown> {
     return this.deleteAddressCommand$.execute(data);
   }
 }
