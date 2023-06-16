@@ -1,4 +1,4 @@
-import { TestUserData } from '../../types/user.type';
+import { TestCustomerData } from '../../types/user.type';
 
 export class LoginFragment {
   getWrapper = () => cy.get('oryx-auth-login');
@@ -9,7 +9,7 @@ export class LoginFragment {
   getLoginButton = () => this.getWrapper().contains('button', 'Login');
   getBEValidationError = () => this.getWrapper().find('oryx-notification');
 
-  login = (user: TestUserData) => {
+  login = (user: TestCustomerData) => {
     this.getEmailInput().type(user.email, { force: true });
     this.getPasswordInput().type(user.password, { force: true });
     this.getRememberMeCheckbox().click();
