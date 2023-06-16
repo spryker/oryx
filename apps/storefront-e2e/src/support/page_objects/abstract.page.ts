@@ -5,7 +5,7 @@ import { SearchFragment } from '../page_fragments/search.fragment';
 export abstract class AbstractSFPage {
   abstract url: string;
 
-  visit(isSSR = true): void {
+  visit(): void {
     if (!this.url) {
       throw new Error(
         'It is not possibe to visit this page bacause `url` is not set.'
@@ -13,7 +13,6 @@ export abstract class AbstractSFPage {
     }
 
     cy.visit(this.url);
-    isSSR ? this.waitForLoadedSSR() : this.waitForLoadedSPA();
   }
 
   header = new HeaderFragment();
