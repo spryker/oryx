@@ -1,7 +1,7 @@
 import { PopoverSelectEvent, POPOVER_EVENT } from '@spryker-oryx/ui/popover';
 import { LitElement, ReactiveController } from 'lit';
-import { OptionComponent } from '../../../../form/option';
-import { getControl } from '../../../../form/utilities';
+import { OptionComponent } from '@spryker-oryx/ui/option';
+import { getControl } from '@spryker-oryx/ui/utilities';
 import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 import { generateMarkedHtml, getFilterRegExp } from './filter.utils';
 

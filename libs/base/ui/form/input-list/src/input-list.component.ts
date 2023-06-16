@@ -1,6 +1,6 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
-import { Direction } from '../../../src/utilities';
+import { Direction } from '@spryker-oryx/ui';
 import { ErrorController, errorStyles } from '../../input';
 import { InputListProperties, InputListStatus } from './input-list.model';
 import { styles } from './input-list.styles';

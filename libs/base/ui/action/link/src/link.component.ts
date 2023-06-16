@@ -1,7 +1,7 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { Icons } from '../../../graphical/icon';
+import { Icons } from '@spryker-oryx/ui/icon';
 import { LinkComponentAttributes, LinkType } from './link.model';
 import { linkStyles } from './link.styles';
 

@@ -1,5 +1,5 @@
 import { LitElement, ReactiveController } from 'lit';
-import { OptionComponent } from '../../../form/option';
+import { OptionComponent } from '@spryker-oryx/ui/option';
 import {
   HighlightController,
   SelectedController,
