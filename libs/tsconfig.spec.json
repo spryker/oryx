@@ -5,10 +5,5 @@
     "noEmit": true
   },
   "files": ["setupTests.ts"],
-  "include": [
-    "**/*.spec.ts",
-    "domain/search/box/controllers/scrolling-area.controller.ts",
-    "domain/search/box/controllers/render-suggestion.controller.ts",
-    "domain/search/box/controllers/query-controls.controller.ts"
-  ]
+  "include": ["**/*.spec.ts"]
 }
