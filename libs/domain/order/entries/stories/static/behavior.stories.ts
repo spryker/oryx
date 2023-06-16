@@ -1,25 +1,22 @@
 import { resolve } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
 import { MockOrderService, OrderItemCount } from '@spryker-oryx/order/mocks';
-import { Meta, Story } from '@storybook/web-components';
+import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../.constants';
+import { storybookPrefix } from '../../../.constants';
+import { OrderEntriesOptions } from '../../entries.model';
 
-interface Props {
+interface Props extends OrderEntriesOptions {
   itemCount: OrderItemCount;
-  limit?: number;
-  threshold?: number;
 }
 
 export default {
   title: `${storybookPrefix}/Entries/Static`,
-} as unknown as Meta;
+};
 
-const Template: Story<Props> = (props): TemplateResult => {
+const Template: Story<Props> = ({ itemCount, ...options }): TemplateResult => {
   const orderService = resolve(OrderService) as unknown as MockOrderService;
-  orderService.changeItemCount(props.itemCount);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { itemCount, ...options } = props;
+  orderService.changeItemCount(itemCount);
   return html`<oryx-order-entries .options=${options}></oryx-order-entries>`;
 };
 
