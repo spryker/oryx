@@ -19,9 +19,11 @@ export class DefaultFormRenderer implements FormRenderer {
   constructor(protected injector = inject(INJECTOR)) {}
 
   fieldValidationPattern(field: FormFieldDefinition): FieldValidationPattern {
-    const { required, pattern, title } = field;
+    const { required, pattern, title, type } = field;
     return {
-      pattern: pattern ?? (required ? '.*\\S+.*' : undefined),
+      pattern:
+        pattern ??
+        (type !== FormFieldType.Email && required ? '.*\\S+.*' : undefined),
       title:
         title ??
         (required ? i18n('form.validation.invalid-empty-text') : undefined),
