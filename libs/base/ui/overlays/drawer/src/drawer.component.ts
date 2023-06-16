@@ -2,7 +2,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { Position } from '../../../src/utilities/model/common';
+import { Position } from '@spryker-oryx/ui';
 import { DrawerProperties, DrawerType } from './drawer.model';
 import {
   drawerBaseStyles,
