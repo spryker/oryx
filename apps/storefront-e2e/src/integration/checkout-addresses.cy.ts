@@ -1,8 +1,8 @@
 import { CartPage } from '../support/page_objects/cart.page';
 import { CheckoutPage } from '../support/page_objects/checkout.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { defaultUser } from '../test-data/default-user';
 import { ProductStorage } from '../test-data/product.storage';
+import { TestCustomerData } from '../types/user.type';
 
 let api: SCCOSApi;
 
@@ -13,27 +13,31 @@ describe('User addresses', () => {
   beforeEach(() => {
     api = new SCCOSApi();
 
-    cy.login(defaultUser);
+    cy.login();
 
-    cy.customerCartsCleanup(api, defaultUser);
-    cy.customerAddressesCleanup(api, defaultUser);
+    cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+      cy.customerCartsCleanup(api, customer);
+      cy.customerAddressesCleanup(api, customer);
+    });
   });
 
   describe('when user opens the cart page', () => {
     beforeEach(() => {
       const productData = ProductStorage.getProductByEq(0);
 
-      // get all customer carts
-      api.carts.customersGet(defaultUser.id).then((customerCartsResponse) => {
-        // add 1 item to the first cart
-        api.cartItems.post(
-          productData,
-          1,
-          customerCartsResponse.body.data[0].id
-        );
-      });
+      cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+        // get all customer carts
+        api.carts.customersGet(customer.id).then((customerCartsResponse) => {
+          // add 1 item to the first cart
+          api.cartItems.post(
+            productData,
+            1,
+            customerCartsResponse.body.data[0].id
+          );
+        });
 
-      cartPage.visit();
+        cartPage.visit();
+      });
     });
 
     describe('and user does not have addresses yet', () => {
@@ -66,8 +70,10 @@ describe('User addresses', () => {
 
     describe('and user already has addresses', () => {
       beforeEach(() => {
-        api.addresses.post(defaultUser.id);
-        api.addresses.post(defaultUser.id);
+        cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+          api.addresses.post(customer.id);
+          api.addresses.post(customer.id);
+        });
       });
 
       describe('and user goes to checkout', () => {
