@@ -36,7 +36,7 @@ export class CheckoutShippingMethodComponent
 
     return html`
       <oryx-checkout-header>
-        <h2>${i18n('checkout.steps.shipping-methods')}</h2>
+        <h2>${i18n('checkout.shipping-methods')}</h2>
       </oryx-checkout-header>
       <form>
         ${carriers.map(

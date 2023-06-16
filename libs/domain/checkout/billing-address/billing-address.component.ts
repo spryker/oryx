@@ -68,7 +68,7 @@ export class CheckoutBillingAddressComponent
 
   protected renderHeading(): TemplateResult {
     return html`<oryx-checkout-header>
-      <h3>${i18n('checkout.steps.billing-address')}</h3>
+      <h3>${i18n('checkout.billing-address')}</h3>
       ${when(
         this.$addresses()?.length,
         () => html`<oryx-checkout-manage-address

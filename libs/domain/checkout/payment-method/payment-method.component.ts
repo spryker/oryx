@@ -32,7 +32,7 @@ export class CheckoutPaymentMethodComponent
     if (!methods?.length) return this.renderEmpty();
 
     return html`<oryx-checkout-header>
-        <h2>${i18n('checkout.steps.payment-methods')}</h2>
+        <h2>${i18n('checkout.payment-methods')}</h2>
       </oryx-checkout-header>
       <form>${methods.map((method) => this.renderMethod(method))}</form>`;
   }
