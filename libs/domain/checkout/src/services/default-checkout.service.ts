@@ -1,7 +1,9 @@
 import { CartService } from '@spryker-oryx/cart';
+import { QueryService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { AddressModificationSuccess } from '@spryker-oryx/user';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
@@ -17,7 +19,6 @@ import {
 import { Checkout, CheckoutResponse, CheckoutState } from '../models';
 import { CheckoutAdapter } from './adapter';
 import { CheckoutService } from './checkout.service';
-import { CheckoutDataService } from './data';
 import { CheckoutStateService } from './state';
 
 export class DefaultCheckoutService implements CheckoutService {
@@ -38,12 +39,12 @@ export class DefaultCheckoutService implements CheckoutService {
     );
 
   constructor(
-    protected dataService = inject(CheckoutDataService),
     protected stateService = inject(CheckoutStateService),
     protected cartService = inject(CartService),
     protected adapter = inject(CheckoutAdapter),
     protected linkService = inject(SemanticLinkService),
-    protected orderService = inject(OrderService)
+    protected orderService = inject(OrderService),
+    protected queryService = inject(QueryService)
   ) {}
 
   getProcessState(): Observable<CheckoutState> {
@@ -100,5 +101,8 @@ export class DefaultCheckoutService implements CheckoutService {
     this.cartService.reload();
     if (response.orders?.length)
       this.orderService.storeLastOrder(response.orders[0]);
+    // We want to reload addresses after checkout, as new address may have been created
+    // This one will be part of command success event, but for now we need to emit it manually
+    this.queryService.emit({ type: AddressModificationSuccess });
   }
 }
