@@ -1,4 +1,5 @@
-import { fixture } from '@open-wc/testing-helpers';
+import { fixture, nextFrame } from '@open-wc/testing-helpers';
+import { ContentLinkComponent } from '@spryker-oryx/content/link';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
@@ -114,6 +115,77 @@ describe('SearchBoxComponent', () => {
 
   it('passes the a11y audit', async () => {
     await expect(element).shadowDom.to.be.accessible();
+  });
+
+  describe('oryx.clear', () => {
+    const callback = vi.fn();
+
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-box
+          query="123"
+          @oryx.clear=${callback}
+        ></oryx-search-box>`
+      );
+    });
+
+    describe('when oryx.clear event dispatched', () => {
+      it('should clear input value', async () => {
+        const input = element.renderRoot.querySelector(
+          'input'
+        ) as HTMLInputElement;
+        element.dispatchEvent(new CustomEvent('oryx.clear', { bubbles: true }));
+        await nextFrame();
+        expect(input.value).toBe('');
+      });
+    });
+
+    describe('when clear button has been clicked', () => {
+      it('should dispatch oryx.clear event', () => {
+        const clear = element.renderRoot.querySelector<HTMLButtonElement>(
+          `oryx-button[slot="suffix"]`
+        );
+        clear?.click();
+        expect(callback).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('oryx.close', () => {
+    const callback = vi.fn();
+
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-box
+          query="123"
+          @oryx.close=${callback}
+        ></oryx-search-box>`
+      );
+    });
+
+    describe('when event is dispatched', () => {
+      it('should close the dropdown', () => {
+        const typeahead = element.renderRoot.querySelector(
+          'oryx-typeahead'
+        ) as HTMLElement;
+
+        typeahead.setAttribute('open', '');
+
+        element.dispatchEvent(new CustomEvent('oryx.close'));
+
+        expect(typeahead.hasAttribute('open')).toBe(false);
+      });
+    });
+
+    describe('when close button has been clicked', () => {
+      it('should dispatch oryx.close event', () => {
+        const close = element.renderRoot.querySelector<HTMLButtonElement>(
+          `oryx-icon-button[slot="suffix"]`
+        );
+        close?.click();
+        expect(callback).toHaveBeenCalled();
+      });
+    });
   });
 
   describe('when query is not provided', () => {
@@ -237,8 +309,12 @@ describe('SearchBoxComponent', () => {
   });
 
   describe('when typing a query string', () => {
+    const callback = vi.fn();
+
     beforeEach(async () => {
-      element = await fixture(html`<oryx-search-box></oryx-search-box>`);
+      element = await fixture(
+        html`<oryx-search-box @oryx.close=${callback}></oryx-search-box>`
+      );
 
       vi.useFakeTimers();
     });
@@ -249,18 +325,59 @@ describe('SearchBoxComponent', () => {
 
     it('should update the query param', async () => {
       await simulateTyping(query);
-
+      vi.advanceTimersByTime(301);
       expect(element.query).toBe(query);
     });
 
     it('should receive the results', async () => {
       await hasResults(false);
-
       await simulateTyping(query);
-      //debounce the typeahead event dispatching
       vi.advanceTimersByTime(301);
-
       await hasResults();
+    });
+
+    describe('rendering', () => {
+      beforeEach(async () => {
+        await simulateTyping(query);
+        vi.advanceTimersByTime(301);
+      });
+
+      it('should render sections', () => {
+        const sections = element.renderRoot.querySelectorAll('section');
+        expect(sections.length).toBe(2);
+      });
+
+      it('should render the whole list of links', () => {
+        const links = element.renderRoot.querySelectorAll(
+          'section:nth-child(1) > ul'
+        );
+        expect(links.length).toBe(2);
+      });
+
+      it('should render list of links with correct url', () => {
+        const links = element.renderRoot.querySelectorAll(
+          'section:nth-child(1) > ul oryx-content-link'
+        );
+
+        Array.from(links).forEach((link) => {
+          expect(
+            [SemanticLinkType.Category, 'search'].includes(
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              (link as ContentLinkComponent).options!.type!
+            )
+          ).toBe(true);
+        });
+      });
+
+      it('should pass query to the view all link params', () => {
+        const viewAllLink =
+          element.renderRoot.querySelector<ContentLinkComponent>(
+            'oryx-button > oryx-content-link'
+          );
+        viewAllLink?.click();
+        expect(viewAllLink?.options?.params?.q).toBe(query);
+        expect(callback).toHaveBeenCalled();
+      });
     });
   });
 
@@ -293,43 +410,6 @@ describe('SearchBoxComponent', () => {
 
     it('should set scrolling-top attribute', () => {
       expect(element.hasAttribute('scrollable-top')).toBe(true);
-    });
-  });
-
-  describe('when oryx.clear event dispatched', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-box query="123"></oryx-search-box>`
-      );
-    });
-
-    it('should clear input value', () => {
-      const input = element.renderRoot.querySelector(
-        'input'
-      ) as HTMLInputElement;
-      element.dispatchEvent(new CustomEvent('oryx.clear', { bubbles: true }));
-
-      expect(input.value).toBe('');
-    });
-  });
-
-  describe('when oryx.close event is dispatched', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-box query="123"></oryx-search-box>`
-      );
-    });
-
-    it('should close the dropdown', () => {
-      const typeahead = element.renderRoot.querySelector(
-        'oryx-typeahead'
-      ) as HTMLElement;
-
-      typeahead.setAttribute('open', '');
-
-      element.dispatchEvent(new CustomEvent('oryx.close'));
-
-      expect(typeahead.hasAttribute('open')).toBe(false);
     });
   });
 
@@ -399,12 +479,12 @@ describe('SearchBoxComponent', () => {
     describe('and query is empty string', () => {
       beforeEach(async () => {
         element = await fixture(html`<oryx-search-box></oryx-search-box>`);
-        element.renderRoot
-          .querySelector('oryx-typeahead')
-          ?.toggleAttribute('open', true);
-        element.renderRoot
-          .querySelector('form')
-          ?.dispatchEvent(new Event('submit'));
+        linkService.get.mockReturnValue(of('link'));
+
+        const typeahead = element.renderRoot.querySelector('oryx-typeahead');
+
+        typeahead?.toggleAttribute('open', true);
+        typeahead?.dispatchEvent(new CustomEvent('oryx.search'));
       });
 
       it('should get the link from service without params', () => {
@@ -414,7 +494,7 @@ describe('SearchBoxComponent', () => {
       });
 
       it('should navigate by link', () => {
-        expect(routerService.navigate).toHaveBeenCalled();
+        expect(routerService.navigate).toHaveBeenCalledWith('link');
       });
 
       it('should close typeahead', () => {
@@ -429,8 +509,8 @@ describe('SearchBoxComponent', () => {
           html`<oryx-search-box .query=${q}></oryx-search-box>`
         );
         element.renderRoot
-          .querySelector('form')
-          ?.dispatchEvent(new Event('submit'));
+          .querySelector('oryx-typeahead')
+          ?.dispatchEvent(new CustomEvent('oryx.search'));
       });
 
       it('should get the link from service with params', () => {

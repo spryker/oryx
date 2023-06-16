@@ -1,57 +1,44 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { I18nService } from '@spryker-oryx/i18n';
+import { Product, ProductMediaContainerSize } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { Suggestion, SuggestionService } from '@spryker-oryx/search';
+import {
+  Suggestion,
+  SuggestionResource,
+  SuggestionService,
+} from '@spryker-oryx/search';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
+import { IconTypes } from '@spryker-oryx/ui/icon';
+import {
+  ClearIconPosition,
+  SearchEventDetail,
+} from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
+import { TypeaheadComponent } from '@spryker-oryx/ui/typeahead';
 import {
   computed,
-  effect,
-  elementEffect,
+  debounce,
   hydratable,
+  i18n,
   signal,
   signalAware,
   signalProperty,
   Size,
-  subscribe,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { DirectiveResult } from 'lit/async-directive';
+import { query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
-import {
-  catchError,
-  debounce,
-  defer,
-  filter,
-  fromEvent,
-  of,
-  Subject,
-  tap,
-  timer,
-} from 'rxjs';
 import { SearchBoxOptions, SearchBoxProperties } from './box.model';
-import {
-  QueryControlsController,
-  RenderSuggestionController,
-  ScrollingAreaController,
-} from './controllers';
 import { baseStyles, searchboxStyles } from './styles';
 
-function debounce2(func: () => unknown, timeout = 300) {
-  let timer: NodeJS.Timeout;
-  return (...args: any) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      func.apply(this, args);
-    }, timeout);
-  };
+interface LinksSection {
+  title?: DirectiveResult;
+  options: SuggestionResource[];
+  type: SemanticLinkType;
 }
 
 @defaultOptions({
@@ -69,28 +56,30 @@ export class SearchBoxComponent
 {
   static styles = [baseStyles, searchboxStyles];
 
-  @signalProperty({ type: String }) query = '';
-  @property({ type: Boolean, reflect: true }) protected stretched = false;
+  constructor() {
+    super();
+    this.onScroll = debounce(this.onScroll.bind(this), 20);
+    this.onTypeahead = debounce(this.onTypeahead.bind(this), 300);
+    this.onClear = this.onClear.bind(this);
+    this.onClose = this.onClose.bind(this);
+  }
+
+  @signalProperty() query = '';
+
+  @query('oryx-typeahead') typeahead!: TypeaheadComponent;
+  @query('div[slot="option"] > div') scrollContainer?: HTMLElement;
 
   protected suggestionService = resolve(SuggestionService);
   protected routerService = resolve(RouterService);
   protected semanticLinkService = resolve(SemanticLinkService);
   protected i18nService = resolve(I18nService);
 
-  protected scrollingAreaController = new ScrollingAreaController(this);
-  protected queryControlsController = new QueryControlsController();
-  protected renderSuggestionController = new RenderSuggestionController(this);
-
-  protected triggerInputValue$ = new Subject<string>();
-
   protected $suggestion = computed(() => {
     const options = this.$options();
-    // debounce
-    // debounce2(() => timer(300)),
-    if (
+    const withSuggestion =
       this.query &&
-      (!options.minChars || this.query.length >= options.minChars)
-    ) {
+      (!options.minChars || this.query.length >= options.minChars);
+    const getSuggestions = () => {
       const raw = signal(this.suggestionService.get({ query: this.query }))();
 
       return raw
@@ -101,40 +90,24 @@ export class SearchBoxComponent
             cmsPages: raw.cmsPages.slice(0, options.cmsCount),
           }
         : null;
-    }
+    };
+    const suggestion = withSuggestion ? getSuggestions() : null;
 
-    return null;
+    this.toggleAttribute('stretched', this.hasCompleteData(suggestion));
+
+    return suggestion;
   });
-
-  @elementEffect()
-  protected effectChanging = effect(() => {
-    this.stretched = this.hasCompleteData(this.$suggestion());
-  });
-
-  @subscribe()
-  protected scrollEvent = defer(() =>
-    fromEvent(this as EventTarget, 'containerScroll')
-  ).pipe(
-    catchError(() => of(null)),
-    filter((v) => v !== null),
-    debounce(() => timer(20)),
-    tap(() => {
-      this.scrollingAreaController.setScrollAttributes(
-        this.scrollContainerRef.value as HTMLElement
-      );
-    })
-  );
 
   protected $placeholder = signal(
     this.i18nService.translate(['search', 'search.placeholder'])
   );
 
-  protected firstUpdated(): void {
-    if (this.query) {
-      (this.inputRef.value as HTMLInputElement).value = this.query;
-      this.triggerInputValue$.next(this.query);
-    }
-  }
+  protected $link = computed(() =>
+    this.semanticLinkService.get({
+      type: SemanticLinkType.ProductList,
+      ...(this.query ? { params: { q: this.query } } : {}),
+    })
+  );
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -150,57 +123,241 @@ export class SearchBoxComponent
     super.disconnectedCallback();
   }
 
-  constructor() {
-    super();
-
-    this.onClear = this.onClear.bind(this);
-    this.onClose = this.onClose.bind(this);
-    this.onScroll = this.onScroll.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+  protected override render(): TemplateResult {
+    return html`
+      <oryx-typeahead
+        @oryx.search=${this.onSearch}
+        @oryx.typeahead=${this.onTypeahead}
+        .clearIconPosition=${ClearIconPosition.None}
+      >
+        <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
+        <input
+          .value=${this.query ?? ''}
+          placeholder=${ifDefined(this.$placeholder())}
+        />
+        ${this.renderSuggestion()}
+        ${when(this.query, () => this.renderControls())}
+      </oryx-typeahead>
+    `;
   }
 
-  protected inputRef: Ref<HTMLInputElement> = createRef();
-  protected scrollContainerRef: Ref<HTMLElement> = createRef();
+  protected renderControls(): TemplateResult {
+    return html`
+      <oryx-button slot="suffix" type="text">
+        <button
+          @click=${() => this.dispatchCustomEvent('oryx.clear')}
+          @mousedown=${this.muteMousedown}
+        >
+          ${i18n('search.box.clear')}
+        </button>
+      </oryx-button>
 
-  protected onClear(e: Event): void {
+      <oryx-icon-button slot="suffix" size=${Size.Sm}>
+        <button
+          aria-label="Close results"
+          @click=${() => this.dispatchCustomEvent('oryx.close')}
+          @mousedown=${this.muteMousedown}
+        >
+          <oryx-icon .type=${IconTypes.Close}></oryx-icon>
+        </button>
+      </oryx-icon-button>
+    `;
+  }
+
+  protected renderSuggestion(): TemplateResult {
+    const suggestion = this.$suggestion();
+
+    if (!suggestion) {
+      return html``;
+    }
+
+    if (this.isNothingFound(suggestion)) {
+      return this.renderNothingFound();
+    }
+
+    return html`
+      <div slot="option">
+        <div @scroll=${this.onScroll}>
+          ${when(this.hasLinks(suggestion), () =>
+            this.renderLinksSection(suggestion)
+          )}
+          ${when(this.hasProducts(suggestion), () =>
+            this.renderProductsSection(suggestion)
+          )}
+        </div>
+      </div>
+    `;
+  }
+
+  protected renderNothingFound(): TemplateResult {
+    return html`
+      <div slot="empty">
+        <oryx-icon .type=${IconTypes.Search}></oryx-icon>
+        <span>${i18n('search.box.nothing-found')}</span>
+      </div>
+    `;
+  }
+
+  protected renderLinksSection(suggestion: Suggestion): TemplateResult {
+    const links: LinksSection[] = [
+      {
+        title: i18n('search.box.suggestions'),
+        options: suggestion.completion.map((name) => ({
+          name,
+          params: { q: name },
+        })),
+        type: SemanticLinkType.ProductList,
+      },
+      {
+        title: i18n('search.box.categories'),
+        options: suggestion.categories.map(({ name, idCategory }) => ({
+          name,
+          url: idCategory,
+        })),
+        type: SemanticLinkType.Category,
+      },
+      {
+        title: i18n('search.box.content'),
+        options: suggestion.cmsPages,
+        type: SemanticLinkType.Page,
+      },
+    ];
+
+    return html` <section>${links.map((l) => this.renderLink(l))}</section> `;
+  }
+
+  protected renderLink(link: LinksSection): TemplateResult {
+    const { title, options, type } = link;
+
+    if (!options.length) {
+      return html``;
+    }
+
+    return html`
+      <h5>${title}</h5>
+      <ul>
+        ${options.map(
+          ({ name, url, params }) => html`
+            <li>
+              <oryx-content-link
+                .options="${{
+                  type,
+                  id: url ?? '',
+                  params: params ?? null,
+                  text: name,
+                }}"
+                close-popover
+              ></oryx-content-link>
+            </li>
+          `
+        )}
+      </ul>
+    `;
+  }
+
+  protected renderProductsSection(suggestion: Suggestion): TemplateResult {
+    return html`
+      <section>
+        <h5>${i18n('search.box.products')}</h5>
+        ${suggestion.products.map(this.renderProduct)}
+
+        <oryx-button
+          outline
+          @click=${() => this.dispatchCustomEvent('oryx.close')}
+        >
+          <oryx-content-link
+            .options="${{
+              type: SemanticLinkType.ProductList,
+              text: i18n('search.box.view-all-products'),
+              params: { q: this.query },
+            }}"
+          ></oryx-content-link>
+        </oryx-button>
+      </section>
+    `;
+  }
+
+  protected renderProduct(product: Product): TemplateResult {
+    return html`
+      <oryx-content-link
+        class="product"
+        .options="${{
+          type: SemanticLinkType.Product,
+          id: product.sku,
+          label: product.name,
+        }}"
+        close-popover
+      >
+        <oryx-product-media
+          .sku=${product.sku}
+          .options=${{ container: ProductMediaContainerSize.Thumbnail }}
+        ></oryx-product-media>
+        <oryx-product-title .sku=${product.sku}></oryx-product-title>
+        <oryx-product-price
+          .sku=${product.sku}
+          .options=${{ enableTaxMessage: false }}
+        ></oryx-product-price>
+      </oryx-content-link>
+    `;
+  }
+
+  // The oryx-typeahead is using focusin and mousedown events listening inside for
+  // managing its opened state.
+  // Need to mute this behavior for control buttons to avoid unexpected closing/opening
+  // of dropdown with results
+  protected muteMousedown(e: Event): void {
     e.stopPropagation();
-    const input = this.inputRef.value as HTMLInputElement;
-
-    input.value = '';
-    this.query = '';
-    this.triggerInputValue$.next('');
+    e.preventDefault();
   }
 
-  protected onClose(): void {
-    this.renderRoot.querySelector('oryx-typeahead')?.removeAttribute('open');
-  }
-
-  protected onTypeahead(): void {
-    this.query = (this.inputRef.value as HTMLInputElement).value;
-    this.triggerInputValue$.next(this.query);
-  }
-
-  protected onScroll(e: Event): void {
-    e.target?.dispatchEvent(
-      new CustomEvent('containerScroll', { bubbles: true, composed: true })
+  protected dispatchCustomEvent(type: string): void {
+    this.typeahead.dispatchEvent(
+      new CustomEvent(type, { bubbles: true, composed: true })
     );
   }
 
-  protected onSubmit(e: SubmitEvent): void {
-    e.preventDefault();
+  protected onClear(): void {
+    this.query = '';
+  }
 
-    this.semanticLinkService
-      .get({
-        type: SemanticLinkType.ProductList,
-        ...(this.query ? { params: { q: this.query } } : {}),
-      })
-      .pipe(
-        tap((link) => {
-          this.routerService.navigate(link!);
-          this.onClose();
-        })
-      )
-      .subscribe();
+  protected onClose(): void {
+    this.typeahead.removeAttribute('open');
+  }
+
+  protected onTypeahead(event: CustomEvent<SearchEventDetail>): void {
+    this.query = event.detail.query.trim();
+  }
+
+  protected onScroll(): void {
+    if (!this.scrollContainer) {
+      this.removeAttribute('scrollable-top');
+      this.removeAttribute('scrollable-bottom');
+
+      return;
+    }
+
+    const { height } = this.scrollContainer.getBoundingClientRect();
+
+    this.toggleAttribute(
+      'scrollable-top',
+      !!Math.ceil(this.scrollContainer.scrollTop)
+    );
+    this.toggleAttribute(
+      'scrollable-bottom',
+      this.scrollContainer.scrollHeight >
+        Math.ceil(height + this.scrollContainer.scrollTop)
+    );
+  }
+
+  protected onSearch(): void {
+    const link = this.$link();
+
+    if (!link) {
+      return;
+    }
+
+    this.routerService.navigate(link);
+    this.onClose();
   }
 
   protected hasLinks(suggestion: Suggestion | null): boolean {
@@ -221,51 +378,5 @@ export class SearchBoxComponent
 
   protected hasCompleteData(suggestion: Suggestion | null): boolean {
     return this.hasLinks(suggestion) && this.hasProducts(suggestion);
-  }
-
-  protected renderSuggestion(): TemplateResult {
-    const suggestion = this.$suggestion();
-
-    if (!suggestion) {
-      return html``;
-    }
-
-    if (this.isNothingFound(suggestion)) {
-      return this.renderSuggestionController.renderNothingFound();
-    }
-
-    return html`
-      <div slot="option">
-        <div @scroll=${this.onScroll} ${ref(this.scrollContainerRef)}>
-          ${when(this.hasLinks(suggestion), () =>
-            this.renderSuggestionController.renderLinksSection(suggestion)
-          )}
-          ${when(this.hasProducts(suggestion), () =>
-            this.renderSuggestionController.renderProductsSection(suggestion)
-          )}
-        </div>
-      </div>
-    `;
-  }
-
-  protected override render(): TemplateResult {
-    return html`
-      <form @submit=${this.onSubmit}>
-        <oryx-typeahead
-          @oryx.typeahead=${this.onTypeahead}
-          .clearIconPosition=${ClearIconPosition.None}
-        >
-          <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
-          <input
-            ${ref(this.inputRef)}
-            placeholder=${ifDefined(this.$placeholder())}
-          />
-          ${this.renderSuggestion()}
-          ${when(this.query, () =>
-            this.queryControlsController.renderControls()
-          )}
-        </oryx-typeahead>
-      </form>
-    `;
   }
 }
