@@ -11,7 +11,7 @@ import { AddressService } from './address.service';
 import { DefaultAddressService } from './default-address.service';
 
 class MockAddressAdapter implements Partial<AddressAdapter> {
-  getAll = vi.fn().mockReturnValue(of(mockNormalizedAddresses));
+  getList = vi.fn().mockReturnValue(of(mockNormalizedAddresses));
   update = vi.fn().mockReturnValue(of(mockCurrentAddress));
   add = vi.fn().mockReturnValue(of(mockCurrentAddress));
   delete = vi.fn().mockReturnValue(of(mockCurrentAddress));
@@ -82,12 +82,12 @@ describe('DefaultAddressService', () => {
 
   describe('getAddresses', () => {
     it('should return an observable', () => {
-      expect(service.getAll()).toBeInstanceOf(Observable);
+      expect(service.getList()).toBeInstanceOf(Observable);
     });
 
     it('should get no addresses for guest user', () => {
-      adapter.getAll.mockReturnValue(of([]));
-      service.getAll().subscribe(callback);
+      adapter.getList.mockReturnValue(of([]));
+      service.getList().subscribe(callback);
       expect(callback).toHaveBeenCalledWith([]);
     });
 
@@ -99,14 +99,14 @@ describe('DefaultAddressService', () => {
       it('should get addresses for current user and be cached when subscribed a second time', () => {
         const trigger$ = new Subject();
 
-        trigger$.pipe(mergeMap(() => service.getAll())).subscribe(callback);
+        trigger$.pipe(mergeMap(() => service.getList())).subscribe(callback);
         trigger$.next('');
 
         expect(callback).toHaveBeenNthCalledWith(1, mockNormalizedAddresses);
 
         trigger$.next('');
 
-        expect(adapter.getAll).toHaveBeenCalledTimes(1);
+        expect(adapter.getList).toHaveBeenCalledTimes(1);
         expect(callback).toHaveBeenNthCalledWith(2, mockNormalizedAddresses);
       });
     });
@@ -114,13 +114,13 @@ describe('DefaultAddressService', () => {
 
   describe('getAddress', () => {
     it('should return an observable', () => {
-      expect(service.getAll()).toBeInstanceOf(Observable);
+      expect(service.getList()).toBeInstanceOf(Observable);
     });
 
     describe('when address list is empty', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-        adapter.getAll.mockReturnValue(of([]));
+        adapter.getList.mockReturnValue(of([]));
       });
 
       it('should return null', () => {
@@ -132,7 +132,7 @@ describe('DefaultAddressService', () => {
     describe('when address id is wrong', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-        adapter.getAll.mockReturnValue(of([mockCurrentAddress]));
+        adapter.getList.mockReturnValue(of([mockCurrentAddress]));
       });
 
       it('should return null', () => {
@@ -144,7 +144,7 @@ describe('DefaultAddressService', () => {
     describe('when address id is correct', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
-        adapter.getAll.mockReturnValue(of([mockCurrentAddress]));
+        adapter.getList.mockReturnValue(of([mockCurrentAddress]));
       });
 
       it('should return null', () => {
@@ -160,7 +160,7 @@ describe('DefaultAddressService', () => {
     });
 
     it('should get no address for a guest user', async () => {
-      adapter.getAll.mockReturnValue(of([]));
+      adapter.getList.mockReturnValue(of([]));
       const result = await firstValueFrom(service.getCurrent());
 
       expect(result).toEqual(null);
@@ -182,7 +182,7 @@ describe('DefaultAddressService', () => {
 
         trigger$.next('');
 
-        expect(adapter.getAll).toHaveBeenCalledTimes(1);
+        expect(adapter.getList).toHaveBeenCalledTimes(1);
         expect(callback).toHaveBeenNthCalledWith(2, mockCurrentAddress);
       });
     });

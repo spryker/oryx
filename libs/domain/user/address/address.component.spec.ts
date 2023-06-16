@@ -19,7 +19,7 @@ import { addressComponent } from './address.def';
 
 class MockAddressService implements Partial<AddressService> {
   get = vi.fn().mockReturnValue(of(mockCurrentAddress));
-  getAll = vi.fn();
+  getList = vi.fn();
 }
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());

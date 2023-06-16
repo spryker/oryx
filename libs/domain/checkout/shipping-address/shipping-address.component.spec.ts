@@ -32,7 +32,7 @@ export class MockCheckoutStateService implements Partial<CheckoutStateService> {
 }
 
 class MockAddressService implements Partial<AddressService> {
-  getAll = vi.fn().mockReturnValue(of([]));
+  getList = vi.fn().mockReturnValue(of([]));
 }
 
 const mockAddress = { id: 'foo' };
@@ -103,7 +103,7 @@ describe('CheckoutShippingAddressComponent', () => {
 
   describe('when there is a list of addresses', () => {
     beforeEach(async () => {
-      addressService.getAll.mockReturnValue([1, 2, 3]);
+      addressService.getList.mockReturnValue([1, 2, 3]);
       element = await fixture(
         html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address>`
       );
@@ -120,7 +120,7 @@ describe('CheckoutShippingAddressComponent', () => {
     describe('and there is no pre-selected address', () => {
       describe('and there is a default shipping address', () => {
         beforeEach(async () => {
-          addressService.getAll.mockReturnValue([
+          addressService.getList.mockReturnValue([
             mockAddress,
             { id: 'bar', isDefaultShipping: true } as Address,
             3,
@@ -141,7 +141,7 @@ describe('CheckoutShippingAddressComponent', () => {
 
       describe('and there is no default shipping address', () => {
         beforeEach(async () => {
-          addressService.getAll.mockReturnValue([mockAddress, 2, 3]);
+          addressService.getList.mockReturnValue([mockAddress, 2, 3]);
           checkoutStateService.get.mockReturnValue(of(null));
           element = await fixture(
             html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address>`
@@ -179,7 +179,7 @@ describe('CheckoutShippingAddressComponent', () => {
 
   describe('when there is no list of addresses', () => {
     beforeEach(async () => {
-      addressService.getAll.mockReturnValue([]);
+      addressService.getList.mockReturnValue([]);
       element = await fixture(
         html`<oryx-checkout-shipping-address></oryx-checkout-shipping-address>`
       );

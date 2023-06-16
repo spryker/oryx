@@ -27,7 +27,7 @@ const mockAddress: Address = {
 };
 class MockAddressService implements Partial<AddressService> {
   get = vi.fn().mockReturnValue(of(mockAddress));
-  getAll = vi.fn();
+  getList = vi.fn();
 }
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());

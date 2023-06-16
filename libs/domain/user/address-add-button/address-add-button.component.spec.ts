@@ -20,7 +20,7 @@ import {
 
 class MockAddressService implements Partial<AddressService> {
   get = vi.fn();
-  getAll = vi.fn();
+  getList = vi.fn();
   delete = vi.fn().mockReturnValue(of({}));
 }
 class MockRouterService implements Partial<RouterService> {

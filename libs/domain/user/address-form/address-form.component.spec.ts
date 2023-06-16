@@ -32,7 +32,7 @@ const mockCountries = [
 
 class MockAddressService implements Partial<AddressService> {
   getCurrent = vi.fn().mockReturnValue(of(null));
-  getAll = vi.fn().mockReturnValue(
+  getList = vi.fn().mockReturnValue(
     of([
       {
         id: 'sampleAddress',
@@ -302,7 +302,7 @@ describe('UserAddressFormComponent', () => {
 
     describe('and there is an address available with is set to default shipping', () => {
       beforeEach(async () => {
-        addressService.getAll.mockReturnValue(
+        addressService.getList.mockReturnValue(
           of([{ isDefaultShipping: true } as Address])
         );
         element = await fixture(html` <oryx-user-address-form
@@ -320,7 +320,7 @@ describe('UserAddressFormComponent', () => {
 
     describe('and there is no address available with is set to default billing', () => {
       beforeEach(async () => {
-        addressService.getAll.mockReturnValue(of([]));
+        addressService.getList.mockReturnValue(of([]));
         element = await fixture(html` <oryx-user-address-form
           enableDefaultShipping
         ></oryx-user-address-form>`);
@@ -353,7 +353,7 @@ describe('UserAddressFormComponent', () => {
 
     describe('and there is an address available with is set to default billing', () => {
       beforeEach(async () => {
-        addressService.getAll.mockReturnValue(
+        addressService.getList.mockReturnValue(
           of([{ isDefaultBilling: true } as Address])
         );
         element = await fixture(html` <oryx-user-address-form
@@ -371,7 +371,7 @@ describe('UserAddressFormComponent', () => {
 
     describe('and there is no address available with is set to default billing', () => {
       beforeEach(async () => {
-        addressService.getAll.mockReturnValue(of([]));
+        addressService.getList.mockReturnValue(of([]));
         element = await fixture(html` <oryx-user-address-form
           enableDefaultBilling
         ></oryx-user-address-form>`);

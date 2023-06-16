@@ -26,7 +26,7 @@ export class CheckoutShippingAddressComponent
 
   protected addressService = resolve(AddressService);
 
-  protected $addresses = signal(this.addressService.getAll());
+  protected $addresses = signal(this.addressService.getList());
   protected $selected = signal(
     this.checkoutStateService.get('shippingAddress')
   );
@@ -46,7 +46,7 @@ export class CheckoutShippingAddressComponent
   @query('oryx-checkout-address')
   protected checkoutAddress?: CheckoutAddressComponent;
 
-  protected override render(): TemplateResult | undefined {
+  protected override render(): TemplateResult | void {
     if (this.$addresses() === undefined) return;
 
     return html`

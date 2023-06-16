@@ -50,12 +50,12 @@ export class MockAddressService implements Partial<AddressService> {
   }
 
   get(addressId: string): Observable<Address | null> {
-    return this.getAll().pipe(
+    return this.getList().pipe(
       map((addresses) => addresses?.find(({ id }) => id === addressId) ?? null)
     );
   }
 
-  getAll(): Observable<Address[]> {
+  getList(): Observable<Address[]> {
     return this.type$.pipe(
       map((type) => {
         switch (type) {

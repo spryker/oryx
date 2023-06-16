@@ -21,7 +21,7 @@ import { checkoutAddressComponent } from './address.def';
 import { CheckoutAddressOptions } from './address.model';
 
 class MockAddressService implements Partial<AddressService> {
-  getAll = vi.fn();
+  getList = vi.fn();
 }
 class MockCheckoutStateService implements Partial<CheckoutStateService> {
   get = vi.fn();
@@ -122,7 +122,7 @@ describe('CheckoutAddressComponent', () => {
 
   describe('when there is no address list', () => {
     beforeEach(async () => {
-      addressService.getAll.mockReturnValue(of([]));
+      addressService.getList.mockReturnValue(of([]));
       element = await fixture(
         html`<oryx-checkout-address></oryx-checkout-address>`
       );
@@ -154,7 +154,7 @@ describe('CheckoutAddressComponent', () => {
 
     describe('when there is an address list', () => {
       beforeEach(async () => {
-        addressService.getAll.mockReturnValue(of([{}]));
+        addressService.getList.mockReturnValue(of([{}]));
       });
 
       describe('and the enableList option is false', () => {

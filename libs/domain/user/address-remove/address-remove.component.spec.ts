@@ -15,7 +15,7 @@ import { userAddressRemoveComponent } from './address-remove.def';
 const mockAddress: Address = { id: 'foo' };
 class MockAddressService implements Partial<AddressService> {
   get = vi.fn().mockReturnValue(of(mockAddress));
-  getAll = vi.fn().mockReturnValue(of([mockAddress]));
+  getList = vi.fn().mockReturnValue(of([mockAddress]));
   delete = vi.fn().mockReturnValue(of({}));
 }
 class MockRouterService implements Partial<RouterService> {

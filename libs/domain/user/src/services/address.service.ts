@@ -4,7 +4,7 @@ import { Address } from '../models';
 export interface AddressService {
   getCurrent(): Observable<Address | null>;
   get(addressId: string): Observable<Address | null>;
-  getAll(): Observable<Address[] | undefined>;
+  getList(): Observable<Address[] | undefined>;
   add(data: Address): Observable<unknown>;
   update(data: Address): Observable<unknown>;
   delete(data: Address): Observable<unknown>;
