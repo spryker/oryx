@@ -93,7 +93,7 @@ export class SearchBoxComponent
     };
     const suggestion = withSuggestion ? getSuggestions() : null;
 
-    this.toggleAttribute('stretched', this.hasCompleteData(suggestion));
+    this.toggleAttribute?.('stretched', this.hasCompleteData(suggestion));
 
     return suggestion;
   });
