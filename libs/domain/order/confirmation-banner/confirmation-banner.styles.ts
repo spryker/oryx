@@ -5,12 +5,11 @@ export const styles = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    line-height: 24px;
     background-color: var(--oryx-color-primary-3);
     padding-block-end: 48px;
   }
 
-  oryx-heading {
+  section {
     display: flex;
     align-items: center;
     color: var(--oryx-color-primary-9);
@@ -18,12 +17,8 @@ export const styles = css`
     margin: 40px 0 16px;
   }
 
-  h1 {
-    font-size: 26px;
-    line-height: 38px;
-  }
-
   p {
     margin: 0;
+    line-height: 24px;
   }
 `;
