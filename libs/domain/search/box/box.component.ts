@@ -7,11 +7,15 @@ import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { ClearIconPosition } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
 import {
-  asyncState,
+  computed,
+  effect,
+  elementEffect,
   hydratable,
+  signal,
+  signalAware,
+  signalProperty,
   Size,
   subscribe,
-  valueType,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -23,17 +27,12 @@ import {
   catchError,
   debounce,
   defer,
-  distinctUntilChanged,
   filter,
   fromEvent,
-  map,
   of,
-  startWith,
   Subject,
-  switchMap,
   tap,
   timer,
-  withLatestFrom,
 } from 'rxjs';
 import { SearchBoxOptions, SearchBoxProperties } from './box.model';
 import {
@@ -43,6 +42,18 @@ import {
 } from './controllers';
 import { baseStyles, searchboxStyles } from './styles';
 
+function debounce2(func: () => unknown, timeout = 300) {
+  let timer: NodeJS.Timeout;
+  return (...args: any) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      func.apply(this, args);
+    }, timeout);
+  };
+}
+
 @defaultOptions({
   minChars: 2,
   completionsCount: 5,
@@ -51,15 +62,20 @@ import { baseStyles, searchboxStyles } from './styles';
   cmsCount: 0,
 })
 @hydratable(['mouseover', 'focusin'])
+@signalAware()
 export class SearchBoxComponent
   extends ContentMixin<SearchBoxOptions>(LitElement)
   implements SearchBoxProperties
 {
   static styles = [baseStyles, searchboxStyles];
 
+  @signalProperty({ type: String }) query = '';
+  @property({ type: Boolean, reflect: true }) protected stretched = false;
+
   protected suggestionService = resolve(SuggestionService);
   protected routerService = resolve(RouterService);
   protected semanticLinkService = resolve(SemanticLinkService);
+  protected i18nService = resolve(I18nService);
 
   protected scrollingAreaController = new ScrollingAreaController(this);
   protected queryControlsController = new QueryControlsController();
@@ -67,37 +83,33 @@ export class SearchBoxComponent
 
   protected triggerInputValue$ = new Subject<string>();
 
-  protected suggestion$ = this.triggerInputValue$.pipe(
-    debounce(() => timer(300)),
-    startWith(''),
-    map((q) => q.trim()),
-    distinctUntilChanged(),
-    withLatestFrom(this.options$),
-    switchMap(([query, options]) => {
-      if (query && (!options.minChars || query.length >= options.minChars)) {
-        return this.suggestionService.get({ query }).pipe(
-          map((raw) =>
-            raw
-              ? {
-                  completion: raw.completion.slice(0, options.completionsCount),
-                  products: raw.products?.slice(0, options.productsCount) ?? [],
-                  categories: raw.categories.slice(0, options.categoriesCount),
-                  cmsPages: raw.cmsPages.slice(0, options.cmsCount),
-                }
-              : null
-          )
-        );
-      }
+  protected $suggestion = computed(() => {
+    const options = this.$options();
+    // debounce
+    // debounce2(() => timer(300)),
+    if (
+      this.query &&
+      (!options.minChars || this.query.length >= options.minChars)
+    ) {
+      const raw = signal(this.suggestionService.get({ query: this.query }))();
 
-      return of(null);
-    }),
-    tap((suggestion) => {
-      this.stretched = this.hasCompleteData(suggestion);
-    })
-  );
+      return raw
+        ? {
+            completion: raw.completion.slice(0, options.completionsCount),
+            products: raw.products?.slice(0, options.productsCount) ?? [],
+            categories: raw.categories.slice(0, options.categoriesCount),
+            cmsPages: raw.cmsPages.slice(0, options.cmsCount),
+          }
+        : null;
+    }
 
-  @asyncState()
-  protected suggestion = valueType(this.suggestion$);
+    return null;
+  });
+
+  @elementEffect()
+  protected effectChanging = effect(() => {
+    this.stretched = this.hasCompleteData(this.$suggestion());
+  });
 
   @subscribe()
   protected scrollEvent = defer(() =>
@@ -113,9 +125,9 @@ export class SearchBoxComponent
     })
   );
 
-  @property({ type: String }) query = '';
-  @property({ type: Boolean, reflect: true })
-  protected stretched = false;
+  protected $placeholder = signal(
+    this.i18nService.translate(['search', 'search.placeholder'])
+  );
 
   protected firstUpdated(): void {
     if (this.query) {
@@ -211,7 +223,9 @@ export class SearchBoxComponent
     return this.hasLinks(suggestion) && this.hasProducts(suggestion);
   }
 
-  protected renderSuggestion(suggestion?: Suggestion | null): TemplateResult {
+  protected renderSuggestion(): TemplateResult {
+    const suggestion = this.$suggestion();
+
     if (!suggestion) {
       return html``;
     }
@@ -234,13 +248,6 @@ export class SearchBoxComponent
     `;
   }
 
-  protected i18nService = resolve(I18nService);
-
-  @asyncState()
-  protected placeholder = valueType(
-    this.i18nService.translate(['search', 'search.placeholder'])
-  );
-
   protected override render(): TemplateResult {
     return html`
       <form @submit=${this.onSubmit}>
@@ -251,9 +258,9 @@ export class SearchBoxComponent
           <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
           <input
             ${ref(this.inputRef)}
-            placeholder=${ifDefined(this.placeholder)}
+            placeholder=${ifDefined(this.$placeholder())}
           />
-          ${this.renderSuggestion(this.suggestion)}
+          ${this.renderSuggestion()}
           ${when(this.query, () =>
             this.queryControlsController.renderControls()
           )}
