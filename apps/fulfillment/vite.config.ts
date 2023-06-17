@@ -71,7 +71,7 @@ export default defineConfig({
       },
     }),
     tsconfigPaths({ root: '../../' }),
-    checker({
+    checker.default({
       typescript: {
         tsconfigPath: 'tsconfig.app.json',
       },
