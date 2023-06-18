@@ -40,7 +40,7 @@ export const homePage: StaticComponent = {
       },
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'brands',
       options: {
         data: {

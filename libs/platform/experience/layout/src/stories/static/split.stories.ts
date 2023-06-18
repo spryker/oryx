@@ -66,7 +66,7 @@ const Template: Story = (): TemplateResult => {
     <h2>Sticky</h2>
     <oryx-layout layout="split-main">
       <div style="grid-column:span 2">1</div>
-      <oryx-layout sticky>
+      <oryx-layout layout-sticky>
         <div style="background:var(--oryx-color-secondary-9);">2 (sticky)</div>
       </oryx-layout>
       ${generateLayoutItems(3, 3)}

@@ -4,6 +4,7 @@ import {
   computed,
   signal,
   Signal,
+  signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
@@ -38,6 +39,7 @@ export declare class AddressMixinInterface {
 export const AddressMixin = <T extends Type<LitElement>>(
   superClass: T
 ): Type<AddressMixinInterface> & T => {
+  @signalAware()
   class AddressMixinClass extends superClass {
     protected addressService = resolve(AddressService);
     protected addressStateService = resolve(AddressStateService);
@@ -46,7 +48,7 @@ export const AddressMixin = <T extends Type<LitElement>>(
     @signalProperty() addressId?: string;
     @signalProperty() address?: Address;
 
-    protected $addresses = signal(this.addressService.getAddresses());
+    protected $addresses = signal(this.addressService.getList());
 
     protected $addressState = signal(this.addressStateService.get());
 
@@ -68,7 +70,7 @@ export const AddressMixin = <T extends Type<LitElement>>(
       if (this.address) return this.address;
       const addressId = this.$addressId();
       if (addressId) {
-        return this.addressService.getAddress(addressId);
+        return this.addressService.get(addressId);
       }
       return null;
     });

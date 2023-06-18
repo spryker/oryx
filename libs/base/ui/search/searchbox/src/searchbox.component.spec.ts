@@ -1,6 +1,6 @@
+import { getShadowElementBySelector } from '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { getShadowElementBySelector } from '@spryker-oryx/testing';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/utilities';
 import { SearchboxComponent } from './searchbox.component';
@@ -8,7 +8,7 @@ import { searchboxComponent } from './searchbox.def';
 import {
   ClearIconAppearance,
   ClearIconPosition,
-  SearchEvent,
+  SearchEventDetail,
   SearchIconPosition,
 } from './searchbox.model';
 
@@ -212,7 +212,7 @@ describe('SearchComponent', () => {
     const itShouldDispatchSearchEvent = (value: string): void => {
       it(`should dispatch search event (${value})`, () =>
         new Promise<void>((done) => {
-          const emitter = ((ev: CustomEvent<SearchEvent>) => {
+          const emitter = ((ev: CustomEvent<SearchEventDetail>) => {
             expect(ev.detail?.query).toBe(value);
             done();
           }) as EventListener;
@@ -234,7 +234,7 @@ describe('SearchComponent', () => {
       describe('and the enter key is used', () => {
         it('should trigger the oryx.search event', () =>
           new Promise<void>((done) => {
-            const emitter = ((ev: CustomEvent<SearchEvent>) => {
+            const emitter = ((ev: CustomEvent<SearchEventDetail>) => {
               expect(ev.detail?.query).toBe('');
               done();
             }) as EventListener;
@@ -277,7 +277,7 @@ describe('SearchComponent', () => {
       describe('and the enter key is used', () => {
         it('should trigger the oryx.search event', () =>
           new Promise<void>((done) => {
-            const emitter = ((ev: CustomEvent<SearchEvent>) => {
+            const emitter = ((ev: CustomEvent<SearchEventDetail>) => {
               expect(ev.detail?.query).toBe('value123');
               done();
             }) as EventListener;

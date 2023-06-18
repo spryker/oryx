@@ -14,9 +14,9 @@ import { userAddressRemoveComponent } from './address-remove.def';
 
 const mockAddress: Address = { id: 'foo' };
 class MockAddressService implements Partial<AddressService> {
-  getAddress = vi.fn().mockReturnValue(of(mockAddress));
-  getAddresses = vi.fn().mockReturnValue(of([mockAddress]));
-  deleteAddress = vi.fn().mockReturnValue(of({}));
+  get = vi.fn().mockReturnValue(of(mockAddress));
+  getList = vi.fn().mockReturnValue(of([mockAddress]));
+  delete = vi.fn().mockReturnValue(of({}));
 }
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
@@ -81,7 +81,7 @@ describe('UserAddressRemoveComponent', () => {
     });
 
     it('should not get the address', () => {
-      expect(addressService.getAddress).not.toHaveBeenCalled();
+      expect(addressService.get).not.toHaveBeenCalled();
     });
   });
 
@@ -114,11 +114,11 @@ describe('UserAddressRemoveComponent', () => {
       });
 
       it('should load the address by id', () => {
-        expect(addressService.getAddress).toHaveBeenCalledWith(mockAddress.id);
+        expect(addressService.get).toHaveBeenCalledWith(mockAddress.id);
       });
 
       it('should delete the address', () => {
-        expect(addressService.deleteAddress).toHaveBeenCalledWith(mockAddress);
+        expect(addressService.delete).toHaveBeenCalledWith(mockAddress);
       });
 
       it('should close the modal', () => {

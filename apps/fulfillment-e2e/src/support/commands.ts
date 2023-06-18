@@ -24,7 +24,10 @@ Cypress.Commands.add('login', (user = defaultUser) => {
   loginPage.visit();
   loginPage.loginForm.login(user);
 
-  cy.wait('@token');
+  // we have to wait for 5++ seconds here
+  // because our bundle is huge and Cypress is not able
+  // to cache all 500++ files fast enough
+  cy.wait('@token', { timeout: 10000 });
 
   cy.intercept('GET', '**/picking-lists?include*').as('picking-lists');
   cy.wait('@picking-lists');

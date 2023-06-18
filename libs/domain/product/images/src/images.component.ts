@@ -127,7 +127,7 @@ export class ProductImagesComponent extends ProductMixin(
     return html`<oryx-layout
       class="navigation"
       layout=${layout || NavigationLayout.Carousel}
-      ?vertical=${isVertical}
+      ?layout-vertical=${isVertical}
       style="--oryx-grid-item-size:${height};--image-fit:${objectFit};"
     >
       ${media.map(

@@ -9,7 +9,7 @@ export interface AddressRequestProps {
 }
 
 export interface AddressAdapter {
-  getAll: () => Observable<Address[]>;
+  getList: () => Observable<Address[]>;
   add: (data: Address) => Observable<Address>;
   update: (data: Address) => Observable<Address>;
   delete: (data: Address) => Observable<unknown>;

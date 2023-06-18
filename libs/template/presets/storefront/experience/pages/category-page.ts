@@ -7,7 +7,6 @@ export const categoryPage: StaticComponent = {
     route: '/category/:id',
     follow: true,
     index: true,
-    description: 'Category Page Description',
   },
   options: {
     data: {
@@ -28,7 +27,6 @@ export const categoryPage: StaticComponent = {
           rules: [
             {
               layout: 'grid',
-              vertical: true,
               gap: '1px',
               divider: true,
               sticky: true,
@@ -40,14 +38,14 @@ export const categoryPage: StaticComponent = {
       },
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'Product listing',
       options: {
         data: { rules: [{ layout: 'list', gap: '20px' }] },
       },
       components: [
         {
-          type: 'experience-composition',
+          type: 'oryx-composition',
           name: 'Product list header',
           options: { data: { rules: [{ layout: 'flex' }] } },
           components: [

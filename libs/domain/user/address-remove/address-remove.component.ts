@@ -62,7 +62,7 @@ export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
     const address = this.$address();
     if (address) {
       this.addressService
-        .deleteAddress(address)
+        .delete(address)
         .pipe(
           tap(() => {
             this.loading = false;
