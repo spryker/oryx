@@ -9,8 +9,8 @@
   package = "@netlify/plugin-lighthouse"
 
   [[plugins.inputs.audits]]
-    path = "/"
+    url = "/"
   [[plugins.inputs.audits]]
-    path = "/product/086_30521602"
+    url = "/product/086_30521602"
   [[plugins.inputs.audits]]
-    path = "/category/4"
+    url = "/category/4"
