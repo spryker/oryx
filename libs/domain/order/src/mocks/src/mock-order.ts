@@ -3,7 +3,7 @@ import { PriceMode } from '@spryker-oryx/cart';
 export const mockOrderData = {
   merchantReferences: [],
   itemStates: ['new'],
-  createdAt: 'mockdate',
+  createdAt: '1980-01-20',
   currencyIsoCode: 'EUR',
   priceMode: PriceMode.GrossMode,
   totals: {

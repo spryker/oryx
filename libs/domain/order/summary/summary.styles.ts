@@ -2,10 +2,8 @@ import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
-export const styles = css`
+export const orderSummaryStyles = css`
   h2 {
-    ${headingUtil(HeadingTag.H3)};
-
     margin: 32px 0;
   }
 
@@ -22,7 +20,7 @@ export const styles = css`
     flex: initial;
   }
 
-  .details {
+  section {
     gap: 8px;
     display: grid;
     grid-template-columns: max-content auto;
@@ -33,7 +31,7 @@ export const styles = css`
     align-items: center;
   }
 
-  .details:first-of-type {
+  section:first-of-type {
     grid-template-columns: 20px max-content auto;
     gap: 8px 6px;
   }
