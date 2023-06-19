@@ -22,7 +22,7 @@ describe('Product Detail Page', () => {
 
     it('should show correct content', () => {
       productDetailPage.getAvailability().should('be.visible');
-      pdp.getReferences().getProducts().should('not.exist');
+      pdp.getRelations().getProducts().should('not.exist');
     });
   });
 
@@ -35,7 +35,7 @@ describe('Product Detail Page', () => {
     });
 
     it('should show product references', () => {
-      pdp.getReferences().getProducts().should('be.visible');
+      pdp.getRelations().getProducts().should('be.visible');
     });
   });
 });
