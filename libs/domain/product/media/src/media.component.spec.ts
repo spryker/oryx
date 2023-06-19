@@ -3,27 +3,66 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   ImageSource,
+  Product,
   ProductImageService,
   ProductMediaContainerSize,
+  ProductService,
 } from '@spryker-oryx/product';
-import {
-  mockProductProviders,
-  MockProductService,
-} from '@spryker-oryx/product/mocks';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
 import { Size } from '@spryker-oryx/utilities';
 
+import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { html } from 'lit';
+import { of } from 'rxjs';
 import { ProductMediaComponent } from './media.component';
 import { productMediaComponent } from './media.def';
 
 class MockProductImageService implements Partial<ProductImageService> {
   resolveSources = vi.fn();
 }
+class MockProductService implements Partial<ProductService> {
+  get = vi.fn();
+}
+
+const img1 = {
+  sm: 'https://images.icecat.biz/img/gallery_mediums/29885545_9575.jpg',
+  lg: 'https://images.icecat.biz/img/gallery/29885545_9575.jpg',
+};
+const img2 = {
+  sm: 'https://images.icecat.biz/img/norm/medium/26138343-5454.jpg',
+  lg: 'https://images.icecat.biz/img/norm/high/26138343-5454.jpg',
+};
+
+const img3 = {
+  sm: 'https://images.icecat.biz/img/gallery_mediums/30663301_9631.jpg',
+  lg: 'https://images.icecat.biz/img/gallery/30663301_9631.jpg',
+};
+
+const images = [
+  {
+    ...img1,
+    xl: img1.lg,
+    externalUrlLarge: img1.lg,
+    externalUrlSmall: img1.sm,
+  },
+  {
+    ...img2,
+    xl: img2.lg,
+    externalUrlLarge: img2.lg,
+    externalUrlSmall: img2.sm,
+  },
+  {
+    ...img3,
+    xl: img3.lg,
+    externalUrlLarge: img3.lg,
+    externalUrlSmall: img3.sm,
+  },
+];
 
 describe('ProductMediaComponent', () => {
   let element: ProductMediaComponent;
   let service: MockProductImageService;
+  let productService: MockProductService;
 
   beforeAll(async () => {
     await useComponent([productMediaComponent]);
@@ -32,16 +71,23 @@ describe('ProductMediaComponent', () => {
   beforeEach(async () => {
     const testInjector = createInjector({
       providers: [
-        ...mockProductProviders,
         {
           provide: ProductImageService,
           useClass: MockProductImageService,
         },
+
+        {
+          provide: ContextService,
+          useClass: DefaultContextService,
+        },
+        {
+          provide: ProductService,
+          useClass: MockProductService,
+        },
       ],
     });
-    service = testInjector.inject(
-      ProductImageService
-    ) as MockProductImageService;
+    service = testInjector.inject<MockProductImageService>(ProductImageService);
+    productService = testInjector.inject<MockProductService>(ProductService);
   });
 
   afterEach(() => {
@@ -170,12 +216,22 @@ describe('ProductMediaComponent', () => {
       ]);
     });
 
-    describe('format', () => {
-      const mockProduct = MockProductService.mockProducts.find(
-        (p) => p.sku === '1'
+    beforeEach(() => {
+      productService.get.mockReturnValue(
+        of({
+          sku: '1',
+          name: 'Sample product',
+          mediaSet: [
+            {
+              name: 'default',
+              media: images,
+            },
+          ],
+        } as Product)
       );
-      const image = mockProduct?.mediaSet?.[0].media[0];
+    });
 
+    describe('format', () => {
       describe('when no format is requested', () => {
         beforeEach(async () => {
           element = await fixture(
@@ -183,9 +239,9 @@ describe('ProductMediaComponent', () => {
           );
         });
 
-        it('should request images for the Gallery format', () => {
+        it('should request images for the Detail format', () => {
           expect(service.resolveSources).toHaveBeenCalledWith(
-            image,
+            images[0],
             ProductMediaContainerSize.Detail
           );
         });
@@ -203,7 +259,7 @@ describe('ProductMediaComponent', () => {
 
         it('should request images for the Thumbnail format', () => {
           expect(service.resolveSources).toHaveBeenCalledWith(
-            image,
+            images[0],
             ProductMediaContainerSize.Thumbnail
           );
         });
@@ -211,20 +267,16 @@ describe('ProductMediaComponent', () => {
     });
 
     describe('mediaIndex', () => {
-      const mockProduct = MockProductService.mockProducts.find(
-        (p) => p.sku === '3'
-      );
       describe('when no mediaIndex is provided', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-product-media sku="3"></oryx-product-media>`
+            html`<oryx-product-media sku="1"></oryx-product-media>`
           );
         });
 
         it('should get the 1st image', () => {
-          const image = mockProduct?.mediaSet?.[0].media[0];
           expect(service.resolveSources).toHaveBeenCalledWith(
-            image,
+            images[0],
             ProductMediaContainerSize.Detail
           );
         });
@@ -234,19 +286,15 @@ describe('ProductMediaComponent', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-product-media
-              sku="3"
+              sku="1"
               .options=${{ mediaIndex: 1 }}
             ></oryx-product-media>`
           );
         });
 
         it('should get the 2nd image', () => {
-          const mockProduct = MockProductService.mockProducts.find(
-            (p) => p.sku === '3'
-          );
-          const image = mockProduct?.mediaSet?.[0].media[1];
           expect(service.resolveSources).toHaveBeenCalledWith(
-            image,
+            images[1],
             ProductMediaContainerSize.Detail
           );
         });
@@ -262,9 +310,8 @@ describe('ProductMediaComponent', () => {
         });
 
         it('should reflect the product name on the alt attribute', () => {
-          const image = element.renderRoot.querySelector('oryx-image');
-
           expect(element).toContainElement(`oryx-image`);
+          const image = element.renderRoot.querySelector('oryx-image');
           expect(image).toHaveProperty('alt', 'Sample product');
         });
       });

@@ -33,7 +33,7 @@ export class ProductPriceComponent extends ProductMixin(
 
   protected pricingService = resolve(PricingService);
 
-  protected prices = computed(() => {
+  protected $prices = computed(() => {
     return this.formatPrices(this.$product()?.price);
   });
 
@@ -45,7 +45,7 @@ export class ProductPriceComponent extends ProductMixin(
   }
 
   protected renderSalesPrice(): TemplateResult | void {
-    const { original, sales } = this.prices() ?? {};
+    const { original, sales } = this.$prices() ?? {};
 
     if (!sales && !original) return;
 
@@ -59,7 +59,7 @@ export class ProductPriceComponent extends ProductMixin(
   protected renderTaxMessage(): TemplateResult | void {
     if (
       !this.$options().enableTaxMessage ||
-      (!this.prices()?.sales && !this.prices()?.original)
+      (!this.$prices()?.sales && !this.$prices()?.original)
     )
       return;
 
@@ -75,7 +75,7 @@ export class ProductPriceComponent extends ProductMixin(
   }
 
   protected renderOriginalPrice(): TemplateResult | void {
-    const { original, sales } = this.prices() ?? {};
+    const { original, sales } = this.$prices() ?? {};
     if (!this.$options().enableOriginalPrice || !sales || !original) {
       return;
     }
