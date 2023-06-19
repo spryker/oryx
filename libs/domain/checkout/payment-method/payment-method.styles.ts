@@ -16,6 +16,7 @@ export const styles = css`
   .no-methods {
     text-align: center;
     line-height: 22px;
+    margin: 0;
   }
 
   oryx-radio {

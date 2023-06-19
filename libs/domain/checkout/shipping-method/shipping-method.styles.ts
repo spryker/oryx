@@ -23,6 +23,7 @@ export const styles = css`
 
     text-align: center;
     line-height: 22px;
+    margin: 0;
   }
 
   div {
