@@ -11,8 +11,8 @@ import { MockProductService } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
-import { ProductReferencesComponent } from './references.component';
-import { productReferencesComponent } from './references.def';
+import { ProductReferencesComponent } from './relations.component';
+import { productReferencesComponent } from './relations.def';
 
 const mockSku = MockProductService.mockProducts[0].sku;
 
@@ -41,7 +41,7 @@ describe('ReferencesComponent', () => {
 
   const renderElement = async (): Promise<ProductReferencesComponent> => {
     return await fixture(
-      html`<oryx-product-references></oryx-product-references>`
+      html`<oryx-product-relations></oryx-product-relations>`
     );
   };
 

@@ -1,8 +1,8 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { ProductReferencesComponent } from './references.component';
+import { ProductReferencesComponent } from './relations.component';
 
-export const referencesSchema: ContentComponentSchema<ProductReferencesComponent> =
+export const relationsSchema: ContentComponentSchema<ProductReferencesComponent> =
   {
     name: 'Product References',
     group: 'Product',
