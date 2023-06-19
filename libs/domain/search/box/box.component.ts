@@ -19,6 +19,8 @@ import { TypeaheadComponent } from '@spryker-oryx/ui/typeahead';
 import {
   computed,
   debounce,
+  effect,
+  elementEffect,
   hydratable,
   i18n,
   signal,
@@ -32,6 +34,7 @@ import { query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
+import { BehaviorSubject, switchMap } from 'rxjs';
 import { SearchBoxOptions, SearchBoxProperties } from './box.model';
 import { baseStyles, searchBoxStyles } from './styles';
 
@@ -66,13 +69,22 @@ export class SearchBoxComponent
   protected semanticLinkService = resolve(SemanticLinkService);
   protected i18nService = resolve(I18nService);
 
+  // TODO: simplify it when we find easier way how to skip emission of initialValue for each observable recreation
+  protected query$ = new BehaviorSubject(this.query);
+  protected suggestion$ = this.query$.pipe(
+    switchMap((query) => this.suggestionService.get({ query }))
+  );
+
+  @elementEffect()
+  protected queryEffect = effect(() => this.query$.next(this.query));
+  protected $raw = computed(() => this.suggestion$);
   protected $suggestion = computed(() => {
     const options = this.$options();
     const withSuggestion =
       this.query &&
       (!options.minChars || this.query.length >= options.minChars);
     const getSuggestions = () => {
-      const raw = signal(this.suggestionService.get({ query: this.query }))();
+      const raw = this.$raw();
 
       return raw
         ? {
