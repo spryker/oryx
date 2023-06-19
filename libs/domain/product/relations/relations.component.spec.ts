@@ -11,8 +11,8 @@ import { MockProductService } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
-import { ProductReferencesComponent } from './relations.component';
-import { productReferencesComponent } from './relations.def';
+import { ProductRelationsComponent } from './relations.component';
+import { productRelationsComponent } from './relations.def';
 
 const mockSku = MockProductService.mockProducts[0].sku;
 
@@ -35,18 +35,18 @@ class MockLayoutService implements Partial<LayoutService> {
 }
 
 describe('ReferencesComponent', () => {
-  let element: ProductReferencesComponent;
+  let element: ProductRelationsComponent;
   let mockAlternativeProductsService: MockAlternativeProductsListService;
   let mockContextService: MockContextService;
 
-  const renderElement = async (): Promise<ProductReferencesComponent> => {
+  const renderElement = async (): Promise<ProductRelationsComponent> => {
     return await fixture(
       html`<oryx-product-relations></oryx-product-relations>`
     );
   };
 
   beforeAll(async () => {
-    await useComponent(productReferencesComponent);
+    await useComponent(productRelationsComponent);
   });
 
   beforeEach(async () => {
@@ -92,7 +92,7 @@ describe('ReferencesComponent', () => {
   });
 
   it('is defined', () => {
-    expect(element).toBeInstanceOf(ProductReferencesComponent);
+    expect(element).toBeInstanceOf(ProductRelationsComponent);
   });
 
   describe('when there is no product SKU in the context', () => {

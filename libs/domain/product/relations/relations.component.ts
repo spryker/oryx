@@ -11,7 +11,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { of } from 'rxjs';
 
 @hydratable()
-export class ProductReferencesComponent extends ProductMixin(
+export class ProductRelationsComponent extends ProductMixin(
   LayoutMixin(LitElement)
 ) {
   protected alternativeProductsListService = resolve(
