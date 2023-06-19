@@ -11,10 +11,8 @@ import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
-  effect,
   elementEffect,
   hydratable,
-  signalAware,
   Size,
   ssrShim,
 } from '@spryker-oryx/utilities';
@@ -35,7 +33,6 @@ import { ProductCardStyles } from './card.styles';
 })
 @ssrShim('style')
 @hydratable(['mouseover', 'focusin'])
-@signalAware()
 export class ProductCardComponent extends ProductMixin(
   ContentMixin<ProductCardOptions>(LitElement)
 ) {
@@ -52,9 +49,12 @@ export class ProductCardComponent extends ProductMixin(
   );
 
   @elementEffect()
-  protected skuController = effect(() => {
-    this.context.provide(ProductContext.SKU, this.$options().sku ?? this.sku);
-  });
+  protected skuController = (): void => {
+    const sku = this.$options().sku;
+    if (sku) {
+      this.context.provide(ProductContext.SKU, sku);
+    }
+  };
 
   protected override render(): TemplateResult | void {
     const product = this.$product();

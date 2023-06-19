@@ -37,7 +37,7 @@ export class ProductAvailabilityComponent extends ProductMixin(
   });
 
   protected override render(): TemplateResult | void {
-    return html` ${when(
+    return html`${when(
       this.$options().enableIndicator,
       () => html`<oryx-swatch .type=${this.getAlertType()}></oryx-swatch>`
     )}
