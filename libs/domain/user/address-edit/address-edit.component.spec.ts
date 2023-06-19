@@ -21,10 +21,10 @@ import {
 } from './address-edit.model';
 
 class MockAddressService implements Partial<AddressService> {
-  getAddress = vi.fn().mockReturnValue(of({}));
-  updateAddress = vi.fn().mockReturnValue(of(null));
-  addAddress = vi.fn().mockReturnValue(of(null));
-  getAddresses = vi.fn();
+  get = vi.fn().mockReturnValue(of({}));
+  update = vi.fn().mockReturnValue(of(null));
+  add = vi.fn().mockReturnValue(of(null));
+  getList = vi.fn();
 }
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
@@ -196,7 +196,7 @@ describe('UserAddressEditComponent', () => {
       });
 
       it('should not submit the new address right away', () => {
-        expect(addressService.addAddress).not.toHaveBeenCalled();
+        expect(addressService.add).not.toHaveBeenCalled();
       });
 
       describe('but when the submit method is called', () => {
@@ -205,7 +205,7 @@ describe('UserAddressEditComponent', () => {
         });
 
         it('should submit the changed address', () => {
-          expect(addressService.addAddress).toHaveBeenCalledWith({
+          expect(addressService.add).toHaveBeenCalledWith({
             ...newAddress,
             isDefaultBilling: false,
             isDefaultShipping: false,
@@ -231,7 +231,7 @@ describe('UserAddressEditComponent', () => {
       });
 
       it('should not submit the updated address right away', () => {
-        expect(addressService.updateAddress).not.toHaveBeenCalled();
+        expect(addressService.update).not.toHaveBeenCalled();
       });
 
       describe('but when the submit method is called', () => {
@@ -240,7 +240,7 @@ describe('UserAddressEditComponent', () => {
         });
 
         it('should submit the changed address', () => {
-          expect(addressService.updateAddress).toHaveBeenCalledWith({
+          expect(addressService.update).toHaveBeenCalledWith({
             ...updatedAddress,
             isDefaultBilling: false,
             isDefaultShipping: false,
@@ -282,7 +282,7 @@ describe('UserAddressEditComponent', () => {
       });
 
       it('should not submit the new address right away', () => {
-        expect(addressService.addAddress).not.toHaveBeenCalled();
+        expect(addressService.add).not.toHaveBeenCalled();
       });
     });
 
@@ -299,7 +299,7 @@ describe('UserAddressEditComponent', () => {
       });
 
       it('should not submit the updated address right away', () => {
-        expect(addressService.updateAddress).not.toHaveBeenCalled();
+        expect(addressService.update).not.toHaveBeenCalled();
       });
     });
   });
@@ -332,7 +332,7 @@ describe('UserAddressEditComponent', () => {
       });
 
       it('should submit the changed address', () => {
-        expect(addressService.addAddress).toHaveBeenCalledWith({
+        expect(addressService.add).toHaveBeenCalledWith({
           ...newAddress,
           isDefaultBilling: false,
           isDefaultShipping: false,
@@ -357,7 +357,7 @@ describe('UserAddressEditComponent', () => {
       });
 
       it('should submit the changed address', () => {
-        expect(addressService.updateAddress).toHaveBeenCalledWith({
+        expect(addressService.update).toHaveBeenCalledWith({
           ...updatedAddress,
           isDefaultBilling: false,
           isDefaultShipping: false,

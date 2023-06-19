@@ -19,9 +19,9 @@ import {
 } from './address-add-button.model';
 
 class MockAddressService implements Partial<AddressService> {
-  getAddress = vi.fn();
-  getAddresses = vi.fn();
-  deleteAddress = vi.fn().mockReturnValue(of({}));
+  get = vi.fn();
+  getList = vi.fn();
+  delete = vi.fn().mockReturnValue(of({}));
 }
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
@@ -121,7 +121,10 @@ describe('UserAddressAddButtonComponent', () => {
       });
 
       it('should set the state to Create', () => {
-        expect(addressStateService.set).toHaveBeenCalledWith(CrudState.Create);
+        expect(addressStateService.set).toHaveBeenCalledWith(
+          CrudState.Create,
+          null
+        );
       });
     });
   });
@@ -149,7 +152,10 @@ describe('UserAddressAddButtonComponent', () => {
       });
 
       it('should set the state to Create', () => {
-        expect(addressStateService.set).toHaveBeenCalledWith(CrudState.Create);
+        expect(addressStateService.set).toHaveBeenCalledWith(
+          CrudState.Create,
+          null
+        );
       });
     });
   });
@@ -177,7 +183,10 @@ describe('UserAddressAddButtonComponent', () => {
       });
 
       it('should set the state to Create', () => {
-        expect(addressStateService.set).toHaveBeenCalledWith(CrudState.Create);
+        expect(addressStateService.set).toHaveBeenCalledWith(
+          CrudState.Create,
+          null
+        );
       });
     });
 

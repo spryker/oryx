@@ -2,8 +2,8 @@ import { CartPage } from '../support/page_objects/cart.page';
 import { CheckoutPage } from '../support/page_objects/checkout.page';
 import { ThankYouPage } from '../support/page_objects/thank-you.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { defaultUser } from '../test-data/default-user';
 import { ProductStorage } from '../test-data/product.storage';
+import { TestCustomerData } from '../types/user.type';
 
 let sccosApi: SCCOSApi;
 let thankYouPage: ThankYouPage;
@@ -16,21 +16,25 @@ const checkoutPage = new CheckoutPage();
 describe('Checkout suite', () => {
   describe('Create a new order by authorized user without addresses', () => {
     beforeEach(() => {
-      cy.login(defaultUser);
+      cy.login();
 
       sccosApi = new SCCOSApi();
 
-      cy.customerCartsCleanup(sccosApi, defaultUser);
-      cy.customerAddressesCleanup(sccosApi, defaultUser);
+      cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+        cy.customerCartsCleanup(sccosApi, customer);
+        cy.customerAddressesCleanup(sccosApi, customer);
+      });
     });
 
     it('must allow user to create a new order', () => {
       const productData = ProductStorage.getProductByEq(2);
 
-      sccosApi.carts
-        .customersGet(defaultUser.id)
-        .its('body.data[0].id')
-        .as('cartId');
+      cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+        sccosApi.carts
+          .customersGet(customer.id)
+          .its('body.data[0].id')
+          .as('cartId');
+      });
 
       cy.get<string>('@cartId').then((cartId) => {
         sccosApi.cartItems.post(productData, 1, cartId);

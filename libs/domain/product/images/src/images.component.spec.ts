@@ -249,7 +249,7 @@ describe('ProductImagesComponent', () => {
         });
 
         it('should set vertical attribute on navigation layout', () => {
-          expect(element).toContainElement(`.navigation[vertical]`);
+          expect(element).toContainElement(`.navigation[layout-vertical]`);
         });
       });
 
@@ -266,7 +266,7 @@ describe('ProductImagesComponent', () => {
         });
 
         it('should set vertical attribute on navigation layout', () => {
-          expect(element).toContainElement(`.navigation[vertical]`);
+          expect(element).toContainElement(`.navigation[layout-vertical]`);
         });
       });
     });

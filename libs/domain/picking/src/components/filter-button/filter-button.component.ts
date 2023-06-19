@@ -13,20 +13,20 @@ import { map, tap } from 'rxjs';
 
 @signalAware()
 export class FilterButtonComponent extends LitElement {
+  protected pickingListService = resolve(PickingListService);
+
   @query('oryx-picking-filters') protected filters?: HTMLElement;
   @query('input') protected input?: HTMLInputElement;
 
   protected $selectedFilters = signal(
-    resolve(PickingListService)
-      .getSortingQualifier()
-      .pipe(
-        map(this.hasSelectedFilter),
-        tap((hasSelected) => {
-          if (this.input) {
-            this.input.checked = hasSelected;
-          }
-        })
-      )
+    this.pickingListService.getSortingQualifier().pipe(
+      map(this.hasSelectedFilter),
+      tap((hasSelected) => {
+        if (this.input) {
+          this.input.checked = hasSelected;
+        }
+      })
+    )
   );
 
   protected override render(): TemplateResult {

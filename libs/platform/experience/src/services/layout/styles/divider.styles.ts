@@ -16,10 +16,8 @@ export const styles: LayoutStyles = {
       background-color: var(--oryx-color-divider, var(--oryx-color-neutral-6));
     }
 
-    :host(:not([vertical]):not([class*='vertical']))
-      *:not(:first-child)::before,
-    :host(:not([vertical]):not([class*='vertical']))
-      ::slotted(*:not(:first-child))::before {
+    :host(:not([layout-vertical])) *:not(:first-child)::before,
+    :host(:not([layout-vertical])) ::slotted(*:not(:first-child))::before {
       width: var(--oryx-divider-width, 1px);
       height: 100%;
       transform: translateX(
@@ -32,10 +30,8 @@ export const styles: LayoutStyles = {
       );
     }
 
-    :host([vertical]) *:not(:first-child)::before,
-    :host([vertical]) ::slotted(*:not(:first-child))::before,
-    :host([class*='vertical']) *:not(:first-child)::before,
-    :host([class*='vertical']) ::slotted(*:not(:first-child))::before {
+    :host([layout-vertical]) *:not(:first-child)::before,
+    :host([layout-vertical]) ::slotted(*:not(:first-child))::before {
       width: 100%;
       height: var(--oryx-divider-width, 1px);
       transform: translateY(
