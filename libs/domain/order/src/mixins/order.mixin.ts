@@ -23,7 +23,7 @@ export const OrderMixin = <
 ): Type<OrderMixinInterface> & T => {
   @signalAware()
   class OrderMixinClass extends superClass {
-    @property({ attribute: 'order-id' }) orderId?: string;
+    @property() orderId?: string;
 
     protected orderController = new OrderController(this);
 

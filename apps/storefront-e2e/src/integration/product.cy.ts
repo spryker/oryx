@@ -20,8 +20,22 @@ describe('Product Detail Page', () => {
       pdp.visit();
     });
 
-    it('should render the availability status', () => {
+    it('should show correct content', () => {
       productDetailPage.getAvailability().should('be.visible');
+      pdp.getReferences().getProducts().should('not.exist');
+    });
+  });
+
+  describe('when product has reference products', () => {
+    const productData = ProductStorage.getProductByEq(5);
+    const pdp = new ProductDetailsPage(productData);
+
+    beforeEach(() => {
+      pdp.visit();
+    });
+
+    it('should show product references', () => {
+      pdp.getReferences().getProducts().should('be.visible');
     });
   });
 });
