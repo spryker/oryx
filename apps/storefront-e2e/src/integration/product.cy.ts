@@ -22,7 +22,7 @@ describe('Product Detail Page', () => {
 
     it('should show correct content', () => {
       productDetailPage.getAvailability().should('be.visible');
-      pdp.getReferences().getWrapper().should('not.exist');
+      pdp.getReferences().getProducts().should('not.exist');
     });
   });
 
