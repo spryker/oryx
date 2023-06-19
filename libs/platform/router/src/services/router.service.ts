@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 
 export interface RouterService {
   go(route: string, extras?: NavigationExtras): void;
-  back(skip?: number): void;
+  back(): void;
   previousRoute(): Observable<string | null>;
   navigate(route: string): void;
   getEvents(type: RouterEventType): Observable<RouterEvent>;

@@ -2,7 +2,7 @@ import { SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { BASE_ROUTE, RouteParams, RouterService } from '@spryker-oryx/router';
 import { html, ReactiveControllerHost, TemplateResult } from 'lit';
-import { fromEvent, Subscription, switchMap, take, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import {
   PathRouteConfig,
   RouteConfig,
@@ -13,8 +13,6 @@ import { LitRoutesRegistry } from './lit-routes-registry';
 
 const origin = location.origin || location.protocol + '//' + location.host;
 
-export const ROUTE_GUARDED_EVENT = 'oryx.route-guarded';
-
 export class LitRouter extends Routes {
   protected id?: string;
   protected routerService = resolve(RouterService);
@@ -23,8 +21,6 @@ export class LitRouter extends Routes {
   protected urlSearchParams?: RouteParams;
 
   protected baseRoute?: string;
-
-  protected subscription?: Subscription;
 
   constructor(
     protected host: ReactiveControllerHost & HTMLElement,
@@ -91,21 +87,7 @@ export class LitRouter extends Routes {
   override hostConnected(): void {
     super.hostConnected();
     window.addEventListener('click', this._onClick);
-    this.subscription = fromEvent(window, 'popstate')
-      .pipe(
-        switchMap(() => {
-          return this.handleRouteLeave().pipe(take(1));
-        }),
-        tap((success) => {
-          if (success) {
-            history.go(1);
-            window.dispatchEvent(new CustomEvent(ROUTE_GUARDED_EVENT, {}));
-            return;
-          }
-          this.goto(window.location.pathname);
-        })
-      )
-      .subscribe();
+    window.addEventListener('popstate', this._onPopState);
     // Kick off routed rendering by going to the current URL
     this.goto(window.location.pathname);
   }
@@ -113,7 +95,7 @@ export class LitRouter extends Routes {
   override hostDisconnected(): void {
     super.hostDisconnected();
     window.removeEventListener('click', this._onClick);
-    this.subscription?.unsubscribe();
+    window.removeEventListener('popstate', this._onPopState);
   }
 
   override async goto(pathname: string): Promise<void> {
@@ -184,5 +166,9 @@ export class LitRouter extends Routes {
       window.history.pushState({}, '', href);
       this.goto(anchor.pathname);
     }
+  };
+
+  private _onPopState = (_e: PopStateEvent) => {
+    this.goto(window.location.pathname);
   };
 }

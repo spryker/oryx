@@ -19,6 +19,7 @@ import { PickingListService } from './picking-list.service';
 
 export class PickingListDefaultService implements PickingListService {
   protected upcomingPickingListId$ = new BehaviorSubject<string | null>(null);
+  protected pickingInProgress$ = new BehaviorSubject<boolean>(false);
 
   constructor(protected adapter = inject(PickingListAdapter)) {}
 
@@ -56,7 +57,10 @@ export class PickingListDefaultService implements PickingListService {
         this.upcomingPickingListId$.next(null);
         return throwError(() => e);
       }),
-      tap(() => this.upcomingPickingListId$.next(null))
+      tap(() => {
+        this.pickingInProgress$.next(true);
+        this.upcomingPickingListId$.next(null);
+      })
     );
   }
 
@@ -69,6 +73,14 @@ export class PickingListDefaultService implements PickingListService {
   }
 
   finishPicking(pickingList: PickingList): Observable<PickingList> {
-    return this.adapter.finishPicking(pickingList);
+    return this.adapter.finishPicking(pickingList).pipe(
+      tap(() => {
+        this.pickingInProgress$.next(false);
+      })
+    );
+  }
+
+  pickingInProgress(): Observable<boolean> {
+    return this.pickingInProgress$;
   }
 }

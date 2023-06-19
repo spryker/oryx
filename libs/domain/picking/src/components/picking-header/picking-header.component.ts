@@ -5,6 +5,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
+import { take, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { PickingHeaderService } from '../../services';
 import { DiscardPickingComponent } from '../discard-modal';
@@ -24,9 +25,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   override connectedCallback(): void {
     super.connectedCallback();
 
-    window.addEventListener(ROUTE_GUARDED_EVENT, () => {
-      this.openDiscardModal();
-    });
+    window.addEventListener(ROUTE_GUARDED_EVENT, () => this.openDiscardModal());
   }
 
   protected renderCartNoteButton(): TemplateResult {
@@ -87,8 +86,13 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   }
 
   protected back(): void {
-    this.pickingHeaderService.setRouteGuard(false);
-    this.routerService.back();
+    this.pickingListService
+      .finishPicking(this.pickingList)
+      .pipe(
+        take(1),
+        tap(() => this.routerService.back())
+      )
+      .subscribe();
   }
 }
 

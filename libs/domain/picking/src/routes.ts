@@ -1,8 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouteConfig } from '@spryker-oryx/router/lit';
 import { html } from 'lit';
-import { Observable } from 'rxjs';
-import { PickingHeaderService } from './services';
+import { map, Observable, take } from 'rxjs';
+import { PickingListService } from './services';
 
 export const defaultPickingRoutes: RouteConfig[] = [
   {
@@ -13,12 +13,13 @@ export const defaultPickingRoutes: RouteConfig[] = [
     path: '/picking-list/picking/:id',
     render: ({ id }) =>
       html`<oryx-picking .pickingListId="${id}" mode-light></oryx-picking>`,
-    enter: (): boolean => {
-      resolve(PickingHeaderService).setRouteGuard(true);
-      return true;
-    },
     leave: (): Observable<boolean> => {
-      return resolve(PickingHeaderService).shouldGuardRoute();
+      return resolve(PickingListService)
+        .pickingInProgress()
+        .pipe(
+          take(1),
+          map((pickingInProgress) => !pickingInProgress)
+        );
     },
   },
   {

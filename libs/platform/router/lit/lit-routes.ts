@@ -7,7 +7,7 @@
 /// <reference types="urlpattern-polyfill" />
 
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
-import { Observable, of } from 'rxjs';
+import { lastValueFrom, Observable, of } from 'rxjs';
 
 export interface BaseRouteConfig {
   name?: string | undefined;
@@ -68,6 +68,8 @@ const getPattern = (route: RouteConfig) => {
   }
   return pattern;
 };
+
+export const ROUTE_GUARDED_EVENT = 'oryx.route-guarded';
 
 /**
  * A reactive controller that performs location-based routing using a
@@ -191,6 +193,20 @@ export class Routes implements ReactiveController {
       const result = pattern.exec({ pathname });
       const params = result?.pathname.groups ?? {};
       tailGroup = getTailGroup(params);
+
+      if (
+        typeof this._currentRoute?.leave === 'function' &&
+        this._currentRoute !== route
+      ) {
+        const success = await lastValueFrom(this._currentRoute.leave(params));
+        // If leave() returns false, cancel this navigation
+        if (success === false) {
+          history.go(1);
+          window.dispatchEvent(new CustomEvent(ROUTE_GUARDED_EVENT, {}));
+          return;
+        }
+      }
+
       if (typeof route.enter === 'function') {
         const success = await route.enter(params);
         // If enter() returns false, cancel this navigation
