@@ -10,11 +10,9 @@ import { ButtonComponent, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
-  effect,
   elementEffect,
   hydratable,
   i18n,
-  signal,
   Size,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -31,7 +29,6 @@ export class CartAddComponent extends ProductMixin(
   protected cartService = resolve(CartService);
 
   @state() protected isInvalid = false;
-  protected isInvalid2 = signal(false);
   @query('oryx-button') protected button?: ButtonComponent;
   @query('oryx-cart-quantity-input') protected input?: QuantityInputComponent;
 
@@ -69,9 +66,9 @@ export class CartAddComponent extends ProductMixin(
   }
 
   @elementEffect()
-  protected reset = effect(() => {
+  protected reset = (): void => {
     if (this.$product()) this.input?.reset?.();
-  });
+  };
 
   protected $hasStock = computed(() => {
     return (

@@ -41,7 +41,7 @@ describe('ProductIdComponent', () => {
     destroyInjector();
   });
 
-  describe.only('when a product is provided ', () => {
+  describe('when a product is provided ', () => {
     beforeEach(() => {
       productService.get.mockReturnValue(of({ sku: '123' }));
     });
