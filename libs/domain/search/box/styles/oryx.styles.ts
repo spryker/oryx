@@ -1,7 +1,7 @@
 import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
-export const searchboxStyles = css`
+export const searchBoxStyles = css`
   [slot='prefix'] {
     color: var(--oryx-color-neutral-11);
   }
