@@ -64,7 +64,6 @@ export class ProductDetailsPage extends AbstractSFPage {
     this.getWrapper().find('oryx-product-attributes').find('dt');
 
   getRelations = () => new ProductRelationsFragment();
-
   getAvailability = () => this.getWrapper().find('oryx-product-availability');
 
   addItemsToTheCart = (numberOfItems = 1) => {
