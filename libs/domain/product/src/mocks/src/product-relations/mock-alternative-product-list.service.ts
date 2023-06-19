@@ -10,9 +10,6 @@ export class MockAlternativeProductListService
   implements AlternativeProductsListService
 {
   get({ sku }: ProductQualifier): Observable<Product[] | undefined> {
-    if (isNaN(Number(sku))) {
-      return of([]);
-    }
     return of([
       MockProductService.mockProducts[Number(sku) - 1],
       MockProductService.mockProducts[Number(sku)],

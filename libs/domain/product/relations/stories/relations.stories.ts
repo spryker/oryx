@@ -10,7 +10,7 @@ export default {
   argTypes: {
     sku: {
       control: { type: 'select' },
-      options: ['1', '2', '5', 'not-found'],
+      options: ['1', '2', '5'],
       defaultValue: '1',
     },
   },
