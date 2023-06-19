@@ -1,9 +1,13 @@
 import { Type } from '@spryker-oryx/di';
+import {
+  ConnectableSignal,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { OrderController } from '../controllers';
 import { OrderComponentProperties, OrderData } from '../models';
-import { ConnectableSignal, signal, signalAware } from '@spryker-oryx/utilities';
 
 export declare class OrderMixinInterface implements OrderComponentProperties {
   orderId?: string;

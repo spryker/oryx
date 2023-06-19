@@ -1,16 +1,12 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { OrderMixin } from '@spryker-oryx/order';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import {
-  computed,
-  hydratable,
-  i18n,
-} from '@spryker-oryx/utilities';
+import { computed, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { OrderEntriesAttributes, OrderEntriesOptions } from './entries.model';
 import { orderEntriesStyles } from './entries.styles';
-import { property } from 'lit/decorators.js';
 
 @defaultOptions({
   limit: 5,
@@ -20,30 +16,26 @@ import { property } from 'lit/decorators.js';
   enableItemPrice: false,
 } as OrderEntriesOptions)
 @hydratable('window:load')
-export class OrderEntriesComponent extends OrderMixin(
-  ContentMixin<OrderEntriesOptions>(LitElement)
-) implements OrderEntriesAttributes {
+export class OrderEntriesComponent
+  extends OrderMixin(ContentMixin<OrderEntriesOptions>(LitElement))
+  implements OrderEntriesAttributes
+{
   static styles = orderEntriesStyles;
 
-  @property({type: Boolean}) expanded = false;
+  @property({ type: Boolean }) expanded = false;
 
-  protected $hasThreshold = computed(() => {
+  protected $isLimited = computed(() => {
     const order = this.$order();
-    const options = this.$options();
-    
-    if (!order || !options.limit || typeof options.threshold !== 'number') {
-      return false;
-    }
-    return order.items.length < options.limit + options.threshold;
+    const { limit = 0, threshold = 0 } = this.$options();
+
+    return limit && order.items.length > limit + threshold;
   });
 
   protected override render(): TemplateResult | void {
-    if (!this.$order) return;
+    if (!this.$order()) return;
 
     return html`
-      ${this.renderHeading()}
-      ${this.renderEntries()}
-      ${this.renderButton()}
+      ${this.renderHeading()} ${this.renderEntries()} ${this.renderButton()}
     `;
   }
 
@@ -60,12 +52,10 @@ export class OrderEntriesComponent extends OrderMixin(
   protected renderEntries(): TemplateResult {
     const order = this.$order();
     const options = this.$options();
-    const showAll = this.$hasThreshold() || this.expanded;
+    const showAll = !this.$isLimited() || this.expanded;
 
     return html`${repeat(
-      showAll ? 
-        order.items :
-        order.items.slice(0, options.limit),
+      showAll ? order.items : order.items.slice(0, options.limit),
       (entry) =>
         html`<oryx-cart-entry
           .key=${entry.uuid}
@@ -79,11 +69,13 @@ export class OrderEntriesComponent extends OrderMixin(
   }
 
   protected renderButton(): TemplateResult | void {
-    if (this.$hasThreshold()) return;
+    if (!this.$isLimited()) return;
+
+    const restItemsCount = this.$order().items.length - this.$options().limit!;
 
     return html`<oryx-button type="text">
       <button @click=${this.toggle}>
-        ${this.expanded ? '-' : '+'}${this.$order().items.length - (this.$options().limit ?? 0)}
+        ${this.expanded ? '-' : '+'}${restItemsCount}
         ${i18n(this.expanded ? 'order.less-products' : 'order.more-products')}
       </button>
     </oryx-button>`;

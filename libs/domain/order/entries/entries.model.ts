@@ -18,7 +18,7 @@ export interface OrderEntriesOptions extends CartEntryOptions {
    * along with toggle button
    *
    * @remarks
-   * The purpose of the `threshold` option is to provide a grace margin beyond `limit` 
+   * The purpose of the `threshold` option is to provide a grace margin beyond `limit`
    * where some additional items can be shown, based on a predefined threshold value.
    *
    * @example

@@ -17,10 +17,11 @@ export default {
   parameters: { chromatic: { disableSnapshot: true } },
 };
 
-const Template: Story<OrderEntriesOptions & OrderEntriesAttributes> = (
-  {expanded, ...options}
-): TemplateResult => {
-  return html`<oryx-order-entries 
+const Template: Story<OrderEntriesOptions & OrderEntriesAttributes> = ({
+  expanded,
+  ...options
+}): TemplateResult => {
+  return html`<oryx-order-entries
     ?expanded=${expanded}
     .options=${options}
   ></oryx-order-entries>`;
