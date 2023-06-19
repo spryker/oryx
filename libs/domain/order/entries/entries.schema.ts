@@ -7,14 +7,12 @@ export const orderEntriesSchema: ContentComponentSchema<OrderEntriesComponent> =
     group: 'Order',
     options: {
       limit: {
-        label: 'Limit',
         type: 'input',
         attributes: {
           type: 'number',
         },
       },
       threshold: {
-        label: 'Threshold',
         type: 'input',
         attributes: {
           type: 'number',
