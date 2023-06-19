@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "license": "Spryker",
-  "type": "module",
   "scripts": {},
   "dependencies": {
     "dexie": "^3.2.2",

@@ -1,4 +1,4 @@
-import 'dotenv/config';
+require('dotenv').config();
 const { createMockServer } = require('./server');
 
 const port = process.env.ORYX_FULFILLMENT_MOCK_PORT || 3001;
