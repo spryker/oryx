@@ -42,6 +42,14 @@ const products: TestProductData[] = [
     currentPriceWith10pDiscount: '333.81',
     previewImageURL: '/img/gallery_mediums/22196536_6541.jpg',
   },
+  {
+    id: '138_30046855',
+    title: 'Acer TravelMate P258-M',
+    originalPrice: '264.32',
+    currentPrice: '264.32',
+    currentPriceWith10pDiscount: '237.89',
+    previewImageURL: '/img/gallery_mediums/30046855_5806.jpg',
+  },
 ];
 
 export class ProductStorage {
