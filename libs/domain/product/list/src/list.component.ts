@@ -18,7 +18,7 @@ export class ProductListComponent extends LayoutMixin(
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);
 
-  protected list = computed(() => {
+  protected $list = computed(() => {
     const params = this.searchParams();
     return params
       ? this.productListService.get(params)
@@ -28,7 +28,7 @@ export class ProductListComponent extends LayoutMixin(
   protected override render(): TemplateResult {
     return html`
       ${repeat(
-        this.list()?.products || [],
+        this.$list()?.products || [],
         (p) => p.sku,
         (p) => html`<oryx-product-card .sku=${p.sku}></oryx-product-card>`
       )}

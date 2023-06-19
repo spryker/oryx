@@ -41,6 +41,7 @@ export class ProductCardComponent extends ProductMixin(
 ) {
   static styles = [ProductCardStyles];
 
+  protected context = new ContextController(this);
   protected semanticLinkService = resolve(SemanticLinkService);
 
   protected $link = computed(() =>
@@ -49,8 +50,6 @@ export class ProductCardComponent extends ProductMixin(
       id: this.$product()?.sku,
     })
   );
-
-  protected context = new ContextController(this);
 
   @elementEffect()
   protected skuController = effect(() => {
@@ -88,7 +87,7 @@ export class ProductCardComponent extends ProductMixin(
   }
 
   // TODO: move to wishlist component
-  protected renderWishlist(): TemplateResult | void {
+  private renderWishlist(): TemplateResult | void {
     if (this.$options().enableWishlist) {
       return html`<div class="actions">
         <oryx-icon-button>

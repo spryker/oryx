@@ -73,7 +73,7 @@ describe('ProductBrandComponent', () => {
     });
   });
 
-  describe.only('when no attributes available in product', () => {
+  describe('when no attributes available in product', () => {
     beforeEach(async () => {
       productService.get.mockReturnValue(of({ sku: '1' }));
       element = await fixture(html`
