@@ -39,7 +39,7 @@ export const ProductMixin = <
     );
 
     protected $product = computed(() => {
-      const sku = this.$productContext() || this.sku;
+      const sku = this.sku ?? this.$productContext();
       return sku ? this.productService?.get({ sku }) : of(null);
     });
 
