@@ -16,7 +16,7 @@ export const OrderMixin = <
   superClass: T
 ): Type<OrderMixinInterface> & T => {
   class OrderMixinClass extends superClass {
-    @property({ attribute: 'order-id' }) orderId?: string;
+    @property() orderId?: string;
 
     protected orderController = new OrderController(this);
   }

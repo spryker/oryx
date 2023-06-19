@@ -12,13 +12,15 @@ import { SpyInstance } from 'vitest';
 import { OrderConfirmationBannerComponent } from './confirmation-banner.component';
 import { orderConfirmationBannerComponent } from './confirmation-banner.def';
 
+const mockId = 'mockid';
+
 const mockContent = {
   getOptions: vi.fn().mockReturnValue(of({})),
   getContent: vi.fn().mockReturnValue(of({})),
 };
 
 const mockContext = {
-  get: vi.fn().mockReturnValue(of('mockid')),
+  get: vi.fn().mockReturnValue(of(mockId)),
   provide: vi.fn(),
 };
 
@@ -68,7 +70,9 @@ describe('OrderConfirmationBannerComponent', () => {
     expect(element).toContainElement('oryx-image');
   });
 
-  it('should render order-id', () => {
-    expect(element?.shadowRoot?.innerHTML).toContain('mockid');
+  it('should render orderId', () => {
+    const p =
+      element.renderRoot.querySelector<HTMLParagraphElement>('section + p');
+    expect(p?.textContent).toContain(mockId);
   });
 });
