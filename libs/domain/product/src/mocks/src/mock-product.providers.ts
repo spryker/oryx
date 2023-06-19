@@ -1,5 +1,6 @@
 import { Provider } from '@spryker-oryx/di';
 import {
+  AlternativeProductsListService,
   DefaultProductAdapter,
   DefaultProductImageService,
   DefaultProductListPageService,
@@ -15,6 +16,7 @@ import {
 } from '@spryker-oryx/product';
 import { MockProductService } from './mock-product.service';
 import { MockProductListAdapter } from './product-list';
+import { MockAlternativeProductListService } from './product-relations/mock-alternative-product-list.service';
 
 export const mockProductProviders: Provider[] = [
   {
@@ -44,5 +46,9 @@ export const mockProductProviders: Provider[] = [
   {
     provide: ProductMediaConfig,
     useValue: productMediaConfig,
+  },
+  {
+    provide: AlternativeProductsListService,
+    useClass: MockAlternativeProductListService,
   },
 ];
