@@ -17,6 +17,7 @@ export const pickingComponentStyles = css`
     display: grid;
     gap: 20px 0;
     grid-auto-rows: max-content;
+    background-color: var(--oryx-color-neutral-3);
   }
 
   .picking-complete {
