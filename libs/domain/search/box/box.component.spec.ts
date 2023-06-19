@@ -1,4 +1,4 @@
-import { fixture, nextFrame } from '@open-wc/testing-helpers';
+import { fixture } from '@open-wc/testing-helpers';
 import { ContentLinkComponent } from '@spryker-oryx/content/link';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
@@ -115,77 +115,6 @@ describe('SearchBoxComponent', () => {
 
   it('passes the a11y audit', async () => {
     await expect(element).shadowDom.to.be.accessible();
-  });
-
-  describe('oryx.clear', () => {
-    const callback = vi.fn();
-
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-box
-          query="123"
-          @oryx.clear=${callback}
-        ></oryx-search-box>`
-      );
-    });
-
-    describe('when oryx.clear event dispatched', () => {
-      it('should clear input value', async () => {
-        const input = element.renderRoot.querySelector(
-          'input'
-        ) as HTMLInputElement;
-        element.dispatchEvent(new CustomEvent('oryx.clear', { bubbles: true }));
-        await nextFrame();
-        expect(input.value).toBe('');
-      });
-    });
-
-    describe('when clear button has been clicked', () => {
-      it('should dispatch oryx.clear event', () => {
-        const clear = element.renderRoot.querySelector<HTMLButtonElement>(
-          `oryx-button[slot="suffix"]`
-        );
-        clear?.click();
-        expect(callback).toHaveBeenCalled();
-      });
-    });
-  });
-
-  describe('oryx.close', () => {
-    const callback = vi.fn();
-
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-box
-          query="123"
-          @oryx.close=${callback}
-        ></oryx-search-box>`
-      );
-    });
-
-    describe('when event is dispatched', () => {
-      it('should close the dropdown', () => {
-        const typeahead = element.renderRoot.querySelector(
-          'oryx-typeahead'
-        ) as HTMLElement;
-
-        typeahead.setAttribute('open', '');
-
-        element.dispatchEvent(new CustomEvent('oryx.close'));
-
-        expect(typeahead.hasAttribute('open')).toBe(false);
-      });
-    });
-
-    describe('when close button has been clicked', () => {
-      it('should dispatch oryx.close event', () => {
-        const close = element.renderRoot.querySelector<HTMLButtonElement>(
-          `oryx-icon-button[slot="suffix"]`
-        );
-        close?.click();
-        expect(callback).toHaveBeenCalled();
-      });
-    });
   });
 
   describe('when query is not provided', () => {
@@ -312,9 +241,7 @@ describe('SearchBoxComponent', () => {
     const callback = vi.fn();
 
     beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-box @oryx.close=${callback}></oryx-search-box>`
-      );
+      element = await fixture(html`<oryx-search-box></oryx-search-box>`);
 
       vi.useFakeTimers();
     });
@@ -376,7 +303,6 @@ describe('SearchBoxComponent', () => {
           );
         viewAllLink?.click();
         expect(viewAllLink?.options?.params?.q).toBe(query);
-        expect(callback).toHaveBeenCalled();
       });
     });
   });

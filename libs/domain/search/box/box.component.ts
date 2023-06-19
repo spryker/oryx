@@ -33,7 +33,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
 import { SearchBoxOptions, SearchBoxProperties } from './box.model';
-import { baseStyles, searchboxStyles } from './styles';
+import { baseStyles, searchBoxStyles } from './styles';
 
 interface LinksSection {
   title?: DirectiveResult;
@@ -54,20 +54,12 @@ export class SearchBoxComponent
   extends ContentMixin<SearchBoxOptions>(LitElement)
   implements SearchBoxProperties
 {
-  static styles = [baseStyles, searchboxStyles];
-
-  constructor() {
-    super();
-    this.onScroll = debounce(this.onScroll.bind(this), 20);
-    this.onTypeahead = debounce(this.onTypeahead.bind(this), 300);
-    this.onClear = this.onClear.bind(this);
-    this.onClose = this.onClose.bind(this);
-  }
+  static styles = [baseStyles, searchBoxStyles];
 
   @signalProperty() query = '';
 
-  @query('oryx-typeahead') typeahead!: TypeaheadComponent;
-  @query('div[slot="option"] > div') scrollContainer?: HTMLElement;
+  @query('oryx-typeahead') protected typeahead!: TypeaheadComponent;
+  @query('div[slot="option"] > div') protected scrollContainer?: HTMLElement;
 
   protected suggestionService = resolve(SuggestionService);
   protected routerService = resolve(RouterService);
@@ -109,25 +101,11 @@ export class SearchBoxComponent
     })
   );
 
-  connectedCallback(): void {
-    super.connectedCallback();
-
-    this.addEventListener('oryx.clear', this.onClear);
-    this.addEventListener('oryx.close', this.onClose);
-  }
-
-  disconnectedCallback(): void {
-    this.removeEventListener('oryx.clear', this.onClear);
-    this.removeEventListener('oryx.close', this.onClose);
-
-    super.disconnectedCallback();
-  }
-
   protected override render(): TemplateResult {
     return html`
       <oryx-typeahead
         @oryx.search=${this.onSearch}
-        @oryx.typeahead=${this.onTypeahead}
+        @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 300)}
         .clearIconPosition=${ClearIconPosition.None}
       >
         <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
@@ -135,19 +113,17 @@ export class SearchBoxComponent
           .value=${this.query ?? ''}
           placeholder=${ifDefined(this.$placeholder())}
         />
-        ${this.renderSuggestion()}
-        ${when(this.query, () => this.renderControls())}
+        ${this.renderSuggestion()} ${this.renderControls()}
       </oryx-typeahead>
     `;
   }
 
-  protected renderControls(): TemplateResult {
+  protected renderControls(): TemplateResult | void {
+    if (!this.query) return;
+
     return html`
       <oryx-button slot="suffix" type="text">
-        <button
-          @click=${() => this.dispatchCustomEvent('oryx.clear')}
-          @mousedown=${this.muteMousedown}
-        >
+        <button @click=${this.onClear} @mousedown=${this.muteMousedown}>
           ${i18n('search.box.clear')}
         </button>
       </oryx-button>
@@ -155,7 +131,7 @@ export class SearchBoxComponent
       <oryx-icon-button slot="suffix" size=${Size.Sm}>
         <button
           aria-label="Close results"
-          @click=${() => this.dispatchCustomEvent('oryx.close')}
+          @click=${this.onClose}
           @mousedown=${this.muteMousedown}
         >
           <oryx-icon .type=${IconTypes.Close}></oryx-icon>
@@ -164,11 +140,11 @@ export class SearchBoxComponent
     `;
   }
 
-  protected renderSuggestion(): TemplateResult {
+  protected renderSuggestion(): TemplateResult | void {
     const suggestion = this.$suggestion();
 
     if (!suggestion) {
-      return html``;
+      return;
     }
 
     if (this.isNothingFound(suggestion)) {
@@ -177,7 +153,7 @@ export class SearchBoxComponent
 
     return html`
       <div slot="option">
-        <div @scroll=${this.onScroll}>
+        <div @scroll=${debounce(this.onScroll.bind(this), 20)}>
           ${when(this.hasLinks(suggestion), () =>
             this.renderLinksSection(suggestion)
           )}
@@ -261,10 +237,7 @@ export class SearchBoxComponent
         <h5>${i18n('search.box.products')}</h5>
         ${suggestion.products.map(this.renderProduct)}
 
-        <oryx-button
-          outline
-          @click=${() => this.dispatchCustomEvent('oryx.close')}
-        >
+        <oryx-button outline @click=${this.onClose}>
           <oryx-content-link
             .options="${{
               type: SemanticLinkType.ProductList,
@@ -281,11 +254,11 @@ export class SearchBoxComponent
     return html`
       <oryx-content-link
         class="product"
-        .options="${{
+        .options=${{
           type: SemanticLinkType.Product,
           id: product.sku,
           label: product.name,
-        }}"
+        }}
         close-popover
       >
         <oryx-product-media
@@ -310,17 +283,14 @@ export class SearchBoxComponent
     e.preventDefault();
   }
 
-  protected dispatchCustomEvent(type: string): void {
-    this.typeahead.dispatchEvent(
-      new CustomEvent(type, { bubbles: true, composed: true })
-    );
-  }
-
   protected onClear(): void {
     this.query = '';
   }
 
   protected onClose(): void {
+    this.typeahead.dispatchEvent(
+      new CustomEvent('oryx.close', { bubbles: true, composed: true })
+    );
     this.typeahead.removeAttribute('open');
   }
 
