@@ -44,6 +44,8 @@ jobs:
         run: npx nx run-many --target=build --all --parallel=2 --exclude testfront,storybook,fulfillment,storefront
       - name: Fix js extension
         run: node tools/post-build/add-js-extension.js
+      - name: Fix d.ts files
+        run: node tools/post-build/fix-dts-paths.js
       - name: Release patch
         if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
         run: npm run release-patch
