@@ -5,6 +5,5 @@ export const styles = css`
     display: grid;
     gap: var(--gap, 10px);
     grid-template-columns: 1fr 1fr;
-    padding-block-start: var(--gap, 10px);
   }
 `;

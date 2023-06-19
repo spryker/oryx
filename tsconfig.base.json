@@ -28,16 +28,16 @@
       ],
       "@spryker-oryx/cart/totals": ["libs/domain/cart/totals/index.ts"],
       "@spryker-oryx/checkout": ["libs/domain/checkout/src/index.ts"],
+      "@spryker-oryx/checkout/account": [
+        "libs/domain/checkout/account/index.ts"
+      ],
       "@spryker-oryx/checkout/address": [
         "libs/domain/checkout/address/index.ts"
       ],
       "@spryker-oryx/checkout/billing-address": [
         "libs/domain/checkout/billing-address/index.ts"
       ],
-      "@spryker-oryx/checkout/customer": [
-        "libs/domain/checkout/customer/index.ts"
-      ],
-      "@spryker-oryx/checkout/guest": ["libs/domain/checkout/guest/index.ts"],
+      "@spryker-oryx/checkout/header": ["libs/domain/checkout/header/index.ts"],
       "@spryker-oryx/checkout/link": ["libs/domain/checkout/link/index.ts"],
       "@spryker-oryx/checkout/manage-address": [
         "libs/domain/checkout/manage-address/index.ts"
@@ -48,17 +48,17 @@
       "@spryker-oryx/checkout/orchestrator": [
         "libs/domain/checkout/orchestrator/index.ts"
       ],
-      "@spryker-oryx/checkout/payment": [
-        "libs/domain/checkout/payment/index.ts"
+      "@spryker-oryx/checkout/payment-method": [
+        "libs/domain/checkout/payment-method/index.ts"
       ],
       "@spryker-oryx/checkout/place-order": [
         "libs/domain/checkout/place-order/index.ts"
       ],
-      "@spryker-oryx/checkout/shipment": [
-        "libs/domain/checkout/shipment/index.ts"
-      ],
       "@spryker-oryx/checkout/shipping-address": [
         "libs/domain/checkout/shipping-address/index.ts"
+      ],
+      "@spryker-oryx/checkout/shipping-method": [
+        "libs/domain/checkout/shipping-method/index.ts"
       ],
       "@spryker-oryx/cli": ["libs/template/cli/src/index.ts"],
       "@spryker-oryx/content": ["libs/domain/content/src/index.ts"],
