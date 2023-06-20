@@ -22,8 +22,14 @@ export class NavigateBackComponent
   @asyncState()
   protected link = valueType(this.routerService.previousRoute());
 
+  @asyncState()
+  protected currentLink = valueType(this.routerService.currentRoute());
+
   protected override render(): TemplateResult {
-    const link = this.link || this.fallbackUrl;
+    const link =
+      this.link && this.link !== this.currentLink
+        ? this.link
+        : this.fallbackUrl;
 
     return html`
       <oryx-button type=${ButtonType.Text}>
