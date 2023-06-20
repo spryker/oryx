@@ -1,4 +1,4 @@
-import { DirectiveResult } from 'lit/directive';
+import { DirectiveResult } from 'lit/directive.js';
 
 export type FormFieldAttributes = Record<string, string | number | boolean>;
 
