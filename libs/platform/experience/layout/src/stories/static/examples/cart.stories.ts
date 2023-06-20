@@ -23,7 +23,11 @@ const Template: Story = (): TemplateResult => {
           ${generateLayoutItems(20, 1, 'Cart item')}
         </oryx-layout>
 
-        <oryx-layout layout="list" sticky .options=${{ rules: [{ top: 90 }] }}>
+        <oryx-layout
+          layout="list"
+          layout-sticky
+          .options=${{ rules: [{ top: 90 }] }}
+        >
           <oryx-layout layout="list">
             <div>subtotal</div>
             <div>discounts</div>

@@ -88,10 +88,10 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   }
 
   protected renderComposition(): TemplateResult {
-    return html`<experience-composition
+    return html`<oryx-composition
       uid=${ifDefined(this.uid)}
       close-popover
-    ></experience-composition>`;
+    ></oryx-composition>`;
   }
 
   protected get icon(): TemplateResult | void {

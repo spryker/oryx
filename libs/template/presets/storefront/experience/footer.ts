@@ -12,7 +12,7 @@ const link = (text: string, id = '/', icon?: string) => ({
 });
 
 const selfServiceLinks = {
-  type: 'experience-composition',
+  type: 'oryx-composition',
   name: 'Links',
   options: {
     data: {
@@ -27,7 +27,7 @@ const selfServiceLinks = {
   },
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'Customer support',
       options: {
         data: { rules: [{ layout: 'flex', vertical: true, align: 'start' }] },
@@ -42,7 +42,7 @@ const selfServiceLinks = {
       ],
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'Our promises',
       options: {
         data: { rules: [{ layout: 'flex', vertical: true, align: 'start' }] },
@@ -54,7 +54,7 @@ const selfServiceLinks = {
       ],
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'About us',
       options: {
         data: { rules: [{ layout: 'flex', vertical: true, align: 'start' }] },
@@ -72,7 +72,7 @@ const selfServiceLinks = {
 };
 
 const checkoutLinks = {
-  type: 'experience-composition',
+  type: 'oryx-composition',
   name: 'checkout methods',
   options: {
     data: {
@@ -104,12 +104,12 @@ const checkoutLinks = {
 };
 
 const socialLinks = {
-  type: 'experience-composition',
+  type: 'oryx-composition',
   name: 'socials',
   options: { data: { rules: [{ layout: 'list' }] } },
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'native apps',
       options: {
         data: {
@@ -119,7 +119,7 @@ const socialLinks = {
       components: [banner('playStore'), banner('appleStore')],
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'socials',
       options: {
         data: {
@@ -137,7 +137,7 @@ const socialLinks = {
 };
 
 const legalLinks = {
-  type: 'experience-composition',
+  type: 'oryx-composition',
   name: 'legal links',
   components: [
     link('©️ 2023 Spryker'),
@@ -156,11 +156,11 @@ export const FooterTemplate: StaticComponent = {
   meta: { title: 'Footer', route: '/_footer' },
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'footer',
       components: [
         {
-          type: 'experience-composition',
+          type: 'oryx-composition',
           name: 'Self service',
           options: {
             data: { rules: [{ layout: 'split' }] },
@@ -168,7 +168,7 @@ export const FooterTemplate: StaticComponent = {
           components: [
             selfServiceLinks,
             {
-              type: 'experience-composition',
+              type: 'oryx-composition',
               name: 'right',
               options: {
                 data: { rules: [{ layout: 'column', columnCount: 2 }] },

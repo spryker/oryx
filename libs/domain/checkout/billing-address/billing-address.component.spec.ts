@@ -31,7 +31,7 @@ export class MockCheckoutStateService implements Partial<CheckoutStateService> {
 }
 
 class MockAddressService implements Partial<AddressService> {
-  getAddresses = vi.fn().mockReturnValue(of([]));
+  getList = vi.fn().mockReturnValue(of([]));
 }
 
 const mockAddress = { id: 'foo' };
@@ -166,7 +166,7 @@ describe('CheckoutBillingAddressComponent', () => {
 
   describe('when there are addresses', () => {
     beforeEach(async () => {
-      addressService.getAddresses.mockReturnValue([1, 2, 3]);
+      addressService.getList.mockReturnValue([1, 2, 3]);
       element = await fixture(
         html`<oryx-checkout-billing-address></oryx-checkout-billing-address>`
       );
@@ -183,7 +183,7 @@ describe('CheckoutBillingAddressComponent', () => {
     describe('and there is no pre-selected address', () => {
       describe('and there is a default billing address', () => {
         beforeEach(async () => {
-          addressService.getAddresses.mockReturnValue([
+          addressService.getList.mockReturnValue([
             mockAddress,
             { id: 'bar', isDefaultBilling: true } as Address,
             3,
@@ -204,7 +204,7 @@ describe('CheckoutBillingAddressComponent', () => {
 
       describe('and there is no default billing address', () => {
         beforeEach(async () => {
-          addressService.getAddresses.mockReturnValue([mockAddress, 2, 3]);
+          addressService.getList.mockReturnValue([mockAddress, 2, 3]);
           checkoutStateService.get.mockReturnValue(of(null));
           element = await fixture(
             html`<oryx-checkout-billing-address></oryx-checkout-billing-address>`

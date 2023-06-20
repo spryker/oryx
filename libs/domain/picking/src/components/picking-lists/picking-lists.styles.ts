@@ -5,6 +5,8 @@ export const pickingListsComponentStyles = css`
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-height: 100vh;
+    background-color: var(--oryx-color-neutral-3);
   }
 
   section {

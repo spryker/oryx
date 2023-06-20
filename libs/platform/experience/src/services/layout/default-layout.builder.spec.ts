@@ -300,43 +300,43 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule({ overflow: 'auto' }, 'overflow: auto');
   });
 
-  describe('classes', () => {
-    let layoutClasses: string | undefined;
+  describe('getLayoutMarkers', () => {
+    let layoutMarkers: string | undefined;
 
     ['vertical', 'bleed', 'overlap', 'sticky', 'divider'].forEach((prop) => {
       describe(`when ${prop} is configured`, () => {
         beforeEach(() => {
-          layoutClasses = service.getLayoutClasses({
+          layoutMarkers = service.getLayoutMarkers({
             rules: [{ [prop]: true }],
           });
         });
 
-        it(`should add the ${prop} class`, () => {
-          expect(layoutClasses).toContain(prop);
+        it(`should add the layout-${prop} marker`, () => {
+          expect(layoutMarkers).toContain(`layout-${prop}`);
         });
       });
 
       [Size.Xs, Size.Sm, Size.Md, Size.Lg, Size.Xl].forEach((size) => {
         describe(`when ${prop} is configured for ${size}`, () => {
           beforeEach(() => {
-            layoutClasses = service.getLayoutClasses({
+            layoutMarkers = service.getLayoutMarkers({
               rules: [{ [prop]: true, query: { breakpoint: size } }],
             });
           });
 
-          it(`should add the ${size}-${prop} class`, () => {
-            expect(layoutClasses).toContain(`${size}-${prop}`);
+          it(`should add the layout-${size}-${prop} marker`, () => {
+            expect(layoutMarkers).toContain(`layout-${size}-${prop}`);
           });
         });
       });
 
       describe(`when ${prop} is not configured`, () => {
         beforeEach(() => {
-          layoutClasses = service.getLayoutClasses({});
+          layoutMarkers = service.getLayoutMarkers({});
         });
 
-        it(`should not add the ${prop} class`, () => {
-          expect(layoutClasses).toBeUndefined();
+        it(`should not add the ${prop} marker`, () => {
+          expect(layoutMarkers).toBeUndefined();
         });
       });
     });

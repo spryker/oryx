@@ -1,10 +1,12 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
+  AlternativeProductsListAdapter,
   availabilityNormalizer,
   AvailabilityNormalizer,
   ConcreteProductsNormalizer,
   concreteProductsNormalizer,
+  DefaultAlternativeProductsListAdapter,
   DefaultProductAdapter,
   DefaultProductListAdapter,
   DefaultProductMediaNormalizer,
@@ -24,6 +26,7 @@ import {
   ProductMediaSetNormalizer,
   productNormalizer,
 } from './adapter';
+import { alternativeProductsListNormalizer } from './adapter/normalizers/alternative-products-list';
 import {
   productLabelNormalizer,
   ProductLabelsNormalizer,
@@ -33,6 +36,8 @@ import {
   PaginationNormalizer,
 } from './adapter/normalizers/pagination';
 import { sortNormalizer, SortNormalizer } from './adapter/normalizers/sort';
+import { AlternativeProductsListService } from './alternative-products-list.service';
+import { DefaultAlternativeProductsListService } from './default-alternative-products-list.service';
 import { DefaultProductListPageService } from './default-product-list-page.service';
 import { DefaultProductListService } from './default-product-list.service';
 import { DefaultProductService } from './default-product.service';
@@ -67,6 +72,14 @@ export const productProviders: Provider[] = [
   {
     provide: ProductListService,
     useClass: DefaultProductListService,
+  },
+  {
+    provide: AlternativeProductsListService,
+    useClass: DefaultAlternativeProductsListService,
+  },
+  {
+    provide: AlternativeProductsListAdapter,
+    useClass: DefaultAlternativeProductsListAdapter,
   },
   {
     provide: ProductListPageService,
@@ -126,6 +139,7 @@ export const productProviders: Provider[] = [
   },
   ...productNormalizer,
   ...productListNormalizer,
+  ...alternativeProductsListNormalizer,
   ...productQueries,
   ...productEffects,
   ProductContextFallback,

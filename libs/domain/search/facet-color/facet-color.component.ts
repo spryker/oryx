@@ -2,13 +2,13 @@ import { resolve } from '@spryker-oryx/di';
 import { FacetValue } from '@spryker-oryx/product';
 import { FacetColorsMapping } from '@spryker-oryx/search';
 import { html, TemplateResult } from 'lit';
-// use relative path for dev ssr server. SearchFacetComponent and SingleFacetControlStyles are undefined
-import { SearchFacetComponent } from '../facet/src/facet.component';
-import { SingleFacetControlStyles } from '../facet/src/facet.styles';
-import { styles } from './facet-color.styles';
+// use relative path for dev ssr server, SearchFacetComponent and searchFacetStyles is undefined
+import { SearchFacetComponent } from '../facet/facet.component';
+import { searchFacetStyles } from '../facet/facet.styles';
+import { searchFacetColorStyles } from './facet-color.styles';
 
 export class SearchColorFacetComponent extends SearchFacetComponent {
-  static styles = [SingleFacetControlStyles, styles];
+  static styles = [searchFacetStyles, searchFacetColorStyles];
 
   protected facetColorsMapping = resolve(FacetColorsMapping);
 

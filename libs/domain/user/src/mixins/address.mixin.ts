@@ -48,7 +48,7 @@ export const AddressMixin = <T extends Type<LitElement>>(
     @signalProperty() addressId?: string;
     @signalProperty() address?: Address;
 
-    protected $addresses = signal(this.addressService.getAddresses());
+    protected $addresses = signal(this.addressService.getList());
 
     protected $addressState = signal(this.addressStateService.get());
 
@@ -70,7 +70,7 @@ export const AddressMixin = <T extends Type<LitElement>>(
       if (this.address) return this.address;
       const addressId = this.$addressId();
       if (addressId) {
-        return this.addressService.getAddress(addressId);
+        return this.addressService.get(addressId);
       }
       return null;
     });

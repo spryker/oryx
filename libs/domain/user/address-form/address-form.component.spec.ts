@@ -3,7 +3,13 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { FormRenderer } from '@spryker-oryx/form';
 import { CountryService } from '@spryker-oryx/site';
-import { AddressFormService, AddressService } from '@spryker-oryx/user';
+import {
+  Address,
+  AddressFormService,
+  AddressService,
+  User,
+  UserService,
+} from '@spryker-oryx/user';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { UserAddressFormComponent } from './address-form.component';
@@ -25,7 +31,16 @@ const mockCountries = [
 ];
 
 class MockAddressService implements Partial<AddressService> {
-  getCurrentAddress = vi.fn().mockReturnValue(of(null));
+  getCurrent = vi.fn().mockReturnValue(of(null));
+  getList = vi.fn().mockReturnValue(
+    of([
+      {
+        id: 'sampleAddress',
+        isDefaultBilling: true,
+        isDefaultShipping: true,
+      } as Address,
+    ])
+  );
 }
 
 class MockCountryService {
@@ -81,12 +96,17 @@ class MockAddressFormService implements Partial<AddressFormService> {
   getForm = vi.fn().mockReturnValue(of(mockForm));
 }
 
+class MockUserService implements Partial<UserService> {
+  getUser = vi.fn().mockReturnValue(of(null));
+}
+
 describe('UserAddressFormComponent', () => {
   let element: UserAddressFormComponent;
   let renderer: MockFormRenderer;
   let formService: MockAddressFormService;
   let countryService: MockCountryService;
   let addressService: MockAddressService;
+  let userService: MockUserService;
 
   let selectElement: HTMLSelectElement | undefined | null;
 
@@ -113,18 +133,18 @@ describe('UserAddressFormComponent', () => {
           provide: AddressService,
           useClass: MockAddressService,
         },
+        {
+          provide: UserService,
+          useClass: MockUserService,
+        },
       ],
     });
-    renderer = testInjector.inject(FormRenderer) as unknown as MockFormRenderer;
-    formService = testInjector.inject(
-      AddressFormService
-    ) as unknown as MockAddressFormService;
-    countryService = testInjector.inject(
-      CountryService
-    ) as unknown as MockCountryService;
-    addressService = testInjector.inject(
-      AddressService
-    ) as unknown as MockAddressService;
+    renderer = testInjector.inject<MockFormRenderer>(FormRenderer);
+    formService =
+      testInjector.inject<MockAddressFormService>(AddressFormService);
+    countryService = testInjector.inject<MockCountryService>(CountryService);
+    addressService = testInjector.inject<MockAddressService>(AddressService);
+    userService = testInjector.inject<MockUserService>(UserService);
   });
 
   afterEach(() => {
@@ -150,7 +170,7 @@ describe('UserAddressFormComponent', () => {
       });
       expect(renderer.buildForm).toHaveBeenCalledWith(
         mockForm.data.options,
-        undefined
+        {}
       );
     });
 
@@ -168,7 +188,7 @@ describe('UserAddressFormComponent', () => {
       element = await fixture(
         html`<oryx-user-address-form
           country="FR"
-          fallbackCountry="PT"
+          .options=${{ fallbackCountry: 'PT' }}
         ></oryx-user-address-form>`
       );
     });
@@ -183,7 +203,7 @@ describe('UserAddressFormComponent', () => {
     it('should render fallback country form', () => {
       expect(renderer.buildForm).toHaveBeenCalledWith(
         mockFallbackForm.data.options,
-        undefined
+        {}
       );
     });
   });
@@ -248,7 +268,7 @@ describe('UserAddressFormComponent', () => {
 
   describe('when a logged in user has an address', () => {
     beforeEach(async () => {
-      addressService.getCurrentAddress.mockReturnValue(of({ iso2Code: 'US' }));
+      addressService.getCurrent.mockReturnValue(of({ iso2Code: 'US' }));
       element = await fixture(
         html`<oryx-user-address-form></oryx-user-address-form>`
       );
@@ -259,7 +279,7 @@ describe('UserAddressFormComponent', () => {
         element.shadowRoot?.querySelector(
           'select[name="iso2Code"] option[selected]'
         );
-      expect(addressService.getCurrentAddress).toHaveBeenCalled();
+      expect(addressService.getCurrent).toHaveBeenCalled();
       expect(selected?.value).toBe('US');
     });
   });
@@ -276,25 +296,93 @@ describe('UserAddressFormComponent', () => {
         expect.arrayContaining([
           expect.objectContaining({ id: 'isDefaultShipping' }),
         ]),
-        undefined
+        {}
       );
+    });
+
+    describe('and there is an address available with is set to default shipping', () => {
+      beforeEach(async () => {
+        addressService.getList.mockReturnValue(
+          of([{ isDefaultShipping: true } as Address])
+        );
+        element = await fixture(html` <oryx-user-address-form
+          enableDefaultShipping
+        ></oryx-user-address-form>`);
+      });
+
+      it('should not set isDefaultShipping to true in the default values', () => {
+        expect(renderer.buildForm).toHaveBeenCalledWith(
+          expect.anything(),
+          expect.not.objectContaining({ isDefaultShipping: true })
+        );
+      });
+    });
+
+    describe('and there is no address available with is set to default billing', () => {
+      beforeEach(async () => {
+        addressService.getList.mockReturnValue(of([]));
+        element = await fixture(html` <oryx-user-address-form
+          enableDefaultShipping
+        ></oryx-user-address-form>`);
+      });
+
+      it('should set isDefaultShipping to true in the default values', () => {
+        expect(renderer.buildForm).toHaveBeenCalledWith(
+          expect.anything(),
+          expect.objectContaining({ isDefaultShipping: true })
+        );
+      });
     });
   });
 
-  describe('when enableDefaultBilling prop is provided', () => {
+  describe('when enableDefaultBilling property is provided', () => {
     beforeEach(async () => {
       element = await fixture(html` <oryx-user-address-form
         enableDefaultBilling
       ></oryx-user-address-form>`);
     });
 
-    it('should merge the field with the form schema', () => {
+    it('should add the field to the form model', () => {
       expect(renderer.buildForm).toHaveBeenCalledWith(
         expect.arrayContaining([
           expect.objectContaining({ id: 'isDefaultBilling' }),
         ]),
-        undefined
+        {}
       );
+    });
+
+    describe('and there is an address available with is set to default billing', () => {
+      beforeEach(async () => {
+        addressService.getList.mockReturnValue(
+          of([{ isDefaultBilling: true } as Address])
+        );
+        element = await fixture(html` <oryx-user-address-form
+          enableDefaultBilling
+        ></oryx-user-address-form>`);
+      });
+
+      it('should not set isDefaultBilling to true in the default values', () => {
+        expect(renderer.buildForm).toHaveBeenCalledWith(
+          expect.anything(),
+          expect.not.objectContaining({ isDefaultBilling: true })
+        );
+      });
+    });
+
+    describe('and there is no address available with is set to default billing', () => {
+      beforeEach(async () => {
+        addressService.getList.mockReturnValue(of([]));
+        element = await fixture(html` <oryx-user-address-form
+          enableDefaultBilling
+        ></oryx-user-address-form>`);
+      });
+
+      it('should set isDefaultBilling to true in the default values', () => {
+        expect(renderer.buildForm).toHaveBeenCalledWith(
+          expect.anything(),
+          expect.objectContaining({ isDefaultBilling: true })
+        );
+      });
     });
   });
 
@@ -311,6 +399,24 @@ describe('UserAddressFormComponent', () => {
         mockForm.data.options,
         values
       );
+    });
+  });
+
+  describe('when a registered user creates a new address', () => {
+    const user = {
+      firstName: 'First',
+      lastName: 'Last',
+      salutation: 'Mr',
+    } as User;
+    beforeEach(async () => {
+      userService.getUser.mockReturnValue(of(user));
+      element = await fixture(html`
+        <oryx-user-address-form></oryx-user-address-form>
+      `);
+    });
+
+    it('should feed in the user`s data', () => {
+      expect(renderer.buildForm).toHaveBeenCalledWith(expect.anything(), user);
     });
   });
 });

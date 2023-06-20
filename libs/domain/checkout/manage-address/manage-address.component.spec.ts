@@ -22,7 +22,7 @@ import { CheckoutManageAddressComponent } from './manage-address.component';
 import { checkoutManageAddressComponent } from './manage-address.def';
 
 class MockAddressService implements Partial<AddressService> {
-  getAddresses = vi.fn();
+  getList = vi.fn();
 }
 class MockCheckoutStateService implements Partial<CheckoutStateService> {
   get = vi.fn();

@@ -88,7 +88,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     const { productId, numberOfPicked } = event.detail;
 
     const productIndex = this.pickingList?.items.findIndex(
-      (item) => item.product.id === productId
+      (item) => item.id === productId
     );
 
     if (
@@ -112,7 +112,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     const { productId } = event.detail;
 
     const productIndex = this.pickingList?.items.findIndex(
-      (item) => item.product.id === productId
+      (item) => item.id === productId
     );
     this.items[productIndex].status = ItemsFilters.NotPicked;
 
@@ -140,7 +140,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
 
   protected confirmPartialPicking(): void {
     const productIndex = this.pickingList?.items.findIndex(
-      (item) => item.product.id === this.partialPicking?.productId
+      (item) => item.id === this.partialPicking?.productId
     );
 
     this.updatePickingItem(
@@ -219,7 +219,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
                 <div class="list-container">
                   ${repeat(
                     tab.items,
-                    (item) => item.product.id,
+                    (item) => item.id,
                     (item) =>
                       html`
                         <oryx-picking-product-card

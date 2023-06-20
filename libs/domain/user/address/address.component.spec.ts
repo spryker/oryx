@@ -18,8 +18,8 @@ import { UserAddressComponent } from './address.component';
 import { addressComponent } from './address.def';
 
 class MockAddressService implements Partial<AddressService> {
-  getAddress = vi.fn().mockReturnValue(of(mockCurrentAddress));
-  getAddresses = vi.fn();
+  get = vi.fn().mockReturnValue(of(mockCurrentAddress));
+  getList = vi.fn();
 }
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
@@ -94,7 +94,7 @@ describe('UserAddressComponent', () => {
 
   describe('when no address', () => {
     beforeEach(async () => {
-      service.getAddress.mockReturnValue(of(null));
+      service.get.mockReturnValue(of(null));
 
       element = await fixture(
         html`<oryx-user-address
@@ -334,7 +334,7 @@ describe('UserAddressComponent', () => {
 
   describe('when some data is missed', () => {
     beforeEach(async () => {
-      service.getAddress.mockReturnValue(of(uncompletedAddress));
+      service.get.mockReturnValue(of(uncompletedAddress));
 
       element = await fixture(
         html`<oryx-user-address
