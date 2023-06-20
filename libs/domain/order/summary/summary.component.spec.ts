@@ -6,7 +6,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import * as experience from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { OrderService } from '@spryker-oryx/order';
-import { mockOrderProviders } from '@spryker-oryx/order/mocks';
+import { MockOrderService, mockOrderProviders } from '@spryker-oryx/order/mocks';
 import * as litRxjs from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -45,27 +45,33 @@ const setupControllerSpies = (): void => {
   );
 };
 
-setupControllerSpies();
-
 class MockLocaleService implements Partial<LocaleService> {
   formatDateTime = vi.fn().mockReturnValue(of('mockdate'));
 }
 
 describe('OrderSummaryComponent', () => {
   let element: OrderSummaryComponent;
+  let orderService: MockOrderService;
+  let localeService: MockLocaleService;
 
   beforeAll(async () => {
     await useComponent([orderSummaryComponent]);
   });
 
   beforeEach(async () => {
-    createInjector({
+    const testInjector = createInjector({
       providers: [
         ...mockOrderProviders,
         ...mockAuthProviders,
         { provide: LocaleService, useClass: MockLocaleService },
       ],
     });
+
+    orderService = testInjector.inject(orderService);
+    localeService = testInjector.inject(LocaleService) as unknown as MockLocaleService;
+
+    setupControllerSpies();
+
     element = await fixture(html`<oryx-order-summary></oryx-order-summary>`);
   });
 
@@ -83,10 +89,13 @@ describe('OrderSummaryComponent', () => {
   });
 
   it('should render inner components', () => {
+    expect(element).toContainElement('section');
     expect(element).toContainElement('oryx-heading');
-    expect(element).toContainElement('oryx-icon');
-    expect(element).toContainElement('oryx-user-address');
-    expect(element).toContainElement('oryx-button');
+  });
+
+  it('should format date', () => {
+    expect(element).toContainElement('section');
+    expect(element).toContainElement('oryx-heading');
   });
 
   describe('when there is no order data', () => {

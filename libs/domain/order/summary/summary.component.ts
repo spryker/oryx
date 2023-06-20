@@ -22,11 +22,9 @@ export class OrderSummaryComponent extends OrderMixin(
 
   protected localeService = resolve(LocaleService);
 
-  protected $order = signal(this.orderController.getOrder());
   protected $createdAt = computed(() => {
-    const {createdAt} = this.$order() ?? {};
-    if (!createdAt) return;
-    return this.localeService.formatDateTime(createdAt)
+    if (!this.$order()?.createdAt) return;
+    return this.localeService.formatDateTime(this.$order()!.createdAt)
   });
 
   protected override render(): TemplateResult | void {
@@ -44,28 +42,22 @@ export class OrderSummaryComponent extends OrderMixin(
 
   protected renderDetails(): TemplateResult {
     return html`
-      <div class="details-container">
-        <section>
-          <div>
-            <oryx-icon .type=${IconTypes.Parcel}></oryx-icon>
-          </div>
-          ${this.renderDetail('order.summary.order-id', this.$order()?.id)}
-          <div>
-            <oryx-icon .type=${IconTypes.Calendar}></oryx-icon>
-          </div>
-          ${
-            this.renderDetail('order.summary.date', 
-            this.$order()?.createdAt,
-            html`${this.$createdAt()}`
-          )}
-        </section>
-        <oryx-button outline>
-          <button @click=${this.print}>
-            <oryx-icon .type=${IconTypes.Printer}></oryx-icon>
-            ${i18n('order.summary.print-receipt')}
-          </button>
-        </oryx-button>
-      </div>
+      <section>
+        <oryx-icon .type=${IconTypes.Parcel}></oryx-icon>
+        ${this.renderDetail('order.summary.order-id', this.$order()?.id)}
+        <oryx-icon .type=${IconTypes.Calendar}></oryx-icon>
+        ${
+          this.renderDetail('order.summary.date', 
+          this.$order()?.createdAt,
+          html`${this.$createdAt()}`
+        )}
+      </section>
+      <oryx-button outline>
+        <button @click=${this.print}>
+          <oryx-icon .type=${IconTypes.Printer}></oryx-icon>
+          ${i18n('order.summary.print-receipt')}
+        </button>
+      </oryx-button>
       <hr />`;
   }
 
