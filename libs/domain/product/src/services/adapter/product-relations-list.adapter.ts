@@ -2,15 +2,14 @@ import { Observable } from 'rxjs';
 import { ProductQualifier } from '../../models/product-qualifier';
 import { Product } from '../../models/product.model';
 
-export interface AlternativeProductsListAdapter {
+export interface ProductRelationsListAdapter {
   get(qualifier: ProductQualifier): Observable<Product[]>;
 }
 
-export const AlternativeProductsListAdapter =
-  'oryx.AlternativeProductsListAdapter';
+export const ProductRelationsListAdapter = 'oryx.ProductRelationsListAdapter';
 
 declare global {
   interface InjectionTokensContractMap {
-    [AlternativeProductsListAdapter]: AlternativeProductsListAdapter;
+    [ProductRelationsListAdapter]: ProductRelationsListAdapter;
   }
 }

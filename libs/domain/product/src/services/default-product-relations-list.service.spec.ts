@@ -3,34 +3,34 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { ProductQualifier } from '../models/product-qualifier';
 import { Product } from '../models/product.model';
-import { AlternativeProductsListAdapter } from './adapter/alternative-products-list.adapter';
-import { AlternativeProductsListService } from './alternative-products-list.service';
-import { DefaultAlternativeProductsListService } from './default-alternative-products-list.service';
+import { ProductRelationsListAdapter } from './adapter/product-relations-list.adapter';
+import { DefaultProductRelationsListService } from './default-product-relations-list.service';
+import { ProductRelationsListService } from './product-relations-list.service';
 
 const mockAdapterData: Product[] = [{ sku: '1' }, { sku: '2' }];
 
-class MockAlternativeProductsListAdapter
-  implements Partial<AlternativeProductsListAdapter>
+class MockProductRelationsListAdapter
+  implements Partial<ProductRelationsListAdapter>
 {
   get = vi
     .fn()
     .mockImplementation((qualifier: ProductQualifier) => of(mockAdapterData));
 }
 
-describe('DefaultAlternativeProductsListService', () => {
-  let service: AlternativeProductsListService;
-  let adapter: AlternativeProductsListAdapter;
+describe('DefaultProductRelationsListService', () => {
+  let service: ProductRelationsListService;
+  let adapter: ProductRelationsListAdapter;
 
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
         {
-          provide: AlternativeProductsListService,
-          useClass: DefaultAlternativeProductsListService,
+          provide: ProductRelationsListService,
+          useClass: DefaultProductRelationsListService,
         },
         {
-          provide: AlternativeProductsListAdapter,
-          useClass: MockAlternativeProductsListAdapter,
+          provide: ProductRelationsListAdapter,
+          useClass: MockProductRelationsListAdapter,
         },
         {
           provide: QueryService,
@@ -39,8 +39,8 @@ describe('DefaultAlternativeProductsListService', () => {
       ],
     });
 
-    service = testInjector.inject(AlternativeProductsListService);
-    adapter = testInjector.inject(AlternativeProductsListAdapter);
+    service = testInjector.inject(ProductRelationsListService);
+    adapter = testInjector.inject(ProductRelationsListAdapter);
   });
 
   afterEach(() => {
@@ -49,7 +49,7 @@ describe('DefaultAlternativeProductsListService', () => {
   });
 
   it('should be provided', () => {
-    expect(service).toBeInstanceOf(DefaultAlternativeProductsListService);
+    expect(service).toBeInstanceOf(DefaultProductRelationsListService);
   });
 
   describe('get', () => {

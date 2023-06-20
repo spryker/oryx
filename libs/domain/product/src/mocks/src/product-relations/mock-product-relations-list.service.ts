@@ -1,13 +1,13 @@
 import {
-  AlternativeProductsListService,
   Product,
   ProductQualifier,
+  ProductRelationsListService,
 } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { Observable, of } from 'rxjs';
 
-export class MockAlternativeProductListService
-  implements AlternativeProductsListService
+export class MockProductRelationsListService
+  implements ProductRelationsListService
 {
   get({ sku }: ProductQualifier): Observable<Product[] | undefined> {
     return of([

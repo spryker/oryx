@@ -1,1 +1,1 @@
-export * from './mock-alternative-product-list.service';
+export * from './mock-product-relations-list.service';
