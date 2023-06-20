@@ -82,17 +82,6 @@
         "cwd": "apps/fulfillment"
       }
     },
-    "test": {
-      "executor": "./tools/executors/oryx-vite:vitest",
-      "options": {
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "watch": {
-          "watch": true
-        }
-      }
-    },
     "mock": {
       "executor": "nx:run-commands",
       "options": {
