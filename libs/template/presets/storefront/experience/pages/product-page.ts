@@ -65,7 +65,7 @@ export const productPage: StaticComponent = {
     },
 
     {
-      type: 'oryx-product-references',
+      type: 'oryx-product-relations',
       options: {
         data: {
           rules: [
