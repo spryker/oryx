@@ -7,7 +7,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { ROUTE_GUARDED_EVENT } from '@spryker-oryx/router/lit';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { PickingHeaderService, PickingListService } from '../../services';
+import { PickingListService } from '../../services';
 import { DiscardPickingComponent } from '../discard-modal';
 import { PickingHeaderComponent } from './picking-header.component';
 import { pickingHeaderComponent } from './picking-header.def';
@@ -19,10 +19,6 @@ class MockPickingListService implements Partial<PickingListService> {
 
 class MockRouterService implements Partial<RouterService> {
   back = vi.fn();
-}
-
-class MockPickingHeaderService implements Partial<PickingHeaderService> {
-  setRouteGuard = vi.fn();
 }
 
 describe('PickingHeaderComponent', () => {
@@ -43,10 +39,6 @@ describe('PickingHeaderComponent', () => {
         {
           provide: PickingListService,
           useClass: MockPickingListService,
-        },
-        {
-          provide: PickingHeaderService,
-          useClass: MockPickingHeaderService,
         },
       ],
     });
