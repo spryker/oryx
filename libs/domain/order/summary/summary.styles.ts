@@ -1,41 +1,40 @@
-import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
-export const styles = css`
-  h2 {
-    ${headingUtil(HeadingTag.H3)};
+export const orderSummaryStyles = css`
+  :host {
+    display: flex;
+    flex-wrap: wrap;
+  }
 
+  :host > :not(:is(oryx-heading + section, oryx-button)) {
+    flex-basis: 100%;
+  }
+
+  :host > oryx-heading + section {
+    align-items: center;
+    grid-template-columns: 20px max-content auto;
+    gap: 8px 6px;
+  }
+
+  h2 {
     margin: 32px 0;
   }
 
-  .details-container {
-    display: flex;
-    gap: 17px;
-  }
-
-  oryx-button {
-    align-self: end;
-  }
-
-  oryx-button button {
-    flex: initial;
-  }
-
-  .details {
+  section {
     gap: 8px;
     display: grid;
     grid-template-columns: max-content auto;
     flex: 1;
   }
 
-  .summary {
-    align-items: center;
+  oryx-button {
+    align-self: end;
+    margin-inline-start: 17px;
   }
 
-  .details:first-of-type {
-    grid-template-columns: 20px max-content auto;
-    gap: 8px 6px;
+  oryx-button button {
+    flex: initial;
   }
 
   .title {
@@ -64,12 +63,14 @@ export const styles = css`
 `;
 
 const smallScreen = css`
-  .details-container {
+  :host {
     flex-direction: column;
   }
 
   oryx-button {
     align-self: start;
+    margin: 0;
+    margin-block-start: 17px;
   }
 `;
 
