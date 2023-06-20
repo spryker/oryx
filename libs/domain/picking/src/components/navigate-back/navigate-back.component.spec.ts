@@ -7,8 +7,11 @@ import { of } from 'rxjs';
 import { NavigateBackComponent } from './navigate-back.component';
 import { navigateBackComponent } from './navigate-back.def';
 
+const currentRoute = '/currentRoute';
+
 class MockRouterService implements Partial<RouterService> {
   previousRoute = vi.fn().mockReturnValue(of(null));
+  currentRoute = vi.fn().mockReturnValue(of(currentRoute));
 }
 
 describe('NavigateBackComponent', () => {
@@ -59,7 +62,7 @@ describe('NavigateBackComponent', () => {
     });
   });
 
-  describe('when previousRoute is existed', () => {
+  describe('when previousRoute is different than currentRoute', () => {
     const previousRoute = '/previousRoute';
 
     beforeEach(async () => {
@@ -69,6 +72,24 @@ describe('NavigateBackComponent', () => {
 
     it('should build the url based on previous route', () => {
       expect(element).toContainElement(`a[href="${previousRoute}"]`);
+    });
+  });
+
+  describe('when previousRoute is same as currentRoute', () => {
+    const previousRoute = currentRoute;
+    const fallbackUrl = '/fallbackUrl';
+
+    beforeEach(async () => {
+      routerService.previousRoute = vi.fn().mockReturnValue(of(previousRoute));
+      element = await fixture(
+        html`<oryx-navigate-back
+          .fallbackUrl=${fallbackUrl}
+        ></oryx-navigate-back>`
+      );
+    });
+
+    it('should build the url based on fallback route', () => {
+      expect(element).toContainElement(`a[href="${fallbackUrl}"]`);
     });
   });
 });
