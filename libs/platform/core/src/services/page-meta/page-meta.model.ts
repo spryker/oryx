@@ -3,6 +3,7 @@ interface LinkAttributes {
   href?: string;
   sizes?: string;
   async?: boolean;
+  defer?: boolean;
 }
 
 interface TextAttributes {

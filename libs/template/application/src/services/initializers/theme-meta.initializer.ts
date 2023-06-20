@@ -22,6 +22,7 @@ export class DefaultThemeMetaInitializer implements AppInitializer {
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap',
           async: true,
+          defer: true,
         },
       },
       {

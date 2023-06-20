@@ -30,6 +30,7 @@ export class DefaultFontInjectable implements FontInjectable {
         rel: 'stylesheet',
         href,
         async: true,
+        defer: true,
       },
     });
 
