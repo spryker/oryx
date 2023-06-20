@@ -24,7 +24,7 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
   protected centerRef = createRef<NotificationCenterComponent>();
 
   protected notification = signal(
-      this.siteNotificationService.get(),
+    this.siteNotificationService.get(),
     { equal: () => false }
   );
 
