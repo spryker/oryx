@@ -2,6 +2,7 @@ interface LinkAttributes {
   rel?: string;
   href?: string;
   sizes?: string;
+  async?: boolean;
 }
 
 interface TextAttributes {
@@ -22,7 +23,7 @@ export interface ElementAttributes
   extends TextAttributes,
     MetaAttributes,
     LinkAttributes {
-  [key: string]: string | undefined;
+  [key: string]: string | undefined | boolean;
 }
 
 export interface ElementDefinition {

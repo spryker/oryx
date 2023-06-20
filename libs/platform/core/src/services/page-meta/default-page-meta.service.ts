@@ -63,13 +63,17 @@ export class DefaultPageMetaService implements PageMetaService {
   ): void {
     for (const [key, value] of Object.entries(attrs)) {
       if (key === 'text' && value) {
-        element.textContent = value;
+        element.textContent = value as string;
 
         continue;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      element.setAttribute(key, value!);
+      if (typeof value === 'boolean') {
+        element.toggleAttribute(key, !!value);
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        element.setAttribute(key, value!);
+      }
     }
   }
 
