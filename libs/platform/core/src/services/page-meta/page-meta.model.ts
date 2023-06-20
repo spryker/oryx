@@ -2,8 +2,7 @@ interface LinkAttributes {
   rel?: string;
   href?: string;
   sizes?: string;
-  async?: boolean;
-  defer?: boolean;
+  disabled?: boolean;
 }
 
 interface TextAttributes {
