@@ -69,7 +69,7 @@ const smallScreen = css`
 
   oryx-button {
     align-self: start;
-    margin:0;
+    margin: 0;
     margin-block-start: 17px;
   }
 `;
