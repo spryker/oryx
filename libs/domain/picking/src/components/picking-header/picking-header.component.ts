@@ -5,7 +5,6 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
-import { take, tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
 import { DiscardPickingComponent } from '../discard-modal';
 import { styles } from './picking-header.styles';
@@ -84,13 +83,8 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   }
 
   protected back(): void {
-    this.pickingListService
-      .finishPicking(this.pickingList)
-      .pipe(
-        take(1),
-        tap(() => this.routerService.back())
-      )
-      .subscribe();
+    this.pickingListService.stopPickingInProgress();
+    this.routerService.back();
   }
 }
 

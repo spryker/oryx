@@ -75,12 +75,16 @@ export class PickingListDefaultService implements PickingListService {
   finishPicking(pickingList: PickingList): Observable<PickingList> {
     return this.adapter.finishPicking(pickingList).pipe(
       tap(() => {
-        this.pickingInProgress$.next(false);
+        this.stopPickingInProgress();
       })
     );
   }
 
   pickingInProgress(): Observable<boolean> {
     return this.pickingInProgress$;
+  }
+
+  stopPickingInProgress(): void {
+    this.pickingInProgress$.next(false);
   }
 }
