@@ -1,6 +1,6 @@
+import { TypeaheadOptions } from '@spryker-oryx/ui/typeahead';
+import { getControl } from '@spryker-oryx/ui/utilities';
 import { LitElement, ReactiveController } from 'lit';
-import { TypeaheadOptions } from '../../../../search/typeahead';
-import { getControl } from '../../../utilities';
 
 /**
  * Whenever a select element is projected in the default slot, this controller

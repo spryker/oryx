@@ -2,7 +2,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { PartInfo } from 'lit/directive';
+import { PartInfo } from 'lit/directive.js';
 import { BehaviorSubject, of, Subject, Subscription } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { AsyncValueObservableStrategy } from './async-value-observable-strategy';
