@@ -60,13 +60,21 @@ export class DefaultCheckoutService implements CheckoutService {
             ? this.adapter.placeOrder(state as PlaceOrderData)
             : throwError(() => new Error('Invalid checkout data'))
         ),
-        switchMap((response) => this.resolveRedirect(response)),
-        tap((response) => this.postCheckout(response))
+        switchMap((response) => this.resolveRedirect(response))
       );
     },
     onStart: [PlaceOrderStart],
     onFinish: [PlaceOrderEnd],
-    onSuccess: [PlaceOrderSuccess, CartsUpdated, AddressModificationSuccess],
+    onSuccess: [
+      PlaceOrderSuccess,
+      CartsUpdated,
+      AddressModificationSuccess,
+      ({ data }) => {
+        if (data.orders?.length)
+          this.orderService.storeLastOrder(data.orders[0]);
+      },
+      () => this.stateService.clear(),
+    ],
     onError: [PlaceOrderFail],
   });
 
@@ -97,17 +105,5 @@ export class DefaultCheckoutService implements CheckoutService {
             id: response.orderReference,
           })
           .pipe(map((redirectUrl) => ({ ...response, redirectUrl })));
-  }
-
-  /**
-   * After placing the order we need to do some cleanup:
-   * - clear the checkout state
-   * - clear the cart
-   * - store the placed order
-   */
-  protected postCheckout(response: CheckoutResponse): void {
-    this.stateService.clear();
-    if (response.orders?.length)
-      this.orderService.storeLastOrder(response.orders[0]);
   }
 }
