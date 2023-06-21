@@ -32,16 +32,14 @@ export class ContentLinkComponent extends ContentMixin<
       .color=${color}
       ?singleLine=${singleLine}
       .icon=${icon}
-    >
-      ${this.renderLink()}
+      >${this.renderLink()}
     </oryx-link>`;
   }
 
   protected renderLink(): TemplateResult {
     if (!this.$link()) return html`${this.$content()?.text}`;
 
-    const { label, target, button, icon } = this.$options();
-    const renderIcon = !!button && !!icon;
+    const { label, target } = this.$options();
 
     return html`
       <a
@@ -50,12 +48,24 @@ export class ContentLinkComponent extends ContentMixin<
         target=${ifDefined(target)}
         rel=${ifDefined(this.getRel())}
       >
-        <slot>
-          ${when(renderIcon, () => html`<oryx-icon .type=${icon}></oryx-icon>`)}
-          ${this.$content()?.text}
-        </slot>
+        ${this.renderContent()}
       </a>
     `;
+  }
+
+  protected renderContent(): TemplateResult {
+    const { text } = this.$content() ?? {};
+    const { button, icon } = this.$options();
+    const renderIcon = !!button && !!icon;
+
+    if (text || icon) {
+      return html` ${when(
+        renderIcon,
+        () => html`<oryx-icon .type=${icon}></oryx-icon>`
+      )}
+      ${this.$content()?.text}`;
+    }
+    return html`<slot></slot>`;
   }
 
   protected getRel(): string | undefined {

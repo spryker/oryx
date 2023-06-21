@@ -8,7 +8,15 @@ export const backOfficeLinkStyles = css`
     --oryx-icon-size: 16px;
 
     display: inline-flex;
-    align-items: center;
+    align-items: baseline;
+    position: relative;
+    gap: 8px;
+  }
+
+  :host([singleLine]) ::slotted(a) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   :host(:not(${isNeutral})) {

@@ -1,27 +1,32 @@
 import { css } from 'lit';
 
 export const storefrontLinkStyles = css`
-  oryx-icon {
+  :host([has-icon]) {
+    --oryx-icon-size: 16px;
+    display: inline-flex;
+    align-items: baseline;
     position: relative;
-    inset-block-start: 2px;
-    padding-inline-start: 6px;
+    gap: 8px;
   }
 
-  ::slotted(*) {
+  :host([singleLine]) ::slotted(a) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  oryx-icon {
+    position: relative;
+    inset-block-start: 3px;
+  }
+
+  ::slotted(a) {
     text-decoration: none;
     color: currentColor;
   }
 
-  :host(:hover) oryx-icon,
-  :host(:hover) ::slotted(*) {
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    /* stylelint-disable-next-line */
-    text-decoration-color: currentColor;
-    text-decoration-thickness: 1px;
-  }
-
-  :host(:hover) ::slotted(*) {
+  :host(:hover) ::slotted(a) {
+    text-decoration: solid underline currentColor 1px;
     text-underline-offset: 4px;
   }
 
@@ -37,13 +42,6 @@ export const storefrontLinkStyles = css`
     height: 100%;
     width: 100%;
     inset-inline-start: 0;
-  }
-
-  oryx-icon::after,
-  ::slotted(oryx-icon)::after {
-    content: 'a';
-    color: transparent;
-    letter-spacing: -3px;
   }
 
   :host([color='primary']),

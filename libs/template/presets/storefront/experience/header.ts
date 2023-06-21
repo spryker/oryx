@@ -19,7 +19,7 @@ export const HeaderTemplate: StaticComponent = {
           options: {
             data: {
               url: '/',
-              icon: 'check_circle',
+              icon: IconTypes.Carrier,
               color: 'light',
             },
           },
@@ -34,7 +34,7 @@ export const HeaderTemplate: StaticComponent = {
           options: {
             data: {
               url: '/',
-              icon: 'check_circle',
+              icon: IconTypes.Parcel,
               color: 'light',
             },
           },
@@ -49,7 +49,7 @@ export const HeaderTemplate: StaticComponent = {
           options: {
             data: {
               url: '/',
-              icon: 'check_circle',
+              icon: 'storefront',
               color: 'light',
             },
           },

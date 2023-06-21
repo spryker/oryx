@@ -16,7 +16,6 @@ import {
   computed,
   hydratable,
   i18n,
-  signal,
   signalProperty,
   Size,
 } from '@spryker-oryx/utilities';
@@ -78,12 +77,12 @@ export class CartEntryComponent
   protected notificationService = resolve(NotificationService);
   protected semanticLinkService = resolve(SemanticLinkService);
 
-  protected $productLink = signal(
-    this.semanticLinkService.get({
+  protected $productLink = computed(() => {
+    return this.semanticLinkService.get({
       type: SemanticLinkType.Product,
-      id: this.sku,
-    })
-  );
+      id: this.$product()?.sku,
+    });
+  });
 
   protected override render(): TemplateResult | void {
     return html`
@@ -97,7 +96,7 @@ export class CartEntryComponent
     if (!this.$options()?.enableItemImage) return;
 
     return html`
-      <a href=${this.$productLink}>
+      <a href=${this.$productLink()}>
         <oryx-product-media
           .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
         ></oryx-product-media>
