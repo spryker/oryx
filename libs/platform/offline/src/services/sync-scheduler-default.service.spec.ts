@@ -1,10 +1,10 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
-import { mockSync } from '@spryker-oryx/offline/mocks';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Collection, Table } from 'dexie';
 import { from, of } from 'rxjs';
 import { SyncEntity } from '../entities';
+import { mockSync } from '../mocks/src/mock-sync';
 import { SyncStatus } from '../models';
 import {
   ProcessSyncsBackgroundSyncTag,

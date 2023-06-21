@@ -1,9 +1,9 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
-import { mockSync } from '@spryker-oryx/offline/mocks';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Table } from 'dexie';
 import { of } from 'rxjs';
+import { mockSync } from '../mocks/src/mock-sync';
 import { SyncStatus } from '../models';
 import { SyncActionRegistryService } from './sync-action-registry.service';
 import { SyncExecutorDefaultService } from './sync-executor-default.service';

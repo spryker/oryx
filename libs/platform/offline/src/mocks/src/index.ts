@@ -1,1 +1,1 @@
-export * from './mock-sync';
+export * from './mock-offline.providers';

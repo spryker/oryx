@@ -1,5 +1,5 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { mockSync } from '@spryker-oryx/offline/mocks';
+import { mockSync } from '../mocks/src/mock-sync';
 import { SyncActionRegistryDefaultService } from './sync-action-registry-default.service';
 import { SyncActionRegistryService } from './sync-action-registry.service';
 
