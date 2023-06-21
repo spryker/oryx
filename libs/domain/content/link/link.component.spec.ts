@@ -57,7 +57,9 @@ describe('ContentLinkComponent', () => {
     });
 
     it('should pass the text to the link', () => {
-      expect(element.renderRoot.querySelector('a')?.innerText).toBe('test');
+      expect(element.renderRoot.querySelector('a')?.textContent?.trim()).toBe(
+        'test'
+      );
     });
   });
 

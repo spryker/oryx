@@ -25,10 +25,7 @@ export class ContentLinkComponent extends ContentMixin<
     const { button, icon, singleLine, color } = this.$options();
 
     if (button) {
-      return html`<oryx-button>
-        ${when(icon, () => html`<oryx-icon .type=${icon}></oryx-icon>`)}
-        ${this.renderLink()}
-      </oryx-button>`;
+      return html`<oryx-button>${this.renderLink()}</oryx-button>`;
     }
 
     return html`<oryx-link
@@ -43,13 +40,21 @@ export class ContentLinkComponent extends ContentMixin<
   protected renderLink(): TemplateResult {
     const { label, target } = this.$options();
 
+    const icon = this.$options().button && this.$options().icon;
+
     return html`
       <a
         href=${this.$link()}
         aria-label=${ifDefined(label)}
         target=${ifDefined(target)}
         rel=${ifDefined(this.getRel())}
-        ><slot>${this.$content()?.text}</slot></a
+        ><slot>
+          ${when(
+            icon,
+            () => html`<oryx-icon .type=${this.$options().icon}></oryx-icon>`
+          )}
+          ${this.$content()?.text}</slot
+        ></a
       >
     `;
   }
