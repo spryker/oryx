@@ -16,7 +16,14 @@ import {
 } from './resolvers';
 import { ProductsExperienceDataRevealer } from './revealers';
 import { SortingService } from './sorting.service';
-import { DefaultSuggestionService, SuggestionService } from './suggestion';
+import {
+  DefaultSuggestionRenderer,
+  DefaultSuggestionRendererService,
+  DefaultSuggestionService,
+  SuggestionRenderer,
+  SuggestionRendererService,
+  SuggestionService,
+} from './suggestion';
 
 export const searchProviders: Provider[] = [
   {
@@ -44,6 +51,14 @@ export const searchProviders: Provider[] = [
   {
     provide: PageMetaResolver,
     useClass: SearchPageTitleMetaResolver,
+  },
+  {
+    provide: SuggestionRendererService,
+    useClass: DefaultSuggestionRendererService,
+  },
+  {
+    provide: SuggestionRenderer,
+    useClass: DefaultSuggestionRenderer,
   },
 ];
 

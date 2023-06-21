@@ -1,15 +1,14 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { ContentLinkComponent } from '@spryker-oryx/content/link';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ExperienceService } from '@spryker-oryx/experience';
 import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
-import { mockSearchProviders } from '@spryker-oryx/search/mocks';
+import { SuggestionRendererService } from '@spryker-oryx/search';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { typeheadComponent } from '@spryker-oryx/ui';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { mockSearchProviders } from '../src/mocks/src';
 import { SearchBoxComponent } from './box.component';
 import { searchBoxComponent } from './box.def';
 
@@ -21,8 +20,11 @@ class MockSemanticLinkService implements Partial<SemanticLinkService> {
   get = vi.fn().mockReturnValue(of(''));
 }
 
-class MockEBService implements Partial<ExperienceService> {
-  getOptions = vi.fn().mockReturnValue(of({}));
+class MockSuggestionRendererService
+  implements Partial<SuggestionRendererService>
+{
+  render = vi.fn().mockReturnValue(html`Lorem`);
+  getSuggestions = vi.fn().mockReturnValue(of({ data: ['data'] }));
 }
 
 class MockI18NService implements Partial<I18nService> {
@@ -35,6 +37,7 @@ describe('SearchBoxComponent', () => {
   let element: SearchBoxComponent;
   let linkService: MockSemanticLinkService;
   let routerService: MockRouterService;
+  let suggestionService: MockSuggestionRendererService;
 
   const hasControls = (): boolean => {
     return (
@@ -82,10 +85,6 @@ describe('SearchBoxComponent', () => {
     const testInjector = createInjector({
       providers: [
         {
-          provide: ExperienceService,
-          useClass: MockEBService,
-        },
-        {
           provide: RouterService,
           useClass: MockRouterService,
         },
@@ -97,6 +96,10 @@ describe('SearchBoxComponent', () => {
           provide: I18nService,
           useClass: MockI18NService,
         },
+        {
+          provide: SuggestionRendererService,
+          useClass: MockSuggestionRendererService,
+        },
         ...mockSearchProviders,
       ],
     });
@@ -106,6 +109,9 @@ describe('SearchBoxComponent', () => {
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;
+    suggestionService = testInjector.inject(
+      SuggestionRendererService
+    ) as unknown as MockSuggestionRendererService;
     element = await fixture(html`<oryx-search-box></oryx-search-box>`);
   });
 
@@ -216,6 +222,8 @@ describe('SearchBoxComponent', () => {
 
   describe('when not found', () => {
     beforeEach(async () => {
+      suggestionService.getSuggestions.mockReturnValueOnce(of({ data: [] }));
+
       element = await fixture(
         html`<oryx-search-box query="abracadabra"></oryx-search-box>`
       );
@@ -262,49 +270,6 @@ describe('SearchBoxComponent', () => {
       vi.advanceTimersByTime(301);
       await hasResults();
     });
-
-    describe('rendering', () => {
-      beforeEach(async () => {
-        await simulateTyping(query);
-        vi.advanceTimersByTime(301);
-      });
-
-      it('should render sections', () => {
-        const sections = element.renderRoot.querySelectorAll('section');
-        expect(sections.length).toBe(2);
-      });
-
-      it('should render the whole list of links', () => {
-        const links = element.renderRoot.querySelectorAll(
-          'section:nth-child(1) > ul'
-        );
-        expect(links.length).toBe(2);
-      });
-
-      it('should render list of links with correct url', () => {
-        const links = element.renderRoot.querySelectorAll(
-          'section:nth-child(1) > ul oryx-content-link'
-        );
-
-        Array.from(links).forEach((link) => {
-          expect(
-            [SemanticLinkType.Category, 'search'].includes(
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              (link as ContentLinkComponent).options!.type!
-            )
-          ).toBe(true);
-        });
-      });
-
-      it('should pass query to the view all link params', () => {
-        const viewAllLink =
-          element.renderRoot.querySelector<ContentLinkComponent>(
-            'oryx-button > oryx-content-link'
-          );
-        viewAllLink?.click();
-        expect(viewAllLink?.options?.params?.q).toBe(query);
-      });
-    });
   });
 
   describe('when container with results is scrolled', () => {
@@ -339,68 +304,6 @@ describe('SearchBoxComponent', () => {
     });
   });
 
-  describe('suggestion is provided partially', () => {
-    describe('and there are links only', () => {
-      beforeEach(async () => {
-        element = await fixture(html`
-          <oryx-search-box
-            query="pro"
-            .options=${{
-              productsCount: 0,
-            }}
-          ></oryx-search-box>
-        `);
-
-        vi.useFakeTimers();
-
-        //debounce the typeahead event dispatching
-        vi.advanceTimersByTime(301);
-      });
-
-      afterEach(() => {
-        vi.clearAllTimers();
-      });
-
-      it('should render only one section', () => {
-        const sections = element.renderRoot.querySelectorAll(
-          '[slot="option"] section'
-        );
-        expect(sections?.length).toBe(1);
-      });
-    });
-
-    describe('and there are products only', () => {
-      beforeEach(async () => {
-        element = await fixture(html`
-          <oryx-search-box
-            query="pro"
-            .options=${{
-              categoriesCount: 0,
-              completionsCount: 0,
-              cmsCount: 0,
-            }}
-          ></oryx-search-box>
-        `);
-
-        vi.useFakeTimers();
-
-        //debounce the typeahead event dispatching
-        vi.advanceTimersByTime(301);
-      });
-
-      afterEach(() => {
-        vi.clearAllTimers();
-      });
-
-      it('should render only one section', () => {
-        const sections = element.renderRoot.querySelectorAll(
-          '[slot="option"] section'
-        );
-        expect(sections?.length).toBe(1);
-      });
-    });
-  });
-
   describe('when search is submitted', () => {
     describe('and query is empty string', () => {
       beforeEach(async () => {
@@ -421,10 +324,6 @@ describe('SearchBoxComponent', () => {
 
       it('should navigate by link', () => {
         expect(routerService.navigate).toHaveBeenCalledWith('link');
-      });
-
-      it('should close typeahead', () => {
-        expect(element).toContainElement('oryx-typeahead:not([open])');
       });
     });
 
