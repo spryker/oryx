@@ -24,7 +24,7 @@ export class ProductMediaComponent extends ProductMixin(
   protected override render(): TemplateResult | void {
     const { mediaIndex = 0, containerSize } = this.$options();
     const sources = this.imageService.resolveSources(
-      this.getMediaSet()?.media[mediaIndex],
+      this.$mediaSet()?.media[mediaIndex],
       containerSize
     );
 
@@ -39,11 +39,13 @@ export class ProductMediaComponent extends ProductMixin(
   }
 
   protected renderImage(src?: string, srcSet?: string): TemplateResult | void {
+    const { name } = this.$product() ?? {};
+    const { alt = name, loading } = this.$options();
     return html`<oryx-image
       .src=${src}
       .srcset=${srcSet}
-      .alt=${this.componentOptions?.alt || this.product?.name}
-      .loading=${this.componentOptions?.loading}
+      .alt=${alt}
+      .loading=${loading}
     ></oryx-image>`;
   }
 
@@ -51,9 +53,9 @@ export class ProductMediaComponent extends ProductMixin(
    * Resolves the media set. When there's no mediaSet index provided, the first
    * media set is returned.
    */
-  protected getMediaSet = computed(() => {
-    const { mediaSet } = this.$options();
+  protected $mediaSet = computed(() => {
     const medias = this.$product()?.mediaSet;
+    const { mediaSet } = this.$options();
     if (mediaSet) {
       return medias?.find((set) => set.name === mediaSet);
     } else {

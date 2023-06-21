@@ -29,6 +29,7 @@ export const searchPage: StaticComponent = {
               divider: true,
               sticky: true,
               top: '108px',
+              margin: '0 0 30px',
             },
           ],
         },
@@ -43,7 +44,7 @@ export const searchPage: StaticComponent = {
       components: [
         {
           type: 'oryx-composition',
-          name: 'Product listing header',
+          name: 'Product list header',
           components: [{ type: 'oryx-search-product-sort' }],
           options: { data: { rules: [{ layout: 'flex', justify: 'end' }] } },
         },
