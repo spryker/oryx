@@ -1,6 +1,6 @@
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { LinkType } from '@spryker-oryx/ui/link';
-import { DirectiveResult } from 'lit/directive';
+import { DirectiveResult } from 'lit/directive.js';
 
 export const enum ContentLinkType {
   RawUrl = 'rawUrl',

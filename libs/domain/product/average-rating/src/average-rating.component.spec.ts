@@ -1,50 +1,44 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ExperienceService } from '@spryker-oryx/experience';
-import { Product } from '@spryker-oryx/product';
 import {
-  mockProductProviders,
-  MockProductService,
-} from '@spryker-oryx/product/mocks';
+  productAverageRatingComponent,
+  ProductService,
+} from '@spryker-oryx/product';
 import { RatingComponent } from '@spryker-oryx/ui/rating';
 import { Size } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ProductAverageRatingComponent } from './average-rating.component';
-import { productAverageRatingComponent } from './average-rating.def';
 
-class MockExperienceContentService implements Partial<ExperienceService> {
-  getOptions = ({ uid = '' }): Observable<any> => of({});
+class MockProductService implements Partial<ProductService> {
+  get = vi.fn();
 }
 
 describe('Average Rating', () => {
   let element: ProductAverageRatingComponent;
-
-  const getRating = (): RatingComponent => {
-    return element.renderRoot.querySelector('oryx-rating') as RatingComponent;
-  };
-
-  const getProduct = (productSku: string): Product => {
-    return MockProductService.mockProducts.find(
-      ({ sku }) => productSku === sku
-    ) as Product;
-  };
+  let productService: MockProductService;
 
   beforeAll(async () => {
     await useComponent(productAverageRatingComponent);
   });
 
   beforeEach(async () => {
-    createInjector({
+    const injector = createInjector({
       providers: [
-        ...mockProductProviders,
         {
-          provide: ExperienceService,
-          useClass: MockExperienceContentService,
+          provide: ProductService,
+          useClass: MockProductService,
+        },
+        {
+          provide: ContextService,
+          useClass: DefaultContextService,
         },
       ],
     });
+
+    productService = injector.inject<MockProductService>(ProductService);
   });
 
   afterEach(() => {
@@ -53,6 +47,9 @@ describe('Average Rating', () => {
 
   describe('when the product has a review count', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({ sku: '1', averageRating: 3.5, reviewCount: 5 })
+      );
       element = await fixture(
         html`<oryx-product-average-rating
           sku="1"
@@ -65,19 +62,26 @@ describe('Average Rating', () => {
     });
 
     it('should pass averageRating to oryx-rating', () => {
-      expect(getRating().value).toBe(getProduct('1').averageRating);
+      const e = element.renderRoot.querySelector(
+        'oryx-rating'
+      ) as RatingComponent;
+      expect(e.value).toBe(3.5);
     });
 
     it('should pass reviewCount to oryx-rating', () => {
-      expect(getRating().reviewCount).toBe(getProduct('1').reviewCount);
+      const e = element.renderRoot.querySelector(
+        'oryx-rating'
+      ) as RatingComponent;
+      expect(e.reviewCount).toBe(5);
     });
   });
 
   describe('when product has no reviews', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(of({ sku: '1' }));
       element = await fixture(
         html`<oryx-product-average-rating
-          sku="3"
+          sku="1"
         ></oryx-product-average-rating>`
       );
     });
@@ -87,16 +91,26 @@ describe('Average Rating', () => {
     });
 
     it('should set default reviewCount for the oryx-rating', () => {
-      expect(getRating().reviewCount).toBe(0);
+      const e = element.renderRoot.querySelector(
+        'oryx-rating'
+      ) as RatingComponent;
+      expect(e.reviewCount).toBe(0);
     });
 
     it('should not pass the average rating to the oryx-rating', () => {
-      expect(getRating().value).toBe(undefined);
+      const e = element.renderRoot.querySelector(
+        'oryx-rating'
+      ) as RatingComponent;
+      expect(e.value).toBe(undefined);
     });
   });
 
   describe('when enableCount is false', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({ sku: '1', averageRating: 3.5, reviewCount: 5 })
+      );
+
       element = await fixture(
         html`<oryx-product-average-rating
           sku="1"
@@ -105,8 +119,11 @@ describe('Average Rating', () => {
       );
     });
 
-    it('should not set reviewCount for the oryx-rating', () => {
-      expect(getRating().reviewCount).toBe(undefined);
+    it('should set default reviewCount for the oryx-rating', () => {
+      const e = element.renderRoot.querySelector(
+        'oryx-rating'
+      ) as RatingComponent;
+      expect(e.reviewCount).toBe(undefined);
     });
   });
 
@@ -121,7 +138,10 @@ describe('Average Rating', () => {
     });
 
     it('should pass the size to the oryx-rating', async () => {
-      expect(getRating().size).toBe(Size.Sm);
+      const e = element.renderRoot.querySelector(
+        'oryx-rating'
+      ) as RatingComponent;
+      expect(e.size).toBe(Size.Sm);
     });
   });
 });

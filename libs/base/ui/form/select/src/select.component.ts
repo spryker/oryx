@@ -1,4 +1,5 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { ErrorOptions, FormControlController } from '@spryker-oryx/ui/input';
 import {
   ClearIconAppearance,
   ClearIconPosition,
@@ -11,11 +12,10 @@ import {
   TypeaheadController,
   TypeaheadOptions,
 } from '@spryker-oryx/ui/typeahead';
+import { getControl } from '@spryker-oryx/ui/utilities';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ErrorOptions, FormControlController } from '../../../form/input';
-import { getControl } from '../../utilities/getControl';
 import { SelectController, SelectFilterController } from './controllers';
 import { baseStyles } from './styles';
 

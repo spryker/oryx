@@ -2,10 +2,10 @@ import { OrderMixin } from '@spryker-oryx/order';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { styles } from './confirmation-banner.styles';
+import { orderConfirmationBannerStyles } from './confirmation-banner.styles';
 
 export class OrderConfirmationBannerComponent extends OrderMixin(LitElement) {
-  static styles = styles;
+  static styles = orderConfirmationBannerStyles;
 
   protected orderRef = signal(this.orderController.getRef());
 

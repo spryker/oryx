@@ -1,6 +1,6 @@
+import { ErrorController, ErrorOptions } from '@spryker-oryx/ui/input';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ErrorController, ErrorOptions } from '../../../form/input';
 import { styles } from './toggle.styles';
 
 export class ToggleComponent extends LitElement implements ErrorOptions {
