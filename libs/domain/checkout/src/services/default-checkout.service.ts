@@ -16,7 +16,7 @@ import {
   take,
   throwError,
 } from 'rxjs';
-import { CheckoutResponse, CheckoutState, PlaceOrderData } from '../models';
+import { CheckoutResponse, CheckoutStatus, PlaceOrderData } from '../models';
 import { CheckoutAdapter } from './adapter';
 import { CheckoutService } from './checkout.service';
 import {
@@ -39,13 +39,13 @@ export class DefaultCheckoutService implements CheckoutService {
           event.type === PlaceOrderStart ? ++acc : --acc,
         0
       ),
-      map((x) => (x ? CheckoutState.Busy : CheckoutState.Ready)),
-      startWith(CheckoutState.Ready)
+      map((x) => (x ? CheckoutStatus.Busy : CheckoutStatus.Ready)),
+      startWith(CheckoutStatus.Ready)
     )
-  ) as Observable<CheckoutState>;
+  ) as Observable<CheckoutStatus>;
 
   protected process$ = this.cartId$.pipe(
-    switchMap((hasCart) => (hasCart ? this.isBusy$ : of(CheckoutState.Empty))),
+    switchMap((hasCart) => (hasCart ? this.isBusy$ : of(CheckoutStatus.Empty))),
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
@@ -87,7 +87,7 @@ export class DefaultCheckoutService implements CheckoutService {
     protected orderService = inject(OrderService)
   ) {}
 
-  getProcessState(): Observable<CheckoutState> {
+  getStatus(): Observable<CheckoutStatus> {
     return this.process$;
   }
 

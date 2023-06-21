@@ -18,7 +18,7 @@ import { checkoutAccountComponent } from './account.def';
 import { CheckoutAccountComponentOptions } from './account.model';
 
 export class MockCheckoutService implements Partial<CheckoutService> {
-  getProcessState = vi.fn().mockReturnValue(of());
+  getStatus = vi.fn().mockReturnValue(of());
 }
 
 export class MockCheckoutDataService implements Partial<CheckoutDataService> {

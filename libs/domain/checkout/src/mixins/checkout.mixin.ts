@@ -6,7 +6,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { map } from 'rxjs';
-import { CheckoutState } from '../models';
+import { CheckoutStatus } from '../models';
 import {
   CheckoutDataService,
   CheckoutService,
@@ -37,22 +37,22 @@ export const CheckoutMixin = <T extends Type<LitElement>>(
 
     protected isEmpty = signal(
       this.checkoutService
-        .getProcessState()
-        .pipe(map((state) => state === CheckoutState.Empty)),
+        .getStatus()
+        .pipe(map((state) => state === CheckoutStatus.Empty)),
       { initialValue: false }
     );
 
     protected isBusy = signal(
       this.checkoutService
-        .getProcessState()
-        .pipe(map((state) => state === CheckoutState.Busy)),
+        .getStatus()
+        .pipe(map((state) => state === CheckoutStatus.Busy)),
       { initialValue: false }
     );
 
     protected isInvalid = signal(
       this.checkoutService
-        .getProcessState()
-        .pipe(map((state) => state === CheckoutState.Invalid)),
+        .getStatus()
+        .pipe(map((state) => state === CheckoutStatus.Invalid)),
       { initialValue: false }
     );
   }

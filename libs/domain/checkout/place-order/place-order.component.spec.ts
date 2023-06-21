@@ -4,8 +4,8 @@ import {
   CheckoutDataService,
   CheckoutResponse,
   CheckoutService,
-  CheckoutState,
   CheckoutStateService,
+  CheckoutStatus,
 } from '@spryker-oryx/checkout';
 import { CheckoutPlaceOrderComponent } from '@spryker-oryx/checkout/place-order';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -24,7 +24,7 @@ export class MockRouterService implements Partial<RouterService> {
 }
 
 export class MockCheckoutService implements Partial<CheckoutService> {
-  getProcessState = vi.fn().mockReturnValue(of());
+  getStatus = vi.fn().mockReturnValue(of());
   placeOrder = vi.fn().mockReturnValue(of());
 }
 
@@ -84,7 +84,7 @@ describe('PlaceOrderComponent', () => {
 
   describe('when the checkout process is not ready', () => {
     beforeEach(async () => {
-      checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Empty));
+      checkoutService.getStatus.mockReturnValue(of(CheckoutStatus.Empty));
       element = await fixture(
         html`<oryx-checkout-place-order></oryx-checkout-place-order>`
       );
@@ -97,7 +97,7 @@ describe('PlaceOrderComponent', () => {
 
   describe('when the checkout process is ready', () => {
     beforeEach(async () => {
-      checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Ready));
+      checkoutService.getStatus.mockReturnValue(of(CheckoutStatus.Ready));
       element = await fixture(
         html`<oryx-checkout-place-order></oryx-checkout-place-order>`
       );
@@ -157,7 +157,7 @@ describe('PlaceOrderComponent', () => {
 
   describe('when the checkout process is busy', () => {
     beforeEach(async () => {
-      checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Busy));
+      checkoutService.getStatus.mockReturnValue(of(CheckoutStatus.Busy));
       element = await fixture(
         html`<oryx-checkout-place-order></oryx-checkout-place-order>`
       );

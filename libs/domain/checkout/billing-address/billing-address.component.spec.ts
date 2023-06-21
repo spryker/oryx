@@ -18,7 +18,7 @@ import { CheckoutBillingAddressComponent } from './billing-address.component';
 import { checkoutBillingAddressComponent } from './billing-address.def';
 
 export class MockCheckoutService implements Partial<CheckoutService> {
-  getProcessState = vi.fn().mockReturnValue(of());
+  getStatus = vi.fn().mockReturnValue(of());
 }
 
 export class MockCheckoutDataService implements Partial<CheckoutDataService> {

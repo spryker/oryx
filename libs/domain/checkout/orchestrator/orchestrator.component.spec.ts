@@ -3,8 +3,8 @@ import { CartService } from '@spryker-oryx/cart';
 import {
   CheckoutDataService,
   CheckoutService,
-  CheckoutState,
   CheckoutStateService,
+  CheckoutStatus,
   isValid,
 } from '@spryker-oryx/checkout';
 import { useComponent } from '@spryker-oryx/core/utilities';
@@ -20,7 +20,7 @@ class MockCartService implements Partial<CartService> {
 }
 
 export class MockCheckoutService implements Partial<CheckoutService> {
-  getProcessState = vi.fn().mockReturnValue(of());
+  getStatus = vi.fn().mockReturnValue(of());
 }
 
 export class MockCheckoutDataService implements Partial<CheckoutDataService> {
@@ -93,7 +93,7 @@ describe('CheckoutOrchestratorComponent', () => {
 
   describe('when the checkout is not available', () => {
     beforeEach(async () => {
-      checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Empty));
+      checkoutService.getStatus.mockReturnValue(of(CheckoutStatus.Empty));
       element = await fixture(
         html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
       );
@@ -106,7 +106,7 @@ describe('CheckoutOrchestratorComponent', () => {
 
   describe('when the checkout is Ready', () => {
     beforeEach(async () => {
-      checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Ready));
+      checkoutService.getStatus.mockReturnValue(of(CheckoutStatus.Ready));
       element = await fixture(
         html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
       );
@@ -119,7 +119,7 @@ describe('CheckoutOrchestratorComponent', () => {
 
   describe('when the checkout is Busy', () => {
     beforeEach(async () => {
-      checkoutService.getProcessState.mockReturnValue(of(CheckoutState.Busy));
+      checkoutService.getStatus.mockReturnValue(of(CheckoutStatus.Busy));
       element = await fixture(
         html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
       );
@@ -136,10 +136,10 @@ describe('CheckoutOrchestratorComponent', () => {
         mockReport.mockReturnValue(true);
       });
 
-      const state = new BehaviorSubject(CheckoutState.Ready);
+      const state = new BehaviorSubject(CheckoutStatus.Ready);
 
       beforeEach(async () => {
-        checkoutService.getProcessState.mockReturnValue(state);
+        checkoutService.getStatus.mockReturnValue(state);
         element = await fixture(
           html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
         );
@@ -147,7 +147,7 @@ describe('CheckoutOrchestratorComponent', () => {
 
       describe('and the state becomes invalid', () => {
         beforeEach(async () => {
-          state.next(CheckoutState.Invalid);
+          state.next(CheckoutStatus.Invalid);
         });
 
         it('should report validity on all the components', () => {
@@ -161,10 +161,10 @@ describe('CheckoutOrchestratorComponent', () => {
         mockReport.mockReturnValue(false);
       });
 
-      const state = new BehaviorSubject(CheckoutState.Ready);
+      const state = new BehaviorSubject(CheckoutStatus.Ready);
 
       beforeEach(async () => {
-        checkoutService.getProcessState.mockReturnValue(state);
+        checkoutService.getStatus.mockReturnValue(state);
         element = await fixture(
           html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
         );
@@ -172,7 +172,7 @@ describe('CheckoutOrchestratorComponent', () => {
 
       describe('and the state becomes invalid', () => {
         beforeEach(async () => {
-          state.next(CheckoutState.Invalid);
+          state.next(CheckoutStatus.Invalid);
         });
 
         it('should report validity on the first component', () => {

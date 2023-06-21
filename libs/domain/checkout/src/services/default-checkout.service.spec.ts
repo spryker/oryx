@@ -3,8 +3,8 @@ import {
   CheckoutDataService,
   CheckoutResponse,
   CheckoutService,
-  CheckoutState,
   CheckoutStateService,
+  CheckoutStatus,
   DefaultCheckoutService,
 } from '@spryker-oryx/checkout';
 import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
@@ -85,45 +85,45 @@ describe('DefaultCheckoutService', () => {
   });
 
   describe('when the cart is empty', () => {
-    let result: CheckoutState;
+    let result: CheckoutStatus;
 
     beforeEach(async () => {
       mockCart.next(null);
       checkoutService
-        .getProcessState()
+        .getStatus()
         .pipe(take(1))
         .subscribe((state) => (result = state));
     });
 
     it('should return an empty state', () => {
-      expect(result).toBe(CheckoutState.Empty);
+      expect(result).toBe(CheckoutStatus.Empty);
     });
   });
 
   describe('when a cart id is available', () => {
-    let result: CheckoutState;
+    let result: CheckoutStatus;
 
     beforeEach(async () => {
       mockCart.next({ id: 'foo' } as Cart);
       checkoutService
-        .getProcessState()
+        .getStatus()
         .pipe(take(1))
         .subscribe((state) => (result = state));
     });
 
     it('should return an read state', () => {
-      expect(result).toBe(CheckoutState.Ready);
+      expect(result).toBe(CheckoutStatus.Ready);
     });
   });
 
   describe('when placeOrder is called', () => {
     describe('and no valid state is provided', () => {
-      const result: CheckoutState[] = [];
+      const result: CheckoutStatus[] = [];
 
       beforeEach(() => {
         checkoutStateService.getAll.mockReturnValue(of(null));
         checkoutService
-          .getProcessState()
+          .getStatus()
           .pipe(take(3))
           .subscribe((state) => result.push(state));
         checkoutService.placeOrder();
@@ -131,9 +131,9 @@ describe('DefaultCheckoutService', () => {
 
       it('should change the state to Ready', () => {
         expect(result).toEqual([
-          CheckoutState.Ready,
-          CheckoutState.Busy,
-          CheckoutState.Ready,
+          CheckoutStatus.Ready,
+          CheckoutStatus.Busy,
+          CheckoutStatus.Ready,
         ]);
       });
 
@@ -143,7 +143,7 @@ describe('DefaultCheckoutService', () => {
     });
 
     describe('and a valid state object is returned', () => {
-      const result: CheckoutState[] = [];
+      const result: CheckoutStatus[] = [];
       const state = { foo: 'bar' };
 
       beforeEach(() => {
@@ -152,7 +152,7 @@ describe('DefaultCheckoutService', () => {
           of({ orders: [{}] } as CheckoutResponse)
         );
         checkoutService
-          .getProcessState()
+          .getStatus()
           .pipe(take(3))
           .subscribe((state) => result.push(state));
         checkoutService.placeOrder();
@@ -160,9 +160,9 @@ describe('DefaultCheckoutService', () => {
 
       it('should change the state to Ready', () => {
         expect(result).toEqual([
-          CheckoutState.Ready,
-          CheckoutState.Busy,
-          CheckoutState.Ready,
+          CheckoutStatus.Ready,
+          CheckoutStatus.Busy,
+          CheckoutStatus.Ready,
         ]);
       });
 
