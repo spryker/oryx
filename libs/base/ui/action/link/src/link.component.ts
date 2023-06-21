@@ -1,8 +1,8 @@
+import { Icons } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { Icons } from '../../../graphical/icon';
 import { ColorType, LinkComponentAttributes, LinkType } from './link.model';
 import { linkStyles } from './styles';
 
