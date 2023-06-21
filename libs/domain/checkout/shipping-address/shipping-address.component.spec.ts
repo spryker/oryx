@@ -29,6 +29,7 @@ export class MockCheckoutDataService implements Partial<CheckoutDataService> {
 export class MockCheckoutStateService implements Partial<CheckoutStateService> {
   get = vi.fn();
   set = vi.fn();
+  isInvalid = vi.fn().mockReturnValue(of(false));
 }
 
 class MockAddressService implements Partial<AddressService> {

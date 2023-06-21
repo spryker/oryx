@@ -26,6 +26,7 @@ class MockAddressService implements Partial<AddressService> {
 }
 class MockCheckoutStateService implements Partial<CheckoutStateService> {
   get = vi.fn();
+  isInvalid = vi.fn().mockReturnValue(of(false));
 }
 class MockCheckoutService implements Partial<CheckoutService> {
   getStatus = vi.fn().mockReturnValue(of(CheckoutStatus.Ready));

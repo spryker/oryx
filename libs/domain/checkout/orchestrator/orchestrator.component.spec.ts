@@ -30,6 +30,7 @@ export class MockCheckoutDataService implements Partial<CheckoutDataService> {
 export class MockCheckoutStateService implements Partial<CheckoutStateService> {
   get = vi.fn();
   set = vi.fn();
+  isInvalid = vi.fn().mockReturnValue(of(false));
 }
 
 const mockReport = vi.fn();
@@ -52,6 +53,7 @@ class MockComposition extends LitElement {
 describe('CheckoutOrchestratorComponent', () => {
   let element: CheckoutOrchestratorComponent;
   let checkoutService: MockCheckoutService;
+  let checkoutStateService: MockCheckoutStateService;
 
   beforeAll(async () => {
     await useComponent(checkoutOrchestratorComponent);
@@ -68,6 +70,8 @@ describe('CheckoutOrchestratorComponent', () => {
     });
 
     checkoutService = injector.inject<MockCheckoutService>(CheckoutService);
+    checkoutStateService =
+      injector.inject<MockCheckoutStateService>(CheckoutStateService);
   });
 
   afterEach(() => {
@@ -136,10 +140,10 @@ describe('CheckoutOrchestratorComponent', () => {
         mockReport.mockReturnValue(true);
       });
 
-      const state = new BehaviorSubject(CheckoutStatus.Ready);
+      const isInvalidState = new BehaviorSubject(false);
 
       beforeEach(async () => {
-        checkoutService.getStatus.mockReturnValue(state);
+        checkoutStateService.isInvalid.mockReturnValue(isInvalidState);
         element = await fixture(
           html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
         );
@@ -147,7 +151,7 @@ describe('CheckoutOrchestratorComponent', () => {
 
       describe('and the state becomes invalid', () => {
         beforeEach(async () => {
-          state.next(CheckoutStatus.Invalid);
+          isInvalidState.next(true);
         });
 
         it('should report validity on all the components', () => {
@@ -161,10 +165,10 @@ describe('CheckoutOrchestratorComponent', () => {
         mockReport.mockReturnValue(false);
       });
 
-      const state = new BehaviorSubject(CheckoutStatus.Ready);
+      const isInvalidState = new BehaviorSubject(false);
 
       beforeEach(async () => {
-        checkoutService.getStatus.mockReturnValue(state);
+        checkoutStateService.isInvalid.mockReturnValue(isInvalidState);
         element = await fixture(
           html`<oryx-checkout-orchestrator></oryx-checkout-orchestrator>`
         );
@@ -172,7 +176,7 @@ describe('CheckoutOrchestratorComponent', () => {
 
       describe('and the state becomes invalid', () => {
         beforeEach(async () => {
-          state.next(CheckoutStatus.Invalid);
+          isInvalidState.next(true);
         });
 
         it('should report validity on the first component', () => {
