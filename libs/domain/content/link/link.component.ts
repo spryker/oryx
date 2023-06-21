@@ -38,9 +38,10 @@ export class ContentLinkComponent extends ContentMixin<
   }
 
   protected renderLink(): TemplateResult {
-    const { label, target } = this.$options();
+    if (!this.$link()) return html`${this.$content()?.text}`;
 
-    const icon = this.$options().button && this.$options().icon;
+    const { label, target, button, icon } = this.$options();
+    const renderIcon = button && icon;
 
     return html`
       <a
@@ -49,10 +50,7 @@ export class ContentLinkComponent extends ContentMixin<
         target=${ifDefined(target)}
         rel=${ifDefined(this.getRel())}
         ><slot>
-          ${when(
-            icon,
-            () => html`<oryx-icon .type=${this.$options().icon}></oryx-icon>`
-          )}
+          ${when(renderIcon, () => html`<oryx-icon .type=${icon}></oryx-icon>`)}
           ${this.$content()?.text}</slot
         ></a
       >

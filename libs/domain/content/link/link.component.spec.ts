@@ -57,9 +57,7 @@ describe('ContentLinkComponent', () => {
     });
 
     it('should pass the text to the link', () => {
-      expect(element.renderRoot.querySelector('a')?.textContent?.trim()).toBe(
-        'test'
-      );
+      expect(element.renderRoot.textContent?.trim()).toBe('test');
     });
   });
 
@@ -74,6 +72,20 @@ describe('ContentLinkComponent', () => {
 
     it('should render the url', () => {
       expect(element).toContainElement('a[href="/test"]');
+    });
+  });
+
+  describe('when url nor type is provided', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-content-link
+          .options=${{} as ContentLinkOptions}
+        ></oryx-content-link>`
+      );
+    });
+
+    it('should not render a link', () => {
+      expect(element).not.toContainElement('a');
     });
   });
 
