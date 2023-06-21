@@ -1,9 +1,9 @@
-export const mockLitHtml = (svg: string[], ...values: string[]): string => {
-  const template = [svg[0]];
+export const mockLitHtml = (value: string[], ...values: string[]): string => {
+  const template = [value[0]];
 
   for (let i = 0; i < values.length; i++) {
     template.push(values[i]);
-    template.push(svg[i + 1]);
+    template.push(value[i + 1]);
   }
 
   return template.join('');
