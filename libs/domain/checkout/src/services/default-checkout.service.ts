@@ -11,6 +11,7 @@ import {
   of,
   scan,
   shareReplay,
+  startWith,
   switchMap,
   take,
   throwError,
@@ -38,7 +39,8 @@ export class DefaultCheckoutService implements CheckoutService {
           event.type === PlaceOrderStart ? ++acc : --acc,
         0
       ),
-      map((x) => (x ? CheckoutState.Busy : CheckoutState.Ready))
+      map((x) => (x ? CheckoutState.Busy : CheckoutState.Ready)),
+      startWith(CheckoutState.Ready)
     )
   ) as Observable<CheckoutState>;
 

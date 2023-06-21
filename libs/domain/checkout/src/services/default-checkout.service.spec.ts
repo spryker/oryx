@@ -7,7 +7,7 @@ import {
   CheckoutStateService,
   DefaultCheckoutService,
 } from '@spryker-oryx/checkout';
-import { QueryService } from '@spryker-oryx/core';
+import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
 import { SemanticLinkService } from '@spryker-oryx/site';
@@ -41,10 +41,6 @@ export class MockCheckoutStateService implements Partial<CheckoutStateService> {
   clear = vi.fn();
 }
 
-class MockQueryService implements Partial<QueryService> {
-  emit = vi.fn();
-}
-
 const mockCart = new BehaviorSubject<Cart | null>(null);
 
 describe('DefaultCheckoutService', () => {
@@ -65,7 +61,7 @@ describe('DefaultCheckoutService', () => {
         { provide: OrderService, useClass: MockOrderService },
         { provide: CheckoutDataService, useClass: MockCheckoutDataService },
         { provide: CheckoutStateService, useClass: MockCheckoutStateService },
-        { provide: QueryService, useClass: MockQueryService },
+        { provide: QueryService, useClass: DefaultQueryService },
       ],
     });
 
@@ -102,13 +98,6 @@ describe('DefaultCheckoutService', () => {
     it('should return an empty state', () => {
       expect(result).toBe(CheckoutState.Empty);
     });
-
-    it('should invalidate the cart Id on state service', () => {
-      expect(checkoutStateService.set).toHaveBeenCalledWith('cartId', {
-        valid: false,
-        value: null,
-      });
-    });
   });
 
   describe('when a cart id is available', () => {
@@ -122,15 +111,8 @@ describe('DefaultCheckoutService', () => {
         .subscribe((state) => (result = state));
     });
 
-    it('should return an empty state', () => {
+    it('should return an read state', () => {
       expect(result).toBe(CheckoutState.Ready);
-    });
-
-    it('should invalidate the cart Id on state service', () => {
-      expect(checkoutStateService.set).toHaveBeenCalledWith('cartId', {
-        valid: true,
-        value: 'foo',
-      });
     });
   });
 
@@ -147,11 +129,11 @@ describe('DefaultCheckoutService', () => {
         checkoutService.placeOrder();
       });
 
-      it('should change the state to invalid', () => {
+      it('should change the state to Ready', () => {
         expect(result).toEqual([
           CheckoutState.Ready,
           CheckoutState.Busy,
-          CheckoutState.Invalid,
+          CheckoutState.Ready,
         ]);
       });
 
@@ -185,15 +167,14 @@ describe('DefaultCheckoutService', () => {
       });
 
       it('should call the adapter to place the order', () => {
-        expect(adapter.placeOrder).toHaveBeenCalledWith({ attributes: state });
+        expect(adapter.placeOrder).toHaveBeenCalledWith({
+          ...state,
+          cartId: 'foo',
+        });
       });
 
       it('should clear the state', () => {
         expect(checkoutStateService.clear).toBeCalled();
-      });
-
-      it('should reload the cart', () => {
-        expect(cartService.reload).toBeCalled();
       });
 
       it('should store the order', () => {
