@@ -59,7 +59,7 @@ export class SearchBoxComponent
   protected i18nService = resolve(I18nService);
 
   protected $raw = computed(() => {
-    const query = this.query.trim();
+    const query = this.query?.trim();
     const options = this.$options();
     const withSuggestion =
       query && (!options.minChars || query.length >= options.minChars);
@@ -219,7 +219,7 @@ export class SearchBoxComponent
   }
 
   protected onTypeahead(event: CustomEvent<SearchEventDetail>): void {
-    this.query = event.detail.query.trim();
+    this.query = event.detail.query;
   }
 
   protected onScroll(): void {
