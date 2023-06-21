@@ -49,11 +49,12 @@ export class ContentLinkComponent extends ContentMixin<
         aria-label=${ifDefined(label)}
         target=${ifDefined(target)}
         rel=${ifDefined(this.getRel())}
-        ><slot>
-          ${when(renderIcon, () => html`<oryx-icon .type=${icon}></oryx-icon>`)}
-          ${this.$content()?.text}</slot
-        ></a
       >
+        <slot>
+          ${when(renderIcon, () => html`<oryx-icon .type=${icon}></oryx-icon>`)}
+          ${this.$content()?.text}
+        </slot>
+      </a>
     `;
   }
 

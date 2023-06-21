@@ -14,7 +14,11 @@ describe('Search suite', () => {
     search.search('sony');
 
     search.getSearchSuggestions().should('have.length', 5);
-    search.getSearchSuggestions().find('a').eq(0).should('have.text', 'sony');
+    search
+      .getSearchSuggestions()
+      .find('a')
+      .eq(0)
+      .should('contain.text', 'sony');
 
     search.getSearchProducts().should('have.length', 5);
     search
