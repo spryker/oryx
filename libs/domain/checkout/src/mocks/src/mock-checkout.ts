@@ -1,4 +1,4 @@
-import { Checkout } from '../../models';
+import { PlaceOrderData } from '../../models';
 
 export const mockSelectedShipmentMethod = {
   selectedShipmentMethod: {
@@ -249,7 +249,7 @@ const mockCustomer = {
   lastName: 'last',
 };
 
-export const mockPostCheckoutProps: { attributes: Checkout } = {
+export const mockPostCheckoutProps: { attributes: PlaceOrderData } = {
   attributes: {
     cartId: 'mockcart',
     payments: [{ provider: 'mockProvider', name: 'mock', id: '1' }],

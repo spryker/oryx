@@ -32,7 +32,7 @@ export interface CheckoutData {
   };
 }
 
-export interface Checkout {
+export interface PlaceOrderData {
   customer: ContactDetails;
   cartId: string;
   billingAddress: Address;
