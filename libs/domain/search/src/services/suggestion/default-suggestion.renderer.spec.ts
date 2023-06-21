@@ -107,7 +107,7 @@ class FakeContainer extends LitElement implements SearchBoxProperties {
 describe('DefaultSuggestionRenderer', () => {
   let element: FakeContainer;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     await useComponent([
       componentDef({ name: 'fake-container', impl: FakeContainer }),
     ]);

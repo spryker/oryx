@@ -40,7 +40,7 @@ export class DefaultSuggestionRendererService
 
   getSuggestions<T = Suggestion>(
     query: string,
-    options?: SuggestionRendererOptions | undefined
+    options?: SuggestionRendererOptions
   ): Observable<T | null> {
     this.data$.next({ query, ...options });
     return this.suggestion$ as unknown as Observable<T | null>;
