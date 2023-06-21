@@ -1,7 +1,11 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
 import { of, take } from 'rxjs';
-import { Checkout, checkoutDataStorageKey, ContactDetails } from '../../models';
+import {
+  checkoutDataStorageKey,
+  ContactDetails,
+  PlaceOrderData,
+} from '../../models';
 import { CheckoutStateService, DefaultCheckoutStateService } from './';
 
 class MockStorageService implements Partial<StorageService> {
@@ -105,7 +109,7 @@ describe('DefaultCheckoutStateService', () => {
 
   describe('when getAll() is called', () => {
     describe('and some of the data is invalid', () => {
-      let data: Partial<Checkout> | null;
+      let data: Partial<PlaceOrderData> | null;
       beforeEach(() => {
         checkoutStateService.set('customer', {
           valid: true,
@@ -130,7 +134,7 @@ describe('DefaultCheckoutStateService', () => {
     });
 
     describe('and the all the data is valid', () => {
-      let data: Partial<Checkout> | null;
+      let data: Partial<PlaceOrderData> | null;
       beforeEach(() => {
         checkoutStateService.set('customer', {
           valid: true,
