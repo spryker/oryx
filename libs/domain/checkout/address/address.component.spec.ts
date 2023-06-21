@@ -10,7 +10,7 @@ import {
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BehaviorSubject, of } from 'rxjs';
-import { CheckoutState } from '../src/models';
+import { CheckoutStatus } from '../src/models';
 import {
   CheckoutDataService,
   CheckoutService,
@@ -27,7 +27,7 @@ class MockCheckoutStateService implements Partial<CheckoutStateService> {
   get = vi.fn();
 }
 class MockCheckoutService implements Partial<CheckoutService> {
-  getProcessState = vi.fn().mockReturnValue(of(CheckoutState.Ready));
+  getStatus = vi.fn().mockReturnValue(of(CheckoutStatus.Ready));
 }
 class MockCheckoutDataService implements Partial<CheckoutDataService> {}
 const mockState = new BehaviorSubject({

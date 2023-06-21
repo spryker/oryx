@@ -1,10 +1,9 @@
 import { OrderData } from '@spryker-oryx/order';
 
-export const enum CheckoutState {
+export const enum CheckoutStatus {
   Empty = 'empty',
   Ready = 'ready',
   Busy = 'busy',
-  Invalid = 'invalid',
 }
 
 /**
@@ -32,7 +31,7 @@ export interface CheckoutData {
   };
 }
 
-export interface Checkout {
+export interface PlaceOrderData {
   customer: ContactDetails;
   cartId: string;
   billingAddress: Address;

@@ -103,18 +103,6 @@ describe('DefaultCartService', () => {
     expect(service).toBeInstanceOf(DefaultCartService);
   });
 
-  describe('reload', () => {
-    beforeEach(() => {
-      adapter.getAll.mockClear();
-    });
-
-    it('should trigger getAll method of the CartAdapter', async () => {
-      service.getCart().pipe(take(3)).subscribe();
-      service.reload();
-      expect(adapter.getAll).toHaveBeenCalledTimes(2);
-    });
-  });
-
   describe('getCart', () => {
     it('should return an observable with undefined if response without carts', () => {
       service.getCart().pipe(take(1)).subscribe(cartCallback);
