@@ -228,12 +228,12 @@ export class SearchBoxComponent
           ({ name, url, params }) => html`
             <li>
               <oryx-content-link
-                .options="${{
+                .options=${{
                   type,
                   id: url ?? '',
                   params: params ?? null,
                   text: name,
-                }}"
+                }}
                 close-popover
               ></oryx-content-link>
             </li>
@@ -251,11 +251,11 @@ export class SearchBoxComponent
 
         <oryx-button outline @click=${this.onClose}>
           <oryx-content-link
-            .options="${{
+            .options=${{
               type: SemanticLinkType.ProductList,
               text: i18n('search.box.view-all-products'),
               params: { q: this.query },
-            }}"
+            }}
           ></oryx-content-link>
         </oryx-button>
       </section>
@@ -303,7 +303,6 @@ export class SearchBoxComponent
     this.typeahead.dispatchEvent(
       new CustomEvent('oryx.close', { bubbles: true, composed: true })
     );
-    this.typeahead.removeAttribute('open');
   }
 
   protected onTypeahead(event: CustomEvent<SearchEventDetail>): void {
