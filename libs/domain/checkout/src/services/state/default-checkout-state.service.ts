@@ -21,6 +21,8 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     Map<keyof PlaceOrderData, CheckoutValue>
   >(new Map());
 
+  protected isInvalid$ = new BehaviorSubject<boolean>(false);
+
   constructor(protected storage = inject(StorageService)) {
     this.restore();
   }
@@ -59,13 +61,18 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
 
   clear(): void {
     this.storage.remove(checkoutDataStorageKey, StorageType.Session);
+    this.isInvalid$.next(false);
     this.subject.next(new Map());
   }
 
   getAll(): Observable<Partial<PlaceOrderData> | null> {
     return this.subject.pipe(
       map((data) => {
-        if (Array.from(data).find((item) => !item[1].valid)) return null;
+        if (Array.from(data).find((item) => !item[1].valid)) {
+          this.isInvalid$.next(true);
+          return null;
+        }
+        this.isInvalid$.next(false);
         const result: Partial<PlaceOrderData> = {};
         data.forEach((item, key) => {
           Object.assign(result, { [key]: item.value });
@@ -73,6 +80,10 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
         return this.populateData(result);
       })
     );
+  }
+
+  isInvalid(): Observable<boolean> {
+    return this.isInvalid$.pipe(distinctUntilChanged());
   }
 
   protected populateData(

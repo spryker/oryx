@@ -4,8 +4,6 @@ export const enum CheckoutStatus {
   Empty = 'empty',
   Ready = 'ready',
   Busy = 'busy',
-  // TODO: move this status to checkout state service
-  Invalid = 'invalid',
 }
 
 /**

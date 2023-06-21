@@ -48,6 +48,14 @@ describe('DefaultCheckoutStateService', () => {
     it('should restore data from the storage service', () => {
       expect(storageService.get).toHaveBeenCalled();
     });
+
+    it('isInvalid should return false', () => {
+      let data: boolean | undefined;
+      checkoutStateService
+        .isInvalid()
+        .subscribe((response) => (data = response));
+      expect(data).toBe(false);
+    });
   });
 
   describe('when the checkout state is not set before', () => {
@@ -131,6 +139,15 @@ describe('DefaultCheckoutStateService', () => {
           .subscribe((response) => (data = response));
         expect(data).toBeNull();
       });
+
+      it('isInvalid should return true', () => {
+        let data: boolean | undefined;
+        checkoutStateService.getAll().subscribe();
+        checkoutStateService
+          .isInvalid()
+          .subscribe((response) => (data = response));
+        expect(data).toBe(true);
+      });
     });
 
     describe('and the all the data is valid', () => {
@@ -164,6 +181,14 @@ describe('DefaultCheckoutStateService', () => {
       it('should populate the name from the shipping address', () => {
         expect(data?.customer?.firstName).toBe('John');
         expect(data?.customer?.lastName).toBe('Doe');
+      });
+
+      it('isInvalid should return false', () => {
+        let data: boolean | undefined;
+        checkoutStateService
+          .isInvalid()
+          .subscribe((response) => (data = response));
+        expect(data).toBe(false);
       });
     });
   });

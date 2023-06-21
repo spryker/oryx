@@ -49,12 +49,9 @@ export const CheckoutMixin = <T extends Type<LitElement>>(
       { initialValue: false }
     );
 
-    protected isInvalid = signal(
-      this.checkoutService
-        .getStatus()
-        .pipe(map((state) => state === CheckoutStatus.Invalid)),
-      { initialValue: false }
-    );
+    protected isInvalid = signal(this.checkoutStateService.isInvalid(), {
+      initialValue: false,
+    });
   }
   return CheckoutMixinClass as unknown as Type<CheckoutMixinInterface> & T;
 };
