@@ -1,5 +1,5 @@
-import { CartService } from '@spryker-oryx/cart';
-import { createCommand, createEffect, QueryService } from '@spryker-oryx/core';
+import { CartService, CartsUpdated } from '@spryker-oryx/cart';
+import { createCommand, createEffect } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
@@ -66,7 +66,7 @@ export class DefaultCheckoutService implements CheckoutService {
     },
     onStart: [PlaceOrderStart],
     onFinish: [PlaceOrderEnd],
-    onSuccess: [PlaceOrderSuccess, AddressModificationSuccess],
+    onSuccess: [PlaceOrderSuccess, CartsUpdated, AddressModificationSuccess],
     onError: [PlaceOrderFail],
   });
 
@@ -75,8 +75,7 @@ export class DefaultCheckoutService implements CheckoutService {
     protected cartService = inject(CartService),
     protected adapter = inject(CheckoutAdapter),
     protected linkService = inject(SemanticLinkService),
-    protected orderService = inject(OrderService),
-    protected queryService = inject(QueryService)
+    protected orderService = inject(OrderService)
   ) {}
 
   getProcessState(): Observable<CheckoutState> {
@@ -108,7 +107,6 @@ export class DefaultCheckoutService implements CheckoutService {
    */
   protected postCheckout(response: CheckoutResponse): void {
     this.stateService.clear();
-    this.cartService.reload();
     if (response.orders?.length)
       this.orderService.storeLastOrder(response.orders[0]);
   }

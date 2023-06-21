@@ -42,6 +42,7 @@ import {
   CartModificationFail,
   CartModificationStart,
   CartModificationSuccess,
+  CartsUpdated,
 } from './state';
 
 export class DefaultCartService implements CartService {
@@ -67,6 +68,7 @@ export class DefaultCartService implements CartService {
       },
     ],
     resetOn: [this.identity.get().pipe(skip(1))],
+    refreshOn: [CartsUpdated],
   });
 
   protected cartQuery$ = createQuery({
@@ -178,10 +180,6 @@ export class DefaultCartService implements CartService {
     ),
     distinctUntilChanged()
   );
-
-  reload(): void {
-    this.cartsQuery$.refresh();
-  }
 
   getCart(qualifier?: CartQualifier): Observable<Cart | undefined> {
     if (qualifier?.cartId) {
