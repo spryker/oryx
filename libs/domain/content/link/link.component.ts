@@ -41,7 +41,7 @@ export class ContentLinkComponent extends ContentMixin<
     if (!this.$link()) return html`${this.$content()?.text}`;
 
     const { label, target, button, icon } = this.$options();
-    const renderIcon = button && icon;
+    const renderIcon = !!button && !!icon;
 
     return html`
       <a

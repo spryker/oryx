@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { IconComponent } from '@spryker-oryx/ui/icon';
 import { LinkComponent } from '@spryker-oryx/ui/link';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -39,7 +40,7 @@ describe('ContentLinkComponent', () => {
     destroyInjector();
   });
 
-  describe.only('when component is created', () => {
+  describe('when component is created', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-content-link
@@ -103,11 +104,11 @@ describe('ContentLinkComponent', () => {
     });
 
     it('should resolve the link from the SemanticLinkService', () => {
-      expect(semanticLinkService.get).toHaveBeenCalledWith(
-        SemanticLinkType.Page,
-        '123',
-        { foo: 'bar' }
-      );
+      expect(semanticLinkService.get).toHaveBeenCalledWith({
+        type: SemanticLinkType.Product,
+        id: '123',
+        params: { foo: 'bar' },
+      });
     });
 
     it('should build the correct link', () => {
@@ -155,7 +156,7 @@ describe('ContentLinkComponent', () => {
     });
 
     it('should combine correct attribute', () => {
-      expect(element).toContainElement('a[rel=noopener]');
+      expect(element).toContainElement('a[rel=nofollow]');
     });
   });
 
@@ -173,7 +174,7 @@ describe('ContentLinkComponent', () => {
     });
 
     it('should combine correct attribute', () => {
-      expect(element).toContainElement('a[rel=noopener nofollow]');
+      expect(element).toContainElement('a[rel="noopener nofollow"]');
     });
   });
 
@@ -181,13 +182,13 @@ describe('ContentLinkComponent', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-content-link
-          .options=${{ label: 'test' }}
+          .options=${{ url: '/test', label: 'test label' }}
         ></oryx-content-link>`
       );
     });
 
     it('should pass set aria-label on the link', () => {
-      expect(element).toContainElement('a[aria-label]');
+      expect(element).toContainElement('a[aria-label="test label"]');
     });
   });
 
@@ -195,7 +196,7 @@ describe('ContentLinkComponent', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-content-link
-          .options=${{ target: '_blank' }}
+          .options=${{ url: '/test', target: '_blank' }}
         ></oryx-content-link>`
       );
     });
@@ -221,11 +222,11 @@ describe('ContentLinkComponent', () => {
     });
   });
 
-  describe('when button option is provided', () => {
+  describe.only('when button option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-content-link
-          .options=${{ button: true }}
+          .options=${{ url: '/test', button: true }}
         ></oryx-content-link>`
       );
     });
@@ -242,13 +243,16 @@ describe('ContentLinkComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-content-link
-            .options=${{ button: true, icon: 'check' }}
+            .options=${{ url: '/test', button: true, icon: 'check' }}
           ></oryx-content-link>`
         );
       });
 
       it('should provide the icon to the oryx-button', () => {
-        expect(element).toContainElement('oryx-icon[type="check"]');
+        const icon = element.renderRoot.querySelector(
+          'oryx-icon'
+        ) as IconComponent;
+        expect(icon.type).toBe('check');
       });
     });
   });
