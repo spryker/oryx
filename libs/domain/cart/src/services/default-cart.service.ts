@@ -145,7 +145,7 @@ export class DefaultCartService implements CartService {
     )
   ) as Observable<Map<string, number>>;
 
-  protected activeCartId$ = this.cartsQuery$.get(undefined).pipe(
+  protected activeCartId$ = this.cartsQuery$.get().pipe(
     map((carts) => {
       for (const cart of carts ?? []) {
         if (cart.isDefault) {
@@ -168,7 +168,7 @@ export class DefaultCartService implements CartService {
   );
 
   protected isBusy$ = combineLatest([
-    this.cartsQuery$.getState(undefined), // loading state of all carts
+    this.cartsQuery$.getState(), // loading state of all carts
     this.getCartState().pipe(startWith({ loading: false } as QueryState<Cart>)), // loading state of the active cart
     this.isCartModified$.pipe(startWith(false)), // is any cart being modified
   ]).pipe(
