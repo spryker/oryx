@@ -3,6 +3,7 @@ import { css } from 'lit';
 export const storefrontLinkStyles = css`
   :host([has-icon]) {
     --oryx-icon-size: 16px;
+
     display: inline-flex;
     align-items: baseline;
     position: relative;
