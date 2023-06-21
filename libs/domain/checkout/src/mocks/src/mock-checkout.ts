@@ -249,14 +249,12 @@ const mockCustomer = {
   lastName: 'last',
 };
 
-export const mockPostCheckoutProps: { attributes: PlaceOrderData } = {
-  attributes: {
-    cartId: 'mockcart',
-    payments: [{ provider: 'mockProvider', name: 'mock', id: '1' }],
-    shipments: [mockShipmentAttributes],
-    customer: mockCustomer,
-    billingAddress: mockShipmentAttributes.shippingAddress,
-  },
+export const mockPlaceOrderData: PlaceOrderData = {
+  cartId: 'mockcart',
+  payments: [{ provider: 'mockProvider', name: 'mock', id: '1' }],
+  shipments: [mockShipmentAttributes],
+  customer: mockCustomer,
+  billingAddress: mockShipmentAttributes.shippingAddress,
 };
 
 export const mockCheckout = {
