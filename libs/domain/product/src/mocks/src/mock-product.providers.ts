@@ -11,10 +11,12 @@ import {
   ProductListService,
   productMediaConfig,
   ProductMediaConfig,
+  ProductRelationsListService,
   ProductService,
 } from '@spryker-oryx/product';
 import { MockProductService } from './mock-product.service';
 import { MockProductListAdapter } from './product-list';
+import { MockProductRelationsListService } from './product-relations/mock-product-relations-list.service';
 
 export const mockProductProviders: Provider[] = [
   {
@@ -44,5 +46,9 @@ export const mockProductProviders: Provider[] = [
   {
     provide: ProductMediaConfig,
     useValue: productMediaConfig,
+  },
+  {
+    provide: ProductRelationsListService,
+    useClass: MockProductRelationsListService,
   },
 ];
