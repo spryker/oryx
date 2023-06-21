@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 export const storefrontLinkStyles = css`
-  :host([has-icon]) {
+  :host([icon]) {
     --oryx-icon-size: 16px;
 
     display: inline-flex;

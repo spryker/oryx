@@ -11,22 +11,15 @@ export class LinkComponent
 {
   @property({ reflect: true }) color?: ColorType = ColorType.Neutral;
   @property({ reflect: true, attribute: 'link-type' }) linkType?: LinkType;
+  @property({ reflect: true }) icon?: Icons | string;
   @property({ type: Boolean, reflect: true }) disabled?: boolean;
-  @property({ reflect: true }) singleLine?: boolean;
-
-  protected iconType?: Icons | string;
-
-  @property() set icon(value: Icons | string) {
-    this.iconType = value;
-    this.toggleAttribute('has-icon', !!value);
-  }
+  @property({ type: Boolean, reflect: true }) singleLine?: boolean;
 
   protected render(): TemplateResult {
     return html`
       ${when(
-        this.iconType,
-        () =>
-          html`<oryx-icon .type=${this.iconType} .size=${Size.Md}></oryx-icon>`
+        this.icon,
+        () => html`<oryx-icon .type=${this.icon} .size=${Size.Md}></oryx-icon>`
       )}
       <slot></slot>
     `;
