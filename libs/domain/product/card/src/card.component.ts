@@ -11,10 +11,8 @@ import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
-  effect,
   elementEffect,
   hydratable,
-  signalAware,
   Size,
   ssrShim,
 } from '@spryker-oryx/utilities';
@@ -35,13 +33,20 @@ import { ProductCardStyles } from './card.styles';
 })
 @ssrShim('style')
 @hydratable(['mouseover', 'focusin'])
-@signalAware()
 export class ProductCardComponent extends ProductMixin(
   ContentMixin<ProductCardOptions>(LitElement)
 ) {
   static styles = [ProductCardStyles];
 
+  protected contextController = new ContextController(this);
   protected semanticLinkService = resolve(SemanticLinkService);
+
+  @elementEffect()
+  protected setProductContext = (): void => {
+    if (this.sku) {
+      this.contextController.provide(ProductContext.SKU, this.sku);
+    }
+  };
 
   protected $link = computed(() =>
     this.semanticLinkService.get({
@@ -50,12 +55,13 @@ export class ProductCardComponent extends ProductMixin(
     })
   );
 
-  protected context = new ContextController(this);
-
   @elementEffect()
-  protected skuController = effect(() => {
-    this.context.provide(ProductContext.SKU, this.$options().sku ?? this.sku);
-  });
+  protected skuController = (): void => {
+    const sku = this.$options().sku;
+    if (sku) {
+      this.contextController.provide(ProductContext.SKU, sku);
+    }
+  };
 
   protected override render(): TemplateResult | void {
     const product = this.$product();
@@ -88,7 +94,7 @@ export class ProductCardComponent extends ProductMixin(
   }
 
   // TODO: move to wishlist component
-  protected renderWishlist(): TemplateResult | void {
+  private renderWishlist(): TemplateResult | void {
     if (this.$options().enableWishlist) {
       return html`<div class="actions">
         <oryx-icon-button>

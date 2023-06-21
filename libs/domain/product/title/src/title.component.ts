@@ -17,7 +17,7 @@ export class ProductTitleComponent extends ProductMixin(
 ) {
   static styles = styles;
 
-  protected hasLink = computed(
+  protected $hasLink = computed(
     () => !!this.$options().linkType && this.$options().linkType !== 'none'
   );
 
@@ -32,7 +32,7 @@ export class ProductTitleComponent extends ProductMixin(
       .asMd=${asMd}
       .asSm=${asSm}
     >
-      ${this.hasLink() ? this.renderLink() : html`${this.$product()?.name}`}
+      ${this.$hasLink() ? this.renderLink() : html`${this.$product()?.name}`}
     </oryx-heading>`;
   }
 
