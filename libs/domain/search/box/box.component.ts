@@ -67,7 +67,7 @@ export class SearchBoxComponent
     return withSuggestion
       ? this.suggestionRendererService.getSuggestions<
           LinksSection[] | Suggestion
-        >(query, this.options)
+        >(query, options)
       : of(null);
   });
   protected $suggestion = computed(() => {
