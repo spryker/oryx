@@ -15,10 +15,10 @@ export const defaultPickingRoutes: RouteConfig[] = [
       html`<oryx-picking .pickingListId="${id}" mode-light></oryx-picking>`,
     leave: (): Observable<boolean> => {
       return resolve(PickingListService)
-        .pickingInProgress()
+        .allowDiscardPicking()
         .pipe(
           take(1),
-          map((pickingInProgress) => !pickingInProgress)
+          map((allowDiscardPicking) => !!allowDiscardPicking)
         );
     },
   },
