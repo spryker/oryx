@@ -21,9 +21,9 @@ export declare class CheckoutMixinInterface {
   /**
    * Indicates that the checkout is ready for collecting checkout data.
    */
-  protected isEmpty: ConnectableSignal<boolean>;
-  protected isInvalid: ConnectableSignal<boolean>;
-  protected isBusy: ConnectableSignal<boolean>;
+  protected $isEmpty: ConnectableSignal<boolean>;
+  protected $isInvalid: ConnectableSignal<boolean>;
+  protected $isBusy: ConnectableSignal<boolean>;
 }
 
 export const CheckoutMixin = <T extends Type<LitElement>>(
@@ -35,21 +35,21 @@ export const CheckoutMixin = <T extends Type<LitElement>>(
     protected checkoutDataService = resolve(CheckoutDataService);
     protected checkoutStateService = resolve(CheckoutStateService);
 
-    protected isEmpty = signal(
+    protected $isEmpty = signal(
       this.checkoutService
         .getStatus()
         .pipe(map((state) => state === CheckoutStatus.Empty)),
       { initialValue: false }
     );
 
-    protected isBusy = signal(
+    protected $isBusy = signal(
       this.checkoutService
         .getStatus()
         .pipe(map((state) => state === CheckoutStatus.Busy)),
       { initialValue: false }
     );
 
-    protected isInvalid = signal(this.checkoutStateService.isInvalid(), {
+    protected $isInvalid = signal(this.checkoutStateService.isInvalid(), {
       initialValue: false,
     });
   }
