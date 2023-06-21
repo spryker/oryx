@@ -2,7 +2,6 @@ import { ContextController } from '@spryker-oryx/core';
 import { resolve, Type } from '@spryker-oryx/di';
 import {
   computed,
-  elementEffect,
   Signal,
   signal,
   signalAware,
@@ -42,13 +41,6 @@ export const ProductMixin = <
       const sku = this.sku ?? this.$productContext();
       return sku ? this.productService?.get({ sku }) : of(null);
     });
-
-    @elementEffect()
-    protected setProductContext = () => {
-      if (this.sku && this.$productContext() !== this.sku) {
-        this.contextController.provide(ProductContext.SKU, this.sku);
-      }
-    };
   }
   return ProductMixinClass as unknown as Type<ProductMixinInterface> & T;
 };

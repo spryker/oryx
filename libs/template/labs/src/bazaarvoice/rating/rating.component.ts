@@ -1,6 +1,6 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { effect, hydratable } from '@spryker-oryx/utilities';
+import { elementEffect, hydratable } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { loadBvScript } from '../script';
 import { bzRatingStyles } from '../styles';
@@ -11,7 +11,8 @@ export class BazaarvoiceRatingComponent extends ProductMixin(
 ) {
   static styles = [bzRatingStyles];
 
-  protected loadScript = effect(() => {
+  @elementEffect()
+  protected loadScript = (): void => {
     const productId = this.$product()?.sku;
     if (productId) {
       loadBvScript().then((bv) => {
@@ -23,7 +24,7 @@ export class BazaarvoiceRatingComponent extends ProductMixin(
         });
       });
     }
-  });
+  };
 
   protected createContainer(id: string): void {
     if (!document.getElementById(id)) {

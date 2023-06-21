@@ -38,8 +38,15 @@ export class ProductCardComponent extends ProductMixin(
 ) {
   static styles = [ProductCardStyles];
 
-  protected context = new ContextController(this);
+  protected contextController = new ContextController(this);
   protected semanticLinkService = resolve(SemanticLinkService);
+
+  @elementEffect()
+  protected setProductContext = (): void => {
+    if (this.sku) {
+      this.contextController.provide(ProductContext.SKU, this.sku);
+    }
+  };
 
   protected $link = computed(() =>
     this.semanticLinkService.get({
@@ -52,7 +59,7 @@ export class ProductCardComponent extends ProductMixin(
   protected skuController = (): void => {
     const sku = this.$options().sku;
     if (sku) {
-      this.context.provide(ProductContext.SKU, sku);
+      this.contextController.provide(ProductContext.SKU, sku);
     }
   };
 

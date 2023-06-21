@@ -1,6 +1,6 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { effect, hydratable } from '@spryker-oryx/utilities';
+import { elementEffect, hydratable } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { loadBvScript } from '../script';
 import { bzRatingStyles } from '../styles';
@@ -12,7 +12,8 @@ export class BazaarvoiceReviewListComponent extends ProductMixin(
 ) {
   static styles = [bzRatingStyles];
 
-  protected loadScript = effect(() => {
+  @elementEffect()
+  protected loadScript = (): void => {
     const productId = this.$product()?.sku;
     if (productId) {
       loadBvScript().then((bv) => {
@@ -24,7 +25,7 @@ export class BazaarvoiceReviewListComponent extends ProductMixin(
         });
       });
     }
-  });
+  };
 
   /**
    * The review list integration comes with an additional element which cannot be controlled.
