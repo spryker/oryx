@@ -3,7 +3,8 @@ import { css } from 'lit';
 export const storefrontLinkStyles = css`
   oryx-icon {
     position: relative;
-    top: 2px;
+    inset-block-start: 2px;
+    padding-inline-start: 6px;
   }
 
   ::slotted(*) {
@@ -15,6 +16,7 @@ export const storefrontLinkStyles = css`
   :host(:hover) ::slotted(*) {
     text-decoration: underline;
     text-underline-offset: 2px;
+    /* stylelint-disable-next-line */
     text-decoration-color: currentColor;
     text-decoration-thickness: 1px;
   }
@@ -34,7 +36,7 @@ export const storefrontLinkStyles = css`
     position: absolute;
     height: 100%;
     width: 100%;
-    left: 0;
+    inset-inline-start: 0;
   }
 
   oryx-icon::after,
@@ -42,10 +44,6 @@ export const storefrontLinkStyles = css`
     content: 'a';
     color: transparent;
     letter-spacing: -3px;
-  }
-
-  oryx-icon {
-    padding-inline-start: 6px;
   }
 
   :host([color='primary']),
@@ -62,12 +60,10 @@ export const storefrontLinkStyles = css`
   }
 
   :host([color='light']:hover) {
-    text-decoration-color: var(--oryx-color-primary-7);
     color: var(--oryx-color-primary-7);
   }
 
   :host([color='light']:active) {
-    text-decoration-color: var(--oryx-color-neutral-0);
     color: var(--oryx-color-neutral-0);
   }
 `;

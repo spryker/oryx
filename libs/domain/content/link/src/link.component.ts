@@ -25,13 +25,17 @@ export class ContentLinkComponent extends ContentMixin<
     const { button, icon, singleLine, color } = this.$options();
 
     if (button) {
-      return html`<oryx-button .icon=${icon}>
+      return html`<oryx-button>
+        ${when(icon, () => html`<oryx-icon .type=${icon}></oryx-icon>`)}
         ${this.renderLink()}
       </oryx-button>`;
     }
 
-    return html`<oryx-link .color=${color} ?singleLine=${singleLine}>
-      ${when(icon, () => html`<oryx-icon .type=${icon}></oryx-icon>`)}
+    return html`<oryx-link
+      .color=${color}
+      ?singleLine=${singleLine}
+      .icon=${icon}
+    >
       ${this.renderLink()}
     </oryx-link>`;
   }
