@@ -1,40 +1,53 @@
 import { SemanticLinkType } from '@spryker-oryx/site';
-import { LinkType } from '@spryker-oryx/ui/link';
-import { DirectiveResult } from 'lit/directive';
+import { ColorType } from '@spryker-oryx/ui/link';
 
-export const enum ContentLinkType {
-  RawUrl = 'rawUrl',
+export interface ContentLinkContent {
+  text?: string;
 }
 
 export interface ContentLinkOptions {
-  type?: SemanticLinkType | ContentLinkType;
-
-  linkType?: LinkType;
-
-  text?: DirectiveResult | string;
+  url?: string;
+  type?: SemanticLinkType;
   id?: string;
   params?: Record<string, string>;
-  icon?: string;
-  label?: string;
-  target?: string;
-  noopener?: boolean;
-  nofollow?: boolean;
-  disabled?: boolean;
-  loading?: boolean;
+
+  color?: ColorType;
 
   /**
-   * Indicates the appearance of the link. By default `oryx-link` is used as
-   * wrapper for anchor element.
-   * If set renders an `oryx-button`;
+   * Both links and button links support a prefixed icon.
+   */
+  icon?: string;
+
+  /**
+   * The label is used for an optimized aria-label on the link. When the label is not
+   * provided, screen readers will read the text of the link.
+   */
+  label?: string;
+
+  /**
+   * The target can be used to open a link in a new (named) window.
+   */
+  target?: string;
+
+  /**
+   * Prevents the new page from being able to access the window.opener property and ensures
+   * it runs in a separate process.
+   */
+  noopener?: boolean;
+
+  /**
+   * Blocks crawlers like Google Search Index to follow the link during indexing.
+   */
+  nofollow?: boolean;
+
+  /**
+   * Renders the link as a button (`oryx-button`), while remaining an anchor element
+   * under the hood.
    */
   button?: boolean;
 
   /**
-   * Indicates that the link should support multi-line.
-   *
-   * Multiline vs line clamping is managed in the link component, and will
-   * come with non-wrapped text. In case the link is intended to be multi-lined
-   * we must avoid this behaviour.
+   * Indicates that the link text should truncate when it has multiple lines.
    */
-  multiLine?: boolean;
+  singleLine?: boolean;
 }

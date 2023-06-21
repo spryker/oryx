@@ -22,7 +22,7 @@ describe('LinkComponent', () => {
     Object.values(types).forEach((type) => {
       describe(`when type is "${type}"`, () => {
         beforeEach(async () => {
-          element = await fixture(html`<oryx-link type="${type}"></oryx-link>`);
+          element = await fixture(html`<oryx-link .type=${type}></oryx-link>`);
         });
 
         it('passes the a11y audit', async () => {

@@ -1,86 +1,59 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentController, ContentMixin } from '@spryker-oryx/experience';
+import { ContentMixin } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
-import { asyncValue, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { combineLatest, of, switchMap } from 'rxjs';
-import { ContentLinkOptions, ContentLinkType } from './link.model';
+import { when } from 'lit/directives/when.js';
+import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
 @hydratable(['mouseover', 'focusin'])
-export class ContentLinkComponent extends ContentMixin<ContentLinkOptions>(
-  LitElement
-) {
-  protected contentController = new ContentController(this);
+export class ContentLinkComponent extends ContentMixin<
+  ContentLinkOptions,
+  ContentLinkContent
+>(LitElement) {
   protected semanticLinkService = resolve(SemanticLinkService);
-  protected options$ = this.contentController.getOptions();
 
-  protected data$ = this.options$.pipe(
-    switchMap((options) => {
-      return combineLatest([
-        this.options$,
-        ...(!options.type || options.type === ContentLinkType.RawUrl
-          ? [of(options.id)]
-          : [
-              this.semanticLinkService.get({
-                type: options.type,
-                id: options.id,
-                params: options.params,
-              }),
-            ]),
-      ]);
-    })
-  );
+  protected $link = computed(() => {
+    const { url, type, id, params } = this.$options();
+    if (url) return url;
+    if (type) return this.semanticLinkService.get({ type: type, id, params });
+    return null;
+  });
 
-  protected getRel(options: ContentLinkOptions): string | undefined {
-    return [options?.noopener && 'noopener', options?.nofollow && 'nofollow']
-      .filter((rel) => !!rel)
-      .join(' ');
+  protected override render(): TemplateResult | void {
+    const { button, icon, singleLine, color } = this.$options();
+
+    if (button) {
+      return html`<oryx-button .icon=${icon}>
+        ${this.renderLink()}
+      </oryx-button>`;
+    }
+
+    return html`<oryx-link .color=${color} ?singleLine=${singleLine}>
+      ${when(icon, () => html`<oryx-icon .type=${icon}></oryx-icon>`)}
+      ${this.renderLink()}
+    </oryx-link>`;
   }
 
-  protected override render(): TemplateResult {
-    return html`${asyncValue(this.data$, ([options, link]) => {
-      const { disabled, loading, icon, multiLine, linkType } =
-        this.componentOptions ?? {};
+  protected renderLink(): TemplateResult {
+    const { label, target } = this.$options();
 
-      if (!link) {
-        return html``;
-      }
-
-      if (options.button) {
-        return html`<oryx-button
-          part="wrapper"
-          .icon=${icon}
-          ?loading=${loading}
-        >
-          ${this.renderLink(link, options)}
-        </oryx-button>`;
-      }
-
-      return html`<oryx-link
-        .icon=${icon}
-        ?disabled=${disabled}
-        ?multiLine=${multiLine}
-        .linkType=${linkType}
-      >
-        ${this.renderLink(link, options)}
-      </oryx-link>`;
-    })}`;
-  }
-
-  protected renderLink(
-    link: string,
-    options: ContentLinkOptions
-  ): TemplateResult {
     return html`
       <a
-        href="${link}"
-        aria-label="${ifDefined(options.label)}"
-        target="${ifDefined(options.target)}"
-        rel="${ifDefined(this.getRel(options))}"
-        ?disabled=${options?.disabled}
-        ><slot>${options?.text}</slot></a
+        href=${this.$link()}
+        aria-label=${ifDefined(label)}
+        target=${ifDefined(target)}
+        rel=${ifDefined(this.getRel())}
+        ><slot>${this.$content()?.text}</slot></a
       >
     `;
+  }
+
+  protected getRel(): string | undefined {
+    const { noopener, nofollow } = this.$options();
+    return [noopener && 'noopener', nofollow && 'nofollow']
+      .filter((rel) => !!rel)
+      .join(' ');
   }
 }

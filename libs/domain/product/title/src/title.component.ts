@@ -40,7 +40,6 @@ export class ProductTitleComponent extends ProductMixin(
     const options = {
       type: SemanticLinkType.Product,
       id: this.$product()?.sku,
-      multiLine: true,
       linkType: this.$options().linkType,
     } as ContentLinkOptions;
 
