@@ -8,7 +8,6 @@ import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { typeheadComponent } from '@spryker-oryx/ui';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { mockSearchProviders } from '../src/mocks/src';
 import { SearchBoxComponent } from './box.component';
 import { searchBoxComponent } from './box.def';
 
@@ -100,7 +99,6 @@ describe('SearchBoxComponent', () => {
           provide: SuggestionRendererService,
           useClass: MockSuggestionRendererService,
         },
-        ...mockSearchProviders,
       ],
     });
     linkService = testInjector.inject(
