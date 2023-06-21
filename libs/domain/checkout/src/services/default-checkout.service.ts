@@ -66,7 +66,7 @@ export class DefaultCheckoutService implements CheckoutService {
     },
     onStart: [PlaceOrderStart],
     onFinish: [PlaceOrderEnd],
-    onSuccess: [PlaceOrderSuccess],
+    onSuccess: [PlaceOrderSuccess, AddressModificationSuccess],
     onError: [PlaceOrderFail],
   });
 
@@ -111,8 +111,5 @@ export class DefaultCheckoutService implements CheckoutService {
     this.cartService.reload();
     if (response.orders?.length)
       this.orderService.storeLastOrder(response.orders[0]);
-    // We want to reload addresses after checkout, as new address may have been created
-    // This one will be part of command success event, but for now we need to emit it manually
-    this.queryService.emit({ type: AddressModificationSuccess });
   }
 }
