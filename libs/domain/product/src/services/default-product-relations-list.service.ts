@@ -5,12 +5,12 @@ import { CurrencyChanged } from '@spryker-oryx/site';
 import { Observable } from 'rxjs';
 import { ProductQualifier } from '../models/product-qualifier';
 import { Product } from '../models/product.model';
-import { AlternativeProductsListAdapter } from './adapter/alternative-products-list.adapter';
-import { AlternativeProductsListService } from './alternative-products-list.service';
+import { ProductRelationsListAdapter } from './adapter/product-relations-list.adapter';
+import { ProductRelationsListService } from './product-relations-list.service';
 import { ProductsLoaded } from './state/events';
 
-export class DefaultAlternativeProductsListService
-  implements AlternativeProductsListService
+export class DefaultProductRelationsListService
+  implements ProductRelationsListService
 {
   protected productsListQuery = createQuery({
     loader: (qualifier: ProductQualifier) => this.adapter.get(qualifier),
@@ -18,7 +18,7 @@ export class DefaultAlternativeProductsListService
     refreshOn: [LocaleChanged, CurrencyChanged],
   });
 
-  constructor(protected adapter = inject(AlternativeProductsListAdapter)) {}
+  constructor(protected adapter = inject(ProductRelationsListAdapter)) {}
 
   get(qualifier: ProductQualifier): Observable<Product[] | undefined> {
     return this.productsListQuery.get(qualifier);

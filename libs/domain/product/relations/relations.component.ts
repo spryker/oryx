@@ -1,8 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { LayoutMixin } from '@spryker-oryx/experience';
 import {
-  AlternativeProductsListService,
   ProductMixin,
+  ProductRelationsListService,
 } from '@spryker-oryx/product';
 import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -14,14 +14,12 @@ import { of } from 'rxjs';
 export class ProductRelationsComponent extends ProductMixin(
   LayoutMixin(LitElement)
 ) {
-  protected alternativeProductsListService = resolve(
-    AlternativeProductsListService
-  );
+  protected productRelativesListService = resolve(ProductRelationsListService);
 
   protected $list = computed(() => {
     const product = this.$product();
     return product?.sku
-      ? this.alternativeProductsListService.get({ sku: product.sku })
+      ? this.productRelativesListService.get({ sku: product.sku })
       : of(undefined);
   });
 
