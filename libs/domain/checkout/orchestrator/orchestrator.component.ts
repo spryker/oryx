@@ -12,11 +12,11 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
 
   @elementEffect()
   protected eff = (): void => {
-    if (this.isInvalid()) this.report();
+    if (this.$isInvalid()) this.report();
   };
 
   protected override render(): TemplateResult | void {
-    if (this.isEmpty()) return;
+    if (this.$isEmpty()) return;
 
     return html` <oryx-composition .uid=${this.uid}></oryx-composition> `;
   }

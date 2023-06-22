@@ -33,7 +33,7 @@ describe('Search suite', () => {
   });
 
   it('must go to PDP from search results', () => {
-    const productData = ProductStorage.getProductByEq(2);
+    const productData = ProductStorage.getProductByEq(3);
     const pdp = new ProductDetailsPage(productData);
 
     cy.intercept('**/concrete-products/**').as('productRequest');
