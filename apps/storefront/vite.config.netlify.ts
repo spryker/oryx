@@ -18,16 +18,7 @@ export default defineConfig({
       'functions/ssr'
     ),
     rollupOptions: {
-      external: [
-        'fs',
-        'path',
-        'url',
-        'module',
-        'vm',
-        /^node/,
-        /^@netlify/,
-        'http',
-      ],
+      external: ['fs', 'path', 'url', 'module', 'vm', /^node/, /^@netlify/],
     },
   },
   plugins: [

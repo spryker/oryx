@@ -1,6 +1,5 @@
-import { ssrAwaiter } from '@spryker-oryx/core/utilities';
+import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { createClient } from 'contentful';
 import {
   ContentfulClientService,
   ContentfulResult,
@@ -12,15 +11,27 @@ import {
 export class DefaultContentfulClientService implements ContentfulClientService {
   constructor(
     protected contentfulToken = inject(ContentfulToken),
-    protected contentfulSpace = inject(ContentfulSpace)
+    protected contentfulSpace = inject(ContentfulSpace),
+    protected http = inject(HttpService)
   ) {}
 
-  protected client = createClient({
-    space: this.contentfulSpace,
-    accessToken: this.contentfulToken,
-  });
-
   getEntries(search: ContentfulSearch): ContentfulResult {
-    return ssrAwaiter(this.client.getEntries(search));
+    const params = Object.entries(search).reduce((acc, [key, value]) => {
+      const param = `${key}=${value}`;
+      if (!acc.length) {
+        return param;
+      }
+
+      return `${acc}&${param}`;
+    }, '');
+
+    return this.http.get(
+      `https://cdn.contentful.com/spaces/${this.contentfulSpace}/environments/master/entries?${params}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.contentfulToken}`,
+        },
+      }
+    );
   }
 }
