@@ -15,12 +15,16 @@ export class ContentfulAdapter implements ContentAdapter {
   }
 
   get(qualifier: ContentQualifier): Observable<Content> {
-    return this.contentful.getEntries(this.getKey(qualifier)).pipe(
-      map((entries) => ({
-        article: Object.values(
-          entries.items[0].fields as Record<string, string>
-        ).reduce((acc, field) => `${acc}\n${field}`, ''),
-      }))
-    );
+    return this.contentful
+      .getEntries({
+        content_type: this.getKey(qualifier),
+      })
+      .pipe(
+        map((entries) => ({
+          article: Object.values(
+            entries.items[0].fields as Record<string, string>
+          ).reduce((acc, field) => `${acc}\n${field}`, ''),
+        }))
+      );
   }
 }

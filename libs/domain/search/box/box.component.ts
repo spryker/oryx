@@ -38,7 +38,7 @@ import { baseStyles, searchBoxStyles } from './styles';
   completionsCount: 5,
   productsCount: 5,
   categoriesCount: 5,
-  cmsCount: 0,
+  cmsCount: 5,
 })
 @hydratable(['mouseover', 'focusin'])
 @signalAware()
@@ -257,12 +257,13 @@ export class SearchBoxComponent
   protected isNothingFound(
     suggestion: Suggestion | null | undefined | LinksSection[]
   ): boolean {
+    console.log(suggestion);
     if (Array.isArray(suggestion)) {
       return !suggestion.length;
     }
 
     return Object.values(suggestion ?? {}).every(
-      (_suggestion) => !_suggestion.length
+      (_suggestion) => !_suggestion?.length
     );
   }
 }

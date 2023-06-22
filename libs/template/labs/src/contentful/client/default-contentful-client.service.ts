@@ -1,14 +1,10 @@
+import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
-import {
-  ChainModifiers,
-  createClient,
-  EntryCollection,
-  EntrySkeletonType,
-  LocaleCode,
-} from 'contentful';
-import { from, Observable } from 'rxjs';
+import { createClient } from 'contentful';
 import {
   ContentfulClientService,
+  ContentfulResult,
+  ContentfulSearch,
   ContentfulSpace,
   ContentfulToken,
 } from './contentful-client.service';
@@ -24,15 +20,7 @@ export class DefaultContentfulClientService implements ContentfulClientService {
     accessToken: this.contentfulToken,
   });
 
-  getEntries(
-    type: string
-  ): Observable<
-    EntryCollection<EntrySkeletonType, ChainModifiers, LocaleCode>
-  > {
-    return from(
-      this.client.getEntries({
-        content_type: type,
-      })
-    );
+  getEntries(search: ContentfulSearch): ContentfulResult {
+    return ssrAwaiter(this.client.getEntries(search));
   }
 }

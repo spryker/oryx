@@ -16,10 +16,17 @@ declare global {
   }
 }
 
+export interface ContentfulSearch {
+  content_type?: string;
+  query?: string;
+}
+
+export type ContentfulResult = Observable<
+  EntryCollection<EntrySkeletonType, ChainModifiers, LocaleCode>
+>;
+
 export interface ContentfulClientService {
-  getEntries(
-    type: string
-  ): Observable<EntryCollection<EntrySkeletonType, ChainModifiers, LocaleCode>>;
+  getEntries(search: ContentfulSearch): ContentfulResult;
 }
 
 export const ContentfulClientService = 'oryx.ContentfulClientService';

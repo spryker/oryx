@@ -80,10 +80,10 @@ class FakeContainer extends LitElement implements SearchBoxProperties {
 
   protected isNothingFound(suggestion: Suggestion): boolean {
     return (
-      !suggestion.products.length &&
-      !suggestion.categories.length &&
-      !suggestion.cmsPages.length &&
-      !suggestion.completion.length
+      !suggestion.products?.length &&
+      !suggestion.categories?.length &&
+      !suggestion.cmsPages?.length &&
+      !suggestion.completion?.length
     );
   }
   @property({ type: Object }) suggestion: Suggestion = notFoundSuggestion;

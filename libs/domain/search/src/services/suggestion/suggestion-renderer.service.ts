@@ -48,7 +48,7 @@ export interface SuggestionRendererService {
 }
 
 export interface SuggestionRenderer {
-  render?(suggestion: Suggestion | null, query?: string): TemplateResult;
+  render?(suggestion: Suggestion | null, query?: string): TemplateResult | void;
   getSuggestions<T = Suggestion>(
     data: SuggestionRendererOptions & { query: string }
   ): Observable<T | null>;

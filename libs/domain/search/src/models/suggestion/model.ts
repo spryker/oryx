@@ -8,8 +8,8 @@ export interface SuggestionResource {
 }
 
 export interface Suggestion {
-  completion: string[];
-  categories: SuggestionResource[];
-  cmsPages: SuggestionResource[];
-  products: Product[];
+  completion?: string[];
+  categories?: SuggestionResource[];
+  cmsPages?: SuggestionResource[];
+  products?: Product[];
 }

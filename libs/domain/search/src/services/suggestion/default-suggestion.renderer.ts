@@ -25,10 +25,9 @@ export class DefaultSuggestionRenderer implements SuggestionRenderer {
       map((raw) =>
         raw
           ? {
-              completion: raw.completion.slice(0, options.completionsCount),
+              completion: raw.completion?.slice(0, options.completionsCount),
               products: raw.products?.slice(0, options.productsCount) ?? [],
-              categories: raw.categories.slice(0, options.categoriesCount),
-              cmsPages: raw.cmsPages.slice(0, options.cmsCount),
+              categories: raw.categories?.slice(0, options.categoriesCount),
             }
           : null
       )
@@ -52,24 +51,21 @@ export class DefaultSuggestionRenderer implements SuggestionRenderer {
     const links: LinksSection[] = [
       {
         title: i18n('search.box.suggestions'),
-        options: suggestion.completion.map((name) => ({
-          name,
-          params: { q: name },
-        })),
+        options:
+          suggestion.completion?.map((name) => ({
+            name,
+            params: { q: name },
+          })) ?? [],
         type: SemanticLinkType.ProductList,
       },
       {
         title: i18n('search.box.categories'),
-        options: suggestion.categories.map(({ name, idCategory }) => ({
-          name,
-          url: idCategory,
-        })),
+        options:
+          suggestion.categories?.map(({ name, idCategory }) => ({
+            name,
+            url: idCategory,
+          })) ?? [],
         type: SemanticLinkType.Category,
-      },
-      {
-        title: i18n('search.box.content'),
-        options: suggestion.cmsPages,
-        type: SemanticLinkType.Page,
       },
     ];
 
@@ -112,7 +108,7 @@ export class DefaultSuggestionRenderer implements SuggestionRenderer {
     return html`
       <section>
         <h5>${i18n('search.box.products')}</h5>
-        ${suggestion.products.map(this.renderProduct)}
+        ${suggestion.products?.map(this.renderProduct)}
 
         <oryx-button
           outline
@@ -159,9 +155,9 @@ export class DefaultSuggestionRenderer implements SuggestionRenderer {
 
   protected hasLinks(suggestion: Suggestion | null | undefined): boolean {
     return !!(
-      suggestion?.completion.length ||
-      suggestion?.cmsPages.length ||
-      suggestion?.categories.length
+      suggestion?.completion?.length ||
+      suggestion?.cmsPages?.length ||
+      suggestion?.categories?.length
     );
   }
 

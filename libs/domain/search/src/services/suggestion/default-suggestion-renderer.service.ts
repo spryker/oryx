@@ -28,12 +28,13 @@ export class DefaultSuggestionRendererService
       combineLatest(
         this.renderers.map((renderer) => renderer.getSuggestions(query))
       ).pipe(
-        map((suggestions) =>
-          suggestions.reduce(
+        map((suggestions) => {
+          console.log(suggestions, 'suggestions');
+          return suggestions.reduce(
             (acc, suggestion) => (suggestion ? { ...suggestion, ...acc } : acc),
             null
-          )
-        )
+          );
+        })
       )
     )
   );
