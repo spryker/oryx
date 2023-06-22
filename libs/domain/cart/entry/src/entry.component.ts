@@ -184,6 +184,7 @@ export class CartEntryComponent
       open
       enableFooter
       enableCloseButtonInHeader
+      minimal
       heading=${i18n('cart.entry.confirm')}
       @oryx.close=${this.revert}
     >

@@ -3,6 +3,10 @@ import { css } from 'lit';
 export const styles = css`
   :host {
     display: block;
+
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+
     border-radius: var(
       --oryx-card-border-radius,
       var(--oryx-border-radius-medium)

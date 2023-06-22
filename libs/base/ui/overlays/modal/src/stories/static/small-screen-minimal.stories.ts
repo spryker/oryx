@@ -16,6 +16,7 @@ const Template: Story = (): TemplateResult => {
   return html`
     <oryx-modal
       open
+      minimal
       preventCloseByEscape
       preventCloseByBackdrop
       heading="Fullscreen modal"
@@ -29,4 +30,4 @@ const Template: Story = (): TemplateResult => {
   `;
 };
 
-export const FullscreenModal = Template.bind({});
+export const SmallScreenMinimumModal = Template.bind({});
