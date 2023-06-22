@@ -37,7 +37,7 @@ export class CartPage extends AbstractSFPage {
   checkout = () => {
     // fixes possible test flakiness caused by hydration delay
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
+    cy.wait(1000);
     this.getCheckoutBtn().click({ force: true });
   };
 }

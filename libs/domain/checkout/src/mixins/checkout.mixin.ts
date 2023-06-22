@@ -6,7 +6,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { map } from 'rxjs';
-import { CheckoutState } from '../models';
+import { CheckoutStatus } from '../models';
 import {
   CheckoutDataService,
   CheckoutService,
@@ -21,9 +21,9 @@ export declare class CheckoutMixinInterface {
   /**
    * Indicates that the checkout is ready for collecting checkout data.
    */
-  protected isEmpty: ConnectableSignal<boolean>;
-  protected isInvalid: ConnectableSignal<boolean>;
-  protected isBusy: ConnectableSignal<boolean>;
+  protected $isEmpty: ConnectableSignal<boolean>;
+  protected $isInvalid: ConnectableSignal<boolean>;
+  protected $isBusy: ConnectableSignal<boolean>;
 }
 
 export const CheckoutMixin = <T extends Type<LitElement>>(
@@ -35,26 +35,23 @@ export const CheckoutMixin = <T extends Type<LitElement>>(
     protected checkoutDataService = resolve(CheckoutDataService);
     protected checkoutStateService = resolve(CheckoutStateService);
 
-    protected isEmpty = signal(
+    protected $isEmpty = signal(
       this.checkoutService
-        .getProcessState()
-        .pipe(map((state) => state === CheckoutState.Empty)),
+        .getStatus()
+        .pipe(map((state) => state === CheckoutStatus.Empty)),
       { initialValue: false }
     );
 
-    protected isBusy = signal(
+    protected $isBusy = signal(
       this.checkoutService
-        .getProcessState()
-        .pipe(map((state) => state === CheckoutState.Busy)),
+        .getStatus()
+        .pipe(map((state) => state === CheckoutStatus.Busy)),
       { initialValue: false }
     );
 
-    protected isInvalid = signal(
-      this.checkoutService
-        .getProcessState()
-        .pipe(map((state) => state === CheckoutState.Invalid)),
-      { initialValue: false }
-    );
+    protected $isInvalid = signal(this.checkoutStateService.isInvalid(), {
+      initialValue: false,
+    });
   }
   return CheckoutMixinClass as unknown as Type<CheckoutMixinInterface> & T;
 };
