@@ -39,7 +39,7 @@ export function i18n<T extends string | readonly string[]>(
   const result = i18nInjectable.get().translate<T>(token, context);
 
   if (typeof result === 'string') {
-    return asUnsafeHtml(result);
+    return result;
   }
 
   if ('text' in result) {

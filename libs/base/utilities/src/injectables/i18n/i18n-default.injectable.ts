@@ -16,7 +16,7 @@ export interface DefaultI18nInjectableOptions {
 }
 
 export class DefaultI18nInjectable implements I18nInjectable {
-  protected static readonly DefaultFilters = defaultI18nContextFilters;
+  static DefaultFilters = defaultI18nContextFilters;
 
   protected tokenPropStart: I18nContextPropStart =
     this.options?.tokenPropStart ?? '<';
@@ -94,7 +94,7 @@ export class DefaultI18nInjectable implements I18nInjectable {
       // Remove trailing spaces
       .trim();
 
-    return { text, hasHtml };
+    return hasHtml ? { text, hasHtml } : text;
   }
 
   protected tokenToStr(token: unknown): string {

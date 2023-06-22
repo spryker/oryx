@@ -59,10 +59,11 @@ export class DefaultI18nProcessor implements I18nProcessor {
     }
 
     if ('text' in result) {
-      const str = new String(result.text) as I18nString;
-      str.hasHtml = result.hasHtml;
-
-      return str;
+      if (result.hasHtml) {
+        return this.createHtmlString(result.text);
+      } else {
+        return String(result.text);
+      }
     }
 
     return String(result);
@@ -84,9 +85,7 @@ export class DefaultI18nProcessor implements I18nProcessor {
         const hasHtml = this.i18nInjectable.hasHtml(token, context);
 
         if (hasHtml) {
-          const str = new String(msg) as I18nString;
-          str.hasHtml = true;
-          return str;
+          return this.createHtmlString(msg);
         }
 
         return msg;
@@ -119,5 +118,12 @@ export class DefaultI18nProcessor implements I18nProcessor {
     } while ((nextDotIdx = tokenPart.indexOf('.')) !== -1);
 
     return;
+  }
+
+  protected createHtmlString(value: unknown): I18nString {
+    const i18nString = new String(value) as I18nString;
+    i18nString.hasHtml = true;
+
+    return i18nString;
   }
 }

@@ -1,5 +1,5 @@
 import { rxjsTestScheduler } from '@spryker-oryx/core/testing';
-import { EMPTY, Observable, of } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, of } from 'rxjs';
 import { DefaultI18nService } from './default-i18n.service';
 import { I18nProcessor } from './i18n.processor';
 
@@ -19,19 +19,29 @@ describe('DefaultI18nService', () => {
   describe('translate() method', () => {
     it('should call `I18nProcessor.interpolate()` with context as observable', () => {
       const { i18nService, i18nProcessor } = setup();
-      const ctx$ = of({ ctx: true });
+      const ctx$ = of({ ctx: true } as any);
+      const ctxSpy = vi.fn();
 
-      i18nService.translate('token', ctx$);
+      i18nService.translate('token', ctx$).subscribe().unsubscribe();
 
-      expect(i18nProcessor.interpolate).toHaveBeenCalledWith('token', ctx$);
+      expect(i18nProcessor.interpolate).toHaveBeenCalledWith(
+        'token',
+        expect.any(Observable)
+      );
+
+      const actualCtx$ = i18nProcessor.interpolate.mock
+        .calls[0][1] as Observable<unknown>;
+      actualCtx$.subscribe(ctxSpy);
+
+      expect(ctxSpy).toHaveBeenCalledWith({ ctx: true });
     });
 
     it('should call `I18nProcessor.interpolate()` with context converted to observable', () => {
       rxjsTestScheduler().run(({ expectObservable }) => {
         const { i18nService, i18nProcessor } = setup();
-        const ctx = { ctx: true };
+        const ctx = { ctx: true } as any;
 
-        i18nService.translate('token', ctx);
+        i18nService.translate('token', ctx).subscribe().unsubscribe();
 
         expect(i18nProcessor.interpolate).toHaveBeenCalledWith(
           'token',
@@ -60,11 +70,55 @@ describe('DefaultI18nService', () => {
         const { i18nService, i18nProcessor } = setup();
         i18nProcessor.interpolate.mockReturnValue(hot(obs1));
 
-        const res$ = i18nService.translate('token', { ctx: true });
+        const res$ = i18nService.translate('token', { ctx: true } as any);
 
         expectObservable(res$, sub1).toBe(exp1);
         expectObservable(res$, sub2).toBe(exp2);
       });
+    });
+
+    it('should cache result from `I18nProcessor.interpolate()`', () => {
+      const { i18nService, i18nProcessor } = setup();
+      const obs1$ = new BehaviorSubject('a');
+      i18nProcessor.interpolate.mockReturnValue(obs1$);
+
+      const res1$ = i18nService.translate('token');
+
+      expect(i18nProcessor.interpolate).not.toHaveBeenCalled();
+
+      res1$.subscribe().unsubscribe();
+
+      expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(1);
+
+      const res2$ = i18nService.translate('token');
+
+      res2$.subscribe().unsubscribe();
+
+      expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(1);
+    });
+
+    it('should clear cache when 0 subscriptions and after 60s timeout', () => {
+      vi.useFakeTimers();
+
+      const { i18nService, i18nProcessor } = setup();
+      const obs1$ = new BehaviorSubject('a');
+      i18nProcessor.interpolate.mockReturnValue(obs1$);
+
+      i18nService.translate('token').subscribe().unsubscribe();
+      expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(1);
+
+      i18nService.translate('token').subscribe().unsubscribe();
+      expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(1);
+
+      // Cache is still valid after 59s
+      vi.advanceTimersByTime(1000 * 59);
+      i18nService.translate('token').subscribe().unsubscribe();
+      expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(1);
+
+      // Cache is cleared after 60s
+      vi.advanceTimersByTime(1000);
+      i18nService.translate('token').subscribe().unsubscribe();
+      expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(2);
     });
   });
 });

@@ -14,7 +14,8 @@ import { I18nService } from './i18n.service';
 export class I18nServiceInjectableAdapter implements I18nInjectable {
   constructor(
     protected i18nService: I18nService,
-    protected asyncDirective = asyncValue
+    protected asyncDirective = asyncValue,
+    protected unsafeHTMLDirective = unsafeHTML
   ) {}
 
   /**
@@ -28,7 +29,9 @@ export class I18nServiceInjectableAdapter implements I18nInjectable {
     return this.asyncDirective(
       this.i18nService.translate(token, context),
       (text) =>
-        text.hasHtml ? html`${unsafeHTML(text.toString())}` : text.toString()
+        text.hasHtml
+          ? html`${this.unsafeHTMLDirective(text.toString())}`
+          : text.toString()
     );
   }
 }
