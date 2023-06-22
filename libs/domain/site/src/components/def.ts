@@ -5,3 +5,4 @@ export * from './navigation-button/navigation-button.def';
 export * from './navigation-item/navigation-item.def';
 export * from './notification-center/notification-center.def';
 export * from './price/price.def';
+export * from './summary-price/summary-price.def';

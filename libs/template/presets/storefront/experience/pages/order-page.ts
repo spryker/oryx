@@ -24,21 +24,21 @@ export const orderPage: StaticComponent = {
         },
         { type: 'oryx-order-entries' },
         {
-          type: 'oryx-cart-totals',
+          type: 'oryx-order-totals',
           components: [
-            { type: 'oryx-cart-totals-subtotal' },
-            {
-              type: 'oryx-cart-totals-discount',
-              options: {
-                data: {
-                  discountRowsAppearance: DiscountRowsAppearance.Collapsed,
-                },
-              },
-            },
-            { type: 'oryx-cart-totals-expense' },
-            { type: 'oryx-cart-totals-tax' },
-            { type: 'oryx-cart-totals-delivery' },
-            { type: 'oryx-cart-totals-total' },
+            { type: 'oryx-order-totals-item', options: { data: { type: 'subtotal' } } },
+            // {
+            //   type: 'oryx-cart-totals-discount',
+            //   options: {
+            //     data: {
+            //       discountRowsAppearance: DiscountRowsAppearance.Collapsed,
+            //     },
+            //   },
+            // },
+            // { type: 'oryx-cart-totals-expense' },
+            // { type: 'oryx-cart-totals-tax' },
+            // { type: 'oryx-cart-totals-delivery' },
+            // { type: 'oryx-cart-totals-total' },
           ],
         },
       ],

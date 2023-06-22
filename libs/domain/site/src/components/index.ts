@@ -5,3 +5,4 @@ export * from './navigation-button';
 export * from './navigation-item';
 export * from './notification-center';
 export * from './price';
+export * from './summary-price';
