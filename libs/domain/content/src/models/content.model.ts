@@ -3,8 +3,5 @@ export interface ContentQualifier {
 }
 
 export interface Content {
-  /**
-   * The article property provides provides article data.
-   */
   article: string;
 }
