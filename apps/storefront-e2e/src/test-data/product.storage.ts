@@ -2,53 +2,34 @@ import { TestProductData } from '../types/product.type';
 
 const products: TestProductData[] = [
   {
-    id: '093_24495843',
-    title: 'Sony SmartWatch 3',
-    originalPrice: '248.99',
-    currentPrice: '248.99',
-    currentPriceWith10pDiscount: '224.09',
-    previewImageURL: '/img/norm/medium/24495843-7844.jpg',
-  },
-  {
-    id: '083_30964018',
-    title: 'Samsung Gear 2 Classic',
-    originalPrice: '332.53',
-    currentPrice: '332.53',
-    currentPriceWith10pDiscount: '299.28',
-    previewImageURL: '/img/gallery_mediums/33474193_2373746309.jpg',
-  },
-  {
-    id: '100_24675726',
-    title: 'Acer Liquid Leap',
+    id: '117_29890338',
+    title: 'Fujitsu ESPRIMO D556',
     originalPrice: '70.00',
-    currentPrice: '62.77',
-    currentPriceWith10pDiscount: '56.49',
-    previewImageURL:
-      '/img/gallery_mediums/img_24675726_medium_1483613008_9797_25362.jpg',
   },
   {
-    id: '086_30521602',
-    title: 'Samsung Gear S2',
-    originalPrice: '180.01',
-    currentPrice: '180.01',
-    currentPriceWith10pDiscount: '162.01',
-    previewImageURL: '/b2c/29889537_4485.jpg',
+    id: '021_21081475',
+    title: 'Sony Cyber-shot DSC-W830',
+    originalPrice: '106.80',
   },
   {
-    id: '082_22196536',
-    title: 'TomTom Multi-Sport Cardio',
-    originalPrice: '370.90',
-    currentPrice: '370.90',
-    currentPriceWith10pDiscount: '333.81',
-    previewImageURL: '/img/gallery_mediums/22196536_6541.jpg',
+    id: '139_24699831',
+    title: 'Asus Transformer Book T200TA',
+    originalPrice: '34.54',
   },
+  // product with product references
   {
     id: '138_30046855',
     title: 'Acer TravelMate P258-M',
     originalPrice: '264.32',
-    currentPrice: '264.32',
-    currentPriceWith10pDiscount: '237.89',
-    previewImageURL: '/img/gallery_mediums/30046855_5806.jpg',
+  },
+  // product with discount
+  {
+    id: '095_24235707',
+    title: 'TomTom Golf',
+    originalPrice: '180.00',
+    currentPrice: '179.94',
+    currentPriceWith10pDiscount: '161.95',
+    previewImageURL: '/img/norm/medium/24235707-6105.jpg',
   },
 ];
 
