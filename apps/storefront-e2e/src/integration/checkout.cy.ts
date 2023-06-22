@@ -27,7 +27,7 @@ describe('Checkout suite', () => {
     });
 
     it('must allow user to create a new order', () => {
-      const productData = ProductStorage.getProductByEq(2);
+      const productData = ProductStorage.getProductByEq(1);
 
       cy.fixture<TestCustomerData>('test-customer').then((customer) => {
         sccosApi.carts
@@ -93,7 +93,7 @@ describe('Checkout suite', () => {
     });
 
     it('must allow user to create a new order', () => {
-      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
+      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
 
       cy.intercept('POST', '/checkout?include=orders').as('checkout');
       cy.intercept('/customers/*/addresses').as('addresses');
