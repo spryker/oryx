@@ -26,7 +26,7 @@ export default defineConfig({
         'vm',
         /^node/,
         /^@netlify/,
-        'contentful',
+        'http',
       ],
     },
   },
