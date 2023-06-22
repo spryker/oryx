@@ -5,10 +5,7 @@ import { storefrontTheme } from '@spryker-oryx/themes';
 
 const env = import.meta.env;
 
-const features = [
-  ...storefrontFeatures,
-  ...(env.ORYX_LABS ? labsFeatures : []),
-];
+const features = [...storefrontFeatures, ...labsFeatures];
 
 export const app = appBuilder()
   .withFeature(features)
