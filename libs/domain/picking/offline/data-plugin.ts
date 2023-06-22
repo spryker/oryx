@@ -1,5 +1,5 @@
 import { OauthService, OauthServiceConfig } from '@spryker-oryx/auth';
-import { App, ExecPlugin, InjectionPlugin } from '@spryker-oryx/core';
+import { App, AppPlugin, InjectionPlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
 import { RouterService } from '@spryker-oryx/router';
@@ -16,16 +16,14 @@ import {
 import { PickingListEntity, PickingProductEntity } from './entities';
 import { PickingListOnlineAdapter } from './services';
 
-export class OfflineDataPlugin extends ExecPlugin {
+export class OfflineDataPlugin implements AppPlugin {
   protected subscription?: Subscription;
 
-  constructor() {
-    super(() => undefined);
+  getName(): string {
+    return 'oryx$pickingOfflineData';
   }
 
   apply(app: App): void | Promise<void> {
-    super.apply(app);
-
     const injector = app!.requirePlugin(InjectionPlugin).getInjector();
 
     const authService = injector.inject(OauthService);
