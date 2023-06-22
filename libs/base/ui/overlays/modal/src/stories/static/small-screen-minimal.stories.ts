@@ -19,7 +19,7 @@ const Template: Story = (): TemplateResult => {
       minimal
       preventCloseByEscape
       preventCloseByBackdrop
-      heading="Fullscreen modal"
+      heading="Minimum modal"
       enableFooter
     >
       <p>
