@@ -57,13 +57,13 @@ export class DefaultSuggestionRendererService
         return html`${this.renderers.map(
           (renderer, index) =>
             renderer.render?.(suggestions[index], query) ??
-            this.renderLinks(suggestions[index] as LinksSection)
+            this.renderDefaultLinks(suggestions[index] as LinksSection)
         )}`;
       })
     );
   }
 
-  protected renderLinks(link?: LinksSection): TemplateResult | void {
+  protected renderDefaultLinks(link?: LinksSection): TemplateResult | void {
     if (!link) {
       return;
     }
