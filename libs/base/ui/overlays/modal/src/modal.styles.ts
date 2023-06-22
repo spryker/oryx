@@ -15,25 +15,25 @@ export const styles = css`
     background: transparent;
     width: min(
       calc(100vw - (var(--oryx-container-bleed, 0px) * 2)),
-      var(---oryx-modal-width, 100%)
+      var(--oryx-modal-width, 100%)
     );
     max-width: calc(100vw - var(--oryx-modal-bleed, 0px) * 2);
     max-height: calc(100vh - var(--oryx-modal-bleed, 0px) * 2);
   }
 
   :host([minimal]) dialog {
-    width: var(---oryx-modal-width, 510px);
+    width: var(--oryx-modal-width, 510px);
   }
 
   :host(:not([minimal])) dialog {
     --oryx-card-border-radius: var(--oryx-modal-radius);
 
-    width: var(--oryx-modal-max-width, var(---oryx-modal-width, 510px));
+    width: var(--oryx-modal-max-width, var(--oryx-modal-width, 510px));
     min-height: var(--oryx-modal-height, auto);
   }
 
   :host(:not([minimal])) oryx-card {
-    margin-block-start: var(--oryx-modal-bleed, 0px);
+    margin-block-start: var(--oryx-modal-bleed, 0);
     min-height: calc(
       var(--oryx-modal-height, auto) - var(--oryx-modal-bleed, 0px) * 2
     );
