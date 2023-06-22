@@ -13,13 +13,13 @@ export const HeaderTemplate: StaticComponent = {
           type: 'oryx-content-link',
           content: {
             data: {
-              text: 'Free delivery & returns',
+              text: 'FREE DELIVERY & RETURNS',
             },
           },
           options: {
             data: {
               url: '/',
-              icon: IconTypes.Carrier,
+              icon: IconTypes.Check,
               color: 'light',
             },
           },
@@ -28,13 +28,13 @@ export const HeaderTemplate: StaticComponent = {
           type: 'oryx-content-link',
           content: {
             data: {
-              text: '100 day return policy',
+              text: '100 DAY RETURN POLICY',
             },
           },
           options: {
             data: {
               url: '/',
-              icon: IconTypes.Parcel,
+              icon: IconTypes.Check,
               color: 'light',
             },
           },
@@ -43,13 +43,13 @@ export const HeaderTemplate: StaticComponent = {
           type: 'oryx-content-link',
           content: {
             data: {
-              text: 'Click & Collect',
+              text: 'CLICK & COLLECT  ',
             },
           },
           options: {
             data: {
               url: '/',
-              icon: 'storefront',
+              icon: IconTypes.Check,
               color: 'light',
             },
           },
