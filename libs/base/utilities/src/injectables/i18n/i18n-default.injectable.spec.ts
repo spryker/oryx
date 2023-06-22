@@ -47,8 +47,8 @@ describe('DefaultI18nInjectable', () => {
     describe('with custom config', () => {
       it('should convert token with context to readable text', () => {
         const i18nInjectable = new DefaultI18nInjectable({
-          tokenPropStart: '\\[',
-          tokenPropEnd: '\\]',
+          tokenPropStart: '\\[' as any,
+          tokenPropEnd: '\\]' as any,
         });
 
         expect(
@@ -60,8 +60,8 @@ describe('DefaultI18nInjectable', () => {
 
       it('should convert token with empty context to readable text', () => {
         const i18nInjectable = new DefaultI18nInjectable({
-          tokenPropStart: '\\[',
-          tokenPropEnd: '\\]',
+          tokenPropStart: '\\[' as any,
+          tokenPropEnd: '\\]' as any,
         });
 
         expect(

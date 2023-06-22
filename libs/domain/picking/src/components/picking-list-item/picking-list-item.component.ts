@@ -83,6 +83,11 @@ export class PickingListItemComponent
           ${i18n('picking.picking-list-item.<count>-items', {
             count: this.pickingList?.itemsCount,
           })}
+          ${i18n('picking.picking-list-item.agree-to-<terms>', {
+            terms: {
+              link: { href: 'https://spryker.com', target: '_blank' },
+            },
+          })}
           ${when(
             this.pickingList?.cartNote,
             () => html`

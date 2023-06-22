@@ -3,13 +3,12 @@ import { DefaultI18nInjectable, I18nContext } from '@spryker-oryx/utilities';
 import {
   combineLatest,
   distinctUntilChanged,
-  map,
   Observable,
-  of,
   shareReplay,
   switchMap,
 } from 'rxjs';
 import { LocaleService } from '../locale';
+import { I18nString } from '../models';
 import { GlobalizeService } from './globalize.service';
 import { I18nLoader } from './i18n.loader';
 import { I18nProcessor } from './i18n.processor';
@@ -39,37 +38,57 @@ export class DefaultI18nProcessor implements I18nProcessor {
   interpolate(
     token: string | readonly string[],
     context: Observable<I18nContext | undefined>
-  ): Observable<string> {
+  ): Observable<I18nString> {
     return combineLatest([this.localeId$, context]).pipe(
-      switchMap(([localeId, ctx]) => this.resolveToken(token, ctx, localeId)),
-      switchMap((text) =>
-        text ? of(text) : this.fallbackInterpolate(token, context)
+      switchMap(
+        async ([localeId, ctx]) =>
+          (await this.resolveToken(token, localeId, ctx)) ??
+          this.fallbackInterpolate(token, ctx)
       )
     );
   }
 
   protected fallbackInterpolate(
     token: string | readonly string[],
-    context: Observable<I18nContext | undefined>
-  ): Observable<string> {
-    return context.pipe(
-      map((ctx) => this.i18nInjectable.translate(token, ctx))
-    );
+    context?: I18nContext
+  ): I18nString {
+    const result = this.i18nInjectable.translate(token, context);
+
+    if (typeof result === 'string') {
+      return result;
+    }
+
+    if ('text' in result) {
+      const str = new String(result.text) as I18nString;
+      str.hasHtml = result.hasHtml;
+
+      return str;
+    }
+
+    return String(result);
   }
 
   protected async resolveToken(
     tokens: string | readonly string[],
-    context: I18nContext | undefined,
-    localeId: string
-  ): Promise<string | undefined> {
+    localeId: string,
+    context?: I18nContext
+  ): Promise<I18nString | undefined> {
     if (typeof tokens === 'string') {
       tokens = [tokens];
     }
 
     for (const token of tokens) {
-      const msg = await this.resolveTokenPieces(token, context, localeId);
+      const msg = await this.resolveTokenPieces(token, localeId, context);
 
       if (msg !== undefined) {
+        const hasHtml = this.i18nInjectable.hasHtml(token, context);
+
+        if (hasHtml) {
+          const str = new String(msg) as I18nString;
+          str.hasHtml = true;
+          return str;
+        }
+
         return msg;
       }
     }
@@ -79,8 +98,8 @@ export class DefaultI18nProcessor implements I18nProcessor {
 
   protected async resolveTokenPieces(
     token: string,
-    context: I18nContext | undefined = {},
-    localeId: string
+    localeId: string,
+    context?: I18nContext
   ): Promise<string | undefined> {
     let tokenPart = token;
     let nextDotIdx = -1; // Start from full token with -1 offset

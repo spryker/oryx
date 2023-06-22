@@ -1,5 +1,11 @@
-import { asyncValue, I18nInjectable } from '@spryker-oryx/utilities';
+import {
+  asyncValue,
+  I18nContext,
+  I18nInjectable,
+} from '@spryker-oryx/utilities';
+import { html } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { I18nService } from './i18n.service';
 
 /**
@@ -17,8 +23,12 @@ export class I18nServiceInjectableAdapter implements I18nInjectable {
    */
   translate(
     token: string | readonly string[],
-    context?: Record<string, unknown> | undefined
+    context?: I18nContext
   ): string | DirectiveResult {
-    return this.asyncDirective(this.i18nService.translate(token, context));
+    return this.asyncDirective(
+      this.i18nService.translate(token, context),
+      (text) =>
+        text.hasHtml ? html`${unsafeHTML(text.toString())}` : text.toString()
+    );
   }
 }

@@ -19,7 +19,7 @@ export class OrderConfirmationBannerComponent extends OrderMixin(LitElement) {
       </section>
       <p>
         ${i18n('order.confirmation.order-<id>-placed', {
-          id: this.orderRef,
+          id: this.orderRef(),
         })}
       </p>
       <p>${i18n('order.confirmation.email-sent')}</p>
