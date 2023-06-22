@@ -15,8 +15,8 @@ describe('Cart', () => {
   });
 
   describe('when the cart page is not visited', () => {
-    describe('and items are added to cart on the product page', () => {
-      const productData = ProductStorage.getProductByEq(2);
+    describe('and discontinued items are added to cart on the product page', () => {
+      const productData = ProductStorage.getProductByEq(4);
       const pdp = new ProductDetailsPage(productData);
 
       beforeEach(() => {
@@ -34,14 +34,15 @@ describe('Cart', () => {
           cartPage.getCartEntriesHeading().should('contain.text', '1 items');
           checkCartEntry({
             quantity: 1,
-            subTotal: '€62.77',
-            originalPrice: '€70.00',
-            salesPrice: '€62.77',
+            subTotal: '€161.95',
+            originalPrice: '180.00',
+            salesPrice: '€179.94',
           });
           checkCartTotals({
-            subTotal: '€62.77',
-            taxTotal: '€4.11',
-            totalPrice: '€62.77',
+            subTotal: '€179.94',
+            taxTotal: '€10.59',
+            discountsTotal: '-€17.99',
+            totalPrice: '€161.95',
           });
         });
       });
@@ -75,14 +76,13 @@ describe('Cart', () => {
         cartPage.getCartEntriesHeading().should('contain.text', '1 items');
         checkCartEntry({
           quantity: 1,
-          subTotal: '€62.77',
-          originalPrice: '€70.00',
-          salesPrice: '€62.77',
+          subTotal: '€34.54',
+          salesPrice: '€34.54',
         });
         checkCartTotals({
-          subTotal: '€62.77',
-          taxTotal: '€4.11',
-          totalPrice: '€62.77',
+          subTotal: '€34.54',
+          taxTotal: '€5.51',
+          totalPrice: '€34.54',
         });
       });
 
@@ -113,15 +113,14 @@ describe('Cart', () => {
           cartPage.getCartEntriesHeading().should('contain.text', '4 items');
           checkCartEntry({
             quantity: 4,
-            subTotal: '€225.97',
-            originalPrice: '€70.00',
-            salesPrice: '€62.77',
+            subTotal: '€124.34',
+            salesPrice: '€34.54',
           });
           checkCartTotals({
-            subTotal: '€251.08',
-            discountsTotal: '-€25.11',
-            taxTotal: '€14.78',
-            totalPrice: '€225.97',
+            subTotal: '€138.16',
+            discountsTotal: '-€13.82',
+            taxTotal: '€19.85',
+            totalPrice: '€124.34',
           });
         });
       });
@@ -138,12 +137,12 @@ describe('Cart', () => {
           cartPage.getCartEntriesHeading().should('contain.text', '1 items');
           checkCartEntry({
             quantity: 2,
-            subTotal: '€62.77',
+            subTotal: '€34.54',
           });
           checkCartTotals({
-            subTotal: '€62.77',
-            taxTotal: '€4.11',
-            totalPrice: '€62.77',
+            subTotal: '€34.54',
+            taxTotal: '€5.51',
+            totalPrice: '€34.54',
           });
 
           cy.get('body').click();
@@ -152,13 +151,12 @@ describe('Cart', () => {
           cartPage.getCartEntriesHeading().should('contain.text', '2 items');
           checkCartEntry({
             quantity: 2,
-            subTotal: '€112.99',
+            subTotal: '€69.08',
           });
           checkCartTotals({
-            subTotal: '€125.54',
-            taxTotal: '€7.39',
-            discountsTotal: '-€12.55',
-            totalPrice: '€112.99',
+            subTotal: '€69.08',
+            taxTotal: '€11.03',
+            totalPrice: '€69.08',
           });
         });
       });
