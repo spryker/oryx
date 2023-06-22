@@ -1,6 +1,7 @@
-import { CartService } from '@spryker-oryx/cart';
+import { CartModificationEnd, CartService } from '@spryker-oryx/cart';
+import { createQuery } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { catchError, map, Observable, of, shareReplay, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap, take } from 'rxjs';
 import { CheckoutData } from '../../models';
 import { CheckoutAdapter } from '../adapter';
 import { CheckoutDataService } from './checkout-data.service';
@@ -14,18 +15,23 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
 
   protected cartId = this.cartService.getCart().pipe(map((cart) => cart?.id));
 
-  protected load$ = this.cartId.pipe(
-    switchMap((cartId) => (cartId ? this.adapter.get({ cartId }) : of(null))),
-    // in some cases, when cart is not yet created, we get 422 error from the backend
-    catchError(() => of({} as CheckoutData)),
-    shareReplay({ bufferSize: 1, refCount: true })
-  );
+  protected query$ = createQuery({
+    loader: () =>
+      this.cartId.pipe(
+        take(1),
+        switchMap((cartId) =>
+          cartId ? this.adapter.get({ cartId }) : of(null)
+        )
+      ),
+    resetOn: [this.cartId],
+    refreshOn: [CartModificationEnd],
+  });
 
   get<K extends keyof CheckoutData>(
     key: K
   ): Observable<CheckoutData[K] | undefined> {
-    return this.load$.pipe(
-      map((data) => data?.[key] as CheckoutData[K] | undefined)
-    );
+    return this.query$
+      .get()
+      .pipe(map((data) => data?.[key] as CheckoutData[K] | undefined));
   }
 }
