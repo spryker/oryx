@@ -222,7 +222,7 @@ describe('ContentLinkComponent', () => {
     });
   });
 
-  describe.only('when button option is provided', () => {
+  describe('when button option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-content-link
