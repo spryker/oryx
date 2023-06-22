@@ -61,6 +61,7 @@ const Template: Story = (): TemplateResult => html`
               className,
               value,
               hasError,
+              required,
             },
           }) => html`
             <oryx-input
@@ -72,6 +73,7 @@ const Template: Story = (): TemplateResult => html`
               <input
                 placeholder="Placeholder"
                 value=${value}
+                ?required=${required}
                 ?disabled=${isDisabled}
                 class=${className}
               />
