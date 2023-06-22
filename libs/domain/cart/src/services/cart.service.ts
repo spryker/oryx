@@ -11,7 +11,6 @@ import {
 } from '../models';
 
 export interface CartService {
-  reload(): void;
   getCart(data?: CartQualifier): Observable<Cart | undefined>;
   getCartState(data?: CartQualifier): Observable<QueryState<Cart>>;
   getTotals(data?: CartQualifier): Observable<CartTotals | null>;
