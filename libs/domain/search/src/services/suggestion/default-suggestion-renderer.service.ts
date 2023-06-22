@@ -10,6 +10,7 @@ import {
 } from 'rxjs';
 import { Suggestion } from '../../models';
 import {
+  LinksSection,
   SuggestionRenderer,
   SuggestionRendererOptions,
   SuggestionRendererService,
@@ -23,20 +24,21 @@ export class DefaultSuggestionRendererService
   protected data$ = new ReplaySubject<
     SuggestionRendererOptions & { query: string }
   >(1);
-  protected suggestion$ = this.data$.pipe(
+  protected suggestions$ = this.data$.pipe(
     switchMap((query) =>
       combineLatest(
         this.renderers.map((renderer) => renderer.getSuggestions(query))
-      ).pipe(
-        map((suggestions) => {
-          console.log(suggestions, 'suggestions');
-          return suggestions.reduce(
-            (acc, suggestion) => (suggestion ? { ...suggestion, ...acc } : acc),
-            null
-          );
-        })
       )
     )
+  );
+  protected suggestion$ = this.suggestions$.pipe(
+    map((suggestions) => {
+      console.log(suggestions, 'suggestions');
+      return suggestions.reduce(
+        (acc, suggestion) => (suggestion ? { ...suggestion, ...acc } : acc),
+        null
+      );
+    })
   );
 
   getSuggestions<T = Suggestion>(
@@ -48,14 +50,51 @@ export class DefaultSuggestionRendererService
   }
 
   render(): Observable<TemplateResult | undefined> {
-    return this.suggestion$.pipe(
+    return this.suggestions$.pipe(
       withLatestFrom(this.data$),
-      map(
-        ([suggestion, { query }]) =>
-          html`${this.renderers.map((renderer) =>
-            renderer.render?.(suggestion, query)
-          )}`
-      )
+      map(([suggestions, { query }]) => {
+        console.log(suggestions, 'suggestions');
+        return html`${this.renderers.map(
+          (renderer, index) =>
+            renderer.render?.(suggestions[index], query) ??
+            this.renderLinks(suggestions[index] as LinksSection)
+        )}`;
+      })
     );
+  }
+
+  protected renderLinks(link?: LinksSection): TemplateResult | void {
+    if (!link) {
+      return;
+    }
+
+    const { title, options, type } = link;
+
+    if (!options.length) {
+      return html``;
+    }
+
+    return html`
+      <section>
+        <h5>${title}</h5>
+        <ul>
+          ${options.map(
+            ({ name, url, params }) => html`
+              <li>
+                <oryx-content-link
+                  .options=${{
+                    type,
+                    id: url ?? '',
+                    params: params ?? null,
+                    text: name,
+                  }}
+                  close-popover
+                ></oryx-content-link>
+              </li>
+            `
+          )}
+        </ul>
+      </section>
+    `;
   }
 }

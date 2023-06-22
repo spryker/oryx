@@ -88,7 +88,7 @@ export class SearchBoxComponent
     })
   );
 
-  protected $render = computed(() => this.suggestionRendererService.render?.());
+  protected $render = computed(() => this.suggestionRendererService.render());
 
   protected override render(): TemplateResult {
     return html`
@@ -143,7 +143,7 @@ export class SearchBoxComponent
     return html`
       <div slot="option">
         <div @scroll=${debounce(this.onScroll.bind(this), 20)}>
-          ${this.$render() ?? this.renderDefaultLinks()}
+          ${this.$render()}
         </div>
       </div>
     `;
@@ -155,47 +155,6 @@ export class SearchBoxComponent
         <oryx-icon .type=${IconTypes.Search}></oryx-icon>
         <span>${i18n('search.box.nothing-found')}</span>
       </div>
-    `;
-  }
-
-  protected renderDefaultLinks(): TemplateResult | void {
-    const links = this.$suggestion();
-
-    if (!Array.isArray(links)) {
-      return;
-    }
-
-    return html`
-      <section>
-        ${links.map((link) => {
-          const { title, options, type } = link;
-
-          if (!options.length) {
-            return html``;
-          }
-
-          return html`
-            <h5>${title}</h5>
-            <ul>
-              ${options.map(
-                ({ name, url, params }) => html`
-                  <li>
-                    <oryx-content-link
-                      .options=${{
-                        type,
-                        id: url ?? '',
-                        params: params ?? null,
-                        text: name,
-                      }}
-                      close-popover
-                    ></oryx-content-link>
-                  </li>
-                `
-              )}
-            </ul>
-          `;
-        })}
-      </section>
     `;
   }
 

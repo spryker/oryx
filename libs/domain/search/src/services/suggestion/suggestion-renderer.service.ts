@@ -40,7 +40,7 @@ export interface LinksSection {
 }
 
 export interface SuggestionRendererService {
-  render?(): Observable<TemplateResult | undefined>;
+  render(): Observable<TemplateResult | undefined>;
   getSuggestions<T = Suggestion>(
     query: string,
     options?: SuggestionRendererOptions
