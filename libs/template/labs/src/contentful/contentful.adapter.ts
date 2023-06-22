@@ -24,11 +24,17 @@ export class ContentfulAdapter implements ContentAdapter {
   }
 
   get(qualifier: ContentQualifier): Observable<Content> {
-    return from(this.client.getEntries()).pipe(
+    console.log(qualifier.article);
+
+    return from(
+      this.client.getEntries({
+        content_type: this.getKey(qualifier),
+      })
+    ).pipe(
       map((entries) => ({
-        article: entries.items.find(
-          (entry) => entry.fields[this.getKey(qualifier)]
-        )?.fields[this.getKey(qualifier)] as string,
+        article: Object.values(
+          entries.items[0].fields as Record<string, string>
+        ).reduce((acc, field) => `${acc}\n${field}`, ''),
       }))
     );
   }
