@@ -27,7 +27,7 @@ describe('Product Detail Page', () => {
   });
 
   describe('when product has reference products', () => {
-    const productData = ProductStorage.getProductByEq(5);
+    const productData = ProductStorage.getProductByEq(3);
     const pdp = new ProductDetailsPage(productData);
 
     beforeEach(() => {
