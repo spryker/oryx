@@ -127,6 +127,13 @@ describe('CartAddComponent', () => {
       expect(element).toContainElement('button:not([disabled])');
     });
 
+    it('should have a max quantity of 10', () => {
+      const quantityInput = element.renderRoot.querySelector(
+        'oryx-cart-quantity-input'
+      ) as QuantityInputComponent;
+      expect(quantityInput.max).toBe(10);
+    });
+
     describe('and when an update is dispatched with an invalid quantity', () => {
       beforeEach(() => {
         const input = element.shadowRoot?.querySelector(
@@ -156,6 +163,13 @@ describe('CartAddComponent', () => {
     it('should disable the button', () => {
       expect(element).toContainElement('button[disabled]');
     });
+
+    it('should have max quantity of 0', () => {
+      const quantityInput = element.renderRoot.querySelector(
+        'oryx-cart-quantity-input'
+      ) as QuantityInputComponent;
+      expect(quantityInput.max).toBe(0);
+    });
   });
 
   describe('when isNeverOutOfStock = true', () => {
@@ -171,6 +185,13 @@ describe('CartAddComponent', () => {
 
     it('should enable the button', () => {
       expect(element).toContainElement('button:not([disabled])');
+    });
+
+    it('should have an infinite max quantity', () => {
+      const quantityInput = element.renderRoot.querySelector(
+        'oryx-cart-quantity-input'
+      ) as QuantityInputComponent;
+      expect(quantityInput.max).toBe(Infinity);
     });
   });
 
