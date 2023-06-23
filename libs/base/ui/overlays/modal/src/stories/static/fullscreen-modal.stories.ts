@@ -1,4 +1,7 @@
-import { OverlaysDecorator } from '@/tools/storybook';
+import {
+  OverlaysDecorator,
+  storybookDefaultViewports,
+} from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -7,7 +10,10 @@ export default {
   title: `${storybookPrefix}/Overlays/Modal/Static`,
   decorators: [OverlaysDecorator()],
   parameters: {
-    chromatic: { delay: 1000 },
+    chromatic: {
+      delay: 1000,
+      viewports: [storybookDefaultViewports.mobile.min],
+    },
     viewport: { defaultViewport: 'mobile2' },
   },
 } as Meta;
