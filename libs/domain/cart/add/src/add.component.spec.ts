@@ -11,7 +11,7 @@ import { Product, ProductService } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
 import { buttonComponent } from '@spryker-oryx/ui';
 import { wait } from '@spryker-oryx/utilities';
-import { BehaviorSubject, delay, Observer, of } from 'rxjs';
+import { BehaviorSubject, delay, of } from 'rxjs';
 import { CartAddComponent } from './add.component';
 import { addToCartComponent } from './add.def';
 
@@ -241,13 +241,23 @@ describe('CartAddComponent', () => {
       });
 
       describe('when adding an item to cart throws an error', () => {
+        let errorCallback: any;
         beforeEach(async () => {
-          service?.addEntry?.mockReturnValue({
-            subscribe: (callback: Partial<Observer<any>>) => {
-              // simulate observable that errors
-              callback.error?.(new Error('error'));
-              callback.complete?.();
-            },
+          service.addEntry?.mockImplementation(() => {
+            return {
+              subscribe: vi.fn().mockImplementation(({ error }) => {
+                //simulate error handling in subscribe
+                //try - catch are required not to pollute test env
+                //by unhandled errors
+                try {
+                  const e = new Error('error');
+                  errorCallback = error.bind(null, e);
+                  error(e);
+                } catch {
+                  //
+                }
+              }),
+            };
           });
 
           element = await fixture(
@@ -259,8 +269,14 @@ describe('CartAddComponent', () => {
           await nextFrame();
         });
 
-        it('should not have the oryx-button in confirmed state', async () => {
-          expect(element).toContainElement('oryx-button:not([confirmed])');
+        it('should throw the handled error', () => {
+          expect(() => errorCallback()).toThrowError('error');
+        });
+
+        it('should drop the states from confirmation button', () => {
+          expect(element).toContainElement(
+            'oryx-button:not([confirmed][loading])'
+          );
         });
       });
     });
