@@ -205,7 +205,7 @@ export class CartEntryComponent
   /**
    * Forces a revert of the quantity, as the quantity input might be updated outside.
    */
-  protected revert(): void {
+  protected revert(e: Error): void {
     this.requiresRemovalConfirmation = false;
     const el = this.shadowRoot?.querySelector<QuantityInputComponent>(
       'oryx-cart-quantity-input'
@@ -213,6 +213,7 @@ export class CartEntryComponent
     if (el) {
       el.value = this.quantity;
     }
+    throw e;
   }
 
   protected onSubmit(ev: CustomEvent<QuantityEventDetail>): void {
@@ -231,7 +232,7 @@ export class CartEntryComponent
           this.notify('cart.cart-entry-updated', this.sku);
         }
       },
-      error: () => this.revert(),
+      error: (e) => this.revert(e),
     });
   }
 
@@ -247,7 +248,7 @@ export class CartEntryComponent
           this.notify('cart.confirm-removed', this.sku);
         }
       },
-      error: () => this.revert(),
+      error: (e) => this.revert(e),
     });
   }
 
