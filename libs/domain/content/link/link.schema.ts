@@ -1,7 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { LinkType } from '@spryker-oryx/ui/link';
+import { ColorType } from '@spryker-oryx/ui/link';
 import { iconInjectable } from '@spryker-oryx/utilities';
 import { ContentLinkComponent } from './link.component';
 
@@ -11,13 +11,10 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
     group: 'Content',
     icon: IconTypes.Link,
     options: {
+      url: { type: FormFieldType.Text },
       type: {
         type: FormFieldType.Select,
         options: [
-          {
-            value: 'rawUrl',
-            text: 'RawUrl',
-          },
           {
             value: 'page',
             text: 'Page',
@@ -53,19 +50,16 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
           },
         ],
       },
-      text: {
-        type: FormFieldType.Text,
-      },
       id: {
-        label: 'Raw URL | Product/Category/Page ID',
+        label: 'Product/Category/Page ID',
         type: FormFieldType.Text,
       },
-      linkType: {
+      color: {
         type: FormFieldType.Select,
         options: [
-          { value: LinkType.Link },
-          { value: LinkType.ExternalLink },
-          { value: LinkType.Neutral },
+          { value: ColorType.Primary },
+          { value: ColorType.Neutral },
+          { value: ColorType.Light },
         ],
       },
       icon: {
@@ -77,14 +71,9 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
             .sort()
             .map((i) => ({ value: i, text: i })) ?? [],
       },
-      noopener: {
-        type: FormFieldType.Boolean,
-      },
-      nofollow: {
-        type: FormFieldType.Boolean,
-      },
-      multiLine: {
-        type: FormFieldType.Boolean,
-      },
+      noopener: { type: FormFieldType.Boolean },
+      nofollow: { type: FormFieldType.Boolean },
+      singleLine: { type: FormFieldType.Boolean },
     },
+    content: { text: { type: FormFieldType.Text } },
   };
