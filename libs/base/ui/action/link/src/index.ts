@@ -1,3 +1,3 @@
 export * from './link.component';
 export * from './link.model';
-export * from './link.styles';
+export * from './styles';

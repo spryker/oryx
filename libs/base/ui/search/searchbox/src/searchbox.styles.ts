@@ -16,10 +16,13 @@ export const baseStyles = [
       --oryx-icon-size: var(--oryx-icon-size-md);
     }
 
+    oryx-icon {
+      transition: opacity var(--oryx-transition-time, 0.3s);
+    }
+
     .clear-button {
       opacity: 0;
       z-index: 1;
-      transition: opacity var(--oryx-transition-time, 0.3s);
       align-self: center;
     }
 
@@ -36,10 +39,8 @@ export const baseStyles = [
       position: absolute;
     }
 
-    :host([has-value]) .clear-button[appearance='toggle'] + [class$='-button'],
-    :host([has-value])
-      .clear-button[appearance='hover']:hover
-      + [class$='-button'] {
+    :host([has-value]) .clear-button[appearance='toggle'] + oryx-icon,
+    :host([has-value]) .clear-button[appearance='hover']:hover + oryx-icon {
       opacity: 0;
     }
 

@@ -9,6 +9,7 @@ import {
 import {
   NotificationService,
   PricingService,
+  SemanticLinkService,
   SemanticLinkType,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
@@ -84,6 +85,14 @@ export class CartEntryComponent
 
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
+  protected semanticLinkService = resolve(SemanticLinkService);
+
+  protected $productLink = computed(() => {
+    return this.semanticLinkService.get({
+      type: SemanticLinkType.Product,
+      id: this.$product()?.sku,
+    });
+  });
 
   protected override render(): TemplateResult | void {
     return html`
@@ -97,18 +106,11 @@ export class CartEntryComponent
     if (!this.$options()?.enableItemImage) return;
 
     return html`
-      <oryx-content-link
-        class="image"
-        .options=${{
-          type: SemanticLinkType.Product,
-          id: this.sku,
-          linkType: LinkType.Neutral,
-        }}
-      >
+      <a href=${this.$productLink()}>
         <oryx-product-media
           .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
         ></oryx-product-media>
-      </oryx-content-link>
+      </a>
     `;
   }
 
