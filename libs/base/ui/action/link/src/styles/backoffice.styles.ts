@@ -1,14 +1,22 @@
 import { css, unsafeCSS } from 'lit';
-import { LinkType } from './link.model';
+import { LinkType } from '../link.model';
 
 const isNeutral = unsafeCSS(`[link-type='${LinkType.Neutral}']`);
 
-export const linkStyles = css`
+export const backOfficeLinkStyles = css`
   :host {
     --oryx-icon-size: 16px;
 
     display: inline-flex;
-    align-items: center;
+    align-items: baseline;
+    position: relative;
+    gap: 8px;
+  }
+
+  :host([singleLine]) ::slotted(a) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   :host(:not(${isNeutral})) {
@@ -39,12 +47,6 @@ export const linkStyles = css`
   oryx-icon,
   ::slotted(oryx-icon) {
     padding: 4px 8px;
-  }
-
-  :host(:not([multiLine])) ::slotted(a) {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   :host([disabled]) {

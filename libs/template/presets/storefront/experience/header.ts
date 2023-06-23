@@ -11,31 +11,46 @@ export const HeaderTemplate: StaticComponent = {
       components: [
         {
           type: 'oryx-content-link',
+          content: {
+            data: {
+              text: 'FREE DELIVERY & RETURNS',
+            },
+          },
           options: {
             data: {
-              id: '/',
-              text: 'Free delivery & returns',
-              icon: 'check_circle',
+              url: '/',
+              icon: IconTypes.Check,
+              color: 'light',
             },
           },
         },
         {
           type: 'oryx-content-link',
+          content: {
+            data: {
+              text: '100 DAY RETURN POLICY',
+            },
+          },
           options: {
             data: {
-              id: '/',
-              text: '100 day return policy',
-              icon: 'check_circle',
+              url: '/',
+              icon: IconTypes.Check,
+              color: 'light',
             },
           },
         },
         {
           type: 'oryx-content-link',
+          content: {
+            data: {
+              text: 'CLICK & COLLECT  ',
+            },
+          },
           options: {
             data: {
-              id: '/',
-              text: 'Click & Collect',
-              icon: 'check_circle',
+              url: '/',
+              icon: IconTypes.Check,
+              color: 'light',
             },
           },
         },
