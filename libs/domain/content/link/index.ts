@@ -1,1 +1,3 @@
-export * from './src/';
+export * from './link.component';
+export * from './link.model';
+export * from './link.schema';

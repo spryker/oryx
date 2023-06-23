@@ -20,9 +20,11 @@ describe('LinkComponent', () => {
   describe('link type', () => {
     const types: LinkType[] = [LinkType.Link, LinkType.ExternalLink];
     Object.values(types).forEach((type) => {
-      describe(`when type is "${type}"`, () => {
+      describe(`when linkType is "${type}"`, () => {
         beforeEach(async () => {
-          element = await fixture(html`<oryx-link type="${type}"></oryx-link>`);
+          element = await fixture(
+            html`<oryx-link .linkType=${type}></oryx-link>`
+          );
         });
 
         it('passes the a11y audit', async () => {
@@ -30,7 +32,7 @@ describe('LinkComponent', () => {
         });
 
         it('should reflect the type attribute on the node', () => {
-          expect(element?.getAttribute('type')).toBe(type);
+          expect(element?.getAttribute('link-type')).toBe(type);
         });
       });
     });
