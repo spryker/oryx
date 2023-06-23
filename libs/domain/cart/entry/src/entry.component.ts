@@ -1,10 +1,15 @@
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductMediaContainerSize, ProductMixin } from '@spryker-oryx/product';
+import {
+  ProductContext,
+  ProductMediaContainerSize,
+  ProductMixin,
+} from '@spryker-oryx/product';
 import {
   NotificationService,
   PricingService,
+  SemanticLinkService,
   SemanticLinkType,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
@@ -13,6 +18,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LinkType } from '@spryker-oryx/ui/link';
 import {
   computed,
+  elementEffect,
   hydratable,
   i18n,
   signalProperty,
@@ -53,9 +59,7 @@ export class CartEntryComponent
 {
   static styles = [cartEntryStyles];
 
-  @property() sku?: string;
-  @signalProperty({ type: Number })
-  quantity?: number;
+  @signalProperty({ type: Number }) quantity?: number;
   @property() key?: string;
   @property({ type: Number }) price?: number;
   @property({ type: Boolean }) readonly?: boolean;
@@ -63,7 +67,7 @@ export class CartEntryComponent
   @state() protected requiresRemovalConfirmation?: boolean;
 
   protected pricingService = resolve(PricingService);
-  protected context = new ContextController(this);
+  protected contextController = new ContextController(this);
 
   protected $availableQuantity = computed(() => {
     const availability = this.$product()?.availability;
@@ -72,8 +76,23 @@ export class CartEntryComponent
       : availability?.quantity ?? Infinity;
   });
 
+  @elementEffect()
+  protected setProductContext = (): void => {
+    if (this.sku) {
+      this.contextController.provide(ProductContext.SKU, this.sku);
+    }
+  };
+
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
+  protected semanticLinkService = resolve(SemanticLinkService);
+
+  protected $productLink = computed(() => {
+    return this.semanticLinkService.get({
+      type: SemanticLinkType.Product,
+      id: this.$product()?.sku,
+    });
+  });
 
   protected override render(): TemplateResult | void {
     return html`
@@ -87,18 +106,11 @@ export class CartEntryComponent
     if (!this.$options()?.enableItemImage) return;
 
     return html`
-      <oryx-content-link
-        class="image"
-        .options=${{
-          type: SemanticLinkType.Product,
-          id: this.sku,
-          linkType: LinkType.Neutral,
-        }}
-      >
+      <a href=${this.$productLink()}>
         <oryx-product-media
           .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
         ></oryx-product-media>
-      </oryx-content-link>
+      </a>
     `;
   }
 

@@ -8,7 +8,13 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
 import { ButtonComponent, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { computed, hydratable, i18n, Size } from '@spryker-oryx/utilities';
+import {
+  computed,
+  elementEffect,
+  hydratable,
+  i18n,
+  Size,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { CartAddOptions } from './add.model';
@@ -21,6 +27,7 @@ export class CartAddComponent extends ProductMixin(
   static styles = styles;
 
   protected cartService = resolve(CartService);
+
   @state() protected isInvalid = false;
   @query('oryx-button') protected button?: ButtonComponent;
   @query('oryx-cart-quantity-input') protected input?: QuantityInputComponent;
@@ -35,21 +42,21 @@ export class CartAddComponent extends ProductMixin(
 
   protected renderQuantity(): TemplateResult | void {
     return html`<oryx-cart-quantity-input
-      .min=${this.min()}
-      .max=${this.max()}
+      .min=${this.$min()}
+      .max=${this.$max()}
       @update=${this.onUpdate}
       @submit=${this.onSubmit}
     ></oryx-cart-quantity-input>`;
   }
 
   protected renderButton(): TemplateResult | void {
-    return html` <oryx-button
+    return html`<oryx-button
       size=${Size.Sm}
       type=${ButtonType.Primary}
       ?outline=${this.$options().outlined}
     >
       <button
-        ?disabled=${this.isInvalid || this.max() < this.min()}
+        ?disabled=${this.isInvalid || this.$hasStock()}
         @click=${this.onSubmit}
       >
         <oryx-icon .type=${IconTypes.CartAdd} size=${Size.Lg}></oryx-icon>
@@ -58,25 +65,35 @@ export class CartAddComponent extends ProductMixin(
     </oryx-button>`;
   }
 
-  protected min = computed(() => {
-    const value = 1;
-    if (this.$product()) {
-      this.shadowRoot
-        ?.querySelector<QuantityInputComponent>('oryx-cart-quantity-input')
-        ?.reset?.();
-    }
-    return value;
+  @elementEffect()
+  protected reset = (): void => {
+    if (this.$product()) this.input?.reset?.();
+  };
+
+  protected $hasStock = computed(() => {
+    return (
+      !this.$product()?.availability?.isNeverOutOfStock &&
+      this.$max() < this.$min()
+    );
   });
 
-  protected max = computed(() => {
-    const qty = this.$product()?.availability?.quantity;
-    return qty
-      ? qty -
-          this.$entries()
-            .filter((entry) => entry.sku === this.$product()?.sku)
-            .map((entry) => entry.quantity)
-            .reduce((a: number, b) => a + b, 0)
-      : 0;
+  protected $min = computed(() => {
+    return 1;
+  });
+
+  protected $max = computed(() => {
+    const { availability, sku } = this.$product() ?? {};
+
+    if (availability?.isNeverOutOfStock) return Infinity;
+    if (availability?.quantity)
+      return (
+        availability?.quantity -
+        this.$entries()
+          .filter((entry) => entry.sku === sku)
+          .map((entry) => entry.quantity)
+          .reduce((a: number, b) => a + b, 0)
+      );
+    return 0;
   });
 
   protected onUpdate(e: CustomEvent<QuantityEventDetail>): void {
@@ -89,7 +106,7 @@ export class CartAddComponent extends ProductMixin(
     if (!sku || !this.button) return;
 
     const quantity =
-      (e as CustomEvent).detail?.quantity ?? this.input?.value ?? this.min();
+      (e as CustomEvent).detail?.quantity ?? this.input?.value ?? this.$min();
     const button = this.button;
 
     this.button.loading = true;

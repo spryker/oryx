@@ -2,11 +2,11 @@ import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
 import { ApiProductModel, Product, ProductQualifier } from '../../models';
-import { AlternativeProductsListAdapter } from './alternative-products-list.adapter';
-import { AlternativeProductsListNormalizer } from './normalizers/alternative-products-list';
+import { RelationsListNormalizer } from './normalizers/relations-list';
+import { ProductRelationsListAdapter } from './product-relations-list.adapter';
 
-export class DefaultAlternativeProductsListAdapter
-  implements AlternativeProductsListAdapter
+export class DefaultProductRelationsListAdapter
+  implements ProductRelationsListAdapter
 {
   protected getQueryEndpoint(sku: string): string {
     return `concrete-products/${sku}/concrete-alternative-products`;
@@ -27,6 +27,6 @@ export class DefaultAlternativeProductsListAdapter
           sku!
         )}?include=${include?.join(',')}`
       )
-      .pipe(this.transformer.do(AlternativeProductsListNormalizer));
+      .pipe(this.transformer.do(RelationsListNormalizer));
   }
 }

@@ -5,8 +5,7 @@ import { Product } from '../../../../models/product.model';
 import { DeserializedProductListIncludes } from '../model';
 import { ProductNormalizer } from '../product/product.normalizer';
 
-export const AlternativeProductsListNormalizer =
-  'oryx.AlternativeProductsListNormalizer*';
+export const RelationsListNormalizer = 'oryx.RelationsListNormalizer*';
 
 export function listNormalizer(
   data: DeserializedProductListIncludes[],
@@ -17,15 +16,15 @@ export function listNormalizer(
   );
 }
 
-export const alternativeProductsListNormalizer: Provider[] = [
+export const relationsListNormalizer: Provider[] = [
   {
-    provide: AlternativeProductsListNormalizer,
+    provide: RelationsListNormalizer,
     useValue: listNormalizer,
   },
 ];
 
 declare global {
   interface InjectionTokensContractMap {
-    [AlternativeProductsListNormalizer]: Transformer<Product[]>[];
+    [RelationsListNormalizer]: Transformer<Product[]>[];
   }
 }

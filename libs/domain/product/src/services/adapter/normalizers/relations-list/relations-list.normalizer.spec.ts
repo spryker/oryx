@@ -1,9 +1,9 @@
 import { DeserializedProductListIncludes } from '@spryker-oryx/product';
 import { of } from 'rxjs';
 import { ProductNormalizer } from '../product/product.normalizer';
-import { listNormalizer } from './alternative-products-list.normalizer';
+import { listNormalizer } from './relations-list.normalizer';
 
-describe('Alternative products list Normalizer', () => {
+describe('Product relations list Normalizer', () => {
   const mockDeserializedProducts: DeserializedProductListIncludes[] = [{}, {}];
   const mockTransformer = {
     transform: vi.fn(),
