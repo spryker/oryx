@@ -1,5 +1,6 @@
-import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { StaticComponent } from '@spryker-oryx/experience';
+import { TotalsItem } from '@spryker-oryx/order/totals-item';
+import { PricesBehavior } from '@spryker-oryx/site';
 
 export const orderPage: StaticComponent = {
   type: 'Page',
@@ -26,19 +27,37 @@ export const orderPage: StaticComponent = {
         {
           type: 'oryx-order-totals',
           components: [
-            { type: 'oryx-order-totals-item', options: { data: { type: 'subtotal' } } },
-            // {
-            //   type: 'oryx-cart-totals-discount',
-            //   options: {
-            //     data: {
-            //       discountRowsAppearance: DiscountRowsAppearance.Collapsed,
-            //     },
-            //   },
-            // },
-            // { type: 'oryx-cart-totals-expense' },
-            // { type: 'oryx-cart-totals-tax' },
-            // { type: 'oryx-cart-totals-delivery' },
-            // { type: 'oryx-cart-totals-total' },
+            {
+              type: 'oryx-order-totals-item',
+              options: { data: { type: TotalsItem.Subtotal } },
+            },
+            {
+              type: 'oryx-order-totals-item',
+              options: {
+                data: {
+                  type: TotalsItem.Discount,
+                  discountRowsAppearance: PricesBehavior.Collapsed,
+                },
+              },
+            },
+            {
+              type: 'oryx-order-totals-item',
+              options: { data: { type: TotalsItem.Expense } },
+            },
+            {
+              type: 'oryx-order-totals-item',
+              options: { data: { type: TotalsItem.Tax } },
+            },
+            {
+              type: 'oryx-order-totals-item',
+              options: { data: { type: TotalsItem.Delivery } },
+            },
+            {
+              type: 'oryx-order-totals-item',
+              options: {
+                data: { type: TotalsItem.Total, enableTaxMessage: true },
+              },
+            },
           ],
         },
       ],

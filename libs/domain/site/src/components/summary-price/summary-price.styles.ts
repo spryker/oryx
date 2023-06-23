@@ -10,6 +10,22 @@ export const siteSummaryPriceStyles = css`
     padding-inline: var(--oryx-space-4);
   }
 
+  :host([delimiter]) {
+    border-block-start: solid 1px var(--oryx-color-neutral-6);
+  }
+
+  :host([accented]) span:first-child {
+    ${headingUtil(HeadingTag.H5)};
+  }
+
+  :host([accented]) span:nth-child(2) {
+    ${headingUtil(HeadingTag.H3)};
+  }
+
+  :host([subtext]) > span:not(.subtext) {
+    padding-block-end: 0;
+  }
+
   span {
     ${headingUtil(HeadingTag.H6)};
 
@@ -17,8 +33,7 @@ export const siteSummaryPriceStyles = css`
   }
 
   .subtext {
-    ${headingUtil(HeadingTag.H6)};
-
+    padding-block-start: 0;
     grid-column: 1/-1;
     text-align: end;
     color: var(--oryx-color-neutral-9);
@@ -55,7 +70,8 @@ export const siteSummaryPriceStyles = css`
     margin-block-end: 10px;
   }
 
-  span:nth-child(2) {
+  span[slot='aside'],
+  ul span:nth-child(2) {
     margin-inline-start: auto;
     color: var(--oryx-color-highlight-10);
   }
@@ -72,6 +88,10 @@ const smallScreen = css`
     display: flex;
     justify-content: space-between;
     padding-inline: var(--oryx-space-4);
+  }
+
+  :host([accented]) span:nth-child(2) {
+    ${headingUtil(HeadingTag.H1)};
   }
 
   span {

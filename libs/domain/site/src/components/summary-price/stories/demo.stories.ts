@@ -13,8 +13,8 @@ const Template: Story = (): TemplateResult => {
     .value=${100}
     .currency=${'EUR'}
     .prices=${[
-      {label: 'test 1', value: 1000},
-      {label: 'test 2', value: 1320},
+      { label: 'test 1', value: 1000 },
+      { label: 'test 2', value: 1320 },
     ]}
   ></oryx-site-summary-price>`;
 };
