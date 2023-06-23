@@ -19,7 +19,7 @@ export class NavigateBackComponent
     return html`
       <oryx-button type=${ButtonType.Text}>
         <a href=${this.url}>
-          <oryx-icon .type=${IconTypes.Back}></oryx-icon>
+          <oryx-icon .type=${IconTypes.ArrowBack}></oryx-icon>
           ${i18n('picking.button.back')}
         </a>
       </oryx-button>
