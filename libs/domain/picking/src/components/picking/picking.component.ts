@@ -212,7 +212,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       ${repeat(
         tabs,
         (tab) => html`
-          <div slot="panels" id="tab-${tab.id}" class="tab-panels">
+          <div slot="panels" id="tab-${tab.id}">
             ${when(
               tab.items?.length,
               () => html`
@@ -236,7 +236,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
                 </div>
                 ${this.renderFinishButton(true)}
               `,
-              () => this.renderPlaceholderComplete()
+              () => this.renderNoItemsFallback()
             )}
           </div>
         `
@@ -244,21 +244,35 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     `;
   }
 
-  protected renderPlaceholderComplete(): TemplateResult | void {
-    if (this.items?.some((item) => item.status !== ItemsFilters.Picked)) {
-      return;
-    }
-
-    return html`
-      <div class="picking-complete">
-        <div class="img-wrap">
-          <oryx-image resource="picking-items-processed"></oryx-image>
+  protected renderNoItemsFallback(): TemplateResult {
+    if (
+      !this.items?.length ||
+      this.items?.some((item) => item.status !== ItemsFilters.Picked)
+    ) {
+      return html`
+        <div class="fallback">
+          <oryx-heading>
+            <h2>${i18n(`picking.no-items`)}!</h2>
+          </oryx-heading>
+          <div>
+            <oryx-image resource="no-orders"></oryx-image>
+          </div>
         </div>
-        <h3 class="title-empty">${i18n(`picking.great-job`)}!</h3>
-        <p>${i18n(`picking.all-items-are-processed`)}!</p>
-      </div>
-      ${this.renderFinishButton()}
-    `;
+      `;
+    } else {
+      return html`
+        <div class="fallback">
+          <div>
+            <oryx-image resource="picking-items-processed"></oryx-image>
+          </div>
+          <oryx-heading>
+            <h1>${i18n(`picking.great-job`)}!</h1>
+          </oryx-heading>
+          <span>${i18n(`picking.all-items-are-processed`)}!</span>
+        </div>
+        ${this.renderFinishButton()}
+      `;
+    }
   }
 
   protected renderFinishButton(hasShadow?: boolean): TemplateResult | void {
@@ -272,11 +286,13 @@ export class PickingComponent extends PickingListMixin(LitElement) {
           'scroll-shadow': hasShadow ?? false,
         })}"
       >
-        <oryx-button type=${ButtonType.Primary} outline>
-          <button @click=${this.finishPicking}>
-            ${i18n('picking.finish-picking')}
-          </button>
-        </oryx-button>
+        <div>
+          <oryx-button type=${ButtonType.Primary} outline>
+            <button @click=${this.finishPicking}>
+              ${i18n('picking.finish-picking')}
+            </button>
+          </oryx-button>
+        </div>
       </div>
     `;
   }
