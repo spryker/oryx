@@ -45,6 +45,17 @@ export class DefaultTokenService implements TokenResolver {
     const tokenResolver = this.getResolver(resourceResolver);
 
     //if it is not possible to resolve the token -> return the token as result
-    return tokenResolver ? tokenResolver.resolve(resolver) : of(token);
+    return tokenResolver ? tokenResolver.resolve<string>(resolver) : of(token);
+  }
+
+  resolveData<T>(token: string): ResolvedToken<T | null> {
+    if (!this.isToken(token)) {
+      return of(null);
+    }
+
+    const [resourceResolver, resolver] = token.split('.');
+    const tokenResolver = this.getResolver(resourceResolver);
+
+    return tokenResolver ? tokenResolver.resolve<T>(resolver) : of(null);
   }
 }

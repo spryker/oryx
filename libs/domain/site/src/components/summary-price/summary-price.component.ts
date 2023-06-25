@@ -12,12 +12,9 @@ import { DirectiveResult } from 'lit/async-directive';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { combineLatest, filter, map, of, switchMap } from 'rxjs';
+import { PricesBehavior, TotalPrice } from '../../models';
 import { PricingService } from '../../services';
-import {
-  PricesBehavior,
-  SiteSummaryPriceComponentAttributes,
-  TotalPrice,
-} from './summary-price.model';
+import { SiteSummaryPriceComponentAttributes } from './summary-price.model';
 import { siteSummaryPriceStyles } from './summary-price.styles';
 
 @signalAware()

@@ -6,3 +6,5 @@ export * from './navigation-item/navigation-item.def';
 export * from './notification-center/notification-center.def';
 export * from './price/price.def';
 export * from './summary-price/summary-price.def';
+export * from './totals-item/totals-item.def';
+export * from './totals/totals.def';

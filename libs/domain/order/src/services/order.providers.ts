@@ -3,6 +3,7 @@ import { orderNormalizer } from './adapter/normalizers';
 import { DefaultOrderService } from './default-order.service';
 import { OrderContextFallback } from './order-context';
 import { OrderService } from './order.service';
+import { OrderResourceResolver } from './resolver';
 
 export const orderProviders = [
   {
@@ -13,6 +14,7 @@ export const orderProviders = [
     provide: OrderAdapter,
     useClass: DefaultOrderAdapter,
   },
+  OrderResourceResolver,
   ...orderNormalizer,
   OrderContextFallback,
 ];

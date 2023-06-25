@@ -5,16 +5,17 @@ import {
 } from '@spryker-oryx/core';
 import { of } from 'rxjs';
 
-export class BaseResolver<T extends Record<string, Resolver>>
+export class BaseResolver<T extends Record<string, Resolver<unknown>>>
   implements TokenResourceResolver
 {
   protected resolvers: T = {} as T;
 
-  resolve(resolver: string): ResolvedToken {
+  resolve<A = string>(resolver: string): ResolvedToken<A> {
     if (!(resolver in this.resolvers)) {
       console.warn(`Resolver ${resolver} is not supported`);
-      return of(resolver);
+      //TODO: organize types and drop any
+      return of(resolver as any);
     }
-    return this.resolvers[resolver as keyof T]();
+    return this.resolvers[resolver as keyof T]() as ResolvedToken<A>;
   }
 }

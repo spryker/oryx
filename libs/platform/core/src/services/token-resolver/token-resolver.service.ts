@@ -1,14 +1,15 @@
 import { Observable } from 'rxjs';
 
-export type ResolvedToken = Observable<string | null>;
-export type Resolver = () => ResolvedToken;
+export type ResolvedToken<T = string> = Observable<T | null>;
+export type Resolver<T = string> = () => ResolvedToken<T>;
 
 export interface TokenResolver {
   resolveToken(token: string): ResolvedToken;
+  resolveData<T>(token: string): ResolvedToken<T>;
 }
 
 export interface TokenResourceResolver {
-  resolve(resolver: string): ResolvedToken;
+  resolve<T>(resolver: string): ResolvedToken<T>;
 }
 
 export const TokenResolver = 'oryx.TokenResolver';

@@ -1,5 +1,4 @@
 import { StaticComponent } from '@spryker-oryx/experience';
-import { TotalsItem } from '@spryker-oryx/order/totals-item';
 import { PricesBehavior } from '@spryker-oryx/site';
 
 export const orderPage: StaticComponent = {
@@ -25,37 +24,38 @@ export const orderPage: StaticComponent = {
         },
         { type: 'oryx-order-entries' },
         {
-          type: 'oryx-order-totals',
+          type: 'oryx-site-totals',
+          options: { data: { renderIf: 'ORDER.HAS_TOTALS' } },
           components: [
             {
-              type: 'oryx-order-totals-item',
-              options: { data: { type: TotalsItem.Subtotal } },
+              type: 'oryx-site-totals-item',
+              options: { data: { type: 'ORDER.SUBTOTAL' } },
             },
             {
-              type: 'oryx-order-totals-item',
+              type: 'oryx-site-totals-item',
               options: {
                 data: {
-                  type: TotalsItem.Discount,
+                  type: 'ORDER.DISCOUNT',
                   discountRowsAppearance: PricesBehavior.Collapsed,
                 },
               },
             },
             {
-              type: 'oryx-order-totals-item',
-              options: { data: { type: TotalsItem.Expense } },
+              type: 'oryx-site-totals-item',
+              options: { data: { type: 'ORDER.EXPENSE' } },
             },
             {
-              type: 'oryx-order-totals-item',
-              options: { data: { type: TotalsItem.Tax } },
+              type: 'oryx-site-totals-item',
+              options: { data: { type: 'ORDER.TAX' } },
             },
             {
-              type: 'oryx-order-totals-item',
-              options: { data: { type: TotalsItem.Delivery } },
+              type: 'oryx-site-totals-item',
+              options: { data: { type: 'ORDER.DELIVERY' } },
             },
             {
-              type: 'oryx-order-totals-item',
+              type: 'oryx-site-totals-item',
               options: {
-                data: { type: TotalsItem.Total, enableTaxMessage: true },
+                data: { type: 'ORDER.TOTAL', enableTaxMessage: true },
               },
             },
           ],
