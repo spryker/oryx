@@ -186,6 +186,9 @@
       "@spryker-oryx/ui/collapsible": [
         "libs/base/ui/structure/collapsible/index.ts"
       ],
+      "@spryker-oryx/ui/collapsible-text": [
+        "libs/base/ui/structure/collapsible-text/index.ts"
+      ],
       "@spryker-oryx/ui/color-mode-selector": [
         "libs/base/ui/action/color-mode-selector/index.ts"
       ],

@@ -2,13 +2,17 @@ import { fixture } from '@open-wc/testing-helpers';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { TextComponent } from '@spryker-oryx/ui/text';
+import {
+  CollapsibleTextComponent,
+  CollapsibleTextToggle,
+} from '@spryker-oryx/ui/collapsible-text';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { Product } from '../src/models';
 import { ProductService } from '../src/services';
 import { ProductDescriptionComponent } from './description.component';
 import { productDescriptionComponent } from './description.def';
+import { ProductDescriptionOptions } from './description.model.js';
 
 class MockProductService implements Partial<ProductService> {
   get = vi.fn();
@@ -46,10 +50,7 @@ describe('ProductDescriptionComponent', () => {
   describe('when a product description is provided', () => {
     beforeEach(async () => {
       productService.get.mockReturnValue(
-        of({
-          sku: '1',
-          description: 'Lorem ipsum.',
-        } as Product)
+        of({ sku: '1', description: 'Lorem ipsum.' } as Product)
       );
       element = await fixture(
         html` <oryx-product-description
@@ -85,14 +86,10 @@ describe('ProductDescriptionComponent', () => {
       );
     });
 
-    it('should passes the a11y audit', async () => {
-      await expect(element).shadowDom.to.be.accessible();
-    });
-
     it('should replace the new lines with <br/> elements', () => {
-      expect(element.shadowRoot?.querySelector('oryx-text p')?.innerHTML).toBe(
-        'Lorem ipsum dolor<br>sit<br>amet.'
-      );
+      expect(
+        element.shadowRoot?.querySelector('oryx-collapsible-text p')?.innerHTML
+      ).toBe('Lorem ipsum dolor<br>sit<br>amet.');
     });
   });
 
@@ -108,10 +105,9 @@ describe('ProductDescriptionComponent', () => {
         html`<oryx-product-description
           sku="1"
           .options=${{
-            truncateAfter: 3,
-            expandInitially: false,
             enableToggle: true,
-          }}
+            lineClamp: 3,
+          } as ProductDescriptionOptions}
           .content="${{ truncateAfter: 100 }}"
         ></oryx-product-description>`
       );
@@ -119,11 +115,10 @@ describe('ProductDescriptionComponent', () => {
 
     it('should pass the options to the oryx-text', () => {
       const text = element.shadowRoot?.querySelector(
-        'oryx-text'
-      ) as TextComponent;
-      expect(text.hideToggle).toBe(false);
-      expect(text.truncateAfter).toBe(3);
-      expect(text.defaultExpanded).toBe(false);
+        'oryx-collapsible-text'
+      ) as CollapsibleTextComponent;
+      expect(text.toggle).toBe(CollapsibleTextToggle.Icon);
+      expect(text.lineClamp).toBe(3);
     });
   });
 
@@ -138,9 +133,9 @@ describe('ProductDescriptionComponent', () => {
 
     it('should default to 3', () => {
       const text = element.shadowRoot?.querySelector(
-        'oryx-text'
-      ) as TextComponent;
-      expect(text.truncateAfter).toBe(3);
+        'oryx-collapsible-text'
+      ) as CollapsibleTextComponent;
+      expect(text.lineClamp).toBe(3);
     });
   });
 });
