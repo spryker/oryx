@@ -34,6 +34,10 @@ export const pickingComponentStyles = css`
     margin-block-end: 10px;
   }
 
+  oryx-image {
+    display: flex;
+  }
+
   .picked-items-info {
     font-weight: 600;
   }

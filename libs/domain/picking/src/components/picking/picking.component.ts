@@ -254,17 +254,13 @@ export class PickingComponent extends PickingListMixin(LitElement) {
           <oryx-heading>
             <h2>${i18n(`picking.no-items`)}!</h2>
           </oryx-heading>
-          <div>
-            <oryx-image resource="no-orders"></oryx-image>
-          </div>
+          <oryx-image resource="no-orders"></oryx-image>
         </div>
       `;
     } else {
       return html`
         <div class="fallback">
-          <div>
-            <oryx-image resource="picking-items-processed"></oryx-image>
-          </div>
+          <oryx-image resource="picking-items-processed"></oryx-image>
           <oryx-heading>
             <h1>${i18n(`picking.great-job`)}!</h1>
           </oryx-heading>
