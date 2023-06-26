@@ -1,6 +1,7 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
 import { I18nContext, InferI18nContext } from '@spryker-oryx/utilities';
+import { isServer } from 'lit';
 import {
   finalize,
   isObservable,
@@ -17,7 +18,7 @@ import { I18nProcessor } from './i18n.processor';
 import { I18nService } from './i18n.service';
 
 export class DefaultI18nService implements I18nService {
-  static CacheCleanupTimeout = 1000 * 60;
+  static CacheCleanupTimeout: number | false = isServer ? false : 1000 * 60 * 5;
 
   protected textCache = new Map<string, Observable<I18nString>>();
 
@@ -51,8 +52,10 @@ export class DefaultI18nService implements I18nService {
       ),
       share({
         connector: () => new ReplaySubject(1),
-        resetOnRefCountZero: () =>
-          timer(DefaultI18nService.CacheCleanupTimeout),
+        resetOnRefCountZero:
+          DefaultI18nService.CacheCleanupTimeout === false
+            ? true
+            : () => timer(DefaultI18nService.CacheCleanupTimeout as number),
       })
     );
   }

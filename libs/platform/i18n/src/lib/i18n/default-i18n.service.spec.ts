@@ -3,6 +3,8 @@ import { BehaviorSubject, EMPTY, Observable, of } from 'rxjs';
 import { DefaultI18nService } from './default-i18n.service';
 import { I18nProcessor } from './i18n.processor';
 
+vi.mock('lit', () => ({ isServer: false }));
+
 describe('DefaultI18nService', () => {
   class MockI18nProcessor implements I18nProcessor {
     interpolate = vi.fn().mockReturnValue(EMPTY);
@@ -97,7 +99,7 @@ describe('DefaultI18nService', () => {
       expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(1);
     });
 
-    it('should clear cache when 0 subscriptions and after 60s timeout', () => {
+    it('should clear cache when 0 subscriptions and after 5m timeout', () => {
       vi.useFakeTimers();
 
       const { i18nService, i18nProcessor } = setup();
@@ -110,15 +112,41 @@ describe('DefaultI18nService', () => {
       i18nService.translate('token').subscribe().unsubscribe();
       expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(1);
 
-      // Cache is still valid after 59s
-      vi.advanceTimersByTime(1000 * 59);
+      // Cache is still valid after 4m 59s
+      vi.advanceTimersByTime(1000 * 60 * 4 + 1000 * 59);
       i18nService.translate('token').subscribe().unsubscribe();
       expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(1);
 
-      // Cache is cleared after 60s
+      // Cache is cleared after 5m
       vi.advanceTimersByTime(1000);
       i18nService.translate('token').subscribe().unsubscribe();
       expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(2);
+    });
+
+    describe('when SSR', () => {
+      let cacheCleanupTimeout: number | false | undefined;
+
+      beforeAll(() => {
+        cacheCleanupTimeout = DefaultI18nService.CacheCleanupTimeout;
+        DefaultI18nService.CacheCleanupTimeout = false;
+      });
+
+      afterAll(() => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        DefaultI18nService.CacheCleanupTimeout = cacheCleanupTimeout!;
+      });
+
+      it('should clean cache immediately after unsubscription', () => {
+        const { i18nService, i18nProcessor } = setup();
+        const obs1$ = new BehaviorSubject('a');
+        i18nProcessor.interpolate.mockReturnValue(obs1$);
+
+        i18nService.translate('token').subscribe().unsubscribe();
+        expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(1);
+
+        i18nService.translate('token').subscribe().unsubscribe();
+        expect(i18nProcessor.interpolate).toHaveBeenCalledTimes(2);
+      });
     });
   });
 });
