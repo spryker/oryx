@@ -141,7 +141,7 @@ export const FooterTemplate: StaticComponent = {
               options: {
                 data: {
                   rules: [
-                    { layout: 'list', gap: 0, colSpan: 2, gridColumn: 11 },
+                    { layout: 'list', gap: 0, colSpan: 2, gridColumn: 10 },
                   ],
                 },
               },
@@ -195,7 +195,7 @@ export const FooterTemplate: StaticComponent = {
               options: {
                 data: {
                   rules: [
-                    { layout: 'list', gap: 0, colSpan: 2, gridColumn: 11 },
+                    { layout: 'list', gap: 0, colSpan: 2, gridColumn: 10 },
                   ],
                 },
               },
