@@ -43,6 +43,11 @@ export interface ModalProperties {
   heading?: string;
 
   /**
+   * Indicates that the modal will not grow out the given modal width.
+   */
+  minimal?: boolean;
+
+  /**
    * A method that opens the modal.
    */
   open: () => void;
