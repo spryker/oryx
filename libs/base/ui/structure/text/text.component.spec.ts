@@ -24,4 +24,18 @@ describe('TextComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
   });
+
+  describe('when content contains tags', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-text
+          .content=${'<h1>This is the content</h1><p>with a <a href="/link">link</a></p>'}
+        ></oryx-text>`
+      );
+    });
+
+    it('should render the html as-is', () => {
+      expect(element).toContainElement(`h1 + p > a[href='/link']`);
+    });
+  });
 });
