@@ -5,7 +5,7 @@ import { NavigateBackAttributes } from '../navigate-back.model';
 
 export default {
   title: `${storybookPrefix}/Navigate Back`,
-  args: { fallbackUrl: '/test/url' },
+  args: { url: '/test/url' },
   parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
@@ -16,7 +16,7 @@ const Template: Story<NavigateBackAttributes> = (props): TemplateResult => {
         display: inline-flex;
       }
     </style>
-    <oryx-navigate-back .fallbackUrl=${props.fallbackUrl}></oryx-navigate-back>
+    <oryx-navigate-back .url=${props.url}></oryx-navigate-back>
   `;
 };
 

@@ -2,7 +2,7 @@ import {
   OverlaysDecorator,
   storybookDefaultViewports,
 } from '@/tools/storybook';
-import { Meta, Story } from '@storybook/web-components';
+import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
@@ -15,15 +15,16 @@ export default {
     },
     viewport: { defaultViewport: 'mobile2' },
   },
-} as Meta;
+};
 
 const Template: Story = (): TemplateResult => {
   return html`
     <oryx-modal
       open
+      minimal
       preventCloseByEscape
       preventCloseByBackdrop
-      heading="Fullscreen modal"
+      heading="Minimum modal"
       enableFooter
     >
       <p>
@@ -34,4 +35,4 @@ const Template: Story = (): TemplateResult => {
   `;
 };
 
-export const FullscreenModal = Template.bind({});
+export const SmallScreenMinimumModal = Template.bind({});
