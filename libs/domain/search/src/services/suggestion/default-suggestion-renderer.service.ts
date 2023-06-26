@@ -88,6 +88,7 @@ export class DefaultSuggestionRendererService
                     params: params ?? null,
                     text: name,
                   }}
+                  .content=${{ text: name }}
                   close-popover
                 ></oryx-content-link>
               </li>
