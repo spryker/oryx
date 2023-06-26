@@ -3,6 +3,7 @@ import { mockGetCartsResponse } from '@spryker-oryx/cart/mocks';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { CurrencyService, Store, StoreService } from '@spryker-oryx/site';
 import { Observable, of } from 'rxjs';
 import { ApiCartModel } from '../../models';
 import { CartAdapter } from './cart.adapter';
@@ -30,6 +31,16 @@ class MockIdentityService implements Partial<IdentityService> {
   get = vi
     .fn<[], Observable<AuthIdentity>>()
     .mockReturnValue(of(mockAnonymousUser));
+}
+
+class MockStoreService implements Partial<StoreService> {
+  get = vi
+    .fn<[], Observable<Store>>()
+    .mockReturnValue(of({ id: 'DE' } as Store));
+}
+
+class MockCurrencyService implements Partial<CurrencyService> {
+  get = vi.fn<[], Observable<string>>().mockReturnValue(of('EUR'));
 }
 
 describe('DefaultCartAdapter', () => {
@@ -66,6 +77,14 @@ describe('DefaultCartAdapter', () => {
         {
           provide: IdentityService,
           useClass: MockIdentityService,
+        },
+        {
+          provide: StoreService,
+          useClass: MockStoreService,
+        },
+        {
+          provide: CurrencyService,
+          useClass: MockCurrencyService,
         },
       ],
     });
@@ -406,6 +425,64 @@ describe('DefaultCartAdapter', () => {
       service.deleteEntry(mockDeleteEntryQualifier).subscribe(callback);
 
       expect(callback).toHaveBeenCalled();
+    });
+  });
+
+  describe('addEntry should create cart if needed for registered user', () => {
+    beforeEach(() => {
+      identity.get.mockReturnValue(of(mockUser));
+    });
+
+    it('should create cart if cartId is undefined', () => {
+      const mockRegisteredAddEntryQualifier = {
+        cartId: undefined,
+        sku: 'sku',
+        quantity: 1,
+      };
+
+      const mockResponse = { id: 'newCartId' };
+      const callback = vi.fn();
+
+      http.flush(mockResponse);
+      mockTransformer.do.mockReturnValue((x: any) => x);
+
+      service.addEntry(mockRegisteredAddEntryQualifier).subscribe(callback);
+
+      expect(http.urls).toStrictEqual([
+        `${mockApiUrl}/carts`,
+        `${mockApiUrl}/carts/newCartId/items?include=items`,
+      ]);
+
+      http.flush(mockResponse);
+
+      expect(callback).toHaveBeenCalledWith(mockResponse);
+    });
+
+    it('should not create cart if cartId is defined', () => {
+      const mockRegisteredAddEntryQualifier = {
+        cartId: 'testCartId',
+        sku: 'sku',
+        quantity: 1,
+      };
+
+      const mockResponse = { id: 'existingCartId' };
+      const callback = vi.fn();
+
+      http.flush(mockResponse);
+      mockTransformer.do.mockReturnValue((x: any) => x);
+
+      service.addEntry(mockRegisteredAddEntryQualifier).subscribe(callback);
+
+      expect(http.url).toBe(
+        `${mockApiUrl}/carts/${
+          mockRegisteredAddEntryQualifier.cartId
+        }/items${requestIncludes(true)}`
+      );
+
+      expect(http.urls).toStrictEqual([
+        `${mockApiUrl}/carts/testCartId/items?include=items`,
+      ]);
+      expect(callback).toHaveBeenCalledWith(mockResponse);
     });
   });
 });
