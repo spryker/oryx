@@ -169,6 +169,10 @@ export class LitRouter extends Routes {
   };
 
   private _onPopState = (_e: PopStateEvent) => {
+    if (this.routeLeaveInProgress) {
+      this.routeLeaveInProgress = false;
+      return;
+    }
     this.goto(window.location.pathname);
   };
 }

@@ -1,12 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { ROUTE_GUARDED_EVENT } from '@spryker-oryx/router/lit';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n } from '@spryker-oryx/utilities';
+import { i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
-import { take, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
+import { PickingHeaderService } from '../../services';
 import { DiscardPickingComponent } from '../discard-modal';
 import { styles } from './picking-header.styles';
 
@@ -14,17 +14,21 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   static styles = styles;
 
   protected routerService = resolve(RouterService);
+  protected pickingHeaderService = resolve(PickingHeaderService);
 
   @query('oryx-discard-picking')
   protected discardModal?: DiscardPickingComponent;
 
   @state() isCartNoteVisible?: boolean;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-
-    window.addEventListener(ROUTE_GUARDED_EVENT, () => this.openDiscardModal());
-  }
+  @subscribe()
+  protected showDialog$ = this.pickingHeaderService
+    .showDialog()
+    .pipe(
+      tap((showDialog) =>
+        showDialog ? this.openDiscardModal() : this.closeDiscardModal()
+      )
+    );
 
   protected renderCartNoteButton(): TemplateResult {
     return html`${this.pickingList?.cartNote
@@ -53,7 +57,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           aria-label=${i18n('oryx.picking.back-to-pick-lists')}
           class="back"
           href="#"
-          @click=${this.openDiscardModal}
+          @click=${this.routerService.back}
         >
           <oryx-icon type=${IconTypes.Back}></oryx-icon>
         </button>
@@ -70,7 +74,10 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
         }}
       ></oryx-site-navigation-item>
       <oryx-discard-picking
-        @oryx.close=${this.closeDiscardModal}
+        @oryx.close=${() => {
+          this.pickingHeaderService.cancel();
+          this.closeDiscardModal();
+        }}
         @oryx.back=${this.back}
       ></oryx-discard-picking>`;
   }
@@ -84,15 +91,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   }
 
   protected back(): void {
-    this.pickingListService
-      .finishPicking(this.pickingList)
-      .pipe(
-        take(1),
-        tap(() => {
-          this.routerService.back();
-        })
-      )
-      .subscribe();
+    this.pickingHeaderService.discard();
   }
 }
 

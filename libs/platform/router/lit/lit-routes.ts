@@ -7,7 +7,7 @@
 /// <reference types="urlpattern-polyfill" />
 
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
-import { lastValueFrom, Observable, of } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 
 export interface BaseRouteConfig {
   name?: string | undefined;
@@ -110,6 +110,8 @@ export class Routes implements ReactiveController {
 
   private _parentRoutes: Routes | undefined;
 
+  protected routeLeaveInProgress = false;
+
   /*
    * State related to the current matching route.
    *
@@ -174,6 +176,7 @@ export class Routes implements ReactiveController {
     // fragments. It currently only handles path names because it's easier to
     // completely disregard the origin for now. The click handler only does
     // an in-page navigation if the origin matches anyway.
+
     let tailGroup: string | undefined;
 
     if (this.routes.length === 0 && this.fallback === undefined) {
@@ -198,13 +201,15 @@ export class Routes implements ReactiveController {
         typeof this._currentRoute?.leave === 'function' &&
         this._currentRoute !== route
       ) {
+        history.go(1);
         const success = await lastValueFrom(this._currentRoute.leave(params));
         // If leave() returns false, cancel this navigation
         if (success === false) {
-          history.go(1);
           window.dispatchEvent(new CustomEvent(ROUTE_GUARDED_EVENT, {}));
           return;
         }
+        this.routeLeaveInProgress = true;
+        history.back();
       }
 
       if (typeof route.enter === 'function') {
@@ -231,13 +236,6 @@ export class Routes implements ReactiveController {
       }
     }
     this._host.requestUpdate();
-  }
-
-  handleRouteLeave(): Observable<boolean> {
-    if (this._currentRoute && typeof this._currentRoute.leave === 'function') {
-      return this._currentRoute.leave(this._currentParams);
-    }
-    return of(false);
   }
 
   /**

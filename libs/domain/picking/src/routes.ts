@@ -1,8 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouteConfig } from '@spryker-oryx/router/lit';
 import { html } from 'lit';
-import { map, Observable, take } from 'rxjs';
-import { PickingListService } from './services';
+import { Observable } from 'rxjs';
+import { PickingHeaderService } from './services';
 
 export const defaultPickingRoutes: RouteConfig[] = [
   {
@@ -13,14 +13,8 @@ export const defaultPickingRoutes: RouteConfig[] = [
     path: '/picking-list/picking/:id',
     render: ({ id }) =>
       html`<oryx-picking .pickingListId="${id}" mode-light></oryx-picking>`,
-    leave: (): Observable<boolean> => {
-      return resolve(PickingListService)
-        .allowDiscardPicking()
-        .pipe(
-          take(1),
-          map((allowDiscardPicking) => !!allowDiscardPicking)
-        );
-    },
+    leave: (): Observable<boolean> =>
+      resolve(PickingHeaderService).guardWithDialog(),
   },
   {
     path: '/customer-note-info/:id',

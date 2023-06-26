@@ -1,5 +1,5 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { BACK_EVENT } from '@spryker-oryx/ui/modal';
+import { BACK_EVENT, CLOSE_EVENT } from '@spryker-oryx/ui/modal';
 import { i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -47,6 +47,10 @@ export class DiscardPickingComponent extends LitElement {
   }
 
   protected close(): void {
+    // route leave callback doesn't work properly without this.
+    this.dispatchEvent(
+      new CustomEvent(CLOSE_EVENT, { bubbles: true, composed: true })
+    );
     this.open = false;
   }
 
