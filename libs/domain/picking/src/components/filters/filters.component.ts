@@ -79,7 +79,6 @@ export class FiltersComponent extends LitElement {
         enableCloseButtonInHeader
         enableNavigateBack
         enableFooter
-        fullscreen
         @oryx.back=${this.onReset}
         @oryx.close=${this.onClose}
       >

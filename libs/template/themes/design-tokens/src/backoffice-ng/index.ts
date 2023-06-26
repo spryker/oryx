@@ -22,7 +22,7 @@ export const backofficeNgTokens: DesignToken[] = [
     ...layoutTokens,
     layout: {
       container: {
-        width: '390px',
+        width: '414px',
         bleed: '10px',
       },
     },
