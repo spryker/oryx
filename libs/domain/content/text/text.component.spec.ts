@@ -74,6 +74,23 @@ describe('ContentTextComponent', () => {
     });
   });
 
+  describe('when autoInstallFont option is false ', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-content-text
+          .options=${{ autoInstallFont: false }}
+          .content=${{
+            text: `<p style="font-family:'my-font'">content</p>`,
+          } as ContentTextContent}
+        ></oryx-content-text>`
+      );
+    });
+
+    it('should not install the font', () => {
+      expect(pageMetaService.add).not.toHaveBeenCalledOnce();
+    });
+  });
+
   describe('when content contains one font', () => {
     beforeEach(async () => {
       element = await fixture(
