@@ -117,8 +117,10 @@ export class CartAddComponent extends ProductMixin(
           button.confirmed = false;
         }, 800);
       },
-      error: () => {
+      error: (e) => {
         button.confirmed = false;
+        button.loading = false;
+        throw e;
       },
       complete: () => {
         button.loading = false;
