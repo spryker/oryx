@@ -31,16 +31,16 @@ describe('PickingComponent', () => {
   let routerService: MockRouterService;
 
   const getTabs = () =>
-    element.renderRoot.querySelectorAll('oryx-tab') as NodeListOf<TabComponent>;
+    element.renderRoot.querySelectorAll<TabComponent>('oryx-tab');
 
   const onTabs = (
     tabs: NodeListOf<TabComponent> | TabComponent[],
     cb: (content: HTMLElement | null) => void
   ) => {
     tabs.forEach((tab) => {
-      const tabContent = element.renderRoot.querySelector(
+      const tabContent = element.renderRoot.querySelector<HTMLElement>(
         `#${tab.getAttribute('for')}`
-      ) as HTMLElement | null;
+      );
       cb(tabContent);
     });
   };
@@ -102,13 +102,11 @@ describe('PickingComponent', () => {
 
   describe('when tab is selected', () => {
     it('should update chip appearance', () => {
-      const tab = element.renderRoot.querySelectorAll(
+      const tab = element.renderRoot.querySelectorAll<TabComponent>(
         'oryx-tab'
       )[1] as TabComponent;
       tab.click();
-      expect(
-        tab.querySelector('oryx-chip[appearance="success"]')
-      ).not.toBeNull();
+      expect(tab).toContainElement('oryx-chip[appearance="success"]');
     });
   });
 
@@ -123,9 +121,7 @@ describe('PickingComponent', () => {
 
     it('should not render product card', () => {
       onTabs(getTabs(), (tabContent) =>
-        expect(
-          tabContent?.querySelector('oryx-picking-product-card')
-        ).toBeFalsy()
+        expect(tabContent).not.toContainElement('oryx-picking-product-card')
       );
     });
 
@@ -139,9 +135,7 @@ describe('PickingComponent', () => {
 
     it('should show fallback image', () => {
       onTabs(getTabs(), (tabContent) =>
-        expect(
-          tabContent?.querySelector('oryx-image[resource="no-orders"]')
-        ).toBeTruthy()
+        expect(tabContent).toContainElement('oryx-image[resource="no-orders"]')
       );
     });
   });
@@ -179,20 +173,16 @@ describe('PickingComponent', () => {
     });
 
     it('should render success image on "Not Picked" and "NotFound" tabs', () => {
-      onTabs([getTabs()[0], getTabs()[2]], (tabContent) => {
-        expect(
-          tabContent?.querySelector(
-            'oryx-image[resource="picking-items-processed"]'
-          )
-        ).toBeTruthy();
-      });
+      onTabs([getTabs()[0], getTabs()[2]], (tabContent) =>
+        expect(tabContent).toContainElement(
+          'oryx-image[resource="picking-items-processed"]'
+        )
+      );
     });
 
     it('should render list of picked products on "Picked" tab', () => {
       onTabs([getTabs()[1]], (tabContent) => {
-        expect(
-          tabContent?.querySelector('oryx-picking-product-card')
-        ).toBeTruthy();
+        expect(tabContent).toContainElement('oryx-picking-product-card');
       });
     });
 
@@ -251,21 +241,17 @@ describe('PickingComponent', () => {
     });
 
     it('should render success image on "Not Picked" tab', () => {
-      onTabs([getTabs()[0]], (tabContent) => {
-        expect(
-          tabContent?.querySelector(
-            'oryx-image[resource="picking-items-processed"]'
-          )
-        ).toBeTruthy();
-      });
+      onTabs([getTabs()[0]], (tabContent) =>
+        expect(tabContent).toContainElement(
+          'oryx-image[resource="picking-items-processed"]'
+        )
+      );
     });
 
     it('should render list of picked products on "Picked" and "NotFound" tabs', () => {
-      onTabs([getTabs()[1], getTabs()[2]], (tabContent) => {
-        expect(
-          tabContent?.querySelector('oryx-picking-product-card')
-        ).toBeTruthy();
-      });
+      onTabs([getTabs()[1], getTabs()[2]], (tabContent) =>
+        expect(tabContent).toContainElement('oryx-picking-product-card')
+      );
     });
 
     it('should perform redirect after click', () => {

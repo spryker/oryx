@@ -247,7 +247,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   protected renderNoItemsFallback(): TemplateResult {
     if (
       !this.items?.length ||
-      this.items?.some((item) => item.status !== ItemsFilters.Picked)
+      this.items.some((item) => item.status !== ItemsFilters.Picked)
     ) {
       return html`
         <div class="fallback">

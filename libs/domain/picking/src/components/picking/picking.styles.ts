@@ -11,7 +11,7 @@ export const pickingComponentStyles = css`
 
   .list-container {
     min-height: calc(100vh - 166px);
-    padding: 25px 0 25px;
+    padding: 25px 0;
     display: grid;
     gap: 20px 0;
     grid-auto-rows: max-content;
