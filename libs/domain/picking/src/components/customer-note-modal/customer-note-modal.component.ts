@@ -19,7 +19,7 @@ export class CustomerNoteModalComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-modal ?open=${this.open} enableFooter footerButtonFullWidth>
+      <oryx-modal ?open=${this.open} enableFooter footerButtonFullWidth minimal>
         <oryx-heading slot="heading">
           <h2>${i18n('picking-lists.customer-note.customer-note')}</h2>
         </oryx-heading>
