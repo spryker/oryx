@@ -79,6 +79,7 @@ export class HttpTestService implements HttpService {
   clear(): void {
     this.responseSubject$.next(NO_RESPONSE);
     this.url = undefined;
+    this.urls = [];
   }
 
   delete<T = unknown>(
