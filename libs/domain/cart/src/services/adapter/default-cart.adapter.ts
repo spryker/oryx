@@ -117,7 +117,7 @@ export class DefaultCartAdapter implements CartAdapter {
   ): Observable<[AuthIdentity, string | undefined]> {
     if (!identity.isAuthenticated || cartId) return of([identity, cartId]);
 
-    // if we ara registered user and we do not have a cartId, we need to create a cart first
+    // if we are a registered user and we do not have a cartId, we need to create a cart first
     return combineLatest([this.store.get(), this.currency.get()]).pipe(
       take(1),
       switchMap(([store, currency]) =>
