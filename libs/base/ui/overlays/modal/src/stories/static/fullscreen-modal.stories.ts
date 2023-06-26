@@ -8,10 +8,9 @@ import { storybookPrefix } from '../../../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Overlays/Modal/Static`,
-  decorators: [OverlaysDecorator()],
+  decorators: [OverlaysDecorator(414, 896)],
   parameters: {
     chromatic: {
-      delay: 1000,
       viewports: [storybookDefaultViewports.mobile.min],
     },
     viewport: { defaultViewport: 'mobile2' },
