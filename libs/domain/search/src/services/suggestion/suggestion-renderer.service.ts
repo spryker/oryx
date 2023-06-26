@@ -37,6 +37,7 @@ export interface LinksSection {
   title?: DirectiveResult;
   options: SuggestionResource[];
   type: SemanticLinkType;
+  id?: string;
 }
 
 export interface SuggestionRendererService {

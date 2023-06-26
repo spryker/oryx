@@ -79,12 +79,12 @@ export class DefaultSuggestionRendererService
         <h5>${title}</h5>
         <ul>
           ${options.map(
-            ({ name, url, params }) => html`
+            ({ name, url, idCategory, params }) => html`
               <li>
                 <oryx-content-link
                   .options=${{
                     type,
-                    id: url ?? '',
+                    id: url ?? idCategory ?? '',
                     params: params ?? null,
                     text: name,
                   }}

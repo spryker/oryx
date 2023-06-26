@@ -63,7 +63,7 @@ export class DefaultSuggestionRenderer implements SuggestionRenderer {
         options:
           suggestion.categories?.map(({ name, idCategory }) => ({
             name,
-            url: idCategory,
+            idCategory,
           })) ?? [],
         type: SemanticLinkType.Category,
       },
@@ -83,15 +83,11 @@ export class DefaultSuggestionRenderer implements SuggestionRenderer {
       <h5>${title}</h5>
       <ul>
         ${options.map(
-          ({ name, url, params }) => html`
+          ({ name, url, idCategory, params }) => html`
             <li>
               <oryx-content-link
-                .options=${{
-                  type,
-                  id: url ?? '',
-                  params: params ?? null,
-                  text: name,
-                }}
+                .options=${{ url, type, id: idCategory, params }}
+                .content=${{ text: name }}
                 close-popover
               ></oryx-content-link>
             </li>
