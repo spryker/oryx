@@ -14,20 +14,20 @@ import { siteCurrencySelectorStyles } from './currency-selector.styles';
 export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
   static styles = [siteCurrencySelectorStyles];
 
-  protected currencyService = resolve(CurrencyService);
+  protected $currencyService = resolve(CurrencyService);
 
-  protected currencies = signal(this.currencyService.getAll(), {
+  protected $currencies = signal(this.$currencyService.getAll(), {
     initialValue: [],
   });
-  protected current = signal(this.currencyService.get());
-  protected currentLocale = signal(resolve(LocaleService).get(), {
+  protected $current = signal(this.$currencyService.get());
+  protected $currentLocale = signal(resolve(LocaleService).get(), {
     initialValue: 'en',
   });
 
   protected override render(): TemplateResult | void {
-    const currencies = this.currencies();
+    const currencies = this.$currencies();
 
-    if (!this.current() || !currencies?.length || currencies.length < 2) {
+    if (!this.$current() || !currencies?.length || currencies.length < 2) {
       return;
     }
 
@@ -35,18 +35,18 @@ export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
       <oryx-dropdown vertical-align position="start">
         <oryx-button type=${ButtonType.Text} slot="trigger">
           <button>
-            ${this.current()}
+            ${this.$current()}
             <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
           </button>
         </oryx-button>
         ${repeat(
-          this.currencies(),
+          this.$currencies(),
           (currency) => currency.code,
           (currency) =>
             html` <oryx-option
               close-popover
               value=${currency.code}
-              ?active=${currency.code === this.current()}
+              ?active=${currency.code === this.$current()}
               @click=${() => this.onClick(currency.code)}
             >
               ${this.getLabel(currency.code)}
@@ -57,11 +57,11 @@ export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
   }
 
   protected onClick(locale: string): void {
-    this.currencyService.set(locale);
+    this.$currencyService.set(locale);
   }
 
   protected getLabel(code: string): string {
-    const currencyNames = new Intl.DisplayNames([this.currentLocale()], {
+    const currencyNames = new Intl.DisplayNames([this.$currentLocale()], {
       type: 'currency',
     });
     return currencyNames.of(code) ?? code;

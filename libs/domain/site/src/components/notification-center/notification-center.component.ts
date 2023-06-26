@@ -7,7 +7,6 @@ import {
 import { elementEffect, hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { map } from 'rxjs';
 import { NotificationService } from '../../services';
 import { SiteNotificationCenterOptions } from './notification-center.model';
 
@@ -23,21 +22,22 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
   protected siteNotificationService = resolve(NotificationService);
   protected centerRef = createRef<NotificationCenterComponent>();
 
-  protected notification = signal(
+  protected $notification = signal(
     this.siteNotificationService.get(),
     { equal: () => false }
   );
 
   @elementEffect()
   protected notification$ = async (): Promise<void> => {
-    const notification = this.notification();
+    const notification = this.$notification();
 
     if (!notification || Object.keys(notification).length === 0) return;
     if (!(this.centerRef.value && 'open' in this.centerRef.value)) {
       await customElements.whenDefined('oryx-notification-center');
     }
-    if (this.componentOptions.autoCloseTime) {
-      notification.autoCloseTime ??= this.componentOptions.autoCloseTime * 1000;
+    const autoCloseTime = this.$options().autoCloseTime;
+    if (autoCloseTime) {
+      notification.autoCloseTime ??= autoCloseTime * 1000;
     }
 
     this.centerRef.value?.open(notification);

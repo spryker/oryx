@@ -33,17 +33,17 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   protected tokenResolver = resolve(TokenResolver);
   protected semanticLinkService = resolve(SemanticLinkService);
 
-  protected label = computed(() => {
+  protected $label = computed(() => {
     const label = this.$options().label;
     return label ? this.tokenResolver.resolveToken(label) : null;
   });
 
-  protected badge = computed(() => {
+  protected $badge = computed(() => {
     const badge = this.$options().badge;
     return badge ? this.tokenResolver.resolveToken(badge) : null;
   });
 
-  protected url = computed(() => {
+  protected $url = computed(() => {
     const url = this.$options().url;
     return typeof url !== 'object' ? url : this.semanticLinkService.get(url);
   });
@@ -108,8 +108,8 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         @mouseenter=${this.onTriggerHover}
       >
         ${when(
-          this.url(),
-          () => html`<a href=${this.url()!}>${this.icon}</a>`,
+          this.$url(),
+          () => html`<a href=${this.$url()!}>${this.icon}</a>`,
           () => html`<button>${this.icon}</button>`
         )}
       </oryx-icon-button>
@@ -124,9 +124,9 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         @mouseenter=${this.onTriggerHover}
       >
         ${when(
-          this.url(),
-          () => html`<a href=${this.url()!}> ${this.icon} ${this.label()} </a>`,
-          () => html`<button>${this.icon} ${this.label()}</button>`
+          this.$url(),
+          () => html`<a href=${this.$url()!}> ${this.icon} ${this.$label()} </a>`,
+          () => html`<button>${this.icon} ${this.$label()}</button>`
         )}
       </oryx-button>
     `;
@@ -136,10 +136,10 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     return html`
       <oryx-site-navigation-button
         slot="trigger"
-        .url=${this.url()}
+        .url=${this.$url()}
         .icon=${this.$options()?.icon}
-        .text=${this.label()}
-        .badge=${this.badge()}
+        .text=${this.$label()}
+        .badge=${this.$badge()}
         @click=${this.onTriggerClick}
         @mouseenter=${this.onTriggerHover}
       ></oryx-site-navigation-button>

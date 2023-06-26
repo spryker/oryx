@@ -15,13 +15,13 @@ export class SiteLocaleSelectorComponent extends ContentMixin(LitElement) {
 
   protected localeService = resolve(LocaleService);
 
-  protected locales = signal(this.localeService.getAll(), { initialValue: [] });
-  protected current = signal(this.localeService.get());
+  protected $locales = signal(this.localeService.getAll(), { initialValue: [] });
+  protected $current = signal(this.localeService.get());
 
   protected override render(): TemplateResult | void {
-    const locales = this.locales();
+    const locales = this.$locales();
 
-    if (!this.current() || !locales?.length || locales.length < 2) {
+    if (!this.$current() || !locales?.length || locales.length < 2) {
       return;
     }
 
@@ -29,18 +29,18 @@ export class SiteLocaleSelectorComponent extends ContentMixin(LitElement) {
       <oryx-dropdown vertical-align position="start">
         <oryx-button type=${ButtonType.Text} slot="trigger">
           <button>
-            ${this.current()}
+            ${this.$current()}
             <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
           </button>
         </oryx-button>
         ${repeat(
-          this.locales(),
+          this.$locales(),
           (locale) => locale.code,
           (locale) =>
             html` <oryx-option
               close-popover
               value=${locale.code}
-              ?active=${locale.code === this.current()}
+              ?active=${locale.code === this.$current()}
               @click=${() => this.onClick(locale.code)}
             >
               ${this.getLabel(locale.code)}

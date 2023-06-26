@@ -20,11 +20,11 @@ export class PriceComponent extends ContentMixin<PriceComponentAttributes>(
   @signalProperty() value?: number;
   @signalProperty() currency?: string;
 
-  protected price = computed(() =>
+  protected $price = computed(() =>
     this.pricingService.format(this.value, this.currency)
   );
 
   protected override render(): TemplateResult | void {
-    return html`${this.price()}`;
+    return html`${this.$price()}`;
   }
 }
