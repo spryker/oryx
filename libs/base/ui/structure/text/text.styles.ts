@@ -32,6 +32,7 @@ export const textStyles = css`
 
   .subtitle {
     ${headingUtil(HeadingTag.Subtitle)}
+
     text-transform: uppercase;
   }
 
