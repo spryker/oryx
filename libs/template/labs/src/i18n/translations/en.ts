@@ -39,6 +39,8 @@ const user = {
 const picking = {
   'picking.product-card.of-<count>-items':
     'Of {count, plural, one {{count} item} other {{count} items}}',
+  'picking.filter.<count>-open-pick-lists':
+    '{count} Open Pick {count, plural, one {List} other {Lists}}',
 };
 
 export default {
