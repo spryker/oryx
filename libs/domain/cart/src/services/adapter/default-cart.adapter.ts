@@ -37,6 +37,7 @@ export class DefaultCartAdapter implements CartAdapter {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
+        console.log('identity', identity);
         const url = this.generateUrl(
           identity.isAuthenticated
             ? `${ApiCartModel.UrlParts.Customers}/${identity.userId}/${ApiCartModel.UrlParts.Carts}`
@@ -57,6 +58,7 @@ export class DefaultCartAdapter implements CartAdapter {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
+        console.log('identity single cart', identity);
         const url = this.generateUrl(
           `${
             identity.isAuthenticated
@@ -126,7 +128,7 @@ export class DefaultCartAdapter implements CartAdapter {
             type: 'carts',
             attributes: {
               name: 'My Cart',
-
+              // TODO: Should be dynamic, when we will start to support GROSS/NET modes
               priceMode: 'GROSS_MODE',
               currency: currency,
               store: store?.id,
