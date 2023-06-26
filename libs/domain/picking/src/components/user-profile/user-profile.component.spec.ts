@@ -49,6 +49,10 @@ describe('UserProfileComponent', () => {
     return element.renderRoot.querySelectorAll('button')[1];
   };
 
+  const getDisabledButton = () => {
+    return element.renderRoot.querySelector('button[disabled]');
+  };
+
   beforeAll(async () => {
     await useComponent(userProfileComponent);
   });
@@ -129,15 +133,15 @@ describe('UserProfileComponent', () => {
     });
 
     it('should disable log out button', () => {
-      expect(
-        element.renderRoot.querySelector('button[disabled]')
-      ).not.toBeNull();
+      const button = getDisabledButton();
+      expect(button).not.toBeNull();
+      expect(button?.textContent).toContain('Log Out');
     });
   });
 
   describe('when sync is not pending and picking is not in progress', () => {
     it('should not disable log out button', () => {
-      expect(element.renderRoot.querySelector('button[disabled]')).toBeNull();
+      expect(getDisabledButton()).toBeNull();
     });
 
     describe('and when log out button is clicked', () => {
@@ -211,9 +215,9 @@ describe('UserProfileComponent', () => {
     });
 
     it('should disable log out button', () => {
-      expect(
-        element.renderRoot.querySelector('button[disabled]')
-      ).not.toBeNull();
+      const button = getDisabledButton();
+      expect(button).not.toBeNull();
+      expect(button?.textContent).toContain('Log Out');
     });
   });
 });
