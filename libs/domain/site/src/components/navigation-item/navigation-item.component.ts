@@ -169,7 +169,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         enableCloseButtonInHeader
         enableCloseByEscape
         enableCloseByBackdrop
-        heading=${this.componentOptions.label}
+        .heading=${this.$options().label}
       >
         ${this.renderComposition()}
       </oryx-modal>
