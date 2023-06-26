@@ -6,7 +6,7 @@ export class LoginFragment {
   getEmailInput = () => this.getWrapper().find('[name="email"]');
   getPasswordInput = () => this.getWrapper().find('[name="password"]');
   getRememberMeCheckbox = () => this.getWrapper().find('[name="rememberme"]');
-  getLoginButton = () => this.getWrapper().contains('button', 'Login');
+  getLoginButton = () => this.getWrapper().contains('button', 'Log in');
   getBEValidationError = () => this.getWrapper().find('oryx-notification');
 
   login = (user: TestCustomerData) => {
