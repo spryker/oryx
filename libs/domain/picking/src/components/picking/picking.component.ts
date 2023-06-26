@@ -192,11 +192,13 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   protected renderTabs(tabs: PickingTab[]): TemplateResult {
     return html`
       ${repeat(
-        tabs, (tab, index) => html`
+        tabs,
+        (tab, index) => html`
           <oryx-tab for="tab-${tab.id}" ${ref(this.tabRefs[index])}>
             ${i18n(`picking.${tab.title}`)}
             <oryx-chip dense ${ref(this.chipRefs[index])}
-            >${tab.items?.length ?? '0'}</oryx-chip>
+              >${tab.items?.length ?? '0'}</oryx-chip
+            >
           </oryx-tab>
         `
       )}
