@@ -44,15 +44,11 @@ export function i18n<T extends string | readonly string[]>(
 
   if ('text' in result) {
     if (result.hasHtml && typeof result.text === 'string') {
-      return asUnsafeHtml(result.text);
+      return html`${unsafeHTML(result.text)}`;
     } else {
       return result.text;
     }
   }
 
   return result;
-}
-
-function asUnsafeHtml(text: string) {
-  return html`${unsafeHTML(text)}`;
 }
