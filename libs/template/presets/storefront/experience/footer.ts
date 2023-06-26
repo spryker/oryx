@@ -6,9 +6,10 @@ const banner = (graphic: string) => ({
   content: { data: { graphic } },
 });
 
-const link = (text: string, id = '/', icon?: string) => ({
+const link = (text: string, url = '/', icon?: string) => ({
   type: 'oryx-content-link',
-  options: { data: { id, text, icon } },
+  options: { data: { url, icon } },
+  content: { data: { text } },
 });
 
 const selfServiceLinks = {

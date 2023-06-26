@@ -37,13 +37,19 @@ const variations = [
     state: '',
     lightDomState: '',
   },
+  {
+    name: 'multi-line',
+    state: '',
+    lightDomState: '',
+  },
 ];
 
 const Template: Story = (): TemplateResult => {
   return html`
     ${variations.map((variant) => {
       const isDisabled = variant.name === 'disabled';
-      const isLongText = variant.name === 'truncated';
+      const isLongText =
+        variant.name === 'truncated' || variant.name === 'multi-line';
       const text = isLongText
         ? {
             link: 'www.link-example.com/some-long-text-here-some-long-text-here-some-long-text-here',
@@ -63,6 +69,7 @@ const Template: Story = (): TemplateResult => {
           <div class="col ${variant.state}">
             <oryx-link
               ?disabled=${isDisabled}
+              ?singleLine=${variant.name === 'truncated'}
               linkType="link"
               @click=${(e: Event): void => e.preventDefault()}
               class="${isLongText ? 'truncated' : ''}"
@@ -71,7 +78,12 @@ const Template: Story = (): TemplateResult => {
             </oryx-link>
           </div>
           <div class="col ${variant.state}">
-            <oryx-link linkType="external" icon="link" ?disabled=${isDisabled}>
+            <oryx-link
+              linkType="external"
+              icon="link"
+              ?disabled=${isDisabled}
+              ?singleLine=${variant.name === 'truncated'}
+            >
               <a
                 href="/"
                 class="${variant.lightDomState} ${isLongText

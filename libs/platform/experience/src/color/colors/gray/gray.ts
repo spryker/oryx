@@ -2,7 +2,7 @@ import { Color } from '../../color.model';
 
 export const gray: Color = {
   light: {
-    0: 'hsl(0, 0%, 100.0%)',
+    0: 'white',
     1: 'hsl(0, 0%, 99.0%)',
     2: 'hsl(0, 0%, 97.3%)',
     3: 'hsl(0, 0%, 95.1%)',
@@ -17,7 +17,7 @@ export const gray: Color = {
     12: 'hsl(0, 0%, 9.0%)',
   },
   dark: {
-    0: 'hsl(0, 0%, 0%)',
+    0: 'black',
     1: 'hsl(0, 0%, 8.5%)',
     2: 'hsl(0, 0%, 11.0%)',
     3: 'hsl(0, 0%, 13.6%)',
