@@ -127,9 +127,9 @@ describe('PickingComponent', () => {
 
     it('should show fallback text', () => {
       onTabs(getTabs(), (tabContent) =>
-        expect(
-          tabContent?.querySelector('.fallback h2')?.textContent
-        ).toContain(i18n('picking.no-items'))
+        expect(tabContent?.querySelector('section h2')?.textContent).toContain(
+          i18n('picking.no-items')
+        )
       );
     });
 
@@ -162,12 +162,12 @@ describe('PickingComponent', () => {
 
     it('should render success message on "Not Picked" and "NotFound" tabs', () => {
       onTabs([getTabs()[0], getTabs()[2]], (tabContent) => {
-        expect(
-          tabContent?.querySelector('.fallback h1')?.textContent
-        ).toContain(i18n('picking.great-job'));
+        expect(tabContent?.querySelector('section h1')?.textContent).toContain(
+          i18n('picking.great-job')
+        );
 
         expect(
-          tabContent?.querySelector('.fallback span')?.textContent
+          tabContent?.querySelector('section span')?.textContent
         ).toContain(i18n('picking.all-items-are-processed'));
       });
     });
@@ -230,12 +230,12 @@ describe('PickingComponent', () => {
 
     it('should render success message on "Not Picked" tab', () => {
       onTabs([getTabs()[0]], (tabContent) => {
-        expect(
-          tabContent?.querySelector('.fallback h1')?.textContent
-        ).toContain(i18n('picking.great-job'));
+        expect(tabContent?.querySelector('section h1')?.textContent).toContain(
+          i18n('picking.great-job')
+        );
 
         expect(
-          tabContent?.querySelector('.fallback span')?.textContent
+          tabContent?.querySelector('section span')?.textContent
         ).toContain(i18n('picking.all-items-are-processed'));
       });
     });

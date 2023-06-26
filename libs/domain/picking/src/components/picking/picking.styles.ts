@@ -18,7 +18,7 @@ export const pickingComponentStyles = css`
     background-color: var(--oryx-color-neutral-3);
   }
 
-  .fallback {
+  section {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,11 +26,11 @@ export const pickingComponentStyles = css`
     height: calc(100vh - 166px);
   }
 
-  .fallback oryx-heading h1 {
+  section oryx-heading h1 {
     margin: 30px 0 8px;
   }
 
-  .fallback oryx-heading h2 {
+  section oryx-heading h2 {
     margin-block-end: 10px;
   }
 
