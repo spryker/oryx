@@ -67,7 +67,10 @@ export class CollapsibleTextComponent
 
     if (this.toggle === CollapsibleTextToggle.Icon) {
       return html`<oryx-icon-button .size=${Size.Sm}>
-        <button aria-label=${i18n(i18nLabel)} @click="${this.onClick}">
+        <button
+          aria-label=${i18n(`collapsible.${i18nLabel}`)}
+          @click=${this.onClick}
+        >
           <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
         </button>
       </oryx-icon-button>`;
@@ -75,7 +78,7 @@ export class CollapsibleTextComponent
 
     if (this.toggle === CollapsibleTextToggle.Text) {
       return html`<oryx-button .type=${ButtonType.Text} .size=${Size.Sm}>
-        <button @click="${this.onClick}">${i18n(i18nLabel)}</button>
+        <button @click=${this.onClick}>${i18n(i18nLabel)}</button>
       </oryx-button>`;
     }
   }
