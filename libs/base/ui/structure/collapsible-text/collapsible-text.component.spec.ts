@@ -54,7 +54,7 @@ describe('CollapsibleTextComponent', () => {
       });
 
       it('should not have a toggle button', () => {
-        expect(element).not.toContainElement('oryx-icon-button button');
+        expect(element).not.toContainElement('button');
       });
     });
 
@@ -82,8 +82,7 @@ describe('CollapsibleTextComponent', () => {
         });
 
         it('should have Read less aria label', () => {
-          const button = element.renderRoot.querySelector('button');
-          expect(button?.getAttribute('aria-label')).toBe('Read less');
+          expect(element).toContainElement('button[aria-label="Read less"]');
         });
       });
     });
@@ -98,10 +97,9 @@ describe('CollapsibleTextComponent', () => {
       });
 
       it('should have a text button', () => {
-        const button = element.renderRoot.querySelector(
-          'oryx-button'
-        ) as ButtonComponent;
-        expect(button.type).toBe(ButtonType.Text);
+        const button =
+          element.renderRoot.querySelector<ButtonComponent>('oryx-button');
+        expect(button?.type).toBe(ButtonType.Text);
       });
 
       it('should have Read more text', () => {
