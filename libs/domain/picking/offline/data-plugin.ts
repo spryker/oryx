@@ -20,7 +20,7 @@ export class OfflineDataPlugin implements AppPlugin {
   protected subscription?: Subscription;
 
   getName(): string {
-    return 'oryx$pickingOfflineData';
+    return 'oryx.pickingOfflineData';
   }
 
   apply(app: App): void | Promise<void> {
