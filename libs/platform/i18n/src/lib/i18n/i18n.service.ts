@@ -1,5 +1,6 @@
 import { I18nContext, InferI18nContext } from '@spryker-oryx/utilities';
 import { Observable } from 'rxjs';
+import { I18nString } from '../models';
 
 export interface I18nService {
   translate<
@@ -8,7 +9,7 @@ export interface I18nService {
   >(
     token: T,
     context?: Ctx | Observable<Ctx>
-  ): Observable<string>;
+  ): Observable<I18nString>;
 }
 
 export const I18nService = 'oryx.I18nService' as const;

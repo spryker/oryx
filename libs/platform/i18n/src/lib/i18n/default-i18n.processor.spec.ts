@@ -8,6 +8,7 @@ import {
   Subject,
 } from 'rxjs';
 import { LocaleService } from '../locale';
+import { I18nString } from '../models';
 import { DefaultI18nProcessor } from './default-i18n.processor';
 import { GlobalizeService } from './globalize.service';
 import { I18nLoader } from './i18n.loader';
@@ -37,7 +38,8 @@ describe('DefaultI18nProcessor', () => {
   }
 
   class MockI18nInjectable implements Pick<DefaultI18nInjectable, 'translate'> {
-    translate = vi.fn();
+    translate = vi.fn().mockReturnValue('mock-translation');
+    hasHtml = vi.fn().mockReturnValue(false);
     asReal(): DefaultI18nInjectable {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return this as any;
@@ -111,7 +113,7 @@ describe('DefaultI18nProcessor', () => {
 
     it('should resolve token from globalize', async () => {
       const { createI18nProcessor, globalizeService, localeService } = setup();
-      const ctx = { ctx: true };
+      const ctx = { ctx: true } as any;
       localeService.get.mockReturnValue(of('mock-locale-id'));
       globalizeService.formatMessage.mockResolvedValue('mock-resolved-text');
 
@@ -159,27 +161,36 @@ describe('DefaultI18nProcessor', () => {
       sub.unsubscribe();
     });
 
-    it('should fallback to i18nInjectable if globalize returns undefined', async () => {
+    it('should return string with html if context has filters with html', async () => {
       const {
         createI18nProcessor,
         globalizeService,
         localeService,
         i18nInjectable,
       } = setup();
-      const ctx = { ctx: true };
+      const ctx = { ctx: true } as any;
       localeService.get.mockReturnValue(of('mock-locale-id'));
-      globalizeService.formatMessage.mockResolvedValue(undefined);
-      i18nInjectable.translate.mockReturnValue('fallback-text');
+      globalizeService.formatMessage.mockResolvedValue('mock-resolved-text');
+      i18nInjectable.hasHtml.mockReturnValue(true);
+      const expectedResult = new String('mock-resolved-text') as I18nString;
+      expectedResult.hasHtml = true;
 
       const res$ = createI18nProcessor().interpolate('token', of(ctx));
+      const res = await firstValueFrom(res$);
 
-      await expect(firstValueFrom(res$)).resolves.toBe('fallback-text');
-      expect(i18nInjectable.translate).toHaveBeenCalledWith('token', ctx);
+      expect(res).toEqual(expectedResult);
+      expect(res.hasHtml).toBe(expectedResult.hasHtml);
+      expect(globalizeService.formatMessage).toHaveBeenCalledWith(
+        'mock-locale-id',
+        'token',
+        ctx
+      );
+      expect(i18nInjectable.hasHtml).toHaveBeenCalledWith('token', ctx);
     });
 
     it('should try to resolve multiple tokens in order from globalize', async () => {
       const { createI18nProcessor, globalizeService, localeService } = setup();
-      const ctx = { ctx: true };
+      const ctx = { ctx: true } as any;
       localeService.get.mockReturnValue(of('mock-locale-id'));
       globalizeService.formatMessage.mockImplementation((_, token) =>
         Promise.resolve(token === 'token2' ? 'mock-resolved-text2' : undefined)
@@ -210,7 +221,7 @@ describe('DefaultI18nProcessor', () => {
 
     it('should try to resolve parts of token separated by dot from globalize', async () => {
       const { createI18nProcessor, globalizeService, localeService } = setup();
-      const ctx = { ctx: true };
+      const ctx = { ctx: true } as any;
       localeService.get.mockReturnValue(of('mock-locale-id'));
       globalizeService.formatMessage.mockImplementation((_, token) =>
         Promise.resolve(
@@ -239,6 +250,73 @@ describe('DefaultI18nProcessor', () => {
         'part3',
         ctx
       );
+    });
+
+    describe('when globalize returns undefined', () => {
+      it('should fallback to i18nInjectable.translate()', async () => {
+        const {
+          createI18nProcessor,
+          globalizeService,
+          localeService,
+          i18nInjectable,
+        } = setup();
+        const ctx = { ctx: true } as any;
+        localeService.get.mockReturnValue(of('mock-locale-id'));
+        globalizeService.formatMessage.mockResolvedValue(undefined);
+        i18nInjectable.translate.mockReturnValue('fallback-text');
+
+        const res$ = createI18nProcessor().interpolate('token', of(ctx));
+
+        await expect(firstValueFrom(res$)).resolves.toBe('fallback-text');
+        expect(i18nInjectable.translate).toHaveBeenCalledWith('token', ctx);
+      });
+
+      it('should convert `I18nTranslationResult` with HTML to `I18nString`', async () => {
+        const {
+          createI18nProcessor,
+          globalizeService,
+          localeService,
+          i18nInjectable,
+        } = setup();
+        const ctx = { ctx: true } as any;
+        localeService.get.mockReturnValue(of('mock-locale-id'));
+        globalizeService.formatMessage.mockResolvedValue(undefined);
+        i18nInjectable.translate.mockReturnValue({
+          text: 'fallback-text',
+          hasHtml: true,
+        });
+        const expectedResult = new String('fallback-text') as I18nString;
+        expectedResult.hasHtml = true;
+
+        const res$ = createI18nProcessor().interpolate('token', of(ctx));
+        const res = await firstValueFrom(res$);
+
+        expect(res).toEqual(expectedResult);
+        expect(res.hasHtml).toBe(expectedResult.hasHtml);
+        expect(i18nInjectable.translate).toHaveBeenCalledWith('token', ctx);
+      });
+
+      it('should convert `I18nTranslationResult` without HTML to string', async () => {
+        const {
+          createI18nProcessor,
+          globalizeService,
+          localeService,
+          i18nInjectable,
+        } = setup();
+        const ctx = { ctx: true } as any;
+        localeService.get.mockReturnValue(of('mock-locale-id'));
+        globalizeService.formatMessage.mockResolvedValue(undefined);
+        i18nInjectable.translate.mockReturnValue({
+          text: 'fallback-text',
+          hasHtml: false,
+        });
+
+        const res$ = createI18nProcessor().interpolate('token', of(ctx));
+        const res = await firstValueFrom(res$);
+
+        expect(res).toBe('fallback-text');
+        expect(i18nInjectable.translate).toHaveBeenCalledWith('token', ctx);
+      });
     });
   });
 });
