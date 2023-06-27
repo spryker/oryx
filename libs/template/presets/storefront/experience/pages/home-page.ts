@@ -31,7 +31,7 @@ export const homePage: StaticComponent = {
       options: {
         data: {
           rules: [
-            { layout: 'carousel', padding: '30px 0 0' },
+            { layout: 'carousel', padding: '30px 0 5px', align: 'stretch' },
             { query: { breakpoint: 'sm' }, padding: '20px' },
           ],
           category: '10',
@@ -61,7 +61,11 @@ export const homePage: StaticComponent = {
               padding: '0px 40px',
               justify: 'center',
             },
-            { query: { childs: true, hover: true }, fill: 'initial' },
+            {
+              query: { childs: true, hover: true },
+              fill: 'initial',
+              scale: 1.1,
+            },
           ],
         },
       },

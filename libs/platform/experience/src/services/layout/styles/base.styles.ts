@@ -13,4 +13,9 @@ export const styles = css`
     margin-inline: auto;
     width: min(100%, calc(var(--_container-width)));
   }
+
+  *,
+  ::slotted(*) {
+    transition: all var(--oryx-transition-time);
+  }
 `;
