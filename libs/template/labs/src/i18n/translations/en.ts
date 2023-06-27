@@ -36,10 +36,16 @@ const user = {
     'Removing this address will not remove any pending orders being dispatched to this address',
 };
 
+const picking = {
+  'picking.product-card.of-<count>-items':
+    'Of {count, plural, one {{count} item} other {{count} items}}',
+};
+
 export default {
   ...product,
   ...cart,
   ...checkout,
   ...order,
   ...user,
+  ...picking,
 };

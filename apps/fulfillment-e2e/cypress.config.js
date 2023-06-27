@@ -12,7 +12,7 @@ module.exports = defineConfig({
   chromeWebSecurity: false,
   includeShadowDom: true,
   pageLoadTimeout: 180000,
-  viewportWidth: 390,
+  viewportWidth: 414,
   viewportHeight: 844,
   e2e: {
     // We've imported your old cypress plugins here.
