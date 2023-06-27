@@ -1,5 +1,4 @@
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
-import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const searchBoxStyles = css`
@@ -29,6 +28,7 @@ export const searchBoxStyles = css`
 
   h5 {
     ${headingUtil(HeadingTag.Subtitle)}
+
     text-transform: uppercase;
     display: flex;
     align-items: center;
@@ -53,8 +53,3 @@ export const searchBoxStyles = css`
     align-self: center;
   }
 `;
-
-const smallScreen = css``;
-export const screenStyles = screenCss({
-  sm: smallScreen,
-});
