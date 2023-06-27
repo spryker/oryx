@@ -1,6 +1,7 @@
 import { ArticleContext, ContentService } from '@spryker-oryx/content';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
+import { ContentMixin } from '@spryker-oryx/experience';
 import {
   computed,
   hydratable,
@@ -9,11 +10,14 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { of } from 'rxjs';
+import { ContentArticleOptions } from './article.model';
 
-// Temporary implementation
+// Temporary implementation ContentFields
 @signalAware()
 @hydratable()
-export class ArticleComponent extends LitElement {
+export class ArticleComponent extends ContentMixin<ContentArticleOptions>(
+  LitElement
+) {
   protected contentService = resolve(ContentService);
   protected contextController = new ContextController(this);
 
@@ -21,8 +25,11 @@ export class ArticleComponent extends LitElement {
     this.contextController.get<string>(ArticleContext.Id)
   );
   protected $article = computed(() => {
-    const id = this.$articleContext();
-    return id ? this.contentService.get({ article: id }) : of(null);
+    const article = this.$articleContext();
+
+    return article
+      ? this.contentService.get({ article, entries: this.$options().entries })
+      : of(null);
   });
 
   protected override render(): TemplateResult {

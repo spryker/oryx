@@ -1,19 +1,7 @@
 import { inject } from '@spryker-oryx/di';
-import {
-  Suggestion,
-  SuggestionAdapter,
-  SuggestionQualifier,
-} from '@spryker-oryx/search';
-import { map, Observable } from 'rxjs';
-import { ContentfulClientService } from '../client';
-
-export const ContentfulSuggestionAdapter = 'oryx.ContentfulSuggestionAdapter';
-
-declare global {
-  interface InjectionTokensContractMap {
-    [ContentfulSuggestionAdapter]: SuggestionAdapter;
-  }
-}
+import { SuggestionAdapter, SuggestionQualifier } from '@spryker-oryx/search';
+import { map, Observable, of } from 'rxjs';
+import { ContentfulClientService, ContentfulResult } from '../client';
 
 export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
   constructor(protected contentful = inject(ContentfulClientService)) {}
@@ -22,17 +10,24 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
     return query ?? '';
   }
 
-  get({ query }: SuggestionQualifier): Observable<Suggestion> {
+  get<T = ContentfulResult>({
+    query,
+    entries,
+  }: SuggestionQualifier): Observable<T> {
+    if (!entries?.includes('contentful')) {
+      return of([]) as unknown as Observable<T>;
+    }
+
     return this.contentful
       .getEntries({
         query: this.getKey({ query }),
       })
       .pipe(
         map((entries) => ({
-          cmsPages: entries.items.map((entry) => ({
+          contentful: entries.items.map((entry) => ({
             name: entry.sys.contentType.sys.id,
           })),
         }))
-      );
+      ) as unknown as Observable<T>;
   }
 }

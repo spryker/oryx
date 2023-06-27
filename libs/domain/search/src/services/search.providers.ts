@@ -5,6 +5,7 @@ import { facetProviders } from '../renderers';
 import {
   DefaultSuggestionAdapter,
   SuggestionAdapter,
+  SuggestionField,
   suggestionNormalizer,
 } from './adapter';
 import { DefaultFacetListService } from './default-facet-list.service';
@@ -17,11 +18,14 @@ import {
 import { ProductsExperienceDataRevealer } from './revealers';
 import { SortingService } from './sorting.service';
 import {
-  DefaultSuggestionRenderer,
+  defaultSuggestionRenderer,
   DefaultSuggestionRendererService,
+  DefaultSuggestionRevealer,
   DefaultSuggestionService,
+  productSuggestionRenderer,
   SuggestionRenderer,
   SuggestionRendererService,
+  SuggestionRevealer,
   SuggestionService,
 } from './suggestion';
 
@@ -58,7 +62,14 @@ export const searchProviders: Provider[] = [
   },
   {
     provide: SuggestionRenderer,
-    useClass: DefaultSuggestionRenderer,
+    useValue: {
+      default: defaultSuggestionRenderer,
+      [SuggestionField.Products]: productSuggestionRenderer,
+    },
+  },
+  {
+    provide: SuggestionRevealer,
+    useClass: DefaultSuggestionRevealer,
   },
 ];
 

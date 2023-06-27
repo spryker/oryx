@@ -2,7 +2,7 @@ import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   ContentfulClientService,
-  ContentfulResult,
+  ContentfulResponse,
   ContentfulSearch,
   ContentfulSpace,
   ContentfulToken,
@@ -15,7 +15,7 @@ export class DefaultContentfulClientService implements ContentfulClientService {
     protected http = inject(HttpService)
   ) {}
 
-  getEntries(search: ContentfulSearch): ContentfulResult {
+  getEntries(search: ContentfulSearch): ContentfulResponse {
     const params = Object.entries(search).reduce((acc, [key, value]) => {
       const param = `${key}=${value}`;
       if (!acc.length) {

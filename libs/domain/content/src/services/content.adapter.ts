@@ -6,7 +6,7 @@ export interface ContentAdapter {
   get(qualifier: ContentQualifier): Observable<Content>;
 }
 
-export const ContentAdapter = 'oryx.ContentAdapter';
+export const ContentAdapter = 'oryx.ContentAdapter*';
 
 declare global {
   interface InjectionTokensContractMap {

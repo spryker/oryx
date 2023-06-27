@@ -1,9 +1,3 @@
-import {
-  ChainModifiers,
-  EntryCollection,
-  EntrySkeletonType,
-  LocaleCode,
-} from 'contentful';
 import { Observable } from 'rxjs';
 
 export const ContentfulToken = 'oryx.ContentfulSpace';
@@ -21,12 +15,19 @@ export interface ContentfulSearch {
   query?: string;
 }
 
-export type ContentfulResult = Observable<
-  EntryCollection<EntrySkeletonType, ChainModifiers, LocaleCode>
->;
+export type ContentfulResponse = Observable<{
+  items: {
+    sys: {
+      contentType: { sys: { id: string } };
+    };
+    fields: Record<string, string>;
+  }[];
+}>;
+
+export type ContentfulResult = { contentful: Record<'name', string>[] };
 
 export interface ContentfulClientService {
-  getEntries(search: ContentfulSearch): ContentfulResult;
+  getEntries(search: ContentfulSearch): ContentfulResponse;
 }
 
 export const ContentfulClientService = 'oryx.ContentfulClientService';

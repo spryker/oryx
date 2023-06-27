@@ -2,6 +2,10 @@ import { QueryState } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import { Content, ContentQualifier } from '../models';
 
+export enum ContentFields {
+  Article = 'article',
+}
+
 export interface ContentService {
   get(qualifier: ContentQualifier): Observable<Content | null | undefined>;
   getState(qualifier: ContentQualifier): Observable<QueryState<Content | null>>;

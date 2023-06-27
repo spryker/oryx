@@ -151,7 +151,6 @@
     "body-parser": "^1.20.2",
     "chai-a11y-axe": "^1.4.0",
     "cldr-data": "^36.0.1",
-    "contentful": "^10.3.0",
     "cors": "^2.8.5",
     "css-convert-json": "^1.1.0",
     "dexie": "^3.2.2",

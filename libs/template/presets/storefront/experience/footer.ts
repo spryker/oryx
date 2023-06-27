@@ -24,7 +24,7 @@ const legalLinks = {
   components: [
     link('©️ 2023 Spryker'),
     link('Imprint'),
-    link('Terms & conditions', '/article/terms'),
+    link('Terms & conditions', '/article/terms-and-conditions'),
     link('Privacy Notice', '/article/privacy'),
     link('Data preference'),
     link('Condition of use'),

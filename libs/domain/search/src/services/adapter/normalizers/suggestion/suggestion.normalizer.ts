@@ -7,15 +7,15 @@ import {
   Product,
 } from '@spryker-oryx/product';
 import { map, Observable } from 'rxjs';
-import { Suggestion } from '../../../../models';
+import { SuggestionResponse } from '../../../../models';
 import { DeserializedSuggestion } from './model';
 
 export const SuggestionNormalizer = 'oryx.SuggestionNormalizer*';
 
 export function suggestionAttributesNormalizer(
   data: DeserializedSuggestion[]
-): Partial<Suggestion> {
-  const { completion, categories, cmsPages, categoryCollection } = data[0];
+): Partial<SuggestionResponse> {
+  const { completion, categories, categoryCollection } = data[0];
 
   return {
     completion,
@@ -25,14 +25,13 @@ export function suggestionAttributesNormalizer(
         (collection) => category.name === collection.name
       )?.idCategory,
     })),
-    cmsPages,
   };
 }
 
 export function suggestionProductNormalizer(
   data: DeserializedSuggestion[],
   transformer: TransformerService
-): Observable<Partial<Suggestion>> {
+): Observable<Partial<SuggestionResponse>> {
   const abstractsKey = camelize(ApiProductModel.Includes.AbstractProducts);
   const { [abstractsKey]: products } = data[0];
 
@@ -54,6 +53,6 @@ export const suggestionNormalizer: Provider[] = [
 
 declare global {
   interface InjectionTokensContractMap {
-    [SuggestionNormalizer]: Transformer<Suggestion>[];
+    [SuggestionNormalizer]: Transformer<SuggestionResponse>[];
   }
 }

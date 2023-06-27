@@ -3,25 +3,43 @@ import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
 import { ProductsLoaded } from '@spryker-oryx/product';
 import { CurrencyChanged } from '@spryker-oryx/site';
-import { Observable } from 'rxjs';
-import { Suggestion, SuggestionQualifier } from '../../models';
+import { combineLatest, map, Observable } from 'rxjs';
+import {
+  Suggestion,
+  SuggestionQualifier,
+  SuggestionResponse,
+} from '../../models';
 import { SuggestionAdapter } from '../adapter';
 import { SuggestionService } from './suggestion.service';
 
 export class DefaultSuggestionService implements SuggestionService {
-  protected suggestionsQuery = createQuery<Suggestion, SuggestionQualifier>({
-    loader: (qualifier) => this.adapter.get(qualifier),
+  constructor(protected adapters = inject(SuggestionAdapter)) {}
+
+  protected suggestionsQuery = createQuery<
+    SuggestionResponse,
+    SuggestionQualifier
+  >({
+    loader: (qualifier) =>
+      combineLatest(
+        this.adapters.map((adapter) => adapter.get(qualifier))
+      ).pipe(
+        map((suggestions) =>
+          suggestions.reduce((acc, curr) => ({ ...acc, ...curr }), {})
+        )
+      ),
     onLoad: [ProductsLoaded],
     refreshOn: [LocaleChanged, CurrencyChanged],
   });
 
-  constructor(protected adapter = inject(SuggestionAdapter)) {}
-
-  get(qualifier: SuggestionQualifier): Observable<Suggestion | undefined> {
-    return this.suggestionsQuery.get(qualifier);
+  get<T = Suggestion>(
+    qualifier: SuggestionQualifier
+  ): Observable<T | undefined> {
+    return this.suggestionsQuery.get(qualifier) as Observable<T | undefined>;
   }
 
-  getState(qualifier: SuggestionQualifier): Observable<QueryState<Suggestion>> {
+  getState(
+    qualifier: SuggestionQualifier
+  ): Observable<QueryState<SuggestionResponse>> {
     return this.suggestionsQuery.getState(qualifier);
   }
 }

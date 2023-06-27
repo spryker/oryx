@@ -1,7 +1,11 @@
-import { ContentAdapter } from '@spryker-oryx/content';
-import { injectEnv } from '@spryker-oryx/core';
+import { ContentAdapter, ContentFields } from '@spryker-oryx/content';
+import { FeatureOptions, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { SuggestionRenderer } from '@spryker-oryx/search';
+import {
+  SuggestionAdapter,
+  SuggestionField,
+  SuggestionRevealer,
+} from '@spryker-oryx/search';
 import {
   ContentfulClientService,
   ContentfulSpace,
@@ -10,11 +14,8 @@ import {
 } from './client';
 import { ContentfulAdapter } from './contentful.adapter';
 import {
-  ContentfulSuggestionAdapter,
-  ContentfulSuggestionRenderer,
-  ContentfulSuggestionService,
+  ContentfulSuggestionRevealer,
   DefaultContentfulSuggestionAdapter,
-  DefaultContentfulSuggestionService,
 } from './suggestion';
 
 export const contentfulProviders: Provider[] = [
@@ -35,15 +36,22 @@ export const contentfulProviders: Provider[] = [
     useClass: ContentfulAdapter,
   },
   {
-    provide: ContentfulSuggestionAdapter,
+    provide: SuggestionAdapter,
     useClass: DefaultContentfulSuggestionAdapter,
   },
   {
-    provide: ContentfulSuggestionService,
-    useClass: DefaultContentfulSuggestionService,
+    provide: FeatureOptions,
+    useValue: {
+      'oryx-search-box': {
+        entries: [...Object.values(SuggestionField), 'contentful'],
+      },
+      'oryx-content-article': {
+        entries: [...Object.values(ContentFields), 'contentful'],
+      },
+    },
   },
   {
-    provide: SuggestionRenderer,
-    useClass: ContentfulSuggestionRenderer,
+    provide: SuggestionRevealer,
+    useClass: ContentfulSuggestionRevealer,
   },
 ];

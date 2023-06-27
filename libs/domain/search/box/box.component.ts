@@ -3,8 +3,9 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import {
-  LinksSection,
   Suggestion,
+  SuggestionField,
+  SuggestionLinks,
   SuggestionRendererService,
 } from '@spryker-oryx/search';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
@@ -39,6 +40,7 @@ import { baseStyles, searchBoxStyles } from './styles';
   productsCount: 5,
   categoriesCount: 5,
   cmsCount: 5,
+  entries: Object.values(SuggestionField),
 })
 @hydratable(['mouseover', 'focusin'])
 @signalAware()
@@ -65,9 +67,7 @@ export class SearchBoxComponent
       query && (!options.minChars || query.length >= options.minChars);
 
     return withSuggestion
-      ? this.suggestionRendererService.getSuggestions<
-          LinksSection[] | Suggestion
-        >(query, options)
+      ? this.suggestionRendererService.getSuggestions(query, options)
       : of(null);
   });
   protected $suggestion = computed(() => {
@@ -214,9 +214,8 @@ export class SearchBoxComponent
   }
 
   protected isNothingFound(
-    suggestion: Suggestion | null | undefined | LinksSection[]
+    suggestion: Suggestion | null | undefined | SuggestionLinks[]
   ): boolean {
-    console.log(suggestion);
     if (Array.isArray(suggestion)) {
       return !suggestion.length;
     }
