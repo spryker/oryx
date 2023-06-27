@@ -6,6 +6,7 @@ export const searchBoxStyles = css`
   :host {
     --oryx-popover-maxheight: 526px;
     --oryx-icon-size: 16px;
+    --oryx-popover-vertical-offset: 10px;
   }
 
   [slot='option'] {

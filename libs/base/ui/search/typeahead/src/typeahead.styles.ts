@@ -10,8 +10,6 @@ export const baseStyles = [
   ...searchboxBaseStyles,
   css`
     :host {
-      --oryx-popover-vertical-offset: 20px;
-
       position: relative;
       display: flex;
     }
@@ -21,7 +19,7 @@ export const baseStyles = [
     }
 
     oryx-popover {
-      margin: calc((var(--oryx-popover-vertical-offset) / 2) - 2px) 0;
+      margin: calc((var(--oryx-popover-vertical-offset, 20px) / 2) - 2px) 0;
       overflow: auto;
       max-height: min(
         calc(

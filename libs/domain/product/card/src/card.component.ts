@@ -1,4 +1,3 @@
-import { CartAddOptions } from '@spryker-oryx/cart/add';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
@@ -180,7 +179,7 @@ export class ProductCardComponent extends ProductMixin(
         outlined: true,
         hideQuantityInput: true,
         enableLabel: template === 'grid',
-      } as CartAddOptions}"
+      }}"
     ></oryx-cart-add>`;
   }
 }
