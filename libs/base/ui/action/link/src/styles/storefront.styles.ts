@@ -28,7 +28,7 @@ export const storefrontLinkStyles = css`
 
   :host(:hover) ::slotted(a) {
     text-decoration: solid underline currentColor 1px;
-    text-underline-offset: 4px;
+    text-underline-offset: 2px;
   }
 
   ::slotted(*:focus-visible) {
