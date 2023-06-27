@@ -1,6 +1,7 @@
 export const resource = `
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg viewBox="0 0 500 235">
+<style>g {transition: all var(--oryx-transition-time)}</style>
 <g
   transform="translate(-398.57143,-700.482)"
   style="fill: var(--oryx-fill, #e60012)"
