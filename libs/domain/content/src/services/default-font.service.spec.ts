@@ -71,4 +71,62 @@ describe('DefaultFontService', () => {
       expect(pageMetaService.add).toHaveBeenCalledOnce();
     });
   });
+
+  describe('style combinations', () => {
+    const fontParam = {
+      attrs: {
+        href: 'https://fonts.googleapis.com/css2?family=my-font:wght@400;500;600;700&display=swap',
+        rel: 'stylesheet',
+      },
+      name: 'link',
+    };
+
+    describe('when the font is provided by font-family', () => {
+      beforeEach(() => {
+        service.install(
+          `<p style="color:red; font-family:'my-font'">content</p>`
+        );
+      });
+
+      it('should install the font', () => {
+        expect(pageMetaService.add).toHaveBeenCalledWith(fontParam);
+      });
+    });
+
+    describe('when the font is provided by font shortcut', () => {
+      beforeEach(() => {
+        service.install(
+          `<p style="color:red; font: italic 1.2em "my-font", serif;">content</p>`
+        );
+      });
+
+      it('should install the font', () => {
+        expect(pageMetaService.add).toHaveBeenCalledWith(fontParam);
+      });
+    });
+
+    describe('when the font is provided with single quotes', () => {
+      beforeEach(() => {
+        service.install(
+          `<p style="color:red; font: italic 1.2em 'my-font', serif;">content</p>`
+        );
+      });
+
+      it('should install the font', () => {
+        expect(pageMetaService.add).toHaveBeenCalledWith(fontParam);
+      });
+    });
+
+    describe('when the font is provided with surrounding spaces', () => {
+      beforeEach(() => {
+        service.install(
+          `<p style="color:red; font : italic 1.2em "my-font", serif;">content</p>`
+        );
+      });
+
+      it('should install the font', () => {
+        expect(pageMetaService.add).toHaveBeenCalledWith(fontParam);
+      });
+    });
+  });
 });

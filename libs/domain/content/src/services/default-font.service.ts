@@ -19,11 +19,11 @@ export class DefaultFontService implements FontService {
 
   protected collectFonts(text: string): string[] {
     const fontsSet = new Set<string>();
-    const regex = /font-family:'(.*?)'/g;
+    const regex = /font(-family)?\s*:\s*[^'"]*['|"](.*?)['|"]/g;
 
     let match;
     while ((match = regex.exec(text)) !== null) {
-      fontsSet.add(match[1]);
+      fontsSet.add(match[2]);
     }
 
     const fonts = Array.from(fontsSet);
