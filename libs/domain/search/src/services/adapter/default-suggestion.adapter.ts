@@ -27,7 +27,11 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
     if (
       !entries ||
       entries.some((entry) =>
-        Object.values<string>(SuggestionField).includes(entry)
+        [
+          SuggestionField.Categories,
+          SuggestionField.Completion,
+          SuggestionField.Products,
+        ].includes(entry)
       )
     ) {
       const include = [
