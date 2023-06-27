@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { SuggestionQualifier, SuggestionResponse } from '../../models';
 
-export enum SuggestionField {
+export const enum SuggestionField {
   Completion = 'completion',
   Categories = 'categories',
   Products = 'products',

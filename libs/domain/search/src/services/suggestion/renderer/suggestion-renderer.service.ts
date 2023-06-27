@@ -31,6 +31,9 @@ export interface SuggestionRendererOptions {
    */
   cmsCount?: number;
 
+  /**
+   * List of entries which should be shown
+   */
   entries?: SuggestionEntries;
 }
 

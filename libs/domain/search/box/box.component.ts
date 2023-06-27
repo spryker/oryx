@@ -5,7 +5,6 @@ import { RouterService } from '@spryker-oryx/router';
 import {
   Suggestion,
   SuggestionField,
-  SuggestionLinks,
   SuggestionRendererService,
 } from '@spryker-oryx/search';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
@@ -40,7 +39,11 @@ import { baseStyles, searchBoxStyles } from './styles';
   productsCount: 5,
   categoriesCount: 5,
   cmsCount: 5,
-  entries: Object.values(SuggestionField),
+  entries: [
+    SuggestionField.Completion,
+    SuggestionField.Categories,
+    SuggestionField.Products,
+  ],
 })
 @hydratable(['mouseover', 'focusin'])
 @signalAware()
@@ -213,13 +216,7 @@ export class SearchBoxComponent
     this.onClose();
   }
 
-  protected isNothingFound(
-    suggestion: Suggestion | null | undefined | SuggestionLinks[]
-  ): boolean {
-    if (Array.isArray(suggestion)) {
-      return !suggestion.length;
-    }
-
+  protected isNothingFound(suggestion: Suggestion | null | undefined): boolean {
     return Object.values(suggestion ?? {}).every(
       (_suggestion) => !_suggestion?.length
     );

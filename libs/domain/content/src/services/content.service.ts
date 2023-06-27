@@ -2,7 +2,7 @@ import { QueryState } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import { Content, ContentQualifier } from '../models';
 
-export enum ContentFields {
+export const enum ContentFields {
   Article = 'article',
 }
 

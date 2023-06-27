@@ -43,10 +43,15 @@ export const contentfulProviders: Provider[] = [
     provide: FeatureOptions,
     useValue: {
       'oryx-search-box': {
-        entries: [...Object.values(SuggestionField), 'contentful'],
+        entries: [
+          SuggestionField.Completion,
+          SuggestionField.Categories,
+          SuggestionField.Products,
+          'contentful',
+        ],
       },
       'oryx-content-article': {
-        entries: [...Object.values(ContentFields), 'contentful'],
+        entries: [ContentFields.Article, 'contentful'],
       },
     },
   },
