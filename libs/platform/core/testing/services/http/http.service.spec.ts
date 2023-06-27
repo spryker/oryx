@@ -80,6 +80,9 @@ describe('HttpTestService', () => {
 
     expect(service.url).toBe(undefined);
     service.request(mockUrl).subscribe(callback);
-    expect(callback).toHaveBeenCalledWith(undefined);
+    expect(callback).not.toHaveBeenCalled();
+
+    service.flush('test');
+    expect(callback).toHaveBeenCalledWith('test');
   });
 });
