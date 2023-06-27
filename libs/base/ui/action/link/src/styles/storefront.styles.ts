@@ -1,12 +1,15 @@
 import { css } from 'lit';
 
 export const storefrontLinkStyles = css`
+  :host {
+    position: relative;
+  }
+
   :host([icon]) {
     --oryx-icon-size: 16px;
 
     display: inline-flex;
     align-items: baseline;
-    position: relative;
     gap: 8px;
   }
 
