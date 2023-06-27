@@ -20,7 +20,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin(LitElement) {
 
   protected override render(): TemplateResult | void {
     const locales = this.locales();
-    console.log(locales);
+
     if (!this.current() || !locales?.length || locales.length < 2) {
       return;
     }
