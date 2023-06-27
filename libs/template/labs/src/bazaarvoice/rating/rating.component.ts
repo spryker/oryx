@@ -1,8 +1,7 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { hydratable, subscribe } from '@spryker-oryx/utilities';
+import { elementEffect, hydratable } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { tap } from 'rxjs';
 import { loadBvScript } from '../script';
 import { bzRatingStyles } from '../styles';
 import { BazaarvoiceRatingOptions } from './rating.model';
@@ -12,22 +11,20 @@ export class BazaarvoiceRatingComponent extends ProductMixin(
 ) {
   static styles = [bzRatingStyles];
 
-  @subscribe()
-  protected product$ = this.productController.getProduct().pipe(
-    tap((product) => {
-      if (product) {
-        loadBvScript().then((bv) => {
-          const summaryRefId = `${this.uid}-average-rating`;
-          this.createContainer(summaryRefId);
-
-          bv.ui('rr', 'show_reviews', {
-            productId: product?.sku,
-            summaryContainerDiv: summaryRefId,
-          });
+  @elementEffect()
+  protected loadScript = (): void => {
+    const productId = this.$product()?.sku;
+    if (productId) {
+      loadBvScript().then((bv) => {
+        const summaryRefId = `${this.uid}-average-rating`;
+        this.createContainer(summaryRefId);
+        bv.ui('rr', 'show_reviews', {
+          productId,
+          summaryContainerDiv: summaryRefId,
         });
-      }
-    })
-  );
+      });
+    }
+  };
 
   protected createContainer(id: string): void {
     if (!document.getElementById(id)) {

@@ -8,6 +8,7 @@ import {
   DefaultProductAdapter,
   DefaultProductListAdapter,
   DefaultProductMediaNormalizer,
+  DefaultProductRelationsListAdapter,
   facetCategoryNormalizer,
   FacetCategoryNormalizer,
   FacetNormalizer,
@@ -23,6 +24,7 @@ import {
   productListNormalizer,
   ProductMediaSetNormalizer,
   productNormalizer,
+  ProductRelationsListAdapter,
 } from './adapter';
 import {
   productLabelNormalizer,
@@ -32,9 +34,11 @@ import {
   paginationNormalizer,
   PaginationNormalizer,
 } from './adapter/normalizers/pagination';
+import { relationsListNormalizer } from './adapter/normalizers/relations-list';
 import { sortNormalizer, SortNormalizer } from './adapter/normalizers/sort';
 import { DefaultProductListPageService } from './default-product-list-page.service';
 import { DefaultProductListService } from './default-product-list.service';
+import { DefaultProductRelationsListService } from './default-product-relations-list.service';
 import { DefaultProductService } from './default-product.service';
 import { DefaultProductImageService } from './images';
 import { ProductImageService } from './images/product-image.service';
@@ -45,6 +49,7 @@ import {
 import { ProductContextFallback } from './product-context';
 import { ProductListPageService } from './product-list-page.service';
 import { ProductListService } from './product-list.service';
+import { ProductRelationsListService } from './product-relations-list.service';
 import { ProductService } from './product.service';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
@@ -67,6 +72,14 @@ export const productProviders: Provider[] = [
   {
     provide: ProductListService,
     useClass: DefaultProductListService,
+  },
+  {
+    provide: ProductRelationsListService,
+    useClass: DefaultProductRelationsListService,
+  },
+  {
+    provide: ProductRelationsListAdapter,
+    useClass: DefaultProductRelationsListAdapter,
   },
   {
     provide: ProductListPageService,
@@ -126,6 +139,7 @@ export const productProviders: Provider[] = [
   },
   ...productNormalizer,
   ...productListNormalizer,
+  ...relationsListNormalizer,
   ...productQueries,
   ...productEffects,
   ProductContextFallback,

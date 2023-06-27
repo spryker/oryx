@@ -52,9 +52,9 @@ export class UserAddressFormComponent
   @signalProperty() country?: string;
 
   protected $countries = signal(this.countryService.getAll());
-  protected $currentAddress = signal(this.addressService.getCurrentAddress());
+  protected $currentAddress = signal(this.addressService.getCurrent());
   protected $user = signal(this.userService.getUser());
-  protected $addresses = signal(this.addressService.getAddresses());
+  protected $addresses = signal(this.addressService.getList());
   protected $currentCountry = computed(() => {
     if (this.country) return this.country;
     return this.$currentAddress()?.iso2Code ?? this.$countries()?.[0].iso2Code;

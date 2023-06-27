@@ -1,29 +1,26 @@
+import { Icons } from '@spryker-oryx/ui/icon';
+import { Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { Icons } from '../../../graphical/icon';
-import { LinkComponentAttributes, LinkType } from './link.model';
-import { linkStyles } from './link.styles';
+import { ColorType, LinkComponentAttributes, LinkType } from './link.model';
 
 export class LinkComponent
   extends LitElement
   implements LinkComponentAttributes
 {
-  static styles = linkStyles;
-
+  @property({ reflect: true }) color?: ColorType = ColorType.Neutral;
   @property({ reflect: true, attribute: 'link-type' }) linkType?: LinkType;
-  @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ reflect: true }) icon?: Icons | string;
-  @property({ reflect: true }) multiLine?: boolean;
+  @property({ type: Boolean, reflect: true }) disabled?: boolean;
+  @property({ type: Boolean, reflect: true }) singleLine?: boolean;
 
   protected render(): TemplateResult {
     return html`
-      <slot name="icon">
-        ${when(
-          this.icon,
-          () => html`<oryx-icon .type=${this.icon}></oryx-icon>`
-        )}
-      </slot>
+      ${when(
+        this.icon,
+        () => html`<oryx-icon .type=${this.icon} .size=${Size.Md}></oryx-icon>`
+      )}
       <slot></slot>
     `;
   }

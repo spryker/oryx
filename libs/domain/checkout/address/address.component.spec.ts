@@ -10,7 +10,7 @@ import {
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BehaviorSubject, of } from 'rxjs';
-import { CheckoutState } from '../src/models';
+import { CheckoutStatus } from '../src/models';
 import {
   CheckoutDataService,
   CheckoutService,
@@ -21,13 +21,13 @@ import { checkoutAddressComponent } from './address.def';
 import { CheckoutAddressOptions } from './address.model';
 
 class MockAddressService implements Partial<AddressService> {
-  getAddresses = vi.fn();
+  getList = vi.fn();
 }
 class MockCheckoutStateService implements Partial<CheckoutStateService> {
   get = vi.fn();
 }
 class MockCheckoutService implements Partial<CheckoutService> {
-  getProcessState = vi.fn().mockReturnValue(of(CheckoutState.Ready));
+  getStatus = vi.fn().mockReturnValue(of(CheckoutStatus.Ready));
 }
 class MockCheckoutDataService implements Partial<CheckoutDataService> {}
 const mockState = new BehaviorSubject({
@@ -122,7 +122,7 @@ describe('CheckoutAddressComponent', () => {
 
   describe('when there is no address list', () => {
     beforeEach(async () => {
-      addressService.getAddresses.mockReturnValue(of([]));
+      addressService.getList.mockReturnValue(of([]));
       element = await fixture(
         html`<oryx-checkout-address></oryx-checkout-address>`
       );
@@ -154,7 +154,7 @@ describe('CheckoutAddressComponent', () => {
 
     describe('when there is an address list', () => {
       beforeEach(async () => {
-        addressService.getAddresses.mockReturnValue(of([{}]));
+        addressService.getList.mockReturnValue(of([{}]));
       });
 
       describe('and the enableList option is false', () => {

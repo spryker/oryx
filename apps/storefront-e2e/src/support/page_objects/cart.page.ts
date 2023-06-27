@@ -29,12 +29,15 @@ export class CartPage extends AbstractSFPage {
   getCartEntriesHeading = () =>
     this.getCartEntriesWrapper().find('oryx-heading');
   getCartTotals = () => this.cartTotals;
-  getCheckoutBtn = () => cy.contains('oryx-content-link', 'Checkout').find('a');
+  getCheckoutBtn = () => cy.contains('oryx-button', 'Checkout').find('a');
   getDeleteModal = () => this.getCartEntriesWrapper().find('oryx-modal');
   getSubmitDeleteBtn = () =>
     this.getDeleteModal().find('oryx-button[slot="footer-more"]');
 
   checkout = () => {
+    // fixes possible test flakiness caused by hydration delay
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
     this.getCheckoutBtn().click({ force: true });
   };
 }

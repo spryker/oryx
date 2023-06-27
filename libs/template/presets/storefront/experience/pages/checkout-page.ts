@@ -26,13 +26,13 @@ export const checkoutPage: StaticComponent = {
         {
           type: 'oryx-checkout-orchestrator',
           components: [
-            { type: 'oryx-checkout-customer' },
+            { type: 'oryx-checkout-account' },
             { type: 'oryx-checkout-shipping-address' },
             { type: 'oryx-checkout-billing-address' },
-            { type: 'oryx-checkout-shipment' },
-            { type: 'oryx-checkout-payment' },
+            { type: 'oryx-checkout-shipping-method' },
+            { type: 'oryx-checkout-payment-method' },
           ],
-          options: { data: { rules: [{ layout: 'list' }] } },
+          options: { data: { rules: [{ layout: 'list', gap: '30px' }] } },
         },
         {
           type: 'oryx-cart-entries',

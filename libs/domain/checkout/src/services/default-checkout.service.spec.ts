@@ -3,10 +3,11 @@ import {
   CheckoutDataService,
   CheckoutResponse,
   CheckoutService,
-  CheckoutState,
   CheckoutStateService,
+  CheckoutStatus,
   DefaultCheckoutService,
 } from '@spryker-oryx/checkout';
+import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
 import { SemanticLinkService } from '@spryker-oryx/site';
@@ -60,6 +61,7 @@ describe('DefaultCheckoutService', () => {
         { provide: OrderService, useClass: MockOrderService },
         { provide: CheckoutDataService, useClass: MockCheckoutDataService },
         { provide: CheckoutStateService, useClass: MockCheckoutStateService },
+        { provide: QueryService, useClass: DefaultQueryService },
       ],
     });
 
@@ -83,69 +85,55 @@ describe('DefaultCheckoutService', () => {
   });
 
   describe('when the cart is empty', () => {
-    let result: CheckoutState;
+    let result: CheckoutStatus;
 
     beforeEach(async () => {
       mockCart.next(null);
       checkoutService
-        .getProcessState()
+        .getStatus()
         .pipe(take(1))
         .subscribe((state) => (result = state));
     });
 
     it('should return an empty state', () => {
-      expect(result).toBe(CheckoutState.Empty);
-    });
-
-    it('should invalidate the cart Id on state service', () => {
-      expect(checkoutStateService.set).toHaveBeenCalledWith('cartId', {
-        valid: false,
-        value: null,
-      });
+      expect(result).toBe(CheckoutStatus.Empty);
     });
   });
 
   describe('when a cart id is available', () => {
-    let result: CheckoutState;
+    let result: CheckoutStatus;
 
     beforeEach(async () => {
       mockCart.next({ id: 'foo' } as Cart);
       checkoutService
-        .getProcessState()
+        .getStatus()
         .pipe(take(1))
         .subscribe((state) => (result = state));
     });
 
-    it('should return an empty state', () => {
-      expect(result).toBe(CheckoutState.Ready);
-    });
-
-    it('should invalidate the cart Id on state service', () => {
-      expect(checkoutStateService.set).toHaveBeenCalledWith('cartId', {
-        valid: true,
-        value: 'foo',
-      });
+    it('should return an read state', () => {
+      expect(result).toBe(CheckoutStatus.Ready);
     });
   });
 
   describe('when placeOrder is called', () => {
     describe('and no valid state is provided', () => {
-      const result: CheckoutState[] = [];
+      const result: CheckoutStatus[] = [];
 
       beforeEach(() => {
         checkoutStateService.getAll.mockReturnValue(of(null));
         checkoutService
-          .getProcessState()
+          .getStatus()
           .pipe(take(3))
           .subscribe((state) => result.push(state));
         checkoutService.placeOrder();
       });
 
-      it('should change the state to invalid', () => {
+      it('should change the state to Ready', () => {
         expect(result).toEqual([
-          CheckoutState.Ready,
-          CheckoutState.Busy,
-          CheckoutState.Invalid,
+          CheckoutStatus.Ready,
+          CheckoutStatus.Busy,
+          CheckoutStatus.Ready,
         ]);
       });
 
@@ -155,7 +143,7 @@ describe('DefaultCheckoutService', () => {
     });
 
     describe('and a valid state object is returned', () => {
-      const result: CheckoutState[] = [];
+      const result: CheckoutStatus[] = [];
       const state = { foo: 'bar' };
 
       beforeEach(() => {
@@ -164,7 +152,7 @@ describe('DefaultCheckoutService', () => {
           of({ orders: [{}] } as CheckoutResponse)
         );
         checkoutService
-          .getProcessState()
+          .getStatus()
           .pipe(take(3))
           .subscribe((state) => result.push(state));
         checkoutService.placeOrder();
@@ -172,22 +160,21 @@ describe('DefaultCheckoutService', () => {
 
       it('should change the state to Ready', () => {
         expect(result).toEqual([
-          CheckoutState.Ready,
-          CheckoutState.Busy,
-          CheckoutState.Ready,
+          CheckoutStatus.Ready,
+          CheckoutStatus.Busy,
+          CheckoutStatus.Ready,
         ]);
       });
 
       it('should call the adapter to place the order', () => {
-        expect(adapter.placeOrder).toHaveBeenCalledWith({ attributes: state });
+        expect(adapter.placeOrder).toHaveBeenCalledWith({
+          ...state,
+          cartId: 'foo',
+        });
       });
 
       it('should clear the state', () => {
         expect(checkoutStateService.clear).toBeCalled();
-      });
-
-      it('should reload the cart', () => {
-        expect(cartService.reload).toBeCalled();
       });
 
       it('should store the order', () => {

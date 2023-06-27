@@ -14,7 +14,7 @@ describe('SSR suite', () => {
   });
 
   it('must render Product details page', () => {
-    const productData = ProductStorage.getProductByEq(0);
+    const productData = ProductStorage.getProductByEq(1);
     const pdp = new ProductDetailsPage(productData);
 
     pdp.visit();
@@ -29,7 +29,7 @@ describe('SSR suite', () => {
 
     pdp.getImages().should('be.visible');
     pdp.getDescription().should('be.visible');
-    pdp.getAttributeTerms().should('have.length', 6);
+    pdp.getAttributeTerms().should('have.length', 7);
   });
 
   it('must render Contact us page', () => {

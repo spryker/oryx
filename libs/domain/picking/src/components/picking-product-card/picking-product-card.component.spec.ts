@@ -74,9 +74,7 @@ describe('PickingProductCardComponent', () => {
 
     describe('when the quantity is enabled', () => {
       it('should enable the button', () => {
-        expect(element.shadowRoot).not.toContainElement(
-          'oryx-button button[disabled]'
-        );
+        expect(element).not.toContainElement('oryx-button button[disabled]');
       });
 
       describe('and when an update is dispatched with an invalid quantity', () => {

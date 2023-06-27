@@ -13,6 +13,7 @@ export class PickingInProgressModalComponent extends LitElement {
       footerButtonFullWidth
       ?open=${this.open}
       @oryx.close=${this.close}
+      minimal
     >
       <oryx-heading slot="heading">
         ${i18n('picking.list.picking-in-progress')}

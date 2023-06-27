@@ -1,4 +1,5 @@
 import { TestProductData } from '../../types/product.type';
+import { ProductRelationsFragment } from '../page_fragments/product-relations.fragment';
 import { QuantityInputFragment } from '../page_fragments/quantity-input.fragment';
 import { AbstractSFPage } from './abstract.page';
 
@@ -62,6 +63,7 @@ export class ProductDetailsPage extends AbstractSFPage {
   getAttributeTerms = () =>
     this.getWrapper().find('oryx-product-attributes').find('dt');
 
+  getRelations = () => new ProductRelationsFragment();
   getAvailability = () => this.getWrapper().find('oryx-product-availability');
 
   addItemsToTheCart = (numberOfItems = 1) => {

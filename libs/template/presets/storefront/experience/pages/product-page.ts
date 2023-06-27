@@ -65,11 +65,9 @@ export const productPage: StaticComponent = {
     },
 
     {
-      type: 'oryx-product-list',
+      type: 'oryx-product-relations',
       options: {
         data: {
-          category: '10',
-          sort: 'rating',
           rules: [
             {
               layout: 'carousel',

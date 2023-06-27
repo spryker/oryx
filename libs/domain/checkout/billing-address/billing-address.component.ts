@@ -6,30 +6,33 @@ import {
   AddressEventDetail,
   AddressService,
 } from '@spryker-oryx/user';
-import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import {
+  elementEffect,
+  hydratable,
+  i18n,
+  signal,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { CheckoutAddressComponent } from '../address';
-import { checkoutBillingAddressStyles } from './billing-address.styles';
 
 @hydratable()
 export class CheckoutBillingAddressComponent
   extends CheckoutMixin(LitElement)
   implements isValid
 {
-  static styles = [checkoutBillingAddressStyles];
-
   protected addressService = resolve(AddressService);
 
-  protected $addresses = signal(this.addressService.getAddresses());
+  protected $addresses = signal(this.addressService.getList());
   protected $selected = signal(this.checkoutStateService.get('billingAddress'));
   protected $shippingAddress = signal(
     this.checkoutStateService.get('shippingAddress')
   );
   protected $isSameAsShippingAddress = signal(true);
 
-  protected autoSelect = effect(() => {
+  @elementEffect()
+  protected autoSelect = (): void => {
     const addresses = this.$addresses();
     if (!addresses?.length) return;
     const selected = this.$selected();
@@ -38,9 +41,10 @@ export class CheckoutBillingAddressComponent
       const defaultAddress = addresses.find((a) => a.isDefaultBilling);
       this.persist(defaultAddress ?? addresses[0], true);
     }
-  });
+  };
 
-  protected persistCopy = effect(() => {
+  @elementEffect()
+  protected persistCopy = (): void => {
     const deliveryAddress = this.$shippingAddress();
     if (
       deliveryAddress &&
@@ -52,17 +56,19 @@ export class CheckoutBillingAddressComponent
         value: deliveryAddress,
       });
     }
-  });
+  };
 
   @query('oryx-checkout-address')
   protected checkoutAddress?: CheckoutAddressComponent;
 
-  protected override render(): TemplateResult {
+  protected override render(): TemplateResult | void {
+    if (this.$addresses() === undefined) return;
     return html`${this.renderHeading()}${this.renderBody()}`;
   }
 
   protected renderHeading(): TemplateResult {
-    return html`<h3>${i18n('checkout.steps.billing-address')}</h3>
+    return html`<oryx-checkout-header>
+      <h3>${i18n('checkout.billing-address')}</h3>
       ${when(
         this.$addresses()?.length,
         () => html`<oryx-checkout-manage-address
@@ -78,7 +84,8 @@ export class CheckoutBillingAddressComponent
             )}
           </button></oryx-button
         >`
-      )} `;
+      )}
+    </oryx-checkout-header>`;
   }
 
   protected renderBody(): TemplateResult {

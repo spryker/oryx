@@ -1,107 +1,80 @@
 import { IdentityService } from '@spryker-oryx/auth';
-import { inject, OnDestroy } from '@spryker-oryx/di';
-import {
-  BehaviorSubject,
-  filter,
-  map,
-  merge,
-  Observable,
-  shareReplay,
-  skip,
-  Subject,
-  Subscription,
-  switchMap,
-  take,
-  tap,
-  using,
-} from 'rxjs';
+import { createCommand, createQuery } from '@spryker-oryx/core';
+import { inject } from '@spryker-oryx/di';
+import { map, Observable, skip } from 'rxjs';
 import { Address } from '../models';
 import { AddressAdapter } from './adapter';
 import { AddressService } from './address.service';
+import { AddressModificationSuccess } from './state';
 
-export class DefaultAddressService implements AddressService, OnDestroy {
-  protected addressesState$ = new BehaviorSubject<Address[] | null>(null);
-  protected reloadAddress$ = new Subject();
-  protected resetSubscription?: Subscription;
+export class DefaultAddressService implements AddressService {
+  protected addressesQuery$ = createQuery({
+    loader: () =>
+      this.adapter.getList().pipe(map((addresses) => addresses ?? [])),
+    resetOn: [this.identity.get().pipe(skip(1))],
+    refreshOn: [AddressModificationSuccess],
+  });
 
-  protected addressesLoading$ = merge(
-    this.reloadAddress$,
-    this.addressesState$.pipe(filter((addresses) => addresses === null))
-  ).pipe(
-    switchMap(() => this.adapter.getAll()),
-    tap((addresses) => {
-      this.addressesState$.next(addresses?.length ? addresses : []);
-      // reset address state, when user will log in or log out
-      this.initReset();
-    })
-  );
-
-  protected addresses$ = using(
-    () => this.addressesLoading$.subscribe(),
-    () => this.addressesState$
-  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
-
-  protected currentAddress$ = this.addresses$.pipe(
-    map(
-      (addresses) =>
-        addresses?.find(
-          (address) => address.isDefaultBilling || address.isDefaultShipping
-        ) ?? null
-    )
-  );
+  protected currentAddress$ = this.addressesQuery$
+    .get()
+    .pipe(
+      map(
+        (addresses) =>
+          addresses?.find(
+            (address) => address.isDefaultBilling || address.isDefaultShipping
+          ) ?? null
+      )
+    );
 
   constructor(
     protected adapter = inject(AddressAdapter),
     protected identity = inject(IdentityService)
   ) {}
 
-  getCurrentAddress(): Observable<Address | null> {
+  getCurrent(): Observable<Address | null> {
     return this.currentAddress$;
   }
 
-  getAddress(addressId: string): Observable<Address | null> {
-    return this.getAddresses().pipe(
+  get(addressId: string): Observable<Address | null> {
+    return this.getList().pipe(
       map((addresses) => addresses?.find(({ id }) => id === addressId) ?? null)
     );
   }
 
-  getAddresses(): Observable<Address[] | null> {
-    return this.addresses$;
+  getList(): Observable<Address[] | undefined> {
+    return this.addressesQuery$.get();
   }
 
-  addAddress(data: Address): Observable<unknown> {
-    return this.adapter
-      .add(data)
-      .pipe(tap(() => this.reloadAddress$.next(true)));
+  protected addAddressCommand$ = createCommand({
+    onSuccess: [AddressModificationSuccess],
+    action: (qualifier: Address) => {
+      return this.adapter.add(qualifier);
+    },
+  });
+
+  protected updateAddressCommand$ = createCommand({
+    onSuccess: [AddressModificationSuccess],
+    action: (qualifier: Address) => {
+      return this.adapter.update(qualifier);
+    },
+  });
+
+  protected deleteAddressCommand$ = createCommand({
+    onSuccess: [AddressModificationSuccess],
+    action: (qualifier: Address) => {
+      return this.adapter.delete(qualifier);
+    },
+  });
+
+  add(data: Address): Observable<unknown> {
+    return this.addAddressCommand$.execute(data);
   }
 
-  updateAddress(data: Address): Observable<unknown> {
-    return this.adapter
-      .update(data)
-      .pipe(tap(() => this.reloadAddress$.next(true)));
+  update(data: Address): Observable<unknown> {
+    return this.updateAddressCommand$.execute(data);
   }
 
-  deleteAddress(data: Address): Observable<unknown> {
-    return this.adapter
-      .delete(data)
-      .pipe(tap(() => this.reloadAddress$.next(true)));
-  }
-
-  protected initReset(): void {
-    this.resetSubscription = this.identity
-      .get()
-      .pipe(
-        skip(1),
-        take(1),
-        tap(() => {
-          this.addressesState$.next(null);
-          this.resetSubscription = undefined;
-        })
-      )
-      .subscribe();
-  }
-
-  onDestroy(): void {
-    this.resetSubscription?.unsubscribe();
+  delete(data: Address): Observable<unknown> {
+    return this.deleteAddressCommand$.execute(data);
   }
 }

@@ -1,3 +1,5 @@
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { I18nString } from '../models';
 import { I18nServiceInjectableAdapter } from './i18n-service-injectable.adapter';
 import { I18nService } from './i18n.service';
 
@@ -19,7 +21,7 @@ describe('I18nServiceInjectableAdapter', () => {
     it('should call `I18nService.translate()` with params', () => {
       const { adapter, i18nService } = setup();
 
-      adapter.translate('token', { ctx: true });
+      adapter.translate('token', { ctx: true } as any);
 
       expect(i18nService.translate).toHaveBeenCalledWith('token', {
         ctx: true,
@@ -29,12 +31,50 @@ describe('I18nServiceInjectableAdapter', () => {
     it('should call `asyncValue()` with result from `I18nService.translate()`', () => {
       const { adapter, i18nService, asyncDir } = setup();
       i18nService.translate.mockReturnValue('mock-translate');
-      asyncDir.mockReturnValue('mock-result');
+      asyncDir.mockImplementation((_, fn) => fn('mock-result'));
 
-      const res = adapter.translate('token', { ctx: true });
+      const res = adapter.translate('token', { ctx: true } as any);
 
       expect(res).toBe('mock-result');
-      expect(asyncDir).toHaveBeenCalledWith('mock-translate');
+      expect(asyncDir).toHaveBeenCalledWith(
+        'mock-translate',
+        expect.any(Function)
+      );
+    });
+
+    it('should return string from `I18nString`', () => {
+      const { adapter, i18nService, asyncDir } = setup();
+      const mockTranslate = new String('mock-translate') as I18nString;
+      i18nService.translate.mockReturnValue(mockTranslate);
+      asyncDir.mockImplementation((_, fn) => fn(mockTranslate));
+
+      const res = adapter.translate('token', { ctx: true } as any);
+
+      expect(res).toBe('mock-translate');
+      expect(asyncDir).toHaveBeenCalledWith(
+        mockTranslate,
+        expect.any(Function)
+      );
+    });
+
+    describe('when result string has HTML', () => {
+      it('should call `unsafeHTML()` with result', () => {
+        const { adapter, i18nService, asyncDir } = setup();
+        const mockTranslate = new String('mock-translate') as I18nString;
+        mockTranslate.hasHtml = true;
+        i18nService.translate.mockReturnValue(mockTranslate);
+        asyncDir.mockImplementation((_, fn) => fn(mockTranslate));
+
+        const res = adapter.translate('token', { ctx: true } as any);
+
+        expect(res).toEqual(
+          expect.objectContaining({ values: [unsafeHTML('mock-translate')] })
+        );
+        expect(asyncDir).toHaveBeenCalledWith(
+          mockTranslate,
+          expect.any(Function)
+        );
+      });
     });
   });
 });

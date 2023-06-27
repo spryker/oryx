@@ -1,5 +1,5 @@
 import { Theme } from '@spryker-oryx/experience';
-import { fulfillmentIcons } from '@spryker-oryx/resources';
+import { fulfillmentIcons, materialDesignIcons } from '@spryker-oryx/resources';
 import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
 
 export const fulfillmentTheme: Theme = {
@@ -10,6 +10,21 @@ export const fulfillmentTheme: Theme = {
       (s) => s.backofficeNgTokens
     ),
   icons: {
-    resource: fulfillmentIcons,
+    resource: materialDesignIcons,
+    resources: [
+      {
+        resource: fulfillmentIcons,
+        types: Object.keys(fulfillmentIcons.mapping ?? {}),
+      },
+      {
+        resource: {
+          id: 'material-icons',
+          styles: {
+            fill: 1,
+          },
+        },
+        types: ['person'],
+      },
+    ],
   },
 };

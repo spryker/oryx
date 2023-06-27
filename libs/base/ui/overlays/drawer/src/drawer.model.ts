@@ -1,4 +1,4 @@
-import { Position } from '../../../src/utilities/model/common';
+import { Position } from '@spryker-oryx/ui';
 
 export enum DrawerType {
   PRIMARY = 'primary',

@@ -59,10 +59,10 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           href="#"
           @click=${this.routerService.back}
         >
-          <oryx-icon type=${IconTypes.Back}></oryx-icon>
+          <oryx-icon type=${IconTypes.ArrowBack}></oryx-icon>
         </button>
       </oryx-icon-button>
-      <div class="title">${this.pickingListId}</div>
+      <div class="title">${this.pickingList?.orderReferences[0]}</div>
       ${this.renderCartNoteButton()}
       <oryx-site-navigation-item
         uid="user-profile"

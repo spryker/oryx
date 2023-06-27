@@ -79,12 +79,11 @@ export class FiltersComponent extends LitElement {
         enableCloseButtonInHeader
         enableNavigateBack
         enableFooter
-        fullscreen
         @oryx.back=${this.onReset}
         @oryx.close=${this.onClose}
       >
         <oryx-heading slot="heading" as-sm="h2">
-          <h4>${i18n('picking.filter.filter-&-sort')}</h4>
+          <h4>${i18n('picking.filter.sort')}</h4>
         </oryx-heading>
 
         <oryx-button slot="navigate-back" type="text">

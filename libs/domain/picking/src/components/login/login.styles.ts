@@ -17,6 +17,7 @@ export const loginComponentStyles = css`
     align-self: center;
     margin-block: 50px;
     margin-block-start: 30px;
+    text-align: center;
   }
 
   h3 {

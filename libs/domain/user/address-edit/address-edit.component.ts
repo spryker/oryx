@@ -48,9 +48,7 @@ export class UserAddressEditComponent extends AddressMixin(
     }
 
     const address = this.populateAddressData();
-    return this.addressService[address.id ? 'updateAddress' : 'addAddress'](
-      address
-    ).pipe(
+    return this.addressService[address.id ? 'update' : 'add'](address).pipe(
       take(1),
       tap(() => {
         this.loading = false;

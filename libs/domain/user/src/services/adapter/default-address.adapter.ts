@@ -15,7 +15,7 @@ export class DefaultAddressAdapter implements AddressAdapter {
     protected httpService = inject(HttpService)
   ) {}
 
-  getAll(): Observable<Address[]> {
+  getList(): Observable<Address[]> {
     return this.identityService.get().pipe(
       take(1),
       switchMap((identity) => {
