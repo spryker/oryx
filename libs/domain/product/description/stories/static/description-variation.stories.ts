@@ -16,17 +16,10 @@ const Template: Story<unknown> = (): TemplateResult => {
       ></oryx-product-description>
     </div>
     <div class="variation-description">
-      <p>Expanded</p>
-      <oryx-product-description
-        sku="1"
-        .options=${{ lineClamp: Infinity }}
-      ></oryx-product-description>
-    </div>
-    <div class="variation-description">
       <p>No Truncation</p>
       <oryx-product-description
         sku="1"
-        .options=${{ enableToggle: false }}
+        .options=${{ lineClamp: Infinity }}
       ></oryx-product-description>
     </div>
 
