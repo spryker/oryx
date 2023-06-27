@@ -13,14 +13,17 @@ export class CartTotalsTotalComponent extends ContentMixin<CartTotalsTotalOption
 ) {
   protected totalsController = new TotalsController(this);
 
-  protected $totals = signal(this.totalsController.getFormattedTotals());
+  protected $totals = signal(this.totalsController.getTotals());
 
   protected override render(): TemplateResult | void {
-    const total = this.$totals()?.priceToPay;
-    if (total) {
+    const { priceToPay, currency } = this.$totals() ?? {};
+    if (priceToPay) {
       return html`
         <span>${i18n('cart.totals.total')}</span>
-        <span>${total}</span>
+        <oryx-site-price
+          .value=${priceToPay}
+          .currency=${currency}
+        ></oryx-site-price>
         ${this.renderTaxMessage()}
       `;
     }

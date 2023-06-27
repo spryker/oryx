@@ -38,8 +38,6 @@ export class DefaultOrderTotalsService implements TotalsService {
       : this.getFromContext();
     return source.pipe(
       map((order) => {
-        console.log(order);
-
         if (!order) return null;
 
         const {

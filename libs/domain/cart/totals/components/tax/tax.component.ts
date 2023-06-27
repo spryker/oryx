@@ -7,14 +7,17 @@ import { TotalsController } from '../../../src/controllers';
 export class CartTotalsTaxComponent extends LitElement {
   protected totalsController = new TotalsController(this);
 
-  protected $totals = signal(this.totalsController.getFormattedTotals());
+  protected $totals = signal(this.totalsController.getTotals());
 
   protected override render(): TemplateResult | void {
-    const taxTotal = this.$totals()?.taxTotal;
+    const { taxTotal, currency } = this.$totals() ?? {};
     if (taxTotal) {
       return html`
         <span>${i18n('cart.totals.tax')}</span>
-        <span>${taxTotal}</span>
+        <oryx-site-price
+          .value=${taxTotal}
+          .currency=${currency}
+        ></oryx-site-price>
       `;
     }
   }

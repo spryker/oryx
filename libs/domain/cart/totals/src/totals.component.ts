@@ -11,7 +11,7 @@ import { TotalsController } from '../../src/controllers';
 import { CartTotalsOptions } from './totals.model';
 
 @defaultOptions({
-  reference: { context: 'CART' },
+  reference: 'CART',
 })
 @hydratable('window:load')
 @signalAware()

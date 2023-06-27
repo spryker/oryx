@@ -3,6 +3,7 @@ import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
 import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { TotalsController } from '../../../src/controllers';
+import { CartDiscount } from '../../../src/models';
 import {
   CartTotalsDiscountOptions,
   DiscountRowsAppearance,
@@ -18,65 +19,87 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
 ) {
   protected totalsController = new TotalsController(this);
 
-  protected $totals = signal(this.totalsController.getFormattedTotals());
+  protected $totals = signal(this.totalsController.getTotals());
 
   protected override render(): TemplateResult | void {
-    const totals = this.$totals();
+    const { discountTotal, discounts, currency } = this.$totals() ?? {};
 
-    console.log(totals);
-
-    if (!totals) return;
+    if (!discountTotal) return;
 
     const { discountRowsAppearance } = this.$options();
 
     if (
       discountRowsAppearance === DiscountRowsAppearance.None ||
-      !totals.discounts?.length
+      discountRowsAppearance === DiscountRowsAppearance.Inline
     ) {
-      return this.renderHeading();
+      return html`${this.renderHeading()}${this.renderDiscounts(
+        discounts,
+        currency
+      )}`;
     }
 
-    const rows = html`<ul>
-      ${totals.discounts.map(
-        ({ displayName, amount }) =>
-          html`<li>
-            <span>${displayName}</span>
-            <span>${amount}</span>
-          </li>`
-      )}
-    </ul>`;
-
-    if (discountRowsAppearance === DiscountRowsAppearance.Inline) {
-      return html`${this.renderHeading()}${rows}`;
-    }
-
-    return html`<oryx-collapsible
-      class="discount"
-      appearance="${CollapsibleAppearance.Inline}"
-      ?open=${discountRowsAppearance !== DiscountRowsAppearance.Collapsed}
-    >
-      <span slot="heading">
-        ${i18n('cart.totals.<count>-discounts', {
-          count: totals.discounts.length,
-        })}
-      </span>
-      <span slot="aside">${totals.discountTotal}</span>
-      ${rows}
-    </oryx-collapsible>`;
+    return this.renderCollapsible();
   }
 
   protected renderHeading(): TemplateResult | void {
     const totals = this.$totals();
-
     if (totals) {
       return html`
         <span>
-          ${i18n('cart.totals.<count>-discounts', {
-            count: totals.discounts?.length,
-          })}
+          ${totals.discounts
+            ? i18n('cart.totals.<count>-discounts', {
+                count: totals.discounts.length,
+              })
+            : i18n('cart.totals.discounts')}
         </span>
-        <span>${String(totals.discountTotal)}</span>
+        <oryx-site-price
+          slot="aside"
+          .value=${-totals.discountTotal!}
+          .currency=${totals.currency}
+        ></oryx-site-price>
       `;
     }
+  }
+
+  protected renderDiscounts(
+    discounts?: CartDiscount[],
+    currency?: string
+  ): TemplateResult | void {
+    if (!discounts?.length) return;
+    return html`<ul>
+      ${discounts.map(
+        ({ displayName, amount }) =>
+          html`<li>
+            <span>${displayName}</span>
+            <oryx-site-price
+              .value=${-amount}
+              .currency=${currency}
+            ></oryx-site-price>
+          </li>`
+      )}
+    </ul>`;
+  }
+
+  protected renderCollapsible(): TemplateResult | void {
+    const { discountTotal, discounts, currency } = this.$totals() ?? {};
+    if (!discountTotal || !discounts?.length) return;
+    return html`<oryx-collapsible
+      class="discount"
+      appearance="${CollapsibleAppearance.Inline}"
+      ?open=${this.$options().discountRowsAppearance !==
+      DiscountRowsAppearance.Collapsed}
+    >
+      <span slot="heading">
+        ${i18n('cart.totals.<count>-discounts', {
+          count: discounts.length,
+        })}
+      </span>
+      <oryx-site-price
+        slot="aside"
+        .value=${-discountTotal}
+        .currency=${currency}
+      ></oryx-site-price>
+      ${this.renderDiscounts(discounts, currency)}
+    </oryx-collapsible>`;
   }
 }
