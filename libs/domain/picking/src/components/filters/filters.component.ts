@@ -7,7 +7,7 @@ import {
   SortableQualifier,
 } from '@spryker-oryx/picking';
 import { i18n, signal } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { map } from 'rxjs';
 import { fields } from './filters.model';
@@ -23,6 +23,16 @@ export class FiltersComponent extends LitElement {
 
   protected fieldRenderer = resolve(FormRenderer);
   protected pickingListService = resolve(PickingListService);
+
+  firstUpdated(_changedProperties: PropertyValues): void {
+    super.firstUpdated(_changedProperties);
+    this.form?.addEventListener('keydown', this.onFormKeyDown);
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.form?.removeEventListener('keydown', this.onFormKeyDown);
+  }
 
   protected $selectedSortingValue = signal(
     this.pickingListService.getSortingQualifier().pipe(map(this.formatValue)),
@@ -72,6 +82,13 @@ export class FiltersComponent extends LitElement {
     this.form.requestSubmit();
   }
 
+  protected onFormKeyDown = (event: KeyboardEvent): void => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.onApply();
+    }
+  };
+
   protected override render(): TemplateResult {
     return html`
       <oryx-modal
@@ -90,14 +107,14 @@ export class FiltersComponent extends LitElement {
           <button>${i18n('picking.filter.reset')}</button>
         </oryx-button>
 
-        <form @submit=${this.onSubmit} id="filter-form">
+        <form @submit=${this.onSubmit}>
           ${this.fieldRenderer.buildForm(fields, {
             sortBy: this.$selectedSortingValue(),
           })}
         </form>
 
         <oryx-button slot="footer">
-          <button @click=${() => this.onApply()} form="filter-form">
+          <button @click=${() => this.onApply()}>
             ${i18n('picking.filter.apply')}
           </button>
         </oryx-button>
