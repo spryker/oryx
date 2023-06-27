@@ -1,79 +1,66 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { CartService, cartTotalsComponent } from '@spryker-oryx/cart';
-import { mockBaseCart, mockEmptyCart } from '@spryker-oryx/cart/mocks';
+import * as cart from '@spryker-oryx/cart';
+import { cartTotalsComponent } from '@spryker-oryx/cart';
+import { mockNormalizedCartTotals } from '@spryker-oryx/cart/mocks';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
-import { PricingService } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { SpyInstance } from 'vitest';
 import { CartTotalsComponent } from './totals.component';
 
-useComponent([cartTotalsComponent]);
+const mockController = () => ({
+  getTotals: vi.fn().mockReturnValue(of(mockNormalizedCartTotals)),
+  provideContext: vi.fn(),
+});
 
-class MockCartService {
-  getTotals = vi.fn().mockReturnValue(of(null));
-  getCart = vi.fn().mockReturnValue(of(null));
-  getEntries = vi.fn().mockReturnValue(of([]));
-  isEmpty = vi.fn().mockReturnValue(of(false));
-  isBusy = vi.fn().mockReturnValue(of(false));
-}
-
-class mockPricingService {
-  format = vi.fn().mockReturnValue(of('price'));
-}
-
-describe('Cart totals component', () => {
+describe('CartTotalsComponent', () => {
   let element: CartTotalsComponent;
+  const callback = vi.fn();
 
-  let service: MockCartService;
-  let testInjector: Injector;
+  beforeAll(async () => await useComponent([cartTotalsComponent]));
 
-  beforeEach(() => {
-    testInjector = createInjector({
-      providers: [
-        {
-          provide: CartService,
-          useClass: MockCartService,
-        },
-        {
-          provide: PricingService,
-          useClass: mockPricingService,
-        },
-      ],
-    });
+  beforeEach(async () => {
+    vi.spyOn(cart, 'TotalsController') as SpyInstance;
+    (cart.TotalsController as unknown as SpyInstance).mockReturnValue(
+      mockController
+    );
 
-    service = testInjector.inject(CartService) as unknown as MockCartService;
+    element = await fixture(
+      html`<oryx-cart-totals
+        .options=${{ reference: 'CART' }}
+      ></oryx-cart-totals>`
+    );
   });
 
   afterEach(() => {
-    destroyInjector();
     vi.clearAllMocks();
   });
 
   it('is defined', async () => {
-    element = await fixture(html`<oryx-cart-totals></oryx-cart-totals>`);
     expect(element).toBeInstanceOf(CartTotalsComponent);
   });
 
-  describe('when the cart is empty', () => {
-    beforeEach(async () => {
-      service.getCart.mockReturnValue(of(mockEmptyCart));
-      element = await fixture(html`<oryx-cart-totals></oryx-cart-totals>`);
-    });
-
-    it('should not render the heading', () => {
-      expect(element).not.toContainElement('h2');
-    });
+  it('should render the content', () => {
+    expect(element).toContainElement('h2');
+    expect(element).toContainElement('oryx-composition');
   });
 
-  describe('when there is a cart', () => {
+  it('should provide the default context', () => {
+    expect(callback).toHaveBeenCalledWith('CART');
+  });
+
+  describe('when there are not totals', () => {
     beforeEach(async () => {
-      service.getCart.mockReturnValue(of(mockBaseCart));
+      vi.spyOn(cart, 'TotalsController') as SpyInstance;
+      (cart.TotalsController as unknown as SpyInstance).mockReturnValue(
+        mockController
+      );
+
       element = await fixture(html`<oryx-cart-totals></oryx-cart-totals>`);
     });
 
-    it('should render the heading', () => {
-      expect(element).toContainElement('h2');
+    it('should not render the content', () => {
+      expect(element).not.toContainElement('h2, oryx-composition');
     });
   });
 });

@@ -8,5 +8,5 @@ export const enum TotalsContext {
 export const TotalsService = 'oryx.TotalsService*';
 
 export interface TotalsService {
-  getTotals(qualifier?: unknown): Observable<NormalizedTotals | null>;
+  getTotals(): Observable<NormalizedTotals | null>;
 }

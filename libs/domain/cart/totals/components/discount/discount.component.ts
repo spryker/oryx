@@ -28,10 +28,11 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
 
     const { discountRowsAppearance } = this.$options();
 
-    if (
-      discountRowsAppearance === DiscountRowsAppearance.None ||
-      discountRowsAppearance === DiscountRowsAppearance.Inline
-    ) {
+    if (discountRowsAppearance === DiscountRowsAppearance.None) {
+      return this.renderHeading();
+    }
+
+    if (discountRowsAppearance === DiscountRowsAppearance.Inline) {
       return html`${this.renderHeading()}${this.renderDiscounts(
         discounts,
         currency
@@ -43,7 +44,7 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
 
   protected renderHeading(): TemplateResult | void {
     const totals = this.$totals();
-    if (totals) {
+    if (totals?.discountTotal) {
       return html`
         <span>
           ${totals.discounts
@@ -54,7 +55,7 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
         </span>
         <oryx-site-price
           slot="aside"
-          .value=${-totals.discountTotal!}
+          .value=${-totals.discountTotal}
           .currency=${totals.currency}
         ></oryx-site-price>
       `;

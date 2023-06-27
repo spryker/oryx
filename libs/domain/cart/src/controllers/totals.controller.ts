@@ -1,6 +1,5 @@
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { PricingService } from '@spryker-oryx/site';
 import { LitElement, ReactiveController } from 'lit';
 import { defer, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { NormalizedTotals } from '../models';
@@ -11,8 +10,6 @@ import {
 
 export class TotalsController implements ReactiveController {
   protected context: ContextController;
-
-  protected pricingService = resolve(PricingService);
 
   constructor(protected host: LitElement) {
     this.host.addController(this);

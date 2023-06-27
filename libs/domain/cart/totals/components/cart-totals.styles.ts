@@ -29,6 +29,10 @@ const smallScreenRules = css`
   oryx-site-price {
     ${headingUtil(HeadingTag.H3)};
   }
+
+  oryx-site-price {
+    margin-inline-start: auto;
+  }
 `;
 
 export const cartTotalsStyles: ThemeStylesheets = [
