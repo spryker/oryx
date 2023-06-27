@@ -69,8 +69,6 @@ const getPattern = (route: RouteConfig) => {
   return pattern;
 };
 
-export const ROUTE_GUARDED_EVENT = 'oryx.route-guarded';
-
 /**
  * A reactive controller that performs location-based routing using a
  * configuration of URL patterns and associated render callbacks.
@@ -205,7 +203,6 @@ export class Routes implements ReactiveController {
         const success = await lastValueFrom(this._currentRoute.leave(params));
         // If leave() returns false, cancel this navigation
         if (success === false) {
-          window.dispatchEvent(new CustomEvent(ROUTE_GUARDED_EVENT, {}));
           return;
         }
         this.routeLeaveInProgress = true;
