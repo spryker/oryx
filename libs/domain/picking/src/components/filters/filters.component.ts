@@ -90,14 +90,14 @@ export class FiltersComponent extends LitElement {
           <button>${i18n('picking.filter.reset')}</button>
         </oryx-button>
 
-        <form @submit=${this.onSubmit}>
+        <form @submit=${this.onSubmit} id="filter-form">
           ${this.fieldRenderer.buildForm(fields, {
             sortBy: this.$selectedSortingValue(),
           })}
         </form>
 
         <oryx-button slot="footer">
-          <button @click=${() => this.onApply()}>
+          <button @click=${() => this.onApply()} form="filter-form">
             ${i18n('picking.filter.apply')}
           </button>
         </oryx-button>
