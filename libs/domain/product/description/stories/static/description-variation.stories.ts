@@ -12,21 +12,21 @@ const Template: Story<unknown> = (): TemplateResult => {
       <p>Collapsed</p>
       <oryx-product-description
         sku="1"
-        .options=${{ truncateAfter: 2 }}
+        .options=${{ lineClamp: 2 }}
       ></oryx-product-description>
     </div>
     <div class="variation-description">
       <p>Expanded</p>
       <oryx-product-description
         sku="1"
-        .options=${{ truncateAfter: 2, expandInitially: true }}
+        .options=${{ lineClamp: Infinity }}
       ></oryx-product-description>
     </div>
     <div class="variation-description">
       <p>No Truncation</p>
       <oryx-product-description
         sku="1"
-        .options=${{ truncateAfter: 0 }}
+        .options=${{ enableToggle: false }}
       ></oryx-product-description>
     </div>
 
