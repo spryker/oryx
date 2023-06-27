@@ -1,21 +1,19 @@
-import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import { resolve } from '@spryker-oryx/di';
+import { PricingService } from '@spryker-oryx/site';
+import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-
-import { CartComponentMixin } from '../../../src/mixins/cart.mixin';
-import { TotalsController } from '@spryker-oryx/cart';
+import { TotalsController } from '../../../src/controllers';
 
 @hydratable('window:load')
-export class CartTotalsSubtotalComponent extends CartComponentMixin(
-  LitElement
-) {
+@signalAware()
+export class CartTotalsSubtotalComponent extends LitElement {
+  protected pricingService = resolve(PricingService);
   protected totalsController = new TotalsController(this);
 
-  protected $t = signal(this.totalsController.getTotals());
+  protected $totals = signal(this.totalsController.getFormattedTotals());
 
   protected override render(): TemplateResult | void {
-    console.log(this.$t());
-    
-    const subtotal = this.$totals()?.calculations?.subtotal;
+    const subtotal = this.$totals()?.subtotal;
     if (subtotal) {
       return html`
         <span>${i18n('cart.totals.subtotal')}</span>

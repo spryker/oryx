@@ -1,26 +1,35 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import {
+  elementEffect,
+  hydratable,
+  i18n,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { CartComponentMixin } from '../../src/mixins/cart.mixin';
-import { TotalsController } from '../../src/services';
+import { TotalsController } from '../../src/controllers';
 import { CartTotalsOptions } from './totals.model';
 
 @defaultOptions({
-  reference: 'CART'
+  reference: { context: 'CART' },
 })
 @hydratable('window:load')
-export class CartTotalsComponent extends CartComponentMixin(
-  ContentMixin<CartTotalsOptions>(LitElement)
+@signalAware()
+export class CartTotalsComponent extends ContentMixin<CartTotalsOptions>(
+  LitElement
 ) {
   protected totalsController = new TotalsController(this);
 
-  connectedCallback(): void {
-    super.connectedCallback();
+  @elementEffect()
+  protected bindContext = (): void => {
+    const reference = this.$options().reference;
 
-    this.totalsController.provideContext(this.$options().reference!);
-  }
+    if (reference) {
+      this.totalsController.provideContext(reference);
+    }
+  };
 
-  protected $t = signal(this.totalsController.getTotals());
+  protected $totals = signal(this.totalsController.getTotals());
 
   protected override render(): TemplateResult | void {
     if (this.$totals()) {

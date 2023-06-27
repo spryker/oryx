@@ -1,9 +1,8 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
-import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-
-import { CartComponentMixin } from '../../../src/mixins/cart.mixin';
+import { TotalsController } from '../../../src/controllers';
 import {
   CartTotalsDiscountOptions,
   DiscountRowsAppearance,
@@ -13,13 +12,21 @@ import {
   discountRowsAppearance: DiscountRowsAppearance.Expanded,
 } as CartTotalsDiscountOptions)
 @hydratable('window:load')
-export class CartTotalsDiscountComponent extends CartComponentMixin(
-  ContentMixin<CartTotalsDiscountOptions>(LitElement)
+@signalAware()
+export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscountOptions>(
+  LitElement
 ) {
+  protected totalsController = new TotalsController(this);
+
+  protected $totals = signal(this.totalsController.getFormattedTotals());
+
   protected override render(): TemplateResult | void {
     const totals = this.$totals();
 
-    if (!totals || !totals.calculations?.discountTotal) return;
+    console.log(totals);
+
+    if (!totals) return;
+
     const { discountRowsAppearance } = this.$options();
 
     if (
@@ -53,7 +60,7 @@ export class CartTotalsDiscountComponent extends CartComponentMixin(
           count: totals.discounts.length,
         })}
       </span>
-      <span slot="aside">${totals.calculations.discountTotal}</span>
+      <span slot="aside">${totals.discountTotal}</span>
       ${rows}
     </oryx-collapsible>`;
   }
@@ -68,7 +75,7 @@ export class CartTotalsDiscountComponent extends CartComponentMixin(
             count: totals.discounts?.length,
           })}
         </span>
-        <span>${String(totals.calculations.discountTotal)}</span>
+        <span>${String(totals.discountTotal)}</span>
       `;
     }
   }

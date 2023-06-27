@@ -1,12 +1,16 @@
-import { Observable } from "rxjs";
-import { CartQualifier, NormalizedTotals } from "../../models";
+import { Observable } from 'rxjs';
+import { NormalizedTotals } from '../../models';
 
 export const enum TotalsContext {
   Reference = 'reference',
 }
 
+export interface TotalsContextData extends Record<string, any> {
+  context: string;
+}
+
 export const TotalsService = 'oryx.TotalsService*';
 
 export interface TotalsService {
-  getTotals(qualifier?: CartQualifier): Observable<NormalizedTotals | null>;
+  getTotals(qualifier?: unknown): Observable<NormalizedTotals | null>;
 }

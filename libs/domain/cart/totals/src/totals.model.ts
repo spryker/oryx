@@ -1,3 +1,5 @@
+import { TotalsContextData } from '../../src/services';
+
 export interface CartTotalsOptions {
-    reference?: string;
+  reference?: TotalsContextData;
 }

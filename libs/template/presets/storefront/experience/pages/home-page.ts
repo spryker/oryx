@@ -16,6 +16,11 @@ export const homePage: StaticComponent = {
   },
   components: [
     {
+      type: 'oryx-cart-totals',
+      options: { data: { reference: { context: 'ORDER', id: 'DE--24' } } },
+      components: [{ type: 'oryx-cart-totals-subtotal' }],
+    },
+    {
       type: 'oryx-content-video',
       options: {
         data: {
