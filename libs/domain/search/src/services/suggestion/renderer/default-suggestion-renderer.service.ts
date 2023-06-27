@@ -59,7 +59,7 @@ export class DefaultSuggestionRendererService
       map(([suggestions, options]) => {
         const data = options.entries?.map((entry) => suggestions[entry]);
 
-        return html` ${data?.map((suggestion, index) => {
+        return html`${data?.map((suggestion, index) => {
           const renderer = this.renderers[options?.entries?.[index] ?? ''];
 
           return options?.entries && renderer

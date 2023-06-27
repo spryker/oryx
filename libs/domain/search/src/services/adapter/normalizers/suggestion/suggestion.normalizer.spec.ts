@@ -37,7 +37,6 @@ describe('Suggestion Normalizers', () => {
       const mockResult = {
         completion: mockDeserializedSuggestion.completion,
         categories: mockDeserializedSuggestion.categories,
-        cmsPages: mockDeserializedSuggestion.cmsPages,
       };
       const normalized = suggestionAttributesNormalizer([
         mockDeserializedSuggestion,

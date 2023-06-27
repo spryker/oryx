@@ -43,7 +43,7 @@ describe('DefaultSuggestionService', () => {
     });
 
     service = testInjector.inject(SuggestionService);
-    adapter = testInjector.inject(SuggestionAdapter);
+    adapter = testInjector.inject(SuggestionAdapter)[0];
   });
 
   afterEach(() => {

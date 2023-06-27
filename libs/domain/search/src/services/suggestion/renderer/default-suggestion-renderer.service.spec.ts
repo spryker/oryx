@@ -2,6 +2,7 @@ import { mockLitHtml } from '@/tools/testing';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { html } from 'lit';
 import { of, take } from 'rxjs';
+import { SuggestionRevealer } from '../revealer';
 import { DefaultSuggestionRendererService } from './default-suggestion-renderer.service';
 import {
   SuggestionRenderer,
@@ -13,14 +14,16 @@ vi.mock('lit', async () => ({
   html: mockLitHtml,
 }));
 
-const mockSuggestionRendererA = {
-  getSuggestions: vi.fn(),
-  render: vi.fn(),
+const mockSuggestionRendererA = vi.fn();
+
+const mockSuggestionRendererB = vi.fn();
+
+const mockSuggestionRevealerA = {
+  reveal: vi.fn(),
 };
 
-const mockSuggestionRendererB = {
-  getSuggestions: vi.fn(),
-  render: vi.fn(),
+const mockSuggestionRevealerB = {
+  reveal: vi.fn(),
 };
 
 describe('DefaultSuggestionRendererService', () => {
@@ -35,11 +38,18 @@ describe('DefaultSuggestionRendererService', () => {
         },
         {
           provide: SuggestionRenderer,
-          useValue: mockSuggestionRendererA,
+          useValue: {
+            a: mockSuggestionRendererA,
+            b: mockSuggestionRendererB,
+          },
         },
         {
-          provide: SuggestionRenderer,
-          useValue: mockSuggestionRendererB,
+          provide: SuggestionRevealer,
+          useValue: mockSuggestionRevealerA,
+        },
+        {
+          provide: SuggestionRevealer,
+          useValue: mockSuggestionRevealerB,
         },
       ],
     });
@@ -54,22 +64,22 @@ describe('DefaultSuggestionRendererService', () => {
   describe('getSuggestions', () => {
     it('should return data from renderers', () => {
       const callback = vi.fn();
-      mockSuggestionRendererA.getSuggestions.mockReturnValue(of({ a: 'a' }));
-      mockSuggestionRendererB.getSuggestions.mockReturnValue(of({ b: 'b' }));
+      mockSuggestionRevealerA.reveal.mockReturnValue(of({ a: 'a' }));
+      mockSuggestionRevealerB.reveal.mockReturnValue(of({ b: 'b' }));
       const result = renderer.getSuggestions('que', {
         op1: 'op1',
         op2: 'op2',
       } as SuggestionRendererOptions);
       result.pipe(take(1)).subscribe(callback);
-      expect(mockSuggestionRendererA.getSuggestions).toHaveBeenCalledWith({
-        query: 'que',
+      expect(mockSuggestionRevealerA.reveal).toHaveBeenCalledWith({
         op1: 'op1',
         op2: 'op2',
+        query: 'que',
       });
-      expect(mockSuggestionRendererB.getSuggestions).toHaveBeenCalledWith({
-        query: 'que',
+      expect(mockSuggestionRevealerB.reveal).toHaveBeenCalledWith({
         op1: 'op1',
         op2: 'op2',
+        query: 'que',
       });
       expect(callback).toHaveBeenCalledWith({ a: 'a', b: 'b' });
     });
@@ -78,21 +88,24 @@ describe('DefaultSuggestionRendererService', () => {
   describe('render', () => {
     it('should return data from renderers', () => {
       const callback = vi.fn();
-      mockSuggestionRendererA.getSuggestions.mockReturnValue(of({ a: 'a' }));
-      mockSuggestionRendererA.render.mockReturnValue(html`<div a></div>`);
-      mockSuggestionRendererB.getSuggestions.mockReturnValue(of({ b: 'b' }));
-      mockSuggestionRendererB.render.mockReturnValue(html`<div b></div>`);
-      renderer.getSuggestions('que').pipe(take(1)).subscribe();
+      mockSuggestionRevealerA.reveal.mockReturnValue(of({ a: 'a' }));
+      mockSuggestionRevealerB.reveal.mockReturnValue(of({ b: 'b' }));
+      mockSuggestionRendererA.mockReturnValue(html`<div a></div>`);
+      mockSuggestionRendererB.mockReturnValue(html`<div b></div>`);
+      renderer
+        .getSuggestions('que', { entries: ['a', 'b'] })
+        .pipe(take(1))
+        .subscribe();
       const result = renderer.render();
       result.pipe(take(1)).subscribe(callback);
-      expect(mockSuggestionRendererA.render).toHaveBeenCalledWith(
-        { a: 'a', b: 'b' },
-        'que'
-      );
-      expect(mockSuggestionRendererB.render).toHaveBeenCalledWith(
-        { a: 'a', b: 'b' },
-        'que'
-      );
+      expect(mockSuggestionRendererA).toHaveBeenCalledWith('a', {
+        entries: ['a', 'b'],
+        query: 'que',
+      });
+      expect(mockSuggestionRendererB).toHaveBeenCalledWith('b', {
+        entries: ['a', 'b'],
+        query: 'que',
+      });
       expect(callback).toHaveBeenCalledWith('<div a></div>,<div b></div>');
     });
   });
