@@ -77,24 +77,21 @@ export class DefaultSuggestionRendererService
     return html`
       <section>
         <h5>${title}</h5>
-        <ul>
-          ${options.map(
-            ({ name, url, idCategory, params }) => html`
-              <li>
-                <oryx-content-link
-                  .options=${{
-                    type,
-                    id: url ?? idCategory ?? '',
-                    params: params ?? null,
-                    text: name,
-                  }}
-                  .content=${{ text: name }}
-                  close-popover
-                ></oryx-content-link>
-              </li>
-            `
-          )}
-        </ul>
+
+        ${options.map(
+          ({ name, url, idCategory, params }) => html`
+            <oryx-content-link
+              .options=${{
+                type,
+                id: url ?? idCategory ?? '',
+                params: params ?? null,
+                text: name,
+              }}
+              .content=${{ text: name }}
+              close-popover
+            ></oryx-content-link>
+          `
+        )}
       </section>
     `;
   }

@@ -12,11 +12,7 @@ export const searchBoxComponent = componentDef({
   impl: () => import('./box.component').then((m) => m.SearchBoxComponent),
   stylesheets: [
     {
-      rules: () =>
-        import('./styles').then((m) => [
-          ...m.screenStyles,
-          ...m.searchboxScreenStyles,
-        ]),
+      rules: () => import('./box.styles').then((m) => [...m.screenStyles]),
     },
   ],
   schema: () => import('./box.schema').then((m) => m.searchBoxComponentSchema),

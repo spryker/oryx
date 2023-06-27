@@ -9,10 +9,7 @@ import {
 } from '@spryker-oryx/search';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import {
-  ClearIconPosition,
-  SearchEventDetail,
-} from '@spryker-oryx/ui/searchbox';
+import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
 import { TypeaheadComponent } from '@spryker-oryx/ui/typeahead';
 import {
@@ -30,8 +27,8 @@ import { query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { html } from 'lit/static-html.js';
 import { of } from 'rxjs';
+import { searchBoxStyles } from './';
 import { SearchBoxOptions, SearchBoxProperties } from './box.model';
-import { baseStyles, searchBoxStyles } from './styles';
 
 @defaultOptions({
   minChars: 2,
@@ -46,7 +43,7 @@ export class SearchBoxComponent
   extends ContentMixin<SearchBoxOptions>(LitElement)
   implements SearchBoxProperties
 {
-  static styles = [baseStyles, searchBoxStyles];
+  static styles = [searchBoxStyles];
 
   @signalProperty() query = '';
 
@@ -95,37 +92,15 @@ export class SearchBoxComponent
       <oryx-typeahead
         @oryx.search=${this.onSearch}
         @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 300)}
-        .clearIconPosition=${ClearIconPosition.None}
+        .clearIcon=${IconTypes.Close}
       >
         <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
         <input
           .value=${this.query ?? ''}
           placeholder=${ifDefined(this.$placeholder())}
         />
-        ${this.renderSuggestion()} ${this.renderControls()}
+        ${this.renderSuggestion()}
       </oryx-typeahead>
-    `;
-  }
-
-  protected renderControls(): TemplateResult | void {
-    if (!this.query) return;
-
-    return html`
-      <oryx-button slot="suffix" type="text">
-        <button @click=${this.onClear} @mousedown=${this.muteMousedown}>
-          ${i18n('search.box.clear')}
-        </button>
-      </oryx-button>
-
-      <oryx-icon-button slot="suffix" size=${Size.Sm}>
-        <button
-          aria-label="Close results"
-          @click=${this.onClose}
-          @mousedown=${this.muteMousedown}
-        >
-          <oryx-icon .type=${IconTypes.Close}></oryx-icon>
-        </button>
-      </oryx-icon-button>
     `;
   }
 
@@ -140,13 +115,7 @@ export class SearchBoxComponent
       return this.renderNothingFound();
     }
 
-    return html`
-      <div slot="option">
-        <div @scroll=${debounce(this.onScroll.bind(this), 20)}>
-          ${this.$render()}
-        </div>
-      </div>
-    `;
+    return html`<div slot="option" shown>${this.$render()}</div>`;
   }
 
   protected renderNothingFound(): TemplateResult {

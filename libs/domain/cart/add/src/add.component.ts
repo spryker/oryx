@@ -17,6 +17,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 import { CartAddOptions } from './add.model';
 import { styles } from './add.styles';
 
@@ -50,17 +51,19 @@ export class CartAddComponent extends ProductMixin(
   }
 
   protected renderButton(): TemplateResult | void {
+    const { outlined, enableLabel } = this.$options();
+
     return html`<oryx-button
       size=${Size.Sm}
       type=${ButtonType.Primary}
-      ?outline=${this.$options().outlined}
+      ?outline=${outlined}
     >
       <button
         ?disabled=${this.isInvalid || this.$hasStock()}
         @click=${this.onSubmit}
       >
         <oryx-icon .type=${IconTypes.CartAdd} size=${Size.Lg}></oryx-icon>
-        ${i18n('cart.add-to-cart')}
+        ${when(enableLabel, () => html`${i18n('cart.add-to-cart')}`)}
       </button>
     </oryx-button>`;
   }
