@@ -15,19 +15,19 @@ export interface ContentfulSearch {
   query?: string;
 }
 
-export type ContentfulResponse = Observable<{
+export interface ContentfulResponse {
   items: {
     sys: {
       contentType: { sys: { id: string } };
     };
     fields: Record<string, string>;
   }[];
-}>;
+}
 
 export type ContentfulResult = { contentful: Record<'name', string>[] };
 
 export interface ContentfulClientService {
-  getEntries(search: ContentfulSearch): ContentfulResponse;
+  getEntries(search: ContentfulSearch): Observable<ContentfulResponse>;
 }
 
 export const ContentfulClientService = 'oryx.ContentfulClientService';
