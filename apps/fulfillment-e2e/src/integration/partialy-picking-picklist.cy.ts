@@ -27,6 +27,17 @@ describe('Partial picking a picklist', () => {
     pickingPage.getPickedProductsNumber().as('initialPickedProductsNumber');
     pickingPage.getNotFoundProductsNumber().as('initialNotFoundProductsNumber');
 
+    // Check fallbacks on "Picked" and "Not Found" tabs
+    pickingPage.insideTabContent(pickingPage.getPickedTab(), () => {
+      pickingFragment.getNoItemsTitle().should('be.visible');
+      pickingFragment.getNoItemsImage().should('be.visible');
+    });
+
+    pickingPage.insideTabContent(pickingPage.getNotFoundTab(), () => {
+      pickingFragment.getNoItemsTitle().should('be.visible');
+      pickingFragment.getNoItemsImage().should('be.visible');
+    });
+
     // For the first item, select only part of the quantity.
     pickingPage.insideTabContent(pickingPage.getNotPickedTab(), () => {
       pickingPage.pickProduct(pickingProductFragment.getProducts().eq(0), 1);

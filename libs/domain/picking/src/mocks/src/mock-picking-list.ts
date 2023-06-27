@@ -49,8 +49,8 @@ export const mockPickingListData: PickingList[] = [
     items: [
       {
         id: 'item2',
-        numberOfNotPicked: 1,
-        numberOfPicked: 1,
+        numberOfNotPicked: 0,
+        numberOfPicked: 2,
         quantity: 2,
         orderItem: {
           quantity: 2,

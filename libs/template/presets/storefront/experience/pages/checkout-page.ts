@@ -79,6 +79,14 @@ export const checkoutPage: StaticComponent = {
             { type: 'oryx-cart-totals-total' },
           ],
         },
+        {
+          type: 'oryx-content-text',
+          content: {
+            data: {
+              text: '<p>The <a href="/terms-and-conditions">Terms and conditions</a> apply.<br/>Please also see our <a href="/privacy">Privacy notice</a>.</p>',
+            },
+          },
+        },
         { type: 'oryx-checkout-place-order' },
       ],
     },
