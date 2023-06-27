@@ -2,13 +2,17 @@ import { Provider } from '@spryker-oryx/di';
 import {
   DefaultFacetListService,
   DefaultSuggestionAdapter,
-  DefaultSuggestionRenderer,
+  defaultSuggestionRenderer,
   DefaultSuggestionRendererService,
+  DefaultSuggestionRevealer,
   FacetColorsMapping,
   FacetListService,
+  productSuggestionRenderer,
   SuggestionAdapter,
+  SuggestionField,
   SuggestionRenderer,
   SuggestionRendererService,
+  SuggestionRevealer,
   SuggestionService,
 } from '@spryker-oryx/search';
 import { SortingService } from '../../services/sorting.service';
@@ -43,6 +47,13 @@ export const mockSearchProviders: Provider[] = [
   },
   {
     provide: SuggestionRenderer,
-    useClass: DefaultSuggestionRenderer,
+    useValue: {
+      default: defaultSuggestionRenderer,
+      [SuggestionField.Products]: productSuggestionRenderer,
+    },
+  },
+  {
+    provide: SuggestionRevealer,
+    useClass: DefaultSuggestionRevealer,
   },
 ];

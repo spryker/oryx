@@ -8,7 +8,7 @@ import { completion } from './completion.mock';
 import { createSuggestionMock } from './mock-suggestion.generator';
 
 export class MockSuggestionService implements Partial<SuggestionService> {
-  get(qualifier: SuggestionQualifier): Observable<Suggestion> {
-    return of(createSuggestionMock(qualifier, completion));
+  get<T = Suggestion>(qualifier: SuggestionQualifier): Observable<T> {
+    return of(createSuggestionMock(qualifier, completion)) as Observable<T>;
   }
 }

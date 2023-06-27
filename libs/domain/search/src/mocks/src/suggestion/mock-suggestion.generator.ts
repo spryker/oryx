@@ -1,8 +1,8 @@
 import { Product } from '@spryker-oryx/product';
 import {
-  Suggestion,
   SuggestionQualifier,
   SuggestionResource,
+  SuggestionResponse,
 } from '@spryker-oryx/search';
 
 const dummyUrl = (): string => '#';
@@ -55,7 +55,7 @@ const createProducts = (completion: string[]): Product[] => {
 export const createSuggestionMock = (
   { query }: SuggestionQualifier,
   _completions: string[]
-): Suggestion => {
+): SuggestionResponse => {
   const re = new RegExp(`^${query}.*`, 'i');
   const completion = _completions.filter((c) => c.match(re));
 

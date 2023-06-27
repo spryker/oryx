@@ -24,7 +24,6 @@ export interface SuggestionResponse {
 }
 
 export interface Suggestion {
-  cmsPages: any;
   completion?: SuggestionLinks[];
   categories?: SuggestionLinks[];
   products?: Product[];
