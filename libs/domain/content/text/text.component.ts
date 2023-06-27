@@ -1,6 +1,8 @@
+import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { elementEffect } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { FontController } from './font.controller';
+import { FontService } from '../src/services/';
 import { ContentTextContent, ContentTextOptions } from './text.model';
 import { contentTextStyles } from './text.styles';
 
@@ -11,7 +13,15 @@ export class ContentTextComponent extends ContentMixin<
 >(LitElement) {
   static styles = contentTextStyles;
 
-  protected fontController = new FontController(this);
+  protected fontService = resolve(FontService);
+
+  @elementEffect()
+  protected installFonts = (): void => {
+    const text = this.$content()?.text;
+    if (text && this.$options().autoInstallFont) {
+      this.fontService.install(text);
+    }
+  };
 
   protected override render(): TemplateResult | void {
     const text = this.$content()?.text;

@@ -1,19 +1,19 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { PageMetaService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { html } from 'lit';
+import { FontService } from '../src/services';
 import { ContentTextComponent } from './text.component';
 import { contentTextComponent } from './text.def';
 import { ContentTextContent } from './text.model.js';
 
-class MockPageMetaService implements Partial<PageMetaService> {
-  add = vi.fn();
+class MockFontService implements Partial<FontService> {
+  install = vi.fn();
 }
 
 describe('ContentTextComponent', () => {
   let element: ContentTextComponent;
-  let pageMetaService: MockPageMetaService;
+  let fontService: MockFontService;
 
   beforeAll(async () => {
     await useComponent(contentTextComponent);
@@ -23,13 +23,13 @@ describe('ContentTextComponent', () => {
     const injector = createInjector({
       providers: [
         {
-          provide: PageMetaService,
-          useClass: MockPageMetaService,
+          provide: FontService,
+          useClass: MockFontService,
         },
       ],
     });
 
-    pageMetaService = injector.inject<MockPageMetaService>(PageMetaService);
+    fontService = injector.inject<MockFontService>(FontService);
   });
 
   afterEach(() => {
@@ -87,14 +87,15 @@ describe('ContentTextComponent', () => {
     });
 
     it('should not install the font', () => {
-      expect(pageMetaService.add).not.toHaveBeenCalledOnce();
+      expect(fontService.install).not.toHaveBeenCalledOnce();
     });
   });
 
-  describe('when content contains one font', () => {
+  describe('when autoInstallFont option is true ', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-content-text
+          .options=${{ autoInstallFont: true }}
           .content=${{
             text: `<p style="font-family:'my-font'">content</p>`,
           } as ContentTextContent}
@@ -103,39 +104,7 @@ describe('ContentTextComponent', () => {
     });
 
     it('should install the font', () => {
-      expect(pageMetaService.add).toHaveBeenCalledOnce();
-    });
-  });
-
-  describe('when content contains two fonts', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-content-text
-          .content=${{
-            text: `<p style="font-family:'my-first-font'">content</p><p style="font-family:'my-second-font'">content</p>`,
-          } as ContentTextContent}
-        ></oryx-content-text>`
-      );
-    });
-
-    it('should install both fonts', () => {
-      expect(pageMetaService.add).toHaveBeenCalledTimes(2);
-    });
-  });
-
-  describe('when content contains the same font twice', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-content-text
-          .content=${{
-            text: `<p style="font-family:'my-first-font'">content</p><p style="font-family:'my-first-font'">content</p>`,
-          } as ContentTextContent}
-        ></oryx-content-text>`
-      );
-    });
-
-    it('should install the fonts once', () => {
-      expect(pageMetaService.add).toHaveBeenCalledOnce();
+      expect(fontService.install).toHaveBeenCalledOnce();
     });
   });
 });
