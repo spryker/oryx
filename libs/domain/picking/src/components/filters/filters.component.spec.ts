@@ -175,7 +175,7 @@ describe('FiltersComponent', () => {
     });
 
     describe('when Enter key is pressed in the form', () => {
-      const mockPreventDefault = vi.fn();
+      let event: KeyboardEvent;
       let request: SpyInstance;
       const sortBy = 'sortBy';
       const sortDesc = 'desc';
@@ -191,14 +191,14 @@ describe('FiltersComponent', () => {
         const form = element.renderRoot.querySelector<HTMLFormElement>('form')!;
         request = vi.spyOn(form, 'requestSubmit');
 
-        const event = new KeyboardEvent('keydown', { key: 'Enter' });
-        event.preventDefault = mockPreventDefault;
+        event = new KeyboardEvent('keydown', { key: 'Enter' });
+        event.preventDefault = vi.fn();
 
         form.dispatchEvent(event);
       });
 
       it('should prevent default form submission', () => {
-        expect(mockPreventDefault).toHaveBeenCalled();
+        expect(event.preventDefault).toHaveBeenCalled();
       });
 
       it('should request submit of the form', () => {
