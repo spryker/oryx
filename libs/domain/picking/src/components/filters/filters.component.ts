@@ -24,11 +24,6 @@ export class FiltersComponent extends LitElement {
   protected fieldRenderer = resolve(FormRenderer);
   protected pickingListService = resolve(PickingListService);
 
-  disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.form?.removeEventListener('keydown', this.onFormKeyDown);
-  }
-
   protected $selectedSortingValue = signal(
     this.pickingListService.getSortingQualifier().pipe(map(this.formatValue)),
     { initialValue: this.formatValue(defaultSortingQualifier) }
@@ -67,7 +62,10 @@ export class FiltersComponent extends LitElement {
     this.form?.reset();
   }
 
-  protected onApply(): void {
+  protected onApply(event: Event): void {
+    if (event instanceof KeyboardEvent && event.key !== 'Enter') return;
+    event.preventDefault();
+
     //For safari 15- and other old browsers
     if (!this.form?.requestSubmit) {
       this.form?.submit();
@@ -75,13 +73,6 @@ export class FiltersComponent extends LitElement {
     }
 
     this.form.requestSubmit();
-  }
-
-  protected onFormKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      this.onApply();
-    }
   }
 
   protected override render(): TemplateResult {
@@ -102,7 +93,7 @@ export class FiltersComponent extends LitElement {
           <button>${i18n('picking.filter.reset')}</button>
         </oryx-button>
 
-        <form @submit=${this.onSubmit} @keydown=${this.onFormKeyDown}>
+        <form @submit=${this.onSubmit} @keydown=${this.onApply}>
           ${this.fieldRenderer.buildForm(fields, {
             sortBy: this.$selectedSortingValue(),
           })}
