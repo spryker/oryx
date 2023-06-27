@@ -121,8 +121,7 @@ export class SearchBoxComponent
   protected renderNothingFound(): TemplateResult {
     return html`
       <div slot="empty">
-        <oryx-icon .type=${IconTypes.Search}></oryx-icon>
-        <span>${i18n('search.box.nothing-found')}</span>
+        ${i18n('search.box.no-results-<keyword>', { keyword: this.query })}
       </div>
     `;
   }

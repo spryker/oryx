@@ -8,6 +8,21 @@ export const searchBoxStyles = css`
     --oryx-popover-vertical-offset: 10px;
   }
 
+  oryx-typeahead::before {
+    content: '';
+    position: fixed;
+    left: 0;
+    top: 0;
+    transition: background-color var(--oryx-transition-time);
+  }
+
+  oryx-typeahead[open]::before {
+    height: 100%;
+    width: 100%;
+    background-color: var(--oryx-color-neutral-12);
+    opacity: 0.3;
+  }
+
   [slot='option'] {
     display: grid;
     grid-template-columns: 177px 1fr;
@@ -28,7 +43,6 @@ export const searchBoxStyles = css`
 
   h5 {
     ${headingUtil(HeadingTag.Subtitle)}
-
     text-transform: uppercase;
     display: flex;
     align-items: center;
@@ -51,5 +65,11 @@ export const searchBoxStyles = css`
 
   oryx-button {
     align-self: center;
+  }
+
+  [slot='empty'] {
+    padding-block: 18px;
+    padding-inline: 15px;
+    color: var(--oryx-color-neutral-9);
   }
 `;
