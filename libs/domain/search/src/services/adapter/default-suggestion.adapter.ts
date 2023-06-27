@@ -31,7 +31,7 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
           SuggestionField.Categories,
           SuggestionField.Completion,
           SuggestionField.Products,
-        ].includes(entry)
+        ].includes(entry as SuggestionField)
       )
     ) {
       const include = [
