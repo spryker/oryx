@@ -11,8 +11,8 @@ export const searchBoxStyles = css`
   oryx-typeahead::before {
     content: '';
     position: fixed;
-    left: 0;
-    top: 0;
+    inset-inline-start: 0;
+    inset-block-start: 0;
     transition: background-color var(--oryx-transition-time);
   }
 
@@ -43,6 +43,7 @@ export const searchBoxStyles = css`
 
   h5 {
     ${headingUtil(HeadingTag.Subtitle)}
+
     text-transform: uppercase;
     display: flex;
     align-items: center;
