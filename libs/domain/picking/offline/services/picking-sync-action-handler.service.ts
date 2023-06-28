@@ -83,11 +83,15 @@ export class PickingSyncActionHandlerService
     return this.onlineAdapter.get({ ids: sync.payload.ids }).pipe(
       combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
       switchMap(async ([pickingLists, store]) => {
+        const pickingListsIdsToRemove = sync.payload.ids.filter(id => {
+          return !pickingLists.find(pl => pl.id === id)
+        })
+        await store.bulkDelete(pickingListsIdsToRemove)
         const addedOrUpdatedKeys = await store.bulkPut(pickingLists, {
           allKeys: true,
         });
 
-        if (addedOrUpdatedKeys.length !== pickingLists.length) {
+        if (addedOrUpdatedKeys.length && addedOrUpdatedKeys.length !== pickingLists.length - pickingListsIdsToRemove.length) {
           throw new Error(
             `PickingSyncActionHandlerService: Could not save ${addedOrUpdatedKeys.length} out of ${pickingLists.length} PickingLists after push!`
           );

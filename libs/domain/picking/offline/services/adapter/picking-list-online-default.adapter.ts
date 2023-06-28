@@ -34,18 +34,7 @@ export class PickingListOnlineDefaultAdapter
   }
 
   get(qualifier: PickingListQualifier): Observable<PickingListEntity[]> {
-    return super.get(qualifier).pipe(
-      // TODO: Remove filtering when BE will be able to retrieve the list of picking lists by provided "ids" list
-      map((pickingListEntities) => {
-        if (qualifier.ids) {
-          return pickingListEntities.filter((entity) =>
-            qualifier.ids?.includes(entity.id)
-          );
-        }
-
-        return pickingListEntities;
-      })
-    ) as Observable<PickingListEntity[]>;
+    return super.get(qualifier) as  Observable<PickingListEntity[]>;
   }
 
   startPicking(pickingList: PickingListEntity): Observable<PickingListEntity> {
@@ -89,10 +78,9 @@ export class PickingListOnlineDefaultAdapter
 
       // Merge local status
       const localStatus =
-        existingPickingList &&
-        pickingList.status !== existingPickingList.localStatus
-          ? existingPickingList.localStatus
-          : pickingList.status;
+        (!existingPickingList || pickingList.status === existingPickingList.localStatus)
+          ? pickingList.status
+          : existingPickingList.localStatus;
 
       const productSkus = pickingList.items.map((item) => item.product.sku);
 
