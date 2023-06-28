@@ -9,8 +9,7 @@ export const productDescriptionSchema: ContentComponentSchema<ProductDescription
     group: 'Product',
     icon: IconTypes.Description,
     options: {
-      truncateAfter: { type: FormFieldType.Number, width: 100 },
-      expandInitially: { type: FormFieldType.Boolean },
+      lineClamp: { type: FormFieldType.Number, width: 100 },
       enableToggle: { type: FormFieldType.Boolean },
     },
   };

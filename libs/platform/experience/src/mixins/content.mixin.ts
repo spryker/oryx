@@ -77,6 +77,7 @@ export const ContentMixin = <
     protected $options = signal(this.contentController.getOptions(), {
       initialValue: {},
     });
+
     protected $content = signal(this.contentController.getContent(), {
       initialValue: {},
     });

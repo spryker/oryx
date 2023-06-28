@@ -63,7 +63,7 @@ export class ContentLinkComponent extends ContentMixin<
         renderIcon,
         () => html`<oryx-icon .type=${icon}></oryx-icon>`
       )}
-      ${this.$content()?.text}`;
+      ${text}`;
     }
     return html`<slot></slot>`;
   }

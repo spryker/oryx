@@ -173,5 +173,44 @@ describe('FiltersComponent', () => {
         });
       });
     });
+
+    describe('when Enter key is pressed in the form', () => {
+      let event: KeyboardEvent;
+      let request: SpyInstance;
+      const sortBy = 'sortBy';
+      const sortDesc = 'desc';
+
+      beforeEach(async () => {
+        renderer.buildForm = vi.fn().mockReturnValue(html`
+          <input name="sortBy" value=${`${sortBy}.${sortDesc}`} checked />
+        `);
+        element = await fixture(
+          html` <oryx-picking-filters open></oryx-picking-filters>`
+        );
+
+        const form = element.renderRoot.querySelector<HTMLFormElement>('form')!;
+        request = vi.spyOn(form, 'requestSubmit');
+
+        event = new KeyboardEvent('keydown', { key: 'Enter' });
+        event.preventDefault = vi.fn();
+
+        form.dispatchEvent(event);
+      });
+
+      it('should prevent default form submission', () => {
+        expect(event.preventDefault).toHaveBeenCalled();
+      });
+
+      it('should request submit of the form', () => {
+        expect(request).toHaveBeenCalled();
+      });
+
+      it('should update the qualifier', () => {
+        expect(service.setSortingQualifier).toHaveBeenCalledWith({
+          sortBy,
+          sortDesc: true,
+        });
+      });
+    });
   });
 });

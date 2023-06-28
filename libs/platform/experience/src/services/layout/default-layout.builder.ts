@@ -199,6 +199,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       overflow: data?.overflow,
     });
 
+    if (data.scale) {
+      add({ transform: `scale(${data?.scale})` });
+    }
+
     return rules;
   }
 
