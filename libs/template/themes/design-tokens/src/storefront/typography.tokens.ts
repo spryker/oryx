@@ -23,6 +23,7 @@ export const typographySmallTokens: ThemeToken = {
     'subtitle-small': { size: '0.857em', line: '1.333em', weight: '600' },
     caption: { size: '0.857em', line: '1.333em', weight: '600' },
     small: { size: '0.857em', line: '1.333em', weight: '500' },
+    bold: { size: '1.1428571429em', line: '1em', weight: '600' },
   },
 };
 
@@ -38,5 +39,6 @@ export const typographyMediumAndLargerTokens: ThemeToken = {
     'subtitle-small': { size: '0.857em', line: '1.333em', weight: '600' },
     caption: { size: '0.857em', line: '1.333em', weight: '600' },
     small: { size: '0.857em', line: '1.333em', weight: '500' },
+    bold: { weight: '600' },
   },
 };

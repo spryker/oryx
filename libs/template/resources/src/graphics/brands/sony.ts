@@ -1,12 +1,10 @@
 export const resource = `
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
-   viewBox="0 0 340 60"
-   xmlns="http://www.w3.org/2000/svg">
-   <g style="fill:var(--oryx-fill, var(--oryx-color-neutral-12))"
-
+viewBox="0 0 340 60"
+xmlns="http://www.w3.org/2000/svg">
+<style>g {transition: all var(--oryx-transition-time)}</style>
+<g style="fill:var(--oryx-fill, var(--oryx-color-neutral-12))"
    transform="translate(647.96607,-300.05509)">
 
    <path

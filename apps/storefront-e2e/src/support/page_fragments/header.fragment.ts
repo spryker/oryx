@@ -34,7 +34,10 @@ export class HeaderFragment {
   };
 
   changeLocale = (locale: string) => {
-    cy.intercept('GET', '/concrete-products/*').as('productRequests');
+    cy.intercept({
+      method: 'GET',
+      url: /(\/catalog-search.*|\/concrete-products\/.*)/,
+    }).as('productOrSearchRequests');
     // hydrate
     this.getLocaleButton().click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
@@ -44,7 +47,7 @@ export class HeaderFragment {
     this.getLocaleSelector()
       .find(`oryx-option[value="${locale}"]`)
       .click({ force: true });
-    cy.wait('@productRequests');
+    cy.wait('@productOrSearchRequests');
   };
 
   changeCurrency = (currency: string) => {
