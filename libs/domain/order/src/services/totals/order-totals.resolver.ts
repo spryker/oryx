@@ -28,7 +28,10 @@ export class OrderTotalsResolver implements TotalsResolver {
 
   protected getFromContext(): Observable<OrderData | null> {
     return this.context
-      .get<string>(document.body, OrderContext.OrderId)
+      .get<string>(
+        undefined /* for now we are happy with global/fallback orderId */,
+        OrderContext.OrderId
+      )
       .pipe(switchMap((id) => (id ? this.orderService.get({ id }) : of(null))));
   }
 

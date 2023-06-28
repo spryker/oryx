@@ -11,7 +11,7 @@ export class ServerContextService extends DefaultContextService {
     element.setAttribute(`${this.dataKey}${key}`, JSON.stringify(value));
   }
 
-  get<T>(element: Element, key: string): Observable<T> {
+  get<T>(element: Element | undefined, key: string): Observable<T> {
     return defer(() => {
       const stack = this.streamParser.getStreamStack();
       const counter = stack.length - 1;
