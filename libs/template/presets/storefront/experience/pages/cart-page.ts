@@ -12,7 +12,7 @@ export const cartPage: StaticComponent = {
       rules: [
         {
           layout: 'split-main',
-          padding: '30px 0 20px',
+          padding: '30px 0',
         },
         { query: { breakpoint: 'sm' }, gap: '0' },
       ],
