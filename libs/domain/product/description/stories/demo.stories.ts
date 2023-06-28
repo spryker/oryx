@@ -8,9 +8,11 @@ export default {
   title: `${storybookPrefix}/Description`,
   args: {
     sku: '1',
+    lineClamp: 2,
+    enableToggle: true,
   },
   argTypes: {
-    truncateAfter: {
+    lineClamp: {
       control: { type: 'number' },
     },
     enableToggle: {

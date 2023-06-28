@@ -13,8 +13,7 @@ export const contactPage: StaticComponent = {
       rules: [
         {
           layout: 'list',
-          margin: '50 0',
-          padding: '10 0',
+          padding: '10px 0',
           bleed: true,
           background: 'var(--oryx-color-primary-3)',
         },

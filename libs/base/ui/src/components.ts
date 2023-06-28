@@ -31,6 +31,7 @@ export * from '../overlays/popover/src/component';
 export * from '../search/searchbox/src/searchbox.def';
 export * from '../search/typeahead/src/typeahead.def';
 export * from '../structure/card/src/component';
+export * from '../structure/collapsible-text/collapsible-text.def';
 export * from '../structure/collapsible/src/collapsible.def';
 export * from '../structure/heading/src/heading.def';
 export * from '../structure/text/text.def';

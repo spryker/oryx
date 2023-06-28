@@ -1,7 +1,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { combineLatest, Observable, switchMap } from 'rxjs';
+import { combineLatest, Observable, switchMap, take } from 'rxjs';
 import {
   ApiCheckoutModel,
   CheckoutData,
@@ -37,6 +37,7 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
       this.identity.get(),
       this.transformer.serialize(data, CheckoutSerializer),
     ]).pipe(
+      take(1),
       switchMap(([user, data]) =>
         this.http
           .post<ApiCheckoutModel.CheckoutResponse>(

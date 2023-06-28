@@ -154,6 +154,10 @@ export class CoreQuery<
         return {
           unsubscribe: () => {
             subscription.unsubscribe();
+            // we have to reset loading flag, if loading was interrupted by unsubscribe
+            if (subject$.value.loading) {
+              subject$.value.loading = false;
+            }
 
             if (this.options.volatile) {
               // if query is volatile set it to initial state
