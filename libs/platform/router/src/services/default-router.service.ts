@@ -29,6 +29,7 @@ export class DefaultRouterService implements RouterService {
   private routerEvents$ = new Subject<RouterEvent>();
   private storedRoute$ = new BehaviorSubject('');
 
+  protected counter = history.state?.counter ?? 0;
   protected storageService = inject(StorageService);
 
   go(route: string, extras?: NavigationExtras): void {
@@ -56,7 +57,7 @@ export class DefaultRouterService implements RouterService {
   }
 
   navigate(route: string): void {
-    globalThis.history.pushState({}, '', route);
+    globalThis.history.pushState({ counter: this.counter + 1 }, '', route);
     this.go(route);
   }
 
@@ -122,6 +123,14 @@ export class DefaultRouterService implements RouterService {
     return tokenIndex !== -1 && routeTokens.length > tokenIndex + 1
       ? routeTokens[tokenIndex + 1]
       : undefined;
+  }
+
+  getCounter(): number {
+    return this.counter;
+  }
+
+  setCounter(value: number): void {
+    this.counter = value;
   }
 
   protected createUrlParams(params?: {

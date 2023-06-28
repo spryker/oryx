@@ -6,6 +6,8 @@
 
 /// <reference types="urlpattern-polyfill" />
 
+import { resolve } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { lastValueFrom, Observable } from 'rxjs';
 
@@ -109,6 +111,9 @@ export class Routes implements ReactiveController {
   private _parentRoutes: Routes | undefined;
 
   protected routeLeaveInProgress = false;
+  // other popstate listeners may fire too late, so we need an additional check
+  protected canDisableRouteLeaveInProgress = false;
+  protected routerService = resolve(RouterService);
 
   /*
    * State related to the current matching route.
@@ -194,19 +199,40 @@ export class Routes implements ReactiveController {
       const result = pattern.exec({ pathname });
       const params = result?.pathname.groups ?? {};
       tailGroup = getTailGroup(params);
+      const counter = history.state?.counter ?? this.routerService.getCounter();
 
       if (
         typeof this._currentRoute?.leave === 'function' &&
         this._currentRoute !== route
       ) {
-        history.go(1);
-        const success = await lastValueFrom(this._currentRoute.leave(params));
+        this.canDisableRouteLeaveInProgress = false;
+        this.routeLeaveInProgress = true;
+        const direction = counter > this.routerService.getCounter() ? -1 : 1;
+        history.go(direction);
+
+        let success = true;
+
+        // On some browsers, history.go doesn't complete fast enough, so trying to go back with another history.go won't work.
+        // So we wait for the first history.go to complete.
+        const callback = async () => {
+          window.removeEventListener('popstate', callback);
+          if (success === false) {
+            return;
+          }
+
+          await history.go(-direction);
+          this.canDisableRouteLeaveInProgress = true;
+        };
+        window.addEventListener('popstate', callback);
+        success = await lastValueFrom(this._currentRoute.leave(params));
         // If leave() returns false, cancel this navigation
         if (success === false) {
+          this.routeLeaveInProgress = false;
           return;
         }
-        this.routeLeaveInProgress = true;
-        history.back();
+        this.routerService.setCounter(counter);
+      } else {
+        this.routerService.setCounter(counter);
       }
 
       if (typeof route.enter === 'function') {

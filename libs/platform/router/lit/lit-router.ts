@@ -163,14 +163,20 @@ export class LitRouter extends Routes {
 
     e.preventDefault();
     if (href !== location.href) {
-      window.history.pushState({}, '', href);
+      window.history.pushState(
+        { counter: this.routerService.getCounter() + 1 },
+        '',
+        href
+      );
       this.goto(anchor.pathname);
     }
   };
 
   private _onPopState = (_e: PopStateEvent) => {
     if (this.routeLeaveInProgress) {
-      this.routeLeaveInProgress = false;
+      if (this.canDisableRouteLeaveInProgress) {
+        this.routeLeaveInProgress = false;
+      }
       return;
     }
     this.goto(window.location.pathname);

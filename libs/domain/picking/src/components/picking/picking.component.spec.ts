@@ -1,7 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PickingListService } from '@spryker-oryx/picking';
+import {
+  PickingHeaderService,
+  PickingListService,
+} from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { tabsComponent } from '@spryker-oryx/ui/tabs';
@@ -19,6 +22,10 @@ class MockPickingListService implements Partial<PickingListService> {
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
+class MockPickingHeaderService implements Partial<PickingHeaderService> {
+  discard = vi.fn();
+}
+
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
@@ -29,6 +36,7 @@ describe('PickingComponent', () => {
   let element: PickingComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
+  let pickingHeaderService: MockPickingHeaderService;
 
   const getTabs = () =>
     element.renderRoot.querySelectorAll<TabComponent>('oryx-tab');
@@ -60,6 +68,10 @@ describe('PickingComponent', () => {
           provide: RouterService,
           useClass: MockRouterService,
         },
+        {
+          provide: PickingHeaderService,
+          useClass: MockPickingHeaderService,
+        },
       ],
     });
 
@@ -70,6 +82,10 @@ describe('PickingComponent', () => {
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;
+
+    pickingHeaderService = testInjector.inject(
+      PickingHeaderService
+    ) as unknown as MockPickingHeaderService;
 
     element = await fixture(
       html`<oryx-picking pickingListId="id"></oryx-picking>`
@@ -262,6 +278,7 @@ describe('PickingComponent', () => {
 
       expect(service.finishPicking).toHaveBeenCalled();
       expect(routerService.navigate).toHaveBeenCalledWith(`/`);
+      expect(pickingHeaderService.discard).toHaveBeenCalled();
     });
   });
 });
