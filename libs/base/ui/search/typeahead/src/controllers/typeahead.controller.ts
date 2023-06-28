@@ -4,7 +4,7 @@ import {
   PopoverOptions,
   PopoverSelectEvent,
 } from '@spryker-oryx/ui/popover';
-import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
+import { SearchEventDetail } from '@spryker-oryx/ui/search';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { OptionComponent } from '../../../../form/option';

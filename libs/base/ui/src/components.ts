@@ -28,7 +28,7 @@ export * from '../overlays/modal/src/modal.def';
 export * from '../overlays/notification-center/src/notification-center.def';
 export * from '../overlays/notification/src/notification.def';
 export * from '../overlays/popover/src/component';
-export * from '../search/searchbox/src/searchbox.def';
+export * from '../search/search/search.def';
 export * from '../search/typeahead/src/typeahead.def';
 export * from '../structure/card/src/component';
 export * from '../structure/collapsible-text/collapsible-text.def';

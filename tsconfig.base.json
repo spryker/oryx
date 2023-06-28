@@ -237,7 +237,7 @@
       "@spryker-oryx/ui/popover": ["libs/base/ui/overlays/popover/index.ts"],
       "@spryker-oryx/ui/radio": ["libs/base/ui/form/radio/index.ts"],
       "@spryker-oryx/ui/rating": ["libs/base/ui/graphical/rating/index.ts"],
-      "@spryker-oryx/ui/searchbox": ["libs/base/ui/search/searchbox/index.ts"],
+      "@spryker-oryx/ui/search": ["libs/base/ui/search/search/index.ts"],
       "@spryker-oryx/ui/select": ["libs/base/ui/form/select/index.ts"],
       "@spryker-oryx/ui/spinner": ["libs/base/ui/graphical/spinner/index.ts"],
       "@spryker-oryx/ui/swatch": ["libs/base/ui/graphical/swatch/index.ts"],

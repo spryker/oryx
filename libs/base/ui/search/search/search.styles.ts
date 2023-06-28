@@ -5,7 +5,7 @@ import {
 import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
-export const baseStyles = [
+export const searchStyles = [
   ...inputBaseStyles,
   css`
     [class$='-button'] {
@@ -54,7 +54,7 @@ export const baseStyles = [
   `,
 ];
 
-const smallScreen = css`
+const searchSmallScreen = css`
   .clear-button[type='remove'] {
     --oryx-icon-size: var(--oryx-icon-size-lg);
   }
@@ -110,9 +110,9 @@ const smallScreen = css`
   }
 `;
 
-export const screenStyles = [
+export const searchScreenStyles = [
   ...inputScreenStyles,
   ...screenCss({
-    sm: smallScreen,
+    sm: searchSmallScreen,
   }),
 ];

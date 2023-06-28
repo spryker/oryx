@@ -2,9 +2,9 @@ import { expect } from '@storybook/jest';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
+import { storybookPrefix } from '../../../../.constants';
 
-import { SearchboxComponent } from '../../searchbox.component';
+import { SearchComponent } from '../../search.component';
 
 export default {
   title: `${storybookPrefix}/Search/Searchbox/Interactive`,
@@ -30,7 +30,7 @@ SearchboxInteractive.play = async (obj: {
 }): Promise<void> => {
   const component = obj.canvasElement.querySelector(
     'oryx-search'
-  ) as SearchboxComponent;
+  ) as SearchComponent;
   const input = component.querySelector('input') as HTMLInputElement;
   const clearButton = component.shadowRoot?.querySelector(
     '.clear'

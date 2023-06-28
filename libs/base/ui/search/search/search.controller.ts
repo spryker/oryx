@@ -2,7 +2,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AffixController } from '@spryker-oryx/ui/input';
 import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { getControl } from '../../../form/utilities';
+import { getControl } from '../../form/utilities';
 import {
   ClearIconAppearance,
   ClearIconPosition,
@@ -11,9 +11,9 @@ import {
   SearchAttributes,
   SearchEventDetail,
   SearchIconPosition,
-} from './searchbox.model';
+} from './search.model';
 
-export class SearchboxController implements ReactiveController {
+export class SearchController implements ReactiveController {
   protected affixController: AffixController;
 
   hostConnected(): void {

@@ -1,12 +1,12 @@
 import { initMutationObserverForComponent } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
+import { storybookPrefix } from '../../../../.constants';
 import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchIconPosition,
-} from '../../searchbox.model';
+} from '../../search.model';
 
 export default {
   title: `${storybookPrefix}/Search/Searchbox/Static`,

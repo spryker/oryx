@@ -1,7 +1,7 @@
 export interface SearchAttributes {
   open?: boolean;
   /**
-   * Provides floating behaviour on small screens
+   * Provides floating behavior on small screens
    */
   xsFloated?: boolean;
   backIcon?: string;

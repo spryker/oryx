@@ -4,9 +4,9 @@ import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchAttributes,
-  SearchboxController,
+  SearchController,
   SearchIconPosition,
-} from '@spryker-oryx/ui/searchbox';
+} from '@spryker-oryx/ui/search';
 import {
   FilterStrategyType,
   TypeaheadController,
@@ -66,7 +66,7 @@ export class SelectComponent
   protected typeaheadController = new TypeaheadController(this, {
     showOnFocus: false,
   });
-  protected searchController = new SearchboxController(this);
+  protected searchController = new SearchController(this);
   protected formControlController = new FormControlController(this);
 
   protected override render(): TemplateResult {

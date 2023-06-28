@@ -3,13 +3,13 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../.constants';
+import { storybookPrefix } from '../../../.constants';
 import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchAttributes,
   SearchIconPosition,
-} from '../searchbox.model';
+} from '../search.model';
 
 export default {
   title: `${storybookPrefix}/Search/SearchBox`,

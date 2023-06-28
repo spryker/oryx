@@ -1,13 +1,10 @@
 import { POPOVER_HEIGHT } from '@spryker-oryx/ui/popover';
-import {
-  baseStyles as searchboxBaseStyles,
-  screenStyles as searchboxScreenStyles,
-} from '@spryker-oryx/ui/searchbox';
+import { searchScreenStyles, searchStyles } from '@spryker-oryx/ui/search';
 import { screenCss } from '@spryker-oryx/utilities';
 import { css, unsafeCSS as unsafecss } from 'lit';
 
 export const baseStyles = [
-  ...searchboxBaseStyles,
+  ...searchStyles,
   css`
     :host {
       --oryx-popover-vertical-offset: 20px;
@@ -77,7 +74,7 @@ export const baseStyles = [
 ];
 
 export const screenStyles = [
-  ...searchboxScreenStyles,
+  ...searchScreenStyles,
   ...screenCss({
     sm: css`
       :host(:not([floatDisabled])) oryx-popover {

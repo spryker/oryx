@@ -10,10 +10,7 @@ import {
 } from '@spryker-oryx/search';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import {
-  ClearIconPosition,
-  SearchEventDetail,
-} from '@spryker-oryx/ui/searchbox';
+import { ClearIconPosition, SearchEventDetail } from '@spryker-oryx/ui/search';
 import '@spryker-oryx/ui/typeahead';
 import { TypeaheadComponent } from '@spryker-oryx/ui/typeahead';
 import {

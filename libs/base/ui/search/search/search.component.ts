@@ -5,20 +5,20 @@ import {
 } from '@spryker-oryx/ui/input';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { SearchboxController } from './searchbox.controller';
+import { SearchController } from './search.controller';
 import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchAttributes,
   SearchIconPosition,
-} from './searchbox.model';
-import { baseStyles } from './searchbox.styles';
+} from './search.model';
+import { searchStyles } from './search.styles';
 
-export class SearchboxComponent
+export class SearchComponent
   extends LitElement
   implements SearchAttributes, FormControlOptions, AffixOptions
 {
-  static override styles = baseStyles;
+  static override styles = searchStyles;
 
   @property({ reflect: true, type: Boolean }) open?: boolean;
   @property({ type: Boolean, attribute: 'xs-floated' }) xsFloated?: boolean;
@@ -37,7 +37,7 @@ export class SearchboxComponent
   @property() backIcon?: string;
 
   protected formControlController = new FormControlController(this);
-  protected searchController = new SearchboxController(this);
+  protected searchController = new SearchController(this);
 
   protected override render(): TemplateResult {
     return html`

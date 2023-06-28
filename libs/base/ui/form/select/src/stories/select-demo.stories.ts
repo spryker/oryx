@@ -6,7 +6,7 @@ import {
   SearchAttributes,
   SearchEventDetail,
   SearchIconPosition,
-} from '@spryker-oryx/ui/searchbox';
+} from '@spryker-oryx/ui/search';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';

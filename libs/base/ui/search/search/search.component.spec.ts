@@ -3,20 +3,20 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { a11yConfig, queryFirstAssigned } from '@spryker-oryx/utilities';
-import { SearchboxComponent } from './searchbox.component';
-import { searchboxComponent } from './searchbox.def';
+import { SearchComponent } from './search.component';
+import { searchComponent } from './search.def';
 import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchEventDetail,
   SearchIconPosition,
-} from './searchbox.model';
+} from './search.model';
 
 describe('SearchComponent', () => {
-  let element: SearchboxComponent;
+  let element: SearchComponent;
 
   beforeAll(async () => {
-    await useComponent(searchboxComponent);
+    await useComponent(searchComponent);
   });
 
   describe('search', () => {

@@ -8,9 +8,9 @@ import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchAttributes,
-  SearchboxController,
+  SearchController,
   SearchIconPosition,
-} from '@spryker-oryx/ui/searchbox';
+} from '@spryker-oryx/ui/search';
 import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -49,7 +49,7 @@ export class TypeaheadComponent
 
   protected typeaheadController = new TypeaheadController(this);
   protected formControlController = new FormControlController(this);
-  protected searchController = new SearchboxController(this);
+  protected searchController = new SearchController(this);
 
   protected override render(): TemplateResult {
     return html`
