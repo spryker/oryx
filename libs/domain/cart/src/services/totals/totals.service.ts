@@ -6,12 +6,12 @@ export const enum TotalsContext {
 }
 
 export const TotalsService = 'oryx.TotalsService';
-export const TotalsServiceProvider = 'oryx.TotalsService*';
+export const TotalsResolver = 'oryx.TotalsResolver*';
 
 export interface TotalsService {
   get(context?: string): Observable<NormalizedTotals | null>;
 }
 
-export interface TotalsServiceProvider {
+export interface TotalsResolver {
   getTotals(): Observable<NormalizedTotals | null>;
 }

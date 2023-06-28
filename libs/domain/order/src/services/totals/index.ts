@@ -1,1 +1,1 @@
-export * from './default-order-totals.service';
+export * from './order-totals.resolver';

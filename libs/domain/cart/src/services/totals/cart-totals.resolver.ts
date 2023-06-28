@@ -2,9 +2,9 @@ import { Provider, resolve } from '@spryker-oryx/di';
 import { map, Observable } from 'rxjs';
 import { NormalizedTotals } from '../../models';
 import { CartService } from '../cart.service';
-import { TotalsServiceProvider } from './totals.service';
+import { TotalsResolver } from './totals.service';
 
-export class DefaultCartTotalsService implements TotalsServiceProvider {
+export class CartTotalsResolver implements TotalsResolver {
   protected cartService = resolve(CartService);
 
   getTotals(): Observable<NormalizedTotals | null> {
@@ -26,6 +26,6 @@ export class DefaultCartTotalsService implements TotalsServiceProvider {
 }
 
 export const CartTotalsProvider: Provider = {
-  provide: `${TotalsServiceProvider}CART`,
-  useClass: DefaultCartTotalsService,
+  provide: `${TotalsResolver}CART`,
+  useClass: CartTotalsResolver,
 };

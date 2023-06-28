@@ -1,7 +1,7 @@
 import {
   CartDiscount,
   NormalizedTotals,
-  TotalsServiceProvider,
+  TotalsResolver,
 } from '@spryker-oryx/cart';
 import { ContextService } from '@spryker-oryx/core';
 import { Provider, resolve } from '@spryker-oryx/di';
@@ -11,7 +11,7 @@ import { GetOrderDataProps } from '../adapter';
 import { OrderContext } from '../order-context';
 import { OrderService } from '../order.service';
 
-export class DefaultOrderTotalsService implements TotalsServiceProvider {
+export class OrderTotalsResolver implements TotalsResolver {
   protected orderService = resolve(OrderService);
   protected context = resolve(ContextService);
 
@@ -62,6 +62,6 @@ export class DefaultOrderTotalsService implements TotalsServiceProvider {
 }
 
 export const OrderTotalsProvider: Provider = {
-  provide: `${TotalsServiceProvider}ORDER`,
-  useClass: DefaultOrderTotalsService,
+  provide: `${TotalsResolver}ORDER`,
+  useClass: OrderTotalsResolver,
 };
