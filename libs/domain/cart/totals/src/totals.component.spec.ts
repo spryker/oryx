@@ -1,38 +1,48 @@
 import { fixture } from '@open-wc/testing-helpers';
-import * as cart from '@spryker-oryx/cart';
-import { cartTotalsComponent } from '@spryker-oryx/cart';
+import { cartTotalsComponent, TotalsService } from '@spryker-oryx/cart';
 import { mockNormalizedCartTotals } from '@spryker-oryx/cart/mocks';
+import * as core from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
+import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { CartTotalsComponent } from './totals.component';
 
-const mockController = () => ({
-  getTotals: vi.fn().mockReturnValue(of(mockNormalizedCartTotals)),
-  provideContext: vi.fn(),
-});
+const mockContext = {
+  get: vi.fn().mockReturnValue(of('MOCK')),
+};
+
+vi.spyOn(core, 'ContextController') as SpyInstance;
+(core.ContextController as unknown as SpyInstance).mockReturnValue(mockContext);
+
+class MockTotalService implements TotalsService {
+  get = vi.fn().mockReturnValue(of(mockNormalizedCartTotals));
+}
 
 describe('CartTotalsComponent', () => {
   let element: CartTotalsComponent;
-  const callback = vi.fn();
+  let service: MockTotalService;
 
   beforeAll(async () => await useComponent([cartTotalsComponent]));
 
   beforeEach(async () => {
-    vi.spyOn(cart, 'TotalsController') as SpyInstance;
-    (cart.TotalsController as unknown as SpyInstance).mockReturnValue(
-      mockController
-    );
+    const testInjector = createInjector({
+      providers: [
+        {
+          provide: TotalsService,
+          useClass: MockTotalService,
+        },
+      ],
+    });
 
-    element = await fixture(
-      html`<oryx-cart-totals
-        .options=${{ reference: 'CART' }}
-      ></oryx-cart-totals>`
-    );
+    service = testInjector.inject<MockTotalService>(TotalsService);
+
+    element = await fixture(html`<oryx-cart-totals></oryx-cart-totals>`);
   });
 
   afterEach(() => {
+    destroyInjector();
     vi.clearAllMocks();
   });
 
@@ -45,17 +55,9 @@ describe('CartTotalsComponent', () => {
     expect(element).toContainElement('oryx-composition');
   });
 
-  it('should provide the default context', () => {
-    expect(callback).toHaveBeenCalledWith('CART');
-  });
-
-  describe('when there are not totals', () => {
+  describe('when there are no totals', () => {
     beforeEach(async () => {
-      vi.spyOn(cart, 'TotalsController') as SpyInstance;
-      (cart.TotalsController as unknown as SpyInstance).mockReturnValue(
-        mockController
-      );
-
+      service.get = vi.fn().mockReturnValue(of(null));
       element = await fixture(html`<oryx-cart-totals></oryx-cart-totals>`);
     });
 

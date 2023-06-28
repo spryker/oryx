@@ -1,6 +1,6 @@
 export interface CartTotalsDiscountOptions {
   /**
-   * @default DiscountRowsAppearance.Inline
+   * @default DiscountRowsAppearance.Expanded
    */
   discountRowsAppearance?: DiscountRowsAppearance;
 }

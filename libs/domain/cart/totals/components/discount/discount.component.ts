@@ -43,23 +43,20 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
   }
 
   protected renderHeading(): TemplateResult | void {
-    const totals = this.$totals();
-    if (totals?.discountTotal) {
-      return html`
-        <span>
-          ${totals.discounts
-            ? i18n('cart.totals.<count>-discounts', {
-                count: totals.discounts.length,
-              })
-            : i18n('cart.totals.discounts')}
-        </span>
-        <oryx-site-price
-          slot="aside"
-          .value=${-totals.discountTotal}
-          .currency=${totals.currency}
-        ></oryx-site-price>
-      `;
-    }
+    const { discounts, discountTotal, currency } = this.$totals()!;
+    return html`
+      <span>
+        ${discounts
+          ? i18n('cart.totals.<count>-discounts', {
+              count: discounts.length,
+            })
+          : i18n('cart.totals.discounts')}
+      </span>
+      <oryx-site-price
+        .value=${-discountTotal!}
+        .currency=${currency}
+      ></oryx-site-price>
+    `;
   }
 
   protected renderDiscounts(
@@ -85,7 +82,6 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
     const { discountTotal, discounts, currency } = this.$totals() ?? {};
     if (!discountTotal || !discounts?.length) return;
     return html`<oryx-collapsible
-      class="discount"
       appearance="${CollapsibleAppearance.Inline}"
       ?open=${this.$options().discountRowsAppearance !==
       DiscountRowsAppearance.Collapsed}

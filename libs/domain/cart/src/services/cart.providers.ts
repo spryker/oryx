@@ -8,7 +8,12 @@ import {
 import { CartService } from './cart.service';
 import { DefaultCartService } from './default-cart.service';
 import { CartResourceResolver } from './resolver';
-import { CartTotalsProvider, DefaultTotalsService, TotalsContextFallback, TotalsService } from './totals';
+import {
+  CartTotalsProvider,
+  DefaultTotalsService,
+  TotalsContextFallback,
+  TotalsService,
+} from './totals';
 
 export const cartProviders: Provider[] = [
   {
@@ -27,5 +32,5 @@ export const cartProviders: Provider[] = [
   CartTotalsProvider,
   ...cartNormalizer,
   ...cartsNormalizer,
-  TotalsContextFallback
+  TotalsContextFallback,
 ];

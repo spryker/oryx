@@ -1,8 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
+import { NormalizedTotals } from '../../models';
 import { CartService } from '../cart.service';
 import { TotalsService, TotalsServiceProvider } from './totals.service';
-import { NormalizedTotals } from '../../models';
 
 export class DefaultTotalsService implements TotalsService {
   protected cartService = resolve(CartService);

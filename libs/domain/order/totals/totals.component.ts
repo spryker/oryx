@@ -1,18 +1,11 @@
-import { ContentMixin } from '@spryker-oryx/experience';
-import {
-  hydratable,
-  i18n,
-  signal,
-  signalAware,
-} from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
 import { TotalsController } from '@spryker-oryx/cart';
+import { ContentMixin } from '@spryker-oryx/experience';
+import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
+import { html, LitElement, TemplateResult } from 'lit';
 
 @hydratable('window:load')
 @signalAware()
-export class OrderTotalsComponent extends ContentMixin(
-  LitElement
-) {
+export class OrderTotalsComponent extends ContentMixin(LitElement) {
   protected totalsController = new TotalsController(this);
 
   connectedCallback(): void {

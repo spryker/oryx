@@ -1,4 +1,5 @@
 import { ContextController } from '@spryker-oryx/core';
+import { resolve } from '@spryker-oryx/di';
 import { LitElement, ReactiveController } from 'lit';
 import { defer, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { NormalizedTotals } from '../models';
@@ -6,7 +7,6 @@ import {
   TotalsContext,
   TotalsService,
 } from '../services/totals/totals.service';
-import { resolve } from '@spryker-oryx/di';
 
 export class TotalsController implements ReactiveController {
   protected context: ContextController;

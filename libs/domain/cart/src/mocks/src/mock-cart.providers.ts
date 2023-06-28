@@ -46,5 +46,5 @@ export const mockCartProviders: Provider[] = [
     provide: `${TotalsServiceProvider}CART-SINGLE-DISCOUNT`,
     useClass: mockedTotals(mockNormalizedCartTotalsSingleDiscount),
   },
-  TotalsContextFallback
+  TotalsContextFallback,
 ];
