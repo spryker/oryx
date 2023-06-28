@@ -10,7 +10,7 @@ import { isDefined } from '@spryker-oryx/utilities';
 import { PickingListDefaultAdapter } from '../../../src/services';
 // Add full import because of issue with naming exports from cjs.
 import * as jsonapi from 'jsonapi-serializer';
-import { firstValueFrom, map, Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import {
   PickingListEntity,
   PickingListItemOffline,
@@ -34,7 +34,7 @@ export class PickingListOnlineDefaultAdapter
   }
 
   get(qualifier: PickingListQualifier): Observable<PickingListEntity[]> {
-    return super.get(qualifier) as  Observable<PickingListEntity[]>;
+    return super.get(qualifier) as Observable<PickingListEntity[]>;
   }
 
   startPicking(pickingList: PickingListEntity): Observable<PickingListEntity> {
@@ -78,7 +78,8 @@ export class PickingListOnlineDefaultAdapter
 
       // Merge local status
       const localStatus =
-        (!existingPickingList || pickingList.status === existingPickingList.localStatus)
+        !existingPickingList ||
+        pickingList.status === existingPickingList.localStatus
           ? pickingList.status
           : existingPickingList.localStatus;
 
