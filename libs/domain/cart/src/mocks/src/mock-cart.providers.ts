@@ -2,6 +2,9 @@ import {
   CartAdapter,
   CartService,
   DefaultCartService,
+  DefaultTotalsService,
+  TotalsContextFallback,
+  TotalsService,
   TotalsServiceProvider,
 } from '@spryker-oryx/cart';
 import { Provider } from '@spryker-oryx/di';
@@ -28,6 +31,10 @@ export const mockCartProviders: Provider[] = [
     useValue: cartTotalsStaticData,
   },
   {
+    provide: TotalsService,
+    useClass: DefaultTotalsService,
+  },
+  {
     provide: `${TotalsServiceProvider}CART`,
     useClass: mockedTotals(mockNormalizedCartTotals),
   },
@@ -39,4 +46,5 @@ export const mockCartProviders: Provider[] = [
     provide: `${TotalsServiceProvider}CART-SINGLE-DISCOUNT`,
     useClass: mockedTotals(mockNormalizedCartTotalsSingleDiscount),
   },
+  TotalsContextFallback
 ];

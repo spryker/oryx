@@ -24,8 +24,7 @@ export const orderPage: StaticComponent = {
         },
         { type: 'oryx-order-entries' },
         {
-          type: 'oryx-cart-totals',
-          options: { data: { reference: 'ORDER' } },
+          type: 'oryx-order-totals',
           components: [
             { type: 'oryx-cart-totals-subtotal' },
             {
