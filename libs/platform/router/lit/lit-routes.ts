@@ -199,7 +199,8 @@ export class Routes implements ReactiveController {
       const result = pattern.exec({ pathname });
       const params = result?.pathname.groups ?? {};
       tailGroup = getTailGroup(params);
-      const counter = history.state?.counter ?? this.routerService.getCounter();
+      const counter =
+        globalThis.history?.state?.counter ?? this.routerService.getCounter();
 
       if (
         typeof this._currentRoute?.leave === 'function' &&
@@ -208,7 +209,7 @@ export class Routes implements ReactiveController {
         this.canDisableRouteLeaveInProgress = false;
         this.routeLeaveInProgress = true;
         const direction = counter > this.routerService.getCounter() ? -1 : 1;
-        history.go(direction);
+        globalThis.history.go(direction);
 
         let success = true;
 
@@ -220,7 +221,7 @@ export class Routes implements ReactiveController {
             return;
           }
 
-          await history.go(-direction);
+          await globalThis.history.go(-direction);
           this.canDisableRouteLeaveInProgress = true;
         };
         window.addEventListener('popstate', callback);

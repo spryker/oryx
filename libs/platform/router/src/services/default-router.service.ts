@@ -29,7 +29,7 @@ export class DefaultRouterService implements RouterService {
   private routerEvents$ = new Subject<RouterEvent>();
   private storedRoute$ = new BehaviorSubject('');
 
-  protected counter = history.state?.counter ?? 0;
+  protected counter = globalThis.history?.state?.counter ?? 0;
   protected storageService = inject(StorageService);
 
   go(route: string, extras?: NavigationExtras): void {
