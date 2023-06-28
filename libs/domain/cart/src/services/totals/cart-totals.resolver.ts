@@ -1,11 +1,11 @@
-import { Provider, resolve } from '@spryker-oryx/di';
+import { inject, Provider } from '@spryker-oryx/di';
 import { map, Observable } from 'rxjs';
 import { NormalizedTotals } from '../../models';
 import { CartService } from '../cart.service';
 import { TotalsResolver } from './totals.service';
 
 export class CartTotalsResolver implements TotalsResolver {
-  protected cartService = resolve(CartService);
+  constructor(protected cartService = inject(CartService)) {}
 
   getTotals(): Observable<NormalizedTotals | null> {
     return this.cartService.getCart().pipe(

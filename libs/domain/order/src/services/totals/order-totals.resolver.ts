@@ -4,7 +4,7 @@ import {
   TotalsResolver,
 } from '@spryker-oryx/cart';
 import { ContextService } from '@spryker-oryx/core';
-import { Provider, resolve } from '@spryker-oryx/di';
+import { inject, Provider } from '@spryker-oryx/di';
 import { map, Observable, of, switchMap } from 'rxjs';
 import { OrderData, OrderDiscount } from '../../models';
 import { GetOrderDataProps } from '../adapter';
@@ -12,8 +12,10 @@ import { OrderContext } from '../order-context';
 import { OrderService } from '../order.service';
 
 export class OrderTotalsResolver implements TotalsResolver {
-  protected orderService = resolve(OrderService);
-  protected context = resolve(ContextService);
+  constructor(
+    protected orderService = inject(OrderService),
+    protected context = inject(ContextService)
+  ) {}
 
   protected formatDiscounts(
     discounts: Record<string, OrderDiscount>
