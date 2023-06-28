@@ -10,9 +10,6 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { TotalsController } from '../../src/controllers';
 import { CartTotalsOptions } from './totals.model';
 
-@defaultOptions({
-  reference: 'CART',
-})
 @hydratable('window:load')
 @signalAware()
 export class CartTotalsComponent extends ContentMixin<CartTotalsOptions>(
@@ -24,9 +21,7 @@ export class CartTotalsComponent extends ContentMixin<CartTotalsOptions>(
   protected bindContext = (): void => {
     const reference = this.$options().reference;
 
-    if (reference) {
-      this.totalsController.provideContext(reference);
-    }
+    this.totalsController.provideContext(reference);
   };
 
   protected $totals = signal(this.totalsController.getTotals());

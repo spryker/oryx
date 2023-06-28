@@ -1,5 +1,4 @@
 import { ContextController } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/di';
 import { LitElement, ReactiveController } from 'lit';
 import { defer, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { NormalizedTotals } from '../models';
@@ -7,23 +6,24 @@ import {
   TotalsContext,
   TotalsService,
 } from '../services/totals/totals.service';
+import { resolve } from '@spryker-oryx/di';
 
 export class TotalsController implements ReactiveController {
   protected context: ContextController;
+  protected totalsService: TotalsService;
 
   constructor(protected host: LitElement) {
     this.host.addController(this);
     this.context = new ContextController(host);
+    this.totalsService = resolve(TotalsService);
   }
 
   hostDisconnected?(): void;
 
-  protected getReference(ref: string): string {
-    return `${TotalsService}${ref}`;
-  }
-
-  provideContext(context: string): void {
-    this.context.provide(TotalsContext.Reference, context);
+  provideContext(context?: string): void {
+    if (context) {
+      this.context.provide(TotalsContext.Reference, context);
+    }
   }
 
   getTotals(): Observable<NormalizedTotals | null> {
@@ -31,9 +31,7 @@ export class TotalsController implements ReactiveController {
       this.context.get<string>(TotalsContext.Reference).pipe(
         switchMap((context) => {
           if (!context) return of(null);
-          return (
-            resolve(this.getReference(context)) as TotalsService
-          ).getTotals();
+          return this.totalsService.get(context);
         }),
         shareReplay({ refCount: true, bufferSize: 1 })
       )

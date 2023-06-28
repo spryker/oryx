@@ -1,21 +1,21 @@
 import { Provider, resolve } from '@spryker-oryx/di';
 import { map, Observable } from 'rxjs';
-import { CartQualifier, NormalizedTotals } from '../../models';
+import { NormalizedTotals } from '../../models';
 import { CartService } from '../cart.service';
-import { TotalsService } from './totals.service';
+import { TotalsServiceProvider } from './totals.service';
 
-export class DefaultCartTotalsService implements TotalsService {
+export class DefaultCartTotalsService implements TotalsServiceProvider {
   protected cartService = resolve(CartService);
 
-  getTotals(qualifier?: CartQualifier): Observable<NormalizedTotals | null> {
-    return this.cartService.getCart(qualifier).pipe(
+  getTotals(): Observable<NormalizedTotals | null> {
+    return this.cartService.getCart().pipe(
       map((cart) => {
         if (!cart?.products?.length) return null;
 
         const { totals, currency, discounts, priceMode } = cart;
 
         return {
-          ...(totals ?? {}),
+          ...totals,
           priceMode,
           currency,
           discounts,
@@ -26,6 +26,6 @@ export class DefaultCartTotalsService implements TotalsService {
 }
 
 export const CartTotalsProvider: Provider = {
-  provide: `${TotalsService}CART`,
+  provide: `${TotalsServiceProvider}CART`,
   useClass: DefaultCartTotalsService,
 };

@@ -1,7 +1,7 @@
 import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { Observable, of } from 'rxjs';
 import { NormalizedTotals } from '../../models';
-import { TotalsService } from '../../services';
+import { TotalsServiceProvider } from '../../services';
 
 const types = [
   'subtotal',
@@ -35,7 +35,7 @@ const discountVariations = [
 }));
 
 export const mockedTotals = (totals: NormalizedTotals) => {
-  return class implements TotalsService {
+  return class implements TotalsServiceProvider {
     getTotals(): Observable<NormalizedTotals | null> {
       return of(totals);
     }

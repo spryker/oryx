@@ -2,7 +2,7 @@ import {
   CartAdapter,
   CartService,
   DefaultCartService,
-  TotalsService,
+  TotalsServiceProvider,
 } from '@spryker-oryx/cart';
 import { Provider } from '@spryker-oryx/di';
 import { ExperienceStaticData } from '@spryker-oryx/experience';
@@ -28,15 +28,15 @@ export const mockCartProviders: Provider[] = [
     useValue: cartTotalsStaticData,
   },
   {
-    provide: `${TotalsService}CART`,
+    provide: `${TotalsServiceProvider}CART`,
     useClass: mockedTotals(mockNormalizedCartTotals),
   },
   {
-    provide: `${TotalsService}CART-NET-MODE`,
+    provide: `${TotalsServiceProvider}CART-NET-MODE`,
     useClass: mockedTotals(mockNormalizedCartTotalsNetMode),
   },
   {
-    provide: `${TotalsService}CART-SINGLE-DISCOUNT`,
+    provide: `${TotalsServiceProvider}CART-SINGLE-DISCOUNT`,
     useClass: mockedTotals(mockNormalizedCartTotalsSingleDiscount),
   },
 ];
