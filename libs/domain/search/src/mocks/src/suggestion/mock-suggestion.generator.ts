@@ -1,6 +1,7 @@
 import { Product } from '@spryker-oryx/product';
 import {
   Suggestion,
+  SuggestionField,
   SuggestionQualifier,
   SuggestionResource,
 } from '@spryker-oryx/search';
@@ -60,9 +61,11 @@ export const createSuggestionMock = (
   const completion = _completions.filter((c) => c.match(re));
 
   return {
-    completion,
-    categories: createResources(completion, 'Category'),
-    cmsPages: createResources(completion, 'Pages'),
-    products: createProducts(completion),
+    [SuggestionField.Suggestions]: completion.map((name) => ({
+      name,
+      params: { q: name },
+    })),
+    [SuggestionField.Categories]: createResources(completion, 'Category'),
+    [SuggestionField.Products]: createProducts(completion),
   };
 };

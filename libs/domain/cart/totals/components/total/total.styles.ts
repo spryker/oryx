@@ -25,7 +25,7 @@ const cartTotalsTotalRules = css`
     ${headingUtil(HeadingTag.H5)};
   }
 
-  span:nth-child(2) {
+  oryx-site-price {
     ${headingUtil(HeadingTag.H3)};
   }
 
@@ -39,20 +39,11 @@ const cartTotalsTotalRules = css`
 `;
 
 const cartTotalsTotalSmallStyles = css`
-  :host {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding-inline: var(--oryx-space-4);
-    padding-block-start: var(--oryx-space-2);
-    border-block-start: solid 1px var(--oryx-color-neutral-6);
-  }
-
   span:first-child {
     ${headingUtil(HeadingTag.H3)};
   }
 
-  span:nth-child(2) {
+  oryx-site-price {
     ${headingUtil(HeadingTag.H1)};
   }
 

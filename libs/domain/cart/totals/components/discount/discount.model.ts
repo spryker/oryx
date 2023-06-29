@@ -1,11 +1,11 @@
 export interface CartTotalsDiscountOptions {
   /**
-   * @default DiscountRowsAppearance.Inline
+   * @default DiscountRowsAppearance.Expanded
    */
   discountRowsAppearance?: DiscountRowsAppearance;
 }
 
-export const enum DiscountRowsAppearance {
+export enum DiscountRowsAppearance {
   /**
    * Indicates to not render discount rows at all.
    */

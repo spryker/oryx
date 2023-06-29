@@ -8,6 +8,7 @@ import {
 } from '@spryker-oryx/product';
 import { map, Observable } from 'rxjs';
 import { Suggestion } from '../../../../models';
+import { SuggestionField } from '../../suggestion.adapter';
 import { DeserializedSuggestion } from './model';
 
 export const SuggestionNormalizer = 'oryx.SuggestionNormalizer*';
@@ -15,17 +16,19 @@ export const SuggestionNormalizer = 'oryx.SuggestionNormalizer*';
 export function suggestionAttributesNormalizer(
   data: DeserializedSuggestion[]
 ): Partial<Suggestion> {
-  const { completion, categories, cmsPages, categoryCollection } = data[0];
+  const { completion, categories, categoryCollection } = data[0];
 
   return {
-    completion,
-    categories: categories.map((category) => ({
-      ...category,
-      idCategory: categoryCollection?.find(
+    [SuggestionField.Suggestions]: completion.map((name) => ({
+      name,
+      params: { q: name },
+    })),
+    [SuggestionField.Categories]: categories.map((category) => ({
+      name: category.name,
+      id: categoryCollection?.find(
         (collection) => category.name === collection.name
       )?.idCategory,
     })),
-    cmsPages,
   };
 }
 
@@ -38,7 +41,7 @@ export function suggestionProductNormalizer(
 
   return transformer
     .transform<Product[]>(products, ConcreteProductsNormalizer)
-    .pipe(map((products) => ({ products })));
+    .pipe(map((products) => ({ [SuggestionField.Products]: products })));
 }
 
 export const suggestionNormalizer: Provider[] = [

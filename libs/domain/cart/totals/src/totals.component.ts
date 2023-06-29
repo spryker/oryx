@@ -1,12 +1,15 @@
 import { ContentMixin } from '@spryker-oryx/experience';
-import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { CartComponentMixin } from '../../src/mixins/cart.mixin';
+import { TotalsController } from '../../src/controllers';
 
 @hydratable('window:load')
-export class CartTotalsComponent extends CartComponentMixin(
-  ContentMixin(LitElement)
-) {
+@signalAware()
+export class CartTotalsComponent extends ContentMixin(LitElement) {
+  protected totalsController = new TotalsController(this);
+
+  protected $totals = signal(this.totalsController.getTotals());
+
   protected override render(): TemplateResult | void {
     if (this.$totals()) {
       return html`<h2>${i18n('cart.totals.summary')}</h2>

@@ -10,7 +10,8 @@ const cartTotalRules = css`
     padding-inline: var(--oryx-space-4);
   }
 
-  span {
+  span,
+  oryx-site-price {
     ${headingUtil(HeadingTag.H6)};
 
     padding-block: var(--oryx-space-2);
@@ -24,8 +25,13 @@ const smallScreenRules = css`
     padding-inline: var(--oryx-space-4);
   }
 
-  span {
+  span,
+  oryx-site-price {
     ${headingUtil(HeadingTag.H3)};
+  }
+
+  oryx-site-price {
+    margin-inline-start: auto;
   }
 `;
 
