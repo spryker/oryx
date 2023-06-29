@@ -19,6 +19,8 @@ import { TypeaheadComponent } from '@spryker-oryx/ui/typeahead';
 import {
   computed,
   debounce,
+  effect,
+  elementEffect,
   hydratable,
   i18n,
   signal,
@@ -30,7 +32,7 @@ import { LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { html } from 'lit/static-html.js';
-import { of } from 'rxjs';
+import { BehaviorSubject, switchMap } from 'rxjs';
 import { SearchBoxOptions, SearchBoxProperties } from './box.model';
 import { baseStyles, searchBoxStyles } from './styles';
 
@@ -60,18 +62,24 @@ export class SearchBoxComponent
   protected semanticLinkService = resolve(SemanticLinkService);
   protected i18nService = resolve(I18nService);
 
-  protected $raw = computed(() => {
-    const query = this.query?.trim();
+  // TODO: simplify it when we find easier way how to skip emission of initialValue for each observable recreation
+  protected query$ = new BehaviorSubject(this.query);
+  protected suggestion$ = this.query$.pipe(
+    switchMap((query) =>
+      this.suggestionRendererService.get(query, this.$options().entities)
+    )
+  );
+
+  @elementEffect()
+  protected queryEffect = effect(() => this.query$.next(this.query));
+  protected $raw = computed(() => this.suggestion$);
+  protected $suggestion = computed(() => {
+    const query = this.query.trim();
     const options = this.$options();
     const withSuggestion =
       query && (!options.minChars || query.length >= options.minChars);
+    const suggestion = withSuggestion ? this.$raw() : null;
 
-    return withSuggestion
-      ? this.suggestionRendererService.getSuggestions(query, options)
-      : of(null);
-  });
-  protected $suggestion = computed(() => {
-    const suggestion = this.$raw();
     this.toggleAttribute?.('stretched', !this.isNothingFound(suggestion));
 
     return suggestion;
@@ -87,8 +95,6 @@ export class SearchBoxComponent
       ...(this.query ? { params: { q: this.query } } : {}),
     })
   );
-
-  protected $render = computed(() => this.suggestionRendererService.render());
 
   protected override render(): TemplateResult {
     return html`
@@ -143,7 +149,10 @@ export class SearchBoxComponent
     return html`
       <div slot="option">
         <div @scroll=${debounce(this.onScroll.bind(this), 20)}>
-          ${this.$render()}
+          ${this.suggestionRendererService.render(suggestion, {
+            ...this.$options(),
+            query: this.query,
+          })}
         </div>
       </div>
     `;

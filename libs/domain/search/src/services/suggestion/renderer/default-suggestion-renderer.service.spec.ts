@@ -2,19 +2,17 @@ import { mockLitHtml } from '@/tools/testing';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { html } from 'lit';
 import { of, take } from 'rxjs';
+import { Suggestion } from '../../../models';
 import { SuggestionService } from '../suggestion.service';
 import { DefaultSuggestionRendererService } from './default-suggestion-renderer.service';
-import {
-  SuggestionRenderer,
-  SuggestionRendererOptions,
-} from './suggestion-renderer.service';
+import { SuggestionRenderer } from './suggestion-renderer.service';
 
 vi.mock('lit', async () => ({
   ...((await vi.importActual('lit')) as Array<unknown>),
   html: mockLitHtml,
 }));
 
-const mockSuggestionRendererA = vi.fn();
+const mockSuggestionRendererProducts = vi.fn();
 
 const mockSuggestionRendererB = vi.fn();
 
@@ -35,7 +33,7 @@ describe('DefaultSuggestionRendererService', () => {
         {
           provide: SuggestionRenderer,
           useValue: {
-            a: mockSuggestionRendererA,
+            products: mockSuggestionRendererProducts,
             b: mockSuggestionRendererB,
           },
         },
@@ -53,15 +51,11 @@ describe('DefaultSuggestionRendererService', () => {
     destroyInjector();
   });
 
-  describe('getSuggestions', () => {
+  describe('get', () => {
     it('should return data from renderers', () => {
       const callback = vi.fn();
       mockSuggestionService.get.mockReturnValue(of({ a: 'a', b: 'b' }));
-      const result = renderer.getSuggestions('que', {
-        op1: 'op1',
-        op2: 'op2',
-        entities: ['a', 'b'],
-      } as SuggestionRendererOptions);
+      const result = renderer.get('que', ['a', 'b']);
       result.pipe(take(1)).subscribe(callback);
       expect(mockSuggestionService.get).toHaveBeenCalledWith({
         entities: ['a', 'b'],
@@ -73,22 +67,20 @@ describe('DefaultSuggestionRendererService', () => {
 
   describe('render', () => {
     it('should return data from renderers', () => {
-      const callback = vi.fn();
       mockSuggestionService.get.mockReturnValue(of({ a: 'a', b: 'b' }));
-      mockSuggestionRendererA.mockReturnValue(html`<div a></div>`);
+      mockSuggestionRendererProducts.mockReturnValue(html`<div a></div>`);
       mockSuggestionRendererB.mockReturnValue(html`<div b></div>`);
-      renderer
-        .getSuggestions('que', {
-          entities: ['a', 'b'],
-          aCount: 3,
-        } as SuggestionRendererOptions)
-        .pipe(take(1))
-        .subscribe();
-      const result = renderer.render();
-      result.pipe(take(1)).subscribe(callback);
-      expect(mockSuggestionRendererA).toHaveBeenCalledWith('a', {
+      const result = renderer.render(
+        { products: 'a', b: 'b' } as unknown as Suggestion,
+        {
+          entities: ['products', 'b'],
+          productsCount: 3,
+          query: 'que',
+        }
+      );
+      expect(mockSuggestionRendererProducts).toHaveBeenCalledWith('a', {
         count: 3,
-        title: 'search.box.a',
+        title: 'search.box.products',
         type: 'search',
         query: 'que',
       });
@@ -97,7 +89,7 @@ describe('DefaultSuggestionRendererService', () => {
         type: 'search',
         query: 'que',
       });
-      expect(callback).toHaveBeenCalledWith('<div a></div>,<div b></div>');
+      expect(result).toBe('<div a></div>,<div b></div>');
     });
   });
 });

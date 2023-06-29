@@ -1,15 +1,9 @@
 import { inject } from '@spryker-oryx/di';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { html, TemplateResult } from 'lit';
-import {
-  map,
-  Observable,
-  ReplaySubject,
-  switchMap,
-  withLatestFrom,
-} from 'rxjs';
+import { Observable } from 'rxjs';
 import { Suggestion } from '../../../models';
-import { SuggestionField } from '../../adapter';
+import { SuggestionEntities, SuggestionField } from '../../adapter';
 import { SuggestionService } from '../suggestion.service';
 import {
   SuggestionRenderer,
@@ -38,48 +32,36 @@ export class DefaultSuggestionRendererService
     [SuggestionField.Articles]: SemanticLinkType.Article,
   };
 
-  protected data$ = new ReplaySubject<
-    SuggestionRendererOptions & Record<'query', string>
-  >(1);
-  protected suggestion$ = this.data$.pipe(
-    switchMap(({ query, entities }) =>
-      this.suggestionService.get({ query, entities })
-    )
-  );
-
-  getSuggestions(
+  get(
     query: string,
-    options?: SuggestionRendererOptions
+    entities?: SuggestionEntities
   ): Observable<Suggestion | undefined> {
-    this.data$.next({ query, ...options });
-    return this.suggestion$;
+    return this.suggestionService.get({ query, entities });
   }
 
-  render(): Observable<TemplateResult | void> {
-    return this.suggestion$.pipe(
-      withLatestFrom(this.data$),
-      map(([suggestions, options]) => {
-        const data = options.entities?.map(
-          (entry) => suggestions?.[entry as keyof Suggestion]
-        );
-
-        return html`${data?.map((suggestion, index) => {
-          const entity = options?.entities?.[index] ?? '';
-          const renderer = this.renderers[entity];
-          const args = {
-            query: options.query,
-            title: `search.box.${entity}`,
-            count: options[
-              `${entity}Count` as keyof SuggestionRendererOptions
-            ] as number,
-            type: this.linkTypeMapper[entity] ?? SemanticLinkType.ProductList,
-          };
-
-          return options?.entities && renderer
-            ? renderer(suggestion, args)
-            : this.renderers.default(suggestion, args);
-        })}`;
-      })
+  render(
+    suggestions: Suggestion,
+    options: SuggestionRendererOptions & Record<'query', string>
+  ): TemplateResult {
+    const data = options.entities?.map(
+      (entry) => suggestions?.[entry as keyof Suggestion]
     );
+
+    return html`${data?.map((suggestion, index) => {
+      const entity = options?.entities?.[index] ?? '';
+      const renderer = this.renderers[entity];
+      const args = {
+        query: options.query,
+        title: `search.box.${entity}`,
+        count: options[
+          `${entity}Count` as keyof SuggestionRendererOptions
+        ] as number,
+        type: this.linkTypeMapper[entity] ?? SemanticLinkType.ProductList,
+      };
+
+      return options?.entities && renderer
+        ? renderer(suggestion, args)
+        : this.renderers.default(suggestion, args);
+    })}`;
   }
 }

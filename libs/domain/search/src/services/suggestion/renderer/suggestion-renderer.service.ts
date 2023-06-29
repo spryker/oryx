@@ -29,10 +29,13 @@ export interface SuggestionRendererParams {
 }
 
 export interface SuggestionRendererService {
-  render(): Observable<TemplateResult | void>;
-  getSuggestions(
+  render(
+    suggestions: Suggestion,
+    options: SuggestionRendererOptions & Record<'query', string>
+  ): TemplateResult;
+  get(
     query: string,
-    options?: SuggestionRendererOptions
+    entities?: SuggestionEntities
   ): Observable<Suggestion | undefined>;
 }
 

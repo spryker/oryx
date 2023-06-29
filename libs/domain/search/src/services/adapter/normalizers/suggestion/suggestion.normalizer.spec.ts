@@ -11,13 +11,11 @@ const mockDeserializedSuggestion = {
   completion: ['A'],
   categories: [
     {
-      url: 'categories-url',
       name: 'name',
     },
   ],
   cmsPages: [
     {
-      url: 'cmsPages-url',
       name: 'name',
     },
   ],

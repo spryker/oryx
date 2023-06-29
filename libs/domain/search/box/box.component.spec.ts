@@ -23,7 +23,7 @@ class MockSuggestionRendererService
   implements Partial<SuggestionRendererService>
 {
   render = vi.fn().mockReturnValue(html`Lorem`);
-  getSuggestions = vi.fn().mockReturnValue(of({ data: ['data'] }));
+  get = vi.fn().mockReturnValue(of({ data: ['data'] }));
 }
 
 class MockI18NService implements Partial<I18nService> {
@@ -220,7 +220,7 @@ describe('SearchBoxComponent', () => {
 
   describe('when not found', () => {
     beforeEach(async () => {
-      suggestionService.getSuggestions.mockReturnValueOnce(of({ data: [] }));
+      suggestionService.get.mockReturnValueOnce(of({ data: [] }));
 
       element = await fixture(
         html`<oryx-search-box query="abracadabra"></oryx-search-box>`
