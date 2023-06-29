@@ -43,7 +43,7 @@ export interface Query<
   get(qualifier?: Qualifier): Observable<ValueType | undefined>;
   getState(qualifier?: Qualifier): Observable<QueryState<ValueType>>;
   set(data: {
-    data: ValueType;
+    data: ValueType | ((prev: ValueType | undefined) => ValueType);
     qualifier?: Qualifier;
     optimistic?: boolean;
   }): void;
