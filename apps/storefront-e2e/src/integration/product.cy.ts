@@ -20,7 +20,7 @@ describe('Product Detail Page', () => {
       pdp.visit();
     });
 
-    it('should show correct content', () => {
+    it('should show correct content', { tags: 'smoke' }, () => {
       productDetailPage.getAvailability().should('be.visible');
       pdp.getRelations().getProducts().should('not.exist');
     });

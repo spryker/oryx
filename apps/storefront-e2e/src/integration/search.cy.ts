@@ -32,7 +32,7 @@ describe('Search suite', () => {
     search.clearSearch();
   });
 
-  it('must go to PDP from search results', () => {
+  it('must go to PDP from search results', { tags: 'smoke' }, () => {
     const productData = ProductStorage.getProductByEq(3);
     const pdp = new ProductDetailsPage(productData);
 

@@ -13,7 +13,7 @@ const checkoutPage = new CheckoutPage();
 // TODO: refactor tests to make them more readable
 // TODO: add a test for an order with different shipping and billing addresses set
 
-describe('Checkout suite', () => {
+describe('Checkout suite', { tags: 'smoke' }, () => {
   describe('Create a new order by authorized user without addresses', () => {
     beforeEach(() => {
       cy.login();

@@ -62,6 +62,7 @@
       ],
       "@spryker-oryx/cli": ["libs/template/cli/src/index.ts"],
       "@spryker-oryx/content": ["libs/domain/content/src/index.ts"],
+      "@spryker-oryx/content/article": ["libs/domain/content/article/index.ts"],
       "@spryker-oryx/content/banner": ["libs/domain/content/banner/index.ts"],
       "@spryker-oryx/content/link": ["libs/domain/content/link/index.ts"],
       "@spryker-oryx/content/text": ["libs/domain/content/text/index.ts"],
