@@ -102,6 +102,7 @@ export module ApiCheckoutModel {
     ShipmentMethods = 'shipment-methods',
     Addresses = 'addresses',
     PaymentMethods = 'payment-methods',
+    Carts = 'carts',
   }
 
   export type ResponseIncludes =
