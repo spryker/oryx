@@ -58,18 +58,12 @@ export const textStyles = css`
 
   a {
     text-decoration: none;
+    color: currentColor;
   }
 
   a[href=''],
   a:not([href]) {
     pointer-events: none;
-  }
-
-  a {
-    color: currentColor;
-  }
-
-  a[href]:not([href='']):not(:active) {
   }
 
   a[color='primary'] {
@@ -83,6 +77,7 @@ export const textStyles = css`
 
   a:active {
     color: var(--oryx-color-primary-9);
+    /* stylelint-disable-next-line */
     text-decoration-color: currentColor;
   }
 
