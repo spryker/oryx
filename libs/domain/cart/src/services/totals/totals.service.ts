@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { NormalizedTotals } from '../../models';
 
 export const enum TotalsContext {
-  Reference = 'reference',
+  Reference = 'cart-totals',
 }
 
 export const TotalsService = 'oryx.TotalsService';

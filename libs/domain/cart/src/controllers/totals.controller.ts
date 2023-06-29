@@ -1,7 +1,7 @@
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { LitElement, ReactiveController } from 'lit';
-import { defer, Observable, of, shareReplay, switchMap } from 'rxjs';
+import { defer, Observable, shareReplay, switchMap } from 'rxjs';
 import { NormalizedTotals } from '../models';
 import {
   TotalsContext,
@@ -30,7 +30,6 @@ export class TotalsController implements ReactiveController {
     return defer(() =>
       this.context.get<string>(TotalsContext.Reference).pipe(
         switchMap((context) => {
-          if (!context) return of(null);
           return this.totalsService.get(context);
         }),
         shareReplay({ refCount: true, bufferSize: 1 })
