@@ -65,8 +65,15 @@ export const textStyles = css`
     pointer-events: none;
   }
 
+  a {
+    color: currentColor;
+  }
+
   a[href]:not([href='']):not(:active) {
-    color: var(--oryx-color, var(--oryx-color-primary-10));
+  }
+
+  a[color='primary'] {
+    color: var(--oryx-color-primary-10);
   }
 
   a:hover {
@@ -76,6 +83,7 @@ export const textStyles = css`
 
   a:active {
     color: var(--oryx-color-primary-9);
+    text-decoration-color: currentColor;
   }
 
   a:focus-visible {

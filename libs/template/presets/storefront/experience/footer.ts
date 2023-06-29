@@ -90,7 +90,7 @@ const selfServiceLinks = {
   options: {
     data: {
       rules: [
-        { layout: 'column', columnCount: 3, color: 'currentColor' },
+        { layout: 'column', columnCount: 3 },
         { query: { breakpoint: 'md' }, columnCount: 2 },
         { query: { breakpoint: 'sm' }, columnCount: 2 },
       ],
@@ -252,7 +252,6 @@ export const FooterTemplate: StaticComponent = {
                   vertical: true,
                   divider: true,
                   gap: '40px 18px',
-                  color: 'currentColor',
                 },
               ],
             },
