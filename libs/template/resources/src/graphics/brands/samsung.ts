@@ -1,8 +1,8 @@
 export const resource = `
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg viewBox="0 0 7051.4024 1080">
+  <style>g {transition: all var(--oryx-transition-time)}</style>
   <g transform="matrix(12.944053,0,0,-12.944053,-540.03625,1620.0233)">
-
       <g clip-path="url(#clipPath16)"
         transform="translate(558.9328,88.5098)"
         style="fill:var(--oryx-fill, #1428a0)">

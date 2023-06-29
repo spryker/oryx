@@ -1,4 +1,4 @@
-import { I18nContext } from '@spryker-oryx/utilities';
+import { I18nContext, I18nContextValue } from '@spryker-oryx/utilities';
 import Globalize from 'globalize';
 import type { I18nDataBundle } from './i18n.loader';
 
@@ -35,9 +35,10 @@ export class GlobalizeService {
   async formatMessage(
     localeId: string,
     token: string,
-    context?: I18nContext
+    context: I18nContext = {}
   ): Promise<string | undefined> {
     const globalize = await this.getFor(localeId);
+    context = this.normalizeContext(context) as I18nContext;
 
     // If formatMessage throws - the token is not in the dataset
     try {
@@ -95,5 +96,51 @@ export class GlobalizeService {
   protected resetLoadStatus(): void {
     this.loadStatus = undefined;
     this.dropCaches();
+  }
+
+  /**
+   * Globalize supports only shallow object context
+   * so we inline all nested objects into one object
+   * with camleCase keys.
+   *
+   * @example
+   * Input cotnext:
+   * ```ts
+   * { val1: { val2: { 'val3' } } }
+   * ```
+   * Normalized context:
+   * ```ts
+   * { val1Val2: 'val3' }
+   * ```
+   */
+  protected normalizeContext(
+    context?: I18nContext | I18nContextValue,
+    parentKey?: string
+  ): I18nContext | I18nContextValue | undefined {
+    if (context && typeof context === 'object') {
+      return Object.fromEntries(
+        Object.entries(context).reduce((ctx, [key, value]) => {
+          const fullKey = parentKey
+            ? `${parentKey}${key.replace(/(^\w)/, (_, c: string) =>
+                c.toUpperCase()
+              )}`
+            : key;
+
+          const fullValues = this.normalizeContext(value, fullKey);
+
+          if (!fullValues) {
+            return ctx;
+          }
+
+          if (typeof fullValues === 'object') {
+            return [...ctx, ...Object.entries(fullValues)];
+          }
+
+          return [...ctx, [fullKey, fullValues]];
+        }, [] as [string, I18nContext | I18nContextValue][])
+      );
+    }
+
+    return context;
   }
 }

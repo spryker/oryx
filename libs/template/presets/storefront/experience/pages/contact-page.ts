@@ -13,8 +13,7 @@ export const contactPage: StaticComponent = {
       rules: [
         {
           layout: 'list',
-          margin: '50 0',
-          padding: '10 0',
+          padding: '10px 0',
           bleed: true,
           background: 'var(--oryx-color-primary-3)',
         },
@@ -24,11 +23,15 @@ export const contactPage: StaticComponent = {
   components: [
     {
       type: 'oryx-content-link',
+      content: {
+        data: {
+          text: 'This is Contact Page element. Remove me when the page is implemented',
+        },
+      },
       options: {
         data: {
           type: 'rawUrl',
-          id: '/contact',
-          text: 'This is Contact Page element. Remove me when the page is implemented',
+          url: '/contact',
           icon: IconTypes.Check,
         },
       },

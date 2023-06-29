@@ -12,8 +12,13 @@ export class PickingFragment {
   getPartialPickingCancelButton = () =>
     this.getPartialPickingDialog().find('button').contains('Cancel');
   getPickingCompleteImage = () =>
-    cy.get('.picking-complete oryx-image').shadow().find('svg');
-  getPickingCompleteTitle = () => cy.get('.picking-complete h3');
-  getPickingCompleteText = () => cy.get('.picking-complete p');
+    cy
+      .get('section oryx-image[resource="picking-items-processed"]')
+      .shadow()
+      .find('svg');
+  getPickingCompleteTitle = () => cy.get('section h1');
+  getPickingCompleteText = () => cy.get('section span');
+  getNoItemsTitle = () => cy.get('section h2');
+  getNoItemsImage = () => cy.get('section oryx-image[resource="no-orders"]');
   getFinishPickingButton = () => cy.get('.submit-wrapper oryx-button button');
 }

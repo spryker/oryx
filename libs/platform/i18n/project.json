@@ -7,7 +7,12 @@
       "executor": "./tools/executors/components-library:build"
     },
     "test": {
-      "executor": "./tools/executors/oryx-vite:vitest"
+      "executor": "./tools/executors/oryx-vite:vitest",
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

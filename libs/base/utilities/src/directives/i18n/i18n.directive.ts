@@ -1,4 +1,6 @@
+import { html, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { i18nInjectable, InferI18nContext } from '../../injectables';
 
 /**
@@ -33,6 +35,20 @@ import { i18nInjectable, InferI18nContext } from '../../injectables';
 export function i18n<T extends string | readonly string[]>(
   token: T,
   context?: InferI18nContext<T>
-): string | DirectiveResult {
-  return i18nInjectable.get().translate(token, context);
+): DirectiveResult | TemplateResult {
+  const result = i18nInjectable.get().translate<T>(token, context);
+
+  if (typeof result === 'string') {
+    return result;
+  }
+
+  if ('text' in result) {
+    if (result.hasHtml && typeof result.text === 'string') {
+      return html`${unsafeHTML(result.text)}`;
+    } else {
+      return result.text;
+    }
+  }
+
+  return result;
 }

@@ -123,8 +123,8 @@ export class PickingListsComponent extends LitElement {
   protected renderFilters(): TemplateResult {
     return html` <div class="filters">
       <span>
-        ${i18n('picking.filter.<value>-open-orders', {
-          value: this.pickingLists?.length ?? 0,
+        ${i18n('picking.filter.<count>-open-pick-lists', {
+          count: this.pickingLists?.length ?? 0,
         })}
       </span>
       <oryx-picking-filter-button></oryx-picking-filter-button>

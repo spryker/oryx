@@ -42,6 +42,7 @@ interface LinksSection {
   title?: DirectiveResult;
   options: SuggestionResource[];
   type: SemanticLinkType;
+  id?: string;
 }
 
 @defaultOptions({
@@ -200,7 +201,7 @@ export class SearchBoxComponent
         title: i18n('search.box.categories'),
         options: suggestion.categories.map(({ name, idCategory }) => ({
           name,
-          url: idCategory,
+          idCategory,
         })),
         type: SemanticLinkType.Category,
       },
@@ -225,15 +226,11 @@ export class SearchBoxComponent
       <h5>${title}</h5>
       <ul>
         ${options.map(
-          ({ name, url, params }) => html`
+          ({ name, url, idCategory, params }) => html`
             <li>
               <oryx-content-link
-                .options="${{
-                  type,
-                  id: url ?? '',
-                  params: params ?? null,
-                  text: name,
-                }}"
+                .options=${{ url, type, id: idCategory, params }}
+                .content=${{ text: name }}
                 close-popover
               ></oryx-content-link>
             </li>
@@ -251,11 +248,11 @@ export class SearchBoxComponent
 
         <oryx-button outline @click=${this.onClose}>
           <oryx-content-link
-            .options="${{
+            .options=${{
               type: SemanticLinkType.ProductList,
-              text: i18n('search.box.view-all-products'),
               params: { q: this.query },
-            }}"
+            }}
+            .content=${{ text: i18n('search.box.view-all-products') }}
           ></oryx-content-link>
         </oryx-button>
       </section>

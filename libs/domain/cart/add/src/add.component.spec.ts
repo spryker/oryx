@@ -11,7 +11,7 @@ import { Product, ProductService } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
 import { buttonComponent } from '@spryker-oryx/ui';
 import { wait } from '@spryker-oryx/utilities';
-import { BehaviorSubject, delay, Observer, of } from 'rxjs';
+import { BehaviorSubject, delay, of } from 'rxjs';
 import { CartAddComponent } from './add.component';
 import { addToCartComponent } from './add.def';
 
@@ -127,6 +127,13 @@ describe('CartAddComponent', () => {
       expect(element).toContainElement('button:not([disabled])');
     });
 
+    it('should have a max quantity of 10', () => {
+      const quantityInput = element.renderRoot.querySelector(
+        'oryx-cart-quantity-input'
+      ) as QuantityInputComponent;
+      expect(quantityInput.max).toBe(10);
+    });
+
     describe('and when an update is dispatched with an invalid quantity', () => {
       beforeEach(() => {
         const input = element.shadowRoot?.querySelector(
@@ -156,6 +163,13 @@ describe('CartAddComponent', () => {
     it('should disable the button', () => {
       expect(element).toContainElement('button[disabled]');
     });
+
+    it('should have max quantity of 0', () => {
+      const quantityInput = element.renderRoot.querySelector(
+        'oryx-cart-quantity-input'
+      ) as QuantityInputComponent;
+      expect(quantityInput.max).toBe(0);
+    });
   });
 
   describe('when isNeverOutOfStock = true', () => {
@@ -171,6 +185,13 @@ describe('CartAddComponent', () => {
 
     it('should enable the button', () => {
       expect(element).toContainElement('button:not([disabled])');
+    });
+
+    it('should have an infinite max quantity', () => {
+      const quantityInput = element.renderRoot.querySelector(
+        'oryx-cart-quantity-input'
+      ) as QuantityInputComponent;
+      expect(quantityInput.max).toBe(Infinity);
     });
   });
 
@@ -241,13 +262,23 @@ describe('CartAddComponent', () => {
       });
 
       describe('when adding an item to cart throws an error', () => {
+        let errorCallback: any;
         beforeEach(async () => {
-          service?.addEntry?.mockReturnValue({
-            subscribe: (callback: Partial<Observer<any>>) => {
-              // simulate observable that errors
-              callback.error?.(new Error('error'));
-              callback.complete?.();
-            },
+          service.addEntry?.mockImplementation(() => {
+            return {
+              subscribe: vi.fn().mockImplementation(({ error }) => {
+                //simulate error handling in subscribe
+                //try - catch are required not to pollute test env
+                //by unhandled errors
+                try {
+                  const e = new Error('error');
+                  errorCallback = error.bind(null, e);
+                  error(e);
+                } catch {
+                  //
+                }
+              }),
+            };
           });
 
           element = await fixture(
@@ -259,8 +290,14 @@ describe('CartAddComponent', () => {
           await nextFrame();
         });
 
-        it('should not have the oryx-button in confirmed state', async () => {
-          expect(element).toContainElement('oryx-button:not([confirmed])');
+        it('should throw the handled error', () => {
+          expect(() => errorCallback()).toThrowError('error');
+        });
+
+        it('should drop the states from confirmation button', () => {
+          expect(element).toContainElement(
+            'oryx-button:not([confirmed][loading])'
+          );
         });
       });
     });
