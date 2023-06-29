@@ -1,7 +1,7 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
-import { from, merge, Observable, of } from 'rxjs';
+import { merge, Observable, of } from 'rxjs';
 import { reduce } from 'rxjs/operators';
 import { CompositionLayout } from '../../models';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
@@ -35,7 +35,7 @@ export class DefaultLayoutService implements LayoutService {
   }
 
   protected resolveCommonStyles(): Observable<string> {
-    return from(
+    return ssrAwaiter(
       import('./styles/base.styles').then((m) => m.styles?.toString() ?? '')
     );
   }
