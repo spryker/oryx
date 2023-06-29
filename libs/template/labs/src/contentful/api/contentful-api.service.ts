@@ -1,4 +1,3 @@
-import { SuggestionResource } from '@spryker-oryx/search';
 import { Observable } from 'rxjs';
 
 export const ContentfulToken = 'oryx.ContentfulSpace';
@@ -23,10 +22,6 @@ export interface ContentfulResponse {
     };
     fields: Record<string, string>;
   }[];
-}
-
-export interface ContentfulResult {
-  contentful: SuggestionResource[];
 }
 
 export interface ContentfulApiService {

@@ -24,10 +24,8 @@ export class DefaultSuggestionService implements SuggestionService {
     refreshOn: [LocaleChanged, CurrencyChanged],
   });
 
-  get<T = Suggestion>(
-    qualifier: SuggestionQualifier
-  ): Observable<T | undefined> {
-    return this.suggestionsQuery.get(qualifier) as Observable<T | undefined>;
+  get(qualifier: SuggestionQualifier): Observable<Suggestion | undefined> {
+    return this.suggestionsQuery.get(qualifier);
   }
 
   getState(qualifier: SuggestionQualifier): Observable<QueryState<Suggestion>> {

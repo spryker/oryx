@@ -1,6 +1,7 @@
 import { Product } from '@spryker-oryx/product';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { DirectiveResult } from 'lit/async-directive';
+import { SuggestionField } from '../../services';
 
 export interface SuggestionLinks {
   title?: DirectiveResult;
@@ -13,11 +14,12 @@ export interface SuggestionResource {
   name: string;
   url?: string;
   params?: Record<string, string>;
-  idCategory?: string;
+  id?: string;
 }
 
 export interface Suggestion {
-  suggestions?: SuggestionResource[];
-  categories?: SuggestionResource[];
-  products?: Product[];
+  [SuggestionField.Suggestions]?: SuggestionResource[];
+  [SuggestionField.Categories]?: SuggestionResource[];
+  [SuggestionField.Articles]?: SuggestionResource[];
+  [SuggestionField.Products]?: Product[];
 }

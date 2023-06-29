@@ -1,11 +1,12 @@
 import { inject } from '@spryker-oryx/di';
 import {
+  Suggestion,
   SuggestionAdapter,
   SuggestionField,
   SuggestionQualifier,
 } from '@spryker-oryx/search';
 import { map, Observable, of } from 'rxjs';
-import { ContentfulApiService, ContentfulResult } from './api';
+import { ContentfulApiService } from './api';
 
 export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
   constructor(protected contentful = inject(ContentfulApiService)) {}
@@ -14,12 +15,9 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
     return query ?? '';
   }
 
-  get<T = ContentfulResult>({
-    query,
-    entities,
-  }: SuggestionQualifier): Observable<T> {
+  get({ query, entities }: SuggestionQualifier): Observable<Suggestion> {
     if (!entities?.includes(SuggestionField.Articles)) {
-      return of([]) as unknown as Observable<T>;
+      return of({});
     }
 
     return this.contentful
@@ -31,9 +29,9 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
         map((names) => ({
           [SuggestionField.Articles]: names?.map((name) => ({
             name,
-            url: name,
+            id: name,
           })),
         }))
-      ) as unknown as Observable<T>;
+      );
   }
 }

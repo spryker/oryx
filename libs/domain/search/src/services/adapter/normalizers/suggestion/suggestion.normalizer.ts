@@ -24,8 +24,8 @@ export function suggestionAttributesNormalizer(
       params: { q: name },
     })),
     [SuggestionField.Categories]: categories.map((category) => ({
-      ...category,
-      idCategory: categoryCollection?.find(
+      name: category.name,
+      id: categoryCollection?.find(
         (collection) => category.name === collection.name
       )?.idCategory,
     })),

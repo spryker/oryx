@@ -66,23 +66,24 @@ export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
 export const defaultSuggestionRenderer: SuggestionRenderer<
   SuggestionResource[]
 > = (suggestion, params) => {
-  const { title, count } = params;
-
   if (!suggestion?.length) {
     return;
   }
+
+  const { title, count, type } = params;
 
   return html`
     <section>
       <h5>${i18n(title ?? '')}</h5>
       <ul>
         ${suggestion.slice(0, count).map(
-          ({ name, url, idCategory, params }) => html`
+          ({ name, url, id, params }) => html`
             <li>
               <oryx-content-link
                 .options=${{
-                  type: '',
-                  id: url ?? idCategory ?? '',
+                  type,
+                  url,
+                  id,
                   params: params ?? null,
                 }}
                 .content=${{ text: name }}

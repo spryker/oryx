@@ -6,6 +6,8 @@ export const enum ContentFields {
   Article = 'article',
 }
 
+export type ContentEntities = (ContentFields | string)[];
+
 export interface ContentService {
   get(qualifier: ContentQualifier): Observable<Content | null | undefined>;
   getState(qualifier: ContentQualifier): Observable<QueryState<Content | null>>;

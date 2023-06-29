@@ -1,8 +1,8 @@
-import { ContentFields } from '../services';
+import { ContentEntities } from '../services';
 
 export interface ContentQualifier {
   article?: string;
-  entities?: (string | ContentFields)[];
+  entities?: ContentEntities;
 }
 
 export interface Content {

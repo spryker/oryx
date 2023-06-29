@@ -3,9 +3,7 @@ import { Observable } from 'rxjs';
 import { Suggestion, SuggestionQualifier } from '../../models';
 
 export interface SuggestionService {
-  get<T = Suggestion>(
-    qualifier: SuggestionQualifier
-  ): Observable<T | undefined>;
+  get(qualifier: SuggestionQualifier): Observable<Suggestion | undefined>;
   getState(qualifier: SuggestionQualifier): Observable<QueryState<Suggestion>>;
 }
 

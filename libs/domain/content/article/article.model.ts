@@ -1,3 +1,8 @@
+import { ContentEntities } from '@spryker-oryx/content';
+
 export interface ContentArticleOptions {
-  entities?: string[];
+  /**
+   * List of entities which should be shown
+   */
+  entities?: ContentEntities;
 }

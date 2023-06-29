@@ -18,7 +18,7 @@ const factory = (clazz: Type<unknown>): unknown => {
     return { get: () => of({}) };
   }
 
-  new clazz();
+  return new clazz();
 };
 
 export const contentfulProviders: Provider[] = [

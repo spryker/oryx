@@ -16,7 +16,7 @@ type Counts = {
 
 export interface SuggestionRendererOptions extends Counts {
   /**
-   * List of entries which should be shown
+   * List of entities which should be shown
    */
   entities?: SuggestionEntities;
 }
@@ -30,10 +30,10 @@ export interface SuggestionRendererParams {
 
 export interface SuggestionRendererService {
   render(): Observable<TemplateResult | void>;
-  getSuggestions<T = Suggestion>(
+  getSuggestions(
     query: string,
     options?: SuggestionRendererOptions
-  ): Observable<T | null>;
+  ): Observable<Suggestion | undefined>;
 }
 
 export type SuggestionRenderer<T = unknown> = (
