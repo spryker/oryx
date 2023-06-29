@@ -102,6 +102,6 @@ export class DefaultPageMetaService implements PageMetaService {
   }
 
   protected escapeValue(value: string): string {
-    return value.replace(/"/g, '\\$&');
+    return value.replace(/"/g, '&quot;');
   }
 }
