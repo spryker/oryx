@@ -7,7 +7,7 @@ export class DefaultTotalsService implements TotalsService {
   constructor(protected injector = inject(INJECTOR)) {}
 
   protected getReference(ref: string | undefined): string {
-    return `${TotalsResolver}${ref}`;
+    return `${TotalsResolver}${ref ?? 'CART'}`;
   }
 
   get(context: string): Observable<NormalizedTotals | null> {

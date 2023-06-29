@@ -3,7 +3,6 @@ import {
   CartService,
   DefaultCartService,
   DefaultTotalsService,
-  TotalsContextFallback,
   TotalsResolver,
   TotalsService,
 } from '@spryker-oryx/cart';
@@ -46,5 +45,4 @@ export const mockCartProviders: Provider[] = [
     provide: `${TotalsResolver}CART-SINGLE-DISCOUNT`,
     useClass: mockedTotals(mockNormalizedCartTotalsSingleDiscount),
   },
-  TotalsContextFallback,
 ];

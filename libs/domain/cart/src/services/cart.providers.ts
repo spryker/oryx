@@ -11,7 +11,6 @@ import { CartResourceResolver } from './resolver';
 import {
   CartTotalsProvider,
   DefaultTotalsService,
-  TotalsContextFallback,
   TotalsService,
 } from './totals';
 
@@ -32,5 +31,4 @@ export const cartProviders: Provider[] = [
   CartTotalsProvider,
   ...cartNormalizer,
   ...cartsNormalizer,
-  TotalsContextFallback,
 ];
