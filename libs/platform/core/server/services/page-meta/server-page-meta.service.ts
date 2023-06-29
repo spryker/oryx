@@ -57,7 +57,8 @@ export class ServerPageMetaService extends DefaultPageMetaService {
 
   protected setAttributes(attrs: ElementAttributes): string {
     return Object.entries(attrs).reduce(
-      (acc, [key, value]) => `${acc} ${key}="${value}"`,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      (acc, [key, value]) => `${acc} ${key}="${this.escapeValue(value!)}"`,
       ''
     );
   }

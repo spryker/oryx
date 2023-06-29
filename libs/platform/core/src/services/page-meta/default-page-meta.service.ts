@@ -69,7 +69,7 @@ export class DefaultPageMetaService implements PageMetaService {
       }
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      element.setAttribute(key, value!);
+      element.setAttribute(key, this.escapeValue(value!));
     }
   }
 
@@ -93,10 +93,15 @@ export class DefaultPageMetaService implements PageMetaService {
         continue;
       }
 
-      attrs += `[${key}="${value}"]`;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      attrs += `[${key}="${this.escapeValue(value!)}"]`;
     }
 
     const name = this.getTagName(definition.name);
     return document.head.querySelector(`${name}${attrs}`);
+  }
+
+  protected escapeValue(value: string): string {
+    return value.replace(/"/g, '\\');
   }
 }
