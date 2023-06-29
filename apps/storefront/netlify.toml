@@ -1,5 +1,5 @@
 [build]
-  ignore = "bash ./../../should-ignore-build.sh ${PROJECT_NAME}"
+  ignore = "cd ../../ && bash ./should-ignore-build.sh ${PROJECT_NAME}"
 
 [functions.ssr]
   node_bundler = "esbuild"
