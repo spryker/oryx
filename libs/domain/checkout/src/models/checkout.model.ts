@@ -34,9 +34,9 @@ export interface CheckoutData {
 }
 
 export interface PlaceOrderData {
-  customer: ContactDetails;
+  customer?: ContactDetails;
   cartId: string;
-  billingAddress: Address;
+  billingAddress?: Address;
   shippingAddress?: Address;
   shipments?: Shipment[];
   shipment?: {

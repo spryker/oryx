@@ -8,11 +8,7 @@ import {
   CheckoutResponse,
   PlaceOrderData,
 } from '../../models';
-import {
-  CheckoutAdapter,
-  GetCheckoutDataProps,
-  UpdateCheckoutDataProps,
-} from './checkout.adapter';
+import { CheckoutAdapter } from './checkout.adapter';
 import { CheckoutNormalizer, CheckoutResponseNormalizer } from './normalizers';
 import { CheckoutDataSerializer, CheckoutSerializer } from './serializers';
 
@@ -24,12 +20,16 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
     protected identity = inject(IdentityService)
   ) {}
 
-  get(props: GetCheckoutDataProps): Observable<CheckoutData> {
-    return this.post(props);
-  }
-
-  update(props: UpdateCheckoutDataProps): Observable<CheckoutData> {
-    return this.post(props);
+  get(props: PlaceOrderData): Observable<CheckoutData> {
+    return this.transformer
+      .serialize(props, CheckoutDataSerializer)
+      .pipe(
+        switchMap((data) =>
+          this.http
+            .post<ApiCheckoutModel.CheckoutResponse>(this.generateUrl(), data)
+            .pipe(this.transformer.do(CheckoutNormalizer))
+        )
+      );
   }
 
   placeOrder(data: PlaceOrderData): Observable<CheckoutResponse> {
@@ -49,23 +49,6 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
           .pipe(this.transformer.do(CheckoutResponseNormalizer))
       )
     );
-  }
-
-  protected post(
-    props: GetCheckoutDataProps | UpdateCheckoutDataProps
-  ): Observable<CheckoutData> {
-    return this.transformer
-      .serialize(props, CheckoutDataSerializer)
-      .pipe(
-        switchMap((data) =>
-          this.http
-            .post<ApiCheckoutModel.CheckoutResponse>(
-              this.generateUrl(props.include),
-              data
-            )
-            .pipe(this.transformer.do(CheckoutNormalizer))
-        )
-      );
   }
 
   protected generateUrl(

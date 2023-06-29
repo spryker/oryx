@@ -1,48 +1,15 @@
 import { Serializer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import {
-  ApiCheckoutModel,
-  Carrier,
-  defaultSelectedShipmentMethod,
-  ShipmentMethod,
-} from '../../../../models';
-import {
-  GetCheckoutDataProps,
-  UpdateCheckoutDataProps,
-} from '../../checkout.adapter';
+import { ApiCheckoutModel, PlaceOrderData } from '../../../../models';
+import { checkoutAttributesSerializer } from './checkout.serializer';
 
 export const CheckoutDataSerializer = 'oryx.CheckoutDataSerializers*';
 
 export function checkoutDataAttributesSerializer(
-  data: UpdateCheckoutDataProps | GetCheckoutDataProps
+  data: PlaceOrderData
 ): Partial<ApiCheckoutModel.CheckoutDataPayload> {
-  const { cartId, attributes: { carriers, ...attributesData } = {} } =
-    data as UpdateCheckoutDataProps;
-  let { attributes: { shipments } = {} } = data as UpdateCheckoutDataProps;
-  const shipmentMethods =
-    carriers?.reduce(
-      (acc: ShipmentMethod[], carrier: Carrier) => [
-        ...acc,
-        ...carrier.shipmentMethods,
-      ],
-      []
-    ) ?? [];
-
-  shipments = shipments?.map((shipment) => {
-    return {
-      ...shipment,
-      selectedShipmentMethod:
-        shipment.selectedShipmentMethod ?? defaultSelectedShipmentMethod,
-    };
-  });
-
   return {
-    attributes: {
-      idCart: cartId,
-      ...attributesData,
-      shipments,
-      shipmentMethods,
-    },
+    ...checkoutAttributesSerializer(data),
     type: 'checkout-data',
   };
 }
@@ -56,8 +23,6 @@ export const checkoutDataSerializer: Provider[] = [
 
 declare global {
   interface InjectionTokensContractMap {
-    [CheckoutDataSerializer]: Serializer<
-      UpdateCheckoutDataProps | GetCheckoutDataProps
-    >[];
+    [CheckoutDataSerializer]: Serializer<PlaceOrderData>[];
   }
 }

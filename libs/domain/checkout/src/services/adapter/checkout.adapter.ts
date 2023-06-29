@@ -18,8 +18,7 @@ export interface UpdateCheckoutDataProps {
 }
 
 export interface CheckoutAdapter {
-  get: (data: GetCheckoutDataProps) => Observable<CheckoutData>;
-  update: (data: UpdateCheckoutDataProps) => Observable<CheckoutData>;
+  get: (data: PlaceOrderData) => Observable<CheckoutData>;
   placeOrder: (data: PlaceOrderData) => Observable<CheckoutResponse>;
 }
 
