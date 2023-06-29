@@ -28,7 +28,7 @@ export const layoutMdTokens: ThemeToken = {
 };
 
 export const layoutSmTokens: ThemeToken = {
-  container: { bleed: '0px' },
+  container: { bleed: '16px' },
   modal: {
     width: '100vw',
     bleed: '0px',

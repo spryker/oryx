@@ -194,6 +194,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       border: data.border,
       'border-radius': data.radius,
       background: data.background,
+      '--oryx-color': data.color,
       '--oryx-fill': data.fill,
       'aspect-ratio': data.ratio,
       overflow: data?.overflow,

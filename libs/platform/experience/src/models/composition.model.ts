@@ -183,6 +183,7 @@ export interface StyleProperties extends LayoutStylesProperties {
    * a background image.
    */
   background?: string;
+  color?: string;
 
   /**
    * Sets the fill color of SVG resources. SVG resources can use specific colors which can be overridden
