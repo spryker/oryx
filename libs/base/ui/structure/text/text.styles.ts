@@ -66,12 +66,12 @@ export const textStyles = css`
   }
 
   a[href]:not([href='']):not(:active) {
-    color: var(--oryx-color-primary-10);
+    color: var(--oryx-color, var(--oryx-color-primary-10));
   }
 
   a:hover {
-    text-decoration: solid underline currentColor 1px;
-    text-underline-offset: 2px;
+    text-decoration: solid underline var(--oryx-color-primary-9) 1px;
+    text-underline-offset: 5px;
   }
 
   a:active {
