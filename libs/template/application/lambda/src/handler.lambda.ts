@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { serverContext } from './context';
@@ -28,7 +28,9 @@ export const storefrontHandler = async (
     console.log(basePath)
     console.log(__filename)
     console.log(__dirname)
-    console.log(readFileSync(root), 'utf8')
+    console.log(existsSync(root), 'utf8')
+    console.log(existsSync(resolve(basePath, index)), 'utf8')
+    console.log(existsSync(resolve(basePath, entry)), 'utf8')
 
     const template = readFileSync(resolve(basePath, index), 'utf8');
     const render = serverContext({
