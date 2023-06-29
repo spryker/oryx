@@ -1,3 +1,4 @@
+import { CartsNormalizer } from '@spryker-oryx/cart';
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { map, Observable } from 'rxjs';
@@ -16,12 +17,14 @@ export function checkoutAttributesNormalizer(
     paymentProviders,
     selectedShipmentMethods,
     selectedPaymentMethods,
+    carts,
   } = data;
   return {
     addresses,
     paymentProviders,
     selectedShipmentMethods,
     selectedPaymentMethods,
+    carts,
   };
 }
 
@@ -43,6 +46,15 @@ export function checkoutPaymentsNormalizer(
     .pipe(map((paymentMethods) => ({ paymentMethods })));
 }
 
+export function checkoutCartsNormalizer(
+  data: DeserializedCheckout,
+  transformer: TransformerService
+): Observable<Partial<CheckoutData>> {
+  return transformer
+    .transform(data, CartsNormalizer)
+    .pipe(map((carts) => ({ carts })));
+}
+
 export const checkoutNormalizer: Provider[] = [
   {
     provide: CheckoutNormalizer,
@@ -55,6 +67,10 @@ export const checkoutNormalizer: Provider[] = [
   {
     provide: CheckoutNormalizer,
     useValue: checkoutPaymentsNormalizer,
+  },
+  {
+    provide: CheckoutNormalizer,
+    useValue: checkoutCartsNormalizer,
   },
 ];
 

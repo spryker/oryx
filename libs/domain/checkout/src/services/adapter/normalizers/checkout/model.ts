@@ -8,5 +8,6 @@ export type DeserializedCheckout = ApiCheckoutModel.Attributes &
     CamelCase<
       | ApiCheckoutModel.Includes.Shipments
       | ApiCheckoutModel.Includes.PaymentMethods
+      | ApiCheckoutModel.Includes.Carts
     >
   >;
