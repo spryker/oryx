@@ -26,11 +26,17 @@ export const storefrontHandler = async (
 
     console.log(context)
     console.log(basePath)
+    
     console.log(__filename)
     console.log(__dirname)
+
     console.log(existsSync(__filename))
     console.log(existsSync(root))
+    
+    console.log(existsSync(resolve(__dirname, index)))
     console.log(existsSync(resolve(basePath, index)))
+    
+    console.log(existsSync(resolve(__dirname, entry)))
     console.log(existsSync(resolve(basePath, entry)))
 
     const template = readFileSync(resolve(basePath, index), 'utf8');
