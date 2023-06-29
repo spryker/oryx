@@ -59,12 +59,15 @@ describe('DefaultPageMetaService', () => {
         {
           name: 'og:img',
           attrs: {
-            content: 'a"',
+            content: `a"'–<>—`,
           },
         },
       ]);
       const imgMeta = document.head.querySelector('meta[name="og:img"]');
-      expect(imgMeta).toHaveProperty('content', 'a&quot;');
+      expect(imgMeta).toHaveProperty(
+        'content',
+        'a&quot;&apos;&ndash;&lt;&gt;&mdash;'
+      );
     });
 
     it('should add attributes to the html tag', () => {

@@ -102,6 +102,13 @@ export class DefaultPageMetaService implements PageMetaService {
   }
 
   protected escapeValue(value: string): string {
-    return value.replace(/"/g, '&quot;');
+    return value
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;')
+      .replace(/'/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/—/g, '&mdash;')
+      .replace(/–/g, '&ndash;');
   }
 }
