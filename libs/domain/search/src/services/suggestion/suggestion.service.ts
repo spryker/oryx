@@ -1,14 +1,12 @@
 import { QueryState } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
-import { SuggestionQualifier, SuggestionResponse } from '../../models';
+import { Suggestion, SuggestionQualifier } from '../../models';
 
 export interface SuggestionService {
-  get<T = SuggestionResponse>(
+  get<T = Suggestion>(
     qualifier: SuggestionQualifier
   ): Observable<T | undefined>;
-  getState(
-    qualifier: SuggestionQualifier
-  ): Observable<QueryState<SuggestionResponse>>;
+  getState(qualifier: SuggestionQualifier): Observable<QueryState<Suggestion>>;
 }
 
 export const SuggestionService = 'oryx.SuggestionService';

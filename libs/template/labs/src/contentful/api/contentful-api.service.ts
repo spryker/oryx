@@ -1,3 +1,4 @@
+import { SuggestionResource } from '@spryker-oryx/search';
 import { Observable } from 'rxjs';
 
 export const ContentfulToken = 'oryx.ContentfulSpace';
@@ -24,16 +25,18 @@ export interface ContentfulResponse {
   }[];
 }
 
-export type ContentfulResult = { contentful: Record<'name', string>[] };
+export interface ContentfulResult {
+  contentful: SuggestionResource[];
+}
 
-export interface ContentfulClientService {
+export interface ContentfulApiService {
   getEntries(search: ContentfulSearch): Observable<ContentfulResponse>;
 }
 
-export const ContentfulClientService = 'oryx.ContentfulClientService';
+export const ContentfulApiService = 'oryx.ContentfulApiService';
 
 declare global {
   interface InjectionTokensContractMap {
-    [ContentfulClientService]: ContentfulClientService;
+    [ContentfulApiService]: ContentfulApiService;
   }
 }

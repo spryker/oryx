@@ -2,7 +2,7 @@ import { ContentFields } from '../services';
 
 export interface ContentQualifier {
   article?: string;
-  entries?: (string | ContentFields)[];
+  entities?: (string | ContentFields)[];
 }
 
 export interface Content {

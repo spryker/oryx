@@ -13,10 +13,7 @@ export class DefaultContentService implements ContentService {
     loader: (q: ContentQualifier) =>
       combineLatest(this.adapters.map((adapter) => adapter.get(q))).pipe(
         map((contents) =>
-          contents.reduce(
-            (acc, curr) => ({ ...acc, ...curr }),
-            Object.create(null)
-          )
+          contents.reduce((acc, curr) => ({ ...acc, ...curr }), {})
         )
       ),
     refreshOn: [LocaleChanged],

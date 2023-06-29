@@ -4,21 +4,14 @@ import { LocaleChanged } from '@spryker-oryx/i18n';
 import { ProductsLoaded } from '@spryker-oryx/product';
 import { CurrencyChanged } from '@spryker-oryx/site';
 import { combineLatest, map, Observable } from 'rxjs';
-import {
-  Suggestion,
-  SuggestionQualifier,
-  SuggestionResponse,
-} from '../../models';
+import { Suggestion, SuggestionQualifier } from '../../models';
 import { SuggestionAdapter } from '../adapter';
 import { SuggestionService } from './suggestion.service';
 
 export class DefaultSuggestionService implements SuggestionService {
   constructor(protected adapters = inject(SuggestionAdapter)) {}
 
-  protected suggestionsQuery = createQuery<
-    SuggestionResponse,
-    SuggestionQualifier
-  >({
+  protected suggestionsQuery = createQuery<Suggestion, SuggestionQualifier>({
     loader: (qualifier) =>
       combineLatest(
         this.adapters.map((adapter) => adapter.get(qualifier))
@@ -37,9 +30,7 @@ export class DefaultSuggestionService implements SuggestionService {
     return this.suggestionsQuery.get(qualifier) as Observable<T | undefined>;
   }
 
-  getState(
-    qualifier: SuggestionQualifier
-  ): Observable<QueryState<SuggestionResponse>> {
+  getState(qualifier: SuggestionQualifier): Observable<QueryState<Suggestion>> {
     return this.suggestionsQuery.getState(qualifier);
   }
 }

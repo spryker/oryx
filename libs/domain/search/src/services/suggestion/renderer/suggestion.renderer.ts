@@ -3,7 +3,7 @@ import { SemanticLinkType } from '@spryker-oryx/site';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { SuggestionLinks } from '../../../models';
+import { SuggestionResource } from '../../../models';
 import { SuggestionRenderer } from './suggestion-renderer.service';
 
 export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
@@ -14,7 +14,7 @@ export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
     return html`
       <section>
         <h5>${i18n('search.box.products')}</h5>
-        ${products?.map(renderProduct)}
+        ${products?.slice(0, params.count)?.map(renderProduct)}
 
         <oryx-button
           outline
@@ -63,32 +63,27 @@ export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
   `;
 };
 
-export const defaultSuggestionRenderer: SuggestionRenderer<SuggestionLinks> = (
-  suggestion
-) => {
-  if (!suggestion) {
+export const defaultSuggestionRenderer: SuggestionRenderer<
+  SuggestionResource[]
+> = (suggestion, params) => {
+  const { title, count } = params;
+
+  if (!suggestion?.length) {
     return;
-  }
-
-  const { title, options, type } = suggestion;
-
-  if (!options?.length) {
-    return html``;
   }
 
   return html`
     <section>
-      <h5>${title}</h5>
+      <h5>${i18n(title ?? '')}</h5>
       <ul>
-        ${options.map(
+        ${suggestion.slice(0, count).map(
           ({ name, url, idCategory, params }) => html`
             <li>
               <oryx-content-link
                 .options=${{
-                  type,
+                  type: '',
                   id: url ?? idCategory ?? '',
                   params: params ?? null,
-                  text: name,
                 }}
                 .content=${{ text: name }}
                 close-popover

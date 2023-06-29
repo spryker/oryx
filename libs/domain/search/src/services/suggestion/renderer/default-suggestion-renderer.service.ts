@@ -1,7 +1,7 @@
 import { inject } from '@spryker-oryx/di';
+import { SemanticLinkType } from '@spryker-oryx/site';
 import { html, TemplateResult } from 'lit';
 import {
-  combineLatest,
   map,
   Observable,
   ReplaySubject,
@@ -9,11 +9,11 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { Suggestion } from '../../../models';
-import { SuggestionRevealer } from '../revealer';
+import { SuggestionField } from '../../adapter';
+import { SuggestionService } from '../suggestion.service';
 import {
   SuggestionRenderer,
   SuggestionRendererOptions,
-  SuggestionRendererParams,
   SuggestionRendererRenderers,
   SuggestionRendererService,
 } from './suggestion-renderer.service';
@@ -22,7 +22,7 @@ export class DefaultSuggestionRendererService
   implements SuggestionRendererService
 {
   constructor(
-    protected revealers = inject(SuggestionRevealer, []),
+    protected suggestionService = inject(SuggestionService),
     protected renderers = inject(
       SuggestionRenderer,
       [] as SuggestionRendererRenderers[]
@@ -32,16 +32,18 @@ export class DefaultSuggestionRendererService
     )
   ) {}
 
-  protected data$ = new ReplaySubject<SuggestionRendererParams>(1);
+  // TODO: find out another solution
+  protected linkTypeMapper: Record<string, SemanticLinkType> = {
+    [SuggestionField.Categories]: SemanticLinkType.Category,
+    [SuggestionField.Articles]: SemanticLinkType.Article,
+  };
+
+  protected data$ = new ReplaySubject<
+    SuggestionRendererOptions & Record<'query', string>
+  >(1);
   protected suggestion$ = this.data$.pipe(
-    switchMap((query) =>
-      combineLatest(this.revealers.map((revealer) => revealer.reveal(query)))
-    ),
-    map((suggestions) =>
-      suggestions.reduce(
-        (acc, suggestion) => (suggestion ? { ...suggestion, ...acc } : acc),
-        Object.create(null)
-      )
+    switchMap(({ query, entities }) =>
+      this.suggestionService.get({ query, entities })
     )
   );
 
@@ -57,14 +59,25 @@ export class DefaultSuggestionRendererService
     return this.suggestion$.pipe(
       withLatestFrom(this.data$),
       map(([suggestions, options]) => {
-        const data = options.entries?.map((entry) => suggestions[entry]);
+        const data = options.entities?.map(
+          (entry) => suggestions?.[entry as keyof Suggestion]
+        );
 
         return html`${data?.map((suggestion, index) => {
-          const renderer = this.renderers[options?.entries?.[index] ?? ''];
+          const entity = options?.entities?.[index] ?? '';
+          const renderer = this.renderers[entity];
+          const args = {
+            query: options.query,
+            title: `search.box.${entity}`,
+            count: options[
+              `${entity}Count` as keyof SuggestionRendererOptions
+            ] as number,
+            type: this.linkTypeMapper[entity] ?? SemanticLinkType.ProductList,
+          };
 
-          return options?.entries && renderer
-            ? renderer(suggestion, options)
-            : this.renderers.default(suggestion, options);
+          return options?.entities && renderer
+            ? renderer(suggestion, args)
+            : this.renderers.default(suggestion, args);
         })}`;
       })
     );

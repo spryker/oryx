@@ -20,12 +20,10 @@ import { SortingService } from './sorting.service';
 import {
   defaultSuggestionRenderer,
   DefaultSuggestionRendererService,
-  DefaultSuggestionRevealer,
   DefaultSuggestionService,
   productSuggestionRenderer,
   SuggestionRenderer,
   SuggestionRendererService,
-  SuggestionRevealer,
   SuggestionService,
 } from './suggestion';
 
@@ -66,10 +64,6 @@ export const searchProviders: Provider[] = [
       default: defaultSuggestionRenderer,
       [SuggestionField.Products]: productSuggestionRenderer,
     },
-  },
-  {
-    provide: SuggestionRevealer,
-    useClass: DefaultSuggestionRevealer,
   },
 ];
 

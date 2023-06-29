@@ -1,3 +1,3 @@
 export interface ContentArticleOptions {
-  entries?: string[];
+  entities?: string[];
 }

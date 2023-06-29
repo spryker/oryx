@@ -1,21 +1,22 @@
 import {
   Content,
   ContentAdapter,
+  ContentFields,
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { inject } from '@spryker-oryx/di';
 import { map, Observable, of } from 'rxjs';
-import { ContentfulClientService } from './client';
+import { ContentfulApiService } from './api';
 
 export class ContentfulAdapter implements ContentAdapter {
-  constructor(protected contentful = inject(ContentfulClientService)) {}
+  constructor(protected contentful = inject(ContentfulApiService)) {}
 
   getKey(qualifier: ContentQualifier): string {
     return qualifier.article ?? '';
   }
 
   get(qualifier: ContentQualifier): Observable<Content> {
-    if (!qualifier.entries?.includes('contentful')) {
+    if (!qualifier.entities?.includes(ContentFields.Article)) {
       return of({});
     }
 

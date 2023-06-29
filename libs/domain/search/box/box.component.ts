@@ -3,6 +3,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import {
+  defaultEntities,
   Suggestion,
   SuggestionField,
   SuggestionRendererService,
@@ -35,15 +36,11 @@ import { baseStyles, searchBoxStyles } from './styles';
 
 @defaultOptions({
   minChars: 2,
-  completionsCount: 5,
-  productsCount: 5,
-  categoriesCount: 5,
-  cmsCount: 5,
-  entries: [
-    SuggestionField.Completion,
-    SuggestionField.Categories,
-    SuggestionField.Products,
-  ],
+  [`${SuggestionField.Suggestions}Count`]: 5,
+  [`${SuggestionField.Products}Count`]: 5,
+  [`${SuggestionField.Categories}Count`]: 5,
+  [`${SuggestionField.Articles}Count`]: 5,
+  entities: defaultEntities,
 })
 @hydratable(['mouseover', 'focusin'])
 @signalAware()
@@ -103,7 +100,7 @@ export class SearchBoxComponent
         <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
         <input
           .value=${this.query ?? ''}
-          placeholder=${ifDefined(this.$placeholder())}
+          placeholder=${ifDefined(this.$placeholder() as string)}
         />
         ${this.renderSuggestion()} ${this.renderControls()}
       </oryx-typeahead>

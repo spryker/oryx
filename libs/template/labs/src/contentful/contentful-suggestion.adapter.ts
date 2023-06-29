@@ -1,10 +1,14 @@
 import { inject } from '@spryker-oryx/di';
-import { SuggestionAdapter, SuggestionQualifier } from '@spryker-oryx/search';
+import {
+  SuggestionAdapter,
+  SuggestionField,
+  SuggestionQualifier,
+} from '@spryker-oryx/search';
 import { map, Observable, of } from 'rxjs';
-import { ContentfulClientService, ContentfulResult } from '../client';
+import { ContentfulApiService, ContentfulResult } from './api';
 
 export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
-  constructor(protected contentful = inject(ContentfulClientService)) {}
+  constructor(protected contentful = inject(ContentfulApiService)) {}
 
   getKey({ query }: SuggestionQualifier): string {
     return query ?? '';
@@ -12,9 +16,9 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
 
   get<T = ContentfulResult>({
     query,
-    entries,
+    entities,
   }: SuggestionQualifier): Observable<T> {
-    if (!entries?.includes('contentful')) {
+    if (!entities?.includes(SuggestionField.Articles)) {
       return of([]) as unknown as Observable<T>;
     }
 
@@ -23,9 +27,11 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
         query: this.getKey({ query }),
       })
       .pipe(
-        map((entries) => ({
-          contentful: entries.items.map((entry) => ({
-            name: entry.sys.contentType.sys.id,
+        map((data) => data.items.map((entry) => entry.sys.contentType.sys.id)),
+        map((names) => ({
+          [SuggestionField.Articles]: names?.map((name) => ({
+            name,
+            url: name,
           })),
         }))
       ) as unknown as Observable<T>;

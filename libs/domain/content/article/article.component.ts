@@ -1,7 +1,11 @@
-import { ArticleContext, ContentService } from '@spryker-oryx/content';
+import {
+  ArticleContext,
+  ContentFields,
+  ContentService,
+} from '@spryker-oryx/content';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin } from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   computed,
   hydratable,
@@ -13,6 +17,9 @@ import { of } from 'rxjs';
 import { ContentArticleOptions } from './article.model';
 
 // Temporary implementation ContentFields
+@defaultOptions({
+  entities: [ContentFields.Article],
+})
 @signalAware()
 @hydratable()
 export class ArticleComponent extends ContentMixin<ContentArticleOptions>(
@@ -24,15 +31,16 @@ export class ArticleComponent extends ContentMixin<ContentArticleOptions>(
   protected $articleContext = signal(
     this.contextController.get<string>(ArticleContext.Id)
   );
+
   protected $article = computed(() => {
     const article = this.$articleContext();
 
     return article
-      ? this.contentService.get({ article, entries: this.$options().entries })
+      ? this.contentService.get({ article, entities: this.$options().entities })
       : of(null);
   });
 
   protected override render(): TemplateResult {
-    return html`${this.$article()?.article}`;
+    return html`<oryx-text .content=${this.$article()?.article}></oryx-text> `;
   }
 }

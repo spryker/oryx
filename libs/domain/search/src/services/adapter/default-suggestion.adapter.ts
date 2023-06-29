@@ -4,8 +4,8 @@ import { ApiProductModel } from '@spryker-oryx/product';
 import { Observable, of } from 'rxjs';
 import {
   ApiSuggestionModel,
+  Suggestion,
   SuggestionQualifier,
-  SuggestionResponse,
 } from '../../models';
 import { SuggestionNormalizer } from './normalizers';
 import { SuggestionAdapter, SuggestionField } from './suggestion.adapter';
@@ -23,25 +23,27 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
     return query ?? '';
   }
 
-  get({ query, entries }: SuggestionQualifier): Observable<SuggestionResponse> {
+  get({ query, entities }: SuggestionQualifier): Observable<Suggestion> {
     if (
-      !entries ||
-      entries.some((entry) =>
+      !entities ||
+      entities.some((entity) =>
         [
           SuggestionField.Categories,
-          SuggestionField.Completion,
+          SuggestionField.Suggestions,
           SuggestionField.Products,
-        ].includes(entry as SuggestionField)
+        ].includes(entity as SuggestionField)
       )
     ) {
-      const include = [
-        ApiProductModel.Includes.AbstractProducts,
-        ApiProductModel.Includes.ConcreteProducts,
-        ApiProductModel.Includes.ConcreteProductImageSets,
-        ApiProductModel.Includes.ConcreteProductPrices,
-        ApiProductModel.Includes.ConcreteProductAvailabilities,
-        ApiProductModel.Includes.Labels,
-      ].join(',');
+      const include = entities?.includes(SuggestionField.Products)
+        ? [
+            ApiProductModel.Includes.AbstractProducts,
+            ApiProductModel.Includes.ConcreteProducts,
+            ApiProductModel.Includes.ConcreteProductImageSets,
+            ApiProductModel.Includes.ConcreteProductPrices,
+            ApiProductModel.Includes.ConcreteProductAvailabilities,
+            ApiProductModel.Includes.Labels,
+          ].join(',')
+        : '';
 
       return this.http
         .get<ApiSuggestionModel.Response>(

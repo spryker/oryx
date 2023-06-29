@@ -16,15 +16,8 @@ export interface SuggestionResource {
   idCategory?: string;
 }
 
-export interface SuggestionResponse {
-  completion?: string[];
-  categories?: SuggestionResource[];
-  cmsPages?: SuggestionResource[];
-  products?: Product[];
-}
-
 export interface Suggestion {
-  completion?: SuggestionLinks[];
-  categories?: SuggestionLinks[];
+  suggestions?: SuggestionResource[];
+  categories?: SuggestionResource[];
   products?: Product[];
 }

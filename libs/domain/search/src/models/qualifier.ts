@@ -1,8 +1,8 @@
-import { SuggestionEntries } from '../services';
+import { SuggestionEntities } from '../services';
 
 export interface SuggestionQualifier {
   query?: string;
-  entries?: SuggestionEntries;
+  entities?: SuggestionEntities;
 }
 
 export interface FacetQualifier {

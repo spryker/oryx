@@ -1,45 +1,32 @@
+import { SemanticLinkType } from '@spryker-oryx/site';
 import { TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
 import { Suggestion } from '../../../models';
-import { SuggestionEntries } from '../../adapter';
+import { SuggestionEntities, SuggestionField } from '../../adapter';
 
 export const SuggestionRendererService = 'oryx.SuggestionRendererService';
 export const SuggestionRenderer = 'oryx.SuggestionRenderer*';
 
-export interface SuggestionRendererOptions {
+type Counts = {
   /**
-   * Maximum amount of completions to show
-   * @default 5
+   * Maximum amount of suggestion entities to show
    */
-  completionsCount?: number;
+  [P in SuggestionField as `${P}Count`]?: number;
+};
 
-  /**
-   * Maximum amount of products to show
-   * @default 6
-   */
-  productsCount?: number;
-
-  /**
-   * Maximum amount of categories to show
-   * @default 5
-   */
-  categoriesCount?: number;
-
-  /**
-   * Maximum amount of CMS links to show
-   * @default 5
-   */
-  cmsCount?: number;
-
+export interface SuggestionRendererOptions extends Counts {
   /**
    * List of entries which should be shown
    */
-  entries?: SuggestionEntries;
+  entities?: SuggestionEntities;
 }
 
-export type SuggestionRendererParams = SuggestionRendererOptions & {
+export interface SuggestionRendererParams {
   query: string;
-};
+  title: string;
+  count?: number;
+  type: SemanticLinkType;
+}
 
 export interface SuggestionRendererService {
   render(): Observable<TemplateResult | void>;

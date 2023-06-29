@@ -7,19 +7,23 @@ import {
   Product,
 } from '@spryker-oryx/product';
 import { map, Observable } from 'rxjs';
-import { SuggestionResponse } from '../../../../models';
+import { Suggestion } from '../../../../models';
+import { SuggestionField } from '../../suggestion.adapter';
 import { DeserializedSuggestion } from './model';
 
 export const SuggestionNormalizer = 'oryx.SuggestionNormalizer*';
 
 export function suggestionAttributesNormalizer(
   data: DeserializedSuggestion[]
-): Partial<SuggestionResponse> {
+): Partial<Suggestion> {
   const { completion, categories, categoryCollection } = data[0];
 
   return {
-    completion,
-    categories: categories.map((category) => ({
+    [SuggestionField.Suggestions]: completion.map((name) => ({
+      name,
+      params: { q: name },
+    })),
+    [SuggestionField.Categories]: categories.map((category) => ({
       ...category,
       idCategory: categoryCollection?.find(
         (collection) => category.name === collection.name
@@ -31,13 +35,13 @@ export function suggestionAttributesNormalizer(
 export function suggestionProductNormalizer(
   data: DeserializedSuggestion[],
   transformer: TransformerService
-): Observable<Partial<SuggestionResponse>> {
+): Observable<Partial<Suggestion>> {
   const abstractsKey = camelize(ApiProductModel.Includes.AbstractProducts);
   const { [abstractsKey]: products } = data[0];
 
   return transformer
     .transform<Product[]>(products, ConcreteProductsNormalizer)
-    .pipe(map((products) => ({ products })));
+    .pipe(map((products) => ({ [SuggestionField.Products]: products })));
 }
 
 export const suggestionNormalizer: Provider[] = [
@@ -53,6 +57,6 @@ export const suggestionNormalizer: Provider[] = [
 
 declare global {
   interface InjectionTokensContractMap {
-    [SuggestionNormalizer]: Transformer<SuggestionResponse>[];
+    [SuggestionNormalizer]: Transformer<Suggestion>[];
   }
 }
