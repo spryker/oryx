@@ -6,8 +6,6 @@
 
 /// <reference types="urlpattern-polyfill" />
 
-import { resolve } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { lastValueFrom, Observable } from 'rxjs';
 
@@ -113,7 +111,8 @@ export class Routes implements ReactiveController {
   protected routeLeaveInProgress = false;
   // other popstate listeners may fire too late, so we need an additional check
   protected canDisableRouteLeaveInProgress = false;
-  protected routerService = resolve(RouterService);
+  protected timestamp =
+    globalThis.history?.state?.timestamp ?? new Date().getTime();
 
   /*
    * State related to the current matching route.
@@ -199,8 +198,8 @@ export class Routes implements ReactiveController {
       const result = pattern.exec({ pathname });
       const params = result?.pathname.groups ?? {};
       tailGroup = getTailGroup(params);
-      const counter =
-        globalThis.history?.state?.counter ?? this.routerService.getCounter();
+      const timestamp =
+        globalThis.history?.state?.timestamp ?? new Date().getTime();
 
       if (
         typeof this._currentRoute?.leave === 'function' &&
@@ -208,7 +207,7 @@ export class Routes implements ReactiveController {
       ) {
         this.canDisableRouteLeaveInProgress = false;
         this.routeLeaveInProgress = true;
-        const direction = counter > this.routerService.getCounter() ? -1 : 1;
+        const direction = timestamp > this.timestamp ? -1 : 1;
         globalThis.history.go(direction);
 
         let success = true;
@@ -231,9 +230,9 @@ export class Routes implements ReactiveController {
           this.routeLeaveInProgress = false;
           return;
         }
-        this.routerService.setCounter(counter);
+        this.timestamp = timestamp;
       } else {
-        this.routerService.setCounter(counter);
+        this.timestamp = timestamp;
       }
 
       if (typeof route.enter === 'function') {

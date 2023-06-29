@@ -163,11 +163,7 @@ export class LitRouter extends Routes {
 
     e.preventDefault();
     if (href !== location.href) {
-      window.history.pushState(
-        { counter: this.routerService.getCounter() + 1 },
-        '',
-        href
-      );
+      window.history.pushState({ timestamp: new Date().getTime() }, '', href);
       this.goto(anchor.pathname);
     }
   };

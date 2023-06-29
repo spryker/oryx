@@ -58,22 +58,6 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     createRef(),
   ];
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    window.addEventListener('popstate', this.discardForwardNavigate);
-  }
-
-  override disconnectedCallback(): void {
-    window.removeEventListener('popstate', this.discardForwardNavigate);
-    super.disconnectedCallback();
-  }
-
-  protected discardForwardNavigate = (): void => {
-    if (this.routerService.getCounter() < history.state?.counter) {
-      this.pickingHeaderService.discard();
-    }
-  };
-
   protected buildTabs(): PickingTab[] {
     return [
       {
