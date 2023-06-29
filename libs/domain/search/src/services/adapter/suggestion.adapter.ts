@@ -8,13 +8,6 @@ export const enum SuggestionField {
   Articles = 'articles',
 }
 
-export const defaultEntities = [
-  SuggestionField.Suggestions,
-  SuggestionField.Categories,
-  SuggestionField.Products,
-  SuggestionField.Articles,
-];
-
 export type SuggestionEntities = (SuggestionField | string)[];
 
 export interface SuggestionAdapter {

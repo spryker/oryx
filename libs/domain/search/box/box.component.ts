@@ -3,7 +3,6 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import {
-  defaultEntities,
   Suggestion,
   SuggestionField,
   SuggestionRendererService,
@@ -41,16 +40,15 @@ import { baseStyles, searchBoxStyles } from './styles';
   [SuggestionField.Suggestions]: {
     max: 5,
   },
-  [SuggestionField.Products]: {
+  [SuggestionField.Categories]: {
     max: 5,
   },
-  [SuggestionField.Categories]: {
+  [SuggestionField.Products]: {
     max: 5,
   },
   [SuggestionField.Articles]: {
     max: 5,
   },
-  entities: defaultEntities,
 })
 @hydratable(['mouseover', 'focusin'])
 @signalAware()
@@ -74,7 +72,7 @@ export class SearchBoxComponent
   protected query$ = new BehaviorSubject(this.query);
   protected suggestion$ = this.query$.pipe(
     switchMap((query) =>
-      this.suggestionRendererService.get(query, this.$options().entities)
+      this.suggestionRendererService.get(query, this.$options())
     )
   );
 

@@ -3,7 +3,7 @@ import { SemanticLinkType } from '@spryker-oryx/site';
 import { html, TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
 import { Suggestion } from '../../../models';
-import { SuggestionEntities, SuggestionField } from '../../adapter';
+import { SuggestionField } from '../../adapter';
 import { SuggestionService } from '../suggestion.service';
 import {
   SuggestionRenderer,
@@ -34,21 +34,25 @@ export class DefaultSuggestionRendererService
 
   get(
     query: string,
-    entities?: SuggestionEntities
+    options?: SuggestionRendererOptions
   ): Observable<Suggestion | undefined> {
-    return this.suggestionService.get({ query, entities });
+    return this.suggestionService.get({
+      query,
+      entities: Object.keys(options ?? {}),
+    });
   }
 
   render(
     suggestions: Suggestion,
     options: SuggestionRendererOptions & Record<'query', string>
   ): TemplateResult {
-    const data = options.entities?.map(
+    const entities = Object.keys(options);
+    const data = entities.map(
       (entry) => suggestions?.[entry as keyof Suggestion]
     );
 
     return html`${data?.map((suggestion, index) => {
-      const entity = options?.entities?.[index] ?? '';
+      const entity = entities[index] ?? '';
       const renderer = this.renderers[entity];
       const args = {
         query: options.query,
@@ -57,7 +61,7 @@ export class DefaultSuggestionRendererService
         ...options[entity as SuggestionField],
       };
 
-      return options?.entities && renderer
+      return renderer
         ? renderer(suggestion, args)
         : this.renderers.default(suggestion, args);
     })}`;

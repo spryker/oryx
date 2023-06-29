@@ -2,7 +2,7 @@ import { SemanticLinkType } from '@spryker-oryx/site';
 import { TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
 import { Suggestion } from '../../../models';
-import { SuggestionEntities, SuggestionField } from '../../adapter';
+import { SuggestionField } from '../../adapter';
 
 export const SuggestionRendererService = 'oryx.SuggestionRendererService';
 export const SuggestionRenderer = 'oryx.SuggestionRenderer*';
@@ -14,17 +14,9 @@ export interface SuggestionFieldOptions {
   max?: number;
 }
 
-type SuggestionFieldOptionsMapper = {
+export type SuggestionRendererOptions = {
   [P in SuggestionField]?: SuggestionFieldOptions;
 };
-
-export interface SuggestionRendererOptions
-  extends SuggestionFieldOptionsMapper {
-  /**
-   * List of entities which should be shown
-   */
-  entities?: SuggestionEntities;
-}
 
 export interface SuggestionRendererParams extends SuggestionFieldOptions {
   query: string;
@@ -39,7 +31,7 @@ export interface SuggestionRendererService {
   ): TemplateResult;
   get(
     query: string,
-    entities?: SuggestionEntities
+    options?: SuggestionRendererOptions
   ): Observable<Suggestion | undefined>;
 }
 

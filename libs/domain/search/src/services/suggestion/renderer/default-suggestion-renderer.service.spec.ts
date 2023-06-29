@@ -5,7 +5,10 @@ import { of, take } from 'rxjs';
 import { Suggestion } from '../../../models';
 import { SuggestionService } from '../suggestion.service';
 import { DefaultSuggestionRendererService } from './default-suggestion-renderer.service';
-import { SuggestionRenderer } from './suggestion-renderer.service';
+import {
+  SuggestionRenderer,
+  SuggestionRendererOptions,
+} from './suggestion-renderer.service';
 
 vi.mock('lit', async () => ({
   ...((await vi.importActual('lit')) as Array<unknown>),
@@ -55,7 +58,10 @@ describe('DefaultSuggestionRendererService', () => {
     it('should return data from renderers', () => {
       const callback = vi.fn();
       mockSuggestionService.get.mockReturnValue(of({ a: 'a', b: 'b' }));
-      const result = renderer.get('que', ['a', 'b']);
+      const result = renderer.get('que', {
+        a: 'a',
+        b: 'b',
+      } as SuggestionRendererOptions);
       result.pipe(take(1)).subscribe(callback);
       expect(mockSuggestionService.get).toHaveBeenCalledWith({
         entities: ['a', 'b'],
@@ -73,7 +79,6 @@ describe('DefaultSuggestionRendererService', () => {
       const result = renderer.render(
         { products: 'a', b: 'b' } as unknown as Suggestion,
         {
-          entities: ['products', 'b'],
           products: {
             max: 3,
           },
