@@ -25,8 +25,8 @@ export const storefrontHandler = async (
     const basePath = dirname(fileURLToPath(root));
 
     console.log(context)
-    console.log(originalUrl)
     console.log(basePath)
+    console.log(readFileSync(basePath), 'utf8')
 
     const template = readFileSync(resolve(basePath, index), 'utf8');
     const render = serverContext({
