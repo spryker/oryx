@@ -46,13 +46,24 @@ export class DefaultSuggestionRendererService
     suggestions: Suggestion,
     options: SuggestionRendererOptions & Record<'query', string>
   ): TemplateResult {
-    const entities = Object.keys(options);
-    const data = entities
-      .map((entry) => suggestions?.[entry as keyof Suggestion])
+    const data = Object.keys(options)
+      .map((entity) => {
+        const records = suggestions?.[entity as keyof Suggestion];
+
+        if (records) {
+          return {
+            records,
+            entity,
+          };
+        }
+
+        return null;
+      })
       .filter(Boolean);
 
-    return html`${data?.map((suggestion, index) => {
-      const entity = entities[index] ?? '';
+    return html`${data?.map((suggestion) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const { entity, records } = suggestion!;
       const renderer = this.renderers[entity];
       const args = {
         query: options.query,
@@ -62,8 +73,8 @@ export class DefaultSuggestionRendererService
       };
 
       return renderer
-        ? renderer(suggestion, args)
-        : this.renderers.default(suggestion, args);
+        ? renderer(records, args)
+        : this.renderers.default(records, args);
     })}`;
   }
 }
