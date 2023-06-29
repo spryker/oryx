@@ -84,7 +84,7 @@ export const defaultSuggestionRenderer: SuggestionRenderer<
                   type,
                   url,
                   id,
-                  params: params ?? null,
+                  params,
                 }}
                 .content=${{ text: name }}
                 close-popover

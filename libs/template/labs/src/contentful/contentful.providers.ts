@@ -12,6 +12,14 @@ import {
 import { DefaultContentfulSuggestionAdapter } from './contentful-suggestion.adapter';
 import { ContentfulAdapter } from './contentful.adapter';
 
+let logged = 0;
+const logMissingEnv = (): void => {
+  if (logged > 0) return;
+  console.warn(
+    'Missing ORYX_CONTENTFUL_TOKEN or/and ORYX_CONTENTFUL_SPACE environment variables'
+  );
+  logged++;
+};
 const factory = (clazz: Type<unknown>): unknown => {
   if (!inject(ContentfulSpace) || !inject(ContentfulToken)) {
     logMissingEnv();
@@ -43,12 +51,3 @@ export const contentfulProviders: Provider[] = [
     useFactory: () => factory(DefaultContentfulSuggestionAdapter),
   },
 ];
-
-let logged = 0;
-const logMissingEnv = (): void => {
-  if (logged > 0) return;
-  console.warn(
-    'Missing ORYX_CONTENTFUL_TOKEN or/and ORYX_CONTENTFUL_SPACE environment variables'
-  );
-  logged++;
-};
