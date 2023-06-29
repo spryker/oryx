@@ -16,7 +16,7 @@ let logged = 0;
 const logMissingEnv = (): void => {
   if (logged > 0) return;
   console.warn(
-    'Missing ORYX_CONTENTFUL_TOKEN or/and ORYX_CONTENTFUL_SPACE environment variables'
+    `Missing ORYX_CONTENTFUL_TOKEN or\\and ORYX_CONTENTFUL_SPACE environment variables`
   );
   logged++;
 };

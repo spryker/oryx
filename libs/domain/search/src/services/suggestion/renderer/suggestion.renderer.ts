@@ -14,7 +14,7 @@ export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
     return html`
       <section>
         <h5>${i18n('search.box.products')}</h5>
-        ${products?.slice(0, params.count)?.map(renderProduct)}
+        ${products?.slice(0, params.max)?.map(renderProduct)}
 
         <oryx-button
           outline
@@ -70,13 +70,13 @@ export const defaultSuggestionRenderer: SuggestionRenderer<
     return;
   }
 
-  const { title, count, type } = params;
+  const { title, max, type } = params;
 
   return html`
     <section>
       <h5>${i18n(title ?? '')}</h5>
       <ul>
-        ${suggestion.slice(0, count).map(
+        ${suggestion.slice(0, max).map(
           ({ name, url, id, params }) => html`
             <li>
               <oryx-content-link

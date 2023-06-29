@@ -38,10 +38,18 @@ import { baseStyles, searchBoxStyles } from './styles';
 
 @defaultOptions({
   minChars: 2,
-  [`${SuggestionField.Suggestions}Count`]: 5,
-  [`${SuggestionField.Products}Count`]: 5,
-  [`${SuggestionField.Categories}Count`]: 5,
-  [`${SuggestionField.Articles}Count`]: 5,
+  [SuggestionField.Suggestions]: {
+    max: 5,
+  },
+  [SuggestionField.Products]: {
+    max: 5,
+  },
+  [SuggestionField.Categories]: {
+    max: 5,
+  },
+  [SuggestionField.Articles]: {
+    max: 5,
+  },
   entities: defaultEntities,
 })
 @hydratable(['mouseover', 'focusin'])
@@ -74,7 +82,7 @@ export class SearchBoxComponent
   protected queryEffect = effect(() => this.query$.next(this.query));
   protected $raw = computed(() => this.suggestion$);
   protected $suggestion = computed(() => {
-    const query = this.query.trim();
+    const query = this.query?.trim();
     const options = this.$options();
     const withSuggestion =
       query && (!options.minChars || query.length >= options.minChars);

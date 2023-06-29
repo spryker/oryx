@@ -53,10 +53,8 @@ export class DefaultSuggestionRendererService
       const args = {
         query: options.query,
         title: `search.box.${entity}`,
-        count: options[
-          `${entity}Count` as keyof SuggestionRendererOptions
-        ] as number,
         type: this.linkTypeMapper[entity] ?? SemanticLinkType.ProductList,
+        ...options[entity as SuggestionField],
       };
 
       return options?.entities && renderer

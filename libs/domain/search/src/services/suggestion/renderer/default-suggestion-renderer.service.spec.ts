@@ -74,12 +74,14 @@ describe('DefaultSuggestionRendererService', () => {
         { products: 'a', b: 'b' } as unknown as Suggestion,
         {
           entities: ['products', 'b'],
-          productsCount: 3,
+          products: {
+            max: 3,
+          },
           query: 'que',
         }
       );
       expect(mockSuggestionRendererProducts).toHaveBeenCalledWith('a', {
-        count: 3,
+        max: 3,
         title: 'search.box.products',
         type: 'search',
         query: 'que',

@@ -14,6 +14,7 @@ export const searchBoxComponentSchema: ContentComponentSchema<SearchBoxComponent
         type: FormFieldType.Number,
         min: 0,
       },
+      // TODO: improve form for object options
       [`${SuggestionField.Suggestions}Count`]: {
         type: FormFieldType.Number,
         min: 0,

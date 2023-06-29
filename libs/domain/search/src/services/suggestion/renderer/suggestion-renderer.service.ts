@@ -7,24 +7,28 @@ import { SuggestionEntities, SuggestionField } from '../../adapter';
 export const SuggestionRendererService = 'oryx.SuggestionRendererService';
 export const SuggestionRenderer = 'oryx.SuggestionRenderer*';
 
-type Counts = {
+export interface SuggestionFieldOptions {
   /**
    * Maximum amount of suggestion entities to show
    */
-  [P in SuggestionField as `${P}Count`]?: number;
+  max?: number;
+}
+
+type SuggestionFieldOptionsMapper = {
+  [P in SuggestionField]?: SuggestionFieldOptions;
 };
 
-export interface SuggestionRendererOptions extends Counts {
+export interface SuggestionRendererOptions
+  extends SuggestionFieldOptionsMapper {
   /**
    * List of entities which should be shown
    */
   entities?: SuggestionEntities;
 }
 
-export interface SuggestionRendererParams {
+export interface SuggestionRendererParams extends SuggestionFieldOptions {
   query: string;
   title: string;
-  count?: number;
   type: SemanticLinkType;
 }
 
