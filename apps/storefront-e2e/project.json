@@ -19,7 +19,28 @@
         "headless-ci": {
           "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
           "watch": false,
-          "record": true
+          "record": true,
+          "tags": "regression"
+        },
+        "smoke": {
+          "env": {
+            "grepTags": "smoke"
+          }
+        },
+        "headless-smoke": {
+          "watch": false,
+          "env": {
+            "grepTags": "smoke"
+          }
+        },
+        "headless-ci-smoke": {
+          "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
+          "watch": false,
+          "record": true,
+          "tags": "smoke",
+          "env": {
+            "grepTags": "smoke"
+          }
         }
       }
     },
