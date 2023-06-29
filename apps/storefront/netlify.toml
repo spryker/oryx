@@ -1,6 +1,6 @@
 [functions.ssr]
   node_bundler = "esbuild"
-  included_files = ["dist/apps/storefront/**"]
+  included_files = ["/dist/**"]
 
 [[plugins]]
   package = "@netlify/plugin-lighthouse"
@@ -15,4 +15,4 @@
     path = "category/4"
 
 [[plugins]]
-  package = "/../tools/netlify-plugins/cypress-tests-runner"
+  package = "/../../tools/netlify-plugins/cypress-tests-runner"
