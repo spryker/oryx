@@ -73,7 +73,6 @@ describe('DefaultSuggestionRendererService', () => {
 
   describe('render', () => {
     it('should return data from renderers', () => {
-      mockSuggestionService.get.mockReturnValue(of({ a: 'a', b: 'b' }));
       mockSuggestionRendererProducts.mockReturnValue(html`<div a></div>`);
       mockSuggestionRendererB.mockReturnValue(html`<div b></div>`);
       const result = renderer.render(
@@ -82,14 +81,15 @@ describe('DefaultSuggestionRendererService', () => {
           products: {
             max: 3,
           },
+          b: {},
           query: 'que',
-        }
+        } as SuggestionRendererOptions & Record<'query', string>
       );
       expect(mockSuggestionRendererProducts).toHaveBeenCalledWith('a', {
-        max: 3,
         title: 'search.box.products',
         type: 'search',
         query: 'que',
+        max: 3,
       });
       expect(mockSuggestionRendererB).toHaveBeenCalledWith('b', {
         title: 'search.box.b',

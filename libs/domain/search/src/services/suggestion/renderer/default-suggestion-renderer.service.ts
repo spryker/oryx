@@ -47,9 +47,9 @@ export class DefaultSuggestionRendererService
     options: SuggestionRendererOptions & Record<'query', string>
   ): TemplateResult {
     const entities = Object.keys(options);
-    const data = entities.map(
-      (entry) => suggestions?.[entry as keyof Suggestion]
-    );
+    const data = entities
+      .map((entry) => suggestions?.[entry as keyof Suggestion])
+      .filter(Boolean);
 
     return html`${data?.map((suggestion, index) => {
       const entity = entities[index] ?? '';
