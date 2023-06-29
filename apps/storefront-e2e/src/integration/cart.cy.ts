@@ -227,23 +227,33 @@ function checkCartTotals(totals: {
   cartTotals.getWrapper().should('be.visible');
 
   if (totals.subTotal) {
-    cartTotals.getSubtotalPrice().should('contain.text', totals.subTotal);
+    cartTotals
+      .getSubtotalPrice()
+      .shadow()
+      .should('contain.text', totals.subTotal);
   }
 
   if (totals.discountsTotal) {
     cartTotals
       .getDiscountsTotal()
+      .shadow()
       .should('contain.text', totals.discountsTotal);
   } else {
     cartTotals.getDiscountsWrapper().should('not.exist');
   }
 
   if (totals.totalPrice) {
-    cartTotals.getTotalPrice().should('contain.text', totals.totalPrice);
+    cartTotals
+      .getTotalPrice()
+      .shadow()
+      .should('contain.text', totals.totalPrice);
   }
 
   if (totals.taxTotal) {
-    cartTotals.getTaxTotalPrice().should('contain.text', totals.taxTotal);
+    cartTotals
+      .getTaxTotalPrice()
+      .shadow()
+      .should('contain.text', totals.taxTotal);
   }
 
   cartTotals

@@ -6,7 +6,7 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Cart Totals/components/Subtotal`,
+  title: `${storybookPrefix}/Cart Totals/components/Delivery`,
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
@@ -15,7 +15,7 @@ const Template: Story = (): TemplateResult => {
     TotalsContext.Reference,
     'CART'
   );
-  return html` <oryx-cart-totals-subtotal></oryx-cart-totals-subtotal> `;
+  return html`<oryx-cart-totals-delivery></oryx-cart-totals-delivery>`;
 };
 
 export const Demo = Template.bind({});

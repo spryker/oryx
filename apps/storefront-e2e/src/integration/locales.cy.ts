@@ -83,9 +83,21 @@ describe('Locales suite', () => {
 });
 
 function checkCurrencyUsedOnCartPage(locale: string) {
-  cartPage.getCartTotals().getSubtotalPrice().checkCurrencyFormatting(locale);
-  cartPage.getCartTotals().getTaxTotalPrice().checkCurrencyFormatting(locale);
-  cartPage.getCartTotals().getTotalPrice().checkCurrencyFormatting(locale);
+  cartPage
+    .getCartTotals()
+    .getSubtotalPrice()
+    .shadow()
+    .checkCurrencyFormatting(locale);
+  cartPage
+    .getCartTotals()
+    .getTaxTotalPrice()
+    .shadow()
+    .checkCurrencyFormatting(locale);
+  cartPage
+    .getCartTotals()
+    .getTotalPrice()
+    .shadow()
+    .checkCurrencyFormatting(locale);
 
   cartPage.getCartEntries().then((entries) => {
     entries[0].getSubtotal().checkCurrencyFormatting(locale);
