@@ -1,7 +1,7 @@
 import { CartModificationEnd, CartService } from '@spryker-oryx/cart';
 import { createQuery } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { map, Observable, of, switchMap, take } from 'rxjs';
+import { map, Observable, of, skip, switchMap, take } from 'rxjs';
 import { CheckoutData } from '../../models';
 import { CheckoutAdapter } from '../adapter';
 import { CheckoutDataService } from './checkout-data.service';
@@ -13,17 +13,17 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     protected cartService = inject(CartService)
   ) {}
 
-  protected cartId = this.cartService.getCart().pipe(map((cart) => cart?.id));
+  protected cartId$ = this.cartService.getCart().pipe(map((cart) => cart?.id));
 
   protected query$ = createQuery({
     loader: () =>
-      this.cartId.pipe(
+      this.cartId$.pipe(
         take(1),
         switchMap((cartId) =>
           cartId ? this.adapter.get({ cartId }) : of(null)
         )
       ),
-    resetOn: [this.cartId],
+    resetOn: [this.cartId$.pipe(skip(1))],
     refreshOn: [CartModificationEnd],
   });
 
