@@ -8,7 +8,7 @@ const cartTotalsDiscountRules = css`
   }
 
   span:has(+ ul),
-  ul span {
+  ul :is(span, oryx-site-price) {
     padding-block: 0;
   }
 
@@ -33,12 +33,12 @@ const cartTotalsDiscountRules = css`
     margin-block-end: 10px;
   }
 
-  span:nth-child(2) {
+  oryx-site-price {
     margin-inline-start: auto;
     color: var(--oryx-color-highlight-10);
   }
 
-  ul span {
+  ul :is(span, oryx-site-price) {
     font-size: initial;
     font-weight: initial;
     line-height: initial;

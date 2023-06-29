@@ -117,3 +117,9 @@ export interface ProductOption {
   optionName?: string;
   price?: number;
 }
+
+export interface NormalizedTotals extends CartTotals {
+  currency?: string;
+  priceMode?: string;
+  discounts?: CartDiscount[];
+}
