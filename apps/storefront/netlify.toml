@@ -1,2 +1,18 @@
+[functions.ssr]
+  node_bundler = "esbuild"
+  included_files = ["dist/apps/storefront/**"]
+
 [[plugins]]
-package = "/../tools/netlify-plugins/cypress-tests-runner"
+  package = "@netlify/plugin-lighthouse"
+
+  [[plugins.inputs.audits]]
+    path = ""
+  
+  [[plugins.inputs.audits]]
+    path = "product/086_30521602"
+  
+  [[plugins.inputs.audits]]
+    path = "category/4"
+
+[[plugins]]
+  package = "/../tools/netlify-plugins/cypress-tests-runner"

@@ -15,7 +15,7 @@ export const viteConfig = {
     root: './server',
   },
   build: {
-    outDirRoot: 'dist/apps/storefront',
+    outDirRoot: './apps/storefront/dist',
     index: './client',
     ssr: './server',
   },
