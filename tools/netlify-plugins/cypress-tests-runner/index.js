@@ -1,19 +1,17 @@
 import { spawnSync } from 'child_process';
 
-export const onSuccess = ({ inputs, constants }) => {
+export const onSuccess = ({ inputs }) => {
   const { nxRunCommand } = inputs;
-  const { DEPLOY_PRIME_URL } = constants;
+  const deployURL = process.env.DEPLOY_PRIME_URL;
 
-  console.log(process.env)
-
-  console.log(`Deployed site URL: ${DEPLOY_PRIME_URL}`);
+  console.log(`Deployed site URL: ${deployURL}`);
   console.log(`Executing "npm run ${nxRunCommand}"...`);
 
   // go to the root directory
   process.chdir('../../');
 
   // override default Cypress variables
-  process.env.CYPRESS_BASE_URL = DEPLOY_PRIME_URL;
+  process.env.CYPRESS_BASE_URL = deployURL;
   process.env.CYPRESS_BROWSER = 'electron';
 
   // sync call is needed here, because if async is used -> netlify will kill child process
