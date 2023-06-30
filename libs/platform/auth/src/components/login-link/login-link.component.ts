@@ -3,10 +3,8 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
-  asyncState,
   hydratable,
-  i18n,
-  valueType,
+  i18n, signal,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { AuthService } from '../../services/auth.service';
@@ -25,11 +23,10 @@ export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
   protected authService = resolve(AuthService);
   protected routerService = resolve(RouterService);
 
-  @asyncState()
-  protected isAuthenticated = valueType(this.authService.isAuthenticated());
+  protected $isAuthenticated = signal(this.authService.isAuthenticated());
 
   protected override render(): TemplateResult | void {
-    if (!this.componentOptions?.enableLogout && this.isAuthenticated) {
+    if (!this.$options()?.enableLogout && this.$isAuthenticated()) {
       return;
     }
 
@@ -37,21 +34,21 @@ export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
       <oryx-button type="text">
         <button @click=${this.onClick}>
           <oryx-icon .type=${IconTypes.Login}></oryx-icon>
-          ${i18n(this.isAuthenticated ? 'auth.logout' : 'auth.login')}
+          ${i18n(this.$isAuthenticated() ? 'auth.logout' : 'auth.login')}
         </button>
       </oryx-button>
     `;
   }
 
   protected onClick(): void {
-    if (!this.isAuthenticated) {
+    if (!this.$isAuthenticated()) {
       this.routerService.navigate('/login');
       return;
     }
 
     this.authService.logout().subscribe(() => {
       this.routerService.navigate(
-        this.componentOptions?.logoutRedirectUrl ?? '/'
+        this.$options()?.logoutRedirectUrl ?? '/'
       );
     });
   }
