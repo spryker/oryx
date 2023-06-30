@@ -11,41 +11,18 @@ export const HeaderTemplate: StaticComponent = {
       components: [
         {
           type: 'oryx-content-link',
-          content: {
-            data: {
-              text: 'FREE DELIVERY & RETURNS',
-            },
-          },
-          options: {
-            data: {
-              url: '/',
-              icon: IconTypes.Check,
-            },
-          },
-        },
-        {
-          type: 'oryx-content-link',
-          content: {
-            data: {
-              text: '100 DAY RETURN POLICY',
-            },
-          },
+          content: { data: { text: 'FREE DELIVERY & RETURNS' } },
           options: { data: { url: '/', icon: IconTypes.Check } },
         },
         {
           type: 'oryx-content-link',
-          content: {
-            data: {
-              text: 'CLICK & COLLECT  ',
-            },
-          },
-          options: {
-            data: {
-              url: '/',
-              icon: IconTypes.Check,
-              color: 'light',
-            },
-          },
+          content: { data: { text: '100 DAY RETURN POLICY' } },
+          options: { data: { url: '/', icon: IconTypes.Check } },
+        },
+        {
+          type: 'oryx-content-link',
+          content: { data: { text: 'CLICK & COLLECT' } },
+          options: { data: { url: '/', icon: IconTypes.Check } },
         },
         {
           type: 'oryx-site-currency-selector',
@@ -67,6 +44,7 @@ export const HeaderTemplate: StaticComponent = {
               gap: '10px',
               align: 'center',
               bleed: true,
+              style: 'color: white',
             },
           ],
         },
