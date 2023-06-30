@@ -1,7 +1,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { combineLatest, Observable, switchMap, take } from 'rxjs';
+import { combineLatest, map, Observable, switchMap, take } from 'rxjs';
 import {
   ApiCheckoutModel,
   CheckoutData,
@@ -21,15 +21,27 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
   ) {}
 
   get(props: PlaceOrderData): Observable<CheckoutData> {
-    return this.transformer
-      .serialize(props, CheckoutDataSerializer)
-      .pipe(
-        switchMap((data) =>
-          this.http
-            .post<ApiCheckoutModel.CheckoutResponse>(this.generateUrl(), data)
-            .pipe(this.transformer.do(CheckoutNormalizer))
-        )
-      );
+    return this.transformer.serialize(props, CheckoutDataSerializer).pipe(
+      switchMap((data) =>
+        this.http
+          .post<ApiCheckoutModel.CheckoutResponse>(this.generateUrl(), data)
+          .pipe(
+            this.transformer.do(CheckoutNormalizer),
+            map((data) => {
+              // Workaround for shipmentTotals = 0
+              // if we do not submit shipment method, we don't want to have shipment totals in the response
+              // as we can't recognize if shipment is calculated or not in case if it's zero
+              if (
+                !props.shipment?.idShipmentMethod &&
+                !data?.carts?.[0]?.totals?.shipmentTotal
+              ) {
+                delete data?.carts?.[0]?.totals?.shipmentTotal;
+              }
+              return data;
+            })
+          )
+      )
+    );
   }
 
   placeOrder(data: PlaceOrderData): Observable<CheckoutResponse> {

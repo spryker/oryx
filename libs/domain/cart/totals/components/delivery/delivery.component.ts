@@ -16,7 +16,7 @@ export class CartTotalsDeliveryComponent extends LitElement {
         <span>${i18n('cart.totals.delivery')}</span>
         ${this.renderPrice(shipmentTotal, currency)}
       `;
-    } else this.renderCalculationMessage();
+    } else return this.renderCalculationMessage();
   }
 
   protected renderPrice(

@@ -14,11 +14,11 @@ export function cartAttributesNormalizer(data: DeserializedCart): Cart {
   delete data[itemsKey];
   delete data[guestItemsKey];
 
+  // Workaround for shipmentTotals = 0
   // we don't want to have shipment and expense totals in the default cart response
   // as we can't recognize if shipment is calculated or not in case if it's zero
-  if (data.totals?.shipmentTotal === 0) {
+  if (!data.totals?.shipmentTotal) {
     delete data.totals?.shipmentTotal;
-    delete data.totals?.expenseTotal;
   }
 
   return {
