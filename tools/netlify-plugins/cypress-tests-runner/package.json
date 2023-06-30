@@ -1,0 +1,7 @@
+{
+  "name": "cypress-tests-runner",
+  "version": "1.0.0",
+  "description": "Plugin for running cypress tests against deployed netlify env",
+  "type": "module",
+  "main": "index.js"
+}
