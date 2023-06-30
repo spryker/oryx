@@ -1,22 +1,19 @@
-import { spawn } from 'child_process';
+import { spawnSync } from 'child_process';
 
-export const onSuccess = async ({ inputs }) => {
+export const onSuccess = ({ inputs }) => {
   const { npmRunCommand, siteUrl } = inputs;
 
   console.log(`Deployed site URL: ${siteUrl}`);
   console.log(`Executing "npm run ${npmRunCommand}"...`);
 
-  const childProcess = spawn('npm', ['run', npmRunCommand], { stdio: 'inherit' });
+  // sync call is needed here, because if async is used -> netlify will kill child process
+  // when the main process is over
+  const childProcess = spawnSync('npm', ['run', npmRunCommand], { stdio: 'inherit' });
 
-  childProcess.on('close', (code) => {
-    if (code === 0) {
-      console.log(`"npm run ${npmRunCommand}" completed successfully.`);
-    } else {
-      console.error(`"npm run ${npmRunCommand}" failed.`);
-    }
-  });
-
-  childProcess.on('error', (err) => {
-    console.error(err);
-  });
+  if (childProcess.status === 0) {
+    console.log(`"npm run ${npmRunCommand}" completed successfully.`);
+  } else {
+    console.error(`"npm run ${npmRunCommand}" failed.`);
+    console.error(childProcess.error);
+  }
 };
