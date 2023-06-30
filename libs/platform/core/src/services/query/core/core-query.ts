@@ -105,10 +105,10 @@ export class CoreQuery<
       refresh$,
     ]).pipe(
       tap(() => {
-        if (!subject$.value.stale) {
+        if (!subject$.value.stale || subject$.value.loading) {
           subject$.next({
             error: subject$.value.error,
-            loading: subject$.value.loading,
+            loading: false,
             stale: true,
             data: subject$.value.data,
           });
