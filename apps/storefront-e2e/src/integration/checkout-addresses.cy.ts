@@ -1,4 +1,3 @@
-import { CartPage } from '../support/page_objects/cart.page';
 import { CheckoutPage } from '../support/page_objects/checkout.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
 import { ProductStorage } from '../test-data/product.storage';
@@ -6,7 +5,6 @@ import { TestCustomerData } from '../types/user.type';
 
 let api: SCCOSApi;
 
-const cartPage = new CartPage();
 const checkoutPage = new CheckoutPage();
 
 describe('User addresses', () => {
@@ -35,15 +33,13 @@ describe('User addresses', () => {
             customerCartsResponse.body.data[0].id
           );
         });
-
-        cartPage.visit();
       });
     });
 
     describe('and user does not have addresses yet', () => {
       describe('and user goes to checkout', () => {
         beforeEach(() => {
-          cartPage.checkout();
+          cy.goToCheckout();
         });
 
         it('then shipping address form is shown', () => {
@@ -78,7 +74,7 @@ describe('User addresses', () => {
 
       describe('and user goes to checkout', () => {
         beforeEach(() => {
-          cartPage.checkout();
+          cy.goToCheckout();
         });
 
         it('then the selected address is shown', () => {

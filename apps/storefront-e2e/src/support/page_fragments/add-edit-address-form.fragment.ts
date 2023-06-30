@@ -52,8 +52,8 @@ export class AddEditAddressFormFragment {
 
     this.selectCoutry(address.iso2Code);
     this.selectSalutation(address.salutation);
-    this.getFirstNameInput().type(address.firstName);
-    this.getLastNameInput().type(address.lastName);
+    this.getFirstNameInput().clear().type(address.firstName, { force: true });
+    this.getLastNameInput().clear().type(address.lastName, { force: true });
     this.getCompanyInput().type(address.company);
     this.getAddress1Input().type(address.address1);
     this.getAddress2Input().type(address.address2);
