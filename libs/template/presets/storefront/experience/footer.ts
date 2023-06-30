@@ -55,7 +55,6 @@ const promises = {
         {
           layout: 'list',
           gap: 0,
-          // colSpan: 2, rowSpan: 2
         },
       ],
     },
