@@ -3,7 +3,7 @@ import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 const cartDeliveryTotalRules = css`
-  .calculation-message {
+  .unknown-message {
     ${headingUtil(HeadingTag.H6)};
 
     flex: 100%;

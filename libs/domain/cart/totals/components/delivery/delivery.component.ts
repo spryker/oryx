@@ -16,7 +16,7 @@ export class CartTotalsDeliveryComponent extends LitElement {
         <span>${i18n('cart.totals.delivery')}</span>
         ${this.renderPrice(shipmentTotal, currency)}
       `;
-    } else return this.renderCalculationMessage();
+    } else return this.renderUnknownMessage();
   }
 
   protected renderPrice(
@@ -32,10 +32,10 @@ export class CartTotalsDeliveryComponent extends LitElement {
     ></oryx-site-price> `;
   }
 
-  protected renderCalculationMessage(): TemplateResult {
+  protected renderUnknownMessage(): TemplateResult {
     return html`
-      <span class="calculation-message"
-        >${i18n('cart.totals.delivery-will-be-calculated-at-checkout')}</span
+      <span class="unknown-message"
+        >${i18n('cart.totals.unknown-delivery-cost')}</span
       >
     `;
   }
