@@ -63,6 +63,7 @@ const mockFullCartTotals: CartTotals = {
   taxTotal: 6386,
   discountTotal: 12075,
   expenseTotal: 1000,
+  shipmentTotal: 1000,
 };
 
 const mockCartTotals: CartTotals = {
