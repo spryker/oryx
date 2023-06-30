@@ -44,7 +44,10 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
     resetOn: [this.cartId$.pipe(skip(1))],
   });
 
-  protected queryTotals$ = createQuery({
+  /**
+   * Workaround update cart totals and not loose shipments
+   */
+  protected queryTotalsCartUpdate$ = createQuery({
     loader: () =>
       combineLatest([this.cartId$, this.checkoutState$]).pipe(
         take(1),
@@ -67,13 +70,7 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
         }
       },
     ],
-  });
-
-  /**
-   * Workaround to receive shipments together with totals
-   * @protected
-   */
-  protected queryTotalsSharedSideEffect$ = this.queryTotals$
+  })
     .get()
     .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
@@ -92,8 +89,8 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
       .pipe(map((data) => data?.[key] as CheckoutData[K] | undefined));
 
     return using(
-      // wire in cart totals workaround into cart data subscription
-      () => this.queryTotalsSharedSideEffect$.subscribe(),
+      // wire-in cart totals workaround into checkout data subscription
+      () => this.queryTotalsCartUpdate$.subscribe(),
       () => result
     );
   }
