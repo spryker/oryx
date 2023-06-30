@@ -13,13 +13,11 @@ import {
   signalAware,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { marked } from 'marked';
 import { of } from 'rxjs';
 import { ContentArticleOptions } from './article.model';
 
-// Temporary implementation ContentFields
-@defaultOptions({
-  entities: [ContentFields.Article],
-})
+@defaultOptions({ entities: [ContentFields.Article] })
 @signalAware()
 @hydratable()
 export class ArticleComponent extends ContentMixin<ContentArticleOptions>(
@@ -32,7 +30,7 @@ export class ArticleComponent extends ContentMixin<ContentArticleOptions>(
     this.contextController.get<string>(ArticleContext.Id)
   );
 
-  protected $article = computed(() => {
+  protected $data = computed(() => {
     const article = this.$articleContext();
 
     return article
@@ -40,7 +38,15 @@ export class ArticleComponent extends ContentMixin<ContentArticleOptions>(
       : of(null);
   });
 
-  protected override render(): TemplateResult {
-    return html`<oryx-text .content=${this.$article()?.article}></oryx-text> `;
+  protected override render(): TemplateResult | void {
+    const data = this.$data();
+
+    if (!data?.article) {
+      return;
+    }
+
+    return html`<oryx-text
+      .content=${marked.parse(data.article)}
+    ></oryx-text> `;
   }
 }
