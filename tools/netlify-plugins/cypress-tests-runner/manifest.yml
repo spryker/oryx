@@ -2,5 +2,3 @@ name: cypress-tests-runner
 inputs:
   - name: npmRunCommand
     description: 'The npm script command to run'
-  - name: siteUrl
-    description: 'The deployed site URL'

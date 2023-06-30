@@ -21,8 +21,7 @@
   package = "/../../tools/netlify-plugins/cypress-tests-runner" 
 
     [plugins.inputs]
-      npmRunCommand = "prettier"
-      siteUrl = "$SITE_URL"
+      npmRunCommand = "sf:e2e:headless:ci:smoke"
 
 [[redirects]]
   from = "/"

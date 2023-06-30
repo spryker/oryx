@@ -1,9 +1,10 @@
 import { spawnSync } from 'child_process';
 
-export const onSuccess = ({ inputs }) => {
-  const { npmRunCommand, siteUrl } = inputs;
+export const onSuccess = ({ inputs, constants }) => {
+  const { npmRunCommand } = inputs;
+  const { DEPLOY_URL } = constants;
 
-  console.log(`Deployed site URL: ${siteUrl}`);
+  console.log(`Deployed site URL: ${DEPLOY_URL}`);
   console.log(`Executing "npm run ${npmRunCommand}"...`);
 
   // go to the root directory
