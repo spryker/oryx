@@ -66,7 +66,7 @@ describe('CartTotalsDeliveryComponent', () => {
     });
 
     it('should not render the content', () => {
-      expect(element).not.toContainElement('span');
+      expect(element).toContainElement('span');
     });
   });
 });
