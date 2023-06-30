@@ -18,7 +18,11 @@
     path = "category/4"
 
 [[plugins]]
-  package = "/../../tools/netlify-plugins/cypress-tests-runner"
+  package = "/../../tools/netlify-plugins/cypress-tests-runner" 
+
+    [plugins.inputs]
+      npmRunCommand = "prettier"
+      siteUrl = "$URL"
 
 [[redirects]]
   from = "/"
