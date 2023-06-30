@@ -67,7 +67,6 @@ export const HeaderTemplate: StaticComponent = {
               gap: '10px',
               align: 'center',
               bleed: true,
-              style: ';color: white',
             },
           ],
         },
