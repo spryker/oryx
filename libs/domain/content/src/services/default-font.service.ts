@@ -1,9 +1,9 @@
 import { PageMetaService } from '@spryker-oryx/core';
-import { resolve } from '@spryker-oryx/di';
+import { inject } from '@spryker-oryx/di';
 import { FontService } from './fonts.service';
 
 export class DefaultFontService implements FontService {
-  protected pageMetaService = resolve(PageMetaService);
+  constructor(protected pageMetaService = inject(PageMetaService)) {}
 
   install(text: string): void {
     this.collectFonts(text).forEach((font) => {

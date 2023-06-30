@@ -35,7 +35,7 @@ describe('Authentication suite', () => {
   });
 
   context('Logout functionality', () => {
-    it('User is able to logout', () => {
+    it('User is able to logout', { tags: 'smoke' }, () => {
       cy.login();
 
       cy.location('pathname').should('be.eq', landingPage.url);

@@ -1,3 +1,4 @@
+import { mockLitHtml } from '@/tools/testing';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { ComponentMapping } from '../experience-tokens';
 import { ComponentsRegistryService } from './components-registry.service';
@@ -5,16 +6,7 @@ import { DefaultComponentsRegistryService } from './default-components-registry.
 
 vi.mock('lit', async () => ({
   ...((await vi.importActual('lit')) as Array<unknown>),
-  html: (svg: string[], ...values: string[]): string => {
-    const template = [svg[0]];
-
-    for (let i = 0; i < values.length; i++) {
-      template.push(values[i]);
-      template.push(svg[i + 1]);
-    }
-
-    return template.join('');
-  },
+  html: mockLitHtml,
 }));
 
 vi.mock('lit/directives/unsafe-html.js', async () => ({
