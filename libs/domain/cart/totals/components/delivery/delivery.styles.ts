@@ -5,6 +5,7 @@ import { css } from 'lit';
 const cartDeliveryTotalRules = css`
   .calculation-message {
     ${headingUtil(HeadingTag.H6)};
+
     flex: 100%;
     color: var(--oryx-color-neutral-9);
   }
