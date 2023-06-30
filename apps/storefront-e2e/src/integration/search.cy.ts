@@ -42,6 +42,7 @@ describe('Search suite', () => {
 
     search.getSearchProducts().eq(0).click();
 
+    // check if correct PDP was opened
     pdp.getTitle().should('contain.text', productData.title);
     pdp.getSKU().should('contain.text', productData.id);
   });

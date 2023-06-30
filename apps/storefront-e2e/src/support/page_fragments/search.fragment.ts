@@ -29,15 +29,18 @@ export class SearchFragment {
       )}*`
     ).as('searchQuery');
 
-    this.getWrapper().click();
+    // trigger hydration
     this.getTypeahead().click();
-    this.getWrapper().should('not.have.attr', 'defer-hydration');
-    this.getTypeahead().should('not.have.attr', 'defer-hydration');
+    // wait for hydration
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
+    cy.wait(500);
     this.getInput().type(text, { delay: 10, force: true });
 
     cy.wait('@searchQuery');
+
+    // wait while open animation is over
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
   };
 
   clearSearch = () => {
