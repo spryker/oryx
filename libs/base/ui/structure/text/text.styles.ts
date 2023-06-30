@@ -66,7 +66,7 @@ export const textStyles = css`
     pointer-events: none;
   }
 
-  a[color='primary'] {
+  a[data-color='primary'] {
     color: var(--oryx-color-primary-10);
   }
 

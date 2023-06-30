@@ -83,7 +83,7 @@ export const checkoutPage: StaticComponent = {
           type: 'oryx-content-text',
           content: {
             data: {
-              text: '<p>The <a href="/article/terms-and-conditions" color="primary">Terms and conditions</a> apply.<br/>Please also see our <a href="/article/privacy" color="primary">Privacy notice</a>.</p>',
+              text: '<p>The <a href="/article/terms-and-conditions" data-color="primary">Terms and conditions</a> apply.<br/>Please also see our <a href="/article/privacy" data-color="primary">Privacy notice</a>.</p>',
             },
           },
         },
