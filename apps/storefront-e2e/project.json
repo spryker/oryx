@@ -23,17 +23,20 @@
           "tags": "regression"
         },
         "smoke": {
+          "browser": "electron",
           "env": {
             "grepTags": "smoke"
           }
         },
         "headless-smoke": {
+          "browser": "electron",
           "watch": false,
           "env": {
             "grepTags": "smoke"
           }
         },
         "headless-ci-smoke": {
+          "browser": "electron",
           "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
           "watch": false,
           "record": true,
