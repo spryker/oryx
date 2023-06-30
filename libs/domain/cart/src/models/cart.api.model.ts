@@ -27,6 +27,7 @@ export module ApiCartModel {
     grandTotal: number;
     priceToPay: number;
     expenseTotal?: number;
+    shipmentTotal?: number;
     discountTotal?: number;
     taxTotal?: number;
     subtotal?: number;
