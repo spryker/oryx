@@ -43,6 +43,7 @@ export class ContentLinkComponent extends ContentMixin<
 
     return html`
       <a
+        part="anchor"
         href=${this.$link()}
         aria-label=${ifDefined(label)}
         target=${ifDefined(target)}

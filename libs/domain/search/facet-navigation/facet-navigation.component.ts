@@ -12,6 +12,7 @@ import {
 import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
 import { computed, hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { tap } from 'rxjs/operators';
 import { SearchFacetNavigationOptions } from './facet-navigation.model';
 import { searchFacetNavigationStyles } from './facet-navigation.styles';
@@ -55,23 +56,21 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
     } = this.$options();
 
     return html`${facets.map((facet, index) =>
-        this.facetComponentRegistryService.renderFacetComponent(
-          facet,
-          {
-            renderLimit,
-            open: index < expandedItemsCount,
-            minForSearch,
-            enableClear: !(
-              this.routerService.getPathId('category') &&
-              facet.parameter === 'category'
-            ),
-          },
-          this.applyFilters.bind(this)
-        )
-      )}
-      <style>
-        ${this.layoutStyles()}
-      </style> `;
+      this.facetComponentRegistryService.renderFacetComponent(
+        facet,
+        {
+          renderLimit,
+          open: index < expandedItemsCount,
+          minForSearch,
+          enableClear: !(
+            this.routerService.getPathId('category') &&
+            facet.parameter === 'category'
+          ),
+        },
+        this.applyFilters.bind(this)
+      )
+    )}
+    ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)} `;
   }
 
   protected applyFilters(e: CustomEvent<SelectFacetEventDetail>): void {

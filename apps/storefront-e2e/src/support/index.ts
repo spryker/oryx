@@ -1,5 +1,8 @@
 import './commands';
 import { SCCOSApi } from './sccos_api/sccos.api';
+import registerCypressGrep from '@cypress/grep/src/support';
+
+registerCypressGrep();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createAUserBeforeTestsAreRun = () => {

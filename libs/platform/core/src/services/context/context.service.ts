@@ -5,7 +5,7 @@ export const ContextServiceFallback = 'oryx.ContextServiceFallback*';
 
 export interface ContextService {
   provide(element: Element, key: string, value: unknown): void;
-  get<T>(element: Element, key: string): Observable<T>;
+  get<T>(element: Element | undefined, key: string): Observable<T>;
   remove(element: Element, key: string): void;
 }
 

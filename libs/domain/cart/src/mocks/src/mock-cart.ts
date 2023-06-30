@@ -4,6 +4,7 @@ import {
   CartDiscount,
   CartEntry,
   CartTotals,
+  NormalizedTotals,
   PriceMode,
 } from '@spryker-oryx/cart';
 
@@ -62,6 +63,7 @@ const mockFullCartTotals: CartTotals = {
   taxTotal: 6386,
   discountTotal: 12075,
   expenseTotal: 1000,
+  shipmentTotal: 1000,
 };
 
 const mockCartTotals: CartTotals = {
@@ -194,4 +196,25 @@ export const mockGetCartsResponse: ApiCartModel.Response = {
       attributes: mockCartEntry,
     },
   ],
+};
+
+export const mockNormalizedCartTotals: NormalizedTotals = {
+  ...mockFullCartTotals,
+  discounts: [...mockMultipleDiscounts],
+  currency: 'EUR',
+  priceMode: PriceMode.GrossMode,
+};
+
+export const mockNormalizedCartTotalsSingleDiscount: NormalizedTotals = {
+  ...mockFullCartTotals,
+  discounts: [...mockDiscounts],
+  currency: 'EUR',
+  priceMode: PriceMode.GrossMode,
+  shipmentTotal: 0,
+};
+
+export const mockNormalizedCartTotalsNetMode: NormalizedTotals = {
+  ...mockNormalizedCartTotals,
+  priceMode: PriceMode.NetMode,
+  shipmentTotal: undefined,
 };

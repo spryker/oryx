@@ -1,3 +1,4 @@
+import { mockLitHtml } from '@/tools/testing';
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
@@ -9,16 +10,7 @@ import { LitRoutesRegistry } from './lit-routes-registry';
 
 vi.mock('lit', async () => ({
   ...((await vi.importActual('lit')) as Array<unknown>),
-  html: (svg: string[], ...values: string[]): string => {
-    const template = [svg[0]];
-
-    for (let i = 0; i < values.length; i++) {
-      template.push(values[i]);
-      template.push(svg[i + 1]);
-    }
-
-    return template.join('');
-  },
+  html: mockLitHtml,
 }));
 
 const mockRouterService = {

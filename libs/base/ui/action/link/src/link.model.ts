@@ -22,5 +22,4 @@ export const enum LinkType {
 export const enum ColorType {
   Primary = 'primary',
   Neutral = 'neutral',
-  Light = 'light',
 }

@@ -10,7 +10,6 @@ export const dropdownBaseStyles = css`
 
     position: relative;
     display: inline-flex;
-    z-index: 100;
   }
 
   oryx-popover {
@@ -23,6 +22,7 @@ export const dropdownBaseStyles = css`
       var(--oryx-popover-maxwidth)
     );
 
+    z-index: 100;
     overflow: auto;
     max-height: min(
       calc(

@@ -24,7 +24,7 @@ export const orderPage: StaticComponent = {
         },
         { type: 'oryx-order-entries' },
         {
-          type: 'oryx-cart-totals',
+          type: 'oryx-order-totals',
           components: [
             { type: 'oryx-cart-totals-subtotal' },
             {
@@ -35,7 +35,6 @@ export const orderPage: StaticComponent = {
                 },
               },
             },
-            { type: 'oryx-cart-totals-expense' },
             { type: 'oryx-cart-totals-tax' },
             { type: 'oryx-cart-totals-delivery' },
             { type: 'oryx-cart-totals-total' },

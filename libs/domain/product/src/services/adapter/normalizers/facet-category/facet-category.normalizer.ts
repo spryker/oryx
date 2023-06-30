@@ -29,7 +29,7 @@ export function facetCategoryNormalizer(fasets: FacetCategory): Facet {
 
   const categoryTreeValues = parse(
     categoryTreeFilter,
-    parsedCategoryFacet!.values as FacetValue[]
+    (parsedCategoryFacet?.values as FacetValue[]) ?? []
   );
 
   const categoryTree = {

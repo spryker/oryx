@@ -5,7 +5,7 @@ import { LoginPage } from '../support/page_objects/login.page';
 import { ProductDetailsPage } from '../support/page_objects/product-details.page';
 import { ProductStorage } from '../test-data/product.storage';
 
-describe('SSR suite', () => {
+describe('SSR suite', { tags: 'smoke' }, () => {
   it('must render Landing page', () => {
     const landingPage = new LandingPage();
 

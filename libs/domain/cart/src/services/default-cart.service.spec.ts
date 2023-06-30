@@ -319,35 +319,6 @@ describe('DefaultCartService', () => {
     });
   });
 
-  describe('getTotals', () => {
-    it('should return an observable', () => {
-      expect(service.getTotals()).toBeInstanceOf(Observable);
-    });
-
-    it('should return null if no carts', () => {
-      service.getTotals().pipe(take(1)).subscribe(statusCallback);
-
-      expect(statusCallback).toHaveBeenCalledWith(null);
-    });
-
-    it('should return cart totals of the active cart', () => {
-      adapter.getAll.mockReturnValue(of([mockBaseCart, mockDefaultCart]));
-      service.getTotals().pipe(take(1)).subscribe(statusCallback);
-
-      expect(statusCallback).toHaveBeenCalledWith(mockDefaultCart.totals);
-    });
-
-    it('should return cart totals of the cart by provided cartId', () => {
-      adapter.get.mockReturnValue(of(mockBaseCart));
-      service
-        .getTotals({ cartId: 'cart' })
-        .pipe(take(1))
-        .subscribe(statusCallback);
-
-      expect(statusCallback).toHaveBeenCalledWith(mockBaseCart.totals);
-    });
-  });
-
   describe('getEntries', () => {
     it('should return an observable', () => {
       expect(service.getEntries()).toBeInstanceOf(Observable);

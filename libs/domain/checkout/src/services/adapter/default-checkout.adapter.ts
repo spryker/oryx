@@ -1,18 +1,14 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { combineLatest, Observable, switchMap } from 'rxjs';
+import { combineLatest, map, Observable, switchMap, take } from 'rxjs';
 import {
   ApiCheckoutModel,
   CheckoutData,
   CheckoutResponse,
   PlaceOrderData,
 } from '../../models';
-import {
-  CheckoutAdapter,
-  GetCheckoutDataProps,
-  UpdateCheckoutDataProps,
-} from './checkout.adapter';
+import { CheckoutAdapter } from './checkout.adapter';
 import { CheckoutNormalizer, CheckoutResponseNormalizer } from './normalizers';
 import { CheckoutDataSerializer, CheckoutSerializer } from './serializers';
 
@@ -24,12 +20,28 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
     protected identity = inject(IdentityService)
   ) {}
 
-  get(props: GetCheckoutDataProps): Observable<CheckoutData> {
-    return this.post(props);
-  }
-
-  update(props: UpdateCheckoutDataProps): Observable<CheckoutData> {
-    return this.post(props);
+  get(props: PlaceOrderData): Observable<CheckoutData> {
+    return this.transformer.serialize(props, CheckoutDataSerializer).pipe(
+      switchMap((data) =>
+        this.http
+          .post<ApiCheckoutModel.CheckoutResponse>(this.generateUrl(), data)
+          .pipe(
+            this.transformer.do(CheckoutNormalizer),
+            map((data) => {
+              // Workaround for shipmentTotals = 0
+              // if we do not submit shipment method, we don't want to have shipment totals in the response
+              // as we can't recognize if shipment is calculated or not in case if it's zero
+              if (
+                !props.shipment?.idShipmentMethod &&
+                !data?.carts?.[0]?.totals?.shipmentTotal
+              ) {
+                delete data?.carts?.[0]?.totals?.shipmentTotal;
+              }
+              return data;
+            })
+          )
+      )
+    );
   }
 
   placeOrder(data: PlaceOrderData): Observable<CheckoutResponse> {
@@ -37,6 +49,7 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
       this.identity.get(),
       this.transformer.serialize(data, CheckoutSerializer),
     ]).pipe(
+      take(1),
       switchMap(([user, data]) =>
         this.http
           .post<ApiCheckoutModel.CheckoutResponse>(
@@ -50,28 +63,13 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
     );
   }
 
-  protected post(
-    props: GetCheckoutDataProps | UpdateCheckoutDataProps
-  ): Observable<CheckoutData> {
-    return this.transformer
-      .serialize(props, CheckoutDataSerializer)
-      .pipe(
-        switchMap((data) =>
-          this.http
-            .post<ApiCheckoutModel.CheckoutResponse>(
-              this.generateUrl(props.include),
-              data
-            )
-            .pipe(this.transformer.do(CheckoutNormalizer))
-        )
-      );
-  }
-
   protected generateUrl(
     include: ApiCheckoutModel.Includes[] = [
       ApiCheckoutModel.Includes.Shipments,
       ApiCheckoutModel.Includes.ShipmentMethods,
       ApiCheckoutModel.Includes.PaymentMethods,
+      ApiCheckoutModel.Includes.Carts,
+      ApiCheckoutModel.Includes.GuestCarts,
     ]
   ): string {
     return `${this.SCOS_BASE_URL}/checkout-data${

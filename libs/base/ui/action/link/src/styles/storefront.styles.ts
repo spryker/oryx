@@ -1,12 +1,15 @@
 import { css } from 'lit';
 
 export const storefrontLinkStyles = css`
+  :host {
+    position: relative;
+    display: inline-flex;
+  }
+
   :host([icon]) {
     --oryx-icon-size: 16px;
 
-    display: inline-flex;
     align-items: baseline;
-    position: relative;
     gap: 8px;
   }
 
@@ -27,8 +30,8 @@ export const storefrontLinkStyles = css`
   }
 
   :host(:hover) ::slotted(a) {
-    text-decoration: solid underline currentColor 1px;
-    text-underline-offset: 2px;
+    text-decoration: solid underline var(--oryx-color-primary-9) 1px;
+    text-underline-offset: 5px;
   }
 
   ::slotted(*:focus-visible) {
@@ -38,31 +41,17 @@ export const storefrontLinkStyles = css`
   ::slotted(*:focus-visible)::before {
     content: '';
     outline: solid 1px var(--oryx-color-focus);
-    outline-offset: 3px;
+    outline-offset: 5px;
     position: absolute;
     height: 100%;
     width: 100%;
     inset-inline-start: 0;
+    inset-block-start: 0;
   }
 
   :host([color='primary']),
+  :host([color='primary']:hover:not(:active)),
   :host(:active) {
     color: var(--oryx-color-primary-10);
-  }
-
-  :host(:hover:not(:active)) {
-    color: var(--oryx-color-primary-9);
-  }
-
-  :host([color='light']) {
-    color: var(--oryx-color-neutral-0);
-  }
-
-  :host([color='light']:hover) {
-    color: var(--oryx-color-primary-7);
-  }
-
-  :host([color='light']:active) {
-    color: var(--oryx-color-neutral-0);
   }
 `;
