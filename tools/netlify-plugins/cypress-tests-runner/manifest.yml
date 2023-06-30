@@ -1,4 +1,4 @@
 name: cypress-tests-runner
 inputs:
-  - name: npmRunCommand
-    description: 'The npm script command to run'
+  - name: nxRunCommand
+    description: 'The nx script command to run'

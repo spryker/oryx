@@ -21,7 +21,7 @@
   package = "/../../tools/netlify-plugins/cypress-tests-runner" 
 
     [plugins.inputs]
-      npmRunCommand = "sf:e2e:headless:ci:smoke"
+      nxRunCommand = "storefront-e2e:e2e:headless-ci-smoke"
 
 [[redirects]]
   from = "/"
