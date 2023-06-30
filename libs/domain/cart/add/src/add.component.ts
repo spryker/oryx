@@ -62,7 +62,7 @@ export class CartAddComponent extends ProductMixin(
       ?outline=${outlined}
     >
       <button
-        ?disabled=${this.isInvalid || this.$hasStock()}
+        ?disabled=${this.isInvalid || !this.$hasStock()}
         @click=${this.onSubmit}
       >
         <oryx-icon .type=${IconTypes.CartAdd} size=${Size.Lg}></oryx-icon>
@@ -78,13 +78,15 @@ export class CartAddComponent extends ProductMixin(
 
   protected $hasStock = computed(() => {
     return (
-      !this.$product()?.availability?.isNeverOutOfStock &&
-      this.$max() < this.$min()
+      this.$product()?.availability?.isNeverOutOfStock ||
+      this.$max() > this.$min()
     );
   });
 
   protected $min = computed(() => {
-    return 1;
+    return this.$product()?.availability?.isNeverOutOfStock || this.$max()
+      ? 1
+      : 0;
   });
 
   protected $max = computed(() => {
