@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/content",
   "type": "module",
-  "version": "0.13.0",
+  "version": "0.12.1",
   "description": "Content features for Oryx applications",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -22,8 +22,8 @@
   },
   "peerDependencies": {
     "lit": "^2.4.0",
-    "marked": "^5.1.0",
     "rxjs": "^7.5.0",
-    "tslib": "^2.4.0"
+    "tslib": "^2.4.0",
+    "marked": "^5.1.0"
   }
 }
