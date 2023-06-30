@@ -23,7 +23,6 @@ export type SuggestionRendererOptions = {
 export interface SuggestionRendererParams extends SuggestionFieldOptions {
   query: string;
   title: string;
-  icon?: string;
   type: SemanticLinkType;
 }
 

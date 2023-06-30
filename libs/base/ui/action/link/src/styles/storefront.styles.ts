@@ -58,10 +58,6 @@ export const storefrontLinkStyles = css`
     color: var(--oryx-color-primary-9);
   }
 
-  /* :host([color='light']) {
-    color: var(--oryx-color-neutral-0);
-  } */
-
   :host([color='light']:hover) {
     color: var(--oryx-color-primary-7);
   }
