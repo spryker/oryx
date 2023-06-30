@@ -17,7 +17,7 @@ export const storefrontHandler = async (
 ): Promise<any> => {
   try {
     const {
-      root = 'file:///var/task/dist/apps/storefront/functions/ssr/index.js',
+      root = 'file:///var/task/apps/storefront/dist/functions/ssr/index.js',
       index = '../../client/index.html',
       entry = '../../server/render.js',
     } = context;

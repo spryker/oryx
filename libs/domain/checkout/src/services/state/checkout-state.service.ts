@@ -17,8 +17,11 @@ export interface CheckoutStateService {
   /**
    * returns the collected checkout state when its' all valid. When parts of the
    * checkout state is invalid, a null is returned.
+   *
+   * Passing complete as false will return the collected checkout state even if parts are invalid.
+   * It will also not trigger invalidation of the checkout state.
    */
-  getAll(): Observable<Partial<PlaceOrderData> | null>;
+  getAll(complete?: boolean): Observable<Partial<PlaceOrderData> | null>;
 
   /**
    * returns the validity of the checkout state.

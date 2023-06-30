@@ -65,14 +65,16 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     this.subject.next(new Map());
   }
 
-  getAll(): Observable<Partial<PlaceOrderData> | null> {
+  getAll(complete = true): Observable<Partial<PlaceOrderData> | null> {
     return this.subject.pipe(
       map((data) => {
-        if (Array.from(data).find((item) => !item[1].valid)) {
+        if (complete && Array.from(data).find((item) => !item[1].valid)) {
           this.isInvalid$.next(true);
           return null;
+        } else {
+          this.isInvalid$.next(false);
         }
-        this.isInvalid$.next(false);
+
         const result: Partial<PlaceOrderData> = {};
         data.forEach((item, key) => {
           Object.assign(result, { [key]: item.value });
