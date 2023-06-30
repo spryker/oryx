@@ -7,6 +7,8 @@ export const onSuccess = ({ inputs }) => {
   console.log(`Executing "npm run ${npmRunCommand}"...`);
 
   // go to the root directory
+  console.log(__filename)
+  console.log(__dirname)
   process.chdir('../../../');
 
   // sync call is needed here, because if async is used -> netlify will kill child process
