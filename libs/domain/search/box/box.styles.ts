@@ -73,5 +73,27 @@ export const searchBoxStyles = css`
   div[slot='empty'] {
     padding-block: 18px;
     padding-inline: 15px;
+    color: var(--oryx-color-neutral-9);
+  }
+
+  oryx-typeahead {
+    z-index: 1;
+  }
+
+  oryx-typeahead::before {
+    content: '';
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--oryx-color-neutral-12);
+    transition: opacity var(--oryx-transition-time);
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  oryx-typeahead[open]::before {
+    opacity: 0.3;
   }
 `;
