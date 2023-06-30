@@ -123,6 +123,7 @@ export class QuantityInputComponent
   protected isMaxDisabled(): boolean {
     return (
       this.disabled ||
+      this.min === 0 ||
       (this.value !== undefined &&
         this.max !== undefined &&
         this.value >= this.max)
