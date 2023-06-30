@@ -24,12 +24,8 @@ export const baseStyles = [
       margin: calc((var(--oryx-popover-vertical-offset) / 2) - 2px) 0;
       overflow: auto;
       max-height: min(
-        calc(
-          var(
-            --_available-popover-height,
-            var(--oryx-popover-maxheight, ${unsafecss(POPOVER_HEIGHT)}px)
-          )
-        )
+        var(--_available-popover-height),
+        var(--oryx-popover-maxheight, ${unsafecss(POPOVER_HEIGHT)}px)
       );
       width: var(--oryx-popover-width, 100%);
     }

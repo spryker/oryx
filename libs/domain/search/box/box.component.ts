@@ -82,11 +82,7 @@ export class SearchBoxComponent
     const options = this.$options();
     const withSuggestion =
       query && (!options.minChars || query.length >= options.minChars);
-    const suggestion = withSuggestion ? this.$raw() : null;
-
-    this.toggleAttribute?.('stretched', !this.isNothingFound(suggestion));
-
-    return suggestion;
+    return withSuggestion ? this.$raw() : null;
   });
 
   protected $placeholder = signal(

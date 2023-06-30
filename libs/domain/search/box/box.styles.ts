@@ -83,8 +83,7 @@ export const searchBoxStyles = css`
   oryx-typeahead::before {
     content: '';
     position: fixed;
-    left: 0;
-    top: 0;
+    inset: 0;
     height: 100%;
     width: 100%;
     background-color: var(--oryx-color-neutral-12);
