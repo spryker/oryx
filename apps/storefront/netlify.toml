@@ -22,7 +22,7 @@
 
     [plugins.inputs]
       npmRunCommand = "prettier"
-      siteUrl = "$URL"
+      siteUrl = "$SITE_URL"
 
 [[redirects]]
   from = "/"
