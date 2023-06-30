@@ -17,13 +17,14 @@ import {
   ssrShim,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { ProductPriceOptions } from '../../price/src/price.model.js';
+import { ProductTitleOptions } from '../../title/src/title.model.js';
 import { ProductCardOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
 
 @defaultOptions({
+  template: 'grid',
   enableTitle: true,
-  titleLineClamp: 1,
   enableMedia: true,
   enablePrice: true,
   enableWishlist: true,
@@ -42,18 +43,9 @@ export class ProductCardComponent extends ProductMixin(
   protected semanticLinkService = resolve(SemanticLinkService);
 
   @elementEffect()
-  protected setProductContext = (): void => {
-    if (this.sku) {
-      this.contextController.provide(ProductContext.SKU, this.sku);
-    }
+  protected setTemplate = (): void => {
+    this.setAttribute('template', this.$options().template ?? 'grid');
   };
-
-  protected $link = computed(() =>
-    this.semanticLinkService.get({
-      type: SemanticLinkType.Product,
-      id: this.$product()?.sku,
-    })
-  );
 
   @elementEffect()
   protected skuController = (): void => {
@@ -63,27 +55,56 @@ export class ProductCardComponent extends ProductMixin(
     }
   };
 
+  @elementEffect()
+  protected setProductContext = (): void => {
+    if (this.sku) {
+      this.contextController.provide(ProductContext.SKU, this.sku);
+    }
+  };
+
   protected override render(): TemplateResult | void {
+    const { template } = this.$options();
+
+    if (template === 'grid') return this.renderGridItem();
+    if (template === 'list') return this.renderListItem();
+  }
+
+  protected renderGridItem(): TemplateResult | void {
+    const product = this.$product();
+    if (!product) return;
+    return html`<a href=${this.$link()} aria-label=${product?.name}>
+      ${[this.renderLabels(), this.renderMedia()]}
+      <div class="details">
+        ${[
+          this.renderTitle(),
+          this.renderRating(),
+          this.renderPrice(),
+          this.renderAddToCart(),
+        ]}
+      </div>
+    </a>`;
+  }
+
+  protected $link = computed(() =>
+    this.semanticLinkService.get({
+      type: SemanticLinkType.Product,
+      id: this.$product()?.sku,
+    })
+  );
+  protected renderListItem(): TemplateResult {
     const product = this.$product();
 
-    if (!product) return;
-
-    const { titleLineClamp } = this.$options();
-    const style = titleLineClamp
-      ? `--oryx-product-title-max-lines:${titleLineClamp}`
-      : undefined;
-    return html`<a href=${this.$link()} aria-label="${product.name}">
-      ${this.renderLabels()}
-      <!-- this.renderWishlist()  -->
-      ${this.renderMedia()}
-      <div
-        class="popover"
-        ?has-line-clamp=${titleLineClamp}
-        style=${ifDefined(style)}
-      >
-        ${this.renderTitle()}
-      </div>
-      ${this.renderRating()} ${this.renderPrice()} ${this.renderAddToCart()}
+    return html`<a
+      href=${this.$link()}
+      aria-label=${product?.name}
+      template="list"
+    >
+      ${[
+        this.renderMedia(ProductMediaContainerSize.Icon),
+        this.renderTitle(),
+        this.renderPrice(),
+        this.renderAddToCart(),
+      ]}
     </a>`;
   }
 
@@ -110,12 +131,14 @@ export class ProductCardComponent extends ProductMixin(
     }
   }
 
-  protected renderMedia(): TemplateResult | void {
+  protected renderMedia(
+    containerSize = ProductMediaContainerSize.Thumbnail
+  ): TemplateResult | void {
     if (this.$options().enableMedia) {
       return html`
         <oryx-product-media
           .options=${{
-            containerSize: ProductMediaContainerSize.Thumbnail,
+            containerSize,
           }}
         ></oryx-product-media>
       `;
@@ -125,7 +148,7 @@ export class ProductCardComponent extends ProductMixin(
   protected renderTitle(): TemplateResult | void {
     if (this.$options().enableTitle) {
       return html`<oryx-product-title
-        .options="${{ tag: HeadingTag.Caption }}"
+        .options="${{ tag: HeadingTag.Caption } as ProductTitleOptions}"
       ></oryx-product-title>`;
     }
   }
@@ -141,20 +164,22 @@ export class ProductCardComponent extends ProductMixin(
   protected renderPrice(): TemplateResult | void {
     if (this.$options().enablePrice) {
       return html`<oryx-product-price
-        .options=${{ enableVatMessage: false }}
+        .options=${{ enableTaxMessage: false } as ProductPriceOptions}
       ></oryx-product-price>`;
     }
   }
 
   protected renderAddToCart(): TemplateResult | void {
-    if (this.$options().enableAddToCart) {
-      return html`<oryx-cart-add
-        tabindex="-1"
-        .options="${{
-          outlined: true,
-          hideQuantityInput: true,
-        }}"
-      ></oryx-cart-add>`;
-    }
+    const { enableAddToCart, template } = this.$options();
+    if (!enableAddToCart) return;
+
+    return html`<oryx-cart-add
+      tabindex="-1"
+      .options="${{
+        outlined: true,
+        hideQuantityInput: true,
+        enableLabel: template === 'grid',
+      }}"
+    ></oryx-cart-add>`;
   }
 }

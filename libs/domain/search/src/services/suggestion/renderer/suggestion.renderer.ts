@@ -1,4 +1,5 @@
-import { Product, ProductMediaContainerSize } from '@spryker-oryx/product';
+import { Product } from '@spryker-oryx/product';
+import { ProductCardOptions } from '@spryker-oryx/product/card';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
@@ -12,49 +13,27 @@ export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
 ) => {
   const renderProductsSection = (query?: string): TemplateResult => {
     return html`
-      <section>
-        <h5>${i18n('search.box.products')}</h5>
+      <section class="products">
         ${products?.slice(0, params.max)?.map(renderProduct)}
 
-        <oryx-button
-          outline
-          @click=${(event: Event) =>
-            event.target?.dispatchEvent(
-              new CustomEvent('oryx.close', { bubbles: true, composed: true })
-            )}
-        >
-          <oryx-content-link
-            .options=${{
-              type: SemanticLinkType.ProductList,
-              params: { q: query },
-            }}
-            .content=${{ text: i18n('search.box.view-all-products') }}
-          ></oryx-content-link>
-        </oryx-button>
+        <oryx-content-link
+          .options=${{
+            type: SemanticLinkType.ProductList,
+            params: { q: query },
+            button: true,
+          }}
+          .content=${{ text: i18n('search.box.view-all-products') }}
+        ></oryx-content-link>
       </section>
     `;
   };
   const renderProduct = (product: Product): TemplateResult => {
     return html`
-      <oryx-content-link
-        class="product"
-        .options=${{
-          type: SemanticLinkType.Product,
-          id: product.sku,
-          label: product.name,
-        }}
+      <oryx-product-card
+        .sku=${product.sku}
+        .options=${{ template: 'list' } as ProductCardOptions}
         close-popover
-      >
-        <oryx-product-media
-          .sku=${product.sku}
-          .options=${{ container: ProductMediaContainerSize.Thumbnail }}
-        ></oryx-product-media>
-        <oryx-product-title .sku=${product.sku}></oryx-product-title>
-        <oryx-product-price
-          .sku=${product.sku}
-          .options=${{ enableTaxMessage: false }}
-        ></oryx-product-price>
-      </oryx-content-link>
+      ></oryx-product-card>
     `;
   };
 
@@ -70,29 +49,29 @@ export const defaultSuggestionRenderer: SuggestionRenderer<
     return;
   }
 
-  const { title, max, type } = params;
+  const { title, icon, max, type } = params;
 
   return html`
     <section>
-      <h5>${i18n(title ?? '')}</h5>
-      <ul>
-        ${suggestion.slice(0, max).map(
-          ({ name, url, id, params }) => html`
-            <li>
-              <oryx-content-link
-                .options=${{
-                  type,
-                  url,
-                  id,
-                  params,
-                }}
-                .content=${{ text: name }}
-                close-popover
-              ></oryx-content-link>
-            </li>
-          `
-        )}
-      </ul>
+      <h5>
+        ${when(icon, () => html`<oryx-icon .type=${icon}></oryx-icon>`)}
+        ${i18n(title ?? '')}
+      </h5>
+
+      ${suggestion.slice(0, max).map(
+        ({ name, url, id, params }) => html`
+          <oryx-content-link
+            .options=${{
+              type,
+              url,
+              id,
+              params,
+            }}
+            .content=${{ text: name }}
+            close-popover
+          ></oryx-content-link>
+        `
+      )}
     </section>
   `;
 };

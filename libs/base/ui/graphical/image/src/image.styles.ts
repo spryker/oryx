@@ -13,9 +13,11 @@ export const styles = css`
   }
 
   [part='fallback'] {
-    --oryx-icon-size: 100px;
+    --oryx-icon-size: var(--oryx-image-fallback-size, 100px);
 
     color: var(--oryx-color-neutral-9);
+    background-color: var(--oryx-image-fallback-background);
+    border-radius: var(--oryx-border-radius-small);
     margin: auto;
     width: 100%;
     height: 100%;

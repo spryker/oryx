@@ -12,6 +12,8 @@ export interface SuggestionFieldOptions {
    * Maximum amount of suggestion entities to show
    */
   max?: number;
+
+  icon?: string;
 }
 
 export type SuggestionRendererOptions = {
