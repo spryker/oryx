@@ -5,11 +5,11 @@ import { CartEntriesOptions } from '../entries.model';
 
 export default {
   title: `${storybookPrefix}/Entries`,
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const Template: Story<CartEntriesOptions> = (): TemplateResult => {

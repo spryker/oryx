@@ -16,11 +16,11 @@ import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 
 export default {
   title: `${storybookPrefix}/Search/Typeahead`,
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 interface Props extends TypeaheadOptions, SearchAttributes, AffixOptions {

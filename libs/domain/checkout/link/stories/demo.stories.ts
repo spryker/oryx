@@ -3,12 +3,12 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
-title: `${storybookPrefix}/Link`,
-parameters: { 
-  chromatic: { 
-     disableSnapshot: true 
-  }
-},
+  title: `${storybookPrefix}/Link`,
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

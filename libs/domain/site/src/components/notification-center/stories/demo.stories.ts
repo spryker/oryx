@@ -42,11 +42,11 @@ export default {
     position: NotificationPosition.TopEnd,
     type: AlertType.Info,
   },
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const emitMessage = (option: Notification): void => {

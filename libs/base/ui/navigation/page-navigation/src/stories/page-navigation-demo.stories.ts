@@ -27,11 +27,11 @@ export default {
     sectionsContainerHeight: 80,
     ...generateArgs(itemsCount),
   },
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 interface Props {

@@ -9,11 +9,11 @@ export default {
       description: 'Tile selected',
     },
   },
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 interface Props {

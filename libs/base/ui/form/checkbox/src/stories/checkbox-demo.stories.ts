@@ -4,11 +4,11 @@ import { storybookPrefix } from '../../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Form/Checkbox`,
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 interface Props {

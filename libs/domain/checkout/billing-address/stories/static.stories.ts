@@ -7,11 +7,11 @@ import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Billing address/Static`,
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const Template: Story<{ type: MockAddressType }> = (args: {

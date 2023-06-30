@@ -19,11 +19,11 @@ import {
 
 export default {
   title: `${storybookPrefix}/Form/Select`,
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 interface Props extends TypeaheadOptions, SearchAttributes, AffixOptions {

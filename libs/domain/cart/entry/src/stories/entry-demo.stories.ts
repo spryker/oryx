@@ -27,11 +27,11 @@ export default {
     price: { table: { category: 'demo' } },
     quantity: { table: { category: 'demo' } },
   },
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as unknown as Meta;
 
 const Template: Story<CartEntryAttributes & CartEntryOptions> = (

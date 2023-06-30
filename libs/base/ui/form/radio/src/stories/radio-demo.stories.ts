@@ -13,11 +13,11 @@ export default {
     disabled: false,
     checked: false,
   },
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 interface Props {

@@ -7,12 +7,12 @@ import { storybookPrefix } from '../../../../.constants';
 import { SpinnerProperties, SpinnerRotation } from '../spinner.model';
 
 export default {
-title: `${storybookPrefix}/Graphical/Spinner`,
-parameters: { 
-  chromatic: { 
-     disableSnapshot: true 
-  }
-},
+  title: `${storybookPrefix}/Graphical/Spinner`,
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 interface Props extends SpinnerProperties {

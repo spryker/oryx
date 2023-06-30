@@ -21,11 +21,11 @@ export default {
       options: Object.values(AddressDefaults),
     },
   },
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const Template: Story<UserAddressListItemOptions> = (props): TemplateResult => {

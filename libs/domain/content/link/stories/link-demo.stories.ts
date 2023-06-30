@@ -40,8 +40,8 @@ export default {
   },
   parameters: {
     chromatic: {
-      disableSnapshot: true
-    }
+      disableSnapshot: true,
+    },
   },
 } as unknown as Meta;
 

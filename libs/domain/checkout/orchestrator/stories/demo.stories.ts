@@ -11,11 +11,11 @@ import { CheckoutDataService } from '../../src/services';
 
 export default {
   title: `${storybookPrefix}/Orchestrator`,
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 };
 
 const Template: Story = (): TemplateResult => {

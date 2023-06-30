@@ -19,11 +19,11 @@ export default {
       control: { type: 'radio' },
     },
   },
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const Template: Story<RatingProperties> = (

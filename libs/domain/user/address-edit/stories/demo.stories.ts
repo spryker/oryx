@@ -4,11 +4,11 @@ import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Address Edit`,
-  parameters: { 
-    chromatic: { 
-       disableSnapshot: true 
-    }
- },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

@@ -5,13 +5,13 @@ import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { CardType } from '../card.model';
 
-export default { 
-title: `${storybookPrefix}/Structure/Card`,
-parameters: { 
-  chromatic: { 
-     disableSnapshot: true 
-  }
-},
+export default {
+  title: `${storybookPrefix}/Structure/Card`,
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 export interface CardProperties {
