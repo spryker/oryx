@@ -4,8 +4,8 @@ export const onSuccess = ({ inputs, constants }) => {
   const { nxRunCommand } = inputs;
   const { DEPLOY_PRIME_URL } = constants;
 
-  console.log(constants)
-  console.log(inputs)
+  console.log(process.env)
+
   console.log(`Deployed site URL: ${DEPLOY_PRIME_URL}`);
   console.log(`Executing "npm run ${nxRunCommand}"...`);
 
