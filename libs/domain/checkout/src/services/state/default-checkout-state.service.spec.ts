@@ -59,7 +59,7 @@ describe('DefaultCheckoutStateService', () => {
   });
 
   describe('when the checkout state is not set before', () => {
-    let result: ContactDetails | null;
+    let result: ContactDetails | null | undefined;
 
     describe('and the set() method is used', () => {
       beforeEach(() => {
