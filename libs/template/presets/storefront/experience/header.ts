@@ -20,7 +20,6 @@ export const HeaderTemplate: StaticComponent = {
             data: {
               url: '/',
               icon: IconTypes.Check,
-              color: 'light',
             },
           },
         },
@@ -31,13 +30,7 @@ export const HeaderTemplate: StaticComponent = {
               text: '100 DAY RETURN POLICY',
             },
           },
-          options: {
-            data: {
-              url: '/',
-              icon: IconTypes.Check,
-              color: 'light',
-            },
-          },
+          options: { data: { url: '/', icon: IconTypes.Check } },
         },
         {
           type: 'oryx-content-link',

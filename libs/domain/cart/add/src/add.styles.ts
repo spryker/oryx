@@ -11,10 +11,6 @@ export const styles = css`
     display: contents;
   }
 
-  oryx-button {
-    flex: auto;
-  }
-
   button {
     --oryx-icon-size: 24px;
 

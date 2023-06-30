@@ -42,11 +42,12 @@ describe('Search suite', () => {
 
     search.getSearchProducts().eq(0).click();
 
+    // check if correct PDP was opened
     pdp.getTitle().should('contain.text', productData.title);
     pdp.getSKU().should('contain.text', productData.id);
   });
 
-  it('must show "Nothing found" message', () => {
+  it('must show "No results" message', () => {
     search.search('test123');
 
     search.getSearchResultsWrapper().should('not.exist');
@@ -54,6 +55,6 @@ describe('Search suite', () => {
     search
       .getEmptySearchResults()
       .should('be.visible')
-      .and('contain.text', 'Nothing found');
+      .and('contain.text', 'No results test123');
   });
 });
