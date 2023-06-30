@@ -57,6 +57,7 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
       ApiCheckoutModel.Includes.ShipmentMethods,
       ApiCheckoutModel.Includes.PaymentMethods,
       ApiCheckoutModel.Includes.Carts,
+      ApiCheckoutModel.Includes.GuestCarts,
     ]
   ): string {
     return `${this.SCOS_BASE_URL}/checkout-data${

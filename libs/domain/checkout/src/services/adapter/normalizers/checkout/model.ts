@@ -9,5 +9,6 @@ export type DeserializedCheckout = ApiCheckoutModel.Attributes &
       | ApiCheckoutModel.Includes.Shipments
       | ApiCheckoutModel.Includes.PaymentMethods
       | ApiCheckoutModel.Includes.Carts
+      | ApiCheckoutModel.Includes.GuestCarts
     >
   >;

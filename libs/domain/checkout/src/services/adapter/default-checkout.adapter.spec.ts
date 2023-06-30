@@ -93,7 +93,7 @@ describe('DefaultCheckoutService', () => {
       it('should build the url with standard includes', () => {
         service.get({ cartId }).subscribe(() => {
           expect(http.url).toBe(
-            `${mockApiUrl}/checkout-data?include=shipments,shipment-methods,payment-methods,carts`
+            `${mockApiUrl}/checkout-data?include=shipments,shipment-methods,payment-methods,carts,guest-carts`
           );
         });
       });

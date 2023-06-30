@@ -18,13 +18,14 @@ export function checkoutAttributesNormalizer(
     selectedShipmentMethods,
     selectedPaymentMethods,
     carts,
+    guestCarts,
   } = data;
   return {
     addresses,
     paymentProviders,
     selectedShipmentMethods,
     selectedPaymentMethods,
-    carts,
+    carts: carts ?? guestCarts,
   };
 }
 
