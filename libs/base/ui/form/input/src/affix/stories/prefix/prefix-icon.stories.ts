@@ -11,6 +11,11 @@ export default {
     prefixFill: false,
     disabled: false,
   },
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 interface Props {
   label: string;

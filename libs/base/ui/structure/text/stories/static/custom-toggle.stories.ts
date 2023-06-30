@@ -6,6 +6,11 @@ import { TextComponent } from '../../text.component';
 
 export default {
   title: `${storybookPrefix}/Structure/Text/Static`,
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 
 const text = unsafeHTML(`

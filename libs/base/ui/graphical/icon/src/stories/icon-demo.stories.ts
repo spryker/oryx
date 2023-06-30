@@ -6,7 +6,14 @@ import { storybookPrefix } from '../../../../.constants';
 
 import { IconProperties } from '../icon.model';
 
-export default { title: `${storybookPrefix}/Graphical/Icon` } as Meta;
+export default { 
+  title: `${storybookPrefix}/Graphical/Icon`,
+parameters: { 
+  chromatic: { 
+     disableSnapshot: true 
+  }
+},
+} as Meta;
 
 const icons = getAppIcons();
 

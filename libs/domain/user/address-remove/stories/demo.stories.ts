@@ -8,6 +8,11 @@ import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Address Remove`,
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

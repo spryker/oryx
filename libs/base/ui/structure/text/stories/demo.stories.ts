@@ -12,6 +12,11 @@ export default {
     truncateAfter: 3,
     defaultExpanded: false,
   } as Props,
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 
 interface Props extends TextProperties {

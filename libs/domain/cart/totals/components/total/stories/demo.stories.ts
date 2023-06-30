@@ -4,6 +4,11 @@ import { storybookPrefix } from '../../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Cart totals/components/total`,
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

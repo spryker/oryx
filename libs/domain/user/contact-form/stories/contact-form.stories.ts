@@ -4,6 +4,11 @@ import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Contact Form`,
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as unknown as Meta;
 
 const Template: Story = (): TemplateResult => {

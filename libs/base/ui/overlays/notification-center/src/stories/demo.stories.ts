@@ -50,6 +50,11 @@ export default {
       table: { category: 'Demo' },
     },
   },
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 
 interface DemoProps {

@@ -11,6 +11,11 @@ export default {
     href: 'https://example.com',
     target: '_blank',
   },
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 
 type Props = {

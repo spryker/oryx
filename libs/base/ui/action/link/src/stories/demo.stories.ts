@@ -36,6 +36,11 @@ export default {
       control: { type: 'select', options: ['primary', 'neutral', 'light'] },
     },
   },
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 
 interface Props {

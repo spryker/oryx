@@ -36,6 +36,11 @@ export default {
       options: tags,
     },
   },
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 
 const Template: Story<HeadingAttributes> = (

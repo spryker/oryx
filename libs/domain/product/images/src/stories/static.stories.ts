@@ -14,7 +14,6 @@ import {
 
 export default {
   title: `${storybookPrefix}/Images/Static`,
-  parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
 let renderCount = 0;

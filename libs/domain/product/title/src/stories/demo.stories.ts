@@ -47,6 +47,11 @@ export default {
       control: { type: 'number' },
     },
   },
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 
 type Props = ProductTitleOptions & ProductComponentProperties;

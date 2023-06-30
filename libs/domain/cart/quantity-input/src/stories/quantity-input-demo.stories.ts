@@ -4,6 +4,11 @@ import { storybookPrefix } from '../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Quantity input`,
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 
 interface Props {

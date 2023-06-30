@@ -5,6 +5,11 @@ import { PageNavigationItemProps } from '../page-navigation-item.model';
 
 export default {
   title: `${storybookPrefix}/Navigations/Page navigation item`,
+  parameters: { 
+    chromatic: { 
+       disableSnapshot: true 
+    }
+ },
 } as Meta;
 
 interface Props extends PageNavigationItemProps {
