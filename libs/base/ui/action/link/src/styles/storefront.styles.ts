@@ -30,8 +30,8 @@ export const storefrontLinkStyles = css`
   }
 
   :host(:hover) ::slotted(a) {
-    text-decoration: solid underline currentColor 1px;
-    text-underline-offset: 2px;
+    text-decoration: solid underline var(--oryx-color-primary-9) 1px;
+    text-underline-offset: 5px;
   }
 
   ::slotted(*:focus-visible) {
@@ -41,7 +41,7 @@ export const storefrontLinkStyles = css`
   ::slotted(*:focus-visible)::before {
     content: '';
     outline: solid 1px var(--oryx-color-focus);
-    outline-offset: 3px;
+    outline-offset: 5px;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -50,6 +50,7 @@ export const storefrontLinkStyles = css`
   }
 
   :host([color='primary']),
+  :host([color='primary']:hover:not(:active)),
   :host(:active) {
     color: var(--oryx-color-primary-10);
   }
