@@ -8,12 +8,21 @@ export const onSuccess = ({ inputs }) => {
 
   // sync call is needed here, because if async is used -> netlify will kill child process
   // when the main process is over
-  const childProcess = spawnSync('npm', ['run', npmRunCommand], { stdio: 'inherit' });
+  const cdCommand = spawnSync('cd', ['../../']);
 
-  if (childProcess.status === 0) {
-    console.log(`"npm run ${npmRunCommand}" completed successfully.`);
+  if (cdCommand.status === 0) {
+    console.log('cd succeeded')
+
+    const childProcess = spawnSync('npm', ['run', npmRunCommand], { stdio: 'inherit' });
+
+    if (childProcess.status === 0) {
+      console.log(`"npm run ${npmRunCommand}" completed successfully.`);
+    } else {
+      console.error(`"npm run ${npmRunCommand}" failed.`);
+      console.error(childProcess.error);
+    }
   } else {
-    console.error(`"npm run ${npmRunCommand}" failed.`);
-    console.error(childProcess.error);
+    console.error('cd failed');
+    console.error(cdCommand.error);
   }
 };
