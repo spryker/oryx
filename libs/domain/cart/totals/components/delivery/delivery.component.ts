@@ -10,11 +10,33 @@ export class CartTotalsDeliveryComponent extends LitElement {
   protected $totals = signal(this.totalsController.getTotals());
 
   protected override render(): TemplateResult | void {
-    if (this.$totals()) {
+    const { shipmentTotal, currency } = this.$totals() ?? {};
+    if (shipmentTotal !== undefined) {
       return html`
         <span>${i18n('cart.totals.delivery')}</span>
-        <span>Not implemented yet</span>
+        ${this.renderPrice(shipmentTotal, currency)}
       `;
-    }
+    } else this.renderCalculationMessage();
+  }
+
+  protected renderPrice(
+    value: number,
+    currency: string | undefined
+  ): TemplateResult {
+    if (value === 0)
+      return html`<span class="free">${i18n('cart.totals.free')}</span>`;
+
+    return html`<oryx-site-price
+      .value=${value}
+      .currency=${currency}
+    ></oryx-site-price> `;
+  }
+
+  protected renderCalculationMessage(): TemplateResult {
+    return html`
+      <span class="calculation-message"
+        >${i18n('cart.totals.delivery-will-be-calculated-at-checkout')}</span
+      >
+    `;
   }
 }

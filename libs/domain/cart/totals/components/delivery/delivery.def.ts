@@ -11,5 +11,11 @@ export const cartTotalsDeliveryComponent = componentDef({
     import('./delivery.schema').then(
       (m) => m.cartTotalsDeliveryComponentSchema
     ),
-  stylesheets: [{ rules }],
+  stylesheets: [
+    { rules },
+    {
+      rules: () =>
+        import('./delivery.styles').then((m) => m.cartDeliveryTotalStyles),
+    },
+  ],
 });
