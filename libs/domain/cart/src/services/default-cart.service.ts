@@ -31,7 +31,6 @@ import {
   CartEntry,
   CartEntryQualifier,
   CartQualifier,
-  NormalizedTotals,
   UpdateCartEntryQualifier,
 } from '../models';
 import { CartAdapter } from './adapter/cart.adapter';
@@ -45,9 +44,8 @@ import {
   CartQuery,
   CartsUpdated,
 } from './state';
-import { TotalsResolver } from './totals';
 
-export class DefaultCartService implements CartService, TotalsResolver {
+export class DefaultCartService implements CartService {
   // TODO: find a better fix for storybook
   protected adapter = inject(CartAdapter);
   protected identity = inject(IdentityService);
@@ -203,23 +201,6 @@ export class DefaultCartService implements CartService, TotalsResolver {
 
     return this.activeCartId$.pipe(
       switchMap((id) => this.cartQuery$.getState({ cartId: id! }))
-    );
-  }
-
-  getTotals(data?: CartQualifier): Observable<NormalizedTotals | null> {
-    return this.getCart(data).pipe(
-      map((cart) => {
-        if (!cart?.products?.length) return null;
-
-        const { totals, currency, discounts, priceMode } = cart;
-
-        return {
-          ...totals,
-          priceMode,
-          currency,
-          discounts,
-        };
-      })
     );
   }
 
