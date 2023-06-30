@@ -1,1 +1,4 @@
 name: cypress-tests-runner
+inputs:
+  - name: nxRunCommand
+    description: 'The nx script command to run'
