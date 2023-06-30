@@ -1,12 +1,15 @@
 import { css } from 'lit';
 
 export const storefrontLinkStyles = css`
+  :host {
+    position: relative;
+    display: inline-flex;
+  }
+
   :host([icon]) {
     --oryx-icon-size: 16px;
 
-    display: inline-flex;
     align-items: baseline;
-    position: relative;
     gap: 8px;
   }
 
@@ -43,6 +46,7 @@ export const storefrontLinkStyles = css`
     height: 100%;
     width: 100%;
     inset-inline-start: 0;
+    inset-block-start: 0;
   }
 
   :host([color='primary']),
