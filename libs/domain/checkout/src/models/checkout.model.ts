@@ -1,3 +1,4 @@
+import { Cart } from '@spryker-oryx/cart';
 import { OrderData } from '@spryker-oryx/order';
 
 export const enum CheckoutStatus {
@@ -29,12 +30,13 @@ export interface CheckoutData {
   shipment?: {
     idShipmentMethod: string;
   };
+  carts?: Cart[];
 }
 
 export interface PlaceOrderData {
-  customer: ContactDetails;
+  customer?: ContactDetails;
   cartId: string;
-  billingAddress: Address;
+  billingAddress?: Address;
   shippingAddress?: Address;
   shipments?: Shipment[];
   shipment?: {

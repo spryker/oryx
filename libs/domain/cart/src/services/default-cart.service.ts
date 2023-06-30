@@ -31,7 +31,6 @@ import {
   CartEntry,
   CartEntryQualifier,
   CartQualifier,
-  CartTotals,
   UpdateCartEntryQualifier,
 } from '../models';
 import { CartAdapter } from './adapter/cart.adapter';
@@ -42,6 +41,7 @@ import {
   CartModificationFail,
   CartModificationStart,
   CartModificationSuccess,
+  CartQuery,
   CartsUpdated,
 } from './state';
 
@@ -72,6 +72,7 @@ export class DefaultCartService implements CartService {
   });
 
   protected cartQuery$ = createQuery({
+    id: CartQuery,
     loader: (qualifier: CartQualifier) => this.adapter.get(qualifier),
     refreshOn: [CartEntryRemoved, LocaleChanged],
   });
@@ -201,10 +202,6 @@ export class DefaultCartService implements CartService {
     return this.activeCartId$.pipe(
       switchMap((id) => this.cartQuery$.getState({ cartId: id! }))
     );
-  }
-
-  getTotals(data?: CartQualifier): Observable<CartTotals | null> {
-    return this.getCart(data).pipe(map((cart) => cart?.totals ?? null));
   }
 
   getEntries(data?: CartQualifier): Observable<CartEntry[]> {
