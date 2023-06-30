@@ -1,24 +1,22 @@
-const { spawn } = require('child_process');
+import { spawn } from 'child_process';
 
-module.exports = {
-  onSuccess: async ({ inputs }) => {
-    const { npmRunCommand, siteUrl } = inputs;
+export const onSuccess = async ({ inputs }) => {
+  const { npmRunCommand, siteUrl } = inputs;
 
-    console.log(`Deployed site URL: ${siteUrl}`);
-    console.log(`Executing "npm run ${npmRunCommand}"...`);
-    
-    const childProcess = spawn('npm', ['run', npmRunCommand], { stdio: 'inherit' });
+  console.log(`Deployed site URL: ${siteUrl}`);
+  console.log(`Executing "npm run ${npmRunCommand}"...`);
 
-    childProcess.on('close', (code) => {
-      if (code === 0) {
-        console.log(`"npm run ${npmRunCommand}" completed successfully.`);
-      } else {
-        console.error(`"npm run ${npmRunCommand}" failed.`);
-      }
-    });
+  const childProcess = spawn('npm', ['run', npmRunCommand], { stdio: 'inherit' });
 
-    childProcess.on('error', (err) => {
-      console.error(err);
-    });
-  },
+  childProcess.on('close', (code) => {
+    if (code === 0) {
+      console.log(`"npm run ${npmRunCommand}" completed successfully.`);
+    } else {
+      console.error(`"npm run ${npmRunCommand}" failed.`);
+    }
+  });
+
+  childProcess.on('error', (err) => {
+    console.error(err);
+  });
 };
