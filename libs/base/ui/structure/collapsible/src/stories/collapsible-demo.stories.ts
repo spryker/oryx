@@ -24,7 +24,6 @@ export default {
       options: [
         CollapsibleToggleControlType.IconButton,
         CollapsibleToggleControlType.TextButton,
-        CollapsibleToggleControlType.None,
       ],
       control: { type: 'select' },
     },
