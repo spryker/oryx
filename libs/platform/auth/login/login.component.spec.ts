@@ -204,7 +204,6 @@ describe('AuthLoginComponent', () => {
         password: 'password',
         rememberMe: false,
       });
-      // expect(submitButton.hasAttribute('disabled')).toBeTruthy();
     });
 
     describe('when login succeeds', () => {
