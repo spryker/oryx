@@ -18,6 +18,7 @@ import {
   pickingListsHeaderComponent,
   pickingProductCardComponent,
   userProfileComponent,
+  warehouseSelectionComponent,
 } from './defs';
 import { defaultPickingRoutes } from './routes';
 import {
@@ -45,6 +46,7 @@ export const pickingComponents = [
   pickingComponent,
   userProfileComponent,
   pickingHeaderComponent,
+  warehouseSelectionComponent,
 ];
 
 export interface PickingFeatureConfig extends PickingConfig {
