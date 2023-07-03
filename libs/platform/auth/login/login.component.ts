@@ -16,6 +16,7 @@ import { styles } from './login.styles';
 
 @defaultOptions({
   enableRememberMe: true,
+  enableRedirect: true,
   passwordVisibility: PasswordVisibilityStrategy.Click,
 })
 @hydratable(['mouseover', 'focus'])
@@ -27,8 +28,6 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   @property() emailName = 'email';
   @property() passwordName = 'password';
   @property() rememberMeName = 'rememberme';
-
-  @state() protected isDisabled = false;
 
   protected emailInputRef = createRef<HTMLInputElement>();
   protected passwordInputRef = createRef<HTMLInputElement>();
@@ -68,30 +67,6 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
       this.isLoading = false;
       this.hasError = true;
     }
-    //
-    //   .then(() => {
-    //     this.isLoading = false;
-    //
-    //     if (this.$options()?.enableRedirect) {
-    //       const redirectUrl = this.$options().redirectUrl;
-    //
-    //       if (redirectUrl) {
-    //         this.routerService.navigate(redirectUrl);
-    //         return;
-    //       }
-    //
-    //       const previousRoute = this.routerService.previousRoute().toPromise();
-    //
-    //       previousRoute.then((route) => {
-    //         const redirectRoute = route ? route : '/';
-    //         this.routerService.navigate(redirectRoute);
-    //       });
-    //     }
-    //   })
-    //   .catch(() => {
-    //     this.isLoading = false;
-    //     this.hasError = true;
-    //   });
   }
 
   protected login(event: Event): void {
