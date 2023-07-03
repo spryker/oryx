@@ -213,7 +213,7 @@ export class OauthService implements AuthService, AuthTokenService {
   }
 }
 
-export interface OauthServiceState {
+interface OauthServiceState {
   authorizedBy?: string;
 }
 
