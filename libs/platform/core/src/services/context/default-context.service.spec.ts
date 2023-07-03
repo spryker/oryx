@@ -232,5 +232,16 @@ describe('ContextService', () => {
 
       expect(mockCallback).toHaveBeenCalledWith(mockFallbackValue);
     });
+
+    it('should use fallback value if null is passed', () => {
+      const mockCallback = vi.fn();
+      element.context.provide(element, mockKey, mockObject);
+
+      testChildContext()
+        .context.get(null, mockKeyFallback)
+        .subscribe(mockCallback);
+
+      expect(mockCallback).toHaveBeenCalledWith(mockFallbackValue);
+    });
   });
 });
