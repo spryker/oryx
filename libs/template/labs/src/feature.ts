@@ -1,4 +1,4 @@
-import { contentfulProviders } from './articles';
+import { contentfulProviders, storyblokProviders } from './articles';
 import { bazaarVoiceComponentMapping } from './bazaarvoice';
 import { cloudinaryImageConverter } from './cloudinary';
 import * as components from './components';
@@ -24,6 +24,7 @@ export const labsFeatures: AppFeature[] = [
       cloudinaryImageConverter,
       bazaarVoiceComponentMapping,
       ...contentfulProviders,
+      ...storyblokProviders,
     ],
   },
   labsI18nFeature,

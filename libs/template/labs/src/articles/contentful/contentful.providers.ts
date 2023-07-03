@@ -1,8 +1,8 @@
 import { ContentAdapter } from '@spryker-oryx/content';
 import { injectEnv } from '@spryker-oryx/core';
-import { inject, Provider, Type } from '@spryker-oryx/di';
+import { Provider } from '@spryker-oryx/di';
 import { SuggestionAdapter } from '@spryker-oryx/search';
-import { of } from 'rxjs';
+import { factory } from '../stubs';
 import {
   ContentfulApiService,
   ContentfulSpace,
@@ -11,23 +11,6 @@ import {
 } from './api';
 import { DefaultContentfulSuggestionAdapter } from './contentful-suggestion.adapter';
 import { ContentfulAdapter } from './contentful.adapter';
-
-let logged = 0;
-const logMissingEnv = (): void => {
-  if (logged > 0) return;
-  console.warn(
-    `Missing ORYX_CONTENTFUL_TOKEN or\\and ORYX_CONTENTFUL_SPACE environment variables`
-  );
-  logged++;
-};
-const factory = (clazz: Type<unknown>): unknown => {
-  if (!inject(ContentfulSpace) || !inject(ContentfulToken)) {
-    logMissingEnv();
-    return { get: () => of({}) };
-  }
-
-  return new clazz();
-};
 
 export const contentfulProviders: Provider[] = [
   {
@@ -40,14 +23,20 @@ export const contentfulProviders: Provider[] = [
   },
   {
     provide: ContentfulApiService,
-    useFactory: () => factory(DefaultContentfulApiService),
+    useFactory: () =>
+      factory(DefaultContentfulApiService, [ContentfulSpace, ContentfulToken]),
   },
   {
     provide: ContentAdapter,
-    useFactory: () => factory(ContentfulAdapter),
+    useFactory: () =>
+      factory(ContentfulAdapter, [ContentfulSpace, ContentfulToken]),
   },
   {
     provide: SuggestionAdapter,
-    useFactory: () => factory(DefaultContentfulSuggestionAdapter),
+    useFactory: () =>
+      factory(DefaultContentfulSuggestionAdapter, [
+        ContentfulSpace,
+        ContentfulToken,
+      ]),
   },
 ];

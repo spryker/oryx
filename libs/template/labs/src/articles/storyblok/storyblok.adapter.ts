@@ -12,24 +12,26 @@ export class StoryblokAdapter implements ContentAdapter {
   constructor(protected storyblok = inject(StoryblokApiService)) {}
 
   getKey(qualifier: ContentQualifier): string {
-    return qualifier.article ?? '';
+    return `${qualifier.id ?? ''}${qualifier.type ?? ''}`;
   }
 
   get(qualifier: ContentQualifier): Observable<Content> {
-    if (!qualifier.entities?.includes(ContentFields.Article)) {
-      return of({});
+    if (
+      !qualifier.entities?.includes(ContentFields.Faq) ||
+      qualifier.type !== ContentFields.Faq
+    ) {
+      return of({} as Content);
     }
 
     return this.storyblok
-      .getEntries({
-        content_type: this.getKey(qualifier),
+      .getEntry({
+        slug: `${qualifier.type}/${qualifier.id}`,
       })
       .pipe(
-        map((entries) => ({
-          article: Object.values(entries.items[0].fields).reduce(
-            (acc, field) => `${acc}\n${field}`,
-            ''
-          ),
+        map((entry) => ({
+          heading: entry.story.content.heading,
+          description: entry.story.content.description,
+          content: entry.story.content.content,
         }))
       );
   }

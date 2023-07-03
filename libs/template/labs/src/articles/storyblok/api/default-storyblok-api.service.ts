@@ -10,6 +10,8 @@ import {
 } from './storyblok-api.service';
 
 export class DefaultStoryblokApiService implements StoryblokApiService {
+  protected endpoint = `https://api.storyblok.com/v2/cdn/stories/`;
+
   constructor(
     protected storyblokToken = inject(StoryblokToken),
     protected locale = inject(LocaleService),
@@ -17,15 +19,10 @@ export class DefaultStoryblokApiService implements StoryblokApiService {
   ) {}
 
   getEntries(search: StoryblokSearch): Observable<StoryblokResponse> {
-    const params = Object.entries(search).reduce((acc, [key, value]) => {
-      const param = `${key}=${value}`;
-      if (!acc.length) {
-        return param;
-      }
+    throw new Error('Method not implemented.');
+  }
 
-      return `${acc}&${param}`;
-    }, '');
-
+  getEntry(search: StoryblokSearch): Observable<StoryblokResponse> {
     return combineLatest([this.locale.get(), this.locale.getAll()]).pipe(
       switchMap(([locale, all]) => {
         const name = all
@@ -33,7 +30,7 @@ export class DefaultStoryblokApiService implements StoryblokApiService {
           ?.name.replace('_', '-');
 
         return this.http.get<StoryblokResponse>(
-          `https://api.storyblok.com/v2/cdn/stories?search_term=note&token=Pat8nOkqr7xy6714sZQEQAtt`
+          `${this.endpoint}/${search.slug}?token=${this.storyblokToken}`
         );
       })
     );

@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-export const StoryblokToken = 'oryx.StoryblokSpace';
+export const StoryblokToken = 'oryx.StoryblokToken';
 export const StoryblokApiService = 'oryx.StoryblokApiService';
 
 declare global {
@@ -10,21 +10,25 @@ declare global {
 }
 
 export interface StoryblokSearch {
-  content_type?: string;
+  slug?: string;
   query?: string;
 }
 
 export interface StoryblokResponse {
-  items: {
-    sys: {
-      contentType: { sys: { id: string } };
+  story: {
+    content: {
+      component: string;
+      content: string;
+      description: string;
+      heading: string;
+      _uid: string;
     };
-    fields: Record<string, string>;
-  }[];
+  };
 }
 
 export interface StoryblokApiService {
-  getEntries(search: StoryblokSearch): Observable<StoryblokResponse>;
+  getEntries(search: StoryblokSearch): Observable<any>;
+  getEntry(search: StoryblokSearch): Observable<StoryblokResponse>;
 }
 
 declare global {
