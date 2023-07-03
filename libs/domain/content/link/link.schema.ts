@@ -56,11 +56,7 @@ export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =
       },
       color: {
         type: FormFieldType.Select,
-        options: [
-          { value: ColorType.Primary },
-          { value: ColorType.Neutral },
-          { value: ColorType.Light },
-        ],
+        options: [{ value: ColorType.Primary }, { value: ColorType.Neutral }],
       },
       icon: {
         type: FormFieldType.Select,

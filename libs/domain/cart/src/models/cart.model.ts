@@ -69,6 +69,10 @@ export interface CartTotals {
    */
   discountTotal?: number;
   /**
+   * Total amount of shipment
+   */
+  shipmentTotal?: number;
+  /**
    * Total amount of tax for the cart.
    */
   taxTotal?: number;
@@ -116,4 +120,10 @@ export interface ProductOption {
   sku?: string;
   optionName?: string;
   price?: number;
+}
+
+export interface NormalizedTotals extends CartTotals {
+  currency?: string;
+  priceMode?: string;
+  discounts?: CartDiscount[];
 }

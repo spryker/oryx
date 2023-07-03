@@ -1,9 +1,11 @@
+import { CartsNormalizer } from '@spryker-oryx/cart';
 import { mockPaymentMethods } from '@spryker-oryx/checkout/mocks';
 import { of, take } from 'rxjs';
 import { PaymentsNormalizer } from '../payments';
 import { ShipmentsNormalizer } from '../shipments';
 import {
   checkoutAttributesNormalizer,
+  checkoutCartsNormalizer,
   checkoutPaymentsNormalizer,
   checkoutShipmentsNormalizer,
 } from './checkout.normalizer';
@@ -67,6 +69,25 @@ const mockDeserializedCheckout = {
         salutation: null,
         zipCode: null,
       },
+      carts: [
+        {
+          priceMode: 'GROSS_MODE',
+          currency: 'EUR',
+          store: 'DE',
+          name: 'Cart 1687950630732',
+          isDefault: true,
+          totals: {
+            expenseTotal: 0,
+            discountTotal: 0,
+            taxTotal: 0,
+            subtotal: 5699,
+            grandTotal: 5699,
+            priceToPay: 5699,
+            shipmentTotal: 0,
+          },
+          id: 'f7fa58ad-50de-5649-b6a8-c82ee4f71986',
+        },
+      ],
     },
   ],
 } as unknown as DeserializedCheckout;
@@ -124,6 +145,25 @@ describe('Checkout Normalizers', () => {
           expect(mockTransformer.transform).toHaveBeenLastCalledWith(
             mockDeserializedCheckout,
             PaymentsNormalizer
+          );
+        });
+    });
+  });
+
+  describe('When carts methods are included', () => {
+    it('should call carts transformer', () => {
+      mockTransformer.transform.mockReturnValue(
+        of(mockDeserializedCheckout.carts)
+      );
+      checkoutCartsNormalizer(mockDeserializedCheckout, mockTransformer)
+        .pipe(take(1))
+        .subscribe((normalized) => {
+          expect(normalized).toEqual({
+            carts: mockDeserializedCheckout.carts,
+          });
+          expect(mockTransformer.transform).toHaveBeenLastCalledWith(
+            mockDeserializedCheckout,
+            CartsNormalizer
           );
         });
     });

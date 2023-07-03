@@ -3,7 +3,6 @@ import {
   filter,
   identity,
   Observable,
-  ReplaySubject,
   retry,
   Subject,
   takeUntil,
@@ -28,7 +27,7 @@ export class CoreQueryManager implements QueryManager {
   protected queries = new Map<string, Query<unknown, any>>();
   protected commands = new Map<string, Command<unknown, any>>();
 
-  protected stateEvents$ = new ReplaySubject<QueryEvent>();
+  protected stateEvents$ = new Subject<QueryEvent>();
 
   protected destroy$ = new Subject<undefined>();
 

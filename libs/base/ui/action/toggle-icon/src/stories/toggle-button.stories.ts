@@ -18,7 +18,7 @@ export default {
   parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
-const iconTypes = ['mobile', 'tablet', 'desktop'];
+const iconTypes = ['phone_iphone', 'tablet_mac', 'desktop_windows'];
 
 const DemoTemplate: Story<{
   disabled: boolean;

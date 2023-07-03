@@ -7,13 +7,14 @@ export interface SemanticLink {
 }
 
 export enum SemanticLinkType {
+  Article = 'article',
   ProductList = 'search',
   Page = 'page',
   Product = 'product',
   Category = 'category',
   Checkout = 'checkout',
   CheckoutLogin = 'checkoutLogin',
-  Order = 'Order',
+  Order = 'order',
   Cart = 'cart',
   Login = 'login',
   AddressList = 'address-list',

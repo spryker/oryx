@@ -62,8 +62,10 @@
       ],
       "@spryker-oryx/cli": ["libs/template/cli/src/index.ts"],
       "@spryker-oryx/content": ["libs/domain/content/src/index.ts"],
+      "@spryker-oryx/content/article": ["libs/domain/content/article/index.ts"],
       "@spryker-oryx/content/banner": ["libs/domain/content/banner/index.ts"],
       "@spryker-oryx/content/link": ["libs/domain/content/link/index.ts"],
+      "@spryker-oryx/content/text": ["libs/domain/content/text/index.ts"],
       "@spryker-oryx/content/video": ["libs/domain/content/video/index.ts"],
       "@spryker-oryx/core": ["libs/platform/core/src/index.ts"],
       "@spryker-oryx/core/mocks": ["libs/platform/core/src/mocks/index.ts"],
@@ -185,6 +187,9 @@
       "@spryker-oryx/ui/chip": ["libs/base/ui/graphical/chip/index.ts"],
       "@spryker-oryx/ui/collapsible": [
         "libs/base/ui/structure/collapsible/index.ts"
+      ],
+      "@spryker-oryx/ui/collapsible-text": [
+        "libs/base/ui/structure/collapsible-text/index.ts"
       ],
       "@spryker-oryx/ui/color-mode-selector": [
         "libs/base/ui/action/color-mode-selector/index.ts"

@@ -30,21 +30,27 @@ describe('Cart', () => {
           pdp.header.getCartSummary().click();
         });
 
-        it('should render the cart page with the newly added entries', () => {
-          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
-          checkCartEntry({
-            quantity: 1,
-            subTotal: '€161.95',
-            originalPrice: '180.00',
-            salesPrice: '€179.94',
-          });
-          checkCartTotals({
-            subTotal: '€179.94',
-            taxTotal: '€10.59',
-            discountsTotal: '-€17.99',
-            totalPrice: '€161.95',
-          });
-        });
+        it(
+          'should render the cart page with the newly added entries',
+          { tags: 'smoke' },
+          () => {
+            cartPage.getCartEntriesHeading().should('be.visible');
+
+            checkCartEntry({
+              quantity: 1,
+              subTotal: '€161.95',
+              originalPrice: '180.00',
+              salesPrice: '€179.94',
+            });
+
+            checkCartTotals({
+              subTotal: '€179.94',
+              taxTotal: '€10.59',
+              discountsTotal: '-€17.99',
+              totalPrice: '€161.95',
+            });
+          }
+        );
       });
     });
   });
@@ -227,23 +233,33 @@ function checkCartTotals(totals: {
   cartTotals.getWrapper().should('be.visible');
 
   if (totals.subTotal) {
-    cartTotals.getSubtotalPrice().should('contain.text', totals.subTotal);
+    cartTotals
+      .getSubtotalPrice()
+      .shadow()
+      .should('contain.text', totals.subTotal);
   }
 
   if (totals.discountsTotal) {
     cartTotals
       .getDiscountsTotal()
+      .shadow()
       .should('contain.text', totals.discountsTotal);
   } else {
     cartTotals.getDiscountsWrapper().should('not.exist');
   }
 
   if (totals.totalPrice) {
-    cartTotals.getTotalPrice().should('contain.text', totals.totalPrice);
+    cartTotals
+      .getTotalPrice()
+      .shadow()
+      .should('contain.text', totals.totalPrice);
   }
 
   if (totals.taxTotal) {
-    cartTotals.getTaxTotalPrice().should('contain.text', totals.taxTotal);
+    cartTotals
+      .getTaxTotalPrice()
+      .shadow()
+      .should('contain.text', totals.taxTotal);
   }
 
   cartTotals

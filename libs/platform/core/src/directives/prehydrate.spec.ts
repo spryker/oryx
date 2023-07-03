@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { prehydrate } from './prehydrate';
+import { preHydrate } from './prehydrate';
 
 const TAG_NAME = 'mock-component';
 
@@ -9,7 +9,7 @@ const TAG_NAME = 'mock-component';
 export class MockComponent extends LitElement {
   render(): TemplateResult {
     return html`<div></div>
-      ${prehydrate(() => {
+      ${preHydrate(() => {
         console.log('mock inline script called');
       }, TAG_NAME)}`;
   }
@@ -18,7 +18,7 @@ export class MockComponent extends LitElement {
 @customElement('another-mock-component')
 export class AnotherMockComponent extends LitElement {
   render(): TemplateResult {
-    return html`<span></span> ${prehydrate(() => {
+    return html`<span></span> ${preHydrate(() => {
         console.log('another inline script called');
       }, 'another-mock-component')}`;
   }

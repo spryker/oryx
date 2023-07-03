@@ -49,7 +49,7 @@ export class DefaultContextService implements ContextService {
     this.manifest.get(element)!.get(key)!.next(value);
   }
 
-  get<T>(element: Element, key: string): Observable<T> {
+  get<T>(element: Element | undefined, key: string): Observable<T> {
     return this.triggerManifest$.pipe(
       startWith(undefined),
       switchMap(() => {
@@ -133,16 +133,16 @@ export class DefaultContextService implements ContextService {
   }
 
   protected closestPassShadow(
-    element: Element | Window | Document,
+    element: Element | Window | Document | undefined,
     selector: string
   ): {
     element?: Element;
     elementWithAttr?: Element;
   } {
     const isElement = (
-      element: Element | Window | Document
+      element: Element | Window | Document | undefined
     ): element is Element => {
-      return element && element !== window && element !== document;
+      return !!(element && element !== window && element !== document);
     };
 
     while (isElement(element)) {

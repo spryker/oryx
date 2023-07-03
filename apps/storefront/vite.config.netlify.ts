@@ -1,6 +1,5 @@
 import { join } from 'path';
 import { defineConfig } from 'vite';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { viteConfig } from './vite.config.common.js';
 
 export default defineConfig({
@@ -21,15 +20,5 @@ export default defineConfig({
       external: ['fs', 'path', 'url', 'module', 'vm', /^node/, /^@netlify/],
     },
   },
-  plugins: [
-    ...viteConfig.plugins(),
-    viteStaticCopy({
-      targets: [
-        {
-          src: '../server/hosting/netlify.toml',
-          dest: '../../client',
-        },
-      ],
-    }),
-  ],
+  plugins: [...viteConfig.plugins()],
 });

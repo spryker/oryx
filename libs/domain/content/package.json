@@ -23,6 +23,7 @@
   "peerDependencies": {
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
-    "tslib": "^2.4.0"
+    "tslib": "^2.4.0",
+    "marked": "^5.1.0"
   }
 }

@@ -13,6 +13,8 @@ const cart = {
     'My cart ({count, plural, one {one item} other {{count} items}})',
   'cart.totals.<count>-discounts':
     '{count, plural, one {Discount} other {Discounts}}',
+  'cart.totals.unknown-delivery-cost':
+    'Delivery costs will be calculated at checkout',
   'cart.entry.<quantity>-items': 'x {quantity}',
   'cart.entry.confirm-remove-<sku>': 'Do you want to remove "{sku}"?',
   'cart.confirm-removed': 'Item is successfully removed',

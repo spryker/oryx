@@ -43,6 +43,7 @@ export class ContentLinkComponent extends ContentMixin<
 
     return html`
       <a
+        part="anchor"
         href=${this.$link()}
         aria-label=${ifDefined(label)}
         target=${ifDefined(target)}
@@ -63,7 +64,7 @@ export class ContentLinkComponent extends ContentMixin<
         renderIcon,
         () => html`<oryx-icon .type=${icon}></oryx-icon>`
       )}
-      ${this.$content()?.text}`;
+      ${text}`;
     }
     return html`<slot></slot>`;
   }
