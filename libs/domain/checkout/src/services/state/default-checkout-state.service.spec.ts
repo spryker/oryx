@@ -1,3 +1,4 @@
+import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
 import { of, take } from 'rxjs';
@@ -15,6 +16,10 @@ class MockStorageService implements Partial<StorageService> {
   remove = vi.fn();
 }
 
+class MockIdentityService implements Partial<IdentityService> {
+  get = vi.fn().mockReturnValue(of({}));
+}
+
 describe('DefaultCheckoutStateService', () => {
   let injector: Injector;
   let checkoutStateService: CheckoutStateService;
@@ -28,6 +33,7 @@ describe('DefaultCheckoutStateService', () => {
           useClass: DefaultCheckoutStateService,
         },
         { provide: StorageService, useClass: MockStorageService },
+        { provide: IdentityService, useClass: MockIdentityService },
       ],
     });
 
