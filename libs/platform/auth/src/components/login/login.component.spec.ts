@@ -247,6 +247,7 @@ describe('AuthLoginComponent', () => {
 
         it('should redirect to the specified url', async () => {
           await submit();
+
           expect(routerService.navigate).toHaveBeenCalledWith('/contact');
         });
       });

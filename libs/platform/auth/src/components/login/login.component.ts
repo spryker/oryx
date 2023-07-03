@@ -3,12 +3,11 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
-import {effect, hydratable, i18n, signal, Size, subscribe } from '@spryker-oryx/utilities';
+import { hydratable, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
-import { catchError, EMPTY, map, of, Subject, switchMap, tap } from 'rxjs';
 import { DefaultAuthLoginStrategy } from './default-login.strategy';
 import { LoginOptions, LoginRequest } from './login.model';
 import { AuthLoginStrategy } from './login.strategy';
@@ -42,59 +41,40 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
     new DefaultAuthLoginStrategy()
   );
 
-  protected doLogin$ = new Subject<LoginRequest>();
+  protected async doLogin(loginState: LoginRequest): Promise<void> {
+    const loginResult = this.authLoginStrategy.login(loginState).toPromise();
 
-  @subscribe()
-  protected login$ = this.doLogin$.pipe(
-    tap(() => {
-      this.isLoading = true;
-      this.hasError = false;
-    }),
-    switchMap((request) =>
-      this.authLoginStrategy.login(request).pipe(
-        catchError((e) => {
-          this.isLoading = false;
-          this.hasError = true;
-          return EMPTY;
-        })
-      )
-    ),
-    tap(() => (this.isLoading = false)),
-    switchMap(() => {
-      if (!this.componentOptions?.enableRedirect) {
-        return EMPTY;
-      }
-      if (this.componentOptions?.redirectUrl) {
-        return of(this.componentOptions?.redirectUrl);
-      }
-      return this.routerService
-        .previousRoute()
-        .pipe(map((previousRoute) => previousRoute ?? '/'));
-    }),
-    tap((redirectUrl) => this.routerService.navigate(redirectUrl))
-  );
+    this.isLoading = true;
+    this.hasError = false;
 
-  // protected async doLogin(loginState: LoginRequest) {
-  //   this.isLoading = true;
-  //   this.hasError = false;
-  //
-  //   await this.authLoginStrategy.login(loginState);
-  //
-  //   this.isLoading = false;
-  //
-  //   if (this.$options()?.enableRedirect) {
-  //     const redirectUrl = await this.routerService.previousRoute();
-  //
-  //     console.log(redirectUrl);
-  //
-  //     this.routerService.navigate('');
-  //   }
-  // }
+    loginResult.then(() => {
+      this.isLoading = false;
+
+      if (this.$options()?.enableRedirect) {
+        const redirectUrl = this.$options().redirectUrl;
+
+        if (redirectUrl) {
+          this.routerService.navigate(redirectUrl);
+          return;
+        }
+
+        const previousRoute = this.routerService.previousRoute().toPromise();
+
+        previousRoute.then((route) => {
+          const redirectRoute = route ? route : '/';
+          this.routerService.navigate(redirectRoute);
+        });
+      }
+    }).catch(() => {
+      this.isLoading = false;
+      this.hasError = true;
+    });
+  }
 
   protected login(event: Event): void {
     event.preventDefault();
-    // this.doLogin(this.getState());
-    this.doLogin$.next(this.getState());
+
+    this.doLogin(this.getState());
   }
 
   protected override render(): TemplateResult {
