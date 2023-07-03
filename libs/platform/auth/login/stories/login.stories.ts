@@ -18,7 +18,7 @@ export default {
       description: 'Password field visibility strategy.',
     },
     enableRememberMe: { type: 'boolean' },
-    disableRedirect: { type: 'boolean' },
+    enableRedirect: { type: 'boolean' },
     redirectUrl: { type: 'string' },
   },
 } as Meta;
