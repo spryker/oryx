@@ -4,10 +4,9 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { Currency } from '../../models';
-import { CurrencyService } from '../../services';
 import { SiteCurrencySelectorComponent } from './currency-selector.component';
 import { siteCurrencySelectorComponent } from './currency-selector.def';
+import {Currency, CurrencyService} from "@spryker-oryx/site";
 
 class MockCurrencyService implements Partial<CurrencyService> {
   get = vi.fn().mockReturnValue('EUR');
