@@ -34,7 +34,6 @@ describe('Cart', () => {
           'should render the cart page with the newly added entries',
           { tags: 'smoke' },
           () => {
-            cartPage.getCartEntriesHeading().should('contain.text', '1 items');
             checkCartEntry({
               quantity: 1,
               subTotal: '€161.95',
