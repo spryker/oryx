@@ -1,12 +1,15 @@
+import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
+  combineLatest,
   distinctUntilChanged,
   map,
   Observable,
+  skip,
+  Subscription,
   take,
-  tap,
 } from 'rxjs';
 import { checkoutDataStorageKey, PlaceOrderData } from '../../models';
 import { CheckoutStateService } from './checkout-state.service';
@@ -23,7 +26,14 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
 
   protected isInvalid$ = new BehaviorSubject<boolean>(false);
 
-  constructor(protected storage = inject(StorageService)) {
+  userId$ = this.identity.get().pipe(map((identity) => identity?.userId ?? ''));
+
+  protected clearSubscription: Subscription | undefined;
+
+  constructor(
+    protected storage = inject(StorageService),
+    protected identity = inject(IdentityService)
+  ) {
     this.restore();
   }
 
@@ -40,11 +50,15 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     if (existing && item.value !== undefined) existing.value = item.value;
     if (!existing) collected.set(key, item);
     this.subject.next(collected);
-    this.storage.set(
-      checkoutDataStorageKey,
-      Array.from(collected),
-      StorageType.Session
-    );
+
+    this.userId$.pipe(take(1)).subscribe((userId) => {
+      this.storage.set(
+        checkoutDataStorageKey,
+        [...Array.from(collected), userId],
+        StorageType.Session
+      );
+      this.setupClearLogic();
+    });
   }
 
   get<K extends keyof PlaceOrderData>(
@@ -63,6 +77,8 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     this.storage.remove(checkoutDataStorageKey, StorageType.Session);
     this.isInvalid$.next(false);
     this.subject.next(new Map());
+    this.clearSubscription?.unsubscribe();
+    this.clearSubscription = undefined;
   }
 
   getAll(complete = true): Observable<Partial<PlaceOrderData> | null> {
@@ -106,15 +122,30 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
    * Restores the data from storage
    */
   protected restore(): void {
-    this.storage
-      .get<Map<keyof PlaceOrderData, CheckoutValue>>(
+    combineLatest([
+      this.storage.get<Map<keyof PlaceOrderData, CheckoutValue>>(
         checkoutDataStorageKey,
         StorageType.Session
-      )
-      .pipe(
-        take(1),
-        tap((stored) => this.subject.next(new Map(stored)))
-      )
-      .subscribe();
+      ),
+      this.userId$,
+    ])
+      .pipe(take(1))
+      .subscribe(([stored, userId]) => {
+        const storedUserId =
+          (stored && Array.isArray(stored) && stored.pop()) ?? {}; // invalid;
+        if (storedUserId === userId) {
+          this.subject.next(new Map(stored));
+          this.setupClearLogic();
+        }
+      });
+  }
+
+  protected setupClearLogic(): void {
+    // clear the data if the user changes
+    if (!this.clearSubscription) {
+      this.clearSubscription = this.userId$
+        .pipe(skip(1), take(1))
+        .subscribe(() => this.clear());
+    }
   }
 }
