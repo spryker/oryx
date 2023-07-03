@@ -47,28 +47,30 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
     this.isLoading = true;
     this.hasError = false;
 
-    loginResult.then(() => {
-      this.isLoading = false;
+    loginResult
+      .then(() => {
+        this.isLoading = false;
 
-      if (this.$options()?.enableRedirect) {
-        const redirectUrl = this.$options().redirectUrl;
+        if (this.$options()?.enableRedirect) {
+          const redirectUrl = this.$options().redirectUrl;
 
-        if (redirectUrl) {
-          this.routerService.navigate(redirectUrl);
-          return;
+          if (redirectUrl) {
+            this.routerService.navigate(redirectUrl);
+            return;
+          }
+
+          const previousRoute = this.routerService.previousRoute().toPromise();
+
+          previousRoute.then((route) => {
+            const redirectRoute = route ? route : '/';
+            this.routerService.navigate(redirectRoute);
+          });
         }
-
-        const previousRoute = this.routerService.previousRoute().toPromise();
-
-        previousRoute.then((route) => {
-          const redirectRoute = route ? route : '/';
-          this.routerService.navigate(redirectRoute);
-        });
-      }
-    }).catch(() => {
-      this.isLoading = false;
-      this.hasError = true;
-    });
+      })
+      .catch(() => {
+        this.isLoading = false;
+        this.hasError = true;
+      });
   }
 
   protected login(event: Event): void {
@@ -159,8 +161,6 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
       </div>
     `;
   }
-
-
 
   protected getState(): LoginRequest {
     const email = this.emailInputRef.value?.value ?? '';

@@ -49,9 +49,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   });
 
   protected onTriggerClick(): void {
-    if (
-      this.$options().contentBehavior === NavigationContentBehavior.Modal
-    ) {
+    if (this.$options().contentBehavior === NavigationContentBehavior.Modal) {
       this.renderRoot
         .querySelector('oryx-modal')
         ?.toggleAttribute('open', true);
@@ -59,9 +57,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   }
 
   protected onTriggerHover(e: MouseEvent): void {
-    if (
-      this.$options().triggerBehavior !== NavigationTriggerBehavior.Hover
-    ) {
+    if (this.$options().triggerBehavior !== NavigationTriggerBehavior.Hover) {
       return;
     }
 
@@ -125,7 +121,8 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
       >
         ${when(
           this.$url(),
-          () => html`<a href=${this.$url()!}> ${this.icon} ${this.$label()} </a>`,
+          () =>
+            html`<a href=${this.$url()!}> ${this.icon} ${this.$label()} </a>`,
           () => html`<button>${this.icon} ${this.$label()}</button>`
         )}
       </oryx-button>

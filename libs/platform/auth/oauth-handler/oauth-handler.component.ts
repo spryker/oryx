@@ -1,9 +1,9 @@
+import { OauthService } from '@spryker-oryx/auth';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { OauthService } from '../../oauth';
 import { styles } from './oauth-handler.styles';
 
 export class OauthHandlerComponent extends LitElement {

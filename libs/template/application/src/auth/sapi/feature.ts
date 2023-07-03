@@ -2,24 +2,24 @@ import {
   AnonAuthTokenService,
   AnonTokenInterceptor,
   AnonTokenInterceptorConfig,
-  authLoginComponent,
-  AuthLoginStrategy,
   AuthTokenInterceptorConfig,
   AuthTokenService,
   IdentityService,
-  loginLinkComponent,
   OauthFeature,
   OauthFeatureConfig,
   OauthService,
   PasswordGrantAuthLoginStrategy,
   PasswordGrantAuthLoginStrategyConfig,
 } from '@spryker-oryx/auth';
+import { AuthLoginStrategy } from '@spryker-oryx/auth/login';
 import {
   AppFeature,
   ComponentsInfo,
   HttpInterceptor,
 } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
+import { loginLinkComponent } from '../../../../../platform/auth/login-link/login-link.def';
+import { authLoginComponent } from '../../../../../platform/auth/login/login.def';
 import { SapiIdentityService } from './sapi-identity.service';
 
 /**

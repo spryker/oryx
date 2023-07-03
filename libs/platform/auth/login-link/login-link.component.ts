@@ -1,13 +1,10 @@
+import { AuthService } from '@spryker-oryx/auth';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import {
-  hydratable,
-  i18n, signal,
-} from '@spryker-oryx/utilities';
+import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { AuthService } from '../../services/auth.service';
 import { LoginLinkOptions } from './login-link.model';
 import { styles } from './login-link.styles';
 
@@ -47,9 +44,7 @@ export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
     }
 
     this.authService.logout().subscribe(() => {
-      this.routerService.navigate(
-        this.$options()?.logoutRedirectUrl ?? '/'
-      );
+      this.routerService.navigate(this.$options()?.logoutRedirectUrl ?? '/');
     });
   }
 }

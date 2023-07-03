@@ -15,7 +15,14 @@
       ],
       "@spryker-oryx/auth": ["libs/platform/auth/src/index.ts"],
       "@spryker-oryx/auth/*": ["libs/platform/auth/*/index.ts"],
+      "@spryker-oryx/auth/login": ["libs/platform/auth/login/index.ts"],
+      "@spryker-oryx/auth/login-link": [
+        "libs/platform/auth/login-link/index.ts"
+      ],
       "@spryker-oryx/auth/mocks": ["libs/platform/auth/mocks/index.ts"],
+      "@spryker-oryx/auth/oauth-handler": [
+        "libs/platform/auth/oauth-handler/index.ts"
+      ],
       "@spryker-oryx/cart": ["libs/domain/cart/src/index.ts"],
       "@spryker-oryx/cart/add": ["libs/domain/cart/add/index.ts"],
       "@spryker-oryx/cart/entries": ["libs/domain/cart/entries/index.ts"],

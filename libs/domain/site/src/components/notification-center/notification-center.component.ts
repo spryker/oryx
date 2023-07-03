@@ -22,10 +22,9 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
   protected siteNotificationService = resolve(NotificationService);
   protected centerRef = createRef<NotificationCenterComponent>();
 
-  protected $notification = signal(
-    this.siteNotificationService.get(),
-    { equal: () => false }
-  );
+  protected $notification = signal(this.siteNotificationService.get(), {
+    equal: () => false,
+  });
 
   @elementEffect()
   protected notification$ = async (): Promise<void> => {
