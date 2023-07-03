@@ -187,9 +187,9 @@ describe('AuthLoginComponent', () => {
       ) as HTMLButtonElement;
 
       const observer = new MutationObserver((value) => {
-        console.log('!!!!', (value[0].target as HTMLButtonElement).hasAttribute('disabled'));
-        expect((value[0].target as HTMLButtonElement).hasAttribute('disabled')).toBeTruthy();
+        const submitButton = value[0].target as HTMLButtonElement;
 
+        expect(submitButton.hasAttribute('disabled')).toBeTruthy();
         observer.disconnect();
       });
 
