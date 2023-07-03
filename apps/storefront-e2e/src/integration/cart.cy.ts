@@ -34,12 +34,15 @@ describe('Cart', () => {
           'should render the cart page with the newly added entries',
           { tags: 'smoke' },
           () => {
+            cartPage.getCartEntriesHeading().should('be.visible');
+
             checkCartEntry({
               quantity: 1,
               subTotal: '€161.95',
               originalPrice: '180.00',
               salesPrice: '€179.94',
             });
+
             checkCartTotals({
               subTotal: '€179.94',
               taxTotal: '€10.59',
