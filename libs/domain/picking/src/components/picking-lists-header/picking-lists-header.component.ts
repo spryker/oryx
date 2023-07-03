@@ -1,11 +1,11 @@
 import { resolve } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
+import { SiteNavigationItemComponent } from '@spryker-oryx/site/navigation-item';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ModalComponent } from '@spryker-oryx/ui/modal';
 import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { pickingListsHeaderComponentStyles } from './picking-lists-header.styles';
-import {SiteNavigationItemComponent} from "@spryker-oryx/site/navigation-item";
 
 export class PickingListsHeaderComponent extends LitElement {
   static styles = pickingListsHeaderComponentStyles;
