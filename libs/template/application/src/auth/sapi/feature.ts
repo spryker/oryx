@@ -18,8 +18,8 @@ import {
   HttpInterceptor,
 } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
-import { loginLinkComponent } from '../../../../../platform/auth/login-link/login-link.def';
-import { authLoginComponent } from '../../../../../platform/auth/login/login.def';
+import { loginLinkComponent } from '@spryker-oryx/auth/login-link';
+import { authLoginComponent } from '@spryker-oryx/auth/login';
 import { SapiIdentityService } from './sapi-identity.service';
 
 /**

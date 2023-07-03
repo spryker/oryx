@@ -15,9 +15,9 @@ import {
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import urlJoin from 'url-join';
-import { loginLinkComponent } from '../../../../../platform/auth/login-link/login-link.def';
-import { authLoginComponent } from '../../../../../platform/auth/login/login.def';
-import { oauthHandlerComponent } from '../../../../../platform/auth/oauth-handler/oauth-handler.def';
+import { loginLinkComponent } from '@spryker-oryx/auth/login-link';
+import { authLoginComponent } from '@spryker-oryx/auth/login';
+import { oauthHandlerComponent } from '@spryker-oryx/auth/oauth-handler';
 import { BapiIdentityService } from './bapi-identity.service';
 import { BapiPlugin } from './plugin';
 import { defaultBapiRoutes } from './routes';
