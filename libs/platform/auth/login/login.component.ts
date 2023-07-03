@@ -5,7 +5,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { hydratable, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { firstValueFrom } from 'rxjs';
