@@ -12,6 +12,11 @@ export default {
   args: {
     enableLogout: true,
   },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const toggleLogin = () => {

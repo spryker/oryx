@@ -49,33 +49,34 @@ export class DefaultContextService implements ContextService {
     this.manifest.get(element)!.get(key)!.next(value);
   }
 
-  get<T>(element: Element | undefined, key: string): Observable<T> {
+  get<T>(element: Element | null, key: string): Observable<T> {
     return this.triggerManifest$.pipe(
       startWith(undefined),
       switchMap(() => {
-        const { element: currentElement, elementWithAttr } =
-          this.closestPassShadow(element, this.getAttributeName(key));
+        if (element) {
+          const { element: currentElement, elementWithAttr } =
+            this.closestPassShadow(element, this.getAttributeName(key));
 
-        if (currentElement && this.hasKey(currentElement, key)) {
-          return this.manifest.get(currentElement)!.get(key)!;
-        }
-
-        if (elementWithAttr) {
-          let value: string | undefined = elementWithAttr.getAttribute(
-            this.getAttributeName(key)
-          )!;
-
-          try {
-            value = JSON.parse(value);
-          } catch {
-            // fallback to string value if JSON.parse will fail
+          if (currentElement && this.hasKey(currentElement, key)) {
+            return this.manifest.get(currentElement)!.get(key)!;
           }
 
-          this.provide(elementWithAttr, key, value);
+          if (elementWithAttr) {
+            let value: string | undefined = elementWithAttr.getAttribute(
+              this.getAttributeName(key)
+            )!;
 
-          return this.manifest.get(elementWithAttr)!.get(key)!;
+            try {
+              value = JSON.parse(value);
+            } catch {
+              // fallback to string value if JSON.parse will fail
+            }
+
+            this.provide(elementWithAttr, key, value);
+
+            return this.manifest.get(elementWithAttr)!.get(key)!;
+          }
         }
-
         return of(undefined);
       }),
       this.contextFallback(key),
