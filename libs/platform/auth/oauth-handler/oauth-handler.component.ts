@@ -15,14 +15,11 @@ export class OauthHandlerComponent extends LitElement {
     protected oauthService = resolve(OauthService),
     protected routerService = resolve(RouterService)
   ) {
-    console.log(routerService, oauthService);
     super();
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
-
-    console.log(1);
 
     if (!this.providerId) {
       throw new Error(`OauthHandlerComponent: Unknown Oauth provider ID!`);
