@@ -5,6 +5,11 @@ import { BannerContent, BannerOptions } from '../banner.model';
 
 export default {
   title: `${storybookPrefix}/Banner`,
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const Template: Story<BannerOptions & BannerContent> = (

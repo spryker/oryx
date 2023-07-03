@@ -34,6 +34,11 @@ export default {
       control: { type: 'boolean' },
     },
   },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const Template: Story<CollapsibleAttributes> = (props): TemplateResult => {

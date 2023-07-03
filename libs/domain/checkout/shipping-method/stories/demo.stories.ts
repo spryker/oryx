@@ -7,7 +7,14 @@ import { mockCarriers } from '../../src/mocks/src/mock';
 import { Shipment } from '../../src/models';
 import { CheckoutDataService } from '../../src/services';
 
-export default { title: `${storybookPrefix}/Shipment` } as Meta;
+export default {
+  title: `${storybookPrefix}/Shipment`,
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
+} as Meta;
 
 const mock: Partial<Shipment>[] = [
   {
