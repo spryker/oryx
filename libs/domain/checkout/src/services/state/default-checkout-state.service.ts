@@ -26,7 +26,10 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
 
   protected isInvalid$ = new BehaviorSubject<boolean>(false);
 
-  userId$ = this.identity.get().pipe(map((identity) => identity?.userId ?? ''));
+  userId$ = this.identity.get().pipe(
+    map((identity) => identity?.userId ?? ''),
+    distinctUntilChanged()
+  );
 
   protected clearSubscription: Subscription | undefined;
 
@@ -50,6 +53,7 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     if (existing && item.value !== undefined) existing.value = item.value;
     if (!existing) collected.set(key, item);
     this.subject.next(collected);
+    this.setupClearLogic();
 
     this.userId$.pipe(take(1)).subscribe((userId) => {
       this.storage.set(
@@ -57,7 +61,6 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
         [...Array.from(collected), userId],
         StorageType.Session
       );
-      this.setupClearLogic();
     });
   }
 
