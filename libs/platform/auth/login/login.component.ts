@@ -8,7 +8,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
-import { firstValueFrom } from 'rxjs';
+import { EmptyError, firstValueFrom } from 'rxjs';
 import { DefaultAuthLoginStrategy } from './default-login.strategy';
 import { LoginOptions, LoginRequest } from './login.model';
 import { AuthLoginStrategy } from './login.strategy';
@@ -46,26 +46,30 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
     try {
       await firstValueFrom(this.authLoginStrategy.login(loginState));
-
-      this.isLoading = false;
-
-      if (this.$options()?.enableRedirect) {
-        const redirectUrl = this.$options().redirectUrl;
-
-        if (redirectUrl) {
-          this.routerService.navigate(redirectUrl);
-          return;
-        }
-
-        const previousRoute = await firstValueFrom(
-          this.routerService.previousRoute()
-        );
-        const redirectRoute = previousRoute ? previousRoute : '/';
-        this.routerService.navigate(redirectRoute);
+    } catch (e) {
+      if (e instanceof EmptyError === false) {
+        this.isLoading = false;
+        this.hasError = true;
       }
-    } catch {
-      this.isLoading = false;
-      this.hasError = true;
+
+      return;
+    }
+
+    this.isLoading = false;
+
+    if (this.$options()?.enableRedirect) {
+      const redirectUrl = this.$options().redirectUrl;
+
+      if (redirectUrl) {
+        this.routerService.navigate(redirectUrl);
+        return;
+      }
+
+      const previousRoute = await firstValueFrom(
+        this.routerService.previousRoute()
+      );
+      const redirectRoute = previousRoute ? previousRoute : '/';
+      this.routerService.navigate(redirectRoute);
     }
   }
 
