@@ -11,15 +11,17 @@ import {
   PasswordGrantAuthLoginStrategy,
   PasswordGrantAuthLoginStrategyConfig,
 } from '@spryker-oryx/auth';
-import { AuthLoginStrategy } from '@spryker-oryx/auth/login';
+import {
+  authLoginComponent,
+  AuthLoginStrategy,
+} from '@spryker-oryx/auth/login';
+import { loginLinkComponent } from '@spryker-oryx/auth/login-link';
 import {
   AppFeature,
   ComponentsInfo,
   HttpInterceptor,
 } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
-import { loginLinkComponent } from '@spryker-oryx/auth/login-link';
-import { authLoginComponent } from '@spryker-oryx/auth/login';
 import { SapiIdentityService } from './sapi-identity.service';
 
 /**

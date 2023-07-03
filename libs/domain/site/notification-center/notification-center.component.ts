@@ -1,5 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { NotificationService } from '@spryker-oryx/site';
 import {
   NotificationCenterComponent,
   NotificationPosition,
@@ -7,7 +8,6 @@ import {
 import { elementEffect, hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { NotificationService } from '../../services';
 import { SiteNotificationCenterOptions } from './notification-center.model';
 
 @defaultOptions({

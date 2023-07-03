@@ -1,6 +1,7 @@
 import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import {
   computed,
   hydratable,
@@ -10,7 +11,6 @@ import { LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
-import { SemanticLinkService } from '../../services';
 import {
   NavigationContentBehavior,
   NavigationTriggerBehavior,

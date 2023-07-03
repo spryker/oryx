@@ -179,7 +179,24 @@
         "libs/domain/search/product-sort/index.ts"
       ],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
+      "@spryker-oryx/site/currency-selector": [
+        "libs/domain/site/currency-selector/index.ts"
+      ],
+      "@spryker-oryx/site/date": ["libs/domain/site/date/index.ts"],
+      "@spryker-oryx/site/locale-selector": [
+        "libs/domain/site/locale-selector/index.ts"
+      ],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
+      "@spryker-oryx/site/navigation-button": [
+        "libs/domain/site/navigation-button/index.ts"
+      ],
+      "@spryker-oryx/site/navigation-item": [
+        "libs/domain/site/navigation-item/index.ts"
+      ],
+      "@spryker-oryx/site/notification-center": [
+        "libs/domain/site/notification-center/index.ts"
+      ],
+      "@spryker-oryx/site/price": ["libs/domain/site/price/index.ts"],
       "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
       "@spryker-oryx/themes/breakpoints": [
         "libs/template/themes/breakpoints/index.ts"

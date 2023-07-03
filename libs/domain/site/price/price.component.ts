@@ -1,4 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
+import { PricingService } from '@spryker-oryx/site';
 import {
   computed,
   hydratable,
@@ -6,7 +7,6 @@ import {
   signalProperty,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { PricingService } from '../../services';
 import { PriceComponentAttributes } from './price.model';
 
 @hydratable()

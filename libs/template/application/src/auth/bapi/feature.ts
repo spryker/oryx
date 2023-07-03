@@ -5,7 +5,12 @@ import {
   OauthFeature,
   OauthFeatureConfig,
 } from '@spryker-oryx/auth';
-import { AuthLoginStrategy } from '@spryker-oryx/auth/login';
+import {
+  authLoginComponent,
+  AuthLoginStrategy,
+} from '@spryker-oryx/auth/login';
+import { loginLinkComponent } from '@spryker-oryx/auth/login-link';
+import { oauthHandlerComponent } from '@spryker-oryx/auth/oauth-handler';
 import {
   AppFeature,
   AppPlugin,
@@ -15,9 +20,6 @@ import {
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import urlJoin from 'url-join';
-import { loginLinkComponent } from '@spryker-oryx/auth/login-link';
-import { authLoginComponent } from '@spryker-oryx/auth/login';
-import { oauthHandlerComponent } from '@spryker-oryx/auth/oauth-handler';
 import { BapiIdentityService } from './bapi-identity.service';
 import { BapiPlugin } from './plugin';
 import { defaultBapiRoutes } from './routes';
