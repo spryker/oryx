@@ -1,7 +1,7 @@
 import { getAppIcons } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../.constants';
+import { storybookPrefix } from '../../.constants';
 import { NavigationButtonAttributes } from '../navigation-button.model';
 
 const icons = getAppIcons();

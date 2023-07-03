@@ -4,7 +4,7 @@ import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { take } from 'rxjs';
-import { storybookPrefix } from '../../../../.constants';
+import { storybookPrefix } from '../../.constants';
 import { LoginLinkOptions } from '../login-link.model';
 
 export default {
