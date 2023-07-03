@@ -9,7 +9,8 @@ declare global {
   namespace Cypress {
     interface Chainable {
       login(): Chainable<void>;
-      goToCheckout(isGuest?: boolean): Chainable<void>;
+      goToCheckout(): Chainable<void>;
+      goToCheckoutAsGuest(): Chainable<void>;
       waitUpdateComplete(
         element: Cypress.Chainable<JQuery<HTMLElement>>
       ): Chainable<boolean>;
@@ -38,17 +39,26 @@ Cypress.Commands.add('login', () => {
   });
 });
 
-Cypress.Commands.add('goToCheckout', (isGuest = false) => {
+Cypress.Commands.add('goToCheckout', () => {
   const cartPage = new CartPage();
-  const cartApiUrl = isGuest ? '/guest-carts?**' : '/customers/DE--**/carts?**';
 
-  cy.intercept(cartApiUrl).as('cartsRequest');
+  cy.intercept('/customers/DE--**/carts?**').as('cartsRequest');
   cartPage.visit();
   cy.wait('@cartsRequest');
 
   cy.intercept('/customers/*/addresses').as('addressesRequest');
   cartPage.checkout();
   cy.wait('@addressesRequest');
+});
+
+Cypress.Commands.add('goToCheckoutAsGuest', () => {
+  const cartPage = new CartPage();
+
+  cy.intercept('/guest-carts?**').as('cartsRequest');
+  cartPage.visit();
+  cy.wait('@cartsRequest');
+
+  cartPage.checkout();
 });
 
 Cypress.Commands.add('waitUpdateComplete', (element) => {

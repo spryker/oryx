@@ -90,7 +90,7 @@ describe('Checkout suite', { tags: 'smoke' }, () => {
     it('must allow user to create a new order', () => {
       sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
 
-      cy.goToCheckout(true);
+      cy.goToCheckoutAsGuest();
       cy.location('pathname').should('be.eq', checkoutPage.anonymousUrl);
 
       checkoutPage.checkoutAsGuestForm.fillForm();
