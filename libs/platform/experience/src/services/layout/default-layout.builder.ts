@@ -101,7 +101,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
   getLayoutStyles(data?: StyleProperties): string | undefined {
     let styles = this.getProperties(data).join(';');
-    if (data?.style) styles += data.style;
+    if (data?.style) styles += `;${data.style}`;
     return styles === '' ? undefined : styles;
   }
 

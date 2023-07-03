@@ -13,7 +13,6 @@ export const groupItemStyles = css`
   label {
     display: contents;
     outline: 0;
-    color: var(--oryx-color-inc);
   }
 
   slot[name='subtext'] {
@@ -22,6 +21,10 @@ export const groupItemStyles = css`
     display: block;
     grid-column: 2 / span 1;
     color: var(--oryx-color-neutral-9);
+  }
+
+  slot[name='subtext']::slotted(*:not(:empty)) {
+    display: block;
     margin-block-start: 4px;
   }
 

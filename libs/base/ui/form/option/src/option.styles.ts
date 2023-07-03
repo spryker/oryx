@@ -18,6 +18,7 @@ export const optionStyles = css`
     outline: none;
     transition: background var(--oryx-transition-time-medium);
     cursor: pointer;
+    color: var(--oryx-color-neutral-12);
   }
 
   oryx-icon.mark {

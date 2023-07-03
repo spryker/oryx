@@ -1,3 +1,28 @@
+[build]
+  ignore = "cd ../../ && bash ./should-ignore-build.sh ${PROJECT_NAME}"
+
+[functions.ssr]
+  node_bundler = "esbuild"
+  included_files = ["dist/**"]
+
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+  [[plugins.inputs.audits]]
+    path = ""
+  
+  [[plugins.inputs.audits]]
+    path = "product/086_30521602"
+  
+  [[plugins.inputs.audits]]
+    path = "category/4"
+
+[[plugins]]
+  package = "/../../tools/netlify-plugins/cypress-tests-runner" 
+
+    [plugins.inputs]
+      nxRunCommand = "storefront-e2e:e2e:headless-ci-smoke"
+
 [[redirects]]
   from = "/"
   status = 200
