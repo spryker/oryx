@@ -1,7 +1,7 @@
+import { CardType } from '@spryker-oryx/ui/card';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
-import { CardType } from '../../../../ui/structure/card';
 
 export default { title: `${storybookPrefix}/Overlays/Modal` } as Meta;
 
@@ -9,8 +9,8 @@ interface Props {
   enableNavigateBack: boolean;
   enableCloseButtonInHeader: boolean;
 
-  firstModalFullscreen?: boolean;
-  secondModalFullscreen?: boolean;
+  firstModalMinimal?: boolean;
+  secondModalMinimal?: boolean;
 
   firstModalHeader?: string;
   secondModalHeader?: string;
@@ -65,7 +65,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
       ?enableCloseButtonInHeader=${props.enableCloseButtonInHeader}
       ?preventCloseByEscape=${props.firstModalPreventCloseByEscape}
       ?preventCloseByBackdrop=${props.firstModalPreventCloseByBackdrop}
-      ?fullscreen=${props.firstModalFullscreen}
+      ?minimal=${props.firstModalMinimal}
       ?footerButtonFullWidth=${props.firstFooterButtonFullWidth}
       heading=${props.firstModalHeader}
       type=${props.firstModalType}
@@ -82,7 +82,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
           ?enableCloseButtonInHeader=${props.enableCloseButtonInHeader}
           ?preventCloseByEscape=${props.secondModalPreventCloseByEscape}
           ?preventCloseByBackdrop=${props.secondModalPreventCloseByBackdrop}
-          ?fullscreen=${props.secondModalFullscreen}
+          ?minimal=${props.secondModalMinimal}
           ?footerButtonFullWidth=${props.secondFooterButtonFullWidth}
           heading=${props.secondModalHeader}
           type=${props.secondModalType}
@@ -100,8 +100,8 @@ export const ModalDemo = Template.bind({});
 ModalDemo.args = {
   enableNavigateBack: false,
   enableCloseButtonInHeader: false,
-  firstModalFullscreen: false,
-  secondModalFullscreen: false,
+  firstModalMinimal: false,
+  secondModalMinimal: false,
   firstModalPreventCloseByBackdrop: false,
   secondModalPreventCloseByBackdrop: false,
   firstModalPreventCloseByEscape: false,
@@ -117,11 +117,11 @@ ModalDemo.args = {
 };
 
 ModalDemo.argTypes = {
-  firstModalFullscreen: {
+  firstModalMinimal: {
     table: { category: 'First modal' },
     control: { type: 'boolean' },
   },
-  secondModalFullscreen: {
+  secondModalMinimal: {
     table: { category: 'Second modal' },
     control: { type: 'boolean' },
   },

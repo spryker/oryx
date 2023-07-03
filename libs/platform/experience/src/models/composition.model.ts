@@ -14,6 +14,7 @@ export interface StyleRuleSet extends StyleProperties, LayoutAttributes {
     childs?: boolean;
     hover?: boolean;
   };
+  [key: string]: unknown;
 }
 
 export enum CompositionLayout {
@@ -34,13 +35,31 @@ export const enum CompositionLayoutOrientation {
   Vertical = 'vertical',
 }
 
-export interface StyleProperties {
+export interface LayoutStylesProperties {
+  /**
+   * Indicates that the composition will stick on the screen at a certain position. The position
+   * defaults to 0px from the top, but can be customised using the styling. For a footer for example
+   * the top can be configured to be 100%.
+   */
   sticky?: boolean;
+  /**
+   * Components are bound inside the page bleed by default. The page bleed is
+   * the space that is outside the main container size of the layout. Both the
+   * maximum container width and minimum page bleed size are configurable by design tokens.
+   *
+   * To _break out_ the container width, the bleed flag can be used. This allows to apply
+   * styling and content outside the container.
+   */
   bleed?: boolean;
   divider?: boolean;
+  /**
+   * Overlapping elements are rendered in the same grid row/column.
+   */
   overlap?: boolean;
   vertical?: boolean;
+}
 
+export interface StyleProperties extends LayoutStylesProperties {
   /**
    * The column count is based on a calculated count by design tokens, which can be specified
    * by design tokens. This results in a column system for grid and carousels that uses 4, 2
@@ -183,6 +202,11 @@ export interface StyleProperties {
   radius?: string;
 
   ratio?: string;
+
+  /**
+   * Transforms the component using this scale.
+   */
+  scale?: number;
 
   style?: string;
 }

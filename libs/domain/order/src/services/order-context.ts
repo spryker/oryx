@@ -4,7 +4,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { map } from 'rxjs';
 
 export const enum OrderContext {
-  OrderId = 'order-id',
+  OrderId = 'orderId',
 }
 
 export const OrderContextFallback: Provider = {

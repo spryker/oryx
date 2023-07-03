@@ -8,28 +8,30 @@ import {
   take,
   tap,
 } from 'rxjs';
-import { Checkout, checkoutDataStorageKey } from '../../models';
+import { checkoutDataStorageKey, PlaceOrderData } from '../../models';
 import { CheckoutStateService } from './checkout-state.service';
 
 type CheckoutValue = {
   valid?: boolean;
-  value?: Partial<Checkout[keyof Checkout]> | null;
+  value?: Partial<PlaceOrderData[keyof PlaceOrderData]> | null;
 };
 
 export class DefaultCheckoutStateService implements CheckoutStateService {
-  protected subject = new BehaviorSubject<Map<keyof Checkout, CheckoutValue>>(
-    new Map()
-  );
+  protected subject = new BehaviorSubject<
+    Map<keyof PlaceOrderData, CheckoutValue>
+  >(new Map());
+
+  protected isInvalid$ = new BehaviorSubject<boolean>(false);
 
   constructor(protected storage = inject(StorageService)) {
     this.restore();
   }
 
-  set<K extends keyof Checkout>(
+  set<K extends keyof PlaceOrderData>(
     key: K,
     item: {
       valid?: boolean;
-      value?: Partial<Checkout[K]> | null;
+      value?: Partial<PlaceOrderData[K]> | null;
     }
   ): void {
     const collected = this.subject.value;
@@ -41,30 +43,39 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     this.storage.set(
       checkoutDataStorageKey,
       Array.from(collected),
-      StorageType.SESSION
+      StorageType.Session
     );
   }
 
-  get<K extends keyof Checkout>(key: K): Observable<Checkout[K] | null> {
+  get<K extends keyof PlaceOrderData>(
+    key: K
+  ): Observable<PlaceOrderData[K] | null> {
     return this.subject.pipe(
       map((data) => {
         if (!data.get(key)) this.set(key, {});
-        return (data.get(key)?.value ?? null) as Checkout[K] | null;
+        return (data.get(key)?.value ?? null) as PlaceOrderData[K] | null;
       }),
       distinctUntilChanged()
     );
   }
 
   clear(): void {
-    this.storage.remove(checkoutDataStorageKey, StorageType.SESSION);
+    this.storage.remove(checkoutDataStorageKey, StorageType.Session);
+    this.isInvalid$.next(false);
     this.subject.next(new Map());
   }
 
-  getAll(): Observable<Partial<Checkout> | null> {
+  getAll(complete = true): Observable<Partial<PlaceOrderData> | null> {
     return this.subject.pipe(
       map((data) => {
-        if (Array.from(data).find((item) => !item[1].valid)) return null;
-        const result: Partial<Checkout> = {};
+        if (complete && Array.from(data).find((item) => !item[1].valid)) {
+          this.isInvalid$.next(true);
+          return null;
+        } else {
+          this.isInvalid$.next(false);
+        }
+
+        const result: Partial<PlaceOrderData> = {};
         data.forEach((item, key) => {
           Object.assign(result, { [key]: item.value });
         });
@@ -73,7 +84,13 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     );
   }
 
-  protected populateData(data: Partial<Checkout>): Partial<Checkout> {
+  isInvalid(): Observable<boolean> {
+    return this.isInvalid$.pipe(distinctUntilChanged());
+  }
+
+  protected populateData(
+    data: Partial<PlaceOrderData>
+  ): Partial<PlaceOrderData> {
     if (data.customer) {
       if (!data.customer.salutation && data.shippingAddress?.salutation)
         data.customer.salutation = data.shippingAddress.salutation;
@@ -82,10 +99,6 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
       if (!data.customer.firstName && data.shippingAddress?.firstName)
         data.customer.firstName = data.shippingAddress.firstName;
     }
-    // tmp: copy the billing address from the shipping address for
-    // as long as we have not implemented the component
-    data.billingAddress = data.shippingAddress;
-
     return data;
   }
 
@@ -94,9 +107,9 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
    */
   protected restore(): void {
     this.storage
-      .get<Map<keyof Checkout, CheckoutValue>>(
+      .get<Map<keyof PlaceOrderData, CheckoutValue>>(
         checkoutDataStorageKey,
-        StorageType.SESSION
+        StorageType.Session
       )
       .pipe(
         take(1),

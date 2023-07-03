@@ -54,6 +54,22 @@ describe('DefaultPageMetaService', () => {
       expect(charsetMeta).toHaveProperty('content', 'b');
     });
 
+    it('should escape quote symbol', () => {
+      service.add([
+        {
+          name: 'og:img',
+          attrs: {
+            content: `a"'–<>—`,
+          },
+        },
+      ]);
+      const imgMeta = document.head.querySelector('meta[name="og:img"]');
+      expect(imgMeta).toHaveProperty(
+        'content',
+        'a&quot;&apos;&ndash;&lt;&gt;&mdash;'
+      );
+    });
+
     it('should add attributes to the html tag', () => {
       service.add({
         name: 'html',

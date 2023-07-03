@@ -1,6 +1,7 @@
 import {
   CompositionLayout,
   CompositionLayoutOrientation,
+  LayoutStylesProperties,
 } from '@spryker-oryx/experience';
 import { Breakpoint } from '@spryker-oryx/utilities';
 
@@ -10,7 +11,7 @@ export interface LayoutAttributes
   orientation?: CompositionLayoutOrientation;
 }
 
-export interface LayoutProperties {
+export interface LayoutProperties extends LayoutStylesProperties {
   /**
    * Layout type that is used all screen sizes.
    *
@@ -21,32 +22,6 @@ export interface LayoutProperties {
    * should be used (eg `layoutSm`).
    */
   layout?: CompositionLayout;
-
-  /**
-   * Components are bound inside the page bleed by default. The page bleed is
-   * the space that is outside the main container size of the layout. Both the
-   * maximum container width and minimum page bleed size are configurable by design tokens.
-   *
-   * To _break out_ the container width, the bleed flag can be used. This allows to apply
-   * styling and content outside the container.
-   */
-  bleed?: boolean;
-
-  /**
-   * Indicates that the composition will stick on the screen at a certain position. The position
-   * defaults to 0px from the top, but can be customised using the styling. For a footer for example
-   * the top can be configured to be 100%.
-   */
-  sticky?: boolean;
-
-  /**
-   * Overlapping elements are rendered in the same grid row/column.
-   */
-  overlap?: boolean;
-
-  divider?: boolean;
-
-  vertical?: boolean;
 }
 
 type ScreenLayoutProperties = {

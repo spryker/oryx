@@ -1,25 +1,23 @@
-import { Type } from '@spryker-oryx/di';
+import { ContextController } from '@spryker-oryx/core';
+import { resolve, Type } from '@spryker-oryx/di';
 import {
-  asyncState,
+  computed,
   Signal,
   signal,
   signalAware,
   signalProperty,
-  valueType,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { ProductController } from '../controllers';
+import { of } from 'rxjs';
 import type { Product } from '../models';
 import { ProductComponentProperties } from '../models';
+import { ProductContext, ProductService } from '../services';
 
 export declare class ProductMixinInterface
   implements ProductComponentProperties
 {
   sku?: string;
-  product?: Product | null;
-  $product: Signal<Product | null>;
-
-  protected productController: ProductController;
+  protected $product: Signal<Product | null>;
 }
 
 export const ProductMixin = <
@@ -31,15 +29,18 @@ export const ProductMixin = <
   class ProductMixinClass extends superClass {
     @signalProperty({ reflect: true }) sku?: string;
 
-    protected productController = new ProductController(this);
+    protected productService = resolve(ProductService, null);
 
-    @asyncState()
-    protected product = valueType(this.productController.getProduct());
+    protected contextController = new ContextController(this);
 
-    protected $product = signal(this.productController.getProduct(), {
-      initialValue: null,
+    protected $productContext = signal(
+      this.contextController.get<string>(ProductContext.SKU)
+    );
+
+    protected $product = computed(() => {
+      const sku = this.sku ?? this.$productContext();
+      return sku ? this.productService?.get({ sku }) : of(null);
     });
   }
-  // Cast return type to your mixin's interface intersected with the superClass type
   return ProductMixinClass as unknown as Type<ProductMixinInterface> & T;
 };

@@ -97,7 +97,7 @@ describe('SelectComponent', () => {
     describe('when created without control', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-select label="some label"></oryx-select>`
+          html`<oryx-select label="some label"><input /></oryx-select>`
         );
       });
 

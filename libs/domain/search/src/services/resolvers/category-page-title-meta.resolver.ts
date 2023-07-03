@@ -34,8 +34,10 @@ export class CategoryPageTitleMetaResolver implements PageMetaResolver {
         return this.facets.get().pipe(
           map((facets) => {
             const selectedId = String(categoryId);
-            const list = facets?.find((facet) => facet.parameter === 'category')
-              ?.values as FacetValue[];
+            const list = [
+              ...((facets?.find((facet) => facet.parameter === 'category')
+                ?.values as FacetValue[]) ?? []),
+            ];
 
             for (const item of list) {
               if (String(item.value) === selectedId) {

@@ -2,9 +2,9 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin, ProductPrices } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
-import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import { computed, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { combineLatest, Observable, switchMap } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { Prices, ProductPriceOptions } from './price.model';
 import { ProductPriceStyles } from './price.styles';
 
@@ -33,12 +33,9 @@ export class ProductPriceComponent extends ProductMixin(
 
   protected pricingService = resolve(PricingService);
 
-  protected prices = signal(
-    this.productController
-      .getProduct()
-      .pipe(switchMap((product) => this.formatPrices(product?.price))),
-    { initialValue: {} as Prices }
-  );
+  protected $prices = computed(() => {
+    return this.formatPrices(this.$product()?.price);
+  });
 
   protected override render(): TemplateResult | void {
     return html`
@@ -48,7 +45,7 @@ export class ProductPriceComponent extends ProductMixin(
   }
 
   protected renderSalesPrice(): TemplateResult | void {
-    const { original, sales } = this.prices();
+    const { original, sales } = this.$prices() ?? {};
 
     if (!sales && !original) return;
 
@@ -62,7 +59,7 @@ export class ProductPriceComponent extends ProductMixin(
   protected renderTaxMessage(): TemplateResult | void {
     if (
       !this.$options().enableTaxMessage ||
-      (!this.prices().sales && !this.prices().original)
+      (!this.$prices()?.sales && !this.$prices()?.original)
     )
       return;
 
@@ -78,7 +75,7 @@ export class ProductPriceComponent extends ProductMixin(
   }
 
   protected renderOriginalPrice(): TemplateResult | void {
-    const { original, sales } = this.prices();
+    const { original, sales } = this.$prices() ?? {};
     if (!this.$options().enableOriginalPrice || !sales || !original) {
       return;
     }

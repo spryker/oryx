@@ -1,10 +1,7 @@
+import { isSafari, nonFocusableOnClickInSafari } from '@spryker-oryx/ui';
 import { isFocusable } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import { getControl } from '../../../../form/utilities';
-import {
-  isSafari,
-  nonFocusableOnClickInSafari,
-} from '../../../../src/utilities';
 import { PopoverComponent } from '../popover.component';
 import {
   CLOSE_EVENT,
@@ -143,15 +140,15 @@ export class ToggleController implements ReactiveController {
     }
   }
 
-  protected handleMouseup(e: MouseEvent): void {
+  protected async handleMouseup(e: MouseEvent): Promise<void> {
+    this.focusShouldBeFocusedMaybe();
+
     if (
-      this.shouldClosePopover(e) ||
+      (await this.shouldClosePopover(e)) ||
       (timePassed(this.timeStarted) && !this.emitterIsInsidePopover(e))
     ) {
       this.toggle(false);
     }
-
-    this.focusShouldBeFocusedMaybe();
   }
 
   protected handleKeydown(e: KeyboardEvent): void {
@@ -177,7 +174,7 @@ export class ToggleController implements ReactiveController {
         break;
       default:
         // avoid toggle the element when the user cmd-tabs away from the browser
-        // or dispatching Tab key
+        // or dispatching Tab keyhandleMouseup
         if (!((e.key === 'Meta' && e.metaKey) || e.key === 'Tab')) {
           this.toggle(true);
         }
@@ -247,8 +244,8 @@ export class ToggleController implements ReactiveController {
     );
   }
 
-  protected shouldClosePopover(e: Event): boolean {
-    return e
+  protected shouldClosePopover(e: Event): Promise<boolean> {
+    const shouldBeClosed = e
       .composedPath()
       .some(
         (element, i, path) =>
@@ -256,6 +253,10 @@ export class ToggleController implements ReactiveController {
           element instanceof Element &&
           element.hasAttribute(CLOSE_POPOVER_ATTR)
       );
+    //add a delay to allow other click handlers being resolved
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(shouldBeClosed), 0)
+    );
   }
 
   protected focusShouldBeFocusedMaybe(): void {

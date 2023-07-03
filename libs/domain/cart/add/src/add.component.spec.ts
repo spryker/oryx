@@ -4,14 +4,14 @@ import {
   QuantityEventDetail,
   QuantityInputComponent,
 } from '@spryker-oryx/cart/quantity-input';
+import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ProductService } from '@spryker-oryx/product';
-import { MockProductService } from '@spryker-oryx/product/mocks';
+import { Product, ProductService } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
 import { buttonComponent } from '@spryker-oryx/ui';
 import { wait } from '@spryker-oryx/utilities';
-import { BehaviorSubject, delay, Observer, of } from 'rxjs';
+import { BehaviorSubject, delay, of } from 'rxjs';
 import { CartAddComponent } from './add.component';
 import { addToCartComponent } from './add.def';
 
@@ -27,9 +27,14 @@ class MockPricingService implements Partial<PricingService> {
   format = vi.fn().mockReturnValue(of('price'));
 }
 
+class MockProductService implements Partial<ProductService> {
+  get = vi.fn();
+}
+
 describe('CartAddComponent', () => {
   let element: CartAddComponent;
   let service: Partial<MockCartService>;
+  let productService: MockProductService;
 
   beforeAll(async () => {
     await useComponent([
@@ -40,7 +45,7 @@ describe('CartAddComponent', () => {
   });
 
   beforeEach(() => {
-    const testInjector = createInjector({
+    const injector = createInjector({
       providers: [
         {
           provide: CartService,
@@ -54,10 +59,17 @@ describe('CartAddComponent', () => {
           provide: PricingService,
           useClass: MockPricingService,
         },
+        {
+          provide: ContextService,
+          useClass: DefaultContextService,
+        },
       ],
     });
 
-    service = testInjector.inject(CartService) as unknown as MockCartService;
+    service = injector.inject<MockCartService>(CartService);
+    productService = injector.inject<MockProductService>(ProductService);
+
+    // productService.get.mockReturnValue(mockProduct$);
   });
 
   afterEach(() => {
@@ -67,6 +79,7 @@ describe('CartAddComponent', () => {
 
   describe('when a correct sku is provided', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(of({ sku: '1' }));
       element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
     });
 
@@ -83,9 +96,10 @@ describe('CartAddComponent', () => {
     });
   });
 
-  describe('when an incorrect sku is provided', () => {
+  describe('when no product is provided', () => {
     beforeEach(async () => {
-      element = await fixture(html`<oryx-cart-add sku="foo"></oryx-cart-add>`);
+      productService.get.mockReturnValue(of(null));
+      element = await fixture(html`<oryx-cart-add id="1"></oryx-cart-add>`);
     });
 
     it('pass the a11y audit', async () => {
@@ -101,36 +115,93 @@ describe('CartAddComponent', () => {
     });
   });
 
-  describe('disabled', () => {
+  describe('when there is quantity available', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({ sku: '1', availability: { quantity: 10 } })
+      );
       element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
     });
 
-    describe('when the quantity is enabled', () => {
-      it('should enable the button', () => {
-        expect(element).toContainElement('button:not([disabled])');
+    it('should enable the button', () => {
+      expect(element).toContainElement('button:not([disabled])');
+    });
+
+    it('should have a max quantity of 10', () => {
+      const quantityInput = element.renderRoot.querySelector(
+        'oryx-cart-quantity-input'
+      ) as QuantityInputComponent;
+      expect(quantityInput.max).toBe(10);
+    });
+
+    describe('and when an update is dispatched with an invalid quantity', () => {
+      beforeEach(() => {
+        const input = element.shadowRoot?.querySelector(
+          'oryx-cart-quantity-input'
+        );
+        input?.dispatchEvent(
+          new CustomEvent<QuantityEventDetail>('update', {
+            detail: { quantity: 5, isInvalid: true },
+          })
+        );
       });
 
-      describe('and when an update is dispatched with an invalid quantity', () => {
-        beforeEach(() => {
-          const input = element.shadowRoot?.querySelector(
-            'oryx-cart-quantity-input'
-          );
-          input?.dispatchEvent(
-            new CustomEvent<QuantityEventDetail>('update', {
-              detail: { quantity: 5, isInvalid: true },
-            })
-          );
-        });
-
-        it('should disable the button', () => {
-          expect(element).toContainElement('button[disabled]');
-        });
+      it('should disable the button', () => {
+        expect(element).toContainElement('button[disabled]');
       });
     });
   });
 
+  describe('when there is 0 quantity available', () => {
+    beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({ sku: '1', availability: { quantity: 0 } })
+      );
+      element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
+    });
+
+    it('should disable the button', () => {
+      expect(element).toContainElement('button[disabled]');
+    });
+
+    it('should have max quantity of 0', () => {
+      const quantityInput = element.renderRoot.querySelector(
+        'oryx-cart-quantity-input'
+      ) as QuantityInputComponent;
+      expect(quantityInput.max).toBe(0);
+    });
+  });
+
+  describe('when isNeverOutOfStock = true', () => {
+    beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({
+          sku: '1',
+          availability: { quantity: 0, isNeverOutOfStock: true },
+        } as Product)
+      );
+      element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
+    });
+
+    it('should enable the button', () => {
+      expect(element).toContainElement('button:not([disabled])');
+    });
+
+    it('should have an infinite max quantity', () => {
+      const quantityInput = element.renderRoot.querySelector(
+        'oryx-cart-quantity-input'
+      ) as QuantityInputComponent;
+      expect(quantityInput.max).toBe(Infinity);
+    });
+  });
+
   describe('submit', () => {
+    beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({ sku: '1', availability: { quantity: 10 } } as Product)
+      );
+    });
+
     describe('when the quantity input is used', () => {
       beforeEach(async () => {
         element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
@@ -191,13 +262,23 @@ describe('CartAddComponent', () => {
       });
 
       describe('when adding an item to cart throws an error', () => {
+        let errorCallback: any;
         beforeEach(async () => {
-          service?.addEntry?.mockReturnValue({
-            subscribe: (callback: Partial<Observer<any>>) => {
-              // simulate observable that errors
-              callback.error?.(new Error('error'));
-              callback.complete?.();
-            },
+          service.addEntry?.mockImplementation(() => {
+            return {
+              subscribe: vi.fn().mockImplementation(({ error }) => {
+                //simulate error handling in subscribe
+                //try - catch are required not to pollute test env
+                //by unhandled errors
+                try {
+                  const e = new Error('error');
+                  errorCallback = error.bind(null, e);
+                  error(e);
+                } catch {
+                  //
+                }
+              }),
+            };
           });
 
           element = await fixture(
@@ -209,8 +290,14 @@ describe('CartAddComponent', () => {
           await nextFrame();
         });
 
-        it('should not have the oryx-button in confirmed state', async () => {
-          expect(element).toContainElement('oryx-button:not([confirmed])');
+        it('should throw the handled error', () => {
+          expect(() => errorCallback()).toThrowError('error');
+        });
+
+        it('should drop the states from confirmation button', () => {
+          expect(element).toContainElement(
+            'oryx-button:not([confirmed][loading])'
+          );
         });
       });
     });
@@ -229,7 +316,6 @@ describe('CartAddComponent', () => {
 
       describe('and when the cart becomes busy', () => {
         beforeEach(() => {
-          busy$.next(true);
           element.renderRoot.querySelector('button')?.click();
         });
 
@@ -239,7 +325,7 @@ describe('CartAddComponent', () => {
 
         describe('and when the cart is no longer busy', () => {
           beforeEach(async () => {
-            busy$.next(false);
+            await wait(800);
           });
 
           it('should no longer have the oryx-button in loading state', () => {
@@ -276,6 +362,12 @@ describe('CartAddComponent', () => {
   });
 
   describe('hideQuantityInput', () => {
+    beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({ sku: '1', availability: { quantity: 10 } } as Product)
+      );
+    });
+
     describe('when "hideQuantityInput" is not provided', () => {
       beforeEach(async () => {
         element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
@@ -304,6 +396,9 @@ describe('CartAddComponent', () => {
 
   describe('when "outlined" option is provided', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({ sku: '1', availability: { quantity: 10 } } as Product)
+      );
       element = await fixture(
         html`<oryx-cart-add
           sku="1"
@@ -319,7 +414,12 @@ describe('CartAddComponent', () => {
   });
 
   describe('when the component is rendered', () => {
+    const product$ = new BehaviorSubject<Product | null>({
+      sku: '1',
+      availability: { quantity: 10 },
+    } as Product);
     beforeEach(async () => {
+      productService.get.mockReturnValue(product$);
       element = await fixture(html`<oryx-cart-add sku="1"></oryx-cart-add>`);
     });
 
@@ -349,7 +449,7 @@ describe('CartAddComponent', () => {
             await wait(800);
           });
 
-          describe('and when the sku has changed', () => {
+          describe('and when the product has changed', () => {
             const quantity = () =>
               element.shadowRoot?.querySelector(
                 'oryx-cart-quantity-input'
@@ -357,9 +457,7 @@ describe('CartAddComponent', () => {
 
             beforeEach(async () => {
               vi.spyOn(quantity(), 'reset');
-              element.sku = '2';
-              element.requestUpdate('sku');
-              await nextFrame();
+              product$.next({ sku: '2' });
             });
 
             it('should reset the quantity', () => {

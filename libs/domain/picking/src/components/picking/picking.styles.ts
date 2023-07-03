@@ -5,35 +5,37 @@ export const pickingComponentStyles = css`
     --sticky-offset: 66px;
   }
 
-  .tab-panels {
-    min-height: 100vh;
+  [slot='panels'] {
     width: 100%;
   }
 
   .list-container {
-    position: relative;
-    height: 100%;
+    min-height: calc(100vh - 166px);
     padding: 25px 0;
     display: grid;
     gap: 20px 0;
     grid-auto-rows: max-content;
+    background-color: var(--oryx-color-neutral-3);
   }
 
-  .picking-complete {
+  section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
+    justify-content: center;
+    height: calc(100vh - 166px);
   }
 
-  .title-empty {
-    font-size: 20px;
-    line-height: 28px;
-    margin-block-end: 0;
+  section oryx-heading h1 {
+    margin: 30px 0 8px;
   }
 
-  .img-wrap {
-    padding: 100px 16% 30px;
+  section oryx-heading h2 {
+    margin-block-end: 10px;
+  }
+
+  oryx-image {
+    display: flex;
   }
 
   .picked-items-info {

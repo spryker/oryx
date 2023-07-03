@@ -1,7 +1,11 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
 import { of, take } from 'rxjs';
-import { Checkout, checkoutDataStorageKey, ContactDetails } from '../../models';
+import {
+  checkoutDataStorageKey,
+  ContactDetails,
+  PlaceOrderData,
+} from '../../models';
 import { CheckoutStateService, DefaultCheckoutStateService } from './';
 
 class MockStorageService implements Partial<StorageService> {
@@ -44,10 +48,18 @@ describe('DefaultCheckoutStateService', () => {
     it('should restore data from the storage service', () => {
       expect(storageService.get).toHaveBeenCalled();
     });
+
+    it('isInvalid should return false', () => {
+      let data: boolean | undefined;
+      checkoutStateService
+        .isInvalid()
+        .subscribe((response) => (data = response));
+      expect(data).toBe(false);
+    });
   });
 
   describe('when the checkout state is not set before', () => {
-    let result: ContactDetails | null;
+    let result: ContactDetails | null | undefined;
 
     describe('and the set() method is used', () => {
       beforeEach(() => {
@@ -76,7 +88,7 @@ describe('DefaultCheckoutStateService', () => {
       expect(storageService.set).toHaveBeenCalledWith(
         checkoutDataStorageKey,
         expect.anything(),
-        StorageType.SESSION
+        StorageType.Session
       );
     });
 
@@ -97,7 +109,7 @@ describe('DefaultCheckoutStateService', () => {
       it('should remove the data from storage', () => {
         expect(storageService.remove).toBeCalledWith(
           checkoutDataStorageKey,
-          StorageType.SESSION
+          StorageType.Session
         );
       });
     });
@@ -105,7 +117,7 @@ describe('DefaultCheckoutStateService', () => {
 
   describe('when getAll() is called', () => {
     describe('and some of the data is invalid', () => {
-      let data: Partial<Checkout> | null;
+      let data: Partial<PlaceOrderData> | null;
       beforeEach(() => {
         checkoutStateService.set('customer', {
           valid: true,
@@ -127,10 +139,19 @@ describe('DefaultCheckoutStateService', () => {
           .subscribe((response) => (data = response));
         expect(data).toBeNull();
       });
+
+      it('isInvalid should return true', () => {
+        let data: boolean | undefined;
+        checkoutStateService.getAll().subscribe();
+        checkoutStateService
+          .isInvalid()
+          .subscribe((response) => (data = response));
+        expect(data).toBe(true);
+      });
     });
 
     describe('and the all the data is valid', () => {
-      let data: Partial<Checkout> | null;
+      let data: Partial<PlaceOrderData> | null;
       beforeEach(() => {
         checkoutStateService.set('customer', {
           valid: true,
@@ -160,6 +181,14 @@ describe('DefaultCheckoutStateService', () => {
       it('should populate the name from the shipping address', () => {
         expect(data?.customer?.firstName).toBe('John');
         expect(data?.customer?.lastName).toBe('Doe');
+      });
+
+      it('isInvalid should return false', () => {
+        let data: boolean | undefined;
+        checkoutStateService
+          .isInvalid()
+          .subscribe((response) => (data = response));
+        expect(data).toBe(false);
       });
     });
   });

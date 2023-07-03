@@ -1,6 +1,7 @@
+import { AddEditAddressFormFragment } from '../page_fragments/add-edit-address-form.fragment';
+import { AddressesListFragment } from '../page_fragments/addresses-list.fragment';
+import { AddressesModalFragment } from '../page_fragments/addresses-modal.fragment';
 import { CartTotalsFragment } from '../page_fragments/cart-totals.fragment';
-import { CheckoutAddressFormFragment } from '../page_fragments/checkout/checkout-address-form.fragment';
-import { CheckoutAddressModalFragment } from '../page_fragments/checkout/checkout-address-modal.fragment';
 import { CheckoutAsGuestFormFragment } from '../page_fragments/checkout/checkout-as-guest-form.fragment';
 import { AbstractSFPage } from './abstract.page';
 
@@ -17,15 +18,27 @@ export class CheckoutPage extends AbstractSFPage {
   }
 
   checkoutAsGuestForm = new CheckoutAsGuestFormFragment();
-  addressForm = new CheckoutAddressFormFragment();
-  addressList = new CheckoutAddressModalFragment('oryx-checkout-address');
-  addressChangeModal = new CheckoutAddressModalFragment('oryx-modal');
 
-  getChangeAddressesButton = () => cy.get('oryx-checkout-manage-address');
+  shipping = {
+    addressesList: new AddressesListFragment('oryx-checkout-shipping-address'),
+    addAddressForm: new AddEditAddressFormFragment(
+      'oryx-checkout-shipping-address'
+    ),
+    addressChangeModal: new AddressesModalFragment(
+      'oryx-checkout-shipping-address'
+    ),
+  };
+
+  billing = {
+    addressesList: new AddressesListFragment('oryx-checkout-billing-address'),
+    addAddressForm: new AddEditAddressFormFragment(
+      'oryx-checkout-billing-address'
+    ),
+    addressChangeModal: new AddressesModalFragment(
+      'oryx-checkout-billing-address'
+    ),
+  };
+
   getCartTotals = new CartTotalsFragment();
   getPlaceOrderBtn = () => cy.get('oryx-checkout-place-order');
-
-  openChangeAddressesModal = () => {
-    this.getChangeAddressesButton().click();
-  };
 }

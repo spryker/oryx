@@ -1,4 +1,4 @@
-import { TestUserData } from '../types/user.type';
+import { TestCustomerData } from '../types/user.type';
 import { LoginPage } from './page_objects/login.page';
 import { SCCOSApi } from './sccos_api/sccos.api';
 
@@ -7,25 +7,30 @@ export {};
 declare global {
   namespace Cypress {
     interface Chainable {
-      login(user: TestUserData): Chainable<void>;
+      login(): Chainable<void>;
       waitUpdateComplete(
         element: Cypress.Chainable<JQuery<HTMLElement>>
       ): Chainable<boolean>;
-      customerCartsCleanup(sccosApi: SCCOSApi, user: TestUserData): void;
-      customerAddressesCleanup(sccosApi: SCCOSApi, user: TestUserData): void;
+      customerCartsCleanup(sccosApi: SCCOSApi, user: TestCustomerData): void;
+      customerAddressesCleanup(
+        sccosApi: SCCOSApi,
+        user: TestCustomerData
+      ): void;
       disableAnimations(): void;
       checkCurrencyFormatting(locale: string): void;
     }
   }
 }
 
-Cypress.Commands.add('login', (user: TestUserData) => {
-  const loginPage = new LoginPage();
+Cypress.Commands.add('login', () => {
+  cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+    const loginPage = new LoginPage();
 
-  loginPage.visit();
-  loginPage.loginForm.login(user);
+    loginPage.visit();
+    loginPage.loginForm.login(customer);
 
-  loginPage.header.getUserSummaryHeading().should('contain', user.name);
+    loginPage.header.getUserSummaryHeading().should('contain', customer.name);
+  });
 });
 
 Cypress.Commands.add('waitUpdateComplete', (element) => {
@@ -34,7 +39,7 @@ Cypress.Commands.add('waitUpdateComplete', (element) => {
 
 Cypress.Commands.add(
   'customerCartsCleanup',
-  (sccosApi: SCCOSApi, user: TestUserData) => {
+  (sccosApi: SCCOSApi, user: TestCustomerData) => {
     sccosApi.carts.customersGet(user.id).then((response) => {
       const carts = response.body.data;
 
@@ -52,7 +57,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'customerAddressesCleanup',
-  (sccosApi: SCCOSApi, user: TestUserData) => {
+  (sccosApi: SCCOSApi, user: TestCustomerData) => {
     sccosApi.addresses.get(user.id).then((response) => {
       const addresses = response.body.data;
 

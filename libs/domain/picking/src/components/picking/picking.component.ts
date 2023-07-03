@@ -88,7 +88,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     const { productId, numberOfPicked } = event.detail;
 
     const productIndex = this.pickingList?.items.findIndex(
-      (item) => item.product.id === productId
+      (item) => item.id === productId
     );
 
     if (
@@ -112,7 +112,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     const { productId } = event.detail;
 
     const productIndex = this.pickingList?.items.findIndex(
-      (item) => item.product.id === productId
+      (item) => item.id === productId
     );
     this.items[productIndex].status = ItemsFilters.NotPicked;
 
@@ -140,7 +140,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
 
   protected confirmPartialPicking(): void {
     const productIndex = this.pickingList?.items.findIndex(
-      (item) => item.product.id === this.partialPicking?.productId
+      (item) => item.id === this.partialPicking?.productId
     );
 
     this.updatePickingItem(
@@ -190,21 +190,19 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   }
 
   protected renderTabs(tabs: PickingTab[]): TemplateResult {
-    return tabs
-      ? html`
-          ${repeat(
-            tabs,
-            (tab, index) => html`
-              <oryx-tab for="tab-${tab.id}" ${ref(this.tabRefs[index])}>
-                ${i18n(`picking.${tab.title}`)}
-                <oryx-chip dense ${ref(this.chipRefs[index])}
-                  >${tab.items?.length ?? '0'}</oryx-chip
-                >
-              </oryx-tab>
-            `
-          )}
+    return html`
+      ${repeat(
+        tabs,
+        (tab, index) => html`
+          <oryx-tab for="tab-${tab.id}" ${ref(this.tabRefs[index])}>
+            ${i18n(`picking.${tab.title}`)}
+            <oryx-chip dense ${ref(this.chipRefs[index])}
+              >${tab.items?.length ?? '0'}</oryx-chip
+            >
+          </oryx-tab>
         `
-      : html``;
+      )}
+    `;
   }
 
   protected renderTabContents(tabs: PickingTab[]): TemplateResult {
@@ -212,14 +210,14 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       ${repeat(
         tabs,
         (tab) => html`
-          <div slot="panels" id="tab-${tab.id}" class="tab-panels">
+          <div slot="panels" id="tab-${tab.id}">
             ${when(
               tab.items?.length,
               () => html`
                 <div class="list-container">
                   ${repeat(
                     tab.items,
-                    (item) => item.product.id,
+                    (item) => item.id,
                     (item) =>
                       html`
                         <oryx-picking-product-card
@@ -236,7 +234,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
                 </div>
                 ${this.renderFinishButton(true)}
               `,
-              () => this.renderPlaceholderComplete()
+              () => this.renderFallback()
             )}
           </div>
         `
@@ -244,25 +242,44 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     `;
   }
 
-  protected renderPlaceholderComplete(): TemplateResult | void {
-    if (this.items?.some((item) => item.status !== ItemsFilters.Picked)) {
-      return;
-    }
-
+  protected renderFinishPickingFallback(): TemplateResult {
     return html`
-      <div class="picking-complete">
-        <div class="img-wrap">
-          <oryx-image resource="picking-items-processed"></oryx-image>
-        </div>
-        <h3 class="title-empty">${i18n(`picking.great-job`)}!</h3>
-        <p>${i18n(`picking.all-items-are-processed`)}!</p>
-      </div>
+      <section>
+        <oryx-image resource="picking-items-processed"></oryx-image>
+        <oryx-heading>
+          <h1>${i18n(`picking.great-job`)}!</h1>
+        </oryx-heading>
+        <span>${i18n(`picking.all-items-are-processed`)}!</span>
+      </section>
       ${this.renderFinishButton()}
     `;
   }
 
+  protected renderNoItemsFallback(): TemplateResult {
+    return html`
+      <section>
+        <oryx-heading>
+          <h2>${i18n(`picking.no-items`)}!</h2>
+        </oryx-heading>
+        <oryx-image resource="no-orders"></oryx-image>
+      </section>
+    `;
+  }
+
+  protected renderFallback(): TemplateResult {
+    if (!this.items?.length || !this.allItemsPicked) {
+      return this.renderNoItemsFallback();
+    } else {
+      return this.renderFinishPickingFallback();
+    }
+  }
+
+  protected get allItemsPicked(): boolean {
+    return this.items?.every((item) => item.status === ItemsFilters.Picked);
+  }
+
   protected renderFinishButton(hasShadow?: boolean): TemplateResult | void {
-    if (this.items?.some((item) => item.status !== ItemsFilters.Picked)) {
+    if (!this.allItemsPicked) {
       return;
     }
 
@@ -272,11 +289,13 @@ export class PickingComponent extends PickingListMixin(LitElement) {
           'scroll-shadow': hasShadow ?? false,
         })}"
       >
-        <oryx-button type=${ButtonType.Primary} outline>
-          <button @click=${this.finishPicking}>
-            ${i18n('picking.finish-picking')}
-          </button>
-        </oryx-button>
+        <div>
+          <oryx-button type=${ButtonType.Primary} outline>
+            <button @click=${this.finishPicking}>
+              ${i18n('picking.finish-picking')}
+            </button>
+          </oryx-button>
+        </div>
       </div>
     `;
   }
@@ -288,6 +307,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
         enableFooter
         preventclosebybackdrop
         footerButtonFullWidth
+        minimal
       >
         <div slot="heading">
           ${i18n('picking.product-card.confirm-picking')}

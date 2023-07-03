@@ -4,7 +4,10 @@ import { createSuggestionMock } from '@spryker-oryx/search/mocks';
 import { Observable, of, switchMap, take } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { SuggestionQualifier } from '../../models';
-import { SuggestionAdapter } from '../adapter/suggestion.adapter';
+import {
+  SuggestionAdapter,
+  SuggestionField,
+} from '../adapter/suggestion.adapter';
 import { DefaultSuggestionService } from './default-suggestion.service';
 import { SuggestionService } from './suggestion.service';
 
@@ -43,7 +46,7 @@ describe('DefaultSuggestionService', () => {
     });
 
     service = testInjector.inject(SuggestionService);
-    adapter = testInjector.inject(SuggestionAdapter);
+    adapter = testInjector.inject(SuggestionAdapter)[0];
   });
 
   afterEach(() => {
@@ -63,7 +66,11 @@ describe('DefaultSuggestionService', () => {
       const callback = vi.fn();
       service.get({ query: 'tes' }).subscribe(callback);
       expect(callback).toHaveBeenCalledWith(
-        expect.objectContaining({ completion: completion.slice(0, 3) })
+        expect.objectContaining({
+          [SuggestionField.Suggestions]: completion
+            .slice(0, 3)
+            .map((name) => ({ name, params: { q: name } })),
+        })
       );
     });
 

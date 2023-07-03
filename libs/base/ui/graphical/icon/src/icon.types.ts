@@ -3,6 +3,7 @@ export enum IconTypes {
   Increase = 'add', // merge with add
   Cart = 'shopping_cart',
   CartAdd = 'add_shopping_cart',
+  Check = 'check',
   Close = 'close',
   Collapse = 'add', // merge with add
   DropUp = 'expand_less',
@@ -12,7 +13,6 @@ export enum IconTypes {
   Decrease = 'remove', // merge with minus
   Info = 'info',
   InputError = 'report', // merge with error
-  Mark = 'check_circle',
   Minus = 'remove',
   Remove = 'delete_forever',
   Report = 'report',
@@ -37,13 +37,14 @@ export enum IconTypes {
   Desktop = 'desktop_windows',
   Mobile = 'phone_iphone',
   Tablet = 'tablet_mac',
-  Error = 'error',
+  Error = 'block',
   Success = 'expand_circle_down',
   Warning = 'warning',
   Planet = 'language',
   Actions = 'more_vert',
   ActionsHorizontal = 'more_horiz',
   Back = 'chevron_left',
+  ArrowBack = 'arrow_back',
   Bottom = 'arrow_downward',
   Calendar = 'calendar_month',
   Copy = 'content_copy',

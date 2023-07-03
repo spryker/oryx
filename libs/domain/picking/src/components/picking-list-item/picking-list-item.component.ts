@@ -66,11 +66,13 @@ export class PickingListItemComponent
           () =>
             html`
               <h3 slot="heading">
-                ${asyncValue(
-                  this.localeService.formatTime(
-                    this.pickingList.requestedDeliveryDate
-                  )
-                )}
+                ${!isNaN(this.pickingList.requestedDeliveryDate.getTime())
+                  ? asyncValue(
+                      this.localeService.formatTime(
+                        this.pickingList.requestedDeliveryDate
+                      )
+                    )
+                  : ''}
               </h3>
             `
         )}

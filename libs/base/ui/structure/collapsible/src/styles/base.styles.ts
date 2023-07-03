@@ -33,6 +33,7 @@ export const collapsibleBaseStyle = css`
     align-items: center;
     gap: 7px;
     cursor: pointer;
+    user-select: none;
   }
 
   :host(${blockSelector}) summary::after {

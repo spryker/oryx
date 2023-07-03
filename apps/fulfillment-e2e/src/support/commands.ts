@@ -14,6 +14,7 @@ declare global {
 }
 
 const indexedDBName = 'fulfillment-app-db';
+const indexedDBStorageName = 'oryx-local-db-storage';
 const defaultUser = { email: 'admin@spryker.com', password: 'change123' };
 const loginPage = new LoginPage();
 
@@ -23,7 +24,10 @@ Cypress.Commands.add('login', (user = defaultUser) => {
   loginPage.visit();
   loginPage.loginForm.login(user);
 
-  cy.wait('@token');
+  // we have to wait for 5++ seconds here
+  // because our bundle is huge and Cypress is not able
+  // to cache all 500++ files fast enough
+  cy.wait('@token', { timeout: 30000 });
 
   cy.intercept('GET', '**/picking-lists?include*').as('picking-lists');
   cy.wait('@picking-lists');
@@ -36,25 +40,16 @@ Cypress.Commands.add('login', (user = defaultUser) => {
 
 Cypress.Commands.add('clearIndexedDB', () => {
   new Cypress.Promise((resolve, reject) => {
-    cy.window().then((win) => {
-      const deleteRequest = win.indexedDB.deleteDatabase(indexedDBName);
-
-      deleteRequest.onsuccess = function () {
-        console.log('Deleted database successfully');
+    cy.window().then(async (win) => {
+      try {
+        await Promise.all([
+          clearIndexedDb(win, indexedDBName),
+          clearIndexedDb(win, indexedDBStorageName),
+        ]);
         resolve();
-      };
-
-      deleteRequest.onerror = function () {
-        console.warn("Couldn't delete database");
+      } catch {
         reject();
-      };
-
-      deleteRequest.onblocked = function () {
-        console.warn(
-          "Couldn't delete database due to the operation being blocked"
-        );
-        reject();
-      };
+      }
     });
   });
 });
@@ -63,20 +58,22 @@ Cypress.Commands.add('waitForIndexedDB', () => {
   cy.log('Wait for IndexedDB existance...');
 
   const checkIndexedDBExistence = () => {
-    return new Cypress.Promise((resolve, reject) => {
-      indexedDB.databases().then((dbs) => {
-        if (dbs.map((db) => db.name).includes(indexedDBName)) {
-          resolve('DB found');
-        }
-
+    return new Cypress.Promise(async (resolve, reject) => {
+      try {
+        await Promise.all([
+          indexedDbExists(indexedDBName),
+          indexedDbExists(indexedDBStorageName),
+        ]);
+        resolve();
+      } catch {
         reject();
-      });
+      }
     });
   };
 
   return cy.wrap(null).then(() => {
-    const checkInterval = 100;
-    const maxAttempts = 60;
+    const checkInterval = 200;
+    const maxAttempts = 30;
     let attempts = 0;
 
     const checkExistenceLoop = () => {
@@ -109,3 +106,35 @@ Cypress.Commands.add('mockPickingInProgress', () => {
     },
   });
 });
+
+async function indexedDbExists(dbName) {
+  const dbs = await indexedDB.databases();
+  if (!dbs.map((db) => db.name).includes(dbName)) {
+    throw `DB "${dbName}" not found`;
+  }
+
+  console.log(`DB "${dbName}" exists`);
+}
+
+function clearIndexedDb(win, dbName) {
+  return new Promise<void>((resolve, reject) => {
+    const deleteRequest = win.indexedDB.deleteDatabase(dbName);
+
+    deleteRequest.onsuccess = function () {
+      console.log(`"${dbName}" database deleted successfully`);
+      resolve();
+    };
+
+    deleteRequest.onerror = function () {
+      console.log(`Couldn't delete database "${dbName}"`);
+      reject();
+    };
+
+    deleteRequest.onblocked = function () {
+      console.warn(
+        `Couldn't delete database "${dbName}" due to the operation being blocked`
+      );
+      reject();
+    };
+  });
+}

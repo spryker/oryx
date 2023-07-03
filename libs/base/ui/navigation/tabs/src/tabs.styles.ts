@@ -1,4 +1,4 @@
-import { primaryColorBase, screenCss } from '@spryker-oryx/utilities';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 import { TabsAppearance } from './tabs.model';
 
@@ -27,7 +27,7 @@ export const baseStyles = css`
   }
 
   :host([shadow]) slot:not([name]) {
-    box-shadow: 0 4px 8px var(--oryx-color-neutral-3);
+    box-shadow: 0 4px 8px var(--oryx-elevation-color-2);
   }
 
   input[type='range'] {
@@ -69,9 +69,9 @@ export const baseStyles = css`
   }
 
   :host([appearance='${secondary}']) ::slotted(oryx-tab[selected]) {
-    color: ${primaryColorBase};
+    color: var(--oryx-color-primary-9);
     background: none;
-    border-color: ${primaryColorBase};
+    border-color: var(--oryx-color-primary-9);
     border-block-end: none;
   }
 

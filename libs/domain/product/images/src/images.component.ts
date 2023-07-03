@@ -19,7 +19,7 @@ import {
 } from './images.model';
 import { productImageStyles } from './images.styles';
 
-const defaultImagesOptions = {
+const defaultImagesOptions: ProductImagesComponentOptions = {
   imageLayout: ProductImagesMainLayout.Carousel,
   navigationLayout: NavigationLayout.Carousel,
   navigationPosition: NavigationPosition.Bottom,
@@ -27,7 +27,7 @@ const defaultImagesOptions = {
   navigationObjectFit: 'contain',
   imageHeight: '300px',
   navigationHeight: '80px',
-  imageColumns: 1,
+  imagesColumns: 1,
 };
 
 @defaultOptions(defaultImagesOptions)
@@ -40,7 +40,7 @@ export class ProductImagesComponent extends ProductMixin(
   @state() active?: number;
 
   protected override render(): TemplateResult | void {
-    if (!this.product) return;
+    if (!this.$product()) return;
 
     const {
       navigationPosition = defaultImagesOptions.navigationPosition,
@@ -74,7 +74,7 @@ export class ProductImagesComponent extends ProductMixin(
     const {
       imageLayout = defaultImagesOptions.imageLayout,
       imageObjectFit: objectFit = defaultImagesOptions.imageObjectFit,
-      imagesColumns: cols = defaultImagesOptions.imageColumns,
+      imagesColumns: cols = defaultImagesOptions.imagesColumns,
       scrollBehavior,
     } = this.$options();
 
@@ -127,7 +127,7 @@ export class ProductImagesComponent extends ProductMixin(
     return html`<oryx-layout
       class="navigation"
       layout=${layout || NavigationLayout.Carousel}
-      ?vertical=${isVertical}
+      ?layout-vertical=${isVertical}
       style="--oryx-grid-item-size:${height};--image-fit:${objectFit};"
     >
       ${media.map(
@@ -187,8 +187,8 @@ export class ProductImagesComponent extends ProductMixin(
     const { mediaSet } = this.$options();
     return (
       (!mediaSet
-        ? this.product?.mediaSet?.[0]
-        : this.product?.mediaSet?.find((set) => set.name === mediaSet)
+        ? this.$product()?.mediaSet?.[0]
+        : this.$product()?.mediaSet?.find((set) => set.name === mediaSet)
       )?.media ?? []
     );
   }

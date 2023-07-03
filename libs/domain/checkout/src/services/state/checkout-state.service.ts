@@ -1,22 +1,32 @@
 import { Observable } from 'rxjs';
-import { Checkout } from '../../models';
+import { PlaceOrderData } from '../../models';
 
 export interface CheckoutStateService {
-  set<K extends keyof Checkout>(
+  set<K extends keyof PlaceOrderData>(
     key: K,
     item: {
       valid?: boolean;
-      value?: Partial<Checkout[K]> | null;
+      value?: Partial<PlaceOrderData[K]> | null;
     }
   ): void;
 
-  get<K extends keyof Checkout>(key: K): Observable<Checkout[K] | null>;
+  get<K extends keyof PlaceOrderData>(
+    key: K
+  ): Observable<PlaceOrderData[K] | null>;
 
   /**
    * returns the collected checkout state when its' all valid. When parts of the
    * checkout state is invalid, a null is returned.
+   *
+   * Passing complete as false will return the collected checkout state even if parts are invalid.
+   * It will also not trigger invalidation of the checkout state.
    */
-  getAll(): Observable<Partial<Checkout> | null>;
+  getAll(complete?: boolean): Observable<Partial<PlaceOrderData> | null>;
+
+  /**
+   * returns the validity of the checkout state.
+   */
+  isInvalid(): Observable<boolean>;
 
   /**
    * Clears the checkout data from memory to ensure that data is not leaked.

@@ -1,6 +1,7 @@
 export * from './a11y';
 export * as AjaxClient from './ajax';
 export * from './converters';
+export * from './debounce';
 export * from './dedupe-arrays';
 export * from './extract-str-props';
 export * from './get-prop-by-path';

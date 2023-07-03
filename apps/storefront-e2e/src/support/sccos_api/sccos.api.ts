@@ -16,10 +16,26 @@ export type CartData = {
   };
 };
 
+export type CustomersBody = {
+  data: {
+    type: 'customers';
+    attributes: {
+      firstName: string;
+      lastName: string;
+      salutation: string;
+      gender: string;
+      email: string;
+      password: string;
+      confirmPassword: string;
+      acceptedTerms: boolean;
+    };
+  };
+};
+
 export class SCCOSApi {
   private anonymousHeader = 'X-Anonymous-Customer-Unique-Id';
   private customerUniqueId: number = Math.random();
-  private headers = {};
+  private headers: any = {};
   private apiUrl: string;
 
   constructor() {
@@ -119,6 +135,9 @@ export class SCCOSApi {
           method: 'DELETE',
           url: `${this.apiUrl}/carts/${cartId}`,
           headers: this.headers,
+          // some carts can't be deleted
+          // but we don't want to fail tests in this case
+          failOnStatusCode: false,
         });
       });
     },
@@ -220,6 +239,18 @@ export class SCCOSApi {
           url: `${this.apiUrl}/customers/${customerId}/addresses/${addressId}`,
           headers: this.headers,
         });
+      });
+    },
+  };
+
+  customer = {
+    post: (body: CustomersBody) => {
+      return cy.request({
+        method: 'POST',
+        url: `${this.apiUrl}/customers`,
+        headers: this.headers,
+        body,
+        failOnStatusCode: false,
       });
     },
   };

@@ -1,6 +1,6 @@
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../constants';
+import { storybookPrefix } from '../../../../../.constants';
 import { generateLayoutItems } from '../util';
 import { generateHeader, pageStyles } from './util';
 
@@ -23,7 +23,11 @@ const Template: Story = (): TemplateResult => {
           ${generateLayoutItems(20, 1, 'Cart item')}
         </oryx-layout>
 
-        <oryx-layout layout="list" sticky .options=${{ rules: [{ top: 90 }] }}>
+        <oryx-layout
+          layout="list"
+          layout-sticky
+          .options=${{ rules: [{ top: 90 }] }}
+        >
           <oryx-layout layout="list">
             <div>subtotal</div>
             <div>discounts</div>

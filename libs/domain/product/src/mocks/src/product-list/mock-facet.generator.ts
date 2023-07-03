@@ -3,7 +3,8 @@ import { Facet, FacetValue } from '@spryker-oryx/product';
 export function generateValues(
   count: number,
   prefix = 'Mock',
-  selectedValues?: string[]
+  selectedValues?: string[],
+  children?: boolean
 ): FacetValue[] {
   const values: FacetValue[] = [];
 
@@ -15,6 +16,7 @@ export function generateValues(
         false,
       count: Number(`${i}0`),
       name: `${prefix}${i}`,
+      ...(children ? { children: generateValues(3, `Sub-${prefix}`) } : {}),
     });
   }
 
@@ -25,13 +27,14 @@ export const generateFacet = (
   name: string,
   parameter: string,
   valuesLength: number,
-  selectedValues?: string[]
+  selectedValues?: string[],
+  children = false
 ): Facet => {
   return {
     name,
     parameter,
     valuesTreeLength: valuesLength,
     ...(selectedValues && { selectedValues }),
-    values: generateValues(valuesLength, name, selectedValues),
+    values: generateValues(valuesLength, name, selectedValues, children),
   };
 };

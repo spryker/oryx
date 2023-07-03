@@ -30,14 +30,8 @@ describe('FormControlController', () => {
         );
       });
 
-      it('should pass the a11y audit', async () => {
-        await expect(element).shadowDom.to.be.accessible(a11yConfig);
-      });
-
-      it('should render the fallback input from shadow dom', () => {
-        expect(getControl(element)).toEqual(
-          element.renderRoot.querySelector('input')
-        );
+      it('should throw an error', () => {
+        expect(() => getControl(element)).toThrowError();
       });
     });
 

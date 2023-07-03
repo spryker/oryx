@@ -74,8 +74,13 @@ export const ContentMixin = <
     @asyncState()
     protected componentContent = valueType(this.content$);
 
-    protected $options = signal(this.contentController.getOptions(), {});
-    protected $content = signal(this.contentController.getContent(), {});
+    protected $options = signal(this.contentController.getOptions(), {
+      initialValue: {},
+    });
+
+    protected $content = signal(this.contentController.getContent(), {
+      initialValue: {},
+    });
   }
   return ContentMixinClass as unknown as Type<
     ContentMixinInterface<OptionsType, ContentType>

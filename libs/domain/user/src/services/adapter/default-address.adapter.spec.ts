@@ -84,21 +84,21 @@ describe('DefaultAddressAdapter', () => {
   describe('getAll should send `get` request', () => {
     describe('guest user', () => {
       it('should not call the api', () => {
-        service.getAll().subscribe();
+        service.getList().subscribe();
 
         const mockHttpGet = vi.spyOn(http, 'get');
         expect(mockHttpGet).not.toHaveBeenCalled();
       });
 
       it('should not call transformer data with data from response', () => {
-        service.getAll().subscribe();
+        service.getList().subscribe();
 
         expect(mockTransformer.transform).not.toHaveBeenCalled();
       });
 
       it('should return empty array', async () => {
         const callback = vi.fn();
-        service.getAll().subscribe(callback);
+        service.getList().subscribe(callback);
         expect(callback).toHaveBeenCalledWith([]);
       });
     });
@@ -109,7 +109,7 @@ describe('DefaultAddressAdapter', () => {
       });
 
       it('should build url', () => {
-        service.getAll().subscribe();
+        service.getList().subscribe();
 
         expect(http.url).toBe(
           `${mockApiUrl}/customers/${mockUser.userId}/addresses`
@@ -118,7 +118,7 @@ describe('DefaultAddressAdapter', () => {
 
       it('should call transformer data with data from response', () => {
         http.flush(mockGetAddressesResponse);
-        service.getAll().subscribe();
+        service.getList().subscribe();
 
         expect(mockTransformer.do).toHaveBeenCalledWith(AddressesNormalizer);
       });
@@ -128,7 +128,7 @@ describe('DefaultAddressAdapter', () => {
         const callback = vi.fn();
         mockTransformer.do.mockReturnValue(() => of(mockTransformerData));
 
-        service.getAll().subscribe(callback);
+        service.getList().subscribe(callback);
 
         expect(callback).toHaveBeenCalledWith(mockTransformerData);
       });

@@ -140,12 +140,22 @@ function createProxyRouter(proxyUrl, proxyRoutes, basePath) {
             res.status(200);
           }
 
-          const response = responseBuffer.toString('utf8');
-          const data = JSON.parse(response);
-          // Extract the token from possible array
-          const payload = Array.isArray(data) ? data[0] : data;
+          try {
+            // Try to extract the response from possible array
+            const response = responseBuffer.toString('utf8');
+            const data = JSON.parse(response);
+            const payload = Array.isArray(data) ? data[0] : data;
 
-          return JSON.stringify(payload);
+            return JSON.stringify(payload);
+          } catch (e) {
+            console.error(
+              `Failed to process proxy response from '${req.url}':`,
+              e
+            );
+
+            // If failed return the original response
+            return responseBuffer;
+          }
         }
       ),
     });

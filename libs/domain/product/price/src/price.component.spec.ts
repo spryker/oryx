@@ -1,9 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { ProductPrice, ProductService } from '@spryker-oryx/product';
-import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { PricingService } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
@@ -35,6 +35,10 @@ class MockPricingService implements Partial<PricingService> {
   }
 }
 
+class MockProductService implements Partial<ProductService> {
+  get = vi.fn();
+}
+
 describe('ProductPriceComponent', () => {
   let element: ProductPriceComponent;
   let mockProductService: ProductService;
@@ -46,7 +50,6 @@ describe('ProductPriceComponent', () => {
   beforeEach(async () => {
     createInjector({
       providers: [
-        ...mockProductProviders,
         {
           provide: PricingService,
           useClass: MockPricingService,
@@ -54,6 +57,14 @@ describe('ProductPriceComponent', () => {
         {
           provide: ExperienceService,
           useClass: MockExperienceService,
+        },
+        {
+          provide: ContextService,
+          useClass: DefaultContextService,
+        },
+        {
+          provide: ProductService,
+          useClass: MockProductService,
         },
       ],
     });
@@ -65,18 +76,20 @@ describe('ProductPriceComponent', () => {
     destroyInjector();
   });
 
-  it('is defined', async () => {
-    element = await fixture(
-      html`<oryx-product-price sku="123"></oryx-product-price>`
-    );
-    expect(element).toBeInstanceOf(ProductPriceComponent);
-  });
+  describe('when the component is created', () => {
+    it('is defined', async () => {
+      element = await fixture(
+        html`<oryx-product-price sku="123"></oryx-product-price>`
+      );
+      expect(element).toBeInstanceOf(ProductPriceComponent);
+    });
 
-  it('passes the a11y audit', async () => {
-    element = await fixture(
-      html`<oryx-product-price sku="123"></oryx-product-price>`
-    );
-    await expect(element).shadowDom.to.be.accessible();
+    it('passes the a11y audit', async () => {
+      element = await fixture(
+        html`<oryx-product-price sku="123"></oryx-product-price>`
+      );
+      await expect(element).shadowDom.to.be.accessible();
+    });
   });
 
   describe('when no price is provided', () => {

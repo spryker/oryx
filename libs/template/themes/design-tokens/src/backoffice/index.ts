@@ -19,6 +19,13 @@ export const backofficeTokens: DesignToken[] = [
     ...typographyTokens,
     ...iconTokens,
     ...layoutTokens,
+    button: {
+      icon: {
+        sm: '13.3px',
+        md: '13.3px',
+        lg: '13.3px',
+      },
+    },
   },
   {
     media: {

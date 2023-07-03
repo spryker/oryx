@@ -1,7 +1,7 @@
+import { sideBySide, states } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
-import { sideBySide, states } from '../../../../../src/utilities';
 
 import { FilterStrategyType } from '../../index';
 

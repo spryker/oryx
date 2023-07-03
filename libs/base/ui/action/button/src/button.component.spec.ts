@@ -123,7 +123,7 @@ describe('ButtonComponent', () => {
         const icon = element.renderRoot.querySelector(
           'oryx-icon'
         ) as IconComponent;
-        expect(icon.type).toBe(IconTypes.Mark);
+        expect(icon.type).toBe(IconTypes.Check);
       });
 
       describe('and the property is set to false afterwards', () => {

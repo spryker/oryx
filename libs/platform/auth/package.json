@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/auth",
-  "version": "0.10.2",
+  "version": "0.12.1",
   "type": "module",
   "description": "Authentication features for Oryx applications",
   "author": "Spryker Systems GmbH",

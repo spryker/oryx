@@ -1,10 +1,12 @@
 {
   "name": "@spryker-oryx/search",
-  "version": "0.10.2",
+  "version": "0.12.1",
   "type": "module",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
   "description": "Search features for Oryx applications",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
   "files": [
     "**/*"
   ],

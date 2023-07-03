@@ -7,11 +7,11 @@ import {
   PickingListDefaultAdapter,
   PickingListStatus,
 } from '@spryker-oryx/picking';
-import { PickingListEntity } from '@spryker-oryx/picking/offline';
 import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Table } from 'dexie';
 import { of } from 'rxjs';
+import { PickingListEntity } from '../../entities';
 import { PickingListOnlineDefaultAdapter } from './picking-list-online-default.adapter';
 import { PickingListOnlineAdapter } from './picking-list-online.adapter';
 

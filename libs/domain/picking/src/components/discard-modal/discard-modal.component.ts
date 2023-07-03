@@ -17,6 +17,7 @@ export class DiscardPickingComponent extends LitElement {
         preventCloseByBackdrop
         preventCloseByEscape
         footerButtonFullWidth
+        minimal
       >
         <oryx-heading slot="heading">
           <h2>${i18n('picking.discard-pick-list?')}</h2>

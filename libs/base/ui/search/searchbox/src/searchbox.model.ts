@@ -12,8 +12,8 @@ export interface SearchAttributes {
   clearIconAppearance?: ClearIconAppearance;
 }
 
-export interface SearchEvent {
-  query?: string;
+export interface SearchEventDetail {
+  query: string;
 }
 
 export const enum SearchIconPosition {

@@ -13,7 +13,7 @@ export interface ComponentMapping {
   [key: string]: {
     tag?: string;
     component?: () => void;
-    template?: (uid: string, layoutClasses?: string) => TemplateResult;
+    template?: (uid: string, markers?: string) => TemplateResult;
   };
 }
 

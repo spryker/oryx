@@ -50,7 +50,7 @@ describe('DefaultSuggestionAdapter', () => {
       ],
     });
 
-    service = testInjector.inject(SuggestionAdapter);
+    service = testInjector.inject(SuggestionAdapter)[0];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     http = testInjector.inject(HttpService) as HttpTestService;
   });

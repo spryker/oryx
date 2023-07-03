@@ -3,7 +3,7 @@ import {
   baseStyles as searchboxBaseStyles,
   screenStyles as searchboxScreenStyles,
 } from '@spryker-oryx/ui/searchbox';
-import { primaryColorBase, screenCss } from '@spryker-oryx/utilities';
+import { screenCss } from '@spryker-oryx/utilities';
 import { css, unsafeCSS as unsafecss } from 'lit';
 
 export const baseStyles = [
@@ -24,7 +24,7 @@ export const baseStyles = [
       margin: calc((var(--oryx-popover-vertical-offset) / 2) - 2px) 0;
       overflow: auto;
       max-height: min(
-        calc(var(--_available-popover-height, ${unsafecss(POPOVER_HEIGHT)}px)),
+        var(--_available-popover-height),
         var(--oryx-popover-maxheight, ${unsafecss(POPOVER_HEIGHT)}px)
       );
       width: var(--oryx-popover-width, 100%);
@@ -64,7 +64,7 @@ export const baseStyles = [
     }
 
     slot[name='loading'] oryx-icon {
-      color: ${primaryColorBase};
+      color: var(--oryx-color-primary-9);
       animation: rotate 3s linear infinite;
     }
 

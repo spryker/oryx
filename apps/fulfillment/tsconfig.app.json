@@ -2,7 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": ["vite/client", "vite-plugin-pwa/client", "node", "web"]
+    "types": ["vite/client", "vite-plugin-pwa/client", "node", "web"],
+    "moduleResolution": "node"
   },
   "exclude": ["**/*.spec.ts"],
   "include": ["src/**/*.ts"]

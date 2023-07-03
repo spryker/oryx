@@ -1,4 +1,5 @@
 import { TestProductData } from '../../types/product.type';
+import { ProductRelationsFragment } from '../page_fragments/product-relations.fragment';
 import { QuantityInputFragment } from '../page_fragments/quantity-input.fragment';
 import { AbstractSFPage } from './abstract.page';
 
@@ -34,11 +35,11 @@ export class ProductDetailsPage extends AbstractSFPage {
     cy.wait(2000);
   };
 
-  getWrapper = () => cy.get('experience-composition[route="/product/:sku"]');
+  getWrapper = () => cy.get('oryx-composition[route="/product/:sku"]');
   getDetailsWrapper = () =>
-    this.getWrapper().find('experience-composition:first-child');
+    this.getWrapper().find('oryx-composition:first-child');
   getInfoWrapper = () =>
-    this.getWrapper().find('experience-composition:nth-child(2)');
+    this.getWrapper().find('oryx-composition:nth-child(2)');
   getTitle = () =>
     this.getInfoWrapper().find('oryx-product-title').find('oryx-heading');
   getRating = () => this.getInfoWrapper().find('oryx-product-average-rating');
@@ -61,6 +62,9 @@ export class ProductDetailsPage extends AbstractSFPage {
   getDescriptionText = () => this.getDescription().find('p');
   getAttributeTerms = () =>
     this.getWrapper().find('oryx-product-attributes').find('dt');
+
+  getRelations = () => new ProductRelationsFragment();
+  getAvailability = () => this.getWrapper().find('oryx-product-availability');
 
   addItemsToTheCart = (numberOfItems = 1) => {
     if (numberOfItems === 1) {

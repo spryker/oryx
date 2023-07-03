@@ -30,6 +30,13 @@ export const defaultMultilineSchema = [
   '{{phone}}',
 ];
 
+export const defaultSimpleSchema = [
+  '{{salutation}} {{firstName}} {{lastName}}',
+  '{{address1}}',
+  '{{city}}, {{zipCode}}',
+  '{{country}}',
+];
+
 export const templateRe =
   /{{(#|\^)(.+?)}}(.+?){{\/(.+?)}}|{{(?!#|\^|\/)(.+?)}}/gm;
 export const lineBreaksRe = /(\r\n|\n|\r)/gm;

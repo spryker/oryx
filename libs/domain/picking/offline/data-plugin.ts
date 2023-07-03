@@ -1,5 +1,5 @@
 import { OauthService, OauthServiceConfig } from '@spryker-oryx/auth';
-import { ExecPlugin, InjectionPlugin } from '@spryker-oryx/core';
+import { App, AppPlugin, InjectionPlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
 import { RouterService } from '@spryker-oryx/router';
@@ -16,45 +16,53 @@ import {
 import { PickingListEntity, PickingProductEntity } from './entities';
 import { PickingListOnlineAdapter } from './services';
 
-export class OfflineDataPlugin extends ExecPlugin {
+export class OfflineDataPlugin implements AppPlugin {
   protected subscription?: Subscription;
 
-  constructor() {
-    super((app) => {
-      const injector = app!.requirePlugin(InjectionPlugin).getInjector();
+  getName(): string {
+    return 'oryx.pickingOfflineData';
+  }
 
-      const authService = injector.inject(OauthService);
-      const routerService = injector.inject(RouterService);
-      const oauthConfig = injector.inject(OauthServiceConfig);
+  apply(app: App): void | Promise<void> {
+    const injector = app!.requirePlugin(InjectionPlugin).getInjector();
 
-      this.subscription = routerService
-        .route()
-        .pipe(
-          switchMap((currentRoute) => {
-            const redirectUrl = new URL(
-              oauthConfig.providers[0].redirectUrl as string
+    const authService = injector.inject(OauthService);
+    const routerService = injector.inject(RouterService);
+    const oauthConfig = injector.inject(OauthServiceConfig);
+
+    this.subscription = routerService
+      .route()
+      .pipe(
+        switchMap((currentRoute) => {
+          const redirectUrl = new URL(
+            oauthConfig.providers[0].redirectUrl as string
+          );
+          if (currentRoute.startsWith(redirectUrl.pathname)) {
+            return authService.isAuthenticated();
+          }
+          return of(undefined);
+        }),
+        switchMap((authenticated) => {
+          if (authenticated) {
+            return this.clearDb(injector).pipe(
+              switchMap(() => this.populateDb(injector)),
+              tap(() => routerService.navigate('/'))
             );
-            if (currentRoute.startsWith(redirectUrl.pathname)) {
-              return authService.isAuthenticated();
-            }
-            return of(undefined);
-          }),
-          switchMap((authenticated) => {
-            if (authenticated) {
-              return this.clearDb(injector).pipe(
-                switchMap(() => this.populateDb(injector)),
-                tap(() => routerService.navigate('/'))
-              );
-            }
-            return of(undefined);
-          })
-        )
-        .subscribe();
-    });
+          }
+          return of(undefined);
+        })
+      )
+      .subscribe();
   }
 
   destroy(): void {
     this.subscription?.unsubscribe();
+  }
+
+  refreshData(injector: Injector): Observable<void> {
+    return this.clearDb(injector).pipe(
+      switchMap(() => this.populateDb(injector))
+    );
   }
 
   protected clearDb(injector: Injector): Observable<void> {

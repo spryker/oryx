@@ -12,7 +12,7 @@ export default {
 
 const Template: Story = (): TemplateResult => {
   return html`
-    <oryx-collapsible header="Header" open>Content</oryx-collapsible>
+    <oryx-collapsible heading="Heading" open>Content</oryx-collapsible>
   `;
 };
 

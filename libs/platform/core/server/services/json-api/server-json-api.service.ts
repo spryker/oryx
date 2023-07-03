@@ -5,10 +5,6 @@ import {
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 
 export class ServerJsonApiTransformerService extends DefaultJsonAPITransformerService {
-  constructor() {
-    super();
-  }
-
   transform<T extends keyof InjectionTokensContractMap>(
     data: unknown,
     token: T

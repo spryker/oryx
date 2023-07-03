@@ -1,6 +1,5 @@
 import { StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { BapiPushNotificationService } from '@spryker-oryx/picking/offline';
 import { PushService } from '@spryker-oryx/push-notification';
 import {
   catchError,
@@ -11,6 +10,7 @@ import {
   throwError,
 } from 'rxjs';
 import { BapiPushNotificationAdapter } from './adapter';
+import { BapiPushNotificationService } from './bapi-push-notification.service';
 
 export class BapiPushNotificationDefaultService
   implements BapiPushNotificationService

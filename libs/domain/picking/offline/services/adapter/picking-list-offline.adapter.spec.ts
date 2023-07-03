@@ -6,15 +6,12 @@ import {
   PickingListQualifierSortBy,
   PickingListStatus,
 } from '@spryker-oryx/picking';
-import {
-  PickingListEntity,
-  PickingProductEntity,
-  PickingSyncAction,
-} from '@spryker-oryx/picking/offline';
 import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Collection, Table } from 'dexie';
 import { of } from 'rxjs';
+import { PickingListEntity, PickingProductEntity } from '../../entities';
+import { PickingSyncAction } from '../picking-sync-action-handler.service';
 import { PickingListOfflineAdapter } from './picking-list-offline.adapter';
 import { PickingListOnlineAdapter } from './picking-list-online.adapter';
 

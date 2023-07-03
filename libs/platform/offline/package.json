@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/offline",
-  "version": "0.10.2",
+  "version": "0.12.1",
   "type": "module",
   "description": "Functionality for offline first applications",
   "author": "Spryker Systems GmbH",

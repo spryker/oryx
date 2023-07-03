@@ -38,6 +38,10 @@ const floatingLabelStyles = (attribute = true) => {
       max-width: calc(100% - 54px - var(--float-label-start-gap, 0px));
     }
 
+    :host(${floatLabel}) slot:not([name])::slotted(*)::placeholder {
+      color: var(--oryx-color-placeholder);
+    }
+
     :host(${floatLabel}),
     :host(${floatLabel}) ::slotted(select:invalid) {
       --oryx-color-placeholder: transparent;
@@ -57,6 +61,16 @@ const floatingLabelStyles = (attribute = true) => {
       inset-block-start: -10px;
       inset-inline-start: 20px;
       max-width: calc(100% - 56px);
+    }
+
+    :host(${floatLabel}[required]:is(:focus-within, [has-value]))
+      slot[name='label'] {
+      padding: 3px calc(8px + 0.5em) 3px 8px;
+    }
+
+    :host(${floatLabel}[required]:is(:focus-within, [has-value]))
+      slot[name='label']::after {
+      inset-inline-end: 0.5em;
     }
 
     :host(${floatLabel}[has-prefix]:is(:focus-within, [has-value]))

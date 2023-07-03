@@ -34,14 +34,14 @@ export class PickingProductCardComponent extends LitElement {
       this.currentNumberOfPicked ?? this.productItem?.numberOfPicked;
 
     this.dispatchPickingEvents(EVENT_SUBMIT, {
-      productId: this.productItem!.product.id,
+      productId: this.productItem!.id,
       numberOfPicked: this.currentNumberOfPicked,
     });
   }
 
   protected editProductPicking(): void {
     this.dispatchPickingEvents(EVENT_EDIT, {
-      productId: this.productItem!.product.id,
+      productId: this.productItem!.id,
     } as ProductItemPickedEvent);
   }
 
@@ -94,13 +94,14 @@ export class PickingProductCardComponent extends LitElement {
         ></oryx-cart-quantity-input>
 
         <div>
-          ${i18n('picking.product-card.of')} ${this.productItem.quantity}
-          ${i18n('picking.product-card.items')}
+          ${i18n('picking.product-card.of-<count>-items', {
+            count: this.productItem.quantity,
+          })}
         </div>
 
         <oryx-button>
           <button ?disabled="${!this.isCorrectNumberOfPickedProvided}">
-            <oryx-icon .type=${IconTypes.Mark}></oryx-icon>
+            <oryx-icon .type=${IconTypes.Check}></oryx-icon>
             ${i18n('picking.product-card.done')}
           </button>
         </oryx-button>

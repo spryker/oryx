@@ -1,24 +1,60 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { AddressService } from '@spryker-oryx/user';
-import { html } from 'lit';
-import { of } from 'rxjs';
-import { UserAddressFormComponent } from '../address-form';
+import { RouterService } from '@spryker-oryx/router';
+import { SemanticLinkService } from '@spryker-oryx/site';
+import {
+  Address,
+  AddressEventDetail,
+  AddressService,
+  AddressStateService,
+  CrudState,
+} from '@spryker-oryx/user';
+import { html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { BehaviorSubject, of } from 'rxjs';
 import { UserAddressEditComponent } from './address-edit.component';
 import { addressEditComponent } from './address-edit.def';
+import {
+  SaveOption,
+  UserAddressEditComponentOptions,
+} from './address-edit.model';
 
 class MockAddressService implements Partial<AddressService> {
-  getAddress = vi.fn().mockReturnValue(of({}));
-  updateAddress = vi.fn().mockReturnValue(of(null));
-  addAddress = vi.fn().mockReturnValue(of(null));
-  getAddresses = vi.fn();
+  get = vi.fn().mockReturnValue(of({}));
+  update = vi.fn().mockReturnValue(of(null));
+  add = vi.fn().mockReturnValue(of(null));
+  getList = vi.fn();
+}
+class MockRouterService implements Partial<RouterService> {
+  currentParams = vi.fn().mockReturnValue(of());
+  navigate = vi.fn();
+}
+const mockState = new BehaviorSubject<{
+  action: CrudState;
+  selected?: Address | null;
+}>({
+  action: CrudState.Read,
+  selected: null,
+});
+class MockAddressStateService implements Partial<AddressStateService> {
+  set = vi.fn();
+  get = vi.fn().mockReturnValue(mockState);
+  clear = vi.fn();
+}
+class MockSemanticLinkService implements Partial<SemanticLinkService> {
+  get = vi.fn().mockReturnValue(of('/link'));
+}
+
+@customElement('oryx-user-address-form')
+class UserAddressForm extends LitElement {
+  getForm = vi.fn();
 }
 
 describe('UserAddressEditComponent', () => {
   let element: UserAddressEditComponent;
   let addressService: MockAddressService;
-  let form: UserAddressFormComponent;
+  let addressStateService: MockAddressStateService;
 
   beforeAll(async () => {
     await useComponent(addressEditComponent);
@@ -31,11 +67,24 @@ describe('UserAddressEditComponent', () => {
           provide: AddressService,
           useClass: MockAddressService,
         },
+        {
+          provide: AddressStateService,
+          useClass: MockAddressStateService,
+        },
+        {
+          provide: RouterService,
+          useClass: MockRouterService,
+        },
+        {
+          provide: SemanticLinkService,
+          useClass: MockSemanticLinkService,
+        },
       ],
     });
-    addressService = testInjector.inject(
-      AddressService
-    ) as unknown as MockAddressService;
+
+    addressService = testInjector.inject<MockAddressService>(AddressService);
+    addressStateService =
+      testInjector.inject<MockAddressStateService>(AddressStateService);
   });
 
   afterEach(() => {
@@ -43,108 +92,280 @@ describe('UserAddressEditComponent', () => {
     vi.clearAllMocks();
   });
 
-  describe('when back button is clicked', () => {
-    const callback = vi.fn();
-
+  describe('when the component is instantiated', () => {
     beforeEach(async () => {
       element = await fixture(html`
-        <oryx-user-address-edit @oryx.back=${callback}></oryx-user-address-edit>
+        <oryx-user-address-edit></oryx-user-address-edit>
       `);
-      element.renderRoot
-        .querySelector('oryx-button[outline] button')
-        ?.dispatchEvent(new CustomEvent('click'));
     });
 
-    it('should dispatch oryx.back event', () => {
-      expect(callback).toHaveBeenCalled();
-    });
-  });
-
-  describe('when back button is clicked', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-user-address-edit></oryx-user-address-edit>`
-      );
-      form = element.renderRoot.querySelector(
-        'oryx-address-form'
-      ) as UserAddressFormComponent;
-      form.submit = vi.fn();
-      element.renderRoot
-        .querySelector('oryx-button:not([outline]) button')
-        ?.dispatchEvent(new CustomEvent('click'));
+    it('should be an instance of UserAddressEditComponent', () => {
+      expect(element).toBeInstanceOf(UserAddressEditComponent);
     });
 
-    it('should submit the form', () => {
-      expect(form.submit).toHaveBeenCalled();
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible();
     });
   });
 
-  describe('when form is submitted without addressId', () => {
-    const callback = vi.fn();
-    const values = { test: 'test' };
-
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-user-address-edit
-          @oryx.success=${callback}
-        ></oryx-user-address-edit>`
-      );
-      form = element.renderRoot.querySelector(
-        'oryx-address-form'
-      ) as UserAddressFormComponent;
-      form.dispatchEvent(
-        new CustomEvent('oryx.submit', { detail: { values } })
-      );
+  describe('when the action state is Read', () => {
+    beforeEach(() => {
+      mockState.next({ action: CrudState.Read });
     });
 
-    it('should dispatch oryx.success event', () => {
-      expect(callback).toHaveBeenCalled();
+    describe('and the inline option = true', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-user-address-edit
+            .options=${{ inline: true } as UserAddressEditComponentOptions}
+          ></oryx-user-address-edit>
+        `);
+      });
+
+      it('should not render the edit form', () => {
+        expect(element).not.toContainElement('oryx-user-address-form');
+      });
     });
 
-    it('should merge fields and add new address', () => {
-      expect(addressService.addAddress).toHaveBeenCalledWith({
-        ...values,
-        isDefaultShipping: false,
-        isDefaultBilling: false,
+    describe('and the inline option = false', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-user-address-edit
+            .options=${{ inline: false } as UserAddressEditComponentOptions}
+          ></oryx-user-address-edit>
+        `);
+      });
+
+      it('should render the edit form', () => {
+        expect(element).toContainElement('oryx-user-address-form');
       });
     });
   });
 
-  describe('when addressId is provided', () => {
-    const callback = vi.fn();
-    const values = { test: 'test' };
-    const addressId = 'testId';
+  describe('when the action state is Create', () => {
+    beforeEach(() => {
+      mockState.next({ action: CrudState.Create });
+    });
 
+    describe('and the inline option = true', () => {
+      beforeEach(async () => {
+        element = await fixture(html`
+          <oryx-user-address-edit
+            .options=${{ inline: true } as UserAddressEditComponentOptions}
+          ></oryx-user-address-edit>
+        `);
+      });
+
+      it('should render the edit form', () => {
+        expect(element).toContainElement('oryx-user-address-form');
+      });
+    });
+  });
+
+  describe('when the save option is set to SaveOption.Save', () => {
     beforeEach(async () => {
-      addressService.getAddress = vi.fn().mockReturnValue(of(values));
-      element = await fixture(
-        html`<oryx-user-address-edit
-          .addressId=${addressId}
-          @oryx.success=${callback}
-        ></oryx-user-address-edit>`
-      );
-      form = element.renderRoot.querySelector(
-        'oryx-address-form'
-      ) as UserAddressFormComponent;
-      form.dispatchEvent(
-        new CustomEvent('oryx.submit', { detail: { values } })
-      );
+      element = await fixture(html`
+        <oryx-user-address-edit
+          .options=${{
+            save: SaveOption.Save,
+          } as UserAddressEditComponentOptions}
+        ></oryx-user-address-edit>
+      `);
     });
 
-    it('should dispatch oryx.success event', () => {
-      expect(callback).toHaveBeenCalled();
+    it('should render the cancel button', () => {
+      const buttons = element.renderRoot.querySelectorAll('oryx-button button');
+      expect(buttons[0].textContent?.trim()).toEqual('Cancel');
     });
 
-    it('should pass address to the form values', () => {
-      expect(form.values).toEqual(values);
+    it('should render the save button', () => {
+      const buttons = element.renderRoot.querySelectorAll('oryx-button button');
+      expect(buttons[1].textContent?.trim()).toEqual('Save');
     });
 
-    it('should merge fields and update address', () => {
-      expect(addressService.updateAddress).toHaveBeenCalledWith({
-        ...values,
-        isDefaultShipping: false,
-        isDefaultBilling: false,
-        id: addressId,
+    describe('and the change event is dispatched with a valid address', () => {
+      const newAddress: Address = { address1: 'New Street 1' };
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector('oryx-user-address-form')
+          ?.dispatchEvent(
+            new CustomEvent<AddressEventDetail>('change', {
+              detail: { address: newAddress, valid: true },
+            })
+          );
+      });
+
+      it('should not submit the new address right away', () => {
+        expect(addressService.add).not.toHaveBeenCalled();
+      });
+
+      describe('but when the submit method is called', () => {
+        beforeEach(() => {
+          element.submit().subscribe();
+        });
+
+        it('should submit the changed address', () => {
+          expect(addressService.add).toHaveBeenCalledWith({
+            ...newAddress,
+            isDefaultBilling: false,
+            isDefaultShipping: false,
+          });
+        });
+
+        it('should clear the state', () => {
+          expect(addressStateService.clear).toHaveBeenCalled();
+        });
+      });
+    });
+
+    describe('and the change event is dispatched with a valid existing address', () => {
+      const updatedAddress: Address = { id: 'foo', address1: 'Old Street 99' };
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector('oryx-user-address-form')
+          ?.dispatchEvent(
+            new CustomEvent<AddressEventDetail>('change', {
+              detail: { address: updatedAddress, valid: true },
+            })
+          );
+      });
+
+      it('should not submit the updated address right away', () => {
+        expect(addressService.update).not.toHaveBeenCalled();
+      });
+
+      describe('but when the submit method is called', () => {
+        beforeEach(() => {
+          element.submit().subscribe();
+        });
+
+        it('should submit the changed address', () => {
+          expect(addressService.update).toHaveBeenCalledWith({
+            ...updatedAddress,
+            isDefaultBilling: false,
+            isDefaultShipping: false,
+          });
+        });
+
+        it('should clear the state', () => {
+          expect(addressStateService.clear).toHaveBeenCalled();
+        });
+      });
+    });
+  });
+
+  describe('when the save option is set to SaveOption.None', () => {
+    beforeEach(async () => {
+      element = await fixture(html`
+        <oryx-user-address-edit
+          .options=${{
+            save: SaveOption.None,
+          } as UserAddressEditComponentOptions}
+        ></oryx-user-address-edit>
+      `);
+    });
+
+    it('should not render the cancel and save button', () => {
+      expect(element).not.toContainElement('button');
+    });
+
+    describe('and the change event is dispatched with a valid address', () => {
+      const newAddress: Address = { address1: 'New Street 1' };
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector('oryx-user-address-form')
+          ?.dispatchEvent(
+            new CustomEvent<AddressEventDetail>('change', {
+              detail: { address: newAddress, valid: true },
+            })
+          );
+      });
+
+      it('should not submit the new address right away', () => {
+        expect(addressService.add).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('and the change event is dispatched with a valid existing address', () => {
+      const updatedAddress: Address = { id: 'foo', address1: 'Old Street 99' };
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector('oryx-user-address-form')
+          ?.dispatchEvent(
+            new CustomEvent<AddressEventDetail>('change', {
+              detail: { address: updatedAddress, valid: true },
+            })
+          );
+      });
+
+      it('should not submit the updated address right away', () => {
+        expect(addressService.update).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('when the save option is set to SaveOption.Instant', () => {
+    beforeEach(async () => {
+      element = await fixture(html`
+        <oryx-user-address-edit
+          .options=${{
+            save: SaveOption.Instant,
+          } as UserAddressEditComponentOptions}
+        ></oryx-user-address-edit>
+      `);
+    });
+
+    it('should not render the Cancel and S button', () => {
+      expect(element).not.toContainElement('button');
+    });
+
+    describe('and the change event is dispatched with a valid new address', () => {
+      const newAddress: Address = { address1: 'New Street 1' };
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector('oryx-user-address-form')
+          ?.dispatchEvent(
+            new CustomEvent<AddressEventDetail>('change', {
+              detail: { address: newAddress, valid: true },
+            })
+          );
+      });
+
+      it('should submit the changed address', () => {
+        expect(addressService.add).toHaveBeenCalledWith({
+          ...newAddress,
+          isDefaultBilling: false,
+          isDefaultShipping: false,
+        });
+      });
+
+      it('should clear the state', () => {
+        expect(addressStateService.clear).toHaveBeenCalled();
+      });
+    });
+
+    describe('and the change event is dispatched with a valid existing address', () => {
+      const updatedAddress: Address = { id: 'foo', address1: 'Old Street 99' };
+      beforeEach(() => {
+        element.renderRoot
+          .querySelector('oryx-user-address-form')
+          ?.dispatchEvent(
+            new CustomEvent<AddressEventDetail>('change', {
+              detail: { address: updatedAddress, valid: true },
+            })
+          );
+      });
+
+      it('should submit the changed address', () => {
+        expect(addressService.update).toHaveBeenCalledWith({
+          ...updatedAddress,
+          isDefaultBilling: false,
+          isDefaultShipping: false,
+        });
+      });
+
+      it('should clear the state', () => {
+        expect(addressStateService.clear).toHaveBeenCalled();
       });
     });
   });

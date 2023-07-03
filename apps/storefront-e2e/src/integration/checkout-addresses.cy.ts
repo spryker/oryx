@@ -1,8 +1,8 @@
 import { CartPage } from '../support/page_objects/cart.page';
 import { CheckoutPage } from '../support/page_objects/checkout.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { defaultUser } from '../test-data/default-user';
 import { ProductStorage } from '../test-data/product.storage';
+import { TestCustomerData } from '../types/user.type';
 
 let api: SCCOSApi;
 
@@ -13,115 +13,157 @@ describe('User addresses', () => {
   beforeEach(() => {
     api = new SCCOSApi();
 
-    cy.login(defaultUser);
+    cy.login();
 
-    cy.customerCartsCleanup(api, defaultUser);
-    cy.customerAddressesCleanup(api, defaultUser);
+    cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+      cy.customerCartsCleanup(api, customer);
+      cy.customerAddressesCleanup(api, customer);
+    });
   });
 
   describe('when user opens the cart page', () => {
     beforeEach(() => {
       const productData = ProductStorage.getProductByEq(0);
 
-      // get all customer carts
-      api.carts.customersGet(defaultUser.id).then((customerCartsResponse) => {
-        // add 1 item to the first cart
-        api.cartItems.post(
-          productData,
-          1,
-          customerCartsResponse.body.data[0].id
-        );
-      });
+      cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+        // get all customer carts
+        api.carts.customersGet(customer.id).then((customerCartsResponse) => {
+          // add 1 item to the first cart
+          api.cartItems.post(
+            productData,
+            1,
+            customerCartsResponse.body.data[0].id
+          );
+        });
 
-      cartPage.visit();
+        cartPage.visit();
+      });
     });
 
     describe('and user does not have addresses yet', () => {
-      describe('and user goes to chechout', () => {
+      describe('and user goes to checkout', () => {
         beforeEach(() => {
           cartPage.checkout();
         });
 
-        it('then default address form is shown', () => {
-          checkoutPage.addressForm.getAddressForm().should('be.visible');
-          checkoutPage.addressList.getAddressList().should('not.exist');
+        it('then shipping address form is shown', () => {
+          checkoutPage.shipping.addAddressForm
+            .getAddressForm()
+            .should('be.visible');
+          checkoutPage.shipping.addressesList
+            .getAddressList()
+            .should('not.exist');
+
+          checkoutPage.billing.addAddressForm
+            .getAddressForm()
+            .should('not.exist');
+          checkoutPage.billing.addressesList
+            .getAddressList()
+            .should('not.exist');
+          checkoutPage.billing.addAddressForm
+            .getWrapper()
+            .shadow()
+            .should('contain.text', 'Same as shipping address');
         });
       });
     });
 
     describe('and user already has addresses', () => {
       beforeEach(() => {
-        api.addresses.post(defaultUser.id);
-        api.addresses.post(defaultUser.id);
+        cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+          api.addresses.post(customer.id);
+          api.addresses.post(customer.id);
+        });
       });
 
-      describe('and user goes to chechout', () => {
+      describe('and user goes to checkout', () => {
         beforeEach(() => {
           cartPage.checkout();
         });
 
-        it('then the list of addresses is shown', () => {
-          checkCheckoutAddressesList(2);
+        it('then the selected address is shown', () => {
+          verifyAddressesVisibility();
         });
 
-        describe('and user wants to change addresses', () => {
-          beforeEach(() => {
-            checkoutPage.openChangeAddressesModal();
-          });
-
-          it('then the addresses modal is open', () => {
-            checkAddressesListInModal(2);
-          });
-
-          describe('and user adds new address', () => {
+        [
+          {
+            type: checkoutPage.shipping,
+            name: 'shipping address',
+          },
+          {
+            type: checkoutPage.billing,
+            name: 'billing address',
+          },
+        ].forEach((address) => {
+          describe(`and user wants to change ${address.name}`, () => {
             beforeEach(() => {
-              checkoutPage.addressChangeModal.addAddress();
+              address.type.addressesList.getChangeAddressesButton().click();
             });
 
-            it('new address appears in both addresses lists', () => {
-              checkAddressesListInModal(3);
-              checkoutPage.addressChangeModal.closeModal();
-              checkCheckoutAddressesList(3);
-            });
-          });
-
-          describe('and user edits existing address', () => {
-            const newCompany = 'Edited Company';
-
-            beforeEach(() => {
-              checkoutPage.addressChangeModal.editCompanyInAddress(newCompany);
+            it('then the addresses modal is open', () => {
+              verifyAddressesListInModal(address.type, 2);
             });
 
-            it('edited address appears in both addresses lists', () => {
-              checkAddressesListInModal(2);
-              checkoutPage.addressChangeModal
-                .getAddressListItem()
-                .eq(0)
-                .find('oryx-user-address')
-                .shadow()
-                .should('contain.text', newCompany);
+            describe('and user adds new address', () => {
+              const addressData = {
+                lastName: `User ${Math.random()}`,
+              };
 
-              checkoutPage.addressChangeModal.closeModal();
+              beforeEach(() => {
+                address.type.addressChangeModal.addAddress(addressData);
+              });
 
-              checkCheckoutAddressesList(2);
-              checkoutPage.addressList
-                .getAddressListItem()
-                .eq(0)
-                .find('oryx-user-address')
-                .shadow()
-                .should('contain.text', newCompany);
+              it('new address appears in the list', () => {
+                verifyAddressesListInModal(address.type, 3);
+              });
+
+              describe('and when user selects new address', () => {
+                beforeEach(() => {
+                  address.type.addressChangeModal.selectAddress(2);
+                });
+
+                it('new address is visible on checkout page', () => {
+                  verifyAddressesVisibility();
+                  // verify that new address was selected successfully and is visible
+                  address.type.addressesList
+                    .getMultiLineAddress()
+                    .shadow()
+                    .should('contain.text', addressData.lastName);
+                });
+              });
             });
-          });
 
-          describe('and user removes existing address', () => {
-            beforeEach(() => {
-              checkoutPage.addressChangeModal.removeAddress();
+            describe('and user edits existing address', () => {
+              const newAddress1 = 'New Address 1';
+              const changedAddressEq = 0;
+
+              beforeEach(() => {
+                address.type.addressChangeModal.editAddress1InAddress(
+                  newAddress1,
+                  changedAddressEq
+                );
+              });
+
+              it('edited address appears in the list', () => {
+                verifyAddressesListInModal(address.type, 2);
+
+                address.type.addressChangeModal.addressesList
+                  .getAddressListItem()
+                  .eq(changedAddressEq)
+                  .find('oryx-user-address')
+                  .shadow()
+                  .should('contain.text', newAddress1);
+              });
             });
 
-            it('removed address dissapeares in both address lists', () => {
-              checkAddressesListInModal(1);
-              checkoutPage.addressChangeModal.closeModal();
-              checkCheckoutAddressesList(1);
+            describe('and user removes existing address', () => {
+              beforeEach(() => {
+                address.type.addressChangeModal.removeAddress(0);
+              });
+
+              it('removed address disappears from the list', () => {
+                verifyAddressesListInModal(address.type, 1);
+              });
             });
           });
         });
@@ -130,19 +172,32 @@ describe('User addresses', () => {
   });
 });
 
-function checkCheckoutAddressesList(numberOfAddresses: number) {
-  checkoutPage.addressForm.getAddressForm().should('not.exist');
-  checkoutPage.getChangeAddressesButton().should('be.visible');
-  checkoutPage.addressList.getAddressList().should('be.visible');
-  checkoutPage.addressList
-    .getAddressListItem()
-    .should('have.length', numberOfAddresses);
+function verifyAddressesVisibility() {
+  // check shipping addresses
+  checkoutPage.shipping.addAddressForm.getAddressForm().should('not.exist');
+
+  checkoutPage.shipping.addressesList
+    .getChangeAddressesButton()
+    .should('be.visible');
+  checkoutPage.shipping.addressesList
+    .getMultiLineAddress()
+    .should('be.visible');
+
+  // check billing addresses
+  checkoutPage.billing.addAddressForm.getAddressForm().should('not.exist');
+
+  checkoutPage.shipping.addressesList
+    .getChangeAddressesButton()
+    .should('be.visible');
+  checkoutPage.billing.addressesList.getMultiLineAddress().should('be.visible');
 }
 
-function checkAddressesListInModal(numberOfAddresses: number) {
-  checkoutPage.addressChangeModal.getAddAddressButton().should('be.visible');
-  checkoutPage.addressChangeModal.getAddressList().should('be.visible');
-  checkoutPage.addressChangeModal
+function verifyAddressesListInModal(addressType, numberOfAddresses: number) {
+  addressType.addressChangeModal.getAddAddressButton().should('be.visible');
+  addressType.addressChangeModal.addressesList
+    .getAddressList()
+    .should('be.visible');
+  addressType.addressChangeModal.addressesList
     .getAddressListItem()
     .should('have.length', numberOfAddresses);
 }

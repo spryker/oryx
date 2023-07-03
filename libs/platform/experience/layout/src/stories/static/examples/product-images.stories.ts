@@ -1,7 +1,7 @@
 import { Story } from '@storybook/web-components';
 
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../constants';
+import { storybookPrefix } from '../../../../../.constants';
 import { generateLayoutItems } from '../util';
 import { pageStyles } from './util';
 
@@ -17,7 +17,7 @@ const generateThumbs = (
 ): TemplateResult => {
   return html`<oryx-layout
     .layout=${layout}
-    ?vertical=${vertical}
+    ?layout-vertical=${vertical}
     class=${cssClass}
     style=${style}
   >
@@ -39,11 +39,11 @@ const Template: Story = (): TemplateResult => {
         ${generateThumbs('grid', 'thumbs')}
         ${generateThumbs('carousel', 'main')}
       </oryx-layout>
-      <oryx-layout layout="list" overlap>
+      <oryx-layout layout="list" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('carousel', 'thumbs', false, 'place-self:start;')}
       </oryx-layout>
-      <oryx-layout layout="list" overlap>
+      <oryx-layout layout="list" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('grid', 'thumbs', false, 'place-self:start;')}
       </oryx-layout>
@@ -59,11 +59,11 @@ const Template: Story = (): TemplateResult => {
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('grid', 'thumbs', true)}
       </div>
-      <oryx-layout style="grid-template-columns: 1fr auto;" overlap>
+      <oryx-layout style="grid-template-columns: 1fr auto;" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('carousel', 'thumbs', true, 'margin-inline: auto 0;')}
       </oryx-layout>
-      <oryx-layout style="grid-template-columns: 1fr auto;" overlap>
+      <oryx-layout style="grid-template-columns: 1fr auto;" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('grid', 'thumbs', true, 'margin-inline: auto 0;')}
       </oryx-layout>
@@ -79,11 +79,11 @@ const Template: Story = (): TemplateResult => {
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('grid', 'thumbs')}
       </oryx-layout>
-      <oryx-layout layout="list" overlap>
+      <oryx-layout layout="list" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('carousel', 'thumbs', false, 'place-self:end;')}
       </oryx-layout>
-      <oryx-layout layout="list" overlap>
+      <oryx-layout layout="list" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('grid', 'thumbs', false, 'place-self:end;')}
       </oryx-layout>
@@ -99,11 +99,11 @@ const Template: Story = (): TemplateResult => {
         ${generateThumbs('grid', 'thumbs', true)}
         ${generateThumbs('carousel', 'main')}
       </oryx-layout>
-      <oryx-layout style="grid-template-columns: auto 1fr ;" overlap>
+      <oryx-layout style="grid-template-columns: auto 1fr ;" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('carousel', 'thumbs', true, 'margin-inline: 0 auto;')}
       </oryx-layout>
-      <oryx-layout style="grid-template-columns: auto 1fr ;" overlap>
+      <oryx-layout style="grid-template-columns: auto 1fr ;" layout-overlap>
         ${generateThumbs('carousel', 'main')}
         ${generateThumbs('grid', 'thumbs', true, 'margin-inline: 0 auto;')}
       </oryx-layout>
@@ -119,7 +119,7 @@ const Template: Story = (): TemplateResult => {
         ${generateThumbs('carousel', 'thumbs', true)}
         ${generateThumbs('carousel', 'main', true)}
       </oryx-layout>
-      <oryx-layout layout="list" overlap>
+      <oryx-layout layout="list" layout-overlap>
         ${generateThumbs('carousel', 'main', true)}
         ${generateThumbs('carousel', 'thumbs', false, 'place-self:start;')}
       </oryx-layout>
@@ -154,7 +154,7 @@ const Template: Story = (): TemplateResult => {
         --oryx-grid-item-size: var(--h);
       }
 
-      *[vertical] {
+      *[layout-vertical] {
         /*
         fix height is required to calculate the number of items that can be distributed
         but also for control the height of the carousel items

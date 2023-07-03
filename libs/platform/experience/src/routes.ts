@@ -6,35 +6,42 @@ export const defaultExperienceRoutes: RouteConfig[] = [
   {
     pattern: new URLPattern({ pathname: '/{index.html}?' }),
     render: (): TemplateResult =>
-      html`<experience-composition route="/"></experience-composition>`,
+      html`<oryx-composition route="/"></oryx-composition>`,
     name: 'Home',
   },
   {
     path: '/product/:sku',
-    render: (): TemplateResult => html`<experience-composition
+    render: (): TemplateResult => html`<oryx-composition
       route="/product/:sku"
-    ></experience-composition>`,
+    ></oryx-composition>`,
     name: 'Product test',
   },
   {
     path: '/category/:id',
-    render: (): TemplateResult => html`<experience-composition
+    render: (): TemplateResult => html`<oryx-composition
       route="/category/:id"
-    ></experience-composition>`,
+    ></oryx-composition>`,
     name: 'Category test',
   },
   {
     path: '/order/:id',
-    render: (): TemplateResult => html`<experience-composition
+    render: (): TemplateResult => html`<oryx-composition
       route="/order/:id"
-    ></experience-composition>`,
+    ></oryx-composition>`,
     name: 'Order',
   },
   {
+    path: '/article/:id',
+    render: (): TemplateResult => html`<oryx-composition
+      route="/article/:id"
+    ></oryx-composition>`,
+    name: 'Article',
+  },
+  {
     path: '/:page',
-    render: ({ page }): TemplateResult => html`<experience-composition
+    render: ({ page }): TemplateResult => html`<oryx-composition
       route="/${page}"
-    ></experience-composition>`,
+    ></oryx-composition>`,
     name: 'Page',
   },
   {

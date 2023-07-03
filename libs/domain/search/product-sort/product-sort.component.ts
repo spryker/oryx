@@ -37,7 +37,7 @@ export class SearchProductSortComponent extends LitElement {
           </option>
 
           ${when(this.hasOptions(), () =>
-            this.sortingOptions()!.sortValues.map(
+            this.sortingOptions()?.sortValues.map(
               ({ sortKey, sortName }) =>
                 html`<option
                   value="${sortKey}"

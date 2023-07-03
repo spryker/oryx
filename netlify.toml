@@ -1,6 +1,2 @@
 [build]
   ignore = "bash ./should-ignore-build.sh ${PROJECT_NAME}"
-
-[functions.ssr]
-  node_bundler = "esbuild"
-  included_files = ["dist/apps/storefront/**"]

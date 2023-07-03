@@ -1,11 +1,9 @@
 import { resolve } from '@spryker-oryx/di';
 import { AlertType } from '@spryker-oryx/ui';
+import { Notification } from '@spryker-oryx/ui/notification';
 import { NotificationService } from '../../../services';
 
-import {
-  Notification,
-  NotificationPosition,
-} from '@spryker-oryx/ui/notification-center';
+import { NotificationPosition } from '@spryker-oryx/ui/notification-center';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';

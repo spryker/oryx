@@ -90,7 +90,7 @@ describe('PickingHeaderComponent', () => {
   it('should render id', () => {
     expect(
       (element.renderRoot.querySelector('.title') as HTMLElement).innerText
-    ).toContain('mockid');
+    ).toContain('mockOrderReference');
   });
 
   it('should render customer note button', () => {

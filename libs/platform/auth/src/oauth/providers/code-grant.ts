@@ -1,4 +1,4 @@
-import { StorageService, StorageType } from '@spryker-oryx/core';
+import { StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   authorizationCodeGrantRequest,
@@ -337,15 +337,8 @@ export class OauthCodeGrantProvider implements OauthProvider {
   protected updateState(state?: OauthCodeGrantState): Observable<void> {
     return (
       state
-        ? this.storage.set(
-            OauthCodeGrantProvider.STATE_KEY,
-            state,
-            StorageType.LOCAL
-          )
-        : this.storage.remove(
-            OauthCodeGrantProvider.STATE_KEY,
-            StorageType.LOCAL
-          )
+        ? this.storage.set(OauthCodeGrantProvider.STATE_KEY, state)
+        : this.storage.remove(OauthCodeGrantProvider.STATE_KEY)
     ).pipe(tap(() => this.state$.next(state)));
   }
 

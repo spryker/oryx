@@ -5,7 +5,7 @@ import { LoginPage } from '../support/page_objects/login.page';
 import { ProductDetailsPage } from '../support/page_objects/product-details.page';
 import { ProductStorage } from '../test-data/product.storage';
 
-describe('SSR suite', () => {
+describe('SSR suite', { tags: 'smoke' }, () => {
   it('must render Landing page', () => {
     const landingPage = new LandingPage();
 
@@ -14,7 +14,7 @@ describe('SSR suite', () => {
   });
 
   it('must render Product details page', () => {
-    const productData = ProductStorage.getProductByEq(0);
+    const productData = ProductStorage.getProductByEq(1);
     const pdp = new ProductDetailsPage(productData);
 
     pdp.visit();
@@ -29,7 +29,7 @@ describe('SSR suite', () => {
 
     pdp.getImages().should('be.visible');
     pdp.getDescription().should('be.visible');
-    pdp.getAttributeTerms().should('have.length', 6);
+    pdp.getAttributeTerms().should('have.length', 7);
   });
 
   it('must render Contact us page', () => {

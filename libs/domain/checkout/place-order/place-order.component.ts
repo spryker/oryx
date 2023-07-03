@@ -9,11 +9,11 @@ export class CheckoutPlaceOrderComponent extends CheckoutMixin(LitElement) {
   protected router = resolve(RouterService);
 
   protected override render(): TemplateResult | void {
-    if (this.isEmpty()) return;
+    if (this.$isEmpty()) return;
 
     return html`<oryx-button
-      ?inert=${this.isBusy()}
-      ?loading=${this.isBusy()}
+      ?inert=${this.$isBusy()}
+      ?loading=${this.$isBusy()}
       @click="${this.onClick}"
     >
       <button>${i18n('checkout.place-order')}</button>

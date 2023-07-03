@@ -18,9 +18,9 @@ export const backofficeNgIcons: IconMapper = {
     [IconTypes.Refresh]: () => import('./icons/refresh').then((s) => s.default),
     [IconTypes.Info]: () => import('./icons/info').then((s) => s.default),
     [IconTypes.Cart]: () => import('./icons/cart').then((s) => s.default),
-    [IconTypes.Mark]: () => import('./icons/check-mark').then((s) => s.default),
+    [IconTypes.Check]: () =>
+      import('./icons/check-mark').then((s) => s.default),
     [IconTypes.Loader]: () => import('./icons/loader').then((s) => s.default),
-    [IconTypes.Mark]: () => import('./icons/mark').then((s) => s.default),
     [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
     [IconTypes.Minus]: () => import('./icons/minus').then((s) => s.default),
     /** Alias to minus */

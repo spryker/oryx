@@ -1,10 +1,12 @@
 {
   "name": "@spryker-oryx/labs",
-  "version": "0.101.1",
+  "version": "0.110.0",
   "type": "module",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
   "description": "Demo features that contribute to the main Oryx component library. Please keep in mind that these components are experimental and are not suitable for use in production environments.",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
   "dependencies": {
     "lit": "^2.0.0",
     "rxjs": "^7.5.0",

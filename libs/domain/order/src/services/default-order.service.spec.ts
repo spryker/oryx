@@ -102,7 +102,7 @@ describe('DefaultOrderService', () => {
     it('should call storage get', () => {
       expect(storage.get).toHaveBeenCalledWith(
         orderStorageKey,
-        StorageType.SESSION
+        StorageType.Session
       );
     });
   });
@@ -113,7 +113,7 @@ describe('DefaultOrderService', () => {
       expect(storage.set).toHaveBeenCalledWith(
         orderStorageKey,
         mockSanitizedResponse,
-        StorageType.SESSION
+        StorageType.Session
       );
     });
   });

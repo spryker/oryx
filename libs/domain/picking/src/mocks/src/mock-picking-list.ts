@@ -15,6 +15,7 @@ export const mockPickingListData: PickingList[] = [
     cartNote: 'Mock cart note',
     items: [
       {
+        id: 'item1',
         numberOfNotPicked: 1,
         numberOfPicked: 1,
         quantity: 2,
@@ -47,8 +48,9 @@ export const mockPickingListData: PickingList[] = [
     orderReferences: ['mockOrderReference'],
     items: [
       {
-        numberOfNotPicked: 1,
-        numberOfPicked: 1,
+        id: 'item2',
+        numberOfNotPicked: 0,
+        numberOfPicked: 2,
         quantity: 2,
         orderItem: {
           quantity: 2,

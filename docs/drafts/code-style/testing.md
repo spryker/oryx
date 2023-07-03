@@ -182,7 +182,7 @@ it('is resolve called', () => {
 - Not to use `toBeFalsy`, `toBeTruthy` at all (we can substitute them with `toBeNull`, `toBeDefined`, `toBe(0)`, `toBe(false/true)`.
 - Use `textContent` together with `toContain` to check projected content instead of relying on the (unofficial) `innerText` API.
 - Use `toHaveBeenCalledTogetherWith` when a call has arguments if not - use `toHaveBeenCalled` instead of `toHaveBeenCalledTimes` (`toHaveBeenCalledTimes` we can use in cases when we have to check exact number of calls).
-- Test helpers, prototype extending should be located in the `@spryker-oryx/testing` storage.
+- Test helpers, prototype extending should be located in the `@/tools/testing` storage.
 - Use `toBeInTheDocument` `toContainElement` `toContainSlottedElement` for checking if component exist in the DOM.
 
   ```ts

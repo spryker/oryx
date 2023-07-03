@@ -9,6 +9,8 @@ import {
 
 export class DefaultSemanticLinkService implements SemanticLinkService {
   protected types = {
+    [SemanticLinkType.Article]: (link: SemanticLink): string =>
+      `/article/${encodeURIComponent(link.id ?? '')}`,
     [SemanticLinkType.ProductList]: (link: SemanticLink): string =>
       `/search${
         link.params
@@ -29,6 +31,11 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
     [SemanticLinkType.Login]: (): string => '/login',
     [SemanticLinkType.Order]: (link: SemanticLink): string =>
       `/order/${encodeURIComponent(link.id ?? '')}`,
+    [SemanticLinkType.AddressList]: (): string => `/my-account/addresses`,
+    [SemanticLinkType.AddressBookCreate]: (): string =>
+      `/my-account/addresses/create`,
+    [SemanticLinkType.AddressBookEdit]: (link: SemanticLink): string =>
+      `/my-account/addresses/edit/${link.id}`,
   };
 
   protected baseRoute = inject(BASE_ROUTE, '');

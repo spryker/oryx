@@ -54,5 +54,5 @@ export interface Command<
   ResultType,
   Qualifier extends object | undefined = undefined
 > {
-  execute(qualifier: Qualifier): Observable<ResultType>;
+  execute(qualifier?: Qualifier): Observable<ResultType>;
 }

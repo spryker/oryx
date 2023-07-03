@@ -1,4 +1,3 @@
-import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
 const navSize = unsafeCSS('36px');
@@ -128,7 +127,7 @@ export const paginationStyles = css`
   ::slotted(*:focus-visible),
   a:not([truncated]):active,
   a:not([truncated]):focus-visible {
-    border-color: ${primaryColorBase};
+    border-color: var(--oryx-color-primary-9);
   }
 
   ::slotted(*[active]),
@@ -141,12 +140,12 @@ export const paginationStyles = css`
   ::slotted(*:active),
   a:not([truncated]):active {
     color: var(--oryx-color-neutral-1);
-    background: ${primaryColorBase};
+    background: var(--oryx-color-primary-9);
   }
 
   ::slotted(*:focus-visible),
   *:focus-visible {
-    box-shadow: 0 0 3px ${primaryColorBase};
+    box-shadow: 0 0 3px var(--oryx-color-primary-9);
   }
 
   ::slotted(*[disabled]),

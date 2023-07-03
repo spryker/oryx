@@ -3,6 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@/tools/storybook": ["tools/storybook/index.ts"],
+      "@/tools/testing": ["tools/testing/index.ts"],
       "@spryker-oryx/application": ["libs/template/application/src/index.ts"],
       "@spryker-oryx/application/lambda": [
         "libs/template/application/lambda/index.ts"
@@ -33,16 +35,16 @@
       ],
       "@spryker-oryx/cart/totals": ["libs/domain/cart/totals/index.ts"],
       "@spryker-oryx/checkout": ["libs/domain/checkout/src/index.ts"],
+      "@spryker-oryx/checkout/account": [
+        "libs/domain/checkout/account/index.ts"
+      ],
       "@spryker-oryx/checkout/address": [
         "libs/domain/checkout/address/index.ts"
       ],
-      "@spryker-oryx/checkout/customer": [
-        "libs/domain/checkout/customer/index.ts"
+      "@spryker-oryx/checkout/billing-address": [
+        "libs/domain/checkout/billing-address/index.ts"
       ],
-      "@spryker-oryx/checkout/delivery": [
-        "libs/domain/checkout/delivery/index.ts"
-      ],
-      "@spryker-oryx/checkout/guest": ["libs/domain/checkout/guest/index.ts"],
+      "@spryker-oryx/checkout/header": ["libs/domain/checkout/header/index.ts"],
       "@spryker-oryx/checkout/link": ["libs/domain/checkout/link/index.ts"],
       "@spryker-oryx/checkout/manage-address": [
         "libs/domain/checkout/manage-address/index.ts"
@@ -53,19 +55,24 @@
       "@spryker-oryx/checkout/orchestrator": [
         "libs/domain/checkout/orchestrator/index.ts"
       ],
-      "@spryker-oryx/checkout/payment": [
-        "libs/domain/checkout/payment/index.ts"
+      "@spryker-oryx/checkout/payment-method": [
+        "libs/domain/checkout/payment-method/index.ts"
       ],
       "@spryker-oryx/checkout/place-order": [
         "libs/domain/checkout/place-order/index.ts"
       ],
-      "@spryker-oryx/checkout/shipment": [
-        "libs/domain/checkout/shipment/index.ts"
+      "@spryker-oryx/checkout/shipping-address": [
+        "libs/domain/checkout/shipping-address/index.ts"
+      ],
+      "@spryker-oryx/checkout/shipping-method": [
+        "libs/domain/checkout/shipping-method/index.ts"
       ],
       "@spryker-oryx/cli": ["libs/template/cli/src/index.ts"],
       "@spryker-oryx/content": ["libs/domain/content/src/index.ts"],
+      "@spryker-oryx/content/article": ["libs/domain/content/article/index.ts"],
       "@spryker-oryx/content/banner": ["libs/domain/content/banner/index.ts"],
       "@spryker-oryx/content/link": ["libs/domain/content/link/index.ts"],
+      "@spryker-oryx/content/text": ["libs/domain/content/text/index.ts"],
       "@spryker-oryx/content/video": ["libs/domain/content/video/index.ts"],
       "@spryker-oryx/core": ["libs/platform/core/src/index.ts"],
       "@spryker-oryx/core/mocks": ["libs/platform/core/src/mocks/index.ts"],
@@ -120,6 +127,9 @@
       "@spryker-oryx/product/attributes": [
         "libs/domain/product/attributes/index.ts"
       ],
+      "@spryker-oryx/product/availability": [
+        "libs/domain/product/availability/index.ts"
+      ],
       "@spryker-oryx/product/average-rating": [
         "libs/domain/product/average-rating/index.ts"
       ],
@@ -135,6 +145,9 @@
       "@spryker-oryx/product/media": ["libs/domain/product/media/index.ts"],
       "@spryker-oryx/product/mocks": ["libs/domain/product/src/mocks/index.ts"],
       "@spryker-oryx/product/price": ["libs/domain/product/price/index.ts"],
+      "@spryker-oryx/product/relations": [
+        "libs/domain/product/relations/index.ts"
+      ],
       "@spryker-oryx/product/title": ["libs/domain/product/title/index.ts"],
       "@spryker-oryx/push-notification": [
         "libs/platform/push-notification/src/index.ts"
@@ -167,7 +180,6 @@
       ],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
-      "@spryker-oryx/testing": ["tools/testing"],
       "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
       "@spryker-oryx/themes/breakpoints": [
         "libs/template/themes/breakpoints/index.ts"
@@ -182,6 +194,9 @@
       "@spryker-oryx/ui/chip": ["libs/base/ui/graphical/chip/index.ts"],
       "@spryker-oryx/ui/collapsible": [
         "libs/base/ui/structure/collapsible/index.ts"
+      ],
+      "@spryker-oryx/ui/collapsible-text": [
+        "libs/base/ui/structure/collapsible-text/index.ts"
       ],
       "@spryker-oryx/ui/color-mode-selector": [
         "libs/base/ui/action/color-mode-selector/index.ts"
@@ -248,11 +263,14 @@
       "@spryker-oryx/ui/video": ["libs/base/ui/graphical/video/index.ts"],
       "@spryker-oryx/user": ["libs/domain/user/src/index.ts"],
       "@spryker-oryx/user/address": ["libs/domain/user/address/index.ts"],
-      "@spryker-oryx/user/address-book": [
-        "libs/domain/user/address-book/index.ts"
+      "@spryker-oryx/user/address-add-button": [
+        "libs/domain/user/address-add-button/index.ts"
       ],
       "@spryker-oryx/user/address-edit": [
         "libs/domain/user/address-edit/index.ts"
+      ],
+      "@spryker-oryx/user/address-edit-button": [
+        "libs/domain/user/address-edit-button/index.ts"
       ],
       "@spryker-oryx/user/address-form": [
         "libs/domain/user/address-form/index.ts"
@@ -271,8 +289,7 @@
       ],
       "@spryker-oryx/user/mocks": ["libs/domain/user/src/mocks/index.ts"],
       "@spryker-oryx/utilities": ["libs/base/utilities/src/index.ts"],
-      "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"],
-      "@spryker-oryx/utilities/no-lit": ["libs/base/utilities/no-lit/index.ts"]
+      "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"]
     }
   }
 }

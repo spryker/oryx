@@ -7,6 +7,10 @@ const loginPage = new LoginPage();
 const oauthHandler = new OauthHandlerFragment();
 
 describe('Login Suite', () => {
+  beforeEach(() => {
+    cy.clearIndexedDB();
+  });
+
   describe('when logged out', () => {
     it('should redirect to login page', () => {
       cy.visit('/');

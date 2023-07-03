@@ -66,7 +66,7 @@ describe('AnonAuthTokenService', () => {
       expect(mockAuthTokenService.getToken).toHaveBeenCalled();
       expect(mockStorageService.remove).toHaveBeenCalledWith(
         'oryx.anonymous-user',
-        StorageType.SESSION
+        StorageType.Session
       );
     });
 
@@ -82,7 +82,7 @@ describe('AnonAuthTokenService', () => {
       expect(mockAuthTokenService.getToken).toHaveBeenCalled();
       expect(mockStorageService.get).toHaveBeenCalledWith(
         'oryx.anonymous-user',
-        StorageType.SESSION
+        StorageType.Session
       );
       expect(callback).toHaveBeenCalledWith({
         type: 'anon',
@@ -104,12 +104,12 @@ describe('AnonAuthTokenService', () => {
       expect(mockAuthTokenService.getToken).toHaveBeenCalled();
       expect(mockStorageService.get).toHaveBeenCalledWith(
         'oryx.anonymous-user',
-        StorageType.SESSION
+        StorageType.Session
       );
       expect(mockStorageService.set).toHaveBeenCalledWith(
         'oryx.anonymous-user',
         'mockGeneratedID',
-        StorageType.SESSION
+        StorageType.Session
       );
       expect(callback).toHaveBeenCalledWith({
         type: 'anon',

@@ -1,10 +1,10 @@
+import { states } from '@/tools/storybook';
 import { expect } from '@storybook/jest';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { FilterStrategyType } from '../../../../../search/typeahead';
-import { states } from '../../../../../src/utilities/storybook';
 
 import { SelectComponent } from '../../index';
 

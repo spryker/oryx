@@ -2,6 +2,8 @@ export interface ProductCardOptions {
   /** The product SKU is used to resolve the product. */
   sku?: string;
 
+  template?: 'grid' | 'list';
+
   /** Indicates whether the product title should be rendered  */
   enableTitle?: boolean;
 

@@ -1,69 +1,92 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
 import { ModalComponent } from '@spryker-oryx/ui/modal';
-import { AddressService } from '@spryker-oryx/user';
 import {
-  AddressBookState,
-  CHANGE_STATE_EVENT,
-  UserAddressBookComponent,
-} from '@spryker-oryx/user/address-book';
-import { UserAddressRemoveComponent } from '@spryker-oryx/user/address-remove';
+  Address,
+  AddressService,
+  AddressStateService,
+  CrudState,
+} from '@spryker-oryx/user';
+import { UserAddressEditComponent } from '@spryker-oryx/user/address-edit';
 import { html } from 'lit';
-import { of } from 'rxjs';
-import { ManageAddressComponent } from './manage-address.component';
-import { manageAddressComponent } from './manage-address.def';
+import { BehaviorSubject, of } from 'rxjs';
+import { CheckoutStatus } from '../src/models';
+import {
+  CheckoutDataService,
+  CheckoutService,
+  CheckoutStateService,
+} from '../src/services';
+import { CheckoutManageAddressComponent } from './manage-address.component';
+import { checkoutManageAddressComponent } from './manage-address.def';
 
 class MockAddressService implements Partial<AddressService> {
-  deleteAddress = vi.fn().mockReturnValue(of(null));
+  getList = vi.fn();
+}
+class MockCheckoutStateService implements Partial<CheckoutStateService> {
+  get = vi.fn();
+  isInvalid = vi.fn().mockReturnValue(of(false));
+}
+class MockCheckoutService implements Partial<CheckoutService> {
+  getStatus = vi.fn().mockReturnValue(of(CheckoutStatus.Ready));
+}
+class MockCheckoutDataService implements Partial<CheckoutDataService> {}
+
+const mockState = new BehaviorSubject({
+  action: CrudState.Read,
+  selected: null,
+});
+class MockAddressStateService implements Partial<AddressStateService> {
+  set = vi.fn();
+  get = vi.fn().mockReturnValue(mockState);
+  clear = vi.fn();
 }
 
-describe('ManageAddressComponent', () => {
-  let addressService: MockAddressService;
-  let element: ManageAddressComponent;
+class MockRouterService implements Partial<RouterService> {
+  currentParams = vi.fn().mockReturnValue(of());
+}
 
-  const getTrigger = (): HTMLButtonElement =>
-    element.renderRoot.querySelector('button') as HTMLButtonElement;
-
-  const getModal = (): ModalComponent =>
-    element.renderRoot.querySelector('oryx-modal') as ModalComponent;
-
-  const getConfirmationModal = (): ModalComponent =>
-    element.renderRoot.querySelector(
-      'oryx-modal + oryx-modal'
-    ) as ModalComponent;
-
-  const getAddressBook = (): UserAddressBookComponent =>
-    element.renderRoot.querySelector(
-      'oryx-user-address-book'
-    ) as UserAddressBookComponent;
-
-  const getAddressRemove = (): UserAddressRemoveComponent =>
-    element.renderRoot.querySelector(
-      'oryx-user-address-remove'
-    ) as UserAddressRemoveComponent;
+describe('CheckoutManageAddressComponent', () => {
+  let element: CheckoutManageAddressComponent;
+  let addressStateService: MockAddressStateService;
 
   beforeAll(async () => {
-    await useComponent(manageAddressComponent);
+    await useComponent(checkoutManageAddressComponent);
   });
 
   beforeEach(async () => {
     const testInjector = createInjector({
       providers: [
         {
+          provide: CheckoutService,
+          useClass: MockCheckoutService,
+        },
+        {
+          provide: CheckoutStateService,
+          useClass: MockCheckoutStateService,
+        },
+        {
+          provide: CheckoutDataService,
+          useClass: MockCheckoutDataService,
+        },
+        {
           provide: AddressService,
           useClass: MockAddressService,
+        },
+        {
+          provide: AddressStateService,
+          useClass: MockAddressStateService,
+        },
+        {
+          provide: RouterService,
+          useClass: MockRouterService,
         },
       ],
     });
 
-    addressService = testInjector.inject(
-      AddressService
-    ) as unknown as MockAddressService;
-
-    element = await fixture(
-      html`<oryx-checkout-manage-address></oryx-checkout-manage-address>`
-    );
+    addressStateService =
+      testInjector.inject<MockAddressStateService>(AddressStateService);
   });
 
   afterEach(() => {
@@ -71,127 +94,222 @@ describe('ManageAddressComponent', () => {
     vi.clearAllMocks();
   });
 
-  it('passes the a11y audit', async () => {
-    await expect(element).shadowDom.to.be.accessible();
+  describe('when the element is created', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-checkout-manage-address></oryx-checkout-manage-address>`
+      );
+    });
+
+    it('should be a class of ManageAddressComponent', async () => {
+      expect(element).toBeInstanceOf(CheckoutManageAddressComponent);
+    });
+
+    it('passes the a11y audit', async () => {
+      await expect(element).shadowDom.to.be.accessible();
+    });
+
+    it('should render a button', () => {
+      expect(element).toContainElement('oryx-button button');
+    });
+
+    it('should not render the modal by default ', () => {
+      expect(element).not.toContainElement('oryx-modal');
+    });
   });
 
-  it('should pass the header to the modal', () => {
-    expect(getModal().heading).toBe('Addresses');
-  });
-
-  describe('when trigger is clicked', () => {
-    beforeEach(() => {
-      getTrigger().click();
+  describe('when the user clicks on the "change" button', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-checkout-manage-address></oryx-checkout-manage-address>`
+      );
+      const button = element.shadowRoot?.querySelector('button');
+      button?.click();
     });
 
     it('should open the modal', () => {
-      expect(element).toContainElement('oryx-modal[open]');
+      expect(element).toContainElement('oryx-modal');
     });
-  });
 
-  describe('when state is changed', () => {
-    beforeEach(() => {
-      getAddressBook().dispatchEvent(
-        new CustomEvent(CHANGE_STATE_EVENT, {
-          detail: { state: AddressBookState.Add },
-        })
+    it('should clear the selected item state', () => {
+      expect(addressStateService.clear).toHaveBeenCalled();
+    });
+
+    it('should render a specific modal heading', () => {
+      const modal =
+        element.renderRoot.querySelector<ModalComponent>('oryx-modal');
+      expect(modal?.heading).toBe('Addresses');
+    });
+
+    it('should render the address-add-button', () => {
+      expect(element).toContainElement('oryx-user-address-add-button');
+    });
+
+    it('should render the address list', () => {
+      expect(element).toContainElement('oryx-user-address-list');
+    });
+
+    it('should not render the editor', () => {
+      expect(element).not.toContainElement('oryx-user-address-edit');
+    });
+
+    it('should render the save button in the footer', () => {
+      const saveButton = element.renderRoot.querySelector(
+        `oryx-button[slot='footer-more'`
       );
+      expect(saveButton?.textContent?.trim()).toBe('Select');
     });
 
-    it('should change the heading', () => {
-      expect(getModal().heading).toBe('Add address');
-    });
+    describe('when the change event is dispatched', () => {
+      const mockAddress: Address = { id: '123' };
+      const event = new CustomEvent('change', {
+        bubbles: true,
+        composed: true,
+        detail: { address: mockAddress },
+      });
+      event.stopPropagation = vi.fn();
 
-    it('should change the state', () => {
-      expect(getAddressBook().activeState).toBe(AddressBookState.Add);
-    });
-
-    describe('and modal is closed', () => {
       beforeEach(() => {
-        getModal().dispatchEvent(new CustomEvent('oryx.close'));
+        const list = element.renderRoot.querySelector('oryx-user-address-list');
+        list?.dispatchEvent(event);
       });
 
-      it('should close the modal', () => {
-        expect(element).not.toContainElement('oryx-modal[open]');
+      it('should prevent the event from bubbling up', () => {
+        expect(event.stopPropagation).toHaveBeenCalled();
+      });
+
+      describe('and the select button is clicked', () => {
+        beforeEach(async () => {
+          const button = element.renderRoot.querySelector<HTMLButtonElement>(
+            `oryx-button[slot='footer-more'] button`
+          );
+          element.dispatchEvent = vi.fn();
+          button?.click();
+        });
+
+        it('should dispatch a change event with the selected address', () => {
+          expect(element.dispatchEvent).toHaveBeenCalledWith(
+            new CustomEvent('change', {
+              detail: { address: mockAddress },
+              bubbles: true,
+              composed: true,
+            })
+          );
+        });
+
+        it('should close the modal', () => {
+          expect(element).not.toContainElement('oryx-modal');
+        });
       });
     });
 
-    describe('and modal is navigated back', () => {
+    describe('when the oryx.close event is dispatched', () => {
       beforeEach(() => {
-        getModal().dispatchEvent(new CustomEvent('oryx.back'));
+        const modal = element.renderRoot.querySelector('oryx-modal');
+        modal?.dispatchEvent(new CustomEvent('oryx.close', {}));
       });
 
-      it('should restore the default state', () => {
-        expect(getAddressBook().activeState).toBe(AddressBookState.List);
-      });
-    });
-
-    describe('and editing is successful', () => {
-      beforeEach(() => {
-        element.renderRoot
-          .querySelector('oryx-user-address-book')
-          ?.dispatchEvent(new CustomEvent('oryx.success'));
+      it('should change the action state to Read', () => {
+        expect(addressStateService.clear).toHaveBeenCalled();
       });
 
-      it('should restore the default state', () => {
-        expect(getAddressBook().activeState).toBe(AddressBookState.List);
+      it('should close the modal open', () => {
+        expect(element).not.toContainElement('oryx-modal');
+      });
+
+      it('should set the address crud state to Read', () => {
+        expect(addressStateService.clear).toHaveBeenCalled();
       });
     });
 
-    describe('and editing is cancelled', () => {
-      beforeEach(() => {
-        element.renderRoot
-          .querySelector('oryx-user-address-book')
-          ?.dispatchEvent(new CustomEvent('oryx.cancel'));
-      });
+    [CrudState.Create, CrudState.Update].forEach((action) => {
+      describe(`when the action state = ${action}`, () => {
+        beforeEach(() => {
+          mockState.next({ action, selected: null });
+        });
 
-      it('should restore the default state', () => {
-        expect(getAddressBook().activeState).toBe(AddressBookState.List);
-      });
-    });
-  });
+        it('should render a specific modal heading', () => {
+          const modal =
+            element.renderRoot.querySelector<ModalComponent>('oryx-modal');
+          expect(modal?.heading).toBe(
+            action === CrudState.Create ? 'Add address' : 'Edit address'
+          );
+        });
 
-  describe('when the address is deleted', () => {
-    const address = { id: 'testId' };
-    beforeEach(() => {
-      getAddressBook().dispatchEvent(
-        new CustomEvent('oryx.remove', {
-          detail: { address },
-        })
-      );
-    });
+        it('should not render the address list', () => {
+          expect(element).not.toContainElement('oryx-user-address-list');
+        });
 
-    it('should show the confirmation modal', () => {
-      expect(getConfirmationModal().hasAttribute('open')).toBe(true);
-    });
+        it('should render the address-add-button', () => {
+          expect(element).not.toContainElement('oryx-user-address-add-button');
+        });
 
-    it('should pass address id to the address remove', () => {
-      expect(getAddressRemove().addressId).toBe(address.id);
-    });
+        it('should render the editor', () => {
+          expect(element).toContainElement('oryx-user-address-edit');
+        });
 
-    describe('and deletion is cancelled', () => {
-      beforeEach(() => {
-        getAddressRemove().dispatchEvent(new CustomEvent('oryx.cancel'));
-      });
+        it('should render the save button in the footer', () => {
+          const saveButton = element.renderRoot.querySelector(
+            `oryx-button[slot='footer-more'`
+          );
+          expect(saveButton?.textContent?.trim()).toBe('Save');
+        });
 
-      it('should not render the confirmation modal', () => {
-        expect(getConfirmationModal()).toBeNull();
-      });
-    });
+        describe('when the change event is dispatched', () => {
+          const mockAddress: Address = { id: '123' };
+          const event = new CustomEvent('change', {
+            bubbles: true,
+            composed: true,
+            detail: { address: mockAddress },
+          });
+          event.stopPropagation = vi.fn();
 
-    describe('and deletion is confirmed', () => {
-      beforeEach(() => {
-        getAddressRemove().dispatchEvent(
-          new CustomEvent('oryx.confirm', { detail: { address } })
-        );
-      });
+          beforeEach(() => {
+            const editor = element.renderRoot.querySelector(
+              'oryx-user-address-edit'
+            );
+            editor?.dispatchEvent(event);
+          });
 
-      it('should call deleteAddress method of the service', () => {
-        expect(addressService.deleteAddress).toHaveBeenCalledWith(address);
-      });
+          it('should prevent the event from bubbling up', () => {
+            expect(event.stopPropagation).toHaveBeenCalled();
+          });
+        });
 
-      it('should not render the confirmation modal', () => {
-        expect(getConfirmationModal()).toBeNull();
+        describe('when the oryx.back event is dispatched', () => {
+          beforeEach(() => {
+            const modal = element.renderRoot.querySelector('oryx-modal');
+            modal?.dispatchEvent(new CustomEvent('oryx.back', {}));
+          });
+
+          it('should change the action state to Read', () => {
+            expect(addressStateService.clear).toHaveBeenCalledWith();
+          });
+
+          it('should keep the modal open', () => {
+            expect(element).toContainElement('oryx-modal[open]');
+          });
+        });
+
+        describe('and the save button is clicked', () => {
+          let button: HTMLButtonElement;
+          let addressEditComponent: UserAddressEditComponent;
+
+          beforeEach(async () => {
+            addressEditComponent = element.renderRoot.querySelector(
+              'oryx-user-address-edit'
+            ) as UserAddressEditComponent;
+            addressEditComponent.submit = vi.fn().mockReturnValue(of({}));
+            button = element.renderRoot.querySelector(
+              `oryx-button[slot='footer-more'] button`
+            ) as HTMLButtonElement;
+            button?.click();
+          });
+
+          it('should submit the editComponent', () => {
+            expect(addressEditComponent.submit).toHaveBeenCalled();
+          });
+        });
       });
     });
   });
