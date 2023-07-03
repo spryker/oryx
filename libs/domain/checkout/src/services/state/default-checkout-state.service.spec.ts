@@ -214,7 +214,7 @@ describe('DefaultCheckoutStateService', () => {
       });
     });
 
-    it.only('should reset the checkout state', () => {
+    it('should reset the checkout state', () => {
       let data;
       // simulate user change
       mockIdentityService.mockIdentity.next({ userId: 'user2' });
