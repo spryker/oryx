@@ -12,7 +12,7 @@ export interface LoginOptions {
   enableRememberMe?: boolean;
 
   /**
-   * Keeps the user at the current route when disableRedirect is `true`.
+   * Redirect the user when enableRedirect is `true`.
    */
   enableRedirect?: boolean;
 
