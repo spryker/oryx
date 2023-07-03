@@ -28,8 +28,6 @@ describe('When a user opens the user profile modal', () => {
       cy.wait(300);
 
       userProfileFragment.getLogOutButton().click();
-
-      cy.wait(300);
     });
 
     it('should log out user', () => {
