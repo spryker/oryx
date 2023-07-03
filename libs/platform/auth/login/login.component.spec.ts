@@ -1,5 +1,4 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
-import { AuthLoginStrategy } from '@spryker-oryx/auth';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector, inject } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
@@ -14,6 +13,7 @@ import { html } from 'lit';
 import { EMPTY, of, throwError } from 'rxjs';
 import { AuthLoginComponent } from './login.component';
 import { authLoginComponent } from './login.def';
+import { AuthLoginStrategy } from './login.strategy';
 
 class MockExperienceService implements Partial<ExperienceService> {
   getOptions = vi.fn();

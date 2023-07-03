@@ -8,6 +8,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
+import { firstValueFrom } from 'rxjs';
 import { DefaultAuthLoginStrategy } from './default-login.strategy';
 import { LoginOptions, LoginRequest } from './login.model';
 import { AuthLoginStrategy } from './login.strategy';
@@ -41,35 +42,56 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   );
 
   protected async doLogin(loginState: LoginRequest): Promise<void> {
-    const loginResult = this.authLoginStrategy.login(loginState).toPromise();
-
     this.isLoading = true;
     this.hasError = false;
 
-    loginResult
-      .then(() => {
-        this.isLoading = false;
+    try {
+      await firstValueFrom(this.authLoginStrategy.login(loginState));
 
-        if (this.$options()?.enableRedirect) {
-          const redirectUrl = this.$options().redirectUrl;
+      this.isLoading = false;
 
-          if (redirectUrl) {
-            this.routerService.navigate(redirectUrl);
-            return;
-          }
+      if (this.$options()?.enableRedirect) {
+        const redirectUrl = this.$options().redirectUrl;
 
-          const previousRoute = this.routerService.previousRoute().toPromise();
-
-          previousRoute.then((route) => {
-            const redirectRoute = route ? route : '/';
-            this.routerService.navigate(redirectRoute);
-          });
+        if (redirectUrl) {
+          this.routerService.navigate(redirectUrl);
+          return;
         }
-      })
-      .catch(() => {
-        this.isLoading = false;
-        this.hasError = true;
-      });
+
+        const previousRoute = await firstValueFrom(
+          this.routerService.previousRoute()
+        );
+        const redirectRoute = previousRoute ? previousRoute : '/';
+        this.routerService.navigate(redirectRoute);
+      }
+    } catch {
+      this.isLoading = false;
+      this.hasError = true;
+    }
+    //
+    //   .then(() => {
+    //     this.isLoading = false;
+    //
+    //     if (this.$options()?.enableRedirect) {
+    //       const redirectUrl = this.$options().redirectUrl;
+    //
+    //       if (redirectUrl) {
+    //         this.routerService.navigate(redirectUrl);
+    //         return;
+    //       }
+    //
+    //       const previousRoute = this.routerService.previousRoute().toPromise();
+    //
+    //       previousRoute.then((route) => {
+    //         const redirectRoute = route ? route : '/';
+    //         this.routerService.navigate(redirectRoute);
+    //       });
+    //     }
+    //   })
+    //   .catch(() => {
+    //     this.isLoading = false;
+    //     this.hasError = true;
+    //   });
   }
 
   protected login(event: Event): void {

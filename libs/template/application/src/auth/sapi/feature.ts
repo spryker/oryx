@@ -2,20 +2,18 @@ import {
   AnonAuthTokenService,
   AnonTokenInterceptor,
   AnonTokenInterceptorConfig,
+  authLoginComponent,
   AuthTokenInterceptorConfig,
   AuthTokenService,
   IdentityService,
+  loginLinkComponent,
   OauthFeature,
   OauthFeatureConfig,
   OauthService,
   PasswordGrantAuthLoginStrategy,
   PasswordGrantAuthLoginStrategyConfig,
 } from '@spryker-oryx/auth';
-import {
-  authLoginComponent,
-  AuthLoginStrategy,
-} from '@spryker-oryx/auth/login';
-import { loginLinkComponent } from '@spryker-oryx/auth/login-link';
+import { AuthLoginStrategy } from '@spryker-oryx/auth/login';
 import {
   AppFeature,
   ComponentsInfo,
