@@ -1,4 +1,13 @@
 import { resolve } from '@spryker-oryx/di';
+import {
+  ItemsFilters,
+  PartialPicking,
+  PickingListItem,
+  PickingListMixin,
+  PickingListStatus,
+  PickingTab,
+  ProductItemPickedEvent,
+} from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { ChipComponent } from '@spryker-oryx/ui/chip';
@@ -12,15 +21,6 @@ import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { catchError, of, tap } from 'rxjs';
-import { PickingListMixin } from '../../mixins';
-import {
-  ItemsFilters,
-  PartialPicking,
-  PickingListItem,
-  PickingListStatus,
-  PickingTab,
-  ProductItemPickedEvent,
-} from '../../models';
 import { PickingProductCardComponent } from '../picking-product-card';
 import { pickingComponentStyles } from './picking.styles';
 

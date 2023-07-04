@@ -1,4 +1,11 @@
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
+import {
+  EVENT_EDIT,
+  EVENT_SUBMIT,
+  ItemsFilters,
+  PickingListItem,
+  ProductItemPickedEvent,
+} from '@spryker-oryx/picking';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -7,13 +14,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
-import {
-  EVENT_EDIT,
-  EVENT_SUBMIT,
-  ItemsFilters,
-  ProductItemPickedEvent,
-  type PickingListItem,
-} from '../../models';
 import { pickingProductCardComponentStyles } from './picking-product-card.styles';
 
 export class PickingProductCardComponent extends LitElement {

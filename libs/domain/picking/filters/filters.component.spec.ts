@@ -2,11 +2,13 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { FormRenderer } from '@spryker-oryx/form';
-import { defaultSortingQualifier } from '@spryker-oryx/picking';
+import {
+  defaultSortingQualifier,
+  PickingListService,
+} from '@spryker-oryx/picking';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { PickingListService } from '../../services';
 import { FiltersComponent } from './filters.component';
 import { filtersComponent } from './filters.def';
 import { fields } from './filters.model';

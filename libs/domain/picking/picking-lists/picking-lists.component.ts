@@ -1,4 +1,9 @@
 import { resolve } from '@spryker-oryx/di';
+import {
+  FallbackType,
+  PickingListService,
+  PickingListStatus,
+} from '@spryker-oryx/picking';
 import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -6,8 +11,6 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { distinctUntilChanged, map, startWith, Subject, switchMap } from 'rxjs';
-import { FallbackType, PickingListStatus } from '../../models';
-import { PickingListService } from '../../services';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { pickingListsComponentStyles } from './picking-lists.styles';
 

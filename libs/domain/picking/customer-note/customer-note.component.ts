@@ -1,10 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
+import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { catchError, of, tap } from 'rxjs';
-import { PickingListMixin } from '../../mixins';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { customerNoteComponentStyles } from './customer-note.styles';
 

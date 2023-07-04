@@ -1,10 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
+import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import { PickingListMixin } from '../../mixins';
 import { styles } from './picking-header.styles';
 
 export class PickingHeaderComponent extends PickingListMixin(LitElement) {
