@@ -68,13 +68,11 @@ describe('DefaultSuggestionService', () => {
       service.get({ query: 'tes' }).subscribe(callback);
       expect(callback).toHaveBeenCalledWith(
         expect.objectContaining({
-          [SuggestionField.Suggestions]: completion
-            .slice(0, 3)
-            .map((name) => ({
-              name,
-              params: { q: name },
-              type: SemanticLinkType.ProductList,
-            })),
+          [SuggestionField.Suggestions]: completion.slice(0, 3).map((name) => ({
+            name,
+            params: { q: name },
+            type: SemanticLinkType.ProductList,
+          })),
         })
       );
     });
