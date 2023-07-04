@@ -10,13 +10,13 @@
   "dependencies": {
     "lit": "^2.0.0",
     "rxjs": "^7.5.0",
-    "@spryker-oryx/di": "latest",
-    "@spryker-oryx/core": "latest",
-    "@spryker-oryx/experience": "latest",
-    "@spryker-oryx/i18n": "latest",
-    "@spryker-oryx/product": "latest",
-    "@spryker-oryx/utilities": "latest",
-    "@spryker-oryx/form": "latest",
-    "@spryker-oryx/ui": "latest"
+    "@spryker-oryx/di": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/i18n": "*",
+    "@spryker-oryx/product": "*",
+    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/form": "*",
+    "@spryker-oryx/ui": "*"
   }
 }

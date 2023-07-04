@@ -7,13 +7,13 @@
   "author": "Spryker Sytems GmbH",
   "license": "See license in LICENSE",
   "dependencies": {
-    "@spryker-oryx/core": "latest",
-    "@spryker-oryx/di": "latest",
-    "@spryker-oryx/indexed-db": "latest",
-    "@spryker-oryx/offline": "latest",
-    "@spryker-oryx/router": "latest",
-    "@spryker-oryx/ui": "latest",
-    "@spryker-oryx/utilities": "latest",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/di": "*",
+    "@spryker-oryx/indexed-db": "*",
+    "@spryker-oryx/offline": "*",
+    "@spryker-oryx/router": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/utilities": "*",
     "jsonapi-serializer": "~3.6.7"
   },
   "peerDependencies": {
