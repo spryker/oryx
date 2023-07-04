@@ -38,6 +38,11 @@ export default {
       control: { type: 'select' },
     },
   },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as unknown as Meta;
 
 const Template: Story<ContentLinkOptions & ContentLinkContent> = (

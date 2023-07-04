@@ -1,6 +1,7 @@
+import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
-import { of, take } from 'rxjs';
+import { BehaviorSubject, of, take } from 'rxjs';
 import {
   checkoutDataStorageKey,
   ContactDetails,
@@ -13,6 +14,11 @@ class MockStorageService implements Partial<StorageService> {
   set = vi.fn();
   clear = vi.fn().mockReturnValue(of());
   remove = vi.fn();
+}
+
+class MockIdentityService implements Partial<IdentityService> {
+  mockIdentity = new BehaviorSubject({} as any);
+  get = vi.fn().mockReturnValue(this.mockIdentity);
 }
 
 describe('DefaultCheckoutStateService', () => {
@@ -28,6 +34,7 @@ describe('DefaultCheckoutStateService', () => {
           useClass: DefaultCheckoutStateService,
         },
         { provide: StorageService, useClass: MockStorageService },
+        { provide: IdentityService, useClass: MockIdentityService },
       ],
     });
 
@@ -190,6 +197,47 @@ describe('DefaultCheckoutStateService', () => {
           .subscribe((response) => (data = response));
         expect(data).toBe(false);
       });
+    });
+  });
+
+  describe('when the user changes', () => {
+    let mockIdentityService: MockIdentityService;
+    const mockCustomerData = { email: 'foo@bar.com' };
+
+    beforeEach(() => {
+      mockIdentityService =
+        injector.inject<MockIdentityService>(IdentityService);
+      mockIdentityService.mockIdentity.next({ userId: 'user1' });
+      checkoutStateService.set('customer', {
+        valid: true,
+        value: mockCustomerData,
+      });
+    });
+
+    it('should reset the checkout state', () => {
+      let data;
+      // simulate user change
+      mockIdentityService.mockIdentity.next({ userId: 'user2' });
+
+      // get the checkout state after user change
+      checkoutStateService
+        .get('customer')
+        .pipe(take(1))
+        .subscribe((result) => (data = result));
+
+      // checkout state should have been reset
+      expect(data).toBeNull();
+    });
+
+    it('should remove the data from storage', () => {
+      // simulate user change
+      mockIdentityService.mockIdentity.next({ userId: 'user2' });
+
+      // check if the data is removed from storage
+      expect(storageService.remove).toBeCalledWith(
+        checkoutDataStorageKey,
+        StorageType.Session
+      );
     });
   });
 });
