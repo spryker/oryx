@@ -1,11 +1,11 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
-import { i18n, Size } from '@spryker-oryx/utilities';
+import { I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 
-export class CustomerNoteModalComponent extends LitElement {
+export class CustomerNoteModalComponent extends I18nMixin(LitElement) {
   @property({ type: Boolean }) open?: boolean;
 
   protected close(): void {
@@ -21,13 +21,13 @@ export class CustomerNoteModalComponent extends LitElement {
     return html`
       <oryx-modal ?open=${this.open} enableFooter footerButtonFullWidth minimal>
         <oryx-heading slot="heading">
-          <h2>${i18n('picking-lists.customer-note.customer-note')}</h2>
+          <h2>${this.i18n('picking-lists.customer-note.customer-note')}</h2>
         </oryx-heading>
         <slot></slot>
         <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
           <button @click=${this.close}>
             <oryx-icon .type=${IconTypes.Check}></oryx-icon>
-            ${i18n('picking-lists.customer-note.got-it')}
+            ${this.i18n('picking-lists.customer-note.got-it')}
           </button>
         </oryx-button>
       </oryx-modal>

@@ -1,10 +1,10 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { BACK_EVENT } from '@spryker-oryx/ui/modal';
-import { i18n, Size } from '@spryker-oryx/utilities';
+import { I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 
-export class PickingInProgressModalComponent extends LitElement {
+export class PickingInProgressModalComponent extends I18nMixin(LitElement) {
   @property({ type: Boolean }) open?: boolean;
 
   protected override render(): TemplateResult {
@@ -16,12 +16,12 @@ export class PickingInProgressModalComponent extends LitElement {
       minimal
     >
       <oryx-heading slot="heading">
-        ${i18n('picking.list.picking-in-progress')}
+        ${this.i18n('picking.list.picking-in-progress')}
       </oryx-heading>
-      ${i18n('picking.list.already-in-progress')}
+      ${this.i18n('picking.list.already-in-progress')}
       <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
         <button @click=${this.closeButton}>
-          ${i18n('picking.list.back-to-pick-lists')}
+          ${this.i18n('picking.list.back-to-pick-lists')}
         </button>
       </oryx-button>
     </oryx-modal>`;

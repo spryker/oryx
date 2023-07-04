@@ -5,7 +5,7 @@ import { SyncSchedulerService } from '@spryker-oryx/offline';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import { RouterService } from '@spryker-oryx/router';
 import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
-import { i18n, signal, signalAware } from '@spryker-oryx/utilities';
+import { I18nMixin, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -13,7 +13,7 @@ import { tap } from 'rxjs';
 import { userProfileComponentStyles } from './user-profile.styles';
 
 @signalAware()
-export class UserProfileComponent extends LitElement {
+export class UserProfileComponent extends I18nMixin(LitElement) {
   static styles = userProfileComponentStyles;
 
   protected routerService = resolve(RouterService);
@@ -36,7 +36,7 @@ export class UserProfileComponent extends LitElement {
     return html`
       <div class="info-block">
         <dl>
-          <dt class="info-label">${i18n('user.profile.employee-id')}</dt>
+          <dt class="info-label">${this.i18n('user.profile.employee-id')}</dt>
           <dd class="info-value">admin@spryker.com</dd>
         </dl>
       </div>
@@ -46,7 +46,7 @@ export class UserProfileComponent extends LitElement {
         () =>
           html`
             <oryx-notification type="info" scheme="dark">
-              ${i18n(
+              ${this.i18n(
                 'user.profile.you-can’t-log-out-because-of-a-pending-synchronization'
               )}.
             </oryx-notification>
@@ -57,7 +57,7 @@ export class UserProfileComponent extends LitElement {
         () =>
           html`
             <oryx-notification type="info" scheme="dark">
-              ${i18n(
+              ${this.i18n(
                 'user.profile.you-can’t-log-out-because-picking-is-in-progress'
               )}.
             </oryx-notification>
@@ -70,7 +70,7 @@ export class UserProfileComponent extends LitElement {
             ?disabled="${isPicking || this.$pendingSyncs()}"
             @click=${this.onLogOut}
           >
-            ${i18n('user.profile.log-Out')}
+            ${this.i18n('user.profile.log-Out')}
           </button>
         </oryx-button>
 
@@ -80,7 +80,7 @@ export class UserProfileComponent extends LitElement {
             html`
               <oryx-button ?loading=${this.loading} type="secondary" outline>
                 <button @click=${this.onReceiveData}>
-                  ${i18n('user.profile.receive-Data')}
+                  ${this.i18n('user.profile.receive-Data')}
                 </button>
               </oryx-button>
             `

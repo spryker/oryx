@@ -4,7 +4,7 @@ import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AddressMixin, CrudState } from '@spryker-oryx/user';
-import { computed, hydratable, i18n } from '@spryker-oryx/utilities';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {
@@ -71,7 +71,7 @@ export class UserAddressListItemComponent extends AddressMixin(
 
     const chip = (token: string) =>
       html`<oryx-chip .appearance=${AlertType.Success}
-        >${i18n(token)}</oryx-chip
+        >${this.i18n(token)}</oryx-chip
       >`;
 
     return html`<div slot="subtext">
@@ -111,7 +111,10 @@ export class UserAddressListItemComponent extends AddressMixin(
 
     return html`
       <oryx-icon-button>
-        <button aria-label=${i18n('user.address.edit')} @click=${this.onEdit}>
+        <button
+          aria-label=${this.i18n('user.address.edit')}
+          @click=${this.onEdit}
+        >
           <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
         </button>
       </oryx-icon-button>

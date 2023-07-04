@@ -3,9 +3,13 @@ import {
   I18nInjectable,
   i18nInjectable,
 } from '../../injectables/i18n/i18n.injectable';
-import { i18n } from './i18n.directive';
+import { i18n, i18nMapInjectable } from './i18n.directive';
 
 describe('i18n directive', () => {
+  beforeEach(() => {
+    i18nMapInjectable.inject(new Map());
+  });
+
   it('should call `I18nInjectable.translate()`', () => {
     const mockI18n: I18nInjectable = {
       translate: vi.fn().mockReturnValue('mock-result'),
@@ -15,6 +19,17 @@ describe('i18n directive', () => {
     i18n('token', { ctx: true });
 
     expect(mockI18n.translate).toHaveBeenCalledWith('token', { ctx: true });
+  });
+
+  describe('when `I18nInjectable.translate()` returns undefined', () => {
+    it('should return empty string', () => {
+      const mockI18n: I18nInjectable = {
+        translate: vi.fn().mockReturnValue(undefined),
+      };
+      i18nInjectable.inject(mockI18n);
+
+      expect(i18n('token')).toBe('');
+    });
   });
 
   describe('when `I18nInjectable.translate()` returns string', () => {

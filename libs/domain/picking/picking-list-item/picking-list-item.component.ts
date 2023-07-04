@@ -4,7 +4,7 @@ import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { asyncValue, i18n, Size } from '@spryker-oryx/utilities';
+import { asyncValue, I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { catchError, of, tap } from 'rxjs';
@@ -12,7 +12,7 @@ import { PickingListItemAttributes } from './picking-list-item.model';
 import { pickingListItemComponentStyles } from './picking-list-item.styles';
 
 export class PickingListItemComponent
-  extends PickingListMixin(LitElement)
+  extends I18nMixin(PickingListMixin(LitElement))
   implements PickingListItemAttributes
 {
   static styles = pickingListItemComponentStyles;
@@ -82,7 +82,7 @@ export class PickingListItemComponent
 
         <div class="total">
           <oryx-icon .type=${IconTypes.Cart}></oryx-icon>
-          ${i18n('picking.picking-list-item.<count>-items', {
+          ${this.i18n('picking.picking-list-item.<count>-items', {
             count: this.pickingList?.itemsCount,
           })}
           ${when(
@@ -111,7 +111,7 @@ export class PickingListItemComponent
             this.upcomingPickingListId !== this.pickingList.id}
             @click=${this.startPicking}
           >
-            ${i18n('picking.picking-list-item.start-picking')}
+            ${this.i18n('picking.picking-list-item.start-picking')}
           </button>
         </oryx-button>
       </oryx-card>

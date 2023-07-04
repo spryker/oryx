@@ -1,11 +1,11 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { BACK_EVENT, CLOSE_EVENT } from '@spryker-oryx/ui/modal';
-import { i18n, Size } from '@spryker-oryx/utilities';
+import { I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { discardModalStyles } from './discard-modal.styles';
 
-export class DiscardPickingComponent extends LitElement {
+export class DiscardPickingComponent extends I18nMixin(LitElement) {
   static styles = discardModalStyles;
 
   @property({ type: Boolean }) open?: boolean;
@@ -21,12 +21,12 @@ export class DiscardPickingComponent extends LitElement {
         minimal
       >
         <oryx-heading slot="heading">
-          <h2>${i18n('picking.discard-pick-list?')}</h2>
+          <h2>${this.i18n('picking.discard-pick-list?')}</h2>
         </oryx-heading>
 
-        ${i18n('picking.discard.stop-picking-and-discard-pick-list?')}
+        ${this.i18n('picking.discard.stop-picking-and-discard-pick-list?')}
         <span class="additional-text"
-          >${i18n('picking.discard.the-pick-list-will-be-lost!')}</span
+          >${this.i18n('picking.discard.the-pick-list-will-be-lost!')}</span
         >
 
         <oryx-button
@@ -35,12 +35,14 @@ export class DiscardPickingComponent extends LitElement {
           type=${ButtonType.Secondary}
           size=${Size.Md}
         >
-          <button @click=${this.close}>${i18n('picking-lists.cancel')}</button>
+          <button @click=${this.close}>
+            ${this.i18n('picking-lists.cancel')}
+          </button>
         </oryx-button>
 
         <oryx-button slot="footer" type=${ButtonType.Critical} size=${Size.Md}>
           <button @click=${this.discard}>
-            ${i18n('picking-lists.discard')}
+            ${this.i18n('picking-lists.discard')}
           </button>
         </oryx-button>
       </oryx-modal>

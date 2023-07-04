@@ -1,7 +1,7 @@
 import { FacetValue } from '@spryker-oryx/product';
 import {
   computed,
-  i18n,
+  I18nMixin,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
@@ -12,7 +12,7 @@ import { FacetController } from './controllers';
 import { searchFacetStyles } from './facet.styles';
 
 @signalAware()
-export class SearchFacetComponent extends LitElement {
+export class SearchFacetComponent extends I18nMixin(LitElement) {
   static styles = [searchFacetStyles];
 
   protected controller = new FacetController(this);
@@ -54,7 +54,7 @@ export class SearchFacetComponent extends LitElement {
       ${when(
         valuesLength,
         () => this.renderValues(facet.values),
-        () => html`${i18n('search.facet.no-results-found')}`
+        () => html`${this.i18n('search.facet.no-results-found')}`
       )}
     </oryx-search-facet-value-navigation>`;
   }

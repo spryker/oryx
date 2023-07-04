@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin, ProductPrices } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
-import { computed, hydratable, i18n } from '@spryker-oryx/utilities';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { combineLatest, Observable } from 'rxjs';
 import { Prices, ProductPriceOptions } from './price.model';
@@ -64,7 +64,7 @@ export class ProductPriceComponent extends ProductMixin(
       return;
 
     return html`<span part="tax">
-      ${i18n(
+      ${this.i18n(
         `product.price.${
           this.$product()?.price?.originalPrice?.isNet
             ? 'tax-excluded'
