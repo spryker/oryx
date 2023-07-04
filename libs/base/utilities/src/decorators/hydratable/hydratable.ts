@@ -4,8 +4,9 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
-import { isServer, LitElement, render, TemplateResult } from 'lit';
+import { isServer, LitElement, noChange, render, TemplateResult } from 'lit';
 import { Effect, effect, resolvingSignals } from '../../signals';
+import { digestForTemplateValues } from './digest-for-template';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
@@ -75,7 +76,8 @@ function hydratableClass<T extends Type<HTMLElement>>(
       if (isServer) {
         // we trigger SSR awaiter on the server, to resolve all asynchronous logic before rendering
         this[SIGNAL_EFFECT] = effect(() => {
-          super.render();
+          const result = super.render();
+          this.setAttribute('digestHack', digestForTemplateValues(result));
         });
       }
     }
@@ -134,13 +136,25 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     render(): TemplateResult {
       const result = super.render();
+
+      const digestFromAttribute = this.getAttribute('digestHack');
+      const digest = digestForTemplateValues(result);
+      // console.log(
+      //   this.tagName,
+      //   digest,
+      //   digestFromAttribute,
+      //   digest === digestFromAttribute
+      // );
+
       if (this[SIGNAL_EFFECT]) {
         this[SIGNAL_EFFECT]!.stop();
         delete this[SIGNAL_EFFECT];
+        if (!isServer && digest !== digestFromAttribute)
+          return (() => noChange)() as any;
       }
 
       if (!isServer) {
-        // this.style.border = '1px solid red';
+        this.style.border = '1px solid red';
       }
 
       this.set;
