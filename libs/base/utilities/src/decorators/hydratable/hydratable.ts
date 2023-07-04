@@ -112,8 +112,8 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       this[DEFER_HYDRATION] = 2; // pre-hydrating
 
-      let resolve;
-      const promise = new Promise(function (res) {
+      let resolve: () => void | undefined;
+      const promise = new Promise<void>(function (res) {
         resolve = res;
       });
 
