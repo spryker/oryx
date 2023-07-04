@@ -22,6 +22,12 @@
           "record": true,
           "tag": "regression"
         },
+        "headless-ci-release": {
+          "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
+          "watch": false,
+          "record": true,
+          "tag": "release"
+        },
         "smoke": {
           "browser": "electron",
           "env": {
