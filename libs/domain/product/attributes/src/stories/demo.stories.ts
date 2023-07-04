@@ -22,6 +22,11 @@ export default {
       table: { category: 'demo' },
     },
   },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 type Props = ProductAttributesOptions & ProductComponentProperties;

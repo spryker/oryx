@@ -18,7 +18,7 @@ export class ProductPageDescriptionMetaResolver implements PageMetaResolver {
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
-      this.context.get(document.body, ProductContext.SKU),
+      this.context.get(null, ProductContext.SKU),
       this.router
         .currentRoute()
         .pipe(map((route) => route.includes('product'))),
@@ -26,7 +26,7 @@ export class ProductPageDescriptionMetaResolver implements PageMetaResolver {
   }
 
   resolve(): Observable<ElementResolver> {
-    return this.context.get(document.body, ProductContext.SKU).pipe(
+    return this.context.get(null, ProductContext.SKU).pipe(
       switchMap((sku) => {
         if (!sku) {
           return of({});
