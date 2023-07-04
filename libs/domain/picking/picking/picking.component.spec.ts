@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
-import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { tabsComponent } from '@spryker-oryx/ui/tabs';

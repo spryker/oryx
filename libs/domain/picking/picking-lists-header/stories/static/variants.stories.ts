@@ -4,7 +4,7 @@ import {
 } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, LitElement, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
+import { storybookPrefix } from '../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Picking List Header/Static`,
