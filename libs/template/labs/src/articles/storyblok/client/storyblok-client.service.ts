@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 export const StoryblokToken = 'oryx.StoryblokToken';
-export const StoryblokApiService = 'oryx.StoryblokApiService';
+export const StoryblokClientService = 'oryx.StoryblokClientService';
 
 declare global {
   interface Environment {
@@ -20,6 +20,7 @@ interface StoryblokContent {
     content: string;
     description: string;
     heading: string;
+    id: string;
     _uid: string;
   };
 }
@@ -32,13 +33,13 @@ export interface StoryblokEntriesResponse {
   stories: StoryblokContent[];
 }
 
-export interface StoryblokApiService {
+export interface StoryblokClientService {
   getEntries(search: StoryblokSearch): Observable<StoryblokEntriesResponse>;
   getEntry(search: StoryblokSearch): Observable<StoryblokEntryResponse>;
 }
 
 declare global {
   interface InjectionTokensContractMap {
-    [StoryblokApiService]: StoryblokApiService;
+    [StoryblokClientService]: StoryblokClientService;
   }
 }

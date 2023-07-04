@@ -4,10 +4,10 @@ import { Provider } from '@spryker-oryx/di';
 import { SuggestionAdapter } from '@spryker-oryx/search';
 import { factory } from '../stubs';
 import {
-  DefaultStoryblokApiService,
-  StoryblokApiService,
+  DefaultStoryblokClientService,
+  StoryblokClientService,
   StoryblokToken,
-} from './api';
+} from './client';
 import { DefaultStoryblokSuggestionAdapter } from './storyblok-suggestion.adapter';
 import { StoryblokAdapter } from './storyblok.adapter';
 
@@ -17,8 +17,8 @@ export const storyblokProviders: Provider[] = [
     useFactory: () => injectEnv('ORYX_STORYBLOK_TOKEN', ''),
   },
   {
-    provide: StoryblokApiService,
-    useFactory: () => factory(DefaultStoryblokApiService, [StoryblokToken]),
+    provide: StoryblokClientService,
+    useFactory: () => factory(DefaultStoryblokClientService, [StoryblokToken]),
   },
   {
     provide: ContentAdapter,

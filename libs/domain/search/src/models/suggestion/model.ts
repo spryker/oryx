@@ -15,6 +15,7 @@ export interface SuggestionResource {
   url?: string;
   params?: Record<string, string>;
   id?: string;
+  type: SemanticLinkType;
 }
 
 export interface Suggestion {

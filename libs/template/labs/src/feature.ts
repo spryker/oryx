@@ -1,4 +1,6 @@
+import { provideExperienceData } from '@spryker-oryx/experience';
 import { contentfulProviders, storyblokProviders } from './articles';
+import * as articles from './articles/article-page';
 import { bazaarVoiceComponentMapping } from './bazaarvoice';
 import { cloudinaryImageConverter } from './cloudinary';
 import * as components from './components';
@@ -25,6 +27,7 @@ export const labsFeatures: AppFeature[] = [
       bazaarVoiceComponentMapping,
       ...contentfulProviders,
       ...storyblokProviders,
+      provideExperienceData(Object.values(articles)),
     ],
   },
   labsI18nFeature,

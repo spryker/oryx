@@ -6,10 +6,10 @@ import {
 } from '@spryker-oryx/content';
 import { inject } from '@spryker-oryx/di';
 import { map, Observable, of } from 'rxjs';
-import { StoryblokApiService } from './api';
+import { StoryblokClientService } from './client';
 
 export class StoryblokAdapter implements ContentAdapter {
-  constructor(protected storyblok = inject(StoryblokApiService)) {}
+  constructor(protected storyblok = inject(StoryblokClientService)) {}
 
   getKey(qualifier: ContentQualifier): string {
     return `${qualifier.id ?? ''}${qualifier.type ?? ''}`;

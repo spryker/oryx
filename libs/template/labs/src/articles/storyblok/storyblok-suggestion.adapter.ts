@@ -5,11 +5,12 @@ import {
   SuggestionField,
   SuggestionQualifier,
 } from '@spryker-oryx/search';
+import { SemanticLinkType } from '@spryker-oryx/site';
 import { map, Observable, of } from 'rxjs';
-import { StoryblokApiService } from './api';
+import { StoryblokClientService } from './client';
 
 export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
-  constructor(protected storyblok = inject(StoryblokApiService)) {}
+  constructor(protected storyblok = inject(StoryblokClientService)) {}
 
   getKey({ query }: SuggestionQualifier): string {
     return query ?? '';
@@ -21,11 +22,12 @@ export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
     }
 
     return this.storyblok.getEntries({ query }).pipe(
-      map((data) => data.stories.map((story) => story.content.heading)),
+      map((data) => data.stories.map((story) => story.content.id)),
       map((names) => ({
         [SuggestionField.Articles]: names?.map((name) => ({
           name,
           id: name,
+          type: SemanticLinkType.Faq,
         })),
       }))
     );

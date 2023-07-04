@@ -87,13 +87,11 @@ describe('DefaultSuggestionRendererService', () => {
       );
       expect(mockSuggestionRendererProducts).toHaveBeenCalledWith('a', {
         title: 'search.box.products',
-        type: 'search',
         query: 'que',
         max: 3,
       });
       expect(mockSuggestionRendererB).toHaveBeenCalledWith('b', {
         title: 'search.box.b',
-        type: 'search',
         query: 'que',
       });
       expect(result).toBe('<div a></div>,<div b></div>');

@@ -26,7 +26,7 @@ const legalLinks = {
     link('Imprint', '/faq/imprint'),
     link('Terms & conditions', '/article/terms-and-conditions'),
     link('Privacy Notice', '/article/privacy'),
-    link('Data preference', '/faq/data-preference'),
+    link('Data preference'),
     link('Condition of use'),
   ],
   options: { data: { rules: [{ layout: 'flex', divider: true }] } },

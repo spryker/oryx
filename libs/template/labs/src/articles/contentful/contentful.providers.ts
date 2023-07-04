@@ -4,11 +4,11 @@ import { Provider } from '@spryker-oryx/di';
 import { SuggestionAdapter } from '@spryker-oryx/search';
 import { factory } from '../stubs';
 import {
-  ContentfulApiService,
+  ContentfulClientService,
   ContentfulSpace,
   ContentfulToken,
-  DefaultContentfulApiService,
-} from './api';
+  DefaultContentfulClientService,
+} from './client';
 import { DefaultContentfulSuggestionAdapter } from './contentful-suggestion.adapter';
 import { ContentfulAdapter } from './contentful.adapter';
 
@@ -22,9 +22,12 @@ export const contentfulProviders: Provider[] = [
     useFactory: () => injectEnv('ORYX_CONTENTFUL_SPACE', ''),
   },
   {
-    provide: ContentfulApiService,
+    provide: ContentfulClientService,
     useFactory: () =>
-      factory(DefaultContentfulApiService, [ContentfulSpace, ContentfulToken]),
+      factory(DefaultContentfulClientService, [
+        ContentfulSpace,
+        ContentfulToken,
+      ]),
   },
   {
     provide: ContentAdapter,

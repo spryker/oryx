@@ -3,14 +3,14 @@ import { inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { Observable, switchMap } from 'rxjs';
 import {
-  StoryblokApiService,
+  StoryblokClientService,
   StoryblokEntriesResponse,
   StoryblokEntryResponse,
   StoryblokSearch,
   StoryblokToken,
-} from './storyblok-api.service';
+} from './storyblok-client.service';
 
-export class DefaultStoryblokApiService implements StoryblokApiService {
+export class DefaultStoryblokClientService implements StoryblokClientService {
   protected endpoint = `https://api.storyblok.com/v2/cdn/stories/`;
 
   constructor(
@@ -20,25 +20,21 @@ export class DefaultStoryblokApiService implements StoryblokApiService {
   ) {}
 
   getEntries(search: StoryblokSearch): Observable<StoryblokEntriesResponse> {
-    return this.locale
-      .get()
-      .pipe(
-        switchMap((locale) =>
-          this.http.get<StoryblokEntriesResponse>(
-            `${this.endpoint}?search_term=${search.query}&token=${this.storyblokToken}&language=${locale}`
-          )
-        )
-      );
+    const endpoint = `${this.endpoint}?search_term=${search.query}&token=${this.storyblokToken}`;
+    return this.search<StoryblokEntriesResponse>(endpoint);
   }
 
   getEntry(search: StoryblokSearch): Observable<StoryblokEntryResponse> {
+    const endpoint = `${this.endpoint}/${search.slug}?token=${this.storyblokToken}`;
+    return this.search<StoryblokEntryResponse>(endpoint);
+  }
+
+  protected search<T>(endpoint: string): Observable<T> {
     return this.locale
       .get()
       .pipe(
         switchMap((locale) =>
-          this.http.get<StoryblokEntryResponse>(
-            `${this.endpoint}/${search.slug}?token=${this.storyblokToken}&language=${locale}`
-          )
+          this.http.get<T>(`${endpoint}&language=${locale}`)
         )
       );
   }

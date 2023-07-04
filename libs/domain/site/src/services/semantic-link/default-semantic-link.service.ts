@@ -11,6 +11,8 @@ export class DefaultSemanticLinkService implements SemanticLinkService {
   protected types = {
     [SemanticLinkType.Article]: (link: SemanticLink): string =>
       `/article/${encodeURIComponent(link.id ?? '')}`,
+    [SemanticLinkType.Faq]: (link: SemanticLink): string =>
+      `/faq/${encodeURIComponent(link.id ?? '')}`,
     [SemanticLinkType.ProductList]: (link: SemanticLink): string =>
       `/search${
         link.params

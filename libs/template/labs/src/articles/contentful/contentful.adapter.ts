@@ -6,10 +6,10 @@ import {
 } from '@spryker-oryx/content';
 import { inject } from '@spryker-oryx/di';
 import { map, Observable, of } from 'rxjs';
-import { ContentfulApiService } from './api';
+import { ContentfulClientService } from './client';
 
 export class ContentfulAdapter implements ContentAdapter {
-  constructor(protected contentful = inject(ContentfulApiService)) {}
+  constructor(protected contentful = inject(ContentfulClientService)) {}
 
   getKey(qualifier: ContentQualifier): string {
     return `${qualifier.id ?? ''}${qualifier.type ?? ''}`;

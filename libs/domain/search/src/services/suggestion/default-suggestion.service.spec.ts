@@ -1,6 +1,7 @@
 import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { createSuggestionMock } from '@spryker-oryx/search/mocks';
+import { SemanticLinkType } from '@spryker-oryx/site';
 import { Observable, of, switchMap, take } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { SuggestionQualifier } from '../../models';
@@ -69,7 +70,11 @@ describe('DefaultSuggestionService', () => {
         expect.objectContaining({
           [SuggestionField.Suggestions]: completion
             .slice(0, 3)
-            .map((name) => ({ name, params: { q: name } })),
+            .map((name) => ({
+              name,
+              params: { q: name },
+              type: SemanticLinkType.ProductList,
+            })),
         })
       );
     });

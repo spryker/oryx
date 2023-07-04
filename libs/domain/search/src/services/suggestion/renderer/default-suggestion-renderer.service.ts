@@ -1,5 +1,4 @@
 import { inject } from '@spryker-oryx/di';
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { html, TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
 import { Suggestion } from '../../../models';
@@ -25,12 +24,6 @@ export class DefaultSuggestionRendererService
       {} as SuggestionRendererRenderers
     )
   ) {}
-
-  // TODO: find out another solution
-  protected linkTypeMapper: Record<string, SemanticLinkType> = {
-    [SuggestionField.Categories]: SemanticLinkType.Category,
-    [SuggestionField.Articles]: SemanticLinkType.Article,
-  };
 
   get(
     query: string,
@@ -68,7 +61,6 @@ export class DefaultSuggestionRendererService
       const args = {
         query: options.query,
         title: `search.box.${entity}`,
-        type: this.linkTypeMapper[entity] ?? SemanticLinkType.ProductList,
         ...options[entity as SuggestionField],
       };
 
