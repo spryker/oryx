@@ -1,10 +1,11 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { combineLatest, Observable, switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import {
   StoryblokApiService,
-  StoryblokResponse,
+  StoryblokEntriesResponse,
+  StoryblokEntryResponse,
   StoryblokSearch,
   StoryblokToken,
 } from './storyblok-api.service';
@@ -18,21 +19,27 @@ export class DefaultStoryblokApiService implements StoryblokApiService {
     protected http = inject(HttpService)
   ) {}
 
-  getEntries(search: StoryblokSearch): Observable<StoryblokResponse> {
-    throw new Error('Method not implemented.');
+  getEntries(search: StoryblokSearch): Observable<StoryblokEntriesResponse> {
+    return this.locale
+      .get()
+      .pipe(
+        switchMap((locale) =>
+          this.http.get<StoryblokEntriesResponse>(
+            `${this.endpoint}?search_term=${search.query}&token=${this.storyblokToken}&language=${locale}`
+          )
+        )
+      );
   }
 
-  getEntry(search: StoryblokSearch): Observable<StoryblokResponse> {
-    return combineLatest([this.locale.get(), this.locale.getAll()]).pipe(
-      switchMap(([locale, all]) => {
-        const name = all
-          .find((_locale) => _locale.code === locale)
-          ?.name.replace('_', '-');
-
-        return this.http.get<StoryblokResponse>(
-          `${this.endpoint}/${search.slug}?token=${this.storyblokToken}`
-        );
-      })
-    );
+  getEntry(search: StoryblokSearch): Observable<StoryblokEntryResponse> {
+    return this.locale
+      .get()
+      .pipe(
+        switchMap((locale) =>
+          this.http.get<StoryblokEntryResponse>(
+            `${this.endpoint}/${search.slug}?token=${this.storyblokToken}&language=${locale}`
+          )
+        )
+      );
   }
 }

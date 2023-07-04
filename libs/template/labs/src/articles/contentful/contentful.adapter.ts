@@ -29,18 +29,18 @@ export class ContentfulAdapter implements ContentAdapter {
       })
       .pipe(
         map((entries) => {
-          const field = entries.items.find(
+          const entry = entries.items.find(
             (entry) => entry.fields.id === qualifier.id
           );
 
-          if (!field) {
+          if (!entry) {
             return null;
           }
 
           return {
-            heading: field?.fields.heading,
-            description: field?.fields.description,
-            content: field?.fields.content,
+            heading: entry?.fields.heading,
+            description: entry?.fields.description,
+            content: entry?.fields.content,
           };
         })
       );

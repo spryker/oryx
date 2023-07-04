@@ -25,7 +25,7 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
         query: this.getKey({ query }),
       })
       .pipe(
-        map((data) => data.items.map((entry) => entry.sys.contentType.sys.id)),
+        map((data) => data.items.map((entry) => entry.fields.id)),
         map((names) => ({
           [SuggestionField.Articles]: names?.map((name) => ({
             name,

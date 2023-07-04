@@ -14,21 +14,27 @@ export interface StoryblokSearch {
   query?: string;
 }
 
-export interface StoryblokResponse {
-  story: {
-    content: {
-      component: string;
-      content: string;
-      description: string;
-      heading: string;
-      _uid: string;
-    };
+interface StoryblokContent {
+  content: {
+    component: string;
+    content: string;
+    description: string;
+    heading: string;
+    _uid: string;
   };
 }
 
+export interface StoryblokEntryResponse {
+  story: StoryblokContent;
+}
+
+export interface StoryblokEntriesResponse {
+  stories: StoryblokContent[];
+}
+
 export interface StoryblokApiService {
-  getEntries(search: StoryblokSearch): Observable<any>;
-  getEntry(search: StoryblokSearch): Observable<StoryblokResponse>;
+  getEntries(search: StoryblokSearch): Observable<StoryblokEntriesResponse>;
+  getEntry(search: StoryblokSearch): Observable<StoryblokEntryResponse>;
 }
 
 declare global {

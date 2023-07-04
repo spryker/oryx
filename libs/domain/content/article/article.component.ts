@@ -34,15 +34,12 @@ export class ArticleComponent extends ContentMixin<ContentArticleOptions>(
   );
 
   protected $data = computed(() => {
+    const { entities } = this.$options();
     const id = this.$articleId();
     const type = this.$articleType();
 
-    return id
-      ? this.contentService.get({
-          id,
-          type,
-          entities: this.$options().entities,
-        })
+    return id && type
+      ? this.contentService.get({ id, type, entities })
       : of(null);
   });
 

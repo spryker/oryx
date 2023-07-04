@@ -20,18 +20,14 @@ export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
       return of({});
     }
 
-    return this.storyblok
-      .getEntries({
-        query: this.getKey({ query }),
-      })
-      .pipe(
-        map((data) => data.items.map((entry) => entry.sys.contentType.sys.id)),
-        map((names) => ({
-          [SuggestionField.Articles]: names?.map((name) => ({
-            name,
-            id: name,
-          })),
-        }))
-      );
+    return this.storyblok.getEntries({ query }).pipe(
+      map((data) => data.stories.map((story) => story.content.heading)),
+      map((names) => ({
+        [SuggestionField.Articles]: names?.map((name) => ({
+          name,
+          id: name,
+        })),
+      }))
+    );
   }
 }
