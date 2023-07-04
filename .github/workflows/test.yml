@@ -19,6 +19,18 @@ env:
   IS_DEV: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/development' }}
 
 jobs:
+  test-pr-title:
+    if: github.event_name == 'pull_request'
+    permissions:
+      statuses: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aslafy-z/conventional-pr-title-action@v3
+        with:
+          preset: conventional-changelog-conventionalcommits@5.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
   test-format:
     runs-on: ubuntu-latest
     steps:
@@ -29,6 +41,7 @@ jobs:
       - uses: ./.github/actions/init
       - name: Format
         run: npx nx format:check --verbose
+
   test-lint:
     runs-on: ubuntu-latest
     steps:
@@ -43,6 +56,7 @@ jobs:
           cmd: npx nx run-many --target=lint --all --parallel=2
           affectedCmd: npx nx affected:lint
           isDev: ${{ env.IS_DEV }}
+
   test-stylelint:
     runs-on: ubuntu-latest
     steps:
@@ -57,6 +71,7 @@ jobs:
           cmd: npx nx run-many --target=stylelint --all --parallel=2
           affectedCmd: npx nx affected --target=stylelint
           isDev: ${{ env.IS_DEV }}
+
   test-tsconfig:
     runs-on: ubuntu-latest
     steps:
@@ -71,6 +86,7 @@ jobs:
           cmd: npx nx run-many --target=paths --all --parallel=2
           affectedCmd: npx nx affected --target=paths
           isDev: ${{ env.IS_DEV }}
+
   test-unit:
     runs-on: ubuntu-latest
     steps:
@@ -89,6 +105,7 @@ jobs:
             node tools/coverage-reports/create-merged-layer-coverage-report.js libs/platform
           affectedCmd: npx nx affected:test
           isDev: ${{ env.IS_DEV }}
+
   test-visual-pr:
     if: ${{ github.actor != 'dependabot[bot]' && github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
@@ -104,6 +121,7 @@ jobs:
           CHROMATIC_SHA: ${{ github.event.pull_request.head.sha }}
           CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref }}
         run: npx nx run storybook:visual-regression-pr
+
   test-visual-dev:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
@@ -119,6 +137,7 @@ jobs:
           CHROMATIC_SHA: ${{ github.event.after }}
           CHROMATIC_BRANCH: development
         run: npx nx run storybook:visual-regression-branch
+
   test-e2e-storefront:
     if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
@@ -138,6 +157,7 @@ jobs:
           cmd: npm run sf:e2e:headless:ci
           affectedCmd: npm run sf:e2e:headless:ci:affected
           isDev: ${{ env.IS_DEV }}
+
   test-e2e-fulfillment:
     if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
@@ -157,6 +177,7 @@ jobs:
           cmd: npm run fa:e2e:headless:ci
           affectedCmd: npm run fa:e2e:headless:ci:affected
           isDev: ${{ env.IS_DEV }}
+
   test-build:
     runs-on: ubuntu-latest
     steps:
@@ -171,14 +192,3 @@ jobs:
           cmd: npx nx run-many --target=build --all --parallel=2
           affectedCmd: npx nx affected:build
           isDev: ${{ env.IS_DEV }}
-  test-pr-title:
-    permissions:
-      statuses: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: aslafy-z/conventional-pr-title-action@v3
-        with:
-          preset: conventional-changelog-conventionalcommits@5.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-    if: github.event_name == 'pull_request'
