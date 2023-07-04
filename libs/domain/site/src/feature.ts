@@ -1,7 +1,7 @@
 import { AppFeature } from '@spryker-oryx/core';
-import * as components from './components/def';
+import * as components from './components';
 import { siteProviders } from './services';
-export * from './components/def';
+export * from './components';
 
 export const siteComponents = Object.values(components);
 
