@@ -143,10 +143,10 @@ export class ToggleController implements ReactiveController {
   protected async handleMouseup(e: MouseEvent): Promise<void> {
     this.focusShouldBeFocusedMaybe();
 
-    const outside =
+    const isEmitterOutside =
       timePassed(this.timeStarted) && !this.emitterIsInsidePopover(e);
 
-    if ((await this.shouldClosePopover(e)) || outside) {
+    if ((await this.shouldClosePopover(e)) || isEmitterOutside) {
       this.toggle(false);
     }
   }
