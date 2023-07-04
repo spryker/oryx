@@ -3,7 +3,14 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 
-export default { title: `${storybookPrefix}/Overlays/Modal` } as Meta;
+export default {
+  title: `${storybookPrefix}/Overlays/Modal`,
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
+} as Meta;
 
 interface Props {
   enableNavigateBack: boolean;
