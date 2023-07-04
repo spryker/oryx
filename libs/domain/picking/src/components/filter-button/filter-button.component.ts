@@ -38,7 +38,7 @@ export class FilterButtonComponent extends LitElement {
           ?checked=${this.$selectedFilters()}
           @click=${(e: Event) => this.onClick(e)}
         />
-        <oryx-icon .type=${IconTypes.Filter}></oryx-icon>
+        <oryx-icon .type=${IconTypes.Filters}></oryx-icon>
         <span>${i18n('picking.filter.sort')}</span>
       </oryx-toggle-icon>
 

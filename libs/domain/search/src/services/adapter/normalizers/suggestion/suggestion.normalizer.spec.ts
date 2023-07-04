@@ -1,5 +1,6 @@
 import { ConcreteProductsNormalizer } from '@spryker-oryx/product';
 import { of, take } from 'rxjs';
+import { SuggestionField } from '../../suggestion.adapter';
 import { DeserializedSuggestion } from './model';
 import {
   suggestionAttributesNormalizer,
@@ -10,13 +11,11 @@ const mockDeserializedSuggestion = {
   completion: ['A'],
   categories: [
     {
-      url: 'categories-url',
       name: 'name',
     },
   ],
   cmsPages: [
     {
-      url: 'cmsPages-url',
       name: 'name',
     },
   ],
@@ -35,9 +34,13 @@ describe('Suggestion Normalizers', () => {
   describe('Suggestion Attributes Normalizer', () => {
     it('should transform DeserializedSuggestion into Suggestion', () => {
       const mockResult = {
-        completion: mockDeserializedSuggestion.completion,
-        categories: mockDeserializedSuggestion.categories,
-        cmsPages: mockDeserializedSuggestion.cmsPages,
+        [SuggestionField.Suggestions]: [
+          {
+            name: mockDeserializedSuggestion.completion[0],
+            params: { q: mockDeserializedSuggestion.completion[0] },
+          },
+        ],
+        [SuggestionField.Categories]: mockDeserializedSuggestion.categories,
       };
       const normalized = suggestionAttributesNormalizer([
         mockDeserializedSuggestion,

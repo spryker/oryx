@@ -39,18 +39,22 @@ beforeAll(() => {
         pass: true,
       };
     },
-    toContainElement: (component: LitElement, selector: string) => {
-      if (!getShadowElementBySelector(component, selector)) {
-        return {
-          message: (): string =>
-            `Expected element to be in DOM but it was not.`,
-          pass: false,
-        };
-      }
+    toContainElement: (
+      component: LitElement | HTMLElement,
+      selector: string
+    ) => {
+      const pass =
+        (component instanceof LitElement &&
+          !!getShadowElementBySelector(component, selector)) ||
+        (component instanceof HTMLElement &&
+          !!component.querySelector(selector));
 
       return {
-        message: (): string => `Element properly rendered`,
-        pass: true,
+        message: (): string =>
+          pass
+            ? 'Element properly rendered'
+            : 'Expected element to be in DOM but it was not.',
+        pass,
       };
     },
     toContainSlottedElement: (

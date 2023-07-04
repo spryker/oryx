@@ -1,4 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
+import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ProductService } from '@spryker-oryx/product';
@@ -38,6 +39,10 @@ describe('ProductAvailabilityComponent', () => {
         {
           provide: ProductService,
           useClass: MockProductService,
+        },
+        {
+          provide: ContextService,
+          useClass: DefaultContextService,
         },
       ],
     });

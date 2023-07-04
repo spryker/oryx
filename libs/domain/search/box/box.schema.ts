@@ -1,6 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { SuggestionField } from '../src/services';
 import { SearchBoxComponent } from './box.component';
 
 export const searchBoxComponentSchema: ContentComponentSchema<SearchBoxComponent> =
@@ -13,19 +14,20 @@ export const searchBoxComponentSchema: ContentComponentSchema<SearchBoxComponent
         type: FormFieldType.Number,
         min: 0,
       },
-      completionsCount: {
+      // TODO: improve form for object options
+      [`${SuggestionField.Suggestions}Count`]: {
         type: FormFieldType.Number,
         min: 0,
       },
-      productsCount: {
+      [`${SuggestionField.Products}Count`]: {
         type: FormFieldType.Number,
         min: 0,
       },
-      categoriesCount: {
+      [`${SuggestionField.Categories}Count`]: {
         type: FormFieldType.Number,
         min: 0,
       },
-      cmsCount: {
+      [`${SuggestionField.Articles}Count`]: {
         type: FormFieldType.Number,
         min: 0,
       },

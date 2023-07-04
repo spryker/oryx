@@ -201,10 +201,6 @@ describe('SiteNavigationItemComponent', () => {
       expect(element).toContainElement('oryx-modal');
     });
 
-    it('should render fullscreen modal', () => {
-      expect(element).toContainElement('oryx-modal[fullscreen]');
-    });
-
     describe('and label is provided', () => {
       beforeEach(async () => {
         element = await fixture(html`

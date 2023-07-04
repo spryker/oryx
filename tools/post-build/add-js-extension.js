@@ -3,17 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
-
-async function* walk(dir) {
-  for await (const d of await fs.promises.opendir(dir)) {
-    const entry = path.join(dir, d.name);
-    if (d.isDirectory()) {
-      yield* walk(entry);
-    } else if (d.isFile()) {
-      yield entry;
-    }
-  }
-}
+const { walk, defaultOptions, defaultSourceFileFilter, defaultModuleFilter } = require('./utils');
 
 function resolveImportPath(sourceFile, importPath, options) {
   const sourceFileAbs = path.resolve(process.cwd(), sourceFile);
@@ -105,18 +95,5 @@ async function run(srcDir, options = defaultOptions) {
     }
   }
 }
-
-const defaultSourceFileFilter = function (sourceFilePath) {
-  return /\.(js|ts)$/.test(sourceFilePath) && !/node_modules/.test(sourceFilePath);
-};
-
-const defaultModuleFilter = function (importedModule) {
-  return !path.isAbsolute(importedModule) && !importedModule.startsWith('@') && !importedModule.endsWith('.js');
-};
-
-const defaultOptions  = {
-  sourceFileFilter: defaultSourceFileFilter,
-  moduleFilter: defaultModuleFilter,
-};
 
 run('./dist/libs/', defaultOptions);

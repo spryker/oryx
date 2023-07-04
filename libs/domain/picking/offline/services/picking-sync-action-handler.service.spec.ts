@@ -18,7 +18,9 @@ class MockIndexedDbService implements Partial<IndexedDbService> {
 class MockPickingListOnlineAdapter
   implements Partial<PickingListOnlineAdapter>
 {
-  get = vi.fn().mockReturnValue(of([]));
+  get = vi
+    .fn()
+    .mockReturnValue(of([{ id: 'id1' }, { id: 'id2' }, { id: 'id3' }]));
   finishPicking = vi.fn().mockReturnValue(of([]));
 }
 
@@ -27,6 +29,12 @@ const mockContent = { items: [] };
 class MockTable implements Partial<Table> {
   bulkPut = vi.fn().mockReturnValue([]);
   update = vi.fn().mockReturnValue(mockContent);
+  bulkDelete = vi.fn();
+  where = vi.fn().mockReturnValue({
+    anyOf: vi.fn().mockReturnValue({
+      count: vi.fn().mockResolvedValue(0),
+    }),
+  });
 }
 
 const mockTable = new MockTable();
@@ -96,6 +104,27 @@ describe('PickingSyncActionHandlerService', () => {
     expect(service).toBeInstanceOf(PickingSyncActionHandlerService);
   });
 
+  const callback = vi.fn();
+
+  describe('when handleSync is called with an unknown action', () => {
+    const unknownSync = {
+      ...mockSync,
+      action: 'Unknown' as unknown as PickingSyncAction,
+    };
+
+    beforeEach(() => {
+      service.handleSync(unknownSync).subscribe({ error: callback });
+    });
+
+    it('should throw error', () => {
+      expect(callback).toHaveBeenCalledWith(
+        new Error(
+          `PickingSyncActionHandlerService: Unable to handle unknown sync action '${unknownSync.action}'!`
+        )
+      );
+    });
+  });
+
   describe('when finishPicking action is handled', () => {
     const callback = vi.fn();
     beforeEach(() => {
@@ -111,7 +140,7 @@ describe('PickingSyncActionHandlerService', () => {
     describe('and store is not updated', () => {
       const callback = vi.fn();
       beforeEach(() => {
-        mockTable.update.mockReturnValue(Promise.resolve(0));
+        mockTable.update.mockReturnValue(0);
 
         service.handleSync(mockSync).subscribe({ error: callback });
       });
@@ -129,51 +158,41 @@ describe('PickingSyncActionHandlerService', () => {
   describe('when Push action is handled', () => {
     const mockPickingLists = [{ id: 'id1' }, { id: 'id2' }];
 
+    const pickingListsIdsToRemove = ['id3'];
+    const mockPickingListsIdsToCreate = mockPickingLists.map((pl) => pl.id);
+
     const mockSyncPush: Sync<PickingSyncAction.Push> = {
       ...mockSync,
       action: PickingSyncAction.Push,
       payload: {
         action: 'create',
         entity: 'picking-lists',
-        ids: mockPickingLists.map((pl) => pl.id),
+        ids: [...mockPickingListsIdsToCreate, ...pickingListsIdsToRemove],
       },
     };
 
-    const callback = vi.fn();
-
     beforeEach(() => {
       adapter.get.mockReturnValue(of(mockPickingLists));
-      mockTable.bulkPut.mockReturnValue(
-        Promise.resolve(mockSyncPush.payload.ids)
-      );
+      mockTable.bulkPut.mockReturnValue(mockPickingListsIdsToCreate);
+      mockTable.where = vi.fn().mockReturnValue({
+        anyOf: vi.fn().mockReturnValue({
+          count: vi.fn().mockResolvedValue(pickingListsIdsToRemove.length),
+        }),
+      });
       service.handleSync(mockSyncPush).subscribe(callback);
     });
 
-    it('should call online adapter and update indexedDB', async () => {
+    it('should call online adapter and update indexedDB', () => {
+      expect(callback).toHaveBeenCalled();
       expect(adapter.get).toHaveBeenCalledWith({
         ids: mockSyncPush.payload.ids,
       });
       expect(indexeddb.getStore).toHaveBeenCalledWith(PickingListEntity);
+      expect(mockTable.bulkDelete).toHaveBeenCalledWith(
+        pickingListsIdsToRemove
+      );
       expect(mockTable.bulkPut).toHaveBeenCalledWith(mockPickingLists, {
         allKeys: true,
-      });
-      expect(callback).toHaveBeenCalled();
-    });
-
-    describe('and store is not updated properly', () => {
-      beforeEach(() => {
-        mockTable.bulkPut.mockReturnValue(
-          Promise.resolve([mockSyncPush.payload.ids[0]])
-        );
-        service.handleSync(mockSyncPush).subscribe({ error: callback });
-      });
-
-      it('should throw error', () => {
-        expect(callback).toHaveBeenCalledWith(
-          new Error(
-            `PickingSyncActionHandlerService: Could not save 1 out of ${mockPickingLists.length} PickingLists after push!`
-          )
-        );
       });
     });
   });

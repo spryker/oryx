@@ -1,8 +1,17 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { IdentityService } from '@spryker-oryx/auth';
+import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Observable, switchMap, take, throwError } from 'rxjs';
+import { CurrencyService, StoreService } from '@spryker-oryx/site';
+import {
+  combineLatest,
+  map,
+  Observable,
+  of,
+  switchMap,
+  take,
+  throwError,
+} from 'rxjs';
 import {
   AddCartEntryQualifier,
   ApiCartModel,
@@ -19,7 +28,9 @@ export class DefaultCartAdapter implements CartAdapter {
     protected http = inject(HttpService),
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
     protected transformer = inject(JsonAPITransformerService),
-    protected identity = inject(IdentityService)
+    protected identity = inject(IdentityService),
+    protected store = inject(StoreService),
+    protected currency = inject(CurrencyService)
   ) {}
 
   getAll(): Observable<Cart[]> {
@@ -70,12 +81,13 @@ export class DefaultCartAdapter implements CartAdapter {
 
     return this.identity.get().pipe(
       take(1),
-      switchMap((identity) => {
-        const url = data.cartId
+      switchMap((identity) => this.createCartIfNeeded(identity, data.cartId)),
+      switchMap(([identity, cartId]) => {
+        const url = cartId
           ? this.generateUrl(
               identity.isAuthenticated
-                ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Items}`
-                : `${ApiCartModel.UrlParts.GuestCarts}/${data.cartId}/${ApiCartModel.UrlParts.GuestCartItems}`,
+                ? `${ApiCartModel.UrlParts.Carts}/${cartId}/${ApiCartModel.UrlParts.Items}`
+                : `${ApiCartModel.UrlParts.GuestCarts}/${cartId}/${ApiCartModel.UrlParts.GuestCartItems}`,
               !identity.isAuthenticated
             )
           : this.generateUrl(
@@ -96,6 +108,34 @@ export class DefaultCartAdapter implements CartAdapter {
           .post<ApiCartModel.Response>(url, body)
           .pipe(this.transformer.do(CartNormalizer));
       })
+    );
+  }
+
+  protected createCartIfNeeded(
+    identity: AuthIdentity,
+    cartId: string | undefined
+  ): Observable<[AuthIdentity, string | undefined]> {
+    if (!identity.isAuthenticated || cartId) return of([identity, cartId]);
+
+    // if we are a registered user and we do not have a cartId, we need to create a cart first
+    return combineLatest([this.store.get(), this.currency.get()]).pipe(
+      take(1),
+      switchMap(([store, currency]) =>
+        this.http.post<ApiCartModel.Response>(`${this.SCOS_BASE_URL}/carts`, {
+          data: {
+            type: 'carts',
+            attributes: {
+              name: 'My Cart',
+              // TODO: Should be dynamic, when we will start to support GROSS/NET modes
+              priceMode: 'GROSS_MODE',
+              currency: currency,
+              store: store?.id,
+            },
+          },
+        })
+      ),
+      this.transformer.do(CartNormalizer),
+      map((result) => [identity, result.id])
     );
   }
 

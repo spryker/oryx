@@ -16,6 +16,15 @@ export const fulfillmentTheme: Theme = {
         resource: fulfillmentIcons,
         types: Object.keys(fulfillmentIcons.mapping ?? {}),
       },
+      {
+        resource: {
+          id: 'material-icons',
+          styles: {
+            fill: 1,
+          },
+        },
+        types: ['person'],
+      },
     ],
   },
 };

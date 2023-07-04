@@ -103,7 +103,7 @@ jobs:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           CHROMATIC_SHA: ${{ github.event.pull_request.head.sha }}
           CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref }}
-        run: npx nx affected --target=visual-regression-pr
+        run: npx nx run storybook:visual-regression-pr
   test-visual-dev:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest

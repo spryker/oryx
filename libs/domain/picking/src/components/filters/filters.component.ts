@@ -62,7 +62,10 @@ export class FiltersComponent extends LitElement {
     this.form?.reset();
   }
 
-  protected onApply(): void {
+  protected onApply(event: Event): void {
+    if (event instanceof KeyboardEvent && event.key !== 'Enter') return;
+    event.preventDefault();
+
     //For safari 15- and other old browsers
     if (!this.form?.requestSubmit) {
       this.form?.submit();
@@ -79,26 +82,25 @@ export class FiltersComponent extends LitElement {
         enableCloseButtonInHeader
         enableNavigateBack
         enableFooter
-        fullscreen
         @oryx.back=${this.onReset}
         @oryx.close=${this.onClose}
       >
         <oryx-heading slot="heading" as-sm="h2">
-          <h4>${i18n('picking.filter.filter-&-sort')}</h4>
+          <h4>${i18n('picking.filter.sort')}</h4>
         </oryx-heading>
 
         <oryx-button slot="navigate-back" type="text">
           <button>${i18n('picking.filter.reset')}</button>
         </oryx-button>
 
-        <form @submit=${this.onSubmit}>
+        <form @submit=${this.onSubmit} @keydown=${this.onApply}>
           ${this.fieldRenderer.buildForm(fields, {
             sortBy: this.$selectedSortingValue(),
           })}
         </form>
 
         <oryx-button slot="footer">
-          <button @click=${() => this.onApply()}>
+          <button @click=${this.onApply}>
             ${i18n('picking.filter.apply')}
           </button>
         </oryx-button>

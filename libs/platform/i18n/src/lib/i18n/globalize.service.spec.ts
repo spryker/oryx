@@ -53,11 +53,11 @@ describe('GlobalizeService', () => {
 
   describe('formatMessage() method', () => {
     testCldrInit((globalizeService) =>
-      globalizeService.formatMessage('locale-id', 'token', { ctx: true })
+      globalizeService.formatMessage('locale-id', 'token', { ctx: true } as any)
     );
 
     testGlobalizeCache((globalizeService, localeId) =>
-      globalizeService.formatMessage(localeId, 'token', { ctx: true })
+      globalizeService.formatMessage(localeId, 'token', { ctx: true } as any)
     );
 
     it('should call `Globalize.formatMessage()` and return result', async () => {
@@ -65,10 +65,32 @@ describe('GlobalizeService', () => {
       const ctx = { mockCtx: true };
       globalize.formatMessage.mockReturnValue('mock-result');
 
-      const res = globalizeService.formatMessage('locale-id', 'token', ctx);
+      const res = globalizeService.formatMessage(
+        'locale-id',
+        'token',
+        ctx as any
+      );
 
       await expect(res).resolves.toBe('mock-result');
       expect(globalize.formatMessage).toHaveBeenCalledWith('token', ctx);
+    });
+
+    it('should transform deep context into flat context', async () => {
+      const { globalizeService, globalize } = setup();
+      const ctx = { mockCtx: true, deep: { deep2: { deep3: 'value' } } };
+      globalize.formatMessage.mockReturnValue('mock-result');
+
+      const res = globalizeService.formatMessage(
+        'locale-id',
+        'token',
+        ctx as any
+      );
+
+      await expect(res).resolves.toBe('mock-result');
+      expect(globalize.formatMessage).toHaveBeenCalledWith('token', {
+        mockCtx: true,
+        deepDeep2Deep3: 'value',
+      });
     });
 
     it('should return undefined if `Globalize.formatMessage()` throws', async () => {
@@ -78,7 +100,11 @@ describe('GlobalizeService', () => {
         throw new Error('Mock Error');
       });
 
-      const res = globalizeService.formatMessage('locale-id', 'token', ctx);
+      const res = globalizeService.formatMessage(
+        'locale-id',
+        'token',
+        ctx as any
+      );
 
       await expect(res).resolves.toBe(undefined);
       expect(globalize.formatMessage).toHaveBeenCalledWith('token', ctx);

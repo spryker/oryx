@@ -2,6 +2,12 @@ import { ThemeToken } from '@spryker-oryx/experience';
 
 export const layoutTokens: ThemeToken = {
   container: { width: '1340px', bleed: '50px' },
+
+  modal: {
+    width: '510px',
+    bleed: '30px',
+  },
+
   column: {
     base: '12',
     gap: '20px',
@@ -18,12 +24,18 @@ export const layoutMdTokens: ThemeToken = {
     base: '8',
     grid: '3',
     split: { equal: '4', aside: '2.66', main: '5' },
-    // aside seems off! when we combine split column and grid (i.e. on plp)
   },
 };
 
 export const layoutSmTokens: ThemeToken = {
-  container: { bleed: '0px' },
+  container: { bleed: '16px' },
+  modal: {
+    width: '100vw',
+    bleed: '0px',
+    'max-width': '100vw',
+    radius: '0px',
+    height: '100vh',
+  },
   column: {
     base: '4',
     grid: '2',

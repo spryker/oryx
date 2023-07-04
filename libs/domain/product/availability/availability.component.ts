@@ -3,6 +3,7 @@ import { ProductMixin } from '@spryker-oryx/product';
 import { AlertType } from '@spryker-oryx/ui';
 import { computed, hydratable, i18n } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { when } from 'lit/directives/when.js';
 import {
   CartItemAvailabilityOptions,
   StockAvailability,
@@ -16,7 +17,7 @@ export class ProductAvailabilityComponent extends ProductMixin(
 ) {
   static styles = availabilityStyles;
 
-  protected status = computed(() => {
+  protected $status = computed(() => {
     const { isNeverOutOfStock, quantity, availability } =
       this.$product()?.availability ?? {};
     const { threshold } = this.$options();
@@ -36,24 +37,26 @@ export class ProductAvailabilityComponent extends ProductMixin(
   });
 
   protected override render(): TemplateResult | void {
-    return html`${this.renderIndicator()}${this.renderText()}`;
+    return html`${when(
+      this.$options().enableIndicator,
+      () => html`<oryx-swatch .type=${this.getAlertType()}></oryx-swatch>`
+    )}
+    ${this.renderText()}`;
   }
 
-  protected renderIndicator(): TemplateResult | void {
-    if (!this.$options().enableIndicator) return;
-
-    switch (this.status()) {
+  protected getAlertType(): AlertType {
+    switch (this.$status()) {
       case StockAvailability.InStock:
-        return html`<oryx-swatch .type=${AlertType.Success}></oryx-swatch>`;
+        return AlertType.Success;
       case StockAvailability.LowStock:
-        return html`<oryx-swatch .type=${AlertType.Warning}></oryx-swatch>`;
+        return AlertType.Warning;
       default:
-        return html`<oryx-swatch .type=${AlertType.Error}></oryx-swatch>`;
+        return AlertType.Error;
     }
   }
 
   protected renderText(): TemplateResult | void {
-    const stock = this.status();
+    const stock = this.$status();
     const availableQuantity = this.$product()?.availability?.quantity;
 
     if (stock === StockAvailability.OutOfStock)

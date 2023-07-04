@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/core",
-  "version": "0.11.0",
+  "version": "0.13.0",
   "type": "module",
   "description": "Core features for Oryx applications",
   "author": "Spryker Systems GmbH",

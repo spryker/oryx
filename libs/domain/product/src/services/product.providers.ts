@@ -1,15 +1,14 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
-  AlternativeProductsListAdapter,
   availabilityNormalizer,
   AvailabilityNormalizer,
   ConcreteProductsNormalizer,
   concreteProductsNormalizer,
-  DefaultAlternativeProductsListAdapter,
   DefaultProductAdapter,
   DefaultProductListAdapter,
   DefaultProductMediaNormalizer,
+  DefaultProductRelationsListAdapter,
   facetCategoryNormalizer,
   FacetCategoryNormalizer,
   FacetNormalizer,
@@ -25,8 +24,8 @@ import {
   productListNormalizer,
   ProductMediaSetNormalizer,
   productNormalizer,
+  ProductRelationsListAdapter,
 } from './adapter';
-import { alternativeProductsListNormalizer } from './adapter/normalizers/alternative-products-list';
 import {
   productLabelNormalizer,
   ProductLabelsNormalizer,
@@ -35,11 +34,11 @@ import {
   paginationNormalizer,
   PaginationNormalizer,
 } from './adapter/normalizers/pagination';
+import { relationsListNormalizer } from './adapter/normalizers/relations-list';
 import { sortNormalizer, SortNormalizer } from './adapter/normalizers/sort';
-import { AlternativeProductsListService } from './alternative-products-list.service';
-import { DefaultAlternativeProductsListService } from './default-alternative-products-list.service';
 import { DefaultProductListPageService } from './default-product-list-page.service';
 import { DefaultProductListService } from './default-product-list.service';
+import { DefaultProductRelationsListService } from './default-product-relations-list.service';
 import { DefaultProductService } from './default-product.service';
 import { DefaultProductImageService } from './images';
 import { ProductImageService } from './images/product-image.service';
@@ -50,6 +49,7 @@ import {
 import { ProductContextFallback } from './product-context';
 import { ProductListPageService } from './product-list-page.service';
 import { ProductListService } from './product-list.service';
+import { ProductRelationsListService } from './product-relations-list.service';
 import { ProductService } from './product.service';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
@@ -74,12 +74,12 @@ export const productProviders: Provider[] = [
     useClass: DefaultProductListService,
   },
   {
-    provide: AlternativeProductsListService,
-    useClass: DefaultAlternativeProductsListService,
+    provide: ProductRelationsListService,
+    useClass: DefaultProductRelationsListService,
   },
   {
-    provide: AlternativeProductsListAdapter,
-    useClass: DefaultAlternativeProductsListAdapter,
+    provide: ProductRelationsListAdapter,
+    useClass: DefaultProductRelationsListAdapter,
   },
   {
     provide: ProductListPageService,
@@ -139,7 +139,7 @@ export const productProviders: Provider[] = [
   },
   ...productNormalizer,
   ...productListNormalizer,
-  ...alternativeProductsListNormalizer,
+  ...relationsListNormalizer,
   ...productQueries,
   ...productEffects,
   ProductContextFallback,

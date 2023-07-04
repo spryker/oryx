@@ -13,7 +13,7 @@ const checkoutPage = new CheckoutPage();
 // TODO: refactor tests to make them more readable
 // TODO: add a test for an order with different shipping and billing addresses set
 
-describe('Checkout suite', () => {
+describe('Checkout suite', { tags: 'smoke' }, () => {
   describe('Create a new order by authorized user without addresses', () => {
     beforeEach(() => {
       cy.login();
@@ -27,7 +27,7 @@ describe('Checkout suite', () => {
     });
 
     it('must allow user to create a new order', () => {
-      const productData = ProductStorage.getProductByEq(2);
+      const productData = ProductStorage.getProductByEq(1);
 
       cy.fixture<TestCustomerData>('test-customer').then((customer) => {
         sccosApi.carts
@@ -40,18 +40,13 @@ describe('Checkout suite', () => {
         sccosApi.cartItems.post(productData, 1, cartId);
       });
 
-      cy.intercept('POST', '/checkout').as('checkout');
-      cy.intercept('/customers/*/addresses').as('addresses');
-
-      cartPage.visit();
-      cartPage.checkout();
-
+      cy.goToCheckout();
       cy.location('pathname').should('be.eq', checkoutPage.url);
-      cy.wait('@addresses');
 
       checkoutPage.shipping.addAddressForm.fillAddressForm();
-      checkoutPage.getPlaceOrderBtn().click();
 
+      cy.intercept('POST', '/checkout').as('checkout');
+      checkoutPage.getPlaceOrderBtn().click();
       cy.wait('@checkout')
         .its('response.body.data.attributes.orderReference')
         .as('createdOrderId');
@@ -93,20 +88,16 @@ describe('Checkout suite', () => {
     });
 
     it('must allow user to create a new order', () => {
-      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
+      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
 
-      cy.intercept('POST', '/checkout?include=orders').as('checkout');
-      cy.intercept('/customers/*/addresses').as('addresses');
-
-      cartPage.visit();
-      cartPage.checkout();
-
+      cy.goToCheckoutAsGuest();
       cy.location('pathname').should('be.eq', checkoutPage.anonymousUrl);
 
       checkoutPage.checkoutAsGuestForm.fillForm();
       checkoutPage.shipping.addAddressForm.fillAddressForm();
-      checkoutPage.getPlaceOrderBtn().click();
 
+      cy.intercept('POST', '/checkout?include=orders').as('checkout');
+      checkoutPage.getPlaceOrderBtn().click();
       cy.wait('@checkout')
         .its('response.body.data.attributes.orderReference')
         .as('createdOrderId');

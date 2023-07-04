@@ -4,7 +4,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LayoutBuilder, LayoutService } from '@spryker-oryx/experience';
 import {
-  AlternativeProductsListService,
+  ProductRelationsListService,
   ProductService,
 } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
@@ -20,8 +20,8 @@ class MockContextService implements Partial<ContextService> {
   get = vi.fn().mockReturnValue(of(undefined));
 }
 
-class MockAlternativeProductsListService
-  implements Partial<AlternativeProductsListService>
+class MockProductRelationsListService
+  implements Partial<ProductRelationsListService>
 {
   get = vi.fn().mockReturnValue(of(MockProductService.mockProducts));
 }
@@ -36,7 +36,7 @@ class MockLayoutService implements Partial<LayoutService> {
 
 describe('ReferencesComponent', () => {
   let element: ProductRelationsComponent;
-  let mockAlternativeProductsService: MockAlternativeProductsListService;
+  let mockProductRelationsListService: MockProductRelationsListService;
   let mockContextService: MockContextService;
 
   const renderElement = async (): Promise<ProductRelationsComponent> => {
@@ -69,15 +69,15 @@ describe('ReferencesComponent', () => {
           useClass: MockLayoutBuilder,
         },
         {
-          provide: AlternativeProductsListService,
-          useClass: MockAlternativeProductsListService,
+          provide: ProductRelationsListService,
+          useClass: MockProductRelationsListService,
         },
       ],
     });
 
-    mockAlternativeProductsService = testInjector.inject(
-      AlternativeProductsListService
-    ) as unknown as MockAlternativeProductsListService;
+    mockProductRelationsListService = testInjector.inject(
+      ProductRelationsListService
+    ) as unknown as MockProductRelationsListService;
 
     mockContextService = testInjector.inject(
       ContextService
@@ -101,7 +101,7 @@ describe('ReferencesComponent', () => {
     });
 
     it('should call service "get" method', () => {
-      expect(mockAlternativeProductsService.get).not.toHaveBeenCalledWith({
+      expect(mockProductRelationsListService.get).not.toHaveBeenCalledWith({
         sku: mockSku,
       });
     });
@@ -122,7 +122,7 @@ describe('ReferencesComponent', () => {
     });
 
     it('should not call service "get" method', () => {
-      expect(mockAlternativeProductsService.get).toHaveBeenCalledWith({
+      expect(mockProductRelationsListService.get).toHaveBeenCalledWith({
         sku: mockSku,
       });
     });
@@ -133,9 +133,9 @@ describe('ReferencesComponent', () => {
       ).toBe(MockProductService.mockProducts.length);
     });
 
-    describe('and there is no alternative products', () => {
+    describe('and there is no related products', () => {
       beforeEach(async () => {
-        mockAlternativeProductsService.get.mockReturnValue(of(undefined));
+        mockProductRelationsListService.get.mockReturnValue(of(undefined));
         element = await renderElement();
       });
 

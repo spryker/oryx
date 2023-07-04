@@ -16,7 +16,7 @@ export class DefaultAddressService implements AddressService {
   });
 
   protected currentAddress$ = this.addressesQuery$
-    .get(undefined)
+    .get()
     .pipe(
       map(
         (addresses) =>
@@ -42,7 +42,7 @@ export class DefaultAddressService implements AddressService {
   }
 
   getList(): Observable<Address[] | undefined> {
-    return this.addressesQuery$.get(undefined);
+    return this.addressesQuery$.get();
   }
 
   protected addAddressCommand$ = createCommand({

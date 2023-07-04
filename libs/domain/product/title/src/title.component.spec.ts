@@ -1,19 +1,18 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ExperienceService } from '@spryker-oryx/experience';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import { LinkType } from '@spryker-oryx/ui/link';
 import { html } from 'lit';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ProductTitleComponent } from './title.component';
 import { productTitleComponent } from './title.def';
 
-class MockExperienceContentService implements Partial<ExperienceService> {
-  getOptions = ({ uid = '' }): Observable<any> => of({});
+class MockSemanticLinkService implements Partial<SemanticLinkService> {
+  get = vi.fn().mockReturnValue(of('/product/123'));
 }
 
-// TODO: unify unit tests for all sub packages
 describe('ProductTitleComponent', () => {
   let element: ProductTitleComponent;
 
@@ -26,8 +25,8 @@ describe('ProductTitleComponent', () => {
       providers: [
         ...mockProductProviders,
         {
-          provide: ExperienceService,
-          useClass: MockExperienceContentService,
+          provide: SemanticLinkService,
+          useClass: MockSemanticLinkService,
         },
       ],
     });
@@ -93,7 +92,7 @@ describe('ProductTitleComponent', () => {
     });
 
     it('should render a heading with a link', () => {
-      expect(element).toContainElement('oryx-heading oryx-content-link');
+      expect(element).toContainElement('oryx-heading oryx-link');
     });
   });
 
@@ -108,7 +107,7 @@ describe('ProductTitleComponent', () => {
     });
 
     it('should render a heading with a link', () => {
-      expect(element).toContainElement('oryx-heading oryx-content-link');
+      expect(element).toContainElement('oryx-heading oryx-link');
     });
   });
 });

@@ -1,72 +1,84 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ExperienceService } from '@spryker-oryx/experience';
-import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
+import { ProductService } from '../../src/services';
 import { ProductIdComponent } from './id.component';
 import { productIdComponent } from './id.def';
 
-const mockSku = '1';
-
-class MockExperienceContentService implements Partial<ExperienceService> {
-  getOptions = ({ uid = '' }): Observable<any> => of({});
+class MockProductService implements Partial<ProductService> {
+  get = vi.fn();
 }
 
 describe('ProductIdComponent', () => {
   let element: ProductIdComponent;
+  let productService: MockProductService;
 
   beforeAll(async () => {
     await useComponent(productIdComponent);
   });
 
   beforeEach(async () => {
-    createInjector({
+    const injector = createInjector({
       providers: [
-        ...mockProductProviders,
         {
-          provide: ExperienceService,
-          useClass: MockExperienceContentService,
+          provide: ProductService,
+          useClass: MockProductService,
+        },
+        {
+          provide: ContextService,
+          useClass: DefaultContextService,
         },
       ],
     });
-    element = await fixture(
-      html`<oryx-product-id
-        .sku=${mockSku}
-        .options=${{ prefix: 'Test prefix' }}
-      ></oryx-product-id>`
-    );
+
+    productService = injector.inject<MockProductService>(ProductService);
   });
 
   afterEach(() => {
     destroyInjector();
   });
 
-  it('passes the a11y audit', async () => {
-    await expect(element).shadowDom.to.be.accessible();
-  });
-
-  it('should render sku prefix', () => {
-    expect(element.shadowRoot?.textContent).toContain('Test prefix');
-  });
-
-  it('should render sku', () => {
-    expect(element.shadowRoot?.textContent).toContain(mockSku);
-  });
-
-  describe('when prefix is empty', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-product-id
-          sku="${mockSku}"
-          .options=${{}}
-        ></oryx-product-id>`
-      );
+  describe('when a product is provided ', () => {
+    beforeEach(() => {
+      productService.get.mockReturnValue(of({ sku: '123' }));
     });
 
-    it('should render default sku prefix', () => {
-      expect(element.shadowRoot?.textContent).toContain('SKU: ');
+    describe('and no prefix is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-id
+            sku="123"
+            .options=${{ prefix: 'Test prefix' }}
+          ></oryx-product-id>`
+        );
+      });
+
+      it('passes the a11y audit', async () => {
+        await expect(element).shadowDom.to.be.accessible();
+      });
+
+      it('should render sku prefix', () => {
+        expect(element.shadowRoot?.textContent).toContain('Test prefix');
+      });
+
+      it('should render sku', () => {
+        expect(element.shadowRoot?.textContent).toContain('123');
+      });
+    });
+
+    describe('and prefix is not provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-product-id sku="123" .options=${{}}></oryx-product-id>`
+        );
+      });
+
+      it('should render default sku prefix', () => {
+        expect(element.shadowRoot?.textContent).toContain('SKU: ');
+      });
     });
   });
 });

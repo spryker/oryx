@@ -1,3 +1,3 @@
 export interface NavigateBackAttributes {
-  fallbackUrl?: string;
+  url?: string;
 }

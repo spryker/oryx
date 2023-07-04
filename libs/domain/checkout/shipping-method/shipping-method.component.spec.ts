@@ -15,7 +15,7 @@ import { CheckoutShippingMethodComponent } from './shipping-method.component';
 import { checkoutShippingMethodComponent } from './shipping-method.def';
 
 export class MockCheckoutService implements Partial<CheckoutService> {
-  getProcessState = vi.fn().mockReturnValue(of());
+  getStatus = vi.fn().mockReturnValue(of());
 }
 
 export class MockCheckoutDataService implements Partial<CheckoutDataService> {
@@ -25,6 +25,7 @@ export class MockCheckoutDataService implements Partial<CheckoutDataService> {
 export class MockCheckoutStateService implements Partial<CheckoutStateService> {
   get = vi.fn();
   set = vi.fn();
+  isInvalid = vi.fn().mockReturnValue(of(false));
 }
 
 describe('CheckoutShipmentComponent', () => {
