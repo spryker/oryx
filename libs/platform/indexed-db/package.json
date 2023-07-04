@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/indexed-db",
-  "version": "0.13.0",
+  "version": "0.15.0",
   "type": "module",
   "description": "Functionality to work with IndexedDB",
   "author": "Spryker Systems GmbH",
@@ -11,9 +11,9 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "dependencies": {
-    "@spryker-oryx/core": "*",
-    "@spryker-oryx/di": "*",
-    "@spryker-oryx/utilities": "*",
+    "@spryker-oryx/core": "0.15.0",
+    "@spryker-oryx/di": "0.15.0",
+    "@spryker-oryx/utilities": "0.15.0",
     "dexie": "^3.2.2"
   },
   "peerDependencies": {
