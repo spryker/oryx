@@ -5,8 +5,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { hydratable, i18n, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
-import { createRef, ref } from 'lit/directives/ref.js';
+import { property, query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { EmptyError, firstValueFrom } from 'rxjs';
 import { DefaultAuthLoginStrategy } from './default-login.strategy';
@@ -25,13 +24,10 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
   @property() isLoading?: boolean;
   @property() hasError?: boolean;
-  @property() emailName = 'email';
-  @property() passwordName = 'password';
-  @property() rememberMeName = 'rememberme';
 
-  protected emailInputRef = createRef<HTMLInputElement>();
-  protected passwordInputRef = createRef<HTMLInputElement>();
-  protected rememberInputRef = createRef<HTMLInputElement>();
+  @query('input[name=email]') email?: HTMLInputElement;
+  @query('input[name=password]') password?: HTMLInputElement;
+  @query('input[name=rememberme]') rememberme?: HTMLInputElement;
 
   protected i18nService = resolve(I18nService);
   protected routerService = resolve(RouterService);
@@ -73,7 +69,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
     }
   }
 
-  protected login(event: Event): void {
+  protected onSubmit(event: Event): void {
     event.preventDefault();
 
     this.doLogin(this.getState());
@@ -91,7 +87,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         `
       )}
 
-      <form @submit=${this.login}>
+      <form @submit=${this.onSubmit}>
         <oryx-input
           .label=${i18n('user.login.email')}
           required
@@ -99,10 +95,9 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         >
           <input
             type="email"
-            name=${this.emailName}
+            name="email"
             required
             placeholder=${i18n('user.login.email')}
-            ${ref(this.emailInputRef)}
           />
         </oryx-input>
 
@@ -114,10 +109,9 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         >
           <input
             type="password"
-            name=${this.passwordName}
+            name="password"
             required
             placeholder=${i18n('login.password')}
-            ${ref(this.passwordInputRef)}
           />
         </oryx-password-input>
 
@@ -143,9 +137,9 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
           () => html`<oryx-checkbox>
             <input
               type="checkbox"
-              name=${this.rememberMeName}
+              name="rememberme"
               aria-label=${i18n('user.login.remember-me')}
-              ${ref(this.rememberInputRef)}
+              ${this.rememberme}
             />
             ${i18n('user.login.remember-me')}
           </oryx-checkbox>`
@@ -163,9 +157,9 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   }
 
   protected getState(): LoginRequest {
-    const email = this.emailInputRef.value?.value ?? '';
-    const password = this.passwordInputRef.value?.value ?? '';
-    const rememberMe = this.rememberInputRef.value?.checked ?? false;
+    const email = this.email?.value ?? '';
+    const password = this.password?.value ?? '';
+    const rememberMe = this.rememberme?.checked ?? false;
 
     return { email, password, rememberMe };
   }
