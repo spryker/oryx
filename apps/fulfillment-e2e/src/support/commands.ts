@@ -36,7 +36,7 @@ Cypress.Commands.add('login', (user = defaultUser) => {
   cy.waitForIndexedDB();
   // this wait is needed to populate the DB with data
   // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(500);
+  cy.wait(800);
 });
 
 Cypress.Commands.add('clearIndexedDB', () => {

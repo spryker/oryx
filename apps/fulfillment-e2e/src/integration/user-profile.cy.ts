@@ -25,8 +25,6 @@ describe('When a user opens the user profile modal', () => {
 
   describe('and user clicks on log out button', () => {
     beforeEach(() => {
-      cy.wait(300);
-
       userProfileFragment.getLogOutButton().click();
     });
 
