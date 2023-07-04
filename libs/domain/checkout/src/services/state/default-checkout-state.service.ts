@@ -4,6 +4,7 @@ import { inject } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
   combineLatest,
+  defer,
   distinctUntilChanged,
   map,
   Observable,
@@ -26,9 +27,11 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
 
   protected isInvalid$ = new BehaviorSubject<boolean>(false);
 
-  userId$ = this.identity.get().pipe(
-    map((identity) => identity?.userId ?? ''),
-    distinctUntilChanged()
+  userId$ = defer(() =>
+    this.identity.get().pipe(
+      map((identity) => identity?.userId ?? ''),
+      distinctUntilChanged()
+    )
   );
 
   protected clearSubscription: Subscription | undefined;
