@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/cli",
-  "version": "0.15.0",
+  "version": "0.13.0",
   "type": "module",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@clack/prompts": "^0.6.3",
-    "@spryker-oryx/core": "0.15.0",
-    "@spryker-oryx/di": "0.15.0",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/di": "*",
     "picocolors": "^1.0.0",
     "request": "^2.88.2",
     "rxjs": "^7.5.0",

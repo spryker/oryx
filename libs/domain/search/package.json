@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/search",
-  "version": "0.15.0",
+  "version": "0.13.0",
   "type": "module",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -20,14 +20,14 @@
     }
   },
   "dependencies": {
-    "@spryker-oryx/content": "0.15.0",
-    "@spryker-oryx/core": "0.15.0",
-    "@spryker-oryx/di": "0.15.0",
-    "@spryker-oryx/experience": "0.15.0",
-    "@spryker-oryx/product": "0.15.0",
-    "@spryker-oryx/router": "0.15.0",
-    "@spryker-oryx/site": "0.15.0",
-    "@spryker-oryx/ui": "0.15.0",
-    "@spryker-oryx/utilities": "0.15.0"
+    "@spryker-oryx/content": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/di": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/product": "*",
+    "@spryker-oryx/router": "*",
+    "@spryker-oryx/site": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/utilities": "*"
   }
 }
