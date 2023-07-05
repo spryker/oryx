@@ -1,11 +1,9 @@
+import { ContentFields, ContentService } from '@spryker-oryx/content';
 import { ContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { of } from 'rxjs';
-import {
-  ContentFields,
-  ContentService,
-} from '../../../../../domain/content/src/services/content.service';
+
 import { StoryblokContentFields } from '../storyblok';
 import { ArticlePageDescriptionMetaResolver } from './article-page-description-meta.resolver';
 

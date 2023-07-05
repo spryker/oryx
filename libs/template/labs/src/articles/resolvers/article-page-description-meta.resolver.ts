@@ -1,3 +1,4 @@
+import { ContentFields, ContentService } from '@spryker-oryx/content';
 import {
   ContextService,
   ElementResolver,
@@ -6,10 +7,7 @@ import {
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
-import {
-  ContentFields,
-  ContentService,
-} from '../../../../../domain/content/src/services/content.service';
+
 import { ArticleContext } from '../article-context';
 import { StoryblokContentFields } from '../storyblok';
 

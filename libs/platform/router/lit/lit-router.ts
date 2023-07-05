@@ -32,7 +32,7 @@ export class LitRouter extends Routes {
         .flat(),
       ...routes,
     ].sort((a) => {
-      // moves 404 page to the end in order not to broke new provided routes
+      // moves 404 page to the end in order not to break new provided routes
       if ((a as PathRouteConfig).path === '/*') {
         return 0;
       }

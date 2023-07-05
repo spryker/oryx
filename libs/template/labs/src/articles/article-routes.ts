@@ -7,7 +7,7 @@ export const articleRoutes: RouteConfig[] = [
     render: (): TemplateResult => html`<oryx-composition
       route="/faq"
     ></oryx-composition>`,
-    name: 'FAQ',
+    name: 'FAQs',
   },
   {
     path: '/faq/:id',
@@ -15,6 +15,13 @@ export const articleRoutes: RouteConfig[] = [
       route="/faq/:id"
     ></oryx-composition>`,
     name: 'FAQ',
+  },
+  {
+    path: '/article',
+    render: (): TemplateResult => html`<oryx-composition
+      route="/article"
+    ></oryx-composition>`,
+    name: 'Articles',
   },
   {
     path: '/article/:id',

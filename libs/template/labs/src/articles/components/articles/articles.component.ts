@@ -23,13 +23,13 @@ export class ArticlesComponent extends LitElement {
 
   protected $data = computed(() => {
     const type = this.$articleType();
-    console.log(type);
+
     return type ? this.contentService.getAll({ type }) : of(null);
   });
 
   protected override render(): TemplateResult | void {
     const data = this.$data();
-    console.log(data);
+
     if (!data?.length) {
       return;
     }
