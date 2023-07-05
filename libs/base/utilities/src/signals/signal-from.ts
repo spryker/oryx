@@ -15,7 +15,7 @@ let _resolvingSignals: number | undefined = undefined;
 let _resolvingSignalsNotifier: StateSignal<number> | undefined = undefined;
 let _ss_counter = 0;
 
-function signalResolving(state = true): void {
+function setResolvingStatus(state = true): void {
   if (state) {
     if (_resolvingSignals !== undefined) _resolvingSignals++;
     return;
@@ -63,7 +63,7 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
       );
     }
     if (this.resolving) {
-      signalResolving(true);
+      setResolvingStatus(true);
     }
     return this.state;
   }
@@ -83,7 +83,7 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
       this.subscription = this.observable.subscribe((value) => {
         if (this.resolving) {
           this.resolving = false;
-          signalResolving(false);
+          setResolvingStatus(false);
         }
         this.set(value);
       });
@@ -95,7 +95,7 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
     this.subscription = undefined;
     if (this.resolving) {
       this.resolving = false;
-      signalResolving(false);
+      setResolvingStatus(false);
     }
   }
 }
