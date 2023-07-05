@@ -8,8 +8,6 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "dependencies": {
-    "lit": "^2.0.0",
-    "rxjs": "^7.5.0",
     "@spryker-oryx/di": "latest",
     "@spryker-oryx/core": "latest",
     "@spryker-oryx/experience": "latest",
@@ -18,5 +16,11 @@
     "@spryker-oryx/utilities": "latest",
     "@spryker-oryx/form": "latest",
     "@spryker-oryx/ui": "latest"
+  },
+  "peerDependencies": {
+    "marked": "^5.1.0",
+    "lit": "^2.4.0",
+    "rxjs": "^7.5.0",
+    "tslib": "^2.4.0"
   }
 }
