@@ -1,5 +1,6 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 import { SuggestionField } from '@spryker-oryx/search';
+import { StoryblokContentFields } from './storyblok';
 
 export const articlePage: StaticComponent = {
   type: 'Page',
@@ -39,7 +40,7 @@ export const faqsPage: StaticComponent = {
           [SuggestionField.Categories]: undefined,
           [SuggestionField.Articles]: undefined,
           [SuggestionField.Products]: undefined,
-          faq: {
+          [StoryblokContentFields.Faq]: {
             max: 8,
           },
         },
