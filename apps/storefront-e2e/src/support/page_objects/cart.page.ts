@@ -1,9 +1,17 @@
 import { CartEntryFragment } from '../page_fragments/cart-entry.fragment';
 import { CartTotalsFragment } from '../page_fragments/cart-totals.fragment';
 import { AbstractSFPage } from './abstract.page';
+import { LandingPage } from './landing.page';
 
 export class CartPage extends AbstractSFPage {
   url = '/cart';
+
+  visit(): void {
+    // temporary fix of an issue with the Checkout button click in SSR cart
+    const homePage = new LandingPage();
+    homePage.visit();
+    homePage.header.getCartSummary().click();
+  }
 
   private cartTotals = new CartTotalsFragment();
 

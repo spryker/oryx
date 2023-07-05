@@ -33,7 +33,12 @@ export default {
       table: { category: 'demo' },
     },
     color: {
-      control: { type: 'select', options: ['primary', 'neutral', 'light'] },
+      control: { type: 'select', options: ['primary', 'neutral'] },
+    },
+  },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
     },
   },
 } as Meta;

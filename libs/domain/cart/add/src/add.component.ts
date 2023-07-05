@@ -62,13 +62,18 @@ export class CartAddComponent extends ProductMixin(
       ?outline=${outlined}
     >
       <button
-        ?disabled=${this.isInvalid || this.$hasStock()}
+        ?disabled=${this.isInvalid || !this.$hasStock()}
+        @mouseup=${this.onMouseUp}
         @click=${this.onSubmit}
       >
         <oryx-icon .type=${IconTypes.CartAdd} size=${Size.Lg}></oryx-icon>
         ${when(enableLabel, () => html`${i18n('cart.add-to-cart')}`)}
       </button>
     </oryx-button>`;
+  }
+
+  protected onMouseUp(e: Event): void {
+    e.stopPropagation();
   }
 
   @elementEffect()
@@ -78,13 +83,15 @@ export class CartAddComponent extends ProductMixin(
 
   protected $hasStock = computed(() => {
     return (
-      !this.$product()?.availability?.isNeverOutOfStock &&
-      this.$max() < this.$min()
+      this.$product()?.availability?.isNeverOutOfStock ||
+      this.$max() > this.$min()
     );
   });
 
   protected $min = computed(() => {
-    return 1;
+    return this.$product()?.availability?.isNeverOutOfStock || this.$max()
+      ? 1
+      : 0;
   });
 
   protected $max = computed(() => {
@@ -108,6 +115,7 @@ export class CartAddComponent extends ProductMixin(
 
   protected onSubmit(e: Event | CustomEvent<QuantityEventDetail>): void {
     e.preventDefault();
+    e.stopPropagation();
     const sku = this.$product()?.sku;
     if (!sku || !this.button) return;
 

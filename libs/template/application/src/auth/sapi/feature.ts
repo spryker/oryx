@@ -3,7 +3,6 @@ import {
   AnonTokenInterceptor,
   AnonTokenInterceptorConfig,
   authLoginComponent,
-  AuthLoginStrategy,
   AuthTokenInterceptorConfig,
   AuthTokenService,
   IdentityService,
@@ -14,6 +13,7 @@ import {
   PasswordGrantAuthLoginStrategy,
   PasswordGrantAuthLoginStrategyConfig,
 } from '@spryker-oryx/auth';
+import { AuthLoginStrategy } from '@spryker-oryx/auth/login';
 import {
   AppFeature,
   ComponentsInfo,

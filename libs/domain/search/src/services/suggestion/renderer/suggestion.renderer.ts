@@ -23,6 +23,7 @@ export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
             button: true,
           }}
           .content=${{ text: i18n('search.box.view-all-products') }}
+          close-popover
         ></oryx-content-link>
       </section>
     `;

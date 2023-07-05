@@ -40,18 +40,13 @@ describe('Checkout suite', { tags: 'smoke' }, () => {
         sccosApi.cartItems.post(productData, 1, cartId);
       });
 
-      cy.intercept('POST', '/checkout').as('checkout');
-      cy.intercept('/customers/*/addresses').as('addresses');
-
-      cartPage.visit();
-      cartPage.checkout();
-
+      cy.goToCheckout();
       cy.location('pathname').should('be.eq', checkoutPage.url);
-      cy.wait('@addresses');
 
       checkoutPage.shipping.addAddressForm.fillAddressForm();
-      checkoutPage.getPlaceOrderBtn().click();
 
+      cy.intercept('POST', '/checkout').as('checkout');
+      checkoutPage.getPlaceOrderBtn().click();
       cy.wait('@checkout')
         .its('response.body.data.attributes.orderReference')
         .as('createdOrderId');
@@ -95,18 +90,14 @@ describe('Checkout suite', { tags: 'smoke' }, () => {
     it('must allow user to create a new order', () => {
       sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
 
-      cy.intercept('POST', '/checkout?include=orders').as('checkout');
-      cy.intercept('/customers/*/addresses').as('addresses');
-
-      cartPage.visit();
-      cartPage.checkout();
-
+      cy.goToCheckoutAsGuest();
       cy.location('pathname').should('be.eq', checkoutPage.anonymousUrl);
 
       checkoutPage.checkoutAsGuestForm.fillForm();
       checkoutPage.shipping.addAddressForm.fillAddressForm();
-      checkoutPage.getPlaceOrderBtn().click();
 
+      cy.intercept('POST', '/checkout?include=orders').as('checkout');
+      checkoutPage.getPlaceOrderBtn().click();
       cy.wait('@checkout')
         .its('response.body.data.attributes.orderReference')
         .as('createdOrderId');

@@ -85,3 +85,4 @@ jobs:
         run: npm run release-test:e2e
         env:
           SCOS_BASE_URL: ${{ env.SCOS_BASE_URL }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}

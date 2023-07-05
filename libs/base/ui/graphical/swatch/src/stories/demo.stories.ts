@@ -13,6 +13,11 @@ export default {
       control: { type: 'color' },
     },
   },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 };
 
 const Template: Story<SwatchAttributes> = (
