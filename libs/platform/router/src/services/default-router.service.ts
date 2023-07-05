@@ -56,7 +56,11 @@ export class DefaultRouterService implements RouterService {
   }
 
   navigate(route: string): void {
-    globalThis.history.pushState({}, '', route);
+    globalThis.history.pushState(
+      { timestamp: new Date().getTime() },
+      '',
+      route
+    );
     this.go(route);
   }
 

@@ -4,3 +4,4 @@ export * from './content.service';
 export * from './default-content.service';
 export * from './default-font.service';
 export * from './fonts.service';
+export * from './resolvers';

@@ -21,6 +21,7 @@ import {
   PickingTab,
   ProductItemPickedEvent,
 } from '../../models';
+import { PickingHeaderService } from '../../services';
 import { PickingProductCardComponent } from '../picking-product-card';
 import { pickingComponentStyles } from './picking.styles';
 
@@ -28,6 +29,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
   static styles = pickingComponentStyles;
 
   protected routerService = resolve(RouterService);
+  protected pickingHeaderService = resolve(PickingHeaderService);
 
   @state()
   protected partialPicking: PartialPicking | null = null;
@@ -160,9 +162,11 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       .pipe(
         tap(() => {
           this.routerService.navigate(`/`);
+          this.pickingHeaderService.discard();
         }),
         catchError(() => {
           this.routerService.navigate(`/`);
+          this.pickingHeaderService.discard();
 
           return of(null);
         })
