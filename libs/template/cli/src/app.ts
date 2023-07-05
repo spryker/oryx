@@ -1,7 +1,9 @@
 import {
   AppBuilder,
   appBuilder,
+  DefaultFeatureOptionsService,
   FeatureOptions,
+  FeatureOptionsService,
   InjectionPlugin,
 } from '@spryker-oryx/core';
 import { CliPlugin } from './plugin';
@@ -11,11 +13,12 @@ export const cliApp = (cliOptions: Record<string, unknown>): AppBuilder =>
   appBuilder()
     .with(
       new InjectionPlugin([
-        ...cliProviders,
         {
-          provide: FeatureOptions,
-          useValue: cliOptions,
+          provide: FeatureOptionsService,
+          useClass: DefaultFeatureOptionsService,
         },
+        { provide: FeatureOptions, useValue: cliOptions },
+        ...cliProviders,
       ])
     )
     .with(new CliPlugin());

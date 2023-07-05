@@ -1,0 +1,17 @@
+{
+  "features": [
+    {
+      "id": "oryx.ui",
+      "name": "UI",
+      "description": "Provides Design System for Oryx",
+      "identifier": "uiFeature",
+      "dependencies": ["oryx.core"]
+    }
+  ],
+  "components": [
+    {
+      "name": "Button",
+      "identifier": "buttonComponent"
+    }
+  ]
+}

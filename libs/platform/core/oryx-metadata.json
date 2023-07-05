@@ -1,0 +1,10 @@
+{
+  "features": [
+    {
+      "id": "oryx.core",
+      "name": "Core",
+      "description": "Provides core features for Oryx",
+      "identifier": "coreFeature"
+    }
+  ]
+}

@@ -111,9 +111,7 @@ Please make sure to not use an existing directory name.`
     outro(`Created Oryx App ${options.name}!`);
   }
 
-  protected async dowloadTemplate(
-    ref: OryxTemplateRef = OryxTemplateRef.Latest
-  ): Promise<void> {
+  protected async dowloadTemplate(ref = OryxTemplateRef.Latest): Promise<void> {
     const repoPath = path.resolve(this.repoPath, ref);
 
     if (fs.existsSync(repoPath)) {
@@ -146,7 +144,7 @@ Please make sure to not use an existing directory name.`
 
   protected async copyTemplate(
     options: CreateAppConfig,
-    ref: OryxTemplateRef = OryxTemplateRef.Latest
+    ref = OryxTemplateRef.Latest
   ): Promise<void> {
     const s = spinner();
 

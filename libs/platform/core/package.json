@@ -28,5 +28,6 @@
       "types": "./src/mocks/index.d.ts",
       "default": "./src/mocks/index.js"
     }
-  }
+  },
+  "oryx": "./oryx-metadata.json"
 }

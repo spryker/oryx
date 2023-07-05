@@ -3,7 +3,7 @@ export interface CliCommand {
   getAliases?(): string[];
   getOptions?(): CliCommandOption[];
   execute(): Promise<void>;
-  getHelp?(): string;
+  getHelp?(): string | Promise<string>;
 }
 
 export interface CliCommandOption {

@@ -1,10 +1,10 @@
 import { Provider } from '@spryker-oryx/di';
 import { CliCommand } from '../models';
-import { CreateCliCommand } from './create';
+import { CreateV2CliCommand } from './create-v2';
 import { HelpCliCommand } from './help';
 import { VersionCliCommand } from './version';
 
-export * from './create';
+export * from './create-v2';
 export * from './help';
 export * from './version';
 
@@ -17,7 +17,7 @@ declare global {
 }
 
 export const cliCommandsProviders: Provider[] = [
-  { provide: CliCommands, useClass: CreateCliCommand },
+  { provide: CliCommands, useClass: CreateV2CliCommand },
   { provide: CliCommands, useClass: HelpCliCommand },
   { provide: CliCommands, useClass: VersionCliCommand },
 ];

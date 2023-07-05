@@ -1,0 +1,28 @@
+{
+  "themes": [
+    {
+      "id": "oryx.storefront",
+      "name": "Storefront Theme",
+      "description": "Storefront Oryx theme",
+      "identifier": "storefrontTheme"
+    },
+    {
+      "id": "oryx.fulfillment",
+      "name": "Fulfillment Theme",
+      "description": "Fulfillment Oryx theme",
+      "identifier": "fulfillmentTheme"
+    },
+    {
+      "id": "oryx.backoffice",
+      "name": "Backoffice Theme",
+      "description": "Backoffice Oryx theme",
+      "identifier": "backofficeTheme"
+    },
+    {
+      "id": "oryx.backoffice-ng",
+      "name": "Backoffice NG Theme",
+      "description": "Backoffice NG Oryx theme",
+      "identifier": "backofficeNgTheme"
+    }
+  ]
+}

@@ -23,8 +23,7 @@ export class HelpCliCommand implements CliCommand {
     const commandName = this.argsService.getPositional(0);
 
     if (commandName) {
-      this.showCommandHelp(commandName);
-      return;
+      return await this.showCommandHelp(commandName);
     }
 
     this.showCommandsHelp();
@@ -47,7 +46,7 @@ ${this.getCliCommandsWithHelp()
     outro();
   }
 
-  showCommandHelp(commandName: string): void {
+  async showCommandHelp(commandName: string): Promise<void> {
     const command = this.getCliCommandsWithHelp().find(
       (command) =>
         command.getName() === commandName ||
@@ -61,7 +60,7 @@ ${this.getCliCommandsWithHelp()
     intro(`Oryx command: ${command.getName()}`);
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    log.message(command.getHelp!());
+    log.message(await command.getHelp!());
 
     outro();
   }

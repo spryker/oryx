@@ -16,5 +16,6 @@
   "dependencies": {
     "@spryker-oryx/core": "latest",
     "@spryker-oryx/utilities": "latest"
-  }
+  },
+  "oryx": "./oryx-metadata.json"
 }

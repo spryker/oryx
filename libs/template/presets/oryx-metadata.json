@@ -1,0 +1,33 @@
+{
+  "features": [
+    {
+      "id": "oryx.b2c",
+      "name": "B2C Preset",
+      "description": "Default preset for B2C Oryx applications",
+      "identifier": "b2cFeatures",
+      "isPreset": true
+    },
+    {
+      "id": "oryx.fulfillment",
+      "name": "Fulfillment Preset",
+      "description": "Default preset for Fulfillment Oryx applications",
+      "identifier": "fulfillmentFeatures",
+      "isPreset": true,
+      "isCallable": true
+    },
+    {
+      "id": "oryx.backoffice",
+      "name": "Backoffice Preset",
+      "description": "Default preset for Backoffice Oryx applications",
+      "identifier": "backofficeFeatures",
+      "isPreset": true
+    },
+    {
+      "id": "oryx.backoffice-ng",
+      "name": "Backoffice NG Preset",
+      "description": "Default preset for Backoffice NG Oryx applications",
+      "identifier": "backofficeNgFeatures",
+      "isPreset": true
+    }
+  ]
+}
