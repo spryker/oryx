@@ -21,6 +21,8 @@ import {
 } from './defs';
 import { defaultPickingRoutes } from './routes';
 import {
+  PickingHeaderDefaultService,
+  PickingHeaderService,
   PickingHttpDefaultService,
   PickingHttpService,
   PickingListAdapter,
@@ -69,6 +71,7 @@ export class PickingFeature implements AppFeature {
       { provide: PickingListService, useClass: PickingListDefaultService },
       { provide: PickingListAdapter, useClass: PickingListDefaultAdapter },
       { provide: PickingHttpService, useClass: PickingHttpDefaultService },
+      { provide: PickingHeaderService, useClass: PickingHeaderDefaultService },
     ];
   }
 }

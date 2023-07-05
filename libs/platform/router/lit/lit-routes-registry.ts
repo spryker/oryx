@@ -1,5 +1,5 @@
-import { RouteConfig } from '@lit-labs/router';
 import { Provider } from '@spryker-oryx/di';
+import { RouteConfig } from './lit-routes';
 
 export interface LitRoutesRegistry {
   routes: RouteConfig[];
