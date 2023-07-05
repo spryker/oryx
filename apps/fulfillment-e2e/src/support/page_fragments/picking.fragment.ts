@@ -21,4 +21,6 @@ export class PickingFragment {
   getNoItemsTitle = () => cy.get('section h2');
   getNoItemsImage = () => cy.get('section oryx-image[resource="no-orders"]');
   getFinishPickingButton = () => cy.get('.submit-wrapper oryx-button button');
+  // TODO - move this to picking header when we have the e2e tests for it
+  getUserIcon = () => this.getWrapper().find('oryx-site-navigation-item');
 }
