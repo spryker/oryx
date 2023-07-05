@@ -57,7 +57,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           aria-label=${i18n('oryx.picking.back-to-pick-lists')}
           class="back"
           href="#"
-          @click=${this.routerService.back}
+          @click=${this.back}
         >
           <oryx-icon type=${IconTypes.ArrowBack}></oryx-icon>
         </button>
@@ -78,7 +78,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           this.pickingHeaderService.cancel();
           this.closeDiscardModal();
         }}
-        @oryx.back=${this.back}
+        @oryx.back=${this.leave}
       ></oryx-discard-picking>`;
   }
 
@@ -90,8 +90,12 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
     this.discardModal?.toggleAttribute('open', false);
   }
 
-  protected back(): void {
+  protected leave(): void {
     this.pickingHeaderService.discard();
+  }
+
+  protected back(): void {
+    this.routerService.back();
   }
 }
 
