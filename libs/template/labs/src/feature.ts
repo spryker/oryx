@@ -1,5 +1,10 @@
 import { provideExperienceData } from '@spryker-oryx/experience';
-import { contentfulProviders, storyblokProviders } from './articles';
+import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import {
+  articleRoutes,
+  contentfulProviders,
+  storyblokProviders,
+} from './articles';
 import * as articles from './articles/article-page';
 import { bazaarVoiceComponentMapping } from './bazaarvoice';
 import { cloudinaryImageConverter } from './cloudinary';
@@ -28,6 +33,7 @@ export const labsFeatures: AppFeature[] = [
       ...contentfulProviders,
       ...storyblokProviders,
       provideExperienceData(Object.values(articles)),
+      ...provideLitRoutes({ routes: articleRoutes }),
     ],
   },
   labsI18nFeature,

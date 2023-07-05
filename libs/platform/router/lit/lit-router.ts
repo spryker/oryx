@@ -25,7 +25,14 @@ export class LitRouter extends Router {
         .map((registry) => registry.routes)
         .flat(),
       ...routes,
-    ] as RouteConfig[];
+    ].sort((a) => {
+      // moves 404 page to the end in order not to broke new provided routes
+      if ((a as PathRouteConfig).path === '/*') {
+        return 0;
+      }
+
+      return -1;
+    });
 
     const baseRoute = resolve(BASE_ROUTE, null);
     if (baseRoute) {
