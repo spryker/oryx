@@ -10,6 +10,7 @@ export class LoginFragment {
   getBEValidationError = () => this.getWrapper().find('oryx-notification');
 
   login = (user: TestCustomerData) => {
+    this.getEmailInput().click(); // hydrate the form
     this.getEmailInput().type(user.email, { force: true });
     this.getPasswordInput().type(user.password, { force: true });
     this.getRememberMeCheckbox().click();
