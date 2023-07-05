@@ -10,6 +10,11 @@ export default defineConfig((config) => {
     build: {
       outDir: join(viteConfig.build.outDirRoot, viteConfig.build.index),
       emptyOutDir: true,
+      rollupOptions: {
+        output: {
+          manualChunks: () => 'index'
+        }
+      }
     },
     publicDir: '../../../libs/template/presets/public',
     plugins: [splitVendorChunkPlugin()],
