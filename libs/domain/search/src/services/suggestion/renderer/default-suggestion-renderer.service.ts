@@ -31,7 +31,9 @@ export class DefaultSuggestionRendererService
   ): Observable<Suggestion | undefined> {
     return this.suggestionService.get({
       query,
-      entities: Object.keys(options ?? {}),
+      entities: Object.keys(options ?? {}).filter(
+        (key) => options?.[key as keyof SuggestionRendererOptions]
+      ),
     });
   }
 

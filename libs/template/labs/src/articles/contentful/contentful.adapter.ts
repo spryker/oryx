@@ -24,7 +24,7 @@ export class ContentfulAdapter implements ContentAdapter {
     }
 
     return this.contentful
-      .getEntries({
+      .searchEntries({
         content_type: qualifier.type,
       })
       .pipe(

@@ -19,7 +19,7 @@ export class DefaultStoryblokClientService implements StoryblokClientService {
     protected http = inject(HttpService)
   ) {}
 
-  getEntries(search: StoryblokSearch): Observable<StoryblokEntriesResponse> {
+  searchEntries(search: StoryblokSearch): Observable<StoryblokEntriesResponse> {
     const endpoint = `${this.endpoint}?search_term=${search.query}&token=${this.storyblokToken}`;
     return this.search<StoryblokEntriesResponse>(endpoint);
   }

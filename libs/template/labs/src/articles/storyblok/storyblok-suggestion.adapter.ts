@@ -17,19 +17,23 @@ export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
   }
 
   get({ query, entities }: SuggestionQualifier): Observable<Suggestion> {
-    if (!entities?.includes(SuggestionField.Articles)) {
-      return of({});
+    console.log(entities);
+    if (
+      entities?.includes(SuggestionField.Articles) ||
+      entities?.includes('faq')
+    ) {
+      return this.storyblok.searchEntries({ query }).pipe(
+        map((data) => data.stories.map((story) => story.content.id)),
+        map((names) => ({
+          [SuggestionField.Articles]: names?.map((name) => ({
+            name,
+            id: name,
+            type: SemanticLinkType.Faq,
+          })),
+        }))
+      );
     }
 
-    return this.storyblok.getEntries({ query }).pipe(
-      map((data) => data.stories.map((story) => story.content.id)),
-      map((names) => ({
-        [SuggestionField.Articles]: names?.map((name) => ({
-          name,
-          id: name,
-          type: SemanticLinkType.Faq,
-        })),
-      }))
-    );
+    return of({});
   }
 }

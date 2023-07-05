@@ -34,7 +34,7 @@ export interface StoryblokEntriesResponse {
 }
 
 export interface StoryblokClientService {
-  getEntries(search: StoryblokSearch): Observable<StoryblokEntriesResponse>;
+  searchEntries(search: StoryblokSearch): Observable<StoryblokEntriesResponse>;
   getEntry(search: StoryblokSearch): Observable<StoryblokEntryResponse>;
 }
 

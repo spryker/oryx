@@ -22,7 +22,7 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
     }
 
     return this.contentful
-      .getEntries({
+      .searchEntries({
         query: this.getKey({ query }),
       })
       .pipe(

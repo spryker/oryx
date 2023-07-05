@@ -18,7 +18,7 @@ export class DefaultContentfulClientService implements ContentfulClientService {
     protected http = inject(HttpService)
   ) {}
 
-  getEntries(search: ContentfulSearch): Observable<ContentfulResponse> {
+  searchEntries(search: ContentfulSearch): Observable<ContentfulResponse> {
     const params = Object.entries(search).reduce((acc, [key, value]) => {
       const param = `${key}=${value}`;
       if (!acc.length) {

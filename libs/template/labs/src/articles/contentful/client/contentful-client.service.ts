@@ -26,7 +26,7 @@ export interface ContentfulResponse {
 }
 
 export interface ContentfulClientService {
-  getEntries(search: ContentfulSearch): Observable<ContentfulResponse>;
+  searchEntries(search: ContentfulSearch): Observable<ContentfulResponse>;
 }
 
 declare global {
