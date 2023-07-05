@@ -48,7 +48,6 @@ export const cartTotalsStaticData = [
     components: [
       { type: 'oryx-cart-totals-subtotal' },
       { type: 'oryx-cart-totals-discount' },
-      { type: 'oryx-cart-totals-expense' },
       { type: 'oryx-cart-totals-tax' },
       { type: 'oryx-cart-totals-delivery' },
       { type: 'oryx-cart-totals-total' },

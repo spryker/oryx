@@ -1,18 +1,2 @@
 [build]
   ignore = "bash ./should-ignore-build.sh ${PROJECT_NAME}"
-
-[functions.ssr]
-  node_bundler = "esbuild"
-  included_files = ["dist/apps/storefront/**"]
-
-[[plugins]]
-  package = "@netlify/plugin-lighthouse"
-
-  [[plugins.inputs.audits]]
-    path = ""
-  
-  [[plugins.inputs.audits]]
-    path = "product/086_30521602"
-  
-  [[plugins.inputs.audits]]
-    path = "category/4"

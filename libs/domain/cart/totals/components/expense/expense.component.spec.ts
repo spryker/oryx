@@ -4,7 +4,7 @@ import { mockNormalizedCartTotals } from '@spryker-oryx/cart/mocks';
 import * as core from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PriceComponent } from '@spryker-oryx/site';
+import { PriceComponent } from '@spryker-oryx/site/price';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';

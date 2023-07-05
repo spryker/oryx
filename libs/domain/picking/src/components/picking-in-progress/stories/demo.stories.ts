@@ -6,6 +6,11 @@ import { storybookPrefix } from '../../../../.constants';
 export default {
   title: `${storybookPrefix}/Picking In Progress Modal`,
   decorators: [OverlaysDecorator()],
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

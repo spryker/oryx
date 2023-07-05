@@ -1,4 +1,5 @@
 import { TestCustomerData } from '../types/user.type';
+import { CartPage } from './page_objects/cart.page';
 import { LoginPage } from './page_objects/login.page';
 import { SCCOSApi } from './sccos_api/sccos.api';
 
@@ -8,6 +9,8 @@ declare global {
   namespace Cypress {
     interface Chainable {
       login(): Chainable<void>;
+      goToCheckout(): Chainable<void>;
+      goToCheckoutAsGuest(): Chainable<void>;
       waitUpdateComplete(
         element: Cypress.Chainable<JQuery<HTMLElement>>
       ): Chainable<boolean>;
@@ -27,10 +30,35 @@ Cypress.Commands.add('login', () => {
     const loginPage = new LoginPage();
 
     loginPage.visit();
+
+    cy.intercept('/customers/DE--**').as('profileRequest');
     loginPage.loginForm.login(customer);
+    cy.wait('@profileRequest');
 
     loginPage.header.getUserSummaryHeading().should('contain', customer.name);
   });
+});
+
+Cypress.Commands.add('goToCheckout', () => {
+  const cartPage = new CartPage();
+
+  cy.intercept('/customers/DE--**/carts?**').as('cartsRequest');
+  cartPage.visit();
+  cy.wait('@cartsRequest');
+
+  cy.intercept('/customers/*/addresses').as('addressesRequest');
+  cartPage.checkout();
+  cy.wait('@addressesRequest');
+});
+
+Cypress.Commands.add('goToCheckoutAsGuest', () => {
+  const cartPage = new CartPage();
+
+  cy.intercept('/guest-carts?**').as('cartsRequest');
+  cartPage.visit();
+  cy.wait('@cartsRequest');
+
+  cartPage.checkout();
 });
 
 Cypress.Commands.add('waitUpdateComplete', (element) => {

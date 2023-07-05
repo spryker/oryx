@@ -63,6 +63,7 @@ const mockFullCartTotals: CartTotals = {
   taxTotal: 6386,
   discountTotal: 12075,
   expenseTotal: 1000,
+  shipmentTotal: 1000,
 };
 
 const mockCartTotals: CartTotals = {
@@ -209,9 +210,11 @@ export const mockNormalizedCartTotalsSingleDiscount: NormalizedTotals = {
   discounts: [...mockDiscounts],
   currency: 'EUR',
   priceMode: PriceMode.GrossMode,
+  shipmentTotal: 0,
 };
 
 export const mockNormalizedCartTotalsNetMode: NormalizedTotals = {
   ...mockNormalizedCartTotals,
   priceMode: PriceMode.NetMode,
+  shipmentTotal: undefined,
 };

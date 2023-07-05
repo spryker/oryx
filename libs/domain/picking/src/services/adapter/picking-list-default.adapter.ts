@@ -101,9 +101,9 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
         'picking-list-items,concrete-products,sales-orders,sales-shipments,concrete-product-image-sets',
     });
 
-    if (qualifier?.ids) {
-      return `/${qualifier.ids[0]}?${params.toString()}`;
-    }
+    qualifier?.ids?.forEach((id) =>
+      params.append('filter[picking-lists.uuids][]', id)
+    );
 
     if (qualifier?.status) {
       params.set('filter[picking-lists.status]', qualifier.status);

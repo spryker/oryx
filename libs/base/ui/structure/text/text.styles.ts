@@ -58,6 +58,7 @@ export const textStyles = css`
 
   a {
     text-decoration: none;
+    color: currentColor;
   }
 
   a[href=''],
@@ -65,17 +66,19 @@ export const textStyles = css`
     pointer-events: none;
   }
 
-  a[href]:not([href='']):not(:active) {
+  a[data-color='primary'] {
     color: var(--oryx-color-primary-10);
   }
 
   a:hover {
-    text-decoration: solid underline currentColor 1px;
-    text-underline-offset: 2px;
+    text-decoration: solid underline var(--oryx-color-primary-9) 1px;
+    text-underline-offset: 5px;
   }
 
   a:active {
     color: var(--oryx-color-primary-9);
+    /* stylelint-disable-next-line */
+    text-decoration-color: currentColor;
   }
 
   a:focus-visible {

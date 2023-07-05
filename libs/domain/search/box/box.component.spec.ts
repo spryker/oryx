@@ -38,14 +38,6 @@ describe('SearchBoxComponent', () => {
   let routerService: MockRouterService;
   let suggestionService: MockSuggestionRendererService;
 
-  const hasControls = (): boolean => {
-    return (
-      element.renderRoot.querySelectorAll(
-        `oryx-button[slot="suffix"], oryx-icon-button[slot="suffix"]`
-      ).length === 2
-    );
-  };
-
   const update = async (): Promise<void> => {
     element.requestUpdate();
     await element.updateComplete;
@@ -137,10 +129,6 @@ describe('SearchBoxComponent', () => {
     it('should not render result`s container', async () => {
       await hasResults(false);
     });
-
-    it('should not render the controls', () => {
-      expect(hasControls()).toBe(false);
-    });
   });
 
   describe('when query is containing spaces only', () => {
@@ -183,10 +171,6 @@ describe('SearchBoxComponent', () => {
     it('should not render result`s container', async () => {
       await hasResults(false);
     });
-
-    it('should render the controls', () => {
-      expect(hasControls()).toBe(true);
-    });
   });
 
   describe('when query is provided', () => {
@@ -207,14 +191,6 @@ describe('SearchBoxComponent', () => {
 
     it('should render result`s container with results', async () => {
       await hasResults();
-    });
-
-    it('should render the controls', () => {
-      expect(hasControls()).toBe(true);
-    });
-
-    it('should set `stretched` attr', async () => {
-      expect(element.hasAttribute('stretched')).toBe(true);
     });
   });
 
@@ -267,38 +243,6 @@ describe('SearchBoxComponent', () => {
       await simulateTyping(query);
       vi.advanceTimersByTime(301);
       await hasResults();
-    });
-  });
-
-  describe('when container with results is scrolled', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<oryx-search-box></oryx-search-box>`);
-
-      vi.useFakeTimers();
-
-      await simulateTyping(query);
-      //debounce the typeahead event dispatching
-      vi.advanceTimersByTime(301);
-
-      await update();
-
-      const scrollContainer = element.renderRoot.querySelector(
-        '[slot="option"] > *'
-      ) as HTMLDivElement;
-
-      scrollContainer.scrollTop = 10;
-      scrollContainer?.dispatchEvent(new CustomEvent('scroll'));
-
-      //debounce onscroll event's callback dispatching
-      vi.advanceTimersByTime(21);
-    });
-
-    afterEach(() => {
-      vi.clearAllTimers();
-    });
-
-    it('should set scrolling-top attribute', () => {
-      expect(element.hasAttribute('scrollable-top')).toBe(true);
     });
   });
 

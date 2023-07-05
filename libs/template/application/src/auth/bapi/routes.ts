@@ -13,6 +13,8 @@ export const defaultBapiRoutes = (
   {
     path: callbackPath,
     render: () =>
-      html`<oryx-oauth-handler providerId=${providerId}></oryx-oauth-handler>`,
+      html`<oryx-auth-oauth-handler
+        providerId=${providerId}
+      ></oryx-auth-oauth-handler>`,
   },
 ];

@@ -4,6 +4,7 @@ import { mockNormalizedCartTotals } from '@spryker-oryx/cart/mocks';
 import * as core from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { PriceComponent } from '@spryker-oryx/site/price';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
@@ -54,7 +55,25 @@ describe('CartTotalsDeliveryComponent', () => {
   });
 
   it('should render the content', () => {
+    const priceComponent =
+      element.renderRoot.querySelector<PriceComponent>(`oryx-site-price`);
     expect(element).toContainElement('span');
+    expect(element).toContainElement('oryx-site-price');
+    expect(priceComponent?.value).toBe(mockNormalizedCartTotals.shipmentTotal);
+    expect(priceComponent?.currency).toBe(mockNormalizedCartTotals.currency);
+  });
+
+  describe('when shipmentTotal is zero', () => {
+    beforeEach(async () => {
+      service.get = vi.fn().mockReturnValue(of({ shipmentTotal: 0 }));
+      element = await fixture(
+        html`<oryx-cart-totals-delivery></oryx-cart-totals-delivery>`
+      );
+    });
+
+    it('should render Free as cost', () => {
+      expect(element).toContainElement('span.free');
+    });
   });
 
   describe('when there are no totals', () => {
@@ -65,8 +84,8 @@ describe('CartTotalsDeliveryComponent', () => {
       );
     });
 
-    it('should not render the content', () => {
-      expect(element).not.toContainElement('span');
+    it('should render unknown delivery message', () => {
+      expect(element).toContainElement('span.unknown-message');
     });
   });
 });

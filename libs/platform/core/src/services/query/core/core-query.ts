@@ -105,10 +105,10 @@ export class CoreQuery<
       refresh$,
     ]).pipe(
       tap(() => {
-        if (!subject$.value.stale) {
+        if (!subject$.value.stale || subject$.value.loading) {
           subject$.next({
             error: subject$.value.error,
-            loading: subject$.value.loading,
+            loading: false,
             stale: true,
             data: subject$.value.data,
           });
@@ -197,11 +197,19 @@ export class CoreQuery<
     qualifier,
     optimistic,
   }: {
-    data: ValueType;
+    data: ValueType | ((prev: ValueType | undefined) => ValueType);
     qualifier: Qualifier;
     optimistic?: boolean;
   }): void {
     const subject$ = this.queryCache.get(this.prepareKey(qualifier))!.subject$;
+
+    data =
+      typeof data === 'function'
+        ? (data as (prev: ValueType | undefined) => ValueType)(
+            subject$.value.data
+          )
+        : (data as ValueType);
+
     subject$.next({
       error: subject$.value.error,
       loading: subject$.value.loading,

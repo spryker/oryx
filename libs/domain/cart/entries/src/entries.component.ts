@@ -10,6 +10,7 @@ import { cartEntriesStyles } from './entries.styles';
 
 @defaultOptions({
   removeByQuantity: RemoveByQuantity.ShowBin,
+  confirmBeforeRemove: true,
   enableItemId: true,
   enableItemImage: true,
   enableItemPrice: true,

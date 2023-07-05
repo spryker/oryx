@@ -69,6 +69,10 @@ export interface CartTotals {
    */
   discountTotal?: number;
   /**
+   * Total amount of shipment
+   */
+  shipmentTotal?: number;
+  /**
    * Total amount of tax for the cart.
    */
   taxTotal?: number;
