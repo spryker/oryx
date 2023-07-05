@@ -1,12 +1,12 @@
-\<Please include a summary of the changes>
+<Please include a summary of the changes>
 
-closes: \<add a Jira ticket link(s) here>
+closes: <Add a Jira ticket link(s) here>
 
-BREAKING CHANGE: \<add a description of breaking change, if any. If there are none - remove this line>
+BREAKING CHANGE: <Add a description of breaking change, if any. If none - remove this line completely>
 
 ---
 
-### Checklist before requesting a review
+### Checklist before requesting a code review
 
 - [ ] PR title is aligned with [PR titles and conventional commits](https://spryker.atlassian.net/wiki/spaces/FA/pages/3821175291/PR+titles+and+conventional+commits)
 - [ ] I have performed a self-review of my code
