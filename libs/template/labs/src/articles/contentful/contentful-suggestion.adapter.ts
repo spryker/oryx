@@ -5,9 +5,8 @@ import {
   SuggestionField,
   SuggestionQualifier,
 } from '@spryker-oryx/search';
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { map, Observable, of } from 'rxjs';
-import { ContentfulClientService } from './client';
+import { ContentfulClientService, ContentfulContentFields } from './client';
 
 export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
   constructor(protected contentful = inject(ContentfulClientService)) {}
@@ -17,22 +16,25 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
   }
 
   get({ query, entities }: SuggestionQualifier): Observable<Suggestion> {
-    if (!entities?.includes(SuggestionField.Articles)) {
-      return of({});
+    if (
+      entities?.includes(SuggestionField.Contents) ||
+      entities?.includes(ContentfulContentFields.Article)
+    ) {
+      return this.contentful
+        .getEntries({
+          query: this.getKey({ query }),
+        })
+        .pipe(
+          map((data) => ({
+            [SuggestionField.Contents]: data.items.map((entry) => ({
+              name: entry.fields.heading,
+              id: entry.fields.id,
+              url: `/article/${encodeURIComponent(entry.fields.id)}`,
+            })),
+          }))
+        );
     }
 
-    return this.contentful
-      .getEntries({
-        query: this.getKey({ query }),
-      })
-      .pipe(
-        map((data) => ({
-          [SuggestionField.Articles]: data.items.map((entry) => ({
-            name: entry.fields.heading,
-            id: entry.fields.id,
-            type: SemanticLinkType.Article,
-          })),
-        }))
-      );
+    return of({});
   }
 }

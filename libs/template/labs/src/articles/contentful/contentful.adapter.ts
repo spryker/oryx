@@ -1,13 +1,11 @@
 import {
   Content,
   ContentAdapter,
-  ContentFields,
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { inject } from '@spryker-oryx/di';
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { map, Observable, of } from 'rxjs';
-import { ContentfulClientService } from './client';
+import { ContentfulClientService, ContentfulContentFields } from './client';
 
 export class ContentfulAdapter implements ContentAdapter {
   constructor(protected contentful = inject(ContentfulClientService)) {}
@@ -17,7 +15,7 @@ export class ContentfulAdapter implements ContentAdapter {
   }
 
   getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
-    if (qualifier.type !== ContentFields.Article) {
+    if (qualifier.type !== ContentfulContentFields.Article) {
       return of(null);
     }
 
@@ -32,7 +30,7 @@ export class ContentfulAdapter implements ContentAdapter {
             heading: entry.fields.heading,
             description: entry.fields.description,
             content: entry.fields.content,
-            type: SemanticLinkType.Article,
+            url: `/article/${encodeURIComponent(entry.fields.id)}`,
           }))
         )
       );

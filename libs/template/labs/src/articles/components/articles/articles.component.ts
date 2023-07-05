@@ -35,14 +35,11 @@ export class ArticlesComponent extends LitElement {
     }
 
     return html`${data.map(
-      (entry) => html`
+      ({ type, id, url, heading: text }) => html`
         <div>
           <oryx-content-link
-            .options=${{
-              type: entry.type,
-              id: entry.id,
-            }}
-            .content=${{ text: entry.heading }}
+            .options=${{ type, id, url }}
+            .content=${{ text }}
           ></oryx-content-link>
         </div>
       `

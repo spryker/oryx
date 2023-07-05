@@ -10,6 +10,7 @@ export interface ContentQualifier {
 export interface Content {
   id?: string;
   type?: SemanticLinkType;
+  url?: string;
   heading: string;
   description: string;
   content: string;

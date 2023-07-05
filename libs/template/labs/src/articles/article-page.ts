@@ -1,5 +1,6 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 import { SuggestionField } from '@spryker-oryx/search';
+import { ContentfulContentFields } from './contentful';
 import { StoryblokContentFields } from './storyblok';
 
 export const articlesPage: StaticComponent = {
@@ -18,7 +19,11 @@ export const articlesPage: StaticComponent = {
           rules: [{ margin: 'auto', width: '580px' }],
           [SuggestionField.Suggestions]: undefined,
           [SuggestionField.Categories]: undefined,
+          [SuggestionField.Contents]: undefined,
           [SuggestionField.Products]: undefined,
+          [ContentfulContentFields.Article]: {
+            max: 8,
+          },
         },
       },
     },
@@ -69,7 +74,7 @@ export const faqsPage: StaticComponent = {
           rules: [{ margin: 'auto', width: '580px' }],
           [SuggestionField.Suggestions]: undefined,
           [SuggestionField.Categories]: undefined,
-          [SuggestionField.Articles]: undefined,
+          [SuggestionField.Contents]: undefined,
           [SuggestionField.Products]: undefined,
           [StoryblokContentFields.Faq]: {
             max: 8,

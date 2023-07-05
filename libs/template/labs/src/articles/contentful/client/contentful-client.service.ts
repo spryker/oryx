@@ -11,6 +11,10 @@ declare global {
   }
 }
 
+export const enum ContentfulContentFields {
+  Article = 'article',
+}
+
 export interface ContentfulSearch {
   content_type?: string;
   query?: string;

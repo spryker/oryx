@@ -4,7 +4,6 @@ import {
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { inject } from '@spryker-oryx/di';
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { map, Observable, of } from 'rxjs';
 import { StoryblokClientService, StoryblokContentFields } from './client';
 
@@ -23,10 +22,11 @@ export class StoryblokAdapter implements ContentAdapter {
     return this.storyblok.getEntries({ type: qualifier.type }).pipe(
       map((entries) =>
         entries.stories.map((entry) => ({
+          id: entry.content.id,
           heading: entry.content.heading,
           description: entry.content.description,
           content: entry.content.content,
-          type: SemanticLinkType.Faq,
+          url: `/faq/${encodeURIComponent(entry.content.id)}`,
         }))
       )
     );

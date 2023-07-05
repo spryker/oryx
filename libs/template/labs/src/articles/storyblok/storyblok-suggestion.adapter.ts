@@ -5,7 +5,6 @@ import {
   SuggestionField,
   SuggestionQualifier,
 } from '@spryker-oryx/search';
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { map, Observable, of } from 'rxjs';
 import { StoryblokClientService, StoryblokContentFields } from './client';
 
@@ -18,15 +17,15 @@ export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
 
   get({ query, entities }: SuggestionQualifier): Observable<Suggestion> {
     if (
-      entities?.includes(SuggestionField.Articles) ||
+      entities?.includes(SuggestionField.Contents) ||
       entities?.includes(StoryblokContentFields.Faq)
     ) {
       return this.storyblok.getEntries({ query }).pipe(
         map((data) => ({
-          [SuggestionField.Articles]: data.stories?.map((story) => ({
+          [SuggestionField.Contents]: data.stories?.map((story) => ({
             id: story.content.id,
             name: story.content.heading,
-            type: SemanticLinkType.Faq,
+            url: `/faq/${encodeURIComponent(story.content.id)}`,
           })),
         }))
       );
