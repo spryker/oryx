@@ -47,7 +47,7 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
           html`
             <oryx-notification type="info" scheme="dark">
               ${this.i18n(
-                'user.profile.you-can’t-log-out-because-of-a-pending-synchronization'
+                "user.profile.you-can't-log-out-because-of-a-pending-synchronization"
               )}.
             </oryx-notification>
           `
@@ -58,7 +58,7 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
           html`
             <oryx-notification type="info" scheme="dark">
               ${this.i18n(
-                'user.profile.you-can’t-log-out-because-picking-is-in-progress'
+                "user.profile.you-can't-log-out-because-picking-is-in-progress"
               )}.
             </oryx-notification>
           `
