@@ -29,7 +29,9 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
             [SuggestionField.Contents]: data.items.map((entry) => ({
               name: entry.fields.heading,
               id: entry.fields.id,
-              url: `/article/${encodeURIComponent(entry.fields.id)}`,
+              url: `/${ContentfulContentFields.Article}/${encodeURIComponent(
+                entry.fields.id
+              )}`,
             })),
           }))
         );

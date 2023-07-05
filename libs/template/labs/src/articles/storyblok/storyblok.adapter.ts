@@ -26,7 +26,9 @@ export class StoryblokAdapter implements ContentAdapter {
           heading: entry.content.heading,
           description: entry.content.description,
           content: entry.content.content,
-          url: `/faq/${encodeURIComponent(entry.content.id)}`,
+          url: `/${StoryblokContentFields.Faq}/${encodeURIComponent(
+            entry.content.id
+          )}`,
         }))
       )
     );

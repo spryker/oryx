@@ -30,7 +30,9 @@ export class ContentfulAdapter implements ContentAdapter {
             heading: entry.fields.heading,
             description: entry.fields.description,
             content: entry.fields.content,
-            url: `/article/${encodeURIComponent(entry.fields.id)}`,
+            url: `/${ContentfulContentFields.Article}/${encodeURIComponent(
+              entry.fields.id
+            )}`,
           }))
         )
       );

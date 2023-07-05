@@ -5,7 +5,7 @@ import { StoryblokContentFields } from './storyblok';
 
 export const articlesPage: StaticComponent = {
   type: 'Page',
-  meta: { route: '/article' },
+  meta: { route: `/${ContentfulContentFields.Article}` },
   options: {
     data: {
       rules: [{ layout: 'flex', padding: '30px 0' }],
@@ -40,7 +40,7 @@ export const articlesPage: StaticComponent = {
 
 export const articlePage: StaticComponent = {
   type: 'Page',
-  meta: { route: '/article/:id' },
+  meta: { route: `/${ContentfulContentFields.Article}/:id` },
   options: {
     data: {
       rules: [{ layout: 'flex', padding: '30px 0' }],
@@ -60,7 +60,7 @@ export const articlePage: StaticComponent = {
 
 export const faqsPage: StaticComponent = {
   type: 'Page',
-  meta: { route: '/faq' },
+  meta: { route: `/${StoryblokContentFields.Faq}` },
   options: {
     data: {
       rules: [{ layout: 'flex', padding: '30px 0' }],
@@ -95,7 +95,7 @@ export const faqsPage: StaticComponent = {
 
 export const faqPage: StaticComponent = {
   type: 'Page',
-  meta: { route: '/faq/:id' },
+  meta: { route: `/${StoryblokContentFields.Faq}/:id` },
   options: {
     data: {
       rules: [{ layout: 'flex', padding: '30px 0' }],
