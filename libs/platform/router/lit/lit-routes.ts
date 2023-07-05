@@ -181,6 +181,10 @@ export class Routes implements ReactiveController {
 
     let tailGroup: string | undefined;
 
+    if (!globalThis.history.state.timestamp) {
+      globalThis.history.replaceState({ timestamp: new Date().getTime() }, '');
+    }
+
     if (this.routes.length === 0 && this.fallback === undefined) {
       // If a routes controller has none of its own routes it acts like it has
       // one route of `/*` so that it passes the whole pathname as a tail
