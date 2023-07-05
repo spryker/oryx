@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { ContentFields, ContentService } from '@spryker-oryx/content';
+import { ContentService } from '@spryker-oryx/content';
 import * as core from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
@@ -77,7 +77,6 @@ describe('ArticleComponent', () => {
     expect(mockContentService.get).toHaveBeenCalledWith({
       id: mockContent,
       type: mockContent,
-      entities: [ContentFields.Article, ContentFields.Faq],
     });
     expect(text).toHaveProperty('content', 'mockMarkedValue');
   });

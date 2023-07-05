@@ -5,9 +5,8 @@ import {
   SuggestionField,
   SuggestionQualifier,
 } from '@spryker-oryx/search';
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { map, Observable, of } from 'rxjs';
-import { StoryblokClientService } from './client';
+import { StoryblokClientService, StoryblokContentFields } from './client';
 
 export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
   constructor(protected storyblok = inject(StoryblokClientService)) {}
@@ -17,19 +16,23 @@ export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
   }
 
   get({ query, entities }: SuggestionQualifier): Observable<Suggestion> {
-    if (!entities?.includes(SuggestionField.Articles)) {
-      return of({});
+    if (
+      entities?.includes(SuggestionField.Contents) ||
+      entities?.includes(StoryblokContentFields.Faq)
+    ) {
+      return this.storyblok.getEntries({ query }).pipe(
+        map((data) => ({
+          [SuggestionField.Contents]: data.stories?.map((story) => ({
+            id: story.content.id,
+            name: story.content.heading,
+            url: `/${StoryblokContentFields.Faq}/${encodeURIComponent(
+              story.content.id
+            )}`,
+          })),
+        }))
+      );
     }
 
-    return this.storyblok.getEntries({ query }).pipe(
-      map((data) => data.stories.map((story) => story.content.id)),
-      map((names) => ({
-        [SuggestionField.Articles]: names?.map((name) => ({
-          name,
-          id: name,
-          type: SemanticLinkType.Faq,
-        })),
-      }))
-    );
+    return of({});
   }
 }

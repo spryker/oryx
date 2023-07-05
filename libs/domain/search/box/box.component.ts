@@ -41,7 +41,7 @@ import { SearchBoxOptions, SearchBoxProperties } from './box.model';
     max: 5,
     icon: 'category',
   },
-  [SuggestionField.Articles]: {
+  [SuggestionField.Contents]: {
     max: 5,
     icon: 'description',
   },

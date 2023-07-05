@@ -27,7 +27,7 @@ export const searchBoxComponentSchema: ContentComponentSchema<SearchBoxComponent
         type: FormFieldType.Number,
         min: 0,
       },
-      [`${SuggestionField.Articles}Count`]: {
+      [`${SuggestionField.Contents}Count`]: {
         type: FormFieldType.Number,
         min: 0,
       },

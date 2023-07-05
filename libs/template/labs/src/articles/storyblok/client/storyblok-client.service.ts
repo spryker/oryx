@@ -9,9 +9,14 @@ declare global {
   }
 }
 
+export const enum StoryblokContentFields {
+  Faq = 'faq',
+}
+
 export interface StoryblokSearch {
   slug?: string;
   query?: string;
+  type?: string;
 }
 
 interface StoryblokContent {

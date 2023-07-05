@@ -15,12 +15,12 @@ export interface SuggestionResource {
   url?: string;
   params?: Record<string, string>;
   id?: string;
-  type: SemanticLinkType;
+  type?: SemanticLinkType;
 }
 
 export interface Suggestion {
   [SuggestionField.Suggestions]?: SuggestionResource[];
   [SuggestionField.Categories]?: SuggestionResource[];
-  [SuggestionField.Articles]?: SuggestionResource[];
+  [SuggestionField.Contents]?: SuggestionResource[];
   [SuggestionField.Products]?: Product[];
 }
