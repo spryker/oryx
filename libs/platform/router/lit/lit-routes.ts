@@ -181,8 +181,8 @@ export class Routes implements ReactiveController {
 
     let tailGroup: string | undefined;
 
-    if (!globalThis.history.state?.timestamp) {
-      globalThis.history.replaceState({ timestamp: new Date().getTime() }, '');
+    if (!globalThis.history?.state?.timestamp) {
+      globalThis.history?.replaceState({ timestamp: new Date().getTime() }, '');
     }
 
     if (this.routes.length === 0 && this.fallback === undefined) {
