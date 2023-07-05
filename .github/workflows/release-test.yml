@@ -72,7 +72,7 @@ jobs:
       - name: Install dependencies for testfront
         run: cd apps/testfront && npm i && npm list --depth=1 && cd ../..
       - name: Check build
-        run: cd apps/testfront && npm run build:client && cd ../..
+        run: cd apps/testfront && npm run build && cd ../..
       - name: Run testfront
         run: npm run testfront
         env:
