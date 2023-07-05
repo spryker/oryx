@@ -16,14 +16,28 @@ const digestSize = 2;
 //  - Easily specifiable and implementable in multiple languages.
 // We don't care about cryptographic suitability.
 
+function sortedStringify(obj: any): string {
+  return JSON.stringify(obj, (key, value) =>
+    typeof value === 'object' && value !== null
+      ? Object.keys(value)
+          .sort()
+          .reduce((sorted: any, key: string) => {
+            sorted[key] = value[key];
+            return sorted;
+          }, {})
+      : value
+  );
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const digestForTemplateValues = (templateResult: TemplateResult) => {
-  if (!templateResult) return undefined;
+  // we don't have to cover cases where there are no values, as it should be catched by default lit checks
+  if (!templateResult || !templateResult.values?.length) return undefined;
   const hashes = new Uint32Array(digestSize).fill(5381);
 
   // Workaround: add values to the digest
   for (const s of templateResult.values) {
-    const z = JSON.stringify(s) ?? '';
+    const z = sortedStringify(s) ?? '';
     for (let i = 0; i < z.length; i++) {
       hashes[i % digestSize] = (hashes[i % digestSize] * 33) ^ z.charCodeAt(i);
     }

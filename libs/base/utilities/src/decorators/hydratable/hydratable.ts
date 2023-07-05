@@ -4,7 +4,7 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { Type } from '@spryker-oryx/di';
-import { isServer, LitElement, noChange, render, TemplateResult } from 'lit';
+import { isServer, LitElement, render, TemplateResult } from 'lit';
 import { Effect, effect, resolvingSignals } from '../../signals';
 import { digestForTemplateValues } from './digest-for-template';
 
@@ -56,7 +56,10 @@ function hydratableClass<T extends Type<HTMLElement>>(
      * 3 - not yet hydrated (hydration deferred)
      * 2 - pre-hydrating (waiting for data required for hydration)
      * 1 - hydrating (lit hydration in progress)
-     * 0 - hydrated (hydration complete)
+     * 0/undefined - hydrated (hydration complete)
+     *
+     * We do use explicit 0 as an intermediate marker to facilitate
+     * workaround checking hydration value mismatch
      */
     [DEFER_HYDRATION]?: number;
     private [SIGNAL_EFFECT]?: Effect;
@@ -93,7 +96,10 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       // special case for hydration
       if (this[DEFER_HYDRATION] === 1) {
-        delete this[DEFER_HYDRATION];
+        // delete this[DEFER_HYDRATION];
+        // This is part of the workaround for hydration mismatch, we would not need this property otherwise
+        this[DEFER_HYDRATION] = 0;
+
         try {
           super.update(changedProperties);
         } catch (e) {
@@ -141,14 +147,15 @@ function hydratableClass<T extends Type<HTMLElement>>(
       if (this[SIGNAL_EFFECT]) {
         this[SIGNAL_EFFECT]!.stop();
         delete this[SIGNAL_EFFECT];
+      }
 
-        if (!isServer) {
-          const digestFromAttribute = this.getAttribute('digestHack');
-          if (digestFromAttribute) {
-            const digest = digestForTemplateValues(result);
-            if (digest !== digestFromAttribute)
-              return (() => noChange)() as any;
-          }
+      if (this[DEFER_HYDRATION] === 0) {
+        // workaround for checking hydration value mismatch
+        delete this[DEFER_HYDRATION];
+        const digestFromAttribute = this.getAttribute('digestHack');
+        if (digestFromAttribute) {
+          const digest = digestForTemplateValues(result);
+          if (digest !== digestFromAttribute) throw new Error('value mismatch');
         }
       }
 
