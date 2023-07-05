@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/search';
 import { SemanticLinkType } from '@spryker-oryx/site';
 import { map, Observable, of } from 'rxjs';
-import { StoryblokClientService } from './client';
+import { StoryblokClientService, StoryblokContentFields } from './client';
 
 export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
   constructor(protected storyblok = inject(StoryblokClientService)) {}
@@ -17,12 +17,11 @@ export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
   }
 
   get({ query, entities }: SuggestionQualifier): Observable<Suggestion> {
-    console.log(entities);
     if (
       entities?.includes(SuggestionField.Articles) ||
-      entities?.includes('faq')
+      entities?.includes(StoryblokContentFields.Faq)
     ) {
-      return this.storyblok.searchEntries({ query }).pipe(
+      return this.storyblok.getEntries({ query }).pipe(
         map((data) => data.stories.map((story) => story.content.id)),
         map((names) => ({
           [SuggestionField.Articles]: names?.map((name) => ({

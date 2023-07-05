@@ -4,8 +4,8 @@ import { RouterService } from '@spryker-oryx/router';
 import { map } from 'rxjs';
 
 export const enum ArticleContext {
-  Id = 'id',
-  Type = 'type',
+  Id = 'article-id',
+  Type = 'article-type',
 }
 
 export const ArticleIdContextFallback: Provider = {

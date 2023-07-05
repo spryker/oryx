@@ -1,12 +1,11 @@
 import {
   Content,
   ContentAdapter,
-  ContentFields,
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { inject } from '@spryker-oryx/di';
 import { map, Observable, of } from 'rxjs';
-import { StoryblokClientService } from './client';
+import { StoryblokClientService, StoryblokContentFields } from './client';
 
 export class StoryblokAdapter implements ContentAdapter {
   constructor(protected storyblok = inject(StoryblokClientService)) {}
@@ -17,8 +16,8 @@ export class StoryblokAdapter implements ContentAdapter {
 
   get(qualifier: ContentQualifier): Observable<Content> {
     if (
-      !qualifier.entities?.includes(ContentFields.Faq) ||
-      qualifier.type !== ContentFields.Faq
+      !qualifier.entities?.includes(StoryblokContentFields.Faq) ||
+      qualifier.type !== StoryblokContentFields.Faq
     ) {
       return of({} as Content);
     }

@@ -1,8 +1,4 @@
-import {
-  ArticleContext,
-  ContentFields,
-  ContentService,
-} from '@spryker-oryx/content';
+import { ContentFields, ContentService } from '@spryker-oryx/content';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
@@ -15,32 +11,30 @@ import {
 import { html, LitElement, TemplateResult } from 'lit';
 import { marked } from 'marked';
 import { of } from 'rxjs';
-import { ContentArticleOptions } from './article.model';
+import { ArticleContext } from '../../article-context';
+import { StoryblokContentFields } from '../../storyblok';
+import { ContentArticleOptions } from '../article/article.model';
 
-@defaultOptions({ entities: [ContentFields.Article, ContentFields.Faq] })
+@defaultOptions({
+  entities: [ContentFields.Article, StoryblokContentFields.Faq],
+})
 @signalAware()
 @hydratable()
-export class ArticleComponent extends ContentMixin<ContentArticleOptions>(
+export class ArticlesComponent extends ContentMixin<ContentArticleOptions>(
   LitElement
 ) {
   protected contentService = resolve(ContentService);
   protected contextController = new ContextController(this);
 
-  protected $articleId = signal(
-    this.contextController.get<string>(ArticleContext.Id)
-  );
   protected $articleType = signal(
     this.contextController.get<string>(ArticleContext.Type)
   );
 
   protected $data = computed(() => {
     const { entities } = this.$options();
-    const id = this.$articleId();
     const type = this.$articleType();
 
-    return id && type
-      ? this.contentService.get({ id, type, entities })
-      : of(null);
+    return type ? this.contentService.get({ type, entities }) : of(null);
   });
 
   protected override render(): TemplateResult | void {

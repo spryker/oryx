@@ -2,8 +2,12 @@ import { ContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { of } from 'rxjs';
-import { ContentFields, ContentService } from '../content.service';
-import { ArticlePageDescriptionMetaResolver } from './article-page-description-meta.resolver';
+import {
+  ContentFields,
+  ContentService,
+} from '../../../../../domain/content/src/services/content.service';
+import { StoryblokContentFields } from '../storyblok';
+import { ArticlePageTitleMetaResolver } from './article-page-title-meta.resolver';
 
 const mockContentService = {
   get: vi.fn(),
@@ -17,15 +21,15 @@ const mockRouterService = {
   currentRoute: vi.fn(),
 };
 
-describe('ArticlePageDescriptionMetaResolver', () => {
-  let service: ArticlePageDescriptionMetaResolver;
+describe('ArticlePageTitleMetaResolver', () => {
+  let service: ArticlePageTitleMetaResolver;
 
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
         {
-          provide: ArticlePageDescriptionMetaResolver,
-          useClass: ArticlePageDescriptionMetaResolver,
+          provide: ArticlePageTitleMetaResolver,
+          useClass: ArticlePageTitleMetaResolver,
         },
         {
           provide: ContextService,
@@ -42,7 +46,7 @@ describe('ArticlePageDescriptionMetaResolver', () => {
       ],
     });
 
-    service = testInjector.inject(ArticlePageDescriptionMetaResolver);
+    service = testInjector.inject(ArticlePageTitleMetaResolver);
   });
 
   afterEach(() => {
@@ -73,23 +77,23 @@ describe('ArticlePageDescriptionMetaResolver', () => {
   });
 
   describe('resolve', () => {
-    it('should return proper object with product description', () => {
+    it('should return proper object with product title', () => {
       const callback = vi.fn();
       mockContextService.get.mockReturnValueOnce(of('id'));
       mockContextService.get.mockReturnValue(of('type'));
       mockContentService.get.mockReturnValue(
         of({
-          description: 'Name A',
+          heading: 'Name A',
         })
       );
       service.resolve().subscribe(callback);
       expect(mockContentService.get).toHaveBeenCalledWith({
         id: 'id',
         type: 'type',
-        entities: [ContentFields.Article, ContentFields.Faq],
+        entities: [ContentFields.Article, StoryblokContentFields.Faq],
       });
       expect(callback).toHaveBeenCalledWith({
-        description: 'Name A',
+        title: 'Name A',
       });
     });
   });

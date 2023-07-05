@@ -6,10 +6,14 @@ import {
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import {
+  ContentFields,
+  ContentService,
+} from '../../../../../domain/content/src/services/content.service';
 import { ArticleContext } from '../article-context';
-import { ContentFields, ContentService } from '../content.service';
+import { StoryblokContentFields } from '../storyblok';
 
-export class ArticlePageDescriptionMetaResolver implements PageMetaResolver {
+export class ArticlePageTitleMetaResolver implements PageMetaResolver {
   constructor(
     protected context = inject(ContextService),
     protected router = inject(RouterService),
@@ -26,7 +30,7 @@ export class ArticlePageDescriptionMetaResolver implements PageMetaResolver {
           map(
             (route) =>
               route.includes(ContentFields.Article) ||
-              route.includes(ContentFields.Faq)
+              route.includes(StoryblokContentFields.Faq)
           )
         ),
     ]);
@@ -42,17 +46,14 @@ export class ArticlePageDescriptionMetaResolver implements PageMetaResolver {
           return of({});
         }
 
+        // TODO: get entities from component or context
         return this.contentService
           .get({
             id,
             type,
-            entities: [ContentFields.Article, ContentFields.Faq],
+            entities: [ContentFields.Article, StoryblokContentFields.Faq],
           })
-          .pipe(
-            map((data) =>
-              data?.description ? { description: data.description } : {}
-            )
-          );
+          .pipe(map((data) => (data?.heading ? { title: data.heading } : {})));
       })
     );
   }

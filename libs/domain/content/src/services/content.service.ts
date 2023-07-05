@@ -4,7 +4,6 @@ import { Content, ContentQualifier } from '../models';
 
 export const enum ContentFields {
   Article = 'article',
-  Faq = 'faq',
 }
 
 export type ContentEntities = (ContentFields | string)[];
