@@ -82,6 +82,7 @@ export class SearchBoxComponent
     const options = this.$options();
     const withSuggestion =
       query && (!options.minChars || query.length >= options.minChars);
+
     return withSuggestion ? this.$raw() : null;
   });
 

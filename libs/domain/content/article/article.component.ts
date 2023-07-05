@@ -17,7 +17,7 @@ import { marked } from 'marked';
 import { of } from 'rxjs';
 import { ContentArticleOptions } from './article.model';
 
-@defaultOptions({ entities: [ContentFields.Article] })
+@defaultOptions({ entities: [ContentFields.Article, ContentFields.Faq] })
 @signalAware()
 @hydratable()
 export class ArticleComponent extends ContentMixin<ContentArticleOptions>(
@@ -26,27 +26,32 @@ export class ArticleComponent extends ContentMixin<ContentArticleOptions>(
   protected contentService = resolve(ContentService);
   protected contextController = new ContextController(this);
 
-  protected $articleContext = signal(
+  protected $articleId = signal(
     this.contextController.get<string>(ArticleContext.Id)
+  );
+  protected $articleType = signal(
+    this.contextController.get<string>(ArticleContext.Type)
   );
 
   protected $data = computed(() => {
-    const article = this.$articleContext();
+    const { entities } = this.$options();
+    const id = this.$articleId();
+    const type = this.$articleType();
 
-    return article
-      ? this.contentService.get({ article, entities: this.$options().entities })
+    return id && type
+      ? this.contentService.get({ id, type, entities })
       : of(null);
   });
 
   protected override render(): TemplateResult | void {
     const data = this.$data();
 
-    if (!data?.article) {
+    if (!data?.content) {
       return;
     }
 
     return html`<oryx-text
-      .content=${marked.parse(data.article)}
+      .content=${marked.parse(data.content)}
     ></oryx-text> `;
   }
 }

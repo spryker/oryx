@@ -3,14 +3,14 @@ import { inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { combineLatest, Observable, switchMap } from 'rxjs';
 import {
-  ContentfulApiService,
+  ContentfulClientService,
   ContentfulResponse,
   ContentfulSearch,
   ContentfulSpace,
   ContentfulToken,
-} from './contentful-api.service';
+} from './contentful-client.service';
 
-export class DefaultContentfulApiService implements ContentfulApiService {
+export class DefaultContentfulClientService implements ContentfulClientService {
   constructor(
     protected contentfulToken = inject(ContentfulToken),
     protected contentfulSpace = inject(ContentfulSpace),

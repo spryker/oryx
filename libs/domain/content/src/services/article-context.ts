@@ -5,12 +5,21 @@ import { map } from 'rxjs';
 
 export const enum ArticleContext {
   Id = 'id',
+  Type = 'type',
 }
 
-export const ArticleContextFallback: Provider = {
+export const ArticleIdContextFallback: Provider = {
   provide: `${ContextServiceFallback}${ArticleContext.Id}`,
   useFactory: () =>
     inject(RouterService)
       .currentParams()
       .pipe(map((params) => params?.id)),
+};
+
+export const ArticleTypeContextFallback: Provider = {
+  provide: `${ContextServiceFallback}${ArticleContext.Type}`,
+  useFactory: () =>
+    inject(RouterService)
+      .currentRoute()
+      .pipe(map((route) => route.split('/').filter(Boolean)[0])),
 };

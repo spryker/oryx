@@ -5,11 +5,12 @@ import {
   SuggestionField,
   SuggestionQualifier,
 } from '@spryker-oryx/search';
+import { SemanticLinkType } from '@spryker-oryx/site';
 import { map, Observable, of } from 'rxjs';
-import { ContentfulApiService } from './api';
+import { ContentfulClientService } from './client';
 
 export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
-  constructor(protected contentful = inject(ContentfulApiService)) {}
+  constructor(protected contentful = inject(ContentfulClientService)) {}
 
   getKey({ query }: SuggestionQualifier): string {
     return query ?? '';
@@ -25,11 +26,12 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
         query: this.getKey({ query }),
       })
       .pipe(
-        map((data) => data.items.map((entry) => entry.sys.contentType.sys.id)),
+        map((data) => data.items.map((entry) => entry.fields.id)),
         map((names) => ({
           [SuggestionField.Articles]: names?.map((name) => ({
             name,
             id: name,
+            type: SemanticLinkType.Article,
           })),
         }))
       );

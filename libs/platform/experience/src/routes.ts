@@ -38,6 +38,13 @@ export const defaultExperienceRoutes: RouteConfig[] = [
     name: 'Article',
   },
   {
+    path: '/faq/:id',
+    render: (): TemplateResult => html`<oryx-composition
+      route="/faq/:id"
+    ></oryx-composition>`,
+    name: 'FAQ',
+  },
+  {
     path: '/:page',
     render: ({ page }): TemplateResult => html`<oryx-composition
       route="/${page}"
