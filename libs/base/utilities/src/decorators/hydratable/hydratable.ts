@@ -12,7 +12,17 @@ const DEFER_HYDRATION = Symbol('deferHydration');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
 export const hydratableAttribute = 'hydratable';
 export const deferHydrationAttribute = 'defer-hydration';
+
+// TODO: workaround for value mismatch issue
+// may not be needed in the future
+// for more info check: https://github.com/lit/lit/issues/3962
+export const hydrationValuesAttribute = 'hydration-values';
+
 const SIGNAL_EFFECT = Symbol('signalEffect');
+
+// flag to enable hydration debugging
+// should be always set to false in production, to eliminate dead code
+const HYDRATION_DEBUG = false;
 
 export interface HydratableLitElement extends LitElement {
   [HYDRATE_ON_DEMAND](force?: boolean): void;
@@ -81,7 +91,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
         this[SIGNAL_EFFECT] = effect(() => {
           const result = super.render();
           const digest = digestForTemplateValues(result);
-          if (digest) this.setAttribute('digestHack', digest);
+          if (digest) this.setAttribute(hydrationValuesAttribute, digest);
         });
       }
     }
@@ -105,6 +115,11 @@ function hydratableClass<T extends Type<HTMLElement>>(
         } catch (e) {
           // catch hydration error and recover by clearing and re-rendering
           // may become obsolete in future versions of lit
+
+          if (HYDRATION_DEBUG) {
+            this['__hydration-with-error'] = true;
+          }
+
           this.renderRoot.innerHTML =
             this.renderRoot.innerHTML.split('<!--lit-part ')[0];
           render(this.render(), this.renderRoot, this.renderOptions);
@@ -141,7 +156,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
       return promise;
     }
 
-    render(): TemplateResult {
+    render(): TemplateResult | void {
       const result = super.render();
 
       if (this[SIGNAL_EFFECT]) {
@@ -152,10 +167,19 @@ function hydratableClass<T extends Type<HTMLElement>>(
       if (this[DEFER_HYDRATION] === 0) {
         // workaround for checking hydration value mismatch
         delete this[DEFER_HYDRATION];
-        const digestFromAttribute = this.getAttribute('digestHack');
+        const digestFromAttribute = this.getAttribute(hydrationValuesAttribute);
         if (digestFromAttribute) {
           const digest = digestForTemplateValues(result);
-          if (digest !== digestFromAttribute) throw new Error('value mismatch');
+          // Returning undefined will be catched by lit as template mismatch
+          if (digest !== digestFromAttribute) return;
+        }
+      }
+
+      if (HYDRATION_DEBUG) {
+        if (!isServer) {
+          this.style.border = this['__hydration-with-error']
+            ? '1px solid red'
+            : '1px solid green';
         }
       }
 
