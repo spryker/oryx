@@ -149,7 +149,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
       if (this[SIGNAL_EFFECT]) {
         this[SIGNAL_EFFECT]!.stop();
         delete this[SIGNAL_EFFECT];
-        if (!isServer && digest !== digestFromAttribute)
+        if (!isServer && digestFromAttribute && digest !== digestFromAttribute)
           return (() => noChange)() as any;
       }
 
