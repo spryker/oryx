@@ -1,7 +1,6 @@
-import { RouteConfig } from '@lit-labs/router';
 import { html, TemplateResult } from 'lit';
 
-export const articleRoutes: RouteConfig[] = [
+export const articleRoutes = [
   {
     path: '/faq',
     render: (): TemplateResult => html`<oryx-composition
