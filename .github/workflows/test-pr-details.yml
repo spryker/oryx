@@ -1,18 +1,19 @@
 name: Test PR details workflow
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 on:
   # Triggers the workflow on pull request events
   pull_request:
-    - opened
-    - synchronize
-    - edited
-    - reopened
+    types:
+      - opened
+      - synchronize
+      - edited
+      - reopened
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test-pr-title:
