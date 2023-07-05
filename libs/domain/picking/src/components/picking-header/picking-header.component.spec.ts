@@ -5,14 +5,24 @@ import { CustomerNoteModalComponent } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { html } from 'lit';
-import { of } from 'rxjs';
-import { PickingListService } from '../../services';
+import { BehaviorSubject, of } from 'rxjs';
+import { PickingHeaderService, PickingListService } from '../../services';
+import { DiscardPickingComponent } from '../discard-modal';
+import { discardModalComponent } from '../discard-modal/discard-modal.def';
 import { PickingHeaderComponent } from './picking-header.component';
 import { pickingHeaderComponent } from './picking-header.def';
 
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
+}
+
+const showDialogTrigger = new BehaviorSubject(false);
+
+class MockPickingHeaderService implements Partial<PickingHeaderService> {
+  showDialog = vi.fn().mockImplementation(() => showDialogTrigger);
+  cancel = vi.fn();
+  discard = vi.fn();
 }
 
 class MockRouterService implements Partial<RouterService> {
@@ -23,9 +33,10 @@ describe('PickingHeaderComponent', () => {
   let element: PickingHeaderComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
+  let pickingHeaderService: MockPickingHeaderService;
 
   beforeAll(async () => {
-    await useComponent(pickingHeaderComponent);
+    await useComponent([pickingHeaderComponent, discardModalComponent]);
   });
 
   beforeEach(async () => {
@@ -39,6 +50,10 @@ describe('PickingHeaderComponent', () => {
           provide: PickingListService,
           useClass: MockPickingListService,
         },
+        {
+          provide: PickingHeaderService,
+          useClass: MockPickingHeaderService,
+        },
       ],
     });
 
@@ -49,10 +64,12 @@ describe('PickingHeaderComponent', () => {
     service = testInjector.inject(
       PickingListService
     ) as unknown as MockPickingListService;
-
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;
+    pickingHeaderService = testInjector.inject(
+      PickingHeaderService
+    ) as unknown as MockPickingHeaderService;
   });
 
   afterEach(() => {
@@ -75,6 +92,9 @@ describe('PickingHeaderComponent', () => {
     );
   };
 
+  const getDiscardModal = (): DiscardPickingComponent | null =>
+    element.renderRoot.querySelector('oryx-discard-picking');
+
   it('is defined', () => {
     expect(element).toBeInstanceOf(PickingHeaderComponent);
   });
@@ -95,6 +115,14 @@ describe('PickingHeaderComponent', () => {
 
   it('should render customer note button', () => {
     expect(getCustomerNoteButton()).not.toBeNull();
+  });
+
+  it('should render discard modal', () => {
+    expect(getDiscardModal()).not.toBeNull();
+  });
+
+  it('should not show discard modal', () => {
+    expect(getDiscardModal()?.hasAttribute('open')).toBe(false);
   });
 
   it('should render account button', () => {
@@ -138,9 +166,42 @@ describe('PickingHeaderComponent', () => {
     beforeEach(() => {
       (getBackButton() as HTMLButtonElement).click();
     });
-    //TODO - check that modal is opened first
-    it('should call router service', () => {
+
+    it('should call router service back', () => {
       expect(routerService.back).toHaveBeenCalled();
+    });
+  });
+
+  describe('when route guard is triggered', () => {
+    beforeEach(async () => {
+      showDialogTrigger.next(true);
+    });
+    it('should open discard modal', () => {
+      expect(getDiscardModal()?.hasAttribute('open')).toBe(true);
+    });
+
+    describe('and close button is clicked', () => {
+      beforeEach(() => {
+        getDiscardModal()?.renderRoot.querySelector('button')?.click();
+      });
+
+      it('should close discard modal', () => {
+        expect(getDiscardModal()?.hasAttribute('open')).toBe(false);
+      });
+
+      it('should call picking header service cancel', () => {
+        expect(pickingHeaderService.cancel).toHaveBeenCalled();
+      });
+    });
+
+    describe('and discard button is clicked', () => {
+      beforeEach(() => {
+        getDiscardModal()?.renderRoot.querySelectorAll('button')[1]?.click();
+      });
+
+      it('should call picking header service discard', () => {
+        expect(pickingHeaderService.discard).toHaveBeenCalled();
+      });
     });
   });
 });

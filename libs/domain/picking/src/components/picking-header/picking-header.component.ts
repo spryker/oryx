@@ -1,18 +1,34 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n } from '@spryker-oryx/utilities';
+import { i18n, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
+import { query, state } from 'lit/decorators.js';
+import { tap } from 'rxjs';
 import { PickingListMixin } from '../../mixins';
+import { PickingHeaderService } from '../../services';
+import { DiscardPickingComponent } from '../discard-modal';
 import { styles } from './picking-header.styles';
 
 export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   static styles = styles;
 
   protected routerService = resolve(RouterService);
+  protected pickingHeaderService = resolve(PickingHeaderService);
+
+  @query('oryx-discard-picking')
+  protected discardModal?: DiscardPickingComponent;
 
   @state() isCartNoteVisible?: boolean;
+
+  @subscribe()
+  protected showDialog$ = this.pickingHeaderService
+    .showDialog()
+    .pipe(
+      tap((showDialog) =>
+        showDialog ? this.openDiscardModal() : this.closeDiscardModal()
+      )
+    );
 
   protected renderCartNoteButton(): TemplateResult {
     return html`${this.pickingList?.cartNote
@@ -56,11 +72,29 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
           contentBehavior: 'modal',
           label: i18n('oryx.picking.account'),
         }}
-      ></oryx-site-navigation-item>`;
+      ></oryx-site-navigation-item>
+      <oryx-discard-picking
+        @oryx.close=${() => {
+          this.pickingHeaderService.cancel();
+          this.closeDiscardModal();
+        }}
+        @oryx.back=${this.leave}
+      ></oryx-discard-picking>`;
+  }
+
+  protected openDiscardModal(): void {
+    this.discardModal?.toggleAttribute('open', true);
+  }
+
+  protected closeDiscardModal(): void {
+    this.discardModal?.toggleAttribute('open', false);
+  }
+
+  protected leave(): void {
+    this.pickingHeaderService.discard();
   }
 
   protected back(): void {
-    //TODO - display discard modal
     this.routerService.back();
   }
 }
