@@ -1,4 +1,4 @@
-import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
+import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';

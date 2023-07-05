@@ -3,7 +3,7 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
 import { CustomerNoteModalComponent } from '@spryker-oryx/picking/customer-note-modal';
-import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
+import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { html } from 'lit';
 import { of } from 'rxjs';

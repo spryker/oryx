@@ -122,6 +122,7 @@
       ],
       "@spryker-oryx/picking/filters": ["libs/domain/picking/filters/index.ts"],
       "@spryker-oryx/picking/login": ["libs/domain/picking/login/index.ts"],
+      "@spryker-oryx/picking/mocks": ["libs/domain/picking/mocks/index.ts"],
       "@spryker-oryx/picking/navigate-back": [
         "libs/domain/picking/navigate-back/index.ts"
       ],
