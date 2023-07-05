@@ -22,11 +22,10 @@ export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
       entities?.includes(StoryblokContentFields.Faq)
     ) {
       return this.storyblok.getEntries({ query }).pipe(
-        map((data) => data.stories.map((story) => story.content.id)),
-        map((names) => ({
-          [SuggestionField.Articles]: names?.map((name) => ({
-            name,
-            id: name,
+        map((data) => ({
+          [SuggestionField.Articles]: data.stories?.map((story) => ({
+            id: story.content.id,
+            name: story.content.heading,
             type: SemanticLinkType.Faq,
           })),
         }))

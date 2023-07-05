@@ -20,12 +20,14 @@ export class DefaultStoryblokClientService implements StoryblokClientService {
   ) {}
 
   getEntries(search: StoryblokSearch): Observable<StoryblokEntriesResponse> {
-    const endpoint = `${this.endpoint}?search_term=${search.query}&token=${this.storyblokToken}`;
-    return this.search<StoryblokEntriesResponse>(endpoint);
+    const endpoint = search.query
+      ? `?search_term=${search.query}&`
+      : `?starts_with=${search.type}&`;
+    return this.search<StoryblokEntriesResponse>(`${endpoint}`);
   }
 
   getEntry(search: StoryblokSearch): Observable<StoryblokEntryResponse> {
-    const endpoint = `${this.endpoint}/${search.slug}?token=${this.storyblokToken}`;
+    const endpoint = `/${search.slug}?`;
     return this.search<StoryblokEntryResponse>(endpoint);
   }
 
@@ -34,7 +36,9 @@ export class DefaultStoryblokClientService implements StoryblokClientService {
       .get()
       .pipe(
         switchMap((locale) =>
-          this.http.get<T>(`${endpoint}&language=${locale}`)
+          this.http.get<T>(
+            `${this.endpoint}${endpoint}token=${this.storyblokToken}&language=${locale}`
+          )
         )
       );
   }

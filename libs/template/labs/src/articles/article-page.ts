@@ -2,6 +2,37 @@ import { StaticComponent } from '@spryker-oryx/experience';
 import { SuggestionField } from '@spryker-oryx/search';
 import { StoryblokContentFields } from './storyblok';
 
+export const articlesPage: StaticComponent = {
+  type: 'Page',
+  meta: { route: '/article' },
+  options: {
+    data: {
+      rules: [{ layout: 'flex', padding: '30px 0' }],
+    },
+  },
+  components: [
+    {
+      type: 'oryx-search-box',
+      options: {
+        data: {
+          rules: [{ margin: 'auto', width: '580px' }],
+          [SuggestionField.Suggestions]: undefined,
+          [SuggestionField.Categories]: undefined,
+          [SuggestionField.Products]: undefined,
+        },
+      },
+    },
+    {
+      type: 'oryx-content-articles',
+      options: {
+        data: {
+          rules: [{ width: '80%', margin: 'auto' }],
+        },
+      },
+    },
+  ],
+};
+
 export const articlePage: StaticComponent = {
   type: 'Page',
   meta: { route: '/article/:id' },
@@ -43,6 +74,14 @@ export const faqsPage: StaticComponent = {
           [StoryblokContentFields.Faq]: {
             max: 8,
           },
+        },
+      },
+    },
+    {
+      type: 'oryx-content-articles',
+      options: {
+        data: {
+          rules: [{ width: '80%', margin: 'auto' }],
         },
       },
     },

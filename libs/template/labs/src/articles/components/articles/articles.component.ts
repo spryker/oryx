@@ -1,7 +1,6 @@
-import { ContentFields, ContentService } from '@spryker-oryx/content';
+import { ContentService } from '@spryker-oryx/content';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   computed,
   hydratable,
@@ -9,20 +8,12 @@ import {
   signalAware,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { marked } from 'marked';
 import { of } from 'rxjs';
 import { ArticleContext } from '../../article-context';
-import { StoryblokContentFields } from '../../storyblok';
-import { ContentArticleOptions } from '../article/article.model';
 
-@defaultOptions({
-  entities: [ContentFields.Article, StoryblokContentFields.Faq],
-})
 @signalAware()
 @hydratable()
-export class ArticlesComponent extends ContentMixin<ContentArticleOptions>(
-  LitElement
-) {
+export class ArticlesComponent extends LitElement {
   protected contentService = resolve(ContentService);
   protected contextController = new ContextController(this);
 
@@ -31,21 +22,30 @@ export class ArticlesComponent extends ContentMixin<ContentArticleOptions>(
   );
 
   protected $data = computed(() => {
-    const { entities } = this.$options();
     const type = this.$articleType();
-
-    return type ? this.contentService.get({ type, entities }) : of(null);
+    console.log(type);
+    return type ? this.contentService.getAll({ type }) : of(null);
   });
 
   protected override render(): TemplateResult | void {
     const data = this.$data();
-
-    if (!data?.content) {
+    console.log(data);
+    if (!data?.length) {
       return;
     }
 
-    return html`<oryx-text
-      .content=${marked.parse(data.content)}
-    ></oryx-text> `;
+    return html`${data.map(
+      (entry) => html`
+        <div>
+          <oryx-content-link
+            .options=${{
+              type: entry.type,
+              id: entry.id,
+            }}
+            .content=${{ text: entry.heading }}
+          ></oryx-content-link>
+        </div>
+      `
+    )}`;
   }
 }

@@ -26,11 +26,10 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
         query: this.getKey({ query }),
       })
       .pipe(
-        map((data) => data.items.map((entry) => entry.fields.id)),
-        map((names) => ({
-          [SuggestionField.Articles]: names?.map((name) => ({
-            name,
-            id: name,
+        map((data) => ({
+          [SuggestionField.Articles]: data.items.map((entry) => ({
+            name: entry.fields.heading,
+            id: entry.fields.id,
             type: SemanticLinkType.Article,
           })),
         }))
