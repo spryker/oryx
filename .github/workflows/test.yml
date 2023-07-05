@@ -19,6 +19,7 @@ env:
   IS_DEV: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/development' }}
 
 jobs:
+  # TODO - run this job when PR is edited
   test-pr-title:
     if: github.event_name == 'pull_request'
     permissions:
@@ -33,6 +34,9 @@ jobs:
 
   test-format:
     runs-on: ubuntu-latest
+    needs: [test-pr-title]
+    if: |
+      needs.test-pr-title.result == 'success' || needs.test-pr-title.result == 'skipped'
     steps:
       - uses: actions/checkout@v3
         with:
@@ -44,6 +48,9 @@ jobs:
 
   test-lint:
     runs-on: ubuntu-latest
+    needs: [test-pr-title]
+    if: |
+      needs.test-pr-title.result == 'success' || needs.test-pr-title.result == 'skipped'
     steps:
       - uses: actions/checkout@v3
         with:
@@ -59,6 +66,9 @@ jobs:
 
   test-stylelint:
     runs-on: ubuntu-latest
+    needs: [test-pr-title]
+    if: |
+      needs.test-pr-title.result == 'success' || needs.test-pr-title.result == 'skipped'
     steps:
       - uses: actions/checkout@v3
         with:
@@ -74,6 +84,9 @@ jobs:
 
   test-tsconfig:
     runs-on: ubuntu-latest
+    needs: [test-pr-title]
+    if: |
+      needs.test-pr-title.result == 'success' || needs.test-pr-title.result == 'skipped'
     steps:
       - uses: actions/checkout@v3
         with:
@@ -89,6 +102,7 @@ jobs:
 
   test-unit:
     runs-on: ubuntu-latest
+    needs: [test-format, test-lint, test-stylelint, test-tsconfig]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -107,8 +121,9 @@ jobs:
           isDev: ${{ env.IS_DEV }}
 
   test-visual-pr:
-    if: ${{ github.actor != 'dependabot[bot]' && github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
+    needs: [test-format, test-lint, test-stylelint, test-tsconfig]
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -123,8 +138,9 @@ jobs:
         run: npx nx run storybook:visual-regression-pr
 
   test-visual-dev:
-    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    needs: [test-format, test-lint, test-stylelint, test-tsconfig]
+    if: ${{ github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -139,8 +155,8 @@ jobs:
         run: npx nx run storybook:visual-regression-branch
 
   test-e2e-storefront:
-    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
+    needs: [test-format, test-lint, test-stylelint, test-tsconfig]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -159,8 +175,8 @@ jobs:
           isDev: ${{ env.IS_DEV }}
 
   test-e2e-fulfillment:
-    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
+    needs: [test-format, test-lint, test-stylelint, test-tsconfig]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -180,6 +196,7 @@ jobs:
 
   test-build:
     runs-on: ubuntu-latest
+    needs: [test-format, test-lint, test-stylelint, test-tsconfig]
     steps:
       - uses: actions/checkout@v3
         with:
