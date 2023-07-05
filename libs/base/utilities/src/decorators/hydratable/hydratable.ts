@@ -152,11 +152,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
         }
       }
 
-      if (!isServer) {
-        this.style.border = '1px solid red';
-      }
-
-      this.set;
       return result;
     }
   };
