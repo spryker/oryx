@@ -77,7 +77,8 @@ function hydratableClass<T extends Type<HTMLElement>>(
         // we trigger SSR awaiter on the server, to resolve all asynchronous logic before rendering
         this[SIGNAL_EFFECT] = effect(() => {
           const result = super.render();
-          this.setAttribute('digestHack', digestForTemplateValues(result));
+          const digest = digestForTemplateValues(result);
+          if (digest) this.setAttribute('digestHack', digest);
         });
       }
     }
@@ -137,20 +138,18 @@ function hydratableClass<T extends Type<HTMLElement>>(
     render(): TemplateResult {
       const result = super.render();
 
-      const digestFromAttribute = this.getAttribute('digestHack');
-      const digest = digestForTemplateValues(result);
-      // console.log(
-      //   this.tagName,
-      //   digest,
-      //   digestFromAttribute,
-      //   digest === digestFromAttribute
-      // );
-
       if (this[SIGNAL_EFFECT]) {
         this[SIGNAL_EFFECT]!.stop();
         delete this[SIGNAL_EFFECT];
-        if (!isServer && digestFromAttribute && digest !== digestFromAttribute)
-          return (() => noChange)() as any;
+
+        if (!isServer) {
+          const digestFromAttribute = this.getAttribute('digestHack');
+          if (digestFromAttribute) {
+            const digest = digestForTemplateValues(result);
+            if (digest !== digestFromAttribute)
+              return (() => noChange)() as any;
+          }
+        }
       }
 
       if (!isServer) {

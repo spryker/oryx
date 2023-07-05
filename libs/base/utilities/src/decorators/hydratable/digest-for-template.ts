@@ -18,6 +18,7 @@ const digestSize = 2;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const digestForTemplateValues = (templateResult: TemplateResult) => {
+  if (!templateResult) return undefined;
   const hashes = new Uint32Array(digestSize).fill(5381);
 
   // Workaround: add values to the digest
