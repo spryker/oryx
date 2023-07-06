@@ -10,7 +10,7 @@ interface HandlerContext {
   entry?: string;
   root?: string;
   /**
-   * Time to live option that allows you to set a fixed duration of time
+   * Time to live (in seconds) option that allows you to set a fixed duration of time
    * after which a cached builder response is invalidated.
    * Also it's possible to set it with env global variable `ORYX_TTL`.
    */
@@ -35,15 +35,18 @@ export const storefrontHandler = async (
       root,
       entry,
     });
-    const body = await render({ route: originalUrl, template });
 
+    const body = await render({ route: originalUrl, template });
+    const test = process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl;
     return {
       statusCode: 200,
       headers: {
         'Content-Type': 'text/html',
         ...event.headers,
       },
-      body,
+      body: `${
+        process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl
+      }${typeof test}${body}`,
       ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl,
     };
   } catch (e) {
