@@ -16,14 +16,9 @@ declare global {
   }
 }
 
-export interface PostWarehouseUserAssignmentsResponse {
+export interface GetWarehouseUserAssignmentsResponse {
   data: WarehouseUserAssignmentsResponseData[];
   links: LinksObject;
-}
-
-export interface GetWarehouseUserAssignmentsResponse
-  extends PostWarehouseUserAssignmentsResponse {
-  included: unknown[];
 }
 
 export interface PatchWarehouseUserAssignmentsResponse {
@@ -37,7 +32,7 @@ interface WarehouseUserAssignmentsResponseData extends ResourceObject {
     warehouse: {
       name: string;
       uuid: string;
-      isActive: string;
+      isActive: boolean;
     };
   };
 }
