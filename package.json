@@ -29,6 +29,7 @@
     "fa:e2e:headless:ci:affected": "npx nx print-affected --select=projects | grep -E -v 'fulfillment' && echo 'nothing changed, skip' || npm run fa:e2e:headless:ci",
     "release-test:e2e": "npx nx run storefront-e2e:e2e:headless-ci-release",
     "testfront": "cd apps/testfront && npm run prod:ssr &",
+    "testfront:e2e": "npx concurrently --kill-others --success first \"cd apps/testfront && npm run prod:ssr\" \"wait-on -i=2000 http://localhost:3001 && npm run release-test:e2e \"",
     "release": "run-s release:*",
     "release-minor": "cd libs && npm run release-minor",
     "release-labs": "cd libs && npm run release-labs",
