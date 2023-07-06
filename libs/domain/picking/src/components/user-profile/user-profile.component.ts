@@ -68,9 +68,8 @@ export class UserProfileComponent extends LitElement {
       )}
 
       <div class="info-footer">
-        <oryx-button type="secondary" outline>
+        <oryx-button ?loading=${this.logoutLoading} type="secondary" outline>
           <button
-            ?loading=${this.logoutLoading}
             ?disabled="${isPicking || this.$pendingSyncs()}"
             @click=${this.onLogOut}
           >
