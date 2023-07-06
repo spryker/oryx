@@ -1,6 +1,5 @@
 import {
   authLoginComponent,
-  AuthLoginStrategy,
   CodeGrantAuthLoginStrategy,
   CodeGrantAuthLoginStrategyConfig,
   IdentityService,
@@ -9,6 +8,7 @@ import {
   OauthFeatureConfig,
   oauthHandlerComponent,
 } from '@spryker-oryx/auth';
+import { AuthLoginStrategy } from '@spryker-oryx/auth/login';
 import {
   AppFeature,
   AppPlugin,

@@ -1,4 +1,3 @@
-export * from './components';
 export * from './config.model';
 export * from './feature';
 export * from './oauth-token.interceptor';

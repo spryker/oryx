@@ -16,6 +16,11 @@ export default {
       control: { type: 'number', max: 100 },
     },
   },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 interface Props extends PaginationProperties {

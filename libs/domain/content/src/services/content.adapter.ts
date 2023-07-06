@@ -3,7 +3,8 @@ import { Content, ContentQualifier } from '../models';
 
 export interface ContentAdapter {
   getKey(qualifier: ContentQualifier): string;
-  get(qualifier: ContentQualifier): Observable<Content>;
+  getAll(qualifier: ContentQualifier): Observable<Content[] | null>;
+  get(qualifier: ContentQualifier): Observable<Content | null>;
 }
 
 export const ContentAdapter = 'oryx.ContentAdapter*';

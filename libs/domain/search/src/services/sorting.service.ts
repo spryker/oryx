@@ -1,9 +1,8 @@
 import { ProductListSort } from '@spryker-oryx/product';
-import { NullableGeneric } from '@spryker-oryx/utilities';
 import { Observable } from 'rxjs';
 
 export interface SortingService {
-  get(): Observable<NullableGeneric<ProductListSort>>;
+  get(): Observable<ProductListSort | null>;
 }
 
 export const SortingService = 'oryx.SortingService';

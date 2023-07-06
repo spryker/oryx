@@ -83,15 +83,14 @@ export class PickingSyncActionHandlerService
     return this.onlineAdapter.get({ ids: sync.payload.ids }).pipe(
       combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
       switchMap(async ([pickingLists, store]) => {
-        const addedOrUpdatedKeys = await store.bulkPut(pickingLists, {
-          allKeys: true,
+        const pickingListsIdsToRemove = sync.payload.ids.filter((id) => {
+          return !pickingLists.find((pl) => pl.id === id);
         });
 
-        if (addedOrUpdatedKeys.length !== pickingLists.length) {
-          throw new Error(
-            `PickingSyncActionHandlerService: Could not save ${addedOrUpdatedKeys.length} out of ${pickingLists.length} PickingLists after push!`
-          );
-        }
+        await store.bulkDelete(pickingListsIdsToRemove);
+        await store.bulkPut(pickingLists, {
+          allKeys: true,
+        });
       })
     );
   }

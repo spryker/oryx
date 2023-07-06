@@ -17,7 +17,14 @@
       ],
       "@spryker-oryx/auth": ["libs/platform/auth/src/index.ts"],
       "@spryker-oryx/auth/*": ["libs/platform/auth/*/index.ts"],
+      "@spryker-oryx/auth/login": ["libs/platform/auth/login/index.ts"],
+      "@spryker-oryx/auth/login-link": [
+        "libs/platform/auth/login-link/index.ts"
+      ],
       "@spryker-oryx/auth/mocks": ["libs/platform/auth/mocks/index.ts"],
+      "@spryker-oryx/auth/oauth-handler": [
+        "libs/platform/auth/oauth-handler/index.ts"
+      ],
       "@spryker-oryx/cart": ["libs/domain/cart/src/index.ts"],
       "@spryker-oryx/cart/add": ["libs/domain/cart/add/index.ts"],
       "@spryker-oryx/cart/entries": ["libs/domain/cart/entries/index.ts"],
@@ -62,7 +69,6 @@
       ],
       "@spryker-oryx/cli": ["libs/template/cli/src/index.ts"],
       "@spryker-oryx/content": ["libs/domain/content/src/index.ts"],
-      "@spryker-oryx/content/article": ["libs/domain/content/article/index.ts"],
       "@spryker-oryx/content/banner": ["libs/domain/content/banner/index.ts"],
       "@spryker-oryx/content/link": ["libs/domain/content/link/index.ts"],
       "@spryker-oryx/content/text": ["libs/domain/content/text/index.ts"],
@@ -101,7 +107,47 @@
       "@spryker-oryx/order/totals": ["libs/domain/order/totals/index.ts"],
       "@spryker-oryx/picking": ["libs/domain/picking/src/index.ts"],
       "@spryker-oryx/picking/*": ["libs/domain/picking/*/index.ts"],
+      "@spryker-oryx/picking/customer-note": [
+        "libs/domain/picking/customer-note/index.ts"
+      ],
+      "@spryker-oryx/picking/customer-note-modal": [
+        "libs/domain/picking/customer-note-modal/index.ts"
+      ],
+      "@spryker-oryx/picking/discard-modal": [
+        "libs/domain/picking/discard-modal/index.ts"
+      ],
+      "@spryker-oryx/picking/filter-button": [
+        "libs/domain/picking/filter-button/index.ts"
+      ],
+      "@spryker-oryx/picking/filters": ["libs/domain/picking/filters/index.ts"],
+      "@spryker-oryx/picking/login": ["libs/domain/picking/login/index.ts"],
+      "@spryker-oryx/picking/mocks": ["libs/domain/picking/mocks/index.ts"],
+      "@spryker-oryx/picking/navigate-back": [
+        "libs/domain/picking/navigate-back/index.ts"
+      ],
       "@spryker-oryx/picking/offline": ["libs/domain/picking/offline/index.ts"],
+      "@spryker-oryx/picking/picking": ["libs/domain/picking/picking/index.ts"],
+      "@spryker-oryx/picking/picking-header": [
+        "libs/domain/picking/picking-header/index.ts"
+      ],
+      "@spryker-oryx/picking/picking-in-progress": [
+        "libs/domain/picking/picking-in-progress/index.ts"
+      ],
+      "@spryker-oryx/picking/picking-list-item": [
+        "libs/domain/picking/picking-list-item/index.ts"
+      ],
+      "@spryker-oryx/picking/picking-lists": [
+        "libs/domain/picking/picking-lists/index.ts"
+      ],
+      "@spryker-oryx/picking/picking-lists-header": [
+        "libs/domain/picking/picking-lists-header/index.ts"
+      ],
+      "@spryker-oryx/picking/picking-product-card": [
+        "libs/domain/picking/picking-product-card/index.ts"
+      ],
+      "@spryker-oryx/picking/user-profile": [
+        "libs/domain/picking/user-profile/index.ts"
+      ],
       "@spryker-oryx/presets": ["libs/template/presets/src/index.ts"],
       "@spryker-oryx/presets/backoffice": [
         "libs/template/presets/backoffice/index.ts"
@@ -172,7 +218,24 @@
         "libs/domain/search/product-sort/index.ts"
       ],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
+      "@spryker-oryx/site/currency-selector": [
+        "libs/domain/site/currency-selector/index.ts"
+      ],
+      "@spryker-oryx/site/date": ["libs/domain/site/date/index.ts"],
+      "@spryker-oryx/site/locale-selector": [
+        "libs/domain/site/locale-selector/index.ts"
+      ],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
+      "@spryker-oryx/site/navigation-button": [
+        "libs/domain/site/navigation-button/index.ts"
+      ],
+      "@spryker-oryx/site/navigation-item": [
+        "libs/domain/site/navigation-item/index.ts"
+      ],
+      "@spryker-oryx/site/notification-center": [
+        "libs/domain/site/notification-center/index.ts"
+      ],
+      "@spryker-oryx/site/price": ["libs/domain/site/price/index.ts"],
       "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
       "@spryker-oryx/themes/breakpoints": [
         "libs/template/themes/breakpoints/index.ts"

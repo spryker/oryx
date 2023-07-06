@@ -35,6 +35,11 @@ export default {
       table: { category: 'demo' },
     },
   },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 interface Props {

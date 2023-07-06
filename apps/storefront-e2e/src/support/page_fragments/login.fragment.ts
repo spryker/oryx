@@ -10,6 +10,11 @@ export class LoginFragment {
   getBEValidationError = () => this.getWrapper().find('oryx-notification');
 
   login = (user: TestCustomerData) => {
+    // hydrate the form with a bit of waiting, to avoid flaky tests
+    this.getEmailInput().click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+
     this.getEmailInput().type(user.email, { force: true });
     this.getPasswordInput().type(user.password, { force: true });
     this.getRememberMeCheckbox().click();

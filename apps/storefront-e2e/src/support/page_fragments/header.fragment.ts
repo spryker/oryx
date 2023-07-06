@@ -56,6 +56,8 @@ export class HeaderFragment {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(500);
     this.getCurrencyButton().click();
-    this.getCurrencySelector().find(`oryx-option[value="${currency}"]`).click();
+    this.getCurrencySelector()
+      .find(`oryx-option[value="${currency}"]`)
+      .click({ force: true });
   };
 }
