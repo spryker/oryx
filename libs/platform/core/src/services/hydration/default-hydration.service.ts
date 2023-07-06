@@ -46,7 +46,9 @@ export class DefaultHydrationService implements HydrationService {
   }
 
   initHydrateHooks(immediate?: boolean): void {
-    this.treewalk(`[${hydratableAttribute}]`).forEach((el) => {
+    const elementsToHydrate = this.treewalk(`[${hydratableAttribute}]`);
+
+    elementsToHydrate.forEach((el) => {
       if (immediate) {
         this.hydrateOnDemand(el);
         return;
@@ -95,7 +97,7 @@ export class DefaultHydrationService implements HydrationService {
       await customElements.whenDefined(element.localName);
     }
 
-    (element as HydratableLitElement)[HYDRATE_ON_DEMAND]?.();
+    await (element as HydratableLitElement)[HYDRATE_ON_DEMAND]?.();
   }
 
   onDestroy(): void {
