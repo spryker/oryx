@@ -26,6 +26,7 @@ export const notificationStyles = css`
 
   oryx-icon-button {
     grid-column: 3;
+    --oryx-icon-color: initial;
   }
 
   :host([floating]) {
@@ -52,10 +53,6 @@ export const notificationStyles = css`
 
   :host([type]) {
     border-color: var(--oryx-icon-color);
-  }
-
-  oryx-icon-button {
-    --oryx-icon-color: initial;
   }
 
   :host([type='info']) {
