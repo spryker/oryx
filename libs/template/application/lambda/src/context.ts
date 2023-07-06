@@ -40,11 +40,15 @@ export const serverContext = (options: ContextOptions): any => {
   // added because of oauth, we probably should not require oauth in the ssr
   window.TextEncoder = class {};
   window.TextDecoder = class {};
+  // TODO: Fix for testfront ssr, we should check why it's not working
+  window.HTMLFormElement = class {};
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};
     (() => ${namespace}.render)();
   `);
+
+  console.log('script:', script);
 
   createContext(window);
 
