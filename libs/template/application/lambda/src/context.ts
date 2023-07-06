@@ -43,6 +43,8 @@ export const serverContext = (options: ContextOptions): any => {
   // TODO: Fix for testfront ssr, we should check why it's not working
   window.HTMLFormElement = class {};
 
+  console.log('window: ', window);
+
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};
     (() => ${namespace}.render)();

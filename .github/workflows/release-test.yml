@@ -40,8 +40,8 @@ jobs:
         run: npm ci
       - name: Build packages
         run: npx nx run-many --target=build --all --parallel=2 --exclude testfront,storybook,fulfillment,storefront
-      - name: Fix js extension
-        run: node tools/post-build/add-js-extension.js
+#      - name: Fix js extension
+#        run: node tools/post-build/add-js-extension.js
       - name: Install verdaccio
         run: npm i -g verdaccio
       - name: Run verdaccio first time to generate config
