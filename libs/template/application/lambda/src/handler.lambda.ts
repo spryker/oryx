@@ -37,6 +37,7 @@ export const storefrontHandler = async (
         ...event.headers,
       },
       body: html,
+      ttl: 900,
     };
   } catch (e) {
     console.error(e);
@@ -44,7 +45,6 @@ export const storefrontHandler = async (
     return {
       statusCode: 500,
       body: JSON.stringify({ error: e }),
-      ttl: 900,
     };
   }
 };
