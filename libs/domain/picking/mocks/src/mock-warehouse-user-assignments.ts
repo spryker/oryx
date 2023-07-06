@@ -14,7 +14,7 @@ export const mockWarehouseUserAssignments: WarehouseUserAssignment[] = [
   {
     id: '2',
     isActive: false,
-    userUuid: 'userUuid2',
+    userUuid: 'userUuid1',
     warehouse: {
       uuid: 'warehouseUuid2',
       name: 'warehouse2',
@@ -24,7 +24,7 @@ export const mockWarehouseUserAssignments: WarehouseUserAssignment[] = [
   {
     id: '3',
     isActive: false,
-    userUuid: 'userUuid3',
+    userUuid: 'userUuid1',
     warehouse: {
       uuid: 'warehouseUuid3',
       name: 'warehouse3',
