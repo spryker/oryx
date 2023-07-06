@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { isObservable, map } from 'rxjs';
 import {
   I18nContext,
   i18nInjectable,
@@ -8,7 +9,7 @@ import {
   InferI18nContext,
   Injectable,
 } from '../../injectables';
-import { computed, Signal, signal } from '../../signals';
+import { Signal, signal } from '../../signals';
 
 /**
  * Internationalize token(s) with optional context object.
@@ -55,8 +56,15 @@ export function i18n<T extends string | readonly string[]>(
     return i18nMap.get(hash)!();
   }
 
-  const $result = signal(i18nInjectable.get().translate(token, context));
-  const $text = computed(() => unwrapText($result()));
+  let text = i18nInjectable.get().translate(token, context);
+
+  if (isObservable(text)) {
+    text = text.pipe(map((result) => unwrapText(result)));
+  } else {
+    text = unwrapText(text);
+  }
+
+  const $text = signal(text);
 
   i18nMap.set(hash, $text);
 

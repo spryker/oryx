@@ -5,7 +5,12 @@ import { SyncSchedulerService } from '@spryker-oryx/offline';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import { RouterService } from '@spryker-oryx/router';
 import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
-import { I18nMixin, signal, signalAware } from '@spryker-oryx/utilities';
+import {
+  computed,
+  I18nMixin,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -28,11 +33,18 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
 
   protected $route = signal(this.routerService.route());
   protected $pendingSyncs = signal(resolve(SyncSchedulerService).hasPending());
+  protected $isPicking = computed(() => this.$route()?.includes('/picking/'));
+  protected $isMainPage = computed(() => this.$route() === '/');
+  protected $pickingInProgress = computed(() =>
+    this.i18n("user.profile.you-can't-log-out-because-picking-is-in-progress")
+  );
+  protected $pendingSync = computed(() =>
+    this.i18n(
+      "user.profile.you-can't-log-out-because-of-a-pending-synchronization"
+    )
+  );
 
   protected override render(): TemplateResult {
-    const isPicking = this.$route()?.includes('/picking/');
-    const isMainPage = this.$route() === '/';
-
     return html`
       <div class="info-block">
         <dl>
@@ -42,24 +54,13 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
       </div>
 
       ${when(
-        this.$pendingSyncs() && !isPicking,
+        this.$pendingSyncs() || this.$isPicking(),
         () =>
           html`
             <oryx-notification type="info" scheme="dark">
-              ${this.i18n(
-                "user.profile.you-can't-log-out-because-of-a-pending-synchronization"
-              )}.
-            </oryx-notification>
-          `
-      )}
-      ${when(
-        isPicking,
-        () =>
-          html`
-            <oryx-notification type="info" scheme="dark">
-              ${this.i18n(
-                "user.profile.you-can't-log-out-because-picking-is-in-progress"
-              )}.
+              ${this.$isPicking()
+                ? this.$pickingInProgress()
+                : this.$pendingSync()}
             </oryx-notification>
           `
       )}
@@ -67,7 +68,7 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
       <div class="info-footer">
         <oryx-button type="secondary" outline>
           <button
-            ?disabled="${isPicking || this.$pendingSyncs()}"
+            ?disabled="${this.$isPicking() || this.$pendingSyncs()}"
             @click=${this.onLogOut}
           >
             ${this.i18n('user.profile.log-Out')}
@@ -75,7 +76,7 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
         </oryx-button>
 
         ${when(
-          isMainPage,
+          this.$isMainPage(),
           () =>
             html`
               <oryx-button ?loading=${this.loading} type="secondary" outline>
@@ -86,6 +87,8 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
             `
         )}
       </div>
+      <!-- HACK: Prerender translation texts for E2E tests to pass -->
+      <!-- ${this.$pickingInProgress()} ${this.$pendingSync()} -->
     `;
   }
 
