@@ -35,7 +35,7 @@ export const storefrontHandler = async (
       root,
       entry,
     });
-    const html = await render({ route: originalUrl, template });
+    const body = await render({ route: originalUrl, template });
 
     return {
       statusCode: 200,
@@ -43,8 +43,8 @@ export const storefrontHandler = async (
         'Content-Type': 'text/html',
         ...event.headers,
       },
-      body: `${event.rawUrl}, ${originalUrl.pathname} ${process.env.ORYX_TTL}`,
-      ttl,
+      body,
+      ttl: process.env.ORYX_TTL ?? ttl,
     };
   } catch (e) {
     console.error(e);
