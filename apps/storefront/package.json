@@ -11,13 +11,5 @@
     "build:client": "vite build",
     "build:ssr": "vite build -c vite.config.server.ts",
     "build:netlify": "vite build -c vite.config.netlify.ts"
-  },
-  "dependencies": {
-    "@spryker-oryx/themes": "latest",
-    "@spryker-oryx/presets": "latest"
-  },
-  "devDependencies": {
-    "vite": "^4.0.0",
-    "vite-plugin-static-copy": "^0.13.0"
   }
 }
