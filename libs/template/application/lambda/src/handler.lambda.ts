@@ -9,6 +9,12 @@ interface HandlerContext {
   component?: string;
   entry?: string;
   root?: string;
+  /**
+   * Time to live option that allows you to set a fixed duration of time
+   * after which a cached builder response is invalidated.
+   * Also it's possible to set it with env global variable `ORYX_TTL`.
+   */
+  ttl?: number;
 }
 
 export const storefrontHandler = async (
@@ -20,6 +26,7 @@ export const storefrontHandler = async (
       root = 'file:///var/task/apps/storefront/dist/functions/ssr/index.js',
       index = '../../client/index.html',
       entry = '../../server/render.js',
+      ttl,
     } = context;
     const originalUrl = new URL(event.rawUrl);
     const basePath = dirname(fileURLToPath(root));
@@ -36,8 +43,8 @@ export const storefrontHandler = async (
         'Content-Type': 'text/html',
         ...event.headers,
       },
-      body: Object.keys(process.env).join(','),
-      ttl: 900,
+      body: `${event.rawUrl}, ${originalUrl.pathname} ${process.env.ORYX_TTL}`,
+      ttl,
     };
   } catch (e) {
     console.error(e);
