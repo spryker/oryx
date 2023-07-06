@@ -5,7 +5,7 @@ export const enum SuggestionField {
   Suggestions = 'suggestions',
   Categories = 'categories',
   Products = 'products',
-  Articles = 'articles',
+  Contents = 'contents',
 }
 
 export type SuggestionEntities = (SuggestionField | string)[];

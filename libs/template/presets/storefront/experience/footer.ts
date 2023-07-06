@@ -23,7 +23,7 @@ const legalLinks = {
   name: 'legal links',
   components: [
     link('©️ 2023 Spryker'),
-    link('Imprint'),
+    link('Imprint', '/faq/imprint'),
     link('Terms & conditions', '/article/terms-and-conditions'),
     link('Privacy Notice', '/article/privacy'),
     link('Data preference'),

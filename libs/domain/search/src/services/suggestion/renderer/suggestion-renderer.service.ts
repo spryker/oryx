@@ -1,4 +1,3 @@
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
 import { Suggestion } from '../../../models';
@@ -23,7 +22,6 @@ export type SuggestionRendererOptions = {
 export interface SuggestionRendererParams extends SuggestionFieldOptions {
   query: string;
   title: string;
-  type: SemanticLinkType;
 }
 
 export interface SuggestionRendererService {

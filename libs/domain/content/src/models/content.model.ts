@@ -1,10 +1,17 @@
+import { SemanticLinkType } from '@spryker-oryx/site';
 import { ContentEntities } from '../services';
 
 export interface ContentQualifier {
-  article?: string;
+  type?: string;
+  id?: string;
   entities?: ContentEntities;
 }
 
 export interface Content {
-  article?: string;
+  id?: string;
+  type?: SemanticLinkType;
+  url?: string;
+  heading: string;
+  description: string;
+  content: string;
 }
