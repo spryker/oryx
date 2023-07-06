@@ -10,7 +10,7 @@ export const styles = css`
   h1 {
     font-weight: 600;
     line-height: 24px;
-    padding-bottom: 34px;
+    padding-block-end: 34px;
   }
 
   h3 {
@@ -23,7 +23,7 @@ export const styles = css`
   }
 
   button {
-    margin-top: 16px;
+    margin-block-start: 16px;
   }
 
   hr {
