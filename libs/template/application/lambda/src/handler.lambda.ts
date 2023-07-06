@@ -17,8 +17,6 @@ interface HandlerContext {
   ttl?: number;
 }
 
-let numberC = 0;
-
 export const storefrontHandler = async (
   event: any,
   context: HandlerContext
@@ -38,14 +36,14 @@ export const storefrontHandler = async (
       entry,
     });
     const body = await render({ route: originalUrl, template });
-    numberC = numberC + 1;
+
     return {
       statusCode: 200,
       headers: {
         'Content-Type': 'text/html',
         ...event.headers,
       },
-      body: `${numberC}${body}`,
+      body,
       ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl,
     };
   } catch (e) {
