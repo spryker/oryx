@@ -26,6 +26,9 @@ export class UserProfileComponent extends LitElement {
   @state()
   protected loading: boolean | null = null;
 
+  @state()
+  protected logoutLoading: boolean | null = null;
+
   protected $route = signal(this.routerService.route());
   protected $pendingSyncs = signal(resolve(SyncSchedulerService).hasPending());
 
@@ -67,6 +70,7 @@ export class UserProfileComponent extends LitElement {
       <div class="info-footer">
         <oryx-button type="secondary" outline>
           <button
+            ?loading=${this.loading}
             ?disabled="${isPicking || this.$pendingSyncs()}"
             @click=${this.onLogOut}
           >
@@ -107,6 +111,7 @@ export class UserProfileComponent extends LitElement {
   }
 
   protected onLogOut(): void {
+    this.logoutLoading = true;
     this.authService.logout();
   }
 }
