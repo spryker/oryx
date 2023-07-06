@@ -44,7 +44,7 @@ export const storefrontHandler = async (
         ...event.headers,
       },
       body,
-      ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) ?? ttl,
+      ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl,
     };
   } catch (e) {
     console.error(e);
