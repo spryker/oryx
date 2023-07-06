@@ -107,7 +107,47 @@
       "@spryker-oryx/order/totals": ["libs/domain/order/totals/index.ts"],
       "@spryker-oryx/picking": ["libs/domain/picking/src/index.ts"],
       "@spryker-oryx/picking/*": ["libs/domain/picking/*/index.ts"],
+      "@spryker-oryx/picking/customer-note": [
+        "libs/domain/picking/customer-note/index.ts"
+      ],
+      "@spryker-oryx/picking/customer-note-modal": [
+        "libs/domain/picking/customer-note-modal/index.ts"
+      ],
+      "@spryker-oryx/picking/discard-modal": [
+        "libs/domain/picking/discard-modal/index.ts"
+      ],
+      "@spryker-oryx/picking/filter-button": [
+        "libs/domain/picking/filter-button/index.ts"
+      ],
+      "@spryker-oryx/picking/filters": ["libs/domain/picking/filters/index.ts"],
+      "@spryker-oryx/picking/login": ["libs/domain/picking/login/index.ts"],
+      "@spryker-oryx/picking/mocks": ["libs/domain/picking/mocks/index.ts"],
+      "@spryker-oryx/picking/navigate-back": [
+        "libs/domain/picking/navigate-back/index.ts"
+      ],
       "@spryker-oryx/picking/offline": ["libs/domain/picking/offline/index.ts"],
+      "@spryker-oryx/picking/picking": ["libs/domain/picking/picking/index.ts"],
+      "@spryker-oryx/picking/picking-header": [
+        "libs/domain/picking/picking-header/index.ts"
+      ],
+      "@spryker-oryx/picking/picking-in-progress": [
+        "libs/domain/picking/picking-in-progress/index.ts"
+      ],
+      "@spryker-oryx/picking/picking-list-item": [
+        "libs/domain/picking/picking-list-item/index.ts"
+      ],
+      "@spryker-oryx/picking/picking-lists": [
+        "libs/domain/picking/picking-lists/index.ts"
+      ],
+      "@spryker-oryx/picking/picking-lists-header": [
+        "libs/domain/picking/picking-lists-header/index.ts"
+      ],
+      "@spryker-oryx/picking/picking-product-card": [
+        "libs/domain/picking/picking-product-card/index.ts"
+      ],
+      "@spryker-oryx/picking/user-profile": [
+        "libs/domain/picking/user-profile/index.ts"
+      ],
       "@spryker-oryx/presets": ["libs/template/presets/src/index.ts"],
       "@spryker-oryx/presets/backoffice": [
         "libs/template/presets/backoffice/index.ts"
