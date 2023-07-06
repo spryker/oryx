@@ -2,12 +2,17 @@ import { Observable } from 'rxjs';
 
 export const ContentfulToken = 'oryx.ContentfulSpace';
 export const ContentfulSpace = 'oryx.ContentfulToken';
+export const ContentfulClientService = 'oryx.ContentfulClientService';
 
 declare global {
   interface Environment {
     readonly ORYX_CONTENTFUL_TOKEN?: string;
     readonly ORYX_CONTENTFUL_SPACE?: string;
   }
+}
+
+export const enum ContentfulContentFields {
+  Article = 'article',
 }
 
 export interface ContentfulSearch {
@@ -24,14 +29,12 @@ export interface ContentfulResponse {
   }[];
 }
 
-export interface ContentfulApiService {
+export interface ContentfulClientService {
   getEntries(search: ContentfulSearch): Observable<ContentfulResponse>;
 }
 
-export const ContentfulApiService = 'oryx.ContentfulApiService';
-
 declare global {
   interface InjectionTokensContractMap {
-    [ContentfulApiService]: ContentfulApiService;
+    [ContentfulClientService]: ContentfulClientService;
   }
 }

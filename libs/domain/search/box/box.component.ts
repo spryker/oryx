@@ -41,7 +41,7 @@ import { SearchBoxOptions, SearchBoxProperties } from './box.model';
     max: 5,
     icon: 'category',
   },
-  [SuggestionField.Articles]: {
+  [SuggestionField.Contents]: {
     max: 5,
     icon: 'description',
   },
@@ -82,6 +82,7 @@ export class SearchBoxComponent
     const options = this.$options();
     const withSuggestion =
       query && (!options.minChars || query.length >= options.minChars);
+
     return withSuggestion ? this.$raw() : null;
   });
 

@@ -1,4 +1,4 @@
-import { RouteConfig } from '@lit-labs/router';
+import { RouteConfig } from '@spryker-oryx/router/lit';
 import { html, TemplateResult } from 'lit';
 import 'urlpattern-polyfill';
 
@@ -29,13 +29,6 @@ export const defaultExperienceRoutes: RouteConfig[] = [
       route="/order/:id"
     ></oryx-composition>`,
     name: 'Order',
-  },
-  {
-    path: '/article/:id',
-    render: (): TemplateResult => html`<oryx-composition
-      route="/article/:id"
-    ></oryx-composition>`,
-    name: 'Article',
   },
   {
     path: '/:page',

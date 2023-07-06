@@ -50,7 +50,7 @@ export const defaultSuggestionRenderer: SuggestionRenderer<
     return;
   }
 
-  const { title, icon, max, type } = params;
+  const { title, icon, max } = params;
 
   return html`
     <section>
@@ -60,7 +60,7 @@ export const defaultSuggestionRenderer: SuggestionRenderer<
       </h5>
 
       ${suggestion.slice(0, max).map(
-        ({ name, url, id, params }) => html`
+        ({ name, url, type, id, params }) => html`
           <oryx-content-link
             .options=${{
               type,

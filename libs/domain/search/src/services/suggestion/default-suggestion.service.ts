@@ -17,7 +17,16 @@ export class DefaultSuggestionService implements SuggestionService {
         this.adapters.map((adapter) => adapter.get(qualifier))
       ).pipe(
         map((suggestions) =>
-          suggestions.reduce((acc, curr) => ({ ...acc, ...curr }), {})
+          suggestions.reduce((acc, curr) => {
+            const value = Object.fromEntries(
+              Object.entries(curr).map(([key, value]) => [
+                key,
+                [...(value ?? []), ...(acc[key as keyof Suggestion] ?? [])],
+              ])
+            );
+
+            return { ...acc, ...value };
+          }, {})
         )
       ),
     onLoad: [ProductsLoaded],
