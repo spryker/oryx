@@ -54,6 +54,10 @@ export const notificationStyles = css`
     border-color: var(--oryx-icon-color);
   }
 
+  oryx-icon-button {
+    --oryx-icon-color: initial;
+  }
+
   :host([type='info']) {
     --oryx-icon-color: var(--oryx-color-info-9);
   }
