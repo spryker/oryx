@@ -1,4 +1,3 @@
-export * from '../article/article.def';
 export * from '../banner/src/banner.def';
 export * from '../link/link.def';
 export * from '../text/text.def';

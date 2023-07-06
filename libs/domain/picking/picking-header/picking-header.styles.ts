@@ -19,6 +19,7 @@ export const styles = css`
     --oryx-icon-color: var(--oryx-color-primary-9);
   }
 
+  oryx-discard-picking,
   oryx-customer-note-modal {
     margin-inline-start: -12px;
   }

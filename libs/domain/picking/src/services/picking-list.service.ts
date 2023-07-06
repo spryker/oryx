@@ -18,6 +18,7 @@ export interface PickingListService {
   setSortingQualifier(
     qualifier: SortableQualifier<PickingListQualifierSortBy>
   ): void;
+  allowDiscardPicking(): Observable<boolean>;
 }
 
 export const PickingListService = 'oryx.PickingListService';

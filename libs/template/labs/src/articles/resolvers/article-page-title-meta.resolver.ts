@@ -1,0 +1,57 @@
+import { ContentFields, ContentService } from '@spryker-oryx/content';
+import {
+  ContextService,
+  ElementResolver,
+  PageMetaResolver,
+} from '@spryker-oryx/core';
+import { inject } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
+import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import { ArticleContext } from '../article-context';
+import { StoryblokContentFields } from '../storyblok';
+
+export class ArticlePageTitleMetaResolver implements PageMetaResolver {
+  constructor(
+    protected context = inject(ContextService),
+    protected router = inject(RouterService),
+    protected contentService = inject(ContentService)
+  ) {}
+
+  getScore(): Observable<unknown[]> {
+    return combineLatest([
+      this.context.get(document.body, ArticleContext.Id),
+      this.context.get(document.body, ArticleContext.Type),
+      this.router
+        .currentRoute()
+        .pipe(
+          map(
+            (route) =>
+              route.includes(ContentFields.Article) ||
+              route.includes(StoryblokContentFields.Faq)
+          )
+        ),
+    ]);
+  }
+
+  resolve(): Observable<ElementResolver> {
+    return combineLatest([
+      this.context.get<string>(document.body, ArticleContext.Id),
+      this.context.get<string>(document.body, ArticleContext.Type),
+    ]).pipe(
+      switchMap(([id, type]) => {
+        if (!id || !type) {
+          return of({});
+        }
+
+        // TODO: get entities from component or context
+        return this.contentService
+          .get({
+            id,
+            type,
+            entities: [ContentFields.Article, StoryblokContentFields.Faq],
+          })
+          .pipe(map((data) => (data?.heading ? { title: data.heading } : {})));
+      })
+    );
+  }
+}

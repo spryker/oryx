@@ -7,7 +7,6 @@ export interface SemanticLink {
 }
 
 export enum SemanticLinkType {
-  Article = 'article',
   ProductList = 'search',
   Page = 'page',
   Product = 'product',
