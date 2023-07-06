@@ -26,7 +26,7 @@ export const storefrontHandler = async (
       root = 'file:///var/task/apps/storefront/dist/functions/ssr/index.js',
       index = '../../client/index.html',
       entry = '../../server/render.js',
-      ttl = process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : undefined,
+      ttl,
     } = context;
     const originalUrl = new URL(event.rawUrl);
     const basePath = dirname(fileURLToPath(root));
@@ -44,7 +44,7 @@ export const storefrontHandler = async (
         ...event.headers,
       },
       body,
-      ttl,
+      ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) ?? ttl,
     };
   } catch (e) {
     console.error(e);
