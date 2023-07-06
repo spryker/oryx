@@ -10,7 +10,7 @@ import { I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { map } from 'rxjs';
-import { fields } from './filters.model';
+import { getFilterFields } from './filters.model';
 import { filtersComponentStyles } from './filters.styles';
 
 export class FiltersComponent extends I18nMixin(LitElement) {
@@ -94,7 +94,7 @@ export class FiltersComponent extends I18nMixin(LitElement) {
         </oryx-button>
 
         <form @submit=${this.onSubmit} @keydown=${this.onApply}>
-          ${this.fieldRenderer.buildForm(fields, {
+          ${this.fieldRenderer.buildForm(getFilterFields(), {
             sortBy: this.$selectedSortingValue(),
           })}
         </form>

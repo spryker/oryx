@@ -11,7 +11,7 @@ import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { FiltersComponent } from './filters.component';
 import { filtersComponent } from './filters.def';
-import { fields } from './filters.model';
+import { getFilterFields } from './filters.model';
 
 class MockPickingListService implements Partial<PickingListService> {
   getSortingQualifier = vi.fn().mockReturnValue(of(defaultSortingQualifier));
@@ -63,7 +63,7 @@ describe('FiltersComponent', () => {
   });
 
   it('should build the form', () => {
-    expect(renderer.buildForm).toHaveBeenCalledWith(fields, {
+    expect(renderer.buildForm).toHaveBeenCalledWith(getFilterFields(), {
       sortBy: 'deliveryDate.asc',
     });
   });
@@ -82,7 +82,7 @@ describe('FiltersComponent', () => {
     });
 
     it('should format the correct value', () => {
-      expect(renderer.buildForm).toHaveBeenCalledWith(fields, {
+      expect(renderer.buildForm).toHaveBeenCalledWith(getFilterFields(), {
         sortBy: 'deliveryDate.asc',
       });
     });
