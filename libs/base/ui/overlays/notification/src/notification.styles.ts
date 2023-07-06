@@ -26,6 +26,7 @@ export const notificationStyles = css`
 
   oryx-icon-button {
     grid-column: 3;
+
     --oryx-icon-color: initial;
   }
 
