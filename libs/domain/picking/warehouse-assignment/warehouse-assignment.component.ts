@@ -27,7 +27,6 @@ export class WarehouseAssignmentComponent extends LitElement {
       .pipe(
         tap(() => {
           this.routerService.navigate('/');
-          // push router to main page
         })
       )
       .subscribe();

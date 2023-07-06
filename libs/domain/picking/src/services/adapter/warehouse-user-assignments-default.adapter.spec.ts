@@ -39,6 +39,8 @@ class MockPickingHttpService implements Partial<PickingHttpService> {
 }
 
 describe('WarehouseUserAssignmentsDefaultAdapter', () => {
+  const endpoint = '/warehouse-user-assignments';
+  const callback = vi.fn();
   let adapter: WarehouseUserAssignmentsAdapter;
   let http: PickingHttpService;
 
@@ -70,14 +72,12 @@ describe('WarehouseUserAssignmentsDefaultAdapter', () => {
   });
 
   describe('when "getList" method is called', () => {
-    const callback = vi.fn();
-
     beforeEach(() => {
       adapter.getList().subscribe(callback);
     });
 
     it('should call the "get" method of PickingHttpService', async () => {
-      expect(http.get).toHaveBeenCalled();
+      expect(http.get).toHaveBeenCalledWith(endpoint);
       await nextTick(1);
       expect(callback).toHaveBeenCalledWith([
         {
@@ -91,8 +91,6 @@ describe('WarehouseUserAssignmentsDefaultAdapter', () => {
   });
 
   describe('when "activateAssignment" method is called', () => {
-    const callback = vi.fn();
-
     beforeEach(() => {
       adapter
         .activateAssignment(mockResponseWarehouseUserAssignment.id)
@@ -101,7 +99,7 @@ describe('WarehouseUserAssignmentsDefaultAdapter', () => {
 
     it('should call the "patch" method of PickingHttpService', async () => {
       expect(http.patch).toHaveBeenCalledWith(
-        `/warehouse-user-assignments/${mockResponseWarehouseUserAssignment.id}`,
+        `${endpoint}/${mockResponseWarehouseUserAssignment.id}`,
         {
           isActive: true,
         }
