@@ -48,8 +48,6 @@ export const serverContext = (options: ContextOptions): any => {
     (() => ${namespace}.render)();
   `);
 
-  console.log('script:', script);
-
   createContext(window);
 
   return script.runInContext(window);
