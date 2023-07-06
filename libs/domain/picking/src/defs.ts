@@ -13,4 +13,4 @@ export * from './components/picking-lists/picking-lists.def';
 export * from './components/picking-product-card/picking-product-card.def';
 export * from './components/picking/picking.def';
 export * from './components/user-profile/user-profile.def';
-export * from './components/warehouse-selection/warehouse-selection.def';
+export * from './components/warehouse-assignment/warehouse-assignment.def';

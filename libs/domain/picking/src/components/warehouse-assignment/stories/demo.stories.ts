@@ -5,7 +5,7 @@ import { TemplateResult } from 'lit/development';
 import { storybookPrefix } from '../../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Warehouse selection`,
+  title: `${storybookPrefix}/Warehouse assignment`,
   parameters: {
     layout: 'fullscreen',
     chromatic: {
@@ -15,7 +15,7 @@ export default {
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  return html` <oryx-warehouse-selection></oryx-warehouse-selection> `;
+  return html` <oryx-warehouse-assignment></oryx-warehouse-assignment> `;
 };
 
 export const Demo = Template.bind({});

@@ -18,7 +18,7 @@ import {
   pickingListsHeaderComponent,
   pickingProductCardComponent,
   userProfileComponent,
-  warehouseSelectionComponent,
+  warehouseAssignmentComponent,
 } from './defs';
 import { defaultPickingRoutes } from './routes';
 import {
@@ -28,6 +28,10 @@ import {
   PickingListDefaultAdapter,
   PickingListDefaultService,
   PickingListService,
+  WarehouseUserAssignmentsAdapter,
+  WarehouseUserAssignmentsDefaultAdapter,
+  WarehouseUserAssignmentsDefaultService,
+  WarehouseUserAssignmentsService,
 } from './services';
 
 export const pickingComponents = [
@@ -46,7 +50,7 @@ export const pickingComponents = [
   pickingComponent,
   userProfileComponent,
   pickingHeaderComponent,
-  warehouseSelectionComponent,
+  warehouseAssignmentComponent,
 ];
 
 export interface PickingFeatureConfig extends PickingConfig {
@@ -71,6 +75,14 @@ export class PickingFeature implements AppFeature {
       { provide: PickingListService, useClass: PickingListDefaultService },
       { provide: PickingListAdapter, useClass: PickingListDefaultAdapter },
       { provide: PickingHttpService, useClass: PickingHttpDefaultService },
+      {
+        provide: WarehouseUserAssignmentsAdapter,
+        useClass: WarehouseUserAssignmentsDefaultAdapter,
+      },
+      {
+        provide: WarehouseUserAssignmentsService,
+        useClass: WarehouseUserAssignmentsDefaultService,
+      },
     ];
   }
 }
