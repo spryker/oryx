@@ -44,6 +44,7 @@ export const storefrontHandler = async (
     return {
       statusCode: 500,
       body: JSON.stringify({ error: e }),
+      ttl: 900,
     };
   }
 };
