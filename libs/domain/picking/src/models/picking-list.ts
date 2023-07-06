@@ -1,4 +1,4 @@
-import { PickingProduct } from './picking-product';
+import { PickingProduct } from '@spryker-oryx/picking';
 
 export interface PickingList {
   id: string;
