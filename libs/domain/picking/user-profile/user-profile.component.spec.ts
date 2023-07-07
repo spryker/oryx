@@ -36,7 +36,7 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 class MockAuthService implements Partial<AuthService> {
-  logout = vi.fn();
+  logout = vi.fn().mockReturnValue(of(undefined));
 }
 
 describe('UserProfileComponent', () => {
@@ -147,6 +147,12 @@ describe('UserProfileComponent', () => {
     describe('and when log out button is clicked', () => {
       beforeEach(() => {
         element.renderRoot.querySelector('button')?.click();
+      });
+
+      it('should show loading indicator', () => {
+        expect(
+          element.renderRoot.querySelector('oryx-button[loading]')
+        ).not.toBeNull();
       });
 
       it('should call auth service', () => {

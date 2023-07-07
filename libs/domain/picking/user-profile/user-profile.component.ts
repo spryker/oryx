@@ -36,6 +36,8 @@ export class UserProfileComponent extends LitElement {
     const isPicking = this.$route()?.includes('/picking/');
     const isMainPage = this.$route() === '/';
 
+    console.log('RENDER', this.logoutLoading);
+
     return html`
       <div class="info-block">
         <dl>
@@ -111,6 +113,10 @@ export class UserProfileComponent extends LitElement {
 
   protected onLogOut(): void {
     this.logoutLoading = true;
-    this.authService.logout();
+    this.authService.logout().subscribe({
+      error: (e) => {
+        this.logoutLoading = false;
+      },
+    });
   }
 }
