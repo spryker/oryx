@@ -1,4 +1,5 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { VideoAspectRatio } from '@spryker-oryx/ui/video';
 import { ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ContentVideoOptions } from './video.model';
@@ -9,7 +10,7 @@ import { videoStyles } from './video.styles';
   playsInline: true,
   muted: true,
   loop: true,
-  aspectRatio: '21/9',
+  aspectRatio: VideoAspectRatio['21/9'],
 })
 @ssrShim('style')
 export class ContentVideoComponent extends ContentMixin<ContentVideoOptions>(
@@ -18,7 +19,7 @@ export class ContentVideoComponent extends ContentMixin<ContentVideoOptions>(
   static styles = [videoStyles];
 
   protected override render(): TemplateResult | void {
-    const options = this.componentOptions;
+    const options = this.$options();
 
     if (!options?.src) return;
 
