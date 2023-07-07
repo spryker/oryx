@@ -1,11 +1,13 @@
+import { TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/directive.js';
+import { Observable } from 'rxjs';
 import { ExtractStrProps } from '../../misc';
 import { Injectable } from '../injectable';
 import { I18nContextFilter } from './i18n-context-filter';
 import { DefaultI18nInjectable } from './i18n-default.injectable';
 
 export const i18nInjectable = new Injectable<I18nInjectable>(
-  'FES.I18nInjectable',
+  'oryx.I18nInjectable',
   new DefaultI18nInjectable()
 );
 
@@ -13,11 +15,11 @@ export interface I18nInjectable {
   translate<T extends string | readonly string[]>(
     token: T,
     context?: InferI18nContext<T>
-  ): I18nTranslation;
+  ): I18nTranslation | Observable<I18nTranslation>;
 }
 
 export type I18nTranslation = I18nTranslationValue | I18nTranslationResult;
-export type I18nTranslationValue = string | DirectiveResult;
+export type I18nTranslationValue = string | DirectiveResult | TemplateResult;
 
 export interface I18nTranslationResult {
   text: I18nTranslationValue;

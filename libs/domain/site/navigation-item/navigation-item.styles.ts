@@ -20,4 +20,8 @@ export const styles = css`
   oryx-dropdown {
     --oryx-popover-maxwidth: 188px;
   }
+
+  oryx-modal {
+    --oryx-icon-color: initial;
+  }
 `;

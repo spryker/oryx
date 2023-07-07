@@ -6,14 +6,14 @@ import {
   PickingListService,
   SortableQualifier,
 } from '@spryker-oryx/picking';
-import { i18n, signal } from '@spryker-oryx/utilities';
+import { I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { map } from 'rxjs';
-import { fields } from './filters.model';
+import { getFilterFields } from './filters.model';
 import { filtersComponentStyles } from './filters.styles';
 
-export class FiltersComponent extends LitElement {
+export class FiltersComponent extends I18nMixin(LitElement) {
   static styles = filtersComponentStyles;
 
   @property({ type: Boolean, reflect: true }) open = false;
@@ -86,22 +86,22 @@ export class FiltersComponent extends LitElement {
         @oryx.close=${this.onClose}
       >
         <oryx-heading slot="heading" as-sm="h2">
-          <h4>${i18n('picking.filter.sort')}</h4>
+          <h4>${this.i18n('picking.filter.sort')}</h4>
         </oryx-heading>
 
         <oryx-button slot="navigate-back" type="text">
-          <button>${i18n('picking.filter.reset')}</button>
+          <button>${this.i18n('picking.filter.reset')}</button>
         </oryx-button>
 
         <form @submit=${this.onSubmit} @keydown=${this.onApply}>
-          ${this.fieldRenderer.buildForm(fields, {
+          ${this.fieldRenderer.buildForm(getFilterFields(), {
             sortBy: this.$selectedSortingValue(),
           })}
         </form>
 
         <oryx-button slot="footer">
           <button @click=${this.onApply}>
-            ${i18n('picking.filter.apply')}
+            ${this.i18n('picking.filter.apply')}
           </button>
         </oryx-button>
       </oryx-modal>

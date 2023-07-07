@@ -2,7 +2,7 @@ import { CartComponentMixin } from '@spryker-oryx/cart';
 import { RemoveByQuantity } from '@spryker-oryx/cart/entry';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { CartEntriesOptions } from './entries.model';
@@ -28,7 +28,9 @@ export class CartEntriesComponent extends CartComponentMixin(
     return html`
       <oryx-heading>
         <h1>
-          ${i18n('cart.totals.<count>-items', { count: this.$totalQuantity() })}
+          ${this.i18n('cart.totals.<count>-items', {
+            count: this.$totalQuantity(),
+          })}
         </h1>
       </oryx-heading>
 

@@ -13,4 +13,5 @@ export * from './screen-css';
 export * from './subscribe-replay';
 export * from './throttle';
 export * from './time';
+export * from './to-observable';
 export * from './wait';

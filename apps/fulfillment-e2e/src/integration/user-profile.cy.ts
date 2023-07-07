@@ -49,7 +49,7 @@ describe('When a user opens the user profile modal', () => {
         .getNotification()
         .should(
           'contain.text',
-          `You can’t log out because of a pending synchronization.`
+          `You can't log out because of a pending synchronization`
         );
     });
   });
@@ -69,7 +69,7 @@ describe('When a user opens the user profile modal', () => {
         .getNotification()
         .should(
           'contain.text',
-          `You can’t log out because picking is in progress.`
+          `You can't log out because picking is in progress`
         );
       userProfileFragment.getReceiveDataButton().should('not.exist');
     });
@@ -91,7 +91,7 @@ describe('When a user opens the user profile modal', () => {
         .getNotification()
         .should(
           'contain.text',
-          `You can’t log out because picking is in progress.`
+          `You can't log out because picking is in progress`
         );
       userProfileFragment.getReceiveDataButton().should('not.exist');
     });
@@ -99,8 +99,12 @@ describe('When a user opens the user profile modal', () => {
 
   describe('when receive data button is clicked', () => {
     beforeEach(() => {
+      cy.intercept('PATCH', '**/picking-lists/**').as('startPicking');
+
       userProfileFragment.getCloseButton().click();
       pickingListsFragment.getStartPickingButtons().eq(1).click();
+
+      cy.wait('@startPicking', { timeout: 30000 });
 
       cy.visit('/');
 

@@ -4,12 +4,12 @@ import { OrderMixin } from '@spryker-oryx/order';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Address } from '@spryker-oryx/user';
-import { computed, hydratable, i18n } from '@spryker-oryx/utilities';
+import { computed, hydratable, I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { orderSummaryStyles } from './summary.styles';
 
 @hydratable('window:load')
-export class OrderSummaryComponent extends OrderMixin(LitElement) {
+export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
   static styles = orderSummaryStyles;
 
   protected localeService = resolve(LocaleService);
@@ -23,7 +23,7 @@ export class OrderSummaryComponent extends OrderMixin(LitElement) {
     if (!this.$order()) return;
 
     return html` <oryx-heading .as=${HeadingTag.H3}>
-        <h2>${i18n('order.summary.order-details')}</h2>
+        <h2>${this.i18n('order.summary.order-details')}</h2>
       </oryx-heading>
       ${this.renderDetails()}
       <section>${this.renderBilling()} ${this.renderShipping()}</section>`;
@@ -43,7 +43,7 @@ export class OrderSummaryComponent extends OrderMixin(LitElement) {
       <oryx-button outline>
         <button @click=${this.print}>
           <oryx-icon .type=${IconTypes.Printer}></oryx-icon>
-          ${i18n('order.summary.print-receipt')}
+          ${this.i18n('order.summary.print-receipt')}
         </button>
       </oryx-button>
       <hr />`;
@@ -52,7 +52,7 @@ export class OrderSummaryComponent extends OrderMixin(LitElement) {
   protected renderBilling(): TemplateResult {
     return html`
       <oryx-heading .as=${HeadingTag.H6}>
-        <h3>${i18n('order.summary.billing-details')}</h3>
+        <h3>${this.i18n('order.summary.billing-details')}</h3>
       </oryx-heading>
       ${this.renderDetail(
         'order.summary.billing-address',
@@ -76,7 +76,7 @@ export class OrderSummaryComponent extends OrderMixin(LitElement) {
   protected renderShipping(): TemplateResult {
     return html`
       <oryx-heading .as=${HeadingTag.H6}>
-        <h3>${i18n('order.summary.shipping-details')}</h3>
+        <h3>${this.i18n('order.summary.shipping-details')}</h3>
       </oryx-heading>
       ${this.renderDetail(
         'order.summary.delivery-address',
@@ -105,7 +105,7 @@ export class OrderSummaryComponent extends OrderMixin(LitElement) {
     if (!detail) return;
 
     return html`
-      <div class="title">${i18n(title)}:</div>
+      <div class="title">${this.i18n(title)}:</div>
       <div>${detailTemplate ?? detail}</div>
     `;
   }

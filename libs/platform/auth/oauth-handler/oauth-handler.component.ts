@@ -1,12 +1,12 @@
 import { OauthService } from '@spryker-oryx/auth';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { i18n } from '@spryker-oryx/utilities';
+import { I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { styles } from './oauth-handler.styles';
 
-export class OauthHandlerComponent extends LitElement {
+export class OauthHandlerComponent extends I18nMixin(LitElement) {
   @property() providerId?: string;
 
   static styles = styles;
@@ -31,7 +31,7 @@ export class OauthHandlerComponent extends LitElement {
   protected render(): unknown {
     return html`
       <oryx-image resource="logo"></oryx-image>
-      <oryx-heading><h3>${i18n('oauth.logging-you-in')}</h3></oryx-heading>
+      <oryx-heading><h3>${this.i18n('oauth.logging-you-in')}</h3></oryx-heading>
       <oryx-spinner></oryx-spinner>
     `;
   }

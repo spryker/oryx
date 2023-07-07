@@ -126,9 +126,8 @@ describe('UserProfileComponent', () => {
     it('should render oryx notification', () => {
       const notification =
         element.renderRoot.querySelector('oryx-notification')?.textContent;
-      expect(notification).toContain('You can');
       expect(notification).toContain(
-        't log out because of a pending synchronization'
+        "You can't log out because of a pending synchronization"
       );
     });
 
