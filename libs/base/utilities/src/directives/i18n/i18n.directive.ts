@@ -1,11 +1,14 @@
 import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { isObservable, map, Observable } from 'rxjs';
 import {
   I18nContext,
+  i18nInjectable,
   I18nTranslation,
   I18nTranslationValue,
   InferI18nContext,
   Injectable,
+  ResolveContextObject,
 } from '../../injectables';
 import { Signal, signal } from '../../signals';
 
@@ -54,14 +57,17 @@ export function i18n<T extends string | readonly string[]>(
     return i18nMap.get(hash)!();
   }
 
-  const text = '';
-  // let text = i18nInjectable.get().translate(token, context);
+  let text = i18nInjectable
+    .get()
+    .translate(token, context as ResolveContextObject<T>);
 
-  // if (isObservable(text)) {
-  //   text = text.pipe(map((result) => unwrapText(result)));
-  // } else {
-  //   text = unwrapText(text);
-  // }
+  if (isObservable(text)) {
+    text = (text as Observable<I18nTranslation>).pipe(
+      map((result) => unwrapText(result))
+    );
+  } else {
+    text = unwrapText(text);
+  }
 
   const $text = signal(text);
 
