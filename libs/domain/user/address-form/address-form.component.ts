@@ -19,7 +19,6 @@ import {
 import {
   computed,
   hydratable,
-  i18n,
   signal,
   signalProperty,
 } from '@spryker-oryx/utilities';
@@ -113,7 +112,7 @@ export class UserAddressFormComponent
       formFields.push({
         id: 'isDefaultShipping',
         type: FormFieldType.Boolean,
-        label: i18n('form.address.default-delivery-address'),
+        label: this.i18n('form.address.default-delivery-address'),
         width: 100,
       });
     }
@@ -121,7 +120,7 @@ export class UserAddressFormComponent
       formFields.push({
         id: 'isDefaultBilling',
         type: FormFieldType.Boolean,
-        label: i18n('form.address.default-billing-address'),
+        label: this.i18n('form.address.default-billing-address'),
         width: 100,
       });
     }

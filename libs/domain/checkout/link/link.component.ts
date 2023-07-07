@@ -1,11 +1,13 @@
 import { CartComponentMixin } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import { hydratable, I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 
 @hydratable(['window:load'])
-export class CheckoutLinkComponent extends CartComponentMixin(LitElement) {
+export class CheckoutLinkComponent extends I18nMixin(
+  CartComponentMixin(LitElement)
+) {
   protected semanticLinkService = resolve(SemanticLinkService);
 
   protected $link = signal(
@@ -17,7 +19,7 @@ export class CheckoutLinkComponent extends CartComponentMixin(LitElement) {
 
     return html`
       <oryx-button ?loading=${this.$isBusy()}>
-        <a href=${this.$link()}>${i18n('cart.checkout')}</a>
+        <a href=${this.$link()}>${this.i18n('cart.checkout')}</a>
       </oryx-button>
     `;
   }

@@ -31,7 +31,7 @@
  * ```
  */
 export class Injectable<T> {
-  static GlobalKey = Symbol.for('FES.Injectable');
+  static GlobalKey = Symbol.for('oryx.Injectable');
 
   protected key;
 

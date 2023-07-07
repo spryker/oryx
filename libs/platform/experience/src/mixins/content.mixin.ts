@@ -1,5 +1,11 @@
 import { Type } from '@spryker-oryx/di';
-import { signal, Signal, signalAware } from '@spryker-oryx/utilities';
+import {
+  I18nMixin,
+  I18nMixinType,
+  signal,
+  Signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ContentComponentProperties, ContentController } from '../index';
@@ -21,9 +27,10 @@ export const ContentMixin = <
   T extends Type<LitElement> = Type<LitElement>
 >(
   superClass: T
-): Type<ContentMixinInterface<OptionsType, ContentType>> & T => {
+): Type<ContentMixinInterface<OptionsType, ContentType> & I18nMixinType> &
+  T => {
   @signalAware()
-  class ContentMixinClass extends superClass {
+  class ContentMixinClass extends I18nMixin(superClass) {
     @property() uid?: string;
 
     @property({ type: Object, reflect: true })
@@ -43,7 +50,7 @@ export const ContentMixin = <
     });
   }
   return ContentMixinClass as unknown as Type<
-    ContentMixinInterface<OptionsType, ContentType>
+    ContentMixinInterface<OptionsType, ContentType> & I18nMixinType
   > &
     T;
 };

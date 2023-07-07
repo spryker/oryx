@@ -1,10 +1,11 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Size } from '@spryker-oryx/utilities';
+import { hydratable, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ButtonComponentAttributes, ButtonType } from './button.model';
 import { buttonStyles } from './styles';
 
+@hydratable()
 export class ButtonComponent
   extends LitElement
   implements ButtonComponentAttributes

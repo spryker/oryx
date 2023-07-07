@@ -1,6 +1,6 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
-import { hydratable, i18n, signal, signalAware } from '@spryker-oryx/utilities';
+import { hydratable, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { TotalsController } from '../../../src/controllers';
 import { CartDiscount } from '../../../src/models';
@@ -47,10 +47,10 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
     return html`
       <span>
         ${discounts
-          ? i18n('cart.totals.<count>-discounts', {
+          ? this.i18n('cart.totals.<count>-discounts', {
               count: discounts.length,
             })
-          : i18n('cart.totals.discounts')}
+          : this.i18n('cart.totals.discounts')}
       </span>
       <oryx-site-price
         .value=${-discountTotal!}
@@ -87,7 +87,7 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
       DiscountRowsAppearance.Collapsed}
     >
       <span slot="heading">
-        ${i18n('cart.totals.<count>-discounts', {
+        ${this.i18n('cart.totals.<count>-discounts', {
           count: discounts.length,
         })}
       </span>
