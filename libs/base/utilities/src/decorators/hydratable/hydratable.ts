@@ -111,18 +111,22 @@ function hydratableClass<T extends Type<HTMLElement>>(
         this[DEFER_HYDRATION] = 0;
 
         try {
+          if (HYDRATION_DEBUG) {
+            this.style.outline = '2px solid blue';
+            this.style.outlineOffset = '-1px';
+          }
           super.update(changedProperties);
         } catch (e) {
           // catch hydration error and recover by clearing and re-rendering
           // may become obsolete in future versions of lit
 
-          if (HYDRATION_DEBUG) {
-            this['__hydration-with-error'] = true;
-          }
-
           this.renderRoot.innerHTML =
             this.renderRoot.innerHTML.split('<!--lit-part ')[0];
           render(this.render(), this.renderRoot, this.renderOptions);
+
+          if (HYDRATION_DEBUG) {
+            this.style.outline = '2px solid red';
+          }
         }
       } else {
         super.update(changedProperties);
@@ -172,14 +176,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
           const digest = digestForTemplateValues(result);
           // Returning undefined will be catched by lit as template mismatch
           if (digest !== digestFromAttribute) return;
-        }
-      }
-
-      if (HYDRATION_DEBUG) {
-        if (!isServer) {
-          this.style.border = this['__hydration-with-error']
-            ? '1px solid red'
-            : '1px solid green';
         }
       }
 
