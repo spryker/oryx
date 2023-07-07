@@ -41,7 +41,11 @@ export class WarehouseUserAssignmentsDefaultAdapter
       .patch<PatchWarehouseUserAssignmentsResponse>(
         `${this.endpoint}/${assignmentId}`,
         {
-          isActive: true,
+          data: {
+            attributes: {
+              isActive: true,
+            },
+          },
         }
       )
       .pipe(
