@@ -12,6 +12,7 @@ export const onSuccess = ({ inputs }) => {
 
   // override default Cypress variables
   process.env.CYPRESS_BASE_URL = deployURL;
+  process.env.CYPRESS_BUILD_ID = process.env.BUILD_ID;
 
   // sync call is needed here, because if async is used -> netlify will kill child process
   // when the main process is over
