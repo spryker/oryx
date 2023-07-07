@@ -114,7 +114,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     verifyFooter();
   });
 
-  it.only('must render Category page', () => {
+  it('must render Category page', () => {
     const categoryId = '6';
     const categoryData = { id: categoryId };
     const categoryPage = new CategoryPage(categoryData);
