@@ -25,7 +25,7 @@ import { ProductPriceStyles } from './price.styles';
   enableOriginalPrice: true,
   enableTaxMessage: true,
 })
-@hydratable(['mouseover', 'focusin'])
+@hydratable()
 export class ProductPriceComponent extends ProductMixin(
   ContentMixin<ProductPriceOptions>(LitElement)
 ) {

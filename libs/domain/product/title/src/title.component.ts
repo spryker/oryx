@@ -13,7 +13,7 @@ import { styles } from './title.styles';
 @defaultOptions({
   linkType: 'none',
 })
-@hydratable(['mouseover', 'focusin'])
+@hydratable()
 export class ProductTitleComponent extends ProductMixin(
   ContentMixin<ProductTitleOptions>(LitElement)
 ) {
