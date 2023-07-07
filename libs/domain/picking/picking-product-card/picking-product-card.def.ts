@@ -8,6 +8,6 @@ export const pickingProductCardComponent = componentDef({
     ),
   schema: () =>
     import('./picking-product-card.schema').then(
-      (m) => m.pickingListItemComponentSchema
+      (m) => m.pickingProductCardComponentSchema
     ),
 });
