@@ -41,8 +41,11 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     const landingPage = new LandingPage();
 
     landingPage.visit();
+
     verifyHeader();
+
     landingPage.getVideo().should('be.visible');
+
     verifyFooter();
   });
 
@@ -65,6 +68,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     pdp.getImages().should('be.visible');
     pdp.getDescription().should('be.visible');
     pdp.getAttributeTerms().should('have.length', 7);
+
     verifyFooter();
   });
 
@@ -76,6 +80,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     verifyHeader();
 
     contactPage.getHeading().should('be.visible');
+
     verifyFooter(false);
   });
 
@@ -87,6 +92,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     verifyHeader();
 
     loginPage.loginForm.getWrapper().should('be.visible');
+
     verifyFooter();
   });
 
@@ -98,6 +104,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     verifyHeader();
 
     cartPage.getCartEntriesWrapper().should('be.visible');
+
     verifyFooter();
   });
 
@@ -111,13 +118,13 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     searchPage.getFacets().should('be.visible');
     searchPage.getProductSort().should('be.visible');
     searchPage.getOryxCards().should('have.length.greaterThan', 1);
+
     verifyFooter();
   });
 
   it('must render Category page', () => {
-    const categoryId = '6';
-    const categoryData = { id: categoryId };
-    const categoryPage = new CategoryPage(categoryData);
+    const categoryId = { id: '6' };
+    const categoryPage = new CategoryPage(categoryId);
 
     categoryPage.visit();
 
@@ -126,6 +133,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     categoryPage.getFacets().should('be.visible');
     categoryPage.getProductSort().should('be.visible');
     categoryPage.getOryxCards().should('have.length.greaterThan', 1);
+
     verifyFooter();
   });
 });
