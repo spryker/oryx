@@ -88,9 +88,16 @@ export class CheckoutAccountComponent
         </oryx-link>
       </oryx-checkout-header>
       <form @change=${this.onChange}>
-        ${this.fieldRenderer.buildForm([
-          { id: 'email', type: FormFieldType.Email, required: true },
-        ])}
+        <oryx-layout layout="grid" style="--column-gap: 20px">
+          ${this.fieldRenderer.buildForm([
+            {
+              id: 'email',
+              type: FormFieldType.Email,
+              required: true,
+              width: 100,
+            },
+          ])}
+        </oryx-layout>
       </form>
     `;
   }
