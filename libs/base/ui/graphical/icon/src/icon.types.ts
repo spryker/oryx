@@ -1,16 +1,12 @@
 export enum IconTypes {
   Add = 'add',
-  Increase = 'add', // merge with add
   Cart = 'shopping_cart',
   CartAdd = 'add_shopping_cart',
   Check = 'check',
   Close = 'close',
-  Collapse = 'add', // merge with add
   DropUp = 'expand_less',
   Dropdown = 'expand_more',
-  Expand = 'remove', // merge with minus
   Image = 'photo_library',
-  Decrease = 'remove', // merge with minus
   Info = 'info',
   InputError = 'report', // merge with error
   Minus = 'remove',
@@ -22,7 +18,6 @@ export enum IconTypes {
   Visible = 'visibility',
   Invisible = 'visibility_off',
   Wishlist = 'favorite',
-  Customer = 'person', // merge with user
   Ratings = 'reviews',
   Sales = 'sell',
   User = 'person',
@@ -33,7 +28,6 @@ export enum IconTypes {
   Parcel = 'deployed_code',
   Printer = 'print',
   Products = 'inventory_2',
-  Profile = 'person', // merge with user
   Desktop = 'desktop_windows',
   Mobile = 'phone_iphone',
   Tablet = 'tablet_mac',
