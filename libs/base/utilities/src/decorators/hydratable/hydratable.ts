@@ -22,7 +22,7 @@ const SIGNAL_EFFECT = Symbol('signalEffect');
 
 // flag to enable hydration debugging
 // should be always set to false in production, to eliminate dead code
-const HYDRATION_DEBUG = false;
+const HYDRATION_DEBUG = true;
 
 export interface HydratableLitElement extends LitElement {
   [HYDRATE_ON_DEMAND](force?: boolean): void;
@@ -110,23 +110,23 @@ function hydratableClass<T extends Type<HTMLElement>>(
         // This is part of the workaround for hydration mismatch, we would not need this property otherwise
         this[DEFER_HYDRATION] = 0;
 
+        if (HYDRATION_DEBUG) {
+          this['__hydration-status'] = 'blue';
+        }
+
         try {
-          if (HYDRATION_DEBUG) {
-            this.style.outline = '2px solid blue';
-            this.style.outlineOffset = '-1px';
-          }
           super.update(changedProperties);
         } catch (e) {
           // catch hydration error and recover by clearing and re-rendering
           // may become obsolete in future versions of lit
 
+          if (HYDRATION_DEBUG) {
+            this['__hydration-status'] = 'red';
+          }
+
           this.renderRoot.innerHTML =
             this.renderRoot.innerHTML.split('<!--lit-part ')[0];
           render(this.render(), this.renderRoot, this.renderOptions);
-
-          if (HYDRATION_DEBUG) {
-            this.style.outline = '2px solid red';
-          }
         }
       } else {
         super.update(changedProperties);
@@ -176,6 +176,15 @@ function hydratableClass<T extends Type<HTMLElement>>(
           const digest = digestForTemplateValues(result);
           // Returning undefined will be catched by lit as template mismatch
           if (digest !== digestFromAttribute) return;
+        }
+      }
+
+      if (HYDRATION_DEBUG) {
+        if (!isServer) {
+          this.style.outline = `2px solid ${
+            this['__hydration-status'] ?? 'green'
+          }`;
+          this.style.outlineOffset = '-1px';
         }
       }
 
