@@ -1,9 +1,7 @@
 import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { isObservable, map } from 'rxjs';
 import {
   I18nContext,
-  i18nInjectable,
   I18nTranslation,
   I18nTranslationValue,
   InferI18nContext,
@@ -56,13 +54,14 @@ export function i18n<T extends string | readonly string[]>(
     return i18nMap.get(hash)!();
   }
 
-  let text = i18nInjectable.get().translate(token, context);
+  const text = '';
+  // let text = i18nInjectable.get().translate(token, context);
 
-  if (isObservable(text)) {
-    text = text.pipe(map((result) => unwrapText(result)));
-  } else {
-    text = unwrapText(text);
-  }
+  // if (isObservable(text)) {
+  //   text = text.pipe(map((result) => unwrapText(result)));
+  // } else {
+  //   text = unwrapText(text);
+  // }
 
   const $text = signal(text);
 
