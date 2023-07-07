@@ -1,5 +1,5 @@
 import { preHydrate } from '@spryker-oryx/core';
-import { hydratable, i18n, Size, throttle } from '@spryker-oryx/utilities';
+import { hydratable, I18nMixin, Size, throttle } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ButtonType } from '../../action/button/src/button.model';
@@ -13,7 +13,7 @@ import { truncateFix } from './pre-hydrate';
 
 @hydratable(['mouseover', 'focus'])
 export class CollapsibleTextComponent
-  extends LitElement
+  extends I18nMixin(LitElement)
   implements CollapsibleTextProperties
 {
   static styles = collapsibleTextStyles;
@@ -68,7 +68,7 @@ export class CollapsibleTextComponent
     if (this.toggle === CollapsibleTextToggle.Icon) {
       return html`<oryx-icon-button .size=${Size.Sm}>
         <button
-          aria-label=${i18n(`collapsible.${i18nLabel}`)}
+          aria-label=${this.i18n(`collapsible.${i18nLabel}`)}
           @click=${this.onClick}
         >
           <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
@@ -78,7 +78,7 @@ export class CollapsibleTextComponent
 
     if (this.toggle === CollapsibleTextToggle.Text) {
       return html`<oryx-button .type=${ButtonType.Text} .size=${Size.Sm}>
-        <button @click=${this.onClick}>${i18n(i18nLabel)}</button>
+        <button @click=${this.onClick}>${this.i18n(i18nLabel)}</button>
       </oryx-button>`;
     }
   }

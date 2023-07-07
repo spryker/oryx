@@ -1,6 +1,8 @@
 import { Type } from '@spryker-oryx/di';
 import {
   asyncState,
+  I18nMixin,
+  I18nMixinType,
   signal,
   Signal,
   signalAware,
@@ -51,9 +53,10 @@ export const ContentMixin = <
   T extends Type<LitElement> = Type<LitElement>
 >(
   superClass: T
-): Type<ContentMixinInterface<OptionsType, ContentType>> & T => {
+): Type<ContentMixinInterface<OptionsType, ContentType> & I18nMixinType> &
+  T => {
   @signalAware()
-  class ContentMixinClass extends superClass {
+  class ContentMixinClass extends I18nMixin(superClass) {
     @property() uid?: string;
 
     @property({ type: Object, reflect: true })
@@ -83,7 +86,7 @@ export const ContentMixin = <
     });
   }
   return ContentMixinClass as unknown as Type<
-    ContentMixinInterface<OptionsType, ContentType>
+    ContentMixinInterface<OptionsType, ContentType> & I18nMixinType
   > &
     T;
 };

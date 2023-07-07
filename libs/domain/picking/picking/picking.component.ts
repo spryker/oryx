@@ -14,7 +14,7 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { ChipComponent } from '@spryker-oryx/ui/chip';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { TabsAppearance } from '@spryker-oryx/ui/tabs';
-import { i18n, subscribe } from '@spryker-oryx/utilities';
+import { I18nMixin, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -25,7 +25,7 @@ import { catchError, of, tap } from 'rxjs';
 import { PickingProductCardComponent } from '../picking-product-card';
 import { pickingComponentStyles } from './picking.styles';
 
-export class PickingComponent extends PickingListMixin(LitElement) {
+export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
   static styles = pickingComponentStyles;
 
   protected routerService = resolve(RouterService);
@@ -199,7 +199,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
         tabs,
         (tab, index) => html`
           <oryx-tab for="tab-${tab.id}" ${ref(this.tabRefs[index])}>
-            ${i18n(`picking.${tab.title}`)}
+            ${this.i18n(`picking.${tab.title}`)}
             <oryx-chip dense ${ref(this.chipRefs[index])}
               >${tab.items?.length ?? '0'}</oryx-chip
             >
@@ -251,9 +251,9 @@ export class PickingComponent extends PickingListMixin(LitElement) {
       <section>
         <oryx-image resource="picking-items-processed"></oryx-image>
         <oryx-heading>
-          <h1>${i18n(`picking.great-job`)}!</h1>
+          <h1>${this.i18n(`picking.great-job`)}!</h1>
         </oryx-heading>
-        <span>${i18n(`picking.all-items-are-processed`)}!</span>
+        <span>${this.i18n(`picking.all-items-are-processed`)}!</span>
       </section>
       ${this.renderFinishButton()}
     `;
@@ -263,7 +263,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
     return html`
       <section>
         <oryx-heading>
-          <h2>${i18n(`picking.no-items`)}!</h2>
+          <h2>${this.i18n(`picking.no-items`)}!</h2>
         </oryx-heading>
         <oryx-image resource="no-orders"></oryx-image>
       </section>
@@ -296,7 +296,7 @@ export class PickingComponent extends PickingListMixin(LitElement) {
         <div>
           <oryx-button type=${ButtonType.Primary} outline>
             <button @click=${this.finishPicking}>
-              ${i18n('picking.finish-picking')}
+              ${this.i18n('picking.finish-picking')}
             </button>
           </oryx-button>
         </div>
@@ -314,31 +314,31 @@ export class PickingComponent extends PickingListMixin(LitElement) {
         minimal
       >
         <div slot="heading">
-          ${i18n('picking.product-card.confirm-picking')}
+          ${this.i18n('picking.product-card.confirm-picking')}
         </div>
 
         <span>
-          ${i18n('picking.product-card.you-only-picked')}
+          ${this.i18n('picking.product-card.you-only-picked')}
           <span class="picked-items-info">
             ${this.partialPicking?.currentNumberOfPicked}
-            ${i18n('picking.product-card.-out-of')}
+            ${this.i18n('picking.product-card.-out-of')}
             ${this.partialPicking?.quantity}
           </span>
-          ${i18n('picking.product-card.items')}.
-          ${i18n(
+          ${this.i18n('picking.product-card.items')}.
+          ${this.i18n(
             'picking.product-card.do-you-really-want-to-complete-the-pick?'
           )}
         </span>
 
         <oryx-button slot="footer" outline type="${ButtonType.Secondary}">
           <button @click=${this.onModalClose}>
-            ${i18n('picking.product-card.cancel')}
+            ${this.i18n('picking.product-card.cancel')}
           </button>
         </oryx-button>
 
         <oryx-button slot="footer" type="${ButtonType.Primary}">
           <button @click=${this.confirmPartialPicking}>
-            ${i18n('picking.product-card.confirm')}
+            ${this.i18n('picking.product-card.confirm')}
           </button>
         </oryx-button>
       </oryx-modal>

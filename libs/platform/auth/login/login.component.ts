@@ -1,9 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
-import { hydratable, i18n, Size } from '@spryker-oryx/utilities';
+import { hydratable, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -29,7 +28,6 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   @query('input[name=password]') password?: HTMLInputElement;
   @query('input[name=rememberme]') rememberme?: HTMLInputElement;
 
-  protected i18nService = resolve(I18nService);
   protected routerService = resolve(RouterService);
   protected authLoginStrategy = resolve(
     AuthLoginStrategy,
@@ -80,7 +78,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         this.hasError,
         () => html`
           <oryx-notification type="error" scheme="dark">
-            ${i18n(
+            ${this.i18n(
               'user.login.the-username-or-password-you-entered-is-invalid'
             )}
           </oryx-notification>
@@ -89,7 +87,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
       <form @submit=${this.onSubmit}>
         <oryx-input
-          .label=${i18n('user.login.email')}
+          .label=${this.i18n('user.login.email')}
           required
           ?hasError="${this.hasError}"
         >
@@ -97,13 +95,13 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
             type="email"
             name="email"
             required
-            placeholder=${i18n('user.login.email')}
+            placeholder=${this.i18n('user.login.email')}
           />
         </oryx-input>
 
         <oryx-password-input
           .strategy="${this.$options()?.passwordVisibility}"
-          .label=${i18n('login.password')}
+          .label=${this.i18n('login.password')}
           required
           ?hasError="${this.hasError}"
         >
@@ -111,14 +109,16 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
             type="password"
             name="password"
             required
-            placeholder=${i18n('login.password')}
+            placeholder=${this.i18n('login.password')}
           />
         </oryx-password-input>
 
         ${this.renderLoginOptions()}
 
         <oryx-button size=${Size.Sm} ?loading=${this.isLoading}>
-          <button ?disabled=${this.isLoading}>${i18n('user.log-in')}</button>
+          <button ?disabled=${this.isLoading}>
+            ${this.i18n('user.log-in')}
+          </button>
         </oryx-button>
       </form>`;
   }
@@ -138,17 +138,17 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
             <input
               type="checkbox"
               name="rememberme"
-              aria-label=${i18n('user.login.remember-me')}
+              aria-label=${this.i18n('user.login.remember-me')}
               ${this.rememberme}
             />
-            ${i18n('user.login.remember-me')}
+            ${this.i18n('user.login.remember-me')}
           </oryx-checkbox>`
         )}
         ${when(
           this.$options()?.forgotPasswordLink,
           () => html`<oryx-link>
             <a href=${this.$options()?.forgotPasswordLink}
-              >${i18n('user.login.forgot-password?')}</a
+              >${this.i18n('user.login.forgot-password?')}</a
             >
           </oryx-link>`
         )}

@@ -1,6 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import {
   Suggestion,
@@ -18,8 +17,6 @@ import {
   effect,
   elementEffect,
   hydratable,
-  i18n,
-  signal,
   signalAware,
   signalProperty,
   Size,
@@ -64,7 +61,6 @@ export class SearchBoxComponent
   protected suggestionRendererService = resolve(SuggestionRendererService);
   protected routerService = resolve(RouterService);
   protected semanticLinkService = resolve(SemanticLinkService);
-  protected i18nService = resolve(I18nService);
 
   // TODO: simplify it when we find easier way how to skip emission of initialValue for each observable recreation
   protected query$ = new BehaviorSubject(this.query);
@@ -86,10 +82,6 @@ export class SearchBoxComponent
     return withSuggestion ? this.$raw() : null;
   });
 
-  protected $placeholder = signal(
-    this.i18nService.translate(['search', 'search.placeholder'])
-  );
-
   protected $link = computed(() =>
     this.semanticLinkService.get({
       type: SemanticLinkType.ProductList,
@@ -107,7 +99,7 @@ export class SearchBoxComponent
         <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
         <input
           .value=${this.query ?? ''}
-          placeholder=${ifDefined(this.$placeholder() as string)}
+          placeholder=${ifDefined(this.i18n(['search', 'search.placeholder']))}
         />
         ${this.renderSuggestion()}
       </oryx-typeahead>
@@ -132,7 +124,7 @@ export class SearchBoxComponent
   protected renderNothingFound(): TemplateResult {
     return html`
       <div slot="empty">
-        ${i18n('search.box.no-results-<query>', { query: this.query })}
+        ${this.i18n('search.box.no-results-<query>', { query: this.query })}
       </div>
     `;
   }

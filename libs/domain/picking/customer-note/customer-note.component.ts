@@ -1,14 +1,16 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
-import { i18n } from '@spryker-oryx/utilities';
+import { I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { catchError, of, tap } from 'rxjs';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { customerNoteComponentStyles } from './customer-note.styles';
 
-export class CustomerNoteComponent extends PickingListMixin(LitElement) {
+export class CustomerNoteComponent extends I18nMixin(
+  PickingListMixin(LitElement)
+) {
   static styles = customerNoteComponentStyles;
 
   protected routerService = resolve(RouterService);
@@ -47,7 +49,7 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
         <oryx-navigate-back></oryx-navigate-back>
         <oryx-image resource="user-note"></oryx-image>
         <oryx-heading as="h2" as-md="h4">
-          <h4>${i18n('picking.customer-note')}</h4>
+          <h4>${this.i18n('picking.customer-note')}</h4>
         </oryx-heading>
       </section>
 
@@ -55,7 +57,7 @@ export class CustomerNoteComponent extends PickingListMixin(LitElement) {
 
       <oryx-button ?loading=${this.upcomingPickingListId}>
         <button @click=${this.onProceed}>
-          ${i18n('picking.proceed-to-picking')}
+          ${this.i18n('picking.proceed-to-picking')}
         </button>
       </oryx-button>
       <oryx-picking-in-progress-modal

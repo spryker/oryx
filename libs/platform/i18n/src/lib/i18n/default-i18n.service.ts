@@ -1,12 +1,15 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
-import { I18nContext, InferI18nContext } from '@spryker-oryx/utilities';
+import {
+  getI18nTextHash,
+  I18nContext,
+  InferI18nContext,
+  toObservable,
+} from '@spryker-oryx/utilities';
 import { isServer } from 'lit';
 import {
   finalize,
-  isObservable,
   Observable,
-  of,
   ReplaySubject,
   share,
   shareReplay,
@@ -42,7 +45,7 @@ export class DefaultI18nService implements I18nService {
       context: Observable<I18nContext | undefined>
     ) => Observable<I18nString>
   ): Observable<I18nString> {
-    const context$ = this.normalizeContext(context).pipe(
+    const context$ = toObservable(context).pipe(
       shareReplay({ bufferSize: 1, refCount: true })
     );
 
@@ -68,7 +71,7 @@ export class DefaultI18nService implements I18nService {
       context: Observable<I18nContext | undefined>
     ) => Observable<I18nString>
   ): Observable<I18nString> {
-    const cachedText$ = this.textCache.get(this.getHash(token, context));
+    const cachedText$ = this.textCache.get(getI18nTextHash(token, context));
 
     if (cachedText$) {
       return cachedText$;
@@ -85,7 +88,7 @@ export class DefaultI18nService implements I18nService {
       context: Observable<I18nContext | undefined>
     ) => Observable<I18nString>
   ): Observable<I18nString> {
-    const hash = this.getHash(token, context);
+    const hash = getI18nTextHash(token, context);
 
     // Check if new context is already in cache
     if (this.textCache.has(hash)) {
@@ -99,32 +102,5 @@ export class DefaultI18nService implements I18nService {
       finalize(() => this.textCache.delete(hash)),
       shareReplay({ bufferSize: 1, refCount: true })
     );
-  }
-
-  protected normalizeContext(
-    context?: I18nContext | Observable<I18nContext>
-  ): Observable<I18nContext | undefined> {
-    return isObservable(context) ? context : of(context);
-  }
-
-  protected getHash(
-    token: string | readonly string[],
-    ctx?: I18nContext
-  ): string {
-    let ctxHash = '$no-context$';
-
-    if (ctx) {
-      try {
-        ctxHash = JSON.stringify(ctx);
-      } catch {
-        // Cannot hash non serializable context
-      }
-    }
-
-    const tokenHash = Array.isArray(token)
-      ? token.join(',')
-      : (token as string);
-
-    return `${tokenHash}|${ctxHash}`;
   }
 }

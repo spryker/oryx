@@ -4,7 +4,7 @@ import {
   PickingListService,
   PickingListStatus,
 } from '@spryker-oryx/picking';
-import { asyncState, i18n, valueType } from '@spryker-oryx/utilities';
+import { asyncState, I18nMixin, valueType } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -14,7 +14,7 @@ import { distinctUntilChanged, map, startWith, Subject, switchMap } from 'rxjs';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { pickingListsComponentStyles } from './picking-lists.styles';
 
-export class PickingListsComponent extends LitElement {
+export class PickingListsComponent extends I18nMixin(LitElement) {
   static styles = pickingListsComponentStyles;
   protected pickingListService = resolve(PickingListService);
 
@@ -84,7 +84,7 @@ export class PickingListsComponent extends LitElement {
                   () => html`
                     <oryx-heading slot="heading">
                       <h4>
-                        ${i18n('picking-lists.search-results-for-picking')}
+                        ${this.i18n('picking-lists.search-results-for-picking')}
                       </h4>
                     </oryx-heading>
                   `
@@ -126,7 +126,7 @@ export class PickingListsComponent extends LitElement {
   protected renderFilters(): TemplateResult {
     return html` <div class="filters">
       <span>
-        ${i18n('picking.filter.<count>-open-pick-lists', {
+        ${this.i18n('picking.filter.<count>-open-pick-lists', {
           count: this.pickingLists?.length ?? 0,
         })}
       </span>
@@ -171,11 +171,11 @@ export class PickingListsComponent extends LitElement {
   private getFallbackTitle(fallbackType: FallbackType) {
     switch (fallbackType) {
       case FallbackType.noResults:
-        return i18n('picking-lists.no-results-found');
+        return this.i18n('picking-lists.no-results-found');
       case FallbackType.noSearchingResults:
-        return i18n('picking-lists.no-picking-results');
+        return this.i18n('picking-lists.no-picking-results');
       case FallbackType.noValueProvided:
-        return i18n('picking-lists.search-by-order-ID');
+        return this.i18n('picking-lists.search-by-order-ID');
       default:
         return '';
     }

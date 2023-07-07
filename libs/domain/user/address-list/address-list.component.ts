@@ -10,7 +10,7 @@ import {
   AddressDefaults,
   EditTarget,
 } from '@spryker-oryx/user/address-list-item';
-import { effect, hydratable, i18n, Size } from '@spryker-oryx/utilities';
+import { effect, hydratable, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { queryAll } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -50,7 +50,7 @@ export class UserAddressListComponent extends AddressMixin(
   protected renderEmpty(): TemplateResult | void {
     return html`<slot name="empty">
       <oryx-icon .type=${IconTypes.Location} size=${Size.Lg}></oryx-icon>
-      ${i18n('user.address.no-addresses')}
+      ${this.i18n('user.address.no-addresses')}
     </slot>`;
   }
 
@@ -114,7 +114,7 @@ export class UserAddressListComponent extends AddressMixin(
     ) {
       return html`<oryx-modal
         open
-        .heading=${i18n('checkout.address.edit-address')}
+        .heading=${this.i18n('checkout.address.edit-address')}
         @oryx.close=${this.onClose}
       >
         <oryx-user-address-edit></oryx-user-address-edit>
