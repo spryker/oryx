@@ -59,7 +59,7 @@ export class QuantityInputComponent
         part="decrease"
       >
         <oryx-icon
-          .type=${this.decreaseIcon ?? IconTypes.Decrease}
+          .type=${this.decreaseIcon ?? IconTypes.Minus}
           size=${Size.Md}
         ></oryx-icon>
       </button>
@@ -93,7 +93,7 @@ export class QuantityInputComponent
         part="increase"
       >
         <oryx-icon
-          .type=${this.increaseIcon ?? IconTypes.Increase}
+          .type=${this.increaseIcon ?? IconTypes.Add}
           size=${Size.Md}
         ></oryx-icon>
       </button>

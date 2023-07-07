@@ -59,7 +59,7 @@ declare global {
   interface I18nContextFilters {}
 }
 
-type ResolveContextObject<T extends string | readonly string[]> =
+export type ResolveContextObject<T extends string | readonly string[]> =
   T extends string
     ? // Extract context from single token
       {

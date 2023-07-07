@@ -68,7 +68,7 @@ export class PickingHeaderComponent extends I18nMixin(
       <oryx-site-navigation-item
         uid="user-profile"
         .options=${{
-          icon: IconTypes.Profile,
+          icon: IconTypes.User,
           triggerType: 'icon',
           contentBehavior: 'modal',
           label: this.i18n('oryx.picking.account'),
