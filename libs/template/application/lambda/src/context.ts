@@ -43,18 +43,18 @@ export const serverContext = (options: ContextOptions): any => {
   // TODO: Fix for testfront ssr, we should check why it's not working
   window.HTMLFormElement = class {};
 
-  console.log('window: ', window);
+  // console.log('window: ', window);
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};
     (() => ${namespace}.render)();
   `);
 
-  console.log('script: ', script);
+  // console.log('script: ', script);
 
   const newContext = createContext(window);
 
-  console.log('newContext: ', newContext);
+  // console.log('newContext: ', newContext);
 
   return script.runInContext(window);
 };
