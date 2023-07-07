@@ -24,7 +24,7 @@ function updateCypressConfig(buildId, baseUrl) {
   console.log(`Deployed site URL: ${baseUrl}`);
   console.log(`Deployed build id: ${buildId}`);
 
-  const pathToProjectConfig = '../../../apps/storefront-e2e/project.json';
+  const pathToProjectConfig = '../../apps/storefront-e2e/project.json';
   const config = JSON.parse(readFileSync(pathToProjectConfig, 'utf8'));
 
   config.targets.e2e.configurations['headless-ci-smoke'].ciBuildId = buildId;
