@@ -207,11 +207,11 @@ export class SCCOSApi {
         });
       });
     },
-    post: (customerId: string) => {
+    post: (customerId: string, addressData = {}) => {
       const body = {
         data: {
           type: 'addresses',
-          attributes: defaultAddress,
+          attributes: { ...defaultAddress, ...addressData },
         },
       };
 

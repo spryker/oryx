@@ -69,7 +69,7 @@ export class PickingListsHeaderComponent extends I18nMixin(LitElement) {
         uid="user-profile"
         @oryx.close=${() => this.onUpdatingData()}
         .options=${{
-          icon: IconTypes.Profile,
+          icon: IconTypes.User,
           triggerType: 'icon',
           contentBehavior: 'modal',
           label: this.i18n('oryx.picking.account'),
