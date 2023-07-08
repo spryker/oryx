@@ -33,7 +33,11 @@ const legalLinks = {
     link('Condition of use'),
   ],
   options: {
-    data: { rules: [{ layout: 'flex', divider: true }] },
+    data: {
+      rules: [
+        { layout: 'flex', divider: true, gap: '0 20px', padding: '20px 0 0' },
+      ],
+    },
   },
 };
 
