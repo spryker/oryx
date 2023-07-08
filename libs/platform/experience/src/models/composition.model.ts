@@ -1,3 +1,4 @@
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Breakpoint } from '@spryker-oryx/utilities';
 import { LayoutAttributes } from '../../layout/src';
 
@@ -208,6 +209,7 @@ export interface StyleProperties extends LayoutStylesProperties {
    */
   scale?: number;
 
+  typo?: HeadingTag;
   style?: string;
 }
 

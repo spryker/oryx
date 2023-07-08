@@ -22,14 +22,19 @@ const legalLinks = {
   type: 'oryx-composition',
   name: 'legal links',
   components: [
-    link('©️ 2023 Spryker'),
+    {
+      type: 'oryx-content-text',
+      content: { data: { text: `©️ 2023 Spryker` } },
+    },
     link('Imprint', '/faq/imprint'),
     link('Terms & conditions', '/article/terms-and-conditions'),
     link('Privacy Notice', '/article/privacy'),
     link('Data preference'),
     link('Condition of use'),
   ],
-  options: { data: { rules: [{ layout: 'flex', divider: true }] } },
+  options: {
+    data: { rules: [{ layout: 'flex', divider: true }] },
+  },
 };
 
 const customerSupport = {
@@ -42,23 +47,14 @@ const customerSupport = {
       <a href="/">Payment</a><br/>
       <a href="/">Shipping information</a><br/>
       <a href="/">Returns & Exchanges</a><br/>
-      <a href="/">Withdrawal rights</a><br/>`,
+      <a href="/">Withdrawal rights</a>`,
     },
   },
 };
 
 const promises = {
   type: 'oryx-composition',
-  options: {
-    data: {
-      rules: [
-        {
-          layout: 'list',
-          gap: 0,
-        },
-      ],
-    },
-  },
+  options: { data: { rules: [{ layout: 'list', gap: 0 }] } },
   components: [
     heading('Our promises'),
     link('Free delivery', '/', IconTypes.Carrier),
@@ -72,12 +68,12 @@ const aboutUs = {
   content: {
     data: {
       text: `<b>About us</b><br/>
-        <a href="/">Company</a><br/>
+        <small><a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>
         <a href="/">Our brands</a><br/>
         <a href="/">Press</a><br/>
-        <a href="/">Corporate information</a><br/>
+        <a href="/">Corporate information</a></small>
         `,
     },
   },
@@ -191,7 +187,7 @@ const socialLinks = {
     {
       type: 'oryx-composition',
       options: {
-        data: { rules: [{ layout: 'flex', align: 'center' }] },
+        data: { rules: [{ layout: 'flex', align: 'center', gap: 20 }] },
       },
       components: [
         banner('pinterest'),
@@ -271,6 +267,7 @@ export const FooterTemplate: StaticComponent = {
           padding: '30 0',
           bleed: true,
           sticky: true,
+          typo: 'small',
         },
       ],
     },
