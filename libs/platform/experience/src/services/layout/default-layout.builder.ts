@@ -205,9 +205,11 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     if (data.typo) {
       add({ 'font-size': `var(--oryx-typography-${data.typo}-size)` });
-      add({ 'font-weight': `var(--oryx-typography-${data.typo}-sizeweight)` });
-      add({ 'font-height': `var(--oryx-typography-${data.typo}-line)` });
-      add({ margin: `0` }); // TODO: only when there's no margin
+      add({ 'font-weight': `var(--oryx-typography-${data.typo}-weight)` });
+      add({ 'line-height': `var(--oryx-typography-${data.typo}-line)` });
+      if (!data.margin) {
+        add({ margin: `0` }, { emptyValue: true });
+      }
     }
 
     return rules;

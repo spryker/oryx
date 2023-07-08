@@ -209,7 +209,13 @@ export interface StyleProperties extends LayoutStylesProperties {
    */
   scale?: number;
 
+  /**
+   * Specifies the typography tag, which is one of the available heading tags.
+   * The typography is applied to the component and all it's sub components, including those components
+   * with a shadow dom, since typography is inherited in shadow dom.
+   */
   typo?: HeadingTag;
+
   style?: string;
 }
 
