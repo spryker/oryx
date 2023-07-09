@@ -56,14 +56,14 @@ export interface QuantityInputAttributes {
   /**
    * The icon type used to render the decrease button icon.
    *
-   * @default IconTypes.Decrease
+   * @default IconTypes.Minus
    */
   decreaseIcon?: string;
 
   /**
    * The icon type used to render the increase button icon.
    *
-   * @default IconTypes.Increase
+   * @default IconTypes.Add
    */
   increaseIcon?: string;
 }
