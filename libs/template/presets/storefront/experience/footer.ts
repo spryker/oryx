@@ -73,12 +73,12 @@ const aboutUs = {
   content: {
     data: {
       text: `<b>About us</b><br/>
-        <small><a href="/">Company</a><br/>
+        <a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>
         <a href="/">Our brands</a><br/>
         <a href="/">Press</a><br/>
-        <a href="/">Corporate information</a></small>
+        <a href="/">Corporate information</a>
         `,
     },
   },
@@ -273,6 +273,7 @@ export const FooterTemplate: StaticComponent = {
           bleed: true,
           sticky: true,
           typo: 'small',
+          style: 'line-height: 24px;',
         },
       ],
     },

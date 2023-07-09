@@ -2,7 +2,7 @@
 
 :root {
   font-family: var(--oryx-typography-body-font);
-  font-size: '14px';
+  font-size: 14px;
   font-weight: var(--oryx-typography-body-weight);
   line-height: var(--oryx-typography-body-line);
   letter-spacing: 0.005em;
