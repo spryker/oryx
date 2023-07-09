@@ -21,6 +21,7 @@ const link = (text: string, url = '/', icon?: string) => ({
 const legalLinks = {
   type: 'oryx-composition',
   name: 'legal links',
+  id: 'bottomFooter',
   components: [
     {
       type: 'oryx-content-text',
