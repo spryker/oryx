@@ -43,8 +43,7 @@ export const formControlBaseStyles = css`
     line-height: 20px;
   }
 
-  slot[name='label']::first-letter,
-  slot[name='label']::slotted(*::first-letter) {
+  slot[name='label']::first-letter {
     text-transform: var(--oryx-form-label-first-letter-transform);
   }
 
