@@ -72,7 +72,7 @@ export class UserAddressFormComponent
         @change=${this.onChange}
         style="--oryx-grid-item-size: var(--oryx-form-grid-size)"
       >
-        <oryx-layout layout="grid" style="gap: 20px;">
+        <oryx-layout layout="grid" style="--column-gap: 20px;--row-gap: 20px;">
           ${this.renderCountrySelector()}
           ${this.fieldRenderer.buildForm(
             this.getFormFields(),
