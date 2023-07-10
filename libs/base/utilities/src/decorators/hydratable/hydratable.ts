@@ -22,7 +22,7 @@ const SIGNAL_EFFECT = Symbol('signalEffect');
 
 // flag to enable hydration debugging
 // should be always set to false in production, to eliminate dead code
-const HYDRATION_DEBUG = true;
+const HYDRATION_DEBUG = false;
 
 export interface HydratableLitElement extends LitElement {
   [HYDRATE_ON_DEMAND](force?: boolean): void;
