@@ -5,52 +5,61 @@ import {
   AddressEventDetail,
   AddressService,
 } from '@spryker-oryx/user';
-import { effect, hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import {
+  elementEffect,
+  hydratable,
+  I18nMixin,
+  signal,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { CheckoutAddressComponent } from '../address';
-import { checkoutShippingAddressStyles } from './shipping-address.styles';
 
 @hydratable()
 export class CheckoutShippingAddressComponent
-  extends CheckoutMixin(LitElement)
+  extends I18nMixin(CheckoutMixin(LitElement))
   implements isValid
 {
-  static styles = [checkoutShippingAddressStyles];
-
   protected addressService = resolve(AddressService);
 
-  protected addresses = signal(this.addressService.getAddresses());
-  protected selected = signal(this.checkoutStateService.get('shippingAddress'));
+  protected $addresses = signal(this.addressService.getList());
+  protected $selected = signal(
+    this.checkoutStateService.get('shippingAddress')
+  );
 
-  protected autoSelect = effect(() => {
-    const addresses = this.addresses();
+  @elementEffect()
+  protected autoSelect = (): void => {
+    const addresses = this.$addresses();
     if (!addresses?.length) return;
-    const selected = this.selected();
+    const selected = this.$selected();
 
     if (!selected || !addresses.find((address) => selected.id === address.id)) {
       const defaultAddress = addresses.find((a) => a.isDefaultShipping);
       this.persist(defaultAddress ?? addresses[0], true);
     }
-  });
+  };
 
   @query('oryx-checkout-address')
   protected checkoutAddress?: CheckoutAddressComponent;
 
-  protected override render(): TemplateResult {
+  protected override render(): TemplateResult | void {
+    if (this.$addresses() === undefined) return;
+
     return html`
-      <h3>${i18n('checkout.steps.shipping-address')}</h3>
-      ${when(
-        this.addresses()?.length,
-        () =>
-          html`<oryx-checkout-manage-address
-            @change=${this.onChange}
-            .selected=${this.selected()}
-          ></oryx-checkout-manage-address>`
-      )}
+      <oryx-checkout-header>
+        <h3>${this.i18n('checkout.shipping-address')}</h3>
+        ${when(
+          this.$addresses()?.length,
+          () =>
+            html`<oryx-checkout-manage-address
+              @change=${this.onChange}
+              .selected=${this.$selected()}
+            ></oryx-checkout-manage-address>`
+        )}
+      </oryx-checkout-header>
       <oryx-checkout-address
-        .addressId=${this.selected()?.id}
+        .addressId=${this.$selected()?.id}
         @change=${this.onChange}
       ></oryx-checkout-address>
     `;

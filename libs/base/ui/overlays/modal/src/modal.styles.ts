@@ -13,17 +13,30 @@ export const styles = css`
     padding: 0;
     border: none;
     background: transparent;
-    min-width: var(--oryx-modal-min-width, 330px);
-    max-width: min(
+    width: min(
       calc(100vw - (var(--oryx-container-bleed, 0px) * 2)),
-      calc(var(--oryx-container-width, 100vw))
+      var(--oryx-modal-width, 100%)
     );
+    max-width: calc(100vw - var(--oryx-modal-bleed, 0px) * 2);
+    max-height: calc(100vh - var(--oryx-modal-bleed, 0px) * 2);
   }
 
-  oryx-card {
-    max-height: calc(100vh - 60px);
-    display: flex;
-    flex-direction: column;
+  :host([minimal]) dialog {
+    width: var(--oryx-modal-width, 510px);
+  }
+
+  :host(:not([minimal])) dialog {
+    --oryx-card-border-radius: var(--oryx-modal-radius);
+
+    width: var(--oryx-modal-max-width, var(--oryx-modal-width, 510px));
+    min-height: var(--oryx-modal-height, auto);
+  }
+
+  :host(:not([minimal])) oryx-card {
+    margin-block-start: var(--oryx-modal-bleed, 0);
+    min-height: calc(
+      var(--oryx-modal-height, auto) - var(--oryx-modal-bleed, 0px) * 2
+    );
   }
 
   dialog::backdrop {

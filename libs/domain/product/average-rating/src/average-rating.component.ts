@@ -1,6 +1,6 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { hydratable, Size } from '@spryker-oryx/utilities';
+import { computed, hydratable, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductAverageRatingOptions } from './average-rating.model';
 
@@ -9,17 +9,18 @@ import { ProductAverageRatingOptions } from './average-rating.model';
 export class ProductAverageRatingComponent extends ProductMixin(
   ContentMixin<ProductAverageRatingOptions>(LitElement)
 ) {
-  protected override render(): TemplateResult | void {
-    const reviewCount = this.$options().enableCount
-      ? this.$product()?.reviewCount ?? 0
-      : undefined;
+  protected $reviewCount = computed(() => {
+    if (!this.$options().enableCount) return;
+    return this.$product()?.reviewCount ?? 0;
+  });
 
+  protected override render(): TemplateResult | void {
     return html`
       <oryx-rating
         readonly
         .size=${this.$options().size}
         .value=${this.$product()?.averageRating}
-        .reviewCount=${reviewCount}
+        .reviewCount=${this.$reviewCount()}
       ></oryx-rating>
     `;
   }

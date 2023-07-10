@@ -11,6 +11,7 @@ import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web'
 import {
   commonGraphics,
   fulfillmentResourceGraphics,
+  materialDesignLink,
 } from '@spryker-oryx/resources';
 import { RouterFeature } from '@spryker-oryx/router';
 import { uiFeature } from '@spryker-oryx/ui';
@@ -45,4 +46,5 @@ export interface FulfillmentFeaturesConfig {
 
 export const fulfillmentResources: Resources = {
   graphics: { ...commonGraphics, ...fulfillmentResourceGraphics },
+  fonts: materialDesignLink,
 };

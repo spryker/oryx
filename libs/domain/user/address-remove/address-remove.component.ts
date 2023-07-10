@@ -1,14 +1,16 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AddressMixin } from '@spryker-oryx/user';
-import { hydratable, i18n, Size } from '@spryker-oryx/utilities';
+import { hydratable, I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { tap } from 'rxjs';
 import { styles } from './address-remove.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
+export class UserAddressRemoveComponent extends I18nMixin(
+  AddressMixin(LitElement)
+) {
   static styles = styles;
 
   @state() protected requestsConfirmation = false;
@@ -19,7 +21,7 @@ export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
     return html`
       <oryx-icon-button>
         <button
-          aria-label=${i18n('user.address.remove')}
+          aria-label=${this.i18n('user.address.remove')}
           @click=${this.onConfirm}
         >
           <oryx-icon .type=${IconTypes.Trash}></oryx-icon>
@@ -38,21 +40,23 @@ export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
 
     return html`<oryx-modal
       open
-      .heading=${i18n('checkout.address.remove-address')}
+      .heading=${this.i18n('checkout.address.remove-address')}
       @oryx.close=${this.onClose}
       enableFooter
     >
       <oryx-user-address .addressId=${this.$addressId()}></oryx-user-address>
       <section>
         <oryx-icon .type=${IconTypes.Info} size=${Size.Md}></oryx-icon>
-        <span> ${i18n('user.address.remove-info')} </span>
+        <span> ${this.i18n('user.address.remove-info')} </span>
       </section>
       <oryx-button
         slot="footer-more"
         type=${ButtonType.Critical}
         ?loading=${this.loading}
       >
-        <button @click=${this.onRemove}>${i18n('user.address.remove')}</button>
+        <button @click=${this.onRemove}>
+          ${this.i18n('user.address.remove')}
+        </button>
       </oryx-button>
     </oryx-modal>`;
   }
@@ -62,7 +66,7 @@ export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
     const address = this.$address();
     if (address) {
       this.addressService
-        .deleteAddress(address)
+        .delete(address)
         .pipe(
           tap(() => {
             this.loading = false;

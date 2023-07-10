@@ -12,7 +12,7 @@ import {
 import { UserAddressEditComponent } from '@spryker-oryx/user/address-edit';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
-import { CheckoutState } from '../src/models';
+import { CheckoutStatus } from '../src/models';
 import {
   CheckoutDataService,
   CheckoutService,
@@ -22,13 +22,14 @@ import { CheckoutManageAddressComponent } from './manage-address.component';
 import { checkoutManageAddressComponent } from './manage-address.def';
 
 class MockAddressService implements Partial<AddressService> {
-  getAddresses = vi.fn();
+  getList = vi.fn();
 }
 class MockCheckoutStateService implements Partial<CheckoutStateService> {
   get = vi.fn();
+  isInvalid = vi.fn().mockReturnValue(of(false));
 }
 class MockCheckoutService implements Partial<CheckoutService> {
-  getProcessState = vi.fn().mockReturnValue(of(CheckoutState.Ready));
+  getStatus = vi.fn().mockReturnValue(of(CheckoutStatus.Ready));
 }
 class MockCheckoutDataService implements Partial<CheckoutDataService> {}
 

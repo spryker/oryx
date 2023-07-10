@@ -140,15 +140,15 @@ export class ToggleController implements ReactiveController {
     }
   }
 
-  protected handleMouseup(e: MouseEvent): void {
-    if (
-      this.shouldClosePopover(e) ||
-      (timePassed(this.timeStarted) && !this.emitterIsInsidePopover(e))
-    ) {
+  protected async handleMouseup(e: MouseEvent): Promise<void> {
+    this.focusShouldBeFocusedMaybe();
+
+    const isEmitterOutside =
+      timePassed(this.timeStarted) && !this.emitterIsInsidePopover(e);
+
+    if ((await this.shouldClosePopover(e)) || isEmitterOutside) {
       this.toggle(false);
     }
-
-    this.focusShouldBeFocusedMaybe();
   }
 
   protected handleKeydown(e: KeyboardEvent): void {
@@ -174,7 +174,7 @@ export class ToggleController implements ReactiveController {
         break;
       default:
         // avoid toggle the element when the user cmd-tabs away from the browser
-        // or dispatching Tab key
+        // or dispatching Tab keyhandleMouseup
         if (!((e.key === 'Meta' && e.metaKey) || e.key === 'Tab')) {
           this.toggle(true);
         }
@@ -244,8 +244,8 @@ export class ToggleController implements ReactiveController {
     );
   }
 
-  protected shouldClosePopover(e: Event): boolean {
-    return e
+  protected shouldClosePopover(e: Event): Promise<boolean> {
+    const shouldBeClosed = e
       .composedPath()
       .some(
         (element, i, path) =>
@@ -253,6 +253,10 @@ export class ToggleController implements ReactiveController {
           element instanceof Element &&
           element.hasAttribute(CLOSE_POPOVER_ATTR)
       );
+    //add a delay to allow other click handlers being resolved
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(shouldBeClosed), 0)
+    );
   }
 
   protected focusShouldBeFocusedMaybe(): void {

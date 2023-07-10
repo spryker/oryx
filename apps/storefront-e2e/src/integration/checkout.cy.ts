@@ -2,8 +2,8 @@ import { CartPage } from '../support/page_objects/cart.page';
 import { CheckoutPage } from '../support/page_objects/checkout.page';
 import { ThankYouPage } from '../support/page_objects/thank-you.page';
 import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { defaultUser } from '../test-data/default-user';
 import { ProductStorage } from '../test-data/product.storage';
+import { TestCustomerData } from '../types/user.type';
 
 let sccosApi: SCCOSApi;
 let thankYouPage: ThankYouPage;
@@ -13,41 +13,40 @@ const checkoutPage = new CheckoutPage();
 // TODO: refactor tests to make them more readable
 // TODO: add a test for an order with different shipping and billing addresses set
 
-describe('Checkout suite', () => {
+describe('Checkout suite', { tags: 'smoke' }, () => {
   describe('Create a new order by authorized user without addresses', () => {
     beforeEach(() => {
-      cy.login(defaultUser);
+      cy.login();
 
       sccosApi = new SCCOSApi();
 
-      cy.customerCartsCleanup(sccosApi, defaultUser);
-      cy.customerAddressesCleanup(sccosApi, defaultUser);
+      cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+        cy.customerCartsCleanup(sccosApi, customer);
+        cy.customerAddressesCleanup(sccosApi, customer);
+      });
     });
 
     it('must allow user to create a new order', () => {
-      const productData = ProductStorage.getProductByEq(2);
+      const productData = ProductStorage.getProductByEq(1);
 
-      sccosApi.carts
-        .customersGet(defaultUser.id)
-        .its('body.data[0].id')
-        .as('cartId');
+      cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+        sccosApi.carts
+          .customersGet(customer.id)
+          .its('body.data[0].id')
+          .as('cartId');
+      });
 
       cy.get<string>('@cartId').then((cartId) => {
         sccosApi.cartItems.post(productData, 1, cartId);
       });
 
-      cy.intercept('POST', '/checkout').as('checkout');
-      cy.intercept('/customers/*/addresses').as('addresses');
-
-      cartPage.visit();
-      cartPage.checkout();
-
+      cy.goToCheckout();
       cy.location('pathname').should('be.eq', checkoutPage.url);
-      cy.wait('@addresses');
 
       checkoutPage.shipping.addAddressForm.fillAddressForm();
-      checkoutPage.getPlaceOrderBtn().click();
 
+      cy.intercept('POST', '/checkout').as('checkout');
+      checkoutPage.getPlaceOrderBtn().click();
       cy.wait('@checkout')
         .its('response.body.data.attributes.orderReference')
         .as('createdOrderId');
@@ -89,20 +88,16 @@ describe('Checkout suite', () => {
     });
 
     it('must allow user to create a new order', () => {
-      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
+      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
 
-      cy.intercept('POST', '/checkout?include=orders').as('checkout');
-      cy.intercept('/customers/*/addresses').as('addresses');
-
-      cartPage.visit();
-      cartPage.checkout();
-
+      cy.goToCheckoutAsGuest();
       cy.location('pathname').should('be.eq', checkoutPage.anonymousUrl);
 
       checkoutPage.checkoutAsGuestForm.fillForm();
       checkoutPage.shipping.addAddressForm.fillAddressForm();
-      checkoutPage.getPlaceOrderBtn().click();
 
+      cy.intercept('POST', '/checkout?include=orders').as('checkout');
+      checkoutPage.getPlaceOrderBtn().click();
       cy.wait('@checkout')
         .its('response.body.data.attributes.orderReference')
         .as('createdOrderId');

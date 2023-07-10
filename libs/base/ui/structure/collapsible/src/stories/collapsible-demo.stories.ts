@@ -24,7 +24,6 @@ export default {
       options: [
         CollapsibleToggleControlType.IconButton,
         CollapsibleToggleControlType.TextButton,
-        CollapsibleToggleControlType.None,
       ],
       control: { type: 'select' },
     },
@@ -33,6 +32,11 @@ export default {
     },
     nonTabbable: {
       control: { type: 'boolean' },
+    },
+  },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
     },
   },
 } as Meta;

@@ -1,12 +1,11 @@
+import { AppFeature } from '@spryker-oryx/core';
+import { articleProviders } from './articles';
 import { bazaarVoiceComponentMapping } from './bazaarvoice';
 import { cloudinaryImageConverter } from './cloudinary';
 import * as components from './components';
 import { labsI18nFeature } from './i18n';
 export * from './components';
 export { labsI18nFeature } from './i18n';
-
-// tmp solution until we've published our packages and we can pull this from core
-type AppFeature = any;
 
 export const labsComponents = Object.values(components);
 
@@ -19,7 +18,11 @@ export const labsComponents = Object.values(components);
 export const labsFeatures: AppFeature[] = [
   {
     components: labsComponents,
-    providers: [cloudinaryImageConverter, bazaarVoiceComponentMapping],
+    providers: [
+      cloudinaryImageConverter,
+      bazaarVoiceComponentMapping,
+      ...articleProviders,
+    ],
   },
   labsI18nFeature,
 ];

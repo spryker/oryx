@@ -1,22 +1,29 @@
-import { PriceMode } from '@spryker-oryx/cart';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { hydratable, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-
-import { CartComponentMixin } from '../../../src/mixins/cart.mixin';
+import { TotalsController } from '../../../src/controllers';
+import { PriceMode } from '../../../src/models';
 import { CartTotalsTotalOptions } from './total.model';
 
 @defaultOptions({ enableTaxMessage: true })
 @hydratable('window:load')
-export class CartTotalsTotalComponent extends CartComponentMixin(
-  ContentMixin<CartTotalsTotalOptions>(LitElement)
+@signalAware()
+export class CartTotalsTotalComponent extends ContentMixin<CartTotalsTotalOptions>(
+  LitElement
 ) {
+  protected totalsController = new TotalsController(this);
+
+  protected $totals = signal(this.totalsController.getTotals());
+
   protected override render(): TemplateResult | void {
-    const total = this.$totals()?.calculations?.priceToPay;
-    if (total) {
+    const { priceToPay, currency } = this.$totals() ?? {};
+    if (priceToPay) {
       return html`
-        <span>${i18n('cart.totals.total')}</span>
-        <span>${total}</span>
+        <span>${this.i18n('cart.totals.total')}</span>
+        <oryx-site-price
+          .value=${priceToPay}
+          .currency=${currency}
+        ></oryx-site-price>
         ${this.renderTaxMessage()}
       `;
     }
@@ -26,8 +33,8 @@ export class CartTotalsTotalComponent extends CartComponentMixin(
     if (this.$options().enableTaxMessage) {
       return html`<span class="tax-message">
         ${this.$totals()?.priceMode === PriceMode.GrossMode
-          ? i18n('cart.totals.tax-included')
-          : i18n('cart.totals.tax-excluded')}
+          ? this.i18n('cart.totals.tax-included')
+          : this.i18n('cart.totals.tax-excluded')}
       </span>`;
     }
   }

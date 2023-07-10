@@ -9,7 +9,7 @@ import {
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { UserAddressAddButtonOptions } from '../address-add-button.model';
+import { UserAddressAddButtonOptions } from '../../address-add-button/address-add-button.model';
 
 export default {
   title: `${storybookPrefix}/Address Edit Button`,
@@ -25,6 +25,11 @@ export default {
     addressId: {
       options: [mockCurrentAddress, uncompletedAddress].map(({ id }) => id),
       control: { type: 'select' },
+    },
+  },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
     },
   },
 } as Meta;

@@ -9,8 +9,6 @@ export const fontawesomeIcons: IconMapper = {
   },
   mapping: {
     [IconTypes.User]: '&#xf007;',
-    [IconTypes.Profile]: '&#xf007;', // merge with user
-    [IconTypes.Customer]: '&#xf007;', // merge with user
     [IconTypes.Sales]: '&#xf555;',
     [IconTypes.Users]: '&#xf508;',
     [IconTypes.ModeDark]: '&#xf186;',

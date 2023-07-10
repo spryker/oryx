@@ -26,8 +26,8 @@ const mockAddress: Address = {
   isDefaultShipping: true,
 };
 class MockAddressService implements Partial<AddressService> {
-  getAddress = vi.fn().mockReturnValue(of(mockAddress));
-  getAddresses = vi.fn();
+  get = vi.fn().mockReturnValue(of(mockAddress));
+  getList = vi.fn();
 }
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
@@ -121,7 +121,7 @@ describe('UserAddressListItemComponent', () => {
 
   describe('when the address id does not match an actual address', () => {
     beforeEach(async () => {
-      addressService.getAddress.mockReturnValue(of(null));
+      addressService.get.mockReturnValue(of(null));
       element = await fixture(
         html`<oryx-user-address-list-item
           addressId="unknown"
@@ -231,7 +231,7 @@ describe('UserAddressListItemComponent', () => {
 
   describe('when the address is marked only for billing', () => {
     beforeEach(() => {
-      addressService.getAddress.mockReturnValue(
+      addressService.get.mockReturnValue(
         of({ id: 'foo', isDefaultBilling: true } as Address)
       );
     });
@@ -300,7 +300,7 @@ describe('UserAddressListItemComponent', () => {
 
   describe('when the address is marked only for shipping', () => {
     beforeEach(() => {
-      addressService.getAddress.mockReturnValue(
+      addressService.get.mockReturnValue(
         of({ id: 'foo', isDefaultShipping: true } as Address)
       );
     });

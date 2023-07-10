@@ -12,6 +12,7 @@ export module ApiCartModel {
     code?: string;
   }
   export interface Attributes {
+    id: string;
     name: string;
     isDefault: boolean;
     totals: Totals;
@@ -26,6 +27,7 @@ export module ApiCartModel {
     grandTotal: number;
     priceToPay: number;
     expenseTotal?: number;
+    shipmentTotal?: number;
     discountTotal?: number;
     taxTotal?: number;
     subtotal?: number;

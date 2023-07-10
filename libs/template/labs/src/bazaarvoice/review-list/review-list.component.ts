@@ -1,8 +1,7 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { hydratable, subscribe } from '@spryker-oryx/utilities';
+import { elementEffect, hydratable } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { tap } from 'rxjs';
 import { loadBvScript } from '../script';
 import { bzRatingStyles } from '../styles';
 import { BazaarvoiceReviewListOptions } from './review-list.model';
@@ -13,23 +12,20 @@ export class BazaarvoiceReviewListComponent extends ProductMixin(
 ) {
   static styles = [bzRatingStyles];
 
-  @subscribe()
-  protected product$ = this.productController.getProduct().pipe(
-    tap((product) => {
-      if (product) {
-        loadBvScript().then((bv) => {
-          this.hideContainer();
-          const reviewsRefId = `${this.uid}-reviews`;
-          this.createContainer(reviewsRefId);
-
-          bv.ui('rr', 'show_reviews', {
-            productId: product?.sku,
-            contentContainerDiv: reviewsRefId,
-          });
+  @elementEffect()
+  protected loadScript = (): void => {
+    const productId = this.$product()?.sku;
+    if (productId) {
+      loadBvScript().then((bv) => {
+        const reviewsRefId = `${this.uid}-reviews`;
+        this.createContainer(reviewsRefId);
+        bv.ui('rr', 'show_reviews', {
+          productId,
+          summaryContainerDiv: reviewsRefId,
         });
-      }
-    })
-  );
+      });
+    }
+  };
 
   /**
    * The review list integration comes with an additional element which cannot be controlled.

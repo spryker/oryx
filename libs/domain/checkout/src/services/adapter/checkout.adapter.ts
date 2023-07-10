@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
 import {
   ApiCheckoutModel,
-  Checkout,
   CheckoutData,
   CheckoutResponse,
+  PlaceOrderData,
 } from '../../models';
 
 export interface GetCheckoutDataProps {
@@ -17,14 +17,9 @@ export interface UpdateCheckoutDataProps {
   attributes: CheckoutData;
 }
 
-export interface PostCheckoutProps {
-  attributes: Checkout;
-}
-
 export interface CheckoutAdapter {
-  get: (data: GetCheckoutDataProps) => Observable<CheckoutData>;
-  update: (data: UpdateCheckoutDataProps) => Observable<CheckoutData>;
-  placeOrder: (data: PostCheckoutProps) => Observable<CheckoutResponse>;
+  get: (data: PlaceOrderData) => Observable<CheckoutData>;
+  placeOrder: (data: PlaceOrderData) => Observable<CheckoutResponse>;
 }
 
 export const CheckoutAdapter = 'oryx.CheckoutAdapter';

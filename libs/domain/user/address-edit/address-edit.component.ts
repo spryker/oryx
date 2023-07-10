@@ -9,7 +9,7 @@ import {
   CrudState,
 } from '@spryker-oryx/user';
 import { UserAddressFormComponent } from '@spryker-oryx/user/address-form';
-import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import { hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -48,9 +48,7 @@ export class UserAddressEditComponent extends AddressMixin(
     }
 
     const address = this.populateAddressData();
-    return this.addressService[address.id ? 'updateAddress' : 'addAddress'](
-      address
-    ).pipe(
+    return this.addressService[address.id ? 'update' : 'add'](address).pipe(
       take(1),
       tap(() => {
         this.loading = false;
@@ -81,12 +79,12 @@ export class UserAddressEditComponent extends AddressMixin(
         () => html`
           <oryx-button outline>
             <button @click=${this.onClose}>
-              ${i18n(['cancel', 'user.address.cancel'])}
+              ${this.i18n(['cancel', 'user.address.cancel'])}
             </button>
           </oryx-button>
           <oryx-button ?loading=${this.loading}>
             <button @click=${this.onSave}>
-              ${i18n(['save', 'user.address.save'])}
+              ${this.i18n(['save', 'user.address.save'])}
             </button>
           </oryx-button>
         `

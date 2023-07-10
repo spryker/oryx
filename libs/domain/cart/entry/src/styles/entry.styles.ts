@@ -71,6 +71,10 @@ export const cartEntryStyles = css`
     padding-block: 20px 28px;
   }
 
+  a {
+    display: contents;
+  }
+
   oryx-product-media {
     width: 87px;
     aspect-ratio: 1/1;

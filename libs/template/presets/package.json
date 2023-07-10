@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/presets",
-  "version": "0.11.0",
+  "version": "0.13.0",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
   "description": "Presets for Oryx applications",
@@ -40,6 +40,6 @@
   "peerDependencies": {
     "lit": "^2.4.0",
     "tslib": "^2.4.0",
-    "urlpattern-polyfill": "^4.0.0"
+    "urlpattern-polyfill": "~4.0.3"
   }
 }

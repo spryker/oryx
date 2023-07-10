@@ -39,7 +39,7 @@ export class AddressesModalFragment {
     this.addAddressForm.getSaveAddressBtn().click();
   };
 
-  editAddress1InAddress = (address1: string, addressEq: number) => {
+  editCity = (newCity: string, addressEq: number) => {
     this.addressesList
       .getAddressListItem()
       .eq(addressEq)
@@ -47,10 +47,7 @@ export class AddressesModalFragment {
       .eq(0)
       .click();
 
-    this.addAddressForm
-      .getAddress1Input()
-      .clear()
-      .type(address1, { force: true });
+    this.addAddressForm.getCityInput().clear().type(newCity, { force: true });
 
     this.addAddressForm.getSaveAddressBtn().click();
   };

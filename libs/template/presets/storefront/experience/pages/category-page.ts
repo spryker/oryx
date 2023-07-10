@@ -31,6 +31,7 @@ export const categoryPage: StaticComponent = {
               divider: true,
               sticky: true,
               top: '108px',
+              margin: '0 0 30px',
             },
           ],
         },
@@ -45,7 +46,7 @@ export const categoryPage: StaticComponent = {
       components: [
         {
           type: 'oryx-composition',
-          name: 'Product listing header',
+          name: 'Product list header',
           options: { data: { rules: [{ layout: 'flex' }] } },
           components: [
             {

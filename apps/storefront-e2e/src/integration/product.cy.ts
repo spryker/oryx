@@ -20,8 +20,22 @@ describe('Product Detail Page', () => {
       pdp.visit();
     });
 
-    it('should render the availability status', () => {
+    it('should show correct content', { tags: 'smoke' }, () => {
       productDetailPage.getAvailability().should('be.visible');
+      pdp.getRelations().getProducts().should('not.exist');
+    });
+  });
+
+  describe('when product has reference products', () => {
+    const productData = ProductStorage.getProductByEq(3);
+    const pdp = new ProductDetailsPage(productData);
+
+    beforeEach(() => {
+      pdp.visit();
+    });
+
+    it('should show product references', () => {
+      pdp.getRelations().getProducts().should('be.visible');
     });
   });
 });

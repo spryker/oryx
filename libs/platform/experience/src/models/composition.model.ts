@@ -203,6 +203,11 @@ export interface StyleProperties extends LayoutStylesProperties {
 
   ratio?: string;
 
+  /**
+   * Transforms the component using this scale.
+   */
+  scale?: number;
+
   style?: string;
 }
 

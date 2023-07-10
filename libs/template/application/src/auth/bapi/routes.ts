@@ -1,4 +1,4 @@
-import { RouteConfig } from '@lit-labs/router';
+import { RouteConfig } from '@spryker-oryx/router/lit';
 import { html } from 'lit';
 
 export const defaultBapiRoutes = (
@@ -13,6 +13,8 @@ export const defaultBapiRoutes = (
   {
     path: callbackPath,
     render: () =>
-      html`<oryx-oauth-handler providerId=${providerId}></oryx-oauth-handler>`,
+      html`<oryx-auth-oauth-handler
+        providerId=${providerId}
+      ></oryx-auth-oauth-handler>`,
   },
 ];

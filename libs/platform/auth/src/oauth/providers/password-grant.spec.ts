@@ -131,6 +131,8 @@ describe('OauthPasswordGrantProvider', () => {
       mockStorage.get.mockReturnValue(of(null));
       mockStorage.remove.mockReturnValue(of(null));
       const service = setup();
+      const http = getInjector().inject(HttpService) as HttpTestService;
+      http.flush(undefined);
       service
         .authenticate({ username: 'name', password: 'password' })
         .subscribe();
@@ -189,6 +191,8 @@ describe('OauthPasswordGrantProvider', () => {
       );
       mockStorage.remove.mockReturnValue(of(null));
       const service = setup();
+      const http = getInjector().inject(HttpService) as HttpTestService;
+      http.flush(undefined);
       service.refreshToken().subscribe();
       expect(mockStorage.remove).toHaveBeenCalledWith('oryx.oauth-token');
     });

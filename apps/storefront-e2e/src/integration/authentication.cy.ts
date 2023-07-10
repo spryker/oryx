@@ -1,7 +1,6 @@
 import { LandingPage } from '../support/page_objects/landing.page';
 import { LoginPage } from '../support/page_objects/login.page';
-import { defaultUser } from '../test-data/default-user';
-import { TestUserData } from '../types/user.type';
+import { TestCustomerData } from '../types/user.type';
 
 const loginPage = new LoginPage();
 const landingPage = new LandingPage();
@@ -9,18 +8,13 @@ const landingPage = new LandingPage();
 describe('Authentication suite', () => {
   context('Login functionality', () => {
     it('must allow user to login with valid credentials', () => {
-      cy.login(defaultUser);
-
-      loginPage.header
-        .getUserSummaryHeading()
-        .should('contain', defaultUser.name);
+      cy.login();
 
       cy.location('pathname').should('be.eq', landingPage.url);
     });
 
     it('must show and error message if a user logs in with invalid credentials', () => {
-      const invalidUser: TestUserData = {
-        id: 'DE--1',
+      const invalidUser: TestCustomerData = {
         name: 'Sonia',
         email: 'sonia@spryker.com',
         password: 'change123123',
@@ -34,15 +28,15 @@ describe('Authentication suite', () => {
       loginPage.header
         .getUserSummaryHeading()
         .should('not.contain', invalidUser.name);
-      loginPage.header.getUserSummaryHeading().should('contain', 'login');
 
+      loginPage.header.getUserSummaryHeading().should('contain', 'login');
       loginPage.loginForm.getBEValidationError().should('be.visible');
     });
   });
 
   context('Logout functionality', () => {
-    it('User is able to logout', () => {
-      cy.login(defaultUser);
+    it('User is able to logout', { tags: 'smoke' }, () => {
+      cy.login();
 
       cy.location('pathname').should('be.eq', landingPage.url);
 

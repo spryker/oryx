@@ -1,10 +1,15 @@
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductMediaContainerSize, ProductMixin } from '@spryker-oryx/product';
+import {
+  ProductContext,
+  ProductMediaContainerSize,
+  ProductMixin,
+} from '@spryker-oryx/product';
 import {
   NotificationService,
   PricingService,
+  SemanticLinkService,
   SemanticLinkType,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
@@ -13,8 +18,8 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LinkType } from '@spryker-oryx/ui/link';
 import {
   computed,
+  elementEffect,
   hydratable,
-  i18n,
   signalProperty,
   Size,
 } from '@spryker-oryx/utilities';
@@ -53,9 +58,7 @@ export class CartEntryComponent
 {
   static styles = [cartEntryStyles];
 
-  @property() sku?: string;
-  @signalProperty({ type: Number })
-  quantity?: number;
+  @signalProperty({ type: Number }) quantity?: number;
   @property() key?: string;
   @property({ type: Number }) price?: number;
   @property({ type: Boolean }) readonly?: boolean;
@@ -63,7 +66,7 @@ export class CartEntryComponent
   @state() protected requiresRemovalConfirmation?: boolean;
 
   protected pricingService = resolve(PricingService);
-  protected context = new ContextController(this);
+  protected contextController = new ContextController(this);
 
   protected $availableQuantity = computed(() => {
     const availability = this.$product()?.availability;
@@ -72,8 +75,23 @@ export class CartEntryComponent
       : availability?.quantity ?? Infinity;
   });
 
+  @elementEffect()
+  protected setProductContext = (): void => {
+    if (this.sku) {
+      this.contextController.provide(ProductContext.SKU, this.sku);
+    }
+  };
+
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
+  protected semanticLinkService = resolve(SemanticLinkService);
+
+  protected $productLink = computed(() => {
+    return this.semanticLinkService.get({
+      type: SemanticLinkType.Product,
+      id: this.$product()?.sku,
+    });
+  });
 
   protected override render(): TemplateResult | void {
     return html`
@@ -87,18 +105,11 @@ export class CartEntryComponent
     if (!this.$options()?.enableItemImage) return;
 
     return html`
-      <oryx-content-link
-        class="image"
-        .options=${{
-          type: SemanticLinkType.Product,
-          id: this.sku,
-          linkType: LinkType.Neutral,
-        }}
-      >
+      <a href=${this.$productLink()}>
         <oryx-product-media
           .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
         ></oryx-product-media>
-      </oryx-content-link>
+      </a>
     `;
   }
 
@@ -128,7 +139,7 @@ export class CartEntryComponent
           <button aria-label="remove">
             <oryx-icon .type=${IconTypes.Trash}></oryx-icon>
           </button>
-          <span>${i18n('cart.remove')}</span>
+          <span>${this.i18n('cart.remove')}</span>
         </oryx-icon-button>
       </div>
     `;
@@ -136,7 +147,7 @@ export class CartEntryComponent
 
   protected renderPricing(): TemplateResult | void {
     const qtyTemplate = this.readonly
-      ? i18n('cart.entry.<quantity>-items', {
+      ? this.i18n('cart.entry.<quantity>-items', {
           quantity: this.quantity,
         })
       : html`<oryx-cart-quantity-input
@@ -159,7 +170,7 @@ export class CartEntryComponent
           this.$options()?.enableItemPrice,
           () =>
             html`<div class="item-price">
-              <span>${i18n('cart.entry.item-price')}</span
+              <span>${this.i18n('cart.entry.item-price')}</span
               ><oryx-product-price
                 .options=${{ enableTaxMessage: false }}
               ></oryx-product-price>
@@ -174,10 +185,11 @@ export class CartEntryComponent
       open
       enableFooter
       enableCloseButtonInHeader
-      heading=${i18n('cart.entry.confirm')}
+      minimal
+      heading=${this.i18n('cart.entry.confirm')}
       @oryx.close=${this.revert}
     >
-      ${i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.sku })}
+      ${this.i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.sku })}
 
       <oryx-button
         slot="footer-more"
@@ -185,7 +197,7 @@ export class CartEntryComponent
         .size=${Size.Md}
         @click=${(ev: Event) => this.removeEntry(ev, true)}
       >
-        <button value="remove">${i18n(`cart.entry.remove`)}</button>
+        <button value="remove">${this.i18n(`cart.entry.remove`)}</button>
       </oryx-button>
     </oryx-modal>`;
   }
@@ -193,7 +205,7 @@ export class CartEntryComponent
   /**
    * Forces a revert of the quantity, as the quantity input might be updated outside.
    */
-  protected revert(): void {
+  protected revert(e: Error): void {
     this.requiresRemovalConfirmation = false;
     const el = this.shadowRoot?.querySelector<QuantityInputComponent>(
       'oryx-cart-quantity-input'
@@ -201,6 +213,7 @@ export class CartEntryComponent
     if (el) {
       el.value = this.quantity;
     }
+    throw e;
   }
 
   protected onSubmit(ev: CustomEvent<QuantityEventDetail>): void {
@@ -219,7 +232,7 @@ export class CartEntryComponent
           this.notify('cart.cart-entry-updated', this.sku);
         }
       },
-      error: () => this.revert(),
+      error: (e) => this.revert(e),
     });
   }
 
@@ -235,14 +248,14 @@ export class CartEntryComponent
           this.notify('cart.confirm-removed', this.sku);
         }
       },
-      error: () => this.revert(),
+      error: (e) => this.revert(e),
     });
   }
 
   protected notify(token: string, sku?: string): void {
     this.notificationService.push({
       type: AlertType.Success,
-      content: i18n(token) as string,
+      content: this.i18n(token) as string,
       subtext: html`<oryx-product-title .sku=${sku}></oryx-product-title>`,
     });
   }

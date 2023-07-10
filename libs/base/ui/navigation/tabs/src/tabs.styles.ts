@@ -27,7 +27,7 @@ export const baseStyles = css`
   }
 
   :host([shadow]) slot:not([name]) {
-    box-shadow: 0 4px 8px var(--oryx-color-neutral-3);
+    box-shadow: 0 4px 8px var(--oryx-elevation-color-2);
   }
 
   input[type='range'] {

@@ -19,7 +19,6 @@ import {
 import {
   computed,
   hydratable,
-  i18n,
   signal,
   signalProperty,
 } from '@spryker-oryx/utilities';
@@ -52,9 +51,9 @@ export class UserAddressFormComponent
   @signalProperty() country?: string;
 
   protected $countries = signal(this.countryService.getAll());
-  protected $currentAddress = signal(this.addressService.getCurrentAddress());
+  protected $currentAddress = signal(this.addressService.getCurrent());
   protected $user = signal(this.userService.getUser());
-  protected $addresses = signal(this.addressService.getAddresses());
+  protected $addresses = signal(this.addressService.getList());
   protected $currentCountry = computed(() => {
     if (this.country) return this.country;
     return this.$currentAddress()?.iso2Code ?? this.$countries()?.[0].iso2Code;
@@ -113,7 +112,7 @@ export class UserAddressFormComponent
       formFields.push({
         id: 'isDefaultShipping',
         type: FormFieldType.Boolean,
-        label: i18n('form.address.default-delivery-address'),
+        label: this.i18n('form.address.default-delivery-address'),
         width: 100,
       });
     }
@@ -121,7 +120,7 @@ export class UserAddressFormComponent
       formFields.push({
         id: 'isDefaultBilling',
         type: FormFieldType.Boolean,
-        label: i18n('form.address.default-billing-address'),
+        label: this.i18n('form.address.default-billing-address'),
         width: 100,
       });
     }

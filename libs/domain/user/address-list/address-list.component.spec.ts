@@ -24,9 +24,9 @@ const mockShippingAddress: Address = {
 const mockAddresses = [mockBillingAddress, mockShippingAddress];
 
 class MockAddressService implements Partial<AddressService> {
-  getAddress = vi.fn();
-  getAddresses = vi.fn();
-  deleteAddress = vi.fn().mockReturnValue(of({}));
+  get = vi.fn();
+  getList = vi.fn();
+  delete = vi.fn().mockReturnValue(of({}));
 }
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());
@@ -104,7 +104,7 @@ describe('UserAddressListComponent', () => {
 
   describe('when there are no addresses provided', () => {
     beforeEach(async () => {
-      service.getAddresses.mockReturnValue(of(null));
+      service.getList.mockReturnValue(of(null));
       element = await fixture(
         html`<oryx-user-address-list></oryx-user-address-list>`
       );
@@ -121,7 +121,7 @@ describe('UserAddressListComponent', () => {
 
   describe('when there are addresses provided', () => {
     beforeEach(async () => {
-      service.getAddresses.mockReturnValue(of(mockAddresses));
+      service.getList.mockReturnValue(of(mockAddresses));
     });
 
     describe('and the selectable option = false', () => {

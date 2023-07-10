@@ -10,4 +10,5 @@ export * from '../labels/src/label.def';
 export * from '../list/src/list.def';
 export * from '../media/src/media.def';
 export * from '../price/src/price.def';
+export * from '../relations/relations.def';
 export * from '../title/src/title.def';

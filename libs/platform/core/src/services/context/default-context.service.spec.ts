@@ -3,7 +3,7 @@ import { createInjector, destroyInjector, resolve } from '@spryker-oryx/di';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
-import { ContextService, ContextServiceFallback } from './context.service';
+import { ContextFallback, ContextService } from './context.service';
 import { DefaultContextService } from './default-context.service';
 
 const mockKey = 'mockKey';
@@ -48,7 +48,7 @@ describe('ContextService', () => {
           useClass: DefaultContextService,
         },
         {
-          provide: `${ContextServiceFallback}${mockKeyFallback}`,
+          provide: `${ContextFallback}${mockKeyFallback}`,
           useValue: of(mockFallbackValue),
         },
       ],
@@ -228,6 +228,17 @@ describe('ContextService', () => {
 
       testChildContext()
         .context.get(testChildContext(), mockKeyFallback)
+        .subscribe(mockCallback);
+
+      expect(mockCallback).toHaveBeenCalledWith(mockFallbackValue);
+    });
+
+    it('should use fallback value if null is passed', () => {
+      const mockCallback = vi.fn();
+      element.context.provide(element, mockKey, mockObject);
+
+      testChildContext()
+        .context.get(null, mockKeyFallback)
         .subscribe(mockCallback);
 
       expect(mockCallback).toHaveBeenCalledWith(mockFallbackValue);

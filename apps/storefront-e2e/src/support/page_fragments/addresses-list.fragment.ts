@@ -12,4 +12,8 @@ export class AddressesListFragment {
   getAddressList = () => this.getWrapper().find('oryx-user-address-list');
   getAddressListItem = () =>
     this.getAddressList().find('oryx-user-address-list-item');
+
+  openChangeAddressesModal = () => {
+    this.getChangeAddressesButton().click();
+  };
 }

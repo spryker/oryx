@@ -19,7 +19,40 @@
         "headless-ci": {
           "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
           "watch": false,
-          "record": true
+          "record": true,
+          "tag": "regression",
+          "group": "sf-regression"
+        },
+        "headless-ci-release": {
+          "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
+          "watch": false,
+          "record": true,
+          "tag": "release",
+          "group": "sf-release"
+        },
+        "smoke": {
+          "browser": "electron",
+          "env": {
+            "grepTags": "smoke"
+          }
+        },
+        "headless-smoke": {
+          "browser": "electron",
+          "watch": false,
+          "env": {
+            "grepTags": "smoke"
+          }
+        },
+        "headless-ci-smoke": {
+          "browser": "electron",
+          "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
+          "watch": false,
+          "record": true,
+          "tag": "smoke",
+          "group": "sf-smoke",
+          "env": {
+            "grepTags": "smoke"
+          }
         }
       }
     },

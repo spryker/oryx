@@ -1,27 +1,45 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { imageComponent } from '@spryker-oryx/ui';
 import { ImageComponent } from '@spryker-oryx/ui/image';
 import { html } from 'lit';
+import { of } from 'rxjs';
+import { ProductService } from '../src/services';
 import { ProductBrandComponent } from './brand.component';
 import { productBrandComponent } from './brand.def';
 
+class MockProductService implements Partial<ProductService> {
+  get = vi.fn();
+}
+
 describe('ProductBrandComponent', () => {
   let element: ProductBrandComponent;
+  let productService: MockProductService;
 
   beforeAll(async () => {
     await useComponent([productBrandComponent, imageComponent]);
   });
 
   beforeEach(async () => {
-    createInjector({
-      providers: mockProductProviders,
+    const injector = createInjector({
+      providers: [
+        {
+          provide: ProductService,
+          useClass: MockProductService,
+        },
+        {
+          provide: ContextService,
+          useClass: DefaultContextService,
+        },
+      ],
     });
+
     element = await fixture(html`
       <oryx-product-brand sku="1"></oryx-product-brand>
     `);
+    productService = injector.inject<MockProductService>(ProductService);
   });
 
   afterEach(() => {
@@ -31,8 +49,17 @@ describe('ProductBrandComponent', () => {
   it('should be defined', () => {
     expect(element).toBeInstanceOf(ProductBrandComponent);
   });
+
   describe('when brand attribute available in product', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({
+          sku: '1',
+          attributes: { brand: 'Brand1' },
+          attributeNames: { brand: 'Brand' },
+        })
+      );
+
       element = await fixture(html`
         <oryx-product-brand sku="1"></oryx-product-brand>
       `);
@@ -48,32 +75,9 @@ describe('ProductBrandComponent', () => {
 
   describe('when no attributes available in product', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(of({ sku: '1' }));
       element = await fixture(html`
-        <oryx-product-brand sku="6"></oryx-product-brand>
-      `);
-    });
-
-    it('should not render the brand image', () => {
-      expect(element).not.toContainElement('oryx-image');
-    });
-  });
-
-  describe('when no attributes available in product', () => {
-    beforeEach(async () => {
-      element = await fixture(html`
-        <oryx-product-brand sku="6"></oryx-product-brand>
-      `);
-    });
-
-    it('should not render the brand image', () => {
-      expect(element).not.toContainElement('oryx-image');
-    });
-  });
-
-  describe('when no SKU provided', () => {
-    beforeEach(async () => {
-      element = await fixture(html`
-        <oryx-product-brand></oryx-product-brand>
+        <oryx-product-brand sku="1"></oryx-product-brand>
       `);
     });
 

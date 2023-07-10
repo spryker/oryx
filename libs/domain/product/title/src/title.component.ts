@@ -1,9 +1,11 @@
-import { ContentLinkOptions } from '@spryker-oryx/content/link';
+import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { SemanticLinkType } from '@spryker-oryx/site';
+import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { LinkType } from '@spryker-oryx/ui/link';
 import { computed, hydratable } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { html } from 'lit/static-html.js';
 import { ProductTitleOptions } from './title.model';
 import { styles } from './title.styles';
@@ -17,9 +19,17 @@ export class ProductTitleComponent extends ProductMixin(
 ) {
   static styles = styles;
 
-  protected hasLink = computed(
-    () => !!this.$options().linkType && this.$options().linkType !== 'none'
-  );
+  protected semanticLinkService = resolve(SemanticLinkService);
+
+  protected $link = computed(() => {
+    if (!this.$options().linkType || this.$options().linkType === 'none') {
+      return null;
+    }
+    return this.semanticLinkService.get({
+      type: SemanticLinkType.Product,
+      id: this.$product()?.sku,
+    });
+  });
 
   protected override render(): TemplateResult | void {
     const { tag, as, asLg, asMd, asSm, maxLines } = this.$options();
@@ -32,20 +42,18 @@ export class ProductTitleComponent extends ProductMixin(
       .asMd=${asMd}
       .asSm=${asSm}
     >
-      ${this.hasLink() ? this.renderLink() : html`${this.$product()?.name}`}
+      ${this.$link() ? this.renderLink() : html`${this.$product()?.name}`}
     </oryx-heading>`;
   }
 
   protected renderLink(): TemplateResult {
-    const options = {
-      type: SemanticLinkType.Product,
-      id: this.$product()?.sku,
-      multiLine: true,
-      linkType: this.$options().linkType,
-    } as ContentLinkOptions;
+    const target =
+      this.$options().linkType === LinkType.ExternalLink ? '_blank' : undefined;
 
-    return html`<oryx-content-link .options=${options}>
-      ${this.$product()?.name}
-    </oryx-content-link>`;
+    return html`<oryx-link>
+      <a href=${this.$link()} target=${ifDefined(target)}>
+        ${this.$product()?.name}
+      </a>
+    </oryx-link>`;
   }
 }

@@ -15,7 +15,7 @@ const components: { [key: string]: boolean } = {};
  *   be invoked for every element
  * - tag: element's tag name (currently required, to make the logic work)
  */
-class PrehydrateDirective extends Directive {
+class PreHydrateDirective extends Directive {
   render(
     dryFunction: (host: LitElement) => void | Promise<void>,
     tag: string
@@ -38,4 +38,4 @@ class PrehydrateDirective extends Directive {
   }
 }
 
-export const prehydrate = directive(PrehydrateDirective);
+export const preHydrate = directive(PreHydrateDirective);

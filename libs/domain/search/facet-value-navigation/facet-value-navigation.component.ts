@@ -1,5 +1,5 @@
 import { AlertType } from '@spryker-oryx/ui';
-import { i18n, Size } from '@spryker-oryx/utilities';
+import { I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { DirectiveResult } from 'lit/async-directive';
 import { property, state } from 'lit/decorators.js';
@@ -13,7 +13,7 @@ import {
 import { facetValueNavigationStyles } from './facet-value-navigation.styles';
 
 export class SearchFacetValueNavigationComponent
-  extends LitElement
+  extends I18nMixin(LitElement)
   implements SearchFacetValueNavigationComponentAttributes
 {
   static styles = facetValueNavigationStyles;
@@ -50,7 +50,7 @@ export class SearchFacetValueNavigationComponent
             html`
               <oryx-button type="text" size=${Size.Sm}>
                 <button @click=${this.onClear}>
-                  ${i18n('oryx.search.facets.clear')}
+                  ${this.i18n('oryx.search.facets.clear')}
                 </button>
               </oryx-button>
             `
@@ -73,9 +73,9 @@ export class SearchFacetValueNavigationComponent
           <button @click=${this.onToggle}>
             ${when(
               this.expanded,
-              () => i18n('oryx.search.facets.show-less'),
+              () => this.i18n('oryx.search.facets.show-less'),
               () =>
-                i18n('oryx.search.facets.show-all-<length>', {
+                this.i18n('oryx.search.facets.show-all-<length>', {
                   length: this.valuesLength ? `(${this.valuesLength})` : '',
                 })
             )}
@@ -104,7 +104,7 @@ export class SearchFacetValueNavigationComponent
   }
 
   protected get searchPlaceholder(): DirectiveResult {
-    return i18n('oryx.search.search-<heading>', {
+    return this.i18n('oryx.search.search-<heading>', {
       heading: this?.heading?.toLowerCase() ?? '',
     });
   }

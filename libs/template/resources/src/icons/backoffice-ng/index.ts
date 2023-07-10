@@ -11,7 +11,7 @@ export const backofficeNgIcons: IconMapper = {
     [IconTypes.Remove]: () => import('./icons/remove').then((s) => s.default),
     [IconTypes.Report]: () => import('./icons/report').then((s) => s.default),
     [IconTypes.Filter]: () => import('./icons/filter').then((s) => s.default),
-    [IconTypes.Profile]: () => import('./icons/profile').then((s) => s.default),
+    [IconTypes.User]: () => import('./icons/profile').then((s) => s.default),
     [IconTypes.Visible]: () => import('./icons/visible').then((s) => s.default),
     [IconTypes.Invisible]: () =>
       import('./icons/invisible').then((s) => s.default),
@@ -23,9 +23,5 @@ export const backofficeNgIcons: IconMapper = {
     [IconTypes.Loader]: () => import('./icons/loader').then((s) => s.default),
     [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
     [IconTypes.Minus]: () => import('./icons/minus').then((s) => s.default),
-    /** Alias to minus */
-    [IconTypes.Decrease]: () => import('./icons/minus').then((s) => s.default),
-    /** Alias to add */
-    [IconTypes.Increase]: () => import('./icons/add').then((s) => s.default),
   },
 };

@@ -16,9 +16,9 @@ import { UserAddressEditButtonComponent } from './address-edit-button.component'
 import { AddressEditButtonOptions, Target } from './address-edit-button.model';
 
 class MockAddressService implements Partial<AddressService> {
-  getAddress = vi.fn();
-  getAddresses = vi.fn();
-  deleteAddress = vi.fn().mockReturnValue(of({}));
+  get = vi.fn();
+  getList = vi.fn();
+  delete = vi.fn().mockReturnValue(of({}));
 }
 class MockRouterService implements Partial<RouterService> {
   currentParams = vi.fn().mockReturnValue(of());

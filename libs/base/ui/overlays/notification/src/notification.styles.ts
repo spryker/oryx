@@ -26,6 +26,8 @@ export const notificationStyles = css`
 
   oryx-icon-button {
     grid-column: 3;
+
+    --oryx-icon-color: initial;
   }
 
   :host([floating]) {
@@ -50,20 +52,24 @@ export const notificationStyles = css`
     border-radius: 50%;
   }
 
+  :host([type]) {
+    border-color: var(--oryx-icon-color);
+  }
+
   :host([type='info']) {
-    border-color: var(--oryx-color-info-9);
+    --oryx-icon-color: var(--oryx-color-info-9);
   }
 
   :host([type='success']) {
-    border-color: var(--oryx-color-success-9);
+    --oryx-icon-color: var(--oryx-color-success-9);
   }
 
   :host([type='warning']) {
-    border-color: var(--oryx-color-warning-9);
+    --oryx-icon-color: var(--oryx-color-warning-9);
   }
 
   :host([type='error']) {
-    border-color: var(--oryx-color-error-9);
+    --oryx-icon-color: var(--oryx-color-error-9);
   }
 
   :host([type='info']) oryx-icon.illustrative {

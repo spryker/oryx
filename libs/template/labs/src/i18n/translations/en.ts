@@ -13,6 +13,8 @@ const cart = {
     'My cart ({count, plural, one {one item} other {{count} items}})',
   'cart.totals.<count>-discounts':
     '{count, plural, one {Discount} other {Discounts}}',
+  'cart.totals.unknown-delivery-cost':
+    'Delivery costs will be calculated at checkout',
   'cart.entry.<quantity>-items': 'x {quantity}',
   'cart.entry.confirm-remove-<sku>': 'Do you want to remove "{sku}"?',
   'cart.confirm-removed': 'Item is successfully removed',
@@ -36,10 +38,18 @@ const user = {
     'Removing this address will not remove any pending orders being dispatched to this address',
 };
 
+const picking = {
+  'picking.product-card.of-<count>-items':
+    'Of {count, plural, one {{count} item} other {{count} items}}',
+  'picking.filter.<count>-open-pick-lists':
+    '{count} Open Pick {count, plural, one {List} other {Lists}}',
+};
+
 export default {
   ...product,
   ...cart,
   ...checkout,
   ...order,
   ...user,
+  ...picking,
 };

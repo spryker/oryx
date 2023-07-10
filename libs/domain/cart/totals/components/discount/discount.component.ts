@@ -1,9 +1,9 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
-import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { hydratable, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-
-import { CartComponentMixin } from '../../../src/mixins/cart.mixin';
+import { TotalsController } from '../../../src/controllers';
+import { CartDiscount } from '../../../src/models';
 import {
   CartTotalsDiscountOptions,
   DiscountRowsAppearance,
@@ -13,63 +13,90 @@ import {
   discountRowsAppearance: DiscountRowsAppearance.Expanded,
 } as CartTotalsDiscountOptions)
 @hydratable('window:load')
-export class CartTotalsDiscountComponent extends CartComponentMixin(
-  ContentMixin<CartTotalsDiscountOptions>(LitElement)
+@signalAware()
+export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscountOptions>(
+  LitElement
 ) {
-  protected override render(): TemplateResult | void {
-    const totals = this.$totals();
+  protected totalsController = new TotalsController(this);
 
-    if (!totals || !totals.calculations?.discountTotal) return;
+  protected $totals = signal(this.totalsController.getTotals());
+
+  protected override render(): TemplateResult | void {
+    const { discountTotal, discounts, currency } = this.$totals() ?? {};
+
+    if (!discountTotal) return;
+
     const { discountRowsAppearance } = this.$options();
 
-    if (
-      discountRowsAppearance === DiscountRowsAppearance.None ||
-      !totals.discounts?.length
-    ) {
+    if (discountRowsAppearance === DiscountRowsAppearance.None) {
       return this.renderHeading();
     }
 
-    const rows = html`<ul>
-      ${totals.discounts.map(
-        ({ displayName, amount }) =>
-          html`<li>
-            <span>${displayName}</span>
-            <span>${amount}</span>
-          </li>`
-      )}
-    </ul>`;
-
     if (discountRowsAppearance === DiscountRowsAppearance.Inline) {
-      return html`${this.renderHeading()}${rows}`;
+      return html`${this.renderHeading()}${this.renderDiscounts(
+        discounts,
+        currency
+      )}`;
     }
 
-    return html`<oryx-collapsible
-      class="discount"
-      appearance="${CollapsibleAppearance.Inline}"
-      ?open=${discountRowsAppearance !== DiscountRowsAppearance.Collapsed}
-    >
-      <span slot="heading">
-        ${i18n('cart.totals.<count>-discounts', {
-          count: totals.discounts.length,
-        })}
-      </span>
-      <span slot="aside">${totals.calculations.discountTotal}</span>
-      ${rows}
-    </oryx-collapsible>`;
+    return this.renderCollapsible();
   }
 
   protected renderHeading(): TemplateResult | void {
-    const totals = this.$totals();
+    const { discounts, discountTotal, currency } = this.$totals()!;
+    return html`
+      <span>
+        ${discounts
+          ? this.i18n('cart.totals.<count>-discounts', {
+              count: discounts.length,
+            })
+          : this.i18n('cart.totals.discounts')}
+      </span>
+      <oryx-site-price
+        .value=${-discountTotal!}
+        .currency=${currency}
+      ></oryx-site-price>
+    `;
+  }
 
-    if (totals) {
-      return html`
-        <span>
-          ${i18n('cart.totals.<count>-discounts', {
-            count: totals.discounts?.length,
-          })}
-        </span>
-        <span>${String(totals.calculations.discountTotal)}</span>
-      `;
-    }
+  protected renderDiscounts(
+    discounts?: CartDiscount[],
+    currency?: string
+  ): TemplateResult | void {
+    if (!discounts?.length) return;
+    return html`<ul>
+      ${discounts.map(
+        ({ displayName, amount }) =>
+          html`<li>
+            <span>${displayName}</span>
+            <oryx-site-price
+              .value=${-amount}
+              .currency=${currency}
+            ></oryx-site-price>
+          </li>`
+      )}
+    </ul>`;
+  }
+
+  protected renderCollapsible(): TemplateResult | void {
+    const { discountTotal, discounts, currency } = this.$totals() ?? {};
+    if (!discountTotal || !discounts?.length) return;
+    return html`<oryx-collapsible
+      appearance="${CollapsibleAppearance.Inline}"
+      ?open=${this.$options().discountRowsAppearance !==
+      DiscountRowsAppearance.Collapsed}
+    >
+      <span slot="heading">
+        ${this.i18n('cart.totals.<count>-discounts', {
+          count: discounts.length,
+        })}
+      </span>
+      <oryx-site-price
+        slot="aside"
+        .value=${-discountTotal}
+        .currency=${currency}
+      ></oryx-site-price>
+      ${this.renderDiscounts(discounts, currency)}
+    </oryx-collapsible>`;
   }
 }

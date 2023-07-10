@@ -9,6 +9,7 @@ declare global {
       clearIndexedDB(): void;
       waitForIndexedDB(): void;
       mockPickingInProgress(): void;
+      mockSyncPending(): void;
     }
   }
 }
@@ -27,7 +28,7 @@ Cypress.Commands.add('login', (user = defaultUser) => {
   // we have to wait for 5++ seconds here
   // because our bundle is huge and Cypress is not able
   // to cache all 500++ files fast enough
-  cy.wait('@token', { timeout: 10000 });
+  cy.wait('@token', { timeout: 30000 });
 
   cy.intercept('GET', '**/picking-lists?include*').as('picking-lists');
   cy.wait('@picking-lists');
@@ -35,7 +36,7 @@ Cypress.Commands.add('login', (user = defaultUser) => {
   cy.waitForIndexedDB();
   // this wait is needed to populate the DB with data
   // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(500);
+  cy.wait(800);
 });
 
 Cypress.Commands.add('clearIndexedDB', () => {
@@ -92,6 +93,19 @@ Cypress.Commands.add('waitForIndexedDB', () => {
   });
 });
 
+Cypress.Commands.add('mockSyncPending', () => {
+  new Cypress.Promise((resolve, reject) => {
+    cy.window().then(async (win) => {
+      try {
+        await mockSyncPending(win);
+        resolve();
+      } catch {
+        reject();
+      }
+    });
+  });
+});
+
 Cypress.Commands.add('mockPickingInProgress', () => {
   cy.intercept('PATCH', '**/picking-lists/*', {
     statusCode: 409,
@@ -134,6 +148,37 @@ function clearIndexedDb(win, dbName) {
       console.warn(
         `Couldn't delete database "${dbName}" due to the operation being blocked`
       );
+      reject();
+    };
+  });
+}
+
+function mockSyncPending(win) {
+  return new Promise<void>((resolve, reject) => {
+    const request = win.indexedDB.open('fulfillment-app-db');
+
+    request.onsuccess = function () {
+      const db = request.result;
+
+      const store = db
+        .transaction('oryx.syncs', 'readwrite')
+        .objectStore('oryx.syncs');
+
+      const transaction = store.add({ status: 'processing' });
+
+      transaction.onsuccess = function () {
+        console.log('pending sync added');
+        resolve();
+      };
+
+      transaction.onerror = function () {
+        console.log('could not add pending sync');
+        reject();
+      };
+    };
+
+    request.onerror = function () {
+      console.log('could not access database');
       reject();
     };
   });
