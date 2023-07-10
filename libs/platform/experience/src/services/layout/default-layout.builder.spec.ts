@@ -314,20 +314,20 @@ describe('DefaultLayoutBuilder', () => {
       'bold',
     ].forEach((heading) => {
       expectStyleRule(
-        { typo: heading as HeadingTag },
+        { typography: heading as HeadingTag },
         `font-size: var(--oryx-typography-${heading}-size)`
       );
       expectStyleRule(
-        { typo: heading as HeadingTag },
+        { typography: heading as HeadingTag },
         `font-weight: var(--oryx-typography-${heading}-weight)`
       );
       expectStyleRule(
-        { typo: heading as HeadingTag },
+        { typography: heading as HeadingTag },
         `line-height: var(--oryx-typography-${heading}-line)`
       );
-      expectStyleRule({ typo: heading as HeadingTag }, `margin: 0`);
+      expectStyleRule({ typography: heading as HeadingTag }, `margin: 0`);
       expectStyleRule(
-        { typo: heading as HeadingTag, margin: '10px' },
+        { typography: heading as HeadingTag, margin: '10px' },
         `margin: 10px`
       );
     });

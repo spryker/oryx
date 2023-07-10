@@ -214,7 +214,7 @@ export interface StyleProperties extends LayoutStylesProperties {
    * The typography is applied to the component and all it's sub components, including those components
    * with a shadow dom, since typography is inherited in shadow dom.
    */
-  typo?: HeadingTag;
+  typography?: HeadingTag;
 
   style?: string;
 }

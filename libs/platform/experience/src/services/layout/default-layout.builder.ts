@@ -203,10 +203,12 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       add({ transform: `scale(${data?.scale})` });
     }
 
-    if (data.typo) {
-      add({ 'font-size': `var(--oryx-typography-${data.typo}-size)` });
-      add({ 'font-weight': `var(--oryx-typography-${data.typo}-weight)` });
-      add({ 'line-height': `var(--oryx-typography-${data.typo}-line)` });
+    if (data.typography) {
+      add({ 'font-size': `var(--oryx-typography-${data.typography}-size)` });
+      add({
+        'font-weight': `var(--oryx-typography-${data.typography}-weight)`,
+      });
+      add({ 'line-height': `var(--oryx-typography-${data.typography}-line)` });
       if (!data.margin) {
         add({ margin: `0` }, { emptyValue: true });
       }

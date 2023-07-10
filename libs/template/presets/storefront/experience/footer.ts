@@ -272,7 +272,7 @@ export const FooterTemplate: StaticComponent = {
           padding: '30 0',
           bleed: true,
           sticky: true,
-          typo: 'small',
+          typography: 'small',
           style: 'line-height: 24px;',
         },
       ],
