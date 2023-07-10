@@ -18,7 +18,7 @@ export const orderSummaryStyles = css`
   }
 
   h2 {
-    margin: 32px 0;
+    margin-block-end: 32px;
   }
 
   section {

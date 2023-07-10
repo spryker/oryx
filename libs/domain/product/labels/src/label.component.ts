@@ -39,7 +39,7 @@ export class ProductLabelsComponent extends ProductMixin(
    * The labels and in/exclusions are case insensitive.
    */
   protected filterLabels(): ProductLabel[] | undefined {
-    const options = this.componentOptions;
+    const options = this.$options();
     const labels = this.$product()?.labels;
 
     if (!options || !labels) return labels;

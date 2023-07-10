@@ -19,7 +19,7 @@ export class ContentVideoComponent extends ContentMixin<ContentVideoOptions>(
   static styles = [videoStyles];
 
   protected override render(): TemplateResult | void {
-    const options = this.componentOptions;
+    const options = this.$options();
 
     if (!options?.src) return;
 

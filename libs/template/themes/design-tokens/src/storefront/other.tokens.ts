@@ -36,9 +36,6 @@ export const tokens: ThemeToken = {
   'space-3': 'calc(var(--oryx-space) * 3)',
   'space-4': 'calc(var(--oryx-space) * 4)',
   'space-6': 'calc(var(--oryx-space) * 6)',
-  required: {
-    asterisk: {
-      color: '${primaryBase}',
-    },
-  },
+  required: { asterisk: { color: '${primaryBase}' } },
+  form: { label: { 'first-letter': { transform: 'capitalize' } } },
 };

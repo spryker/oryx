@@ -9,12 +9,8 @@ export class CheckoutPage extends AbstractSFPage {
   url = '/checkout';
   anonymousUrl = '/checkout';
 
-  waitForLoadedSPA(): void {
+  waitForLoaded(): void {
     this.getCartTotals.getTotalPrice().should('be.visible');
-  }
-
-  waitForLoadedSSR(): void {
-    this.waitForLoadedSPA();
   }
 
   checkoutAsGuestForm = new CheckoutAsGuestFormFragment();
