@@ -52,9 +52,17 @@ export const serverContext = (options: ContextOptions): any => {
 
   // console.log('script: ', script);
 
-  const newContext = createContext(window);
+  try {
+    const newContext = createContext(window);
+  } catch(e) {
+    console.log(e);
+  }
 
   // console.log('newContext: ', newContext);
 
-  return script.runInContext(window);
+  try {
+    return script.runInContext(window);
+  } catch (e) {
+    console.log(e);
+  }
 };
