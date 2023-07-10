@@ -11,9 +11,13 @@ export const styles = css`
     display: contents;
   }
 
-  button {
+  /* button {
     --oryx-icon-size: 24px;
 
     height: 28px;
+  } */
+
+  oryx-action {
+    width: inherit;
   }
 `;

@@ -175,11 +175,11 @@ export class ProductCardComponent extends ProductMixin(
 
     return html`<oryx-cart-add
       tabindex="-1"
-      .options="${{
+      .options=${{
         outlined: true,
         hideQuantityInput: true,
         enableLabel: template === 'grid',
-      }}"
+      }}
     ></oryx-cart-add>`;
   }
 }

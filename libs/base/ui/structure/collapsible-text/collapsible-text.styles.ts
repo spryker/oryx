@@ -53,16 +53,16 @@ export const collapsibleTextStyles = css`
     }
   }
 
-  :host(:not([requiresToggle])) oryx-icon-button {
+  :host(:not([requiresToggle])) oryx-action {
     display: none;
   }
 
-  oryx-icon-button {
+  oryx-action {
     transition: transform var(--oryx-transition-time-long) ease-in-out;
     color: var(--oryx-color-primary-9);
   }
 
-  :host([expanded]) oryx-icon-button {
+  :host([expanded]) oryx-action {
     transform: rotate(180deg);
   }
 `;

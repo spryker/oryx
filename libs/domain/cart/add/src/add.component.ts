@@ -6,7 +6,7 @@ import {
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { ButtonComponent, ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
@@ -16,7 +16,6 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
-import { when } from 'lit/directives/when.js';
 import { CartAddOptions } from './add.model';
 import { styles } from './add.styles';
 
@@ -32,7 +31,7 @@ export class CartAddComponent extends ProductMixin(
   protected cartService = resolve(CartService);
 
   @state() protected isInvalid = false;
-  @query('oryx-button') protected button?: ButtonComponent;
+  @query('oryx-action') protected button?: ButtonComponent;
   @query('oryx-cart-quantity-input') protected input?: QuantityInputComponent;
 
   protected override render(): TemplateResult | void {
@@ -54,21 +53,18 @@ export class CartAddComponent extends ProductMixin(
 
   protected renderButton(): TemplateResult | void {
     const { outlined, enableLabel } = this.$options();
+    const type = outlined ? 'outline' : 'solid';
+    const text = enableLabel ? this.i18n('cart.add-to-cart') : undefined;
 
-    return html`<oryx-button
-      size=${Size.Sm}
-      type=${ButtonType.Primary}
-      ?outline=${outlined}
-    >
-      <button
-        ?disabled=${this.isInvalid || !this.$hasStock()}
-        @mouseup=${this.onMouseUp}
-        @click=${this.onSubmit}
-      >
-        <oryx-icon .type=${IconTypes.CartAdd} size=${Size.Lg}></oryx-icon>
-        ${when(enableLabel, () => html`${this.i18n('cart.add-to-cart')}`)}
-      </button>
-    </oryx-button>`;
+    return html`<oryx-action
+      .size=${Size.Md}
+      .type=${type}
+      .label=${text}
+      .icon=${IconTypes.CartAdd}
+      ?disabled=${this.isInvalid || !this.$hasStock()}
+      @click=${this.onSubmit}
+      @mouseup=${this.onMouseUp}
+    ></oryx-action>`;
   }
 
   protected onMouseUp(e: Event): void {
@@ -113,6 +109,7 @@ export class CartAddComponent extends ProductMixin(
   }
 
   protected onSubmit(e: Event | CustomEvent<QuantityEventDetail>): void {
+    console.log('e', e);
     e.preventDefault();
     e.stopPropagation();
     const sku = this.$product()?.sku;

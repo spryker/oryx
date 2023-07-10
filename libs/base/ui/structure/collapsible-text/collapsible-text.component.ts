@@ -66,14 +66,13 @@ export class CollapsibleTextComponent
     const i18nLabel = this.expanded ? 'read-less' : 'read-more';
 
     if (this.toggle === CollapsibleTextToggle.Icon) {
-      return html`<oryx-icon-button .size=${Size.Sm}>
-        <button
-          aria-label=${this.i18n(`collapsible.${i18nLabel}`)}
-          @click=${this.onClick}
-        >
-          <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
-        </button>
-      </oryx-icon-button>`;
+      return html` <oryx-action
+        .size=${Size.Sm}
+        aria-label=${this.i18n(`collapsible.${i18nLabel}`)}
+        type="icon"
+        .icon=${IconTypes.Dropdown}
+        @click=${this.onClick}
+      ></oryx-action>`;
     }
 
     if (this.toggle === CollapsibleTextToggle.Text) {

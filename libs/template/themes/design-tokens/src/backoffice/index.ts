@@ -20,6 +20,18 @@ export const backofficeTokens: DesignToken[] = [
     ...iconTokens,
     ...layoutTokens,
     button: {
+      lg: {
+        height: '48px',
+      },
+      md: {
+        height: '42px',
+      },
+      sm: {
+        height: '38px',
+      },
+      border: {
+        radius: '10px',
+      },
       icon: {
         sm: '13.3px',
         md: '13.3px',
