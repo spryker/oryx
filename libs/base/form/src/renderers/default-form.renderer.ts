@@ -161,7 +161,7 @@ export class DefaultFormRenderer implements FormRenderer {
     field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
-    const { pattern } = this.fieldValidationPattern(field);
+    const { pattern, title } = this.fieldValidationPattern(field);
     return html`
       <oryx-input
         .label=${field.label}
@@ -177,6 +177,7 @@ export class DefaultFormRenderer implements FormRenderer {
           max=${ifDefined(field.max)}
           ?required=${field.required}
           pattern=${ifDefined(pattern)}
+          title=${ifDefined(title)}
         />
       </oryx-input>
     `;
@@ -358,12 +359,10 @@ export class DefaultFormRenderer implements FormRenderer {
     `;
   }
 
-  protected resolveStyles(params: FormFieldDefinition): string | undefined {
-    let styles = '';
+  protected resolveStyles(params: FormFieldDefinition): string | void {
     if (params.width === 100) {
-      styles += `grid-column: auto / span 2;`;
+      return `grid-column: auto / span 2;`;
     }
-    return styles ? styles : undefined;
   }
 
   /**
