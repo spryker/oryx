@@ -1,5 +1,5 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductMixin } from '@spryker-oryx/product';
+import { ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { AlertType } from '@spryker-oryx/ui';
 import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -10,7 +10,7 @@ import {
 } from './availability.model';
 import { availabilityStyles } from './availability.styles';
 
-@hydratable()
+@hydratable(`@${ProductContext.SKU}`)
 @defaultOptions({ threshold: 5, enableIndicator: true })
 export class ProductAvailabilityComponent extends ProductMixin(
   ContentMixin<CartItemAvailabilityOptions>(LitElement)
