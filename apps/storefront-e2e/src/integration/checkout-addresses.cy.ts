@@ -7,158 +7,148 @@ let api: SCCOSApi;
 
 const checkoutPage = new CheckoutPage();
 
-describe('User addresses', () => {
-  beforeEach(() => {
-    api = new SCCOSApi();
+describe('User addresses suite', () => {
+  describe('when user is guest', () => {
+    beforeEach(() => {
+      api = new SCCOSApi();
 
-    cy.login();
+      api.guestCarts.get();
+    });
 
-    cy.fixture<TestCustomerData>('test-customer').then((customer) => {
-      cy.customerCartsCleanup(api, customer);
-      cy.customerAddressesCleanup(api, customer);
+    describe('and user has some produts in the cart', () => {
+      beforeEach(() => {
+        api.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
+      });
+
+      describe('and user goes to checkout', () => {
+        beforeEach(() => {
+          cy.goToCheckoutAsGuest();
+        });
+
+        it('then shipping address form is shown and billing address is the same as shipping', () => {
+          verifyDefaultAddressesView();
+        });
+      });
     });
   });
 
-  describe('when user opens the cart page', () => {
+  describe('when user is logged in', () => {
     beforeEach(() => {
-      const productData = ProductStorage.getProductByEq(0);
+      api = new SCCOSApi();
+
+      cy.login();
 
       cy.fixture<TestCustomerData>('test-customer').then((customer) => {
-        // get all customer carts
-        api.carts.customersGet(customer.id).then((customerCartsResponse) => {
-          // add 1 item to the first cart
-          api.cartItems.post(
-            productData,
-            1,
-            customerCartsResponse.body.data[0].id
-          );
-        });
+        cy.customerCartsCleanup(api, customer);
+        cy.customerAddressesCleanup(api, customer);
       });
     });
 
-    describe('and user does not have addresses yet', () => {
-      describe('and user goes to checkout', () => {
-        beforeEach(() => {
-          cy.goToCheckout();
-        });
-
-        it('then shipping address form is shown', () => {
-          checkoutPage.shipping.addAddressForm
-            .getAddressForm()
-            .should('be.visible');
-          checkoutPage.shipping.addressesList
-            .getAddressList()
-            .should('not.exist');
-
-          checkoutPage.billing.addAddressForm
-            .getAddressForm()
-            .should('not.exist');
-          checkoutPage.billing.addressesList
-            .getAddressList()
-            .should('not.exist');
-          checkoutPage.billing.addAddressForm
-            .getWrapper()
-            .shadow()
-            .should('contain.text', 'Same as shipping address');
-        });
-      });
-    });
-
-    describe('and user already has addresses', () => {
+    describe('and user has some products in the cart', () => {
       beforeEach(() => {
+        const productData = ProductStorage.getProductByEq(0);
+
         cy.fixture<TestCustomerData>('test-customer').then((customer) => {
-          api.addresses.post(customer.id);
-          api.addresses.post(customer.id);
+          // get all customer carts
+          api.carts.customersGet(customer.id).then((customerCartsResponse) => {
+            const cartId = customerCartsResponse.body.data[0].id;
+            // add 1 item to the first cart
+            api.cartItems.post(productData, 1, cartId);
+          });
         });
       });
 
-      describe('and user goes to checkout', () => {
+      describe('and user does not have addresses yet', () => {
+        describe('and user goes to checkout', () => {
+          beforeEach(() => {
+            cy.goToCheckout();
+          });
+
+          it('then shipping address form is shown and billing address is the same as shipping', () => {
+            verifyDefaultAddressesView();
+          });
+        });
+      });
+
+      describe('and user already has addresses', () => {
+        const randomCity1 = `Random City ${Math.random()}`;
+        const randomCity2 = `Random City ${Math.random()}`;
+
         beforeEach(() => {
-          cy.goToCheckout();
+          cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+            api.addresses.post(customer.id, { city: randomCity1 });
+            api.addresses.post(customer.id, { city: randomCity2 });
+          });
         });
 
-        it('then the selected address is shown', () => {
-          verifyAddressesVisibility();
-        });
+        describe('and user goes to checkout', () => {
+          const addressData = {
+            lastName: `User ${Math.random()}`,
+          };
 
-        [
-          {
-            type: checkoutPage.shipping,
-            name: 'shipping address',
-          },
-          {
-            type: checkoutPage.billing,
-            name: 'billing address',
-          },
-        ].forEach((address) => {
-          describe(`and user wants to change ${address.name}`, () => {
-            beforeEach(() => {
-              address.type.addressesList.getChangeAddressesButton().click();
+          beforeEach(() => {
+            cy.goToCheckout();
+          });
+
+          it('then addresses are shown on page and in addresses modals and user can change them', () => {
+            verifyAddressesVisibility(checkoutPage.shipping);
+            verifyAddressesVisibility(checkoutPage.billing);
+
+            // shipping addresses
+            verifyAddressListInModalAndCheckAddressChange({
+              addressType: checkoutPage.shipping,
+              numberOfAddresses: 2,
+              firstAddressCity: randomCity1,
             });
 
-            it('then the addresses modal is open', () => {
-              verifyAddressesListInModal(address.type, 2);
+            // billing addresses
+            verifyAddressListInModalAndCheckAddressChange({
+              addressType: checkoutPage.billing,
+              numberOfAddresses: 2,
+              firstAddressCity: randomCity1,
             });
+          });
 
-            describe('and user adds new address', () => {
-              const addressData = {
-                lastName: `User ${Math.random()}`,
-              };
-
-              beforeEach(() => {
+          [
+            {
+              type: checkoutPage.shipping,
+              name: 'shipping address',
+            },
+            {
+              type: checkoutPage.billing,
+              name: 'billing address',
+            },
+          ].forEach((address) => {
+            describe(`and user adds, edits and deletes ${address.name}`, () => {
+              it(`then ${address.name} is added, edited and deleted without errors`, () => {
+                // add address
+                address.type.addressesList.openChangeAddressesModal();
                 address.type.addressChangeModal.addAddress(addressData);
-              });
 
-              it('new address appears in the list', () => {
                 verifyAddressesListInModal(address.type, 3);
-              });
 
-              describe('and when user selects new address', () => {
-                beforeEach(() => {
-                  address.type.addressChangeModal.selectAddress(2);
-                });
+                // edit address
+                const newCity = 'New Address 1';
+                const addressEq = 0;
 
-                it('new address is visible on checkout page', () => {
-                  verifyAddressesVisibility();
-                  // verify that new address was selected successfully and is visible
-                  address.type.addressesList
-                    .getMultiLineAddress()
-                    .shadow()
-                    .should('contain.text', addressData.lastName);
-                });
-              });
-            });
+                address.type.addressChangeModal.editCity(newCity, addressEq);
 
-            describe('and user edits existing address', () => {
-              const newAddress1 = 'New Address 1';
-              const changedAddressEq = 0;
+                // we still have 3 addresses
+                verifyAddressesListInModal(address.type, 3);
 
-              beforeEach(() => {
-                address.type.addressChangeModal.editAddress1InAddress(
-                  newAddress1,
-                  changedAddressEq
-                );
-              });
-
-              it('edited address appears in the list', () => {
-                verifyAddressesListInModal(address.type, 2);
-
+                // and edited address is visible
                 address.type.addressChangeModal.addressesList
                   .getAddressListItem()
-                  .eq(changedAddressEq)
+                  .eq(addressEq)
                   .find('oryx-user-address')
                   .shadow()
-                  .should('contain.text', newAddress1);
-              });
-            });
+                  .should('contain.text', newCity);
 
-            describe('and user removes existing address', () => {
-              beforeEach(() => {
+                // delete address
                 address.type.addressChangeModal.removeAddress(0);
-              });
 
-              it('removed address disappears from the list', () => {
-                verifyAddressesListInModal(address.type, 1);
+                // 3 - 1 = 2
+                verifyAddressesListInModal(address.type, 2);
               });
             });
           });
@@ -168,24 +158,25 @@ describe('User addresses', () => {
   });
 });
 
-function verifyAddressesVisibility() {
-  // check shipping addresses
-  checkoutPage.shipping.addAddressForm.getAddressForm().should('not.exist');
+function verifyDefaultAddressesView() {
+  // shipping addresses
+  checkoutPage.shipping.addAddressForm.getAddressForm().should('be.visible');
+  checkoutPage.shipping.addAddressForm.getCityInput().should('be.visible');
+  checkoutPage.shipping.addressesList.getAddressList().should('not.exist');
 
-  checkoutPage.shipping.addressesList
-    .getChangeAddressesButton()
-    .should('be.visible');
-  checkoutPage.shipping.addressesList
-    .getMultiLineAddress()
-    .should('be.visible');
-
-  // check billing addresses
+  // billing addresses
   checkoutPage.billing.addAddressForm.getAddressForm().should('not.exist');
+  checkoutPage.billing.addressesList.getAddressList().should('not.exist');
+  checkoutPage.billing.addAddressForm
+    .getWrapper()
+    .shadow()
+    .should('contain.text', 'Same as shipping address');
+}
 
-  checkoutPage.shipping.addressesList
-    .getChangeAddressesButton()
-    .should('be.visible');
-  checkoutPage.billing.addressesList.getMultiLineAddress().should('be.visible');
+function verifyAddressesVisibility(addressType) {
+  addressType.addAddressForm.getAddressForm().should('not.exist');
+  addressType.addressesList.getChangeAddressesButton().should('be.visible');
+  addressType.addressesList.getMultiLineAddress().should('be.visible');
 }
 
 function verifyAddressesListInModal(addressType, numberOfAddresses: number) {
@@ -196,4 +187,21 @@ function verifyAddressesListInModal(addressType, numberOfAddresses: number) {
   addressType.addressChangeModal.addressesList
     .getAddressListItem()
     .should('have.length', numberOfAddresses);
+}
+
+function verifyAddressListInModalAndCheckAddressChange(params: {
+  addressType;
+  numberOfAddresses: number;
+  firstAddressCity: string;
+}) {
+  params.addressType.addressesList.openChangeAddressesModal();
+
+  verifyAddressesListInModal(params.addressType, params.numberOfAddresses);
+
+  params.addressType.addressChangeModal.selectAddress(0);
+
+  params.addressType.addressesList
+    .getMultiLineAddress()
+    .shadow()
+    .should('contain.text', params.firstAddressCity);
 }
