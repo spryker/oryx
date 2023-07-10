@@ -26,7 +26,7 @@ export const styles = css`
     margin-inline-start: var(--oryx-space-2);
   }
 
-  oryx-icon {
+  section oryx-icon {
     --oryx-icon-size: 16px;
     --_margin: 0;
     --oryx-icon-color: var(--oryx-color-neutral-9);

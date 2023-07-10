@@ -1,4 +1,4 @@
-import { PickingProduct } from './picking-product';
+import { PickingProduct } from '@spryker-oryx/picking';
 
 export interface PickingList {
   id: string;
@@ -36,6 +36,7 @@ export enum FallbackType {
 }
 
 export interface PickingListItem {
+  id: string;
   quantity: number;
   numberOfPicked: number;
   numberOfNotPicked: number;

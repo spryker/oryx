@@ -14,7 +14,11 @@ describe('Search suite', () => {
     search.search('sony');
 
     search.getSearchSuggestions().should('have.length', 5);
-    search.getSearchSuggestions().find('a').eq(0).should('have.text', 'sony');
+    search
+      .getSearchSuggestions()
+      .find('a')
+      .eq(0)
+      .should('contain.text', 'sony');
 
     search.getSearchProducts().should('have.length', 5);
     search
@@ -28,8 +32,8 @@ describe('Search suite', () => {
     search.clearSearch();
   });
 
-  it('must go to PDP from search results', () => {
-    const productData = ProductStorage.getProductByEq(2);
+  it('must go to PDP from search results', { tags: 'smoke' }, () => {
+    const productData = ProductStorage.getProductByEq(3);
     const pdp = new ProductDetailsPage(productData);
 
     cy.intercept('**/concrete-products/**').as('productRequest');
@@ -38,11 +42,12 @@ describe('Search suite', () => {
 
     search.getSearchProducts().eq(0).click();
 
+    // check if correct PDP was opened
     pdp.getTitle().should('contain.text', productData.title);
     pdp.getSKU().should('contain.text', productData.id);
   });
 
-  it('must show "Nothing found" message', () => {
+  it('must show "No results" message', () => {
     search.search('test123');
 
     search.getSearchResultsWrapper().should('not.exist');
@@ -50,6 +55,6 @@ describe('Search suite', () => {
     search
       .getEmptySearchResults()
       .should('be.visible')
-      .and('contain.text', 'Nothing found');
+      .and('contain.text', 'No results test123');
   });
 });

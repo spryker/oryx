@@ -1,4 +1,4 @@
-import { getAppGraphics } from '@spryker-oryx/ui';
+import { getAppGraphics } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -18,6 +18,11 @@ export default {
     },
     fill: {
       table: { category: 'demo' },
+    },
+  },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
     },
   },
 } as Meta;

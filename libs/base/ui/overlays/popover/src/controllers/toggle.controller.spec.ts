@@ -1,8 +1,5 @@
+import { dispatchKeydown, userAgentSafariMacOsX154 } from '@/tools/testing';
 import { fixture } from '@open-wc/testing-helpers';
-import {
-  dispatchKeydown,
-  userAgentSafariMacOsX154,
-} from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -226,6 +223,8 @@ describe('ToggleController', () => {
             element.dispatchEvent(new MouseEvent('mousedown'));
             vi.advanceTimersByTime(301);
             element.dispatchEvent(new MouseEvent('mouseup'));
+            //delay close-popover attr presence check
+            vi.advanceTimersByTime(1);
           });
 
           it('should not hide the popover', () => {
@@ -374,6 +373,8 @@ describe('ToggleController', () => {
             beforeEach(() => {
               vi.advanceTimersByTime(300 + 1);
               element.dispatchEvent(new Event('mouseup', { bubbles: true }));
+              //delay close-popover attr presence check
+              vi.advanceTimersByTime(1);
             });
             it('should not show the popover', () => {
               expect(utils.popover()?.hasAttribute('show')).toBe(false);
@@ -592,7 +593,8 @@ describe('ToggleController', () => {
         button?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
         button?.dispatchEvent(new Event('mouseup', { bubbles: true }));
 
-        vi.advanceTimersByTime(0);
+        //delay close-popover attr presence check
+        vi.advanceTimersByTime(1);
 
         expect(button?.matches(':focus')).toBe(true);
       });

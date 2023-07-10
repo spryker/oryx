@@ -1,6 +1,6 @@
 export * from './a11y';
 export * as AjaxClient from './ajax';
-export * from './converters';
+export * from './debounce';
 export * from './dedupe-arrays';
 export * from './extract-str-props';
 export * from './get-prop-by-path';
@@ -13,4 +13,5 @@ export * from './screen-css';
 export * from './subscribe-replay';
 export * from './throttle';
 export * from './time';
+export * from './to-observable';
 export * from './wait';

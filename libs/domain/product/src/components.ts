@@ -1,4 +1,5 @@
 export * from '../attributes/src/attributes.def';
+export * from '../availability/availability.def';
 export * from '../average-rating/src/average-rating.def';
 export * from '../brand/brand.def';
 export * from '../card/src/card.def';
@@ -9,4 +10,5 @@ export * from '../labels/src/label.def';
 export * from '../list/src/list.def';
 export * from '../media/src/media.def';
 export * from '../price/src/price.def';
+export * from '../relations/relations.def';
 export * from '../title/src/title.def';

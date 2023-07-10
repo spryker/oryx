@@ -1,14 +1,14 @@
-import { ContextServiceFallback } from '@spryker-oryx/core';
+import { ContextFallback } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { map } from 'rxjs';
 
 export const enum OrderContext {
-  OrderId = 'order-id',
+  OrderId = 'orderId',
 }
 
 export const OrderContextFallback: Provider = {
-  provide: `${ContextServiceFallback}${OrderContext.OrderId}`,
+  provide: `${ContextFallback}${OrderContext.OrderId}`,
   useFactory: () =>
     inject(RouterService)
       .currentParams()

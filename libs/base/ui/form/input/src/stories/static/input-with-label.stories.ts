@@ -1,11 +1,11 @@
-import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
 import {
   generateVariantsMatrix,
   VariantsGroup,
   variantsGroupTemplate,
-} from '../../../../../src/utilities';
+} from '@/tools/storybook';
+import { Meta, Story } from '@storybook/web-components';
+import { html, TemplateResult } from 'lit';
+import { storybookPrefix } from '../../../../../.constants';
 import '../../../index';
 import {
   getInputVariants,
@@ -61,6 +61,7 @@ const Template: Story = (): TemplateResult => html`
               className,
               value,
               hasError,
+              required,
             },
           }) => html`
             <oryx-input
@@ -72,6 +73,7 @@ const Template: Story = (): TemplateResult => html`
               <input
                 placeholder="Placeholder"
                 value=${value}
+                ?required=${required}
                 ?disabled=${isDisabled}
                 class=${className}
               />

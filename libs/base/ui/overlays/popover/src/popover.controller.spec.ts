@@ -1,6 +1,6 @@
+import { dispatchKeydown } from '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
-import { dispatchKeydown } from '@spryker-oryx/testing';
 import { a11yConfig } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';

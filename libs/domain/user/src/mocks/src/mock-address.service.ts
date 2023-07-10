@@ -45,17 +45,17 @@ export class MockAddressService implements Partial<AddressService> {
     this.type$.next(type);
   }
 
-  getCurrentAddress(): Observable<Address | null> {
+  getCurrent(): Observable<Address | null> {
     return this.currentAddress$;
   }
 
-  getAddress(addressId: string): Observable<Address | null> {
-    return this.getAddresses().pipe(
+  get(addressId: string): Observable<Address | null> {
+    return this.getList().pipe(
       map((addresses) => addresses?.find(({ id }) => id === addressId) ?? null)
     );
   }
 
-  getAddresses(): Observable<Address[] | null> {
+  getList(): Observable<Address[]> {
     return this.type$.pipe(
       map((type) => {
         switch (type) {
@@ -90,21 +90,21 @@ export class MockAddressService implements Partial<AddressService> {
             return [...mockNormalizedAddresses, uncompletedAddress];
           case MockAddressType.None:
           default:
-            return null;
+            return [];
         }
       })
     );
   }
 
-  addAddress(address: Address): Observable<Address> {
+  add(address: Address): Observable<Address> {
     return of(address);
   }
 
-  updateAddress(address: Address): Observable<Address> {
+  update(address: Address): Observable<Address> {
     return of(address);
   }
 
-  deleteAddress(address: Address): Observable<Address> {
+  delete(address: Address): Observable<Address> {
     return of(address);
   }
 }

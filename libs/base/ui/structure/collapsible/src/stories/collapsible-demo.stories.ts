@@ -12,7 +12,7 @@ export default {
   args: {
     appearance: CollapsibleAppearance.Block,
     toggleControlType: CollapsibleToggleControlType.IconButton,
-    header: 'header',
+    heading: 'heading',
     nonTabbable: false,
   },
   argTypes: {
@@ -24,7 +24,6 @@ export default {
       options: [
         CollapsibleToggleControlType.IconButton,
         CollapsibleToggleControlType.TextButton,
-        CollapsibleToggleControlType.None,
       ],
       control: { type: 'select' },
     },
@@ -35,6 +34,11 @@ export default {
       control: { type: 'boolean' },
     },
   },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 const Template: Story<CollapsibleAttributes> = (props): TemplateResult => {
@@ -43,7 +47,7 @@ const Template: Story<CollapsibleAttributes> = (props): TemplateResult => {
       ?open=${props.open}
       .appearance=${props.appearance}
       .toggleControlType=${props.toggleControlType}
-      .header=${props.header}
+      .heading=${props.heading}
       ?nonTabbable=${props.nonTabbable}
     >
       Content with <button>accessible</button> elements.

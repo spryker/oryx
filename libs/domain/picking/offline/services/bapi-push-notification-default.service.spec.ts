@@ -1,11 +1,10 @@
 import { StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  BapiPushNotificationAdapter,
-  BapiPushNotificationDefaultService,
-} from '@spryker-oryx/picking/offline';
+
 import { PushService } from '@spryker-oryx/push-notification';
 import { of, Subscription, throwError } from 'rxjs';
+import { BapiPushNotificationAdapter } from './adapter';
+import { BapiPushNotificationDefaultService } from './bapi-push-notification-default.service';
 
 class MockPushService implements Partial<PushService> {
   subscribe = vi.fn().mockImplementation(() => of(null));

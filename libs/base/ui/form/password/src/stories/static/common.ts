@@ -1,8 +1,4 @@
-import {
-  Variant,
-  VariantOptions,
-  VariantsGroup,
-} from '../../../../../src/utilities';
+import { Variant, VariantOptions, VariantsGroup } from '@/tools/storybook';
 
 export enum CategoryX {
   INVISIBLE = 'Invisible',

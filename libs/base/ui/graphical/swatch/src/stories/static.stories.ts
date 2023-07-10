@@ -1,43 +1,45 @@
+import { AlertType } from '@spryker-oryx/ui';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 
 export default { title: `${storybookPrefix}/Graphical/Swatch` };
 
-const renderRow = (colors: string[], title?: string): TemplateResult => {
-  return html`
-    <h4>${title ?? colors.join(' / ')}</h4>
-    <div class="row">
-      ${colors.map(
-        (color) => html`<oryx-swatch .color=${color}></oryx-swatch>`
-      )}
-    </div>
-  `;
-};
-
 const Template = (): TemplateResult => {
   return html`
-    <style>
-      h4 {
-        margin-block-end: 10px;
-      }
+    <h4>Alert types</h4>
+    <oryx-swatch .type=${AlertType.Info}></oryx-swatch>
+    <oryx-swatch .type=${AlertType.Success}></oryx-swatch>
+    <oryx-swatch .type=${AlertType.Warning}></oryx-swatch>
+    <oryx-swatch .type=${AlertType.Error}></oryx-swatch>
 
-      .row {
-        display: grid;
-        grid-template-columns: repeat(3, 30px);
-        margin-block-end: 20px;
-      }
-    </style>
+    <h4>Named colors</h4>
+    <oryx-swatch .color=${'red'}></oryx-swatch>
+    <oryx-swatch .color=${'green'}></oryx-swatch>
+    <oryx-swatch .color=${'blue'}></oryx-swatch>
 
-    ${renderRow(['red', 'green', 'blue'])} ${renderRow(['#11856e', '#94DDC0'])}
-    ${renderRow(['rgb(17, 133, 110)', 'rgba(17, 133, 110, 0.5)'])}
-    ${renderRow(['hsl(168deg 77% 29%)', 'hsl(156deg 52% 72%)'])}
-    ${renderRow(['hwb(168deg 7% 49%)', 'hwb(156deg 57% 13%)'])}
-    ${renderRow(
-      [
-        "url('https://images.unsplash.com/photo-1453728013993-6d66e9c9123a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zm9jdXN8ZW58MHx8MHx8&w=1000&q=80')",
-      ],
-      "url('Image URL')"
-    )}
+    <h4>Color variables</h4>
+    <oryx-swatch .color=${'var(--oryx-color-primary-3)'}></oryx-swatch>
+    <oryx-swatch .color=${'var(--oryx-color-primary-7)'}></oryx-swatch>
+    <oryx-swatch .color=${'var(--oryx-color-primary-9)'}></oryx-swatch>
+    <oryx-swatch .color=${'var(--oryx-color-primary-10)'}></oryx-swatch>
+    <oryx-swatch .color=${'var(--oryx-color-primary-12)'}></oryx-swatch>
+
+    <h4>Hex colors</h4>
+    <oryx-swatch .color=${'#11856e'}></oryx-swatch>
+    <oryx-swatch .color=${'#94DDC0'}></oryx-swatch>
+
+    <h4>Rgb colors</h4>
+    <oryx-swatch .color=${'rgb(17, 133, 110)'}></oryx-swatch>
+    <oryx-swatch .color=${'rgba(17, 133, 110, 0.5)'}></oryx-swatch>
+
+    <h4>Hsl colors</h4>
+    <oryx-swatch .color=${'hsl(168deg 77% 29%)'}></oryx-swatch>
+    <oryx-swatch .color=${'hsl(156deg 52% 72%)'}></oryx-swatch>
+
+    <h4>Images</h4>
+    <oryx-swatch
+      .color=${`url('https://images.unsplash.com/photo-1453728013993-6d66e9c9123a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zm9jdXN8ZW58MHx8MHx8&w=1000&q=80')`}
+    ></oryx-swatch>
   `;
 };
 

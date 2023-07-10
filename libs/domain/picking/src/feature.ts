@@ -1,7 +1,6 @@
 import { AppFeature, ComponentsInfo } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import { PickingConfig, providePickingConfig } from './config.provider';
 import {
   customerNoteComponent,
   customerNoteModalComponent,
@@ -18,9 +17,12 @@ import {
   pickingListsHeaderComponent,
   pickingProductCardComponent,
   userProfileComponent,
-} from './defs';
+} from './components';
+import { PickingConfig, providePickingConfig } from './config.provider';
 import { defaultPickingRoutes } from './routes';
 import {
+  PickingHeaderDefaultService,
+  PickingHeaderService,
   PickingHttpDefaultService,
   PickingHttpService,
   PickingListAdapter,
@@ -69,6 +71,7 @@ export class PickingFeature implements AppFeature {
       { provide: PickingListService, useClass: PickingListDefaultService },
       { provide: PickingListAdapter, useClass: PickingListDefaultAdapter },
       { provide: PickingHttpService, useClass: PickingHttpDefaultService },
+      { provide: PickingHeaderService, useClass: PickingHeaderDefaultService },
     ];
   }
 }

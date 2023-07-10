@@ -1,5 +1,5 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { hydratable, i18n, Size } from '@spryker-oryx/utilities';
+import { hydratable, I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -26,7 +26,7 @@ import { styles } from './quantity-input.styles';
  */
 @hydratable(['window:load'])
 export class QuantityInputComponent
-  extends LitElement
+  extends I18nMixin(LitElement)
   implements QuantityInputAttributes
 {
   static styles = styles;
@@ -53,14 +53,14 @@ export class QuantityInputComponent
     return html`
       <button
         @click=${this.decrease}
-        aria-label=${i18n('cart.quantity.decrease')}
+        aria-label=${this.i18n('cart.quantity.decrease')}
         tabindex="-1"
         ?disabled=${this.isMinDisabled()}
         part="decrease"
       >
         <oryx-icon
-          .type=${this.decreaseIcon ?? IconTypes.Decrease}
-          size=${Size.Sm}
+          .type=${this.decreaseIcon ?? IconTypes.Minus}
+          size=${Size.Md}
         ></oryx-icon>
       </button>
       <oryx-input
@@ -70,7 +70,7 @@ export class QuantityInputComponent
       >
         <input
           ${ref(this.inputRef)}
-          aria-label=${i18n('cart.quantity')}
+          aria-label=${this.i18n('cart.quantity')}
           type="number"
           .value=${this.getValue()}
           min=${this.min}
@@ -87,14 +87,14 @@ export class QuantityInputComponent
       </oryx-input>
       <button
         @click=${this.increase}
-        aria-label=${i18n('cart.quantity.increase')}
+        aria-label=${this.i18n('cart.quantity.increase')}
         tabindex="-1"
         ?disabled=${this.isMaxDisabled()}
         part="increase"
       >
         <oryx-icon
-          .type=${this.increaseIcon ?? IconTypes.Increase}
-          size=${Size.Sm}
+          .type=${this.increaseIcon ?? IconTypes.Add}
+          size=${Size.Md}
         ></oryx-icon>
       </button>
     `;
@@ -117,17 +117,14 @@ export class QuantityInputComponent
   }
 
   protected isMinDisabled(): boolean {
-    return (
-      this.disabled || (this.value !== undefined && this.value <= this.min)
-    );
+    return this.disabled || (this.value ?? this.min) <= this.min;
   }
 
   protected isMaxDisabled(): boolean {
     return (
       this.disabled ||
-      (this.value !== undefined &&
-        this.max !== undefined &&
-        this.value >= this.max)
+      this.max === 0 ||
+      (!!this.max && !!this.value && this.value >= this.max)
     );
   }
 

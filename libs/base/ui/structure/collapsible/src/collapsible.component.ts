@@ -21,7 +21,7 @@ export class CollapsibleComponent
   @property({ type: Object }) toggleControlType =
     CollapsibleToggleControlType.IconButton;
   @property({ type: Boolean }) open?: boolean;
-  @property() header?: string;
+  @property() heading?: string;
   @property({ type: Boolean }) nonTabbable?: boolean;
 
   protected override render(): TemplateResult {
@@ -33,7 +33,7 @@ export class CollapsibleComponent
             this.preventKeyboardNavigation ? '-1' : undefined
           )}
         >
-          <slot name="header">${this.header}</slot>
+          <slot name="heading">${this.heading}</slot>
           ${this.renderToggleControl()}
           <slot name="aside"></slot>
         </summary>
@@ -47,14 +47,14 @@ export class CollapsibleComponent
       <slot name="collapsed">
         ${when(
           !this.isTextTrigger,
-          () => html`<oryx-icon .type=${IconTypes.Expand}></oryx-icon>`,
+          () => html`<oryx-icon .type=${IconTypes.Minus}></oryx-icon>`,
           () => html`Hide`
         )}
       </slot>
       <slot name="expanded">
         ${when(
           !this.isTextTrigger,
-          () => html`<oryx-icon .type=${IconTypes.Collapse}></oryx-icon>`,
+          () => html`<oryx-icon .type=${IconTypes.Add}></oryx-icon>`,
           () => html`Show`
         )}
       </slot>

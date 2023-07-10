@@ -13,11 +13,6 @@ describe('ButtonComponent', () => {
     await useComponent(buttonComponent);
   });
 
-  it('is defined', () => {
-    const el = document.createElement('oryx-button');
-    expect(el).toBeInstanceOf(ButtonComponent);
-  });
-
   describe('when the element is created', () => {
     beforeEach(async () => {
       element = await fixture(
@@ -123,7 +118,7 @@ describe('ButtonComponent', () => {
         const icon = element.renderRoot.querySelector(
           'oryx-icon'
         ) as IconComponent;
-        expect(icon.type).toBe(IconTypes.Mark);
+        expect(icon.type).toBe(IconTypes.Check);
       });
 
       describe('and the property is set to false afterwards', () => {

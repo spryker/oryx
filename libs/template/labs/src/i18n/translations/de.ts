@@ -1,6 +1,8 @@
 export default {
   'cart.totals.<count>-items':
     'Mein Warenkorb ({count, plural, one {ein artikel} other {{count} artikel}})',
+  'cart.totals.unknown-delivery-cost':
+    'Die Lieferkosten werden beim Auschecken berechnet',
   'add-to-cart': 'In den Warenkorb',
   'cart.summary.heading': 'Warenkorb',
   login: 'Anmelden',

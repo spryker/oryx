@@ -181,7 +181,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
   /**
    * Temporary flag for storing the information about header/footer editing
    */
-  public headerEdit$ = new BehaviorSubject<boolean>(false);
+  headerEdit$ = new BehaviorSubject(false);
 
   onDestroy(): void {
     this.destroy$.next();

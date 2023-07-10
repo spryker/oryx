@@ -1,25 +1,34 @@
+import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
+import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Address, AddressMixin } from '@spryker-oryx/user';
-import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { AddressMixin, CrudState } from '@spryker-oryx/user';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {
   AddressDefaults,
-  AddressListItemAttributes,
-  AddressListItemOptions,
-  EDIT_EVENT,
-  REMOVE_EVENT,
+  EditTarget,
+  UserAddressListItemOptions,
 } from './address-list-item.model';
 import { styles } from './address-list-item.styles';
 
 @hydratable('window:load')
-export class UserAddressListItemComponent
-  extends AddressMixin(ContentMixin<AddressListItemOptions>(LitElement))
-  implements AddressListItemAttributes
-{
+export class UserAddressListItemComponent extends AddressMixin(
+  ContentMixin<UserAddressListItemOptions>(LitElement)
+) {
   static styles = styles;
+
+  protected semanticLinkService = resolve(SemanticLinkService);
+
+  protected editLink = computed(() => {
+    const id = this.$address()?.id;
+    return this.semanticLinkService.get({
+      type: SemanticLinkType.AddressBookEdit,
+      id,
+    });
+  });
 
   protected override render(): TemplateResult | void {
     if (!this.$address()) return;
@@ -29,7 +38,7 @@ export class UserAddressListItemComponent
         <slot></slot>${this.renderContent()}
       </oryx-radio>`;
     } else {
-      return html`<section>${this.renderContent()}</section>`;
+      return html`<section>${this.renderContent()}</section> `;
     }
   }
 
@@ -45,41 +54,6 @@ export class UserAddressListItemComponent
     `;
   }
 
-  protected renderActions(): TemplateResult | void {
-    const address = this.$address();
-    const { editable, removable } = this.$options();
-    if (!address || (!editable && !removable)) return;
-
-    return html`<div class="controls">
-      ${when(
-        editable,
-        () => html`
-          <oryx-icon-button>
-            <button
-              aria-label=${i18n('user.address.edit')}
-              @click=${(): void => this.emitEvent(EDIT_EVENT, address)}
-            >
-              <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
-            </button>
-          </oryx-icon-button>
-        `
-      )}
-      ${when(
-        removable,
-        () => html`
-          <oryx-icon-button>
-            <button
-              aria-label=${i18n('user.address.remove')}
-              @click=${(): void => this.emitEvent(REMOVE_EVENT, address)}
-            >
-              <oryx-icon .type=${IconTypes.Trash}></oryx-icon>
-            </button>
-          </oryx-icon-button>
-        `
-      )}
-    </div>`;
-  }
-
   protected renderDefaults(): TemplateResult | void {
     const address = this.$address();
     const { addressDefaults } = this.$options();
@@ -93,13 +67,11 @@ export class UserAddressListItemComponent
     const defaultShipping =
       address.isDefaultShipping && (showAll || showShipping);
 
-    if (!defaultBilling && !defaultShipping) {
-      return html``;
-    }
+    if (!defaultBilling && !defaultShipping) return;
 
     const chip = (token: string) =>
-      html`<oryx-chip appearance=${AlertType.Success}
-        >${i18n(token)}</oryx-chip
+      html`<oryx-chip .appearance=${AlertType.Success}
+        >${this.i18n(token)}</oryx-chip
       >`;
 
     return html`<div slot="subtext">
@@ -112,13 +84,54 @@ export class UserAddressListItemComponent
     </div>`;
   }
 
-  protected emitEvent(event: string, address: Address): void {
-    this.dispatchEvent(
-      new CustomEvent(event, {
-        bubbles: true,
-        composed: true,
-        detail: { address },
-      })
-    );
+  protected renderActions(): TemplateResult | void {
+    const address = this.$address();
+    const { editable, removable } = this.$options();
+    if (!address || (!editable && !removable)) return;
+
+    return html`<div class="controls">
+      ${this.renderEditTrigger()} ${this.renderRemoveTrigger()}
+    </div>`;
+  }
+
+  protected renderEditTrigger(): TemplateResult | void {
+    const address = this.$address();
+    const { editable, editTarget } = this.$options();
+    if (!address || !editable) return;
+
+    if (editTarget === EditTarget.Link) {
+      return html`
+        <oryx-icon-button outline>
+          <a href=${this.editLink()}>
+            <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
+          </a>
+        </oryx-icon-button>
+      `;
+    }
+
+    return html`
+      <oryx-icon-button>
+        <button
+          aria-label=${this.i18n('user.address.edit')}
+          @click=${this.onEdit}
+        >
+          <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
+        </button>
+      </oryx-icon-button>
+    `;
+  }
+
+  protected renderRemoveTrigger(): TemplateResult | void {
+    if (!this.$options().removable) return;
+    return html`
+      <oryx-user-address-remove
+        .addressId=${this.$address()?.id}
+      ></oryx-user-address-remove>
+    `;
+  }
+
+  protected onEdit(): void {
+    const address = this.$address();
+    this.addressStateService.set(CrudState.Update, address?.id);
   }
 }

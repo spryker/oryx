@@ -15,15 +15,22 @@ export class DimensionController implements ReactiveController {
 
   setBoundingBox(element: HTMLElement): void {
     const vOffset =
-      this.getComputedProperty(this.host, '--oryx-popover-vertical-offset') ??
-      0;
+      (this.getComputedProperty(
+        this.host,
+        '--oryx-popover-vertical-offset'
+      ) as number) ?? 0;
 
     const maxHeight =
-      this.getComputedProperty(this.host, '--oryx-popover-maxheight') ??
-      POPOVER_HEIGHT;
+      (this.getComputedProperty(
+        this.host,
+        '--oryx-popover-maxheight'
+      ) as number) ?? POPOVER_HEIGHT;
 
     const maxWidth =
-      this.getComputedProperty(this.host, '--oryx-popover-maxwidth') ?? 0;
+      (this.getComputedProperty(
+        this.host,
+        '--oryx-popover-maxwidth'
+      ) as number) ?? 0;
 
     const {
       top,

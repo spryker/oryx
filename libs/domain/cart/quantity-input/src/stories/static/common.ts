@@ -3,7 +3,7 @@ import {
   Variant,
   VariantOptions,
   VariantsGroup,
-} from '@spryker-oryx/ui';
+} from '@/tools/storybook';
 
 export const enum CategoryX {
   Default = 'default',

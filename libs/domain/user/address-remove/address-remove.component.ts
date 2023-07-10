@@ -1,56 +1,84 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Address, AddressMixin } from '@spryker-oryx/user';
-import { hydratable, i18n, Size } from '@spryker-oryx/utilities';
+import { AddressMixin } from '@spryker-oryx/user';
+import { hydratable, I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { CANCEL_EVENT, CONFIRM_EVENT } from './address-remove.model';
+import { state } from 'lit/decorators.js';
+import { tap } from 'rxjs';
 import { styles } from './address-remove.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class UserAddressRemoveComponent extends AddressMixin(LitElement) {
+export class UserAddressRemoveComponent extends I18nMixin(
+  AddressMixin(LitElement)
+) {
   static styles = styles;
 
-  protected override render(): TemplateResult | void {
-    const address = this.$address();
-    if (!address) return;
+  @state() protected requestsConfirmation = false;
+  // TODO: resolve loading state from central place
+  @state() protected loading = false;
 
+  protected override render(): TemplateResult | void {
     return html`
-      <oryx-user-address .addressId=${address.id}></oryx-user-address>
+      <oryx-icon-button>
+        <button
+          aria-label=${this.i18n('user.address.remove')}
+          @click=${this.onConfirm}
+        >
+          <oryx-icon .type=${IconTypes.Trash}></oryx-icon>
+        </button>
+      </oryx-icon-button>
+      ${this.renderRemoveConfirmationModal()}
+    `;
+  }
+
+  protected onConfirm(): void {
+    this.requestsConfirmation = true;
+  }
+
+  protected renderRemoveConfirmationModal(): TemplateResult | void {
+    if (!this.requestsConfirmation) return;
+
+    return html`<oryx-modal
+      open
+      .heading=${this.i18n('checkout.address.remove-address')}
+      @oryx.close=${this.onClose}
+      enableFooter
+    >
+      <oryx-user-address .addressId=${this.$addressId()}></oryx-user-address>
       <section>
         <oryx-icon .type=${IconTypes.Info} size=${Size.Md}></oryx-icon>
-        <span>
-          ${i18n(
-            'user.address.removing-this-address-will-not-remove-any-pending-orders-being-dispatched-to-this-address'
-          )}
-        </span>
+        <span> ${this.i18n('user.address.remove-info')} </span>
       </section>
-      ${this.renderControls(address)}
-    `;
-  }
-
-  protected renderControls(address: Address): TemplateResult {
-    return html`
-      <oryx-button outline type=${ButtonType.Secondary}>
-        <button @click=${(): void => this.emitEvent(CANCEL_EVENT)}>
-          ${i18n('user.address.cancel')}
+      <oryx-button
+        slot="footer-more"
+        type=${ButtonType.Critical}
+        ?loading=${this.loading}
+      >
+        <button @click=${this.onRemove}>
+          ${this.i18n('user.address.remove')}
         </button>
       </oryx-button>
-
-      <oryx-button type=${ButtonType.Critical}>
-        <button @click=${(): void => this.emitEvent(CONFIRM_EVENT, address)}>
-          ${i18n('user.address.remove')}
-        </button>
-      </oryx-button>
-    `;
+    </oryx-modal>`;
   }
 
-  protected emitEvent(event: string, address?: Address): void {
-    this.dispatchEvent(
-      new CustomEvent(event, {
-        composed: true,
-        bubbles: true,
-        ...(address ? { detail: { address } } : {}),
-      })
-    );
+  protected onRemove(): void {
+    this.loading = true;
+    const address = this.$address();
+    if (address) {
+      this.addressService
+        .delete(address)
+        .pipe(
+          tap(() => {
+            this.loading = false;
+            this.requestsConfirmation = false;
+          })
+        )
+        .subscribe();
+    }
+  }
+
+  protected onClose(e: Event): void {
+    e.stopPropagation();
+    this.requestsConfirmation = false;
   }
 }

@@ -1,121 +1,88 @@
-import { primaryColorBase } from '@spryker-oryx/utilities';
 import { css } from 'lit';
+import { HeadingTag, headingUtil } from '../heading/src/';
 
 export const textStyles = css`
-  :host {
-    --_text-line-clamp: var(--line-clamp, 0);
-
-    display: flex;
-    flex-direction: column;
-    padding-block: 20px;
+  h1 {
+    ${headingUtil(HeadingTag.H1)}
   }
 
-  ::slotted(p) {
+  h2 {
+    ${headingUtil(HeadingTag.H2)}
+  }
+
+  h3 {
+    ${headingUtil(HeadingTag.H3)}
+  }
+
+  h4 {
+    ${headingUtil(HeadingTag.H4)}
+  }
+
+  h5 {
+    ${headingUtil(HeadingTag.H5)}
+  }
+
+  h6 {
+    ${headingUtil(HeadingTag.H6)}
+  }
+
+  .caption {
+    ${headingUtil(HeadingTag.Caption)}
+  }
+
+  .subtitle {
+    ${headingUtil(HeadingTag.Subtitle)}
+
+    text-transform: uppercase;
+  }
+
+  .subtitle-small {
+    ${headingUtil(HeadingTag.SubtitleSmall)}
+  }
+
+  small {
+    ${headingUtil(HeadingTag.Small)}
+  }
+
+  b {
+    ${headingUtil(HeadingTag.Bold)}
+  }
+
+  p:first-child {
     margin-block-start: 0;
-    transition: margin-bottom 0.8s cubic-bezier(0, 1, 0, 1);
   }
 
-  :host([truncation]) div {
-    overflow: hidden;
+  p:last-child {
+    margin-block-end: 0;
   }
 
-  :host([truncation][truncated]) ::slotted(p) {
-    display: inline;
+  a {
+    text-decoration: none;
+    color: currentColor;
   }
 
-  :host([truncation][truncated]) ::slotted(p)::after {
-    content: ' ';
+  a[href=''],
+  a:not([href]) {
+    pointer-events: none;
   }
 
-  :host([truncation][truncated]) div {
-    max-height: calc(var(--_text-line-clamp) * var(--oryx-line-height, 24px));
-    transition: max-height var(--oryx-transition-time) cubic-bezier(0, 1, 0, 1);
+  a[data-color='primary'] {
+    color: var(--oryx-color-primary-10);
   }
 
-  :host(:not([truncated])) div {
-    max-height: calc(
-      var(--lines-count, 100rem) * var(--oryx-line-height, 24px)
-    );
-    transition: max-height var(--oryx-transition-time) ease-out;
+  a:hover {
+    text-decoration: solid underline var(--oryx-color-primary-9) 1px;
+    text-underline-offset: 5px;
   }
 
-  slot:not([name]) {
-    display: block;
-  }
-
-  :host([truncated]) slot:not([name]) {
+  a:active {
+    color: var(--oryx-color-primary-9);
     /* stylelint-disable-next-line */
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: var(--_text-line-clamp);
-    line-clamp: var(--_text-line-clamp);
-    text-overflow: ellipsis;
-    overflow: hidden;
+    text-decoration-color: currentColor;
   }
 
-  :host([initialized][truncated]) slot:not([name]) {
-    animation: close 0.1s ease 0.1s forwards;
-    -webkit-line-clamp: initial;
-    line-clamp: initial;
-  }
-
-  /* stylelint-disable-next-line */
-  @media (min-resolution: 0.001dpcm) {
-    @supports (-webkit-appearance: none) and (stroke-color: transparent) {
-      :host([initialized][truncated]) slot:not([name]) {
-        /* this won't function on safari */
-        -webkit-line-clamp: var(--_text-line-clamp);
-      }
-    }
-  }
-
-  :host(:not([truncated])) {
-    animation: open 0.1s ease 0s forwards;
-  }
-
-  oryx-icon-button {
-    display: inline-flex;
-    align-self: center;
-    margin: 10px 0;
-    transition: transform var(--oryx-transition-time-long) ease-in-out;
-    color: ${primaryColorBase};
-  }
-
-  :host(:not([truncated])) oryx-icon-button {
-    transform: rotate(180deg);
-  }
-
-  /* FF won't render line-clamp properly wen there's not wrapping block element surrounding
-   * various child elements. This breaks Safari, hence we limit this behaviour only to FF. */
-  @supports (-moz-appearance: none) {
-    slot:not([name]) {
-      display: block;
-    }
-  }
-
-  :host(:not([truncation])) slot[name='toggle'] {
-    display: none;
-  }
-
-  @keyframes open {
-    from {
-      line-clamp: var(--_text-line-clamp);
-      -webkit-line-clamp: var(--_text-line-clamp);
-    }
-    to {
-      line-clamp: initial;
-      -webkit-line-clamp: initial;
-    }
-  }
-
-  @keyframes close {
-    from {
-      line-clamp: initial;
-      -webkit-line-clamp: initial;
-    }
-    to {
-      line-clamp: var(--_text-line-clamp);
-      -webkit-line-clamp: var(--_text-line-clamp);
-    }
+  a:focus-visible {
+    outline: solid 1px var(--oryx-color-focus);
+    outline-offset: 3px;
   }
 `;

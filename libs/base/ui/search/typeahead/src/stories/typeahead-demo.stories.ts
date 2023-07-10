@@ -1,11 +1,11 @@
-import { branches, getAppIcons, states } from '@spryker-oryx/ui';
+import { branches, getAppIcons, states } from '@/tools/storybook';
 import { AffixOptions } from '@spryker-oryx/ui/input';
 import '@spryker-oryx/ui/popover';
 import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchAttributes,
-  SearchEvent,
+  SearchEventDetail,
   SearchIconPosition,
 } from '@spryker-oryx/ui/searchbox';
 import { Meta, Story } from '@storybook/web-components';
@@ -16,6 +16,11 @@ import { FilterStrategyType, TypeaheadOptions } from '../typeahead.model';
 
 export default {
   title: `${storybookPrefix}/Search/Typeahead`,
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 interface Props extends TypeaheadOptions, SearchAttributes, AffixOptions {
@@ -27,13 +32,13 @@ interface Props extends TypeaheadOptions, SearchAttributes, AffixOptions {
 const Template: Story<Props> = (props: Props): TemplateResult => {
   const data: string[] = props.dataSet === 'branches' ? branches : states;
 
-  const logTypeahead = (ev: CustomEvent<SearchEvent>): void => {
+  const logTypeahead = (ev: CustomEvent<SearchEventDetail>): void => {
     console.log('oryx.typeahead event', ev.detail.query);
   };
-  const logSelect = (ev: CustomEvent<SearchEvent>): void => {
+  const logSelect = (ev: CustomEvent<SearchEventDetail>): void => {
     console.log('oryx.select event', ev.detail.query);
   };
-  const logSearch = (ev: CustomEvent<SearchEvent>): void => {
+  const logSearch = (ev: CustomEvent<SearchEventDetail>): void => {
     console.log('oryx.search event', ev.detail.query);
   };
 

@@ -1,9 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
-import { ContentLinkComponent } from '@spryker-oryx/content/link';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PricingService } from '@spryker-oryx/site';
+import { PricingService, SemanticLinkService } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { CheckoutLinkComponent } from './link.component';
@@ -18,6 +17,10 @@ class MockCartService implements Partial<CartService> {
 
 class mockPricingService {
   format = vi.fn();
+}
+
+class MockSemanticLinkService implements Partial<SemanticLinkService> {
+  get = vi.fn().mockReturnValue(of('/checkout'));
 }
 
 describe('CheckoutLinkComponent', () => {
@@ -39,6 +42,10 @@ describe('CheckoutLinkComponent', () => {
           provide: PricingService,
           useClass: mockPricingService,
         },
+        {
+          provide: SemanticLinkService,
+          useClass: MockSemanticLinkService,
+        },
       ],
     });
 
@@ -52,9 +59,7 @@ describe('CheckoutLinkComponent', () => {
   describe('when cart is empty', () => {
     beforeEach(async () => {
       service.isEmpty.mockReturnValue(of(true));
-      element = await fixture(
-        html`<oryx-checkout-link uid="1"></oryx-checkout-link>`
-      );
+      element = await fixture(html`<oryx-checkout-link></oryx-checkout-link>`);
     });
 
     it(`should not render the link`, () => {
@@ -65,9 +70,7 @@ describe('CheckoutLinkComponent', () => {
   describe('when cart is not empty', () => {
     beforeEach(async () => {
       service.isEmpty.mockReturnValue(of(false));
-      element = await fixture(
-        html`<oryx-checkout-link uid="1"></oryx-checkout-link>`
-      );
+      element = await fixture(html`<oryx-checkout-link></oryx-checkout-link>`);
     });
 
     it('should pass the a11y audit', async () => {
@@ -75,7 +78,7 @@ describe('CheckoutLinkComponent', () => {
     });
 
     it(`should render the link`, () => {
-      expect(element).toContainElement('oryx-content-link');
+      expect(element).toContainElement('a[href="/checkout"]');
     });
   });
 
@@ -83,16 +86,11 @@ describe('CheckoutLinkComponent', () => {
     beforeEach(async () => {
       service.isBusy.mockReturnValue(of(true));
       service.isEmpty.mockReturnValue(of(false));
-      element = await fixture(
-        html` <oryx-checkout-link uid="1"></oryx-checkout-link>`
-      );
+      element = await fixture(html`<oryx-checkout-link></oryx-checkout-link>`);
     });
 
     it(`should pass the option to content link`, () => {
-      const contentLink = element.renderRoot.querySelector(
-        'oryx-content-link'
-      ) as ContentLinkComponent;
-      expect(contentLink?.options?.loading).toBe(true);
+      expect(element).toContainElement('oryx-button[loading]');
     });
   });
 });

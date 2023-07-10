@@ -1,4 +1,4 @@
-import { Direction } from '../../../src/utilities/model';
+import { Direction } from '@spryker-oryx/ui';
 import { ErrorOptions } from '../../input';
 
 export interface InputListProperties extends Partial<ErrorOptions> {

@@ -7,7 +7,5 @@ export class PickingListsHeaderFragment {
   getSearchBackButton = () => this.getSearch().find('.back-button');
   getSearchClearButton = () => this.getSearch().find('.clear-button');
   getUserIcon = () => this.getWrapper().find('oryx-site-navigation-item');
-  getUserProfileModal = () =>
-    this.getUserIcon().find('oryx-modal').shadow().find('dialog');
   getTitle = () => this.getWrapper().find('oryx-heading');
 }

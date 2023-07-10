@@ -35,6 +35,11 @@ export default {
       ),
     },
   },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as Meta;
 
 interface Props extends AddressFormAttributes {
@@ -42,13 +47,13 @@ interface Props extends AddressFormAttributes {
 }
 
 const Template: Story<Props> = (props): TemplateResult => {
-  return html`<oryx-address-form
+  return html`<oryx-user-address-form
     .values=${props.address}
     .country="${props.country}"
     .enableDefaultShipping=${props.enableDefaultShipping}
     .enableDefaultBilling=${props.enableDefaultBilling}
-    .fallbackCountry="${props.fallbackCountry}"
-  ></oryx-address-form>`;
+    .options=${{ fallbackCountry: props.fallbackCountry }}
+  ></oryx-user-address-form>`;
 };
 
 export const Demo = Template.bind({});

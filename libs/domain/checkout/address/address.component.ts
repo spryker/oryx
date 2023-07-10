@@ -1,56 +1,52 @@
-import { Address, isValid } from '@spryker-oryx/checkout';
-import { resolve } from '@spryker-oryx/di';
+import { isValid } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { AddressService } from '@spryker-oryx/user';
+import {
+  AddressEventDetail,
+  AddressMixin,
+  CrudState,
+} from '@spryker-oryx/user';
 import { UserAddressFormComponent } from '@spryker-oryx/user/address-form';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
-import { signal, signalAware } from '@spryker-oryx/utilities';
+import { signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { property, query, state } from 'lit/decorators.js';
+import { query } from 'lit/decorators.js';
+import { CheckoutAddressOptions } from './address.model';
 
 @signalAware()
 export class CheckoutAddressComponent
-  extends ContentMixin(LitElement)
+  extends AddressMixin(ContentMixin<CheckoutAddressOptions>(LitElement))
   implements isValid
 {
-  @property({ type: Object }) address?: Address;
-
-  protected addressService = resolve(AddressService);
-  protected addresses = signal(this.addressService.getAddresses());
-
-  @state()
-  protected selected: Address | null = null;
-
-  @query('oryx-address-form')
+  @query('oryx-user-address-form')
   protected addressComponent?: UserAddressFormComponent;
 
   protected override render(): TemplateResult | void {
-    if (this.addresses()?.length)
-      return html`<oryx-user-address-list
-        .options=${{ selectable: true, addressDefaults: AddressDefaults.All }}
-        @oryx.select=${this.onSelect}
-      ></oryx-user-address-list>`;
+    if (this.$addresses()?.length) {
+      if (this.$options().enableList) {
+        return html`<oryx-user-address-list
+          .addressId=${this.$addressId()}
+          .options=${{ selectable: true, addressDefaults: AddressDefaults.All }}
+          @change=${this.onChange}
+        ></oryx-user-address-list>`;
+      } else {
+        return html`<oryx-user-address
+          .addressId=${this.$addressId()}
+          .options=${{ multiline: true }}
+        ></oryx-user-address>`;
+      }
+    }
 
-    return html`<oryx-address-form
+    return html`<oryx-user-address-form
       .address=${this.address}
-    ></oryx-address-form>`;
+    ></oryx-user-address-form>`;
   }
 
-  protected onSelect(e: CustomEvent): void {
-    this.selected = e.detail.address;
-    this.dispatchEvent(
-      new CustomEvent('selectedAddress', {
-        detail: { data: this.selected, valid: true },
-        bubbles: true,
-        composed: true,
-      })
-    );
+  protected onChange(e: CustomEvent<AddressEventDetail>): void {
+    this.addressStateService.set(CrudState.Read, e.detail.address?.id);
   }
 
   isValid(report: boolean): boolean {
-    if (this.selected) {
-      return true;
-    }
+    if (this.$addressId()) return true;
 
     const form = this.addressComponent?.getForm();
     if (!form?.checkValidity() && report) {

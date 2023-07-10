@@ -1,4 +1,4 @@
-import { getAppIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
@@ -9,10 +9,11 @@ export default {
   args: {
     linkType: LinkType.Link,
     disabled: false,
-    multiLine: false,
+    singleLine: false,
     icon: undefined,
     link: '/?path=/story/ui-actions-link--link-demo',
     text: 'Link',
+    color: 'primary',
   },
   argTypes: {
     linkType: {
@@ -31,6 +32,14 @@ export default {
       control: { type: 'text' },
       table: { category: 'demo' },
     },
+    color: {
+      control: { type: 'select', options: ['primary', 'neutral'] },
+    },
+  },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
   },
 } as Meta;
 
@@ -39,22 +48,18 @@ interface Props {
   text: string;
 }
 
-const Template: Story<LinkComponentAttributes & Props> = ({
-  disabled,
-  icon,
-  link,
-  linkType,
-  multiLine,
-  text,
-}): TemplateResult => {
+const Template: Story<LinkComponentAttributes & Props> = (
+  props
+): TemplateResult => {
   return html`
     <oryx-link
-      ?disabled=${disabled}
-      ?multiLine=${multiLine}
-      .linkType=${linkType}
-      .icon=${icon}
+      ?disabled=${props.disabled}
+      ?singleLine=${props.singleLine}
+      .linkType=${props.linkType}
+      .icon=${props.icon}
+      .color=${props.color}
     >
-      <a href=${link}>${text}</a>
+      <a href=${props.link}>${props.text}</a>
     </oryx-link>
   `;
 };

@@ -10,6 +10,7 @@
     "**/vitest.config.ts",
     "**/*.spec.ts",
     "**/*.stories.ts",
+    "**/stories/*",
     "**/.storybook/*"
   ]
 }

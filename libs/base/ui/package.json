@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/ui",
-  "version": "0.10.2",
+  "version": "0.13.0",
   "type": "module",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -8,6 +8,8 @@
   "files": [
     "**/*"
   ],
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
   "publishConfig": {
     "access": "public"
   },

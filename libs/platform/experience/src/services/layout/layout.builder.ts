@@ -32,13 +32,10 @@ export interface LayoutBuilder {
   createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string;
 
   /**
-   * Generates an class list that is driven by layout properties on the
+   * Generates an list of layout values that is driven by layout properties on the
    * composition.
-   *
-   * Style classes have not been our favourite choice, but applying attributes
-   * to the host is not an option at SSR time.
    */
-  getLayoutClasses(data?: CompositionProperties): string | undefined;
+  getLayoutMarkers(data?: CompositionProperties): string | undefined;
 
   /**
    * Generates an inline style, driven by the style properties

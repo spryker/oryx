@@ -40,11 +40,7 @@ export const backofficeIcons: IconMapper = {
       import('./icons/settings').then((s) => s.default),
     [IconTypes.Star]: () => import('./icons/star').then((s) => s.default),
     [IconTypes.Add]: () => import('./icons/add').then((s) => s.default),
-    [IconTypes.Increase]: () => import('./icons/add').then((s) => s.default),
-    [IconTypes.Collapse]: () => import('./icons/add').then((s) => s.default), // merge with add
     [IconTypes.Minus]: () => import('./icons/minus').then((s) => s.default),
-    [IconTypes.Decrease]: () => import('./icons/minus').then((s) => s.default),
-    [IconTypes.Expand]: () => import('./icons/minus').then((s) => s.default), // merge with minus
     [IconTypes.Close]: () => import('./icons/close').then((s) => s.default),
     [IconTypes.Search]: () => import('./icons/search').then((s) => s.default),
     [IconTypes.Edit]: () => import('./icons/edit').then((s) => s.default),
@@ -53,7 +49,7 @@ export const backofficeIcons: IconMapper = {
       import('./icons/actions-horizontal').then((s) => s.default),
     [IconTypes.Back]: () => import('./icons/back').then((s) => s.default),
     [IconTypes.Front]: () => import('./icons/front').then((s) => s.default),
-    [IconTypes.Mark]: () => import('./icons/mark').then((s) => s.default),
+    [IconTypes.Check]: () => import('./icons/check').then((s) => s.default),
     [IconTypes.DropUp]: () => import('./icons/drop-up').then((s) => s.default),
     [IconTypes.Dropdown]: () =>
       import('./icons/dropdown').then((s) => s.default),

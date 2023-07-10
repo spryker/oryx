@@ -1,6 +1,6 @@
 import {
   AddressDefaults,
-  AddressListItemOptions,
+  UserAddressListItemOptions,
 } from '@spryker-oryx/user/address-list-item';
 import { MockAddressType } from '@spryker-oryx/user/mocks';
 import { Meta, Story } from '@storybook/web-components';
@@ -20,9 +20,14 @@ export default {
       options: Object.values(AddressDefaults),
     },
   },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 } as unknown as Meta;
 
-const Template: Story<AddressListItemOptions> = (props): TemplateResult => {
+const Template: Story<UserAddressListItemOptions> = (props): TemplateResult => {
   return html`${renderSelector(MockAddressType.Three, props)}`;
 };
 

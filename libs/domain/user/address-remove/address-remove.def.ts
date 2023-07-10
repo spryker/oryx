@@ -1,6 +1,6 @@
 import { componentDef } from '@spryker-oryx/core';
 
-export const addressRemoveComponent = componentDef({
+export const userAddressRemoveComponent = componentDef({
   name: 'oryx-user-address-remove',
   impl: () =>
     import('./address-remove.component').then(

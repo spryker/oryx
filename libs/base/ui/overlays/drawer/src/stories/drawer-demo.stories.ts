@@ -1,9 +1,9 @@
+import { OverlaysDecorator } from '@/tools/storybook';
+import { Position } from '@spryker-oryx/ui';
 import { Meta, Story } from '@storybook/web-components';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { storybookPrefix } from '../../../../.constants';
-import { Position } from '../../../../src/utilities/model/common';
-import { OverlaysDecorator } from '../../../../src/utilities/storybook';
 import { DrawerProperties, DrawerType } from '../drawer.model';
 import { DrawerService } from '../service';
 

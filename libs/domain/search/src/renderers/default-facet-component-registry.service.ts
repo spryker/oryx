@@ -1,6 +1,6 @@
 import { inject } from '@spryker-oryx/di';
 import { Facet } from '@spryker-oryx/product';
-import { FacetSelect } from '@spryker-oryx/search/facet';
+import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
 import { TemplateResult } from 'lit';
 import { FacetComponentRegistryService } from './facet-component-registry.service';
 import {
@@ -25,7 +25,7 @@ export class DefaultFacetComponentRegistryService
   renderFacetComponent(
     facet: Facet,
     options: FacetMappingOptions,
-    selectListener: (e: CustomEvent<FacetSelect>) => void
+    selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
   ): TemplateResult {
     return (
       this.facetComponentMap[facet.parameter] ??

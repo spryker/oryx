@@ -1,11 +1,18 @@
-import { getAppIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../.constants';
 import { CardType } from '../card.model';
 
-export default { title: `${storybookPrefix}/Structure/Card` } as Meta;
+export default {
+  title: `${storybookPrefix}/Structure/Card`,
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
+} as Meta;
 
 export interface CardProperties {
   type?: CardType;

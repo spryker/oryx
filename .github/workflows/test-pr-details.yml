@@ -1,0 +1,28 @@
+name: Test PR details workflow
+
+on:
+  # Triggers the workflow on pull request events
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - edited
+      - reopened
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-pr-title:
+    permissions:
+      statuses: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aslafy-z/conventional-pr-title-action@v3
+        with:
+          preset: conventional-changelog-conventionalcommits@5.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

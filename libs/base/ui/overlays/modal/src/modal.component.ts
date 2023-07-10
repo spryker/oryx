@@ -1,21 +1,23 @@
 import { isFirefox } from '@spryker-oryx/ui';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n, Size } from '@spryker-oryx/utilities';
+import { I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import { fullscreenModalStyles } from './fullscreen-modal.styles';
 import { BACK_EVENT, CLOSE_EVENT, ModalProperties } from './modal.model';
 import { styles } from './modal.styles';
 
-export class ModalComponent extends LitElement implements ModalProperties {
-  static styles = [styles, fullscreenModalStyles];
+export class ModalComponent
+  extends I18nMixin(LitElement)
+  implements ModalProperties
+{
+  static styles = [styles];
 
   protected backdropTargetTag = 'dialog';
   protected initialBodyOverflow?: string;
 
   @property({ type: Boolean, attribute: 'open' }) isOpen?: boolean;
-  @property({ type: Boolean, reflect: true }) fullscreen?: boolean;
+  @property({ type: Boolean, reflect: true }) minimal?: boolean;
   @property({ type: Boolean }) footerButtonFullWidth?: boolean;
   @property() heading?: string;
   @property({ type: Boolean }) preventCloseByEscape?: boolean;
@@ -153,7 +155,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
               <oryx-icon-button>
                 <button
                   type="button"
-                  aria-label="${i18n('oryx.modal.navigate-back')}"
+                  aria-label="${this.i18n('oryx.modal.navigate-back')}"
                 >
                   <oryx-icon .type=${IconTypes.Back}></oryx-icon>
                 </button>
@@ -195,7 +197,7 @@ export class ModalComponent extends LitElement implements ModalProperties {
               <slot name="footer">
                 <oryx-button type="secondary" outline .size=${Size.Md}>
                   <button value="cancel">
-                    ${i18n(
+                    ${this.i18n(
                       this.enableNavigateBack ? 'modal.back' : 'modal.cancel'
                     )}
                   </button>

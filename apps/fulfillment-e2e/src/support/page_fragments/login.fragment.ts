@@ -6,7 +6,7 @@ export class LoginFragment {
   getWrapper = () => cy.get('oryx-auth-login');
   getEmailInput = () => this.getWrapper().find('[name="email"]');
   getPasswordInput = () => this.getWrapper().find('[name="password"]');
-  getLoginButton = () => this.getWrapper().contains('button', 'Login');
+  getLoginButton = () => this.getWrapper().contains('button', 'Log in');
   getBEValidationError = () => this.getWrapper().find('oryx-notification');
   getLabelSlot = () => this.getWrapper().find('slot[name="label"]');
 

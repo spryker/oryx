@@ -3,6 +3,7 @@ import { css } from 'lit';
 export const styles = css`
   :host {
     display: block;
+    isolation: isolate;
   }
 
   section {
@@ -35,6 +36,7 @@ export const styles = css`
   }
 
   .controls {
+    z-index: 1;
     align-self: flex-start;
     margin-inline-start: auto;
   }

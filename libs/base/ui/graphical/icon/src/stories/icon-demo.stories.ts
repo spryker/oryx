@@ -1,4 +1,4 @@
-import { getAppIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@/tools/storybook';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -6,7 +6,14 @@ import { storybookPrefix } from '../../../../.constants';
 
 import { IconProperties } from '../icon.model';
 
-export default { title: `${storybookPrefix}/Graphical/Icon` } as Meta;
+export default {
+  title: `${storybookPrefix}/Graphical/Icon`,
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
+} as Meta;
 
 const icons = getAppIcons();
 

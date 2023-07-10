@@ -16,10 +16,10 @@ export const checkoutOrchestratorStaticData = [
   {
     id: 'singlePage',
     components: [
-      { type: 'oryx-checkout-customer' },
+      { type: 'oryx-checkout-account' },
       { type: 'oryx-checkout-delivery' },
-      { type: 'oryx-checkout-shipment' },
-      { type: 'oryx-checkout-payment' },
+      { type: 'oryx-checkout-shipping-method' },
+      { type: 'oryx-checkout-payment-method' },
     ],
   },
 ];

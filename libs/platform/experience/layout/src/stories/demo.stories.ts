@@ -5,7 +5,7 @@ import {
 } from '@spryker-oryx/experience';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../constants';
+import { storybookPrefix } from '../../../.constants';
 
 const demoTable = { category: 'Demo' };
 const nestedDemoTable = { category: '(sub) layout' };
@@ -103,8 +103,8 @@ const Template: Story<DemoProps & StyleRuleSet> = (
             <oryx-layout
               uid="item-${i + 1}"
               .layout=${props.layout}
-              ?sticky=${props.sticky}
-              ?bleed=${props.bleed}
+              ?layout-sticky=${props.sticky}
+              ?layout-bleed=${props.bleed}
               .options=${innerOptions}
             >
               ${Array.from({ length: 8 }, (_, j) => item(j + 1, ` (n)`))}

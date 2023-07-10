@@ -1,6 +1,6 @@
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../constants';
+import { storybookPrefix } from '../../../../../.constants';
 import { generateLayoutItems } from '../util';
 import { generateHeader, pageStyles } from './util';
 
@@ -32,7 +32,7 @@ const Template: Story = (): TemplateResult => {
             ${generateLayoutItems(8, 1, 'thumb ')}
           </oryx-layout>
         </oryx-layout>
-        <oryx-layout sticky layout="list" style="top:120px">
+        <oryx-layout layout-sticky layout="list" style="top:120px">
           <div>name</div>
           <div>price</div>
           <div>stock</div>
@@ -40,12 +40,12 @@ const Template: Story = (): TemplateResult => {
       </oryx-layout>
 
       <h3>recommendations (carousel)</h3>
-      <oryx-layout layout="carousel" bleed>
+      <oryx-layout layout="carousel" layout-bleed>
         ${generateLayoutItems(12)}
       </oryx-layout>
 
       <h3>inspiration grid</h3>
-      <oryx-layout layout="grid" bleed style="--cols:5;--h:100px">
+      <oryx-layout layout="grid" layout-bleed style="--cols:5;--h:100px">
         ${generateLayoutItems(10)}
       </oryx-layout>
 

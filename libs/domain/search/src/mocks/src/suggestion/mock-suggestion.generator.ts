@@ -1,9 +1,11 @@
 import { Product } from '@spryker-oryx/product';
 import {
   Suggestion,
+  SuggestionField,
   SuggestionQualifier,
   SuggestionResource,
 } from '@spryker-oryx/search';
+import { SemanticLinkType } from '@spryker-oryx/site';
 
 const dummyUrl = (): string => '#';
 const makeTheNameGreatAgain = (name: string): string =>
@@ -14,11 +16,13 @@ const makeTheNameGreatAgain = (name: string): string =>
 
 const createResources = (
   completion: string[],
-  resourceName: string
+  resourceName: string,
+  type: SemanticLinkType
 ): SuggestionResource[] => {
   return completion.map((c) => ({
     name: `${makeTheNameGreatAgain(c)} ${resourceName}`,
     url: dummyUrl(),
+    type,
   }));
 };
 
@@ -60,9 +64,16 @@ export const createSuggestionMock = (
   const completion = _completions.filter((c) => c.match(re));
 
   return {
-    completion,
-    categories: createResources(completion, 'Category'),
-    cmsPages: createResources(completion, 'Pages'),
-    products: createProducts(completion),
+    [SuggestionField.Suggestions]: completion.map((name) => ({
+      name,
+      params: { q: name },
+      type: SemanticLinkType.ProductList,
+    })),
+    [SuggestionField.Categories]: createResources(
+      completion,
+      'Category',
+      SemanticLinkType.Category
+    ),
+    [SuggestionField.Products]: createProducts(completion),
   };
 };

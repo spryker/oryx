@@ -2,14 +2,14 @@ import { resolve } from '@spryker-oryx/di';
 import { AddressService } from '@spryker-oryx/user';
 import {
   AddressDefaults,
-  AddressListItemOptions,
+  UserAddressListItemOptions,
 } from '@spryker-oryx/user/address-list-item';
 import { MockAddressService, MockAddressType } from '@spryker-oryx/user/mocks';
 import { html, TemplateResult } from 'lit';
 
 export const renderSelector = (
   type: MockAddressType,
-  props: AddressListItemOptions = {}
+  props: UserAddressListItemOptions = {}
 ): TemplateResult => {
   const addressService = resolve(
     AddressService
@@ -23,7 +23,6 @@ export const renderSelector = (
       removable: true,
       ...props,
     }}
-    @oryx.select=${console.log}
     @oryx.edit=${console.log}
     @oryx.remove=${console.log}
   ></oryx-user-address-list>`;

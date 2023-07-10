@@ -11,7 +11,7 @@ export default {
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return html` <oryx-collapsible header="Header">Content</oryx-collapsible> `;
+  return html` <oryx-collapsible heading="Heading">Content</oryx-collapsible> `;
 };
 
 export const OpenStrategy = Template.bind({});

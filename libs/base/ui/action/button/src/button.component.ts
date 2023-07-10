@@ -1,10 +1,11 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Size } from '@spryker-oryx/utilities';
+import { hydratable, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ButtonComponentAttributes, ButtonType } from './button.model';
 import { buttonStyles } from './styles';
 
+@hydratable()
 export class ButtonComponent
   extends LitElement
   implements ButtonComponentAttributes
@@ -23,7 +24,8 @@ export class ButtonComponent
 
   protected renderLoader(): TemplateResult | void {
     if (!this.loading && !this.confirmed) return;
-    const icon = this.loading ? IconTypes.Loader : IconTypes.Mark;
+    const icon =
+      this.loading && !this.confirmed ? IconTypes.Loader : IconTypes.Check;
     return html` <oryx-icon .type=${icon} .size=${Size.Lg}></oryx-icon> `;
   }
 }

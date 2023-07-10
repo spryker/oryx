@@ -1,8 +1,10 @@
 import { PickingListsHeaderFragment } from '../support/page_fragments/picking-lists-header.fragment';
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
+import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
 
 const pickingListsFragment = new PickingListsFragment();
 const headerFragment = new PickingListsHeaderFragment();
+const userProfileFragment = new UserProfileFragment();
 
 describe('Picking Lists Search', () => {
   beforeEach(() => {
@@ -50,6 +52,6 @@ describe('Picking Lists Search', () => {
 
     headerFragment.getUserIcon().should('be.visible').click();
 
-    headerFragment.getUserProfileModal().should('be.visible');
+    userProfileFragment.getWrapper().should('be.visible');
   });
 });

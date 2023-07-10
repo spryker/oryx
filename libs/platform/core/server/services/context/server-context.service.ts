@@ -11,19 +11,21 @@ export class ServerContextService extends DefaultContextService {
     element.setAttribute(`${this.dataKey}${key}`, JSON.stringify(value));
   }
 
-  get<T>(element: Element, key: string): Observable<T> {
+  get<T>(element: Element | null, key: string): Observable<T> {
     return defer(() => {
-      const stack = this.streamParser.getStreamStack();
-      const counter = stack.length - 1;
+      if (element) {
+        const stack = this.streamParser.getStreamStack();
+        const counter = stack.length - 1;
 
-      for (let i = counter; i >= 0; i--) {
-        const value = stack[i][key];
+        for (let i = counter; i >= 0; i--) {
+          const value = stack[i][key];
 
-        if (value === undefined) {
-          continue;
+          if (value === undefined) {
+            continue;
+          }
+
+          return of(JSON.parse(value));
         }
-
-        return of(JSON.parse(value));
       }
 
       return of(undefined);

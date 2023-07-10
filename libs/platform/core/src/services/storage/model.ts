@@ -1,4 +1,7 @@
 export const enum StorageType {
-  LOCAL = 'local',
-  SESSION = 'session',
+  Local = 'local',
+  Session = 'session',
+  Idb = 'idb',
 }
+
+export type StoredValue = string | void;

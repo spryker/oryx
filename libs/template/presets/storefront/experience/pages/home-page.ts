@@ -31,7 +31,7 @@ export const homePage: StaticComponent = {
       options: {
         data: {
           rules: [
-            { layout: 'carousel', padding: '30px 0 0' },
+            { layout: 'carousel', padding: '30px 0 5px', align: 'stretch' },
             { query: { breakpoint: 'sm' }, padding: '20px' },
           ],
           category: '10',
@@ -40,7 +40,7 @@ export const homePage: StaticComponent = {
       },
     },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       name: 'brands',
       options: {
         data: {
@@ -50,6 +50,7 @@ export const homePage: StaticComponent = {
               padding: '60px 0',
               gap: '30px 0px',
               columnCount: 6,
+              justify: 'center',
               fill: 'var(--oryx-color-neutral-8)',
             },
             { query: { breakpoint: 'md' }, columnCount: 4 },
@@ -60,7 +61,11 @@ export const homePage: StaticComponent = {
               padding: '0px 40px',
               justify: 'center',
             },
-            { query: { childs: true, hover: true }, fill: 'initial' },
+            {
+              query: { childs: true, hover: true },
+              fill: 'initial',
+              scale: 1.1,
+            },
           ],
         },
       },

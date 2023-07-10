@@ -1,12 +1,21 @@
 import { inject } from '@spryker-oryx/di';
 import {
   CompositionProperties,
+  LayoutStylesProperties,
   StyleProperties,
   StyleRuleSet,
 } from '../../models';
 import { Component } from '../experience';
 import { LayoutBuilder } from './layout.builder';
 import { ScreenService } from './screen.service';
+
+export const layoutKeys: (keyof LayoutStylesProperties)[] = [
+  'sticky',
+  'bleed',
+  'overlap',
+  'divider',
+  'vertical',
+];
 
 export class DefaultLayoutBuilder implements LayoutBuilder {
   constructor(protected screenService = inject(ScreenService)) {}
@@ -65,44 +74,35 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     }
   }
 
-  getLayoutClasses(data?: CompositionProperties): string | undefined {
-    const ruleSets: string[] = [];
-    data?.rules?.forEach((rule) => {
-      ruleSets.push(...this.getClasses(rule));
-    });
+  getLayoutMarkers(data?: CompositionProperties): string | undefined {
+    const markerPrefix = 'layout-';
 
-    if (ruleSets.length === 0) return;
+    return data?.rules?.reduce((acc, ruleSet) => {
+      if (!ruleSet) return acc;
 
-    return ruleSets.join(' ');
+      const ruleMarkers = layoutKeys.reduce((acc, key) => {
+        const value = ruleSet[key];
+
+        if (!value) return acc;
+
+        const breakpoint = ruleSet.query?.breakpoint;
+        const markerKey = breakpoint
+          ? `${markerPrefix}${breakpoint}-${key}`
+          : `${markerPrefix}${key}`;
+
+        return `${acc} ${
+          typeof value === 'boolean' ? markerKey : `${markerKey}="${value}"`
+        }`;
+      }, '');
+
+      return `${acc}${ruleMarkers}`;
+    }, '');
   }
 
   getLayoutStyles(data?: StyleProperties): string | undefined {
     let styles = this.getProperties(data).join(';');
-    if (data?.style) styles += data.style;
+    if (data?.style) styles += `;${data.style}`;
     return styles === '' ? undefined : styles;
-  }
-
-  /**
-   * Populates an array of classes based on the layout properties provided
-   * in the data.
-   */
-  protected getClasses(ruleSet?: StyleRuleSet): string[] {
-    const classes: string[] = [];
-    if (!ruleSet) return classes;
-
-    const add = (className: string, required = false): void => {
-      if (!required) return;
-      const breakpoint = ruleSet.query?.breakpoint;
-      classes.push(breakpoint ? `${breakpoint}-${className}` : className);
-    };
-
-    add('bleed', ruleSet.bleed);
-    add('sticky', ruleSet.sticky);
-    add('vertical', ruleSet.vertical);
-    add('overlap', ruleSet.overlap);
-    add('divider', ruleSet.divider);
-
-    return classes;
   }
 
   protected getProperties(data?: StyleProperties): string[] {
@@ -198,6 +198,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       'aspect-ratio': data.ratio,
       overflow: data?.overflow,
     });
+
+    if (data.scale) {
+      add({ transform: `scale(${data?.scale})` });
+    }
 
     return rules;
   }

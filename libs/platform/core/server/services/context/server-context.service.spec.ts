@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { ContextService, ContextServiceFallback } from '@spryker-oryx/core';
+import { ContextFallback, ContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, resolve } from '@spryker-oryx/di';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
@@ -55,7 +55,7 @@ describe('SSRContextService', () => {
           useClass: ServerContextService,
         },
         {
-          provide: `${ContextServiceFallback}${mockKeyFallback}`,
+          provide: `${ContextFallback}${mockKeyFallback}`,
           useValue: of(mockFallbackValue),
         },
       ],
@@ -124,6 +124,17 @@ describe('SSRContextService', () => {
 
     testChildContext()
       .context.get(testChildContext(), mockKeyFallback)
+      .subscribe(mockCallback);
+
+    expect(mockCallback).toHaveBeenCalledWith(mockFallbackValue);
+  });
+
+  it('should use fallback value if null is passed', () => {
+    const mockCallback = vi.fn();
+    element.context.provide(element, mockKey, mockObject);
+
+    testChildContext()
+      .context.get(null, mockKeyFallback)
       .subscribe(mockCallback);
 
     expect(mockCallback).toHaveBeenCalledWith(mockFallbackValue);

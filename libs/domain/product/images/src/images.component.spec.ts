@@ -1,10 +1,9 @@
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
+import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ExperienceService } from '@spryker-oryx/experience';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
-import { of } from 'rxjs';
 import { ProductImagesComponent } from './images.component';
 import { productImagesComponent } from './images.def';
 import {
@@ -19,10 +18,6 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 Element.prototype.scroll = (): void => {};
 
-class MockExperienceContentService implements Partial<ExperienceService> {
-  getOptions = vi.fn().mockReturnValue(of({}));
-}
-
 describe('ProductImagesComponent', () => {
   let element: ProductImagesComponent;
 
@@ -35,8 +30,8 @@ describe('ProductImagesComponent', () => {
       providers: [
         ...mockProductProviders,
         {
-          provide: ExperienceService,
-          useClass: MockExperienceContentService,
+          provide: ContextService,
+          useClass: DefaultContextService,
         },
       ],
     });
@@ -249,7 +244,7 @@ describe('ProductImagesComponent', () => {
         });
 
         it('should set vertical attribute on navigation layout', () => {
-          expect(element).toContainElement(`.navigation[vertical]`);
+          expect(element).toContainElement(`.navigation[layout-vertical]`);
         });
       });
 
@@ -266,7 +261,7 @@ describe('ProductImagesComponent', () => {
         });
 
         it('should set vertical attribute on navigation layout', () => {
-          expect(element).toContainElement(`.navigation[vertical]`);
+          expect(element).toContainElement(`.navigation[layout-vertical]`);
         });
       });
     });

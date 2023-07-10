@@ -1,35 +1,42 @@
+import '@/tools/testing';
 import { fixture } from '@open-wc/testing-helpers';
+import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ExperienceService } from '@spryker-oryx/experience';
-import '@spryker-oryx/testing';
 import { html } from 'lit';
-import { Observable, of } from 'rxjs';
-import { mockProductProviders } from '../../src/mocks';
+import { of } from 'rxjs';
+import { Product } from '../../src/models';
+import { ProductService } from '../../src/services';
 import { ProductLabelsComponent } from './label.component';
 import { productLabelsComponent } from './label.def';
 
-class MockExperienceContentService implements Partial<ExperienceService> {
-  getOptions = ({ uid = '' }): Observable<any> => of({});
+class MockProductService implements Partial<ProductService> {
+  get = vi.fn();
 }
 
 describe('ProductLabelsComponent', () => {
   let element: ProductLabelsComponent;
+  let productService: MockProductService;
 
   beforeAll(async () => {
     await useComponent(productLabelsComponent);
   });
 
   beforeEach(async () => {
-    createInjector({
+    const injector = createInjector({
       providers: [
-        ...mockProductProviders,
         {
-          provide: ExperienceService,
-          useClass: MockExperienceContentService,
+          provide: ProductService,
+          useClass: MockProductService,
+        },
+        {
+          provide: ContextService,
+          useClass: DefaultContextService,
         },
       ],
     });
+
+    productService = injector.inject<MockProductService>(ProductService);
   });
 
   afterEach(() => {
@@ -38,6 +45,7 @@ describe('ProductLabelsComponent', () => {
 
   describe('when the product has no labels', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(of({ sku: '1' }));
       element = await fixture(
         html`<oryx-product-labels sku="3"></oryx-product-labels>`
       );
@@ -48,8 +56,11 @@ describe('ProductLabelsComponent', () => {
     });
   });
 
-  describe('when the product has labels', () => {
+  describe('when the product has two labels', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({ sku: '1', labels: [{ name: 'new' }, { name: 'sale' }] } as Product)
+      );
       element = await fixture(
         html`<oryx-product-labels sku="1"></oryx-product-labels>`
       );
@@ -97,6 +108,9 @@ describe('ProductLabelsComponent', () => {
 
   describe('when the product label is inverted', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({ sku: '1', labels: [{ name: 'new' }, { name: 'sale' }] } as Product)
+      );
       element = await fixture(
         html`<oryx-product-labels
           sku="1"
@@ -112,6 +126,9 @@ describe('ProductLabelsComponent', () => {
 
   describe('when the product label is not inverted', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({ sku: '1', labels: [{ name: 'new' }, { name: 'sale' }] } as Product)
+      );
       element = await fixture(
         html`<oryx-product-labels
           sku="1"
@@ -127,6 +144,9 @@ describe('ProductLabelsComponent', () => {
 
   describe('when invert is not provided', () => {
     beforeEach(async () => {
+      productService.get.mockReturnValue(
+        of({ sku: '1', labels: [{ name: 'new' }, { name: 'sale' }] } as Product)
+      );
       element = await fixture(
         html`<oryx-product-labels sku="1"></oryx-product-labels>`
       );

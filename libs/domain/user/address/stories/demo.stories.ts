@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { AddressComponentProperties, AddressService } from '@spryker-oryx/user';
+import { AddressService } from '@spryker-oryx/user';
 import {
   MockAddressService,
   MockAddressType,
@@ -11,12 +11,6 @@ import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
 import { AddressOptions } from '../address.model';
 
-interface Props extends AddressComponentProperties, AddressOptions {}
-
-const addressesIds = [mockCurrentAddress, uncompletedAddress].map(
-  ({ id }) => id
-);
-
 export default {
   title: `${storybookPrefix}/Address`,
   args: {
@@ -25,17 +19,23 @@ export default {
   },
   argTypes: {
     addressId: {
-      options: addressesIds,
+      options: [mockCurrentAddress, uncompletedAddress].map(({ id }) => id),
       control: { type: 'select' },
+    },
+  },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
     },
   },
 } as Meta;
 
-const Template: Story<Props> = (props): TemplateResult => {
-  const addressService = resolve(
-    AddressService
-  ) as unknown as MockAddressService;
-  addressService.changeMockAddressType(MockAddressType.Incomplete);
+const Template: Story<AddressOptions & { addressId?: string }> = (
+  props
+): TemplateResult => {
+  resolve<MockAddressService>(AddressService).changeMockAddressType(
+    MockAddressType.Incomplete
+  );
   return html`<oryx-user-address
     .addressId=${props.addressId}
     .options=${props}

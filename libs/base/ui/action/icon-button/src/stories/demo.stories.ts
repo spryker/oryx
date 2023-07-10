@@ -1,4 +1,4 @@
-import { getAppIcons } from '@spryker-oryx/ui';
+import { getAppIcons } from '@/tools/storybook';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
@@ -33,6 +33,11 @@ export default {
     text: {
       control: { type: 'text' },
       table: { category: 'demo' },
+    },
+  },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
     },
   },
 } as Meta;

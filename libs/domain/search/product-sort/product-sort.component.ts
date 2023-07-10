@@ -4,7 +4,7 @@ import { SortingService } from '@spryker-oryx/search';
 import {
   computed,
   hydratable,
-  i18n,
+  I18nMixin,
   signal,
   signalAware,
 } from '@spryker-oryx/utilities';
@@ -14,7 +14,7 @@ import { tap } from 'rxjs/operators';
 
 @hydratable(['mouseover', 'focus'])
 @signalAware()
-export class SearchProductSortComponent extends LitElement {
+export class SearchProductSortComponent extends I18nMixin(LitElement) {
   protected routerService = resolve(RouterService);
   protected sortingService = resolve(SortingService);
 
@@ -30,14 +30,14 @@ export class SearchProductSortComponent extends LitElement {
       <oryx-select>
         <select
           @change=${this.sortingNavigation}
-          aria-label="${i18n('oryx.search.select-sorting')}"
+          aria-label="${this.i18n('oryx.search.select-sorting')}"
         >
           <option value="" hidden>
-            ${i18n('oryx.search.select-sort-parameter')}
+            ${this.i18n('oryx.search.select-sort-parameter')}
           </option>
 
           ${when(this.hasOptions(), () =>
-            this.sortingOptions()!.sortValues.map(
+            this.sortingOptions()?.sortValues.map(
               ({ sortKey, sortName }) =>
                 html`<option
                   value="${sortKey}"

@@ -1,6 +1,6 @@
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../constants';
+import { storybookPrefix } from '../../../../../.constants';
 import { generateLayoutItems } from '../util';
 import { generateHeader, pageStyles } from './util';
 
@@ -16,7 +16,7 @@ const Template: Story = (): TemplateResult => {
       ${generateHeader()}
 
       <oryx-layout layout="split-column" style="--split-column-factor: 0.25;">
-        <oryx-layout layout="list" sticky style="top: 100px;">
+        <oryx-layout layout="list" layout-sticky style="top: 100px;">
           ${generateLayoutItems(5, 1, 'Facet')}
         </oryx-layout>
 

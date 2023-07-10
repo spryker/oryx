@@ -6,15 +6,12 @@ import {
   CartEntry,
   CartEntryQualifier,
   CartQualifier,
-  CartTotals,
   UpdateCartEntryQualifier,
 } from '../models';
 
 export interface CartService {
-  reload(): void;
   getCart(data?: CartQualifier): Observable<Cart | undefined>;
   getCartState(data?: CartQualifier): Observable<QueryState<Cart>>;
-  getTotals(data?: CartQualifier): Observable<CartTotals | null>;
   getEntries(data?: CartQualifier): Observable<CartEntry[]>;
   addEntry(data: AddCartEntryQualifier): Observable<unknown>;
   updateEntry(data: UpdateCartEntryQualifier): Observable<unknown>;

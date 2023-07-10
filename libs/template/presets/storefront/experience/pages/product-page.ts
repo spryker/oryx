@@ -10,7 +10,7 @@ export const productPage: StaticComponent = {
 
   components: [
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       options: {
         data: {
           rules: [
@@ -23,7 +23,7 @@ export const productPage: StaticComponent = {
       },
       components: [
         {
-          type: 'experience-composition',
+          type: 'oryx-composition',
           options: { data: { rules: [{ layout: 'flex', vertical: true }] } },
           components: [
             {
@@ -36,7 +36,7 @@ export const productPage: StaticComponent = {
           ],
         },
         {
-          type: 'experience-composition',
+          type: 'oryx-composition',
           options: {
             data: {
               rules: [{ vertical: true, top: '108px', sticky: true }],
@@ -58,17 +58,16 @@ export const productPage: StaticComponent = {
               options: { data: { enableSalesLabel: true } },
             },
             { type: 'oryx-cart-add' },
+            { type: 'oryx-product-availability' },
           ],
         },
       ],
     },
 
     {
-      type: 'oryx-product-list',
+      type: 'oryx-product-relations',
       options: {
         data: {
-          category: '10',
-          sort: 'rating',
           rules: [
             {
               layout: 'carousel',

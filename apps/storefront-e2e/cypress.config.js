@@ -22,6 +22,7 @@ module.exports = defineConfig({
     baseUrl: 'http://localhost:3001',
     specPattern: './src/integration/*.cy.{js,jsx,ts,tsx}',
     supportFile: './src/support/index.ts',
+    fixturesFolder: './src/fixtures',
   },
   env: {
     SCOS_BASE_URL: process.env.SCOS_BASE_URL,

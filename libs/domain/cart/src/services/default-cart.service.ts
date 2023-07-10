@@ -31,7 +31,6 @@ import {
   CartEntry,
   CartEntryQualifier,
   CartQualifier,
-  CartTotals,
   UpdateCartEntryQualifier,
 } from '../models';
 import { CartAdapter } from './adapter/cart.adapter';
@@ -42,6 +41,8 @@ import {
   CartModificationFail,
   CartModificationStart,
   CartModificationSuccess,
+  CartQuery,
+  CartsUpdated,
 } from './state';
 
 export class DefaultCartService implements CartService {
@@ -67,9 +68,11 @@ export class DefaultCartService implements CartService {
       },
     ],
     resetOn: [this.identity.get().pipe(skip(1))],
+    refreshOn: [CartsUpdated],
   });
 
   protected cartQuery$ = createQuery({
+    id: CartQuery,
     loader: (qualifier: CartQualifier) => this.adapter.get(qualifier),
     refreshOn: [CartEntryRemoved, LocaleChanged],
   });
@@ -145,7 +148,7 @@ export class DefaultCartService implements CartService {
     )
   ) as Observable<Map<string, number>>;
 
-  protected activeCartId$ = this.cartsQuery$.get(undefined).pipe(
+  protected activeCartId$ = this.cartsQuery$.get().pipe(
     map((carts) => {
       for (const cart of carts ?? []) {
         if (cart.isDefault) {
@@ -168,7 +171,7 @@ export class DefaultCartService implements CartService {
   );
 
   protected isBusy$ = combineLatest([
-    this.cartsQuery$.getState(undefined), // loading state of all carts
+    this.cartsQuery$.getState(), // loading state of all carts
     this.getCartState().pipe(startWith({ loading: false } as QueryState<Cart>)), // loading state of the active cart
     this.isCartModified$.pipe(startWith(false)), // is any cart being modified
   ]).pipe(
@@ -178,10 +181,6 @@ export class DefaultCartService implements CartService {
     ),
     distinctUntilChanged()
   );
-
-  reload(): void {
-    this.cartsQuery$.refresh();
-  }
 
   getCart(qualifier?: CartQualifier): Observable<Cart | undefined> {
     if (qualifier?.cartId) {
@@ -203,10 +202,6 @@ export class DefaultCartService implements CartService {
     return this.activeCartId$.pipe(
       switchMap((id) => this.cartQuery$.getState({ cartId: id! }))
     );
-  }
-
-  getTotals(data?: CartQualifier): Observable<CartTotals | null> {
-    return this.getCart(data).pipe(map((cart) => cart?.totals ?? null));
   }
 
   getEntries(data?: CartQualifier): Observable<CartEntry[]> {

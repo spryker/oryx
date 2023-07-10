@@ -32,12 +32,12 @@ export class DefaultOrderService implements OrderService {
   }
 
   getLastOrder(): Observable<OrderData | null> {
-    return this.storage.get<OrderData>(orderStorageKey, StorageType.SESSION);
+    return this.storage.get<OrderData>(orderStorageKey, StorageType.Session);
   }
 
   storeLastOrder(order: OrderData): void {
     // For privacy reasons, we cannot store the address in session storage.
     const { billingAddress, shippingAddress, ...sanitized } = order;
-    this.storage.set(orderStorageKey, sanitized, StorageType.SESSION);
+    this.storage.set(orderStorageKey, sanitized, StorageType.Session);
   }
 }

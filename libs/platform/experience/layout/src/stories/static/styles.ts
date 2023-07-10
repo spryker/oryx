@@ -1,4 +1,3 @@
-import { primaryColorBase, primaryColorLighter } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const layoutStaticStyles = css`
@@ -8,8 +7,8 @@ export const layoutStaticStyles = css`
   }
 
   oryx-layout div {
-    color: ${primaryColorBase};
-    background: ${primaryColorLighter};
+    color: var(--oryx-color-primary-9);
+    background: var(--oryx-color-primary-3);
     padding: 10px;
   }
 

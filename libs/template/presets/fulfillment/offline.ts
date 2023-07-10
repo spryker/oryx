@@ -11,8 +11,10 @@ import {
 } from '@spryker-oryx/offline';
 import {
   OfflinePickingFeature,
+  SwAuthFeature,
   SwOfflinePickingFeature,
 } from '@spryker-oryx/picking/offline';
+import { RouterFeature } from '@spryker-oryx/router';
 import { fulfillmentFeatures, FulfillmentFeaturesConfig } from './app';
 
 export interface SharedOfflineFulfillmentFeaturesConfig {
@@ -62,6 +64,8 @@ export function offlineServiceWorkerFulfillmentFeatures(
     coreFeature,
     new I18nFeature(config?.i18n),
     new IndexedDbFeature(config?.indexedDb),
+    new RouterFeature(),
+    new SwAuthFeature(),
     new OfflineServiceWorkerFeature(),
     {
       providers: [

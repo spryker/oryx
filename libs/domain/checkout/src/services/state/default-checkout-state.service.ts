@@ -1,35 +1,53 @@
+import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
+  combineLatest,
+  defer,
   distinctUntilChanged,
   map,
   Observable,
+  skip,
+  Subscription,
   take,
-  tap,
 } from 'rxjs';
-import { Checkout, checkoutDataStorageKey } from '../../models';
+import { checkoutDataStorageKey, PlaceOrderData } from '../../models';
 import { CheckoutStateService } from './checkout-state.service';
 
 type CheckoutValue = {
   valid?: boolean;
-  value?: Partial<Checkout[keyof Checkout]> | null;
+  value?: Partial<PlaceOrderData[keyof PlaceOrderData]> | null;
 };
 
 export class DefaultCheckoutStateService implements CheckoutStateService {
-  protected subject = new BehaviorSubject<Map<keyof Checkout, CheckoutValue>>(
-    new Map()
+  protected subject = new BehaviorSubject<
+    Map<keyof PlaceOrderData, CheckoutValue>
+  >(new Map());
+
+  protected isInvalid$ = new BehaviorSubject<boolean>(false);
+
+  userId$ = defer(() =>
+    this.identity.get().pipe(
+      map((identity) => identity?.userId ?? ''),
+      distinctUntilChanged()
+    )
   );
 
-  constructor(protected storage = inject(StorageService)) {
+  protected clearSubscription: Subscription | undefined;
+
+  constructor(
+    protected storage = inject(StorageService),
+    protected identity = inject(IdentityService)
+  ) {
     this.restore();
   }
 
-  set<K extends keyof Checkout>(
+  set<K extends keyof PlaceOrderData>(
     key: K,
     item: {
       valid?: boolean;
-      value?: Partial<Checkout[K]> | null;
+      value?: Partial<PlaceOrderData[K]> | null;
     }
   ): void {
     const collected = this.subject.value;
@@ -38,33 +56,48 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     if (existing && item.value !== undefined) existing.value = item.value;
     if (!existing) collected.set(key, item);
     this.subject.next(collected);
-    this.storage.set(
-      checkoutDataStorageKey,
-      Array.from(collected),
-      StorageType.SESSION
-    );
+    this.setupClearLogic();
+
+    this.userId$.pipe(take(1)).subscribe((userId) => {
+      this.storage.set(
+        checkoutDataStorageKey,
+        [...Array.from(collected), userId],
+        StorageType.Session
+      );
+    });
   }
 
-  get<K extends keyof Checkout>(key: K): Observable<Checkout[K] | null> {
+  get<K extends keyof PlaceOrderData>(
+    key: K
+  ): Observable<PlaceOrderData[K] | null> {
     return this.subject.pipe(
       map((data) => {
         if (!data.get(key)) this.set(key, {});
-        return (data.get(key)?.value ?? null) as Checkout[K] | null;
+        return (data.get(key)?.value ?? null) as PlaceOrderData[K] | null;
       }),
       distinctUntilChanged()
     );
   }
 
   clear(): void {
-    this.storage.remove(checkoutDataStorageKey, StorageType.SESSION);
+    this.storage.remove(checkoutDataStorageKey, StorageType.Session);
+    this.isInvalid$.next(false);
     this.subject.next(new Map());
+    this.clearSubscription?.unsubscribe();
+    this.clearSubscription = undefined;
   }
 
-  getAll(): Observable<Partial<Checkout> | null> {
+  getAll(complete = true): Observable<Partial<PlaceOrderData> | null> {
     return this.subject.pipe(
       map((data) => {
-        if (Array.from(data).find((item) => !item[1].valid)) return null;
-        const result: Partial<Checkout> = {};
+        if (complete && Array.from(data).find((item) => !item[1].valid)) {
+          this.isInvalid$.next(true);
+          return null;
+        } else {
+          this.isInvalid$.next(false);
+        }
+
+        const result: Partial<PlaceOrderData> = {};
         data.forEach((item, key) => {
           Object.assign(result, { [key]: item.value });
         });
@@ -73,7 +106,13 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     );
   }
 
-  protected populateData(data: Partial<Checkout>): Partial<Checkout> {
+  isInvalid(): Observable<boolean> {
+    return this.isInvalid$.pipe(distinctUntilChanged());
+  }
+
+  protected populateData(
+    data: Partial<PlaceOrderData>
+  ): Partial<PlaceOrderData> {
     if (data.customer) {
       if (!data.customer.salutation && data.shippingAddress?.salutation)
         data.customer.salutation = data.shippingAddress.salutation;
@@ -82,10 +121,6 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
       if (!data.customer.firstName && data.shippingAddress?.firstName)
         data.customer.firstName = data.shippingAddress.firstName;
     }
-    // tmp: copy the billing address from the shipping address for
-    // as long as we have not implemented the component
-    data.billingAddress = data.shippingAddress;
-
     return data;
   }
 
@@ -93,15 +128,30 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
    * Restores the data from storage
    */
   protected restore(): void {
-    this.storage
-      .get<Map<keyof Checkout, CheckoutValue>>(
+    combineLatest([
+      this.storage.get<Map<keyof PlaceOrderData, CheckoutValue>>(
         checkoutDataStorageKey,
-        StorageType.SESSION
-      )
-      .pipe(
-        take(1),
-        tap((stored) => this.subject.next(new Map(stored)))
-      )
-      .subscribe();
+        StorageType.Session
+      ),
+      this.userId$,
+    ])
+      .pipe(take(1))
+      .subscribe(([stored, userId]) => {
+        const storedUserId =
+          (stored && Array.isArray(stored) && stored.pop()) ?? {}; // invalid;
+        if (storedUserId === userId) {
+          this.subject.next(new Map(stored));
+          this.setupClearLogic();
+        }
+      });
+  }
+
+  protected setupClearLogic(): void {
+    // clear the data if the user changes
+    if (!this.clearSubscription) {
+      this.clearSubscription = this.userId$
+        .pipe(skip(1), take(1))
+        .subscribe(() => this.clear());
+    }
   }
 }

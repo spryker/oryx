@@ -3,12 +3,13 @@ import {
   initMutationObserverForComponent,
   Variant,
   VariantOptions,
-} from '../../../../../src/utilities';
+} from '@/tools/storybook';
 
 export enum CategoryX {
   DEFAULT = 'Default',
   HOVERED = 'Hovered',
   FOCUSED = 'Focused',
+  REQUIRED = 'Required',
   DISABLED = 'Disabled',
   ERROR = 'Error',
   ERROR_WITHOUT_MESSAGE = 'Error without message',
@@ -20,6 +21,7 @@ export interface InputVariantOptions extends VariantOptions {
   isDisabled?: boolean;
   hasError?: boolean;
   floatLabel?: boolean;
+  required?: boolean;
   label?: string;
   value?: string | number;
 }
@@ -61,6 +63,13 @@ export const baseInputVariants: InputVariant[] = [
     categoryY: '',
     options: {
       className: 'pseudo-focus-within',
+    },
+  },
+  {
+    categoryX: CategoryX.REQUIRED,
+    categoryY: '',
+    options: {
+      required: true,
     },
   },
   {

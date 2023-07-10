@@ -1,11 +1,10 @@
-import { primaryColorBase, primaryColorLighter } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 
 export const generateHeader = (): TemplateResult => {
   return html`
     <oryx-layout
       layout="flex"
-      bleed
+      layout-bleed
       .options=${{ rules: [{ background: 'var(--oryx-color-neutral-6)' }] }}
     >
       <div>link</div>
@@ -16,8 +15,8 @@ export const generateHeader = (): TemplateResult => {
 
     <oryx-layout
       layout="flex"
-      bleed
-      sticky
+      layout-bleed
+      layout-sticky
       .options=${{
         rules: [
           {
@@ -39,7 +38,7 @@ export const generateHeader = (): TemplateResult => {
 export const pageStyles = html`
   <style>
     oryx-layout div {
-      background: ${primaryColorLighter};
+      background: var(--oryx-color-primary-3);
       padding: 10px;
       outline: solid 1px;
       outline-offset: -1px;
@@ -52,25 +51,7 @@ export const pageStyles = html`
     }
 
     .thumbs div:hover {
-      background: ${primaryColorBase};
+      background: var(--oryx-color-primary-9);
     }
   </style>
 `;
-
-// oryx-layout.page > oryx-layout {
-//   /* --padding-inline: 10px;
-//   padding-block: 10px;
-//   --padding: 10px;
-//   --scroll-start: 10px;*/
-// }
-
-// oryx-layout.page > oryx-layout oryx-layout {
-//   /* --padding-inline: 0;
-//   --padding: 0px; */
-// }
-// /*
-//     .thumbs {
-//       --padding: 10px;
-//       --scroll-start: 10px;
-//     }
-//     */

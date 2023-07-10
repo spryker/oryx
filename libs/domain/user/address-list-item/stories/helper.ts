@@ -3,10 +3,10 @@ import { AddressService } from '@spryker-oryx/user';
 import { MockAddressService, MockAddressType } from '@spryker-oryx/user/mocks';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { AddressListItemOptions } from '../address-list-item.model';
+import { UserAddressListItemOptions } from '../address-list-item.model';
 
 export const renderSelector = (
-  options: AddressListItemOptions = {}
+  options: UserAddressListItemOptions = {}
 ): TemplateResult => {
   const addressService = resolve(
     AddressService

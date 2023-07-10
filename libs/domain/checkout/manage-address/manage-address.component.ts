@@ -1,111 +1,175 @@
-import { resolve } from '@spryker-oryx/di';
-import { Address, AddressService } from '@spryker-oryx/user';
-import { AddressBookState } from '@spryker-oryx/user/address-book';
-import { hydratable, i18n, signalAware, Size } from '@spryker-oryx/utilities';
+import { ButtonType } from '@spryker-oryx/ui/button';
+import {
+  Address,
+  AddressEventDetail,
+  AddressMixin,
+  CrudState,
+} from '@spryker-oryx/user';
+import { Target } from '@spryker-oryx/user/address-add-button';
+import {
+  SaveOption,
+  UserAddressEditComponent,
+} from '@spryker-oryx/user/address-edit';
+import { EditTarget } from '@spryker-oryx/user/address-list-item';
+import {
+  hydratable,
+  I18nMixin,
+  signalProperty,
+  Size,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
-import { tap } from 'rxjs';
-import { styles } from './manage-address.styles';
+import { DirectiveResult } from 'lit/async-directive';
+import { query, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
+import { CheckoutMixin } from '../src/mixins';
+import { checkoutManageAddressStyles } from './manage-address.styles';
 
-@signalAware()
 @hydratable(['mouseover', 'focusin'])
-export class ManageAddressComponent extends LitElement {
-  static styles = styles;
+export class CheckoutManageAddressComponent extends I18nMixin(
+  AddressMixin(CheckoutMixin(LitElement))
+) {
+  static styles = checkoutManageAddressStyles;
 
-  protected addressService = resolve(AddressService);
+  @signalProperty() selected?: Address | null;
 
-  @state()
-  protected state = AddressBookState.List;
+  @state() protected open?: boolean;
+  @state() protected loading?: boolean;
+  @state() protected preselected: Address | null = null;
 
-  @state()
-  protected open?: boolean;
-
-  @state()
-  protected selected?: string;
-
-  protected headings = {
-    [AddressBookState.List]: i18n('checkout.address.addresses'),
-    [AddressBookState.Add]: i18n('checkout.address.add-address'),
-    [AddressBookState.Edit]: i18n('checkout.address.edit-address'),
-  };
+  @query('oryx-user-address-edit') editComponent?: UserAddressEditComponent;
 
   protected override render(): TemplateResult | void {
-    const heading = this.headings[this.state];
-
     return html`
-      <oryx-button type="text" size=${Size.Sm}>
-        <button @click=${this.goToList}>
-          ${i18n('checkout.address.change')}
+      <oryx-button .type=${ButtonType.Text} .size=${Size.Sm}>
+        <button @click=${this.onOpen}>
+          ${this.i18n('checkout.address.change')}
         </button>
       </oryx-button>
 
-      <oryx-modal
-        ?open=${this.open}
-        .heading=${heading}
-        preventCloseByEscape
-        preventCloseByBackdrop
-        enableCloseButtonInHeader
-        ?enableNavigateBack=${this.state !== AddressBookState.List}
-        @oryx.close=${this.onClose}
-        @oryx.back=${this.goToList}
-      >
-        <oryx-user-address-book
-          .activeState=${this.state}
-          @oryx.change-state=${this.onStateChange}
-          @oryx.remove=${this.onRemove}
-          @oryx.success=${this.goToList}
-          @oryx.cancel=${this.goToList}
-        ></oryx-user-address-book>
-      </oryx-modal>
-
-      ${this.renderRemoveConfirmationModal()}
+      ${when(
+        this.open,
+        () => html`
+          <oryx-modal
+            open
+            @oryx.back=${this.onBack}
+            @oryx.close=${this.onClose}
+            .heading=${this.getHeading()}
+            enableCloseButtonInHeader
+            ?enableNavigateBack=${this.$addressState().action !==
+            CrudState.Read}
+            enableFooter
+          >
+            ${[this.renderList(), this.renderEditor(), this.renderFooter()]}
+          </oryx-modal>
+        `
+      )}
     `;
   }
 
-  protected goToList(): void {
+  protected renderList(): TemplateResult | void {
+    const action = this.$addressState().action;
+    if (action !== CrudState.Read && action !== CrudState.Delete) return;
+
+    return html`<oryx-user-address-add-button
+        .options=${{ target: Target.Inline }}
+      ></oryx-user-address-add-button>
+
+      <oryx-user-address-list
+        .addressId=${this.preselected?.id ?? this.selected?.id}
+        .options=${{
+          selectable: true,
+          editable: true,
+          removable: true,
+          editTarget: EditTarget.Inline,
+        }}
+        @change=${this.onChange}
+      ></oryx-user-address-list> `;
+  }
+
+  protected renderEditor(): TemplateResult | void {
+    const action = this.$addressState().action;
+    if (action !== CrudState.Create && action !== CrudState.Update) return;
+
+    return html`
+      <oryx-user-address-edit
+        .options=${{ save: SaveOption.None }}
+        @change=${this.onEdit}
+      ></oryx-user-address-edit>
+    `;
+  }
+
+  protected renderFooter(): TemplateResult | void {
+    const action = this.$addressState().action;
+    if (action === CrudState.Read) {
+      return html`<oryx-button slot="footer-more" .size=${Size.Md}>
+        <button @click=${this.onSelect}>
+          ${this.i18n('checkout.address.select')}
+        </button>
+      </oryx-button>`;
+    }
+
+    if (action === CrudState.Create || action === CrudState.Update) {
+      return html`<oryx-button
+        slot="footer-more"
+        .size=${Size.Md}
+        .loading=${this.loading}
+      >
+        <button @click=${this.onSave}>
+          ${this.i18n(['save', 'user.address.save'])}
+        </button>
+      </oryx-button>`;
+    }
+  }
+
+  protected onEdit(e: Event): void {
+    e.stopPropagation();
+  }
+
+  protected onSave(): void {
+    this.loading = true;
+    this.editComponent?.submit().subscribe(() => (this.loading = false));
+  }
+
+  protected getHeading(): DirectiveResult {
+    const action = this.$addressState().action;
+    if (action === CrudState.Create)
+      return this.i18n('checkout.address.add-address');
+    if (action === CrudState.Update)
+      return this.i18n('checkout.address.edit-address');
+
+    return this.i18n('checkout.address.addresses');
+  }
+
+  protected onOpen(): void {
+    this.addressStateService.clear();
     this.open = true;
-    this.state = AddressBookState.List;
   }
 
   protected onClose(): void {
+    this.addressStateService.clear();
+    this.preselected = null;
     this.open = false;
   }
 
-  protected onRemove(ev: CustomEvent): void {
-    this.selected = ev.detail.address.id;
+  protected onBack(): void {
+    this.addressStateService.clear();
   }
 
-  protected onStateChange(e: CustomEvent): void {
-    this.state = e.detail.state;
-  }
-
-  protected renderRemoveConfirmationModal(): TemplateResult | void {
-    if (!this.selected) return;
-    return html` <oryx-modal
-      open
-      .heading=${i18n('checkout.address.remove-address')}
-      preventCloseByEscape
-      preventCloseByBackdrop
-      @oryx.close=${(e: CustomEvent): void => this.onCancelRemove(e)}
-    >
-      <oryx-user-address-remove
-        .addressId=${this.selected}
-        @oryx.cancel=${(e: CustomEvent): void => this.onCancelRemove(e)}
-        @oryx.confirm=${(e: CustomEvent): void =>
-          this.onConfirmRemove(e.detail.address)}
-      ></oryx-user-address-remove>
-    </oryx-modal>`;
-  }
-
-  protected onCancelRemove(e: CustomEvent): void {
+  protected onChange(e: CustomEvent<AddressEventDetail>): void {
     e.stopPropagation();
-    this.selected = undefined;
+    this.preselected = e.detail.address ?? null;
   }
 
-  protected onConfirmRemove(address: Address): void {
-    this.addressService
-      .deleteAddress(address)
-      .pipe(tap(() => (this.selected = undefined)))
-      .subscribe();
+  protected onSelect(): void {
+    if (this.preselected) {
+      this.dispatchEvent(
+        new CustomEvent<AddressEventDetail>('change', {
+          detail: { address: this.preselected },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
+    this.onClose();
   }
 }

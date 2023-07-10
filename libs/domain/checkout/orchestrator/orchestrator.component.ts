@@ -12,15 +12,13 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
 
   @elementEffect()
   protected eff = (): void => {
-    if (this.isInvalid()) this.report();
+    if (this.$isInvalid()) this.report();
   };
 
   protected override render(): TemplateResult | void {
-    if (this.isEmpty()) return;
+    if (this.$isEmpty()) return;
 
-    return html`
-      <experience-composition .uid=${this.uid}></experience-composition>
-    `;
+    return html` <oryx-composition .uid=${this.uid}></oryx-composition> `;
   }
 
   protected report(): void {
@@ -34,7 +32,7 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
   protected components(): (isValid & HTMLElement)[] {
     return Array.from(
       this.shadowRoot
-        ?.querySelector('experience-composition')
+        ?.querySelector('oryx-composition')
         ?.shadowRoot?.querySelectorAll('*:not(style)') ?? []
     );
   }

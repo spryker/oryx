@@ -36,7 +36,7 @@ The `oryx.typeahead` is dispatched on every _input_. You can use the native inpu
 ```html
 <oryx-search @oryx.typeahead="${typeahead}"></oryx-search>
 <script>
-  const typeahead = (e: CustomEvent<SearchEvent>): void => {
+  const typeahead = (e: CustomEvent<SearchEventDetail>): void => {
     // use e.detail.query to get the typeahead value
   };
 </script>

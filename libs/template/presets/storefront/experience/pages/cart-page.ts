@@ -12,7 +12,7 @@ export const cartPage: StaticComponent = {
       rules: [
         {
           layout: 'split-main',
-          padding: '30px 0 20px',
+          padding: '30px 0',
         },
         { query: { breakpoint: 'sm' }, gap: '0' },
       ],
@@ -21,14 +21,13 @@ export const cartPage: StaticComponent = {
   components: [
     { type: 'oryx-cart-entries' },
     {
-      type: 'experience-composition',
+      type: 'oryx-composition',
       components: [
         {
           type: 'oryx-cart-totals',
           components: [
             { type: 'oryx-cart-totals-subtotal' },
             { type: 'oryx-cart-totals-discount' },
-            { type: 'oryx-cart-totals-expense' },
             { type: 'oryx-cart-totals-tax' },
             { type: 'oryx-cart-totals-delivery' },
             { type: 'oryx-cart-totals-total' },

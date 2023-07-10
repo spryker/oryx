@@ -1,4 +1,4 @@
-import { storybookDefaultViewports } from '@spryker-oryx/ui';
+import { storybookDefaultViewports } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
