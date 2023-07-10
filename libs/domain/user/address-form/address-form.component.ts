@@ -134,7 +134,7 @@ export class UserAddressFormComponent
     if (!countries?.length || countries?.length < 2) return;
 
     return html` <oryx-select
-      label="Country"
+      label="country"
       @oryx.close=${(e: Event): void => e.stopPropagation()}
       style="grid-column: 1 / span 2"
     >
