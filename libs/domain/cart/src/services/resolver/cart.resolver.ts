@@ -35,9 +35,11 @@ export class CartResolver extends BaseResolver<CartResolvers> {
       );
     },
     EMPTY: (): ResolvedToken => {
-      return this.cartService$.getCart().pipe(
-        map((cart) => !cart?.products?.find(({quantity}) => !!quantity))
-      );
+      return this.cartService$
+        .getCart()
+        .pipe(
+          map((cart) => !cart?.products?.find(({ quantity }) => !!quantity))
+        );
     },
   };
 }

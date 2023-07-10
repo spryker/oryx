@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { of } from 'rxjs';
+import { map, of } from 'rxjs';
 import {
   ResolvedToken,
   TokenResolver,
@@ -13,8 +13,33 @@ const tokenRE = /^[A-Z_-]+\.(!?)[A-Z_-]+$/;
 export class DefaultTokenService implements TokenResolver {
   protected resolvers = new Map<string, TokenResourceResolver>();
 
+  resolveToken(token: string): ResolvedToken {
+    if (!this.isToken(token)) {
+      return of(token);
+    }
+
+    const [resourceResolver, rawResolver] = token.split('.');
+    const isNegative = this.isNegative(rawResolver);
+    const resolver = rawResolver.slice(isNegative ? 1 : 0)
+    const tokenResolver = this.getResolver(resourceResolver);
+
+    //if it is not possible to resolve the token -> return the token as result
+    if (!tokenResolver) {
+      return of(token);
+    }
+
+    return tokenResolver.resolve(resolver).pipe(map(
+      //reverse the value of negative token if needed
+      resolvedValue => isNegative ? !resolvedValue : resolvedValue
+    ));
+  }
+
   protected isToken(resolver: string): boolean {
     return tokenRE.test(resolver);
+  }
+
+  protected isNegative(resolver: string): boolean {
+    return resolver.indexOf('!') === 0;
   }
 
   protected getResolverKey(resourceResolver: string): string {
@@ -35,17 +60,5 @@ export class DefaultTokenService implements TokenResolver {
     }
 
     return this.resolvers.get(key);
-  }
-
-  resolveToken(token: string): ResolvedToken {
-    if (!this.isToken(token)) {
-      return of(token);
-    }
-
-    const [resourceResolver, resolver] = token.split('.');
-    const tokenResolver = this.getResolver(resourceResolver);
-
-    //if it is not possible to resolve the token -> return the token as result
-    return tokenResolver ? tokenResolver.resolve(resolver) : of(token);
   }
 }
