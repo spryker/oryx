@@ -68,8 +68,11 @@ export class UserAddressFormComponent
 
   protected override render(): TemplateResult | void {
     return html`
-      <form @change=${this.onChange}>
-        <oryx-layout layout="grid" style="--column-gap: 20px">
+      <form
+        @change=${this.onChange}
+        style="--oryx-grid-item-size: var(--oryx-form-grid-size)"
+      >
+        <oryx-layout layout="grid" style="gap: 20px;">
           ${this.renderCountrySelector()}
           ${this.fieldRenderer.buildForm(
             this.getFormFields(),
@@ -133,7 +136,7 @@ export class UserAddressFormComponent
     const activeCountry = this.$currentCountry();
     if (!countries?.length || countries?.length < 2) return;
 
-    return html` <oryx-select
+    return html`<oryx-select
       label="country"
       @oryx.close=${(e: Event): void => e.stopPropagation()}
       style="grid-column: 1 / span 2"
