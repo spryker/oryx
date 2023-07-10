@@ -34,6 +34,8 @@ export class DefaultLocaleService implements LocaleService {
       distinctUntilChanged(),
       map((locale, i) => {
         // Use map to access index and emit LocaleChanged only after first value
+        console.log('locale and i: ', locale, i);
+
         if (i !== 0) {
           this.queryService.emit({ type: LocaleChanged, data: locale });
         }
@@ -81,10 +83,14 @@ export class DefaultLocaleService implements LocaleService {
   }
 
   get(): Observable<string> {
+    this.active$.subscribe((v)=>console.log('get: ', v))
+
     return this.active$;
   }
 
   set(value: string): void {
+    console.log('set: ', value);
+
     this.setActive$.next(value);
   }
 
