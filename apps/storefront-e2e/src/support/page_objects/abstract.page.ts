@@ -13,6 +13,7 @@ export abstract class AbstractSFPage {
     }
 
     cy.visit(this.url);
+    this.waitForLoaded();
   }
 
   header = new HeaderFragment();
@@ -21,21 +22,11 @@ export abstract class AbstractSFPage {
 
   /**
    * Method should contain a check that will be TRUE
-   * when concrete page was successfully rendered in SPA mode
+   * when concrete page was successfully rendered
    *
    * It might be a simple element.should('be.visible') check
    * or something more complicated, like API requests interception
    * or Page Fragments initialization checks
    */
-  abstract waitForLoadedSPA(): void;
-
-  /**
-   * Method should contain a check that will be TRUE
-   * when concrete page was successfully rendered in SSR mode
-   *
-   * It might be a simple element.should('be.visible') check
-   * or something more complicated, like API requests interception
-   * or Page Fragments initialization checks
-   */
-  abstract waitForLoadedSSR(): void;
+  abstract waitForLoaded(): void;
 }

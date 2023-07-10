@@ -16,12 +16,8 @@ export class SearchPage extends AbstractSFPage {
     }
   }
 
-  waitForLoadedSSR(): void {
+  waitForLoaded(): void {
     this.getFacets().should('be.visible');
-  }
-
-  waitForLoadedSPA(): void {
-    this.waitForLoadedSSR();
   }
 
   getFacets = () => cy.get('oryx-search-facet');
