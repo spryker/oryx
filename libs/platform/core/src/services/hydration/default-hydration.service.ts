@@ -104,11 +104,12 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
         this.context
           .get(element, context)
           .pipe(skip(1), take(1))
-          .subscribe(() =>
+          .subscribe(() => {
             this.contextChange[context].forEach((el) =>
               this.hydrateOnDemand(el)
-            )
-          )
+            );
+            delete this.contextChange[context];
+          })
       );
     } else {
       this.contextChange[context].push(element);
