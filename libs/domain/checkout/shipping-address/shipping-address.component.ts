@@ -8,7 +8,7 @@ import {
 import {
   elementEffect,
   hydratable,
-  i18n,
+  I18nMixin,
   signal,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -18,7 +18,7 @@ import { CheckoutAddressComponent } from '../address';
 
 @hydratable()
 export class CheckoutShippingAddressComponent
-  extends CheckoutMixin(LitElement)
+  extends I18nMixin(CheckoutMixin(LitElement))
   implements isValid
 {
   protected addressService = resolve(AddressService);
@@ -48,7 +48,7 @@ export class CheckoutShippingAddressComponent
 
     return html`
       <oryx-checkout-header>
-        <h3>${i18n('checkout.shipping-address')}</h3>
+        <h3>${this.i18n('checkout.shipping-address')}</h3>
         ${when(
           this.$addresses()?.length,
           () =>

@@ -11,17 +11,14 @@ export class CartPage extends AbstractSFPage {
     const homePage = new LandingPage();
     homePage.visit();
     homePage.header.getCartSummary().click();
+
+    this.waitForLoaded();
   }
 
   private cartTotals = new CartTotalsFragment();
 
-  waitForLoadedSSR(): void {
+  waitForLoaded(): void {
     this.getCartEntriesWrapper().should('be.visible');
-  }
-
-  waitForLoadedSPA(): void {
-    // TODO: add move accurate check
-    this.waitForLoadedSSR();
   }
 
   getCartEntriesWrapper = () => cy.get('oryx-cart-entries');

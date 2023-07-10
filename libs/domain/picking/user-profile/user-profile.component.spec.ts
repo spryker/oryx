@@ -7,7 +7,7 @@ import { SyncSchedulerService } from '@spryker-oryx/offline';
 import { RouterService } from '@spryker-oryx/router';
 import { nextTick } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { of, switchMap } from 'rxjs';
+import { catchError, of, switchMap, throwError } from 'rxjs';
 import { UserProfileComponent } from './user-profile.component';
 import { userProfileComponent } from './user-profile.def';
 
@@ -36,7 +36,7 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 class MockAuthService implements Partial<AuthService> {
-  logout = vi.fn();
+  logout = vi.fn().mockReturnValue(of(undefined));
 }
 
 describe('UserProfileComponent', () => {
@@ -126,9 +126,8 @@ describe('UserProfileComponent', () => {
     it('should render oryx notification', () => {
       const notification =
         element.renderRoot.querySelector('oryx-notification')?.textContent;
-      expect(notification).toContain('You can');
       expect(notification).toContain(
-        't log out because of a pending synchronization'
+        "You can't log out because of a pending synchronization"
       );
     });
 
@@ -149,8 +148,32 @@ describe('UserProfileComponent', () => {
         element.renderRoot.querySelector('button')?.click();
       });
 
+      it('should show loading indicator', () => {
+        expect(element).toContainElement('oryx-button[loading]');
+      });
+
       it('should call auth service', () => {
         expect(authService.logout).toHaveBeenCalled();
+      });
+
+      describe('and when log out fails', () => {
+        beforeEach(() => {
+          authService.logout.mockReturnValue(
+            throwError(() => new Error('error'))
+          );
+          element.renderRoot.querySelector('button')?.click();
+        });
+
+        it('should not show loading indicator', () => {
+          expect(element).not.toContainElement('oryx-button[loading]');
+        });
+
+        it('auth service should throw error', () => {
+          const callback = vi.fn().mockReturnValue(of(''));
+          authService.logout().pipe(catchError(callback)).subscribe();
+
+          expect(callback).toHaveBeenCalled();
+        });
       });
     });
   });
@@ -188,9 +211,7 @@ describe('UserProfileComponent', () => {
         });
 
         it('should not show loading indicator', () => {
-          expect(
-            element.renderRoot.querySelector('oryx-button[loading]')
-          ).toBeNull();
+          expect(element).not.toContainElement('oryx-button[loading]');
         });
       });
     });

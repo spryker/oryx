@@ -13,7 +13,7 @@ import {
 import { EditTarget } from '@spryker-oryx/user/address-list-item';
 import {
   hydratable,
-  i18n,
+  I18nMixin,
   signalProperty,
   Size,
 } from '@spryker-oryx/utilities';
@@ -25,8 +25,8 @@ import { CheckoutMixin } from '../src/mixins';
 import { checkoutManageAddressStyles } from './manage-address.styles';
 
 @hydratable(['mouseover', 'focusin'])
-export class CheckoutManageAddressComponent extends AddressMixin(
-  CheckoutMixin(LitElement)
+export class CheckoutManageAddressComponent extends I18nMixin(
+  AddressMixin(CheckoutMixin(LitElement))
 ) {
   static styles = checkoutManageAddressStyles;
 
@@ -42,7 +42,7 @@ export class CheckoutManageAddressComponent extends AddressMixin(
     return html`
       <oryx-button .type=${ButtonType.Text} .size=${Size.Sm}>
         <button @click=${this.onOpen}>
-          ${i18n('checkout.address.change')}
+          ${this.i18n('checkout.address.change')}
         </button>
       </oryx-button>
 
@@ -103,7 +103,7 @@ export class CheckoutManageAddressComponent extends AddressMixin(
     if (action === CrudState.Read) {
       return html`<oryx-button slot="footer-more" .size=${Size.Md}>
         <button @click=${this.onSelect}>
-          ${i18n('checkout.address.select')}
+          ${this.i18n('checkout.address.select')}
         </button>
       </oryx-button>`;
     }
@@ -115,7 +115,7 @@ export class CheckoutManageAddressComponent extends AddressMixin(
         .loading=${this.loading}
       >
         <button @click=${this.onSave}>
-          ${i18n(['save', 'user.address.save'])}
+          ${this.i18n(['save', 'user.address.save'])}
         </button>
       </oryx-button>`;
     }
@@ -133,11 +133,11 @@ export class CheckoutManageAddressComponent extends AddressMixin(
   protected getHeading(): DirectiveResult {
     const action = this.$addressState().action;
     if (action === CrudState.Create)
-      return i18n('checkout.address.add-address');
+      return this.i18n('checkout.address.add-address');
     if (action === CrudState.Update)
-      return i18n('checkout.address.edit-address');
+      return this.i18n('checkout.address.edit-address');
 
-    return i18n('checkout.address.addresses');
+    return this.i18n('checkout.address.addresses');
   }
 
   protected onOpen(): void {

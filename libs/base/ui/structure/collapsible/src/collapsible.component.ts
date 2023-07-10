@@ -47,14 +47,14 @@ export class CollapsibleComponent
       <slot name="collapsed">
         ${when(
           !this.isTextTrigger,
-          () => html`<oryx-icon .type=${IconTypes.Expand}></oryx-icon>`,
+          () => html`<oryx-icon .type=${IconTypes.Minus}></oryx-icon>`,
           () => html`Hide`
         )}
       </slot>
       <slot name="expanded">
         ${when(
           !this.isTextTrigger,
-          () => html`<oryx-icon .type=${IconTypes.Collapse}></oryx-icon>`,
+          () => html`<oryx-icon .type=${IconTypes.Add}></oryx-icon>`,
           () => html`Show`
         )}
       </slot>

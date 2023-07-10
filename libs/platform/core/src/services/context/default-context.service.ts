@@ -9,7 +9,7 @@ import {
   Subject,
   switchMap,
 } from 'rxjs';
-import { ContextService, ContextServiceFallback } from './context.service';
+import { ContextFallback, ContextService } from './context.service';
 
 declare global {
   interface Node {
@@ -113,7 +113,7 @@ export class DefaultContextService implements ContextService {
         switchMap((value) =>
           value === undefined
             ? this.injector.inject<Observable<T>>(
-                `${ContextServiceFallback}${token}`,
+                `${ContextFallback}${token}`,
                 of(value)
               )
             : of(value)

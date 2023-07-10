@@ -1,4 +1,4 @@
-import { ContextServiceFallback } from '@spryker-oryx/core';
+import { ContextFallback } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { map } from 'rxjs';
@@ -9,7 +9,7 @@ export const enum ArticleContext {
 }
 
 export const ArticleIdContextFallback: Provider = {
-  provide: `${ContextServiceFallback}${ArticleContext.Id}`,
+  provide: `${ContextFallback}${ArticleContext.Id}`,
   useFactory: () =>
     inject(RouterService)
       .currentParams()
@@ -17,7 +17,7 @@ export const ArticleIdContextFallback: Provider = {
 };
 
 export const ArticleTypeContextFallback: Provider = {
-  provide: `${ContextServiceFallback}${ArticleContext.Type}`,
+  provide: `${ContextFallback}${ArticleContext.Type}`,
   useFactory: () =>
     inject(RouterService)
       .currentRoute()

@@ -1,17 +1,25 @@
-import { fixture, html } from '@open-wc/testing-helpers';
+import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { LitElement, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { FormFieldDefinition, FormFieldType } from '../models';
 import { DefaultFormRenderer } from './default-form.renderer';
 import { FormRenderer } from './form.renderer';
 import { FormFieldRenderer } from './renderer';
 
+@customElement('mock-form')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+class MockFormComponent extends LitElement {
+  render(): TemplateResult {
+    return html`<slot></slot>`;
+  }
+}
+
 @customElement('mock-field')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MockFieldComponent extends LitElement {
   render(): TemplateResult {
-    return html`<div>mock input</div>`;
+    return html`<div></div>`;
   }
 }
 
@@ -21,9 +29,18 @@ class MockRenderer {
 
 const mockRenderer = `${FormFieldRenderer}-mock`;
 
+const inputFields = [
+  { type: FormFieldType.Text },
+  { type: FormFieldType.Phone },
+  { type: FormFieldType.Email },
+  { type: FormFieldType.Number },
+];
+
 describe('DefaultFormRenderer', () => {
-  let service: DefaultFormRenderer;
+  let element: MockFormComponent;
+  let service: FormRenderer;
   let renderer: MockRenderer;
+
   beforeEach(async () => {
     const testInjector = createInjector({
       providers: [
@@ -38,566 +55,330 @@ describe('DefaultFormRenderer', () => {
       ],
     });
 
-    service = testInjector.inject(FormRenderer) as DefaultFormRenderer;
+    service = testInjector.inject(FormRenderer);
     renderer = testInjector.inject(mockRenderer);
   });
 
   afterEach(() => {
+    vi.clearAllMocks();
     destroyInjector();
   });
 
-  describe('fieldValidationPattern()', () => {
-    describe('when field does not have validation patterns', () => {
-      it('should not assign default values', () => {
-        const { pattern, title } = service.fieldValidationPattern({
-          id: 'test',
-        });
-
-        expect(pattern).toBeUndefined();
-        expect(title).toBeUndefined();
-      });
-
-      describe('and field is required', () => {
-        it('should return default values', () => {
-          const { pattern, title } = service.fieldValidationPattern({
-            id: 'test',
-            required: true,
-          });
-
-          expect(pattern).toBe('.*\\S+.*');
-          expect(title).toBe('Invalid empty text');
-        });
-      });
-    });
-
-    describe('when field has own validation patterns', () => {
-      const validationPattern = {
-        pattern: 'testPattern',
-        title: 'testTitle',
-      };
-
-      it('should assign field values', () => {
-        const { pattern, title } = service.fieldValidationPattern({
-          id: 'test',
-          ...validationPattern,
-        });
-
-        expect(pattern).toBe(validationPattern.pattern);
-        expect(title).toBe(validationPattern.title);
-      });
-    });
-  });
-
-  describe('formatFormData()', () => {
-    let element: HTMLFormElement;
-
-    describe('when there are no form elements', () => {
-      beforeEach(async () => {
-        element = await fixture(html`<form></form>`);
-      });
-
-      it('should return an empty object', () => {
-        expect(service.formatFormData(element)).toStrictEqual({});
-      });
-    });
-
-    describe('when a checkbox is checked', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`
-            <form>
-              <input name="foo" value="bar" />
-              <input type="checkbox" checked name="checkbox" />
-            </form>
-          `
-        );
-      });
-
-      it('should convert it to a boolean value', () => {
-        expect(service.formatFormData(element)).toStrictEqual({
-          foo: 'bar',
-          checkbox: true,
-        });
-      });
-    });
-
-    describe('when a checkbox is unchecked', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<form>
-            <input name="foo" value="bar" />
-            <input type="checkbox" name="checkbox" />
-          </form>`
-        );
-      });
-
-      it('should not add the checkbox field', () => {
-        expect(service.formatFormData(element)).toStrictEqual({
-          foo: 'bar',
-        });
-      });
-    });
+  it('should be provided', () => {
+    expect(service).toBeInstanceOf(DefaultFormRenderer);
   });
 
   describe('build', () => {
-    let element: HTMLElement;
-    let field: FormFieldDefinition;
+    const mockForm = async (
+      field: FormFieldDefinition,
+      value?: Record<string, string | boolean>
+    ) =>
+      (element = await fixture(
+        html`<mock-form>${service.buildForm([field], value)} </mock-form>`
+      ));
 
-    const expectFieldAttributeValue = (
-      selector: string,
-      attr: string,
-      value?: string | boolean | number
-    ): void => {
-      it(`should have an ${selector} with proper value`, () => {
-        const control = element.querySelector(selector);
-        expect(control?.[attr as keyof Element]).toBe(
-          attr === 'name' ? field.id : value
-        );
-      });
-    };
+    describe('text fields', () => {
+      inputFields.forEach((f: { type: FormFieldType }) => {
+        describe(f.type, () => {
+          describe(`when a value is provided`, () => {
+            beforeEach(async () => {
+              element = await mockForm(
+                {
+                  id: 'f',
+                  type: f.type,
+                },
+                { f: 'v' }
+              );
+            });
 
-    const expectComponentTag = (tag: string): void => {
-      it('should render the element', () => {
-        expect(element.tagName).toBe(tag.toUpperCase());
-      });
-    };
-
-    const setup = async (
-      definition: Partial<FormFieldDefinition>,
-      value?: string | boolean
-    ): Promise<void> => {
-      field = {
-        id: 'foo',
-        ...definition,
-      };
-      element = await fixture(service.buildField(field, value));
-    };
-
-    describe('field label', () => {
-      describe('when there is no label', () => {
-        describe('and the field id has no camelCase letters', () => {
-          const field: FormFieldDefinition = {
-            id: 'field',
-            type: FormFieldType.Text,
-          };
-          beforeEach(async () => {
-            await service.buildField(field);
+            it('should render the value', () => {
+              expect(element).toContainElement(`input[value='v']`);
+            });
           });
 
-          it('should use the field id as a label', () => {
-            expect(field.label).toBe('field');
-          });
-        });
+          describe(`when a value is not provided`, () => {
+            beforeEach(async () => {
+              element = await mockForm({
+                id: 'f',
+                type: f.type,
+              });
+            });
 
-        describe('and the field id has camelCase letters', () => {
-          const field: FormFieldDefinition = {
-            id: 'firstSecondLast',
-            type: FormFieldType.Text,
-          };
-
-          beforeEach(async () => {
-            await service.buildField(field);
+            it('should not render the value', () => {
+              expect(element).toContainElement(`input[value='']`);
+            });
           });
 
-          it('should use add spaces in the label', () => {
-            expect(field.label).toBe('first second last');
+          describe(`when a pattern is provided`, () => {
+            beforeEach(async () => {
+              element = await mockForm({
+                id: 'f',
+                type: f.type,
+                pattern: 'p',
+              });
+            });
+
+            it('should add the pattern as attribute', () => {
+              expect(element).toContainElement(`input[pattern='p']`);
+            });
           });
-        });
-      });
 
-      describe('when the label is empty', () => {
-        const field: FormFieldDefinition = {
-          id: 'field-id',
-          type: FormFieldType.Text,
-          label: '',
-        };
+          describe(`when a placeholder is provided`, () => {
+            beforeEach(async () => {
+              element = await mockForm({
+                id: 'f',
+                type: f.type,
+                placeholder: 'p',
+              });
+            });
 
-        beforeEach(async () => {
-          await service.buildField(field);
-        });
+            it('should render the placeholder', () => {
+              expect(element).toContainElement(`input[placeholder='p']`);
+            });
+          });
 
-        it('should use the field id as a label', () => {
-          expect(field.label).toBe('field-id');
-        });
-      });
+          describe(`when a placeholder is not provided `, () => {
+            beforeEach(async () => {
+              element = await mockForm({
+                id: 'f',
+                type: f.type,
+              });
+            });
 
-      describe('when there is a label', () => {
-        const field: FormFieldDefinition = {
-          id: 'field-id',
-          type: FormFieldType.Text,
-          label: 'my-label',
-        };
-
-        beforeEach(async () => {
-          await service.buildField(field);
-        });
-
-        it('should not change the label', () => {
-          expect(field.label).toBe('my-label');
+            it('should render the placeholder', () => {
+              expect(element).toContainElement(`input:not([placeholder])`);
+            });
+          });
         });
       });
     });
 
-    describe('classMap', () => {
-      describe('when there is no width', () => {
-        const field: FormFieldDefinition = {
-          id: 'field-id',
-          type: FormFieldType.Text,
-        };
-
+    describe('when the field type is number', () => {
+      describe('and a min length is provided', () => {
         beforeEach(async () => {
-          element = await fixture(service.buildField(field));
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Number,
+            min: 5,
+          });
         });
 
-        it('should have w50 class', () => {
-          expect(element.classList.contains('w50')).toBe(true);
+        it('should add the min attribute', () => {
+          expect(element).toContainElement(`input[min='5']`);
         });
       });
 
-      describe('when the width is 100', () => {
-        const field: FormFieldDefinition = {
-          id: 'field-id',
-          type: FormFieldType.Text,
-          width: 100,
-        };
-
+      describe('and a max length is provided', () => {
         beforeEach(async () => {
-          element = await fixture(service.buildField(field));
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Number,
+            max: 5,
+          });
         });
 
-        it('should have w100 class', () => {
-          expect(element.classList.contains('w100')).toBe(true);
-        });
-      });
-
-      describe('when the width is 50', () => {
-        const field: FormFieldDefinition = {
-          id: 'field-id',
-          type: FormFieldType.Text,
-          width: 50,
-        };
-        beforeEach(async () => {
-          element = await fixture(service.buildField(field));
-        });
-        it('should have w50 class', () => {
-          expect(element.classList.contains('w50')).toBe(true);
+        it('should add the max attribute', () => {
+          expect(element).toContainElement(`input[max='5']`);
         });
       });
     });
 
-    describe('unknown type', () => {
-      describe('when an unknown field type is provided', () => {
+    describe('when the field type is boolean', () => {
+      describe('and there is no value', () => {
         beforeEach(async () => {
-          await setup({ type: 'unknown' });
-        });
-
-        it('should not have an input element', () => {
-          expect(element).toBeNull();
-        });
-      });
-    });
-
-    describe('input', () => {
-      describe('when a legacy input field is built', () => {
-        beforeEach(async () => {
-          await setup({ type: 'input' }, 'value');
-        });
-
-        expectComponentTag('oryx-input');
-        expectFieldAttributeValue('input', 'name');
-        expectFieldAttributeValue('input', 'value', 'value');
-        expectFieldAttributeValue('input', 'type', 'text');
-        expectFieldAttributeValue('input', 'required', false);
-      });
-
-      describe('when a required input field is built', () => {
-        beforeEach(async () => {
-          await setup({ type: 'input', required: true });
-        });
-
-        expectComponentTag('oryx-input');
-        expectFieldAttributeValue('input', 'required', true);
-      });
-
-      describe('when a text field is built', () => {
-        describe('and a value is given', () => {
-          beforeEach(async () => {
-            await setup({ type: FormFieldType.Text }, 'value');
+          element = await mockForm({
+            id: 'f',
+            type: FormFieldType.Boolean,
           });
-
-          expectComponentTag('oryx-input');
-          expectFieldAttributeValue('input', 'name');
-          expectFieldAttributeValue('input', 'value', 'value');
-          expectFieldAttributeValue('input', 'type', 'text');
         });
 
-        describe('and no value is given', () => {
-          beforeEach(async () => {
-            await setup({ type: FormFieldType.Text });
-          });
-
-          expectFieldAttributeValue('input', 'value', '');
-        });
-
-        describe('and it has a range', () => {
-          beforeEach(async () => {
-            await setup({ type: FormFieldType.Text, min: 4, max: 50 });
-          });
-
-          expectFieldAttributeValue('input', 'minLength', 4);
-          expectFieldAttributeValue('input', 'maxLength', 50);
-        });
-      });
-
-      describe('when a number field is built', () => {
-        describe('and a value is given', () => {
-          beforeEach(async () => {
-            await setup({ type: FormFieldType.Number }, '0');
-          });
-
-          expectComponentTag('oryx-input');
-          expectFieldAttributeValue('input', 'name');
-          expectFieldAttributeValue('input', 'value', '0');
-          expectFieldAttributeValue('input', 'type', 'number');
-        });
-
-        describe('and no value is given', () => {
-          beforeEach(async () => {
-            await setup({ type: FormFieldType.Number });
-          });
-
-          expectFieldAttributeValue('input', 'value', '');
-        });
-
-        describe('and it has a range', () => {
-          beforeEach(async () => {
-            await setup({ type: FormFieldType.Number, min: 4, max: 50 });
-          });
-
-          expectFieldAttributeValue('input', 'min', '4');
-          expectFieldAttributeValue('input', 'max', '50');
-        });
-      });
-
-      describe('when a textarea type is requested', () => {
-        beforeEach(async () => {
-          await setup({ type: FormFieldType.Textarea }, 'rich text');
-        });
-
-        expectComponentTag('oryx-input');
-        expectFieldAttributeValue('textarea', 'name');
-        expectFieldAttributeValue('textarea', 'value', 'rich text');
-
-        it('should have an textarea element', () => {
-          expect(element.querySelector('textarea')).toBeDefined();
-        });
-      });
-
-      describe('when a color field is built', () => {
-        describe('when a value is provider', () => {
-          beforeEach(async () => {
-            await setup({ type: FormFieldType.Color }, '#ffcc00');
-          });
-
-          expectComponentTag('oryx-input');
-          expectFieldAttributeValue('input', 'name');
-          expectFieldAttributeValue('input', 'value', '#ffcc00');
-          expectFieldAttributeValue('input', 'type', 'color');
-        });
-
-        describe('when no value is provider', () => {
-          beforeEach(async () => {
-            await setup({ type: FormFieldType.Color });
-          });
-
-          expectFieldAttributeValue('input', 'value', '#000000');
-        });
-      });
-    });
-
-    describe('when a boolean type is requested', () => {
-      beforeEach(async () => {
-        await setup({ type: FormFieldType.Boolean }, true);
-      });
-
-      expectComponentTag('oryx-checkbox');
-      expectFieldAttributeValue('input', 'name');
-      expectFieldAttributeValue('input', 'type', 'checkbox');
-      expectFieldAttributeValue('input', 'checked', true);
-
-      describe('when no value is provider', () => {
-        beforeEach(async () => {
-          await setup({ type: FormFieldType.Boolean });
-        });
-
-        expectFieldAttributeValue('input', 'checked', false);
-      });
-    });
-
-    describe('when a custom field type is requested', () => {
-      beforeEach(async () => {
-        await setup({ type: 'mock', label: 'mock' }, 'value');
-      });
-
-      expectComponentTag('mock-field');
-
-      it('should call the mock field renderer', () => {
-        expect(renderer.render).toHaveBeenCalledWith(field, 'value');
-      });
-
-      it('should have custom field content', () => {
-        const div = element.shadowRoot?.querySelector('div');
-        expect(div?.innerText).toBe('mock input');
-      });
-    });
-
-    describe('when a toggle field is built', () => {
-      beforeEach(async () => {
-        await setup({ type: FormFieldType.Toggle }, true);
-      });
-
-      expectComponentTag('oryx-toggle');
-      expectFieldAttributeValue('input', 'name');
-      expectFieldAttributeValue('input', 'type', 'checkbox');
-      expectFieldAttributeValue('input', 'checked', true);
-
-      describe('when no value is provider', () => {
-        beforeEach(async () => {
-          await setup({ type: FormFieldType.Toggle });
-        });
-
-        expectFieldAttributeValue('input', 'checked', false);
-      });
-    });
-
-    describe('when a toggle icon field is built', () => {
-      const options = [
-        { value: 'a', text: 'alpha', icon: 'alpha' },
-        { value: 'b', text: 'beta', icon: 'beta' },
-        { value: 'c', text: 'charlie', icon: 'charlie' },
-      ];
-
-      beforeEach(async () => {
-        await setup({ type: FormFieldType.ToggleButton, options }, 'b');
-      });
-
-      expectComponentTag('oryx-input-list');
-
-      it('should have 3 toggle-icon option', () => {
-        const toggleIcons = element.querySelectorAll('oryx-toggle-icon');
-        expect(toggleIcons.length).toBe(3);
-      });
-
-      options.forEach((option) => {
-        it('should have a toggle-icon for each option', () => {
-          expect(
-            element.querySelector(`input[value="${option.value}"]`)
-          ).toBeDefined();
-        });
-
-        it(`should render the text "${option.text}" inside the button`, () => {
-          const text = element.querySelector(
-            `input[value="${option.value}"] ~ span`
+        it('should render a checkbox component', () => {
+          expect(element).toContainElement(
+            `oryx-checkbox input[name="f"][type="checkbox"]:not([checked])`
           );
-          expect(text?.textContent?.trim()).toBe(option.text);
         });
+      });
 
-        it(`should render an oryx-icon for the icon type (${option.icon}) inside the button`, () => {
-          const icon = element.querySelector(
-            `input[value="${option.value}"] + oryx-icon`
+      describe('and there is a value', () => {
+        beforeEach(async () => {
+          element = await mockForm(
+            { id: 'f', type: FormFieldType.Boolean },
+            { f: true }
           );
-          expect(icon).toHaveProperty('type', option.icon);
-        });
-      });
-
-      it('should select the right option for the value', () => {
-        expect(
-          element.querySelector('input[value="b"][checked]')
-        ).toBeDefined();
-      });
-    });
-
-    describe('when a select field is built', () => {
-      describe('when a value is provided', () => {
-        const options = [{ value: 'a' }, { value: 'b' }, { value: 'c' }];
-
-        beforeEach(async () => {
-          await setup({ type: FormFieldType.Select, options }, 'b');
         });
 
-        expectComponentTag('oryx-select');
-
-        it('should have a selected option', () => {
-          const select = element?.querySelector('option[selected');
-          expect(select?.textContent?.trim()).toBe('b');
-        });
-      });
-
-      describe('when no value is provided', () => {
-        const options = [{ value: 'a' }, { value: 'b' }, { value: 'c' }];
-
-        beforeEach(async () => {
-          await setup({ type: FormFieldType.Select, options });
-        });
-
-        it('should not have a selected option', () => {
-          expect(element).not.toContainElement('option[selected]');
+        it('should render a checked checkbox component', () => {
+          expect(element).toContainElement(
+            `oryx-checkbox input[name="f"][type="checkbox"][checked]`
+          );
         });
       });
     });
 
-    describe('when a list of radio fields is built', () => {
-      const field = {
-        type: FormFieldType.RadioList,
-        options: [
-          { value: 'a', text: 'text a' },
-          { value: 'b', text: 'text b' },
-          { value: 'c', text: 'text c' },
-        ],
-        label: 'test',
-        attributes: { direction: 'test' },
-      };
+    describe('required', () => {
+      [
+        ...inputFields,
+        { type: FormFieldType.Textarea, selector: 'textarea' },
+        { type: FormFieldType.Boolean },
+        { type: FormFieldType.Select, selector: 'select' },
+        { type: FormFieldType.Toggle },
+      ].forEach((f: { type: FormFieldType; selector?: string }) => {
+        describe(`when the ${f.type} field is required`, () => {
+          beforeEach(async () => {
+            element = await mockForm({ id: 'f', type: f.type, required: true });
+          });
 
-      beforeEach(async () => {
-        await setup(field, 'b');
-      });
-
-      expectComponentTag('oryx-input-list');
-
-      it('should have a checked input', () => {
-        const checked =
-          element.querySelector<HTMLInputElement>('input[checked]');
-        expect(checked?.value).toBe('b');
-      });
-
-      it('should set the label', () => {
-        expect(element.getAttribute('heading')).toBe(field.label);
-      });
-
-      it('should set the direction', () => {
-        expect(element.getAttribute('direction')).toBe(
-          field.attributes.direction
-        );
-      });
-
-      it('should render inputs labels', () => {
-        const radio = element.querySelector('oryx-radio');
-        expect(radio?.textContent?.trim()).toContain(field.options[0].text);
-      });
-
-      describe('when texts for inputs are not provided', () => {
-        const field = {
-          type: FormFieldType.RadioList,
-          options: [{ value: 'a' }, { value: 'b' }, { value: 'c' }],
-        };
-
-        beforeEach(async () => {
-          await setup(field, 'b');
+          it('should render a required field', () => {
+            expect(element).toContainElement(
+              `${f.selector ?? 'input'}[required]`
+            );
+          });
         });
 
-        it('should render inputs values as labels', () => {
-          const radio = element.querySelector('oryx-radio');
-          expect(radio?.textContent?.trim()).toContain(field.options[0].value);
+        describe(`when the  ${f.type} field is not required`, () => {
+          beforeEach(async () => {
+            element = await mockForm({ id: 'f', type: f.type });
+          });
+
+          it('should render a required field', () => {
+            expect(element).toContainElement(
+              `${f.selector ?? 'input'}:not([required])`
+            );
+          });
+        });
+      });
+
+      [
+        { type: FormFieldType.ToggleButton },
+        { type: FormFieldType.RadioList },
+      ].forEach((f) => {
+        describe(`when the ${f.type} field is required`, () => {
+          beforeEach(async () => {
+            element = await mockForm({
+              id: 'f',
+              type: f.type,
+              required: true,
+              options: [{ value: 'foo' }, { value: 'bar' }],
+            });
+          });
+
+          it('should mark each option as a required field', () => {
+            const list = element.querySelector('oryx-input-list');
+            expect(list).toContainElement(`input[required][value='foo']`);
+            expect(list).toContainElement(`input[required][value='bar']`);
+          });
+        });
+
+        describe(`when the ${f.type} field is not required`, () => {
+          beforeEach(async () => {
+            element = await mockForm({
+              id: 'f',
+              type: f.type,
+              options: [{ value: 'foo' }, { value: 'bar' }],
+            });
+          });
+
+          it('should not mark each option as a required field', () => {
+            const list = element.querySelector('oryx-input-list');
+            expect(list).toContainElement(`input:not([required])[value='foo']`);
+            expect(list).toContainElement(`input:not([required])[value='bar']`);
+          });
+        });
+      });
+    });
+
+    describe('style', () => {
+      [
+        ...inputFields,
+        { type: FormFieldType.Textarea },
+        { type: FormFieldType.Boolean, selector: 'oryx-checkbox' },
+        { type: FormFieldType.Select, selector: 'oryx-select' },
+        { type: FormFieldType.Toggle, selector: 'oryx-toggle' },
+        { type: FormFieldType.ToggleButton, selector: 'oryx-input-list' },
+        { type: FormFieldType.RadioList, selector: 'oryx-input-list' },
+      ].forEach((f: { type: FormFieldType; selector?: string }) => {
+        describe(`when the ${f.type} field has a width of 100`, () => {
+          beforeEach(async () => {
+            element = await mockForm({ id: 'f', type: f.type, width: 100 });
+          });
+
+          it('should render the style', () => {
+            const input = element.querySelector(f.selector ?? 'oryx-input');
+
+            expect(input?.getAttribute('style')).toContain(
+              'grid-column: auto / span 2'
+            );
+          });
+        });
+
+        describe(`when the ${f.type} field has no width`, () => {
+          beforeEach(async () => {
+            element = await mockForm({ id: 'f', type: f.type });
+          });
+
+          it('should not render a style', () => {
+            const input = element.querySelector(f.selector ?? 'oryx-input');
+            expect(input?.getAttribute('style')).toBe('');
+          });
+        });
+      });
+    });
+
+    describe('floating label', () => {
+      [
+        ...inputFields,
+        { type: FormFieldType.Textarea },
+        { type: FormFieldType.Select, selector: 'oryx-select' },
+      ].forEach((f: { type: FormFieldType; selector?: string }) => {
+        describe(`when the ${f.type} field has a floating label`, () => {
+          beforeEach(async () => {
+            element = await mockForm({
+              id: 'f',
+              type: f.type,
+              floatLabel: true,
+            });
+          });
+
+          it('should render a floating label', () => {
+            expect(element).toContainElement(
+              `${f.selector ?? 'oryx-input'}[floatLabel]`
+            );
+          });
+        });
+
+        describe(`when the ${f.type} field has no floating label`, () => {
+          beforeEach(async () => {
+            element = await mockForm({ id: 'f', type: f.type });
+          });
+
+          it('should not render a floating label', () => {
+            expect(element).toContainElement(
+              `${f.selector ?? 'oryx-input'}:not([floatLabel])`
+            );
+          });
+        });
+      });
+    });
+
+    describe('custom renderer', () => {
+      describe('when a custom field type is requested', () => {
+        const field = { id: 'foo', type: 'mock' };
+
+        beforeEach(async () => {
+          element = await mockForm(field);
+        });
+
+        it('should render the element', () => {
+          expect(element).toContainElement('mock-field');
+        });
+
+        it('should call the mock field renderer', () => {
+          expect(renderer.render).toHaveBeenCalledWith(field, undefined);
+        });
+
+        it('should have custom field content', () => {
+          const customFieldElement = element.querySelector('mock-field');
+          expect(customFieldElement).toContainElement('div');
         });
       });
     });

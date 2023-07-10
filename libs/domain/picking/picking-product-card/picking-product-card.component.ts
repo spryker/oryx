@@ -7,7 +7,7 @@ import {
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n } from '@spryker-oryx/utilities';
+import { I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -16,7 +16,7 @@ import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { pickingProductCardComponentStyles } from './picking-product-card.styles';
 
-export class PickingProductCardComponent extends LitElement {
+export class PickingProductCardComponent extends I18nMixin(LitElement) {
   static styles = pickingProductCardComponentStyles;
 
   @property() productItem?: PickingListItem;
@@ -94,7 +94,7 @@ export class PickingProductCardComponent extends LitElement {
         ></oryx-cart-quantity-input>
 
         <div>
-          ${i18n('picking.product-card.of-<count>-items', {
+          ${this.i18n('picking.product-card.of-<count>-items', {
             count: this.productItem.quantity,
           })}
         </div>
@@ -102,7 +102,7 @@ export class PickingProductCardComponent extends LitElement {
         <oryx-button>
           <button ?disabled="${!this.isCorrectNumberOfPickedProvided}">
             <oryx-icon .type=${IconTypes.Check}></oryx-icon>
-            ${i18n('picking.product-card.done')}
+            ${this.i18n('picking.product-card.done')}
           </button>
         </oryx-button>
       </form>
@@ -147,17 +147,17 @@ export class PickingProductCardComponent extends LitElement {
       text = `${this.productItem.numberOfPicked}/${this.productItem.quantity}`;
 
       if (this.productItem.numberOfPicked < this.productItem.quantity) {
-        label = i18n('picking.product-card.items-picked') as string;
+        label = this.i18n('picking.product-card.items-picked') as string;
       } else {
-        subtext = i18n('picking.product-card.all-items-picked') as string;
+        subtext = this.i18n('picking.product-card.all-items-picked') as string;
       }
     } else if (this.status === ItemsFilters.NotFound) {
       text = `${this.productItem.numberOfNotPicked}/${this.productItem.quantity}`;
 
       if (this.productItem.numberOfNotPicked < this.productItem.quantity) {
-        label = i18n('picking.product-card.items-not-found') as string;
+        label = this.i18n('picking.product-card.items-not-found') as string;
       } else {
-        subtext = i18n('picking.product-card.no-items-found') as string;
+        subtext = this.i18n('picking.product-card.no-items-found') as string;
       }
     }
 
@@ -169,7 +169,7 @@ export class PickingProductCardComponent extends LitElement {
       <oryx-button>
         <button @click=${this.editProductPicking}>
           <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
-          ${i18n('picking.product-card.edit-items')}
+          ${this.i18n('picking.product-card.edit-items')}
         </button>
       </oryx-button>
     `;

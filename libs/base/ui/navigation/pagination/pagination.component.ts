@@ -1,5 +1,5 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n } from '@spryker-oryx/utilities';
+import { I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -8,7 +8,7 @@ import { PaginationProperties } from './pagination.model';
 import { paginationStyles } from './pagination.styles';
 
 export class PaginationComponent
-  extends LitElement
+  extends I18nMixin(LitElement)
   implements PaginationProperties
 {
   static styles = [paginationStyles];
@@ -16,8 +16,8 @@ export class PaginationComponent
   @property({ type: Boolean, reflect: true }) enableNavigation?: boolean;
   @property({ type: Number }) max = 5;
   @property({ type: Number }) current = 1;
-  @property() previousLabel = i18n('oryx.pagination.previous-page');
-  @property() nextLabel = i18n('oryx.pagination.next-page');
+  @property() previousLabel = this.i18n('oryx.pagination.previous-page');
+  @property() nextLabel = this.i18n('oryx.pagination.next-page');
   @queryAssignedElements({}) pages?: Array<HTMLElement>;
 
   protected controller = new PaginationController(this);

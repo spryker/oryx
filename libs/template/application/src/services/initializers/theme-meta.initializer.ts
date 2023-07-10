@@ -26,7 +26,7 @@ export class DefaultThemeMetaInitializer implements AppInitializer {
       {
         name: 'style',
         attrs: {
-          text: 'body {margin: 0;}',
+          text: ':root{font-size: 14px}body {margin: 0;}',
         },
       },
     ]);

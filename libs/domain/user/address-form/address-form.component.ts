@@ -5,7 +5,6 @@ import {
   FormFieldType,
   FormMixin,
   FormRenderer,
-  formStyles,
   FormValues,
 } from '@spryker-oryx/form';
 import { CountryService } from '@spryker-oryx/site';
@@ -19,7 +18,6 @@ import {
 import {
   computed,
   hydratable,
-  i18n,
   signal,
   signalProperty,
 } from '@spryker-oryx/utilities';
@@ -30,7 +28,6 @@ import {
   AddressFormAttributes,
   AddressFormOptions,
 } from './address-form.model';
-import { styles } from './address-form.styles';
 
 @defaultOptions({ fallbackCountry: 'DE' })
 @hydratable(['mouseover', 'focusin'])
@@ -38,8 +35,6 @@ export class UserAddressFormComponent
   extends FormMixin(ContentMixin<AddressFormOptions>(LitElement))
   implements AddressFormAttributes
 {
-  static styles = [styles, formStyles];
-
   protected countryService = resolve(CountryService);
   protected addressService = resolve(AddressService);
   protected addressFormService = resolve(AddressFormService);
@@ -72,13 +67,20 @@ export class UserAddressFormComponent
   @query('form') protected form?: HTMLFormElement;
 
   protected override render(): TemplateResult | void {
-    return html`<form @change=${this.onChange}>
-      ${this.renderCountrySelector()}
-      ${this.fieldRenderer.buildForm(
-        this.getFormFields(),
-        this.getFormValues()
-      )}
-    </form>`;
+    return html`
+      <form
+        @change=${this.onChange}
+        style="--oryx-grid-item-size: var(--oryx-form-grid-size)"
+      >
+        <oryx-layout layout="grid" style="--column-gap: 20px;--row-gap: 20px;">
+          ${this.renderCountrySelector()}
+          ${this.fieldRenderer.buildForm(
+            this.getFormFields(),
+            this.getFormValues()
+          )}
+        </oryx-layout>
+      </form>
+    `;
   }
 
   protected getFormValues(): FormValues {
@@ -113,7 +115,7 @@ export class UserAddressFormComponent
       formFields.push({
         id: 'isDefaultShipping',
         type: FormFieldType.Boolean,
-        label: i18n('form.address.default-delivery-address'),
+        label: this.i18n('form.address.default-delivery-address'),
         width: 100,
       });
     }
@@ -121,7 +123,7 @@ export class UserAddressFormComponent
       formFields.push({
         id: 'isDefaultBilling',
         type: FormFieldType.Boolean,
-        label: i18n('form.address.default-billing-address'),
+        label: this.i18n('form.address.default-billing-address'),
         width: 100,
       });
     }
@@ -134,10 +136,10 @@ export class UserAddressFormComponent
     const activeCountry = this.$currentCountry();
     if (!countries?.length || countries?.length < 2) return;
 
-    return html` <oryx-select
-      class="w100"
-      label="Country"
+    return html`<oryx-select
+      label="country"
       @oryx.close=${(e: Event): void => e.stopPropagation()}
+      style="grid-column: 1 / span 2"
     >
       <select
         name="iso2Code"

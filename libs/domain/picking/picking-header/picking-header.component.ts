@@ -3,13 +3,15 @@ import { PickingHeaderService, PickingListMixin } from '@spryker-oryx/picking';
 import { DiscardPickingComponent } from '@spryker-oryx/picking/discard-modal';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n, subscribe } from '@spryker-oryx/utilities';
+import { I18nMixin, subscribe } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { tap } from 'rxjs';
 import { styles } from './picking-header.styles';
 
-export class PickingHeaderComponent extends PickingListMixin(LitElement) {
+export class PickingHeaderComponent extends I18nMixin(
+  PickingListMixin(LitElement)
+) {
   static styles = styles;
 
   protected routerService = resolve(RouterService);
@@ -34,7 +36,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
       ? html`
           <oryx-icon-button>
             <button
-              aria-label=${i18n('oryx.picking.customer-note')}
+              aria-label=${this.i18n('oryx.picking.customer-note')}
               @click=${() => (this.isCartNoteVisible = true)}
             >
               <oryx-icon type=${IconTypes.Info}></oryx-icon>
@@ -53,7 +55,7 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
   protected override render(): TemplateResult {
     return html` <oryx-icon-button>
         <button
-          aria-label=${i18n('oryx.picking.back-to-pick-lists')}
+          aria-label=${this.i18n('oryx.picking.back-to-pick-lists')}
           class="back"
           href="#"
           @click=${this.back}
@@ -66,10 +68,10 @@ export class PickingHeaderComponent extends PickingListMixin(LitElement) {
       <oryx-site-navigation-item
         uid="user-profile"
         .options=${{
-          icon: IconTypes.Profile,
+          icon: IconTypes.User,
           triggerType: 'icon',
           contentBehavior: 'modal',
-          label: i18n('oryx.picking.account'),
+          label: this.i18n('oryx.picking.account'),
         }}
       ></oryx-site-navigation-item>
       <oryx-discard-picking

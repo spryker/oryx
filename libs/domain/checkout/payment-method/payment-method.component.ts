@@ -1,12 +1,12 @@
 import { CheckoutMixin, isValid, PaymentMethod } from '@spryker-oryx/checkout';
-import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import { hydratable, I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { styles } from './payment-method.styles';
 
 @hydratable('window:load')
 export class CheckoutPaymentMethodComponent
-  extends CheckoutMixin(LitElement)
+  extends I18nMixin(CheckoutMixin(LitElement))
   implements isValid
 {
   static styles = styles;
@@ -32,7 +32,7 @@ export class CheckoutPaymentMethodComponent
     if (!methods?.length) return this.renderEmpty();
 
     return html`<oryx-checkout-header>
-        <h2>${i18n('checkout.payment-methods')}</h2>
+        <h2>${this.i18n('checkout.payment-methods')}</h2>
       </oryx-checkout-header>
       <form>${methods.map((method) => this.renderMethod(method))}</form>`;
   }
@@ -51,7 +51,7 @@ export class CheckoutPaymentMethodComponent
         />
         ${method.name}
         <span slot="subtext">
-          ${i18n('checkout.payment.select-<method>', {
+          ${this.i18n('checkout.payment.select-<method>', {
             method: method.name,
           })}
         </span>
@@ -89,7 +89,7 @@ export class CheckoutPaymentMethodComponent
 
   protected renderEmpty(): TemplateResult {
     return html`<p class="no-methods">
-      ${i18n('checkout.payment.no-methods-available')}
+      ${this.i18n('checkout.payment.no-methods-available')}
     </p>`;
   }
 }

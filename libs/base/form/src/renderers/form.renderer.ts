@@ -1,21 +1,7 @@
 import { TemplateResult } from 'lit';
-import { DirectiveResult } from 'lit/directive.js';
-import { ClassMapDirective } from 'lit/directives/class-map.js';
-import {
-  FieldValidationPattern,
-  FormFieldDefinition,
-  FormValues,
-} from '../models';
+import { FormFieldDefinition, FormValues } from '../models';
 
 export interface FormRenderer {
-  fieldValidationPattern(field: FormFieldDefinition): FieldValidationPattern;
-
-  formatFormData(form: HTMLFormElement): unknown;
-
-  formatFormControl(
-    control: HTMLInputElement | HTMLSelectElement
-  ): Record<string, unknown>;
-
   /**
    *
    * @param data list of fields to render
@@ -28,15 +14,6 @@ export interface FormRenderer {
     values?: FormValues,
     keyFn?: (field: FormFieldDefinition) => string
   ): TemplateResult | void;
-
-  buildField(
-    field: FormFieldDefinition,
-    value?: string | boolean
-  ): TemplateResult;
-
-  getClassMap(
-    params: FormFieldDefinition
-  ): DirectiveResult<typeof ClassMapDirective>;
 }
 
 export const FormRenderer = 'oryx.FormRenderer';

@@ -4,7 +4,6 @@ import { LocaleService } from '@spryker-oryx/i18n';
 import {
   computed,
   hydratable,
-  i18n,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
@@ -28,7 +27,7 @@ export class DateComponent extends ContentMixin<DateComponentAttributes>(
   protected override render(): TemplateResult | void {
     if (!this.$date()) return;
     if (this.i18nToken) {
-      return html`${i18n(this.i18nToken, { date: this.$date() })}`;
+      return html`${this.i18n(this.i18nToken, { date: this.$date() })}`;
     } else {
       return html`${this.$date()}`;
     }

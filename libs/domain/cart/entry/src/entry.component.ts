@@ -20,7 +20,6 @@ import {
   computed,
   elementEffect,
   hydratable,
-  i18n,
   signalProperty,
   Size,
 } from '@spryker-oryx/utilities';
@@ -140,7 +139,7 @@ export class CartEntryComponent
           <button aria-label="remove">
             <oryx-icon .type=${IconTypes.Trash}></oryx-icon>
           </button>
-          <span>${i18n('cart.remove')}</span>
+          <span>${this.i18n('cart.remove')}</span>
         </oryx-icon-button>
       </div>
     `;
@@ -148,7 +147,7 @@ export class CartEntryComponent
 
   protected renderPricing(): TemplateResult | void {
     const qtyTemplate = this.readonly
-      ? i18n('cart.entry.<quantity>-items', {
+      ? this.i18n('cart.entry.<quantity>-items', {
           quantity: this.quantity,
         })
       : html`<oryx-cart-quantity-input
@@ -171,7 +170,7 @@ export class CartEntryComponent
           this.$options()?.enableItemPrice,
           () =>
             html`<div class="item-price">
-              <span>${i18n('cart.entry.item-price')}</span
+              <span>${this.i18n('cart.entry.item-price')}</span
               ><oryx-product-price
                 .options=${{ enableTaxMessage: false }}
               ></oryx-product-price>
@@ -187,10 +186,10 @@ export class CartEntryComponent
       enableFooter
       enableCloseButtonInHeader
       minimal
-      heading=${i18n('cart.entry.confirm')}
+      heading=${this.i18n('cart.entry.confirm')}
       @oryx.close=${this.revert}
     >
-      ${i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.sku })}
+      ${this.i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.sku })}
 
       <oryx-button
         slot="footer-more"
@@ -198,7 +197,7 @@ export class CartEntryComponent
         .size=${Size.Md}
         @click=${(ev: Event) => this.removeEntry(ev, true)}
       >
-        <button value="remove">${i18n(`cart.entry.remove`)}</button>
+        <button value="remove">${this.i18n(`cart.entry.remove`)}</button>
       </oryx-button>
     </oryx-modal>`;
   }
@@ -256,7 +255,7 @@ export class CartEntryComponent
   protected notify(token: string, sku?: string): void {
     this.notificationService.push({
       type: AlertType.Success,
-      content: i18n(token) as string,
+      content: this.i18n(token) as string,
       subtext: html`<oryx-product-title .sku=${sku}></oryx-product-title>`,
     });
   }
