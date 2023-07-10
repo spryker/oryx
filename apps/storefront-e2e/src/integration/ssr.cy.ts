@@ -19,14 +19,13 @@ const verifyFooter = (isPageScrollable = true) => {
   }
 
   footer.getLinkByUrl('/contact').should('be.visible');
+
+  const currentYear = new Date().getFullYear();
   footer
     .getWrapper()
-    .find('oryx-link')
-    .then((footerElement) => {
-      const footerText = footerElement.text();
-      const currentYear = new Date().getFullYear();
-      expect(footerText).to.contain(currentYear);
-    });
+    .find('oryx-text')
+    .shadow()
+    .should('contain.text', currentYear);
 };
 
 const verifyHeader = () => {
