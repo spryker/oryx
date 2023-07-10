@@ -42,6 +42,7 @@ export const serverContext = (options: ContextOptions): any => {
   window.TextDecoder = class {};
   // TODO: Fix for testfront ssr, we should check why it's not working
   window.HTMLFormElement = class {};
+  window.HTMLInputElement = class {};
 
   // console.log('window: ', window);
 
