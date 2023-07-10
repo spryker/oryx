@@ -9,11 +9,7 @@ export class ThankYouPage extends AbstractSFPage {
     this.url = `/order/${orderId}`;
   }
 
-  waitForLoadedSPA(): void {
-    this.waitForLoadedSSR();
-  }
-
-  waitForLoadedSSR(): void {
+  waitForLoaded(): void {
     this.getHeading().should('be.visible');
   }
 
