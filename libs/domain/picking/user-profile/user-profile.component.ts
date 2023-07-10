@@ -32,7 +32,7 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
   protected loading: boolean | null = null;
 
   @state()
-  protected logoutLoading: boolean | null = null;
+  protected logoutLoading = false;
 
   protected $route = signal(this.routerService.route());
   protected $pendingSyncs = signal(resolve(SyncSchedulerService).hasPending());
