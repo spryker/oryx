@@ -24,6 +24,11 @@ export interface ActionComponentAttributes {
 export const enum ButtonColor {
   Primary = 'primary',
   Secondary = 'secondary',
+  Neutral = 'neutral',
+  Info = 'info',
+  Success = 'success',
+  Warning = 'warning',
+  Error = 'error',
 }
 
 export const enum ButtonType {

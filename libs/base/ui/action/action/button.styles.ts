@@ -39,7 +39,7 @@ const baseStyles = css`
     justify-content: center;
   }
 
-  :host([custom]:not([icon-only])),
+  :host([custom]:not([icon-only]):not([loading])),
   :host([type='icon'][with-icon]) :is(a, button),
   :host([type='icon'][with-icon]) ::slotted(:is(a, button)) {
     justify-content: start;
@@ -208,7 +208,7 @@ const iconStyles = css`
     background: var(--background);
     z-index: -1;
     border: solid 1px var(--bc);
-    transition: border var(--oryx-transition-time);
+    transition: var(--oryx-transition-time);
   }
 `;
 
