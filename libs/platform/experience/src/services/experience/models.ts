@@ -9,6 +9,10 @@ export interface ComponentData {
   items?: any;
 }
 
+export interface ComponentVisibility {
+  hide?: string
+}
+
 export interface Component<C = CompositionProperties> {
   id: string;
   name?: string;
@@ -24,4 +28,5 @@ export interface Component<C = CompositionProperties> {
   components?: Component[];
   options?: { data?: C };
   content?: { data?: any };
+  visibility?: ComponentVisibility;
 }

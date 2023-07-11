@@ -95,6 +95,22 @@ export const HeaderTemplate: StaticComponent = {
             },
           },
         },
+        {
+          type: 'oryx-composition',
+          visibility: {
+            hide: 'CART.!EMPTY'
+          },
+          components: [
+            {
+              type: 'oryx-site-navigation-item',
+              options: {
+                data: {
+                  label: 'TEST',
+                },
+              },
+            },
+          ]
+        },
       ],
       options: {
         data: {

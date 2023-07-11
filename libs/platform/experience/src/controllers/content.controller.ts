@@ -1,4 +1,4 @@
-import { FeatureOptionsService } from '@spryker-oryx/core';
+import { FeatureOptionsService, TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   getStaticProp,
@@ -20,6 +20,7 @@ export class ContentController<T = unknown, K = unknown> {
     LitElement & ContentComponentProperties<K, T>
   >;
   protected optionsService = resolve(FeatureOptionsService, null);
+  protected tokenResolver = resolve(TokenResolver);
 
   constructor(protected host: LitElement & ContentComponentProperties<K, T>) {
     // TODO: fix property assigning outside of constructor, it doesn't work in the storybook now
@@ -79,6 +80,23 @@ export class ContentController<T = unknown, K = unknown> {
           shareReplay({ bufferSize: 1, refCount: true })
         );
       })
+    );
+  }
+
+  isHidden(): Observable<boolean> {
+    return this.observe.get('uid').pipe(
+      switchMap((uid) =>
+        uid && this.experienceContent
+          ? this.experienceContent
+              .isHidden({ uid })
+              .pipe(switchMap((config) => {
+                return config?.hide ? 
+                       this.tokenResolver.resolveToken(config.hide).pipe(map(value => !!value)) : 
+                       of(false)
+              }))
+          : of(false)
+      ),
+      shareReplay({ bufferSize: 1, refCount: true })
     );
   }
 }

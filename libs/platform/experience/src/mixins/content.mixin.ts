@@ -1,6 +1,7 @@
 import { Type } from '@spryker-oryx/di';
 import {
   asyncState,
+  elementEffect,
   I18nMixin,
   I18nMixinType,
   signal,
@@ -45,6 +46,8 @@ export declare class ContentMixinInterface<OptionsType, ContentType>
 
   protected $options: Signal<OptionsType>;
   protected $content: Signal<ContentType>;
+
+  protected $isHidden: Signal<boolean>;
 }
 
 export const ContentMixin = <
@@ -84,6 +87,8 @@ export const ContentMixin = <
     protected $content = signal(this.contentController.getContent(), {
       initialValue: {},
     });
+
+    protected $isHidden = signal(this.contentController.isHidden());
   }
   return ContentMixinClass as unknown as Type<
     ContentMixinInterface<OptionsType, ContentType> & I18nMixinType

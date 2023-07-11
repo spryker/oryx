@@ -23,6 +23,7 @@ export class DefaultExperienceService implements ExperienceService {
   protected dataComponent: DataStore<Component> = {};
   protected dataContent: DataStore = {};
   protected dataOptions: DataStore = {};
+  protected visibilityHiddenState: DataStore = {};
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
@@ -192,6 +193,24 @@ export class DefaultExperienceService implements ExperienceService {
       .subscribe((component) => {
         const options = component?.options ?? {};
         this.dataOptions[uid].next(options);
+      });
+  }
+
+  isHidden({ uid }: { uid: string }): Observable<any> {
+    if (!this.visibilityHiddenState[uid]) {
+      this.visibilityHiddenState[uid] = new ReplaySubject(1);
+      this.reloadVisibilityState(uid);
+    }
+
+    return this.visibilityHiddenState[uid];
+  }
+
+  protected reloadVisibilityState(uid: string): void {
+    this.getComponent({ uid })
+      .pipe(take(1))
+      .subscribe((component) => {
+        const state = component?.visibility ?? {};
+        this.visibilityHiddenState[uid].next(state);
       });
   }
 
