@@ -6,7 +6,7 @@ export * from './facet-range';
 export * from './labels';
 export * from './media';
 export * from './model';
-export * from './node';
+export * from './category-id';
 export * from './price';
 export * from './product';
 export * from './product-list';

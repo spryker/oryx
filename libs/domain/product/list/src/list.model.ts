@@ -1,3 +1,5 @@
 import { ProductListQualifier } from '@spryker-oryx/product';
 
-export type ProductListOptions = ProductListQualifier;
+export interface ProductListOptions extends ProductListQualifier {
+  heading?: string;
+}

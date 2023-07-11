@@ -1,5 +1,5 @@
 import { ApiProductModel } from '../../../../models';
-import { nodeNormalizer } from './node.normalizer';
+import { categoryIdNormalizer } from './category-id.normalizer';
 
 describe('Product Node Normalizer', () => {
   it('should transform ApiProductModel.CategoryNodes[] into DeserializedNode', () => {
@@ -7,10 +7,10 @@ describe('Product Node Normalizer', () => {
       { isActive: false, nodeId: 4 },
       { isActive: true, nodeId: 8 },
     ] as ApiProductModel.CategoryNodes[];
-    const normalized = nodeNormalizer(mockTransformed);
+    const normalized = categoryIdNormalizer(mockTransformed);
 
     expect(normalized).toEqual({
-      nodeId: String(mockTransformed[1].nodeId),
+      categoryId: String(mockTransformed[1].nodeId),
     });
   });
 });

@@ -2,7 +2,7 @@ import { camelize } from '@spryker-oryx/core/utilities';
 import { of, take } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { ProductMediaSetNormalizer } from '../media';
-import { NodeNormalizer } from '../node';
+import { CategoryIdNormalizer } from '../category-id';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 import {
@@ -27,7 +27,7 @@ const mockTokensData = {
       externalUrlSmall: 'externalUrlSmall',
     },
   ],
-  [NodeNormalizer]: '20',
+  [CategoryIdNormalizer]: '20',
 };
 const mockTransformer = {
   transform: vi
@@ -165,10 +165,10 @@ describe('Product Normalizers', () => {
         productNodeNormalizer(mockDeserializedProduct, mockTransformer)
           .pipe(take(1))
           .subscribe((normalized) => {
-            expect(normalized).toBe(mockTokensData[NodeNormalizer]);
+            expect(normalized).toBe(mockTokensData[CategoryIdNormalizer]);
             expect(mockTransformer.transform).toHaveBeenCalledWith(
               mockDeserializedProduct.abstractProducts?.[0].categoryNodes,
-              NodeNormalizer
+              CategoryIdNormalizer
             );
             done();
           });

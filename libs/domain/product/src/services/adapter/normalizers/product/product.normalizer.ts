@@ -6,7 +6,7 @@ import { ApiProductModel, Product } from '../../../../models';
 import { AvailabilityNormalizer } from '../availability';
 import { ProductLabelsNormalizer } from '../labels/labels.normalizer';
 import { ProductMediaSetNormalizer } from '../media';
-import { NodeNormalizer } from '../node';
+import { CategoryIdNormalizer } from '../category-id';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 
@@ -98,7 +98,7 @@ export function productNodeNormalizer(
 
   const { [nodeKey]: node } = abstract[0];
 
-  return transformer.transform(node, NodeNormalizer);
+  return transformer.transform(node, CategoryIdNormalizer);
 }
 
 export const productNormalizer: Provider[] = [

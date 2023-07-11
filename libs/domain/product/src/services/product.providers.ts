@@ -15,8 +15,8 @@ import {
   facetsRangeNormalizer,
   mediaNormalizer,
   mediaSetNormalizer,
-  nodeNormalizer,
-  NodeNormalizer,
+  categoryIdNormalizer,
+  CategoryIdNormalizer,
   PriceNormalizer,
   priceNormalizer,
   ProductAdapter,
@@ -158,7 +158,7 @@ export const productProviders: Provider[] = [
     useClass: ProductPageDescriptionMetaResolver,
   },
   {
-    provide: NodeNormalizer,
-    useValue: nodeNormalizer,
+    provide: CategoryIdNormalizer,
+    useValue: categoryIdNormalizer,
   },
 ];

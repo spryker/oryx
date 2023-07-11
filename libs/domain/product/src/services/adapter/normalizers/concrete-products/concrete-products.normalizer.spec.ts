@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { of, take } from 'rxjs';
-import { NodeNormalizer } from '../node';
+import { CategoryIdNormalizer } from '../category-id';
 import { ProductNormalizer } from '../product';
 import { concreteProductsNormalizer } from './concrete-products.normalizer';
 import { DeserializedAbstract } from './model';
@@ -43,7 +43,7 @@ describe('Concrete Products Normalizer', () => {
         );
         expect(mockTransformer.transform).toHaveBeenCalledWith(
           mockAbstracts[0].categoryNodes,
-          NodeNormalizer
+          CategoryIdNormalizer
         );
         expect(mockTransformer.transform).toHaveBeenCalledWith(
           mockAbstracts[1].concreteProducts![0],
@@ -55,7 +55,7 @@ describe('Concrete Products Normalizer', () => {
         );
         expect(mockTransformer.transform).toHaveBeenCalledWith(
           mockAbstracts[1].categoryNodes,
-          NodeNormalizer
+          CategoryIdNormalizer
         );
 
         expect(normalized).toEqual([mockTransformed, mockTransformed]);

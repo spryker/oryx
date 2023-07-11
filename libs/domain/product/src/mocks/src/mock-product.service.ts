@@ -98,6 +98,7 @@ export class MockProductService implements Partial<ProductService> {
         isNeverOutOfStock: false,
         availability: true,
       },
+      categoryId: 'category id 1',
     },
     {
       sku: '2',
@@ -135,6 +136,7 @@ export class MockProductService implements Partial<ProductService> {
         quantity: 0,
         availability: false,
       },
+      categoryId: 'category id 2',
     },
     {
       sku: '3',
