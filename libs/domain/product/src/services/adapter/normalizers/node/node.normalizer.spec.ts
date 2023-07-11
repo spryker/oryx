@@ -9,6 +9,8 @@ describe('Product Node Normalizer', () => {
     ] as ApiProductModel.CategoryNodes[];
     const normalized = nodeNormalizer(mockTransformed);
 
-    expect(normalized).toBe(String(mockTransformed[1].nodeId));
+    expect(normalized).toEqual({
+      nodeId: String(mockTransformed[1].nodeId),
+    });
   });
 });
