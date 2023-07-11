@@ -17,7 +17,6 @@ import { DefaultLocaleAdapter, LocaleAdapter } from './adapter';
 import { LocaleService } from './locale.service';
 import { LocaleChanged } from './state';
 
-const i = 0;
 export class DefaultLocaleService implements LocaleService {
   protected setActive$ = new BehaviorSubject<string | null>(null);
   protected active$;
@@ -78,8 +77,6 @@ export class DefaultLocaleService implements LocaleService {
   }
 
   get(): Observable<string> {
-    this.active$.subscribe((v) => console.log('get: ', v));
-
     return this.active$;
   }
 
