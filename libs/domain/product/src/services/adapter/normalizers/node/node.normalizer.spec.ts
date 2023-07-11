@@ -1,23 +1,14 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { DeserializedAvailability } from './model';
-import { availabilityNormalizer } from './node.normalizer';
+import { ApiProductModel } from '../../../../models';
+import { nodeNormalizer } from './node.normalizer';
 
-const mockAvailability: DeserializedAvailability = {
-  id: 'test',
-  isNeverOutOfStock: false,
-  availability: false,
-  quantity: '10',
-} as DeserializedAvailability;
+describe('Product Node Normalizer', () => {
+  it('should transform ApiProductModel.CategoryNodes[] into DeserializedNode', () => {
+    const mockTransformed = [
+      { isActive: false, nodeId: 4 },
+      { isActive: true, nodeId: 8 },
+    ] as ApiProductModel.CategoryNodes[];
+    const normalized = nodeNormalizer(mockTransformed);
 
-describe('Product Availability Normalizer', () => {
-  it('should transform ApiProductModel.ProductAvailability into ProductAvailability', () => {
-    const mockTransformed = {
-      isNeverOutOfStock: false,
-      availability: false,
-      quantity: Number(mockAvailability.quantity),
-    };
-    const normalized = availabilityNormalizer(mockAvailability);
-
-    expect(normalized).toEqual(mockTransformed);
+    expect(normalized).toBe(String(mockTransformed[1].nodeId));
   });
 });
