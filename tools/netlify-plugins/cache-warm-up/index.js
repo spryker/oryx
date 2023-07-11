@@ -2,20 +2,18 @@ import { exec } from 'child_process';
 
 export const onSuccess = ({ inputs }) => {
   const { oryxCache } = inputs;
-  const { path } = oryxCache;
   const deployURL = process.env.DEPLOY_PRIME_URL;
 
+  // these logs should not be removed because
+  // they might be useful for debugging
   console.log(inputs)
+  console.log('deployURL: ', deployURL);
 
-  if (!deployURL) {
-    console.error('deployURL is not valid, check you inputs');
-    console.log('deployURL: ', deployURL);
-    return;
-  }
+  oryxCache.forEach(cacheConfig => {
+    const url = `${deployURL}${cacheConfig.path}`;
 
-  const url = `${deployURL}/${path}`;
-
-  sendGetRequest(url);
+    sendGetRequest(url);
+  });
 };
 
 function sendGetRequest(url) {
