@@ -1,13 +1,13 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductMixin } from '@spryker-oryx/product';
-import { hydratable, i18n, ssrShim } from '@spryker-oryx/utilities';
+import { ProductContext, ProductMixin } from '@spryker-oryx/product';
+import { hydratable, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductAttributesOptions } from './attributes.model';
 import { productAttributeStyles } from './attributes.styles';
 
 @ssrShim('style')
 @defaultOptions({ columnCount: '2' })
-@hydratable()
+@hydratable(`@${ProductContext.SKU}`)
 export class ProductAttributesComponent extends ProductMixin(
   ContentMixin<ProductAttributesOptions>(LitElement)
 ) {
@@ -36,7 +36,7 @@ export class ProductAttributesComponent extends ProductMixin(
   ): TemplateResult {
     const name = names[key];
     return name.startsWith('product.attribute.')
-      ? html`${i18n(name)}`
+      ? html`${this.i18n(name)}`
       : html`${names[key]}`;
   }
 }

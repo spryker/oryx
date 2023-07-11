@@ -1,5 +1,5 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { ColorMode, i18n, rootInjectable } from '@spryker-oryx/utilities';
+import { ColorMode, I18nMixin, rootInjectable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { styles } from './color-mode-selector.styles';
@@ -7,7 +7,7 @@ import { ModeEvent, toggleMode } from './utilities';
 
 export const EVENT_TOGGLE_COLOR = 'oryx.toggle-mode';
 
-export class ColorModeSelectorComponent extends LitElement {
+export class ColorModeSelectorComponent extends I18nMixin(LitElement) {
   static styles = [styles];
 
   @state()
@@ -75,7 +75,7 @@ export class ColorModeSelectorComponent extends LitElement {
       <oryx-icon-button>
         <button
           type="button"
-          aria-label="${i18n('site.change-color-mode')}"
+          aria-label="${this.i18n('site.change-color-mode')}"
           @click=${this.triggerEvent}
         >
           <oryx-icon .type=${iconType}></oryx-icon>

@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { hydratable, i18n, signal } from '@spryker-oryx/utilities';
+import { hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { AddressMixin } from '../src/mixins';
 import { CrudState } from '../src/models';
@@ -28,7 +28,7 @@ export class UserAddressAddButtonComponent extends AddressMixin(
         <oryx-button outline>
           <a href=${this.$createLink()} @click=${this.onCreate}>
             <oryx-icon .type=${IconTypes.Add}></oryx-icon>
-            ${i18n(['add', 'user.address.add'])}
+            ${this.i18n(['add', 'user.address.add'])}
           </a>
         </oryx-button>
       `;
@@ -37,7 +37,7 @@ export class UserAddressAddButtonComponent extends AddressMixin(
         <oryx-button outline>
           <button @click=${this.onCreate}>
             <oryx-icon .type=${IconTypes.Add}></oryx-icon>
-            ${i18n('user.address.add')}
+            ${this.i18n('user.address.add')}
           </button>
         </oryx-button>
         ${this.renderModal()}
@@ -56,7 +56,7 @@ export class UserAddressAddButtonComponent extends AddressMixin(
     ) {
       return html`<oryx-modal
         open
-        .heading=${i18n('checkout.address.create-address')}
+        .heading=${this.i18n('checkout.address.create-address')}
         @oryx.close=${this.onClose}
       >
         <oryx-user-address-edit></oryx-user-address-edit>

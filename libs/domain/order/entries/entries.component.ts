@@ -1,7 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { OrderMixin } from '@spryker-oryx/order';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { computed, hydratable, i18n } from '@spryker-oryx/utilities';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -42,7 +42,7 @@ export class OrderEntriesComponent
   protected renderHeading(): TemplateResult {
     return html`<oryx-heading .as=${HeadingTag.H6}>
       <h3>
-        ${i18n('order.<count>-items', {
+        ${this.i18n('order.<count>-items', {
           count: this.$order().items.length,
         })}
       </h3>
@@ -76,7 +76,9 @@ export class OrderEntriesComponent
     return html`<oryx-button type="text">
       <button @click=${this.toggle}>
         ${this.expanded ? '-' : '+'}${restItemsCount}
-        ${i18n(this.expanded ? 'order.less-products' : 'order.more-products')}
+        ${this.i18n(
+          this.expanded ? 'order.less-products' : 'order.more-products'
+        )}
       </button>
     </oryx-button>`;
   }

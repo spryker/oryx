@@ -17,15 +17,8 @@ export class ProductDetailsPage extends AbstractSFPage {
     }
   }
 
-  waitForLoadedSSR(): void {
-    this.getQuantityComponent()
-      .getInput()
-      .should('be.visible')
-      .and('be.enabled');
-  }
-
-  waitForLoadedSPA(): void {
-    this.waitForLoadedSSR();
+  waitForLoaded(): void {
+    this.getQuantityComponent().getInput().should('be.visible');
   }
 
   hydrateAddToCart = () => {

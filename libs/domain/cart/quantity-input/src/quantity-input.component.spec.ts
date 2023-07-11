@@ -651,7 +651,7 @@ describe('QuantityInputComponent', () => {
 
       it('should default to "decrease" type', () => {
         expect(element).toContainElement(
-          `button[part="decrease"] oryx-icon[type="${IconTypes.Decrease}"]`
+          `button[part="decrease"] oryx-icon[type="${IconTypes.Minus}"]`
         );
       });
     });
@@ -681,7 +681,7 @@ describe('QuantityInputComponent', () => {
 
       it('should default to "increase" type', () => {
         expect(element).toContainElement(
-          `button[part="increase"] oryx-icon[type="${IconTypes.Increase}"]`
+          `button[part="increase"] oryx-icon[type="${IconTypes.Add}"]`
         );
       });
     });

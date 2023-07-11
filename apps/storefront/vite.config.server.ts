@@ -1,10 +1,9 @@
 import { join } from 'path';
-import { defineConfig } from 'vite';
+import { defineConfig, UserConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { viteConfig } from './vite.config.common.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default defineConfig((config) => {
+export default defineConfig(() => {
   return {
     root: viteConfig.index,
     envDir: viteConfig.root,
@@ -49,5 +48,5 @@ export default defineConfig((config) => {
         ],
       }),
     ],
-  };
+  } as UserConfig;
 });

@@ -10,9 +10,9 @@ export class AddEditAddressFormFragment {
   getWrapper = () => cy.get(this.wrapperSelector);
   getAddressForm = () => this.getWrapper().find('oryx-user-address-form');
   getCountrySelect = () =>
-    this.getWrapper().find('oryx-select[label="Country"]');
+    this.getWrapper().find('oryx-select[label="country"]');
   getSalutationSelect = () =>
-    this.getWrapper().find('oryx-select[label="Salutation"]');
+    this.getWrapper().find('oryx-select[label="salutation"]');
   getFirstNameInput = () =>
     this.getAddressForm().find('input[name="firstName"]');
   getLastNameInput = () => this.getAddressForm().find('input[name="lastName"]');

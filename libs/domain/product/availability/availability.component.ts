@@ -1,7 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductMixin } from '@spryker-oryx/product';
+import { ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { AlertType } from '@spryker-oryx/ui';
-import { computed, hydratable, i18n } from '@spryker-oryx/utilities';
+import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {
@@ -10,7 +10,7 @@ import {
 } from './availability.model';
 import { availabilityStyles } from './availability.styles';
 
-@hydratable()
+@hydratable(`@${ProductContext.SKU}`)
 @defaultOptions({ threshold: 5, enableIndicator: true })
 export class ProductAvailabilityComponent extends ProductMixin(
   ContentMixin<CartItemAvailabilityOptions>(LitElement)
@@ -60,22 +60,22 @@ export class ProductAvailabilityComponent extends ProductMixin(
     const availableQuantity = this.$product()?.availability?.quantity;
 
     if (stock === StockAvailability.OutOfStock)
-      return html`${i18n('product.availability.none')}`;
+      return html`${this.i18n('product.availability.none')}`;
 
     if (this.$options().enableExactStock && availableQuantity) {
       if (stock === StockAvailability.LowStock)
-        return html`${i18n('product.availability.limited-<stock>', {
+        return html`${this.i18n('product.availability.limited-<stock>', {
           stock: availableQuantity,
         })}`;
       if (stock === StockAvailability.InStock)
-        return html`${i18n('product.availability.available-<stock>', {
+        return html`${this.i18n('product.availability.available-<stock>', {
           stock: availableQuantity,
         })}`;
     }
 
     if (stock === StockAvailability.LowStock)
-      return html`${i18n('product.availability.limited')}`;
+      return html`${this.i18n('product.availability.limited')}`;
     if (stock === StockAvailability.InStock)
-      return html`${i18n('product.availability.available')}`;
+      return html`${this.i18n('product.availability.available')}`;
   }
 }

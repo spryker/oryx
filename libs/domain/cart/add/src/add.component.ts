@@ -12,7 +12,6 @@ import {
   computed,
   elementEffect,
   hydratable,
-  i18n,
   Size,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -67,7 +66,7 @@ export class CartAddComponent extends ProductMixin(
         @click=${this.onSubmit}
       >
         <oryx-icon .type=${IconTypes.CartAdd} size=${Size.Lg}></oryx-icon>
-        ${when(enableLabel, () => html`${i18n('cart.add-to-cart')}`)}
+        ${when(enableLabel, () => html`${this.i18n('cart.add-to-cart')}`)}
       </button>
     </oryx-button>`;
   }

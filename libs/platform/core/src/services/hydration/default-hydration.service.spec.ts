@@ -6,10 +6,11 @@ import {
 } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { AppRef } from '../../orchestration/app';
 import { DefaultHydrationService } from './default-hydration.service';
 import { HydrationService, HydrationTrigger } from './hydration.service';
+import { ContextService } from '@spryker-oryx/core';
 
 @customElement('mock-a')
 class MockA extends LitElement {
@@ -31,6 +32,11 @@ class MockRouter extends LitElement {
   [HYDRATE_ON_DEMAND] = vi.fn();
 }
 
+@customElement('mock-d')
+class MockD extends LitElement {
+  [HYDRATE_ON_DEMAND] = vi.fn();
+}
+
 const mockComponentsPlugin = {
   loadComponent: vi.fn(),
 };
@@ -42,8 +48,21 @@ const mockApp = {
 const mockAInitializer = vi.fn().mockReturnValue(of(null));
 const mockBInitializer = vi.fn().mockReturnValue(of(null));
 
+class MockContextService implements Partial<ContextService> {
+  private context$ = new BehaviorSubject(0);
+
+  get(): Observable<any> {
+    return this.context$;
+  }
+
+  triggerContextChange(): void {
+    this.context$.next(this.context$.value + 1);
+  }
+}
+
 describe('DefaultHydrationService', () => {
   let service: HydrationService;
+  let mockContextService: MockContextService;
 
   beforeEach(async () => {
     const testInjector = createInjector({
@@ -64,14 +83,22 @@ describe('DefaultHydrationService', () => {
           provide: HydrationTrigger,
           useFactory: mockBInitializer,
         },
+        {
+          provide: ContextService,
+          useClass: MockContextService,
+        },
       ],
     });
     service = testInjector.inject(HydrationService);
+    mockContextService = testInjector.inject(
+      ContextService as unknown as MockContextService
+    );
     await fixture(html`
       <mock-a hydratable="click"></mock-a>
       <mock-b></mock-b>
       <mock-c hydratable="click,focusin"></mock-c>
       <mock-router hydratable route="/"></mock-router>
+      <mock-d hydratable="@sku"></mock-d>
     `);
   });
 
@@ -149,6 +176,18 @@ describe('DefaultHydrationService', () => {
       expect(mockB[HYDRATE_ON_DEMAND]).not.toHaveBeenCalled();
       expect(mockComponentsPlugin.loadComponent).not.toHaveBeenCalled();
       expect(window.customElements.whenDefined).not.toHaveBeenCalled();
+    });
+
+    it('should call HYDRATE_ON_DEMAND when context changes', async () => {
+      const mockD = document.querySelector('mock-d') as HydratableLitElement;
+      vi.spyOn(window.customElements, 'get').mockReturnValue(MockD);
+      await service.initHydrateHooks();
+
+      mockContextService.triggerContextChange();
+
+      await nextFrame();
+
+      expect(mockD[HYDRATE_ON_DEMAND]).toHaveBeenCalled();
     });
   });
 });

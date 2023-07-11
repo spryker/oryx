@@ -19,7 +19,8 @@
         "headless-ci": {
           "cypressConfig": "apps/fulfillment-e2e/cypress.ci.config.js",
           "watch": false,
-          "record": true
+          "record": true,
+          "group": "fa-regression"
         }
       }
     },

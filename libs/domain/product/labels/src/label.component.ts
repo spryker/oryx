@@ -1,12 +1,16 @@
 import { ContentMixin } from '@spryker-oryx/experience';
-import { ProductLabel, ProductMixin } from '@spryker-oryx/product';
+import {
+  ProductContext,
+  ProductLabel,
+  ProductMixin,
+} from '@spryker-oryx/product';
 import { computed, hydratable } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { ProductLabelsOptions } from './label.model';
 import { labelStyles } from './label.styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydratable(`@${ProductContext.SKU}`)
 export class ProductLabelsComponent extends ProductMixin(
   ContentMixin<ProductLabelsOptions>(LitElement)
 ) {
@@ -35,7 +39,7 @@ export class ProductLabelsComponent extends ProductMixin(
    * The labels and in/exclusions are case insensitive.
    */
   protected filterLabels(): ProductLabel[] | undefined {
-    const options = this.componentOptions;
+    const options = this.$options();
     const labels = this.$product()?.labels;
 
     if (!options || !labels) return labels;

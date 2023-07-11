@@ -1,11 +1,13 @@
 import { CheckoutMixin } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { hydratable, i18n } from '@spryker-oryx/utilities';
+import { hydratable, I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 
 @hydratable('window:load')
-export class CheckoutPlaceOrderComponent extends CheckoutMixin(LitElement) {
+export class CheckoutPlaceOrderComponent extends I18nMixin(
+  CheckoutMixin(LitElement)
+) {
   protected router = resolve(RouterService);
 
   protected override render(): TemplateResult | void {
@@ -16,7 +18,7 @@ export class CheckoutPlaceOrderComponent extends CheckoutMixin(LitElement) {
       ?loading=${this.$isBusy()}
       @click="${this.onClick}"
     >
-      <button>${i18n('checkout.place-order')}</button>
+      <button>${this.i18n('checkout.place-order')}</button>
     </oryx-button>`;
   }
 

@@ -6,7 +6,7 @@ import {
   PickingListQualifierSortBy,
   PickingListStatus,
 } from '@spryker-oryx/picking';
-import { mockPickingListData } from '@spryker-oryx/picking/src/mocks';
+import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Collection, Table } from 'dexie';
 import { of } from 'rxjs';

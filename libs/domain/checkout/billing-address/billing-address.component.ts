@@ -9,7 +9,7 @@ import {
 import {
   elementEffect,
   hydratable,
-  i18n,
+  I18nMixin,
   signal,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -19,7 +19,7 @@ import { CheckoutAddressComponent } from '../address';
 
 @hydratable()
 export class CheckoutBillingAddressComponent
-  extends CheckoutMixin(LitElement)
+  extends I18nMixin(CheckoutMixin(LitElement))
   implements isValid
 {
   protected addressService = resolve(AddressService);
@@ -68,7 +68,7 @@ export class CheckoutBillingAddressComponent
 
   protected renderHeading(): TemplateResult {
     return html`<oryx-checkout-header>
-      <h3>${i18n('checkout.billing-address')}</h3>
+      <h3>${this.i18n('checkout.billing-address')}</h3>
       ${when(
         this.$addresses()?.length,
         () => html`<oryx-checkout-manage-address
@@ -77,7 +77,7 @@ export class CheckoutBillingAddressComponent
         ></oryx-checkout-manage-address>`,
         () => html`<oryx-button .type=${ButtonType.Text}>
           <button @click=${this.reuseShippingAddress}>
-            ${i18n(
+            ${this.i18n(
               this.$isSameAsShippingAddress()
                 ? 'checkout.billing-address.change'
                 : 'checkout.billing-address.same-as-shipping-address'
@@ -90,7 +90,9 @@ export class CheckoutBillingAddressComponent
 
   protected renderBody(): TemplateResult {
     if (!this.$addresses()?.length && this.$isSameAsShippingAddress()) {
-      return html`${i18n('checkout.billing-address.same-as-shipping-address')}`;
+      return html`${this.i18n(
+        'checkout.billing-address.same-as-shipping-address'
+      )}`;
     } else {
       return html`<oryx-checkout-address
         .addressId=${this.$selected()?.id}

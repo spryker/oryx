@@ -6,12 +6,7 @@ import { FormFieldType, FormRenderer } from '@spryker-oryx/form';
 import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { UserService } from '@spryker-oryx/user';
-import {
-  elementEffect,
-  hydratable,
-  i18n,
-  signal,
-} from '@spryker-oryx/utilities';
+import { elementEffect, hydratable, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { CheckoutAccountComponentOptions } from './account.model';
@@ -70,7 +65,7 @@ export class CheckoutAccountComponent
     if (this.isAuthenticated()) {
       return html`
         <oryx-checkout-header>
-          <h1>${i18n('checkout.account')}</h1>
+          <h1>${this.i18n('checkout.account')}</h1>
         </oryx-checkout-header>
         <p>${firstName} ${lastName}<br />${email}</p>
       `;
@@ -82,16 +77,27 @@ export class CheckoutAccountComponent
   protected renderGuest(): TemplateResult {
     return html`
       <oryx-checkout-header>
-        <h1>${i18n('checkout.guest-checkout')}</h1>
-        <p class="have-an-account">${i18n('checkout.guest.have-an-account')}</p>
+        <h1>${this.i18n('checkout.guest-checkout')}</h1>
+        <p class="have-an-account">
+          ${this.i18n('checkout.guest.have-an-account')}
+        </p>
         <oryx-link>
-          <a href=${this.loginRoute()}> ${i18n('checkout.guest.login')} </a>
+          <a href=${this.loginRoute()}>
+            ${this.i18n('checkout.guest.login')}
+          </a>
         </oryx-link>
       </oryx-checkout-header>
       <form @change=${this.onChange}>
-        ${this.fieldRenderer.buildForm([
-          { id: 'email', type: FormFieldType.Email, required: true },
-        ])}
+        <oryx-layout layout="grid" style="--column-gap: 20px">
+          ${this.fieldRenderer.buildForm([
+            {
+              id: 'email',
+              type: FormFieldType.Email,
+              required: true,
+              width: 100,
+            },
+          ])}
+        </oryx-layout>
       </form>
     `;
   }
