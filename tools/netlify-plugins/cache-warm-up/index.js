@@ -1,7 +1,8 @@
 import { exec } from 'child_process';
 
 export const onSuccess = ({ inputs }) => {
-  const { path } = inputs;
+  const { oryxCache } = inputs;
+  const { path } = oryxCache;
   const deployURL = process.env.DEPLOY_PRIME_URL;
 
   if (!path || !deployURL) {
