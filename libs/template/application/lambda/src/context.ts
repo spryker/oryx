@@ -40,30 +40,17 @@ export const serverContext = (options: ContextOptions): any => {
   // added because of oauth, we probably should not require oauth in the ssr
   window.TextEncoder = class {};
   window.TextDecoder = class {};
-  // TODO: Fix for testfront ssr, we should check why it's not working
+  // TODO: We need this to build ssr render script with enabled `emitDecoratorMetadata` in tsconfig
+  // We can check and remove it after release with disabled `emitDecoratorMetadata`
   window.HTMLFormElement = class {};
   window.HTMLInputElement = class {};
-
-  // console.log('window: ', window);
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};
     (() => ${namespace}.render)();
   `);
 
-  // console.log('script: ', script);
+  createContext(window);
 
-  try {
-    const newContext = createContext(window);
-  } catch(e) {
-    console.log(e);
-  }
-
-  // console.log('newContext: ', newContext);
-
-  try {
-    return script.runInContext(window);
-  } catch (e) {
-    console.log(e);
-  }
+  return script.runInContext(window);
 };
