@@ -1,5 +1,5 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductMixin } from '@spryker-oryx/product';
+import { ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { hydratable, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductAttributesOptions } from './attributes.model';
@@ -7,7 +7,7 @@ import { productAttributeStyles } from './attributes.styles';
 
 @ssrShim('style')
 @defaultOptions({ columnCount: '2' })
-@hydratable()
+@hydratable(`@${ProductContext.SKU}`)
 export class ProductAttributesComponent extends ProductMixin(
   ContentMixin<ProductAttributesOptions>(LitElement)
 ) {

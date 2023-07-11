@@ -113,7 +113,7 @@ describe('PickingHeaderComponent', () => {
   it('should render id', () => {
     expect(
       (element.renderRoot.querySelector('.title') as HTMLElement).innerText
-    ).toContain('mockOrderReference');
+    ).toContain(mockPickingListData[0].orderReferences[0]);
   });
 
   it('should render customer note button', () => {

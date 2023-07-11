@@ -79,7 +79,7 @@ export class CartAddComponent extends ProductMixin(
   protected $hasStock = computed(() => {
     return (
       this.$product()?.availability?.isNeverOutOfStock ||
-      this.$max() > this.$min()
+      (this.$max() && this.$max() >= this.$min())
     );
   });
 

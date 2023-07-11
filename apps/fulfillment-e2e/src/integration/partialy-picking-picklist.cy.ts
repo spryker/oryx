@@ -1,7 +1,10 @@
+import { CustomerNoteModalFragment } from '../support/page_fragments/customer-note-modal.fragment';
+import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 import { PickingProductFragment } from '../support/page_fragments/picking-product.fragment';
 import { PickingFragment } from '../support/page_fragments/picking.fragment';
 import { PickingPage } from '../support/page_objects/picking.page';
+import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
 
 const pickingListId = '37cb241e-f18a-5768-985c-a2d7aff4875e';
 
@@ -10,6 +13,9 @@ const pickingPage = new PickingPage(pickingListId);
 const pickingListsFragment = new PickingListsFragment();
 const pickingProductFragment = new PickingProductFragment();
 const pickingFragment = new PickingFragment();
+const pickingHeaderFragment = new PickingHeaderFragment();
+const customerNoteModalFragment = new CustomerNoteModalFragment();
+const userProfileFragment = new UserProfileFragment();
 
 describe('Partial picking a picklist', () => {
   beforeEach(() => {
@@ -20,6 +26,23 @@ describe('Partial picking a picklist', () => {
   });
 
   it('should check partial picking', () => {
+    // See picking lists id
+    pickingHeaderFragment
+      .getPickingListsTitle()
+      .should('be.visible')
+      .and('contain', 'DE--19');
+
+    // See customer note
+    pickingHeaderFragment.getCustomerNoteIcon().should('be.visible').click();
+    customerNoteModalFragment.getModal().should('be.visible');
+    customerNoteModalFragment.getCloseButton().click();
+
+    // See user profile modal
+    pickingHeaderFragment.getUserIcon().should('be.visible').click();
+    userProfileFragment.getWrapper().should('be.visible');
+    userProfileFragment.getCloseButton().should('be.visible').click();
+    userProfileFragment.getWrapper().should('not.be.visible');
+
     // Setting initial number of products in each tab
     pickingPage
       .getNotPickedProductsNumber()

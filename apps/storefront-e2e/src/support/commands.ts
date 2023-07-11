@@ -9,6 +9,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       login(): Chainable<void>;
+      loginApi(): Chainable<void>;
       goToCheckout(): Chainable<void>;
       goToCheckoutAsGuest(): Chainable<void>;
       waitUpdateComplete(
@@ -36,6 +37,22 @@ Cypress.Commands.add('login', () => {
     cy.wait('@profileRequest');
 
     loginPage.header.getUserSummaryHeading().should('contain', customer.name);
+  });
+});
+
+Cypress.Commands.add('loginApi', () => {
+  cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+    const api = new SCCOSApi();
+
+    api.token.post(customer).then((res) => {
+      cy.window().then((win) => {
+        win.localStorage.setItem(
+          'oryx.oauth-state',
+          '{"authorizedBy":"spryker"}'
+        );
+        win.localStorage.setItem('oryx.oauth-token', JSON.stringify(res.body));
+      });
+    });
   });
 });
 

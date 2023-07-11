@@ -55,11 +55,25 @@ export const HeaderTemplate: StaticComponent = {
       name: 'Composition',
       components: [
         {
-          type: 'oryx-content-banner',
-          content: { data: { graphic: 'logo' } },
+          type: 'oryx-content-image',
+          content: {
+            data: {
+              graphic: 'logo',
+              link: '/',
+              label: 'Composable Storefront based on Oryx',
+            },
+          },
           options: {
             data: {
-              rules: [{ width: 'max-content', height: '42px' }],
+              rules: [
+                {
+                  colSpan: 3,
+                  height: '42px',
+                  justify: 'start',
+                  style: 'color: white',
+                },
+                { query: { breakpoint: 'md' }, colSpan: 2 },
+              ],
               link: '/',
             },
           },
@@ -68,30 +82,46 @@ export const HeaderTemplate: StaticComponent = {
           type: 'oryx-search-box',
           options: {
             data: {
-              rules: [{ margin: 'auto', width: '580px' }],
+              rules: [
+                { colSpan: 6, width: 'auto' },
+                { query: { breakpoint: 'md' }, colSpan: 4 },
+              ],
             },
           },
         },
         {
-          type: 'oryx-site-navigation-item',
-          options: {
-            data: {
-              contentBehavior: 'dropdown',
-              label: 'USER.NAME',
-              icon: IconTypes.User,
+          type: 'oryx-composition',
+          components: [
+            {
+              type: 'oryx-site-navigation-item',
+              options: {
+                data: {
+                  contentBehavior: 'dropdown',
+                  label: 'USER.NAME',
+                  icon: IconTypes.User,
+                },
+              },
+              components: [{ type: 'oryx-auth-login-link' }],
             },
-          },
-          components: [{ type: 'oryx-auth-login-link' }],
-        },
-        {
-          type: 'oryx-site-navigation-item',
-          id: 'mini-cart',
+            {
+              type: 'oryx-site-navigation-item',
+              id: 'mini-cart',
+              options: {
+                data: {
+                  label: 'cart',
+                  badge: 'CART.SUMMARY',
+                  icon: IconTypes.Cart,
+                  url: { type: 'cart' },
+                },
+              },
+            },
+          ],
           options: {
             data: {
-              label: 'cart',
-              badge: 'CART.SUMMARY',
-              icon: IconTypes.Cart,
-              url: { type: 'cart' },
+              rules: [
+                { colSpan: 3, layout: 'flex', justify: 'end' },
+                { query: { breakpoint: 'md' }, colSpan: 2 },
+              ],
             },
           },
         },
@@ -100,10 +130,10 @@ export const HeaderTemplate: StaticComponent = {
         data: {
           rules: [
             {
-              layout: 'flex',
+              layout: 'column',
               background: 'var(--oryx-color-primary-9)',
               align: 'center',
-              zIndex: '2',
+              zIndex: '1',
               padding: '5px 0',
               gap: '5px',
               sticky: true,

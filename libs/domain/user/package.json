@@ -20,14 +20,14 @@
     }
   },
   "dependencies": {
-    "@spryker-oryx/auth": "latest",
-    "@spryker-oryx/core": "latest",
-    "@spryker-oryx/di": "latest",
-    "@spryker-oryx/experience": "latest",
-    "@spryker-oryx/form": "latest",
-    "@spryker-oryx/site": "latest",
-    "@spryker-oryx/ui": "latest",
-    "@spryker-oryx/utilities": "latest"
+    "@spryker-oryx/auth": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/di": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/form": "*",
+    "@spryker-oryx/site": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/utilities": "*"
   },
   "peerDependencies": {
     "lit": "^2.4.0",

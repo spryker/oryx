@@ -11,7 +11,7 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "dependencies": {
-    "@spryker-oryx/di": "latest",
+    "@spryker-oryx/di": "*",
     "css-convert-json": "^1.1.0"
   },
   "peerDependencies": {

@@ -37,7 +37,8 @@
       "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
       "message": "chore(release): publish libs release [skip ci]",
       "tagVersionPrefix": "lib@",
-      "verifyAccess": false
+      "verifyAccess": false,
+      "exact": true
     }
   }
 }

@@ -110,6 +110,10 @@ function hydratableClass<T extends Type<HTMLElement>>(
         // This is part of the workaround for hydration mismatch, we would not need this property otherwise
         this[DEFER_HYDRATION] = 0;
 
+        if (HYDRATION_DEBUG) {
+          this['__hydration-status'] = 'blue';
+        }
+
         try {
           super.update(changedProperties);
         } catch (e) {
@@ -117,7 +121,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
           // may become obsolete in future versions of lit
 
           if (HYDRATION_DEBUG) {
-            this['__hydration-with-error'] = true;
+            this['__hydration-status'] = 'red';
           }
 
           this.renderRoot.innerHTML =
@@ -177,9 +181,10 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       if (HYDRATION_DEBUG) {
         if (!isServer) {
-          this.style.border = this['__hydration-with-error']
-            ? '1px solid red'
-            : '1px solid green';
+          this.style.outline = `2px solid ${
+            this['__hydration-status'] ?? 'green'
+          }`;
+          this.style.outlineOffset = '-1px';
         }
       }
 

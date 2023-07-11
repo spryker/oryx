@@ -8,9 +8,9 @@
   "author": "Spryker Sytems GmbH",
   "license": "See license in LICENSE",
   "dependencies": {
-    "@spryker-oryx/core": "latest",
-    "@spryker-oryx/di": "latest",
-    "@spryker-oryx/utilities": "latest"
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/di": "*",
+    "@spryker-oryx/utilities": "*"
   },
   "peerDependencies": {
     "dexie": "^3.2.2",

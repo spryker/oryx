@@ -1,0 +1,158 @@
+[
+  {
+    "id": "DE--1",
+    "email": "spencor.hopkin@spryker.com",
+    "name": "Spencor",
+    "password": "change123"
+  },
+  {
+    "id": "DE--2",
+    "email": "maria.williams@spryker.com",
+    "name": "Maria",
+    "password": "change123"
+  },
+  {
+    "id": "DE--3",
+    "email": "maggie.may@spryker.com",
+    "name": "Maggie",
+    "password": "change123"
+  },
+  {
+    "id": "DE--4",
+    "email": "bill.martin@spryker.com",
+    "name": "Bill",
+    "password": "change123"
+  },
+  {
+    "id": "DE--5",
+    "email": "george.freeman@spryker.com",
+    "name": "George",
+    "password": "change123"
+  },
+  {
+    "id": "DE--6",
+    "email": "henry.tudor@spryker.com",
+    "name": "Henry",
+    "password": "change123"
+  },
+  {
+    "id": "DE--7",
+    "email": "anne.boleyn@spryker.com",
+    "name": "Anne",
+    "password": "change123"
+  },
+  {
+    "id": "DE--8",
+    "email": "andrew@ottom.de",
+    "name": "Andrew",
+    "password": "change123"
+  },
+  {
+    "id": "DE--9",
+    "email": "Ahill@ottom.de",
+    "name": "Ahill",
+    "password": "change123"
+  },
+  {
+    "id": "DE--10",
+    "email": "Alexa@ottom.de",
+    "name": "Alexa",
+    "password": "change123"
+  },
+  {
+    "id": "DE--11",
+    "email": "Frida@ottom.de",
+    "name": "Frida",
+    "password": "change123"
+  },
+  {
+    "id": "DE--12",
+    "email": "Lisa@ottom.de",
+    "name": "Lisa",
+    "password": "change123"
+  },
+  {
+    "id": "DE--13",
+    "email": "Kim@ottom.de",
+    "name": "Kim",
+    "password": "change123"
+  },
+  {
+    "id": "DE--14",
+    "email": "Solomon@spryker.com",
+    "name": "Solomon",
+    "password": "change123"
+  },
+  {
+    "id": "DE--15",
+    "email": "Richi@spryker.com",
+    "name": "Armando",
+    "password": "change123"
+  },
+  {
+    "id": "DE--16",
+    "email": "karl@spryker.com",
+    "name": "Karl",
+    "password": "change123"
+  },
+  {
+    "id": "DE--17",
+    "email": "Sarah@spryker.com",
+    "name": "Sarah",
+    "password": "change123"
+  },
+  {
+    "id": "DE--18",
+    "email": "Elizabet@spryker.com",
+    "name": "Elizabet",
+    "password": "change123"
+  },
+  {
+    "id": "DE--19",
+    "email": "donald@spryker.com",
+    "name": "Donald",
+    "password": "change123"
+  },
+  {
+    "id": "DE--20",
+    "email": "Trever.m@spryker.com",
+    "name": "Trever",
+    "password": "change123"
+  },
+  {
+    "id": "DE--21",
+    "email": "sonia@spryker.com",
+    "name": "Sonia",
+    "password": "change123"
+  },
+  {
+    "id": "DE--30",
+    "email": "Lilu@ottom.de",
+    "name": "Lilu",
+    "password": "change123"
+  },
+  {
+    "id": "DE--31",
+    "email": "arnold@spryker.com",
+    "name": "Arnold",
+    "password": "change123"
+  },
+  {
+    "id": "DE--32",
+    "email": "sally@ottom.de",
+    "name": "Sally",
+    "password": "change123"
+  },
+  {
+    "id": "DE--33",
+    "email": "kevin@spryker.com",
+    "name": "Kevin",
+    "password": "change123"
+  },
+  {
+    "id": "DE--34",
+    "email": "emma@spryker.com",
+    "name": "Emma",
+    "password": "change123"
+  }
+]

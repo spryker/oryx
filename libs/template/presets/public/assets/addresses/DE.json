@@ -5,46 +5,18 @@
     "options": [
       {
         "id": "salutation",
-        "label": "Salutation",
         "type": "select",
         "width": 100,
         "required": true,
         "options": [
-          {
-            "value": "Mr",
-            "text": "Mr"
-          },
-          {
-            "value": "Ms",
-            "text": "Ms"
-          },
-          {
-            "value": "Dr",
-            "text": "Dr"
-          }
+          { "value": "Mr", "text": "Mr" },
+          { "value": "Ms", "text": "Ms" },
+          { "value": "Dr", "text": "Dr" }
         ]
       },
-      {
-        "id": "firstName",
-        "label": "First Name",
-        "type": "input",
-        "required": true,
-        "width": 50
-      },
-      {
-        "id": "lastName",
-        "label": "Last Name",
-        "type": "input",
-        "required": true,
-        "width": 50
-      },
-      {
-        "id": "company",
-        "label": "Company",
-        "width": 100,
-        "type": "input",
-        "required": false
-      },
+      { "id": "firstName", "type": "input", "required": true },
+      { "id": "lastName", "type": "input", "required": true },
+      { "id": "company", "width": 100, "type": "input" },
       {
         "id": "address1",
         "label": "Street and House number",
@@ -56,8 +28,7 @@
         "id": "address2",
         "label": "Apt, suite, unit, building, floor, etc.",
         "width": 100,
-        "type": "input",
-        "required": true
+        "type": "input"
       },
       {
         "id": "zipCode",
@@ -65,19 +36,8 @@
         "type": "input",
         "required": true
       },
-      {
-        "id": "city",
-        "label": "City",
-        "type": "input",
-        "required": true
-      },
-      {
-        "id": "phone",
-        "label": "Phone",
-        "width": 100,
-        "type": "tel",
-        "required": false
-      }
+      { "id": "city", "type": "input", "required": true },
+      { "id": "phone", "width": 100, "type": "tel" }
     ]
   }
 }

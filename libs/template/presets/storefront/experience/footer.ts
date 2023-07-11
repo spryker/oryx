@@ -1,9 +1,9 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 
-const banner = (graphic: string) => ({
-  type: 'oryx-content-banner',
-  content: { data: { graphic } },
+const image = (graphic: string) => ({
+  type: 'oryx-content-image',
+  content: { data: { graphic, alt: graphic } },
 });
 
 const heading = (text: string, rule = {}) => ({
@@ -124,12 +124,12 @@ const paymentLinks = {
         },
       },
       components: [
-        banner('mastercard'),
-        banner('visa'),
-        banner('paypal'),
-        banner('klarna'),
-        banner('applePay'),
-        banner('googlePay'),
+        image('mastercard'),
+        image('visa'),
+        image('paypal'),
+        image('klarna'),
+        image('applePay'),
+        image('googlePay'),
       ],
     },
   ],
@@ -159,7 +159,7 @@ const shippingLinks = {
           ],
         },
       },
-      components: [banner('dhl'), banner('hermes'), banner('dhlExpress')],
+      components: [image('dhl'), image('hermes'), image('dhlExpress')],
     },
   ],
 };
@@ -175,7 +175,7 @@ const mobileAppsLinks = {
       options: {
         data: { rules: [{ layout: 'flex', align: 'center' }] },
       },
-      components: [banner('playStore'), banner('appleStore')],
+      components: [image('playStore'), image('appleStore')],
     },
   ],
 };
@@ -195,10 +195,10 @@ const socialLinks = {
         data: { rules: [{ layout: 'flex', align: 'center', gap: 20 }] },
       },
       components: [
-        banner('pinterest'),
-        banner('youtube'),
-        banner('instagram'),
-        banner('facebook'),
+        image('pinterest'),
+        image('youtube'),
+        image('instagram'),
+        image('facebook'),
       ],
     },
   ],

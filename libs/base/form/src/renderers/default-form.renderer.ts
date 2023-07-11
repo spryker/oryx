@@ -1,8 +1,6 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
-import { DirectiveResult } from 'lit/directive.js';
-import { classMap, ClassMapDirective } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
@@ -18,7 +16,25 @@ import { FormFieldRenderer } from './renderer';
 export class DefaultFormRenderer implements FormRenderer {
   constructor(protected injector = inject(INJECTOR)) {}
 
-  fieldValidationPattern(field: FormFieldDefinition): FieldValidationPattern {
+  buildForm(
+    data?: FormFieldDefinition[],
+    values?: FormValues,
+    keyFn: (field: FormFieldDefinition) => string = (
+      field: FormFieldDefinition
+    ): string => field.id
+  ): TemplateResult | void {
+    if (!data) return;
+    return html`${repeat(
+      data,
+      keyFn,
+      (field: FormFieldDefinition): TemplateResult =>
+        html`${this.buildField(field, values?.[field.id])}`
+    )}`;
+  }
+
+  protected fieldValidationPattern(
+    field: FormFieldDefinition
+  ): FieldValidationPattern {
     const { required, pattern, title, type } = field;
     return {
       pattern:
@@ -30,7 +46,7 @@ export class DefaultFormRenderer implements FormRenderer {
     };
   }
 
-  formatFormData(form: HTMLFormElement): unknown {
+  protected formatFormData(form: HTMLFormElement): unknown {
     const formData = new FormData(form);
     let formatted = {};
     for (const [name, value] of formData) {
@@ -43,7 +59,7 @@ export class DefaultFormRenderer implements FormRenderer {
     return formatted;
   }
 
-  formatFormControl(
+  protected formatFormControl(
     control: HTMLInputElement | HTMLSelectElement
   ): Record<string, unknown> {
     let value;
@@ -63,23 +79,7 @@ export class DefaultFormRenderer implements FormRenderer {
     };
   }
 
-  buildForm(
-    data?: FormFieldDefinition[],
-    values?: FormValues,
-    keyFn: (field: FormFieldDefinition) => string = (
-      field: FormFieldDefinition
-    ): string => field.id
-  ): TemplateResult | void {
-    if (!data) return;
-    return html`${repeat(
-      data,
-      keyFn,
-      (field: FormFieldDefinition): TemplateResult =>
-        html`${this.buildField(field, values?.[field.id])}`
-    )}`;
-  }
-
-  buildField(
+  protected buildField(
     field: FormFieldDefinition,
     value?: string | boolean
   ): TemplateResult {
@@ -96,9 +96,9 @@ export class DefaultFormRenderer implements FormRenderer {
     }
     switch (field.type) {
       case 'input':
+      case FormFieldType.Text:
       case FormFieldType.Phone:
-      case FormFieldType.Email:
-      case FormFieldType.Text: {
+      case FormFieldType.Email: {
         return this.buildTextField(field, value as string);
       }
       case FormFieldType.Number: {
@@ -140,11 +140,11 @@ export class DefaultFormRenderer implements FormRenderer {
       <oryx-input
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
-        class=${this.getClassMap(field)}
+        .style=${this.resolveStyles(field)}
       >
         <input
           .name=${field.id}
-          .value=${value ?? ''}
+          value=${value ?? ''}
           placeholder=${ifDefined(field.placeholder)}
           minlength=${ifDefined(field.min)}
           maxlength=${ifDefined(field.max)}
@@ -161,20 +161,23 @@ export class DefaultFormRenderer implements FormRenderer {
     field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
+    const { pattern, title } = this.fieldValidationPattern(field);
     return html`
       <oryx-input
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
-        class=${this.getClassMap(field)}
+        .style=${this.resolveStyles(field)}
       >
         <input
-          .name=${field.id}
-          .value=${value ?? ''}
+          name=${field.id}
+          value=${value ?? ''}
           placeholder=${ifDefined(field.placeholder)}
           type="number"
           min=${ifDefined(field.min)}
           max=${ifDefined(field.max)}
           ?required=${field.required}
+          pattern=${ifDefined(pattern)}
+          title=${ifDefined(title)}
         />
       </oryx-input>
     `;
@@ -186,8 +189,8 @@ export class DefaultFormRenderer implements FormRenderer {
   ): TemplateResult {
     return html`
       <oryx-checkbox
-        class=${this.getClassMap(field)}
         .required=${field.required}
+        .style=${this.resolveStyles(field)}
       >
         <input
           type="checkbox"
@@ -208,7 +211,7 @@ export class DefaultFormRenderer implements FormRenderer {
       <oryx-input
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
-        class=${this.getClassMap(field)}
+        .style=${this.resolveStyles(field)}
       >
         <textarea
           .name=${field.id}
@@ -225,11 +228,16 @@ export class DefaultFormRenderer implements FormRenderer {
     value: string
   ): TemplateResult {
     return html`
-      <oryx-input .label=${field.label} class=${this.getClassMap(field)}>
+      <oryx-input
+        .label=${field.label}
+        floatLabel=${ifDefined(field.floatLabel)}
+        .style=${this.resolveStyles(field)}
+      >
         <input
           type="color"
           .name=${field.id}
-          .value=${value ?? ''}
+          value=${value ?? ''}
+          placeholder=${ifDefined(field.placeholder)}
           ?required=${field.required}
         />
       </oryx-input>
@@ -241,7 +249,7 @@ export class DefaultFormRenderer implements FormRenderer {
     value?: string | boolean
   ): TemplateResult {
     return html`
-      <oryx-toggle class=${this.getClassMap(field)}>
+      <oryx-toggle .style=${this.resolveStyles(field)}>
         <input
           type="checkbox"
           .name=${field.id}
@@ -258,7 +266,10 @@ export class DefaultFormRenderer implements FormRenderer {
     value?: string
   ): TemplateResult {
     return html`
-      <oryx-input-list .heading=${field.label} class=${this.getClassMap(field)}>
+      <oryx-input-list
+        .heading=${field.label}
+        .style=${this.resolveStyles(field)}
+      >
         ${field.options?.map(
           (option) => html`
             <oryx-toggle-icon>
@@ -290,7 +301,7 @@ export class DefaultFormRenderer implements FormRenderer {
     return html`
       <oryx-select
         .label=${field.label}
-        class=${this.getClassMap(field)}
+        .style=${this.resolveStyles(field)}
         floatLabel=${ifDefined(field.floatLabel)}
         @oryx.close=${(e: Event): void => e.stopPropagation()}
       >
@@ -328,6 +339,7 @@ export class DefaultFormRenderer implements FormRenderer {
       <oryx-input-list
         heading=${ifDefined(field.label)}
         direction=${ifDefined(field.attributes?.direction)}
+        .style=${this.resolveStyles(field)}
       >
         ${field.options?.map(
           (option) => html`
@@ -337,6 +349,7 @@ export class DefaultFormRenderer implements FormRenderer {
                 name=${field.id}
                 value=${option.value}
                 ?checked=${option.value === value}
+                ?required=${field.required}
               />
               ${option.text ?? option.value}
             </oryx-radio>
@@ -346,13 +359,10 @@ export class DefaultFormRenderer implements FormRenderer {
     `;
   }
 
-  getClassMap(
-    params: FormFieldDefinition
-  ): DirectiveResult<typeof ClassMapDirective> {
-    return classMap({
-      w100: params.width === 100,
-      w50: !params.width || params.width == 50,
-    });
+  protected resolveStyles(params: FormFieldDefinition): string | void {
+    if (params.width === 100) {
+      return `grid-column: auto / span 2;`;
+    }
   }
 
   /**
