@@ -1,10 +1,10 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 
 const brand = (name: string, rules?: any) => ({
-  type: 'oryx-content-banner',
+  type: 'oryx-content-image',
   name,
-  content: { data: { graphic: name } },
-  options: { data: { link: `/search?q=${name}`, rules } },
+  content: { data: { graphic: name, link: `/search?q=${name}` } },
+  options: { data: { rules } },
 });
 
 export const homePage: StaticComponent = {
@@ -16,13 +16,68 @@ export const homePage: StaticComponent = {
   },
   components: [
     {
-      type: 'oryx-content-video',
+      type: 'oryx-composition',
+      components: [
+        {
+          type: 'oryx-content-image',
+          name: 'hero',
+          content: {
+            data: {
+              link: `/category/12`,
+              alt: 'hero image',
+              image:
+                'https://images.unsplash.com/photo-1670272505340-d906d8d77d03?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80',
+            },
+          },
+          options: {
+            data: {
+              position: 'center 20%',
+              rules: [
+                {
+                  width: '100%',
+                  style: 'position:absolute;left:0;z-index:-1',
+                },
+              ],
+            },
+          },
+        },
+        {
+          type: 'oryx-content-text',
+          content: {
+            data: {
+              text: `
+            <span class="subtitle">CANON EOS R7 System camera</span>
+            <h1 style="margin:20px 0;">Discover everything</h1>
+            <h3 style="margin-bottom:20px">EOS R7 wows with its ability to track fast-moving subjects with its Deep-learning Dual Pixel CMOS AF II focus system.</h3>
+            <oryx-button><a href="/category/12">Shop now</a></oryx-button>
+          `,
+            },
+          },
+          options: {
+            data: {
+              rules: [
+                {
+                  padding: '40px',
+                  background: 'rgba(35, 35, 35, 0.56);',
+                  margin: '30px 0',
+                  radius: 4,
+                  style: 'color: white;gap:20px',
+                },
+              ],
+            },
+          },
+        },
+      ],
       options: {
         data: {
-          src: 'https://www.youtube.com/watch?v=m6pG6fubp9g&t=5s',
-          autoplay: true,
-          muted: true,
-          rules: [{ height: '35vh' }],
+          rules: [
+            {
+              height: '550px',
+              layout: 'split',
+              align: 'end',
+              bleed: true,
+            },
+          ],
         },
       },
     },
@@ -31,7 +86,11 @@ export const homePage: StaticComponent = {
       options: {
         data: {
           rules: [
-            { layout: 'carousel', padding: '30px 0 5px', align: 'stretch' },
+            {
+              layout: 'carousel',
+              padding: '30px 0 5px',
+              align: 'stretch',
+            },
             { query: { breakpoint: 'sm' }, padding: '20px' },
           ],
           category: '10',

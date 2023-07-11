@@ -55,12 +55,17 @@ export const HeaderTemplate: StaticComponent = {
       name: 'Composition',
       components: [
         {
-          type: 'oryx-content-banner',
-          content: { data: { graphic: 'logo' } },
+          type: 'oryx-content-image',
+          content: {
+            data: {
+              graphic: 'logo',
+              link: '/',
+              linkLabel: 'Composable Storefront based on Oryx',
+            },
+          },
           options: {
             data: {
               rules: [{ width: 'max-content', height: '42px' }],
-              link: '/',
             },
           },
         },
