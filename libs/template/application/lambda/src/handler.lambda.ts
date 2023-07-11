@@ -43,7 +43,7 @@ export const storefrontHandler = async (
         'Content-Type': 'text/html',
         ...event.headers,
       },
-      body: `${Number(process.env.ORYX_TTL)}${Math.random()}${body}`,
+      body,
       ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl,
     };
   } catch (e) {
