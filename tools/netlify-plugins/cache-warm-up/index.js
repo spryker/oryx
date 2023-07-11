@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import { execSync } from 'child_process';
 
 export const onSuccess = ({ inputs }) => {
   const { oryxCache } = inputs;
@@ -19,7 +19,7 @@ export const onSuccess = ({ inputs }) => {
 function sendGetRequest(url) {
   console.log('Sending GET request to: ', url);
 
-  exec(`curl -v -i ${url}`, (error, stdout, stderr) => {
+  execSync(`curl -I -X GET ${url}`, (error, stdout, stderr) => {
     if (error) {
       console.error(`error: ${error.message}`);
       return;
