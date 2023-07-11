@@ -1,6 +1,6 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   ApiProductModel,
   ProductList,
@@ -71,14 +71,6 @@ export class DefaultProductListAdapter implements ProductListAdapter {
           qualifier
         )}&include=${include?.join(',')}`
       )
-      .pipe(
-        tap((s) => {
-          console.log(s, 'before');
-        }),
-        this.transformer.do(ProductListNormalizer),
-        tap((s) => {
-          console.log(s, 'after');
-        })
-      );
+      .pipe(this.transformer.do(ProductListNormalizer));
   }
 }

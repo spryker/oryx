@@ -110,7 +110,8 @@ export module ApiProductModel {
     | Include<Includes.ConcreteProductPrices, Prices>
     | Include<Includes.ConcreteProductAvailabilities, ProductAvailability>
     | Include<Includes.Labels, ProductLabels>
-    | Include<Includes.AbstractProducts, Abstract>;
+    | Include<Includes.AbstractProducts, Abstract>
+    | Include<Includes.CategoryNodes, CategoryNodes>;
 
   export type Response = JsonApiModel<Concrete, ResponseIncludes[]>;
 }
