@@ -67,7 +67,7 @@ export const styles = css`
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin-top: 34px;
+    margin-block-start: 34px;
   }
 
   .loading span {
