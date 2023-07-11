@@ -31,6 +31,7 @@ export async function createProdSever(
 
       res.status(200).end(html);
     } catch (e) {
+      console.error(e);
       res.status(500).end((e as Error).message);
     }
   });
