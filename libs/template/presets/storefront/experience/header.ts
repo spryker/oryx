@@ -66,7 +66,7 @@ export const HeaderTemplate: StaticComponent = {
           options: {
             data: {
               rules: [
-                { colSpan: 3, height: '42px' },
+                { colSpan: 3, height: '42px', justify: 'start' },
                 { query: { breakpoint: 'md' }, colSpan: 2 },
               ],
               link: '/',
