@@ -1,9 +1,13 @@
 import { CustomerNoteFragment } from '../support/page_fragments/customer-note.fragment';
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 import { PickingFragment } from '../support/page_fragments/picking.fragment';
+import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
+import { DiscardModalFragment } from '../support/page_fragments/discard-modal.fragment';
 
 const pickingListsFragment = new PickingListsFragment();
 const customerNoteFragment = new CustomerNoteFragment();
+const pickingHeaderFragment = new PickingHeaderFragment();
+const discardModalFragment = new DiscardModalFragment();
 
 describe('Start picking a picklist with customer note', () => {
   beforeEach(() => {
@@ -58,6 +62,42 @@ describe('Start picking a picklist with customer note', () => {
       pickingFragment.getTabsList().eq(0).should('contain.text', 'Not Picked');
       pickingFragment.getTabsList().eq(1).should('contain.text', 'Picked');
       pickingFragment.getTabsList().eq(2).should('contain.text', 'Not Found');
+
+      // See discard modal by clicking on back button
+      // Due to a cypress bug https://github.com/cypress-io/cypress/issues/26905,
+      // the only meaningful way to check visibility is in the slots.
+      discardModalFragment.getContent().should('not.be.visible');
+      pickingHeaderFragment.getBackButton().click();
+      discardModalFragment.getContent().should('be.visible');
+
+      // should hide discard modal
+      discardModalFragment.getCancelButton().click();
+      discardModalFragment.getContent().should('not.be.visible');
+      cy.location('pathname').should('to.match', /^\/picking-list/);
+
+      // should navigate back
+      pickingHeaderFragment.getBackButton().click();
+      discardModalFragment.getDiscardButton().click();
+      cy.location('pathname').should('to.match', /^\/customer-note-info/);
+
+      customerNoteFragment.getProceedToPickingButton().click();
+
+      // See discard modal by clicking on browser back button
+      discardModalFragment.getContent().should('not.be.visible');
+      cy.go('back');
+      discardModalFragment.getContent().should('be.visible');
+
+      // should hide discard modal
+      discardModalFragment.getCancelButton().click();
+      discardModalFragment.getContent().should('not.be.visible');
+      cy.location('pathname').should('to.match', /^\/picking-list/);
+
+      // should navigate back
+      cy.go('back');
+      discardModalFragment.getDiscardButton().click();
+      cy.location('pathname').should('to.match', /^\/customer-note-info/);
+
+      customerNoteFragment.getProceedToPickingButton().click();
 
       // should display "Not picked" as selected
       pickingFragment.getTabsList().eq(0).should('have.attr', 'selected');
