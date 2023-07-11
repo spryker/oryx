@@ -1,7 +1,7 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { AvailabilityNormalizer } from '../availability';
 import { ProductLabelsNormalizer } from '../labels/labels.normalizer';
@@ -91,8 +91,12 @@ export function productNodeNormalizer(
   const abstractKey = camelize(ApiProductModel.Includes.AbstractProducts);
   const nodeKey = camelize(ApiProductModel.Includes.CategoryNodes);
   const { [abstractKey]: abstract } = data;
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { [nodeKey]: node } = abstract![0];
+
+  if (!abstract?.length) {
+    return of({});
+  }
+
+  const { [nodeKey]: node } = abstract[0];
 
   return transformer.transform(node, NodeNormalizer);
 }
