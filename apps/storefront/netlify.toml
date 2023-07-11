@@ -8,13 +8,13 @@
 [[plugins]]
   package = "/../../tools/netlify-plugins/cache-warm-up"
 
-  [[plugins.inputs]]
+  [plugins.inputs]
     path = ""
 
-  [[plugins.inputs]]
+  [plugins.inputs]
     path = "product/086_30521602"
 
-  [[plugins.inputs]]
+  [plugins.inputs]
     path = "category/4"
 
 [[plugins]]
