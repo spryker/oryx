@@ -24,7 +24,8 @@ const wordmark = `
 `;
 
 export const logo = `
-  <svg viewBox="0 0 109 42">
+  <svg viewBox="0 0 109 42" role="img" aria-labelledby="svg-title">
+    <title id="svg-title">Spryker logo</title>
     ${symbol}
     ${wordmark}
   </svg>
