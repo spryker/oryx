@@ -61,39 +61,39 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
 
       for (let i = 0; i < modes.length; i++) {
         if (modes[i][0] === '@') {
-          // hydration on context change
           this.setupContextHydration(el, modes[i].slice(1));
         } else {
-          // event hydration
-          const parts = modes[i].split(':');
-          const mode = parts[parts.length - 1];
-          let target: HTMLElement | typeof window = el;
-          if (parts.length > 1) {
-            target = parts[0] === 'window' ? window : el;
-          }
-
-          target.addEventListener(mode, async () => {
-            const childs = this.treewalk(
-              `[${deferHydrationAttribute}]`,
-              el,
-              false
-            );
-
-            if (childs.length) {
-              const promises = childs.map((childEl) =>
-                this.hydrateOnDemand(childEl)
-              );
-              await Promise.all(promises);
-            }
-
-            this.hydrateOnDemand(el);
-          });
+          this.setupEventHydration(el, modes[i]);
         }
       }
     });
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.hydrateOnDemand(document.querySelector<LitElement>(this.root)!);
+  }
+
+  protected setupEventHydration(element: HTMLElement, event: string): void {
+    const parts = event.split(':');
+    const mode = parts[parts.length - 1];
+    let target: HTMLElement | typeof window = element;
+    if (parts.length > 1) {
+      target = parts[0] === 'window' ? window : element;
+    }
+
+    target.addEventListener(mode, async () => {
+      const childs = this.treewalk(
+        `[${deferHydrationAttribute}]`,
+        element,
+        false
+      );
+
+      if (childs.length) {
+        const promises = childs.map((childEl) => this.hydrateOnDemand(childEl));
+        await Promise.all(promises);
+      }
+
+      this.hydrateOnDemand(element);
+    });
   }
 
   protected setupContextHydration(element: HTMLElement, context: string): void {
