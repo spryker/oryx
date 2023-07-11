@@ -1,6 +1,6 @@
+import { resolve } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
 import { MockPickingListService } from '@spryker-oryx/picking/mocks';
-import { resolve } from '@spryker-oryx/di';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
