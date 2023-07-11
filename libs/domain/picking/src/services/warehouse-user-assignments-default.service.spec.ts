@@ -64,6 +64,9 @@ describe('WarehouseUserAssignmentsDefaultService', () => {
 
     it('should call the "getList" method of the adapter', () => {
       expect(adapter.getList).toHaveBeenCalled();
+    });
+
+    it('should get the list of warehouse user assignments', () => {
       expect(callback).toHaveBeenCalledWith([mockWarehouseUserAssignment]);
     });
   });
@@ -79,6 +82,9 @@ describe('WarehouseUserAssignmentsDefaultService', () => {
       expect(adapter.activateAssignment).toHaveBeenCalledWith(
         mockWarehouseUserAssignment.id
       );
+    });
+
+    it('should get updated warehouse user assignment', () => {
       expect(callback).toHaveBeenCalledWith(mockWarehouseUserAssignment);
     });
   });

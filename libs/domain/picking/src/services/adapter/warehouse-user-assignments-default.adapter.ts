@@ -1,22 +1,25 @@
+import { JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
+  GetWarehouseUserAssignmentsResponse,
   PatchWarehouseUserAssignmentsResponse,
   PickingHttpService,
 } from '@spryker-oryx/picking';
 import * as jsonapi from 'jsonapi-serializer';
-import { Observable, switchMap } from 'rxjs';
-import { Warehouse, WarehouseUserAssignment } from '../../models/warehouse';
-import { LinksObject } from './types';
+import { Observable } from 'rxjs';
+import { WarehouseUserAssignment } from '../../models/warehouse';
 import {
-  GetWarehouseUserAssignmentsResponse,
-  WarehouseUserAssignmentsAdapter,
-} from './warehouse-user-assignments.adapter';
+  WarehouseUserAssignmentNormalizer,
+  WarehouseUserAssignmentsNormalizer,
+} from './normalizers';
+import { WarehouseUserAssignmentsAdapter } from './warehouse-user-assignments.adapter';
 
 export class WarehouseUserAssignmentsDefaultAdapter
   implements WarehouseUserAssignmentsAdapter
 {
   constructor(
     protected pickingHttpService = inject(PickingHttpService),
+    protected transformer = inject(JsonAPITransformerService),
     protected deserializer = new jsonapi.Deserializer({
       keyForAttribute: 'camelCase',
     })
@@ -27,11 +30,7 @@ export class WarehouseUserAssignmentsDefaultAdapter
   getList(): Observable<WarehouseUserAssignment[]> {
     return this.pickingHttpService
       .get<GetWarehouseUserAssignmentsResponse>(this.endpoint)
-      .pipe(
-        switchMap((res: GetWarehouseUserAssignmentsResponse) =>
-          this.parseWarehouseUserAssignmentsList(res)
-        )
-      );
+      .pipe(this.transformer.do(WarehouseUserAssignmentsNormalizer));
   }
 
   activateAssignment(
@@ -48,46 +47,6 @@ export class WarehouseUserAssignmentsDefaultAdapter
           },
         }
       )
-      .pipe(
-        switchMap((res: PatchWarehouseUserAssignmentsResponse) =>
-          this.parseWarehouseUserAssignment(res)
-        )
-      );
+      .pipe(this.transformer.do(WarehouseUserAssignmentNormalizer));
   }
-
-  protected mapToWarehouseUserAssignment(
-    data: WarehouseUserAssignmentsResponseData
-  ): WarehouseUserAssignment {
-    return {
-      id: data.id,
-      isActive: data.isActive,
-      userUuid: data.userUuid,
-      warehouse: data.warehouse,
-    };
-  }
-
-  protected async parseWarehouseUserAssignmentsList(
-    response: GetWarehouseUserAssignmentsResponse
-  ): Promise<WarehouseUserAssignment[]> {
-    const deserializedData: WarehouseUserAssignmentsResponseData[] =
-      await this.deserializer.deserialize(response);
-
-    return deserializedData.map(this.mapToWarehouseUserAssignment);
-  }
-
-  protected async parseWarehouseUserAssignment(
-    response: PatchWarehouseUserAssignmentsResponse
-  ): Promise<WarehouseUserAssignment> {
-    const deserializedData: WarehouseUserAssignmentsResponseData =
-      await this.deserializer.deserialize(response);
-
-    return this.mapToWarehouseUserAssignment(deserializedData);
-  }
-}
-
-export interface WarehouseUserAssignmentsResponseData extends LinksObject {
-  id: string;
-  isActive: boolean;
-  userUuid: string;
-  warehouse: Warehouse;
 }

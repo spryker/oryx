@@ -10,7 +10,7 @@ export const defaultPickingRoutes: RouteConfig[] = [
     render: () => html`<oryx-picking-lists mode-light></oryx-picking-lists>`,
   },
   {
-    path: '/warehouse-assignment',
+    path: '/warehouse-selection',
     render: () =>
       html`<oryx-warehouse-assignment mode-light></oryx-warehouse-assignment>`,
   },

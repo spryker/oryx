@@ -1,3 +1,4 @@
+import { JsonAPITransformerService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   GetWarehouseUserAssignmentsResponse,
@@ -5,7 +6,6 @@ import {
   WarehouseUserAssignmentsAdapter,
   WarehouseUserAssignmentsDefaultAdapter,
 } from '@spryker-oryx/picking';
-import { nextTick } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
 
 const mockResponseWarehouseUserAssignment = {
@@ -38,6 +38,12 @@ class MockPickingHttpService implements Partial<PickingHttpService> {
   );
 }
 
+const mockTransformerData = 'mockTransformerData';
+
+const mockTransformer = {
+  do: vi.fn().mockReturnValue(() => of(mockTransformerData)),
+};
+
 describe('WarehouseUserAssignmentsDefaultAdapter', () => {
   const endpoint = '/warehouse-user-assignments';
   const callback = vi.fn();
@@ -47,6 +53,10 @@ describe('WarehouseUserAssignmentsDefaultAdapter', () => {
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
+        {
+          provide: JsonAPITransformerService,
+          useValue: mockTransformer,
+        },
         {
           provide: WarehouseUserAssignmentsAdapter,
           useClass: WarehouseUserAssignmentsDefaultAdapter,
@@ -76,17 +86,12 @@ describe('WarehouseUserAssignmentsDefaultAdapter', () => {
       adapter.getList().subscribe(callback);
     });
 
-    it('should call the "get" method of PickingHttpService', async () => {
+    it('should call the "get" method of PickingHttpService with endpoint', () => {
       expect(http.get).toHaveBeenCalledWith(endpoint);
-      await nextTick(1);
-      expect(callback).toHaveBeenCalledWith([
-        {
-          id: mockResponseWarehouseUserAssignment.id,
-          userUuid: mockResponseWarehouseUserAssignment.attributes.userUuid,
-          isActive: mockResponseWarehouseUserAssignment.attributes.isActive,
-          warehouse: mockResponseWarehouseUserAssignment.attributes.warehouse,
-        },
-      ]);
+    });
+
+    it('should return transformed data', () => {
+      expect(callback).toHaveBeenCalledWith(mockTransformerData);
     });
   });
 
@@ -97,20 +102,21 @@ describe('WarehouseUserAssignmentsDefaultAdapter', () => {
         .subscribe(callback);
     });
 
-    it('should call the "patch" method of PickingHttpService', async () => {
+    it('should call the "patch" method of PickingHttpService', () => {
       expect(http.patch).toHaveBeenCalledWith(
         `${endpoint}/${mockResponseWarehouseUserAssignment.id}`,
         {
-          isActive: true,
+          data: {
+            attributes: {
+              isActive: true,
+            },
+          },
         }
       );
-      await nextTick(1);
-      expect(callback).toHaveBeenCalledWith({
-        id: mockResponseWarehouseUserAssignment.id,
-        userUuid: mockResponseWarehouseUserAssignment.attributes.userUuid,
-        isActive: mockResponseWarehouseUserAssignment.attributes.isActive,
-        warehouse: mockResponseWarehouseUserAssignment.attributes.warehouse,
-      });
+    });
+
+    it('should receive updated warehouse user assignment', () => {
+      expect(callback).toHaveBeenCalledWith(mockTransformerData);
     });
   });
 });

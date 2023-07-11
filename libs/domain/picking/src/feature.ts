@@ -1,4 +1,9 @@
-import { AppFeature, ComponentsInfo } from '@spryker-oryx/core';
+import {
+  AppFeature,
+  ComponentsInfo,
+  DefaultJsonAPITransformerService,
+  JsonAPITransformerService,
+} from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import {
@@ -30,9 +35,11 @@ import {
   PickingListDefaultAdapter,
   PickingListDefaultService,
   PickingListService,
+  warehouseUserAssignmentNormalizer,
   WarehouseUserAssignmentsAdapter,
   WarehouseUserAssignmentsDefaultAdapter,
   WarehouseUserAssignmentsDefaultService,
+  warehouseUserAssignmentsNormalizer,
   WarehouseUserAssignmentsService,
 } from './services';
 
@@ -74,6 +81,12 @@ export class PickingFeature implements AppFeature {
         !config?.noDefaultRoutes ? { routes: defaultPickingRoutes } : undefined
       ),
       ...providePickingConfig(config),
+      {
+        provide: JsonAPITransformerService,
+        useClass: DefaultJsonAPITransformerService,
+      },
+      ...warehouseUserAssignmentNormalizer,
+      ...warehouseUserAssignmentsNormalizer,
       { provide: PickingListService, useClass: PickingListDefaultService },
       { provide: PickingListAdapter, useClass: PickingListDefaultAdapter },
       { provide: PickingHttpService, useClass: PickingHttpDefaultService },

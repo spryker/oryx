@@ -73,6 +73,10 @@ describe('WarehouseAssignmentComponent', () => {
     });
   });
 
+  it('should render header', () => {
+    expect(el).toContainElement('oryx-picking-header');
+  });
+
   it('should render button of each location', () => {
     const buttons = el.renderRoot.querySelectorAll('button');
     expect(buttons.length).toBe(mockWarehouseUserAssignments.length);

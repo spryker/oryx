@@ -276,15 +276,6 @@ interface PickingListResponseProductImage extends ResourceObject {
   ];
 }
 
-// interface ResourceObject {
-//   id: string;
-//   type: string;
-// }
-//
-// interface LinksObject {
-//   self: string;
-// }
-
 interface StartPickingListResponse {
   data: PatchPickingListData;
   links: LinksObject;
