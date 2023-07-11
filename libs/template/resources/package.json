@@ -14,7 +14,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@spryker-oryx/experience": "latest",
-    "@spryker-oryx/ui": "latest"
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/ui": "*"
   }
 }

@@ -9,7 +9,7 @@
   "types": "./src/main.d.ts",
   "bin": "./src/main.js",
   "dependencies": {
-    "@spryker-oryx/cli": "latest"
+    "@spryker-oryx/cli": "*"
   },
   "publishConfig": {
     "access": "public"
