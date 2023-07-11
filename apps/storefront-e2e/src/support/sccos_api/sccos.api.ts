@@ -1,5 +1,6 @@
 import { defaultAddress } from '../../test-data/default-address';
 import { TestProductData } from '../../types/product.type';
+import { TestCustomerData } from '../../types/user.type';
 
 export type ApiResponse<T> = {
   data: T;
@@ -13,22 +14,6 @@ export type CartData = {
   id: string;
   attributes: {
     name: string;
-  };
-};
-
-export type CustomersBody = {
-  data: {
-    type: 'customers';
-    attributes: {
-      firstName: string;
-      lastName: string;
-      salutation: string;
-      gender: string;
-      email: string;
-      password: string;
-      confirmPassword: string;
-      acceptedTerms: boolean;
-    };
   };
 };
 
@@ -243,14 +228,20 @@ export class SCCOSApi {
     },
   };
 
-  customer = {
-    post: (body: CustomersBody) => {
+  token = {
+    post: (user: TestCustomerData) => {
+      cy.log('SCCOSApi | POST token');
+
       return cy.request({
         method: 'POST',
-        url: `${this.apiUrl}/customers`,
+        url: `${this.apiUrl}/token`,
         headers: this.headers,
-        body,
-        failOnStatusCode: false,
+        form: true,
+        body: {
+          username: user.email,
+          password: user.password,
+          grant_type: 'password',
+        },
       });
     },
   };
