@@ -16,7 +16,7 @@ const checkoutPage = new CheckoutPage();
 describe('Checkout suite', { tags: 'smoke' }, () => {
   describe('Create a new order by authorized user without addresses', () => {
     beforeEach(() => {
-      cy.login();
+      cy.loginApi();
 
       sccosApi = new SCCOSApi();
 
