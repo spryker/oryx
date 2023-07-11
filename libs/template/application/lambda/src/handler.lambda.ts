@@ -6,7 +6,6 @@ import { serverContext } from './context';
 
 interface HandlerContext {
   index?: string;
-  component?: string;
   entry?: string;
   root?: string;
   /**
@@ -15,6 +14,7 @@ interface HandlerContext {
    * Also it's possible to set it with env global variable `ORYX_TTL`.
    */
   ttl?: number;
+  [key: string]: any;
 }
 
 export const storefrontHandler = async (
