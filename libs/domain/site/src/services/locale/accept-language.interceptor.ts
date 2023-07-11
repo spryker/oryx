@@ -40,8 +40,6 @@ export class AcceptLanguageInterceptor implements HttpInterceptor {
 
     headers.set(this.headerName, locale);
 
-    console.log(headers, locale);
-
     return { ...options, headers };
   }
 
