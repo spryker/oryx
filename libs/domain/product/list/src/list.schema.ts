@@ -9,6 +9,8 @@ export const productListSchema: ContentComponentSchema<ProductListComponent> = {
   group: 'Product',
   icon: IconTypes.ViewList,
   options: {
+    heading: { type: FormFieldType.Text, label: 'List heading', width: 100 },
+
     q: { type: FormFieldType.Text, label: 'Search query', width: 100 },
     category: { type: FormFieldType.Text },
     brand: { type: FormFieldType.Text },
@@ -22,15 +24,7 @@ export const productListSchema: ContentComponentSchema<ProductListComponent> = {
 
     sort: {
       type: FormFieldType.Select,
-      options: [
-        { value: SortParamNames.NameAsc },
-        { value: SortParamNames.NameDesc },
-        { value: SortParamNames.None },
-        { value: SortParamNames.Popularity },
-        { value: SortParamNames.PriceAsc },
-        { value: SortParamNames.PriceDesc },
-        { value: SortParamNames.Rating },
-      ],
+      options: Object.values(SortParamNames).map((value) => ({ value })),
     },
     page: { type: FormFieldType.Number },
     ipp: {
