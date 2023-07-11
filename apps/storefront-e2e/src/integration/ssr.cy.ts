@@ -43,7 +43,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
 
     verifyHeader();
 
-    landingPage.getVideo().should('be.visible');
+    landingPage.getHeroBanner().should('be.visible');
 
     verifyFooter();
   });
