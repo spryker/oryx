@@ -19,17 +19,8 @@ export const onSuccess = ({ inputs }) => {
 function sendGetRequest(url) {
   console.log('Sending GET request to: ', url);
 
-  execSync(`curl -I -X GET ${url}`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`error: ${error.message}`);
-      return;
-    }
+  const result = execSync(`curl -I -X GET ${url}`);
 
-    if (stderr) {
-      console.error(`stderr: ${stderr}`);
-      return;
-    }
-
-    console.log(`stdout:\n${stdout}`);
-  });
+  console.log(result.toString());
+  console.log('---------')
 }
