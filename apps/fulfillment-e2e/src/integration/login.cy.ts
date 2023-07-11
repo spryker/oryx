@@ -1,8 +1,10 @@
 import { OauthHandlerFragment } from '../support/page_fragments/oauth-handler.fragment';
+import { PickingListsHeaderFragment } from '../support/page_fragments/picking-lists-header.fragment';
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 import { LoginPage } from '../support/page_objects/login.page';
 
 const pickingListsFragment = new PickingListsFragment();
+const headerFragment = new PickingListsHeaderFragment();
 const loginPage = new LoginPage();
 const oauthHandler = new OauthHandlerFragment();
 
@@ -47,9 +49,9 @@ describe('Login Suite', () => {
 
       cy.location('pathname').should('be.equal', '/');
       pickingListsFragment.getWrapper().should('be.visible');
-      pickingListsFragment.getSearchIcon().should('be.visible');
-      pickingListsFragment.getUserIcon().should('be.visible');
-      pickingListsFragment.getHeadline().should('contain.text', 'Pick lists');
+      headerFragment.getSearchIcon().should('be.visible');
+      headerFragment.getUserIcon().should('be.visible');
+      headerFragment.getHeadline().should('contain.text', 'Pick lists');
       pickingListsFragment.getSortButton().should('be.visible');
     });
   });

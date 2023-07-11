@@ -9,7 +9,7 @@ export const viteConfig = {
     root: './server',
   },
   build: {
-    outDirRoot: 'dist/apps/testfront',
+    outDirRoot: '../dist',
     index: './client',
     ssr: './server',
   },

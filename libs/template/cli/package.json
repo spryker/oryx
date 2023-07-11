@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@clack/prompts": "^0.6.3",
-    "@spryker-oryx/core": "latest",
-    "@spryker-oryx/di": "latest",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/di": "*",
     "picocolors": "^1.0.0",
     "request": "^2.88.2",
     "rxjs": "^7.5.0",

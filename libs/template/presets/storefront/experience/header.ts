@@ -55,16 +55,26 @@ export const HeaderTemplate: StaticComponent = {
       name: 'Composition',
       components: [
         {
-          type: 'oryx-content-banner',
-          content: { data: { graphic: 'logo' } },
+          type: 'oryx-content-image',
+          content: {
+            data: {
+              graphic: 'logo',
+              link: '/',
+              label: 'Composable Storefront based on Oryx',
+            },
+          },
           options: {
             data: {
               rules: [
-                { colSpan: 3, height: '42px' },
+                {
+                  colSpan: 3,
+                  height: '42px',
+                  justify: 'start',
+                  style: 'color: white',
+                },
                 { query: { breakpoint: 'md' }, colSpan: 2 },
               ],
               link: '/',
-              linkLabel: 'Spryker logo',
             },
           },
         },

@@ -5,14 +5,17 @@ import { LoginPage } from '../support/page_objects/login.page';
 import { ProductDetailsPage } from '../support/page_objects/product-details.page';
 import { SearchPage } from '../support/page_objects/search.page';
 import { CategoryPage } from '../support/page_objects/category.page';
+import { CheckoutPage } from '../support/page_objects/checkout.page';
 import { ProductStorage } from '../test-data/product.storage';
 import { FooterFragment } from '../support/page_fragments/footer.fragment';
 import { HeaderFragment } from '../support/page_fragments/header.fragment';
 import { SearchFragment } from '../support/page_fragments/search.fragment';
+import { SCCOSApi } from '../support/sccos_api/sccos.api';
 
 const footer = new FooterFragment();
 const header = new HeaderFragment();
 const search = new SearchFragment();
+let sccosApi: SCCOSApi;
 const verifyFooter = (isPageScrollable = true) => {
   if (isPageScrollable) {
     cy.scrollTo('bottom');
@@ -43,7 +46,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
 
     verifyHeader();
 
-    landingPage.getVideo().should('be.visible');
+    landingPage.getHeroBanner().should('be.visible');
 
     verifyFooter();
   });
@@ -103,6 +106,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     verifyHeader();
 
     cartPage.getCartEntriesWrapper().should('be.visible');
+    cartPage.getEmptyCartMessage().should('be.visible');
 
     verifyFooter();
   });
@@ -132,6 +136,23 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     categoryPage.getFacets().should('be.visible');
     categoryPage.getProductSort().should('be.visible');
     categoryPage.getOryxCards().should('have.length.greaterThan', 1);
+
+    verifyFooter();
+  });
+
+  it('must render Checkout page', () => {
+    const checkoutPage = new CheckoutPage();
+    sccosApi = new SCCOSApi();
+    sccosApi.guestCarts.get();
+    sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
+
+    cy.goToCheckoutAsGuest();
+    cy.location('pathname').should('be.eq', checkoutPage.anonymousUrl);
+    cy.reload();
+
+    verifyHeader();
+
+    checkoutPage.getPlaceOrderBtn().should('be.visible');
 
     verifyFooter();
   });
