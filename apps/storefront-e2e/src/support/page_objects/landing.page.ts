@@ -4,10 +4,10 @@ export class LandingPage extends AbstractSFPage {
   url = '/';
 
   waitForLoaded(): void {
-    this.getVideo().should('be.visible');
+    // no need to wait for anything (previously we waited for youtube video)
   }
 
-  getVideo = () => cy.get('oryx-video');
+  getHeroBanner = () => cy.get('oryx-content-image');
   getProductCards = () => cy.get('oryx-product-card');
   getProductCardPrices = () =>
     this.getProductCards().find('oryx-product-price').find('span');

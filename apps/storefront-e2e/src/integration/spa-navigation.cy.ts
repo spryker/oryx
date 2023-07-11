@@ -24,7 +24,7 @@ describe('SPA navigation suite', () => {
 
       it('should navigate the user back to the home page', () => {
         cy.location('pathname').should('be.eq', landingPage.url);
-        landingPage.getVideo().should('be.visible');
+        landingPage.getHeroBanner().should('be.visible');
       });
     });
   });

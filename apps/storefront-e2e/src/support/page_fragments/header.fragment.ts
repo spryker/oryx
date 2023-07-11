@@ -13,7 +13,7 @@ export class HeaderFragment {
     this.getLocaleSelector().find('oryx-button').find('button');
 
   getLogo = () =>
-    this.getWrapper().find('oryx-content-banner').find('a[href="/"]');
+    this.getWrapper().find('oryx-content-image').find('a[href="/"]');
 
   getUserSummary = () => cy.get('oryx-site-navigation-item:nth-of-type(1)');
   getUserSummaryHeading = () => this.getUserSummary().find('oryx-heading');
