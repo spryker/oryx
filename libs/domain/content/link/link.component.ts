@@ -7,7 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
-@hydratable(['mouseover', 'focusin'])
+@hydratable()
 export class ContentLinkComponent extends ContentMixin<
   ContentLinkOptions,
   ContentLinkContent
