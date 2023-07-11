@@ -11,6 +11,7 @@ export type Relationships = Record<string, Record<'data', Relationship[]>>;
 
 export interface Data<A> {
   attributes: A;
+  id?: string;
   relationships?: Relationships;
 }
 

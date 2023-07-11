@@ -27,6 +27,7 @@ export interface Pagination {
 
 export interface Product {
   sku?: string;
+  nodeId?: string;
   attributeNames?: Record<string, string>;
   attributes?: Record<string, string>;
   averageRating?: number;

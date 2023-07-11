@@ -78,5 +78,19 @@ export const productPage: StaticComponent = {
         },
       },
     },
+    {
+      type: 'oryx-product-list',
+      options: {
+        data: {
+          rules: [
+            {
+              layout: 'carousel',
+              padding: '20 0',
+              colSpan: '2',
+            },
+          ],
+        },
+      },
+    },
   ],
 };

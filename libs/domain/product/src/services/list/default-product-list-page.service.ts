@@ -19,6 +19,7 @@ export class DefaultProductListPageService implements ProductListPageService {
     return this.routerService.currentQuery().pipe(
       switchMap((params) => {
         const categoryId = this.routerService.getPathId('category');
+
         return this.productListService.get(
           categoryId ? { ...params, category: categoryId } : params ?? {}
         );

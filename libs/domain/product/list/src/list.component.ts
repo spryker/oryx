@@ -4,6 +4,7 @@ import {
   ProductListPageService,
   ProductListQualifier,
   ProductListService,
+  ProductMixin,
 } from '@spryker-oryx/product';
 import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -12,20 +13,28 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ProductListOptions } from './list.model';
 
 @hydratable()
-export class ProductListComponent extends LayoutMixin(
-  ContentMixin<ProductListOptions>(LitElement)
+export class ProductListComponent extends ProductMixin(
+  LayoutMixin(ContentMixin<ProductListOptions>(LitElement))
 ) {
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);
 
   protected $list = computed(() => {
-    const params = this.searchParams();
+    let params = this.searchParams();
+    const product = this.$product();
+
+    if (product?.nodeId && !params?.category) {
+      params ??= {};
+      params.category ??= product.nodeId;
+    }
+
     return params
       ? this.productListService.get(params)
       : this.productListPageService.get();
   });
 
   protected override render(): TemplateResult {
+    console.log(this.$list());
     return html`
       ${repeat(
         this.$list()?.products || [],

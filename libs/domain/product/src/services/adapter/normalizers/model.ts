@@ -8,8 +8,14 @@ export type DeserializedProductIncludes = {
     ? ApiProductModel.ImageSets[]
     : P extends ApiProductModel.Includes.ConcreteProductPrices
     ? ApiProductModel.Prices[]
+    : P extends ApiProductModel.Includes.CategoryNodes
+    ? ApiProductModel.CategoryNodes[]
     : P extends ApiProductModel.Includes.AbstractProducts
-    ? ApiProductModel.Abstract[]
+    ? (ApiProductModel.Abstract &
+        Pick<
+          DeserializedProductIncludes,
+          CamelCase<ApiProductModel.Includes.CategoryNodes>
+        >)[]
     : P extends ApiProductModel.Includes.ConcreteProductAvailabilities
     ? DeserializedAvailability[]
     : P extends ApiProductModel.Includes.ConcreteProducts

@@ -24,6 +24,8 @@ export class DefaultProductAdapter implements ProductAdapter {
       ApiProductModel.Includes.ConcreteProductPrices,
       ApiProductModel.Includes.ConcreteProductAvailabilities,
       ApiProductModel.Includes.Labels,
+      ApiProductModel.Includes.AbstractProducts,
+      ApiProductModel.Includes.CategoryNodes,
       ...(include ?? []),
     ].filter((type, index, arr) => arr.indexOf(type) === index);
 
