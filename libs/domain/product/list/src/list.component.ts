@@ -28,7 +28,7 @@ export class ProductListComponent extends ProductMixin(
     if (product?.categoryId && !params?.category) {
       params ??= {};
       params.category = product.categoryId;
-      params.sort = SortParamNames.Popularity;
+      params.sort ??= SortParamNames.Popularity;
     }
 
     return params
