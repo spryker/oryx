@@ -5,9 +5,9 @@ export const onSuccess = ({ inputs }) => {
   const { path } = oryxCache;
   const deployURL = process.env.DEPLOY_PRIME_URL;
 
-  if (!path || !deployURL) {
-    console.error('path or deployURL are not valid, check you inputs');
-    console.log('path: ', path);
+  if (!deployURL) {
+    console.error('deployURL is not valid, check you inputs');
+    console.log('oryxCache: ', oryxCache);
     console.log('deployURL: ', deployURL);
     return;
   }
