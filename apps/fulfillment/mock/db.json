@@ -1004,5 +1004,61 @@
         "self": "/push-notification-subscriptions/id"
       }
     }
+  },
+
+  "warehouse-user-assignments": {
+    "data": [
+      {
+        "type": "warehouse-user-assignments",
+        "id": "1",
+        "attributes": {
+          "userUuid": "userUuid1",
+          "isActive": true,
+          "warehouse": {
+            "name": "warehouse 1",
+            "uuid": "warehouseUuid1",
+            "isActive": true
+          }
+        },
+        "links": {
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/warehouse-user-assignments/1"
+        }
+      },
+      {
+        "type": "warehouse-user-assignments",
+        "id": "2",
+        "attributes": {
+          "userUuid": "userUuid1",
+          "isActive": false,
+          "warehouse": {
+            "name": "warehouse 2",
+            "uuid": "warehouseUuid2",
+            "isActive": true
+          }
+        },
+        "links": {
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/warehouse-user-assignments/2"
+        }
+      },
+      {
+        "type": "warehouse-user-assignments",
+        "id": "3",
+        "attributes": {
+          "userUuid": "userUuid1",
+          "isActive": false,
+          "warehouse": {
+            "name": "warehouse 3",
+            "uuid": "warehouseUuid3",
+            "isActive": true
+          }
+        },
+        "links": {
+          "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/warehouse-user-assignments/3"
+        }
+      }
+    ],
+    "links": {
+      "self": "https://backend-api.de.demo-picking-app.cloud.spryker.toys/warehouse-user-assignments"
+    }
   }
 }
