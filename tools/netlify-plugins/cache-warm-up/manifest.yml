@@ -1,0 +1,4 @@
+name: cache-warm-up
+inputs:
+  - name: path
+    description: 'The relative path to which GET request will be sent, should not start with /'
