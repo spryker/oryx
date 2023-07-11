@@ -6,9 +6,7 @@ import {
   ConcreteProductsNormalizer,
   concreteProductsNormalizer,
   DefaultProductAdapter,
-  DefaultProductListAdapter,
   DefaultProductMediaNormalizer,
-  DefaultProductRelationsListAdapter,
   facetCategoryNormalizer,
   FacetCategoryNormalizer,
   FacetNormalizer,
@@ -20,11 +18,9 @@ import {
   PriceNormalizer,
   priceNormalizer,
   ProductAdapter,
-  ProductListAdapter,
   productListNormalizer,
   ProductMediaSetNormalizer,
   productNormalizer,
-  ProductRelationsListAdapter,
 } from './adapter';
 import {
   productLabelNormalizer,
@@ -36,9 +32,6 @@ import {
 } from './adapter/normalizers/pagination';
 import { relationsListNormalizer } from './adapter/normalizers/relations-list';
 import { sortNormalizer, SortNormalizer } from './adapter/normalizers/sort';
-import { DefaultProductListPageService } from './default-product-list-page.service';
-import { DefaultProductListService } from './default-product-list.service';
-import { DefaultProductRelationsListService } from './default-product-relations-list.service';
 import { DefaultProductService } from './default-product.service';
 import { DefaultProductImageService } from './images';
 import { ProductImageService } from './images/product-image.service';
@@ -46,11 +39,22 @@ import {
   productMediaConfig,
   ProductMediaConfig,
 } from './images/product-media.config';
+import {
+  DefaultProductListAdapter,
+  DefaultProductListPageService,
+  DefaultProductListService,
+  ProductListAdapter,
+  ProductListPageService,
+  ProductListService,
+} from './list';
 import { ProductContextFallback } from './product-context';
-import { ProductListPageService } from './product-list-page.service';
-import { ProductListService } from './product-list.service';
-import { ProductRelationsListService } from './product-relations-list.service';
 import { ProductService } from './product.service';
+import {
+  DefaultProductRelationsListAdapter,
+  DefaultProductRelationsListService,
+  ProductRelationsListAdapter,
+  ProductRelationsListService,
+} from './related';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
 import { productEffects } from './state/effects';

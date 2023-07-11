@@ -5,8 +5,8 @@ import {
   ApiProductModel,
   ProductList,
   ProductListQualifier,
-} from '../../models';
-import { ProductListNormalizer } from './normalizers/product-list';
+} from '../../../models';
+import { ProductListNormalizer } from '../../adapter';
 import { ProductListAdapter } from './product-list.adapter';
 
 export class DefaultProductListAdapter implements ProductListAdapter {

@@ -1,8 +1,8 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
-import { ApiProductModel, Product, ProductQualifier } from '../../models';
-import { RelationsListNormalizer } from './normalizers/relations-list';
+import { ApiProductModel, Product, ProductQualifier } from '../../../models';
+import { RelationsListNormalizer } from '../../adapter/normalizers/relations-list';
 import { ProductRelationsListAdapter } from './product-relations-list.adapter';
 
 export class DefaultProductRelationsListAdapter

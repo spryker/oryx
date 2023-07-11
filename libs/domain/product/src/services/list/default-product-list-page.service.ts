@@ -1,7 +1,7 @@
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { map, Observable, switchMap } from 'rxjs';
-import { Pagination, ProductList } from '../models';
+import { Pagination, ProductList } from '../../models';
 import { ProductListPageService } from './product-list-page.service';
 import { ProductListService } from './product-list.service';
 

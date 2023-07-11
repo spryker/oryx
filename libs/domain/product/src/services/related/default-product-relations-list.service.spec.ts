@@ -1,9 +1,8 @@
 import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
-import { ProductQualifier } from '../models/product-qualifier';
-import { Product } from '../models/product.model';
-import { ProductRelationsListAdapter } from './adapter/product-relations-list.adapter';
+import { Product, ProductQualifier } from '../../models';
+import { ProductRelationsListAdapter } from './adapter';
 import { DefaultProductRelationsListService } from './default-product-relations-list.service';
 import { ProductRelationsListService } from './product-relations-list.service';
 
