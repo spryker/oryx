@@ -10,15 +10,15 @@
 
   [[plugins.inputs.audits]]
     path = ""
-  
+
   [[plugins.inputs.audits]]
     path = "product/086_30521602"
-  
+
   [[plugins.inputs.audits]]
     path = "category/4"
 
 [[plugins]]
-  package = "/../../tools/netlify-plugins/cypress-tests-runner" 
+  package = "/../../tools/netlify-plugins/cypress-tests-runner"
 
     [plugins.inputs]
       nxRunCommand = "storefront-e2e:e2e:headless-ci-smoke"
@@ -26,7 +26,7 @@
 [[redirects]]
   from = "/"
   status = 200
-  to = "/.netlify/functions/ssr"
+  to = "/.netlify/builders/ssr"
   force = true
   [redirects.headers]
     X-XSS-Protection = "1; mode=block"
@@ -37,7 +37,7 @@
 [[redirects]]
   from = "/*"
   status = 200
-  to = "/.netlify/functions/ssr"
+  to = "/.netlify/builders/ssr"
   [redirects.headers]
     X-XSS-Protection = "1; mode=block"
     Content-Security-Policy = "default-src 'self' ; connect-src https: ; style-src 'self' 'unsafe-inline' https: ; form-action 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: ; img-src https: data: ; media-src https: ; base-uri 'self'; frame-src 'self' https://*.spryker.com https://*.netlify.com https://*.netlify.app https://www.youtube.com ; object-src 'self' https://www.youtube.com; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com; "
