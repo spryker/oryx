@@ -4,7 +4,7 @@ const brand = (name: string, rules?: any) => ({
   type: 'oryx-content-banner',
   name,
   content: { data: { graphic: name } },
-  options: { data: { link: `/search?q=${name}`, rules } },
+  options: { data: { link: `/search?q=${name}`, linkLabel: name, rules } },
 });
 
 export const homePage: StaticComponent = {
