@@ -36,6 +36,7 @@
     "testfront:e2e": "npx concurrently --kill-others --success first \"cd apps/testfront && npm run prod:ssr\" \"wait-on -i=2000 http://localhost:3001 && npm run release-test:e2e \"",
     "release": "run-s release:*",
     "release-test": "cd libs && npm run release-test",
+    "release-rc": "cd libs && npm run release-rc",
     "release-minor": "cd libs && npm run release-minor",
     "release-labs": "cd libs && npm run release-labs",
     "release-patch": "cd libs && npm run release-patch",
