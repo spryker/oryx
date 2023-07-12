@@ -12,6 +12,7 @@
     "prerelease-minor": "npm run pack",
     "prerelease-from-packages": "npm run pack",
     "prerelease-patch": "npm run pack",
+    "prerelease-test": "npm run pack",
     "release": "lerna publish --yes",
     "release-test": "lerna publish minor --yes --no-push",
     "release-patch": "lerna publish patch --yes",
