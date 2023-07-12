@@ -213,9 +213,7 @@ export class DefaultExperienceService implements ExperienceService {
     this.getComponent({ uid })
       .pipe(take(1))
       .subscribe((component) => {
-        if (component?.visibility) {
-          this.visibilityHiddenState[uid].next(component.visibility);
-        }
+        this.visibilityHiddenState[uid].next(component?.visibility ?? null);
       });
   }
 

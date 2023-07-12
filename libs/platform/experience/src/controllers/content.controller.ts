@@ -100,9 +100,8 @@ export class ContentController<T = unknown, K = unknown> {
 
   protected dynamicVisibilityRules(): Observable<ComponentVisibility | null> {
     return this.observe.get('uid').pipe(
-      filter(isDefined),
       switchMap((uid) =>
-        this.experienceContent
+        uid && this.experienceContent
           ? this.experienceContent.getVisibilityState({ uid })
           : of(null)
       ),

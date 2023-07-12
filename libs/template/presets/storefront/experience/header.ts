@@ -93,15 +93,58 @@ export const HeaderTemplate: StaticComponent = {
           type: 'oryx-composition',
           components: [
             {
-              type: 'oryx-site-navigation-item',
-              options: {
-                data: {
-                  contentBehavior: 'dropdown',
-                  label: 'USER.NAME',
-                  icon: IconTypes.User,
-                },
+              type: 'oryx-composition',
+              visibility: {
+                token: 'USER.AUTHENTICATED',
               },
-              components: [{ type: 'oryx-auth-login-link' }],
+              components: [
+                {
+                  type: 'oryx-site-navigation-item',
+                  options: {
+                    data: {
+                      label: 'login',
+                      icon: IconTypes.User,
+                      url: { type: 'login' },
+                    },
+                  },
+                },
+              ],
+            },
+            {
+              type: 'oryx-composition',
+              visibility: {
+                token: 'USER.!AUTHENTICATED',
+              },
+              components: [
+                {
+                  type: 'oryx-site-navigation-item',
+                  options: {
+                    data: {
+                      contentBehavior: 'dropdown',
+                      label: 'USER.NAME',
+                      icon: IconTypes.User,
+                    },
+                  },
+                  components: [{ type: 'oryx-auth-login-link' }],
+                },
+              ],
+            },
+            {
+              type: 'oryx-composition',
+              visibility: {
+                hide: false,
+                token: 'CART.!EMPTY',
+              },
+              components: [
+                {
+                  type: 'oryx-site-navigation-item',
+                  options: {
+                    data: {
+                      label: 'CART EMPTY',
+                    },
+                  },
+                },
+              ],
             },
             {
               type: 'oryx-site-navigation-item',

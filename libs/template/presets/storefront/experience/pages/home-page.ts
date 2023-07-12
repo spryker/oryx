@@ -82,23 +82,6 @@ export const homePage: StaticComponent = {
       },
     },
     {
-      type: 'oryx-composition',
-      visibility: {
-        hide: false,
-        token: 'CART.!EMPTY',
-      },
-      components: [
-        {
-          type: 'oryx-site-navigation-item',
-          options: {
-            data: {
-              label: 'TEST',
-            },
-          },
-        },
-      ],
-    },
-    {
       type: 'oryx-product-list',
       options: {
         data: {

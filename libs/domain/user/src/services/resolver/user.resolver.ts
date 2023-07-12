@@ -5,7 +5,6 @@ import {
   TokenResourceResolvers,
 } from '@spryker-oryx/core';
 import { Provider, resolve } from '@spryker-oryx/di';
-import { i18n } from '@spryker-oryx/utilities';
 import { map } from 'rxjs';
 import { UserService } from '..';
 
@@ -18,9 +17,8 @@ export class UserResolver extends BaseResolver<UserResolvers> {
   protected user$ = resolve(UserService).getUser();
 
   protected resolvers: UserResolvers = {
-    // TODO: drop hardcoded fallback string
     NAME: (): ResolvedToken =>
-      this.user$.pipe(map((user) => user?.firstName ?? i18n('auth.login'))),
+      this.user$.pipe(map((user) => user?.firstName ?? '')),
     AUTHENTICATED: (): ResolvedToken => this.user$.pipe(map((user) => !!user)),
   };
 }

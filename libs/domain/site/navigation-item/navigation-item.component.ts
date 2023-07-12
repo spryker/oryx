@@ -18,6 +18,7 @@ import {
   SiteNavigationItemOptions,
 } from './navigation-item.model';
 import { styles } from './navigation-item.styles';
+import { of } from 'rxjs';
 
 @defaultOptions({
   triggerType: NavigationTriggerType.StorefrontButton,
@@ -35,12 +36,12 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected $label = computed(() => {
     const label = this.$options().label;
-    return label ? this.tokenResolver.resolveToken(label) : null;
+    return label ? this.tokenResolver.resolveToken(label) : of(null);
   });
 
   protected $badge = computed(() => {
     const badge = this.$options().badge;
-    return badge ? this.tokenResolver.resolveToken(badge) : null;
+    return badge ? this.tokenResolver.resolveToken(badge) : of(null);
   });
 
   protected $url = computed(() => {
