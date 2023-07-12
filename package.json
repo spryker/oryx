@@ -2,6 +2,10 @@
   "name": "spryker-oryx",
   "version": "0.0.0",
   "description": "Spryker Oryx Monorepo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spryker/oryx"
+  },
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
@@ -72,7 +76,7 @@
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-typescript": "^11.0.0",
-    "@spryker-lerna/lerna": "^5.2.0",
+    "lerna": "^7.0.0",
     "@storybook/addon-a11y": "^6.5.10",
     "@storybook/addon-docs": "^6.5.16",
     "@storybook/addon-essentials": "6.5.10",
