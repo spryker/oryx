@@ -1,18 +1,23 @@
 import { Type } from '@spryker-oryx/di';
 import {
   asyncState,
+  computed,
   elementEffect,
   I18nMixin,
   I18nMixinType,
   signal,
   Signal,
   signalAware,
+  signalProperty,
   valueType,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Observable } from 'rxjs';
-import { ContentComponentProperties, ContentController } from '../index';
+import { ContentComponentProperties, ContentController, DynamicVisibilityStates } from '../index';
+
+export const visibilityAttribute = 'dynamic-visibility';
+export const visibilityHiddenAttribute = 'dynamic-visibility-hidden';
 
 export declare class ContentMixinInterface<OptionsType, ContentType>
   implements ContentComponentProperties<OptionsType, ContentType>
@@ -88,7 +93,26 @@ export const ContentMixin = <
       initialValue: {},
     });
 
-    protected $isHidden = signal(this.contentController.isHidden());
+    @signalProperty({type: Boolean, attribute: visibilityAttribute, reflect: true}) 
+    dynamicVisibility = false;
+    @signalProperty({type: Boolean, attribute: visibilityHiddenAttribute, reflect: true}) 
+    dynamicVisibilityHidden = false;
+
+    protected $dynamicVisibilityState = signal(this.contentController.dynamicVisibilityState());
+
+    @elementEffect()
+    protected toggleVisibilityState = (): void => {
+      const state = this.$dynamicVisibilityState();
+
+      if (state === DynamicVisibilityStates.None) return;
+
+      this.dynamicVisibility = true;
+      this.dynamicVisibilityHidden = state !== DynamicVisibilityStates.Visible
+    }
+
+    protected $isHidden = computed(() => {
+      return this.dynamicVisibility && this.dynamicVisibilityHidden;
+    })
   }
   return ContentMixinClass as unknown as Type<
     ContentMixinInterface<OptionsType, ContentType> & I18nMixinType

@@ -62,6 +62,8 @@ export class CompositionComponent extends LayoutMixin(
   });
 
   protected override render(): TemplateResult | void {
+    if (this.$isHidden()) return;
+
     const components = this.$components();
 
     if (!components?.length) return;

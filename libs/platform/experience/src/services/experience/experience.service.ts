@@ -12,7 +12,7 @@ export interface ExperienceService {
   getComponent(qualifier: ComponentQualifier): Observable<Component>;
   getContent<T>({ uid }: { uid: string }): Observable<T>;
   getOptions<T>({ uid }: { uid: string }): Observable<T>;
-  isHidden({ uid }: { uid: string }): Observable<ComponentVisibility>;
+  getVisibilityState({ uid }: { uid: string }): Observable<ComponentVisibility | null>;
 }
 
 declare global {

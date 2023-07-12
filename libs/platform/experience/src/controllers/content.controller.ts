@@ -3,13 +3,14 @@ import { resolve } from '@spryker-oryx/di';
 import {
   getStaticProp,
   InstanceWithStatic,
+  isDefined,
   ObserveController,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { map, Observable, of, shareReplay, switchMap } from 'rxjs';
+import { combineLatestWith, distinctUntilChanged, filter, map, Observable, of, shareReplay, startWith, switchMap } from 'rxjs';
 import { optionsKey } from '../decorators';
 import { ContentComponentProperties } from '../models';
-import { ExperienceService } from '../services';
+import { ComponentVisibility, ExperienceService, DynamicVisibilityStates } from '../services';
 
 export class ContentController<T = unknown, K = unknown> {
   protected experienceContent = resolve(
@@ -83,20 +84,42 @@ export class ContentController<T = unknown, K = unknown> {
     );
   }
 
-  isHidden(): Observable<boolean> {
+  protected dynamicVisibilityRules(): Observable<ComponentVisibility | null> {
     return this.observe.get('uid').pipe(
+      filter(isDefined),
       switchMap((uid) =>
-        uid && this.experienceContent
-          ? this.experienceContent
-              .isHidden({ uid })
-              .pipe(switchMap((config) => {
-                return config?.hide ? 
-                       this.tokenResolver.resolveToken(config.hide).pipe(map(value => !!value)) : 
-                       of(false)
-              }))
-          : of(false)
+        this.experienceContent
+          ? this.experienceContent.getVisibilityState({ uid })
+          : of(null)
       ),
       shareReplay({ bufferSize: 1, refCount: true })
+    );
+  }
+
+  protected isHidden(): Observable<boolean> {
+    return this.dynamicVisibilityRules().pipe(
+      distinctUntilChanged(),
+      switchMap((config) => 
+        config?.hide ? 
+          of(true):
+        config?.token ?
+          this.tokenResolver.resolveToken(config.token).pipe(map(value => !!value)):
+          of(false)
+      )         
+    );
+  }
+
+  dynamicVisibilityState(): Observable<DynamicVisibilityStates> {
+    return this.dynamicVisibilityRules().pipe(
+      startWith(null),
+      combineLatestWith(this.isHidden().pipe(startWith(null))),
+      switchMap(([rules, visibility]) => 
+        !rules ?
+          of(DynamicVisibilityStates.None) :
+        visibility === null ?
+          of(DynamicVisibilityStates.Defer) :
+          of(visibility ? DynamicVisibilityStates.Hidden : DynamicVisibilityStates.Visible)
+      ),        
     );
   }
 }

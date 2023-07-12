@@ -98,7 +98,8 @@ export const HeaderTemplate: StaticComponent = {
         {
           type: 'oryx-composition',
           visibility: {
-            hide: 'CART.!EMPTY'
+            hide: false,
+            token: 'CART.!EMPTY'
           },
           components: [
             {
