@@ -61,7 +61,7 @@ jobs:
           sed -i 's/\$authenticated/\$all/g' $VERDACCIO_CONFIG
         env:
           VERDACCIO_CONFIG: /home/runner/.config/verdaccio/config.yaml
-      - name: Run verdaccio gain
+      - name: Run verdaccio again
         run: verdaccio &
       - name: Set npm registry for @spryker-oryx to verdaccio
         run: npm config set @spryker-oryx:registry http://localhost:4873
