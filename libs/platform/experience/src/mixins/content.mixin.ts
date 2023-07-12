@@ -17,7 +17,6 @@ import { Observable } from 'rxjs';
 import { ContentComponentProperties, ContentController, DynamicVisibilityStates } from '../index';
 
 export const visibilityAttribute = 'dynamic-visibility';
-export const visibilityHiddenAttribute = 'dynamic-visibility-hidden';
 
 export declare class ContentMixinInterface<OptionsType, ContentType>
   implements ContentComponentProperties<OptionsType, ContentType>
@@ -52,7 +51,7 @@ export declare class ContentMixinInterface<OptionsType, ContentType>
   protected $options: Signal<OptionsType>;
   protected $content: Signal<ContentType>;
 
-  protected $isHidden: Signal<boolean>;
+  dynamicVisibility: string | null;
 }
 
 export const ContentMixin = <
@@ -93,10 +92,8 @@ export const ContentMixin = <
       initialValue: {},
     });
 
-    @signalProperty({type: Boolean, attribute: visibilityAttribute, reflect: true}) 
-    dynamicVisibility = false;
-    @signalProperty({type: Boolean, attribute: visibilityHiddenAttribute, reflect: true}) 
-    dynamicVisibilityHidden = false;
+    @signalProperty({attribute: visibilityAttribute, reflect: true}) 
+    dynamicVisibility: string | null = null;
 
     protected $dynamicVisibilityState = signal(this.contentController.dynamicVisibilityState());
 
@@ -104,15 +101,14 @@ export const ContentMixin = <
     protected toggleVisibilityState = (): void => {
       const state = this.$dynamicVisibilityState();
 
-      if (state === DynamicVisibilityStates.None) return;
-
-      this.dynamicVisibility = true;
-      this.dynamicVisibilityHidden = state !== DynamicVisibilityStates.Visible
+      if (state === DynamicVisibilityStates.None) {
+        this.dynamicVisibility = null;
+      } else {
+        this.dynamicVisibility = state === DynamicVisibilityStates.Visible ? 
+        DynamicVisibilityStates.Visible : 
+        DynamicVisibilityStates.Hidden;
+      }
     }
-
-    protected $isHidden = computed(() => {
-      return this.dynamicVisibility && this.dynamicVisibilityHidden;
-    })
   }
   return ContentMixinClass as unknown as Type<
     ContentMixinInterface<OptionsType, ContentType> & I18nMixinType
