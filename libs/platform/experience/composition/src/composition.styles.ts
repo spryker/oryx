@@ -1,11 +1,5 @@
 import { css } from 'lit';
 
-export const compositionStyles = css`
-  :host {
-    isolation: isolate;
-  }
-`;
-
 export const compositionPreviewStyles = css`
   .eb-preview-focus {
     position: relative;

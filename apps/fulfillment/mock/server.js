@@ -39,6 +39,29 @@ exports.createMockServer = function createMockServer() {
   router.post('/token', mapRequestToGet);
   router.post('/push-notification-subscriptions', mapRequestToGet);
 
+  router.patch('/warehouse-user-assignments/:id', (req, res) => {
+    const { id } = req.params;
+
+    res.send({
+      data: {
+        type: 'warehouse-user-assignments',
+        id,
+        attributes: {
+          userUuid: 'userUuid1',
+          isActive: true,
+          warehouse: {
+            name: 'warehouse 1',
+            uuid: 'warehouseUuid1',
+            isActive: true,
+          },
+        },
+        links: {
+          self: `https://backend-api.de.demo-picking-app.cloud.spryker.toys/warehouse-user-assignments/${id}`,
+        },
+      },
+    });
+  });
+
   router.patch('/picking-lists/:id/picking-list-items', (req, res) => {
     const { id } = req.params;
 
