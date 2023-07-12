@@ -41,6 +41,8 @@
       "message": "chore(release): publish libs release [skip ci]",
       "tagVersionPrefix": "lib@",
       "verifyAccess": false,
+      "createRelease": "github",
+      "allowBranch": ["development", "release/*"],
       "exact": true
     }
   }
