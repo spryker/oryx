@@ -15,40 +15,33 @@ export class StoreInterceptor implements HttpInterceptor {
     protected injector = inject(INJECTOR)
   ) {}
 
-  intercept(
-    url: string,
-    options: RequestOptions,
-    handle: HttpHandlerFn
-  ): Observable<Response> {
+  intercept(req: Request, handle: HttpHandlerFn): Observable<Response> {
     const storeService = this.injector.inject(StoreService);
 
     return storeService.getAll().pipe(
       take(1),
       switchMap((stores) =>
         stores.length <= 1
-          ? handle(url, options)
+          ? handle(req)
           : storeService.get().pipe(
               switchMap((store) =>
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                handle(url, this.addStoreHeader(options, store!.id))
+                handle(this.addStoreHeader(req, store!.id))
               )
             )
       )
     );
   }
 
-  protected addStoreHeader(
-    options: RequestOptions,
-    store: string
-  ): RequestOptions {
-    const headers = new Headers(options.headers);
+  protected addStoreHeader(req: Request, store: string): Request {
+    const newReq = req.clone();
 
-    headers.set('X-Store', store);
+    newReq.headers.set('X-Store', store);
 
-    return { ...options, headers };
+    return newReq;
   }
 
-  shouldInterceptRequest(url: string): boolean {
+  shouldInterceptRequest({ url }: Request): boolean {
     if (!this.SCOS_BASE_URL || !url.startsWith(this.SCOS_BASE_URL))
       return false;
 

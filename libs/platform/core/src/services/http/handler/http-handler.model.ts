@@ -4,22 +4,15 @@ import { RequestOptions } from '../http.model';
 export const HttpInterceptor = 'oryx.HttpInterceptor*';
 export const HttpHandler = 'oryx.HttpHandler';
 
-export type HttpHandlerFn = (
-  url: string,
-  options: RequestOptions
-) => Observable<Response>;
+export type HttpHandlerFn = (req: Request) => Observable<Response>;
 
 export interface HttpHandler {
   handle: HttpHandlerFn;
 }
 
 export interface HttpInterceptor {
-  intercept(
-    url: string,
-    options: RequestOptions,
-    handle: HttpHandlerFn
-  ): Observable<Response>;
-  shouldInterceptRequest?(url: string, options: RequestOptions): boolean;
+  intercept(req: Request, handle: HttpHandlerFn): Observable<Response>;
+  shouldInterceptRequest?(req: Request): boolean;
 }
 
 declare global {

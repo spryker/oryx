@@ -22,7 +22,7 @@ export class DefaultHttpService implements HttpService {
       options.headers = headers;
     }
 
-    return this.handler.handle(url, options).pipe(
+    return this.handler.handle(new Request(url, options)).pipe(
       switchMap((response) => {
         if (options.parser) {
           return options.parser(response);
