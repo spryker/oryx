@@ -36,8 +36,6 @@ describe('Search suite', () => {
     const productData = ProductStorage.getProductByEq(3);
     const pdp = new ProductDetailsPage(productData);
 
-    cy.intercept('**/concrete-products/**').as('productRequest');
-
     search.search(productData.title);
 
     search.getSearchProducts().eq(0).click();

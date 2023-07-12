@@ -22,25 +22,25 @@ export class SearchFragment {
     this.getSearchResultsWrapper().contains('View all products');
 
   search = (text: string) => {
-    cy.intercept(
-      `**/catalog-search-suggestions?q=${encodeURIComponent(text).replace(
-        /%20/g,
-        '+'
-      )}*`
-    ).as('searchQuery');
+    const encoded = encodeURIComponent(text).replace(/%20/g, '+');
+
+    cy.intercept(`/catalog-search-suggestions?q=${encoded}*`).as('searchQuery');
 
     // trigger hydration
-    this.getTypeahead().click();
-    // wait for hydration
+    cy.intercept('/assets/box.component-*.js').as('searchHydationFiles');
+    this.getInput().click();
+    cy.wait('@searchHydationFiles');
+
+    // wait till search elements are re-rendered
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
-    this.getInput().type(text, { delay: 10, force: true });
+    cy.wait(250);
+
+    this.getInput().type(text);
 
     cy.wait('@searchQuery');
-
     // wait while open animation is over
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
+    cy.wait(125);
   };
 
   clearSearch = () => {
