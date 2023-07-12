@@ -1,4 +1,3 @@
-import { visibilityAttribute } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   Component,
@@ -20,7 +19,7 @@ import {
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, isServer, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
@@ -32,8 +31,6 @@ export class CompositionComponent extends LayoutMixin(
 ) {
   @signalProperty({ reflect: true }) uid?: string;
   @signalProperty({ reflect: true }) route?: string;
-  @signalProperty({ attribute: visibilityAttribute, reflect: true })
-  dynamicVisibility: string | null = null;
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
@@ -53,7 +50,7 @@ export class CompositionComponent extends LayoutMixin(
       this.dynamicVisibility = null;
     } else {
       this.dynamicVisibility =
-        state === DynamicVisibilityStates.Visible
+        !isServer && state === DynamicVisibilityStates.Visible
           ? DynamicVisibilityStates.Visible
           : DynamicVisibilityStates.Hidden;
     }
