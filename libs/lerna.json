@@ -24,8 +24,7 @@
     "template/themes",
     "base/ui",
     "domain/user",
-    "base/utilities",
-    "template/cli"
+    "base/utilities"
   ],
   "version": "0.13.0",
   "npmClient": "npm",
