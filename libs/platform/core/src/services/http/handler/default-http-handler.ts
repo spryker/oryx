@@ -1,7 +1,6 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { RequestOptions } from '../http.model';
 import {
   HttpHandler,
   HttpHandlerFn,

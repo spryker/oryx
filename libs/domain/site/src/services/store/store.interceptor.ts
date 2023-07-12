@@ -1,8 +1,4 @@
-import {
-  HttpHandlerFn,
-  HttpInterceptor,
-  RequestOptions,
-} from '@spryker-oryx/core';
+import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { Observable, switchMap, take } from 'rxjs';
 import { StoreService } from './store.service';

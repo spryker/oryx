@@ -1,8 +1,4 @@
-import {
-  HttpHandlerFn,
-  HttpInterceptor,
-  RequestOptions,
-} from '@spryker-oryx/core';
+import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { map, Observable, switchMap, take } from 'rxjs';

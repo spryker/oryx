@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { RequestOptions } from '../http.model';
 
 export const HttpInterceptor = 'oryx.HttpInterceptor*';
 export const HttpHandler = 'oryx.HttpHandler';
