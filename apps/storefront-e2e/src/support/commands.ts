@@ -12,9 +12,6 @@ declare global {
       loginApi(): Chainable<void>;
       goToCheckout(): Chainable<void>;
       goToCheckoutAsGuest(): Chainable<void>;
-      waitUpdateComplete(
-        element: Cypress.Chainable<JQuery<HTMLElement>>
-      ): Chainable<boolean>;
       customerCartsCleanup(sccosApi: SCCOSApi, user: TestCustomerData): void;
       customerAddressesCleanup(
         sccosApi: SCCOSApi,
@@ -76,10 +73,6 @@ Cypress.Commands.add('goToCheckoutAsGuest', () => {
   cy.wait('@cartsRequest');
 
   cartPage.checkout();
-});
-
-Cypress.Commands.add('waitUpdateComplete', (element) => {
-  return element.invoke('prop', 'updateComplete').should('exist');
 });
 
 Cypress.Commands.add(

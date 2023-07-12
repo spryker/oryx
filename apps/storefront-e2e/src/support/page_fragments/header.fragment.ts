@@ -34,30 +34,39 @@ export class HeaderFragment {
   };
 
   changeLocale = (locale: string) => {
-    cy.intercept({
-      method: 'GET',
-      url: /(\/catalog-search.*|\/concrete-products\/.*)/,
-    }).as('productOrSearchRequests');
-    // hydrate
-    this.getLocaleButton().click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
-    this.getLocaleButton().click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    this.initProductsUpdateInterceptor();
+
+    this.getLocaleButton().trigger('mouseenter').wait(75).click();
+
     this.getLocaleSelector()
       .find(`oryx-option[value="${locale}"]`)
-      .click({ force: true });
-    cy.wait('@productOrSearchRequests');
+      .wait(75)
+      .click();
+
+    this.waitForProductsUpdate();
   };
 
   changeCurrency = (currency: string) => {
-    // hydrate
-    this.getCurrencyButton().click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
-    this.getCurrencyButton().click();
+    this.initProductsUpdateInterceptor();
+
+    this.getCurrencyButton().trigger('mouseenter').wait(75).click();
+
     this.getCurrencySelector()
       .find(`oryx-option[value="${currency}"]`)
-      .click({ force: true });
+      .wait(75)
+      .click();
+
+    this.waitForProductsUpdate();
   };
+
+  private initProductsUpdateInterceptor() {
+    cy.intercept({
+      method: 'GET',
+      url: /\/catalog-search.*|\/concrete-products\/.*/,
+    }).as('productOrSearchRequests');
+  }
+
+  private waitForProductsUpdate() {
+    cy.wait('@productOrSearchRequests');
+  }
 }
