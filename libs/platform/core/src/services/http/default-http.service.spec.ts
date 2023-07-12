@@ -4,10 +4,11 @@ import { DefaultHttpService } from './default-http.service';
 import { HttpHandler } from './handler';
 import { HttpService } from './http.service';
 
-const mockUrl = 'https://mockUrl';
+const mockUrl = 'https://mockurl/';
 const mockOptions = {
   keepalive: true,
   headers: {
+    'content-type': 'application/json',
     custom: 'custom',
   },
 };
@@ -16,7 +17,28 @@ const mockBody = {
 };
 
 class MockHttpHandler implements HttpHandler {
-  handle = (req: Request) => vi.fn(req).mockReturnValue(of({ ok: true }));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected request: Record<string, any> = {};
+
+  handle = vi.fn().mockImplementation((req: Request) => {
+    this.request.url = req.url;
+    this.request.method = req.method;
+    this.request.headers = {};
+
+    for (const [key, value] of req.headers.entries()) {
+      this.request.headers[key] = value;
+    }
+
+    if (req.body) {
+      this.request.body = req.json();
+    }
+
+    return of({ ok: true });
+  });
+
+  getRequestData(): Record<string, unknown> {
+    return this.request;
+  }
 }
 
 describe('DefaultHttpService', () => {
@@ -57,57 +79,70 @@ describe('DefaultHttpService', () => {
 
   it('request method should call `HttpHandler.handle` with proper parameters', () => {
     service.request(mockUrl, mockOptions);
-
-    expect(httpHandler.handle).toHaveBeenCalledWith(mockUrl, mockOptions);
+    expect(httpHandler.getRequestData()).toEqual({
+      url: mockUrl,
+      headers: mockOptions.headers,
+      method: 'GET',
+    });
   });
 
-  // it('get method should call `HttpHandler.handle` with proper parameters', () => {
-  //   service.get(mockUrl, mockOptions);
+  it('get method should call `HttpHandler.handle` with proper parameters', () => {
+    service.get(mockUrl, mockOptions);
 
-  //   expect(httpHandler.handle).toHaveBeenCalledWith(mockUrl, {
-  //     ...mockOptions,
-  //     method: 'GET',
-  //   });
-  // });
+    expect(httpHandler.getRequestData()).toEqual({
+      url: mockUrl,
+      headers: mockOptions.headers,
+      method: 'GET',
+    });
+  });
 
-  // it('post method should call `HttpHandler.handle` with proper parameters', () => {
-  //   service.post(mockUrl, mockBody, mockOptions);
+  it('post method should call `HttpHandler.handle` with proper parameters', async () => {
+    service.post(mockUrl, mockBody, mockOptions);
+    const body = await httpHandler.getRequestData().body;
 
-  //   expect(httpHandler.handle).toHaveBeenCalledWith(mockUrl, {
-  //     ...mockOptions,
-  //     method: 'POST',
-  //     body: JSON.stringify(mockBody),
-  //   });
-  // });
+    expect(httpHandler.getRequestData()).toEqual(
+      expect.objectContaining({
+        url: mockUrl,
+        headers: mockOptions.headers,
+        method: 'POST',
+      })
+    );
+    expect(body).toEqual(mockBody);
+  });
 
-  // it('patch method should call `HttpHandler.handle` with proper parameters', () => {
-  //   service.patch(mockUrl, mockBody, mockOptions);
+  it('patch method should call `HttpHandler.handle` with proper parameters', async () => {
+    service.patch(mockUrl, mockBody, mockOptions);
+    const body = await httpHandler.getRequestData().body;
 
-  //   expect(httpHandler.handle).toHaveBeenCalledWith(mockUrl, {
-  //     ...mockOptions,
-  //     method: 'PATCH',
-  //     body: JSON.stringify(mockBody),
-  //   });
-  // });
+    expect(httpHandler.getRequestData()).toEqual(
+      expect.objectContaining({
+        url: mockUrl,
+        headers: mockOptions.headers,
+        method: 'PATCH',
+      })
+    );
+    expect(body).toEqual(mockBody);
+  });
 
-  // it('delete method should call `HttpHandler.handle` with proper parameters', () => {
-  //   service.delete(mockUrl, mockOptions);
+  it('delete method should call `HttpHandler.handle` with proper parameters', () => {
+    service.delete(mockUrl, mockOptions);
 
-  //   expect(httpHandler.handle).toHaveBeenCalledWith(mockUrl, {
-  //     ...mockOptions,
-  //     method: 'DELETE',
-  //   });
-  // });
+    expect(httpHandler.getRequestData()).toEqual({
+      url: mockUrl,
+      headers: mockOptions.headers,
+      method: 'DELETE',
+    });
+  });
 
-  // it('should return result from custom parser', () => {
-  //   const parser = vi.fn().mockReturnValue(of('parser'));
-  //   const request = { ok: true, body: 'handleResult' };
-  //   const callback = vi.fn();
+  it('should return result from custom parser', () => {
+    const parser = vi.fn().mockReturnValue(of('parser'));
+    const request = { ok: true, body: 'handleResult' };
+    const callback = vi.fn();
 
-  //   httpHandler.handle.mockReturnValue(of(request));
-  //   service.request(mockUrl, { parser }).subscribe(callback);
+    httpHandler.handle.mockReturnValue(of(request));
+    service.request(mockUrl, { parser }).subscribe(callback);
 
-  //   expect(parser).toHaveBeenCalledWith(request);
-  //   expect(callback).toHaveBeenCalledWith('parser');
-  // });
+    expect(parser).toHaveBeenCalledWith(request);
+    expect(callback).toHaveBeenCalledWith('parser');
+  });
 });
