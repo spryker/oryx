@@ -1,3 +1,4 @@
+import { visibilityAttribute } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   Component,
@@ -31,10 +32,32 @@ export class CompositionComponent extends LayoutMixin(
 ) {
   @signalProperty({ reflect: true }) uid?: string;
   @signalProperty({ reflect: true }) route?: string;
+  @signalProperty({ attribute: visibilityAttribute, reflect: true })
+  dynamicVisibility: string | null = null;
 
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
+
+  protected $dynamicVisibilityState = signal(
+    this.contentController.dynamicVisibilityState()
+  );
+
+  @elementEffect()
+  protected toggleVisibilityState = (): void => {
+    if (!this.uid) return;
+
+    const state = this.$dynamicVisibilityState();
+
+    if (state === DynamicVisibilityStates.None) {
+      this.dynamicVisibility = null;
+    } else {
+      this.dynamicVisibility =
+        state === DynamicVisibilityStates.Visible
+          ? DynamicVisibilityStates.Visible
+          : DynamicVisibilityStates.Hidden;
+    }
+  };
 
   @elementEffect()
   protected $uidFromRoute = effect(() => {

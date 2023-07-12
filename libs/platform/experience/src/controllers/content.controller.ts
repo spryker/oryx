@@ -3,14 +3,12 @@ import { resolve } from '@spryker-oryx/di';
 import {
   getStaticProp,
   InstanceWithStatic,
-  isDefined,
   ObserveController,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import {
   combineLatestWith,
   distinctUntilChanged,
-  filter,
   map,
   Observable,
   of,
