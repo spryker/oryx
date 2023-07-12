@@ -209,7 +209,6 @@ describe('ProductListComponent', () => {
       expect(mockProductListService.get).toHaveBeenCalledWith({
         category: MockProductService.mockProducts.find((p) => p.sku === '1')
           ?.categoryId,
-        sort: SortParamNames.Popularity,
       });
     });
   });

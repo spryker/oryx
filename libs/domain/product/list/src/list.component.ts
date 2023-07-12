@@ -12,7 +12,6 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ProductListOptions } from './list.model';
-import { HeadingTag } from '@spryker-oryx/ui/heading';
 
 @hydratable()
 export class ProductListComponent extends ProductMixin(
@@ -28,7 +27,6 @@ export class ProductListComponent extends ProductMixin(
     if (product?.categoryId && !params?.category) {
       params ??= {};
       params.category = product.categoryId;
-      params.sort ??= SortParamNames.Popularity;
     }
 
     return params
@@ -44,17 +42,17 @@ export class ProductListComponent extends ProductMixin(
   }
 
   // TODO: render it when layout will be fixed
-  protected renderHeading(): TemplateResult | void {
-    const options = this.$options();
+  // protected renderHeading(): TemplateResult | void {
+  //   const options = this.$options();
 
-    if (!options.heading || !this.$list()?.products?.length) {
-      return;
-    }
+  //   if (!options.heading || !this.$list()?.products?.length) {
+  //     return;
+  //   }
 
-    return html`
-      <oryx-heading tag=${HeadingTag.H3}>${options.heading}</oryx-heading>
-    `;
-  }
+  //   return html`
+  //     <oryx-heading tag=${HeadingTag.H3}>${options.heading}</oryx-heading>
+  //   `;
+  // }
 
   protected renderList(): TemplateResult {
     return html`
