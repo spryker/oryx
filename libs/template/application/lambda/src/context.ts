@@ -40,6 +40,10 @@ export const serverContext = (options: ContextOptions): any => {
   // added because of oauth, we probably should not require oauth in the ssr
   window.TextEncoder = class {};
   window.TextDecoder = class {};
+  // TODO: We need this to build ssr render script with enabled `emitDecoratorMetadata` in tsconfig
+  // We can check and remove it after release with disabled `emitDecoratorMetadata`
+  window.HTMLFormElement = class {};
+  window.HTMLInputElement = class {};
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};

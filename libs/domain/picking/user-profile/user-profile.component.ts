@@ -31,6 +31,9 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
   @state()
   protected loading: boolean | null = null;
 
+  @state()
+  protected logoutLoading = false;
+
   protected $route = signal(this.routerService.route());
   protected $pendingSyncs = signal(resolve(SyncSchedulerService).hasPending());
   protected $isPicking = computed(() => this.$route()?.includes('/picking/'));
@@ -66,7 +69,7 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
       )}
 
       <div class="info-footer">
-        <oryx-button type="secondary" outline>
+        <oryx-button ?loading=${this.logoutLoading} type="secondary" outline>
           <button
             ?disabled="${this.$isPicking() || this.$pendingSyncs()}"
             @click=${this.onLogOut}
@@ -110,6 +113,11 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
   }
 
   protected onLogOut(): void {
-    this.authService.logout();
+    this.logoutLoading = true;
+    this.authService.logout().subscribe({
+      error: (e) => {
+        this.logoutLoading = false;
+      },
+    });
   }
 }

@@ -25,6 +25,6 @@ export const viteConfig = {
         tsconfigPath: 'tsconfig.app.json',
       },
     }),
-    tsconfigPaths({ root: viteConfig.monorepoRoot }),
+    tsconfigPaths({ root: viteConfig.monorepoRoot }) as unknown as Plugin,
   ],
 };

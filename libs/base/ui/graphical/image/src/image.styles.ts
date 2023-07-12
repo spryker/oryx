@@ -30,5 +30,6 @@ export const styles = css`
     max-width: var(--image-max-width, 100%);
     max-height: var(--image-max-height, 100%);
     object-fit: var(--image-fit, contain);
+    object-position: var(--image-position);
   }
 `;

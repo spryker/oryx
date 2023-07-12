@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite -c vite.config.dev.ts",
-    "dev:ssr": "ts-node --experimentalSpecifierResolution node --esm server/server",
+    "dev:ssr": "ts-node server/server",
     "build": "npm run build:client && npm run build:ssr && npm run build:netlify",
     "build:client": "vite build",
     "build:ssr": "vite build -c vite.config.server.ts",

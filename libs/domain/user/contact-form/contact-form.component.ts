@@ -15,6 +15,13 @@ export class UserContactFormComponent extends FormMixin(
   protected fieldRenderer = resolve(FormRenderer);
 
   protected override render(): TemplateResult {
-    return html`<form>${this.fieldRenderer.buildForm(fields)}</form>`;
+    return html`<form>
+      <oryx-layout
+        layout="grid"
+        style="--oryx-column-count:2;--column-gap: 20px;"
+      >
+        ${this.fieldRenderer.buildForm(fields)}
+      </oryx-layout>
+    </form>`;
   }
 }

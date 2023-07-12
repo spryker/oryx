@@ -36,7 +36,7 @@ describe('User addresses suite', () => {
     beforeEach(() => {
       api = new SCCOSApi();
 
-      cy.login();
+      cy.loginApi();
 
       cy.fixture<TestCustomerData>('test-customer').then((customer) => {
         cy.customerCartsCleanup(api, customer);

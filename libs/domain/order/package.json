@@ -17,15 +17,15 @@
     }
   },
   "dependencies": {
-    "@spryker-oryx/auth": "latest",
-    "@spryker-oryx/cart": "latest",
-    "@spryker-oryx/core": "latest",
-    "@spryker-oryx/di": "latest",
-    "@spryker-oryx/experience": "latest",
-    "@spryker-oryx/router": "latest",
-    "@spryker-oryx/site": "latest",
-    "@spryker-oryx/ui": "latest",
-    "@spryker-oryx/utilities": "latest"
+    "@spryker-oryx/auth": "*",
+    "@spryker-oryx/cart": "*",
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/di": "*",
+    "@spryker-oryx/experience": "*",
+    "@spryker-oryx/router": "*",
+    "@spryker-oryx/site": "*",
+    "@spryker-oryx/ui": "*",
+    "@spryker-oryx/utilities": "*"
   },
   "peerDependencies": {
     "lit": "^2.4.0",

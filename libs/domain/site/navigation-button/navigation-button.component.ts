@@ -35,7 +35,10 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
       <oryx-button>
         ${when(
           this.url,
-          () => html`<a href=${this.url!}>${innerContent}</a>`,
+          () =>
+            html`<a href=${this.url!} aria-label=${this.text}
+              >${innerContent}</a
+            >`,
           () => html`<button>${innerContent}</button>`
         )}
       </oryx-button>

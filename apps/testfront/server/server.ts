@@ -1,7 +1,7 @@
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { createServer } from '../../../libs/template/application/server';
+import { createServer } from '@spryker-oryx/application/server';
 import { viteConfig } from '../vite.config.common';
 
 const config = {
@@ -20,7 +20,6 @@ const config = {
     entry: join(viteConfig.ssr.root, viteConfig.ssr.entry),
     index: viteConfig.index,
   },
-  component: '<oryx-app></oryx-app>',
   namespace: viteConfig.ssr.namespace,
 };
 

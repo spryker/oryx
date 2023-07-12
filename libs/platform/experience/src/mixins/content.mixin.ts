@@ -1,7 +1,5 @@
 import { Type } from '@spryker-oryx/di';
 import {
-  asyncState,
-  computed,
   elementEffect,
   I18nMixin,
   I18nMixinType,
@@ -9,11 +7,9 @@ import {
   Signal,
   signalAware,
   signalProperty,
-  valueType,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { Observable } from 'rxjs';
 import { ContentComponentProperties, ContentController, DynamicVisibilityStates } from '../index';
 
 export const visibilityAttribute = 'dynamic-visibility';
@@ -25,29 +21,6 @@ export declare class ContentMixinInterface<OptionsType, ContentType>
   options?: OptionsType;
   content?: ContentType;
   protected contentController: ContentController<ContentType, OptionsType>;
-
-  protected data: { options: OptionsType; content: ContentType };
-
-  /**
-   * @deprecated
-   */
-  protected options$: Observable<OptionsType>;
-
-  /**
-   * @deprecated
-   */
-  protected content$: Observable<ContentType>;
-
-  /**
-   * @deprecated
-   */
-  protected componentOptions: OptionsType;
-
-  /**
-   * @deprecated
-   */
-  protected componentContent: ContentType;
-
   protected $options: Signal<OptionsType>;
   protected $content: Signal<ContentType>;
 
@@ -73,16 +46,6 @@ export const ContentMixin = <
     content?: ContentType;
 
     protected contentController = new ContentController(this);
-
-    protected options$ = this.contentController.getOptions();
-
-    @asyncState()
-    protected componentOptions = valueType(this.options$);
-
-    protected content$ = this.contentController.getContent();
-
-    @asyncState()
-    protected componentContent = valueType(this.content$);
 
     protected $options = signal(this.contentController.getOptions(), {
       initialValue: {},
