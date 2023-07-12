@@ -105,7 +105,6 @@ export const HeaderTemplate: StaticComponent = {
             },
             {
               type: 'oryx-site-navigation-item',
-              id: 'mini-cart',
               options: {
                 data: {
                   label: 'cart',
@@ -124,23 +123,6 @@ export const HeaderTemplate: StaticComponent = {
               ],
             },
           },
-        },
-        {
-          type: 'oryx-composition',
-          visibility: {
-            hide: false,
-            token: 'CART.!EMPTY'
-          },
-          components: [
-            {
-              type: 'oryx-site-navigation-item',
-              options: {
-                data: {
-                  label: 'TEST',
-                },
-              },
-            },
-          ]
         },
       ],
       options: {
