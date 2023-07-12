@@ -38,11 +38,12 @@ export class ProductListComponent extends ProductMixin(
 
   protected override render(): TemplateResult {
     return html`
-      ${this.renderHeading()} ${this.renderList()}
+      ${this.renderList()}
       ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
     `;
   }
 
+  // TODO: render it when layout will be fixed
   protected renderHeading(): TemplateResult | void {
     const options = this.$options();
 
