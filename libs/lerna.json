@@ -27,7 +27,7 @@
     "base/utilities",
     "template/cli"
   ],
-  "version": "0.13.0",
+  "version": "1.0.0-rc.0",
   "npmClient": "npm",
   "command": {
     "publish": {
@@ -36,6 +36,9 @@
       "contents": "dist",
       "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
       "message": "chore(release): publish libs release [skip ci]",
+      "createRelease": "github",
+      "gitRemote": "pub",
+      "allowBranch": ["development", "release/*"],
       "tagVersionPrefix": "lib@",
       "verifyAccess": false,
       "exact": true
