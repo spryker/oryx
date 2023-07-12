@@ -66,7 +66,7 @@ export class ProductDetailsPage extends AbstractSFPage {
         url: /\/carts\/*\/items*|\/guest-cart-items*/,
       }).as('addToCartRequest');
 
-      this.getAddToCartBtn().click();
+      this.getAddToCartBtn().trigger('mouseenter').wait(150).click();
 
       cy.wait('@addToCartRequest');
     } else {

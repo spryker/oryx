@@ -36,7 +36,7 @@ export class HeaderFragment {
   changeLocale = (locale: string) => {
     this.initProductsUpdateInterceptor();
 
-    this.getLocaleButton().trigger('mouseenter').wait(75).click();
+    this.getLocaleButton().trigger('mouseenter').wait(150).click();
 
     this.getLocaleSelector()
       .find(`oryx-option[value="${locale}"]`)
@@ -49,7 +49,7 @@ export class HeaderFragment {
   changeCurrency = (currency: string) => {
     this.initProductsUpdateInterceptor();
 
-    this.getCurrencyButton().trigger('mouseenter').wait(75).click();
+    this.getCurrencyButton().trigger('mouseenter').wait(150).click();
 
     this.getCurrencySelector()
       .find(`oryx-option[value="${currency}"]`)
