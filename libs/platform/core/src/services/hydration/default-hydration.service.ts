@@ -60,7 +60,7 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
       //need to hydrate elements with dynamic visibility rule on load
       const hasDynamicVisibility = el.hasAttribute('dynamic-visibility');
       if (hasDynamicVisibility) {
-        el.setAttribute(hydratableAttribute, 'window:load')
+        el.setAttribute(hydratableAttribute, 'window:load');
       }
       const modes = el.getAttribute(hydratableAttribute)?.split?.(',') ?? [];
 

@@ -10,7 +10,11 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { ContentComponentProperties, ContentController, DynamicVisibilityStates } from '../index';
+import {
+  ContentComponentProperties,
+  ContentController,
+  DynamicVisibilityStates,
+} from '../index';
 
 export const visibilityAttribute = 'dynamic-visibility';
 
@@ -55,10 +59,12 @@ export const ContentMixin = <
       initialValue: {},
     });
 
-    @signalProperty({attribute: visibilityAttribute, reflect: true}) 
+    @signalProperty({ attribute: visibilityAttribute, reflect: true })
     dynamicVisibility: string | null = null;
 
-    protected $dynamicVisibilityState = signal(this.contentController.dynamicVisibilityState());
+    protected $dynamicVisibilityState = signal(
+      this.contentController.dynamicVisibilityState()
+    );
 
     @elementEffect()
     protected toggleVisibilityState = (): void => {
@@ -67,11 +73,12 @@ export const ContentMixin = <
       if (state === DynamicVisibilityStates.None) {
         this.dynamicVisibility = null;
       } else {
-        this.dynamicVisibility = state === DynamicVisibilityStates.Visible ? 
-        DynamicVisibilityStates.Visible : 
-        DynamicVisibilityStates.Hidden;
+        this.dynamicVisibility =
+          state === DynamicVisibilityStates.Visible
+            ? DynamicVisibilityStates.Visible
+            : DynamicVisibilityStates.Hidden;
       }
-    }
+    };
   }
   return ContentMixinClass as unknown as Type<
     ContentMixinInterface<OptionsType, ContentType> & I18nMixinType

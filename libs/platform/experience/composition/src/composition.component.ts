@@ -64,7 +64,7 @@ export class CompositionComponent extends LayoutMixin(
 
   protected override render(): TemplateResult | void {
     console.log(this.uid, this.dynamicVisibility);
-    
+
     if (this.dynamicVisibility === DynamicVisibilityStates.Hidden) return;
 
     const components = this.$components();

@@ -20,7 +20,7 @@ export class DefaultTokenService implements TokenResolver {
 
     const [resourceResolver, rawResolver] = token.split('.');
     const isNegative = this.isNegative(rawResolver);
-    const resolver = rawResolver.slice(isNegative ? 1 : 0)
+    const resolver = rawResolver.slice(isNegative ? 1 : 0);
     const tokenResolver = this.getResolver(resourceResolver);
 
     //if it is not possible to resolve the token -> return the token as result
@@ -28,10 +28,12 @@ export class DefaultTokenService implements TokenResolver {
       return of(token);
     }
 
-    return tokenResolver.resolve(resolver).pipe(map(
-      //reverse the value of negative token if needed
-      resolvedValue => isNegative ? !resolvedValue : resolvedValue
-    ));
+    return tokenResolver.resolve(resolver).pipe(
+      map(
+        //reverse the value of negative token if needed
+        (resolvedValue) => (isNegative ? !resolvedValue : resolvedValue)
+      )
+    );
   }
 
   protected isToken(resolver: string): boolean {

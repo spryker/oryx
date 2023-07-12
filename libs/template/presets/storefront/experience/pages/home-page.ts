@@ -85,7 +85,7 @@ export const homePage: StaticComponent = {
       type: 'oryx-composition',
       visibility: {
         hide: false,
-        token: 'CART.!EMPTY'
+        token: 'CART.!EMPTY',
       },
       components: [
         {
@@ -96,7 +96,7 @@ export const homePage: StaticComponent = {
             },
           },
         },
-      ]
+      ],
     },
     {
       type: 'oryx-product-list',

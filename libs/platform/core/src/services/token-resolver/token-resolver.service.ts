@@ -1,7 +1,9 @@
 import { DirectiveResult } from 'lit/directive';
 import { Observable } from 'rxjs';
 
-export type ResolvedToken = Observable<DirectiveResult | string | boolean | null>;
+export type ResolvedToken = Observable<
+  DirectiveResult | string | boolean | null
+>;
 export type Resolver = () => ResolvedToken;
 
 export interface TokenResolver {

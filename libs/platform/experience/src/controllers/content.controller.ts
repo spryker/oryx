@@ -7,10 +7,24 @@ import {
   ObserveController,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { combineLatestWith, distinctUntilChanged, filter, map, Observable, of, shareReplay, startWith, switchMap } from 'rxjs';
+import {
+  combineLatestWith,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  of,
+  shareReplay,
+  startWith,
+  switchMap,
+} from 'rxjs';
 import { optionsKey } from '../decorators';
 import { ContentComponentProperties } from '../models';
-import { ComponentVisibility, ExperienceService, DynamicVisibilityStates } from '../services';
+import {
+  ComponentVisibility,
+  ExperienceService,
+  DynamicVisibilityStates,
+} from '../services';
 
 export class ContentController<T = unknown, K = unknown> {
   protected experienceContent = resolve(
@@ -99,13 +113,15 @@ export class ContentController<T = unknown, K = unknown> {
   protected isHidden(): Observable<boolean> {
     return this.dynamicVisibilityRules().pipe(
       distinctUntilChanged(),
-      switchMap((config) => 
-        config?.hide ? 
-          of(true):
-        config?.token ?
-          this.tokenResolver.resolveToken(config.token).pipe(map(value => !!value)):
-          of(false)
-      )         
+      switchMap((config) =>
+        config?.hide
+          ? of(true)
+          : config?.token
+          ? this.tokenResolver
+              .resolveToken(config.token)
+              .pipe(map((value) => !!value))
+          : of(false)
+      )
     );
   }
 
@@ -113,13 +129,17 @@ export class ContentController<T = unknown, K = unknown> {
     return this.dynamicVisibilityRules().pipe(
       startWith(null),
       combineLatestWith(this.isHidden().pipe(startWith(null))),
-      switchMap(([rules, visibility]) => 
-        !rules ?
-          of(DynamicVisibilityStates.None) :
-        visibility === null ?
-          of(DynamicVisibilityStates.Defer) :
-          of(visibility ? DynamicVisibilityStates.Hidden : DynamicVisibilityStates.Visible)
-      ),        
+      switchMap(([rules, visibility]) =>
+        !rules
+          ? of(DynamicVisibilityStates.None)
+          : visibility === null
+          ? of(DynamicVisibilityStates.Defer)
+          : of(
+              visibility
+                ? DynamicVisibilityStates.Hidden
+                : DynamicVisibilityStates.Visible
+            )
+      )
     );
   }
 }

@@ -196,7 +196,11 @@ export class DefaultExperienceService implements ExperienceService {
       });
   }
 
-  getVisibilityState({ uid }: { uid: string }): Observable<ComponentVisibility | null> {
+  getVisibilityState({
+    uid,
+  }: {
+    uid: string;
+  }): Observable<ComponentVisibility | null> {
     if (!this.visibilityHiddenState[uid]) {
       this.visibilityHiddenState[uid] = new ReplaySubject(1);
       this.reloadVisibilityState(uid);

@@ -4,8 +4,8 @@ export enum DynamicVisibilityStates {
   None = 'none',
   Defer = 'defer',
   Visible = 'visible',
-  Hidden = 'hidden'
-};
+  Hidden = 'hidden',
+}
 
 export interface ComponentImage {
   src: string;
@@ -17,8 +17,8 @@ export interface ComponentData {
 }
 
 export interface ComponentVisibility {
-  hide?: boolean,
-  token?: string,
+  hide?: boolean;
+  token?: string;
 }
 
 export interface Component<C = CompositionProperties> {
