@@ -2,7 +2,6 @@ import { Type } from '@spryker-oryx/di';
 import {
   CompositionLayout,
   ContentMixin,
-  DynamicVisibilityStates,
   layoutKeys,
   StyleRuleSet,
 } from '@spryker-oryx/experience';
@@ -19,7 +18,6 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { LayoutController } from '../controllers/layout.controller';
-import { visibilityAttribute } from '@spryker-oryx/core';
 
 export declare class LayoutMixinInterface {
   layout?: CompositionLayout;
@@ -33,7 +31,6 @@ export declare class LayoutMixinInterface {
   md?: LayoutProperties;
   lg?: LayoutProperties;
   xl?: LayoutProperties;
-  dynamicVisibility: DynamicVisibilityStates | null;
   protected layoutStyles: ConnectableSignal<string | undefined>;
 }
 
@@ -82,9 +79,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     @signalProperty({ type: Object, reflect: true }) md?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) lg?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) xl?: LayoutProperties;
-
-    @signalProperty({ attribute: visibilityAttribute, reflect: true })
-    dynamicVisibility: string | null = null;
 
     protected layoutController = new LayoutController(this);
 

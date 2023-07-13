@@ -5,7 +5,6 @@ import {
   CompositionLayout,
   CompositionProperties,
   ContentMixin,
-  DynamicVisibilityStates,
   ExperienceService,
   LayoutBuilder,
   LayoutMixin,
@@ -19,10 +18,11 @@ import {
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, isServer, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
+import { CompositionComponentsController } from './composition-components.controller';
 
 @signalAware()
 @hydratable()
@@ -36,25 +36,7 @@ export class CompositionComponent extends LayoutMixin(
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
 
-  protected $dynamicVisibilityState = signal(
-    this.contentController.dynamicVisibilityState()
-  );
-
-  @elementEffect()
-  protected toggleVisibilityState = (): void => {
-    if (!this.uid) return;
-
-    const state = this.$dynamicVisibilityState();
-
-    if (state === DynamicVisibilityStates.None) {
-      this.dynamicVisibility = null;
-    } else {
-      this.dynamicVisibility =
-        !isServer && state === DynamicVisibilityStates.Visible
-          ? DynamicVisibilityStates.Visible
-          : DynamicVisibilityStates.Hidden;
-    }
-  };
+  protected componentsController = new CompositionComponentsController(this);
 
   @elementEffect()
   protected $uidFromRoute = effect(() => {
@@ -71,20 +53,12 @@ export class CompositionComponent extends LayoutMixin(
     }
   });
 
-  protected $components = computed(() => {
-    if (!this.uid) {
-      return [];
-    }
-
-    return (
-      signal(this.experienceService.getComponent({ uid: this.uid }))()
-        ?.components ?? []
-    );
-  });
+  protected $components = signal(this.componentsController.getComponents());
+  protected $hasDynamicallyVisibleSuccessor = signal(
+    this.componentsController.hasDynamicallyVisibleSuccessor()
+  );
 
   protected override render(): TemplateResult | void {
-    if (this.dynamicVisibility === DynamicVisibilityStates.Hidden) return;
-
     const components = this.$components();
 
     if (!components?.length) return;
@@ -104,7 +78,7 @@ export class CompositionComponent extends LayoutMixin(
   protected renderComponent(
     component: Component<CompositionProperties>,
     index: number
-  ): TemplateResult | undefined {
+  ): TemplateResult {
     const template = this.registryService.resolveTemplate({
       type: component.type,
       uid: component.id,

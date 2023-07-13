@@ -1,14 +1,17 @@
 import { Type } from '@spryker-oryx/di';
 import {
+  elementEffect,
   I18nMixin,
   I18nMixinType,
   signal,
   Signal,
   signalAware,
+  signalProperty,
 } from '@spryker-oryx/utilities';
-import { LitElement } from 'lit';
+import { isServer, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ContentComponentProperties, ContentController } from '../index';
+import { visibilityAttribute } from '@spryker-oryx/core';
 
 export declare class ContentMixinInterface<OptionsType, ContentType>
   implements ContentComponentProperties<OptionsType, ContentType>
@@ -48,6 +51,29 @@ export const ContentMixin = <
     protected $content = signal(this.contentController.getContent(), {
       initialValue: {},
     });
+
+    @signalProperty({ attribute: visibilityAttribute, reflect: true })
+    _dynamicVisibility: string | null = null;
+
+    // protected $visibility = signal(
+    //   this.contentController.dynamicVisibilityState()
+    // );
+
+    // @elementEffect()
+    // protected toggleVisibilityState = (): void => {
+    //   if (!this.uid) return;
+
+    //   const visibility = this.$visibility();
+
+    //   if (visibility === DynamicVisibilityStates.None) {
+    //     this._dynamicVisibility = null;
+    //   } else {
+    //     this._dynamicVisibility =
+    //       !isServer && visibility === DynamicVisibilityStates.Visible
+    //         ? DynamicVisibilityStates.Visible
+    //         : DynamicVisibilityStates.Hidden;
+    //   }
+    // };
   }
   return ContentMixinClass as unknown as Type<
     ContentMixinInterface<OptionsType, ContentType> & I18nMixinType

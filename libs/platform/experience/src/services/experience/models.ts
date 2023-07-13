@@ -1,8 +1,7 @@
 import { CompositionProperties } from '../../models';
 
-export enum DynamicVisibilityStates {
+export enum Visibility {
   None = 'none',
-  Defer = 'defer',
   Visible = 'visible',
   Hidden = 'hidden',
 }
@@ -14,11 +13,6 @@ export interface ComponentImage {
 
 export interface ComponentData {
   items?: any;
-}
-
-export interface ComponentVisibility {
-  hide?: boolean;
-  token?: string;
 }
 
 export interface Component<C = CompositionProperties> {
@@ -36,5 +30,4 @@ export interface Component<C = CompositionProperties> {
   components?: Component[];
   options?: { data?: C };
   content?: { data?: any };
-  visibility?: ComponentVisibility;
 }

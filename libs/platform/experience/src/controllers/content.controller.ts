@@ -1,4 +1,4 @@
-import { FeatureOptionsService, TokenResolver } from '@spryker-oryx/core';
+import { FeatureOptionsService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   getStaticProp,
@@ -6,23 +6,10 @@ import {
   ObserveController,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import {
-  combineLatestWith,
-  distinctUntilChanged,
-  map,
-  Observable,
-  of,
-  shareReplay,
-  startWith,
-  switchMap,
-} from 'rxjs';
+import { map, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { optionsKey } from '../decorators';
 import { ContentComponentProperties } from '../models';
-import {
-  ComponentVisibility,
-  ExperienceService,
-  DynamicVisibilityStates,
-} from '../services';
+import { ExperienceService } from '../services';
 
 export class ContentController<T = unknown, K = unknown> {
   protected experienceContent = resolve(
@@ -33,7 +20,6 @@ export class ContentController<T = unknown, K = unknown> {
     LitElement & ContentComponentProperties<K, T>
   >;
   protected optionsService = resolve(FeatureOptionsService, null);
-  protected tokenResolver = resolve(TokenResolver);
 
   constructor(protected host: LitElement & ContentComponentProperties<K, T>) {
     // TODO: fix property assigning outside of constructor, it doesn't work in the storybook now
@@ -93,50 +79,6 @@ export class ContentController<T = unknown, K = unknown> {
           shareReplay({ bufferSize: 1, refCount: true })
         );
       })
-    );
-  }
-
-  protected dynamicVisibilityRules(): Observable<ComponentVisibility | null> {
-    return this.observe.get('uid').pipe(
-      switchMap((uid) =>
-        uid && this.experienceContent
-          ? this.experienceContent.getVisibilityState({ uid })
-          : of(null)
-      ),
-      shareReplay({ bufferSize: 1, refCount: true })
-    );
-  }
-
-  protected isHidden(): Observable<boolean> {
-    return this.dynamicVisibilityRules().pipe(
-      distinctUntilChanged(),
-      switchMap((config) =>
-        config?.hide
-          ? of(true)
-          : config?.token
-          ? this.tokenResolver
-              .resolveToken(config.token)
-              .pipe(map((value) => !!value))
-          : of(false)
-      )
-    );
-  }
-
-  dynamicVisibilityState(): Observable<DynamicVisibilityStates> {
-    return this.dynamicVisibilityRules().pipe(
-      startWith(null),
-      combineLatestWith(this.isHidden().pipe(startWith(null))),
-      switchMap(([rules, visibility]) =>
-        !rules
-          ? of(DynamicVisibilityStates.None)
-          : visibility === null
-          ? of(DynamicVisibilityStates.Defer)
-          : of(
-              visibility
-                ? DynamicVisibilityStates.Hidden
-                : DynamicVisibilityStates.Visible
-            )
-      )
     );
   }
 }
