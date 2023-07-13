@@ -22,6 +22,11 @@ export interface CartEntryAttributes {
   price?: number;
 
   /**
+   * The item sales price that override the item sales price.
+   */
+  itemPrice?: number;
+
+  /**
    * Indicates whether the cart entry can be edited. In readonly mode,
    * the quantity input and actions are hidden in the UI.
    */

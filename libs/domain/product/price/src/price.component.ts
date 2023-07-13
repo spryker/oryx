@@ -6,11 +6,12 @@ import {
   ProductPrices,
 } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydratable, signalProperty } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { combineLatest, Observable } from 'rxjs';
 import { Prices, ProductPriceOptions } from './price.model';
 import { ProductPriceStyles } from './price.styles';
+import { property } from 'lit/decorators.js';
 
 /**
  * Renders the (formatted) product price.
@@ -34,6 +35,12 @@ export class ProductPriceComponent extends ProductMixin(
   ContentMixin<ProductPriceOptions>(LitElement)
 ) {
   static styles = ProductPriceStyles;
+
+  /**
+   * Indicates the sales price. If the sales price is not given by a property,
+   * it will be resolved from the product data.
+   */
+  @signalProperty() sales?: number;
 
   protected pricingService = resolve(PricingService);
 
@@ -100,11 +107,18 @@ export class ProductPriceComponent extends ProductMixin(
   /**
    * Formats the given product prices and emits an object containing the formatted
    * sales price and original price.
+   *
+   * When a sales price is provided as in input property, the product price is ignored. Also,
+   * the original price will be change to the default price in this case.
    */
   protected formatPrices(price?: ProductPrices): Observable<Prices> {
+    const salesPrice = this.sales ?? price?.defaultPrice;
+    const originalPrice = this.sales
+      ? price?.defaultPrice
+      : price?.originalPrice;
     return combineLatest({
-      sales: this.pricingService.format(price?.defaultPrice),
-      original: this.pricingService.format(price?.originalPrice),
+      sales: this.pricingService.format(salesPrice),
+      original: this.pricingService.format(originalPrice),
     });
   }
 }

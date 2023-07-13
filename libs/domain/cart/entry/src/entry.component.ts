@@ -38,6 +38,7 @@ import {
   RemoveByQuantity,
 } from './entry.model';
 import { cartEntryStyles } from './styles';
+import { ProductPriceOptions } from '@spryker-oryx/product/price';
 
 /**
  * Supports updating the quantity as well as removing the entry entirely.
@@ -60,7 +61,8 @@ export class CartEntryComponent
 
   @signalProperty({ type: Number }) quantity?: number;
   @property() key?: string;
-  @property({ type: Number }) price?: number;
+  @property({ type: Number }) itemPrice?: number;
+  @property({ type: Number }) entryPrice?: number;
   @property({ type: Boolean }) readonly?: boolean;
 
   @state() protected requiresRemovalConfirmation?: boolean;
@@ -165,14 +167,15 @@ export class CartEntryComponent
     return html`
       <section class="pricing">
         ${qtyTemplate}
-        <oryx-site-price .value=${this.price}></oryx-site-price>
+        <oryx-site-price .value=${this.entryPrice}></oryx-site-price>
         ${when(
           this.$options()?.enableItemPrice,
           () =>
             html`<div class="item-price">
-              <span>${this.i18n('cart.entry.item-price')}</span
-              ><oryx-product-price
-                .options=${{ enableTaxMessage: false }}
+              <span>${this.i18n('cart.entry.item-price')}</span>
+              <oryx-product-price
+                .options=${{ enableTaxMessage: false } as ProductPriceOptions}
+                .sales=${this.itemPrice}
               ></oryx-product-price>
             </div>`
         )}
