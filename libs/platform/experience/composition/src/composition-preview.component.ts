@@ -18,15 +18,12 @@ import {
 } from 'rxjs';
 
 import { CompositionComponent } from './composition.component';
-import {
-  compositionPreviewStyles,
-  compositionStyles,
-} from './composition.styles';
+import { compositionPreviewStyles } from './composition.styles';
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
 export class CompositionPreviewComponent extends CompositionComponent {
-  static styles = [compositionStyles, compositionPreviewStyles];
+  static styles = [compositionPreviewStyles];
 
   @query(`.${EB_PREVIEW_FOCUS_CLASS}`)
   protected focusedComponent?: HTMLElement;

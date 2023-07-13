@@ -61,9 +61,16 @@ export class ProductDetailsPage extends AbstractSFPage {
 
   addItemsToTheCart = (numberOfItems = 1) => {
     if (numberOfItems === 1) {
-      this.getAddToCartBtn().click();
-      // click on a button in loading and confirmed state does nothing
-      // so we have to wait will the button is active again
+      cy.intercept({
+        method: 'POST',
+        url: /\/carts\/*\/items*|\/guest-cart-items*/,
+      }).as('addToCartRequest');
+
+      this.getAddToCartBtn().trigger('mouseenter').wait(150).click();
+
+      cy.wait('@addToCartRequest');
+
+      // wait till loading animation is finished
       this.getAddToCartBtn().should('not.have.attr', 'loading');
       this.getAddToCartBtn().should('not.have.attr', 'confirmed');
     } else {
