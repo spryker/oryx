@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/ui",
-  "version": "1.0.0-rc.0",
+  "version": "0.13.0",
   "type": "module",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -14,8 +14,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@spryker-oryx/core": "1.0.0-rc.0",
-    "@spryker-oryx/utilities": "1.0.0-rc.0"
+    "@spryker-oryx/core": "*",
+    "@spryker-oryx/utilities": "*"
   },
   "peerDependencies": {
     "lit": "^2.4.0",
