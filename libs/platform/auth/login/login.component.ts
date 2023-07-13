@@ -17,7 +17,7 @@ import { styles } from './login.styles';
   enableRedirect: true,
   passwordVisibility: PasswordVisibilityStrategy.Click,
 })
-@hydratable(['mouseover', 'focus'])
+@hydratable({ event: ['mouseover', 'focus'] })
 export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   static styles = styles;
 

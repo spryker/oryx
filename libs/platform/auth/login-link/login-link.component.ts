@@ -11,7 +11,7 @@ import { styles } from './login-link.styles';
 @defaultOptions({
   enableLogout: true,
 })
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
   LitElement
 ) {
