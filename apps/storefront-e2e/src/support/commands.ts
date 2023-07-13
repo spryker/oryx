@@ -12,10 +12,9 @@ declare global {
       loginApi(): Chainable<void>;
       goToCheckout(): Chainable<void>;
       goToCheckoutAsGuest(): Chainable<void>;
-      // eslint-disable-next-line @typescript-eslint/ban-types
       hydrateElemenet(
         assetPath: string,
-        triggerHydrationFn: Function
+        triggerHydrationFn
       ): Chainable<void>;
       customerCartsCleanup(sccosApi: SCCOSApi, user: TestCustomerData): void;
       customerAddressesCleanup(
@@ -79,10 +78,9 @@ Cypress.Commands.add('goToCheckoutAsGuest', () => {
   cartPage.checkout();
 });
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 Cypress.Commands.add(
   'hydrateElemenet',
-  (assetPath: string, triggerHydrationFn: Function) => {
+  (assetPath: string, triggerHydrationFn) => {
     cy.intercept(assetPath).as(`${assetPath}Request`);
 
     triggerHydrationFn();

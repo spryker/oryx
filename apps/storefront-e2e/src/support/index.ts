@@ -7,6 +7,7 @@ registerCypressGrep();
 const removeUselessLogsFromCypressLogs = () => {
   const origLog = Cypress.log;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Cypress.log = function (opts: any, ...other) {
     if (opts.url) {
       // this request is being intercepted
