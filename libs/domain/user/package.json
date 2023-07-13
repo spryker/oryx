@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/user",
   "type": "module",
-  "version": "0.13.0",
+  "version": "1.0.0-rc.0",
   "description": "User features for Oryx applications",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -20,14 +20,14 @@
     }
   },
   "dependencies": {
-    "@spryker-oryx/auth": "*",
-    "@spryker-oryx/core": "*",
-    "@spryker-oryx/di": "*",
-    "@spryker-oryx/experience": "*",
-    "@spryker-oryx/form": "*",
-    "@spryker-oryx/site": "*",
-    "@spryker-oryx/ui": "*",
-    "@spryker-oryx/utilities": "*"
+    "@spryker-oryx/auth": "1.0.0-rc.0",
+    "@spryker-oryx/core": "1.0.0-rc.0",
+    "@spryker-oryx/di": "1.0.0-rc.0",
+    "@spryker-oryx/experience": "1.0.0-rc.0",
+    "@spryker-oryx/form": "1.0.0-rc.0",
+    "@spryker-oryx/site": "1.0.0-rc.0",
+    "@spryker-oryx/ui": "1.0.0-rc.0",
+    "@spryker-oryx/utilities": "1.0.0-rc.0"
   },
   "peerDependencies": {
     "lit": "^2.4.0",
