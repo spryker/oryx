@@ -28,37 +28,60 @@ export interface HydratableLitElement extends LitElement {
   [HYDRATE_ON_DEMAND](force?: boolean): void;
 }
 
+export interface HydratableOptions {
+  event?: string | string[];
+  context?: string | string[];
+}
+
 export const hydratable =
-  (prop?: string | string[]) =>
+  (options?: HydratableOptions) =>
   (classOrDescriptor: Type<HTMLElement> | ClassDescriptor): void =>
     typeof classOrDescriptor === 'function'
-      ? legacyCustomElement(classOrDescriptor, prop)
-      : standardCustomElement(classOrDescriptor as ClassDescriptor, prop);
+      ? legacyCustomElement(classOrDescriptor, options)
+      : standardCustomElement(classOrDescriptor as ClassDescriptor, options);
 
 const legacyCustomElement = (
   clazz: Type<HTMLElement>,
-  prop?: string | string[]
+  options?: HydratableOptions
 ) => {
-  return hydratableClass(clazz, prop);
+  return hydratableClass(clazz, options);
 };
 
 const standardCustomElement = (
   descriptor: ClassDescriptor,
-  prop?: string | string[]
+  options?: HydratableOptions
 ) => {
   const { kind, elements } = descriptor;
   return {
     kind,
     elements,
     finisher(clazz: Constructor<HydratableLitElement>) {
-      return hydratableClass(clazz, prop);
+      return hydratableClass(clazz, options);
     },
   };
 };
 
+function optionsToAttribute(options?: HydratableOptions): string {
+  if (!options) return '';
+
+  const attributes: string[] = [];
+
+  if (options.event) {
+    attributes.push(...[].concat(options.event));
+  }
+
+  if (options.context) {
+    attributes.push(
+      ...[].concat(options.context).map((context) => `@${context}`)
+    );
+  }
+
+  return attributes.join(',');
+}
+
 function hydratableClass<T extends Type<HTMLElement>>(
   target: T,
-  mode?: string | string[]
+  options?: HydratableOptions
 ): any {
   return class extends (target as any) {
     /**
@@ -78,7 +101,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
       super(...args);
 
       if (isServer) {
-        this.setAttribute(hydratableAttribute, mode ?? '');
+        this.setAttribute(hydratableAttribute, optionsToAttribute(options));
       } else if (this.shadowRoot) {
         this[DEFER_HYDRATION] = 3;
       }
