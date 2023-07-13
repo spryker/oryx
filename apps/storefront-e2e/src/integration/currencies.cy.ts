@@ -40,7 +40,7 @@ describe('Currencies suite', () => {
         it('CHF price is still applied', () => {
           // product price is displayed in CHF
           pdp.getPrice().should('contain.text', 'CHF');
-          pdp.addItemsToTheCart(1);
+          pdp.addItemsToTheCart(1, true);
           // go to the cart
           pdp.header.getCartSummary().click();
           // cart currencies are not switched automatically
@@ -69,7 +69,7 @@ describe('Currencies suite', () => {
 
       describe('and user changes the currency back to EUR', () => {
         beforeEach(() => {
-          cartPage.header.changeCurrency('EUR');
+          cartPage.header.changeCurrency('EUR', true);
         });
 
         it('EUR prices are applied on the cart page', () => {
