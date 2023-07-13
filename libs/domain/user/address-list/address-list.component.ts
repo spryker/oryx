@@ -21,7 +21,7 @@ import { styles } from './address-list.styles';
   addressDefaults: AddressDefaults.All,
   editTarget: EditTarget.Link,
 })
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class UserAddressListComponent extends AddressMixin(
   ContentMixin<UserAddressListOptions>(LitElement)
 ) {

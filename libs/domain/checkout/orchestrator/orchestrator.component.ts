@@ -4,7 +4,7 @@ import { elementEffect, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { checkoutOrchestratorStyles } from './orchestrator.styles';
 
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class CheckoutOrchestratorComponent extends CheckoutMixin(
   ContentMixin(LitElement)
 ) {

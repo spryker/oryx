@@ -24,7 +24,7 @@ import { styles } from './quantity-input.styles';
  * dispatched when the Enter key is dispatched, To submit on each change even, the
  * `submitOnChange` property can be set.
  */
-@hydratable(['window:load'])
+@hydratable({ event: ['window:load'] })
 export class QuantityInputComponent
   extends I18nMixin(LitElement)
   implements QuantityInputAttributes

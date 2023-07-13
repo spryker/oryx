@@ -9,7 +9,7 @@ import { CrudState } from '../src/models';
 import { AddressEditButtonOptions, Target } from './address-edit-button.model';
 
 @defaultOptions({ target: Target.Link })
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 export class UserAddressEditButtonComponent extends AddressMixin(
   ContentMixin<AddressEditButtonOptions>(LitElement)
 ) {

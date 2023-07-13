@@ -46,7 +46,7 @@ import { SearchBoxOptions, SearchBoxProperties } from './box.model';
     max: 5,
   },
 })
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 @signalAware()
 export class SearchBoxComponent
   extends ContentMixin<SearchBoxOptions>(LitElement)

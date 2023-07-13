@@ -4,7 +4,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { styles } from './payment-method.styles';
 
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class CheckoutPaymentMethodComponent
   extends I18nMixin(CheckoutMixin(LitElement))
   implements isValid

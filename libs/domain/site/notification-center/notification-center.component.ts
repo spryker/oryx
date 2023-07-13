@@ -15,7 +15,7 @@ import { SiteNotificationCenterOptions } from './notification-center.model';
   enableStacking: true,
   autoCloseTime: 8,
 })
-@hydratable('window:oryx-notify')
+@hydratable({ event: 'window:oryx-notify' })
 export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificationCenterOptions>(
   LitElement
 ) {

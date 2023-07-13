@@ -8,7 +8,7 @@ import { computed, hydratable, I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { orderSummaryStyles } from './summary.styles';
 
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
   static styles = orderSummaryStyles;
 

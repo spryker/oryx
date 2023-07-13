@@ -9,7 +9,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
 import { siteLocaleSelectorStyles } from './locale-selector.styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 export class SiteLocaleSelectorComponent extends ContentMixin(LitElement) {
   static styles = [siteLocaleSelectorStyles];
 

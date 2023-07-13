@@ -12,7 +12,7 @@ import {
 } from './address-add-button.model';
 
 @defaultOptions({ target: Target.Link })
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 export class UserAddressAddButtonComponent extends AddressMixin(
   ContentMixin<UserAddressAddButtonOptions>(LitElement)
 ) {

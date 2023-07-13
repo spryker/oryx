@@ -8,7 +8,7 @@ import { when } from 'lit/directives/when.js';
 import { styles } from './shipping-method.styles';
 
 @signalAware()
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class CheckoutShippingMethodComponent
   extends CheckoutMixin(ContentMixin(LitElement))
   implements isValid

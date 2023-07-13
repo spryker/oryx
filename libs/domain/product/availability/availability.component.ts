@@ -10,7 +10,7 @@ import {
 } from './availability.model';
 import { availabilityStyles } from './availability.styles';
 
-@hydratable(`@${ProductContext.SKU}`)
+@hydratable({ context: ProductContext.SKU })
 @defaultOptions({ threshold: 5, enableIndicator: true })
 export class ProductAvailabilityComponent extends ProductMixin(
   ContentMixin<CartItemAvailabilityOptions>(LitElement)

@@ -7,7 +7,7 @@ import {
 import { html, LitElement, TemplateResult } from 'lit';
 import { TotalsController } from '../../../src/controllers';
 
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 @signalAware()
 export class CartTotalsDeliveryComponent extends I18nMixin(LitElement) {
   protected totalsController = new TotalsController(this);

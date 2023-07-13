@@ -13,7 +13,7 @@ import { styles } from './title.styles';
 @defaultOptions({
   linkType: 'none',
 })
-@hydratable(`@${ProductContext.SKU}`)
+@hydratable({ context: ProductContext.SKU })
 export class ProductTitleComponent extends ProductMixin(
   ContentMixin<ProductTitleOptions>(LitElement)
 ) {

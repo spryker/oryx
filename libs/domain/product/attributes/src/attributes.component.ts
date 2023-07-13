@@ -7,7 +7,7 @@ import { productAttributeStyles } from './attributes.styles';
 
 @ssrShim('style')
 @defaultOptions({ columnCount: '2' })
-@hydratable(`@${ProductContext.SKU}`)
+@hydratable({ context: ProductContext.SKU })
 export class ProductAttributesComponent extends ProductMixin(
   ContentMixin<ProductAttributesOptions>(LitElement)
 ) {

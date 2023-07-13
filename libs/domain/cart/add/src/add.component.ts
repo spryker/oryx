@@ -23,7 +23,7 @@ import { styles } from './add.styles';
 @defaultOptions({
   enableLabel: true,
 })
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 export class CartAddComponent extends ProductMixin(
   CartComponentMixin(ContentMixin<CartAddOptions>(LitElement))
 ) {

@@ -4,7 +4,7 @@ import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { hydratable, I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 
-@hydratable(['window:load'])
+@hydratable({ event: ['window:load'] })
 export class CheckoutLinkComponent extends I18nMixin(
   CartComponentMixin(LitElement)
 ) {

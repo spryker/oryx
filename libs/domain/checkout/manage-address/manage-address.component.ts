@@ -24,7 +24,7 @@ import { when } from 'lit/directives/when.js';
 import { CheckoutMixin } from '../src/mixins';
 import { checkoutManageAddressStyles } from './manage-address.styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 export class CheckoutManageAddressComponent extends I18nMixin(
   AddressMixin(CheckoutMixin(LitElement))
 ) {

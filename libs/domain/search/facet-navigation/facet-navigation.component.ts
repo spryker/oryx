@@ -17,7 +17,7 @@ import { tap } from 'rxjs/operators';
 import { SearchFacetNavigationOptions } from './facet-navigation.model';
 import { searchFacetNavigationStyles } from './facet-navigation.styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 @defaultOptions({
   expandedItemsCount: 5,
   valueRenderLimit: 5,

@@ -6,7 +6,7 @@ import { html } from 'lit/static-html.js';
 import { ProductIdOptions } from './id.model';
 
 @defaultOptions({ prefix: 'SKU: ' })
-@hydratable(`@${ProductContext.SKU}`)
+@hydratable({ context: ProductContext.SKU })
 export class ProductIdComponent extends ProductMixin(
   ContentMixin<ProductIdOptions>(LitElement)
 ) {

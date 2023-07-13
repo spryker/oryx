@@ -29,7 +29,7 @@ import { ProductPriceStyles } from './price.styles';
   enableOriginalPrice: true,
   enableTaxMessage: true,
 })
-@hydratable(`@${ProductContext.SKU}`)
+@hydratable({ context: ProductContext.SKU })
 export class ProductPriceComponent extends ProductMixin(
   ContentMixin<ProductPriceOptions>(LitElement)
 ) {

@@ -10,7 +10,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
 import { siteCurrencySelectorStyles } from './currency-selector.styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
   static styles = [siteCurrencySelectorStyles];
 

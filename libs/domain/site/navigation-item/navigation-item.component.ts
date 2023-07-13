@@ -24,7 +24,7 @@ import { styles } from './navigation-item.styles';
   triggerBehavior: NavigationTriggerBehavior.Click,
   contentBehavior: NavigationContentBehavior.Navigation,
 })
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItemOptions>(
   LitElement
 ) {

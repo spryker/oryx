@@ -7,7 +7,7 @@ import { state } from 'lit/decorators.js';
 import { tap } from 'rxjs';
 import { styles } from './address-remove.styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 export class UserAddressRemoveComponent extends I18nMixin(
   AddressMixin(LitElement)
 ) {

@@ -10,7 +10,7 @@ import { html } from 'lit/static-html.js';
 import { ProductLabelsOptions } from './label.model';
 import { labelStyles } from './label.styles';
 
-@hydratable(`@${ProductContext.SKU}`)
+@hydratable({ context: ProductContext.SKU })
 export class ProductLabelsComponent extends ProductMixin(
   ContentMixin<ProductLabelsOptions>(LitElement)
 ) {

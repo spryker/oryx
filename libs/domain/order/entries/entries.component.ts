@@ -15,7 +15,7 @@ import { orderEntriesStyles } from './entries.styles';
   enableItemId: true,
   enableItemPrice: false,
 } as OrderEntriesOptions)
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class OrderEntriesComponent
   extends OrderMixin(ContentMixin<OrderEntriesOptions>(LitElement))
   implements OrderEntriesAttributes

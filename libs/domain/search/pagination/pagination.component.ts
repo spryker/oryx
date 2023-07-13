@@ -11,7 +11,7 @@ import urlJoin from 'url-join';
 import { SearchPaginationOptions } from './pagination.model';
 
 @defaultOptions({ max: 3, enableControls: true })
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class SearchPaginationComponent extends ContentMixin<
   SearchPaginationOptions & ProductListQualifier
 >(LitElement) {

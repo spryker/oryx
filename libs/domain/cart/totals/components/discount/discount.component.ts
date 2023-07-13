@@ -12,7 +12,7 @@ import {
 @defaultOptions({
   discountRowsAppearance: DiscountRowsAppearance.Expanded,
 } as CartTotalsDiscountOptions)
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 @signalAware()
 export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscountOptions>(
   LitElement

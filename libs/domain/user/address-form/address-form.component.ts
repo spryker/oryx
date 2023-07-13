@@ -30,7 +30,7 @@ import {
 } from './address-form.model';
 
 @defaultOptions({ fallbackCountry: 'DE' })
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 export class UserAddressFormComponent
   extends FormMixin(ContentMixin<AddressFormOptions>(LitElement))
   implements AddressFormAttributes

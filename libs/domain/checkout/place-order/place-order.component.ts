@@ -4,7 +4,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { hydratable, I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class CheckoutPlaceOrderComponent extends I18nMixin(
   CheckoutMixin(LitElement)
 ) {

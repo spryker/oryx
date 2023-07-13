@@ -17,7 +17,7 @@ import { styles } from './address.styles';
 @defaultOptions({
   schema: defaultSimpleSchema,
 })
-@hydratable('mouseover')
+@hydratable({ event: 'mouseover' })
 export class UserAddressComponent extends AddressMixin(
   ContentMixin<AddressOptions>(LitElement)
 ) {

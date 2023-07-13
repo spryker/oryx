@@ -32,7 +32,7 @@ const defaultImagesOptions: ProductImagesComponentOptions = {
 };
 
 @defaultOptions(defaultImagesOptions)
-@hydratable(['mouseover', `@${ProductContext.SKU}`])
+@hydratable({ event: 'mouseover', context: ProductContext.SKU })
 export class ProductImagesComponent extends ProductMixin(
   ContentMixin<ProductImagesComponentOptions>(LitElement)
 ) {

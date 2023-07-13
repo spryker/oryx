@@ -15,7 +15,7 @@ import { cartEntriesStyles } from './entries.styles';
   enableItemImage: true,
   enableItemPrice: true,
 } as CartEntriesOptions)
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class CartEntriesComponent extends CartComponentMixin(
   ContentMixin<CartEntriesOptions>(LitElement)
 ) {

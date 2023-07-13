@@ -5,7 +5,7 @@ import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { ProductBrandOptions } from './brand.model';
 
-@hydratable(`@${ProductContext.SKU}`)
+@hydratable({ context: ProductContext.SKU })
 export class ProductBrandComponent extends ProductMixin(
   ContentMixin<ProductBrandOptions>(LitElement)
 ) {

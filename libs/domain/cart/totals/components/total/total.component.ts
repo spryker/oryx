@@ -6,7 +6,7 @@ import { PriceMode } from '../../../src/models';
 import { CartTotalsTotalOptions } from './total.model';
 
 @defaultOptions({ enableTaxMessage: true })
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 @signalAware()
 export class CartTotalsTotalComponent extends ContentMixin<CartTotalsTotalOptions>(
   LitElement

@@ -13,7 +13,7 @@ import { CheckoutAccountComponentOptions } from './account.model';
 import { checkoutAccountStyles } from './account.styles';
 
 @defaultOptions({ enableGuestCheckout: true })
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class CheckoutAccountComponent
   extends CheckoutMixin(
     ContentMixin<CheckoutAccountComponentOptions>(LitElement)

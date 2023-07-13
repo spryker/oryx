@@ -14,7 +14,7 @@ import {
 } from './address-list-item.model';
 import { styles } from './address-list-item.styles';
 
-@hydratable('window:load')
+@hydratable({ event: 'window:load' })
 export class UserAddressListItemComponent extends AddressMixin(
   ContentMixin<UserAddressListItemOptions>(LitElement)
 ) {

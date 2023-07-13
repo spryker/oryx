@@ -21,7 +21,7 @@ import {
 import { styles } from './address-edit.styles';
 
 @defaultOptions({ save: SaveOption.Save, inline: false })
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 export class UserAddressEditComponent extends AddressMixin(
   ContentMixin<UserAddressEditComponentOptions>(LitElement)
 ) {

@@ -6,7 +6,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { fields } from './contact-form.model';
 import { styles } from './contact-form.styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 export class UserContactFormComponent extends FormMixin(
   ContentMixin(LitElement)
 ) {

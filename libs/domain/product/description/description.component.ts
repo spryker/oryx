@@ -9,7 +9,10 @@ import { ProductDescriptionOptions } from './description.model';
 import { convertLineFeedsToHTML } from './utils';
 
 @defaultOptions({ lineClamp: 3, enableToggle: true })
-@hydratable(['mouseover', 'window:resize', `@${ProductContext.SKU}`])
+@hydratable({
+  event: ['mouseover', 'window:resize'],
+  context: ProductContext.SKU,
+})
 export class ProductDescriptionComponent extends ProductMixin(
   ContentMixin<ProductDescriptionOptions>(LitElement)
 ) {
