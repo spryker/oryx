@@ -67,12 +67,14 @@ function optionsToAttribute(options?: HydratableOptions): string {
   const attributes: string[] = [];
 
   if (options.event) {
-    attributes.push(...[].concat(options.event));
+    attributes.push(...([] as string[]).concat(options.event ?? []));
   }
 
   if (options.context) {
     attributes.push(
-      ...[].concat(options.context).map((context) => `@${context}`)
+      ...([] as string[])
+        .concat(options.context ?? [])
+        .map((context) => `@${context}`)
     );
   }
 
