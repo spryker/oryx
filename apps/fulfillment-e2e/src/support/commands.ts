@@ -1,5 +1,6 @@
 import { TestUserData } from '../types/user.type';
 import { LoginPage } from './page_objects/login.page';
+import { WarehouseSelectionListFragment } from './page_fragments/warehouse-selection-list.fragment';
 export {};
 
 declare global {
@@ -20,6 +21,8 @@ const defaultUser = { email: 'admin@spryker.com', password: 'change123' };
 const loginPage = new LoginPage();
 
 Cypress.Commands.add('login', (user = defaultUser) => {
+  const warehouseSelectionListFragment = new WarehouseSelectionListFragment();
+
   cy.intercept('POST', '**/token').as('token');
 
   loginPage.visit();
@@ -29,6 +32,12 @@ Cypress.Commands.add('login', (user = defaultUser) => {
   // because our bundle is huge and Cypress is not able
   // to cache all 500++ files fast enough
   cy.wait('@token', { timeout: 30000 });
+
+  cy.intercept('GET', '**/warehouse-user-assignments').as(
+    'warehouse-user-assignments'
+  );
+  cy.wait('@warehouse-user-assignments');
+  warehouseSelectionListFragment.getWarehouseSelectionButtons().eq(0).click();
 
   cy.intercept('GET', '**/picking-lists?include*').as('picking-lists');
   cy.wait('@picking-lists');

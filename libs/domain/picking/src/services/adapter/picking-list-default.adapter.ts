@@ -1,7 +1,7 @@
 import { inject } from '@spryker-oryx/di';
 // Add full import because of issue with naming exports from cjs.
 import * as jsonapi from 'jsonapi-serializer';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap, tap } from 'rxjs';
 import {
   ItemsFilters,
   PickingList,
@@ -29,7 +29,10 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
 
     return this.pickingHttpService
       .get<GetPickingListResponse>(`/picking-lists${query}`)
-      .pipe(switchMap((res) => this.parsePickingLists(res)));
+      .pipe(
+        switchMap((res) => this.parsePickingLists(res)),
+        tap(() => console.log('get adapter'))
+      );
   }
 
   startPicking(pickingList: PickingList): Observable<PickingList> {

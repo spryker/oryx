@@ -46,7 +46,8 @@ export class PickingListDefaultService implements PickingListService {
           ...sortingQualifier,
           ...qualifier,
         })
-      )
+      ),
+      tap(() => console.log('get service'))
     );
   }
 

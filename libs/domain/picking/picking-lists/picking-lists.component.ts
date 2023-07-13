@@ -10,7 +10,14 @@ import { state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { distinctUntilChanged, map, startWith, Subject, switchMap } from 'rxjs';
+import {
+  distinctUntilChanged,
+  map,
+  startWith,
+  Subject,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { pickingListsComponentStyles } from './picking-lists.styles';
 
@@ -43,7 +50,8 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
         status: PickingListStatus.ReadyForPicking,
         searchOrderReference: value,
       });
-    })
+    }),
+    tap(() => console.log('lists'))
   );
 
   @asyncState()

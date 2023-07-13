@@ -1,10 +1,8 @@
 import { OauthHandlerFragment } from '../support/page_fragments/oauth-handler.fragment';
-import { PickingListsHeaderFragment } from '../support/page_fragments/picking-lists-header.fragment';
-import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 import { LoginPage } from '../support/page_objects/login.page';
+import { WarehouseSelectionListFragment } from '../support/page_fragments/warehouse-selection-list.fragment';
 
-const pickingListsFragment = new PickingListsFragment();
-const headerFragment = new PickingListsHeaderFragment();
+const warehouseSelectionListFragment = new WarehouseSelectionListFragment();
 const loginPage = new LoginPage();
 const oauthHandler = new OauthHandlerFragment();
 
@@ -23,37 +21,30 @@ describe('Login Suite', () => {
       loginPage.getLogo().should('be.visible');
       loginPage.getTitle().should('be.visible');
     });
-  });
 
-  describe('when logging in', () => {
-    it('should login successfully', () => {
-      cy.intercept('POST', '**/token').as('token');
-      cy.intercept('GET', '**/picking-lists?include*').as('picking-lists');
+    // logging in
+    cy.intercept('POST', '**/token').as('token');
+    cy.intercept('GET', '**/picking-lists?include*').as('picking-lists');
 
-      loginPage.visit();
-      loginPage.loginForm.login({
-        email: 'admin@spryker.com',
-        password: 'change123',
-      });
-
-      cy.wait('@token');
-
-      cy.location('pathname').should('match', /^\/oauth/);
-
-      oauthHandler.getWrapper().should('be.visible');
-      oauthHandler.getLogo().should('be.visible');
-      oauthHandler.getTitle().should('be.visible');
-      oauthHandler.getSpinner().should('be.visible');
-
-      cy.wait('@picking-lists');
-
-      cy.location('pathname').should('be.equal', '/');
-      pickingListsFragment.getWrapper().should('be.visible');
-      headerFragment.getSearchIcon().should('be.visible');
-      headerFragment.getUserIcon().should('be.visible');
-      headerFragment.getHeadline().should('contain.text', 'Pick lists');
-      pickingListsFragment.getSortButton().should('be.visible');
+    loginPage.visit();
+    loginPage.loginForm.login({
+      email: 'admin@spryker.com',
+      password: 'change123',
     });
+
+    cy.wait('@token');
+
+    cy.location('pathname').should('match', /^\/oauth/);
+
+    oauthHandler.getWrapper().should('be.visible');
+    oauthHandler.getLogo().should('be.visible');
+    oauthHandler.getTitle().should('be.visible');
+    oauthHandler.getSpinner().should('be.visible');
+
+    cy.wait('@warehouse-user-assignments');
+
+    cy.location('pathname').should('be.equal', '/warehouse-selection');
+    warehouseSelectionListFragment.getWrapper().should('be.visible');
   });
 
   describe('when login fails', () => {

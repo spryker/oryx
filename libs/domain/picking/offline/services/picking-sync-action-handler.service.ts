@@ -1,7 +1,13 @@
 import { inject } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import { Sync, SyncActionHandler } from '@spryker-oryx/offline';
-import { combineLatestWith, Observable, switchMap, throwError } from 'rxjs';
+import {
+  combineLatestWith,
+  Observable,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 import { PickingListEntity } from '../entities';
 import { PickingListOnlineAdapter } from './adapter';
 
@@ -81,6 +87,7 @@ export class PickingSyncActionHandlerService
     }
 
     return this.onlineAdapter.get({ ids: sync.payload.ids }).pipe(
+      tap(() => console.log('handlePush')),
       combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
       switchMap(async ([pickingLists, store]) => {
         const pickingListsIdsToRemove = sync.payload.ids.filter((id) => {

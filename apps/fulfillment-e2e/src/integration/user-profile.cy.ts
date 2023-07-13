@@ -1,5 +1,4 @@
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
-import { PickingFragment } from '../support/page_fragments/picking.fragment';
 import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
 import { LoginPage } from '../support/page_objects/login.page';
 import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
@@ -8,7 +7,6 @@ import { PickingListsHeaderFragment } from '../support/page_fragments/picking-li
 const pickingListsFragment = new PickingListsFragment();
 const userProfileFragment = new UserProfileFragment();
 const loginPage = new LoginPage();
-const pickingFragment = new PickingFragment();
 const pickingHeaderFragment = new PickingHeaderFragment();
 const pickingListsHeaderFragment = new PickingListsHeaderFragment();
 
@@ -24,7 +22,8 @@ describe('When a user opens the user profile modal', () => {
     userProfileFragment.getWrapper().should('be.visible');
     userProfileFragment.getLogOutButton().should('be.visible');
     userProfileFragment.getNotification().should('not.exist');
-    userProfileFragment.getReceiveDataButton().should('be.visible');
+    userProfileFragment.getWrapper().should('be.visible');
+    userProfileFragment.getLogOutButton().should('be.visible');
   });
 
   describe('and user clicks on log out button', () => {

@@ -15,9 +15,11 @@ import {
   map,
   Observable,
   switchMap,
+  tap,
 } from 'rxjs';
 import type { PickingList } from '../models';
 import { PickingListService } from '../services';
+import { log } from '@clack/prompts';
 
 export declare class PickingListMixinInterface
   implements PickingListComponentProperties
@@ -46,7 +48,8 @@ export const PickingListMixin = <
       distinctUntilChanged(),
       filter(isDefined),
       switchMap((id) => this.pickingListService.get({ ids: [id] })),
-      map((list) => list?.[0] ?? null)
+      map((list) => list?.[0] ?? null),
+      tap(() => console.log('mixin'))
     );
 
     @asyncState()
