@@ -5,7 +5,7 @@ import {
   WarehouseUserAssignmentNormalizer,
 } from '@spryker-oryx/picking';
 import { combineLatest, Observable, of } from 'rxjs';
-import { WarehouseUserAssignment } from '../../../models/warehouse';
+import { WarehouseUserAssignment } from '../../../models/warehouse-user-assignment';
 
 export const WarehouseUserAssignmentsNormalizer =
   'oryx.WarehouseUserAssignmentsNormalizer*';

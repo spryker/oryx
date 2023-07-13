@@ -1,17 +1,28 @@
 import { inject } from '@spryker-oryx/di';
 import { WarehouseUserAssignmentsAdapter } from '@spryker-oryx/picking';
 import { Observable, tap } from 'rxjs';
-import { WarehouseUserAssignment } from '../models/warehouse';
+import {
+  WarehouseUserAssignment,
+  warehouseUserAssignmentStorageKey,
+} from '../models/warehouse-user-assignment';
 import { WarehouseUserAssignmentsService } from './warehouse-user-assignments.service';
 import { StorageService } from '@spryker-oryx/core';
+import { AuthService, OauthService } from '@spryker-oryx/auth';
 
 export class WarehouseUserAssignmentsDefaultService
   implements WarehouseUserAssignmentsService
 {
   constructor(
     protected adapter = inject(WarehouseUserAssignmentsAdapter),
-    protected storageService: StorageService = inject(StorageService)
-  ) {}
+    protected storageService = inject(StorageService),
+    protected authService = inject(AuthService)
+  ) {
+    authService.isAuthenticated().subscribe((isAuthenticated) => {
+      if (!isAuthenticated) {
+        this.storageService.remove(warehouseUserAssignmentStorageKey);
+      }
+    });
+  }
 
   getList(): Observable<WarehouseUserAssignment[]> {
     return this.adapter.getList();
@@ -28,7 +39,7 @@ export class WarehouseUserAssignmentsDefaultService
           );
         }
 
-        this.storageService.set('oryx.warehouse-user-assignment', assignment);
+        this.storageService.set(warehouseUserAssignmentStorageKey, assignment);
       })
     );
   }

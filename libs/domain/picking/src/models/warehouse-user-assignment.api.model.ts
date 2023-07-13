@@ -1,5 +1,5 @@
 import { LinksObject, ResourceObject } from '../services/adapter/types';
-import { Warehouse } from './warehouse';
+import { Warehouse } from './warehouse-user-assignment';
 
 export interface DeserializedWarehouseUserAssignment extends LinksObject {
   id: string;

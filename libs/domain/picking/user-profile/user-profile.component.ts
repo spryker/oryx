@@ -17,7 +17,10 @@ import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs';
 import { userProfileComponentStyles } from './user-profile.styles';
-import { WarehouseUserAssignment } from '../src/models/warehouse';
+import {
+  WarehouseUserAssignment,
+  warehouseUserAssignmentStorageKey,
+} from '../src/models/warehouse-user-assignment';
 
 @signalAware()
 export class UserProfileComponent extends I18nMixin(LitElement) {
@@ -38,7 +41,7 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
   protected logoutLoading = false;
 
   protected $location: ConnectableSignal<WarehouseUserAssignment | null> =
-    signal(this.storageService.get('oryx.warehouse-user-assignment'));
+    signal(this.storageService.get(warehouseUserAssignmentStorageKey));
   protected $route = signal(this.routerService.route());
   protected $pendingSyncs = signal(resolve(SyncSchedulerService).hasPending());
   protected $isPicking = computed(() => this.$route()?.includes('/picking/'));

@@ -33,7 +33,7 @@ describe('Header Component', () => {
         'oryx-site-navigation-item'
       )?.options
     ).toEqual({
-      icon: IconTypes.Profile,
+      icon: IconTypes.User,
       triggerType: 'icon',
       contentBehavior: 'modal',
       label: i18n('oryx.picking.account'),

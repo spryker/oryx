@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { WarehouseUserAssignment } from '../models/warehouse';
+import { WarehouseUserAssignment } from '../models/warehouse-user-assignment';
 
 export interface WarehouseUserAssignmentsService {
   getList(): Observable<WarehouseUserAssignment[]>;
