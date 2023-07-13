@@ -12,10 +12,7 @@ declare global {
       loginApi(): Chainable<void>;
       goToCheckout(): Chainable<void>;
       goToCheckoutAsGuest(): Chainable<void>;
-      hydrateElemenet(
-        assetPath: string,
-        triggerHydrationFn
-      ): Chainable<void>;
+      hydrateElemenet(assetPath: string, triggerHydrationFn): Chainable<void>;
       customerCartsCleanup(sccosApi: SCCOSApi, user: TestCustomerData): void;
       customerAddressesCleanup(
         sccosApi: SCCOSApi,
