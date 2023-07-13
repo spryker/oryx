@@ -20,6 +20,7 @@ export type CartData = {
 export class SCCOSApi {
   private anonymousHeader = 'X-Anonymous-Customer-Unique-Id';
   private customerUniqueId: number = Math.random();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private headers: any = {};
   private apiUrl: string;
 
