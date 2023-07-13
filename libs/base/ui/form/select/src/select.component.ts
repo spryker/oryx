@@ -19,7 +19,7 @@ import { property } from 'lit/decorators.js';
 import { SelectController, SelectFilterController } from './controllers';
 import { baseStyles } from './styles';
 
-@hydratable(['mouseover', 'focus'])
+@hydratable({ event: ['mouseover', 'focus'] })
 export class SelectComponent
   extends LitElement
   implements ErrorOptions, SearchAttributes, TypeaheadOptions

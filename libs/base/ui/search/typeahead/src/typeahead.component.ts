@@ -18,7 +18,7 @@ import { TypeaheadController } from './controllers';
 import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
 import { baseStyles } from './typeahead.styles';
 
-@hydratable('focusin')
+@hydratable({ event: 'focusin' })
 export class TypeaheadComponent
   extends LitElement
   implements

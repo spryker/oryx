@@ -11,7 +11,7 @@ import {
 import { collapsibleTextStyles } from './collapsible-text.styles';
 import { truncateFix } from './pre-hydrate';
 
-@hydratable(['mouseover', 'focus'])
+@hydratable({ event: ['mouseover', 'focus'] })
 export class CollapsibleTextComponent
   extends I18nMixin(LitElement)
   implements CollapsibleTextProperties

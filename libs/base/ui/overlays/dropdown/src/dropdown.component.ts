@@ -6,7 +6,7 @@ import { property } from 'lit/decorators.js';
 import { DropdownProperties, Position } from './dropdown.model';
 import { dropdownBaseStyles, dropdownStyles } from './styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydratable({ event: ['mouseover', 'focusin'] })
 export class DropdownComponent
   extends LitElement
   implements DropdownProperties
