@@ -23,7 +23,6 @@ describe('Warehouse selection', () => {
     userProfileFragment.getWrapper().should('be.visible');
     userProfileFragment.getLogOutButton().should('be.visible');
     userProfileFragment.getWrapper().should('be.visible');
-    userProfileFragment.getLogOutButton().should('not.be.visible');
     userProfileFragment.getCloseButton().should('be.visible');
     userProfileFragment.getCloseButton().click();
 
