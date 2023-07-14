@@ -1,12 +1,12 @@
 import { Transformer } from '@spryker-oryx/core';
 import { ApiProductModel } from '../../../../models';
-import { DeserializedNode } from './model';
+import { DeserializeCategoryIds } from './model';
 
 export const CategoryIdNormalizer = 'oryx.CategoryIdNormalizer*';
 
 export function categoryIdNormalizer(
   data: ApiProductModel.CategoryNodes[] | undefined
-): DeserializedNode | undefined {
+): DeserializeCategoryIds | undefined {
   if (!data?.length) {
     return;
   }
@@ -25,6 +25,6 @@ export function categoryIdNormalizer(
 
 declare global {
   interface InjectionTokensContractMap {
-    [CategoryIdNormalizer]: Transformer<DeserializedNode>[];
+    [CategoryIdNormalizer]: Transformer<DeserializeCategoryIds>[];
   }
 }

@@ -2,7 +2,7 @@ import { ApiProductModel } from '../../../../models';
 import { categoryIdNormalizer } from './category-id.normalizer';
 
 describe('Product Node Normalizer', () => {
-  it('should transform ApiProductModel.CategoryNodes[] into DeserializedNode', () => {
+  it('should transform ApiProductModel.CategoryNodes[] into DeserializeCategoryIds', () => {
     const mockTransformed = [
       { isActive: false, nodeId: 4 },
       { isActive: true, nodeId: 2 },
