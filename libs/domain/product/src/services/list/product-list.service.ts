@@ -1,6 +1,6 @@
 import { QueryState } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
-import { ProductList, ProductListQualifier } from '../models';
+import { ProductList, ProductListQualifier } from '../../models';
 
 export interface ProductListService {
   get(qualifier: ProductListQualifier): Observable<ProductList | undefined>;

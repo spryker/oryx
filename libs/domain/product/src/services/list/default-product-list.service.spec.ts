@@ -2,7 +2,7 @@ import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { Observable, of, switchMap, take } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { ProductListQualifier } from '../models';
+import { ProductListQualifier } from '../../models';
 import { ProductListAdapter } from './adapter';
 import { DefaultProductListService } from './default-product-list.service';
 import { ProductListService } from './product-list.service';

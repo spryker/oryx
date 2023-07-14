@@ -3,11 +3,10 @@ import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
 import { CurrencyChanged } from '@spryker-oryx/site';
 import { Observable } from 'rxjs';
-import { ProductQualifier } from '../models/product-qualifier';
-import { Product } from '../models/product.model';
-import { ProductRelationsListAdapter } from './adapter/product-relations-list.adapter';
+import { Product, ProductQualifier } from '../../models';
+import { ProductsLoaded } from '../state';
+import { ProductRelationsListAdapter } from './adapter';
 import { ProductRelationsListService } from './product-relations-list.service';
-import { ProductsLoaded } from './state/events';
 
 export class DefaultProductRelationsListService
   implements ProductRelationsListService
