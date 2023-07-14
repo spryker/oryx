@@ -18,7 +18,6 @@ export class DefaultHttpHandler implements HttpHandler {
   constructor(protected injector = inject(INJECTOR)) {}
 
   handle(initialRequest: Request): Observable<Response> {
-    console.log('initialRequest');
     if (this.chain === null) {
       const interceptors = this.injector.inject(HttpInterceptor, null);
 
