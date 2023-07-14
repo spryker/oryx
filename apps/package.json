@@ -3,11 +3,5 @@
   "version": "0.0.0",
   "description": "",
   "private": true,
-  "author": "",
-  "scripts": {
-    "release": "lerna publish --yes",
-    "release-from-tag": "npm run release -- --conventional-graduate",
-    "release-tag": "npm run release -- --conventional-prerelease --dist-tag $RELEASE_TAG --preid $RELEASE_TAG",
-    "release-branch": "node ../tools/release/release.js"
-  }
+  "author": ""
 }

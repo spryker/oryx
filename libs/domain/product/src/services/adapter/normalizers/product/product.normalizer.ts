@@ -1,11 +1,12 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { AvailabilityNormalizer } from '../availability';
 import { ProductLabelsNormalizer } from '../labels/labels.normalizer';
 import { ProductMediaSetNormalizer } from '../media';
+import { CategoryIdNormalizer } from '../category-id';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 
@@ -83,6 +84,23 @@ export function productAvailabilityNormalizer(
     .pipe(map((availability) => ({ availability })));
 }
 
+export function productNodeNormalizer(
+  data: DeserializedProduct,
+  transformer: TransformerService
+): Observable<Partial<Product>> {
+  const abstractKey = camelize(ApiProductModel.Includes.AbstractProducts);
+  const nodeKey = camelize(ApiProductModel.Includes.CategoryNodes);
+  const { [abstractKey]: abstract } = data;
+
+  if (!abstract?.length) {
+    return of({});
+  }
+
+  const { [nodeKey]: node } = abstract[0];
+
+  return transformer.transform(node, CategoryIdNormalizer);
+}
+
 export const productNormalizer: Provider[] = [
   {
     provide: ProductNormalizer,
@@ -103,6 +121,10 @@ export const productNormalizer: Provider[] = [
   {
     provide: ProductNormalizer,
     useValue: productAvailabilityNormalizer,
+  },
+  {
+    provide: ProductNormalizer,
+    useValue: productNodeNormalizer,
   },
 ];
 
