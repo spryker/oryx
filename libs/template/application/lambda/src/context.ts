@@ -1,7 +1,4 @@
-import {
-  getWindow,
-  installWindowOnGlobal,
-} from '@lit-labs/ssr/lib/dom-shim.js';
+import { getWindow, installWindowOnGlobal } from './dom-shim';
 import * as buffer from 'buffer';
 import { readFileSync } from 'fs';
 import { createRequire } from 'module';
