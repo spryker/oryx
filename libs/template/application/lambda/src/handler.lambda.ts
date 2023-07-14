@@ -36,15 +36,15 @@ export const storefrontHandler = async (
       root,
       entry,
     });
-    // const body = await render({ route: originalUrl, template });
+    const body = await render({ route: originalUrl, template });
 
     return {
       statusCode: 200,
       headers: {
         'Content-Type': 'text/html',
-        // ...event.headers,
+        ...event.headers,
       },
-      body: 'all good',
+      body,
       ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl,
     };
   } catch (e: any) {
