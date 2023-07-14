@@ -16,7 +16,7 @@
     "prepare": "husky install",
     "build-storybook": "nx run storybook:build",
     "build:executors": "tsc --project ./tools/tsconfig.tools.json",
-    "sf:e2e:open": "npx concurrently --kill-others --success first \"npx nx run storefront:serve-prod\" \"wait-on -i=2000 http://localhost:3001 && npx nx run storefront-e2e:e2e\"",
+    "sf:e2e:open": "npx concurrently --kill-others --success first \"npx nx run storefront:serve-ssr\" \"wait-on -i=2000 http://localhost:3001 && npx nx run storefront-e2e:e2e\"",
     "sf:e2e:open:smoke": "npx concurrently --kill-others --success first \"npx nx run storefront:serve-prod\" \"wait-on -i=2000 http://localhost:3001 && npx nx run storefront-e2e:e2e:smoke\"",
     "sf:e2e:headless": "npx concurrently --kill-others --success first \"npx nx run storefront:serve-prod\" \"wait-on -i=2000 http://localhost:3001 && npx nx run storefront-e2e:e2e:headless\"",
     "sf:e2e:headless:smoke": "npx concurrently --kill-others --success first \"npx nx run storefront:serve-prod\" \"wait-on -i=2000 http://localhost:3001 && npx nx run storefront-e2e:e2e:headless-smoke\"",

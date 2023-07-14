@@ -5,7 +5,6 @@ import {
   ProductListQualifier,
   ProductListService,
   ProductMixin,
-  SortParamNames,
 } from '@spryker-oryx/product';
 import { computed, hydratable } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
