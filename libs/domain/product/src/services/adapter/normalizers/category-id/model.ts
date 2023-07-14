@@ -1,1 +1,1 @@
-export type DeserializedNode = Record<'categoryId', string>;
+export type DeserializedNode = Record<'categoryIds', string[]>;

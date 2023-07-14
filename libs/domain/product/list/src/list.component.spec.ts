@@ -208,7 +208,7 @@ describe('ProductListComponent', () => {
     it('should call ProductListService.get with proper parameters', async () => {
       expect(mockProductListService.get).toHaveBeenCalledWith({
         category: MockProductService.mockProducts.find((p) => p.sku === '1')
-          ?.categoryId,
+          ?.categoryIds?.[0],
       });
     });
   });

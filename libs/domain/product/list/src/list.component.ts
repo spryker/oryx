@@ -24,9 +24,9 @@ export class ProductListComponent extends ProductMixin(
     let params = this.searchParams();
     const product = this.$product();
 
-    if (product?.categoryId && !params?.category) {
+    if (product?.categoryIds && !params?.category) {
       params ??= {};
-      params.category = product.categoryId;
+      params.category = product.categoryIds[0];
     }
 
     return params

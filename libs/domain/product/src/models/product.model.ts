@@ -28,9 +28,9 @@ export interface Pagination {
 export interface Product {
   sku?: string;
   /**
-   * Id of the category to which the product belongs.
+   * Ids of the category to which the product belongs.
    */
-  categoryId?: string;
+  categoryIds?: string[];
   attributeNames?: Record<string, string>;
   attributes?: Record<string, string>;
   averageRating?: number;

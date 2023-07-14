@@ -11,13 +11,16 @@ export function categoryIdNormalizer(
     return;
   }
 
-  const id = data.find((node) => node.isActive)?.nodeId;
+  const categoryIds = data.reduce(
+    (acc, curr) => (curr.isActive ? [...acc, String(curr.nodeId)] : acc),
+    [] as string[]
+  );
 
-  if (!id) {
+  if (!categoryIds.length) {
     return;
   }
 
-  return { categoryId: String(id) };
+  return { categoryIds };
 }
 
 declare global {
