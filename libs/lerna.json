@@ -24,8 +24,7 @@
     "template/themes",
     "base/ui",
     "domain/user",
-    "base/utilities",
-    "template/cli"
+    "base/utilities"
   ],
   "version": "0.13.0",
   "npmClient": "npm",
@@ -37,7 +36,9 @@
       "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
       "message": "chore(release): publish libs release [skip ci]",
       "tagVersionPrefix": "lib@",
+      "createRelease": "github",
       "verifyAccess": false,
+      "allowBranch": ["development", "release/*"],
       "exact": true
     }
   }
