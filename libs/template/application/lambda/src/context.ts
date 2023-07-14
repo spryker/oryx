@@ -28,7 +28,6 @@ export const serverContext = (options: ContextOptions): any => {
       exports: {},
     },
   });
-  console.log(window);
   window.setTimeout = setTimeout;
   window.clearTimeout = clearTimeout;
   window.setInterval = setInterval;
