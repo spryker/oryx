@@ -14,6 +14,7 @@ import {
 } from '../../models';
 import { PickingHttpService } from '../picking-http.service';
 import { PickingListAdapter } from './picking-list.adapter';
+import { LinksObject, ResourceObject } from './types';
 
 export class PickingListDefaultAdapter implements PickingListAdapter {
   constructor(
@@ -273,15 +274,6 @@ interface PickingListResponseProductImage extends ResourceObject {
       externalUrlLarge: string;
     }
   ];
-}
-
-interface ResourceObject {
-  id: string;
-  type: string;
-}
-
-interface LinksObject {
-  self: string;
 }
 
 interface StartPickingListResponse {

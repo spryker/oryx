@@ -6,6 +6,18 @@
   included_files = ["dist/**"]
 
 [[plugins]]
+  package = "/../../tools/netlify-plugins/cache-warm-up"
+
+  [[plugins.inputs.oryxCache]]
+    path = "/"
+
+  [[plugins.inputs.oryxCache]]
+    path = "/product/086_30521602"
+
+  [[plugins.inputs.oryxCache]]
+    path = "/category/4"
+
+[[plugins]]
   package = "@netlify/plugin-lighthouse"
 
   [[plugins.inputs.audits]]

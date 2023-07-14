@@ -13,3 +13,4 @@ export * from '../picking-lists/picking-lists.def';
 export * from '../picking-product-card/picking-product-card.def';
 export * from '../picking/picking.def';
 export * from '../user-profile/user-profile.def';
+export * from '../warehouse-assignment/warehouse-assignment.def';

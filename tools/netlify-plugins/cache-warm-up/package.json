@@ -1,0 +1,7 @@
+{
+  "name": "cache-warm-up",
+  "version": "1.0.0",
+  "description": "Plugin for warming up cache after deployment",
+  "type": "module",
+  "main": "index.js"
+}
