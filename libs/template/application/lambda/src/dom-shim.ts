@@ -1,3 +1,4 @@
+// TODO: remove local shim and use from lit-ssr when lit 3 has been released
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import {

@@ -30,7 +30,11 @@ export const serverContext = (options: ContextOptions): any => {
       Headers,
     },
   });
-  window.fetch ??= fetch;
+
+  if (!window.fetch) {
+    window.fetch = fetch;
+  }
+
   window.setTimeout = setTimeout;
   window.clearTimeout = clearTimeout;
   window.setInterval = setInterval;
