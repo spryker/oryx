@@ -1,11 +1,7 @@
-import {
-  getWindow,
-  installWindowOnGlobal,
-} from '@lit-labs/ssr/lib/dom-shim.js';
+import { getWindow, installWindowOnGlobal } from './dom-shim';
 import * as buffer from 'buffer';
 import { readFileSync } from 'fs';
 import { createRequire } from 'module';
-import { Headers } from 'node-fetch';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { createContext, Script } from 'vm';
@@ -30,9 +26,9 @@ export const serverContext = (options: ContextOptions): any => {
       process,
       buffer,
       exports: {},
-      Headers,
     },
   });
+  console.log(window);
   window.setTimeout = setTimeout;
   window.clearTimeout = clearTimeout;
   window.setInterval = setInterval;
