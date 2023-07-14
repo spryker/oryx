@@ -1,4 +1,7 @@
-import { getWindow, installWindowOnGlobal } from './dom-shim';
+import {
+  getWindow,
+  installWindowOnGlobal,
+} from '@lit-labs/ssr/lib/dom-shim.js';
 import * as buffer from 'buffer';
 import { readFileSync } from 'fs';
 import { createRequire } from 'module';
@@ -14,6 +17,8 @@ interface ContextOptions {
   root?: string;
 }
 
+globalThis.fetch = fetch;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const serverContext = (options: ContextOptions): any => {
   const { entry, root = import.meta.url, namespace = 'storefront' } = options;
@@ -27,10 +32,11 @@ export const serverContext = (options: ContextOptions): any => {
       buffer,
       exports: {},
       Request,
-      fetch,
       Headers,
+      fetch,
     },
   });
+
   window.setTimeout = setTimeout;
   window.clearTimeout = clearTimeout;
   window.setInterval = setInterval;

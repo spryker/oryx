@@ -5,6 +5,7 @@ import {
   Element,
   CustomElementRegistry,
 } from '@lit-labs/ssr-dom-shim';
+import fetch from 'node-fetch';
 
 export const getWindow: ({
   includeJSBuiltIns,
@@ -45,6 +46,10 @@ export const getWindow: ({
     btoa(s: any) {
       return Buffer.from(s, 'binary').toString('base64');
     },
+    fetch: (url: any, init: any) =>
+      // TODO(aomarks) The typings from node-fetch are wrong because they don't
+      // allow URL.
+      fetch(url, init),
     location: new URL('http://localhost'),
     MutationObserver: class {
       observe() {}
