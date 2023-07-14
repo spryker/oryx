@@ -1,4 +1,4 @@
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { AffixController, AffixOptions } from './affix';
@@ -6,7 +6,7 @@ import { ErrorOptions } from './error';
 import { FormControlController, FormControlOptions } from './form-control';
 import { baseStyles } from './input.styles';
 
-@hydratable()
+@hydrate()
 export class InputComponent
   extends LitElement
   implements FormControlOptions, AffixOptions, ErrorOptions

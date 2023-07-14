@@ -33,7 +33,7 @@ export interface HydratableOptions {
   context?: string | string[];
 }
 
-export const hydratable =
+export const hydrate =
   (options?: HydratableOptions) =>
   (classOrDescriptor: Type<HTMLElement> | ClassDescriptor): void =>
     typeof classOrDescriptor === 'function'

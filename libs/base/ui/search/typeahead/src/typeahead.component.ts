@@ -11,14 +11,14 @@ import {
   SearchboxController,
   SearchIconPosition,
 } from '@spryker-oryx/ui/searchbox';
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { TypeaheadController } from './controllers';
 import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
 import { baseStyles } from './typeahead.styles';
 
-@hydratable({ event: 'focusin' })
+@hydrate({ event: 'focusin' })
 export class TypeaheadComponent
   extends LitElement
   implements

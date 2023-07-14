@@ -1,12 +1,12 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { PopoverController } from '@spryker-oryx/ui/popover';
-import { hydratable, queryFirstFocusable, Size } from '@spryker-oryx/utilities';
+import { hydrate, queryFirstFocusable, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DropdownProperties, Position } from './dropdown.model';
 import { dropdownBaseStyles, dropdownStyles } from './styles';
 
-@hydratable({ event: ['mouseover', 'focusin'] })
+@hydrate({ event: ['mouseover', 'focusin'] })
 export class DropdownComponent
   extends LitElement
   implements DropdownProperties
