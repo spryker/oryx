@@ -38,6 +38,10 @@ export default defineConfig(() => {
       viteStaticCopy({
         targets: [
           {
+            src: '../../../libs/template/application/server/src/hosting/dom-shim.js',
+            dest: '../functions/ssr',
+          },
+          {
             src: '../../../libs/template/application/server/src/hosting/context.js',
             dest: '../functions/ssr',
           },
