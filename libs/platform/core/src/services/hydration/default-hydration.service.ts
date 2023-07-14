@@ -13,8 +13,6 @@ import { ComponentsPlugin } from '../../orchestration/components';
 import { HydrationService, HydrationTrigger } from './hydration.service';
 import { ContextService } from '../context';
 
-export const visibilityAttribute = 'dynamic-visibility';
-
 export class DefaultHydrationService implements HydrationService, OnDestroy {
   protected subscription = new Subscription();
   protected contextChange: Record<string, HTMLElement[]> = {};
@@ -59,11 +57,6 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
         return;
       }
 
-      //need to hydrate elements with dynamic visibility rule on load
-      const hasDynamicVisibility = el.hasAttribute(visibilityAttribute);
-      if (hasDynamicVisibility) {
-        el.setAttribute(hydratableAttribute, 'window:load');
-      }
       const modes = el.getAttribute(hydratableAttribute)?.split?.(',') ?? [];
 
       for (let i = 0; i < modes.length; i++) {

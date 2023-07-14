@@ -10,7 +10,6 @@ import {
   LayoutMixin,
 } from '@spryker-oryx/experience';
 import {
-  computed,
   effect,
   elementEffect,
   hydratable,

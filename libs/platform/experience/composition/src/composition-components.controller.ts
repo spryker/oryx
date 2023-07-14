@@ -91,15 +91,9 @@ export class CompositionComponentsController implements ReactiveController {
   }
 
   hasDynamicallyVisibleSuccessor(): Observable<boolean> {
-    return this.componentsVisibility().pipe(
-      switchMap((visibility) =>
-        visibility
-          ? combineLatest(visibility).pipe(
-              map(
-                (v) => !!v?.some((visibility) => visibility !== Visibility.None)
-              )
-            )
-          : of(false)
+    return this.components().pipe(
+      map(
+        (components) => !!components?.some((c) => !!c.options?.data?.visibility)
       )
     );
   }

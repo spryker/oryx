@@ -195,27 +195,6 @@ export class DefaultExperienceService implements ExperienceService {
       });
   }
 
-  // getVisibilityState({
-  //   uid,
-  // }: {
-  //   uid: string;
-  // }): Observable<ComponentVisibility | null> {
-  //   if (!this.visibilityHiddenState[uid]) {
-  //     this.visibilityHiddenState[uid] = new ReplaySubject(1);
-  //     this.reloadVisibilityState(uid);
-  //   }
-
-  //   return this.visibilityHiddenState[uid];
-  // }
-
-  // protected reloadVisibilityState(uid: string): void {
-  //   this.getComponent({ uid })
-  //     .pipe(take(1))
-  //     .subscribe((component) => {
-  //       this.visibilityHiddenState[uid].next(component?.visibility ?? null);
-  //     });
-  // }
-
   protected getAutoId(): string {
     return `static${this.autoComponentId++}`;
   }
