@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { ProductList, ProductListQualifier } from '../../models';
+import { ProductList, ProductListQualifier } from '../../../models';
 
 export interface ProductListAdapter {
   getKey(qualifier: ProductListQualifier): string;

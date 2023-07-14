@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
-import { ProductQualifier } from '../models/product-qualifier';
-import { Product } from '../models/product.model';
+import { Product, ProductQualifier } from '../../models';
 
 export interface ProductRelationsListService {
   get(qualifier: ProductQualifier): Observable<Product[] | undefined>;

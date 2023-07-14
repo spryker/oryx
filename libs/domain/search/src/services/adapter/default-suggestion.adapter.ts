@@ -37,6 +37,7 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
       const include = entities?.includes(SuggestionField.Products)
         ? [
             ApiProductModel.Includes.AbstractProducts,
+            ApiProductModel.Includes.CategoryNodes,
             ApiProductModel.Includes.ConcreteProducts,
             ApiProductModel.Includes.ConcreteProductImageSets,
             ApiProductModel.Includes.ConcreteProductPrices,

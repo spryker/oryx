@@ -68,6 +68,22 @@ export const productPage: StaticComponent = {
       type: 'oryx-product-relations',
       options: {
         data: {
+          heading: 'Alternative Products',
+          rules: [
+            {
+              layout: 'carousel',
+              padding: '20 0',
+              colSpan: '2',
+            },
+          ],
+        },
+      },
+    },
+    {
+      type: 'oryx-product-list',
+      options: {
+        data: {
+          heading: 'Related Products',
           rules: [
             {
               layout: 'carousel',
