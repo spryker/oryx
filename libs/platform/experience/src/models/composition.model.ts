@@ -9,7 +9,7 @@ export interface CompositionProperties {
 
 export interface ComponentVisibility {
   hide?: boolean;
-  hideRule?: string;
+  hideByRule?: string;
 }
 
 export interface StyleRuleSet extends StyleProperties, LayoutAttributes {

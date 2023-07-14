@@ -97,7 +97,7 @@ export const HeaderTemplate: StaticComponent = {
               options: {
                 data: {
                   visibility: {
-                    hideRule: 'USER.AUTHENTICATED',
+                    hideByRule: 'USER.AUTHENTICATED',
                   },
                   label: 'login',
                   icon: IconTypes.User,
@@ -110,7 +110,7 @@ export const HeaderTemplate: StaticComponent = {
               options: {
                 data: {
                   visibility: {
-                    hideRule: 'USER.!AUTHENTICATED',
+                    hideByRule: 'USER.!AUTHENTICATED',
                   },
                   contentBehavior: 'dropdown',
                   label: 'USER.NAME',
@@ -118,17 +118,6 @@ export const HeaderTemplate: StaticComponent = {
                 },
               },
               components: [{ type: 'oryx-auth-login-link' }],
-            },
-            {
-              type: 'oryx-site-navigation-item',
-              options: {
-                data: {
-                  visibility: {
-                    hideRule: 'CART.!EMPTY',
-                  },
-                  label: 'CART EMPTY',
-                },
-              },
             },
             {
               type: 'oryx-site-navigation-item',

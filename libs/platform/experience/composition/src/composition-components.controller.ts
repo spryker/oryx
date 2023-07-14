@@ -31,9 +31,11 @@ export class CompositionComponentsController implements ReactiveController {
       .get('uid')
       .pipe(
         switchMap((uid) =>
-          this.experienceService
-            .getComponent({ uid })
-            .pipe(map((component) => component?.components ?? null))
+          uid
+            ? this.experienceService
+                .getComponent({ uid })
+                .pipe(map((component) => component?.components ?? null))
+            : of(null)
         )
       );
   }
@@ -55,9 +57,9 @@ export class CompositionComponentsController implements ReactiveController {
                 return of(Visibility.Hidden);
               }
 
-              if (visibility.hideRule) {
+              if (visibility.hideByRule) {
                 return this.tokenResolver
-                  .resolveToken(visibility.hideRule)
+                  .resolveToken(visibility.hideByRule)
                   .pipe(
                     startWith(Visibility.Hidden),
                     map((value) =>
