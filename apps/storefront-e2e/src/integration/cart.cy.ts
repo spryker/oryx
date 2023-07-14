@@ -21,7 +21,6 @@ describe('Cart', () => {
 
       beforeEach(() => {
         pdp.visit();
-        pdp.hydrateAddToCart();
         pdp.addItemsToTheCart(1);
       });
 

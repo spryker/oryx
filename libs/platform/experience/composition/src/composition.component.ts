@@ -22,15 +22,12 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { compositionStyles } from './composition.styles';
 
 @signalAware()
 @hydratable()
 export class CompositionComponent extends LayoutMixin(
   ContentMixin<CompositionProperties>(LitElement)
 ) {
-  static styles = [compositionStyles];
-
   @signalProperty({ reflect: true }) uid?: string;
   @signalProperty({ reflect: true }) route?: string;
 

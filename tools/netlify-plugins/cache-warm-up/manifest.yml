@@ -1,0 +1,4 @@
+name: cache-warm-up
+inputs:
+  - name: oryxCache
+    description: 'An object that contains configurations to initialize cache'
