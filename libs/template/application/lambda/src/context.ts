@@ -31,7 +31,7 @@ export const serverContext = (options: ContextOptions): any => {
       fetch,
     },
   });
-
+  console.log(window);
   window.setTimeout = setTimeout;
   window.clearTimeout = clearTimeout;
   window.setInterval = setInterval;
@@ -48,6 +48,7 @@ export const serverContext = (options: ContextOptions): any => {
     ${readFileSync(resolve(basePath, entry), 'utf8')};
     (() => ${namespace}.render)();
   `);
+  console.log(script);
 
   createContext(window);
 
