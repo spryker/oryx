@@ -58,8 +58,12 @@ export const getWindow: ({
   };
   if (includeJSBuiltIns) {
     Object.assign(window, {
+      // No-op any async tasks
       setTimeout() {},
       clearTimeout() {},
+      Buffer,
+      URL,
+      URLSearchParams,
       console: {
         log(...args: any[]) {
           console.log(...args);
