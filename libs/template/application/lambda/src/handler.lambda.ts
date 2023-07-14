@@ -3,7 +3,6 @@ import { readFileSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { serverContext } from './context';
-import { type } from 'os';
 
 interface HandlerContext {
   index?: string;
