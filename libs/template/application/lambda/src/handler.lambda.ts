@@ -51,10 +51,8 @@ export const storefrontHandler = async (
     console.error(e);
 
     return {
-      statusCode: 404,
-      body: `${JSON.stringify(Object.keys(e))} ${typeof e} ${
-        Object.keys(e).length
-      }`,
+      statusCode: 500,
+      body: JSON.stringify(e),
     };
   }
 };
