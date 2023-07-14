@@ -17,8 +17,6 @@ interface ContextOptions {
   root?: string;
 }
 
-globalThis.fetch = fetch;
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const serverContext = (options: ContextOptions): any => {
   const { entry, root = import.meta.url, namespace = 'storefront' } = options;
