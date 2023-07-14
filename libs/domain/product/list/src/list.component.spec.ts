@@ -16,7 +16,6 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { ProductListComponent } from './list.component';
 import { productListComponent } from './list.def';
-import { HeadingTag } from '@spryker-oryx/ui/heading';
 
 class MockProductListService implements Partial<ProductListService> {
   get = vi.fn();
