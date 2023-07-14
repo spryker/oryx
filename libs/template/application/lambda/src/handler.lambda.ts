@@ -47,12 +47,12 @@ export const storefrontHandler = async (
       body,
       ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl,
     };
-  } catch (e: any) {
+  } catch (e) {
     console.error(e);
 
     return {
       statusCode: 500,
-      body: JSON.stringify(e),
+      body: JSON.stringify({ error: e }),
     };
   }
 };
