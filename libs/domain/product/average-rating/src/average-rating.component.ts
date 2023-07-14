@@ -1,11 +1,11 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductContext, ProductMixin } from '@spryker-oryx/product';
-import { computed, hydratable, Size } from '@spryker-oryx/utilities';
+import { computed, hydrate, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductAverageRatingOptions } from './average-rating.model';
 
 @defaultOptions({ enableCount: true, size: Size.Lg })
-@hydratable({ context: ProductContext.SKU })
+@hydrate({ context: ProductContext.SKU })
 export class ProductAverageRatingComponent extends ProductMixin(
   ContentMixin<ProductAverageRatingOptions>(LitElement)
 ) {

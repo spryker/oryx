@@ -1,6 +1,6 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { Address, AddressMixin } from '@spryker-oryx/user';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import {
   AddressOptions,
@@ -17,7 +17,7 @@ import { styles } from './address.styles';
 @defaultOptions({
   schema: defaultSimpleSchema,
 })
-@hydratable({ event: 'mouseover' })
+@hydrate({ event: 'mouseover' })
 export class UserAddressComponent extends AddressMixin(
   ContentMixin<AddressOptions>(LitElement)
 ) {

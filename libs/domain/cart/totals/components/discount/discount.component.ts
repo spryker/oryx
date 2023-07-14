@@ -1,6 +1,6 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
-import { hydratable, signal, signalAware } from '@spryker-oryx/utilities';
+import { hydrate, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { TotalsController } from '../../../src/controllers';
 import { CartDiscount } from '../../../src/models';
@@ -12,7 +12,7 @@ import {
 @defaultOptions({
   discountRowsAppearance: DiscountRowsAppearance.Expanded,
 } as CartTotalsDiscountOptions)
-@hydratable({ event: 'window:load' })
+@hydrate({ event: 'window:load' })
 @signalAware()
 export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscountOptions>(
   LitElement

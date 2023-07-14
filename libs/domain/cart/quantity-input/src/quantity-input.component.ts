@@ -1,5 +1,5 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { hydratable, I18nMixin, Size } from '@spryker-oryx/utilities';
+import { hydrate, I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -24,7 +24,7 @@ import { styles } from './quantity-input.styles';
  * dispatched when the Enter key is dispatched, To submit on each change even, the
  * `submitOnChange` property can be set.
  */
-@hydratable({ event: ['window:load'] })
+@hydrate({ event: ['window:load'] })
 export class QuantityInputComponent
   extends I18nMixin(LitElement)
   implements QuantityInputAttributes

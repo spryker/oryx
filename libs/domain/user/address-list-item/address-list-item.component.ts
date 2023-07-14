@@ -4,7 +4,7 @@ import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AddressMixin, CrudState } from '@spryker-oryx/user';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {
@@ -14,7 +14,7 @@ import {
 } from './address-list-item.model';
 import { styles } from './address-list-item.styles';
 
-@hydratable({ event: 'window:load' })
+@hydrate({ event: 'window:load' })
 export class UserAddressListItemComponent extends AddressMixin(
   ContentMixin<UserAddressListItemOptions>(LitElement)
 ) {

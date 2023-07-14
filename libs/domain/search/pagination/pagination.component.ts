@@ -4,14 +4,14 @@ import {
   ProductListPageService,
   ProductListQualifier,
 } from '@spryker-oryx/product';
-import { hydratable, signal } from '@spryker-oryx/utilities';
+import { hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { TemplateResult } from 'lit/development';
 import urlJoin from 'url-join';
 import { SearchPaginationOptions } from './pagination.model';
 
 @defaultOptions({ max: 3, enableControls: true })
-@hydratable({ event: 'window:load' })
+@hydrate({ event: 'window:load' })
 export class SearchPaginationComponent extends ContentMixin<
   SearchPaginationOptions & ProductListQualifier
 >(LitElement) {

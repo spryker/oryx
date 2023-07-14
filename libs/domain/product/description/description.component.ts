@@ -1,7 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { CollapsibleTextToggle } from '@spryker-oryx/ui/collapsible-text';
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { html } from 'lit/static-html.js';
@@ -9,7 +9,7 @@ import { ProductDescriptionOptions } from './description.model';
 import { convertLineFeedsToHTML } from './utils';
 
 @defaultOptions({ lineClamp: 3, enableToggle: true })
-@hydratable({
+@hydrate({
   event: ['mouseover', 'window:resize'],
   context: ProductContext.SKU,
 })

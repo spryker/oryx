@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/user';
 import {
   elementEffect,
-  hydratable,
+  hydrate,
   I18nMixin,
   signal,
 } from '@spryker-oryx/utilities';
@@ -16,7 +16,7 @@ import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { CheckoutAddressComponent } from '../address';
 
-@hydratable()
+@hydrate()
 export class CheckoutShippingAddressComponent
   extends I18nMixin(CheckoutMixin(LitElement))
   implements isValid

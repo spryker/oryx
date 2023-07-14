@@ -4,13 +4,13 @@ import {
   ProductLabel,
   ProductMixin,
 } from '@spryker-oryx/product';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { ProductLabelsOptions } from './label.model';
 import { labelStyles } from './label.styles';
 
-@hydratable({ context: ProductContext.SKU })
+@hydrate({ context: ProductContext.SKU })
 export class ProductLabelsComponent extends ProductMixin(
   ContentMixin<ProductLabelsOptions>(LitElement)
 ) {

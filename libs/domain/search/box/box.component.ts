@@ -16,7 +16,7 @@ import {
   debounce,
   effect,
   elementEffect,
-  hydratable,
+  hydrate,
   signalAware,
   signalProperty,
   Size,
@@ -46,7 +46,7 @@ import { SearchBoxOptions, SearchBoxProperties } from './box.model';
     max: 5,
   },
 })
-@hydratable({ event: ['mouseover', 'focusin'] })
+@hydrate({ event: ['mouseover', 'focusin'] })
 @signalAware()
 export class SearchBoxComponent
   extends ContentMixin<SearchBoxOptions>(LitElement)

@@ -1,11 +1,11 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductContext, ProductMixin } from '@spryker-oryx/product';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { html } from 'lit/static-html.js';
 import { ProductBrandOptions } from './brand.model';
 
-@hydratable({ context: ProductContext.SKU })
+@hydrate({ context: ProductContext.SKU })
 export class ProductBrandComponent extends ProductMixin(
   ContentMixin<ProductBrandOptions>(LitElement)
 ) {

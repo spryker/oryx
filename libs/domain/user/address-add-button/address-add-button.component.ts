@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { hydratable, signal } from '@spryker-oryx/utilities';
+import { hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { AddressMixin } from '../src/mixins';
 import { CrudState } from '../src/models';
@@ -12,7 +12,7 @@ import {
 } from './address-add-button.model';
 
 @defaultOptions({ target: Target.Link })
-@hydratable({ event: ['mouseover', 'focusin'] })
+@hydrate({ event: ['mouseover', 'focusin'] })
 export class UserAddressAddButtonComponent extends AddressMixin(
   ContentMixin<UserAddressAddButtonOptions>(LitElement)
 ) {

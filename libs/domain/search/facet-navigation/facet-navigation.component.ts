@@ -10,14 +10,14 @@ import {
   FacetListService,
 } from '@spryker-oryx/search';
 import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
-import { computed, hydratable, signal } from '@spryker-oryx/utilities';
+import { computed, hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { tap } from 'rxjs/operators';
 import { SearchFacetNavigationOptions } from './facet-navigation.model';
 import { searchFacetNavigationStyles } from './facet-navigation.styles';
 
-@hydratable({ event: ['mouseover', 'focusin'] })
+@hydrate({ event: ['mouseover', 'focusin'] })
 @defaultOptions({
   expandedItemsCount: 5,
   valueRenderLimit: 5,

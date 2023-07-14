@@ -4,13 +4,13 @@ import { LocaleService } from '@spryker-oryx/i18n';
 import { CurrencyService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { hydratable, signal } from '@spryker-oryx/utilities';
+import { hydrate, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit/static-html.js';
 import { siteCurrencySelectorStyles } from './currency-selector.styles';
 
-@hydratable({ event: ['mouseover', 'focusin'] })
+@hydrate({ event: ['mouseover', 'focusin'] })
 export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
   static styles = [siteCurrencySelectorStyles];
 

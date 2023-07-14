@@ -1,10 +1,10 @@
 import { CartComponentMixin } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
-import { hydratable, I18nMixin, signal } from '@spryker-oryx/utilities';
+import { hydrate, I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 
-@hydratable({ event: ['window:load'] })
+@hydrate({ event: ['window:load'] })
 export class CheckoutLinkComponent extends I18nMixin(
   CartComponentMixin(LitElement)
 ) {

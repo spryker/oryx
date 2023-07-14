@@ -1,13 +1,13 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { NavigationButtonAttributes } from './navigation-button.model';
 import { siteNavigationButtonStyles } from './navigation-button.styles';
 
-@hydratable()
+@hydrate()
 export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttributes>(
   LitElement
 ) {

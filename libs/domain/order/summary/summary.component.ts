@@ -4,11 +4,11 @@ import { OrderMixin } from '@spryker-oryx/order';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Address } from '@spryker-oryx/user';
-import { computed, hydratable, I18nMixin } from '@spryker-oryx/utilities';
+import { computed, hydrate, I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { orderSummaryStyles } from './summary.styles';
 
-@hydratable({ event: 'window:load' })
+@hydrate({ event: 'window:load' })
 export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
   static styles = orderSummaryStyles;
 

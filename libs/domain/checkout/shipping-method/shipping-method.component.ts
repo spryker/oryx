@@ -1,14 +1,14 @@
 import { CheckoutMixin, isValid, ShipmentMethod } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { hydratable, signal, signalAware } from '@spryker-oryx/utilities';
+import { hydrate, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { styles } from './shipping-method.styles';
 
 @signalAware()
-@hydratable({ event: 'window:load' })
+@hydrate({ event: 'window:load' })
 export class CheckoutShippingMethodComponent
   extends CheckoutMixin(ContentMixin(LitElement))
   implements isValid

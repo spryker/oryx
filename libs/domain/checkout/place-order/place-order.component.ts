@@ -1,10 +1,10 @@
 import { CheckoutMixin } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { hydratable, I18nMixin } from '@spryker-oryx/utilities';
+import { hydrate, I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 
-@hydratable({ event: 'window:load' })
+@hydrate({ event: 'window:load' })
 export class CheckoutPlaceOrderComponent extends I18nMixin(
   CheckoutMixin(LitElement)
 ) {

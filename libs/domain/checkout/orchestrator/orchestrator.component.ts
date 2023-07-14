@@ -1,10 +1,10 @@
 import { CheckoutMixin, isValid } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { elementEffect, hydratable } from '@spryker-oryx/utilities';
+import { elementEffect, hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { checkoutOrchestratorStyles } from './orchestrator.styles';
 
-@hydratable({ event: 'window:load' })
+@hydrate({ event: 'window:load' })
 export class CheckoutOrchestratorComponent extends CheckoutMixin(
   ContentMixin(LitElement)
 ) {
