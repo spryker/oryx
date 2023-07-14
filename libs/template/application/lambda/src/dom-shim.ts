@@ -61,7 +61,6 @@ export const getWindow: ({
       // No-op any async tasks
       setTimeout() {},
       clearTimeout() {},
-      // Required for node-fetch
       Buffer,
       URL,
       URLSearchParams,

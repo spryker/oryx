@@ -26,6 +26,9 @@ export const serverContext = (options: ContextOptions): any => {
       process,
       buffer,
       exports: {},
+      Request,
+      fetch,
+      Headers,
     },
   });
   window.setTimeout = setTimeout;
