@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { serverContext } from './context';
+import { type } from 'os';
 
 interface HandlerContext {
   index?: string;
@@ -51,7 +52,9 @@ export const storefrontHandler = async (
 
     return {
       statusCode: 404,
-      body: JSON.stringify(Object.keys(e)),
+      body: `${JSON.stringify(Object.keys(e))} ${typeof e} ${
+        Object.keys(e).length
+      }`,
     };
   }
 };
