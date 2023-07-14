@@ -46,12 +46,12 @@ export const storefrontHandler = async (
       body,
       ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl,
     };
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
 
     return {
       statusCode: 404,
-      body: JSON.stringify(e),
+      body: JSON.stringify(Object.keys(e)),
     };
   }
 };
