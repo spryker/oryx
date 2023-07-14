@@ -1,6 +1,6 @@
 import { CompositionProperties } from '../../models';
 
-export enum Visibility {
+export const enum Visibility {
   None = 'none',
   Visible = 'visible',
   Hidden = 'hidden',
