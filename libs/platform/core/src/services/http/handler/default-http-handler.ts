@@ -1,7 +1,6 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { RequestOptions } from '../http.model';
 import {
   HttpHandler,
   HttpHandlerFn,
@@ -9,8 +8,7 @@ import {
 } from './http-handler.model';
 
 type ChainedInterceptorsFn = (
-  url: string,
-  options: RequestOptions,
+  req: Request,
   finalHandlerFn: HttpHandlerFn
 ) => Observable<Response>;
 
@@ -19,51 +17,39 @@ export class DefaultHttpHandler implements HttpHandler {
 
   constructor(protected injector = inject(INJECTOR)) {}
 
-  handle(
-    initialUrl: string,
-    initialOptions: RequestOptions
-  ): Observable<Response> {
+  handle(initialRequest: Request): Observable<Response> {
     if (this.chain === null) {
       const interceptors = this.injector.inject(HttpInterceptor, null);
 
       if (!interceptors) {
-        return fromFetch(initialUrl, initialOptions);
+        return fromFetch(initialRequest);
       }
 
       const initialFn = (
-        url: string,
-        options: RequestOptions,
+        req: Request,
         handle: HttpHandlerFn
       ): Observable<Response> => {
-        return handle(url, options);
+        return handle(req);
       };
       const reducer = (
         chainFn: ChainedInterceptorsFn,
         interceptor: HttpInterceptor
       ) => {
-        return (
-          url: string,
-          options: RequestOptions,
-          handle: HttpHandlerFn
-        ): Observable<Response> => {
+        return (req: Request, handle: HttpHandlerFn): Observable<Response> => {
           if (
             interceptor.shouldInterceptRequest &&
-            !interceptor.shouldInterceptRequest(url, options)
+            !interceptor.shouldInterceptRequest(req)
           ) {
-            return chainFn(url, options, handle);
+            return chainFn(req, handle);
           }
 
-          return interceptor.intercept(url, options, (url, options) =>
-            chainFn(url, options, handle)
-          );
+          return interceptor.intercept(req, (req) => chainFn(req, handle));
         };
       };
 
       this.chain = interceptors.reduceRight(reducer, initialFn);
     }
 
-    return this.chain(initialUrl, initialOptions, (url, options) =>
-      fromFetch(url, options)
-    );
+    return this.chain(initialRequest, (req) => fromFetch(req));
   }
 }
