@@ -5,7 +5,7 @@ import {
   NotificationCenterComponent,
   NotificationPosition,
 } from '@spryker-oryx/ui/notification-center';
-import { elementEffect, hydratable, signal } from '@spryker-oryx/utilities';
+import { elementEffect, hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { SiteNotificationCenterOptions } from './notification-center.model';
@@ -15,7 +15,7 @@ import { SiteNotificationCenterOptions } from './notification-center.model';
   enableStacking: true,
   autoCloseTime: 8,
 })
-@hydratable('window:oryx-notify')
+@hydrate({ event: 'window:oryx-notify' })
 export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificationCenterOptions>(
   LitElement
 ) {

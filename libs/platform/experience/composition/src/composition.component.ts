@@ -13,7 +13,7 @@ import {
   computed,
   effect,
   elementEffect,
-  hydratable,
+  hydrate,
   signal,
   signalAware,
   signalProperty,
@@ -24,7 +24,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 
 @signalAware()
-@hydratable()
+@hydrate()
 export class CompositionComponent extends LayoutMixin(
   ContentMixin<CompositionProperties>(LitElement)
 ) {

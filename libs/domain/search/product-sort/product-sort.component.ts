@@ -3,7 +3,7 @@ import { RouterService } from '@spryker-oryx/router';
 import { SortingService } from '@spryker-oryx/search';
 import {
   computed,
-  hydratable,
+  hydrate,
   I18nMixin,
   signal,
   signalAware,
@@ -12,7 +12,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs/operators';
 
-@hydratable(['mouseover', 'focus'])
+@hydrate({ event: ['mouseover', 'focus'] })
 @signalAware()
 export class SearchProductSortComponent extends I18nMixin(LitElement) {
   protected routerService = resolve(RouterService);

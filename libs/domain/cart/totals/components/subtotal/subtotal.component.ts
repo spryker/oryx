@@ -1,5 +1,5 @@
 import {
-  hydratable,
+  hydrate,
   I18nMixin,
   signal,
   signalAware,
@@ -7,7 +7,7 @@ import {
 import { html, LitElement, TemplateResult } from 'lit';
 import { TotalsController } from '../../../src/controllers';
 
-@hydratable('window:load')
+@hydrate({ event: 'window:load' })
 @signalAware()
 export class CartTotalsSubtotalComponent extends I18nMixin(LitElement) {
   protected totalsController = new TotalsController(this);
