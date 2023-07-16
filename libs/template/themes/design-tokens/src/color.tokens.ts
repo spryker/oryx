@@ -2,7 +2,7 @@ import { ColorDesignTokens, colorPalette } from '@spryker-oryx/experience';
 
 export const color: ColorDesignTokens = {
   neutral: colorPalette.grays.sprykerSfGray,
-  primary: colorPalette.colors.red,
+  primary: colorPalette.colors.spryker,
   secondary: colorPalette.colors.amber,
 
   highlight: colorPalette.colors.red,
