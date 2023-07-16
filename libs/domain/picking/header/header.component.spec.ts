@@ -3,7 +3,6 @@ import { useComponent } from '@spryker-oryx/core/utilities';
 import { SiteNavigationItemComponent } from '@spryker-oryx/site/navigation-item';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n } from '@spryker-oryx/utilities';
-import { beforeEach } from 'vitest';
 import HeaderComponent from './header.component';
 import { headerComponent } from './header.def';
 
