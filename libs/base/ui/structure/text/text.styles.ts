@@ -77,14 +77,14 @@ export const textStyles = css`
   }
 
   a:hover {
-    text-decoration: solid underline var(--oryx-color-primary-9) 1px;
+    text-decoration: solid underline currentColor 1px;
     text-underline-offset: 5px;
   }
 
   a:active {
     color: var(--oryx-color-primary-9);
     /* stylelint-disable-next-line */
-    text-decoration-color: currentColor;
+    /* text-decoration-color: currentColor; */
   }
 
   a:focus-visible {
