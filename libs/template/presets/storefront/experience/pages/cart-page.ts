@@ -35,20 +35,7 @@ export const cartPage: StaticComponent = {
         },
         { type: 'oryx-checkout-link' },
       ],
-      options: {
-        data: {
-          rules: [
-            {
-              layout: 'flex',
-              vertical: true,
-              align: 'stretch',
-              gap: '20px',
-              sticky: true,
-              top: '108px',
-            },
-          ],
-        },
-      },
+      options: { data: { rules: [{ sticky: true, top: '108px' }] } },
     },
   ],
 };
