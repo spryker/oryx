@@ -1,8 +1,4 @@
-import {
-  HttpHandlerFn,
-  HttpInterceptor,
-  RequestOptions,
-} from '@spryker-oryx/core';
+import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { catchError, map, Observable, of, switchMap, take } from 'rxjs';
 import { AuthTokenData, AuthTokenService } from './auth-token.service';
@@ -15,36 +11,28 @@ export class AuthTokenInterceptor implements HttpInterceptor {
     protected readonly authTokenService = inject(AuthTokenService)
   ) {}
 
-  intercept(
-    url: string,
-    options: RequestOptions,
-    handle: HttpHandlerFn
-  ): Observable<Response> {
+  intercept(req: Request, handle: HttpHandlerFn): Observable<Response> {
     return this.authTokenService.getToken().pipe(
       take(1),
-      map((token) => this.addBearerAuthHeader(token, options)),
-      catchError(() => of(options)),
-      switchMap((options) => handle(url, options))
+      map((token) => this.addBearerAuthHeader(token, req)),
+      catchError(() => of(req)),
+      switchMap((newReq) => handle(newReq))
     );
   }
 
-  shouldInterceptRequest(url: string): boolean {
+  shouldInterceptRequest({ url }: Request): boolean {
     return !this.config?.baseUrl || url.startsWith(this.config.baseUrl);
   }
 
-  protected addBearerAuthHeader(
-    token: AuthTokenData,
-    options: Readonly<RequestOptions>
-  ): RequestOptions {
+  protected addBearerAuthHeader(token: AuthTokenData, req: Request): Request {
     if (token.type.toLowerCase() !== 'bearer') {
-      return options;
+      return req;
     }
 
-    const headers = new Headers(options.headers);
+    const newReq = req.clone();
+    newReq.headers.set(this.headerName, `Bearer ${token.token}`);
 
-    headers.set(this.headerName, `Bearer ${token.token}`);
-
-    return { ...options, headers };
+    return newReq;
   }
 }
 

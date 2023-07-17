@@ -3,7 +3,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { LinkType } from '@spryker-oryx/ui/link';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { html } from 'lit/static-html.js';
@@ -13,7 +13,7 @@ import { styles } from './title.styles';
 @defaultOptions({
   linkType: 'none',
 })
-@hydratable(`@${ProductContext.SKU}`)
+@hydrate({ context: ProductContext.SKU })
 export class ProductTitleComponent extends ProductMixin(
   ContentMixin<ProductTitleOptions>(LitElement)
 ) {

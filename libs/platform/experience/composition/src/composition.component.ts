@@ -12,8 +12,8 @@ import {
 import {
   effect,
   elementEffect,
-  hydratable,
   hydratableAttribute,
+  hydrate,
   signal,
   signalAware,
   signalProperty,
@@ -25,7 +25,7 @@ import { when } from 'lit/directives/when.js';
 import { CompositionComponentsController } from '@spryker-oryx/experience/composition';
 
 @signalAware()
-@hydratable()
+@hydrate()
 export class CompositionComponent extends LayoutMixin(
   ContentMixin<CompositionProperties>(LitElement)
 ) {

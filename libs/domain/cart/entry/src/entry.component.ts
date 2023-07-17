@@ -19,7 +19,7 @@ import { LinkType } from '@spryker-oryx/ui/link';
 import {
   computed,
   elementEffect,
-  hydratable,
+  hydrate,
   signalProperty,
   Size,
 } from '@spryker-oryx/utilities';
@@ -49,7 +49,7 @@ import { cartEntryStyles } from './styles';
   enableItemPrice: true,
   confirmBeforeRemove: true,
 } as CartEntryOptions)
-@hydratable()
+@hydrate()
 export class CartEntryComponent
   extends ProductMixin(
     CartComponentMixin(ContentMixin<CartEntryOptions>(LitElement))

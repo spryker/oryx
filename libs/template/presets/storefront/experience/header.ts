@@ -70,7 +70,7 @@ export const HeaderTemplate: StaticComponent = {
                   colSpan: 3,
                   height: '42px',
                   justify: 'start',
-                  style: 'color: white',
+                  style: 'color: var(--oryx-color-primary-0, white)',
                 },
                 { query: { breakpoint: 'md' }, colSpan: 2 },
               ],

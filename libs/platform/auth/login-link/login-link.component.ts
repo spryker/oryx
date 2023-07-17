@@ -3,7 +3,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { hydratable, signal } from '@spryker-oryx/utilities';
+import { hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { LoginLinkOptions } from './login-link.model';
 import { styles } from './login-link.styles';
@@ -11,7 +11,7 @@ import { styles } from './login-link.styles';
 @defaultOptions({
   enableLogout: true,
 })
-@hydratable('window:load')
+@hydrate({ event: 'window:load' })
 export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
   LitElement
 ) {

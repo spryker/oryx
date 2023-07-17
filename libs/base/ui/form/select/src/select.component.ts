@@ -13,13 +13,13 @@ import {
   TypeaheadOptions,
 } from '@spryker-oryx/ui/typeahead';
 import { getControl } from '@spryker-oryx/ui/utilities';
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { SelectController, SelectFilterController } from './controllers';
 import { baseStyles } from './styles';
 
-@hydratable(['mouseover', 'focus'])
+@hydrate({ event: ['mouseover', 'focus'] })
 export class SelectComponent
   extends LitElement
   implements ErrorOptions, SearchAttributes, TypeaheadOptions

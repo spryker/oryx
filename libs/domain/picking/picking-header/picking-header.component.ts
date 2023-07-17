@@ -53,34 +53,29 @@ export class PickingHeaderComponent extends I18nMixin(
   }
 
   protected override render(): TemplateResult {
-    return html` <oryx-icon-button>
-        <button
-          aria-label=${this.i18n('oryx.picking.back-to-pick-lists')}
-          class="back"
-          href="#"
-          @click=${this.back}
-        >
-          <oryx-icon type=${IconTypes.ArrowBack}></oryx-icon>
-        </button>
-      </oryx-icon-button>
-      <div class="title">${this.pickingList?.orderReferences[0]}</div>
-      ${this.renderCartNoteButton()}
-      <oryx-site-navigation-item
-        uid="user-profile"
-        .options=${{
-          icon: IconTypes.User,
-          triggerType: 'icon',
-          contentBehavior: 'modal',
-          label: this.i18n('oryx.picking.account'),
-        }}
-      ></oryx-site-navigation-item>
-      <oryx-discard-picking
-        @oryx.close=${() => {
-          this.pickingHeaderService.cancel();
-          this.closeDiscardModal();
-        }}
-        @oryx.back=${this.leave}
-      ></oryx-discard-picking>`;
+    return html`
+      <oryx-header>
+        <oryx-icon-button>
+          <button
+            aria-label=${this.i18n('oryx.picking.back-to-pick-lists')}
+            class="back"
+            href="#"
+            @click=${this.back}
+          >
+            <oryx-icon type=${IconTypes.ArrowBack}></oryx-icon>
+          </button>
+        </oryx-icon-button>
+        <div class="title">${this.pickingList?.orderReferences[0]}</div>
+        ${this.renderCartNoteButton()}
+        <oryx-discard-picking
+          @oryx.close=${() => {
+            this.pickingHeaderService.cancel();
+            this.closeDiscardModal();
+          }}
+          @oryx.back=${this.leave}
+        ></oryx-discard-picking>
+      </oryx-header>
+    `;
   }
 
   protected openDiscardModal(): void {

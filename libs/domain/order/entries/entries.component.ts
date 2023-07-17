@@ -1,7 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { OrderMixin } from '@spryker-oryx/order';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -15,7 +15,7 @@ import { orderEntriesStyles } from './entries.styles';
   enableItemId: true,
   enableItemPrice: false,
 } as OrderEntriesOptions)
-@hydratable('window:load')
+@hydrate({ event: 'window:load' })
 export class OrderEntriesComponent
   extends OrderMixin(ContentMixin<OrderEntriesOptions>(LitElement))
   implements OrderEntriesAttributes

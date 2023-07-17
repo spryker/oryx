@@ -12,7 +12,7 @@ import {
 } from '@spryker-oryx/user/address-edit';
 import { EditTarget } from '@spryker-oryx/user/address-list-item';
 import {
-  hydratable,
+  hydrate,
   I18nMixin,
   signalProperty,
   Size,
@@ -24,7 +24,7 @@ import { when } from 'lit/directives/when.js';
 import { CheckoutMixin } from '../src/mixins';
 import { checkoutManageAddressStyles } from './manage-address.styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydrate({ event: ['mouseover', 'focusin'] })
 export class CheckoutManageAddressComponent extends I18nMixin(
   AddressMixin(CheckoutMixin(LitElement))
 ) {

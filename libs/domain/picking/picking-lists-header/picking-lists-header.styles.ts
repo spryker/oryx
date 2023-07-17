@@ -1,14 +1,15 @@
 import { css } from 'lit';
 
 export const pickingListsHeaderComponentStyles = css`
-  :host {
-    display: flex;
-    align-items: center;
-    padding: 22px;
-    gap: 12px;
+  oryx-header {
     box-shadow: var(--oryx-elevation-2) var(--oryx-elevation-color-2);
-    background-color: var(--oryx-color-neutral-1);
-    z-index: 2;
+  }
+
+  oryx-header div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
   }
 
   oryx-heading {

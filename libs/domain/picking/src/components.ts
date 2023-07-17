@@ -3,6 +3,7 @@ export * from '../customer-note/customer-note.def';
 export * from '../discard-modal/discard-modal.def';
 export * from '../filter-button/filter-button.def';
 export * from '../filters/filters.def';
+export * from '../header/header.def';
 export * from '../login/login.def';
 export * from '../navigate-back/navigate-back.def';
 export * from '../picking-header/picking-header.def';

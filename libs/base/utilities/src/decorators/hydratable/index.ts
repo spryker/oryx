@@ -1,1 +1,1 @@
-export * from './hydratable';
+export * from './hydrate';

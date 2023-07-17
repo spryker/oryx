@@ -12,7 +12,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
   elementEffect,
-  hydratable,
+  hydrate,
   Size,
   ssrShim,
 } from '@spryker-oryx/utilities';
@@ -33,7 +33,7 @@ import { ProductCardStyles } from './card.styles';
   enableAddToCart: true,
 })
 @ssrShim('style')
-@hydratable()
+@hydrate()
 export class ProductCardComponent extends ProductMixin(
   ContentMixin<ProductCardOptions>(LitElement)
 ) {
