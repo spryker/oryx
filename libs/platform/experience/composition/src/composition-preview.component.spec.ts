@@ -4,7 +4,6 @@ import { SSRAwaiterService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
-  Component,
   ComponentsRegistryService,
   ComponentTemplate,
   ExperienceService,
@@ -13,8 +12,10 @@ import {
 } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
-import { CompositionPreviewComponent } from './composition-preview.component';
 import { previewCompositionComponent } from './composition.def';
+import { CompositionPreviewComponent } from './composition-preview.component';
+import { SpyInstance } from 'vitest';
+import * as composition from '@spryker-oryx/experience/composition';
 
 const BASE_COMPONENTS = [
   { id: '1', type: 'oryx-content-banner' },
@@ -23,13 +24,6 @@ const BASE_COMPONENTS = [
 ];
 
 class MockExperienceService implements Partial<ExperienceService> {
-  components = [...BASE_COMPONENTS];
-  getComponent = (): Observable<Component> =>
-    of({
-      id: '',
-      type: '',
-      components: this.components,
-    });
   getOptions = (): Observable<any> => of({});
   getContent = (): Observable<any> => of({});
   getInteractionData = (): Observable<any> => of({});
@@ -62,7 +56,16 @@ class MockLayoutService implements Partial<LayoutService> {
   getStyles = vi.fn().mockReturnValue(of(null));
 }
 
-describe('Composition', () => {
+const mockComponents = {
+  getComponents: vi.fn().mockReturnValue(of([...BASE_COMPONENTS])),
+  hasDynamicallyVisibleChild: vi.fn().mockReturnValue(of(false)),
+};
+vi.spyOn(composition, 'CompositionComponentsController') as SpyInstance;
+(
+  composition.CompositionComponentsController as unknown as SpyInstance
+).mockReturnValue(mockComponents);
+
+describe('CompositionPreviewComponent', () => {
   let element: CompositionPreviewComponent;
 
   beforeAll(async () => {
@@ -108,14 +111,7 @@ describe('Composition', () => {
     expect(element).toBeInstanceOf(CompositionPreviewComponent);
   });
 
-  it('should render oryx-content-banner', () => {
-    const banner = element?.shadowRoot?.querySelector('oryx-content-banner');
-    expect(banner).toBeTruthy();
-  });
-
   it('should render components with uid attributes', () => {
-    const banner = element?.shadowRoot?.querySelector('oryx-content-banner');
-
-    expect(banner?.getAttribute('uid')).toBe('1');
+    expect(element).toContainElement('oryx-content-banner[uid="1"]');
   });
 });

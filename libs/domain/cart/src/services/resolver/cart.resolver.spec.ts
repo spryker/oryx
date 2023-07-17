@@ -80,4 +80,27 @@ describe('CartResolver', () => {
       bigCart
     );
   });
+
+  describe('EMPTY', () => {
+    const expectedResult = (
+      description: string,
+      expectation: boolean,
+      cart: Partial<Cart>
+    ) => {
+      describe(description, () => {
+        const callback = vi.fn();
+        beforeEach(() => {
+          cartService.getCart = vi.fn().mockReturnValue(of(cart));
+          resolver.resolve('EMPTY').subscribe(callback);
+        });
+
+        it(`should return ${expectation}`, () => {
+          expect(callback).toHaveBeenCalledWith(expectation);
+        });
+      });
+    };
+
+    expectedResult('when cart is empty', true, emptyCart);
+    expectedResult('when cart is not empty', false, smallCart);
+  });
 });

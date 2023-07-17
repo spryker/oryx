@@ -1,11 +1,5 @@
 import { CompositionProperties } from '../../models';
 
-export const enum Visibility {
-  None = 'none',
-  Visible = 'visible',
-  Hidden = 'hidden',
-}
-
 export interface ComponentImage {
   src: string;
   alt?: string;

@@ -10,12 +10,10 @@ import {
   LayoutMixin,
 } from '@spryker-oryx/experience';
 import {
-  deferHydrationAttribute,
   effect,
   elementEffect,
   hydratable,
   hydratableAttribute,
-  HYDRATE_ON_DEMAND,
   signal,
   signalAware,
   signalProperty,
@@ -24,8 +22,7 @@ import { html, isServer, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { CompositionComponentsController } from './composition-components.controller';
-import { HydrationService } from '@spryker-oryx/core';
+import { CompositionComponentsController } from '@spryker-oryx/experience/composition';
 
 @signalAware()
 @hydratable()
@@ -38,7 +35,6 @@ export class CompositionComponent extends LayoutMixin(
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
-  protected hydrationService = resolve(HydrationService);
 
   protected componentsController = new CompositionComponentsController(this);
 
@@ -59,8 +55,8 @@ export class CompositionComponent extends LayoutMixin(
 
   protected $components = signal(this.componentsController.getComponents());
 
-  protected $hasDynamicallyVisibleSuccessor = signal(
-    this.componentsController.hasDynamicallyVisibleSuccessor()
+  protected $hasDynamicallyVisibleChild = signal(
+    this.componentsController.hasDynamicallyVisibleChild()
   );
 
   @elementEffect()
@@ -69,7 +65,7 @@ export class CompositionComponent extends LayoutMixin(
     //with dynamically visible components
     if (
       isServer &&
-      this.$hasDynamicallyVisibleSuccessor() &&
+      this.$hasDynamicallyVisibleChild() &&
       this.getAttribute(hydratableAttribute) !== 'window:load'
     ) {
       this.setAttribute(hydratableAttribute, 'window:load');

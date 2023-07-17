@@ -1,16 +1,8 @@
 import { LitElement, ReactiveController } from 'lit';
 import { ContentComponentProperties } from '../../src/models';
 import { resolve } from '@spryker-oryx/di';
-import { Component, ExperienceService, Visibility } from '../../src/services';
-import {
-  Observable,
-  combineLatest,
-  combineLatestWith,
-  map,
-  of,
-  startWith,
-  switchMap,
-} from 'rxjs';
+import { Component, ExperienceService } from '../../src/services';
+import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
 import { TokenResolver } from '@spryker-oryx/core';
 import { ObserveController } from '@spryker-oryx/utilities';
 
@@ -22,7 +14,6 @@ export class CompositionComponentsController implements ReactiveController {
   protected experienceService = resolve(ExperienceService);
 
   constructor(protected host: LitElement & ContentComponentProperties) {
-    this.host.addController(this);
     this.observe = new ObserveController(host);
   }
 
@@ -34,65 +25,51 @@ export class CompositionComponentsController implements ReactiveController {
           uid
             ? this.experienceService
                 .getComponent({ uid })
-                .pipe(map((component) => component?.components ?? null))
+                .pipe(map((component) => component.components ?? null))
             : of(null)
         )
       );
   }
 
-  protected componentsVisibility(): Observable<
-    Observable<Visibility>[] | null
-  > {
-    return this.components().pipe(
-      map((components) =>
-        components
-          ? components.map((c) => {
-              const visibility = c.options?.data?.visibility;
+  protected filterHiddenComponents(
+    components: Component[]
+  ): Observable<Component[]> {
+    return combineLatest(
+      components.map((c) => {
+        const visibility = c.options?.data?.visibility;
 
-              if (!visibility) {
-                return of(Visibility.None);
-              }
+        if (!visibility) {
+          return of(c);
+        }
 
-              if (visibility.hide) {
-                return of(Visibility.Hidden);
-              }
+        if (visibility.hide) {
+          return of(null);
+        }
 
-              if (visibility.hideByRule) {
-                return this.tokenResolver
-                  .resolveToken(visibility.hideByRule)
-                  .pipe(
-                    startWith(Visibility.Hidden),
-                    map((value) =>
-                      value ? Visibility.Hidden : Visibility.Visible
-                    )
-                  );
-              }
+        if (visibility.hideByRule) {
+          return this.tokenResolver.resolveToken(visibility.hideByRule).pipe(
+            //hidden by default
+            startWith(true),
+            map((value) => (value ? null : c))
+          );
+        }
 
-              return of(Visibility.Visible);
-            })
-          : null
-      )
-    );
+        return of(c);
+      })
+    ).pipe(map((components) => components.filter((c) => c))) as Observable<
+      Component[]
+    >;
   }
 
   getComponents(): Observable<Component[] | null> {
     return this.components().pipe(
-      combineLatestWith(this.componentsVisibility()),
-      switchMap(([components, visibility]) =>
-        visibility
-          ? combineLatest(visibility).pipe(
-              map(
-                (v) =>
-                  components?.filter((c, i) => !(v[i] === Visibility.Hidden)) ??
-                  []
-              )
-            )
-          : of(components)
+      switchMap((components) =>
+        components ? this.filterHiddenComponents(components) : of([])
       )
     );
   }
 
-  hasDynamicallyVisibleSuccessor(): Observable<boolean> {
+  hasDynamicallyVisibleChild(): Observable<boolean> {
     return this.components().pipe(
       map(
         (components) => !!components?.some((c) => !!c.options?.data?.visibility)
