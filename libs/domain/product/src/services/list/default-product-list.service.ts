@@ -3,10 +3,10 @@ import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
 import { CurrencyChanged } from '@spryker-oryx/site';
 import { Observable } from 'rxjs';
-import { ProductList, ProductListQualifier } from '../models';
+import { ProductList, ProductListQualifier } from '../../models';
+import { ProductsLoaded } from '../state';
 import { ProductListAdapter } from './adapter';
 import { ProductListService } from './product-list.service';
-import { ProductsLoaded } from './state';
 
 export class DefaultProductListService implements ProductListService {
   protected productListQuery = createQuery({

@@ -4,7 +4,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { SemanticLinkService } from '@spryker-oryx/site';
 import {
   computed,
-  hydratable,
+  hydrate,
   queryFirstFocusable,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
@@ -24,7 +24,7 @@ import { styles } from './navigation-item.styles';
   triggerBehavior: NavigationTriggerBehavior.Click,
   contentBehavior: NavigationContentBehavior.Navigation,
 })
-@hydratable('window:load')
+@hydrate({ event: 'window:load' })
 export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItemOptions>(
   LitElement
 ) {

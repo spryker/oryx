@@ -10,7 +10,7 @@ import {
   AddressDefaults,
   EditTarget,
 } from '@spryker-oryx/user/address-list-item';
-import { effect, hydratable, Size } from '@spryker-oryx/utilities';
+import { effect, hydrate, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { queryAll } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -21,7 +21,7 @@ import { styles } from './address-list.styles';
   addressDefaults: AddressDefaults.All,
   editTarget: EditTarget.Link,
 })
-@hydratable('window:load')
+@hydrate({ event: 'window:load' })
 export class UserAddressListComponent extends AddressMixin(
   ContentMixin<UserAddressListOptions>(LitElement)
 ) {

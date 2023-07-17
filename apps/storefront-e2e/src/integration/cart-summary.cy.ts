@@ -23,12 +23,11 @@ describe('Cart summary suite', () => {
     context('must increase if', () => {
       it('a product is added in the cart from pdp', () => {
         pdp.visit();
-        pdp.hydrateAddToCart();
 
         pdp.addItemsToTheCart(1);
         pdp.header.getCartCount().should('be.visible').and('contain.text', '1');
 
-        pdp.addItemsToTheCart(1);
+        pdp.addItemsToTheCart(1, true);
         pdp.header.getCartCount().should('be.visible').and('contain.text', '2');
       });
 

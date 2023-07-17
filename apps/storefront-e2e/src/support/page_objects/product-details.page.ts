@@ -21,13 +21,6 @@ export class ProductDetailsPage extends AbstractSFPage {
     this.getQuantityComponent().getInput().should('be.visible');
   }
 
-  hydrateAddToCart = () => {
-    this.getQuantityComponent().getInput().click();
-    // the only way to check for hydration now
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(2000);
-  };
-
   getWrapper = () => cy.get('oryx-composition[route="/product/:sku"]');
   getDetailsWrapper = () =>
     this.getWrapper().find('oryx-composition:first-child');
@@ -59,14 +52,20 @@ export class ProductDetailsPage extends AbstractSFPage {
   getRelations = () => new ProductRelationsFragment();
   getAvailability = () => this.getWrapper().find('oryx-product-availability');
 
-  addItemsToTheCart = (numberOfItems = 1) => {
+  addItemsToTheCart = (numberOfItems = 1, isHydrated = false) => {
     if (numberOfItems === 1) {
+      if (!isHydrated) {
+        cy.hydrateElemenet('/assets/cart-add-*.js', () => {
+          this.getAddToCartBtn().click();
+        });
+      }
+
       cy.intercept({
         method: 'POST',
         url: /\/carts\/*\/items*|\/guest-cart-items*/,
       }).as('addToCartRequest');
 
-      this.getAddToCartBtn().trigger('mouseenter').wait(150).click();
+      this.getAddToCartBtn().click();
 
       cy.wait('@addToCartRequest');
 

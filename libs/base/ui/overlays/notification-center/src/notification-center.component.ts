@@ -1,4 +1,4 @@
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -13,7 +13,7 @@ import {
 import { notificationCenterBaseStyles } from './notification-center.styles';
 import { RegistryController } from './registry.controller';
 
-@hydratable()
+@hydrate()
 export class NotificationCenterComponent
   extends LitElement
   implements NotificationCenterComponentAttributes

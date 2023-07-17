@@ -1,10 +1,10 @@
 import { CheckoutMixin, isValid, PaymentMethod } from '@spryker-oryx/checkout';
-import { hydratable, I18nMixin, signal } from '@spryker-oryx/utilities';
+import { hydrate, I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { styles } from './payment-method.styles';
 
-@hydratable('window:load')
+@hydrate({ event: 'window:load' })
 export class CheckoutPaymentMethodComponent
   extends I18nMixin(CheckoutMixin(LitElement))
   implements isValid
