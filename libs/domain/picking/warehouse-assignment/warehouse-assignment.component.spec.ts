@@ -74,7 +74,7 @@ describe('WarehouseAssignmentComponent', () => {
   });
 
   it('should render header', () => {
-    expect(el).toContainElement('oryx-picking-header');
+    expect(el).toContainElement('oryx-header');
   });
 
   it('should render button of each location', () => {

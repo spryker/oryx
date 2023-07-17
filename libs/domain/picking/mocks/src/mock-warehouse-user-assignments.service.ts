@@ -1,6 +1,6 @@
 import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking';
 import { Observable, of } from 'rxjs';
-import { WarehouseUserAssignment } from '../../src/models/warehouse';
+import { WarehouseUserAssignment } from '../../src/models/warehouse-user-assignment';
 import { mockWarehouseUserAssignments } from './mock-warehouse-user-assignments';
 
 export class MockWarehouseUserAssignmentsService
