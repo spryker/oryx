@@ -1,9 +1,9 @@
 import { componentDef } from '@spryker-oryx/core';
-import { ProductListQualifier } from '@spryker-oryx/product';
+import { ProductListOptions } from './list.model';
 
 declare global {
   interface FeatureOptions {
-    'product-list'?: ProductListQualifier;
+    'product-list'?: ProductListOptions;
   }
 }
 

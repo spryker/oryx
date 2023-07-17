@@ -2,7 +2,6 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { map, Observable, of } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { Mock } from 'vitest';
-import { RequestOptions } from '../http.model';
 import { DefaultHttpHandler } from './default-http-handler';
 import {
   HttpHandler,
@@ -13,8 +12,9 @@ import {
 const mockFromFetchResult = {
   original: 'original',
 };
-const mockUrl = 'url';
-const mockOptions = {};
+const mockUrl = 'http://url';
+const mockRequest = new Request(mockUrl);
+mockRequest.headers.set('a', 'initial');
 const callback = vi.fn();
 
 vi.mock('rxjs/fetch', () => ({
@@ -22,17 +22,11 @@ vi.mock('rxjs/fetch', () => ({
 }));
 
 export class InterceptorA implements HttpInterceptor {
-  intercept(
-    url: string,
-    options: RequestOptions,
-    handle: HttpHandlerFn
-  ): Observable<Response> {
-    options = {
-      ...options,
-      a: 'a',
-    } as RequestOptions;
+  intercept(req: Request, handle: HttpHandlerFn): Observable<Response> {
+    const newReq = req.clone();
+    newReq.headers.set('a', 'a');
 
-    return handle(url, options).pipe(
+    return handle(newReq).pipe(
       map((res) => ({
         ...res,
         a: 'a',
@@ -42,12 +36,8 @@ export class InterceptorA implements HttpInterceptor {
 }
 
 export class InterceptorB implements HttpInterceptor {
-  intercept(
-    url: string,
-    options: RequestOptions,
-    handle: HttpHandlerFn
-  ): Observable<Response> {
-    return handle(url, options).pipe(
+  intercept(req: Request, handle: HttpHandlerFn): Observable<Response> {
+    return handle(req).pipe(
       map((res) => ({
         ...res,
         b: 'b',
@@ -57,32 +47,20 @@ export class InterceptorB implements HttpInterceptor {
 }
 
 export class InterceptorC implements HttpInterceptor {
-  intercept(
-    url: string,
-    options: RequestOptions,
-    handle: HttpHandlerFn
-  ): Observable<Response> {
-    options = {
-      ...options,
-      c: 'c',
-    } as RequestOptions;
+  intercept(req: Request, handle: HttpHandlerFn): Observable<Response> {
+    const newReq = req.clone();
+    newReq.headers.set('c', 'c');
 
-    return handle(url, options);
+    return handle(newReq);
   }
 }
 
 export class InterceptorD implements HttpInterceptor {
-  intercept(
-    url: string,
-    options: RequestOptions,
-    handle: HttpHandlerFn
-  ): Observable<Response> {
-    options = {
-      ...options,
-      c: 'c',
-    } as RequestOptions;
+  intercept(req: Request, handle: HttpHandlerFn): Observable<Response> {
+    const newReq = req.clone();
+    newReq.headers.set('c', 'd');
 
-    return handle(`${url}+D`, options);
+    return handle(newReq);
   }
 
   shouldInterceptRequest(): boolean {
@@ -117,8 +95,8 @@ describe('DefaultHttpHandler', () => {
     });
 
     it('should return result of fromFetch', () => {
-      handler.handle(mockUrl, mockOptions).subscribe(callback);
-      expect(fromFetch).toHaveBeenCalledWith(mockUrl, mockOptions);
+      handler.handle(mockRequest).subscribe(callback);
+      expect(fromFetch).toHaveBeenCalledWith(mockRequest);
       expect(callback).toHaveBeenCalledWith(mockFromFetchResult);
     });
   });
@@ -150,15 +128,15 @@ describe('DefaultHttpHandler', () => {
     });
 
     it('should transform request and call formFetch with new options', () => {
-      handler.handle(mockUrl, mockOptions);
-      expect(fromFetch).toHaveBeenCalledWith(mockUrl, {
-        a: 'a',
-        c: 'c',
-      });
+      handler.handle(mockRequest);
+      const newReq = mockRequest.clone();
+      newReq.headers.set('a', 'a');
+      newReq.headers.set('c', 'c');
+      expect(fromFetch).toHaveBeenCalledWith(newReq);
     });
 
     it('should transform response and return it', () => {
-      handler.handle(mockUrl, mockOptions).subscribe(callback);
+      handler.handle(mockRequest).subscribe(callback);
       expect(callback).toHaveBeenCalledWith({
         ...mockFromFetchResult,
         a: 'a',
@@ -186,8 +164,8 @@ describe('DefaultHttpHandler', () => {
     });
 
     it('should not provide request transformation', () => {
-      handler.handle(mockUrl, mockOptions);
-      expect(fromFetch).toHaveBeenCalledWith(mockUrl, mockOptions);
+      handler.handle(mockRequest);
+      expect(fromFetch).toHaveBeenCalledWith(mockRequest);
     });
   });
 });

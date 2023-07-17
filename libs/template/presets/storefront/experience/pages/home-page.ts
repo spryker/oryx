@@ -35,7 +35,7 @@ export const homePage: StaticComponent = {
               rules: [
                 {
                   width: '100%',
-                  style: 'position:absolute;left:0;z-index:-1',
+                  style: 'position:absolute;left:0',
                 },
               ],
             },
@@ -61,7 +61,7 @@ export const homePage: StaticComponent = {
                   background: 'rgba(35, 35, 35, 0.56);',
                   margin: '30px 0',
                   radius: 4,
-                  style: 'color: white;gap:20px',
+                  style: 'color: white;gap:20px;z-index:0',
                 },
               ],
             },

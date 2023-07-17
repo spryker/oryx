@@ -1,10 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { hydratable, HYDRATE_ON_DEMAND } from './hydratable';
+import { hydrate, HYDRATE_ON_DEMAND } from './hydrate';
 
 @customElement('mock-component')
-@hydratable()
+@hydrate()
 export class MockComponent extends LitElement {
   render(): TemplateResult {
     return html`rendered content`;

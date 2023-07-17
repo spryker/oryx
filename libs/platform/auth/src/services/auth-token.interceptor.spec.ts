@@ -46,11 +46,14 @@ describe('AuthTokenInterceptor', () => {
 
   describe('intercept', () => {
     it('should add new headers', () => {
-      const mockHeadersMethods = {
+      const mockHeaders = {
         set: vi.fn(),
       };
-      const mockHeaders = vi.fn().mockReturnValue(mockHeadersMethods);
-      vi.stubGlobal('Headers', mockHeaders);
+      const mockRequestMethods = {
+        clone: () => ({ headers: mockHeaders }),
+      };
+      const mockRequest = vi.fn().mockReturnValue(mockRequestMethods);
+      vi.stubGlobal('Request', mockRequest);
       const headers = { param1: 'value1' };
       const mockHandle = vi.fn().mockReturnValue(of(null));
       mockAuthTokenService.getToken.mockReturnValue(
@@ -61,22 +64,30 @@ describe('AuthTokenInterceptor', () => {
       );
       service
         .intercept(
-          'mockUrl',
-          { body: 'value1', method: 'POST', headers },
+          new Request('http://mockurl', {
+            body: 'value1',
+            method: 'POST',
+            headers,
+          }),
           mockHandle
         )
         .subscribe();
       expect(mockAuthTokenService.getToken).toHaveBeenCalled();
-      expect(mockHeaders).toHaveBeenCalledWith(headers);
-      expect(mockHeadersMethods.set).toHaveBeenCalledWith(
+      expect(mockHeaders.set).toHaveBeenCalledWith(
         mockConfig.headerName,
         'Bearer mockToken'
       );
     });
 
     it('should not add new headers if token is not bearer type', () => {
-      const mockHeaders = vi.fn();
-      vi.stubGlobal('Headers', mockHeaders);
+      const mockHeaders = {
+        set: vi.fn(),
+      };
+      const mockRequestMethods = {
+        clone: () => ({ headers: mockHeaders }),
+      };
+      const mockRequest = vi.fn().mockReturnValue(mockRequestMethods);
+      vi.stubGlobal('Request', mockRequest);
       const headers = { param1: 'value1' };
       const mockHandle = vi.fn().mockReturnValue(of(null));
       mockAuthTokenService.getToken.mockReturnValue(
@@ -87,12 +98,15 @@ describe('AuthTokenInterceptor', () => {
       );
       service
         .intercept(
-          'mockUrl',
-          { body: 'value1', method: 'POST', headers },
+          new Request('http://mockurl', {
+            body: 'value1',
+            method: 'POST',
+            headers,
+          }),
           mockHandle
         )
         .subscribe();
-      expect(mockHeaders).not.toHaveBeenCalled();
+      expect(mockHeaders.set).not.toHaveBeenCalled();
     });
 
     it('should call handle with options with generated headers', () => {
@@ -100,44 +114,53 @@ describe('AuthTokenInterceptor', () => {
       const mockUrl = 'mockUrl';
       const mockOptions = { body: 'value1', method: 'POST', headers };
       const mockHandle = vi.fn().mockReturnValue(of(null));
-      const mockHeadersMethods = {
+      const mockHeaders = {
         set: vi.fn(),
-        newHeader: 'newHeader',
       };
-      const mockHeaders = vi.fn().mockReturnValue(mockHeadersMethods);
-      vi.stubGlobal('Headers', mockHeaders);
+      const mockRequestMethods = {
+        clone: () => ({ headers: mockHeaders }),
+      };
+      const mockRequest = vi.fn().mockReturnValue(mockRequestMethods);
+      vi.stubGlobal('Request', mockRequest);
       mockAuthTokenService.getToken.mockReturnValue(
         of({
           type: 'bearer',
           token: 'mockToken',
         })
       );
-      service.intercept(mockUrl, mockOptions, mockHandle).subscribe();
-      expect(mockHandle).toHaveBeenCalledWith(mockUrl, {
-        ...mockOptions,
-        headers: mockHeadersMethods,
-      });
+      service
+        .intercept(new Request(mockUrl, mockOptions), mockHandle)
+        .subscribe();
+      expect(mockHandle).toHaveBeenCalledWith({ headers: mockHeaders });
     });
 
     it('should call handle with default options if error has been occurred', () => {
       const headers = { param1: 'value1' };
-      const mockUrl = 'mockUrl';
+      const mockUrl = 'http://mockurl';
       const mockOptions = { body: 'value1', method: 'POST', headers };
       const mockHandle = vi.fn().mockReturnValue(of(null));
       mockAuthTokenService.getToken.mockReturnValue(
         throwError(() => new Error())
       );
-      service.intercept(mockUrl, mockOptions, mockHandle).subscribe();
-      expect(mockHandle).toHaveBeenCalledWith(mockUrl, mockOptions);
+      const req = new Request(mockUrl, mockOptions);
+      service.intercept(req, mockHandle).subscribe();
+      expect(mockHandle).toHaveBeenCalledWith(req);
     });
   });
 
   describe('shouldInterceptRequest', () => {
     it('should check if base url exist', () => {
-      expect(service.shouldInterceptRequest('url/additional')).toBe(true);
-      mockConfig.baseUrl = 'url';
-      expect(service.shouldInterceptRequest('url/additional')).toBe(true);
-      expect(service.shouldInterceptRequest('noMatch/additional')).toBe(false);
+      expect(
+        service.shouldInterceptRequest(new Request('http://url/additional'))
+      ).toBe(true);
+      mockConfig.baseUrl = 'http://url';
+      service.shouldInterceptRequest(new Request('http://url/additional'));
+      expect(
+        service.shouldInterceptRequest(new Request('http://url/additional'))
+      ).toBe(true);
+      expect(
+        service.shouldInterceptRequest(new Request('http://noMatch/additional'))
+      ).toBe(false);
     });
   });
 });

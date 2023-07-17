@@ -1,8 +1,4 @@
-import {
-  HttpHandlerFn,
-  HttpInterceptor,
-  RequestOptions,
-} from '@spryker-oryx/core';
+import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { catchError, map, Observable, of, switchMap, take } from 'rxjs';
 import { AuthTokenData, AuthTokenService } from './auth-token.service';
@@ -15,36 +11,28 @@ export class AnonTokenInterceptor implements HttpInterceptor {
     protected readonly authTokenService = inject(AuthTokenService)
   ) {}
 
-  intercept(
-    url: string,
-    options: RequestOptions,
-    handle: HttpHandlerFn
-  ): Observable<Response> {
+  intercept(req: Request, handle: HttpHandlerFn): Observable<Response> {
     return this.authTokenService.getToken().pipe(
       take(1),
-      map((token) => this.addAnonHeader(token, options)),
-      catchError(() => of(options)),
-      switchMap((options) => handle(url, options))
+      map((token) => this.addAnonHeader(token, req)),
+      catchError(() => of(req)),
+      switchMap((newReq) => handle(newReq))
     );
   }
 
-  shouldInterceptRequest(url: string): boolean {
+  shouldInterceptRequest({ url }: Request): boolean {
     return !this.config.baseUrl || url.startsWith(this.config.baseUrl);
   }
 
-  protected addAnonHeader(
-    token: AuthTokenData,
-    options: Readonly<RequestOptions>
-  ): RequestOptions {
+  protected addAnonHeader(token: AuthTokenData, req: Request): Request {
     if (token.type !== 'anon') {
-      return options;
+      return req;
     }
 
-    const headers = new Headers(options.headers);
+    const newReq = req.clone();
+    newReq.headers.set(this.headerName, token.token);
 
-    headers.set(this.headerName, token.token);
-
-    return { ...options, headers };
+    return newReq;
   }
 }
 
