@@ -6,8 +6,6 @@ import 'urlpattern-polyfill';
 export const defaultExperienceRoutes: RouteConfig[] = [
   {
     pattern: new URLPattern({ pathname: '/{index.html}?' }),
-    render: (): TemplateResult =>
-      html`<oryx-composition route="/"></oryx-composition>`,
   },
   {
     path: '/product/:sku',
@@ -23,9 +21,6 @@ export const defaultExperienceRoutes: RouteConfig[] = [
   },
   {
     path: '/:page',
-    render: ({ page }): TemplateResult => html`<oryx-composition
-      route="/${page}"
-    ></oryx-composition>`,
     type: RouteType.Page,
   },
   {

@@ -279,13 +279,19 @@ export class Routes implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): unknown {
-    if (!this._currentRoute?.render && isRouterPath(this._currentRoute)) {
-      return html`<oryx-composition
-        route=${this._currentRoute.path}
-      ></oryx-composition>`;
+    if (this._currentRoute?.render) {
+      return this._currentRoute?.render?.(this._currentParams);
     }
 
-    return this._currentRoute?.render?.(this._currentParams);
+    if (isRouterPath(this._currentRoute)) {
+      const path = this._currentParams.page
+        ? `/${this._currentParams.page}`
+        : this._currentRoute.path;
+
+      return html`<oryx-composition route=${path}></oryx-composition>`;
+    }
+
+    return html`<oryx-composition route="/"></oryx-composition>`;
   }
 
   /**
