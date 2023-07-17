@@ -4,7 +4,6 @@ import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { hydrate, I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 @hydrate({ event: ['window:load'] })
 export class CheckoutLinkComponent extends I18nMixin(
@@ -21,7 +20,7 @@ export class CheckoutLinkComponent extends I18nMixin(
 
     return html`
       <oryx-button ?loading=${this.$isBusy()}>
-        <a href=${ifDefined(this.$link())}>${this.i18n('cart.checkout')}</a>
+        <a href=${this.$link()}>${this.i18n('cart.checkout')}</a>
       </oryx-button>
     `;
   }

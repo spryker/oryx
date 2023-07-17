@@ -37,7 +37,6 @@ import {
   RemoveByQuantity,
 } from './entry.model';
 import { cartEntryStyles } from './styles';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { RouteType } from '@spryker-oryx/router';
 
 /**
@@ -106,7 +105,7 @@ export class CartEntryComponent
     if (!this.$options()?.enableItemImage) return;
 
     return html`
-      <a href=${ifDefined(this.$productLink())}>
+      <a href=${this.$productLink()}>
         <oryx-product-media
           .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
         ></oryx-product-media>
