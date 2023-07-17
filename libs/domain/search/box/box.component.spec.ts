@@ -4,7 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import { SuggestionRendererService } from '@spryker-oryx/search';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { typeheadComponent } from '@spryker-oryx/ui';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -16,7 +16,7 @@ class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
+class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of(''));
 }
 
@@ -81,7 +81,7 @@ describe('SearchBoxComponent', () => {
           useClass: MockRouterService,
         },
         {
-          provide: SemanticLinkService,
+          provide: LinkService,
           useClass: MockSemanticLinkService,
         },
         {
@@ -94,9 +94,7 @@ describe('SearchBoxComponent', () => {
         },
       ],
     });
-    linkService = testInjector.inject(
-      SemanticLinkService
-    ) as MockSemanticLinkService;
+    linkService = testInjector.inject(LinkService) as MockSemanticLinkService;
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;

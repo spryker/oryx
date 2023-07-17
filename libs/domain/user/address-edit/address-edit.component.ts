@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import {
   Address,
   AddressEventDetail,
@@ -29,7 +29,7 @@ export class UserAddressEditComponent extends AddressMixin(
   static styles = styles;
 
   protected routerService = resolve(RouterService);
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected $listPageRoute = signal(
     this.semanticLinkService.get({ type: RouteLinkType.AddressList })

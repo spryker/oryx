@@ -1,26 +1,23 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { RouteLinkType } from '@spryker-oryx/router/lit';
-import {
-  DefaultSemanticLinkService,
-  SemanticLink,
-  SemanticLinkService,
-} from '@spryker-oryx/site';
 import { Observable, of } from 'rxjs';
+import { DefaultLinkService } from './default-link.service';
+import { LinkService, LinkOptions } from './link.service';
 
 const mockRouterService = {
   getRoutes: vi.fn(),
 };
 
 describe('DefaultLinkService', () => {
-  let service: SemanticLinkService;
+  let service: LinkService;
 
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
         {
-          provide: SemanticLinkService,
-          useClass: DefaultSemanticLinkService,
+          provide: LinkService,
+          useClass: DefaultLinkService,
         },
         {
           provide: RouterService,
@@ -29,7 +26,7 @@ describe('DefaultLinkService', () => {
       ],
     });
 
-    service = testInjector.inject(SemanticLinkService);
+    service = testInjector.inject(LinkService);
     mockRouterService.getRoutes.mockReturnValue(
       of([
         {
@@ -47,7 +44,7 @@ describe('DefaultLinkService', () => {
   });
 
   it('should be provided', () => {
-    expect(service).toBeInstanceOf(DefaultSemanticLinkService);
+    expect(service).toBeInstanceOf(DefaultLinkService);
   });
 
   describe('get method', () => {
@@ -60,7 +57,7 @@ describe('DefaultLinkService', () => {
 
     describe('when type equal "RouteLinkType.Page"', () => {
       beforeEach(() => {
-        const link: SemanticLink = { type: RouteLinkType.Page, id: 'about' };
+        const link: LinkOptions = { type: RouteLinkType.Page, id: 'about' };
         service.get(link).subscribe(callback);
       });
 
@@ -80,7 +77,7 @@ describe('DefaultLinkService', () => {
             },
           ])
         );
-        const link: SemanticLink = { type: RouteLinkType.Product, id: '1' };
+        const link: LinkOptions = { type: RouteLinkType.Product, id: '1' };
         service.get(link).subscribe(callback);
       });
 
@@ -100,7 +97,7 @@ describe('DefaultLinkService', () => {
             },
           ])
         );
-        const link: SemanticLink = {
+        const link: LinkOptions = {
           type: RouteLinkType.Category,
           id: 'laptops',
         };
@@ -113,7 +110,7 @@ describe('DefaultLinkService', () => {
 
       describe('and link contains params', () => {
         beforeEach(() => {
-          const link: SemanticLink = {
+          const link: LinkOptions = {
             type: RouteLinkType.Category,
             id: 'laptops',
             params: { param1: '1', param2: '2' },
@@ -131,7 +128,7 @@ describe('DefaultLinkService', () => {
 
     describe('when just type is defined', () => {
       beforeEach(() => {
-        const link: SemanticLink = {
+        const link: LinkOptions = {
           type: RouteLinkType.Cart,
         };
         service.get(link).subscribe(callback);
@@ -145,7 +142,7 @@ describe('DefaultLinkService', () => {
     describe('when type equal "RouteLinkType.ProductList"', () => {
       describe('and link contains params', () => {
         beforeEach(() => {
-          const link: SemanticLink = {
+          const link: LinkOptions = {
             type: RouteLinkType.ProductList,
             params: { param1: '1', param2: '2' },
           };
@@ -159,7 +156,7 @@ describe('DefaultLinkService', () => {
 
       describe('and "id" is not provided', () => {
         beforeEach(() => {
-          const link: SemanticLink = {
+          const link: LinkOptions = {
             type: RouteLinkType.ProductList,
           };
           service.get(link).subscribe(callback);

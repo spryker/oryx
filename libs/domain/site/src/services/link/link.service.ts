@@ -1,20 +1,20 @@
 import { RouteLinkType } from '@spryker-oryx/router/lit';
 import { Observable } from 'rxjs';
 
-export interface SemanticLink {
+export interface LinkOptions {
   type: RouteLinkType | string;
   id?: string;
   params?: Record<string, string>;
 }
 
-export interface SemanticLinkService {
-  get(link: SemanticLink): Observable<string | undefined>;
+export interface LinkService {
+  get(link: LinkOptions): Observable<string | undefined>;
 }
 
-export const SemanticLinkService = 'oryx.SemanticLinkService';
+export const LinkService = 'oryx.LinkService';
 
 declare global {
   interface InjectionTokensContractMap {
-    [SemanticLinkService]: SemanticLinkService;
+    [LinkService]: LinkService;
   }
 }

@@ -4,7 +4,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { FormFieldType, FormRenderer } from '@spryker-oryx/form';
 import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { UserService } from '@spryker-oryx/user';
 import { elementEffect, hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -26,7 +26,7 @@ export class CheckoutAccountComponent
   protected fieldRenderer = resolve(FormRenderer);
   protected userService = resolve(UserService);
   protected authService = resolve(AuthService);
-  protected linkService = resolve(SemanticLinkService);
+  protected linkService = resolve(LinkService);
   protected routerService = resolve(RouterService);
 
   protected isAuthenticated = signal(this.authService.isAuthenticated());

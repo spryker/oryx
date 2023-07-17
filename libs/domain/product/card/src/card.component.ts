@@ -6,7 +6,7 @@ import {
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
@@ -41,7 +41,7 @@ export class ProductCardComponent extends ProductMixin(
   static styles = [ProductCardStyles];
 
   protected contextController = new ContextController(this);
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   @elementEffect()
   protected setTemplate = (): void => {

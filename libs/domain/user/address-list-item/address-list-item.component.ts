@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AddressMixin, CrudState } from '@spryker-oryx/user';
@@ -21,7 +21,7 @@ export class UserAddressListItemComponent extends AddressMixin(
 ) {
   static styles = styles;
 
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected editLink = computed(() => {
     const id = this.$address()?.id;

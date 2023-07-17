@@ -9,7 +9,7 @@ import {
 import {
   NotificationService,
   PricingService,
-  SemanticLinkService,
+  LinkService,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
@@ -85,7 +85,7 @@ export class CartEntryComponent
 
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected $productLink = computed(() => {
     return this.semanticLinkService.get({

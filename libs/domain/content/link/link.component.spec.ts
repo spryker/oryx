@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { IconComponent } from '@spryker-oryx/ui/icon';
 import { LinkComponent } from '@spryker-oryx/ui/link';
 import { html } from 'lit';
@@ -11,7 +11,7 @@ import { contentLinkComponent } from './link.def';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
 import { RouteLinkType } from '@spryker-oryx/router/lit';
 
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
+class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/page'));
 }
 
@@ -27,14 +27,13 @@ describe('ContentLinkComponent', () => {
     const injector = createInjector({
       providers: [
         {
-          provide: SemanticLinkService,
+          provide: LinkService,
           useClass: MockSemanticLinkService,
         },
       ],
     });
 
-    semanticLinkService =
-      injector.inject<MockSemanticLinkService>(SemanticLinkService);
+    semanticLinkService = injector.inject<MockSemanticLinkService>(LinkService);
   });
 
   afterEach(() => {
@@ -104,7 +103,7 @@ describe('ContentLinkComponent', () => {
       );
     });
 
-    it('should resolve the link from the SemanticLinkService', () => {
+    it('should resolve the link from the LinkService', () => {
       expect(semanticLinkService.get).toHaveBeenCalledWith({
         type: RouteLinkType.Product,
         id: '123',

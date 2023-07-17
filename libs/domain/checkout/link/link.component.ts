@@ -1,7 +1,7 @@
 import { CartComponentMixin } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { RouteLinkType } from '@spryker-oryx/router/lit';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { hydrate, I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -10,7 +10,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 export class CheckoutLinkComponent extends I18nMixin(
   CartComponentMixin(LitElement)
 ) {
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected $link = signal(
     this.semanticLinkService.get({ type: RouteLinkType.Checkout })

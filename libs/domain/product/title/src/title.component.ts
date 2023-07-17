@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductContext, ProductMixin } from '@spryker-oryx/product';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { LinkType } from '@spryker-oryx/ui/link';
 import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
@@ -20,7 +20,7 @@ export class ProductTitleComponent extends ProductMixin(
 ) {
   static styles = styles;
 
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected $link = computed(() => {
     if (!this.$options().linkType || this.$options().linkType === 'none') {

@@ -1,16 +1,16 @@
 import { inject } from '@spryker-oryx/di';
 import { BASE_ROUTE, RouterService } from '@spryker-oryx/router';
 import { Observable, of, switchMap, throwError } from 'rxjs';
-import { SemanticLink, SemanticLinkService } from './semantic-link.service';
+import { LinkOptions, LinkService } from './link.service';
 import { RouteLinkType, isRouterPath } from '@spryker-oryx/router/lit';
 
-export class DefaultSemanticLinkService implements SemanticLinkService {
+export class DefaultLinkService implements LinkService {
   constructor(
     protected baseRoute = inject(BASE_ROUTE, ''),
     protected routerService = inject(RouterService)
   ) {}
 
-  get(link: SemanticLink): Observable<string | undefined> {
+  get(link: LinkOptions): Observable<string | undefined> {
     return this.routerService.getRoutes().pipe(
       switchMap((routes) => {
         const route =

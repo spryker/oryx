@@ -6,7 +6,7 @@ import {
   SuggestionField,
   SuggestionRendererService,
 } from '@spryker-oryx/search';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
@@ -61,7 +61,7 @@ export class SearchBoxComponent
 
   protected suggestionRendererService = resolve(SuggestionRendererService);
   protected routerService = resolve(RouterService);
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   // TODO: simplify it when we find easier way how to skip emission of initialValue for each observable recreation
   protected query$ = new BehaviorSubject(this.query);
