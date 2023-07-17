@@ -34,14 +34,6 @@ export const defaultExperienceRoutes: RouteConfig[] = [
     type: RouteLinkType.Order,
   },
   {
-    path: '/my-account/addresses/edit/:id',
-    render: (): TemplateResult => html`<oryx-composition
-      route="/my-account/addresses/edit/:id"
-    ></oryx-composition>`,
-    name: 'Address Book Edit',
-    type: RouteLinkType.AddressBookEdit,
-  },
-  {
     path: '/:page',
     render: ({ page }): TemplateResult => html`<oryx-composition
       route="/${page}"
