@@ -7,13 +7,23 @@ export class DefaultFontService implements FontService {
 
   install(text: string): void {
     this.collectFonts(text).forEach((font) => {
-      this.pageMetaService.add({
-        name: 'link',
-        attrs: {
-          rel: 'stylesheet',
-          href: `https://fonts.googleapis.com/css2?family=${font}:wght@400;500;600;700&display=swap`,
+      this.pageMetaService.add([
+        {
+          name: 'link',
+          attrs: {
+            rel: 'preload',
+            href: `https://fonts.googleapis.com/css2?family=${font}:wght@400;500;600;700&display=swap`,
+          },
         },
-      });
+        {
+          name: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: `https://fonts.googleapis.com/css2?family=${font}:wght@400;500;600;700&display=swap`,
+            media: 'all',
+          },
+        },
+      ]);
     });
   }
 

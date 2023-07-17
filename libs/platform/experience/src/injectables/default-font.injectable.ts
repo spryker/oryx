@@ -24,13 +24,23 @@ export class DefaultFontInjectable implements FontInjectable {
       return of(false);
     }
 
-    resolve(PageMetaService).add({
-      name: 'link',
-      attrs: {
-        rel: 'stylesheet',
-        href,
+    resolve(PageMetaService).add([
+      {
+        name: 'link',
+        attrs: {
+          rel: 'preload',
+          href,
+        },
       },
-    });
+      {
+        name: 'link',
+        attrs: {
+          rel: 'stylesheet',
+          href,
+          media: 'all',
+        },
+      },
+    ]);
 
     if (isServer || !font || document.fonts.check(font)) {
       return of(true);
