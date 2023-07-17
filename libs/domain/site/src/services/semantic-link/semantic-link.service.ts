@@ -2,7 +2,7 @@ import { RouteLinkType } from '@spryker-oryx/router/lit';
 import { Observable } from 'rxjs';
 
 export interface SemanticLink {
-  type: RouteLinkType;
+  type: RouteLinkType | string;
   id?: string;
   params?: Record<string, string>;
 }
