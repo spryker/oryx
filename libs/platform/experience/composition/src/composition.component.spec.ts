@@ -13,7 +13,7 @@ import {
 import { html, TemplateResult } from 'lit';
 import { Observable, of } from 'rxjs';
 import { compositionComponent } from './composition.def';
-import * as composition from '@spryker-oryx/experience/composition';
+import * as compositionController from './composition-components.controller';
 import { CompositionComponent } from './composition.component';
 import { SpyInstance } from 'vitest';
 
@@ -59,9 +59,12 @@ const mockComponents = {
   getComponents: vi.fn().mockReturnValue(of([...BASE_COMPONENTS])),
   hasDynamicallyVisibleChild: vi.fn().mockReturnValue(of(false)),
 };
-vi.spyOn(composition, 'CompositionComponentsController') as SpyInstance;
+vi.spyOn(
+  compositionController,
+  'CompositionComponentsController'
+) as SpyInstance;
 (
-  composition.CompositionComponentsController as unknown as SpyInstance
+  compositionController.CompositionComponentsController as unknown as SpyInstance
 ).mockReturnValue(mockComponents);
 
 describe('CompositionComponent', () => {

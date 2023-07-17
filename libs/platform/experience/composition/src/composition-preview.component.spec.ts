@@ -15,7 +15,7 @@ import { Observable, of } from 'rxjs';
 import { previewCompositionComponent } from './composition.def';
 import { CompositionPreviewComponent } from './composition-preview.component';
 import { SpyInstance } from 'vitest';
-import * as composition from '@spryker-oryx/experience/composition';
+import * as compositionController from './composition-components.controller';
 
 const BASE_COMPONENTS = [
   { id: '1', type: 'oryx-content-banner' },
@@ -60,9 +60,12 @@ const mockComponents = {
   getComponents: vi.fn().mockReturnValue(of([...BASE_COMPONENTS])),
   hasDynamicallyVisibleChild: vi.fn().mockReturnValue(of(false)),
 };
-vi.spyOn(composition, 'CompositionComponentsController') as SpyInstance;
+vi.spyOn(
+  compositionController,
+  'CompositionComponentsController'
+) as SpyInstance;
 (
-  composition.CompositionComponentsController as unknown as SpyInstance
+  compositionController.CompositionComponentsController as unknown as SpyInstance
 ).mockReturnValue(mockComponents);
 
 describe('CompositionPreviewComponent', () => {

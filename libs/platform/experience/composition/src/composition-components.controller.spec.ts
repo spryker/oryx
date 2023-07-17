@@ -4,7 +4,7 @@ import * as litRxjs from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { CompositionComponentsController } from '@spryker-oryx/experience/composition';
+import { CompositionComponentsController } from './composition-components.controller';
 import { ExperienceService } from '../../src/services';
 import { Component } from '../../src/services/experience/models';
 

@@ -22,7 +22,7 @@ import { html, isServer, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { CompositionComponentsController } from '@spryker-oryx/experience/composition';
+import { CompositionComponentsController } from './composition-components.controller';
 
 @signalAware()
 @hydrate()
