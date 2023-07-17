@@ -5,7 +5,7 @@ import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { SuggestionResource } from '../../../models';
 import { SuggestionRenderer } from './suggestion-renderer.service';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
   products,
@@ -18,7 +18,7 @@ export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
 
         <oryx-content-link
           .options=${{
-            type: RouteLinkType.ProductList,
+            type: RouteType.ProductList,
             params: { q: query },
             button: true,
           }}

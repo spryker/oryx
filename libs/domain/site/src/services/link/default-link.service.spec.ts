@@ -1,6 +1,5 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { RouterService } from '@spryker-oryx/router';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouterService, RouteType } from '@spryker-oryx/router';
 import { Observable, of } from 'rxjs';
 import { DefaultLinkService } from './default-link.service';
 import { LinkService, LinkOptions } from './link.service';
@@ -32,7 +31,7 @@ describe('DefaultLinkService', () => {
         {
           path: '/:page',
           name: 'Page',
-          type: RouteLinkType.Page,
+          type: RouteType.Page,
         },
       ])
     );
@@ -51,13 +50,13 @@ describe('DefaultLinkService', () => {
     const callback = vi.fn();
 
     it('should return an observable', () => {
-      const link = { type: RouteLinkType.Page, id: 'about' };
+      const link = { type: RouteType.Page, id: 'about' };
       expect(service.get(link)).toBeInstanceOf(Observable);
     });
 
-    describe('when type equal "RouteLinkType.Page"', () => {
+    describe('when type equal "RouteType.Page"', () => {
       beforeEach(() => {
-        const link: LinkOptions = { type: RouteLinkType.Page, id: 'about' };
+        const link: LinkOptions = { type: RouteType.Page, id: 'about' };
         service.get(link).subscribe(callback);
       });
 
@@ -66,18 +65,18 @@ describe('DefaultLinkService', () => {
       });
     });
 
-    describe('when type equal "RouteLinkType.Product"', () => {
+    describe('when type equal "RouteType.Product"', () => {
       beforeEach(() => {
         mockRouterService.getRoutes.mockReturnValue(
           of([
             {
               path: '/product/:id',
               name: 'Page',
-              type: RouteLinkType.Product,
+              type: RouteType.Product,
             },
           ])
         );
-        const link: LinkOptions = { type: RouteLinkType.Product, id: '1' };
+        const link: LinkOptions = { type: RouteType.Product, id: '1' };
         service.get(link).subscribe(callback);
       });
 
@@ -86,19 +85,19 @@ describe('DefaultLinkService', () => {
       });
     });
 
-    describe('when type equal "RouteLinkType.Category"', () => {
+    describe('when type equal "RouteType.Category"', () => {
       beforeEach(() => {
         mockRouterService.getRoutes.mockReturnValue(
           of([
             {
               path: '/category/:id',
               name: 'Page',
-              type: RouteLinkType.Category,
+              type: RouteType.Category,
             },
           ])
         );
         const link: LinkOptions = {
-          type: RouteLinkType.Category,
+          type: RouteType.Category,
           id: 'laptops',
         };
         service.get(link).subscribe(callback);
@@ -111,7 +110,7 @@ describe('DefaultLinkService', () => {
       describe('and link contains params', () => {
         beforeEach(() => {
           const link: LinkOptions = {
-            type: RouteLinkType.Category,
+            type: RouteType.Category,
             id: 'laptops',
             params: { param1: '1', param2: '2' },
           };
@@ -129,7 +128,7 @@ describe('DefaultLinkService', () => {
     describe('when just type is defined', () => {
       beforeEach(() => {
         const link: LinkOptions = {
-          type: RouteLinkType.Cart,
+          type: RouteType.Cart,
         };
         service.get(link).subscribe(callback);
       });
@@ -139,11 +138,11 @@ describe('DefaultLinkService', () => {
       });
     });
 
-    describe('when type equal "RouteLinkType.ProductList"', () => {
+    describe('when type equal "RouteType.ProductList"', () => {
       describe('and link contains params', () => {
         beforeEach(() => {
           const link: LinkOptions = {
-            type: RouteLinkType.ProductList,
+            type: RouteType.ProductList,
             params: { param1: '1', param2: '2' },
           };
           service.get(link).subscribe(callback);
@@ -157,7 +156,7 @@ describe('DefaultLinkService', () => {
       describe('and "id" is not provided', () => {
         beforeEach(() => {
           const link: LinkOptions = {
-            type: RouteLinkType.ProductList,
+            type: RouteType.ProductList,
           };
           service.get(link).subscribe(callback);
         });

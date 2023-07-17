@@ -1,12 +1,12 @@
 import { Product } from '@spryker-oryx/product';
 import { DirectiveResult } from 'lit/async-directive';
 import { SuggestionField } from '../../services';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 export interface SuggestionLinks {
   title?: DirectiveResult;
   options: SuggestionResource[];
-  type: RouteLinkType | string;
+  type: RouteType | string;
   id?: string;
 }
 
@@ -15,7 +15,7 @@ export interface SuggestionResource {
   url?: string;
   params?: Record<string, string>;
   id?: string;
-  type?: RouteLinkType | string;
+  type?: RouteType | string;
 }
 
 export interface Suggestion {

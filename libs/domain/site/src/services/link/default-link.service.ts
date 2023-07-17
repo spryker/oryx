@@ -1,8 +1,8 @@
 import { inject } from '@spryker-oryx/di';
-import { BASE_ROUTE, RouterService } from '@spryker-oryx/router';
+import { BASE_ROUTE, RouteType, RouterService } from '@spryker-oryx/router';
 import { Observable, of, switchMap, throwError } from 'rxjs';
 import { LinkOptions, LinkService } from './link.service';
-import { RouteLinkType, isRouterPath } from '@spryker-oryx/router/lit';
+import { isRouterPath } from '@spryker-oryx/router/lit';
 
 export class DefaultLinkService implements LinkService {
   constructor(
@@ -15,7 +15,7 @@ export class DefaultLinkService implements LinkService {
       switchMap((routes) => {
         const route =
           routes?.find((route) => route.type === link.type) ??
-          routes?.find((route) => route.type === RouteLinkType.Page);
+          routes?.find((route) => route.type === RouteType.Page);
 
         if (!route || !isRouterPath(route)) {
           return throwError(() => new Error('Link type is not supported'));
@@ -24,7 +24,7 @@ export class DefaultLinkService implements LinkService {
         const dynamicId =
           link.type && link.id
             ? encodeURIComponent(link.id)
-            : route.type === RouteLinkType.Page
+            : route.type === RouteType.Page
             ? encodeURIComponent(link.type)
             : encodeURIComponent(link.id ?? '');
         const dynamicParams = link.params

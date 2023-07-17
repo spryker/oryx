@@ -6,14 +6,14 @@ import {
   suggestionAttributesNormalizer,
   suggestionProductNormalizer,
 } from './suggestion.normalizer';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 const mockDeserializedSuggestion = {
   completion: ['A'],
   categories: [
     {
       name: 'name',
-      type: RouteLinkType.Category,
+      type: RouteType.Category,
     },
   ],
   cmsPages: [
@@ -40,7 +40,7 @@ describe('Suggestion Normalizers', () => {
           {
             name: mockDeserializedSuggestion.completion[0],
             params: { q: mockDeserializedSuggestion.completion[0] },
-            type: RouteLinkType.ProductList,
+            type: RouteType.ProductList,
           },
         ],
         [SuggestionField.Categories]: mockDeserializedSuggestion.categories,

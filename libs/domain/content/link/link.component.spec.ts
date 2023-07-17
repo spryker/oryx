@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import { ContentLinkComponent } from './link.component';
 import { contentLinkComponent } from './link.def';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/page'));
@@ -95,7 +95,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: RouteLinkType.Product,
+            type: RouteType.Product,
             id: '123',
             params: { foo: 'bar' },
           }}
@@ -105,7 +105,7 @@ describe('ContentLinkComponent', () => {
 
     it('should resolve the link from the LinkService', () => {
       expect(semanticLinkService.get).toHaveBeenCalledWith({
-        type: RouteLinkType.Product,
+        type: RouteType.Product,
         id: '123',
         params: { foo: 'bar' },
       });
@@ -131,7 +131,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: RouteLinkType.Page,
+            type: RouteType.Page,
             noopener: true,
           }}
         ></oryx-content-link>`
@@ -148,7 +148,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: RouteLinkType.Page,
+            type: RouteType.Page,
             nofollow: true,
           }}
         ></oryx-content-link>`
@@ -165,7 +165,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: RouteLinkType.Page,
+            type: RouteType.Page,
             noopener: true,
             nofollow: true,
           }}

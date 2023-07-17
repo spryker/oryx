@@ -10,8 +10,7 @@ import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ProductCardComponent } from './card.component';
 import { productCardComponent } from './card.def';
-import { RouterService } from '@spryker-oryx/router';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouterService, RouteType } from '@spryker-oryx/router';
 
 const mockContext = {
   get: vi.fn().mockReturnValue(of('1')),
@@ -25,7 +24,7 @@ const mockRouterService = {
     of([
       {
         path: '/product/:id',
-        type: RouteLinkType.Product,
+        type: RouteType.Product,
       },
     ])
   ),

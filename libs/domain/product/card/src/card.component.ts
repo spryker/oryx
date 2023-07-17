@@ -21,7 +21,7 @@ import { ProductPriceOptions } from '../../price/src/price.model.js';
 import { ProductTitleOptions } from '../../title/src/title.model.js';
 import { ProductCardOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({
   template: 'grid',
@@ -88,7 +88,7 @@ export class ProductCardComponent extends ProductMixin(
 
   protected $link = computed(() =>
     this.semanticLinkService.get({
-      type: RouteLinkType.Product,
+      type: RouteType.Product,
       id: this.$product()?.sku,
     })
   );

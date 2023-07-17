@@ -9,7 +9,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { html } from 'lit/static-html.js';
 import { ProductTitleOptions } from './title.model';
 import { styles } from './title.styles';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({
   linkType: 'none',
@@ -27,7 +27,7 @@ export class ProductTitleComponent extends ProductMixin(
       return null;
     }
     return this.semanticLinkService.get({
-      type: RouteLinkType.Product,
+      type: RouteType.Product,
       id: this.$product()?.sku,
     });
   });

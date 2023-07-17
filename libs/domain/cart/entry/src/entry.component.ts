@@ -38,7 +38,7 @@ import {
 } from './entry.model';
 import { cartEntryStyles } from './styles';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 /**
  * Supports updating the quantity as well as removing the entry entirely.
@@ -89,7 +89,7 @@ export class CartEntryComponent
 
   protected $productLink = computed(() => {
     return this.semanticLinkService.get({
-      type: RouteLinkType.Product,
+      type: RouteType.Product,
       id: this.$product()?.sku,
     });
   });

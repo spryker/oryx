@@ -13,7 +13,7 @@ import {
   UserAddressListItemOptions,
 } from './address-list-item.model';
 import { styles } from './address-list-item.styles';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 @hydrate({ event: 'window:load' })
 export class UserAddressListItemComponent extends AddressMixin(
@@ -26,7 +26,7 @@ export class UserAddressListItemComponent extends AddressMixin(
   protected editLink = computed(() => {
     const id = this.$address()?.id;
     return this.semanticLinkService.get({
-      type: RouteLinkType.AddressBookEdit,
+      type: RouteType.AddressBookEdit,
       id,
     });
   });

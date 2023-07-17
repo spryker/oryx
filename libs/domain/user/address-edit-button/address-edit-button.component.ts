@@ -7,7 +7,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { AddressMixin } from '../src/mixins';
 import { CrudState } from '../src/models';
 import { AddressEditButtonOptions, Target } from './address-edit-button.model';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ target: Target.Link })
 @hydrate({ event: ['mouseover', 'focusin'] })
@@ -20,7 +20,7 @@ export class UserAddressEditButtonComponent extends AddressMixin(
     const id = this.$addressId();
     if (!id) return;
     return this.semanticLinkService.get({
-      type: RouteLinkType.AddressBookEdit,
+      type: RouteType.AddressBookEdit,
       id,
     });
   });

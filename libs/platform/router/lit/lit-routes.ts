@@ -6,23 +6,13 @@
 
 /// <reference types="urlpattern-polyfill" />
 
-import type { ReactiveController, ReactiveControllerHost } from 'lit';
+import { RouteType } from '@spryker-oryx/router';
+import {
+  html,
+  type ReactiveController,
+  type ReactiveControllerHost,
+} from 'lit';
 import { lastValueFrom, Observable } from 'rxjs';
-
-export const enum RouteLinkType {
-  Page = 'page',
-  ProductList = 'search',
-  Product = 'product',
-  Category = 'category',
-  Checkout = 'checkout',
-  CheckoutLogin = 'checkoutLogin',
-  Order = 'order',
-  Cart = 'cart',
-  Login = 'login',
-  AddressList = 'address-list',
-  AddressBookCreate = 'address-book-create',
-  AddressBookEdit = 'address-book-edit',
-}
 
 export interface BaseRouteConfig {
   name?: string;
@@ -33,7 +23,7 @@ export interface BaseRouteConfig {
   leave?: (params: {
     [key: string]: string | undefined;
   }) => Observable<boolean>;
-  type?: RouteLinkType | string;
+  type?: RouteType | string;
 }
 
 /**
@@ -63,8 +53,8 @@ export interface URLPatternRouteConfig extends BaseRouteConfig {
 export type RouteConfig = PathRouteConfig | URLPatternRouteConfig;
 
 export const isRouterPath = (
-  route: PathRouteConfig | URLPatternRouteConfig
-): route is PathRouteConfig => !!(route as PathRouteConfig).path;
+  route: PathRouteConfig | URLPatternRouteConfig | undefined
+): route is PathRouteConfig => !!(route as PathRouteConfig)?.path;
 
 // A cache of URLPatterns created for PathRouteConfig.
 // Rather than converting all given RoutConfigs to URLPatternRouteConfig, this
@@ -289,6 +279,12 @@ export class Routes implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): unknown {
+    if (!this._currentRoute?.render && isRouterPath(this._currentRoute)) {
+      return html`<oryx-composition
+        route=${this._currentRoute.path}
+      ></oryx-composition>`;
+    }
+
     return this._currentRoute?.render?.(this._currentParams);
   }
 

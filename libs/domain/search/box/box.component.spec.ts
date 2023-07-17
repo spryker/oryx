@@ -10,7 +10,7 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchBoxComponent } from './box.component';
 import { searchBoxComponent } from './box.def';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
@@ -259,7 +259,7 @@ describe('SearchBoxComponent', () => {
 
       it('should get the link from service without params', () => {
         expect(linkService.get).toHaveBeenCalledWith({
-          type: RouteLinkType.ProductList,
+          type: RouteType.ProductList,
         });
       });
 
@@ -281,7 +281,7 @@ describe('SearchBoxComponent', () => {
 
       it('should get the link from service with params', () => {
         expect(linkService.get).toHaveBeenCalledWith({
-          type: RouteLinkType.ProductList,
+          type: RouteType.ProductList,
           params: { q },
         });
       });

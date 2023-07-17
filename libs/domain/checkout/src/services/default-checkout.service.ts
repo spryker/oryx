@@ -26,7 +26,7 @@ import {
   PlaceOrderStart,
   PlaceOrderSuccess,
 } from './state';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 export class DefaultCheckoutService implements CheckoutService {
   protected cartId$ = this.cartService
@@ -103,7 +103,7 @@ export class DefaultCheckoutService implements CheckoutService {
       ? of(response)
       : this.linkService
           .get({
-            type: RouteLinkType.Order,
+            type: RouteType.Order,
             id: response.orderReference,
           })
           .pipe(map((redirectUrl) => ({ ...response, redirectUrl })));

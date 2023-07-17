@@ -1,8 +1,8 @@
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 import { Observable } from 'rxjs';
 
 export interface LinkOptions {
-  type: RouteLinkType | string;
+  type: RouteType | string;
   id?: string;
   params?: Record<string, string>;
 }

@@ -1,4 +1,4 @@
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 import { ColorType } from '@spryker-oryx/ui/link';
 
 export interface ContentLinkContent {
@@ -7,7 +7,7 @@ export interface ContentLinkContent {
 
 export interface ContentLinkOptions {
   url?: string;
-  type?: RouteLinkType;
+  type?: RouteType;
   id?: string;
   params?: Record<string, string>;
 

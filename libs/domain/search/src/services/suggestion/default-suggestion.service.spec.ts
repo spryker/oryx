@@ -10,7 +10,7 @@ import {
 } from '../adapter/suggestion.adapter';
 import { DefaultSuggestionService } from './default-suggestion.service';
 import { SuggestionService } from './suggestion.service';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 const completion = ['test', 'test 1', 'test 2', 'any', 'any test'];
 
@@ -71,7 +71,7 @@ describe('DefaultSuggestionService', () => {
           [SuggestionField.Suggestions]: completion.slice(0, 3).map((name) => ({
             name,
             params: { q: name },
-            type: RouteLinkType.ProductList,
+            type: RouteType.ProductList,
           })),
         })
       );

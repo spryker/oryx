@@ -19,7 +19,7 @@ import {
   UserAddressEditComponentOptions,
 } from './address-edit.model';
 import { styles } from './address-edit.styles';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ save: SaveOption.Save, inline: false })
 @hydrate({ event: ['mouseover', 'focusin'] })
@@ -32,7 +32,7 @@ export class UserAddressEditComponent extends AddressMixin(
   protected semanticLinkService = resolve(LinkService);
 
   protected $listPageRoute = signal(
-    this.semanticLinkService.get({ type: RouteLinkType.AddressList })
+    this.semanticLinkService.get({ type: RouteType.AddressList })
   );
 
   // TODO: move to central place

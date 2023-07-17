@@ -1,6 +1,6 @@
 import { CartComponentMixin } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { hydrate, I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -13,7 +13,7 @@ export class CheckoutLinkComponent extends I18nMixin(
   protected semanticLinkService = resolve(LinkService);
 
   protected $link = signal(
-    this.semanticLinkService.get({ type: RouteLinkType.Checkout })
+    this.semanticLinkService.get({ type: RouteType.Checkout })
   );
 
   protected override render(): TemplateResult | void {

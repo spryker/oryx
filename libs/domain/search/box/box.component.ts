@@ -28,7 +28,7 @@ import { html } from 'lit/static-html.js';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { searchBoxStyles } from './';
 import { SearchBoxOptions, SearchBoxProperties } from './box.model';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({
   minChars: 2,
@@ -85,7 +85,7 @@ export class SearchBoxComponent
 
   protected $link = computed(() =>
     this.semanticLinkService.get({
-      type: RouteLinkType.ProductList,
+      type: RouteType.ProductList,
       ...(this.query ? { params: { q: this.query } } : {}),
     })
   );

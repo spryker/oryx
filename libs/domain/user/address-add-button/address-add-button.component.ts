@@ -10,7 +10,7 @@ import {
   Target,
   UserAddressAddButtonOptions,
 } from './address-add-button.model';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ target: Target.Link })
 @hydrate({ event: ['mouseover', 'focusin'] })
@@ -20,7 +20,7 @@ export class UserAddressAddButtonComponent extends AddressMixin(
   protected semanticLinkService = resolve(LinkService);
 
   protected $createLink = signal(
-    this.semanticLinkService.get({ type: RouteLinkType.AddressBookCreate })
+    this.semanticLinkService.get({ type: RouteType.AddressBookCreate })
   );
 
   protected render(): TemplateResult | void {

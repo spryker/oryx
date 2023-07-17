@@ -11,7 +11,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { CheckoutAccountComponentOptions } from './account.model';
 import { checkoutAccountStyles } from './account.styles';
-import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ enableGuestCheckout: true })
 @hydrate({ event: 'window:load' })
@@ -32,7 +32,7 @@ export class CheckoutAccountComponent
   protected isAuthenticated = signal(this.authService.isAuthenticated());
   protected customer = signal(this.userService.getUser());
   protected loginRoute = signal(
-    this.linkService.get({ type: RouteLinkType.Login })
+    this.linkService.get({ type: RouteType.Login })
   );
   protected selected = signal(this.checkoutStateService.get('customer'));
 
