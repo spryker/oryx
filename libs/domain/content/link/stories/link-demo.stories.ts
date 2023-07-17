@@ -1,9 +1,9 @@
 import { getAppIcons } from '@/tools/storybook';
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
 import { ContentLinkContent, ContentLinkOptions } from '../link.model';
+import { RouteType } from '@spryker-oryx/router';
 
 export default {
   title: `${storybookPrefix}/Link`,
@@ -22,11 +22,7 @@ export default {
       control: { type: 'select' },
     },
     type: {
-      options: [
-        SemanticLinkType.Page,
-        SemanticLinkType.Category,
-        SemanticLinkType.Product,
-      ],
+      options: [RouteType.Page, RouteType.Category, RouteType.Product],
       control: { type: 'select' },
     },
     noopener: {
