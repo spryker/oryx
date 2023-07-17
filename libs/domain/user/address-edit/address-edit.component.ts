@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import {
   Address,
   AddressEventDetail,
@@ -19,6 +19,7 @@ import {
   UserAddressEditComponentOptions,
 } from './address-edit.model';
 import { styles } from './address-edit.styles';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
 
 @defaultOptions({ save: SaveOption.Save, inline: false })
 @hydrate({ event: ['mouseover', 'focusin'] })
@@ -31,7 +32,7 @@ export class UserAddressEditComponent extends AddressMixin(
   protected semanticLinkService = resolve(SemanticLinkService);
 
   protected $listPageRoute = signal(
-    this.semanticLinkService.get({ type: SemanticLinkType.AddressList })
+    this.semanticLinkService.get({ type: RouteLinkType.AddressList })
   );
 
   // TODO: move to central place

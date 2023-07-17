@@ -9,8 +9,23 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { lastValueFrom, Observable } from 'rxjs';
 
+export const enum RouteLinkType {
+  Page = 'page',
+  ProductList = 'search',
+  Product = 'product',
+  Category = 'category',
+  Checkout = 'checkout',
+  CheckoutLogin = 'checkoutLogin',
+  Order = 'order',
+  Cart = 'cart',
+  Login = 'login',
+  AddressList = 'address-list',
+  AddressBookCreate = 'address-book-create',
+  AddressBookEdit = 'address-book-edit',
+}
+
 export interface BaseRouteConfig {
-  name?: string | undefined;
+  name?: string;
   render?: (params: { [key: string]: string | undefined }) => unknown;
   enter?: (params: {
     [key: string]: string | undefined;
@@ -18,6 +33,7 @@ export interface BaseRouteConfig {
   leave?: (params: {
     [key: string]: string | undefined;
   }) => Observable<boolean>;
+  type?: RouteLinkType | string;
 }
 
 /**
@@ -45,6 +61,10 @@ export interface URLPatternRouteConfig extends BaseRouteConfig {
  * render() callback used to render a match to the outlet.
  */
 export type RouteConfig = PathRouteConfig | URLPatternRouteConfig;
+
+export const isRouterPath = (
+  route: PathRouteConfig | URLPatternRouteConfig
+): route is PathRouteConfig => !!(route as PathRouteConfig).path;
 
 // A cache of URLPatterns created for PathRouteConfig.
 // Rather than converting all given RoutConfigs to URLPatternRouteConfig, this

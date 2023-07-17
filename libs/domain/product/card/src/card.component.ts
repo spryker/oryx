@@ -6,7 +6,7 @@ import {
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
@@ -21,6 +21,7 @@ import { ProductPriceOptions } from '../../price/src/price.model.js';
 import { ProductTitleOptions } from '../../title/src/title.model.js';
 import { ProductCardOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
 
 @defaultOptions({
   template: 'grid',
@@ -87,7 +88,7 @@ export class ProductCardComponent extends ProductMixin(
 
   protected $link = computed(() =>
     this.semanticLinkService.get({
-      type: SemanticLinkType.Product,
+      type: RouteLinkType.Product,
       id: this.$product()?.sku,
     })
   );

@@ -1,5 +1,5 @@
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { ContentEntities } from '../services';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
 
 export interface ContentQualifier {
   type?: string;
@@ -9,7 +9,7 @@ export interface ContentQualifier {
 
 export interface Content {
   id?: string;
-  type?: SemanticLinkType;
+  type?: RouteLinkType;
   url?: string;
   heading: string;
   description: string;

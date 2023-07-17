@@ -1,4 +1,4 @@
-import { RouteConfig } from '@spryker-oryx/router/lit';
+import { RouteConfig, RouteLinkType } from '@spryker-oryx/router/lit';
 import { html, TemplateResult } from 'lit';
 import 'urlpattern-polyfill';
 
@@ -15,6 +15,7 @@ export const defaultExperienceRoutes: RouteConfig[] = [
       route="/product/:sku"
     ></oryx-composition>`,
     name: 'Product test',
+    type: RouteLinkType.Product,
   },
   {
     path: '/category/:id',
@@ -22,6 +23,7 @@ export const defaultExperienceRoutes: RouteConfig[] = [
       route="/category/:id"
     ></oryx-composition>`,
     name: 'Category test',
+    type: RouteLinkType.Category,
   },
   {
     path: '/order/:id',
@@ -29,6 +31,15 @@ export const defaultExperienceRoutes: RouteConfig[] = [
       route="/order/:id"
     ></oryx-composition>`,
     name: 'Order',
+    type: RouteLinkType.Order,
+  },
+  {
+    path: '/my-account/addresses/edit/:id',
+    render: (): TemplateResult => html`<oryx-composition
+      route="/my-account/addresses/edit/:id"
+    ></oryx-composition>`,
+    name: 'Address Book Edit',
+    type: RouteLinkType.AddressBookEdit,
   },
   {
     path: '/:page',
@@ -36,6 +47,7 @@ export const defaultExperienceRoutes: RouteConfig[] = [
       route="/${page}"
     ></oryx-composition>`,
     name: 'Page',
+    type: RouteLinkType.Page,
   },
   {
     path: '/*',

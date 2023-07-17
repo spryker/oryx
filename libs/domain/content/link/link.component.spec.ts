@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import { IconComponent } from '@spryker-oryx/ui/icon';
 import { LinkComponent } from '@spryker-oryx/ui/link';
 import { html } from 'lit';
@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { ContentLinkComponent } from './link.component';
 import { contentLinkComponent } from './link.def';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
 
 class MockSemanticLinkService implements Partial<SemanticLinkService> {
   get = vi.fn().mockReturnValue(of('/page'));
@@ -95,7 +96,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: SemanticLinkType.Product,
+            type: RouteLinkType.Product,
             id: '123',
             params: { foo: 'bar' },
           }}
@@ -105,7 +106,7 @@ describe('ContentLinkComponent', () => {
 
     it('should resolve the link from the SemanticLinkService', () => {
       expect(semanticLinkService.get).toHaveBeenCalledWith({
-        type: SemanticLinkType.Product,
+        type: RouteLinkType.Product,
         id: '123',
         params: { foo: 'bar' },
       });
@@ -131,7 +132,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: SemanticLinkType.Page,
+            type: RouteLinkType.Page,
             noopener: true,
           }}
         ></oryx-content-link>`
@@ -148,7 +149,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: SemanticLinkType.Page,
+            type: RouteLinkType.Page,
             nofollow: true,
           }}
         ></oryx-content-link>`
@@ -165,7 +166,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: SemanticLinkType.Page,
+            type: RouteLinkType.Page,
             noopener: true,
             nofollow: true,
           }}

@@ -1,3 +1,4 @@
+import { RouteConfig } from '@spryker-oryx/router/lit';
 import { Observable } from 'rxjs';
 
 export interface RouterService {
@@ -13,6 +14,8 @@ export interface RouterService {
   acceptParams(params: RouteParams): void;
   getUrl(route?: string, extras?: NavigationExtras): Observable<string>;
   getPathId(id: string): string | undefined;
+  setRoutes(routes: RouteConfig[]): void;
+  getRoutes(): RouteConfig[] | undefined;
 }
 
 export const RouterService = 'oryx.RouterService';

@@ -1,48 +1,47 @@
 import { inject } from '@spryker-oryx/di';
-import { BASE_ROUTE } from '@spryker-oryx/router';
+import { BASE_ROUTE, RouterService } from '@spryker-oryx/router';
 import { Observable, of, throwError } from 'rxjs';
-import {
-  SemanticLink,
-  SemanticLinkService,
-  SemanticLinkType,
-} from './semantic-link.service';
+import { SemanticLink, SemanticLinkService } from './semantic-link.service';
+import { RouteLinkType, isRouterPath } from '@spryker-oryx/router/lit';
 
 export class DefaultSemanticLinkService implements SemanticLinkService {
   protected types = {
-    [SemanticLinkType.ProductList]: (link: SemanticLink): string =>
-      `/search${
-        link.params
-          ? `?${this.getUrlParams(link.params)}`
-          : encodeURIComponent(link.id ?? '')
-      }`,
-    [SemanticLinkType.Page]: (link: SemanticLink): string =>
-      `/${encodeURIComponent(link.id ?? '')}`,
-    [SemanticLinkType.Product]: (link: SemanticLink): string =>
-      `/product/${encodeURIComponent(link.id ?? '')}`,
-    [SemanticLinkType.Category]: (link: SemanticLink): string =>
-      `/category/${link.id}${
-        link.params ? `?${this.getUrlParams(link.params)}` : ''
-      }`,
-    [SemanticLinkType.Cart]: (): string => '/cart',
-    [SemanticLinkType.Checkout]: (): string => '/checkout',
-    [SemanticLinkType.CheckoutLogin]: (): string => '/checkout',
-    [SemanticLinkType.Login]: (): string => '/login',
-    [SemanticLinkType.Order]: (link: SemanticLink): string =>
-      `/order/${encodeURIComponent(link.id ?? '')}`,
-    [SemanticLinkType.AddressList]: (): string => `/my-account/addresses`,
-    [SemanticLinkType.AddressBookCreate]: (): string =>
-      `/my-account/addresses/create`,
-    [SemanticLinkType.AddressBookEdit]: (link: SemanticLink): string =>
-      `/my-account/addresses/edit/${link.id}`,
+    // [SemanticLinkType.AddressList]: (): string => `/my-account/addresses`,
+    // [SemanticLinkType.AddressBookCreate]: (): string =>
+    //   `/my-account/addresses/create`,
+    // [SemanticLinkType.AddressBookEdit]: (link: SemanticLink): string =>
+    //   `/my-account/addresses/edit/${link.id}`,
   };
 
-  protected baseRoute = inject(BASE_ROUTE, '');
+  constructor(
+    protected baseRoute = inject(BASE_ROUTE, ''),
+    protected routerService = inject(RouterService)
+  ) {}
 
   get(link: SemanticLink): Observable<string | undefined> {
-    if (!this.types[link.type]) {
+    const routes = this.routerService.getRoutes();
+    const route =
+      routes?.find((route) => route.type === link.type) ??
+      routes?.find((route) => route.type === RouteLinkType.Page);
+
+    if (!route || !isRouterPath(route)) {
       return throwError(() => new Error('Link type is not supported'));
     }
-    return of(this.baseRoute + this.types[link.type]?.(link));
+
+    const dynamicId =
+      route.type === RouteLinkType.Page
+        ? encodeURIComponent(link.type)
+        : encodeURIComponent(link.id ?? '');
+    const dynamicParams = link.params
+      ? `?${this.getUrlParams(link.params)}`
+      : '';
+    const parts = route.path.split('/');
+    parts.pop();
+    const path = `${parts.join('/')}${
+      dynamicId ? `/${dynamicId}` : ''
+    }${dynamicParams}`;
+
+    return of(`${this.baseRoute}${path}`);
   }
 
   private getUrlParams(params: Record<string, string>): string {

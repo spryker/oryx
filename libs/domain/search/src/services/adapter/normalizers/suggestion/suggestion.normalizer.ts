@@ -6,11 +6,11 @@ import {
   ConcreteProductsNormalizer,
   Product,
 } from '@spryker-oryx/product';
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { map, Observable } from 'rxjs';
 import { Suggestion } from '../../../../models';
 import { SuggestionField } from '../../suggestion.adapter';
 import { DeserializedSuggestion } from './model';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
 
 export const SuggestionNormalizer = 'oryx.SuggestionNormalizer*';
 
@@ -23,14 +23,14 @@ export function suggestionAttributesNormalizer(
     [SuggestionField.Suggestions]: completion.map((name) => ({
       name,
       params: { q: name },
-      type: SemanticLinkType.ProductList,
+      type: RouteLinkType.ProductList,
     })),
     [SuggestionField.Categories]: categories.map((category) => ({
       name: category.name,
       id: categoryCollection?.find(
         (collection) => category.name === collection.name
       )?.idCategory,
-      type: SemanticLinkType.Category,
+      type: RouteLinkType.Category,
     })),
   };
 }

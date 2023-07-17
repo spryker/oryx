@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AddressMixin, CrudState } from '@spryker-oryx/user';
@@ -13,6 +13,7 @@ import {
   UserAddressListItemOptions,
 } from './address-list-item.model';
 import { styles } from './address-list-item.styles';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
 
 @hydrate({ event: 'window:load' })
 export class UserAddressListItemComponent extends AddressMixin(
@@ -25,7 +26,7 @@ export class UserAddressListItemComponent extends AddressMixin(
   protected editLink = computed(() => {
     const id = this.$address()?.id;
     return this.semanticLinkService.get({
-      type: SemanticLinkType.AddressBookEdit,
+      type: RouteLinkType.AddressBookEdit,
       id,
     });
   });

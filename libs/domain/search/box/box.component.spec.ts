@@ -4,12 +4,13 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import { SuggestionRendererService } from '@spryker-oryx/search';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import { typeheadComponent } from '@spryker-oryx/ui';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchBoxComponent } from './box.component';
 import { searchBoxComponent } from './box.def';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
 
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
@@ -260,7 +261,7 @@ describe('SearchBoxComponent', () => {
 
       it('should get the link from service without params', () => {
         expect(linkService.get).toHaveBeenCalledWith({
-          type: SemanticLinkType.ProductList,
+          type: RouteLinkType.ProductList,
         });
       });
 
@@ -282,7 +283,7 @@ describe('SearchBoxComponent', () => {
 
       it('should get the link from service with params', () => {
         expect(linkService.get).toHaveBeenCalledWith({
-          type: SemanticLinkType.ProductList,
+          type: RouteLinkType.ProductList,
           params: { q },
         });
       });

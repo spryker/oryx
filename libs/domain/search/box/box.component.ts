@@ -6,7 +6,7 @@ import {
   SuggestionField,
   SuggestionRendererService,
 } from '@spryker-oryx/search';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
@@ -28,6 +28,7 @@ import { html } from 'lit/static-html.js';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { searchBoxStyles } from './';
 import { SearchBoxOptions, SearchBoxProperties } from './box.model';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
 
 @defaultOptions({
   minChars: 2,
@@ -84,7 +85,7 @@ export class SearchBoxComponent
 
   protected $link = computed(() =>
     this.semanticLinkService.get({
-      type: SemanticLinkType.ProductList,
+      type: RouteLinkType.ProductList,
       ...(this.query ? { params: { q: this.query } } : {}),
     })
   );

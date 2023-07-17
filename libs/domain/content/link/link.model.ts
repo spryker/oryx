@@ -1,4 +1,4 @@
-import { SemanticLinkType } from '@spryker-oryx/site';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
 import { ColorType } from '@spryker-oryx/ui/link';
 
 export interface ContentLinkContent {
@@ -7,7 +7,7 @@ export interface ContentLinkContent {
 
 export interface ContentLinkOptions {
   url?: string;
-  type?: SemanticLinkType;
+  type?: RouteLinkType;
   id?: string;
   params?: Record<string, string>;
 

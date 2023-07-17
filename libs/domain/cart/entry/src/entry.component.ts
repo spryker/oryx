@@ -10,7 +10,6 @@ import {
   NotificationService,
   PricingService,
   SemanticLinkService,
-  SemanticLinkType,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
@@ -38,6 +37,8 @@ import {
   RemoveByQuantity,
 } from './entry.model';
 import { cartEntryStyles } from './styles';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
 
 /**
  * Supports updating the quantity as well as removing the entry entirely.
@@ -88,7 +89,7 @@ export class CartEntryComponent
 
   protected $productLink = computed(() => {
     return this.semanticLinkService.get({
-      type: SemanticLinkType.Product,
+      type: RouteLinkType.Product,
       id: this.$product()?.sku,
     });
   });
@@ -105,7 +106,7 @@ export class CartEntryComponent
     if (!this.$options()?.enableItemImage) return;
 
     return html`
-      <a href=${this.$productLink()}>
+      <a href=${ifDefined(this.$productLink())}>
         <oryx-product-media
           .options=${{ containerSize: ProductMediaContainerSize.Thumbnail }}
         ></oryx-product-media>

@@ -1,9 +1,9 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
 import {
   DefaultSemanticLinkService,
   SemanticLink,
   SemanticLinkService,
-  SemanticLinkType,
 } from '@spryker-oryx/site';
 import { Observable } from 'rxjs';
 
@@ -36,13 +36,13 @@ describe('DefaultLinkService', () => {
     let callback: any;
 
     it('should return an observable', () => {
-      const link: SemanticLink = { type: SemanticLinkType.Page, id: 'about' };
+      const link: SemanticLink = { type: RouteLinkType.Page, id: 'about' };
       expect(service.get(link)).toBeInstanceOf(Observable);
     });
 
-    describe('when type equal "SemanticLinkType.Page"', () => {
+    describe('when type equal "RouteLinkType.Page"', () => {
       beforeEach(() => {
-        const link: SemanticLink = { type: SemanticLinkType.Page, id: 'about' };
+        const link: SemanticLink = { type: RouteLinkType.Page, id: 'about' };
         callback = vi.fn();
         service.get(link).subscribe(callback);
       });
@@ -52,9 +52,9 @@ describe('DefaultLinkService', () => {
       });
     });
 
-    describe('when type equal "SemanticLinkType.Product"', () => {
+    describe('when type equal "RouteLinkType.Product"', () => {
       beforeEach(() => {
-        const link: SemanticLink = { type: SemanticLinkType.Product, id: '1' };
+        const link: SemanticLink = { type: RouteLinkType.Product, id: '1' };
         callback = vi.fn();
         service.get(link).subscribe(callback);
       });
@@ -64,10 +64,10 @@ describe('DefaultLinkService', () => {
       });
     });
 
-    describe('when type equal "SemanticLinkType.Category"', () => {
+    describe('when type equal "RouteLinkType.Category"', () => {
       beforeEach(() => {
         const link: SemanticLink = {
-          type: SemanticLinkType.Category,
+          type: RouteLinkType.Category,
           id: 'laptops',
         };
         callback = vi.fn();
@@ -81,7 +81,7 @@ describe('DefaultLinkService', () => {
       describe('and link contains params', () => {
         beforeEach(() => {
           const link: SemanticLink = {
-            type: SemanticLinkType.Category,
+            type: RouteLinkType.Category,
             id: 'laptops',
             params: { param1: '1', param2: '2' },
           };
@@ -97,10 +97,10 @@ describe('DefaultLinkService', () => {
       });
     });
 
-    describe('when type equal "SemanticLinkType.Cart"', () => {
+    describe('when type equal "RouteLinkType.Cart"', () => {
       beforeEach(() => {
         const link: SemanticLink = {
-          type: SemanticLinkType.Cart,
+          type: RouteLinkType.Cart,
         };
         callback = vi.fn();
         service.get(link).subscribe(callback);
@@ -111,10 +111,10 @@ describe('DefaultLinkService', () => {
       });
     });
 
-    describe('when type equal "SemanticLinkType.Checkout"', () => {
+    describe('when type equal "RouteLinkType.Checkout"', () => {
       beforeEach(() => {
         const link: SemanticLink = {
-          type: SemanticLinkType.Checkout,
+          type: RouteLinkType.Checkout,
         };
         callback = vi.fn();
         service.get(link).subscribe(callback);
@@ -125,10 +125,10 @@ describe('DefaultLinkService', () => {
       });
     });
 
-    describe('when type equal "SemanticLinkType.ProductList"', () => {
+    describe('when type equal "RouteLinkType.ProductList"', () => {
       beforeEach(() => {
         const link: SemanticLink = {
-          type: SemanticLinkType.ProductList,
+          type: RouteLinkType.ProductList,
           id: '?test=test',
         };
         callback = vi.fn();
@@ -142,7 +142,7 @@ describe('DefaultLinkService', () => {
       describe('and link contains params', () => {
         beforeEach(() => {
           const link: SemanticLink = {
-            type: SemanticLinkType.ProductList,
+            type: RouteLinkType.ProductList,
             params: { param1: '1', param2: '2' },
           };
           callback = vi.fn();
@@ -157,7 +157,7 @@ describe('DefaultLinkService', () => {
       describe('and "id" is not provided', () => {
         beforeEach(() => {
           const link: SemanticLink = {
-            type: SemanticLinkType.ProductList,
+            type: RouteLinkType.ProductList,
           };
           callback = vi.fn();
           service.get(link).subscribe(callback);

@@ -16,6 +16,7 @@ import {
   RouterEventType,
   RouterService,
 } from './router.service';
+import { RouteConfig } from '../../lit/lit-routes';
 
 const CURRENT_PAGE = 'currentPage';
 const PREVIOUS_PAGE = 'previousPage';
@@ -29,6 +30,7 @@ export class DefaultRouterService implements RouterService {
   private routerEvents$ = new Subject<RouterEvent>();
   private storedRoute$ = new BehaviorSubject('');
 
+  protected routes?: RouteConfig[];
   protected storageService = inject(StorageService);
 
   go(route: string, extras?: NavigationExtras): void {
@@ -122,6 +124,14 @@ export class DefaultRouterService implements RouterService {
     return tokenIndex !== -1 && routeTokens.length > tokenIndex + 1
       ? routeTokens[tokenIndex + 1]
       : undefined;
+  }
+
+  setRoutes(routes: RouteConfig[]): void {
+    this.routes = routes;
+  }
+
+  getRoutes(): RouteConfig[] | undefined {
+    return this.routes;
   }
 
   protected createUrlParams(params?: {

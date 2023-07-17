@@ -1,8 +1,10 @@
 import { CartComponentMixin } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { RouteLinkType } from '@spryker-oryx/router/lit';
+import { SemanticLinkService } from '@spryker-oryx/site';
 import { hydrate, I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 @hydrate({ event: ['window:load'] })
 export class CheckoutLinkComponent extends I18nMixin(
@@ -11,7 +13,7 @@ export class CheckoutLinkComponent extends I18nMixin(
   protected semanticLinkService = resolve(SemanticLinkService);
 
   protected $link = signal(
-    this.semanticLinkService.get({ type: SemanticLinkType.Checkout })
+    this.semanticLinkService.get({ type: RouteLinkType.Checkout })
   );
 
   protected override render(): TemplateResult | void {
@@ -19,7 +21,7 @@ export class CheckoutLinkComponent extends I18nMixin(
 
     return html`
       <oryx-button ?loading=${this.$isBusy()}>
-        <a href=${this.$link()}>${this.i18n('cart.checkout')}</a>
+        <a href=${ifDefined(this.$link())}>${this.i18n('cart.checkout')}</a>
       </oryx-button>
     `;
   }
