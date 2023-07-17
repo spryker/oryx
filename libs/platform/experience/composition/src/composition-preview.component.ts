@@ -1,6 +1,5 @@
-import { Component, PreviewExperienceService } from '@spryker-oryx/experience';
+import { PreviewExperienceService } from '@spryker-oryx/experience';
 import {
-  computed,
   effect,
   elementEffect,
   observe,
@@ -17,7 +16,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-
 import { CompositionComponent } from './composition.component';
 import { compositionPreviewStyles } from './composition.styles';
 
