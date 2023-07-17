@@ -30,7 +30,7 @@ export class DefaultRouterService implements RouterService {
   private routerEvents$ = new Subject<RouterEvent>();
   private storedRoute$ = new BehaviorSubject('');
 
-  protected routes?: RouteConfig[];
+  protected routes$ = new ReplaySubject<RouteConfig[]>(1);
   protected storageService = inject(StorageService);
 
   go(route: string, extras?: NavigationExtras): void {
@@ -127,11 +127,11 @@ export class DefaultRouterService implements RouterService {
   }
 
   setRoutes(routes: RouteConfig[]): void {
-    this.routes = routes;
+    this.routes$.next(routes);
   }
 
-  getRoutes(): RouteConfig[] | undefined {
-    return this.routes;
+  getRoutes(): Observable<RouteConfig[] | undefined> {
+    return this.routes$.asObservable();
   }
 
   protected createUrlParams(params?: {

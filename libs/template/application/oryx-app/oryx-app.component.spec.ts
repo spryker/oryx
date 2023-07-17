@@ -3,7 +3,7 @@ import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { RouteParams, RouterService } from '@spryker-oryx/router';
-import { LitRouter } from '@spryker-oryx/router/lit';
+import { LitRouter, RouteConfig } from '@spryker-oryx/router/lit';
 import { siteProviders } from '@spryker-oryx/site';
 import { html } from 'lit';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -25,6 +25,10 @@ class MockRouterService implements Partial<RouterService> {
   }
   acceptParams(params: RouteParams): void {
     this.params$.next(params);
+  }
+
+  setRoutes(routes: RouteConfig[]): void {
+    //
   }
 }
 
