@@ -29,10 +29,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
 
     return this.pickingHttpService
       .get<GetPickingListResponse>(`/picking-lists${query}`)
-      .pipe(
-        switchMap((res) => this.parsePickingLists(res)),
-        tap(() => console.log('get adapter'))
-      );
+      .pipe(switchMap((res) => this.parsePickingLists(res)));
   }
 
   startPicking(pickingList: PickingList): Observable<PickingList> {

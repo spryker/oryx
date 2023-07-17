@@ -87,7 +87,6 @@ export class PickingSyncActionHandlerService
     }
 
     return this.onlineAdapter.get({ ids: sync.payload.ids }).pipe(
-      tap(() => console.log('handlePush')),
       combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
       switchMap(async ([pickingLists, store]) => {
         const pickingListsIdsToRemove = sync.payload.ids.filter((id) => {

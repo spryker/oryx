@@ -50,8 +50,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
         status: PickingListStatus.ReadyForPicking,
         searchOrderReference: value,
       });
-    }),
-    tap(() => console.log('lists'))
+    })
   );
 
   @asyncState()

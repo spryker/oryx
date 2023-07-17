@@ -48,8 +48,7 @@ export const PickingListMixin = <
       distinctUntilChanged(),
       filter(isDefined),
       switchMap((id) => this.pickingListService.get({ ids: [id] })),
-      map((list) => list?.[0] ?? null),
-      tap(() => console.log('mixin'))
+      map((list) => list?.[0] ?? null)
     );
 
     @asyncState()

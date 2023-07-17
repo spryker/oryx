@@ -17,7 +17,6 @@ import {
 } from '../models/warehouse-user-assignment';
 import { StorageService } from '@spryker-oryx/core';
 import { AuthService, OauthService } from '@spryker-oryx/auth';
-import { nextTick } from '@spryker-oryx/utilities';
 
 const mockWarehouseUserAssignment: WarehouseUserAssignment = {
   id: 'id1',
@@ -38,6 +37,7 @@ class MockWarehouseUserAssignmentsAdapter
 }
 
 class MockStorageService implements Partial<StorageService> {
+  get = vi.fn().mockReturnValue(of(undefined));
   set = vi.fn().mockReturnValue(of(undefined));
   remove = vi.fn().mockReturnValue(of(undefined));
 }
@@ -133,6 +133,18 @@ describe('WarehouseUserAssignmentsDefaultService', () => {
 
       it('should get the list of warehouse user assignments', () => {
         expect(callback).toHaveBeenCalledWith([mockWarehouseUserAssignment]);
+      });
+    });
+
+    describe('when "getUserAssignment" method is called', () => {
+      beforeEach(() => {
+        service.getUserAssignment().subscribe(callback);
+      });
+
+      it('should call the "get" method of the storage service', () => {
+        expect(storageService.get).toHaveBeenCalledWith(
+          warehouseUserAssignmentStorageKey
+        );
       });
     });
 

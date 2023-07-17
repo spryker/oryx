@@ -50,8 +50,7 @@ export class OfflineDataPlugin implements AppPlugin {
             );
           }
           return of(undefined);
-        }),
-        tap(() => console.log('apply'))
+        })
       )
       .subscribe();
   }
