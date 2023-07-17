@@ -135,7 +135,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        parallelism: [1, 2]
+        parallelism: [1, 2, 3]
     steps:
       - uses: actions/checkout@v3
         with:
