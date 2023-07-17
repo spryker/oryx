@@ -91,14 +91,17 @@ describe('AcceptLanguageInterceptor', () => {
       const locale = 'en-US';
       (localeService.get as Mock).mockReturnValue(of(locale));
       (fromFetch as Mock).mockReturnValue(of(null));
+      const req = new Request(testCase.url, options);
+      const expected = req.clone();
 
-      handler.handle(testCase.url, options).subscribe();
+      if (testCase.shouldIntercept) {
+        expected.headers.set('Accept-Language', locale);
+      }
+
+      handler.handle(req).subscribe();
       await nextFrame();
       expect(fromFetch).toHaveBeenCalledWith(
-        testCase.url,
-        testCase.shouldIntercept
-          ? { headers: new Headers({ 'Accept-Language': locale }) }
-          : options
+        testCase.shouldIntercept ? expected : req
       );
     });
   });

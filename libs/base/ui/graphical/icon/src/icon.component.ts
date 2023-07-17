@@ -1,6 +1,6 @@
 import {
   computed,
-  hydratable,
+  hydrate,
   iconInjectable,
   signalAware,
   signalProperty,
@@ -14,7 +14,7 @@ import { styles } from './icon.styles';
 
 @ssrShim('style')
 @signalAware()
-@hydratable()
+@hydrate()
 export class IconComponent extends LitElement implements IconProperties {
   static styles = styles;
 

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Pagination, ProductList } from '../models';
+import { Pagination, ProductList } from '../../models';
 
 export interface ProductListPageService {
   get(): Observable<ProductList | undefined>;

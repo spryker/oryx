@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
-import { hydratable, Size } from '@spryker-oryx/utilities';
+import { hydrate, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -17,7 +17,7 @@ import { styles } from './login.styles';
   enableRedirect: true,
   passwordVisibility: PasswordVisibilityStrategy.Click,
 })
-@hydratable(['mouseover', 'focus'])
+@hydrate({ event: ['mouseover', 'focus'] })
 export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   static styles = styles;
 

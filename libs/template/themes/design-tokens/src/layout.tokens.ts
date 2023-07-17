@@ -14,7 +14,7 @@ export const layoutTokens: ThemeToken = {
     grid: '4',
     split: { equal: '6', aside: '3', main: '8' },
   },
-  row: { gap: '10px' },
+  row: { gap: '20px' },
   divider: { width: '1px' },
 };
 

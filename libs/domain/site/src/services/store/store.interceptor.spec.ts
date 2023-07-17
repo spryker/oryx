@@ -93,14 +93,17 @@ describe('StoreInterceptor', () => {
       (storeService.getAll as Mock).mockReturnValue(of([{}, {}]));
       (storeService.get as Mock).mockReturnValue(of({ id: STORE }));
       (fromFetch as Mock).mockReturnValue(of(null));
+      const req = new Request(testCase.url, options);
+      const expected = req.clone();
 
-      handler.handle(testCase.url, options).subscribe();
+      if (testCase.shouldIntercept) {
+        expected.headers.set('X-Store', STORE);
+      }
+
+      handler.handle(req).subscribe();
       await nextFrame();
       expect(fromFetch).toHaveBeenCalledWith(
-        testCase.url,
-        testCase.shouldIntercept
-          ? { headers: new Headers({ 'X-Store': STORE }) }
-          : options
+        testCase.shouldIntercept ? expected : req
       );
     });
   });
@@ -113,8 +116,8 @@ describe('StoreInterceptor', () => {
     (storeService.getAll as Mock).mockReturnValue(of([{}]));
     (fromFetch as Mock).mockReturnValue(of(null));
 
-    handler.handle(url, options).subscribe();
+    handler.handle(new Request(url, options)).subscribe();
     await nextFrame();
-    expect(fromFetch).toHaveBeenCalledWith(url, options);
+    expect(fromFetch).toHaveBeenCalledWith(new Request(url, options));
   });
 });

@@ -1,8 +1,4 @@
-import {
-  HttpHandlerFn,
-  HttpInterceptor,
-  RequestOptions,
-} from '@spryker-oryx/core';
+import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { map, Observable, switchMap, take } from 'rxjs';
@@ -17,38 +13,31 @@ export class AcceptLanguageInterceptor implements HttpInterceptor {
     protected injector = inject(INJECTOR)
   ) {}
 
-  intercept(
-    url: string,
-    options: RequestOptions,
-    handle: HttpHandlerFn
-  ): Observable<Response> {
+  intercept(req: Request, handle: HttpHandlerFn): Observable<Response> {
     return this.injector
       .inject(LocaleService)
       .get()
       .pipe(
         take(1),
-        map((locale) => this.addLanguageHeader(locale, options)),
-        switchMap((options) => handle(url, options))
+        map((locale) => this.addLanguageHeader(locale, req)),
+        switchMap((newReq) => handle(newReq))
       );
   }
 
-  protected addLanguageHeader(
-    locale: string,
-    options: RequestOptions
-  ): RequestOptions {
-    const headers = new Headers(options.headers);
+  protected addLanguageHeader(locale: string, req: Request): Request {
+    const newReq = req.clone();
 
-    headers.set(this.headerName, locale);
+    newReq.headers.set(this.headerName, locale);
 
-    return { ...options, headers };
+    return newReq;
   }
 
-  shouldInterceptRequest(urlStr: string): boolean {
-    if (!this.SCOS_BASE_URL || !urlStr.startsWith(this.SCOS_BASE_URL)) {
+  shouldInterceptRequest({ url }: Request): boolean {
+    if (!this.SCOS_BASE_URL || !url.startsWith(this.SCOS_BASE_URL)) {
       return false;
     }
 
-    const path = new URL(urlStr).pathname;
+    const path = new URL(url).pathname;
 
     return !this.excludedEndpoints.some((endpoint) =>
       path.startsWith(endpoint)

@@ -33,29 +33,35 @@ export class HeaderFragment {
     this.getLogoutButton().click();
   };
 
-  changeLocale = (locale: string) => {
+  changeLocale = (locale: string, isHydrated = false) => {
+    if (!isHydrated) {
+      cy.hydrateElemenet('/assets/locale-selector.component-*.js', () => {
+        this.getLocaleButton().click();
+      });
+    }
+
+    const selector = `oryx-option[value="${locale}"]`;
+
+    this.getLocaleButton().click();
+
     this.initProductsUpdateInterceptor();
-
-    this.getLocaleButton().trigger('mouseenter').wait(150).click();
-
-    this.getLocaleSelector()
-      .find(`oryx-option[value="${locale}"]`)
-      .wait(75)
-      .click();
-
+    this.getLocaleSelector().find(selector).click();
     this.waitForProductsUpdate();
   };
 
-  changeCurrency = (currency: string) => {
+  changeCurrency = (currency: string, isHydrated = false) => {
+    if (!isHydrated) {
+      cy.hydrateElemenet('/assets/currency-selector.component-*.js', () => {
+        this.getCurrencyButton().click();
+      });
+    }
+
+    const selector = `oryx-option[value="${currency}"]`;
+
+    this.getCurrencyButton().click();
+
     this.initProductsUpdateInterceptor();
-
-    this.getCurrencyButton().trigger('mouseenter').wait(150).click();
-
-    this.getCurrencySelector()
-      .find(`oryx-option[value="${currency}"]`)
-      .wait(75)
-      .click();
-
+    this.getCurrencySelector().find(selector).click();
     this.waitForProductsUpdate();
   };
 

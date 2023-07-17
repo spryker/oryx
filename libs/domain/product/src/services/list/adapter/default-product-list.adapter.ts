@@ -5,8 +5,8 @@ import {
   ApiProductModel,
   ProductList,
   ProductListQualifier,
-} from '../../models';
-import { ProductListNormalizer } from './normalizers/product-list';
+} from '../../../models';
+import { ProductListNormalizer } from '../../adapter';
 import { ProductListAdapter } from './product-list.adapter';
 
 export class DefaultProductListAdapter implements ProductListAdapter {
@@ -57,6 +57,7 @@ export class DefaultProductListAdapter implements ProductListAdapter {
   get(qualifier: ProductListQualifier): Observable<ProductList> {
     const include = [
       ApiProductModel.Includes.AbstractProducts,
+      ApiProductModel.Includes.CategoryNodes,
       ApiProductModel.Includes.ConcreteProducts,
       ApiProductModel.Includes.ConcreteProductImageSets,
       ApiProductModel.Includes.ConcreteProductPrices,

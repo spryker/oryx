@@ -3,7 +3,7 @@ import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   computed,
-  hydratable,
+  hydrate,
   signal,
   signalAware,
 } from '@spryker-oryx/utilities';
@@ -13,7 +13,7 @@ import { of } from 'rxjs';
 import { ArticleContext } from '../../article-context';
 
 @signalAware()
-@hydratable()
+@hydrate()
 export class ArticleComponent extends LitElement {
   protected contentService = resolve(ContentService);
   protected contextController = new ContextController(this);

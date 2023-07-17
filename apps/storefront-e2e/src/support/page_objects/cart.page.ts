@@ -1,19 +1,9 @@
 import { CartEntryFragment } from '../page_fragments/cart-entry.fragment';
 import { CartTotalsFragment } from '../page_fragments/cart-totals.fragment';
 import { AbstractSFPage } from './abstract.page';
-import { LandingPage } from './landing.page';
 
 export class CartPage extends AbstractSFPage {
   url = '/cart';
-
-  visit(): void {
-    // temporary fix of an issue with the Checkout button click in SSR cart
-    const homePage = new LandingPage();
-    homePage.visit();
-    homePage.header.getCartSummary().click();
-
-    this.waitForLoaded();
-  }
 
   private cartTotals = new CartTotalsFragment();
 
@@ -40,9 +30,6 @@ export class CartPage extends AbstractSFPage {
     this.getDeleteModal().find('oryx-button[slot="footer-more"]');
 
   checkout = () => {
-    // fixes possible test flakiness caused by hydration delay
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
-    this.getCheckoutBtn().click({ force: true });
+    this.getCheckoutBtn().click();
   };
 }

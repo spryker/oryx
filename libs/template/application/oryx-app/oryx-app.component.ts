@@ -1,9 +1,9 @@
 import { LitRouter } from '@spryker-oryx/router/lit';
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { styles } from './oryx-app.styles';
 
-@hydratable()
+@hydrate()
 export class OryxAppComponent extends LitElement {
   static styles = styles;
 

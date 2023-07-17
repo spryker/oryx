@@ -2,11 +2,13 @@ import { camelize } from '@spryker-oryx/core/utilities';
 import { of, take } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { ProductMediaSetNormalizer } from '../media';
+import { CategoryIdNormalizer } from '../category-id';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 import {
   productAttributeNormalizer,
   productMediaSetNormalizer,
+  productNodeNormalizer,
   productPriceNormalizer,
 } from './product.normalizer';
 
@@ -25,6 +27,7 @@ const mockTokensData = {
       externalUrlSmall: 'externalUrlSmall',
     },
   ],
+  [CategoryIdNormalizer]: '20',
 };
 const mockTransformer = {
   transform: vi
@@ -79,7 +82,21 @@ describe('Product Normalizers', () => {
         color: 'Color',
         brand: 'Brand',
       },
-    };
+      [camelize(ApiProductModel.Includes.AbstractProducts)]: [
+        {
+          [camelize(ApiProductModel.Includes.CategoryNodes)]: [
+            {
+              nodeId: 8,
+              isActive: false,
+            },
+            {
+              nodeId: 10,
+              isActive: true,
+            },
+          ],
+        },
+      ],
+    } as unknown as DeserializedProduct;
   });
 
   describe('Product Attributes Normalizer', () => {
@@ -136,6 +153,22 @@ describe('Product Normalizers', () => {
             expect(mockTransformer.transform).toHaveBeenCalledWith(
               mockDeserializedProduct.concreteProductImageSets?.[0].imageSets,
               ProductMediaSetNormalizer
+            );
+            done();
+          });
+      }));
+  });
+
+  describe('Product Node Normalizer', () => {
+    it('should call node transformer', () =>
+      new Promise<void>((done) => {
+        productNodeNormalizer(mockDeserializedProduct, mockTransformer)
+          .pipe(take(1))
+          .subscribe((normalized) => {
+            expect(normalized).toBe(mockTokensData[CategoryIdNormalizer]);
+            expect(mockTransformer.transform).toHaveBeenCalledWith(
+              mockDeserializedProduct.abstractProducts?.[0].categoryNodes,
+              CategoryIdNormalizer
             );
             done();
           });

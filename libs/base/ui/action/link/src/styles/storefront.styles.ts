@@ -30,7 +30,7 @@ export const storefrontLinkStyles = css`
   }
 
   :host(:hover) ::slotted(a) {
-    text-decoration: solid underline var(--oryx-color-primary-9) 1px;
+    text-decoration: solid underline currentColor 1px;
     text-underline-offset: 5px;
   }
 

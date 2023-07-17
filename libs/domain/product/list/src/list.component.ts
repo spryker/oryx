@@ -4,22 +4,30 @@ import {
   ProductListPageService,
   ProductListQualifier,
   ProductListService,
+  ProductMixin,
 } from '@spryker-oryx/product';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ProductListOptions } from './list.model';
 
-@hydratable()
-export class ProductListComponent extends LayoutMixin(
-  ContentMixin<ProductListOptions>(LitElement)
+@hydrate()
+export class ProductListComponent extends ProductMixin(
+  LayoutMixin(ContentMixin<ProductListOptions>(LitElement))
 ) {
   protected productListService = resolve(ProductListService);
   protected productListPageService = resolve(ProductListPageService);
 
   protected $list = computed(() => {
-    const params = this.searchParams();
+    let params = this.searchParams();
+    const product = this.$product();
+
+    if (product?.categoryIds && !params?.category) {
+      params ??= {};
+      params.category = product.categoryIds[0];
+    }
+
     return params
       ? this.productListService.get(params)
       : this.productListPageService.get();
@@ -27,12 +35,31 @@ export class ProductListComponent extends LayoutMixin(
 
   protected override render(): TemplateResult {
     return html`
+      ${this.renderList()}
+      ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
+    `;
+  }
+
+  // TODO: render it when layout will be fixed
+  // protected renderHeading(): TemplateResult | void {
+  //   const options = this.$options();
+
+  //   if (!options.heading || !this.$list()?.products?.length) {
+  //     return;
+  //   }
+
+  //   return html`
+  //     <oryx-heading tag=${HeadingTag.H3}>${options.heading}</oryx-heading>
+  //   `;
+  // }
+
+  protected renderList(): TemplateResult {
+    return html`
       ${repeat(
-        this.$list()?.products || [],
+        this.$list()?.products ?? [],
         (p) => p.sku,
         (p) => html`<oryx-product-card .sku=${p.sku}></oryx-product-card>`
       )}
-      ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
     `;
   }
 

@@ -1,4 +1,4 @@
-import { hydratable, ssrShim } from '@spryker-oryx/utilities';
+import { hydrate, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -6,7 +6,7 @@ import { VideoAspectRatio, VideoAttributes, VideoPreload } from './video.model';
 import { videoStyles } from './video.styles';
 
 @ssrShim('style')
-@hydratable()
+@hydrate()
 export default class VideoComponent
   extends LitElement
   implements VideoAttributes

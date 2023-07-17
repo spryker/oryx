@@ -44,7 +44,7 @@ describe('Locales suite', () => {
               'Gear S2 X Atelier Mendini In einer wunderbaren'
             );
           pdp.getPrice().checkCurrencyFormatting('de');
-          pdp.addItemsToTheCart(1);
+          pdp.addItemsToTheCart(1, true);
           // go to the cart
           pdp.header.getCartSummary().click();
           checkCurrencyUsedOnCartPage('de');
@@ -71,7 +71,7 @@ describe('Locales suite', () => {
 
       describe('and user changes the locale back to EN', () => {
         beforeEach(() => {
-          cartPage.header.changeLocale('en');
+          cartPage.header.changeLocale('en', true);
         });
 
         it('EN tests and currencies are applied', () => {

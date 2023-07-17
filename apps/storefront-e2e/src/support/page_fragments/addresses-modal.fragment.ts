@@ -47,7 +47,10 @@ export class AddressesModalFragment {
       .eq(0)
       .click();
 
-    this.addAddressForm.getCityInput().clear().type(newCity, { force: true });
+    this.addAddressForm
+      .getCityInput()
+      .clear({ force: true })
+      .type(newCity, { force: true });
 
     this.addAddressForm.getSaveAddressBtn().click();
   };

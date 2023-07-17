@@ -3,14 +3,14 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
 import {
   computed,
-  hydratable,
+  hydrate,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { DateComponentAttributes } from './date.model';
 
-@hydratable()
+@hydrate()
 @signalAware()
 export class DateComponent extends ContentMixin<DateComponentAttributes>(
   LitElement

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { of, take } from 'rxjs';
+import { CategoryIdNormalizer } from '../category-id';
 import { ProductNormalizer } from '../product';
 import { concreteProductsNormalizer } from './concrete-products.normalizer';
 import { DeserializedAbstract } from './model';
@@ -11,6 +12,7 @@ const mockAbstracts = [
         concrete: 'A',
       },
     ],
+    categoryNodes: [{ category: 'a' }],
   },
   {
     concreteProducts: [
@@ -21,15 +23,16 @@ const mockAbstracts = [
         concrete: 'C',
       },
     ],
+    categoryNodes: [{ category: 'b' }],
   },
 ] as unknown as DeserializedAbstract[];
 
 describe('Concrete Products Normalizer', () => {
   it('should pass every concrete product to the ProductNormalizers via transformer', () => {
-    const mockTransformed = 'mockTransformed';
+    const mockTransformed = { mockTransformed: 'mockTransformed' };
     const mockTransformer = {
       transform: vi.fn().mockReturnValue(of(mockTransformed)),
-      do: vi.fn().mockReturnValue(() => of(mockTransformed)),
+      do: vi.fn().mockReturnValue(() => mockTransformed),
     };
     concreteProductsNormalizer(mockAbstracts, mockTransformer)
       .pipe(take(1))
@@ -39,12 +42,20 @@ describe('Concrete Products Normalizer', () => {
           ProductNormalizer
         );
         expect(mockTransformer.transform).toHaveBeenCalledWith(
+          mockAbstracts[0].categoryNodes,
+          CategoryIdNormalizer
+        );
+        expect(mockTransformer.transform).toHaveBeenCalledWith(
           mockAbstracts[1].concreteProducts![0],
           ProductNormalizer
         );
         expect(mockTransformer.transform).not.toHaveBeenCalledWith(
           mockAbstracts[1].concreteProducts![1],
           ProductNormalizer
+        );
+        expect(mockTransformer.transform).toHaveBeenCalledWith(
+          mockAbstracts[1].categoryNodes,
+          CategoryIdNormalizer
         );
 
         expect(normalized).toEqual([mockTransformed, mockTransformed]);

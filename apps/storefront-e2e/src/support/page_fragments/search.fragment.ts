@@ -24,20 +24,14 @@ export class SearchFragment {
   search = (text: string) => {
     const encoded = encodeURIComponent(text).replace(/%20/g, '+');
 
+    cy.hydrateElemenet('/assets/box.component-*.js', () => {
+      this.getInput().click();
+    });
+
     cy.intercept(`/catalog-search-suggestions?q=${encoded}*`).as('searchQuery');
-
-    // trigger hydration
-    cy.intercept('/assets/box.component-*.js').as('searchHydationFiles');
-    this.getInput().click();
-    cy.wait('@searchHydationFiles');
-
-    // wait till search elements are re-rendered
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(250);
-
     this.getInput().type(text);
-
     cy.wait('@searchQuery');
+
     // wait while open animation is over
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(125);

@@ -6,14 +6,14 @@ import { FormFieldType, FormRenderer } from '@spryker-oryx/form';
 import { RouterService } from '@spryker-oryx/router';
 import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
 import { UserService } from '@spryker-oryx/user';
-import { elementEffect, hydratable, signal } from '@spryker-oryx/utilities';
+import { elementEffect, hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { CheckoutAccountComponentOptions } from './account.model';
 import { checkoutAccountStyles } from './account.styles';
 
 @defaultOptions({ enableGuestCheckout: true })
-@hydratable('window:load')
+@hydrate({ event: 'window:load' })
 export class CheckoutAccountComponent
   extends CheckoutMixin(
     ContentMixin<CheckoutAccountComponentOptions>(LitElement)

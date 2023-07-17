@@ -5,7 +5,7 @@ import {
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -32,7 +32,7 @@ const defaultImagesOptions: ProductImagesComponentOptions = {
 };
 
 @defaultOptions(defaultImagesOptions)
-@hydratable(['mouseover', `@${ProductContext.SKU}`])
+@hydrate({ event: 'mouseover', context: ProductContext.SKU })
 export class ProductImagesComponent extends ProductMixin(
   ContentMixin<ProductImagesComponentOptions>(LitElement)
 ) {

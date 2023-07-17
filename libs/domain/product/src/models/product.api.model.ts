@@ -82,6 +82,19 @@ export module ApiProductModel {
     quantity: string;
   }
 
+  export interface CategoryNodes {
+    id: string;
+    isActive: boolean;
+    metaDescription: string;
+    metaKeywords: string;
+    metaTitle: string;
+    name: string;
+    nodeId: number;
+    order: number;
+    parents: CategoryNodes[];
+    children: CategoryNodes[];
+  }
+
   export const enum Includes {
     ConcreteProductImageSets = 'concrete-product-image-sets',
     ConcreteProductPrices = 'concrete-product-prices',
@@ -89,13 +102,16 @@ export module ApiProductModel {
     ConcreteProducts = 'concrete-products',
     Labels = 'product-labels',
     ConcreteProductAvailabilities = 'concrete-product-availabilities',
+    CategoryNodes = 'category-nodes',
   }
 
   export type ResponseIncludes =
     | Include<Includes.ConcreteProductImageSets, ImageSets>
     | Include<Includes.ConcreteProductPrices, Prices>
     | Include<Includes.ConcreteProductAvailabilities, ProductAvailability>
-    | Include<Includes.Labels, ProductLabels>;
+    | Include<Includes.Labels, ProductLabels>
+    | Include<Includes.AbstractProducts, Abstract>
+    | Include<Includes.CategoryNodes, CategoryNodes>;
 
   export type Response = JsonApiModel<Concrete, ResponseIncludes[]>;
 }

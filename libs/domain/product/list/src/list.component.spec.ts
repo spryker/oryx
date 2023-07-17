@@ -8,7 +8,10 @@ import {
   ProductListService,
   SortParamNames,
 } from '@spryker-oryx/product';
-import { mockProductProviders } from '@spryker-oryx/product/mocks';
+import {
+  MockProductService,
+  mockProductProviders,
+} from '@spryker-oryx/product/mocks';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { ProductListComponent } from './list.component';
@@ -193,4 +196,70 @@ describe('ProductListComponent', () => {
       expect(mockProductListPageService.get).toHaveBeenCalled();
     });
   });
+
+  describe('when product sku is defined', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-product-list sku="1"></oryx-product-list>`
+      );
+    });
+
+    it('should call ProductListService.get with proper parameters', async () => {
+      expect(mockProductListService.get).toHaveBeenCalledWith({
+        category: MockProductService.mockProducts.find((p) => p.sku === '1')
+          ?.categoryIds?.[0],
+      });
+    });
+  });
+
+  // TODO: uncomment it when layout will be fixed
+  // describe('heading ', () => {
+  //   describe('when heading is defined', () => {
+  //     beforeEach(async () => {
+  //       mockProductListPageService.get.mockReturnValue(
+  //         of({ products: [{ sku: '123' }] })
+  //       );
+  //       element = await fixture(
+  //         html`<oryx-product-list
+  //           .options=${{ heading: 'This is Title' }}
+  //         ></oryx-product-list>`
+  //       );
+  //     });
+
+  //     it('should render oryx-heading', () => {
+  //       const heading = element.shadowRoot?.querySelector('oryx-heading');
+  //       expect(element).toContainElement('oryx-heading');
+  //       expect(heading?.getAttribute('tag')).toBe(HeadingTag.H3);
+  //       expect(heading?.textContent).toContain('This is Title');
+  //     });
+
+  //     describe('and list is not empty', () => {
+  //       beforeEach(async () => {
+  //         mockProductListPageService.get.mockReturnValue(of({ products: [] }));
+  //         element = await fixture(
+  //           html`<oryx-product-list
+  //             .options=${{ heading: 'This is Title' }}
+  //           ></oryx-product-list>`
+  //         );
+  //       });
+
+  //       it('should not render oryx-heading', () => {
+  //         expect(element).not.toContainElement('oryx-heading');
+  //       });
+  //     });
+  //   });
+
+  //   describe('when heading is defined', () => {
+  //     beforeEach(async () => {
+  //       mockProductListPageService.get.mockReturnValue(
+  //         of({ products: [{ sku: '123' }] })
+  //       );
+  //       element = await fixture(html`<oryx-product-list></oryx-product-list>`);
+  //     });
+
+  //     it('should not render oryx-heading', () => {
+  //       expect(element).not.toContainElement('oryx-heading');
+  //     });
+  //   });
+  // });
 });

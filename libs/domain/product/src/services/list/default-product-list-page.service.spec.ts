@@ -1,12 +1,10 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  DefaultProductListPageService,
-  Pagination,
-  ProductListPageService,
-  ProductListService,
-} from '@spryker-oryx/product';
 import { RouteParams, RouterService } from '@spryker-oryx/router';
 import { Observable, of } from 'rxjs';
+import { Pagination } from '../../models';
+import { DefaultProductListPageService } from './default-product-list-page.service';
+import { ProductListPageService } from './product-list-page.service';
+import { ProductListService } from './product-list.service';
 
 const mockPagination: Pagination = {
   itemsPerPage: 0,
