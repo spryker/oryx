@@ -83,8 +83,6 @@ export const textStyles = css`
 
   a:active {
     color: var(--oryx-color-primary-9);
-    /* stylelint-disable-next-line */
-    /* text-decoration-color: currentColor; */
   }
 
   a:focus-visible {
