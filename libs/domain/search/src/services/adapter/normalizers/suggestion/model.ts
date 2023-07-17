@@ -8,5 +8,6 @@ import { ApiSuggestionModel } from '../../../../models';
 export type DeserializedSuggestion = ApiSuggestionModel.Attributes &
   Pick<
     DeserializedProductIncludes,
-    CamelCase<ApiProductModel.Includes.AbstractProducts>
+    | CamelCase<ApiProductModel.Includes.AbstractProducts>
+    | CamelCase<ApiProductModel.Includes.CategoryNodes>
   >;

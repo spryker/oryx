@@ -1,12 +1,12 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { elementEffect, hydratable } from '@spryker-oryx/utilities';
+import { elementEffect, hydrate } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { loadBvScript } from '../script';
 import { bzRatingStyles } from '../styles';
 import { BazaarvoiceReviewListOptions } from './review-list.model';
 
-@hydratable()
+@hydrate()
 export class BazaarvoiceReviewListComponent extends ProductMixin(
   ContentMixin<BazaarvoiceReviewListOptions>(LitElement)
 ) {

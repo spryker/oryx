@@ -106,6 +106,10 @@ describe('PickingHeaderComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
+  it('should render header component', () => {
+    expect(element).toContainElement('oryx-header');
+  });
+
   it('should render back button', () => {
     expect(getBackButton()).not.toBeNull();
   });
@@ -113,7 +117,7 @@ describe('PickingHeaderComponent', () => {
   it('should render id', () => {
     expect(
       (element.renderRoot.querySelector('.title') as HTMLElement).innerText
-    ).toContain('mockOrderReference');
+    ).toContain(mockPickingListData[0].orderReferences[0]);
   });
 
   it('should render customer note button', () => {
@@ -126,12 +130,6 @@ describe('PickingHeaderComponent', () => {
 
   it('should not show discard modal', () => {
     expect(getDiscardModal()?.hasAttribute('open')).toBe(false);
-  });
-
-  it('should render account button', () => {
-    expect(
-      element.renderRoot.querySelector('oryx-site-navigation-item')
-    ).not.toBeNull();
   });
 
   describe('when customer note button is clicked', () => {

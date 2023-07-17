@@ -16,13 +16,14 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { previewStyles } from './composition-preview.styles';
+
 import { CompositionComponent } from './composition.component';
+import { compositionPreviewStyles } from './composition.styles';
 
 const EB_PREVIEW_FOCUS_CLASS = 'eb-preview-focus';
 
 export class CompositionPreviewComponent extends CompositionComponent {
-  static styles = [previewStyles];
+  static styles = [compositionPreviewStyles];
 
   @query(`.${EB_PREVIEW_FOCUS_CLASS}`)
   protected focusedComponent?: HTMLElement;

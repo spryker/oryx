@@ -2,7 +2,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
   graphicInjectable,
-  hydratable,
+  hydrate,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
@@ -13,7 +13,7 @@ import { ImageComponentAttributes, LoadingStrategy } from './image.model';
 import { styles } from './image.styles';
 
 @signalAware()
-@hydratable()
+@hydrate()
 export class ImageComponent
   extends LitElement
   implements ImageComponentAttributes
@@ -24,10 +24,11 @@ export class ImageComponent
     super();
   }
 
-  @signalProperty({ reflect: true }) resource?: string;
-  @property({ reflect: true }) src?: string;
+  @signalProperty() resource?: string;
+
+  @property() src?: string;
   @property() srcset?: string;
-  @property({ reflect: true }) alt?: string;
+  @property() alt?: string;
   @property() loading?: LoadingStrategy;
   @property({ type: Boolean }) skipFallback?: boolean;
 

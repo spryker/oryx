@@ -11,7 +11,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
   elementEffect,
-  hydratable,
+  hydrate,
   Size,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -23,7 +23,7 @@ import { styles } from './add.styles';
 @defaultOptions({
   enableLabel: true,
 })
-@hydratable(['mouseover', 'focusin'])
+@hydrate({ event: ['mouseover', 'focusin'] })
 export class CartAddComponent extends ProductMixin(
   CartComponentMixin(ContentMixin<CartAddOptions>(LitElement))
 ) {
@@ -83,7 +83,7 @@ export class CartAddComponent extends ProductMixin(
   protected $hasStock = computed(() => {
     return (
       this.$product()?.availability?.isNeverOutOfStock ||
-      this.$max() > this.$min()
+      (this.$max() && this.$max() >= this.$min())
     );
   });
 

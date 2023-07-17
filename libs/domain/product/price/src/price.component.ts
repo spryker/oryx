@@ -1,8 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductMixin, ProductPrices } from '@spryker-oryx/product';
+import {
+  ProductContext,
+  ProductMixin,
+  ProductPrices,
+} from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { combineLatest, Observable } from 'rxjs';
 import { Prices, ProductPriceOptions } from './price.model';
@@ -25,7 +29,7 @@ import { ProductPriceStyles } from './price.styles';
   enableOriginalPrice: true,
   enableTaxMessage: true,
 })
-@hydratable(['mouseover', 'focusin'])
+@hydrate({ context: ProductContext.SKU })
 export class ProductPriceComponent extends ProductMixin(
   ContentMixin<ProductPriceOptions>(LitElement)
 ) {

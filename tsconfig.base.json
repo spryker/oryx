@@ -69,7 +69,7 @@
       ],
       "@spryker-oryx/cli": ["libs/template/cli/src/index.ts"],
       "@spryker-oryx/content": ["libs/domain/content/src/index.ts"],
-      "@spryker-oryx/content/banner": ["libs/domain/content/banner/index.ts"],
+      "@spryker-oryx/content/image": ["libs/domain/content/image/index.ts"],
       "@spryker-oryx/content/link": ["libs/domain/content/link/index.ts"],
       "@spryker-oryx/content/text": ["libs/domain/content/text/index.ts"],
       "@spryker-oryx/content/video": ["libs/domain/content/video/index.ts"],
@@ -120,6 +120,7 @@
         "libs/domain/picking/filter-button/index.ts"
       ],
       "@spryker-oryx/picking/filters": ["libs/domain/picking/filters/index.ts"],
+      "@spryker-oryx/picking/header": ["libs/domain/picking/header/index.ts"],
       "@spryker-oryx/picking/login": ["libs/domain/picking/login/index.ts"],
       "@spryker-oryx/picking/mocks": ["libs/domain/picking/mocks/index.ts"],
       "@spryker-oryx/picking/navigate-back": [
@@ -147,6 +148,9 @@
       ],
       "@spryker-oryx/picking/user-profile": [
         "libs/domain/picking/user-profile/index.ts"
+      ],
+      "@spryker-oryx/picking/warehouse-assignment": [
+        "libs/domain/picking/warehouse-assignment/index.ts"
       ],
       "@spryker-oryx/presets": ["libs/template/presets/src/index.ts"],
       "@spryker-oryx/presets/backoffice": [

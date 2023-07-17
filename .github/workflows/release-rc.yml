@@ -1,0 +1,54 @@
+name: Release rc Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run && github.event.workflow_run.conclusion == 'success' || true }}
+    environment: 'Release NPM'
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      GIT_USER: ${{ vars.GIT_USER }}
+      GIT_EMAIL: ${{ vars.GIT_EMAIL }}
+      RELEASE_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref }}
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ env.GH_TOKEN }}
+          ref: ${{ env.RELEASE_BRANCH }}
+          submodules: recursive
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-node-
+      - name: Auth NPM
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
+          npm whoami
+      - name: Auth Git
+        run: |
+          git config user.email "${{ env.GIT_EMAIL }}"
+          git config user.name "${{ env.GIT_USER }}"
+      - name: Install Deps
+        run: npm ci
+      - name: Build packages
+        run: npx nx run-many --target=build --all --parallel=2 --exclude testfront,storybook,fulfillment,storefront
+      - name: Fix js extension
+        run: node tools/post-build/add-js-extension.js
+      - name: Fix d.ts files
+        run: node tools/post-build/fix-dts-paths.js
+      - name: Release rc
+        if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
+        run: npm run release-rc
+      - name: Release Error Log
+        if: failure()
+        run: cat libs/lerna-debug.log

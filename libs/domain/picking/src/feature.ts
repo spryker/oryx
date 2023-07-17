@@ -1,4 +1,9 @@
-import { AppFeature, ComponentsInfo } from '@spryker-oryx/core';
+import {
+  AppFeature,
+  ComponentsInfo,
+  DefaultJsonAPITransformerService,
+  JsonAPITransformerService,
+} from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import {
@@ -7,6 +12,7 @@ import {
   discardModalComponent,
   filterButtonComponent,
   filtersComponent,
+  headerComponent,
   loginPageComponent,
   navigateBackComponent,
   pickingComponent,
@@ -17,6 +23,7 @@ import {
   pickingListsHeaderComponent,
   pickingProductCardComponent,
   userProfileComponent,
+  warehouseAssignmentComponent,
 } from './components';
 import { PickingConfig, providePickingConfig } from './config.provider';
 import { defaultPickingRoutes } from './routes';
@@ -29,6 +36,12 @@ import {
   PickingListDefaultAdapter,
   PickingListDefaultService,
   PickingListService,
+  warehouseUserAssignmentNormalizer,
+  WarehouseUserAssignmentsAdapter,
+  WarehouseUserAssignmentsDefaultAdapter,
+  WarehouseUserAssignmentsDefaultService,
+  warehouseUserAssignmentsNormalizer,
+  WarehouseUserAssignmentsService,
 } from './services';
 
 export const pickingComponents = [
@@ -38,6 +51,7 @@ export const pickingComponents = [
   filterButtonComponent,
   filtersComponent,
   loginPageComponent,
+  headerComponent,
   navigateBackComponent,
   pickingListsComponent,
   pickingListsHeaderComponent,
@@ -47,6 +61,7 @@ export const pickingComponents = [
   pickingComponent,
   userProfileComponent,
   pickingHeaderComponent,
+  warehouseAssignmentComponent,
 ];
 
 export interface PickingFeatureConfig extends PickingConfig {
@@ -68,10 +83,24 @@ export class PickingFeature implements AppFeature {
         !config?.noDefaultRoutes ? { routes: defaultPickingRoutes } : undefined
       ),
       ...providePickingConfig(config),
+      {
+        provide: JsonAPITransformerService,
+        useClass: DefaultJsonAPITransformerService,
+      },
+      ...warehouseUserAssignmentNormalizer,
+      ...warehouseUserAssignmentsNormalizer,
       { provide: PickingListService, useClass: PickingListDefaultService },
       { provide: PickingListAdapter, useClass: PickingListDefaultAdapter },
       { provide: PickingHttpService, useClass: PickingHttpDefaultService },
       { provide: PickingHeaderService, useClass: PickingHeaderDefaultService },
+      {
+        provide: WarehouseUserAssignmentsAdapter,
+        useClass: WarehouseUserAssignmentsDefaultAdapter,
+      },
+      {
+        provide: WarehouseUserAssignmentsService,
+        useClass: WarehouseUserAssignmentsDefaultService,
+      },
     ];
   }
 }

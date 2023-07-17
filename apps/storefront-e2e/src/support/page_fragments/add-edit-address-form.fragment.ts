@@ -10,9 +10,9 @@ export class AddEditAddressFormFragment {
   getWrapper = () => cy.get(this.wrapperSelector);
   getAddressForm = () => this.getWrapper().find('oryx-user-address-form');
   getCountrySelect = () =>
-    this.getWrapper().find('oryx-select[label="Country"]');
+    this.getWrapper().find('oryx-select[label="country"]');
   getSalutationSelect = () =>
-    this.getWrapper().find('oryx-select[label="Salutation"]');
+    this.getWrapper().find('oryx-select[label="salutation"]');
   getFirstNameInput = () =>
     this.getAddressForm().find('input[name="firstName"]');
   getLastNameInput = () => this.getAddressForm().find('input[name="lastName"]');
@@ -28,37 +28,34 @@ export class AddEditAddressFormFragment {
 
   selectCoutry = (isoCode: string) => {
     this.getCountrySelect().click();
-    this.getCountrySelect()
-      .find(`oryx-option[value="${isoCode}"]`)
-      .should('be.visible')
-      .click({ force: true });
+    this.getCountrySelect().find(`oryx-option[value="${isoCode}"]`).click();
   };
 
   selectSalutation = (salutation: string) => {
     this.getSalutationSelect().click();
-    this.getSalutationSelect()
-      .contains('oryx-option', salutation)
-      .should('be.visible')
-      .click({ force: true });
+    this.getSalutationSelect().contains('oryx-option', salutation).click();
   };
 
   fillAddressForm = (addressData?) => {
     const address = { ...defaultAddress, ...addressData };
 
-    // wait till form is rendered and ready
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(2000);
-    cy.disableAnimations();
+    this.getFirstNameInput().should('be.visible', { timeout: 10000 });
 
     this.selectCoutry(address.iso2Code);
     this.selectSalutation(address.salutation);
-    this.getFirstNameInput().clear().type(address.firstName, { force: true });
-    this.getLastNameInput().clear().type(address.lastName, { force: true });
-    this.getCompanyInput().type(address.company);
-    this.getAddress1Input().type(address.address1);
-    this.getAddress2Input().type(address.address2);
-    this.getZipInput().type(address.zipCode);
-    this.getCityInput().type(address.city);
-    this.getPhoneInput().type(address.phone);
+    // force typing is needed because sometimes Cypress thinks that our inputs are disabled
+    // TODO investigate it deeper later
+    this.getFirstNameInput()
+      .clear({ force: true })
+      .type(address.firstName, { force: true });
+    this.getLastNameInput()
+      .clear({ force: true })
+      .type(address.lastName, { force: true });
+    this.getCompanyInput().type(address.company, { force: true });
+    this.getAddress1Input().type(address.address1, { force: true });
+    this.getAddress2Input().type(address.address2, { force: true });
+    this.getZipInput().type(address.zipCode, { force: true });
+    this.getCityInput().type(address.city, { force: true });
+    this.getPhoneInput().type(address.phone, { force: true });
   };
 }

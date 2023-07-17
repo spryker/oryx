@@ -93,13 +93,14 @@ describe('CurrentCurrencyInterceptor', () => {
 
       (currencyService.get as Mock).mockReturnValue(of(currency));
       (fromFetch as Mock).mockReturnValue(of(null));
+      const req = new Request(testCase.url, options);
+      const expected = testCase.shouldIntercept
+        ? new Request(expectedUrl.toString(), req)
+        : req;
 
-      handler.handle(testCase.url, options).subscribe();
+      handler.handle(new Request(testCase.url, options)).subscribe();
       await nextFrame();
-      expect(fromFetch).toHaveBeenCalledWith(
-        testCase.shouldIntercept ? expectedUrl.toString() : testCase.url,
-        options
-      );
+      expect(fromFetch).toHaveBeenCalledWith(expected);
     });
   });
 });

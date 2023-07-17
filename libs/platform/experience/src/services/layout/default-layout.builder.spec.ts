@@ -1,5 +1,6 @@
 import { App, AppRef } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Size } from '@spryker-oryx/utilities';
 import {
   CompositionProperties,
@@ -298,6 +299,38 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule({ rotate: 3 }, 'rotate: 3deg');
     expectStyleRule({ rotate: -2 }, 'rotate: -2deg');
     expectStyleRule({ overflow: 'auto' }, 'overflow: auto');
+
+    [
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'caption',
+      'subtitle',
+      'subtitle-small',
+      'small',
+      'bold',
+    ].forEach((heading) => {
+      expectStyleRule(
+        { typography: heading as HeadingTag },
+        `font-size: var(--oryx-typography-${heading}-size)`
+      );
+      expectStyleRule(
+        { typography: heading as HeadingTag },
+        `font-weight: var(--oryx-typography-${heading}-weight)`
+      );
+      expectStyleRule(
+        { typography: heading as HeadingTag },
+        `line-height: var(--oryx-typography-${heading}-line)`
+      );
+      expectStyleRule({ typography: heading as HeadingTag }, `margin: 0`);
+      expectStyleRule(
+        { typography: heading as HeadingTag, margin: '10px' },
+        `margin: 10px`
+      );
+    });
   });
 
   describe('getLayoutMarkers', () => {

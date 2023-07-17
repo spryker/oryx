@@ -13,5 +13,9 @@
     "moduleResolution": "Node",
     "isolatedModules": true,
     "resolveJsonModule": true
+  },
+  "ts-node": {
+    "experimentalSpecifierResolution": "node",
+    "esm": true
   }
 }

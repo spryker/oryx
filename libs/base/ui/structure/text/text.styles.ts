@@ -2,27 +2,33 @@ import { css } from 'lit';
 import { HeadingTag, headingUtil } from '../heading/src/';
 
 export const textStyles = css`
-  h1 {
+  h1,
+  .h1 {
     ${headingUtil(HeadingTag.H1)}
   }
 
-  h2 {
+  h2,
+  .h2 {
     ${headingUtil(HeadingTag.H2)}
   }
 
-  h3 {
+  h3,
+  .h3 {
     ${headingUtil(HeadingTag.H3)}
   }
 
-  h4 {
+  h4,
+  .h4 {
     ${headingUtil(HeadingTag.H4)}
   }
 
-  h5 {
+  h5,
+  .h5 {
     ${headingUtil(HeadingTag.H5)}
   }
 
-  h6 {
+  h6,
+  .h6 {
     ${headingUtil(HeadingTag.H6)}
   }
 
@@ -71,14 +77,12 @@ export const textStyles = css`
   }
 
   a:hover {
-    text-decoration: solid underline var(--oryx-color-primary-9) 1px;
+    text-decoration: solid underline currentColor 1px;
     text-underline-offset: 5px;
   }
 
   a:active {
     color: var(--oryx-color-primary-9);
-    /* stylelint-disable-next-line */
-    text-decoration-color: currentColor;
   }
 
   a:focus-visible {

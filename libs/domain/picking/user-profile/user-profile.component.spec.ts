@@ -1,15 +1,16 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
-import { App, AppRef } from '@spryker-oryx/core';
+import { App, AppRef, StorageService } from '@spryker-oryx/core';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { SyncSchedulerService } from '@spryker-oryx/offline';
 import { RouterService } from '@spryker-oryx/router';
-import { nextTick } from '@spryker-oryx/utilities';
+import { i18n, nextTick } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { of, switchMap } from 'rxjs';
+import { catchError, of, switchMap, throwError } from 'rxjs';
 import { UserProfileComponent } from './user-profile.component';
 import { userProfileComponent } from './user-profile.def';
+import { beforeEach } from 'vitest';
 
 const mockOfflineDataPlugin = {
   refreshData: vi.fn().mockReturnValue(
@@ -36,7 +37,11 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 class MockAuthService implements Partial<AuthService> {
-  logout = vi.fn();
+  logout = vi.fn().mockReturnValue(of(undefined));
+}
+
+class MockStorageService implements Partial<StorageService> {
+  get = vi.fn().mockReturnValue(of(undefined));
 }
 
 describe('UserProfileComponent', () => {
@@ -44,6 +49,7 @@ describe('UserProfileComponent', () => {
   let routerService: MockRouterService;
   let syncSchedulerService: MockSyncSchedulerService;
   let authService: MockAuthService;
+  let storageService: MockStorageService;
 
   const getReceiveDataButton = () => {
     return element.renderRoot.querySelectorAll('button')[1];
@@ -76,6 +82,10 @@ describe('UserProfileComponent', () => {
           provide: AuthService,
           useClass: MockAuthService,
         },
+        {
+          provide: StorageService,
+          useClass: MockStorageService,
+        },
       ],
     });
 
@@ -88,6 +98,9 @@ describe('UserProfileComponent', () => {
     authService = testInjector.inject(
       AuthService
     ) as unknown as MockAuthService;
+    storageService = testInjector.inject(
+      StorageService
+    ) as unknown as MockStorageService;
 
     element = await fixture(
       html`<oryx-picking-user-profile></oryx-picking-user-profile>`
@@ -112,6 +125,14 @@ describe('UserProfileComponent', () => {
     expect(
       element.renderRoot.querySelector('.info-footer oryx-button')
     ).not.toBeNull();
+  });
+
+  it('should not render warehouse location', () => {
+    element.renderRoot.querySelectorAll('dl').forEach((item) => {
+      expect(item.querySelector('dt')?.textContent).not.toContain(
+        i18n('user.profile.location')
+      );
+    });
   });
 
   describe('when sync is pending', () => {
@@ -148,8 +169,32 @@ describe('UserProfileComponent', () => {
         element.renderRoot.querySelector('button')?.click();
       });
 
+      it('should show loading indicator', () => {
+        expect(element).toContainElement('oryx-button[loading]');
+      });
+
       it('should call auth service', () => {
         expect(authService.logout).toHaveBeenCalled();
+      });
+
+      describe('and when log out fails', () => {
+        beforeEach(() => {
+          authService.logout.mockReturnValue(
+            throwError(() => new Error('error'))
+          );
+          element.renderRoot.querySelector('button')?.click();
+        });
+
+        it('should not show loading indicator', () => {
+          expect(element).not.toContainElement('oryx-button[loading]');
+        });
+
+        it('auth service should throw error', () => {
+          const callback = vi.fn().mockReturnValue(of(''));
+          authService.logout().pipe(catchError(callback)).subscribe();
+
+          expect(callback).toHaveBeenCalled();
+        });
       });
     });
   });
@@ -187,9 +232,7 @@ describe('UserProfileComponent', () => {
         });
 
         it('should not show loading indicator', () => {
-          expect(
-            element.renderRoot.querySelector('oryx-button[loading]')
-          ).toBeNull();
+          expect(element).not.toContainElement('oryx-button[loading]');
         });
       });
     });
@@ -217,6 +260,29 @@ describe('UserProfileComponent', () => {
       const button = getDisabledButton();
       expect(button).not.toBeNull();
       expect(button?.textContent).toContain('Log Out');
+    });
+  });
+
+  describe('when there is warehouseUserAssignment in the storage', () => {
+    const mockWarehouseName = 'mockWarehouseName';
+
+    beforeEach(async () => {
+      storageService.get = vi
+        .fn()
+        .mockReturnValue(of({ warehouse: { name: mockWarehouseName } }));
+
+      element = await fixture(
+        `<oryx-picking-user-profile></oryx-picking-user-profile>`
+      );
+    });
+
+    it('should render warehouse location', () => {
+      expect(
+        element.renderRoot.querySelectorAll('dl')[0].textContent
+      ).toContain(i18n('user.profile.location'));
+      expect(
+        element.renderRoot.querySelectorAll('dd')[0].textContent
+      ).toContain(mockWarehouseName);
     });
   });
 });

@@ -1,10 +1,8 @@
 import { join } from 'path';
-import { defineConfig } from 'vite';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { defineConfig, UserConfig } from 'vite';
 import { viteConfig } from './vite.config.common.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default defineConfig((config) => {
+export default defineConfig(() => {
   return {
     root: viteConfig.index,
     envDir: viteConfig.root,
@@ -34,20 +32,6 @@ export default defineConfig((config) => {
     ssr: {
       noExternal: true,
     },
-    plugins: [
-      ...viteConfig.plugins(),
-      viteStaticCopy({
-        targets: [
-          {
-            src: '../../../libs/template/application/server/src/hosting/context.js',
-            dest: '../functions/ssr',
-          },
-          {
-            src: '../../../libs/template/application/server/src/hosting/handler.lambda.js',
-            dest: '../functions/ssr',
-          },
-        ],
-      }),
-    ],
-  };
+    plugins: [...viteConfig.plugins()],
+  } as UserConfig;
 });

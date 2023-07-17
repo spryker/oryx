@@ -3,7 +3,10 @@ import { mockNormalizedAddresses } from '@spryker-oryx/user/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { AddressFormAttributes } from '../address-form.model';
+import {
+  AddressFormAttributes,
+  AddressFormOptions,
+} from '../address-form.model';
 
 const countries = ['DE', 'US', 'AT', 'PT', 'ES'];
 
@@ -42,7 +45,7 @@ export default {
   },
 } as Meta;
 
-interface Props extends AddressFormAttributes {
+interface Props extends AddressFormAttributes, AddressFormOptions {
   address?: Address;
 }
 
@@ -53,6 +56,7 @@ const Template: Story<Props> = (props): TemplateResult => {
     .enableDefaultShipping=${props.enableDefaultShipping}
     .enableDefaultBilling=${props.enableDefaultBilling}
     .options=${{ fallbackCountry: props.fallbackCountry }}
+    style="--oryx-column-grid: 2"
   ></oryx-user-address-form>`;
 };
 

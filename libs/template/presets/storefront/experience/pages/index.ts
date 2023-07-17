@@ -5,6 +5,6 @@ export * from './contact-page';
 export * from './home-page';
 export * from './login-page';
 export * from './my-account';
-export * from './order-page';
+export * from './order-confirmation-page';
 export * from './product-page';
 export * from './search-page';

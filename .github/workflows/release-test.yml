@@ -40,8 +40,6 @@ jobs:
         run: npm ci
       - name: Build packages
         run: npx nx run-many --target=build --all --parallel=2 --exclude testfront,storybook,fulfillment,storefront
-      - name: Fix js extension
-        run: node tools/post-build/add-js-extension.js
       - name: Install verdaccio
         run: npm i -g verdaccio
       - name: Run verdaccio first time to generate config
@@ -63,26 +61,16 @@ jobs:
           sed -i 's/\$authenticated/\$all/g' $VERDACCIO_CONFIG
         env:
           VERDACCIO_CONFIG: /home/runner/.config/verdaccio/config.yaml
-      - name: Run verdaccio gain
+      - name: Run verdaccio again
         run: verdaccio &
       - name: Set npm registry for @spryker-oryx to verdaccio
         run: npm config set @spryker-oryx:registry http://localhost:4873
-      - name: Release minor
-        run: npm run release-minor
+      - name: Release test
+        run: npm run release-test
       - name: Install dependencies for testfront
         run: cd apps/testfront && npm i && npm list --depth=1 && cd ../..
-      - name: Check build
-        run: cd apps/testfront && npm run build:client && cd ../..
-      - name: Run testfront
-        run: npm run testfront
-        env:
-          FES_CONTENT_BACKEND_URL: ${{ env.FES_CONTENT_BACKEND_URL }}
-          SCOS_BASE_URL: ${{ env.SCOS_BASE_URL }}
-          STORE: ${{ env.STORE }}
-      - name: Wait a bit
-        run: sleep 20
       - name: Run e2e
-        run: npm run release-test:e2e
+        run: npm run testfront:e2e
         env:
           SCOS_BASE_URL: ${{ env.SCOS_BASE_URL }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}

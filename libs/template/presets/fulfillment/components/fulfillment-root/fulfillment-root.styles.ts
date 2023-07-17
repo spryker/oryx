@@ -2,9 +2,8 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
-    font-family: var(--oryx-typography-font-face);
-    font-size: var(--oryx-typography-font-size);
-    font-weight: var(--oryx-typography-font-weight);
+    font-family: var(--oryx-typography-body-font);
+    font-weight: var(--oryx-typography-body-weight);
     box-sizing: border-box;
     min-height: 100vh;
     display: block;

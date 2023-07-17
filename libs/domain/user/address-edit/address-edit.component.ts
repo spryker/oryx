@@ -9,7 +9,7 @@ import {
   CrudState,
 } from '@spryker-oryx/user';
 import { UserAddressFormComponent } from '@spryker-oryx/user/address-form';
-import { hydratable, signal } from '@spryker-oryx/utilities';
+import { hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -21,7 +21,7 @@ import {
 import { styles } from './address-edit.styles';
 
 @defaultOptions({ save: SaveOption.Save, inline: false })
-@hydratable(['mouseover', 'focusin'])
+@hydrate({ event: ['mouseover', 'focusin'] })
 export class UserAddressEditComponent extends AddressMixin(
   ContentMixin<UserAddressEditComponentOptions>(LitElement)
 ) {

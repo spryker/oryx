@@ -1,9 +1,9 @@
 import { TotalsController } from '@spryker-oryx/cart';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { hydratable, signal, signalAware } from '@spryker-oryx/utilities';
+import { hydrate, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 
-@hydratable('window:load')
+@hydrate({ event: 'window:load' })
 @signalAware()
 export class OrderTotalsComponent extends ContentMixin(LitElement) {
   protected totalsController = new TotalsController(this);

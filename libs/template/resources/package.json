@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/resources",
-  "version": "0.13.0",
+  "version": "1.0.0-rc.0",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
   "description": "Resources for Oryx applications",
@@ -14,7 +14,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@spryker-oryx/experience": "latest",
-    "@spryker-oryx/ui": "latest"
+    "@spryker-oryx/experience": "1.0.0-rc.0",
+    "@spryker-oryx/ui": "1.0.0-rc.0"
   }
 }

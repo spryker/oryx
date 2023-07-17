@@ -9,17 +9,15 @@ declare global {
   namespace Cypress {
     interface Chainable {
       login(): Chainable<void>;
+      loginApi(): Chainable<void>;
       goToCheckout(): Chainable<void>;
       goToCheckoutAsGuest(): Chainable<void>;
-      waitUpdateComplete(
-        element: Cypress.Chainable<JQuery<HTMLElement>>
-      ): Chainable<boolean>;
+      hydrateElemenet(assetPath: string, triggerHydrationFn): Chainable<void>;
       customerCartsCleanup(sccosApi: SCCOSApi, user: TestCustomerData): void;
       customerAddressesCleanup(
         sccosApi: SCCOSApi,
         user: TestCustomerData
       ): void;
-      disableAnimations(): void;
       checkCurrencyFormatting(locale: string): void;
     }
   }
@@ -39,12 +37,36 @@ Cypress.Commands.add('login', () => {
   });
 });
 
+Cypress.Commands.add('loginApi', () => {
+  cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+    const api = new SCCOSApi();
+
+    api.token.post(customer).then((res) => {
+      cy.window().then((win) => {
+        win.localStorage.setItem(
+          'oryx.oauth-state',
+          '{"authorizedBy":"spryker"}'
+        );
+        win.localStorage.setItem('oryx.oauth-token', JSON.stringify(res.body));
+      });
+    });
+  });
+});
+
 Cypress.Commands.add('goToCheckout', () => {
   const cartPage = new CartPage();
 
   cy.intercept('/customers/DE--**/carts?**').as('cartsRequest');
   cartPage.visit();
   cy.wait('@cartsRequest');
+
+  // carts request is not enought to be sure
+  // that checkout button is clickable
+  // we have to wait for other elements, and even with them
+  // there is no 100% guarranty that checkout btn is ready
+  cartPage.getCartTotals().getTotalPrice().should('be.visible');
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(250);
 
   cy.intercept('/customers/*/addresses').as('addressesRequest');
   cartPage.checkout();
@@ -58,12 +80,31 @@ Cypress.Commands.add('goToCheckoutAsGuest', () => {
   cartPage.visit();
   cy.wait('@cartsRequest');
 
+  // carts request is not enought to be sure
+  // that checkout button is clickable
+  // we have to wait for other elements, and even with them
+  // there is no 100% guarranty that checkout btn is ready
+  cartPage.getCartTotals().getTotalPrice().should('be.visible');
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(250);
+
   cartPage.checkout();
 });
 
-Cypress.Commands.add('waitUpdateComplete', (element) => {
-  return element.invoke('prop', 'updateComplete').should('exist');
-});
+Cypress.Commands.add(
+  'hydrateElemenet',
+  (assetPath: string, triggerHydrationFn) => {
+    cy.intercept(assetPath).as(`${assetPath}Request`);
+
+    triggerHydrationFn();
+
+    cy.wait(`@${assetPath}Request`);
+
+    // wait till hydrated elements are re-rendered
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(250);
+  }
+);
 
 Cypress.Commands.add(
   'customerCartsCleanup',
@@ -95,17 +136,6 @@ Cypress.Commands.add(
     });
   }
 );
-
-Cypress.Commands.add('disableAnimations', () => {
-  cy.window().then((window) => {
-    const document = window.document;
-    const root = document.querySelector('oryx-app') as any;
-
-    root.style.setProperty('--oryx-transition-time', 0);
-    root.style.setProperty('--oryx-transition-time-medium', 0);
-    root.style.setProperty('--oryx-transition-time-long', 0);
-  });
-});
 
 Cypress.Commands.add(
   'checkCurrencyFormatting',

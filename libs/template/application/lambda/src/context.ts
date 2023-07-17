@@ -1,11 +1,7 @@
-import {
-  getWindow,
-  installWindowOnGlobal,
-} from '@lit-labs/ssr/lib/dom-shim.js';
+import { getWindow, installWindowOnGlobal } from './dom-shim';
 import * as buffer from 'buffer';
 import { readFileSync } from 'fs';
 import { createRequire } from 'module';
-import { Headers } from 'node-fetch';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { createContext, Script } from 'vm';
@@ -30,9 +26,15 @@ export const serverContext = (options: ContextOptions): any => {
       process,
       buffer,
       exports: {},
+      Request,
       Headers,
     },
   });
+
+  if (!window.fetch) {
+    window.fetch = fetch;
+  }
+
   window.setTimeout = setTimeout;
   window.clearTimeout = clearTimeout;
   window.setInterval = setInterval;
@@ -40,6 +42,10 @@ export const serverContext = (options: ContextOptions): any => {
   // added because of oauth, we probably should not require oauth in the ssr
   window.TextEncoder = class {};
   window.TextDecoder = class {};
+  // TODO: We need this to build ssr render script with enabled `emitDecoratorMetadata` in tsconfig
+  // We can check and remove it after release with disabled `emitDecoratorMetadata`
+  window.HTMLFormElement = class {};
+  window.HTMLInputElement = class {};
 
   const script = new Script(`
     ${readFileSync(resolve(basePath, entry), 'utf8')};

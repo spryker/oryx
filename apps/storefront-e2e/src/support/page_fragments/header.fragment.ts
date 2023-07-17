@@ -13,7 +13,7 @@ export class HeaderFragment {
     this.getLocaleSelector().find('oryx-button').find('button');
 
   getLogo = () =>
-    this.getWrapper().find('oryx-content-banner').find('a[href="/"]');
+    this.getWrapper().find('oryx-content-image').find('a[href="/"]');
 
   getUserSummary = () => cy.get('oryx-site-navigation-item:nth-of-type(1)');
   getUserSummaryHeading = () => this.getUserSummary().find('oryx-heading');
@@ -33,31 +33,46 @@ export class HeaderFragment {
     this.getLogoutButton().click();
   };
 
-  changeLocale = (locale: string) => {
-    cy.intercept({
-      method: 'GET',
-      url: /(\/catalog-search.*|\/concrete-products\/.*)/,
-    }).as('productOrSearchRequests');
-    // hydrate
+  changeLocale = (locale: string, isHydrated = false) => {
+    if (!isHydrated) {
+      cy.hydrateElemenet('/assets/locale-selector.component-*.js', () => {
+        this.getLocaleButton().click();
+      });
+    }
+
+    const selector = `oryx-option[value="${locale}"]`;
+
     this.getLocaleButton().click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
-    this.getLocaleButton().click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    this.getLocaleSelector()
-      .find(`oryx-option[value="${locale}"]`)
-      .click({ force: true });
-    cy.wait('@productOrSearchRequests');
+
+    this.initProductsUpdateInterceptor();
+    this.getLocaleSelector().find(selector).click();
+    this.waitForProductsUpdate();
   };
 
-  changeCurrency = (currency: string) => {
-    // hydrate
+  changeCurrency = (currency: string, isHydrated = false) => {
+    if (!isHydrated) {
+      cy.hydrateElemenet('/assets/currency-selector.component-*.js', () => {
+        this.getCurrencyButton().click();
+      });
+    }
+
+    const selector = `oryx-option[value="${currency}"]`;
+
     this.getCurrencyButton().click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
-    this.getCurrencyButton().click();
-    this.getCurrencySelector()
-      .find(`oryx-option[value="${currency}"]`)
-      .click({ force: true });
+
+    this.initProductsUpdateInterceptor();
+    this.getCurrencySelector().find(selector).click();
+    this.waitForProductsUpdate();
   };
+
+  private initProductsUpdateInterceptor() {
+    cy.intercept({
+      method: 'GET',
+      url: /\/catalog-search.*|\/concrete-products\/.*/,
+    }).as('productOrSearchRequests');
+  }
+
+  private waitForProductsUpdate() {
+    cy.wait('@productOrSearchRequests');
+  }
 }
