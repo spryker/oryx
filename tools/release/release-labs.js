@@ -1,3 +1,4 @@
+const semver = require('semver');
 const { execSync } = require("child_process");
 const libsVersion = require('../../libs/lerna.json').version;
 const labsVersion  = require('../../libs/template/labs/package.json').version;
@@ -22,23 +23,30 @@ function main() {
 
 function getNewLabsVersion() {
   const undottedLibsVersion = getUndottedLibsVersion(libsVersion);
-  const labsPatch = Number(getLabsPatch());
+  const currentLabsPatch = Number(getLabsPatch());
   const isNewLibsRelease = getLabsMinor() !== undottedLibsVersion;
+  const newLabsPatch = isNewLibsRelease ? 0 : currentLabsPatch + 1;
+  const prereleaseLibsVersion = getPrereleaseLibsVersion(libsVersion);
 
-  return isNewLibsRelease ? `0.${undottedLibsVersion}.0` : `0.${undottedLibsVersion}.${labsPatch + 1}`;
+  return `0.${undottedLibsVersion}.${newLabsPatch}${prereleaseLibsVersion}`;
 }
 
 function getLabsPatch() {
-  return labsVersion.split('.').pop();
+  return String(semver.patch(labsVersion));
 }
 
 function getLabsMinor() {
-  return Number(labsVersion.split('.').at(1));
+  return String(semver.minor(labsVersion));
 }
 
 function getUndottedLibsVersion(libsVersion) {
-  return Number(libsVersion.replaceAll('.', ''));
+  return `${semver.major(libsVersion)}${semver.minor(libsVersion)}${semver.patch(libsVersion)}`;
 }
+
+function getPrereleaseLibsVersion(libsVersion) {
+  return `-${semver.prerelease(libsVersion).join('.')}`;
+}
+
 
 function createTag(version) {
   try {
