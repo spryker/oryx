@@ -3,14 +3,14 @@ import { resolve } from '@spryker-oryx/di';
 import { FontInjectable } from '@spryker-oryx/utilities';
 import { isServer } from 'lit';
 import {
+  Observable,
+  Subject,
   asyncScheduler,
   fromEvent,
   map,
-  Observable,
   observeOn,
   of,
   startWith,
-  Subject,
   takeUntil,
 } from 'rxjs';
 
@@ -24,23 +24,14 @@ export class DefaultFontInjectable implements FontInjectable {
       return of(false);
     }
 
-    resolve(PageMetaService).add([
-      {
-        name: 'link',
-        attrs: {
-          rel: 'preload',
-          href,
-        },
+    resolve(PageMetaService).add({
+      name: 'link',
+      attrs: {
+        rel: 'stylesheet',
+        href,
+        media: 'all',
       },
-      {
-        name: 'link',
-        attrs: {
-          rel: 'stylesheet',
-          href,
-          media: 'all',
-        },
-      },
-    ]);
+    });
 
     if (isServer || !font || document.fonts.check(font)) {
       return of(true);

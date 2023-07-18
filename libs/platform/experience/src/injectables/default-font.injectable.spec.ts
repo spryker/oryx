@@ -51,23 +51,14 @@ describe('DefaultFontInjectable', () => {
       mockResource.getFont.mockReturnValue(mockFont);
       injectable.setFont('a');
       expect(mockResource.getFont).toHaveBeenCalledWith('a');
-      expect(mockPageMetaService.add).toHaveBeenCalledWith([
-        {
-          name: 'link',
-          attrs: {
-            rel: 'preload',
-            href: mockFont,
-          },
+      expect(mockPageMetaService.add).toHaveBeenCalledWith({
+        name: 'link',
+        attrs: {
+          rel: 'stylesheet',
+          href: mockFont,
+          media: 'all',
         },
-        {
-          name: 'link',
-          attrs: {
-            rel: 'stylesheet',
-            href: mockFont,
-            media: 'all',
-          },
-        },
-      ]);
+      });
     });
 
     it('should return observable and emit if font loaded', async () => {

@@ -73,23 +73,14 @@ describe('DefaultFontService', () => {
   });
 
   describe('style combinations', () => {
-    const fontParam = [
-      {
-        attrs: {
-          rel: 'preload',
-          href: 'https://fonts.googleapis.com/css2?family=my-font:wght@400;500;600;700&display=swap',
-        },
-        name: 'link',
+    const fontParam = {
+      attrs: {
+        href: 'https://fonts.googleapis.com/css2?family=my-font:wght@400;500;600;700&display=swap',
+        rel: 'stylesheet',
+        media: 'all',
       },
-      {
-        attrs: {
-          href: 'https://fonts.googleapis.com/css2?family=my-font:wght@400;500;600;700&display=swap',
-          rel: 'stylesheet',
-          media: 'all',
-        },
-        name: 'link',
-      },
-    ];
+      name: 'link',
+    };
 
     describe('when the font is provided by font-family', () => {
       beforeEach(() => {
