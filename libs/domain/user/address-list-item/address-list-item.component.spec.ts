@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { IconComponent } from '@spryker-oryx/ui/icon';
 import {
@@ -46,7 +46,7 @@ class MockAddressStateService implements Partial<AddressStateService> {
   clear = vi.fn();
 }
 
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
+class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/link'));
 }
 
@@ -75,7 +75,7 @@ describe('UserAddressListItemComponent', () => {
           useClass: MockRouterService,
         },
         {
-          provide: SemanticLinkService,
+          provide: LinkService,
           useClass: MockSemanticLinkService,
         },
       ],

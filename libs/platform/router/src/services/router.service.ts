@@ -1,3 +1,4 @@
+import { RouteConfig } from '@spryker-oryx/router/lit';
 import { Observable } from 'rxjs';
 
 export interface RouterService {
@@ -13,6 +14,8 @@ export interface RouterService {
   acceptParams(params: RouteParams): void;
   getUrl(route?: string, extras?: NavigationExtras): Observable<string>;
   getPathId(id: string): string | undefined;
+  setRoutes(routes: RouteConfig[]): void;
+  getRoutes(): Observable<RouteConfig[] | undefined>;
 }
 
 export const RouterService = 'oryx.RouterService';
@@ -25,6 +28,21 @@ declare global {
 
 export const enum RouterEventType {
   NavigationEnd,
+}
+
+export const enum RouteType {
+  Page = 'page',
+  ProductList = 'search',
+  Product = 'product',
+  Category = 'category',
+  Checkout = 'checkout',
+  CheckoutLogin = 'checkoutLogin',
+  Order = 'order',
+  Cart = 'cart',
+  Login = 'login',
+  AddressList = 'address-list',
+  AddressBookCreate = 'address-book-create',
+  AddressBookEdit = 'address-book-edit',
 }
 
 export interface RouterEvent {

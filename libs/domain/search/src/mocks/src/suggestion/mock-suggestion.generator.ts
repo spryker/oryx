@@ -1,11 +1,11 @@
 import { Product } from '@spryker-oryx/product';
+import { RouteType } from '@spryker-oryx/router';
 import {
   Suggestion,
   SuggestionField,
   SuggestionQualifier,
   SuggestionResource,
 } from '@spryker-oryx/search';
-import { SemanticLinkType } from '@spryker-oryx/site';
 
 const dummyUrl = (): string => '#';
 const makeTheNameGreatAgain = (name: string): string =>
@@ -17,7 +17,7 @@ const makeTheNameGreatAgain = (name: string): string =>
 const createResources = (
   completion: string[],
   resourceName: string,
-  type: SemanticLinkType
+  type: RouteType
 ): SuggestionResource[] => {
   return completion.map((c) => ({
     name: `${makeTheNameGreatAgain(c)} ${resourceName}`,
@@ -67,12 +67,12 @@ export const createSuggestionMock = (
     [SuggestionField.Suggestions]: completion.map((name) => ({
       name,
       params: { q: name },
-      type: SemanticLinkType.ProductList,
+      type: RouteType.ProductList,
     })),
     [SuggestionField.Categories]: createResources(
       completion,
       'Category',
-      SemanticLinkType.Category
+      RouteType.Category
     ),
     [SuggestionField.Products]: createProducts(completion),
   };

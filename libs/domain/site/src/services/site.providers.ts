@@ -21,10 +21,7 @@ import {
 } from './notification';
 import { DefaultPricingService, PricingService } from './pricing';
 import { DefaultSalutationService, SalutationService } from './salutation';
-import {
-  DefaultSemanticLinkService,
-  SemanticLinkService,
-} from './semantic-link';
+import { DefaultLinkService, LinkService } from './link';
 import { DefaultStoreService, StoreService } from './store';
 
 declare global {
@@ -44,8 +41,8 @@ export const siteProviders: Provider[] = [
     useFactory: () => injectEnv('STORE', ''),
   },
   {
-    provide: SemanticLinkService,
-    useClass: DefaultSemanticLinkService,
+    provide: LinkService,
+    useClass: DefaultLinkService,
   },
   {
     provide: StoreService,

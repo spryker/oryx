@@ -1,12 +1,15 @@
 import { QueryService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { isDefined } from '@spryker-oryx/utilities';
 import {
+  BehaviorSubject,
   concat,
   distinctUntilChanged,
+  filter,
   map,
   Observable,
-  ReplaySubject,
   shareReplay,
+  skip,
   takeUntil,
 } from 'rxjs';
 import { Locale } from '../models';
@@ -15,7 +18,7 @@ import { LocaleService } from './locale.service';
 import { LocaleChanged } from './state';
 
 export class DefaultLocaleService implements LocaleService {
-  protected setActive$ = new ReplaySubject<string>(1);
+  protected setActive$ = new BehaviorSubject<string | null>(null);
   protected active$;
   protected all$;
   protected dateFormat$: Observable<Intl.DateTimeFormat>;
@@ -28,18 +31,11 @@ export class DefaultLocaleService implements LocaleService {
     protected queryService = inject(QueryService)
   ) {
     this.active$ = concat(
-      this.adapter.getDefault().pipe(takeUntil(this.setActive$)),
+      this.adapter.getDefault().pipe(takeUntil(this.setActive$.pipe(skip(1)))),
       this.setActive$
     ).pipe(
+      filter(isDefined),
       distinctUntilChanged(),
-      map((locale, i) => {
-        // Use map to access index and emit LocaleChanged only after first value
-        if (i !== 0) {
-          this.queryService.emit({ type: LocaleChanged, data: locale });
-        }
-
-        return locale;
-      }),
       shareReplay({ refCount: true, bufferSize: 1 })
     );
 
@@ -85,7 +81,12 @@ export class DefaultLocaleService implements LocaleService {
   }
 
   set(value: string): void {
+    const prev = this.setActive$.value;
     this.setActive$.next(value);
+
+    if (prev !== value) {
+      this.queryService.emit({ type: LocaleChanged, data: value });
+    }
   }
 
   formatDate(stamp: string | number | Date): Observable<string> {

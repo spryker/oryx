@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -10,16 +10,17 @@ import {
   Target,
   UserAddressAddButtonOptions,
 } from './address-add-button.model';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ target: Target.Link })
 @hydrate({ event: ['mouseover', 'focusin'] })
 export class UserAddressAddButtonComponent extends AddressMixin(
   ContentMixin<UserAddressAddButtonOptions>(LitElement)
 ) {
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected $createLink = signal(
-    this.semanticLinkService.get({ type: SemanticLinkType.AddressBookCreate })
+    this.semanticLinkService.get({ type: RouteType.AddressBookCreate })
   );
 
   protected render(): TemplateResult | void {
