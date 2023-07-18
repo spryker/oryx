@@ -1,22 +1,17 @@
-import { IconComponent, Icons, IconTypes } from '@spryker-oryx/ui/icon';
+import { preHydrate } from '@spryker-oryx/core';
+import { Icons, IconTypes } from '@spryker-oryx/ui/icon';
+import { hydrate, ssrShim } from '@spryker-oryx/utilities';
+import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { when } from 'lit/directives/when.js';
 import {
-  html,
-  isServer,
-  LitElement,
-  PropertyValues,
-  TemplateResult,
-} from 'lit';
-import { property, queryAssignedElements, state } from 'lit/decorators.js';
-import {
-  ButtonComponentAttributes,
   ButtonColor,
-  ButtonType,
+  ButtonComponentAttributes,
   ButtonSize,
+  ButtonType,
 } from './button.model';
 import { buttonStyles } from './button.styles';
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { hydrate, ssrShim } from '@spryker-oryx/utilities';
-import { preHydrate } from '@spryker-oryx/core';
 import { hydrateSlotChange } from './prehydrate';
 
 @ssrShim('style')
@@ -55,37 +50,26 @@ export class ButtonComponent
   @property({ type: Boolean, reflect: true }) loading?: boolean;
   @property({ type: Boolean, reflect: true }) confirmed?: boolean;
 
-  @property({ type: Boolean }) custom?: boolean;
-
   protected willUpdate(props: PropertyValues): void {
     super.willUpdate(props);
     this.setAttributes();
   }
 
   protected override render(): TemplateResult {
-    const template = [this.renderLoader(), this.renderConfirmed()];
+    return html`
+      ${[this.renderLoader(), this.renderConfirmed()]}
+      <slot name="custom">
+        ${when(
+          this.href,
+          () => this.renderLink(),
+          () => this.renderButton()
+        )}
+      </slot>
+      ${preHydrate(hydrateSlotChange, this.tagName.toLowerCase())}
+    `;
+  }
 
-    if (!this.custom && (this.text || this.icon)) {
-      template.push(html`${this.renderIcon()}${this.text}`);
-    } else {
-      template.push(
-        html`<slot @slotchange=${() => this.onSlotChange()}>
-            ${this.renderIcon()}${this.text}
-          </slot>
-          ${preHydrate(hydrateSlotChange, this.tagName.toLowerCase())}`
-      );
-      if (this.custom) return html`${template}`;
-    }
-
-    if (this.href) {
-      return html`<a
-        part="link"
-        href=${this.href}
-        aria-label=${ifDefined(this.label)}
-        >${template}</a
-      >`;
-    }
-
+  protected renderButton(): TemplateResult {
     return html`
       <button
         part="button"
@@ -94,9 +78,23 @@ export class ButtonComponent
         ?empty=${!this.text}
         .ariaLabel=${this.label}
       >
-        ${template}
+        ${this.renderContent()}
       </button>
     `;
+  }
+
+  protected renderLink(): TemplateResult {
+    return html`
+      <a part="link" href=${this.href} aria-label=${ifDefined(this.label)}>
+        ${this.renderContent()}
+      </a>
+    `;
+  }
+
+  protected renderContent(): TemplateResult {
+    return html`<slot @slotchange=${() => this.onSlotChange()}>
+      ${this.renderIcon()}${this.text}
+    </slot>`;
   }
 
   protected onSlotChange(): void {
@@ -126,13 +124,19 @@ export class ButtonComponent
     return html`<oryx-icon .type=${this.icon}></oryx-icon>`;
   }
 
+  /**
+   * The loader icon will be rendered when the component is not disabled.
+   */
   protected renderLoader(): TemplateResult | void {
-    if (!this.loading) return;
+    if (!this.loading || this.disabled) return;
     return html`<oryx-icon loader .type=${IconTypes.Loader}></oryx-icon>`;
   }
 
+  /**
+   * The loader icon will be rendered when the component state is not disabled nor loading
+   */
   protected renderConfirmed(): TemplateResult | void {
-    if (!this.confirmed) return;
+    if (!this.confirmed || this.disabled || this.loading) return;
     return html`<oryx-icon confirmed .type=${IconTypes.Check}></oryx-icon>`;
   }
 }

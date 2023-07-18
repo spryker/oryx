@@ -30,13 +30,14 @@ const baseStyles = css`
     border: solid 2px var(--_border-color);
   }
 
-  :host([block]) > :is(a, button),
+  :host([block]) :is(a, button),
   :host([block]) ::slotted(:is(a, button)) {
     width: 100%;
   }
 
   :is(a, button),
   ::slotted(:is(a, button)),
+  :host,
   :host([custom]) {
     display: inline-flex;
     align-items: center;
@@ -268,8 +269,7 @@ const iconStyles = css`
 `;
 
 const loadingStyles = css`
-  :host([confirmed]),
-  :host([loading]) {
+  :host(:is([confirmed], [loading]):not([disabled])) {
     color: transparent;
   }
 

@@ -1,7 +1,6 @@
 import { getAppIcons } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
-import { when } from 'lit/directives/when.js';
+import { TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import {
   ButtonColor,
@@ -11,10 +10,13 @@ import {
 import { renderButton } from './util';
 
 export default {
-  title: `${storybookPrefix}/Actions/Action`,
+  title: `${storybookPrefix}/Actions/Button`,
   args: {
     text: 'Action',
     color: ButtonColor.Primary,
+    disabled: false,
+    loading: false,
+    confirmed: false,
   },
   argTypes: {
     type: {

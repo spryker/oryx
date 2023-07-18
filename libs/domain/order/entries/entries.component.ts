@@ -77,11 +77,11 @@ export class OrderEntriesComponent
 
     const i18nToken = this.expanded
       ? 'order.less-products-<count>'
-      : 'order.more-products-<value>';
+      : 'order.more-products-<count>';
 
     return html`<oryx-button
       .type=${ButtonType.Text}
-      .text=${this.i18n(i18nToken, { value: restItemsCount })}
+      .text=${this.i18n(i18nToken, { count: restItemsCount })}
       @click=${this.toggle}
     >
     </oryx-button>`;

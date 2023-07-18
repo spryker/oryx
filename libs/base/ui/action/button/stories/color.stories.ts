@@ -5,7 +5,7 @@ import { ButtonColor, ButtonSize } from '../button.model';
 import { renderButtons, staticButtons } from './util';
 
 export default {
-  title: `${storybookPrefix}/Actions/Action/Static`,
+  title: `${storybookPrefix}/Actions/Button/Static`,
 } as Meta;
 
 const colors = [

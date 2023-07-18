@@ -1,4 +1,3 @@
-import { Size } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { ButtonColor, ButtonSize, ButtonType } from '../button.model';
@@ -34,7 +33,7 @@ export const renderButton = (props: ButtonProps): TemplateResult => {
 
   if (props.slotted === 'link') {
     template = html`
-      <a href=${props.href ?? 'https://spryker.com'}>
+      <a href=${props.href ?? 'https://spryker.com'} slot="custom">
         ${when(
           props.icon,
           () => html`<oryx-icon .type=${props.icon}></oryx-icon>`
@@ -46,7 +45,7 @@ export const renderButton = (props: ButtonProps): TemplateResult => {
 
   if (props.slotted === 'button') {
     template = html`
-      <button>
+      <button slot="custom">
         ${when(
           props.icon,
           () => html`<oryx-icon .type=${props.icon}></oryx-icon>`
@@ -64,7 +63,7 @@ export const renderButton = (props: ButtonProps): TemplateResult => {
       .text=${text}
       .icon=${icon}
       .href=${href}
-      ?custom=${props.slotted === 'link' || props.slotted === 'button'}
+      ?customOUD=${props.slotted === 'link' || props.slotted === 'button'}
       ?disabled=${props.disabled}
       ?loading=${props.loading}
       ?confirmed=${props.confirmed}

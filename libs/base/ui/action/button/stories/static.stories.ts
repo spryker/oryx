@@ -5,7 +5,7 @@ import { ButtonColor } from '../button.model';
 import { staticButtons } from './util';
 
 export default {
-  title: `${storybookPrefix}/Actions/Action/Static`,
+  title: `${storybookPrefix}/Actions/Button/Static`,
 } as Meta;
 
 const PrimaryTemplate: Story = (): TemplateResult => {
