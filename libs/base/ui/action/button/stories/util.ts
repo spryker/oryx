@@ -75,13 +75,15 @@ export const renderButton = (props: ButtonProps): TemplateResult => {
 
 const text = 'Button';
 const icon = 'rocket';
-const sizes = [ButtonSize.Lg, ButtonSize.Md, ButtonSize.Sm];
 const href = 'http://spryker.com';
 const disabled = true;
 const loading = true;
 const confirmed = true;
 
-const renderButtons = (label: string, props: ButtonProps) => html`
+export const renderButtons = (
+  label: string,
+  props: ButtonProps
+): TemplateResult => html`
   <span>${label}</span>
   ${[
     renderButton({ ...props, text }),
@@ -101,7 +103,10 @@ const onClick = () => {
   console.log('click event');
 };
 
-export const staticButtons = (color: ButtonColor): TemplateResult => html`
+export const staticButtons = (
+  color: ButtonColor,
+  sizes = [ButtonSize.Lg, ButtonSize.Md, ButtonSize.Sm]
+): TemplateResult => html`
   <section @click=${onClick}>
     <span></span>
     <span style="grid-column: 2 / span 3">Solid (default)</span>
