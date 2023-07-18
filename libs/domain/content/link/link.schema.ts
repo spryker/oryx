@@ -1,8 +1,8 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
+import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ColorType } from '@spryker-oryx/ui/link';
 import { iconInjectable } from '@spryker-oryx/utilities';
-import { FormFieldType } from 'libs/platform/form/src';
 import { ContentLinkComponent } from './link.component';
 
 export const linkComponentSchema: ContentComponentSchema<ContentLinkComponent> =

@@ -1,5 +1,5 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FormFieldType } from 'libs/platform/form/src';
+import { FormFieldType } from '@spryker-oryx/form';
 import { UserAddressAddButtonComponent } from './address-add-button.component';
 
 export const userAddressAddButtonSchema: ContentComponentSchema<UserAddressAddButtonComponent> =

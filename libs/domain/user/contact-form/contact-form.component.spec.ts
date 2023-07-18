@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { FormRenderer } from 'libs/platform/form/src';
+import { FormRenderer } from '@spryker-oryx/form';
 import { html } from 'lit';
 import { userContactFormComponent } from './contact-form.def';
 import { fields } from './contact-form.model';

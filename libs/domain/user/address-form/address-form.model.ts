@@ -1,4 +1,4 @@
-import { FormFieldDefinition } from 'libs/platform/form/src';
+import { FormFieldDefinition } from '@spryker-oryx/form';
 
 export interface AddressForm {
   id: string;

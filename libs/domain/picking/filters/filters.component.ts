@@ -1,4 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
+import { FormRenderer } from '@spryker-oryx/form';
 import {
   defaultSortingQualifier,
   PickingListQualifierSortBy,
@@ -6,7 +7,6 @@ import {
   SortableQualifier,
 } from '@spryker-oryx/picking';
 import { I18nMixin, signal } from '@spryker-oryx/utilities';
-import { FormRenderer } from 'libs/platform/form/src';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { map } from 'rxjs';

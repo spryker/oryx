@@ -1,5 +1,5 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FormFieldType } from 'libs/platform/form/src';
+import { FormFieldType } from '@spryker-oryx/form';
 import { DiscountRowsAppearance } from './discount.model';
 
 export const cartTotalsDiscountComponentSchema: ContentComponentSchema = {

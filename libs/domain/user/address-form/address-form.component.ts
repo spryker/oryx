@@ -1,5 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import {
+  FormFieldDefinition,
+  FormFieldType,
+  FormMixin,
+  FormRenderer,
+  FormValues,
+} from '@spryker-oryx/form';
 import { CountryService } from '@spryker-oryx/site';
 import {
   Address,
@@ -14,13 +21,6 @@ import {
   signal,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import {
-  FormFieldDefinition,
-  FormFieldType,
-  FormMixin,
-  FormRenderer,
-  FormValues,
-} from 'libs/platform/form/src';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import {

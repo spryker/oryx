@@ -1,6 +1,6 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
+import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { FormFieldType } from 'libs/platform/form/src';
 import { ProductAttributesComponent } from './attributes.component';
 
 export const productAttributesSchema: ContentComponentSchema<ProductAttributesComponent> =

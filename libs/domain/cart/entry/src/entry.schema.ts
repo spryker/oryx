@@ -1,6 +1,6 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
+import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { FormFieldType } from 'libs/platform/form/src';
 import { CartEntryComponent } from './entry.component';
 
 export const cartEntryComponentSchema: ContentComponentSchema<CartEntryComponent> =

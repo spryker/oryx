@@ -1,5 +1,5 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FormFieldType } from 'libs/platform/form/src';
+import { FormFieldType } from '@spryker-oryx/form';
 import { SiteNavigationItemComponent } from './navigation-item.component';
 
 export const siteNavigationItemSchema: ContentComponentSchema<SiteNavigationItemComponent> =
