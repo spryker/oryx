@@ -1,5 +1,5 @@
-import { wait } from '@spryker-oryx/utilities';
 import { afterEach, describe, Mock } from 'vitest';
+import { wait } from '../../misc';
 import {
   Computed,
   Effect,

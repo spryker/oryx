@@ -1,12 +1,7 @@
-import {
-  ComponentsInfo,
-  ComponentsPlugin,
-  FeatureOptions,
-  InjectionPlugin,
-} from '@spryker-oryx/core';
+import { FeatureOptions, InjectionPlugin } from '@spryker-oryx/core';
 import { Theme, ThemePlugin } from '@spryker-oryx/experience';
+import { ComponentsInfo, ComponentsPlugin } from '@spryker-oryx/utilities';
 import { ModularAppBuilder } from './modular-app-builder';
-
 const mockApply = vi.fn();
 
 vi.mock('@spryker-oryx/core', async () => {

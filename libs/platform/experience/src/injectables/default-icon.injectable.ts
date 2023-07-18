@@ -1,9 +1,5 @@
 import { AppRef } from '@spryker-oryx/core';
-import {
-  LazyLoadable,
-  resolveLazyLoadable,
-  ssrAwaiter,
-} from '@spryker-oryx/core/utilities';
+import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { resolve } from '@spryker-oryx/di';
 import { defaultIconFont, IconTypes } from '@spryker-oryx/ui/icon';
 import {
@@ -11,6 +7,8 @@ import {
   IconHost,
   IconInjectable,
   isPromise,
+  LazyLoadable,
+  resolveLazyLoadable,
 } from '@spryker-oryx/utilities';
 import { html, svg, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';

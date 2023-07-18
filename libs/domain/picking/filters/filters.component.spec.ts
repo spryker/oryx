@@ -1,11 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { FormRenderer } from '@spryker-oryx/form';
 import {
   PickingListService,
   defaultSortingQualifier,
 } from '@spryker-oryx/picking';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';

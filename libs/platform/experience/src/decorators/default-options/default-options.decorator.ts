@@ -9,7 +9,7 @@ type ClassType<T = Record<string, any>> = Type<LitElement & { options?: T }> & {
   [optionsKey]?: T;
 };
 
-declare module '@spryker-oryx/core' {
+declare module '@spryker-oryx/utilities' {
   interface ComponentStatic {
     [optionsKey]?: Record<string, unknown>;
   }

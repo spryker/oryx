@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { LoginPageComponent } from './login.component';
 import { loginPageComponent } from './login.def';

@@ -1,4 +1,4 @@
-import { componentDef } from '@spryker-oryx/core';
+import { componentDef } from '@spryker-oryx/utilities';
 
 export const orderConfirmationBannerComponent = componentDef({
   name: 'oryx-order-confirmation-banner',

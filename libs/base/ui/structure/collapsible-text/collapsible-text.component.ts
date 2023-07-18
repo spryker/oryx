@@ -1,5 +1,10 @@
-import { preHydrate } from '@spryker-oryx/core';
-import { hydrate, I18nMixin, Size, throttle } from '@spryker-oryx/utilities';
+import {
+  hydrate,
+  I18nMixin,
+  preHydrate,
+  Size,
+  throttle,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ButtonType } from '../../action/button/src/button.model';

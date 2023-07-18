@@ -1,4 +1,3 @@
-import { ComponentDef } from '@spryker-oryx/core';
 import { DefaultMedia, rootInjectable, Size } from '@spryker-oryx/utilities';
 import { css, CSSResult } from 'lit';
 import { ThemePlugin, ThemePluginName } from './theme';

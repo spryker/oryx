@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LazyLoadable } from '@spryker-oryx/core/utilities';
-import { Type } from '@spryker-oryx/utilities';
 import { CSSResult, CSSResultGroup, CSSResultOrNative } from 'lit';
+import { Type } from '../../misc';
+import { LazyLoadable } from '../utilities';
+
+declare global {
+  export interface FeatureOptions {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: Record<string, any> | undefined;
+  }
+}
 
 export type ComponentInfo = ComponentDef | ComponentDefFn;
 

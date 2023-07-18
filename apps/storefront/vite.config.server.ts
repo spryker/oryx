@@ -22,11 +22,7 @@ export default defineConfig(() => {
       ),
       ssr: viteConfig.ssr.entry,
       rollupOptions: {
-        output: {
-          globals: {
-            buffer: 'buffer',
-          },
-        },
+        external: ['buffer'],
       },
     },
     ssr: {

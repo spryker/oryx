@@ -1,4 +1,4 @@
-import { Type } from '@spryker-oryx/utilities';
+import { BuilderPlugin, Type } from '@spryker-oryx/utilities';
 
 export const AppRef = 'oryx.AppRef';
 
@@ -31,13 +31,7 @@ export interface AppBuilder<T = ''> {
 
 export type Builder<T> = T extends string ? AppBuilder : T;
 
-export interface GenericPlugin {
-  getName(): string;
-  apply(app: App): void | Promise<void>;
-  destroy?(app?: App): void;
-}
-
-export type AppPlugin = GenericPlugin;
+export type AppPlugin = BuilderPlugin<App>;
 
 export interface AppPluginBeforeApply {
   beforeApply(app: App): void | Promise<void>;

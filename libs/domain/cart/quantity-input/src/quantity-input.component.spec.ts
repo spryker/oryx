@@ -1,8 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { destroyInjector } from '@spryker-oryx/di';
 import { iconComponent } from '@spryker-oryx/ui';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { QuantityInputComponent } from './quantity-input.component';
 import { quantityInputComponent } from './quantity-input.def';

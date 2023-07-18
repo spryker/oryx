@@ -1,5 +1,5 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
+import { useComponent } from '@spryker-oryx/utilities';
 import { PaginationComponent } from './pagination.component';
 import { paginationComponent } from './pagination.def';
 

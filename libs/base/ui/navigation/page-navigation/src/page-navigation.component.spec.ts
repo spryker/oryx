@@ -1,9 +1,9 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import {
   a11yConfig,
   queryAssignedElements,
   queryFirstAssigned,
+  useComponent,
 } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import {

@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
@@ -10,7 +9,8 @@ import {
   AddressStateService,
   CrudState,
 } from '@spryker-oryx/user';
-import { html, LitElement } from 'lit';
+import { useComponent } from '@spryker-oryx/utilities';
+import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BehaviorSubject, of } from 'rxjs';
 import { UserAddressEditComponent } from './address-edit.component';

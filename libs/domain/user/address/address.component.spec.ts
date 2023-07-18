@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import {
@@ -12,6 +11,7 @@ import {
   mockCurrentAddress,
   uncompletedAddress,
 } from '@spryker-oryx/user/mocks';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { UserAddressComponent } from './address.component';
