@@ -39,12 +39,8 @@ export class AddEditAddressFormFragment {
   fillAddressForm = (addressData?) => {
     const address = { ...defaultAddress, ...addressData };
 
-    this.getFirstNameInput().should('be.visible', { timeout: 10000 });
-
     this.selectCoutry(address.iso2Code);
     this.selectSalutation(address.salutation);
-    // force typing is needed because sometimes Cypress thinks that our inputs are disabled
-    // TODO investigate it deeper later
     this.getFirstNameInput()
       .clear({ force: true })
       .type(address.firstName, { force: true });
