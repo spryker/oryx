@@ -15,7 +15,11 @@
             "depConstraints": [
               {
                 "sourceTag": "layer:domain",
-                "onlyDependOnLibsWithTags": ["layer:base", "layer:domain"]
+                "onlyDependOnLibsWithTags": [
+                  "layer:base",
+                  "layer:domain",
+                  "lib:core"
+                ]
               },
               {
                 "sourceTag": "layer:platform",
@@ -27,7 +31,7 @@
               },
               {
                 "sourceTag": "layer:base",
-                "onlyDependOnLibsWithTags": ["layer:base"]
+                "onlyDependOnLibsWithTags": ["layer:base", "lib:core"]
               },
               {
                 "sourceTag": "layer:template",
