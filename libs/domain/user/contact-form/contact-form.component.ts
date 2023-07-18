@@ -1,8 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { FormMixin, FormRenderer, formStyles } from '@spryker-oryx/form';
 import { hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { FormMixin, FormRenderer, formStyles } from 'libs/platform/form/src';
+import { LitElement, TemplateResult, html } from 'lit';
 import { fields } from './contact-form.model';
 import { styles } from './contact-form.styles';
 

@@ -1,5 +1,5 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FormFieldType } from '@spryker-oryx/form';
+import { FormFieldType } from 'libs/platform/form/src';
 import { ProductAvailabilityComponent } from './availability.component';
 
 export const ProductAvailabilitySchema: ContentComponentSchema<ProductAvailabilityComponent> =

@@ -1,7 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { VideoAspectRatio, VideoPreload } from '@spryker-oryx/ui/video';
+import { FormFieldType } from 'libs/platform/form/src';
 import { ContentVideoComponent } from './video.component';
 
 export const videoComponentSchema: ContentComponentSchema<ContentVideoComponent> =

@@ -1,5 +1,5 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FormFieldType } from '@spryker-oryx/form';
+import { FormFieldType } from 'libs/platform/form/src';
 import { CartTotalsTotalComponent } from './total.component';
 
 export const cartTotalsTotalComponentSchema: ContentComponentSchema<CartTotalsTotalComponent> =

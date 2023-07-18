@@ -1,6 +1,6 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { FormFieldType } from 'libs/platform/form/src';
 import { ProductImagesComponent } from './images.component';
 import { ProductImagesScrollBehavior } from './images.model';
 

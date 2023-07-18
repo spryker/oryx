@@ -1,7 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
+import { FormFieldType } from 'libs/platform/form/src';
 import { AuthLoginComponent } from './login.component';
 
 export const loginComponentSchema: ContentComponentSchema<AuthLoginComponent> =

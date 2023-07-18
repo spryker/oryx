@@ -14,7 +14,6 @@ import {
   experienceRoutesFeature,
   Resources,
 } from '@spryker-oryx/experience';
-import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature } from '@spryker-oryx/i18n';
 import { orderFeature } from '@spryker-oryx/order';
 import { productFeature } from '@spryker-oryx/product';
@@ -28,6 +27,7 @@ import { searchFeature, searchPreviewProviders } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
 import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
+import { formFeature } from 'libs/platform/form/src';
 import { isServer } from 'lit';
 import 'urlpattern-polyfill';
 import { StaticExperienceFeature } from './experience';

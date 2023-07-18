@@ -1,5 +1,5 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FormFieldType } from '@spryker-oryx/form';
+import { FormFieldType } from 'libs/platform/form/src';
 import { ContentTextComponent } from './text.component';
 
 export const contentTextSchema: ContentComponentSchema<ContentTextComponent> = {

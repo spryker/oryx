@@ -2,16 +2,15 @@ import { AuthService } from '@spryker-oryx/auth';
 import { CheckoutMixin, ContactDetails, isValid } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { FormFieldType, FormRenderer } from '@spryker-oryx/form';
-import { RouterService } from '@spryker-oryx/router';
+import { RouteType, RouterService } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { UserService } from '@spryker-oryx/user';
 import { elementEffect, hydrate, signal } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { FormFieldType, FormRenderer } from 'libs/platform/form/src';
+import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { CheckoutAccountComponentOptions } from './account.model';
 import { checkoutAccountStyles } from './account.styles';
-import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ enableGuestCheckout: true })
 @hydrate({ event: 'window:load' })

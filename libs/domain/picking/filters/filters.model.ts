@@ -1,5 +1,5 @@
-import { FormFieldDefinition, FormFieldType } from '@spryker-oryx/form';
 import { i18n } from '@spryker-oryx/utilities';
+import { FormFieldDefinition, FormFieldType } from 'libs/platform/form/src';
 
 export interface FiltersAttributes {
   open?: boolean;

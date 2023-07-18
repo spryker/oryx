@@ -1,7 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
+import { FormFieldType } from 'libs/platform/form/src';
 import { ProductMediaContainerSize } from '../../src/models';
 import { ProductMediaComponent } from './media.component';
 

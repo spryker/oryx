@@ -1,8 +1,8 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FormFieldType } from '@spryker-oryx/form';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LinkType } from '@spryker-oryx/ui/link';
+import { FormFieldType } from 'libs/platform/form/src';
 import { ProductTitleComponent } from './title.component';
 
 const tagOptions = [

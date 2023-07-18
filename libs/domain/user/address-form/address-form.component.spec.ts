@@ -1,7 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { FormRenderer } from '@spryker-oryx/form';
 import { CountryService } from '@spryker-oryx/site';
 import {
   Address,
@@ -10,6 +9,7 @@ import {
   User,
   UserService,
 } from '@spryker-oryx/user';
+import { FormRenderer } from 'libs/platform/form/src';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { UserAddressFormComponent } from './address-form.component';
