@@ -70,9 +70,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
           )}
           ${when(
             props.customTrigger,
-            () => html` <oryx-button slot="trigger">
-              <button>trigger</button>
-            </oryx-button>`
+            () => html` <oryx-button slot="trigger">trigger</oryx-button>`
           )}
           ${when(isOptions, renderOptions, renderCustomContent)}
         </oryx-dropdown>

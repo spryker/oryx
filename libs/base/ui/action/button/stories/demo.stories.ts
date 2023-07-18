@@ -3,12 +3,17 @@ import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../.constants';
-import { ActionComponentAttributes, ButtonType } from '../action.model';
+import {
+  ButtonColor,
+  ButtonComponentAttributes,
+  ButtonType,
+} from '../button.model';
 
 export default {
   title: `${storybookPrefix}/Actions/Action`,
   args: {
     text: 'Action',
+    color: ButtonColor.Primary,
     // type: ButtonType.Outline,
     //     linkType: LinkType.Link,
     //     disabled: false,
@@ -18,12 +23,33 @@ export default {
   },
   argTypes: {
     type: {
-      options: [ButtonType.Solid, ButtonType.Outline, ButtonType.Icon],
+      options: [
+        ButtonType.Text,
+        ButtonType.Solid,
+        ButtonType.Outline,
+        ButtonType.Icon,
+      ],
+      control: { type: 'select' },
+    },
+    color: {
+      options: [
+        ButtonColor.Primary,
+        ButtonColor.Secondary,
+        ButtonColor.Neutral,
+        ButtonColor.Highlight,
+        ButtonColor.Error,
+        ButtonColor.Warning,
+        ButtonColor.Info,
+        ButtonColor.Success,
+      ],
       control: { type: 'select' },
     },
     icon: {
       options: getAppIcons(),
       control: { type: 'select' },
+    },
+    label: {
+      control: { type: 'text' },
     },
     slotted: {
       options: ['link', 'button', 'content'],
@@ -34,6 +60,7 @@ export default {
       control: { type: 'text' },
       table: { category: 'demo' },
     },
+
     //   color: {
     //     control: { type: 'select', options: ['primary', 'neutral'] },
     //   },
@@ -46,7 +73,7 @@ interface Props {
   slotted: 'link' | 'button' | 'content';
 }
 
-const Template: Story<ActionComponentAttributes & Props> = (
+const Template: Story<ButtonComponentAttributes & Props> = (
   props
 ): TemplateResult => {
   let template;
@@ -85,14 +112,15 @@ const Template: Story<ActionComponentAttributes & Props> = (
     `;
   }
   return html`
-    <oryx-action
+    <oryx-button
       .color=${props.color}
       .type=${props.type}
-      .label=${props.text}
+      .text=${props.text}
+      .label=${props.label}
       .icon=${props.icon}
       .href=${props.href}
       ?custom=${props.slotted === 'link' || props.slotted === 'button'}
-      >${template}</oryx-action
+      >${template}</oryx-button
     >
   `;
 };

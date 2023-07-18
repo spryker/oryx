@@ -11,6 +11,7 @@ import { DefaultAuthLoginStrategy } from './default-login.strategy';
 import { LoginOptions, LoginRequest } from './login.model';
 import { AuthLoginStrategy } from './login.strategy';
 import { styles } from './login.styles';
+import { ButtonSize } from '@spryker-oryx/ui/button';
 
 @defaultOptions({
   enableRememberMe: true,
@@ -115,7 +116,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
         ${this.renderLoginOptions()}
 
-        <oryx-button size=${Size.Sm} ?loading=${this.isLoading}>
+        <oryx-button .size=${ButtonSize.Md} ?loading=${this.isLoading} custom>
           <button ?disabled=${this.isLoading}>
             ${this.i18n('user.log-in')}
           </button>

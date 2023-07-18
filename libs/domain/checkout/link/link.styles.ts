@@ -1,12 +1,6 @@
 import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
-export const linkStyles = css`
-  a {
-    width: 100%;
-  }
-`;
-
 const smallScreen = css`
   :host {
     display: block;

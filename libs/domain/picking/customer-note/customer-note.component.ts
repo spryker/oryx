@@ -55,10 +55,11 @@ export class CustomerNoteComponent extends I18nMixin(
 
       <p>${this.pickingList?.cartNote}</p>
 
-      <oryx-button ?loading=${this.upcomingPickingListId}>
-        <button @click=${this.onProceed}>
-          ${this.i18n('picking.proceed-to-picking')}
-        </button>
+      <oryx-button
+        ?loading=${this.upcomingPickingListId}
+        @click=${this.onProceed}
+      >
+        ${this.i18n('picking.proceed-to-picking')}
       </oryx-button>
       <oryx-picking-in-progress-modal
         @oryx.back=${this.closePickingInProgressModal}

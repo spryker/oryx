@@ -10,6 +10,7 @@ import {
   CollapsibleToggleControlType,
 } from './collapsible.model';
 import { collapsibleBaseStyle } from './styles';
+import { ButtonType } from '@spryker-oryx/ui/button';
 
 export class CollapsibleComponent
   extends LitElement
@@ -78,7 +79,7 @@ export class CollapsibleComponent
 
     if (this.isTextTrigger) {
       return html`
-        <oryx-button type="text" size=${this.controlSize}>
+        <oryx-button .type=${ButtonType.Text} .size=${this.controlSize}>
           ${trigger}
         </oryx-button>
       `;

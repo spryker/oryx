@@ -1,8 +1,8 @@
 import { componentDef } from '@spryker-oryx/core';
 
 export const actionComponent = componentDef({
-  name: 'oryx-action',
-  impl: () => import('./action.component').then((m) => m.ActionComponent),
+  name: 'oryx-button',
+  impl: () => import('./button.component').then((m) => m.ButtonComponent),
   //   stylesheets: [
   //     {
   //       theme: 'backoffice',

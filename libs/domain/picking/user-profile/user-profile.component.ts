@@ -16,6 +16,7 @@ import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs';
 import { userProfileComponentStyles } from './user-profile.styles';
+import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 
 @signalAware()
 export class UserProfileComponent extends I18nMixin(LitElement) {
@@ -69,23 +70,27 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
       )}
 
       <div class="info-footer">
-        <oryx-button ?loading=${this.logoutLoading} type="secondary" outline>
-          <button
-            ?disabled="${this.$isPicking() || this.$pendingSyncs()}"
-            @click=${this.onLogOut}
-          >
-            ${this.i18n('user.profile.log-Out')}
-          </button>
+        <oryx-button
+          ?loading=${this.logoutLoading}
+          .type=${ButtonType.Outline}
+          .color=${ButtonColor.Neutral}
+          @click=${this.onLogOut}
+          ?disabled="${this.$isPicking() || this.$pendingSyncs()}"
+        >
+          ${this.i18n('user.profile.log-Out')}
         </oryx-button>
 
         ${when(
           this.$isMainPage(),
           () =>
             html`
-              <oryx-button ?loading=${this.loading} type="secondary" outline>
-                <button @click=${this.onReceiveData}>
-                  ${this.i18n('user.profile.receive-Data')}
-                </button>
+              <oryx-button
+                ?loading=${this.loading}
+                .type=${ButtonType.Outline}
+                .color=${ButtonColor.Neutral}
+                @click=${this.onReceiveData}
+              >
+                ${this.i18n('user.profile.receive-Data')}
               </oryx-button>
             `
         )}

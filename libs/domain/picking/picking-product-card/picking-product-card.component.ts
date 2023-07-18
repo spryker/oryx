@@ -99,12 +99,11 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
           })}
         </div>
 
-        <oryx-button>
-          <button ?disabled="${!this.isCorrectNumberOfPickedProvided}">
-            <oryx-icon .type=${IconTypes.Check}></oryx-icon>
-            ${this.i18n('picking.product-card.done')}
-          </button>
-        </oryx-button>
+        <oryx-button
+          ?disabled=${!this.isCorrectNumberOfPickedProvided}
+          .icon=${IconTypes.Check}
+          .text=${this.i18n('picking.product-card.done')}
+        ></oryx-button>
       </form>
     `;
 
@@ -166,12 +165,11 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
         <p>${text} ${label}</p>
         ${when(subtext, () => html`<p>${subtext}</p>`)}
       </div>
-      <oryx-button>
-        <button @click=${this.editProductPicking}>
-          <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
-          ${this.i18n('picking.product-card.edit-items')}
-        </button>
-      </oryx-button>
+      <oryx-button
+        @click=${this.editProductPicking}
+        .icon=${IconTypes.Edit}
+        .text=${this.i18n('picking.product-card.edit-items')}
+      ></oryx-button>
     `;
   }
 }

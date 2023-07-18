@@ -117,7 +117,7 @@ export const cartEntryStyles = css`
     justify-content: start;
   }
 
-  .actions oryx-icon-button span {
+  .actions oryx-button span {
     display: var(--oryx-screen-small-inline, none);
   }
 `;

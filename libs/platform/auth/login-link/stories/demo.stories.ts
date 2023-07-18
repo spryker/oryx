@@ -6,6 +6,7 @@ import { html, TemplateResult } from 'lit';
 import { take } from 'rxjs';
 import { storybookPrefix } from '../../.constants';
 import { LoginLinkOptions } from '../login-link.model';
+import { ButtonSize } from '@spryker-oryx/ui/button';
 
 export default {
   title: `${storybookPrefix}/Login Link`,
@@ -29,8 +30,8 @@ const toggleLogin = () => {
 
 const Template: Story<LoginLinkOptions> = (options): TemplateResult => {
   return html`
-    <oryx-button size=${Size.Sm} @click=${toggleLogin}>
-      <button style="margin-bottom: 16px" type="submit">
+    <oryx-button .size=${ButtonSize.Sm} @click=${toggleLogin}
+       style="display: block;margin-bottom: 16px" >
         Toggle auth state
       </button>
     </oryx-button>

@@ -116,16 +116,12 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     return html`
       <oryx-button
         slot="trigger"
+        .href=${this.$url()}
+        .icon=${this.icon}
+        .label=${'???'}
         @click=${this.onTriggerClick}
         @mouseenter=${this.onTriggerHover}
-      >
-        ${when(
-          this.$url(),
-          () =>
-            html`<a href=${this.$url()!}> ${this.icon} ${this.$label()} </a>`,
-          () => html`<button>${this.icon} ${this.$label()}</button>`
-        )}
-      </oryx-button>
+      ></oryx-button>
     `;
   }
 

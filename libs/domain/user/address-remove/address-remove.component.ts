@@ -1,4 +1,4 @@
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AddressMixin } from '@spryker-oryx/user';
 import { hydrate, I18nMixin, Size } from '@spryker-oryx/utilities';
@@ -51,13 +51,12 @@ export class UserAddressRemoveComponent extends I18nMixin(
       </section>
       <oryx-button
         slot="footer-more"
-        type=${ButtonType.Critical}
+        .color=${ButtonColor.Error}
+        .size=${ButtonSize.Md}
+        .text=${this.i18n('user.address.remove')}
         ?loading=${this.loading}
-      >
-        <button @click=${this.onRemove}>
-          ${this.i18n('user.address.remove')}
-        </button>
-      </oryx-button>
+        @click=${this.onRemove}
+      ></oryx-button>
     </oryx-modal>`;
   }
 

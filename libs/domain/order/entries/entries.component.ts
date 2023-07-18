@@ -7,6 +7,7 @@ import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { OrderEntriesAttributes, OrderEntriesOptions } from './entries.model';
 import { orderEntriesStyles } from './entries.styles';
+import { ButtonType } from '@spryker-oryx/ui/button';
 
 @defaultOptions({
   limit: 5,
@@ -73,14 +74,15 @@ export class OrderEntriesComponent
 
     const restItemsCount = this.$order().items.length - this.$options().limit!;
 
-    return html`<oryx-button type="text">
-      <button @click=${this.toggle}>
-        ${this.expanded ? '-' : '+'}${restItemsCount}
-        ${this.i18n(
-          this.expanded ? 'order.less-products' : 'order.more-products'
-        )}
-      </button>
-    </oryx-button>`;
+    let text = this.expanded ? '-' : '+';
+    text += restItemsCount;
+    text += this.expanded ? 'order.less-products' : 'order.more-products';
+
+    return html`<oryx-button
+      .type=${ButtonType.Text}
+      @click=${this.toggle}
+      .text=${text}
+    ></oryx-button>`;
   }
 
   protected toggle(): void {

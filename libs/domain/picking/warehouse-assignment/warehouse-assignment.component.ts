@@ -7,6 +7,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs';
 import { styles } from './warehouse-assignment.styles';
+import { ButtonSize } from '@spryker-oryx/ui/button';
 
 @signalAware()
 export class WarehouseAssignmentComponent extends LitElement {
@@ -79,10 +80,11 @@ export class WarehouseAssignmentComponent extends LitElement {
               <h3>${item.warehouse.name}</h3>
             </oryx-heading>
 
-            <oryx-button size=${Size.Sm}>
-              <button @click=${() => this.onSelect(item.id)}>
-                ${i18n('picking.select')}
-              </button>
+            <oryx-button
+              .size=${ButtonSize.Sm}
+              @click=${() => this.onSelect(item.id)}
+            >
+              ${i18n('picking.select')}
             </oryx-button>
             <hr />
           `

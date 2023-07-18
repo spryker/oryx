@@ -18,9 +18,13 @@ export class CheckoutLinkComponent extends I18nMixin(
     if (this.$isEmpty()) return;
 
     return html`
-      <oryx-action ?loading=${this.$isBusy()} custom>
-        <a href=${this.$link()}>${this.i18n('cart.checkout')}</a>
-      </oryx-action>
+      <oryx-button
+        ?loading=${this.$isBusy()}
+        .href=${this.$link()}
+        .text=${this.i18n('cart.checkout')}
+        block
+      >
+      </oryx-button>
     `;
   }
 }

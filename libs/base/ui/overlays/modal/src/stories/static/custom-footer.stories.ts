@@ -3,6 +3,7 @@ import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
+import { ButtonColor, ButtonSize } from '@spryker-oryx/ui/button';
 
 export default {
   title: `${storybookPrefix}/Overlays/Modal/Static`,
@@ -22,11 +23,19 @@ const Template: Story = (): TemplateResult => {
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua
       </p>
-      <oryx-button slot="footer" type="primary" size=${Size.Sm}>
-        <button>Save</button>
+      <oryx-button
+        slot="footer"
+        .color=${ButtonColor.Primary}
+        .size=${ButtonSize.Sm}
+      >
+        Save
       </oryx-button>
-      <oryx-button slot="footer" type="primary" size=${Size.Sm}>
-        <button>Ok</button>
+      <oryx-button
+        slot="footer"
+        .color=${ButtonColor.Primary}
+        .size=${ButtonSize.Sm}
+      >
+        Ok
       </oryx-button>
     </oryx-modal>
   `;

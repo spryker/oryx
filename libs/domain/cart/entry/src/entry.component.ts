@@ -13,7 +13,7 @@ import {
   SemanticLinkType,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LinkType } from '@spryker-oryx/ui/link';
 import {
@@ -131,16 +131,15 @@ export class CartEntryComponent
 
     return html`
       <div class="actions">
-        <oryx-icon-button
-          size=${Size.Md}
-          @click=${this.removeEntry}
+        <oryx-button
+          .type=${ButtonType.Icon}
+          .size=${ButtonSize.Md}
+          .color=${ButtonColor.Neutral}
+          .icon=${IconTypes.Trash}
+          .label=${this.i18n('remove')}
           ?disabled=${this.$isBusy()}
-        >
-          <button aria-label="remove">
-            <oryx-icon .type=${IconTypes.Trash}></oryx-icon>
-          </button>
-          <span>${this.i18n('cart.remove')}</span>
-        </oryx-icon-button>
+          @click=${this.removeEntry}
+        ></oryx-button>
       </div>
     `;
   }
@@ -193,7 +192,7 @@ export class CartEntryComponent
 
       <oryx-button
         slot="footer-more"
-        .type=${ButtonType.Critical}
+        .color=${ButtonColor.Error}
         .size=${Size.Md}
         @click=${(ev: Event) => this.removeEntry(ev, true)}
       >

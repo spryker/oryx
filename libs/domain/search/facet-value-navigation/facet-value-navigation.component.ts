@@ -11,6 +11,7 @@ import {
   ToggleFacetEventDetail,
 } from './facet-value-navigation.model';
 import { facetValueNavigationStyles } from './facet-value-navigation.styles';
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 
 export class SearchFacetValueNavigationComponent
   extends I18nMixin(LitElement)
@@ -48,11 +49,12 @@ export class SearchFacetValueNavigationComponent
           allowClear,
           () =>
             html`
-              <oryx-button type="text" size=${Size.Sm}>
-                <button @click=${this.onClear}>
-                  ${this.i18n('oryx.search.facets.clear')}
-                </button>
-              </oryx-button>
+              <oryx-button
+                .type=${ButtonType.Text}
+                .size=${ButtonSize.Sm}
+                .text=${this.i18n('oryx.search.facets.clear')}
+                @click=${this.onClear}
+              ></oryx-button>
             `
         )}
       </section>
@@ -69,17 +71,19 @@ export class SearchFacetValueNavigationComponent
 
       ${when(
         this.enableToggle,
-        () => html` <oryx-button type="text" size=${Size.Lg}>
-          <button @click=${this.onToggle}>
-            ${when(
-              this.expanded,
-              () => this.i18n('oryx.search.facets.show-less'),
-              () =>
-                this.i18n('oryx.search.facets.show-all-<length>', {
-                  length: this.valuesLength ? `(${this.valuesLength})` : '',
-                })
-            )}
-          </button>
+        () => html` <oryx-button
+          .type=${ButtonType.Text}
+          .size=${ButtonSize.Lg}
+          @click=${this.onToggle}
+        >
+          ${when(
+            this.expanded,
+            () => this.i18n('oryx.search.facets.show-less'),
+            () =>
+              this.i18n('oryx.search.facets.show-all-<length>', {
+                length: this.valuesLength ? `(${this.valuesLength})` : '',
+              })
+          )}
         </oryx-button>`
       )}
     </oryx-collapsible>`;

@@ -10,14 +10,4 @@ export const styles = css`
   form {
     display: contents;
   }
-
-  /* button {
-    --oryx-icon-size: 24px;
-
-    height: 28px;
-  } */
-
-  oryx-action {
-    width: inherit;
-  }
 `;

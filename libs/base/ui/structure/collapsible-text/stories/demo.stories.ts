@@ -34,7 +34,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`
     <oryx-collapsible-text
       .lineClamp=${props.lineClamp ?? 0}
-      .toggle=${!!props.toggle}
+      .toggle=${props.toggle}
       >${unsafeHTML(props.text)}</oryx-collapsible-text
     >
   `;

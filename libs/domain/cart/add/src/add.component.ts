@@ -31,18 +31,17 @@ export class CartAddComponent extends ProductMixin(
   protected cartService = resolve(CartService);
 
   @state() protected isInvalid = false;
-  @query('oryx-action') protected button?: ButtonComponent;
+  @query('oryx-button') protected button?: ButtonComponent;
   @query('oryx-cart-quantity-input') protected input?: QuantityInputComponent;
 
   protected override render(): TemplateResult | void {
     if (!this.$product()?.sku) return;
-    if (this.$options().hideQuantityInput) {
-      return this.renderButton();
-    }
     return html`${this.renderQuantity()} ${this.renderButton()}`;
   }
 
   protected renderQuantity(): TemplateResult | void {
+    if (this.$options().hideQuantityInput) return;
+
     return html`<oryx-cart-quantity-input
       .min=${this.$min()}
       .max=${this.$max()}
@@ -54,17 +53,19 @@ export class CartAddComponent extends ProductMixin(
   protected renderButton(): TemplateResult | void {
     const { outlined, enableLabel } = this.$options();
     const type = outlined ? 'outline' : 'solid';
-    const text = enableLabel ? this.i18n('cart.add-to-cart') : undefined;
+    const text = this.i18n('cart.add-to-cart');
 
-    return html`<oryx-action
+    return html`<oryx-button
       .size=${Size.Md}
       .type=${type}
-      .label=${text}
+      .text=${enableLabel ? text : undefined}
+      .label=${enableLabel ? undefined : text}
       .icon=${IconTypes.CartAdd}
+      ?block=${this.$options().hideQuantityInput}
       ?disabled=${this.isInvalid || !this.$hasStock()}
       @click=${this.onSubmit}
       @mouseup=${this.onMouseUp}
-    ></oryx-action>`;
+    ></oryx-button>`;
   }
 
   protected onMouseUp(e: Event): void {

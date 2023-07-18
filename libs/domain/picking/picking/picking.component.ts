@@ -10,7 +10,7 @@ import {
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { ChipComponent } from '@spryker-oryx/ui/chip';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { TabsAppearance } from '@spryker-oryx/ui/tabs';
@@ -294,10 +294,12 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
         })}"
       >
         <div>
-          <oryx-button type=${ButtonType.Primary} outline>
-            <button @click=${this.finishPicking}>
-              ${this.i18n('picking.finish-picking')}
-            </button>
+          <oryx-button
+            .color=${ButtonColor.Primary}
+            .type=${ButtonType.Outline}
+            @click=${this.finishPicking}
+          >
+            ${this.i18n('picking.finish-picking')}
           </oryx-button>
         </div>
       </div>
@@ -330,16 +332,22 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
           )}
         </span>
 
-        <oryx-button slot="footer" outline type="${ButtonType.Secondary}">
+        <oryx-button
+          slot="footer"
+          .type=${ButtonType.Outline}
+          .color=${ButtonColor.Secondary}
+        >
           <button @click=${this.onModalClose}>
             ${this.i18n('picking.product-card.cancel')}
           </button>
         </oryx-button>
 
-        <oryx-button slot="footer" type="${ButtonType.Primary}">
-          <button @click=${this.confirmPartialPicking}>
-            ${this.i18n('picking.product-card.confirm')}
-          </button>
+        <oryx-button
+          slot="footer"
+          .color=${ButtonColor.Primary}
+          @click=${this.confirmPartialPicking}
+        >
+          ${this.i18n('picking.product-card.confirm')}
         </oryx-button>
       </oryx-modal>
     `;

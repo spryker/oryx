@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { CurrencyService } from '@spryker-oryx/site';
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { hydrate, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
@@ -33,12 +33,13 @@ export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
 
     return html`
       <oryx-dropdown vertical-align position="start">
-        <oryx-button type=${ButtonType.Text} slot="trigger">
-          <button>
-            ${this.$current()}
-            <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
-          </button>
-        </oryx-button>
+        <oryx-button
+          slot="trigger"
+          .size=${ButtonSize.Md}
+          .type=${ButtonType.None}
+          .text=${this.$current()}
+          .icon=${IconTypes.Dropdown}
+        ></oryx-button>
         ${repeat(
           this.$currencies(),
           (currency) => currency.code,

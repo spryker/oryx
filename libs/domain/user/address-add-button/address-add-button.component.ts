@@ -10,6 +10,7 @@ import {
   Target,
   UserAddressAddButtonOptions,
 } from './address-add-button.model';
+import { ButtonType } from '@spryker-oryx/ui/button';
 
 @defaultOptions({ target: Target.Link })
 @hydrate({ event: ['mouseover', 'focusin'] })
@@ -23,26 +24,19 @@ export class UserAddressAddButtonComponent extends AddressMixin(
   );
 
   protected render(): TemplateResult | void {
-    if (this.$options().target === Target.Link) {
-      return html`
-        <oryx-button outline>
-          <a href=${this.$createLink()} @click=${this.onCreate}>
-            <oryx-icon .type=${IconTypes.Add}></oryx-icon>
-            ${this.i18n(['add', 'user.address.add'])}
-          </a>
-        </oryx-button>
-      `;
-    } else {
-      return html`
-        <oryx-button outline>
-          <button @click=${this.onCreate}>
-            <oryx-icon .type=${IconTypes.Add}></oryx-icon>
-            ${this.i18n('user.address.add')}
-          </button>
-        </oryx-button>
-        ${this.renderModal()}
-      `;
-    }
+    const href =
+      this.$options().target === Target.Link ? this.$createLink() : undefined;
+
+    return html`
+      <oryx-button
+        .type=${ButtonType.Outline}
+        .icon=${IconTypes.Add}
+        .text=${this.i18n(['add', 'user.address.add'])}
+        .href=${href}
+        block
+        @click=${this.onCreate}
+      ></oryx-button>
+    `;
   }
 
   protected onCreate(): void {

@@ -14,12 +14,12 @@ export class CheckoutPlaceOrderComponent extends I18nMixin(
     if (this.$isEmpty()) return;
 
     return html`<oryx-button
+      block
+      .text=${this.i18n('checkout.place-order')}
       ?inert=${this.$isBusy()}
       ?loading=${this.$isBusy()}
       @click="${this.onClick}"
-    >
-      <button>${this.i18n('checkout.place-order')}</button>
-    </oryx-button>`;
+    ></oryx-button>`;
   }
 
   protected onClick(): void {

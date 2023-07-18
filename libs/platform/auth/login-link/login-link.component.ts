@@ -7,6 +7,7 @@ import { hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { LoginLinkOptions } from './login-link.model';
 import { styles } from './login-link.styles';
+import { ButtonType } from '@spryker-oryx/ui/button';
 
 @defaultOptions({
   enableLogout: true,
@@ -27,12 +28,15 @@ export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
       return;
     }
 
+    const i18nToken = this.$isAuthenticated() ? 'auth.logout' : 'auth.login';
+
     return html`
-      <oryx-button type="text">
-        <button @click=${this.onClick}>
-          <oryx-icon .type=${IconTypes.Login}></oryx-icon>
-          ${this.i18n(this.$isAuthenticated() ? 'auth.logout' : 'auth.login')}
-        </button>
+      <oryx-button
+        .type=${ButtonType.Text}
+        .text=${this.i18n(i18nToken)}
+        .icon=${IconTypes.Login}
+        @click=${this.onClick}
+      >
       </oryx-button>
     `;
   }

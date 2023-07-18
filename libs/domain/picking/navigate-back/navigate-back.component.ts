@@ -17,12 +17,12 @@ export class NavigateBackComponent
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-button type=${ButtonType.Text}>
-        <a href=${this.url}>
-          <oryx-icon .type=${IconTypes.ArrowBack}></oryx-icon>
-          ${this.i18n('picking.button.back')}
-        </a>
-      </oryx-button>
+      <oryx-button
+        .type=${ButtonType.Text}
+        .icon=${IconTypes.ArrowBack}
+        .text=${this.i18n('picking.button.back')}
+        href=${this.url}
+      ></oryx-button>
     `;
   }
 }

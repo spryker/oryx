@@ -28,6 +28,48 @@ export const navigationButtonScreenStyles = screenCss({
 });
 
 export const siteNavigationButtonStyles = css`
+oryx-button::part(button),oryx-button::part(link) {
+  
+  position: relative;
+  --oryx-icon-size: 32px;
+
+  height: 68px;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 5px;
+
+  }
+  oryx-button::part(button):hover,  
+oryx-button::part(link):hover{
+  background-color: var(--oryx-color-primary-10);
+  border-color: var(--oryx-color-primary-10);
+  box-shadow: none;
+}
+
+mark {
+    position: absolute;
+    box-sizing: border-box;
+    line-height: 16px;
+    min-width: 6px;
+    padding: 1px 6px;
+    border-radius: 2px;
+    text-align: center;
+    background: var(--oryx-color-secondary-9);
+    color: var(--oryx-color-secondary-0, white);
+    inset-block-start: 6px;
+    inset-inline-end: 8px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: calc(100% - 16px); 
+  }
+
+  /* oryx-button::part(button) {
+    display: block;
+    height: 68px;
+  }
+
   :host {
     min-width: 75px;
     min-height: 68px;
@@ -75,21 +117,5 @@ export const siteNavigationButtonStyles = css`
     display: var(--oryx-screen-small-hide, initial);
   }
 
-  mark {
-    position: absolute;
-    box-sizing: border-box;
-    line-height: 16px;
-    min-width: 6px;
-    padding: 1px 6px;
-    border-radius: 2px;
-    text-align: center;
-    background: var(--oryx-color-secondary-9);
-    color: var(--oryx-color-secondary-0, white);
-    inset-block-start: 6px;
-    inset-inline-end: 8px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    max-width: calc(100% - 16px);
-  }
+  
 `;

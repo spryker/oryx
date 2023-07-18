@@ -6,6 +6,7 @@ import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { BACK_EVENT, CLOSE_EVENT, ModalProperties } from './modal.model';
 import { styles } from './modal.styles';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 
 export class ModalComponent
   extends I18nMixin(LitElement)
@@ -152,14 +153,9 @@ export class ModalComponent
           this.enableNavigateBack,
           () => html`
             <slot name="navigate-back" @click=${this.onGoBack}>
-              <oryx-icon-button>
-                <button
-                  type="button"
-                  aria-label="${this.i18n('oryx.modal.navigate-back')}"
-                >
-                  <oryx-icon .type=${IconTypes.Back}></oryx-icon>
-                </button>
-              </oryx-icon-button>
+              <oryx-button .type=${ButtonType.Icon} .icon=${
+            IconTypes.Back
+          } .label=${this.i18n('modal.back')}></oryx-icon-button>
             </slot>
           `
         )}
@@ -172,8 +168,12 @@ export class ModalComponent
         ${when(
           this.enableCloseButtonInHeader,
           () => html`
-            <oryx-icon-button size=${Size.Sm}>
-              <button value="cancel" aria-label="close modal">
+            <oryx-button  
+            .type=${ButtonType.Icon}
+            .color=${ButtonColor.Neutral} 
+            .size=${ButtonSize.Sm} 
+            custom>
+              <button value="cancel" aria-label=${this.i18n('modal.close')}>
                 <oryx-icon .type=${IconTypes.Close}></oryx-icon>
               </button>
             </oryx-icon-button>
@@ -195,7 +195,12 @@ export class ModalComponent
           () => html`
             <footer slot="footer">
               <slot name="footer">
-                <oryx-button type="secondary" outline .size=${Size.Md}>
+                <oryx-button
+                  .type=${ButtonType.Outline}
+                  .color=${ButtonColor.Neutral}
+                  .size=${ButtonSize.Md}
+                  custom
+                >
                   <button value="cancel">
                     ${this.i18n(
                       this.enableNavigateBack ? 'modal.back' : 'modal.cancel'

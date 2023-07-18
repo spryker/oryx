@@ -26,6 +26,7 @@ export const styles = css`
   }
 
   oryx-button {
+    align-self: start;
     margin: var(--_login-button-margin, 0);
   }
 

@@ -7,6 +7,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { CartEntriesOptions } from './entries.model';
 import { cartEntriesStyles } from './entries.styles';
+import { ButtonSize } from '@spryker-oryx/ui/button';
 
 @defaultOptions({
   removeByQuantity: RemoveByQuantity.ShowBin,
@@ -59,7 +60,7 @@ export class CartEntriesComponent extends CartComponentMixin(
       <section class="empty">
         <oryx-icon .type=${IconTypes.Cart}></oryx-icon>
         <p>Your shopping cart is empty</p>
-        <oryx-button size="large">
+        <oryx-button .size=${ButtonSize.Lg}>
           <button>Shop now</button>
         </oryx-button>
       </section>

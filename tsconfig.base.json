@@ -248,7 +248,6 @@
       ],
       "@spryker-oryx/ui": ["libs/base/ui/src/index.ts"],
       "@spryker-oryx/ui/button": ["libs/base/ui/action/button/index.ts"],
-      "@spryker-oryx/ui/action": ["libs/base/ui/action/action/index.ts"],
       "@spryker-oryx/ui/card": ["libs/base/ui/structure/card/index.ts"],
       "@spryker-oryx/ui/checkbox": ["libs/base/ui/form/checkbox/index.ts"],
       "@spryker-oryx/ui/chip": ["libs/base/ui/graphical/chip/index.ts"],

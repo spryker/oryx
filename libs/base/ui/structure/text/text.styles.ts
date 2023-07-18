@@ -89,4 +89,8 @@ export const textStyles = css`
     outline: solid 1px var(--oryx-color-focus);
     outline-offset: 3px;
   }
+
+  oryx-button a:hover {
+    text-decoration: none;
+  }
 `;

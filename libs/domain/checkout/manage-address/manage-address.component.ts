@@ -40,10 +40,12 @@ export class CheckoutManageAddressComponent extends I18nMixin(
 
   protected override render(): TemplateResult | void {
     return html`
-      <oryx-button .type=${ButtonType.Text} .size=${Size.Sm}>
-        <button @click=${this.onOpen}>
-          ${this.i18n('checkout.address.change')}
-        </button>
+      <oryx-button
+        .type=${ButtonType.Text}
+        .size=${Size.Sm}
+        @click=${this.onOpen}
+      >
+        ${this.i18n('checkout.address.change')}
       </oryx-button>
 
       ${when(

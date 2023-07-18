@@ -75,15 +75,16 @@ export class CheckoutBillingAddressComponent
           @change=${this.onChange}
           .selected=${this.$selected()}
         ></oryx-checkout-manage-address>`,
-        () => html`<oryx-button .type=${ButtonType.Text}>
-          <button @click=${this.reuseShippingAddress}>
-            ${this.i18n(
-              this.$isSameAsShippingAddress()
-                ? 'checkout.billing-address.change'
-                : 'checkout.billing-address.same-as-shipping-address'
-            )}
-          </button></oryx-button
-        >`
+        () => html`<oryx-button
+          .type=${ButtonType.Text}
+          @click=${this.reuseShippingAddress}
+        >
+          ${this.i18n(
+            this.$isSameAsShippingAddress()
+              ? 'checkout.billing-address.change'
+              : 'checkout.billing-address.same-as-shipping-address'
+          )}
+        </oryx-button>`
       )}
     </oryx-checkout-header>`;
   }

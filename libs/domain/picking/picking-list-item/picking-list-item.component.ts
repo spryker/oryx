@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { asyncValue, I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -88,13 +88,12 @@ export class PickingListItemComponent
           ${when(
             this.pickingList?.cartNote,
             () => html`
-              <oryx-icon-button size=${Size.Md}>
-                <button
-                  aria-label="Show customer note"
-                  @click=${this.showCustomerNote}
-                >
-                  <oryx-icon .type=${IconTypes.Info}></oryx-icon>
-                </button>
+              <oryx-icon-button
+                .size=${ButtonSize.Md}
+                aria-label="Show customer note"
+                @click=${this.showCustomerNote}
+              >
+                <oryx-icon .type=${IconTypes.Info}></oryx-icon>
               </oryx-icon-button>
             `
           )}
@@ -102,17 +101,14 @@ export class PickingListItemComponent
 
         <oryx-button
           slot="footer"
-          type=${ButtonType.Primary}
-          size=${Size.Lg}
+          .color=${ButtonColor.Primary}
+          .size=${ButtonSize.Lg}
           ?loading=${this.upcomingPickingListId === this.pickingList.id}
+          ?disabled=${this.upcomingPickingListId &&
+          this.upcomingPickingListId !== this.pickingList.id}
+          @click=${this.startPicking}
         >
-          <button
-            ?disabled=${this.upcomingPickingListId &&
-            this.upcomingPickingListId !== this.pickingList.id}
-            @click=${this.startPicking}
-          >
-            ${this.i18n('picking.picking-list-item.start-picking')}
-          </button>
+          ${this.i18n('picking.picking-list-item.start-picking')}
         </oryx-button>
       </oryx-card>
     `;
