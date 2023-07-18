@@ -99,6 +99,7 @@ const colorStyles = css`
 
   :host(:is([type='solid'], :not([type]))) {
     --_background-color: var(--_c9, var(--oryx-color-primary-9));
+    --_text-color: var(--_c0, var(--oryx-color-primary-0));
   }
 
   :host(:is([type='solid'], :not([type]))),
@@ -109,10 +110,6 @@ const colorStyles = css`
   :host([type='outline']),
   :host([type='icon']) {
     --_background-color: var(--_c1, var(--oryx-color-primary-1));
-  }
-
-  :host(:is([type='solid'], :not([type]))) {
-    --_text-color: var(--_c0, var(--oryx-color-primary-0));
   }
 
   :host(:is([type='solid'], :not([type])):active) {
@@ -136,14 +133,15 @@ const colorStyles = css`
   :host([type='text']:hover) {
     --_text-color: var(--_c10, var(--oryx-color-primary-10));
   }
+
   :host([type='outline']:active) {
     --_border-color: var(--_c10, var(--oryx-color-primary-10));
-    --_box-shadow: 0px 0px 3px 0px
+    --_box-shadow: 0 0 3px 0
       var(--oryx-color-primary-9, var(--oryx-color-primary-9));
   }
 
   :host(:not([type='text']):not([type='icon']):hover:not(:active)) {
-    --_box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+    --_box-shadow: 0 4px 8px 0 rgba(0 0 0 / 10%);
   }
 
   :host([type='text']:active) {
@@ -153,14 +151,7 @@ const colorStyles = css`
     );
   }
 
-  :host([type='icon']) :is(button, a),
-  :host([type='icon']) ::slotted(:is(button, a)) {
-    /* background-color: transparent; */
-    /* background-color: var(--oryx-color-neutral-0); */
-  }
-
   :host([type='icon']:hover) {
-    /* --_background-color: var(--oryx-color-neutral-3); */
     --_border-color: var(--_c8, var(--oryx-color-primary-8));
   }
 
@@ -238,8 +229,8 @@ const iconStyles = css`
     --_height: 24px;
   }
 
-  :host([type='icon']) :is(button, a):before,
-  :host([type='icon']) ::slotted(:is(button, a)):before {
+  :host([type='icon']) :is(button, a)::before,
+  :host([type='icon']) ::slotted(:is(button, a))::before {
     content: '';
     height: var(--_height);
     aspect-ratio: 1/1;
@@ -251,8 +242,8 @@ const iconStyles = css`
     transition: var(--oryx-transition-time);
   }
 
-  :host([type='icon'][has-text][has-icon]) :is(button, a):before,
-  :host([type='icon'][has-text][has-icon]) ::slotted(:is(button, a)):before {
+  :host([type='icon'][has-text][has-icon]) :is(button, a)::before,
+  :host([type='icon'][has-text][has-icon]) ::slotted(:is(button, a))::before {
     margin-inline-start: calc(var(--_button-icon-margin, 7px) * -1);
   }
 
