@@ -1,4 +1,4 @@
-import { createInjector } from '@spryker-oryx/di';
+import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { DefaultTokenService } from './default-token-resolver.service';
 import {
@@ -7,6 +7,7 @@ import {
   TokenResourceResolver,
   TokenResourceResolvers,
 } from './token-resolver.service';
+import { SpyInstance } from 'vitest';
 
 class TestResolver implements TokenResourceResolver {
   resolve(resolver: string): ResolvedToken {
@@ -16,6 +17,7 @@ class TestResolver implements TokenResourceResolver {
 
 describe('DefaultTokenService', () => {
   let service: DefaultTokenService;
+  let resolver: TestResolver;
   const callback = vi.fn();
 
   beforeAll(() => {
@@ -32,7 +34,10 @@ describe('DefaultTokenService', () => {
       ],
     });
 
-    service = testInjector.inject(TokenResolver) as DefaultTokenService;
+    service = testInjector.inject<DefaultTokenService>(TokenResolver);
+    resolver = testInjector.inject<TestResolver>(
+      `${TokenResourceResolvers}TEST`
+    );
   });
 
   afterEach(() => {
@@ -69,6 +74,24 @@ describe('DefaultTokenService', () => {
 
     it('should resolve the token', () => {
       expect(callback).toHaveBeenCalledWith('RESOLVED_VALUE');
+    });
+  });
+
+  describe('when token is negative', () => {
+    const token = 'TEST.!NEGATIVE_VALUE';
+    let spy: SpyInstance;
+
+    beforeEach(() => {
+      spy = vi.spyOn(resolver, 'resolve');
+      service.resolveToken(token).subscribe(callback);
+    });
+
+    it('should pass correct token to the resolver', () => {
+      expect(spy).toHaveBeenCalledWith('NEGATIVE_VALUE');
+    });
+
+    it('should return reversal value', () => {
+      expect(callback).toHaveBeenCalledWith(!'NEGATIVE_VALUE');
     });
   });
 });
