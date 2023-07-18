@@ -36,6 +36,15 @@
               {
                 "sourceTag": "type:app",
                 "onlyDependOnLibsWithTags": ["*"]
+              },
+              // Exception rules
+              {
+                "sourceTag": "lib:picking",
+                "onlyDependOnLibsWithTags": [
+                  "lib:domain",
+                  "layer:base",
+                  "layer:platform"
+                ]
               }
             ]
           }
