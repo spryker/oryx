@@ -16,9 +16,10 @@
               {
                 "sourceTag": "layer:domain",
                 "onlyDependOnLibsWithTags": [
+                  "layer:platform",
                   "layer:base",
                   "layer:domain",
-                  "lib:core"
+                  "layer:template"
                 ]
               },
               {
@@ -40,15 +41,6 @@
               {
                 "sourceTag": "type:app",
                 "onlyDependOnLibsWithTags": ["*"]
-              },
-              // Exception rules
-              {
-                "sourceTag": "lib:picking",
-                "onlyDependOnLibsWithTags": [
-                  "lib:domain",
-                  "layer:base",
-                  "layer:platform"
-                ]
               }
             ]
           }

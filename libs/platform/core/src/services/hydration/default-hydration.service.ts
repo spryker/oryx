@@ -1,5 +1,6 @@
 import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
 import {
+  ComponentsPlugin,
   deferHydrationAttribute,
   hydratableAttribute,
   HydratableLitElement,
@@ -8,7 +9,6 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { skip, Subscription, take } from 'rxjs';
-import { ComponentsPlugin } from '../../../../../base/utilities/src/plugins/components';
 import { AppRef } from '../../orchestration/app';
 import { ContextService } from '../context';
 import { HydrationService, HydrationTrigger } from './hydration.service';
