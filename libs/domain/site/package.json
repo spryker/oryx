@@ -23,6 +23,7 @@
     "@spryker-oryx/core": "1.0.0-rc.0",
     "@spryker-oryx/di": "1.0.0-rc.0",
     "@spryker-oryx/experience": "1.0.0-rc.0",
+    "@spryker-oryx/router": "1.0.0-rc.0",
     "@spryker-oryx/ui": "1.0.0-rc.0",
     "@spryker-oryx/utilities": "1.0.0-rc.0"
   },

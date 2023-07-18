@@ -1,7 +1,7 @@
 import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import {
   computed,
   hydrate,
@@ -32,7 +32,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   static styles = styles;
 
   protected tokenResolver = resolve(TokenResolver);
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected $label = computed(() => {
     const label = this.$options().label;

@@ -2,14 +2,14 @@ import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { LinkType } from '@spryker-oryx/ui/link';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { ProductTitleComponent } from './title.component';
 import { productTitleComponent } from './title.def';
 
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
+class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/product/123'));
 }
 
@@ -25,7 +25,7 @@ describe('ProductTitleComponent', () => {
       providers: [
         ...mockProductProviders,
         {
-          provide: SemanticLinkService,
+          provide: LinkService,
           useClass: MockSemanticLinkService,
         },
       ],
