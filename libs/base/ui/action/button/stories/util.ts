@@ -16,7 +16,7 @@ interface ButtonProps {
   href?: string;
 }
 
-const renderButton = (props: ButtonProps) => {
+export const renderButton = (props: ButtonProps): TemplateResult => {
   let template;
   const text = props.slotted ? undefined : props.text;
   const icon = props.slotted ? undefined : props.icon;

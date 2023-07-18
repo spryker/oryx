@@ -72,17 +72,19 @@ export class OrderEntriesComponent
   protected renderButton(): TemplateResult | void {
     if (!this.$isLimited()) return;
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const restItemsCount = this.$order().items.length - this.$options().limit!;
 
-    let text = this.expanded ? '-' : '+';
-    text += restItemsCount;
-    text += this.expanded ? 'order.less-products' : 'order.more-products';
+    const i18nToken = this.expanded
+      ? 'order.less-products-<count>'
+      : 'order.more-products-<value>';
 
     return html`<oryx-button
       .type=${ButtonType.Text}
+      .text=${this.i18n(i18nToken, { value: restItemsCount })}
       @click=${this.toggle}
-      .text=${text}
-    ></oryx-button>`;
+    >
+    </oryx-button>`;
   }
 
   protected toggle(): void {

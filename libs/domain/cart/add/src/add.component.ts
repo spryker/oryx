@@ -110,7 +110,6 @@ export class CartAddComponent extends ProductMixin(
   }
 
   protected onSubmit(e: Event | CustomEvent<QuantityEventDetail>): void {
-    console.log('e', e);
     e.preventDefault();
     e.stopPropagation();
     const sku = this.$product()?.sku;

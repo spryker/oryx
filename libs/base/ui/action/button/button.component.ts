@@ -39,20 +39,21 @@ export class ButtonComponent
   @property({ reflect: true }) type?: ButtonType;
   @property({ reflect: true }) size?: ButtonSize;
   @property({ type: Boolean, reflect: true }) block?: boolean;
-  @property({ reflect: true })
-  set color(color: ButtonColor) {
+
+  @property() set color(color: ButtonColor) {
     if (!color) return;
     this.style.setProperty('--_c0', `var(--oryx-color-${color}-0, white)`);
     this.style.setProperty('--_c1', `var(--oryx-color-${color}-1)`);
     this.style.setProperty('--_c3', `var(--oryx-color-${color}-3)`);
+    this.style.setProperty('--_c7', `var(--oryx-color-${color}-7)`);
     this.style.setProperty('--_c8', `var(--oryx-color-${color}-8)`);
     this.style.setProperty('--_c9', `var(--oryx-color-${color}-9)`);
     this.style.setProperty('--_c10', `var(--oryx-color-${color}-10)`);
   }
 
+  @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ type: Boolean, reflect: true }) loading?: boolean;
   @property({ type: Boolean, reflect: true }) confirmed?: boolean;
-  @property({ type: Boolean, reflect: true }) disabled?: boolean;
 
   @property({ type: Boolean }) custom?: boolean;
 

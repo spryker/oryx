@@ -30,7 +30,7 @@ const baseStyles = css`
     border: solid 2px var(--_border-color);
   }
 
-  :host([block]) > *,
+  :host([block]) > :is(a, button),
   :host([block]) ::slotted(:is(a, button)) {
     width: 100%;
   }
@@ -43,7 +43,6 @@ const baseStyles = css`
     justify-content: center;
   }
 
-  /* :host([custom]:not([icon-only]):not([loading]):not([confirmed])), */
   :host([custom][has-icon]:not([has-text]):not([loading]):not([confirmed])),
   :host([type='icon'][has-icon][has-text]) :is(a, button),
   :host([type='icon'][has-icon][has-text]) ::slotted(:is(a, button)) {
@@ -58,27 +57,30 @@ const baseStyles = css`
 `;
 
 const sizeStyles = css`
+  :host(:is(:not([type]), [type='solid'], [type='outline'])) {
+    --_icon-padding-inline: var(--oryx-button-icon-padding-inline, 18px);
+  }
+
   :host(:is(:not([size]), [size='lg']):is(:not([type]), [type='solid'], [type='outline'])) {
     --_height: var(--oryx-button-lg-height, 46px);
-    --_padding-inline: 32px;
-    --_icon-padding-inline: 18px;
+    --_padding-inline: var(--oryx-button-lg-padding-inline, 32px);
+  }
+
+  :host([size='md']:is(:not([type]), [type='solid'], [type='outline'])) {
+    --_height: var(--oryx-button-md-height, 42px);
+    --_padding-inline: var(--oryx-button-md-padding-inline, 18px);
+  }
+
+  :host([size='sm']:not([type='text']):not([type='icon'])) {
+    --_height: var(--oryx-button-sm-height, 32px);
+    --_padding-inline: var(--oryx-button-sm-padding-inline, 14px);
+    --_gap: 6px;
   }
 
   :host([type='text']) {
     --oryx-button-border-radius: 1em;
     --_padding-inline: 8px;
     --_icon-padding-inline: 8px;
-  }
-
-  :host([size='md']:is(:not([type]), [type='solid'], [type='outline'])) {
-    --_height: var(--oryx-button-md-height, 42px);
-    --_padding-inline: 18px;
-  }
-
-  :host([size='sm']:not([type='text']):not([type='icon'])) {
-    --_height: var(--oryx-button-sm-height, 32px);
-    --_padding-inline: 14px;
-    --_gap: 6px;
   }
 
   :host([has-text][has-icon]:is(:not([type]), [type='solid'], [type='outline'])) {
@@ -152,7 +154,7 @@ const colorStyles = css`
   }
 
   :host([type='icon']:hover) {
-    --_border-color: var(--_c8, var(--oryx-color-primary-8));
+    --_border-color: var(--_c7, var(--oryx-color-primary-7));
   }
 
   :host([type='icon']:active) {
@@ -209,6 +211,14 @@ const iconStyles = css`
     border-radius: 50%;
   }
 
+  :host([size='lg']) {
+    --oryx-icon-size: var(--oryx-button-lg-icon-size, 24px);
+  }
+
+  :host([size='md']) {
+    --oryx-icon-size: var(--oryx-button-md-icon-size, 24px);
+  }
+
   :host([size='sm']),
   :host([type='text']) {
     --oryx-icon-size: 16px;
@@ -244,7 +254,7 @@ const iconStyles = css`
 
   :host([type='icon'][has-text][has-icon]) :is(button, a)::before,
   :host([type='icon'][has-text][has-icon]) ::slotted(:is(button, a))::before {
-    margin-inline-start: calc(var(--_button-icon-margin, 7px) * -1);
+    margin-inline-start: calc(var(--_button-icon-margin, 7px) * -1 - 1px);
   }
 
   :host([custom][type='icon'][has-text][has-icon]) [loader] {

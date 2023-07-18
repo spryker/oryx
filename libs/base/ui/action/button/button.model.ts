@@ -56,6 +56,13 @@ export interface ButtonComponentAttributes {
   block?: boolean;
 
   /**
+   * Indicates whether the button is in the disabled state.
+   *
+   * @default false
+   */
+  disabled?: boolean;
+
+  /**
    * Indicates whether the button is in the loading state.
    * When `loading` is set to `true`, a loading (spinner) effect can be rendered on the button.
    *
