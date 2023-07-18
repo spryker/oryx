@@ -26,6 +26,7 @@
     "@spryker-oryx/experience": "1.0.0-rc.0",
     "@spryker-oryx/product": "1.0.0-rc.0",
     "@spryker-oryx/site": "1.0.0-rc.0",
+    "@spryker-oryx/router": "1.0.0-rc.0",
     "@spryker-oryx/ui": "1.0.0-rc.0",
     "@spryker-oryx/utilities": "1.0.0-rc.0"
   },

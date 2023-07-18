@@ -1,25 +1,26 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { computed, hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { AddressMixin } from '../src/mixins';
 import { CrudState } from '../src/models';
 import { AddressEditButtonOptions, Target } from './address-edit-button.model';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ target: Target.Link })
 @hydrate({ event: ['mouseover', 'focusin'] })
 export class UserAddressEditButtonComponent extends AddressMixin(
   ContentMixin<AddressEditButtonOptions>(LitElement)
 ) {
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected editLink = computed(() => {
     const id = this.$addressId();
     if (!id) return;
     return this.semanticLinkService.get({
-      type: SemanticLinkType.AddressBookEdit,
+      type: RouteType.AddressBookEdit,
       id,
     });
   });

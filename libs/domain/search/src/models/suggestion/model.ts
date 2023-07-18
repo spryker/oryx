@@ -1,5 +1,5 @@
 import { Product } from '@spryker-oryx/product';
-import { SemanticLinkType } from '@spryker-oryx/site';
+import { RouteType } from '@spryker-oryx/router';
 import { SuggestionField } from '../../services';
 
 export interface SuggestionResource {
@@ -7,7 +7,7 @@ export interface SuggestionResource {
   url?: string;
   params?: Record<string, string>;
   id?: string;
-  type?: SemanticLinkType;
+  type?: RouteType | string;
 }
 
 export interface Suggestion {

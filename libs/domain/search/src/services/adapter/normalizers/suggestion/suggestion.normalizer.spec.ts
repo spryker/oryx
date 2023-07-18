@@ -1,5 +1,4 @@
 import { ConcreteProductsNormalizer } from '@spryker-oryx/product';
-import { SemanticLinkType } from '@spryker-oryx/site';
 import { of, take } from 'rxjs';
 import { SuggestionField } from '../../suggestion.adapter';
 import { DeserializedSuggestion } from './model';
@@ -7,13 +6,14 @@ import {
   suggestionAttributesNormalizer,
   suggestionProductNormalizer,
 } from './suggestion.normalizer';
+import { RouteType } from '@spryker-oryx/router';
 
 const mockDeserializedSuggestion = {
   completion: ['A'],
   categories: [
     {
       name: 'name',
-      type: SemanticLinkType.Category,
+      type: RouteType.Category,
     },
   ],
   cmsPages: [
@@ -40,7 +40,7 @@ describe('Suggestion Normalizers', () => {
           {
             name: mockDeserializedSuggestion.completion[0],
             params: { q: mockDeserializedSuggestion.completion[0] },
-            type: SemanticLinkType.ProductList,
+            type: RouteType.ProductList,
           },
         ],
         [SuggestionField.Categories]: mockDeserializedSuggestion.categories,

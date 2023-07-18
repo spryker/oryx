@@ -4,13 +4,14 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { FormFieldType, FormRenderer } from '@spryker-oryx/form';
 import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { UserService } from '@spryker-oryx/user';
 import { elementEffect, hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { CheckoutAccountComponentOptions } from './account.model';
 import { checkoutAccountStyles } from './account.styles';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ enableGuestCheckout: true })
 @hydrate({ event: 'window:load' })
@@ -25,13 +26,13 @@ export class CheckoutAccountComponent
   protected fieldRenderer = resolve(FormRenderer);
   protected userService = resolve(UserService);
   protected authService = resolve(AuthService);
-  protected linkService = resolve(SemanticLinkService);
+  protected linkService = resolve(LinkService);
   protected routerService = resolve(RouterService);
 
   protected isAuthenticated = signal(this.authService.isAuthenticated());
   protected customer = signal(this.userService.getUser());
   protected loginRoute = signal(
-    this.linkService.get({ type: SemanticLinkType.Login })
+    this.linkService.get({ type: RouteType.Login })
   );
   protected selected = signal(this.checkoutStateService.get('customer'));
 
