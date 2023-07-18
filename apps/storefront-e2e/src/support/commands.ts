@@ -104,7 +104,7 @@ Cypress.Commands.add(
 
     // wait till hydrated elements are re-rendered
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(250);
+    cy.wait(500);
   }
 );
 
