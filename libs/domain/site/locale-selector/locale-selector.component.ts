@@ -33,9 +33,10 @@ export class SiteLocaleSelectorComponent extends ContentMixin(LitElement) {
           slot="trigger"
           .size=${ButtonSize.Md}
           .type=${ButtonType.None}
-          .text=${this.$current()}
-          .icon=${IconTypes.Dropdown}
-        ></oryx-button>
+        >
+          ${this.$current()}
+          <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
+        </oryx-button>
         ${repeat(
           this.$locales(),
           (locale) => locale.code,

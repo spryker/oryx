@@ -37,9 +37,10 @@ export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
           slot="trigger"
           .size=${ButtonSize.Md}
           .type=${ButtonType.None}
-          .text=${this.$current()}
-          .icon=${IconTypes.Dropdown}
-        ></oryx-button>
+        >
+          ${this.$current()}
+          <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
+        </oryx-button>
         ${repeat(
           this.$currencies(),
           (currency) => currency.code,
