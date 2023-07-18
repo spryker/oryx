@@ -1,7 +1,7 @@
 {
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "sourceRoot": "libs/base/form",
+  "sourceRoot": "libs/platform/form",
   "prefix": "fes",
   "targets": {
     "build": {
@@ -16,7 +16,7 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/base/form/**/*.ts"]
+        "lintFilePatterns": ["libs/platform/form/**/*.ts"]
       },
       "outputs": ["{options.outputFile}"]
     },
@@ -26,9 +26,9 @@
         "uiFramework": "@storybook/web-components",
         "port": 4400,
         "config": {
-          "configFolder": "libs/base/form/.storybook"
+          "configFolder": "libs/platform/form/.storybook"
         },
-        "staticDir": ["libs/base/form/public"]
+        "staticDir": ["libs/platform/form/public"]
       },
       "configurations": {
         "ci": {
@@ -41,8 +41,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "libs/base/form/**/*.css",
-          "libs/base/form/**/*.styles.ts"
+          "libs/platform/form/**/*.css",
+          "libs/platform/form/**/*.styles.ts"
         ]
       }
     }
