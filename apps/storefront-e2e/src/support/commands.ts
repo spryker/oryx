@@ -88,7 +88,9 @@ Cypress.Commands.add('goToCheckoutAsGuest', () => {
   // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(250);
 
+  cy.intercept('/assets/addresses/*.json').as('addressesRequest');
   cartPage.checkout();
+  cy.wait('@addressesRequest');
 });
 
 Cypress.Commands.add(
@@ -102,7 +104,7 @@ Cypress.Commands.add(
 
     // wait till hydrated elements are re-rendered
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(250);
+    cy.wait(500);
   }
 );
 
