@@ -2,10 +2,9 @@ import {
   ClassDescriptor,
   Constructor,
 } from '@lit/reactive-element/decorators.js';
-
 import { LitElement, isServer } from 'lit';
+import { ssrStyleShim } from '../../index';
 import { Type } from '../../misc';
-import { ssrStyleShim } from '../../ssr';
 
 export const ssrShim =
   (features: string[] | string) =>

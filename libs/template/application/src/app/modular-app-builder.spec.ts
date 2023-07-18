@@ -12,10 +12,21 @@ vi.mock('@spryker-oryx/core', async () => {
 
   return {
     ...actual,
-    ComponentsPlugin: vi.fn().mockReturnValue({
+    InjectionPlugin: vi.fn().mockReturnValue({
       apply: () => mockApply(),
     }),
-    InjectionPlugin: vi.fn().mockReturnValue({
+  };
+});
+
+vi.mock('@spryker-oryx/utilities', async () => {
+  const actual = (await vi.importActual('@spryker-oryx/utilities')) as Record<
+    string,
+    unknown
+  >;
+
+  return {
+    ...actual,
+    ComponentsPlugin: vi.fn().mockReturnValue({
       apply: () => mockApply(),
     }),
   };
