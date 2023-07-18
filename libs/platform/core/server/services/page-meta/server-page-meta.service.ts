@@ -12,6 +12,12 @@ export class ServerPageMetaService extends DefaultPageMetaService {
     const metas = Array.isArray(definitions) ? definitions : [definitions];
 
     for (const meta of metas) {
+      const preload = this.getPreload(meta);
+
+      if (preload) {
+        metas.push(preload);
+      }
+
       const duplicate = this.metas.find(
         (_meta) => JSON.stringify(_meta) === JSON.stringify(meta)
       );

@@ -56,6 +56,7 @@ describe('DefaultFontInjectable', () => {
         attrs: {
           rel: 'stylesheet',
           href: mockFont,
+          media: 'all',
         },
       });
     });
