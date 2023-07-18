@@ -9,8 +9,7 @@ import {
 import {
   NotificationService,
   PricingService,
-  SemanticLinkService,
-  SemanticLinkType,
+  LinkService,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
@@ -19,7 +18,7 @@ import { LinkType } from '@spryker-oryx/ui/link';
 import {
   computed,
   elementEffect,
-  hydratable,
+  hydrate,
   signalProperty,
   Size,
 } from '@spryker-oryx/utilities';
@@ -38,6 +37,7 @@ import {
   RemoveByQuantity,
 } from './entry.model';
 import { cartEntryStyles } from './styles';
+import { RouteType } from '@spryker-oryx/router';
 
 /**
  * Supports updating the quantity as well as removing the entry entirely.
@@ -49,7 +49,7 @@ import { cartEntryStyles } from './styles';
   enableItemPrice: true,
   confirmBeforeRemove: true,
 } as CartEntryOptions)
-@hydratable()
+@hydrate()
 export class CartEntryComponent
   extends ProductMixin(
     CartComponentMixin(ContentMixin<CartEntryOptions>(LitElement))
@@ -84,11 +84,11 @@ export class CartEntryComponent
 
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected $productLink = computed(() => {
     return this.semanticLinkService.get({
-      type: SemanticLinkType.Product,
+      type: RouteType.Product,
       id: this.$product()?.sku,
     });
   });

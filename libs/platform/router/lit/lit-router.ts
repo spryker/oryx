@@ -72,6 +72,8 @@ export class LitRouter extends Routes {
 
     super(host, routes);
 
+    this.routerService.setRoutes(routes);
+
     if (baseRoute) {
       this.baseRoute = baseRoute;
     }

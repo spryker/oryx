@@ -60,6 +60,14 @@ Cypress.Commands.add('goToCheckout', () => {
   cartPage.visit();
   cy.wait('@cartsRequest');
 
+  // carts request is not enought to be sure
+  // that checkout button is clickable
+  // we have to wait for other elements, and even with them
+  // there is no 100% guarranty that checkout btn is ready
+  cartPage.getCartTotals().getTotalPrice().should('be.visible');
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(250);
+
   cy.intercept('/customers/*/addresses').as('addressesRequest');
   cartPage.checkout();
   cy.wait('@addressesRequest');
@@ -72,7 +80,17 @@ Cypress.Commands.add('goToCheckoutAsGuest', () => {
   cartPage.visit();
   cy.wait('@cartsRequest');
 
+  // carts request is not enought to be sure
+  // that checkout button is clickable
+  // we have to wait for other elements, and even with them
+  // there is no 100% guarranty that checkout btn is ready
+  cartPage.getCartTotals().getTotalPrice().should('be.visible');
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(250);
+
+  cy.intercept('/assets/addresses/*.json').as('addressesRequest');
   cartPage.checkout();
+  cy.wait('@addressesRequest');
 });
 
 Cypress.Commands.add(
@@ -86,7 +104,7 @@ Cypress.Commands.add(
 
     // wait till hydrated elements are re-rendered
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(250);
+    cy.wait(500);
   }
 );
 

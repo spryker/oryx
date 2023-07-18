@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import {
   Address,
   AddressEventDetail,
@@ -9,7 +9,7 @@ import {
   CrudState,
 } from '@spryker-oryx/user';
 import { UserAddressFormComponent } from '@spryker-oryx/user/address-form';
-import { hydratable, signal } from '@spryker-oryx/utilities';
+import { hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -19,19 +19,20 @@ import {
   UserAddressEditComponentOptions,
 } from './address-edit.model';
 import { styles } from './address-edit.styles';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ save: SaveOption.Save, inline: false })
-@hydratable(['mouseover', 'focusin'])
+@hydrate({ event: ['mouseover', 'focusin'] })
 export class UserAddressEditComponent extends AddressMixin(
   ContentMixin<UserAddressEditComponentOptions>(LitElement)
 ) {
   static styles = styles;
 
   protected routerService = resolve(RouterService);
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected $listPageRoute = signal(
-    this.semanticLinkService.get({ type: SemanticLinkType.AddressList })
+    this.semanticLinkService.get({ type: RouteType.AddressList })
   );
 
   // TODO: move to central place

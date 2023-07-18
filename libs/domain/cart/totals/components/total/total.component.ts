@@ -1,12 +1,12 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { hydratable, signal, signalAware } from '@spryker-oryx/utilities';
+import { hydrate, signal, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { TotalsController } from '../../../src/controllers';
 import { PriceMode } from '../../../src/models';
 import { CartTotalsTotalOptions } from './total.model';
 
 @defaultOptions({ enableTaxMessage: true })
-@hydratable('window:load')
+@hydrate({ event: 'window:load' })
 @signalAware()
 export class CartTotalsTotalComponent extends ContentMixin<CartTotalsTotalOptions>(
   LitElement

@@ -1,10 +1,10 @@
 import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import {
   computed,
-  hydratable,
+  hydrate,
   queryFirstFocusable,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
@@ -24,14 +24,14 @@ import { styles } from './navigation-item.styles';
   triggerBehavior: NavigationTriggerBehavior.Click,
   contentBehavior: NavigationContentBehavior.Navigation,
 })
-@hydratable('window:load')
+@hydrate({ event: 'window:load' })
 export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItemOptions>(
   LitElement
 ) {
   static styles = styles;
 
   protected tokenResolver = resolve(TokenResolver);
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected $label = computed(() => {
     const label = this.$options().label;

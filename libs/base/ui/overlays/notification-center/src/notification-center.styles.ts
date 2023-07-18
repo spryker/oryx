@@ -108,7 +108,7 @@ export const notificationCenterBaseStyles = css`
     margin-inline: calc(2 * var(--gap, 10px));
   }
 
-  :host([stackable]) > *:nth-child(n + 2) span[slot='subtext'] {
+  :host([stackable]) > *:nth-of-type(n + 2) span[slot='subtext'] {
     opacity: 0;
     transition: all var(--oryx-transition-time) var(--delay) ease;
   }
@@ -121,7 +121,7 @@ export const notificationCenterBaseStyles = css`
     margin-inline: 0;
   }
 
-  :host([stackable]:hover) > *:nth-child(n + 2) span[slot='subtext'] {
+  :host([stackable]:hover) > *:nth-of-type(n + 2) span[slot='subtext'] {
     opacity: 1;
   }
 `;

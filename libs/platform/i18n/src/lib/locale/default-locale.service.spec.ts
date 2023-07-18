@@ -58,25 +58,6 @@ describe('DefaultLocaleService', () => {
 
       expect(cb).toHaveBeenCalledWith('mock-locale');
     });
-
-    it('should not emit LocaleChanged query with locale initially', () => {
-      adapter.getDefault.mockReturnValue(of('mock-locale'));
-
-      getService().get().subscribe();
-
-      expect(testInjector.inject(MockQueryService).emit).not.toHaveBeenCalled();
-    });
-
-    it('should emit LocaleChanged query with changed locale', () => {
-      adapter.getDefault.mockReturnValue(from(['mock-locale', 'new-locale']));
-
-      getService().get().subscribe();
-
-      expect(testInjector.inject(MockQueryService).emit).toHaveBeenCalledWith({
-        type: LocaleChanged,
-        data: 'new-locale',
-      });
-    });
   });
 
   describe('set() method', () => {

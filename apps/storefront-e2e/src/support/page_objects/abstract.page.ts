@@ -12,6 +12,7 @@ export abstract class AbstractSFPage {
       );
     }
 
+    this.beforeVisit();
     cy.visit(this.url);
     this.waitForLoaded();
   }
@@ -19,6 +20,18 @@ export abstract class AbstractSFPage {
   header = new HeaderFragment();
   footer = new FooterFragment();
   search = new SearchFragment();
+
+  /**
+   * Initializes cypress interceptors
+   *
+   * The method is called before page is visited
+   *
+   * It is empty because not all pages need interceptors
+   * so it can't be abstract
+   */
+  beforeVisit(): void {
+    //
+  }
 
   /**
    * Method should contain a check that will be TRUE

@@ -49,41 +49,45 @@ describe('OauthTokenInterceptor', () => {
   describe('intercept', () => {
     describe('header has X-Oauth key', () => {
       it('should remove `X-Oauth` call handle with params', () => {
-        const mockHeadersMethods = {
+        const mockHeaders = {
           has: vi.fn().mockReturnValue(true),
           delete: vi.fn(),
           additional: 'mockAdditional',
         };
-        const mockHeaders = vi.fn().mockReturnValue(mockHeadersMethods);
-        vi.stubGlobal('Headers', mockHeaders);
+        const mockRequestMethods = {
+          clone: () => ({ headers: mockHeaders }),
+          headers: mockHeaders,
+        };
+        const mockRequest = vi.fn().mockReturnValue(mockRequestMethods);
+        vi.stubGlobal('Request', mockRequest);
         const mockUrl = 'mockUrl';
         const headers = { param1: 'value1' };
         const mockOptions = { body: 'value1', method: 'POST', headers };
         const mockHandle = vi.fn().mockReturnValue(of(null));
 
-        service.intercept(mockUrl, mockOptions, mockHandle);
+        service.intercept(new Request(mockUrl, mockOptions), mockHandle);
 
-        expect(mockHeaders).toHaveBeenCalledWith(headers);
-        expect(mockHeadersMethods.has).toHaveBeenCalledWith(
+        expect(mockHeaders.has).toHaveBeenCalledWith(
           OauthTokenInterceptor.HEADER_NAME
         );
-        expect(mockHeadersMethods.delete).toHaveBeenCalledWith(
+        expect(mockHeaders.delete).toHaveBeenCalledWith(
           OauthTokenInterceptor.HEADER_NAME
         );
-        expect(mockHandle).toHaveBeenCalledWith(mockUrl, {
-          ...mockOptions,
-          headers: mockHeadersMethods,
-        });
+        expect(mockHandle).toHaveBeenCalledWith({ headers: mockHeaders });
       });
     });
 
     it('should call refresh token', async () => {
-      const mockHeadersMethods = {
+      const mockHeaders = {
         has: vi.fn(),
         delete: vi.fn(),
       };
-      const mockHeaders = vi.fn().mockReturnValue(mockHeadersMethods);
-      vi.stubGlobal('Headers', mockHeaders);
+      const mockRequestMethods = {
+        clone: () => ({ headers: mockHeaders }),
+        headers: mockHeaders,
+      };
+      const mockRequest = vi.fn().mockReturnValue(mockRequestMethods);
+      vi.stubGlobal('Request', mockRequest);
       const mockUrl = 'mockUrl';
       const headers = { param1: 'value1' };
       const mockOptions = { body: 'value1', method: 'POST', headers };
@@ -92,19 +96,25 @@ describe('OauthTokenInterceptor', () => {
         .mockReturnValueOnce(of({ ok: false, status: 401 }))
         .mockReturnValue(of({ ok: true }));
       mockOauthService.refreshToken.mockReturnValue(of(null));
-      service.intercept(mockUrl, mockOptions, mockHandle).subscribe();
+      service
+        .intercept(new Request(mockUrl, mockOptions), mockHandle)
+        .subscribe();
       await nextFrame();
       expect(mockOauthService.refreshToken).toHaveBeenCalled();
     });
 
     describe('when OauthService.refreshToken throw error', () => {
       it('should call logout', async () => {
-        const mockHeadersMethods = {
+        const mockHeaders = {
           has: vi.fn(),
           delete: vi.fn(),
         };
-        const mockHeaders = vi.fn().mockReturnValue(mockHeadersMethods);
-        vi.stubGlobal('Headers', mockHeaders);
+        const mockRequestMethods = {
+          clone: () => ({ headers: mockHeaders }),
+          headers: mockHeaders,
+        };
+        const mockRequest = vi.fn().mockReturnValue(mockRequestMethods);
+        vi.stubGlobal('Request', mockRequest);
         const mockUrl = 'mockUrl';
         const headers = { param1: 'value1' };
         const mockOptions = { body: 'value1', method: 'POST', headers };
@@ -116,7 +126,9 @@ describe('OauthTokenInterceptor', () => {
           throwError(() => new Error())
         );
         mockOauthService.logout.mockReturnValue(of(null));
-        service.intercept(mockUrl, mockOptions, mockHandle).subscribe();
+        service
+          .intercept(new Request(mockUrl, mockOptions), mockHandle)
+          .subscribe();
         await nextFrame();
         expect(mockOauthService.logout).toHaveBeenCalled();
       });

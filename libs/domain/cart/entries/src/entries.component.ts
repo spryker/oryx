@@ -2,7 +2,7 @@ import { CartComponentMixin } from '@spryker-oryx/cart';
 import { RemoveByQuantity } from '@spryker-oryx/cart/entry';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { hydratable } from '@spryker-oryx/utilities';
+import { hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { CartEntriesOptions } from './entries.model';
@@ -15,7 +15,7 @@ import { cartEntriesStyles } from './entries.styles';
   enableItemImage: true,
   enableItemPrice: true,
 } as CartEntriesOptions)
-@hydratable('window:load')
+@hydrate({ event: 'window:load' })
 export class CartEntriesComponent extends CartComponentMixin(
   ContentMixin<CartEntriesOptions>(LitElement)
 ) {

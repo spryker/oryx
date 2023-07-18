@@ -2,14 +2,14 @@ import { resolve } from '@spryker-oryx/di';
 import { PricingService } from '@spryker-oryx/site';
 import {
   computed,
-  hydratable,
+  hydrate,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { PriceComponentAttributes } from './price.model';
 
-@hydratable()
+@hydrate()
 @signalAware()
 export class PriceComponent
   extends LitElement

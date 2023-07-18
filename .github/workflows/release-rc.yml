@@ -46,7 +46,7 @@ jobs:
         run: node tools/post-build/add-js-extension.js
       - name: Fix d.ts files
         run: node tools/post-build/fix-dts-paths.js
-      - name: Release minor
+      - name: Release rc
         if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
         run: npm run release-rc
       - name: Release Error Log

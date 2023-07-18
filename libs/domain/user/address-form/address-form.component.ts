@@ -17,7 +17,7 @@ import {
 } from '@spryker-oryx/user';
 import {
   computed,
-  hydratable,
+  hydrate,
   signal,
   signalProperty,
 } from '@spryker-oryx/utilities';
@@ -30,7 +30,7 @@ import {
 } from './address-form.model';
 
 @defaultOptions({ fallbackCountry: 'DE' })
-@hydratable(['mouseover', 'focusin'])
+@hydrate({ event: ['mouseover', 'focusin'] })
 export class UserAddressFormComponent
   extends FormMixin(ContentMixin<AddressFormOptions>(LitElement))
   implements AddressFormAttributes
