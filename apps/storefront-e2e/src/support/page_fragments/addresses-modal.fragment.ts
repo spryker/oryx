@@ -35,7 +35,11 @@ export class AddressesModalFragment {
 
   addAddress = (addressData?) => {
     this.getAddAddressButton().click();
+
+    cy.intercept('/assets/addresses/*.json').as('addressesRequest');
     this.addAddressForm.fillAddressForm(addressData);
+    cy.wait('@addressesRequest');
+
     this.addAddressForm.getSaveAddressBtn().click();
   };
 

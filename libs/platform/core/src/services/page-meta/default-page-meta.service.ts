@@ -17,6 +17,12 @@ export class DefaultPageMetaService implements PageMetaService {
       if (!this.get(definition)) {
         this.insert(definition);
       }
+
+      const preload = this.getPreload(definition);
+
+      if (preload) {
+        definitions.push(preload);
+      }
     }
   }
 
@@ -30,6 +36,12 @@ export class DefaultPageMetaService implements PageMetaService {
 
       if (existed) {
         existed?.remove();
+      }
+
+      const preload = this.getPreload(definition);
+
+      if (preload) {
+        definitions.push(preload);
       }
     }
   }
@@ -49,6 +61,24 @@ export class DefaultPageMetaService implements PageMetaService {
 
   setHtmlAttributes(attrs: ElementAttributes): void {
     this.setAttributes(attrs, document.documentElement);
+  }
+
+  protected getPreload(
+    definition: ElementDefinition
+  ): ElementDefinition | void {
+    if (definition.disablePreload) {
+      return;
+    }
+
+    if (definition.name === 'link' && definition.attrs.rel === 'stylesheet') {
+      return {
+        name: 'link',
+        attrs: {
+          rel: 'preload',
+          href: definition.attrs.href,
+        },
+      };
+    }
   }
 
   protected getTagName(name: string): string {

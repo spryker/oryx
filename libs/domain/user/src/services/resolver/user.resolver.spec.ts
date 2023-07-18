@@ -17,7 +17,6 @@ class MockUserService implements Partial<UserService> {
 
 describe('UserResolver', () => {
   let resolver: UserResolver;
-  let userService: MockUserService;
 
   beforeEach(() => {
     const testInjector = createInjector({
@@ -31,9 +30,6 @@ describe('UserResolver', () => {
     });
 
     resolver = testInjector.inject(`${TokenResourceResolvers}USER`);
-    userService = testInjector.inject(
-      UserService
-    ) as unknown as MockUserService;
   });
 
   afterEach(() => {
@@ -60,12 +56,35 @@ describe('UserResolver', () => {
       });
     };
 
-    expectedResult('when user is not ready', 'login');
-    expectedResult('when user does not have firstName', 'login', emptyUser);
+    expectedResult('when user is not ready', '');
+    expectedResult('when user does not have firstName', '', emptyUser);
     expectedResult(
       'when user has firstName',
       userWithName.firstName,
       userWithName
     );
+  });
+
+  describe('AUTHENTICATED', () => {
+    const expectedResult = (
+      description: string,
+      expectation: boolean,
+      user: Partial<User> | null = null
+    ) => {
+      describe(description, () => {
+        const callback = vi.fn();
+        beforeEach(() => {
+          userObservable.next(user);
+          resolver.resolve('AUTHENTICATED').subscribe(callback);
+        });
+
+        it(`should return ${expectation}`, () => {
+          expect(callback).toHaveBeenCalledWith(expectation);
+        });
+      });
+    };
+
+    expectedResult('when has no user profile', false);
+    expectedResult('when user profile is provided', true, userWithName);
   });
 });

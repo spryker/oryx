@@ -29,7 +29,7 @@ export class SearchFragment {
     });
 
     cy.intercept(`/catalog-search-suggestions?q=${encoded}*`).as('searchQuery');
-    this.getInput().type(text);
+    this.getInput().type(text, { force: true });
     cy.wait('@searchQuery');
 
     // wait while open animation is over

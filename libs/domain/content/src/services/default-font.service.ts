@@ -12,6 +12,7 @@ export class DefaultFontService implements FontService {
         attrs: {
           rel: 'stylesheet',
           href: `https://fonts.googleapis.com/css2?family=${font}:wght@400;500;600;700&display=swap`,
+          media: 'all',
         },
       });
     });
