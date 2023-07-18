@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LazyLoadable } from '@spryker-oryx/core/utilities';
-import { Type } from '@spryker-oryx/di';
+import { Type } from '@spryker-oryx/utilities';
 import { CSSResult, CSSResultGroup, CSSResultOrNative } from 'lit';
 
 export type ComponentInfo = ComponentDef | ComponentDefFn;

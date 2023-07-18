@@ -3,8 +3,8 @@ import {
   ClassDescriptor,
   Constructor,
 } from '@lit/reactive-element/decorators.js';
-import { Type } from '@spryker-oryx/di';
-import { isServer, LitElement, render, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, isServer, render } from 'lit';
+import { Type } from '../../misc';
 import { Effect, effect, resolvingSignals } from '../../signals';
 import { digestForTemplateValues } from './digest-for-template';
 

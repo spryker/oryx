@@ -1,5 +1,5 @@
 import { ClassDescriptor } from '@lit/reactive-element/decorators.js';
-import { Type } from '@spryker-oryx/di';
+import { Type } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 
 export const optionsKey = Symbol.for('default-options');
