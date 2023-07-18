@@ -26,7 +26,7 @@ export class WarehouseAssignmentComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-picking-header></oryx-picking-header>
+      <oryx-header></oryx-header>
       ${when(
         this.$locations() === null,
         () => this.renderLoading(),

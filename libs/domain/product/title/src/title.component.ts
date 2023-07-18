@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductContext, ProductMixin } from '@spryker-oryx/product';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { LinkType } from '@spryker-oryx/ui/link';
 import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
@@ -9,6 +9,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { html } from 'lit/static-html.js';
 import { ProductTitleOptions } from './title.model';
 import { styles } from './title.styles';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({
   linkType: 'none',
@@ -19,14 +20,14 @@ export class ProductTitleComponent extends ProductMixin(
 ) {
   static styles = styles;
 
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   protected $link = computed(() => {
     if (!this.$options().linkType || this.$options().linkType === 'none') {
       return null;
     }
     return this.semanticLinkService.get({
-      type: SemanticLinkType.Product,
+      type: RouteType.Product,
       id: this.$product()?.sku,
     });
   });

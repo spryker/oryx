@@ -13,12 +13,12 @@ import {
   DefaultNotificationService,
   DefaultPricingService,
   DefaultSalutationService,
-  DefaultSemanticLinkService,
+  DefaultLinkService,
   NotificationService,
   PricingService,
   SalutationService,
   SapiLocaleAdapter,
-  SemanticLinkService,
+  LinkService,
   SiteErrorHandler,
   StoreService,
 } from '@spryker-oryx/site';
@@ -62,8 +62,8 @@ export const mockSiteProviders: Provider[] = [
     useClass: DefaultPricingService,
   },
   {
-    provide: SemanticLinkService,
-    useClass: DefaultSemanticLinkService,
+    provide: LinkService,
+    useClass: DefaultLinkService,
   },
   {
     provide: NotificationService,

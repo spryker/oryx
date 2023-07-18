@@ -10,3 +10,6 @@ export interface WarehouseUserAssignment {
   userUuid: string;
   warehouse: Warehouse;
 }
+
+export const warehouseUserAssignmentStorageKey =
+  'oryx.warehouse-user-assignment';

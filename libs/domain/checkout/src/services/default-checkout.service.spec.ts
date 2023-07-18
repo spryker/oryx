@@ -10,7 +10,7 @@ import {
 import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { BehaviorSubject, of, take } from 'rxjs';
 import { CheckoutAdapter } from './adapter';
 
@@ -22,7 +22,7 @@ class MockCartService implements Partial<CartService> {
 class MockCheckoutAdapter implements Partial<CheckoutAdapter> {
   placeOrder = vi.fn();
 }
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
+class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/link'));
 }
 
@@ -56,7 +56,7 @@ describe('DefaultCheckoutService', () => {
       providers: [
         { provide: CheckoutAdapter, useClass: MockCheckoutAdapter },
         { provide: CartService, useClass: MockCartService },
-        { provide: SemanticLinkService, useClass: MockSemanticLinkService },
+        { provide: LinkService, useClass: MockSemanticLinkService },
         { provide: CheckoutService, useClass: DefaultCheckoutService },
         { provide: OrderService, useClass: MockOrderService },
         { provide: CheckoutDataService, useClass: MockCheckoutDataService },
@@ -72,7 +72,7 @@ describe('DefaultCheckoutService', () => {
     checkoutService = injector.inject(CheckoutService);
     checkoutStateService =
       injector.inject<MockCheckoutStateService>(CheckoutStateService);
-    linkService = injector.inject<MockSemanticLinkService>(SemanticLinkService);
+    linkService = injector.inject<MockSemanticLinkService>(LinkService);
   });
 
   afterEach(() => {

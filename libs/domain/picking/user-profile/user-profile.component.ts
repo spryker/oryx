@@ -1,22 +1,27 @@
 import { AuthService } from '@spryker-oryx/auth';
-import { AppRef } from '@spryker-oryx/core';
+import { AppRef, StorageService } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
 import { SyncSchedulerService } from '@spryker-oryx/offline';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import { RouterService } from '@spryker-oryx/router';
+import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
 import {
-  computed,
+  ConnectableSignal,
   I18nMixin,
+  computed,
   signal,
   signalAware,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs';
+import {
+  WarehouseUserAssignment,
+  warehouseUserAssignmentStorageKey,
+} from '../src/models/warehouse-user-assignment';
 import { userProfileComponentStyles } from './user-profile.styles';
-import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 
 @signalAware()
 export class UserProfileComponent extends I18nMixin(LitElement) {
@@ -24,6 +29,7 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
 
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
+  protected storageService = resolve(StorageService);
 
   protected injector = resolve(INJECTOR);
   protected injectorDataPlugin =
@@ -35,6 +41,8 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
   @state()
   protected logoutLoading = false;
 
+  protected $location: ConnectableSignal<WarehouseUserAssignment | null> =
+    signal(this.storageService.get(warehouseUserAssignmentStorageKey));
   protected $route = signal(this.routerService.route());
   protected $pendingSyncs = signal(resolve(SyncSchedulerService).hasPending());
   protected $isPicking = computed(() => this.$route()?.includes('/picking/'));
@@ -51,6 +59,15 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
   protected override render(): TemplateResult {
     return html`
       <div class="info-block">
+        ${when(
+          this.$location(),
+          () => html`
+            <dl>
+              <dt class="info-label">${this.i18n('user.profile.location')}</dt>
+              <dd class="info-value">${this.$location()?.warehouse.name}</dd>
+            </dl>
+          `
+        )}
         <dl>
           <dt class="info-label">${this.i18n('user.profile.employee-id')}</dt>
           <dd class="info-value">admin@spryker.com</dd>
