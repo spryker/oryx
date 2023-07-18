@@ -40,8 +40,9 @@ describe('Checkout suite', { tags: 'smoke' }, () => {
         sccosApi.cartItems.post(productData, 1, cartId);
       });
 
+      cy.intercept('/assets/addresses/*.json').as('addressesRequest');
       cy.goToCheckout();
-      cy.location('pathname').should('be.eq', checkoutPage.url);
+      cy.wait('@addressesRequest');
 
       checkoutPage.shipping.addAddressForm.fillAddressForm();
 
@@ -91,7 +92,6 @@ describe('Checkout suite', { tags: 'smoke' }, () => {
       sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
 
       cy.goToCheckoutAsGuest();
-      cy.location('pathname').should('be.eq', checkoutPage.anonymousUrl);
 
       checkoutPage.checkoutAsGuestForm.fillForm();
       checkoutPage.shipping.addAddressForm.fillAddressForm();

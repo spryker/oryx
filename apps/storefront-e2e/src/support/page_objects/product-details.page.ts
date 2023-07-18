@@ -17,8 +17,13 @@ export class ProductDetailsPage extends AbstractSFPage {
     }
   }
 
+  beforeVisit(): void {
+    cy.intercept(`/concrete-products/${this.productId}*`).as('productRequest');
+  }
+
   waitForLoaded(): void {
     this.getQuantityComponent().getInput().should('be.visible');
+    cy.wait('@productRequest');
   }
 
   getWrapper = () => cy.get('oryx-composition[route="/product/:sku"]');
