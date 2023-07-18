@@ -10,15 +10,16 @@ import { UserService } from '..';
 
 export type UserResolvers = {
   NAME: Resolver;
+  AUTHENTICATED: Resolver;
 };
 
 export class UserResolver extends BaseResolver<UserResolvers> {
   protected user$ = resolve(UserService).getUser();
 
   protected resolvers: UserResolvers = {
-    // TODO: drop hardcoded fallback string
     NAME: (): ResolvedToken =>
-      this.user$.pipe(map((user) => user?.firstName ?? 'login')),
+      this.user$.pipe(map((user) => user?.firstName ?? '')),
+    AUTHENTICATED: (): ResolvedToken => this.user$.pipe(map((user) => !!user)),
   };
 }
 

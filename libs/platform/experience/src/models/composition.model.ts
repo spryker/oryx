@@ -4,6 +4,12 @@ import { LayoutAttributes } from '../../layout/src';
 
 export interface CompositionProperties {
   rules?: StyleRuleSet[];
+  visibility?: ComponentVisibility;
+}
+
+export interface ComponentVisibility {
+  hide?: boolean;
+  hideByRule?: string;
 }
 
 export interface StyleRuleSet extends StyleProperties, LayoutAttributes {
