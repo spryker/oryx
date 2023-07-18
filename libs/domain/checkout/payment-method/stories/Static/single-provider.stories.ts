@@ -1,5 +1,8 @@
 import { CheckoutDataService } from '@spryker-oryx/checkout';
-import { MockCheckoutDataService, mockPayments } from '@spryker-oryx/checkout/mocks';
+import {
+  MockCheckoutDataService,
+  mockPayments,
+} from '@spryker-oryx/checkout/mocks';
 import { resolve } from '@spryker-oryx/di';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
