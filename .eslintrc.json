@@ -27,12 +27,12 @@
                 "onlyDependOnLibsWithTags": [
                   "layer:platform",
                   "layer:base",
-                  "lib:domain"
+                  "layer:domain"
                 ]
               },
               {
                 "sourceTag": "layer:base",
-                "onlyDependOnLibsWithTags": ["layer:base", "lib:core"]
+                "onlyDependOnLibsWithTags": ["layer:base"]
               },
               {
                 "sourceTag": "layer:template",

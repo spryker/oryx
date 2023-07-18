@@ -3,12 +3,15 @@ import { mockAuthProviders } from '@spryker-oryx/auth/mocks';
 import * as core from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
+import {
+  MockOrderService,
+  mockOrderProviders,
+} from '@spryker-oryx/order/mocks';
 import * as litRxjs from '@spryker-oryx/utilities';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { MockOrderService, mockOrderProviders } from '../src/mocks';
 import { OrderService } from '../src/services';
 import { OrderSummaryComponent } from './summary.component';
 import { orderSummaryComponent } from './summary.def';

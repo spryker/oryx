@@ -7,7 +7,6 @@ import { RouterService } from '@spryker-oryx/router';
 import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { catchError, of, switchMap, throwError } from 'rxjs';
-import { beforeEach } from 'vitest';
 import { UserProfileComponent } from './user-profile.component';
 import { userProfileComponent } from './user-profile.def';
 
