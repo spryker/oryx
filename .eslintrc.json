@@ -18,17 +18,12 @@
                 "onlyDependOnLibsWithTags": [
                   "layer:platform",
                   "layer:base",
-                  "layer:domain",
-                  "layer:template"
+                  "layer:domain"
                 ]
               },
               {
                 "sourceTag": "layer:platform",
-                "onlyDependOnLibsWithTags": [
-                  "layer:platform",
-                  "layer:base",
-                  "layer:domain"
-                ]
+                "onlyDependOnLibsWithTags": ["layer:platform", "layer:base"]
               },
               {
                 "sourceTag": "layer:base",
@@ -41,6 +36,16 @@
               {
                 "sourceTag": "type:app",
                 "onlyDependOnLibsWithTags": ["*"]
+              },
+              // Exception rules
+              {
+                "sourceTag": "lib:picking",
+                "onlyDependOnLibsWithTags": [
+                  "layer:platform",
+                  "layer:base",
+                  "layer:domain",
+                  "layer:template"
+                ]
               }
             ]
           }
