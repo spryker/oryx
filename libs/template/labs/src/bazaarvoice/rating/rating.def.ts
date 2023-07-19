@@ -1,4 +1,4 @@
-import { componentDef } from '@spryker-oryx/core';
+import { componentDef } from '@spryker-oryx/utilities';
 import { BazaarvoiceRatingOptions } from './rating.model';
 
 declare global {

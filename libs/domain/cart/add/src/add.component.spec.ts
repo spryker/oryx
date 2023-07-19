@@ -5,12 +5,11 @@ import {
   QuantityInputComponent,
 } from '@spryker-oryx/cart/quantity-input';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { Product, ProductService } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
 import { buttonComponent } from '@spryker-oryx/ui';
-import { wait } from '@spryker-oryx/utilities';
+import { useComponent, wait } from '@spryker-oryx/utilities';
 import { BehaviorSubject, delay, of } from 'rxjs';
 import { CartAddComponent } from './add.component';
 import { addToCartComponent } from './add.def';

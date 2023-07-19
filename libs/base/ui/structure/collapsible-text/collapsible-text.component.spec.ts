@@ -1,12 +1,11 @@
 // organize-imports-ignore
-import './ponyfill';
 import { fixture, html } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
+import { useComponent } from '@spryker-oryx/utilities';
+import { ButtonComponent, ButtonType } from '../../action/button/src';
 import { CollapsibleTextComponent } from './collapsible-text.component';
 import { collapsibleTextComponent } from './collapsible-text.def';
 import { CollapsibleTextToggle } from './collapsible-text.model';
-import { ButtonComponent } from '../../action/button/src/button.component.js';
-import { ButtonType } from '../../action/button/src/button.model.js';
+import './ponyfill';
 
 describe('CollapsibleTextComponent', () => {
   let element: CollapsibleTextComponent;

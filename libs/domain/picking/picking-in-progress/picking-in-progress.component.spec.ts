@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { PickingInProgressModalComponent } from './picking-in-progress.component';
 import { pickingInProgressModalComponent } from './picking-in-progress.def';
