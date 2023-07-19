@@ -37,7 +37,7 @@ export const cartPage: StaticComponent = {
               margin: 'auto',
               padding: '20px',
               radius: '4px',
-              style: `display: grid;justify-items: center;`,
+              style: `display: grid;gap:14px;justify-items: center;`,
             },
           ],
         },
