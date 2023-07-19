@@ -13,13 +13,13 @@ export const orderPage: StaticComponent = {
     {
       type: 'oryx-composition',
       options: {
-        data: { rules: [{ layout: 'split-main', padding: '30px 0' }] },
+        rules: [{ layout: 'split-main', padding: '30px 0' }],
       },
       components: [
         {
           type: 'oryx-order-summary',
           options: {
-            data: { rules: [{ colSpan: 2 }] },
+            rules: [{ colSpan: 2 }],
           },
         },
         { type: 'oryx-order-entries' },
@@ -30,9 +30,7 @@ export const orderPage: StaticComponent = {
             {
               type: 'oryx-cart-totals-discount',
               options: {
-                data: {
-                  discountRowsAppearance: DiscountRowsAppearance.Collapsed,
-                },
+                discountRowsAppearance: DiscountRowsAppearance.Collapsed,
               },
             },
             { type: 'oryx-cart-totals-tax' },

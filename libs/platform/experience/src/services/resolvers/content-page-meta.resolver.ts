@@ -1,7 +1,7 @@
 import { ElementResolver, PageMetaResolver } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { combineLatest, map, Observable } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 import { ExperienceStaticData, StaticComponent } from '../experience';
 
 export class ContentPageMetaResolver implements PageMetaResolver {
@@ -21,7 +21,7 @@ export class ContentPageMetaResolver implements PageMetaResolver {
     return this.router.currentRoute().pipe(
       map((route) => {
         const defaultMeta = this.getData(route);
-        const meta: Record<string, string> = {
+        const meta = {
           ...defaultMeta,
         };
 
@@ -45,7 +45,7 @@ export class ContentPageMetaResolver implements PageMetaResolver {
         delete meta.follow;
         delete meta.index;
 
-        return meta;
+        return meta as Record<string, string>;
       })
     );
   }

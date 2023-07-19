@@ -23,12 +23,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   collectStyles(components: Component[]): string {
     return components
       .map((component) =>
-        component.options?.data
-          ? this.createStylesFromOptions(
-              component.options.data.rules,
-              component.id
-            )
-          : ''
+        this.createStylesFromOptions(component.options?.rules, component.id)
       )
       .join('');
   }
