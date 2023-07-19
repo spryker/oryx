@@ -1,7 +1,7 @@
 import { inject } from '@spryker-oryx/di';
 // Add full import because of issue with naming exports from cjs.
 import * as jsonapi from 'jsonapi-serializer';
-import { map, Observable, of, switchMap, tap } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import {
   ItemsFilters,
   PickingList,
