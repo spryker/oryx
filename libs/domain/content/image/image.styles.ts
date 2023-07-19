@@ -7,7 +7,7 @@ export const contentImageStyles = css`
   }
 
   a {
-    display: contents;
+    width: inherit;
     color: inherit;
   }
 `;
