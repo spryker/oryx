@@ -1,4 +1,4 @@
-import { resolve, Type } from '@spryker-oryx/di';
+import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import {
   computed,
@@ -6,6 +6,7 @@ import {
   Signal,
   signalAware,
   signalProperty,
+  Type,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { map } from 'rxjs';

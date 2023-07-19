@@ -1,16 +1,16 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { contentLinkComponent } from '@spryker-oryx/content';
 import * as core from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
+import { RouteType, RouterService } from '@spryker-oryx/router';
 import { siteProviders } from '@spryker-oryx/site';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ProductCardComponent } from './card.component';
 import { productCardComponent } from './card.def';
-import { RouterService, RouteType } from '@spryker-oryx/router';
 
 const mockContext = {
   get: vi.fn().mockReturnValue(of('1')),

@@ -1,5 +1,4 @@
-import { Type } from '@spryker-oryx/di';
-import { signal, Signal, signalAware } from '@spryker-oryx/utilities';
+import { signal, Signal, signalAware, Type } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { CartController } from '../controllers';

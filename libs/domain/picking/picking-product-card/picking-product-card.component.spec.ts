@@ -1,9 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { ImageComponent } from '@spryker-oryx/ui/image';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { PickingProductCardComponent } from './picking-product-card.component';
 import { pickingProductCardComponent } from './picking-product-card.def';

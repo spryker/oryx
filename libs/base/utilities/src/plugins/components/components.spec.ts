@@ -1,8 +1,6 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
-import { queryFirstAssigned } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
-import { SpyInstance } from 'vitest';
-import { App } from '../app';
+import { LitElement, TemplateResult, html } from 'lit';
+import { queryFirstAssigned } from '../../misc';
 import { ComponentsPlugin, ComponentsPluginName } from './components';
 import { ComponentDef, componentDef } from './components.model';
 
@@ -40,17 +38,7 @@ const createComponentDef = (tag: Tags, preload = false): (() => ComponentDef) =>
       : components[tag],
   });
 
-const mockApp = {
-  findPlugin: vi.fn(),
-} as unknown as App;
-
 describe('ComponentsPlugin', () => {
-  beforeEach(() => {
-    (mockApp.findPlugin as unknown as SpyInstance).mockReturnValue({
-      resolve: vi.fn(),
-    });
-  });
-
   afterEach(() => {
     vi.resetAllMocks();
   });

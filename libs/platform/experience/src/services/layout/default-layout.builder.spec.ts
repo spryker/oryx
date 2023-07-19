@@ -103,9 +103,7 @@ describe('DefaultLayoutBuilder', () => {
             id: 'test',
             type: 'banner',
             options: {
-              data: {
-                rules: [{}],
-              },
+              rules: [{}],
             },
           },
         ]);
@@ -123,9 +121,7 @@ describe('DefaultLayoutBuilder', () => {
             {
               type: 'banner',
               options: {
-                data: {
-                  rules: [{ background: 'red' }],
-                },
+                rules: [{ background: 'red' }],
               },
             },
           ] as Component<CompositionProperties>[]);
@@ -143,9 +139,7 @@ describe('DefaultLayoutBuilder', () => {
               id: 'test',
               type: 'banner',
               options: {
-                data: {
-                  rules: [{ background: 'red' }],
-                },
+                rules: [{ background: 'red' }],
               },
             },
           ]);
@@ -167,9 +161,7 @@ describe('DefaultLayoutBuilder', () => {
             id: 'test',
             type: 'banner',
             options: {
-              data: {
-                rules: [{ query: { breakpoint: Size.Md }, background: 'red' }],
-              },
+              rules: [{ query: { breakpoint: Size.Md }, background: 'red' }],
             },
           },
         ]);
@@ -193,9 +185,7 @@ describe('DefaultLayoutBuilder', () => {
             id: 'test',
             type: 'banner',
             options: {
-              data: {
-                rules: [{ query: { childs: true }, background: 'red' }],
-              },
+              rules: [{ query: { childs: true }, background: 'red' }],
             },
           },
         ]);
@@ -219,9 +209,7 @@ describe('DefaultLayoutBuilder', () => {
             id: 'test',
             type: 'banner',
             options: {
-              data: {
-                rules: [{ query: { hover: true }, background: 'red' }],
-              },
+              rules: [{ query: { hover: true }, background: 'red' }],
             },
           },
         ]);

@@ -1,11 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   CollapsibleTextComponent,
   CollapsibleTextToggle,
 } from '@spryker-oryx/ui/collapsible-text';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { Product } from '../src/models';

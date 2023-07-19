@@ -1,4 +1,4 @@
-import { componentDef } from '@spryker-oryx/core';
+import { componentDef } from '@spryker-oryx/utilities';
 import { SiteNotificationCenterOptions } from './notification-center.model';
 
 declare global {

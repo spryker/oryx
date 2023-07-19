@@ -1,6 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
-import { a11yConfig } from '@spryker-oryx/utilities';
+import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { navigationComponent } from './component';

@@ -1,5 +1,5 @@
-import { Type } from '@spryker-oryx/di';
 import { ReactiveElement } from 'lit';
+import { Type } from '../../misc';
 import { signalAware } from '../../signals';
 import { i18n } from './i18n.directive';
 

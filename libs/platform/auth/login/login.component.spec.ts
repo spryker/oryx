@@ -1,5 +1,4 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector, inject } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { I18nService } from '@spryker-oryx/i18n';
@@ -9,6 +8,7 @@ import {
   PasswordInputComponent,
   PasswordVisibilityStrategy,
 } from '@spryker-oryx/ui/password';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { EMPTY, of, throwError } from 'rxjs';
 import { AuthLoginComponent } from './login.component';

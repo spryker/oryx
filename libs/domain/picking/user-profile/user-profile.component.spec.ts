@@ -1,16 +1,14 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
 import { App, AppRef, StorageService } from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { SyncSchedulerService } from '@spryker-oryx/offline';
 import { RouterService } from '@spryker-oryx/router';
-import { i18n, nextTick } from '@spryker-oryx/utilities';
+import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { catchError, of, switchMap, throwError } from 'rxjs';
 import { UserProfileComponent } from './user-profile.component';
 import { userProfileComponent } from './user-profile.def';
-import { beforeEach } from 'vitest';
 
 const mockOfflineDataPlugin = {
   refreshData: vi.fn().mockReturnValue(

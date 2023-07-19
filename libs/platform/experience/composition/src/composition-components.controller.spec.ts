@@ -4,9 +4,9 @@ import * as litRxjs from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { CompositionComponentsController } from './composition-components.controller';
 import { ExperienceService } from '../../src/services';
 import { Component } from '../../src/services/experience/models';
+import { CompositionComponentsController } from './composition-components.controller';
 
 const mockElement = {
   tagName: 'tagName',
@@ -30,10 +30,8 @@ const mockComponentWithVisibility: Component = {
     {
       ...mockComponent,
       options: {
-        data: {
-          visibility: {
-            hide: false,
-          },
+        visibility: {
+          hide: false,
         },
       },
     },
@@ -46,10 +44,8 @@ const mockComponentWithVisibilityHidden: Component = {
     {
       ...mockComponent,
       options: {
-        data: {
-          visibility: {
-            hide: true,
-          },
+        visibility: {
+          hide: true,
         },
       },
     },
@@ -62,10 +58,8 @@ const mockComponentWithVisibilityRule: Component = {
     {
       ...mockComponent,
       options: {
-        data: {
-          visibility: {
-            hideByRule,
-          },
+        visibility: {
+          hideByRule,
         },
       },
     },
