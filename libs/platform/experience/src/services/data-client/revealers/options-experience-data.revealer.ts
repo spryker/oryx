@@ -1,9 +1,6 @@
-import {
-  AppRef,
-  ComponentsPlugin,
-  FeatureOptionsService,
-} from '@spryker-oryx/core';
+import { AppRef, FeatureOptionsService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { ComponentsPlugin } from '@spryker-oryx/utilities';
 import { Observable, tap } from 'rxjs';
 import { optionsKey } from '../../../decorators';
 import { MessageType } from '../data-client.model';

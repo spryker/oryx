@@ -1,11 +1,12 @@
 import { ContextController } from '@spryker-oryx/core';
-import { resolve, Type } from '@spryker-oryx/di';
+import { resolve } from '@spryker-oryx/di';
 import {
   computed,
   Signal,
   signal,
   signalAware,
   signalProperty,
+  Type,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { of } from 'rxjs';

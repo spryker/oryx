@@ -1,10 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListError, PickingListService } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { modalComponent } from '@spryker-oryx/ui/modal';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of, throwError } from 'rxjs';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';

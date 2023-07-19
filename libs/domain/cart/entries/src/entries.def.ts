@@ -1,5 +1,4 @@
-import { componentDef } from '@spryker-oryx/core';
-import { Size } from '@spryker-oryx/utilities';
+import { Size, componentDef } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 import { CartEntriesOptions } from './entries.model';
 

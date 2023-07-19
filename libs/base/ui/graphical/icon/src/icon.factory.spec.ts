@@ -1,6 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
-import { Size } from '@spryker-oryx/utilities';
+import { Size, useComponent } from '@spryker-oryx/utilities';
 import { svg } from 'lit';
 import { IconComponent } from './icon.component';
 import { iconComponent } from './icon.def';

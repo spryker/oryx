@@ -6,8 +6,8 @@ import {
   CheckoutStateService,
   Shipment,
 } from '@spryker-oryx/checkout';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 

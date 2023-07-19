@@ -96,6 +96,22 @@ export const HeaderTemplate: StaticComponent = {
               type: 'oryx-site-navigation-item',
               options: {
                 data: {
+                  visibility: {
+                    hideByRule: 'USER.AUTHENTICATED',
+                  },
+                  label: 'login',
+                  icon: IconTypes.User,
+                  url: { type: 'login' },
+                },
+              },
+            },
+            {
+              type: 'oryx-site-navigation-item',
+              options: {
+                data: {
+                  visibility: {
+                    hideByRule: 'USER.!AUTHENTICATED',
+                  },
                   contentBehavior: 'dropdown',
                   label: 'USER.NAME',
                   icon: IconTypes.User,
@@ -105,7 +121,6 @@ export const HeaderTemplate: StaticComponent = {
             },
             {
               type: 'oryx-site-navigation-item',
-              id: 'mini-cart',
               options: {
                 data: {
                   label: 'cart',

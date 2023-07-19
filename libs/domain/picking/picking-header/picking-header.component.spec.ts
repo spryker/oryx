@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   PickingHeaderService,
@@ -9,6 +8,7 @@ import { CustomerNoteModalComponent } from '@spryker-oryx/picking/customer-note-
 import { DiscardPickingComponent } from '@spryker-oryx/picking/discard-modal';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { discardModalComponent } from '../discard-modal/discard-modal.def';

@@ -19,7 +19,7 @@ export const dryLogic = (): ((
           if (node.parentElement) {
             node = node.parentElement;
           } else {
-            node = node.getRootNode().host;
+            node = (node.getRootNode() as Node & { host: Element }).host;
             if (node.firstElementChild) {
               return node.firstElementChild;
             }

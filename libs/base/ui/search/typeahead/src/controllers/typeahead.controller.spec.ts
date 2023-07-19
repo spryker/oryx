@@ -1,9 +1,8 @@
 import { getShadowElementBySelector } from '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { PopoverSelectEvent } from '@spryker-oryx/ui/popover';
 import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
-import { a11yConfig } from '@spryker-oryx/utilities';
+import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { SpyInstance } from 'vitest';

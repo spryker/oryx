@@ -1,11 +1,7 @@
 import { nextFrame } from '@open-wc/testing-helpers';
-import {
-  App,
-  AppRef,
-  ComponentsPlugin,
-  FeatureOptionsService,
-} from '@spryker-oryx/core';
+import { App, AppRef, FeatureOptionsService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
+import { ComponentsPlugin } from '@spryker-oryx/utilities';
 import { optionsKey } from '../../../decorators';
 import { MessageType } from '../data-client.model';
 import { postMessage } from '../utilities';

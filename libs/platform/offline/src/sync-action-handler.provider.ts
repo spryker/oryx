@@ -1,4 +1,5 @@
-import { Provider, Type } from '@spryker-oryx/di';
+import { Provider } from '@spryker-oryx/di';
+import { Type } from '@spryker-oryx/utilities';
 import { SyncAction, SyncActionHandler } from './models';
 
 export interface SyncActionHandlerRegistry {

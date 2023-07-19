@@ -1,9 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { TokenResolver } from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LinkService } from '@spryker-oryx/site';
 import { modalComponent } from '@spryker-oryx/ui/modal';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';

@@ -1,12 +1,12 @@
-import { isNodeElement } from '@spryker-oryx/core/utilities';
-import { AppPlugin } from '../app';
+import { BuilderPlugin } from '../plugins.model';
+import { isNodeElement } from '../utilities';
 import { ComponentsLoader } from './components-loader';
 import { ComponentImplMeta, ObservableShadowElement } from './components.model';
 import { isObservableShadowElement } from './utilities';
 
 export class ComponentsObserver
   extends ComponentsLoader
-  implements Pick<AppPlugin, 'destroy'>
+  implements Pick<BuilderPlugin, 'destroy'>
 {
   protected readonly observer = new MutationObserver(
     this.handleMutations.bind(this)

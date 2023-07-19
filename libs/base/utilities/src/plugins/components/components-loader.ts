@@ -1,5 +1,5 @@
-import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
-import { isDefined } from '@spryker-oryx/utilities';
+import { isDefined } from '../../guards';
+import { resolveLazyLoadable } from '../utilities';
 import {
   ComponentDef,
   ComponentImplMeta,

@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { destroyInjector } from '@spryker-oryx/di';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { NavigateBackComponent } from './navigate-back.component';
 import { navigateBackComponent } from './navigate-back.def';

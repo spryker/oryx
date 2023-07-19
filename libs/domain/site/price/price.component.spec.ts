@@ -1,8 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { CurrencyService, siteProviders } from '@spryker-oryx/site';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { PriceComponent } from './price.component';

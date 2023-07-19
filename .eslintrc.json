@@ -18,28 +18,16 @@
                 "onlyDependOnLibsWithTags": [
                   "layer:platform",
                   "layer:base",
-                  "layer:domain",
-                  "layer:template",
-                  "lib:experience",
-                  "lib:i18n",
-                  "lib:ui",
-                  "lib:form"
+                  "layer:domain"
                 ]
               },
               {
                 "sourceTag": "layer:platform",
-                "onlyDependOnLibsWithTags": [
-                  "layer:platform",
-                  "layer:base",
-                  "lib:experience",
-                  "lib:i18n",
-                  "lib:ui",
-                  "lib:form"
-                ]
+                "onlyDependOnLibsWithTags": ["layer:platform", "layer:base"]
               },
               {
                 "sourceTag": "layer:base",
-                "onlyDependOnLibsWithTags": ["layer:base", "lib:ui", "lib:form"]
+                "onlyDependOnLibsWithTags": ["layer:base"]
               },
               {
                 "sourceTag": "layer:template",
@@ -51,37 +39,12 @@
               },
               // Exception rules
               {
-                "sourceTag": "lib:experience",
+                "sourceTag": "lib:picking",
                 "onlyDependOnLibsWithTags": [
-                  "lib:themes",
-                  "layer:base",
                   "layer:platform",
-                  "lib:ui"
-                ]
-              },
-              {
-                "sourceTag": "lib:i18n",
-                "onlyDependOnLibsWithTags": [
-                  "lib:site",
                   "layer:base",
-                  "layer:platform"
-                ]
-              },
-              {
-                "sourceTag": "lib:form",
-                "onlyDependOnLibsWithTags": [
-                  "layer:base",
-                  "lib:core",
-                  "lib:experience",
-                  "lib:ui"
-                ]
-              },
-              {
-                "sourceTag": "lib:ui",
-                "onlyDependOnLibsWithTags": [
-                  "layer:base",
-                  "lib:core",
-                  "lib:themes"
+                  "layer:domain",
+                  "layer:template"
                 ]
               }
             ]

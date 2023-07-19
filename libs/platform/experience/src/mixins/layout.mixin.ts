@@ -1,4 +1,3 @@
-import { Type } from '@spryker-oryx/di';
 import {
   CompositionLayout,
   ContentMixin,
@@ -15,6 +14,7 @@ import {
   signalAware,
   signalProperty,
   ssrShim,
+  Type,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { LayoutController } from '../controllers/layout.controller';
