@@ -5,8 +5,8 @@ import { LitElement } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { CompositionComponentsController } from './composition-components.controller';
-import { ExperienceService } from '../../src/services';
-import { Component } from '../../src/services/experience/models';
+import { ExperienceService } from '../src/services';
+import { Component } from '../src/services/experience/models';
 
 const mockElement = {
   tagName: 'tagName',

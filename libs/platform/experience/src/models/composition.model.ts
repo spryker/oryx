@@ -1,6 +1,6 @@
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Breakpoint } from '@spryker-oryx/utilities';
-import { LayoutAttributes } from '../../layout/src';
+import { LayoutAttributes } from '../../layout';
 
 export interface CompositionProperties {
   rules?: StyleRuleSet[];

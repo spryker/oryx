@@ -1,15 +1,48 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
-import { Breakpoint, sizes } from '@spryker-oryx/utilities';
+import { Breakpoint, Size, sizes, throttle } from '@spryker-oryx/utilities';
 import { merge, Observable, of } from 'rxjs';
-import { reduce } from 'rxjs/operators';
+import { distinctUntilChanged, reduce } from 'rxjs/operators';
 import { CompositionLayout } from '../../models';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import { LayoutService } from './layout.service';
 import { ScreenService } from './screen.service';
 
 export class DefaultLayoutService implements LayoutService {
-  constructor(protected screenService = inject(ScreenService)) {}
+  constructor(protected screenService = inject(ScreenService)) {
+    this.setupBreakpointsObserver(document.body)
+  }
+
+  protected breakpoint?: Observable<Size>;
+
+  protected setupBreakpointsObserver(target: HTMLElement): void {
+    if (!target) return;
+
+    this.breakpoint = new Observable<Size>((subscriber) => {
+      const observer = new ResizeObserver(() => {
+        subscriber.next(this.evaluateBreakpoint(target));
+      });
+  
+      observer.observe(target);
+  
+      return () => {
+        observer.disconnect();
+      };
+    }).pipe(
+      distinctUntilChanged()
+    );
+  };
+
+  protected evaluateBreakpoint(target: HTMLElement): Size {
+    const width = target.clientWidth;
+    return Object.entries(this.screenService.getBreakpoints()).find(([_b, {min = 0, max = Infinity}]) => {
+      return width >= min && width <= max;
+    })![0] as Size;
+  }
+
+  getBreakpoint(): Observable<Size> {
+    return this.breakpoint!;
+  }
 
   getStyles(layoutInfo: ResponsiveLayoutInfo): Observable<string> {
     const observables: Observable<string>[] = [];

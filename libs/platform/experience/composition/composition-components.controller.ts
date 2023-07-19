@@ -1,7 +1,7 @@
 import { LitElement, ReactiveController } from 'lit';
-import { ContentComponentProperties } from '../../src/models';
+import { ContentComponentProperties } from '../src/models';
 import { resolve } from '@spryker-oryx/di';
-import { Component, ExperienceService } from '../../src/services';
+import { Component, ExperienceService, LayoutService } from '../src/services';
 import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
 import { TokenResolver } from '@spryker-oryx/core';
 import { ObserveController } from '@spryker-oryx/utilities';
@@ -12,9 +12,11 @@ export class CompositionComponentsController implements ReactiveController {
   protected observe: ObserveController<LitElement & ContentComponentProperties>;
   protected tokenResolver = resolve(TokenResolver);
   protected experienceService = resolve(ExperienceService);
+  protected layoutService = resolve(LayoutService);
 
   constructor(protected host: LitElement & ContentComponentProperties) {
     this.observe = new ObserveController(host);
+    this.layoutService.getBreakpoint().subscribe(console.log)
   }
 
   protected components(): Observable<Component[] | null> {
