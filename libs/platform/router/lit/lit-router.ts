@@ -8,7 +8,12 @@
 
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { BASE_ROUTE, RouteParams, RouterService } from '@spryker-oryx/router';
+import {
+  BASE_ROUTE,
+  RouteParams,
+  RouterService,
+  RouteType,
+} from '@spryker-oryx/router';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { html, TemplateResult } from 'lit';
 import { lastValueFrom, Observable, Subscription, tap } from 'rxjs';
@@ -23,6 +28,7 @@ export interface BaseRouteConfig {
   leave?: (params: {
     [key: string]: string | undefined;
   }) => Observable<boolean>;
+  type?: RouteType | string;
 }
 
 /**
@@ -50,6 +56,10 @@ export interface URLPatternRouteConfig extends BaseRouteConfig {
  * render() callback used to render a match to the outlet.
  */
 export type RouteConfig = PathRouteConfig | URLPatternRouteConfig;
+
+export const isRouterPath = (
+  route: PathRouteConfig | URLPatternRouteConfig | undefined
+): route is PathRouteConfig => !!(route as PathRouteConfig)?.path;
 
 // A cache of URLPatterns created for PathRouteConfig.
 // Rather than converting all given RoutConfigs to URLPatternRouteConfig, this
