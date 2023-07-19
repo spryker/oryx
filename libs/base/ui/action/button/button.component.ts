@@ -21,6 +21,7 @@ export class ButtonComponent
   implements ButtonComponentAttributes
 {
   static styles = buttonStyles;
+
   static shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
@@ -92,9 +93,8 @@ export class ButtonComponent
   }
 
   protected renderContent(): TemplateResult {
-    return html`<slot @slotchange=${() => this.onSlotChange()}>
-      ${this.renderIcon()}${this.text}
-    </slot>`;
+    return html`${this.renderIcon()}${this.text}
+      <slot @slotchange=${() => this.onSlotChange()}> </slot>`;
   }
 
   protected onSlotChange(): void {

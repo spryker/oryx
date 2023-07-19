@@ -153,9 +153,13 @@ export class ModalComponent
           this.enableNavigateBack,
           () => html`
             <slot name="navigate-back" @click=${this.onGoBack}>
-              <oryx-button .type=${ButtonType.Icon} .icon=${
-            IconTypes.Back
-          } .label=${this.i18n('modal.back')}></oryx-icon-button>
+              <oryx-button
+                .type=${ButtonType.Icon}
+                .size=${ButtonSize.Md}
+                .color=${ButtonColor.Neutral}
+                .icon=${IconTypes.ArrowBack}
+                .label=${this.i18n('modal.back')}
+              ></oryx-button>
             </slot>
           `
         )}
@@ -170,10 +174,12 @@ export class ModalComponent
           () => html`
             <oryx-button  
             .type=${ButtonType.Icon}
+            .size=${ButtonSize.Md} 
             .color=${ButtonColor.Neutral} 
-            .size=${ButtonSize.Sm} 
-            custom>
-              <button value="cancel" aria-label=${this.i18n('modal.close')}>
+            >
+              <button slot="custom" value="cancel" aria-label=${this.i18n(
+                'modal.close'
+              )}>
                 <oryx-icon .type=${IconTypes.Close}></oryx-icon>
               </button>
             </oryx-icon-button>
@@ -199,9 +205,8 @@ export class ModalComponent
                   .type=${ButtonType.Outline}
                   .color=${ButtonColor.Neutral}
                   .size=${ButtonSize.Md}
-                  custom
                 >
-                  <button value="cancel">
+                  <button slot="custom" value="cancel">
                     ${this.i18n(
                       this.enableNavigateBack ? 'modal.back' : 'modal.cancel'
                     )}

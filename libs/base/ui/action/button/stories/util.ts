@@ -63,7 +63,6 @@ export const renderButton = (props: ButtonProps): TemplateResult => {
       .text=${text}
       .icon=${icon}
       .href=${href}
-      ?customOUD=${props.slotted === 'link' || props.slotted === 'button'}
       ?disabled=${props.disabled}
       ?loading=${props.loading}
       ?confirmed=${props.confirmed}
@@ -125,7 +124,11 @@ export const staticButtons = (
 
     <h3 style="grid-column: 1 / -1">Button properties</h3>
     ${sizes.map((size) => html`${renderButtons(size, { size, color })}`)}
-    ${renderButtons('disabled', { disabled, size: ButtonSize.Lg, color })}
+    ${renderButtons('disabled', {
+      disabled,
+      size: ButtonSize.Lg,
+      color,
+    })}
     ${renderButtons('loading', { loading, color })}
     ${renderButtons('confirmed', { confirmed, color })}
 

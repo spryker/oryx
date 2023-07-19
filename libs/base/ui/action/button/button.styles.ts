@@ -25,9 +25,14 @@ const baseStyles = css`
     cursor: pointer;
   }
 
-  :host(:is([type='solid'], [type='outline'])) :is(a, button),
-  :host(:is([type='solid'], [type='outline'])) ::slotted(:is(a, button)) {
+  :host(:is(:not([type]), [type='solid'], [type='outline'])) :is(a, button),
+  :host(:is(:not([type]), [type='solid'], [type='outline']))
+    ::slotted(:is(a, button)) {
     border: solid 2px var(--_border-color);
+  }
+
+  :host([block]) {
+    display: flex;
   }
 
   :host([block]) :is(a, button),
@@ -52,7 +57,7 @@ const baseStyles = css`
 
   :focus-visible,
   ::slotted(:focus-visible) {
-    outline: solid 2px blue;
+    outline: solid 2px var(--oryx-color-focus);
     outline-offset: 2px;
   }
 `;
@@ -96,7 +101,8 @@ const sizeStyles = css`
 const colorStyles = css`
   :host([type='text']),
   :host([type='outline']),
-  :host([type='icon']) {
+  :host([type='icon']),
+  :host(:is([type='solid'], :not([type])[loading])) {
     --_text-color: var(--_c9, var(--oryx-color-primary-9));
   }
 
@@ -121,14 +127,11 @@ const colorStyles = css`
   }
 
   :host(:is([type='solid'], :not([type]))[color='neutral']):active {
-    --_background-color: var(
-      --oryx-color-neutral-12,
-      var(--oryx-color-primary-12)
-    );
+    --_background-color: var(--oryx-color-neutral-12);
   }
 
   :host([type='outline']:hover:not(:active)),
-  :host([type='outline'][loading]) {
+  :host(:is(:not([type]), [type='solid'], [type='outline'])[loading]) {
     --_background-color: var(--_c3, var(--oryx-color-primary-3));
   }
 
@@ -148,14 +151,12 @@ const colorStyles = css`
   }
 
   :host([type='text']:active) {
-    --_background-color: var(
-      --oryx-color-neutral-3,
-      var(--oryx-color-primary-3)
-    );
+    --_background-color: var(--oryx-color-neutral-3);
   }
 
   :host([type='icon']:hover) {
     --_border-color: var(--_c7, var(--oryx-color-primary-7));
+    --_background-color: var(--oryx-color-neutral-3);
   }
 
   :host([type='icon']:active) {
@@ -248,7 +249,7 @@ const iconStyles = css`
     position: absolute;
     z-index: -1;
     background: var(--_background-color);
-    border: solid 1px var(--_border-color);
+    border: solid 1px var(--_border-color, transparent);
     border-radius: 50%;
     transition: var(--oryx-transition-time);
   }

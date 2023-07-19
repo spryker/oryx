@@ -119,7 +119,6 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         slot="trigger"
         .href=${this.$url()}
         .icon=${this.icon}
-        .label=${'???'}
         @click=${this.onTriggerClick}
         @mouseenter=${this.onTriggerHover}
       ></oryx-button>
