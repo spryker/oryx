@@ -9,6 +9,7 @@ import {
   Subject,
 } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
+import { RouteConfig } from '../../lit/lit-router';
 import {
   NavigationExtras,
   RouteParams,
@@ -16,7 +17,6 @@ import {
   RouterEventType,
   RouterService,
 } from './router.service';
-import { RouteConfig } from '../../lit/lit-routes';
 
 const CURRENT_PAGE = 'currentPage';
 const PREVIOUS_PAGE = 'previousPage';
