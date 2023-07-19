@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { FontService } from '../src/services';
 import { ContentTextComponent } from './text.component';

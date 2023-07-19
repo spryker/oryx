@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   warehouseAssignmentComponent,
@@ -7,7 +6,7 @@ import {
 } from '@spryker-oryx/picking';
 import { mockWarehouseUserAssignments } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
-import { i18n, nextTick } from '@spryker-oryx/utilities';
+import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of, switchMap } from 'rxjs';
 import { beforeEach, vi } from 'vitest';

@@ -77,6 +77,7 @@ describe('DefaultFontService', () => {
       attrs: {
         href: 'https://fonts.googleapis.com/css2?family=my-font:wght@400;500;600;700&display=swap',
         rel: 'stylesheet',
+        media: 'all',
       },
       name: 'link',
     };

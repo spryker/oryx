@@ -1,10 +1,12 @@
 import { CheckoutDataService, Shipment } from '@spryker-oryx/checkout';
-import { MockCheckoutDataService } from '@spryker-oryx/checkout/mocks';
+import {
+  MockCheckoutDataService,
+  mockShipments,
+} from '@spryker-oryx/checkout/mocks';
 import { resolve } from '@spryker-oryx/di';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { mockShipments } from '../../../src/mocks/src/mock';
 
 export default { title: `${storybookPrefix}/Shipment/Static` } as Meta;
 

@@ -1,6 +1,7 @@
-import { resolve, Type } from '@spryker-oryx/di';
+import { resolve } from '@spryker-oryx/di';
 import { PickingListComponentProperties } from '@spryker-oryx/picking/picking-lists';
 import {
+  Type,
   asyncState,
   isDefined,
   observe,
@@ -10,10 +11,10 @@ import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import {
   BehaviorSubject,
+  Observable,
   distinctUntilChanged,
   filter,
   map,
-  Observable,
   switchMap,
   tap,
 } from 'rxjs';

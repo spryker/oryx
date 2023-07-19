@@ -1,11 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
-import { PricingService, LinkService, siteProviders } from '@spryker-oryx/site';
+import { LinkService, PricingService, siteProviders } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { QuantityInputComponent } from '../../quantity-input/src';

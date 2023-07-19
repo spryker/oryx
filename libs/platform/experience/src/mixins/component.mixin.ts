@@ -1,4 +1,4 @@
-import { Type } from '@spryker-oryx/di';
+import { Type } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ContentComponentProperties } from '../index';

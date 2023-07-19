@@ -114,7 +114,6 @@ const paymentLinks = {
             { query: { breakpoint: 'md' }, columnCount: 2 },
             {
               query: { childs: true },
-
               ratio: '4/3',
               background: 'var(--oryx-color-neutral-1)',
               radius: 5,

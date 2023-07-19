@@ -14,12 +14,9 @@ import {
   PasswordGrantAuthLoginStrategyConfig,
 } from '@spryker-oryx/auth';
 import { AuthLoginStrategy } from '@spryker-oryx/auth/login';
-import {
-  AppFeature,
-  ComponentsInfo,
-  HttpInterceptor,
-} from '@spryker-oryx/core';
+import { AppFeature, HttpInterceptor } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
+import { ComponentsInfo } from '@spryker-oryx/utilities';
 import { SapiIdentityService } from './sapi-identity.service';
 
 /**

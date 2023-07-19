@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { fixture } from '@open-wc/testing-helpers';
 import { SSRAwaiterService } from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
-  Component,
-  ComponentsRegistryService,
   ComponentTemplate,
+  ComponentsRegistryService,
   ExperienceService,
   LayoutBuilder,
   LayoutService,
 } from '@spryker-oryx/experience';
-import { html, TemplateResult } from 'lit';
+import { useComponent } from '@spryker-oryx/utilities';
+import { TemplateResult, html } from 'lit';
 import { Observable, of } from 'rxjs';
+import { SpyInstance } from 'vitest';
+import * as compositionController from './composition-components.controller';
 import { CompositionPreviewComponent } from './composition-preview.component';
 import { previewCompositionComponent } from './composition.def';
 
@@ -23,13 +24,6 @@ const BASE_COMPONENTS = [
 ];
 
 class MockExperienceService implements Partial<ExperienceService> {
-  components = [...BASE_COMPONENTS];
-  getComponent = (): Observable<Component> =>
-    of({
-      id: '',
-      type: '',
-      components: this.components,
-    });
   getOptions = (): Observable<any> => of({});
   getContent = (): Observable<any> => of({});
   getInteractionData = (): Observable<any> => of({});
@@ -62,7 +56,19 @@ class MockLayoutService implements Partial<LayoutService> {
   getStyles = vi.fn().mockReturnValue(of(null));
 }
 
-describe('Composition', () => {
+const mockComponents = {
+  getComponents: vi.fn().mockReturnValue(of([...BASE_COMPONENTS])),
+  hasDynamicallyVisibleChild: vi.fn().mockReturnValue(of(false)),
+};
+vi.spyOn(
+  compositionController,
+  'CompositionComponentsController'
+) as SpyInstance;
+(
+  compositionController.CompositionComponentsController as unknown as SpyInstance
+).mockReturnValue(mockComponents);
+
+describe('CompositionPreviewComponent', () => {
   let element: CompositionPreviewComponent;
 
   beforeAll(async () => {
@@ -108,14 +114,7 @@ describe('Composition', () => {
     expect(element).toBeInstanceOf(CompositionPreviewComponent);
   });
 
-  it('should render oryx-content-banner', () => {
-    const banner = element?.shadowRoot?.querySelector('oryx-content-banner');
-    expect(banner).toBeTruthy();
-  });
-
   it('should render components with uid attributes', () => {
-    const banner = element?.shadowRoot?.querySelector('oryx-content-banner');
-
-    expect(banner?.getAttribute('uid')).toBe('1');
+    expect(element).toContainElement('oryx-content-banner[uid="1"]');
   });
 });
