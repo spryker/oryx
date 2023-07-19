@@ -10,15 +10,39 @@ export const cartPage: StaticComponent = {
   options: {
     data: {
       rules: [
-        {
-          layout: 'split-main',
-          padding: '30px 0',
-        },
+        { layout: 'split-main', padding: '30px 0' },
         { query: { breakpoint: 'sm' }, gap: '0' },
       ],
     },
   },
   components: [
+    {
+      type: 'oryx-content-text',
+      content: {
+        data: {
+          text: `
+          <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
+          <p>Your shopping cart is empty</p><oryx-button>
+          <a href="/search">Shop now</a></oryx-button>`,
+        },
+      },
+      options: {
+        data: {
+          visibility: { hideByRule: 'CART.!EMPTY' },
+          rules: [
+            {
+              colSpan: 2,
+              background: 'var(--oryx-color-neutral-3)',
+              width: '66%',
+              margin: 'auto',
+              padding: '20px',
+              radius: '4px',
+              style: `display: grid;justify-items: center;`,
+            },
+          ],
+        },
+      },
+    },
     { type: 'oryx-cart-entries' },
     {
       type: 'oryx-composition',

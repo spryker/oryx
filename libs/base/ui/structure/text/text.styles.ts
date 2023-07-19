@@ -2,6 +2,10 @@ import { css } from 'lit';
 import { HeadingTag, headingUtil } from '../heading/src/';
 
 export const textStyles = css`
+  :host {
+    display: contents;
+  }
+
   h1,
   .h1 {
     ${headingUtil(HeadingTag.H1)}

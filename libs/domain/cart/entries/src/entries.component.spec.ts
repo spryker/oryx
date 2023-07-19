@@ -59,17 +59,6 @@ describe('CartEntriesComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  describe('when the cart is empty', () => {
-    beforeEach(async () => {
-      service.isEmpty = vi.fn().mockReturnValue(of(true));
-      element = await fixture(html`<oryx-cart-entries></oryx-cart-entries>`);
-    });
-
-    it('should render an empty section', () => {
-      expect(element).toContainElement('section.empty');
-    });
-  });
-
   describe('when cart contains entries', () => {
     beforeEach(async () => {
       service.getEntries = vi.fn().mockReturnValue(of([entry]));

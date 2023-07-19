@@ -12,29 +12,6 @@ export const cartEntriesStyles = css`
     border-block-end: 1px solid var(--oryx-color-neutral-6);
   }
 
-  section.empty {
-    --oryx-icon-size: 40px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: var(--oryx-space-4);
-    background: var(--oryx-color-neutral-3);
-  }
-
-  section p {
-    margin-block: 14px 25px;
-  }
-
-  [slot='header'] {
-    display: flex;
-    align-items: center;
-  }
-
-  oryx-chip {
-    margin-inline-start: var(--oryx-space-2);
-  }
-
   oryx-heading {
     text-align: var(--oryx-typography-h1-align);
   }
