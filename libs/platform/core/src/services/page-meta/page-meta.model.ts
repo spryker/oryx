@@ -28,4 +28,9 @@ export interface ElementAttributes
 export interface ElementDefinition {
   name: 'link' | 'style' | 'title' | 'script' | 'html' | 'meta' | string;
   attrs: ElementAttributes;
+  /**
+   * Disables adding additional link with preload rel attribute for better site speed.
+   * Works only with link meta with stylesheet rel attribute.
+   */
+  disablePreload?: boolean;
 }

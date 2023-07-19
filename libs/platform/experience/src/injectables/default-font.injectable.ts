@@ -3,14 +3,14 @@ import { resolve } from '@spryker-oryx/di';
 import { FontInjectable } from '@spryker-oryx/utilities';
 import { isServer } from 'lit';
 import {
+  Observable,
+  Subject,
   asyncScheduler,
   fromEvent,
   map,
-  Observable,
   observeOn,
   of,
   startWith,
-  Subject,
   takeUntil,
 } from 'rxjs';
 
@@ -29,6 +29,7 @@ export class DefaultFontInjectable implements FontInjectable {
       attrs: {
         rel: 'stylesheet',
         href,
+        media: 'all',
       },
     });
 
