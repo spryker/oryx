@@ -33,6 +33,7 @@ class MockLayoutBuilder implements Partial<LayoutBuilder> {
   getLayoutStyles = vi.fn();
   collectStyles = vi.fn();
   createStylesFromOptions = vi.fn();
+  getLayoutMarkers = vi.fn();
 }
 
 class MockSSRAwaiter {
