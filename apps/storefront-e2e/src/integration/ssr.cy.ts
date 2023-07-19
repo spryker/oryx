@@ -101,7 +101,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
   it('must render Cart page', () => {
     const cartPage = new CartPage();
 
-    cartPage.visit();
+    cy.goToCartAsGuest();
 
     verifyHeader();
 

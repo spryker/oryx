@@ -57,7 +57,7 @@ describe('Cart', () => {
   describe('when the cart page is visited', () => {
     describe('and the cart is empty', () => {
       beforeEach(() => {
-        cartPage.visit();
+        cy.goToCartAsGuest();
       });
 
       it('should render an empty message', () => {
@@ -74,7 +74,7 @@ describe('Cart', () => {
     describe('and there is an item in cart', () => {
       beforeEach(() => {
         scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
-        cartPage.visit();
+        cy.goToCartAsGuest();
       });
 
       it('should render the cart entries and totals', () => {

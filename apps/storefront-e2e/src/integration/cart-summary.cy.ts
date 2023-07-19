@@ -33,8 +33,7 @@ describe('Cart summary suite', () => {
 
       it('a product is added in the cart from cart (input, manual)', () => {
         sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
-
-        cartPage.visit();
+        cy.goToCartAsGuest();
 
         cartPage.header.getCartCount().should('contain.text', '1');
 
@@ -50,7 +49,7 @@ describe('Cart summary suite', () => {
     context('must decrease if', () => {
       it('a product is removed from the cart (- btn click)', () => {
         sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 2);
-        cartPage.visit();
+        cy.goToCartAsGuest();
 
         cartPage.header.getCartCount().should('contain.text', '2');
 
@@ -65,7 +64,7 @@ describe('Cart summary suite', () => {
     context('must be not visible if', () => {
       it('all items are removed from the cart (trash btn click)', () => {
         sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
-        cartPage.visit();
+        cy.goToCartAsGuest();
 
         cartPage.header.getCartCount().should('contain.text', '1');
 
@@ -79,7 +78,7 @@ describe('Cart summary suite', () => {
 
       it('all items are removed from the cart (X btn click)', () => {
         sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 2);
-        cartPage.visit();
+        cy.goToCartAsGuest();
 
         cartPage.header.getCartCount().should('contain.text', '2');
 
