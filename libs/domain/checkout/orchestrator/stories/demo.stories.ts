@@ -1,12 +1,13 @@
 import {
   checkoutOrchestratorStaticData,
+  mockCarriers,
   MockCheckoutDataService,
+  mockPayments,
 } from '@spryker-oryx/checkout/mocks';
 import { resolve } from '@spryker-oryx/di';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { mockCarriers, mockPayments } from '../../src/mocks/src/mock';
 import { CheckoutDataService } from '../../src/services';
 
 export default {

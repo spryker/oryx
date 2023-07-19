@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.lib.json",
   "compilerOptions": {
-    "types": ["node", "web", "vitest/globals"]
+    "types": ["vitest/globals"]
   },
   "include": ["**/*.ts"]
 }

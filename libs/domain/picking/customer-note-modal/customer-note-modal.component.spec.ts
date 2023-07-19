@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { CLOSE_EVENT, ModalComponent } from '@spryker-oryx/ui/modal';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { CustomerNoteModalComponent } from './customer-note-modal.component';

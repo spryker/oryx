@@ -1,9 +1,9 @@
 import { AppPlugin } from '@spryker-oryx/core';
-import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import {
   fontInjectable,
   graphicInjectable,
   iconInjectable,
+  resolveLazyLoadable,
 } from '@spryker-oryx/utilities';
 import {
   DefaultFontInjectable,

@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
 import { NotificationService } from '@spryker-oryx/site';
@@ -8,8 +7,9 @@ import {
   NotificationCenterComponent,
   NotificationPosition,
 } from '@spryker-oryx/ui/notification-center';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { of, Subject } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { SiteNotificationCenterComponent } from './notification-center.component';
 import { siteNotificationCenterComponent } from './notification-center.def';
 

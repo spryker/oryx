@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { fixture } from '@open-wc/testing-helpers';
 import { SSRAwaiterService } from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
-  ComponentsRegistryService,
   ComponentTemplate,
+  ComponentsRegistryService,
   ExperienceService,
   LayoutBuilder,
   LayoutService,
 } from '@spryker-oryx/experience';
-import { html, TemplateResult } from 'lit';
+import { useComponent } from '@spryker-oryx/utilities';
+import { TemplateResult, html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { previewCompositionComponent } from './composition.def';
-import { CompositionPreviewComponent } from './composition-preview.component';
 import { SpyInstance } from 'vitest';
 import * as compositionController from './composition-components.controller';
+import { CompositionPreviewComponent } from './composition-preview.component';
+import { previewCompositionComponent } from './composition.def';
 
 const BASE_COMPONENTS = [
   { id: '1', type: 'oryx-content-banner' },

@@ -25,7 +25,7 @@ import {
   signal,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import {
   AddressForm,

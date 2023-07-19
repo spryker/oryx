@@ -1,7 +1,6 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { queryFirstAssigned } from '@spryker-oryx/utilities';
+import { queryFirstAssigned, useComponent } from '@spryker-oryx/utilities';
 import { IconButtonComponent } from './icon-button.component';
 import { iconButtonComponent } from './icon-button.def';
 

@@ -1,10 +1,13 @@
 import { MockAuthService } from '@spryker-oryx/auth/mocks';
-import { MockCheckoutDataService } from '@spryker-oryx/checkout/mocks';
+import {
+  MockCheckoutDataService,
+  mockCarriers,
+  mockPayments,
+} from '@spryker-oryx/checkout/mocks';
 import { resolve } from '@spryker-oryx/di';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { mockCarriers, mockPayments } from '../../../src/mocks/src/mock';
 import { CheckoutDataService } from '../../../src/services';
 
 export default {

@@ -1,14 +1,14 @@
-import { LazyLoadable } from '@spryker-oryx/core/utilities';
 import {
   Breakpoints,
   CssMediaQueries,
   CssStyles,
   CssStylesWithMedia,
+  LazyLoadable,
 } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
 import { Color } from '../../color/color.model';
 
-declare module '@spryker-oryx/core' {
+declare module '@spryker-oryx/utilities' {
   interface ComponentMap {
     themes?: (ThemeStyles | ThemeStylesheets)[] | null;
   }

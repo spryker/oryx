@@ -1,4 +1,4 @@
-import { isPromise } from '@spryker-oryx/utilities';
+import { isPromise } from '../../guards';
 
 export type LazyLoadable<T> = T | (() => Promise<T>);
 

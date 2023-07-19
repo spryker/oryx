@@ -8,9 +8,9 @@ import {
   CheckoutStatus,
 } from '@spryker-oryx/checkout';
 import { CheckoutPlaceOrderComponent } from '@spryker-oryx/checkout/place-order';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { checkoutPlaceOrderComponent } from './place-order.def';

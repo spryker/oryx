@@ -35,5 +35,5 @@
       "executor": "./tools/executors/components-library:paths"
     }
   },
-  "tags": ["lib:experience"]
+  "tags": ["layer:platform"]
 }

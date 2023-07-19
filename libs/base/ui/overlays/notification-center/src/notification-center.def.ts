@@ -1,4 +1,4 @@
-import { componentDef } from '@spryker-oryx/core';
+import { componentDef } from '@spryker-oryx/utilities';
 import { TAG_NAME } from './tag';
 
 export const notificationCenterComponent = componentDef({

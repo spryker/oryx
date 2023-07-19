@@ -1,10 +1,10 @@
 import { mockCartProviders } from '@spryker-oryx/cart/mocks';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { RouteParams, RouterService } from '@spryker-oryx/router';
 import { LitRouter, RouteConfig } from '@spryker-oryx/router/lit';
 import { siteProviders } from '@spryker-oryx/site';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { SpyInstance } from 'vitest';

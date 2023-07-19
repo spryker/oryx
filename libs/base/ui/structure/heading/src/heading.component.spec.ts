@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
+import { useComponent } from '@spryker-oryx/utilities';
 import { HeadingComponent } from './heading.component';
 import { headingComponent } from './heading.def';
 
