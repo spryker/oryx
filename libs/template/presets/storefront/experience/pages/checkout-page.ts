@@ -9,15 +9,13 @@ export const checkoutPage: StaticComponent = {
     description: 'Checkout Page Description',
   },
   options: {
-    data: {
-      rules: [
-        {
-          layout: 'split-main',
-          padding: '30px 0',
-        },
-        { query: { breakpoint: 'sm' }, gap: '0' },
-      ],
-    },
+    rules: [
+      {
+        layout: 'split-main',
+        padding: '30px 0',
+      },
+      { query: { breakpoint: 'sm' }, gap: '0' },
+    ],
   },
   components: [
     {
@@ -32,32 +30,28 @@ export const checkoutPage: StaticComponent = {
             { type: 'oryx-checkout-shipping-method' },
             { type: 'oryx-checkout-payment-method' },
           ],
-          options: { data: { rules: [{ layout: 'list', gap: '30px' }] } },
+          options: { rules: [{ layout: 'list', gap: '30px' }] },
         },
         {
           type: 'oryx-cart-entries',
-          options: { data: { readonly: true } },
+          options: { readonly: true },
         },
       ],
       options: {
-        data: {
-          rules: [
-            { gap: '20px', layout: 'flex', vertical: true, align: 'stretch' },
-          ],
-        },
+        rules: [
+          { gap: '20px', layout: 'flex', vertical: true, align: 'stretch' },
+        ],
       },
     },
     {
       type: 'oryx-composition',
       options: {
-        data: {
-          rules: [
-            {
-              sticky: true,
-              top: '108px',
-            },
-          ],
-        },
+        rules: [
+          {
+            sticky: true,
+            top: '108px',
+          },
+        ],
       },
       components: [
         {
@@ -67,9 +61,7 @@ export const checkoutPage: StaticComponent = {
             {
               type: 'oryx-cart-totals-discount',
               options: {
-                data: {
-                  discountRowsAppearance: DiscountRowsAppearance.Collapsed,
-                },
+                discountRowsAppearance: DiscountRowsAppearance.Collapsed,
               },
             },
             { type: 'oryx-cart-totals-tax' },
@@ -80,9 +72,7 @@ export const checkoutPage: StaticComponent = {
         {
           type: 'oryx-content-text',
           content: {
-            data: {
-              text: '<p>The <a href="/article/terms-and-conditions" target="_blank" data-color="primary">Terms and conditions</a> apply.<br/>Please also see our <a href="/article/privacy" target="_blank"  data-color="primary">Privacy notice</a>.</p>',
-            },
+            text: '<p>The <a href="/article/terms-and-conditions" target="_blank" data-color="primary">Terms and conditions</a> apply.<br/>Please also see our <a href="/article/privacy" target="_blank"  data-color="primary">Privacy notice</a>.</p>',
           },
         },
         { type: 'oryx-checkout-place-order' },

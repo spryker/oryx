@@ -7,7 +7,7 @@ export const createAddressPage: StaticComponent = {
     route: '/my-account/addresses/create',
   },
   options: {
-    data: { rules: [{ layout: 'flex', width: '50%', margin: 'auto' }] },
+    rules: [{ layout: 'flex', width: '50%', margin: 'auto' }],
   },
   components: [{ type: 'oryx-user-address-edit' }],
 };
