@@ -16,11 +16,9 @@ import {
   filter,
   map,
   switchMap,
-  tap,
 } from 'rxjs';
 import type { PickingList } from '../models';
 import { PickingListService } from '../services';
-import { log } from '@clack/prompts';
 
 export declare class PickingListMixinInterface
   implements PickingListComponentProperties

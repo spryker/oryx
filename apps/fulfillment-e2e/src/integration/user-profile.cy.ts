@@ -22,7 +22,6 @@ describe('When a user opens the user profile modal', () => {
     userProfileFragment.getWrapper().should('be.visible');
     userProfileFragment.getLogOutButton().should('be.visible');
     userProfileFragment.getNotification().should('not.exist');
-    userProfileFragment.getWrapper().should('be.visible');
     userProfileFragment.getLogOutButton().should('be.visible');
   });
 
