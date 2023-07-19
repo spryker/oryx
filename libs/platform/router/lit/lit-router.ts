@@ -361,9 +361,21 @@ export class LitRouter implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): TemplateResult {
-    return html`<outlet
-      >${this._currentRoute?.render?.(this._currentParams)}</outlet
-    >`;
+    if (this._currentRoute?.render) {
+      return html`<outlet
+        >${this._currentRoute?.render?.(this._currentParams)}</outlet
+      >`;
+    }
+
+    if (isRouterPath(this._currentRoute)) {
+      const path = this._currentParams.page
+        ? `/${this._currentParams.page}`
+        : this._currentRoute.path;
+
+      return html`<oryx-composition route=${path}></oryx-composition>`;
+    }
+
+    return html`<oryx-composition route="/"></oryx-composition>`;
   }
 
   protected storeUrlSearchParams(): void {
