@@ -1,16 +1,32 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
-  WarehouseUserAssignmentsService,
   warehouseAssignmentComponent,
+  WarehouseUserAssignmentsService,
 } from '@spryker-oryx/picking';
 import { mockWarehouseUserAssignments } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
-import { i18n, useComponent } from '@spryker-oryx/utilities';
+import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { of } from 'rxjs';
+import { of, switchMap } from 'rxjs';
 import { beforeEach, vi } from 'vitest';
 import { WarehouseAssignmentComponent } from './warehouse-assignment.component';
+import { App, AppRef } from '@spryker-oryx/core';
+
+const mockOfflineDataPlugin = {
+  refreshData: vi.fn().mockReturnValue(
+    of(undefined).pipe(
+      switchMap(async () => {
+        await nextTick(2);
+        return of(undefined);
+      })
+    )
+  ),
+};
+
+class MockApp implements Partial<App> {
+  requirePlugin = vi.fn().mockReturnValue(mockOfflineDataPlugin);
+}
 
 class MockWarehouseUserAssignmentsService
   implements Partial<WarehouseUserAssignmentsService>
@@ -38,6 +54,10 @@ describe('WarehouseAssignmentComponent', () => {
   beforeEach(async () => {
     const testInjector = createInjector({
       providers: [
+        {
+          provide: AppRef,
+          useClass: MockApp,
+        },
         {
           provide: WarehouseUserAssignmentsService,
           useClass: MockWarehouseUserAssignmentsService,
