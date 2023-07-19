@@ -58,11 +58,11 @@ export const textStyles = css`
     ${headingUtil(HeadingTag.Bold)}
   }
 
-  p:first-child {
+  p:first-of-type {
     margin-block-start: 0;
   }
 
-  p:last-child {
+  p:last-of-type {
     margin-block-end: 0;
   }
 
