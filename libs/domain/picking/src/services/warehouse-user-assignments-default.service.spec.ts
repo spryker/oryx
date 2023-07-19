@@ -16,7 +16,7 @@ import {
   warehouseUserAssignmentStorageKey,
 } from '../models/warehouse-user-assignment';
 import { StorageService } from '@spryker-oryx/core';
-import { AuthService, OauthService } from '@spryker-oryx/auth';
+import { AuthService } from '@spryker-oryx/auth';
 
 const mockWarehouseUserAssignment: WarehouseUserAssignment = {
   id: 'id1',
