@@ -7,7 +7,7 @@ import { when } from 'lit/directives/when.js';
 import { NavigationButtonAttributes } from './navigation-button.model';
 import { siteNavigationButtonStyles } from './navigation-button.styles';
 
-@hydrate({ event: 'window:load' })
+@hydrate()
 export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttributes>(
   LitElement
 ) {
