@@ -6,6 +6,7 @@ import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { NavigationButtonAttributes } from './navigation-button.model';
 import { siteNavigationButtonStyles } from './navigation-button.styles';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 @hydrate()
 export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttributes>(
@@ -20,7 +21,7 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
 
   protected override render(): TemplateResult {
     const innerContent = html`
-      ${when(this.icon, () => html`<oryx-icon .type=${this.icon}></oryx-icon>`)}
+      ${when(this.icon, () => html`<oryx-icon type=${this.icon!}></oryx-icon>`)}
       ${when(
         this.text,
         () =>
@@ -36,7 +37,7 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
         ${when(
           this.url,
           () =>
-            html`<a href=${this.url!} aria-label=${this.text}
+            html`<a href=${this.url!} aria-label=${ifDefined(this.text)}
               >${innerContent}</a
             >`,
           () => html`<button>${innerContent}</button>`

@@ -8,17 +8,13 @@ export const loginPage: StaticComponent = {
     description: 'Login Page Description',
   },
   options: {
-    data: {
-      rules: [{ layout: 'flex', padding: '30px 0' }],
-    },
+    rules: [{ layout: 'flex', padding: '30px 0' }],
   },
   components: [
     {
       type: 'oryx-auth-login',
       options: {
-        data: {
-          rules: [{ width: '50%', margin: 'auto' }],
-        },
+        rules: [{ width: '50%', margin: 'auto' }],
       },
     },
   ],

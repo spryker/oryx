@@ -1,9 +1,10 @@
-import { Size } from '@spryker-oryx/utilities';
+import { hydrate, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { IconButtonProperties } from './icon-button.model';
 import { iconButtonStyles } from './icon-button.styles';
 
+@hydrate()
 export class IconButtonComponent
   extends LitElement
   implements IconButtonProperties

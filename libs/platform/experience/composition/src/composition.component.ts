@@ -18,7 +18,7 @@ import {
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, isServer, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
@@ -96,9 +96,7 @@ export class CompositionComponent extends LayoutMixin(
     const template = this.registryService.resolveTemplate({
       type: component.type,
       uid: component.id,
-      markers: component.options?.data
-        ? this.layoutBuilder.getLayoutMarkers(component.options.data)
-        : undefined,
+      markers: this.layoutBuilder.getLayoutMarkers(component.options),
     });
     if (this.$options()?.rules?.[0]?.layout === CompositionLayout.Tabular) {
       return html`

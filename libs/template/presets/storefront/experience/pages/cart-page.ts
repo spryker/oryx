@@ -8,15 +8,13 @@ export const cartPage: StaticComponent = {
     description: 'Cart Page Description',
   },
   options: {
-    data: {
-      rules: [
-        {
-          layout: 'split-main',
-          padding: '30px 0',
-        },
-        { query: { breakpoint: 'sm' }, gap: '0' },
-      ],
-    },
+    rules: [
+      {
+        layout: 'split-main',
+        padding: '30px 0',
+      },
+      { query: { breakpoint: 'sm' }, gap: '0' },
+    ],
   },
   components: [
     { type: 'oryx-cart-entries' },
@@ -35,7 +33,7 @@ export const cartPage: StaticComponent = {
         },
         { type: 'oryx-checkout-link' },
       ],
-      options: { data: { rules: [{ sticky: true, top: '108px' }] } },
+      options: { rules: [{ sticky: true, top: '108px' }] },
     },
   ],
 };
