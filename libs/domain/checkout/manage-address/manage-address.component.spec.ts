@@ -154,9 +154,9 @@ describe('CheckoutManageAddressComponent', () => {
 
     it('should render the save button in the footer', () => {
       const saveButton = element.renderRoot.querySelector(
-        `oryx-button[slot='footer-more'`
+        `oryx-button[slot='footer-more']`
       );
-      expect(saveButton?.textContent?.trim()).toBe('Select');
+      expect(saveButton).toHaveProperty('text', 'Select');
     });
 
     describe('when the change event is dispatched', () => {
@@ -179,11 +179,10 @@ describe('CheckoutManageAddressComponent', () => {
 
       describe('and the select button is clicked', () => {
         beforeEach(async () => {
-          const button = element.renderRoot.querySelector<HTMLButtonElement>(
-            `oryx-button[slot='footer-more'] button`
-          );
           element.dispatchEvent = vi.fn();
-          button?.click();
+          element.renderRoot
+            .querySelector<HTMLElement>(`oryx-button[slot='footer-more']`)
+            ?.click();
         });
 
         it('should dispatch a change event with the selected address', () => {
@@ -249,9 +248,9 @@ describe('CheckoutManageAddressComponent', () => {
 
         it('should render the save button in the footer', () => {
           const saveButton = element.renderRoot.querySelector(
-            `oryx-button[slot='footer-more'`
+            `oryx-button[slot='footer-more']`
           );
-          expect(saveButton?.textContent?.trim()).toBe('Save');
+          expect(saveButton).toHaveProperty('text', 'Save');
         });
 
         describe('when the change event is dispatched', () => {
@@ -291,7 +290,6 @@ describe('CheckoutManageAddressComponent', () => {
         });
 
         describe('and the save button is clicked', () => {
-          let button: HTMLButtonElement;
           let addressEditComponent: UserAddressEditComponent;
 
           beforeEach(async () => {
@@ -299,10 +297,9 @@ describe('CheckoutManageAddressComponent', () => {
               'oryx-user-address-edit'
             ) as UserAddressEditComponent;
             addressEditComponent.submit = vi.fn().mockReturnValue(of({}));
-            button = element.renderRoot.querySelector(
-              `oryx-button[slot='footer-more'] button`
-            ) as HTMLButtonElement;
-            button?.click();
+            element.renderRoot
+              .querySelector<HTMLElement>(`oryx-button[slot='footer-more']`)
+              ?.click();
           });
 
           it('should submit the editComponent', () => {

@@ -31,7 +31,7 @@ describe('NavigationButtonComponent', () => {
   });
 
   it('should render button', () => {
-    expect(element).toContainElement('button');
+    expect(element).toContainElement('oryx-button');
   });
 
   describe('when content data is not provided', () => {
@@ -55,7 +55,8 @@ describe('NavigationButtonComponent', () => {
     });
 
     it('should render anchor element with proper href', () => {
-      expect(element).toContainElement(`a[href="${url}"]`);
+      const button = element.renderRoot.querySelector('oryx-button');
+      expect(button).toHaveProperty('href', url);
     });
   });
 

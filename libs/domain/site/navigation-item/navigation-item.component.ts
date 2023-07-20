@@ -2,6 +2,7 @@ import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import {
   computed,
   hydrate,
@@ -9,8 +10,8 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
+import { of } from 'rxjs';
 import {
   NavigationContentBehavior,
   NavigationTriggerBehavior,
@@ -18,7 +19,6 @@ import {
   SiteNavigationItemOptions,
 } from './navigation-item.model';
 import { styles } from './navigation-item.styles';
-import { of } from 'rxjs';
 
 @defaultOptions({
   triggerType: NavigationTriggerType.StorefrontButton,
@@ -91,25 +91,16 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     ></oryx-composition>`;
   }
 
-  protected get icon(): TemplateResult | void {
-    if (!this.$options()?.icon) return;
-
-    return html`<oryx-icon .type=${this.$options()?.icon}></oryx-icon>`;
-  }
-
   protected renderIconButton(): TemplateResult {
     return html`
-      <oryx-icon-button
+      <oryx-button
         slot="trigger"
+        .type=${ButtonType.Icon}
+        .icon=${this.$options()?.icon}
+        .href=${this.$url()}
         @click=${this.onTriggerClick}
         @mouseenter=${this.onTriggerHover}
-      >
-        ${when(
-          this.$url(),
-          () => html`<a href=${this.$url()!}>${this.icon}</a>`,
-          () => html`<button>${this.icon}</button>`
-        )}
-      </oryx-icon-button>
+      ></oryx-button>
     `;
   }
 
@@ -118,7 +109,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
       <oryx-button
         slot="trigger"
         .href=${this.$url()}
-        .icon=${this.icon}
+        .icon=${this.$options()?.icon}
         @click=${this.onTriggerClick}
         @mouseenter=${this.onTriggerHover}
       ></oryx-button>

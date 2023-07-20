@@ -2,9 +2,10 @@ import { resolve } from '@spryker-oryx/di';
 import { PickingHeaderService, PickingListMixin } from '@spryker-oryx/picking';
 import { DiscardPickingComponent } from '@spryker-oryx/picking/discard-modal';
 import { RouterService } from '@spryker-oryx/router';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin, subscribe } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { tap } from 'rxjs';
 import { styles } from './picking-header.styles';
@@ -34,14 +35,12 @@ export class PickingHeaderComponent extends I18nMixin(
   protected renderCartNoteButton(): TemplateResult {
     return html`${this.pickingList?.cartNote
       ? html`
-          <oryx-icon-button>
-            <button
-              aria-label=${this.i18n('oryx.picking.customer-note')}
-              @click=${() => (this.isCartNoteVisible = true)}
-            >
-              <oryx-icon type=${IconTypes.Info}></oryx-icon>
-            </button>
-          </oryx-icon-button>
+          <oryx-button
+            .type=${ButtonType.Icon}
+            .label=${this.i18n('oryx.picking.customer-note')}
+            @click=${() => (this.isCartNoteVisible = true)}
+            .icon=${IconTypes.Info}
+          ></oryx-button>
           <oryx-customer-note-modal
             ?open=${this.isCartNoteVisible}
             @oryx.close=${() => (this.isCartNoteVisible = false)}
@@ -55,16 +54,13 @@ export class PickingHeaderComponent extends I18nMixin(
   protected override render(): TemplateResult {
     return html`
       <oryx-header>
-        <oryx-icon-button>
-          <button
-            aria-label=${this.i18n('oryx.picking.back-to-pick-lists')}
-            class="back"
-            href="#"
-            @click=${this.back}
-          >
-            <oryx-icon type=${IconTypes.ArrowBack}></oryx-icon>
-          </button>
-        </oryx-icon-button>
+        <oryx-button
+          .type=${ButtonType.Icon}
+          class="back"
+          .label=${this.i18n('oryx.picking.back-to-pick-lists')}
+          .icon=${IconTypes.ArrowBack}
+          @click=${this.back}
+        ></oryx-button>
         <div class="title">${this.pickingList?.orderReferences[0]}</div>
         ${this.renderCartNoteButton()}
         <oryx-discard-picking

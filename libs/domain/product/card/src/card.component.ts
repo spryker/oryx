@@ -118,14 +118,9 @@ export class ProductCardComponent extends ProductMixin(
   // private renderWishlist(): TemplateResult | void {
   //   if (this.$options().enableWishlist) {
   //     return html`<div class="actions">
-  //       <oryx-icon-button>
-  //         <button
-  //           tabindex="-1"
-  //           aria-label="add-to-favorites"
-  //           @click=${(e: Event) => e.preventDefault()}
-  //         >
-  //           <oryx-icon .type=${IconTypes.Wishlist}></oryx-icon>
-  //         </button>
+  //       <oryx-button
+  //          .type=${ButtonType.Icon} .icon=${IconTypes.Wishlist}
+  //          @click=${(e: Event) => e.preventDefault()}>
   //       </oryx-icon-button>
   //     </div>`;
   //   }

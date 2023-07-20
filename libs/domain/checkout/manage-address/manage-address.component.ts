@@ -12,12 +12,12 @@ import {
 } from '@spryker-oryx/user/address-edit';
 import { EditTarget } from '@spryker-oryx/user/address-list-item';
 import {
-  hydrate,
   I18nMixin,
-  signalProperty,
   Size,
+  hydrate,
+  signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { DirectiveResult } from 'lit/async-directive';
 import { query, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -103,11 +103,12 @@ export class CheckoutManageAddressComponent extends I18nMixin(
   protected renderFooter(): TemplateResult | void {
     const action = this.$addressState().action;
     if (action === CrudState.Read) {
-      return html`<oryx-button slot="footer-more" .size=${Size.Md}>
-        <button @click=${this.onSelect}>
-          ${this.i18n('checkout.address.select')}
-        </button>
-      </oryx-button>`;
+      return html`<oryx-button
+        slot="footer-more"
+        .size=${Size.Md}
+        .text=${this.i18n('checkout.address.select')}
+        @click=${this.onSelect}
+      ></oryx-button>`;
     }
 
     if (action === CrudState.Create || action === CrudState.Update) {
@@ -115,11 +116,9 @@ export class CheckoutManageAddressComponent extends I18nMixin(
         slot="footer-more"
         .size=${Size.Md}
         .loading=${this.loading}
-      >
-        <button @click=${this.onSave}>
-          ${this.i18n(['save', 'user.address.save'])}
-        </button>
-      </oryx-button>`;
+        .text=${this.i18n(['save', 'user.address.save'])}
+        @click=${this.onSave}
+      ></oryx-button>`;
     }
   }
 

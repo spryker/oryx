@@ -15,10 +15,10 @@ import { ChipComponent } from '@spryker-oryx/ui/chip';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { TabsAppearance } from '@spryker-oryx/ui/tabs';
 import { I18nMixin, subscribe } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { createRef, ref, Ref } from 'lit/directives/ref.js';
+import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { catchError, of, tap } from 'rxjs';
@@ -336,19 +336,16 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
           slot="footer"
           .type=${ButtonType.Outline}
           .color=${ButtonColor.Secondary}
-        >
-          <button @click=${this.onModalClose}>
-            ${this.i18n('picking.product-card.cancel')}
-          </button>
-        </oryx-button>
+          .text=${this.i18n('picking.product-card.cancel')}
+          @click=${this.onModalClose}
+        ></oryx-button>
 
         <oryx-button
           slot="footer"
           .color=${ButtonColor.Primary}
+          .text=${this.i18n('picking.product-card.confirm')}
           @click=${this.confirmPartialPicking}
-        >
-          ${this.i18n('picking.product-card.confirm')}
-        </oryx-button>
+        ></oryx-button>
       </oryx-modal>
     `;
   }

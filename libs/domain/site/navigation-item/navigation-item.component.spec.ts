@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { TokenResolver } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { modalComponent } from '@spryker-oryx/ui/modal';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -72,7 +73,7 @@ describe('SiteNavigationItemComponent', () => {
 
   const getTrigger = (): HTMLElement | null => {
     return element.renderRoot.querySelector(
-      'oryx-button, oryx-icon-button, oryx-site-navigation-button'
+      'oryx-button, oryx-site-navigation-button'
     ) as HTMLElement;
   };
 
@@ -239,8 +240,8 @@ describe('SiteNavigationItemComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('should render oryx-button with button inside', () => {
-      expect(element).toContainElement('oryx-button button');
+    it('should render oryx-button', () => {
+      expect(element).toContainElement('oryx-button');
     });
 
     describe('and icon is provided', () => {
@@ -257,7 +258,8 @@ describe('SiteNavigationItemComponent', () => {
       });
 
       it('should render oryx-icon', () => {
-        expect(element).toContainElement('oryx-icon');
+        const button = element.renderRoot.querySelector('oryx-button');
+        expect(button).toHaveProperty('icon', 'test');
       });
     });
 
@@ -276,7 +278,8 @@ describe('SiteNavigationItemComponent', () => {
       });
 
       it('should render anchor element inside oryx-button with given url', () => {
-        expect(element).toContainElement(`oryx-button a[href="${url}"]`);
+        const button = element.renderRoot.querySelector('oryx-button');
+        expect(button).toHaveProperty('href', url);
       });
     });
   });
@@ -290,8 +293,9 @@ describe('SiteNavigationItemComponent', () => {
       `);
     });
 
-    it('should render oryx-icon-button with button inside', () => {
-      expect(element).toContainElement('oryx-icon-button button');
+    it('should render oryx-button', () => {
+      const button = element.renderRoot.querySelector('oryx-button');
+      expect(button).toHaveProperty('type', ButtonType.Icon);
     });
 
     describe('and icon is provided', () => {
@@ -308,7 +312,8 @@ describe('SiteNavigationItemComponent', () => {
       });
 
       it('should render oryx-icon', () => {
-        expect(element).toContainElement('oryx-icon');
+        const button = element.renderRoot.querySelector('oryx-button');
+        expect(button).toHaveProperty('icon', 'test');
       });
     });
 
@@ -326,8 +331,9 @@ describe('SiteNavigationItemComponent', () => {
         `);
       });
 
-      it('should render anchor element inside oryx-icon-button with given url', () => {
-        expect(element).toContainElement(`oryx-icon-button a[href="${url}"]`);
+      it('should render anchor element inside oryx-button with given url', () => {
+        const button = element.renderRoot.querySelector('oryx-button');
+        expect(button).toHaveProperty('href', url);
       });
     });
   });
