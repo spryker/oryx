@@ -7,6 +7,7 @@ export const styles = css`
   }
 
   oryx-text {
+    /* stylelint-disable-next-line */
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: var(--line-clamp);
