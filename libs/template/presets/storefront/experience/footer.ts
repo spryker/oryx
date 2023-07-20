@@ -8,7 +8,7 @@ const image = (graphic: string) => ({
 
 const heading = (text: string, rule = {}) => ({
   type: 'oryx-content-text',
-  content: { text: `<b>${text}</b>` },
+  content: { text: `<strong>${text}</strong>` },
   options: { rules: [rule] },
 });
 
@@ -43,7 +43,7 @@ const legalLinks = {
 const customerSupport = {
   type: 'oryx-content-text',
   content: {
-    text: `<b>Customer Support</b><br/>
+    text: `<strong>Customer Support</strong><br/>
       <a href="/contact">Contact us</a><br/>
       <a href="/">Help center</a><br/>
       <a href="/">Payment</a><br/>
@@ -67,7 +67,7 @@ const promises = {
 const aboutUs = {
   type: 'oryx-content-text',
   content: {
-    text: `<b>About us</b><br/>
+    text: `<strong>About us</strong><br/>
         <a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>

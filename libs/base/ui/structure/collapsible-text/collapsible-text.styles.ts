@@ -3,7 +3,6 @@ import { css } from 'lit';
 export const collapsibleTextStyles = css`
   :host {
     display: grid;
-    justify-items: center;
     gap: 10px;
     line-height: var(--oryx-line-height, 22px);
   }
@@ -60,6 +59,7 @@ export const collapsibleTextStyles = css`
   oryx-icon-button {
     transition: transform var(--oryx-transition-time-long) ease-in-out;
     color: var(--oryx-color-primary-9);
+    justify-self: center;
   }
 
   :host([expanded]) oryx-icon-button {

@@ -1,57 +1,27 @@
 import { css } from 'lit';
-import { HeadingTag, headingUtil } from '../heading/src/';
 
 export const textStyles = css`
+  * {
+    margin: 0;
+    font-size: var(--_fs);
+    font-weight: var(--_fw);
+    line-height: var(--_lh);
+    text-wrap: balance;
+  }
+
   h1,
-  .h1 {
-    ${headingUtil(HeadingTag.H1)}
-  }
-
   h2,
-  .h2 {
-    ${headingUtil(HeadingTag.H2)}
-  }
-
   h3,
-  .h3 {
-    ${headingUtil(HeadingTag.H3)}
-  }
-
   h4,
-  .h4 {
-    ${headingUtil(HeadingTag.H4)}
-  }
-
   h5,
-  .h5 {
-    ${headingUtil(HeadingTag.H5)}
-  }
-
   h6,
-  .h6 {
-    ${headingUtil(HeadingTag.H6)}
-  }
-
-  .caption {
-    ${headingUtil(HeadingTag.Caption)}
+  caption {
+    display: block;
+    text-align: start;
   }
 
   .subtitle {
-    ${headingUtil(HeadingTag.Subtitle)}
-
     text-transform: uppercase;
-  }
-
-  .subtitle-small {
-    ${headingUtil(HeadingTag.SubtitleSmall)}
-  }
-
-  small {
-    ${headingUtil(HeadingTag.Small)}
-  }
-
-  b {
-    ${headingUtil(HeadingTag.Bold)}
   }
 
   p:first-child {
@@ -90,3 +60,31 @@ export const textStyles = css`
     outline-offset: 3px;
   }
 `;
+
+// caption {
+//   /* display: inline-block; */
+//   display: contents;
+// }
+
+// caption,
+// .caption {
+//   ${headingUtil(HeadingTag.Caption)}
+// }
+
+// .subtitle {
+//   ${headingUtil(HeadingTag.Subtitle)}
+
+//   text-transform: uppercase;
+// }
+
+// .subtitle-small {
+//   ${headingUtil(HeadingTag.SubtitleSmall)}
+// }
+
+// small {
+//   ${headingUtil(HeadingTag.Small)}
+// }
+
+// b {
+//   ${headingUtil(HeadingTag.Bold)}
+// }

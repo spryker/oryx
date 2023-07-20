@@ -31,7 +31,7 @@ export const typographySmallTokens: ThemeToken = {
     h4: { size: '1rem', line: '1.5714285714em', weight: '600' },
     h5: { size: '1rem', line: '1.5714285714em', weight: '700' },
     h6: { size: '0.8571428571rem', line: '1.3333333333em', weight: '600' },
-    bold: { size: '1.1428571429rem', line: '1em', weight: '600' },
+    strong: { size: '1.1428571429rem', weight: '600', line: '1em' },
   },
 };
 
@@ -43,6 +43,6 @@ export const typographyMediumAndLargerTokens: ThemeToken = {
     h4: { size: '1.2857142857rem', line: '1.4444444444em', weight: '500' },
     h5: { size: '1.1428571429rem', line: '1.5em', weight: '600' },
     h6: { size: '1.1428571429rem', line: '1.5em', weight: '500' },
-    bold: { size: '1rem', weight: '600' },
+    strong: { size: '1rem', weight: '600' },
   },
 };

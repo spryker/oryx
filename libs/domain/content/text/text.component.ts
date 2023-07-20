@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { elementEffect } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { FontService } from '../src/services/';
 import { ContentTextContent, ContentTextOptions } from './text.model';
 import { contentTextStyles } from './text.styles';
