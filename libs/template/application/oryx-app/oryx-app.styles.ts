@@ -11,7 +11,6 @@ export const styles = css`
     background-color: var(--oryx-color-neutral-1);
     min-height: 100vh;
     box-sizing: border-box;
-    text-wrap: balance;
   }
 
   ::placeholder {
