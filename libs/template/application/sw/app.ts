@@ -1,6 +1,8 @@
 import { appBuilder } from '@spryker-oryx/application';
-import { offlineServiceWorkerFulfillmentFeatures } from '@spryker-oryx/presets/fulfillment';
-import { fallbackEnv } from '../src/fallback-env';
+import {
+  offlineServiceWorkerFulfillmentFeatures,
+  fallbackEnv,
+} from '@spryker-oryx/presets/fulfillment';
 
 export const app = appBuilder()
   .withEnvironment({ ...fallbackEnv, ...process.env })
