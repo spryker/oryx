@@ -24,7 +24,7 @@ export class CartPage extends AbstractSFPage {
   getCartEntriesHeading = () =>
     this.getCartEntriesWrapper().find('oryx-heading');
   getCartTotals = () => this.cartTotals;
-  getCheckoutBtn = () => cy.contains('oryx-button', 'Checkout').find('a');
+  getCheckoutBtn = () => cy.contains('oryx-button', 'Checkout');
   getDeleteModal = () => this.getCartEntriesWrapper().find('oryx-modal');
   getSubmitDeleteBtn = () =>
     this.getDeleteModal().find('oryx-button[slot="footer-more"]');

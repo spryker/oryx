@@ -9,8 +9,7 @@ export class HeaderFragment {
     this.getCurrencySelector().find('oryx-button').find('button');
 
   getLocaleSelector = () => this.getWrapper().find('oryx-site-locale-selector');
-  getLocaleButton = () =>
-    this.getLocaleSelector().find('oryx-button').find('button');
+  getLocaleButton = () => this.getLocaleSelector().find('oryx-button');
 
   getLogo = () =>
     this.getWrapper().find('oryx-content-image').find('a[href="/"]');
@@ -36,13 +35,13 @@ export class HeaderFragment {
   changeLocale = (locale: string, isHydrated = false) => {
     if (!isHydrated) {
       cy.hydrateElemenet('/assets/locale-selector.component-*.js', () => {
-        this.getLocaleButton().click();
+        this.getLocaleSelector().click();
       });
     }
 
     const selector = `oryx-option[value="${locale}"]`;
 
-    this.getLocaleButton().click();
+    this.getLocaleSelector().click();
 
     this.initProductsUpdateInterceptor();
     this.getLocaleSelector().find(selector).click();
