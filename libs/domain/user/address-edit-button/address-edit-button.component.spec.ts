@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonComponent } from '@spryker-oryx/ui/button';
 import {
   Address,
   AddressService,
@@ -35,13 +36,14 @@ class MockAddressStateService implements Partial<AddressStateService> {
   get = vi.fn().mockReturnValue(mockState);
   clear = vi.fn();
 }
-class MockSemanticLinkService implements Partial<LinkService> {
+class MockLinkService implements Partial<LinkService> {
   get = vi.fn();
 }
 
 describe('UserAddressEditButtonComponent', () => {
   let element: UserAddressEditButtonComponent;
   let addressStateService: MockAddressStateService;
+  let linkService: MockLinkService;
 
   beforeAll(async () => {
     await useComponent(userAddressEditButtonComponent);
@@ -64,13 +66,14 @@ describe('UserAddressEditButtonComponent', () => {
         },
         {
           provide: LinkService,
-          useClass: MockSemanticLinkService,
+          useClass: MockLinkService,
         },
       ],
     });
 
     addressStateService =
       testInjector.inject<MockAddressStateService>(AddressStateService);
+    linkService = testInjector.inject<MockLinkService>(LinkService);
   });
 
   afterEach(() => {
@@ -96,19 +99,20 @@ describe('UserAddressEditButtonComponent', () => {
 
   describe('when the target option is set to link', () => {
     beforeEach(async () => {
+      linkService.get.mockReturnValue(of('/address-book/edit'));
       element = await fixture(
         html`<oryx-user-address-edit-button
+          addressId="foo"
           .options=${{ target: Target.Link } as AddressEditButtonOptions}
         ></oryx-user-address-add-button>`
       );
     });
 
     it('should render an anchor link', () => {
-      expect(element).toContainElement('a');
-    });
-
-    it('should not render a button', () => {
-      expect(element).not.toContainElement('button');
+      const button = element.renderRoot.querySelector(
+        'oryx-button'
+      ) as ButtonComponent;
+      expect(button.href).toBe('/address-book/edit');
     });
   });
 
@@ -122,17 +126,13 @@ describe('UserAddressEditButtonComponent', () => {
       );
     });
 
-    it('should not render an anchor link', () => {
-      expect(element).not.toContainElement('a');
-    });
-
     it('should render a button', () => {
-      expect(element).toContainElement('button');
+      expect(element).toContainElement('oryx-button');
     });
 
     describe('and the click event is dispatched on the button', () => {
       beforeEach(() => {
-        element.renderRoot.querySelector('button')?.click();
+        element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
       });
 
       it('should change the action state to Create', () => {

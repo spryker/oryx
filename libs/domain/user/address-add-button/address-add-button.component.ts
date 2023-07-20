@@ -1,17 +1,17 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { hydrate, signal } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { AddressMixin } from '../src/mixins';
 import { CrudState } from '../src/models';
 import {
   Target,
   UserAddressAddButtonOptions,
 } from './address-add-button.model';
-import { ButtonType } from '@spryker-oryx/ui/button';
-import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ target: Target.Link })
 @hydrate({ event: ['mouseover', 'focusin'] })
@@ -37,6 +37,7 @@ export class UserAddressAddButtonComponent extends AddressMixin(
         block
         @click=${this.onCreate}
       ></oryx-button>
+      ${this.renderModal()}
     `;
   }
 
