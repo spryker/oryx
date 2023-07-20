@@ -4,6 +4,8 @@ import {
   userAgentFirefox109,
 } from '@/tools/testing';
 import { fixture } from '@open-wc/testing-helpers';
+import { ButtonComponent } from '@spryker-oryx/ui/button';
+import { IconComponent, IconTypes } from '@spryker-oryx/ui/icon';
 import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
 import { clear, mockUserAgent } from 'jest-useragent-mock';
 import { html } from 'lit';
@@ -239,7 +241,10 @@ describe('Modal', () => {
     });
 
     it('should render close button in the header', () => {
-      expect(element).toContainElement('header > oryx-icon-button');
+      const icon = element.renderRoot.querySelector(
+        'header > oryx-button button oryx-icon'
+      ) as IconComponent;
+      expect(icon.type).toBe(IconTypes.Close);
     });
   });
 
@@ -262,7 +267,10 @@ describe('Modal', () => {
     });
 
     it('should render the button', () => {
-      expect(element).toContainElement('oryx-icon-button:first-child');
+      const button = element.renderRoot.querySelector(
+        'oryx-button'
+      ) as ButtonComponent;
+      expect(button.icon).toBe(IconTypes.ArrowBack);
     });
 
     describe('and the button is clicked', () => {

@@ -1,3 +1,4 @@
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import {
   hydrate,
   I18nMixin,
@@ -14,7 +15,6 @@ import {
 } from './collapsible-text.model';
 import { collapsibleTextStyles } from './collapsible-text.styles';
 import { truncateFix } from './pre-hydrate';
-import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 
 @hydrate({ event: ['mouseover', 'focus'] })
 export class CollapsibleTextComponent
@@ -68,12 +68,14 @@ export class CollapsibleTextComponent
   }
 
   protected renderToggle(): TemplateResult | void {
-    const i18nLabel = this.expanded ? 'read-less' : 'read-more';
+    const i18nToken = `collapsible.${
+      this.expanded ? 'read-less' : 'read-more'
+    }`;
 
     if (this.toggle === CollapsibleTextToggle.Icon) {
       return html`<oryx-button
         .size=${ButtonSize.Sm}
-        .label=${this.i18n(`collapsible.${i18nLabel}`)}
+        .label=${this.i18n(i18nToken)}
         .type=${ButtonType.Icon}
         .icon=${IconTypes.Dropdown}
         @click=${this.onClick}
@@ -86,7 +88,7 @@ export class CollapsibleTextComponent
         .size=${Size.Sm}
         @click=${this.onClick}
       >
-        ${this.i18n(i18nLabel)}
+        ${this.i18n(i18nToken)}
       </oryx-button>`;
     }
   }
