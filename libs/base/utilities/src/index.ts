@@ -4,5 +4,6 @@ export * from './guards';
 export * from './injectables';
 export * from './misc';
 export * from './model';
+export * from './plugins';
 export * from './signals';
 export * from './ssr';

@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { ModalComponent } from '@spryker-oryx/ui/modal';
@@ -10,6 +9,7 @@ import {
   CrudState,
 } from '@spryker-oryx/user';
 import { UserAddressEditComponent } from '@spryker-oryx/user/address-edit';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { CheckoutStatus } from '../src/models';

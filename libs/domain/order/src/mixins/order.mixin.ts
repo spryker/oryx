@@ -1,6 +1,6 @@
-import { Type } from '@spryker-oryx/di';
 import {
   ConnectableSignal,
+  Type,
   signal,
   signalAware,
 } from '@spryker-oryx/utilities';

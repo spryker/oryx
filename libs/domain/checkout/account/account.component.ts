@@ -3,16 +3,15 @@ import { CheckoutMixin, ContactDetails, isValid } from '@spryker-oryx/checkout';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { FormFieldType, FormRenderer } from '@spryker-oryx/form';
-import { RouterService } from '@spryker-oryx/router';
+import { RouteType, RouterService } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { UserService } from '@spryker-oryx/user';
 import { elementEffect, hydrate, signal } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { CheckoutAccountComponentOptions } from './account.model';
 import { checkoutAccountStyles } from './account.styles';
-import { ButtonType } from '@spryker-oryx/ui/button';
-import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ enableGuestCheckout: true })
 @hydrate({ event: 'window:load' })
@@ -90,12 +89,7 @@ export class CheckoutAccountComponent
       <form @change=${this.onChange}>
         <oryx-layout layout="grid" style="--column-gap: 20px">
           ${this.fieldRenderer.buildForm([
-            {
-              id: 'email',
-              type: FormFieldType.Email,
-              required: true,
-              width: 100,
-            },
+            { id: 'email', type: FormFieldType.Email, required: true },
           ])}
         </oryx-layout>
       </form>

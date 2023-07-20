@@ -1,6 +1,6 @@
-import { Type } from '@spryker-oryx/di';
 import { toCSS, toJSON } from 'css-convert-json';
 import { LitElement } from 'lit';
+import { Type } from '../misc';
 
 //all properties and methods re-defining should be conditional
 //due to testing environment is also a server environment

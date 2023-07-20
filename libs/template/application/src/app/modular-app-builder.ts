@@ -2,9 +2,6 @@ import {
   App,
   AppEnvironment,
   AppFeature,
-  ComponentsInfo,
-  ComponentsOptions,
-  ComponentsPlugin,
   FeatureOptions,
   InjectionPlugin,
   SimpleAppBuilder,
@@ -16,6 +13,11 @@ import {
   Theme,
   ThemePlugin,
 } from '@spryker-oryx/experience';
+import {
+  ComponentsInfo,
+  ComponentsOptions,
+  ComponentsPlugin,
+} from '@spryker-oryx/utilities';
 import { AppBuilderWithModules, ModularAppBuilderOptions } from './app.model';
 
 /**

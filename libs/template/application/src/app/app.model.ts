@@ -1,12 +1,7 @@
-import {
-  AppBuilder,
-  AppFeature,
-  AppPlugin,
-  ComponentsInfo,
-  ComponentsOptions,
-} from '@spryker-oryx/core';
+import { AppBuilder, AppFeature, AppPlugin } from '@spryker-oryx/core';
 import { InjectorOptions, Provider } from '@spryker-oryx/di';
 import { Resources, Theme } from '@spryker-oryx/experience';
+import { ComponentsInfo, ComponentsOptions } from '@spryker-oryx/utilities';
 
 declare module '@spryker-oryx/core' {
   interface AppFeature {

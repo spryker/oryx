@@ -1,4 +1,5 @@
-import { inject, Type } from '@spryker-oryx/di';
+import { inject } from '@spryker-oryx/di';
+import { Type } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
 
 const logged: Record<string, number> = {};

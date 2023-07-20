@@ -46,3 +46,15 @@ Object.defineProperty(HTMLElement.prototype, 'scrollHeight', {
     return this._scrollHeight;
   },
 });
+
+Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
+  configurable: true,
+  set: function () {},
+  get: function () {},
+});
+
+Object.defineProperty(window, 'scrollTo', {
+  configurable: true,
+  set: function () {},
+  get: function () {},
+});

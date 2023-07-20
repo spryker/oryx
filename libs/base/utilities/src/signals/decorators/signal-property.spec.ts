@@ -1,6 +1,6 @@
-import { effect } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { effect } from '../core';
 import { signalProperty } from './signal-property';
 
 @customElement('test-element')

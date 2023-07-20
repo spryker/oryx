@@ -1,7 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import MockDate from 'mockdate';
 import { of } from 'rxjs';

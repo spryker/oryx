@@ -12,6 +12,8 @@ declare global {
       loginApi(): Chainable<void>;
       goToCheckout(): Chainable<void>;
       goToCheckoutAsGuest(): Chainable<void>;
+      goToCart(): Chainable<void>;
+      goToCartAsGuest(): Chainable<void>;
       hydrateElemenet(assetPath: string, triggerHydrationFn): Chainable<void>;
       customerCartsCleanup(sccosApi: SCCOSApi, user: TestCustomerData): void;
       customerAddressesCleanup(
@@ -53,12 +55,18 @@ Cypress.Commands.add('loginApi', () => {
   });
 });
 
-Cypress.Commands.add('goToCheckout', () => {
+Cypress.Commands.add('goToCart', () => {
   const cartPage = new CartPage();
 
   cy.intercept('/customers/DE--**/carts?**').as('cartsRequest');
   cartPage.visit();
   cy.wait('@cartsRequest');
+});
+
+Cypress.Commands.add('goToCheckout', () => {
+  const cartPage = new CartPage();
+
+  cy.goToCart();
 
   // carts request is not enought to be sure
   // that checkout button is clickable
@@ -73,12 +81,18 @@ Cypress.Commands.add('goToCheckout', () => {
   cy.wait('@addressesRequest');
 });
 
-Cypress.Commands.add('goToCheckoutAsGuest', () => {
+Cypress.Commands.add('goToCartAsGuest', () => {
   const cartPage = new CartPage();
 
   cy.intercept('/guest-carts?**').as('cartsRequest');
   cartPage.visit();
   cy.wait('@cartsRequest');
+});
+
+Cypress.Commands.add('goToCheckoutAsGuest', () => {
+  const cartPage = new CartPage();
+
+  cy.goToCartAsGuest();
 
   // carts request is not enought to be sure
   // that checkout button is clickable

@@ -1,7 +1,6 @@
 import { checkSlots, dispatchKeydown } from '@/tools/testing';
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
-import { a11yConfig } from '@spryker-oryx/utilities';
+import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { modalComponent } from '../../index';
 import { NDSModalComponent } from './modal.component';
