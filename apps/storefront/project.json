@@ -11,6 +11,17 @@
         "cwd": "apps/storefront"
       }
     },
+    "serve-e2e": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "npx vite build -c vite.config.prod-no-ssr.ts",
+          "npx vite preview --port 3001"
+        ],
+        "cwd": "apps/storefront",
+        "parallel": false
+      }
+    },
     "serve-ssr": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
