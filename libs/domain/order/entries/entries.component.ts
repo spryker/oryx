@@ -76,8 +76,8 @@ export class OrderEntriesComponent
     const restItemsCount = this.$order().items.length - this.$options().limit!;
 
     const i18nToken = this.expanded
-      ? 'order.less-products-<count>'
-      : 'order.more-products-<count>';
+      ? 'order.products.less-than-<count>'
+      : 'order.products.more-than-<count>';
 
     return html`<oryx-button
       .type=${ButtonType.Text}

@@ -173,16 +173,15 @@ describe('UserAddressEditComponent', () => {
       `);
     });
 
-    // TODO: how to test those?
-    // it('should render the cancel button', () => {
-    //   const buttons = element.renderRoot.querySelectorAll('oryx-button');
-    //   expect(buttons[0]?.textContent?.trim()).toEqual('Cancel');
-    // });
+    it('should render the cancel button', () => {
+      const buttons = element.renderRoot.querySelectorAll('oryx-button');
+      expect(buttons[0]).toHaveProperty('text', 'Cancel');
+    });
 
-    // it('should render the save button', () => {
-    //   const buttons = element.renderRoot.querySelectorAll('oryx-button');
-    //   expect(buttons[1].textContent?.trim()).toEqual('Save');
-    // });
+    it('should render the save button', () => {
+      const buttons = element.renderRoot.querySelectorAll('oryx-button');
+      expect(buttons[1]).toHaveProperty('text', 'Save');
+    });
 
     describe('and the change event is dispatched with a valid address', () => {
       const newAddress: Address = { address1: 'New Street 1' };

@@ -100,8 +100,7 @@ describe('OrderEntriesComponent', () => {
     describe('and order items are above the threshold', () => {
       it('should render toggle button with proper title', () => {
         const button = getButton();
-        expect(button.textContent).toContain('+3');
-        expect(button.textContent).toContain('More');
+        expect(button).toHaveProperty('text', 'More than 3');
       });
 
       it('should render items equal to limit', () => {
@@ -117,8 +116,7 @@ describe('OrderEntriesComponent', () => {
         });
         it('should render toggle button with proper title', () => {
           const button = getButton();
-          expect(button.textContent).toContain('-3');
-          expect(button.textContent).toContain('Less');
+          expect(button).toHaveProperty('text', 'Less than 3');
         });
       });
     });

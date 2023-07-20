@@ -69,25 +69,21 @@ describe('CollapsibleTextComponent', () => {
         expect(element).toContainElement('oryx-button');
       });
 
-      // it('should have Read more text', () => {
-      //   const button = element.renderRoot.querySelector(
-      //     'oryx-button'
-      //   ) as ButtonComponent;
-      //   expect(button.label).toBe('Read more');
-      // });
+      it('should have Read more text', () => {
+        const button = element.renderRoot.querySelector('oryx-button');
+        expect(button).toHaveProperty('label', 'Read more');
+      });
 
-      // describe('and when the button is clicked', () => {
-      //   beforeEach(() => {
-      //     element.renderRoot.querySelector('button')?.click();
-      //   });
+      describe('and when the button is clicked', () => {
+        beforeEach(() => {
+          element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
+        });
 
-      //   it('should have Read less text', () => {
-      //     const button = element.renderRoot.querySelector(
-      //       'oryx-button'
-      //     ) as ButtonComponent;
-      //     expect(button.label).toBe('Read less');
-      //   });
-      // });
+        it('should have Read less text', () => {
+          const button = element.renderRoot.querySelector('oryx-button');
+          expect(button).toHaveProperty('label', 'Read less');
+        });
+      });
     });
 
     describe('when enableToggle property = text', () => {
