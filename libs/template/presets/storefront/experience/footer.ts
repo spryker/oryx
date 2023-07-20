@@ -8,14 +8,14 @@ const image = (graphic: string) => ({
 
 const heading = (text: string, rule = {}) => ({
   type: 'oryx-content-text',
-  content: { text: `<b>${text}</b>` },
+  content: { data: { text: `<b>${text}</b>` } },
   options: { rules: [rule] },
 });
 
 const link = (text: string, url = '/', icon?: string) => ({
   type: 'oryx-content-link',
   options: { url, icon },
-  content: { text },
+  content: { data: { text } },
 });
 
 const legalLinks = {
@@ -25,7 +25,7 @@ const legalLinks = {
   components: [
     {
       type: 'oryx-content-text',
-      content: { text: `©️ 2023 Spryker` },
+      content: { data: { text: `©️ 2023 Spryker` } },
     },
     link('Imprint', '/faq/imprint'),
     link('Terms & conditions', '/article/terms-and-conditions'),
@@ -43,13 +43,15 @@ const legalLinks = {
 const customerSupport = {
   type: 'oryx-content-text',
   content: {
-    text: `<b>Customer Support</b><br/>
-      <a href="/contact">Contact us</a><br/>
-      <a href="/">Help center</a><br/>
-      <a href="/">Payment</a><br/>
-      <a href="/">Shipping information</a><br/>
-      <a href="/">Returns & Exchanges</a><br/>
-      <a href="/">Withdrawal rights</a>`,
+    data: {
+      text: `<b>Customer Support</b><br/>
+        <a href="/contact">Contact us</a><br/>
+        <a href="/">Help center</a><br/>
+        <a href="/">Payment</a><br/>
+        <a href="/">Shipping information</a><br/>
+        <a href="/">Returns & Exchanges</a><br/>
+        <a href="/">Withdrawal rights</a>`,
+    },
   },
 };
 
@@ -67,7 +69,8 @@ const promises = {
 const aboutUs = {
   type: 'oryx-content-text',
   content: {
-    text: `<b>About us</b><br/>
+    data: {
+      text: `<b>About us</b><br/>
         <a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>
@@ -75,6 +78,7 @@ const aboutUs = {
         <a href="/">Press</a><br/>
         <a href="/">Corporate information</a>
         `,
+    },
   },
 };
 

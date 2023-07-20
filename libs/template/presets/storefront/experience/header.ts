@@ -11,17 +11,17 @@ export const HeaderTemplate: StaticComponent = {
       components: [
         {
           type: 'oryx-content-link',
-          content: { text: 'FREE DELIVERY & RETURNS' },
+          content: { data: { text: 'FREE DELIVERY & RETURNS' } },
           options: { url: '/', icon: IconTypes.Check },
         },
         {
           type: 'oryx-content-link',
-          content: { text: '100 DAY RETURN POLICY' },
+          content: { data: { text: '100 DAY RETURN POLICY' } },
           options: { url: '/', icon: IconTypes.Check },
         },
         {
           type: 'oryx-content-link',
-          content: { text: 'CLICK & COLLECT' },
+          content: { data: { text: 'CLICK & COLLECT' } },
           options: { url: '/', icon: IconTypes.Check },
         },
         {
@@ -53,9 +53,11 @@ export const HeaderTemplate: StaticComponent = {
         {
           type: 'oryx-content-image',
           content: {
-            graphic: 'logo',
-            link: '/',
-            label: 'Composable Storefront based on Oryx',
+            data: {
+              graphic: 'logo',
+              link: '/',
+              label: 'Composable Storefront based on Oryx',
+            },
           },
           options: {
             rules: [

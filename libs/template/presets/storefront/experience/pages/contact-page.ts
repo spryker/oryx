@@ -22,7 +22,9 @@ export const contactPage: StaticComponent = {
     {
       type: 'oryx-content-link',
       content: {
-        text: 'This is Contact Page element. Remove me when the page is implemented',
+        data: {
+          text: 'This is Contact Page element. Remove me when the page is implemented',
+        },
       },
       options: {
         type: 'rawUrl',

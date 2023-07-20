@@ -1,10 +1,13 @@
 import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
+import {
+  Component,
+  ContentComponentProperties,
+  ExperienceService,
+} from '@spryker-oryx/experience';
 import { ObserveController } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
 import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
-import { ContentComponentProperties } from '../../src/models';
-import { Component, ExperienceService } from '../../src/services';
 
 export class CompositionComponentsController implements ReactiveController {
   hostConnected?(): void;
