@@ -18,6 +18,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { CartAddOptions } from './add.model';
 import { styles } from './add.styles';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 @defaultOptions({
   enableLabel: true,
@@ -53,14 +54,14 @@ export class CartAddComponent extends ProductMixin(
   protected renderButton(): TemplateResult | void {
     const { outlined, enableLabel } = this.$options();
     const type = outlined ? 'outline' : 'solid';
-    const text = this.i18n('cart.add-to-cart');
+    const text = this.i18n('cart.add-to-cart') as string;
 
     return html`<oryx-button
-      .size=${Size.Md}
-      .type=${type}
-      .text=${enableLabel ? text : undefined}
-      .label=${enableLabel ? undefined : text}
-      .icon=${IconTypes.CartAdd}
+      size=${Size.Md}
+      type=${type}
+      text=${ifDefined(enableLabel ? text : undefined)}
+      label=${ifDefined(enableLabel ? undefined : text)}
+      icon=${IconTypes.CartAdd}
       ?block=${this.$options().hideQuantityInput}
       ?disabled=${this.isInvalid || !this.$hasStock()}
       @click=${this.onSubmit}
