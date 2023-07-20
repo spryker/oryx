@@ -3,7 +3,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 
 const image = (graphic: string) => ({
   type: 'oryx-content-image',
-  content: { data: { graphic, alt: graphic } },
+  content: { graphic, alt: graphic },
 });
 
 const heading = (text: string, rule = {}) => ({
@@ -131,7 +131,7 @@ const paymentLinks = {
 const shippingLinks = {
   type: 'oryx-composition',
   id: 'shippingLinks',
-  options: { data: { rules: [{ layout: 'list', colSpan: 2 }] } },
+  options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
     heading('Shipping partners'),
     {
@@ -204,9 +204,7 @@ const otherLinks = {
     },
     {
       type: 'oryx-composition',
-      options: {
-        rules: [{ layout: 'column', columnCount: 6 }],
-      },
+      options: { rules: [{ layout: 'column', columnCount: 6 }] },
       components: [shippingLinks, socialLinks],
     },
   ],

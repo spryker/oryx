@@ -1,12 +1,14 @@
-import { resolve } from '@spryker-oryx/di';
+import { INJECTOR, resolve } from '@spryker-oryx/di';
 import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n, signal, signalAware, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { tap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { styles } from './warehouse-assignment.styles';
+import { AppRef } from '@spryker-oryx/core';
+import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 
 @signalAware()
 export class WarehouseAssignmentComponent extends LitElement {
@@ -15,6 +17,10 @@ export class WarehouseAssignmentComponent extends LitElement {
   protected warehouseUserAssignmentsService = resolve(
     WarehouseUserAssignmentsService
   );
+
+  protected injector = resolve(INJECTOR);
+  protected injectorDataPlugin =
+    resolve(AppRef).requirePlugin(OfflineDataPlugin);
 
   protected routerService = resolve(RouterService);
 
@@ -43,8 +49,9 @@ export class WarehouseAssignmentComponent extends LitElement {
     this.warehouseUserAssignmentsService
       .activateAssignment(assignmentId)
       .pipe(
-        tap(() => {
+        switchMap(() => {
           this.routerService.navigate('/');
+          return this.injectorDataPlugin.refreshData(this.injector);
         })
       )
       .subscribe();
