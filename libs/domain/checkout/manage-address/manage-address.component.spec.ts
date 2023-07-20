@@ -110,7 +110,7 @@ describe('CheckoutManageAddressComponent', () => {
     });
 
     it('should render a button', () => {
-      expect(element).toContainElement('oryx-button button');
+      expect(element).toContainElement('oryx-button');
     });
 
     it('should not render the modal by default ', () => {
@@ -123,8 +123,7 @@ describe('CheckoutManageAddressComponent', () => {
       element = await fixture(
         html`<oryx-checkout-manage-address></oryx-checkout-manage-address>`
       );
-      const button = element.shadowRoot?.querySelector('button');
-      button?.click();
+      element.shadowRoot?.querySelector<HTMLElement>('oryx-button')?.click();
     });
 
     it('should open the modal', () => {
