@@ -54,8 +54,8 @@ describe('OrderEntriesComponent', () => {
   let element: OrderEntriesComponent;
   let orderService: MockOrderService;
 
-  const getButton = (): HTMLButtonElement => {
-    return element.shadowRoot?.querySelector('button') as HTMLButtonElement;
+  const getButton = (): HTMLElement => {
+    return element.shadowRoot?.querySelector('oryx-button') as HTMLElement;
   };
 
   const getItems = (): NodeList => {
@@ -100,8 +100,8 @@ describe('OrderEntriesComponent', () => {
     describe('and order items are above the threshold', () => {
       it('should render toggle button with proper title', () => {
         const button = getButton();
-        expect(button.innerText).toContain('+3');
-        expect(button.innerText).toContain('More');
+        expect(button.textContent).toContain('+3');
+        expect(button.textContent).toContain('More');
       });
 
       it('should render items equal to limit', () => {
@@ -117,8 +117,8 @@ describe('OrderEntriesComponent', () => {
         });
         it('should render toggle button with proper title', () => {
           const button = getButton();
-          expect(button.innerText).toContain('-3');
-          expect(button.innerText).toContain('Less');
+          expect(button.textContent).toContain('-3');
+          expect(button.textContent).toContain('Less');
         });
       });
     });

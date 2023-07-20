@@ -1,13 +1,13 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { OrderMixin } from '@spryker-oryx/order';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { computed, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { OrderEntriesAttributes, OrderEntriesOptions } from './entries.model';
 import { orderEntriesStyles } from './entries.styles';
-import { ButtonType } from '@spryker-oryx/ui/button';
 
 @defaultOptions({
   limit: 5,
