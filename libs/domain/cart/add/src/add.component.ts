@@ -6,19 +6,19 @@ import {
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductMixin } from '@spryker-oryx/product';
-import { ButtonComponent } from '@spryker-oryx/ui/button';
+import { ButtonComponent, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
+  Size,
   computed,
   elementEffect,
   hydrate,
-  Size,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { CartAddOptions } from './add.model';
 import { styles } from './add.styles';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 @defaultOptions({
   enableLabel: true,
@@ -53,7 +53,7 @@ export class CartAddComponent extends ProductMixin(
 
   protected renderButton(): TemplateResult | void {
     const { outlined, enableLabel } = this.$options();
-    const type = outlined ? 'outline' : 'solid';
+    const type = outlined ? ButtonType.Outline : ButtonType.Solid;
     const text = this.i18n('cart.add-to-cart') as string;
 
     return html`<oryx-button

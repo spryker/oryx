@@ -1,7 +1,6 @@
-// organize-imports-ignore
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/utilities';
-import { ButtonComponent, ButtonType } from '../../action/button/src';
+import { ButtonComponent, ButtonType } from '../../action/button';
 import { CollapsibleTextComponent } from './collapsible-text.component';
 import { collapsibleTextComponent } from './collapsible-text.def';
 import { CollapsibleTextToggle } from './collapsible-text.model';

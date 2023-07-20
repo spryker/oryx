@@ -102,7 +102,7 @@ const colorStyles = css`
   :host([type='text']),
   :host([type='outline']),
   :host([type='icon']),
-  :host(:is([type='solid'], :not([type])[loading])) {
+  :host(:is([type='solid'], :not([type]))[loading]) {
     --_text-color: var(--_c9, var(--oryx-color-primary-9));
   }
 

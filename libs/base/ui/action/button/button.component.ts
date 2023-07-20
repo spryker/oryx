@@ -1,6 +1,5 @@
-import { preHydrate } from '@spryker-oryx/core';
 import { Icons, IconTypes } from '@spryker-oryx/ui/icon';
-import { hydrate, ssrShim } from '@spryker-oryx/utilities';
+import { hydrate, preHydrate, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
