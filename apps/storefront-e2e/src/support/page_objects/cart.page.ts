@@ -8,11 +8,13 @@ export class CartPage extends AbstractSFPage {
   private cartTotals = new CartTotalsFragment();
 
   waitForLoaded(): void {
-    this.getCartEntriesWrapper().should('be.visible');
+    this.getEmptyCartMessageWrapper().should('be.visible');
   }
 
   getCartEntriesWrapper = () => cy.get('oryx-cart-entries');
-  getEmptyCartMessage = () => cy.contains('Your shopping cart is empty');
+  getEmptyCartMessageWrapper = () => cy.get('oryx-content-text');
+  getEmptyCartMessage = () =>
+    this.getEmptyCartMessageWrapper().contains('Your shopping cart is empty');
   getCartEntries = () =>
     this.getCartEntriesWrapper()
       .find('oryx-cart-entry')

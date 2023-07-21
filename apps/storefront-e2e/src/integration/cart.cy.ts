@@ -62,7 +62,7 @@ describe('Cart', () => {
 
       it('should render an empty message', () => {
         cartPage
-          .getCartEntriesWrapper()
+          .getEmptyCartMessageWrapper()
           .contains('Your shopping cart is empty')
           .should('be.visible');
 
