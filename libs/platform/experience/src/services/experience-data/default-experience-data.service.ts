@@ -55,7 +55,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       const paths = value.split('.');
 
       for (let i = 0; i < paths.length; i++) {
-        const [path, nested] = paths[i].split('*');
+        const [path, nested] = paths[i].split('>');
 
         if (nested) {
           paths.splice(i + 1, 0, ...Array(Number(nested) - 1).fill(path));
