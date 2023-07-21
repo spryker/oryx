@@ -2,7 +2,7 @@ import { HttpService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { BehaviorSubject, switchMap } from 'rxjs';
-import { provideExperienceData } from '../experience-data';
+import { ExperienceDataService } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
 import { DefaultExperienceService } from './default-experience.service';
 import { ExperienceService } from './experience.service';
@@ -79,6 +79,10 @@ const mockStatic = {
   components: [{ type: 'pageA' }, { type: 'pageB' }],
 };
 
+const mockExperienceDataService = {
+  getData: vi.fn().mockReturnValue([mockStatic]),
+};
+
 describe('DefaultExperienceService', () => {
   let service: ExperienceService;
   let http: HttpTestService;
@@ -98,7 +102,10 @@ describe('DefaultExperienceService', () => {
           provide: 'ExperienceService',
           useClass: DefaultExperienceService,
         },
-        provideExperienceData(mockStatic),
+        {
+          provide: ExperienceDataService,
+          useValue: mockExperienceDataService,
+        },
       ],
     });
 

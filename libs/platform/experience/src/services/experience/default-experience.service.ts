@@ -23,22 +23,22 @@ export class DefaultExperienceService implements ExperienceService {
   protected dataComponent: DataStore<Component> = {};
   protected dataContent: DataStore = {};
   protected dataOptions: DataStore = {};
-  protected staticData: ExperienceComponent[] = [];
+  protected experienceData: ExperienceComponent[] = [];
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
-    protected experienceData = inject(ExperienceDataService)
+    protected experienceDataService = inject(ExperienceDataService)
   ) {
-    this.initStaticData();
+    this.initExperienceData();
   }
 
-  protected initStaticData(): void {
-    this.staticData = this.processStaticData();
+  protected initExperienceData(): void {
+    this.experienceData = this.processExperienceData();
   }
 
-  protected processStaticData(shouldStore = true): Component[] {
-    return this.experienceData.getData().map((component) => {
+  protected processExperienceData(shouldStore = true): Component[] {
+    return this.experienceDataService.getData().map((component) => {
       this.processComponent(component, shouldStore);
 
       if (shouldStore) {

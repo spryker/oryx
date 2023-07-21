@@ -12,6 +12,14 @@ export const enum ExperienceDataMergeType {
 }
 
 type ExperienceDataMergeTypes = {
+  /**
+   * Interpolates value by type\id path.
+   * Value path should be separated by a dot. (e.g. headerId.oryx-composition.footerId).
+   *
+   * It's possible to use aliases
+   *   nested chain - oryx-composition>3 => oryx-composition.oryx-composition.oryx-composition
+   *   element index - oryx-composition[2] => get second oryx-composition element
+   */
   [K in ExperienceDataMergeType]?: string;
 };
 

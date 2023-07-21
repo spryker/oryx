@@ -8,13 +8,13 @@ import { isDefined } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
   EMPTY,
+  Observable,
+  Subject,
   filter,
   fromEvent,
   map,
   merge,
-  Observable,
   shareReplay,
-  Subject,
   takeUntil,
   tap,
 } from 'rxjs';
@@ -120,8 +120,8 @@ export class PreviewExperienceService extends DefaultExperienceService {
     filter(isDefined)
   );
 
-  protected initStaticData(): void {
-    this.staticData = this.processStaticData(false);
+  protected initExperienceData(): void {
+    this.experienceData = this.processExperienceData(false);
   }
 
   protected reloadComponent(uid: string): void {
@@ -155,7 +155,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
   protected sendStaticData(): void {
     postMessage({
       type: MessageType.Static,
-      data: this.staticData,
+      data: this.experienceData,
     });
   }
 

@@ -18,14 +18,16 @@ export class DefaultExperienceDataService implements ExperienceDataService {
   protected recordsById: Record<string, ExperienceComponent> = {};
   protected records: ExperienceComponent[] = [];
 
-  constructor(protected staticData = inject(ExperienceData, [])) {}
+  constructor(protected experienceData = inject(ExperienceData, [])) {}
 
   getData(): ExperienceComponent[] {
-    const staticData = this.staticData
+    const experienceData: ExperienceComponent[] = JSON.parse(
+      JSON.stringify(this.experienceData)
+    )
       .flat()
-      .sort((a) => (a.strategy ? 0 : -1));
+      .sort((a: ExperienceComponent) => (a.strategy ? 0 : -1));
 
-    for (const data of staticData) {
+    for (const data of experienceData) {
       if (data.id) {
         this.recordsById[data.id] = data;
 
@@ -64,10 +66,11 @@ export class DefaultExperienceDataService implements ExperienceDataService {
         const [childPath, childIndex] = path.split(/[[\]]/);
         let childCounter = 1;
         let componentIndex = 0;
-        console.log(childPath, childIndex);
+
         const component = components?.find(
           (component, index): void | boolean => {
-            const isComponent = component.type === childPath;
+            const isComponent =
+              component.type === childPath || component.id === childPath;
             const isProperChild = childCounter === Number(childIndex);
             const withIndex = !childIndex && isComponent;
             const withoutIndex = childIndex && isComponent && isProperChild;
@@ -137,8 +140,6 @@ export class DefaultExperienceDataService implements ExperienceDataService {
         ++i;
       }
     }
-
-    console.log(components);
   }
 
   protected mergeByStrategy(properties: MergeProperties): void {
