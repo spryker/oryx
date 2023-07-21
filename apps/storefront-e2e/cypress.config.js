@@ -11,7 +11,6 @@ module.exports = defineConfig({
   screenshotsFolder: '../../dist/cypress/apps/storefront-e2e/screenshots',
   chromeWebSecurity: false,
   includeShadowDom: true,
-  pageLoadTimeout: 180000,
   viewportWidth: 1024,
   e2e: {
     // We've imported your old cypress plugins here.
