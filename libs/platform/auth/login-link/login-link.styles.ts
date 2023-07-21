@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 export const styles = css`
-  button {
+  oryx-button {
     --oryx-icon-size: 24px;
 
     justify-content: flex-start;

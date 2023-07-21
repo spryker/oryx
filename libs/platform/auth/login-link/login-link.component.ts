@@ -2,12 +2,12 @@ import { AuthService } from '@spryker-oryx/auth';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { hydrate, signal } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { LoginLinkOptions } from './login-link.model';
 import { styles } from './login-link.styles';
-import { ButtonType } from '@spryker-oryx/ui/button';
 
 @defaultOptions({
   enableLogout: true,
