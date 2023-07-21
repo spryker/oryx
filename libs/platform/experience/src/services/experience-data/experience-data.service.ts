@@ -11,6 +11,11 @@ export const enum ExperienceDataMergeType {
   Patch = 'patch',
 }
 
+export const enum ExperienceRefPosition {
+  Prepend = 'prepend',
+  Append = 'append',
+}
+
 type ExperienceDataMergeTypes = {
   /**
    * Interpolates value by type\id path.
@@ -27,9 +32,14 @@ export interface ExperienceDataMergeStrategy extends ExperienceDataMergeTypes {
   id: string;
 }
 
+export interface ExperienceDataRef {
+  [key: string]: ExperienceRefPosition | string;
+}
+
 export type ExperienceComponent = Partial<
   Omit<Component<unknown>, 'components'>
 > & {
+  ref?: ExperienceDataRef;
   components?: ExperienceComponent[];
   strategy?: ExperienceDataMergeStrategy;
 };

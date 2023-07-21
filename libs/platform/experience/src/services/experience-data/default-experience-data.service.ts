@@ -43,7 +43,9 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       this.records.push(data);
     }
 
-    return [...this.records, ...Object.values(this.recordsById)];
+    const mergedData = [...this.records, ...Object.values(this.recordsById)];
+
+    return mergedData;
   }
 
   protected processMerging(data: ExperienceComponent): void {
