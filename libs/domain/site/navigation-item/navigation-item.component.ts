@@ -46,7 +46,9 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected $url = computed(() => {
     const url = this.$options().url;
-    return typeof url !== 'object' ? url : this.semanticLinkService.get(url);
+    return typeof url !== 'object'
+      ? of(url)
+      : this.semanticLinkService.get(url);
   });
 
   protected onTriggerClick(): void {
@@ -120,10 +122,10 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     return html`
       <oryx-site-navigation-button
         slot="trigger"
-        .url=${this.$url()}
-        .icon=${this.$options()?.icon}
-        .text=${this.$label()}
-        .badge=${this.$badge()}
+        url=${ifDefined(this.$url())}
+        icon=${ifDefined(this.$options().icon)}
+        text=${ifDefined(this.$label())}
+        badge=${ifDefined(this.$badge())}
         @click=${this.onTriggerClick}
         @mouseenter=${this.onTriggerHover}
       ></oryx-site-navigation-button>
@@ -154,7 +156,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         enableCloseByEscape
         enableCloseByBackdrop
         fullscreen
-        .heading=${this.$options().label}
+        heading=${ifDefined(this.$options().label)}
       >
         ${this.renderComposition()}
       </oryx-modal>

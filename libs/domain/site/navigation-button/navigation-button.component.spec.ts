@@ -70,9 +70,7 @@ describe('NavigationButtonComponent', () => {
     });
 
     it('should render oryx-icon with proper type', () => {
-      const icons = element.renderRoot.querySelector('oryx-icon');
-      expect(element).toContainElement(`oryx-icon`);
-      expect(icons).toHaveProperty(`type`, testPlaceholder);
+      expect(element).toContainElement(`oryx-icon[type="${testPlaceholder}"]`);
     });
   });
 
