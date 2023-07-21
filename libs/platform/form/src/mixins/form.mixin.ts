@@ -1,5 +1,5 @@
-import { Type } from '@spryker-oryx/di';
 import {
+  Type,
   asyncState,
   observe,
   signalProperty,

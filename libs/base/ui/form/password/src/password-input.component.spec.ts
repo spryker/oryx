@@ -1,7 +1,6 @@
 import { getShadowElementBySelector } from '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
-import { a11yConfig } from '@spryker-oryx/utilities';
+import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import { getControl } from '../../utilities/getControl';
 import { PasswordInputComponent } from './password-input.component';

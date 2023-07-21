@@ -54,7 +54,7 @@ describe('Currencies suite', () => {
     beforeEach(() => {
       const scosApi = new SCCOSApi();
       scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
-      cartPage.visit();
+      cy.goToCartAsGuest();
     });
 
     describe('and user changes the currency to CHF', () => {

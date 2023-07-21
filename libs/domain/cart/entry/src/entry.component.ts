@@ -187,7 +187,7 @@ export class CartEntryComponent
       enableCloseButtonInHeader
       minimal
       heading=${this.i18n('cart.entry.confirm')}
-      @oryx.close=${this.revert}
+      @oryx.close=${() => this.revert()}
     >
       ${this.i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.sku })}
 
@@ -205,15 +205,13 @@ export class CartEntryComponent
   /**
    * Forces a revert of the quantity, as the quantity input might be updated outside.
    */
-  protected revert(e: Error): void {
+  protected revert(e?: Error): void {
     this.requiresRemovalConfirmation = false;
     const el = this.shadowRoot?.querySelector<QuantityInputComponent>(
       'oryx-cart-quantity-input'
     );
-    if (el) {
-      el.value = this.quantity;
-    }
-    throw e;
+    if (el) el.value = this.quantity;
+    if (e) throw e;
   }
 
   protected onSubmit(ev: CustomEvent<QuantityEventDetail>): void {
@@ -232,7 +230,7 @@ export class CartEntryComponent
           this.notify('cart.cart-entry-updated', this.sku);
         }
       },
-      error: (e) => this.revert(e),
+      error: (e: Error) => this.revert(e),
     });
   }
 
@@ -248,7 +246,7 @@ export class CartEntryComponent
           this.notify('cart.confirm-removed', this.sku);
         }
       },
-      error: (e) => this.revert(e),
+      error: (e: Error) => this.revert(e),
     });
   }
 

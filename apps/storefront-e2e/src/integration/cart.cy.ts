@@ -57,7 +57,7 @@ describe('Cart', () => {
   describe('when the cart page is visited', () => {
     describe('and the cart is empty', () => {
       beforeEach(() => {
-        cartPage.visit();
+        cy.goToCartAsGuest();
       });
 
       it('should render an empty message', () => {
@@ -74,7 +74,7 @@ describe('Cart', () => {
     describe('and there is an item in cart', () => {
       beforeEach(() => {
         scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
-        cartPage.visit();
+        cy.goToCartAsGuest();
       });
 
       it('should render the cart entries and totals', () => {
@@ -186,7 +186,13 @@ describe('Cart', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
             entries[0].getRemoveBtn().click();
+
+            cy.intercept({
+              method: 'DELETE',
+              url: '/guest-carts/*/guest-cart-items/*',
+            }).as('deleteCartItemRequest');
             cartPage.getSubmitDeleteBtn().click();
+            cy.wait('@deleteCartItemRequest');
           });
         });
 

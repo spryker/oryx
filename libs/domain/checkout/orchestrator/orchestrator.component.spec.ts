@@ -7,9 +7,9 @@ import {
   CheckoutStatus,
   isValid,
 } from '@spryker-oryx/checkout';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { html, LitElement, TemplateResult } from 'lit';
+import { useComponent } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BehaviorSubject, of } from 'rxjs';
 import { CheckoutOrchestratorComponent } from './orchestrator.component';

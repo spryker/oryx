@@ -1,8 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { SiteNavigationItemComponent } from '@spryker-oryx/site/navigation-item';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n } from '@spryker-oryx/utilities';
+import { i18n, useComponent } from '@spryker-oryx/utilities';
 import HeaderComponent from './header.component';
 import { headerComponent } from './header.def';
 

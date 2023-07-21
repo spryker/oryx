@@ -22,11 +22,14 @@ export default defineConfig(() => {
       ),
       ssr: viteConfig.ssr.entry,
       rollupOptions: {
+        // Uses to avoid errors on e2e tests
         output: {
           globals: {
             buffer: 'buffer',
           },
         },
+        // Uses to avoid builtIn dependency error while building
+        external: ['buffer'],
       },
     },
     ssr: {

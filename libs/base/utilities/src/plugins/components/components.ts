@@ -1,5 +1,5 @@
-import { rootInjectable } from '@spryker-oryx/utilities';
-import { AppPlugin } from '../app';
+import { rootInjectable } from '../../injectables';
+import { BuilderPlugin } from '../plugins.model';
 import { ComponentsObserver } from './components-observer';
 import {
   ComponentImplMeta,
@@ -16,7 +16,10 @@ export const ComponentsPluginName = 'core$components';
  *  Defines components in lazy-load and preload modes, depends on options {@link ComponentsOptions}.
  *  Applies theme styles for component definition.
  */
-export class ComponentsPlugin extends ComponentsObserver implements AppPlugin {
+export class ComponentsPlugin
+  extends ComponentsObserver
+  implements BuilderPlugin
+{
   protected readonly implMetaProgrammatic: ComponentImplMeta = {
     programmaticLoad: true,
   };

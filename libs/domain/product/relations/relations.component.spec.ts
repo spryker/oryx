@@ -1,6 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { ContextService } from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LayoutBuilder, LayoutService } from '@spryker-oryx/experience';
 import {
@@ -8,6 +7,7 @@ import {
   ProductService,
 } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';

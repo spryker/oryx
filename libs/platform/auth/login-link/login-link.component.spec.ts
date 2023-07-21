@@ -1,9 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { i18n } from '@spryker-oryx/utilities';
+import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { LoginLinkComponent } from './login-link.component';

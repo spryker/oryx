@@ -25,5 +25,5 @@
       "executor": "./tools/executors/components-library:paths"
     }
   },
-  "tags": ["lib:i18n"]
+  "tags": ["layer:platform"]
 }

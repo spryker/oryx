@@ -89,7 +89,7 @@
       "@spryker-oryx/experience/mocks": [
         "libs/platform/experience/src/mocks/index.ts"
       ],
-      "@spryker-oryx/form": ["libs/base/form/src/index.ts"],
+      "@spryker-oryx/form": ["libs/platform/form/src/index.ts"],
       "@spryker-oryx/i18n": ["libs/platform/i18n/src/index.ts"],
       "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
       "@spryker-oryx/labs": ["libs/template/labs/src/index.ts"],
@@ -349,7 +349,10 @@
       ],
       "@spryker-oryx/user/mocks": ["libs/domain/user/src/mocks/index.ts"],
       "@spryker-oryx/utilities": ["libs/base/utilities/src/index.ts"],
-      "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"]
+      "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"],
+      "@spryker-oryx/utilities/window-stub": [
+        "libs/base/utilities/window-stub/index.ts"
+      ]
     }
   }
 }

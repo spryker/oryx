@@ -1,8 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PricingService, LinkService } from '@spryker-oryx/site';
+import { LinkService, PricingService } from '@spryker-oryx/site';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { CheckoutLinkComponent } from './link.component';

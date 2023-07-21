@@ -1,4 +1,4 @@
-import { componentDef } from '@spryker-oryx/core';
+import { componentDef } from '@spryker-oryx/utilities';
 
 const rules = () =>
   import('../cart-totals.styles').then((m) => m.cartTotalsStyles);

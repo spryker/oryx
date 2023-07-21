@@ -12,6 +12,8 @@ declare global {
       loginApi(): Chainable<void>;
       goToCheckout(): Chainable<void>;
       goToCheckoutAsGuest(): Chainable<void>;
+      goToCart(): Chainable<void>;
+      goToCartAsGuest(): Chainable<void>;
       hydrateElemenet(assetPath: string, triggerHydrationFn): Chainable<void>;
       customerCartsCleanup(sccosApi: SCCOSApi, user: TestCustomerData): void;
       customerAddressesCleanup(
@@ -53,12 +55,18 @@ Cypress.Commands.add('loginApi', () => {
   });
 });
 
-Cypress.Commands.add('goToCheckout', () => {
+Cypress.Commands.add('goToCart', () => {
   const cartPage = new CartPage();
 
   cy.intercept('/customers/DE--**/carts?**').as('cartsRequest');
   cartPage.visit();
   cy.wait('@cartsRequest');
+});
+
+Cypress.Commands.add('goToCheckout', () => {
+  const cartPage = new CartPage();
+
+  cy.goToCart();
 
   // carts request is not enought to be sure
   // that checkout button is clickable
@@ -68,17 +76,26 @@ Cypress.Commands.add('goToCheckout', () => {
   // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(250);
 
-  cy.intercept('/customers/*/addresses').as('addressesRequest');
+  cy.intercept({
+    method: 'GET',
+    url: '/customers/*/addresses',
+  }).as('addressesRequest');
   cartPage.checkout();
   cy.wait('@addressesRequest');
 });
 
-Cypress.Commands.add('goToCheckoutAsGuest', () => {
+Cypress.Commands.add('goToCartAsGuest', () => {
   const cartPage = new CartPage();
 
   cy.intercept('/guest-carts?**').as('cartsRequest');
   cartPage.visit();
   cy.wait('@cartsRequest');
+});
+
+Cypress.Commands.add('goToCheckoutAsGuest', () => {
+  const cartPage = new CartPage();
+
+  cy.goToCartAsGuest();
 
   // carts request is not enought to be sure
   // that checkout button is clickable
@@ -93,18 +110,27 @@ Cypress.Commands.add('goToCheckoutAsGuest', () => {
   cy.wait('@addressesRequest');
 });
 
+// this action is temporarily changed
+// because of constant hydation issues and instability
+//
+// All tests, including regression, will be run against SPA build
+// till SSR is not fixed completely
+//
+// still, smoke tests should run against SSR build
 Cypress.Commands.add(
   'hydrateElemenet',
   (assetPath: string, triggerHydrationFn) => {
-    cy.intercept(assetPath).as(`${assetPath}Request`);
+    if (Cypress.env('isSSR')) {
+      cy.intercept(assetPath).as(`${assetPath}Request`);
 
-    triggerHydrationFn();
+      triggerHydrationFn();
 
-    cy.wait(`@${assetPath}Request`);
+      cy.wait(`@${assetPath}Request`);
 
-    // wait till hydrated elements are re-rendered
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
+      // wait till hydrated elements are re-rendered
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
+    }
   }
 );
 

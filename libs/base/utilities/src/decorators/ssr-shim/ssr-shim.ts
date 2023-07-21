@@ -2,9 +2,9 @@ import {
   ClassDescriptor,
   Constructor,
 } from '@lit/reactive-element/decorators.js';
-import { Type } from '@spryker-oryx/di';
-import { isServer, LitElement } from 'lit';
+import { LitElement, isServer } from 'lit';
 import { ssrStyleShim } from '../../index';
+import { Type } from '../../misc';
 
 export const ssrShim =
   (features: string[] | string) =>

@@ -3,19 +3,19 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 
 const image = (graphic: string) => ({
   type: 'oryx-content-image',
-  content: { data: { graphic, alt: graphic } },
+  content: { graphic, alt: graphic },
 });
 
 const heading = (text: string, rule = {}) => ({
   type: 'oryx-content-text',
-  content: { data: { text: `<b>${text}</b>` } },
-  options: { data: { rules: [rule] } },
+  content: { text: `<b>${text}</b>` },
+  options: { rules: [rule] },
 });
 
 const link = (text: string, url = '/', icon?: string) => ({
   type: 'oryx-content-link',
-  options: { data: { url, icon } },
-  content: { data: { text } },
+  options: { url, icon },
+  content: { text },
 });
 
 const legalLinks = {
@@ -25,7 +25,7 @@ const legalLinks = {
   components: [
     {
       type: 'oryx-content-text',
-      content: { data: { text: `©️ 2023 Spryker` } },
+      content: { text: `©️ 2023 Spryker` },
     },
     link('Imprint', '/faq/imprint'),
     link('Terms & conditions', '/article/terms-and-conditions'),
@@ -34,32 +34,28 @@ const legalLinks = {
     link('Condition of use'),
   ],
   options: {
-    data: {
-      rules: [
-        { layout: 'flex', divider: true, gap: '0 20px', padding: '20px 0 0' },
-      ],
-    },
+    rules: [
+      { layout: 'flex', divider: true, gap: '0 20px', padding: '20px 0 0' },
+    ],
   },
 };
 
 const customerSupport = {
   type: 'oryx-content-text',
   content: {
-    data: {
-      text: `<b>Customer Support</b><br/>
+    text: `<b>Customer Support</b><br/>
       <a href="/contact">Contact us</a><br/>
       <a href="/">Help center</a><br/>
       <a href="/">Payment</a><br/>
       <a href="/">Shipping information</a><br/>
       <a href="/">Returns & Exchanges</a><br/>
       <a href="/">Withdrawal rights</a>`,
-    },
   },
 };
 
 const promises = {
   type: 'oryx-composition',
-  options: { data: { rules: [{ layout: 'list', gap: 0 }] } },
+  options: { rules: [{ layout: 'list', gap: 0 }] },
   components: [
     heading('Our promises'),
     link('Free delivery', '/', IconTypes.Carrier),
@@ -71,8 +67,7 @@ const promises = {
 const aboutUs = {
   type: 'oryx-content-text',
   content: {
-    data: {
-      text: `<b>About us</b><br/>
+    text: `<b>About us</b><br/>
         <a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>
@@ -80,7 +75,6 @@ const aboutUs = {
         <a href="/">Press</a><br/>
         <a href="/">Corporate information</a>
         `,
-    },
   },
 };
 
@@ -88,13 +82,11 @@ const selfServiceLinks = {
   type: 'oryx-composition',
   name: 'Self service',
   options: {
-    data: {
-      rules: [
-        { layout: 'column', columnCount: 3 },
-        { query: { breakpoint: 'md' }, columnCount: 2 },
-        { query: { breakpoint: 'sm' }, columnCount: 2 },
-      ],
-    },
+    rules: [
+      { layout: 'column', columnCount: 3 },
+      { query: { breakpoint: 'md' }, columnCount: 2 },
+      { query: { breakpoint: 'sm' }, columnCount: 2 },
+    ],
   },
   components: [customerSupport, promises, aboutUs],
 };
@@ -102,26 +94,23 @@ const selfServiceLinks = {
 const paymentLinks = {
   type: 'oryx-composition',
   id: 'paymentLinks',
-  options: { data: { rules: [{ layout: 'list', colSpan: 2 }] } },
+  options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
     heading('Safe Payment methods'),
     {
       type: 'oryx-composition',
       options: {
-        data: {
-          rules: [
-            { layout: 'column', columnCount: 3 },
-            { query: { breakpoint: 'md' }, columnCount: 2 },
-            {
-              query: { childs: true },
-
-              ratio: '4/3',
-              background: 'var(--oryx-color-neutral-1)',
-              radius: 5,
-              padding: '0.5vw',
-            },
-          ],
-        },
+        rules: [
+          { layout: 'column', columnCount: 3 },
+          { query: { breakpoint: 'md' }, columnCount: 2 },
+          {
+            query: { childs: true },
+            ratio: '4/3',
+            background: 'var(--oryx-color-neutral-1)',
+            radius: 5,
+            padding: '0.5vw',
+          },
+        ],
       },
       components: [
         image('mastercard'),
@@ -138,26 +127,24 @@ const paymentLinks = {
 const shippingLinks = {
   type: 'oryx-composition',
   id: 'shippingLinks',
-  options: { data: { rules: [{ layout: 'list', colSpan: 2 }] } },
+  options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
     heading('Shipping partners'),
     {
       type: 'oryx-composition',
       options: {
-        data: {
-          rules: [
-            { layout: 'column', columnCount: 3 },
-            { query: { breakpoint: 'md' }, columnCount: 2 },
-            {
-              query: { childs: true },
+        rules: [
+          { layout: 'column', columnCount: 3 },
+          { query: { breakpoint: 'md' }, columnCount: 2 },
+          {
+            query: { childs: true },
 
-              ratio: '4/3',
-              background: 'var(--oryx-color-neutral-1)',
-              radius: 5,
-              padding: '0.5vw',
-            },
-          ],
-        },
+            ratio: '4/3',
+            background: 'var(--oryx-color-neutral-1)',
+            radius: 5,
+            padding: '0.5vw',
+          },
+        ],
       },
       components: [image('dhl'), image('hermes'), image('dhlExpress')],
     },
@@ -167,13 +154,13 @@ const shippingLinks = {
 const mobileAppsLinks = {
   type: 'oryx-composition',
   id: 'mobileAppsLinks',
-  options: { data: { rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }] } },
+  options: { rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }] },
   components: [
     heading('Spryker apps'),
     {
       type: 'oryx-composition',
       options: {
-        data: { rules: [{ layout: 'flex', align: 'center' }] },
+        rules: [{ layout: 'flex', align: 'center' }],
       },
       components: [image('playStore'), image('appleStore')],
     },
@@ -183,16 +170,14 @@ const mobileAppsLinks = {
 const socialLinks = {
   type: 'oryx-composition',
   options: {
-    data: {
-      rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }],
-    },
+    rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }],
   },
   components: [
     heading('You can also find us on'),
     {
       type: 'oryx-composition',
       options: {
-        data: { rules: [{ layout: 'flex', align: 'center', gap: 20 }] },
+        rules: [{ layout: 'flex', align: 'center', gap: 20 }],
       },
       components: [
         image('pinterest'),
@@ -206,20 +191,16 @@ const socialLinks = {
 
 const otherLinks = {
   type: 'oryx-composition',
-  options: { data: { rules: [{ layout: 'list' }] } },
+  options: { rules: [{ layout: 'list' }] },
   components: [
     {
       type: 'oryx-composition',
-      options: { data: { rules: [{ layout: 'column', columnCount: 6 }] } },
+      options: { rules: [{ layout: 'column', columnCount: 6 }] },
       components: [paymentLinks, mobileAppsLinks],
     },
     {
       type: 'oryx-composition',
-      options: {
-        data: {
-          rules: [{ layout: 'column', columnCount: 6 }],
-        },
-      },
+      options: { rules: [{ layout: 'column', columnCount: 6 }] },
       components: [shippingLinks, socialLinks],
     },
   ],
@@ -228,7 +209,7 @@ const otherLinks = {
 const topFooter = {
   type: 'oryx-composition',
   id: 'topFooter',
-  options: { data: { rules: [{ layout: 'split', gap: '10px' }] } },
+  options: { rules: [{ layout: 'split', gap: '10px' }] },
   components: [selfServiceLinks, otherLinks],
 };
 
@@ -245,16 +226,14 @@ export const FooterTemplate: StaticComponent = {
           type: 'oryx-composition',
           components: [topFooter, legalLinks],
           options: {
-            data: {
-              rules: [
-                {
-                  layout: 'flex',
-                  vertical: true,
-                  divider: true,
-                  gap: '40px 18px',
-                },
-              ],
-            },
+            rules: [
+              {
+                layout: 'flex',
+                vertical: true,
+                divider: true,
+                gap: '40px 18px',
+              },
+            ],
           },
         },
       ],
@@ -262,20 +241,18 @@ export const FooterTemplate: StaticComponent = {
     { type: 'oryx-site-notification-center' },
   ],
   options: {
-    data: {
-      rules: [
-        {
-          layout: 'flex',
-          divider: true,
-          top: '100%',
-          background: 'var(--oryx-color-neutral-3)',
-          padding: '30 0',
-          bleed: true,
-          sticky: true,
-          typography: 'small',
-          style: 'line-height: 24px;',
-        },
-      ],
-    },
+    rules: [
+      {
+        layout: 'flex',
+        divider: true,
+        top: '100%',
+        background: 'var(--oryx-color-neutral-3)',
+        padding: '30 0',
+        bleed: true,
+        sticky: true,
+        typography: 'small',
+        style: 'line-height: 24px;',
+      },
+    ],
   },
 };

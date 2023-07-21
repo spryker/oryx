@@ -1,4 +1,4 @@
-import { componentDef } from '@spryker-oryx/core';
+import { componentDef } from '@spryker-oryx/utilities';
 import { ProductAverageRatingOptions } from './average-rating.model';
 
 declare global {

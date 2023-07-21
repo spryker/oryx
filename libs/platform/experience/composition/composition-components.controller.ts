@@ -37,11 +37,11 @@ export class CompositionComponentsController implements ReactiveController {
     components: Component[]
   ): Observable<Component[]> {
     return combineLatest(
-      components.map((c) => {
-        const visibility = c.options?.data?.visibility;
+      components.map((component) => {
+        const visibility = component.options?.visibility;
 
         if (!visibility) {
-          return of(c);
+          return of(component);
         }
 
         if (visibility.hide) {
@@ -52,15 +52,13 @@ export class CompositionComponentsController implements ReactiveController {
           return this.tokenResolver.resolveToken(visibility.hideByRule).pipe(
             //hidden by default
             startWith(true),
-            map((value) => (value ? null : c))
+            map((value) => (value ? null : component))
           );
         }
 
-        return of(c);
+        return of(component);
       })
-    ).pipe(map((components) => components.filter((c) => c))) as Observable<
-      Component[]
-    >;
+    ).pipe(map((components) => components.filter(Boolean) as Component[]));
   }
 
   getComponents(): Observable<Component[] | null> {
@@ -74,7 +72,8 @@ export class CompositionComponentsController implements ReactiveController {
   hasDynamicallyVisibleChild(): Observable<boolean> {
     return this.components().pipe(
       map(
-        (components) => !!components?.some((c) => !!c.options?.data?.visibility)
+        (components) =>
+          !!components?.some((component) => !!component.options?.visibility)
       )
     );
   }

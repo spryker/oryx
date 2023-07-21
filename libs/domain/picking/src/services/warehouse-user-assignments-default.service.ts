@@ -28,6 +28,10 @@ export class WarehouseUserAssignmentsDefaultService
     return this.adapter.getList();
   }
 
+  getUserAssignment(): Observable<WarehouseUserAssignment | null> {
+    return this.storageService.get(warehouseUserAssignmentStorageKey);
+  }
+
   activateAssignment(
     assignmentId: string
   ): Observable<WarehouseUserAssignment> {

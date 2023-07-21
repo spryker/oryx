@@ -1,4 +1,3 @@
-import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
 import {
   Breakpoint,
   Breakpoints,
@@ -8,6 +7,7 @@ import {
   CssStylesWithMedia,
   DefaultMedia,
   getPropByPath,
+  resolveLazyLoadable,
 } from '@spryker-oryx/utilities';
 import { CSSResult, unsafeCSS } from 'lit';
 import { Color } from '../../color';

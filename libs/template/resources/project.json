@@ -25,5 +25,5 @@
       }
     }
   },
-  "tags": ["layer:template", "lib:resources"]
+  "tags": ["layer:template"]
 }

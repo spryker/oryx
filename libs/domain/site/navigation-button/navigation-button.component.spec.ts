@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { beforeEach } from 'vitest';
 import { NavigationButtonComponent } from './navigation-button.component';
@@ -69,9 +69,7 @@ describe('NavigationButtonComponent', () => {
     });
 
     it('should render oryx-icon with proper type', () => {
-      const icons = element.renderRoot.querySelector('oryx-icon');
-      expect(element).toContainElement(`oryx-icon`);
-      expect(icons).toHaveProperty(`type`, testPlaceholder);
+      expect(element).toContainElement(`oryx-icon[type="${testPlaceholder}"]`);
     });
   });
 

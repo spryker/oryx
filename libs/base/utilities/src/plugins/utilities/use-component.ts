@@ -3,7 +3,7 @@ import {
   ComponentDefImpl,
   ComponentInfo,
   ComponentType,
-} from '@spryker-oryx/core';
+} from '../components';
 
 const isDefGuard = (def: ComponentInfo): def is ComponentDef =>
   !!(def as ComponentDef).name;

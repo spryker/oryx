@@ -1,5 +1,5 @@
-import { componentDef } from '@spryker-oryx/core';
 import { UserAddressListItemOptions } from '@spryker-oryx/user/address-list-item';
+import { componentDef } from '@spryker-oryx/utilities';
 
 declare global {
   interface FeatureOptions {
