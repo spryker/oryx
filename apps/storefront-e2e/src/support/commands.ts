@@ -76,7 +76,10 @@ Cypress.Commands.add('goToCheckout', () => {
   // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(250);
 
-  cy.intercept('/customers/*/addresses').as('addressesRequest');
+  cy.intercept({
+    method: 'GET',
+    url: '/customers/*/addresses',
+  }).as('addressesRequest');
   cartPage.checkout();
   cy.wait('@addressesRequest');
 });
@@ -107,18 +110,27 @@ Cypress.Commands.add('goToCheckoutAsGuest', () => {
   cy.wait('@addressesRequest');
 });
 
+// this action is temporarily changed
+// because of constant hydation issues and instability
+//
+// All tests, including regression, will be run against SPA build
+// till SSR is not fixed completely
+//
+// still, smoke tests should run against SSR build
 Cypress.Commands.add(
   'hydrateElemenet',
   (assetPath: string, triggerHydrationFn) => {
-    cy.intercept(assetPath).as(`${assetPath}Request`);
+    if (Cypress.env('isSSR')) {
+      cy.intercept(assetPath).as(`${assetPath}Request`);
 
-    triggerHydrationFn();
+      triggerHydrationFn();
 
-    cy.wait(`@${assetPath}Request`);
+      cy.wait(`@${assetPath}Request`);
 
-    // wait till hydrated elements are re-rendered
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
+      // wait till hydrated elements are re-rendered
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
+    }
   }
 );
 

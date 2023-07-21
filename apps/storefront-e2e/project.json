@@ -52,7 +52,8 @@
           "tag": "smoke",
           "group": "sf-smoke",
           "env": {
-            "grepTags": "smoke"
+            "grepTags": "smoke",
+            "isSSR": true
           }
         }
       }
