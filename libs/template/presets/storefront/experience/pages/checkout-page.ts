@@ -18,28 +18,24 @@ export const checkoutPage: StaticComponent = {
     {
       type: 'oryx-content-text',
       content: {
-        data: {
-          text: `
+        text: `
           <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
           <p>Your shopping cart is empty</p><oryx-button>
           <a href="/search">Shop now</a></oryx-button>`,
-        },
       },
       options: {
-        data: {
-          visibility: { hideByRule: 'CART.!EMPTY' },
-          rules: [
-            {
-              colSpan: 2,
-              background: 'var(--oryx-color-neutral-3)',
-              width: '66%',
-              margin: 'auto',
-              padding: '20px',
-              radius: '4px',
-              style: `display: grid;gap:14px;justify-items:center;`,
-            },
-          ],
-        },
+        visibility: { hideByRule: 'CART.!EMPTY' },
+        rules: [
+          {
+            colSpan: 2,
+            background: 'var(--oryx-color-neutral-3)',
+            width: '66%',
+            margin: 'auto',
+            padding: '20px',
+            radius: '4px',
+            style: `display: grid;gap:14px;justify-items:center;`,
+          },
+        ],
       },
     },
     {
