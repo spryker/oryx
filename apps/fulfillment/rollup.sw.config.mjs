@@ -14,7 +14,7 @@ const env = Object.fromEntries(
 );
 
 export default {
-  input: 'sw/main.ts',
+  input: 'sw/app.ts',
   output: {
     dir: 'dev-dist/sw',
     format: 'es',
