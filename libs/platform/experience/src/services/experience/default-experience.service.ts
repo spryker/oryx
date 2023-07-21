@@ -10,7 +10,7 @@ import {
   throwError,
 } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ExperienceDataService, StaticComponent } from '../experience-data';
+import { ExperienceComponent, ExperienceDataService } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
@@ -23,7 +23,7 @@ export class DefaultExperienceService implements ExperienceService {
   protected dataComponent: DataStore<Component> = {};
   protected dataContent: DataStore = {};
   protected dataOptions: DataStore = {};
-  protected staticData: StaticComponent[] = [];
+  protected staticData: ExperienceComponent[] = [];
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
@@ -49,7 +49,7 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected processComponent(
-    _component: Component | StaticComponent,
+    _component: Component | ExperienceComponent,
     shouldStore = true
   ): void {
     const components = [_component];

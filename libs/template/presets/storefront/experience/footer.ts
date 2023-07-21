@@ -1,4 +1,4 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 
 const image = (graphic: string) => ({
@@ -217,7 +217,7 @@ const topFooter = {
   components: [selfServiceLinks, otherLinks],
 };
 
-export const FooterTemplate: StaticComponent = {
+export const FooterTemplate: ExperienceComponent = {
   id: 'footer',
   type: 'Page',
   meta: { title: 'Footer', route: '/_footer' },

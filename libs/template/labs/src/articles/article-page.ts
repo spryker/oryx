@@ -1,9 +1,9 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { SuggestionField } from '@spryker-oryx/search';
 import { ContentfulContentFields } from './contentful';
 import { StoryblokContentFields } from './storyblok';
 
-export const articlesPage: StaticComponent = {
+export const articlesPage: ExperienceComponent = {
   type: 'Page',
   meta: { route: `/${ContentfulContentFields.Article}` },
   options: {
@@ -38,7 +38,7 @@ export const articlesPage: StaticComponent = {
   ],
 };
 
-export const articlePage: StaticComponent = {
+export const articlePage: ExperienceComponent = {
   type: 'Page',
   meta: { route: `/${ContentfulContentFields.Article}/:id` },
   options: {
@@ -58,7 +58,7 @@ export const articlePage: StaticComponent = {
   ],
 };
 
-export const faqsPage: StaticComponent = {
+export const faqsPage: ExperienceComponent = {
   type: 'Page',
   meta: { route: `/${StoryblokContentFields.Faq}` },
   options: {
@@ -93,7 +93,7 @@ export const faqsPage: StaticComponent = {
   ],
 };
 
-export const faqPage: StaticComponent = {
+export const faqPage: ExperienceComponent = {
   type: 'Page',
   meta: { route: `/${StoryblokContentFields.Faq}/:id` },
   options: {

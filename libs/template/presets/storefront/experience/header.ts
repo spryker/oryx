@@ -1,7 +1,7 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 
-export const HeaderTemplate: StaticComponent = {
+export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
   type: 'Page',
   meta: { title: 'Header', route: '/_header' },

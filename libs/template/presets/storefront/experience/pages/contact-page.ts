@@ -1,7 +1,7 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 
-export const contactPage: StaticComponent = {
+export const contactPage: ExperienceComponent = {
   id: 'contact',
   type: 'Page',
   meta: {

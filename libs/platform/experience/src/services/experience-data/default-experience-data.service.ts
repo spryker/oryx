@@ -1,26 +1,26 @@
 import { inject } from '@spryker-oryx/di';
 import {
+  ExperienceComponent,
+  ExperienceData,
   ExperienceDataMergeType,
   ExperienceDataService,
-  ExperienceStaticData,
-  StaticComponent,
 } from './experience-data.service';
 
 interface MergeProperties {
-  data: StaticComponent;
-  components?: StaticComponent[];
+  data: ExperienceComponent;
+  components?: ExperienceComponent[];
   componentIndex?: number;
   type: string;
   name?: string;
 }
 
 export class DefaultExperienceDataService implements ExperienceDataService {
-  protected recordsById: Record<string, StaticComponent> = {};
-  protected records: StaticComponent[] = [];
+  protected recordsById: Record<string, ExperienceComponent> = {};
+  protected records: ExperienceComponent[] = [];
 
-  constructor(protected staticData = inject(ExperienceStaticData, [])) {}
+  constructor(protected staticData = inject(ExperienceData, [])) {}
 
-  getData(): StaticComponent[] {
+  getData(): ExperienceComponent[] {
     const staticData = this.staticData
       .flat()
       .sort((a) => (a.strategy ? 0 : -1));
@@ -44,7 +44,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     return [...this.records, ...Object.values(this.recordsById)];
   }
 
-  protected processMerging(data: StaticComponent): void {
+  protected processMerging(data: ExperienceComponent): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const strategy = data.strategy!;
     let { components } = this.recordsById[strategy?.id];

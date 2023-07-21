@@ -1,6 +1,6 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const cartPage: StaticComponent = {
+export const cartPage: ExperienceComponent = {
   id: 'cart',
   type: 'Page',
   meta: {

@@ -1,7 +1,7 @@
 import { Provider } from '@spryker-oryx/di';
 import { Component } from '@spryker-oryx/experience';
 
-export const ExperienceStaticData = 'oryx.ExperienceStaticData*';
+export const ExperienceData = 'oryx.ExperienceData*';
 export const ExperienceDataService = 'oryx.ExperienceDataService';
 
 export const enum ExperienceDataMergeType {
@@ -19,34 +19,34 @@ export interface ExperienceDataMergeStrategy extends ExperienceDataMergeTypes {
   id: string;
 }
 
-export type StaticComponent = Partial<
+export type ExperienceComponent = Partial<
   Omit<Component<unknown>, 'components'>
 > & {
-  components?: StaticComponent[];
+  components?: ExperienceComponent[];
   strategy?: ExperienceDataMergeStrategy;
 };
 
 export interface ExperienceDataService {
-  getData(): StaticComponent[];
+  getData(): ExperienceComponent[];
 }
 
-export interface ExperienceStaticData {
-  data: StaticComponent | StaticComponent[];
+export interface ExperienceData {
+  data: ExperienceComponent | ExperienceComponent[];
   strategy?: ExperienceDataMergeStrategy;
 }
 
 export function provideExperienceData(
-  data: StaticComponent | StaticComponent[]
+  data: ExperienceComponent | ExperienceComponent[]
 ): Provider {
   return {
-    provide: ExperienceStaticData,
+    provide: ExperienceData,
     useValue: data,
   };
 }
 
 declare global {
   interface InjectionTokensContractMap {
-    [ExperienceStaticData]: StaticComponent | StaticComponent[];
+    [ExperienceData]: ExperienceComponent | ExperienceComponent[];
     [ExperienceDataService]: ExperienceDataService;
   }
 }

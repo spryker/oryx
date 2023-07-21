@@ -1,4 +1,4 @@
-import { StaticComponent, StyleRuleSet } from '@spryker-oryx/experience';
+import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
 
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
   type: 'oryx-content-image',
@@ -7,7 +7,7 @@ const brand = (name: string, rules?: StyleRuleSet[]) => ({
   options: { rules },
 });
 
-export const homePage: StaticComponent = {
+export const homePage: ExperienceComponent = {
   id: 'home',
   type: 'Page',
   meta: {
