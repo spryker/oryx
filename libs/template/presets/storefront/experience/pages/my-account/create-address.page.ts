@@ -1,6 +1,7 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 
 export const createAddressPage: StaticComponent = {
+  id: 'create-address',
   type: 'Page',
   meta: {
     title: 'Create address Page',

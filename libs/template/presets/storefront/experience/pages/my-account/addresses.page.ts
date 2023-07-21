@@ -2,6 +2,7 @@ import { StaticComponent } from '@spryker-oryx/experience';
 import { EditTarget } from '@spryker-oryx/user/address-list-item';
 
 export const addressBookPage: StaticComponent = {
+  id: 'address-book',
   type: 'Page',
   meta: {
     title: 'Address book',

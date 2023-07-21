@@ -19,12 +19,9 @@ export interface ExperienceDataMergeStrategy extends ExperienceDataMergeTypes {
   id: string;
 }
 
-export type StaticComponent = Omit<
-  Component<unknown>,
-  'id' | 'components' | 'type'
+export type StaticComponent = Partial<
+  Omit<Component<unknown>, 'components'>
 > & {
-  id?: string;
-  type?: string;
   components?: StaticComponent[];
   strategy?: ExperienceDataMergeStrategy;
 };

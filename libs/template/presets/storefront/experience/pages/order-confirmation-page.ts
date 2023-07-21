@@ -1,7 +1,8 @@
 import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { StaticComponent } from '@spryker-oryx/experience';
 
-export const orderPage: StaticComponent = {
+export const orderConfirmationPage: StaticComponent = {
+  id: 'order-confirmation',
   type: 'Page',
   meta: {
     title: 'Order Confirmation Page',

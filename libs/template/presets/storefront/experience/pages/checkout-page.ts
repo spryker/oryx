@@ -2,6 +2,7 @@ import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { StaticComponent } from '@spryker-oryx/experience';
 
 export const checkoutPage: StaticComponent = {
+  id: 'checkout',
   type: 'Page',
   meta: {
     title: 'Checkout Page',

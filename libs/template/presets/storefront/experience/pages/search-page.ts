@@ -1,6 +1,7 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 
 export const searchPage: StaticComponent = {
+  id: 'search',
   type: 'Page',
   meta: {
     title: 'Search',
