@@ -2,6 +2,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ContentImageContent, ContentImageOptions } from './image.model';
 import { contentImageStyles } from './image.styles';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 @defaultOptions({ fit: 'cover' })
 export class ContentImageComponent extends ContentMixin<
@@ -16,7 +17,7 @@ export class ContentImageComponent extends ContentMixin<
     if (!image && !graphic) return;
 
     if (link) {
-      return html`<a .href=${link} aria-label=${label || alt}>
+      return html`<a href=${link} aria-label=${ifDefined(label || alt)}>
         ${this.renderImage()}
       </a>`;
     } else {
@@ -28,10 +29,10 @@ export class ContentImageComponent extends ContentMixin<
     const { image, graphic, alt } = this.$content();
 
     return html`<oryx-image
-      .resource=${graphic}
-      .src=${!graphic && image}
-      .style=${this.getStyles()}
-      .alt=${alt}
+      resource=${ifDefined(graphic)}
+      src=${ifDefined(!graphic ? image : undefined)}
+      style=${ifDefined(this.getStyles())}
+      alt=${ifDefined(alt)}
     ></oryx-image>`;
   }
 
