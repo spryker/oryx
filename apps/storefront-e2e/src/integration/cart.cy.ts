@@ -275,8 +275,9 @@ function checkCartTotals(totals: {
 
 function checkEmptyCart() {
   cartPage
-    .getCartEntriesWrapper()
+    .getEmptyCartMessageWrapper()
     .contains('Your shopping cart is empty')
     .should('be.visible');
+  cartPage.getCartEntriesWrapper().should('not.be.visible');
   cartPage.getCartTotals().getWrapper().should('not.be.visible');
 }
