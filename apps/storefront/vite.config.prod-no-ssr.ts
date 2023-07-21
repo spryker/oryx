@@ -6,7 +6,11 @@ export default defineConfig({
   envDir: viteConfig.root,
   envPrefix: viteConfig.envPrefix,
   server: {
+    port: 3000,
+  },
+  preview: {
     port: 3001,
+    strictPort: true,
   },
   publicDir: '../../../libs/template/presets/public',
   plugins: [...viteConfig.plugins()],

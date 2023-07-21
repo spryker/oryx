@@ -16,7 +16,7 @@
       "options": {
         "commands": [
           "npx vite build -c vite.config.prod-no-ssr.ts",
-          "npx vite preview --strictPort --port 3001 -d"
+          "npx vite preview -c vite.config.prod-no-ssr.ts -d"
         ],
         "cwd": "apps/storefront",
         "parallel": false
