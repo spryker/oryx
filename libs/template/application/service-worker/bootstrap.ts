@@ -8,10 +8,12 @@ import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching';
 
 declare let self: ServiceWorkerGlobalScope;
 
-cleanupOutdatedCaches();
-precacheAndRoute(self.__WB_MANIFEST ?? []);
-skipWaiting();
-clientsClaim();
+export const bootstrap = (): void => {
+  cleanupOutdatedCaches();
+  precacheAndRoute(self.__WB_MANIFEST ?? []);
+  skipWaiting();
+  clientsClaim();
+};
 
 function skipWaiting() {
   self.addEventListener('message', (event) => {
