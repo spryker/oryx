@@ -75,8 +75,8 @@ describe('Checkout suite', { tags: 'smoke' }, () => {
 
         // check that the cart is cleared
         thankYouPage.header.getCartCount().should('not.exist');
-        thankYouPage.header.getCartSummary().click();
 
+        cartPage.visit();
         cartPage.getEmptyCartMessage().should('be.visible');
       });
     });
