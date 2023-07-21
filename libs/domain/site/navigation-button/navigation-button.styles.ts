@@ -2,18 +2,17 @@ import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 const smallScreen = css`
-  :host {
-    min-width: 59px;
-    min-height: 40px;
-  }
-
-  oryx-button {
-    --oryx-icon-size: 20px;
-  }
-
   a,
   button {
-    border-radius: 0;
+    --oryx-icon-size: 24px;
+
+    padding: 6px;
+    height: 38px;
+    width: auto;
+  }
+
+  oryx-heading {
+    display: none;
   }
 
   mark {
@@ -28,20 +27,22 @@ export const navigationButtonScreenStyles = screenCss({
 });
 
 export const siteNavigationButtonStyles = css`
-  oryx-button::part(button),
-  oryx-button::part(link) {
+  a,
+  button {
     --oryx-icon-size: 32px;
 
     position: relative;
     height: 68px;
+    width: 62px;
+    max-width: 62px;
     display: grid;
     align-content: center;
     justify-items: center;
     gap: 5px;
+    padding: 12px 8px;
   }
 
-  oryx-button::part(button):hover,
-  oryx-button::part(link):hover {
+  :is(a, button):hover {
     background-color: var(--oryx-color-primary-10);
     border-color: var(--oryx-color-primary-10);
     box-shadow: none;

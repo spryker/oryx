@@ -19,8 +19,8 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
   @property() badge?: string;
 
   protected override render(): TemplateResult {
-    const innerContent = html`
-      ${when(this.icon, () => html`<oryx-icon .type=${this.icon}></oryx-icon>`)}
+    const buttonContent = html`
+      ${when(this.icon, () => html`<oryx-icon type=${this.icon}></oryx-icon>`)}
       ${when(
         this.text,
         () =>
@@ -31,7 +31,14 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
       ${when(this.badge, () => html`<mark>${this.badge}</mark>`)}
     `;
 
-    // TODO: aria-label vs text
-    return html` <oryx-button .href=${this.url}>${innerContent}</oryx-button> `;
+    return html`
+      <oryx-button>
+        ${when(
+          this.url,
+          () => html`<a href=${this.url} slot="custom">${buttonContent}</a>`,
+          () => html`<button slot="custom">${buttonContent}</button>`
+        )}
+      </oryx-button>
+    `;
   }
 }
