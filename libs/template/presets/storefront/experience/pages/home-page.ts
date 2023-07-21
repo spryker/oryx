@@ -8,6 +8,7 @@ const brand = (name: string, rules?: StyleRuleSet[]) => ({
 });
 
 export const homePage: StaticComponent = {
+  id: 'home',
   type: 'Page',
   meta: {
     title: 'Home Page',

@@ -1,7 +1,7 @@
 import { ModeEvent } from '@spryker-oryx/ui/color-mode-selector';
 import { ContentComponentSchema } from '../../models';
 import { ResourceGraphic } from '../../plugins';
-import { StaticComponent } from '../experience/static-data';
+import { StaticComponent } from '../experience-data';
 
 export const enum MessageType {
   Graphics = 'oryx.graphics',

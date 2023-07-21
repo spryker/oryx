@@ -1,7 +1,7 @@
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { BASE_ROUTE, RouteParams, RouterService } from '@spryker-oryx/router';
-import { html, ReactiveControllerHost, TemplateResult } from 'lit';
+import { ReactiveControllerHost, TemplateResult, html } from 'lit';
 import { tap } from 'rxjs';
 import {
   PathRouteConfig,
@@ -31,14 +31,9 @@ export class LitRouter extends Routes {
         .map((registry) => registry.routes)
         .flat(),
       ...routes,
-    ].sort((a) => {
+    ]
       // moves 404 page to the end in order not to break new provided routes
-      if ((a as PathRouteConfig).path === '/*') {
-        return 0;
-      }
-
-      return -1;
-    });
+      .sort((a) => ((a as PathRouteConfig).path === '/*' ? 0 : -1));
 
     const baseRoute = resolve(BASE_ROUTE, null);
     if (baseRoute) {

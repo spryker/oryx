@@ -2,10 +2,10 @@ import { HttpService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { BehaviorSubject, switchMap } from 'rxjs';
+import { provideExperienceData } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
 import { DefaultExperienceService } from './default-experience.service';
 import { ExperienceService } from './experience.service';
-import { provideExperienceData } from './static-data';
 
 const mockStructureKey = 'bannerSlider';
 const mockDataKey = 'homepage-banner';

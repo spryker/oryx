@@ -10,10 +10,10 @@ import {
   throwError,
 } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { ExperienceDataService, StaticComponent } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
-import { ExperienceStaticData, StaticComponent } from './static-data';
 
 type DataStore<T = unknown> = Record<string, ReplaySubject<T>>;
 
@@ -23,11 +23,12 @@ export class DefaultExperienceService implements ExperienceService {
   protected dataComponent: DataStore<Component> = {};
   protected dataContent: DataStore = {};
   protected dataOptions: DataStore = {};
+  protected staticData: StaticComponent[] = [];
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
-    protected staticData = inject(ExperienceStaticData, []).flat()
+    protected experienceData = inject(ExperienceDataService)
   ) {
     this.initStaticData();
   }
@@ -37,7 +38,7 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected processStaticData(shouldStore = true): Component[] {
-    return this.staticData.map((component) => {
+    return this.experienceData.getData().map((component) => {
       this.processComponent(component, shouldStore);
 
       if (shouldStore) {

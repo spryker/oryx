@@ -3,7 +3,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 
 const image = (graphic: string) => ({
   type: 'oryx-content-image',
-  content: { graphic, alt: graphic },
+  content: { data: { graphic, alt: graphic } },
 });
 
 const heading = (text: string, rule = {}) => ({
