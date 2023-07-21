@@ -186,7 +186,13 @@ describe('Cart', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
             entries[0].getRemoveBtn().click();
+
+            cy.intercept({
+              method: 'DELETE',
+              url: '/guest-carts/*/guest-cart-items/*',
+            }).as('deleteCartItemRequest');
             cartPage.getSubmitDeleteBtn().click();
+            cy.wait('@deleteCartItemRequest');
           });
         });
 
