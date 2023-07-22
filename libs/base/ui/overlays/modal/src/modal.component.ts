@@ -1,12 +1,12 @@
 import { isFirefox } from '@spryker-oryx/ui';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nMixin, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import { I18nMixin } from '@spryker-oryx/utilities';
+import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { BACK_EVENT, CLOSE_EVENT, ModalProperties } from './modal.model';
 import { styles } from './modal.styles';
-import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 
 export class ModalComponent
   extends I18nMixin(LitElement)
@@ -172,17 +172,19 @@ export class ModalComponent
         ${when(
           this.enableCloseButtonInHeader,
           () => html`
-            <oryx-button  
-            .type=${ButtonType.Icon}
-            .size=${ButtonSize.Md} 
-            .color=${ButtonColor.Neutral} 
+            <oryx-button
+              .type=${ButtonType.Icon}
+              .size=${ButtonSize.Sm}
+              .color=${ButtonColor.Neutral}
             >
-              <button slot="custom" value="cancel" aria-label=${this.i18n(
-                'modal.close'
-              )}>
+              <button
+                slot="custom"
+                value="cancel"
+                aria-label=${this.i18n('modal.close')}
+              >
                 <oryx-icon .type=${IconTypes.Close}></oryx-icon>
               </button>
-            </oryx-icon-button>
+            </oryx-button>
           `
         )}
       </header>

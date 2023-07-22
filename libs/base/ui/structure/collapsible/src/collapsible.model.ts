@@ -18,24 +18,9 @@ export interface CollapsibleAttributes {
   appearance?: CollapsibleAppearance;
 
   /**
-   * The toggle button comes in 2 types:
-   * - icon button
-   * - text button
-   *
-   * The text appearance is particularly useful for an inline collapsible
-   * that needs a show/hide button rather than an drop down/up icon.
-   */
-  toggleControlType?: CollapsibleToggleControlType;
-
-  /**
    * Prevent focus by keyboard navigation
    */
   nonTabbable?: boolean;
-}
-
-export const enum CollapsibleToggleControlType {
-  IconButton = 'iconButton',
-  TextButton = 'textButton',
 }
 
 export const enum CollapsibleAppearance {

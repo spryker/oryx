@@ -70,8 +70,16 @@ export const styles = css`
     flex: 1 0;
   }
 
-  slot[name='navigation-back'] button {
-    padding: 0;
+  slot[name='navigate-back'] oryx-button {
+    margin-inline-start: -7px;
+  }
+
+  header > oryx-button {
+    margin-inline-end: -7px;
+  }
+
+  slot[name='navigation-back'] oryx-button {
+    outline: solid 3px red;
   }
 
   :host([footerButtonFullWidth]) footer oryx-button,
@@ -82,12 +90,9 @@ export const styles = css`
 
 export const screenStyles = screenCss({
   sm: css`
-    header oryx-icon-button:last-child button {
+    oryx-button {
+      --oryx-button-height: 38px;
       --oryx-icon-size: var(--oryx-icon-size-lg);
-
-      padding: 6px;
-      max-height: 38px;
-      margin-block: -7px;
     }
   `,
 });

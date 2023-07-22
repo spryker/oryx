@@ -12,10 +12,10 @@ const baseStyles = css`
   :is(a, button),
   ::slotted(:is(a, button)) {
     all: unset;
-    height: var(--_height);
+    height: var(--oryx-button-height, var(--_height));
     min-width: var(--_height);
-    padding-inline: var(--_padding-inline);
-    background: var(--_background-color);
+    padding: var(--oryx-button-padding, 0 var(--_padding-inline));
+    background: var(--oryx-button-background, var(--_background-color));
     border-radius: var(--oryx-button-border-radius, 4px);
     gap: var(--_gap, 8px);
     box-shadow: var(--_box-shadow);
@@ -28,7 +28,7 @@ const baseStyles = css`
   :host(:is(:not([type]), [type='solid'], [type='outline'])) :is(a, button),
   :host(:is(:not([type]), [type='solid'], [type='outline']))
     ::slotted(:is(a, button)) {
-    border: solid 2px var(--_border-color);
+    border: var(--oryx-button-border, solid 2px var(--_border-color));
   }
 
   :host([block]) {
@@ -244,12 +244,15 @@ const iconStyles = css`
   :host([type='icon']) :is(button, a)::before,
   :host([type='icon']) ::slotted(:is(button, a))::before {
     content: '';
-    height: var(--_height);
+    height: var(--oryx-button-height, var(--_height));
     aspect-ratio: 1/1;
     position: absolute;
     z-index: -1;
-    background: var(--_background-color);
-    border: solid 1px var(--_border-color, transparent);
+    background: var(--oryx-button-background, var(--_background-color));
+    border: var(
+      --oryx-button-border,
+      solid 1px var(--_border-color, transparent)
+    );
     border-radius: 50%;
     transition: var(--oryx-transition-time);
   }

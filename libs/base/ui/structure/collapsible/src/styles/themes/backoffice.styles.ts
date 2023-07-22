@@ -43,14 +43,6 @@ const styles = [
       box-shadow: var(--oryx-box-shadow-focus);
     }
 
-    oryx-icon-button {
-      color: var(--oryx-color-neutral-9);
-    }
-
-    summary:hover oryx-icon-button {
-      color: var(--oryx-color-neutral-11);
-    }
-
     :host(${blockSelector}) slot:not([name]) {
       display: block;
       padding-block: 13px;

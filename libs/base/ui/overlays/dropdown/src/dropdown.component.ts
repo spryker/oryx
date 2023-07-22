@@ -1,7 +1,8 @@
+import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { PopoverController } from '@spryker-oryx/ui/popover';
-import { hydrate, queryFirstFocusable, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { Size, hydrate, queryFirstFocusable } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DropdownProperties, Position } from './dropdown.model';
 import { dropdownBaseStyles, dropdownStyles } from './styles';
@@ -28,13 +29,13 @@ export class DropdownComponent
   protected override render(): TemplateResult {
     return html`
       <slot name="trigger">
-        <oryx-icon-button .size=${this.triggerIconSize}>
-          <button aria-label=${this.toggleButtonAriaLabel}>
-            <slot name="icon"
-              ><oryx-icon .type=${IconTypes.Actions}></oryx-icon
-            ></slot>
-          </button>
-        </oryx-icon-button>
+        <oryx-button
+          .type=${ButtonType.Icon}
+          .size=${this.triggerIconSize}
+          .color=${ButtonColor.Neutral}
+          .label=${this.toggleButtonAriaLabel}
+          .icon=${IconTypes.Actions}
+        ></oryx-button>
       </slot>
 
       <oryx-popover

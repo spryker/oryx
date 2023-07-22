@@ -19,7 +19,7 @@ export class CartEntryFragment {
   getOriginalPrice = () =>
     this.getWrapper().find('oryx-product-price').find('[part="original"]');
   getSubtotal = () => this.getWrapper().find('oryx-site-price').shadow();
-  getRemoveBtn = () => this.getWrapper().find('[aria-label="remove"]');
+  getRemoveBtn = () => this.getWrapper().find('[aria-label="Remove"]');
   getQuantityInput = () =>
     new QuantityInputFragment(
       this.getWrapper().find('oryx-cart-quantity-input')
