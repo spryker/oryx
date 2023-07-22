@@ -5,8 +5,7 @@ export class HeaderFragment {
 
   getCurrencySelector = () =>
     this.getWrapper().find('oryx-site-currency-selector');
-  getCurrencyButton = () =>
-    this.getCurrencySelector().find('oryx-button').find('button');
+  getCurrencyButton = () => this.getCurrencySelector().find('oryx-button');
 
   getLocaleSelector = () => this.getWrapper().find('oryx-site-locale-selector');
   getLocaleButton = () => this.getLocaleSelector().find('oryx-button');
