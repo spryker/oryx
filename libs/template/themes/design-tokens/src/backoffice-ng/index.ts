@@ -3,6 +3,7 @@ import { Size } from '@spryker-oryx/utilities';
 import { color } from '../color.tokens';
 import { tokens } from './other.tokens';
 
+import { buttonTokens } from '../backoffice/button.token';
 import {
   typographySmallTokens,
   typographyTokens,
@@ -11,6 +12,7 @@ import { commonTokensSmall } from '../common-tokens';
 import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
 
 export const backofficeNgTokens: DesignToken[] = [
+  ...buttonTokens,
   {
     color,
     ...tokens,
@@ -45,6 +47,5 @@ export const backofficeNgTokens: DesignToken[] = [
     },
     ...layoutSmTokens,
     ...commonTokensSmall,
-    'button-sm-icon-size': '20px',
   },
 ];
