@@ -45,5 +45,6 @@ export const backofficeNgTokens: DesignToken[] = [
     },
     ...layoutSmTokens,
     ...commonTokensSmall,
+    'button-sm-icon-size': '20px',
   },
 ];

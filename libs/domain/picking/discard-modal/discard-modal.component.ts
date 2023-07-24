@@ -1,7 +1,7 @@
 import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { BACK_EVENT, CLOSE_EVENT } from '@spryker-oryx/ui/modal';
-import { I18nMixin, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { I18nMixin } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { discardModalStyles } from './discard-modal.styles';
 
@@ -32,7 +32,7 @@ export class DiscardPickingComponent extends I18nMixin(LitElement) {
         <oryx-button
           slot="footer"
           .type=${ButtonType.Outline}
-          .color=${ButtonColor.Secondary}
+          .color=${ButtonColor.Neutral}
           .size=${ButtonSize.Md}
           @click=${this.close}
         >

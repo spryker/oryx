@@ -1,7 +1,7 @@
-import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonSize } from '@spryker-oryx/ui/button';
 import { BACK_EVENT } from '@spryker-oryx/ui/modal';
-import { I18nMixin, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { I18nMixin } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 
 export class PickingInProgressModalComponent extends I18nMixin(LitElement) {
@@ -23,10 +23,9 @@ export class PickingInProgressModalComponent extends I18nMixin(LitElement) {
         slot="footer"
         .color=${ButtonColor.Primary}
         .size=${ButtonSize.Md}
+        .text=${this.i18n('picking.list.back-to-pick-lists')}
         @click=${this.closeButton}
-      >
-        ${this.i18n('picking.list.back-to-pick-lists')}
-      </oryx-button>
+      ></oryx-button>
     </oryx-modal>`;
   }
 

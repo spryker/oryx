@@ -1,7 +1,7 @@
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { NavigateBackAttributes } from './navigate-back.model';
 import { navigateBackComponentStyles } from './navigate-back.styles';
@@ -19,9 +19,10 @@ export class NavigateBackComponent
     return html`
       <oryx-button
         .type=${ButtonType.Text}
+        .color=${ButtonColor.Neutral}
         .icon=${IconTypes.ArrowBack}
         .text=${this.i18n('picking.button.back')}
-        href=${this.url}
+        .href=${this.url}
       ></oryx-button>
     `;
   }

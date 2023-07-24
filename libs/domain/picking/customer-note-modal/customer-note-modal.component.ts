@@ -28,9 +28,9 @@ export class CustomerNoteModalComponent extends I18nMixin(LitElement) {
           slot="footer"
           .color=${ButtonColor.Primary}
           .size=${ButtonSize.Md}
-          @click=${this.close}
           .icon=${IconTypes.Check}
           .text=${this.i18n('picking-lists.customer-note.got-it')}
+          @click=${this.close}
         ></oryx-button>
       </oryx-modal>
     `;

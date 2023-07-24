@@ -89,10 +89,9 @@ export class WarehouseAssignmentComponent extends LitElement {
 
             <oryx-button
               .size=${ButtonSize.Sm}
+              .text=${i18n('picking.select')}
               @click=${() => this.onSelect(item.id)}
-            >
-              ${i18n('picking.select')}
-            </oryx-button>
+            ></oryx-button>
             <hr />
           `
         )}

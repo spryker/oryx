@@ -5,14 +5,24 @@ const baseStyles = css`
   :host {
     ${headingUtil(HeadingTag.Bold)};
 
-    color: var(--_text-color);
+    color: var(--oryx-button-color, var(--_text-color));
     isolation: isolate;
+  }
+
+  :host([block]) {
+    /* display: flex; */
+    width: 100%;
+  }
+
+  slot {
+    width: inherit;
   }
 
   :is(a, button),
   ::slotted(:is(a, button)) {
     all: unset;
     height: var(--oryx-button-height, var(--_height));
+    width: inherit;
     min-width: var(--_height);
     padding: var(--oryx-button-padding, 0 var(--_padding-inline));
     background: var(--oryx-button-background, var(--_background-color));
@@ -29,15 +39,6 @@ const baseStyles = css`
   :host(:is(:not([type]), [type='solid'], [type='outline']))
     ::slotted(:is(a, button)) {
     border: var(--oryx-button-border, solid 2px var(--_border-color));
-  }
-
-  :host([block]) {
-    display: flex;
-  }
-
-  :host([block]) :is(a, button),
-  :host([block]) ::slotted(:is(a, button)) {
-    width: 100%;
   }
 
   :is(a, button),
@@ -101,9 +102,13 @@ const sizeStyles = css`
 const colorStyles = css`
   :host([type='text']),
   :host([type='outline']),
-  :host([type='icon']),
+  /* :host([type='icon']), */
   :host(:is([type='solid'], :not([type]))[loading]) {
     --_text-color: var(--_c9, var(--oryx-color-primary-9));
+  }
+
+  :host([type='icon']) {
+    --_text-color: var(--_c9, var(--oryx-color-neutral-9));
   }
 
   :host(:is([type='solid'], :not([type]))) {
@@ -155,12 +160,12 @@ const colorStyles = css`
   }
 
   :host([type='icon']:hover) {
-    --_border-color: var(--_c7, var(--oryx-color-primary-7));
+    --_border-color: var(--_c7, var(--oryx-color-neutral-8));
     --_background-color: var(--oryx-color-neutral-3);
   }
 
   :host([type='icon']:active) {
-    --_border-color: var(--_c9, var(--oryx-color-primary-9));
+    --_border-color: var(--_c9, var(--oryx-color-neutral-9));
   }
 
   :host([type='solid'][color='neutral']) {
@@ -223,7 +228,7 @@ const iconStyles = css`
 
   :host([size='sm']),
   :host([type='text']) {
-    --oryx-icon-size: 16px;
+    --oryx-icon-size: var(--oryx-button-sm-icon-size, 16px);
   }
 
   :host([type='icon']:is(:not([size]), [size='lg'])) {

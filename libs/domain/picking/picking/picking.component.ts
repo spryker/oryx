@@ -295,12 +295,11 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
       >
         <div>
           <oryx-button
-            .color=${ButtonColor.Primary}
             .type=${ButtonType.Outline}
+            .color=${ButtonColor.Primary}
+            .text=${this.i18n('picking.finish-picking')}
             @click=${this.finishPicking}
-          >
-            ${this.i18n('picking.finish-picking')}
-          </oryx-button>
+          ></oryx-button>
         </div>
       </div>
     `;

@@ -28,9 +28,6 @@ export const styles = css`
 
   .warehouses-list oryx-button {
     display: block;
-  }
-
-  .warehouses-list button {
     margin-block-start: 16px;
   }
 

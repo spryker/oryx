@@ -103,11 +103,11 @@ export class UserAddressListItemComponent extends AddressMixin(
 
     if (editTarget === EditTarget.Link) {
       return html`
-        <oryx-icon-button outline>
-          <a href=${this.editLink()}>
-            <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
-          </a>
-        </oryx-icon-button>
+        <oryx-button
+          .type=${ButtonType.Icon}
+          .icon=${IconTypes.Edit}
+          .href=${this.editLink()}
+        ></oryx-button>
       `;
     }
 

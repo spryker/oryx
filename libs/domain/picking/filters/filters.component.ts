@@ -6,13 +6,13 @@ import {
   PickingListService,
   SortableQualifier,
 } from '@spryker-oryx/picking';
+import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { map } from 'rxjs';
 import { getFilterFields } from './filters.model';
 import { filtersComponentStyles } from './filters.styles';
-import { ButtonType } from '@spryker-oryx/ui/button';
 
 export class FiltersComponent extends I18nMixin(LitElement) {
   static styles = filtersComponentStyles;
@@ -90,9 +90,12 @@ export class FiltersComponent extends I18nMixin(LitElement) {
           <h4>${this.i18n('picking.filter.sort')}</h4>
         </oryx-heading>
 
-        <oryx-button slot="navigate-back" .type=${ButtonType.Text}>
-          ${this.i18n('picking.filter.reset')}
-        </oryx-button>
+        <oryx-button
+          slot="navigate-back"
+          .color=${ButtonColor.Neutral}
+          .type=${ButtonType.Text}
+          .text=${this.i18n('picking.filter.reset')}
+        ></oryx-button>
 
         <form @submit=${this.onSubmit} @keydown=${this.onApply}>
           ${this.fieldRenderer.buildForm(getFilterFields(), {
@@ -100,9 +103,11 @@ export class FiltersComponent extends I18nMixin(LitElement) {
           })}
         </form>
 
-        <oryx-button slot="footer" @click=${this.onApply}>
-          ${this.i18n('picking.filter.apply')}
-        </oryx-button>
+        <oryx-button
+          slot="footer"
+          .text=${this.i18n('picking.filter.apply')}
+          @click=${this.onApply}
+        ></oryx-button>
       </oryx-modal>
     `;
   }

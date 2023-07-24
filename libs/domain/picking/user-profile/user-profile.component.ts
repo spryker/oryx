@@ -88,27 +88,27 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
 
       <div class="info-footer">
         <oryx-button
-          ?loading=${this.logoutLoading}
           .type=${ButtonType.Outline}
           .color=${ButtonColor.Neutral}
+          .text=${this.i18n('user.profile.log-out')}
+          block
+          ?loading=${this.logoutLoading}
+          ?disabled=${this.$isPicking() || this.$pendingSyncs()}
           @click=${this.onLogOut}
-          ?disabled="${this.$isPicking() || this.$pendingSyncs()}"
-        >
-          ${this.i18n('user.profile.log-Out')}
-        </oryx-button>
+        ></oryx-button>
 
         ${when(
           this.$isMainPage(),
           () =>
             html`
               <oryx-button
-                ?loading=${this.loading}
                 .type=${ButtonType.Outline}
                 .color=${ButtonColor.Neutral}
+                .text=${this.i18n('user.profile.receive-data')}
+                block
+                ?loading=${this.loading}
                 @click=${this.onReceiveData}
-              >
-                ${this.i18n('user.profile.receive-Data')}
-              </oryx-button>
+              ></oryx-button>
             `
         )}
       </div>

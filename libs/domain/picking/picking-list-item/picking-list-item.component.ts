@@ -4,8 +4,8 @@ import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { asyncValue, I18nMixin, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { I18nMixin, asyncValue } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { catchError, of, tap } from 'rxjs';
 import { PickingListItemAttributes } from './picking-list-item.model';
@@ -88,28 +88,31 @@ export class PickingListItemComponent
           ${when(
             this.pickingList?.cartNote,
             () => html`
-              <oryx-icon-button
+              <oryx-button
+                class="show-customer"
+                .type=${ButtonType.Icon}
                 .size=${ButtonSize.Md}
-                aria-label="Show customer note"
+                .icon=${IconTypes.Info}
+                .label=${this.i18n(
+                  'picking.picking-list-item.show-customer-note'
+                )}
                 @click=${this.showCustomerNote}
-              >
-                <oryx-icon .type=${IconTypes.Info}></oryx-icon>
-              </oryx-icon-button>
+              ></oryx-button>
             `
           )}
         </div>
 
         <oryx-button
           slot="footer"
+          class="start-picking"
           .color=${ButtonColor.Primary}
           .size=${ButtonSize.Lg}
+          .text=${this.i18n('picking.picking-list-item.start-picking')}
           ?loading=${this.upcomingPickingListId === this.pickingList.id}
           ?disabled=${this.upcomingPickingListId &&
           this.upcomingPickingListId !== this.pickingList.id}
           @click=${this.startPicking}
-        >
-          ${this.i18n('picking.picking-list-item.start-picking')}
-        </oryx-button>
+        ></oryx-button>
       </oryx-card>
     `;
   }

@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { PickingHeaderService, PickingListMixin } from '@spryker-oryx/picking';
 import { DiscardPickingComponent } from '@spryker-oryx/picking/discard-modal';
 import { RouterService } from '@spryker-oryx/router';
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin, subscribe } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
@@ -32,23 +32,22 @@ export class PickingHeaderComponent extends I18nMixin(
       )
     );
 
-  protected renderCartNoteButton(): TemplateResult {
-    return html`${this.pickingList?.cartNote
-      ? html`
-          <oryx-button
-            .type=${ButtonType.Icon}
-            .label=${this.i18n('oryx.picking.customer-note')}
-            @click=${() => (this.isCartNoteVisible = true)}
-            .icon=${IconTypes.Info}
-          ></oryx-button>
-          <oryx-customer-note-modal
-            ?open=${this.isCartNoteVisible}
-            @oryx.close=${() => (this.isCartNoteVisible = false)}
-          >
-            ${this.pickingList?.cartNote}
-          </oryx-customer-note-modal>
-        `
-      : ''}`;
+  protected renderCartNoteButton(): TemplateResult | void {
+    if (this.pickingList?.cartNote) {
+      return html`<oryx-button
+          .type=${ButtonType.Icon}
+          .size=${ButtonSize.Md}
+          .label=${this.i18n('oryx.picking.customer-note')}
+          .icon=${IconTypes.Info}
+          @click=${() => (this.isCartNoteVisible = true)}
+        ></oryx-button>
+        <oryx-customer-note-modal
+          ?open=${this.isCartNoteVisible}
+          @oryx.close=${() => (this.isCartNoteVisible = false)}
+        >
+          ${this.pickingList?.cartNote}
+        </oryx-customer-note-modal>`;
+    }
   }
 
   protected override render(): TemplateResult {
@@ -56,9 +55,10 @@ export class PickingHeaderComponent extends I18nMixin(
       <oryx-header>
         <oryx-button
           .type=${ButtonType.Icon}
-          class="back"
-          .label=${this.i18n('oryx.picking.back-to-pick-lists')}
+          .color=${ButtonColor.Neutral}
+          .size=${ButtonSize.Md}
           .icon=${IconTypes.ArrowBack}
+          .label=${this.i18n('oryx.picking.back-to-pick-lists')}
           @click=${this.back}
         ></oryx-button>
         <div class="title">${this.pickingList?.orderReferences[0]}</div>

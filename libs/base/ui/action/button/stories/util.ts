@@ -11,6 +11,7 @@ interface ButtonProps {
   disabled?: boolean;
   loading?: boolean;
   confirmed?: boolean;
+  block?: boolean;
   slotted?: 'content' | 'link' | 'button';
   href?: string;
 }
@@ -63,6 +64,7 @@ export const renderButton = (props: ButtonProps): TemplateResult => {
       .text=${text}
       .icon=${icon}
       .href=${href}
+      ?block=${props.block}
       ?disabled=${props.disabled}
       ?loading=${props.loading}
       ?confirmed=${props.confirmed}

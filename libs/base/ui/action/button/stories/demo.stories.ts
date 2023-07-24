@@ -17,6 +17,7 @@ export default {
     disabled: false,
     loading: false,
     confirmed: false,
+    block: false,
   },
   argTypes: {
     type: {

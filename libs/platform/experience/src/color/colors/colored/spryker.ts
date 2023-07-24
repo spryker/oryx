@@ -12,7 +12,7 @@ export const spryker: Color = {
     12: '#004628',
   },
   dark: {
-    0: 'black',
+    0: 'white',
     1: 'black',
     3: '#004628',
     7: '#1C6C5C',
