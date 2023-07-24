@@ -16,7 +16,13 @@ import {
 } from '@spryker-oryx/router';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { html, TemplateResult } from 'lit';
-import { lastValueFrom, Observable, Subscription, tap } from 'rxjs';
+import {
+  isObservable,
+  lastValueFrom,
+  Observable,
+  Subscription,
+  tap,
+} from 'rxjs';
 import { LitRoutesRegistry } from './lit-routes-registry';
 
 export interface BaseRouteConfig {
@@ -24,10 +30,10 @@ export interface BaseRouteConfig {
   render?: (params: { [key: string]: string | undefined }) => unknown;
   enter?: (params: {
     [key: string]: string | undefined;
-  }) => Promise<boolean> | boolean;
+  }) => Promise<boolean> | Observable<boolean> | boolean;
   leave?: (params: {
     [key: string]: string | undefined;
-  }) => Observable<boolean>;
+  }) => Promise<boolean> | Observable<boolean> | boolean;
   type?: RouteType | string;
 }
 
@@ -304,35 +310,48 @@ export class LitRouter implements ReactiveController {
         this.canDisableRouteLeaveInProgress = false;
         this.routeLeaveInProgress = true;
         const direction = timestamp > this.timestamp ? -1 : 1;
-        globalThis.history.go(direction);
 
-        let success = true;
+        let success = this._currentRoute.leave(params);
 
-        // On some browsers, history.go doesn't complete fast enough, so trying to go back with another history.go won't work.
-        // So we wait for the first history.go to complete.
-        const callback = async () => {
-          window.removeEventListener('popstate', callback);
+        if (success !== true) {
+          globalThis.history.go(direction);
+
+          success = true;
+
+          // On some browsers, history.go doesn't complete fast enough, so trying to go back with another history.go won't work.
+          // So we wait for the first history.go to complete.
+          const callback = async () => {
+            window.removeEventListener('popstate', callback);
+            if (success === false) {
+              return;
+            }
+
+            await globalThis.history.go(-direction);
+            this.canDisableRouteLeaveInProgress = true;
+          };
+          window.addEventListener('popstate', callback);
+          success = await (isObservable(this._currentRoute.leave(params))
+            ? lastValueFrom(
+                this._currentRoute.leave(params) as Observable<boolean>
+              )
+            : this._currentRoute.leave(params));
+
+          // If leave() returns false, cancel this navigation
           if (success === false) {
+            this.routeLeaveInProgress = false;
             return;
           }
-
-          await globalThis.history.go(-direction);
-          this.canDisableRouteLeaveInProgress = true;
-        };
-        window.addEventListener('popstate', callback);
-        success = await lastValueFrom(this._currentRoute.leave(params));
-        // If leave() returns false, cancel this navigation
-        if (success === false) {
-          this.routeLeaveInProgress = false;
-          return;
         }
+
         this.timestamp = timestamp;
       } else {
         this.timestamp = timestamp;
       }
 
       if (typeof route.enter === 'function') {
-        const success = await route.enter(params);
+        const success = await (isObservable(route.enter(params))
+          ? lastValueFrom(route.enter(params) as Observable<boolean>)
+          : route.enter(params));
         // If enter() returns false, cancel this navigation
         if (success === false) {
           return;

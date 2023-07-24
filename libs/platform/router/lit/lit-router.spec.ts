@@ -261,63 +261,199 @@ describe('DefaultRouterService', () => {
     });
 
     describe('when entering a route with enter guard', () => {
-      beforeEach(async () => {
-        mockRouteConfig[4].enter = vi.fn().mockReturnValue(false);
-        await router.goto('/e');
-        router.outlet();
-      });
-
-      it('should call enter guard', () => {
-        expect(mockRouteConfig[4].enter).toHaveBeenCalled();
-      });
-
-      describe('and cannot enter route', () => {
-        it('should not call render', () => {
-          expect(mockRouteConfig[4].render).not.toHaveBeenCalled();
-        });
-      });
-
-      describe('and can enter route', () => {
+      describe('and enter guard returns a boolean observable', () => {
         beforeEach(async () => {
-          mockRouteConfig[4].enter?.mockReturnValue(true);
+          mockRouteConfig[4].enter = vi.fn().mockReturnValue(of(false));
           await router.goto('/e');
           router.outlet();
         });
 
-        it('should call render', () => {
-          expect(mockRouteConfig[4].render).toHaveBeenCalled();
+        it('should call enter guard', () => {
+          expect(mockRouteConfig[4].enter).toHaveBeenCalled();
+        });
+
+        describe('and cannot enter route', () => {
+          it('should not call render', () => {
+            expect(mockRouteConfig[4].render).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('and can enter route', () => {
+          beforeEach(async () => {
+            mockRouteConfig[4].enter?.mockReturnValue(of(true));
+            await router.goto('/e');
+            router.outlet();
+          });
+
+          it('should call render', () => {
+            expect(mockRouteConfig[4].render).toHaveBeenCalled();
+          });
+        });
+      });
+
+      describe('and enter guard returns a boolean', () => {
+        beforeEach(async () => {
+          mockRouteConfig[4].enter = vi.fn().mockReturnValue(false);
+          await router.goto('/e');
+          router.outlet();
+        });
+
+        it('should call enter guard', () => {
+          expect(mockRouteConfig[4].enter).toHaveBeenCalled();
+        });
+
+        describe('and cannot enter route', () => {
+          it('should not call render', () => {
+            expect(mockRouteConfig[4].render).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('and can enter route', () => {
+          beforeEach(async () => {
+            mockRouteConfig[4].enter?.mockReturnValue(true);
+            await router.goto('/e');
+            router.outlet();
+          });
+
+          it('should call render', () => {
+            expect(mockRouteConfig[4].render).toHaveBeenCalled();
+          });
+        });
+      });
+
+      describe('and enter guard returns a boolean promise', () => {
+        beforeEach(async () => {
+          mockRouteConfig[4].enter = vi
+            .fn()
+            .mockReturnValue(new Promise((resolve) => resolve(false)));
+          await router.goto('/e');
+          router.outlet();
+        });
+
+        it('should call enter guard', () => {
+          expect(mockRouteConfig[4].enter).toHaveBeenCalled();
+        });
+
+        describe('and cannot enter route', () => {
+          it('should not call render', () => {
+            expect(mockRouteConfig[4].render).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('and can enter route', () => {
+          beforeEach(async () => {
+            mockRouteConfig[4].enter?.mockReturnValue(
+              new Promise((resolve) => resolve(true))
+            );
+            await router.goto('/e');
+            router.outlet();
+          });
+
+          it('should call render', () => {
+            expect(mockRouteConfig[4].render).toHaveBeenCalled();
+          });
         });
       });
     });
 
     describe('when leaving a route with leave guard', () => {
-      beforeEach(async () => {
-        mockRouteConfig[2].leave = vi.fn().mockReturnValue(of(false));
-        await router.goto('/c');
-        await router.goto('/a');
-        router.outlet();
-      });
-
-      it('should call leave guard', () => {
-        expect(mockRouteConfig[2].leave).toHaveBeenCalled();
-      });
-
-      describe('and cannot leave route', () => {
-        it('should not call render', () => {
-          expect(mockRouteConfig[0].render).not.toHaveBeenCalled();
-        });
-      });
-
-      describe('and can leave route', () => {
+      describe('and leave guard is a boolean', () => {
         beforeEach(async () => {
-          mockRouteConfig[2].leave?.mockReturnValue(of(true));
+          mockRouteConfig[2].leave = vi.fn().mockReturnValue(false);
           await router.goto('/c');
           await router.goto('/a');
           router.outlet();
         });
 
-        it('should call render', () => {
-          expect(mockRouteConfig[0].render).toHaveBeenCalled();
+        it('should call leave guard', () => {
+          expect(mockRouteConfig[2].leave).toHaveBeenCalled();
+        });
+
+        describe('and cannot leave route', () => {
+          it('should not call render', () => {
+            expect(mockRouteConfig[0].render).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('and can leave route', () => {
+          beforeEach(async () => {
+            mockRouteConfig[2].leave?.mockReturnValue(true);
+            await router.goto('/c');
+            await router.goto('/a');
+            router.outlet();
+          });
+
+          it('should call render', () => {
+            expect(mockRouteConfig[0].render).toHaveBeenCalled();
+          });
+        });
+      });
+
+      describe('and leave guard is a boolean promise', () => {
+        beforeEach(async () => {
+          mockRouteConfig[2].leave = vi
+            .fn()
+            .mockReturnValue(new Promise((resolve) => resolve(false)));
+          await router.goto('/c');
+          await router.goto('/a');
+          router.outlet();
+        });
+
+        it('should call leave guard', () => {
+          expect(mockRouteConfig[2].leave).toHaveBeenCalled();
+        });
+
+        describe('and cannot leave route', () => {
+          it('should not call render', () => {
+            expect(mockRouteConfig[0].render).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('and can leave route', () => {
+          beforeEach(async () => {
+            mockRouteConfig[2].leave?.mockReturnValue(
+              new Promise((resolve) => resolve(true))
+            );
+            await router.goto('/c');
+            await router.goto('/a');
+            router.outlet();
+          });
+
+          it('should call render', () => {
+            expect(mockRouteConfig[0].render).toHaveBeenCalled();
+          });
+        });
+      });
+
+      describe('and leave guard is a boolean observable', () => {
+        beforeEach(async () => {
+          mockRouteConfig[2].leave = vi.fn().mockReturnValue(of(false));
+          await router.goto('/c');
+          await router.goto('/a');
+          router.outlet();
+        });
+
+        it('should call leave guard', () => {
+          expect(mockRouteConfig[2].leave).toHaveBeenCalled();
+        });
+
+        describe('and cannot leave route', () => {
+          it('should not call render', () => {
+            expect(mockRouteConfig[0].render).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('and can leave route', () => {
+          beforeEach(async () => {
+            mockRouteConfig[2].leave?.mockReturnValue(of(true));
+            await router.goto('/c');
+            await router.goto('/a');
+            router.outlet();
+          });
+
+          it('should call render', () => {
+            expect(mockRouteConfig[0].render).toHaveBeenCalled();
+          });
         });
       });
     });
