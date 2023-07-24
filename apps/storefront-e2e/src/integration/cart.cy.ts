@@ -61,13 +61,7 @@ describe('Cart', () => {
       });
 
       it('should render an empty message', () => {
-        cartPage
-          .getCartEntriesWrapper()
-          .contains('Your shopping cart is empty')
-          .should('be.visible');
-
-        cartPage.getCartEntriesHeading().should('not.exist');
-        cartPage.getCartTotals().getWrapper().should('not.be.visible');
+        cartPage.hasEmptyCart();
       });
     });
 
@@ -100,7 +94,7 @@ describe('Cart', () => {
         });
 
         it('should have an empty cart', () => {
-          checkEmptyCart();
+          cartPage.hasEmptyCart();
         });
       });
 
@@ -178,7 +172,7 @@ describe('Cart', () => {
         });
 
         it('should have an empty cart', () => {
-          checkEmptyCart();
+          cartPage.hasEmptyCart();
         });
       });
 
@@ -197,7 +191,7 @@ describe('Cart', () => {
         });
 
         it('should have an empty cart', () => {
-          checkEmptyCart();
+          cartPage.hasEmptyCart();
         });
       });
     });
@@ -271,12 +265,4 @@ function checkCartTotals(totals: {
     .getTaxMessage()
     .should('be.visible')
     .and('contain.text', 'Tax included');
-}
-
-function checkEmptyCart() {
-  cartPage
-    .getCartEntriesWrapper()
-    .contains('Your shopping cart is empty')
-    .should('be.visible');
-  cartPage.getCartTotals().getWrapper().should('not.be.visible');
 }
