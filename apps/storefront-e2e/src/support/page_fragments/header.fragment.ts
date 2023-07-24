@@ -25,9 +25,7 @@ export class HeaderFragment {
   getCartCount = () => this.getCartSummary().find('mark');
 
   logout = () => {
-    this.getOpenUserMenuButton().click();
-    this.getUserSummaryMenu().should('have.attr', 'open');
-
+    this.getUserSummary().click();
     this.getLogoutButton().click();
   };
 
