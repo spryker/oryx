@@ -77,7 +77,7 @@ describe('Checkout suite', { tags: 'smoke' }, () => {
         thankYouPage.header.getCartCount().should('not.exist');
         thankYouPage.header.getCartSummary().click();
 
-        cartPage.getEmptyCartMessage().should('be.visible');
+        cartPage.hasEmptyCart();
       });
     });
   });
@@ -127,7 +127,7 @@ describe('Checkout suite', { tags: 'smoke' }, () => {
         thankYouPage.header.getCartCount().should('not.exist');
         thankYouPage.header.getCartSummary().click();
 
-        cartPage.getEmptyCartMessage().should('be.visible');
+        cartPage.hasEmptyCart();
       });
     });
   });

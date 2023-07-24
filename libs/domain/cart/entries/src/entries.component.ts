@@ -21,9 +21,8 @@ export class CartEntriesComponent extends CartComponentMixin(
 ) {
   static styles = cartEntriesStyles;
 
-  // TODO: implement loading state
   protected override render(): TemplateResult | void {
-    if (this.$isEmpty()) return this.renderEmpty();
+    if (this.$isEmpty()) return;
 
     return html`
       <oryx-heading>
@@ -50,19 +49,6 @@ export class CartEntriesComponent extends CartComponentMixin(
           `;
         }
       )}
-    `;
-  }
-
-  // TODO: we like to remove this, since this should be content managed
-  protected renderEmpty(): TemplateResult {
-    return html`
-      <section class="empty">
-        <oryx-icon .type=${IconTypes.Cart}></oryx-icon>
-        <p>Your shopping cart is empty</p>
-        <oryx-button size="large">
-          <button>Shop now</button>
-        </oryx-button>
-      </section>
     `;
   }
 }
