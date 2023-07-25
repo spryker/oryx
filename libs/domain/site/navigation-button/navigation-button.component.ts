@@ -32,11 +32,11 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
     `;
 
     return html`
-      <oryx-button>
+      <oryx-button .href=${this.url}>
         ${when(
           this.url,
-          () => html`<a href=${this.url} slot="custom">${buttonContent}</a>`,
-          () => html`<button slot="custom">${buttonContent}</button>`
+          () => html`${buttonContent}`,
+          () => html`${buttonContent}`
         )}
       </oryx-button>
     `;

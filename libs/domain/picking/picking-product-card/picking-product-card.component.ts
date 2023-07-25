@@ -6,13 +6,14 @@ import {
   PickingListItem,
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
+import { ButtonSize } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { createRef, ref, Ref } from 'lit/directives/ref.js';
+import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { pickingProductCardComponentStyles } from './picking-product-card.styles';
 
@@ -100,9 +101,10 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
         </div>
 
         <oryx-button
-          ?disabled=${!this.isCorrectNumberOfPickedProvided}
+          .size=${ButtonSize.Md}
           .icon=${IconTypes.Check}
           .text=${this.i18n('picking.product-card.done')}
+          ?disabled=${!this.isCorrectNumberOfPickedProvided}
         ></oryx-button>
       </form>
     `;
@@ -166,9 +168,9 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
         ${when(subtext, () => html`<p>${subtext}</p>`)}
       </div>
       <oryx-button
-        @click=${this.editProductPicking}
         .icon=${IconTypes.Edit}
         .text=${this.i18n('picking.product-card.edit-items')}
+        @click=${this.editProductPicking}
       ></oryx-button>
     `;
   }

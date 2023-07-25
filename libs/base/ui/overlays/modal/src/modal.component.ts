@@ -174,7 +174,7 @@ export class ModalComponent
           () => html`
             <oryx-button
               .type=${ButtonType.Icon}
-              .size=${ButtonSize.Sm}
+              .size=${ButtonSize.Md}
               .color=${ButtonColor.Neutral}
             >
               <button

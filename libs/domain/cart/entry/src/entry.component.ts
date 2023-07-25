@@ -134,7 +134,6 @@ export class CartEntryComponent
         <oryx-button
           .type=${ButtonType.Icon}
           .size=${ButtonSize.Md}
-          .color=${ButtonColor.Neutral}
           .icon=${IconTypes.Trash}
           .label=${this.i18n('remove')}
           ?disabled=${this.$isBusy()}

@@ -1,4 +1,4 @@
-import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
@@ -19,6 +19,7 @@ export class NavigateBackComponent
     return html`
       <oryx-button
         .type=${ButtonType.Text}
+        .size=${ButtonSize.Md}
         .color=${ButtonColor.Neutral}
         .icon=${IconTypes.ArrowBack}
         .text=${this.i18n('picking.button.back')}

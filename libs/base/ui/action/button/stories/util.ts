@@ -58,9 +58,9 @@ export const renderButton = (props: ButtonProps): TemplateResult => {
 
   return html`
     <oryx-button
-      .type=${props.type}
+      .type=${props.type ?? ButtonType.Solid}
       .color=${props.color}
-      .size=${props.size}
+      .size=${props.size ?? ButtonSize.Lg}
       .text=${text}
       .icon=${icon}
       .href=${href}
@@ -95,7 +95,6 @@ export const renderButtons = (
     renderButton({ ...props, type: ButtonType.Text, text }),
     renderButton({ ...props, type: ButtonType.Text, text, icon }),
     renderButton({ ...props, type: ButtonType.Icon, icon }),
-    renderButton({ ...props, type: ButtonType.Icon, icon, text }),
   ]}
 `;
 
@@ -109,20 +108,19 @@ export const staticButtons = (
 ): TemplateResult => html`
   <section @click=${onClick}>
     <span></span>
-    <span style="grid-column: 2 / span 3">Solid (default)</span>
-    <span style="grid-column: 5 / span 3">Outline</span>
-    <span style="grid-column: 8 / span 2">Text</span>
-    <span style="grid-column: 10 / -1">Icon</span>
+    <b style="grid-column: 2 / span 3">Solid (default)</b>
+    <b style="grid-column: 5 / span 3">Outline</b>
+    <b style="grid-column: 8 / span 2">Text</b>
+    <b>Icon</b>
     <span style="grid-column: 2">Text only</span>
     <span>With icon</span>
     <span>Icon only</span>
     <span>Icon</span>
-    <span>Medium</span>
-    <span>Small</span>
+    <span>With icon</span>
+    <span>Icon only</span>
     <span>Text</span>
-    <span>Text and icon</span>
-    <span>Large</span>
-    <span>Medium</span>
+    <span>With icon</span>
+    <span></span>
 
     <h3 style="grid-column: 1 / -1">Button properties</h3>
     ${sizes.map((size) => html`${renderButtons(size, { size, color })}`)}
@@ -136,7 +134,7 @@ export const staticButtons = (
 
     <h3 style="grid-column: 1 / -1">Link properties</h3>
     ${sizes.map((size) => html`${renderButtons(size, { size, color, href })}`)}
-    ${renderButtons('disabled', { disabled, size: ButtonSize.Lg, color, href })}
+    ${renderButtons('disabled', { disabled, color, href })}
     ${renderButtons('loading', { loading, color, href })}
     ${renderButtons('confirmed', { confirmed, color, href })}
 
@@ -186,7 +184,7 @@ export const staticButtons = (
   <style>
     section {
       display: grid;
-      grid-template-columns: repeat(11, max-content);
+      grid-template-columns: repeat(10, max-content);
       gap: 10px;
       justify-items: start;
       align-items: center;

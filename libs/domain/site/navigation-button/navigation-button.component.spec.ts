@@ -55,8 +55,10 @@ describe('NavigationButtonComponent', () => {
     });
 
     it('should render anchor element with proper href', () => {
-      const button = element.renderRoot.querySelector('oryx-button');
-      expect(button).toHaveProperty('href', url);
+      expect(element.renderRoot.querySelector('oryx-button')).toHaveProperty(
+        'href',
+        url
+      );
     });
   });
 

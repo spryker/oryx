@@ -91,6 +91,7 @@ export class PickingListItemComponent
               <oryx-button
                 class="show-customer"
                 .type=${ButtonType.Icon}
+                .color=${ButtonColor.Primary}
                 .size=${ButtonSize.Md}
                 .icon=${IconTypes.Info}
                 .label=${this.i18n(

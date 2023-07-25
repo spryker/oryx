@@ -10,9 +10,13 @@ export const buttonComponent = componentDef({
         {
           media: { screen: Size.Sm },
           css: css`
-            :host(:not([type='icon'])) {
+            /* :host {
+              --oryx-button-size-factor: 1;
+            } */
+
+            /* :host(:not([type='icon'])) {
               width: 100%;
-            }
+            } */
           `,
         },
       ],

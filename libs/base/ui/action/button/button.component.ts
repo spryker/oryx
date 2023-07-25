@@ -13,6 +13,30 @@ import {
 import { buttonStyles } from './button.styles';
 import { hydrateSlotChange } from './prehydrate';
 
+/**
+ * The `oryx-button` can handle both form buttons and links. The UI will be the same
+ * for a link or button.
+ *
+ * All buttons support both text and icons. The icons are typically rendered before the text,
+ * but it is possible to "slot in" your customer UI.
+ *
+ * The button component comes in various flavours. There are different properties to influence the UI:
+ *
+ * ### ButtonType
+ * The ButtonType supports 4 variations:
+ * - `solid` a button with a solid background.
+ * - `outline` a button with an outline and a neutral background.
+ * - `icon` a button that is build
+ * - `text`
+ *
+ * ### Color
+ * The `ButtonColor` supports 3 colors:
+ * - Primary
+ * - Neutral
+ * - Error
+ *
+ * Only a couple of the color shades are used for the button UI.
+ */
 @ssrShim('style')
 @hydrate()
 export class ButtonComponent
@@ -31,20 +55,25 @@ export class ButtonComponent
   @property() icon?: Icons | string;
   @property() href?: string;
 
-  @property({ reflect: true }) type?: ButtonType;
-  @property({ reflect: true }) size?: ButtonSize;
-  @property({ type: Boolean, reflect: true }) block?: boolean;
+  @property({ reflect: true }) type = ButtonType.Solid;
+  @property({ reflect: true }) size = ButtonSize.Lg;
+  @property({ reflect: true }) color?: ButtonColor;
 
-  @property() set color(color: ButtonColor) {
-    if (!color) return;
-    this.style.setProperty('--_c0', `var(--oryx-color-${color}-0, white)`);
-    this.style.setProperty('--_c1', `var(--oryx-color-${color}-1)`);
-    this.style.setProperty('--_c3', `var(--oryx-color-${color}-3)`);
-    this.style.setProperty('--_c7', `var(--oryx-color-${color}-7)`);
-    this.style.setProperty('--_c8', `var(--oryx-color-${color}-8)`);
-    this.style.setProperty('--_c9', `var(--oryx-color-${color}-9)`);
-    this.style.setProperty('--_c10', `var(--oryx-color-${color}-10)`);
-  }
+  // @property({ reflect: true }) set color(color: ButtonColor) {
+  //   if (
+  //     !color ||
+  //     color === ButtonColor.Primary ||
+  //     color === ButtonColor.Neutral
+  //   )
+  //     return;
+  //   this.style.setProperty('--_c0', `var(--oryx-color-${color}-0, white)`);
+  //   this.style.setProperty('--_c1', `var(--oryx-color-${color}-1)`);
+  //   this.style.setProperty('--_c3', `var(--oryx-color-${color}-3)`);
+  //   this.style.setProperty('--_c7', `var(--oryx-color-${color}-7)`);
+  //   this.style.setProperty('--_c8', `var(--oryx-color-${color}-8)`);
+  //   this.style.setProperty('--_c9', `var(--oryx-color-${color}-9)`);
+  //   this.style.setProperty('--_c10', `var(--oryx-color-${color}-10)`);
+  // }
 
   @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ type: Boolean, reflect: true }) loading?: boolean;
@@ -75,8 +104,7 @@ export class ButtonComponent
         part="button"
         type="button"
         ?disabled=${this.disabled}
-        ?empty=${!this.text}
-        .ariaLabel=${this.label}
+        aria-label=${this.label ?? this.text}
       >
         ${this.renderContent()}
       </button>
@@ -85,7 +113,11 @@ export class ButtonComponent
 
   protected renderLink(): TemplateResult {
     return html`
-      <a part="link" href=${this.href} aria-label=${ifDefined(this.label)}>
+      <a
+        part="button"
+        href=${this.href}
+        .ariaLabel=${ifDefined(this.label ?? this.text)}
+      >
         ${this.renderContent()}
       </a>
     `;

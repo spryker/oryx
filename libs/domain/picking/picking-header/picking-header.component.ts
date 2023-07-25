@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { PickingHeaderService, PickingListMixin } from '@spryker-oryx/picking';
 import { DiscardPickingComponent } from '@spryker-oryx/picking/discard-modal';
 import { RouterService } from '@spryker-oryx/router';
-import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin, subscribe } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
@@ -55,7 +55,6 @@ export class PickingHeaderComponent extends I18nMixin(
       <oryx-header>
         <oryx-button
           .type=${ButtonType.Icon}
-          .color=${ButtonColor.Neutral}
           .size=${ButtonSize.Md}
           .icon=${IconTypes.ArrowBack}
           .label=${this.i18n('oryx.picking.back-to-pick-lists')}

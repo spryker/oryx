@@ -27,7 +27,6 @@ export const styles = css`
   }
 
   .warehouses-list oryx-button {
-    display: block;
     margin-block-start: 16px;
   }
 

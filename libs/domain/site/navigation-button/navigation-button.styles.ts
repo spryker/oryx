@@ -27,8 +27,7 @@ export const navigationButtonScreenStyles = screenCss({
 });
 
 export const siteNavigationButtonStyles = css`
-  a,
-  button {
+  oryx-button::part(button) {
     --oryx-icon-size: 32px;
 
     position: relative;
@@ -42,7 +41,7 @@ export const siteNavigationButtonStyles = css`
     padding: 12px 8px;
   }
 
-  :is(a, button):hover {
+  oryx-button::part(button):hover {
     background-color: var(--oryx-color-primary-10);
     border-color: var(--oryx-color-primary-10);
     box-shadow: none;

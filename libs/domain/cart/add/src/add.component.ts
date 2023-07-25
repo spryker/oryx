@@ -62,7 +62,6 @@ export class CartAddComponent extends ProductMixin(
       text=${ifDefined(enableLabel ? text : undefined)}
       label=${ifDefined(enableLabel ? undefined : text)}
       icon=${IconTypes.CartAdd}
-      ?block=${this.$options().hideQuantityInput}
       ?disabled=${this.isInvalid || !this.$hasStock()}
       @click=${this.onSubmit}
       @mouseup=${this.onMouseUp}

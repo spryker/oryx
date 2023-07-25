@@ -6,4 +6,8 @@ export const styles = css`
     flex-wrap: wrap;
     gap: 12px 17px;
   }
+
+  oryx-button {
+    display: flex;
+  }
 `;

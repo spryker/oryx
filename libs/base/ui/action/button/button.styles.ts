@@ -1,44 +1,37 @@
 import { css } from 'lit';
-import { HeadingTag, headingUtil } from '../../structure/heading/src';
 
 const baseStyles = css`
   :host {
-    ${headingUtil(HeadingTag.Bold)};
-
+    font-weight: var(--oryx-button-font-weight);
     color: var(--oryx-button-color, var(--_text-color));
     isolation: isolate;
-  }
-
-  :host([block]) {
-    /* display: flex; */
-    width: 100%;
-  }
-
-  slot {
-    width: inherit;
   }
 
   :is(a, button),
   ::slotted(:is(a, button)) {
     all: unset;
-    height: var(--oryx-button-height, var(--_height));
-    width: inherit;
-    min-width: var(--_height);
-    padding: var(--oryx-button-padding, 0 var(--_padding-inline));
-    background: var(--oryx-button-background, var(--_background-color));
-    border-radius: var(--oryx-button-border-radius, 4px);
-    gap: var(--_gap, 8px);
-    box-shadow: var(--_box-shadow);
     box-sizing: border-box;
+    height: var(--oryx-button-height, var(--_height));
+    min-width: var(--oryx-button-height, var(--_height));
+    width: 100%;
+    background: var(--oryx-button-background, var(--_background-color));
+    padding: var(--oryx-button-padding, 0 var(--_padding-inline));
+    gap: 8px;
+    border-radius: var(--oryx-button-border-radius, 4px);
+    box-shadow: var(--_box-shadow);
     text-decoration: none;
     transition: var(--oryx-transition-time);
     cursor: pointer;
+    border: var(
+      --oryx-button-border,
+      solid var(--oryx-button-border-width, 2px)
+        var(--_border-color, transparent)
+    );
   }
 
-  :host(:is(:not([type]), [type='solid'], [type='outline'])) :is(a, button),
-  :host(:is(:not([type]), [type='solid'], [type='outline']))
-    ::slotted(:is(a, button)) {
-    border: var(--oryx-button-border, solid 2px var(--_border-color));
+  :host([type='icon']) {
+    --oryx-button-border-width: 1px;
+    --oryx-button-border-radius: 50%;
   }
 
   :is(a, button),
@@ -50,12 +43,6 @@ const baseStyles = css`
     justify-content: center;
   }
 
-  :host([custom][has-icon]:not([has-text]):not([loading]):not([confirmed])),
-  :host([type='icon'][has-icon][has-text]) :is(a, button),
-  :host([type='icon'][has-icon][has-text]) ::slotted(:is(a, button)) {
-    justify-content: start;
-  }
-
   :focus-visible,
   ::slotted(:focus-visible) {
     outline: solid 2px var(--oryx-color-focus);
@@ -64,71 +51,118 @@ const baseStyles = css`
 `;
 
 const sizeStyles = css`
-  :host(:is(:not([type]), [type='solid'], [type='outline'])) {
-    --_icon-padding-inline: var(--oryx-button-icon-padding-inline, 18px);
+  :host([size='lg']) {
+    --_factor: calc(6 + var(--oryx-button-size-factor, 0));
   }
 
-  :host(:is(:not([size]), [size='lg']):is(:not([type]), [type='solid'], [type='outline'])) {
-    --_height: var(--oryx-button-lg-height, 46px);
-    --_padding-inline: var(--oryx-button-lg-padding-inline, 32px);
+  :host([size='md']) {
+    --_factor: calc(5 + var(--oryx-button-size-factor, 0));
   }
 
-  :host([size='md']:is(:not([type]), [type='solid'], [type='outline'])) {
-    --_height: var(--oryx-button-md-height, 42px);
-    --_padding-inline: var(--oryx-button-md-padding-inline, 18px);
+  :host([size='sm']) {
+    --_factor: calc(4 + var(--oryx-button-size-factor, 0));
   }
 
-  :host([size='sm']:not([type='text']):not([type='icon'])) {
-    --_height: var(--oryx-button-sm-height, 32px);
-    --_padding-inline: var(--oryx-button-sm-padding-inline, 14px);
-    --_gap: 6px;
+  :host(:is([type='solid'], [type='outline'])) {
+    --_height: var(--oryx-button-height, calc(var(--_factor) * 6px + 12px));
+  }
+
+  :host([type='solid']) {
+    --oryx-icon-size: var(
+      --oryx-solid-button-icon-size,
+      calc(var(--_factor) * 4px)
+    );
+  }
+
+  :host([type='outline']) {
+    --oryx-icon-size: var(
+      --oryx-outline-button-icon-size,
+      calc(var(--_factor) * 4px)
+    );
   }
 
   :host([type='text']) {
-    --oryx-button-border-radius: 1em;
+    --_height: var(--oryx-button-height, calc(var(--_factor) * 4px + 8px));
     --_padding-inline: 8px;
-    --_icon-padding-inline: 8px;
+    --oryx-icon-size: var(
+      --oryx-text-button-icon-size,
+      calc(var(--_factor) * 4px)
+    );
   }
 
-  :host([has-text][has-icon]:is(:not([type]), [type='solid'], [type='outline'])) {
-    --_padding-inline: var(--_icon-padding-inline, 14px);
+  :host([type='icon']) {
+    --_height: var(--oryx-button-height, calc(var(--_factor) * 6px));
+    --oryx-icon-size: var(
+      --oryx-icon-button-icon-size,
+      calc(var(--_factor) * 4px)
+    );
   }
 
-  :host(:is([has-icon]:not([has-text]), [type='none'])) {
-    --_padding-inline: 0 !important;
+  :host(:is([type='solid'], [type='outline']):is(:not([has-text]):not([has-icon]))) {
+    --_padding-inline: calc(var(--_factor) * 4px);
+  }
+
+  :host(:is([type='solid'], [type='outline'])[has-icon][has-text]) {
+    --_padding-inline: 16px;
   }
 `;
 
 const colorStyles = css`
+  :host(:is(:not([type='icon']):not([color]), [color='primary'])) {
+    --_c0: var(--oryx-color-primary-0);
+    --_c1: var(--oryx-color-primary-1);
+    --_c3: var(--oryx-color-primary-3);
+    --_c7: var(--oryx-color-primary-7);
+    --_c9: var(--oryx-color-primary-9);
+    --_c10: var(--oryx-color-primary-10);
+  }
+
+  :host(:is([type='icon']:not([color]), [color='neutral'])) {
+    --_c0: var(--oryx-color-neutral-0);
+    --_c1: var(--oryx-color-neutral-1);
+    --_c3: var(--oryx-color-neutral-3);
+    --_c7: var(--oryx-color-neutral-7);
+    --_c9: var(--oryx-color-neutral-9);
+    --_c10: var(--oryx-color-neutral-10);
+  }
+
+  :host([color='error']) {
+    --_c0: var(--oryx-color-error-0);
+    --_c1: var(--oryx-color-error-1);
+    --_c3: var(--oryx-color-error-3);
+    --_c7: var(--oryx-color-error-7);
+    --_c9: var(--oryx-color-error-9);
+    --_c10: var(--oryx-color-error-10);
+  }
+
   :host([type='text']),
   :host([type='outline']),
-  /* :host([type='icon']), */
   :host(:is([type='solid'], :not([type]))[loading]) {
-    --_text-color: var(--_c9, var(--oryx-color-primary-9));
+    --_text-color: var(--_c9);
   }
 
   :host([type='icon']) {
-    --_text-color: var(--_c9, var(--oryx-color-neutral-9));
+    --_text-color: var(--_c9);
   }
 
   :host(:is([type='solid'], :not([type]))) {
-    --_background-color: var(--_c9, var(--oryx-color-primary-9));
-    --_text-color: var(--_c0, var(--oryx-color-primary-0));
+    --_background-color: var(--_c9);
+    --_text-color: var(--_c0);
   }
 
   :host(:is([type='solid'], :not([type]))),
   :host([type='outline']) {
-    --_border-color: var(--_c9, var(--oryx-color-primary-9));
+    --_border-color: var(--_c9);
   }
 
   :host([type='outline']),
   :host([type='icon']) {
-    --_background-color: var(--_c1, var(--oryx-color-primary-1));
+    --_background-color: var(--_c1);
   }
 
   :host(:is([type='solid'], :not([type])):active) {
-    --_background-color: var(--_c10, var(--oryx-color-primary-10));
-    --_border-color: var(--_c10, var(--oryx-color-primary-10));
+    --_background-color: var(--_c10);
+    --_border-color: var(--_c10);
   }
 
   :host(:is([type='solid'], :not([type]))[color='neutral']):active {
@@ -137,18 +171,17 @@ const colorStyles = css`
 
   :host([type='outline']:hover:not(:active)),
   :host(:is(:not([type]), [type='solid'], [type='outline'])[loading]) {
-    --_background-color: var(--_c3, var(--oryx-color-primary-3));
+    --_background-color: var(--_c3);
   }
 
   :host([type='outline']:active),
   :host([type='text']:hover) {
-    --_text-color: var(--_c10, var(--oryx-color-primary-10));
+    --_text-color: var(--_c10);
   }
 
   :host([type='outline']:active) {
-    --_border-color: var(--_c10, var(--oryx-color-primary-10));
-    --_box-shadow: 0 0 3px 0
-      var(--oryx-color-primary-9, var(--oryx-color-primary-9));
+    --_border-color: var(--_c10);
+    --_box-shadow: 0 0 3px 0 var(--oryx-color-primary-9);
   }
 
   :host(:not([type='text']):not([type='icon']):hover:not(:active)) {
@@ -160,12 +193,12 @@ const colorStyles = css`
   }
 
   :host([type='icon']:hover) {
-    --_border-color: var(--_c7, var(--oryx-color-neutral-8));
+    --_border-color: var(--_c7);
     --_background-color: var(--oryx-color-neutral-3);
   }
 
   :host([type='icon']:active) {
-    --_border-color: var(--_c9, var(--oryx-color-neutral-9));
+    --_border-color: var(--_c9);
   }
 
   :host([type='solid'][color='neutral']) {
@@ -180,18 +213,18 @@ const colorStyles = css`
       --oryx-color-neutral-12,
       var(--oryx-color-primary-12)
     );
-    --_border-color: var(--oryx-color-neutral-12, var(--oryx-color-primary-12));
+    --_border-color: var(--oryx-color-neutral-12);
   }
 
   :host([type='outline'][color='neutral']) {
-    --_text-color: var(--oryx-color-neutral-11, var(--oryx-color-primary-11));
-    --_border-color: var(--oryx-color-neutral-8, var(--oryx-color-primary-8));
+    --_text-color: var(--oryx-color-neutral-11);
+    --_border-color: var(--oryx-color-neutral-8);
   }
 
   :host(:not([type='text']):not([type='icon'])[disabled]),
   :host(:not([type='text']):not([type='icon'])) button:disabled {
     --_text-color: var(--oryx-color-neutral-9);
-    --_border-color: var(--oryx-color-neutral-6, var(--oryx-color-primary-6));
+    --_border-color: var(--oryx-color-neutral-6);
     --_background-color: var(
       --oryx-color-neutral-6,
       var(--oryx-color-primary-6)
@@ -203,77 +236,7 @@ const colorStyles = css`
   }
 
   :host([type='icon']) button:disabled {
-    --_text-color: var(--oryx-color-neutral-8, var(--oryx-color-primary-8));
-  }
-`;
-
-const iconStyles = css`
-  :host([type='icon'][has-text][has-icon]) :is(button, a),
-  :host([type='icon'][has-text][has-icon]) ::slotted(:is(button, a)) {
-    background: none;
-  }
-
-  :host([type='icon']:not([has-text][has-icon])) :is(button, a),
-  :host([type='icon']:not([has-text][has-icon])) ::slotted(:is(button, a)) {
-    border-radius: 50%;
-  }
-
-  :host([size='lg']) {
-    --oryx-icon-size: var(--oryx-button-lg-icon-size, 24px);
-  }
-
-  :host([size='md']) {
-    --oryx-icon-size: var(--oryx-button-md-icon-size, 24px);
-  }
-
-  :host([size='sm']),
-  :host([type='text']) {
-    --oryx-icon-size: var(--oryx-button-sm-icon-size, 16px);
-  }
-
-  :host([type='icon']:is(:not([size]), [size='lg'])) {
-    --_height: 38px;
-  }
-
-  :host([type='icon'][size='md']) {
-    --oryx-icon-size: 20px;
-    --_button-icon-margin: 6px;
-    --_height: 32px;
-  }
-
-  :host([type='icon'][size='sm']) {
-    --_button-icon-margin: 4px;
-    --_height: 24px;
-  }
-
-  :host([type='icon']) :is(button, a)::before,
-  :host([type='icon']) ::slotted(:is(button, a))::before {
-    content: '';
-    height: var(--oryx-button-height, var(--_height));
-    aspect-ratio: 1/1;
-    position: absolute;
-    z-index: -1;
-    background: var(--oryx-button-background, var(--_background-color));
-    border: var(
-      --oryx-button-border,
-      solid 1px var(--_border-color, transparent)
-    );
-    border-radius: 50%;
-    transition: var(--oryx-transition-time);
-  }
-
-  :host([type='icon'][has-text][has-icon]) :is(button, a)::before,
-  :host([type='icon'][has-text][has-icon]) ::slotted(:is(button, a))::before {
-    margin-inline-start: calc(var(--_button-icon-margin, 7px) * -1 - 1px);
-  }
-
-  :host([custom][type='icon'][has-text][has-icon]) [loader] {
-    margin-inline-start: var(--_button-icon-margin, 7px);
-  }
-
-  :host([type='icon'][has-text][has-icon]) {
-    --_padding-inline: var(--_button-icon-margin, 7px);
-    --_gap: calc(var(--_button-icon-margin, 8px) + 8px);
+    --_text-color: var(--oryx-color-neutral-8);
   }
 `;
 
@@ -282,14 +245,14 @@ const loadingStyles = css`
     color: transparent;
   }
 
-  :host([loading]) [loader] {
-    animation: spin 2s infinite linear;
-  }
-
   [confirmed],
   [loader] {
     position: absolute;
     color: var(--_text-color);
+  }
+
+  :host([loading]) [loader] {
+    animation: spin 2.5s infinite linear;
   }
 
   @keyframes spin {
@@ -303,6 +266,5 @@ export const buttonStyles = css`
   ${baseStyles}
   ${sizeStyles}
   ${colorStyles}
-  ${iconStyles}
   ${loadingStyles}
 `;

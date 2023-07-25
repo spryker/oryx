@@ -68,7 +68,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     const trigger = e.target as HTMLElement;
     //focus focusable part of the trigger
     (
-      (trigger.querySelector('a, button') ||
+      (trigger.querySelector('oryx-button') ||
         queryFirstFocusable(trigger)) as HTMLElement
     )?.focus();
     this.onTriggerClick();

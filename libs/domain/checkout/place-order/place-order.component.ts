@@ -3,18 +3,19 @@ import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { hydrate, I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { checkoutPlaceOrder } from './place-order.styles';
 
 @hydrate({ event: 'window:load' })
 export class CheckoutPlaceOrderComponent extends I18nMixin(
   CheckoutMixin(LitElement)
 ) {
+  static styles = checkoutPlaceOrder;
   protected router = resolve(RouterService);
 
   protected override render(): TemplateResult | void {
     if (this.$isEmpty()) return;
 
     return html`<oryx-button
-      block
       .text=${this.i18n('checkout.place-order')}
       ?inert=${this.$isBusy()}
       ?loading=${this.$isBusy()}
