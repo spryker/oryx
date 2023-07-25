@@ -21,6 +21,7 @@ export class UserAddressRemoveComponent extends I18nMixin(
     return html`
       <oryx-button
         .type=${ButtonType.Icon}
+        .size=${ButtonSize.Md}
         .label=${this.i18n('user.address.remove')}
         .icon=${IconTypes.Trash}
         @click=${this.onConfirm}

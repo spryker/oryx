@@ -40,9 +40,9 @@ export const styles = css`
     margin-inline-start: auto;
   }
 
-  .controls,
   [slot='subtext'] {
     display: flex;
+    gap: 8px;
   }
 
   [slot='subtext'] {

@@ -3,6 +3,7 @@ import { hydrate, preHydrate, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { when } from 'lit/directives/when.js';
 import {
   ButtonColor,
   ButtonComponentAttributes,
@@ -122,7 +123,8 @@ export class ButtonComponent
   }
 
   protected renderContent(): TemplateResult {
-    return html`${this.renderIcon()}${this.text}
+    return html`${this.renderIcon()}
+      ${when(this.type !== ButtonType.Icon, () => html`${this.text}`)}
       <slot @slotchange=${() => this.onSlotChange()}> </slot>`;
   }
 

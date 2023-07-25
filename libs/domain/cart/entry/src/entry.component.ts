@@ -196,7 +196,9 @@ export class CartEntryComponent
         ?loading=${this.$isBusy()}
         @click=${(ev: Event) => this.removeEntry(ev, true)}
       >
-        <button value="remove">${this.i18n(`cart.entry.remove`)}</button>
+        <button slot="custom" value="remove">
+          ${this.i18n(`cart.entry.remove`)}
+        </button>
       </oryx-button>
     </oryx-modal>`;
   }

@@ -30,16 +30,7 @@ export default {
       control: { type: 'select' },
     },
     color: {
-      options: [
-        ButtonColor.Primary,
-        ButtonColor.Secondary,
-        ButtonColor.Neutral,
-        ButtonColor.Highlight,
-        ButtonColor.Error,
-        ButtonColor.Warning,
-        ButtonColor.Info,
-        ButtonColor.Success,
-      ],
+      options: [ButtonColor.Primary, ButtonColor.Neutral, ButtonColor.Error],
       control: { type: 'select' },
     },
     icon: {

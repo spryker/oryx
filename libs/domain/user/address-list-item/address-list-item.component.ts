@@ -3,7 +3,7 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AddressMixin, CrudState } from '@spryker-oryx/user';
 import { computed, hydrate } from '@spryker-oryx/utilities';
@@ -105,6 +105,7 @@ export class UserAddressListItemComponent extends AddressMixin(
       return html`
         <oryx-button
           .type=${ButtonType.Icon}
+          .size=${ButtonSize.Md}
           .icon=${IconTypes.Edit}
           .href=${this.editLink()}
         ></oryx-button>
@@ -114,6 +115,7 @@ export class UserAddressListItemComponent extends AddressMixin(
     return html`
       <oryx-button
         .type=${ButtonType.Icon}
+        .size=${ButtonSize.Md}
         .icon=${IconTypes.Edit}
         .label=${this.i18n('user.address.edit')}
         @click=${this.onEdit}
