@@ -34,9 +34,18 @@ export class AddressesModalFragment {
   };
 
   addAddress = (addressData?) => {
+    cy.intercept('/assets/addresses/*.json').as('addressesDataRequest');
     this.getAddAddressButton().click();
+    cy.wait('@addressesDataRequest');
+
     this.addAddressForm.fillAddressForm(addressData);
+
+    cy.intercept({
+      method: 'POST',
+      url: '/customers/*/addresses',
+    }).as('postUserAddressesRequest');
     this.addAddressForm.getSaveAddressBtn().click();
+    cy.wait('@postUserAddressesRequest');
   };
 
   editCity = (newCity: string, addressEq: number) => {
@@ -47,15 +56,29 @@ export class AddressesModalFragment {
       .eq(0)
       .click();
 
-    this.addAddressForm.getCityInput().clear().type(newCity, { force: true });
+    this.addAddressForm
+      .getCityInput()
+      .clear({ force: true })
+      .type(newCity, { force: true });
 
+    cy.intercept({
+      method: 'PATCH',
+      url: '/customers/*/addresses/*',
+    }).as('patchUserAddressesRequest');
     this.addAddressForm.getSaveAddressBtn().click();
+    cy.wait('@patchUserAddressesRequest');
   };
 
   removeAddress = (eq: number) => {
     // click remove icon-button
     this.addressesList.getAddressListItem().eq(eq).find('button').eq(1).click();
+
+    cy.intercept({
+      method: 'DELETE',
+      url: '/customers/*/addresses/*',
+    }).as('deleteUserAddressesRequest');
     // click remove button in remove address modal
     cy.get('oryx-user-address-remove').find('button').eq(1).click();
+    cy.wait('@deleteUserAddressesRequest');
   };
 }

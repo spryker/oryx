@@ -1,16 +1,17 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { RouteType } from '@spryker-oryx/router';
+import { LinkService } from '@spryker-oryx/site';
 import { IconComponent } from '@spryker-oryx/ui/icon';
 import { LinkComponent } from '@spryker-oryx/ui/link';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { ContentLinkComponent } from './link.component';
 import { contentLinkComponent } from './link.def';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
+class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/page'));
 }
 
@@ -26,14 +27,13 @@ describe('ContentLinkComponent', () => {
     const injector = createInjector({
       providers: [
         {
-          provide: SemanticLinkService,
+          provide: LinkService,
           useClass: MockSemanticLinkService,
         },
       ],
     });
 
-    semanticLinkService =
-      injector.inject<MockSemanticLinkService>(SemanticLinkService);
+    semanticLinkService = injector.inject<MockSemanticLinkService>(LinkService);
   });
 
   afterEach(() => {
@@ -95,7 +95,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: SemanticLinkType.Product,
+            type: RouteType.Product,
             id: '123',
             params: { foo: 'bar' },
           }}
@@ -103,9 +103,9 @@ describe('ContentLinkComponent', () => {
       );
     });
 
-    it('should resolve the link from the SemanticLinkService', () => {
+    it('should resolve the link from the LinkService', () => {
       expect(semanticLinkService.get).toHaveBeenCalledWith({
-        type: SemanticLinkType.Product,
+        type: RouteType.Product,
         id: '123',
         params: { foo: 'bar' },
       });
@@ -131,7 +131,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: SemanticLinkType.Page,
+            type: RouteType.Page,
             noopener: true,
           }}
         ></oryx-content-link>`
@@ -148,7 +148,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: SemanticLinkType.Page,
+            type: RouteType.Page,
             nofollow: true,
           }}
         ></oryx-content-link>`
@@ -165,7 +165,7 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: SemanticLinkType.Page,
+            type: RouteType.Page,
             noopener: true,
             nofollow: true,
           }}

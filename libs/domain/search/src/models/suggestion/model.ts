@@ -1,21 +1,13 @@
 import { Product } from '@spryker-oryx/product';
-import { SemanticLinkType } from '@spryker-oryx/site';
-import { DirectiveResult } from 'lit/async-directive';
+import { RouteType } from '@spryker-oryx/router';
 import { SuggestionField } from '../../services';
-
-export interface SuggestionLinks {
-  title?: DirectiveResult;
-  options: SuggestionResource[];
-  type: SemanticLinkType;
-  id?: string;
-}
 
 export interface SuggestionResource {
   name: string;
   url?: string;
   params?: Record<string, string>;
   id?: string;
-  type?: SemanticLinkType;
+  type?: RouteType | string;
 }
 
 export interface Suggestion {

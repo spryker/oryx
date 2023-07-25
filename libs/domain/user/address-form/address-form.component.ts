@@ -1,5 +1,9 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import {
+  CompositionLayout,
+  ContentMixin,
+  defaultOptions,
+} from '@spryker-oryx/experience';
 import {
   FormFieldDefinition,
   FormFieldType,
@@ -17,11 +21,11 @@ import {
 } from '@spryker-oryx/user';
 import {
   computed,
-  hydratable,
+  hydrate,
   signal,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import {
   AddressForm,
@@ -30,7 +34,7 @@ import {
 } from './address-form.model';
 
 @defaultOptions({ fallbackCountry: 'DE' })
-@hydratable(['mouseover', 'focusin'])
+@hydrate({ event: ['mouseover', 'focusin'] })
 export class UserAddressFormComponent
   extends FormMixin(ContentMixin<AddressFormOptions>(LitElement))
   implements AddressFormAttributes
@@ -72,7 +76,10 @@ export class UserAddressFormComponent
         @change=${this.onChange}
         style="--oryx-grid-item-size: var(--oryx-form-grid-size)"
       >
-        <oryx-layout layout="grid" style="--column-gap: 20px;--row-gap: 20px;">
+        <oryx-layout
+          .layout=${CompositionLayout.Grid}
+          style="--column-gap: 20px;--row-gap: 20px;"
+        >
           ${this.renderCountrySelector()}
           ${this.fieldRenderer.buildForm(
             this.getFormFields(),
@@ -139,7 +146,6 @@ export class UserAddressFormComponent
     return html`<oryx-select
       label="country"
       @oryx.close=${(e: Event): void => e.stopPropagation()}
-      style="grid-column: 1 / span 2"
     >
       <select
         name="iso2Code"

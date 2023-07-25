@@ -1,7 +1,8 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
+import { CategoryIdNormalizer } from '../category-id';
 import { ProductNormalizer } from '../product';
 import { DeserializedAbstract } from './model';
 
@@ -14,15 +15,19 @@ export function concreteProductsNormalizer(
   const concreteProductsKey = camelize(
     ApiProductModel.Includes.ConcreteProducts
   );
+  const categoryKey = camelize(ApiProductModel.Includes.CategoryNodes);
 
   return combineLatest(
     data
       .filter((abstract) => abstract[concreteProductsKey]?.length)
       .map((abstract) =>
-        transformer.transform(
-          abstract[concreteProductsKey]?.[0],
-          ProductNormalizer
-        )
+        combineLatest([
+          transformer.transform(
+            abstract[concreteProductsKey]?.[0],
+            ProductNormalizer
+          ),
+          transformer.transform(abstract[categoryKey], CategoryIdNormalizer),
+        ]).pipe(map(([product, nodeId]) => ({ ...product, ...nodeId })))
       )
   );
 }

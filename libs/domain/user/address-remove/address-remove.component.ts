@@ -1,13 +1,13 @@
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AddressMixin } from '@spryker-oryx/user';
-import { hydratable, I18nMixin, Size } from '@spryker-oryx/utilities';
+import { hydrate, I18nMixin, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { tap } from 'rxjs';
 import { styles } from './address-remove.styles';
 
-@hydratable(['mouseover', 'focusin'])
+@hydrate({ event: ['mouseover', 'focusin'] })
 export class UserAddressRemoveComponent extends I18nMixin(
   AddressMixin(LitElement)
 ) {

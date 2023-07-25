@@ -21,7 +21,6 @@ describe('Cart', () => {
 
       beforeEach(() => {
         pdp.visit();
-        pdp.hydrateAddToCart();
         pdp.addItemsToTheCart(1);
       });
 
@@ -58,24 +57,18 @@ describe('Cart', () => {
   describe('when the cart page is visited', () => {
     describe('and the cart is empty', () => {
       beforeEach(() => {
-        cartPage.visit();
+        cy.goToCartAsGuest();
       });
 
       it('should render an empty message', () => {
-        cartPage
-          .getCartEntriesWrapper()
-          .contains('Your shopping cart is empty')
-          .should('be.visible');
-
-        cartPage.getCartEntriesHeading().should('not.exist');
-        cartPage.getCartTotals().getWrapper().should('not.be.visible');
+        cartPage.hasEmptyCart();
       });
     });
 
-    describe('and there is an item in cart', () => {
+    describe('and there is an item in the cart', () => {
       beforeEach(() => {
         scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
-        cartPage.visit();
+        cy.goToCartAsGuest();
       });
 
       it('should render the cart entries and totals', () => {
@@ -101,7 +94,7 @@ describe('Cart', () => {
         });
 
         it('should have an empty cart', () => {
-          checkEmptyCart();
+          cartPage.hasEmptyCart();
         });
       });
 
@@ -179,7 +172,7 @@ describe('Cart', () => {
         });
 
         it('should have an empty cart', () => {
-          checkEmptyCart();
+          cartPage.hasEmptyCart();
         });
       });
 
@@ -187,12 +180,38 @@ describe('Cart', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
             entries[0].getRemoveBtn().click();
+
+            cy.intercept({
+              method: 'DELETE',
+              url: '/guest-carts/*/guest-cart-items/*',
+            }).as('deleteCartItemRequest');
             cartPage.getSubmitDeleteBtn().click();
+            cy.wait('@deleteCartItemRequest');
           });
         });
 
         it('should have an empty cart', () => {
-          checkEmptyCart();
+          cartPage.hasEmptyCart();
+        });
+      });
+
+      describe('and some BE error occurs while editing cart', () => {
+        beforeEach(() => {
+          cy.failApiCall(
+            {
+              method: 'PATCH',
+              url: '/guest-carts/*/guest-cart-items/*',
+            },
+            () => {
+              cartPage.getCartEntries().then((entries) => {
+                entries[0].getQuantityInput().increase();
+              });
+            }
+          );
+        });
+
+        it('should show an error in global notification center', () => {
+          cy.checkGlobalNotificationAfterFailedApiCall(cartPage);
         });
       });
     });
@@ -266,12 +285,4 @@ function checkCartTotals(totals: {
     .getTaxMessage()
     .should('be.visible')
     .and('contain.text', 'Tax included');
-}
-
-function checkEmptyCart() {
-  cartPage
-    .getCartEntriesWrapper()
-    .contains('Your shopping cart is empty')
-    .should('be.visible');
-  cartPage.getCartTotals().getWrapper().should('not.be.visible');
 }

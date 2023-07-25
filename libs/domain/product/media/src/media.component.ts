@@ -7,7 +7,7 @@ import {
   ProductMixin,
 } from '@spryker-oryx/product';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { ProductMediaOptions } from './media.model';
 
@@ -15,7 +15,7 @@ import { ProductMediaOptions } from './media.model';
   loading: LoadingStrategy.Lazy,
   containerSize: ProductMediaContainerSize.Detail,
 })
-@hydratable(['mouseover', 'focusin'])
+@hydrate({ event: ['mouseover', 'focusin'] })
 export class ProductMediaComponent extends ProductMixin(
   ContentMixin<ProductMediaOptions>(LitElement)
 ) {

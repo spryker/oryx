@@ -1,10 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { contentLinkComponent } from '@spryker-oryx/content';
 import * as core from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
+import { RouteType, RouterService } from '@spryker-oryx/router';
 import { siteProviders } from '@spryker-oryx/site';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
@@ -18,6 +19,17 @@ const mockContext = {
 vi.spyOn(core, 'ContextController') as SpyInstance;
 (core.ContextController as unknown as SpyInstance).mockReturnValue(mockContext);
 
+const mockRouterService = {
+  getRoutes: vi.fn().mockReturnValue(
+    of([
+      {
+        path: '/product/:id',
+        type: RouteType.Product,
+      },
+    ])
+  ),
+};
+
 describe('ProductCardComponent', () => {
   let element: ProductCardComponent;
 
@@ -27,7 +39,14 @@ describe('ProductCardComponent', () => {
 
   beforeEach(async () => {
     createInjector({
-      providers: [...mockProductProviders, ...siteProviders],
+      providers: [
+        ...mockProductProviders,
+        ...siteProviders,
+        {
+          provide: RouterService,
+          useValue: mockRouterService,
+        },
+      ],
     });
 
     element = await fixture(
@@ -178,7 +197,14 @@ describe('ProductCardComponent', () => {
       );
 
       createInjector({
-        providers: [...mockProductProviders, ...siteProviders],
+        providers: [
+          ...mockProductProviders,
+          ...siteProviders,
+          {
+            provide: RouterService,
+            useValue: mockRouterService,
+          },
+        ],
       });
 
       element = await fixture(html` <oryx-product-card></oryx-product-card> `);

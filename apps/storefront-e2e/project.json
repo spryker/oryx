@@ -20,6 +20,7 @@
           "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
           "watch": false,
           "record": true,
+          "parallel": true,
           "tag": "regression",
           "group": "sf-regression"
         },
@@ -51,7 +52,8 @@
           "tag": "smoke",
           "group": "sf-smoke",
           "env": {
-            "grepTags": "smoke"
+            "grepTags": "smoke",
+            "isSSR": true
           }
         }
       }

@@ -1,10 +1,10 @@
-import { SemanticLink } from '@spryker-oryx/site';
+import { LinkOptions } from '@spryker-oryx/site';
 
 export interface SiteNavigationItemOptions {
   icon?: string;
   label?: string;
   badge?: string;
-  url?: string | SemanticLink;
+  url?: string | LinkOptions;
   triggerType?: NavigationTriggerType;
   triggerBehavior?: NavigationTriggerBehavior;
   contentBehavior?: NavigationContentBehavior;

@@ -1,0 +1,51 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/platform/form",
+  "prefix": "fes",
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/components-library:build"
+    },
+    "paths": {
+      "executor": "./tools/executors/components-library:paths"
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/platform/form/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "storybook": {
+      "executor": "@nrwl/storybook:storybook",
+      "options": {
+        "uiFramework": "@storybook/web-components",
+        "port": 4400,
+        "config": {
+          "configFolder": "libs/platform/form/.storybook"
+        },
+        "staticDir": ["libs/platform/form/public"]
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/platform/form/**/*.css",
+          "libs/platform/form/**/*.styles.ts"
+        ]
+      }
+    }
+  },
+  "tags": ["layer:platform"]
+}

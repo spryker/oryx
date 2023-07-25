@@ -2,7 +2,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
   graphicInjectable,
-  hydratable,
+  hydrate,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
@@ -13,7 +13,7 @@ import { ImageComponentAttributes, LoadingStrategy } from './image.model';
 import { styles } from './image.styles';
 
 @signalAware()
-@hydratable()
+@hydrate()
 export class ImageComponent
   extends LitElement
   implements ImageComponentAttributes

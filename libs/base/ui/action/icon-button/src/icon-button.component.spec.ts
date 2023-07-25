@@ -1,9 +1,10 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { queryFirstAssigned } from '@spryker-oryx/utilities';
+import { queryFirstAssigned, useComponent } from '@spryker-oryx/utilities';
 import { IconButtonComponent } from './icon-button.component';
 import { iconButtonComponent } from './icon-button.def';
+
+const id = 'test-button';
 
 describe('IconButtonComponent', () => {
   let element: IconButtonComponent;
@@ -12,23 +13,23 @@ describe('IconButtonComponent', () => {
     await useComponent(iconButtonComponent);
   });
 
-  it('is defined', () => {
-    const el = document.createElement('oryx-icon-button');
-    expect(el).toBeInstanceOf(IconButtonComponent);
-  });
-
-  it('should render content', async () => {
-    const id = 'test-button';
+  beforeEach(async () => {
     element = await fixture(html`<oryx-icon-button>
       <button id=${id}>
         <oryx-icon .type=${IconTypes.Close}></oryx-icon>
       </button>
     </oryx-icon-button>`);
+  });
 
+  it('is defined', () => {
+    expect(element).toBeInstanceOf(IconButtonComponent);
+  });
+
+  it('should render content', async () => {
     const el = queryFirstAssigned(element, {
-      selector: 'button',
-    }) as HTMLElement;
+      selector: `button[id=${id}]`,
+    });
 
-    expect(el?.id).toBe(id);
+    expect(el).not.toBeUndefined();
   });
 });

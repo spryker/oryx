@@ -31,37 +31,35 @@ export class OauthTokenInterceptor
   }
 
   override intercept(
-    url: string,
-    options: RequestOptions,
+    req: Request,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    if (this.isOauthRequest(options)) {
-      return handle(url, this.removeOauthHeader(options));
+    if (this.isOauthRequest(req)) {
+      return handle(this.removeOauthHeader(req));
     }
 
     // Pause all request before refresh request finishes
     return (this.refresh$ ?? of(undefined)).pipe(
-      switchMap(() => super.intercept(url, options, handle)),
-      switchMap((res) => this.handleHttpError(res, url, options, handle))
+      switchMap(() => super.intercept(req, handle)),
+      switchMap((res) => this.handleHttpError(res, req, handle))
     );
   }
 
-  protected isOauthRequest(options: RequestOptions): boolean {
-    return new Headers(options.headers).has(OauthTokenInterceptor.HEADER_NAME);
+  protected isOauthRequest(req: Request): boolean {
+    return req.headers.has(OauthTokenInterceptor.HEADER_NAME);
   }
 
-  protected removeOauthHeader(options: RequestOptions): RequestOptions {
-    const headers = new Headers(options.headers);
+  protected removeOauthHeader(req: Request): Request {
+    const newReq = req.clone();
 
-    headers.delete(OauthTokenInterceptor.HEADER_NAME);
+    newReq.headers.delete(OauthTokenInterceptor.HEADER_NAME);
 
-    return { ...options, headers };
+    return newReq;
   }
 
   protected handleHttpError(
     response: Response,
-    url: string,
-    options: RequestOptions,
+    req: Request,
     handle: HttpHandlerFn
   ): Observable<Response> {
     if (response.ok || response.status !== 401) {
@@ -78,6 +76,6 @@ export class OauthTokenInterceptor
     }
 
     // Retry failed request
-    return this.intercept(url, options, handle);
+    return this.intercept(req, handle);
   }
 }

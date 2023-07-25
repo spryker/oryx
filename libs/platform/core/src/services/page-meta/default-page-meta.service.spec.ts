@@ -80,6 +80,39 @@ describe('DefaultPageMetaService', () => {
 
       expect(document.documentElement).toHaveProperty('lang', 'en');
     });
+
+    it('should add preload link', () => {
+      service.add([
+        {
+          name: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: 'href-stylesheet',
+          },
+        },
+      ]);
+      const originalLink = document.head.querySelector(
+        'link[rel="stylesheet"]'
+      );
+      const preloadLink = document.head.querySelector('link[rel="preload"]');
+      expect(originalLink?.getAttribute('href')).toBe('href-stylesheet');
+      expect(preloadLink?.getAttribute('href')).toBe('href-stylesheet');
+    });
+
+    it('should not add preload link if disablePreload is true', () => {
+      service.add([
+        {
+          name: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: 'href-stylesheet',
+          },
+          disablePreload: true,
+        },
+      ]);
+      expect('link[rel="stylesheet"]').toBeInTheDocument();
+      expect('link[rel="preload"]').not.toBeInTheDocument();
+    });
   });
 
   describe('remove', () => {
@@ -105,6 +138,29 @@ describe('DefaultPageMetaService', () => {
       title = document.head.querySelector('title');
       await nextFrame();
       expect(title).toBeNull();
+    });
+
+    it('should remove link with preload meta', async () => {
+      service.add([
+        {
+          name: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: 'href-stylesheet',
+          },
+        },
+      ]);
+      expect('link[rel="stylesheet"]').toBeInTheDocument();
+      service.remove([
+        {
+          name: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: 'href-stylesheet',
+          },
+        },
+      ]);
+      expect('link[rel="stylesheet"]').not.toBeInTheDocument();
     });
   });
 

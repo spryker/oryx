@@ -2,7 +2,7 @@ import { CartService, CartsUpdated } from '@spryker-oryx/cart';
 import { createCommand, createEffect } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { AddressModificationSuccess } from '@spryker-oryx/user';
 import {
   combineLatest,
@@ -26,6 +26,7 @@ import {
   PlaceOrderStart,
   PlaceOrderSuccess,
 } from './state';
+import { RouteType } from '@spryker-oryx/router';
 
 export class DefaultCheckoutService implements CheckoutService {
   protected cartId$ = this.cartService
@@ -83,7 +84,7 @@ export class DefaultCheckoutService implements CheckoutService {
     protected stateService = inject(CheckoutStateService),
     protected cartService = inject(CartService),
     protected adapter = inject(CheckoutAdapter),
-    protected linkService = inject(SemanticLinkService),
+    protected linkService = inject(LinkService),
     protected orderService = inject(OrderService)
   ) {}
 
@@ -102,7 +103,7 @@ export class DefaultCheckoutService implements CheckoutService {
       ? of(response)
       : this.linkService
           .get({
-            type: SemanticLinkType.Order,
+            type: RouteType.Order,
             id: response.orderReference,
           })
           .pipe(map((redirectUrl) => ({ ...response, redirectUrl })));

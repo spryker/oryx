@@ -1,11 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { I18nService } from '@spryker-oryx/i18n';
-import { RouterService } from '@spryker-oryx/router';
+import { RouteType, RouterService } from '@spryker-oryx/router';
 import { SuggestionRendererService } from '@spryker-oryx/search';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { typeheadComponent } from '@spryker-oryx/ui';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchBoxComponent } from './box.component';
@@ -15,7 +15,7 @@ class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
+class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of(''));
 }
 
@@ -80,7 +80,7 @@ describe('SearchBoxComponent', () => {
           useClass: MockRouterService,
         },
         {
-          provide: SemanticLinkService,
+          provide: LinkService,
           useClass: MockSemanticLinkService,
         },
         {
@@ -93,9 +93,7 @@ describe('SearchBoxComponent', () => {
         },
       ],
     });
-    linkService = testInjector.inject(
-      SemanticLinkService
-    ) as MockSemanticLinkService;
+    linkService = testInjector.inject(LinkService) as MockSemanticLinkService;
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;
@@ -260,7 +258,7 @@ describe('SearchBoxComponent', () => {
 
       it('should get the link from service without params', () => {
         expect(linkService.get).toHaveBeenCalledWith({
-          type: SemanticLinkType.ProductList,
+          type: RouteType.ProductList,
         });
       });
 
@@ -282,7 +280,7 @@ describe('SearchBoxComponent', () => {
 
       it('should get the link from service with params', () => {
         expect(linkService.get).toHaveBeenCalledWith({
-          type: SemanticLinkType.ProductList,
+          type: RouteType.ProductList,
           params: { q },
         });
       });

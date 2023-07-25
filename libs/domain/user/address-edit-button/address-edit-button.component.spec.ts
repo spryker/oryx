@@ -1,8 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import {
   Address,
   AddressService,
@@ -10,6 +9,7 @@ import {
   CrudState,
   userAddressEditButtonComponent,
 } from '@spryker-oryx/user';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { UserAddressEditButtonComponent } from './address-edit-button.component';
@@ -35,7 +35,7 @@ class MockAddressStateService implements Partial<AddressStateService> {
   get = vi.fn().mockReturnValue(mockState);
   clear = vi.fn();
 }
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
+class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn();
 }
 
@@ -63,7 +63,7 @@ describe('UserAddressEditButtonComponent', () => {
           useClass: MockRouterService,
         },
         {
-          provide: SemanticLinkService,
+          provide: LinkService,
           useClass: MockSemanticLinkService,
         },
       ],

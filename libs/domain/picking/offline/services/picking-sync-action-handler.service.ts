@@ -1,7 +1,13 @@
 import { inject } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import { Sync, SyncActionHandler } from '@spryker-oryx/offline';
-import { combineLatestWith, Observable, switchMap, throwError } from 'rxjs';
+import {
+  combineLatestWith,
+  Observable,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 import { PickingListEntity } from '../entities';
 import { PickingListOnlineAdapter } from './adapter';
 

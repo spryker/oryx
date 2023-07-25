@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   ImageSource,
@@ -9,7 +8,7 @@ import {
   ProductService,
 } from '@spryker-oryx/product';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
-import { Size } from '@spryker-oryx/utilities';
+import { Size, useComponent } from '@spryker-oryx/utilities';
 
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { html } from 'lit';

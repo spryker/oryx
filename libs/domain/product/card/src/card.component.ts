@@ -6,13 +6,13 @@ import {
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
-import { SemanticLinkService, SemanticLinkType } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   computed,
   elementEffect,
-  hydratable,
+  hydrate,
   Size,
   ssrShim,
 } from '@spryker-oryx/utilities';
@@ -21,6 +21,7 @@ import { ProductPriceOptions } from '../../price/src/price.model.js';
 import { ProductTitleOptions } from '../../title/src/title.model.js';
 import { ProductCardOptions } from './card.model';
 import { ProductCardStyles } from './card.styles';
+import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({
   template: 'grid',
@@ -33,14 +34,14 @@ import { ProductCardStyles } from './card.styles';
   enableAddToCart: true,
 })
 @ssrShim('style')
-@hydratable()
+@hydrate()
 export class ProductCardComponent extends ProductMixin(
   ContentMixin<ProductCardOptions>(LitElement)
 ) {
   static styles = [ProductCardStyles];
 
   protected contextController = new ContextController(this);
-  protected semanticLinkService = resolve(SemanticLinkService);
+  protected semanticLinkService = resolve(LinkService);
 
   @elementEffect()
   protected setTemplate = (): void => {
@@ -87,7 +88,7 @@ export class ProductCardComponent extends ProductMixin(
 
   protected $link = computed(() =>
     this.semanticLinkService.get({
-      type: SemanticLinkType.Product,
+      type: RouteType.Product,
       id: this.$product()?.sku,
     })
   );

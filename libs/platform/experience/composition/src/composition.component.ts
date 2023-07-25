@@ -10,21 +10,22 @@ import {
   LayoutMixin,
 } from '@spryker-oryx/experience';
 import {
-  computed,
   effect,
   elementEffect,
-  hydratable,
+  hydratableAttribute,
+  hydrate,
   signal,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
+import { CompositionComponentsController } from './composition-components.controller';
 
 @signalAware()
-@hydratable()
+@hydrate()
 export class CompositionComponent extends LayoutMixin(
   ContentMixin<CompositionProperties>(LitElement)
 ) {
@@ -34,6 +35,8 @@ export class CompositionComponent extends LayoutMixin(
   protected experienceService = resolve(ExperienceService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
+
+  protected componentsController = new CompositionComponentsController(this);
 
   @elementEffect()
   protected $uidFromRoute = effect(() => {
@@ -50,15 +53,23 @@ export class CompositionComponent extends LayoutMixin(
     }
   });
 
-  protected $components = computed(() => {
-    if (!this.uid) {
-      return [];
-    }
+  protected $components = signal(this.componentsController.getComponents());
 
-    return (
-      signal(this.experienceService.getComponent({ uid: this.uid }))()
-        ?.components ?? []
-    );
+  protected $hasDynamicallyVisibleChild = signal(
+    this.componentsController.hasDynamicallyVisibleChild()
+  );
+
+  @elementEffect()
+  protected hydrateOnLoad = effect(() => {
+    //TODO: find better way to hydrate composition
+    //with dynamically visible components
+    if (
+      isServer &&
+      this.$hasDynamicallyVisibleChild() &&
+      this.getAttribute(hydratableAttribute) !== 'window:load'
+    ) {
+      this.setAttribute(hydratableAttribute, 'window:load');
+    }
   });
 
   protected override render(): TemplateResult | void {
@@ -81,13 +92,11 @@ export class CompositionComponent extends LayoutMixin(
   protected renderComponent(
     component: Component<CompositionProperties>,
     index: number
-  ): TemplateResult | undefined {
+  ): TemplateResult {
     const template = this.registryService.resolveTemplate({
       type: component.type,
       uid: component.id,
-      markers: component.options?.data
-        ? this.layoutBuilder.getLayoutMarkers(component.options.data)
-        : undefined,
+      markers: this.layoutBuilder.getLayoutMarkers(component.options),
     });
     if (this.$options()?.rules?.[0]?.layout === CompositionLayout.Tabular) {
       return html`

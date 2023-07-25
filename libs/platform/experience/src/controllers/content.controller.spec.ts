@@ -13,14 +13,10 @@ const mockElement = {
 } as unknown as LitElement;
 const mockUid = 'mockUid';
 const mockContent = {
-  data: {
-    mockContent: 'mockContent',
-  },
+  mockContent: 'mockContent',
 };
 const mockOptions = {
-  data: {
-    mockOptions: 'mockOptions',
-  },
+  mockOptions: 'mockOptions',
 };
 const mockObserveValue = {
   id: 'mockContent',
@@ -98,7 +94,7 @@ describe('ContentController', () => {
       expect(mockExperienceService.getContent).toHaveBeenCalledWith({
         uid: mockUid,
       });
-      expect(callback).toHaveBeenCalledWith(mockContent.data);
+      expect(callback).toHaveBeenCalledWith(mockContent);
     });
 
     it('should emit `undefined` if content, uid and ExperienceService are not defined', () => {
@@ -141,7 +137,7 @@ describe('ContentController', () => {
       expect(mockExperienceService.getOptions).toHaveBeenCalledWith({
         uid: mockUid,
       });
-      expect(callback).toHaveBeenCalledWith(mockOptions.data);
+      expect(callback).toHaveBeenCalledWith(mockOptions);
     });
 
     it('should emit `empty object` if options, uid and ExperienceService are not defined', () => {
@@ -192,7 +188,7 @@ describe('ContentController', () => {
 
         expect(callback).toHaveBeenCalledWith({
           ...mockDefaultValue,
-          ...mockOptions.data,
+          ...mockOptions,
         });
       });
 

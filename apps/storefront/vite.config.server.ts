@@ -1,6 +1,5 @@
 import { join } from 'path';
 import { defineConfig, UserConfig } from 'vite';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { viteConfig } from './vite.config.common.js';
 
 export default defineConfig(() => {
@@ -23,30 +22,19 @@ export default defineConfig(() => {
       ),
       ssr: viteConfig.ssr.entry,
       rollupOptions: {
+        // Uses to avoid errors on e2e tests
         output: {
           globals: {
             buffer: 'buffer',
           },
         },
+        // Uses to avoid builtIn dependency error while building
+        external: ['buffer'],
       },
     },
     ssr: {
       noExternal: true,
     },
-    plugins: [
-      ...viteConfig.plugins(),
-      viteStaticCopy({
-        targets: [
-          {
-            src: '../../../libs/template/application/server/src/hosting/context.js',
-            dest: '../functions/ssr',
-          },
-          {
-            src: '../../../libs/template/application/server/src/hosting/handler.lambda.js',
-            dest: '../functions/ssr',
-          },
-        ],
-      }),
-    ],
+    plugins: [...viteConfig.plugins()],
   } as UserConfig;
 });

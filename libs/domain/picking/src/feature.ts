@@ -1,17 +1,18 @@
 import {
   AppFeature,
-  ComponentsInfo,
   DefaultJsonAPITransformerService,
   JsonAPITransformerService,
 } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { ComponentsInfo } from '@spryker-oryx/utilities';
 import {
   customerNoteComponent,
   customerNoteModalComponent,
   discardModalComponent,
   filterButtonComponent,
   filtersComponent,
+  headerComponent,
   loginPageComponent,
   navigateBackComponent,
   pickingComponent,
@@ -35,12 +36,12 @@ import {
   PickingListDefaultAdapter,
   PickingListDefaultService,
   PickingListService,
-  warehouseUserAssignmentNormalizer,
   WarehouseUserAssignmentsAdapter,
   WarehouseUserAssignmentsDefaultAdapter,
   WarehouseUserAssignmentsDefaultService,
-  warehouseUserAssignmentsNormalizer,
   WarehouseUserAssignmentsService,
+  warehouseUserAssignmentNormalizer,
+  warehouseUserAssignmentsNormalizer,
 } from './services';
 
 export const pickingComponents = [
@@ -50,6 +51,7 @@ export const pickingComponents = [
   filterButtonComponent,
   filtersComponent,
   loginPageComponent,
+  headerComponent,
   navigateBackComponent,
   pickingListsComponent,
   pickingListsHeaderComponent,

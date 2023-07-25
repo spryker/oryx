@@ -1,4 +1,4 @@
-import { WarehouseUserAssignment } from '../../src/models/warehouse';
+import { WarehouseUserAssignment } from '../../src/models/warehouse-user-assignment';
 
 export const mockWarehouseUserAssignments: WarehouseUserAssignment[] = [
   {

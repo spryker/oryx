@@ -1,8 +1,5 @@
-import {
-  applicationFeature,
-  SapiAuthComponentsFeature,
-  SapiAuthFeature,
-} from '@spryker-oryx/application';
+import { applicationFeature } from '@spryker-oryx/application';
+import { SapiAuthComponentsFeature, SapiAuthFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
 import { checkoutFeature } from '@spryker-oryx/checkout';
 import { contentFeature } from '@spryker-oryx/content';

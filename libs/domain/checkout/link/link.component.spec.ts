@@ -1,8 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PricingService, SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService, PricingService } from '@spryker-oryx/site';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { CheckoutLinkComponent } from './link.component';
@@ -19,7 +19,7 @@ class mockPricingService {
   format = vi.fn();
 }
 
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
+class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/checkout'));
 }
 
@@ -43,7 +43,7 @@ describe('CheckoutLinkComponent', () => {
           useClass: mockPricingService,
         },
         {
-          provide: SemanticLinkService,
+          provide: LinkService,
           useClass: MockSemanticLinkService,
         },
       ],

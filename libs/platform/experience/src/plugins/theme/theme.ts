@@ -1,16 +1,13 @@
+import { App, AppPlugin } from '@spryker-oryx/core';
 import {
-  App,
-  AppPlugin,
+  Breakpoints,
   ComponentDef,
   ComponentMap,
   ComponentsPlugin,
-} from '@spryker-oryx/core';
-import { resolveLazyLoadable } from '@spryker-oryx/core/utilities';
-import {
-  Breakpoints,
   deferHydrationAttribute,
   hydratableAttribute,
   iconInjectable,
+  resolveLazyLoadable,
   rootInjectable,
 } from '@spryker-oryx/utilities';
 import { css, isServer, unsafeCSS } from 'lit';

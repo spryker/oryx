@@ -1,6 +1,6 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductContext, ProductMixin } from '@spryker-oryx/product';
-import { computed, hydratable, signalProperty } from '@spryker-oryx/utilities';
+import { computed, hydrate, signalProperty } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ProductPriceOptions } from './price.model';
@@ -22,7 +22,7 @@ import { ProductPriceStyles } from './price.styles';
   enableOriginalPrice: true,
   enableTaxMessage: true,
 })
-@hydratable(`@${ProductContext.SKU}`)
+@hydrate({ context: ProductContext.SKU })
 export class ProductPriceComponent extends ProductMixin(
   ContentMixin<ProductPriceOptions>(LitElement)
 ) {

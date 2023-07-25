@@ -61,7 +61,9 @@ describe('User addresses suite', () => {
       describe('and user does not have addresses yet', () => {
         describe('and user goes to checkout', () => {
           beforeEach(() => {
+            cy.intercept('/assets/addresses/*.json').as('addressesRequest');
             cy.goToCheckout();
+            cy.wait('@addressesRequest');
           });
 
           it('then shipping address form is shown and billing address is the same as shipping', () => {

@@ -1,5 +1,10 @@
-import { preHydrate } from '@spryker-oryx/core';
-import { hydratable, I18nMixin, Size, throttle } from '@spryker-oryx/utilities';
+import {
+  hydrate,
+  I18nMixin,
+  preHydrate,
+  Size,
+  throttle,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ButtonType } from '../../action/button/src/button.model';
@@ -11,7 +16,7 @@ import {
 import { collapsibleTextStyles } from './collapsible-text.styles';
 import { truncateFix } from './pre-hydrate';
 
-@hydratable(['mouseover', 'focus'])
+@hydrate({ event: ['mouseover', 'focus'] })
 export class CollapsibleTextComponent
   extends I18nMixin(LitElement)
   implements CollapsibleTextProperties

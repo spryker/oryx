@@ -1,9 +1,9 @@
 import { injectEnv } from '@spryker-oryx/core';
-import { InferType, inject } from '@spryker-oryx/di';
+import { inject } from '@spryker-oryx/di';
 import { IndexedDbEntities } from '@spryker-oryx/indexed-db';
-import { isDefined } from '@spryker-oryx/utilities';
+import { InferType, isDefined } from '@spryker-oryx/utilities';
 import { Dexie, Table, Transaction } from 'dexie';
-import { map, Observable, of, shareReplay, switchMap } from 'rxjs';
+import { Observable, map, of, shareReplay, switchMap } from 'rxjs';
 import {
   IndexedDbEntityType,
   IndexedDbIndexAutoIncrement,

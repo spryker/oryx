@@ -1,6 +1,6 @@
 import { ReactiveElement } from '@lit/reactive-element';
 import { ClassDescriptor } from '@lit/reactive-element/decorators.js';
-import { Type } from '@spryker-oryx/di';
+import { Type } from '../../misc';
 import { SignalController } from '../signal.controller';
 
 const legacySignalAware = (clazz: Type<ReactiveElement>) => {

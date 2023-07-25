@@ -4,13 +4,13 @@ import {
   ProductMixin,
   ProductRelationsListService,
 } from '@spryker-oryx/product';
-import { computed, hydratable } from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { of } from 'rxjs';
 
-@hydratable()
+@hydrate()
 export class ProductRelationsComponent extends ProductMixin(
   LayoutMixin(LitElement)
 ) {

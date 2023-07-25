@@ -7,7 +7,7 @@ export const styles = css`
     background: var(--oryx-color-neutral-3);
   }
 
-  oryx-picking-header {
+  oryx-header {
     box-shadow: var(--oryx-elevation-2) var(--oryx-elevation-color-2);
   }
 

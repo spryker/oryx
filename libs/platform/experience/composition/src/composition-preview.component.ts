@@ -1,4 +1,4 @@
-import { Component, PreviewExperienceService } from '@spryker-oryx/experience';
+import { PreviewExperienceService } from '@spryker-oryx/experience';
 import {
   effect,
   elementEffect,
@@ -16,7 +16,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-
 import { CompositionComponent } from './composition.component';
 import { compositionPreviewStyles } from './composition.styles';
 
@@ -101,22 +100,19 @@ export class CompositionPreviewComponent extends CompositionComponent {
       const headerEdit$ = (this.experienceService as PreviewExperienceService)
         .headerEdit$;
 
-      const component = this.experienceService
-        .getComponent({ uid })
-        .pipe(catchError(() => of({} as Component)));
+      const component = this.componentsController
+        .getComponents()
+        .pipe(catchError(() => of([])));
 
       if (!this.routeDriven && (uid === 'header' || uid === 'footer')) {
         return component.pipe(
-          switchMap((component) =>
-            headerEdit$.pipe(
-              map((edit) => (edit ? ({} as Component) : component))
-            )
+          switchMap((components) =>
+            headerEdit$.pipe(map((edit) => (edit ? [] : components)))
           )
         );
       }
       return component;
-    }),
-    map((component: Component) => component?.components ?? [])
+    })
   );
 
   protected override $components = signal(this.components$);

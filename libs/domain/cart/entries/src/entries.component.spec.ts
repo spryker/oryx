@@ -1,10 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { PricingService } from '@spryker-oryx/site';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { CartEntriesComponent } from './entries.component';
@@ -57,17 +57,6 @@ describe('CartEntriesComponent', () => {
 
   it('passes the a11y audit', async () => {
     await expect(element).shadowDom.to.be.accessible();
-  });
-
-  describe('when the cart is empty', () => {
-    beforeEach(async () => {
-      service.isEmpty = vi.fn().mockReturnValue(of(true));
-      element = await fixture(html`<oryx-cart-entries></oryx-cart-entries>`);
-    });
-
-    it('should render an empty section', () => {
-      expect(element).toContainElement('section.empty');
-    });
   });
 
   describe('when cart contains entries', () => {

@@ -15,6 +15,9 @@
       "@spryker-oryx/application/server": [
         "libs/template/application/server/index.ts"
       ],
+      "@spryker-oryx/application/service-worker": [
+        "libs/template/application/service-worker/index.ts"
+      ],
       "@spryker-oryx/auth": ["libs/platform/auth/src/index.ts"],
       "@spryker-oryx/auth/*": ["libs/platform/auth/*/index.ts"],
       "@spryker-oryx/auth/login": ["libs/platform/auth/login/index.ts"],
@@ -89,7 +92,7 @@
       "@spryker-oryx/experience/mocks": [
         "libs/platform/experience/src/mocks/index.ts"
       ],
-      "@spryker-oryx/form": ["libs/base/form/src/index.ts"],
+      "@spryker-oryx/form": ["libs/platform/form/src/index.ts"],
       "@spryker-oryx/i18n": ["libs/platform/i18n/src/index.ts"],
       "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
       "@spryker-oryx/labs": ["libs/template/labs/src/index.ts"],
@@ -120,6 +123,7 @@
         "libs/domain/picking/filter-button/index.ts"
       ],
       "@spryker-oryx/picking/filters": ["libs/domain/picking/filters/index.ts"],
+      "@spryker-oryx/picking/header": ["libs/domain/picking/header/index.ts"],
       "@spryker-oryx/picking/login": ["libs/domain/picking/login/index.ts"],
       "@spryker-oryx/picking/mocks": ["libs/domain/picking/mocks/index.ts"],
       "@spryker-oryx/picking/navigate-back": [
@@ -348,7 +352,10 @@
       ],
       "@spryker-oryx/user/mocks": ["libs/domain/user/src/mocks/index.ts"],
       "@spryker-oryx/utilities": ["libs/base/utilities/src/index.ts"],
-      "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"]
+      "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"],
+      "@spryker-oryx/utilities/window-stub": [
+        "libs/base/utilities/window-stub/index.ts"
+      ]
     }
   }
 }

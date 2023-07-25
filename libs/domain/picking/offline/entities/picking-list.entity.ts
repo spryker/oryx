@@ -1,4 +1,3 @@
-import { Type } from '@spryker-oryx/di';
 import {
   indexedDbEntity,
   indexedDbForeignKey,
@@ -11,6 +10,7 @@ import {
   PickingListQualifierSortBy,
   PickingListStatus,
 } from '@spryker-oryx/picking';
+import { Type } from '@spryker-oryx/utilities';
 import { Table } from 'dexie';
 import { PickingProductEntity } from './picking-product.entity';
 

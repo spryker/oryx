@@ -1,9 +1,8 @@
 import { createEvent } from '@/tools/testing';
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { ColorMode } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { ColorMode, useComponent } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import {
   ColorModeSelectorComponent,
   EVENT_TOGGLE_COLOR,

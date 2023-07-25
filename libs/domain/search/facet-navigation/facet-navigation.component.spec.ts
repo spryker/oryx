@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LayoutBuilder, LayoutService } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
@@ -8,6 +7,7 @@ import {
   FacetListService,
 } from '@spryker-oryx/search';
 import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchFacetNavigationComponent } from './facet-navigation.component';

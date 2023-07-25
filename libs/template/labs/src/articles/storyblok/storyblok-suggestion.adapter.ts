@@ -25,9 +25,7 @@ export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
           [SuggestionField.Contents]: data.stories?.map((story) => ({
             id: story.content.id,
             name: story.content.heading,
-            url: `/${StoryblokContentFields.Faq}/${encodeURIComponent(
-              story.content.id
-            )}`,
+            type: StoryblokContentFields.Faq,
           })),
         }))
       );

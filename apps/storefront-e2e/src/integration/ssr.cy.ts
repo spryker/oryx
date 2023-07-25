@@ -39,121 +39,123 @@ const verifyHeader = () => {
 };
 
 describe('SSR suite', { tags: 'smoke' }, () => {
-  it('must render Landing page', () => {
-    const landingPage = new LandingPage();
+  if (Cypress.env('isSSR')) {
+    it('must render Landing page', () => {
+      const landingPage = new LandingPage();
 
-    landingPage.visit();
+      landingPage.visit();
 
-    verifyHeader();
+      verifyHeader();
 
-    landingPage.getHeroBanner().should('be.visible');
+      landingPage.getHeroBanner().should('be.visible');
 
-    verifyFooter();
-  });
+      verifyFooter();
+    });
 
-  it('must render Product details page', () => {
-    const productData = ProductStorage.getProductByEq(1);
-    const pdp = new ProductDetailsPage(productData);
+    it('must render Product details page', () => {
+      const productData = ProductStorage.getProductByEq(1);
+      const pdp = new ProductDetailsPage(productData);
 
-    pdp.visit();
+      pdp.visit();
 
-    verifyHeader();
+      verifyHeader();
 
-    pdp.getTitle().should('contain.text', productData.title);
-    pdp.getRating().should('be.visible');
-    pdp.getSKU().should('contain.text', productData.id);
-    pdp.getPrice().should('contain.text', productData.originalPrice);
+      pdp.getTitle().should('contain.text', productData.title);
+      pdp.getRating().should('be.visible');
+      pdp.getSKU().should('contain.text', productData.id);
+      pdp.getPrice().should('contain.text', productData.originalPrice);
 
-    pdp.getQuantityComponent().getInput().should('have.value', 1);
-    pdp.getAddToCartBtn().should('be.visible');
+      pdp.getQuantityComponent().getInput().should('have.value', 1);
+      pdp.getAddToCartBtn().should('be.visible');
 
-    pdp.getImages().should('be.visible');
-    pdp.getDescription().should('be.visible');
-    pdp.getAttributeTerms().should('have.length', 7);
+      pdp.getImages().should('be.visible');
+      pdp.getDescription().should('be.visible');
+      pdp.getAttributeTerms().should('have.length', 7);
 
-    verifyFooter();
-  });
+      verifyFooter();
+    });
 
-  it('must render Contact us page', () => {
-    const contactPage = new ContactPage();
+    it('must render Contact us page', () => {
+      const contactPage = new ContactPage();
 
-    contactPage.visit();
+      contactPage.visit();
 
-    verifyHeader();
+      verifyHeader();
 
-    contactPage.getHeading().should('be.visible');
+      contactPage.getHeading().should('be.visible');
 
-    verifyFooter(false);
-  });
+      verifyFooter(false);
+    });
 
-  it('must render Login page', () => {
-    const loginPage = new LoginPage();
+    it('must render Login page', () => {
+      const loginPage = new LoginPage();
 
-    loginPage.visit();
+      loginPage.visit();
 
-    verifyHeader();
+      verifyHeader();
 
-    loginPage.loginForm.getWrapper().should('be.visible');
+      loginPage.loginForm.getWrapper().should('be.visible');
 
-    verifyFooter();
-  });
+      verifyFooter();
+    });
 
-  it('must render Cart page', () => {
-    const cartPage = new CartPage();
+    it('must render Cart page', () => {
+      const cartPage = new CartPage();
 
-    cartPage.visit();
+      cy.goToCartAsGuest();
 
-    verifyHeader();
+      verifyHeader();
 
-    cartPage.getCartEntriesWrapper().should('be.visible');
-    cartPage.getEmptyCartMessage().should('be.visible');
+      cartPage.getCartEntriesWrapper().should('be.visible');
+      cartPage.getEmptyCartMessage().should('be.visible');
 
-    verifyFooter();
-  });
+      verifyFooter();
+    });
 
-  it('must render Search page', () => {
-    const searchPage = new SearchPage();
+    it('must render Search page', () => {
+      const searchPage = new SearchPage();
 
-    searchPage.visit();
+      searchPage.visit();
 
-    verifyHeader();
+      verifyHeader();
 
-    searchPage.getFacets().should('be.visible');
-    searchPage.getProductSort().should('be.visible');
-    searchPage.getOryxCards().should('have.length.greaterThan', 1);
+      searchPage.getFacets().should('be.visible');
+      searchPage.getProductSort().should('be.visible');
+      searchPage.getOryxCards().should('have.length.greaterThan', 1);
 
-    verifyFooter();
-  });
+      verifyFooter();
+    });
 
-  it('must render Category page', () => {
-    const categoryId = { id: '6' };
-    const categoryPage = new CategoryPage(categoryId);
+    it('must render Category page', () => {
+      const categoryId = { id: '6' };
+      const categoryPage = new CategoryPage(categoryId);
 
-    categoryPage.visit();
+      categoryPage.visit();
 
-    verifyHeader();
+      verifyHeader();
 
-    categoryPage.getFacets().should('be.visible');
-    categoryPage.getProductSort().should('be.visible');
-    categoryPage.getOryxCards().should('have.length.greaterThan', 1);
+      categoryPage.getFacets().should('be.visible');
+      categoryPage.getProductSort().should('be.visible');
+      categoryPage.getOryxCards().should('have.length.greaterThan', 1);
 
-    verifyFooter();
-  });
+      verifyFooter();
+    });
 
-  it('must render Checkout page', () => {
-    const checkoutPage = new CheckoutPage();
-    sccosApi = new SCCOSApi();
-    sccosApi.guestCarts.get();
-    sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
+    it('must render Checkout page', () => {
+      const checkoutPage = new CheckoutPage();
+      sccosApi = new SCCOSApi();
+      sccosApi.guestCarts.get();
+      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
 
-    cy.goToCheckoutAsGuest();
-    cy.location('pathname').should('be.eq', checkoutPage.anonymousUrl);
-    cy.reload();
+      cy.goToCheckoutAsGuest();
+      cy.location('pathname').should('be.eq', checkoutPage.anonymousUrl);
+      cy.reload();
 
-    verifyHeader();
+      verifyHeader();
 
-    checkoutPage.getPlaceOrderBtn().should('be.visible');
+      checkoutPage.getPlaceOrderBtn().should('be.visible');
 
-    verifyFooter();
-  });
+      verifyFooter();
+    });
+  }
 });

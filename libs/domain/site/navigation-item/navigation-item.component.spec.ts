@@ -1,9 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { TokenResolver } from '@spryker-oryx/core';
-import { useComponent } from '@spryker-oryx/core/utilities';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { SemanticLinkService } from '@spryker-oryx/site';
+import { LinkService } from '@spryker-oryx/site';
 import { modalComponent } from '@spryker-oryx/ui/modal';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
@@ -20,7 +20,7 @@ class MockTokenResolver implements Partial<TokenResolver> {
   resolveToken = vi.fn().mockReturnValue(of('test'));
 }
 
-class MockSemanticLinkService implements Partial<SemanticLinkService> {
+class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/test'));
 }
 
@@ -45,7 +45,7 @@ describe('SiteNavigationItemComponent', () => {
           useClass: MockTokenResolver,
         },
         {
-          provide: SemanticLinkService,
+          provide: LinkService,
           useClass: MockSemanticLinkService,
         },
       ],
@@ -55,7 +55,7 @@ describe('SiteNavigationItemComponent', () => {
       TokenResolver
     ) as unknown as MockTokenResolver;
     semanticService = testInjector.inject(
-      SemanticLinkService
+      LinkService
     ) as unknown as MockSemanticLinkService;
 
     element = await fixture(html`
