@@ -1,10 +1,10 @@
 import { LitElement, ReactiveController } from 'lit';
-import { ContentComponentProperties } from '../src/models';
+import { ContentComponentProperties, StyleRuleSet } from '../src/models';
 import { resolve } from '@spryker-oryx/di';
 import { Component, ExperienceService, LayoutService } from '../src/services';
 import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
 import { TokenResolver } from '@spryker-oryx/core';
-import { ObserveController } from '@spryker-oryx/utilities';
+import { ObserveController, Size } from '@spryker-oryx/utilities';
 
 export class CompositionComponentsController implements ReactiveController {
   hostConnected?(): void;
@@ -16,7 +16,6 @@ export class CompositionComponentsController implements ReactiveController {
 
   constructor(protected host: LitElement & ContentComponentProperties) {
     this.observe = new ObserveController(host);
-    this.layoutService.getBreakpoint().subscribe(console.log)
   }
 
   protected components(): Observable<Component[] | null> {
@@ -34,37 +33,50 @@ export class CompositionComponentsController implements ReactiveController {
   }
 
   protected filterHiddenComponents(
-    components: Component[]
+    components: Component[],
+    breakpoint: Size
   ): Observable<Component[]> {
     return combineLatest(
       components.map((component) => {
-        const visibility = component.options?.visibility;
+        const rules = this.getCurrentRules(component, breakpoint);
 
-        if (!visibility) {
+        if (!rules) {
           return of(component);
         }
 
-        if (visibility.hide) {
+        if (rules.hide) {
           return of(null);
         }
 
-        if (visibility.hideByRule) {
-          return this.tokenResolver.resolveToken(visibility.hideByRule).pipe(
-            //hidden by default
-            startWith(true),
-            map((value) => (value ? null : component))
-          );
-        }
-
-        return of(component);
+        return this.tokenResolver.resolveToken(rules.hideByRule!).pipe(
+          //hidden by default
+          startWith(true),
+          map((value) => (value ? null : component))
+        );
       })
     ).pipe(map((components) => components.filter(Boolean) as Component[]));
   }
 
+  protected getCurrentRules(
+    component: Component,
+    breakpoint: Size
+  ): StyleRuleSet | void {
+    return component.options?.rules?.find(
+      ({ query, hide, hideByRule }) =>
+        (hide || hideByRule) &&
+        (!query?.breakpoint || query.breakpoint === breakpoint)
+    );
+  }
+
   getComponents(): Observable<Component[] | null> {
-    return this.components().pipe(
-      switchMap((components) =>
-        components ? this.filterHiddenComponents(components) : of([])
+    return combineLatest([
+      this.components(),
+      this.layoutService.getBreakpoint(),
+    ]).pipe(
+      switchMap(([components, breakpoint]) =>
+        components
+          ? this.filterHiddenComponents(components, breakpoint)
+          : of([])
       )
     );
   }
@@ -73,7 +85,12 @@ export class CompositionComponentsController implements ReactiveController {
     return this.components().pipe(
       map(
         (components) =>
-          !!components?.some((component) => !!component.options?.visibility)
+          !!components?.some(
+            (component) =>
+              !!component.options?.rules?.some(
+                ({ hide, hideByRule }) => !hide || !hideByRule
+              )
+          )
       )
     );
   }

@@ -4,7 +4,6 @@ import { LayoutAttributes } from '../../layout';
 
 export interface CompositionProperties {
   rules?: StyleRuleSet[];
-  visibility?: ComponentVisibility;
 }
 
 export interface ComponentVisibility {
@@ -12,7 +11,10 @@ export interface ComponentVisibility {
   hideByRule?: string;
 }
 
-export interface StyleRuleSet extends StyleProperties, LayoutAttributes {
+export interface StyleRuleSet
+  extends StyleProperties,
+    LayoutAttributes,
+    ComponentVisibility {
   /**
    * Allows to apply a style rule set for specific selectors.
    */

@@ -1,8 +1,16 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
 import { Breakpoint, Size, sizes, throttle } from '@spryker-oryx/utilities';
-import { merge, Observable, of, ReplaySubject } from 'rxjs';
-import { distinctUntilChanged, reduce } from 'rxjs/operators';
+import {
+  merge,
+  Observable,
+  of,
+  ReplaySubject,
+  distinctUntilChanged,
+  map,
+  reduce,
+  tap,
+} from 'rxjs';
 import { CompositionLayout } from '../../models';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import { LayoutService } from './layout.service';
@@ -10,37 +18,37 @@ import { ScreenService } from './screen.service';
 
 export class DefaultLayoutService implements LayoutService {
   constructor(protected screenService = inject(ScreenService)) {
-    this.setupBreakpointsObserver(document.body)
+    this.updateScreenWidth = throttle(this.updateScreenWidth.bind(this), 200);
+    this.setupBreakpointsObserver(document.body);
   }
 
-  protected breakpoint$ = new ReplaySubject<Size>();
+  protected screenWidth$ = new ReplaySubject<number>();
+
+  protected updateScreenWidth(elements: ResizeObserverEntry[]): void {
+    this.screenWidth$.next(elements[0].borderBoxSize[0].inlineSize);
+  }
 
   protected setupBreakpointsObserver(target: HTMLElement): void {
     if (!target) return;
 
-    this.breakpoint$.next(this.evaluateBreakpoint(target));
+    this.screenWidth$.next(target.clientWidth);
 
-    const handler =  throttle(
-      () => this.breakpoint$.next(this.evaluateBreakpoint(target)),
-      100
-    );
+    const observer = new ResizeObserver(this.updateScreenWidth);
+    observer.observe(target, { box: 'border-box' });
+  }
 
-    const observer = new ResizeObserver(handler);
-    observer.observe(target);
-  };
-
-  protected evaluateBreakpoint(target: HTMLElement): Size {
-    console.log(target.clientWidth);
-    
-    const width = target.clientWidth;
-    return Object.entries(this.screenService.getBreakpoints()).find(([_b, {min = 0, max = Infinity}]) => {
-      return width >= min && width <= max;
-    })![0] as Size;
+  protected evaluateBreakpoint(width: number): Size {
+    return Object.entries(this.screenService.getBreakpoints()).find(
+      ([_b, { min = 0, max = Infinity }]) => {
+        return width >= min && width <= max;
+      }
+    )![0] as Size;
   }
 
   getBreakpoint(): Observable<Size> {
-    return this.breakpoint$?.pipe(
-      distinctUntilChanged()
+    return this.screenWidth$?.pipe(
+      distinctUntilChanged(),
+      map((width) => this.evaluateBreakpoint(width))
     );
   }
 

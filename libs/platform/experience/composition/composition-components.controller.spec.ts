@@ -30,9 +30,11 @@ const mockComponentWithVisibility: Component = {
     {
       ...mockComponent,
       options: {
-        visibility: {
-          hide: false,
-        },
+        rules: [
+          {
+            hide: false,
+          },
+        ],
       },
     },
   ],
@@ -44,9 +46,11 @@ const mockComponentWithVisibilityHidden: Component = {
     {
       ...mockComponent,
       options: {
-        visibility: {
-          hide: true,
-        },
+        rules: [
+          {
+            hide: true,
+          },
+        ],
       },
     },
   ],
@@ -58,9 +62,11 @@ const mockComponentWithVisibilityRule: Component = {
     {
       ...mockComponent,
       options: {
-        visibility: {
-          hideByRule,
-        },
+        rules: [
+          {
+            hideByRule,
+          },
+        ],
       },
     },
   ],
