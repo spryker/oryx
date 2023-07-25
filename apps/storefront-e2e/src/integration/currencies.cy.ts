@@ -69,6 +69,9 @@ describe('Currencies suite', () => {
 
       describe('and user changes the currency back to EUR', () => {
         beforeEach(() => {
+          // small "hack" needed for cypress
+          cy.get('body').click();
+
           cartPage.header.changeCurrency('EUR', true);
         });
 

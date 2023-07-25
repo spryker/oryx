@@ -71,6 +71,9 @@ describe('Locales suite', () => {
 
       describe('and user changes the locale back to EN', () => {
         beforeEach(() => {
+          // small "hack" needed for cypress
+          cy.get('body').click();
+
           cartPage.header.changeLocale('en', true);
         });
 
