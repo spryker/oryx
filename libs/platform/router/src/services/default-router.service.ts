@@ -2,11 +2,11 @@ import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
-  combineLatest,
-  map,
   Observable,
   ReplaySubject,
   Subject,
+  combineLatest,
+  map,
 } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
 import { RouteConfig } from '../../lit/lit-router';

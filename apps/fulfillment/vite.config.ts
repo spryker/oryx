@@ -30,7 +30,7 @@ export default defineConfig({
       injectRegister: 'auto',
       strategies: 'injectManifest',
       srcDir: 'dev-dist/sw',
-      filename: 'main.js',
+      filename: 'app.js',
       manifest: {
         name: 'Fulfillment App',
         short_name: 'Fulfillment App',

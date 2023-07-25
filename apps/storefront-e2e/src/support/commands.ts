@@ -1,4 +1,6 @@
+import { RouteMatcherOptions } from 'node_modules/cypress/types/net-stubbing';
 import { TestCustomerData } from '../types/user.type';
+import { AbstractSFPage } from './page_objects/abstract.page';
 import { CartPage } from './page_objects/cart.page';
 import { LoginPage } from './page_objects/login.page';
 import { SCCOSApi } from './sccos_api/sccos.api';
@@ -21,6 +23,8 @@ declare global {
         user: TestCustomerData
       ): void;
       checkCurrencyFormatting(locale: string): void;
+      failApiCall(routeMatcherOptions: RouteMatcherOptions, actionFn): void;
+      checkGlobalNotificationAfterFailedApiCall(page: AbstractSFPage): void;
     }
   }
 }
@@ -161,6 +165,48 @@ Cypress.Commands.add(
       addresses
         .map((address) => address.id)
         .forEach((id) => sccosApi.addresses.delete(user.id, id));
+    });
+  }
+);
+
+const failApiCallResponse = {
+  statusCode: 500,
+  body: 'Internal Server Error',
+  forceError: false,
+};
+const apiErrorMessage = `${failApiCallResponse.statusCode} ${failApiCallResponse.body}`;
+
+Cypress.Commands.add('failApiCall', (options, actionFn) => {
+  // prevents test from failing
+  // if unhandled 500 error occurs
+  Cypress.on('uncaught:exception', (err) => {
+    return !err.message.includes(apiErrorMessage);
+  });
+
+  cy.intercept(options, failApiCallResponse).as('failedRequest');
+  actionFn();
+  cy.wait('@failedRequest');
+});
+
+Cypress.Commands.add(
+  'checkGlobalNotificationAfterFailedApiCall',
+  (page: AbstractSFPage) => {
+    page.globalNotificationCenter.getCenter().should('be.visible');
+    page.globalNotificationCenter.getNotifications().then((notifications) => {
+      // only 1 notification is shown
+      expect(notifications.length).to.be.eq(1);
+
+      // this notification is an expected API error
+      notifications[0].getType().should('be.eq', 'error');
+      notifications[0].getWrapper().should('contain.text', 'Error');
+      notifications[0].getSubtext().should('have.text', apiErrorMessage);
+
+      // close notification
+      notifications[0].getCloseBtn().click();
+
+      // check if notification disappeared
+      notifications[0].getWrapper().should('not.exist');
+      page.globalNotificationCenter.getWrapper().should('not.be.visible');
     });
   }
 );
