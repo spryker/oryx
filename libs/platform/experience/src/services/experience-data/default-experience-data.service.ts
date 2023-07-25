@@ -58,7 +58,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
 
       let { components } = record;
 
-      for (let i = 0; i < paths.length; i++) {
+      for (let i = isTemplateId ? 1 : 0; i < paths.length; i++) {
         const [path, nested] = paths[i].split('>');
 
         if (nested) {
