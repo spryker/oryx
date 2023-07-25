@@ -1,18 +1,11 @@
-import { Size } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
 export const defaultIconFont = 'Material Symbols Outlined';
 
-const smallSize = unsafeCSS(`[size='${Size.Sm}']`);
-const mediumSize = unsafeCSS(`[size='${Size.Md}']`);
 const font = unsafeCSS(defaultIconFont);
 
 export const styles = css`
   :host {
-    /* stylelint-disable-next-line */
-    /* --_margin: 0px; */
-    /* --_margin: 2px; */
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,20 +23,7 @@ export const styles = css`
   svg,
   ::slotted(svg) {
     fill: var(--oryx-icon-color, currentColor);
-    width: calc(var(--oryx-icon-size, 24px) - (var(--_margin) * 2));
+    width: var(--oryx-icon-size, 24px);
     aspect-ratio: 1 / 1;
-    /* margin: var(--_margin); */
-
-    /* margin: 2px; */
-  }
-
-  :host([size='md']) {
-    /* --_margin: 2px; */
-    /* --_oryx-icon-size: 20px; */
-  }
-
-  :host([size='sm']) {
-    /* --_margin: 4px; */
-    /* --_oryx-icon-size: 16px; */
   }
 `;

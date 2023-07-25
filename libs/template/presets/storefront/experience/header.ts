@@ -100,7 +100,6 @@ export const HeaderTemplate: StaticComponent = {
                   hideByRule: 'USER.!AUTHENTICATED',
                 },
                 contentBehavior: 'dropdown',
-                triggerBehavior: 'hover',
                 label: 'USER.NAME',
                 icon: IconTypes.User,
               },

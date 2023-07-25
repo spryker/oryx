@@ -36,8 +36,7 @@ const baseStyles = css`
 
   :is(a, button),
   ::slotted(:is(a, button)),
-  :host,
-  :host([custom]) {
+  :host {
     display: inline-flex;
     align-items: center;
     justify-content: center;
