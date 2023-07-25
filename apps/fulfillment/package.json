@@ -5,9 +5,7 @@
   "license": "Spryker",
   "scripts": {},
   "dependencies": {
-    "dexie": "^3.2.2",
-    "workbox-core": "^6.5.4",
-    "workbox-precaching": "^6.5.4"
+    "dexie": "^3.2.2"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^4.0.2",
