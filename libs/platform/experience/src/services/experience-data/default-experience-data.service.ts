@@ -172,6 +172,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     if (type === ExperienceDataMergeType.Replace) {
       data.type ??= 'oryx-composition';
       components[componentIndex] = data;
+
       return;
     }
 
@@ -191,14 +192,12 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       components[componentIndex] = {
         ...components[componentIndex],
         ...data,
-        ...(data.options
-          ? {
-              options: {
-                ...(components[componentIndex].options ?? {}),
-                ...data.options,
-              },
-            }
-          : {}),
+        ...(data.options && {
+          options: {
+            ...(components[componentIndex]?.options ?? {}),
+            ...(data.options ?? {}),
+          },
+        }),
         ...(data.content && {
           content: {
             ...(components[componentIndex].content ?? {}),
@@ -212,8 +211,6 @@ export class DefaultExperienceDataService implements ExperienceDataService {
           },
         }),
       };
-
-      return;
     }
   }
 }

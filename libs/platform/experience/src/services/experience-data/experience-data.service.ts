@@ -32,9 +32,7 @@ export interface ExperienceDataMergeStrategy {
   type?: ExperienceDataMergeType | string;
 }
 
-export type ExperienceComponent = Partial<
-  Omit<Component<unknown>, 'components'>
-> & {
+export type ExperienceComponent = Partial<Omit<Component, 'components'>> & {
   components?: ExperienceComponent[];
   merge?: ExperienceDataMergeStrategy;
 };

@@ -72,7 +72,7 @@ export const productPage: ExperienceComponent = {
           {
             layout: 'carousel',
             padding: '20 0',
-            colSpan: '2',
+            colSpan: 2,
           },
         ],
       },
@@ -85,7 +85,7 @@ export const productPage: ExperienceComponent = {
           {
             layout: 'carousel',
             padding: '20 0',
-            colSpan: '2',
+            colSpan: 2,
           },
         ],
       },

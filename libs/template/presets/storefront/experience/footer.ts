@@ -58,7 +58,7 @@ const customerSupport = {
 const promises = {
   type: 'oryx-composition',
   id: 'promises',
-  options: { rules: [{ layout: 'list', gap: 0 }] },
+  options: { rules: [{ layout: 'list', gap: '0' }] },
   components: [
     heading('Our promises'),
     link('Free delivery', '/', IconTypes.Carrier),

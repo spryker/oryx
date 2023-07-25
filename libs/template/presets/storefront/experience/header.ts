@@ -134,7 +134,7 @@ export const HeaderTemplate: ExperienceComponent = {
             layout: 'column',
             background: 'var(--oryx-color-primary-9)',
             align: 'center',
-            zIndex: '1',
+            zIndex: 1,
             padding: '5px 0',
             gap: '5px',
             sticky: true,
