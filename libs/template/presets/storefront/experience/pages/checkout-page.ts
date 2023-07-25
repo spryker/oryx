@@ -43,6 +43,7 @@ export const checkoutPage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
+      id: 'checkoutInformation',
       components: [
         {
           type: 'oryx-checkout-orchestrator',
@@ -69,6 +70,7 @@ export const checkoutPage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
+      id: 'checkoutTotals',
       options: {
         visibility: { hideByRule: 'CART.EMPTY' },
         rules: [{ sticky: true, top: '108px' }],

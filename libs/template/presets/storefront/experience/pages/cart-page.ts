@@ -43,6 +43,7 @@ export const cartPage: ExperienceComponent = {
     { type: 'oryx-cart-entries' },
     {
       type: 'oryx-composition',
+      id: 'cartTotals',
       components: [
         {
           type: 'oryx-cart-totals',

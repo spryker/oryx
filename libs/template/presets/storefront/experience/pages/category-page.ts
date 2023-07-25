@@ -36,6 +36,7 @@ export const categoryPage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
+      id: 'productListing',
       name: 'Product listing',
       options: {
         rules: [{ layout: 'list', gap: '20px' }],
@@ -43,6 +44,7 @@ export const categoryPage: ExperienceComponent = {
       components: [
         {
           type: 'oryx-composition',
+          id: 'productListingHeader',
           name: 'Product list header',
           options: { rules: [{ layout: 'flex' }] },
           components: [

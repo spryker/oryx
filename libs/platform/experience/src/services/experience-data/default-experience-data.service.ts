@@ -152,9 +152,10 @@ export class DefaultExperienceDataService implements ExperienceDataService {
   }
 
   protected mergeByStrategy(properties: MergeProperties): void {
-    const { components, data, componentIndex = NaN, type } = properties;
+    const { components = [], data, componentIndex = NaN, type } = properties;
     const merge = (start: number, end = 0) =>
       components?.splice(start, end, ...(data.components ?? []));
+    delete data.merge;
 
     if (type === ExperienceDataMergeType.Before) {
       merge(componentIndex);
@@ -169,30 +170,47 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     }
 
     if (type === ExperienceDataMergeType.Replace) {
-      merge(componentIndex, 1);
-
+      data.type ??= 'oryx-composition';
+      components[componentIndex] = data;
       return;
     }
 
     if (type === ExperienceDataMergeType.Append) {
-      delete data.merge;
       components?.push(data);
 
       return;
     }
 
     if (type === ExperienceDataMergeType.Prepend) {
-      delete data.merge;
       components?.unshift(data);
 
       return;
     }
 
-    if (type === ExperienceDataMergeType.Patch && components) {
-      delete data.merge;
+    if (type === ExperienceDataMergeType.Patch) {
       components[componentIndex] = {
         ...components[componentIndex],
         ...data,
+        ...(data.options
+          ? {
+              options: {
+                ...(components[componentIndex].options ?? {}),
+                ...data.options,
+              },
+            }
+          : {}),
+        ...(data.content && {
+          content: {
+            ...(components[componentIndex].content ?? {}),
+            ...data.content,
+            ...(data.content.data && {
+              data: {
+                ...(components[componentIndex].content?.data ?? {}),
+                ...data.content.data,
+              },
+            }),
+          },
+        }),
       };
 
       return;

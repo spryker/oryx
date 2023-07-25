@@ -12,6 +12,7 @@ export const productPage: ExperienceComponent = {
   components: [
     {
       type: 'oryx-composition',
+      id: 'productBody',
       options: {
         rules: [
           {
@@ -23,6 +24,7 @@ export const productPage: ExperienceComponent = {
       components: [
         {
           type: 'oryx-composition',
+          id: 'productPreview',
           options: { rules: [{ layout: 'flex', vertical: true }] },
           components: [
             {
@@ -36,6 +38,7 @@ export const productPage: ExperienceComponent = {
         },
         {
           type: 'oryx-composition',
+          id: 'productData',
           options: {
             rules: [{ vertical: true, top: '108px', sticky: true }],
           },

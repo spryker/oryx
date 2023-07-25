@@ -18,6 +18,7 @@ export const homePage: ExperienceComponent = {
   components: [
     {
       type: 'oryx-composition',
+      id: 'homeBanner',
       components: [
         {
           type: 'oryx-content-image',
@@ -93,6 +94,7 @@ export const homePage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
+      id: 'homeBrands',
       name: 'brands',
       options: {
         rules: [

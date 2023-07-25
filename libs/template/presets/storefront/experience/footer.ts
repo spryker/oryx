@@ -57,6 +57,7 @@ const customerSupport = {
 
 const promises = {
   type: 'oryx-composition',
+  id: 'promises',
   options: { rules: [{ layout: 'list', gap: 0 }] },
   components: [
     heading('Our promises'),
@@ -84,6 +85,7 @@ const aboutUs = {
 
 const selfServiceLinks = {
   type: 'oryx-composition',
+  id: 'selfService',
   name: 'Self service',
   options: {
     rules: [
@@ -103,6 +105,7 @@ const paymentLinks = {
     heading('Safe Payment methods'),
     {
       type: 'oryx-composition',
+      id: 'paymentLinkImages',
       options: {
         rules: [
           { layout: 'column', columnCount: 3 },
@@ -136,6 +139,7 @@ const shippingLinks = {
     heading('Shipping partners'),
     {
       type: 'oryx-composition',
+      id: 'shippingLinkImages',
       options: {
         rules: [
           { layout: 'column', columnCount: 3 },
@@ -163,6 +167,7 @@ const mobileAppsLinks = {
     heading('Spryker apps'),
     {
       type: 'oryx-composition',
+      id: 'mobileAppsLinkImages',
       options: {
         rules: [{ layout: 'flex', align: 'center' }],
       },
@@ -173,6 +178,7 @@ const mobileAppsLinks = {
 
 const socialLinks = {
   type: 'oryx-composition',
+  id: 'socialLinks',
   options: {
     rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }],
   },
@@ -180,6 +186,7 @@ const socialLinks = {
     heading('You can also find us on'),
     {
       type: 'oryx-composition',
+      id: 'socialLinkImages',
       options: {
         rules: [{ layout: 'flex', align: 'center', gap: 20 }],
       },
@@ -195,15 +202,18 @@ const socialLinks = {
 
 const otherLinks = {
   type: 'oryx-composition',
+  id: 'otherLinks',
   options: { rules: [{ layout: 'list' }] },
   components: [
     {
       type: 'oryx-composition',
+      id: 'tradeMarksLinks',
       options: { rules: [{ layout: 'column', columnCount: 6 }] },
       components: [paymentLinks, mobileAppsLinks],
     },
     {
       type: 'oryx-composition',
+      id: 'brandsLinks',
       options: { rules: [{ layout: 'column', columnCount: 6 }] },
       components: [shippingLinks, socialLinks],
     },
@@ -224,6 +234,7 @@ export const FooterTemplate: ExperienceComponent = {
   components: [
     {
       type: 'oryx-composition',
+      id: 'footerLinks',
       name: 'footer',
       components: [
         {

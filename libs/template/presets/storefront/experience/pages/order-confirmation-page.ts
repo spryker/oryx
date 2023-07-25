@@ -13,6 +13,7 @@ export const orderConfirmationPage: ExperienceComponent = {
     { type: 'oryx-order-confirmation-banner' },
     {
       type: 'oryx-composition',
+      id: 'orderData',
       options: {
         rules: [{ layout: 'split-main', padding: '30px 0' }],
       },
