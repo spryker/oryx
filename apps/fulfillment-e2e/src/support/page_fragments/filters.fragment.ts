@@ -13,9 +13,7 @@ export class FiltersFragment {
       .find('oryx-picking-filters')
       .find('[slot="navigate-back"] button');
   getFiltersCloseButton = () =>
-    this.getFiltersModal().find(
-      'header oryx-icon-button button[value="cancel"]'
-    );
+    this.getFiltersModal().find('header oryx-button button[value="cancel"]');
   getFiltersApplyButton = () =>
     this.getFilterButton()
       .find('oryx-picking-filters')
@@ -26,6 +24,6 @@ export class FiltersFragment {
     pickingListsFragment
       .getPickingListsItems()
       .eq(0)
-      .find('.total oryx-icon-button button')
+      .find('.total oryx-button')
       .should(!isChange ? 'exist' : 'not.exist');
 }
