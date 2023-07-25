@@ -13,6 +13,11 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
 ) {
   static styles = siteNavigationButtonStyles;
 
+  static shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   @property() url?: string;
   @property() icon?: string;
   @property() text?: string;
