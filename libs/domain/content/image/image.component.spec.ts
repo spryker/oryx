@@ -23,6 +23,9 @@ const label = 'link label';
 describe('ContentImageComponent', () => {
   let element: ContentImageComponent;
 
+  const getImage = (): HTMLElement =>
+    element.renderRoot.querySelector('oryx-image') as HTMLElement;
+
   beforeAll(async () => {
     await useComponent(contentImageComponent);
   });
@@ -99,10 +102,7 @@ describe('ContentImageComponent', () => {
       });
 
       it('should have provide the alt text to the oryx-image element', () => {
-        const image = element.renderRoot.querySelector(
-          'oryx-image'
-        ) as ImageComponent;
-        expect(image.alt).toBe(alt);
+        expect(element).toContainElement(`oryx-image[alt="${alt}"]`);
       });
     });
   });
@@ -117,10 +117,7 @@ describe('ContentImageComponent', () => {
     });
 
     it('should provide the graphic to the oryx-image element', () => {
-      const image = element.renderRoot.querySelector(
-        'oryx-image'
-      ) as ImageComponent;
-      expect(image.resource).toBe(graphic);
+      expect(element).toContainElement(`oryx-image[resource="${graphic}"]`);
     });
 
     it('should not have an anchor element', () => {
@@ -180,11 +177,7 @@ describe('ContentImageComponent', () => {
     });
 
     it('should have default styles', () => {
-      const image = element.renderRoot.querySelector(
-        'oryx-image'
-      ) as ImageComponent;
-      expect(image.getAttribute('style')).toContain('--image-fit: cover');
-      expect(image.getAttribute('style')).not.toContain('--image-position');
+      expect(getImage().style.getPropertyValue('--image-fit')).toBe('cover');
     });
   });
 
@@ -198,12 +191,8 @@ describe('ContentImageComponent', () => {
       );
     });
 
-    it('should have default styles', () => {
-      const image = element.renderRoot.querySelector(
-        'oryx-image'
-      ) as ImageComponent;
-      expect(image.getAttribute('style')).not.toContain('--image-fit');
-      expect(image.getAttribute('style')).not.toContain('--image-position');
+    it('should not specify the style attribute', () => {
+      expect(element).toContainElement(`oryx-image:not([style])`);
     });
   });
 
@@ -218,10 +207,7 @@ describe('ContentImageComponent', () => {
     });
 
     it(`should have the image-fit 'contain'`, () => {
-      const image = element.renderRoot.querySelector(
-        'oryx-image'
-      ) as ImageComponent;
-      expect(image.getAttribute('style')).toContain('--image-fit: contain');
+      expect(getImage().style.getPropertyValue('--image-fit')).toBe('contain');
     });
   });
 
@@ -235,12 +221,9 @@ describe('ContentImageComponent', () => {
       );
     });
 
-    it(`should have the image-fit 'contain'`, () => {
-      const image = element.renderRoot.querySelector(
-        'oryx-image'
-      ) as ImageComponent;
-      expect(image.getAttribute('style')).toContain(
-        '--image-position: center 30%'
+    it(`should position to the styles'`, () => {
+      expect(getImage().style.getPropertyValue('--image-position')).toBe(
+        'center 30%'
       );
     });
   });

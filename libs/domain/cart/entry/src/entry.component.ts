@@ -6,23 +6,24 @@ import {
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
+import { RouteType } from '@spryker-oryx/router';
 import {
+  LinkService,
   NotificationService,
   PricingService,
-  LinkService,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LinkType } from '@spryker-oryx/ui/link';
 import {
+  Size,
   computed,
   elementEffect,
   hydrate,
   signalProperty,
-  Size,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import {
@@ -37,7 +38,6 @@ import {
   RemoveByQuantity,
 } from './entry.model';
 import { cartEntryStyles } from './styles';
-import { RouteType } from '@spryker-oryx/router';
 
 /**
  * Supports updating the quantity as well as removing the entry entirely.
@@ -195,6 +195,7 @@ export class CartEntryComponent
         slot="footer-more"
         .type=${ButtonType.Critical}
         .size=${Size.Md}
+        ?loading=${this.$isBusy()}
         @click=${(ev: Event) => this.removeEntry(ev, true)}
       >
         <button value="remove">${this.i18n(`cart.entry.remove`)}</button>
