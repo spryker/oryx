@@ -3,7 +3,6 @@ import { hydrate, preHydrate, ssrShim } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { when } from 'lit/directives/when.js';
 import {
   ButtonColor,
   ButtonComponentAttributes,
@@ -29,6 +28,18 @@ import { hydrateSlotChange } from './prehydrate';
  * - `icon` a button that is build
  * - `text`
  *
+ * ### ButtonSize
+ * The button comes in 3 sizes, `lg`, `md` and `sm`. The real estate of the button system is driven by a
+ * size factor. The size factor is used to calculate the height of the button, it's inline padding and
+ * the size of the icon.
+ *
+ * Some UI systems support a static icon size regardless of the button size. This is supported by design tokens
+ * per button type:
+ * -  `--oryx-button-solid-icon-size`
+ * - ` --oryx-button-outline-icon-size`
+ * - ` --oryx-button-text-icon-size`
+ * - ` --oryx-button-icon-icon-size`
+ *
  * ### Color
  * The `ButtonColor` supports 3 colors:
  * - Primary
@@ -36,6 +47,8 @@ import { hydrateSlotChange } from './prehydrate';
  * - Error
  *
  * Only a couple of the color shades are used for the button UI.
+ *
+ *
  */
 @ssrShim('style')
 @hydrate()
@@ -69,16 +82,17 @@ export class ButtonComponent
   }
 
   protected override render(): TemplateResult {
+    const templates = [this.renderLoader(), this.renderConfirmed()];
+
+    const x = this.href ? this.renderLink() : this.renderButton();
+    if (this.text || this.icon) {
+      templates.push(x);
+    } else {
+      templates.push(html`<slot name="custom">${x}</slot>`);
+    }
+
     return html`
-      ${[this.renderLoader(), this.renderConfirmed()]}
-      <slot name="custom">
-        ${when(
-          this.href,
-          () => this.renderLink(),
-          () => this.renderButton()
-        )}
-      </slot>
-      ${preHydrate(hydrateSlotChange, this.tagName.toLowerCase())}
+      ${templates} ${preHydrate(hydrateSlotChange, this.tagName.toLowerCase())}
     `;
   }
 

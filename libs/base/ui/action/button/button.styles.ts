@@ -66,16 +66,24 @@ const sizeStyles = css`
     --_height: var(--oryx-button-height, calc(var(--_factor) * 6px + 12px));
   }
 
+  :host(:is([type='solid'], [type='outline']):is(:not([has-text]):not([has-icon]))) {
+    --_padding-inline: calc(var(--_factor) * 4px);
+  }
+
+  :host(:is([type='solid'], [type='outline'])[has-icon][has-text]) {
+    --_padding-inline: 16px;
+  }
+
   :host([type='solid']) {
     --oryx-icon-size: var(
-      --oryx-solid-button-icon-size,
+      --oryx-button-solid-icon-size,
       calc(var(--_factor) * 4px)
     );
   }
 
   :host([type='outline']) {
     --oryx-icon-size: var(
-      --oryx-outline-button-icon-size,
+      --oryx-button-outline-icon-size,
       calc(var(--_factor) * 4px)
     );
   }
@@ -84,7 +92,7 @@ const sizeStyles = css`
     --_height: var(--oryx-button-height, calc(var(--_factor) * 4px + 8px));
     --_padding-inline: 8px;
     --oryx-icon-size: var(
-      --oryx-text-button-icon-size,
+      --oryx-button-text-icon-size,
       calc(var(--_factor) * 4px)
     );
   }
@@ -92,17 +100,9 @@ const sizeStyles = css`
   :host([type='icon']) {
     --_height: var(--oryx-button-height, calc(var(--_factor) * 6px));
     --oryx-icon-size: var(
-      --oryx-icon-button-icon-size,
+      --oryx-button-icon-icon-size,
       calc(var(--_factor) * 4px)
     );
-  }
-
-  :host(:is([type='solid'], [type='outline']):is(:not([has-text]):not([has-icon]))) {
-    --_padding-inline: calc(var(--_factor) * 4px);
-  }
-
-  :host(:is([type='solid'], [type='outline'])[has-icon][has-text]) {
-    --_padding-inline: 16px;
   }
 `;
 
@@ -134,13 +134,10 @@ const colorStyles = css`
     --_c10: var(--oryx-color-error-10);
   }
 
+  :host([type='icon']),
   :host([type='text']),
   :host([type='outline']),
   :host(:is([type='solid'], :not([type]))[loading]) {
-    --_text-color: var(--_c9);
-  }
-
-  :host([type='icon']) {
     --_text-color: var(--_c9);
   }
 
@@ -150,7 +147,8 @@ const colorStyles = css`
   }
 
   :host(:is([type='solid'], :not([type]))),
-  :host([type='outline']) {
+  :host([type='outline']),
+  :host([type='icon']:active) {
     --_border-color: var(--_c9);
   }
 
@@ -196,10 +194,6 @@ const colorStyles = css`
     --_background-color: var(--oryx-color-neutral-3);
   }
 
-  :host([type='icon']:active) {
-    --_border-color: var(--_c9);
-  }
-
   :host([type='solid'][color='neutral']) {
     --_background-color: var(
       --oryx-color-neutral-11,
@@ -230,10 +224,7 @@ const colorStyles = css`
     );
   }
 
-  :host(:is([type='text'], [type='icon'])[disabled]) {
-    --_text-color: var(--oryx-color-neutral-8);
-  }
-
+  :host(:is([type='text'], [type='icon'])[disabled]),
   :host([type='icon']) button:disabled {
     --_text-color: var(--oryx-color-neutral-8);
   }
