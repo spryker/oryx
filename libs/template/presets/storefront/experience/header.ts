@@ -7,46 +7,46 @@ export const HeaderTemplate: StaticComponent = {
   type: 'Page',
   meta: { title: 'Header', route: '/_header' },
   components: [
-    // {
-    //   type: 'oryx-composition',
-    //   components: [
-    //     {
-    //       type: 'oryx-content-link',
-    //       content: { text: 'FREE DELIVERY & RETURNS' },
-    //       options: { url: '/', icon: IconTypes.Check },
-    //     },
-    //     {
-    //       type: 'oryx-content-link',
-    //       content: { text: '100 DAY RETURN POLICY' },
-    //       options: { url: '/', icon: IconTypes.Check },
-    //     },
-    //     {
-    //       type: 'oryx-content-link',
-    //       content: { text: 'CLICK & COLLECT' },
-    //       options: { url: '/', icon: IconTypes.Check },
-    //     },
-    //     {
-    //       type: 'oryx-site-currency-selector',
-    //       options: {
-    //         rules: [{ style: 'margin-inline-start: auto' }],
-    //       },
-    //     },
-    //     { type: 'oryx-site-locale-selector' },
-    //   ],
-    //   options: {
-    //     rules: [
-    //       {
-    //         layout: 'flex',
-    //         background: 'hsl(0, 0%, 9.0%)',
-    //         padding: '10px 0',
-    //         gap: '10px',
-    //         align: 'center',
-    //         bleed: true,
-    //         style: 'color: white',
-    //       },
-    //     ],
-    //   },
-    // },
+    {
+      type: 'oryx-composition',
+      components: [
+        {
+          type: 'oryx-content-link',
+          content: { text: 'FREE DELIVERY & RETURNS' },
+          options: { url: '/', icon: IconTypes.Check },
+        },
+        {
+          type: 'oryx-content-link',
+          content: { text: '100 DAY RETURN POLICY' },
+          options: { url: '/', icon: IconTypes.Check },
+        },
+        {
+          type: 'oryx-content-link',
+          content: { text: 'CLICK & COLLECT' },
+          options: { url: '/', icon: IconTypes.Check },
+        },
+        {
+          type: 'oryx-site-currency-selector',
+          options: {
+            rules: [{ style: 'margin-inline-start: auto' }],
+          },
+        },
+        { type: 'oryx-site-locale-selector' },
+      ],
+      options: {
+        rules: [
+          {
+            layout: 'flex',
+            background: 'hsl(0, 0%, 9.0%)',
+            padding: '10px 0',
+            gap: '10px',
+            align: 'center',
+            bleed: true,
+            style: 'color: white',
+          },
+        ],
+      },
+    },
     {
       type: 'oryx-composition',
       name: 'Composition',

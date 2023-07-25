@@ -218,27 +218,27 @@ export const FooterTemplate: StaticComponent = {
   type: 'Page',
   meta: { title: 'Footer', route: '/_footer' },
   components: [
-    // {
-    //   type: 'oryx-composition',
-    //   name: 'footer',
-    //   components: [
-    //     {
-    //       type: 'oryx-composition',
-    //       components: [topFooter, legalLinks],
-    //       options: {
-    //         rules: [
-    //           {
-    //             layout: 'flex',
-    //             vertical: true,
-    //             divider: true,
-    //             gap: '40px 18px',
-    //           },
-    //         ],
-    //       },
-    //     },
-    //   ],
-    // },
-    // { type: 'oryx-site-notification-center' },
+    {
+      type: 'oryx-composition',
+      name: 'footer',
+      components: [
+        {
+          type: 'oryx-composition',
+          components: [topFooter, legalLinks],
+          options: {
+            rules: [
+              {
+                layout: 'flex',
+                vertical: true,
+                divider: true,
+                gap: '40px 18px',
+              },
+            ],
+          },
+        },
+      ],
+    },
+    { type: 'oryx-site-notification-center' },
   ],
   options: {
     rules: [
