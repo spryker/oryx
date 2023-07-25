@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import 'urlpattern-polyfill';
