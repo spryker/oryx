@@ -4,16 +4,17 @@ import {
   PickingListService,
   PickingListStatus,
 } from '@spryker-oryx/picking';
-import { asyncState, I18nMixin, valueType } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { I18nMixin, signal, signalAware } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { distinctUntilChanged, map, startWith, Subject, switchMap } from 'rxjs';
+import { Subject, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { pickingListsComponentStyles } from './picking-lists.styles';
 
+@signalAware()
 export class PickingListsComponent extends I18nMixin(LitElement) {
   static styles = pickingListsComponentStyles;
   protected pickingListService = resolve(PickingListService);
@@ -46,8 +47,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
     })
   );
 
-  @asyncState()
-  protected pickingLists = valueType(this.pickingLists$);
+  protected $pickingLists = signal(this.pickingLists$);
 
   protected override render(): TemplateResult {
     return html` ${this.renderPickingLists()}
@@ -71,7 +71,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
 
       ${this.renderFilters()}
       ${when(
-        !this.pickingLists?.length,
+        !this.$pickingLists()?.length,
         () => this.renderResultsFallback(),
         () => html`
           ${when(
@@ -90,7 +90,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
                   `
                 )}
                 ${repeat(
-                  this.pickingLists!,
+                  this.$pickingLists(),
                   (pl) => pl.id,
                   (pl) =>
                     html`<oryx-picking-list-item
@@ -127,7 +127,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
     return html` <div class="filters">
       <span>
         ${this.i18n('picking.filter.<count>-open-pick-lists', {
-          count: this.pickingLists?.length ?? 0,
+          count: this.$pickingLists()?.length ?? 0,
         })}
       </span>
       <oryx-picking-filter-button></oryx-picking-filter-button>

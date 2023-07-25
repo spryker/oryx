@@ -1,5 +1,5 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
-import { asyncValue } from '@spryker-oryx/utilities';
+import { signal, signalAware } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { of } from 'rxjs';
@@ -13,6 +13,20 @@ class FakeComponent extends LitElement {
 
   render(): TemplateResult {
     return html` <slot></slot> `;
+  }
+}
+
+@customElement('fake-signal')
+@signalAware()
+class FakeSignalComponent extends LitElement {
+  protected $option = signal(of(['first']));
+
+  render(): TemplateResult {
+    return html`<fake-typeahead>
+      <select>
+        ${this.$option().map((item) => html`<option>${item}</option`)}
+      </select>
+    </fake-typeahead>`;
   }
 }
 
@@ -90,28 +104,18 @@ describe('SelectController', () => {
     });
   });
 
-  describe('render via asyncValue', () => {
+  describe('render via signal', () => {
     beforeEach(async () => {
-      const option = of(['first']);
-      element = await fixture(
-        html`
-          <fake-typeahead>
-            <select>
-              ${asyncValue(
-                option,
-                (options) => html`
-                  ${options.map((item) => html` <option>${item}</option>`)}
-                `
-              )}
-            </select>
-          </fake-typeahead>
-        `
-      );
+      element = await fixture(html` <fake-signal></fake-signal> `);
       await elementUpdated(element);
     });
 
     it('should generate 1 element', () => {
-      expect(element.querySelectorAll('oryx-option').length).toBe(1);
+      expect(
+        element.shadowRoot
+          ?.querySelector('fake-typeahead')
+          ?.querySelectorAll('oryx-option').length
+      ).toBe(1);
     });
   });
 });
