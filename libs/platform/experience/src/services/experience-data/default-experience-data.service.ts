@@ -25,40 +25,40 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       JSON.stringify(this.experienceData)
     )
       .flat()
-      .sort((a: ExperienceComponent) => (a.strategy ? 0 : -1));
+      .sort((a: ExperienceComponent) => (a.merge ? 0 : -1));
 
     for (const data of experienceData) {
-      if (data.id) {
-        this.recordsById[data.id] = data;
-
-        continue;
-      }
-
-      if (data.strategy) {
+      if (data.merge) {
         this.processMerging(data);
 
         continue;
       }
 
+      if (data.id) {
+        this.recordsById[data.id] = data;
+      }
+
       this.records.push(data);
     }
 
-    const mergedData = [...this.records, ...Object.values(this.recordsById)];
-
-    return mergedData;
+    return this.records;
   }
 
   protected processMerging(data: ExperienceComponent): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const strategy = data.strategy!;
-    let { components } = this.recordsById[strategy?.id];
+    const { type = ExperienceDataMergeType.Replace, selector } = data.merge!;
+    const paths = selector.split('.');
 
-    for (const [key, value] of Object.entries(strategy)) {
-      if (key === 'id') continue;
+    for (const record of this.records) {
+      const isTemplateId = paths[0].startsWith('#');
 
-      const paths = value.split('.');
+      if (isTemplateId && record.id !== paths[0].substring(1)) {
+        continue;
+      }
 
-      for (let i = 0; i < paths.length; i++) {
+      let { components } = record;
+
+      for (let i = isTemplateId ? 1 : 0; i < paths.length; i++) {
         const [path, nested] = paths[i].split('>');
 
         if (nested) {
@@ -90,34 +90,36 @@ export class DefaultExperienceDataService implements ExperienceDataService {
         );
 
         const isLast = i === paths.length - 1;
+        const isNotRepetitive = [
+          ExperienceDataMergeType.Prepend,
+          ExperienceDataMergeType.Append,
+        ].includes(type as ExperienceDataMergeType);
 
-        if (isLast && !childIndex) {
+        if (isLast && !childIndex && !isNotRepetitive) {
           this.mergeAll({
             data,
             components,
-            type: key,
+            type,
             name: path,
           });
 
-          return;
+          break;
         }
 
         if (isLast) {
           this.mergeByStrategy({
             data,
             components,
-            type: key,
+            type,
             componentIndex,
           });
 
-          return;
+          break;
         }
 
         components = component?.components;
       }
     }
-
-    return;
   }
 
   protected mergeAll(properties: MergeProperties): void {
@@ -136,10 +138,15 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       });
 
       if (
-        type === ExperienceDataMergeType.Before ||
-        type === ExperienceDataMergeType.After
+        [
+          ExperienceDataMergeType.Before,
+          ExperienceDataMergeType.Prepend,
+          ExperienceDataMergeType.Append,
+          ExperienceDataMergeType.After,
+        ].includes(type as ExperienceDataMergeType) &&
+        data.components?.length
       ) {
-        ++i;
+        i = i + data.components?.length;
       }
     }
   }
@@ -167,9 +174,22 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       return;
     }
 
-    if (type === ExperienceDataMergeType.Patch && components) {
-      delete data.strategy;
+    if (type === ExperienceDataMergeType.Append) {
+      delete data.merge;
+      components?.push(data);
 
+      return;
+    }
+
+    if (type === ExperienceDataMergeType.Prepend) {
+      delete data.merge;
+      components?.unshift(data);
+
+      return;
+    }
+
+    if (type === ExperienceDataMergeType.Patch && components) {
+      delete data.merge;
       components[componentIndex] = {
         ...components[componentIndex],
         ...data,

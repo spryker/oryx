@@ -15,9 +15,6 @@ export const homePage: ExperienceComponent = {
     route: '/',
     description: 'Home Page Description',
   },
-  ref: {
-    header: 'prepend',
-  },
   components: [
     {
       type: 'oryx-composition',

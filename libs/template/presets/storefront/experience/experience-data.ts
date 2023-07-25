@@ -21,6 +21,23 @@ import {
 export const StaticExperienceFeature: AppFeature = {
   providers: [
     provideExperienceData([
+      {
+        components: [
+          {
+            type: 'oryx-content-text',
+            content: { data: { text: 'test' } },
+          },
+          {
+            type: 'oryx-content-text',
+            content: { data: { text: 'test' } },
+          },
+        ],
+        merge: {
+          selector: '#footer.oryx-composition',
+        },
+      },
+    ]),
+    provideExperienceData([
       HeaderTemplate,
       FooterTemplate,
       cartPage,
