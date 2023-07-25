@@ -5,18 +5,15 @@ import '@spryker-oryx/utilities/window-stub';
 
 import { clientsClaim } from 'workbox-core';
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching';
-import { app } from './app';
 
 declare let self: ServiceWorkerGlobalScope;
 
-cleanupOutdatedCaches();
-precacheAndRoute(self.__WB_MANIFEST ?? []);
-skipWaiting();
-clientsClaim();
-
-app
-  .then(() => console.debug('Service worker app started!'))
-  .catch(console.error);
+export const bootstrap = (): void => {
+  cleanupOutdatedCaches();
+  precacheAndRoute(self.__WB_MANIFEST ?? []);
+  skipWaiting();
+  clientsClaim();
+};
 
 function skipWaiting() {
   self.addEventListener('message', (event) => {
