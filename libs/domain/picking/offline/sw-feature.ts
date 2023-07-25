@@ -1,4 +1,4 @@
-import { BapiAuthFeature } from '@spryker-oryx/application';
+import { BapiAuthFeature } from '@spryker-oryx/auth';
 import { AppFeature } from '@spryker-oryx/core';
 import { OfflinePickingFeature } from './feature';
 
