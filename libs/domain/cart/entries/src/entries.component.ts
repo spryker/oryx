@@ -43,8 +43,8 @@ export class CartEntriesComponent extends CartComponentMixin(
               .sku=${entry.sku}
               .currency=${this.$cart()?.currency}
               .quantity=${entry.quantity}
+              .price=${entry.calculations?.sumPriceToPayAggregation}
               .itemPrice=${entry.calculations?.unitPriceToPayAggregation}
-              .entryPrice=${entry.calculations?.sumPriceToPayAggregation}
               .key=${entry.groupKey}
               .options=${this.$options()}
               ?readonly=${this.$options().readonly}

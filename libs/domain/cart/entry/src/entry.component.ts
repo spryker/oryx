@@ -61,8 +61,8 @@ export class CartEntryComponent
 
   @signalProperty({ type: Number }) quantity?: number;
   @property() key?: string;
+  @property({ type: Number }) price?: number;
   @property({ type: Number }) itemPrice?: number;
-  @property({ type: Number }) entryPrice?: number;
   @property({ type: Boolean }) readonly?: boolean;
   @property() currency?: string;
 
@@ -169,7 +169,7 @@ export class CartEntryComponent
       <section class="pricing">
         ${qtyTemplate}
         <oryx-site-price
-          .value=${this.entryPrice}
+          .value=${this.price}
           .currency=${this.currency}
         ></oryx-site-price>
         ${when(
