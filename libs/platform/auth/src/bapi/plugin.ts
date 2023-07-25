@@ -1,4 +1,4 @@
-import { OauthService, OauthServiceConfig } from '@spryker-oryx/auth';
+import { OauthService, OauthServiceConfig } from '../oauth';
 import { App, AppPlugin } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';

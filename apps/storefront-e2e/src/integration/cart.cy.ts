@@ -65,7 +65,7 @@ describe('Cart', () => {
       });
     });
 
-    describe('and there is an item in cart', () => {
+    describe('and there is an item in the cart', () => {
       beforeEach(() => {
         scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
         cy.goToCartAsGuest();
@@ -192,6 +192,26 @@ describe('Cart', () => {
 
         it('should have an empty cart', () => {
           cartPage.hasEmptyCart();
+        });
+      });
+
+      describe('and some BE error occurs while editing cart', () => {
+        beforeEach(() => {
+          cy.failApiCall(
+            {
+              method: 'PATCH',
+              url: '/guest-carts/*/guest-cart-items/*',
+            },
+            () => {
+              cartPage.getCartEntries().then((entries) => {
+                entries[0].getQuantityInput().increase();
+              });
+            }
+          );
+        });
+
+        it('should show an error in global notification center', () => {
+          cy.checkGlobalNotificationAfterFailedApiCall(cartPage);
         });
       });
     });

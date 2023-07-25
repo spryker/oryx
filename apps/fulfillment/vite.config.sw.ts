@@ -8,7 +8,7 @@ export default defineConfig(() => {
     build: {
       outDir: 'dev-dist/sw',
       lib: {
-        entry: 'sw/main.ts',
+        entry: 'sw/app.ts',
         formats: ['es'],
         fileName: (format, entryName) => `${entryName}.js`,
       },
@@ -21,6 +21,6 @@ export default defineConfig(() => {
       'process.env.DEV': JSON.stringify(!production),
       'process.env': JSON.stringify(process.env ?? {}),
     },
-    plugins: [tsconfigPaths({ root: '../../' })],
+    plugins: [tsconfigPaths({ root: '../../' })]
   };
 });

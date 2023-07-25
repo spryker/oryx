@@ -13,7 +13,7 @@ const checkoutPage = new CheckoutPage();
 // TODO: refactor tests to make them more readable
 // TODO: add a test for an order with different shipping and billing addresses set
 
-describe('Checkout suite', { tags: 'smoke' }, () => {
+describe('Checkout suite', () => {
   describe('Create a new order by authorized user without addresses', () => {
     beforeEach(() => {
       cy.loginApi();
@@ -24,9 +24,7 @@ describe('Checkout suite', { tags: 'smoke' }, () => {
         cy.customerCartsCleanup(sccosApi, customer);
         cy.customerAddressesCleanup(sccosApi, customer);
       });
-    });
 
-    it('must allow user to create a new order', () => {
       const productData = ProductStorage.getProductByEq(1);
 
       cy.fixture<TestCustomerData>('test-customer').then((customer) => {
@@ -45,7 +43,9 @@ describe('Checkout suite', { tags: 'smoke' }, () => {
       cy.wait('@addressesRequest');
 
       checkoutPage.shipping.addAddressForm.fillAddressForm();
+    });
 
+    it('must allow user to create a new order', { tags: 'smoke' }, () => {
       cy.intercept('POST', '/checkout').as('checkout');
       checkoutPage.getPlaceOrderBtn().click();
       cy.wait('@checkout')
@@ -80,9 +80,27 @@ describe('Checkout suite', { tags: 'smoke' }, () => {
         cartPage.hasEmptyCart();
       });
     });
+
+    describe('Global notification', () => {
+      beforeEach(() => {
+        cy.failApiCall(
+          {
+            method: 'POST',
+            url: '/checkout*',
+          },
+          () => {
+            checkoutPage.getPlaceOrderBtn().click();
+          }
+        );
+      });
+
+      it('should show a notification if BE error occurs while creating order', () => {
+        cy.checkGlobalNotificationAfterFailedApiCall(checkoutPage);
+      });
+    });
   });
 
-  describe('Create a new order by guest user', () => {
+  describe('Create a new order by guest user', { tags: 'smoke' }, () => {
     beforeEach(() => {
       sccosApi = new SCCOSApi();
       sccosApi.guestCarts.get();
