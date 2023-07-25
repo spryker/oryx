@@ -1,6 +1,5 @@
-import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vite';
-import { Plugin } from 'vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 const production = !process.argv.includes('--watch');
 
