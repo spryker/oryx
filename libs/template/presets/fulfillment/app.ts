@@ -1,7 +1,7 @@
 import {
   BapiAuthComponentsFeature,
   BapiAuthFeature,
-} from '@spryker-oryx/application';
+} from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { Resources } from '@spryker-oryx/experience';
