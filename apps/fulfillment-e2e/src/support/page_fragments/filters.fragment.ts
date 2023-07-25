@@ -11,13 +11,13 @@ export class FiltersFragment {
   getFiltersResetButton = () =>
     this.getFilterButton()
       .find('oryx-picking-filters')
-      .find('[slot="navigate-back"] button');
+      .find('[slot="navigate-back"]');
   getFiltersCloseButton = () =>
-    this.getFiltersModal().find('header oryx-button button[value="cancel"]');
+    this.getFiltersModal().find('header oryx-button').eq(1);
   getFiltersApplyButton = () =>
     this.getFilterButton()
       .find('oryx-picking-filters')
-      .find('oryx-button[slot="footer"] button');
+      .find('oryx-button[slot="footer"]');
   getSortingOption = (eq: number) =>
     this.getFiltersModal().find('input').eq(eq);
   shouldChangePickingListsOrder = (isChange: boolean) =>
