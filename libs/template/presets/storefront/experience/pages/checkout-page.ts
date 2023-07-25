@@ -19,10 +19,12 @@ export const checkoutPage: ExperienceComponent = {
     {
       type: 'oryx-content-text',
       content: {
-        text: `
+        data: {
+          text: `
           <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
           <p>Your shopping cart is empty</p><oryx-button>
           <a href="/search">Shop now</a></oryx-button>`,
+        },
       },
       options: {
         visibility: { hideByRule: 'CART.!EMPTY' },
