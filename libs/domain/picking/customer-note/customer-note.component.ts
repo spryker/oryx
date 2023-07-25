@@ -1,14 +1,13 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
-import { I18nMixin, signalAware } from '@spryker-oryx/utilities';
+import { I18nMixin } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { catchError, of, tap } from 'rxjs';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { customerNoteComponentStyles } from './customer-note.styles';
 
-@signalAware()
 export class CustomerNoteComponent extends I18nMixin(
   PickingListMixin(LitElement)
 ) {

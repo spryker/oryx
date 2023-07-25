@@ -24,7 +24,7 @@ class FakeSignalComponent extends LitElement {
   render(): TemplateResult {
     return html`<fake-typeahead>
       <select>
-        ${this.$option().map((item) => html`<option>${item}</option`)}
+        ${this.$option().map((item) => html`<option>${item}</option>`)}
       </select>
     </fake-typeahead>`;
   }

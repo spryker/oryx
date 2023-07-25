@@ -14,7 +14,7 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { ChipComponent } from '@spryker-oryx/ui/chip';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { TabsAppearance } from '@spryker-oryx/ui/tabs';
-import { I18nMixin, signalAware, subscribe } from '@spryker-oryx/utilities';
+import { I18nMixin, subscribe } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -25,7 +25,6 @@ import { catchError, of, tap } from 'rxjs';
 import { PickingProductCardComponent } from '../picking-product-card';
 import { pickingComponentStyles } from './picking.styles';
 
-@signalAware()
 export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
   static styles = pickingComponentStyles;
 

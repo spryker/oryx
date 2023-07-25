@@ -3,13 +3,12 @@ import { PickingHeaderService, PickingListMixin } from '@spryker-oryx/picking';
 import { DiscardPickingComponent } from '@spryker-oryx/picking/discard-modal';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nMixin, signalAware, subscribe } from '@spryker-oryx/utilities';
+import { I18nMixin, subscribe } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { tap } from 'rxjs';
 import { styles } from './picking-header.styles';
 
-@signalAware()
 export class PickingHeaderComponent extends I18nMixin(
   PickingListMixin(LitElement)
 ) {
