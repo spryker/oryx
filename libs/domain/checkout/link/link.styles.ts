@@ -3,7 +3,7 @@ import { css } from 'lit';
 
 export const checkoutLinkStyles = css`
   oryx-button {
-    display: block;
+    display: flex;
   }
 `;
 

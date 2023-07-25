@@ -59,22 +59,6 @@ export class ButtonComponent
   @property({ reflect: true }) size = ButtonSize.Lg;
   @property({ reflect: true }) color?: ButtonColor;
 
-  // @property({ reflect: true }) set color(color: ButtonColor) {
-  //   if (
-  //     !color ||
-  //     color === ButtonColor.Primary ||
-  //     color === ButtonColor.Neutral
-  //   )
-  //     return;
-  //   this.style.setProperty('--_c0', `var(--oryx-color-${color}-0, white)`);
-  //   this.style.setProperty('--_c1', `var(--oryx-color-${color}-1)`);
-  //   this.style.setProperty('--_c3', `var(--oryx-color-${color}-3)`);
-  //   this.style.setProperty('--_c7', `var(--oryx-color-${color}-7)`);
-  //   this.style.setProperty('--_c8', `var(--oryx-color-${color}-8)`);
-  //   this.style.setProperty('--_c9', `var(--oryx-color-${color}-9)`);
-  //   this.style.setProperty('--_c10', `var(--oryx-color-${color}-10)`);
-  // }
-
   @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ type: Boolean, reflect: true }) loading?: boolean;
   @property({ type: Boolean, reflect: true }) confirmed?: boolean;

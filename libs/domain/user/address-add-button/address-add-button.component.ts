@@ -12,12 +12,15 @@ import {
   Target,
   UserAddressAddButtonOptions,
 } from './address-add-button.model';
+import { userAddressAddButton } from './address-add-button.styles';
 
 @defaultOptions({ target: Target.Link })
 @hydrate({ event: ['mouseover', 'focusin'] })
 export class UserAddressAddButtonComponent extends AddressMixin(
   ContentMixin<UserAddressAddButtonOptions>(LitElement)
 ) {
+  static styles = userAddressAddButton;
+
   protected semanticLinkService = resolve(LinkService);
 
   protected $createLink = signal(
@@ -34,7 +37,6 @@ export class UserAddressAddButtonComponent extends AddressMixin(
         .icon=${IconTypes.Add}
         .text=${this.i18n(['add', 'user.address.add'])}
         .href=${href}
-        block
         @click=${this.onCreate}
       ></oryx-button>
       ${this.renderModal()}

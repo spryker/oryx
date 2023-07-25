@@ -49,13 +49,6 @@ export interface ButtonComponentAttributes {
   size?: ButtonSize;
 
   /**
-   * Controls whether the button element takes the full width available (block) or is inline.
-   *
-   * @default false
-   */
-  block?: boolean;
-
-  /**
    * Indicates whether the button is in the disabled state.
    *
    * @default false
@@ -88,12 +81,7 @@ export const enum ButtonSize {
 
 export const enum ButtonColor {
   Primary = 'primary',
-  Secondary = 'secondary',
   Neutral = 'neutral',
-  Highlight = 'highlight',
-  Info = 'info',
-  Success = 'success',
-  Warning = 'warning',
   Error = 'error',
 }
 
@@ -102,6 +90,7 @@ export const enum ButtonColor {
  */
 export const enum ButtonType {
   None = 'none',
+
   /**
    * A button which is rendered as text without any background or border.
    */

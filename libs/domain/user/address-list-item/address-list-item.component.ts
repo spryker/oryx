@@ -115,7 +115,7 @@ export class UserAddressListItemComponent extends AddressMixin(
       <oryx-button
         .type=${ButtonType.Icon}
         .icon=${IconTypes.Edit}
-        .text=${this.i18n('user.address.edit')}
+        .label=${this.i18n('user.address.edit')}
         @click=${this.onEdit}
       ></oryx-button>
     `;
