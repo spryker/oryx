@@ -42,11 +42,8 @@ export const styles = css`
 
   [slot='subtext'] {
     display: flex;
-    gap: 8px;
-  }
-
-  [slot='subtext'] {
     flex-wrap: wrap;
     padding-block-start: 8px;
+    gap: 8px;
   }
 `;
