@@ -6,6 +6,7 @@ import {
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
+import { ProductPriceOptions } from '@spryker-oryx/product/price';
 import {
   NotificationService,
   PricingService,
@@ -17,13 +18,13 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LinkType } from '@spryker-oryx/ui/link';
 import {
+  Size,
   computed,
   elementEffect,
   hydratable,
   signalProperty,
-  Size,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import {
@@ -38,7 +39,6 @@ import {
   RemoveByQuantity,
 } from './entry.model';
 import { cartEntryStyles } from './styles';
-import { ProductPriceOptions } from '@spryker-oryx/product/price';
 
 /**
  * Supports updating the quantity as well as removing the entry entirely.
@@ -64,6 +64,7 @@ export class CartEntryComponent
   @property({ type: Number }) itemPrice?: number;
   @property({ type: Number }) entryPrice?: number;
   @property({ type: Boolean }) readonly?: boolean;
+  @property() currency?: string;
 
   @state() protected requiresRemovalConfirmation?: boolean;
 
@@ -167,7 +168,10 @@ export class CartEntryComponent
     return html`
       <section class="pricing">
         ${qtyTemplate}
-        <oryx-site-price .value=${this.entryPrice}></oryx-site-price>
+        <oryx-site-price
+          .value=${this.entryPrice}
+          .currency=${this.currency}
+        ></oryx-site-price>
         ${when(
           this.$options()?.enableItemPrice,
           () =>
@@ -176,6 +180,7 @@ export class CartEntryComponent
               <oryx-product-price
                 .options=${{ enableTaxMessage: false } as ProductPriceOptions}
                 .sales=${this.itemPrice}
+                .currency=${this.currency}
               ></oryx-product-price>
             </div>`
         )}

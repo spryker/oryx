@@ -18,6 +18,7 @@ export declare class CartMixinInterface implements CartComponentAttributes {
 
   protected $isEmpty: Signal<boolean>;
   protected $isBusy: Signal<boolean>;
+  protected $cart: Signal<Cart | null>;
   protected $entries: Signal<CartEntry[]>;
   protected $totals: Signal<FormattedCartTotals | null>;
   protected $totalQuantity: Signal<number>;
@@ -41,12 +42,19 @@ export const CartComponentMixin = <
     protected $isBusy = signal(this.cartController.isBusy(), {
       initialValue: false,
     });
+
+    protected $cart = signal(this.cartController.getCart(), {
+      initialValue: null,
+    });
+
     protected $entries = signal(this.cartController.getEntries(), {
       initialValue: [],
     });
+
     protected $totals = signal(this.cartController.getTotals(), {
       initialValue: null,
     });
+
     protected $totalQuantity = signal(this.cartController.getTotalQuantity(), {
       initialValue: null,
     });

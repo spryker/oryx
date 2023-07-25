@@ -3,7 +3,7 @@ import { RemoveByQuantity } from '@spryker-oryx/cart/entry';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { hydratable } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { CartEntriesOptions } from './entries.model';
 import { cartEntriesStyles } from './entries.styles';
@@ -41,6 +41,7 @@ export class CartEntriesComponent extends CartComponentMixin(
           return html`
             <oryx-cart-entry
               .sku=${entry.sku}
+              .currency=${this.$cart()?.currency}
               .quantity=${entry.quantity}
               .itemPrice=${entry.calculations?.unitPriceToPayAggregation}
               .entryPrice=${entry.calculations?.sumPriceToPayAggregation}
