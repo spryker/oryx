@@ -5,10 +5,12 @@ export class HeaderFragment {
 
   getCurrencySelector = () =>
     this.getWrapper().find('oryx-site-currency-selector');
-  getCurrencyButton = () => this.getCurrencySelector().find('oryx-button');
+  getCurrencyButton = () =>
+    this.getCurrencySelector().find('oryx-button[slot="trigger"]');
 
   getLocaleSelector = () => this.getWrapper().find('oryx-site-locale-selector');
-  getLocaleButton = () => this.getLocaleSelector().find('oryx-button');
+  getLocaleButton = () =>
+    this.getLocaleSelector().find('oryx-button[slot="trigger"]');
 
   getLogo = () =>
     this.getWrapper().find('oryx-content-image').find('a[href="/"]');
