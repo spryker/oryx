@@ -334,7 +334,7 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
         <oryx-button
           slot="footer"
           .type=${ButtonType.Outline}
-          .color=${ButtonColor.Secondary}
+          .color=${ButtonColor.Neutral}
           .text=${this.i18n('picking.product-card.cancel')}
           @click=${this.onModalClose}
         ></oryx-button>
