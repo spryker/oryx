@@ -21,6 +21,6 @@ export default defineConfig(() => {
       'process.env.DEV': JSON.stringify(!production),
       'process.env': JSON.stringify(process.env ?? {}),
     },
-    plugins: [tsconfigPaths({ root: '../../' })]
+    plugins: [tsconfigPaths({ root: '../../' })],
   };
 });
