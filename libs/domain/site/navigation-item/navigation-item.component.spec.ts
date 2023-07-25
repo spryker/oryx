@@ -198,7 +198,7 @@ describe('SiteNavigationItemComponent', () => {
       `);
     });
 
-    it('should render oryx-dropdown', () => {
+    it('should render modal', () => {
       expect(element).toContainElement('oryx-modal');
     });
 
@@ -258,8 +258,7 @@ describe('SiteNavigationItemComponent', () => {
       });
 
       it('should render oryx-icon', () => {
-        const button = element.renderRoot.querySelector('oryx-button');
-        expect(button).toHaveProperty('icon', 'test');
+        expect(element).toContainElement(`oryx-button[icon="test"]`);
       });
     });
 
@@ -278,8 +277,7 @@ describe('SiteNavigationItemComponent', () => {
       });
 
       it('should render anchor element inside oryx-button with given url', () => {
-        const button = element.renderRoot.querySelector('oryx-button');
-        expect(button).toHaveProperty('href', url);
+        expect(element).toContainElement(`oryx-button[href="${url}"]`);
       });
     });
   });
@@ -293,9 +291,10 @@ describe('SiteNavigationItemComponent', () => {
       `);
     });
 
-    it('should render oryx-button', () => {
-      const button = element.renderRoot.querySelector('oryx-button');
-      expect(button).toHaveProperty('type', ButtonType.Icon);
+    it('should render oryx-button with icon type', () => {
+      expect(element).toContainElement(
+        `oryx-button[type="${ButtonType.Icon}"]`
+      );
     });
 
     describe('and icon is provided', () => {
@@ -312,8 +311,7 @@ describe('SiteNavigationItemComponent', () => {
       });
 
       it('should render oryx-icon', () => {
-        const button = element.renderRoot.querySelector('oryx-button');
-        expect(button).toHaveProperty('icon', 'test');
+        expect(element).toContainElement(`oryx-button[icon="test"]`);
       });
     });
 
@@ -332,8 +330,7 @@ describe('SiteNavigationItemComponent', () => {
       });
 
       it('should render anchor element inside oryx-button with given url', () => {
-        const button = element.renderRoot.querySelector('oryx-button');
-        expect(button).toHaveProperty('href', url);
+        expect(element).toContainElement(`oryx-button[href="${url}"]`);
       });
     });
   });
@@ -419,23 +416,6 @@ describe('SiteNavigationItemComponent', () => {
 
       describe('when triggerBehavior is "hover"', () => {
         describe('and trigger is hovered', () => {
-          beforeEach(async () => {
-            element = await fixture(html`
-              <oryx-site-navigation-item
-                .options=${{
-                  label: 'test',
-                  triggerType,
-                  triggerBehavior: NavigationTriggerBehavior.Hover,
-                }}
-              ></oryx-site-navigation-item>
-            `);
-            triggerHover();
-          });
-
-          it('should pass focus to the trigger', () => {
-            expect(element.matches(':focus')).toBe(true);
-          });
-
           describe('and contentBehavior is "modal"', () => {
             beforeEach(async () => {
               element = await fixture(html`

@@ -36,12 +36,12 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected $label = computed(() => {
     const label = this.$options().label;
-    return label ? this.tokenResolver.resolveToken(label) : of(null);
+    return label ? this.tokenResolver.resolveToken(label) : of(undefined);
   });
 
   protected $badge = computed(() => {
     const badge = this.$options().badge;
-    return badge ? this.tokenResolver.resolveToken(badge) : of(null);
+    return badge ? this.tokenResolver.resolveToken(badge) : of(undefined);
   });
 
   protected $url = computed(() => {
@@ -65,12 +65,8 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     }
 
     //imitate mousedown behavior
-    const trigger = e.target as HTMLElement;
-    //focus focusable part of the trigger
-    (
-      (trigger.querySelector('oryx-button') ||
-        queryFirstFocusable(trigger)) as HTMLElement
-    )?.focus();
+    const trigger = e.target as LitElement;
+    trigger.focus();
     this.onTriggerClick();
   }
 
@@ -93,25 +89,14 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     ></oryx-composition>`;
   }
 
-  protected renderIconButton(): TemplateResult {
+  protected renderButton(type?: ButtonType): TemplateResult {
     return html`
       <oryx-button
         slot="trigger"
-        .type=${ButtonType.Icon}
-        .icon=${this.$options()?.icon}
-        .href=${this.$url()}
-        @click=${this.onTriggerClick}
-        @mouseenter=${this.onTriggerHover}
-      ></oryx-button>
-    `;
-  }
-
-  protected renderButton(): TemplateResult {
-    return html`
-      <oryx-button
-        slot="trigger"
-        .href=${this.$url()}
-        .icon=${this.$options()?.icon}
+        type=${ifDefined(type)}
+        text=${ifDefined(this.$label())}
+        href=${ifDefined(this.$url())}
+        icon=${ifDefined(this.$options().icon)}
         @click=${this.onTriggerClick}
         @mouseenter=${this.onTriggerHover}
       ></oryx-button>
@@ -135,7 +120,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   protected renderTrigger(): TemplateResult {
     switch (this.$options().triggerType) {
       case NavigationTriggerType.Icon:
-        return this.renderIconButton();
+        return this.renderButton(ButtonType.Icon);
       case NavigationTriggerType.Button:
         return this.renderButton();
       case NavigationTriggerType.StorefrontButton:
