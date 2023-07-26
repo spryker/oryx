@@ -1,9 +1,9 @@
 import { RouteMatcherOptions } from 'node_modules/cypress/types/net-stubbing';
-import { Customer } from './types/user.type';
 import { AbstractSFPage } from './page-objects/abstract.page';
 import { CartPage } from './page-objects/cart.page';
 import { LoginPage } from './page-objects/login.page';
 import { SCCOSApi } from './sccos-api/sccos.api';
+import { Customer } from './types/user.type';
 
 export {};
 
