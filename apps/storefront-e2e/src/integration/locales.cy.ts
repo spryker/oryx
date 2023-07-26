@@ -100,7 +100,7 @@ function checkCurrencyUsedOnCartPage(locale: string) {
     .checkCurrencyFormatting(locale);
 
   cartPage.getCartEntries().then((entries) => {
-    entries[0].getSubtotal().checkCurrencyFormatting(locale);
-    entries[0].getSalesPrice().checkCurrencyFormatting(locale);
+    entries[0].getSubtotal().shadow().checkCurrencyFormatting(locale);
+    entries[0].getSalesPrice().shadow().checkCurrencyFormatting(locale);
   });
 }

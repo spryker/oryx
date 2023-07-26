@@ -1,9 +1,9 @@
 import { RouteMatcherOptions } from 'node_modules/cypress/types/net-stubbing';
-import { Customer } from './types/user.type';
 import { AbstractSFPage } from './page-objects/abstract.page';
 import { CartPage } from './page-objects/cart.page';
 import { LoginPage } from './page-objects/login.page';
 import { SCCOSApi } from './sccos-api/sccos.api';
+import { Customer } from './types/user.type';
 
 export {};
 
@@ -98,10 +98,10 @@ Cypress.Commands.add('goToCheckoutAsGuest', () => {
 
   cy.goToCartAsGuest();
 
-  // carts request is not enought to be sure
+  // carts request is not enough to be sure
   // that checkout button is clickable
   // we have to wait for other elements, and even with them
-  // there is no 100% guarranty that checkout btn is ready
+  // there is no 100% guaranty that checkout btn is ready
   cartPage.getCartTotals().getTotalPrice().should('be.visible');
   // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(250);

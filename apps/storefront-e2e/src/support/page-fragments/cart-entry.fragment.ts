@@ -15,10 +15,14 @@ export class CartEntryFragment {
     this.getWrapper().find('oryx-product-media').find('oryx-icon');
   getSKU = () => this.getWrapper().find('oryx-product-id').shadow();
   getSalesPrice = () =>
-    this.getWrapper().find('oryx-product-price').find('[part="sales"]');
+    this.getWrapper()
+      .find('oryx-product-price')
+      .shadow()
+      .find('oryx-site-price[part="sales"]');
+
   getOriginalPrice = () =>
     this.getWrapper().find('oryx-product-price').find('[part="original"]');
-  getSubtotal = () => this.getWrapper().find('oryx-site-price').shadow();
+  getSubtotal = () => this.getWrapper().find('.pricing > oryx-site-price');
   getRemoveBtn = () => this.getWrapper().find('[aria-label="remove"]');
   getQuantityInput = () =>
     new QuantityInputFragment(

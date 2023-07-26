@@ -1,29 +1,26 @@
-import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   ProductContext,
   ProductMixin,
-  ProductPrices,
+  ProductPrice,
 } from '@spryker-oryx/product';
-import { PricingService } from '@spryker-oryx/site';
-import { computed, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
-import { combineLatest, Observable } from 'rxjs';
-import { Prices, ProductPriceOptions } from './price.model';
+import { computed, hydrate, signalProperty } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
+import { property } from 'lit/decorators.js';
+import { ProductPriceOptions } from './price.model';
 import { ProductPriceStyles } from './price.styles';
 
 /**
  * Renders the (formatted) product price.
  *
  * The component provides the ability to render two prices:
- * 1. the sales price (AKA "default" price)
- * 2. the original price (AKA "strikethrough" or "from" price)
+ * 1. The sales price (AKA "default" price)
+ * 2. The original price (AKA "strikethrough" or "from" price)
  *
- * The sales price is always rendered, where as the original price
- * can be configured to not be rendered.
+ * The sales price is always rendered, where as the original price can be configured
+ * to not be rendered.
  *
- * The components leverages the `PricingService` to format the prices for
- * the active locale and currency.
+ *
  */
 @defaultOptions({
   enableOriginalPrice: true,
@@ -35,35 +32,83 @@ export class ProductPriceComponent extends ProductMixin(
 ) {
   static styles = ProductPriceStyles;
 
-  protected pricingService = resolve(PricingService);
+  /**
+   * Indicates the sales price. If the sales price is not given by a property,
+   * it will be resolved from the product data.
+   */
+  @signalProperty() sales?: number;
 
-  protected $prices = computed(() => {
-    return this.formatPrices(this.$product()?.price);
+  /**
+   * The component uses the `PriceComponent` to render prices in the active currency.
+   * If a currency is provided, the price currency must match this currency, otherwise the price
+   * is not rendered
+   */
+  @property() currency?: string;
+
+  protected $salesPrice = computed(() => {
+    if (this.sales) return this.sales;
+
+    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
+
+    if (defaultPrice) {
+      return this.isValid(defaultPrice) && defaultPrice.value;
+    } else {
+      return this.isValid(originalPrice) && originalPrice?.value;
+    }
   });
+
+  protected $originalPrice = computed(() => {
+    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
+
+    if (this.sales && !originalPrice && this.sales !== defaultPrice?.value) {
+      return this.isValid(defaultPrice) && defaultPrice?.value;
+    } else {
+      return this.isValid(originalPrice) && originalPrice?.value;
+    }
+  });
+
+  protected isValid(price?: ProductPrice): boolean {
+    return !this.currency || this.currency === price?.currency;
+  }
 
   protected override render(): TemplateResult | void {
     return html`
-      ${this.renderSalesPrice()} ${this.renderTaxMessage()}
-      ${this.renderOriginalPrice()} ${this.renderSalesLabel()}
+      ${[
+        this.renderSalesPrice(),
+        this.renderTaxMessage(),
+        this.renderOriginalPrice(),
+        this.renderSalesLabel(),
+      ]}
     `;
   }
 
   protected renderSalesPrice(): TemplateResult | void {
-    const { original, sales } = this.$prices() ?? {};
+    const price = this.$salesPrice();
+    if (!price) return;
 
-    if (!sales && !original) return;
+    return html`<oryx-site-price
+      .value=${price}
+      .currency=${this.currency}
+      part="sales"
+      ?has-discount=${!!this.$originalPrice()}
+    ></oryx-site-price>`;
+  }
 
-    const hasDiscount = !!sales && !!original;
+  protected renderOriginalPrice(): TemplateResult | void {
+    const price = this.$originalPrice();
+    if (!price) return;
 
-    return html`<span part="sales" ?has-discount=${hasDiscount}
-      >${sales ?? original}</span
-    >`;
+    return html`<oryx-site-price
+      .value=${price}
+      .currency=${this.currency}
+      part="original"
+    ></oryx-site-price>`;
   }
 
   protected renderTaxMessage(): TemplateResult | void {
     if (
       !this.$options().enableTaxMessage ||
-      (!this.$prices()?.sales && !this.$prices()?.original)
+      (!this.$salesPrice() && !this.$originalPrice())
     )
       return;
 
@@ -78,14 +123,6 @@ export class ProductPriceComponent extends ProductMixin(
     </span>`;
   }
 
-  protected renderOriginalPrice(): TemplateResult | void {
-    const { original, sales } = this.$prices() ?? {};
-    if (!this.$options().enableOriginalPrice || !sales || !original) {
-      return;
-    }
-    return html`<span part="original">${original}</span>`;
-  }
-
   protected renderSalesLabel(): TemplateResult | void {
     if (!this.$options().enableSalesLabel) return;
 
@@ -95,16 +132,5 @@ export class ProductPriceComponent extends ProductMixin(
         .options=${{ included: 'sale %', invert: true }}
       ></oryx-product-labels>
     `;
-  }
-
-  /**
-   * Formats the given product prices and emits an object containing the formatted
-   * sales price and original price.
-   */
-  protected formatPrices(price?: ProductPrices): Observable<Prices> {
-    return combineLatest({
-      sales: this.pricingService.format(price?.defaultPrice),
-      original: this.pricingService.format(price?.originalPrice),
-    });
   }
 }

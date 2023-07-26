@@ -1,6 +1,6 @@
-import { Product } from '../types/product.type';
 import { ProductRelationsFragment } from '../page-fragments/product-relations.fragment';
 import { QuantityInputFragment } from '../page-fragments/quantity-input.fragment';
+import { Product } from '../types/product.type';
 import { AbstractSFPage } from './abstract.page';
 
 export class ProductDetailsPage extends AbstractSFPage {
@@ -36,7 +36,10 @@ export class ProductDetailsPage extends AbstractSFPage {
   getRating = () => this.getInfoWrapper().find('oryx-product-average-rating');
   getSKU = () => this.getInfoWrapper().find('oryx-product-id').shadow();
   getPrice = () =>
-    this.getInfoWrapper().find('oryx-product-price').find('[part="sales"]');
+    this.getInfoWrapper()
+      .find('oryx-product-price')
+      .find('[part="sales"]')
+      .shadow();
   getAddToCartWrapper = () => this.getInfoWrapper().find('oryx-cart-add');
 
   getQuantityComponent = () => {

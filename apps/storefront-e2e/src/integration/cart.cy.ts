@@ -38,8 +38,8 @@ describe('Cart', () => {
             checkCartEntry({
               quantity: 1,
               subTotal: '€161.95',
-              originalPrice: '180.00',
-              salesPrice: '€179.94',
+              originalPrice: '€180.00',
+              salesPrice: '€161.95',
             });
 
             checkCartTotals({
@@ -113,7 +113,7 @@ describe('Cart', () => {
           checkCartEntry({
             quantity: 4,
             subTotal: '€124.34',
-            salesPrice: '€34.54',
+            salesPrice: '€31.08',
           });
           checkCartTotals({
             subTotal: '€138.16',
@@ -232,13 +232,19 @@ function checkCartEntry(entry: {
         .should('have.value', entry.quantity);
     }
     if (entry.subTotal) {
-      entries[0].getSubtotal().should('contain.text', entry.subTotal);
+      entries[0].getSubtotal().shadow().should('contain.text', entry.subTotal);
     }
     if (entry.salesPrice) {
-      entries[0].getSalesPrice().should('contain.text', entry.salesPrice);
+      entries[0]
+        .getSalesPrice()
+        .shadow()
+        .should('contain.text', entry.salesPrice);
     }
     if (entry.originalPrice) {
-      entries[0].getOriginalPrice().should('contain.text', entry.originalPrice);
+      entries[0]
+        .getOriginalPrice()
+        .shadow()
+        .should('contain.text', entry.originalPrice);
     }
   });
 }
