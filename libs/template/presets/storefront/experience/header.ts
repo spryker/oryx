@@ -86,19 +86,6 @@ export const HeaderTemplate: StaticComponent = {
             {
               type: 'oryx-site-navigation-item',
               options: {
-                label: 'HiddenLg',
-                icon: IconTypes.User,
-                rules: [
-                  {
-                    query: { breakpoint: Size.Lg },
-                    hide: true,
-                  },
-                ],
-              },
-            },
-            {
-              type: 'oryx-site-navigation-item',
-              options: {
                 label: 'login',
                 icon: IconTypes.User,
                 url: { type: 'login' },

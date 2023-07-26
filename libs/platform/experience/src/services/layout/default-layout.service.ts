@@ -1,5 +1,5 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { inject } from '@spryker-oryx/di';
+import { OnDestroy, inject } from '@spryker-oryx/di';
 import { Breakpoint, Size, sizes, throttle } from '@spryker-oryx/utilities';
 import {
   merge,
@@ -9,47 +9,24 @@ import {
   distinctUntilChanged,
   map,
   reduce,
+  startWith,
 } from 'rxjs';
 import { CompositionLayout } from '../../models';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import { LayoutService } from './layout.service';
 import { ScreenService } from './screen.service';
 
-export class DefaultLayoutService implements LayoutService {
+export class DefaultLayoutService implements LayoutService, OnDestroy {
   constructor(protected screenService = inject(ScreenService)) {
     this.setupBreakpointsObserver(document.body);
   }
 
-  protected screenWidth$ = new ReplaySubject<number>();
+  protected observer?: ResizeObserver;
+  protected screenWidth$ = new ReplaySubject<number>(1);
 
-  protected setupBreakpointsObserver(target: HTMLElement): void {
-    if (!target) return;
-
-    this.screenWidth$.next(window.innerWidth);
-
-    const observer = new ResizeObserver(
-      throttle(
-        () =>
-          window.requestAnimationFrame(() => {
-            this.screenWidth$.next(window.innerWidth);
-          }),
-        50
-      )
-    );
-    observer.observe(target);
-  }
-
-  protected evaluateBreakpoint(width: number): Size {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return Object.entries(this.screenService.getBreakpoints()).find(
-      ([_b, { min = 0, max = Infinity }]) => {
-        return width >= min && width <= max;
-      }
-    )![0] as Size;
-  }
-
-  getBreakpoint(): Observable<Size> {
+  getActiveBreakpoint(): Observable<Size | undefined> {
     return this.screenWidth$?.pipe(
+      startWith(undefined),
       map((width) => this.evaluateBreakpoint(width)),
       distinctUntilChanged()
     );
@@ -76,6 +53,10 @@ export class DefaultLayoutService implements LayoutService {
     return observables.length > 0
       ? merge(...observables).pipe(reduce((acc, curr) => acc + curr, ''))
       : of('');
+  }
+
+  onDestroy(): void {
+    this.observer?.disconnect();
   }
 
   protected resolveCommonStyles(): Observable<string> {
@@ -206,5 +187,32 @@ export class DefaultLayoutService implements LayoutService {
     });
 
     return result;
+  }
+
+  protected setupBreakpointsObserver(target?: HTMLElement): void {
+    if (!target) return;
+
+    this.screenWidth$.next(window.innerWidth);
+
+    this.observer = new ResizeObserver(
+      throttle(
+        () =>
+          window.requestAnimationFrame(() => {
+            this.screenWidth$.next(window.innerWidth);
+          }),
+        50
+      )
+    );
+    this.observer.observe(target);
+  }
+
+  protected evaluateBreakpoint(width?: number): Size | undefined {
+    if (typeof width === 'undefined') return;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return Object.entries(this.screenService.getBreakpoints()).find(
+      ([_b, { min = 0, max = Infinity }]) => {
+        return width >= min && width <= max;
+      }
+    )![0] as Size;
   }
 }

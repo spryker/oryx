@@ -18,6 +18,28 @@ export class CompositionComponentsController implements ReactiveController {
     this.observe = new ObserveController(host);
   }
 
+  getComponents(): Observable<Component[] | null> {
+    return combineLatest([
+      this.components(),
+      this.layoutService.getActiveBreakpoint(),
+    ]).pipe(
+      switchMap(([components, breakpoint]) =>
+        components
+          ? this.filterHiddenComponents(components, breakpoint)
+          : of([])
+      )
+    );
+  }
+
+  hasDynamicallyVisibleChild(): Observable<boolean> {
+    return this.components().pipe(
+      map(
+        (components) =>
+          !!components?.some((component) => !!this.getRules(component))
+      )
+    );
+  }
+
   protected components(): Observable<Component[] | null> {
     return this.observe
       .get('uid')
@@ -38,12 +60,7 @@ export class CompositionComponentsController implements ReactiveController {
   ): Observable<Component[]> {
     return combineLatest(
       components.map((component) => {
-        //short check for the SSR
-        if (!breakpoint) {
-          return this.hasVisibilityRules(component) ? of(null) : of(component);
-        }
-
-        const rules = this.getCurrentRules(component, breakpoint);
+        const rules = this.getRules(component, breakpoint);
 
         if (!rules) {
           return of(component);
@@ -62,39 +79,14 @@ export class CompositionComponentsController implements ReactiveController {
     ).pipe(map((components) => components.filter(Boolean) as Component[]));
   }
 
-  protected getCurrentRules(
+  protected getRules(
     component: Component,
-    breakpoint: Size
+    breakpoint?: Size
   ): StyleRuleSet | void {
     return component.options?.rules?.find(
       ({ query, hide, hideByRule }) =>
         (hide || hideByRule) &&
-        (!query?.breakpoint || query.breakpoint === breakpoint)
-    );
-  }
-
-  getComponents(): Observable<Component[] | null> {
-    return combineLatest([
-      this.components(),
-      this.layoutService.getBreakpoint().pipe(startWith(undefined)),
-    ]).pipe(
-      switchMap(([components, breakpoint]) =>
-        components
-          ? this.filterHiddenComponents(components, breakpoint)
-          : of([])
-      )
-    );
-  }
-
-  protected hasVisibilityRules(component: Component): boolean {
-    return !!component.options?.rules?.some(
-      ({ hide, hideByRule }) => !!(hide || hideByRule)
-    );
-  }
-
-  hasDynamicallyVisibleChild(): Observable<boolean> {
-    return this.components().pipe(
-      map((components) => !!components?.some(this.hasVisibilityRules))
+        (!breakpoint || !query?.breakpoint || query.breakpoint === breakpoint)
     );
   }
 }

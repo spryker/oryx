@@ -5,8 +5,11 @@ import { LitElement } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { CompositionComponentsController } from './composition-components.controller';
-import { ExperienceService, LayoutService } from '../src/services';
-import { Component } from '../src/services/experience/models';
+import {
+  ExperienceService,
+  LayoutService,
+  Component,
+} from '@spryker-oryx/experience';
 
 const mockElement = {
   tagName: 'tagName',
@@ -107,7 +110,7 @@ const mockComponentWithBreakpointLg: Component = {
 };
 
 class mockLayoutService implements Partial<LayoutService> {
-  getBreakpoint = vi.fn().mockReturnValue(of('lg'));
+  getActiveBreakpoint = vi.fn().mockReturnValue(of('lg'));
 }
 
 class MockExperienceService implements Partial<ExperienceService> {

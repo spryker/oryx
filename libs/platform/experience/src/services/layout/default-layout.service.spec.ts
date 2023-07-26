@@ -1,8 +1,7 @@
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
-import { Size, Breakpoints } from '@spryker-oryx/utilities';
+import { Size } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
 import { lastValueFrom } from 'rxjs';
-import { SpyInstance } from 'vitest';
 import { CompositionLayout } from '../../models';
 import { DefaultLayoutService } from './default-layout.service';
 import { LayoutService } from './layout.service';
@@ -117,7 +116,7 @@ describe('DefaultLayoutService', () => {
           [Size.Lg]: { min: 1025 },
         });
 
-        service.getBreakpoint().subscribe(callback);
+        service.getActiveBreakpoint().subscribe(callback);
       });
 
       it('should set sm breakpoint', () => {
@@ -134,7 +133,7 @@ describe('DefaultLayoutService', () => {
           [Size.Lg]: { min: 768 },
         });
 
-        service.getBreakpoint().subscribe(callback);
+        service.getActiveBreakpoint().subscribe(callback);
       });
 
       it('should set lg breakpoint', () => {
