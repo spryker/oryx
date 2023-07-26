@@ -121,7 +121,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
   );
 
   protected initExperienceData(): void {
-    this.experienceData = this.processExperienceData(false);
+    this.experienceData = this.experienceDataService.getData();
   }
 
   protected reloadComponent(uid: string): void {

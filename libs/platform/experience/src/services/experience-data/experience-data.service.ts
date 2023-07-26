@@ -35,10 +35,13 @@ export interface ExperienceDataMergeStrategy {
 export type ExperienceComponent = Partial<Omit<Component, 'components'>> & {
   components?: ExperienceComponent[];
   merge?: ExperienceDataMergeStrategy;
+  ref?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string | symbol]: any;
 };
 
 export interface ExperienceDataService {
-  getData(): ExperienceComponent[];
+  getData(cb?: (c: ExperienceComponent) => void): ExperienceComponent[];
 }
 
 export function provideExperienceData(

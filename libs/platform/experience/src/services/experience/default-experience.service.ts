@@ -18,7 +18,6 @@ import { Component } from './models';
 type DataStore<T = unknown> = Record<string, ReplaySubject<T>>;
 
 export class DefaultExperienceService implements ExperienceService {
-  protected autoComponentId = 0;
   protected dataRoutes: DataStore<string> = {};
   protected dataComponent: DataStore<Component> = {};
   protected dataContent: DataStore = {};
@@ -34,35 +33,28 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected initExperienceData(): void {
-    this.experienceData = this.processExperienceData();
-  }
-
-  protected processExperienceData(shouldStore = true): Component[] {
-    return this.experienceDataService.getData().map((component) => {
-      this.processComponent(component, shouldStore);
-
-      if (shouldStore) {
-        this.storeData('dataRoutes', component.meta?.route, component.id);
-      }
-      return component as Component;
-    });
+    this.experienceData = this.experienceDataService.getData((c) =>
+      this.processData(c)
+    );
   }
 
   protected processComponent(
-    _component: Component | ExperienceComponent,
-    shouldStore = true
+    _component: Component | ExperienceComponent
   ): void {
     const components = [_component];
 
     for (const component of components) {
-      component.id ??= this.getAutoId();
-
-      if (shouldStore) {
-        this.storeData('dataComponent', component.id, component);
-      }
-
+      this.processData(component);
       components.push(...(component.components ?? []));
     }
+  }
+
+  protected processData(component: Component | ExperienceComponent): void {
+    if (component.meta?.route) {
+      this.storeData('dataRoutes', component.meta.route, component.id);
+    }
+
+    this.storeData('dataComponent', component.id, component);
   }
 
   protected storeData(
@@ -151,7 +143,6 @@ export class DefaultExperienceService implements ExperienceService {
           }
           const component = components[0];
           this.processComponent(component);
-          this.storeData('dataRoutes', route, component.id);
         })
       )
       .subscribe();
@@ -194,9 +185,5 @@ export class DefaultExperienceService implements ExperienceService {
         const options = component?.options ?? {};
         this.dataOptions[uid].next(options);
       });
-  }
-
-  protected getAutoId(): string {
-    return `static${this.autoComponentId++}`;
   }
 }

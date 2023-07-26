@@ -9,29 +9,37 @@ export const contactPage: ExperienceComponent = {
     route: '/contact',
     description: 'Contact Page Description',
   },
-  options: {
-    rules: [
-      {
-        layout: 'list',
-        padding: '10px 0',
-        bleed: true,
-        background: 'var(--oryx-color-primary-3)',
-      },
-    ],
-  },
   components: [
+    { ref: 'header' },
     {
-      type: 'oryx-content-link',
-      content: {
-        data: {
-          text: 'This is Contact Page element. Remove me when the page is implemented',
-        },
-      },
+      type: 'oryx-composition',
+      id: 'contactBody',
       options: {
-        type: 'rawUrl',
-        url: '/contact',
-        icon: IconTypes.Check,
+        rules: [
+          {
+            layout: 'list',
+            padding: '10px 0',
+            bleed: true,
+            background: 'var(--oryx-color-primary-3)',
+          },
+        ],
       },
+      components: [
+        {
+          type: 'oryx-content-link',
+          content: {
+            data: {
+              text: 'This is Contact Page element. Remove me when the page is implemented',
+            },
+          },
+          options: {
+            type: 'rawUrl',
+            url: '/contact',
+            icon: IconTypes.Check,
+          },
+        },
+      ],
     },
+    { ref: 'footer' },
   ],
 };

@@ -118,17 +118,6 @@ describe('DefaultExperienceService', () => {
     http.clear();
   });
 
-  it('should parse static data and add ids', () => {
-    const callback = vi.fn();
-    service.getComponent({ uid: 'static0' }).subscribe(callback);
-    expect(callback).toHaveBeenCalledWith(expect.objectContaining(mockStatic));
-    service.getComponent({ uid: 'static2' }).subscribe(callback);
-    expect(callback).toHaveBeenCalledWith({
-      ...mockStatic.components[1],
-      id: 'static2',
-    });
-  });
-
   describe('getComponent', () => {
     it('should return mock data', () => {
       const callback = vi.fn();

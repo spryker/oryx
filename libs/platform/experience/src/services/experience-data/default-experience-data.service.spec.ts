@@ -10,9 +10,11 @@ const mockPageA: ExperienceComponent = {
   id: 'a',
   components: [
     {
+      id: 'a1',
       type: 'a-component',
       components: [
         {
+          id: 'a2',
           type: 'a-component',
           components: [
             {
@@ -22,14 +24,17 @@ const mockPageA: ExperienceComponent = {
               id: 'a-component',
               components: [
                 {
+                  id: 'a3',
                   type: 'b-component',
                   options: { b: 'b' },
                 },
                 {
+                  id: 'a3',
                   type: 'c-component',
                   options: { c: 'c' },
                 },
                 {
+                  id: 'a3',
                   type: 'b-component',
                   options: { b: 'b' },
                 },
@@ -46,10 +51,13 @@ const mockPageB: ExperienceComponent = {
   id: 'b',
   components: [
     {
+      id: 'b1',
       type: 'a-component',
       components: [
         {
+          id: 'b2',
           type: 'a-component',
+          components: [],
         },
       ],
     },
@@ -57,12 +65,9 @@ const mockPageB: ExperienceComponent = {
 };
 
 const mockMergeComponent = {
+  id: 'c1',
+  type: 'merge-component',
   options: { merge: 'merge' },
-  components: [
-    {
-      type: 'merge-component',
-    },
-  ],
 };
 
 describe('DefaultExperienceDataService', () => {
@@ -104,10 +109,10 @@ describe('DefaultExperienceDataService', () => {
         const expected = {
           id: 'a-component',
           components: [
-            { type: 'b-component', options: { b: 'b' } },
-            { type: 'c-component', options: { c: 'c' } },
-            { type: 'merge-component' },
-            { type: 'b-component', options: { b: 'b' } },
+            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            mockMergeComponent,
+            { type: 'b-component', id: 'a3', options: { b: 'b' } },
           ],
         };
         expect(expected).toEqual(result);
@@ -144,11 +149,11 @@ describe('DefaultExperienceDataService', () => {
         const expected = {
           id: 'a-component',
           components: [
-            { type: 'merge-component' },
-            { type: 'b-component', options: { b: 'b' } },
-            { type: 'c-component', options: { c: 'c' } },
-            { type: 'merge-component' },
-            { type: 'b-component', options: { b: 'b' } },
+            mockMergeComponent,
+            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            mockMergeComponent,
+            { type: 'b-component', id: 'a3', options: { b: 'b' } },
           ],
         };
         expect(expected).toEqual(result);
@@ -187,10 +192,10 @@ describe('DefaultExperienceDataService', () => {
         const expected = {
           id: 'a-component',
           components: [
-            { type: 'b-component', options: { b: 'b' } },
-            { type: 'c-component', options: { c: 'c' } },
-            { type: 'b-component', options: { b: 'b' } },
-            { type: 'merge-component' },
+            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            mockMergeComponent,
           ],
         };
         expect(expected).toEqual(result);
@@ -227,11 +232,11 @@ describe('DefaultExperienceDataService', () => {
         const expected = {
           id: 'a-component',
           components: [
-            { type: 'b-component', options: { b: 'b' } },
-            { type: 'merge-component' },
-            { type: 'c-component', options: { c: 'c' } },
-            { type: 'b-component', options: { b: 'b' } },
-            { type: 'merge-component' },
+            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            mockMergeComponent,
+            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            mockMergeComponent,
           ],
         };
         expect(expected).toEqual(result);
@@ -269,9 +274,9 @@ describe('DefaultExperienceDataService', () => {
         const expected = {
           id: 'a-component',
           components: [
-            { type: 'b-component', options: { b: 'b' } },
-            { type: 'c-component', options: { c: 'c' } },
-            { type: 'oryx-composition', ...mockMergeComponent },
+            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            mockMergeComponent,
           ],
         };
 
@@ -289,7 +294,6 @@ describe('DefaultExperienceDataService', () => {
             },
             provideExperienceData([
               {
-                type: 'custom-type',
                 ...mockMergeComponent,
                 merge: {
                   type: 'replace',
@@ -310,9 +314,9 @@ describe('DefaultExperienceDataService', () => {
         const expected = {
           id: 'a-component',
           components: [
-            { type: 'custom-type', ...mockMergeComponent },
-            { type: 'c-component', options: { c: 'c' } },
-            { type: 'custom-type', ...mockMergeComponent },
+            mockMergeComponent,
+            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            mockMergeComponent,
           ],
         };
         expect(expected).toEqual(result);
@@ -351,10 +355,9 @@ describe('DefaultExperienceDataService', () => {
         const expected = {
           id: 'a-component',
           components: [
-            { type: 'b-component', options: { b: 'b' } },
-            { type: 'c-component', options: { c: 'c' } },
+            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            { type: 'c-component', id: 'a3', options: { c: 'c' } },
             {
-              type: 'b-component',
               ...mockMergeComponent,
               options: { b: 'b', ...mockMergeComponent.options },
             },
@@ -396,13 +399,11 @@ describe('DefaultExperienceDataService', () => {
           id: 'a-component',
           components: [
             {
-              type: 'b-component',
               ...mockMergeComponent,
               options: { b: 'b', ...mockMergeComponent.options },
             },
-            { type: 'c-component', options: { c: 'c' } },
+            { type: 'c-component', id: 'a3', options: { c: 'c' } },
             {
-              type: 'b-component',
               ...mockMergeComponent,
               options: { b: 'b', ...mockMergeComponent.options },
             },
@@ -444,9 +445,9 @@ describe('DefaultExperienceDataService', () => {
       const expected = {
         id: 'a-component',
         components: [
-          { type: 'b-component', options: { b: 'b' } },
-          { type: 'c-component', options: { c: 'c' } },
-          { type: 'b-component', options: { b: 'b' } },
+          { type: 'b-component', id: 'a3', options: { b: 'b' } },
+          { type: 'c-component', id: 'a3', options: { c: 'c' } },
+          { type: 'b-component', id: 'a3', options: { b: 'b' } },
           mockMergeComponent,
         ],
       };
@@ -486,9 +487,9 @@ describe('DefaultExperienceDataService', () => {
         id: 'a-component',
         components: [
           mockMergeComponent,
-          { type: 'b-component', options: { b: 'b' } },
-          { type: 'c-component', options: { c: 'c' } },
-          { type: 'b-component', options: { b: 'b' } },
+          { type: 'b-component', id: 'a3', options: { b: 'b' } },
+          { type: 'c-component', id: 'a3', options: { c: 'c' } },
+          { type: 'b-component', id: 'a3', options: { b: 'b' } },
         ],
       };
 
@@ -522,21 +523,14 @@ describe('DefaultExperienceDataService', () => {
     });
     it('should use merge strategy for all templates', () => {
       const result = service.getData();
-      const b = result[0];
-      const a = result[1];
+      const a = result[0];
+      const b = result[1];
 
       expect(b.id).toBe('b');
-      expect(b.components).toEqual([
-        mockMergeComponent,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        ...mockPageB.components!,
-      ]);
+
+      expect(b.components?.[0].components?.[0]).toEqual(mockMergeComponent);
       expect(a.id).toBe('a');
-      expect(a.components).toEqual([
-        mockMergeComponent,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        ...mockPageA.components!,
-      ]);
+      expect(a.components?.[0].components?.[0]).toEqual(mockMergeComponent);
     });
   });
 });

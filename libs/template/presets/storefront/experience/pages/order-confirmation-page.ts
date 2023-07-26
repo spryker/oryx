@@ -10,6 +10,7 @@ export const orderConfirmationPage: ExperienceComponent = {
     description: 'Order Page Description',
   },
   components: [
+    { ref: 'header' },
     { type: 'oryx-order-confirmation-banner' },
     {
       type: 'oryx-composition',
@@ -41,5 +42,6 @@ export const orderConfirmationPage: ExperienceComponent = {
         },
       ],
     },
+    { ref: 'footer' },
   ],
 };

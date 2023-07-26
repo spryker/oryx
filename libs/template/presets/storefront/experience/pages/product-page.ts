@@ -8,8 +8,8 @@ export const productPage: ExperienceComponent = {
     route: '/product/:sku',
     description: 'Default Product Page Description',
   },
-
   components: [
+    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'productBody',
@@ -63,7 +63,6 @@ export const productPage: ExperienceComponent = {
         },
       ],
     },
-
     {
       type: 'oryx-product-relations',
       options: {
@@ -90,5 +89,6 @@ export const productPage: ExperienceComponent = {
         ],
       },
     },
+    { ref: 'footer' },
   ],
 };
