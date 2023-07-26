@@ -1,22 +1,14 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { ButtonColor, ButtonSize } from '../button.model';
-import { renderButtons, staticButtons } from './util';
+import { ButtonColor } from '../button.model';
+import { renderButtons } from './util';
 
 export default {
   title: `${storybookPrefix}/Actions/Button/Static`,
 } as Meta;
 
-const colors = [
-  ButtonColor.Primary,
-  ButtonColor.Secondary,
-  ButtonColor.Neutral,
-  ButtonColor.Warning,
-  ButtonColor.Info,
-  ButtonColor.Error,
-  ButtonColor.Success,
-];
+const colors = [ButtonColor.Primary, ButtonColor.Neutral, ButtonColor.Error];
 
 const PrimaryTemplate: Story = (): TemplateResult => {
   return html`<section>
@@ -26,7 +18,7 @@ const PrimaryTemplate: Story = (): TemplateResult => {
     <style>
       section {
         display: grid;
-        grid-template-columns: repeat(11, max-content);
+        grid-template-columns: repeat(10, max-content);
         gap: 10px;
         justify-items: start;
         align-items: center;
