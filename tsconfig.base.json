@@ -160,6 +160,9 @@
         "libs/template/presets/backoffice-ng/index.ts"
       ],
       "@spryker-oryx/presets/fes": ["libs/template/presets/fes/index.ts"],
+      "@spryker-oryx/presets/fulfillment": [
+        "libs/template/presets/fulfillment/index.ts"
+      ],
       "@spryker-oryx/presets/storefront": [
         "libs/template/presets/storefront/index.ts"
       ],
