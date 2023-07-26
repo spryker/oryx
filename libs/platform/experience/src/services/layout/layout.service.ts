@@ -6,7 +6,6 @@ export const LayoutService = 'oryx.LayoutService';
 
 export interface LayoutService {
   getStyles(sheets: ResponsiveLayoutInfo): Observable<string>;
-  getActiveBreakpoint(): Observable<Size | undefined>;
 }
 
 declare global {

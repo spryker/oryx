@@ -1,11 +1,10 @@
-// organize-imports-ignore
+import '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/utilities';
 import { ButtonComponent, ButtonType } from '../../action/button/src';
 import { CollapsibleTextComponent } from './collapsible-text.component';
 import { collapsibleTextComponent } from './collapsible-text.def';
 import { CollapsibleTextToggle } from './collapsible-text.model';
-import '@/tools/testing';
 
 describe('CollapsibleTextComponent', () => {
   let element: CollapsibleTextComponent;

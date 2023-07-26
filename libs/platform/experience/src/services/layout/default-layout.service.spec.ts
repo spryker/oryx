@@ -6,11 +6,9 @@ import { CompositionLayout } from '../../models';
 import { DefaultLayoutService } from './default-layout.service';
 import { LayoutService } from './layout.service';
 import { ScreenService } from './screen.service';
-import '@/tools/testing';
 
 const mockLayoutService = {
   getScreenMedia: vi.fn(),
-  getBreakpoints: vi.fn(),
 };
 
 const layout = {
@@ -102,42 +100,6 @@ describe('DefaultLayoutService', () => {
           [Size.Lg]
         );
         expect(styles).toBe(`${common}${layoutStyles}`);
-      });
-    });
-  });
-
-  describe('getBreakpoint', () => {
-    describe('when screen size corresponds to small screens', () => {
-      const callback = vi.fn();
-
-      beforeEach(() => {
-        mockLayoutService.getBreakpoints.mockReturnValue({
-          [Size.Sm]: { max: 1024 },
-          [Size.Lg]: { min: 1025 },
-        });
-
-        service.getActiveBreakpoint().subscribe(callback);
-      });
-
-      it('should set sm breakpoint', () => {
-        expect(callback).toHaveBeenCalledWith(Size.Sm);
-      });
-    });
-
-    describe('when screen size corresponds to large screens', () => {
-      const callback = vi.fn();
-
-      beforeEach(() => {
-        mockLayoutService.getBreakpoints.mockReturnValue({
-          [Size.Sm]: { max: 767 },
-          [Size.Lg]: { min: 768 },
-        });
-
-        service.getActiveBreakpoint().subscribe(callback);
-      });
-
-      it('should set lg breakpoint', () => {
-        expect(callback).toHaveBeenCalledWith(Size.Lg);
       });
     });
   });

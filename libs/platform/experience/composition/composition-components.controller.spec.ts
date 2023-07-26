@@ -7,7 +7,7 @@ import { SpyInstance } from 'vitest';
 import { CompositionComponentsController } from './composition-components.controller';
 import {
   ExperienceService,
-  LayoutService,
+  ScreenService,
   Component,
 } from '@spryker-oryx/experience';
 
@@ -109,8 +109,8 @@ const mockComponentWithBreakpointLg: Component = {
   ],
 };
 
-class mockLayoutService implements Partial<LayoutService> {
-  getActiveBreakpoint = vi.fn().mockReturnValue(of('lg'));
+class MockScreenService implements Partial<ScreenService> {
+  getScreenSize = vi.fn().mockReturnValue(of('lg'));
 }
 
 class MockExperienceService implements Partial<ExperienceService> {
@@ -137,8 +137,8 @@ describe('CompositionComponentsController', () => {
     createInjector({
       providers: [
         {
-          provide: LayoutService,
-          useClass: mockLayoutService,
+          provide: ScreenService,
+          useClass: MockScreenService,
         },
         {
           provide: ExperienceService,
@@ -161,12 +161,12 @@ describe('CompositionComponentsController', () => {
     vi.clearAllMocks();
   });
 
-  describe('hasDynamicallyVisibleChild', () => {
+  describe('hasDynamicallyVisibleComponent', () => {
     describe('when uid is not provided', () => {
       const callback = vi.fn();
       beforeEach(() => {
         const controller = new CompositionComponentsController(mockElement);
-        controller.hasDynamicallyVisibleChild().subscribe(callback);
+        controller.hasDynamicallyVisibleComponent().subscribe(callback);
       });
 
       it('should return false', () => {
@@ -182,7 +182,7 @@ describe('CompositionComponentsController', () => {
           .fn()
           .mockReturnValue(of(mockComponent));
         const controller = new CompositionComponentsController(mockElement);
-        controller.hasDynamicallyVisibleChild().subscribe(callback);
+        controller.hasDynamicallyVisibleComponent().subscribe(callback);
       });
 
       it('should return false', () => {
@@ -197,7 +197,7 @@ describe('CompositionComponentsController', () => {
           .fn()
           .mockReturnValue(of(mockComponentWithComposition));
         const controller = new CompositionComponentsController(mockElement);
-        controller.hasDynamicallyVisibleChild().subscribe(callback);
+        controller.hasDynamicallyVisibleComponent().subscribe(callback);
       });
 
       it('should return false', () => {
@@ -212,7 +212,7 @@ describe('CompositionComponentsController', () => {
           .fn()
           .mockReturnValue(of(mockComponentWithVisibilityHidden));
         const controller = new CompositionComponentsController(mockElement);
-        controller.hasDynamicallyVisibleChild().subscribe(callback);
+        controller.hasDynamicallyVisibleComponent().subscribe(callback);
       });
 
       it('should return true', () => {
@@ -227,7 +227,7 @@ describe('CompositionComponentsController', () => {
           .fn()
           .mockReturnValue(of(mockComponentWithVisibilityRule));
         const controller = new CompositionComponentsController(mockElement);
-        controller.hasDynamicallyVisibleChild().subscribe(callback);
+        controller.hasDynamicallyVisibleComponent().subscribe(callback);
       });
 
       it('should return true', () => {

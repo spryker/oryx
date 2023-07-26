@@ -1,4 +1,5 @@
-import { Breakpoint, Breakpoints } from '@spryker-oryx/utilities';
+import { Breakpoint, Breakpoints, Size } from '@spryker-oryx/utilities';
+import { Observable } from 'rxjs';
 
 export const ScreenService = 'oryx.ScreenService';
 
@@ -9,6 +10,7 @@ export interface ScreenService {
     exclude?: Breakpoint | Breakpoint[]
   ): string | void | null;
   getSmallest(): Breakpoint | void;
+  getScreenSize(): Observable<Size | undefined>;
 }
 
 declare global {

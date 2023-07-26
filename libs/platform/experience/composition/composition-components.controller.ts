@@ -1,7 +1,7 @@
 import { LitElement, ReactiveController } from 'lit';
 import { ContentComponentProperties, StyleRuleSet } from '../src/models';
 import { resolve } from '@spryker-oryx/di';
-import { Component, ExperienceService, LayoutService } from '../src/services';
+import { Component, ExperienceService, ScreenService } from '../src/services';
 import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
 import { TokenResolver } from '@spryker-oryx/core';
 import { ObserveController, Size } from '@spryker-oryx/utilities';
@@ -12,7 +12,7 @@ export class CompositionComponentsController implements ReactiveController {
   protected observe: ObserveController<LitElement & ContentComponentProperties>;
   protected tokenResolver = resolve(TokenResolver);
   protected experienceService = resolve(ExperienceService);
-  protected layoutService = resolve(LayoutService);
+  protected screenService = resolve(ScreenService);
 
   constructor(protected host: LitElement & ContentComponentProperties) {
     this.observe = new ObserveController(host);
@@ -21,7 +21,7 @@ export class CompositionComponentsController implements ReactiveController {
   getComponents(): Observable<Component[] | null> {
     return combineLatest([
       this.components(),
-      this.layoutService.getActiveBreakpoint(),
+      this.screenService.getScreenSize(),
     ]).pipe(
       switchMap(([components, breakpoint]) =>
         components
@@ -31,7 +31,7 @@ export class CompositionComponentsController implements ReactiveController {
     );
   }
 
-  hasDynamicallyVisibleChild(): Observable<boolean> {
+  hasDynamicallyVisibleComponent(): Observable<boolean> {
     return this.components().pipe(
       map(
         (components) =>
@@ -56,11 +56,11 @@ export class CompositionComponentsController implements ReactiveController {
 
   protected filterHiddenComponents(
     components: Component[],
-    breakpoint?: Size
+    screenSize?: Size
   ): Observable<Component[]> {
     return combineLatest(
       components.map((component) => {
-        const rules = this.getRules(component, breakpoint);
+        const rules = this.getRules(component, screenSize);
 
         if (!rules) {
           return of(component);
@@ -81,12 +81,12 @@ export class CompositionComponentsController implements ReactiveController {
 
   protected getRules(
     component: Component,
-    breakpoint?: Size
+    screenSize?: Size
   ): StyleRuleSet | void {
     return component.options?.rules?.find(
       ({ query, hide, hideByRule }) =>
         (hide || hideByRule) &&
-        (!breakpoint || !query?.breakpoint || query.breakpoint === breakpoint)
+        (!screenSize || !query?.breakpoint || query.breakpoint === screenSize)
     );
   }
 }
