@@ -1,4 +1,4 @@
-export interface PriceComponentAttributes {
+export interface SitePriceComponentAttributes {
   /**
    * The value property represents the price in cents. For example,
    * if the price is €12.34, the value should be set to `1234`.
