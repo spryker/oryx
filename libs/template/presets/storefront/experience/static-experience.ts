@@ -13,7 +13,7 @@ import {
   editAddressPage,
   homePage,
   loginPage,
-  orderPage,
+  orderConfirmationPage,
   productPage,
   searchPage,
 } from './pages';
@@ -29,7 +29,7 @@ export const StaticExperienceFeature: AppFeature = {
       contactPage,
       homePage,
       loginPage,
-      orderPage,
+      orderConfirmationPage,
       productPage,
       searchPage,
       addressBookPage,

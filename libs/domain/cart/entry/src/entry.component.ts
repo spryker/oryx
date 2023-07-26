@@ -6,6 +6,7 @@ import {
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
+import { ProductPriceOptions } from '@spryker-oryx/product/price';
 import { RouteType } from '@spryker-oryx/router';
 import {
   LinkService,
@@ -61,7 +62,9 @@ export class CartEntryComponent
   @signalProperty({ type: Number }) quantity?: number;
   @property() key?: string;
   @property({ type: Number }) price?: number;
+  @property({ type: Number }) itemPrice?: number;
   @property({ type: Boolean }) readonly?: boolean;
+  @property() currency?: string;
 
   @state() protected requiresRemovalConfirmation?: boolean;
 
@@ -163,14 +166,19 @@ export class CartEntryComponent
     return html`
       <section class="pricing">
         ${qtyTemplate}
-        <oryx-site-price .value=${this.price}></oryx-site-price>
+        <oryx-site-price
+          .value=${this.price}
+          .currency=${this.currency}
+        ></oryx-site-price>
         ${when(
           this.$options()?.enableItemPrice,
           () =>
             html`<div class="item-price">
-              <span>${this.i18n('cart.entry.item-price')}</span
-              ><oryx-product-price
-                .options=${{ enableTaxMessage: false }}
+              <span>${this.i18n('cart.entry.item-price')}</span>
+              <oryx-product-price
+                .options=${{ enableTaxMessage: false } as ProductPriceOptions}
+                .sales=${this.itemPrice}
+                .currency=${this.currency}
               ></oryx-product-price>
             </div>`
         )}

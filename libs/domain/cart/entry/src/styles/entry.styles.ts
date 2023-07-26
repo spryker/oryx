@@ -62,7 +62,7 @@ const pricing = css`
 
 export const cartEntryStyles = css`
   :host {
-    --image-fit: cover;
+    --image-fit: contain;
 
     display: grid;
     grid-template-columns: auto 1fr auto;

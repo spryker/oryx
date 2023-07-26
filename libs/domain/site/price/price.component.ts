@@ -6,14 +6,14 @@ import {
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
-import { PriceComponentAttributes } from './price.model';
+import { LitElement, TemplateResult, html } from 'lit';
+import { SitePriceComponentAttributes } from './price.model';
 
 @hydrate()
 @signalAware()
-export class PriceComponent
+export class SitePriceComponent
   extends LitElement
-  implements PriceComponentAttributes
+  implements SitePriceComponentAttributes
 {
   protected pricingService = resolve(PricingService);
 
