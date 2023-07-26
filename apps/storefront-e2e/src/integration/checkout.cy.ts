@@ -77,6 +77,7 @@ describe('Checkout suite', () => {
         thankYouPage.header.getCartCount().should('not.exist');
         thankYouPage.header.getCartSummary().click();
 
+        cartPage.visit();
         cartPage.hasEmptyCart();
       });
     });
