@@ -6,7 +6,10 @@ import { StoryblokContentFields } from './storyblok';
 export const articlesPage: ExperienceComponent = {
   type: 'Page',
   id: 'articles',
-  meta: { route: `/${ContentfulContentFields.Article}` },
+  meta: {
+    title: 'Articles Page',
+    route: `/${ContentfulContentFields.Article}`,
+  },
   options: {
     rules: [{ layout: 'flex', padding: '30px 0' }],
   },
@@ -47,7 +50,10 @@ export const articlesPage: ExperienceComponent = {
 export const articlePage: ExperienceComponent = {
   type: 'Page',
   id: 'article',
-  meta: { route: `/${ContentfulContentFields.Article}/:id` },
+  meta: {
+    title: 'Article Page',
+    route: `/${ContentfulContentFields.Article}/:id`,
+  },
   components: [
     { ref: 'header' },
     {
@@ -72,7 +78,7 @@ export const articlePage: ExperienceComponent = {
 export const faqsPage: ExperienceComponent = {
   type: 'Page',
   id: 'faqs',
-  meta: { route: `/${StoryblokContentFields.Faq}` },
+  meta: { title: 'FAQ`s Page', route: `/${StoryblokContentFields.Faq}` },
   components: [
     { ref: 'header' },
     {
@@ -110,7 +116,7 @@ export const faqsPage: ExperienceComponent = {
 export const faqPage: ExperienceComponent = {
   type: 'Page',
   id: 'faq',
-  meta: { route: `/${StoryblokContentFields.Faq}/:id` },
+  meta: { title: 'FAQ Page', route: `/${StoryblokContentFields.Faq}/:id` },
   components: [
     { ref: 'header' },
     {
