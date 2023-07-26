@@ -16,7 +16,6 @@ import { catchError, of, tap } from 'rxjs';
 import { PickingListItemAttributes } from './picking-list-item.model';
 import { pickingListItemComponentStyles } from './picking-list-item.styles';
 
-@signalAware()
 export class PickingListItemComponent
   extends I18nMixin(PickingListMixin(LitElement))
   implements PickingListItemAttributes

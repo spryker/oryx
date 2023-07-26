@@ -5,7 +5,6 @@ import { I18nMixin, signal, signalAware } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { pickingListsHeaderComponentStyles } from './picking-lists-header.styles';
 
-@signalAware()
 export class PickingListsHeaderComponent extends I18nMixin(LitElement) {
   static styles = pickingListsHeaderComponentStyles;
 

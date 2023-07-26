@@ -14,7 +14,6 @@ import { Subject, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { pickingListsComponentStyles } from './picking-lists.styles';
 
-@signalAware()
 export class PickingListsComponent extends I18nMixin(LitElement) {
   static styles = pickingListsComponentStyles;
   protected pickingListService = resolve(PickingListService);
