@@ -9,7 +9,6 @@ import {
   distinctUntilChanged,
   map,
   reduce,
-  tap,
 } from 'rxjs';
 import { CompositionLayout } from '../../models';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
@@ -18,26 +17,29 @@ import { ScreenService } from './screen.service';
 
 export class DefaultLayoutService implements LayoutService {
   constructor(protected screenService = inject(ScreenService)) {
-    this.updateScreenWidth = throttle(this.updateScreenWidth.bind(this), 200);
     this.setupBreakpointsObserver(document.body);
   }
 
   protected screenWidth$ = new ReplaySubject<number>();
 
-  protected updateScreenWidth(elements: ResizeObserverEntry[]): void {
-    this.screenWidth$.next(elements[0].borderBoxSize[0].inlineSize);
-  }
-
   protected setupBreakpointsObserver(target: HTMLElement): void {
     if (!target) return;
 
-    this.screenWidth$.next(target.clientWidth);
+    this.screenWidth$.next(window.innerWidth);
 
-    const observer = new ResizeObserver(this.updateScreenWidth);
+    const observer = new ResizeObserver(throttle(
+      () => window.requestAnimationFrame(() => {
+        console.log(window.innerWidth);
+        
+        this.screenWidth$.next(window.innerWidth)
+      }),
+      200
+    ));
     observer.observe(target, { box: 'border-box' });
   }
 
   protected evaluateBreakpoint(width: number): Size {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return Object.entries(this.screenService.getBreakpoints()).find(
       ([_b, { min = 0, max = Infinity }]) => {
         return width >= min && width <= max;
