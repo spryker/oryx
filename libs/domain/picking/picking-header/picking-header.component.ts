@@ -4,7 +4,7 @@ import { DiscardPickingComponent } from '@spryker-oryx/picking/discard-modal';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin, subscribe } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { tap } from 'rxjs';
 import { styles } from './picking-header.styles';
@@ -32,7 +32,7 @@ export class PickingHeaderComponent extends I18nMixin(
     );
 
   protected renderCartNoteButton(): TemplateResult {
-    return html`${this.pickingList?.cartNote
+    return html`${this.$pickingList()?.cartNote
       ? html`
           <oryx-icon-button>
             <button
@@ -46,7 +46,7 @@ export class PickingHeaderComponent extends I18nMixin(
             ?open=${this.isCartNoteVisible}
             @oryx.close=${() => (this.isCartNoteVisible = false)}
           >
-            ${this.pickingList?.cartNote}
+            ${this.$pickingList()?.cartNote}
           </oryx-customer-note-modal>
         `
       : ''}`;
@@ -65,7 +65,7 @@ export class PickingHeaderComponent extends I18nMixin(
             <oryx-icon type=${IconTypes.ArrowBack}></oryx-icon>
           </button>
         </oryx-icon-button>
-        <div class="title">${this.pickingList?.orderReferences[0]}</div>
+        <div class="title">${this.$pickingList()?.orderReferences[0]}</div>
         ${this.renderCartNoteButton()}
         <oryx-discard-picking
           @oryx.close=${() => {

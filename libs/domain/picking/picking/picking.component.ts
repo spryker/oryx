@@ -14,11 +14,11 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { ChipComponent } from '@spryker-oryx/ui/chip';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { TabsAppearance } from '@spryker-oryx/ui/tabs';
-import { I18nMixin, subscribe } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { I18nMixin, computed, subscribe } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { createRef, ref, Ref } from 'lit/directives/ref.js';
+import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { catchError, of, tap } from 'rxjs';
@@ -37,12 +37,7 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
   @state()
   protected items: PickingListItem[] = [];
 
-  @subscribe()
-  protected itemsSubscription$ = this.pickingList$.pipe(
-    tap((list) => {
-      this.items = list?.items;
-    })
-  );
+  protected $items = computed(() => this.$pickingList()?.items);
 
   protected productCardRef: Ref<PickingProductCardComponent> = createRef();
   protected notPickedTabRef: Ref<TabComponent> = createRef();
@@ -59,6 +54,8 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
   ];
 
   protected buildTabs(): PickingTab[] {
+    this.items = this.$items();
+
     return [
       {
         id: ItemsFilters.NotPicked,
@@ -89,7 +86,7 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
   protected savePickingItem(event: CustomEvent<ProductItemPickedEvent>): void {
     const { productId, numberOfPicked } = event.detail;
 
-    const productIndex = this.pickingList?.items.findIndex(
+    const productIndex = this.$pickingList()?.items.findIndex(
       (item) => item.id === productId
     );
 
@@ -113,7 +110,7 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
   ): Promise<void> {
     const { productId } = event.detail;
 
-    const productIndex = this.pickingList?.items.findIndex(
+    const productIndex = this.$pickingList()?.items.findIndex(
       (item) => item.id === productId
     );
     this.items[productIndex].status = ItemsFilters.NotPicked;
@@ -141,7 +138,7 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
   }
 
   protected confirmPartialPicking(): void {
-    const productIndex = this.pickingList?.items.findIndex(
+    const productIndex = this.$pickingList()?.items.findIndex(
       (item) => item.id === this.partialPicking?.productId
     );
 
@@ -154,11 +151,11 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
   }
 
   protected finishPicking(): void {
-    this.pickingList.status = PickingListStatus.PickingFinished;
+    this.$pickingList().status = PickingListStatus.PickingFinished;
 
     // ToDo: update this logic after Bapi is fully integrated in fulfillment app
     this.pickingListService
-      .finishPicking(this.pickingList)
+      .finishPicking(this.$pickingList())
       .pipe(
         tap(() => {
           this.routerService.navigate(`/`);

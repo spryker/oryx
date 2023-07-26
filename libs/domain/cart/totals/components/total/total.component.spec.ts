@@ -6,7 +6,7 @@ import {
 } from '@spryker-oryx/cart/mocks';
 import * as core from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PriceComponent } from '@spryker-oryx/site/price';
+import { SitePriceComponent } from '@spryker-oryx/site/price';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -71,7 +71,7 @@ describe('CartTotalsTotalComponent', () => {
 
   it('should populate the data to the price component', () => {
     const priceComponent =
-      element.renderRoot.querySelector<PriceComponent>('oryx-site-price');
+      element.renderRoot.querySelector<SitePriceComponent>('oryx-site-price');
     expect(priceComponent?.value).toBe(mockNormalizedCartTotals.priceToPay);
     expect(priceComponent?.currency).toBe(mockNormalizedCartTotals.currency);
   });

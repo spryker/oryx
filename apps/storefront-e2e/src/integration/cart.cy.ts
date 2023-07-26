@@ -1,7 +1,7 @@
-import { CartPage } from '../support/page_objects/cart.page';
-import { ProductDetailsPage } from '../support/page_objects/product-details.page';
-import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { ProductStorage } from '../test-data/product.storage';
+import { CartPage } from '../support/page-objects/cart.page';
+import { ProductDetailsPage } from '../support/page-objects/product-details.page';
+import { SCCOSApi } from '../support/sccos-api/sccos.api';
+import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const cartPage = new CartPage();
 const cartTotals = cartPage.getCartTotals();
@@ -38,8 +38,8 @@ describe('Cart', () => {
             checkCartEntry({
               quantity: 1,
               subTotal: '€161.95',
-              originalPrice: '180.00',
-              salesPrice: '€179.94',
+              originalPrice: '€180.00',
+              salesPrice: '€161.95',
             });
 
             checkCartTotals({
@@ -65,7 +65,7 @@ describe('Cart', () => {
       });
     });
 
-    describe('and there is an item in cart', () => {
+    describe('and there is an item in the cart', () => {
       beforeEach(() => {
         scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
         cy.goToCartAsGuest();
@@ -113,7 +113,7 @@ describe('Cart', () => {
           checkCartEntry({
             quantity: 4,
             subTotal: '€124.34',
-            salesPrice: '€34.54',
+            salesPrice: '€31.08',
           });
           checkCartTotals({
             subTotal: '€138.16',
@@ -194,6 +194,26 @@ describe('Cart', () => {
           cartPage.hasEmptyCart();
         });
       });
+
+      describe('and some BE error occurs while editing cart', () => {
+        beforeEach(() => {
+          cy.failApiCall(
+            {
+              method: 'PATCH',
+              url: '/guest-carts/*/guest-cart-items/*',
+            },
+            () => {
+              cartPage.getCartEntries().then((entries) => {
+                entries[0].getQuantityInput().increase();
+              });
+            }
+          );
+        });
+
+        it('should show an error in global notification center', () => {
+          cy.checkGlobalNotificationAfterFailedApiCall(cartPage);
+        });
+      });
     });
   });
 });
@@ -212,13 +232,19 @@ function checkCartEntry(entry: {
         .should('have.value', entry.quantity);
     }
     if (entry.subTotal) {
-      entries[0].getSubtotal().should('contain.text', entry.subTotal);
+      entries[0].getSubtotal().shadow().should('contain.text', entry.subTotal);
     }
     if (entry.salesPrice) {
-      entries[0].getSalesPrice().should('contain.text', entry.salesPrice);
+      entries[0]
+        .getSalesPrice()
+        .shadow()
+        .should('contain.text', entry.salesPrice);
     }
     if (entry.originalPrice) {
-      entries[0].getOriginalPrice().should('contain.text', entry.originalPrice);
+      entries[0]
+        .getOriginalPrice()
+        .shadow()
+        .should('contain.text', entry.originalPrice);
     }
   });
 }

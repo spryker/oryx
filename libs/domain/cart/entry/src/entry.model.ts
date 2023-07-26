@@ -17,9 +17,20 @@ export interface CartEntryAttributes {
   quantity?: number;
 
   /**
-   * The price represents the non formatted price for the cart entry's SKU.
+   * The entry price represents the price per item of the entry. This might be a
+   * discounted price because of volume pricing.
+   *
+   * The given number represents the non formatted price.
    */
   price?: number;
+
+  /**
+   * The item price represents the sales price of the item of the entry. This might be
+   * a discounted price. Additional discounts can be given by volume pricing, see `price`.
+   *
+   * The given number represents the non formatted price.
+   */
+  itemPrice?: number;
 
   /**
    * Indicates whether the cart entry can be edited. In readonly mode,
@@ -27,6 +38,7 @@ export interface CartEntryAttributes {
    */
   readonly?: boolean;
 }
+
 export interface CartEntryOptions {
   /**
    * Indicates whether the cart entry can be edited. In readonly mode,

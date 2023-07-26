@@ -93,53 +93,123 @@ describe('ProductPriceComponent', () => {
   });
 
   describe('when no price is provided', () => {
-    beforeEach(async () => {
-      vi.spyOn(mockProductService, 'get').mockImplementation(() => of());
-      element = await fixture(
-        html`<oryx-product-price sku="123"></oryx-product-price>`
-      );
+    describe('and no sales price is provided', () => {
+      beforeEach(async () => {
+        vi.spyOn(mockProductService, 'get').mockImplementation(() => of());
+        element = await fixture(
+          html`<oryx-product-price sku="123"></oryx-product-price>`
+        );
+      });
+
+      it(`should not render any price`, () => {
+        expect(element).not.toContainElement('oryx-site-price');
+      });
     });
 
-    it(`should not render any price`, () => {
-      expect(element).not.toContainElement('span');
+    describe('and a sales price is provided', () => {
+      beforeEach(async () => {
+        vi.spyOn(mockProductService, 'get').mockImplementation(() => of());
+        element = await fixture(
+          html`<oryx-product-price
+            sku="123"
+            .sales=${1234}
+          ></oryx-product-price>`
+        );
+      });
+
+      it(`should render a sales price`, () => {
+        expect(
+          element.renderRoot.querySelector('oryx-site-price[part="sales"]')
+        ).toHaveProperty('value', 1234);
+      });
     });
   });
 
   describe('when only a default price is provided', () => {
-    beforeEach(async () => {
-      vi.spyOn(mockProductService, 'get').mockImplementation(() =>
-        of({ price: { defaultPrice: mockEurNet } })
-      );
-      element = await fixture(
-        html`<oryx-product-price sku="123"></oryx-product-price>`
-      );
+    describe('and there is no currency property provided', () => {
+      beforeEach(async () => {
+        vi.spyOn(mockProductService, 'get').mockImplementation(() =>
+          of({ price: { defaultPrice: mockEurNet } })
+        );
+        element = await fixture(
+          html`<oryx-product-price sku="123"></oryx-product-price>`
+        );
+      });
+
+      it(`should render the sales price`, () => {
+        expect(
+          element.renderRoot.querySelector('oryx-site-price[part="sales"]')
+        ).toHaveProperty('value', 1095);
+      });
+
+      it(`should render the tax`, () => {
+        expect(element).toContainElement('span[part="tax"]');
+      });
     });
 
-    it(`should render the sales price`, () => {
-      expect(element).toContainElement('span[part="sales"]');
-    });
+    describe('and the currency property is different from the price currency', () => {
+      beforeEach(async () => {
+        vi.spyOn(mockProductService, 'get').mockImplementation(() =>
+          of({ price: { defaultPrice: mockEurNet } })
+        );
+        element = await fixture(
+          html`<oryx-product-price
+            sku="123"
+            currency="USD"
+          ></oryx-product-price>`
+        );
+      });
 
-    it(`should render the tax`, () => {
-      expect(element).toContainElement('span[part="tax"]');
+      it(`should not render the sales price`, () => {
+        expect(element).not.toContainElement('oryx-site-price[part="sales"]');
+      });
+
+      it(`should not render the tax`, () => {
+        expect(element).not.toContainElement('span[part="tax"]');
+      });
     });
   });
 
   describe('when only an original price is provided', () => {
-    beforeEach(async () => {
-      vi.spyOn(mockProductService, 'get').mockImplementation(() =>
-        of({ price: { originalPrice: mockEurNet } })
-      );
-      element = await fixture(
-        html`<oryx-product-price sku="123"></oryx-product-price>`
-      );
+    describe('and there is no currency property provided', () => {
+      beforeEach(async () => {
+        vi.spyOn(mockProductService, 'get').mockImplementation(() =>
+          of({ price: { originalPrice: mockEurNet } })
+        );
+        element = await fixture(
+          html`<oryx-product-price sku="123"></oryx-product-price>`
+        );
+      });
+
+      it(`should render the original price`, () => {
+        expect(element).toContainElement('oryx-site-price[part="sales"]');
+      });
+
+      it(`should render the tax`, () => {
+        expect(element).toContainElement('[part="tax"]');
+      });
     });
 
-    it(`should render the original price`, () => {
-      expect(element).toContainElement('span[part="sales"]');
-    });
+    describe('and the currency property is different from the price currency', () => {
+      beforeEach(async () => {
+        vi.spyOn(mockProductService, 'get').mockImplementation(() =>
+          of({ price: { originalPrice: mockEurNet } })
+        );
+        element = await fixture(
+          html`<oryx-product-price
+            sku="123"
+            currency="USD"
+          ></oryx-product-price>`
+        );
+      });
 
-    it(`should render the tax`, () => {
-      expect(element).toContainElement('span[part="tax"]');
+      it(`should not render the original price`, () => {
+        expect(element).not.toContainElement('oryx-site-price[part="sales"]');
+      });
+
+      it(`should not render the tax`, () => {
+        expect(element).not.toContainElement('[part="tax"]');
+      });
     });
   });
 
@@ -154,15 +224,15 @@ describe('ProductPriceComponent', () => {
     });
 
     it(`should render the sales price`, () => {
-      expect(element).toContainElement('span[part="sales"]');
+      expect(element).toContainElement('[part="sales"]');
     });
 
     it(`should render the tax`, () => {
-      expect(element).toContainElement('span[part="tax"]');
+      expect(element).toContainElement('[part="tax"]');
     });
 
     it(`should render the original price`, () => {
-      expect(element).toContainElement('span[part="original"]');
+      expect(element).toContainElement('[part="original"]');
     });
   });
 
@@ -177,7 +247,7 @@ describe('ProductPriceComponent', () => {
     });
 
     it(`should render the tax excluded message`, () => {
-      const vat = element.shadowRoot?.querySelector('span[part="tax"]');
+      const vat = element.shadowRoot?.querySelector('[part="tax"]');
       expect(vat?.textContent).toContain('Tax excluded');
     });
   });
@@ -195,7 +265,7 @@ describe('ProductPriceComponent', () => {
     });
 
     it(`should render the tax included message`, () => {
-      const vat = element.shadowRoot?.querySelector('span[part="tax"]');
+      const vat = element.shadowRoot?.querySelector('[part="tax"]');
       expect(vat?.textContent).toContain('Tax included');
     });
   });

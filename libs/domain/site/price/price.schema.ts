@@ -1,7 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { PriceComponent } from './price.component';
+import { SitePriceComponent } from './price.component';
 
-export const sitePriceSchema: ContentComponentSchema<PriceComponent> = {
+export const sitePriceSchema: ContentComponentSchema<SitePriceComponent> = {
   name: 'Price',
   group: 'Site',
   icon: 'currency_exchange',
