@@ -27,14 +27,16 @@ export class DefaultLayoutService implements LayoutService {
 
     this.screenWidth$.next(window.innerWidth);
 
-    const observer = new ResizeObserver(throttle(
-      () => window.requestAnimationFrame(() => {
-        console.log(window.innerWidth);
-        
-        this.screenWidth$.next(window.innerWidth)
-      }),
-      200
-    ));
+    const observer = new ResizeObserver(
+      throttle(
+        () =>
+          window.requestAnimationFrame(() => {
+            console.log(123);
+            this.screenWidth$.next(window.innerWidth);
+          }),
+        200
+      )
+    );
     observer.observe(target, { box: 'border-box' });
   }
 

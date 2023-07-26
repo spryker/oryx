@@ -1,14 +1,17 @@
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
-import { Size } from '@spryker-oryx/utilities';
+import { Size, Breakpoints } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
 import { lastValueFrom } from 'rxjs';
+import { SpyInstance } from 'vitest';
 import { CompositionLayout } from '../../models';
 import { DefaultLayoutService } from './default-layout.service';
 import { LayoutService } from './layout.service';
 import { ScreenService } from './screen.service';
+import '@/tools/testing';
 
 const mockLayoutService = {
   getScreenMedia: vi.fn(),
+  getBreakpoints: vi.fn(),
 };
 
 const layout = {
@@ -28,6 +31,12 @@ const layout = {
 
 describe('DefaultLayoutService', () => {
   let service: LayoutService;
+  let storedWindowMethod: any;
+
+  // beforeAll(() => {
+  //   storedWindowMethod = window.requestAnimationFrame;
+  //   window.requestAnimationFrame = vi.fn().mockImplementation(cb => cb());
+  // });
 
   beforeEach(() => {
     createInjector({
@@ -49,7 +58,12 @@ describe('DefaultLayoutService', () => {
   afterEach(() => {
     vi.resetAllMocks();
     destroyInjector();
+    vi.clearAllTimers();
   });
+
+  // afterAll(() => {
+  //   window.requestAnimationFrame = storedWindowMethod;
+  // });
 
   describe('getStyles', () => {
     it('should resolve common styles', async () => {
@@ -100,6 +114,42 @@ describe('DefaultLayoutService', () => {
           [Size.Lg]
         );
         expect(styles).toBe(`${common}${layoutStyles}`);
+      });
+    });
+  });
+
+  describe('getBreakpoint', () => {
+    describe('when screen size corresponds to small screens', () => {
+      const callback = vi.fn();
+
+      beforeEach(() => {
+        mockLayoutService.getBreakpoints.mockReturnValue({
+          [Size.Sm]: { max: 1024 },
+          [Size.Lg]: { min: 1025 },
+        });
+
+        service.getBreakpoint().subscribe(callback);
+      });
+
+      it('should set sm breakpoint', () => {
+        expect(callback).toHaveBeenCalledWith(Size.Sm);
+      });
+    });
+
+    describe('when screen size corresponds to large screens', () => {
+      const callback = vi.fn();
+
+      beforeEach(() => {
+        mockLayoutService.getBreakpoints.mockReturnValue({
+          [Size.Sm]: { max: 767 },
+          [Size.Lg]: { min: 768 },
+        });
+
+        service.getBreakpoint().subscribe(callback);
+      });
+
+      it('should set lg breakpoint', () => {
+        expect(callback).toHaveBeenCalledWith(Size.Lg);
       });
     });
   });

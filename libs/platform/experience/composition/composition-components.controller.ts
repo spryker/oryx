@@ -88,7 +88,7 @@ export class CompositionComponentsController implements ReactiveController {
           !!components?.some(
             (component) =>
               !!component.options?.rules?.some(
-                ({ hide, hideByRule }) => !hide || !hideByRule
+                ({ hide, hideByRule }) => hide || hideByRule
               )
           )
       )
