@@ -14,19 +14,23 @@ const baseStyles = css`
     height: var(--oryx-button-height, var(--_height));
     min-width: var(--oryx-button-height, var(--_height));
     width: 100%;
-    background: var(--oryx-button-background, var(--_background-color));
     padding: var(--oryx-button-padding, 0 var(--_padding-inline));
     gap: 8px;
-    border-radius: var(--oryx-button-border-radius, 4px);
     box-shadow: var(--_box-shadow);
     text-decoration: none;
     transition: var(--oryx-transition-time);
     cursor: pointer;
+    border-radius: var(--oryx-button-border-radius, 4px);
+    background: var(--oryx-button-background, var(--_background-color));
     border: var(
       --oryx-button-border,
       solid var(--oryx-button-border-width, 2px)
         var(--_border-color, transparent)
     );
+  }
+
+  :host([type='solid']:not([loading])) {
+    --oryx-button-border-width: 0;
   }
 
   :host([type='icon']) {
@@ -40,6 +44,10 @@ const baseStyles = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+
+  :host(:not([type='text']):not([type='icon']):hover:not(:active)) {
+    --_box-shadow: 0 4px 8px 0 rgba(0 0 0 / 10%);
   }
 
   :focus-visible,
@@ -114,6 +122,7 @@ const colorStyles = css`
     --_c7: var(--oryx-color-primary-7);
     --_c9: var(--oryx-color-primary-9);
     --_c10: var(--oryx-color-primary-10);
+    --_c11: var(--oryx-color-primary-11);
   }
 
   :host(:is([type='icon']:not([color]), [color='neutral'])) {
@@ -136,9 +145,12 @@ const colorStyles = css`
 
   :host([type='icon']),
   :host([type='text']),
-  :host([type='outline']),
   :host(:is([type='solid'], :not([type]))[loading]) {
     --_text-color: var(--_c9);
+  }
+
+  :host([type='outline']) {
+    --_text-color: var(--_c10);
   }
 
   :host(:is([type='solid'], :not([type]))) {
@@ -149,7 +161,7 @@ const colorStyles = css`
   :host(:is([type='solid'], :not([type]))),
   :host([type='outline']),
   :host([type='icon']:active) {
-    --_border-color: var(--_c9);
+    --_border-color: var(--_c7);
   }
 
   :host([type='outline']),
@@ -157,17 +169,17 @@ const colorStyles = css`
     --_background-color: var(--_c1);
   }
 
-  :host(:is([type='solid'], :not([type])):active) {
+  :host([type='solid']:is(:active, :focus-within)) {
     --_background-color: var(--_c10);
     --_border-color: var(--_c10);
   }
 
-  :host(:is([type='solid'], :not([type]))[color='neutral']):active {
+  :host([type='solid'][color='neutral']):active {
     --_background-color: var(--oryx-color-neutral-12);
   }
 
   :host([type='outline']:hover:not(:active)),
-  :host(:is(:not([type]), [type='solid'], [type='outline'])[loading]) {
+  :host(:is([type='solid'], [type='outline'])[loading]) {
     --_background-color: var(--_c3);
   }
 
@@ -179,10 +191,6 @@ const colorStyles = css`
   :host([type='outline']:active) {
     --_border-color: var(--_c10);
     --_box-shadow: 0 0 3px 0 var(--oryx-color-primary-9);
-  }
-
-  :host(:not([type='text']):not([type='icon']):hover:not(:active)) {
-    --_box-shadow: 0 4px 8px 0 rgba(0 0 0 / 10%);
   }
 
   :host([type='text']:active) {
