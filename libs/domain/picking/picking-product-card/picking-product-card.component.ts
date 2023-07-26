@@ -102,10 +102,13 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
 
         <oryx-button
           .size=${ButtonSize.Md}
-          .icon=${IconTypes.Check}
-          .text=${this.i18n('picking.product-card.done')}
           ?disabled=${!this.isCorrectNumberOfPickedProvided}
-        ></oryx-button>
+        >
+          <button slot="custom">
+            <oryx-icon .type=${IconTypes.Check}></oryx-icon>
+            ${this.i18n('picking.product-card.done')}
+          </button>
+        </oryx-button>
       </form>
     `;
 

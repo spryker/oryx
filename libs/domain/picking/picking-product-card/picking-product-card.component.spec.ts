@@ -112,7 +112,9 @@ describe('PickingProductCardComponent', () => {
             ></oryx-picking-product-card>
           `
         );
-        element.shadowRoot?.querySelector<HTMLElement>('oryx-button')?.click();
+        element.shadowRoot
+          ?.querySelector<HTMLElement>('oryx-button button')
+          ?.click();
       });
 
       it('should dispatch submit event', () => {

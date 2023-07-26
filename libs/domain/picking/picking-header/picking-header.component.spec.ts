@@ -79,24 +79,6 @@ describe('PickingHeaderComponent', () => {
     destroyInjector();
   });
 
-  // const getCustomerNoteModal = (): CustomerNoteModalComponent | null =>
-  //   element.renderRoot.querySelector('oryx-customer-note-modal');
-
-  // const getCustomerNoteButton = () => {
-  //   return element.renderRoot.querySelector(
-  //     'oryx-icon-button button[aria-label="Customer note"]'
-  //   );
-  // };
-
-  // const getBackButton = () => {
-  //   return element.renderRoot.querySelector(
-  //     'button[aria-label="Back to pick lists"]'
-  //   );
-  // };
-
-  // const getDiscardModal = (): DiscardPickingComponent | null =>
-  //   element.renderRoot.querySelector('oryx-discard-picking');
-
   describe('when component is created', () => {
     beforeEach(async () => {
       element = await fixture(
@@ -126,37 +108,35 @@ describe('PickingHeaderComponent', () => {
         i18n('oryx.picking.back-to-pick-lists')
       );
     });
-  });
 
-  it('should render id', () => {
-    expect(
-      (element.renderRoot.querySelector('.title') as HTMLElement).innerText
-    ).toContain(mockPickingListData[0].orderReferences[0]);
-  });
+    it('should render id', () => {
+      expect(element.renderRoot.querySelector('.title')?.textContent).toContain(
+        mockPickingListData[0].orderReferences[0]
+      );
+    });
 
-  // it('should render customer note button', () => {
-  //   expect(getCustomerNoteButton()).not.toBeNull();
-  // });
+    it('should render customer note button', () => {
+      expect(element).toContainElement('.title + oryx-button');
+    });
 
-  it('should render discard modal', () => {
-    expect(element).not.toContainElement('oryx-discard-picking');
-  });
+    it('should render discard modal', () => {
+      expect(element).toContainElement('oryx-discard-picking');
+    });
 
-  it('should not show discard modal', () => {
-    expect(
-      element.renderRoot
-        .querySelector('oryx-discard-picking')
-        ?.hasAttribute('open')
-    ).toBe(false);
+    it('should not show discard modal', () => {
+      expect(
+        element.renderRoot
+          .querySelector('oryx-discard-picking')
+          ?.hasAttribute('open')
+      ).toBe(false);
+    });
   });
 
   describe('when customer note button is clicked', () => {
     beforeEach(() => {
       element.renderRoot
-        .querySelector('oryx-discard-picking')
-        ?.dispatchEvent(
-          new CustomEvent(BACK_EVENT, { bubbles: true, composed: true })
-        );
+        .querySelector<HTMLElement>('.title + oryx-button')
+        ?.click();
     });
 
     it('should provide the note text to customer-note-modal component', () => {
