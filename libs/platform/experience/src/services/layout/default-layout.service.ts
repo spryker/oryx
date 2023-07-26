@@ -33,10 +33,10 @@ export class DefaultLayoutService implements LayoutService {
           window.requestAnimationFrame(() => {
             this.screenWidth$.next(window.innerWidth);
           }),
-        200
+        50
       )
     );
-    observer.observe(target, { box: 'border-box' });
+    observer.observe(target);
   }
 
   protected evaluateBreakpoint(width: number): Size {
@@ -50,8 +50,8 @@ export class DefaultLayoutService implements LayoutService {
 
   getBreakpoint(): Observable<Size> {
     return this.screenWidth$?.pipe(
-      distinctUntilChanged(),
-      map((width) => this.evaluateBreakpoint(width))
+      map((width) => this.evaluateBreakpoint(width)),
+      distinctUntilChanged()
     );
   }
 

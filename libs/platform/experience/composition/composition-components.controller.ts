@@ -34,10 +34,15 @@ export class CompositionComponentsController implements ReactiveController {
 
   protected filterHiddenComponents(
     components: Component[],
-    breakpoint: Size
+    breakpoint?: Size
   ): Observable<Component[]> {
     return combineLatest(
       components.map((component) => {
+        //short check for the SSR
+        if (!breakpoint) {
+          return this.hasVisibilityRules(component) ? of(null) : of(component);
+        }
+
         const rules = this.getCurrentRules(component, breakpoint);
 
         if (!rules) {
@@ -47,7 +52,7 @@ export class CompositionComponentsController implements ReactiveController {
         if (rules.hide) {
           return of(null);
         }
-
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return this.tokenResolver.resolveToken(rules.hideByRule!).pipe(
           //hidden by default
           startWith(true),
@@ -71,7 +76,7 @@ export class CompositionComponentsController implements ReactiveController {
   getComponents(): Observable<Component[] | null> {
     return combineLatest([
       this.components(),
-      this.layoutService.getBreakpoint(),
+      this.layoutService.getBreakpoint().pipe(startWith(undefined)),
     ]).pipe(
       switchMap(([components, breakpoint]) =>
         components
@@ -81,17 +86,15 @@ export class CompositionComponentsController implements ReactiveController {
     );
   }
 
+  protected hasVisibilityRules(component: Component): boolean {
+    return !!component.options?.rules?.some(
+      ({ hide, hideByRule }) => !!(hide || hideByRule)
+    );
+  }
+
   hasDynamicallyVisibleChild(): Observable<boolean> {
     return this.components().pipe(
-      map(
-        (components) =>
-          !!components?.some(
-            (component) =>
-              !!component.options?.rules?.some(
-                ({ hide, hideByRule }) => hide || hideByRule
-              )
-          )
-      )
+      map((components) => !!components?.some(this.hasVisibilityRules))
     );
   }
 }
