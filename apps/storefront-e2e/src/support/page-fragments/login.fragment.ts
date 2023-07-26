@@ -1,4 +1,4 @@
-import { TestCustomerData } from '../../types/user.type';
+import { Customer } from '../types/user.type';
 
 export class LoginFragment {
   getWrapper = () => cy.get('oryx-auth-login');
@@ -9,7 +9,7 @@ export class LoginFragment {
   getLoginButton = () => this.getWrapper().contains('button', 'Log in');
   getBEValidationError = () => this.getWrapper().find('oryx-notification');
 
-  login = (user: TestCustomerData) => {
+  login = (user: Customer) => {
     cy.hydrateElemenet('/assets/checkbox.component-*.js', () => {
       this.getEmailInput().click();
     });

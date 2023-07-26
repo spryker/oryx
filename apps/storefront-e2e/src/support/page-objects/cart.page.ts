@@ -1,5 +1,5 @@
-import { CartEntryFragment } from '../page_fragments/cart-entry.fragment';
-import { CartTotalsFragment } from '../page_fragments/cart-totals.fragment';
+import { CartEntryFragment } from '../page-fragments/cart-entry.fragment';
+import { CartTotalsFragment } from '../page-fragments/cart-totals.fragment';
 import { AbstractSFPage } from './abstract.page';
 
 export class CartPage extends AbstractSFPage {

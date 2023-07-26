@@ -1,6 +1,6 @@
-import { TestProductData } from '../types/product.type';
+import { Product } from '../../types/product.type';
 
-const products: TestProductData[] = [
+const products: Product[] = [
   {
     id: '117_29890338',
     title: 'Fujitsu ESPRIMO D556',
@@ -34,7 +34,7 @@ const products: TestProductData[] = [
 ];
 
 export class ProductStorage {
-  static getProductByEq(eq: number): TestProductData {
+  static getProductByEq(eq: number): Product {
     if (eq >= products.length) {
       throw new Error(`Product with eq = ${eq} does not exist.`);
     }

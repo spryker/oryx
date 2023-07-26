@@ -1,10 +1,10 @@
 import { AbstractSFPage } from './abstract.page';
-import { TestCategoryData } from '../../types/category.type';
+import { Category } from '../types/category.type';
 export class CategoryPage extends AbstractSFPage {
   url = '/category/';
   categoryId: string;
 
-  constructor(categoryData?: TestCategoryData) {
+  constructor(categoryData?: Category) {
     super();
 
     if (categoryData) {

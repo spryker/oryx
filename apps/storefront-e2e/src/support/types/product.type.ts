@@ -1,4 +1,4 @@
-export type TestProductData = {
+export type Product = {
   id: string;
   title: string;
   originalPrice: string;

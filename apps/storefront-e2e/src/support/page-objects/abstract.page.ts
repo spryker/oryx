@@ -1,7 +1,7 @@
-import { FooterFragment } from '../page_fragments/footer.fragment';
-import { HeaderFragment } from '../page_fragments/header.fragment';
-import { GlobalNotificationCenter } from '../page_fragments/global-notification-center.fragment';
-import { SearchFragment } from '../page_fragments/search.fragment';
+import { FooterFragment } from '../page-fragments/footer.fragment';
+import { HeaderFragment } from '../page-fragments/header.fragment';
+import { GlobalNotificationCenter } from '../page-fragments/global-notification-center.fragment';
+import { SearchFragment } from '../page-fragments/search.fragment';
 
 export abstract class AbstractSFPage {
   abstract url: string;
