@@ -1,11 +1,12 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n } from '@spryker-oryx/utilities';
+import { i18n, signalAware } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { styles } from './header.styles';
 import { query } from 'lit/decorators.js';
 import { ModalComponent } from '@spryker-oryx/ui/modal';
 import { SiteNavigationItemComponent } from '@spryker-oryx/site/navigation-item';
 
+@signalAware()
 export class HeaderComponent extends LitElement {
   static styles = styles;
 
