@@ -14,6 +14,7 @@
     "template/presets",
     "template/resources",
     "domain/product",
+    "domain/picking",
     "domain/order",
     "platform/router",
     "platform/indexed-db",
