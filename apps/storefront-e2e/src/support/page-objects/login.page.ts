@@ -1,4 +1,4 @@
-import { LoginFragment } from '../page_fragments/login.fragment';
+import { LoginFragment } from '../page-fragments/login.fragment';
 import { AbstractSFPage } from './abstract.page';
 
 export class LoginPage extends AbstractSFPage {

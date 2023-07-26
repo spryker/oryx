@@ -1,6 +1,6 @@
 import './commands';
 import registerCypressGrep from '@cypress/grep/src/support';
-import { TestCustomerData } from '../types/user.type';
+import { Customer } from './types/user.type';
 
 registerCypressGrep();
 
@@ -28,7 +28,7 @@ const removeUselessLogsFromCypressLogs = () => {
 };
 
 const getRandomCustomer = () => {
-  cy.fixture('users').then((users: TestCustomerData[]) => {
+  cy.fixture('users').then((users: Customer[]) => {
     const randomUser = users[Math.floor(Math.random() * users.length)];
     const path = './src/fixtures/test-customer.json';
 

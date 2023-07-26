@@ -1,18 +1,18 @@
 import { AbstractSFPage } from './abstract.page';
-import { TestSearchData } from '../../types/search.type';
-import { SearchFragment } from '../page_fragments/search.fragment';
+import { SearchParameters } from '../types/search.type';
+import { SearchFragment } from '../page-fragments/search.fragment';
 
 export class SearchPage extends AbstractSFPage {
   url = '/search';
   queryParameter: string;
   search = new SearchFragment();
 
-  constructor(searchData?: TestSearchData) {
+  constructor(searchData?: SearchParameters) {
     super();
 
     if (searchData) {
-      this.queryParameter = searchData.searchQuery;
-      this.url += `?q=${searchData.searchQuery}`;
+      this.queryParameter = searchData.q;
+      this.url += `?q=${searchData.q}`;
     }
   }
 

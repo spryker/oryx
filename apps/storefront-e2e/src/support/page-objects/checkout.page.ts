@@ -1,8 +1,8 @@
-import { AddEditAddressFormFragment } from '../page_fragments/add-edit-address-form.fragment';
-import { AddressesListFragment } from '../page_fragments/addresses-list.fragment';
-import { AddressesModalFragment } from '../page_fragments/addresses-modal.fragment';
-import { CartTotalsFragment } from '../page_fragments/cart-totals.fragment';
-import { CheckoutAsGuestFormFragment } from '../page_fragments/checkout-as-guest-form.fragment';
+import { AddEditAddressFormFragment } from '../page-fragments/add-edit-address-form.fragment';
+import { AddressesListFragment } from '../page-fragments/addresses-list.fragment';
+import { AddressesModalFragment } from '../page-fragments/addresses-modal.fragment';
+import { CartTotalsFragment } from '../page-fragments/cart-totals.fragment';
+import { CheckoutAsGuestFormFragment } from '../page-fragments/checkout-as-guest-form.fragment';
 import { AbstractSFPage } from './abstract.page';
 
 export class CheckoutPage extends AbstractSFPage {

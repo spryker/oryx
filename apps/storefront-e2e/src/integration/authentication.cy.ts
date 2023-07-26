@@ -1,11 +1,11 @@
-import { LandingPage } from '../support/page_objects/landing.page';
-import { LoginPage } from '../support/page_objects/login.page';
-import { TestCustomerData } from '../types/user.type';
+import { LandingPage } from '../support/page-objects/landing.page';
+import { LoginPage } from '../support/page-objects/login.page';
+import { Customer } from '../support/types/user.type';
 
 const loginPage = new LoginPage();
 const landingPage = new LandingPage();
 
-const invalidUser: TestCustomerData = {
+const invalidUser: Customer = {
   name: 'Sonia',
   email: 'sonia@spryker.com',
   password: 'change123123',

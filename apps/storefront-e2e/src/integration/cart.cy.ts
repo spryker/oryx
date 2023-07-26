@@ -1,7 +1,7 @@
-import { CartPage } from '../support/page_objects/cart.page';
-import { ProductDetailsPage } from '../support/page_objects/product-details.page';
-import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { ProductStorage } from '../test-data/product.storage';
+import { CartPage } from '../support/page-objects/cart.page';
+import { ProductDetailsPage } from '../support/page-objects/product-details.page';
+import { SCCOSApi } from '../support/sccos-api/sccos.api';
+import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const cartPage = new CartPage();
 const cartTotals = cartPage.getCartTotals();

@@ -1,4 +1,4 @@
-import { defaultAddress } from '../../test-data/default-address';
+import { defaultAddress } from '../test-data/default-address';
 
 export class AddEditAddressFormFragment {
   private wrapperSelector: string;
