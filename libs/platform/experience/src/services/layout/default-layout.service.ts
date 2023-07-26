@@ -31,7 +31,6 @@ export class DefaultLayoutService implements LayoutService {
       throttle(
         () =>
           window.requestAnimationFrame(() => {
-            console.log(123);
             this.screenWidth$.next(window.innerWidth);
           }),
         200

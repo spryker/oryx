@@ -31,12 +31,6 @@ const layout = {
 
 describe('DefaultLayoutService', () => {
   let service: LayoutService;
-  let storedWindowMethod: any;
-
-  // beforeAll(() => {
-  //   storedWindowMethod = window.requestAnimationFrame;
-  //   window.requestAnimationFrame = vi.fn().mockImplementation(cb => cb());
-  // });
 
   beforeEach(() => {
     createInjector({
@@ -58,12 +52,7 @@ describe('DefaultLayoutService', () => {
   afterEach(() => {
     vi.resetAllMocks();
     destroyInjector();
-    vi.clearAllTimers();
   });
-
-  // afterAll(() => {
-  //   window.requestAnimationFrame = storedWindowMethod;
-  // });
 
   describe('getStyles', () => {
     it('should resolve common styles', async () => {
