@@ -36,7 +36,10 @@ export class ProductDetailsPage extends AbstractSFPage {
   getRating = () => this.getInfoWrapper().find('oryx-product-average-rating');
   getSKU = () => this.getInfoWrapper().find('oryx-product-id').shadow();
   getPrice = () =>
-    this.getInfoWrapper().find('oryx-product-price').find('[part="sales"]');
+    this.getInfoWrapper()
+      .find('oryx-product-price')
+      .find('[part="sales"]')
+      .shadow();
   getAddToCartWrapper = () => this.getInfoWrapper().find('oryx-cart-add');
 
   getQuantityComponent = () => {

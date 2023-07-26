@@ -97,9 +97,8 @@ function checkCurrencyOnCartPage(currency: string) {
     .shadow()
     .should('contain.text', currency);
 
-  // TODO: Currently entry currencies are not displayed correctly
-  // cartPage.getCartEntries().then((entries) => {
-  //   entries[0].getSubtotal().should('contain.text', currency);
-  //   entries[0].getSalesPrice().should('contain.text', currency);
-  // });
+  cartPage.getCartEntries().then((entries) => {
+    entries[0].getSubtotal().shadow().should('contain.text', currency);
+    entries[0].getSalesPrice().shadow().should('contain.text', currency);
+  });
 }

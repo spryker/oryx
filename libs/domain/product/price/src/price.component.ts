@@ -1,5 +1,9 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductContext, ProductMixin } from '@spryker-oryx/product';
+import {
+  ProductContext,
+  ProductMixin,
+  ProductPrice,
+} from '@spryker-oryx/product';
 import { computed, hydrate, signalProperty } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -42,20 +46,30 @@ export class ProductPriceComponent extends ProductMixin(
   @property() currency?: string;
 
   protected $salesPrice = computed(() => {
-    const { defaultPrice } = this.$product()?.price ?? {};
-    return (
-      (!this.currency || this.currency === defaultPrice?.currency) &&
-      defaultPrice?.value
-    );
+    if (this.sales) return this.sales;
+
+    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
+
+    if (defaultPrice) {
+      return this.isValid(defaultPrice) && defaultPrice.value;
+    } else {
+      return this.isValid(originalPrice) && originalPrice?.value;
+    }
   });
 
   protected $originalPrice = computed(() => {
-    const { originalPrice } = this.$product()?.price ?? {};
-    return (
-      (!this.currency || this.currency === originalPrice?.currency) &&
-      originalPrice?.value
-    );
+    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
+
+    if (this.sales && !originalPrice && this.sales !== defaultPrice?.value) {
+      return this.isValid(defaultPrice) && defaultPrice?.value;
+    } else {
+      return this.isValid(originalPrice) && originalPrice?.value;
+    }
   });
+
+  protected isValid(price?: ProductPrice): boolean {
+    return !this.currency || this.currency === price?.currency;
+  }
 
   protected $isDiscounted = computed(() => {
     return (
@@ -63,20 +77,24 @@ export class ProductPriceComponent extends ProductMixin(
         typeof this.$salesPrice() === 'number' &&
         this.sales < Number(this.$salesPrice())) ||
       (typeof this.$salesPrice() === 'number' &&
-        typeof this.$salesPrice() === 'number' &&
-        Number(this.$originalPrice()) < Number(this.$originalPrice()))
+        typeof this.$originalPrice() === 'number' &&
+        Number(this.$salesPrice()) < Number(this.$originalPrice()))
     );
   });
 
   protected override render(): TemplateResult | void {
     return html`
-      ${this.renderSalesPrice()} ${this.renderTaxMessage()}
-      ${this.renderOriginalPrice()} ${this.renderSalesLabel()}
+      ${[
+        this.renderSalesPrice(),
+        this.renderTaxMessage(),
+        this.renderOriginalPrice(),
+        this.renderSalesLabel(),
+      ]}
     `;
   }
 
   protected renderSalesPrice(): TemplateResult | void {
-    const price = this.sales ?? this.$salesPrice() ?? this.$originalPrice();
+    const price = this.$salesPrice();
     if (!price) return;
 
     return html`<oryx-site-price
@@ -88,7 +106,7 @@ export class ProductPriceComponent extends ProductMixin(
   }
 
   protected renderOriginalPrice(): TemplateResult | void {
-    const price = this.$originalPrice() || this.$salesPrice();
+    const price = this.$originalPrice();
     if (!price) return;
 
     return html`<oryx-site-price
