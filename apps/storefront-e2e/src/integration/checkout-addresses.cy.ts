@@ -1,7 +1,7 @@
-import { CheckoutPage } from '../support/page_objects/checkout.page';
-import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { ProductStorage } from '../test-data/product.storage';
-import { TestCustomerData } from '../types/user.type';
+import { CheckoutPage } from '../support/page-objects/checkout.page';
+import { SCCOSApi } from '../support/sccos-api/sccos.api';
+import { ProductStorage } from '../support/test-data/storages/product.storage';
+import { Customer } from '../support/types/user.type';
 
 let api: SCCOSApi;
 
@@ -38,7 +38,7 @@ describe('User addresses suite', () => {
 
       cy.loginApi();
 
-      cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+      cy.fixture<Customer>('test-customer').then((customer) => {
         cy.customerCartsCleanup(api, customer);
         cy.customerAddressesCleanup(api, customer);
       });
@@ -48,7 +48,7 @@ describe('User addresses suite', () => {
       beforeEach(() => {
         const productData = ProductStorage.getProductByEq(0);
 
-        cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+        cy.fixture<Customer>('test-customer').then((customer) => {
           // get all customer carts
           api.carts.customersGet(customer.id).then((customerCartsResponse) => {
             const cartId = customerCartsResponse.body.data[0].id;
@@ -77,7 +77,7 @@ describe('User addresses suite', () => {
         const randomCity2 = `Random City ${Math.random()}`;
 
         beforeEach(() => {
-          cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+          cy.fixture<Customer>('test-customer').then((customer) => {
             api.addresses.post(customer.id, { city: randomCity1 });
             api.addresses.post(customer.id, { city: randomCity2 });
           });

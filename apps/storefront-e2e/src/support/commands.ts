@@ -1,9 +1,9 @@
 import { RouteMatcherOptions } from 'node_modules/cypress/types/net-stubbing';
-import { TestCustomerData } from '../types/user.type';
-import { AbstractSFPage } from './page_objects/abstract.page';
-import { CartPage } from './page_objects/cart.page';
-import { LoginPage } from './page_objects/login.page';
-import { SCCOSApi } from './sccos_api/sccos.api';
+import { Customer } from './types/user.type';
+import { AbstractSFPage } from './page-objects/abstract.page';
+import { CartPage } from './page-objects/cart.page';
+import { LoginPage } from './page-objects/login.page';
+import { SCCOSApi } from './sccos-api/sccos.api';
 
 export {};
 
@@ -17,11 +17,8 @@ declare global {
       goToCart(): Chainable<void>;
       goToCartAsGuest(): Chainable<void>;
       hydrateElemenet(assetPath: string, triggerHydrationFn): Chainable<void>;
-      customerCartsCleanup(sccosApi: SCCOSApi, user: TestCustomerData): void;
-      customerAddressesCleanup(
-        sccosApi: SCCOSApi,
-        user: TestCustomerData
-      ): void;
+      customerCartsCleanup(sccosApi: SCCOSApi, user: Customer): void;
+      customerAddressesCleanup(sccosApi: SCCOSApi, user: Customer): void;
       checkCurrencyFormatting(locale: string): void;
       failApiCall(routeMatcherOptions: RouteMatcherOptions, actionFn): void;
       checkGlobalNotificationAfterFailedApiCall(page: AbstractSFPage): void;
@@ -30,7 +27,7 @@ declare global {
 }
 
 Cypress.Commands.add('login', () => {
-  cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+  cy.fixture<Customer>('test-customer').then((customer) => {
     const loginPage = new LoginPage();
 
     loginPage.visit();
@@ -44,7 +41,7 @@ Cypress.Commands.add('login', () => {
 });
 
 Cypress.Commands.add('loginApi', () => {
-  cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+  cy.fixture<Customer>('test-customer').then((customer) => {
     const api = new SCCOSApi();
 
     api.token.post(customer).then((res) => {
@@ -140,7 +137,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'customerCartsCleanup',
-  (sccosApi: SCCOSApi, user: TestCustomerData) => {
+  (sccosApi: SCCOSApi, user: Customer) => {
     sccosApi.carts.customersGet(user.id).then((response) => {
       const carts = response.body.data;
 
@@ -158,7 +155,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'customerAddressesCleanup',
-  (sccosApi: SCCOSApi, user: TestCustomerData) => {
+  (sccosApi: SCCOSApi, user: Customer) => {
     sccosApi.addresses.get(user.id).then((response) => {
       const addresses = response.body.data;
 

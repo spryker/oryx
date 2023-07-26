@@ -1,6 +1,6 @@
-import { TestProductData } from '../../types/product.type';
-import { ProductRelationsFragment } from '../page_fragments/product-relations.fragment';
-import { QuantityInputFragment } from '../page_fragments/quantity-input.fragment';
+import { Product } from '../types/product.type';
+import { ProductRelationsFragment } from '../page-fragments/product-relations.fragment';
+import { QuantityInputFragment } from '../page-fragments/quantity-input.fragment';
 import { AbstractSFPage } from './abstract.page';
 
 export class ProductDetailsPage extends AbstractSFPage {
@@ -8,7 +8,7 @@ export class ProductDetailsPage extends AbstractSFPage {
   productId: string;
   quantityInput: QuantityInputFragment;
 
-  constructor(productData?: TestProductData) {
+  constructor(productData?: Product) {
     super();
 
     if (productData) {

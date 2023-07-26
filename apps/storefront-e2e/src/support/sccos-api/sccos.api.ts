@@ -1,6 +1,6 @@
-import { defaultAddress } from '../../test-data/default-address';
-import { TestProductData } from '../../types/product.type';
-import { TestCustomerData } from '../../types/user.type';
+import { defaultAddress } from '../test-data/default-address';
+import { Product } from '../types/product.type';
+import { Customer } from '../types/user.type';
 
 export type ApiResponse<T> = {
   data: T;
@@ -130,7 +130,7 @@ export class SCCOSApi {
   };
 
   guestCartItems = {
-    post: (productData: TestProductData, quantity: number) => {
+    post: (productData: Product, quantity: number) => {
       const body = {
         data: {
           type: 'guest-cart-items',
@@ -153,7 +153,7 @@ export class SCCOSApi {
   };
 
   cartItems = {
-    post: (productData: TestProductData, quantity: number, cartId: string) => {
+    post: (productData: Product, quantity: number, cartId: string) => {
       const body = {
         data: {
           type: 'items',
@@ -230,7 +230,7 @@ export class SCCOSApi {
   };
 
   token = {
-    post: (user: TestCustomerData) => {
+    post: (user: Customer) => {
       cy.log('SCCOSApi | POST token');
 
       return cy.request({
