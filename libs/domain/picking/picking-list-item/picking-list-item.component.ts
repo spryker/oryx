@@ -27,7 +27,7 @@ export class PickingListItemComponent
   protected localeService = resolve(LocaleService);
 
   protected $requestedDeliveryDate = computed(() => {
-    if (!isNaN(this.$pickingList().requestedDeliveryDate.getTime())) {
+    if (!isNaN(this.$pickingList()?.requestedDeliveryDate.getTime())) {
       return this.localeService.formatTime(
         this.$pickingList()?.requestedDeliveryDate
       );

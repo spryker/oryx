@@ -14,7 +14,7 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { ChipComponent } from '@spryker-oryx/ui/chip';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { TabsAppearance } from '@spryker-oryx/ui/tabs';
-import { I18nMixin, subscribe } from '@spryker-oryx/utilities';
+import { I18nMixin, computed, subscribe } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -37,12 +37,7 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
   @state()
   protected items: PickingListItem[] = [];
 
-  @subscribe()
-  protected itemsSubscription$ = this.pickingList$.pipe(
-    tap((list) => {
-      this.items = list?.items;
-    })
-  );
+  protected $items = computed(() => this.$pickingList()?.items);
 
   protected productCardRef: Ref<PickingProductCardComponent> = createRef();
   protected notPickedTabRef: Ref<TabComponent> = createRef();
@@ -59,6 +54,8 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
   ];
 
   protected buildTabs(): PickingTab[] {
+    this.items = this.$items();
+
     return [
       {
         id: ItemsFilters.NotPicked,
