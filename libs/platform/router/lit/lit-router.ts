@@ -342,7 +342,6 @@ export class LitRouter implements ReactiveController {
             return;
           }
         }
-
         this.timestamp = timestamp;
       } else {
         this.timestamp = timestamp;
@@ -374,6 +373,7 @@ export class LitRouter implements ReactiveController {
       }
     }
     this._host.requestUpdate();
+    await this._host.updateComplete;
   }
 
   /**

@@ -1,6 +1,6 @@
-import { ProductDetailsPage } from '../support/page_objects/product-details.page';
-import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { ProductStorage } from '../test-data/product.storage';
+import { ProductDetailsPage } from '../support/page-objects/product-details.page';
+import { SCCOSApi } from '../support/sccos-api/sccos.api';
+import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const productDetailPage = new ProductDetailsPage();
 

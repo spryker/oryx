@@ -1,9 +1,9 @@
-import { CartPage } from '../support/page_objects/cart.page';
-import { CheckoutPage } from '../support/page_objects/checkout.page';
-import { ThankYouPage } from '../support/page_objects/thank-you.page';
-import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { ProductStorage } from '../test-data/product.storage';
-import { TestCustomerData } from '../types/user.type';
+import { CartPage } from '../support/page-objects/cart.page';
+import { CheckoutPage } from '../support/page-objects/checkout.page';
+import { ThankYouPage } from '../support/page-objects/thank-you.page';
+import { SCCOSApi } from '../support/sccos-api/sccos.api';
+import { ProductStorage } from '../support/test-data/storages/product.storage';
+import { Customer } from '../support/types/user.type';
 
 let sccosApi: SCCOSApi;
 let thankYouPage: ThankYouPage;
@@ -20,14 +20,14 @@ describe('Checkout suite', () => {
 
       sccosApi = new SCCOSApi();
 
-      cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+      cy.fixture<Customer>('test-customer').then((customer) => {
         cy.customerCartsCleanup(sccosApi, customer);
         cy.customerAddressesCleanup(sccosApi, customer);
       });
 
       const productData = ProductStorage.getProductByEq(1);
 
-      cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+      cy.fixture<Customer>('test-customer').then((customer) => {
         sccosApi.carts
           .customersGet(customer.id)
           .its('body.data[0].id')
@@ -77,6 +77,7 @@ describe('Checkout suite', () => {
         thankYouPage.header.getCartCount().should('not.exist');
         thankYouPage.header.getCartSummary().click();
 
+        cartPage.visit();
         cartPage.hasEmptyCart();
       });
     });

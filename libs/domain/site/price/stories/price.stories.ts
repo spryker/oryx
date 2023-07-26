@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { PriceComponentAttributes } from '../price.model';
+import { SitePriceComponentAttributes } from '../price.model';
 
 export default {
   title: `${storybookPrefix}/price`,
@@ -16,8 +16,8 @@ export default {
   },
 } as Meta;
 
-const Template: Story<PriceComponentAttributes> = (
-  props: PriceComponentAttributes
+const Template: Story<SitePriceComponentAttributes> = (
+  props: SitePriceComponentAttributes
 ): TemplateResult => {
   return html`<oryx-site-price
     .value=${props.value}

@@ -16,10 +16,6 @@ export const defaultExperienceRoutes: RouteConfig[] = [
     type: RouteType.Category,
   },
   {
-    path: '/order/:id',
-    type: RouteType.Order,
-  },
-  {
     path: '/:page',
     type: RouteType.Page,
   },

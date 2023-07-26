@@ -20,7 +20,7 @@
       "options": {
         "commands": [
           "rm -rf dev-dist/sw",
-          "npx rollup --config rollup.sw.config.mjs"
+          "npx vite build --config vite.config.sw.ts"
         ],
         "parallel": false,
         "cwd": "apps/fulfillment"
@@ -29,7 +29,7 @@
         "watch": {
           "commands": [
             "rm -rf dev-dist/sw",
-            "npx rollup --config rollup.sw.config.mjs --watch"
+            "npx vite build --config vite.config.sw.ts --watch"
           ]
         }
       }
