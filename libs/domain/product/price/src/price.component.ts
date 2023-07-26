@@ -71,17 +71,6 @@ export class ProductPriceComponent extends ProductMixin(
     return !this.currency || this.currency === price?.currency;
   }
 
-  protected $isDiscounted = computed(() => {
-    return (
-      (this.sales &&
-        typeof this.$salesPrice() === 'number' &&
-        this.sales < Number(this.$salesPrice())) ||
-      (typeof this.$salesPrice() === 'number' &&
-        typeof this.$originalPrice() === 'number' &&
-        Number(this.$salesPrice()) < Number(this.$originalPrice()))
-    );
-  });
-
   protected override render(): TemplateResult | void {
     return html`
       ${[
@@ -101,7 +90,7 @@ export class ProductPriceComponent extends ProductMixin(
       .value=${price}
       .currency=${this.currency}
       part="sales"
-      ?has-discount=${this.$isDiscounted()}
+      ?has-discount=${!!this.$originalPrice()}
     ></oryx-site-price>`;
   }
 
