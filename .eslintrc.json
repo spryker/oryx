@@ -11,7 +11,7 @@
           {
             "allowCircularSelfDependency": true,
             "enforceBuildableLibDependency": true,
-            "allow": [],
+            "allow": ["fulfillment"],
             "depConstraints": [
               {
                 "sourceTag": "layer:domain",
