@@ -4,7 +4,7 @@ import {
   I18nTranslation,
   I18nTranslationResult,
 } from '@spryker-oryx/utilities';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { I18nService } from './i18n.service';
 
 /**
@@ -14,8 +14,7 @@ export class I18nServiceInjectableAdapter implements I18nInjectable {
   constructor(protected i18nService: I18nService) {}
 
   /**
-   * Uses {@link asyncValue} directive to convert Observable
-   * from {@link I18nService.translate()} to lit render.
+   * Converts Observable {@link I18nService.translate()} to lit render.
    */
   translate(
     token: string | readonly string[],

@@ -1,8 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { asyncState, I18nMixin, valueType } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { I18nMixin, signal, signalAware } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { pickingListsHeaderComponentStyles } from './picking-lists-header.styles';
 
 export class PickingListsHeaderComponent extends I18nMixin(LitElement) {
@@ -10,8 +10,7 @@ export class PickingListsHeaderComponent extends I18nMixin(LitElement) {
 
   protected localeService = resolve(LocaleService);
 
-  @asyncState()
-  protected date = valueType(this.localeService.formatDate(Date.now()));
+  protected $date = signal(this.localeService.formatDate(Date.now()));
 
   protected onSearch(e: KeyboardEvent): void {
     const value = (e.target as HTMLInputElement).value;
@@ -43,7 +42,7 @@ export class PickingListsHeaderComponent extends I18nMixin(LitElement) {
           <oryx-heading>
             <h4>
               ${this.i18n('picking.header.pick-lists-<date>', {
-                date: this.date,
+                date: this.$date(),
               })}
             </h4>
           </oryx-heading>
