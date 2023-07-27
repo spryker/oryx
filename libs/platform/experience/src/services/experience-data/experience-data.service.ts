@@ -32,11 +32,9 @@ export interface ExperienceDataMergeStrategy {
   type?: ExperienceDataMergeType | string;
 
   /**
-   * Adds possibility to change current selector globally by per page all in all pages.
-   *
-   * @default false;
+   * Disable possibility to change current selector globally by per page or in all pages.
    */
-  global?: boolean;
+  disableGlobal?: boolean;
 }
 
 export type ExperienceComponent = Partial<Omit<Component, 'components'>> & {

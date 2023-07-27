@@ -64,97 +64,95 @@ export class DefaultExperienceDataService implements ExperienceDataService {
 
     for (const strategy of this.strategies) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const { selector, global } = strategy.merge!;
+      const { selector, disableGlobal } = strategy.merge!;
       const paths = selector.split('.');
       const isTemplateId = paths[0].startsWith('#');
       const templateId = paths[0].substring(1);
       const isTemplateOnly = paths.length === 1 && isTemplateId;
 
-      if (global) {
-        const mainTemplates = templates.length;
+      if (disableGlobal) {
+        for (const template of templates) {
+          const innerPaths = [...paths];
 
-        for (const [index, template] of templates.entries()) {
-          if (
-            isTemplateId &&
-            template.id !== templateId &&
-            index < mainTemplates
-          ) {
-            continue;
-          }
-
-          const path = isTemplateId && paths.length === 2 ? paths[1] : paths[0];
-
-          this.mergeAll({
-            strategy,
-            components: template.components,
-            name: path,
-          });
-
-          templates.push(...(template?.components ?? []));
-        }
-
-        continue;
-      }
-
-      for (const template of templates) {
-        const innerPaths = [...paths];
-
-        if (isTemplateOnly && template.id === templateId) {
-          this.mergeByStrategy({
-            strategy,
-            components: template.components,
-          });
-
-          break;
-        }
-
-        if (isTemplateId && template.id !== templateId) {
-          continue;
-        }
-
-        let { components } = template;
-
-        for (let i = isTemplateId ? 1 : 0; i < innerPaths.length; i++) {
-          const [path, nested] = innerPaths[i].split('>');
-
-          if (nested) {
-            innerPaths.splice(
-              i + 1,
-              0,
-              ...Array(Number(nested) - 1).fill(path)
-            );
-          }
-
-          const { component, childIndex, componentIndex } = this.getChildData(
-            path,
-            components
-          );
-
-          const isLast = i === innerPaths.length - 1;
-
-          if (isLast && !childIndex) {
-            this.mergeAll({
+          if (isTemplateOnly && template.id === templateId) {
+            this.mergeByStrategy({
               strategy,
-              components,
-              name: path,
+              components: template.components,
             });
 
             break;
           }
 
-          if (isLast) {
-            this.mergeByStrategy({
-              strategy,
-              components,
-              componentIndex,
-            });
+          if (isTemplateId && template.id !== templateId) {
+            continue;
           }
 
-          components = component?.components;
+          let { components } = template;
+
+          for (let i = isTemplateId ? 1 : 0; i < innerPaths.length; i++) {
+            const [path, nested] = innerPaths[i].split('>');
+
+            if (nested) {
+              innerPaths.splice(
+                i + 1,
+                0,
+                ...Array(Number(nested) - 1).fill(path)
+              );
+            }
+
+            const { component, childIndex, componentIndex } = this.getChildData(
+              path,
+              components
+            );
+
+            const isLast = i === innerPaths.length - 1;
+
+            if (isLast && !childIndex) {
+              this.mergeAll({
+                strategy,
+                components,
+                name: path,
+              });
+
+              break;
+            }
+
+            if (isLast) {
+              this.mergeByStrategy({
+                strategy,
+                components,
+                componentIndex,
+              });
+            }
+
+            components = component?.components;
+          }
         }
+
+        continue;
       }
 
-      continue;
+      const mainTemplates = templates.length;
+
+      for (const [index, template] of templates.entries()) {
+        if (
+          isTemplateId &&
+          template.id !== templateId &&
+          index < mainTemplates
+        ) {
+          continue;
+        }
+
+        const path = isTemplateId && paths.length === 2 ? paths[1] : paths[0];
+
+        this.mergeAll({
+          strategy,
+          components: template.components,
+          name: path,
+        });
+
+        templates.push(...(template?.components ?? []));
+      }
     }
   }
 
