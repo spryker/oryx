@@ -97,6 +97,8 @@ describe('Start picking a picklist with customer note', () => {
       discardModalFragment.getDiscardButton().click();
       cy.location('pathname').should('to.match', /^\/customer-note-info/);
 
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(1000)
       customerNoteFragment.getProceedToPickingButton().click();
 
       // should display "Not picked" as selected
