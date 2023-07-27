@@ -106,8 +106,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
 
       verifyHeader();
 
-      cartPage.getCartEntriesWrapper().should('be.visible');
-      cartPage.getEmptyCartMessage().should('be.visible');
+      cartPage.checkEmptyCart();
 
       verifyFooter();
     });
