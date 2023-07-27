@@ -26,4 +26,12 @@ export const styles = css`
     width: var(--oryx-icon-size, 24px);
     aspect-ratio: 1 / 1;
   }
+
+  :host([size='md']) {
+    --_oryx-icon-size: 20px;
+  }
+
+  :host([size='sm']) {
+    --_oryx-icon-size: 13.3px;
+  }
 `;
