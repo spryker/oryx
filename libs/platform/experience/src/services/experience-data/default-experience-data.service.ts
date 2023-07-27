@@ -58,9 +58,12 @@ export class DefaultExperienceDataService implements ExperienceDataService {
 
     // Register all components with has id's
     for (const record of data) {
-      record.id = record.id
-        ? `${record.id}-${this.getAutoId()}`
-        : this.getAutoId();
+      if (!record.id?.includes('hash')) {
+        record.id = record.id
+          ? `${record.id}-${this.getAutoId()}`
+          : this.getAutoId();
+      }
+
       cb?.(record);
       data.push(...(record.components ?? []));
     }
