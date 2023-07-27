@@ -13,6 +13,10 @@ export const enum ExperienceDataMergeType {
   Patch = 'patch',
 }
 
+export const enum ExperienceDataType {
+  Page = 'Page',
+}
+
 export interface ExperienceDataMergeStrategy {
   /**
    * Interpolates value by type\id path.

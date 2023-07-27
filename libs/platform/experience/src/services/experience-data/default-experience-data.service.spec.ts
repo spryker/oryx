@@ -65,7 +65,7 @@ const mockPageB: ExperienceComponent = {
 };
 
 const mockMergeComponent = {
-  id: 'c1',
+  id: expect.anything(),
   type: 'merge-component',
   options: { merge: 'merge' },
 };
@@ -93,6 +93,8 @@ describe('DefaultExperienceDataService', () => {
                 merge: {
                   type: 'before',
                   selector: '#a.a-component>2.a-component[2].b-component[2]',
+                  disableGlobal: true,
+                  disableGlobal: true,
                 },
               },
               mockPageA,
@@ -104,15 +106,15 @@ describe('DefaultExperienceDataService', () => {
         service = testInjector.inject(ExperienceDataService);
       });
       it('should add element before needed selector', () => {
-        const result = service.getData().find((c) => c.id === 'a')
+        const result = service.getData().find((c) => c.id?.includes('a'))
           ?.components?.[0].components?.[0].components?.[1];
         const expected = {
-          id: 'a-component',
+          id: expect.anything(),
           components: [
-            { type: 'b-component', id: 'a3', options: { b: 'b' } },
-            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
+            { type: 'c-component', id: expect.anything(), options: { c: 'c' } },
             mockMergeComponent,
-            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
           ],
         };
         expect(expected).toEqual(result);
@@ -133,6 +135,7 @@ describe('DefaultExperienceDataService', () => {
                 merge: {
                   type: 'before',
                   selector: '#a.a-component>2.a-component[2].b-component',
+                  disableGlobal: true,
                 },
               },
               mockPageA,
@@ -144,16 +147,16 @@ describe('DefaultExperienceDataService', () => {
         service = testInjector.inject(ExperienceDataService);
       });
       it('should add element before all selectors', () => {
-        const result = service.getData().find((c) => c.id === 'a')
+        const result = service.getData().find((c) => c.id?.includes('a'))
           ?.components?.[0].components?.[0].components?.[1];
         const expected = {
-          id: 'a-component',
+          id: expect.anything(),
           components: [
             mockMergeComponent,
-            { type: 'b-component', id: 'a3', options: { b: 'b' } },
-            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
+            { type: 'c-component', id: expect.anything(), options: { c: 'c' } },
             mockMergeComponent,
-            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
           ],
         };
         expect(expected).toEqual(result);
@@ -176,6 +179,7 @@ describe('DefaultExperienceDataService', () => {
                 merge: {
                   type: 'after',
                   selector: '#a.a-component>2.a-component[2].b-component[2]',
+                  disableGlobal: true,
                 },
               },
               mockPageA,
@@ -187,14 +191,14 @@ describe('DefaultExperienceDataService', () => {
         service = testInjector.inject(ExperienceDataService);
       });
       it('should add element after needed selector', () => {
-        const result = service.getData().find((c) => c.id === 'a')
+        const result = service.getData().find((c) => c.id?.includes('a'))
           ?.components?.[0].components?.[0].components?.[1];
         const expected = {
-          id: 'a-component',
+          id: expect.anything(),
           components: [
-            { type: 'b-component', id: 'a3', options: { b: 'b' } },
-            { type: 'c-component', id: 'a3', options: { c: 'c' } },
-            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
+            { type: 'c-component', id: expect.anything(), options: { c: 'c' } },
+            { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
             mockMergeComponent,
           ],
         };
@@ -216,6 +220,7 @@ describe('DefaultExperienceDataService', () => {
                 merge: {
                   type: 'after',
                   selector: '#a.a-component>2.a-component[2].b-component',
+                  disableGlobal: true,
                 },
               },
               mockPageA,
@@ -227,15 +232,15 @@ describe('DefaultExperienceDataService', () => {
         service = testInjector.inject(ExperienceDataService);
       });
       it('should add element after all selectors', () => {
-        const result = service.getData().find((c) => c.id === 'a')
+        const result = service.getData().find((c) => c.id?.includes('a'))
           ?.components?.[0].components?.[0].components?.[1];
         const expected = {
-          id: 'a-component',
+          id: expect.anything(),
           components: [
-            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
             mockMergeComponent,
-            { type: 'c-component', id: 'a3', options: { c: 'c' } },
-            { type: 'b-component', id: 'a3', options: { b: 'b' } },
+            { type: 'c-component', id: expect.anything(), options: { c: 'c' } },
+            { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
             mockMergeComponent,
           ],
         };
@@ -258,6 +263,7 @@ describe('DefaultExperienceDataService', () => {
                 ...mockMergeComponent,
                 merge: {
                   selector: '#a.a-component>2.a-component[2].b-component[2]',
+                  disableGlobal: true,
                 },
               },
               mockPageA,
@@ -269,13 +275,13 @@ describe('DefaultExperienceDataService', () => {
         service = testInjector.inject(ExperienceDataService);
       });
       it('should replace element by needed selector', () => {
-        const result = service.getData().find((c) => c.id === 'a')
+        const result = service.getData().find((c) => c.id?.includes('a'))
           ?.components?.[0].components?.[0].components?.[1];
         const expected = {
-          id: 'a-component',
+          id: expect.anything(),
           components: [
-            { type: 'b-component', id: 'a3', options: { b: 'b' } },
-            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
+            { type: 'c-component', id: expect.anything(), options: { c: 'c' } },
             mockMergeComponent,
           ],
         };
@@ -298,6 +304,7 @@ describe('DefaultExperienceDataService', () => {
                 merge: {
                   type: 'replace',
                   selector: '#a.a-component>2.a-component[2].b-component',
+                  disableGlobal: true,
                 },
               },
               mockPageA,
@@ -309,13 +316,13 @@ describe('DefaultExperienceDataService', () => {
         service = testInjector.inject(ExperienceDataService);
       });
       it('should replace all elements by selectors', () => {
-        const result = service.getData().find((c) => c.id === 'a')
+        const result = service.getData().find((c) => c.id?.includes('a'))
           ?.components?.[0].components?.[0].components?.[1];
         const expected = {
-          id: 'a-component',
+          id: expect.anything(),
           components: [
             mockMergeComponent,
-            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            { type: 'c-component', id: expect.anything(), options: { c: 'c' } },
             mockMergeComponent,
           ],
         };
@@ -339,6 +346,7 @@ describe('DefaultExperienceDataService', () => {
                 merge: {
                   type: 'patch',
                   selector: '#a.a-component>2.a-component[2].b-component[2]',
+                  disableGlobal: true,
                 },
               },
               mockPageA,
@@ -350,13 +358,13 @@ describe('DefaultExperienceDataService', () => {
         service = testInjector.inject(ExperienceDataService);
       });
       it('should merge element by needed selector', () => {
-        const result = service.getData().find((c) => c.id === 'a')
+        const result = service.getData().find((c) => c.id?.includes('a'))
           ?.components?.[0].components?.[0].components?.[1];
         const expected = {
-          id: 'a-component',
+          id: expect.anything(),
           components: [
-            { type: 'b-component', id: 'a3', options: { b: 'b' } },
-            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
+            { type: 'c-component', id: expect.anything(), options: { c: 'c' } },
             {
               ...mockMergeComponent,
               options: { b: 'b', ...mockMergeComponent.options },
@@ -382,6 +390,7 @@ describe('DefaultExperienceDataService', () => {
                 merge: {
                   type: 'patch',
                   selector: '#a.a-component>2.a-component[2].b-component',
+                  disableGlobal: true,
                 },
               },
               mockPageA,
@@ -393,16 +402,16 @@ describe('DefaultExperienceDataService', () => {
         service = testInjector.inject(ExperienceDataService);
       });
       it('should merge all elements by selectors', () => {
-        const result = service.getData().find((c) => c.id === 'a')
+        const result = service.getData().find((c) => c.id?.includes('a'))
           ?.components?.[0].components?.[0].components?.[1];
         const expected = {
-          id: 'a-component',
+          id: expect.anything(),
           components: [
             {
               ...mockMergeComponent,
               options: { b: 'b', ...mockMergeComponent.options },
             },
-            { type: 'c-component', id: 'a3', options: { c: 'c' } },
+            { type: 'c-component', id: expect.anything(), options: { c: 'c' } },
             {
               ...mockMergeComponent,
               options: { b: 'b', ...mockMergeComponent.options },
@@ -429,6 +438,7 @@ describe('DefaultExperienceDataService', () => {
               merge: {
                 type: 'append',
                 selector: '#a.a-component>2.a-component[2].b-component[2]',
+                disableGlobal: true,
               },
             },
             mockPageA,
@@ -440,14 +450,14 @@ describe('DefaultExperienceDataService', () => {
       service = testInjector.inject(ExperienceDataService);
     });
     it('should merge add element to the components', () => {
-      const result = service.getData().find((c) => c.id === 'a')
+      const result = service.getData().find((c) => c.id?.includes('a'))
         ?.components?.[0].components?.[0].components?.[1];
       const expected = {
-        id: 'a-component',
+        id: expect.anything(),
         components: [
-          { type: 'b-component', id: 'a3', options: { b: 'b' } },
-          { type: 'c-component', id: 'a3', options: { c: 'c' } },
-          { type: 'b-component', id: 'a3', options: { b: 'b' } },
+          { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
+          { type: 'c-component', id: expect.anything(), options: { c: 'c' } },
+          { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
           mockMergeComponent,
         ],
       };
@@ -470,6 +480,7 @@ describe('DefaultExperienceDataService', () => {
               merge: {
                 type: 'prepend',
                 selector: '#a.a-component>2.a-component[2].b-component[2]',
+                disableGlobal: true,
               },
             },
             mockPageA,
@@ -481,15 +492,15 @@ describe('DefaultExperienceDataService', () => {
       service = testInjector.inject(ExperienceDataService);
     });
     it('should merge prepend element to the components', () => {
-      const result = service.getData().find((c) => c.id === 'a')
+      const result = service.getData().find((c) => c.id?.includes('a'))
         ?.components?.[0].components?.[0].components?.[1];
       const expected = {
-        id: 'a-component',
+        id: expect.anything(),
         components: [
           mockMergeComponent,
-          { type: 'b-component', id: 'a3', options: { b: 'b' } },
-          { type: 'c-component', id: 'a3', options: { c: 'c' } },
-          { type: 'b-component', id: 'a3', options: { b: 'b' } },
+          { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
+          { type: 'c-component', id: expect.anything(), options: { c: 'c' } },
+          { type: 'b-component', id: expect.anything(), options: { b: 'b' } },
         ],
       };
 
@@ -526,10 +537,9 @@ describe('DefaultExperienceDataService', () => {
       const a = result[0];
       const b = result[1];
 
-      expect(b.id).toBe('b');
-
+      expect(b.id).toContain('b');
       expect(b.components?.[0].components?.[0]).toEqual(mockMergeComponent);
-      expect(a.id).toBe('a');
+      expect(a.id).toContain('a');
       expect(a.components?.[0].components?.[0]).toEqual(mockMergeComponent);
     });
   });

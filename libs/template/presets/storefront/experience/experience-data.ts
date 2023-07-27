@@ -20,6 +20,14 @@ import {
 
 export const StaticExperienceFeature: AppFeature = {
   providers: [
+    provideExperienceData({
+      type: 'oryx-content-text',
+      content: { data: { text: '<h1>test 123</h1>' } },
+      merge: {
+        selector: '#home.oryx-content-image',
+        type: 'replace',
+      },
+    }),
     provideExperienceData([
       HeaderTemplate,
       FooterTemplate,

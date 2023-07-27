@@ -25,9 +25,8 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       JSON.stringify(this.experienceData)
     ).flat();
 
+    // Sort strategies and templates
     for (const record of copy) {
-      this.addAutoId(record);
-
       if (record.merge) {
         this.strategies.push(record);
 
@@ -40,6 +39,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
 
     const records = [...this.strategies, ...Object.values(this.records)];
 
+    // Adds references to the components
     for (const record of records) {
       if (record.ref && this.records[record.ref]) {
         Object.assign(
@@ -49,12 +49,21 @@ export class DefaultExperienceDataService implements ExperienceDataService {
         delete record.ref;
       }
 
-      this.addAutoId(record);
-      cb?.(record);
       records.push(...(record.components ?? []));
     }
 
     this.processMerging();
+
+    const data = Object.values(this.records);
+
+    // Register all components with has id's
+    for (const record of data) {
+      record.id = record.id
+        ? `${record.id}-${this.getAutoId()}`
+        : this.getAutoId();
+      cb?.(record);
+      data.push(...(record.components ?? []));
+    }
 
     return Object.values(this.records);
   }
@@ -287,7 +296,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     }
   }
 
-  protected addAutoId(record: ExperienceComponent): void {
-    record.id ??= `static${this.autoComponentId++}`;
+  protected getAutoId(): string {
+    return `hash${this.autoComponentId++}`;
   }
 }
