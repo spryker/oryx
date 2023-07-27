@@ -15,7 +15,7 @@ import {
   RouteType,
 } from '@spryker-oryx/router';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
-import { html, TemplateResult } from 'lit';
+import { html, isServer, TemplateResult } from 'lit';
 import {
   isObservable,
   lastValueFrom,
@@ -23,6 +23,7 @@ import {
   Subscription,
   tap,
 } from 'rxjs';
+
 import { LitRoutesRegistry } from './lit-routes-registry';
 
 export interface BaseRouteConfig {
@@ -226,6 +227,10 @@ export class LitRouter implements ReactiveController {
     if (baseRoute) {
       this.baseRoute = baseRoute;
     }
+
+    if (isServer) {
+      this.subscribe();
+    }
   }
 
   /**
@@ -373,7 +378,9 @@ export class LitRouter implements ReactiveController {
       }
     }
     this._host.requestUpdate();
-    await this._host.updateComplete;
+    if (!isServer) {
+      await this._host.updateComplete;
+    }
   }
 
   /**
@@ -446,19 +453,7 @@ export class LitRouter implements ReactiveController {
     // Kick off routed rendering by going to the current URL
     this.goto(window.location.pathname);
 
-    this.subscription = this.routerService
-      .currentRoute()
-      .pipe(
-        tap(async (route) => {
-          if (route !== '') {
-            const resolve = this.ssrAwaiter?.getAwaiter();
-            await this._goto(route);
-            this.routerService.acceptParams(this.params);
-            resolve?.();
-          }
-        })
-      )
-      .subscribe();
+    this.subscribe();
   }
 
   hostDisconnected(): void {
@@ -473,6 +468,22 @@ export class LitRouter implements ReactiveController {
 
     this.subscription?.unsubscribe();
   }
+
+  protected subscribe = (): void => {
+    this.subscription = this.routerService
+      .currentRoute()
+      .pipe(
+        tap(async (route) => {
+          if (route !== '') {
+            const resolve = this.ssrAwaiter?.getAwaiter();
+            await this._goto(route);
+            this.routerService.acceptParams(this.params);
+            resolve?.();
+          }
+        })
+      )
+      .subscribe();
+  };
 
   private _onRoutesConnected = (e: RoutesConnectedEvent) => {
     // Don't handle the event fired by this routes controller, which we get
