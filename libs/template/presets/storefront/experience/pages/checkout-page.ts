@@ -67,8 +67,8 @@ export const checkoutPage: ExperienceComponent = {
             },
           ],
           options: {
-            visibility: { hideByRule: 'CART.EMPTY' },
             rules: [
+              { hideByRule: 'CART.EMPTY' },
               { gap: '20px', layout: 'flex', vertical: true, align: 'stretch' },
             ],
           },
@@ -77,8 +77,10 @@ export const checkoutPage: ExperienceComponent = {
           type: 'oryx-composition',
           id: 'checkoutTotals',
           options: {
-            visibility: { hideByRule: 'CART.EMPTY' },
-            rules: [{ sticky: true, top: '108px' }],
+            rules: [
+              { hideByRule: 'CART.EMPTY' },
+              { sticky: true, top: '108px' },
+            ],
           },
           components: [
             {

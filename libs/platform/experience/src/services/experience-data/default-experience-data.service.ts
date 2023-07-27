@@ -41,7 +41,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     const records = [...this.strategies, ...Object.values(this.records)];
 
     for (const record of records) {
-      if (record.ref) {
+      if (record.ref && this.records[record.ref]) {
         Object.assign(
           record,
           JSON.parse(JSON.stringify(this.records[record.ref]))
@@ -64,114 +64,97 @@ export class DefaultExperienceDataService implements ExperienceDataService {
 
     for (const strategy of this.strategies) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const { selector } = strategy.merge!;
+      const { selector, global } = strategy.merge!;
       const paths = selector.split('.');
       const isTemplateId = paths[0].startsWith('#');
       const templateId = paths[0].substring(1);
       const isTemplateOnly = paths.length === 1 && isTemplateId;
-      let isGlobal = (isTemplateId && paths.length === 2) || paths.length === 1;
 
-      // Check first two levels if it's not a path
-      if (isGlobal) {
-        for (const template of templates) {
-          if (isTemplateOnly && template.id === templateId) {
-            this.mergeByStrategy({
-              strategy,
-              components: template.components,
-            });
+      if (global) {
+        const mainTemplates = templates.length;
 
-            break;
-          }
-
-          if (isTemplateId && template.id !== templateId) {
+        for (const [index, template] of templates.entries()) {
+          if (
+            isTemplateId &&
+            template.id !== templateId &&
+            index < mainTemplates
+          ) {
             continue;
           }
 
           const path = isTemplateId && paths.length === 2 ? paths[1] : paths[0];
-          const { component } = this.getChildData(path, template.components);
 
-          if (!component) {
-            continue;
-          }
+          this.mergeAll({
+            strategy,
+            components: template.components,
+            name: path,
+          });
 
-          isGlobal = false;
-
-          break;
-        }
-      }
-
-      // Parse as usual selector path
-      if (!isGlobal) {
-        for (const template of templates) {
-          if (isTemplateId && template.id !== templateId) {
-            continue;
-          }
-
-          let { components } = template;
-
-          for (let i = isTemplateId ? 1 : 0; i < paths.length; i++) {
-            const [path, nested] = paths[i].split('>');
-
-            if (nested) {
-              paths.splice(i + 1, 0, ...Array(Number(nested) - 1).fill(path));
-            }
-
-            const { component, childIndex, componentIndex } = this.getChildData(
-              path,
-              components
-            );
-
-            const isLast = i === paths.length - 1;
-
-            if (isLast && !childIndex) {
-              this.mergeAll({
-                strategy,
-                components,
-                name: path,
-              });
-
-              break;
-            }
-
-            if (isLast) {
-              this.mergeByStrategy({
-                strategy,
-                components,
-                componentIndex,
-              });
-
-              break;
-            }
-
-            components = component?.components;
-          }
+          templates.push(...(template?.components ?? []));
         }
 
         continue;
       }
 
-      // Appear as global parser
-      const mainTemplates = templates.length;
+      for (const template of templates) {
+        const innerPaths = [...paths];
 
-      for (const [index, template] of templates.entries()) {
-        if (
-          isTemplateId &&
-          template.id !== templateId &&
-          index < mainTemplates
-        ) {
+        if (isTemplateOnly && template.id === templateId) {
+          this.mergeByStrategy({
+            strategy,
+            components: template.components,
+          });
+
+          break;
+        }
+
+        if (isTemplateId && template.id !== templateId) {
           continue;
         }
 
-        const path = isTemplateId && paths.length === 2 ? paths[1] : paths[0];
+        let { components } = template;
 
-        this.mergeAll({
-          strategy,
-          components: template.components,
-          name: path,
-        });
+        for (let i = isTemplateId ? 1 : 0; i < innerPaths.length; i++) {
+          const [path, nested] = innerPaths[i].split('>');
 
-        templates.push(...(template?.components ?? []));
+          if (nested) {
+            innerPaths.splice(
+              i + 1,
+              0,
+              ...Array(Number(nested) - 1).fill(path)
+            );
+          }
+
+          const { component, childIndex, componentIndex } = this.getChildData(
+            path,
+            components
+          );
+
+          const isLast = i === innerPaths.length - 1;
+
+          if (isLast && !childIndex) {
+            this.mergeAll({
+              strategy,
+              components,
+              name: path,
+            });
+
+            break;
+          }
+
+          if (isLast) {
+            this.mergeByStrategy({
+              strategy,
+              components,
+              componentIndex,
+            });
+          }
+
+          components = component?.components;
+        }
       }
+
+      continue;
     }
   }
 

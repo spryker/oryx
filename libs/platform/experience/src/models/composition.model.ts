@@ -4,6 +4,7 @@ import { Breakpoint } from '@spryker-oryx/utilities';
 
 export interface CompositionProperties {
   rules?: StyleRuleSet[];
+  [key: string]: unknown;
 }
 
 export interface ComponentVisibility {

@@ -30,6 +30,13 @@ export interface ExperienceDataMergeStrategy {
    * @default ExperienceDataMergeType.Replace
    */
   type?: ExperienceDataMergeType | string;
+
+  /**
+   * Adds possibility to change current selector globally by per page all in all pages.
+   *
+   * @default false;
+   */
+  global: boolean;
 }
 
 export type ExperienceComponent = Partial<Omit<Component, 'components'>> & {
