@@ -31,8 +31,8 @@ export const cartPage: ExperienceComponent = {
             },
           },
           options: {
-            visibility: { hideByRule: 'CART.!EMPTY' },
             rules: [
+              { hideByRule: 'CART.!EMPTY' },
               {
                 colSpan: 2,
                 background: 'var(--oryx-color-neutral-3)',
