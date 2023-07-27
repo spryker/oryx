@@ -124,11 +124,7 @@ describe('PickingHeaderComponent', () => {
     });
 
     it('should not show discard modal', () => {
-      expect(
-        element.renderRoot
-          .querySelector('oryx-discard-picking')
-          ?.hasAttribute('open')
-      ).toBe(false);
+      expect(element).toContainElement('oryx-discard-picking:not([open])');
     });
   });
 
