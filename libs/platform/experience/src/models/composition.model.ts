@@ -1,10 +1,9 @@
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Breakpoint } from '@spryker-oryx/utilities';
-import { LayoutAttributes } from '../../layout/src';
+import { LayoutAttributes } from '@spryker-oryx/experience/layout';
 
 export interface CompositionProperties {
   rules?: StyleRuleSet[];
-  visibility?: ComponentVisibility;
 }
 
 export interface ComponentVisibility {
@@ -12,7 +11,10 @@ export interface ComponentVisibility {
   hideByRule?: string;
 }
 
-export interface StyleRuleSet extends StyleProperties, LayoutAttributes {
+export interface StyleRuleSet
+  extends StyleProperties,
+    LayoutAttributes,
+    ComponentVisibility {
   /**
    * Allows to apply a style rule set for specific selectors.
    */
