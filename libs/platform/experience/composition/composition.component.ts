@@ -55,8 +55,8 @@ export class CompositionComponent extends LayoutMixin(
 
   protected $components = signal(this.componentsController.getComponents());
 
-  protected $hasDynamicallyVisibleChild = signal(
-    this.componentsController.hasDynamicallyVisibleChild()
+  protected $hasDynamicallyVisibleComponent = signal(
+    this.componentsController.hasDynamicallyVisibleComponent()
   );
 
   @elementEffect()
@@ -65,7 +65,7 @@ export class CompositionComponent extends LayoutMixin(
     //with dynamically visible components
     if (
       isServer &&
-      this.$hasDynamicallyVisibleChild() &&
+      this.$hasDynamicallyVisibleComponent() &&
       this.getAttribute(hydratableAttribute) !== 'window:load'
     ) {
       this.setAttribute(hydratableAttribute, 'window:load');

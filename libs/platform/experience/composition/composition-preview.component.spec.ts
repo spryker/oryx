@@ -59,7 +59,7 @@ class MockLayoutService implements Partial<LayoutService> {
 
 const mockComponents = {
   getComponents: vi.fn().mockReturnValue(of([...BASE_COMPONENTS])),
-  hasDynamicallyVisibleChild: vi.fn().mockReturnValue(of(false)),
+  hasDynamicallyVisibleComponent: vi.fn().mockReturnValue(of(false)),
 };
 vi.spyOn(
   compositionController,
