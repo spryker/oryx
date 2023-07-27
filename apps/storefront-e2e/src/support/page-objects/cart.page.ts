@@ -8,12 +8,11 @@ export class CartPage extends AbstractSFPage {
   private cartTotals = new CartTotalsFragment();
 
   waitForLoaded(): void {
-    // TODO: this check will be improved in the followup PR
-    // this.getEmptyCartMessage().should('be.visible');
+    this.getCartEntriesWrapper().should('exist');
   }
 
   getCartEntriesWrapper = () => cy.get('oryx-cart-entries');
-  getEmptyCartMessage = () => cy.get('oryx-content-text');
+  getEmptyCartMessage = () => cy.contains('Your shopping cart is empty');
   getCartEntries = () =>
     this.getCartEntriesWrapper()
       .find('oryx-cart-entry')
@@ -35,11 +34,15 @@ export class CartPage extends AbstractSFPage {
     this.getCheckoutBtn().click({ force: true });
   };
 
-  hasEmptyCart = () => {
-    this.getEmptyCartMessage()
-      .contains('Your shopping cart is empty')
-      .should('be.visible');
+  checkEmptyCart = () => {
+    this.getEmptyCartMessage().should('be.visible');
     this.getCartEntriesWrapper().should('not.be.visible');
     this.getCartTotals().getWrapper().should('not.be.visible');
+  };
+
+  checkNotEmptyCart = () => {
+    this.getEmptyCartMessage().should('not.exist');
+    this.getCartEntriesWrapper().should('be.visible');
+    this.getCartTotals().getWrapper().should('be.visible');
   };
 }

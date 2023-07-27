@@ -18,6 +18,7 @@ export const loginComponentStyles = css`
     margin-block: 50px;
     margin-block-start: 30px;
     text-align: center;
+    margin-inline: 18px;
   }
 
   h3 {

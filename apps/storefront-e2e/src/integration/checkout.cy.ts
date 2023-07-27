@@ -77,8 +77,7 @@ describe('Checkout suite', () => {
         thankYouPage.header.getCartCount().should('not.exist');
         thankYouPage.header.getCartSummary().click();
 
-        cartPage.visit();
-        cartPage.hasEmptyCart();
+        cartPage.checkEmptyCart();
       });
     });
 
@@ -146,7 +145,7 @@ describe('Checkout suite', () => {
         thankYouPage.header.getCartCount().should('not.exist');
         thankYouPage.header.getCartSummary().click();
 
-        cartPage.hasEmptyCart();
+        cartPage.checkEmptyCart();
       });
     });
   });
