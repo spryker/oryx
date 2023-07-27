@@ -4,21 +4,29 @@ import { PickingListsFragment } from '../support/page_fragments/picking-lists.fr
 const pickingListsFragment = new PickingListsFragment();
 const customerNoteFragment = new CustomerNoteModalFragment();
 
-describe('When the user opens customer note', () => {
+describe('when the user opens the page', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();
-    pickingListsFragment.getCustomerNoteButtons().eq(0).click();
   });
 
-  describe('and user clicks on close button', () => {
+  describe('and the user opens customer note', () => {
     beforeEach(() => {
-      customerNoteFragment.getModal().should('be.visible');
-      customerNoteFragment.getCloseButton().click();
+      pickingListsFragment.getCustomerNoteButtons().click();
     });
 
-    it('should close customer note modal', () => {
-      customerNoteFragment.getModal().should('not.be.visible');
+    it('should show the customer note modal', () => {
+      customerNoteFragment.getModal().should('be.visible');
+    });
+
+    describe('and when the user clicks on close button', () => {
+      beforeEach(() => {
+        customerNoteFragment.getCloseButton().click();
+      });
+
+      it('should close customer note modal', () => {
+        customerNoteFragment.getModal().should('not.be.visible');
+      });
     });
   });
 });

@@ -41,9 +41,8 @@ export const siteNavigationButtonStyles = css`
     padding: 12px 8px;
   }
 
-  oryx-button::part(button):hover {
+  oryx-button::part(button):is(:hover, :focus-within) {
     background-color: var(--oryx-color-primary-10);
-    border-color: var(--oryx-color-primary-10);
     box-shadow: none;
   }
 

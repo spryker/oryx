@@ -46,7 +46,7 @@ const baseStyles = css`
     justify-content: center;
   }
 
-  :host(:not([type='text']):not([type='icon']):hover:not(:active)) {
+  :host(:not([type='text']):not([type='icon']):is(:hover, :focus-within):not(:active)) {
     --_box-shadow: 0 4px 8px 0 rgba(0 0 0 / 10%);
   }
 
@@ -169,7 +169,7 @@ const colorStyles = css`
     --_background-color: var(--_c1);
   }
 
-  :host([type='solid']:is(:active, :focus-within)) {
+  :host([type='solid']:is(:hover:active)) {
     --_background-color: var(--_c10);
     --_border-color: var(--_c10);
   }
@@ -178,22 +178,22 @@ const colorStyles = css`
     --_background-color: var(--oryx-color-neutral-12);
   }
 
-  :host([type='outline']:hover:not(:active)),
+  :host([type='outline']:is(:hover, :focus-within)),
   :host(:is([type='solid'], [type='outline'])[loading]) {
     --_background-color: var(--_c3);
   }
 
-  :host([type='outline']:active),
-  :host([type='text']:hover) {
+  :host([type='outline']:hover:active),
+  :host([type='text']:hover:hover) {
     --_text-color: var(--_c10);
   }
 
-  :host([type='outline']:active) {
+  :host([type='outline']:hover:active) {
     --_border-color: var(--_c10);
     --_box-shadow: 0 0 3px 0 var(--oryx-color-primary-9);
   }
 
-  :host([type='text']:active) {
+  :host([type='text']:hover:active) {
     --_background-color: var(--oryx-color-neutral-3);
   }
 
@@ -209,7 +209,7 @@ const colorStyles = css`
     );
   }
 
-  :host([type='solid'][color='neutral']) button:active {
+  :host([type='solid'][color='neutral']) button:hover:active {
     --_background-color: var(
       --oryx-color-neutral-12,
       var(--oryx-color-primary-12)
