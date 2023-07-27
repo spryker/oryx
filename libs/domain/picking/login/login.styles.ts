@@ -26,7 +26,6 @@ export const loginComponentStyles = css`
   }
 
   oryx-auth-login {
-    --_login-button-margin: 8px 0 0 0;
     --gap: 22px;
   }
 `;

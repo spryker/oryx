@@ -25,11 +25,6 @@ export const styles = css`
     ${headingUtil(HeadingTag.H5)};
   }
 
-  oryx-button {
-    align-self: start;
-    margin: var(--_login-button-margin, 0);
-  }
-
   oryx-notification {
     margin-block-end: 20px;
   }
