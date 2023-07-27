@@ -1,7 +1,7 @@
 import { TotalsController } from '@spryker-oryx/cart';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { hydrate, signal, signalAware } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 
 @hydrate({ event: 'window:load' })
 @signalAware()

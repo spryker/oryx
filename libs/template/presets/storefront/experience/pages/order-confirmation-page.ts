@@ -11,7 +11,7 @@ export const orderConfirmationPage: StaticComponent = {
     { type: 'oryx-order-confirmation-banner' },
     {
       type: 'oryx-composition',
-      options: { rules: [{ layout: 'split-main', padding: '30px 0' }] },
+      options: { rules: [{ layout: 'split-main', padding: '30px 0 0' }] },
       components: [
         {
           type: 'oryx-order-summary',
@@ -25,10 +25,7 @@ export const orderConfirmationPage: StaticComponent = {
             { type: 'oryx-cart-totals-total' },
           ],
         },
-        {
-          type: 'oryx-order-entries',
-          options: { rules: [{ colSpan: 2 }] },
-        },
+        { type: 'oryx-order-entries' },
       ],
     },
   ],

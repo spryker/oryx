@@ -61,7 +61,7 @@ describe('Cart', () => {
       });
 
       it('should render an empty message', () => {
-        cartPage.hasEmptyCart();
+        cartPage.checkEmptyCart();
       });
     });
 
@@ -69,6 +69,7 @@ describe('Cart', () => {
       beforeEach(() => {
         scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
         cy.goToCartAsGuest();
+        cartPage.checkNotEmptyCart();
       });
 
       it('should render the cart entries and totals', () => {
@@ -94,7 +95,7 @@ describe('Cart', () => {
         });
 
         it('should have an empty cart', () => {
-          cartPage.hasEmptyCart();
+          cartPage.checkEmptyCart();
         });
       });
 
@@ -172,7 +173,7 @@ describe('Cart', () => {
         });
 
         it('should have an empty cart', () => {
-          cartPage.hasEmptyCart();
+          cartPage.checkEmptyCart();
         });
       });
 
@@ -191,7 +192,7 @@ describe('Cart', () => {
         });
 
         it('should have an empty cart', () => {
-          cartPage.hasEmptyCart();
+          cartPage.checkEmptyCart();
         });
       });
 
