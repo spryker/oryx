@@ -1,12 +1,12 @@
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import {
-  hydrate,
   I18nMixin,
-  preHydrate,
   Size,
+  hydrate,
+  preHydrate,
   throttle,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { IconTypes } from '../../graphical/icon/src/icon.types';
 import {

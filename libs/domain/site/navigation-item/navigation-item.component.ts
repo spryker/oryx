@@ -3,11 +3,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import {
-  computed,
-  hydrate,
-  queryFirstFocusable,
-} from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { html } from 'lit/static-html.js';

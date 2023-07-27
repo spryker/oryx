@@ -1,8 +1,8 @@
 import { CustomerNoteFragment } from '../support/page_fragments/customer-note.fragment';
+import { DiscardModalFragment } from '../support/page_fragments/discard-modal.fragment';
+import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 import { PickingFragment } from '../support/page_fragments/picking.fragment';
-import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
-import { DiscardModalFragment } from '../support/page_fragments/discard-modal.fragment';
 
 const pickingListsFragment = new PickingListsFragment();
 const customerNoteFragment = new CustomerNoteFragment();
@@ -98,7 +98,7 @@ describe('Start picking a picklist with customer note', () => {
       cy.location('pathname').should('to.match', /^\/customer-note-info/);
 
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(1000)
+      cy.wait(1000);
       customerNoteFragment.getProceedToPickingButton().click();
 
       // should display "Not picked" as selected

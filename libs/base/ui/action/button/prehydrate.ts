@@ -1,5 +1,4 @@
 import { LitElement } from 'lit';
-import { ButtonComponent } from './button.component';
 
 export const hydrateSlotChange = async (host: LitElement): Promise<void> => {
   const slot = host.shadowRoot?.querySelector('slot') as HTMLElement;

@@ -1,12 +1,11 @@
 import { MockAuthService } from '@spryker-oryx/auth/mocks';
 import { resolve } from '@spryker-oryx/di';
-import { Size } from '@spryker-oryx/utilities';
+import { ButtonSize } from '@spryker-oryx/ui/button';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { take } from 'rxjs';
 import { storybookPrefix } from '../../.constants';
 import { LoginLinkOptions } from '../login-link.model';
-import { ButtonSize } from '@spryker-oryx/ui/button';
 
 export default {
   title: `${storybookPrefix}/Login Link`,

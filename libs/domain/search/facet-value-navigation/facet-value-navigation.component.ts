@@ -1,6 +1,7 @@
 import { AlertType } from '@spryker-oryx/ui';
-import { I18nMixin, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { I18nMixin } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { DirectiveResult } from 'lit/async-directive';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -11,7 +12,6 @@ import {
   ToggleFacetEventDetail,
 } from './facet-value-navigation.model';
 import { facetValueNavigationStyles } from './facet-value-navigation.styles';
-import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 
 export class SearchFacetValueNavigationComponent
   extends I18nMixin(LitElement)

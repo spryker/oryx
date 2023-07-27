@@ -1,9 +1,8 @@
-import { Size } from '@spryker-oryx/utilities';
+import { ButtonSize } from '@spryker-oryx/ui/button';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { TabsProperties } from '../tabs.model';
-import { ButtonSize } from '@spryker-oryx/ui/button';
 
 const numberOfTabs = 3;
 
