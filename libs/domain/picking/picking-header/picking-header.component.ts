@@ -32,27 +32,30 @@ export class PickingHeaderComponent extends I18nMixin(
       )
     );
 
-  protected renderCartNoteButton(): TemplateResult | void {
-    if (this.pickingList?.cartNote) {
-      return html`<oryx-button
-          .type=${ButtonType.Icon}
-          .size=${ButtonSize.Md}
-          .label=${this.i18n('oryx.picking.customer-note')}
-          .icon=${IconTypes.Info}
-          @click=${() => (this.isCartNoteVisible = true)}
-        ></oryx-button>
-        <oryx-customer-note-modal
-          ?open=${this.isCartNoteVisible}
-          @oryx.close=${() => (this.isCartNoteVisible = false)}
-        >
-          ${this.pickingList?.cartNote}
-        </oryx-customer-note-modal>`;
-    }
+  protected renderCartNoteButton(): TemplateResult {
+    return html`${this.$pickingList()?.cartNote
+      ? html`
+          <oryx-button
+            .type=${ButtonType.Icon}
+            .size=${ButtonSize.Md}
+            .label=${this.i18n('oryx.picking.customer-note')}
+            .icon=${IconTypes.Info}
+            @click=${() => (this.isCartNoteVisible = true)}
+          ></oryx-button>
+          <oryx-customer-note-modal
+            ?open=${this.isCartNoteVisible}
+            @oryx.close=${() => (this.isCartNoteVisible = false)}
+          >
+            ${this.$pickingList()?.cartNote}
+          </oryx-customer-note-modal>
+        `
+      : ''}`;
   }
 
   protected override render(): TemplateResult {
     return html`
       <oryx-header>
+        <<<<<<< HEAD
         <oryx-button
           .type=${ButtonType.Icon}
           .size=${ButtonSize.Md}
@@ -61,7 +64,19 @@ export class PickingHeaderComponent extends I18nMixin(
           @click=${this.back}
         ></oryx-button>
         <div class="title">${this.pickingList?.orderReferences[0]}</div>
-        ${this.renderCartNoteButton()}
+        =======
+        <oryx-icon-button>
+          <button
+            aria-label=${this.i18n('oryx.picking.back-to-pick-lists')}
+            class="back"
+            href="#"
+            @click=${this.back}
+          >
+            <oryx-icon type=${IconTypes.ArrowBack}></oryx-icon>
+          </button>
+        </oryx-icon-button>
+        <div class="title">${this.$pickingList()?.orderReferences[0]}</div>
+        >>>>>>> development ${this.renderCartNoteButton()}
         <oryx-discard-picking
           @oryx.close=${() => {
             this.pickingHeaderService.cancel();

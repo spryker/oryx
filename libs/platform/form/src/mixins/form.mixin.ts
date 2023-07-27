@@ -1,10 +1,4 @@
-import {
-  Type,
-  asyncState,
-  observe,
-  signalProperty,
-  valueType,
-} from '@spryker-oryx/utilities';
+import { Type, observe, signalProperty } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { BehaviorSubject } from 'rxjs';
 import { FormController } from '../controllers';
@@ -17,10 +11,6 @@ export declare class FormMixinInterface<FormValues = unknown>
   submit(): void;
 
   values?: FormValues;
-  /**
-   * @deprecated
-   */
-  protected formValues?: FormValues;
 }
 
 export const FormMixin = <
@@ -63,9 +53,6 @@ export const FormMixin = <
 
     @observe()
     protected values$ = new BehaviorSubject(this.values);
-
-    @asyncState()
-    protected formValues = valueType(this.values$);
   }
 
   return FormMixinClass as unknown as Type<FormMixinInterface<Values>> & T;
