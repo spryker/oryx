@@ -1,12 +1,15 @@
 import { TokenResolver } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
-import * as litRxjs from '@spryker-oryx/utilities';
+import * as utils from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { ExperienceService } from '../../src/services';
-import { Component } from '../../src/services/experience/models';
 import { CompositionComponentsController } from './composition-components.controller';
+import {
+  ExperienceService,
+  ScreenService,
+  Component,
+} from '@spryker-oryx/experience';
 
 const mockElement = {
   tagName: 'tagName',
@@ -30,9 +33,11 @@ const mockComponentWithVisibility: Component = {
     {
       ...mockComponent,
       options: {
-        visibility: {
-          hide: false,
-        },
+        rules: [
+          {
+            hide: false,
+          },
+        ],
       },
     },
   ],
@@ -44,9 +49,11 @@ const mockComponentWithVisibilityHidden: Component = {
     {
       ...mockComponent,
       options: {
-        visibility: {
-          hide: true,
-        },
+        rules: [
+          {
+            hide: true,
+          },
+        ],
       },
     },
   ],
@@ -58,13 +65,53 @@ const mockComponentWithVisibilityRule: Component = {
     {
       ...mockComponent,
       options: {
-        visibility: {
-          hideByRule,
-        },
+        rules: [
+          {
+            hideByRule,
+          },
+        ],
       },
     },
   ],
 };
+
+const mockComponentWithBreakpointMd: Component = {
+  ...mockComponent,
+  components: [
+    {
+      ...mockComponent,
+      options: {
+        rules: [
+          {
+            query: { breakpoint: utils.Size.Md },
+            hide: true,
+          },
+        ],
+      },
+    },
+  ],
+};
+
+const mockComponentWithBreakpointLg: Component = {
+  ...mockComponent,
+  components: [
+    {
+      ...mockComponent,
+      options: {
+        rules: [
+          {
+            query: { breakpoint: utils.Size.Lg },
+            hide: true,
+          },
+        ],
+      },
+    },
+  ],
+};
+
+class MockScreenService implements Partial<ScreenService> {
+  getScreenSize = vi.fn().mockReturnValue(of('lg'));
+}
 
 class MockExperienceService implements Partial<ExperienceService> {
   getComponent = vi.fn().mockReturnValue(of({}));
@@ -73,8 +120,8 @@ class MockExperienceService implements Partial<ExperienceService> {
 const mockObserve = {
   get: vi.fn().mockReturnValue(of(null)),
 };
-vi.spyOn(litRxjs, 'ObserveController') as SpyInstance;
-(litRxjs.ObserveController as unknown as SpyInstance).mockReturnValue(
+vi.spyOn(utils, 'ObserveController') as SpyInstance;
+(utils.ObserveController as unknown as SpyInstance).mockReturnValue(
   mockObserve
 );
 
@@ -89,6 +136,10 @@ describe('CompositionComponentsController', () => {
   beforeEach(() => {
     createInjector({
       providers: [
+        {
+          provide: ScreenService,
+          useClass: MockScreenService,
+        },
         {
           provide: ExperienceService,
           useClass: MockExperienceService,
@@ -110,12 +161,12 @@ describe('CompositionComponentsController', () => {
     vi.clearAllMocks();
   });
 
-  describe('hasDynamicallyVisibleChild', () => {
+  describe('hasDynamicallyVisibleComponent', () => {
     describe('when uid is not provided', () => {
       const callback = vi.fn();
       beforeEach(() => {
         const controller = new CompositionComponentsController(mockElement);
-        controller.hasDynamicallyVisibleChild().subscribe(callback);
+        controller.hasDynamicallyVisibleComponent().subscribe(callback);
       });
 
       it('should return false', () => {
@@ -131,7 +182,7 @@ describe('CompositionComponentsController', () => {
           .fn()
           .mockReturnValue(of(mockComponent));
         const controller = new CompositionComponentsController(mockElement);
-        controller.hasDynamicallyVisibleChild().subscribe(callback);
+        controller.hasDynamicallyVisibleComponent().subscribe(callback);
       });
 
       it('should return false', () => {
@@ -146,7 +197,7 @@ describe('CompositionComponentsController', () => {
           .fn()
           .mockReturnValue(of(mockComponentWithComposition));
         const controller = new CompositionComponentsController(mockElement);
-        controller.hasDynamicallyVisibleChild().subscribe(callback);
+        controller.hasDynamicallyVisibleComponent().subscribe(callback);
       });
 
       it('should return false', () => {
@@ -154,14 +205,29 @@ describe('CompositionComponentsController', () => {
       });
     });
 
-    describe('when component has composition components with visibility config', () => {
+    describe('when component has hidden composition components', () => {
       const callback = vi.fn();
       beforeEach(() => {
         experienceService.getComponent = vi
           .fn()
-          .mockReturnValue(of(mockComponentWithVisibility));
+          .mockReturnValue(of(mockComponentWithVisibilityHidden));
         const controller = new CompositionComponentsController(mockElement);
-        controller.hasDynamicallyVisibleChild().subscribe(callback);
+        controller.hasDynamicallyVisibleComponent().subscribe(callback);
+      });
+
+      it('should return true', () => {
+        expect(callback).toBeCalledWith(true);
+      });
+    });
+
+    describe('when component has composition components with visibility rules', () => {
+      const callback = vi.fn();
+      beforeEach(() => {
+        experienceService.getComponent = vi
+          .fn()
+          .mockReturnValue(of(mockComponentWithVisibilityRule));
+        const controller = new CompositionComponentsController(mockElement);
+        controller.hasDynamicallyVisibleComponent().subscribe(callback);
       });
 
       it('should return true', () => {
@@ -230,6 +296,40 @@ describe('CompositionComponentsController', () => {
 
       it('should filter the components', () => {
         expect(callback).toBeCalledWith([]);
+      });
+    });
+
+    describe('when rules contain breakpoints', () => {
+      describe('and rule`s breakpoint does not match actual one', () => {
+        const callback = vi.fn();
+        beforeEach(() => {
+          experienceService.getComponent = vi
+            .fn()
+            .mockReturnValue(of(mockComponentWithBreakpointMd));
+          const controller = new CompositionComponentsController(mockElement);
+          controller.getComponents().subscribe(callback);
+        });
+
+        it('should not filter the components', () => {
+          expect(callback).toBeCalledWith(
+            mockComponentWithBreakpointMd.components
+          );
+        });
+      });
+
+      describe('and rule`s breakpoint matches actual one', () => {
+        const callback = vi.fn();
+        beforeEach(() => {
+          experienceService.getComponent = vi
+            .fn()
+            .mockReturnValue(of(mockComponentWithBreakpointLg));
+          const controller = new CompositionComponentsController(mockElement);
+          controller.getComponents().subscribe(callback);
+        });
+
+        it('should filter the components', () => {
+          expect(callback).toBeCalledWith([]);
+        });
       });
     });
 

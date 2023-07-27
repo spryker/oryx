@@ -9,10 +9,11 @@ const mockTheme: Theme = {
   name: 'name',
   breakpoints: {
     [Size.Sm]: {
-      min: 0,
+      max: 767,
     },
     [Size.Md]: {
       min: 768,
+      max: 1023,
     },
     [Size.Lg]: {
       min: 1024,
@@ -54,9 +55,9 @@ describe('DefaultScreenService', () => {
 
   describe('getScreenMedia() ', () => {
     describe('when breakpoint is Md', () => {
-      it('should return a media query with min 768px', () => {
+      it('should return a media query with min 768px and max 1023px', () => {
         const query = service.getScreenMedia(Size.Md);
-        expect(query).toBe('@media (min-width: 768px)');
+        expect(query).toBe('@media (min-width: 768px) and (max-width: 1023px)');
       });
     });
 
@@ -64,6 +65,20 @@ describe('DefaultScreenService', () => {
       it('should return a media query with min 124px', () => {
         const query = service.getScreenMedia(Size.Lg);
         expect(query).toBe('@media (min-width: 1024px)');
+      });
+    });
+  });
+
+  describe('getBreakpoint', () => {
+    describe('when screen size corresponds to large screens', () => {
+      const callback = vi.fn();
+
+      beforeEach(() => {
+        service.getScreenSize().subscribe(callback);
+      });
+
+      it('should set lg breakpoint', () => {
+        expect(callback).toHaveBeenCalledWith(Size.Lg);
       });
     });
   });

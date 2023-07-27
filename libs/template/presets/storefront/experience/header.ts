@@ -1,5 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { Size } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
@@ -90,23 +91,19 @@ export const HeaderTemplate: ExperienceComponent = {
             {
               type: 'oryx-site-navigation-item',
               options: {
-                visibility: {
-                  hideByRule: 'USER.AUTHENTICATED',
-                },
                 label: 'login',
                 icon: IconTypes.User,
                 url: { type: 'login' },
+                rules: [{ hideByRule: 'USER.AUTHENTICATED' }],
               },
             },
             {
               type: 'oryx-site-navigation-item',
               options: {
-                visibility: {
-                  hideByRule: 'USER.!AUTHENTICATED',
-                },
                 contentBehavior: 'dropdown',
                 label: 'USER.NAME',
                 icon: IconTypes.User,
+                rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
               },
               components: [{ type: 'oryx-auth-login-link' }],
             },
@@ -123,7 +120,10 @@ export const HeaderTemplate: ExperienceComponent = {
           options: {
             rules: [
               { colSpan: 3, layout: 'flex', justify: 'end' },
-              { query: { breakpoint: 'md' }, colSpan: 2 },
+              {
+                query: { breakpoint: 'md' },
+                colSpan: 2,
+              },
             ],
           },
         },
