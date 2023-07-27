@@ -36,7 +36,7 @@ export interface ExperienceDataMergeStrategy {
    *
    * @default false;
    */
-  global: boolean;
+  global?: boolean;
 }
 
 export type ExperienceComponent = Partial<Omit<Component, 'components'>> & {
