@@ -63,7 +63,7 @@ export class PickingHeaderComponent extends I18nMixin(
           @click=${this.back}
         ></oryx-button>
         <div class="title">${this.$pickingList()?.orderReferences[0]}</div>
-
+        ${this.renderCartNoteButton()}
         <oryx-discard-picking
           @oryx.close=${() => {
             this.pickingHeaderService.cancel();
