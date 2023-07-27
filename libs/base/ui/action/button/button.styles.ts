@@ -115,31 +115,30 @@ const sizeStyles = css`
 
 const colorStyles = css`
   :host(:is(:not([type='icon']):not([color]), [color='primary'])) {
-    --_c0: var(--oryx-color-primary-0);
     --_c1: var(--oryx-color-primary-1);
     --_c3: var(--oryx-color-primary-3);
     --_c7: var(--oryx-color-primary-7);
     --_c9: var(--oryx-color-primary-9);
     --_c10: var(--oryx-color-primary-10);
-    --_c11: var(--oryx-color-primary-11);
+    --_c12: var(--oryx-color-primary-12);
   }
 
   :host(:is([type='icon']:not([color]), [color='neutral'])) {
-    --_c0: var(--oryx-color-neutral-0);
     --_c1: var(--oryx-color-neutral-1);
     --_c3: var(--oryx-color-neutral-3);
     --_c7: var(--oryx-color-neutral-7);
     --_c9: var(--oryx-color-neutral-9);
     --_c10: var(--oryx-color-neutral-10);
+    --_c12: var(--oryx-color-neutral-12);
   }
 
   :host([color='error']) {
-    --_c0: var(--oryx-color-error-0);
     --_c1: var(--oryx-color-error-1);
     --_c3: var(--oryx-color-error-3);
     --_c7: var(--oryx-color-error-7);
     --_c9: var(--oryx-color-error-9);
     --_c10: var(--oryx-color-error-10);
+    --_c12: var(--oryx-color-error-12);
   }
 
   :host([type='icon']),
@@ -154,7 +153,7 @@ const colorStyles = css`
 
   :host(:is([type='solid'], :not([type]))) {
     --_background-color: var(--_c9);
-    --_text-color: var(--_c0);
+    --_text-color: var(--_c12);
   }
 
   :host(:is([type='solid'], :not([type]))),
