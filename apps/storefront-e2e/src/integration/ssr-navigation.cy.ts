@@ -1,16 +1,16 @@
+import { FooterFragment } from '../support/page-fragments/footer.fragment';
+import { HeaderFragment } from '../support/page-fragments/header.fragment';
+import { SearchFragment } from '../support/page-fragments/search.fragment';
 import { CartPage } from '../support/page-objects/cart.page';
+import { CategoryPage } from '../support/page-objects/category.page';
+import { CheckoutPage } from '../support/page-objects/checkout.page';
 import { ContactPage } from '../support/page-objects/contact.page';
 import { LandingPage } from '../support/page-objects/landing.page';
 import { LoginPage } from '../support/page-objects/login.page';
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
 import { SearchPage } from '../support/page-objects/search.page';
-import { CategoryPage } from '../support/page-objects/category.page';
-import { CheckoutPage } from '../support/page-objects/checkout.page';
-import { ProductStorage } from '../support/test-data/storages/product.storage';
-import { FooterFragment } from '../support/page-fragments/footer.fragment';
-import { HeaderFragment } from '../support/page-fragments/header.fragment';
-import { SearchFragment } from '../support/page-fragments/search.fragment';
 import { SCCOSApi } from '../support/sccos-api/sccos.api';
+import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const footer = new FooterFragment();
 const header = new HeaderFragment();
