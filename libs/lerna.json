@@ -8,7 +8,7 @@
     "domain/content",
     "platform/core",
     "platform/experience",
-    "base/form",
+    "platform/form",
     "platform/i18n",
     "base/di",
     "template/presets",
