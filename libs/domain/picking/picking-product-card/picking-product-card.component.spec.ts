@@ -90,11 +90,7 @@ describe('PickingProductCardComponent', () => {
         });
 
         it('should disable the button', () => {
-          expect(
-            element.renderRoot
-              .querySelector('oryx-button')
-              ?.hasAttribute('disabled')
-          ).toBe(true);
+          expect(element).toContainElement('oryx-button[disabled]');
         });
       });
     });

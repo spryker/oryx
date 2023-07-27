@@ -44,7 +44,7 @@ describe('NotificationComponent', () => {
       `);
     });
 
-    it('should have correct translated aria-labels', async () => {
+    it('should have correct translated aria-labels', () => {
       const button = element.renderRoot.querySelector('oryx-button');
       expect(button).toHaveProperty('label', closeButtonAriaLabel);
     });

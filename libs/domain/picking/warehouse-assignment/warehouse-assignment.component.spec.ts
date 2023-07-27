@@ -97,11 +97,11 @@ describe('WarehouseAssignmentComponent', () => {
     expect(el).toContainElement('oryx-header');
   });
 
-  it('should render button of each location', () => {
-    const buttons =
-      el.renderRoot.querySelectorAll<ButtonComponent>('oryx-button');
-    expect(buttons.length).toBe(mockWarehouseUserAssignments.length);
-    mockWarehouseUserAssignments.forEach((item, index) => {
+  mockWarehouseUserAssignments.forEach((item, index) => {
+    it(`should render button (${index}) of each location`, () => {
+      const buttons =
+        el.renderRoot.querySelectorAll<ButtonComponent>('oryx-button');
+      expect(buttons.length).toBe(mockWarehouseUserAssignments.length);
       expect(buttons[index]).toHaveProperty('text', i18n('picking.select'));
     });
   });

@@ -85,11 +85,11 @@ export class ButtonComponent
   protected override render(): TemplateResult {
     const templates = [this.renderLoader(), this.renderConfirmed()];
 
-    const x = this.href ? this.renderLink() : this.renderButton();
+    const button = this.href ? this.renderLink() : this.renderButton();
     if (this.text || this.icon) {
-      templates.push(x);
+      templates.push(button);
     } else {
-      templates.push(html`<slot name="custom">${x}</slot>`);
+      templates.push(html`<slot name="custom">${button}</slot>`);
     }
 
     return html`

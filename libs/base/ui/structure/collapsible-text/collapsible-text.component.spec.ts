@@ -1,6 +1,6 @@
 import '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/utilities';
+import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { ButtonComponent, ButtonType } from '../../action/button';
 import { CollapsibleTextComponent } from './collapsible-text.component';
 import { collapsibleTextComponent } from './collapsible-text.def';
@@ -101,27 +101,23 @@ describe('CollapsibleTextComponent', () => {
         expect(button?.type).toBe(ButtonType.Text);
       });
 
-      // TODO: fix this test
-      // it('should have Read more text', () => {
-      //   const button = element.renderRoot.querySelector(
-      //     'oryx-button'
-      //   ) as ButtonComponent;
-      //   expect(button.label).toBe('Read more');
-      // });
+      it('should have Read more text', () => {
+        expect(
+          element.renderRoot.querySelector('oryx-button')?.textContent?.trim()
+        ).toBe(i18n('read-more'));
+      });
 
-      // describe('and when the button is clicked', () => {
-      //   beforeEach(() => {
-      //     element.renderRoot.querySelector('button')?.click();
-      //   });
+      describe('and when the button is clicked', () => {
+        beforeEach(() => {
+          element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
+        });
 
-      // TODO: fix this test
-      // it('should have Read less text', () => {
-      //   const button = element.renderRoot.querySelector(
-      //     'oryx-button'
-      //   ) as ButtonComponent;
-      //   expect(button.label).toBe('Read less');
-      // });
-      // });
+        it('should have Read less text', () => {
+          expect(
+            element.renderRoot.querySelector('oryx-button')?.textContent?.trim()
+          ).toBe(i18n('read-less'));
+        });
+      });
     });
   });
 

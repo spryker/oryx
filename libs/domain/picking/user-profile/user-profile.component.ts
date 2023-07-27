@@ -88,6 +88,7 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
 
       <div class="info-footer">
         <oryx-button
+          class="logout-button"
           .type=${ButtonType.Outline}
           .color=${ButtonColor.Neutral}
           .text=${this.i18n('user.profile.log-out')}
@@ -102,6 +103,7 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
           () =>
             html`
               <oryx-button
+                class="receive-data"
                 .type=${ButtonType.Outline}
                 .color=${ButtonColor.Neutral}
                 .text=${this.i18n('user.profile.receive-data')}

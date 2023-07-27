@@ -49,10 +49,6 @@ describe('UserProfileComponent', () => {
   let authService: MockAuthService;
   let storageService: MockStorageService;
 
-  const getReceiveDataButton = () => {
-    return element.renderRoot.querySelectorAll('button')[1];
-  };
-
   beforeAll(async () => {
     await useComponent(userProfileComponent);
   });
@@ -180,14 +176,13 @@ describe('UserProfileComponent', () => {
           authService.logout.mockReturnValue(
             throwError(() => new Error('error'))
           );
-
           element.renderRoot
-            .querySelectorAll<HTMLElement>('oryx-button')[0]
+            .querySelector<HTMLElement>('.logout-button')
             ?.click();
         });
 
         it('should not show loading indicator', () => {
-          const button = element.renderRoot.querySelectorAll('oryx-button')[0];
+          const button = element.renderRoot.querySelector('.logout-button');
           expect(button).toHaveProperty('text', 'Log out');
           expect(button?.hasAttribute('loading')).toBe(false);
         });
@@ -204,14 +199,12 @@ describe('UserProfileComponent', () => {
 
   describe('when user is on the main page', () => {
     it('should render receive data button', () => {
-      expect(getReceiveDataButton()).not.toBeNull();
+      expect(element).toContainElement('.receive-data');
     });
 
     describe('and the receive data button is clicked', () => {
       beforeEach(() => {
-        element.renderRoot
-          .querySelectorAll<HTMLElement>('oryx-button')[1]
-          .click();
+        element.renderRoot.querySelector<HTMLElement>('.receive-data')?.click();
       });
 
       it('should call offline data plugin', () => {
@@ -219,7 +212,7 @@ describe('UserProfileComponent', () => {
       });
 
       it('should render loading indicator', async () => {
-        const button = element.renderRoot.querySelectorAll('oryx-button')[1];
+        const button = element.renderRoot.querySelector('.receive-data');
         expect(button).toHaveProperty('text', 'Receive data');
         expect(button?.hasAttribute('loading')).toBe(true);
       });
@@ -232,8 +225,8 @@ describe('UserProfileComponent', () => {
             `<oryx-picking-user-profile></oryx-picking-user-profile>`
           );
           element.renderRoot
-            .querySelectorAll<HTMLElement>('oryx-button')[1]
-            .click();
+            .querySelector<HTMLElement>('oryx-button.received-data')
+            ?.click();
         });
 
         it('should call router service navigate', async () => {
@@ -242,7 +235,7 @@ describe('UserProfileComponent', () => {
         });
 
         it('should not show loading indicator', () => {
-          const button = element.renderRoot.querySelectorAll('oryx-button')[1];
+          const button = element.renderRoot.querySelector('.receive-data');
           expect(button).toHaveProperty('text', 'Receive data');
           expect(button?.hasAttribute('loading')).toBe(false);
         });

@@ -74,10 +74,10 @@ export class CollapsibleTextComponent
 
     if (this.toggle === CollapsibleTextToggle.Icon) {
       return html`<oryx-button
-        .size=${ButtonSize.Sm}
-        .label=${this.i18n(i18nToken)}
         .type=${ButtonType.Icon}
+        .size=${ButtonSize.Sm}
         .icon=${IconTypes.Dropdown}
+        .label=${this.i18n(i18nToken)}
         @click=${this.onClick}
       ></oryx-button>`;
     }

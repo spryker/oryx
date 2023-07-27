@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 const baseStyles = css`
   :host {
-    font-weight: var(--oryx-button-font-weight);
     color: var(--oryx-button-color, var(--_text-color));
     isolation: isolate;
   }

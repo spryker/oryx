@@ -118,7 +118,7 @@ describe('PickingListItemComponent', () => {
     describe('and picking is proceed', () => {
       beforeEach(() => {
         element.renderRoot
-          .querySelectorAll<HTMLElement>('oryx-button')[1]
+          .querySelector<HTMLElement>('oryx-button.start-picking')
           ?.click();
       });
 

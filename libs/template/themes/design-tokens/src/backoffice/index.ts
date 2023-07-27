@@ -11,7 +11,6 @@ import {
 import { commonTokensSmall } from '../common-tokens';
 import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
 import { buttonTokens } from './button.token';
-import { iconTokens } from './icon.token';
 
 export const backofficeTokens: DesignToken[] = [
   ...buttonTokens,
@@ -19,7 +18,6 @@ export const backofficeTokens: DesignToken[] = [
     color,
     ...tokens,
     ...typographyTokens,
-    ...iconTokens,
     ...layoutTokens,
   },
   {

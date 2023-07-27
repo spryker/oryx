@@ -168,7 +168,9 @@ describe('PickingHeaderComponent', () => {
     });
 
     it('should not render customer note modal', () => {
-      // expect(getCustomerNoteModal()).toBeNull();
+      expect(
+        element.renderRoot.querySelector('oryx-customer-note-modal')
+      ).toBeNull();
     });
   });
 
@@ -190,11 +192,7 @@ describe('PickingHeaderComponent', () => {
     });
 
     it('should open discard modal', () => {
-      expect(
-        element.renderRoot
-          .querySelector('oryx-discard-picking')
-          ?.hasAttribute('open')
-      ).toBe(true);
+      expect(element).toContainElement('oryx-discard-picking[open]');
     });
 
     describe('and close button is clicked', () => {
@@ -207,11 +205,7 @@ describe('PickingHeaderComponent', () => {
       });
 
       it('should close discard modal', () => {
-        expect(
-          element.renderRoot
-            .querySelector('oryx-discard-picking')
-            ?.hasAttribute('open')
-        ).toBe(false);
+        expect(element).toContainElement('oryx-discard-picking:not([open])');
       });
 
       it('should call picking header service cancel', () => {
