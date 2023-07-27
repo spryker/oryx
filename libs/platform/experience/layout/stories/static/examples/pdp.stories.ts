@@ -1,6 +1,6 @@
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../../../.constants';
+import { storybookPrefix } from '../../../../.constants';
 import { generateLayoutItems } from '../util';
 import { generateHeader, pageStyles } from './util';
 
