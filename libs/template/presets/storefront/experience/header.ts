@@ -53,6 +53,7 @@ export const HeaderTemplate: ExperienceComponent = {
       components: [
         {
           type: 'oryx-content-image',
+          id: 'headerLogo',
           content: {
             data: {
               graphic: 'logo',
@@ -84,7 +85,7 @@ export const HeaderTemplate: ExperienceComponent = {
         },
         {
           type: 'oryx-composition',
-          id: 'headerNavigation',
+          id: 'headerActions',
           components: [
             {
               type: 'oryx-site-navigation-item',

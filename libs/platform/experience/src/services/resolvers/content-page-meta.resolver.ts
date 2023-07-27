@@ -8,7 +8,7 @@ export class ContentPageMetaResolver implements PageMetaResolver {
   constructor(
     protected router = inject(RouterService),
     // Temporary: TODO use real mock data
-    protected staticData = inject(ExperienceData, []).flat()
+    protected experienceData = inject(ExperienceData, []).flat()
   ) {}
 
   getScore(): Observable<unknown[]> {
@@ -53,7 +53,7 @@ export class ContentPageMetaResolver implements PageMetaResolver {
   protected getData(route: string): ExperienceComponent['meta'] | undefined {
     const routePath = route.split('/').filter(Boolean)[0];
 
-    return this.staticData.find((data) => {
+    return this.experienceData.find((data) => {
       const metaPath = data.meta?.route?.split('/').filter(Boolean)[0];
 
       return routePath === metaPath;

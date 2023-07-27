@@ -42,6 +42,7 @@ const legalLinks = {
 
 const customerSupport = {
   type: 'oryx-content-text',
+  id: 'customerSupport',
   content: {
     data: {
       text: `<b>Customer Support</b><br/>
@@ -69,6 +70,7 @@ const promises = {
 
 const aboutUs = {
   type: 'oryx-content-text',
+  id: 'aboutUs',
   content: {
     data: {
       text: `<b>About us</b><br/>

@@ -45,7 +45,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     protected dataClient = inject(ExperienceDataClientService)
   ) {
     super();
-    this.sendStaticData();
+    this.sendExperienceData();
     merge(
       this.dataClient.initialize(),
       this.structureDataEvent$,
@@ -152,7 +152,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     });
   }
 
-  protected sendStaticData(): void {
+  protected sendExperienceData(): void {
     postMessage({
       type: MessageType.Static,
       data: this.experienceData,
