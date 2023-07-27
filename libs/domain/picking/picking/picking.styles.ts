@@ -24,6 +24,7 @@ export const pickingComponentStyles = css`
     align-items: center;
     justify-content: center;
     height: calc(100vh - 166px);
+    background-color: var(--oryx-color-neutral-3);
   }
 
   section oryx-heading h1 {
@@ -46,7 +47,7 @@ export const pickingComponentStyles = css`
     position: sticky;
     inset-block-end: 0;
     padding: 20px;
-    background-color: var(--oryx-color-neutral-1);
+    background-color: var(--oryx-color-neutral-3);
     animation: slide-up 0.5s ease-in-out;
   }
 
