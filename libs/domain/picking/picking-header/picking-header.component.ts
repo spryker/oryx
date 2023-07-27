@@ -55,7 +55,6 @@ export class PickingHeaderComponent extends I18nMixin(
   protected override render(): TemplateResult {
     return html`
       <oryx-header>
-        <<<<<<< HEAD
         <oryx-button
           .type=${ButtonType.Icon}
           .size=${ButtonSize.Md}
@@ -63,20 +62,8 @@ export class PickingHeaderComponent extends I18nMixin(
           .label=${this.i18n('oryx.picking.back-to-pick-lists')}
           @click=${this.back}
         ></oryx-button>
-        <div class="title">${this.pickingList?.orderReferences[0]}</div>
-        =======
-        <oryx-icon-button>
-          <button
-            aria-label=${this.i18n('oryx.picking.back-to-pick-lists')}
-            class="back"
-            href="#"
-            @click=${this.back}
-          >
-            <oryx-icon type=${IconTypes.ArrowBack}></oryx-icon>
-          </button>
-        </oryx-icon-button>
         <div class="title">${this.$pickingList()?.orderReferences[0]}</div>
-        >>>>>>> development ${this.renderCartNoteButton()}
+
         <oryx-discard-picking
           @oryx.close=${() => {
             this.pickingHeaderService.cancel();
