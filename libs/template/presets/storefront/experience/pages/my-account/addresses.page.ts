@@ -9,7 +9,6 @@ export const addressBookPage: ExperienceComponent = {
     route: '/my-account/addresses',
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'addressBookBody',
@@ -33,6 +32,5 @@ export const addressBookPage: ExperienceComponent = {
         },
       ],
     },
-    { ref: 'footer' },
   ],
 };

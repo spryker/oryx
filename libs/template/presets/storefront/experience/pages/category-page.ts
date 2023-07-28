@@ -10,7 +10,6 @@ export const categoryPage: ExperienceComponent = {
     index: true,
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'categoryBody',
@@ -71,6 +70,5 @@ export const categoryPage: ExperienceComponent = {
         },
       ],
     },
-    { ref: 'footer' },
   ],
 };

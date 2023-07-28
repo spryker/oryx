@@ -9,7 +9,6 @@ export const cartPage: ExperienceComponent = {
     description: 'Cart Page Description',
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'cartBody',
@@ -66,6 +65,5 @@ export const cartPage: ExperienceComponent = {
         },
       ],
     },
-    { ref: 'footer' },
   ],
 };

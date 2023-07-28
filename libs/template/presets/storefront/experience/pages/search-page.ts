@@ -8,7 +8,6 @@ export const searchPage: ExperienceComponent = {
     route: '/search',
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'searchBody',
@@ -66,6 +65,5 @@ export const searchPage: ExperienceComponent = {
         },
       ],
     },
-    { ref: 'footer' },
   ],
 };

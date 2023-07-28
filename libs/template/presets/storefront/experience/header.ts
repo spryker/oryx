@@ -1,10 +1,10 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Size } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
-  type: 'oryx-composition',
+  type: 'Page',
+  meta: { title: 'Header', route: '/_header' },
   components: [
     {
       type: 'oryx-composition',

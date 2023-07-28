@@ -10,7 +10,6 @@ export const checkoutPage: ExperienceComponent = {
     description: 'Checkout Page Description',
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'checkoutBody',
@@ -111,6 +110,5 @@ export const checkoutPage: ExperienceComponent = {
         },
       ],
     },
-    { ref: 'footer' },
   ],
 };

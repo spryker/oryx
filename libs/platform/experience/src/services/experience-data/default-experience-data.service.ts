@@ -49,24 +49,12 @@ export class DefaultExperienceDataService implements ExperienceDataService {
         delete record.ref;
       }
 
+      record.id ??= this.getAutoId();
+      cb?.(record);
       records.push(...(record.components ?? []));
     }
 
     this.processMerging();
-
-    const data = Object.values(this.records);
-
-    // Register all components with has id's
-    for (const record of data) {
-      if (!record.id?.includes('hash')) {
-        record.id = record.id
-          ? `${record.id}-${this.getAutoId()}`
-          : this.getAutoId();
-      }
-
-      cb?.(record);
-      data.push(...(record.components ?? []));
-    }
 
     return Object.values(this.records);
   }
@@ -300,6 +288,6 @@ export class DefaultExperienceDataService implements ExperienceDataService {
   }
 
   protected getAutoId(): string {
-    return `hash${this.autoComponentId++}`;
+    return `static${this.autoComponentId++}`;
   }
 }

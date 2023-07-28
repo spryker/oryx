@@ -9,7 +9,6 @@ export const productPage: ExperienceComponent = {
     description: 'Default Product Page Description',
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'productBody',
@@ -89,6 +88,5 @@ export const productPage: ExperienceComponent = {
         ],
       },
     },
-    { ref: 'footer' },
   ],
 };

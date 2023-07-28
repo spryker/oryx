@@ -14,7 +14,6 @@ export const articlesPage: ExperienceComponent = {
     rules: [{ layout: 'flex', padding: '30px 0' }],
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'articlesBody',
@@ -43,7 +42,6 @@ export const articlesPage: ExperienceComponent = {
         },
       ],
     },
-    { ref: 'footer' },
   ],
 };
 
@@ -55,7 +53,6 @@ export const articlePage: ExperienceComponent = {
     route: `/${ContentfulContentFields.Article}/:id`,
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'articleBody',
@@ -71,7 +68,6 @@ export const articlePage: ExperienceComponent = {
         },
       ],
     },
-    { ref: 'footer' },
   ],
 };
 
@@ -80,7 +76,6 @@ export const faqsPage: ExperienceComponent = {
   id: 'faqs',
   meta: { title: 'FAQ`s Page', route: `/${StoryblokContentFields.Faq}` },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'faqsBody',
@@ -109,7 +104,6 @@ export const faqsPage: ExperienceComponent = {
         },
       ],
     },
-    { ref: 'footer' },
   ],
 };
 
@@ -118,7 +112,6 @@ export const faqPage: ExperienceComponent = {
   id: 'faq',
   meta: { title: 'FAQ Page', route: `/${StoryblokContentFields.Faq}/:id` },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'faqBody',
@@ -134,6 +127,5 @@ export const faqPage: ExperienceComponent = {
         },
       ],
     },
-    { ref: 'footer' },
   ],
 };

@@ -231,7 +231,8 @@ const topFooter = {
 
 export const FooterTemplate: ExperienceComponent = {
   id: 'footer',
-  type: 'oryx-composition',
+  type: 'Page',
+  meta: { title: 'Footer', route: '/_footer' },
   components: [
     {
       type: 'oryx-composition',

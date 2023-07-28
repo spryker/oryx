@@ -9,7 +9,6 @@ export const loginPage: ExperienceComponent = {
     description: 'Login Page Description',
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'loginBody',
@@ -25,6 +24,5 @@ export const loginPage: ExperienceComponent = {
         },
       ],
     },
-    { ref: 'footer' },
   ],
 };

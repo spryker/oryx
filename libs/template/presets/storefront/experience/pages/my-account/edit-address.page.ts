@@ -8,7 +8,6 @@ export const editAddressPage: ExperienceComponent = {
     route: '/my-account/addresses/edit/:id',
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'editAddressBody',
@@ -17,6 +16,5 @@ export const editAddressPage: ExperienceComponent = {
       },
       components: [{ type: 'oryx-user-address-edit' }],
     },
-    { ref: 'footer' },
   ],
 };

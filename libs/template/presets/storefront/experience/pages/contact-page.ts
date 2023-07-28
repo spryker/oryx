@@ -10,7 +10,6 @@ export const contactPage: ExperienceComponent = {
     description: 'Contact Page Description',
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'contactBody',
@@ -40,6 +39,5 @@ export const contactPage: ExperienceComponent = {
         },
       ],
     },
-    { ref: 'footer' },
   ],
 };
