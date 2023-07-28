@@ -24,7 +24,7 @@ export class ImageComponent
     super();
   }
 
-  @signalProperty({ reflect: true }) resource?: string;
+  @signalProperty() resource?: string;
 
   @property() src?: string;
   @property() srcset?: string;
