@@ -1,40 +1,28 @@
-SPRYKER SYSTEMS GMBH EVALUATION LICENSE AGREEMENT
+SPRYKER - LICENSE AGREEMENT FOR EVALUATION OF AND EARLY ACCESS TO SOFTWARE
 
-SPRYKER SYSTEMS GMBH, REGISTERED WITH THE COMMERCIAL REGISTER OF THE LOWER COURT OF HAMBURG UNDER HRB 134310
-("WE" OR "SPRYKER")GRANTS YOU (THE "LICENSEE") THE RIGHT TO USE THE SOFTWARE (AS DEFINED BELOW)
-UNDER THE PROVISIONS OF THIS EVALUATION LICENSE AGREEMENT (THE "AGREEMENT").
+SPRYKER SYSTEMS GMBH, REGISTERED WITH THE COMMERCIAL REGISTER OF THE LOWER COURT OF HAMBURG UNDER HRB 134310 (“WE” OR ”SPRYKER”) GRANTS YOU (“LICENSEE”) THE RIGHT TO USE THE SOFTWARE (AS DEFINED BELOW) UNDER THE PROVISIONS OF THIS LICENSE AGREEMENT FOR EVALUATION AND EARLY ACCESS (THE “AGREEMENT”).
 
-The "Software" includes any software owned and distributed by Spryker under this Agreement. The Software
-contains elements of open source components, to which different license terms apply respectively.
-These open source components are needed to be installed separately.
+For the purposes of this Agreement, the “Software” includes any software, which is owned and made available (i) by Spryker for evaluation purposes or (ii) as part of Spryker’s early access program under this Agreement.
 
-Spryker grants to Licensee, during the 45-calendar-day period (the "Evaluation Period") following the download of the Software,
-the nontransferable, nonexclusive limited, free of charge license to permit Licensee's employees to internally use the Software
-to test and evaluate the Software in connection with potentially purchasing non-evaluation licenses to the Software.
+Spryker grants to Licensee, (i) during the 45-calendar-day period (the “Evaluation Period”) following the first download of the Software or (ii) during the period it makes available a feature, module or functionality as part of its early access program (the “Early Access Period”), the non-transferable, non-exclusive limited, free of charge license (for (i) the “Evaluation License” or for (ii) the “Early Access License”, as applicable, both a “License”) to permit Licensee and/or Licensee’s employees to internally use the Software to test and evaluate the Software. In case of the Evaluation License, Licensee will not be granted the license under this Agreement for one particular piece of the Software more than once.
 
-Licensee shall not (i) use the Software to set up a productive live system, for development purposes or any other purposes apart
-from evaluating the Software; (ii) copy any part of the Software except to make one copy for back-up purposes; (iii) distribute,
-disclose, market, rent, lease, or transfer the Software or act as a service bureau with respect to the Software; (iv) export the
-Software or install it in multiple locations; (v) disclose any confidential information provided by Spryker; (vi) modify or make
-derivative works of the Software; or (vii) allow others to make or obtain copies of the Software.
+Under the License granted in this Agreement, Licensee shall not (i) use the Software to set up a production live system, for development purposes or any other purposes apart from evaluating and testing the Software; (ii) copy any part of the Software except to make one copy for back-up purposes; (iii) distribute, disclose, market, rent, lease, or transfer the Software or act as a service bureau with respect to the Software; (iv) export the Software or install it in multiple locations; (v) disclose any confidential information provided by Spryker; (vi) modify or make derivative works of the Software; or (vii) allow others to make or obtain copies of the Software.
 
-THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND. SPRYKER DISCLAIMS ALL WARRANTIES, EXPRESSED OR IMPLIED, INCLUDING
-BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, TITLE, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE. SPRYKER WILL NOT
-BE LIABLE FOR ANY DAMAGES ASSOCIATED WITH THE SOFTWARE, INCLUDING WITHOUT LIMITATION ORDINARY, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL
-DAMAGES OF ANY KIND, INCLUDING BUT NOT LIMITED TO DAMAGES RELATING TO LOST DATA OR LOST PROFITS, EVEN IF SPRYKER HAS BEEN ADVISED OF
-THE POSSIBILITY OF SUCH DAMAGES.
+The use of the Software in a production environment, to the extent permitted at all, requires prior conclusion of a separate agreement between Spryker and Licensee. Spryker will not support any versions of the Software being provided for evaluation purposes or as part of Spryker’s early access program. The provision of the Software as part of Spryker’s early access program does not necessarily mean it will be released as part of Spryker’s products in the future.
 
-Licensee's license to use the Software shall terminate on the earlier of (i) the expiration of the Evaluation Period, or (ii) the date
-both parties enter into a definitive agreement for the provision by Spryker to Licensee of a non-evaluation license to the Software.
-Upon termination of the license as provided above, Licensee shall promptly destroy the Software and any back-up copy of the Software
-made during the Evaluation Period if Spryker and the Licensee have not agreed a non-evaluation license to the Software.
+The Software may contain elements of open source components, to which different license terms apply respectively. Licensee may need to install these open source components separately.
 
-This Agreement shall be governed by the laws of Germany to the exclusion of IPR (International Law) and the United Nations Convention
-on Contracts for the International Sale of Goods (CISG). The parties consent to the jurisdiction of the courts in Berlin (Germany).
+THE SOFTWARE IS PROVIDED “AS-IS” AND WITHOUT WARRANTY OF ANY KIND. SPRYKER DISCLAIMS ALL WARRANTIES, EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, TITLE, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE. SPRYKER WILL NOT BE LIABLE FOR ANY DAMAGES ASSOCIATED WITH THE SOFTWARE, INCLUDING WITHOUT LIMITATION ORDINARY, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES OF ANY KIND, INCLUDING BUT NOT LIMITED TO DAMAGES RELATING TO LOST DATA OR LOST PROFITS, EVEN IF SPRYKER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 
-This Agreement is not assignable or transferable by Licensee and any attempt to do so is null and void.
+Licensee can provide input, suggestions, suggest or recommend changes or enhancements of the Software (“Feedback”). Any Feedback provided by Licensee is not considered confidential information and is received and treated by Spryker on a non-confidential and unrestricted basis. Licensee grants Spryker a sub-licenseable right to use, distribute, disclose and/or incorporate it into the Software or other products of Spryker, free of charge and without restriction as to time and place.
 
-This Agreement constitutes the entire agreement between the parties concerning Licensee's use of the Software. This Agreement supersedes
-any prior verbal understanding between the parties and any Licensee purchase order or other ordering document, regardless of whether such
-document is received by Spryker before or after execution of this Agreement. This Agreement may be amended only in a writing signed by
-an authorized officer of Spryker.
+Licensee's License to use the Software under this Agreement shall terminate on the earlier of (i) the expiration of the Evaluation Period or the Early Access Period (as applicable), or (ii) the date both parties enter into a definitive agreement for the provision by Spryker to Licensee of a full non-evaluation license to Spryker’s software.
+
+Upon termination of the License as provided under this Agreement, Licensee shall promptly destroy the Software and any back-up copy of the Software made during the Evaluation Period or Early Access Period if Spryker and Licensee have not agreed a non-evaluation license to Spryker’s software.
+
+This Agreement shall be governed by the laws of Germany to the exclusion of IPR (International Law) and the United Nations Convention on Contracts for the International Sale of Goods (CISG). The parties consent to the jurisdiction of the courts in Berlin (Germany).
+
+This Agreement and/or the License is not assignable or transferable by Licensee and any attempt to do so is null and void.
+
+This Agreement constitutes the entire agreement between the parties concerning Licensee’s use of the Software. This Agreement supersedes any prior verbal understanding between the parties. This Agreement may be amended only in a writing signed by an authorized officer of Spryker.
+
