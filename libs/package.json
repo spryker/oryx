@@ -28,7 +28,7 @@
     "pack": "run-s pack:*",
     "prepack:libs": "npm run clean:dist",
     "pack:libs": "lerna exec --concurrency 1 --stream -- node \\$LERNA_ROOT_PATH/../tools/release/pack-lib.js",
-    "pack:files": "node ../tools/utils/multi-copy.js ../LICENSE '../dist/libs/*/*/*'",
+    "pack:files": "node ../tools/utils/multi-copy.js \\$LERNA_ROOT_PATH/../LICENSE '../dist/libs/*/*/*'",
     "postversion": "lerna exec --concurrency 1 --stream -- node \\$LERNA_ROOT_PATH/../tools/release/update-lib.js",
     "clean:dist": "rm -rf */dist"
   }
