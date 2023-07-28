@@ -28,9 +28,6 @@ async function main(files) {
     throw new NoDestError();
   }
 
-  log('DEBUG! Copy sources:', ...sources);
-  log('DEBUG! Copy destinations:', destinations);
-
   info(`Expanded destinations:\n\t${destinations.join('\n\t')}`);
 
   await chainAsync(destinations, (destination) => {
