@@ -15,7 +15,7 @@ describe('User addresses suite', () => {
       api.guestCarts.get();
     });
 
-    describe('and user has some produts in the cart', () => {
+    describe('and user has some products in the cart', () => {
       beforeEach(() => {
         api.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
       });

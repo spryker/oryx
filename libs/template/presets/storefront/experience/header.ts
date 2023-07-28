@@ -1,6 +1,5 @@
 import { StaticComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Size } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: StaticComponent = {
   id: 'header',
@@ -64,7 +63,7 @@ export const HeaderTemplate: StaticComponent = {
                 colSpan: 3,
                 height: '42px',
                 justify: 'start',
-                style: 'color: var(--oryx-color-primary-0, white)',
+                style: 'color: var(--oryx-color-primary-12)',
               },
               { query: { breakpoint: 'md' }, colSpan: 2 },
             ],

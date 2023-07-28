@@ -39,6 +39,8 @@ export const styles = css`
     border-radius: var(--oryx-border-radius-small);
     margin: 0;
     height: 42px;
+    aspect-ratio: 1/1;
+    justify-content: center;
     box-sizing: border-box;
     transition: var(--oryx-transition-time);
   }

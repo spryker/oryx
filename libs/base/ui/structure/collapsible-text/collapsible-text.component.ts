@@ -1,13 +1,13 @@
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import {
-  hydrate,
   I18nMixin,
-  preHydrate,
   Size,
+  hydrate,
+  preHydrate,
   throttle,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
 import { property, query } from 'lit/decorators.js';
-import { ButtonType } from '../../action/button/src/button.model';
 import { IconTypes } from '../../graphical/icon/src/icon.types';
 import {
   CollapsibleTextProperties,
@@ -68,22 +68,27 @@ export class CollapsibleTextComponent
   }
 
   protected renderToggle(): TemplateResult | void {
-    const i18nLabel = this.expanded ? 'read-less' : 'read-more';
+    const i18nToken = `collapsible.${
+      this.expanded ? 'read-less' : 'read-more'
+    }`;
 
     if (this.toggle === CollapsibleTextToggle.Icon) {
-      return html`<oryx-icon-button .size=${Size.Sm}>
-        <button
-          aria-label=${this.i18n(`collapsible.${i18nLabel}`)}
-          @click=${this.onClick}
-        >
-          <oryx-icon .type=${IconTypes.Dropdown}></oryx-icon>
-        </button>
-      </oryx-icon-button>`;
+      return html`<oryx-button
+        .type=${ButtonType.Icon}
+        .size=${ButtonSize.Sm}
+        .icon=${IconTypes.Dropdown}
+        .label=${this.i18n(i18nToken)}
+        @click=${this.onClick}
+      ></oryx-button>`;
     }
 
     if (this.toggle === CollapsibleTextToggle.Text) {
-      return html`<oryx-button .type=${ButtonType.Text} .size=${Size.Sm}>
-        <button @click=${this.onClick}>${this.i18n(i18nLabel)}</button>
+      return html`<oryx-button
+        .type=${ButtonType.Text}
+        .size=${Size.Sm}
+        @click=${this.onClick}
+      >
+        ${this.i18n(i18nToken)}
       </oryx-button>`;
     }
   }
