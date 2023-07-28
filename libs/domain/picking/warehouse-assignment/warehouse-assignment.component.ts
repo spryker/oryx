@@ -34,7 +34,7 @@ export class WarehouseAssignmentComponent extends LitElement {
     return html`
       <oryx-header></oryx-header>
       ${when(
-        this.$locations() === null,
+        this.$locations() === null || this.$locations()?.length === 1,
         () => this.renderLoading(),
         () =>
           html`${when(
@@ -100,6 +100,11 @@ export class WarehouseAssignmentComponent extends LitElement {
   }
 
   protected renderLoading(): TemplateResult {
+    const locations = this.$locations();
+    if (locations?.length === 1) {
+      this.onSelect(locations[0].id);
+    }
+
     return html`
       <div class="loading">
         <span>${i18n('picking.loading-locations')}</span>
