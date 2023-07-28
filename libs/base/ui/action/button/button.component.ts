@@ -26,8 +26,8 @@ import { hydrateSlotChange } from './prehydrate';
  * The ButtonType supports 4 variations:
  * - `solid` a button with a solid background.
  * - `outline` a button with an outline and a neutral background.
- * - `icon` a button that is build
- * - `text`
+ * - `icon` a button with no background and no outline, but with a border radius.
+ * - `text` a button with no background and no outline.
  *
  * ### ButtonSize
  * The button comes in 3 sizes, `lg`, `md` and `sm`. The real estate of the button system is driven by a
@@ -48,7 +48,6 @@ import { hydrateSlotChange } from './prehydrate';
  * - Error
  *
  * Only a couple of the color shades are used for the button UI.
- *
  *
  */
 @ssrShim('style')
@@ -73,8 +72,8 @@ export class ButtonComponent
   @property({ reflect: true }) size = ButtonSize.Lg;
   @property({ reflect: true }) color?: ButtonColor;
 
-  @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ type: Boolean, reflect: true }) active?: boolean;
+  @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ type: Boolean, reflect: true }) loading?: boolean;
   @property({ type: Boolean, reflect: true }) confirmed?: boolean;
 

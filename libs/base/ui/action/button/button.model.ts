@@ -49,6 +49,14 @@ export interface ButtonComponentAttributes {
   size?: ButtonSize;
 
   /**
+   * Indicates whether the button is active, which is similar to the `:active` CSS pseudo-class.
+   * This is typically used for toggle buttons, where the button is active when the toggle is on.
+   *
+   * @default false
+   */
+  active?: boolean;
+
+  /**
    * Indicates whether the button is in the disabled state.
    *
    * @default false

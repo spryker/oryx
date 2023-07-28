@@ -1,6 +1,10 @@
 import { css } from 'lit';
 
 export const orderEntriesStyles = css`
+  :host {
+    display: grid;
+  }
+
   h3 {
     margin-block-end: 20px;
   }
@@ -11,9 +15,6 @@ export const orderEntriesStyles = css`
 
   oryx-button {
     margin-block-start: 10px;
-  }
-
-  button {
-    color: var(--oryx-color-primary-9);
+    margin-inline: auto;
   }
 `;

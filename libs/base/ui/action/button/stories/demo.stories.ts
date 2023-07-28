@@ -11,6 +11,7 @@ import { renderButton } from './util';
 
 export default {
   title: `${storybookPrefix}/Actions/Button`,
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     text: 'Action',
     color: ButtonColor.Primary,
@@ -40,13 +41,12 @@ export default {
     label: {
       control: { type: 'text' },
     },
+    href: {
+      control: { type: 'text' },
+    },
     slotted: {
       options: ['link', 'button', 'content'],
       control: { type: 'select' },
-      table: { category: 'demo' },
-    },
-    href: {
-      control: { type: 'text' },
       table: { category: 'demo' },
     },
   },
