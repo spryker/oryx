@@ -1,7 +1,5 @@
 {
-  "packages": [
-    "base/di"
-  ],
+  "packages": ["base/di"],
   "version": "1.0.0-rc.1",
   "npmClient": "npm",
   "command": {

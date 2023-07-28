@@ -39,7 +39,7 @@ jobs:
       - name: Install Deps
         run: npm ci
       - name: Build packages
-#        run: npx nx run-many --target=build --all --parallel=2 --exclude testfront,storybook,fulfillment,storefront
+        #        run: npx nx run-many --target=build --all --parallel=2 --exclude testfront,storybook,fulfillment,storefront
         run: npx nx run di:build
       - name: Install verdaccio
         run: npm i -g verdaccio
