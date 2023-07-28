@@ -24,13 +24,13 @@ export class ImageComponent
     super();
   }
 
-  @signalProperty() resource?: string;
+  @signalProperty({ reflect: true }) resource?: string;
 
   @property() src?: string;
   @property() srcset?: string;
   @property() alt?: string;
   @property() loading?: LoadingStrategy;
-  @property({ type: Boolean }) skipFallback?: boolean;
+  @property({ type: Boolean, reflect: true }) skipFallback?: boolean;
 
   @state() failed?: string;
 
