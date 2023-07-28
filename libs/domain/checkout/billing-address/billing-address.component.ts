@@ -7,12 +7,12 @@ import {
   AddressService,
 } from '@spryker-oryx/user';
 import {
+  I18nMixin,
   elementEffect,
   hydrate,
-  I18nMixin,
   signal,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { CheckoutAddressComponent } from '../address';
@@ -75,15 +75,16 @@ export class CheckoutBillingAddressComponent
           @change=${this.onChange}
           .selected=${this.$selected()}
         ></oryx-checkout-manage-address>`,
-        () => html`<oryx-button .type=${ButtonType.Text}>
-          <button @click=${this.reuseShippingAddress}>
-            ${this.i18n(
-              this.$isSameAsShippingAddress()
-                ? 'checkout.billing-address.change'
-                : 'checkout.billing-address.same-as-shipping-address'
-            )}
-          </button></oryx-button
-        >`
+        () => html`<oryx-button
+          .type=${ButtonType.Text}
+          @click=${this.reuseShippingAddress}
+        >
+          ${this.i18n(
+            this.$isSameAsShippingAddress()
+              ? 'checkout.billing-address.change'
+              : 'checkout.billing-address.same-as-shipping-address'
+          )}
+        </oryx-button>`
       )}
     </oryx-checkout-header>`;
   }

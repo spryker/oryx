@@ -8,9 +8,4 @@ export const modalComponent = componentDef({
       : import('./no-dialog-support/modal.component').then(
           (m) => m.NDSModalComponent
         ),
-  stylesheets: [
-    {
-      rules: () => import('./modal.styles').then((m) => m.screenStyles),
-    },
-  ],
 });

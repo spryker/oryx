@@ -7,6 +7,6 @@ export class GlobalNotification {
 
   getWrapper = () => cy.wrap(this.wrapper);
   getSubtext = () => this.getWrapper().find('span[slot="subtext"]');
-  getCloseBtn = () => this.getWrapper().find('oryx-icon-button');
+  getCloseBtn = () => this.getWrapper().find('oryx-button');
   getType = () => this.getWrapper().invoke('attr', 'type');
 }

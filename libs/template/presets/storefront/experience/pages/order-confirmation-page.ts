@@ -27,10 +27,7 @@ export const orderConfirmationPage: ExperienceComponent = {
             { type: 'oryx-cart-totals-total' },
           ],
         },
-        {
-          type: 'oryx-order-entries',
-          options: { rules: [{ colSpan: 2 }] },
-        },
+        { type: 'oryx-order-entries' },
       ],
     },
   ],

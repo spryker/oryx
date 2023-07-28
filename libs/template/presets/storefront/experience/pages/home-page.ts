@@ -46,11 +46,13 @@ export const homePage: ExperienceComponent = {
           content: {
             data: {
               text: `
-                <span class="subtitle">CANON EOS R7 System camera</span>
-                <h1 style="margin:20px 0;">Discover everything</h1>
-                <div class="h3" style="margin-bottom:20px">EOS R7 wows with its ability to track fast-moving subjects with its Deep-learning Dual Pixel CMOS AF II focus system.</div>
-                <oryx-button><a href="/category/12">Shop now</a></oryx-button>
-              `,
+              <span class="subtitle">CANON EOS R7 System camera</span>
+              <h1 style="margin:20px 0;">Discover everything</h1>
+              <div class="h3" style="margin-bottom:20px">EOS R7 wows with its ability to track fast-moving subjects with its Deep-learning Dual Pixel CMOS AF II focus system.</div>
+
+              <oryx-button  href="/category/12">Shop now</oryx-button>
+
+            `,
             },
           },
           options: {

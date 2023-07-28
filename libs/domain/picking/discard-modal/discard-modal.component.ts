@@ -1,7 +1,7 @@
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { BACK_EVENT, CLOSE_EVENT } from '@spryker-oryx/ui/modal';
-import { I18nMixin, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { I18nMixin } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { discardModalStyles } from './discard-modal.styles';
 
@@ -31,19 +31,21 @@ export class DiscardPickingComponent extends I18nMixin(LitElement) {
 
         <oryx-button
           slot="footer"
-          outline
-          type=${ButtonType.Secondary}
-          size=${Size.Md}
+          .type=${ButtonType.Outline}
+          .color=${ButtonColor.Neutral}
+          .size=${ButtonSize.Md}
+          @click=${this.close}
         >
-          <button @click=${this.close}>
-            ${this.i18n('picking-lists.cancel')}
-          </button>
+          ${this.i18n('picking-lists.cancel')}
         </oryx-button>
 
-        <oryx-button slot="footer" type=${ButtonType.Critical} size=${Size.Md}>
-          <button @click=${this.discard}>
-            ${this.i18n('picking-lists.discard')}
-          </button>
+        <oryx-button
+          slot="footer"
+          .color=${ButtonColor.Error}
+          .size=${ButtonSize.Md}
+          @click=${this.discard}
+        >
+          ${this.i18n('picking-lists.discard')}
         </oryx-button>
       </oryx-modal>
     `;

@@ -1,13 +1,14 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { computed, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { AddressMixin } from '../src/mixins';
 import { CrudState } from '../src/models';
 import { AddressEditButtonOptions, Target } from './address-edit-button.model';
-import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ target: Target.Link })
 @hydrate({ event: ['mouseover', 'focusin'] })
@@ -26,25 +27,18 @@ export class UserAddressEditButtonComponent extends AddressMixin(
   });
 
   protected render(): TemplateResult | void {
-    if (this.$options().target === Target.Link) {
-      return html`
-        <oryx-button outline>
-          <a href=${this.editLink()} ?disabled=${!this.$addressId()}>
-            <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
-            ${this.i18n(['edit', 'user.address.edit-address'])}
-          </a>
-        </oryx-button>
-      `;
-    } else {
-      return html`
-        <oryx-button outline>
-          <button @click=${this.onEdit} ?disabled=${!this.$addressId()}>
-            <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
-            ${this.i18n(['edit', 'user.address.edit'])}
-          </button>
-        </oryx-button>
-      `;
-    }
+    const href =
+      this.$options().target === Target.Link ? this.editLink() : undefined;
+    return html`
+      <oryx-button
+        .type=${ButtonType.Outline}
+        .icon=${IconTypes.Edit}
+        .text=${this.i18n(['edit', 'user.address.edit-address'])}
+        .href=${href}
+        ?disabled=${!this.$addressId()}
+        @click=${this.onEdit}
+      ></oryx-button>
+    `;
   }
 
   protected onEdit(): void {

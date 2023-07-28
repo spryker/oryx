@@ -1,11 +1,13 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
+import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AddressMixin, CrudState } from '@spryker-oryx/user';
 import { computed, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {
   AddressDefaults,
@@ -13,7 +15,6 @@ import {
   UserAddressListItemOptions,
 } from './address-list-item.model';
 import { styles } from './address-list-item.styles';
-import { RouteType } from '@spryker-oryx/router';
 
 @hydrate({ event: 'window:load' })
 export class UserAddressListItemComponent extends AddressMixin(
@@ -102,23 +103,24 @@ export class UserAddressListItemComponent extends AddressMixin(
 
     if (editTarget === EditTarget.Link) {
       return html`
-        <oryx-icon-button outline>
-          <a href=${this.editLink()}>
-            <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
-          </a>
-        </oryx-icon-button>
+        <oryx-button
+          .type=${ButtonType.Icon}
+          .size=${ButtonSize.Md}
+          .icon=${IconTypes.Edit}
+          .label=${this.i18n('user.address.edit')}
+          .href=${this.editLink()}
+        ></oryx-button>
       `;
     }
 
     return html`
-      <oryx-icon-button>
-        <button
-          aria-label=${this.i18n('user.address.edit')}
-          @click=${this.onEdit}
-        >
-          <oryx-icon .type=${IconTypes.Edit}></oryx-icon>
-        </button>
-      </oryx-icon-button>
+      <oryx-button
+        .type=${ButtonType.Icon}
+        .size=${ButtonSize.Md}
+        .icon=${IconTypes.Edit}
+        .label=${this.i18n('user.address.edit')}
+        @click=${this.onEdit}
+      ></oryx-button>
     `;
   }
 

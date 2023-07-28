@@ -88,7 +88,7 @@ describe('UserAddressRemoveComponent', () => {
   describe('when the user clicks the remove button', () => {
     beforeEach(() => {
       element.renderRoot
-        .querySelector('oryx-icon-button button')
+        .querySelector<HTMLElement>('oryx-button')
         ?.dispatchEvent(new MouseEvent('click'));
     });
 
@@ -98,7 +98,7 @@ describe('UserAddressRemoveComponent', () => {
       ></oryx-user-address-remove>`);
 
       element.renderRoot
-        .querySelector('oryx-icon-button button')
+        .querySelector('oryx-button')
         ?.dispatchEvent(new MouseEvent('click'));
     });
 
@@ -109,8 +109,8 @@ describe('UserAddressRemoveComponent', () => {
     describe('and the confirm remove button is clicked', () => {
       beforeEach(() => {
         element.renderRoot
-          .querySelector<HTMLButtonElement>('oryx-button button')
-          ?.dispatchEvent(new MouseEvent('click'));
+          .querySelector<HTMLElement>('oryx-button[slot="footer-more"]')
+          ?.click();
       });
 
       it('should load the address by id', () => {

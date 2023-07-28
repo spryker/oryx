@@ -68,7 +68,7 @@ export const HeaderTemplate: ExperienceComponent = {
                 colSpan: 3,
                 height: '42px',
                 justify: 'start',
-                style: 'color: var(--oryx-color-primary-0, white)',
+                style: 'color: var(--oryx-color-primary-12)',
               },
               { query: { breakpoint: 'md' }, colSpan: 2 },
             ],

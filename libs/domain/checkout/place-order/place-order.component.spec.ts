@@ -119,7 +119,7 @@ describe('PlaceOrderComponent', () => {
 
     describe('and the button is clicked', () => {
       beforeEach(async () => {
-        element.renderRoot.querySelector('button')?.click();
+        element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
       });
 
       it('should call CheckoutService.placeOrder', () => {
@@ -131,7 +131,7 @@ describe('PlaceOrderComponent', () => {
           checkoutService.placeOrder.mockReturnValue(
             of({ redirectUrl: 'http://foo.com/bar' } as CheckoutResponse)
           );
-          element.renderRoot.querySelector('button')?.click();
+          element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
         });
 
         it('should navigate to the redirect route', () => {

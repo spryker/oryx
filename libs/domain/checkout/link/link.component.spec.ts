@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { CartService } from '@spryker-oryx/cart';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LinkService, PricingService } from '@spryker-oryx/site';
+import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -78,7 +79,10 @@ describe('CheckoutLinkComponent', () => {
     });
 
     it(`should render the link`, () => {
-      expect(element).toContainElement('a[href="/checkout"]');
+      const button = element.renderRoot.querySelector(
+        'oryx-button'
+      ) as ButtonComponent;
+      expect(button.href).toBe('/checkout');
     });
   });
 

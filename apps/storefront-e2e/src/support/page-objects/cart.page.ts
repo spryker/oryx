@@ -8,11 +8,11 @@ export class CartPage extends AbstractSFPage {
   private cartTotals = new CartTotalsFragment();
 
   waitForLoaded(): void {
-    this.getEmptyCartMessage().should('be.visible');
+    this.getCartEntriesWrapper().should('exist');
   }
 
   getCartEntriesWrapper = () => cy.get('oryx-cart-entries');
-  getEmptyCartMessage = () => cy.get('oryx-content-text');
+  getEmptyCartMessage = () => cy.contains('Your shopping cart is empty');
   getCartEntries = () =>
     this.getCartEntriesWrapper()
       .find('oryx-cart-entry')
@@ -24,20 +24,25 @@ export class CartPage extends AbstractSFPage {
   getCartEntriesHeading = () =>
     this.getCartEntriesWrapper().find('oryx-heading');
   getCartTotals = () => this.cartTotals;
-  getCheckoutBtn = () => cy.contains('oryx-button', 'Checkout').find('a');
+  getCheckoutBtn = () =>
+    cy.get('oryx-checkout-link').find('oryx-button').find('a');
   getDeleteModal = () => this.getCartEntriesWrapper().find('oryx-modal');
   getSubmitDeleteBtn = () =>
     this.getDeleteModal().find('oryx-button[slot="footer-more"]');
 
   checkout = () => {
-    this.getCheckoutBtn().click();
+    this.getCheckoutBtn().click({ force: true });
   };
 
-  hasEmptyCart = () => {
-    this.getEmptyCartMessage()
-      .contains('Your shopping cart is empty')
-      .should('be.visible');
+  checkEmptyCart = () => {
+    this.getEmptyCartMessage().should('be.visible');
     this.getCartEntriesWrapper().should('not.be.visible');
     this.getCartTotals().getWrapper().should('not.be.visible');
+  };
+
+  checkNotEmptyCart = () => {
+    this.getEmptyCartMessage().should('not.exist');
+    this.getCartEntriesWrapper().should('be.visible');
+    this.getCartTotals().getWrapper().should('be.visible');
   };
 }

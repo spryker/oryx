@@ -58,7 +58,7 @@ describe('SiteLocaleSelectorComponent', () => {
     });
 
     it('should not render the locale selector', () => {
-      expect(element).not.toContainElement('button');
+      expect(element).not.toContainElement('oryx-button');
     });
   });
 
@@ -71,7 +71,7 @@ describe('SiteLocaleSelectorComponent', () => {
     });
 
     it('should not show the locale selector', () => {
-      expect(element).not.toContainElement('button');
+      expect(element).not.toContainElement('oryx-button');
     });
   });
 
@@ -84,7 +84,7 @@ describe('SiteLocaleSelectorComponent', () => {
     });
 
     it('should not show the locale selector', () => {
-      expect(element).not.toContainElement('button');
+      expect(element).not.toContainElement('oryx-button');
     });
   });
 
@@ -99,7 +99,7 @@ describe('SiteLocaleSelectorComponent', () => {
     });
 
     it('should render the locale selector', () => {
-      expect(element).toContainElement('button');
+      expect(element).toContainElement('oryx-button');
     });
 
     it('should render the english option in its native locale', () => {

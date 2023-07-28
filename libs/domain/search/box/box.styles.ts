@@ -27,8 +27,7 @@ export const searchBoxStyles = css`
     grid-column: 1;
   }
 
-  oryx-content-link::part(anchor) {
-    display: inline-block;
+  section:not(.products) oryx-content-link::part(anchor) {
     padding-block: 6px;
   }
 

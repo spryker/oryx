@@ -1,12 +1,13 @@
+import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AffixController } from '@spryker-oryx/ui/input';
-import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
+import { LitElement, ReactiveController, TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { getControl } from '../../../form/utilities';
 import {
+  CLOSE_EVENT,
   ClearIconAppearance,
   ClearIconPosition,
-  CLOSE_EVENT,
   OPEN_EVENT,
   SearchAttributes,
   SearchEventDetail,
@@ -46,13 +47,11 @@ export class SearchboxController implements ReactiveController {
   renderTrigger(): TemplateResult {
     return html`
       <slot name="trigger" @click=${() => this.onTriggerClick()}>
-        <oryx-icon-button>
-          <button title="search">
-            <slot name="trigger-icon"
-              ><oryx-icon .type=${IconTypes.Search}></oryx-icon
-            ></slot>
-          </button>
-        </oryx-icon-button>
+        <oryx-button
+          .type=${ButtonType.Icon}
+          .color=${ButtonColor.Neutral}
+          .icon=${IconTypes.Search}
+        ></oryx-button>
       </slot>
     `;
   }

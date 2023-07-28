@@ -3,7 +3,6 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { ButtonComponent } from '@spryker-oryx/ui/button';
-import { IconComponent } from '@spryker-oryx/ui/icon';
 import {
   Address,
   AddressService,
@@ -174,16 +173,17 @@ describe('UserAddressListItemComponent', () => {
     });
 
     it('should render an edit button inside the control menu', () => {
-      const icon = element.renderRoot.querySelector<IconComponent>(
-        '.controls oryx-icon-button oryx-icon'
-      );
-      expect(icon?.type).toBe('edit');
+      expect(
+        element.renderRoot.querySelector<ButtonComponent>(
+          '.controls oryx-button'
+        )
+      ).toHaveProperty('icon', 'edit');
     });
 
     describe('and the edit button is clicked', () => {
       beforeEach(() => {
         element.renderRoot
-          .querySelector<ButtonComponent>('.controls oryx-icon-button button')
+          .querySelector<HTMLElement>('.controls oryx-button')
           ?.click();
       });
 

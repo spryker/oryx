@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonComponent } from '@spryker-oryx/ui/button';
 import {
   Address,
   AddressService,
@@ -39,13 +40,14 @@ class MockAddressStateService implements Partial<AddressStateService> {
   get = vi.fn().mockReturnValue(mockState);
   clear = vi.fn();
 }
-class MockSemanticLinkService implements Partial<LinkService> {
+class MockLinkService implements Partial<LinkService> {
   get = vi.fn();
 }
 
 describe('UserAddressAddButtonComponent', () => {
   let element: UserAddressAddButtonComponent;
   let addressStateService: MockAddressStateService;
+  let linkService: MockLinkService;
 
   beforeAll(async () => {
     await useComponent(userAddressAddButtonComponent);
@@ -68,13 +70,14 @@ describe('UserAddressAddButtonComponent', () => {
         },
         {
           provide: LinkService,
-          useClass: MockSemanticLinkService,
+          useClass: MockLinkService,
         },
       ],
     });
 
     addressStateService =
       testInjector.inject<MockAddressStateService>(AddressStateService);
+    linkService = testInjector.inject<MockLinkService>(LinkService);
   });
 
   afterEach(() => {
@@ -100,6 +103,7 @@ describe('UserAddressAddButtonComponent', () => {
 
   describe('when the target option is set to link', () => {
     beforeEach(async () => {
+      linkService.get.mockReturnValue(of('/address-book'));
       element = await fixture(
         html`<oryx-user-address-add-button
           .options=${{ target: Target.Link } as UserAddressAddButtonOptions}
@@ -108,16 +112,15 @@ describe('UserAddressAddButtonComponent', () => {
     });
 
     it('should render an anchor link', () => {
-      expect(element).toContainElement('a');
-    });
-
-    it('should not render a button', () => {
-      expect(element).not.toContainElement('button');
+      const button = element.renderRoot.querySelector(
+        'oryx-button'
+      ) as ButtonComponent;
+      expect(button.href).toBe('/address-book');
     });
 
     describe('and the click event is dispatched on the button', () => {
       beforeEach(() => {
-        element.renderRoot.querySelector('a')?.click();
+        element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
       });
 
       it('should set the state to Create', () => {
@@ -138,17 +141,13 @@ describe('UserAddressAddButtonComponent', () => {
       );
     });
 
-    it('should not render an anchor link', () => {
-      expect(element).not.toContainElement('a');
-    });
-
     it('should render a button', () => {
-      expect(element).toContainElement('button');
+      expect(element).toContainElement('oryx-button');
     });
 
     describe('and the click event is dispatched on the button', () => {
       beforeEach(() => {
-        element.renderRoot.querySelector('button')?.click();
+        element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
       });
 
       it('should set the state to Create', () => {
@@ -174,12 +173,12 @@ describe('UserAddressAddButtonComponent', () => {
     });
 
     it('should render a button', () => {
-      expect(element).toContainElement('button');
+      expect(element).toContainElement('oryx-button');
     });
 
     describe('and the click event is dispatched on the button', () => {
       beforeEach(() => {
-        element.renderRoot.querySelector('button')?.click();
+        element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
       });
 
       it('should set the state to Create', () => {
