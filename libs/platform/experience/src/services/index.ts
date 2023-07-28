@@ -1,5 +1,6 @@
 export * from './data-client';
 export * from './experience';
+export * from './experience-data';
 export * from './experience-tokens';
 export * from './experience.providers';
 export * from './layout';

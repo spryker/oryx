@@ -15,6 +15,10 @@ import {
   ExperienceService,
   PreviewExperienceService,
 } from './experience';
+import {
+  DefaultExperienceDataService,
+  ExperienceDataService,
+} from './experience-data';
 import { ContentBackendUrl } from './experience-tokens';
 import {
   DefaultLayoutBuilder,
@@ -64,6 +68,10 @@ export const experienceProviders: Provider[] = [
   {
     provide: PageMetaResolver,
     useClass: ContentPageMetaResolver,
+  },
+  {
+    provide: ExperienceDataService,
+    useClass: DefaultExperienceDataService,
   },
 ];
 

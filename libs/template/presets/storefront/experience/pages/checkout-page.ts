@@ -1,7 +1,8 @@
 import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const checkoutPage: StaticComponent = {
+export const checkoutPage: ExperienceComponent = {
+  id: 'checkout-page',
   type: 'Page',
   meta: {
     title: 'Checkout Page',
@@ -18,10 +19,12 @@ export const checkoutPage: StaticComponent = {
     {
       type: 'oryx-content-text',
       content: {
-        text: `
+        data: {
+          text: `
           <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
           <p>Your shopping cart is empty</p><oryx-button>
           <a href="/search">Shop now</a></oryx-button>`,
+        },
       },
       options: {
         rules: [
@@ -40,6 +43,7 @@ export const checkoutPage: StaticComponent = {
     },
     {
       type: 'oryx-composition',
+      id: 'checkout-information',
       components: [
         {
           type: 'oryx-checkout-orchestrator',
@@ -66,6 +70,7 @@ export const checkoutPage: StaticComponent = {
     },
     {
       type: 'oryx-composition',
+      id: 'checkout-totals',
       options: {
         rules: [{ hideByRule: 'CART.EMPTY' }, { sticky: true, top: '108px' }],
       },
@@ -88,7 +93,9 @@ export const checkoutPage: StaticComponent = {
         {
           type: 'oryx-content-text',
           content: {
-            text: '<p>The <a href="/article/terms-and-conditions" target="_blank" data-color="primary">Terms and conditions</a> apply.<br/>Please also see our <a href="/article/privacy" target="_blank"  data-color="primary">Privacy notice</a>.</p>',
+            data: {
+              text: '<p>The <a href="/article/terms-and-conditions" target="_blank" data-color="primary">Terms and conditions</a> apply.<br/>Please also see our <a href="/article/privacy" target="_blank"  data-color="primary">Privacy notice</a>.</p>',
+            },
           },
         },
         { type: 'oryx-checkout-place-order' },

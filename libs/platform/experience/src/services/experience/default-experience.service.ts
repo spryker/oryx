@@ -10,58 +10,51 @@ import {
   throwError,
 } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { ExperienceComponent, ExperienceDataService } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 import { Component } from './models';
-import { ExperienceStaticData, StaticComponent } from './static-data';
 
 type DataStore<T = unknown> = Record<string, ReplaySubject<T>>;
 
 export class DefaultExperienceService implements ExperienceService {
-  protected autoComponentId = 0;
   protected dataRoutes: DataStore<string> = {};
   protected dataComponent: DataStore<Component> = {};
   protected dataContent: DataStore = {};
   protected dataOptions: DataStore = {};
+  protected experienceData: ExperienceComponent[] = [];
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
-    protected staticData = inject(ExperienceStaticData, []).flat()
+    protected experienceDataService = inject(ExperienceDataService)
   ) {
-    this.initStaticData();
+    this.initExperienceData();
   }
 
-  protected initStaticData(): void {
-    this.staticData = this.processStaticData();
-  }
-
-  protected processStaticData(shouldStore = true): Component[] {
-    return this.staticData.map((component) => {
-      this.processComponent(component, shouldStore);
-
-      if (shouldStore) {
-        this.storeData('dataRoutes', component.meta?.route, component.id);
-      }
-      return component as Component;
-    });
+  protected initExperienceData(): void {
+    this.experienceData = this.experienceDataService.getData((c) =>
+      this.processData(c)
+    );
   }
 
   protected processComponent(
-    _component: Component | StaticComponent,
-    shouldStore = true
+    _component: Component | ExperienceComponent
   ): void {
     const components = [_component];
 
     for (const component of components) {
-      component.id ??= this.getAutoId();
-
-      if (shouldStore) {
-        this.storeData('dataComponent', component.id, component);
-      }
-
+      this.processData(component);
       components.push(...(component.components ?? []));
     }
+  }
+
+  protected processData(component: Component | ExperienceComponent): void {
+    if (component.meta?.route) {
+      this.storeData('dataRoutes', component.meta.route, component.id);
+    }
+
+    this.storeData('dataComponent', component.id, component);
   }
 
   protected storeData(
@@ -150,7 +143,6 @@ export class DefaultExperienceService implements ExperienceService {
           }
           const component = components[0];
           this.processComponent(component);
-          this.storeData('dataRoutes', route, component.id);
         })
       )
       .subscribe();
@@ -193,9 +185,5 @@ export class DefaultExperienceService implements ExperienceService {
         const options = component?.options ?? {};
         this.dataOptions[uid].next(options);
       });
-  }
-
-  protected getAutoId(): string {
-    return `static${this.autoComponentId++}`;
   }
 }

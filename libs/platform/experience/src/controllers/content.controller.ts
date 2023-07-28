@@ -35,7 +35,9 @@ export class ContentController<T = unknown, K = unknown> {
         return this.observe.get('uid').pipe(
           switchMap((uid) =>
             uid && this.experienceContent
-              ? this.experienceContent.getContent<T>({ uid })
+              ? this.experienceContent
+                  .getContent<{ data: T }>({ uid })
+                  .pipe(map((component) => component?.data))
               : of(undefined)
           ),
           shareReplay({ bufferSize: 1, refCount: true })

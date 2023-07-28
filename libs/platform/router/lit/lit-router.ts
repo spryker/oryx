@@ -178,14 +178,9 @@ export class LitRouter implements ReactiveController {
         .map((registry) => registry.routes)
         .flat(),
       ...routes,
-    ].sort((a) => {
+    ]
       // moves 404 page to the end in order not to break new provided routes
-      if ((a as PathRouteConfig).path === '/*') {
-        return 0;
-      }
-
-      return -1;
-    });
+      .sort((a) => ((a as PathRouteConfig).path === '/*' ? 0 : -1));
 
     const baseRoute = resolve(BASE_ROUTE, null);
     if (baseRoute) {

@@ -13,7 +13,9 @@ const mockElement = {
 } as unknown as LitElement;
 const mockUid = 'mockUid';
 const mockContent = {
-  mockContent: 'mockContent',
+  data: {
+    mockContent: 'mockContent',
+  },
 };
 const mockOptions = {
   mockOptions: 'mockOptions',
@@ -94,7 +96,7 @@ describe('ContentController', () => {
       expect(mockExperienceService.getContent).toHaveBeenCalledWith({
         uid: mockUid,
       });
-      expect(callback).toHaveBeenCalledWith(mockContent);
+      expect(callback).toHaveBeenCalledWith(mockContent.data);
     });
 
     it('should emit `undefined` if content, uid and ExperienceService are not defined', () => {
