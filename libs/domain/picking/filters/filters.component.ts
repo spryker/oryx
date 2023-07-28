@@ -92,7 +92,7 @@ export class FiltersComponent extends I18nMixin(LitElement) {
 
         <oryx-button
           slot="navigate-back"
-          .color=${ButtonColor.Neutral}
+          .color=${ButtonColor.Primary}
           .type=${ButtonType.Text}
           .text=${this.i18n('picking.filter.reset')}
         ></oryx-button>
