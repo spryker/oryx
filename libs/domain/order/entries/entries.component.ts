@@ -2,7 +2,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { OrderMixin } from '@spryker-oryx/order';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { computed, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { OrderEntriesAttributes, OrderEntriesOptions } from './entries.model';
@@ -28,7 +28,7 @@ export class OrderEntriesComponent
     const order = this.$order();
     const { limit = 0, threshold = 0 } = this.$options();
 
-    return limit && order.items.length > limit + threshold;
+    return limit && order?.items.length > limit + threshold;
   });
 
   protected override render(): TemplateResult | void {
