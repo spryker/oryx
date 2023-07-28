@@ -263,6 +263,8 @@ export class LitRouter implements ReactiveController {
    * pattern with a tail wildcard pattern (`/*`).
    */
   async _goto(pathname: string): Promise<void> {
+    console.log(this.routes);
+    
     if (
       this.baseRoute &&
       (!pathname.startsWith(this.baseRoute) || pathname === this.baseRoute)
@@ -387,6 +389,8 @@ export class LitRouter implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): TemplateResult {
+    console.log(this._currentRoute);
+    
     if (this._currentRoute?.render) {
       return html`<outlet
         >${this._currentRoute?.render?.(this._currentParams)}</outlet
