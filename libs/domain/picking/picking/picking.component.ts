@@ -10,11 +10,11 @@ import {
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { ChipComponent } from '@spryker-oryx/ui/chip';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { TabsAppearance } from '@spryker-oryx/ui/tabs';
-import { I18nMixin, computed, subscribe } from '@spryker-oryx/utilities';
+import { I18nMixin, computed } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -291,11 +291,12 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
         })}"
       >
         <div>
-          <oryx-button type=${ButtonType.Primary} outline>
-            <button @click=${this.finishPicking}>
-              ${this.i18n('picking.finish-picking')}
-            </button>
-          </oryx-button>
+          <oryx-button
+            .type=${ButtonType.Outline}
+            .color=${ButtonColor.Primary}
+            .text=${this.i18n('picking.finish-picking')}
+            @click=${this.finishPicking}
+          ></oryx-button>
         </div>
       </div>
     `;
@@ -327,17 +328,20 @@ export class PickingComponent extends I18nMixin(PickingListMixin(LitElement)) {
           )}
         </span>
 
-        <oryx-button slot="footer" outline type="${ButtonType.Secondary}">
-          <button @click=${this.onModalClose}>
-            ${this.i18n('picking.product-card.cancel')}
-          </button>
-        </oryx-button>
+        <oryx-button
+          slot="footer"
+          .type=${ButtonType.Outline}
+          .color=${ButtonColor.Neutral}
+          .text=${this.i18n('picking.product-card.cancel')}
+          @click=${this.onModalClose}
+        ></oryx-button>
 
-        <oryx-button slot="footer" type="${ButtonType.Primary}">
-          <button @click=${this.confirmPartialPicking}>
-            ${this.i18n('picking.product-card.confirm')}
-          </button>
-        </oryx-button>
+        <oryx-button
+          slot="footer"
+          .color=${ButtonColor.Primary}
+          .text=${this.i18n('picking.product-card.confirm')}
+          @click=${this.confirmPartialPicking}
+        ></oryx-button>
       </oryx-modal>
     `;
   }

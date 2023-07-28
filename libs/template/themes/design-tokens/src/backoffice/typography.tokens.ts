@@ -10,6 +10,7 @@ export const typographyTokens: ThemeToken = {
       weight: '400',
     },
     caption: { size: '0.8571428571rem', line: '1.3333333333em', weight: '600' },
+    bold: { size: '1rem', weight: '600', line: '1.5714285714rem' },
   },
 };
 

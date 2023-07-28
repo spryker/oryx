@@ -5,5 +5,5 @@ export class PickingHeaderFragment {
     this.getWrapper().find('button[aria-label="Customer note"]');
   getUserIcon = () => this.getWrapper().find('oryx-site-navigation-item');
   getPickingListsTitle = () => this.getWrapper().find('.title');
-  getBackButton = () => this.getWrapper().find('oryx-icon-button').eq(0);
+  getBackButton = () => this.getWrapper().find('oryx-button').eq(0);
 }

@@ -1,7 +1,7 @@
 import { AlertType } from '@spryker-oryx/ui';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import {
   CLOSE_EVENT,
@@ -55,11 +55,14 @@ export class NotificationComponent
   protected renderCloseButton(): TemplateResult | void {
     if (!this.closable) return;
 
-    return html`<oryx-icon-button size=${Size.Sm}>
-      <button aria-label=${this.closeButtonAriaLabel} @click=${this.onClose}>
-        <oryx-icon .type=${IconTypes.Close}></oryx-icon>
-      </button>
-    </oryx-icon-button>`;
+    return html`<oryx-button
+      .type=${ButtonType.Icon}
+      .color=${ButtonColor.Neutral}
+      .size=${ButtonSize.Sm}
+      .label=${this.closeButtonAriaLabel}
+      .icon=${IconTypes.Close}
+      @click=${this.onClose}
+    ></oryx-button>`;
   }
 
   protected onClose(): void {

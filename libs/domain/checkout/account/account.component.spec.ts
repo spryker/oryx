@@ -4,6 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { FormRenderer } from '@spryker-oryx/form';
 import { RouterService } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { User, UserService } from '@spryker-oryx/user';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -176,9 +177,10 @@ describe('CheckoutAccountComponent', () => {
       });
 
       it('should render a link to login page', () => {
-        expect(element).toContainElement(
-          `oryx-checkout-header a[href='/login']`
-        );
+        const button = element.renderRoot.querySelector(
+          'oryx-checkout-header oryx-button'
+        ) as ButtonComponent;
+        expect(button.href).toBe('/login');
       });
 
       describe('and the form data is changed', () => {

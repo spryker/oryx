@@ -111,6 +111,7 @@ const listStyles = css`
   :host([template='list']) oryx-cart-add {
     grid-column: 3;
     grid-row: 1 / span 2;
+    align-items: center;
   }
 
   :host([template='list']) oryx-product-title {

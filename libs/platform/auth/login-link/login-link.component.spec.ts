@@ -23,9 +23,7 @@ describe('LoginLinkComponent', () => {
   let routerService: MockRouterService;
 
   const clickButton = (): void => {
-    element.renderRoot
-      .querySelector('button')
-      ?.dispatchEvent(new MouseEvent('click'));
+    element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
   };
 
   beforeAll(async () => {
@@ -68,9 +66,8 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render login title', () => {
-      expect(element.renderRoot.querySelector('button')?.textContent).toContain(
-        i18n('auth.login')
-      );
+      const button = element.renderRoot.querySelector('oryx-button');
+      expect(button).toHaveProperty('text', i18n('auth.login'));
     });
 
     describe('and button is clicked', () => {
@@ -97,9 +94,8 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render logout title', () => {
-      expect(element.renderRoot.querySelector('button')?.textContent).toContain(
-        i18n('auth.logout')
-      );
+      const button = element.renderRoot.querySelector('oryx-button');
+      expect(button).toHaveProperty('text', i18n('auth.logout'));
     });
 
     describe('and logout is not enabled', () => {

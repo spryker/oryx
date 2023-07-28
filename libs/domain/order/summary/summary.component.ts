@@ -1,6 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { OrderMixin } from '@spryker-oryx/order';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Address } from '@spryker-oryx/user';
@@ -40,12 +41,12 @@ export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
           html`${this.$createdAt()}`
         )}
       </section>
-      <oryx-button outline>
-        <button @click=${this.print}>
-          <oryx-icon .type=${IconTypes.Printer}></oryx-icon>
-          ${this.i18n('order.summary.print-receipt')}
-        </button>
-      </oryx-button>
+      <oryx-button
+        .type=${ButtonType.Outline}
+        .text=${this.i18n('order.summary.print-receipt')}
+        .icon=${IconTypes.Printer}
+        @click=${this.onPrint}
+      ></oryx-button>
       <hr />`;
   }
 
@@ -110,7 +111,7 @@ export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
     `;
   }
 
-  protected print(): void {
+  protected onPrint(): void {
     window.print();
   }
 }

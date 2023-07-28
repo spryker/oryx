@@ -1,5 +1,6 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { OrderMixin } from '@spryker-oryx/order';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
@@ -71,15 +72,18 @@ export class OrderEntriesComponent
   protected renderButton(): TemplateResult | void {
     if (!this.$isLimited()) return;
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const restItemsCount = this.$order().items.length - this.$options().limit!;
 
-    return html`<oryx-button type="text">
-      <button @click=${this.toggle}>
-        ${this.expanded ? '-' : '+'}${restItemsCount}
-        ${this.i18n(
-          this.expanded ? 'order.less-products' : 'order.more-products'
-        )}
-      </button>
+    const i18nToken = this.expanded
+      ? 'order.products.less-than-<count>'
+      : 'order.products.more-than-<count>';
+
+    return html`<oryx-button
+      .type=${ButtonType.Text}
+      .text=${this.i18n(i18nToken, { count: restItemsCount })}
+      @click=${this.toggle}
+    >
     </oryx-button>`;
   }
 

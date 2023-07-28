@@ -54,10 +54,7 @@ describe('PickingInProgressModalComponent', () => {
       });
 
       it('should close modal when close button is clicked', async () => {
-        const closeButton: HTMLButtonElement | null =
-          element.renderRoot?.querySelector('button') ?? null;
-        closeButton?.click();
-
+        element.renderRoot?.querySelector<HTMLElement>('oryx-button')?.click();
         await element.updateComplete;
 
         expect(

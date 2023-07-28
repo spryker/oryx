@@ -8,7 +8,7 @@ export const preventPropagatingFix = async (
     e.stopPropagation();
   };
   host.shadowRoot
-    ?.querySelectorAll('oryx-cart-add, oryx-icon-button')
+    ?.querySelectorAll('oryx-cart-add, oryx-button')
     .forEach((element) => {
       element.addEventListener('click', preventPropagating);
     });

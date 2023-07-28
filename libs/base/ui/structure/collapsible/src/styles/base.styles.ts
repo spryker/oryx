@@ -48,21 +48,14 @@ export const collapsibleBaseStyle = css`
     display: none;
   }
 
-  oryx-icon-button {
-    transition-duration: var(--oryx-transition-time-medium);
-    transition-property: transform;
-  }
-
-  :is(oryx-icon-button, oryx-button) {
+  oryx-button {
     display: flex;
     align-items: center;
     color: var(--oryx-color-neutral-11);
   }
 
-  :host(:not(${inlineSelector})) :is(oryx-icon-button, oryx-button) {
+  :host(:not(${inlineSelector})) oryx-button {
     margin-inline-start: auto;
-
-    /* we do not like to leverage standard UI of icon-button on the block appearance */
     pointer-events: none;
   }
 
@@ -71,17 +64,12 @@ export const collapsibleBaseStyle = css`
     display: none;
   }
 
-  /** only apply pointer events at the icon button for inline appearance */
   :host(${inlineSelector}) summary {
     pointer-events: none;
   }
 
-  :host(${inlineSelector}) :is(oryx-icon-button, oryx-button) {
+  :host(${inlineSelector}) oryx-button {
     pointer-events: all;
-  }
-
-  :host(${blockSelector}) oryx-icon-button > * {
-    padding: 2px;
   }
 
   slot[name='aside']::slotted(*) {

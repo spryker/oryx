@@ -66,7 +66,7 @@ describe('SearchFacetValueNavigationComponent', () => {
       );
 
       button = element.renderRoot.querySelector(
-        'slot:not([name]) + oryx-button button'
+        'slot:not([name]) + oryx-button'
       );
     });
 
@@ -85,7 +85,7 @@ describe('SearchFacetValueNavigationComponent', () => {
         );
 
         button = element.renderRoot.querySelector(
-          'slot:not([name]) + oryx-button button'
+          'slot:not([name]) + oryx-button'
         );
       });
 
@@ -108,7 +108,7 @@ describe('SearchFacetValueNavigationComponent', () => {
         );
 
         button = element.renderRoot.querySelector(
-          'slot:not([name]) + oryx-button button'
+          'slot:not([name]) + oryx-button'
         );
         button?.dispatchEvent(new MouseEvent('click'));
       });
@@ -177,8 +177,8 @@ describe('SearchFacetValueNavigationComponent', () => {
       describe('and clear button is clicked', () => {
         beforeEach(() => {
           element.renderRoot
-            .querySelector('section oryx-button button')
-            ?.dispatchEvent(new MouseEvent('click'));
+            .querySelector<HTMLElement>('section oryx-button')
+            ?.click();
         });
 
         it('should dispatch oryx.clear event', () => {

@@ -2,15 +2,12 @@ import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/site';
-import {
-  computed,
-  hydrate,
-  queryFirstFocusable,
-} from '@spryker-oryx/utilities';
+import { ButtonType } from '@spryker-oryx/ui/button';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { when } from 'lit/directives/when.js';
 import { html } from 'lit/static-html.js';
+import { of } from 'rxjs';
 import {
   NavigationContentBehavior,
   NavigationTriggerBehavior,
@@ -18,7 +15,6 @@ import {
   SiteNavigationItemOptions,
 } from './navigation-item.model';
 import { styles } from './navigation-item.styles';
-import { of } from 'rxjs';
 
 @defaultOptions({
   triggerType: NavigationTriggerType.StorefrontButton,
@@ -36,12 +32,12 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
 
   protected $label = computed(() => {
     const label = this.$options().label;
-    return label ? this.tokenResolver.resolveToken(label) : of(null);
+    return label ? this.tokenResolver.resolveToken(label) : of(undefined);
   });
 
   protected $badge = computed(() => {
     const badge = this.$options().badge;
-    return badge ? this.tokenResolver.resolveToken(badge) : of(null);
+    return badge ? this.tokenResolver.resolveToken(badge) : of(undefined);
   });
 
   protected $url = computed(() => {
@@ -65,12 +61,8 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     }
 
     //imitate mousedown behavior
-    const trigger = e.target as HTMLElement;
-    //focus focusable part of the trigger
-    (
-      (trigger.querySelector('a, button') ||
-        queryFirstFocusable(trigger)) as HTMLElement
-    )?.focus();
+    const trigger = e.target as LitElement;
+    trigger.focus();
     this.onTriggerClick();
   }
 
@@ -93,43 +85,17 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
     ></oryx-composition>`;
   }
 
-  protected get icon(): TemplateResult {
-    return html`${when(
-      this.$options().icon,
-      () => html`<oryx-icon type=${this.$options().icon!}></oryx-icon>`
-    )}`;
-  }
-
-  protected renderIconButton(): TemplateResult {
-    return html`
-      <oryx-icon-button
-        slot="trigger"
-        @click=${this.onTriggerClick}
-        @mouseenter=${this.onTriggerHover}
-      >
-        ${when(
-          this.$url(),
-          () => html`<a href=${this.$url()!}>${this.icon}</a>`,
-          () => html`<button>${this.icon}</button>`
-        )}
-      </oryx-icon-button>
-    `;
-  }
-
-  protected renderButton(): TemplateResult {
+  protected renderButton(type?: ButtonType): TemplateResult {
     return html`
       <oryx-button
         slot="trigger"
+        type=${ifDefined(type)}
+        text=${ifDefined(this.$label())}
+        href=${ifDefined(this.$url())}
+        icon=${ifDefined(this.$options().icon)}
         @click=${this.onTriggerClick}
         @mouseenter=${this.onTriggerHover}
-      >
-        ${when(
-          this.$url(),
-          () =>
-            html`<a href=${this.$url()!}> ${this.icon} ${this.$label()} </a>`,
-          () => html`<button>${this.icon} ${this.$label()}</button>`
-        )}
-      </oryx-button>
+      ></oryx-button>
     `;
   }
 
@@ -150,7 +116,7 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   protected renderTrigger(): TemplateResult {
     switch (this.$options().triggerType) {
       case NavigationTriggerType.Icon:
-        return this.renderIconButton();
+        return this.renderButton(ButtonType.Icon);
       case NavigationTriggerType.Button:
         return this.renderButton();
       case NavigationTriggerType.StorefrontButton:

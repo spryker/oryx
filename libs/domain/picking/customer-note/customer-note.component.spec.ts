@@ -83,9 +83,7 @@ describe('CustomerNoteComponent', () => {
 
   describe('when picking is proceed', () => {
     beforeEach(() => {
-      element.renderRoot
-        .querySelector('button')
-        ?.dispatchEvent(new MouseEvent('click'));
+      element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
     });
 
     it('should start picking with current picking list', () => {
@@ -113,9 +111,7 @@ describe('CustomerNoteComponent', () => {
           html`<oryx-customer-note pickingListId="id"></oryx-customer-note>`
         );
 
-        element.renderRoot
-          .querySelector('button')
-          ?.dispatchEvent(new MouseEvent('click'));
+        element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
       });
 
       it('should not navigate route', () => {
@@ -148,7 +144,7 @@ describe('CustomerNoteComponent', () => {
       describe('and back to pick lists button is clicked', () => {
         beforeEach(() => {
           getPickingInProgressModal()
-            .shadowRoot?.querySelector('button')
+            .shadowRoot?.querySelector<HTMLElement>('oryx-button')
             ?.click();
         });
 

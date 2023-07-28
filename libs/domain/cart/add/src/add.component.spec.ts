@@ -9,6 +9,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { Product, ProductService } from '@spryker-oryx/product';
 import { PricingService } from '@spryker-oryx/site';
 import { buttonComponent } from '@spryker-oryx/ui';
+import { ButtonComponent, ButtonType } from '@spryker-oryx/ui/button';
 import { useComponent, wait } from '@spryker-oryx/utilities';
 import { BehaviorSubject, delay, of } from 'rxjs';
 import { CartAddComponent } from './add.component';
@@ -123,7 +124,10 @@ describe('CartAddComponent', () => {
     });
 
     it('should enable the button', () => {
-      expect(element).toContainElement('button:not([disabled])');
+      const button = element.renderRoot.querySelector(
+        'oryx-button'
+      ) as ButtonComponent;
+      expect(button.disabled).toBeUndefined();
     });
 
     it('should have a max quantity of 10', () => {
@@ -146,7 +150,7 @@ describe('CartAddComponent', () => {
       });
 
       it('should disable the button', () => {
-        expect(element).toContainElement('button[disabled]');
+        expect(element).toContainElement('oryx-button[disabled]');
       });
     });
   });
@@ -160,7 +164,10 @@ describe('CartAddComponent', () => {
     });
 
     it('should disable the button', () => {
-      expect(element).toContainElement('button[disabled]');
+      const button = element.renderRoot.querySelector(
+        'oryx-button'
+      ) as ButtonComponent;
+      expect(button).toHaveProperty('disabled');
     });
 
     it('should have max quantity of 0', () => {
@@ -183,7 +190,9 @@ describe('CartAddComponent', () => {
     });
 
     it('should enable the button', () => {
-      expect(element).toContainElement('button:not([disabled])');
+      const button =
+        element.renderRoot.querySelector<ButtonComponent>('oryx-button');
+      expect(button?.disabled).toBeUndefined();
     });
 
     it('should have an infinite max quantity', () => {
@@ -228,8 +237,9 @@ describe('CartAddComponent', () => {
 
       describe('when the item is added successfully to cart', () => {
         beforeEach(() => {
-          const button = element.shadowRoot?.querySelector('button');
-          button?.click();
+          element.shadowRoot
+            ?.querySelector<HTMLElement>('oryx-button')
+            ?.click();
         });
 
         it('should call "addEntry" cart service method', () => {
@@ -245,7 +255,8 @@ describe('CartAddComponent', () => {
           });
 
           it('should have the oryx-button in confirmed state', () => {
-            expect(element).toContainElement('oryx-button[confirmed]');
+            const button = element.renderRoot.querySelector('oryx-button');
+            expect(button).toHaveProperty('confirmed');
           });
 
           describe('and when 800ms passed', () => {
@@ -315,7 +326,7 @@ describe('CartAddComponent', () => {
 
       describe('and when the cart becomes busy', () => {
         beforeEach(() => {
-          element.renderRoot.querySelector('button')?.click();
+          element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
         });
 
         it('should change the oryx-button in loading state', () => {
@@ -346,8 +357,9 @@ describe('CartAddComponent', () => {
 
       describe('and when the item is added to cart', () => {
         beforeEach(() => {
-          const button = element.shadowRoot?.querySelector('button');
-          button?.click();
+          element.shadowRoot
+            ?.querySelector<HTMLElement>('oryx-button')
+            ?.click();
         });
 
         it('should call "addEntry" cart service method', () => {
@@ -408,7 +420,7 @@ describe('CartAddComponent', () => {
 
     it('should set "outline" attribute to the button', async () => {
       const button = element.renderRoot.querySelector('oryx-button');
-      expect(button?.hasAttribute('outline')).toBe(true);
+      expect(button).toHaveProperty('type', ButtonType.Outline);
     });
   });
 
@@ -432,8 +444,9 @@ describe('CartAddComponent', () => {
 
       describe('and the item is added to cart', () => {
         beforeEach(() => {
-          const button = element.shadowRoot?.querySelector('button');
-          button?.click();
+          element.shadowRoot
+            ?.querySelector<HTMLElement>('oryx-button')
+            ?.click();
         });
 
         it('should call "addEntry" cart service method', () => {

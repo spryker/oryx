@@ -2,16 +2,12 @@ import { css } from 'lit';
 import { blockSelector, inlineSelector } from '../base.styles';
 
 const inlineAppearance = css`
-  :host(${inlineSelector}) :is(oryx-icon-button, oryx-button) {
+  :host(${inlineSelector}) oryx-button {
     transition-duration: 0.6s;
     transition-property: transform;
   }
 
-  :host(${inlineSelector}) details[open] oryx-icon-button {
-    transform: rotate(-180deg);
-  }
-
-  :host(${inlineSelector}) details[open] oryx-icon-button oryx-icon {
+  :host(${inlineSelector}) details[open] oryx-button {
     transform: rotate(-180deg);
   }
 `;
@@ -24,6 +20,10 @@ const blockAppearance = css`
 
   :host(${blockSelector}) :is(summary, summary + *) {
     padding-inline: 20px;
+  }
+
+  :host(${blockSelector}) oryx-button {
+    margin-inline-end: -7px;
   }
 
   :host(${blockSelector}) slot[name='side-dish']::slotted(*) {
@@ -50,10 +50,9 @@ const blockAppearance = css`
     box-shadow: var(--oryx-box-shadow-focus);
   }
 
-  :host(${blockSelector}) oryx-icon-button {
-    color: var(--oryx-color-ink);
-    position: relative;
-    inset-inline-start: 8px;
+  oryx-button {
+    transition-duration: var(--oryx-transition-time-medium);
+    transition-property: transform;
   }
 
   :host(${blockSelector}) slot[name='header'] {

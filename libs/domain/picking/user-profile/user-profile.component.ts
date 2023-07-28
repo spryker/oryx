@@ -1,26 +1,27 @@
 import { AuthService } from '@spryker-oryx/auth';
 import { AppRef, StorageService } from '@spryker-oryx/core';
-import { inject, INJECTOR, resolve } from '@spryker-oryx/di';
+import { INJECTOR, resolve } from '@spryker-oryx/di';
 import { SyncSchedulerService } from '@spryker-oryx/offline';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import { RouterService } from '@spryker-oryx/router';
+import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
 import {
-  computed,
   ConnectableSignal,
   I18nMixin,
+  computed,
   signal,
   signalAware,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs';
-import { userProfileComponentStyles } from './user-profile.styles';
 import {
   WarehouseUserAssignment,
   warehouseUserAssignmentStorageKey,
 } from '../src/models/warehouse-user-assignment';
+import { userProfileComponentStyles } from './user-profile.styles';
 
 @signalAware()
 export class UserProfileComponent extends I18nMixin(LitElement) {
@@ -86,24 +87,30 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
       )}
 
       <div class="info-footer">
-        <oryx-button ?loading=${this.logoutLoading} type="secondary" outline>
-          <button
-            ?disabled="${this.$isPicking() || this.$pendingSyncs()}"
-            @click=${this.onLogOut}
-          >
-            ${this.i18n('user.profile.log-Out')}
-          </button>
-        </oryx-button>
+        <oryx-button
+          class="logout-button"
+          .type=${ButtonType.Outline}
+          .color=${ButtonColor.Neutral}
+          .text=${this.i18n('user.profile.log-out')}
+          block
+          ?loading=${this.logoutLoading}
+          ?disabled=${this.$isPicking() || this.$pendingSyncs()}
+          @click=${this.onLogOut}
+        ></oryx-button>
 
         ${when(
           this.$isMainPage(),
           () =>
             html`
-              <oryx-button ?loading=${this.loading} type="secondary" outline>
-                <button @click=${this.onReceiveData}>
-                  ${this.i18n('user.profile.receive-Data')}
-                </button>
-              </oryx-button>
+              <oryx-button
+                class="receive-data"
+                .type=${ButtonType.Outline}
+                .color=${ButtonColor.Neutral}
+                .text=${this.i18n('user.profile.receive-data')}
+                block
+                ?loading=${this.loading}
+                @click=${this.onReceiveData}
+              ></oryx-button>
             `
         )}
       </div>

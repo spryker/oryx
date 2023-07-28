@@ -1,14 +1,15 @@
+import { AppRef } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
 import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking';
+import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import { RouterService } from '@spryker-oryx/router';
-import { i18n, signal, signalAware, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { ButtonSize } from '@spryker-oryx/ui/button';
+import { i18n, signal, signalAware } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { switchMap, tap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { styles } from './warehouse-assignment.styles';
-import { AppRef } from '@spryker-oryx/core';
-import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 
 @signalAware()
 export class WarehouseAssignmentComponent extends LitElement {
@@ -86,11 +87,11 @@ export class WarehouseAssignmentComponent extends LitElement {
               <h3>${item.warehouse.name}</h3>
             </oryx-heading>
 
-            <oryx-button size=${Size.Sm}>
-              <button @click=${() => this.onSelect(item.id)}>
-                ${i18n('picking.select')}
-              </button>
-            </oryx-button>
+            <oryx-button
+              .size=${ButtonSize.Sm}
+              .text=${i18n('picking.select')}
+              @click=${() => this.onSelect(item.id)}
+            ></oryx-button>
             <hr />
           `
         )}

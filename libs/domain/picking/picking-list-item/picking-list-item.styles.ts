@@ -39,11 +39,11 @@ export const pickingListItemComponentStyles = css`
     width: 100%;
   }
 
-  oryx-icon-button {
+  .show-customer {
     margin-inline-start: auto;
   }
 
-  oryx-button {
+  .start-picking {
     margin-block: 0;
     width: 100%;
   }

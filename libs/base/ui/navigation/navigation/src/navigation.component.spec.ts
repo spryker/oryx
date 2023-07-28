@@ -1,4 +1,3 @@
-import { getShadowElementBySelector } from '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
 import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
 import { navigationComponent } from './component';
@@ -31,8 +30,8 @@ describe('NavigationComponent', () => {
       });
 
       it('should apply custom aria label', () => {
-        const button = getShadowElementBySelector(element, 'button');
-        expect(button?.getAttribute('aria-label')).toBe(toggleButtonAriaLabel);
+        const button = element.renderRoot.querySelector('oryx-button');
+        expect(button).toHaveProperty('label', toggleButtonAriaLabel);
       });
     });
 
@@ -46,8 +45,8 @@ describe('NavigationComponent', () => {
       });
 
       it('should apply default aria label', () => {
-        const button = getShadowElementBySelector(element, 'button');
-        expect(button?.getAttribute('aria-label')).toBe('collapse navigation');
+        const button = element.renderRoot.querySelector('oryx-button');
+        expect(button).toHaveProperty('label', 'collapse navigation');
       });
 
       it('should have a collapsed attribute', () => {
@@ -59,7 +58,7 @@ describe('NavigationComponent', () => {
       describe('when the collapse button is clicked first time', () => {
         beforeEach(async () => {
           element = await fixture(html`<oryx-navigation> </oryx-navigation>`);
-          getShadowElementBySelector(element, 'button')?.click();
+          element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
         });
 
         it('passes the a11y audit', async () => {
@@ -74,7 +73,8 @@ describe('NavigationComponent', () => {
       describe('when the collapse button is clicked second time', () => {
         beforeEach(async () => {
           element = await fixture(html`<oryx-navigation> </oryx-navigation>`);
-          const button = getShadowElementBySelector(element, 'button');
+          const button =
+            element.renderRoot.querySelector<HTMLElement>('oryx-button');
           button?.click();
           button?.click();
         });

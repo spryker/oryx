@@ -1,9 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
+import { ButtonSize } from '@spryker-oryx/ui/button';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
-import { hydrate, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { hydrate } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { EmptyError, firstValueFrom } from 'rxjs';
@@ -115,8 +116,8 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
 
         ${this.renderLoginOptions()}
 
-        <oryx-button size=${Size.Sm} ?loading=${this.isLoading}>
-          <button ?disabled=${this.isLoading}>
+        <oryx-button .size=${ButtonSize.Md} ?loading=${this.isLoading}>
+          <button slot="custom" ?disabled=${this.isLoading}>
             ${this.i18n('user.log-in')}
           </button>
         </oryx-button>
