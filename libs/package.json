@@ -19,7 +19,7 @@
     "release-patch": "lerna publish patch --yes",
     "release-minor": "lerna publish minor --yes",
     "release-rc": "lerna publish --conventional-prerelease --dist-tag=rc --preid=rc --yes",
-    "prerelease-labs": "node ../tools/utils/multi-copy.js ../../LICENSE '../dist/libs/template/labs/*'",
+    "prerelease-labs": "node ../tools/utils/multi-copy.js ../LICENSE '../dist/libs/template/labs/*'",
     "release-labs": "node ../tools/release/release-labs.js",
     "release-from-tag": "npm run release -- --conventional-graduate",
     "release-tag": "npm run release -- --conventional-prerelease --dist-tag $RELEASE_TAG --preid $RELEASE_TAG",
@@ -28,7 +28,7 @@
     "pack": "run-s pack:*",
     "prepack:libs": "npm run clean:dist",
     "pack:libs": "lerna exec --concurrency 1 --stream -- node \\$LERNA_ROOT_PATH/../tools/release/pack-lib.js",
-    "pack:files": "node ../tools/utils/multi-copy.js ../../LICENSE '../dist/libs/*/*/*'",
+    "pack:files": "node ../tools/utils/multi-copy.js ../LICENSE '../dist/libs/*/*/*'",
     "postversion": "lerna exec --concurrency 1 --stream -- node \\$LERNA_ROOT_PATH/../tools/release/update-lib.js",
     "clean:dist": "rm -rf */dist"
   }
