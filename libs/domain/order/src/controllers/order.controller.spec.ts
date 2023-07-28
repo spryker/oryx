@@ -84,6 +84,7 @@ describe('OrderController', () => {
 
   describe('when getOrder is called', () => {
     const callback = vi.fn();
+
     describe('and user is anonymous', () => {
       beforeEach(() => {
         const orderController = new OrderController(mockThis);
@@ -102,6 +103,7 @@ describe('OrderController', () => {
         expect(callback).toHaveBeenCalledWith(mockOrderData);
       });
     });
+
     describe('and user is logged in', () => {
       beforeEach(() => {
         identity.get.mockReturnValue(of(mockUser));
@@ -121,6 +123,7 @@ describe('OrderController', () => {
         expect(callback).toHaveBeenCalledWith(mockOrderData);
       });
     });
+
     describe('and order id is not provided', () => {
       beforeEach(() => {
         mockContext.get.mockReturnValue(of(null));

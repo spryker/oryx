@@ -1,7 +1,9 @@
-import { TestCustomerData } from '../types/user.type';
-import { CartPage } from './page_objects/cart.page';
-import { LoginPage } from './page_objects/login.page';
-import { SCCOSApi } from './sccos_api/sccos.api';
+import { RouteMatcherOptions } from 'node_modules/cypress/types/net-stubbing';
+import { AbstractSFPage } from './page-objects/abstract.page';
+import { CartPage } from './page-objects/cart.page';
+import { LoginPage } from './page-objects/login.page';
+import { SCCOSApi } from './sccos-api/sccos.api';
+import { Customer } from './types/user.type';
 
 export {};
 
@@ -15,18 +17,17 @@ declare global {
       goToCart(): Chainable<void>;
       goToCartAsGuest(): Chainable<void>;
       hydrateElemenet(assetPath: string, triggerHydrationFn): Chainable<void>;
-      customerCartsCleanup(sccosApi: SCCOSApi, user: TestCustomerData): void;
-      customerAddressesCleanup(
-        sccosApi: SCCOSApi,
-        user: TestCustomerData
-      ): void;
+      customerCartsCleanup(sccosApi: SCCOSApi, user: Customer): void;
+      customerAddressesCleanup(sccosApi: SCCOSApi, user: Customer): void;
       checkCurrencyFormatting(locale: string): void;
+      failApiCall(routeMatcherOptions: RouteMatcherOptions, actionFn): void;
+      checkGlobalNotificationAfterFailedApiCall(page: AbstractSFPage): void;
     }
   }
 }
 
 Cypress.Commands.add('login', () => {
-  cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+  cy.fixture<Customer>('test-customer').then((customer) => {
     const loginPage = new LoginPage();
 
     loginPage.visit();
@@ -40,7 +41,7 @@ Cypress.Commands.add('login', () => {
 });
 
 Cypress.Commands.add('loginApi', () => {
-  cy.fixture<TestCustomerData>('test-customer').then((customer) => {
+  cy.fixture<Customer>('test-customer').then((customer) => {
     const api = new SCCOSApi();
 
     api.token.post(customer).then((res) => {
@@ -76,7 +77,10 @@ Cypress.Commands.add('goToCheckout', () => {
   // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(250);
 
-  cy.intercept('/customers/*/addresses').as('addressesRequest');
+  cy.intercept({
+    method: 'GET',
+    url: '/customers/*/addresses',
+  }).as('addressesRequest');
   cartPage.checkout();
   cy.wait('@addressesRequest');
 });
@@ -94,10 +98,10 @@ Cypress.Commands.add('goToCheckoutAsGuest', () => {
 
   cy.goToCartAsGuest();
 
-  // carts request is not enought to be sure
+  // carts request is not enough to be sure
   // that checkout button is clickable
   // we have to wait for other elements, and even with them
-  // there is no 100% guarranty that checkout btn is ready
+  // there is no 100% guaranty that checkout btn is ready
   cartPage.getCartTotals().getTotalPrice().should('be.visible');
   // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(250);
@@ -107,24 +111,33 @@ Cypress.Commands.add('goToCheckoutAsGuest', () => {
   cy.wait('@addressesRequest');
 });
 
+// this action is temporarily changed
+// because of constant hydation issues and instability
+//
+// All tests, including regression, will be run against SPA build
+// till SSR is not fixed completely
+//
+// still, smoke tests should run against SSR build
 Cypress.Commands.add(
   'hydrateElemenet',
   (assetPath: string, triggerHydrationFn) => {
-    cy.intercept(assetPath).as(`${assetPath}Request`);
+    if (Cypress.env('isSSR')) {
+      cy.intercept(assetPath).as(`${assetPath}Request`);
 
-    triggerHydrationFn();
+      triggerHydrationFn();
 
-    cy.wait(`@${assetPath}Request`);
+      cy.wait(`@${assetPath}Request`);
 
-    // wait till hydrated elements are re-rendered
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
+      // wait till hydrated elements are re-rendered
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
+    }
   }
 );
 
 Cypress.Commands.add(
   'customerCartsCleanup',
-  (sccosApi: SCCOSApi, user: TestCustomerData) => {
+  (sccosApi: SCCOSApi, user: Customer) => {
     sccosApi.carts.customersGet(user.id).then((response) => {
       const carts = response.body.data;
 
@@ -142,13 +155,55 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'customerAddressesCleanup',
-  (sccosApi: SCCOSApi, user: TestCustomerData) => {
+  (sccosApi: SCCOSApi, user: Customer) => {
     sccosApi.addresses.get(user.id).then((response) => {
       const addresses = response.body.data;
 
       addresses
         .map((address) => address.id)
         .forEach((id) => sccosApi.addresses.delete(user.id, id));
+    });
+  }
+);
+
+const failApiCallResponse = {
+  statusCode: 500,
+  body: 'Internal Server Error',
+  forceError: false,
+};
+const apiErrorMessage = `${failApiCallResponse.statusCode} ${failApiCallResponse.body}`;
+
+Cypress.Commands.add('failApiCall', (options, actionFn) => {
+  // prevents test from failing
+  // if unhandled 500 error occurs
+  Cypress.on('uncaught:exception', (err) => {
+    return !err.message.includes(apiErrorMessage);
+  });
+
+  cy.intercept(options, failApiCallResponse).as('failedRequest');
+  actionFn();
+  cy.wait('@failedRequest');
+});
+
+Cypress.Commands.add(
+  'checkGlobalNotificationAfterFailedApiCall',
+  (page: AbstractSFPage) => {
+    page.globalNotificationCenter.getCenter().should('be.visible');
+    page.globalNotificationCenter.getNotifications().then((notifications) => {
+      // only 1 notification is shown
+      expect(notifications.length).to.be.eq(1);
+
+      // this notification is an expected API error
+      notifications[0].getType().should('be.eq', 'error');
+      notifications[0].getWrapper().should('contain.text', 'Error');
+      notifications[0].getSubtext().should('have.text', apiErrorMessage);
+
+      // close notification
+      notifications[0].getCloseBtn().click();
+
+      // check if notification disappeared
+      notifications[0].getWrapper().should('not.exist');
+      page.globalNotificationCenter.getWrapper().should('not.be.visible');
     });
   }
 );

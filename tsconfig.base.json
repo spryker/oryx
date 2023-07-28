@@ -15,6 +15,9 @@
       "@spryker-oryx/application/server": [
         "libs/template/application/server/index.ts"
       ],
+      "@spryker-oryx/application/service-worker": [
+        "libs/template/application/service-worker/index.ts"
+      ],
       "@spryker-oryx/auth": ["libs/platform/auth/src/index.ts"],
       "@spryker-oryx/auth/*": ["libs/platform/auth/*/index.ts"],
       "@spryker-oryx/auth/login": ["libs/platform/auth/login/index.ts"],
@@ -349,7 +352,10 @@
       ],
       "@spryker-oryx/user/mocks": ["libs/domain/user/src/mocks/index.ts"],
       "@spryker-oryx/utilities": ["libs/base/utilities/src/index.ts"],
-      "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"]
+      "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"],
+      "@spryker-oryx/utilities/window-stub": [
+        "libs/base/utilities/window-stub/index.ts"
+      ]
     }
   }
 }

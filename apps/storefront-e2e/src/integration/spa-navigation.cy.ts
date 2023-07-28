@@ -1,5 +1,5 @@
-import { ContactPage } from '../support/page_objects/contact.page';
-import { LandingPage } from '../support/page_objects/landing.page';
+import { ContactPage } from '../support/page-objects/contact.page';
+import { LandingPage } from '../support/page-objects/landing.page';
 
 const landingPage = new LandingPage();
 const contactPage = new ContactPage();

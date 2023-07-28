@@ -5,8 +5,8 @@ import { CurrencyService, siteProviders } from '@spryker-oryx/site';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { PriceComponent } from './price.component';
-import { priceComponent } from './price.def';
+import { SitePriceComponent } from './price.component';
+import { sitePriceComponent } from './price.def';
 
 class MockLocaleService implements Partial<LocaleService> {
   get = vi.fn().mockReturnValue(of('en'));
@@ -16,13 +16,13 @@ class MockCurrencyService implements Partial<CurrencyService> {
   get = vi.fn().mockReturnValue(of('EUR'));
 }
 
-describe('PriceComponent', () => {
-  let element: PriceComponent;
+describe('SitePriceComponent', () => {
+  let element: SitePriceComponent;
   let localeService: MockLocaleService;
   let currencyService: MockCurrencyService;
 
   beforeAll(async () => {
-    await useComponent([priceComponent]);
+    await useComponent([sitePriceComponent]);
   });
 
   beforeEach(async () => {
@@ -59,7 +59,7 @@ describe('PriceComponent', () => {
     });
 
     it('should be an instance of PriceComponent', () => {
-      expect(element).toBeInstanceOf(PriceComponent);
+      expect(element).toBeInstanceOf(SitePriceComponent);
     });
   });
 

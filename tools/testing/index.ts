@@ -1,5 +1,6 @@
 import './a11y';
 import './prototypeExtending';
+import './resize-observer.ponyfill';
 export * from './lit-html';
 export * from './event';
 export * from './helpers/index';

@@ -1,6 +1,11 @@
 import { css } from 'lit';
+import { HeadingTag, headingUtil } from '../heading';
 
 export const textStyles = css`
+  :host {
+    display: contents;
+  }
+
   * {
     margin: 0;
     font-size: var(--_fs);
@@ -24,11 +29,23 @@ export const textStyles = css`
     text-transform: uppercase;
   }
 
-  p:first-child {
+  .subtitle-small {
+    ${headingUtil(HeadingTag.SubtitleSmall)}
+  }
+
+  small {
+    ${headingUtil(HeadingTag.Small)}
+  }
+
+  b {
+    ${headingUtil(HeadingTag.Bold)}
+  }
+
+  p:first-of-type {
     margin-block-start: 0;
   }
 
-  p:last-child {
+  p:last-of-type {
     margin-block-end: 0;
   }
 

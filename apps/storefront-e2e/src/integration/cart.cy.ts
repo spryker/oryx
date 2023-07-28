@@ -1,7 +1,7 @@
-import { CartPage } from '../support/page_objects/cart.page';
-import { ProductDetailsPage } from '../support/page_objects/product-details.page';
-import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { ProductStorage } from '../test-data/product.storage';
+import { CartPage } from '../support/page-objects/cart.page';
+import { ProductDetailsPage } from '../support/page-objects/product-details.page';
+import { SCCOSApi } from '../support/sccos-api/sccos.api';
+import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const cartPage = new CartPage();
 const cartTotals = cartPage.getCartTotals();
@@ -38,8 +38,8 @@ describe('Cart', () => {
             checkCartEntry({
               quantity: 1,
               subTotal: '€161.95',
-              originalPrice: '180.00',
-              salesPrice: '€179.94',
+              originalPrice: '€180.00',
+              salesPrice: '€161.95',
             });
 
             checkCartTotals({
@@ -61,20 +61,15 @@ describe('Cart', () => {
       });
 
       it('should render an empty message', () => {
-        cartPage
-          .getCartEntriesWrapper()
-          .contains('Your shopping cart is empty')
-          .should('be.visible');
-
-        cartPage.getCartEntriesHeading().should('not.exist');
-        cartPage.getCartTotals().getWrapper().should('not.be.visible');
+        cartPage.checkEmptyCart();
       });
     });
 
-    describe('and there is an item in cart', () => {
+    describe('and there is an item in the cart', () => {
       beforeEach(() => {
         scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
         cy.goToCartAsGuest();
+        cartPage.checkNotEmptyCart();
       });
 
       it('should render the cart entries and totals', () => {
@@ -100,7 +95,7 @@ describe('Cart', () => {
         });
 
         it('should have an empty cart', () => {
-          checkEmptyCart();
+          cartPage.checkEmptyCart();
         });
       });
 
@@ -119,7 +114,7 @@ describe('Cart', () => {
           checkCartEntry({
             quantity: 4,
             subTotal: '€124.34',
-            salesPrice: '€34.54',
+            salesPrice: '€31.08',
           });
           checkCartTotals({
             subTotal: '€138.16',
@@ -178,7 +173,7 @@ describe('Cart', () => {
         });
 
         it('should have an empty cart', () => {
-          checkEmptyCart();
+          cartPage.checkEmptyCart();
         });
       });
 
@@ -186,12 +181,38 @@ describe('Cart', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
             entries[0].getRemoveBtn().click();
+
+            cy.intercept({
+              method: 'DELETE',
+              url: '/guest-carts/*/guest-cart-items/*',
+            }).as('deleteCartItemRequest');
             cartPage.getSubmitDeleteBtn().click();
+            cy.wait('@deleteCartItemRequest');
           });
         });
 
         it('should have an empty cart', () => {
-          checkEmptyCart();
+          cartPage.checkEmptyCart();
+        });
+      });
+
+      describe('and some BE error occurs while editing cart', () => {
+        beforeEach(() => {
+          cy.failApiCall(
+            {
+              method: 'PATCH',
+              url: '/guest-carts/*/guest-cart-items/*',
+            },
+            () => {
+              cartPage.getCartEntries().then((entries) => {
+                entries[0].getQuantityInput().increase();
+              });
+            }
+          );
+        });
+
+        it('should show an error in global notification center', () => {
+          cy.checkGlobalNotificationAfterFailedApiCall(cartPage);
         });
       });
     });
@@ -212,13 +233,19 @@ function checkCartEntry(entry: {
         .should('have.value', entry.quantity);
     }
     if (entry.subTotal) {
-      entries[0].getSubtotal().should('contain.text', entry.subTotal);
+      entries[0].getSubtotal().shadow().should('contain.text', entry.subTotal);
     }
     if (entry.salesPrice) {
-      entries[0].getSalesPrice().should('contain.text', entry.salesPrice);
+      entries[0]
+        .getSalesPrice()
+        .shadow()
+        .should('contain.text', entry.salesPrice);
     }
     if (entry.originalPrice) {
-      entries[0].getOriginalPrice().should('contain.text', entry.originalPrice);
+      entries[0]
+        .getOriginalPrice()
+        .shadow()
+        .should('contain.text', entry.originalPrice);
     }
   });
 }
@@ -265,12 +292,4 @@ function checkCartTotals(totals: {
     .getTaxMessage()
     .should('be.visible')
     .and('contain.text', 'Tax included');
-}
-
-function checkEmptyCart() {
-  cartPage
-    .getCartEntriesWrapper()
-    .contains('Your shopping cart is empty')
-    .should('be.visible');
-  cartPage.getCartTotals().getWrapper().should('not.be.visible');
 }

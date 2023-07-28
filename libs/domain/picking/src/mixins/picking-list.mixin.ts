@@ -1,11 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListComponentProperties } from '@spryker-oryx/picking/picking-lists';
 import {
+  Signal,
   Type,
-  asyncState,
   isDefined,
   observe,
-  valueType,
+  signal,
+  signalAware,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -26,8 +27,8 @@ export declare class PickingListMixinInterface
   protected pickingListService: PickingListService;
   pickingListId?: string;
   protected pickingList$: Observable<PickingList>;
-  protected pickingList: PickingList;
-  protected upcomingPickingListId: string | null;
+  protected $pickingList: Signal<PickingList>;
+  protected $upcomingPickingListId: Signal<string | null>;
 }
 
 export const PickingListMixin = <
@@ -35,6 +36,7 @@ export const PickingListMixin = <
 >(
   superClass: T
 ): Type<PickingListMixinInterface> & T => {
+  @signalAware()
   class PickingListMixinClass extends superClass {
     protected pickingListService = resolve(PickingListService);
 
@@ -50,11 +52,9 @@ export const PickingListMixin = <
       map((list) => list?.[0] ?? null)
     );
 
-    @asyncState()
-    protected pickingList = valueType(this.pickingList$);
+    protected $pickingList = signal(this.pickingList$);
 
-    @asyncState()
-    protected upcomingPickingListId = valueType(
+    protected $upcomingPickingListId = signal(
       this.pickingListService.getUpcomingPickingListId()
     );
   }

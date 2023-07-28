@@ -1,7 +1,6 @@
-import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { StaticComponent } from '@spryker-oryx/experience';
 
-export const orderPage: StaticComponent = {
+export const orderConfirmationPage: StaticComponent = {
   type: 'Page',
   meta: {
     title: 'Order Confirmation Page',
@@ -12,31 +11,21 @@ export const orderPage: StaticComponent = {
     { type: 'oryx-order-confirmation-banner' },
     {
       type: 'oryx-composition',
-      options: {
-        rules: [{ layout: 'split-main', padding: '30px 0' }],
-      },
+      options: { rules: [{ layout: 'split-main', padding: '30px 0 0' }] },
       components: [
         {
           type: 'oryx-order-summary',
-          options: {
-            rules: [{ colSpan: 2 }],
-          },
         },
-        { type: 'oryx-order-entries' },
         {
           type: 'oryx-order-totals',
           components: [
             { type: 'oryx-cart-totals-subtotal' },
-            {
-              type: 'oryx-cart-totals-discount',
-              options: {
-                discountRowsAppearance: DiscountRowsAppearance.Collapsed,
-              },
-            },
+            { type: 'oryx-cart-totals-discount' },
             { type: 'oryx-cart-totals-tax' },
             { type: 'oryx-cart-totals-total' },
           ],
         },
+        { type: 'oryx-order-entries' },
       ],
     },
   ],
