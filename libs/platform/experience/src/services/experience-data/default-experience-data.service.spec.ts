@@ -94,7 +94,6 @@ describe('DefaultExperienceDataService', () => {
                   type: 'before',
                   selector: '#a.a-component>2.a-component[2].b-component[2]',
                   disableGlobal: true,
-                  disableGlobal: true,
                 },
               },
               mockPageA,
