@@ -1,8 +1,8 @@
 import { inject } from '@spryker-oryx/di';
 import { BASE_ROUTE, RouteType, RouterService } from '@spryker-oryx/router';
+import { isRouterPath } from '@spryker-oryx/router/lit';
 import { Observable, of, switchMap, throwError } from 'rxjs';
 import { LinkOptions, LinkService } from './link.service';
-import { isRouterPath } from '@spryker-oryx/router/lit';
 
 export class DefaultLinkService implements LinkService {
   constructor(
@@ -31,7 +31,9 @@ export class DefaultLinkService implements LinkService {
           ? `?${this.getUrlParams(link.params)}`
           : '';
         const parts = route.path.split('/');
-        parts.pop();
+        if (dynamicId) {
+          parts.pop();
+        }
         const path = `${parts.join('/')}${
           dynamicId ? `/${dynamicId}` : ''
         }${dynamicParams}`;

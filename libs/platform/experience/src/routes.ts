@@ -1,9 +1,6 @@
-import { AuthService } from '@spryker-oryx/auth';
-import { resolve } from '@spryker-oryx/di';
 import { RouteType } from '@spryker-oryx/router';
 import { RouteConfig } from '@spryker-oryx/router/lit';
 import { html, TemplateResult } from 'lit';
-import { Observable } from 'rxjs';
 import 'urlpattern-polyfill';
 
 export const defaultExperienceRoutes: RouteConfig[] = [
@@ -13,8 +10,7 @@ export const defaultExperienceRoutes: RouteConfig[] = [
   {
     path: '/login',
     type: RouteType.Login,
-    enter: (): Observable<boolean> =>
-      resolve(AuthService).isAuthenticated(),
+    redirect: { when: 'USER.AUTHENTICATED' },
   },
   {
     path: '/product/:sku',

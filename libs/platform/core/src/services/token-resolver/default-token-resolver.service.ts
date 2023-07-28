@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { map, of, startWith } from 'rxjs';
+import { map, of, skip, startWith } from 'rxjs';
 import {
   ResolvedToken,
   TokenResolver,
@@ -29,6 +29,7 @@ export class DefaultTokenService implements TokenResolver {
 
     return tokenResolver.resolve(resolver).pipe(
       startWith(null),
+      skip(1),
       map(
         //reverse the value of negative token if needed
         (resolvedValue) => (isNegative ? !resolvedValue : resolvedValue)

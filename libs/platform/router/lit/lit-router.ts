@@ -6,35 +6,42 @@
 
 /// <reference types="urlpattern-polyfill" />
 
-import { SSRAwaiterService } from '@spryker-oryx/core';
+import { SSRAwaiterService, TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   BASE_ROUTE,
   RouteParams,
-  RouterService,
   RouteType,
+  RouterService,
 } from '@spryker-oryx/router';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
-import { html, isServer, TemplateResult } from 'lit';
+import { TemplateResult, html, isServer } from 'lit';
 import {
-  isObservable,
-  lastValueFrom,
+  BehaviorSubject,
   Observable,
   Subscription,
+  isObservable,
+  lastValueFrom,
   tap,
 } from 'rxjs';
 
 import { LitRoutesRegistry } from './lit-routes-registry';
 
+export interface RouteRedirect {
+  to?: string;
+  when: string | RouteHandler;
+}
+
+export type RouteHandler = (params: {
+  [key: string]: string | undefined;
+}) => Promise<boolean> | Observable<boolean> | boolean;
+
 export interface BaseRouteConfig {
   name?: string | undefined;
   render?: (params: { [key: string]: string | undefined }) => unknown;
-  enter?: (params: {
-    [key: string]: string | undefined;
-  }) => Promise<boolean> | Observable<boolean> | boolean;
-  leave?: (params: {
-    [key: string]: string | undefined;
-  }) => Promise<boolean> | Observable<boolean> | boolean;
+  enter?: RouteHandler;
+  leave?: RouteHandler;
+  redirect?: RouteRedirect;
   type?: RouteType | string;
 }
 
@@ -152,6 +159,7 @@ export class LitRouter implements ReactiveController {
   protected id?: string;
   protected routerService = resolve(RouterService);
   protected ssrAwaiter = resolve(SSRAwaiterService, null);
+  protected tokenResolver = resolve(TokenResolver);
 
   protected urlSearchParams?: RouteParams;
 
@@ -168,6 +176,8 @@ export class LitRouter implements ReactiveController {
   // to the parent? We can call `this._parentRoutes.disconnect(this)`.
   private _onDisconnect: (() => void) | undefined;
 
+  protected await$ = new BehaviorSubject(false);
+
   constructor(
     host: ReactiveControllerHost & HTMLElement,
     routes: Array<RouteConfig>,
@@ -179,8 +189,11 @@ export class LitRouter implements ReactiveController {
         .flat(),
       ...routes,
     ].sort((a) => {
-      // moves 404 page to the end in order not to break new provided routes
-      if ((a as PathRouteConfig).path === '/*') {
+      // moves 404 page and other pages (/:page) to the end in order not to break new provided routes
+      if (
+        (a as PathRouteConfig).path === '/*' ||
+        (a as PathRouteConfig).path === '/:page'
+      ) {
         return 0;
       }
 
@@ -255,6 +268,10 @@ export class LitRouter implements ReactiveController {
     });
   }
 
+  delayRender(): Observable<boolean> {
+    return this.await$;
+  }
+
   /**
    * Navigates this routes controller to `pathname`.
    *
@@ -263,8 +280,6 @@ export class LitRouter implements ReactiveController {
    * pattern with a tail wildcard pattern (`/*`).
    */
   async _goto(pathname: string): Promise<void> {
-    console.log(this.routes);
-    
     if (
       this.baseRoute &&
       (!pathname.startsWith(this.baseRoute) || pathname === this.baseRoute)
@@ -303,6 +318,23 @@ export class LitRouter implements ReactiveController {
       if (route === undefined) {
         throw new Error(`No route found for ${pathname}`);
       }
+
+      if (route.redirect) {
+        const { when, to = '/' } = route.redirect;
+        if (typeof when === 'function') {
+          //TODO: handle case when 'when' is function
+        } else {
+          this.await$.next(true);
+          this.tokenResolver.resolveToken(when).subscribe(async (value) => {
+            if (value) {
+              this.routerService.navigate(to);
+            }
+
+            this.await$.next(false);
+          });
+        }
+      }
+
       const pattern = getPattern(route);
       const result = pattern.exec({ pathname });
       const params = result?.pathname.groups ?? {};
@@ -389,8 +421,6 @@ export class LitRouter implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): TemplateResult {
-    console.log(this._currentRoute);
-    
     if (this._currentRoute?.render) {
       return html`<outlet
         >${this._currentRoute?.render?.(this._currentParams)}</outlet
