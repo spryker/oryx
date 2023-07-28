@@ -32,11 +32,7 @@
       "conventionalCommits": true,
       "forcePublish": true,
       "contents": "dist",
-      "ignoreChanges": [
-        "*.md",
-        "**/*.spec.ts",
-        "**/*.stories.ts"
-      ],
+      "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
       "message": "chore(release): publish libs release [skip ci]",
       "tagVersionPrefix": "lib@",
       "verifyAccess": false,
