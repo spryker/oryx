@@ -24,8 +24,8 @@ export const checkoutPage: StaticComponent = {
           <a href="/search">Shop now</a></oryx-button>`,
       },
       options: {
-        visibility: { hideByRule: 'CART.!EMPTY' },
         rules: [
+          { hideByRule: 'CART.!EMPTY' },
           {
             colSpan: 2,
             background: 'var(--oryx-color-neutral-3)',
@@ -58,8 +58,8 @@ export const checkoutPage: StaticComponent = {
         },
       ],
       options: {
-        visibility: { hideByRule: 'CART.EMPTY' },
         rules: [
+          { hideByRule: 'CART.EMPTY' },
           { gap: '20px', layout: 'flex', vertical: true, align: 'stretch' },
         ],
       },
@@ -67,8 +67,7 @@ export const checkoutPage: StaticComponent = {
     {
       type: 'oryx-composition',
       options: {
-        visibility: { hideByRule: 'CART.EMPTY' },
-        rules: [{ sticky: true, top: '108px' }],
+        rules: [{ hideByRule: 'CART.EMPTY' }, { sticky: true, top: '108px' }],
       },
       components: [
         {

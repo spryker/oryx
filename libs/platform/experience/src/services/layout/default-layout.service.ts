@@ -1,8 +1,7 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
-import { merge, Observable, of } from 'rxjs';
-import { reduce } from 'rxjs/operators';
+import { merge, Observable, of, reduce } from 'rxjs';
 import { CompositionLayout } from '../../models';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import { LayoutService } from './layout.service';

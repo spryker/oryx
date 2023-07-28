@@ -1,5 +1,5 @@
 export const throttle = (
-  fn: () => void,
+  fn: (..._args: any[]) => void,
   wait: number,
   deferACall = false
 ): (() => void) => {

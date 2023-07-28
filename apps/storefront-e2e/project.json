@@ -34,14 +34,16 @@
         "smoke": {
           "browser": "electron",
           "env": {
-            "grepTags": "smoke"
+            "grepTags": "smoke",
+            "isSSR": true
           }
         },
         "headless-smoke": {
           "browser": "electron",
           "watch": false,
           "env": {
-            "grepTags": "smoke"
+            "grepTags": "smoke",
+            "isSSR": true
           }
         },
         "headless-ci-smoke": {

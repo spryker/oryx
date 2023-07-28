@@ -5,7 +5,7 @@ import {
 } from '@spryker-oryx/experience';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../../.constants';
+import { storybookPrefix } from '../../.constants';
 
 const demoTable = { category: 'Demo' };
 const nestedDemoTable = { category: '(sub) layout' };

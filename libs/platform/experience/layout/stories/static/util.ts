@@ -1,5 +1,5 @@
 import { html, TemplateResult } from 'lit';
-import { CompositionLayout } from '../../../../src/models';
+import { CompositionLayout } from '../../../src/models';
 
 export const generateLayoutItems = (
   length = 1,
