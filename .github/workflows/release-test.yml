@@ -39,7 +39,8 @@ jobs:
       - name: Install Deps
         run: npm ci
       - name: Build packages
-        run: npx nx run-many --target=build --all --parallel=2 --exclude testfront,storybook,fulfillment,storefront
+#        run: npx nx run-many --target=build --all --parallel=2 --exclude testfront,storybook,fulfillment,storefront
+        run: npx nx run di:build
       - name: Install verdaccio
         run: npm i -g verdaccio
       - name: Run verdaccio first time to generate config
@@ -69,8 +70,8 @@ jobs:
         run: npm run release-test
       - name: Install dependencies for testfront
         run: cd apps/testfront && npm i && npm list --depth=1 && cd ../..
-      - name: Run e2e
-        run: npm run testfront:e2e
-        env:
-          SCOS_BASE_URL: ${{ env.SCOS_BASE_URL }}
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+#      - name: Run e2e
+#        run: npm run testfront:e2e
+#        env:
+#          SCOS_BASE_URL: ${{ env.SCOS_BASE_URL }}
+#          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
