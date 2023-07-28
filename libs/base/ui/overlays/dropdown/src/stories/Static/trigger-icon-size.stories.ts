@@ -1,7 +1,8 @@
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 export default {
@@ -15,40 +16,32 @@ const Template: Story<unknown> = (): TemplateResult => {
       (size) => html`<oryx-dropdown triggerIconSize=${size}></oryx-dropdown>`
     )}
 
-    <h4>Icon size</h4>
-
-    ${[Size.Lg, Size.Md, Size.Sm].map(
-      (size) => html`<oryx-dropdown>
-        <oryx-icon
-          slot="icon"
-          .type=${IconTypes.Actions}
-          size=${size}
-        ></oryx-icon>
-      </oryx-dropdown>`
-    )}
-
     <h4>Custom icon (custom size and margin)</h4>
     <oryx-dropdown>
-      <oryx-icon
-        slot="icon"
-        .type=${IconTypes.Actions}
-        style="--oryx-icon-size: 20px;margin:10px;"
-      ></oryx-icon>
+      <oryx-button
+        slot="trigger"
+        .size=${ButtonSize.Md}
+        .type=${ButtonType.Icon}
+        .icon=${IconTypes.Actions}
+        style="margin:10px;"
+      ></oryx-button>
     </oryx-dropdown>
     <oryx-dropdown>
-      <oryx-icon
-        slot="icon"
-        .type=${IconTypes.Actions}
-        style="--oryx-icon-size: 40px;margin:20px;"
-      ></oryx-icon>
+      <oryx-button
+        slot="trigger"
+        style="--oryx-button-size-factor: 4;margin:10px;"
+        .type=${ButtonType.Icon}
+        .icon=${IconTypes.Actions}
+      ></oryx-button>
     </oryx-dropdown>
     <oryx-dropdown>
-      <oryx-icon
-        slot="icon"
-        .type=${IconTypes.Actions}
-        style="--oryx-icon-size: 60px;margin:10px;"
-      ></oryx-icon>
-    </oryx-dropdown>
+      <oryx-button
+        slot="trigger"
+        style="--oryx-button-size-factor: 11;margin:10px;"
+        .type=${ButtonType.Icon}
+        .icon=${IconTypes.Actions}
+      ></oryx-button
+    ></oryx-dropdown>
   `;
 };
 

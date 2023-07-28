@@ -9,10 +9,10 @@ export const styles = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    height: var(--oryx-icon-size, 24px);
+    height: var(--oryx-icon-size, var(--_size, 24px));
     aspect-ratio: 1 / 1;
     color: var(--oryx-icon-color, inherit);
-    font: var(--oryx-icon-weight, 500) var(--oryx-icon-size, 24px)
+    font: var(--oryx-icon-weight, 500) var(--oryx-icon-size, var(--_size, 24px))
       var(--oryx-icon-font, ${font});
     font-variation-settings: 'FILL' var(--oryx-icon-fill, 0),
       'wght' var(--oryx-icon-weight, 500), 'GRAD' var(--oryx-icon-grad, 0),
@@ -23,15 +23,18 @@ export const styles = css`
   svg,
   ::slotted(svg) {
     fill: var(--oryx-icon-color, currentColor);
-    width: var(--oryx-icon-size, 24px);
+    width: var(--oryx-icon-size, var(--_size, 24px));
     aspect-ratio: 1 / 1;
+    margin: var(--_margin, 0);
   }
 
   :host([size='md']) {
-    --_oryx-icon-size: 20px;
+    --_size: 20px;
+    --_margin: 2px;
   }
 
   :host([size='sm']) {
-    --_oryx-icon-size: 13.3px;
+    --_size: 16px;
+    --_margin: 4px;
   }
 `;

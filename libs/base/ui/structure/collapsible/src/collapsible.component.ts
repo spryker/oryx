@@ -17,7 +17,7 @@ export class CollapsibleComponent
   static styles = [collapsibleBaseStyle];
 
   @property({ reflect: true }) appearance = CollapsibleAppearance.Block;
-  @property({ type: Boolean }) open?: boolean = true;
+  @property({ type: Boolean }) open?: boolean;
   @property() heading?: string;
   @property({ type: Boolean }) nonTabbable?: boolean;
 

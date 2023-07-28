@@ -158,7 +158,7 @@ const colorStyles = css`
 
   :host(:is([type='solid'], :not([type]))),
   :host([type='outline']),
-  :host([type='icon']:active) {
+  :host([type='icon']:is(:active, [active])) {
     --_border-color: var(--_c7);
   }
 
@@ -167,12 +167,12 @@ const colorStyles = css`
     --_background-color: var(--_c1);
   }
 
-  :host([type='solid']:is(:hover:active)) {
+  :host([type='solid']:is(:hover:active, [active])) {
     --_background-color: var(--_c10);
     --_border-color: var(--_c10);
   }
 
-  :host([type='solid'][color='neutral']):active {
+  :host([type='solid'][color='neutral']):is(:active, [active]) {
     --_background-color: var(--oryx-color-neutral-12);
   }
 
@@ -181,21 +181,21 @@ const colorStyles = css`
     --_background-color: var(--_c3);
   }
 
-  :host([type='outline']:hover:active),
-  :host([type='text']:hover:hover) {
+  :host([type='outline']:is(:hover:active, [active])),
+  :host([type='text']:hover) {
     --_text-color: var(--_c10);
   }
 
-  :host([type='outline']:hover:active) {
+  :host([type='outline']:is(:hover:active, [active])) {
     --_border-color: var(--_c10);
     --_box-shadow: 0 0 3px 0 var(--oryx-color-primary-9);
   }
 
-  :host([type='text']:hover:active) {
+  :host([type='text']:is(:hover:active, [active])) {
     --_background-color: var(--oryx-color-neutral-3);
   }
 
-  :host([type='icon']:hover) {
+  :host([type='icon']:is(:hover, [active])) {
     --_border-color: var(--_c7);
     --_background-color: var(--oryx-color-neutral-3);
   }
@@ -207,7 +207,7 @@ const colorStyles = css`
     );
   }
 
-  :host([type='solid'][color='neutral']) button:hover:active {
+  :host([type='solid'][color='neutral']) button:is(:hover:active, [active]) {
     --_background-color: var(
       --oryx-color-neutral-12,
       var(--oryx-color-primary-12)

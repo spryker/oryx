@@ -1,4 +1,4 @@
-import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { PopoverController } from '@spryker-oryx/ui/popover';
 import { Size, hydrate, queryFirstFocusable } from '@spryker-oryx/utilities';
@@ -31,8 +31,8 @@ export class DropdownComponent
       <slot name="trigger">
         <oryx-button
           .type=${ButtonType.Icon}
+          .active=${this.open}
           .size=${this.triggerIconSize}
-          .color=${ButtonColor.Neutral}
           .label=${this.toggleButtonAriaLabel}
           .icon=${IconTypes.Actions}
         ></oryx-button>

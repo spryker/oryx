@@ -22,6 +22,10 @@ const blockAppearance = css`
     padding-inline: 20px;
   }
 
+  :host(${blockSelector}) oryx-button {
+    margin-inline-end: -7px;
+  }
+
   :host(${blockSelector}) slot[name='side-dish']::slotted(*) {
     margin-inline-start: 20px;
   }

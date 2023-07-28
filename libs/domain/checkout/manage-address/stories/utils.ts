@@ -22,8 +22,11 @@ export const toggleBehavior = (behavior?: BehaviorType): void => {
 const getManageAddressElement = (): LitElement =>
   document.querySelector('oryx-checkout-manage-address') as LitElement;
 
-export const open = (): void =>
-  getManageAddressElement()?.renderRoot.querySelector('button')?.click();
+export const open = (): void => {
+  getManageAddressElement()
+    ?.renderRoot.querySelector<HTMLElement>('oryx-button')
+    ?.click();
+};
 
 export const asyncOpen = (): void => {
   const loop = setTimeout(() => {

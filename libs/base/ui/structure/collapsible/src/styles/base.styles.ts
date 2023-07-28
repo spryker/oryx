@@ -55,7 +55,6 @@ export const collapsibleBaseStyle = css`
   }
 
   :host(:not(${inlineSelector})) oryx-button {
-    margin-inline-end: -7px;
     margin-inline-start: auto;
     pointer-events: none;
   }

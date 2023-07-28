@@ -74,6 +74,7 @@ export class ButtonComponent
   @property({ reflect: true }) color?: ButtonColor;
 
   @property({ type: Boolean, reflect: true }) disabled?: boolean;
+  @property({ type: Boolean, reflect: true }) active?: boolean;
   @property({ type: Boolean, reflect: true }) loading?: boolean;
   @property({ type: Boolean, reflect: true }) confirmed?: boolean;
 

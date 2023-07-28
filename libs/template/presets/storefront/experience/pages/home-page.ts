@@ -25,10 +25,10 @@ export const homePage: StaticComponent = {
             link: `/category/12`,
             alt: 'hero image',
             image:
-              'https://as2.ftcdn.net/v2/jpg/02/43/32/71/1000_F_243327126_VzTCoh1oHOa2WnMdyyXlJDS6nG7pfYJ1.jpg',
+              'https://images.unsplash.com/photo-1670272505340-d906d8d77d03?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80',
           },
           options: {
-            // position: 'center 20%',
+            position: 'center 20%',
             rules: [
               {
                 width: '100%',
@@ -84,7 +84,7 @@ export const homePage: StaticComponent = {
           },
           { query: { breakpoint: 'sm' }, padding: '20px' },
         ],
-        category: '11',
+        category: '10',
         sort: 'rating',
       },
     },
