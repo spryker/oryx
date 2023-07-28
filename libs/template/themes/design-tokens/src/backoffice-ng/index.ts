@@ -45,8 +45,5 @@ export const backofficeNgTokens: DesignToken[] = [
     },
     ...layoutSmTokens,
     ...commonTokensSmall,
-    modal: {
-      bleed: '20px',
-    },
   },
 ];
