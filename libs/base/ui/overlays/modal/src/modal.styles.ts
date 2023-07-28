@@ -21,7 +21,7 @@ export const styles = css`
   }
 
   :host([minimal]) dialog {
-    width: var(--oryx-modal-width, 510px);
+    min-width: var(--oryx-modal-width, 510px), calc(100vw - 20px);
   }
 
   :host(:not([minimal])) dialog {
