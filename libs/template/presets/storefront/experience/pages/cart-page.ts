@@ -40,7 +40,12 @@ export const cartPage: ExperienceComponent = {
         ],
       },
     },
-    { type: 'oryx-cart-entries' },
+    {
+      type: 'oryx-composition',
+      id: 'cartEntries',
+      components: [{ type: 'oryx-cart-entries' }],
+      options: { rules: [{ layout: 'list' }] },
+    },
     {
       type: 'oryx-composition',
       id: 'cartTotals',
