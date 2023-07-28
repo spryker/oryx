@@ -8,7 +8,6 @@ import {
   defer,
   map,
   Observable,
-  of,
   shareReplay,
   switchMap,
 } from 'rxjs';
@@ -29,10 +28,7 @@ export class OrderController {
             .getLastOrder()
             .pipe(map((lastOrder) => lastOrder ?? null));
         }
-        if (id) {
-          return this.orderService.get({ id });
-        }
-        return of(null);
+        return this.orderService.get({ id });
       })
     )
   ).pipe(shareReplay({ refCount: true, bufferSize: 1 }));

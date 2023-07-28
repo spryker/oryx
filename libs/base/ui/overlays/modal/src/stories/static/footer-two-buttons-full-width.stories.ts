@@ -1,6 +1,6 @@
 import { OverlaysDecorator } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 export default {
@@ -20,12 +20,8 @@ const Template: Story = (): TemplateResult => {
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua
       </p>
-      <oryx-button slot="footer">
-        <button>Save</button>
-      </oryx-button>
-      <oryx-button slot="footer">
-        <button>Edit</button>
-      </oryx-button>
+      <oryx-button slot="footer"> Save </oryx-button>
+      <oryx-button slot="footer"> Edit </oryx-button>
     </oryx-modal>
   `;
 };

@@ -1,7 +1,7 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 
 export const loginPage: ExperienceComponent = {
-  id: 'login',
+  id: 'login-page',
   type: 'Page',
   meta: {
     title: 'Login Page',

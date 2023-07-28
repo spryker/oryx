@@ -1,7 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { RouterService } from '@spryker-oryx/router';
+import { RouteType, RouterService } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import {
   Address,
   AddressEventDetail,
@@ -10,7 +11,7 @@ import {
 } from '@spryker-oryx/user';
 import { UserAddressFormComponent } from '@spryker-oryx/user/address-form';
 import { hydrate, signal } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { Observable, of, take, tap } from 'rxjs';
@@ -19,7 +20,6 @@ import {
   UserAddressEditComponentOptions,
 } from './address-edit.model';
 import { styles } from './address-edit.styles';
-import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({ save: SaveOption.Save, inline: false })
 @hydrate({ event: ['mouseover', 'focusin'] })
@@ -78,16 +78,16 @@ export class UserAddressEditComponent extends AddressMixin(
       ${when(
         this.$options().save === SaveOption.Save,
         () => html`
-          <oryx-button outline>
-            <button @click=${this.onClose}>
-              ${this.i18n(['cancel', 'user.address.cancel'])}
-            </button>
-          </oryx-button>
-          <oryx-button ?loading=${this.loading}>
-            <button @click=${this.onSave}>
-              ${this.i18n(['save', 'user.address.save'])}
-            </button>
-          </oryx-button>
+          <oryx-button
+            .type=${ButtonType.Outline}
+            .text=${this.i18n('user.address.cancel')}
+            @click=${this.onClose}
+          ></oryx-button>
+          <oryx-button
+            .text=${this.i18n('user.address.save')}
+            ?loading=${this.loading}
+            @click=${this.onSave}
+          ></oryx-button>
         `
       )}
     `;

@@ -1,10 +1,12 @@
 import { css } from 'lit';
 
 export const siteLocaleSelectorStyles = css`
-  button {
-    --oryx-icon-color: currentColor;
-
-    color: white;
+  oryx-button {
+    color: inherit;
     text-transform: uppercase;
+  }
+
+  oryx-button:is(:hover, :active) {
+    background-color: rgba(18, 18, 18, 0.1);
   }
 `;

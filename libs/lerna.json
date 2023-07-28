@@ -8,7 +8,7 @@
     "domain/content",
     "platform/core",
     "platform/experience",
-    "base/form",
+    "platform/form",
     "platform/i18n",
     "base/di",
     "template/presets",
@@ -25,7 +25,7 @@
     "domain/user",
     "base/utilities"
   ],
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "npmClient": "npm",
   "command": {
     "publish": {

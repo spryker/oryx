@@ -2,7 +2,7 @@ import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { ExperienceComponent } from '@spryker-oryx/experience';
 
 export const checkoutPage: ExperienceComponent = {
-  id: 'checkout',
+  id: 'checkout-page',
   type: 'Page',
   meta: {
     title: 'Checkout Page',
@@ -10,40 +10,71 @@ export const checkoutPage: ExperienceComponent = {
     description: 'Checkout Page Description',
   },
   components: [
-    { ref: 'header' },
+    {
+      type: 'oryx-content-text',
+      content: {
+        data: {
+          text: `
+          <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
+          <p>Your shopping cart is empty</p><oryx-button>
+          <a href="/search">Shop now</a></oryx-button>`,
+        },
+      },
+      options: {
+        rules: [
+          { hideByRule: 'CART.!EMPTY' },
+          {
+            colSpan: 2,
+            background: 'var(--oryx-color-neutral-3)',
+            width: '66%',
+            margin: 'auto',
+            padding: '20px',
+            radius: '4px',
+            style: `display: grid;gap:14px;justify-items:center;`,
+          },
+        ],
+      },
+    },
     {
       type: 'oryx-composition',
-      id: 'checkoutBody',
+      id: 'checkout-information',
+      components: [
+        {
+          type: 'oryx-checkout-orchestrator',
+          components: [
+            { type: 'oryx-checkout-account' },
+            { type: 'oryx-checkout-shipping-address' },
+            { type: 'oryx-checkout-billing-address' },
+            { type: 'oryx-checkout-shipping-method' },
+            { type: 'oryx-checkout-payment-method' },
+          ],
+          options: { rules: [{ layout: 'list', gap: '30px' }] },
+        },
+        {
+          type: 'oryx-cart-entries',
+          options: { readonly: true },
+        },
+      ],
       options: {
         rules: [
           { layout: 'split-main', padding: '30px 0' },
           { query: { breakpoint: 'sm' }, gap: '0' },
         ],
       },
+    },
+    {
+      type: 'oryx-composition',
+      id: 'checkout-totals',
+      options: {
+        rules: [{ hideByRule: 'CART.EMPTY' }, { sticky: true, top: '108px' }],
+      },
       components: [
         {
           type: 'oryx-content-text',
           content: {
             data: {
-              text: `
-              <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
-              <p>Your shopping cart is empty</p><oryx-button>
-              <a href="/search">Shop now</a></oryx-button>`,
+              text: '<p>The <a href="/article/terms-and-conditions" target="_blank" data-color="primary">Terms and conditions</a> apply.<br/>Please also see our <a href="/article/privacy" target="_blank"  data-color="primary">Privacy notice</a>.</p>',
             },
-          },
-          options: {
-            rules: [
-              { hideByRule: 'CART.!EMPTY' },
-              {
-                colSpan: 2,
-                background: 'var(--oryx-color-neutral-3)',
-                width: '66%',
-                margin: 'auto',
-                padding: '20px',
-                radius: '4px',
-                style: `display: grid;gap:14px;justify-items:center;`,
-              },
-            ],
           },
         },
         {

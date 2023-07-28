@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { storybookPrefix } from '../../../.constants';
 import {
@@ -34,7 +34,7 @@ const Template: Story<Props> = (props: Props): TemplateResult => {
   return html`
     <oryx-collapsible-text
       .lineClamp=${props.lineClamp ?? 0}
-      .toggle=${!!props.toggle}
+      .toggle=${props.toggle}
       >${unsafeHTML(props.text)}</oryx-collapsible-text
     >
   `;

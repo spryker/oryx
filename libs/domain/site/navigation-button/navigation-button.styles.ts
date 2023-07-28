@@ -2,18 +2,17 @@ import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 const smallScreen = css`
-  :host {
-    min-width: 59px;
-    min-height: 40px;
-  }
-
-  oryx-button {
-    --oryx-icon-size: 20px;
-  }
-
   a,
   button {
-    border-radius: 0;
+    --oryx-icon-size: 24px;
+
+    padding: 6px;
+    height: 38px;
+    width: auto;
+  }
+
+  oryx-heading {
+    display: none;
   }
 
   mark {
@@ -28,51 +27,23 @@ export const navigationButtonScreenStyles = screenCss({
 });
 
 export const siteNavigationButtonStyles = css`
-  :host {
-    min-width: 75px;
-    min-height: 68px;
-    max-width: 154px;
-    display: inline-flex;
-    flex-direction: column;
-    position: relative;
-  }
-
-  oryx-button {
+  oryx-button::part(button) {
     --oryx-icon-size: 32px;
 
-    flex: 1 0 auto;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  a,
-  button {
+    position: relative;
+    height: 68px;
+    width: 62px;
+    max-width: 62px;
     display: grid;
+    align-content: center;
     justify-items: center;
     gap: 5px;
-    padding: 6px;
-    border: solid 2px transparent;
-    box-sizing: border-box;
+    padding: 12px 8px;
   }
 
-  :is(a, button):hover {
+  oryx-button::part(button):is(:hover, :focus-within) {
     background-color: var(--oryx-color-primary-10);
     box-shadow: none;
-  }
-
-  :is(a, button):focus-visible {
-    border-color: var(--oryx-color-neutral-1);
-    outline: solid 1px blue;
-    outline-offset: -3px;
-  }
-
-  :is(a, button):active {
-    background-color: var(--oryx-color-primary-12);
-    box-shadow: none;
-  }
-
-  oryx-heading {
-    display: var(--oryx-screen-small-hide, initial);
   }
 
   mark {

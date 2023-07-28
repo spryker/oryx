@@ -8,7 +8,7 @@ const brand = (name: string, rules?: StyleRuleSet[]) => ({
 });
 
 export const homePage: ExperienceComponent = {
-  id: 'home',
+  id: 'home-page',
   type: 'Page',
   meta: {
     title: 'Home Page',
@@ -19,7 +19,7 @@ export const homePage: ExperienceComponent = {
     { ref: 'header' },
     {
       type: 'oryx-composition',
-      id: 'homeBanner',
+      id: 'home-hero',
       components: [
         {
           type: 'oryx-content-image',
@@ -47,11 +47,13 @@ export const homePage: ExperienceComponent = {
           content: {
             data: {
               text: `
-                <span class="subtitle">CANON EOS R7 System camera</span>
-                <h1 style="margin:20px 0;">Discover everything</h1>
-                <div class="h3" style="margin-bottom:20px">EOS R7 wows with its ability to track fast-moving subjects with its Deep-learning Dual Pixel CMOS AF II focus system.</div>
-                <oryx-button><a href="/category/12">Shop now</a></oryx-button>
-              `,
+              <span class="subtitle">CANON EOS R7 System camera</span>
+              <h1 style="margin:20px 0;">Discover everything</h1>
+              <div class="h3" style="margin-bottom:20px">EOS R7 wows with its ability to track fast-moving subjects with its Deep-learning Dual Pixel CMOS AF II focus system.</div>
+
+              <oryx-button  href="/category/12">Shop now</oryx-button>
+
+            `,
             },
           },
           options: {
@@ -95,7 +97,7 @@ export const homePage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
-      id: 'homeBrands',
+      id: 'brands',
       name: 'brands',
       options: {
         rules: [

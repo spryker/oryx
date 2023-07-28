@@ -74,7 +74,7 @@ describe('SiteCurrencySelectorComponent', () => {
     });
 
     it('should not render the currency selector', () => {
-      expect(element).not.toContainElement('button');
+      expect(element).not.toContainElement('oryx-button');
     });
   });
 
@@ -87,7 +87,7 @@ describe('SiteCurrencySelectorComponent', () => {
     });
 
     it('should not show the currency selector', () => {
-      expect(element).not.toContainElement('button');
+      expect(element).not.toContainElement('oryx-button');
     });
   });
 
@@ -102,7 +102,7 @@ describe('SiteCurrencySelectorComponent', () => {
     });
 
     it('should show the currency selector', () => {
-      expect(element).toContainElement('button');
+      expect(element).toContainElement('oryx-button');
     });
 
     describe('and a currency is selected', () => {
@@ -130,7 +130,7 @@ describe('SiteCurrencySelectorComponent', () => {
       });
 
       it('should render the currency selector', () => {
-        const button = element.shadowRoot?.querySelector('button');
+        const button = element.shadowRoot?.querySelector('oryx-button');
         expect(button).toBeDefined();
         expect(button?.textContent).toContain('EUR');
       });

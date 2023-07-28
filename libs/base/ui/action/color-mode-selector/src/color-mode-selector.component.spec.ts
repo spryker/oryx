@@ -61,29 +61,27 @@ describe('ColorModeSelectorComponent', () => {
     });
 
     it('should render proper structure', () => {
-      const icon = element.renderRoot.querySelector('oryx-icon');
-      expect(element).toContainElement('oryx-icon-button');
-      expect(element).toContainElement('button');
-      expect(element).toContainElement('oryx-icon');
-      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
+      const button = element.renderRoot.querySelector('oryx-button');
+      expect(button).toHaveProperty('icon', IconTypes.ModeDark);
     });
   });
 
-  describe('when button component has been clicked', () => {
+  describe('when button component has been clicked', async () => {
     it('should toggle icon type', async () => {
-      const button = element.renderRoot.querySelector('button');
-      const icon = element.renderRoot.querySelector('oryx-icon');
-      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
+      const button =
+        element.renderRoot.querySelector<HTMLElement>('oryx-button');
+      expect(button).toHaveProperty('icon', IconTypes.ModeDark);
       button?.click();
       await nextFrame();
-      expect(icon).toHaveProperty('type', IconTypes.ModeLight);
+      expect(button).toHaveProperty('icon', IconTypes.ModeLight);
       button?.click();
       await nextFrame();
-      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
+      expect(button).toHaveProperty('icon', IconTypes.ModeDark);
     });
 
     it('should toggle attribute on the root element', async () => {
-      const button = element.renderRoot.querySelector('button');
+      const button =
+        element.renderRoot.querySelector<HTMLElement>('oryx-button');
       button?.click();
       await nextFrame();
       expect(document.body?.hasAttribute('mode-dark')).toBe(true);
@@ -96,8 +94,9 @@ describe('ColorModeSelectorComponent', () => {
 
   describe('when `oryx.toggle-mode` event has been dispatched', () => {
     it('should toggle icon type', async () => {
-      const icon = element.renderRoot.querySelector('oryx-icon');
-      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
+      const button =
+        element.renderRoot.querySelector<HTMLElement>('oryx-button');
+      expect(button).toHaveProperty('icon', IconTypes.ModeDark);
       window.dispatchEvent(
         createEvent(
           { type: EVENT_TOGGLE_COLOR },
@@ -105,7 +104,7 @@ describe('ColorModeSelectorComponent', () => {
         )
       );
       await nextFrame();
-      expect(icon).toHaveProperty('type', IconTypes.ModeLight);
+      expect(button).toHaveProperty('icon', IconTypes.ModeLight);
       window.dispatchEvent(
         createEvent(
           { type: EVENT_TOGGLE_COLOR },
@@ -113,8 +112,9 @@ describe('ColorModeSelectorComponent', () => {
         )
       );
       await nextFrame();
-      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
+      expect(button).toHaveProperty('icon', IconTypes.ModeDark);
     });
+
     it('should toggle attribute on the root element', async () => {
       window.dispatchEvent(
         createEvent(
@@ -138,29 +138,30 @@ describe('ColorModeSelectorComponent', () => {
 
   describe('when mode has been change thought browser', () => {
     it('should change icon type', async () => {
-      const icon = element.renderRoot.querySelector('oryx-icon');
+      const button =
+        element.renderRoot.querySelector<HTMLElement>('oryx-button');
       darkMode.match = false;
       triggerMatcher();
       await nextFrame();
-      expect(icon).toHaveProperty('type', IconTypes.ModeDark);
+      expect(button).toHaveProperty('icon', IconTypes.ModeDark);
       darkMode.match = true;
       triggerMatcher();
       await nextFrame();
-      expect(icon).toHaveProperty('type', IconTypes.ModeLight);
+      expect(button).toHaveProperty('icon', IconTypes.ModeLight);
       darkMode.match = false;
     });
 
     it('should not change icon type if root element has attribute', async () => {
-      const button = element.renderRoot.querySelector('button');
-      const icon = element.renderRoot.querySelector('oryx-icon');
+      const button =
+        element.renderRoot.querySelector<HTMLElement>('oryx-button');
       button?.click();
       await nextFrame();
       expect(document.body?.hasAttribute(ColorMode.Dark)).toBe(true);
-      expect(icon).toHaveProperty('type', IconTypes.ModeLight);
+      expect(button).toHaveProperty('icon', IconTypes.ModeLight);
       darkMode.match = false;
       triggerMatcher();
       await nextFrame();
-      expect(icon).toHaveProperty('type', IconTypes.ModeLight);
+      expect(button).toHaveProperty('icon', IconTypes.ModeLight);
     });
   });
 });

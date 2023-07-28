@@ -1,7 +1,8 @@
 import { isFirefox } from '@spryker-oryx/ui';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nMixin, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import { I18nMixin } from '@spryker-oryx/utilities';
+import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { BACK_EVENT, CLOSE_EVENT, ModalProperties } from './modal.model';
@@ -152,14 +153,13 @@ export class ModalComponent
           this.enableNavigateBack,
           () => html`
             <slot name="navigate-back" @click=${this.onGoBack}>
-              <oryx-icon-button>
-                <button
-                  type="button"
-                  aria-label="${this.i18n('oryx.modal.navigate-back')}"
-                >
-                  <oryx-icon .type=${IconTypes.Back}></oryx-icon>
-                </button>
-              </oryx-icon-button>
+              <oryx-button
+                .type=${ButtonType.Icon}
+                .size=${ButtonSize.Md}
+                .color=${ButtonColor.Neutral}
+                .icon=${IconTypes.ArrowBack}
+                .label=${this.i18n('modal.back')}
+              ></oryx-button>
             </slot>
           `
         )}
@@ -172,11 +172,19 @@ export class ModalComponent
         ${when(
           this.enableCloseButtonInHeader,
           () => html`
-            <oryx-icon-button size=${Size.Sm}>
-              <button value="cancel" aria-label="close modal">
+            <oryx-button
+              .type=${ButtonType.Icon}
+              .size=${ButtonSize.Md}
+              .color=${ButtonColor.Neutral}
+            >
+              <button
+                slot="custom"
+                value="cancel"
+                aria-label=${this.i18n('modal.close')}
+              >
                 <oryx-icon .type=${IconTypes.Close}></oryx-icon>
               </button>
-            </oryx-icon-button>
+            </oryx-button>
           `
         )}
       </header>
@@ -195,8 +203,12 @@ export class ModalComponent
           () => html`
             <footer slot="footer">
               <slot name="footer">
-                <oryx-button type="secondary" outline .size=${Size.Md}>
-                  <button value="cancel">
+                <oryx-button
+                  .type=${ButtonType.Outline}
+                  .color=${ButtonColor.Neutral}
+                  .size=${ButtonSize.Md}
+                >
+                  <button slot="custom" value="cancel">
                     ${this.i18n(
                       this.enableNavigateBack ? 'modal.back' : 'modal.cancel'
                     )}

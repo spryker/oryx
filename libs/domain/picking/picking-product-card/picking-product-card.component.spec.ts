@@ -90,7 +90,7 @@ describe('PickingProductCardComponent', () => {
         });
 
         it('should disable the button', () => {
-          expect(element).toContainElement('oryx-button button[disabled]');
+          expect(element).toContainElement('oryx-button[disabled]');
         });
       });
     });
@@ -108,11 +108,9 @@ describe('PickingProductCardComponent', () => {
             ></oryx-picking-product-card>
           `
         );
-
-        const button = element.shadowRoot?.querySelector(
-          'oryx-button button'
-        ) as HTMLButtonElement;
-        button.click();
+        element.shadowRoot
+          ?.querySelector<HTMLElement>('oryx-button button')
+          ?.click();
       });
 
       it('should dispatch submit event', () => {
@@ -134,10 +132,7 @@ describe('PickingProductCardComponent', () => {
           `
         );
 
-        const button = element.shadowRoot?.querySelector(
-          'oryx-button button'
-        ) as HTMLButtonElement;
-        button.click();
+        element.shadowRoot?.querySelector<HTMLElement>('oryx-button')?.click();
       });
 
       it('should dispatch edit event', () => {
@@ -183,9 +178,10 @@ describe('PickingProductCardComponent', () => {
     });
 
     it('should render edit button', () => {
-      expect(
-        element.shadowRoot?.querySelector('oryx-button button')?.textContent
-      ).toContain('Edit items');
+      expect(element.renderRoot.querySelector('oryx-button')).toHaveProperty(
+        'text',
+        'Edit items'
+      );
     });
   });
 
@@ -218,9 +214,10 @@ describe('PickingProductCardComponent', () => {
     });
 
     it('should render edit button', () => {
-      expect(
-        element.shadowRoot?.querySelector('oryx-button button')?.textContent
-      ).toContain('Edit items');
+      expect(element.renderRoot.querySelector('oryx-button')).toHaveProperty(
+        'text',
+        'Edit items'
+      );
     });
   });
 });

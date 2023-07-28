@@ -111,20 +111,15 @@ describe('PickingListItemComponent', () => {
     it('should emit showCustomerNote event when the customer note button is clicked', () => {
       const event = vi.fn();
       element.addEventListener('oryx.show-note', event);
-
-      const button: HTMLButtonElement | null = element.renderRoot.querySelector(
-        'oryx-icon-button > button'
-      );
-      button?.click();
-
+      element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
       expect(event).toHaveBeenCalled();
     });
 
     describe('and picking is proceed', () => {
       beforeEach(() => {
         element.renderRoot
-          .querySelector('oryx-button button')
-          ?.dispatchEvent(new MouseEvent('click'));
+          .querySelector<HTMLElement>('oryx-button.start-picking')
+          ?.click();
       });
 
       it('should perform redirect', () => {
@@ -149,15 +144,13 @@ describe('PickingListItemComponent', () => {
       );
     });
 
-    it('should not render icon button', () => {
-      expect(element).not.toContainElement('oryx-icon-button');
+    it('should not render show-customer button', () => {
+      expect(element).not.toContainElement('oryx-button.show-customer');
     });
 
     describe('and picking is proceed', () => {
       beforeEach(() => {
-        element.renderRoot
-          .querySelector('oryx-button button')
-          ?.dispatchEvent(new MouseEvent('click'));
+        element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
       });
 
       it('should start picking', () => {
@@ -183,18 +176,13 @@ describe('PickingListItemComponent', () => {
               return error;
             })
           );
-
           element = await fixture(
             html`<oryx-picking-list-item
               pickingListId="id"
             ></oryx-picking-list-item>`
           );
-
           element.addEventListener('oryx.show-picking-in-progress', event);
-
-          element.renderRoot
-            .querySelector('oryx-button button')
-            ?.dispatchEvent(new MouseEvent('click'));
+          element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
         });
 
         it('should emit showPickingInProgress event', () => {

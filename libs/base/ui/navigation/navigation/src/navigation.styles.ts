@@ -47,18 +47,17 @@ export const navigationStyles = css`
     opacity: 0;
   }
 
-  oryx-icon-button {
+  oryx-button {
     position: absolute;
     inset-inline-end: -12px;
     inset-block-end: 30px;
   }
 
-  oryx-icon-button button {
-    background-color: var(--oryx-color-neutral-1);
+  oryx-button::part(button)::before {
     border-color: var(--oryx-color-neutral-8);
   }
 
-  :host([collapsed]) oryx-icon-button oryx-icon {
+  :host([collapsed]) oryx-button {
     transform: rotate(180deg);
   }
 `;

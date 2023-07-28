@@ -1,7 +1,7 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 
 export const searchPage: ExperienceComponent = {
-  id: 'search',
+  id: 'search-page',
   type: 'Page',
   meta: {
     title: 'Search',
@@ -21,9 +21,24 @@ export const searchPage: ExperienceComponent = {
           { query: { breakpoint: 'md' }, splitColumnFactor: 1 / 3 },
         ],
       },
+    },
+    {
+      type: 'oryx-composition',
+      id: 'product-listing',
+      name: 'Product listing',
+      options: {
+        rules: [{ layout: 'flex', vertical: true, gap: '20px' }],
+      },
       components: [
         {
-          type: 'oryx-search-facet-navigation',
+          type: 'oryx-composition',
+          id: 'product-listing-header',
+          name: 'Product list header',
+          components: [{ type: 'oryx-search-product-sort' }],
+          options: { rules: [{ layout: 'flex', justify: 'end' }] },
+        },
+        {
+          type: 'oryx-product-list',
           options: {
             rules: [
               {

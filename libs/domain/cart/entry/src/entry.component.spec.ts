@@ -341,13 +341,14 @@ describe('CartEntryComponent', () => {
       });
 
       it('should disable the actions', () => {
-        expect(element).toContainElement('oryx-icon-button[disabled]');
+        expect(element).toContainElement('.actions oryx-button[disabled]');
       });
 
       describe('and when the cart is no longer busy', () => {
         beforeEach(() => {
           isBusy$.next(false);
         });
+
         it('should enable the oryx-cart-quantity-input', () => {
           expect(element).toContainElement(
             'oryx-cart-quantity-input:not([disabled])'
@@ -355,7 +356,9 @@ describe('CartEntryComponent', () => {
         });
 
         it('should enable the actions', () => {
-          expect(element).toContainElement('oryx-icon-button:not([disabled])');
+          expect(element).toContainElement(
+            '.actions oryx-button:not([disabled])'
+          );
         });
       });
     });

@@ -121,7 +121,7 @@ describe('CheckoutBillingAddressComponent', () => {
     });
 
     it('should have a change button by default', () => {
-      const button = element.renderRoot.querySelector('button');
+      const button = element.renderRoot.querySelector('oryx-button');
       expect(button?.textContent).contain('Change');
     });
 
@@ -141,11 +141,11 @@ describe('CheckoutBillingAddressComponent', () => {
 
       describe('and the change button is clicked', () => {
         beforeEach(() => {
-          element.renderRoot.querySelector('button')?.click();
+          element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
         });
 
         it('should render the "same as shipping address" button', () => {
-          const button = element.renderRoot.querySelector('button');
+          const button = element.renderRoot.querySelector('oryx-button');
           expect(button?.textContent).contain('Same as shipping address');
         });
 

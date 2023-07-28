@@ -1,10 +1,8 @@
 import { css } from 'lit';
 
 export const siteCurrencySelectorStyles = css`
-  button {
-    --oryx-icon-color: white;
-
-    color: white;
+  oryx-button {
+    color: inherit;
     text-transform: uppercase;
   }
 `;

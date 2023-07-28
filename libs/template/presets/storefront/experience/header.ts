@@ -1,6 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Size } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
@@ -8,7 +7,7 @@ export const HeaderTemplate: ExperienceComponent = {
   components: [
     {
       type: 'oryx-composition',
-      id: 'headerLinks',
+      id: 'header-links',
       components: [
         {
           type: 'oryx-content-link',
@@ -49,12 +48,12 @@ export const HeaderTemplate: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
-      id: 'headerBody',
+      id: 'header-body',
       name: 'Composition',
       components: [
         {
           type: 'oryx-content-image',
-          id: 'headerLogo',
+          id: 'site-logo',
           content: {
             data: {
               graphic: 'logo',
@@ -68,7 +67,7 @@ export const HeaderTemplate: ExperienceComponent = {
                 colSpan: 3,
                 height: '42px',
                 justify: 'start',
-                style: 'color: var(--oryx-color-primary-0, white)',
+                style: 'color: var(--oryx-color-primary-12)',
               },
               { query: { breakpoint: 'md' }, colSpan: 2 },
             ],
@@ -86,7 +85,7 @@ export const HeaderTemplate: ExperienceComponent = {
         },
         {
           type: 'oryx-composition',
-          id: 'headerActions',
+          id: 'header-actions',
           components: [
             {
               type: 'oryx-site-navigation-item',

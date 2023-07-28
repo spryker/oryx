@@ -4,11 +4,14 @@ import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { hydrate, I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { checkoutLinkStyles } from './link.styles';
 
 @hydrate({ event: ['window:load'] })
 export class CheckoutLinkComponent extends I18nMixin(
   CartComponentMixin(LitElement)
 ) {
+  static styles = [checkoutLinkStyles];
+
   protected semanticLinkService = resolve(LinkService);
 
   protected $link = signal(
@@ -19,9 +22,11 @@ export class CheckoutLinkComponent extends I18nMixin(
     if (this.$isEmpty()) return;
 
     return html`
-      <oryx-button ?loading=${this.$isBusy()}>
-        <a href=${this.$link()}>${this.i18n('cart.checkout')}</a>
-      </oryx-button>
+      <oryx-button
+        .text=${this.i18n('cart.checkout')}
+        .href=${this.$link()}
+        ?loading=${this.$isBusy()}
+      ></oryx-button>
     `;
   }
 }

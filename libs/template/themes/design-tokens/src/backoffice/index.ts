@@ -10,22 +10,15 @@ import {
 
 import { commonTokensSmall } from '../common-tokens';
 import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
-import { iconTokens } from './icon.token';
+import { buttonTokens } from './button.token';
 
 export const backofficeTokens: DesignToken[] = [
+  ...buttonTokens,
   {
     color,
     ...tokens,
     ...typographyTokens,
-    ...iconTokens,
     ...layoutTokens,
-    button: {
-      icon: {
-        sm: '13.3px',
-        md: '13.3px',
-        lg: '13.3px',
-      },
-    },
   },
   {
     media: {

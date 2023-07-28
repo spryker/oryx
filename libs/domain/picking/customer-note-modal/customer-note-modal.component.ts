@@ -1,8 +1,8 @@
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonSize } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
-import { I18nMixin, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { I18nMixin } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 
 export class CustomerNoteModalComponent extends I18nMixin(LitElement) {
@@ -24,12 +24,14 @@ export class CustomerNoteModalComponent extends I18nMixin(LitElement) {
           <h2>${this.i18n('picking-lists.customer-note.customer-note')}</h2>
         </oryx-heading>
         <slot></slot>
-        <oryx-button slot="footer" type=${ButtonType.Primary} size=${Size.Md}>
-          <button @click=${this.close}>
-            <oryx-icon .type=${IconTypes.Check}></oryx-icon>
-            ${this.i18n('picking-lists.customer-note.got-it')}
-          </button>
-        </oryx-button>
+        <oryx-button
+          slot="footer"
+          .color=${ButtonColor.Primary}
+          .size=${ButtonSize.Md}
+          .icon=${IconTypes.Check}
+          .text=${this.i18n('picking-lists.customer-note.got-it')}
+          @click=${this.close}
+        ></oryx-button>
       </oryx-modal>
     `;
   }

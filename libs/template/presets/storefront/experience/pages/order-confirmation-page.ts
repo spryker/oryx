@@ -1,7 +1,7 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 
 export const orderConfirmationPage: ExperienceComponent = {
-  id: 'order-confirmation',
+  id: 'order-confirmation-page',
   type: 'Page',
   meta: {
     title: 'Order Confirmation Page',
@@ -13,10 +13,8 @@ export const orderConfirmationPage: ExperienceComponent = {
     { type: 'oryx-order-confirmation-banner' },
     {
       type: 'oryx-composition',
-      id: 'orderData',
-      options: {
-        rules: [{ layout: 'split-main', padding: '30px 0' }],
-      },
+      id: 'order-totals',
+      options: { rules: [{ layout: 'split-main', padding: '30px 0 0' }] },
       components: [
         {
           type: 'oryx-order-summary',
@@ -30,10 +28,7 @@ export const orderConfirmationPage: ExperienceComponent = {
             { type: 'oryx-cart-totals-total' },
           ],
         },
-        {
-          type: 'oryx-order-entries',
-          options: { rules: [{ colSpan: 2 }] },
-        },
+        { type: 'oryx-order-entries' },
       ],
     },
     { ref: 'footer' },

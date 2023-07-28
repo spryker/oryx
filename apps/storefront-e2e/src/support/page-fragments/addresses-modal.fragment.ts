@@ -78,7 +78,7 @@ export class AddressesModalFragment {
       url: '/customers/*/addresses/*',
     }).as('deleteUserAddressesRequest');
     // click remove button in remove address modal
-    cy.get('oryx-user-address-remove').find('button').eq(1).click();
+    cy.get('oryx-user-address-remove').find('oryx-button').eq(1).click();
     cy.wait('@deleteUserAddressesRequest');
   };
 }

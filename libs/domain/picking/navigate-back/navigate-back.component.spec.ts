@@ -23,7 +23,10 @@ describe('NavigateBackComponent', () => {
 
   describe('when there is no url provided', () => {
     it('should use default url', () => {
-      expect(element).toContainElement('a[href="/"]');
+      expect(element.renderRoot.querySelector('oryx-button')).toHaveProperty(
+        'href',
+        '/'
+      );
     });
   });
 
@@ -37,7 +40,10 @@ describe('NavigateBackComponent', () => {
     });
 
     it('should build the url based on provided url', () => {
-      expect(element).toContainElement(`a[href="${url}"]`);
+      expect(element.renderRoot.querySelector('oryx-button')).toHaveProperty(
+        'href',
+        url
+      );
     });
   });
 });

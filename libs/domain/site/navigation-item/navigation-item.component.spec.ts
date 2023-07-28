@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { TokenResolver } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { modalComponent } from '@spryker-oryx/ui/modal';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -72,7 +73,7 @@ describe('SiteNavigationItemComponent', () => {
 
   const getTrigger = (): HTMLElement | null => {
     return element.renderRoot.querySelector(
-      'oryx-button, oryx-icon-button, oryx-site-navigation-button'
+      'oryx-button, oryx-site-navigation-button'
     ) as HTMLElement;
   };
 
@@ -197,7 +198,7 @@ describe('SiteNavigationItemComponent', () => {
       `);
     });
 
-    it('should render oryx-dropdown', () => {
+    it('should render modal', () => {
       expect(element).toContainElement('oryx-modal');
     });
 
@@ -239,8 +240,8 @@ describe('SiteNavigationItemComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('should render oryx-button with button inside', () => {
-      expect(element).toContainElement('oryx-button button');
+    it('should render oryx-button', () => {
+      expect(element).toContainElement('oryx-button');
     });
 
     describe('and icon is provided', () => {
@@ -257,7 +258,7 @@ describe('SiteNavigationItemComponent', () => {
       });
 
       it('should render oryx-icon', () => {
-        expect(element).toContainElement('oryx-icon');
+        expect(element).toContainElement(`oryx-button[icon="test"]`);
       });
     });
 
@@ -276,7 +277,7 @@ describe('SiteNavigationItemComponent', () => {
       });
 
       it('should render anchor element inside oryx-button with given url', () => {
-        expect(element).toContainElement(`oryx-button a[href="${url}"]`);
+        expect(element).toContainElement(`oryx-button[href="${url}"]`);
       });
     });
   });
@@ -290,8 +291,10 @@ describe('SiteNavigationItemComponent', () => {
       `);
     });
 
-    it('should render oryx-icon-button with button inside', () => {
-      expect(element).toContainElement('oryx-icon-button button');
+    it('should render oryx-button with icon type', () => {
+      expect(element).toContainElement(
+        `oryx-button[type="${ButtonType.Icon}"]`
+      );
     });
 
     describe('and icon is provided', () => {
@@ -308,7 +311,7 @@ describe('SiteNavigationItemComponent', () => {
       });
 
       it('should render oryx-icon', () => {
-        expect(element).toContainElement('oryx-icon');
+        expect(element).toContainElement(`oryx-button[icon="test"]`);
       });
     });
 
@@ -326,8 +329,8 @@ describe('SiteNavigationItemComponent', () => {
         `);
       });
 
-      it('should render anchor element inside oryx-icon-button with given url', () => {
-        expect(element).toContainElement(`oryx-icon-button a[href="${url}"]`);
+      it('should render anchor element inside oryx-button with given url', () => {
+        expect(element).toContainElement(`oryx-button[href="${url}"]`);
       });
     });
   });
@@ -413,23 +416,6 @@ describe('SiteNavigationItemComponent', () => {
 
       describe('when triggerBehavior is "hover"', () => {
         describe('and trigger is hovered', () => {
-          beforeEach(async () => {
-            element = await fixture(html`
-              <oryx-site-navigation-item
-                .options=${{
-                  label: 'test',
-                  triggerType,
-                  triggerBehavior: NavigationTriggerBehavior.Hover,
-                }}
-              ></oryx-site-navigation-item>
-            `);
-            triggerHover();
-          });
-
-          it('should pass focus to the trigger', () => {
-            expect(element.matches(':focus')).toBe(true);
-          });
-
           describe('and contentBehavior is "modal"', () => {
             beforeEach(async () => {
               element = await fixture(html`

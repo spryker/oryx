@@ -92,7 +92,8 @@ const smallScreen = css`
           )
       )
     );
-    transform: translateY(calc(-50% + var(--floating-vertical-offset, 16px)));
+    transform: translateY(calc(-50% + var(--floating-vertical-offset, 20px)));
+    z-index: 1;
   }
 
   :host([xs-floated]) :is(slot[name='label'], .back-button + .search-button) {
