@@ -62,9 +62,7 @@ describe('CustomerNoteModal', () => {
       });
 
       it(`should emit ${CLOSE_EVENT} event when on button click`, () => {
-        getModal()
-          ?.querySelector<HTMLButtonElement>('oryx-button button')
-          ?.click();
+        getModal()?.querySelector<HTMLElement>('oryx-button')?.click();
         expect(spy).toBeCalled();
       });
 

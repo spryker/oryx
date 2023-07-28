@@ -63,4 +63,8 @@ export const pickingProductCardComponentStyles = css`
   .bold-text {
     font-weight: 600;
   }
+
+  oryx-button {
+    display: block;
+  }
 `;

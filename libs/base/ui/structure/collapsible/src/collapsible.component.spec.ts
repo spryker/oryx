@@ -1,11 +1,9 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import { Size, useComponent } from '@spryker-oryx/utilities';
+import { ButtonSize } from '@spryker-oryx/ui/button';
+import { useComponent } from '@spryker-oryx/utilities';
 import { CollapsibleComponent } from './collapsible.component';
 import { collapsibleComponent } from './collapsible.def';
-import {
-  CollapsibleAppearance,
-  CollapsibleToggleControlType,
-} from './collapsible.model';
+import { CollapsibleAppearance } from './collapsible.model';
 
 describe('CollapsibleComponent', () => {
   let element: CollapsibleComponent;
@@ -26,36 +24,17 @@ describe('CollapsibleComponent', () => {
   });
 
   describe('When the appearance is block', () => {
-    describe('and the TextButton toggle control type is provided', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-collapsible
-            .appearance=${CollapsibleAppearance.Block}
-            .toggleControlType=${CollapsibleToggleControlType.TextButton}
-          ></oryx-collapsible>`
-        );
-      });
-
-      it('should have a medium sized oryx-button', () => {
-        const toggle = element.shadowRoot?.querySelector('oryx-button');
-        expect(toggle?.getAttribute('size')).toBe(Size.Md);
-      });
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-collapsible
+          .appearance=${CollapsibleAppearance.Block}
+        ></oryx-collapsible>`
+      );
     });
 
-    describe('and the IconButton toggle control type is provided', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-collapsible
-            .appearance=${CollapsibleAppearance.Block}
-            .toggleControlType=${CollapsibleToggleControlType.IconButton}
-          ></oryx-collapsible>`
-        );
-      });
-
-      it('should have a medium sized oryx-icon-button', () => {
-        const toggle = element.shadowRoot?.querySelector('oryx-icon-button');
-        expect(toggle?.getAttribute('size')).toBe(Size.Md);
-      });
+    it('should have a small sized oryx-button', () => {
+      const button = element.renderRoot.querySelector('oryx-button');
+      expect(button).toHaveProperty('size', ButtonSize.Sm);
     });
   });
 
@@ -70,38 +49,6 @@ describe('CollapsibleComponent', () => {
 
     it('should set tabindex on summary', () => {
       expect(element).toContainElement('summary[tabindex="-1"]');
-    });
-
-    describe('and the TextButton toggle control type is provided', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-collapsible
-            .appearance=${CollapsibleAppearance.Inline}
-            .toggleControlType=${CollapsibleToggleControlType.TextButton}
-          ></oryx-collapsible>`
-        );
-      });
-
-      it('should have a medium sized oryx-button', () => {
-        const toggle = element.shadowRoot?.querySelector('oryx-button');
-        expect(toggle?.getAttribute('size')).toBe(Size.Sm);
-      });
-    });
-
-    describe('and the IconButton toggle control type is provided', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-collapsible
-            .appearance=${CollapsibleAppearance.Inline}
-            .toggleControlType=${CollapsibleToggleControlType.IconButton}
-          ></oryx-collapsible>`
-        );
-      });
-
-      it('should have a medium sized oryx-icon-button', () => {
-        const toggle = element.shadowRoot?.querySelector('oryx-icon-button');
-        expect(toggle?.getAttribute('size')).toBe(Size.Sm);
-      });
     });
   });
 

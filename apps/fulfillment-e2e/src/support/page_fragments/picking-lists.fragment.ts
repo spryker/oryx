@@ -12,9 +12,9 @@ export class PickingListsFragment {
     this.getNoItemsFallback().find('oryx-image[resource="no-search-results"]');
   getPickingListsItems = () => this.getWrapper().find('oryx-picking-list-item');
   getCustomerNoteButtons = () =>
-    this.getPickingListsItems().find('.total oryx-icon-button button');
+    this.getPickingListsItems().find('.total oryx-button');
   getStartPickingButtons = () =>
-    this.getPickingListsItems().find('oryx-button[slot="footer"] button');
+    this.getPickingListsItems().find('oryx-button[slot="footer"]');
   getPickingListItemId = (eq: number) =>
     this.getPickingListsItems()
       .eq(eq)

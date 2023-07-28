@@ -6,7 +6,6 @@ import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { NavigationButtonAttributes } from './navigation-button.model';
 import { siteNavigationButtonStyles } from './navigation-button.styles';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 @hydrate()
 export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttributes>(
@@ -14,14 +13,19 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
 ) {
   static styles = siteNavigationButtonStyles;
 
+  static shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   @property() url?: string;
   @property() icon?: string;
   @property() text?: string;
   @property() badge?: string;
 
   protected override render(): TemplateResult {
-    const innerContent = html`
-      ${when(this.icon, () => html`<oryx-icon type=${this.icon!}></oryx-icon>`)}
+    const buttonContent = html`
+      ${when(this.icon, () => html`<oryx-icon type=${this.icon}></oryx-icon>`)}
       ${when(
         this.text,
         () =>
@@ -33,14 +37,11 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
     `;
 
     return html`
-      <oryx-button>
+      <oryx-button .href=${this.url}>
         ${when(
           this.url,
-          () =>
-            html`<a href=${this.url!} aria-label=${ifDefined(this.text)}
-              >${innerContent}</a
-            >`,
-          () => html`<button>${innerContent}</button>`
+          () => html`${buttonContent}`,
+          () => html`${buttonContent}`
         )}
       </oryx-button>
     `;

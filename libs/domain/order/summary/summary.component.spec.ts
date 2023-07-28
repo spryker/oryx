@@ -152,10 +152,7 @@ describe('OrderSummaryComponent', () => {
       setupControllerSpies();
 
       element = await fixture(html`<oryx-order-summary></oryx-order-summary>`);
-
-      element.renderRoot
-        .querySelector('oryx-button button')
-        ?.dispatchEvent(new MouseEvent('click'));
+      element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
     });
 
     it('should print the receipt', () => {

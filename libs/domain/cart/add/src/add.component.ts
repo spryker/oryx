@@ -9,14 +9,14 @@ import { ProductMixin } from '@spryker-oryx/product';
 import { ButtonComponent, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
+  Size,
   computed,
   elementEffect,
   hydrate,
-  Size,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
-import { when } from 'lit/directives/when.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { CartAddOptions } from './add.model';
 import { styles } from './add.styles';
 
@@ -37,13 +37,12 @@ export class CartAddComponent extends ProductMixin(
 
   protected override render(): TemplateResult | void {
     if (!this.$product()?.sku) return;
-    if (this.$options().hideQuantityInput) {
-      return this.renderButton();
-    }
     return html`${this.renderQuantity()} ${this.renderButton()}`;
   }
 
   protected renderQuantity(): TemplateResult | void {
+    if (this.$options().hideQuantityInput) return;
+
     return html`<oryx-cart-quantity-input
       .min=${this.$min()}
       .max=${this.$max()}
@@ -54,21 +53,19 @@ export class CartAddComponent extends ProductMixin(
 
   protected renderButton(): TemplateResult | void {
     const { outlined, enableLabel } = this.$options();
+    const type = outlined ? ButtonType.Outline : ButtonType.Solid;
+    const text = this.i18n('cart.add-to-cart') as string;
 
     return html`<oryx-button
-      size=${Size.Sm}
-      type=${ButtonType.Primary}
-      ?outline=${outlined}
-    >
-      <button
-        ?disabled=${this.isInvalid || !this.$hasStock()}
-        @mouseup=${this.onMouseUp}
-        @click=${this.onSubmit}
-      >
-        <oryx-icon .type=${IconTypes.CartAdd} size=${Size.Lg}></oryx-icon>
-        ${when(enableLabel, () => html`${this.i18n('cart.add-to-cart')}`)}
-      </button>
-    </oryx-button>`;
+      size=${Size.Md}
+      type=${type}
+      text=${ifDefined(enableLabel ? text : undefined)}
+      label=${ifDefined(enableLabel ? undefined : text)}
+      icon=${IconTypes.CartAdd}
+      ?disabled=${this.isInvalid || !this.$hasStock()}
+      @click=${this.onSubmit}
+      @mouseup=${this.onMouseUp}
+    ></oryx-button>`;
   }
 
   protected onMouseUp(e: Event): void {

@@ -9,7 +9,6 @@ import {
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   Size,
   computed,
@@ -116,21 +115,16 @@ export class ProductCardComponent extends ProductMixin(
   }
 
   // TODO: move to wishlist component
-  private renderWishlist(): TemplateResult | void {
-    if (this.$options().enableWishlist) {
-      return html`<div class="actions">
-        <oryx-icon-button>
-          <button
-            tabindex="-1"
-            aria-label="add-to-favorites"
-            @click=${(e: Event) => e.preventDefault()}
-          >
-            <oryx-icon .type=${IconTypes.Wishlist}></oryx-icon>
-          </button>
-        </oryx-icon-button>
-      </div>`;
-    }
-  }
+  // private renderWishlist(): TemplateResult | void {
+  //   if (this.$options().enableWishlist) {
+  //     return html`<div class="actions">
+  //       <oryx-button
+  //          .type=${ButtonType.Icon} .icon=${IconTypes.Wishlist}
+  //          @click=${(e: Event) => e.preventDefault()}>
+  //       </oryx-icon-button>
+  //     </div>`;
+  //   }
+  // }
 
   protected renderMedia(
     containerSize = ProductMediaContainerSize.Thumbnail
@@ -179,11 +173,11 @@ export class ProductCardComponent extends ProductMixin(
 
     return html`<oryx-cart-add
       tabindex="-1"
-      .options="${{
+      .options=${{
         outlined: true,
         hideQuantityInput: true,
         enableLabel: template === 'grid',
-      }}"
+      }}
     ></oryx-cart-add>`;
   }
 }

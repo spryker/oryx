@@ -40,9 +40,7 @@ describe('DiscardModalComponent', () => {
 
     describe('and close button is clicked', () => {
       beforeEach(() => {
-        element.renderRoot
-          .querySelector('button')
-          ?.dispatchEvent(new MouseEvent('click'));
+        element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
       });
 
       it('should close the modal', () => {

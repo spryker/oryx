@@ -1,30 +1,21 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import {
   CollapsibleAppearance,
   CollapsibleAttributes,
-  CollapsibleToggleControlType,
 } from '../collapsible.model';
 
 export default {
   title: `${storybookPrefix}/Structure/Collapsible`,
   args: {
     appearance: CollapsibleAppearance.Block,
-    toggleControlType: CollapsibleToggleControlType.IconButton,
     heading: 'heading',
     nonTabbable: false,
   },
   argTypes: {
     appearance: {
       options: [CollapsibleAppearance.Block, CollapsibleAppearance.Inline],
-      control: { type: 'select' },
-    },
-    toggleControlType: {
-      options: [
-        CollapsibleToggleControlType.IconButton,
-        CollapsibleToggleControlType.TextButton,
-      ],
       control: { type: 'select' },
     },
     open: {
@@ -46,7 +37,6 @@ const Template: Story<CollapsibleAttributes> = (props): TemplateResult => {
     <oryx-collapsible
       ?open=${props.open}
       .appearance=${props.appearance}
-      .toggleControlType=${props.toggleControlType}
       .heading=${props.heading}
       ?nonTabbable=${props.nonTabbable}
     >

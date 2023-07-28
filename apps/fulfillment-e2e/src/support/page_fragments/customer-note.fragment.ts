@@ -6,7 +6,6 @@ export class CustomerNoteFragment {
   getIllustration = () => this.getWrapper().find('oryx-image');
   getNavigateBackButton = () => this.getWrapper().find('oryx-navigate-back');
   getNote = () => this.getWrapper().find('p');
-  getProceedToPickingButton = () =>
-    this.getWrapper().find('oryx-button button').eq(0);
+  getProceedToPickingButton = () => this.getWrapper().find('oryx-button').eq(0);
   pickingInProgressModal = new PickingInProgressModalFragment();
 }

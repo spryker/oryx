@@ -3,7 +3,7 @@ import {
   FormControlController,
   FormControlOptions,
 } from '@spryker-oryx/ui/input';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { SearchboxController } from './searchbox.controller';
 import {

@@ -1,8 +1,8 @@
 import { CustomerNoteFragment } from '../support/page_fragments/customer-note.fragment';
+import { DiscardModalFragment } from '../support/page_fragments/discard-modal.fragment';
+import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 import { PickingFragment } from '../support/page_fragments/picking.fragment';
-import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
-import { DiscardModalFragment } from '../support/page_fragments/discard-modal.fragment';
 
 const pickingListsFragment = new PickingListsFragment();
 const customerNoteFragment = new CustomerNoteFragment();
@@ -49,7 +49,7 @@ describe('Start picking a picklist with customer note', () => {
     beforeEach(() => {
       customerNoteFragment.getProceedToPickingButton().should('be.visible');
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(300);
+      cy.wait(1000);
       customerNoteFragment.getProceedToPickingButton().click();
     });
 
@@ -80,6 +80,8 @@ describe('Start picking a picklist with customer note', () => {
       discardModalFragment.getDiscardButton().click();
       cy.location('pathname').should('to.match', /^\/customer-note-info/);
 
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(1000);
       customerNoteFragment.getProceedToPickingButton().click();
 
       // See discard modal by clicking on browser back button
@@ -97,6 +99,8 @@ describe('Start picking a picklist with customer note', () => {
       discardModalFragment.getDiscardButton().click();
       cy.location('pathname').should('to.match', /^\/customer-note-info/);
 
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(1000);
       customerNoteFragment.getProceedToPickingButton().click();
 
       // should display "Not picked" as selected
@@ -120,7 +124,7 @@ describe('Start picking a picklist with customer note', () => {
 
       customerNoteFragment.getProceedToPickingButton().should('be.visible');
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(300);
+      cy.wait(1000);
       customerNoteFragment.getProceedToPickingButton().click();
     });
 

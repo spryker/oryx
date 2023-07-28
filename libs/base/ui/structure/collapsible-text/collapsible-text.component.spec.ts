@@ -1,7 +1,7 @@
 import '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
-import { useComponent } from '@spryker-oryx/utilities';
-import { ButtonComponent, ButtonType } from '../../action/button/src';
+import { i18n, useComponent } from '@spryker-oryx/utilities';
+import { ButtonComponent, ButtonType } from '../../action/button';
 import { CollapsibleTextComponent } from './collapsible-text.component';
 import { collapsibleTextComponent } from './collapsible-text.def';
 import { CollapsibleTextToggle } from './collapsible-text.model';
@@ -66,21 +66,22 @@ describe('CollapsibleTextComponent', () => {
       });
 
       it('should have a toggle button', () => {
-        expect(element).toContainElement('oryx-icon-button button');
+        expect(element).toContainElement('oryx-button');
       });
 
-      it('should have Read more aria label', () => {
-        const button = element.renderRoot.querySelector('button');
-        expect(button?.getAttribute('aria-label')).toBe('Read more');
+      it('should have Read more text', () => {
+        const button = element.renderRoot.querySelector('oryx-button');
+        expect(button).toHaveProperty('label', 'Read more');
       });
 
       describe('and when the button is clicked', () => {
         beforeEach(() => {
-          element.renderRoot.querySelector('button')?.click();
+          element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
         });
 
-        it('should have Read less aria label', () => {
-          expect(element).toContainElement('button[aria-label="Read less"]');
+        it('should have Read less text', () => {
+          const button = element.renderRoot.querySelector('oryx-button');
+          expect(button).toHaveProperty('label', 'Read less');
         });
       });
     });
@@ -101,18 +102,20 @@ describe('CollapsibleTextComponent', () => {
       });
 
       it('should have Read more text', () => {
-        const button = element.renderRoot.querySelector('button');
-        expect(button?.textContent).toContain('Read more');
+        expect(
+          element.renderRoot.querySelector('oryx-button')?.textContent?.trim()
+        ).toBe(i18n('read-more'));
       });
 
       describe('and when the button is clicked', () => {
         beforeEach(() => {
-          element.renderRoot.querySelector('button')?.click();
+          element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
         });
 
-        it('should have Read less aria label', () => {
-          const button = element.renderRoot.querySelector('button');
-          expect(button?.textContent).toContain('Read less');
+        it('should have Read less text', () => {
+          expect(
+            element.renderRoot.querySelector('oryx-button')?.textContent?.trim()
+          ).toBe(i18n('read-less'));
         });
       });
     });

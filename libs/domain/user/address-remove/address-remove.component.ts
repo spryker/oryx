@@ -1,8 +1,8 @@
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { AddressMixin } from '@spryker-oryx/user';
-import { hydrate, I18nMixin, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { I18nMixin, Size, hydrate } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { tap } from 'rxjs';
 import { styles } from './address-remove.styles';
@@ -19,14 +19,13 @@ export class UserAddressRemoveComponent extends I18nMixin(
 
   protected override render(): TemplateResult | void {
     return html`
-      <oryx-icon-button>
-        <button
-          aria-label=${this.i18n('user.address.remove')}
-          @click=${this.onConfirm}
-        >
-          <oryx-icon .type=${IconTypes.Trash}></oryx-icon>
-        </button>
-      </oryx-icon-button>
+      <oryx-button
+        .type=${ButtonType.Icon}
+        .size=${ButtonSize.Md}
+        .label=${this.i18n('user.address.remove')}
+        .icon=${IconTypes.Trash}
+        @click=${this.onConfirm}
+      ></oryx-button>
       ${this.renderRemoveConfirmationModal()}
     `;
   }
@@ -51,13 +50,12 @@ export class UserAddressRemoveComponent extends I18nMixin(
       </section>
       <oryx-button
         slot="footer-more"
-        type=${ButtonType.Critical}
+        .color=${ButtonColor.Error}
+        .size=${ButtonSize.Md}
+        .text=${this.i18n('user.address.remove')}
         ?loading=${this.loading}
-      >
-        <button @click=${this.onRemove}>
-          ${this.i18n('user.address.remove')}
-        </button>
-      </oryx-button>
+        @click=${this.onRemove}
+      ></oryx-button>
     </oryx-modal>`;
   }
 

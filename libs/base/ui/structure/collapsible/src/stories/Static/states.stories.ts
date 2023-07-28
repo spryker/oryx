@@ -1,11 +1,8 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../../.constants';
-import {
-  CollapsibleAppearance,
-  CollapsibleToggleControlType,
-} from '../../collapsible.model';
+import { CollapsibleAppearance } from '../../collapsible.model';
 
 export default {
   title: `${storybookPrefix}/Structure/Collapsible/Static`,
@@ -35,16 +32,8 @@ const sections = [
     appearance: CollapsibleAppearance.Inline,
   },
   {
-    title: 'Inline appearance (toggle button)',
+    title: 'Inline appearance (aside content)',
     appearance: CollapsibleAppearance.Inline,
-    toggleControlType: CollapsibleToggleControlType.TextButton,
-  },
-  {
-    title: 'Inline appearance (custom text, aside content)',
-    appearance: CollapsibleAppearance.Inline,
-    toggleControlType: CollapsibleToggleControlType.TextButton,
-    collapsed: 'hide please',
-    expanded: 'show more',
     aside: '$0.99',
   },
 ];
@@ -92,19 +81,11 @@ const Template: Story<unknown> = (): TemplateResult => {
 
 const collapsible = (section: any, open = false): TemplateResult => html`
   <oryx-collapsible
-    appearance=${section.appearance}
+    .appearance=${section.appearance}
     .toggleControlType=${section.toggleControlType}
     ?open=${open}
   >
     <span slot="heading">Heading</span>
-    ${when(
-      section.expanded,
-      () => html`<span slot="expanded">${section.expanded}</span>`
-    )}
-    ${when(
-      section.collapsed,
-      () => html`<span slot="collapsed">${section.collapsed}</span>`
-    )}
     ${when(
       section.aside,
       () =>
