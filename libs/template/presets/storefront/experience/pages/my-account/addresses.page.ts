@@ -8,29 +8,23 @@ export const addressBookPage: ExperienceComponent = {
     title: 'Address book',
     route: '/my-account/addresses',
   },
+  options: {
+    rules: [
+      { layout: 'flex', padding: '30px 0', width: '50%', margin: 'auto' },
+    ],
+  },
   components: [
     {
-      type: 'oryx-composition',
-      id: 'addressBookBody',
+      type: 'oryx-user-address-list',
       options: {
-        rules: [
-          { layout: 'flex', padding: '30px 0', width: '50%', margin: 'auto' },
-        ],
+        editable: true,
+        removable: true,
+        editTarget: EditTarget.Link,
       },
-      components: [
-        {
-          type: 'oryx-user-address-list',
-          options: {
-            editable: true,
-            removable: true,
-            editTarget: EditTarget.Link,
-          },
-        },
-        {
-          type: 'oryx-user-address-add-button',
-          options: { target: 'link' },
-        },
-      ],
+    },
+    {
+      type: 'oryx-user-address-add-button',
+      options: { target: 'link' },
     },
   ],
 };

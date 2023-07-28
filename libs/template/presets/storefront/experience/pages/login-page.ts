@@ -8,21 +8,15 @@ export const loginPage: ExperienceComponent = {
     route: '/login',
     description: 'Login Page Description',
   },
+  options: {
+    rules: [{ layout: 'flex', padding: '30px 0' }],
+  },
   components: [
     {
-      type: 'oryx-composition',
-      id: 'loginBody',
+      type: 'oryx-auth-login',
       options: {
-        rules: [{ layout: 'flex', padding: '30px 0' }],
+        rules: [{ width: '50%', margin: 'auto' }],
       },
-      components: [
-        {
-          type: 'oryx-auth-login',
-          options: {
-            rules: [{ width: '50%', margin: 'auto' }],
-          },
-        },
-      ],
     },
   ],
 };
