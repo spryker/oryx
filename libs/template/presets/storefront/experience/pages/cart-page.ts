@@ -1,7 +1,7 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 
 export const cartPage: ExperienceComponent = {
-  id: 'cart',
+  id: 'cart-page',
   type: 'Page',
   meta: {
     title: 'Cart Page',
@@ -42,13 +42,13 @@ export const cartPage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
-      id: 'cartEntries',
+      id: 'cart-entries',
       components: [{ type: 'oryx-cart-entries' }],
       options: { rules: [{ layout: 'list' }] },
     },
     {
       type: 'oryx-composition',
-      id: 'cartTotals',
+      id: 'cart-totals',
       components: [
         {
           type: 'oryx-cart-totals',

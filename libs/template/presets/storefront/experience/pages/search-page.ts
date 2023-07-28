@@ -1,7 +1,7 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 
 export const searchPage: ExperienceComponent = {
-  id: 'search',
+  id: 'search-page',
   type: 'Page',
   meta: {
     title: 'Search',
@@ -34,7 +34,7 @@ export const searchPage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
-      id: 'productListing',
+      id: 'product-listing',
       name: 'Product listing',
       options: {
         rules: [{ layout: 'flex', vertical: true, gap: '20px' }],
@@ -42,7 +42,7 @@ export const searchPage: ExperienceComponent = {
       components: [
         {
           type: 'oryx-composition',
-          id: 'productListingHeader',
+          id: 'product-listing-header',
           name: 'Product list header',
           components: [{ type: 'oryx-search-product-sort' }],
           options: { rules: [{ layout: 'flex', justify: 'end' }] },

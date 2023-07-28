@@ -8,7 +8,7 @@ export const HeaderTemplate: ExperienceComponent = {
   components: [
     {
       type: 'oryx-composition',
-      id: 'headerLinks',
+      id: 'header-links',
       components: [
         {
           type: 'oryx-content-link',
@@ -49,12 +49,12 @@ export const HeaderTemplate: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
-      id: 'headerBody',
+      id: 'header-body',
       name: 'Composition',
       components: [
         {
           type: 'oryx-content-image',
-          id: 'headerLogo',
+          id: 'site-logo',
           content: {
             data: {
               graphic: 'logo',
@@ -86,7 +86,7 @@ export const HeaderTemplate: ExperienceComponent = {
         },
         {
           type: 'oryx-composition',
-          id: 'headerActions',
+          id: 'header-actions',
           components: [
             {
               type: 'oryx-site-navigation-item',

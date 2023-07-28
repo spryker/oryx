@@ -2,7 +2,7 @@ import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { ExperienceComponent } from '@spryker-oryx/experience';
 
 export const checkoutPage: ExperienceComponent = {
-  id: 'checkout',
+  id: 'checkout-page',
   type: 'Page',
   meta: {
     title: 'Checkout Page',
@@ -43,7 +43,7 @@ export const checkoutPage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
-      id: 'checkoutInformation',
+      id: 'checkout-information',
       components: [
         {
           type: 'oryx-checkout-orchestrator',
@@ -70,7 +70,7 @@ export const checkoutPage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
-      id: 'checkoutTotals',
+      id: 'checkout-totals',
       options: {
         rules: [{ hideByRule: 'CART.EMPTY' }, { sticky: true, top: '108px' }],
       },

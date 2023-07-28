@@ -2,7 +2,7 @@ import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 
 export const contactPage: ExperienceComponent = {
-  id: 'contact',
+  id: 'contact-page',
   type: 'Page',
   meta: {
     title: 'Contact Page',

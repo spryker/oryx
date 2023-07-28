@@ -1,7 +1,7 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 
 export const categoryPage: ExperienceComponent = {
-  id: 'category',
+  id: 'category-page',
   type: 'Page',
   meta: {
     title: 'Category Page',
@@ -36,7 +36,7 @@ export const categoryPage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
-      id: 'productListing',
+      id: 'product-listing',
       name: 'Product listing',
       options: {
         rules: [{ layout: 'list', gap: '20px' }],
@@ -44,7 +44,7 @@ export const categoryPage: ExperienceComponent = {
       components: [
         {
           type: 'oryx-composition',
-          id: 'productListingHeader',
+          id: 'product-listing-header',
           name: 'Product list header',
           options: { rules: [{ layout: 'flex' }] },
           components: [

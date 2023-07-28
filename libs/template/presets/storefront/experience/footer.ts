@@ -21,7 +21,7 @@ const link = (text: string, url = '/', icon?: string) => ({
 const legalLinks = {
   type: 'oryx-composition',
   name: 'legal links',
-  id: 'bottomFooter',
+  id: 'legal-links',
   components: [
     {
       type: 'oryx-content-text',
@@ -42,7 +42,7 @@ const legalLinks = {
 
 const customerSupport = {
   type: 'oryx-content-text',
-  id: 'customerSupport',
+  id: 'customer-support',
   content: {
     data: {
       text: `<b>Customer Support</b><br/>
@@ -58,7 +58,7 @@ const customerSupport = {
 
 const promises = {
   type: 'oryx-composition',
-  id: 'promises',
+  id: 'corporate-promises',
   options: { rules: [{ layout: 'list', gap: '0' }] },
   components: [
     heading('Our promises'),
@@ -70,7 +70,7 @@ const promises = {
 
 const aboutUs = {
   type: 'oryx-content-text',
-  id: 'aboutUs',
+  id: 'corporate-info',
   content: {
     data: {
       text: `<b>About us</b><br/>
@@ -85,9 +85,9 @@ const aboutUs = {
   },
 };
 
-const selfServiceLinks = {
+const selfService = {
   type: 'oryx-composition',
-  id: 'selfService',
+  id: 'self-service',
   name: 'Self service',
   options: {
     rules: [
@@ -101,13 +101,13 @@ const selfServiceLinks = {
 
 const paymentLinks = {
   type: 'oryx-composition',
-  id: 'paymentLinks',
+  id: 'payment',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
     heading('Safe Payment methods'),
     {
       type: 'oryx-composition',
-      id: 'paymentLinkImages',
+      id: 'payment-links',
       options: {
         rules: [
           { layout: 'column', columnCount: 3 },
@@ -135,13 +135,13 @@ const paymentLinks = {
 
 const shippingLinks = {
   type: 'oryx-composition',
-  id: 'shippingLinks',
+  id: 'shipping',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
     heading('Shipping partners'),
     {
       type: 'oryx-composition',
-      id: 'shippingLinkImages',
+      id: 'shipping-links',
       options: {
         rules: [
           { layout: 'column', columnCount: 3 },
@@ -163,13 +163,13 @@ const shippingLinks = {
 
 const mobileAppsLinks = {
   type: 'oryx-composition',
-  id: 'mobileAppsLinks',
+  id: 'apps',
   options: { rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }] },
   components: [
     heading('Spryker apps'),
     {
       type: 'oryx-composition',
-      id: 'mobileAppsLinkImages',
+      id: 'app-links',
       options: {
         rules: [{ layout: 'flex', align: 'center' }],
       },
@@ -180,7 +180,7 @@ const mobileAppsLinks = {
 
 const socialLinks = {
   type: 'oryx-composition',
-  id: 'socialLinks',
+  id: 'social',
   options: {
     rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }],
   },
@@ -188,7 +188,7 @@ const socialLinks = {
     heading('You can also find us on'),
     {
       type: 'oryx-composition',
-      id: 'socialLinkImages',
+      id: 'social-links',
       options: {
         rules: [{ layout: 'flex', align: 'center', gap: 20 }],
       },
@@ -202,31 +202,29 @@ const socialLinks = {
   ],
 };
 
-const otherLinks = {
+const externalLinks = {
   type: 'oryx-composition',
-  id: 'otherLinks',
+  id: 'external-links',
   options: { rules: [{ layout: 'list' }] },
   components: [
     {
       type: 'oryx-composition',
-      id: 'tradeMarksLinks',
       options: { rules: [{ layout: 'column', columnCount: 6 }] },
       components: [paymentLinks, mobileAppsLinks],
     },
     {
       type: 'oryx-composition',
-      id: 'brandsLinks',
       options: { rules: [{ layout: 'column', columnCount: 6 }] },
       components: [shippingLinks, socialLinks],
     },
   ],
 };
 
-const topFooter = {
+const siteLinks = {
   type: 'oryx-composition',
-  id: 'topFooter',
+  id: 'site-links',
   options: { rules: [{ layout: 'split', gap: '10px' }] },
-  components: [selfServiceLinks, otherLinks],
+  components: [selfService, externalLinks],
 };
 
 export const FooterTemplate: ExperienceComponent = {
@@ -241,7 +239,7 @@ export const FooterTemplate: ExperienceComponent = {
       components: [
         {
           type: 'oryx-composition',
-          components: [topFooter, legalLinks],
+          components: [siteLinks, legalLinks],
           options: {
             rules: [
               {

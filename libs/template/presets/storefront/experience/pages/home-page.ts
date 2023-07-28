@@ -8,7 +8,7 @@ const brand = (name: string, rules?: StyleRuleSet[]) => ({
 });
 
 export const homePage: ExperienceComponent = {
-  id: 'home',
+  id: 'home-page',
   type: 'Page',
   meta: {
     title: 'Home Page',
@@ -18,7 +18,7 @@ export const homePage: ExperienceComponent = {
   components: [
     {
       type: 'oryx-composition',
-      id: 'homeBanner',
+      id: 'home-hero',
       components: [
         {
           type: 'oryx-content-image',
@@ -96,7 +96,7 @@ export const homePage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
-      id: 'homeBrands',
+      id: 'brands',
       name: 'brands',
       options: {
         rules: [
