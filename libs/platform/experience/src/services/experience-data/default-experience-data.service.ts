@@ -64,73 +64,10 @@ export class DefaultExperienceDataService implements ExperienceDataService {
 
     for (const strategy of this.strategies) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const { selector, disableGlobal } = strategy.merge!;
+      const { selector } = strategy.merge!;
       const paths = selector.split('.');
       const isTemplateId = paths[0].startsWith('#');
       const templateId = paths[0].substring(1);
-      const isTemplateOnly = paths.length === 1 && isTemplateId;
-
-      if (disableGlobal) {
-        for (const template of templates) {
-          const innerPaths = [...paths];
-
-          if (isTemplateOnly && template.id === templateId) {
-            this.mergeByStrategy({
-              strategy,
-              components: template.components,
-            });
-
-            break;
-          }
-
-          if (isTemplateId && template.id !== templateId) {
-            continue;
-          }
-
-          let { components } = template;
-
-          for (let i = isTemplateId ? 1 : 0; i < innerPaths.length; i++) {
-            const [path, nested] = innerPaths[i].split('>');
-
-            if (nested) {
-              innerPaths.splice(
-                i + 1,
-                0,
-                ...Array(Number(nested) - 1).fill(path)
-              );
-            }
-
-            const { component, childIndex, componentIndex } = this.getChildData(
-              path,
-              components
-            );
-
-            const isLast = i === innerPaths.length - 1;
-
-            if (isLast && !childIndex) {
-              this.mergeAll({
-                strategy,
-                components,
-                name: path,
-              });
-
-              break;
-            }
-
-            if (isLast) {
-              this.mergeByStrategy({
-                strategy,
-                components,
-                componentIndex,
-              });
-            }
-
-            components = component?.components;
-          }
-        }
-
-        continue;
-      }
 
       const mainTemplates = templates.length;
 
