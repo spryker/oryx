@@ -49,7 +49,7 @@ describe('Start picking a picklist with customer note', () => {
     beforeEach(() => {
       customerNoteFragment.getProceedToPickingButton().should('be.visible');
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(300);
+      cy.wait(1000);
       customerNoteFragment.getProceedToPickingButton().click();
     });
 
@@ -80,6 +80,8 @@ describe('Start picking a picklist with customer note', () => {
       discardModalFragment.getDiscardButton().click();
       cy.location('pathname').should('to.match', /^\/customer-note-info/);
 
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(1000);
       customerNoteFragment.getProceedToPickingButton().click();
 
       // See discard modal by clicking on browser back button
@@ -122,7 +124,7 @@ describe('Start picking a picklist with customer note', () => {
 
       customerNoteFragment.getProceedToPickingButton().should('be.visible');
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(300);
+      cy.wait(1000);
       customerNoteFragment.getProceedToPickingButton().click();
     });
 
