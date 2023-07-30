@@ -8,10 +8,10 @@ const landingPage = new LandingPage();
 describe('Authentication suite', () => {
   it('must allow to login and logout', { tags: 'smoke' }, () => {
     cy.login();
-    checkSuccessfulLogin();
+    verifySuccessfulLogin();
 
     landingPage.header.logout();
-    checkSuccessfulLogout();
+    verifySuccessfulLogout();
   });
 
   it('must show a BE error message if user logs in with invalid credentials', () => {
@@ -24,22 +24,22 @@ describe('Authentication suite', () => {
     loginPage.visit();
     loginPage.loginForm.login(invalidUser);
 
-    checkFailedLogin();
+    verifyFailedLogin();
   });
 });
 
-function checkFailedLogin() {
+function verifyFailedLogin() {
   loginPage.header.checkTextInUserSummaryHeading('login');
   loginPage.loginForm.getBEValidationError().should('be.visible');
   loginPage.globalNotificationCenter.getWrapper().should('not.be.visible');
 }
 
-function checkSuccessfulLogin() {
+function verifySuccessfulLogin() {
   cy.fixture<Customer>('test-customer').then((customer) => {
     landingPage.header.checkTextInUserSummaryHeading(customer.name);
   });
 }
 
-function checkSuccessfulLogout() {
+function verifySuccessfulLogout() {
   loginPage.header.checkTextInUserSummaryHeading('login');
 }

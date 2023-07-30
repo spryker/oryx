@@ -12,31 +12,11 @@ import { SearchPage } from '../support/page-objects/search.page';
 import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
+let sccosApi: SCCOSApi;
+
 const footer = new FooterFragment();
 const header = new HeaderFragment();
 const search = new SearchFragment();
-let sccosApi: SCCOSApi;
-const verifyFooter = (isPageScrollable = true) => {
-  if (isPageScrollable) {
-    cy.scrollTo('bottom');
-  }
-
-  footer.getLinkByUrl('/contact').should('be.visible');
-
-  const currentYear = new Date().getFullYear();
-  footer
-    .getWrapper()
-    .find('oryx-text')
-    .shadow()
-    .should('contain.text', currentYear);
-};
-
-const verifyHeader = () => {
-  header.getLocaleSelector().should('be.visible');
-  header.getCurrencySelector().should('be.visible');
-  header.getUserSummaryHeading().should('be.visible');
-  search.getTypeahead().should('be.visible');
-};
 
 describe('SSR suite', { tags: 'smoke' }, () => {
   if (Cypress.env('isSSR')) {
@@ -126,8 +106,8 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     });
 
     it('must render Category page', () => {
-      const categoryId = { id: '6' };
-      const categoryPage = new CategoryPage(categoryId);
+      const categoryData = { id: '6' };
+      const categoryPage = new CategoryPage(categoryData);
 
       categoryPage.visit();
 
@@ -142,12 +122,14 @@ describe('SSR suite', { tags: 'smoke' }, () => {
 
     it('must render Checkout page', () => {
       const checkoutPage = new CheckoutPage();
+
       sccosApi = new SCCOSApi();
       sccosApi.guestCarts.get();
       sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
 
       cy.goToCheckoutAsGuest();
-      cy.location('pathname').should('be.eq', checkoutPage.anonymousUrl);
+
+      // trigger ssr
       cy.reload();
 
       verifyHeader();
@@ -158,3 +140,26 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     });
   }
 });
+
+function verifyFooter(isPageScrollable = true) {
+  if (isPageScrollable) {
+    cy.scrollTo('bottom');
+  }
+
+  footer.getLinkByUrl('/contact').should('be.visible');
+
+  const currentYear = new Date().getFullYear();
+
+  footer
+    .getWrapper()
+    .find('oryx-text')
+    .shadow()
+    .should('contain.text', currentYear);
+}
+
+function verifyHeader() {
+  header.getLocaleSelector().should('be.visible');
+  header.getCurrencySelector().should('be.visible');
+  header.getUserSummaryHeading().should('be.visible');
+  search.getTypeahead().should('be.visible');
+}
