@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { inject } from '@spryker-oryx/di';
 import {
   ExperienceComponent,
@@ -8,53 +9,22 @@ import {
 
 interface MergeProperties {
   strategy: ExperienceComponent;
-  components?: ExperienceComponent[];
+  template: ExperienceComponent;
   componentIndex?: number;
   name?: string;
 }
 
 export class DefaultExperienceDataService implements ExperienceDataService {
-  protected records: Record<string, ExperienceComponent> = {};
+  protected records?: Record<string, ExperienceComponent>;
   protected strategies: ExperienceComponent[] = [];
   protected autoComponentId = 0;
 
   constructor(protected experienceData = inject(ExperienceData, [])) {}
 
   getData(cb: (c: ExperienceComponent) => void): ExperienceComponent[] {
-    const copy: ExperienceComponent[] = JSON.parse(
-      JSON.stringify(this.experienceData)
-    ).flat();
+    if (!this.records) this.initialize();
 
-    // Sort strategies and templates
-    for (const record of copy) {
-      if (record.merge) {
-        this.strategies.push(record);
-
-        continue;
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.records[record.id!] = record;
-    }
-
-    const records = [...this.strategies, ...Object.values(this.records)];
-
-    // Adds references to the components
-    for (const record of records) {
-      if (record.ref && this.records[record.ref]) {
-        Object.assign(
-          record,
-          JSON.parse(JSON.stringify(this.records[record.ref]))
-        );
-        delete record.ref;
-      }
-
-      records.push(...(record.components ?? []));
-    }
-
-    this.processMerging();
-
-    const data = Object.values(this.records);
+    const data = Object.values(this.records!);
 
     // Register all components with has id's
     for (const record of data) {
@@ -67,104 +37,118 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       cb?.(record);
       data.push(...(record.components ?? []));
     }
-
-    return Object.values(this.records);
+    console.log(this.records);
+    return Object.values(this.records!);
   }
 
-  protected processMerging(): void {
-    const templates = Object.values(this.records);
+  protected initialize(): void {
+    const copy: ExperienceComponent[] = JSON.parse(
+      JSON.stringify(this.experienceData)
+    ).flat();
 
-    for (const strategy of this.strategies) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const { selector, disableGlobal } = strategy.merge!;
-      const paths = selector.split('.');
-      const isTemplateId = paths[0].startsWith('#');
-      const templateId = paths[0].substring(1);
-      const isTemplateOnly = paths.length === 1 && isTemplateId;
-
-      if (disableGlobal) {
-        for (const template of templates) {
-          const innerPaths = [...paths];
-
-          if (isTemplateOnly && template.id === templateId) {
-            this.mergeByStrategy({
-              strategy,
-              components: template.components,
-            });
-
-            break;
-          }
-
-          if (isTemplateId && template.id !== templateId) {
-            continue;
-          }
-
-          let { components } = template;
-
-          for (let i = isTemplateId ? 1 : 0; i < innerPaths.length; i++) {
-            const [path, nested] = innerPaths[i].split('>');
-
-            if (nested) {
-              innerPaths.splice(
-                i + 1,
-                0,
-                ...Array(Number(nested) - 1).fill(path)
-              );
-            }
-
-            const { component, childIndex, componentIndex } = this.getChildData(
-              path,
-              components
-            );
-
-            const isLast = i === innerPaths.length - 1;
-
-            if (isLast && !childIndex) {
-              this.mergeAll({
-                strategy,
-                components,
-                name: path,
-              });
-
-              break;
-            }
-
-            if (isLast) {
-              this.mergeByStrategy({
-                strategy,
-                components,
-                componentIndex,
-              });
-            }
-
-            components = component?.components;
-          }
-        }
+    // Divide strategies and templates
+    for (const record of copy) {
+      if (record.merge) {
+        this.strategies.push(record);
 
         continue;
       }
 
-      const mainTemplates = templates.length;
+      this.records ??= {};
+      this.records[record.id!] = record;
+    }
 
-      for (const [index, template] of templates.entries()) {
-        if (
-          isTemplateId &&
-          template.id !== templateId &&
-          index < mainTemplates
-        ) {
+    const records = [...this.strategies, ...Object.values(this.records!)];
+
+    // Adds references to the components
+    for (const record of records) {
+      if (record.ref && this.records![record.ref]) {
+        Object.assign(
+          record,
+          JSON.parse(JSON.stringify(this.records![record.ref]))
+        );
+        delete record.ref;
+      }
+
+      records.push(...(record.components ?? []));
+    }
+
+    this.processMerging();
+  }
+
+  protected processMerging(): void {
+    const templates = Object.values(this.records!);
+
+    for (const strategy of this.strategies) {
+      const { selector } = strategy.merge!;
+      let templateId = '';
+      const paths = selector
+        .split('.')
+        .map((path) => {
+          if (path.startsWith('#')) {
+            templateId = path.substring(1);
+
+            return [];
+          }
+
+          const [name, nested] = path.split('>');
+          return nested ? Array(Number(nested)).fill(name) : name;
+        })
+        .flat();
+      const isTemplateOnly = !paths.length && templateId;
+
+      for (const template of templates) {
+        if (isTemplateOnly && template.id === templateId) {
+          this.mergeByStrategy({
+            strategy,
+            template,
+          });
+
+          break;
+        }
+
+        if (templateId && template.id !== templateId) {
           continue;
         }
 
-        const path = isTemplateId && paths.length === 2 ? paths[1] : paths[0];
-
-        this.mergeAll({
-          strategy,
-          components: template.components,
-          name: path,
-        });
-
-        templates.push(...(template?.components ?? []));
+        this.recursiveMerge(template, paths, strategy);
       }
+    }
+  }
+
+  protected recursiveMerge(
+    template: ExperienceComponent,
+    paths: string[],
+    strategy: ExperienceComponent
+  ): void {
+    const components = template.components ?? [];
+
+    for (let i = 0; i < components.length; i++) {
+      const component = components[i];
+
+      if (component.type === paths[0] || component.id === paths[0]) {
+        if (paths.length === 1) {
+          this.mergeByStrategy({
+            strategy,
+            template,
+            componentIndex: i,
+          });
+
+          if (
+            strategy.merge?.type === ExperienceDataMergeType.Before ||
+            strategy.merge?.type === ExperienceDataMergeType.After
+          )
+            i += 1;
+
+          continue;
+        }
+
+        this.recursiveMerge(component ?? [], paths.slice(1), strategy);
+
+        continue;
+      }
+
+      this.recursiveMerge(component ?? [], paths, strategy);
     }
   }
 
@@ -205,58 +189,34 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     };
   }
 
-  protected mergeAll(properties: MergeProperties): void {
-    const { components = [], strategy, name = '' } = properties;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { type } = strategy.merge!;
-
-    for (let i = 0; i < components.length; i++) {
-      if (name !== components[i].type && name !== components[i].id) {
-        continue;
-      }
-
-      this.mergeByStrategy({
-        strategy,
-        components:
-          type === ExperienceDataMergeType.Prepend ||
-          type === ExperienceDataMergeType.Append
-            ? components[i].components
-            : components,
-        componentIndex: i,
-      });
-
-      if (
-        type === ExperienceDataMergeType.Before ||
-        type === ExperienceDataMergeType.After
-      )
-        i++;
-    }
-  }
-
   protected mergeByStrategy(properties: MergeProperties): void {
-    const { components = [], componentIndex = NaN } = properties;
+    const { template, componentIndex = NaN } = properties;
     const strategy = { ...properties.strategy };
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { type = ExperienceDataMergeType.Replace } = strategy.merge!;
-    const merge = (start: number, end = 0) =>
-      components.splice(start, end, strategy);
+    const { components = [] } = template;
+    const isNaN = Number.isNaN(componentIndex);
     delete strategy.merge;
 
-    if (type === ExperienceDataMergeType.Before) {
-      merge(componentIndex);
+    if (type === ExperienceDataMergeType.Before && !isNaN) {
+      components.splice(componentIndex, 0, strategy);
 
       return;
     }
 
-    if (type === ExperienceDataMergeType.After) {
-      merge(componentIndex + 1);
+    if (type === ExperienceDataMergeType.After && !isNaN) {
+      components.splice(componentIndex + 1, 0, strategy);
 
       return;
     }
 
     if (type === ExperienceDataMergeType.Replace) {
       strategy.type ??= 'oryx-composition';
-      components[componentIndex] = strategy;
+
+      if (componentIndex) {
+        components[componentIndex] = strategy;
+      } else {
+        template.components = [strategy];
+      }
 
       return;
     }
@@ -274,28 +234,37 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     }
 
     if (type === ExperienceDataMergeType.Patch) {
-      components[componentIndex] = {
-        ...components[componentIndex],
+      const component = components[componentIndex] ?? template;
+      const newComponent = {
+        ...component,
         ...strategy,
+        ...(strategy.meta && {
+          meta: {
+            ...(component?.meta ?? {}),
+            ...strategy.meta,
+          },
+        }),
         ...(strategy.options && {
           options: {
-            ...(components[componentIndex]?.options ?? {}),
-            ...(strategy.options ?? {}),
+            ...(component?.options ?? {}),
+            ...strategy.options,
           },
         }),
         ...(strategy.content && {
           content: {
-            ...(components[componentIndex].content ?? {}),
+            ...component.content,
             ...strategy.content,
             ...(strategy.content.data && {
               data: {
-                ...(components[componentIndex].content?.data ?? {}),
+                ...component.content?.data,
                 ...strategy.content.data,
               },
             }),
           },
         }),
       };
+
+      Object.assign(component, newComponent);
     }
   }
 

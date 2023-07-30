@@ -14,10 +14,8 @@ export const articlesPage: ExperienceComponent = {
     rules: [{ layout: 'flex', padding: '30px 0' }],
   },
   components: [
-    { ref: 'header' },
     {
-      type: 'oryx-composition',
-      id: 'articlesBody',
+      type: 'oryx-search-box',
       options: {
         rules: [{ margin: 'auto', width: '580px' }],
         [SuggestionField.Suggestions]: undefined,
@@ -62,37 +60,29 @@ export const faqsPage: ExperienceComponent = {
   type: 'Page',
   id: 'faqs',
   meta: { title: 'FAQ`s Page', route: `/${StoryblokContentFields.Faq}` },
+  options: {
+    rules: [{ layout: 'flex', padding: '30px 0' }],
+  },
   components: [
-    { ref: 'header' },
     {
-      type: 'oryx-composition',
-      id: 'faqsBody',
+      type: 'oryx-search-box',
       options: {
-        rules: [{ layout: 'flex', padding: '30px 0' }],
+        rules: [{ margin: 'auto', width: '580px' }],
+        [SuggestionField.Suggestions]: undefined,
+        [SuggestionField.Categories]: undefined,
+        [SuggestionField.Contents]: undefined,
+        [SuggestionField.Products]: undefined,
+        [StoryblokContentFields.Faq]: {
+          max: 8,
+        },
       },
-      components: [
-        {
-          type: 'oryx-search-box',
-          options: {
-            rules: [{ margin: 'auto', width: '580px' }],
-            [SuggestionField.Suggestions]: undefined,
-            [SuggestionField.Categories]: undefined,
-            [SuggestionField.Contents]: undefined,
-            [SuggestionField.Products]: undefined,
-            [StoryblokContentFields.Faq]: {
-              max: 8,
-            },
-          },
-        },
-        {
-          type: 'oryx-content-articles',
-          options: {
-            rules: [{ width: '80%', margin: 'auto' }],
-          },
-        },
-      ],
     },
-    { ref: 'footer' },
+    {
+      type: 'oryx-content-articles',
+      options: {
+        rules: [{ width: '80%', margin: 'auto' }],
+      },
+    },
   ],
 };
 
@@ -100,23 +90,15 @@ export const faqPage: ExperienceComponent = {
   type: 'Page',
   id: 'faq',
   meta: { title: 'FAQ Page', route: `/${StoryblokContentFields.Faq}/:id` },
+  options: {
+    rules: [{ layout: 'flex', padding: '30px 0' }],
+  },
   components: [
-    { ref: 'header' },
     {
-      type: 'oryx-composition',
-      id: 'faqBody',
+      type: 'oryx-content-article',
       options: {
-        rules: [{ layout: 'flex', padding: '30px 0' }],
+        rules: [{ width: '80%', margin: 'auto' }],
       },
-      components: [
-        {
-          type: 'oryx-content-article',
-          options: {
-            rules: [{ width: '80%', margin: 'auto' }],
-          },
-        },
-      ],
     },
-    { ref: 'footer' },
   ],
 };

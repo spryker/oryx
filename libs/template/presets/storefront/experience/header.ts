@@ -3,7 +3,8 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 
 export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
-  type: 'oryx-composition',
+  type: 'Page',
+  meta: { title: 'Header', route: '/_header' },
   components: [
     {
       type: 'oryx-composition',

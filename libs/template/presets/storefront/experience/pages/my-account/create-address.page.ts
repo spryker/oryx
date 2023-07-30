@@ -7,16 +7,8 @@ export const createAddressPage: ExperienceComponent = {
     title: 'Create address Page',
     route: '/my-account/addresses/create',
   },
-  components: [
-    { ref: 'header' },
-    {
-      type: 'oryx-composition',
-      id: 'createAddressBody',
-      options: {
-        rules: [{ layout: 'flex', width: '50%', margin: 'auto' }],
-      },
-      components: [{ type: 'oryx-user-address-edit' }],
-    },
-    { ref: 'footer' },
-  ],
+  options: {
+    rules: [{ layout: 'flex', width: '50%', margin: 'auto' }],
+  },
+  components: [{ type: 'oryx-user-address-edit' }],
 };

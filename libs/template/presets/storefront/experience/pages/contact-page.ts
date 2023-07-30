@@ -9,8 +9,17 @@ export const contactPage: ExperienceComponent = {
     route: '/contact',
     description: 'Contact Page Description',
   },
+  options: {
+    rules: [
+      {
+        layout: 'list',
+        padding: '10px 0',
+        bleed: true,
+        background: 'var(--oryx-color-primary-3)',
+      },
+    ],
+  },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-content-link',
       content: {
@@ -19,31 +28,10 @@ export const contactPage: ExperienceComponent = {
         },
       },
       options: {
-        rules: [
-          {
-            layout: 'list',
-            padding: '10px 0',
-            bleed: true,
-            background: 'var(--oryx-color-primary-3)',
-          },
-        ],
+        type: 'rawUrl',
+        url: '/contact',
+        icon: IconTypes.Check,
       },
-      components: [
-        {
-          type: 'oryx-content-link',
-          content: {
-            data: {
-              text: 'This is Contact Page element. Remove me when the page is implemented',
-            },
-          },
-          options: {
-            type: 'rawUrl',
-            url: '/contact',
-            icon: IconTypes.Check,
-          },
-        },
-      ],
     },
-    { ref: 'footer' },
   ],
 };

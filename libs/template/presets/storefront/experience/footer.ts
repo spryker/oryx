@@ -209,13 +209,11 @@ const externalLinks = {
   components: [
     {
       type: 'oryx-composition',
-      id: 'tradeMarksLinks',
       options: { rules: [{ layout: 'column', columnCount: 6 }] },
       components: [paymentLinks, mobileAppsLinks],
     },
     {
       type: 'oryx-composition',
-      id: 'brandsLinks',
       options: { rules: [{ layout: 'column', columnCount: 6 }] },
       components: [shippingLinks, socialLinks],
     },
@@ -231,7 +229,8 @@ const siteLinks = {
 
 export const FooterTemplate: ExperienceComponent = {
   id: 'footer',
-  type: 'oryx-composition',
+  type: 'Page',
+  meta: { title: 'Footer', route: '/_footer' },
   components: [
     {
       type: 'oryx-composition',

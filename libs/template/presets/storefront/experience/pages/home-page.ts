@@ -16,7 +16,6 @@ export const homePage: ExperienceComponent = {
     description: 'Home Page Description',
   },
   components: [
-    { ref: 'header' },
     {
       type: 'oryx-composition',
       id: 'home-hero',
@@ -136,6 +135,5 @@ export const homePage: ExperienceComponent = {
         brand('acer'),
       ],
     },
-    { ref: 'footer' },
   ],
 };
