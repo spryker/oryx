@@ -63,6 +63,10 @@ export class HeaderFragment {
     this.waitForProductsUpdate();
   };
 
+  checkTextInUserSummaryHeading(text: string) {
+    this.getUserSummaryHeading().should('contain', text);
+  }
+
   private initProductsUpdateInterceptor() {
     cy.intercept({
       method: 'GET',

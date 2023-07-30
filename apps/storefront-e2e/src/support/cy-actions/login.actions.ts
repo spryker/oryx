@@ -22,8 +22,6 @@ Cypress.Commands.add('login', () => {
     cy.intercept('/customers/DE--**').as('profileRequest');
     loginPage.loginForm.login(customer);
     cy.wait('@profileRequest');
-
-    loginPage.header.getUserSummaryHeading().should('contain', customer.name);
   });
 });
 
