@@ -62,65 +62,6 @@ export const faqsPage: ExperienceComponent = {
   type: 'Page',
   id: 'faqs',
   meta: { title: 'FAQ`s Page', route: `/${StoryblokContentFields.Faq}` },
-  options: {
-    rules: [{ layout: 'flex', padding: '30px 0' }],
-  },
-  components: [
-    {
-      type: 'oryx-search-box',
-      options: {
-        rules: [{ margin: 'auto', width: '580px' }],
-        [SuggestionField.Suggestions]: undefined,
-        [SuggestionField.Categories]: undefined,
-        [SuggestionField.Contents]: undefined,
-        [SuggestionField.Products]: undefined,
-        [StoryblokContentFields.Faq]: {
-          max: 8,
-        },
-      },
-    },
-    {
-      type: 'oryx-content-articles',
-      options: {
-        rules: [{ width: '80%', margin: 'auto' }],
-      },
-    },
-    { ref: 'footer' },
-  ],
-};
-
-export const faqPage: ExperienceComponent = {
-  type: 'Page',
-  id: 'faq',
-  meta: { title: 'FAQ Page', route: `/${StoryblokContentFields.Faq}/:id` },
-  options: {
-    rules: [{ layout: 'flex', padding: '30px 0' }],
-  },
-  components: [
-    { ref: 'header' },
-    {
-      type: 'oryx-composition',
-      id: 'articleBody',
-      options: {
-        rules: [{ width: '80%', margin: 'auto' }],
-      },
-      components: [
-        {
-          type: 'oryx-content-article',
-          options: {
-            rules: [{ width: '80%', margin: 'auto' }],
-          },
-        },
-      ],
-    },
-    { ref: 'footer' },
-  ],
-};
-
-export const faqsPage: ExperienceComponent = {
-  type: 'Page',
-  id: 'faqs',
-  meta: { title: 'FAQ`s Page', route: `/${StoryblokContentFields.Faq}` },
   components: [
     { ref: 'header' },
     {
