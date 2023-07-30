@@ -119,6 +119,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
 
   protected recursiveSearch(properties: MergeProperties): void {
     const { strategy, template, paths = [] } = properties;
+    const { type } = strategy.merge!;
     const { components } = template;
 
     if (!components) {
@@ -133,15 +134,20 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       const isMatch = component.type === path || component.id === path;
 
       if (isMatch && isMergeElement) {
+        console.log(path, component.type, isMatch);
         this.merge({
           strategy,
-          template,
+          template:
+            type === ExperienceDataMergeType.Prepend ||
+            type === ExperienceDataMergeType.Append
+              ? component
+              : template,
           componentIndex: i,
         });
 
         if (
-          strategy.merge?.type === ExperienceDataMergeType.Before ||
-          strategy.merge?.type === ExperienceDataMergeType.After
+          type === ExperienceDataMergeType.Before ||
+          type === ExperienceDataMergeType.After
         )
           i++;
 
@@ -189,6 +195,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     }
 
     if (type === ExperienceDataMergeType.Append) {
+      console.log(components);
       components.push(strategy);
 
       return;
