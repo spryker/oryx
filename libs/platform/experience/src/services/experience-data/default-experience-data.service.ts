@@ -134,7 +134,6 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       const isMatch = component.type === path || component.id === path;
 
       if (isMatch && isMergeElement) {
-        console.log(path, component.type, isMatch);
         this.merge({
           strategy,
           template:
@@ -195,7 +194,6 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     }
 
     if (type === ExperienceDataMergeType.Append) {
-      console.log(components);
       components.push(strategy);
 
       return;
