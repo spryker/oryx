@@ -13,7 +13,6 @@ interface MergeProperties {
   componentIndex?: number;
   name?: string;
   paths?: string[];
-  intermediate?: [string, number];
 }
 
 export class DefaultExperienceDataService implements ExperienceDataService {

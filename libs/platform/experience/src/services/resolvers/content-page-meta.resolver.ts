@@ -7,8 +7,10 @@ import { ExperienceComponent, ExperienceDataService } from '../experience';
 export class ContentPageMetaResolver implements PageMetaResolver {
   constructor(
     protected router = inject(RouterService),
-    protected experienceData = inject(ExperienceDataService)
+    protected experienceDataService = inject(ExperienceDataService)
   ) {}
+
+  protected experienceData = this.experienceDataService.getData();
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
@@ -52,7 +54,7 @@ export class ContentPageMetaResolver implements PageMetaResolver {
   protected getData(route: string): ExperienceComponent['meta'] | undefined {
     const routePath = route.split('/').filter(Boolean)[0];
 
-    return this.experienceData.getData().find((data) => {
+    return this.experienceData.find((data) => {
       const metaPath = data.meta?.route?.split('/').filter(Boolean)[0];
 
       return routePath === metaPath;
