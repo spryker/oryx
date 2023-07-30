@@ -8,7 +8,7 @@ export const StaticExperienceFeature: AppFeature = {
       type: 'oryx-content-text',
       content: { data: { text: '<h1>test 123</h1>' } },
       merge: {
-        selector: '#footer.corporate-promises.oryx-content-text',
+        selector: '#footer.corporate-promises.oryx-content-link[2]',
         type: 'before',
       },
     }),

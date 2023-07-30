@@ -12,6 +12,7 @@ interface MergeProperties {
   template: ExperienceComponent;
   componentIndex?: number;
   name?: string;
+  paths?: string[];
 }
 
 export class DefaultExperienceDataService implements ExperienceDataService {
@@ -99,7 +100,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
 
       for (const template of templates) {
         if (isTemplateOnly && template.id === templateId) {
-          this.mergeByStrategy({
+          this.merge({
             strategy,
             template,
           });
@@ -111,24 +112,30 @@ export class DefaultExperienceDataService implements ExperienceDataService {
           continue;
         }
 
-        this.recursiveMerge(template, paths, strategy);
+        this.recursiveSearch({ template, paths, strategy });
       }
     }
   }
 
-  protected recursiveMerge(
-    template: ExperienceComponent,
-    paths: string[],
-    strategy: ExperienceComponent
-  ): void {
-    const components = template.components ?? [];
+  protected recursiveSearch(properties: MergeProperties, matchIndex = 1): void {
+    const { strategy, template, paths = [] } = properties;
+    const { components } = template;
+
+    if (!components) {
+      return;
+    }
+
+    const [path, childIndex] = paths[0].split(/[[\]]/);
 
     for (let i = 0; i < components.length; i++) {
       const component = components[i];
 
-      if (component.type === paths[0] || component.id === paths[0]) {
-        if (paths.length === 1) {
-          this.mergeByStrategy({
+      if (component.type === path || component.id === path) {
+        const isMergeElement = paths.length === 1;
+        const withChildMatch = childIndex && Number(childIndex) === matchIndex;
+
+        if (isMergeElement) {
+          this.merge({
             strategy,
             template,
             componentIndex: i,
@@ -139,16 +146,28 @@ export class DefaultExperienceDataService implements ExperienceDataService {
             strategy.merge?.type === ExperienceDataMergeType.After
           )
             i += 1;
-
-          continue;
         }
 
-        this.recursiveMerge(component ?? [], paths.slice(1), strategy);
+        if (isMergeElement && withChildMatch) {
+          break;
+        }
+
+        this.recursiveSearch(
+          {
+            template: component,
+            paths: isMergeElement ? paths : paths.slice(1),
+            strategy,
+          },
+          childIndex ? matchIndex + 1 : 1
+        );
 
         continue;
       }
 
-      this.recursiveMerge(component ?? [], paths, strategy);
+      this.recursiveSearch(
+        { template: component, paths, strategy },
+        matchIndex
+      );
     }
   }
 
@@ -189,7 +208,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     };
   }
 
-  protected mergeByStrategy(properties: MergeProperties): void {
+  protected merge(properties: MergeProperties): void {
     const { template, componentIndex = NaN } = properties;
     const strategy = { ...properties.strategy };
     const { type = ExperienceDataMergeType.Replace } = strategy.merge!;
