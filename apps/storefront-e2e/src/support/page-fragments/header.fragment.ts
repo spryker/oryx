@@ -1,5 +1,5 @@
 export class HeaderFragment {
-  getWrapper = () => cy.get('[route="/_header"]');
+  getWrapper = () => cy.get('[uid="header"]');
 
   getContactLink = () => this.getWrapper().find('oryx-content-link').find('a');
 

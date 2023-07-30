@@ -11,9 +11,9 @@ export class OryxAppComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-composition route="/_header"></oryx-composition>
+      <oryx-composition uid="header"></oryx-composition>
       ${this.router.outlet()}
-      <oryx-composition route="/_footer"></oryx-composition>
+      <oryx-composition uid="footer"></oryx-composition>
     `;
   }
 }
