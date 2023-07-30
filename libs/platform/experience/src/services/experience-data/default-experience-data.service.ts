@@ -13,6 +13,7 @@ interface MergeProperties {
   componentIndex?: number;
   name?: string;
   paths?: string[];
+  intermediate?: [string, number];
 }
 
 export class DefaultExperienceDataService implements ExperienceDataService {
@@ -38,7 +39,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       cb?.(record);
       data.push(...(record.components ?? []));
     }
-    console.log(this.records);
+
     return Object.values(this.records!);
   }
 
@@ -117,7 +118,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     }
   }
 
-  protected recursiveSearch(properties: MergeProperties, matchIndex = 1): void {
+  protected recursiveSearch(properties: MergeProperties): void {
     const { strategy, template, paths = [] } = properties;
     const { components } = template;
 
@@ -125,87 +126,35 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       return;
     }
 
-    const [path, childIndex] = paths[0].split(/[[\]]/);
+    const path = paths[0];
+    const isMergeElement = paths.length === 1;
 
     for (let i = 0; i < components.length; i++) {
       const component = components[i];
+      const isMatch = component.type === path || component.id === path;
 
-      if (component.type === path || component.id === path) {
-        const isMergeElement = paths.length === 1;
-        const withChildMatch = childIndex && Number(childIndex) === matchIndex;
+      if (isMatch && isMergeElement) {
+        this.merge({
+          strategy,
+          template,
+          componentIndex: i,
+        });
 
-        if (isMergeElement) {
-          this.merge({
-            strategy,
-            template,
-            componentIndex: i,
-          });
-
-          if (
-            strategy.merge?.type === ExperienceDataMergeType.Before ||
-            strategy.merge?.type === ExperienceDataMergeType.After
-          )
-            i += 1;
-        }
-
-        if (isMergeElement && withChildMatch) {
-          break;
-        }
-
-        this.recursiveSearch(
-          {
-            template: component,
-            paths: isMergeElement ? paths : paths.slice(1),
-            strategy,
-          },
-          childIndex ? matchIndex + 1 : 1
-        );
+        if (
+          strategy.merge?.type === ExperienceDataMergeType.Before ||
+          strategy.merge?.type === ExperienceDataMergeType.After
+        )
+          i++;
 
         continue;
       }
 
-      this.recursiveSearch(
-        { template: component, paths, strategy },
-        matchIndex
-      );
+      this.recursiveSearch({
+        template: component,
+        paths: isMergeElement || !isMatch ? paths : paths.slice(1),
+        strategy,
+      });
     }
-  }
-
-  protected getChildData(
-    path: string,
-    components?: ExperienceComponent[]
-  ): {
-    component?: ExperienceComponent;
-    componentIndex: number;
-    childIndex: string;
-  } {
-    const [childPath, childIndex] = path.split(/[[\]]/);
-    let childCounter = 1;
-    let componentIndex = 0;
-
-    const component = components?.find((component, index): void | boolean => {
-      const isComponent =
-        component.type === childPath || component.id === childPath;
-      const isProperChild = childCounter === Number(childIndex);
-      const withIndex = !childIndex && isComponent;
-      const withoutIndex = childIndex && isComponent && isProperChild;
-
-      if (withIndex || withoutIndex) {
-        componentIndex = index;
-
-        return true;
-      }
-
-      if (isComponent && !isProperChild) {
-        ++childCounter;
-      }
-    });
-
-    return {
-      component,
-      componentIndex,
-      childIndex,
-    };
   }
 
   protected merge(properties: MergeProperties): void {
