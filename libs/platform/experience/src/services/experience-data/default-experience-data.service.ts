@@ -16,16 +16,16 @@ interface MergeProperties {
 }
 
 export class DefaultExperienceDataService implements ExperienceDataService {
-  protected records?: Record<string, ExperienceComponent>;
+  protected records: Record<string, ExperienceComponent> = {};
   protected strategies: ExperienceComponent[] = [];
   protected autoComponentId = 0;
 
   constructor(protected experienceData = inject(ExperienceData, [])) {}
 
   getData(cb: (c: ExperienceComponent) => void): ExperienceComponent[] {
-    if (!this.records) this.initialize();
+    if (!Object.keys(this.records).length) this.initialize();
 
-    const data = Object.values(this.records!);
+    const data = Object.values(this.records);
 
     // Register all components with by id's
     for (const record of data) {
@@ -34,7 +34,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       data.push(...(record.components ?? []));
     }
 
-    return Object.values(this.records!);
+    return Object.values(this.records);
   }
 
   protected initialize(): void {
@@ -54,14 +54,14 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       this.records[record.id!] = record;
     }
 
-    const records = [...this.strategies, ...Object.values(this.records ?? {})];
+    const records = [...this.strategies, ...Object.values(this.records)];
 
     // Adds references to the components
     for (const record of records) {
-      if (record.ref && this.records![record.ref]) {
+      if (record.ref && this.records[record.ref]) {
         Object.assign(
           record,
-          JSON.parse(JSON.stringify(this.records![record.ref]))
+          JSON.parse(JSON.stringify(this.records[record.ref]))
         );
         delete record.ref;
       }
@@ -73,7 +73,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
   }
 
   protected processMerging(): void {
-    const templates = Object.values(this.records!);
+    const templates = Object.values(this.records);
 
     for (const strategy of this.strategies) {
       const { selector } = strategy.merge!;
