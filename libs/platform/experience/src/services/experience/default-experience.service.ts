@@ -33,9 +33,9 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected initExperienceData(): void {
-    this.experienceData = this.experienceDataService.getData((c) =>
-      this.processData(c)
-    );
+    this.experienceData = this.experienceDataService.getData((c) => {
+      this.processData(c);
+    });
   }
 
   protected processComponent(
