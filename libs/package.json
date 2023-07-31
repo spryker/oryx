@@ -15,7 +15,7 @@
     "prerelease-test": "npm run pack",
     "prerelease-rc": "npm run pack",
     "release": "lerna publish --yes",
-    "release-test": "lerna publish --yes --no-push",
+    "release-test": "lerna publish minor --yes --no-push",
     "release-patch": "lerna publish patch --yes",
     "release-minor": "lerna publish minor --yes",
     "release-rc": "lerna publish --conventional-prerelease --dist-tag=rc --preid=rc --yes",
