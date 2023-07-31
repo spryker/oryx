@@ -36,6 +36,7 @@ export const storefrontHandler = async (
       entry,
     });
     const body = await render({ route: originalUrl, template });
+    const hasQueryParams = !!event.queryStringParameters;
 
     return {
       statusCode: 200,
@@ -44,7 +45,9 @@ export const storefrontHandler = async (
         ...event.headers,
       },
       body,
-      ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl,
+      ...(hasQueryParams
+        ? { ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl }
+        : {}),
     };
   } catch (e) {
     console.error(e);
