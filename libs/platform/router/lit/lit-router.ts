@@ -6,42 +6,35 @@
 
 /// <reference types="urlpattern-polyfill" />
 
-import { SSRAwaiterService, TokenResolver } from '@spryker-oryx/core';
+import { SSRAwaiterService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   BASE_ROUTE,
   RouteParams,
-  RouteType,
   RouterService,
+  RouteType,
 } from '@spryker-oryx/router';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
-import { TemplateResult, html, isServer } from 'lit';
+import { html, isServer, TemplateResult } from 'lit';
 import {
-  Observable,
-  Subscription,
   isObservable,
   lastValueFrom,
-  take,
+  Observable,
+  Subscription,
   tap,
 } from 'rxjs';
 
 import { LitRoutesRegistry } from './lit-routes-registry';
 
-export interface RouteRedirect {
-  to?: string;
-  when: string | RouteHandler;
-}
-
-export type RouteHandler = (params: {
-  [key: string]: string | undefined;
-}) => Promise<boolean> | Observable<boolean> | boolean;
-
 export interface BaseRouteConfig {
   name?: string | undefined;
   render?: (params: { [key: string]: string | undefined }) => unknown;
-  enter?: RouteHandler;
-  leave?: RouteHandler;
-  redirect?: RouteRedirect;
+  enter?: (params: {
+    [key: string]: string | undefined;
+  }) => Promise<boolean> | Observable<boolean> | boolean;
+  leave?: (params: {
+    [key: string]: string | undefined;
+  }) => Promise<boolean> | Observable<boolean> | boolean;
   type?: RouteType | string;
 }
 
@@ -159,7 +152,6 @@ export class LitRouter implements ReactiveController {
   protected id?: string;
   protected routerService = resolve(RouterService);
   protected ssrAwaiter = resolve(SSRAwaiterService, null);
-  protected tokenResolver = resolve(TokenResolver);
 
   protected urlSearchParams?: RouteParams;
 
@@ -187,7 +179,7 @@ export class LitRouter implements ReactiveController {
         .flat(),
       ...routes,
     ]
-      // moves 404 page to the end in order not to break new provided routes
+      // moves 404 page and other pages (/:page) to the end in order not to break new provided routes
       .sort((a) =>
         (a as PathRouteConfig).path === '/*' ||
         (a as PathRouteConfig).path === '/:page'
@@ -196,7 +188,6 @@ export class LitRouter implements ReactiveController {
       );
 
     const baseRoute = resolve(BASE_ROUTE, null);
-
     if (baseRoute) {
       routes = routes.map((route) => {
         if ((route as PathRouteConfig).path) {
@@ -310,23 +301,6 @@ export class LitRouter implements ReactiveController {
       if (route === undefined) {
         throw new Error(`No route found for ${pathname}`);
       }
-
-      if (route.redirect) {
-        const { when, to = '/' } = route.redirect;
-        if (typeof when === 'function') {
-          //TODO: handle case when 'when' is function
-        } else {
-          if (
-            await lastValueFrom(
-              this.tokenResolver.resolveToken(when).pipe(take(1))
-            )
-          ) {
-            this.routerService.navigate(to);
-            return;
-          }
-        }
-      }
-
       const pattern = getPattern(route);
       const result = pattern.exec({ pathname });
       const params = result?.pathname.groups ?? {};
@@ -382,6 +356,7 @@ export class LitRouter implements ReactiveController {
         const success = await (isObservable(route.enter(params))
           ? lastValueFrom(route.enter(params) as Observable<boolean>)
           : route.enter(params));
+
         // If enter() returns false, cancel this navigation
         if (success === false) {
           return;
@@ -413,8 +388,6 @@ export class LitRouter implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): TemplateResult {
-    if (isServer && this._currentRoute?.redirect) return html``;
-
     if (this._currentRoute?.render) {
       return html`<outlet
         >${this._currentRoute?.render?.(this._currentParams)}</outlet
