@@ -27,7 +27,7 @@ function getNewLabsVersion() {
   const labsPatch = isNewLibsRelease ? 0 : Number(getLabsPatch()) + 1;
   const prereleaseLibsVersion = getPrereleaseLibsVersion(libsVersion);
 
-  return `0.${undottedLibsVersion}.${labsPatch}${prereleaseLibsVersion}`;
+  return `0.${undottedLibsVersion}.${labsPatch}${prereleaseLibsVersion ? prereleaseLibsVersion : ''}`;
 }
 
 function getLabsPatch() {
@@ -43,7 +43,7 @@ function getUndottedLibsVersion(libsVersion) {
 }
 
 function getPrereleaseLibsVersion(libsVersion) {
-  return `-${semver.prerelease(libsVersion).join('.')}`;
+  return semver.prerelease(libsVersion) ? `-${semver.prerelease(libsVersion).join('.')}` : semver.prerelease(libsVersion);
 }
 
 function createTag(version) {
