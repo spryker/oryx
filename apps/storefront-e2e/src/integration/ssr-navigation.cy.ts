@@ -1,6 +1,6 @@
 import { FooterFragment } from '../support/page-fragments/footer.fragment';
 import { HeaderFragment } from '../support/page-fragments/header.fragment';
-import { SearchFragment } from '../support/page-fragments/search.fragment';
+import { SearchBoxFragment } from '../support/page-fragments/search-box.fragment';
 import { CartPage } from '../support/page-objects/cart.page';
 import { CategoryPage } from '../support/page-objects/category.page';
 import { CheckoutPage } from '../support/page-objects/checkout.page';
@@ -16,7 +16,7 @@ let sccosApi: SCCOSApi;
 
 const footer = new FooterFragment();
 const header = new HeaderFragment();
-const search = new SearchFragment();
+const searchbox = new SearchBoxFragment();
 
 describe('SSR suite', { tags: 'smoke' }, () => {
   if (Cypress.env('isSSR')) {
@@ -161,5 +161,5 @@ function verifyHeader() {
   header.getLocaleSelector().should('be.visible');
   header.getCurrencySelector().should('be.visible');
   header.getUserSummaryHeading().should('be.visible');
-  search.getTypeahead().should('be.visible');
+  searchbox.getTypeahead().should('be.visible');
 }

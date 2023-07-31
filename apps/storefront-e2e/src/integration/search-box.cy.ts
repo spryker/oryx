@@ -1,58 +1,70 @@
 import { LandingPage } from '../support/page-objects/landing.page';
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
+import { searchDataStorage } from '../support/test-data/storages/search-box.storage';
 
 const landingPage = new LandingPage();
-const search = landingPage.search;
+const searchbox = landingPage.searchbox;
 
-describe('Search suite', () => {
+describe('Search box suite', () => {
   beforeEach(() => {
     landingPage.visit();
   });
 
-  it('must show search results', () => {
-    search.search('sony');
+  it('must show correct search results based on input', () => {
+    const searchData = searchDataStorage[0];
 
-    search.getSearchSuggestions().should('have.length', 5);
-    search
-      .getSearchSuggestions()
-      .find('a')
-      .eq(0)
-      .should('contain.text', 'sony');
+    // valid search
+    searchbox.search(searchData.query);
+    verifySearchResults(searchData);
 
-    search.getSearchProducts().should('have.length', 5);
-    search
-      .getSearchProducts()
-      .find('oryx-product-title')
-      .eq(0)
-      .shadow()
-      .should('contain.text', 'Sony NEX-VG20EH');
+    // clear search
+    searchbox.clearSearch();
+    searchbox.getSearchResultsWrapper().should('not.exist');
 
-    search.getViewAllBtn().should('be.visible');
-    search.clearSearch();
+    // empty search
+    searchbox.search('test123');
+    verifyEmptySearchResults();
   });
 
-  it('must go to PDP from search results', { tags: 'smoke' }, () => {
+  it('must navigate to PDP from search results', { tags: 'smoke' }, () => {
     const productData = ProductStorage.getProductByEq(3);
     const pdp = new ProductDetailsPage(productData);
 
-    search.search(productData.title);
+    searchbox.search(productData.title);
+    searchbox.clickOnProduct(0);
 
-    search.getSearchProducts().eq(0).click();
-
-    // check if correct PDP was opened
-    pdp.getTitle().should('contain.text', productData.title);
-    pdp.getSKU().should('contain.text', productData.id);
-  });
-
-  it('must show "No results" message', () => {
-    search.search('test123');
-
-    search.getSearchResultsWrapper().should('not.exist');
-
-    search
-      .getEmptySearchResults()
-      .should('be.visible')
-      .and('contain.text', 'No results test123');
+    verifyPDP(pdp, productData);
   });
 });
+
+function verifySearchResults(searchData) {
+  searchbox
+    .getSearchSuggestions()
+    .should('have.length', searchData.suggestionsCount);
+  searchbox
+    .getSearchSuggestions()
+    .find('a')
+    .eq(0)
+    .should('contain.text', searchData.firstSuggestion);
+
+  searchbox.getSearchProducts().should('have.length', searchData.productCount);
+  searchbox
+    .getSearchProducts()
+    .find('oryx-product-title')
+    .eq(0)
+    .shadow()
+    .should('contain.text', searchData.firstProductTitle);
+
+  searchbox.getViewAllBtn().should('be.visible');
+}
+
+function verifyEmptySearchResults() {
+  searchbox.getSearchResultsWrapper().should('not.exist');
+  searchbox.getEmptySearchResults().should('be.visible');
+}
+
+function verifyPDP(pdp, productData) {
+  pdp.getTitle().should('contain.text', productData.title);
+  pdp.getSKU().should('contain.text', productData.id);
+}
