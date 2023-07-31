@@ -54,7 +54,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       this.records[record.id!] = record;
     }
 
-    const records = [...this.strategies, ...Object.values(this.records!)];
+    const records = [...this.strategies, ...Object.values(this.records ?? {})];
 
     // Adds references to the components
     for (const record of records) {
