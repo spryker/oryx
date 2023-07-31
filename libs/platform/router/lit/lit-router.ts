@@ -17,11 +17,11 @@ import {
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { TemplateResult, html, isServer } from 'lit';
 import {
-  BehaviorSubject,
   Observable,
   Subscription,
   isObservable,
   lastValueFrom,
+  take,
   tap,
 } from 'rxjs';
 
@@ -176,8 +176,6 @@ export class LitRouter implements ReactiveController {
   // to the parent? We can call `this._parentRoutes.disconnect(this)`.
   private _onDisconnect: (() => void) | undefined;
 
-  protected await$ = new BehaviorSubject(false);
-
   constructor(
     host: ReactiveControllerHost & HTMLElement,
     routes: Array<RouteConfig>,
@@ -201,6 +199,7 @@ export class LitRouter implements ReactiveController {
     });
 
     const baseRoute = resolve(BASE_ROUTE, null);
+
     if (baseRoute) {
       routes = routes.map((route) => {
         if ((route as PathRouteConfig).path) {
@@ -268,10 +267,6 @@ export class LitRouter implements ReactiveController {
     });
   }
 
-  delayRender(): Observable<boolean> {
-    return this.await$;
-  }
-
   /**
    * Navigates this routes controller to `pathname`.
    *
@@ -324,14 +319,14 @@ export class LitRouter implements ReactiveController {
         if (typeof when === 'function') {
           //TODO: handle case when 'when' is function
         } else {
-          this.await$.next(true);
-          this.tokenResolver.resolveToken(when).subscribe(async (value) => {
-            if (value) {
-              this.routerService.navigate(to);
-            }
-
-            this.await$.next(false);
-          });
+          if (
+            await lastValueFrom(
+              this.tokenResolver.resolveToken(when).pipe(take(1))
+            )
+          ) {
+            this.routerService.navigate(to);
+            return;
+          }
         }
       }
 
@@ -421,6 +416,8 @@ export class LitRouter implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): TemplateResult {
+    if (isServer && this._currentRoute?.redirect) return html``;
+
     if (this._currentRoute?.render) {
       return html`<outlet
         >${this._currentRoute?.render?.(this._currentParams)}</outlet
