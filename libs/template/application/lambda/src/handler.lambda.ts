@@ -45,7 +45,7 @@ export const storefrontHandler = async (
         ...event.headers,
       },
       body,
-      ...(hasQueryParams
+      ...(!hasQueryParams
         ? { ttl: process.env.ORYX_TTL ? Number(process.env.ORYX_TTL) : ttl }
         : {}),
     };
