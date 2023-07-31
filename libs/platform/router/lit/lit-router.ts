@@ -356,7 +356,6 @@ export class LitRouter implements ReactiveController {
         const success = await (isObservable(route.enter(params))
           ? lastValueFrom(route.enter(params) as Observable<boolean>)
           : route.enter(params));
-
         // If enter() returns false, cancel this navigation
         if (success === false) {
           return;

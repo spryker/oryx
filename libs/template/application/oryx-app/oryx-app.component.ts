@@ -9,7 +9,7 @@ export class OryxAppComponent extends LitElement {
 
   protected router = new LitRouter(this, []);
 
-  protected override render(): TemplateResult | void {
+  protected override render(): TemplateResult {
     return html`
       <oryx-composition uid="header"></oryx-composition>
       ${this.router.outlet()}
