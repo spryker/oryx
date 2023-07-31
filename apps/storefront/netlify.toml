@@ -18,6 +18,18 @@
     path = "/category/4"
 
 [[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+  [[plugins.inputs.audits]]
+    path = ""
+
+  [[plugins.inputs.audits]]
+    path = "product/086_30521602"
+
+  [[plugins.inputs.audits]]
+    path = "category/4"
+
+[[plugins]]
   package = "/../../tools/netlify-plugins/cypress-tests-runner"
 
     [plugins.inputs]
