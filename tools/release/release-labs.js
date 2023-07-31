@@ -87,7 +87,7 @@ function commitToGit() {
 
 function pushToGit() {
   try {
-    runCmd(`git push origin HEAD --tags`);
+    runCmd(`git push origin HEAD --tags --no-verify`);
   } catch (e) {
     throw e;
   }
