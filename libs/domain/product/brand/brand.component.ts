@@ -10,7 +10,7 @@ export class ProductBrandComponent extends ProductMixin(
   ContentMixin<ProductBrandOptions>(LitElement)
 ) {
   protected $brand = computed(() => {
-    return this.$product()?.attributes?.['brand']?.toLowerCase();
+    return this.$product()?.attributes?.['brand'];
   });
 
   protected override render(): TemplateResult | void {

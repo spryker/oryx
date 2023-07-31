@@ -69,7 +69,7 @@ describe('ProductBrandComponent', () => {
       const image = element.shadowRoot?.querySelector(
         'oryx-image'
       ) as ImageComponent;
-      expect(image.resource).toBe('brand1');
+      expect(image.resource).toBe('Brand1');
     });
   });
 
