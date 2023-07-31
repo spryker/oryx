@@ -1,7 +1,7 @@
 import { AlertType } from '@spryker-oryx/ui';
-import { Size } from '@spryker-oryx/utilities';
+import { ButtonSize } from '@spryker-oryx/ui/button';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { storybookPrefix } from '../../../../../.constants';
 import { Scheme } from '../../notification.model';
@@ -134,9 +134,7 @@ const Template: Story = ({ backgroundColor }): TemplateResult => {
                     <span class="title"> Custom title </span>
                     <div class="content">Italic content</div>
                     <div class="buttons">
-                      <oryx-button size=${Size.Sm}>
-                        <button>OK</button>
-                      </oryx-button>
+                      <oryx-button .size=${ButtonSize.Sm}> OK </oryx-button>
                     </div>
                   </div>
                 </oryx-notification>

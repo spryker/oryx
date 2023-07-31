@@ -170,8 +170,8 @@ describe('PickingComponent', () => {
     it('should render finish button', () => {
       onTabs(getTabs(), (tabContent) =>
         expect(
-          tabContent?.querySelector('.submit-wrapper button')?.textContent
-        ).toContain(i18n('picking.finish-picking'))
+          tabContent?.querySelector('.submit-wrapper oryx-button')
+        ).toHaveProperty('text', i18n('picking.finish-picking'))
       );
     });
 
@@ -202,10 +202,9 @@ describe('PickingComponent', () => {
     });
 
     it('should perform redirect after click', () => {
-      const button = element.renderRoot.querySelector(
-        '.submit-wrapper button'
-      ) as HTMLButtonElement;
-      button.click();
+      element.renderRoot
+        .querySelector<HTMLElement>('.submit-wrapper oryx-button')
+        ?.click();
 
       expect(service.finishPicking).toHaveBeenCalled();
       expect(routerService.navigate).toHaveBeenCalledWith(`/`);
@@ -238,8 +237,8 @@ describe('PickingComponent', () => {
     it('should render finish button', () => {
       onTabs(getTabs(), (tabContent) =>
         expect(
-          tabContent?.querySelector('.submit-wrapper button')?.textContent
-        ).toContain(i18n('picking.finish-picking'))
+          tabContent?.querySelector('.submit-wrapper oryx-button')
+        ).toHaveProperty('text', i18n('picking.finish-picking'))
       );
     });
 
@@ -270,10 +269,9 @@ describe('PickingComponent', () => {
     });
 
     it('should perform redirect after click', () => {
-      const button = element.renderRoot.querySelector(
-        '.submit-wrapper button'
-      ) as HTMLButtonElement;
-      button.click();
+      element.renderRoot
+        .querySelector<HTMLButtonElement>('.submit-wrapper oryx-button')
+        ?.click();
 
       expect(service.finishPicking).toHaveBeenCalled();
       expect(routerService.navigate).toHaveBeenCalledWith(`/`);

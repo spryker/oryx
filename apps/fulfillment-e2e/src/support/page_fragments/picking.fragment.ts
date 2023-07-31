@@ -8,9 +8,9 @@ export class PickingFragment {
   getTabContentById = (tabId) => this.getWrapper().find(`[id="${tabId}"]`);
   getPartialPickingDialog = () => this.getWrapper().find('oryx-modal');
   getPartialPickingConfirmButton = () =>
-    this.getPartialPickingDialog().find('button').contains('Confirm');
+    this.getPartialPickingDialog().find('oryx-button').contains('Confirm');
   getPartialPickingCancelButton = () =>
-    this.getPartialPickingDialog().find('button').contains('Cancel');
+    this.getPartialPickingDialog().find('oryx-button').contains('Cancel');
   getPickingCompleteImage = () =>
     cy
       .get('section oryx-image[resource="picking-items-processed"]')
@@ -20,5 +20,5 @@ export class PickingFragment {
   getPickingCompleteText = () => cy.get('section span');
   getNoItemsTitle = () => cy.get('section h2');
   getNoItemsImage = () => cy.get('section oryx-image[resource="no-orders"]');
-  getFinishPickingButton = () => cy.get('.submit-wrapper oryx-button button');
+  getFinishPickingButton = () => cy.get('.submit-wrapper oryx-button');
 }

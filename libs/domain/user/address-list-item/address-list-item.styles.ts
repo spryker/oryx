@@ -14,7 +14,6 @@ export const styles = css`
   div {
     display: grid;
     grid-template-columns: 1fr min-content;
-    gap: 8px;
     align-items: center;
     white-space: initial;
     text-overflow: initial;
@@ -41,14 +40,10 @@ export const styles = css`
     margin-inline-start: auto;
   }
 
-  .controls,
   [slot='subtext'] {
     display: flex;
-    gap: 8px;
-  }
-
-  [slot='subtext'] {
     flex-wrap: wrap;
     padding-block-start: 8px;
+    gap: 8px;
   }
 `;

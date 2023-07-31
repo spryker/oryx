@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/router",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.2",
   "type": "module",
   "description": "Routing functionality for Oryx framework",
   "author": "Spryker Systems GmbH",
@@ -11,9 +11,9 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "dependencies": {
-    "@spryker-oryx/core": "1.0.0-rc.0",
-    "@spryker-oryx/di": "1.0.0-rc.0",
-    "@spryker-oryx/utilities": "1.0.0-rc.0"
+    "@spryker-oryx/core": "1.0.0-rc.2",
+    "@spryker-oryx/di": "1.0.0-rc.2",
+    "@spryker-oryx/utilities": "1.0.0-rc.2"
   },
   "peerDependencies": {
     "@lit-labs/router": "^0.1.1",

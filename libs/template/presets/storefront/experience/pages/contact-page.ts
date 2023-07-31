@@ -1,7 +1,8 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 
-export const contactPage: StaticComponent = {
+export const contactPage: ExperienceComponent = {
+  id: 'contact-page',
   type: 'Page',
   meta: {
     title: 'Contact Page',
@@ -9,16 +10,14 @@ export const contactPage: StaticComponent = {
     description: 'Contact Page Description',
   },
   options: {
-    data: {
-      rules: [
-        {
-          layout: 'list',
-          padding: '10px 0',
-          bleed: true,
-          background: 'var(--oryx-color-primary-3)',
-        },
-      ],
-    },
+    rules: [
+      {
+        layout: 'list',
+        padding: '10px 0',
+        bleed: true,
+        background: 'var(--oryx-color-primary-3)',
+      },
+    ],
   },
   components: [
     {
@@ -29,11 +28,9 @@ export const contactPage: StaticComponent = {
         },
       },
       options: {
-        data: {
-          type: 'rawUrl',
-          url: '/contact',
-          icon: IconTypes.Check,
-        },
+        type: 'rawUrl',
+        url: '/contact',
+        icon: IconTypes.Check,
       },
     },
   ],

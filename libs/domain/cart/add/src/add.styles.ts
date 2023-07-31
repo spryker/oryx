@@ -7,13 +7,7 @@ export const styles = css`
     gap: 12px 17px;
   }
 
-  form {
-    display: contents;
-  }
-
-  button {
-    --oryx-icon-size: 24px;
-
-    height: 28px;
+  oryx-button {
+    display: flex;
   }
 `;

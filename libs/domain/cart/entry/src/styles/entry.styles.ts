@@ -62,7 +62,7 @@ const pricing = css`
 
 export const cartEntryStyles = css`
   :host {
-    --image-fit: cover;
+    --image-fit: contain;
 
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -117,7 +117,7 @@ export const cartEntryStyles = css`
     justify-content: start;
   }
 
-  .actions oryx-icon-button span {
+  .actions oryx-button span {
     display: var(--oryx-screen-small-inline, none);
   }
 `;

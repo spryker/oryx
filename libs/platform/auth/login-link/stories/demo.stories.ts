@@ -1,8 +1,8 @@
 import { MockAuthService } from '@spryker-oryx/auth/mocks';
 import { resolve } from '@spryker-oryx/di';
-import { Size } from '@spryker-oryx/utilities';
+import { ButtonSize } from '@spryker-oryx/ui/button';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { take } from 'rxjs';
 import { storybookPrefix } from '../../.constants';
 import { LoginLinkOptions } from '../login-link.model';
@@ -29,8 +29,8 @@ const toggleLogin = () => {
 
 const Template: Story<LoginLinkOptions> = (options): TemplateResult => {
   return html`
-    <oryx-button size=${Size.Sm} @click=${toggleLogin}>
-      <button style="margin-bottom: 16px" type="submit">
+    <oryx-button .size=${ButtonSize.Sm} @click=${toggleLogin}
+       style="display: block;margin-bottom: 16px" >
         Toggle auth state
       </button>
     </oryx-button>

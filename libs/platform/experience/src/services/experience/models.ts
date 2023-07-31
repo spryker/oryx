@@ -6,10 +6,13 @@ export interface ComponentImage {
 }
 
 export interface ComponentData {
-  items?: any;
+  items?: unknown;
 }
 
-export interface Component<C = CompositionProperties> {
+export interface Component<
+  Options = CompositionProperties,
+  Content = Record<string, unknown>
+> {
   id: string;
   name?: string;
   type: string;
@@ -19,9 +22,11 @@ export interface Component<C = CompositionProperties> {
     description?: string;
     follow?: boolean;
     index?: boolean;
-    [key: string]: any;
+    [key: string]: string | boolean | undefined;
   };
   components?: Component[];
-  options?: { data?: C };
-  content?: { data?: any };
+  options?: Options;
+  content?: {
+    data: Content;
+  };
 }

@@ -1,13 +1,14 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const editAddressPage: StaticComponent = {
+export const editAddressPage: ExperienceComponent = {
+  id: 'edit-address',
   type: 'Page',
   meta: {
     title: 'Edit address page',
     route: '/my-account/addresses/edit/:id',
   },
   options: {
-    data: { rules: [{ layout: 'flex', width: '50%', margin: 'auto' }] },
+    rules: [{ layout: 'flex', width: '50%', margin: 'auto' }],
   },
   components: [{ type: 'oryx-user-address-edit' }],
 };

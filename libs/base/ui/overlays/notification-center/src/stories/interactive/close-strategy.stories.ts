@@ -2,7 +2,7 @@ import { wait } from '@spryker-oryx/utilities';
 import { expect } from '@storybook/jest';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { NotificationCenterComponent } from '../../notification-center.component';
 import { NotificationPosition } from '../../notification-center.model';
@@ -28,14 +28,13 @@ CloseStrategy.play = async (obj: {
   const center = obj.canvasElement.querySelector(
     TAG_NAME
   ) as NotificationCenterComponent;
-
   await wait(1000);
   open({ autoClose: false });
   await wait(0);
   expect(getNotification(center)).toBeDefined;
   await wait(1000);
   userEvent.click(
-    getNotification(center)?.renderRoot?.querySelector('button') as Element
+    getNotification(center)?.renderRoot?.querySelector('oryx-button') as Element
   );
   await wait(0);
   expect(getNotification(center)).toBeNull;

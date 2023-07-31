@@ -1,15 +1,13 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ColorMode, I18nMixin, rootInjectable } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
-import { styles } from './color-mode-selector.styles';
+import { ButtonSize, ButtonType } from '../../button/button.model';
 import { ModeEvent, toggleMode } from './utilities';
 
 export const EVENT_TOGGLE_COLOR = 'oryx.toggle-mode';
 
 export class ColorModeSelectorComponent extends I18nMixin(LitElement) {
-  static styles = [styles];
-
   @state()
   protected mode = this.getMode();
 
@@ -72,15 +70,13 @@ export class ColorModeSelectorComponent extends I18nMixin(LitElement) {
       this.mode === ColorMode.Light ? IconTypes.ModeDark : IconTypes.ModeLight;
 
     return html`
-      <oryx-icon-button>
-        <button
-          type="button"
-          aria-label="${this.i18n('site.change-color-mode')}"
-          @click=${this.triggerEvent}
-        >
-          <oryx-icon .type=${iconType}></oryx-icon>
-        </button>
-      </oryx-icon-button>
+      <oryx-button
+        .type=${ButtonType.Icon}
+        .size=${ButtonSize.Md}
+        .label=${this.i18n('site.change-color-mode')}
+        .icon=${iconType}
+        @click=${this.triggerEvent}
+      ></oryx-button>
     `;
   }
 }

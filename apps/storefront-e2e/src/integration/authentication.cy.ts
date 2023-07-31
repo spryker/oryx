@@ -1,9 +1,15 @@
-import { LandingPage } from '../support/page_objects/landing.page';
-import { LoginPage } from '../support/page_objects/login.page';
-import { TestCustomerData } from '../types/user.type';
+import { LandingPage } from '../support/page-objects/landing.page';
+import { LoginPage } from '../support/page-objects/login.page';
+import { Customer } from '../support/types/user.type';
 
 const loginPage = new LoginPage();
 const landingPage = new LandingPage();
+
+const invalidUser: Customer = {
+  name: 'Sonia',
+  email: 'sonia@spryker.com',
+  password: 'change123123',
+};
 
 describe('Authentication suite', () => {
   context('Login functionality', () => {
@@ -13,13 +19,7 @@ describe('Authentication suite', () => {
       cy.location('pathname').should('be.eq', landingPage.url);
     });
 
-    it('must show and error message if a user logs in with invalid credentials', () => {
-      const invalidUser: TestCustomerData = {
-        name: 'Sonia',
-        email: 'sonia@spryker.com',
-        password: 'change123123',
-      };
-
+    it('must show a BE error message if user logs in with invalid credentials', () => {
       const loginPage = new LoginPage();
 
       loginPage.visit();
@@ -31,6 +31,8 @@ describe('Authentication suite', () => {
 
       loginPage.header.getUserSummaryHeading().should('contain', 'login');
       loginPage.loginForm.getBEValidationError().should('be.visible');
+
+      loginPage.globalNotificationCenter.getWrapper().should('not.be.visible');
     });
   });
 

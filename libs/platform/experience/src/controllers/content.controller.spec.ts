@@ -18,9 +18,7 @@ const mockContent = {
   },
 };
 const mockOptions = {
-  data: {
-    mockOptions: 'mockOptions',
-  },
+  mockOptions: 'mockOptions',
 };
 const mockObserveValue = {
   id: 'mockContent',
@@ -141,7 +139,7 @@ describe('ContentController', () => {
       expect(mockExperienceService.getOptions).toHaveBeenCalledWith({
         uid: mockUid,
       });
-      expect(callback).toHaveBeenCalledWith(mockOptions.data);
+      expect(callback).toHaveBeenCalledWith(mockOptions);
     });
 
     it('should emit `empty object` if options, uid and ExperienceService are not defined', () => {
@@ -192,7 +190,7 @@ describe('ContentController', () => {
 
         expect(callback).toHaveBeenCalledWith({
           ...mockDefaultValue,
-          ...mockOptions.data,
+          ...mockOptions,
         });
       });
 

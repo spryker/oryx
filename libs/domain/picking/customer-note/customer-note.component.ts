@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { I18nMixin } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { catchError, of, tap } from 'rxjs';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
@@ -20,16 +20,16 @@ export class CustomerNoteComponent extends I18nMixin(
 
   protected onProceed(): void {
     //TODO: provide more complex validation
-    if (!this.pickingList) {
+    if (!this.$pickingList()) {
       return;
     }
 
     this.pickingListService
-      .startPicking(this.pickingList)
+      .startPicking(this.$pickingList())
       .pipe(
         tap(() =>
           this.routerService.navigate(
-            `/picking-list/picking/${this.pickingList.id}`
+            `/picking-list/picking/${this.$pickingList().id}`
           )
         ),
         catchError((e) => {
@@ -53,13 +53,14 @@ export class CustomerNoteComponent extends I18nMixin(
         </oryx-heading>
       </section>
 
-      <p>${this.pickingList?.cartNote}</p>
+      <p>${this.$pickingList()?.cartNote}</p>
 
-      <oryx-button ?loading=${this.upcomingPickingListId}>
-        <button @click=${this.onProceed}>
-          ${this.i18n('picking.proceed-to-picking')}
-        </button>
-      </oryx-button>
+      <oryx-button
+        ?loading=${this.$upcomingPickingListId()}
+        .text=${this.i18n('picking.proceed-to-picking')}
+        @click=${this.onProceed}
+      ></oryx-button>
+
       <oryx-picking-in-progress-modal
         @oryx.back=${this.closePickingInProgressModal}
         ${ref(this.pickingInProgressModal)}

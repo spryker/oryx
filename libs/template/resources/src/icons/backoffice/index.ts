@@ -48,6 +48,8 @@ export const backofficeIcons: IconMapper = {
     [IconTypes.ActionsHorizontal]: () =>
       import('./icons/actions-horizontal').then((s) => s.default),
     [IconTypes.Back]: () => import('./icons/back').then((s) => s.default),
+    [IconTypes.ArrowBack]: () =>
+      import('./icons/arrow-back').then((s) => s.default),
     [IconTypes.Front]: () => import('./icons/front').then((s) => s.default),
     [IconTypes.Check]: () => import('./icons/check').then((s) => s.default),
     [IconTypes.DropUp]: () => import('./icons/drop-up').then((s) => s.default),

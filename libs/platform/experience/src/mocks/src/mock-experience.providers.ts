@@ -4,10 +4,12 @@ import {
   ComponentsRegistryService,
   ContentBackendUrl,
   DefaultComponentsRegistryService,
+  DefaultExperienceDataService,
   DefaultExperienceService,
   DefaultLayoutBuilder,
   DefaultLayoutService,
   DefaultScreenService,
+  ExperienceDataService,
   ExperienceService,
   LayoutBuilder,
   LayoutService,
@@ -44,5 +46,9 @@ export const mockExperienceProviders: Provider[] = [
   {
     provide: ComponentsRegistryService,
     useClass: DefaultComponentsRegistryService,
+  },
+  {
+    provide: ExperienceDataService,
+    useClass: DefaultExperienceDataService,
   },
 ];

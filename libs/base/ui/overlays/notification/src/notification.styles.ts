@@ -24,10 +24,10 @@ export const notificationStyles = css`
     background: var(--oryx-color-neutral-3);
   }
 
-  oryx-icon-button {
-    grid-column: 3;
-
+  oryx-button {
     --oryx-icon-color: initial;
+
+    grid-column: 3;
   }
 
   :host([floating]) {

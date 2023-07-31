@@ -2,6 +2,10 @@ import { css } from 'lit';
 import { HeadingTag, headingUtil } from '../heading/src/';
 
 export const textStyles = css`
+  :host {
+    display: contents;
+  }
+
   h1,
   .h1 {
     ${headingUtil(HeadingTag.H1)}
@@ -54,11 +58,11 @@ export const textStyles = css`
     ${headingUtil(HeadingTag.Bold)}
   }
 
-  p:first-child {
+  p:first-of-type {
     margin-block-start: 0;
   }
 
-  p:last-child {
+  p:last-of-type {
     margin-block-end: 0;
   }
 
@@ -88,5 +92,9 @@ export const textStyles = css`
   a:focus-visible {
     outline: solid 1px var(--oryx-color-focus);
     outline-offset: 3px;
+  }
+
+  oryx-button a:hover {
+    text-decoration: none;
   }
 `;

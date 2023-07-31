@@ -8,13 +8,12 @@
     "domain/content",
     "platform/core",
     "platform/experience",
-    "base/form",
+    "platform/form",
     "platform/i18n",
     "base/di",
     "template/presets",
     "template/resources",
     "domain/product",
-    "domain/picking",
     "domain/order",
     "platform/router",
     "platform/indexed-db",
@@ -26,25 +25,18 @@
     "domain/user",
     "base/utilities"
   ],
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.2",
   "npmClient": "npm",
   "command": {
     "publish": {
       "conventionalCommits": true,
       "forcePublish": true,
       "contents": "dist",
-      "ignoreChanges": [
-        "*.md",
-        "**/*.spec.ts",
-        "**/*.stories.ts"
-      ],
+      "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
       "message": "chore(release): publish libs release [skip ci]",
       "tagVersionPrefix": "lib@",
       "verifyAccess": false,
-      "allowBranch": [
-        "development",
-        "release/*"
-      ],
+      "allowBranch": ["development", "release/*"],
       "exact": true
     }
   }

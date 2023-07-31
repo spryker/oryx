@@ -1,34 +1,34 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const productPage: StaticComponent = {
+export const productPage: ExperienceComponent = {
+  id: 'product-page',
   type: 'Page',
   meta: {
     title: 'Product Page',
     route: '/product/:sku',
     description: 'Default Product Page Description',
   },
-
   components: [
     {
       type: 'oryx-composition',
+      id: 'product-body',
       options: {
-        data: {
-          rules: [
-            {
-              layout: 'split-main',
-              padding: '30px 0 0',
-            },
-          ],
-        },
+        rules: [
+          {
+            layout: 'split-main',
+            padding: '30px 0 0',
+          },
+        ],
       },
       components: [
         {
           type: 'oryx-composition',
-          options: { data: { rules: [{ layout: 'flex', vertical: true }] } },
+          id: 'product-preview',
+          options: { rules: [{ layout: 'flex', vertical: true }] },
           components: [
             {
               type: 'oryx-product-labels',
-              options: { data: { excluded: 'sale %' } },
+              options: { excluded: 'sale %' },
             },
             { type: 'oryx-product-images' },
             { type: 'oryx-product-description' },
@@ -37,25 +37,24 @@ export const productPage: StaticComponent = {
         },
         {
           type: 'oryx-composition',
+          id: 'product-info',
           options: {
-            data: {
-              rules: [{ vertical: true, top: '108px', sticky: true }],
-            },
+            rules: [{ vertical: true, top: '108px', sticky: true }],
           },
           components: [
             {
               type: 'oryx-product-title',
-              options: { data: { tag: 'h1' } },
+              options: { tag: 'h1' },
             },
             {
               type: 'oryx-product-brand',
-              options: { data: { rules: [{ width: '70px' }] } },
+              options: { rules: [{ width: '70px' }] },
             },
             { type: 'oryx-product-average-rating' },
             { type: 'oryx-product-id' },
             {
               type: 'oryx-product-price',
-              options: { data: { enableSalesLabel: true } },
+              options: { enableSalesLabel: true },
             },
             { type: 'oryx-cart-add' },
             { type: 'oryx-product-availability' },
@@ -63,35 +62,30 @@ export const productPage: StaticComponent = {
         },
       ],
     },
-
     {
       type: 'oryx-product-relations',
       options: {
-        data: {
-          heading: 'Alternative Products',
-          rules: [
-            {
-              layout: 'carousel',
-              padding: '20 0',
-              colSpan: '2',
-            },
-          ],
-        },
+        heading: 'Alternative Products',
+        rules: [
+          {
+            layout: 'carousel',
+            padding: '20 0',
+            colSpan: 2,
+          },
+        ],
       },
     },
     {
       type: 'oryx-product-list',
       options: {
-        data: {
-          heading: 'Related Products',
-          rules: [
-            {
-              layout: 'carousel',
-              padding: '20 0',
-              colSpan: '2',
-            },
-          ],
-        },
+        heading: 'Related Products',
+        rules: [
+          {
+            layout: 'carousel',
+            padding: '20 0',
+            colSpan: 2,
+          },
+        ],
       },
     },
   ],

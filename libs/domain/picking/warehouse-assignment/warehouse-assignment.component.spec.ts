@@ -1,4 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   WarehouseUserAssignmentsService,
@@ -6,11 +7,27 @@ import {
 } from '@spryker-oryx/picking';
 import { mockWarehouseUserAssignments } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
-import { i18n, useComponent } from '@spryker-oryx/utilities';
+import { ButtonComponent } from '@spryker-oryx/ui/button';
+import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { of } from 'rxjs';
+import { of, switchMap } from 'rxjs';
 import { beforeEach, vi } from 'vitest';
 import { WarehouseAssignmentComponent } from './warehouse-assignment.component';
+
+const mockOfflineDataPlugin = {
+  refreshData: vi.fn().mockReturnValue(
+    of(undefined).pipe(
+      switchMap(async () => {
+        await nextTick(2);
+        return of(undefined);
+      })
+    )
+  ),
+};
+
+class MockApp implements Partial<App> {
+  requirePlugin = vi.fn().mockReturnValue(mockOfflineDataPlugin);
+}
 
 class MockWarehouseUserAssignmentsService
   implements Partial<WarehouseUserAssignmentsService>
@@ -38,6 +55,10 @@ describe('WarehouseAssignmentComponent', () => {
   beforeEach(async () => {
     const testInjector = createInjector({
       providers: [
+        {
+          provide: AppRef,
+          useClass: MockApp,
+        },
         {
           provide: WarehouseUserAssignmentsService,
           useClass: MockWarehouseUserAssignmentsService,
@@ -76,11 +97,12 @@ describe('WarehouseAssignmentComponent', () => {
     expect(el).toContainElement('oryx-header');
   });
 
-  it('should render button of each location', () => {
-    const buttons = el.renderRoot.querySelectorAll('button');
-    expect(buttons.length).toBe(mockWarehouseUserAssignments.length);
-    mockWarehouseUserAssignments.forEach((item, index) => {
-      expect(buttons[index].textContent).toContain(i18n('picking.select'));
+  mockWarehouseUserAssignments.forEach((item, index) => {
+    it(`should render button (${index}) of each location`, () => {
+      const buttons =
+        el.renderRoot.querySelectorAll<ButtonComponent>('oryx-button');
+      expect(buttons.length).toBe(mockWarehouseUserAssignments.length);
+      expect(buttons[index]).toHaveProperty('text', i18n('picking.select'));
     });
   });
 
@@ -91,8 +113,7 @@ describe('WarehouseAssignmentComponent', () => {
 
   describe('when "Select" button is clicked', () => {
     beforeEach(() => {
-      const button = el.renderRoot.querySelector('button');
-      button?.click();
+      el.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
     });
 
     it('should call "activateAssignment" method', () => {

@@ -1,6 +1,7 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const loginPage: StaticComponent = {
+export const loginPage: ExperienceComponent = {
+  id: 'login-page',
   type: 'Page',
   meta: {
     title: 'Login Page',
@@ -8,17 +9,13 @@ export const loginPage: StaticComponent = {
     description: 'Login Page Description',
   },
   options: {
-    data: {
-      rules: [{ layout: 'flex', padding: '30px 0' }],
-    },
+    rules: [{ layout: 'flex', padding: '30px 0' }],
   },
   components: [
     {
       type: 'oryx-auth-login',
       options: {
-        data: {
-          rules: [{ width: '50%', margin: 'auto' }],
-        },
+        rules: [{ width: '50%', margin: 'auto' }],
       },
     },
   ],

@@ -10,15 +10,12 @@ export class ProductBrandComponent extends ProductMixin(
   ContentMixin<ProductBrandOptions>(LitElement)
 ) {
   protected $brand = computed(() => {
-    return this.$product()?.attributes?.['brand']?.toLowerCase();
+    return this.$product()?.attributes?.['brand'];
   });
 
   protected override render(): TemplateResult | void {
     if (!this.$brand()) return;
 
-    return html`<oryx-image
-      .resource=${this.$brand()}
-      ?skipFallback=${true}
-    />`;
+    return html`<oryx-image .resource=${this.$brand()} skipFallback />`;
   }
 }

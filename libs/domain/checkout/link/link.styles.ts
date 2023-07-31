@@ -1,6 +1,12 @@
 import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
+export const checkoutLinkStyles = css`
+  oryx-button {
+    display: flex;
+  }
+`;
+
 const smallScreen = css`
   :host {
     display: block;

@@ -1,6 +1,7 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const cartPage: StaticComponent = {
+export const cartPage: ExperienceComponent = {
+  id: 'cart-page',
   type: 'Page',
   meta: {
     title: 'Cart Page',
@@ -8,20 +9,46 @@ export const cartPage: StaticComponent = {
     description: 'Cart Page Description',
   },
   options: {
-    data: {
-      rules: [
-        {
-          layout: 'split-main',
-          padding: '30px 0',
-        },
-        { query: { breakpoint: 'sm' }, gap: '0' },
-      ],
-    },
+    rules: [
+      { layout: 'split-main', padding: '30px 0' },
+      { query: { breakpoint: 'sm' }, gap: '0' },
+    ],
   },
   components: [
-    { type: 'oryx-cart-entries' },
+    {
+      type: 'oryx-content-text',
+      content: {
+        data: {
+          text: `
+          <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
+          <p>Your shopping cart is empty</p><oryx-button>
+          <a href="/search">Shop now</a></oryx-button>`,
+        },
+      },
+      options: {
+        rules: [
+          { hideByRule: 'CART.!EMPTY' },
+          {
+            colSpan: 2,
+            background: 'var(--oryx-color-neutral-3)',
+            width: '66%',
+            margin: 'auto',
+            padding: '20px',
+            radius: '4px',
+            style: `display: grid;gap:14px;justify-items: center;`,
+          },
+        ],
+      },
+    },
     {
       type: 'oryx-composition',
+      id: 'cart-entries',
+      components: [{ type: 'oryx-cart-entries' }],
+      options: { rules: [{ layout: 'list' }] },
+    },
+    {
+      type: 'oryx-composition',
+      id: 'cart-totals',
       components: [
         {
           type: 'oryx-cart-totals',
@@ -35,7 +62,7 @@ export const cartPage: StaticComponent = {
         },
         { type: 'oryx-checkout-link' },
       ],
-      options: { data: { rules: [{ sticky: true, top: '108px' }] } },
+      options: { rules: [{ sticky: true, top: '108px' }] },
     },
   ],
 };

@@ -160,8 +160,8 @@ describe('FiltersComponent', () => {
         const form = element.renderRoot.querySelector<HTMLFormElement>('form')!;
         request = vi.spyOn(form, 'requestSubmit');
         element.renderRoot
-          .querySelector('oryx-button[slot="footer"] button')
-          ?.dispatchEvent(new MouseEvent('click'));
+          .querySelector<HTMLElement>('oryx-button[slot="footer"]')
+          ?.click();
       });
 
       it('should request submit of the form', () => {

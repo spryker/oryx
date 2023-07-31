@@ -1,7 +1,8 @@
 import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const checkoutPage: StaticComponent = {
+export const checkoutPage: ExperienceComponent = {
+  id: 'checkout-page',
   type: 'Page',
   meta: {
     title: 'Checkout Page',
@@ -9,19 +10,40 @@ export const checkoutPage: StaticComponent = {
     description: 'Checkout Page Description',
   },
   options: {
-    data: {
-      rules: [
-        {
-          layout: 'split-main',
-          padding: '30px 0',
-        },
-        { query: { breakpoint: 'sm' }, gap: '0' },
-      ],
-    },
+    rules: [
+      { layout: 'split-main', padding: '30px 0' },
+      { query: { breakpoint: 'sm' }, gap: '0' },
+    ],
   },
   components: [
     {
+      type: 'oryx-content-text',
+      content: {
+        data: {
+          text: `
+          <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
+          <p>Your shopping cart is empty</p><oryx-button>
+          <a href="/search">Shop now</a></oryx-button>`,
+        },
+      },
+      options: {
+        rules: [
+          { hideByRule: 'CART.!EMPTY' },
+          {
+            colSpan: 2,
+            background: 'var(--oryx-color-neutral-3)',
+            width: '66%',
+            margin: 'auto',
+            padding: '20px',
+            radius: '4px',
+            style: `display: grid;gap:14px;justify-items:center;`,
+          },
+        ],
+      },
+    },
+    {
       type: 'oryx-composition',
+      id: 'checkout-information',
       components: [
         {
           type: 'oryx-checkout-orchestrator',
@@ -32,32 +54,25 @@ export const checkoutPage: StaticComponent = {
             { type: 'oryx-checkout-shipping-method' },
             { type: 'oryx-checkout-payment-method' },
           ],
-          options: { data: { rules: [{ layout: 'list', gap: '30px' }] } },
+          options: { rules: [{ layout: 'list', gap: '30px' }] },
         },
         {
           type: 'oryx-cart-entries',
-          options: { data: { readonly: true } },
+          options: { readonly: true },
         },
       ],
       options: {
-        data: {
-          rules: [
-            { gap: '20px', layout: 'flex', vertical: true, align: 'stretch' },
-          ],
-        },
+        rules: [
+          { hideByRule: 'CART.EMPTY' },
+          { gap: '20px', layout: 'flex', vertical: true, align: 'stretch' },
+        ],
       },
     },
     {
       type: 'oryx-composition',
+      id: 'checkout-totals',
       options: {
-        data: {
-          rules: [
-            {
-              sticky: true,
-              top: '108px',
-            },
-          ],
-        },
+        rules: [{ hideByRule: 'CART.EMPTY' }, { sticky: true, top: '108px' }],
       },
       components: [
         {
@@ -67,9 +82,7 @@ export const checkoutPage: StaticComponent = {
             {
               type: 'oryx-cart-totals-discount',
               options: {
-                data: {
-                  discountRowsAppearance: DiscountRowsAppearance.Collapsed,
-                },
+                discountRowsAppearance: DiscountRowsAppearance.Collapsed,
               },
             },
             { type: 'oryx-cart-totals-tax' },

@@ -42,7 +42,7 @@ class MockAddressStateService implements Partial<AddressStateService> {
   get = vi.fn().mockReturnValue(mockState);
   clear = vi.fn();
 }
-class MockSemanticLinkService implements Partial<LinkService> {
+class MockLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/link'));
 }
 
@@ -77,7 +77,7 @@ describe('UserAddressEditComponent', () => {
         },
         {
           provide: LinkService,
-          useClass: MockSemanticLinkService,
+          useClass: MockLinkService,
         },
       ],
     });
@@ -174,13 +174,13 @@ describe('UserAddressEditComponent', () => {
     });
 
     it('should render the cancel button', () => {
-      const buttons = element.renderRoot.querySelectorAll('oryx-button button');
-      expect(buttons[0].textContent?.trim()).toEqual('Cancel');
+      const buttons = element.renderRoot.querySelectorAll('oryx-button');
+      expect(buttons[0]).toHaveProperty('text', 'Cancel');
     });
 
     it('should render the save button', () => {
-      const buttons = element.renderRoot.querySelectorAll('oryx-button button');
-      expect(buttons[1].textContent?.trim()).toEqual('Save');
+      const buttons = element.renderRoot.querySelectorAll('oryx-button');
+      expect(buttons[1]).toHaveProperty('text', 'Save');
     });
 
     describe('and the change event is dispatched with a valid address', () => {

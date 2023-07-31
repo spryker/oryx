@@ -1,4 +1,5 @@
 import { inject } from '@spryker-oryx/di';
+import { Breakpoint } from '@spryker-oryx/utilities';
 import {
   CompositionProperties,
   LayoutStylesProperties,
@@ -23,12 +24,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   collectStyles(components: Component[]): string {
     return components
       .map((component) =>
-        component.options?.data
-          ? this.createStylesFromOptions(
-              component.options.data.rules,
-              component.id
-            )
-          : ''
+        this.createStylesFromOptions(component.options?.rules, component.id)
       )
       .join('');
   }
@@ -66,7 +62,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     if (rule.query?.breakpoint) {
       const mediaQuery = this.screenService.getScreenMedia(
-        rule.query.breakpoint
+        rule.query.breakpoint as Breakpoint
       );
       return `${mediaQuery}{\n${selectors.join(', ')} {\n${styles}\n}}`;
     } else {

@@ -1,8 +1,8 @@
-import { CartPage } from '../support/page_objects/cart.page';
-import { LandingPage } from '../support/page_objects/landing.page';
-import { ProductDetailsPage } from '../support/page_objects/product-details.page';
-import { SCCOSApi } from '../support/sccos_api/sccos.api';
-import { ProductStorage } from '../test-data/product.storage';
+import { CartPage } from '../support/page-objects/cart.page';
+import { LandingPage } from '../support/page-objects/landing.page';
+import { ProductDetailsPage } from '../support/page-objects/product-details.page';
+import { SCCOSApi } from '../support/sccos-api/sccos.api';
+import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const homePage = new LandingPage();
 const cartPage = new CartPage();
@@ -69,6 +69,9 @@ describe('Currencies suite', () => {
 
       describe('and user changes the currency back to EUR', () => {
         beforeEach(() => {
+          // small "hack" needed for cypress
+          cy.get('body').click();
+
           cartPage.header.changeCurrency('EUR', true);
         });
 
@@ -97,9 +100,8 @@ function checkCurrencyOnCartPage(currency: string) {
     .shadow()
     .should('contain.text', currency);
 
-  // TODO: Currently entry currencies are not displayed correctly
-  // cartPage.getCartEntries().then((entries) => {
-  //   entries[0].getSubtotal().should('contain.text', currency);
-  //   entries[0].getSalesPrice().should('contain.text', currency);
-  // });
+  cartPage.getCartEntries().then((entries) => {
+    entries[0].getSubtotal().shadow().should('contain.text', currency);
+    entries[0].getSalesPrice().shadow().should('contain.text', currency);
+  });
 }

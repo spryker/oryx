@@ -41,6 +41,12 @@ export class CartController {
     );
   }
 
+  getCart(): Observable<Cart | undefined> {
+    return this.cartQualifier.pipe(
+      switchMap((qualifier) => this.cartService.getCart(qualifier))
+    );
+  }
+
   getEntries(): Observable<CartEntry[]> {
     return this.cartQualifier.pipe(
       switchMap((qualifier) => this.cartService.getEntries(qualifier))

@@ -13,8 +13,4 @@ export const styles = css`
   .title {
     flex: 1;
   }
-
-  .back {
-    --oryx-icon-size: 18px;
-  }
 `;

@@ -8,7 +8,7 @@ export class PickingProductFragment {
       .find('input[type="number"]');
   getQuantityInputMinusButton = () => cy.get('button[aria-label="Decrease"]');
   getQuantityInputPlusButton = () => cy.get('button[aria-label="Increase"]');
-  getSubmitButton = () => cy.get('oryx-button button');
+  getSubmitButton = () => cy.get('oryx-button');
 
   pickAllProductItems = () => {
     this.getQuantityInputPlusButton().then(($button) => {

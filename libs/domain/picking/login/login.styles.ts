@@ -18,6 +18,7 @@ export const loginComponentStyles = css`
     margin-block: 50px;
     margin-block-start: 30px;
     text-align: center;
+    margin-inline: 18px;
   }
 
   h3 {
@@ -26,7 +27,6 @@ export const loginComponentStyles = css`
   }
 
   oryx-auth-login {
-    --_login-button-margin: 8px 0 0 0;
     --gap: 22px;
   }
 `;

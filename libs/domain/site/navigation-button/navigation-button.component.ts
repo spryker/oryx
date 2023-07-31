@@ -13,14 +13,19 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
 ) {
   static styles = siteNavigationButtonStyles;
 
+  static shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   @property() url?: string;
   @property() icon?: string;
   @property() text?: string;
   @property() badge?: string;
 
   protected override render(): TemplateResult {
-    const innerContent = html`
-      ${when(this.icon, () => html`<oryx-icon .type=${this.icon}></oryx-icon>`)}
+    const buttonContent = html`
+      ${when(this.icon, () => html`<oryx-icon type=${this.icon}></oryx-icon>`)}
       ${when(
         this.text,
         () =>
@@ -32,14 +37,11 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
     `;
 
     return html`
-      <oryx-button>
+      <oryx-button .href=${this.url}>
         ${when(
           this.url,
-          () =>
-            html`<a href=${this.url!} aria-label=${this.text}
-              >${innerContent}</a
-            >`,
-          () => html`<button>${innerContent}</button>`
+          () => html`${buttonContent}`,
+          () => html`${buttonContent}`
         )}
       </oryx-button>
     `;

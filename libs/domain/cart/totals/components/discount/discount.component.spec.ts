@@ -3,7 +3,7 @@ import { TotalsService } from '@spryker-oryx/cart';
 import { mockNormalizedCartTotals } from '@spryker-oryx/cart/mocks';
 import * as core from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PriceComponent } from '@spryker-oryx/site/price';
+import { SitePriceComponent } from '@spryker-oryx/site/price';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -36,7 +36,7 @@ describe('CartTotalsDiscountComponent', () => {
           );
           expect(heading?.textContent).toContain(displayName);
           const priceComponent =
-            element.renderRoot.querySelector<PriceComponent>(
+            element.renderRoot.querySelector<SitePriceComponent>(
               `ul > li:nth-child(${i + 1}) oryx-site-price`
             );
           expect(priceComponent?.value).toBe(-amount);
@@ -89,7 +89,7 @@ describe('CartTotalsDiscountComponent', () => {
   });
 
   it('should populate the data to the price component', () => {
-    const priceComponent = element.renderRoot.querySelector<PriceComponent>(
+    const priceComponent = element.renderRoot.querySelector<SitePriceComponent>(
       'oryx-site-price[slot="aside"]'
     );
     expect(priceComponent?.value).toBe(
@@ -135,7 +135,7 @@ describe('CartTotalsDiscountComponent', () => {
 
     it('should populate the data to the price component', () => {
       const priceComponent =
-        element.renderRoot.querySelector<PriceComponent>('oryx-site-price');
+        element.renderRoot.querySelector<SitePriceComponent>('oryx-site-price');
       expect(priceComponent?.value).toBe(
         -mockNormalizedCartTotals.discountTotal!
       );
@@ -190,7 +190,7 @@ describe('CartTotalsDiscountComponent', () => {
 
     it('should populate the data to the price component', () => {
       const priceComponent =
-        element.renderRoot.querySelector<PriceComponent>('oryx-site-price');
+        element.renderRoot.querySelector<SitePriceComponent>('oryx-site-price');
       expect(priceComponent?.value).toBe(
         -mockNormalizedCartTotals.discountTotal!
       );

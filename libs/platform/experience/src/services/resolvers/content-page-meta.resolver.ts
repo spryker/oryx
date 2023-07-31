@@ -1,15 +1,16 @@
 import { ElementResolver, PageMetaResolver } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { combineLatest, map, Observable } from 'rxjs';
-import { ExperienceStaticData, StaticComponent } from '../experience';
+import { Observable, combineLatest, map } from 'rxjs';
+import { ExperienceComponent, ExperienceDataService } from '../experience';
 
 export class ContentPageMetaResolver implements PageMetaResolver {
   constructor(
     protected router = inject(RouterService),
-    // Temporary: TODO use real mock data
-    protected staticData = inject(ExperienceStaticData, []).flat()
+    protected experienceDataService = inject(ExperienceDataService)
   ) {}
+
+  protected experienceData = this.experienceDataService.getData();
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
@@ -21,7 +22,7 @@ export class ContentPageMetaResolver implements PageMetaResolver {
     return this.router.currentRoute().pipe(
       map((route) => {
         const defaultMeta = this.getData(route);
-        const meta: Record<string, string> = {
+        const meta = {
           ...defaultMeta,
         };
 
@@ -45,15 +46,15 @@ export class ContentPageMetaResolver implements PageMetaResolver {
         delete meta.follow;
         delete meta.index;
 
-        return meta;
+        return meta as Record<string, string>;
       })
     );
   }
 
-  protected getData(route: string): StaticComponent['meta'] | undefined {
+  protected getData(route: string): ExperienceComponent['meta'] | undefined {
     const routePath = route.split('/').filter(Boolean)[0];
 
-    return this.staticData.find((data) => {
+    return this.experienceData.find((data) => {
       const metaPath = data.meta?.route?.split('/').filter(Boolean)[0];
 
       return routePath === metaPath;

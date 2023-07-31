@@ -6,23 +6,25 @@ import {
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
+import { ProductPriceOptions } from '@spryker-oryx/product/price';
+import { RouteType } from '@spryker-oryx/router';
 import {
+  LinkService,
   NotificationService,
   PricingService,
-  LinkService,
 } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { LinkType } from '@spryker-oryx/ui/link';
 import {
+  Size,
   computed,
   elementEffect,
   hydrate,
   signalProperty,
-  Size,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import {
@@ -37,7 +39,6 @@ import {
   RemoveByQuantity,
 } from './entry.model';
 import { cartEntryStyles } from './styles';
-import { RouteType } from '@spryker-oryx/router';
 
 /**
  * Supports updating the quantity as well as removing the entry entirely.
@@ -61,7 +62,9 @@ export class CartEntryComponent
   @signalProperty({ type: Number }) quantity?: number;
   @property() key?: string;
   @property({ type: Number }) price?: number;
+  @property({ type: Number }) itemPrice?: number;
   @property({ type: Boolean }) readonly?: boolean;
+  @property() currency?: string;
 
   @state() protected requiresRemovalConfirmation?: boolean;
 
@@ -131,16 +134,14 @@ export class CartEntryComponent
 
     return html`
       <div class="actions">
-        <oryx-icon-button
-          size=${Size.Md}
-          @click=${this.removeEntry}
+        <oryx-button
+          .type=${ButtonType.Icon}
+          .size=${ButtonSize.Md}
+          .icon=${IconTypes.Trash}
+          .label=${this.i18n('remove')}
           ?disabled=${this.$isBusy()}
-        >
-          <button aria-label="remove">
-            <oryx-icon .type=${IconTypes.Trash}></oryx-icon>
-          </button>
-          <span>${this.i18n('cart.remove')}</span>
-        </oryx-icon-button>
+          @click=${this.removeEntry}
+        ></oryx-button>
       </div>
     `;
   }
@@ -165,14 +166,19 @@ export class CartEntryComponent
     return html`
       <section class="pricing">
         ${qtyTemplate}
-        <oryx-site-price .value=${this.price}></oryx-site-price>
+        <oryx-site-price
+          .value=${this.price}
+          .currency=${this.currency}
+        ></oryx-site-price>
         ${when(
           this.$options()?.enableItemPrice,
           () =>
             html`<div class="item-price">
-              <span>${this.i18n('cart.entry.item-price')}</span
-              ><oryx-product-price
-                .options=${{ enableTaxMessage: false }}
+              <span>${this.i18n('cart.entry.item-price')}</span>
+              <oryx-product-price
+                .options=${{ enableTaxMessage: false } as ProductPriceOptions}
+                .sales=${this.itemPrice}
+                .currency=${this.currency}
               ></oryx-product-price>
             </div>`
         )}
@@ -193,11 +199,14 @@ export class CartEntryComponent
 
       <oryx-button
         slot="footer-more"
-        .type=${ButtonType.Critical}
+        .color=${ButtonColor.Error}
         .size=${Size.Md}
+        ?loading=${this.$isBusy()}
         @click=${(ev: Event) => this.removeEntry(ev, true)}
       >
-        <button value="remove">${this.i18n(`cart.entry.remove`)}</button>
+        <button slot="custom" value="remove">
+          ${this.i18n(`cart.entry.remove`)}
+        </button>
       </oryx-button>
     </oryx-modal>`;
   }

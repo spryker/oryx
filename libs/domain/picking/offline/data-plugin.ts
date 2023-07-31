@@ -45,8 +45,7 @@ export class OfflineDataPlugin implements AppPlugin {
         switchMap((authenticated) => {
           if (authenticated) {
             return this.clearDb(injector).pipe(
-              switchMap(() => this.populateDb(injector)),
-              tap(() => routerService.navigate('/'))
+              tap(() => routerService.navigate('/warehouse-selection'))
             );
           }
           return of(undefined);
