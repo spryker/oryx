@@ -1,27 +1,28 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 
-export const HeaderTemplate: StaticComponent = {
+export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
   type: 'Page',
   meta: { title: 'Header', route: '/_header' },
   components: [
     {
       type: 'oryx-composition',
+      id: 'header-links',
       components: [
         {
           type: 'oryx-content-link',
-          content: { text: 'FREE DELIVERY & RETURNS' },
+          content: { data: { text: 'FREE DELIVERY & RETURNS' } },
           options: { url: '/', icon: IconTypes.Check },
         },
         {
           type: 'oryx-content-link',
-          content: { text: '100 DAY RETURN POLICY' },
+          content: { data: { text: '100 DAY RETURN POLICY' } },
           options: { url: '/', icon: IconTypes.Check },
         },
         {
           type: 'oryx-content-link',
-          content: { text: 'CLICK & COLLECT' },
+          content: { data: { text: 'CLICK & COLLECT' } },
           options: { url: '/', icon: IconTypes.Check },
         },
         {
@@ -48,14 +49,18 @@ export const HeaderTemplate: StaticComponent = {
     },
     {
       type: 'oryx-composition',
+      id: 'header-body',
       name: 'Composition',
       components: [
         {
           type: 'oryx-content-image',
+          id: 'site-logo',
           content: {
-            graphic: 'logo',
-            link: '/',
-            label: 'Composable Storefront based on Oryx',
+            data: {
+              graphic: 'logo',
+              link: '/',
+              label: 'Composable Storefront based on Oryx',
+            },
           },
           options: {
             rules: [
@@ -81,6 +86,7 @@ export const HeaderTemplate: StaticComponent = {
         },
         {
           type: 'oryx-composition',
+          id: 'header-actions',
           components: [
             {
               type: 'oryx-site-navigation-item',
@@ -128,7 +134,7 @@ export const HeaderTemplate: StaticComponent = {
             layout: 'column',
             background: 'var(--oryx-color-primary-9)',
             align: 'center',
-            zIndex: '1',
+            zIndex: 1,
             padding: '5px 0',
             gap: '5px',
             sticky: true,

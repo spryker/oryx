@@ -7,7 +7,7 @@ import {
 import { Provider } from '@spryker-oryx/di';
 
 import { StorageService } from '@spryker-oryx/core';
-import { ExperienceStaticData } from '@spryker-oryx/experience';
+import { ExperienceData } from '@spryker-oryx/experience';
 import { MockCheckoutDataService } from './mock-checkout-data.service';
 import { MockCheckoutService } from './mock-checkout.service';
 import { MockStorageService } from './mock-storage.service';
@@ -42,7 +42,7 @@ export const mockCheckoutProviders: Provider[] = [
     useClass: MockStorageService,
   },
   {
-    provide: ExperienceStaticData,
+    provide: ExperienceData,
     useValue: checkoutOrchestratorStaticData,
   },
 ];

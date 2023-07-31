@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/push-notification",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "type": "module",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
@@ -8,9 +8,9 @@
   "author": "Spryker Sytems GmbH",
   "license": "See license in LICENSE",
   "dependencies": {
-    "@spryker-oryx/core": "1.0.0-rc.1",
-    "@spryker-oryx/di": "1.0.0-rc.1",
-    "@spryker-oryx/utilities": "1.0.0-rc.1"
+    "@spryker-oryx/core": "1.0.0-rc.2",
+    "@spryker-oryx/di": "1.0.0-rc.2",
+    "@spryker-oryx/utilities": "1.0.0-rc.2"
   },
   "peerDependencies": {
     "dexie": "^3.2.2",

@@ -6,6 +6,7 @@ import { RouterEventType, RouterService } from '@spryker-oryx/router';
 import { NEVER, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { ExperienceDataClientService, postMessage } from '../data-client';
+import { ExperienceDataService } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ExperienceService } from './experience.service';
 import {
@@ -23,6 +24,10 @@ class MockExperienceDataClientService implements ExperienceDataClientService {
   initialize = vi.fn().mockReturnValue(of(null));
   sendStatic = vi.fn();
 }
+
+const mockExperienceDataService = {
+  getData: vi.fn().mockReturnValue([]),
+};
 
 describe('ExperiencePreviewService', () => {
   let service: PreviewExperienceService;
@@ -50,6 +55,10 @@ describe('ExperiencePreviewService', () => {
         {
           provide: RouterService,
           useClass: MockRouterService,
+        },
+        {
+          provide: ExperienceDataService,
+          useValue: mockExperienceDataService,
         },
       ],
     });

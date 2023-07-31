@@ -1,7 +1,8 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { EditTarget } from '@spryker-oryx/user/address-list-item';
 
-export const addressBookPage: StaticComponent = {
+export const addressBookPage: ExperienceComponent = {
+  id: 'address-book',
   type: 'Page',
   meta: {
     title: 'Address book',

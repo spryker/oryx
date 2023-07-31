@@ -1,7 +1,7 @@
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { of } from 'rxjs';
-import { ExperienceStaticData } from '../experience';
+import { ExperienceData } from '../experience';
 import { ContentPageMetaResolver } from './content-page-meta.resolver';
 
 const mockRouter = {
@@ -25,7 +25,7 @@ describe('ContentPageMetaResolver', () => {
           useValue: mockRouter,
         },
         {
-          provide: ExperienceStaticData,
+          provide: ExperienceData,
           useFactory: mockStaticData,
         },
       ],

@@ -1,7 +1,8 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 
-export const contactPage: StaticComponent = {
+export const contactPage: ExperienceComponent = {
+  id: 'contact-page',
   type: 'Page',
   meta: {
     title: 'Contact Page',
@@ -22,7 +23,9 @@ export const contactPage: StaticComponent = {
     {
       type: 'oryx-content-link',
       content: {
-        text: 'This is Contact Page element. Remove me when the page is implemented',
+        data: {
+          text: 'This is Contact Page element. Remove me when the page is implemented',
+        },
       },
       options: {
         type: 'rawUrl',

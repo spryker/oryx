@@ -26,5 +26,7 @@ export interface Component<
   };
   components?: Component[];
   options?: Options;
-  content?: Content;
+  content?: {
+    data: Content;
+  };
 }

@@ -1,10 +1,15 @@
-import { LitElement, ReactiveController } from 'lit';
-import { ContentComponentProperties, StyleRuleSet } from '../src/models';
-import { resolve } from '@spryker-oryx/di';
-import { Component, ExperienceService, ScreenService } from '../src/services';
-import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
 import { TokenResolver } from '@spryker-oryx/core';
+import { resolve } from '@spryker-oryx/di';
+import {
+  Component,
+  ContentComponentProperties,
+  ExperienceService,
+  ScreenService,
+  StyleRuleSet,
+} from '@spryker-oryx/experience';
 import { ObserveController, Size } from '@spryker-oryx/utilities';
+import { LitElement, ReactiveController } from 'lit';
+import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
 
 export class CompositionComponentsController implements ReactiveController {
   hostConnected?(): void;

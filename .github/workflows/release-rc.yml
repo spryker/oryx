@@ -49,6 +49,8 @@ jobs:
       - name: Release rc
         if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
         run: npm run release-rc
+      - name: Run smoke
+        run: curl -X POST -d {} https://api.netlify.com/build_hooks/64b4f9338ca8dd495532b6ee
       - name: Release Error Log
         if: failure()
         run: cat libs/lerna-debug.log

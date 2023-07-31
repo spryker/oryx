@@ -1,13 +1,14 @@
-import { StaticComponent, StyleRuleSet } from '@spryker-oryx/experience';
+import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
 
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
   type: 'oryx-content-image',
   name,
-  content: { graphic: name, label: name, link: `/search?q=${name}` },
+  content: { data: { graphic: name, label: name, link: `/search?q=${name}` } },
   options: { rules },
 });
 
-export const homePage: StaticComponent = {
+export const homePage: ExperienceComponent = {
+  id: 'home-page',
   type: 'Page',
   meta: {
     title: 'Home Page',
@@ -17,15 +18,18 @@ export const homePage: StaticComponent = {
   components: [
     {
       type: 'oryx-composition',
+      id: 'home-hero',
       components: [
         {
           type: 'oryx-content-image',
           name: 'hero',
           content: {
-            link: `/category/12`,
-            alt: 'hero image',
-            image:
-              'https://images.unsplash.com/photo-1670272505340-d906d8d77d03?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80',
+            data: {
+              link: `/category/12`,
+              alt: 'hero image',
+              image:
+                'https://images.unsplash.com/photo-1670272505340-d906d8d77d03?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80',
+            },
           },
           options: {
             position: 'center 20%',
@@ -40,14 +44,16 @@ export const homePage: StaticComponent = {
         {
           type: 'oryx-content-text',
           content: {
-            text: `
-            <span class="subtitle">CANON EOS R7 System camera</span>
-            <h1 style="margin:20px 0;">Discover everything</h1>
-            <div class="h3" style="margin-bottom:20px">EOS R7 wows with its ability to track fast-moving subjects with its Deep-learning Dual Pixel CMOS AF II focus system.</div>
-           
-            <oryx-button  href="/category/12">Shop now</oryx-button>
+            data: {
+              text: `
+              <span class="subtitle">CANON EOS R7 System camera</span>
+              <h1 style="margin:20px 0;">Discover everything</h1>
+              <div class="h3" style="margin-bottom:20px">EOS R7 wows with its ability to track fast-moving subjects with its Deep-learning Dual Pixel CMOS AF II focus system.</div>
 
-          `,
+              <oryx-button  href="/category/12">Shop now</oryx-button>
+
+            `,
+            },
           },
           options: {
             rules: [
@@ -90,6 +96,7 @@ export const homePage: StaticComponent = {
     },
     {
       type: 'oryx-composition',
+      id: 'brands',
       name: 'brands',
       options: {
         rules: [
