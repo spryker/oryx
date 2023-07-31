@@ -3,7 +3,9 @@ import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
   type: 'oryx-content-image',
   name,
-  content: { data: { graphic: name, label: name, link: `/search?q=${name}` } },
+  content: {
+    data: { graphic: name, label: name, link: `/search?brand=${name}` },
+  },
   options: { rules },
 });
 
@@ -124,15 +126,15 @@ export const homePage: ExperienceComponent = {
         ],
       },
       components: [
-        brand('samsung'),
-        brand('sony'),
-        brand('lenovo'),
-        brand('hp'),
-        brand('tomtom'),
-        brand('dell'),
-        brand('fujitsu', [{ padding: '0 0 2px' }]),
-        brand('asus'),
-        brand('acer'),
+        brand('Samsung'),
+        brand('Sony'),
+        brand('Lenovo'),
+        brand('HP'),
+        brand('TomTom'),
+        brand('DELL'),
+        brand('Fujitsu', [{ padding: '0 0 2px' }]),
+        brand('Asus'),
+        brand('Acer'),
       ],
     },
   ],
