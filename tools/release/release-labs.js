@@ -43,7 +43,7 @@ function getUndottedLibsVersion(libsVersion) {
 }
 
 function getPrereleaseLibsVersion(libsVersion) {
-  return `-${semver.prerelease(libsVersion).join('.')}`;
+  return semver.prerelease(libsVersion) ? `-${semver.prerelease(libsVersion).join('.')}` : '';
 }
 
 function createTag(version) {
