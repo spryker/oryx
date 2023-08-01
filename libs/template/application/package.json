@@ -14,7 +14,7 @@
     "@spryker-oryx/router": "1.0.0",
     "@spryker-oryx/ui": "1.0.0",
     "@spryker-oryx/utilities": "1.0.0",
-    "@webcomponents/template-shadowroot": "^0.1.0",
+    "@webcomponents/template-shadowroot": "^0.2.1",
     "abort-controller": "^3.0.0",
     "express": "^4.17.1",
     "url-join": "^5.0.0",
