@@ -145,6 +145,8 @@ export class DefaultExperienceDataService implements ExperienceDataService {
         )
           i++;
 
+        if (type === ExperienceDataMergeType.Remove) i--;
+
         continue;
       }
 
@@ -176,10 +178,16 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       return;
     }
 
+    if (type === ExperienceDataMergeType.Remove) {
+      components.splice(componentIndex, 1);
+
+      return;
+    }
+
     if (type === ExperienceDataMergeType.Replace) {
       strategy.type ??= 'oryx-composition';
 
-      if (componentIndex) {
+      if (componentIndex !== undefined) {
         components[componentIndex] = strategy;
       } else {
         template.components = [strategy];
