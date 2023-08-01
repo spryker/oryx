@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nMixin, signal, signalAware } from '@spryker-oryx/utilities';
+import { I18nMixin, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { pickingListsHeaderComponentStyles } from './picking-lists-header.styles';
 
@@ -36,6 +36,8 @@ export class PickingListsHeaderComponent extends I18nMixin(LitElement) {
   }
 
   protected override render(): TemplateResult {
+    console.log(this.$date(), 'date', Date.now());
+
     return html`
       <oryx-header>
         <div>

@@ -1,11 +1,12 @@
 import { storybookDefaultViewports } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Picking list item/Static`,
   parameters: {
+    layout: 'fullscreen',
     chromatic: {
       viewports: [storybookDefaultViewports.mobile.min],
     },

@@ -1,10 +1,10 @@
 import { MockDateDecorator } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Picking List Header`,
+  title: `${storybookPrefix}/Picking list header`,
   parameters: {
     layout: 'fullscreen',
     chromatic: {
