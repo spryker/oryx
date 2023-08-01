@@ -45,4 +45,8 @@ export class CartPage extends AbstractSFPage {
     this.getCartEntriesWrapper().should('be.visible');
     this.getCartTotals().getWrapper().should('be.visible');
   };
+
+  approveCartEntryDeletion = () => {
+    this.getSubmitDeleteBtn().click();
+  };
 }

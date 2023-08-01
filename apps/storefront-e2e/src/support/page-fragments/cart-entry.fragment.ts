@@ -29,5 +29,19 @@ export class CartEntryFragment {
       this.getWrapper().find('oryx-cart-quantity-input')
     );
 
-  remove = () => this.getRemoveBtn().click();
+  addEntry = () => {
+    this.getQuantityInput().increase();
+  };
+
+  removeEntry = () => {
+    this.getQuantityInput().decrease();
+  };
+
+  deleteEntry = () => this.getRemoveBtn().click();
+
+  changeQuantityInInput = (numberOfItems: number) => {
+    this.getQuantityInput().getInput().type(`{selectall}${numberOfItems}`);
+    // small hack to blur the input needed for cypress
+    cy.get('body').click();
+  };
 }

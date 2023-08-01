@@ -63,9 +63,15 @@ export class HeaderFragment {
     this.waitForProductsUpdate();
   };
 
-  checkTextInUserSummaryHeading(text: string) {
+  checkTextInUserSummaryHeading = (text: string) => {
     this.getUserSummaryHeading().should('contain', text);
-  }
+  };
+
+  checkCartCount = (items: number) => {
+    items === 0
+      ? this.getCartCount().should('not.exist')
+      : this.getCartCount().should('have.text', items);
+  };
 
   private initProductsUpdateInterceptor() {
     cy.intercept({
