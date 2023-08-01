@@ -8,7 +8,7 @@ import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Filters`,
-  decorators: [OverlaysDecorator(320, 568)],
+  decorators: [OverlaysDecorator(320, 568, true)],
   parameters: {
     layout: 'fullscreen',
     chromatic: {
