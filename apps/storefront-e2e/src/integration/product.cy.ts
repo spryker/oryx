@@ -1,41 +1,24 @@
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
-const productDetailPage = new ProductDetailsPage();
-
-let scosApi: SCCOSApi;
-
-describe('Product Detail Page', () => {
-  beforeEach(() => {
-    scosApi = new SCCOSApi();
-    scosApi.guestCarts.get();
-  });
-
-  describe('when the product page visited', () => {
+describe('Product Detail Page suite', () => {
+  it('must show default product', { tags: 'smoke' }, () => {
     const productData = ProductStorage.getProductByEq(2);
     const pdp = new ProductDetailsPage(productData);
 
-    beforeEach(() => {
-      pdp.visit();
-    });
+    pdp.visit();
+    pdp.checkDefaultProduct();
 
-    it('should show correct content', { tags: 'smoke' }, () => {
-      productDetailPage.getAvailability().should('be.visible');
-      pdp.getRelations().getProducts().should('not.exist');
-    });
+    pdp.getRelations().getProducts().should('not.exist');
   });
 
-  describe('when product has reference products', () => {
+  it('must show product with references', () => {
     const productData = ProductStorage.getProductByEq(3);
     const pdp = new ProductDetailsPage(productData);
 
-    beforeEach(() => {
-      pdp.visit();
-    });
+    pdp.visit();
+    pdp.checkDefaultProduct();
 
-    it('should show product references', () => {
-      pdp.getRelations().getProducts().should('be.visible');
-    });
+    pdp.getRelations().getProducts().should('be.visible');
   });
 });

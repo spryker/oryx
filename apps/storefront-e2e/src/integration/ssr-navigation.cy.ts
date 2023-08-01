@@ -40,17 +40,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
 
       verifyHeader();
 
-      pdp.getTitle().should('contain.text', productData.title);
-      pdp.getRating().should('be.visible');
-      pdp.getSKU().should('contain.text', productData.id);
-      pdp.getPrice().should('contain.text', productData.originalPrice);
-
-      pdp.getQuantityComponent().getInput().should('have.value', 1);
-      pdp.getAddToCartBtn().should('be.visible');
-
-      pdp.getImages().should('be.visible');
-      pdp.getDescription().should('be.visible');
-      pdp.getAttributeTerms().should('have.length', 7);
+      pdp.checkDefaultProduct();
 
       verifyFooter();
     });
