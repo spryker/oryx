@@ -1,11 +1,11 @@
+import { GlueAPI } from '../support/apis/glue.api';
 import { CartPage } from '../support/page-objects/cart.page';
 import { CheckoutPage } from '../support/page-objects/checkout.page';
 import { ThankYouPage } from '../support/page-objects/thank-you.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 import { Customer } from '../support/types/user.type';
 
-let sccosApi: SCCOSApi;
+let api: GlueAPI;
 let thankYouPage: ThankYouPage;
 const cartPage = new CartPage();
 const checkoutPage = new CheckoutPage();
@@ -18,24 +18,21 @@ describe('Checkout suite', () => {
     beforeEach(() => {
       cy.loginApi();
 
-      sccosApi = new SCCOSApi();
+      api = new GlueAPI();
 
       cy.fixture<Customer>('test-customer').then((customer) => {
-        cy.customerCartsCleanup(sccosApi, customer);
-        cy.customerAddressesCleanup(sccosApi, customer);
+        cy.customerCartsCleanup(api, customer);
+        cy.customerAddressesCleanup(api, customer);
       });
 
-      const productData = ProductStorage.getProductByEq(1);
+      const productData = ProductStorage.getByEq(1);
 
       cy.fixture<Customer>('test-customer').then((customer) => {
-        sccosApi.carts
-          .customersGet(customer.id)
-          .its('body.data[0].id')
-          .as('cartId');
+        api.carts.customersGet(customer.id).its('body.data[0].id').as('cartId');
       });
 
       cy.get<string>('@cartId').then((cartId) => {
-        sccosApi.cartItems.post(productData, 1, cartId);
+        api.cartItems.post(productData, 1, cartId);
       });
 
       cy.intercept('/assets/addresses/*.json').as('addressesRequest');
@@ -102,14 +99,14 @@ describe('Checkout suite', () => {
 
   describe('Create a new order by guest user', { tags: 'smoke' }, () => {
     beforeEach(() => {
-      sccosApi = new SCCOSApi();
-      sccosApi.guestCarts.get();
+      api = new GlueAPI();
+      api.guestCarts.get();
     });
 
     it('must allow user to create a new order', () => {
-      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
+      cy.addItemsToTheGuestCart(api, 1, ProductStorage.getByEq(4));
 
-      cy.goToCheckoutAsGuest();
+      cy.goToGuestCheckout();
 
       checkoutPage.checkoutAsGuestForm.fillForm();
       checkoutPage.shipping.addAddressForm.fillAddressForm();

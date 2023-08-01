@@ -6,7 +6,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       goToCheckout(): Chainable<void>;
-      goToCheckoutAsGuest(): Chainable<void>;
+      goToGuestCheckout(): Chainable<void>;
     }
   }
 }
@@ -22,8 +22,8 @@ Cypress.Commands.add('goToCheckout', () => {
   cy.wait('@customerAddressesRequest');
 });
 
-Cypress.Commands.add('goToCheckoutAsGuest', () => {
-  cy.goToCartAsGuest();
+Cypress.Commands.add('goToGuestCheckout', () => {
+  cy.goToGuestCart();
   waitForNonEmptyCartToBeLoaded();
 
   cy.intercept('/assets/addresses/*.json').as('addressFormDataRequest');

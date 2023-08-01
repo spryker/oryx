@@ -1,6 +1,8 @@
 import { RouteMatcherOptions } from 'node_modules/cypress/types/net-stubbing';
+import { CartData, GlueAPI } from '../apis/glue.api';
 import { AbstractSFPage } from '../page-objects/abstract.page';
-import { CartData, SCCOSApi } from '../sccos-api/sccos.api';
+import { ProductStorage } from '../test-data/storages/product.storage';
+import { Product } from '../types/product.type';
 import { Customer } from '../types/user.type';
 
 export {};
@@ -8,37 +10,39 @@ export {};
 declare global {
   namespace Cypress {
     interface Chainable {
-      customerCartsCleanup(sccosApi: SCCOSApi, user: Customer): void;
-      customerAddressesCleanup(sccosApi: SCCOSApi, user: Customer): void;
+      customerCartsCleanup(api: GlueAPI, user: Customer): void;
+      customerAddressesCleanup(api: GlueAPI, user: Customer): void;
       failApiCall(routeMatcherOptions: RouteMatcherOptions, actionFn): void;
       checkGlobalNotificationAfterFailedApiCall(page: AbstractSFPage): void;
+      addItemsToTheGuestCart(
+        api: GlueAPI,
+        numberOfItems: number,
+        product?: Product
+      ): void;
     }
   }
 }
 
-Cypress.Commands.add(
-  'customerCartsCleanup',
-  (sccosApi: SCCOSApi, user: Customer) => {
-    sccosApi.carts.customersGet(user.id).then((response) => {
-      const carts = response.body.data;
+Cypress.Commands.add('customerCartsCleanup', (api: GlueAPI, user: Customer) => {
+  api.carts.customersGet(user.id).then((response) => {
+    const carts = response.body.data;
 
-      removeLastCart(carts);
-      deleteCarts(sccosApi, carts);
-    });
+    removeLastCart(carts);
+    deleteCarts(api, carts);
+  });
 
-    createNewCart(sccosApi);
-  }
-);
+  createNewCart(api);
+});
 
 Cypress.Commands.add(
   'customerAddressesCleanup',
-  (sccosApi: SCCOSApi, user: Customer) => {
-    sccosApi.addresses.get(user.id).then((response) => {
+  (api: GlueAPI, user: Customer) => {
+    api.addresses.get(user.id).then((response) => {
       const addresses = response.body.data;
 
       addresses
         .map((address) => address.id)
-        .forEach((id) => sccosApi.addresses.delete(user.id, id));
+        .forEach((id) => api.addresses.delete(user.id, id));
     });
   }
 );
@@ -82,16 +86,27 @@ Cypress.Commands.add(
   }
 );
 
+Cypress.Commands.add(
+  'addItemsToTheGuestCart',
+  (
+    api: GlueAPI,
+    numberOfItems: number,
+    product = ProductStorage.getByEq(1)
+  ) => {
+    api.guestCartItems.post(product, numberOfItems);
+  }
+);
+
 function removeLastCart(carts: CartData[]) {
   carts.pop();
 }
 
-function deleteCarts(sccosApi: SCCOSApi, carts: CartData[]) {
-  carts.map((cart) => cart.id).forEach((id) => sccosApi.carts.delete(id));
+function deleteCarts(api: GlueAPI, carts: CartData[]) {
+  carts.map((cart) => cart.id).forEach((id) => api.carts.delete(id));
 }
 
-function createNewCart(sccosApi: SCCOSApi) {
-  sccosApi.carts.post();
+function createNewCart(api: GlueAPI) {
+  api.carts.post();
 }
 
 function getFailedApiCallData() {

@@ -1,3 +1,4 @@
+import { GlueAPI } from '../support/apis/glue.api';
 import { FooterFragment } from '../support/page-fragments/footer.fragment';
 import { HeaderFragment } from '../support/page-fragments/header.fragment';
 import { SearchBoxFragment } from '../support/page-fragments/search-box.fragment';
@@ -9,10 +10,9 @@ import { LandingPage } from '../support/page-objects/landing.page';
 import { LoginPage } from '../support/page-objects/login.page';
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
 import { SearchPage } from '../support/page-objects/search.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
-let sccosApi: SCCOSApi;
+let api: GlueAPI;
 
 const footer = new FooterFragment();
 const header = new HeaderFragment();
@@ -33,7 +33,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     });
 
     it('must render Product details page', () => {
-      const productData = ProductStorage.getProductByEq(1);
+      const productData = ProductStorage.getByEq(1);
       const pdp = new ProductDetailsPage(productData);
 
       pdp.visit();
@@ -72,7 +72,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     it('must render Cart page', () => {
       const cartPage = new CartPage();
 
-      cy.goToCartAsGuest();
+      cy.goToGuestCart();
 
       verifyHeader();
 
@@ -113,11 +113,11 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     it('must render Checkout page', () => {
       const checkoutPage = new CheckoutPage();
 
-      sccosApi = new SCCOSApi();
-      sccosApi.guestCarts.get();
-      sccosApi.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
+      api = new GlueAPI();
+      api.guestCarts.get();
 
-      cy.goToCheckoutAsGuest();
+      cy.addItemsToTheGuestCart(api, 1, ProductStorage.getByEq(4));
+      cy.goToGuestCheckout();
 
       // trigger ssr
       cy.reload();

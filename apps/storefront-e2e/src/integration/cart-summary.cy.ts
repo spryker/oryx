@@ -1,9 +1,9 @@
+import { GlueAPI } from '../support/apis/glue.api';
 import { CartPage } from '../support/page-objects/cart.page';
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
-let sccosApi: SCCOSApi;
+let api: GlueAPI;
 
 const cartPage = new CartPage();
 
@@ -14,14 +14,14 @@ const cartPage = new CartPage();
 // and this suite should cover all these integrations
 describe('Cart summary suite', () => {
   beforeEach(() => {
-    sccosApi = new SCCOSApi();
-    sccosApi.guestCarts.get();
+    api = new GlueAPI();
+    api.guestCarts.get();
   });
 
   context('Counter', () => {
     context('must increase if', () => {
       it('a product is added in the cart from pdp', () => {
-        const pdp = new ProductDetailsPage(ProductStorage.getProductByEq(0));
+        const pdp = new ProductDetailsPage(ProductStorage.getByEq(0));
 
         pdp.visit();
 
@@ -33,8 +33,8 @@ describe('Cart summary suite', () => {
       });
 
       it('a product is added in the cart from cart (input, manual)', () => {
-        addItemsInTheGuestCart(1);
-        cy.goToCartAsGuest();
+        cy.addItemsToTheGuestCart(api, 1);
+        cy.goToGuestCart();
 
         cartPage.header.checkCartCount(1);
 
@@ -48,8 +48,8 @@ describe('Cart summary suite', () => {
 
     context('must decrease if', () => {
       it('a product is removed from the cart (- btn click)', () => {
-        addItemsInTheGuestCart(2);
-        cy.goToCartAsGuest();
+        cy.addItemsToTheGuestCart(api, 2);
+        cy.goToGuestCart();
 
         cartPage.header.checkCartCount(2);
 
@@ -63,8 +63,8 @@ describe('Cart summary suite', () => {
 
     context('must be not visible if', () => {
       it('all items are removed from the cart (trash btn click)', () => {
-        addItemsInTheGuestCart(1);
-        cy.goToCartAsGuest();
+        cy.addItemsToTheGuestCart(api, 1);
+        cy.goToGuestCart();
 
         cartPage.header.checkCartCount(1);
 
@@ -77,8 +77,8 @@ describe('Cart summary suite', () => {
       });
 
       it('all items are removed from the cart (X btn click)', () => {
-        addItemsInTheGuestCart(2);
-        cy.goToCartAsGuest();
+        cy.addItemsToTheGuestCart(api, 2);
+        cy.goToGuestCart();
 
         cartPage.header.checkCartCount(2);
 
@@ -92,7 +92,3 @@ describe('Cart summary suite', () => {
     });
   });
 });
-
-function addItemsInTheGuestCart(numberOfItems: number) {
-  sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), numberOfItems);
-}

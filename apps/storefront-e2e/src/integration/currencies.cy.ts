@@ -1,7 +1,7 @@
+import { GlueAPI } from '../support/apis/glue.api';
 import { CartPage } from '../support/page-objects/cart.page';
 import { LandingPage } from '../support/page-objects/landing.page';
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const homePage = new LandingPage();
@@ -52,9 +52,8 @@ describe('Currencies suite', () => {
 
   describe('when there is a product in the cart and user opens the cart page', () => {
     beforeEach(() => {
-      const scosApi = new SCCOSApi();
-      scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
-      cy.goToCartAsGuest();
+      cy.addItemsToTheGuestCart(new GlueAPI(), 1, ProductStorage.getByEq(2));
+      cy.goToGuestCart();
     });
 
     describe('and user changes the currency to CHF', () => {

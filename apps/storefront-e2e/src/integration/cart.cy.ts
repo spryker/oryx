@@ -1,22 +1,22 @@
+import { GlueAPI } from '../support/apis/glue.api';
 import { CartPage } from '../support/page-objects/cart.page';
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const cartPage = new CartPage();
 const cartTotals = cartPage.getCartTotals();
 
-let scosApi: SCCOSApi;
+let api: GlueAPI;
 
 describe('Cart', () => {
   beforeEach(() => {
-    scosApi = new SCCOSApi();
-    scosApi.guestCarts.get();
+    api = new GlueAPI();
+    api.guestCarts.get();
   });
 
   describe('when the cart page is not visited', () => {
     describe('and discontinued items are added to cart on the product page', () => {
-      const productData = ProductStorage.getProductByEq(4);
+      const productData = ProductStorage.getByEq(4);
       const pdp = new ProductDetailsPage(productData);
 
       beforeEach(() => {
@@ -57,7 +57,7 @@ describe('Cart', () => {
   describe('when the cart page is visited', () => {
     describe('and the cart is empty', () => {
       beforeEach(() => {
-        cy.goToCartAsGuest();
+        cy.goToGuestCart();
       });
 
       it('should render an empty message', () => {
@@ -67,8 +67,8 @@ describe('Cart', () => {
 
     describe('and there is an item in the cart', () => {
       beforeEach(() => {
-        scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
-        cy.goToCartAsGuest();
+        cy.addItemsToTheGuestCart(api, 1, ProductStorage.getByEq(2));
+        cy.goToGuestCart();
 
         cartPage.checkNotEmptyCart();
       });

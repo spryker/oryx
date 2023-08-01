@@ -28,7 +28,7 @@ describe('Search box suite', () => {
   });
 
   it('must navigate to PDP from search results', { tags: 'smoke' }, () => {
-    const productData = ProductStorage.getProductByEq(3);
+    const productData = ProductStorage.getByEq(3);
     const pdp = new ProductDetailsPage(productData);
 
     searchbox.search(productData.title);
