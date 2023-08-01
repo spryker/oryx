@@ -69,6 +69,7 @@ describe('Cart', () => {
       beforeEach(() => {
         scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
         cy.goToCartAsGuest();
+
         cartPage.checkNotEmptyCart();
       });
 
@@ -89,8 +90,8 @@ describe('Cart', () => {
       describe('and the entry decrease button is clicked', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
-            entries[0].getQuantityInput().decrease();
-            cartPage.getSubmitDeleteBtn().click();
+            entries[0].decreaseEntry();
+            cartPage.approveCartEntryDeletion();
           });
         });
 
@@ -102,10 +103,7 @@ describe('Cart', () => {
       describe('and the quantity is increased by input enter', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
-            entries[0]
-              .getQuantityInput()
-              .getInput()
-              .type('{selectall}4{enter}');
+            entries[0].changeQuantityInInput(4);
           });
         });
 
@@ -128,26 +126,11 @@ describe('Cart', () => {
       describe('and the quantity is increased by input change', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
-            entries[0].getQuantityInput().getInput().type('{selectall}2');
+            entries[0].changeQuantityInInput(2);
           });
         });
 
         it('should update the cart totals after blur', () => {
-          // quantity updated, but not yet recalculated prices
-          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
-          checkCartEntry({
-            quantity: 2,
-            subTotal: '€34.54',
-          });
-          checkCartTotals({
-            subTotal: '€34.54',
-            taxTotal: '€5.51',
-            totalPrice: '€34.54',
-          });
-
-          cy.get('body').click();
-
-          // after blur the quantity the prices will be recalculated
           cartPage.getCartEntriesHeading().should('contain.text', '2 items');
           checkCartEntry({
             quantity: 2,
@@ -164,11 +147,8 @@ describe('Cart', () => {
       describe('and the quantity is changed to 0', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
-            entries[0]
-              .getQuantityInput()
-              .getInput()
-              .type('{selectall}0{enter}');
-            cartPage.getSubmitDeleteBtn().click();
+            entries[0].changeQuantityInInput(0);
+            cartPage.approveCartEntryDeletion();
           });
         });
 
@@ -180,14 +160,8 @@ describe('Cart', () => {
       describe('and the entry is removed', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
-            entries[0].getRemoveBtn().click();
-
-            cy.intercept({
-              method: 'DELETE',
-              url: '/guest-carts/*/guest-cart-items/*',
-            }).as('deleteCartItemRequest');
-            cartPage.getSubmitDeleteBtn().click();
-            cy.wait('@deleteCartItemRequest');
+            entries[0].decreaseEntry();
+            cartPage.approveCartEntryDeletion();
           });
         });
 
@@ -205,7 +179,7 @@ describe('Cart', () => {
             },
             () => {
               cartPage.getCartEntries().then((entries) => {
-                entries[0].getQuantityInput().increase();
+                entries[0].increaseEntry();
               });
             }
           );

@@ -29,19 +29,25 @@ export class CartEntryFragment {
       this.getWrapper().find('oryx-cart-quantity-input')
     );
 
-  addEntry = () => {
+  increaseEntry = () => {
     this.getQuantityInput().increase();
   };
 
-  removeEntry = () => {
+  decreaseEntry = () => {
     this.getQuantityInput().decrease();
   };
 
   deleteEntry = () => this.getRemoveBtn().click();
 
   changeQuantityInInput = (numberOfItems: number) => {
-    this.getQuantityInput().getInput().type(`{selectall}${numberOfItems}`);
-    // small hack to blur the input needed for cypress
-    cy.get('body').click();
+    this.getQuantityInput()
+      .getInput()
+      .type(`{selectall}${numberOfItems}{enter}`);
+
+    // if numberOfItems === 0 - the modal should appear
+    // and we don't want to close it by clicking on body
+    if (numberOfItems !== 0) {
+      cy.get('body').click();
+    }
   };
 }

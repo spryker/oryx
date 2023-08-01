@@ -47,6 +47,13 @@ export class CartPage extends AbstractSFPage {
   };
 
   approveCartEntryDeletion = () => {
+    cy.intercept({
+      method: 'DELETE',
+      url: '/guest-carts/*/guest-cart-items/*',
+    }).as('deleteCartItemRequest');
+
     this.getSubmitDeleteBtn().click();
+
+    cy.wait('@deleteCartItemRequest');
   };
 }
