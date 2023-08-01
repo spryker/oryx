@@ -128,7 +128,7 @@ export class GlobalizeService {
 
           const fullValues = this.normalizeContext(value, fullKey);
 
-          if (!fullValues) {
+          if (!fullValues && fullValues !== 0) {
             return ctx;
           }
 
