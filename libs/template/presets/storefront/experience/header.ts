@@ -1,6 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Size } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
@@ -89,21 +88,6 @@ export const HeaderTemplate: ExperienceComponent = {
           type: 'oryx-composition',
           id: 'header-actions',
           components: [
-            {
-              type: 'oryx-site-navigation-item',
-              options: {
-                label: 'EMPTY',
-                icon: IconTypes.Cart,
-                url: { type: 'cart' },
-                rules: [
-                  {
-                    query: { breakpoint: Size.Lg },
-                    hideByRule: 'USER.AUTHENTICATED',
-                  },
-                  { query: { breakpoint: Size.Sm }, hide: true },
-                ],
-              },
-            },
             {
               type: 'oryx-site-navigation-item',
               options: {
