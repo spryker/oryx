@@ -65,7 +65,7 @@ describe('Locales suite', () => {
         cartPage.header.changeLocale('de');
       });
 
-      it('DE tests and currencies are applied', () => {
+      it('DE texts and currencies are applied', () => {
         checkCurrencyUsedOnCartPage('de');
       });
 
@@ -77,7 +77,7 @@ describe('Locales suite', () => {
           cartPage.header.changeLocale('en', true);
         });
 
-        it('EN tests and currencies are applied', () => {
+        it('EN texts and currencies are applied', () => {
           checkCurrencyUsedOnCartPage('en');
         });
       });
@@ -86,21 +86,11 @@ describe('Locales suite', () => {
 });
 
 function checkCurrencyUsedOnCartPage(locale: string) {
-  cartPage
-    .getCartTotals()
-    .getSubtotalPrice()
-    .shadow()
-    .checkCurrencyFormatting(locale);
-  cartPage
-    .getCartTotals()
-    .getTaxTotalPrice()
-    .shadow()
-    .checkCurrencyFormatting(locale);
-  cartPage
-    .getCartTotals()
-    .getTotalPrice()
-    .shadow()
-    .checkCurrencyFormatting(locale);
+  const totals = cartPage.getCartTotals();
+
+  totals.getSubtotalPrice().shadow().checkCurrencyFormatting(locale);
+  totals.getTaxTotalPrice().shadow().checkCurrencyFormatting(locale);
+  totals.getTotalPrice().shadow().checkCurrencyFormatting(locale);
 
   cartPage.getCartEntries().then((entries) => {
     entries[0].getSubtotal().shadow().checkCurrencyFormatting(locale);

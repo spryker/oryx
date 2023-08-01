@@ -84,21 +84,11 @@ describe('Currencies suite', () => {
 });
 
 function checkCurrencyOnCartPage(currency: string) {
-  cartPage
-    .getCartTotals()
-    .getSubtotalPrice()
-    .shadow()
-    .should('contain.text', currency);
-  cartPage
-    .getCartTotals()
-    .getTaxTotalPrice()
-    .shadow()
-    .should('contain.text', currency);
-  cartPage
-    .getCartTotals()
-    .getTotalPrice()
-    .shadow()
-    .should('contain.text', currency);
+  const totals = cartPage.getCartTotals();
+
+  totals.getSubtotalPrice().shadow().should('contain.text', currency);
+  totals.getTaxTotalPrice().shadow().should('contain.text', currency);
+  totals.getTotalPrice().shadow().should('contain.text', currency);
 
   cartPage.getCartEntries().then((entries) => {
     entries[0].getSubtotal().shadow().should('contain.text', currency);
