@@ -17,8 +17,8 @@ export class CardComponent extends LitElement {
           <h5>${this.heading}</h5>
         </oryx-heading>
       </slot>
-      <slot part="body"></slot>
       <slot name="footer"></slot>
+      <slot part="body"></slot>
     `;
   }
 }
