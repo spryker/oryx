@@ -1,7 +1,7 @@
+import { GlueAPI } from '../support/apis/glue.api';
 import { CartPage } from '../support/page-objects/cart.page';
 import { LandingPage } from '../support/page-objects/landing.page';
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const homePage = new LandingPage();
@@ -52,9 +52,8 @@ describe('Currencies suite', () => {
 
   describe('when there is a product in the cart and user opens the cart page', () => {
     beforeEach(() => {
-      const scosApi = new SCCOSApi();
-      scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
-      cy.goToCartAsGuest();
+      cy.addProductToGuestCart(new GlueAPI(), 1, ProductStorage.getByEq(2));
+      cy.goToGuestCart();
     });
 
     describe('and user changes the currency to CHF', () => {
@@ -84,21 +83,11 @@ describe('Currencies suite', () => {
 });
 
 function checkCurrencyOnCartPage(currency: string) {
-  cartPage
-    .getCartTotals()
-    .getSubtotalPrice()
-    .shadow()
-    .should('contain.text', currency);
-  cartPage
-    .getCartTotals()
-    .getTaxTotalPrice()
-    .shadow()
-    .should('contain.text', currency);
-  cartPage
-    .getCartTotals()
-    .getTotalPrice()
-    .shadow()
-    .should('contain.text', currency);
+  const totals = cartPage.getCartTotals();
+
+  totals.getSubtotalPrice().shadow().should('contain.text', currency);
+  totals.getTaxTotalPrice().shadow().should('contain.text', currency);
+  totals.getTotalPrice().shadow().should('contain.text', currency);
 
   cartPage.getCartEntries().then((entries) => {
     entries[0].getSubtotal().shadow().should('contain.text', currency);

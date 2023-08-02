@@ -17,7 +17,7 @@ export type CartData = {
   };
 };
 
-export class SCCOSApi {
+export class GlueAPI {
   private anonymousHeader = 'X-Anonymous-Customer-Unique-Id';
   private customerUniqueId: number = Math.random();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,7 +61,7 @@ export class SCCOSApi {
 
   guestCarts = {
     get: () => {
-      cy.log('SCCOSApi | Create new guest cart');
+      cy.log('GlueApi | Create new guest cart');
 
       cy.request({
         method: 'GET',
@@ -73,7 +73,7 @@ export class SCCOSApi {
 
   carts = {
     customersGet: (customerId: string) => {
-      cy.log('SCCOSApi | Get carts for logged in user');
+      cy.log('GlueApi | Get carts for logged in user');
 
       return cy.getAllLocalStorage().then((storage) => {
         this.addAuthorizationHeaders(storage);
@@ -98,7 +98,7 @@ export class SCCOSApi {
         },
       }
     ) => {
-      cy.log('SCCOSApi | Create new cart for logged in user');
+      cy.log('GlueApi | Create new cart for logged in user');
 
       return cy.getAllLocalStorage().then((storage) => {
         this.addAuthorizationHeaders(storage);
@@ -112,7 +112,7 @@ export class SCCOSApi {
       });
     },
     delete: (cartId: string) => {
-      cy.log('SCCOSApi | Delete cart for logged in user');
+      cy.log('GlueApi | Delete cart for logged in user');
 
       return cy.getAllLocalStorage().then((storage) => {
         this.addAuthorizationHeaders(storage);
@@ -141,7 +141,7 @@ export class SCCOSApi {
         },
       };
 
-      cy.log('SCCOSApi | Add items to the guest cart');
+      cy.log('GlueApi | Add items to the guest cart');
 
       cy.request({
         method: 'POST',
@@ -164,7 +164,7 @@ export class SCCOSApi {
         },
       };
 
-      cy.log('SCCOSApi | Add items to customer cart');
+      cy.log('GlueApi | Add items to customer cart');
 
       return cy.getAllLocalStorage().then((storage) => {
         this.addAuthorizationHeaders(storage);
@@ -181,7 +181,7 @@ export class SCCOSApi {
 
   addresses = {
     get: (customerId: string) => {
-      cy.log('SCCOSApi | Get customer addresses');
+      cy.log('GlueApi | Get customer addresses');
 
       return cy.getAllLocalStorage().then((storage) => {
         this.addAuthorizationHeaders(storage);
@@ -201,7 +201,7 @@ export class SCCOSApi {
         },
       };
 
-      cy.log('SCCOSApi | Create customer address');
+      cy.log('GlueApi | Create customer address');
 
       return cy.getAllLocalStorage().then((storage) => {
         this.addAuthorizationHeaders(storage);
@@ -215,7 +215,7 @@ export class SCCOSApi {
       });
     },
     delete: (customerId: string, addressId: string) => {
-      cy.log('SCCOSApi | Delete customer address');
+      cy.log('GlueApi | Delete customer address');
 
       return cy.getAllLocalStorage().then((storage) => {
         this.addAuthorizationHeaders(storage);
@@ -231,7 +231,7 @@ export class SCCOSApi {
 
   token = {
     post: (user: Customer) => {
-      cy.log('SCCOSApi | POST token');
+      cy.log('GlueApi | POST token');
 
       return cy.request({
         method: 'POST',

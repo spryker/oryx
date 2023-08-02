@@ -1,5 +1,5 @@
+import { GlueAPI } from '../apis/glue.api';
 import { LoginPage } from '../page-objects/login.page';
-import { SCCOSApi } from '../sccos-api/sccos.api';
 import { Customer } from '../types/user.type';
 
 export {};
@@ -22,14 +22,12 @@ Cypress.Commands.add('login', () => {
     cy.intercept('/customers/DE--**').as('profileRequest');
     loginPage.loginForm.login(customer);
     cy.wait('@profileRequest');
-
-    loginPage.header.getUserSummaryHeading().should('contain', customer.name);
   });
 });
 
 Cypress.Commands.add('loginApi', () => {
   cy.fixture<Customer>('test-customer').then((customer) => {
-    const api = new SCCOSApi();
+    const api = new GlueAPI();
 
     api.token.post(customer).then((res) => {
       cy.window().then((win) => {

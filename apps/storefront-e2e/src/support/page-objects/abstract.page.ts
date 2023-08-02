@@ -1,7 +1,7 @@
 import { FooterFragment } from '../page-fragments/footer.fragment';
-import { HeaderFragment } from '../page-fragments/header.fragment';
 import { GlobalNotificationCenter } from '../page-fragments/global-notification-center.fragment';
-import { SearchFragment } from '../page-fragments/search.fragment';
+import { HeaderFragment } from '../page-fragments/header.fragment';
+import { SearchBoxFragment } from '../page-fragments/search-box.fragment';
 
 export abstract class AbstractSFPage {
   abstract url: string;
@@ -20,7 +20,7 @@ export abstract class AbstractSFPage {
 
   header = new HeaderFragment();
   footer = new FooterFragment();
-  search = new SearchFragment();
+  searchbox = new SearchBoxFragment();
   globalNotificationCenter = new GlobalNotificationCenter();
 
   /**

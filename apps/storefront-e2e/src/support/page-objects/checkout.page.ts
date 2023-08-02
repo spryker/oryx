@@ -37,4 +37,20 @@ export class CheckoutPage extends AbstractSFPage {
 
   getCartTotals = new CartTotalsFragment();
   getPlaceOrderBtn = () => cy.get('oryx-checkout-place-order');
+
+  placeOrder = () => {
+    this.order('/checkout');
+  };
+
+  placeOrderAsGuest = () => {
+    this.order('/checkout?include=*');
+  };
+
+  private order = (url: string) => {
+    cy.intercept('POST', url).as('checkout');
+    this.getPlaceOrderBtn().click();
+    cy.wait('@checkout')
+      .its('response.body.data.attributes.orderReference')
+      .as('createdOrderId');
+  };
 }

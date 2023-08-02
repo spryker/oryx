@@ -1,28 +1,26 @@
+import { GlueAPI } from '../support/apis/glue.api';
 import { CheckoutPage } from '../support/page-objects/checkout.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 import { Customer } from '../support/types/user.type';
 
-let api: SCCOSApi;
-
+let api: GlueAPI;
 const checkoutPage = new CheckoutPage();
 
 describe('User addresses suite', () => {
   describe('when user is guest', () => {
     beforeEach(() => {
-      api = new SCCOSApi();
-
+      api = new GlueAPI();
       api.guestCarts.get();
     });
 
     describe('and user has some products in the cart', () => {
       beforeEach(() => {
-        api.guestCartItems.post(ProductStorage.getProductByEq(4), 1);
+        cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
       });
 
       describe('and user goes to checkout', () => {
         beforeEach(() => {
-          cy.goToCheckoutAsGuest();
+          cy.goToGuestCheckout();
         });
 
         it('then shipping address form is shown and billing address is the same as shipping', () => {
@@ -34,7 +32,7 @@ describe('User addresses suite', () => {
 
   describe('when user is logged in', () => {
     beforeEach(() => {
-      api = new SCCOSApi();
+      api = new GlueAPI();
 
       cy.loginApi();
 
@@ -46,24 +44,13 @@ describe('User addresses suite', () => {
 
     describe('and user has some products in the cart', () => {
       beforeEach(() => {
-        const productData = ProductStorage.getProductByEq(0);
-
-        cy.fixture<Customer>('test-customer').then((customer) => {
-          // get all customer carts
-          api.carts.customersGet(customer.id).then((customerCartsResponse) => {
-            const cartId = customerCartsResponse.body.data[0].id;
-            // add 1 item to the first cart
-            api.cartItems.post(productData, 1, cartId);
-          });
-        });
+        cy.addProductToCart(api);
       });
 
       describe('and user does not have addresses yet', () => {
         describe('and user goes to checkout', () => {
           beforeEach(() => {
-            cy.intercept('/assets/addresses/*.json').as('addressesRequest');
             cy.goToCheckout();
-            cy.wait('@addressesRequest');
           });
 
           it('then shipping address form is shown and billing address is the same as shipping', () => {

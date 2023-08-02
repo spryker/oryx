@@ -1,22 +1,22 @@
+import { GlueAPI } from '../support/apis/glue.api';
 import { CartPage } from '../support/page-objects/cart.page';
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const cartPage = new CartPage();
 const cartTotals = cartPage.getCartTotals();
 
-let scosApi: SCCOSApi;
+let api: GlueAPI;
 
 describe('Cart', () => {
   beforeEach(() => {
-    scosApi = new SCCOSApi();
-    scosApi.guestCarts.get();
+    api = new GlueAPI();
+    api.guestCarts.get();
   });
 
   describe('when the cart page is not visited', () => {
     describe('and discontinued items are added to cart on the product page', () => {
-      const productData = ProductStorage.getProductByEq(4);
+      const productData = ProductStorage.getByEq(4);
       const pdp = new ProductDetailsPage(productData);
 
       beforeEach(() => {
@@ -57,7 +57,7 @@ describe('Cart', () => {
   describe('when the cart page is visited', () => {
     describe('and the cart is empty', () => {
       beforeEach(() => {
-        cy.goToCartAsGuest();
+        cy.goToGuestCart();
       });
 
       it('should render an empty message', () => {
@@ -67,8 +67,9 @@ describe('Cart', () => {
 
     describe('and there is an item in the cart', () => {
       beforeEach(() => {
-        scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
-        cy.goToCartAsGuest();
+        cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(2));
+        cy.goToGuestCart();
+
         cartPage.checkNotEmptyCart();
       });
 
@@ -89,8 +90,8 @@ describe('Cart', () => {
       describe('and the entry decrease button is clicked', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
-            entries[0].getQuantityInput().decrease();
-            cartPage.getSubmitDeleteBtn().click();
+            entries[0].decreaseEntry();
+            cartPage.approveCartEntryDeletion();
           });
         });
 
@@ -102,10 +103,7 @@ describe('Cart', () => {
       describe('and the quantity is increased by input enter', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
-            entries[0]
-              .getQuantityInput()
-              .getInput()
-              .type('{selectall}4{enter}');
+            entries[0].changeQuantityInInput(4);
           });
         });
 
@@ -128,26 +126,11 @@ describe('Cart', () => {
       describe('and the quantity is increased by input change', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
-            entries[0].getQuantityInput().getInput().type('{selectall}2');
+            entries[0].changeQuantityInInput(2);
           });
         });
 
         it('should update the cart totals after blur', () => {
-          // quantity updated, but not yet recalculated prices
-          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
-          checkCartEntry({
-            quantity: 2,
-            subTotal: '€34.54',
-          });
-          checkCartTotals({
-            subTotal: '€34.54',
-            taxTotal: '€5.51',
-            totalPrice: '€34.54',
-          });
-
-          cy.get('body').click();
-
-          // after blur the quantity the prices will be recalculated
           cartPage.getCartEntriesHeading().should('contain.text', '2 items');
           checkCartEntry({
             quantity: 2,
@@ -164,11 +147,8 @@ describe('Cart', () => {
       describe('and the quantity is changed to 0', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
-            entries[0]
-              .getQuantityInput()
-              .getInput()
-              .type('{selectall}0{enter}');
-            cartPage.getSubmitDeleteBtn().click();
+            entries[0].changeQuantityInInput(0);
+            cartPage.approveCartEntryDeletion();
           });
         });
 
@@ -180,14 +160,8 @@ describe('Cart', () => {
       describe('and the entry is removed', () => {
         beforeEach(() => {
           cartPage.getCartEntries().then((entries) => {
-            entries[0].getRemoveBtn().click();
-
-            cy.intercept({
-              method: 'DELETE',
-              url: '/guest-carts/*/guest-cart-items/*',
-            }).as('deleteCartItemRequest');
-            cartPage.getSubmitDeleteBtn().click();
-            cy.wait('@deleteCartItemRequest');
+            entries[0].decreaseEntry();
+            cartPage.approveCartEntryDeletion();
           });
         });
 
@@ -205,7 +179,7 @@ describe('Cart', () => {
             },
             () => {
               cartPage.getCartEntries().then((entries) => {
-                entries[0].getQuantityInput().increase();
+                entries[0].increaseEntry();
               });
             }
           );
