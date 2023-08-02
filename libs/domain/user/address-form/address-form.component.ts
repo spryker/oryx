@@ -171,18 +171,28 @@ export class UserAddressFormComponent
     this.countryService.set(this.country);
   }
 
+  protected preventInvalidDisplay = (e: Event): void => {
+    e.stopImmediatePropagation();
+  };
+
   protected onChange(): void {
     if (this.form) {
       const address: Address = Object.fromEntries(
         new FormData(this.form).entries()
       );
       address.id = this.values?.id;
+      this.form.addEventListener('invalid', this.preventInvalidDisplay, true);
       this.dispatchEvent(
         new CustomEvent<AddressEventDetail>('change', {
           detail: { address, valid: this.form.checkValidity() },
           bubbles: true,
           composed: true,
         })
+      );
+      this.form.removeEventListener(
+        'invalid',
+        this.preventInvalidDisplay,
+        true
       );
     }
   }
