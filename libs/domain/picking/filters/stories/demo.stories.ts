@@ -8,7 +8,9 @@ import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Filters`,
-  decorators: [OverlaysDecorator(300, 1200)],
+  //900px height is set to be sure that all content fit to the chromatic viewport
+  //that has non-configurable 900px height by default
+  decorators: [OverlaysDecorator(300, 900)],
   parameters: {
     layout: 'fullscreen',
     chromatic: {
