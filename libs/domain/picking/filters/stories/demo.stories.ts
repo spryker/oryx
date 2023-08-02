@@ -10,6 +10,7 @@ export default {
   title: `${storybookPrefix}/Filters`,
   decorators: [OverlaysDecorator(320, 568)],
   parameters: {
+    layout: 'fullscreen',
     chromatic: {
       viewports: [storybookDefaultViewports.mobile.min],
     },

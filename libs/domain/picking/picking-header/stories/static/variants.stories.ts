@@ -10,7 +10,6 @@ export default {
   title: `${storybookPrefix}/Picking header/Static`,
   decorators: [OverlaysDecorator(320, 568)],
   parameters: {
-    layout: 'fullscreen',
     chromatic: {
       viewports: [storybookDefaultViewports.mobile.min],
     },

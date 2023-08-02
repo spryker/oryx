@@ -9,7 +9,6 @@ const pickingListIds = mockPickingListData.map(({ id }) => id);
 export default {
   title: `${storybookPrefix}/Picking header`,
   parameters: {
-    layout: 'fullscreen',
     chromatic: {
       disableSnapshot: true,
     },
