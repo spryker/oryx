@@ -14,9 +14,14 @@ declare global {
       customerAddressesCleanup(api: GlueAPI, user: Customer): void;
       failApiCall(routeMatcherOptions: RouteMatcherOptions, actionFn): void;
       checkGlobalNotificationAfterFailedApiCall(page: AbstractSFPage): void;
-      addItemsToTheGuestCart(
+      addProductToGuestCart(
         api: GlueAPI,
-        numberOfItems: number,
+        numberOfItems?: number,
+        product?: Product
+      ): void;
+      addProductToCart(
+        api: GlueAPI,
+        numberOfItems?: number,
         product?: Product
       ): void;
     }
@@ -87,13 +92,22 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
-  'addItemsToTheGuestCart',
-  (
-    api: GlueAPI,
-    numberOfItems: number,
-    product = ProductStorage.getByEq(1)
-  ) => {
+  'addProductToGuestCart',
+  (api: GlueAPI, numberOfItems = 1, product = ProductStorage.getByEq(1)) => {
     api.guestCartItems.post(product, numberOfItems);
+  }
+);
+
+Cypress.Commands.add(
+  'addProductToCart',
+  (api: GlueAPI, numberOfItems = 1, product = ProductStorage.getByEq(1)) => {
+    cy.fixture<Customer>('test-customer').then((customer) => {
+      api.carts.customersGet(customer.id).then((cartData) => {
+        const cartId = cartData.body.data[0].id;
+
+        api.cartItems.post(product, numberOfItems, cartId);
+      });
+    });
   }
 );
 

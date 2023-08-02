@@ -52,7 +52,7 @@ describe('Currencies suite', () => {
 
   describe('when there is a product in the cart and user opens the cart page', () => {
     beforeEach(() => {
-      cy.addItemsToTheGuestCart(new GlueAPI(), 1, ProductStorage.getByEq(2));
+      cy.addProductToGuestCart(new GlueAPI(), 1, ProductStorage.getByEq(2));
       cy.goToGuestCart();
     });
 

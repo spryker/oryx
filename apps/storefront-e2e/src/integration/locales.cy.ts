@@ -56,7 +56,7 @@ describe('Locales suite', () => {
   describe('when there is a product in the cart and user opens the cart page', () => {
     beforeEach(() => {
       const api = new GlueAPI();
-      cy.addItemsToTheGuestCart(api, 1, ProductStorage.getByEq(2));
+      cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(2));
       cy.goToGuestCart();
     });
 

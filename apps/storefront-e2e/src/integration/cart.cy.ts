@@ -67,7 +67,7 @@ describe('Cart', () => {
 
     describe('and there is an item in the cart', () => {
       beforeEach(() => {
-        cy.addItemsToTheGuestCart(api, 1, ProductStorage.getByEq(2));
+        cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(2));
         cy.goToGuestCart();
 
         cartPage.checkNotEmptyCart();

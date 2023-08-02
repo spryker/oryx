@@ -116,7 +116,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       api = new GlueAPI();
       api.guestCarts.get();
 
-      cy.addItemsToTheGuestCart(api, 1, ProductStorage.getByEq(4));
+      cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
       cy.goToGuestCheckout();
 
       // trigger ssr

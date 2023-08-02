@@ -16,7 +16,7 @@ describe('User addresses suite', () => {
 
     describe('and user has some products in the cart', () => {
       beforeEach(() => {
-        cy.addItemsToTheGuestCart(api, 1, ProductStorage.getByEq(4));
+        cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
       });
 
       describe('and user goes to checkout', () => {
