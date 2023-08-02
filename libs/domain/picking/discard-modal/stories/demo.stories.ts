@@ -10,7 +10,6 @@ export default {
   title: `${storybookPrefix}/Discard modal`,
   decorators: [OverlaysDecorator(320, 568)],
   parameters: {
-    layout: 'fullscreen',
     chromatic: {
       viewports: [storybookDefaultViewports.mobile.min],
     },

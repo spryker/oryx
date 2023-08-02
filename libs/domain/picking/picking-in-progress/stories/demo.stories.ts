@@ -5,7 +5,6 @@ import { storybookPrefix } from '../../.constants';
 export default {
   title: `${storybookPrefix}/Picking in progress modal`,
   parameters: {
-    layout: 'fullscreen',
     chromatic: {
       disableSnapshot: true,
     },

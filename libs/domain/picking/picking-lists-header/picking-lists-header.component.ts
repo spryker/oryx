@@ -36,8 +36,6 @@ export class PickingListsHeaderComponent extends I18nMixin(LitElement) {
   }
 
   protected override render(): TemplateResult {
-    console.log(this.$date(), 'date', Date.now());
-
     return html`
       <oryx-header>
         <div>

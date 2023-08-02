@@ -6,7 +6,6 @@ import { storybookPrefix } from '../../.constants';
 export default {
   title: `${storybookPrefix}/Customer note`,
   parameters: {
-    layout: 'fullscreen',
     chromatic: {
       viewports: [storybookDefaultViewports.mobile.min],
     },

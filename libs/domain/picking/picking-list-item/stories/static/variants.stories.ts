@@ -6,7 +6,6 @@ import { storybookPrefix } from '../../../.constants';
 export default {
   title: `${storybookPrefix}/Picking list item/Static`,
   parameters: {
-    layout: 'fullscreen',
     chromatic: {
       viewports: [storybookDefaultViewports.mobile.min],
     },

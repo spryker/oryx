@@ -4,7 +4,7 @@ import {
   PickingListService,
   PickingListStatus,
 } from '@spryker-oryx/picking';
-import { I18nMixin, signal, signalAware } from '@spryker-oryx/utilities';
+import { I18nMixin, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
