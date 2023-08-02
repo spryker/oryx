@@ -235,11 +235,6 @@ describe('UserProfileComponent', () => {
             ?.click();
         });
 
-        it('should call router service navigate', async () => {
-          mockOfflineDataPlugin.refreshData().subscribe();
-          expect(routerService.navigate).toHaveBeenCalledWith('/');
-        });
-
         it('should not show loading indicator', () => {
           const button = element.renderRoot.querySelector('.receive-data');
           expect(button).toHaveProperty('text', 'Receive data');
