@@ -4,7 +4,6 @@ import { ProductStorage } from '../support/test-data/storages/product.storage';
 import { Customer } from '../support/types/user.type';
 
 let api: GlueAPI;
-
 const checkoutPage = new CheckoutPage();
 
 describe('User addresses suite', () => {
@@ -45,24 +44,13 @@ describe('User addresses suite', () => {
 
     describe('and user has some products in the cart', () => {
       beforeEach(() => {
-        const productData = ProductStorage.getByEq(0);
-
-        cy.fixture<Customer>('test-customer').then((customer) => {
-          // get all customer carts
-          api.carts.customersGet(customer.id).then((customerCartsResponse) => {
-            const cartId = customerCartsResponse.body.data[0].id;
-            // add 1 item to the first cart
-            api.cartItems.post(productData, 1, cartId);
-          });
-        });
+        cy.addProductToCart(api);
       });
 
       describe('and user does not have addresses yet', () => {
         describe('and user goes to checkout', () => {
           beforeEach(() => {
-            cy.intercept('/assets/addresses/*.json').as('addressesRequest');
             cy.goToCheckout();
-            cy.wait('@addressesRequest');
           });
 
           it('then shipping address form is shown and billing address is the same as shipping', () => {
