@@ -2,14 +2,15 @@ import { ElementResolver, PageMetaResolver } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { Observable, combineLatest, map } from 'rxjs';
-import { ExperienceComponent, ExperienceData } from '../experience';
+import { ExperienceComponent, ExperienceDataService } from '../experience';
 
 export class ContentPageMetaResolver implements PageMetaResolver {
   constructor(
     protected router = inject(RouterService),
-    // Temporary: TODO use real mock data
-    protected experienceData = inject(ExperienceData, []).flat()
+    protected experienceDataService = inject(ExperienceDataService)
   ) {}
+
+  protected experienceData = this.experienceDataService.getData();
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
