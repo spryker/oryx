@@ -46,7 +46,7 @@ export class WarehouseAssignmentComponent extends LitElement {
     `;
   }
 
-  protected onSelect(assignmentId: string): void {
+  protected selectWarehouse(assignmentId: string): void {
     this.warehouseUserAssignmentsService
       .activateAssignment(assignmentId)
       .pipe(
@@ -90,7 +90,7 @@ export class WarehouseAssignmentComponent extends LitElement {
             <oryx-button
               .size=${ButtonSize.Sm}
               .text=${i18n('picking.select')}
-              @click=${() => this.onSelect(item.id)}
+              @click=${() => this.selectWarehouse(item.id)}
             ></oryx-button>
             <hr />
           `
@@ -102,7 +102,7 @@ export class WarehouseAssignmentComponent extends LitElement {
   protected renderLoading(): TemplateResult {
     const locations = this.$locations();
     if (locations?.length === 1) {
-      this.onSelect(locations[0].id);
+      this.selectWarehouse(locations[0].id);
     }
 
     return html`
