@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/di",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0",
   "type": "module",
   "description": "Dependency injection for Oryx applications",
   "author": "Spryker Systems GmbH",
