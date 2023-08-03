@@ -21,15 +21,6 @@ export const decorators = [
   (storyFn, context) => {
     //automatically reset mocked date for each story that does not use MockDateDecorator
     MockDate.reset();
-
-    //automatically un-apply width and height from iframe element that added by OverlaysDecorator
-    const iframe = window.frameElement ?? window.parent;
-    if (iframe?.classList.contains('chromatic-overlay-decorated')) {
-      iframe.classList.remove('chromatic-overlay-decorated');
-      iframe.style.width = '';
-      iframe.style.height = '';
-    }
-
     return storyFn(context);
   },
 ];

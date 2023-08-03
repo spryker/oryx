@@ -7,13 +7,6 @@ export const OverlaysDecorator =
   (storyFn: any, context: any): TemplateResult => {
     if (!isChromatic()) return storyFn(context);
 
-    //un-applying is happening in global decorator for each story
-    //apps/storybook/.storybook/preview.js
-    const iframe = (window.frameElement ?? window.parent) as HTMLElement;
-    iframe.classList.add('chromatic-overlay-decorated');
-    iframe.style.width = `${width}px`;
-    iframe.style.height = `${height}px`;
-
     return html`
       <div style=${`width: ${width}px; height: ${height}px;`}>
         ${storyFn(context)}
