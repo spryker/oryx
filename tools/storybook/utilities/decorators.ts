@@ -9,12 +9,10 @@ export const OverlaysDecorator =
 
     //un-applying is happening in global decorator for each story
     //apps/storybook/.storybook/preview.js
-    (window.frameElement as HTMLElement).toggleAttribute(
-      'chromatic-overlay-decorated',
-      true
-    );
-    (window.frameElement as HTMLElement).style.width = `${width}px`;
-    (window.frameElement as HTMLElement).style.height = `${height}px`;
+    const iframe = (window.frameElement ?? window.parent) as HTMLElement;
+    iframe.classList.add('chromatic-overlay-decorated');
+    iframe.style.width = `${width}px`;
+    iframe.style.height = `${height}px`;
 
     return html`
       <div style=${`width: ${width}px; height: ${height}px;`}>
