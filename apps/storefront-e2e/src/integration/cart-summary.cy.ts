@@ -13,7 +13,7 @@ describe('Cart summary suite', () => {
     cy.createGuestCart(api);
   });
 
-  context('Counter', () => {
+  context('counter: ', () => {
     it('must increase if a product is added from pdp', () => {
       const pdp = new ProductDetailsPage(ProductStorage.getByEq(0));
 

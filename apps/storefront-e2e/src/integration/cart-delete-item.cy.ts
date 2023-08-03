@@ -12,7 +12,7 @@ describe('Delete item modal suite', () => {
     cy.goToGuestCart();
   });
 
-  it('and empty cart should be shown if last item is removed (minus/trash icon)', () => {
+  it('should be shown if last item is removed (minus/trash icon)', () => {
     cartPage.getCartEntries().then((entries) => {
       entries[0].decreaseEntry();
       cartPage.approveCartEntryDeletion();
@@ -21,7 +21,7 @@ describe('Delete item modal suite', () => {
     cartPage.checkEmptyCart();
   });
 
-  it('and empty cart should be shown if last item is removed (0 input)', () => {
+  it('should be shown if last item is removed (0 input)', () => {
     cartPage.getCartEntries().then((entries) => {
       entries[0].changeQuantityInInput(0);
       cartPage.approveCartEntryDeletion();
@@ -30,7 +30,7 @@ describe('Delete item modal suite', () => {
     cartPage.checkEmptyCart();
   });
 
-  it('and empty cart should be shown if last item is removed (delete icon)', () => {
+  it('should be shown if last item is removed (delete icon)', () => {
     cartPage.getCartEntries().then((entries) => {
       entries[0].deleteEntry();
       cartPage.approveCartEntryDeletion();
