@@ -1,12 +1,11 @@
+import { GlueAPI } from '../support/apis/glue.api';
 import { CartPage } from '../support/page-objects/cart.page';
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
-let sccosApi: SCCOSApi;
+let api: GlueAPI;
 
 const cartPage = new CartPage();
-const pdp = new ProductDetailsPage(ProductStorage.getProductByEq(0));
 
 // Cart summary is an element that navigates you to the cart
 // and shows the # of items added to the cart in Counter
@@ -15,78 +14,79 @@ const pdp = new ProductDetailsPage(ProductStorage.getProductByEq(0));
 // and this suite should cover all these integrations
 describe('Cart summary suite', () => {
   beforeEach(() => {
-    sccosApi = new SCCOSApi();
-    sccosApi.guestCarts.get();
+    api = new GlueAPI();
+    api.guestCarts.get();
   });
 
   context('Counter', () => {
     context('must increase if', () => {
       it('a product is added in the cart from pdp', () => {
+        const pdp = new ProductDetailsPage(ProductStorage.getByEq(0));
+
         pdp.visit();
 
         pdp.addItemsToTheCart(1);
-        pdp.header.getCartCount().should('be.visible').and('contain.text', '1');
+        pdp.header.checkCartCount(1);
 
         pdp.addItemsToTheCart(1, true);
-        pdp.header.getCartCount().should('be.visible').and('contain.text', '2');
+        pdp.header.checkCartCount(2);
       });
 
       it('a product is added in the cart from cart (input, manual)', () => {
-        sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
-        cy.goToCartAsGuest();
+        cy.addProductToGuestCart(api, 1);
+        cy.goToGuestCart();
 
-        cartPage.header.getCartCount().should('contain.text', '1');
+        cartPage.header.checkCartCount(1);
 
-        cartPage.getCartEntries().then((entries) => {
-          entries[0].getQuantityInput().getInput().type('{selectall}2');
-          cy.get('body').click();
+        cartPage.getCartEntries().then((cartEntries) => {
+          cartEntries[0].changeQuantityInInput(2);
 
-          cartPage.header.getCartCount().should('contain.text', '2');
+          cartPage.header.checkCartCount(2);
         });
       });
     });
 
     context('must decrease if', () => {
       it('a product is removed from the cart (- btn click)', () => {
-        sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 2);
-        cy.goToCartAsGuest();
+        cy.addProductToGuestCart(api, 2);
+        cy.goToGuestCart();
 
-        cartPage.header.getCartCount().should('contain.text', '2');
+        cartPage.header.checkCartCount(2);
 
-        cartPage.getCartEntries().then((entries) => {
-          entries[0].getQuantityInput().decrease();
+        cartPage.getCartEntries().then((cartEntries) => {
+          cartEntries[0].decreaseEntry();
 
-          cartPage.header.getCartCount().should('contain.text', '1');
+          cartPage.header.checkCartCount(1);
         });
       });
     });
 
     context('must be not visible if', () => {
       it('all items are removed from the cart (trash btn click)', () => {
-        sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 1);
-        cy.goToCartAsGuest();
+        cy.addProductToGuestCart(api, 1);
+        cy.goToGuestCart();
 
-        cartPage.header.getCartCount().should('contain.text', '1');
+        cartPage.header.checkCartCount(1);
 
         cartPage.getCartEntries().then((entries) => {
-          entries[0].getQuantityInput().decrease();
-          cartPage.getSubmitDeleteBtn().click();
+          entries[0].decreaseEntry();
+          cartPage.approveCartEntryDeletion();
 
-          cartPage.header.getCartCount().should('not.exist');
+          cartPage.header.checkCartCount(0);
         });
       });
 
       it('all items are removed from the cart (X btn click)', () => {
-        sccosApi.guestCartItems.post(ProductStorage.getProductByEq(1), 2);
-        cy.goToCartAsGuest();
+        cy.addProductToGuestCart(api, 2);
+        cy.goToGuestCart();
 
-        cartPage.header.getCartCount().should('contain.text', '2');
+        cartPage.header.checkCartCount(2);
 
         cartPage.getCartEntries().then((entries) => {
-          entries[0].remove();
-          cartPage.getSubmitDeleteBtn().click();
+          entries[0].deleteEntry();
+          cartPage.approveCartEntryDeletion();
 
-          cartPage.header.getCartCount().should('not.exist');
+          cartPage.header.checkCartCount(0);
         });
       });
     });

@@ -34,7 +34,7 @@ const products: Product[] = [
 ];
 
 export class ProductStorage {
-  static getProductByEq(eq: number): Product {
+  static getByEq(eq: number): Product {
     if (eq >= products.length) {
       throw new Error(`Product with eq = ${eq} does not exist.`);
     }

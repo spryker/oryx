@@ -1,16 +1,17 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const productPage: StaticComponent = {
+export const productPage: ExperienceComponent = {
+  id: 'product-page',
   type: 'Page',
   meta: {
     title: 'Product Page',
     route: '/product/:sku',
     description: 'Default Product Page Description',
   },
-
   components: [
     {
       type: 'oryx-composition',
+      id: 'product-body',
       options: {
         rules: [
           {
@@ -22,6 +23,7 @@ export const productPage: StaticComponent = {
       components: [
         {
           type: 'oryx-composition',
+          id: 'product-preview',
           options: { rules: [{ layout: 'flex', vertical: true }] },
           components: [
             {
@@ -35,6 +37,7 @@ export const productPage: StaticComponent = {
         },
         {
           type: 'oryx-composition',
+          id: 'product-info',
           options: {
             rules: [{ vertical: true, top: '108px', sticky: true }],
           },
@@ -59,7 +62,6 @@ export const productPage: StaticComponent = {
         },
       ],
     },
-
     {
       type: 'oryx-product-relations',
       options: {
@@ -68,7 +70,7 @@ export const productPage: StaticComponent = {
           {
             layout: 'carousel',
             padding: '20 0',
-            colSpan: '2',
+            colSpan: 2,
           },
         ],
       },
@@ -81,7 +83,7 @@ export const productPage: StaticComponent = {
           {
             layout: 'carousel',
             padding: '20 0',
-            colSpan: '2',
+            colSpan: 2,
           },
         ],
       },

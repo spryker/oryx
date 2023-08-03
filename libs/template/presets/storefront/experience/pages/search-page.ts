@@ -1,6 +1,7 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const searchPage: StaticComponent = {
+export const searchPage: ExperienceComponent = {
+  id: 'search-page',
   type: 'Page',
   meta: {
     title: 'Search',
@@ -33,6 +34,7 @@ export const searchPage: StaticComponent = {
     },
     {
       type: 'oryx-composition',
+      id: 'product-listing',
       name: 'Product listing',
       options: {
         rules: [{ layout: 'flex', vertical: true, gap: '20px' }],
@@ -40,6 +42,7 @@ export const searchPage: StaticComponent = {
       components: [
         {
           type: 'oryx-composition',
+          id: 'product-listing-header',
           name: 'Product list header',
           components: [{ type: 'oryx-search-product-sort' }],
           options: { rules: [{ layout: 'flex', justify: 'end' }] },

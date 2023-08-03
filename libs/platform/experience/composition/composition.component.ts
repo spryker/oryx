@@ -2,7 +2,6 @@ import { resolve } from '@spryker-oryx/di';
 import {
   Component,
   ComponentsRegistryService,
-  CompositionLayout,
   CompositionProperties,
   ContentMixin,
   ExperienceService,
@@ -84,33 +83,19 @@ export class CompositionComponent extends LayoutMixin(
     return html`${repeat(
       components,
       (component) => component.id,
-      (component, index) => this.renderComponent(component, index)
+      (component) => this.renderComponent(component)
     )}
     ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))} `;
   }
 
   protected renderComponent(
-    component: Component<CompositionProperties>,
-    index: number
+    component: Component<CompositionProperties>
   ): TemplateResult {
     const template = this.registryService.resolveTemplate({
       type: component.type,
       uid: component.id,
       markers: this.layoutBuilder.getLayoutMarkers(component.options),
     });
-    if (this.$options()?.rules?.[0]?.layout === CompositionLayout.Tabular) {
-      return html`
-        <input
-          type="radio"
-          name="tab"
-          id=${component.id}
-          ?checked=${index === 0}
-        />
-        <label for=${component.id}>${component.name ?? component.type}</label>
-        ${template}
-      `;
-    }
-
     return html`${template}`;
   }
 }

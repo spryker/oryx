@@ -143,7 +143,9 @@ describe('UserProfileComponent', () => {
     });
 
     it('should disable log out button', () => {
-      const button = element.renderRoot.querySelectorAll('oryx-button')[0];
+      const button = element.renderRoot.querySelector(
+        'oryx-button.logout-button'
+      );
       expect(button).toHaveProperty('text', 'Log out');
       expect(button?.hasAttribute('disabled')).toBe(true);
     });
@@ -151,7 +153,9 @@ describe('UserProfileComponent', () => {
 
   describe('when sync is not pending and picking is not in progress', () => {
     it('should not disable log out button', () => {
-      const button = element.renderRoot.querySelectorAll('oryx-button')[0];
+      const button = element.renderRoot.querySelector(
+        'oryx-button.logout-button'
+      );
       expect(button).toHaveProperty('text', 'Log out');
       expect(button?.hasAttribute('disabled')).toBe(false);
     });
@@ -162,7 +166,9 @@ describe('UserProfileComponent', () => {
       });
 
       it('should show loading indicator', () => {
-        const button = element.renderRoot.querySelectorAll('oryx-button')[0];
+        const button = element.renderRoot.querySelector(
+          'oryx-button.logout-button'
+        );
         expect(button).toHaveProperty('text', 'Log out');
         expect(button?.hasAttribute('loading')).toBe(true);
       });

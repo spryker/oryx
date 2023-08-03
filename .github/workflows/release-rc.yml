@@ -49,6 +49,10 @@ jobs:
       - name: Release rc
         if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
         run: npm run release-rc
+      - name: Run b2c edge env update
+        run: curl -X POST -d {} https://api.netlify.com/build_hooks/64b4f9338ca8dd495532b6ee?clear_cache=true
+      - name: Run b2b edge env update
+        run: curl -X POST -d {} https://api.netlify.com/build_hooks/64b4f96f29229947990679b0?clear_cache=true
       - name: Release Error Log
         if: failure()
         run: cat libs/lerna-debug.log

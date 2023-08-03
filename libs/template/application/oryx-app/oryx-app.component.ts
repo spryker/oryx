@@ -1,6 +1,6 @@
 import { LitRouter } from '@spryker-oryx/router/lit';
 import { hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { styles } from './oryx-app.styles';
 
 @hydrate()

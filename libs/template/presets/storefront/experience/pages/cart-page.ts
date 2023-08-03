@@ -1,6 +1,7 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const cartPage: StaticComponent = {
+export const cartPage: ExperienceComponent = {
+  id: 'cart-page',
   type: 'Page',
   meta: {
     title: 'Cart Page',
@@ -17,10 +18,12 @@ export const cartPage: StaticComponent = {
     {
       type: 'oryx-content-text',
       content: {
-        text: `
+        data: {
+          text: `
           <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
           <p>Your shopping cart is empty</p><oryx-button>
           <a href="/search">Shop now</a></oryx-button>`,
+        },
       },
       options: {
         rules: [
@@ -37,9 +40,15 @@ export const cartPage: StaticComponent = {
         ],
       },
     },
-    { type: 'oryx-cart-entries' },
     {
       type: 'oryx-composition',
+      id: 'cart-entries',
+      components: [{ type: 'oryx-cart-entries' }],
+      options: { rules: [{ layout: 'list' }] },
+    },
+    {
+      type: 'oryx-composition',
+      id: 'cart-totals',
       components: [
         {
           type: 'oryx-cart-totals',

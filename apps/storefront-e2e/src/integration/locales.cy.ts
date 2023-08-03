@@ -1,7 +1,7 @@
+import { GlueAPI } from '../support/apis/glue.api';
 import { CartPage } from '../support/page-objects/cart.page';
 import { LandingPage } from '../support/page-objects/landing.page';
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const homePage = new LandingPage();
@@ -55,9 +55,9 @@ describe('Locales suite', () => {
 
   describe('when there is a product in the cart and user opens the cart page', () => {
     beforeEach(() => {
-      const scosApi = new SCCOSApi();
-      scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
-      cy.goToCartAsGuest();
+      const api = new GlueAPI();
+      cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(2));
+      cy.goToGuestCart();
     });
 
     describe('and user changes the locale to DE', () => {
@@ -65,7 +65,7 @@ describe('Locales suite', () => {
         cartPage.header.changeLocale('de');
       });
 
-      it('DE tests and currencies are applied', () => {
+      it('DE texts and currencies are applied', () => {
         checkCurrencyUsedOnCartPage('de');
       });
 
@@ -77,7 +77,7 @@ describe('Locales suite', () => {
           cartPage.header.changeLocale('en', true);
         });
 
-        it('EN tests and currencies are applied', () => {
+        it('EN texts and currencies are applied', () => {
           checkCurrencyUsedOnCartPage('en');
         });
       });
@@ -86,21 +86,11 @@ describe('Locales suite', () => {
 });
 
 function checkCurrencyUsedOnCartPage(locale: string) {
-  cartPage
-    .getCartTotals()
-    .getSubtotalPrice()
-    .shadow()
-    .checkCurrencyFormatting(locale);
-  cartPage
-    .getCartTotals()
-    .getTaxTotalPrice()
-    .shadow()
-    .checkCurrencyFormatting(locale);
-  cartPage
-    .getCartTotals()
-    .getTotalPrice()
-    .shadow()
-    .checkCurrencyFormatting(locale);
+  const totals = cartPage.getCartTotals();
+
+  totals.getSubtotalPrice().shadow().checkCurrencyFormatting(locale);
+  totals.getTaxTotalPrice().shadow().checkCurrencyFormatting(locale);
+  totals.getTotalPrice().shadow().checkCurrencyFormatting(locale);
 
   cartPage.getCartEntries().then((entries) => {
     entries[0].getSubtotal().shadow().checkCurrencyFormatting(locale);

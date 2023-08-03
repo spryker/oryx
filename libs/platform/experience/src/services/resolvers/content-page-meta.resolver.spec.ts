@@ -1,14 +1,16 @@
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { of } from 'rxjs';
-import { ExperienceStaticData } from '../experience';
+import { ExperienceDataService } from '../experience';
 import { ContentPageMetaResolver } from './content-page-meta.resolver';
 
 const mockRouter = {
   currentRoute: vi.fn(),
 };
 
-const mockStaticData = vi.fn();
+const mockExperienceDataService = {
+  getData: vi.fn(),
+};
 
 describe('ContentPageMetaResolver', () => {
   let service: ContentPageMetaResolver;
@@ -25,8 +27,8 @@ describe('ContentPageMetaResolver', () => {
           useValue: mockRouter,
         },
         {
-          provide: ExperienceStaticData,
-          useFactory: mockStaticData,
+          provide: ExperienceDataService,
+          useValue: mockExperienceDataService,
         },
       ],
     });
@@ -40,7 +42,11 @@ describe('ContentPageMetaResolver', () => {
   describe('getScore', () => {
     it('should return proper value if content exist', () => {
       const callback = vi.fn();
-      mockStaticData.mockReturnValue({ meta: { route: '/product/:id' } });
+      mockExperienceDataService.getData.mockReturnValue([
+        {
+          meta: { route: '/product/:id' },
+        },
+      ]);
       service = getInjector().inject(ContentPageMetaResolver);
       mockRouter.currentRoute.mockReturnValue(of('/product/123'));
       service.getScore().subscribe(callback);
@@ -49,7 +55,11 @@ describe('ContentPageMetaResolver', () => {
 
     it('should return proper value if content is not exist', () => {
       const callback = vi.fn();
-      mockStaticData.mockReturnValue({ meta: { route: '/category/:id' } });
+      mockExperienceDataService.getData.mockReturnValue([
+        {
+          meta: { route: '/category/:id' },
+        },
+      ]);
       service = getInjector().inject(ContentPageMetaResolver);
       mockRouter.currentRoute.mockReturnValue(of('/product/123'));
       service.getScore().subscribe(callback);
@@ -60,15 +70,17 @@ describe('ContentPageMetaResolver', () => {
   describe('resolve', () => {
     it('should return proper object', () => {
       const callback = vi.fn();
-      mockStaticData.mockReturnValue({
-        meta: {
-          route: '/product/:id',
-          follow: true,
-          index: false,
-          title: 'title',
-          description: 'description',
+      mockExperienceDataService.getData.mockReturnValue([
+        {
+          meta: {
+            route: '/product/:id',
+            follow: true,
+            index: false,
+            title: 'title',
+            description: 'description',
+          },
         },
-      });
+      ]);
       service = getInjector().inject(ContentPageMetaResolver);
       mockRouter.currentRoute.mockReturnValue(of('/product/123'));
 

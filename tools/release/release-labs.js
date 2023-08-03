@@ -43,7 +43,7 @@ function getUndottedLibsVersion(libsVersion) {
 }
 
 function getPrereleaseLibsVersion(libsVersion) {
-  return `-${semver.prerelease(libsVersion).join('.')}`;
+  return semver.prerelease(libsVersion) ? `-${semver.prerelease(libsVersion).join('.')}` : '';
 }
 
 function createTag(version) {
@@ -87,7 +87,7 @@ function commitToGit() {
 
 function pushToGit() {
   try {
-    runCmd(`git push origin HEAD --tags`);
+    runCmd(`git push origin HEAD --tags --no-verify`);
   } catch (e) {
     throw e;
   }

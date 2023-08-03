@@ -6,7 +6,7 @@ import {
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ImageComponentAttributes, LoadingStrategy } from './image.model';
@@ -30,7 +30,7 @@ export class ImageComponent
   @property() srcset?: string;
   @property() alt?: string;
   @property() loading?: LoadingStrategy;
-  @property({ type: Boolean }) skipFallback?: boolean;
+  @property({ type: Boolean, reflect: true }) skipFallback?: boolean;
 
   @state() failed?: string;
 
