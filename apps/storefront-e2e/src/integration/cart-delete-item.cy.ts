@@ -6,8 +6,8 @@ const cartPage = new CartPage();
 describe('Delete item modal suite', () => {
   beforeEach(() => {
     const api = new GlueAPI();
-    api.guestCarts.get();
 
+    cy.createGuestCart(api);
     cy.addProductToGuestCart(api);
     cy.goToGuestCart();
   });

@@ -1,19 +1,21 @@
 import { GlueAPI } from '../support/apis/glue.api';
 import { CartPage } from '../support/page-objects/cart.page';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
-import { Customer } from '../support/types/user.type';
 
 const cartPage = new CartPage();
 const cartTotals = cartPage.getCartTotals();
 
 let api: GlueAPI;
 
+// TODO: this might be extracted further into something bigger
+// for now let's keep it here
 const users = [
   {
     userType: 'guest',
     createCart: () => {
       api = new GlueAPI();
-      api.guestCarts.get();
+
+      cy.createGuestCart(api);
     },
     goToCart: () => {
       cy.goToGuestCart();
@@ -27,12 +29,10 @@ const users = [
     userType: 'authenticated',
     createCart: () => {
       api = new GlueAPI();
-      cy.loginApi();
-      cy.fixture<Customer>('test-customer').then((customer) => {
-        cy.customerCartsCleanup(api, customer);
-      });
 
-      api.carts.post();
+      cy.loginApi(api);
+      cy.customerCleanup(api);
+      cy.createCart(api);
     },
     goToCart: () => {
       cy.goToCart();
@@ -46,17 +46,19 @@ const users = [
 
 describe('Cart suite', () => {
   users.forEach((user) => {
-    context(`For ${user.userType} user: `, () => {
+    describe(`for ${user.userType} user: `, () => {
       beforeEach(() => {
         user.createCart();
       });
 
-      it('should render empty cart if there are no items', () => {
-        user.goToCart();
-        cartPage.checkEmptyCart();
+      describe('without items in the cart: ', () => {
+        it('should render empty cart if there are no items', () => {
+          user.goToCart();
+          cartPage.checkEmptyCart();
+        });
       });
 
-      context('For cart with items: ', () => {
+      describe('with items in the cart: ', () => {
         beforeEach(() => {
           user.addProduct();
           user.goToCart();

@@ -9,7 +9,8 @@ const cartPage = new CartPage();
 describe('Cart summary suite', () => {
   beforeEach(() => {
     api = new GlueAPI();
-    api.guestCarts.get();
+
+    cy.createGuestCart(api);
   });
 
   context('Counter', () => {

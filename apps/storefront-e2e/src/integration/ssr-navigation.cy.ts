@@ -114,8 +114,8 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       const checkoutPage = new CheckoutPage();
 
       api = new GlueAPI();
-      api.guestCarts.get();
 
+      cy.createGuestCart(api);
       cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
       cy.goToGuestCheckout();
 
