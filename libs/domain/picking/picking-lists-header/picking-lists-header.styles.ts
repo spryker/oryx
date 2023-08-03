@@ -1,6 +1,10 @@
 import { css } from 'lit';
 
 export const pickingListsHeaderComponentStyles = css`
+  :host {
+    z-index: 1;
+  }
+
   oryx-header {
     box-shadow: var(--oryx-elevation-2) var(--oryx-elevation-color-2);
   }
