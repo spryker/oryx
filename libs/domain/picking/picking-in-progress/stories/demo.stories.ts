@@ -1,11 +1,9 @@
-import { OverlaysDecorator } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Picking In Progress Modal`,
-  decorators: [OverlaysDecorator()],
+  title: `${storybookPrefix}/Picking in progress modal`,
   parameters: {
     chromatic: {
       disableSnapshot: true,

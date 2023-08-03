@@ -3,11 +3,11 @@ import {
   storybookDefaultViewports,
 } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Picking List Header/Static`,
+  title: `${storybookPrefix}/Picking list header/Static`,
   parameters: {
     layout: 'fullscreen',
     chromatic: {

@@ -1,9 +1,12 @@
-import { storybookDefaultViewports } from '@/tools/storybook';
+import {
+  MockDateDecorator,
+  storybookDefaultViewports,
+} from '@/tools/storybook';
 import { resolve } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
 import { MockPickingListService } from '@spryker-oryx/picking/mocks';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
@@ -14,6 +17,7 @@ export default {
       viewports: [storybookDefaultViewports.mobile.min],
     },
   },
+  decorators: [MockDateDecorator()],
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
