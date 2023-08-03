@@ -4,13 +4,20 @@ import {
   PickingListService,
   PickingListStatus,
 } from '@spryker-oryx/picking';
-import { I18nMixin, signal, signalAware } from '@spryker-oryx/utilities';
+import { I18nMixin, i18n, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { Subject, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
+import {
+  Subject,
+  distinctUntilChanged,
+  map,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { pickingListsComponentStyles } from './picking-lists.styles';
 
@@ -30,6 +37,9 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
   @state()
   protected searchValueLength?: number = 0;
 
+  @state()
+  protected loading = true;
+
   protected searchValue$ = new Subject<string>();
 
   protected pickingLists$ = this.searchValue$.pipe(
@@ -37,19 +47,22 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
     map((q) => q.trim()),
     distinctUntilChanged(),
     switchMap((value) => {
+      this.loading = true;
       this.searchValueLength = value.length;
 
-      return this.pickingListService.get({
-        status: PickingListStatus.ReadyForPicking,
-        searchOrderReference: value,
-      });
+      return this.pickingListService
+        .get({
+          status: PickingListStatus.ReadyForPicking,
+          searchOrderReference: value,
+        })
+        .pipe(tap(() => (this.loading = false)));
     })
   );
 
   protected $pickingLists = signal(this.pickingLists$);
 
   protected override render(): TemplateResult {
-    return html` ${this.renderPickingLists()}
+    return html` ${this.renderLoading()}${this.renderPickingLists()}
       <oryx-picking-in-progress-modal
         ${ref(this.pickingInProgressModal)}
       ></oryx-picking-in-progress-modal>
@@ -60,6 +73,16 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
       >
         ${this.customerNote}
       </oryx-customer-note-modal>`;
+  }
+
+  protected renderLoading(): TemplateResult {
+    return html`${when(
+      this.loading,
+      () => html`<div class="loading">
+        <span>${i18n('picking.loading-locations')}</span>
+        <oryx-spinner></oryx-spinner>
+      </div>`
+    )}`;
   }
 
   protected renderPickingLists(): TemplateResult {
