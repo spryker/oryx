@@ -6,7 +6,7 @@ const loginPage = new LoginPage();
 const landingPage = new LandingPage();
 
 describe('Authentication suite', () => {
-  it('must allow to login and logout', { tags: 'smoke' }, () => {
+  it('should allow to login and logout', { tags: 'smoke' }, () => {
     cy.login();
     verifySuccessfulLogin();
 
@@ -14,7 +14,7 @@ describe('Authentication suite', () => {
     verifySuccessfulLogout();
   });
 
-  it('must show a BE error message if user logs in with invalid credentials', () => {
+  it('should show a BE error message if user logs in with invalid credentials', () => {
     const invalidUser: Customer = {
       name: 'Sonia',
       email: 'sonia@spryker.com',

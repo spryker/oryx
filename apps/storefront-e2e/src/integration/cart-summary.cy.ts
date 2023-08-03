@@ -14,7 +14,7 @@ describe('Cart summary suite', () => {
   });
 
   context('counter: ', () => {
-    it('must increase if a product is added from pdp', () => {
+    it('should increase if a product is added from pdp', () => {
       const pdp = new ProductDetailsPage(ProductStorage.getByEq(0));
 
       pdp.visit();
@@ -26,7 +26,7 @@ describe('Cart summary suite', () => {
       pdp.header.checkCartCount(2);
     });
 
-    it('must increase if a product is added from cart (input)', () => {
+    it('should increase if a product is added from cart (input)', () => {
       cy.addProductToGuestCart(api, 1);
       cy.goToGuestCart();
 
@@ -39,7 +39,7 @@ describe('Cart summary suite', () => {
       });
     });
 
-    it('must decrease if a product is removed from the cart (- btn click)', () => {
+    it('should decrease if a product is removed from the cart (- btn click)', () => {
       cy.addProductToGuestCart(api, 2);
       cy.goToGuestCart();
 
@@ -52,7 +52,7 @@ describe('Cart summary suite', () => {
       });
     });
 
-    it('must dissapear if all items are removed from the cart (trash btn click)', () => {
+    it('should dissapear if all items are removed from the cart (trash btn click)', () => {
       cy.addProductToGuestCart(api, 1);
       cy.goToGuestCart();
 
@@ -66,7 +66,7 @@ describe('Cart summary suite', () => {
       });
     });
 
-    it('must dissapear if all items are removed from the cart (X btn click)', () => {
+    it('should dissapear if all items are removed from the cart (X btn click)', () => {
       cy.addProductToGuestCart(api, 2);
       cy.goToGuestCart();
 

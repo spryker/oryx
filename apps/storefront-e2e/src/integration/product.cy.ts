@@ -1,8 +1,8 @@
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
-describe('Product Detail Page suite', () => {
-  it('must show default product', { tags: 'smoke' }, () => {
+describe('Product details page suite', () => {
+  it('should show product details', { tags: 'smoke' }, () => {
     const productData = ProductStorage.getByEq(2);
     const pdp = new ProductDetailsPage(productData);
 
@@ -12,7 +12,7 @@ describe('Product Detail Page suite', () => {
     pdp.getRelations().getProducts().should('not.exist');
   });
 
-  it('must show product with references', () => {
+  it('should show product with relations', () => {
     const productData = ProductStorage.getByEq(3);
     const pdp = new ProductDetailsPage(productData);
 
