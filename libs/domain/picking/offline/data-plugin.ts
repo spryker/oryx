@@ -4,11 +4,12 @@ import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
 import { RouterService } from '@spryker-oryx/router';
 import {
+  BehaviorSubject,
+  Observable,
+  Subscription,
   combineLatest,
   map,
-  Observable,
   of,
-  Subscription,
   switchMap,
   tap,
   withLatestFrom,
@@ -18,6 +19,7 @@ import { PickingListOnlineAdapter } from './services';
 
 export class OfflineDataPlugin implements AppPlugin {
   protected subscription?: Subscription;
+  protected isRefreshing$ = new BehaviorSubject(false);
 
   getName(): string {
     return 'oryx.pickingOfflineData';
@@ -59,9 +61,22 @@ export class OfflineDataPlugin implements AppPlugin {
   }
 
   refreshData(injector: Injector): Observable<void> {
+    this.isRefreshing$.next(true);
     return this.clearDb(injector).pipe(
-      switchMap(() => this.populateDb(injector))
+      switchMap(() => this.populateDb(injector)),
+      tap({
+        next: () => {
+          this.isRefreshing$.next(false);
+        },
+        error: () => {
+          this.isRefreshing$.next(false);
+        },
+      })
     );
+  }
+
+  isRefreshing(): Observable<boolean> {
+    return this.isRefreshing$;
   }
 
   protected clearDb(injector: Injector): Observable<void> {

@@ -6,25 +6,17 @@ import {
   PickingListStatus,
 } from '@spryker-oryx/picking';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
-import { I18nMixin, i18n, signal, subscribe } from '@spryker-oryx/utilities';
+import { I18nMixin, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import {
-  Subject,
-  catchError,
-  distinctUntilChanged,
-  map,
-  of,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { Subject, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { pickingListsComponentStyles } from './picking-lists.styles';
 
+@signalAware()
 export class PickingListsComponent extends I18nMixin(LitElement) {
   static styles = pickingListsComponentStyles;
   protected pickingListService = resolve(PickingListService);
@@ -41,31 +33,15 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
   @state()
   protected searchValueLength?: number = 0;
 
-  @state()
-  protected loading = false;
-
   protected searchValue$ = new Subject<string>();
 
   protected injector = resolve(INJECTOR);
   protected injectorDataPlugin =
     resolve(AppRef).requirePlugin(OfflineDataPlugin);
 
-  @subscribe()
-  protected dataRefresh = this.injectorDataPlugin
-    .refreshData(this.injector)
-    .pipe(
-      catchError((value) => {
-        return of(value);
-      }),
-      tap({
-        subscribe: () => {
-          this.loading = true;
-        },
-        finalize: () => {
-          this.loading = false;
-        },
-      })
-    );
+  protected dataRefresh$ = this.injectorDataPlugin.isRefreshing();
+
+  protected $loading = signal(this.dataRefresh$);
 
   protected pickingLists$ = this.searchValue$.pipe(
     startWith(''),
@@ -99,7 +75,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
 
   protected renderLoading(): TemplateResult {
     return html`${when(
-      this.loading,
+      this.$loading(),
       () => html`<div class="loading">
         <span>${i18n('picking.loading-locations')}</span>
         <oryx-spinner></oryx-spinner>
