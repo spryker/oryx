@@ -42,7 +42,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
   protected searchValueLength?: number = 0;
 
   @state()
-  protected loading = true;
+  protected loading = false;
 
   protected searchValue$ = new Subject<string>();
 
