@@ -47,7 +47,7 @@ export const pickingListsComponentStyles = css`
   .loading {
     position: fixed;
     z-index: 1;
-    background-color: rgba(245, 245, 245, 0.8);
+    background-color: rgb(245 245 245 / 80%);
     display: flex;
     justify-content: center;
     align-items: center;
