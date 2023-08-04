@@ -77,7 +77,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
     return html`${when(
       this.$loading(),
       () => html`<div class="loading">
-        <span>${i18n('picking.loading-locations')}</span>
+        <span>${i18n('picking.loading-data')}</span>
         <oryx-spinner></oryx-spinner>
       </div>`
     )}`;

@@ -1,4 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
 import { CustomerNoteModalComponent } from '@spryker-oryx/picking/customer-note-modal';
@@ -10,6 +11,14 @@ import { of } from 'rxjs';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { PickingListsComponent } from './picking-lists.component';
 import { pickingListsComponent } from './picking-lists.def';
+
+const mockOfflineDataPlugin = {
+  isRefreshing: vi.fn().mockReturnValue(of(false)),
+};
+
+class MockApp implements Partial<App> {
+  requirePlugin = vi.fn().mockReturnValue(mockOfflineDataPlugin);
+}
 
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of(mockPickingListData));
@@ -30,6 +39,10 @@ describe('PickingListsComponent', () => {
           provide: PickingListService,
           useClass: MockPickingListService,
         },
+        {
+          provide: AppRef,
+          useClass: MockApp,
+        },
       ],
     });
 
@@ -42,6 +55,23 @@ describe('PickingListsComponent', () => {
   afterEach(() => {
     vi.clearAllMocks();
     destroyInjector();
+  });
+
+  describe('when not retrieving data', () => {
+    it('should not show loading indicator', () => {
+      expect(element.renderRoot.querySelector('.loading')).toBeNull();
+    });
+  });
+
+  describe('when retrieving data', () => {
+    beforeEach(async () => {
+      mockOfflineDataPlugin.isRefreshing.mockReturnValue(of(true));
+      element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
+    });
+
+    it('should show loading indicator', () => {
+      expect(element.renderRoot.querySelector('.loading')).not.toBeNull();
+    });
   });
 
   describe('when picking lists is not empty', () => {
