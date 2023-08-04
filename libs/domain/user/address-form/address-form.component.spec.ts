@@ -208,6 +208,33 @@ describe('UserAddressFormComponent', () => {
     });
   });
 
+  describe('when form changes', () => {
+    const callback = vi.fn();
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-user-address-form></oryx-user-address-form>`
+      );
+
+      element.addEventListener('change', callback);
+
+      element.shadowRoot
+        ?.querySelector('select')
+        ?.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+
+    it('should dispatch change event', () => {
+      expect(callback).toHaveBeenCalledWith(
+        new CustomEvent('change', {
+          detail: {
+            valid: true,
+          },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    });
+  });
+
   describe('when selected country changes', () => {
     beforeEach(async () => {
       element = await fixture(

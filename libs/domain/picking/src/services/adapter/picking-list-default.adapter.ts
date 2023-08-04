@@ -152,10 +152,10 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       sku: product.sku,
       productName: product.name,
       image:
-        product.concreteProductImageSets[0].imageSets[0].images[0]
+        product.concreteProductImageSets?.[0].imageSets[0].images[0]
           .externalUrlSmall,
       imageLarge:
-        product.concreteProductImageSets[0].imageSets[0].images[0]
+        product.concreteProductImageSets?.[0].imageSets[0].images[0]
           .externalUrlLarge,
     }));
 

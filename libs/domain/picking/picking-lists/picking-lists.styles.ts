@@ -17,6 +17,7 @@ export const pickingListsComponentStyles = css`
   oryx-picking-lists-header {
     position: sticky;
     inset-block-start: 0;
+    z-index: 1;
   }
 
   .no-items-fallback {

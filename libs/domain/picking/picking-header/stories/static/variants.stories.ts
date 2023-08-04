@@ -1,9 +1,19 @@
+import {
+  OverlaysDecorator,
+  storybookDefaultViewports,
+} from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Picking header/Static`,
+  decorators: [OverlaysDecorator(320, 568)],
+  parameters: {
+    chromatic: {
+      viewports: [storybookDefaultViewports.mobile.min],
+    },
+  },
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {

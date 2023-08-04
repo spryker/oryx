@@ -32,7 +32,7 @@ class MockApp implements Partial<App> {
 class MockWarehouseUserAssignmentsService
   implements Partial<WarehouseUserAssignmentsService>
 {
-  getList = vi.fn().mockReturnValue(of(mockWarehouseUserAssignments));
+  getList = vi.fn();
   activateAssignment = vi
     .fn()
     .mockReturnValue(of(mockWarehouseUserAssignments[0]));
@@ -45,7 +45,7 @@ class MockRouterService implements Partial<RouterService> {
 describe('WarehouseAssignmentComponent', () => {
   let el: WarehouseAssignmentComponent;
 
-  let service: WarehouseUserAssignmentsService;
+  let service: MockWarehouseUserAssignmentsService;
   let routerService: RouterService;
 
   beforeAll(async () => {
@@ -70,12 +70,10 @@ describe('WarehouseAssignmentComponent', () => {
       ],
     });
 
-    service = testInjector.inject(WarehouseUserAssignmentsService);
-    routerService = testInjector.inject(RouterService);
-
-    el = await fixture(
-      html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+    service = testInjector.inject<MockWarehouseUserAssignmentsService>(
+      WarehouseUserAssignmentsService
     );
+    routerService = testInjector.inject(RouterService);
   });
 
   afterEach(() => {
@@ -83,40 +81,73 @@ describe('WarehouseAssignmentComponent', () => {
     destroyInjector();
   });
 
-  it('should render name of each location', () => {
-    const headings = el.renderRoot.querySelectorAll('h3');
-    expect(headings.length).toBe(mockWarehouseUserAssignments.length);
-    mockWarehouseUserAssignments.forEach((item, index) => {
-      expect(headings[index].textContent).toBe(
-        mockWarehouseUserAssignments[index].warehouse.name
+  describe('when there is multiple warehouses', () => {
+    beforeEach(async () => {
+      service.getList.mockReturnValue(of(mockWarehouseUserAssignments));
+      el = await fixture(
+        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
       );
     });
-  });
 
-  it('should render header', () => {
-    expect(el).toContainElement('oryx-header');
-  });
+    it('should render name of each location', () => {
+      const headings = el.renderRoot.querySelectorAll('h3');
+      expect(headings.length).toBe(mockWarehouseUserAssignments.length);
+      mockWarehouseUserAssignments.forEach((item, index) => {
+        expect(headings[index].textContent).toBe(
+          mockWarehouseUserAssignments[index].warehouse.name
+        );
+      });
+    });
 
-  mockWarehouseUserAssignments.forEach((item, index) => {
-    it(`should render button (${index}) of each location`, () => {
-      const buttons =
-        el.renderRoot.querySelectorAll<ButtonComponent>('oryx-button');
-      expect(buttons.length).toBe(mockWarehouseUserAssignments.length);
-      expect(buttons[index]).toHaveProperty('text', i18n('picking.select'));
+    it('should render header', () => {
+      expect(el).toContainElement('oryx-header');
+    });
+
+    mockWarehouseUserAssignments.forEach((item, index) => {
+      it(`should render button (${index}) of each location`, () => {
+        const buttons =
+          el.renderRoot.querySelectorAll<ButtonComponent>('oryx-button');
+        expect(buttons.length).toBe(mockWarehouseUserAssignments.length);
+        expect(buttons[index]).toHaveProperty('text', i18n('picking.select'));
+      });
+    });
+
+    it('should not call "activateAssignment" and "navigate" methods initially', () => {
+      expect(service.activateAssignment).not.toHaveBeenCalled();
+      expect(routerService.navigate).not.toHaveBeenCalled();
+    });
+
+    describe('when "Select" button is clicked', () => {
+      beforeEach(() => {
+        el.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
+      });
+
+      it('should call "activateAssignment" method', () => {
+        expect(service.activateAssignment).toHaveBeenCalledWith(
+          mockWarehouseUserAssignments[0].id
+        );
+      });
+
+      it('should navigate to "/" route', () => {
+        expect(routerService.navigate).toHaveBeenCalledWith('/');
+      });
     });
   });
 
-  it('should not call "activateAssignment" and "navigate" methods initially', () => {
-    expect(service.activateAssignment).not.toHaveBeenCalled();
-    expect(routerService.navigate).not.toHaveBeenCalled();
-  });
-
-  describe('when "Select" button is clicked', () => {
-    beforeEach(() => {
-      el.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
+  describe('when there is only one warehouse to choose', () => {
+    beforeEach(async () => {
+      service.getList.mockReturnValue(
+        of(mockWarehouseUserAssignments.slice(0, 1))
+      );
+      el = await fixture(
+        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+      );
     });
 
-    it('should call "activateAssignment" method', () => {
+    it('should call "activateAssignment" and not render any location ', () => {
+      const headings = el.renderRoot.querySelectorAll('h3');
+      expect(headings.length).toBe(0);
+
       expect(service.activateAssignment).toHaveBeenCalledWith(
         mockWarehouseUserAssignments[0].id
       );
@@ -124,6 +155,24 @@ describe('WarehouseAssignmentComponent', () => {
 
     it('should navigate to "/" route', () => {
       expect(routerService.navigate).toHaveBeenCalledWith('/');
+    });
+  });
+
+  describe('when the list is empty', () => {
+    beforeEach(async () => {
+      service.getList.mockReturnValue(
+        of(mockWarehouseUserAssignments.slice(0, 0))
+      );
+      el = await fixture(
+        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+      );
+    });
+
+    it('should render fallback', () => {
+      expect(el).toContainElement('oryx-image');
+
+      const image = el.renderRoot.querySelector('oryx-image');
+      expect(image?.hasAttribute('resource')).toBe(true);
     });
   });
 });

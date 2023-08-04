@@ -179,8 +179,13 @@ export class LitRouter implements ReactiveController {
         .flat(),
       ...routes,
     ]
-      // moves 404 page to the end in order not to break new provided routes
-      .sort((a) => ((a as PathRouteConfig).path === '/*' ? 0 : -1));
+      // moves 404 page and other pages (/:page) to the end in order not to break new provided routes
+      .sort((a) =>
+        (a as PathRouteConfig).path === '/*' ||
+        (a as PathRouteConfig).path === '/:page'
+          ? 0
+          : -1
+      );
 
     const baseRoute = resolve(BASE_ROUTE, null);
     if (baseRoute) {

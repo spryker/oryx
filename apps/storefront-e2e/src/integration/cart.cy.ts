@@ -1,121 +1,98 @@
+import { GlueAPI } from '../support/apis/glue.api';
 import { CartPage } from '../support/page-objects/cart.page';
-import { ProductDetailsPage } from '../support/page-objects/product-details.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const cartPage = new CartPage();
 const cartTotals = cartPage.getCartTotals();
 
-let scosApi: SCCOSApi;
+let api: GlueAPI;
 
-describe('Cart', () => {
-  beforeEach(() => {
-    scosApi = new SCCOSApi();
-    scosApi.guestCarts.get();
-  });
+// TODO: this might be extracted further into something bigger
+// for now let's keep it here
+const users = [
+  {
+    userType: 'guest',
+    createCart: () => {
+      api = new GlueAPI();
 
-  describe('when the cart page is not visited', () => {
-    describe('and discontinued items are added to cart on the product page', () => {
-      const productData = ProductStorage.getProductByEq(4);
-      const pdp = new ProductDetailsPage(productData);
+      cy.createGuestCart(api);
+    },
+    goToCart: () => {
+      cy.goToGuestCart();
+    },
+    addProduct: () => {
+      cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(2));
+    },
+    updateCartItemsUrl: '/guest-carts/*/guest-cart-items/*',
+  },
+  {
+    userType: 'authenticated',
+    createCart: () => {
+      api = new GlueAPI();
 
+      cy.loginApi(api);
+      cy.customerCleanup(api);
+      cy.createCart(api);
+    },
+    goToCart: () => {
+      cy.goToCart();
+    },
+    addProduct: () => {
+      cy.addProductToCart(api, 1, ProductStorage.getByEq(2));
+    },
+    updateCartItemsUrl: '/carts/*/items/*',
+  },
+];
+
+describe('Cart suite', () => {
+  users.forEach((user) => {
+    describe(`for ${user.userType} user: `, () => {
       beforeEach(() => {
-        pdp.visit();
-        pdp.addItemsToTheCart(1);
+        user.createCart();
       });
 
-      describe('and the user navigates to the cart page', () => {
-        beforeEach(() => {
-          pdp.header.getCartSummary().click();
-        });
-
-        it(
-          'should render the cart page with the newly added entries',
-          { tags: 'smoke' },
-          () => {
-            cartPage.getCartEntriesHeading().should('be.visible');
-
-            checkCartEntry({
-              quantity: 1,
-              subTotal: '€161.95',
-              originalPrice: '€180.00',
-              salesPrice: '€161.95',
-            });
-
-            checkCartTotals({
-              subTotal: '€179.94',
-              taxTotal: '€10.59',
-              discountsTotal: '-€17.99',
-              totalPrice: '€161.95',
-            });
-          }
-        );
-      });
-    });
-  });
-
-  describe('when the cart page is visited', () => {
-    describe('and the cart is empty', () => {
-      beforeEach(() => {
-        cy.goToCartAsGuest();
-      });
-
-      it('should render an empty message', () => {
-        cartPage.checkEmptyCart();
-      });
-    });
-
-    describe('and there is an item in the cart', () => {
-      beforeEach(() => {
-        scosApi.guestCartItems.post(ProductStorage.getProductByEq(2), 1);
-        cy.goToCartAsGuest();
-        cartPage.checkNotEmptyCart();
-      });
-
-      it('should render the cart entries and totals', () => {
-        cartPage.getCartEntriesHeading().should('contain.text', '1 items');
-        checkCartEntry({
-          quantity: 1,
-          subTotal: '€34.54',
-          salesPrice: '€34.54',
-        });
-        checkCartTotals({
-          subTotal: '€34.54',
-          taxTotal: '€5.51',
-          totalPrice: '€34.54',
-        });
-      });
-
-      describe('and the entry decrease button is clicked', () => {
-        beforeEach(() => {
-          cartPage.getCartEntries().then((entries) => {
-            entries[0].getQuantityInput().decrease();
-            cartPage.getSubmitDeleteBtn().click();
-          });
-        });
-
-        it('should have an empty cart', () => {
+      describe('without items in the cart: ', () => {
+        it('should render empty cart if there are no items', () => {
+          user.goToCart();
           cartPage.checkEmptyCart();
         });
       });
 
-      describe('and the quantity is increased by input enter', () => {
+      describe('with items in the cart: ', () => {
         beforeEach(() => {
-          cartPage.getCartEntries().then((entries) => {
-            entries[0]
-              .getQuantityInput()
-              .getInput()
-              .type('{selectall}4{enter}');
-          });
+          user.addProduct();
+          user.goToCart();
         });
 
-        it('should update the cart totals', () => {
+        it('should update prices if the number of items was changed', () => {
+          cartPage.checkNotEmptyCart();
+          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
+
+          checkCartEntry({
+            quantity: 1,
+            subTotal: '€34.54',
+            salesPrice: '€34.54',
+          });
+
+          checkCartTotals({
+            subTotal: '€34.54',
+            taxTotal: '€5.51',
+            totalPrice: '€34.54',
+          });
+
+          // change the number of items
+          cartPage.getCartEntries().then((entries) => {
+            entries[0].changeQuantityInInput(4);
+          });
+
           cartPage.getCartEntriesHeading().should('contain.text', '4 items');
+
           checkCartEntry({
             quantity: 4,
             subTotal: '€124.34',
             salesPrice: '€31.08',
           });
+
           checkCartTotals({
             subTotal: '€138.16',
             discountsTotal: '-€13.82',
@@ -123,95 +100,20 @@ describe('Cart', () => {
             totalPrice: '€124.34',
           });
         });
-      });
 
-      describe('and the quantity is increased by input change', () => {
-        beforeEach(() => {
-          cartPage.getCartEntries().then((entries) => {
-            entries[0].getQuantityInput().getInput().type('{selectall}2');
-          });
-        });
-
-        it('should update the cart totals after blur', () => {
-          // quantity updated, but not yet recalculated prices
-          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
-          checkCartEntry({
-            quantity: 2,
-            subTotal: '€34.54',
-          });
-          checkCartTotals({
-            subTotal: '€34.54',
-            taxTotal: '€5.51',
-            totalPrice: '€34.54',
-          });
-
-          cy.get('body').click();
-
-          // after blur the quantity the prices will be recalculated
-          cartPage.getCartEntriesHeading().should('contain.text', '2 items');
-          checkCartEntry({
-            quantity: 2,
-            subTotal: '€69.08',
-          });
-          checkCartTotals({
-            subTotal: '€69.08',
-            taxTotal: '€11.03',
-            totalPrice: '€69.08',
-          });
-        });
-      });
-
-      describe('and the quantity is changed to 0', () => {
-        beforeEach(() => {
-          cartPage.getCartEntries().then((entries) => {
-            entries[0]
-              .getQuantityInput()
-              .getInput()
-              .type('{selectall}0{enter}');
-            cartPage.getSubmitDeleteBtn().click();
-          });
-        });
-
-        it('should have an empty cart', () => {
-          cartPage.checkEmptyCart();
-        });
-      });
-
-      describe('and the entry is removed', () => {
-        beforeEach(() => {
-          cartPage.getCartEntries().then((entries) => {
-            entries[0].getRemoveBtn().click();
-
-            cy.intercept({
-              method: 'DELETE',
-              url: '/guest-carts/*/guest-cart-items/*',
-            }).as('deleteCartItemRequest');
-            cartPage.getSubmitDeleteBtn().click();
-            cy.wait('@deleteCartItemRequest');
-          });
-        });
-
-        it('should have an empty cart', () => {
-          cartPage.checkEmptyCart();
-        });
-      });
-
-      describe('and some BE error occurs while editing cart', () => {
-        beforeEach(() => {
+        it('should show a global error if an error occurs while cart editing', () => {
           cy.failApiCall(
             {
               method: 'PATCH',
-              url: '/guest-carts/*/guest-cart-items/*',
+              url: user.updateCartItemsUrl,
             },
             () => {
               cartPage.getCartEntries().then((entries) => {
-                entries[0].getQuantityInput().increase();
+                entries[0].increaseEntry();
               });
             }
           );
-        });
 
-        it('should show an error in global notification center', () => {
           cy.checkGlobalNotificationAfterFailedApiCall(cartPage);
         });
       });
