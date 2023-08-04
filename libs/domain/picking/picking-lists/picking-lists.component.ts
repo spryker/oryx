@@ -1,10 +1,12 @@
-import { resolve } from '@spryker-oryx/di';
+import { AppRef } from '@spryker-oryx/core';
+import { INJECTOR, resolve } from '@spryker-oryx/di';
 import {
   FallbackType,
   PickingListService,
   PickingListStatus,
 } from '@spryker-oryx/picking';
-import { I18nMixin, i18n, signal } from '@spryker-oryx/utilities';
+import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
+import { I18nMixin, i18n, signal, subscribe } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -12,8 +14,10 @@ import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import {
   Subject,
+  catchError,
   distinctUntilChanged,
   map,
+  of,
   startWith,
   switchMap,
   tap,
@@ -42,20 +46,38 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
 
   protected searchValue$ = new Subject<string>();
 
+  protected injector = resolve(INJECTOR);
+  protected injectorDataPlugin =
+    resolve(AppRef).requirePlugin(OfflineDataPlugin);
+
+  @subscribe()
+  protected dataRefresh = this.injectorDataPlugin
+    .refreshData(this.injector)
+    .pipe(
+      catchError((value) => {
+        return of(value);
+      }),
+      tap({
+        subscribe: () => {
+          this.loading = true;
+        },
+        finalize: () => {
+          this.loading = false;
+        },
+      })
+    );
+
   protected pickingLists$ = this.searchValue$.pipe(
     startWith(''),
     map((q) => q.trim()),
     distinctUntilChanged(),
     switchMap((value) => {
-      this.loading = true;
       this.searchValueLength = value.length;
 
-      return this.pickingListService
-        .get({
-          status: PickingListStatus.ReadyForPicking,
-          searchOrderReference: value,
-        })
-        .pipe(tap(() => (this.loading = false)));
+      return this.pickingListService.get({
+        status: PickingListStatus.ReadyForPicking,
+        searchOrderReference: value,
+      });
     })
   );
 
