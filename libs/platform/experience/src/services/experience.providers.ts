@@ -40,15 +40,7 @@ declare global {
   }
 }
 
-export const experienceProviders: Provider[] = [
-  {
-    provide: ContentBackendUrl,
-    useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),
-  },
-  {
-    provide: ExperienceService,
-    useClass: DefaultExperienceService,
-  },
+export const experienceLayoutProviders: Provider[] = [
   {
     provide: ScreenService,
     useClass: DefaultScreenService,
@@ -60,6 +52,17 @@ export const experienceProviders: Provider[] = [
   {
     provide: LayoutService,
     useClass: DefaultLayoutService,
+  },
+];
+
+export const experienceProviders: Provider[] = [
+  {
+    provide: ContentBackendUrl,
+    useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),
+  },
+  {
+    provide: ExperienceService,
+    useClass: DefaultExperienceService,
   },
   {
     provide: ComponentsRegistryService,
@@ -73,6 +76,7 @@ export const experienceProviders: Provider[] = [
     provide: ExperienceDataService,
     useClass: DefaultExperienceDataService,
   },
+  ...experienceLayoutProviders,
 ];
 
 export const experiencePreviewProviders: Provider[] = [
