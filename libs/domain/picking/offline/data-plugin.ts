@@ -62,8 +62,7 @@ export class OfflineDataPlugin implements AppPlugin {
 
   refreshData(injector: Injector): Observable<void> {
     this.isRefreshing$.next(true);
-    return this.clearDb(injector).pipe(
-      switchMap(() => this.populateDb(injector)),
+    return this.populateDb(injector, true).pipe(
       tap({
         next: () => {
           this.isRefreshing$.next(false);
@@ -94,26 +93,32 @@ export class OfflineDataPlugin implements AppPlugin {
     );
   }
 
-  protected populateDb(injector: Injector): Observable<void> {
+  protected populateDb(injector: Injector, refresh = false): Observable<void> {
     const onlineAdapter = injector.inject(PickingListOnlineAdapter);
     const dexieIdbService = injector.inject(DexieIndexedDbService);
 
     return onlineAdapter.get({}).pipe(
-      map((pl) => {
-        const productIds = new Set<string>();
-        return {
-          pickingLists: pl,
-          products: pl
-            .map((pickingList) => pickingList.items.map((item) => item.product))
-            .flat()
-            .filter((product) => {
-              if (productIds.has(product.id)) return false;
-              productIds.add(product.id);
+      switchMap((pl) =>
+        (refresh ? this.clearDb(injector) : of()).pipe(
+          map(() => {
+            const productIds = new Set<string>();
+            return {
+              pickingLists: pl,
+              products: pl
+                .map((pickingList) =>
+                  pickingList.items.map((item) => item.product)
+                )
+                .flat()
+                .filter((product) => {
+                  if (productIds.has(product.id)) return false;
+                  productIds.add(product.id);
 
-              return true;
-            }),
-        };
-      }),
+                  return true;
+                }),
+            };
+          })
+        )
+      ),
       withLatestFrom(
         dexieIdbService.getStore(PickingListEntity),
         dexieIdbService.getStore(PickingProductEntity),
