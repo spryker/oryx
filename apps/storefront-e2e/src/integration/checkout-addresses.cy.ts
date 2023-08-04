@@ -1,146 +1,112 @@
 import { GlueAPI } from '../support/apis/glue.api';
 import { CheckoutPage } from '../support/page-objects/checkout.page';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
-import { Customer } from '../support/types/user.type';
 
 let api: GlueAPI;
 const checkoutPage = new CheckoutPage();
 
 describe('User addresses suite', () => {
-  describe('when user is guest', () => {
-    beforeEach(() => {
+  describe('for guest user: ', () => {
+    it('should show shipping address form if user does not have addresses (guest)', () => {
       api = new GlueAPI();
-      api.guestCarts.get();
-    });
 
-    describe('and user has some products in the cart', () => {
-      beforeEach(() => {
-        cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
-      });
+      cy.createGuestCart(api);
+      cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
+      cy.goToGuestCheckout();
 
-      describe('and user goes to checkout', () => {
-        beforeEach(() => {
-          cy.goToGuestCheckout();
-        });
-
-        it('then shipping address form is shown and billing address is the same as shipping', () => {
-          verifyDefaultAddressesView();
-        });
-      });
+      verifyDefaultAddressesView();
     });
   });
 
-  describe('when user is logged in', () => {
+  describe('for authenticated user: ', () => {
     beforeEach(() => {
       api = new GlueAPI();
 
-      cy.loginApi();
+      cy.loginApi(api);
+      cy.customerCleanup(api);
+      cy.addProductToCart(api);
+    });
 
-      cy.fixture<Customer>('test-customer').then((customer) => {
-        cy.customerCartsCleanup(api, customer);
-        cy.customerAddressesCleanup(api, customer);
+    describe('without addresses: ', () => {
+      it('should show shipping address form if user does not have addresses (authenticated)', () => {
+        cy.goToCheckout();
+        verifyDefaultAddressesView();
       });
     });
 
-    describe('and user has some products in the cart', () => {
+    describe('with addresses: ', () => {
+      const addresses = [
+        {
+          type: checkoutPage.shipping,
+          name: 'shipping address',
+        },
+        {
+          type: checkoutPage.billing,
+          name: 'billing address',
+        },
+      ];
+
+      let randomCity1;
+      let randomCity2;
+
       beforeEach(() => {
-        cy.addProductToCart(api);
+        randomCity1 = `Random City ${Math.random()}`;
+        randomCity2 = `Random City ${Math.random()}`;
+
+        cy.addAddress(api, { city: randomCity1 });
+        cy.addAddress(api, { city: randomCity2 });
+
+        cy.goToCheckout();
       });
 
-      describe('and user does not have addresses yet', () => {
-        describe('and user goes to checkout', () => {
-          beforeEach(() => {
-            cy.goToCheckout();
-          });
+      it('should show addresses if user has some', () => {
+        verifyAddressesVisibility(checkoutPage.shipping);
+        verifyAddressesVisibility(checkoutPage.billing);
 
-          it('then shipping address form is shown and billing address is the same as shipping', () => {
-            verifyDefaultAddressesView();
-          });
+        verifyAddressListInModalAndCheckAddressChange({
+          addressType: checkoutPage.shipping,
+          numberOfAddresses: 2,
+          firstAddressCity: randomCity1,
+        });
+
+        verifyAddressListInModalAndCheckAddressChange({
+          addressType: checkoutPage.billing,
+          numberOfAddresses: 2,
+          firstAddressCity: randomCity1,
         });
       });
 
-      describe('and user already has addresses', () => {
-        const randomCity1 = `Random City ${Math.random()}`;
-        const randomCity2 = `Random City ${Math.random()}`;
-
-        beforeEach(() => {
-          cy.fixture<Customer>('test-customer').then((customer) => {
-            api.addresses.post(customer.id, { city: randomCity1 });
-            api.addresses.post(customer.id, { city: randomCity2 });
-          });
-        });
-
-        describe('and user goes to checkout', () => {
-          const addressData = {
+      addresses.forEach((address) => {
+        it(`should add, edit and delete ${address.name} without errors`, () => {
+          address.type.addressesList.openChangeAddressesModal();
+          address.type.addressChangeModal.addAddress({
             lastName: `User ${Math.random()}`,
-          };
-
-          beforeEach(() => {
-            cy.goToCheckout();
           });
 
-          it('then addresses are shown on page and in addresses modals and user can change them', () => {
-            verifyAddressesVisibility(checkoutPage.shipping);
-            verifyAddressesVisibility(checkoutPage.billing);
+          verifyAddressesListInModal(address.type, 3);
 
-            // shipping addresses
-            verifyAddressListInModalAndCheckAddressChange({
-              addressType: checkoutPage.shipping,
-              numberOfAddresses: 2,
-              firstAddressCity: randomCity1,
-            });
+          // edit address
+          const newCity = 'New Address 1';
+          const addressEq = 0;
 
-            // billing addresses
-            verifyAddressListInModalAndCheckAddressChange({
-              addressType: checkoutPage.billing,
-              numberOfAddresses: 2,
-              firstAddressCity: randomCity1,
-            });
-          });
+          address.type.addressChangeModal.editCity(newCity, addressEq);
 
-          [
-            {
-              type: checkoutPage.shipping,
-              name: 'shipping address',
-            },
-            {
-              type: checkoutPage.billing,
-              name: 'billing address',
-            },
-          ].forEach((address) => {
-            describe(`and user adds, edits and deletes ${address.name}`, () => {
-              it(`then ${address.name} is added, edited and deleted without errors`, () => {
-                // add address
-                address.type.addressesList.openChangeAddressesModal();
-                address.type.addressChangeModal.addAddress(addressData);
+          // we still have 3 addresses
+          verifyAddressesListInModal(address.type, 3);
 
-                verifyAddressesListInModal(address.type, 3);
+          // and edited address is visible
+          address.type.addressChangeModal.addressesList
+            .getAddressListItem()
+            .eq(addressEq)
+            .find('oryx-user-address')
+            .shadow()
+            .should('contain.text', newCity);
 
-                // edit address
-                const newCity = 'New Address 1';
-                const addressEq = 0;
+          // delete address
+          address.type.addressChangeModal.removeAddress(0);
 
-                address.type.addressChangeModal.editCity(newCity, addressEq);
-
-                // we still have 3 addresses
-                verifyAddressesListInModal(address.type, 3);
-
-                // and edited address is visible
-                address.type.addressChangeModal.addressesList
-                  .getAddressListItem()
-                  .eq(addressEq)
-                  .find('oryx-user-address')
-                  .shadow()
-                  .should('contain.text', newCity);
-
-                // delete address
-                address.type.addressChangeModal.removeAddress(0);
-
-                // 3 - 1 = 2
-                verifyAddressesListInModal(address.type, 2);
-              });
-            });
-          });
+          // 3 - 1 = 2
+          verifyAddressesListInModal(address.type, 2);
         });
       });
     });

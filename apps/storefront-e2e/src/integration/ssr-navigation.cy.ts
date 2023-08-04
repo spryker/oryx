@@ -20,7 +20,7 @@ const searchbox = new SearchBoxFragment();
 
 describe('SSR suite', { tags: 'smoke' }, () => {
   if (Cypress.env('isSSR')) {
-    it('must render Landing page', () => {
+    it('should render Landing page', () => {
       const landingPage = new LandingPage();
 
       landingPage.visit();
@@ -32,7 +32,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       verifyFooter();
     });
 
-    it('must render Product details page', () => {
+    it('should render Product details page', () => {
       const productData = ProductStorage.getByEq(1);
       const pdp = new ProductDetailsPage(productData);
 
@@ -45,7 +45,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       verifyFooter();
     });
 
-    it('must render Contact us page', () => {
+    it('should render Contact us page', () => {
       const contactPage = new ContactPage();
 
       contactPage.visit();
@@ -57,7 +57,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       verifyFooter(false);
     });
 
-    it('must render Login page', () => {
+    it('should render Login page', () => {
       const loginPage = new LoginPage();
 
       loginPage.visit();
@@ -69,7 +69,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       verifyFooter();
     });
 
-    it('must render Cart page', () => {
+    it('should render Cart page', () => {
       const cartPage = new CartPage();
 
       cy.goToGuestCart();
@@ -81,7 +81,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       verifyFooter();
     });
 
-    it('must render Search page', () => {
+    it('should render Search page', () => {
       const searchPage = new SearchPage();
 
       searchPage.visit();
@@ -95,7 +95,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       verifyFooter();
     });
 
-    it('must render Category page', () => {
+    it('should render Category page', () => {
       const categoryData = { id: '6' };
       const categoryPage = new CategoryPage(categoryData);
 
@@ -110,12 +110,12 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       verifyFooter();
     });
 
-    it('must render Checkout page', () => {
+    it('should render Checkout page', () => {
       const checkoutPage = new CheckoutPage();
 
       api = new GlueAPI();
-      api.guestCarts.get();
 
+      cy.createGuestCart(api);
       cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
       cy.goToGuestCheckout();
 

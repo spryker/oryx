@@ -5,7 +5,7 @@ const landingPage = new LandingPage();
 const contactPage = new ContactPage();
 
 describe('SPA navigation suite', () => {
-  it('must change pages when user clicks on different links', () => {
+  it('should change pages when user clicks on different links', () => {
     landingPage.visit();
     landingPage.footer.getLinkByUrl('/contact').click();
 

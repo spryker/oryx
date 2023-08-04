@@ -8,7 +8,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       login(): Chainable<void>;
-      loginApi(): Chainable<void>;
+      loginApi(api: GlueAPI): Chainable<void>;
     }
   }
 }
@@ -25,10 +25,8 @@ Cypress.Commands.add('login', () => {
   });
 });
 
-Cypress.Commands.add('loginApi', () => {
+Cypress.Commands.add('loginApi', (api: GlueAPI) => {
   cy.fixture<Customer>('test-customer').then((customer) => {
-    const api = new GlueAPI();
-
     api.token.post(customer).then((res) => {
       cy.window().then((win) => {
         win.localStorage.setItem(

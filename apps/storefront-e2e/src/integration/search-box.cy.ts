@@ -11,7 +11,7 @@ describe('Search box suite', () => {
     landingPage.visit();
   });
 
-  it('must show correct search results based on input', () => {
+  it('should show correct search results based on input', () => {
     const searchData = searchDataStorage[0];
 
     // valid search
@@ -27,14 +27,14 @@ describe('Search box suite', () => {
     verifyEmptySearchResults();
   });
 
-  it('must navigate to PDP from search results', { tags: 'smoke' }, () => {
+  it('should navigate to PDP from search results', { tags: 'smoke' }, () => {
     const productData = ProductStorage.getByEq(3);
     const pdp = new ProductDetailsPage(productData);
 
     searchbox.search(productData.title);
     searchbox.clickOnProduct(0);
 
-    verifyPDP(pdp, productData);
+    pdp.checkDefaultProduct();
   });
 });
 
@@ -62,9 +62,4 @@ function verifySearchResults(searchData) {
 function verifyEmptySearchResults() {
   searchbox.getSearchResultsWrapper().should('not.exist');
   searchbox.getEmptySearchResults().should('be.visible');
-}
-
-function verifyPDP(pdp, productData) {
-  pdp.getTitle().should('contain.text', productData.title);
-  pdp.getSKU().should('contain.text', productData.id);
 }

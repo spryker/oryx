@@ -73,6 +73,10 @@ export class HeaderFragment {
       : this.getCartCount().should('have.text', items);
   };
 
+  goToCart = () => {
+    this.getCartSummary().click();
+  };
+
   private initProductsUpdateInterceptor() {
     cy.intercept({
       method: 'GET',
