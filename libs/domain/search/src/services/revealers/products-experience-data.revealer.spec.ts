@@ -2,6 +2,7 @@ import { nextFrame } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { MessageType, postMessage } from '@spryker-oryx/experience';
 import { of } from 'rxjs';
+import { SuggestionField } from '../adapter';
 import { SuggestionService } from '../suggestion';
 import { ProductsExperienceDataRevealer } from './products-experience-data.revealer';
 
@@ -60,6 +61,7 @@ describe('ProductsExperienceDataRevealer', () => {
       await nextFrame();
       expect(mockSuggestionService.get).toHaveBeenCalledWith({
         query: mockQuery,
+        entities: [SuggestionField.Products],
       });
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {
