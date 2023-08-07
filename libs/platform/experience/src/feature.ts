@@ -4,22 +4,22 @@ import * as components from './components';
 import { PreviewPlugin } from './plugins';
 import { defaultExperienceRoutes } from './routes';
 import {
-  experienceLayoutProviders,
   experiencePreviewProviders,
   experienceProviders,
+  layoutProviders,
 } from './services';
 
 export const experienceComponents = [components.compositionComponent];
 
-export const experienceLayoutFeature: AppFeature = {
-  providers: experienceLayoutProviders,
+export const layoutFeature: AppFeature = {
+  providers: layoutProviders,
   components: [components.layoutComponent],
 };
 
 export const experienceFeature: AppFeature = {
   providers: experienceProviders,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  components: [...experienceComponents, ...experienceLayoutFeature.components!],
+  components: [...experienceComponents, ...layoutFeature.components!],
 };
 
 export const experienceRoutesFeature: AppFeature = {

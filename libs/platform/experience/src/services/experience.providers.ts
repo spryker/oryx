@@ -40,7 +40,7 @@ declare global {
   }
 }
 
-export const experienceLayoutProviders: Provider[] = [
+export const layoutProviders: Provider[] = [
   {
     provide: ScreenService,
     useClass: DefaultScreenService,
@@ -76,7 +76,7 @@ export const experienceProviders: Provider[] = [
     provide: ExperienceDataService,
     useClass: DefaultExperienceDataService,
   },
-  ...experienceLayoutProviders,
+  ...layoutProviders,
 ];
 
 export const experiencePreviewProviders: Provider[] = [

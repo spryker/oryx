@@ -1,5 +1,5 @@
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
-import { Resources, experienceLayoutFeature } from '@spryker-oryx/experience';
+import { Resources, layoutFeature } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import {
   commonGraphics,
@@ -22,7 +22,7 @@ export const backofficeFeatures: AppFeature[] = [
   coreFeature,
   formFeature,
   siteFeature,
-  experienceLayoutFeature,
+  layoutFeature,
   {
     resources: backofficeResources,
   },
