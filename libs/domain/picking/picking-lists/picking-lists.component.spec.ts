@@ -72,6 +72,10 @@ describe('PickingListsComponent', () => {
     it('should show loading indicator', () => {
       expect(element.renderRoot.querySelector('.loading')).not.toBeNull();
     });
+
+    afterEach(() => {
+      mockOfflineDataPlugin.isRefreshing.mockReturnValue(of(false));
+    });
   });
 
   describe('when picking lists is not empty', () => {

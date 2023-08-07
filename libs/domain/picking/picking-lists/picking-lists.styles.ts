@@ -46,18 +46,8 @@ export const pickingListsComponentStyles = css`
   }
 
   .loading {
-    position: fixed;
-    z-index: 1;
-    background-color: rgb(245 245 245 / 80%);
     display: flex;
-    justify-content: center;
     align-items: center;
     gap: 10px;
-    inset: 0;
-    padding-block-start: 34px;
-  }
-
-  .loading span {
-    font-weight: 600;
   }
 `;

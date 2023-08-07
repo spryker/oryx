@@ -60,7 +60,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
   protected $pickingLists = signal(this.pickingLists$);
 
   protected override render(): TemplateResult {
-    return html` ${this.renderLoading()}${this.renderPickingLists()}
+    return html` ${this.renderPickingLists()}
       <oryx-picking-in-progress-modal
         ${ref(this.pickingInProgressModal)}
       ></oryx-picking-in-progress-modal>
@@ -71,16 +71,6 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
       >
         ${this.customerNote}
       </oryx-customer-note-modal>`;
-  }
-
-  protected renderLoading(): TemplateResult {
-    return html`${when(
-      this.$loading(),
-      () => html`<div class="loading">
-        <span>${i18n('picking.loading-data')}</span>
-        <oryx-spinner></oryx-spinner>
-      </div>`
-    )}`;
   }
 
   protected renderPickingLists(): TemplateResult {
@@ -145,11 +135,19 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
 
   protected renderFilters(): TemplateResult {
     return html` <div class="filters">
-      <span>
-        ${this.i18n('picking.filter.<count>-open-pick-lists', {
-          count: this.$pickingLists()?.length ?? 0,
-        })}
-      </span>
+      ${when(
+        this.$loading(),
+        () => html`<span class="loading"
+          ><span>${i18n('picking.loading-data')}</span>
+          <oryx-spinner></oryx-spinner
+        ></span>`,
+        () =>
+          html`<span
+            >${this.i18n('picking.filter.<count>-open-pick-lists', {
+              count: this.$pickingLists()?.length ?? 0,
+            })}</span
+          >`
+      )}
       <oryx-picking-filter-button></oryx-picking-filter-button>
     </div>`;
   }
