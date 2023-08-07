@@ -187,7 +187,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     if (type === ExperienceDataMergeType.Replace) {
       strategy.type ??= 'oryx-composition';
 
-      if (componentIndex !== undefined) {
+      if (!isNaN) {
         components[componentIndex] = strategy;
       } else {
         template.components = [strategy];
