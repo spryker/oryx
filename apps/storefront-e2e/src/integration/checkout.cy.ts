@@ -35,6 +35,11 @@ describe('Checkout suite', () => {
           .and('not.contain', 'Billing address')
           .and('not.contain', 'Delivery address');
 
+        thankYouPage.getOrderEntriesWrapper().should('be.visible');
+        thankYouPage.getOrderEntries().should('have.length.at.least', 1);
+
+        thankYouPage.orderTotalsFragment.getWrapper().should('not.exist');
+
         verifyThatCartWasCleared();
       });
     });
@@ -65,6 +70,30 @@ describe('Checkout suite', () => {
           .and('not.contain', 'Email')
           .and('contain', 'Billing address')
           .and('contain', 'Delivery address');
+
+        thankYouPage.getOrderEntriesWrapper().should('be.visible');
+        thankYouPage.getOrderEntries().should('have.length.at.least', 1);
+
+        thankYouPage.orderTotalsFragment.getWrapper().should('be.visible');
+        thankYouPage.orderTotalsFragment
+          .getSubtotalPrice()
+          .shadow()
+          .should('contain.text', '€106.80');
+        thankYouPage.orderTotalsFragment
+          .getDiscountsTotal()
+          .shadow()
+          .should('contain.text', '-€29.90');
+        thankYouPage.orderTotalsFragment
+          .getTaxTotalPrice()
+          .shadow()
+          .should('contain.text', '€13.06');
+        thankYouPage.orderTotalsFragment
+          .getTotalPrice()
+          .shadow()
+          .should('contain.text', '€81.80');
+        thankYouPage.orderTotalsFragment
+          .getTaxMessage()
+          .should('contain.text', 'Tax included');
 
         verifyThatCartWasCleared();
       });

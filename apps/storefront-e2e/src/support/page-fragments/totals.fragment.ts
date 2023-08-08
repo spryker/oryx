@@ -1,5 +1,11 @@
-export class CartTotalsFragment {
-  getWrapper = () => cy.get('oryx-cart-totals');
+export class TotalsFragment {
+  protected wrapper: string;
+
+  constructor(wrapper: string) {
+    this.wrapper = wrapper;
+  }
+
+  getWrapper = () => cy.get(this.wrapper);
   getSubtotalText = () => this.getWrapper().find('oryx-cart-totals-subtotal');
   getSubtotalPrice = () => this.getSubtotalText().find('oryx-site-price');
   getDiscountsWrapper = () => this.getWrapper().find('oryx-collapsible');
@@ -9,6 +15,4 @@ export class CartTotalsFragment {
   getTotalPrice = () =>
     this.getWrapper().find('oryx-cart-totals-total').find('oryx-site-price');
   getTaxMessage = () => this.getWrapper().get('.tax-message');
-  getCartSummary = () => cy.get('oryx-site-navigation-item:nth-of-type(2)');
-  getCartSummaryQuantity = () => this.getCartSummary().find('mark');
 }

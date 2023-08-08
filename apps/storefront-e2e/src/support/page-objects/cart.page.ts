@@ -1,11 +1,11 @@
 import { CartEntryFragment } from '../page-fragments/cart-entry.fragment';
-import { CartTotalsFragment } from '../page-fragments/cart-totals.fragment';
+import { TotalsFragment } from '../page-fragments/totals.fragment';
 import { AbstractSFPage } from './abstract.page';
 
 export class CartPage extends AbstractSFPage {
   url = '/cart';
 
-  private cartTotals = new CartTotalsFragment();
+  private cartTotals = new TotalsFragment('oryx-cart-totals');
 
   waitForLoaded(): void {
     this.getCartEntriesWrapper().should('exist');
