@@ -22,7 +22,6 @@ import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { catchError, of } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
 
 @signalAware()
@@ -61,14 +60,7 @@ export class CompositionComponent extends LayoutMixin(
     }
   });
 
-  protected $components = signal(
-    this.componentsController.getComponents().pipe(
-      catchError((error) => {
-        console.log(error);
-        return of(null);
-      })
-    )
-  );
+  protected $components = signal(this.componentsController.getComponents());
 
   protected $hasDynamicallyVisibleComponent = signal(
     this.componentsController.hasDynamicallyVisibleComponent()

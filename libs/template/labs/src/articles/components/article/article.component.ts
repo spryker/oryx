@@ -28,7 +28,7 @@ export class ArticleComponent extends LitElement {
   protected $data = computed(() => {
     const id = this.$articleId();
     const type = this.$articleType();
-    console.log(type, id);
+
     return id && type ? this.contentService.get({ id, type }) : of(null);
   });
 

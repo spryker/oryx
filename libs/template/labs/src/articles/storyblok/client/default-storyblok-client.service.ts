@@ -1,7 +1,7 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { Observable, catchError, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, of, switchMap } from 'rxjs';
 import {
   StoryblokClientService,
   StoryblokEntriesResponse,
@@ -30,7 +30,7 @@ export class DefaultStoryblokClientService implements StoryblokClientService {
 
   getEntry(search: StoryblokSearch): Observable<StoryblokEntryResponse | null> {
     const endpoint = `/${search.slug}?`;
-    return this.search<StoryblokEntryResponse>(endpoint).pipe(tap(console.log));
+    return this.search<StoryblokEntryResponse>(endpoint);
   }
 
   protected search<T>(endpoint: string): Observable<T | null> {
