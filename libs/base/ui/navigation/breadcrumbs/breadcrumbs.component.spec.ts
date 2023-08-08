@@ -29,11 +29,11 @@ describe('BreadcrumbsComponent', () => {
       await expect(element).shadowDom.to.be.accessible(a11yConfig);
     });
 
-    it('should render slot', async () => {
+    it('should render slot', () => {
       expect(slot).toBeDefined();
     });
 
-    it('should render all slotted elements', async () => {
+    it('should render all slotted elements', () => {
       expect(slot.assignedElements().length).toBe(5);
     });
   });

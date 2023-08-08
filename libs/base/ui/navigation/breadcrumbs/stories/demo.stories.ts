@@ -10,15 +10,15 @@ const icons = getAppIcons();
 
 const breadcrumbs = [
   {
-    label: 'Home',
+    text: 'Home',
     url: '/',
   },
   {
-    label: 'Cameras & Camcorders',
+    text: 'Cameras & Camcorders',
     url: '/category',
   },
   {
-    label: 'Digital Cameras',
+    text: 'Digital Cameras',
     url: '/category',
   },
 ];
@@ -48,10 +48,10 @@ export default {
 const Template: Story<Props> = (props): TemplateResult => {
   return html`
     <oryx-breadcrumbs>
-      ${breadcrumbs.map(({ label, url }, index) => {
+      ${breadcrumbs.map(({ text, url }, index) => {
         const isLast = index + 1 === breadcrumbs.length;
         return html`
-          <a href=${ifDefined(url)}>${label}</a>
+          <a href=${ifDefined(url)}>${text}</a>
           ${when(
             !isLast,
             () => html`<oryx-icon .type=${props.divider}></oryx-icon>`

@@ -10,11 +10,11 @@ export const breadcrumbsStyles = css`
   }
 
   ::slotted(oryx-icon) {
-    --_size: 12px;
+    --oryx-icon-size: 12px;
     --_margin: 0;
   }
 
-  ::slotted(a) {
+  ::slotted(:not(oryx-icon)) {
     text-decoration: none;
     color: var(--oryx-color-neutral-12);
     max-width: var(--oryx-breadcrumb-max-width, 480px);
@@ -27,7 +27,7 @@ export const breadcrumbsStyles = css`
     color: var(--oryx-color-primary-10);
   }
 
-  ::slotted(a:is([disabled], :last-of-type)) {
+  ::slotted(:is([disabled], :last-child)) {
     color: var(--oryx-color-neutral-9);
     pointer-events: none;
   }
