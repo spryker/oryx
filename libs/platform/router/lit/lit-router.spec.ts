@@ -14,6 +14,7 @@ const mockRouterService = {
   acceptParams: vi.fn(),
   go: vi.fn(),
   setRoutes: vi.fn(),
+  getNotFound: vi.fn(),
 };
 
 const awaiterResolver = vi.fn();
@@ -130,6 +131,7 @@ describe('DefaultRouterService', () => {
     });
 
     mockRouterService.currentRoute.mockReturnValue(of('/a'));
+    mockRouterService.getNotFound.mockReturnValue(of());
 
     mockRouteConfig[0].render = vi.fn().mockReturnValue(html`outletResult`);
     mockRouteConfig[3].render = vi
