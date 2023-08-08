@@ -4,7 +4,7 @@ import {
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { inject } from '@spryker-oryx/di';
-import { map, Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { ContentfulClientService, ContentfulContentFields } from './client';
 
 export class ContentfulAdapter implements ContentAdapter {

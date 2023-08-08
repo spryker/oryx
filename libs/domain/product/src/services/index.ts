@@ -7,4 +7,5 @@ export * from './product.providers';
 export * from './product.service';
 export * from './related';
 export * from './resolvers';
+export * from './routes';
 export * from './state';

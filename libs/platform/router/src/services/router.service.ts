@@ -16,6 +16,8 @@ export interface RouterService {
   getPathId(id: string): string | undefined;
   setRoutes(routes: RouteConfig[]): void;
   getRoutes(): Observable<RouteConfig[] | undefined>;
+  redirectNotFound(): Observable<void>;
+  getNotFound(): Observable<void>;
 }
 
 export const RouterService = 'oryx.RouterService';
@@ -40,6 +42,7 @@ export const enum RouteType {
   Order = 'order',
   Cart = 'cart',
   Login = 'login',
+  NotFound = 'not-found',
   AddressList = 'address-list',
   AddressBookCreate = 'address-book-create',
   AddressBookEdit = 'address-book-edit',

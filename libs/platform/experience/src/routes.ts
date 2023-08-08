@@ -1,6 +1,6 @@
 import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import { RouterService, RouteType } from '@spryker-oryx/router';
+import { RouteType } from '@spryker-oryx/router';
 import { RouteConfig } from '@spryker-oryx/router/lit';
 import { html, TemplateResult } from 'lit';
 import { map, take } from 'rxjs';
@@ -18,22 +18,8 @@ export const defaultExperienceRoutes: RouteConfig[] = [
         .resolveToken('USER.AUTHENTICATED')
         .pipe(
           take(1),
-          map((state) => {
-            if (state) {
-              resolve(RouterService).navigate('/');
-            }
-
-            return !state;
-          })
+          map((state) => (state ? '/' : !state))
         ),
-  },
-  {
-    path: '/product/:sku',
-    type: RouteType.Product,
-  },
-  {
-    path: '/category/:id',
-    type: RouteType.Category,
   },
   {
     path: '/:page',
@@ -41,6 +27,7 @@ export const defaultExperienceRoutes: RouteConfig[] = [
   },
   {
     path: '/*',
+    type: RouteType.NotFound,
     render: (): TemplateResult =>
       html`<oryx-heading><h1>Error 404</h1></oryx-heading>
         <p>Page not found</p>`,

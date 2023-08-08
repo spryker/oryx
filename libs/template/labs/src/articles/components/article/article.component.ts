@@ -7,7 +7,7 @@ import {
   signal,
   signalAware,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { marked } from 'marked';
 import { of } from 'rxjs';
 import { ArticleContext } from '../../article-context';
@@ -28,7 +28,7 @@ export class ArticleComponent extends LitElement {
   protected $data = computed(() => {
     const id = this.$articleId();
     const type = this.$articleType();
-
+    console.log(type, id);
     return id && type ? this.contentService.get({ id, type }) : of(null);
   });
 

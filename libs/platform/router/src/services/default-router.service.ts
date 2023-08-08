@@ -7,6 +7,7 @@ import {
   Subject,
   combineLatest,
   map,
+  of,
 } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
 import { RouteConfig } from '../../lit/lit-router';
@@ -29,6 +30,7 @@ export class DefaultRouterService implements RouterService {
   );
   private routerEvents$ = new Subject<RouterEvent>();
   private storedRoute$ = new BehaviorSubject('');
+  private notFound$ = new ReplaySubject<void>(1);
 
   protected routes$ = new ReplaySubject<RouteConfig[]>(1);
   protected storageService = inject(StorageService);
@@ -132,6 +134,15 @@ export class DefaultRouterService implements RouterService {
 
   getRoutes(): Observable<RouteConfig[] | undefined> {
     return this.routes$.asObservable();
+  }
+
+  redirectNotFound(): Observable<void> {
+    this.notFound$.next();
+    return of(undefined);
+  }
+
+  getNotFound(): Observable<void> {
+    return this.notFound$.asObservable();
   }
 
   protected createUrlParams(params?: {

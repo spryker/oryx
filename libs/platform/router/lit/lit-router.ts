@@ -21,6 +21,7 @@ import {
   lastValueFrom,
   Observable,
   Subscription,
+  switchMap,
   tap,
 } from 'rxjs';
 
@@ -32,7 +33,11 @@ export interface BaseRouteConfig {
   render?: (params: { [key: string]: string | undefined }) => unknown;
   enter?: (params: {
     [key: string]: string | undefined;
-  }) => Promise<boolean> | Observable<boolean> | boolean;
+  }) =>
+    | Promise<boolean | string>
+    | Observable<boolean | string>
+    | boolean
+    | string;
   leave?: (params: {
     [key: string]: string | undefined;
   }) => Promise<boolean> | Observable<boolean> | boolean;
@@ -221,7 +226,9 @@ export class LitRouter implements ReactiveController {
     (this._host = host).addController(this);
 
     this.routes = [...routes];
-    this.fallback = options?.fallback;
+    this.fallback =
+      options?.fallback ??
+      this.routes.find((route) => route.type === RouteType.NotFound);
 
     this.routerService.setRoutes(routes);
 
@@ -232,6 +239,11 @@ export class LitRouter implements ReactiveController {
     if (isServer) {
       this.subscribe();
     }
+
+    this.routerService
+      .getNotFound()
+      .pipe(switchMap(() => this._goto(RouteType.NotFound)))
+      .subscribe();
   }
 
   /**
@@ -336,11 +348,10 @@ export class LitRouter implements ReactiveController {
             this.canDisableRouteLeaveInProgress = true;
           };
           window.addEventListener('popstate', callback);
-          success = await (isObservable(this._currentRoute.leave(params))
-            ? lastValueFrom(
-                this._currentRoute.leave(params) as Observable<boolean>
-              )
-            : this._currentRoute.leave(params));
+          const leaveFn = this._currentRoute.leave(params);
+          success = await (isObservable(leaveFn)
+            ? lastValueFrom(leaveFn)
+            : leaveFn);
 
           // If leave() returns false, cancel this navigation
           if (success === false) {
@@ -354,11 +365,23 @@ export class LitRouter implements ReactiveController {
       }
 
       if (typeof route.enter === 'function') {
-        const success = await (isObservable(route.enter(params))
-          ? lastValueFrom(route.enter(params) as Observable<boolean>)
-          : route.enter(params));
+        const enterFn = route.enter(params);
+        const result = await (isObservable(enterFn)
+          ? lastValueFrom(enterFn)
+          : enterFn);
+
+        if (typeof result === 'string') {
+          if (result === RouteType.NotFound) {
+            this._goto(result);
+          } else {
+            this.routerService.navigate(result);
+          }
+
+          return;
+        }
+
         // If enter() returns false, cancel this navigation
-        if (success === false) {
+        if (result === false) {
           return;
         }
       }
@@ -427,6 +450,7 @@ export class LitRouter implements ReactiveController {
     const matchedRoute = this.routes.find((r) =>
       getPattern(r).test({ pathname: pathname })
     );
+
     if (matchedRoute || this.fallback === undefined) {
       return matchedRoute;
     }
