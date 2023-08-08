@@ -251,6 +251,9 @@
         "libs/template/themes/design-tokens/index.ts"
       ],
       "@spryker-oryx/ui": ["libs/base/ui/src/index.ts"],
+      "@spryker-oryx/ui/breadcrumbs": [
+        "libs/base/ui/navigation/breadcrumbs/index.ts"
+      ],
       "@spryker-oryx/ui/button": ["libs/base/ui/action/button/index.ts"],
       "@spryker-oryx/ui/card": ["libs/base/ui/structure/card/index.ts"],
       "@spryker-oryx/ui/checkbox": ["libs/base/ui/form/checkbox/index.ts"],
