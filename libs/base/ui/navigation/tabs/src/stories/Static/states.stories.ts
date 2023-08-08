@@ -1,8 +1,8 @@
 import { generateVariantsMatrix, Variant } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
+import { TabsAppearance, TabsProperties } from '../../..';
 import { storybookPrefix } from '../../../../../.constants';
-import { TabsAppearance, TabsProperties } from '../../../../../navigation/tabs';
 
 export default {
   title: `${storybookPrefix}/Navigations/Tabs/Static`,

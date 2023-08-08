@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { HeadingTag, headingUtil } from '../heading/src/';
+import { HeadingTag, headingUtil } from '../heading/src';
 
 export const textStyles = css`
   :host {
