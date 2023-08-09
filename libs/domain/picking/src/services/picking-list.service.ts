@@ -19,6 +19,8 @@ export interface PickingListService {
     qualifier: SortableQualifier<PickingListQualifierSortBy>
   ): void;
   allowDiscardPicking(): Observable<boolean>;
+  isRefreshing(): Observable<boolean>;
+  setRefreshing(value: boolean): void;
 }
 
 export const PickingListService = 'oryx.PickingListService';

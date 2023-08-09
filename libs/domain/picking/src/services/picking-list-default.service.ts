@@ -20,6 +20,7 @@ import { PickingListService } from './picking-list.service';
 export class PickingListDefaultService implements PickingListService {
   protected upcomingPickingListId$ = new BehaviorSubject<string | null>(null);
   protected allowDiscardPicking$ = new BehaviorSubject<boolean>(true);
+  protected isRefreshing$ = new BehaviorSubject(false);
 
   constructor(protected adapter = inject(PickingListAdapter)) {}
 
@@ -80,5 +81,13 @@ export class PickingListDefaultService implements PickingListService {
 
   allowDiscardPicking(): Observable<boolean> {
     return this.allowDiscardPicking$;
+  }
+
+  isRefreshing(): Observable<boolean> {
+    return this.isRefreshing$;
+  }
+
+  setRefreshing(value: boolean): void {
+    this.isRefreshing$.next(value);
   }
 }

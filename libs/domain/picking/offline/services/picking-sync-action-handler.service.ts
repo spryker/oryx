@@ -1,13 +1,8 @@
 import { inject } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import { Sync, SyncActionHandler } from '@spryker-oryx/offline';
-import {
-  combineLatestWith,
-  Observable,
-  switchMap,
-  tap,
-  throwError,
-} from 'rxjs';
+import { PickingListService } from '@spryker-oryx/picking';
+import { Observable, combineLatestWith, switchMap, throwError } from 'rxjs';
 import { PickingListEntity } from '../entities';
 import { PickingListOnlineAdapter } from './adapter';
 
@@ -35,7 +30,8 @@ export class PickingSyncActionHandlerService
 {
   constructor(
     protected indexedDbService = inject(IndexedDbService),
-    protected onlineAdapter = inject(PickingListOnlineAdapter)
+    protected onlineAdapter = inject(PickingListOnlineAdapter),
+    protected pickingListService = inject(PickingListService)
   ) {}
 
   handleSync(sync: Sync<PickingSyncAction>): Observable<void> {
@@ -86,6 +82,7 @@ export class PickingSyncActionHandlerService
       );
     }
 
+    this.pickingListService.setRefreshing(true);
     return this.onlineAdapter.get({ ids: sync.payload.ids }).pipe(
       combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
       switchMap(async ([pickingLists, store]) => {
@@ -97,6 +94,8 @@ export class PickingSyncActionHandlerService
         await store.bulkPut(pickingLists, {
           allKeys: true,
         });
+
+        this.pickingListService.setRefreshing(false);
       })
     );
   }

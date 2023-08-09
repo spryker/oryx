@@ -2,9 +2,9 @@ import { OauthService, OauthServiceConfig } from '@spryker-oryx/auth';
 import { App, AppPlugin, InjectionPlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
+import { PickingListService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import {
-  BehaviorSubject,
   Observable,
   Subscription,
   combineLatest,
@@ -19,7 +19,6 @@ import { PickingListOnlineAdapter } from './services';
 
 export class OfflineDataPlugin implements AppPlugin {
   protected subscription?: Subscription;
-  protected isRefreshing$ = new BehaviorSubject(false);
 
   getName(): string {
     return 'oryx.pickingOfflineData';
@@ -61,21 +60,19 @@ export class OfflineDataPlugin implements AppPlugin {
   }
 
   refreshData(injector: Injector): Observable<void> {
-    this.isRefreshing$.next(true);
-    return this.populateDb(injector, true).pipe(
+    const pickingListService = injector.inject(PickingListService);
+    pickingListService.setRefreshing(true);
+    return this.clearDb(injector).pipe(
+      switchMap(() => this.populateDb(injector)),
       tap({
         next: () => {
-          this.isRefreshing$.next(false);
+          pickingListService.setRefreshing(false);
         },
         error: () => {
-          this.isRefreshing$.next(false);
+          pickingListService.setRefreshing(false);
         },
       })
     );
-  }
-
-  isRefreshing(): Observable<boolean> {
-    return this.isRefreshing$;
   }
 
   protected clearDb(injector: Injector): Observable<void> {
@@ -93,32 +90,26 @@ export class OfflineDataPlugin implements AppPlugin {
     );
   }
 
-  protected populateDb(injector: Injector, refresh = false): Observable<void> {
+  protected populateDb(injector: Injector): Observable<void> {
     const onlineAdapter = injector.inject(PickingListOnlineAdapter);
     const dexieIdbService = injector.inject(DexieIndexedDbService);
 
     return onlineAdapter.get({}).pipe(
-      switchMap((pl) =>
-        (refresh ? this.clearDb(injector) : of()).pipe(
-          map(() => {
-            const productIds = new Set<string>();
-            return {
-              pickingLists: pl,
-              products: pl
-                .map((pickingList) =>
-                  pickingList.items.map((item) => item.product)
-                )
-                .flat()
-                .filter((product) => {
-                  if (productIds.has(product.id)) return false;
-                  productIds.add(product.id);
+      map((pl) => {
+        const productIds = new Set<string>();
+        return {
+          pickingLists: pl,
+          products: pl
+            .map((pickingList) => pickingList.items.map((item) => item.product))
+            .flat()
+            .filter((product) => {
+              if (productIds.has(product.id)) return false;
+              productIds.add(product.id);
 
-                  return true;
-                }),
-            };
-          })
-        )
-      ),
+              return true;
+            }),
+        };
+      }),
       withLatestFrom(
         dexieIdbService.getStore(PickingListEntity),
         dexieIdbService.getStore(PickingProductEntity),

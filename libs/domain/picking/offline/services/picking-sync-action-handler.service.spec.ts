@@ -1,7 +1,7 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import { Sync, SyncStatus } from '@spryker-oryx/offline';
-import { PickingListStatus } from '@spryker-oryx/picking';
+import { PickingListService, PickingListStatus } from '@spryker-oryx/picking';
 import { Table } from 'dexie';
 import { of } from 'rxjs';
 import { PickingListEntity } from '../entities';
@@ -22,6 +22,10 @@ class MockPickingListOnlineAdapter
     .fn()
     .mockReturnValue(of([{ id: 'id1' }, { id: 'id2' }, { id: 'id3' }]));
   finishPicking = vi.fn().mockReturnValue(of([]));
+}
+
+class MockPickingListService implements Partial<PickingListService> {
+  setRefreshing = vi.fn();
 }
 
 const mockContent = { items: [] };
@@ -67,6 +71,7 @@ describe('PickingSyncActionHandlerService', () => {
   let service: PickingSyncActionHandlerService;
   let indexeddb: MockIndexedDbService;
   let adapter: MockPickingListOnlineAdapter;
+  let pickingListService: MockPickingListService;
 
   beforeEach(() => {
     const testInjector = createInjector({
@@ -78,6 +83,10 @@ describe('PickingSyncActionHandlerService', () => {
         {
           provide: IndexedDbService,
           useClass: MockIndexedDbService,
+        },
+        {
+          provide: PickingListService,
+          useClass: MockPickingListService,
         },
         {
           provide: PickingListOnlineAdapter,
@@ -93,6 +102,9 @@ describe('PickingSyncActionHandlerService', () => {
     adapter = testInjector.inject(
       PickingListOnlineAdapter
     ) as unknown as MockPickingListOnlineAdapter;
+    pickingListService = testInjector.inject(
+      PickingListService
+    ) as unknown as MockPickingListService;
   });
 
   afterEach(() => {
@@ -183,6 +195,7 @@ describe('PickingSyncActionHandlerService', () => {
     });
 
     it('should call online adapter and update indexedDB', () => {
+      expect(pickingListService.setRefreshing).toHaveBeenCalledWith(true);
       expect(callback).toHaveBeenCalled();
       expect(adapter.get).toHaveBeenCalledWith({
         ids: mockSyncPush.payload.ids,
@@ -194,6 +207,7 @@ describe('PickingSyncActionHandlerService', () => {
       expect(mockTable.bulkPut).toHaveBeenCalledWith(mockPickingLists, {
         allKeys: true,
       });
+      expect(pickingListService.setRefreshing).toHaveBeenCalledWith(false);
     });
   });
 });

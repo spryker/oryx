@@ -1,11 +1,9 @@
-import { AppRef } from '@spryker-oryx/core';
-import { INJECTOR, resolve } from '@spryker-oryx/di';
+import { resolve } from '@spryker-oryx/di';
 import {
   FallbackType,
   PickingListService,
   PickingListStatus,
 } from '@spryker-oryx/picking';
-import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import { I18nMixin, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -35,11 +33,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
 
   protected searchValue$ = new Subject<string>();
 
-  protected injector = resolve(INJECTOR);
-  protected injectorDataPlugin =
-    resolve(AppRef).requirePlugin(OfflineDataPlugin);
-
-  protected dataRefresh$ = this.injectorDataPlugin.isRefreshing();
+  protected dataRefresh$ = this.pickingListService.isRefreshing();
 
   protected $loading = signal(this.dataRefresh$);
 
