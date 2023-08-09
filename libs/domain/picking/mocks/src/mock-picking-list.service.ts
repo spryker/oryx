@@ -57,4 +57,8 @@ export class MockPickingListService implements Partial<PickingListService> {
   getUpcomingPickingListId(): Observable<string | null> {
     return of(null);
   }
+
+  isRefreshing(): Observable<boolean> {
+    return of(false);
+  }
 }
