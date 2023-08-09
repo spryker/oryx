@@ -22,14 +22,6 @@ export const defaultExperienceRoutes: RouteConfig[] = [
         ),
   },
   {
-    path: '/product/:sku',
-    type: RouteType.Product,
-  },
-  {
-    path: '/category/:id',
-    type: RouteType.Category,
-  },
-  {
     path: '/:page',
     type: RouteType.Page,
   },
