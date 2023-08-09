@@ -38,7 +38,7 @@ describe('Checkout suite', () => {
         thankYouPage.getOrderEntriesWrapper().should('be.visible');
         thankYouPage.getOrderEntries().should('have.length.at.least', 1);
 
-        thankYouPage.orderTotalsFragment.getWrapper().should('not.exist');
+        thankYouPage.getOrderTotals.getWrapper().should('not.exist');
 
         verifyThatCartWasCleared();
       });
@@ -74,26 +74,13 @@ describe('Checkout suite', () => {
         thankYouPage.getOrderEntriesWrapper().should('be.visible');
         thankYouPage.getOrderEntries().should('have.length.at.least', 1);
 
-        thankYouPage.orderTotalsFragment.getWrapper().should('be.visible');
-        thankYouPage.orderTotalsFragment
-          .getSubtotalPrice()
-          .shadow()
-          .should('contain.text', '€106.80');
-        thankYouPage.orderTotalsFragment
-          .getDiscountsTotal()
-          .shadow()
-          .should('contain.text', '-€29.90');
-        thankYouPage.orderTotalsFragment
-          .getTaxTotalPrice()
-          .shadow()
-          .should('contain.text', '€13.06');
-        thankYouPage.orderTotalsFragment
-          .getTotalPrice()
-          .shadow()
-          .should('contain.text', '€81.80');
-        thankYouPage.orderTotalsFragment
-          .getTaxMessage()
-          .should('contain.text', 'Tax included');
+        thankYouPage.getOrderTotals.getWrapper().should('be.visible');
+        thankYouPage.getOrderTotals.checkTotals({
+          subTotal: '€106.80',
+          discountsTotal: '-€29.90',
+          taxTotal: '€13.06',
+          totalPrice: '€81.80',
+        });
 
         verifyThatCartWasCleared();
       });

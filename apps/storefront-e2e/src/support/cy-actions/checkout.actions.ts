@@ -50,7 +50,7 @@ function waitForShippingAndBillingMethods() {
 //
 // this check should be removed in the future when hydration is improved
 function waitForNonEmptyCartToBeLoaded() {
-  cartPage.getCartTotals().getTotalPrice().should('be.visible');
+  cartPage.getCartTotals.getTotalPrice().should('be.visible');
   // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(250);
 }

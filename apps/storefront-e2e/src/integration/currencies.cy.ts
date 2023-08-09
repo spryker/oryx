@@ -42,7 +42,7 @@ describe('Currencies suite', () => {
 });
 
 function checkCurrencyOnCartPage(currency: string) {
-  const totals = cartPage.getCartTotals();
+  const totals = cartPage.getCartTotals;
 
   totals.getSubtotalPrice().shadow().should('contain.text', currency);
   totals.getTaxTotalPrice().shadow().should('contain.text', currency);

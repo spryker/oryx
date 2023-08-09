@@ -3,7 +3,6 @@ import { CartPage } from '../support/page-objects/cart.page';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const cartPage = new CartPage();
-const cartTotals = cartPage.getCartTotals();
 
 let api: GlueAPI;
 
@@ -74,7 +73,7 @@ describe('Cart suite', () => {
             salesPrice: '€34.54',
           });
 
-          checkCartTotals({
+          cartPage.getCartTotals.checkTotals({
             subTotal: '€34.54',
             taxTotal: '€5.51',
             totalPrice: '€34.54',
@@ -93,7 +92,7 @@ describe('Cart suite', () => {
             salesPrice: '€31.08',
           });
 
-          checkCartTotals({
+          cartPage.getCartTotals.checkTotals({
             subTotal: '€138.16',
             discountsTotal: '-€13.82',
             taxTotal: '€19.85',
@@ -150,48 +149,4 @@ function checkCartEntry(entry: {
         .should('contain.text', entry.originalPrice);
     }
   });
-}
-
-function checkCartTotals(totals: {
-  subTotal?: string;
-  discountsTotal?: string;
-  taxTotal?: string;
-  totalPrice?: string;
-}) {
-  cartTotals.getWrapper().should('be.visible');
-
-  if (totals.subTotal) {
-    cartTotals
-      .getSubtotalPrice()
-      .shadow()
-      .should('contain.text', totals.subTotal);
-  }
-
-  if (totals.discountsTotal) {
-    cartTotals
-      .getDiscountsTotal()
-      .shadow()
-      .should('contain.text', totals.discountsTotal);
-  } else {
-    cartTotals.getDiscountsWrapper().should('not.exist');
-  }
-
-  if (totals.totalPrice) {
-    cartTotals
-      .getTotalPrice()
-      .shadow()
-      .should('contain.text', totals.totalPrice);
-  }
-
-  if (totals.taxTotal) {
-    cartTotals
-      .getTaxTotalPrice()
-      .shadow()
-      .should('contain.text', totals.taxTotal);
-  }
-
-  cartTotals
-    .getTaxMessage()
-    .should('be.visible')
-    .and('contain.text', 'Tax included');
 }

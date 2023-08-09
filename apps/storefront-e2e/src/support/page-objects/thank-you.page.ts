@@ -5,13 +5,10 @@ import { AbstractSFPage } from './abstract.page';
 export class ThankYouPage extends AbstractSFPage {
   url: string;
 
-  orderTotalsFragment: TotalsFragment;
-
   constructor(orderId: string) {
     super();
 
     this.url = `/order/${orderId}`;
-    this.orderTotalsFragment = new TotalsFragment('oryx-order-totals');
   }
 
   waitForLoaded(): void {
@@ -32,4 +29,5 @@ export class ThankYouPage extends AbstractSFPage {
         );
       });
   getOrderDetails = () => this.getOrderSummary().find('section');
+  getOrderTotals = new TotalsFragment('oryx-order-totals');
 }

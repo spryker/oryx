@@ -43,7 +43,7 @@ describe('Locales suite', () => {
 });
 
 function checkCurrencyUsedOnCartPage(locale: string) {
-  const totals = cartPage.getCartTotals();
+  const totals = cartPage.getCartTotals;
 
   totals.getSubtotalPrice().shadow().checkCurrencyFormatting(locale);
   totals.getTaxTotalPrice().shadow().checkCurrencyFormatting(locale);

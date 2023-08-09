@@ -15,4 +15,37 @@ export class TotalsFragment {
   getTotalPrice = () =>
     this.getWrapper().find('oryx-cart-totals-total').find('oryx-site-price');
   getTaxMessage = () => this.getWrapper().get('.tax-message');
+
+  checkTotals(totals: {
+    subTotal?: string;
+    discountsTotal?: string;
+    taxTotal?: string;
+    totalPrice?: string;
+  }) {
+    this.getWrapper().should('be.visible');
+
+    if (totals.subTotal) {
+      this.getSubtotalPrice().shadow().should('contain.text', totals.subTotal);
+    }
+
+    if (totals.discountsTotal) {
+      this.getDiscountsTotal()
+        .shadow()
+        .should('contain.text', totals.discountsTotal);
+    } else {
+      this.getDiscountsWrapper().should('not.exist');
+    }
+
+    if (totals.totalPrice) {
+      this.getTotalPrice().shadow().should('contain.text', totals.totalPrice);
+    }
+
+    if (totals.taxTotal) {
+      this.getTaxTotalPrice().shadow().should('contain.text', totals.taxTotal);
+    }
+
+    this.getTaxMessage()
+      .should('be.visible')
+      .and('contain.text', 'Tax included');
+  }
 }

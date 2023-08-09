@@ -5,8 +5,6 @@ import { AbstractSFPage } from './abstract.page';
 export class CartPage extends AbstractSFPage {
   url = '/cart';
 
-  private cartTotals = new TotalsFragment('oryx-cart-totals');
-
   waitForLoaded(): void {
     this.getCartEntriesWrapper().should('exist');
   }
@@ -23,7 +21,7 @@ export class CartPage extends AbstractSFPage {
       });
   getCartEntriesHeading = () =>
     this.getCartEntriesWrapper().find('oryx-heading');
-  getCartTotals = () => this.cartTotals;
+  getCartTotals = new TotalsFragment('oryx-cart-totals');
   getCheckoutBtn = () =>
     cy.get('oryx-checkout-link').find('oryx-button').find('a');
   getDeleteModal = () => this.getCartEntriesWrapper().find('oryx-modal');
@@ -37,13 +35,13 @@ export class CartPage extends AbstractSFPage {
   checkEmptyCart = () => {
     this.getEmptyCartMessage().should('be.visible');
     this.getCartEntriesWrapper().should('not.be.visible');
-    this.getCartTotals().getWrapper().should('not.be.visible');
+    this.getCartTotals.getWrapper().should('not.be.visible');
   };
 
   checkNotEmptyCart = () => {
     this.getEmptyCartMessage().should('not.exist');
     this.getCartEntriesWrapper().should('be.visible');
-    this.getCartTotals().getWrapper().should('be.visible');
+    this.getCartTotals.getWrapper().should('be.visible');
   };
 
   approveCartEntryDeletion = () => {
