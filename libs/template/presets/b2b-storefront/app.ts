@@ -6,14 +6,15 @@ import { contentFeature } from '@spryker-oryx/content';
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { coreServerProviders } from '@spryker-oryx/core/server';
 import {
+  Resources,
   experienceFeature,
   experiencePreviewFeature,
   experienceRoutesFeature,
-  Resources,
 } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature } from '@spryker-oryx/i18n';
 import { orderFeature } from '@spryker-oryx/order';
+import { StaticExperienceFeature } from '@spryker-oryx/presets/storefront';
 import { productFeature } from '@spryker-oryx/product';
 import {
   brandGraphics,
@@ -27,7 +28,6 @@ import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import { isServer } from 'lit';
 import 'urlpattern-polyfill';
-import { StaticExperienceFeature } from '@spryker-oryx/presets/storefront';
 
 const isPreview = new URLSearchParams(
   new URL(globalThis.location?.href).search
