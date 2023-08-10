@@ -169,6 +169,9 @@
       "@spryker-oryx/presets/storefront": [
         "libs/template/presets/storefront/index.ts"
       ],
+      "@spryker-oryx/presets/b2b-storefront": [
+        "libs/template/presets/b2b-storefront/index.ts"
+      ],
       "@spryker-oryx/product": ["libs/domain/product/src/index.ts"],
       "@spryker-oryx/product/attributes": [
         "libs/domain/product/attributes/index.ts"
