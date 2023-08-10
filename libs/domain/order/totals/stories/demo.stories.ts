@@ -6,10 +6,10 @@ import { storybookPrefix } from '../../.constants';
 export default {
   title: `${storybookPrefix}/Totals`,
   args: {
-    mockUid: 'all',
+    uid: 'all',
   },
   argTypes: {
-    mockUid: {
+    uid: {
       control: { type: 'select' },
       options: cartTotalsStaticData.map((d) => d.id),
       table: { category: 'demo' },
@@ -18,7 +18,7 @@ export default {
 } as Meta;
 
 const Template: Story = (props): TemplateResult => {
-  return html`<oryx-order-totals .uid=${props.mockUid}></oryx-order-totals>`;
+  return html`<oryx-order-totals .uid=${props.uid}></oryx-order-totals>`;
 };
 
 export const Demo = Template.bind({});
