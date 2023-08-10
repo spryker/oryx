@@ -73,7 +73,7 @@ describe('Cart suite', () => {
             salesPrice: '€34.54',
           });
 
-          cartPage.getCartTotals.checkTotals({
+          cartPage.getCartTotals().checkTotals({
             subTotal: '€34.54',
             taxTotal: '€5.51',
             totalPrice: '€34.54',
@@ -92,7 +92,7 @@ describe('Cart suite', () => {
             salesPrice: '€31.08',
           });
 
-          cartPage.getCartTotals.checkTotals({
+          cartPage.getCartTotals().checkTotals({
             subTotal: '€138.16',
             discountsTotal: '-€13.82',
             taxTotal: '€19.85',

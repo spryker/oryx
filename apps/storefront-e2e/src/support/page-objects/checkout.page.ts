@@ -9,7 +9,7 @@ export class CheckoutPage extends AbstractSFPage {
   url = '/checkout';
 
   waitForLoaded(): void {
-    this.getCartTotals.getTotalPrice().should('be.visible');
+    this.getCartTotals().getTotalPrice().should('be.visible');
   }
 
   checkoutAsGuestForm = new CheckoutAsGuestFormFragment();
@@ -34,7 +34,7 @@ export class CheckoutPage extends AbstractSFPage {
     ),
   };
 
-  getCartTotals = new TotalsFragment('oryx-cart-totals');
+  getCartTotals = () => new TotalsFragment('oryx-cart-totals');
   getPlaceOrderBtn = () => cy.get('oryx-checkout-place-order');
   getShippingWrapper = () => cy.get('oryx-checkout-shipping-method');
   getShippingMethods = () => this.getShippingWrapper().find('oryx-tile');

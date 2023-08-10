@@ -29,5 +29,5 @@ export class ThankYouPage extends AbstractSFPage {
         );
       });
   getOrderDetails = () => this.getOrderSummary().find('section');
-  getOrderTotals = new TotalsFragment('oryx-order-totals');
+  getOrderTotals = () => new TotalsFragment('oryx-order-totals');
 }

@@ -38,7 +38,7 @@ describe('Checkout suite', () => {
         thankYouPage.getOrderEntriesWrapper().should('be.visible');
         thankYouPage.getOrderEntries().should('have.length.at.least', 1);
 
-        thankYouPage.getOrderTotals.getWrapper().should('not.exist');
+        thankYouPage.getOrderTotals().getWrapper().should('not.exist');
 
         verifyThatCartWasCleared();
       });
@@ -74,8 +74,8 @@ describe('Checkout suite', () => {
         thankYouPage.getOrderEntriesWrapper().should('be.visible');
         thankYouPage.getOrderEntries().should('have.length.at.least', 1);
 
-        thankYouPage.getOrderTotals.getWrapper().should('be.visible');
-        thankYouPage.getOrderTotals.checkTotals({
+        thankYouPage.getOrderTotals().getWrapper().should('be.visible');
+        thankYouPage.getOrderTotals().checkTotals({
           subTotal: '€106.80',
           discountsTotal: '-€29.90',
           taxTotal: '€13.06',
