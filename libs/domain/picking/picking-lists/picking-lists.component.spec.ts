@@ -1,8 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
 import { CustomerNoteModalComponent } from '@spryker-oryx/picking/customer-note-modal';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+import { PickingSyncActionHandlerService } from '@spryker-oryx/picking/offline';
 import { CLOSE_EVENT, ModalComponent } from '@spryker-oryx/ui/modal';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -10,6 +12,20 @@ import { of } from 'rxjs';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { PickingListsComponent } from './picking-lists.component';
 import { pickingListsComponent } from './picking-lists.def';
+
+const mockOfflineDataPlugin = {
+  isRefreshing: vi.fn().mockReturnValue(of(false)),
+};
+
+class MockPickingSyncActionHandlerService
+  implements Partial<PickingSyncActionHandlerService>
+{
+  isSyncing = vi.fn().mockReturnValue(of(false));
+}
+
+class MockApp implements Partial<App> {
+  requirePlugin = vi.fn().mockReturnValue(mockOfflineDataPlugin);
+}
 
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of(mockPickingListData));
@@ -19,6 +35,7 @@ class MockPickingListService implements Partial<PickingListService> {
 describe('PickingListsComponent', () => {
   let element: PickingListsComponent;
   let service: MockPickingListService;
+  let syncService: MockPickingSyncActionHandlerService;
 
   beforeAll(async () => {
     await useComponent([pickingListsComponent]);
@@ -31,12 +48,23 @@ describe('PickingListsComponent', () => {
           provide: PickingListService,
           useClass: MockPickingListService,
         },
+        {
+          provide: PickingSyncActionHandlerService,
+          useClass: MockPickingSyncActionHandlerService,
+        },
+        {
+          provide: AppRef,
+          useClass: MockApp,
+        },
       ],
     });
 
     service = testInjector.inject(
       PickingListService
     ) as unknown as MockPickingListService;
+    syncService = testInjector.inject(
+      PickingSyncActionHandlerService
+    ) as unknown as MockPickingSyncActionHandlerService;
     element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
   });
 
@@ -49,11 +77,15 @@ describe('PickingListsComponent', () => {
     it('should not show loading indicator', () => {
       expect(element.renderRoot.querySelector('.loading')).toBeNull();
     });
+
+    it('should not show sync indicator', () => {
+      expect(element.renderRoot.querySelector('.sync')).toBeNull();
+    });
   });
 
   describe('when retrieving data', () => {
     beforeEach(async () => {
-      service.isRefreshing.mockReturnValue(of(true));
+      mockOfflineDataPlugin.isRefreshing.mockReturnValue(of(true));
       element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
     });
 
@@ -61,11 +93,20 @@ describe('PickingListsComponent', () => {
       expect(element.renderRoot.querySelector('.loading')).not.toBeNull();
     });
 
-    /*
     afterEach(() => {
-      service.isRefreshing.mockReturnValue(of(false));
+      mockOfflineDataPlugin.isRefreshing.mockReturnValue(of(false));
     });
-    */
+  });
+
+  describe('when receiving push notifications', () => {
+    beforeEach(async () => {
+      syncService.isSyncing.mockReturnValue(of(true));
+      element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
+    });
+
+    it('should show loading indicator', () => {
+      expect(element.renderRoot.querySelector('.sync')).not.toBeNull();
+    });
   });
 
   describe('when picking lists is not empty', () => {

@@ -1,9 +1,14 @@
-import { resolve } from '@spryker-oryx/di';
+import { AppRef } from '@spryker-oryx/core';
+import { INJECTOR, resolve } from '@spryker-oryx/di';
 import {
   FallbackType,
   PickingListService,
   PickingListStatus,
 } from '@spryker-oryx/picking';
+import {
+  OfflineDataPlugin,
+  PickingSyncActionHandlerService,
+} from '@spryker-oryx/picking/offline';
 import { I18nMixin, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -18,6 +23,7 @@ import { pickingListsComponentStyles } from './picking-lists.styles';
 export class PickingListsComponent extends I18nMixin(LitElement) {
   static styles = pickingListsComponentStyles;
   protected pickingListService = resolve(PickingListService);
+  protected pickingSyncHandler = resolve(PickingSyncActionHandlerService);
 
   @state()
   protected isSearchActive = false;
@@ -33,9 +39,12 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
 
   protected searchValue$ = new Subject<string>();
 
-  protected dataRefresh$ = this.pickingListService.isRefreshing();
+  protected injector = resolve(INJECTOR);
+  protected injectorDataPlugin =
+    resolve(AppRef).requirePlugin(OfflineDataPlugin);
 
-  protected $loading = signal(this.dataRefresh$);
+  protected $syncing = signal(this.pickingSyncHandler.isSyncing());
+  protected $refreshing = signal(this.injectorDataPlugin.isRefreshing());
 
   protected pickingLists$ = this.searchValue$.pipe(
     startWith(''),
@@ -68,48 +77,53 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
   }
 
   protected renderPickingLists(): TemplateResult {
-    return html`
-      <oryx-picking-lists-header
+    return html` <oryx-picking-lists-header
         @oryx.search=${this.searchOrderReference}
       ></oryx-picking-lists-header>
 
       ${this.renderFilters()}
       ${when(
-        !this.$pickingLists()?.length,
-        () => this.renderResultsFallback(),
-        () => html`
-          ${when(
-            this.noValueSearchProvided(),
-            () => this.renderSearchFallback(),
+        this.$refreshing(),
+        () => this.renderLoading(),
+        () =>
+          html`${when(
+            !this.$pickingLists()?.length,
+            () => this.renderResultsFallback(),
             () => html`
-              <section>
-                ${when(
-                  this.isSearchActive,
-                  () => html`
-                    <oryx-heading slot="heading">
-                      <h4>
-                        ${this.i18n('picking-lists.search-results-for-picking')}
-                      </h4>
-                    </oryx-heading>
-                  `
-                )}
-                ${repeat(
-                  this.$pickingLists(),
-                  (pl) => pl.id,
-                  (pl) =>
-                    html`<oryx-picking-list-item
-                      .pickingListId=${pl.id}
-                      @oryx.show-note=${this.openCustomerNoteModal}
-                      @oryx.show-picking-in-progress=${this
-                        .openPickingInProgressModal}
-                    ></oryx-picking-list-item>`
-                )}
-              </section>
+              ${when(
+                this.noValueSearchProvided(),
+                () => this.renderSearchFallback(),
+                () => html`
+                  <section>
+                    ${when(
+                      this.isSearchActive,
+                      () => html`
+                        <oryx-heading slot="heading">
+                          <h4>
+                            ${this.i18n(
+                              'picking-lists.search-results-for-picking'
+                            )}
+                          </h4>
+                        </oryx-heading>
+                      `
+                    )}
+                    ${repeat(
+                      this.$pickingLists(),
+                      (pl) => pl.id,
+                      (pl) =>
+                        html`<oryx-picking-list-item
+                          .pickingListId=${pl.id}
+                          @oryx.show-note=${this.openCustomerNoteModal}
+                          @oryx.show-picking-in-progress=${this
+                            .openPickingInProgressModal}
+                        ></oryx-picking-list-item>`
+                    )}
+                  </section>
+                `
+              )}
             `
-          )}
-        `
-      )}
-    `;
+          )}`
+      )}`;
   }
 
   protected renderResultsFallback(): TemplateResult {
@@ -130,8 +144,8 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
   protected renderFilters(): TemplateResult {
     return html` <div class="filters">
       ${when(
-        this.$loading(),
-        () => html`<span class="loading"
+        this.$syncing(),
+        () => html`<span class="sync"
           ><span>${i18n('picking.loading-data')}</span>
           <oryx-spinner></oryx-spinner
         ></span>`,
@@ -143,6 +157,13 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
           >`
       )}
       <oryx-picking-filter-button></oryx-picking-filter-button>
+    </div>`;
+  }
+
+  protected renderLoading(): TemplateResult {
+    return html`<div class="loading">
+      <span>${i18n('picking.loading-data')}</span>
+      <oryx-spinner></oryx-spinner>
     </div>`;
   }
 

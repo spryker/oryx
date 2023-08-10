@@ -2,9 +2,9 @@ import { OauthService, OauthServiceConfig } from '@spryker-oryx/auth';
 import { App, AppPlugin, InjectionPlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
-import { PickingListService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import {
+  BehaviorSubject,
   Observable,
   Subscription,
   combineLatest,
@@ -19,6 +19,7 @@ import { PickingListOnlineAdapter } from './services';
 
 export class OfflineDataPlugin implements AppPlugin {
   protected subscription?: Subscription;
+  protected refreshing$ = new BehaviorSubject(false);
 
   getName(): string {
     return 'oryx.pickingOfflineData';
@@ -60,19 +61,22 @@ export class OfflineDataPlugin implements AppPlugin {
   }
 
   refreshData(injector: Injector): Observable<void> {
-    const pickingListService = injector.inject(PickingListService);
-    pickingListService.setRefreshing(true);
+    this.refreshing$.next(true);
     return this.clearDb(injector).pipe(
       switchMap(() => this.populateDb(injector)),
       tap({
         next: () => {
-          pickingListService.setRefreshing(false);
+          this.refreshing$.next(false);
         },
         error: () => {
-          pickingListService.setRefreshing(false);
+          this.refreshing$.next(false);
         },
       })
     );
+  }
+
+  isRefreshing(): Observable<boolean> {
+    return this.refreshing$;
   }
 
   protected clearDb(injector: Injector): Observable<void> {
