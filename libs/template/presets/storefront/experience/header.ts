@@ -26,10 +26,13 @@ export const HeaderTemplate: ExperienceComponent = {
           options: { url: '/', icon: IconTypes.Check },
         },
         {
-          type: 'oryx-site-currency-selector',
+          type: 'oryx-price-mode-selector',
           options: {
             rules: [{ style: 'margin-inline-start: auto' }],
           },
+        },
+        {
+          type: 'oryx-site-currency-selector',
         },
         { type: 'oryx-site-locale-selector' },
       ],
