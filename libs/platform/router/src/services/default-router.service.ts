@@ -14,6 +14,7 @@ import { RouteConfig } from '../../lit/lit-router';
 import {
   NavigationExtras,
   RouteParams,
+  RouteType,
   RouterEvent,
   RouterEventType,
   RouterService,
@@ -60,6 +61,12 @@ export class DefaultRouterService implements RouterService {
   }
 
   navigate(route: string): void {
+    if (route === RouteType.NotFound) {
+      this.router$.next(RouteType.NotFound);
+
+      return;
+    }
+
     globalThis.history.pushState({}, '', route);
     this.go(route);
   }
@@ -137,12 +144,8 @@ export class DefaultRouterService implements RouterService {
   }
 
   redirectNotFound(): Observable<void> {
-    this.notFound$.next();
+    this.navigate(RouteType.NotFound);
     return of(undefined);
-  }
-
-  getNotFound(): Observable<void> {
-    return this.notFound$.asObservable();
   }
 
   protected createUrlParams(params?: {

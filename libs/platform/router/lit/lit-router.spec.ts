@@ -14,7 +14,6 @@ const mockRouterService = {
   acceptParams: vi.fn(),
   go: vi.fn(),
   setRoutes: vi.fn(),
-  getNotFound: vi.fn(),
 };
 
 const awaiterResolver = vi.fn();

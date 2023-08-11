@@ -21,7 +21,6 @@ import {
   lastValueFrom,
   Observable,
   Subscription,
-  switchMap,
   tap,
 } from 'rxjs';
 
@@ -239,11 +238,6 @@ export class LitRouter implements ReactiveController {
     if (isServer) {
       this.subscribe();
     }
-
-    this.routerService
-      .getNotFound()
-      .pipe(switchMap(() => this._goto(RouteType.NotFound)))
-      .subscribe();
   }
 
   /**

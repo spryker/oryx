@@ -6,7 +6,7 @@ import { LitRouter, RouteConfig } from '@spryker-oryx/router/lit';
 import { siteProviders } from '@spryker-oryx/site';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { oryxAppComponent } from './oryx-app.def';
 
@@ -29,10 +29,6 @@ class MockRouterService implements Partial<RouterService> {
 
   setRoutes(routes: RouteConfig[]): void {
     //
-  }
-
-  getNotFound(): Observable<void> {
-    return of(undefined);
   }
 }
 

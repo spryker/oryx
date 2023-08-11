@@ -17,7 +17,6 @@ export interface RouterService {
   setRoutes(routes: RouteConfig[]): void;
   getRoutes(): Observable<RouteConfig[] | undefined>;
   redirectNotFound(): Observable<void>;
-  getNotFound(): Observable<void>;
 }
 
 export const RouterService = 'oryx.RouterService';
