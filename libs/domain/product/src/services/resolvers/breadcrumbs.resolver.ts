@@ -11,20 +11,18 @@ export class ProductListBreadcrumbsResolver implements BreadcrumbsResolver {
   protected routerService = resolve(RouterService);
 
   resolve(): Observable<Breadcrumb[]> {
-    return this.routerService
-      .currentRouteWithParams()
-      .pipe(
-        map(({ query }) => [
-          {
-            i18n: query.q
-              ? {
-                  token: 'product.breadcrumbs.search-for-"<q>"',
-                  values: query as Record<string, string>,
-                }
-              : { token: 'product.breadcrumbs.search' },
-          },
-        ])
-      );
+    return this.routerService.currentRouteWithParams().pipe(
+      map(({ query }) => [
+        {
+          i18n: query.q
+            ? {
+                token: 'product.breadcrumbs.search-for-"<q>"',
+                values: query as Record<string, string>,
+              }
+            : { token: 'product.breadcrumbs.search' },
+        },
+      ])
+    );
   }
 }
 
