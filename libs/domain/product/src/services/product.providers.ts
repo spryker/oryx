@@ -1,45 +1,45 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
-  availabilityNormalizer,
   AvailabilityNormalizer,
+  CategoryIdNormalizer,
   ConcreteProductsNormalizer,
-  concreteProductsNormalizer,
   DefaultProductAdapter,
   DefaultProductMediaNormalizer,
-  facetCategoryNormalizer,
   FacetCategoryNormalizer,
   FacetNormalizer,
   FacetRangeNormalizer,
+  PriceNormalizer,
+  ProductAdapter,
+  ProductMediaSetNormalizer,
+  availabilityNormalizer,
+  categoryIdNormalizer,
+  concreteProductsNormalizer,
+  facetCategoryNormalizer,
   facetsNormalizer,
   facetsRangeNormalizer,
   mediaNormalizer,
   mediaSetNormalizer,
-  categoryIdNormalizer,
-  CategoryIdNormalizer,
-  PriceNormalizer,
   priceNormalizer,
-  ProductAdapter,
   productListNormalizer,
-  ProductMediaSetNormalizer,
   productNormalizer,
 } from './adapter';
 import {
-  productLabelNormalizer,
   ProductLabelsNormalizer,
+  productLabelNormalizer,
 } from './adapter/normalizers/labels/labels.normalizer';
 import {
-  paginationNormalizer,
   PaginationNormalizer,
+  paginationNormalizer,
 } from './adapter/normalizers/pagination';
 import { relationsListNormalizer } from './adapter/normalizers/relations-list';
-import { sortNormalizer, SortNormalizer } from './adapter/normalizers/sort';
+import { SortNormalizer, sortNormalizer } from './adapter/normalizers/sort';
 import { DefaultProductService } from './default-product.service';
 import { DefaultProductImageService } from './images';
 import { ProductImageService } from './images/product-image.service';
 import {
-  productMediaConfig,
   ProductMediaConfig,
+  productMediaConfig,
 } from './images/product-media.config';
 import {
   DefaultProductListAdapter,
@@ -57,6 +57,7 @@ import {
   ProductRelationsListAdapter,
   ProductRelationsListService,
 } from './related';
+import { ProductListBreadcrumbs } from './resolvers';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
 import { productEffects } from './state/effects';
@@ -161,4 +162,5 @@ export const productProviders: Provider[] = [
     provide: CategoryIdNormalizer,
     useValue: categoryIdNormalizer,
   },
+  ProductListBreadcrumbs,
 ];

@@ -2,18 +2,20 @@ import { ErrorHandler, HttpInterceptor, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { LocaleAdapter } from '@spryker-oryx/i18n';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
+import { BreadcrumbsService, DefaultBreadcrumbsService } from './breadcrumbs';
 import { CountryService, DefaultCountryService } from './country';
 import {
-  currencyHydration,
   CurrencyService,
   CurrentCurrencyInterceptor,
   DefaultCurrencyService,
+  currencyHydration,
 } from './currency';
 import { SiteErrorHandler } from './error-handling';
+import { DefaultLinkService, LinkService } from './link';
 import {
   AcceptLanguageInterceptor,
-  localeHydration,
   SapiLocaleAdapter,
+  localeHydration,
 } from './locale';
 import {
   DefaultNotificationService,
@@ -21,9 +23,7 @@ import {
 } from './notification';
 import { DefaultPricingService, PricingService } from './pricing';
 import { DefaultSalutationService, SalutationService } from './salutation';
-import { DefaultLinkService, LinkService } from './link';
 import { DefaultStoreService, StoreService } from './store';
-import { BreadcrumbsService, DefaultBreadcrumbsService } from './breadcrumbs';
 
 declare global {
   interface AppEnvironment {

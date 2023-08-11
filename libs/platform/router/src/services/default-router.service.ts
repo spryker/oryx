@@ -137,11 +137,15 @@ export class DefaultRouterService implements RouterService {
   }
 
   currentRouteWithParams(): Observable<RouteWithParams> {
-    return combineLatest([this.route$, this.params$, this.urlSearchParams$]).pipe(
+    return combineLatest([
+      this.route$,
+      this.params$,
+      this.urlSearchParams$,
+    ]).pipe(
       map(([route, params, query]) => ({
         ...route,
         params,
-        query
+        query,
       }))
     );
   }
@@ -149,7 +153,7 @@ export class DefaultRouterService implements RouterService {
   setCurrentRouteConfig(route: RouteConfig): void {
     this.route$.next(route);
   }
-  
+
   protected createUrlParams(params?: {
     [x: string]: string | string[] | undefined;
   }): string | undefined {

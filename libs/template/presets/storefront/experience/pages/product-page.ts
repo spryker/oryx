@@ -10,10 +10,6 @@ export const productPage: ExperienceComponent = {
   },
   components: [
     {
-      type: 'oryx-site-breadcrumbs',
-      id: 'breadcrumbs',
-    },
-    {
       type: 'oryx-composition',
       id: 'product-body',
       options: {
@@ -25,6 +21,17 @@ export const productPage: ExperienceComponent = {
         ],
       },
       components: [
+        {
+          type: 'oryx-site-breadcrumbs',
+          id: 'breadcrumbs',
+          options: {
+            rules: [
+              {
+                colSpan: 2,
+              },
+            ],
+          },
+        },
         {
           type: 'oryx-composition',
           id: 'product-preview',

@@ -13,7 +13,7 @@ export const siteBreadcrumbsStyles = css`
     --oryx-icon-size: 12px;
     --_margin: 0;
   }
-  
+
   :host > :not(oryx-icon) {
     text-decoration: none;
     color: var(--oryx-color-neutral-12);

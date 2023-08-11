@@ -12,19 +12,20 @@ import { DefaultFacetListService } from './default-facet-list.service';
 import { DefaultSortingService } from './default-sorting.service';
 import { FacetListService } from './facet-list.service';
 import {
+  CategoryBreadcrumbs,
   CategoryPageTitleMetaResolver,
   SearchPageTitleMetaResolver,
 } from './resolvers';
 import { ProductsExperienceDataRevealer } from './revealers';
 import { SortingService } from './sorting.service';
 import {
-  defaultSuggestionRenderer,
   DefaultSuggestionRendererService,
   DefaultSuggestionService,
-  productSuggestionRenderer,
   SuggestionRenderer,
   SuggestionRendererService,
   SuggestionService,
+  defaultSuggestionRenderer,
+  productSuggestionRenderer,
 } from './suggestion';
 
 export const searchProviders: Provider[] = [
@@ -65,6 +66,7 @@ export const searchProviders: Provider[] = [
       [SuggestionField.Products]: productSuggestionRenderer,
     },
   },
+  CategoryBreadcrumbs,
 ];
 
 export const searchPreviewProviders: Provider[] = [

@@ -1,2 +1,2 @@
-export * from './default-breadcrumbs.service';
 export * from './breadcrumbs.service';
+export * from './default-breadcrumbs.service';

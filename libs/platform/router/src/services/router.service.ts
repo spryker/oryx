@@ -65,6 +65,6 @@ export interface RouteParams {
 export type QueryParamsHandling = 'merge' | '';
 
 export type RouteWithParams = RouteConfig & {
-  params: RouteParams,
-  query: RouteParams
-}
+  params: RouteParams;
+  query: RouteParams;
+};
