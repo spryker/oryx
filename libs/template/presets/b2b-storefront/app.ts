@@ -1,10 +1,9 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { provideExperienceData } from '@spryker-oryx/experience';
 import { storefrontFeatures } from '@spryker-oryx/presets/storefront';
-
 import { contactPage } from './experience/contact-page';
 
-export const StaticB2BExperienceFeature: AppFeature = {
+const StaticB2BExperienceFeature: AppFeature = {
   providers: [provideExperienceData([contactPage])],
 };
 

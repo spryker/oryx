@@ -1,20 +1,13 @@
-import { contactPage as storefrontContactPage } from '@spryker-oryx/presets/storefront';
-import { IconTypes } from '@spryker-oryx/ui/icon';
+import { ExperienceComponent } from "@spryker-oryx/experience";
 
-storefrontContactPage.components = [
-  {
-    type: 'oryx-content-link',
-    content: {
-      data: {
-        text: 'This is B2B Contact Page element. Remove me when the page is implemented',
-      },
-    },
-    options: {
-      type: 'rawUrl',
-      url: '/contact',
-      icon: IconTypes.Check,
+export const contactPage: ExperienceComponent = {
+  merge: {
+    selector: '#contact-page.oryx-content-link',
+    type: 'patch'
+  },
+  content: {
+    data: {
+      text: 'This is B2B Contact Page element. Remove me when the page is implemented',
     },
   },
-];
-
-export const contactPage = storefrontContactPage;
+};
