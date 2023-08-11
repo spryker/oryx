@@ -35,6 +35,11 @@ describe('Checkout suite', () => {
           .and('not.contain', 'Billing address')
           .and('not.contain', 'Delivery address');
 
+        thankYouPage.getOrderEntriesWrapper().should('be.visible');
+        thankYouPage.getOrderEntries().should('have.length.at.least', 1);
+
+        thankYouPage.getOrderTotals().getWrapper().should('not.exist');
+
         verifyThatCartWasCleared();
       });
     });
@@ -65,6 +70,17 @@ describe('Checkout suite', () => {
           .and('not.contain', 'Email')
           .and('contain', 'Billing address')
           .and('contain', 'Delivery address');
+
+        thankYouPage.getOrderEntriesWrapper().should('be.visible');
+        thankYouPage.getOrderEntries().should('have.length.at.least', 1);
+
+        thankYouPage.getOrderTotals().getWrapper().should('be.visible');
+        thankYouPage.getOrderTotals().checkTotals({
+          subTotal: '€106.80',
+          discountsTotal: '-€29.90',
+          taxTotal: '€13.06',
+          totalPrice: '€81.80',
+        });
 
         verifyThatCartWasCleared();
       });
