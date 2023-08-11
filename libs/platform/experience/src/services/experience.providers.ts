@@ -1,5 +1,7 @@
 import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { ExperienceAdapter } from './adapter';
+import { CmsExperienceAdapter } from './adapter/cms-experience.adapter';
 import {
   AppReadyExperienceDataRevealer,
   ColorModeExperienceDataRevealer,
@@ -59,6 +61,10 @@ export const experienceProviders: Provider[] = [
   {
     provide: ContentBackendUrl,
     useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),
+  },
+  {
+    provide: ExperienceAdapter,
+    useClass: CmsExperienceAdapter,
   },
   {
     provide: ExperienceService,

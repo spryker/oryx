@@ -1,4 +1,4 @@
-import { CompositionProperties } from '../../models';
+import { CompositionProperties } from './composition.model';
 
 export interface ComponentImage {
   src: string;

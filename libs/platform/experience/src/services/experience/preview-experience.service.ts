@@ -18,13 +18,13 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
+import { Component } from '../../models';
 import {
   ExperienceDataClientService,
   MessageType,
   postMessage,
 } from '../data-client';
 import { DefaultExperienceService } from './default-experience.service';
-import { Component } from './models';
 
 export const REQUEST_MESSAGE_TYPE = 'sf-preview-request';
 export const POST_MESSAGE_TYPE = 'experience-builder-preview';

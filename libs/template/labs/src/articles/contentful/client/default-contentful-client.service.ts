@@ -12,9 +12,9 @@ import {
 
 export class DefaultContentfulClientService implements ContentfulClientService {
   constructor(
+    protected locale = inject(LocaleService),
     protected contentfulToken = inject(ContentfulToken),
     protected contentfulSpace = inject(ContentfulSpace),
-    protected locale = inject(LocaleService),
     protected http = inject(HttpService)
   ) {}
 

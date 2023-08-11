@@ -10,10 +10,11 @@ import {
   throwError,
 } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Component } from '../../models';
+import { ExperienceAdapter } from '../adapter';
 import { ExperienceComponent, ExperienceDataService } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ComponentQualifier, ExperienceService } from './experience.service';
-import { Component } from './models';
 
 type DataStore<T = unknown> = Record<string, ReplaySubject<T>>;
 
@@ -27,7 +28,8 @@ export class DefaultExperienceService implements ExperienceService {
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
-    protected experienceDataService = inject(ExperienceDataService)
+    protected experienceDataService = inject(ExperienceDataService),
+    protected experienceAdapter = inject(ExperienceAdapter)
   ) {
     this.initExperienceData();
   }
@@ -94,6 +96,10 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected reloadComponent(uid: string): void {
+    this.reloadBackendComponent(uid);
+  }
+
+  private reloadBackendComponent(uid: string): void {
     const componentsUrl = `${
       this.contentBackendUrl
     }/components/${encodeURIComponent(uid)}`;
