@@ -6,6 +6,7 @@ import {
   Observable,
   combineLatestWith,
   switchMap,
+  tap,
   throwError,
 } from 'rxjs';
 import { PickingListEntity } from '../entities';
@@ -104,8 +105,10 @@ export class PickingSyncActionHandlerService
         await store.bulkPut(pickingLists, {
           allKeys: true,
         });
-
-        this.syncing$.next(false);
+      }),
+      tap({
+        next: () => this.syncing$.next(false),
+        error: () => this.syncing$.next(false),
       })
     );
   }
