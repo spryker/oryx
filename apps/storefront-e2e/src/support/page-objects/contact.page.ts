@@ -7,5 +7,10 @@ export class ContactPage extends AbstractSFPage {
     this.getHeading().should('be.visible');
   }
 
-  getHeading = () => cy.contains('This is Contact Page element.');
+  getHeading = () =>
+    cy.contains(
+      cy.isB2B()
+        ? 'This is B2B Contact Page element.'
+        : 'This is Contact Page element.'
+    );
 }

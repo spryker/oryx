@@ -1,9 +1,9 @@
-import { ExperienceComponent } from "@spryker-oryx/experience";
+import { ExperienceComponent } from '@spryker-oryx/experience';
 
 export const contactPage: ExperienceComponent = {
   merge: {
     selector: '#contact-page.oryx-content-link',
-    type: 'patch'
+    type: 'patch',
   },
   content: {
     data: {

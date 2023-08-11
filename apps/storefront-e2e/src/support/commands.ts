@@ -10,6 +10,7 @@ declare global {
     interface Chainable {
       hydrateElemenet(assetPath: string, triggerHydrationFn): Chainable<void>;
       checkCurrencyFormatting(locale: string): void;
+      isB2B(): boolean;
     }
   }
 }
@@ -41,6 +42,8 @@ Cypress.Commands.add(
     }
   }
 );
+
+Cypress.Commands.add('isB2B', () => Cypress.env('IS_B2B'));
 
 function checkCurrencyFormatting(
   subject,
