@@ -1,5 +1,5 @@
 import { AppRef } from '@spryker-oryx/core';
-import { INJECTOR, resolve } from '@spryker-oryx/di';
+import { resolve } from '@spryker-oryx/di';
 import {
   FallbackType,
   PickingListService,
@@ -39,7 +39,6 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
 
   protected searchValue$ = new Subject<string>();
 
-  protected injector = resolve(INJECTOR);
   protected injectorDataPlugin =
     resolve(AppRef).requirePlugin(OfflineDataPlugin);
 
@@ -145,10 +144,10 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
     return html` <div class="filters">
       ${when(
         this.$syncing(),
-        () => html`<span class="sync"
-          ><span>${i18n('picking.loading-data')}</span>
-          <oryx-spinner></oryx-spinner
-        ></span>`,
+        () => html`<span class="sync">
+          <span>${i18n('picking.loading-data')}</span>
+          <oryx-spinner></oryx-spinner>
+        </span>`,
         () =>
           html`<span
             >${this.i18n('picking.filter.<count>-open-pick-lists', {
