@@ -13,6 +13,7 @@ import { RouteConfig } from '../../lit/lit-router';
 import {
   NavigationExtras,
   RouteParams,
+  RouteWithParams,
   RouterEvent,
   RouterEventType,
   RouterService,
@@ -30,6 +31,7 @@ export class DefaultRouterService implements RouterService {
   private routerEvents$ = new Subject<RouterEvent>();
   private storedRoute$ = new BehaviorSubject('');
 
+  protected route$ = new ReplaySubject<RouteConfig>(1);
   protected routes$ = new ReplaySubject<RouteConfig[]>(1);
   protected storageService = inject(StorageService);
 
@@ -134,6 +136,20 @@ export class DefaultRouterService implements RouterService {
     return this.routes$.asObservable();
   }
 
+  currentRouteWithParams(): Observable<RouteWithParams> {
+    return combineLatest([this.route$, this.params$, this.urlSearchParams$]).pipe(
+      map(([route, params, query]) => ({
+        ...route,
+        params,
+        query
+      }))
+    );
+  }
+
+  setCurrentRouteConfig(route: RouteConfig): void {
+    this.route$.next(route);
+  }
+  
   protected createUrlParams(params?: {
     [x: string]: string | string[] | undefined;
   }): string | undefined {

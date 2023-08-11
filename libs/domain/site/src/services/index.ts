@@ -1,4 +1,5 @@
 export * from './adapter';
+export * from './breadcrumbs';
 export * from './country';
 export * from './currency';
 export * from './error-handling';

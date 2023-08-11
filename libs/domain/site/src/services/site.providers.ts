@@ -23,6 +23,7 @@ import { DefaultPricingService, PricingService } from './pricing';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultLinkService, LinkService } from './link';
 import { DefaultStoreService, StoreService } from './store';
+import { BreadcrumbsService, DefaultBreadcrumbsService } from './breadcrumbs';
 
 declare global {
   interface AppEnvironment {
@@ -39,6 +40,10 @@ export const siteProviders: Provider[] = [
   {
     provide: 'STORE',
     useFactory: () => injectEnv('STORE', ''),
+  },
+  {
+    provide: BreadcrumbsService,
+    useClass: DefaultBreadcrumbsService,
   },
   {
     provide: LinkService,

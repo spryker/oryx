@@ -299,6 +299,7 @@ export class LitRouter implements ReactiveController {
       this._currentParams = { 0: tailGroup };
     } else {
       const route = this._getRoute(pathname);
+
       if (route === undefined) {
         throw new Error(`No route found for ${pathname}`);
       }
@@ -370,6 +371,8 @@ export class LitRouter implements ReactiveController {
         tailGroup === undefined
           ? pathname
           : pathname.substring(0, pathname.length - tailGroup.length);
+
+      this.routerService.setCurrentRouteConfig(route);
     }
 
     // Propagate the tail match to children
