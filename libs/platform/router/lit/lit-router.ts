@@ -365,11 +365,7 @@ export class LitRouter implements ReactiveController {
           : enterFn);
 
         if (typeof result === 'string') {
-          if (result === RouteType.NotFound) {
-            this._goto(result);
-          } else {
-            this.routerService.navigate(result);
-          }
+          this.routerService.navigate(result);
 
           return;
         }
