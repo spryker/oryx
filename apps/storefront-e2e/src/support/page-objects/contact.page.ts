@@ -1,3 +1,4 @@
+import { isB2B } from '../index';
 import { AbstractSFPage } from './abstract.page';
 
 export class ContactPage extends AbstractSFPage {
@@ -9,7 +10,7 @@ export class ContactPage extends AbstractSFPage {
 
   getHeading = () =>
     cy.contains(
-      cy.isB2B()
+      isB2B()
         ? 'This is B2B Contact Page element.'
         : 'This is Contact Page element.'
     );

@@ -75,6 +75,7 @@
           "record": true,
           "parallel": true,
           "tag": "only-b2b",
+          "group": "sf-b2b",
           "env": {
             "grepTags": "b2b"
           }
