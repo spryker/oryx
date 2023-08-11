@@ -31,7 +31,6 @@ export class DefaultRouterService implements RouterService {
   );
   private routerEvents$ = new Subject<RouterEvent>();
   private storedRoute$ = new BehaviorSubject('');
-  private notFound$ = new ReplaySubject<void>(1);
 
   protected routes$ = new ReplaySubject<RouteConfig[]>(1);
   protected storageService = inject(StorageService);
