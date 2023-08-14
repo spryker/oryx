@@ -4,24 +4,29 @@ import { LocaleAdapter } from '@spryker-oryx/i18n';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
 import { CountryService, DefaultCountryService } from './country';
 import {
-  currencyHydration,
   CurrencyService,
   CurrentCurrencyInterceptor,
   DefaultCurrencyService,
+  currencyHydration,
 } from './currency';
 import { SiteErrorHandler } from './error-handling';
+import { DefaultLinkService, LinkService } from './link';
 import {
   AcceptLanguageInterceptor,
-  localeHydration,
   SapiLocaleAdapter,
+  localeHydration,
 } from './locale';
 import {
   DefaultNotificationService,
   NotificationService,
 } from './notification';
+import {
+  DefaultPriceModeService,
+  PriceModeInterceptor,
+  PriceModeService,
+} from './price-mode';
 import { DefaultPricingService, PricingService } from './pricing';
 import { DefaultSalutationService, SalutationService } from './salutation';
-import { DefaultLinkService, LinkService } from './link';
 import { DefaultStoreService, StoreService } from './store';
 
 declare global {
@@ -39,6 +44,10 @@ export const siteProviders: Provider[] = [
   {
     provide: 'STORE',
     useFactory: () => injectEnv('STORE', ''),
+  },
+  {
+    provide: 'SCOS_PRICE_MODE',
+    useFactory: () => injectEnv('SCOS_PRICE_MODE', ''),
   },
   {
     provide: LinkService,
@@ -60,6 +69,10 @@ export const siteProviders: Provider[] = [
   {
     provide: CurrencyService,
     useClass: DefaultCurrencyService,
+  },
+  {
+    provide: PriceModeService,
+    useClass: DefaultPriceModeService,
   },
   {
     provide: LocaleAdapter,
@@ -89,6 +102,10 @@ export const siteProviders: Provider[] = [
   {
     provide: HttpInterceptor,
     useClass: CurrentCurrencyInterceptor,
+  },
+  {
+    provide: HttpInterceptor,
+    useClass: PriceModeInterceptor,
   },
   localeHydration,
   currencyHydration,
