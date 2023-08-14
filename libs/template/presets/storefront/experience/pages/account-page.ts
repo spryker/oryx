@@ -31,6 +31,15 @@ export const accountPage: ExperienceComponent = {
               text: 'This page is not implemented yet',
             },
           },
+          options: {
+            rules: [{ hideByRule: 'ACCOUNT.IS_VALID_TAB' }],
+          },
+        },
+        {
+          type: 'oryx-user-overview',
+          options: {
+            rules: [{ hideByRule: 'ACCOUNT.!IS_VALID_TAB' }],
+          },
         },
       ],
       options: {

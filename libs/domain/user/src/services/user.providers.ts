@@ -17,7 +17,7 @@ import { AddressService } from './address.service';
 import { DefaultAddressFormService } from './default-address-form.service';
 import { DefaultAddressService } from './default-address.service';
 import { DefaultUserService } from './default-user.service';
-import { UserResourceResolver } from './resolver';
+import { AccountResourceResolver, UserResourceResolver } from './resolver';
 import { AddressStateService, DefaultAddressStateService } from './state';
 import { UserService } from './user.service';
 
@@ -56,4 +56,5 @@ export const userProviders: Provider[] = [
   ...userNormalizer,
   AccountContextFallback,
   UserResourceResolver,
+  AccountResourceResolver,
 ];

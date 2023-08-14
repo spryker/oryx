@@ -351,6 +351,7 @@
         "libs/domain/user/contact-form/index.ts"
       ],
       "@spryker-oryx/user/mocks": ["libs/domain/user/src/mocks/index.ts"],
+      "@spryker-oryx/user/overview": ["libs/domain/user/overview/index.ts"],
       "@spryker-oryx/utilities": ["libs/base/utilities/src/index.ts"],
       "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"],
       "@spryker-oryx/utilities/window-stub": [
