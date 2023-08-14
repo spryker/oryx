@@ -15,7 +15,6 @@ export class StoryblokAdapter implements ContentAdapter {
   }
 
   getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
-    console.log(qualifier, 'qualifier');
     if (qualifier.type !== StoryblokContentFields.Faq) {
       return of(null);
     }
