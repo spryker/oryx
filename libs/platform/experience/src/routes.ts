@@ -6,7 +6,7 @@ import { html, TemplateResult } from 'lit';
 import { map, take } from 'rxjs';
 import 'urlpattern-polyfill';
 
-export const defaultExperienceRoutes: RouteConfig[] = [
+export const defaultExperienceLatestRoutes: RouteConfig[] = [
   {
     pattern: new URLPattern({ pathname: '/{index.html}?' }),
   },
@@ -31,5 +31,17 @@ export const defaultExperienceRoutes: RouteConfig[] = [
     render: (): TemplateResult =>
       html`<oryx-heading><h1>Error 404</h1></oryx-heading>
         <p>Page not found</p>`,
+  },
+];
+
+export const defaultExperienceRoutes: RouteConfig[] = [
+  ...defaultExperienceLatestRoutes,
+  {
+    path: '/product/:sku',
+    type: RouteType.Product,
+  },
+  {
+    path: '/category/:id',
+    type: RouteType.Category,
   },
 ];
