@@ -1,3 +1,4 @@
+export * from './account-page';
 export * from './cart-page';
 export * from './category-page';
 export * from './checkout-page';

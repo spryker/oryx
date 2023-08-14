@@ -85,4 +85,5 @@ export enum IconTypes {
   Title = 'title',
   Card = 'view_carousel',
   Input = 'input',
+  OrdersHistory = 'orders_history',
 }

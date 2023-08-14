@@ -1,3 +1,4 @@
+export * from '../account-menu/account-menu.def';
 export * from '../address-add-button/address-add-button.def';
 export * from '../address-edit-button/address-edit-button.def';
 export * from '../address-edit/address-edit.def';

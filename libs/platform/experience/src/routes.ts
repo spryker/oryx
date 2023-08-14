@@ -36,6 +36,10 @@ export const defaultExperienceRoutes: RouteConfig[] = [
     type: RouteType.Category,
   },
   {
+    path: '/account/:tab',
+    type: RouteType.Account,
+  },
+  {
     path: '/:page',
     type: RouteType.Page,
   },

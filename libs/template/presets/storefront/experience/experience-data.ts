@@ -3,6 +3,7 @@ import { provideExperienceData } from '@spryker-oryx/experience';
 import { FooterTemplate } from './footer';
 import { HeaderTemplate } from './header';
 import {
+  accountPage,
   addressBookPage,
   cartPage,
   categoryPage,
@@ -29,6 +30,7 @@ export const StaticExperienceFeature: AppFeature = {
       homePage,
       loginPage,
       orderConfirmationPage,
+      accountPage,
       productPage,
       searchPage,
       addressBookPage,

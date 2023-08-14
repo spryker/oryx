@@ -18,5 +18,7 @@ export const storefrontIcons: IconMapper = {
       import('./icons/products').then((s) => s.default),
     [IconTypes.Front]: () => import('./icons/front').then((s) => s.default),
     [IconTypes.Reset]: () => import('./icons/reset').then((s) => s.default),
+    [IconTypes.OrdersHistory]: () =>
+      import('./icons/orders-history').then((s) => s.default),
   },
 };

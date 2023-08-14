@@ -38,6 +38,7 @@ export const enum RouteType {
   Checkout = 'checkout',
   CheckoutLogin = 'checkoutLogin',
   Order = 'order',
+  Account = 'account',
   Cart = 'cart',
   Login = 'login',
   AddressList = 'address-list',

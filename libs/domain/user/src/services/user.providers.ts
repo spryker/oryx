@@ -1,4 +1,5 @@
 import { Provider } from '@spryker-oryx/di';
+import { AccountContextFallback } from './account-context';
 import {
   AddressAdapter,
   addressesNormalizer,
@@ -53,5 +54,6 @@ export const userProviders: Provider[] = [
   ...addressNormalizer,
   ...addressSerializers,
   ...userNormalizer,
+  AccountContextFallback,
   UserResourceResolver,
 ];
