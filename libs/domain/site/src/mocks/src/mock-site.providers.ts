@@ -21,8 +21,10 @@ import {
   LinkService,
   SiteErrorHandler,
   StoreService,
+  BreadcrumbsService,
 } from '@spryker-oryx/site';
 import { MockStoreService } from './mock-store.service';
+import { MockBreadcrumbsService } from './mock-breadcrumbs.service';
 
 export const mockSiteProviders: Provider[] = [
   {
@@ -72,5 +74,9 @@ export const mockSiteProviders: Provider[] = [
   {
     provide: ErrorHandler,
     useClass: SiteErrorHandler,
+  },
+  {
+    provide: BreadcrumbsService,
+    useClass: MockBreadcrumbsService,
   },
 ];

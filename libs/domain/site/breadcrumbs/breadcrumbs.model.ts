@@ -2,11 +2,11 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 
 export interface SiteBreadcrumbsOptions {
   /**
-   * Type of the icon for the divider. Accepts `null` to hide the divider
+   * Type of the icon for the divider.
    *
    * @default `IconTypes.Front`
    */
-  dividerIcon?: IconTypes | null;
+  dividerIcon?: IconTypes;
 
   /**
    * Render a divider between navigation links
