@@ -25,6 +25,7 @@ import {
   PriceModeInterceptor,
   PriceModeService,
 } from './price-mode';
+import { priceModeHydration } from './price-mode/price-mode-hydration';
 import { DefaultPricingService, PricingService } from './pricing';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultStoreService, StoreService } from './store';
@@ -109,6 +110,7 @@ export const siteProviders: Provider[] = [
   },
   localeHydration,
   currencyHydration,
+  priceModeHydration,
   // TODO: uncomment when CORs header issue is fixed
   // {
   //   provide: HttpInterceptor,
