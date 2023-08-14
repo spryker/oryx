@@ -11,7 +11,6 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { DirectiveResult } from 'lit/directive';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { SiteBreadcrumbsOptions } from './breadcrumbs.model';
 import { siteBreadcrumbsStyles } from './breadcrumbs.styles';
@@ -28,19 +27,14 @@ export class SiteBreadcrumbsComponent extends I18nMixin(
 
   protected $breadcrumbs = signal(this.breadcrumbsService.get());
 
-  protected override render(): TemplateResult | void {
+  protected override render(): TemplateResult[] {
     const breadcrumbs = this.$breadcrumbs();
-    if (!breadcrumbs?.length) return;
 
-    return html`${repeat(
-      breadcrumbs,
-      (b) => b.url ?? b.text ?? b.i18n?.token,
-      (b, index) => {
-        const isLastItem = index + 1 === breadcrumbs.length;
-        return html`${this.renderBreadcrumb(b)}
-        ${when(!isLastItem, () => this.renderDivider())}`;
-      }
-    )}`;
+    return breadcrumbs.map((b, index) => {
+      const isLastItem = index + 1 === breadcrumbs.length;
+      return html`${this.renderBreadcrumb(b)}
+      ${when(!isLastItem, () => this.renderDivider())}`;
+    })
   }
 
   protected renderText({
