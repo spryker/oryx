@@ -322,6 +322,9 @@
       "@spryker-oryx/ui/utilities": ["libs/base/ui/form/utilities/index.ts"],
       "@spryker-oryx/ui/video": ["libs/base/ui/graphical/video/index.ts"],
       "@spryker-oryx/user": ["libs/domain/user/src/index.ts"],
+      "@spryker-oryx/user/account-link": [
+        "libs/domain/user/account-link/index.ts"
+      ],
       "@spryker-oryx/user/address": ["libs/domain/user/address/index.ts"],
       "@spryker-oryx/user/address-add-button": [
         "libs/domain/user/address-add-button/index.ts"

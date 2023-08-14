@@ -105,7 +105,10 @@ export const HeaderTemplate: ExperienceComponent = {
                 icon: IconTypes.User,
                 rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
               },
-              components: [{ type: 'oryx-auth-login-link' }],
+              components: [
+                { type: 'oryx-user-account-link' },
+                { type: 'oryx-auth-login-link' },
+              ],
             },
             {
               type: 'oryx-site-navigation-item',
