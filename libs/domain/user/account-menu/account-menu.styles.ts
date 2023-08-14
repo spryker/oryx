@@ -9,11 +9,13 @@ export const styles = css`
 
   oryx-button {
     --_height: 42px;
+
     border-block-end: 4px solid;
   }
 
   oryx-button:not(.active) {
     --_text-color: var(--oryx-color-neutral-12);
+
     border-color: transparent;
   }
 `;
