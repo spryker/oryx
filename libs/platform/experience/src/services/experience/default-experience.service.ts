@@ -29,7 +29,7 @@ export class DefaultExperienceService implements ExperienceService {
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
     protected experienceDataService = inject(ExperienceDataService),
-    protected experienceAdapter = inject(ExperienceAdapter)
+    protected experienceAdapter = inject(ExperienceAdapter, null)
   ) {
     this.initExperienceData();
   }
@@ -46,6 +46,11 @@ export class DefaultExperienceService implements ExperienceService {
     const components = [_component];
 
     for (const component of components) {
+      if (!component) {
+        continue;
+      }
+
+      component.id ??= this.experienceDataService.getAutoId();
       this.processData(component);
       components.push(...(component.components ?? []));
     }
@@ -96,10 +101,6 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected reloadComponent(uid: string): void {
-    this.reloadBackendComponent(uid);
-  }
-
-  private reloadBackendComponent(uid: string): void {
     const componentsUrl = `${
       this.contentBackendUrl
     }/components/${encodeURIComponent(uid)}`;
@@ -136,21 +137,19 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected reloadComponentByRoute(route: string): void {
+    /**
+     * @deprecated Since version 1.2. Use provided `ExperienceAdapter.get` method.
+     */
     const componentsUrl = `${
       this.contentBackendUrl
     }/components/?meta.route=${encodeURIComponent(route)}`;
-    this.http
-      .get<Component[]>(componentsUrl)
-      .pipe(
-        tap((components) => {
-          // TODO: why only first one
-          if (!components?.length) {
-            return;
-          }
-          const component = components[0];
-          this.processComponent(component);
-        })
-      )
+
+    const adapter = this.experienceAdapter
+      ? this.experienceAdapter.get({ id: route })
+      : this.http.get<Component>(componentsUrl);
+
+    adapter
+      .pipe(tap((page: Component) => this.processComponent(page)))
       .subscribe();
   }
 

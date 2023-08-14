@@ -243,7 +243,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     }
   }
 
-  protected getAutoId(): string {
+  getAutoId(): string {
     return `hash${this.autoComponentId++}`;
   }
 }

@@ -1,6 +1,7 @@
 import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { ExperienceAdapter } from './adapter';
+import { CmsToken } from '../models';
+import { ExperienceAdapter, productNormalizer } from './adapter';
 import { CmsExperienceAdapter } from './adapter/cms-experience.adapter';
 import {
   AppReadyExperienceDataRevealer,
@@ -63,6 +64,10 @@ export const experienceProviders: Provider[] = [
     useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),
   },
   {
+    provide: CmsToken,
+    useFactory: () => injectEnv('ORYX_CMS_TOKEN', ''),
+  },
+  {
     provide: ExperienceAdapter,
     useClass: CmsExperienceAdapter,
   },
@@ -83,6 +88,7 @@ export const experienceProviders: Provider[] = [
     useClass: DefaultExperienceDataService,
   },
   ...layoutProviders,
+  ...productNormalizer,
 ];
 
 export const experiencePreviewProviders: Provider[] = [

@@ -1,5 +1,13 @@
 import { CompositionProperties } from './composition.model';
 
+export const CmsToken = 'oryx.ContentfulSpace';
+
+declare global {
+  interface Environment {
+    readonly ORYX_CMS_TOKEN?: string;
+  }
+}
+
 export interface ComponentImage {
   src: string;
   alt?: string;
@@ -29,4 +37,10 @@ export interface Component<
   content?: {
     data: Content;
   };
+}
+
+declare global {
+  interface InjectionTokensContractMap {
+    [CmsToken]: string;
+  }
 }

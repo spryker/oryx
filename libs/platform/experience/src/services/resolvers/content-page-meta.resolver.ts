@@ -1,27 +1,44 @@
 import { ElementResolver, PageMetaResolver } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { Observable, combineLatest, map } from 'rxjs';
-import { ExperienceComponent, ExperienceDataService } from '../experience';
+import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
+import {
+  ExperienceComponent,
+  ExperienceDataService,
+  ExperienceService,
+} from '../experience';
 
 export class ContentPageMetaResolver implements PageMetaResolver {
   constructor(
     protected router = inject(RouterService),
-    protected experienceDataService = inject(ExperienceDataService)
+    protected experienceDataService = inject(ExperienceDataService),
+    protected experienceService = inject(ExperienceService)
   ) {}
 
   protected experienceData = this.experienceDataService.getData();
+  protected getMeta$ = this.router.currentRoute().pipe(
+    switchMap((route) => {
+      const staticMeta = this.getStaticMeta(route);
+
+      if (staticMeta) {
+        return of(staticMeta);
+      }
+
+      return (
+        this.experienceService
+          .getComponent({ route })
+          .pipe(map((page) => page.meta)) ?? null
+      );
+    })
+  );
 
   getScore(): Observable<unknown[]> {
-    return combineLatest([
-      this.router.currentRoute().pipe(map((route) => this.getData(route))),
-    ]);
+    return combineLatest([this.getMeta$]);
   }
 
   resolve(): Observable<ElementResolver> {
-    return this.router.currentRoute().pipe(
-      map((route) => {
-        const defaultMeta = this.getData(route);
+    return this.getMeta$.pipe(
+      map((defaultMeta) => {
         const meta = {
           ...defaultMeta,
         };
@@ -51,7 +68,9 @@ export class ContentPageMetaResolver implements PageMetaResolver {
     );
   }
 
-  protected getData(route: string): ExperienceComponent['meta'] | undefined {
+  protected getStaticMeta(
+    route: string
+  ): ExperienceComponent['meta'] | undefined {
     const routePath = route.split('/').filter(Boolean)[0];
 
     return this.experienceData.find((data) => {

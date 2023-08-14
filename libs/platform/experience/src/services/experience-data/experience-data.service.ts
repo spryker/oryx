@@ -47,6 +47,7 @@ export type ExperienceComponent = Partial<Omit<Component, 'components'>> & {
 
 export interface ExperienceDataService {
   getData(cb?: (c: ExperienceComponent) => void): ExperienceComponent[];
+  getAutoId(): string;
 }
 
 export function provideExperienceData(
