@@ -4,11 +4,13 @@ import { RouterService } from '@spryker-oryx/router';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
+  Observable,
   catchError,
+  combineLatest,
   distinctUntilChanged,
+  filter,
   from,
   map,
-  Observable,
   of,
   shareReplay,
   switchMap,
@@ -30,8 +32,10 @@ export class OauthService implements AuthService, AuthTokenService {
   protected static readonly STATE_KEY = 'oryx.oauth-state';
 
   protected state$ = new BehaviorSubject<OauthServiceState>({});
+  protected ready$ = new BehaviorSubject<boolean>(false);
 
-  protected oauthToken$ = this.state$.pipe(
+  protected oauthToken$ = combineLatest([this.state$, this.ready$]).pipe(
+    filter(([state, ready]) => ready),
     switchMap(() =>
       this.getCurrentProvider().pipe(
         switchMap((provider) => provider.getToken())
@@ -68,7 +72,14 @@ export class OauthService implements AuthService, AuthTokenService {
     protected readonly routerService = inject(RouterService),
     protected readonly storageService = inject(StorageService)
   ) {
-    this.restoreState();
+    // We won't get correct values for isAuthenticated if we don't wait for restoreState to complete first
+    this.initState()
+      .pipe(
+        tap(() => {
+          this.ready$.next(true);
+        })
+      )
+      .subscribe();
   }
 
   login(): Observable<void> {
@@ -192,11 +203,20 @@ export class OauthService implements AuthService, AuthTokenService {
     return this.state$;
   }
 
-  protected restoreState(): void {
-    this.storageService
+  protected initState(): Observable<OauthServiceState | null> {
+    return this.storageService
       .get<OauthServiceState>(OauthService.STATE_KEY)
-      .pipe(distinctUntilChanged())
-      .subscribe((state) => this.state$.next({ ...state }));
+      .pipe(
+        distinctUntilChanged(),
+        map((state) => {
+          this.state$.next({ ...state });
+          return state;
+        })
+      );
+  }
+
+  protected restoreState(): void {
+    this.initState().subscribe();
   }
 
   protected updateState(providerId?: string): Observable<void> {
