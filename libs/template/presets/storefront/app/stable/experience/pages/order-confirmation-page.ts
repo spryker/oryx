@@ -20,6 +20,9 @@ export const orderConfirmationPage: ExperienceComponent = {
         },
         {
           type: 'oryx-order-totals',
+          options: {
+            rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
+          },
           components: [
             { type: 'oryx-cart-totals-subtotal' },
             { type: 'oryx-cart-totals-discount' },
