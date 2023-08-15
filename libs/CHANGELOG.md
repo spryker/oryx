@@ -8,6 +8,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
+
+
 *  hydration issues ([#211](https://github.com/spryker/oryx/issues/211)) ([64b9426](https://github.com/spryker/oryx/commit/64b94261bd394371210968fde748e964a349b00b))
 * *** test environment work ([#855](https://github.com/spryker/oryx/issues/855)) ([9e1f0ee](https://github.com/spryker/oryx/commit/9e1f0ee8cedb8537392c10ccea7f30b790741f58))
 * 3534 update disabled arrow color ([#910](https://github.com/spryker/oryx/issues/910)) ([7e7017c](https://github.com/spryker/oryx/commit/7e7017c3360d8eb9e77c67a8b56e396a7a51caf4))
