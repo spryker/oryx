@@ -14,6 +14,7 @@ const mockRouterService = {
   acceptParams: vi.fn(),
   go: vi.fn(),
   setRoutes: vi.fn(),
+  setCurrentRouteConfig: vi.fn(),
 };
 
 const awaiterResolver = vi.fn();
@@ -168,12 +169,19 @@ describe('DefaultRouterService', () => {
     });
 
     describe('and goto is used', () => {
-      it('should call RouterService.go with proper params', async () => {
+      beforeEach(async () => {
         globalThis.location.search = '?q=query';
         await router.goto('/b');
+      })
+
+      it('should call RouterService.go with proper params', () => {
         expect(mockRouterService.go).toHaveBeenCalledWith('/b', {
           queryParams: { q: 'query' },
         });
+      });
+
+      it('should call setCurrentRouteConfig', () => {
+        expect(mockRouterService.setCurrentRouteConfig).toHaveBeenCalled();
       });
     });
 

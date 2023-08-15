@@ -30,10 +30,10 @@ export class SiteBreadcrumbsComponent extends I18nMixin(
   protected override render(): TemplateResult[] {
     const breadcrumbs = this.$breadcrumbs();
 
-    return breadcrumbs.map((b, index) => {
+    return breadcrumbs?.map((b, index) => {
       const isLastItem = index + 1 === breadcrumbs.length;
       return html`${this.renderBreadcrumb(b)}
-      ${when(!isLastItem, () => this.renderDivider())}`;
+      ${when(this.$options().showDivider && !isLastItem, () => this.renderDivider())}`;
     });
   }
 
@@ -50,8 +50,7 @@ export class SiteBreadcrumbsComponent extends I18nMixin(
     </a>`;
   }
 
-  protected renderDivider(): TemplateResult | void {
-    if (!this.$options().showDivider) return;
+  protected renderDivider(): TemplateResult {
     return html`<oryx-icon .type="${this.$options().dividerIcon}"></oryx-icon>`;
   }
 }

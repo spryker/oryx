@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { Size } from '@spryker-oryx/utilities';
 
 export const categoryPage: ExperienceComponent = {
   id: 'category-page',
@@ -27,6 +28,7 @@ export const categoryPage: ExperienceComponent = {
           {
             colSpan: 2,
           },
+          { query: { breakpoint: Size.Sm }, hide: true }
         ],
       },
     },

@@ -1,4 +1,3 @@
-import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const siteBreadcrumbsStyles = css`
@@ -32,13 +31,3 @@ export const siteBreadcrumbsStyles = css`
     pointer-events: none;
   }
 `;
-
-const smallScreen = css`
-  :host {
-    display: none;
-  }
-`;
-
-export const screenStyles = screenCss({
-  sm: smallScreen,
-});

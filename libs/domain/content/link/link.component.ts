@@ -6,6 +6,7 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
+import { ButtonType } from '@spryker-oryx/ui/button';
 
 @hydrate()
 export class ContentLinkComponent extends ContentMixin<
@@ -25,7 +26,7 @@ export class ContentLinkComponent extends ContentMixin<
     const { button, icon, singleLine, color } = this.$options();
 
     if (button) {
-      return html`<oryx-button>${this.renderLink(true)}</oryx-button>`;
+      return html`<oryx-button .type=${ButtonType.Text}>${this.renderLink(true)}</oryx-button>`;
     }
 
     return html`<oryx-link

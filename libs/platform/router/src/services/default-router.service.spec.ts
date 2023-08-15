@@ -3,6 +3,11 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
 import { DefaultRouterService } from './default-router.service';
 import { RouterEventType, RouterService } from './router.service';
+import { RouteConfig } from '../../lit/lit-router';
+
+const routeConfig = {
+  name: 'test',
+} 
 
 class MockStorageService implements Partial<StorageService> {
   get = vi.fn();
@@ -227,4 +232,17 @@ describe('DefaultRouterService', () => {
       expect(url).toBe('/route');
     });
   });
+
+  describe('currentRouteWithParams', () => {
+    const callback = vi.fn();
+    beforeEach(() => {
+      service.setCurrentRouteConfig(routeConfig as RouteConfig);
+      service.acceptParams({});
+      service.currentRouteWithParams().subscribe(callback);
+    });
+
+    it('should return current route', () => {
+      expect(callback).toHaveBeenCalledWith(expect.objectContaining(routeConfig))
+    });
+  })
 });

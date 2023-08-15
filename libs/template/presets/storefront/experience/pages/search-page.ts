@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { Size } from '@spryker-oryx/utilities';
 
 export const searchPage: ExperienceComponent = {
   id: 'search-page',
@@ -25,6 +26,7 @@ export const searchPage: ExperienceComponent = {
           {
             colSpan: 2,
           },
+          { query: { breakpoint: Size.Sm }, hide: true }
         ],
       },
     },

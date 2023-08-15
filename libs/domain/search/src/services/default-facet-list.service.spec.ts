@@ -7,6 +7,11 @@ import { Observable, of } from 'rxjs';
 import { DefaultFacetListService } from './default-facet-list.service';
 import { FacetListService } from './facet-list.service';
 
+const facets = [
+  { name: 'mock', parameter: 'mock' },
+  { name: 'mock1', parameter: 'mock1' }
+];
+
 class MockProductListPageService implements Partial<ProductListPageService> {
   get = vi.fn().mockImplementation(() => of([]));
 }
@@ -58,21 +63,56 @@ describe('DefaultFacetListService', () => {
       service.get().subscribe();
       expect(pageListService.get).toHaveBeenCalled();
     });
+
+    describe('when product list does not contain facets', () => {
+      const callback = vi.fn();
+      beforeEach(() => {
+        pageListService.get = vi.fn().mockReturnValue(of({}));
+        service.get().subscribe(callback);
+      });
+  
+      it('should return empty array', () => {
+        expect(callback).toHaveBeenCalledWith([]);
+      });
+    });
   });
 
   describe('getFacet', () => {
     beforeEach(() => {
-      service.get = vi.fn().mockReturnValue(of([]));
+      service.get = vi.fn().mockReturnValue(of(facets));
     });
 
-    it('should return an observable', () => {
-      expect(service.getFacet({ name: 'mock' })).toBeInstanceOf(Observable);
+    describe('when qualifier contains `name`', () => {
+      const callback = vi.fn();
+      beforeEach(() => {
+        service.getFacet({ name: 'mock' }).subscribe(callback);
+      });
+  
+      it('should return facet that matches name', () => {
+        expect(callback).toHaveBeenCalledWith(facets[0]);
+      });
     });
 
-    it('should call mock product list page', () => {
-      service.getFacet({ name: 'mock' }).subscribe(vi.fn());
+    describe('when qualifier contains `parameter`', () => {
+      const callback = vi.fn();
+      beforeEach(() => {
+        service.getFacet({ parameter: 'mock1' }).subscribe(callback);
+      });
+  
+      it('should return facet that matches parameter', () => {
+        expect(callback).toHaveBeenCalledWith(facets[1]);
+      });
+    });
 
-      expect(service.get).toHaveBeenCalled();
+    describe('when facet with current qualifier is not found', () => {
+      const callback = vi.fn();
+      beforeEach(() => {
+        service.getFacet({ name: 'mock2' }).subscribe(callback);
+      });
+  
+      it('should return empty object', () => {
+        expect(callback).toHaveBeenCalledWith({});
+      });
     });
   });
 });

@@ -7,6 +7,7 @@ export * from './link';
 export * from './locale';
 export * from './notification';
 export * from './pricing';
+export * from './resolvers';
 export * from './salutation';
 export * from './site.providers';
 export * from './store';

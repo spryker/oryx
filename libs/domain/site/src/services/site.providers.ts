@@ -24,6 +24,7 @@ import {
 import { DefaultPricingService, PricingService } from './pricing';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultStoreService, StoreService } from './store';
+import { DefaultBreadcrumbs } from './resolvers';
 
 declare global {
   interface AppEnvironment {
@@ -97,6 +98,7 @@ export const siteProviders: Provider[] = [
   },
   localeHydration,
   currencyHydration,
+  DefaultBreadcrumbs
   // TODO: uncomment when CORs header issue is fixed
   // {
   //   provide: HttpInterceptor,
