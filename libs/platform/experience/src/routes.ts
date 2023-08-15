@@ -6,7 +6,7 @@ import { html, TemplateResult } from 'lit';
 import { map, take } from 'rxjs';
 import 'urlpattern-polyfill';
 
-export const defaultExperienceLatestRoutes: RouteConfig[] = [
+export const experienceRoutes: RouteConfig[] = [
   {
     pattern: new URLPattern({ pathname: '/{index.html}?' }),
   },
@@ -35,7 +35,20 @@ export const defaultExperienceLatestRoutes: RouteConfig[] = [
 ];
 
 export const defaultExperienceRoutes: RouteConfig[] = [
-  ...defaultExperienceLatestRoutes,
+  {
+    pattern: new URLPattern({ pathname: '/{index.html}?' }),
+  },
+  {
+    path: '/login',
+    type: RouteType.Login,
+    enter: () =>
+      resolve(TokenResolver)
+        .resolveToken('USER.AUTHENTICATED')
+        .pipe(
+          take(1),
+          map((state) => (state ? '/' : !state))
+        ),
+  },
   {
     path: '/product/:sku',
     type: RouteType.Product,
@@ -43,5 +56,16 @@ export const defaultExperienceRoutes: RouteConfig[] = [
   {
     path: '/category/:id',
     type: RouteType.Category,
+  },
+  {
+    path: '/:page',
+    type: RouteType.Page,
+  },
+  {
+    path: '/*',
+    type: RouteType.NotFound,
+    render: (): TemplateResult =>
+      html`<oryx-heading><h1>Error 404</h1></oryx-heading>
+        <p>Page not found</p>`,
   },
 ];
