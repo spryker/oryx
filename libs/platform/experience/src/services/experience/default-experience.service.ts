@@ -40,6 +40,9 @@ export class DefaultExperienceService implements ExperienceService {
     });
   }
 
+  /**
+   * @deprecated Since version 1.1. Use provided `ExperienceDataService.processComponent` method.
+   */
   protected processComponent(
     _component: Component | ExperienceComponent
   ): void {
@@ -50,7 +53,6 @@ export class DefaultExperienceService implements ExperienceService {
         continue;
       }
 
-      component.id ??= this.experienceDataService.getAutoId();
       this.processData(component);
       components.push(...(component.components ?? []));
     }
@@ -110,7 +112,9 @@ export class DefaultExperienceService implements ExperienceService {
       .pipe(
         tap((component) => {
           this.dataComponent[uid].next(component);
-          this.processComponent(component);
+          this.experienceDataService.processComponent(component, (c) =>
+            this.processData(c)
+          );
         }),
         catchError(() => {
           this.dataComponent[uid].next({ id: uid, type: '' });
@@ -138,7 +142,7 @@ export class DefaultExperienceService implements ExperienceService {
 
   protected reloadComponentByRoute(route: string): void {
     /**
-     * @deprecated Since version 1.2. Use provided `ExperienceAdapter.get` method.
+     * @deprecated Since version 1.1. Use provided `ExperienceAdapter.get` method.
      */
     const componentsUrl = `${
       this.contentBackendUrl
@@ -149,7 +153,13 @@ export class DefaultExperienceService implements ExperienceService {
       : this.http.get<Component>(componentsUrl);
 
     adapter
-      .pipe(tap((page: Component) => this.processComponent(page)))
+      .pipe(
+        tap((page: Component) =>
+          this.experienceDataService.processComponent(page, (c) =>
+            this.processData(c)
+          )
+        )
+      )
       .subscribe();
   }
 
