@@ -3,45 +3,59 @@ import {
   ContentAdapter,
   ContentQualifier,
 } from '@spryker-oryx/content';
-import { inject } from '@spryker-oryx/di';
-import { map, Observable, of } from 'rxjs';
-import { ContentfulClientService, ContentfulContentFields } from './client';
+import {
+  ApiExperienceCmsModel,
+  CmsExperienceAdapter,
+  ExperienceCms,
+} from '@spryker-oryx/experience';
+import { Observable, map, of } from 'rxjs';
+import { ContentfulContentFields } from './contentful.model';
 
-export class ContentfulAdapter implements ContentAdapter {
-  constructor(protected contentful = inject(ContentfulClientService)) {}
+declare module '@spryker-oryx/experience' {
+  interface ExperienceCms {
+    articles?: Content[];
+  }
+}
 
-  getKey(qualifier: ContentQualifier): string {
-    return qualifier.id ?? qualifier.type ?? '';
+export function cmsContentNormalizer(
+  data: ApiExperienceCmsModel.Model
+): ExperienceCms {
+  if (data.qualifier.type === ContentfulContentFields.Article) {
+    return {
+      articles: data.data.items.map((entry) => ({
+        id: entry.fields.id,
+        heading: entry.fields.heading,
+        description: entry.fields.description,
+        content: entry.fields.content,
+        url: `/${ContentfulContentFields.Article}/${encodeURIComponent(
+          entry.fields.id
+        )}`,
+      })),
+    };
   }
 
+  return {};
+}
+
+export class ContentfulContentAdapter
+  extends CmsExperienceAdapter<Content>
+  implements ContentAdapter
+{
   getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
     if (qualifier.type !== ContentfulContentFields.Article) {
       return of(null);
     }
 
-    return this.contentful
-      .getEntries({
-        content_type: qualifier.type,
-      })
-      .pipe(
-        map((entries) =>
-          entries.items.map((entry) => ({
-            id: entry.fields.id,
-            heading: entry.fields.heading,
-            description: entry.fields.description,
-            content: entry.fields.content,
-            url: `/${ContentfulContentFields.Article}/${encodeURIComponent(
-              entry.fields.id
-            )}`,
-          }))
-        )
-      );
+    return this.getCmsData(qualifier).pipe(
+      map((data) => data?.articles ?? null)
+    );
   }
 
-  get(qualifier: ContentQualifier): Observable<Content | null> {
-    return this.getAll(qualifier).pipe(
+  override get(qualifier: ContentQualifier): Observable<Content | null> {
+    return this.getAll({ id: qualifier.id, type: qualifier.type }).pipe(
       map(
-        (entries) => entries?.find((entry) => entry.id === qualifier.id) ?? null
+        (articles) =>
+          articles?.find((entry) => entry.id === qualifier.id) ?? null
       )
     );
   }

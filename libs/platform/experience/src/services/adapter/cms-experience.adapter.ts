@@ -1,46 +1,68 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Observable, map } from 'rxjs';
+import { LocaleService } from '@spryker-oryx/i18n';
+import { Observable, combineLatest, map, switchMap } from 'rxjs';
 import {
   ApiExperienceCmsModel,
   CmsToken,
   Component,
+  ExperienceCms,
   ExperienceQualifier,
 } from '../../models';
-import { ExperienceAdapter } from './experience.adapter';
+import { CmsAdapter } from './experience.adapter';
 import { CmsNormalizer } from './normalizers';
 
-export class CmsExperienceAdapter implements ExperienceAdapter {
+export class CmsExperienceAdapter<T = Component> implements CmsAdapter<T> {
   constructor(
+    protected locale = inject(LocaleService),
     protected cmsToken = inject(CmsToken),
     protected transformer = inject(JsonAPITransformerService),
     protected http = inject(HttpService)
   ) {}
 
-  protected url =
-    'https://cdn.contentful.com/spaces/eu6b2pc688zv/entries?content_type=page';
+  protected url = 'https://cdn.contentful.com/spaces/eu6b2pc688zv/entries?';
 
   getKey(qualifier: ExperienceQualifier): string {
-    return qualifier.id ?? '';
+    return qualifier.id ?? qualifier.query ?? 'page';
   }
 
-  getAll(): Observable<Component[] | null> {
-    return this.http
-      .get<ApiExperienceCmsModel.Response>(this.url, {
-        headers: { Authorization: `Bearer ${this.cmsToken}` },
-      })
-      .pipe(
-        map((data) => ({ data: { attributes: data } })),
-        this.transformer.do(CmsNormalizer)
-      );
-  }
+  getCmsData(qualifier: ExperienceQualifier): Observable<ExperienceCms | null> {
+    const params = Object.entries(qualifier).reduce((acc, [key, value]) => {
+      if (key === 'id') return acc;
 
-  get(qualifier: ExperienceQualifier): Observable<Component | null> {
-    return this.getAll().pipe(
-      map(
-        (pages) =>
-          pages?.find((page) => page.meta?.route === qualifier.id) ?? null
-      ) ?? null
+      const param = `${key === 'type' ? 'content_type' : key}=${value}`;
+
+      if (!acc.length) {
+        return param;
+      }
+
+      return `${acc}&${param}`;
+    }, '');
+
+    return combineLatest([this.locale.get(), this.locale.getAll()]).pipe(
+      switchMap(([locale, all]) => {
+        const name = all
+          .find((_locale) => _locale.code === locale)
+          ?.name.replace('_', '-');
+
+        return this.http.get<ApiExperienceCmsModel.Response>(
+          `${this.url}${params}&locale=${name}`,
+          {
+            headers: { Authorization: `Bearer ${this.cmsToken}` },
+          }
+        );
+      }),
+      map((data) => ({ data: { attributes: { data, qualifier } } })),
+      this.transformer.do(CmsNormalizer)
     );
+  }
+
+  get(qualifier: ExperienceQualifier): Observable<T | null> {
+    return this.getCmsData(qualifier).pipe(
+      map(
+        (data) =>
+          data?.pages?.find((page) => page.meta?.route === qualifier.id) ?? null
+      ) ?? null
+    ) as Observable<T | null>;
   }
 }

@@ -149,16 +149,18 @@ export class DefaultExperienceService implements ExperienceService {
     }/components/?meta.route=${encodeURIComponent(route)}`;
 
     const adapter = this.experienceAdapter
-      ? this.experienceAdapter.get({ id: route })
+      ? this.experienceAdapter.get({ id: route, type: 'page' })
       : this.http.get<Component>(componentsUrl);
 
     adapter
       .pipe(
-        tap((page: Component) =>
-          this.experienceDataService.processComponent(page, (c) =>
-            this.processData(c)
-          )
-        )
+        tap((page) => {
+          if (page) {
+            this.experienceDataService.processComponent(page, (c) =>
+              this.processData(c)
+            );
+          }
+        })
       )
       .subscribe();
   }

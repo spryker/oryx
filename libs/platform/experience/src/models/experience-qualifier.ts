@@ -1,3 +1,5 @@
 export interface ExperienceQualifier {
-  id: string;
+  id?: string;
+  type?: string;
+  query?: string;
 }

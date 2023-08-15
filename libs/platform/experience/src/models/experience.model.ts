@@ -39,6 +39,10 @@ export interface Component<
   };
 }
 
+export interface ExperienceCms {
+  pages?: Component[];
+}
+
 declare global {
   interface InjectionTokensContractMap {
     [CmsToken]: string;

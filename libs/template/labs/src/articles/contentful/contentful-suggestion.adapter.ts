@@ -1,15 +1,42 @@
 import { inject } from '@spryker-oryx/di';
 import {
+  ApiExperienceCmsModel,
+  ExperienceAdapter,
+  ExperienceCms,
+} from '@spryker-oryx/experience';
+import {
   Suggestion,
   SuggestionAdapter,
   SuggestionField,
   SuggestionQualifier,
 } from '@spryker-oryx/search';
-import { map, Observable, of } from 'rxjs';
-import { ContentfulClientService, ContentfulContentFields } from './client';
+import { Observable, map, of } from 'rxjs';
+import { ContentfulContentFields } from './contentful.model';
+
+declare module '@spryker-oryx/experience' {
+  interface ExperienceCms {
+    [SuggestionField.Contents]?: Suggestion[SuggestionField.Contents];
+  }
+}
+
+export function cmsSuggestionNormalizer(
+  data: ApiExperienceCmsModel.Model
+): ExperienceCms {
+  if (data.qualifier.query) {
+    return {
+      [SuggestionField.Contents]: data.data.items.map((entry) => ({
+        name: entry.fields.heading,
+        id: entry.fields.id,
+        type: ContentfulContentFields.Article,
+      })),
+    };
+  }
+
+  return {};
+}
 
 export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
-  constructor(protected contentful = inject(ContentfulClientService)) {}
+  constructor(protected experienceCmsAdapter = inject(ExperienceAdapter)) {}
 
   getKey({ query }: SuggestionQualifier): string {
     return query ?? '';
@@ -20,17 +47,13 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
       entities?.includes(SuggestionField.Contents) ||
       entities?.includes(ContentfulContentFields.Article)
     ) {
-      return this.contentful
-        .getEntries({
+      return this.experienceCmsAdapter
+        .getCmsData({
           query: this.getKey({ query }),
         })
         .pipe(
           map((data) => ({
-            [SuggestionField.Contents]: data.items.map((entry) => ({
-              name: entry.fields.heading,
-              id: entry.fields.id,
-              type: ContentfulContentFields.Article,
-            })),
+            [SuggestionField.Contents]: data?.[SuggestionField.Contents],
           }))
         );
     }

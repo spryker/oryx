@@ -18,10 +18,10 @@ export const articlesPage: ExperienceComponent = {
       type: 'oryx-search-box',
       options: {
         rules: [{ margin: 'auto', width: '580px' }],
-        [SuggestionField.Suggestions]: undefined,
-        [SuggestionField.Categories]: undefined,
-        [SuggestionField.Contents]: undefined,
-        [SuggestionField.Products]: undefined,
+        [SuggestionField.Suggestions]: null,
+        [SuggestionField.Categories]: null,
+        [SuggestionField.Contents]: null,
+        [SuggestionField.Products]: null,
         [ContentfulContentFields.Article]: {
           max: 8,
         },
@@ -46,7 +46,7 @@ export const articlePage: ExperienceComponent = {
   options: {
     rules: [{ layout: 'flex', padding: '30px 0' }],
   },
-  ccomponents: [
+  components: [
     {
       type: 'oryx-content-article',
       options: {
@@ -59,7 +59,7 @@ export const articlePage: ExperienceComponent = {
 export const faqsPage: ExperienceComponent = {
   type: 'Page',
   id: 'faqs',
-  meta: { title: 'FAQ`s Page', route: `/${StoryblokContentFields.Faq}` },
+  meta: { title: 'FAQs Page', route: `/${StoryblokContentFields.Faq}` },
   options: {
     rules: [{ layout: 'flex', padding: '30px 0' }],
   },
@@ -68,10 +68,10 @@ export const faqsPage: ExperienceComponent = {
       type: 'oryx-search-box',
       options: {
         rules: [{ margin: 'auto', width: '580px' }],
-        [SuggestionField.Suggestions]: undefined,
-        [SuggestionField.Categories]: undefined,
-        [SuggestionField.Contents]: undefined,
-        [SuggestionField.Products]: undefined,
+        [SuggestionField.Suggestions]: null,
+        [SuggestionField.Categories]: null,
+        [SuggestionField.Contents]: null,
+        [SuggestionField.Products]: null,
         [StoryblokContentFields.Faq]: {
           max: 8,
         },

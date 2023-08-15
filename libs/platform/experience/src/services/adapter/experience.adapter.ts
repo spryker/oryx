@@ -1,10 +1,20 @@
 import { Observable } from 'rxjs';
-import { Component, ExperienceQualifier } from '../../models';
+import { Component, ExperienceCms, ExperienceQualifier } from '../../models';
 
 export const ExperienceAdapter = 'oryx.ExperienceAdapter';
 
 export interface ExperienceAdapter {
   getKey(qualifier: ExperienceQualifier): string;
-  getAll(): Observable<Component[] | null>;
-  get(qualifier: ExperienceQualifier): Observable<Component | null>;
+  getCmsData(qualifier?: ExperienceQualifier): Observable<ExperienceCms | null>;
+  get(qualifier: ExperienceQualifier): Observable<unknown | null>;
+}
+
+export type CmsAdapter<T = Component> = ExperienceAdapter & {
+  get(qualifier: ExperienceQualifier): Observable<T | null>;
+};
+
+declare global {
+  interface InjectionTokensContractMap {
+    [ExperienceAdapter]: CmsAdapter;
+  }
 }
