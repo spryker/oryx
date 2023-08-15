@@ -132,7 +132,6 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
             composed: true,
           })
         );
-        this.routerService.navigate('/');
       });
   }
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.1 (2023-08-15)
+
+
+### Bug Fixes
+
+* **order:** order totals component visibility for logged-in users ([#702](https://github.com/spryker/oryx/issues/702)) ([00a914b](https://github.com/spryker/oryx/commit/00a914bc340ebdbbac95db8c07f0d86b0bbee8d4))
+  
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 

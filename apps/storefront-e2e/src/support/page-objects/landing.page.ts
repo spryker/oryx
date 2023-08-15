@@ -14,4 +14,8 @@ export class LandingPage extends AbstractSFPage {
       .find('oryx-product-price')
       .find('oryx-site-price')
       .shadow();
+
+  clickOnProductCart = (eq: number) => {
+    this.getProductCards().eq(eq).click();
+  };
 }

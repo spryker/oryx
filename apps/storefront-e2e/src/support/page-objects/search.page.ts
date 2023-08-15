@@ -1,11 +1,11 @@
-import { AbstractSFPage } from './abstract.page';
+import { SearchBoxFragment } from '../page-fragments/search-box.fragment';
 import { SearchParameters } from '../types/search.type';
-import { SearchFragment } from '../page-fragments/search.fragment';
+import { AbstractSFPage } from './abstract.page';
 
 export class SearchPage extends AbstractSFPage {
   url = '/search';
   queryParameter: string;
-  search = new SearchFragment();
+  searchbox = new SearchBoxFragment();
 
   constructor(searchData?: SearchParameters) {
     super();

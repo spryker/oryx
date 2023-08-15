@@ -29,5 +29,25 @@ export class CartEntryFragment {
       this.getWrapper().find('oryx-cart-quantity-input')
     );
 
-  remove = () => this.getRemoveBtn().click();
+  increaseEntry = () => {
+    this.getQuantityInput().increase();
+  };
+
+  decreaseEntry = () => {
+    this.getQuantityInput().decrease();
+  };
+
+  deleteEntry = () => this.getRemoveBtn().click();
+
+  changeQuantityInInput = (numberOfItems: number) => {
+    this.getQuantityInput()
+      .getInput()
+      .type(`{selectall}${numberOfItems}{enter}`);
+
+    // if numberOfItems === 0 - the modal should appear
+    // and we don't want to close it by clicking on body
+    if (numberOfItems !== 0) {
+      cy.get('body').click();
+    }
+  };
 }

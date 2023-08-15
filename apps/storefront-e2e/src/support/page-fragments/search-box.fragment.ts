@@ -1,4 +1,4 @@
-export class SearchFragment {
+export class SearchBoxFragment {
   getWrapper = () => cy.get('oryx-search-box');
 
   getPopover = () => this.getWrapper().find('oryx-popover');
@@ -39,5 +39,9 @@ export class SearchFragment {
 
   clearSearch = () => {
     this.getClearButton().click();
+  };
+
+  clickOnProduct = (eq: number) => {
+    this.getSearchProducts().eq(eq).click();
   };
 }

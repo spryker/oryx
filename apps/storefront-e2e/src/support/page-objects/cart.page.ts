@@ -1,11 +1,9 @@
 import { CartEntryFragment } from '../page-fragments/cart-entry.fragment';
-import { CartTotalsFragment } from '../page-fragments/cart-totals.fragment';
+import { TotalsFragment } from '../page-fragments/totals.fragment';
 import { AbstractSFPage } from './abstract.page';
 
 export class CartPage extends AbstractSFPage {
   url = '/cart';
-
-  private cartTotals = new CartTotalsFragment();
 
   waitForLoaded(): void {
     this.getCartEntriesWrapper().should('exist');
@@ -23,7 +21,7 @@ export class CartPage extends AbstractSFPage {
       });
   getCartEntriesHeading = () =>
     this.getCartEntriesWrapper().find('oryx-heading');
-  getCartTotals = () => this.cartTotals;
+  getCartTotals = () => new TotalsFragment('oryx-cart-totals');
   getCheckoutBtn = () =>
     cy.get('oryx-checkout-link').find('oryx-button').find('a');
   getDeleteModal = () => this.getCartEntriesWrapper().find('oryx-modal');
@@ -44,5 +42,16 @@ export class CartPage extends AbstractSFPage {
     this.getEmptyCartMessage().should('not.exist');
     this.getCartEntriesWrapper().should('be.visible');
     this.getCartTotals().getWrapper().should('be.visible');
+  };
+
+  approveCartEntryDeletion = () => {
+    cy.intercept({
+      method: 'DELETE',
+      url: '/guest-carts/*/guest-cart-items/*',
+    }).as('deleteCartItemRequest');
+
+    this.getSubmitDeleteBtn().click();
+
+    cy.wait('@deleteCartItemRequest');
   };
 }

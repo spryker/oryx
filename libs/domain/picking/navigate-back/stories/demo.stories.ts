@@ -1,12 +1,15 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 import { NavigateBackAttributes } from '../navigate-back.model';
 
 export default {
-  title: `${storybookPrefix}/Navigate Back`,
+  title: `${storybookPrefix}/Navigate back`,
   args: { url: '/test/url' },
-  parameters: { chromatic: { disableSnapshot: true } },
+  parameters: {
+    layout: 'fullscreen',
+    chromatic: { disableSnapshot: true },
+  },
 } as Meta;
 
 const Template: Story<NavigateBackAttributes> = (props): TemplateResult => {

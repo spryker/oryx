@@ -5,20 +5,22 @@ import { AbstractSFPage } from './abstract.page';
 
 export class ProductDetailsPage extends AbstractSFPage {
   url = '/product/';
-  productId: string;
+  productData: Product;
   quantityInput: QuantityInputFragment;
 
   constructor(productData?: Product) {
     super();
 
     if (productData) {
-      this.productId = productData.id;
+      this.productData = productData;
       this.url += productData.id;
     }
   }
 
   beforeVisit(): void {
-    cy.intercept(`/concrete-products/${this.productId}*`).as('productRequest');
+    cy.intercept(`/concrete-products/${this.productData.id}*`).as(
+      'productRequest'
+    );
   }
 
   waitForLoaded(): void {
@@ -58,6 +60,7 @@ export class ProductDetailsPage extends AbstractSFPage {
     this.getWrapper().find('oryx-product-attributes').find('dt');
 
   getRelations = () => new ProductRelationsFragment();
+  getProductsList = () => cy.get('oryx-product-list');
   getAvailability = () => this.getWrapper().find('oryx-product-availability');
 
   addItemsToTheCart = (numberOfItems = 1, isHydrated = false) => {
@@ -83,5 +86,22 @@ export class ProductDetailsPage extends AbstractSFPage {
     } else {
       throw new Error('Add multiple items to the Cart is not implemented yet.');
     }
+  };
+
+  checkDefaultProduct = () => {
+    this.getImages().should('be.visible');
+    this.getDescription().should('be.visible');
+    this.getAttributeTerms().should('be.visible');
+
+    this.getTitle().should('contain.text', this.productData.title);
+    this.getRating().should('be.visible');
+    this.getSKU().should('contain.text', this.productData.id);
+    this.getPrice().should('contain.text', this.productData.originalPrice);
+
+    this.getQuantityComponent().getInput().should('have.value', 1);
+    this.getAddToCartBtn().should('be.visible');
+    this.getAvailability().should('be.visible');
+
+    this.getProductsList().should('be.visible');
   };
 }

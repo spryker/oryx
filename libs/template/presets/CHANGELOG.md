@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.1 (2023-08-15)
+
+
+### Bug Fixes
+
+* **presets:** id for category-page product list and product list header ([#699](https://github.com/spryker/oryx/issues/699)) ([d91d868](https://github.com/spryker/oryx/commit/d91d86805cc1481738b5de19c4e8dc039b170c4b))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 

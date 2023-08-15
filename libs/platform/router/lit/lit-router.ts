@@ -24,6 +24,7 @@ import {
   tap,
 } from 'rxjs';
 
+import { when } from 'lit/directives/when.js';
 import { LitRoutesRegistry } from './lit-routes-registry';
 
 export interface BaseRouteConfig {
@@ -179,8 +180,13 @@ export class LitRouter implements ReactiveController {
         .flat(),
       ...routes,
     ]
-      // moves 404 page to the end in order not to break new provided routes
-      .sort((a) => ((a as PathRouteConfig).path === '/*' ? 0 : -1));
+      // moves 404 page and other pages (/:page) to the end in order not to break new provided routes
+      .sort((a) =>
+        (a as PathRouteConfig).path === '/*' ||
+        (a as PathRouteConfig).path === '/:page'
+          ? 0
+          : -1
+      );
 
     const baseRoute = resolve(BASE_ROUTE, null);
     if (baseRoute) {
@@ -382,21 +388,19 @@ export class LitRouter implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): TemplateResult {
-    if (this._currentRoute?.render) {
-      return html`<outlet
-        >${this._currentRoute?.render?.(this._currentParams)}</outlet
-      >`;
-    }
-
-    if (isRouterPath(this._currentRoute)) {
-      const path = this._currentParams.page
+    const path = isRouterPath(this._currentRoute)
+      ? this._currentParams.page
         ? `/${this._currentParams.page}`
-        : this._currentRoute.path;
+        : this._currentRoute.path
+      : '/';
 
-      return html`<oryx-composition route=${path}></oryx-composition>`;
-    }
-
-    return html`<oryx-composition route="/"></oryx-composition>`;
+    return html`<outlet>
+      ${when(
+        this._currentRoute?.render,
+        () => this._currentRoute?.render?.(this._currentParams),
+        () => html`<oryx-composition route=${path}></oryx-composition>`
+      )}
+    </outlet>`;
   }
 
   protected storeUrlSearchParams(): void {

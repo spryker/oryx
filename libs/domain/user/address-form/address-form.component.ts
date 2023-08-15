@@ -179,7 +179,13 @@ export class UserAddressFormComponent
       address.id = this.values?.id;
       this.dispatchEvent(
         new CustomEvent<AddressEventDetail>('change', {
-          detail: { address, valid: this.form.checkValidity() },
+          detail: {
+            address,
+            // We don't want to trigger valdity in the UI, just store details in storage.
+            valid: [...this.form.elements].every(
+              (e) => (e as HTMLInputElement).validity.valid
+            ),
+          },
           bubbles: true,
           composed: true,
         })

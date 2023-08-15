@@ -1,4 +1,5 @@
 import { CartPage } from '../page-objects/cart.page';
+import { CheckoutPage } from '../page-objects/checkout.page';
 
 export {};
 
@@ -6,12 +7,13 @@ declare global {
   namespace Cypress {
     interface Chainable {
       goToCheckout(): Chainable<void>;
-      goToCheckoutAsGuest(): Chainable<void>;
+      goToGuestCheckout(): Chainable<void>;
     }
   }
 }
 
 const cartPage = new CartPage();
+const checkoutPage = new CheckoutPage();
 
 Cypress.Commands.add('goToCheckout', () => {
   cy.goToCart();
@@ -20,16 +22,25 @@ Cypress.Commands.add('goToCheckout', () => {
   cy.intercept('/customers/*/addresses').as('customerAddressesRequest');
   cartPage.checkout();
   cy.wait('@customerAddressesRequest');
+
+  waitForShippingAndBillingMethods();
 });
 
-Cypress.Commands.add('goToCheckoutAsGuest', () => {
-  cy.goToCartAsGuest();
+Cypress.Commands.add('goToGuestCheckout', () => {
+  cy.goToGuestCart();
   waitForNonEmptyCartToBeLoaded();
 
   cy.intercept('/assets/addresses/*.json').as('addressFormDataRequest');
   cartPage.checkout();
   cy.wait('@addressFormDataRequest');
+
+  waitForShippingAndBillingMethods();
 });
+
+function waitForShippingAndBillingMethods() {
+  checkoutPage.getShippingMethods().should('be.visible');
+  checkoutPage.getBillingMethods().should('be.visible');
+}
 
 // just open a cart page is not enought to be sure
 // that checkout button is clickable

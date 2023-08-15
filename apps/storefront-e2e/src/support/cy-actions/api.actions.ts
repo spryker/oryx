@@ -1,6 +1,8 @@
 import { RouteMatcherOptions } from 'node_modules/cypress/types/net-stubbing';
+import { CartData, GlueAPI } from '../apis/glue.api';
 import { AbstractSFPage } from '../page-objects/abstract.page';
-import { CartData, SCCOSApi } from '../sccos-api/sccos.api';
+import { ProductStorage } from '../test-data/storages/product.storage';
+import { Product } from '../types/product.type';
 import { Customer } from '../types/user.type';
 
 export {};
@@ -8,37 +10,56 @@ export {};
 declare global {
   namespace Cypress {
     interface Chainable {
-      customerCartsCleanup(sccosApi: SCCOSApi, user: Customer): void;
-      customerAddressesCleanup(sccosApi: SCCOSApi, user: Customer): void;
+      customerCleanup(api: GlueAPI): void;
+      customerCartsCleanup(api: GlueAPI, user: Customer): void;
+      customerAddressesCleanup(api: GlueAPI, user: Customer): void;
       failApiCall(routeMatcherOptions: RouteMatcherOptions, actionFn): void;
       checkGlobalNotificationAfterFailedApiCall(page: AbstractSFPage): void;
+      createGuestCart(api: GlueAPI): void;
+      createCart(api: GlueAPI): void;
+      addProductToGuestCart(
+        api: GlueAPI,
+        numberOfItems?: number,
+        product?: Product
+      ): void;
+      addProductToCart(
+        api: GlueAPI,
+        numberOfItems?: number,
+        product?: Product
+      ): void;
+      addAddress(api: GlueAPI, addressData?): void;
     }
   }
 }
 
-Cypress.Commands.add(
-  'customerCartsCleanup',
-  (sccosApi: SCCOSApi, user: Customer) => {
-    sccosApi.carts.customersGet(user.id).then((response) => {
-      const carts = response.body.data;
+Cypress.Commands.add('customerCleanup', (api: GlueAPI) => {
+  cy.fixture<Customer>('test-customer').then((customer) => {
+    cy.customerCartsCleanup(api, customer);
+    cy.customerAddressesCleanup(api, customer);
+  });
+});
 
-      removeLastCart(carts);
-      deleteCarts(sccosApi, carts);
-    });
+Cypress.Commands.add('customerCartsCleanup', (api: GlueAPI, user: Customer) => {
+  api.carts.customersGet(user.id).then((response) => {
+    const carts = response.body.data;
 
-    createNewCart(sccosApi);
-  }
-);
+    removeLastCart(carts);
+    deleteCarts(api, carts);
+  });
+
+  // we have to create a new cart after each cleanup
+  cy.createCart(api);
+});
 
 Cypress.Commands.add(
   'customerAddressesCleanup',
-  (sccosApi: SCCOSApi, user: Customer) => {
-    sccosApi.addresses.get(user.id).then((response) => {
+  (api: GlueAPI, user: Customer) => {
+    api.addresses.get(user.id).then((response) => {
       const addresses = response.body.data;
 
       addresses
         .map((address) => address.id)
-        .forEach((id) => sccosApi.addresses.delete(user.id, id));
+        .forEach((id) => api.addresses.delete(user.id, id));
     });
   }
 );
@@ -82,16 +103,46 @@ Cypress.Commands.add(
   }
 );
 
+Cypress.Commands.add('createCart', (api: GlueAPI) => {
+  api.carts.post();
+});
+
+Cypress.Commands.add('createGuestCart', (api: GlueAPI) => {
+  api.guestCarts.get();
+});
+
+Cypress.Commands.add(
+  'addProductToGuestCart',
+  (api: GlueAPI, numberOfItems = 1, product = ProductStorage.getByEq(1)) => {
+    api.guestCartItems.post(product, numberOfItems);
+  }
+);
+
+Cypress.Commands.add(
+  'addProductToCart',
+  (api: GlueAPI, numberOfItems = 1, product = ProductStorage.getByEq(1)) => {
+    cy.fixture<Customer>('test-customer').then((customer) => {
+      api.carts.customersGet(customer.id).then((cartData) => {
+        const cartId = cartData.body.data[0].id;
+
+        api.cartItems.post(product, numberOfItems, cartId);
+      });
+    });
+  }
+);
+
+Cypress.Commands.add('addAddress', (api: GlueAPI, address?) => {
+  cy.fixture<Customer>('test-customer').then((customer) => {
+    api.addresses.post(customer.id, address);
+  });
+});
+
 function removeLastCart(carts: CartData[]) {
   carts.pop();
 }
 
-function deleteCarts(sccosApi: SCCOSApi, carts: CartData[]) {
-  carts.map((cart) => cart.id).forEach((id) => sccosApi.carts.delete(id));
-}
-
-function createNewCart(sccosApi: SCCOSApi) {
-  sccosApi.carts.post();
+function deleteCarts(api: GlueAPI, carts: CartData[]) {
+  carts.map((cart) => cart.id).forEach((id) => api.carts.delete(id));
 }
 
 function getFailedApiCallData() {
