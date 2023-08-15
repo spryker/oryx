@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.1 (2023-08-15)
+
+
+### Bug Fixes
+
+* allow normalized i18n context values 0 ([#667](https://github.com/spryker/oryx/issues/667)) ([bacffa3](https://github.com/spryker/oryx/commit/bacffa325e8e02b6719ccab4c7ff970582148d53))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 

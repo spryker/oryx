@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.1 (2023-08-15)
+
+
+### Bug Fixes
+
+* allow normalized i18n context values 0 ([#667](https://github.com/spryker/oryx/issues/667)) ([bacffa3](https://github.com/spryker/oryx/commit/bacffa325e8e02b6719ccab4c7ff970582148d53))
+* **experience:** drop obsolete `CompositionLayout.Tabular` layout type and related logic from `CompositionComponent` ([#682](https://github.com/spryker/oryx/issues/682)) ([d149861](https://github.com/spryker/oryx/commit/d149861a03cf232b1d1ba86eb117070f864eaab3))
+* **experience:** add remove strategy for static data merging, fix storing data in experience-preview service, add experience-layout feature ([#693](https://github.com/spryker/oryx/issues/693)) ([92c6fee](https://github.com/spryker/oryx/commit/92c6fee200ca70162d423810bb600174ee519be9))
+* **order:** order totals component visibility for logged-in users ([#702](https://github.com/spryker/oryx/issues/702)) ([00a914b](https://github.com/spryker/oryx/commit/00a914bc340ebdbbac95db8c07f0d86b0bbee8d4))
+* **presets:** id for category-page product list and product list header ([#699](https://github.com/spryker/oryx/issues/699)) ([d91d868](https://github.com/spryker/oryx/commit/d91d86805cc1481738b5de19c4e8dc039b170c4b))
+* **router:** authenticated users will be redirected from login page when accidentally navigate to it  ([#670](https://github.com/spryker/oryx/issues/670)) ([ed25ff1](https://github.com/spryker/oryx/commit/ed25ff1b86462dab812790ca72abb77bd59261aa))
+* **user:** don't update UI on validity triggered by change event in `UserAddressFormComponent` ([#687](https://github.com/spryker/oryx/issues/687)) ([ab206a2](https://github.com/spryker/oryx/commit/ab206a2468809301f275953859e1182d6cbca865))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 
