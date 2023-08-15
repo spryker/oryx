@@ -19,7 +19,7 @@ export function cmsItemsNormalizer(
   return {};
 }
 
-export const productNormalizer: Provider[] = [
+export const cmsNormalizer: Provider[] = [
   {
     provide: CmsNormalizer,
     useValue: cmsItemsNormalizer,
