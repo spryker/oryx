@@ -27,7 +27,7 @@ import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import { isServer } from 'lit';
 import 'urlpattern-polyfill';
-import { StaticExperienceFeature } from '../experience';
+import { StaticExperienceFeature } from './experience';
 
 const isPreview = new URLSearchParams(
   new URL(globalThis.location?.href).search

@@ -18,7 +18,7 @@ export class ContentPageMetaResolver implements PageMetaResolver {
   protected experienceData = this.experienceDataService.getData();
   protected getMeta$ = this.router.currentRoute().pipe(
     switchMap((route) => {
-      const staticMeta = this.getStaticMeta(route);
+      const staticMeta = this.getData(route);
 
       if (staticMeta) {
         return of(staticMeta);
@@ -68,9 +68,7 @@ export class ContentPageMetaResolver implements PageMetaResolver {
     );
   }
 
-  protected getStaticMeta(
-    route: string
-  ): ExperienceComponent['meta'] | undefined {
+  protected getData(route: string): ExperienceComponent['meta'] | undefined {
     const routePath = route.split('/').filter(Boolean)[0];
 
     return this.experienceData.find((data) => {
