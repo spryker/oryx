@@ -1,12 +1,13 @@
 import { QueryService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { PriceModes } from '../../models';
 import { PriceModeService } from './price-mode.service';
 import { PriceModeChanged } from './state';
 
 export class DefaultPriceModeService implements PriceModeService {
   protected activePriceMode$ = new BehaviorSubject<string>(
-    this.defaultPriceMode
+    this.defaultPriceMode ?? PriceModes.GrossMode
   );
 
   constructor(
