@@ -214,6 +214,9 @@
       "@spryker-oryx/search/facet-navigation": [
         "libs/domain/search/facet-navigation/index.ts"
       ],
+      "@spryker-oryx/search/facet-rating": [
+        "libs/domain/search/facet-rating/index.ts"
+      ],
       "@spryker-oryx/search/facet-value-navigation": [
         "libs/domain/search/facet-value-navigation/index.ts"
       ],
