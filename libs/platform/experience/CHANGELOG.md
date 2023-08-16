@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.1 (2023-08-15)
+
+
+### Bug Fixes
+
+* **experience:** drop obsolete `CompositionLayout.Tabular` layout type and related logic from `CompositionComponent` ([#682](https://github.com/spryker/oryx/issues/682)) ([d149861](https://github.com/spryker/oryx/commit/d149861a03cf232b1d1ba86eb117070f864eaab3))
+* **experience:** add remove strategy for static data merging, fix storing data in experience-preview service, add experience-layout feature ([#693](https://github.com/spryker/oryx/issues/693)) ([92c6fee](https://github.com/spryker/oryx/commit/92c6fee200ca70162d423810bb600174ee519be9))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 

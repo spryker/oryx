@@ -103,7 +103,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
         return;
       }
 
-      this.storeData('dataOptions', options.id, options);
+      this.storeData('dataOptions', options.id, options.data);
     })
   );
 
