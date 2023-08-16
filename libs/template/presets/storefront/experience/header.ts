@@ -1,5 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { i18n } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
@@ -106,7 +107,25 @@ export const HeaderTemplate: ExperienceComponent = {
                 rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
               },
               components: [
-                { type: 'oryx-user-account-link' },
+                {
+                  type: 'oryx-content-link',
+                  options: {
+                    icon: IconTypes.User,
+                    url: '/account/overview',
+                    button: true,
+                    rules: [
+                      {
+                        style:
+                          '--oryx-button-background: transparent; padding-inline: 7px; --oryx-button-color: var(--oryx-color-neutral-12);',
+                      },
+                    ],
+                  },
+                  content: {
+                    data: {
+                      text: i18n('user.account'),
+                    },
+                  },
+                },
                 { type: 'oryx-auth-login-link' },
               ],
             },
