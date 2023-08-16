@@ -44,4 +44,22 @@ export const pickingListsComponentStyles = css`
   .filters {
     padding: 0 20px;
   }
+
+  .sync {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-block-start: 34px;
+  }
+
+  .loading span {
+    font-weight: 600;
+  }
 `;
