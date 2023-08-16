@@ -1,12 +1,12 @@
 import { appBuilder } from '@spryker-oryx/application';
 import { labsFeatures } from '@spryker-oryx/labs';
-import { storefrontFeatures } from '@spryker-oryx/presets/storefront';
+import { storefrontFeatures_1_1 } from '@spryker-oryx/presets/storefront';
 import { storefrontTheme } from '@spryker-oryx/themes';
 
 const env = import.meta.env;
 
 const features = [
-  ...storefrontFeatures,
+  ...storefrontFeatures_1_1,
   ...(env.ORYX_LABS ? labsFeatures : []),
 ];
 

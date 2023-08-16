@@ -6,9 +6,9 @@ import { contentFeature } from '@spryker-oryx/content';
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { coreServerProviders } from '@spryker-oryx/core/server';
 import {
-  experienceLatestFeature,
-  experiencePreviewLatestFeature,
-  experienceRoutesLatestFeature,
+  experienceFeature_1_1,
+  experiencePreviewFeature_1_1,
+  experienceRoutesFeature_1_1,
 } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature } from '@spryker-oryx/i18n';
@@ -21,16 +21,16 @@ import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
 import { isServer } from 'lit';
 import 'urlpattern-polyfill';
-import { storefrontResources } from '../stable';
+import { storefrontResources } from '../1_0';
 import { staticExperienceLatestFeature } from './experience';
 
 const isPreview = new URLSearchParams(
   new URL(globalThis.location?.href).search
 ).has('ebPreview');
 
-export const storefrontLatestResources = storefrontResources;
+export const storefrontResources_1_1 = storefrontResources;
 
-export const storefrontLatestFeatures: AppFeature[] = [
+export const storefrontFeatures_1_1: AppFeature[] = [
   uiFeature,
   coreFeature,
   new SapiAuthFeature(),
@@ -49,12 +49,12 @@ export const storefrontLatestFeatures: AppFeature[] = [
   userFeature,
   isServer ? { providers: coreServerProviders } : {},
   ...(isPreview
-    ? [experiencePreviewLatestFeature, { providers: searchPreviewProviders }]
+    ? [experiencePreviewFeature_1_1, { providers: searchPreviewProviders }]
     : [{}]),
-  experienceLatestFeature,
-  experienceRoutesLatestFeature,
+  experienceFeature_1_1,
+  experienceRoutesFeature_1_1,
   {
-    resources: storefrontLatestResources,
+    resources: storefrontResources_1_1,
   },
   staticExperienceLatestFeature,
 ];
