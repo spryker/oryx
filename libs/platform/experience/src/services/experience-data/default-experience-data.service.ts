@@ -26,13 +26,12 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     if (!Object.keys(this.records).length) this.initialize();
 
     const data = Object.values(this.records);
-    // Register all components by id's
-    this.processComponent(data, cb);
+    this.registerComponent(data, cb);
 
     return data;
   }
 
-  processComponent(
+  registerComponent(
     c: ExperienceComponent | ExperienceComponent[],
     cb?: ((c: ExperienceComponent) => void) | undefined
   ): void {

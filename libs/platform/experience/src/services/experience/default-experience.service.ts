@@ -112,7 +112,7 @@ export class DefaultExperienceService implements ExperienceService {
       .pipe(
         tap((component) => {
           this.dataComponent[uid].next(component);
-          this.experienceDataService.processComponent(component, (c) =>
+          this.experienceDataService.registerComponent(component, (c) =>
             this.processData(c)
           );
         }),
@@ -156,7 +156,7 @@ export class DefaultExperienceService implements ExperienceService {
       .pipe(
         tap((page) => {
           if (page) {
-            this.experienceDataService.processComponent(page, (c) =>
+            this.experienceDataService.registerComponent(page, (c) =>
               this.processData(c)
             );
           }
