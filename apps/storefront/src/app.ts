@@ -7,7 +7,9 @@ import { storefrontTheme } from '@spryker-oryx/themes';
 const env = import.meta.env;
 
 const features = [
-  ...(env.ORYX_PRESET ? b2bStorefrontFeatures : storefrontFeatures),
+  ...(env.ORYX_PRESET && env.ORYX_PRESET === 'b2b'
+    ? b2bStorefrontFeatures
+    : storefrontFeatures),
   ...(env.ORYX_LABS ? labsFeatures : []),
 ];
 
