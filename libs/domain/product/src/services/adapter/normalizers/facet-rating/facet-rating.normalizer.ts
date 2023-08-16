@@ -1,7 +1,7 @@
 import { Transformer } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { tap } from 'rxjs';
+import { map, take } from 'rxjs';
 import { ApiProductListModel, Facet } from '../../../../models';
 
 export const FacetRatingNormalizer = 'oryx.FacetRatingNormalizer*';
@@ -13,18 +13,17 @@ export function facetRatingNormalizer(
 
   const routerService = resolve(RouterService);
 
+  const selectedValues$ = routerService.currentQuery().pipe(
+    map((params) =>
+      params?.[ratingParamKey] ? [params?.[ratingParamKey] as string] : []
+    ),
+    take(1)
+  );
+
   let selectedValues: string[] = [];
-  routerService
-    .currentQuery()
-    .pipe(
-      tap((params) => {
-        selectedValues = params?.[ratingParamKey]
-          ? [params?.[ratingParamKey] as string]
-          : [];
-      })
-    )
-    .subscribe()
-    .unsubscribe();
+  selectedValues$.subscribe((values) => {
+    selectedValues = values;
+  });
 
   const facetValues = Array.from(new Array(5).keys())
     .map((i) => {
@@ -48,7 +47,7 @@ export function facetRatingNormalizer(
     valuesTreeLength:
       ratingFacet.max - ratingFacet.min
         ? ratingFacet.max - ratingFacet.min + 1
-        : ratingFacet.max ?? 1,
+        : 1,
     ...(config.isMultiValued && { multiValued: config.isMultiValued }),
   };
 }
