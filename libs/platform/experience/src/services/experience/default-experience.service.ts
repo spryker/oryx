@@ -41,7 +41,7 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   /**
-   * @deprecated Since version 1.1. Use provided `ExperienceDataService.processComponent` method.
+   * @deprecated Since version 1.1. Use provided `ExperienceDataService.registerComponent` method.
    */
   protected processComponent(
     _component: Component | ExperienceComponent
