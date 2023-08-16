@@ -23,18 +23,6 @@ export const productPage: ExperienceComponent = {
       },
       components: [
         {
-          type: 'oryx-site-breadcrumbs',
-          id: 'breadcrumbs',
-          options: {
-            rules: [
-              {
-                colSpan: 2,
-              },
-              { query: { breakpoint: Size.Sm }, hide: true }
-            ],
-          },
-        },
-        {
           type: 'oryx-composition',
           id: 'product-preview',
           options: { rules: [{ layout: 'flex', vertical: true }] },

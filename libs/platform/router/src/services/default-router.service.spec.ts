@@ -4,9 +4,11 @@ import { of } from 'rxjs';
 import { DefaultRouterService } from './default-router.service';
 import { RouterEventType, RouterService } from './router.service';
 import { RouteConfig } from '../../lit/lit-router';
+import 'urlpattern-polyfill';
 
-const routeConfig = {
+const routeConfig: RouteConfig = {
   name: 'test',
+  path: '/test',
 } 
 
 class MockStorageService implements Partial<StorageService> {
@@ -233,12 +235,13 @@ describe('DefaultRouterService', () => {
     });
   });
 
-  describe('currentRouteWithParams', () => {
+  describe('current', () => {
     const callback = vi.fn();
     beforeEach(() => {
-      service.setCurrentRouteConfig(routeConfig as RouteConfig);
+      service.go('/test');
+      service.setRoutes([routeConfig]);
       service.acceptParams({});
-      service.currentRouteWithParams().subscribe(callback);
+      service.current().subscribe(callback);
     });
 
     it('should return current route', () => {

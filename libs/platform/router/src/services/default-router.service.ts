@@ -9,7 +9,7 @@ import {
   map,
 } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
-import { RouteConfig } from '../../lit/lit-router';
+import { RouteConfig, URLPatternRouteConfig } from '../../lit/lit-router';
 import {
   NavigationExtras,
   RouteParams,
@@ -22,6 +22,16 @@ import {
 const CURRENT_PAGE = 'currentPage';
 const PREVIOUS_PAGE = 'previousPage';
 
+const isPatternConfig = (route: RouteConfig): route is URLPatternRouteConfig =>
+  (route as URLPatternRouteConfig).pattern !== undefined;
+
+const getPattern = (route: RouteConfig) => {
+  if (isPatternConfig(route)) {
+    return route.pattern;
+  }
+  return new URLPattern({ pathname: route.path });
+};
+
 export class DefaultRouterService implements RouterService {
   private router$ = new BehaviorSubject(globalThis.location?.pathname ?? '/');
   private params$ = new ReplaySubject<RouteParams>(1);
@@ -31,7 +41,6 @@ export class DefaultRouterService implements RouterService {
   private routerEvents$ = new Subject<RouterEvent>();
   private storedRoute$ = new BehaviorSubject('');
 
-  protected route$ = new ReplaySubject<RouteConfig>(1);
   protected routes$ = new ReplaySubject<RouteConfig[]>(1);
   protected storageService = inject(StorageService);
 
@@ -136,9 +145,9 @@ export class DefaultRouterService implements RouterService {
     return this.routes$.asObservable();
   }
 
-  currentRouteWithParams(): Observable<RouteWithParams> {
+  current(): Observable<RouteWithParams> {
     return combineLatest([
-      this.route$,
+      this.getCurrent(),
       this.params$,
       this.urlSearchParams$,
     ]).pipe(
@@ -148,10 +157,6 @@ export class DefaultRouterService implements RouterService {
         query,
       }))
     );
-  }
-
-  setCurrentRouteConfig(route: RouteConfig): void {
-    this.route$.next(route);
   }
 
   protected createUrlParams(params?: {
@@ -183,5 +188,14 @@ export class DefaultRouterService implements RouterService {
         decodeURIComponent(search ?? globalThis.location?.search ?? '')
       ).entries()
     );
+  }
+
+  protected getCurrent(): Observable<RouteConfig> {
+    return combineLatest([this.router$, this.routes$]).pipe(
+      map(([pathname, routes]) => 
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        routes.find((r) =>getPattern(r).test({ pathname: pathname }))!
+      )
+    )
   }
 }

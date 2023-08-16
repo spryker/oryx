@@ -1,9 +1,8 @@
 import { INJECTOR, inject, resolve } from '@spryker-oryx/di';
-import { RouteType, RouterService } from '@spryker-oryx/router';
-import { Observable, catchError, map, of, switchMap } from 'rxjs';
+import { RouterService } from '@spryker-oryx/router';
+import { Observable, map, of, switchMap } from 'rxjs';
 import { Breadcrumb } from '../../models';
 import {
-  BreadcrumbsQualifier,
   BreadcrumbsResolver,
   BreadcrumbsResolvers,
   BreadcrumbsService,
@@ -23,14 +22,10 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
     return `${BreadcrumbsResolvers}${type}`;
   }
 
-  protected resolveType(
-    qualifier?: BreadcrumbsQualifier
-  ): Observable<RouteType | undefined> {
-    return qualifier?.type
-      ? of(qualifier.type)
-      : this.routerService
-          .currentRouteWithParams()
-          .pipe(map((route) => route.type as RouteType | undefined));
+  protected resolveType(): Observable<string | undefined> {
+    return this.routerService
+      .current()
+      .pipe(map((route) => route.type as string | undefined));
   }
 
   protected mapBreadcrumbs(breadcrumbs: Breadcrumb[]): Breadcrumb[] {
@@ -44,11 +39,12 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
       .pipe(map((breadcrumbs) => this.mapBreadcrumbs(breadcrumbs)));
   }
 
-  get(qualifier?: BreadcrumbsQualifier): Observable<Breadcrumb[]> {
-    return this.resolveType(qualifier).pipe(
+  get(): Observable<Breadcrumb[]> {
+    return this.resolveType().pipe(
       switchMap((type) => {
         try {
-          return this.resolveBreadcrumbs(String(type).toUpperCase())
+          if (!type) throw 'Incorrect route type!';
+          return this.resolveBreadcrumbs(type.toUpperCase())
         } catch {
           //Fallback breadcrumbs
           return this.resolveBreadcrumbs()

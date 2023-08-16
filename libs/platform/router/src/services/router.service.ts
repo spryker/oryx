@@ -9,8 +9,7 @@ export interface RouterService {
   getEvents(type: RouterEventType): Observable<RouterEvent>;
   route(): Observable<string>;
   currentRoute(): Observable<string>;
-  currentRouteWithParams(): Observable<RouteWithParams>;
-  setCurrentRouteConfig(config: RouteConfig): void;
+  current(): Observable<RouteWithParams>;
   currentParams(): Observable<RouteParams>;
   currentQuery(): Observable<RouteParams | undefined>;
   acceptParams(params: RouteParams): void;

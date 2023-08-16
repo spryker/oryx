@@ -11,7 +11,7 @@ export class ProductListBreadcrumbsResolver implements BreadcrumbsResolver {
   protected routerService = resolve(RouterService);
 
   resolve(): Observable<Breadcrumb[]> {
-    return this.routerService.currentRouteWithParams().pipe(
+    return this.routerService.current().pipe(
       map(({ query }) => [
         {
           i18n: query.q

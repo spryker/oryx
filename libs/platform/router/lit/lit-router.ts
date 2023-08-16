@@ -371,8 +371,6 @@ export class LitRouter implements ReactiveController {
         tailGroup === undefined
           ? pathname
           : pathname.substring(0, pathname.length - tailGroup.length);
-
-      this.routerService.setCurrentRouteConfig(route);
     }
 
     // Propagate the tail match to children
