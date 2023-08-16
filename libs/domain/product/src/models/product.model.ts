@@ -107,6 +107,11 @@ export interface FacetValue {
    */
   selected?: boolean;
 
+  /**
+   * Indicates whether this value is disabled.
+   */
+  disabled?: boolean;
+
   children?: FacetValue[];
 }
 

@@ -1,7 +1,6 @@
 import { Transformer } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { FacetParams } from '@spryker-oryx/search';
 import { tap } from 'rxjs';
 import { ApiProductListModel, Facet } from '../../../../models';
 
@@ -10,6 +9,8 @@ export const FacetRatingNormalizer = 'oryx.FacetRatingNormalizer*';
 export function facetRatingNormalizer(
   ratingFacet: ApiProductListModel.RangeFacet
 ): Facet {
+  const ratingParamKey = 'rating[min]';
+
   const routerService = resolve(RouterService);
 
   let selectedValues: string[] = [];
@@ -17,28 +18,31 @@ export function facetRatingNormalizer(
     .currentQuery()
     .pipe(
       tap((params) => {
-        selectedValues = params?.[FacetParams.Rating]
-          ? [params?.[FacetParams.Rating] as string]
+        selectedValues = params?.[ratingParamKey]
+          ? [params?.[ratingParamKey] as string]
           : [];
       })
     )
-    .subscribe().unsubscribe();
+    .subscribe()
+    .unsubscribe();
 
-  const facetValues = [];
-
-  for (let i = ratingFacet.min; i <= ratingFacet.max; i++) {
-    facetValues.unshift({
-      value: String(i),
-      selected: selectedValues.includes(String(i)),
-      count: 0,
-    });
-  }
+  const facetValues = Array.from(new Array(5).keys())
+    .map((i) => {
+      const value = i + 1;
+      return {
+        value: String(value),
+        selected: selectedValues.includes(String(value)),
+        count: 0,
+        disabled: value < ratingFacet.min || value > ratingFacet.max,
+      };
+    })
+    .reverse();
 
   const { config, localizedName } = ratingFacet;
 
   return {
     name: localizedName,
-    parameter: FacetParams.Rating,
+    parameter: ratingParamKey,
     values: facetValues,
     selectedValues,
     valuesTreeLength:
