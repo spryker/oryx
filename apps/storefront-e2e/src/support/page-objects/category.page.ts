@@ -19,7 +19,7 @@ export class CategoryPage extends AbstractSFPage {
 
   getFacets = () => cy.get('oryx-search-facet');
   getRadio = () => cy.get('input[type="radio"]');
-  getOryxCard = () => cy.get('oryx-product-card');
+  getProductCard = () => cy.get('oryx-product-card');
   getProductPrice = () => cy.get('oryx-site-price');
   getProductSort = () => cy.get('oryx-search-product-sort');
   getProductTitle = () => cy.get('oryx-product-title');

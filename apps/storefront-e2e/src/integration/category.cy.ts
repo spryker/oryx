@@ -74,24 +74,24 @@ describe('Sorting on the Category page', () => {
   it('default sorting applied even after clearing the sort parameter', () => {
     cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
     cy.wait('@catalog-search', { timeout: 5000 });
-    //Wait till JS build the template
+    // Wait till JS build the template
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.get('oryx-product-card').each((card, cardIndex) => {
       cy.wrap(card).should('have.attr', 'sku', defaultSortingOrder[cardIndex]);
     });
-    //Checking that sorted by name ascending
+    // Checking that sorted by name ascending
     categoryPage.getProductSort().click();
     cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
     cy.get(`oryx-option[value="${sortingOptions[1]}"]`).click();
     cy.wait('@catalog-search', { timeout: 5000 });
-    //Wait till JS build the template
+    // Wait till JS build the template
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.get('oryx-product-card').each((card, cardIndex) => {
       cy.wrap(card).should('have.attr', 'sku', expectedSkuOrder[1][cardIndex]);
     });
-    //Checking that after clear default order applied
+    // Checking that after clear default order applied
     cy.get('oryx-select')
       .find('oryx-icon[type="delete_forever"]')
       .trigger('mouseover')
@@ -105,7 +105,7 @@ describe('Sorting on the Category page', () => {
     });
   });
 
-  //Checks sorting through the all sorting options
+  // Checks sorting through the all sorting options
   sortingOptions.forEach((option, index) => {
     it(`should sort products by ${option}`, () => {
       const expectedSku = expectedSkuOrder[index];
@@ -113,7 +113,7 @@ describe('Sorting on the Category page', () => {
       cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
       cy.get(`oryx-option[value="${option}"]`).click();
       cy.wait('@catalog-search', { timeout: 5000 });
-      //Wait till JS build the template
+      // Wait till JS build the template
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(200);
       cy.get('oryx-product-card').each((card, cardIndex) => {
