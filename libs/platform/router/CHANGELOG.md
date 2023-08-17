@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.1 (2023-08-15)
+
+
+### Bug Fixes
+
+* **router:** authenticated users will be redirected from login page when accidentally navigate to it  ([#670](https://github.com/spryker/oryx/issues/670)) ([ed25ff1](https://github.com/spryker/oryx/commit/ed25ff1b86462dab812790ca72abb77bd59261aa))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 
