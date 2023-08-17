@@ -3,16 +3,15 @@ import { inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { Observable, combineLatest, map, switchMap } from 'rxjs';
 import {
-  ApiExperienceCmsModel,
+  ApiCmsModel,
+  CmsQualifier,
   CmsToken,
-  Component,
   ExperienceCms,
-  ExperienceQualifier,
 } from '../../models';
-import { CmsAdapter } from './experience.adapter';
+import { CmsAdapter } from './cms.adapter';
 import { CmsNormalizer } from './normalizers';
 
-export class CmsExperienceAdapter<T = Component> implements CmsAdapter<T> {
+export class DefaultCmsAdapter implements CmsAdapter {
   constructor(
     protected locale = inject(LocaleService),
     protected cmsToken = inject(CmsToken),
@@ -22,11 +21,11 @@ export class CmsExperienceAdapter<T = Component> implements CmsAdapter<T> {
 
   protected url = 'https://cdn.contentful.com/spaces/eu6b2pc688zv/entries?';
 
-  getKey(qualifier: ExperienceQualifier): string {
+  getKey(qualifier: CmsQualifier): string {
     return qualifier.id ?? qualifier.query ?? 'page';
   }
 
-  getCmsData(qualifier: ExperienceQualifier): Observable<ExperienceCms | null> {
+  get(qualifier: CmsQualifier): Observable<ExperienceCms> {
     const params = Object.entries(qualifier).reduce((acc, [key, value]) => {
       if (key === 'id') return acc;
 
@@ -45,7 +44,7 @@ export class CmsExperienceAdapter<T = Component> implements CmsAdapter<T> {
           .find((_locale) => _locale.code === locale)
           ?.name.replace('_', '-');
 
-        return this.http.get<ApiExperienceCmsModel.Response>(
+        return this.http.get<ApiCmsModel.Response>(
           `${this.url}${params}&locale=${name}`,
           {
             headers: { Authorization: `Bearer ${this.cmsToken}` },
@@ -55,14 +54,5 @@ export class CmsExperienceAdapter<T = Component> implements CmsAdapter<T> {
       map((data) => ({ data: { attributes: { data, qualifier } } })),
       this.transformer.do(CmsNormalizer)
     );
-  }
-
-  get(qualifier: ExperienceQualifier): Observable<T | null> {
-    return this.getCmsData(qualifier).pipe(
-      map(
-        (data) =>
-          data?.pages?.find((page) => page.meta?.route === qualifier.id) ?? null
-      ) ?? null
-    ) as Observable<T | null>;
   }
 }

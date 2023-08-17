@@ -149,7 +149,7 @@ export class DefaultExperienceService implements ExperienceService {
     }/components/?meta.route=${encodeURIComponent(route)}`;
 
     const adapter = this.experienceAdapter
-      ? this.experienceAdapter.get({ id: route, type: 'page' })
+      ? this.experienceAdapter.get({ route })
       : this.http.get<Component>(componentsUrl);
 
     adapter

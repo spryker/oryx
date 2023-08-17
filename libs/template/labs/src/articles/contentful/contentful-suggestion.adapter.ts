@@ -1,7 +1,7 @@
 import { inject } from '@spryker-oryx/di';
 import {
-  ApiExperienceCmsModel,
-  ExperienceAdapter,
+  ApiCmsModel,
+  CmsAdapter,
   ExperienceCms,
 } from '@spryker-oryx/experience';
 import {
@@ -20,9 +20,9 @@ declare module '@spryker-oryx/experience' {
 }
 
 export function cmsSuggestionNormalizer(
-  data: ApiExperienceCmsModel.Model
+  data: ApiCmsModel.Model<{ heading: string }>
 ): ExperienceCms {
-  if (data.qualifier.query) {
+  if (data.qualifier.type === ContentfulContentFields.Article) {
     return {
       [SuggestionField.Contents]: data.data.items.map((entry) => ({
         name: entry.fields.heading,
@@ -36,7 +36,7 @@ export function cmsSuggestionNormalizer(
 }
 
 export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
-  constructor(protected experienceCmsAdapter = inject(ExperienceAdapter)) {}
+  constructor(protected cmsAdapter = inject(CmsAdapter)) {}
 
   getKey({ query }: SuggestionQualifier): string {
     return query ?? '';
@@ -47,9 +47,10 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
       entities?.includes(SuggestionField.Contents) ||
       entities?.includes(ContentfulContentFields.Article)
     ) {
-      return this.experienceCmsAdapter
-        .getCmsData({
+      return this.cmsAdapter
+        .get({
           query: this.getKey({ query }),
+          type: ContentfulContentFields.Article,
         })
         .pipe(
           map((data) => ({

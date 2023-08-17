@@ -1,15 +1,15 @@
 import { Transformer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { ApiExperienceCmsModel, ExperienceCms } from '../../../../models';
+import { ApiCmsModel, Component, ExperienceCms } from '../../../../models';
 
 export const CmsNormalizer = 'oryx.CmsNormalizer*';
 
 export function cmsItemsNormalizer(
-  data: ApiExperienceCmsModel.Model
+  data: ApiCmsModel.Model<{ data: Component; id: string }>
 ): ExperienceCms {
-  if (data.qualifier.type === 'page') {
+  if (data.qualifier.type === 'component') {
     return {
-      pages: data.data.items.map((item) => ({
+      components: data.data.items.map((item) => ({
         ...item.fields.data,
         id: item.fields.id,
       })),

@@ -40,7 +40,7 @@ export interface Component<
 }
 
 export interface ExperienceCms {
-  pages?: Component[];
+  components?: Component[];
 }
 
 declare global {

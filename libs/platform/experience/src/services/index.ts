@@ -1,4 +1,5 @@
 export * from './adapter';
+export * from './cms';
 export * from './data-client';
 export * from './experience';
 export * from './experience-data';

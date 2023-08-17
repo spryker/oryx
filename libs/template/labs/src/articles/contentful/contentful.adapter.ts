@@ -3,9 +3,10 @@ import {
   ContentAdapter,
   ContentQualifier,
 } from '@spryker-oryx/content';
+import { inject } from '@spryker-oryx/di';
 import {
-  ApiExperienceCmsModel,
-  CmsExperienceAdapter,
+  ApiCmsModel,
+  CmsAdapter,
   ExperienceCms,
 } from '@spryker-oryx/experience';
 import { Observable, map, of } from 'rxjs';
@@ -18,7 +19,11 @@ declare module '@spryker-oryx/experience' {
 }
 
 export function cmsContentNormalizer(
-  data: ApiExperienceCmsModel.Model
+  data: ApiCmsModel.Model<{
+    heading: string;
+    description: string;
+    content: string;
+  }>
 ): ExperienceCms {
   if (data.qualifier.type === ContentfulContentFields.Article) {
     return {
@@ -37,22 +42,25 @@ export function cmsContentNormalizer(
   return {};
 }
 
-export class ContentfulContentAdapter
-  extends CmsExperienceAdapter<Content>
-  implements ContentAdapter
-{
+export class ContentfulContentAdapter implements ContentAdapter {
+  constructor(protected cmsAdapter = inject(CmsAdapter)) {}
+
+  getKey(qualifier: ContentQualifier): string {
+    return qualifier.id ?? '';
+  }
+
   getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
     if (qualifier.type !== ContentfulContentFields.Article) {
       return of(null);
     }
 
-    return this.getCmsData(qualifier).pipe(
-      map((data) => data?.articles ?? null)
-    );
+    return this.cmsAdapter
+      .get(qualifier)
+      .pipe(map((data) => data?.articles ?? null));
   }
 
-  override get(qualifier: ContentQualifier): Observable<Content | null> {
-    return this.getAll({ id: qualifier.id, type: qualifier.type }).pipe(
+  get(qualifier: ContentQualifier): Observable<Content | null> {
+    return this.getAll(qualifier).pipe(
       map(
         (articles) =>
           articles?.find((entry) => entry.id === qualifier.id) ?? null
