@@ -1,17 +1,14 @@
 import { PageMetaResolverService } from '@spryker-oryx/core';
-import { Provider, resolve } from '@spryker-oryx/di';
-import {
-  Breadcrumb,
-  BreadcrumbsResolver,
-  BreadcrumbsResolvers,
-} from '@spryker-oryx/site';
+import { INJECTOR, Provider, inject } from '@spryker-oryx/di';
 import { Observable, map } from 'rxjs';
+import { Breadcrumb } from '../../models';
+import { BreadcrumbsResolver, BreadcrumbsResolvers } from '../breadcrumbs';
 
 export class DefaultBreadcrumbsResolver implements BreadcrumbsResolver {
-  protected pageMetaResolver = resolve(PageMetaResolverService);
-
+  constructor(protected injector = inject(INJECTOR)) {}
+  
   resolve(): Observable<Breadcrumb[]> {
-    return this.pageMetaResolver.getTitle().pipe(map((text) => [{ text }]));
+    return this.injector.inject(PageMetaResolverService).getTitle().pipe(map((text) => [{ text }]));
   }
 }
 

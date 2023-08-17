@@ -1,4 +1,4 @@
-import { Provider, resolve } from '@spryker-oryx/di';
+import { INJECTOR, Provider, inject } from '@spryker-oryx/di';
 import { Facet, FacetValue } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import {
@@ -20,8 +20,7 @@ import { FacetListService } from '../facet-list.service';
 export type FlatFacet = { name: string; value: string };
 
 export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
-  protected facetsListService = resolve(FacetListService);
-  protected linkService = resolve(LinkService);
+  constructor(protected injector = inject(INJECTOR)) {}
 
   protected getFlattenCategoriesBreadcrumbs(
     categories: Facet
@@ -46,7 +45,7 @@ export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
     const selected = getSelected(categories.values as FacetValue[]);
     return combineLatest(
       flattenSelected(selected).map(({ name, value }) =>
-        this.linkService
+        this.injector.inject(LinkService)
           .get({ id: value, type: RouteType.Category })
           .pipe(map((url) => ({ text: name, url })))
       )
@@ -54,14 +53,15 @@ export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
   }
 
   resolve(): Observable<Breadcrumb[]> {
-    return this.facetsListService.getFacet({ parameter: 'category' }).pipe(
-      switchMap((facet) => this.getFlattenCategoriesBreadcrumbs(facet)),
-      switchMap((breadcrumbs) =>
-        !breadcrumbs?.length
-          ? throwError(() => new Error('Categories breadcrumbs list is empty!'))
-          : of(breadcrumbs)
-      )
-    );
+    return this.injector.inject(FacetListService)
+      .getFacet({ parameter: 'category' }).pipe(
+        switchMap((facet) => this.getFlattenCategoriesBreadcrumbs(facet)),
+        switchMap((breadcrumbs) =>
+          !breadcrumbs?.length
+            ? throwError(() => new Error('Categories breadcrumbs list is empty!'))
+            : of(breadcrumbs)
+        )
+      );
   }
 }
 

@@ -1,4 +1,4 @@
-import { Provider, resolve } from '@spryker-oryx/di';
+import { INJECTOR, Provider, inject } from '@spryker-oryx/di';
 import { RouteType, RouterService } from '@spryker-oryx/router';
 import {
   Breadcrumb,
@@ -8,10 +8,10 @@ import {
 import { Observable, map } from 'rxjs';
 
 export class ProductListBreadcrumbsResolver implements BreadcrumbsResolver {
-  protected routerService = resolve(RouterService);
+  constructor(protected injector = inject(INJECTOR)) {}
 
   resolve(): Observable<Breadcrumb[]> {
-    return this.routerService.current().pipe(
+    return this.injector.inject(RouterService).current().pipe(
       map(({ query }) => [
         {
           i18n: query.q
