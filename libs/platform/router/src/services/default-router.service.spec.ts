@@ -1,15 +1,15 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
+import 'urlpattern-polyfill';
+import { RouteConfig } from '../../lit/lit-router';
 import { DefaultRouterService } from './default-router.service';
 import { RouterEventType, RouterService } from './router.service';
-import { RouteConfig } from '../../lit/lit-router';
-import 'urlpattern-polyfill';
 
 const routeConfig: RouteConfig = {
   name: 'test',
   path: '/test',
-} 
+};
 
 class MockStorageService implements Partial<StorageService> {
   get = vi.fn();
@@ -245,7 +245,9 @@ describe('DefaultRouterService', () => {
     });
 
     it('should return current route', () => {
-      expect(callback).toHaveBeenCalledWith(expect.objectContaining(routeConfig))
+      expect(callback).toHaveBeenCalledWith(
+        expect.objectContaining(routeConfig)
+      );
     });
-  })
+  });
 });

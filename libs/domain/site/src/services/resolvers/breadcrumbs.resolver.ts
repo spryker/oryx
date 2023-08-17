@@ -11,9 +11,7 @@ export class DefaultBreadcrumbsResolver implements BreadcrumbsResolver {
   protected pageMetaResolver = resolve(PageMetaResolverService);
 
   resolve(): Observable<Breadcrumb[]> {
-    return this.pageMetaResolver
-      .getTitle()
-      .pipe(map((text) => [{ text }]));
+    return this.pageMetaResolver.getTitle().pipe(map((text) => [{ text }]));
   }
 }
 

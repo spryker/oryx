@@ -9,7 +9,7 @@ import { FacetListService } from './facet-list.service';
 
 const facets = [
   { name: 'mock', parameter: 'mock' },
-  { name: 'mock1', parameter: 'mock1' }
+  { name: 'mock1', parameter: 'mock1' },
 ];
 
 class MockProductListPageService implements Partial<ProductListPageService> {
@@ -70,7 +70,7 @@ describe('DefaultFacetListService', () => {
         pageListService.get = vi.fn().mockReturnValue(of({}));
         service.get().subscribe(callback);
       });
-  
+
       it('should return empty array', () => {
         expect(callback).toHaveBeenCalledWith([]);
       });
@@ -87,7 +87,7 @@ describe('DefaultFacetListService', () => {
       beforeEach(() => {
         service.getFacet({ name: 'mock' }).subscribe(callback);
       });
-  
+
       it('should return facet that matches name', () => {
         expect(callback).toHaveBeenCalledWith(facets[0]);
       });
@@ -98,7 +98,7 @@ describe('DefaultFacetListService', () => {
       beforeEach(() => {
         service.getFacet({ parameter: 'mock1' }).subscribe(callback);
       });
-  
+
       it('should return facet that matches parameter', () => {
         expect(callback).toHaveBeenCalledWith(facets[1]);
       });
@@ -109,7 +109,7 @@ describe('DefaultFacetListService', () => {
       beforeEach(() => {
         service.getFacet({ name: 'mock2' }).subscribe(callback);
       });
-  
+
       it('should return empty object', () => {
         expect(callback).toHaveBeenCalledWith({});
       });

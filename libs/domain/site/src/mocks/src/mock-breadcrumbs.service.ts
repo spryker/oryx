@@ -1,5 +1,5 @@
-import { Observable, of } from 'rxjs';
 import { Breadcrumb, BreadcrumbsService } from '@spryker-oryx/site';
+import { Observable, of } from 'rxjs';
 
 export class MockBreadcrumbsService implements BreadcrumbsService {
   get(): Observable<Breadcrumb[]> {

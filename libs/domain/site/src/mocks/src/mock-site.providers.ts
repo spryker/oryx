@@ -6,25 +6,25 @@ import {
   LocaleService,
 } from '@spryker-oryx/i18n';
 import {
+  BreadcrumbsService,
   CountryService,
   CurrencyService,
   DefaultCountryService,
   DefaultCurrencyService,
+  DefaultLinkService,
   DefaultNotificationService,
   DefaultPricingService,
   DefaultSalutationService,
-  DefaultLinkService,
+  LinkService,
   NotificationService,
   PricingService,
   SalutationService,
   SapiLocaleAdapter,
-  LinkService,
   SiteErrorHandler,
   StoreService,
-  BreadcrumbsService,
 } from '@spryker-oryx/site';
-import { MockStoreService } from './mock-store.service';
 import { MockBreadcrumbsService } from './mock-breadcrumbs.service';
+import { MockStoreService } from './mock-store.service';
 
 export const mockSiteProviders: Provider[] = [
   {

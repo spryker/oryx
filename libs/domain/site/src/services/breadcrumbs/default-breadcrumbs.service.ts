@@ -1,6 +1,6 @@
 import { INJECTOR, inject, resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { Observable, map, of, switchMap } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 import { Breadcrumb } from '../../models';
 import {
   BreadcrumbsResolver,
@@ -34,7 +34,8 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
 
   protected resolveBreadcrumbs(type = 'DEFAULT'): Observable<Breadcrumb[]> {
     const key = this.getResolverKey(type);
-    return this.injector.inject<BreadcrumbsResolver>(key)
+    return this.injector
+      .inject<BreadcrumbsResolver>(key)
       .resolve()
       .pipe(map((breadcrumbs) => this.mapBreadcrumbs(breadcrumbs)));
   }
@@ -44,10 +45,10 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
       switchMap((type) => {
         try {
           if (!type) throw 'Incorrect route type!';
-          return this.resolveBreadcrumbs(type.toUpperCase())
+          return this.resolveBreadcrumbs(type.toUpperCase());
         } catch {
           //Fallback breadcrumbs
-          return this.resolveBreadcrumbs()
+          return this.resolveBreadcrumbs();
         }
       })
     );

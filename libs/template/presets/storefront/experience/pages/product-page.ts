@@ -1,5 +1,4 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { Size } from '@spryker-oryx/utilities';
 
 export const productPage: ExperienceComponent = {
   id: 'product-page',

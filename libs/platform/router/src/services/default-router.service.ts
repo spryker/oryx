@@ -192,10 +192,11 @@ export class DefaultRouterService implements RouterService {
 
   protected getCurrent(): Observable<RouteConfig> {
     return combineLatest([this.router$, this.routes$]).pipe(
-      map(([pathname, routes]) => 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        routes.find((r) =>getPattern(r).test({ pathname: pathname }))!
+      map(
+        ([pathname, routes]) =>
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          routes.find((r) => getPattern(r).test({ pathname: pathname }))!
       )
-    )
+    );
   }
 }

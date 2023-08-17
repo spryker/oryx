@@ -33,7 +33,9 @@ export class SiteBreadcrumbsComponent extends I18nMixin(
     return breadcrumbs?.map((b, index) => {
       const isLastItem = index + 1 === breadcrumbs.length;
       return html`${this.renderBreadcrumb(b)}
-      ${when(this.$options().showDivider && !isLastItem, () => this.renderDivider())}`;
+      ${when(this.$options().showDivider && !isLastItem, () =>
+        this.renderDivider()
+      )}`;
     });
   }
 
