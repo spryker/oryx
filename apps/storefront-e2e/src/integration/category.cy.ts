@@ -75,6 +75,7 @@ describe('Sorting on the Category page', () => {
     cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
     cy.wait('@catalog-search', { timeout: 5000 });
     // Wait till JS build the template
+    // TODO Refactor cy.wait into understandable variable
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.get('oryx-product-card').each((card, cardIndex) => {
@@ -86,6 +87,7 @@ describe('Sorting on the Category page', () => {
     cy.get(`oryx-option[value="${sortingOptions[1]}"]`).click();
     cy.wait('@catalog-search', { timeout: 5000 });
     // Wait till JS build the template
+    // TODO Refactor cy.wait into understandable variable
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.get('oryx-product-card').each((card, cardIndex) => {
@@ -98,6 +100,8 @@ describe('Sorting on the Category page', () => {
       .click();
     cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
     cy.wait('@catalog-search', { timeout: 5000 });
+    // Wait till JS build the template
+    // TODO Refactor cy.wait into understandable variable
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.get('oryx-product-card').each((card, cardIndex) => {
@@ -114,6 +118,7 @@ describe('Sorting on the Category page', () => {
       cy.get(`oryx-option[value="${option}"]`).click();
       cy.wait('@catalog-search', { timeout: 5000 });
       // Wait till JS build the template
+      // TODO Refactor cy.wait into understandable variable
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(200);
       cy.get('oryx-product-card').each((card, cardIndex) => {
