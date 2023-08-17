@@ -57,6 +57,28 @@
             "grepTags": "smoke",
             "isSSR": true
           }
+        },
+        "b2b-open": {
+          "env": {
+            "grepTags": "b2b"
+          }
+        },
+        "b2b-headless": {
+          "watch": false,
+          "env": {
+            "grepTags": "b2b"
+          }
+        },
+        "b2b-headless-ci": {
+          "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
+          "watch": false,
+          "record": true,
+          "parallel": true,
+          "tag": "only-b2b",
+          "group": "sf-b2b",
+          "env": {
+            "grepTags": "b2b"
+          }
         }
       }
     },
