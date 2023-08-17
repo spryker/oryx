@@ -26,10 +26,6 @@ export const experienceRoutes: RouteConfig[] = [
     type: RouteType.Page,
   },
   {
-    path: '/new/:sku',
-    type: RouteType.Product,
-  },
-  {
     path: '/*',
     type: RouteType.NotFound,
     render: (): TemplateResult =>
@@ -58,10 +54,6 @@ export const defaultExperienceRoutes: RouteConfig[] = [
   },
   {
     path: '/product/:sku',
-    type: RouteType.Product,
-  },
-  {
-    path: '/default/:sku',
     type: RouteType.Product,
   },
   {
