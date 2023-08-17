@@ -34,6 +34,9 @@ export const experienceRoutes: RouteConfig[] = [
   },
 ];
 
+/**
+ * @deprecated: Since 1.1 version will be deleted. Use `experienceRoutes` instead.
+ */
 export const defaultExperienceRoutes: RouteConfig[] = [
   {
     pattern: new URLPattern({ pathname: '/{index.html}?' }),
