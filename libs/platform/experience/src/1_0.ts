@@ -1,15 +1,15 @@
+// @deprecated Since: 1.2 use factory instead
 import { AppFeature } from '@spryker-oryx/core';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import * as components from '../components';
-import { PreviewPlugin } from '../plugins';
-import { defaultExperienceRoutes } from '../routes';
+import * as components from './components';
+import { experienceComponents } from './feature';
+import { PreviewPlugin } from './plugins';
+import { defaultExperienceRoutes } from './routes';
 import {
   experiencePreviewProviders,
   experienceProviders,
   layoutProviders,
-} from '../services';
-
-export const experienceComponents = [components.compositionComponent];
+} from './services';
 
 export const layoutFeature: AppFeature = {
   providers: layoutProviders,
