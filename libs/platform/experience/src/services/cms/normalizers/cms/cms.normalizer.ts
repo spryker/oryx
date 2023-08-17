@@ -5,7 +5,7 @@ import { ApiCmsModel, Component, ExperienceCms } from '../../../../models';
 export const CmsNormalizer = 'oryx.CmsNormalizer*';
 
 export function cmsItemsNormalizer(
-  data: ApiCmsModel.Model<{ data: Component; id: string }>
+  data: ApiCmsModel.Model<{ data: Component }>
 ): ExperienceCms {
   if (data.qualifier.type === 'component') {
     return {
