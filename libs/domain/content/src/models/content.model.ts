@@ -1,5 +1,5 @@
-import { ContentEntities } from '../services';
 import { RouteType } from '@spryker-oryx/router';
+import { ContentEntities } from '../services';
 
 export interface ContentQualifier {
   type?: string;

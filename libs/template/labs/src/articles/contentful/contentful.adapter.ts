@@ -8,6 +8,7 @@ import {
   ApiCmsModel,
   CmsAdapter,
   ExperienceCms,
+  getFieldByLocale,
 } from '@spryker-oryx/experience';
 import { Observable, map, of } from 'rxjs';
 import { ContentfulContentFields } from './contentful.model';
@@ -27,15 +28,17 @@ export function cmsContentNormalizer(
 ): ExperienceCms {
   if (data.qualifier.type === ContentfulContentFields.Article) {
     return {
-      articles: data.data.items.map((entry) => ({
-        id: entry.fields.id,
-        heading: entry.fields.heading,
-        description: entry.fields.description,
-        content: entry.fields.content,
-        url: `/${ContentfulContentFields.Article}/${encodeURIComponent(
-          entry.fields.id
-        )}`,
-      })),
+      articles: data.data.items.map((entry) => {
+        const id = getFieldByLocale(entry.fields.id, data.locale);
+
+        return {
+          id,
+          heading: getFieldByLocale(entry.fields.heading, data.locale),
+          description: getFieldByLocale(entry.fields.description, data.locale),
+          content: getFieldByLocale(entry.fields.content, data.locale),
+          url: `/${ContentfulContentFields.Article}/${encodeURIComponent(id)}`,
+        };
+      }),
     };
   }
 
@@ -54,9 +57,12 @@ export class ContentfulContentAdapter implements ContentAdapter {
       return of(null);
     }
 
-    return this.cmsAdapter
-      .get(qualifier)
-      .pipe(map((data) => data?.articles ?? null));
+    return this.cmsAdapter.get({ id: qualifier.id, type: qualifier.type }).pipe(
+      map((data) => {
+        console.log(data);
+        return data?.articles ?? null;
+      })
+    );
   }
 
   get(qualifier: ContentQualifier): Observable<Content | null> {

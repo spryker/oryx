@@ -1,7 +1,8 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
+import { camelize } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { Observable, combineLatest, map, switchMap } from 'rxjs';
+import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import {
   ApiCmsModel,
   CmsQualifier,
@@ -11,6 +12,21 @@ import {
 import { CmsAdapter } from './cms.adapter';
 import { CmsNormalizer } from './normalizers';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getFieldByLocale = <T extends Record<string, any>>(
+  field: T,
+  locale: string
+): T extends Record<string, infer Value> ? Value : unknown => {
+  if (!field) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return null as any;
+  }
+
+  const records = Object.values(field);
+
+  return records.length === 1 ? records[0] : field[locale];
+};
+
 export class DefaultCmsAdapter implements CmsAdapter {
   constructor(
     protected locale = inject(LocaleService),
@@ -19,7 +35,7 @@ export class DefaultCmsAdapter implements CmsAdapter {
     protected http = inject(HttpService)
   ) {}
 
-  protected url = 'https://cdn.contentful.com/spaces/eu6b2pc688zv/entries?';
+  protected url = 'https://api.contentful.com/spaces/eu6b2pc688zv/entries?';
 
   getKey(qualifier: CmsQualifier): string {
     return qualifier.id ?? qualifier.query ?? 'page';
@@ -38,21 +54,24 @@ export class DefaultCmsAdapter implements CmsAdapter {
       return `${acc}&${param}`;
     }, '');
 
-    return combineLatest([this.locale.get(), this.locale.getAll()]).pipe(
-      switchMap(([locale, all]) => {
-        const name = all
-          .find((_locale) => _locale.code === locale)
-          ?.name.replace('_', '-');
+    return this.http
+      .get<ApiCmsModel.Response>(`${this.url}${params}`, {
+        headers: { Authorization: `Bearer ${this.cmsToken}` },
+      })
+      .pipe(
+        switchMap((data) =>
+          combineLatest([this.locale.get(), this.locale.getAll(), of(data)])
+        ),
+        map(([locale, all, data]) => {
+          const name = camelize(
+            all.find((_locale) => _locale.code === locale)?.name ?? ''
+          );
 
-        return this.http.get<ApiCmsModel.Response>(
-          `${this.url}${params}&locale=${name}`,
-          {
-            headers: { Authorization: `Bearer ${this.cmsToken}` },
-          }
-        );
-      }),
-      map((data) => ({ data: { attributes: { data, qualifier } } })),
-      this.transformer.do(CmsNormalizer)
-    );
+          return {
+            data: { attributes: { data, qualifier, locale: name } },
+          };
+        }),
+        this.transformer.do(CmsNormalizer)
+      );
   }
 }

@@ -3,6 +3,7 @@ import {
   ApiCmsModel,
   CmsAdapter,
   ExperienceCms,
+  getFieldByLocale,
 } from '@spryker-oryx/experience';
 import {
   Suggestion,
@@ -25,8 +26,8 @@ export function cmsSuggestionNormalizer(
   if (data.qualifier.type === ContentfulContentFields.Article) {
     return {
       [SuggestionField.Contents]: data.data.items.map((entry) => ({
-        name: entry.fields.heading,
-        id: entry.fields.id,
+        name: getFieldByLocale(entry.fields.heading, data.locale),
+        id: getFieldByLocale(entry.fields.id, data.locale),
         type: ContentfulContentFields.Article,
       })),
     };
