@@ -1,6 +1,6 @@
-import { ContentLinkAppearance } from '@spryker-oryx/content/link';
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { LinkAppearance } from '@spryker-oryx/ui/link';
 import { i18n } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
@@ -113,7 +113,7 @@ export const HeaderTemplate: ExperienceComponent = {
                   options: {
                     icon: IconTypes.User,
                     url: '/account/overview',
-                    appearance: ContentLinkAppearance.DROPDOWN,
+                    appearance: LinkAppearance.DROPDOWN,
                   },
                   content: {
                     data: {
