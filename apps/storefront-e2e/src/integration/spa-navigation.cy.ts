@@ -5,16 +5,20 @@ const landingPage = new LandingPage();
 const contactPage = new ContactPage();
 
 describe('SPA navigation suite', () => {
-  it('should change pages when user clicks on different links', () => {
-    landingPage.visit();
-    landingPage.footer.getLinkByUrl('/contact').click();
+  it(
+    'should change pages when user clicks on different links',
+    { tags: 'b2b' },
+    () => {
+      landingPage.visit();
+      landingPage.footer.getLinkByUrl('/contact').click();
 
-    checkIfContactPageIsOpened();
+      checkIfContactPageIsOpened();
 
-    contactPage.header.getLogo().click();
+      contactPage.header.getLogo().click();
 
-    checkIfHomePageIsOpened();
-  });
+      checkIfHomePageIsOpened();
+    }
+  );
 });
 
 function checkIfContactPageIsOpened() {

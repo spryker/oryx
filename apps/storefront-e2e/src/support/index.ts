@@ -1,5 +1,5 @@
-import './commands';
 import registerCypressGrep from '@cypress/grep/src/support';
+import './commands';
 import { Customer } from './types/user.type';
 
 registerCypressGrep();
@@ -34,6 +34,10 @@ const getRandomCustomer = () => {
 
     cy.writeFile(path, JSON.stringify(randomUser));
   });
+};
+
+export const isB2B = (): boolean => {
+  return Cypress.env('IS_B2B');
 };
 
 before(() => {

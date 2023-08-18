@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.1 (2023-08-15)
+
+
+### Bug Fixes
+
+* **user:** don't update UI on validity triggered by change event in `UserAddressFormComponent` ([#687](https://github.com/spryker/oryx/issues/687)) ([ab206a2](https://github.com/spryker/oryx/commit/ab206a2468809301f275953859e1182d6cbca865))
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 

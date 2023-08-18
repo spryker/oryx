@@ -50,7 +50,7 @@ export class ProductCardComponent extends ProductMixin(
   @elementEffect()
   protected skuController = (): void => {
     const sku = this.$options().sku;
-    if (sku) {
+    if (sku !== undefined) {
       this.contextController.provide(ProductContext.SKU, sku);
     }
   };

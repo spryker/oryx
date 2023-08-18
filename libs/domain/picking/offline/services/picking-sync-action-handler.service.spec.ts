@@ -171,6 +171,8 @@ describe('PickingSyncActionHandlerService', () => {
       },
     };
 
+    const syncCallback = vi.fn();
+
     beforeEach(() => {
       adapter.get.mockReturnValue(of(mockPickingLists));
       mockTable.bulkPut.mockReturnValue(mockPickingListsIdsToCreate);
@@ -180,6 +182,7 @@ describe('PickingSyncActionHandlerService', () => {
         }),
       });
       service.handleSync(mockSyncPush).subscribe(callback);
+      service.isSyncing().subscribe(syncCallback);
     });
 
     it('should call online adapter and update indexedDB', () => {
@@ -194,6 +197,11 @@ describe('PickingSyncActionHandlerService', () => {
       expect(mockTable.bulkPut).toHaveBeenCalledWith(mockPickingLists, {
         allKeys: true,
       });
+    });
+
+    it('should update syncing status', () => {
+      expect(syncCallback).toHaveBeenNthCalledWith(1, true);
+      expect(syncCallback).toHaveBeenLastCalledWith(false);
     });
   });
 });
