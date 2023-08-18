@@ -1,6 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
-import { ContentLinkComponent } from '@spryker-oryx/content/link';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
@@ -67,9 +66,7 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render login title', () => {
-      const link = element.renderRoot.querySelector(
-        'oryx-content-link'
-      ) as ContentLinkComponent;
+      const link = element.renderRoot.querySelector('oryx-content-link') as any;
       expect(link?.content?.text).toBe(i18n('auth.login'));
     });
 
@@ -97,9 +94,7 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render logout title', () => {
-      const link = element.renderRoot.querySelector(
-        'oryx-content-link'
-      ) as ContentLinkComponent;
+      const link = element.renderRoot.querySelector('oryx-content-link') as any;
       expect(link?.content?.text).toBe(i18n('auth.logout'));
     });
 

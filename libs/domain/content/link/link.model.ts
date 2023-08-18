@@ -1,13 +1,8 @@
 import { RouteType } from '@spryker-oryx/router';
-import { ColorType } from '@spryker-oryx/ui/link';
+import { ColorType, LinkAppearance } from '@spryker-oryx/ui/link';
 
 export interface ContentLinkContent {
   text?: string;
-}
-
-export const enum ContentLinkAppearance {
-  LINK = 'link',
-  DROPDOWN = 'dropdown',
 }
 
 export interface ContentLinkOptions {
@@ -59,5 +54,5 @@ export interface ContentLinkOptions {
   /**
    * Changes the appearance of the content link
    */
-  appearance?: ContentLinkAppearance;
+  appearance?: LinkAppearance;
 }
