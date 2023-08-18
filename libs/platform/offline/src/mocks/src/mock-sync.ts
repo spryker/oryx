@@ -14,4 +14,5 @@ export const mockSync = {
   whenCompleted: vi.fn(),
   cancel: vi.fn(),
   handleSync: vi.fn().mockReturnValue(of(undefined)),
+  isSyncing: vi.fn().mockReturnValue(of(false)),
 };

@@ -51,6 +51,10 @@ export const pickingComponentStyles = css`
     animation: slide-up 0.5s ease-in-out;
   }
 
+  .submit-wrapper oryx-button {
+    display: flex;
+  }
+
   .scroll-shadow {
     box-shadow: 0 -1px 6px var(--oryx-color-neutral-4);
   }

@@ -11,6 +11,7 @@ export const enum ExperienceDataMergeType {
   After = 'after',
   Replace = 'replace',
   Patch = 'patch',
+  Remove = 'remove',
 }
 
 export const enum ExperienceDataType {

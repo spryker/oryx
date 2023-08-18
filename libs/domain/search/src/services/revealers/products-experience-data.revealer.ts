@@ -7,6 +7,7 @@ import {
 } from '@spryker-oryx/experience';
 import { Observable, of, switchMap, tap } from 'rxjs';
 import { Suggestion } from '../../models';
+import { SuggestionField } from '../adapter';
 import { SuggestionService } from '../suggestion';
 
 export class ProductsExperienceDataRevealer implements ExperienceDataRevealer {
@@ -14,7 +15,11 @@ export class ProductsExperienceDataRevealer implements ExperienceDataRevealer {
 
   protected products$ = catchMessage(MessageType.Query).pipe(
     switchMap(
-      (query) => this.suggestionService?.get({ query }) ?? of(undefined)
+      (query) =>
+        this.suggestionService?.get({
+          query,
+          entities: [SuggestionField.Products],
+        }) ?? of(undefined)
     ),
     tap((suggestions?: Suggestion) => {
       postMessage({
