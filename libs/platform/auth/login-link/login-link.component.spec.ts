@@ -1,5 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
+import { ContentLinkComponent } from '@spryker-oryx/content/link';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
@@ -22,8 +23,8 @@ describe('LoginLinkComponent', () => {
   let authService: MockAuthService;
   let routerService: MockRouterService;
 
-  const clickButton = (): void => {
-    element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
+  const clickLink = (): void => {
+    element.renderRoot.querySelector<HTMLElement>('oryx-content-link')?.click();
   };
 
   beforeAll(async () => {
@@ -66,13 +67,15 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render login title', () => {
-      const button = element.renderRoot.querySelector('oryx-button');
-      expect(button).toHaveProperty('text', i18n('auth.login'));
+      const link = element.renderRoot.querySelector(
+        'oryx-content-link'
+      ) as ContentLinkComponent;
+      expect(link?.content?.text).toBe(i18n('auth.login'));
     });
 
-    describe('and button is clicked', () => {
+    describe('and link is clicked', () => {
       beforeEach(() => {
-        clickButton();
+        clickLink();
       });
 
       it('should navigate to login page', () => {
@@ -94,8 +97,10 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render logout title', () => {
-      const button = element.renderRoot.querySelector('oryx-button');
-      expect(button).toHaveProperty('text', i18n('auth.logout'));
+      const link = element.renderRoot.querySelector(
+        'oryx-content-link'
+      ) as ContentLinkComponent;
+      expect(link?.content?.text).toBe(i18n('auth.logout'));
     });
 
     describe('and logout is not enabled', () => {
@@ -106,14 +111,14 @@ describe('LoginLinkComponent', () => {
         </oryx-auth-login-link>`);
       });
 
-      it('should not render the button', () => {
-        expect(element).not.toContainElement('oryx-button');
+      it('should not render the link', () => {
+        expect(element).not.toContainElement('oryx-content-link');
       });
     });
 
-    describe('and button is clicked', () => {
+    describe('and link is clicked', () => {
       beforeEach(() => {
-        clickButton();
+        clickLink();
       });
 
       it('should emit the logout', () => {
@@ -132,7 +137,7 @@ describe('LoginLinkComponent', () => {
             .options=${{ logoutRedirectUrl }}
           >
           </oryx-auth-login-link>`);
-          clickButton();
+          clickLink();
         });
 
         it('should redirect to the route', () => {

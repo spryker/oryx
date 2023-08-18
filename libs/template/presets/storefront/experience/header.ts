@@ -1,3 +1,4 @@
+import { ContentLinkAppearance } from '@spryker-oryx/content/link';
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n } from '@spryker-oryx/utilities';
@@ -112,13 +113,7 @@ export const HeaderTemplate: ExperienceComponent = {
                   options: {
                     icon: IconTypes.User,
                     url: '/account/overview',
-                    button: true,
-                    rules: [
-                      {
-                        style:
-                          '--oryx-button-background: transparent; padding-inline: 7px; --oryx-button-color: var(--oryx-color-neutral-12);',
-                      },
-                    ],
+                    appearance: ContentLinkAppearance.DROPDOWN,
                   },
                   content: {
                     data: {

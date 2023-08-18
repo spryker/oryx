@@ -58,7 +58,7 @@ describe('ContentLinkComponent', () => {
     });
 
     it('should pass the text to the link', () => {
-      expect(element.renderRoot.textContent?.trim()).toBe('test');
+      expect(element.renderRoot.textContent?.trim()).toContain('test');
     });
   });
 

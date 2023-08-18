@@ -5,6 +5,11 @@ export interface ContentLinkContent {
   text?: string;
 }
 
+export const enum ContentLinkAppearance {
+  LINK = 'link',
+  DROPDOWN = 'dropdown',
+}
+
 export interface ContentLinkOptions {
   url?: string;
   type?: RouteType;
@@ -50,4 +55,9 @@ export interface ContentLinkOptions {
    * Indicates that the link text should truncate when it has multiple lines.
    */
   singleLine?: boolean;
+
+  /**
+   * Changes the appearance of the content link
+   */
+  appearance?: ContentLinkAppearance;
 }

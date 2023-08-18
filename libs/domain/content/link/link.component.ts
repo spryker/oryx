@@ -1,17 +1,29 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
+import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { ContentLinkContent, ContentLinkOptions } from './link.model';
+import {
+  ContentLinkAppearance,
+  ContentLinkContent,
+  ContentLinkOptions,
+} from './link.model';
+import { styles } from './link.styles';
 
 @hydrate()
 export class ContentLinkComponent extends ContentMixin<
   ContentLinkOptions,
   ContentLinkContent
 >(LitElement) {
+  static styles = styles;
+
+  @property({ reflect: true, type: Boolean })
+  protected dropdown = false;
+
   protected semanticLinkService = resolve(LinkService);
 
   protected $link = computed(() => {
@@ -22,10 +34,15 @@ export class ContentLinkComponent extends ContentMixin<
   });
 
   protected override render(): TemplateResult | void {
-    const { button, icon, singleLine, color } = this.$options();
+    const { appearance, button, icon, singleLine, color } = this.$options();
 
-    if (button) {
-      return html`<oryx-button>${this.renderLink(true)}</oryx-button>`;
+    this.dropdown = appearance === ContentLinkAppearance.DROPDOWN;
+
+    if (button || this.dropdown) {
+      return html`<oryx-button
+        .type=${ifDefined(this.dropdown ? ButtonType.Text : undefined)}
+        >${this.renderLink(true)}</oryx-button
+      >`;
     }
 
     return html`<oryx-link
@@ -37,7 +54,7 @@ export class ContentLinkComponent extends ContentMixin<
   }
 
   protected renderLink(custom?: boolean): TemplateResult {
-    if (!this.$link()) return html`${this.$content()?.text}`;
+    if (!this.$link()) return html`${this.renderContent()}`;
 
     const { label, target } = this.$options();
 
@@ -57,8 +74,9 @@ export class ContentLinkComponent extends ContentMixin<
 
   protected renderContent(): TemplateResult {
     const { text } = this.$content() ?? {};
-    const { button, icon } = this.$options();
-    const renderIcon = !!button && !!icon;
+    const { button, icon, appearance } = this.$options();
+    const renderIcon =
+      (!!button || appearance === ContentLinkAppearance.DROPDOWN) && !!icon;
 
     if (text || icon) {
       return html` ${when(
