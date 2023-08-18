@@ -21,7 +21,8 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
   }
 
   protected resolveType(): Observable<string | undefined> {
-    return this.injector.inject(RouterService)
+    return this.injector
+      .inject(RouterService)
       .current()
       .pipe(map((route) => route.type as string | undefined));
   }

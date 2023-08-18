@@ -6,9 +6,12 @@ import { BreadcrumbsResolver, BreadcrumbsResolvers } from '../breadcrumbs';
 
 export class DefaultBreadcrumbsResolver implements BreadcrumbsResolver {
   constructor(protected injector = inject(INJECTOR)) {}
-  
+
   resolve(): Observable<Breadcrumb[]> {
-    return this.injector.inject(PageMetaResolverService).getTitle().pipe(map((text) => [{ text }]));
+    return this.injector
+      .inject(PageMetaResolverService)
+      .getTitle()
+      .pipe(map((text) => [{ text }]));
   }
 }
 

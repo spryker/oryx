@@ -43,23 +43,31 @@ export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
     };
 
     const selected = getSelected(categories.values as FacetValue[]);
-    return combineLatest(
-      flattenSelected(selected).map(({ name, value }) =>
-        this.injector.inject(LinkService)
-          .get({ id: value, type: RouteType.Category })
-          .pipe(map((url) => ({ text: name, url })))
-      )
-    );
+    const flatten = flattenSelected(selected);
+    return flatten.length
+      ? combineLatest(
+          flattenSelected(selected).map(({ name, value }) =>
+            this.injector
+              .inject(LinkService)
+              .get({ id: value, type: RouteType.Category })
+              .pipe(map((url) => ({ text: name, url })))
+          )
+        )
+      : of([]);
   }
 
   resolve(): Observable<Breadcrumb[]> {
-    return this.injector.inject(FacetListService)
-      .getFacet({ parameter: 'category' }).pipe(
+    return this.injector
+      .inject(FacetListService)
+      .getFacet({ parameter: 'category' })
+      .pipe(
         switchMap((facet) => this.getFlattenCategoriesBreadcrumbs(facet)),
         switchMap((breadcrumbs) =>
-          !breadcrumbs?.length
-            ? throwError(() => new Error('Categories breadcrumbs list is empty!'))
-            : of(breadcrumbs)
+          breadcrumbs.length
+            ? of(breadcrumbs)
+            : throwError(
+                () => new Error('Categories breadcrumbs list is empty!')
+              )
         )
       );
   }
