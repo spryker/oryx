@@ -1,4 +1,4 @@
-import { INJECTOR, Provider, inject } from '@spryker-oryx/di';
+import { Provider, inject } from '@spryker-oryx/di';
 import { Facet, FacetValue } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import {
@@ -17,10 +17,13 @@ import {
 } from 'rxjs';
 import { FacetListService } from '../facet-list.service';
 
-export type FlatFacet = { name: string; value: string };
+type FlatFacet = { name: string; value: string };
 
 export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
-  constructor(protected injector = inject(INJECTOR)) {}
+  constructor(
+    protected facetListService = inject(FacetListService),
+    protected linkService = inject(LinkService)
+  ) {}
 
   protected getFlattenCategoriesBreadcrumbs(
     categories: Facet
@@ -46,9 +49,8 @@ export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
     const flatten = flattenSelected(selected);
     return flatten.length
       ? combineLatest(
-          flattenSelected(selected).map(({ name, value }) =>
-            this.injector
-              .inject(LinkService)
+          flatten.map(({ name, value }) =>
+            this.linkService
               .get({ id: value, type: RouteType.Category })
               .pipe(map((url) => ({ text: name, url })))
           )
@@ -57,19 +59,14 @@ export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
   }
 
   resolve(): Observable<Breadcrumb[]> {
-    return this.injector
-      .inject(FacetListService)
-      .getFacet({ parameter: 'category' })
-      .pipe(
-        switchMap((facet) => this.getFlattenCategoriesBreadcrumbs(facet)),
-        switchMap((breadcrumbs) =>
-          breadcrumbs.length
-            ? of(breadcrumbs)
-            : throwError(
-                () => new Error('Categories breadcrumbs list is empty!')
-              )
-        )
-      );
+    return this.facetListService.getFacet({ parameter: 'category' }).pipe(
+      switchMap((facet) => this.getFlattenCategoriesBreadcrumbs(facet)),
+      switchMap((breadcrumbs) =>
+        breadcrumbs.length
+          ? of(breadcrumbs)
+          : throwError(() => new Error('Categories breadcrumbs list is empty!'))
+      )
+    );
   }
 }
 

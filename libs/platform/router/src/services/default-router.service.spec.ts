@@ -1,8 +1,8 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { RouteConfig } from '@spryker-oryx/router/lit';
 import { of } from 'rxjs';
 import 'urlpattern-polyfill';
-import { RouteConfig } from '../../lit/lit-router';
 import { DefaultRouterService } from './default-router.service';
 import { RouterEventType, RouterService } from './router.service';
 

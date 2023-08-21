@@ -4,7 +4,7 @@ import {
   Resolver,
   TokenResourceResolvers,
 } from '@spryker-oryx/core';
-import { INJECTOR, Provider, inject } from '@spryker-oryx/di';
+import { Provider, inject } from '@spryker-oryx/di';
 import { map } from 'rxjs';
 import { CartService } from '..';
 
@@ -14,10 +14,8 @@ export type CartResolvers = {
 };
 
 export class CartResolver extends BaseResolver<CartResolvers> {
-  protected cartService: CartService;
-  constructor(protected injector = inject(INJECTOR)) {
+  constructor(protected cartService = inject(CartService)) {
     super();
-    this.cartService = injector.inject(CartService);
   }
 
   protected resolvers = {

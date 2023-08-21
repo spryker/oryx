@@ -4,7 +4,7 @@ import {
   Resolver,
   TokenResourceResolvers,
 } from '@spryker-oryx/core';
-import { INJECTOR, Provider, inject } from '@spryker-oryx/di';
+import { Provider, inject } from '@spryker-oryx/di';
 import { map } from 'rxjs';
 import { UserService } from '..';
 
@@ -14,11 +14,11 @@ export type UserResolvers = {
 };
 
 export class UserResolver extends BaseResolver<UserResolvers> {
-  constructor(protected injector = inject(INJECTOR)) {
+  constructor(protected userService = inject(UserService)) {
     super();
   }
 
-  protected user$ = this.injector.inject(UserService).getUser();
+  protected user$ = this.userService.getUser();
 
   protected resolvers: UserResolvers = {
     NAME: (): ResolvedToken =>

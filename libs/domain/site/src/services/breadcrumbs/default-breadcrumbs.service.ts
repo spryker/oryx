@@ -9,7 +9,10 @@ import {
 } from './breadcrumbs.service';
 
 export class DefaultBreadcrumbsService implements BreadcrumbsService {
-  constructor(protected injector = inject(INJECTOR)) {}
+  constructor(
+    protected injector = inject(INJECTOR),
+    protected routerService = inject(RouterService)
+  ) {}
 
   protected homeBreadcrumb = {
     i18n: { token: 'breadcrumbs.home' },
@@ -21,14 +24,9 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
   }
 
   protected resolveType(): Observable<string | undefined> {
-    return this.injector
-      .inject(RouterService)
+    return this.routerService
       .current()
       .pipe(map((route) => route.type as string | undefined));
-  }
-
-  protected mapBreadcrumbs(breadcrumbs: Breadcrumb[]): Breadcrumb[] {
-    return [this.homeBreadcrumb, ...breadcrumbs];
   }
 
   protected resolveBreadcrumbs(type = 'DEFAULT'): Observable<Breadcrumb[]> {
@@ -36,7 +34,7 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
     return this.injector
       .inject<BreadcrumbsResolver>(key)
       .resolve()
-      .pipe(map((breadcrumbs) => this.mapBreadcrumbs(breadcrumbs)));
+      .pipe(map((breadcrumbs) => [this.homeBreadcrumb, ...breadcrumbs]));
   }
 
   get(): Observable<Breadcrumb[]> {
