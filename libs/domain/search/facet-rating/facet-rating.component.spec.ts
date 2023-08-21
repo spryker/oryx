@@ -36,7 +36,7 @@ describe('FacetRatingComponent', () => {
     });
 
     element = await fixture(
-      html`<oryx-search-rating-facet name="Rating"></oryx-search-rating-facet>`
+      html`<oryx-search-facet-rating name="Rating"></oryx-search-facet-rating>`
     );
   });
 
