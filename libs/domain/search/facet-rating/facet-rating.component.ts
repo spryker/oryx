@@ -14,14 +14,14 @@ export class SearchRatingFacetComponent extends SearchFacetComponent {
     facetValue: FacetValue
   ): TemplateResult {
     return html`
-      <div class="rating-facet-label">
+      <label>
         <oryx-rating
           readonly
           value=${facetValue.value}
           scale=${5}
         ></oryx-rating>
         ${when(Number(facetValue.value) < 5, () => html`<span>& up</span>`)}
-      </div>
+      </label>
     `;
   }
 }
