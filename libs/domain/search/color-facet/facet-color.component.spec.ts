@@ -39,10 +39,10 @@ describe('FacetColorComponent', () => {
     });
 
     element = await fixture(
-      html`<oryx-search-facet-color
+      html`<oryx-search-color-facet
         name="Color"
         .renderLimit=${mockRenderLimit}
-      ></oryx-search-facet-color>`
+      ></oryx-search-color-facet>`
     );
   });
 

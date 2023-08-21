@@ -44,14 +44,14 @@ export const facetProviders = [
           selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
         ): TemplateResult => {
           return html`
-            <oryx-search-facet-color
+            <oryx-search-color-facet
               @oryx.select=${selectListener}
               .name=${facet.name}
               .renderLimit=${options.renderLimit}
               .open=${options.open}
               .multi=${facet.multiValued}
             >
-            </oryx-search-facet-color>
+            </oryx-search-color-facet>
           `;
         },
       },
