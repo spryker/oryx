@@ -1,11 +1,11 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const accountPage: ExperienceComponent = {
-  id: 'account-page',
+export const overviewPage: ExperienceComponent = {
+  id: 'overview-page',
   type: 'Page',
   meta: {
-    title: 'Account Page',
-    route: '/account/:page',
+    title: 'Overview Page',
+    route: '/account/overview',
   },
   options: {
     rules: [
@@ -15,18 +15,15 @@ export const accountPage: ExperienceComponent = {
     ],
   },
   components: [
-    { ref: 'account-menu' },
+    {
+      ref: 'account-menu',
+    },
     {
       type: 'oryx-composition',
-      id: 'account-content',
+      id: 'overview-content',
       components: [
         {
-          type: 'oryx-content-text',
-          content: {
-            data: {
-              text: 'This page is not implemented yet',
-            },
-          },
+          type: 'oryx-user-overview',
         },
       ],
       options: {

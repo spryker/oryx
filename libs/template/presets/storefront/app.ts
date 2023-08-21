@@ -6,10 +6,10 @@ import { contentFeature } from '@spryker-oryx/content';
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { coreServerProviders } from '@spryker-oryx/core/server';
 import {
+  Resources,
   experienceFeature,
   experiencePreviewFeature,
   experienceRoutesFeature,
-  Resources,
 } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature } from '@spryker-oryx/i18n';
@@ -50,6 +50,7 @@ export const storefrontFeatures: AppFeature[] = [
   orderFeature,
   contentFeature,
   formFeature,
+  userFeature,
   experienceFeature,
   experienceRoutesFeature,
   isPreview ? experiencePreviewFeature : {},
@@ -57,7 +58,6 @@ export const storefrontFeatures: AppFeature[] = [
   searchFeature,
   siteFeature,
   applicationFeature,
-  userFeature,
   isServer ? { providers: coreServerProviders } : {},
   isPreview ? { providers: searchPreviewProviders } : {},
   {

@@ -1,5 +1,5 @@
 import { Provider } from '@spryker-oryx/di';
-import { AccountContextFallback } from './account-context';
+import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import {
   AddressAdapter,
   addressesNormalizer,
@@ -17,7 +17,8 @@ import { AddressService } from './address.service';
 import { DefaultAddressFormService } from './default-address-form.service';
 import { DefaultAddressService } from './default-address.service';
 import { DefaultUserService } from './default-user.service';
-import { AccountResourceResolver, UserResourceResolver } from './resolver';
+import { UserResourceResolver } from './resolver';
+import { userRoutes } from './routes';
 import { AddressStateService, DefaultAddressStateService } from './state';
 import { UserService } from './user.service';
 
@@ -54,7 +55,6 @@ export const userProviders: Provider[] = [
   ...addressNormalizer,
   ...addressSerializers,
   ...userNormalizer,
-  AccountContextFallback,
   UserResourceResolver,
-  AccountResourceResolver,
+  ...provideLitRoutes({ routes: userRoutes }),
 ];

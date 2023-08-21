@@ -1,14 +1,8 @@
 import { css } from 'lit';
 
 export const styles = css`
-  :host {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-  }
-
   oryx-button {
-    --_height: 42px;
+    --_height: 38px;
 
     border-block-end: 4px solid;
   }
