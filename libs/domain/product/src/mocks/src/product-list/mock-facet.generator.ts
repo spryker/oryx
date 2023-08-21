@@ -18,7 +18,8 @@ export function generateValues(
       count: Number(`${i}0`),
       name: `${prefix}${i}`,
       ...(children ? { children: generateValues(3, `Sub-${prefix}`) } : {}),
-      disabled: (disabledValues && disabledValues?.indexOf(`${prefix}${i}`) >= 0) ??
+      disabled:
+        (disabledValues && disabledValues?.indexOf(`${prefix}${i}`) >= 0) ??
         false,
     });
   }
@@ -39,8 +40,21 @@ export const generateFacet = (
     parameter,
     valuesTreeLength: valuesLength,
     ...(selectedValues && { selectedValues }),
-    values: generateValues(valuesLength, name, selectedValues, disabledValues, children),
+    values: generateValues(
+      valuesLength,
+      name,
+      selectedValues,
+      disabledValues,
+      children
+    ),
   };
 };
 
-
+export const generateRatingFacet = (): Facet => {
+  return {
+    name: 'Rating',
+    parameter: 'rating[min]',
+    valuesTreeLength: 5,
+    values: generateValues(5, '', ['1']),
+  };
+};
