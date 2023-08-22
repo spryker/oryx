@@ -1,4 +1,4 @@
-import { resolve } from '@spryker-oryx/di';
+import { INJECTOR, inject } from '@spryker-oryx/di';
 import { map, of } from 'rxjs';
 import {
   ResolvedToken,
@@ -11,6 +11,8 @@ const tokenRE = /^[A-Z_-]+\.(!?)[A-Z_-]+$/;
 
 export class DefaultTokenService implements TokenResolver {
   protected resolvers = new Map<string, TokenResourceResolver>();
+
+  constructor(protected injector = inject(INJECTOR)) {}
 
   resolveToken(token: string): ResolvedToken {
     if (!this.isToken(token)) {
@@ -53,7 +55,7 @@ export class DefaultTokenService implements TokenResolver {
     const key = this.getResolverKey(resourceResolver);
     if (!this.resolvers.has(key)) {
       try {
-        const resolver = resolve(key);
+        const resolver = this.injector.inject<TokenResourceResolver>(key);
         this.resolvers.set(key, resolver);
       } catch {
         //is handled in injector

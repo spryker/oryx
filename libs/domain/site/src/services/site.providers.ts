@@ -2,26 +2,31 @@ import { ErrorHandler, HttpInterceptor, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { LocaleAdapter } from '@spryker-oryx/i18n';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
+import { BreadcrumbsService, DefaultBreadcrumbsService } from './breadcrumbs';
 import { CountryService, DefaultCountryService } from './country';
 import {
-  currencyHydration,
   CurrencyService,
   CurrentCurrencyInterceptor,
   DefaultCurrencyService,
+  currencyHydration,
 } from './currency';
 import { SiteErrorHandler } from './error-handling';
+import { DefaultLinkService, LinkService } from './link';
 import {
   AcceptLanguageInterceptor,
-  localeHydration,
   SapiLocaleAdapter,
+  localeHydration,
 } from './locale';
 import {
   DefaultNotificationService,
   NotificationService,
 } from './notification';
 import { DefaultPricingService, PricingService } from './pricing';
+import {
+  DefaultFallbackBreadcrumbsResolver,
+  FallbackBreadcrumbsResolver,
+} from './resolvers';
 import { DefaultSalutationService, SalutationService } from './salutation';
-import { DefaultLinkService, LinkService } from './link';
 import { DefaultStoreService, StoreService } from './store';
 
 declare global {
@@ -39,6 +44,10 @@ export const siteProviders: Provider[] = [
   {
     provide: 'STORE',
     useFactory: () => injectEnv('STORE', ''),
+  },
+  {
+    provide: BreadcrumbsService,
+    useClass: DefaultBreadcrumbsService,
   },
   {
     provide: LinkService,
@@ -89,6 +98,10 @@ export const siteProviders: Provider[] = [
   {
     provide: HttpInterceptor,
     useClass: CurrentCurrencyInterceptor,
+  },
+  {
+    provide: FallbackBreadcrumbsResolver,
+    useClass: DefaultFallbackBreadcrumbsResolver,
   },
   localeHydration,
   currencyHydration,

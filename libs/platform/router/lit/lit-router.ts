@@ -299,6 +299,7 @@ export class LitRouter implements ReactiveController {
       this._currentParams = { 0: tailGroup };
     } else {
       const route = this._getRoute(pathname);
+
       if (route === undefined) {
         throw new Error(`No route found for ${pathname}`);
       }

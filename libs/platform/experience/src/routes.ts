@@ -28,6 +28,10 @@ export const defaultExperienceRoutes: RouteConfig[] = [
         ),
   },
   {
+    path: '/search',
+    type: RouteType.ProductList,
+  },
+  {
     path: '/product/:sku',
     type: RouteType.Product,
   },

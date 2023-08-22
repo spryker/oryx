@@ -9,10 +9,11 @@ import {
   map,
 } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
-import { RouteConfig } from '../../lit/lit-router';
+import { RouteConfig, URLPatternRouteConfig } from '../../lit/lit-router';
 import {
   NavigationExtras,
   RouteParams,
+  RouteWithParams,
   RouterEvent,
   RouterEventType,
   RouterService,
@@ -20,6 +21,16 @@ import {
 
 const CURRENT_PAGE = 'currentPage';
 const PREVIOUS_PAGE = 'previousPage';
+
+const isPatternConfig = (route: RouteConfig): route is URLPatternRouteConfig =>
+  (route as URLPatternRouteConfig).pattern !== undefined;
+
+const getPattern = (route: RouteConfig) => {
+  if (isPatternConfig(route)) {
+    return route.pattern;
+  }
+  return new URLPattern({ pathname: route.path });
+};
 
 export class DefaultRouterService implements RouterService {
   private router$ = new BehaviorSubject(globalThis.location?.pathname ?? '/');
@@ -134,6 +145,20 @@ export class DefaultRouterService implements RouterService {
     return this.routes$.asObservable();
   }
 
+  current(): Observable<RouteWithParams> {
+    return combineLatest([
+      this.getCurrent(),
+      this.params$,
+      this.urlSearchParams$,
+    ]).pipe(
+      map(([route, params, query]) => ({
+        ...route,
+        params,
+        query,
+      }))
+    );
+  }
+
   protected createUrlParams(params?: {
     [x: string]: string | string[] | undefined;
   }): string | undefined {
@@ -162,6 +187,16 @@ export class DefaultRouterService implements RouterService {
       new URLSearchParams(
         decodeURIComponent(search ?? globalThis.location?.search ?? '')
       ).entries()
+    );
+  }
+
+  protected getCurrent(): Observable<RouteConfig> {
+    return combineLatest([this.router$, this.routes$]).pipe(
+      map(
+        ([pathname, routes]) =>
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          routes.find((r) => getPattern(r).test({ pathname: pathname }))!
+      )
     );
   }
 }
