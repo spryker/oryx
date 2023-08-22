@@ -106,4 +106,23 @@ describe('DefaultBreadcrumbsService', () => {
       );
     });
   });
+
+  describe('when route does not nave type', () => {
+    let spy: SpyInstance;
+    beforeEach(() => {
+      routerService.current = vi.fn().mockReturnValue(of({}));
+      spy = vi.spyOn(defaultResolver, 'resolve');
+      service.get().subscribe(callback);
+    });
+
+    it('should resolve the breadcrumbs from the fallback service', () => {
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should return processed array of default breadcrumbs', () => {
+      expect(callback).toHaveBeenCalledWith(
+        expect.arrayContaining([breadcrumb])
+      );
+    });
+  });
 });
