@@ -8,6 +8,10 @@ export const styles = css`
     white-space: nowrap;
   }
 
+  oryx-button:hover {
+    background-color: var(--oryx-color-neutral-3);
+  }
+
   oryx-button:not(.active) {
     --_text-color: var(--oryx-color-neutral-12);
 
