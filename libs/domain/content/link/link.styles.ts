@@ -5,6 +5,7 @@ export const styles = css`
     --oryx-button-color: var(--oryx-color-neutral-12);
 
     padding: 9px 15px;
+    display: block;
   }
 
   :host([dropdown]:hover) {

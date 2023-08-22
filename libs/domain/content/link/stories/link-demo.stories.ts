@@ -1,13 +1,10 @@
 import { getAppIcons } from '@/tools/storybook';
 import { RouteType } from '@spryker-oryx/router';
+import { LinkAppearance } from '@spryker-oryx/ui/link';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import {
-  ContentLinkAppearance,
-  ContentLinkContent,
-  ContentLinkOptions,
-} from '../link.model';
+import { ContentLinkContent, ContentLinkOptions } from '../link.model';
 
 export default {
   title: `${storybookPrefix}/Link`,
@@ -19,7 +16,7 @@ export default {
     noopener: false,
     nofollow: false,
     button: false,
-    appearance: ContentLinkAppearance.LINK,
+    appearance: LinkAppearance.LINK,
   },
   argTypes: {
     icon: {
@@ -39,7 +36,7 @@ export default {
       control: { type: 'select' },
     },
     appearance: {
-      options: [ContentLinkAppearance.LINK, ContentLinkAppearance.DROPDOWN],
+      options: [LinkAppearance.LINK, LinkAppearance.DROPDOWN],
       control: { type: 'select' },
     },
   },
