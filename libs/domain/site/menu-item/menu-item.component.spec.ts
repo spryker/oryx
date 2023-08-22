@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
+import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -71,9 +72,9 @@ describe('MenuItemComponent', () => {
   });
 
   it('should pass text to oryx button', () => {
-    expect((element.renderRoot.querySelector('oryx-button') as any).text).toBe(
-      'mock'
-    );
+    expect(
+      (element.renderRoot.querySelector('oryx-button') as ButtonComponent).text
+    ).toBe('mock');
   });
 
   it('should not be highlighted', () => {
@@ -143,7 +144,8 @@ describe('MenuItemComponent', () => {
 
     it('should pass icon to oryx button', () => {
       expect(
-        (element.renderRoot.querySelector('oryx-button') as any).icon
+        (element.renderRoot.querySelector('oryx-button') as ButtonComponent)
+          .icon
       ).toBe('mockicon');
     });
   });
