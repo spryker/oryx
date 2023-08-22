@@ -26,13 +26,10 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
   get(): Observable<Breadcrumb[]> {
     return this.routerService.current().pipe(
       switchMap((route) => {
-        const key = this.getResolverKey(route.type ?? 'DEFAULT');
         return this.injector
           .inject<BreadcrumbsResolver>(
-            key,
-            this.injector.inject<BreadcrumbsResolver>(
-              this.getResolverKey('DEFAULT')
-            )
+            this.getResolverKey(route.type ?? 'DEFAULT'),
+            this.injector.inject(this.getResolverKey('DEFAULT'))
           )
           .resolve()
           .pipe(map((breadcrumbs) => [this.homeBreadcrumb, ...breadcrumbs]));
