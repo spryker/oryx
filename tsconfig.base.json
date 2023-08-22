@@ -207,10 +207,10 @@
       "@spryker-oryx/router/lit": ["libs/platform/router/lit/index.ts"],
       "@spryker-oryx/search": ["libs/domain/search/src/index.ts"],
       "@spryker-oryx/search/box": ["libs/domain/search/box/index.ts"],
-      "@spryker-oryx/search/facet": ["libs/domain/search/facet/index.ts"],
-      "@spryker-oryx/search/facet-color": [
-        "libs/domain/search/facet-color/index.ts"
+      "@spryker-oryx/search/color-facet": [
+        "libs/domain/search/color-facet/index.ts"
       ],
+      "@spryker-oryx/search/facet": ["libs/domain/search/facet/index.ts"],
       "@spryker-oryx/search/facet-navigation": [
         "libs/domain/search/facet-navigation/index.ts"
       ],

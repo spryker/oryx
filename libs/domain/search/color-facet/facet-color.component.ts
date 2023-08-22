@@ -21,10 +21,10 @@ export class SearchColorFacetComponent extends SearchFacetComponent {
     facetValue: FacetValue
   ): TemplateResult {
     return html`
-      <label>
+      <div class="color-facet-label">
         <oryx-swatch .color=${this.getColor(facetValue.value)}></oryx-swatch>
         ${facetValue.name ?? facetValue.value}
-      </label>
+      </div>
     `;
   }
 
