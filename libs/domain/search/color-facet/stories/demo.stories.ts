@@ -7,7 +7,7 @@ import {
   SelectFacetEventDetail,
 } from '@spryker-oryx/search/facet';
 import { Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { take } from 'rxjs';
 import { storybookPrefix } from '../../.constants';
 
