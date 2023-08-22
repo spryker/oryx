@@ -19,7 +19,10 @@ describe('DefaultBreadcrumbsResolver', () => {
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
-        DefaultBreadcrumbs,
+        {
+          provide: DefaultBreadcrumbs,
+          useClass: DefaultBreadcrumbsResolver,
+        },
         {
           provide: PageMetaResolverService,
           useClass: MockPageMetaResolverService,
@@ -30,7 +33,7 @@ describe('DefaultBreadcrumbsResolver', () => {
     pageMetaResolver = testInjector.inject<MockPageMetaResolverService>(
       PageMetaResolverService
     );
-    service = testInjector.inject(DefaultBreadcrumbs.provide);
+    service = testInjector.inject(DefaultBreadcrumbs);
   });
 
   afterEach(() => {
