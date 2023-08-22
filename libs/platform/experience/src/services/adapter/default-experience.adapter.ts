@@ -6,10 +6,14 @@ import { CmsAdapter } from '../cms';
 import { ContentBackendUrl } from '../experience-tokens';
 import { ExperienceAdapter } from './experience.adapter';
 
+interface CmsComponent {
+  data: Component;
+}
+
 export class DefaultExperienceAdapter implements ExperienceAdapter {
   constructor(
     protected backendUrl = inject(ContentBackendUrl),
-    protected cms = inject(CmsAdapter, null),
+    protected cms = inject(CmsAdapter, {} as CmsAdapter),
     protected http = inject(HttpService)
   ) {}
 
@@ -20,17 +24,18 @@ export class DefaultExperienceAdapter implements ExperienceAdapter {
   }
 
   get(qualifier: ExperienceQualifier): Observable<Component | null> {
-    if (this.cms) {
-      return this.cms.get({ type: 'component' }).pipe(
-        map(
-          ({ components }) =>
-            components?.find((component) => {
-              const toCompare = qualifier.id
-                ? component.id
-                : component.meta?.route;
-              return toCompare === (qualifier.id ?? qualifier.route);
-            }) ?? null
-        )
+    if (this.cms?.get) {
+      return this.cms.get<CmsComponent>({ type: 'component' }).pipe(
+        map((data) => {
+          const component = data.items?.find((_component) => {
+            const toCompare = qualifier.id
+              ? _component.data.id
+              : _component.data.meta?.route;
+            return toCompare === (qualifier.id ?? qualifier.route);
+          });
+
+          return component ? { ...component?.data, id: component?.id } : null;
+        })
       );
     }
 

@@ -1,3 +1,4 @@
+import { CmsQualifier } from './cms-qualifier';
 import { CompositionProperties } from './composition.model';
 
 export const CmsToken = 'oryx.ContentfulSpace';
@@ -39,8 +40,14 @@ export interface Component<
   };
 }
 
-export interface ExperienceCms {
-  components?: Component[];
+export type CmsEntry = Record<string, unknown> & {
+  id: string;
+  version: number;
+};
+
+export interface CmsModel<T = CmsEntry> {
+  qualifier: CmsQualifier;
+  items: (T & CmsEntry)[];
 }
 
 declare global {

@@ -2,7 +2,14 @@ import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { CmsToken } from '../models';
 import { DefaultExperienceAdapter, ExperienceAdapter } from './adapter';
-import { CmsAdapter, cmsNormalizer, DefaultCmsAdapter } from './cms';
+import {
+  CmsAdapter,
+  cmsFieldNormalizers,
+  cmsFieldsNormalizers,
+  cmsItemsNormalizers,
+  cmsTypesNormalizers,
+  DefaultCmsAdapter,
+} from './cms';
 import {
   AppReadyExperienceDataRevealer,
   ColorModeExperienceDataRevealer,
@@ -92,7 +99,10 @@ export const experienceProviders: Provider[] = [
     useClass: DefaultExperienceDataService,
   },
   ...layoutProviders,
-  ...cmsNormalizer,
+  ...cmsItemsNormalizers,
+  ...cmsTypesNormalizers,
+  ...cmsFieldNormalizers,
+  ...cmsFieldsNormalizers,
 ];
 
 export const experiencePreviewProviders: Provider[] = [

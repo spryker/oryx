@@ -1,10 +1,5 @@
 import { inject } from '@spryker-oryx/di';
-import {
-  ApiCmsModel,
-  CmsAdapter,
-  ExperienceCms,
-  getFieldByLocale,
-} from '@spryker-oryx/experience';
+import { CmsAdapter } from '@spryker-oryx/experience';
 import {
   Suggestion,
   SuggestionAdapter,
@@ -14,26 +9,8 @@ import {
 import { Observable, map, of } from 'rxjs';
 import { ContentfulContentFields } from './contentful.model';
 
-declare module '@spryker-oryx/experience' {
-  interface ExperienceCms {
-    [SuggestionField.Contents]?: Suggestion[SuggestionField.Contents];
-  }
-}
-
-export function cmsSuggestionNormalizer(
-  data: ApiCmsModel.Model<{ heading: string }>
-): ExperienceCms {
-  if (data.qualifier.type === ContentfulContentFields.Article) {
-    return {
-      [SuggestionField.Contents]: data.data.items.map((entry) => ({
-        name: getFieldByLocale(entry.fields.heading, data.locale),
-        id: getFieldByLocale(entry.fields.id, data.locale),
-        type: ContentfulContentFields.Article,
-      })),
-    };
-  }
-
-  return {};
+interface CmsSuggestion {
+  heading: string;
 }
 
 export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
@@ -49,13 +26,17 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
       entities?.includes(ContentfulContentFields.Article)
     ) {
       return this.cmsAdapter
-        .get({
+        .get<CmsSuggestion>({
           query: this.getKey({ query }),
           type: ContentfulContentFields.Article,
         })
         .pipe(
           map((data) => ({
-            [SuggestionField.Contents]: data?.[SuggestionField.Contents],
+            [SuggestionField.Contents]: data.items.map((entry) => ({
+              name: entry.heading,
+              id: entry.id,
+              type: ContentfulContentFields.Article,
+            })),
           }))
         );
     }

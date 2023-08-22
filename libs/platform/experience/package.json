@@ -24,7 +24,9 @@
     "@spryker-oryx/di": "1.0.0",
     "@spryker-oryx/router": "1.0.0",
     "@spryker-oryx/ui": "1.0.0",
-    "@spryker-oryx/utilities": "1.0.0"
+    "@spryker-oryx/utilities": "1.0.0",
+    "@types/marked": "^5.0.0",
+    "marked": "^5.1.0"
   },
   "peerDependencies": {
     "lit": "^2.4.0",

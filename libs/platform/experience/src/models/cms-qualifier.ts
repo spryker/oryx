@@ -1,5 +1,6 @@
 export interface CmsQualifier {
   id?: string;
-  type?: string;
+  type: string;
   query?: string;
+  body?: Record<string, unknown>;
 }

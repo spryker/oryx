@@ -7,8 +7,7 @@ import {
   signal,
   signalAware,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
-import { marked } from 'marked';
+import { LitElement, TemplateResult, html } from 'lit';
 import { of } from 'rxjs';
 import { ArticleContext } from '../../article-context';
 
@@ -39,8 +38,6 @@ export class ArticleComponent extends LitElement {
       return;
     }
 
-    return html`<oryx-text
-      .content=${marked.parse(data.content)}
-    ></oryx-text> `;
+    return html`<oryx-text .content=${data.content}></oryx-text> `;
   }
 }
