@@ -57,7 +57,7 @@ export const accountMenu = {
       options: {
         type: 'account',
         id: 'order-history',
-        icon: IconTypes.OrdersHistory,
+        icon: IconTypes.History,
       },
     },
   ],

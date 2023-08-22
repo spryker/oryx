@@ -5,6 +5,7 @@ export const styles = css`
     --_height: 38px;
 
     border-block-end: 4px solid;
+    white-space: nowrap;
   }
 
   oryx-button:not(.active) {
