@@ -4,7 +4,7 @@ import { Observable, map } from 'rxjs';
 import { Breadcrumb } from '../../models';
 import { BreadcrumbsResolver, BreadcrumbsResolvers } from '../breadcrumbs';
 
-export class DefaultBreadcrumbsResolver implements BreadcrumbsResolver {
+export class DefaultFallbackBreadcrumbsResolver implements BreadcrumbsResolver {
   constructor(protected pageMetaService = inject(PageMetaResolverService)) {}
 
   resolve(): Observable<Breadcrumb[]> {
@@ -12,4 +12,4 @@ export class DefaultBreadcrumbsResolver implements BreadcrumbsResolver {
   }
 }
 
-export const DefaultBreadcrumbs = `${BreadcrumbsResolvers}default`;
+export const FallbackBreadcrumbsResolver = `${BreadcrumbsResolvers}fallback`;

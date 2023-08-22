@@ -19,7 +19,7 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
     url: '/',
   };
 
-  protected getResolverKey(type = 'default'): string {
+  protected getResolverKey(type = 'fallback'): string {
     return `${BreadcrumbsResolvers}${type}`;
   }
 

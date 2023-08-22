@@ -3,6 +3,7 @@ import { RouteWithParams, RouterService } from '@spryker-oryx/router';
 import { Observable, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { Breadcrumb } from '../../models';
+import { FallbackBreadcrumbsResolver } from '../resolvers';
 import {
   BreadcrumbsResolver,
   BreadcrumbsResolvers,
@@ -46,7 +47,7 @@ describe('DefaultBreadcrumbsService', () => {
           useClass: TestResolver,
         },
         {
-          provide: `${BreadcrumbsResolvers}default`,
+          provide: FallbackBreadcrumbsResolver,
           useClass: TestResolver,
         },
       ],
@@ -57,7 +58,7 @@ describe('DefaultBreadcrumbsService', () => {
     routerService = testInjector.inject<MockRouterService>(RouterService);
     resolver = testInjector.inject<TestResolver>(`${BreadcrumbsResolvers}test`);
     defaultResolver = testInjector.inject<TestResolver>(
-      `${BreadcrumbsResolvers}default`
+      FallbackBreadcrumbsResolver
     );
   });
 

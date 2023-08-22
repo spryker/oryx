@@ -22,7 +22,10 @@ import {
   NotificationService,
 } from './notification';
 import { DefaultPricingService, PricingService } from './pricing';
-import { DefaultBreadcrumbs, DefaultBreadcrumbsResolver } from './resolvers';
+import {
+  DefaultFallbackBreadcrumbsResolver,
+  FallbackBreadcrumbsResolver,
+} from './resolvers';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultStoreService, StoreService } from './store';
 
@@ -97,8 +100,8 @@ export const siteProviders: Provider[] = [
     useClass: CurrentCurrencyInterceptor,
   },
   {
-    provide: DefaultBreadcrumbs,
-    useClass: DefaultBreadcrumbsResolver,
+    provide: FallbackBreadcrumbsResolver,
+    useClass: DefaultFallbackBreadcrumbsResolver,
   },
   localeHydration,
   currencyHydration,
