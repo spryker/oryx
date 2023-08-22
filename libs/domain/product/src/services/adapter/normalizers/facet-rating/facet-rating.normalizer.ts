@@ -11,8 +11,8 @@ export function facetRatingNormalizer(
 ): Observable<Facet> {
   const ratingParamKey = 'rating[min]';
 
-  //TODO: temporary solution. For now, it is only way to get current rating[min] value
-  // because the backend wrongly returns the rating[min] value.
+  //TODO: temporary solution. Should be fixed after https://spryker.atlassian.net/browse/CC-31032.
+  // For now, it is only way to get current rating[min] value because the backend wrongly returns the rating[min] value.
   const routerService = resolve(RouterService);
 
   return routerService.currentQuery().pipe(

@@ -58,7 +58,7 @@ describe('FacetRatingComponent', () => {
     const ratings = element.renderRoot.querySelectorAll('oryx-rating');
 
     (mockFacet.values as FacetValue[]).forEach((value, index) => {
-      if (Number(value) < 4) {
+      if (Number(value) <= 4) {
         expect(ratings[index]?.nextElementSibling?.textContent).toBe('& up');
       }
     });
@@ -68,7 +68,7 @@ describe('FacetRatingComponent', () => {
     expect(
       element.renderRoot.querySelector('oryx-rating[value="5"]')
         ?.nextElementSibling
-    ).toBe(undefined);
+    ).toBe(null);
   });
 
   it('should render each oryx-rating with "readonly" attribute', () => {
