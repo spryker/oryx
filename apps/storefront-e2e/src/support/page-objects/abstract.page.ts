@@ -1,3 +1,4 @@
+import { BreadcrumbsFragment } from '../page-fragments/breadcrumbs.fragment';
 import { FooterFragment } from '../page-fragments/footer.fragment';
 import { GlobalNotificationCenter } from '../page-fragments/global-notification-center.fragment';
 import { HeaderFragment } from '../page-fragments/header.fragment';
@@ -22,6 +23,7 @@ export abstract class AbstractSFPage {
   footer = new FooterFragment();
   searchbox = new SearchBoxFragment();
   globalNotificationCenter = new GlobalNotificationCenter();
+  breadcrumbs = new BreadcrumbsFragment();
 
   /**
    * Initializes cypress interceptors
