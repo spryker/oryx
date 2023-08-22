@@ -6,8 +6,8 @@ import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { MenuItemComponent } from './menu-item.component';
-import { menuItemComponent } from './menu-item.def';
+import { SiteMenuItemComponent } from './menu-item.component';
+import { siteMenuItemComponent } from './menu-item.def';
 
 class MockLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/'));
@@ -17,13 +17,13 @@ class MockRouterService implements Partial<RouterService> {
   route = vi.fn().mockReturnValue(of('/'));
 }
 
-describe('MenuItemComponent', () => {
-  let element: MenuItemComponent;
+describe('SiteMenuItemComponent', () => {
+  let element: SiteMenuItemComponent;
   let routerService: MockRouterService;
   let linkService: MockLinkService;
 
   beforeAll(async () => {
-    await useComponent(menuItemComponent);
+    await useComponent(siteMenuItemComponent);
   });
 
   beforeEach(async () => {
@@ -60,7 +60,7 @@ describe('MenuItemComponent', () => {
   });
 
   it('should be defined', () => {
-    expect(element).toBeInstanceOf(MenuItemComponent);
+    expect(element).toBeInstanceOf(SiteMenuItemComponent);
   });
 
   it('should pass the a11y audit', async () => {

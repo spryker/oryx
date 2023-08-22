@@ -10,7 +10,7 @@ import { map } from 'rxjs';
 import { SiteMenuItemContent, SiteMenuItemOptions } from './menu-item.model';
 import { styles } from './menu-item.styles';
 
-export class MenuItemComponent extends ContentMixin<
+export class SiteMenuItemComponent extends ContentMixin<
   SiteMenuItemOptions,
   SiteMenuItemContent
 >(LitElement) {
