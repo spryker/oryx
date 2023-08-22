@@ -9,6 +9,14 @@ import { storybookPrefix } from '../../.constants';
 
 export default {
   title: `${storybookPrefix}/Facet Rating`,
+  args: {
+    open: true,
+  },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
 };
 
 const Template: Story<SearchFacetComponentAttributes> = (
@@ -26,7 +34,3 @@ const Template: Story<SearchFacetComponentAttributes> = (
 };
 
 export const Demo = Template.bind({});
-
-Demo.args = {
-  open: true,
-};
