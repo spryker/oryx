@@ -156,6 +156,9 @@
         "libs/domain/picking/warehouse-assignment/index.ts"
       ],
       "@spryker-oryx/presets": ["libs/template/presets/src/index.ts"],
+      "@spryker-oryx/presets/b2b-storefront": [
+        "libs/template/presets/b2b-storefront/index.ts"
+      ],
       "@spryker-oryx/presets/backoffice": [
         "libs/template/presets/backoffice/index.ts"
       ],
