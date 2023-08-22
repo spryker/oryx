@@ -84,13 +84,14 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
         type=${this.multi ? 'checkbox' : 'radio'}
         name=${this.facet()!.parameter}
         value=${facetValue.value}
+        ?disabled=${facetValue.disabled}
         ?checked=${facetValue.selected}
         @change=${this.onChange}
         aria-label=${label}
       />
       <div>
         ${this.renderValueControlLabel(facetValue)}
-        <span>${facetValue.count}</span>
+        ${when(facetValue.count, () => html`<span>${facetValue.count}</span>`)}
       </div> `;
 
     return this.multi

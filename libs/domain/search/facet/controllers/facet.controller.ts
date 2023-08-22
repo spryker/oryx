@@ -7,9 +7,9 @@ import {
   ToggleFacetEventDetail,
 } from '@spryker-oryx/search/facet-value-navigation';
 import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
-import { computed, ObserveController, signal } from '@spryker-oryx/utilities';
+import { ObserveController, computed, signal } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
-import { defer, Observable, of, switchMap } from 'rxjs';
+import { Observable, defer, of, switchMap } from 'rxjs';
 import {
   FACET_SELECT_EVENT,
   SearchFacetComponentAttributes,

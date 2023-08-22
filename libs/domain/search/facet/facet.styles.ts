@@ -21,6 +21,7 @@ export const searchFacetStyles = css`
 
   input + div {
     display: flex;
+    justify-content: space-between;
     gap: 10px;
   }
 
@@ -28,9 +29,5 @@ export const searchFacetStyles = css`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-  }
-
-  input + div > *:last-child {
-    margin-inline-start: auto;
   }
 `;
