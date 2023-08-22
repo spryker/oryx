@@ -19,8 +19,8 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
     url: '/',
   };
 
-  protected getResolverKey(type: string): string {
-    return `${BreadcrumbsResolvers}${type.toUpperCase()}`;
+  protected getResolverKey(type = 'default'): string {
+    return `${BreadcrumbsResolvers}${type}`;
   }
 
   get(): Observable<Breadcrumb[]> {
@@ -28,8 +28,8 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
       switchMap((route) => {
         return this.injector
           .inject<BreadcrumbsResolver>(
-            this.getResolverKey(route.type ?? 'DEFAULT'),
-            this.injector.inject(this.getResolverKey('DEFAULT'))
+            this.getResolverKey(route.type),
+            this.injector.inject(this.getResolverKey())
           )
           .resolve()
           .pipe(map((breadcrumbs) => [this.homeBreadcrumb, ...breadcrumbs]));

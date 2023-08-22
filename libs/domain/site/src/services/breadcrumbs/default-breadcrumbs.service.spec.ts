@@ -42,11 +42,11 @@ describe('DefaultBreadcrumbsService', () => {
           useClass: MockRouterService,
         },
         {
-          provide: `${BreadcrumbsResolvers}TEST`,
+          provide: `${BreadcrumbsResolvers}test`,
           useClass: TestResolver,
         },
         {
-          provide: `${BreadcrumbsResolvers}DEFAULT`,
+          provide: `${BreadcrumbsResolvers}default`,
           useClass: TestResolver,
         },
       ],
@@ -55,9 +55,9 @@ describe('DefaultBreadcrumbsService', () => {
     service =
       testInjector.inject<DefaultBreadcrumbsService>(BreadcrumbsService);
     routerService = testInjector.inject<MockRouterService>(RouterService);
-    resolver = testInjector.inject<TestResolver>(`${BreadcrumbsResolvers}TEST`);
+    resolver = testInjector.inject<TestResolver>(`${BreadcrumbsResolvers}test`);
     defaultResolver = testInjector.inject<TestResolver>(
-      `${BreadcrumbsResolvers}DEFAULT`
+      `${BreadcrumbsResolvers}default`
     );
   });
 

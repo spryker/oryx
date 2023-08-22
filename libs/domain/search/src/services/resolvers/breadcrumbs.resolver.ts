@@ -62,6 +62,6 @@ export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
 }
 
 export const CategoryBreadcrumbs: Provider = {
-  provide: `${BreadcrumbsResolvers}${String(RouteType.Category).toUpperCase()}`,
+  provide: `${BreadcrumbsResolvers}${RouteType.Category}`,
   useClass: CategoryBreadcrumbsResolver,
 };
