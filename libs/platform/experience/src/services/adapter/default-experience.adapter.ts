@@ -1,6 +1,6 @@
 import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { Component, ExperienceQualifier } from '../../models';
 import { CmsAdapter } from '../cms';
 import { ContentBackendUrl } from '../experience-tokens';
@@ -13,7 +13,7 @@ interface CmsComponent {
 export class DefaultExperienceAdapter implements ExperienceAdapter {
   constructor(
     protected backendUrl = inject(ContentBackendUrl),
-    protected cms = inject(CmsAdapter, {} as CmsAdapter),
+    protected cms = inject(CmsAdapter, {} as Partial<CmsAdapter>),
     protected http = inject(HttpService)
   ) {}
 
@@ -25,17 +25,16 @@ export class DefaultExperienceAdapter implements ExperienceAdapter {
 
   get(qualifier: ExperienceQualifier): Observable<Component | null> {
     if (this.cms?.get) {
-      return this.cms.get<CmsComponent>({ type: 'component' }).pipe(
-        map((data) => {
-          const component = data.items?.find((_component) => {
-            const toCompare = qualifier.id
-              ? _component.data.id
-              : _component.data.meta?.route;
-            return toCompare === (qualifier.id ?? qualifier.route);
-          });
-
-          return component ? { ...component?.data, id: component?.id } : null;
-        })
+      return this.getAll().pipe(
+        map(
+          (data) =>
+            data?.find((_component) => {
+              const toCompare = qualifier.id
+                ? _component.id
+                : _component.meta?.route;
+              return toCompare === (qualifier.id ?? qualifier.route);
+            }) ?? null
+        )
       );
     }
 
@@ -44,5 +43,19 @@ export class DefaultExperienceAdapter implements ExperienceAdapter {
       : `?meta.route=${encodeURIComponent(qualifier.route ?? '')}`;
 
     return this.http.get<Component>(`${this.url}${part}`);
+  }
+
+  getAll(): Observable<Component[] | null> {
+    if (!this.cms?.get) {
+      return of(null);
+    }
+
+    return this.cms
+      .get<CmsComponent>({ type: 'component' })
+      .pipe(
+        map((data) =>
+          data.items?.map((item) => ({ ...item.data, id: item.id }))
+        )
+      );
   }
 }

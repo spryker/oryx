@@ -22,6 +22,7 @@ export function cmsTypeNormalizer(
           locale: records.locale,
           fields: records.fields,
           version: record.sys.version,
+          internalId: record.sys.id,
         },
         CmsFieldsNormalizer
       )

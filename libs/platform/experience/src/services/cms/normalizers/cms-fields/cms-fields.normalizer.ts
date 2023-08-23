@@ -10,15 +10,15 @@ export function fieldsNormalizer(
   data: {
     data: ApiCmsModel.ContentType;
     locale: ApiCmsModel.Model['locale'];
-    fields: ApiCmsModel.ContentField[];
+    fields: Record<string, ApiCmsModel.ContentField>;
     version: number;
+    internalId: string;
   },
   transformer: TransformerService
 ): Observable<CmsEntry> {
   return combineLatest(
     Object.entries(data.data).map(([key, value]) => {
-      const { localized, type } =
-        data.fields.find((field) => field.name === key) ?? {};
+      const { localized, type } = data.fields[key] ?? {};
       const record = localized ? value[data.locale] : Object.values(value)[0];
 
       return transformer.transform(
@@ -31,6 +31,7 @@ export function fieldsNormalizer(
       records.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {
         version: data.version,
         id: '',
+        internalId: data.internalId,
       })
     )
   );

@@ -4,6 +4,7 @@ import * as components from './components';
 import { PreviewPlugin } from './plugins';
 import { defaultExperienceRoutes } from './routes';
 import {
+  adapterProviders,
   experiencePreviewProviders,
   experienceProviders,
   layoutProviders,
@@ -14,6 +15,10 @@ export const experienceComponents = [components.compositionComponent];
 export const layoutFeature: AppFeature = {
   providers: layoutProviders,
   components: [components.layoutComponent],
+};
+
+export const adapterFeature: AppFeature = {
+  providers: adapterProviders,
 };
 
 export const experienceFeature: AppFeature = {

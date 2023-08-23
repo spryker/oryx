@@ -18,11 +18,13 @@ export function itemsNormalizer(
   records: ApiCmsModel.Model,
   transformer: TransformerService
 ): Observable<Partial<CmsModel>> {
-  const { fields } = records.type.items[0];
-
   return transformer
     .transform(
-      { data: records.data.items, fields, locale: records.locale },
+      {
+        data: records.data.items,
+        fields: records.type,
+        locale: records.locale,
+      },
       CmsTypeNormalizer
     )
     .pipe(map((items) => ({ items })));

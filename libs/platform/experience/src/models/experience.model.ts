@@ -1,11 +1,13 @@
 import { CmsQualifier } from './cms-qualifier';
 import { CompositionProperties } from './composition.model';
 
-export const CmsToken = 'oryx.ContentfulSpace';
+export const ContentfulToken = 'oryx.ContentfulToken';
+export const ContentfulSpace = 'oryx.ContentfulSpace';
 
 declare global {
   interface Environment {
-    readonly ORYX_CMS_TOKEN?: string;
+    readonly ORYX_CONTENTFUL_TOKEN?: string;
+    readonly ORYX_CONTENTFUL_SPACE?: string;
   }
 }
 
@@ -43,6 +45,7 @@ export interface Component<
 export type CmsEntry = Record<string, unknown> & {
   id: string;
   version: number;
+  internalId: string;
 };
 
 export interface CmsModel<T = CmsEntry> {
@@ -52,6 +55,7 @@ export interface CmsModel<T = CmsEntry> {
 
 declare global {
   interface InjectionTokensContractMap {
-    [CmsToken]: string;
+    [ContentfulToken]: string;
+    [ContentfulSpace]: string;
   }
 }

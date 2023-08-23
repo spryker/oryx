@@ -1,6 +1,6 @@
 import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { CmsToken } from '../models';
+import { ContentfulSpace, ContentfulToken } from '../models';
 import { DefaultExperienceAdapter, ExperienceAdapter } from './adapter';
 import {
   CmsAdapter,
@@ -8,7 +8,7 @@ import {
   cmsFieldsNormalizers,
   cmsItemsNormalizers,
   cmsTypesNormalizers,
-  DefaultCmsAdapter,
+  ContentfulCmsAdapter,
 } from './cms';
 import {
   AppReadyExperienceDataRevealer,
@@ -47,6 +47,7 @@ import { ContentPageMetaResolver } from './resolvers';
 declare global {
   interface AppEnvironment {
     readonly FES_CONTENT_BACKEND_URL?: string;
+    readonly ORYX_CONTENTFUL_TOKEN?: string;
   }
 }
 
@@ -65,22 +66,33 @@ export const layoutProviders: Provider[] = [
   },
 ];
 
-export const experienceProviders: Provider[] = [
+export const adapterProviders: Provider[] = [
   {
     provide: ContentBackendUrl,
     useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),
   },
   {
-    provide: CmsToken,
-    useFactory: () => injectEnv('ORYX_CMS_TOKEN', ''),
+    provide: ContentfulToken,
+    useFactory: () => injectEnv('ORYX_CONTENTFUL_TOKEN', ''),
   },
+  {
+    provide: ContentfulSpace,
+    useFactory: () => injectEnv('ORYX_CONTENTFUL_SPACE', ''),
+  },
+  ...cmsItemsNormalizers,
+  ...cmsTypesNormalizers,
+  ...cmsFieldNormalizers,
+  ...cmsFieldsNormalizers,
+];
+
+export const experienceProviders: Provider[] = [
   {
     provide: ExperienceAdapter,
     useClass: DefaultExperienceAdapter,
   },
   {
     provide: CmsAdapter,
-    useClass: DefaultCmsAdapter,
+    useClass: ContentfulCmsAdapter,
   },
   {
     provide: ExperienceService,
@@ -99,10 +111,7 @@ export const experienceProviders: Provider[] = [
     useClass: DefaultExperienceDataService,
   },
   ...layoutProviders,
-  ...cmsItemsNormalizers,
-  ...cmsTypesNormalizers,
-  ...cmsFieldNormalizers,
-  ...cmsFieldsNormalizers,
+  ...adapterProviders,
 ];
 
 export const experiencePreviewProviders: Provider[] = [
