@@ -2,8 +2,9 @@ import { inject } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import { Sync, SyncActionHandler } from '@spryker-oryx/offline';
 import {
-  combineLatestWith,
+  BehaviorSubject,
   Observable,
+  combineLatestWith,
   switchMap,
   tap,
   throwError,
@@ -38,6 +39,8 @@ export class PickingSyncActionHandlerService
     protected onlineAdapter = inject(PickingListOnlineAdapter)
   ) {}
 
+  protected syncing$ = new BehaviorSubject(false);
+
   handleSync(sync: Sync<PickingSyncAction>): Observable<void> {
     switch (sync.action) {
       case PickingSyncAction.FinishPicking:
@@ -54,6 +57,10 @@ export class PickingSyncActionHandlerService
             )
         );
     }
+  }
+
+  isSyncing(): Observable<boolean> {
+    return this.syncing$;
   }
 
   protected handleFinishPicking(
@@ -86,6 +93,7 @@ export class PickingSyncActionHandlerService
       );
     }
 
+    this.syncing$.next(true);
     return this.onlineAdapter.get({ ids: sync.payload.ids }).pipe(
       combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
       switchMap(async ([pickingLists, store]) => {
@@ -97,6 +105,10 @@ export class PickingSyncActionHandlerService
         await store.bulkPut(pickingLists, {
           allKeys: true,
         });
+      }),
+      tap({
+        next: () => this.syncing$.next(false),
+        error: () => this.syncing$.next(false),
       })
     );
   }
