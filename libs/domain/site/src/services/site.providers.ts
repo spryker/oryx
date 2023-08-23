@@ -22,7 +22,10 @@ import {
   NotificationService,
 } from './notification';
 import { DefaultPricingService, PricingService } from './pricing';
-import { DefaultBreadcrumbs } from './resolvers';
+import {
+  DefaultFallbackBreadcrumbsResolver,
+  FallbackBreadcrumbsResolver,
+} from './resolvers';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultStoreService, StoreService } from './store';
 
@@ -96,9 +99,12 @@ export const siteProviders: Provider[] = [
     provide: HttpInterceptor,
     useClass: CurrentCurrencyInterceptor,
   },
+  {
+    provide: FallbackBreadcrumbsResolver,
+    useClass: DefaultFallbackBreadcrumbsResolver,
+  },
   localeHydration,
   currencyHydration,
-  DefaultBreadcrumbs,
   // TODO: uncomment when CORs header issue is fixed
   // {
   //   provide: HttpInterceptor,

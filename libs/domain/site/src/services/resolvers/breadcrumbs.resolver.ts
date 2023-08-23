@@ -1,10 +1,10 @@
 import { PageMetaResolverService } from '@spryker-oryx/core';
-import { Provider, inject } from '@spryker-oryx/di';
+import { inject } from '@spryker-oryx/di';
 import { Observable, map } from 'rxjs';
 import { Breadcrumb } from '../../models';
 import { BreadcrumbsResolver, BreadcrumbsResolvers } from '../breadcrumbs';
 
-export class DefaultBreadcrumbsResolver implements BreadcrumbsResolver {
+export class DefaultFallbackBreadcrumbsResolver implements BreadcrumbsResolver {
   constructor(protected pageMetaService = inject(PageMetaResolverService)) {}
 
   resolve(): Observable<Breadcrumb[]> {
@@ -12,7 +12,4 @@ export class DefaultBreadcrumbsResolver implements BreadcrumbsResolver {
   }
 }
 
-export const DefaultBreadcrumbs: Provider = {
-  provide: `${BreadcrumbsResolvers}DEFAULT`,
-  useClass: DefaultBreadcrumbsResolver,
-};
+export const FallbackBreadcrumbsResolver = `${BreadcrumbsResolvers}fallback`;

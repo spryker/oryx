@@ -19,34 +19,20 @@ export class DefaultBreadcrumbsService implements BreadcrumbsService {
     url: '/',
   };
 
-  protected getResolverKey(type: string): string {
+  protected getResolverKey(type = 'fallback'): string {
     return `${BreadcrumbsResolvers}${type}`;
   }
 
-  protected resolveType(): Observable<string | undefined> {
-    return this.routerService
-      .current()
-      .pipe(map((route) => route.type as string | undefined));
-  }
-
-  protected resolveBreadcrumbs(type = 'DEFAULT'): Observable<Breadcrumb[]> {
-    const key = this.getResolverKey(type);
-    return this.injector
-      .inject<BreadcrumbsResolver>(key)
-      .resolve()
-      .pipe(map((breadcrumbs) => [this.homeBreadcrumb, ...breadcrumbs]));
-  }
-
   get(): Observable<Breadcrumb[]> {
-    return this.resolveType().pipe(
-      switchMap((type) => {
-        try {
-          if (!type) throw 'Incorrect route type!';
-          return this.resolveBreadcrumbs(type.toUpperCase());
-        } catch {
-          //Fallback breadcrumbs
-          return this.resolveBreadcrumbs();
-        }
+    return this.routerService.current().pipe(
+      switchMap((route) => {
+        return this.injector
+          .inject<BreadcrumbsResolver>(
+            this.getResolverKey(route.type),
+            this.injector.inject(this.getResolverKey())
+          )
+          .resolve()
+          .pipe(map((breadcrumbs) => [this.homeBreadcrumb, ...breadcrumbs]));
       })
     );
   }

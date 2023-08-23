@@ -34,7 +34,9 @@ describe('Breadcrumbs suite', () => {
     //should have 1 divider
     searchPage.breadcrumbs.shouldHaveDividers(1);
 
-    searchPage.breadcrumbs.lastBreadcrumb().should('contain.text', 'Search for "test"');
+    searchPage.breadcrumbs
+      .lastBreadcrumb()
+      .should('contain.text', 'Search for "test"');
   });
 
   it('should render breadcrumbs for the product details page', () => {
@@ -48,7 +50,9 @@ describe('Breadcrumbs suite', () => {
     searchPage.breadcrumbs.shouldHaveDividers(1);
 
     //should render product's title as the last breadcrumb
-    searchPage.breadcrumbs.lastBreadcrumb().should('contain.text', product.title);
+    searchPage.breadcrumbs
+      .lastBreadcrumb()
+      .should('contain.text', product.title);
   });
 
   it('should render breadcrumbs for the categories page', () => {
@@ -62,12 +66,19 @@ describe('Breadcrumbs suite', () => {
     searchPage.breadcrumbs.shouldHaveDividers(2);
 
     //should render parent category as second breadcrumb
-    searchPage.breadcrumbs.nthBreadcrumb(2).should('contain.text', parentCategory.title);
+    searchPage.breadcrumbs
+      .nthBreadcrumb(2)
+      .should('contain.text', parentCategory.title);
     //should have proper link
-    searchPage.breadcrumbs.nthBreadcrumb(2).invoke('attr', 'href').should('eq', `/category/${parentCategory.id}`);
+    searchPage.breadcrumbs
+      .nthBreadcrumb(2)
+      .invoke('attr', 'href')
+      .should('eq', `/category/${parentCategory.id}`);
 
     //should render child category as the last breadcrumb
-    searchPage.breadcrumbs.lastBreadcrumb().should('contain.text', childCategory.title);
+    searchPage.breadcrumbs
+      .lastBreadcrumb()
+      .should('contain.text', childCategory.title);
 
     //when click on parent category
     searchPage.breadcrumbs.nthBreadcrumb(2).click();
@@ -76,6 +87,8 @@ describe('Breadcrumbs suite', () => {
     searchPage.breadcrumbs.shouldHaveDividers(1);
 
     //should render parent category as the last breadcrumb
-    searchPage.breadcrumbs.lastBreadcrumb().should('contain.text', parentCategory.title);
+    searchPage.breadcrumbs
+      .lastBreadcrumb()
+      .should('contain.text', parentCategory.title);
   });
 });

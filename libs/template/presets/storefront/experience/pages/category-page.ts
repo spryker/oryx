@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { Size } from '@spryker-oryx/utilities';
 
 export const categoryPage: ExperienceComponent = {
   id: 'category-page',
@@ -19,6 +20,18 @@ export const categoryPage: ExperienceComponent = {
     ],
   },
   components: [
+    {
+      type: 'oryx-site-breadcrumbs',
+      id: 'breadcrumbs',
+      options: {
+        rules: [
+          {
+            colSpan: 2,
+          },
+          { query: { breakpoint: Size.Sm }, hide: true },
+        ],
+      },
+    },
     {
       type: 'oryx-search-facet-navigation',
       options: {

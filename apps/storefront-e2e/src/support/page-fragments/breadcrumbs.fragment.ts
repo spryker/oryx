@@ -6,10 +6,10 @@ export class BreadcrumbsFragment {
   shouldHaveHomePageLink(): void {
     const link = this.get().find('a:first-of-type');
     link.should('contain.text', 'Home');
-    link.invoke('attr', 'href').should('eq', '/')
+    link.invoke('attr', 'href').should('eq', '/');
   }
 
-  shouldHaveDividers(quantity: number): void{
+  shouldHaveDividers(quantity: number): void {
     this.get().find('oryx-icon').should('have.length', quantity);
   }
 }

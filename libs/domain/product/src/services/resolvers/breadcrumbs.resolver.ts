@@ -27,8 +27,6 @@ export class ProductListBreadcrumbsResolver implements BreadcrumbsResolver {
 }
 
 export const ProductListBreadcrumbs: Provider = {
-  provide: `${BreadcrumbsResolvers}${String(
-    RouteType.ProductList
-  ).toUpperCase()}`,
+  provide: `${BreadcrumbsResolvers}${RouteType.ProductList}`,
   useClass: ProductListBreadcrumbsResolver,
 };

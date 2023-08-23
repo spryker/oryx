@@ -15,5 +15,6 @@ export const BreadcrumbsResolvers = 'oryx.BreadcrumbsResolver*';
 declare global {
   interface InjectionTokensContractMap {
     [BreadcrumbsService]: BreadcrumbsService;
+    [BreadcrumbsResolvers]: BreadcrumbsResolver;
   }
 }

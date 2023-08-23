@@ -7,17 +7,13 @@ import {
   BreadcrumbsResolvers,
   LinkService,
 } from '@spryker-oryx/site';
-import {
-  Observable,
-  combineLatest,
-  map,
-  of,
-  switchMap,
-  throwError,
-} from 'rxjs';
+import { Observable, combineLatest, map, switchMap, throwError } from 'rxjs';
 import { FacetListService } from '../facet-list.service';
 
-type FlatFacet = { name: string; value: string };
+interface FlatFacet {
+  name: string;
+  value: string;
+}
 
 export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
   constructor(
@@ -55,22 +51,17 @@ export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
               .pipe(map((url) => ({ text: name, url })))
           )
         )
-      : of([]);
+      : throwError(() => new Error('Categories breadcrumbs list is empty!'));
   }
 
   resolve(): Observable<Breadcrumb[]> {
-    return this.facetListService.getFacet({ parameter: 'category' }).pipe(
-      switchMap((facet) => this.getFlattenCategoriesBreadcrumbs(facet)),
-      switchMap((breadcrumbs) =>
-        breadcrumbs.length
-          ? of(breadcrumbs)
-          : throwError(() => new Error('Categories breadcrumbs list is empty!'))
-      )
-    );
+    return this.facetListService
+      .getFacet({ parameter: 'category' })
+      .pipe(switchMap((facet) => this.getFlattenCategoriesBreadcrumbs(facet)));
   }
 }
 
 export const CategoryBreadcrumbs: Provider = {
-  provide: `${BreadcrumbsResolvers}${String(RouteType.Category).toUpperCase()}`,
+  provide: `${BreadcrumbsResolvers}${RouteType.Category}`,
   useClass: CategoryBreadcrumbsResolver,
 };

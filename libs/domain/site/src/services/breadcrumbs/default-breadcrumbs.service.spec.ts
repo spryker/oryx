@@ -3,6 +3,7 @@ import { RouteWithParams, RouterService } from '@spryker-oryx/router';
 import { Observable, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { Breadcrumb } from '../../models';
+import { FallbackBreadcrumbsResolver } from '../resolvers';
 import {
   BreadcrumbsResolver,
   BreadcrumbsResolvers,
@@ -42,11 +43,11 @@ describe('DefaultBreadcrumbsService', () => {
           useClass: MockRouterService,
         },
         {
-          provide: `${BreadcrumbsResolvers}TEST`,
+          provide: `${BreadcrumbsResolvers}test`,
           useClass: TestResolver,
         },
         {
-          provide: `${BreadcrumbsResolvers}DEFAULT`,
+          provide: FallbackBreadcrumbsResolver,
           useClass: TestResolver,
         },
       ],
@@ -55,9 +56,9 @@ describe('DefaultBreadcrumbsService', () => {
     service =
       testInjector.inject<DefaultBreadcrumbsService>(BreadcrumbsService);
     routerService = testInjector.inject<MockRouterService>(RouterService);
-    resolver = testInjector.inject<TestResolver>(`${BreadcrumbsResolvers}TEST`);
+    resolver = testInjector.inject<TestResolver>(`${BreadcrumbsResolvers}test`);
     defaultResolver = testInjector.inject<TestResolver>(
-      `${BreadcrumbsResolvers}DEFAULT`
+      FallbackBreadcrumbsResolver
     );
   });
 
@@ -92,6 +93,25 @@ describe('DefaultBreadcrumbsService', () => {
     let spy: SpyInstance;
     beforeEach(() => {
       routerService.current = vi.fn().mockReturnValue(of({ type: 'test1' }));
+      spy = vi.spyOn(defaultResolver, 'resolve');
+      service.get().subscribe(callback);
+    });
+
+    it('should resolve the breadcrumbs from the fallback service', () => {
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should return processed array of default breadcrumbs', () => {
+      expect(callback).toHaveBeenCalledWith(
+        expect.arrayContaining([breadcrumb])
+      );
+    });
+  });
+
+  describe('when route does not nave type', () => {
+    let spy: SpyInstance;
+    beforeEach(() => {
+      routerService.current = vi.fn().mockReturnValue(of({}));
       spy = vi.spyOn(defaultResolver, 'resolve');
       service.get().subscribe(callback);
     });
