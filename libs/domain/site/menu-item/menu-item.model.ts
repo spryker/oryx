@@ -1,3 +1,7 @@
+export enum SiteMenuItemVariation {
+  Navigation = 'navigation',
+}
+
 export interface SiteMenuItemContent {
   text?: string;
 }
@@ -22,4 +26,9 @@ export interface SiteMenuItemOptions {
    * Supports displaying a prefixed icon.
    */
   icon?: string;
+
+  /**
+   * Determines the appearance of the menu item.
+   */
+  variation?: SiteMenuItemVariation;
 }

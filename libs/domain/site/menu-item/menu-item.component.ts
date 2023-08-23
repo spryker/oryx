@@ -7,7 +7,11 @@ import { computed } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { map } from 'rxjs';
-import { SiteMenuItemContent, SiteMenuItemOptions } from './menu-item.model';
+import {
+  SiteMenuItemContent,
+  SiteMenuItemOptions,
+  SiteMenuItemVariation,
+} from './menu-item.model';
 import { styles } from './menu-item.styles';
 
 export class SiteMenuItemComponent extends ContentMixin<
@@ -33,8 +37,9 @@ export class SiteMenuItemComponent extends ContentMixin<
   });
 
   protected override render(): TemplateResult {
-    const { icon } = this.$options();
+    const { variation, icon } = this.$options();
     return html`<oryx-button
+      variation=${variation ?? SiteMenuItemVariation.Navigation}
       class=${ifDefined(this.$active() ? 'active' : '')}
       .type="${ButtonType.Text}"
       .text=${this.$content()?.text}

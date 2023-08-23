@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { i18n } from '@spryker-oryx/utilities';
 
 export const overviewPage: ExperienceComponent = {
   id: 'overview-page',
@@ -23,7 +24,12 @@ export const overviewPage: ExperienceComponent = {
       id: 'overview-content',
       components: [
         {
-          type: 'oryx-user-overview',
+          type: 'oryx-content-text',
+          content: {
+            data: {
+              text: i18n('user.overview'),
+            },
+          },
         },
       ],
       options: {

@@ -81,6 +81,12 @@ describe('SiteMenuItemComponent', () => {
     expect(element.renderRoot.querySelector('.active')).toBeNull();
   });
 
+  it('should have button with variation attribute', () => {
+    expect(
+      element.renderRoot.querySelector('oryx-button[variation="navigation"')
+    ).not.toBeNull();
+  });
+
   describe('when item is active', () => {
     beforeEach(async () => {
       routerService.route.mockReturnValue(of('/mock'));
