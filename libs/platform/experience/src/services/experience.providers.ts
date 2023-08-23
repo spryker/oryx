@@ -47,7 +47,6 @@ import { ContentPageMetaResolver } from './resolvers';
 declare global {
   interface AppEnvironment {
     readonly FES_CONTENT_BACKEND_URL?: string;
-    readonly ORYX_CONTENTFUL_TOKEN?: string;
   }
 }
 
