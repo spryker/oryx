@@ -14,3 +14,7 @@ export interface AddCartEntryQualifier extends CartQualifier {
 export interface UpdateCartEntryQualifier extends CartEntryQualifier {
   quantity: number;
 }
+
+export interface UpdateCartPriceModeQualifier extends CartEntryQualifier {
+  priceMode: number;
+}

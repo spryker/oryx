@@ -10,6 +10,7 @@ import {
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
+import { PriceModeChanged } from '@spryker-oryx/site';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   combineLatest,
@@ -32,6 +33,7 @@ import {
   CartEntryQualifier,
   CartQualifier,
   UpdateCartEntryQualifier,
+  UpdateCartPriceModeQualifier,
 } from '../models';
 import { CartAdapter } from './adapter/cart.adapter';
 import { CartService } from './cart.service';
@@ -77,6 +79,20 @@ export class DefaultCartService implements CartService {
     refreshOn: [CartEntryRemoved, LocaleChanged],
   });
 
+  // protected cartQueryUpdate$ = createQuery({
+  //   id: CartQueryUpdate,
+  //   loader: (qualifier: UpdateCartPriceModeQualifier) =>
+  //     this.adapter.updateCartPriceMode(qualifier),
+  //   refreshOn: [PriceModeChanged],
+  // });
+
+  protected updateCardEntryCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: UpdateCartPriceModeQualifier) => {
+      return this.adapter.updateCartPriceMode(qualifier);
+    },
+  });
+
   protected addEntryCommand$ = createCommand({
     ...this.cartCommandBase,
     action: (qualifier: AddCartEntryQualifier) => {
@@ -110,6 +126,19 @@ export class DefaultCartService implements CartService {
         });
     },
   ]);
+
+  protected updatePriceMode$ = createEffect<Cart>([
+    PriceModeChanged,
+    ({ event }) => {
+      if (event.data)
+        // Use result of modification commands to update cart state
+        this.updateCart({ cartId: event.data.id });
+    },
+  ]);
+
+  updateCart(data: CartQualifier): Observable<unknown> {
+    return of();
+  }
 
   protected isCartModified$ = createEffect<Cart>(({ getEvents }) =>
     getEvents([CartModificationStart, CartModificationEnd]).pipe(

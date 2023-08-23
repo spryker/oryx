@@ -1,3 +1,4 @@
+// import { CartPriceChangeGuard } from '@spryker-oryx/cart';
 import { ErrorHandler, HttpInterceptor, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { LocaleAdapter } from '@spryker-oryx/i18n';
@@ -29,6 +30,8 @@ import { priceModeHydration } from './price-mode/price-mode-hydration';
 import { DefaultPricingService, PricingService } from './pricing';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultStoreService, StoreService } from './store';
+
+export const PriceModeGuard = 'oryx.CartPriceModeChangeGuard*';
 
 declare global {
   interface AppEnvironment {
