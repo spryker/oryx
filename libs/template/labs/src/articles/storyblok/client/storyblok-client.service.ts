@@ -39,8 +39,10 @@ export interface StoryblokEntriesResponse {
 }
 
 export interface StoryblokClientService {
-  getEntries(search: StoryblokSearch): Observable<StoryblokEntriesResponse>;
-  getEntry(search: StoryblokSearch): Observable<StoryblokEntryResponse>;
+  getEntries(
+    search: StoryblokSearch
+  ): Observable<StoryblokEntriesResponse | null>;
+  getEntry(search: StoryblokSearch): Observable<StoryblokEntryResponse | null>;
 }
 
 declare global {

@@ -14,8 +14,8 @@ export class DefaultContentService implements ContentService {
       combineLatest(this.adapters.map((adapter) => adapter.get(q))).pipe(
         map((contents) =>
           contents.reduce(
-            (acc, curr) => ({ ...acc, ...(curr as Content) }),
-            {} as Content
+            (acc, curr) => (curr ? { ...acc, ...curr } : acc),
+            null
           )
         )
       ),
