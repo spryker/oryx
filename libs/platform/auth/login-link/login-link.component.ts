@@ -6,7 +6,6 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { hydrate, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { LoginLinkOptions } from './login-link.model';
-import { styles } from './login-link.styles';
 
 @defaultOptions({
   enableLogout: true,
@@ -15,8 +14,6 @@ import { styles } from './login-link.styles';
 export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
   LitElement
 ) {
-  static styles = styles;
-
   protected authService = resolve(AuthService);
   protected routerService = resolve(RouterService);
 

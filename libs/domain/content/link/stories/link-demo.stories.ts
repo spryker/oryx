@@ -19,7 +19,7 @@ export default {
     noopener: false,
     nofollow: false,
     button: false,
-    appearance: ContentLinkAppearance.LINK,
+    appearance: ContentLinkAppearance.Link,
   },
   argTypes: {
     icon: {
@@ -40,9 +40,9 @@ export default {
     },
     appearance: {
       options: [
-        ContentLinkAppearance.LINK,
-        ContentLinkAppearance.BUTTON,
-        ContentLinkAppearance.DROPDOWN,
+        ContentLinkAppearance.Link,
+        ContentLinkAppearance.Button,
+        ContentLinkAppearance.Dropdown,
       ],
       control: { type: 'select' },
     },

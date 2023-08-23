@@ -2,12 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import {
-  computed,
-  elementEffect,
-  hydrate,
-  ssrShim,
-} from '@spryker-oryx/utilities';
+import { computed, elementEffect, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
@@ -18,7 +13,6 @@ import {
 } from './link.model';
 import { styles } from './link.styles';
 
-@ssrShim('style')
 @hydrate()
 export class ContentLinkComponent extends ContentMixin<
   ContentLinkOptions,
@@ -31,10 +25,7 @@ export class ContentLinkComponent extends ContentMixin<
   @elementEffect()
   protected setDropdown = () => {
     const { appearance } = this.$options();
-    this.toggleAttribute(
-      'dropdown',
-      appearance === ContentLinkAppearance.DROPDOWN
-    );
+    this.setAttribute('appearance', `${appearance}`);
   };
 
   protected $link = computed(() => {
@@ -47,9 +38,9 @@ export class ContentLinkComponent extends ContentMixin<
   protected override render(): TemplateResult | void {
     const { appearance, button, icon, singleLine, color } = this.$options();
 
-    const dropdown = appearance === ContentLinkAppearance.DROPDOWN;
+    const dropdown = appearance === ContentLinkAppearance.Dropdown;
 
-    if (button || dropdown || appearance === ContentLinkAppearance.BUTTON) {
+    if (button || dropdown || appearance === ContentLinkAppearance.Button) {
       return html`<oryx-button
         .type=${ifDefined(dropdown ? ButtonType.Text : undefined)}
         >${this.renderLink(true)}</oryx-button
@@ -87,7 +78,7 @@ export class ContentLinkComponent extends ContentMixin<
     const { text } = this.$content() ?? {};
     const { button, icon, appearance } = this.$options();
     const renderIcon =
-      (!!button || (appearance && appearance !== ContentLinkAppearance.LINK)) &&
+      (!!button || (appearance && appearance !== ContentLinkAppearance.Link)) &&
       !!icon;
 
     if (text || icon) {

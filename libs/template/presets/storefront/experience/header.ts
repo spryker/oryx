@@ -113,7 +113,7 @@ export const HeaderTemplate: ExperienceComponent = {
                   options: {
                     icon: IconTypes.User,
                     url: '/account/overview',
-                    appearance: ContentLinkAppearance.DROPDOWN,
+                    appearance: ContentLinkAppearance.Dropdown,
                   },
                   content: {
                     data: {

@@ -6,9 +6,9 @@ export interface ContentLinkContent {
 }
 
 export const enum ContentLinkAppearance {
-  LINK = 'link',
-  DROPDOWN = 'dropdown',
-  BUTTON = 'button',
+  Link = 'link',
+  Dropdown = 'dropdown',
+  Button = 'button',
 }
 
 export interface ContentLinkOptions {
@@ -58,7 +58,7 @@ export interface ContentLinkOptions {
   singleLine?: boolean;
 
   /**
-   * Changes the appearance of the content link
+   * Changes the appearance of the content link.
    */
   appearance?: ContentLinkAppearance;
 }

@@ -268,7 +268,7 @@ describe('ContentLinkComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-content-link
-            .options=${{ appearance: ContentLinkAppearance.DROPDOWN }}
+            .options=${{ appearance: ContentLinkAppearance.Dropdown }}
           ></oryx-content-link>`
         );
       });
@@ -291,7 +291,7 @@ describe('ContentLinkComponent', () => {
           html`<oryx-content-link
             .options=${{
               url: '/test',
-              appearance: ContentLinkAppearance.BUTTON,
+              appearance: ContentLinkAppearance.Button,
             }}
           ></oryx-content-link>`
         );

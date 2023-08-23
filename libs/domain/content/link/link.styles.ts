@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 export const styles = css`
-  :host([dropdown]) {
+  :host([appearance='dropdown']) {
     --oryx-button-color: var(--oryx-color-neutral-12);
 
     padding: 9px 5px;
@@ -9,7 +9,7 @@ export const styles = css`
     height: 24px;
   }
 
-  :host([dropdown]:hover) {
+  :host([appearance='dropdown']:hover) {
     background-color: var(--oryx-color-neutral-3);
   }
 `;
