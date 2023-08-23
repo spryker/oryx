@@ -4,13 +4,17 @@ import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { ButtonComponent, ButtonType } from '@spryker-oryx/ui/button';
 import { IconComponent } from '@spryker-oryx/ui/icon';
-import { LinkAppearance, LinkComponent } from '@spryker-oryx/ui/link';
+import { LinkComponent } from '@spryker-oryx/ui/link';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { ContentLinkComponent } from './link.component';
 import { contentLinkComponent } from './link.def';
-import { ContentLinkContent, ContentLinkOptions } from './link.model';
+import {
+  ContentLinkAppearance,
+  ContentLinkContent,
+  ContentLinkOptions,
+} from './link.model';
 
 class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/page'));
@@ -223,6 +227,7 @@ describe('ContentLinkComponent', () => {
     });
   });
 
+  // TODO - deprecate these when we no longer support button option
   describe('when button option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
@@ -263,7 +268,7 @@ describe('ContentLinkComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-content-link
-            .options=${{ appearance: LinkAppearance.DROPDOWN }}
+            .options=${{ appearance: ContentLinkAppearance.DROPDOWN }}
           ></oryx-content-link>`
         );
       });
@@ -277,6 +282,44 @@ describe('ContentLinkComponent', () => {
 
       it('should have attribute dropdown', () => {
         expect(element.hasAttribute('dropdown')).toBe(true);
+      });
+    });
+
+    describe('and appearance is button', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-content-link
+            .options=${{
+              url: '/test',
+              appearance: ContentLinkAppearance.BUTTON,
+            }}
+          ></oryx-content-link>`
+        );
+      });
+
+      it('should render link inside oryx-button', () => {
+        expect(element).toContainElement('oryx-button a');
+      });
+
+      it('should not render oryx-link', () => {
+        expect(element).not.toContainElement('oryx-link');
+      });
+
+      describe('and an icon is provided', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-content-link
+              .options=${{ url: '/test', button: true, icon: 'check' }}
+            ></oryx-content-link>`
+          );
+        });
+
+        it('should provide the icon to the oryx-button', () => {
+          const icon = element.renderRoot.querySelector(
+            'oryx-icon'
+          ) as IconComponent;
+          expect(icon.type).toBe('check');
+        });
       });
     });
   });

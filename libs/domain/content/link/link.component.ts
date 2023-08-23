@@ -2,7 +2,6 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { LinkAppearance } from '@spryker-oryx/ui/link';
 import {
   computed,
   elementEffect,
@@ -12,7 +11,11 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { ContentLinkContent, ContentLinkOptions } from './link.model';
+import {
+  ContentLinkAppearance,
+  ContentLinkContent,
+  ContentLinkOptions,
+} from './link.model';
 import { styles } from './link.styles';
 
 @ssrShim('style')
@@ -28,7 +31,10 @@ export class ContentLinkComponent extends ContentMixin<
   @elementEffect()
   protected setDropdown = () => {
     const { appearance } = this.$options();
-    this.toggleAttribute('dropdown', appearance === LinkAppearance.DROPDOWN);
+    this.toggleAttribute(
+      'dropdown',
+      appearance === ContentLinkAppearance.DROPDOWN
+    );
   };
 
   protected $link = computed(() => {
@@ -41,9 +47,9 @@ export class ContentLinkComponent extends ContentMixin<
   protected override render(): TemplateResult | void {
     const { appearance, button, icon, singleLine, color } = this.$options();
 
-    const dropdown = appearance === LinkAppearance.DROPDOWN;
+    const dropdown = appearance === ContentLinkAppearance.DROPDOWN;
 
-    if (button || dropdown) {
+    if (button || dropdown || appearance === ContentLinkAppearance.BUTTON) {
       return html`<oryx-button
         .type=${ifDefined(dropdown ? ButtonType.Text : undefined)}
         >${this.renderLink(true)}</oryx-button
@@ -81,7 +87,8 @@ export class ContentLinkComponent extends ContentMixin<
     const { text } = this.$content() ?? {};
     const { button, icon, appearance } = this.$options();
     const renderIcon =
-      (!!button || appearance === LinkAppearance.DROPDOWN) && !!icon;
+      (!!button || (appearance && appearance !== ContentLinkAppearance.LINK)) &&
+      !!icon;
 
     if (text || icon) {
       return html` ${when(

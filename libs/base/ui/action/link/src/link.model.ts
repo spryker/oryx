@@ -23,8 +23,3 @@ export const enum ColorType {
   Primary = 'primary',
   Neutral = 'neutral',
 }
-
-export const enum LinkAppearance {
-  LINK = 'link',
-  DROPDOWN = 'dropdown',
-}

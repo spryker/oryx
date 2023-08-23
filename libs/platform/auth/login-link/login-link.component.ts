@@ -3,7 +3,6 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { LinkAppearance } from '@spryker-oryx/ui/link';
 import { hydrate, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { LoginLinkOptions } from './login-link.model';
@@ -31,17 +30,9 @@ export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
     const i18nToken = this.$isAuthenticated() ? 'auth.logout' : 'auth.login';
 
     return html`
-      <oryx-content-link
-        .options=${{
-          appearance: LinkAppearance.DROPDOWN,
-          icon: IconTypes.Login,
-        }}
-        .content=${{
-          text: this.i18n(i18nToken),
-        }}
-        @click=${this.onClick}
-      >
-      </oryx-content-link>
+      <oryx-option .icon=${IconTypes.Login} @click=${this.onClick}>
+        ${this.i18n(i18nToken)}
+      </oryx-option>
     `;
   }
 
