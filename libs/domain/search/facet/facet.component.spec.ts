@@ -44,9 +44,7 @@ describe('SearchFacetComponent', () => {
       ],
     });
 
-    facetListService = injector.inject(
-      FacetListService
-    ) as unknown as MockFacetListService;
+    facetListService = injector.inject<MockFacetListService>(FacetListService);
 
     element = await fixture(
       html`<oryx-search-facet name="Mock"></oryx-search-facet>`
@@ -57,7 +55,7 @@ describe('SearchFacetComponent', () => {
     destroyInjector();
   });
 
-  it('is defined', async () => {
+  it('is defined', () => {
     expect(element).toBeInstanceOf(SearchFacetComponent);
   });
 
@@ -65,16 +63,20 @@ describe('SearchFacetComponent', () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  it('should provide "valuesLength" attribute to oryx-search-facet-value-navigation', async () => {
-    const valueNavigation: SearchFacetValueNavigationComponent | null =
-      element.renderRoot.querySelector('oryx-search-facet-value-navigation');
+  it('should provide "valuesLength" attribute to oryx-search-facet-value-navigation', () => {
+    const valueNavigation =
+      element.renderRoot.querySelector<SearchFacetValueNavigationComponent>(
+        'oryx-search-facet-value-navigation'
+      );
 
     expect(valueNavigation?.valuesLength).toBe(10);
   });
 
-  it('should provide "selectedLength" attribute to oryx-search-facet-value-navigation', async () => {
-    const valueNavigation: SearchFacetValueNavigationComponent | null =
-      element.renderRoot.querySelector('oryx-search-facet-value-navigation');
+  it('should provide "selectedLength" attribute to oryx-search-facet-value-navigation', () => {
+    const valueNavigation =
+      element.renderRoot.querySelector<SearchFacetValueNavigationComponent>(
+        'oryx-search-facet-value-navigation'
+      );
 
     expect(valueNavigation?.selectedLength).toBe(selectedValuesNames.length);
   });
@@ -95,8 +97,8 @@ describe('SearchFacetComponent', () => {
         });
 
         it('should provide name attribute to oryx-search-facet-value-navigation', () => {
-          const valueNavigation: SearchFacetValueNavigationComponent | null =
-            element.renderRoot.querySelector(
+          const valueNavigation =
+            element.renderRoot.querySelector<SearchFacetValueNavigationComponent>(
               'oryx-search-facet-value-navigation'
             );
 
@@ -270,11 +272,9 @@ describe('SearchFacetComponent', () => {
         });
 
         it('should not provide "enableClear" attribute to oryx-search-facet-value-navigation', () => {
-          const valueNavigation = element.renderRoot.querySelector(
-            'oryx-search-facet-value-navigation'
+          expect(element).toContainElement(
+            'oryx-search-facet-value-navigation:not([enableClear])'
           );
-
-          expect(valueNavigation?.hasAttribute('enableClear')).toBe(false);
         });
       });
 
@@ -286,11 +286,9 @@ describe('SearchFacetComponent', () => {
         });
 
         it('should provide "enableClear" attribute to oryx-search-facet-value-navigation', () => {
-          const valueNavigation = element.renderRoot.querySelector(
-            'oryx-search-facet-value-navigation'
+          expect(element).toContainElement(
+            'oryx-search-facet-value-navigation[enableClear]'
           );
-
-          expect(valueNavigation?.hasAttribute('enableClear')).toBe(true);
         });
       });
     });
@@ -359,52 +357,60 @@ describe('SearchFacetComponent', () => {
     });
 
     it('should render the count number for facet values which count property is greater than 0', () => {
-      (mockFacet.values as FacetValue[]).forEach((value, index) => {
-        if (value.count) {
-          expect(
-            listItems[index].querySelectorAll('input + div span').length
-          ).toBe(2);
-          expect(
-            listItems[index].querySelector('input + div span:last-child')
-              ?.textContent
-          ).toContain(value.count);
-        } else {
-          expect(
-            listItems[index].querySelectorAll('input + div span').length
-          ).toBe(1);
-        }
-      });
-    });
+      const values = (mockFacet.values as FacetValue[]).filter(
+        (val) => val.count > 0
+      );
 
-    it('should render disabled facet value', () => {
-      (mockFacet.values as FacetValue[]).forEach((value, index) => {
-        if (value.disabled) {
-          expect(
-            listItems[index].querySelector('input')?.hasAttribute('disabled')
-          ).toBe(true);
-        } else {
-          expect(
-            listItems[index].querySelector('input')?.hasAttribute('disabled')
-          ).toBe(false);
-        }
-      });
-    });
+      const facetOptions = Array.from(listItems).filter(
+        (item) =>
+          item.querySelectorAll('input + div span').length === 2 &&
+          item.querySelector('input + div span:last-child')?.textContent
+      );
 
-    it('should render disabled facet value', () => {
-      selectedValuesNames.forEach((valueName) => {
+      expect(values.length).toBe(facetOptions.length);
+
+      values.forEach((value) => {
         expect(
-          element.renderRoot
-            .querySelector(`input[value="${valueName}"]`)
-            ?.hasAttribute('checked')
-        ).toBe(true);
+          element.renderRoot.querySelector(
+            `input[value="${value.name}"] + div span:last-child`
+          )?.textContent
+        ).toContain(value.count);
+      });
+    });
+
+    it('should not render the count number for facet values which count property is 0', () => {
+      const values = (mockFacet.values as FacetValue[]).filter(
+        (val) => val.count === 0
+      );
+
+      const facetOptions = Array.from(listItems).filter(
+        (item) => item.querySelectorAll('input + div span').length === 1
+      );
+
+      expect(values.length).toBe(facetOptions.length);
+    });
+
+    it('should render disabled facet value', () => {
+      disabledValuesNames.forEach((valueName) => {
+        expect(element).toContainElement(
+          `input[value="${valueName}"][disabled]`
+        );
+      });
+    });
+
+    it('should render checked facet value', () => {
+      selectedValuesNames.forEach((valueName) => {
+        expect(element).toContainElement(
+          `input[value="${valueName}"][checked]`
+        );
       });
     });
 
     it('should not render children facet values', () => {
-      expect(element.renderRoot.querySelectorAll('li li').length).toBe(0);
+      expect(element).not.toContainElement('li li');
     });
 
-    it('should reneder facet value label', () => {
+    it('should render facet value label', () => {
       (mockFacet.values as FacetValue[]).forEach((value, index) => {
         expect(
           listItems[index].querySelector('input + div span')?.textContent
@@ -438,7 +444,7 @@ describe('SearchFacetComponent', () => {
       );
     });
 
-    it('should render children facet values', async () => {
+    it('should render children facet values', () => {
       expect(element.renderRoot.querySelectorAll('li li').length).toBe(30);
     });
   });
@@ -454,13 +460,15 @@ describe('SearchFacetComponent', () => {
       );
     });
 
-    it('should not render facet values', async () => {
-      expect(element.renderRoot.querySelectorAll('li').length).toBe(0);
+    it('should not render facet values', () => {
+      expect(element).not.toContainElement('li');
     });
 
-    it('should render fallback message', async () => {
-      const valueNavigation: SearchFacetValueNavigationComponent | null =
-        element.renderRoot.querySelector('oryx-search-facet-value-navigation');
+    it('should render fallback message', () => {
+      const valueNavigation =
+        element.renderRoot.querySelector<SearchFacetValueNavigationComponent>(
+          'oryx-search-facet-value-navigation'
+        );
 
       expect(valueNavigation?.textContent).toContain(
         i18n('search.facet.no-results-found')

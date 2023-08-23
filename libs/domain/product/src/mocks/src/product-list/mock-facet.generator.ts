@@ -57,12 +57,13 @@ export const generateRatingFacet = (
   const values: FacetValue[] = [];
 
   for (let i = 1; i <= 5; i++) {
+    const value = String(i);
     values.push({
-      value: String(i),
-      selected: selectedValues?.includes(String(i)),
+      value,
+      selected: selectedValues?.includes(value),
       count: 0,
-      name: String(i),
-      disabled: disabledValues?.includes(String(i)),
+      name: value,
+      disabled: disabledValues?.includes(value),
     });
   }
 
