@@ -1,6 +1,7 @@
 import { ProductRelationsFragment } from '../page-fragments/product-relations.fragment';
 import { QuantityInputFragment } from '../page-fragments/quantity-input.fragment';
 import { Product } from '../types/product.type';
+import { visibilityCheck } from '../utils';
 import { AbstractSFPage } from './abstract.page';
 
 export class ProductDetailsPage extends AbstractSFPage {
@@ -53,11 +54,11 @@ export class ProductDetailsPage extends AbstractSFPage {
   };
 
   getAddToCartBtn = () => this.getAddToCartWrapper().find('oryx-button');
-  getImages = () => this.getWrapper().find('oryx-product-media');
+  getImages = () => this.getWrapper().find('oryx-product-images');
   getDescription = () => this.getWrapper().find('oryx-product-description');
   getDescriptionText = () => this.getDescription().find('p');
-  getAttributeTerms = () =>
-    this.getWrapper().find('oryx-product-attributes').find('dt');
+  getAttributes = () => this.getWrapper().find('oryx-product-attributes');
+  getAttributeTerms = () => this.getAttributes().find('dt');
 
   getRelations = () => new ProductRelationsFragment();
   getProductsList = () => cy.get('oryx-product-list');
@@ -89,19 +90,18 @@ export class ProductDetailsPage extends AbstractSFPage {
   };
 
   checkDefaultProduct = () => {
-    this.getImages().should('be.visible');
-    this.getDescription().should('be.visible');
-    this.getAttributeTerms().should('be.visible');
+    visibilityCheck(this.getImages());
+    visibilityCheck(this.getDescription());
+    visibilityCheck(this.getAttributes());
 
     this.getTitle().should('contain.text', this.productData.title);
-    this.getRating().should('be.visible');
+    visibilityCheck(this.getRating());
     this.getSKU().should('contain.text', this.productData.id);
     this.getPrice().should('contain.text', this.productData.originalPrice);
 
     this.getQuantityComponent().getInput().should('have.value', 1);
-    this.getAddToCartBtn().should('be.visible');
-    this.getAvailability().should('be.visible');
-
-    this.getProductsList().should('be.visible');
+    visibilityCheck(this.getAddToCartBtn());
+    visibilityCheck(this.getAvailability());
+    visibilityCheck(this.getProductsList());
   };
 }
