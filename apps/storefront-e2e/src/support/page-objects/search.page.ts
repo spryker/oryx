@@ -17,10 +17,10 @@ export class SearchPage extends AbstractSFPage {
   }
 
   waitForLoaded(): void {
-    this.getFacets().should('be.visible');
+    this.getFacet().should('be.visible');
   }
 
-  getFacets = () => cy.get('oryx-search-facet');
-  getOryxCards = () => cy.get('oryx-product-card');
+  getFacet = () => cy.get('oryx-search-facet');
+  getProductCard = () => cy.get('oryx-product-card');
   getProductSort = () => cy.get('oryx-search-product-sort');
 }
