@@ -22,6 +22,7 @@ export function facetRatingNormalizer(
         ? [params?.[ratingParamKey] as string]
         : [];
       const facetValues = Array.from(new Array(5).keys())
+        .reverse()
         .map((i) => {
           const value = i + 1;
           return {
@@ -30,8 +31,7 @@ export function facetRatingNormalizer(
             count: 0,
             disabled: value < ratingFacet.min || value > ratingFacet.max,
           };
-        })
-        .reverse();
+        });
 
       const { config, localizedName } = ratingFacet;
 
