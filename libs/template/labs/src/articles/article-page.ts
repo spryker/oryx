@@ -46,7 +46,7 @@ export const articlePage: ExperienceComponent = {
   options: {
     rules: [{ layout: 'flex', padding: '30px 0' }],
   },
-  ccomponents: [
+  components: [
     {
       type: 'oryx-content-article',
       options: {
