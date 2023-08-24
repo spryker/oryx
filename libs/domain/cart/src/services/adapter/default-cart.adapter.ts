@@ -98,12 +98,12 @@ export class DefaultCartAdapter implements CartAdapter {
 
         const body = {
           data: {
-            type: ApiCartModel.UrlParts.Carts,
+            type: identity.isAuthenticated
+              ? ApiCartModel.UrlParts.Carts
+              : ApiCartModel.UrlParts.GuestCarts,
             attributes,
           },
         };
-
-        console.log('updateCartPriceMode', attributes);
 
         return this.http
           .patch<ApiCartModel.Response>(url, body)
@@ -154,10 +154,6 @@ export class DefaultCartAdapter implements CartAdapter {
     identity: AuthIdentity,
     cartId: string | undefined
   ): Observable<[AuthIdentity, string | undefined]> {
-    // this.priceMode
-    //   .get()
-    //   .pipe(tap((x) => console.log('price mode - createCartIfNeeded', x)));
-
     if (!identity.isAuthenticated || cartId) {
       return of([identity, cartId]);
     }
@@ -193,10 +189,7 @@ export class DefaultCartAdapter implements CartAdapter {
   updateEntry(data: UpdateCartEntryQualifier): Observable<Cart> {
     const attributes = {
       quantity: data.quantity,
-      // priceMode: PriceMode.NetMode,
     };
-
-    // console.log('updateEntry');
 
     return this.identity.get().pipe(
       take(1),
@@ -215,8 +208,6 @@ export class DefaultCartAdapter implements CartAdapter {
             attributes,
           },
         };
-
-        // console.log('updateEntry', attributes);
 
         return this.http
           .patch<ApiCartModel.Response>(url, body)

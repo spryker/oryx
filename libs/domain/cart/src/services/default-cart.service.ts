@@ -79,13 +79,6 @@ export class DefaultCartService implements CartService {
     refreshOn: [CartEntryRemoved, LocaleChanged],
   });
 
-  // protected cartQueryUpdate$ = createQuery({
-  //   id: CartQueryUpdate,
-  //   loader: (qualifier: UpdateCartPriceModeQualifier) =>
-  //     this.adapter.updateCartPriceMode(qualifier),
-  //   refreshOn: [PriceModeChanged],
-  // });
-
   protected updateCardEntryCommand$ = createCommand({
     ...this.cartCommandBase,
     action: (qualifier: UpdateCartPriceModeQualifier) => {
@@ -130,15 +123,21 @@ export class DefaultCartService implements CartService {
   protected updatePriceMode$ = createEffect<Cart>([
     PriceModeChanged,
     ({ event }) => {
-      if (event.data)
-        // Use result of modification commands to update cart state
-        this.updateCart({ cartId: event.data.id });
+      if (event.data) {
+        let cartId: string | undefined;
+        this.getCart().subscribe((cart) => {
+          cartId = cart?.id;
+        });
+
+        this.adapter
+          .updateCartPriceMode({
+            cartId,
+            priceMode: event.data.priceMode,
+          })
+          .subscribe();
+      }
     },
   ]);
-
-  updateCart(data: CartQualifier): Observable<unknown> {
-    return of();
-  }
 
   protected isCartModified$ = createEffect<Cart>(({ getEvents }) =>
     getEvents([CartModificationStart, CartModificationEnd]).pipe(
