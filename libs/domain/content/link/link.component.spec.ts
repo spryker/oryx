@@ -281,7 +281,9 @@ describe('ContentLinkComponent', () => {
       });
 
       it('should have attribute dropdown', () => {
-        expect(element.hasAttribute('dropdown')).toBe(true);
+        expect(element.getAttribute('appearance')).toBe(
+          ContentLinkAppearance.Dropdown
+        );
       });
     });
 
