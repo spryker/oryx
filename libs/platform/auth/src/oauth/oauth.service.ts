@@ -73,7 +73,7 @@ export class OauthService implements AuthService, AuthTokenService {
     protected readonly storageService = inject(StorageService)
   ) {
     // We won't get correct values for isAuthenticated if we don't wait for restoreState to complete first
-    this.initState()
+    this.restoreState()
       .pipe(
         tap(() => {
           this.ready$.next(true);
@@ -129,7 +129,7 @@ export class OauthService implements AuthService, AuthTokenService {
   }
 
   invokeStoredToken(): void {
-    this.restoreState();
+    this.restoreState().subscribe();
   }
 
   getToken(): Observable<AuthTokenData> {
@@ -203,7 +203,7 @@ export class OauthService implements AuthService, AuthTokenService {
     return this.state$;
   }
 
-  protected initState(): Observable<OauthServiceState | null> {
+  protected restoreState(): Observable<OauthServiceState | null> {
     return this.storageService
       .get<OauthServiceState>(OauthService.STATE_KEY)
       .pipe(
@@ -213,10 +213,6 @@ export class OauthService implements AuthService, AuthTokenService {
           return state;
         })
       );
-  }
-
-  protected restoreState(): void {
-    this.initState().subscribe();
   }
 
   protected updateState(providerId?: string): Observable<void> {
