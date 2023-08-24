@@ -9,6 +9,7 @@ export const userRoutes: RouteConfig[] = [
   },
   {
     path: '/account/*',
+    type: RouteType.NotFound,
     render: (): TemplateResult =>
       html`<oryx-composition route="/account/:page"></oryx-composition>`,
   },

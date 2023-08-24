@@ -1,6 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 
-export const accountPage: ExperienceComponent = {
+export const defaultAccountPage: ExperienceComponent = {
   id: 'account-page',
   type: 'Page',
   meta: {

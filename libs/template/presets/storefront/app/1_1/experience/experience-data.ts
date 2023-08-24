@@ -1,10 +1,6 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { provideExperienceData } from '@spryker-oryx/experience';
-import { accountMenu } from './account-menu';
-import { FooterTemplate } from './footer';
-import { HeaderTemplate } from './header';
 import {
-  accountPage,
   addressBookPage,
   cartPage,
   categoryPage,
@@ -15,12 +11,15 @@ import {
   homePage,
   loginPage,
   orderConfirmationPage,
-  overviewPage,
   productPage,
   searchPage,
-} from './pages';
+} from '../../1_0';
+import { FooterTemplate } from '../../1_0/experience/footer';
+import { HeaderTemplate } from '../../1_0/experience/header';
+import { accountMenu } from './account-menu';
+import { defaultAccountPage, overviewPage } from './pages';
 
-export const StaticExperienceFeature: AppFeature = {
+export const staticExperienceLatestFeature: AppFeature = {
   providers: [
     provideExperienceData([
       accountMenu,
@@ -33,7 +32,7 @@ export const StaticExperienceFeature: AppFeature = {
       homePage,
       loginPage,
       orderConfirmationPage,
-      accountPage,
+      defaultAccountPage,
       productPage,
       searchPage,
       addressBookPage,
