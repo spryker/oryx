@@ -7,7 +7,7 @@ import {
   signal,
   signalAware,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { marked } from 'marked';
 import { of } from 'rxjs';
 import { ArticleContext } from '../../article-context';

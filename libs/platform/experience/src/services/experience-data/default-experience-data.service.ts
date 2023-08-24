@@ -178,7 +178,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       return;
     }
 
-    if (type === ExperienceDataMergeType.Remove) {
+    if (type === ExperienceDataMergeType.Remove && !isNaN) {
       components.splice(componentIndex, 1);
 
       return;
