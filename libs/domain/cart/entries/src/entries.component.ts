@@ -24,14 +24,6 @@ export class CartEntriesComponent extends CartComponentMixin(
     if (this.$isEmpty()) return;
 
     return html`
-      <oryx-heading>
-        <h1>
-          ${this.i18n('cart.totals.<count>-items', {
-            count: this.$totalQuantity(),
-          })}
-        </h1>
-      </oryx-heading>
-
       ${repeat(
         this.$entries(),
         (entry) => entry.groupKey,
