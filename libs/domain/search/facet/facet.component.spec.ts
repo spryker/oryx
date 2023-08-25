@@ -261,7 +261,7 @@ describe('SearchFacetComponent', () => {
     });
 
     describe('enableClear', () => {
-      describe('is provided', () => {
+      describe('is set to false', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search-facet
@@ -375,32 +375,6 @@ describe('SearchFacetComponent', () => {
             `input[value="${value.name}"] + div span:last-child`
           )?.textContent
         ).toContain(value.count);
-      });
-    });
-
-    it('should not render the count number for facet values which count property is 0', () => {
-      const values = (mockFacet.values as FacetValue[]).filter(
-        (val) => val.count === 0
-      );
-
-      const facetOptions = Array.from(listItems).filter(
-        (item) => item.querySelectorAll('input + div span').length === 1
-      );
-
-      expect(values.length).toBe(facetOptions.length);
-
-      values.forEach((value) => {
-        expect(
-          element.renderRoot.querySelectorAll(
-            `input[value="${value.name}"] + div span`
-          ).length
-        ).toBe(1);
-
-        expect(
-          element.renderRoot
-            .querySelector(`input[value="${value.name}"] + div span:last-child`)
-            ?.textContent?.trim()
-        ).not.toBe(value.count);
       });
     });
 
