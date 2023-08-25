@@ -16,6 +16,10 @@ export const productRoutes: RouteConfig[] = [
           map((product) => (product ? true : RouteType.NotFound))
         ),
   },
+  {
+    path: '/search',
+    type: RouteType.ProductList,
+  },
 ];
 
 export const productListRoutes: RouteConfig[] = [
