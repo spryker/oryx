@@ -4,6 +4,7 @@ import { viteConfig } from './vite.config.common.js';
 
 export default defineConfig({
   root: viteConfig.index,
+  define: viteConfig.define,
   build: {
     lib: {
       entry: join(viteConfig.root, viteConfig.ssr.root, './hosting/netlify.ts'),
@@ -19,7 +20,6 @@ export default defineConfig({
     rollupOptions: {
       external: ['fs', 'path', 'url', 'module', 'vm', /^node/, /^@netlify/],
     },
-    define: viteConfig.define,
   },
   plugins: [...viteConfig.plugins()],
 });
