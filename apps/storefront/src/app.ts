@@ -3,8 +3,6 @@ import { labsFeatures } from '@spryker-oryx/labs';
 import { b2bStorefrontFeatures } from '@spryker-oryx/presets/b2b-storefront';
 import { storefrontFeaturesLatest } from '@spryker-oryx/presets/storefront';
 import { storefrontTheme } from '@spryker-oryx/themes';
-import {isOryxFeatureLevel, OryxFeatureLevel} from "@spryker-oryx/utilities";
-
 
 const env = import.meta.env;
 
@@ -20,20 +18,3 @@ export const app = appBuilder()
   .withTheme([storefrontTheme])
   .withEnvironment(env)
   .create();
-
-console.log('test123', OryxFeatureLevel);
-const c = OryxFeatureLevel;
-console.log('test124', c);
-
-
-if (OryxFeatureLevel >= 110) {
-  console.log('test222');
-} else {
-  console.log('test333');
-}
-
-if (isOryxFeatureLevel(110)) {
-  console.log('test444');
-} else {
-  console.log('test555');
-}
