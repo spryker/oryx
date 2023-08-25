@@ -14,8 +14,8 @@ import { RouteConfig, URLPatternRouteConfig } from '../../lit/lit-router';
 import {
   NavigationExtras,
   RouteParams,
-  RouteWithParams,
   RouteType,
+  RouteWithParams,
   RouterEvent,
   RouterEventType,
   RouterService,
@@ -166,7 +166,7 @@ export class DefaultRouterService implements RouterService {
       }))
     );
   }
-  
+
   redirectNotFound(): Observable<void> {
     this.navigate(RouteType.NotFound);
     return of(undefined);
