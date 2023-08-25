@@ -2,9 +2,9 @@ import { Provider, inject } from '@spryker-oryx/di';
 import { Facet, FacetValue } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import {
-  Breadcrumb,
-  BreadcrumbsResolver,
-  BreadcrumbsResolvers,
+  BreadcrumbItem,
+  BreadcrumbResolver,
+  BreadcrumbResolvers,
   LinkService,
 } from '@spryker-oryx/site';
 import { Observable, combineLatest, map, switchMap, throwError } from 'rxjs';
@@ -15,15 +15,15 @@ interface FlatFacet {
   value: string;
 }
 
-export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
+export class CategoryBreadcrumbResolver implements BreadcrumbResolver {
   constructor(
     protected facetListService = inject(FacetListService),
     protected linkService = inject(LinkService)
   ) {}
 
-  protected getFlattenCategoriesBreadcrumbs(
+  protected getFlattenCategoriesBreadcrumb(
     categories: Facet
-  ): Observable<Breadcrumb[]> {
+  ): Observable<BreadcrumbItem[]> {
     const getSelected = (facets?: FacetValue[]): FacetValue | undefined => {
       return facets?.find(
         ({ selected, children }) => selected || getSelected(children)
@@ -51,17 +51,17 @@ export class CategoryBreadcrumbsResolver implements BreadcrumbsResolver {
               .pipe(map((url) => ({ text: name, url })))
           )
         )
-      : throwError(() => new Error('Categories breadcrumbs list is empty!'));
+      : throwError(() => new Error('Categories breadcrumb list is empty!'));
   }
 
-  resolve(): Observable<Breadcrumb[]> {
+  resolve(): Observable<BreadcrumbItem[]> {
     return this.facetListService
       .getFacet({ parameter: 'category' })
-      .pipe(switchMap((facet) => this.getFlattenCategoriesBreadcrumbs(facet)));
+      .pipe(switchMap((facet) => this.getFlattenCategoriesBreadcrumb(facet)));
   }
 }
 
-export const CategoryBreadcrumbs: Provider = {
-  provide: `${BreadcrumbsResolvers}${RouteType.Category}`,
-  useClass: CategoryBreadcrumbsResolver,
+export const CategoryBreadcrumb: Provider = {
+  provide: `${BreadcrumbResolvers}${RouteType.Category}`,
+  useClass: CategoryBreadcrumbResolver,
 };

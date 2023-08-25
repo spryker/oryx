@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { Breadcrumb, BreadcrumbsService } from '@spryker-oryx/site';
+import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   I18nMixin,
@@ -12,26 +12,26 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { DirectiveResult } from 'lit/directive';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { SiteBreadcrumbsOptions } from './breadcrumbs.model';
-import { siteBreadcrumbsStyles } from './breadcrumbs.styles';
+import { SiteBreadcrumbOptions } from './breadcrumb.model';
+import { siteBreadcrumbStyles } from './breadcrumb.styles';
 
 @hydrate({ event: 'window:load' })
 @signalAware()
 @defaultOptions({ dividerIcon: IconTypes.Front, showDivider: true })
-export class SiteBreadcrumbsComponent extends I18nMixin(
-  ContentMixin<SiteBreadcrumbsOptions>(LitElement)
+export class SiteBreadcrumbComponent extends I18nMixin(
+  ContentMixin<SiteBreadcrumbOptions>(LitElement)
 ) {
-  static styles = siteBreadcrumbsStyles;
+  static styles = siteBreadcrumbStyles;
 
-  protected breadcrumbsService = resolve(BreadcrumbsService);
+  protected breadcrumbService = resolve(BreadcrumbService);
 
-  protected $breadcrumbs = signal(this.breadcrumbsService.get());
+  protected $breadcrumb = signal(this.breadcrumbService.get());
 
   protected override render(): TemplateResult[] {
-    const breadcrumbs = this.$breadcrumbs();
+    const breadcrumb = this.$breadcrumb();
 
-    return breadcrumbs?.map((b, index) => {
-      const isLastItem = index + 1 === breadcrumbs.length;
+    return breadcrumb?.map((b, index) => {
+      const isLastItem = index + 1 === breadcrumb.length;
       return html`${this.renderBreadcrumb(b)}
       ${when(this.$options().showDivider && !isLastItem, () =>
         this.renderDivider()
@@ -42,11 +42,11 @@ export class SiteBreadcrumbsComponent extends I18nMixin(
   protected renderText({
     i18n,
     text,
-  }: Breadcrumb): string | DirectiveResult | void {
+  }: BreadcrumbItem): string | DirectiveResult | void {
     return i18n ? this.i18n(i18n.token, i18n.values) : text;
   }
 
-  protected renderBreadcrumb(breadcrumb: Breadcrumb): TemplateResult {
+  protected renderBreadcrumb(breadcrumb: BreadcrumbItem): TemplateResult {
     return html`<a href="${ifDefined(breadcrumb.url)}">
       ${this.renderText(breadcrumb)}
     </a>`;

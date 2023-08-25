@@ -21,7 +21,7 @@ export const categoryPage: ExperienceComponent = {
   },
   components: [
     {
-      type: 'oryx-site-breadcrumbs',
+      type: 'oryx-site-breadcrumb',
       options: {
         rules: [
           {

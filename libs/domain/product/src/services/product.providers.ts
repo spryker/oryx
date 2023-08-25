@@ -58,10 +58,10 @@ import {
   ProductRelationsListAdapter,
   ProductRelationsListService,
 } from './related';
-import { ProductListBreadcrumbs } from './resolvers';
+import { ProductListBreadcrumb } from './resolvers';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
-import { productListRoutes, productRoutes } from './routes';
+import { productRoutes } from './routes';
 import { productEffects } from './state/effects';
 import { productQueries } from './state/queries';
 
@@ -164,6 +164,6 @@ export const productProviders: Provider[] = [
     provide: CategoryIdNormalizer,
     useValue: categoryIdNormalizer,
   },
-  ProductListBreadcrumbs,
-  ...provideLitRoutes({ routes: [...productRoutes, ...productListRoutes] }),
+  ProductListBreadcrumb,
+  ...provideLitRoutes({ routes: productRoutes }),
 ];

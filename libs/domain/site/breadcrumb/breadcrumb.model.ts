@@ -1,6 +1,6 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
 
-export interface SiteBreadcrumbsOptions {
+export interface SiteBreadcrumbOptions {
   /**
    * Type of the icon for the divider.
    *

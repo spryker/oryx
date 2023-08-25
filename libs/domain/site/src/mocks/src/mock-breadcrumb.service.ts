@@ -1,8 +1,8 @@
-import { Breadcrumb, BreadcrumbsService } from '@spryker-oryx/site';
+import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
 import { Observable, of } from 'rxjs';
 
-export class MockBreadcrumbsService implements BreadcrumbsService {
-  get(): Observable<Breadcrumb[]> {
+export class MockBreadcrumbService implements BreadcrumbService {
+  get(): Observable<BreadcrumbItem[]> {
     return of([
       { text: 'Home', url: '/' },
       { text: 'Cameras & Camcorders', url: '/1' },

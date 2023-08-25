@@ -4,23 +4,23 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Breadcrumbs/Static`,
+  title: `${storybookPrefix}/Breadcrumb/Static`,
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
   return html`
     <h3>Default</h3>
-    <oryx-site-breadcrumbs></oryx-site-breadcrumbs>
+    <oryx-site-breadcrumb></oryx-site-breadcrumb>
 
     <h3>Custom divider's icon</h3>
-    <oryx-site-breadcrumbs
+    <oryx-site-breadcrumb
       .options=${{ dividerIcon: IconTypes.Add }}
-    ></oryx-site-breadcrumbs>
+    ></oryx-site-breadcrumb>
 
     <h3>Without dividers</h3>
-    <oryx-site-breadcrumbs
+    <oryx-site-breadcrumb
       .options=${{ showDivider: false }}
-    ></oryx-site-breadcrumbs>
+    ></oryx-site-breadcrumb>
   `;
 };
 

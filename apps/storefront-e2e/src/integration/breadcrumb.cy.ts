@@ -13,7 +13,7 @@ const categoryPage = new CategoryPage(childCategory);
 const pdp = new ProductDetailsPage(product);
 
 describe('Breadcrumb suite', () => {
-  it('should render breadcrumb for the product list page', () => {
+  it('should render breadcrumb for the search page', () => {
     searchPage.visit();
 
     searchPage.breadcrumb.get().should('be.visible');
@@ -23,7 +23,8 @@ describe('Breadcrumb suite', () => {
     //should have 1 divider
     searchPage.breadcrumb.shouldHaveDividers(1);
 
-    searchPage.breadcrumb.lastBreadcrumbItem().should('contain.text', 'Search');
+    //the last breadcrumb should be "Search"
+    searchPage.breadcrumb.nthBreadcrumbItem(-1).should('contain.text', 'Search');
 
     //when search query is provided
     searchPage.url = `${searchPage.url}?q=test`;
@@ -34,8 +35,9 @@ describe('Breadcrumb suite', () => {
     //should have 1 divider
     searchPage.breadcrumb.shouldHaveDividers(1);
 
+    //the last breadcrumb should be "Search for <query>"
     searchPage.breadcrumb
-      .lastBreadcrumbItem()
+      .nthBreadcrumbItem(-1)
       .should('contain.text', 'Search for "test"');
   });
 
@@ -51,7 +53,7 @@ describe('Breadcrumb suite', () => {
 
     //should render product's title as the last breadcrumb
     searchPage.breadcrumb
-      .lastBreadcrumbItem()
+      .nthBreadcrumbItem(-1)
       .should('contain.text', product.title);
   });
 
@@ -67,28 +69,28 @@ describe('Breadcrumb suite', () => {
 
     //should render parent category as second breadcrumb
     searchPage.breadcrumb
-      .nthBreadcrumbItem(2)
+      .nthBreadcrumbItem(1)
       .should('contain.text', parentCategory.title);
     //should have proper link
     searchPage.breadcrumb
-      .nthBreadcrumbItem(2)
+      .nthBreadcrumbItem(1)
       .invoke('attr', 'href')
       .should('eq', `/category/${parentCategory.id}`);
 
     //should render child category as the last breadcrumb
     searchPage.breadcrumb
-      .lastBreadcrumbItem()
+      .nthBreadcrumbItem(-1)
       .should('contain.text', childCategory.title);
 
     //when click on parent category
-    searchPage.breadcrumb.nthBreadcrumbItem(2).click();
+    searchPage.breadcrumb.nthBreadcrumbItem(1).click();
 
     //should have 1 divider
     searchPage.breadcrumb.shouldHaveDividers(1);
 
     //should render parent category as the last breadcrumb
     searchPage.breadcrumb
-      .lastBreadcrumbItem()
+      .nthBreadcrumbItem(-1)
       .should('contain.text', parentCategory.title);
   });
 });

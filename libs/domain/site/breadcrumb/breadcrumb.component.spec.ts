@@ -1,53 +1,53 @@
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { Breadcrumb, BreadcrumbsService } from '@spryker-oryx/site';
+import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
 import { IconComponent, IconTypes } from '@spryker-oryx/ui/icon';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { SiteBreadcrumbsComponent } from './breadcrumbs.component';
-import { siteBreadcrumbsComponent } from './breadcrumbs.def';
+import { SiteBreadcrumbComponent } from './breadcrumb.component';
+import { siteBreadcrumbComponent } from './breadcrumb.def';
 
-const breadcrumb: Breadcrumb = {
+const breadcrumb: BreadcrumbItem = {
   url: '/test',
   text: 'test',
 };
 
-const breadcrumbI18n: Breadcrumb = {
+const breadcrumbI18n: BreadcrumbItem = {
   url: '/test',
   i18n: { token: 'test.test', values: { value: 'test' } },
 };
 
-const breadcrumbNoUrl: Breadcrumb = {
+const breadcrumbNoUrl: BreadcrumbItem = {
   text: 'test',
 };
 
 const breadcrumbs = [breadcrumb, breadcrumbI18n, breadcrumbNoUrl];
 
-class MockBreadcrumbsService implements BreadcrumbsService {
+class MockBreadcrumbService implements BreadcrumbService {
   get = vi.fn().mockReturnValue(of([]));
 }
 
-describe('SiteBreadcrumbsComponent', () => {
-  let element: SiteBreadcrumbsComponent;
-  let service: MockBreadcrumbsService;
+describe('SiteBreadcrumbComponent', () => {
+  let element: SiteBreadcrumbComponent;
+  let service: MockBreadcrumbService;
 
   beforeAll(async () => {
-    await useComponent(siteBreadcrumbsComponent);
+    await useComponent(siteBreadcrumbComponent);
   });
 
   beforeEach(async () => {
     const injector = createInjector({
       providers: [
         {
-          provide: BreadcrumbsService,
-          useClass: MockBreadcrumbsService,
+          provide: BreadcrumbService,
+          useClass: MockBreadcrumbService,
         },
       ],
     });
 
-    service = injector.inject<MockBreadcrumbsService>(BreadcrumbsService);
+    service = injector.inject<MockBreadcrumbService>(BreadcrumbService);
   });
 
   afterEach(() => {
@@ -55,7 +55,7 @@ describe('SiteBreadcrumbsComponent', () => {
     vi.clearAllMocks();
   });
 
-  describe('when breadcrumbs are not provided', () => {
+  describe('when breadcrumb are not provided', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
@@ -67,7 +67,7 @@ describe('SiteBreadcrumbsComponent', () => {
     });
   });
 
-  describe('when breadcrumbs are provided', () => {
+  describe('when breadcrumb are provided', () => {
     beforeEach(async () => {
       service.get = vi.fn().mockReturnValue(of(breadcrumbs));
       element = await fixture(

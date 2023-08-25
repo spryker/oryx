@@ -21,10 +21,3 @@ export const productRoutes: RouteConfig[] = [
     type: RouteType.ProductList,
   },
 ];
-
-export const productListRoutes: RouteConfig[] = [
-  {
-    path: '/search',
-    type: RouteType.ProductList,
-  },
-];

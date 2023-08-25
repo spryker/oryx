@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const siteBreadcrumbsStyles = css`
+export const siteBreadcrumbStyles = css`
   :host {
     display: flex;
     align-items: center;

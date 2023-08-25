@@ -3,18 +3,18 @@ import { RouteWithParams, RouterService } from '@spryker-oryx/router';
 import { Observable, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
 import { Breadcrumb } from '../../models';
-import { FallbackBreadcrumbsResolver } from '../resolvers';
+import { FallbackBreadcrumbResolver } from '../resolvers';
 import {
-  BreadcrumbsResolver,
-  BreadcrumbsResolvers,
-  BreadcrumbsService,
-} from './breadcrumbs.service';
-import { DefaultBreadcrumbsService } from './default-breadcrumbs.service';
+  BreadcrumbResolver,
+  BreadcrumbResolvers,
+  BreadcrumbService,
+} from './breadcrumb.service';
+import { DefaultBreadcrumbService } from './default-breadcrumb.service';
 
 const breadcrumb = { text: 'test' };
 const route: Partial<RouteWithParams> = { type: 'test' };
 
-class TestResolver implements BreadcrumbsResolver {
+class TestResolver implements BreadcrumbResolver {
   resolve(): Observable<Breadcrumb[]> {
     return of([breadcrumb]);
   }
@@ -24,8 +24,8 @@ class MockRouterService implements Partial<RouterService> {
   current = vi.fn().mockReturnValue(of(route));
 }
 
-describe('DefaultBreadcrumbsService', () => {
-  let service: BreadcrumbsService;
+describe('DefaultBreadcrumbService', () => {
+  let service: BreadcrumbService;
   let routerService: MockRouterService;
   let resolver: TestResolver;
   let defaultResolver: TestResolver;
@@ -35,30 +35,30 @@ describe('DefaultBreadcrumbsService', () => {
     const testInjector = createInjector({
       providers: [
         {
-          provide: BreadcrumbsService,
-          useClass: DefaultBreadcrumbsService,
+          provide: BreadcrumbService,
+          useClass: DefaultBreadcrumbService,
         },
         {
           provide: RouterService,
           useClass: MockRouterService,
         },
         {
-          provide: `${BreadcrumbsResolvers}test`,
+          provide: `${BreadcrumbResolvers}test`,
           useClass: TestResolver,
         },
         {
-          provide: FallbackBreadcrumbsResolver,
+          provide: FallbackBreadcrumbResolver,
           useClass: TestResolver,
         },
       ],
     });
 
     service =
-      testInjector.inject<DefaultBreadcrumbsService>(BreadcrumbsService);
+      testInjector.inject<DefaultBreadcrumbService>(BreadcrumbService);
     routerService = testInjector.inject<MockRouterService>(RouterService);
-    resolver = testInjector.inject<TestResolver>(`${BreadcrumbsResolvers}test`);
+    resolver = testInjector.inject<TestResolver>(`${BreadcrumbResolvers}test`);
     defaultResolver = testInjector.inject<TestResolver>(
-      FallbackBreadcrumbsResolver
+      FallbackBreadcrumbResolver
     );
   });
 
@@ -67,7 +67,7 @@ describe('DefaultBreadcrumbsService', () => {
     destroyInjector();
   });
 
-  describe('when breadcrumbs resolver`s type exists', () => {
+  describe('when breadcrumb resolver`s type exists', () => {
     let spy: SpyInstance;
     beforeEach(() => {
       spy = vi.spyOn(resolver, 'resolve');
@@ -78,18 +78,18 @@ describe('DefaultBreadcrumbsService', () => {
       expect(routerService.current).toHaveBeenCalled();
     });
 
-    it('should resolve the breadcrumbs from the service', () => {
+    it('should resolve the breadcrumb from the service', () => {
       expect(spy).toHaveBeenCalled();
     });
 
-    it('should return processed array of breadcrumbs', () => {
+    it('should return processed array of breadcrumb', () => {
       expect(callback).toHaveBeenCalledWith(
         expect.arrayContaining([breadcrumb])
       );
     });
   });
 
-  describe('when breadcrumbs resolver`s type does not exist', () => {
+  describe('when breadcrumb resolver`s type does not exist', () => {
     let spy: SpyInstance;
     beforeEach(() => {
       routerService.current = vi.fn().mockReturnValue(of({ type: 'test1' }));
@@ -97,11 +97,11 @@ describe('DefaultBreadcrumbsService', () => {
       service.get().subscribe(callback);
     });
 
-    it('should resolve the breadcrumbs from the fallback service', () => {
+    it('should resolve the breadcrumb from the fallback service', () => {
       expect(spy).toHaveBeenCalled();
     });
 
-    it('should return processed array of default breadcrumbs', () => {
+    it('should return processed array of default breadcrumb', () => {
       expect(callback).toHaveBeenCalledWith(
         expect.arrayContaining([breadcrumb])
       );
@@ -116,11 +116,11 @@ describe('DefaultBreadcrumbsService', () => {
       service.get().subscribe(callback);
     });
 
-    it('should resolve the breadcrumbs from the fallback service', () => {
+    it('should resolve the breadcrumb from the fallback service', () => {
       expect(spy).toHaveBeenCalled();
     });
 
-    it('should return processed array of default breadcrumbs', () => {
+    it('should return processed array of default breadcrumb', () => {
       expect(callback).toHaveBeenCalledWith(
         expect.arrayContaining([breadcrumb])
       );
