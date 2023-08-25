@@ -40,10 +40,9 @@ export function facetRatingNormalizer(
         parameter: ratingParamKey,
         values: facetValues,
         selectedValues,
-        valuesTreeLength:
-          ratingFacet.max - ratingFacet.min
-            ? ratingFacet.max - ratingFacet.min + 1
-            : 1,
+        valuesTreeLength: ratingFacet.max
+          ? ratingFacet.max - ratingFacet.min + 1
+          : 0,
         ...(config.isMultiValued && { multiValued: config.isMultiValued }),
       };
     })

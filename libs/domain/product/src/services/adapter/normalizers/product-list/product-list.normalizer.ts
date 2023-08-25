@@ -1,8 +1,8 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
-import { Observable, combineLatest, map } from 'rxjs';
-import { ApiProductListModel, ProductList } from '../../../../models';
+import { Observable, combineLatest, map, of } from 'rxjs';
+import { ApiProductListModel, Facet, ProductList } from '../../../../models';
 import { ConcreteProductsNormalizer } from '../concrete-products';
 import { FacetNormalizer } from '../facet';
 import { FacetCategoryNormalizer } from '../facet-category';
@@ -61,7 +61,7 @@ export function productFacetNormalizer(
   );
 
   const ratingFacet = data[0].rangeFacets!.splice(
-    data[0].valueFacets!.findIndex((v) => v.name === 'rating'),
+    data[0].rangeFacets!.findIndex((v) => v.name === 'rating'),
     1
   );
 
@@ -73,7 +73,9 @@ export function productFacetNormalizer(
       },
       FacetCategoryNormalizer
     ),
-    transformer.transform(ratingFacet[0], FacetRatingNormalizer),
+    ratingFacet[0]?.max
+      ? transformer.transform(ratingFacet[0], FacetRatingNormalizer)
+      : of(null),
     transformer.transform(
       {
         facetList: data[0].valueFacets,
@@ -83,9 +85,9 @@ export function productFacetNormalizer(
     ),
     transformer.transform(data[0].rangeFacets, FacetRangeNormalizer),
   ]).pipe(
-    map(([categoryFacet, ratingFacet, facetValues, rangeValues]) => {
+    map((facets: (Facet | Facet[] | null)[]) => {
       return {
-        facets: [categoryFacet, ratingFacet, ...facetValues, ...rangeValues],
+        facets: facets.filter((facet) => facet).flat() as Facet[],
       };
     })
   );

@@ -361,13 +361,13 @@ describe('SearchFacetComponent', () => {
         (val) => val.count > 0
       );
 
-      const facetOptions = Array.from(listItems).filter(
+      const facetOptionsWithCounter = Array.from(listItems).filter(
         (item) =>
           item.querySelectorAll('input + div span').length === 2 &&
           item.querySelector('input + div span:last-child')?.textContent
       );
 
-      expect(values.length).toBe(facetOptions.length);
+      expect(values.length).toBe(facetOptionsWithCounter.length);
 
       values.forEach((value) => {
         expect(
@@ -388,6 +388,20 @@ describe('SearchFacetComponent', () => {
       );
 
       expect(values.length).toBe(facetOptions.length);
+
+      values.forEach((value) => {
+        expect(
+          element.renderRoot.querySelectorAll(
+            `input[value="${value.name}"] + div span`
+          ).length
+        ).toBe(1);
+
+        expect(
+          element.renderRoot
+            .querySelector(`input[value="${value.name}"] + div span:last-child`)
+            ?.textContent?.trim()
+        ).not.toBe(value.count);
+      });
     });
 
     it('should render disabled facet value', () => {

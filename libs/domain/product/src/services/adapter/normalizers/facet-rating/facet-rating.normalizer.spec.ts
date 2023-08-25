@@ -29,7 +29,7 @@ const generateNoramalizedFacet = (
     name: facet.localizedName,
     parameter: facet.config.parameterName,
     selectedValues: selectedValue ? [String(selectedValue)] : [],
-    valuesTreeLength: facet.max - facet.min + 1,
+    valuesTreeLength: facet.max ? facet.max - facet.min + 1 : 0,
     values: Array.from(new Array(5).keys())
       .reverse()
       .map((i) => {
@@ -67,11 +67,16 @@ describe('Product Facet Normalizers', () => {
 
   const callback = vi.fn();
 
-  it('should return normalized rating facet-navigation', () => {
-    facetRatingNormalizer(mockRatingFacet).pipe(take(1)).subscribe(callback);
-    expect(callback).toHaveBeenCalledWith(
-      generateNoramalizedFacet(mockRatingFacet)
-    );
+  describe('when facet is provided', () => {
+    beforeEach(() => {
+      facetRatingNormalizer(mockRatingFacet).pipe(take(1)).subscribe(callback);
+    });
+
+    it('should return normalized rating facet', () => {
+      expect(callback).toHaveBeenCalledWith(
+        generateNoramalizedFacet(mockRatingFacet)
+      );
+    });
   });
 
   describe('when router has "rating[min]" param', () => {
@@ -89,6 +94,45 @@ describe('Product Facet Normalizers', () => {
       facetRatingNormalizer(mockRatingFacet).pipe(take(1)).subscribe(callback);
       expect(callback).toHaveBeenCalledWith(
         generateNoramalizedFacet(mockRatingFacet, [], ratingMin)
+      );
+    });
+  });
+
+  describe('when min and max are equal', () => {
+    const modifiedMockRatingFacet = {
+      ...mockRatingFacet,
+      min: 4,
+      max: 4,
+    };
+
+    beforeEach(() => {
+      facetRatingNormalizer(modifiedMockRatingFacet)
+        .pipe(take(1))
+        .subscribe(callback);
+    });
+
+    it('should return normalized rating facet with all values as disabled', () => {
+      expect(callback).toHaveBeenCalledWith(
+        generateNoramalizedFacet(modifiedMockRatingFacet, [1, 2, 3, 5])
+      );
+    });
+  });
+
+  describe('when max is 0', () => {
+    const modifiedMockRatingFacet = {
+      ...mockRatingFacet,
+      max: 0,
+    };
+
+    beforeEach(() => {
+      facetRatingNormalizer(modifiedMockRatingFacet)
+        .pipe(take(1))
+        .subscribe(callback);
+    });
+
+    it('should return normalized rating facet with all values as disabled', () => {
+      expect(callback).toHaveBeenCalledWith(
+        generateNoramalizedFacet(modifiedMockRatingFacet, [1, 2, 3, 4, 5])
       );
     });
   });
