@@ -1,7 +1,7 @@
-export class BreadcrumbsFragment {
-  get = () => cy.get('oryx-site-breadcrumbs');
-  lastBreadcrumb = () => this.get().find('a:last-of-type');
-  nthBreadcrumb = (n: number) => this.get().find(`a:nth-of-type(${n})`);
+export class BreadcrumbFragment {
+  get = () => cy.get('oryx-site-breadcrumb');
+  lastBreadcrumbItem = () => this.get().find('a:last-of-type');
+  nthBreadcrumbItem = (n: number) => this.get().find(`a:nth-of-type(${n})`);
 
   shouldHaveHomePageLink(): void {
     const link = this.get().find('a:first-of-type');

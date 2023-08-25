@@ -2,9 +2,9 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouteWithParams, RouterService } from '@spryker-oryx/router';
 import { of } from 'rxjs';
 import {
-  ProductListBreadcrumbs,
-  ProductListBreadcrumbsResolver,
-} from './breadcrumbs.resolver';
+  ProductListBreadcrumb,
+  ProductListBreadcrumbResolver,
+} from './breadcrumb.resolver';
 
 const route: Partial<RouteWithParams> = { query: {} };
 const routeWithSearch: Partial<RouteWithParams> = { query: { q: 'test' } };
@@ -13,14 +13,14 @@ class MockRouterService implements Partial<RouterService> {
   current = vi.fn().mockReturnValue(of(route));
 }
 
-describe('ProductListBreadcrumbsResolver', () => {
-  let service: ProductListBreadcrumbsResolver;
+describe('ProductListBreadcrumbResolver', () => {
+  let service: ProductListBreadcrumbResolver;
   let routerService: MockRouterService;
 
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
-        ProductListBreadcrumbs,
+        ProductListBreadcrumb,
         {
           provide: RouterService,
           useClass: MockRouterService,
@@ -29,7 +29,7 @@ describe('ProductListBreadcrumbsResolver', () => {
     });
 
     routerService = testInjector.inject<MockRouterService>(RouterService);
-    service = testInjector.inject(ProductListBreadcrumbs.provide);
+    service = testInjector.inject(ProductListBreadcrumb.provide);
   });
 
   afterEach(() => {
@@ -52,7 +52,7 @@ describe('ProductListBreadcrumbsResolver', () => {
         expect.arrayContaining([
           {
             i18n: {
-              token: 'product.breadcrumbs.search',
+              token: 'product.breadcrumb.search',
             },
           },
         ])
@@ -72,7 +72,7 @@ describe('ProductListBreadcrumbsResolver', () => {
           expect.arrayContaining([
             {
               i18n: {
-                token: 'product.breadcrumbs.search-for-<search>',
+                token: 'product.breadcrumb.search-for-<search>',
                 values: { search: `"${routeWithSearch.query?.q}"` },
               },
             },

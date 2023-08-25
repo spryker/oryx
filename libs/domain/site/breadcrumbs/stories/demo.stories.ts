@@ -25,7 +25,7 @@ export default {
 } as Meta;
 
 const Template: Story<SiteBreadcrumbsOptions> = (options): TemplateResult => {
-  return html`<oryx-site-breadcrumbs
+  return html`<oryx-site-breadcrumb
     .options=${options}
   ></oryx-site-breadcrumbs>`;
 };

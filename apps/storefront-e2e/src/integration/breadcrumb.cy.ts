@@ -12,83 +12,83 @@ const searchPage = new SearchPage();
 const categoryPage = new CategoryPage(childCategory);
 const pdp = new ProductDetailsPage(product);
 
-describe('Breadcrumbs suite', () => {
-  it('should render breadcrumbs for the search page', () => {
+describe('Breadcrumb suite', () => {
+  it('should render breadcrumb for the product list page', () => {
     searchPage.visit();
 
-    searchPage.breadcrumbs.get().should('be.visible');
+    searchPage.breadcrumb.get().should('be.visible');
 
     //first link should be home
-    searchPage.breadcrumbs.shouldHaveHomePageLink();
+    searchPage.breadcrumb.shouldHaveHomePageLink();
     //should have 1 divider
-    searchPage.breadcrumbs.shouldHaveDividers(1);
+    searchPage.breadcrumb.shouldHaveDividers(1);
 
-    searchPage.breadcrumbs.lastBreadcrumb().should('contain.text', 'Search');
+    searchPage.breadcrumb.lastBreadcrumbItem().should('contain.text', 'Search');
 
     //when search query is provided
     searchPage.url = `${searchPage.url}?q=test`;
     searchPage.visit();
 
     //first link should be home
-    searchPage.breadcrumbs.shouldHaveHomePageLink();
+    searchPage.breadcrumb.shouldHaveHomePageLink();
     //should have 1 divider
-    searchPage.breadcrumbs.shouldHaveDividers(1);
+    searchPage.breadcrumb.shouldHaveDividers(1);
 
-    searchPage.breadcrumbs
-      .lastBreadcrumb()
+    searchPage.breadcrumb
+      .lastBreadcrumbItem()
       .should('contain.text', 'Search for "test"');
   });
 
-  it('should render breadcrumbs for the product details page', () => {
+  it('should render breadcrumb for the product details page', () => {
     pdp.visit();
 
-    searchPage.breadcrumbs.get().should('be.visible');
+    searchPage.breadcrumb.get().should('be.visible');
 
     //first link should be home
-    searchPage.breadcrumbs.shouldHaveHomePageLink();
+    searchPage.breadcrumb.shouldHaveHomePageLink();
     //should have 1 divider
-    searchPage.breadcrumbs.shouldHaveDividers(1);
+    searchPage.breadcrumb.shouldHaveDividers(1);
 
     //should render product's title as the last breadcrumb
-    searchPage.breadcrumbs
-      .lastBreadcrumb()
+    searchPage.breadcrumb
+      .lastBreadcrumbItem()
       .should('contain.text', product.title);
   });
 
-  it('should render breadcrumbs for the categories page', () => {
+  it('should render breadcrumb for the categories page', () => {
     categoryPage.visit();
 
-    searchPage.breadcrumbs.get().should('be.visible');
+    searchPage.breadcrumb.get().should('be.visible');
 
     //first link should be home
-    searchPage.breadcrumbs.shouldHaveHomePageLink();
+    searchPage.breadcrumb.shouldHaveHomePageLink();
     //should have 2 dividers
-    searchPage.breadcrumbs.shouldHaveDividers(2);
+    searchPage.breadcrumb.shouldHaveDividers(2);
 
     //should render parent category as second breadcrumb
-    searchPage.breadcrumbs
-      .nthBreadcrumb(2)
+    searchPage.breadcrumb
+      .nthBreadcrumbItem(2)
       .should('contain.text', parentCategory.title);
     //should have proper link
-    searchPage.breadcrumbs
-      .nthBreadcrumb(2)
+    searchPage.breadcrumb
+      .nthBreadcrumbItem(2)
       .invoke('attr', 'href')
       .should('eq', `/category/${parentCategory.id}`);
 
     //should render child category as the last breadcrumb
-    searchPage.breadcrumbs
-      .lastBreadcrumb()
+    searchPage.breadcrumb
+      .lastBreadcrumbItem()
       .should('contain.text', childCategory.title);
 
     //when click on parent category
-    searchPage.breadcrumbs.nthBreadcrumb(2).click();
+    searchPage.breadcrumb.nthBreadcrumbItem(2).click();
 
     //should have 1 divider
-    searchPage.breadcrumbs.shouldHaveDividers(1);
+    searchPage.breadcrumb.shouldHaveDividers(1);
 
     //should render parent category as the last breadcrumb
-    searchPage.breadcrumbs
-      .lastBreadcrumb()
+    searchPage.breadcrumb
+      .lastBreadcrumbItem()
       .should('contain.text', parentCategory.title);
   });
 });

@@ -58,7 +58,7 @@ describe('SiteBreadcrumbsComponent', () => {
   describe('when breadcrumbs are not provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-site-breadcrumbs></oryx-site-breadcrumbs>`
+        html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
       );
     });
 
@@ -71,7 +71,7 @@ describe('SiteBreadcrumbsComponent', () => {
     beforeEach(async () => {
       service.get = vi.fn().mockReturnValue(of(breadcrumbs));
       element = await fixture(
-        html`<oryx-site-breadcrumbs></oryx-site-breadcrumbs>`
+        html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
       );
     });
 
@@ -89,7 +89,7 @@ describe('SiteBreadcrumbsComponent', () => {
       beforeEach(async () => {
         service.get = vi.fn().mockReturnValue(of([breadcrumb]));
         element = await fixture(
-          html`<oryx-site-breadcrumbs></oryx-site-breadcrumbs>`
+          html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
         );
       });
 
@@ -108,7 +108,7 @@ describe('SiteBreadcrumbsComponent', () => {
       beforeEach(async () => {
         service.get = vi.fn().mockReturnValue(of([breadcrumbI18n]));
         element = await fixture(
-          html`<oryx-site-breadcrumbs></oryx-site-breadcrumbs>`
+          html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
         );
         spy = vi.spyOn(element, 'i18n');
         element.requestUpdate();
@@ -127,7 +127,7 @@ describe('SiteBreadcrumbsComponent', () => {
       beforeEach(async () => {
         service.get = vi.fn().mockReturnValue(of([breadcrumbNoUrl]));
         element = await fixture(
-          html`<oryx-site-breadcrumbs></oryx-site-breadcrumbs>`
+          html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
         );
       });
 
@@ -138,9 +138,9 @@ describe('SiteBreadcrumbsComponent', () => {
 
     describe('and dividerIcon option is provided', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-site-breadcrumbs
+        element = await fixture(html`<oryx-site-breadcrumb
           .options=${{ dividerIcon: IconTypes.Add }}
-        ></oryx-site-breadcrumbs>`);
+        ></oryx-site-breadcrumb>`);
       });
 
       it('should icon type to the icon', () => {
@@ -152,9 +152,9 @@ describe('SiteBreadcrumbsComponent', () => {
 
     describe('and showDivider option is false', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-site-breadcrumbs
+        element = await fixture(html`<oryx-site-breadcrumb
           .options=${{ showDivider: false }}
-        ></oryx-site-breadcrumbs>`);
+        ></oryx-site-breadcrumb>`);
       });
 
       it('should not render the dividers', () => {

@@ -2,12 +2,12 @@ import { Provider, inject } from '@spryker-oryx/di';
 import { RouteType, RouterService } from '@spryker-oryx/router';
 import {
   Breadcrumb,
-  BreadcrumbsResolver,
-  BreadcrumbsResolvers,
+  BreadcrumbResolver,
+  BreadcrumbResolvers,
 } from '@spryker-oryx/site';
 import { Observable, map } from 'rxjs';
 
-export class ProductListBreadcrumbsResolver implements BreadcrumbsResolver {
+export class ProductListBreadcrumbResolver implements BreadcrumbResolver {
   constructor(protected routerService = inject(RouterService)) {}
 
   resolve(): Observable<Breadcrumb[]> {
@@ -16,17 +16,17 @@ export class ProductListBreadcrumbsResolver implements BreadcrumbsResolver {
         {
           i18n: query.q
             ? {
-                token: 'product.breadcrumbs.search-for-<search>',
+                token: 'product.breadcrumb.search-for-<search>',
                 values: { search: `"${query.q}"` },
               }
-            : { token: 'product.breadcrumbs.search' },
+            : { token: 'product.breadcrumb.search' },
         },
       ])
     );
   }
 }
 
-export const ProductListBreadcrumbs: Provider = {
-  provide: `${BreadcrumbsResolvers}${RouteType.ProductList}`,
-  useClass: ProductListBreadcrumbsResolver,
+export const ProductListBreadcrumb: Provider = {
+  provide: `${BreadcrumbResolvers}${RouteType.ProductList}`,
+  useClass: ProductListBreadcrumbResolver,
 };
