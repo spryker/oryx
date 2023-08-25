@@ -1,5 +1,6 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import {
   AvailabilityNormalizer,
   CategoryIdNormalizer,
@@ -60,6 +61,7 @@ import {
 import { ProductListBreadcrumbs } from './resolvers';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
+import { productRoutes } from './routes';
 import { productEffects } from './state/effects';
 import { productQueries } from './state/queries';
 
@@ -163,4 +165,5 @@ export const productProviders: Provider[] = [
     useValue: categoryIdNormalizer,
   },
   ProductListBreadcrumbs,
+  ...provideLitRoutes({ routes: productRoutes }),
 ];
