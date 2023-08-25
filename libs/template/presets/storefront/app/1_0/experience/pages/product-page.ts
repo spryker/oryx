@@ -24,7 +24,6 @@ export const productPage: ExperienceComponent = {
       components: [
         {
           type: 'oryx-site-breadcrumbs',
-          id: 'breadcrumbs',
           options: {
             rules: [
               {
