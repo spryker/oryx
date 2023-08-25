@@ -74,28 +74,3 @@ export const generateRatingFacet = (
     values: values.reverse(),
   };
 };
-
-export const generateRatingFacet = (
-  selectedValues?: string[],
-  disabledValues?: string[]
-): Facet => {
-  const values: FacetValue[] = [];
-
-  for (let i = 1; i <= 5; i++) {
-    const value = String(i);
-    values.push({
-      value,
-      selected: selectedValues?.includes(value),
-      count: 0,
-      name: value,
-      disabled: disabledValues?.includes(value),
-    });
-  }
-
-  return {
-    name: 'Rating',
-    parameter: 'rating[min]',
-    valuesTreeLength: 5,
-    values: values.reverse(),
-  };
-};
