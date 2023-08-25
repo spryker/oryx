@@ -23,7 +23,8 @@ describe('Breadcrumbs suite', () => {
     //should have 1 divider
     searchPage.breadcrumbs.shouldHaveDividers(1);
 
-    searchPage.breadcrumbs.lastBreadcrumb().should('contain.text', 'Search');
+    //the last breadcrumb should be "Search"
+    searchPage.breadcrumbs.nthBreadcrumb(-1).should('contain.text', 'Search');
 
     //when search query is provided
     searchPage.url = `${searchPage.url}?q=test`;
@@ -34,8 +35,9 @@ describe('Breadcrumbs suite', () => {
     //should have 1 divider
     searchPage.breadcrumbs.shouldHaveDividers(1);
 
+    //the last breadcrumb should be "Search for <query>"
     searchPage.breadcrumbs
-      .lastBreadcrumb()
+      .nthBreadcrumb(-1)
       .should('contain.text', 'Search for "test"');
   });
 
@@ -51,7 +53,7 @@ describe('Breadcrumbs suite', () => {
 
     //should render product's title as the last breadcrumb
     searchPage.breadcrumbs
-      .lastBreadcrumb()
+      .nthBreadcrumb(-1)
       .should('contain.text', product.title);
   });
 
@@ -67,28 +69,28 @@ describe('Breadcrumbs suite', () => {
 
     //should render parent category as second breadcrumb
     searchPage.breadcrumbs
-      .nthBreadcrumb(2)
+      .nthBreadcrumb(1)
       .should('contain.text', parentCategory.title);
     //should have proper link
     searchPage.breadcrumbs
-      .nthBreadcrumb(2)
+      .nthBreadcrumb(1)
       .invoke('attr', 'href')
       .should('eq', `/category/${parentCategory.id}`);
 
     //should render child category as the last breadcrumb
     searchPage.breadcrumbs
-      .lastBreadcrumb()
+      .nthBreadcrumb(-1)
       .should('contain.text', childCategory.title);
 
     //when click on parent category
-    searchPage.breadcrumbs.nthBreadcrumb(2).click();
+    searchPage.breadcrumbs.nthBreadcrumb(1).click();
 
     //should have 1 divider
     searchPage.breadcrumbs.shouldHaveDividers(1);
 
     //should render parent category as the last breadcrumb
     searchPage.breadcrumbs
-      .lastBreadcrumb()
+      .nthBreadcrumb(-1)
       .should('contain.text', parentCategory.title);
   });
 });
