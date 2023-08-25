@@ -15,5 +15,5 @@ export * from './throttle';
 export * from './time';
 export * from './to-observable';
 export * from './type';
-export * from './wait';
 export * from './version';
+export * from './wait';
