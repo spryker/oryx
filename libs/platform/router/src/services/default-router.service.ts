@@ -7,12 +7,14 @@ import {
   Subject,
   combineLatest,
   map,
+  of,
 } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
 import { RouteConfig, URLPatternRouteConfig } from '../../lit/lit-router';
 import {
   NavigationExtras,
   RouteParams,
+  RouteType,
   RouteWithParams,
   RouterEvent,
   RouterEventType,
@@ -69,6 +71,12 @@ export class DefaultRouterService implements RouterService {
   }
 
   navigate(route: string): void {
+    if (route === RouteType.NotFound) {
+      this.router$.next(RouteType.NotFound);
+
+      return;
+    }
+
     globalThis.history.pushState({}, '', route);
     this.go(route);
   }
@@ -157,6 +165,11 @@ export class DefaultRouterService implements RouterService {
         query,
       }))
     );
+  }
+
+  redirectNotFound(): Observable<void> {
+    this.navigate(RouteType.NotFound);
+    return of(undefined);
   }
 
   protected createUrlParams(params?: {

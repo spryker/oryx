@@ -8,6 +8,7 @@ import {
   LayoutBuilder,
   LayoutMixin,
 } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import {
   effect,
   elementEffect,
@@ -32,6 +33,7 @@ export class CompositionComponent extends LayoutMixin(
   @signalProperty({ reflect: true }) route?: string;
 
   protected experienceService = resolve(ExperienceService);
+  protected routerService = resolve(RouterService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
 
@@ -43,9 +45,15 @@ export class CompositionComponent extends LayoutMixin(
       return;
     }
 
-    const component =
-      signal(this.experienceService.getComponent({ route: this.route }))() ??
-      ({} as Component);
+    const component = signal(
+      this.experienceService.getComponent({ route: this.route })
+    )();
+
+    if (!component?.id) {
+      this.routerService.redirectNotFound();
+      this.uid = undefined;
+      return;
+    }
 
     if (this.uid !== component.id) {
       this.uid = component.id;

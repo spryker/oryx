@@ -136,11 +136,9 @@ export class DefaultExperienceService implements ExperienceService {
     this.http
       .get<Component[]>(componentsUrl)
       .pipe(
+        catchError(() => of(undefined)),
         tap((components) => {
-          // TODO: why only first one
-          if (!components?.length) {
-            return;
-          }
+          if (!components?.length) return;
           const component = components[0];
           this.processComponent(component);
         })
