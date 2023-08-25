@@ -19,6 +19,7 @@ export default defineConfig({
     rollupOptions: {
       external: ['fs', 'path', 'url', 'module', 'vm', /^node/, /^@netlify/],
     },
+    define: viteConfig.define,
   },
   plugins: [...viteConfig.plugins()],
 });
