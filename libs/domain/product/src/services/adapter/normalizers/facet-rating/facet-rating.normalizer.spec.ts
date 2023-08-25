@@ -194,7 +194,7 @@ describe('Product Facet Normalizers', () => {
         .subscribe(callback);
     });
 
-    it('should return normalized rating facet with first value as disabled', () => {
+    it('should return normalized rating facet with first and last values as disabled', () => {
       expect(callback).toHaveBeenCalledWith(
         generateNoramalizedFacet(modifiedMockRatingFacet, [
           modifiedMockRatingFacet.min - 1,
