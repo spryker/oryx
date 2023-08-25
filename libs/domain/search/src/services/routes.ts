@@ -16,4 +16,8 @@ export const categoryRoutes: RouteConfig[] = [
           map((facets) => (facets ? true : RouteType.NotFound))
         ),
   },
+  {
+    path: '/search',
+    type: RouteType.ProductList,
+  },
 ];
