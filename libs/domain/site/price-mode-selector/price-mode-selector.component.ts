@@ -58,7 +58,9 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
   protected onClick(locale: string): void {
     let isAllowed = false;
     const priceModeInjector = this.injector.inject(PriceModeChangeGuard);
-    priceModeInjector[0]?.isAllowed().subscribe((x) => (isAllowed = x));
+    priceModeInjector[0]
+      ?.isAllowed()
+      .subscribe((value: boolean) => (isAllowed = value));
 
     if (isAllowed) {
       this.priceModeService.set(locale);
