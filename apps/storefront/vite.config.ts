@@ -7,6 +7,7 @@ export default defineConfig((config) => {
     root: viteConfig.index,
     envDir: viteConfig.root,
     envPrefix: viteConfig.envPrefix,
+    define: viteConfig.define,
     build: {
       outDir: join(
         viteConfig.monorepoRoot,
