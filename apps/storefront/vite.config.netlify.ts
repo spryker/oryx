@@ -4,6 +4,7 @@ import { viteConfig } from './vite.config.common.js';
 
 export default defineConfig({
   root: viteConfig.index,
+  define: viteConfig.define,
   build: {
     lib: {
       entry: join(viteConfig.root, viteConfig.ssr.root, './hosting/netlify.ts'),
