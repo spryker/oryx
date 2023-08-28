@@ -1,7 +1,7 @@
+import dotenv from 'dotenv';
 import { Plugin } from 'vite';
 import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import dotenv from 'dotenv';
 
 dotenv.config();
 
