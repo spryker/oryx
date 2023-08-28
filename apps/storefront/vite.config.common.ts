@@ -1,6 +1,9 @@
 import { Plugin } from 'vite';
 import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const viteConfig = {
   index: './src',
@@ -8,7 +11,7 @@ export const viteConfig = {
   root: '../',
   envPrefix: ['ORYX', 'FES', 'SCOS', 'STORE'],
   define: {
-    __ORYX_FEATURE_LEVEL__: 'latest',
+    __ORYX_FEATURE_LEVEL__: `${process.env.ORYX_FEATURE_LEVEL ?? 'latest'}`,
   },
   /// need additional escape because we start from './src'
   monorepoRoot: '../../../',
