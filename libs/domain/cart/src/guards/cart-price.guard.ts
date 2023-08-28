@@ -1,5 +1,5 @@
 import { inject } from '@spryker-oryx/di';
-import { PriceModeGuard } from '@spryker-oryx/site';
+import { PriceModeChangeGuard } from '@spryker-oryx/site';
 import { Observable } from 'rxjs';
 import { CartService } from '../services';
 
@@ -17,6 +17,6 @@ export class CartPriceModeChangeGuard implements Guard {
 
 declare global {
   interface InjectionTokensContractMap {
-    [PriceModeGuard]: CartPriceModeChangeGuard;
+    [PriceModeChangeGuard]: Guard;
   }
 }

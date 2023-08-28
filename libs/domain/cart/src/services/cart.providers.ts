@@ -1,5 +1,5 @@
 import { Provider } from '@spryker-oryx/di';
-import { PriceModeGuard } from '@spryker-oryx/site';
+import { PriceModeChangeGuard } from '@spryker-oryx/site';
 import { CartPriceModeChangeGuard } from '../guards/cart-price.guard';
 import {
   CartAdapter,
@@ -30,8 +30,8 @@ export const cartProviders: Provider[] = [
     useClass: DefaultTotalsService,
   },
   {
-    provide: PriceModeGuard,
-    useValue: CartPriceModeChangeGuard,
+    provide: PriceModeChangeGuard,
+    useClass: CartPriceModeChangeGuard,
   },
   CartResourceResolver,
   CartTotalsProvider,

@@ -33,7 +33,6 @@ import {
   CartEntryQualifier,
   CartQualifier,
   UpdateCartEntryQualifier,
-  UpdateCartPriceModeQualifier,
 } from '../models';
 import { CartAdapter } from './adapter/cart.adapter';
 import { CartService } from './cart.service';
@@ -77,13 +76,6 @@ export class DefaultCartService implements CartService {
     id: CartQuery,
     loader: (qualifier: CartQualifier) => this.adapter.get(qualifier),
     refreshOn: [CartEntryRemoved, LocaleChanged],
-  });
-
-  protected updateCardEntryCommand$ = createCommand({
-    ...this.cartCommandBase,
-    action: (qualifier: UpdateCartPriceModeQualifier) => {
-      return this.adapter.updateCartPriceMode(qualifier);
-    },
   });
 
   protected addEntryCommand$ = createCommand({

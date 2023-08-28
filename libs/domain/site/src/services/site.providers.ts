@@ -31,8 +31,6 @@ import { DefaultPricingService, PricingService } from './pricing';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultStoreService, StoreService } from './store';
 
-export const PriceModeGuard = 'oryx.CartPriceModeChangeGuard*';
-
 declare global {
   interface AppEnvironment {
     readonly SCOS_BASE_URL?: string;

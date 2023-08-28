@@ -7,6 +7,8 @@ export interface PriceModeService {
 
 export const PriceModeService = 'oryx.PriceModeService';
 
+export const PriceModeChangeGuard = 'oryx.PriceModeChangeGuard*';
+
 declare global {
   interface InjectionTokensContractMap {
     [PriceModeService]: PriceModeService;
