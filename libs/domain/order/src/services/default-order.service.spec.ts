@@ -2,7 +2,7 @@ import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { mockOrderData } from '@spryker-oryx/order/mocks';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import { Observable, firstValueFrom, of } from 'rxjs';
 import { OrderData, orderStorageKey } from '../models';
 import { OrderAdapter } from './adapter';
 import { DefaultOrderService } from './default-order.service';
@@ -19,6 +19,7 @@ class MockIdentityService implements Partial<IdentityService> {
 class MockStorageService implements Partial<StorageService> {
   get = vi.fn().mockReturnValue(of(mockSanitizedResponse));
   set = vi.fn().mockReturnValue(of(undefined));
+  remove = vi.fn().mockReturnValue(of(undefined));
 }
 
 const { shippingAddress, billingAddress, ...mockSanitizedResponse } =
@@ -108,11 +109,21 @@ describe('DefaultOrderService', () => {
   });
 
   describe('when storeLastOrder is called', () => {
-    it('should call storage', () => {
+    it('should call storage set', () => {
       service.storeLastOrder(mockOrderData);
       expect(storage.set).toHaveBeenCalledWith(
         orderStorageKey,
         mockSanitizedResponse,
+        StorageType.Session
+      );
+    });
+  });
+
+  describe('when clearLastOrder is called', () => {
+    it('should call storage remove', () => {
+      service.clearLastOrder();
+      expect(storage.remove).toHaveBeenCalledWith(
+        orderStorageKey,
         StorageType.Session
       );
     });

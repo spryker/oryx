@@ -6,6 +6,7 @@ export interface OrderService {
   get(data: GetOrderDataProps): Observable<OrderData | null>;
   getLastOrder(): Observable<OrderData | null>;
   storeLastOrder(order: OrderData): void;
+  clearLastOrder(): void;
 }
 
 export const OrderService = 'oryx.OrderService';

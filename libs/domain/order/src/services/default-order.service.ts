@@ -1,7 +1,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { catchError, Observable, of, shareReplay, switchMap } from 'rxjs';
+import { Observable, catchError, of, shareReplay, switchMap } from 'rxjs';
 import { OrderData, orderStorageKey } from '../models';
 import { GetOrderDataProps, OrderAdapter } from './adapter';
 import { OrderService } from './order.service';
@@ -39,5 +39,9 @@ export class DefaultOrderService implements OrderService {
     // For privacy reasons, we cannot store the address in session storage.
     const { billingAddress, shippingAddress, ...sanitized } = order;
     this.storage.set(orderStorageKey, sanitized, StorageType.Session);
+  }
+
+  clearLastOrder(): void {
+    this.storage.remove(orderStorageKey, StorageType.Session);
   }
 }
