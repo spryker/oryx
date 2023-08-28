@@ -8,11 +8,6 @@ export const siteBreadcrumbStyles = css`
     flex-wrap: wrap;
   }
 
-  oryx-icon {
-    --oryx-icon-size: 12px;
-    --_margin: 0;
-  }
-
   :host > :not(oryx-icon) {
     text-decoration: none;
     color: var(--oryx-color-neutral-12);
@@ -26,8 +21,7 @@ export const siteBreadcrumbStyles = css`
     color: var(--oryx-color-primary-10);
   }
 
-  :host > :is([disabled], :last-child) {
+  :host > span {
     color: var(--oryx-color-neutral-9);
-    pointer-events: none;
   }
 `;

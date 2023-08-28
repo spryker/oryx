@@ -2,7 +2,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouteWithParams, RouterService } from '@spryker-oryx/router';
 import { Observable, of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { Breadcrumb } from '../../models';
+import { BreadcrumbItem } from '../../models';
 import { FallbackBreadcrumbResolver } from '../resolvers';
 import {
   BreadcrumbResolver,
@@ -15,7 +15,7 @@ const breadcrumb = { text: 'test' };
 const route: Partial<RouteWithParams> = { type: 'test' };
 
 class TestResolver implements BreadcrumbResolver {
-  resolve(): Observable<Breadcrumb[]> {
+  resolve(): Observable<BreadcrumbItem[]> {
     return of([breadcrumb]);
   }
 }

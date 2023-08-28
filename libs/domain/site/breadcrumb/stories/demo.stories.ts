@@ -8,7 +8,7 @@ import { SiteBreadcrumbOptions } from '../breadcrumb.model';
 export default {
   title: `${storybookPrefix}/Breadcrumb`,
   args: {
-    dividerIcon: IconTypes.Front,
+    dividerIcon: IconTypes.Forward,
     showDivider: true,
   },
   argTypes: {

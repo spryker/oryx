@@ -4,6 +4,7 @@ import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   I18nMixin,
+  Size,
   hydrate,
   signal,
   signalAware,
@@ -17,7 +18,7 @@ import { siteBreadcrumbStyles } from './breadcrumb.styles';
 
 @hydrate({ event: 'window:load' })
 @signalAware()
-@defaultOptions({ dividerIcon: IconTypes.Front, showDivider: true })
+@defaultOptions({ dividerIcon: IconTypes.Forward, showDivider: true })
 export class SiteBreadcrumbComponent extends I18nMixin(
   ContentMixin<SiteBreadcrumbOptions>(LitElement)
 ) {
@@ -32,7 +33,7 @@ export class SiteBreadcrumbComponent extends I18nMixin(
 
     return breadcrumb?.map((b, index) => {
       const isLastItem = index + 1 === breadcrumb.length;
-      return html`${this.renderBreadcrumb(b)}
+      return html`${this.renderBreadcrumb(b, isLastItem)}
       ${when(this.$options().showDivider && !isLastItem, () =>
         this.renderDivider()
       )}`;
@@ -46,13 +47,17 @@ export class SiteBreadcrumbComponent extends I18nMixin(
     return i18n ? this.i18n(i18n.token, i18n.values) : text;
   }
 
-  protected renderBreadcrumb(breadcrumb: BreadcrumbItem): TemplateResult {
+  protected renderBreadcrumb(breadcrumb: BreadcrumbItem, isLastItem: boolean): TemplateResult {
+    if (isLastItem) {
+      return html`<span>${this.renderText(breadcrumb)}</span>`;
+    }
+
     return html`<a href="${ifDefined(breadcrumb.url)}">
       ${this.renderText(breadcrumb)}
     </a>`;
   }
 
   protected renderDivider(): TemplateResult {
-    return html`<oryx-icon .type="${this.$options().dividerIcon}"></oryx-icon>`;
+    return html`<oryx-icon .type="${this.$options().dividerIcon}" .size="${Size.Sm}"></oryx-icon>`;
   }
 }

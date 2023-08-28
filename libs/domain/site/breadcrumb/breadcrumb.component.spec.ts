@@ -75,19 +75,24 @@ describe('SiteBreadcrumbComponent', () => {
       );
     });
 
-    it('should render a link for each breadcrumb', () => {
-      const links = element.renderRoot.querySelectorAll('a');
-      expect(links.length).toBe(breadcrumbs.length);
+    it('should render each breadcrumb', () => {
+      const items = element.renderRoot.querySelectorAll('a, span');
+      expect(items.length).toBe(breadcrumbs.length);
     });
 
     it('should render breadcrumbs.length - 1 dividers', () => {
       const dividers = element.renderRoot.querySelectorAll('oryx-icon');
       expect(dividers.length).toBe(breadcrumbs.length - 1);
     });
+    
+    it('should render span as last breadcrumb', () => {
+      const last = element.renderRoot.querySelector('span');
+      expect(last?.textContent).toBe(breadcrumbs[2].text);
+    });
 
     describe('and breadcrumb has a text label', () => {
       beforeEach(async () => {
-        service.get = vi.fn().mockReturnValue(of([breadcrumb]));
+        service.get = vi.fn().mockReturnValue(of([breadcrumb, breadcrumb]));
         element = await fixture(
           html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
         );
@@ -106,7 +111,7 @@ describe('SiteBreadcrumbComponent', () => {
     describe('and breadcrumb has a text i18n token', () => {
       let spy: SpyInstance;
       beforeEach(async () => {
-        service.get = vi.fn().mockReturnValue(of([breadcrumbI18n]));
+        service.get = vi.fn().mockReturnValue(of([breadcrumbI18n, breadcrumb]));
         element = await fixture(
           html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
         );
@@ -121,11 +126,15 @@ describe('SiteBreadcrumbComponent', () => {
           breadcrumbI18n.i18n?.values
         );
       });
+
+      it('should render a link', () => {
+        expect(element).toContainElement(`a[href="${breadcrumb.url}"]`);
+      });
     });
 
     describe('and breadcrumb does not have an url', () => {
       beforeEach(async () => {
-        service.get = vi.fn().mockReturnValue(of([breadcrumbNoUrl]));
+        service.get = vi.fn().mockReturnValue(of([breadcrumbNoUrl, breadcrumb]));
         element = await fixture(
           html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
         );
