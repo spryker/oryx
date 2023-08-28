@@ -11,6 +11,7 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  define: viteConfig.define,
   publicDir: '../../../libs/template/presets/public',
   plugins: [...viteConfig.plugins()],
 });
