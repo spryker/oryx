@@ -1,13 +1,13 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import * as components from '../components';
-import { PreviewPlugin } from '../plugins';
-import { defaultExperienceRoutes } from '../routes';
+import * as components from './components';
+import { PreviewPlugin } from './plugins';
+import { defaultExperienceRoutes } from './routes';
 import {
   experiencePreviewProviders,
   experienceProviders,
   layoutProviders,
-} from '../services';
+} from './services';
 
 export const experienceComponents = [components.compositionComponent];
 
