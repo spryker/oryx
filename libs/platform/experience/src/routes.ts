@@ -50,7 +50,7 @@ export const defaultExperienceRoutes: RouteConfig[] = [
           map((state) => (state ? '/' : !state))
         ),
   },
-  ...(OryxFeatureLevel < 1_1
+  ...(OryxFeatureLevel < '1.1'
     ? [
         // deprecated routes in 1.1
         {
