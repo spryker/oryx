@@ -8,7 +8,7 @@ export const viteConfig = {
   root: '../',
   envPrefix: ['ORYX', 'FES', 'SCOS', 'STORE'],
   define: {
-    __ORYX_FEATURE_LEVEL__: `"${process.env.ORYX_FEATURE_LEVEL}"`,
+    __ORYX_FEATURE_VERSION__: `"${process.env.ORYX_FEATURE_VERSION}"`,
   },
   /// need additional escape because we start from './src'
   monorepoRoot: '../../../',

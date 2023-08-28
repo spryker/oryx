@@ -1,9 +1,9 @@
-declare const __ORYX_FEATURE_LEVEL__: number;
+declare const __ORYX_FEATURE_VERSION__: string;
 
 // this one should be adjusted per major version
-const defaultLevel = '1.0';
+const defaultVersion = '1.0';
 
-export const OryxFeatureLevel =
-  typeof __ORYX_FEATURE_LEVEL__ !== 'undefined'
-    ? __ORYX_FEATURE_LEVEL__ || defaultLevel
-    : defaultLevel;
+export const featureVersion =
+  typeof __ORYX_FEATURE_VERSION__ !== 'undefined'
+    ? __ORYX_FEATURE_VERSION__ || defaultVersion
+    : defaultVersion;

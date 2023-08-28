@@ -2,7 +2,7 @@ import { TokenResolver } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouteType } from '@spryker-oryx/router';
 import { RouteConfig } from '@spryker-oryx/router/lit';
-import { OryxFeatureLevel } from '@spryker-oryx/utilities';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { map, take } from 'rxjs';
 import 'urlpattern-polyfill';
@@ -50,7 +50,7 @@ export const defaultExperienceRoutes: RouteConfig[] = [
           map((state) => (state ? '/' : !state))
         ),
   },
-  ...(OryxFeatureLevel < '1.1'
+  ...(featureVersion < '1.1'
     ? [
         // deprecated routes in 1.1
         {
