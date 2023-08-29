@@ -1,4 +1,3 @@
-// import { CartPriceChangeGuard } from '@spryker-oryx/cart';
 import { ErrorHandler, HttpInterceptor, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { LocaleAdapter } from '@spryker-oryx/i18n';
