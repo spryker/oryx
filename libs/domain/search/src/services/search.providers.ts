@@ -2,6 +2,7 @@ import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { ExperienceDataRevealer } from '@spryker-oryx/experience';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { facetProviders } from '../renderers';
 import {
   DefaultSuggestionAdapter,
@@ -29,7 +30,6 @@ import {
   defaultSuggestionRenderer,
   productSuggestionRenderer,
 } from './suggestion';
-import { featureVersion } from '@spryker-oryx/utilities';
 
 export const searchProviders: Provider[] = [
   {

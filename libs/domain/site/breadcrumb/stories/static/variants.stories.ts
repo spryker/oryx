@@ -18,9 +18,7 @@ const Template: Story = (): TemplateResult => {
     ></oryx-site-breadcrumb>
 
     <h3>Without dividers</h3>
-    <oryx-site-breadcrumb
-      .options=${{ divider: '' }}
-    ></oryx-site-breadcrumb>
+    <oryx-site-breadcrumb .options=${{ divider: '' }}></oryx-site-breadcrumb>
   `;
 };
 

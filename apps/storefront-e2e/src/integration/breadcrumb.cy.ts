@@ -24,7 +24,9 @@ describe('Breadcrumb suite', () => {
     searchPage.breadcrumb.shouldHaveDividers(1);
 
     //the last breadcrumb should be "Search"
-    searchPage.breadcrumb.nthBreadcrumbItem(-1).should('contain.text', 'Search');
+    searchPage.breadcrumb
+      .nthBreadcrumbItem(-1)
+      .should('contain.text', 'Search');
 
     //when search query is provided
     searchPage.url = `${searchPage.url}?q=test`;

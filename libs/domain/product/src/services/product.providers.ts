@@ -1,6 +1,7 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 import {
   AvailabilityNormalizer,
   CategoryIdNormalizer,
@@ -64,7 +65,6 @@ import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-met
 import { productRoutes } from './routes';
 import { productEffects } from './state/effects';
 import { productQueries } from './state/queries';
-import { featureVersion } from '@spryker-oryx/utilities';
 
 export const productProviders: Provider[] = [
   {

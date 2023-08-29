@@ -5,7 +5,7 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 import { SiteBreadcrumbOptions } from '../breadcrumb.model';
 
-const icons = getAppIcons()
+const icons = getAppIcons();
 
 export default {
   title: `${storybookPrefix}/Breadcrumb`,
@@ -14,8 +14,8 @@ export default {
   },
   argTypes: {
     divider: {
-      options: [ '', ...icons],
-      control: { 
+      options: ['', ...icons],
+      control: {
         type: 'select',
       },
     },

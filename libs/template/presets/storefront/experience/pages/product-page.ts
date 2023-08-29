@@ -22,19 +22,21 @@ export const productPage: ExperienceComponent = {
         ],
       },
       components: [
-        ...(featureVersion >= '1.1' ? [
-          {
-            type: 'oryx-site-breadcrumb',
-            options: {
-              rules: [
-                {
-                  colSpan: 2,
+        ...(featureVersion >= '1.1'
+          ? [
+              {
+                type: 'oryx-site-breadcrumb',
+                options: {
+                  rules: [
+                    {
+                      colSpan: 2,
+                    },
+                    { query: { breakpoint: Size.Sm }, hide: true },
+                  ],
                 },
-                { query: { breakpoint: Size.Sm }, hide: true },
-              ],
-            },
-          },
-        ] : []),
+              },
+            ]
+          : []),
         {
           type: 'oryx-composition',
           id: 'product-preview',

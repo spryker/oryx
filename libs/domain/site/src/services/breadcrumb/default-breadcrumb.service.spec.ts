@@ -53,8 +53,7 @@ describe('DefaultBreadcrumbService', () => {
       ],
     });
 
-    service =
-      testInjector.inject<DefaultBreadcrumbService>(BreadcrumbService);
+    service = testInjector.inject<DefaultBreadcrumbService>(BreadcrumbService);
     routerService = testInjector.inject<MockRouterService>(RouterService);
     resolver = testInjector.inject<TestResolver>(`${BreadcrumbResolvers}test`);
     defaultResolver = testInjector.inject<TestResolver>(

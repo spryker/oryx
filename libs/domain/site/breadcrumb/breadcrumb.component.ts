@@ -40,11 +40,16 @@ export class SiteBreadcrumbComponent extends I18nMixin(
     });
   }
 
-  protected renderText({text}: BreadcrumbItem): string | DirectiveResult | void {
+  protected renderText({
+    text,
+  }: BreadcrumbItem): string | DirectiveResult | void {
     return typeof text === 'object' ? this.i18n(text.token, text.values) : text;
   }
 
-  protected renderBreadcrumb(breadcrumb: BreadcrumbItem, isLastItem: boolean): TemplateResult {
+  protected renderBreadcrumb(
+    breadcrumb: BreadcrumbItem,
+    isLastItem: boolean
+  ): TemplateResult {
     if (isLastItem) {
       return html`<span>${this.renderText(breadcrumb)}</span>`;
     }
@@ -55,6 +60,9 @@ export class SiteBreadcrumbComponent extends I18nMixin(
   }
 
   protected renderDivider(): TemplateResult {
-    return html`<oryx-icon .type="${this.$options().divider}" .size="${Size.Sm}"></oryx-icon>`;
+    return html`<oryx-icon
+      .type="${this.$options().divider}"
+      .size="${Size.Sm}"
+    ></oryx-icon>`;
   }
 }

@@ -2,7 +2,7 @@ import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
 import { IconComponent, IconTypes } from '@spryker-oryx/ui/icon';
-import { useComponent } from '@spryker-oryx/utilities';
+import { I18nContext, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
@@ -84,7 +84,7 @@ describe('SiteBreadcrumbComponent', () => {
       const dividers = element.renderRoot.querySelectorAll('oryx-icon');
       expect(dividers.length).toBe(breadcrumbs.length - 1);
     });
-    
+
     it('should render span as last breadcrumb', () => {
       const last = element.renderRoot.querySelector('span');
       expect(last?.textContent).toBe(breadcrumbs[2].text);
@@ -121,10 +121,11 @@ describe('SiteBreadcrumbComponent', () => {
       });
 
       it('should translate the token', () => {
-        expect(spy).toHaveBeenCalledWith(
-          breadcrumbI18n.i18n?.token,
-          breadcrumbI18n.i18n?.values
-        );
+        const text = breadcrumbI18n.text as {
+          token: string;
+          values?: I18nContext;
+        };
+        expect(spy).toHaveBeenCalledWith(text.token, text.values);
       });
 
       it('should render a link', () => {
@@ -134,7 +135,9 @@ describe('SiteBreadcrumbComponent', () => {
 
     describe('and breadcrumb does not have an url', () => {
       beforeEach(async () => {
-        service.get = vi.fn().mockReturnValue(of([breadcrumbNoUrl, breadcrumb]));
+        service.get = vi
+          .fn()
+          .mockReturnValue(of([breadcrumbNoUrl, breadcrumb]));
         element = await fixture(
           html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
         );
