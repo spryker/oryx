@@ -148,7 +148,7 @@ jobs:
         env:
           SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          STORE: DE,
+          STORE: DE
 
         with:
           cmd: npm run sf:e2e:headless:ci
