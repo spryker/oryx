@@ -1,53 +1,53 @@
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { Breadcrumb, BreadcrumbsService } from '@spryker-oryx/site';
+import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
 import { IconComponent, IconTypes } from '@spryker-oryx/ui/icon';
-import { useComponent } from '@spryker-oryx/utilities';
+import { I18nContext, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { SiteBreadcrumbsComponent } from './breadcrumbs.component';
-import { siteBreadcrumbsComponent } from './breadcrumbs.def';
+import { SiteBreadcrumbComponent } from './breadcrumb.component';
+import { siteBreadcrumbComponent } from './breadcrumb.def';
 
-const breadcrumb: Breadcrumb = {
+const breadcrumb: BreadcrumbItem = {
   url: '/test',
   text: 'test',
 };
 
-const breadcrumbI18n: Breadcrumb = {
+const breadcrumbI18n: BreadcrumbItem = {
   url: '/test',
-  i18n: { token: 'test.test', values: { value: 'test' } },
+  text: { token: 'test.test', values: { value: 'test' } },
 };
 
-const breadcrumbNoUrl: Breadcrumb = {
+const breadcrumbNoUrl: BreadcrumbItem = {
   text: 'test',
 };
 
 const breadcrumbs = [breadcrumb, breadcrumbI18n, breadcrumbNoUrl];
 
-class MockBreadcrumbsService implements BreadcrumbsService {
+class MockBreadcrumbService implements BreadcrumbService {
   get = vi.fn().mockReturnValue(of([]));
 }
 
-describe('SiteBreadcrumbsComponent', () => {
-  let element: SiteBreadcrumbsComponent;
-  let service: MockBreadcrumbsService;
+describe('SiteBreadcrumbComponent', () => {
+  let element: SiteBreadcrumbComponent;
+  let service: MockBreadcrumbService;
 
   beforeAll(async () => {
-    await useComponent(siteBreadcrumbsComponent);
+    await useComponent(siteBreadcrumbComponent);
   });
 
   beforeEach(async () => {
     const injector = createInjector({
       providers: [
         {
-          provide: BreadcrumbsService,
-          useClass: MockBreadcrumbsService,
+          provide: BreadcrumbService,
+          useClass: MockBreadcrumbService,
         },
       ],
     });
 
-    service = injector.inject<MockBreadcrumbsService>(BreadcrumbsService);
+    service = injector.inject<MockBreadcrumbService>(BreadcrumbService);
   });
 
   afterEach(() => {
@@ -55,10 +55,10 @@ describe('SiteBreadcrumbsComponent', () => {
     vi.clearAllMocks();
   });
 
-  describe('when breadcrumbs are not provided', () => {
+  describe('when breadcrumb are not provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-site-breadcrumbs></oryx-site-breadcrumbs>`
+        html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
       );
     });
 
@@ -67,17 +67,17 @@ describe('SiteBreadcrumbsComponent', () => {
     });
   });
 
-  describe('when breadcrumbs are provided', () => {
+  describe('when breadcrumb are provided', () => {
     beforeEach(async () => {
       service.get = vi.fn().mockReturnValue(of(breadcrumbs));
       element = await fixture(
-        html`<oryx-site-breadcrumbs></oryx-site-breadcrumbs>`
+        html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
       );
     });
 
-    it('should render a link for each breadcrumb', () => {
-      const links = element.renderRoot.querySelectorAll('a');
-      expect(links.length).toBe(breadcrumbs.length);
+    it('should render each breadcrumb', () => {
+      const items = element.renderRoot.querySelectorAll('a, span');
+      expect(items.length).toBe(breadcrumbs.length);
     });
 
     it('should render breadcrumbs.length - 1 dividers', () => {
@@ -85,11 +85,16 @@ describe('SiteBreadcrumbsComponent', () => {
       expect(dividers.length).toBe(breadcrumbs.length - 1);
     });
 
+    it('should render span as last breadcrumb', () => {
+      const last = element.renderRoot.querySelector('span');
+      expect(last?.textContent).toBe(breadcrumbs[2].text);
+    });
+
     describe('and breadcrumb has a text label', () => {
       beforeEach(async () => {
-        service.get = vi.fn().mockReturnValue(of([breadcrumb]));
+        service.get = vi.fn().mockReturnValue(of([breadcrumb, breadcrumb]));
         element = await fixture(
-          html`<oryx-site-breadcrumbs></oryx-site-breadcrumbs>`
+          html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
         );
       });
 
@@ -106,9 +111,9 @@ describe('SiteBreadcrumbsComponent', () => {
     describe('and breadcrumb has a text i18n token', () => {
       let spy: SpyInstance;
       beforeEach(async () => {
-        service.get = vi.fn().mockReturnValue(of([breadcrumbI18n]));
+        service.get = vi.fn().mockReturnValue(of([breadcrumbI18n, breadcrumb]));
         element = await fixture(
-          html`<oryx-site-breadcrumbs></oryx-site-breadcrumbs>`
+          html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
         );
         spy = vi.spyOn(element, 'i18n');
         element.requestUpdate();
@@ -116,18 +121,25 @@ describe('SiteBreadcrumbsComponent', () => {
       });
 
       it('should translate the token', () => {
-        expect(spy).toHaveBeenCalledWith(
-          breadcrumbI18n.i18n?.token,
-          breadcrumbI18n.i18n?.values
-        );
+        const text = breadcrumbI18n.text as {
+          token: string;
+          values?: I18nContext;
+        };
+        expect(spy).toHaveBeenCalledWith(text.token, text.values);
+      });
+
+      it('should render a link', () => {
+        expect(element).toContainElement(`a[href="${breadcrumb.url}"]`);
       });
     });
 
     describe('and breadcrumb does not have an url', () => {
       beforeEach(async () => {
-        service.get = vi.fn().mockReturnValue(of([breadcrumbNoUrl]));
+        service.get = vi
+          .fn()
+          .mockReturnValue(of([breadcrumbNoUrl, breadcrumb]));
         element = await fixture(
-          html`<oryx-site-breadcrumbs></oryx-site-breadcrumbs>`
+          html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
         );
       });
 
@@ -136,11 +148,11 @@ describe('SiteBreadcrumbsComponent', () => {
       });
     });
 
-    describe('and dividerIcon option is provided', () => {
+    describe('and divider option is provided', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-site-breadcrumbs
-          .options=${{ dividerIcon: IconTypes.Add }}
-        ></oryx-site-breadcrumbs>`);
+        element = await fixture(html`<oryx-site-breadcrumb
+          .options=${{ divider: IconTypes.Add }}
+        ></oryx-site-breadcrumb>`);
       });
 
       it('should icon type to the icon', () => {
@@ -150,11 +162,11 @@ describe('SiteBreadcrumbsComponent', () => {
       });
     });
 
-    describe('and showDivider option is false', () => {
+    describe('and divider is equal empty string', () => {
       beforeEach(async () => {
-        element = await fixture(html`<oryx-site-breadcrumbs
-          .options=${{ showDivider: false }}
-        ></oryx-site-breadcrumbs>`);
+        element = await fixture(html`<oryx-site-breadcrumb
+          .options=${{ divider: '' }}
+        ></oryx-site-breadcrumb>`);
       });
 
       it('should not render the dividers', () => {

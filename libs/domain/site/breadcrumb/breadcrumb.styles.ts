@@ -1,16 +1,11 @@
 import { css } from 'lit';
 
-export const siteBreadcrumbsStyles = css`
+export const siteBreadcrumbStyles = css`
   :host {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
-  }
-
-  oryx-icon {
-    --oryx-icon-size: 12px;
-    --_margin: 0;
   }
 
   :host > :not(oryx-icon) {
@@ -26,8 +21,7 @@ export const siteBreadcrumbsStyles = css`
     color: var(--oryx-color-primary-10);
   }
 
-  :host > :is([disabled], :last-child) {
+  :host > span {
     color: var(--oryx-color-neutral-9);
-    pointer-events: none;
   }
 `;

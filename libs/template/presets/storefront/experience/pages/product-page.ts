@@ -1,5 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { Size } from '@spryker-oryx/utilities';
+import { Size, featureVersion } from '@spryker-oryx/utilities';
 
 export const productPage: ExperienceComponent = {
   id: 'product-page',
@@ -22,17 +22,21 @@ export const productPage: ExperienceComponent = {
         ],
       },
       components: [
-        {
-          type: 'oryx-site-breadcrumbs',
-          options: {
-            rules: [
+        ...(featureVersion >= '1.1'
+          ? [
               {
-                colSpan: 2,
+                type: 'oryx-site-breadcrumb',
+                options: {
+                  rules: [
+                    {
+                      colSpan: 2,
+                    },
+                    { query: { breakpoint: Size.Sm }, hide: true },
+                  ],
+                },
               },
-              { query: { breakpoint: Size.Sm }, hide: true },
-            ],
-          },
-        },
+            ]
+          : []),
         {
           type: 'oryx-composition',
           id: 'product-preview',

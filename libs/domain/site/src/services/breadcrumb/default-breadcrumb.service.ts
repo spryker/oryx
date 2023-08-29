@@ -1,38 +1,38 @@
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { Observable, map, switchMap } from 'rxjs';
-import { Breadcrumb } from '../../models';
+import { BreadcrumbItem } from '../../models';
 import {
-  BreadcrumbsResolver,
-  BreadcrumbsResolvers,
-  BreadcrumbsService,
-} from './breadcrumbs.service';
+  BreadcrumbResolver,
+  BreadcrumbResolvers,
+  BreadcrumbService,
+} from './breadcrumb.service';
 
-export class DefaultBreadcrumbsService implements BreadcrumbsService {
+export class DefaultBreadcrumbService implements BreadcrumbService {
   constructor(
     protected injector = inject(INJECTOR),
     protected routerService = inject(RouterService)
   ) {}
 
   protected homeBreadcrumb = {
-    i18n: { token: 'breadcrumbs.home' },
+    text: { token: 'breadcrumb.home' },
     url: '/',
   };
 
   protected getResolverKey(type = 'fallback'): string {
-    return `${BreadcrumbsResolvers}${type}`;
+    return `${BreadcrumbResolvers}${type}`;
   }
 
-  get(): Observable<Breadcrumb[]> {
+  get(): Observable<BreadcrumbItem[]> {
     return this.routerService.current().pipe(
       switchMap((route) => {
         return this.injector
-          .inject<BreadcrumbsResolver>(
+          .inject<BreadcrumbResolver>(
             this.getResolverKey(route.type),
             this.injector.inject(this.getResolverKey())
           )
           .resolve()
-          .pipe(map((breadcrumbs) => [this.homeBreadcrumb, ...breadcrumbs]));
+          .pipe(map((breadcrumb) => [this.homeBreadcrumb, ...breadcrumb]));
       })
     );
   }

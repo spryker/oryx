@@ -2,6 +2,7 @@ import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { ExperienceDataRevealer } from '@spryker-oryx/experience';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { facetProviders } from '../renderers';
 import {
   DefaultSuggestionAdapter,
@@ -13,7 +14,7 @@ import { DefaultFacetListService } from './default-facet-list.service';
 import { DefaultSortingService } from './default-sorting.service';
 import { FacetListService } from './facet-list.service';
 import {
-  CategoryBreadcrumbs,
+  CategoryBreadcrumb,
   CategoryPageTitleMetaResolver,
   SearchPageTitleMetaResolver,
 } from './resolvers';
@@ -68,7 +69,7 @@ export const searchProviders: Provider[] = [
       [SuggestionField.Products]: productSuggestionRenderer,
     },
   },
-  CategoryBreadcrumbs,
+  ...(featureVersion >= '1.1' ? [CategoryBreadcrumb] : []),
   ...provideLitRoutes({ routes: categoryRoutes }),
 ];
 

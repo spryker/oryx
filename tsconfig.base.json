@@ -228,9 +228,7 @@
         "libs/domain/search/product-sort/index.ts"
       ],
       "@spryker-oryx/site": ["libs/domain/site/src/index.ts"],
-      "@spryker-oryx/site/breadcrumbs": [
-        "libs/domain/site/breadcrumbs/index.ts"
-      ],
+      "@spryker-oryx/site/breadcrumb": ["libs/domain/site/breadcrumb/index.ts"],
       "@spryker-oryx/site/currency-selector": [
         "libs/domain/site/currency-selector/index.ts"
       ],

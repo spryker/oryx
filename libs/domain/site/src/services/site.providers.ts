@@ -1,8 +1,9 @@
 import { ErrorHandler, HttpInterceptor, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { LocaleAdapter } from '@spryker-oryx/i18n';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
-import { BreadcrumbsService, DefaultBreadcrumbsService } from './breadcrumbs';
+import { BreadcrumbService, DefaultBreadcrumbService } from './breadcrumb';
 import { CountryService, DefaultCountryService } from './country';
 import {
   CurrencyService,
@@ -23,8 +24,8 @@ import {
 } from './notification';
 import { DefaultPricingService, PricingService } from './pricing';
 import {
-  DefaultFallbackBreadcrumbsResolver,
-  FallbackBreadcrumbsResolver,
+  DefaultFallbackBreadcrumbResolver,
+  FallbackBreadcrumbResolver,
 } from './resolvers';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultStoreService, StoreService } from './store';
@@ -44,10 +45,6 @@ export const siteProviders: Provider[] = [
   {
     provide: 'STORE',
     useFactory: () => injectEnv('STORE', ''),
-  },
-  {
-    provide: BreadcrumbsService,
-    useClass: DefaultBreadcrumbsService,
   },
   {
     provide: LinkService,
@@ -99,12 +96,20 @@ export const siteProviders: Provider[] = [
     provide: HttpInterceptor,
     useClass: CurrentCurrencyInterceptor,
   },
-  {
-    provide: FallbackBreadcrumbsResolver,
-    useClass: DefaultFallbackBreadcrumbsResolver,
-  },
   localeHydration,
   currencyHydration,
+  ...(featureVersion >= '1.1'
+    ? [
+        {
+          provide: BreadcrumbService,
+          useClass: DefaultBreadcrumbService,
+        },
+        {
+          provide: FallbackBreadcrumbResolver,
+          useClass: DefaultFallbackBreadcrumbResolver,
+        },
+      ]
+    : []),
   // TODO: uncomment when CORs header issue is fixed
   // {
   //   provide: HttpInterceptor,

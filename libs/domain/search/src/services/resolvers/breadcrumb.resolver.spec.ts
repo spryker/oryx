@@ -4,9 +4,9 @@ import { LinkService } from '@spryker-oryx/site';
 import { of } from 'rxjs';
 import { FacetListService } from '../facet-list.service';
 import {
-  CategoryBreadcrumbs,
-  CategoryBreadcrumbsResolver,
-} from './breadcrumbs.resolver';
+  CategoryBreadcrumb,
+  CategoryBreadcrumbResolver,
+} from './breadcrumb.resolver';
 
 const url = '/mock';
 
@@ -66,15 +66,15 @@ class MockFacetListService implements Partial<FacetListService> {
   getFacet = vi.fn().mockReturnValue(of(facet));
 }
 
-describe('CategoryBreadcrumbsResolver', () => {
-  let service: CategoryBreadcrumbsResolver;
+describe('CategoryBreadcrumbResolver', () => {
+  let service: CategoryBreadcrumbResolver;
   let linkService: MockLinkService;
   let facetService: MockFacetListService;
 
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
-        CategoryBreadcrumbs,
+        CategoryBreadcrumb,
         {
           provide: LinkService,
           useClass: MockLinkService,
@@ -88,7 +88,7 @@ describe('CategoryBreadcrumbsResolver', () => {
 
     linkService = testInjector.inject<MockLinkService>(LinkService);
     facetService = testInjector.inject<MockFacetListService>(FacetListService);
-    service = testInjector.inject(CategoryBreadcrumbs.provide);
+    service = testInjector.inject(CategoryBreadcrumb.provide);
   });
 
   afterEach(() => {
@@ -141,7 +141,7 @@ describe('CategoryBreadcrumbsResolver', () => {
         );
       });
 
-      it('should resolve a trace of breadcrumbs', () => {
+      it('should resolve a trace of breadcrumb', () => {
         expect(callback).toHaveBeenCalledWith([
           { text: parent.name, url },
           { text: child.name, url },

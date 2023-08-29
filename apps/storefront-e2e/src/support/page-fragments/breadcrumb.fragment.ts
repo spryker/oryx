@@ -1,9 +1,9 @@
-export class BreadcrumbsFragment {
-  get = () => cy.get('oryx-site-breadcrumbs');
-  nthBreadcrumb = (n: number) => this.get().find('a').eq(n);
+export class BreadcrumbFragment {
+  get = () => cy.get('oryx-site-breadcrumb');
+  nthBreadcrumbItem = (n: number) => this.get().find('a, span').eq(n);
 
   shouldHaveHomePageLink(): void {
-    this.nthBreadcrumb(0)
+    this.nthBreadcrumbItem(0)
       .should('contain.text', 'Home')
       .invoke('attr', 'href')
       .should('eq', '/');

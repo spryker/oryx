@@ -1,8 +1,8 @@
 import { PageMetaResolverService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
-  DefaultFallbackBreadcrumbsResolver,
-  FallbackBreadcrumbsResolver,
+  DefaultFallbackBreadcrumbResolver,
+  FallbackBreadcrumbResolver,
 } from '@spryker-oryx/site';
 import { of } from 'rxjs';
 
@@ -12,16 +12,16 @@ class MockPageMetaResolverService implements Partial<PageMetaResolverService> {
   getTitle = vi.fn().mockReturnValue(of(text));
 }
 
-describe('DefaultFallbackBreadcrumbsResolver', () => {
-  let service: DefaultFallbackBreadcrumbsResolver;
+describe('DefaultFallbackBreadcrumbResolver', () => {
+  let service: DefaultFallbackBreadcrumbResolver;
   let pageMetaResolver: MockPageMetaResolverService;
 
   beforeEach(() => {
     const testInjector = createInjector({
       providers: [
         {
-          provide: FallbackBreadcrumbsResolver,
-          useClass: DefaultFallbackBreadcrumbsResolver,
+          provide: FallbackBreadcrumbResolver,
+          useClass: DefaultFallbackBreadcrumbResolver,
         },
         {
           provide: PageMetaResolverService,
@@ -33,7 +33,7 @@ describe('DefaultFallbackBreadcrumbsResolver', () => {
     pageMetaResolver = testInjector.inject<MockPageMetaResolverService>(
       PageMetaResolverService
     );
-    service = testInjector.inject(FallbackBreadcrumbsResolver);
+    service = testInjector.inject(FallbackBreadcrumbResolver);
   });
 
   afterEach(() => {
