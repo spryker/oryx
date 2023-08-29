@@ -51,7 +51,7 @@ describe('ProductListBreadcrumbResolver', () => {
       expect(callback).toHaveBeenCalledWith(
         expect.arrayContaining([
           {
-            i18n: {
+            text: {
               token: 'product.breadcrumb.search',
             },
           },
@@ -71,7 +71,7 @@ describe('ProductListBreadcrumbResolver', () => {
         expect(callback).toHaveBeenCalledWith(
           expect.arrayContaining([
             {
-              i18n: {
+              text: {
                 token: 'product.breadcrumb.search-for-<search>',
                 values: { search: `"${routeWithSearch.query?.q}"` },
               },
