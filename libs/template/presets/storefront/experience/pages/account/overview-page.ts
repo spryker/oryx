@@ -12,6 +12,7 @@ export const overviewPage: ExperienceComponent = {
     rules: [
       {
         layout: 'grid',
+        padding: '20px 0 0',
       },
     ],
   },

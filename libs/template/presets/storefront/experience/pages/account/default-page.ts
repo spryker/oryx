@@ -11,6 +11,7 @@ export const defaultAccountPage: ExperienceComponent = {
     rules: [
       {
         layout: 'grid',
+        padding: '20px 0 0',
       },
     ],
   },
