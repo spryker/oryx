@@ -15,7 +15,7 @@ export class DefaultBreadcrumbService implements BreadcrumbService {
   ) {}
 
   protected homeBreadcrumb = {
-    i18n: { token: 'breadcrumb.home' },
+    text: { token: 'breadcrumb.home' },
     url: '/',
   };
 

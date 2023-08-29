@@ -6,12 +6,5 @@ export interface SiteBreadcrumbOptions {
    *
    * @default `IconTypes.Front`
    */
-  dividerIcon?: IconTypes;
-
-  /**
-   * Render a divider between navigation links
-   *
-   * @default `true`
-   */
-  showDivider?: boolean;
+  divider?: IconTypes;
 }

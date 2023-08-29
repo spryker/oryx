@@ -64,6 +64,7 @@ import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-met
 import { productRoutes } from './routes';
 import { productEffects } from './state/effects';
 import { productQueries } from './state/queries';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const productProviders: Provider[] = [
   {
@@ -164,6 +165,6 @@ export const productProviders: Provider[] = [
     provide: CategoryIdNormalizer,
     useValue: categoryIdNormalizer,
   },
-  ProductListBreadcrumb,
+  ...(featureVersion >= '1.1' ? [ProductListBreadcrumb] : []),
   ...provideLitRoutes({ routes: productRoutes }),
 ];

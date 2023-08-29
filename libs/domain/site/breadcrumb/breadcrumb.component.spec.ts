@@ -16,7 +16,7 @@ const breadcrumb: BreadcrumbItem = {
 
 const breadcrumbI18n: BreadcrumbItem = {
   url: '/test',
-  i18n: { token: 'test.test', values: { value: 'test' } },
+  text: { token: 'test.test', values: { value: 'test' } },
 };
 
 const breadcrumbNoUrl: BreadcrumbItem = {
@@ -145,10 +145,10 @@ describe('SiteBreadcrumbComponent', () => {
       });
     });
 
-    describe('and dividerIcon option is provided', () => {
+    describe('and divider option is provided', () => {
       beforeEach(async () => {
         element = await fixture(html`<oryx-site-breadcrumb
-          .options=${{ dividerIcon: IconTypes.Add }}
+          .options=${{ divider: IconTypes.Add }}
         ></oryx-site-breadcrumb>`);
       });
 
@@ -159,10 +159,10 @@ describe('SiteBreadcrumbComponent', () => {
       });
     });
 
-    describe('and showDivider option is false', () => {
+    describe('and divider is equal empty string', () => {
       beforeEach(async () => {
         element = await fixture(html`<oryx-site-breadcrumb
-          .options=${{ showDivider: false }}
+          .options=${{ divider: '' }}
         ></oryx-site-breadcrumb>`);
       });
 

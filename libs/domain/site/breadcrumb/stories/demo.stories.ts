@@ -5,16 +5,19 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 import { SiteBreadcrumbOptions } from '../breadcrumb.model';
 
+const icons = getAppIcons()
+
 export default {
   title: `${storybookPrefix}/Breadcrumb`,
   args: {
-    dividerIcon: IconTypes.Forward,
-    showDivider: true,
+    divider: IconTypes.Forward,
   },
   argTypes: {
-    dividerIcon: {
-      options: getAppIcons(),
-      control: { type: 'select' },
+    divider: {
+      options: [ '', ...icons],
+      control: { 
+        type: 'select',
+      },
     },
   },
   parameters: {

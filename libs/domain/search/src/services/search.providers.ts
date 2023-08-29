@@ -29,6 +29,7 @@ import {
   defaultSuggestionRenderer,
   productSuggestionRenderer,
 } from './suggestion';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const searchProviders: Provider[] = [
   {
@@ -68,7 +69,7 @@ export const searchProviders: Provider[] = [
       [SuggestionField.Products]: productSuggestionRenderer,
     },
   },
-  CategoryBreadcrumb,
+  ...(featureVersion >= '1.1' ? [CategoryBreadcrumb] : []),
   ...provideLitRoutes({ routes: categoryRoutes }),
 ];
 

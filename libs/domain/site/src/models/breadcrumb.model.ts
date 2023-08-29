@@ -1,5 +1,6 @@
+import { I18nContext } from "@spryker-oryx/utilities";
+
 export interface BreadcrumbItem {
-  text?: string;
-  i18n?: { token: string; values?: Record<string, string | number> };
+  text?: string | { token: string | readonly string[]; values?: I18nContext};
   url?: string;
 }

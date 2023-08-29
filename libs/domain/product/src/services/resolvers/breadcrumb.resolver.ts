@@ -14,7 +14,7 @@ export class ProductListBreadcrumbResolver implements BreadcrumbResolver {
     return this.routerService.current().pipe(
       map(({ query }) => [
         {
-          i18n: query.q
+          text: query.q
             ? {
                 token: 'product.breadcrumb.search-for-<search>',
                 values: { search: `"${query.q}"` },

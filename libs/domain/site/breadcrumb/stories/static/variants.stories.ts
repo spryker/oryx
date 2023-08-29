@@ -14,12 +14,12 @@ const Template: Story = (): TemplateResult => {
 
     <h3>Custom divider's icon</h3>
     <oryx-site-breadcrumb
-      .options=${{ dividerIcon: IconTypes.Add }}
+      .options=${{ divider: IconTypes.Add }}
     ></oryx-site-breadcrumb>
 
     <h3>Without dividers</h3>
     <oryx-site-breadcrumb
-      .options=${{ showDivider: false }}
+      .options=${{ divider: '' }}
     ></oryx-site-breadcrumb>
   `;
 };
