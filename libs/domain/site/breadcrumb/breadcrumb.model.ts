@@ -4,7 +4,7 @@ export interface SiteBreadcrumbOptions {
   /**
    * Type of the icon for the divider.
    *
-   * @default `IconTypes.Front`
+   * @default `IconTypes.Forward`
    */
   divider?: IconTypes;
 }
