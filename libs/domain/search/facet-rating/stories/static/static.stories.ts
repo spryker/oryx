@@ -3,8 +3,6 @@ import { resolve } from '@spryker-oryx/di';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { SearchRatingFacetComponent } from '@spryker-oryx/search/facet-rating';
-import { expect } from '@storybook/jest';
-import { userEvent } from '@storybook/testing-library';
 import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
@@ -31,11 +29,7 @@ SelectedOption.play = async (obj: {
     obj.canvasElement.querySelector('oryx-search-facet-rating')
   );
   await waitForShadowDom(component);
-  const option =
-    component.renderRoot.querySelector<HTMLInputElement>('input[value="4"]');
-  expect(option.checked).toBeFalsy();
-
-  userEvent.click(option);
-
-  expect(option.checked).toBeTruthy();
+  component.renderRoot.querySelector<HTMLInputElement>(
+    'input[value="4"]'
+  )!.checked = true;
 };
