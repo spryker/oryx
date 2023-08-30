@@ -121,13 +121,13 @@ export class DefaultCartService implements CartService {
           cartId = cart?.id;
         });
 
-        this.adapter
-          .updateCartPriceMode({
-            cartId,
-            priceMode: event.data.priceMode,
-          })
-          .subscribe();
+        return this.adapter.updateCartPriceMode({
+          cartId,
+          priceMode: event.data.priceMode,
+        });
       }
+
+      return;
     },
   ]);
 

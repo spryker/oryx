@@ -1,5 +1,5 @@
 import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
-import { INJECTOR, inject } from '@spryker-oryx/di';
+import { inject } from '@spryker-oryx/di';
 import { Observable, map, switchMap, take } from 'rxjs';
 import { PriceModeService } from './price-mode.service';
 
@@ -14,18 +14,15 @@ export class PriceModeInterceptor implements HttpInterceptor {
 
   constructor(
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
-    protected injector = inject(INJECTOR)
+    protected priceModeService = inject(PriceModeService)
   ) {}
 
   intercept(req: Request, handle: HttpHandlerFn): Observable<Response> {
-    return this.injector
-      .inject(PriceModeService)
-      .get()
-      .pipe(
-        take(1),
-        map((priceMode) => this.addPriceModeToUrl(req, priceMode)),
-        switchMap((newReq) => handle(newReq))
-      );
+    return this.priceModeService.get().pipe(
+      take(1),
+      map((priceMode) => this.addPriceModeToUrl(req, priceMode)),
+      switchMap((newReq) => handle(newReq))
+    );
   }
 
   protected addPriceModeToUrl(req: Request, priceMode: string): Request {
@@ -37,7 +34,7 @@ export class PriceModeInterceptor implements HttpInterceptor {
     }
 
     urlObject.searchParams.set(this.parameterName, priceMode);
-    return new Request(urlObject.toString(), req);
+    return new Request(urlObject.toString(), req.clone());
   }
 
   shouldInterceptRequest({ url }: Request): boolean {

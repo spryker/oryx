@@ -19,6 +19,7 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
   static styles = [sitePriceModeSelectorStyles];
 
   protected injector = resolve(INJECTOR);
+  protected priceModeGuard = this.injector.inject(PriceModeChangeGuard);
 
   protected priceModeService = resolve(PriceModeService);
   protected notificationService = resolve(NotificationService);
@@ -56,32 +57,28 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
   }
 
   protected onClick(locale: string): void {
-    let isAllowed = false;
-    const priceModeInjector = this.injector.inject(PriceModeChangeGuard);
-    priceModeInjector[0]
-      ?.isAllowed()
-      .subscribe((value: boolean) => (isAllowed = value));
-
-    if (isAllowed) {
-      this.priceModeService.set(locale);
-    } else {
-      this.notificationService.push({
-        type: AlertType.Error,
-        content: 'Error',
-        subtext: 'Can’t switch price mode when there are items in the cart',
-      });
-
-      const optionGrossMode = this.getOptionElement(PriceModes.GrossMode);
-      const optionNetMode = this.getOptionElement(PriceModes.NetMode);
-
-      if (this.$current() === PriceModes.GrossMode) {
-        optionGrossMode?.setAttribute('active', 'true');
-        optionNetMode?.removeAttribute('active');
+    this.priceModeGuard[0]?.isAllowed().subscribe((isAllowed: boolean) => {
+      if (isAllowed) {
+        this.priceModeService.set(locale);
       } else {
-        optionNetMode?.setAttribute('active', 'true');
-        optionGrossMode?.removeAttribute('active');
+        this.notificationService.push({
+          type: AlertType.Error,
+          content: 'Error',
+          subtext: 'Can’t switch price mode when there are items in the cart',
+        });
+
+        const optionGrossMode = this.getOptionElement(PriceModes.GrossMode);
+        const optionNetMode = this.getOptionElement(PriceModes.NetMode);
+
+        if (this.$current() === PriceModes.GrossMode) {
+          optionGrossMode?.setAttribute('active', 'true');
+          optionNetMode?.removeAttribute('active');
+        } else {
+          optionNetMode?.setAttribute('active', 'true');
+          optionGrossMode?.removeAttribute('active');
+        }
       }
-    }
+    });
   }
 
   protected getLabel(priceMode: string): string {
