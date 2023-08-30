@@ -3,8 +3,7 @@ import { ExperienceAdapter } from '@spryker-oryx/experience';
 import { ContentExperienceAdapter } from './adapter';
 import { ContentService } from './content.service';
 import { DefaultContentService } from './default-content.service';
-import { DefaultFontService } from './font/default-font.service';
-import { FontService } from './font/font.service';
+import { DefaultFontService, FontService } from './font';
 
 export const contentProviders: Provider[] = [
   {
