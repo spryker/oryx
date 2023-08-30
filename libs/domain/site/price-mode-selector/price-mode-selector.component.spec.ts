@@ -2,7 +2,11 @@ import { fixture, html } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { useComponent } from '@spryker-oryx/utilities';
 import { Subject } from 'rxjs';
-import { NotificationService, PriceModeService } from '../src/services';
+import {
+  NotificationService,
+  PriceModeChangeGuard,
+  PriceModeService,
+} from '../src/services';
 import { SitePriceModeSelectorComponent } from './price-mode-selector.component';
 import { sitePriceModeSelectorComponent } from './price-mode-selector.def';
 
@@ -15,6 +19,10 @@ const notificationTrigger$ = new Subject();
 
 class MockNotificationService implements Partial<NotificationService> {
   get = vi.fn().mockReturnValue(notificationTrigger$);
+}
+
+class MockCartPriceModeChangeGuard {
+  isAllowed = vi.fn();
 }
 
 describe('SitePriceModeSelectorComponent', () => {
@@ -35,6 +43,10 @@ describe('SitePriceModeSelectorComponent', () => {
         {
           provide: NotificationService,
           useClass: MockNotificationService,
+        },
+        {
+          provide: PriceModeChangeGuard,
+          useClass: MockCartPriceModeChangeGuard,
         },
       ],
     });
