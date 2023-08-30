@@ -30,14 +30,10 @@ export class DefaultContentService implements ContentService {
 
   protected getQuery = createQuery<Content | null, ContentQualifier>({
     loader: (q: ContentQualifier) =>
-      combineLatest(
-        this.getAdapters(q).map(
-          (adapter) => adapter.get(q) as Observable<Content | null>
-        )
-      ).pipe(
+      combineLatest(this.getAdapters(q).map((adapter) => adapter.get(q))).pipe(
         map((contents) =>
           contents.reduce(
-            (acc, curr) => ({ ...(acc as Content), ...(curr as Content) }),
+            (acc, curr) => ({ ...(acc as Content), ...curr }),
             {} as Content
           )
         )

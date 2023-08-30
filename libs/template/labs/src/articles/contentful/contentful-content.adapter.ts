@@ -9,11 +9,17 @@ import { LocaleService } from '@spryker-oryx/i18n';
 import { Observable, combineLatest, from, map, reduce, switchMap } from 'rxjs';
 import { ContentfulCmsModel } from './contentful.api.model';
 import { ContentfulSpace, ContentfulToken } from './contentful.model';
-import { ContentfulFieldNormalizer } from './normalizers';
+import { ContentField, ContentfulFieldNormalizer } from './normalizers';
+
+export interface ContentfulEntry {
+  id: string;
+  version: number;
+  fields: ContentField[];
+}
 
 export const cmsContentfulName = 'oryx.cms.contentful';
 
-export class ContentfulCmsAdapter implements ContentAdapter {
+export class ContentfulAdapter implements ContentAdapter {
   constructor(
     protected token = inject(ContentfulToken),
     protected space = inject(ContentfulSpace),
@@ -22,7 +28,7 @@ export class ContentfulCmsAdapter implements ContentAdapter {
     protected locale = inject(LocaleService)
   ) {}
 
-  protected url = `https://api.contentful.com/spaces/${this.space}`;
+  protected url = `https://cdn.contentful.com/spaces/${this.space}`;
 
   getName(): string {
     return cmsContentfulName;
@@ -42,30 +48,8 @@ export class ContentfulCmsAdapter implements ContentAdapter {
   }
 
   getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
-    return combineLatest([
-      this.http.get<ContentfulCmsModel.CrudEntriesResponse>(
-        `${this.url}/entries?${this.getParams(qualifier)}`,
-        { headers: { Authorization: `Bearer ${this.token}` } }
-      ),
-      this.getContentFields(qualifier.type ?? ''),
-      this.getLocalLocale(),
-    ]).pipe(
-      switchMap(([data, types, locale]) => {
-        const records = data.items.map((record) => {
-          const fields = Object.entries(record.fields).map(([key, field]) => {
-            const { localized, type } = types[key] ?? {};
-            const value = localized ? field[locale] : Object.values(field)[0];
-
-            return { key, value, type };
-          });
-
-          return {
-            fields,
-            version: record.sys.version,
-            id: record.sys.id,
-          };
-        });
-
+    return this.getEntries(qualifier).pipe(
+      switchMap((records) => {
         return from(records).pipe(
           switchMap((record) => {
             return combineLatest(
@@ -91,7 +75,46 @@ export class ContentfulCmsAdapter implements ContentAdapter {
     );
   }
 
-  protected getParams(qualifier: ContentQualifier): string {
+  protected getEntries(
+    qualifier: ContentQualifier
+  ): Observable<ContentfulEntry[]> {
+    return combineLatest([
+      this.getLocalLocale(),
+      this.getContentFields(qualifier.type ?? ''),
+    ]).pipe(
+      switchMap(([locale, types]) => {
+        return this.http
+          .get<ContentfulCmsModel.EntriesResponse>(
+            `${this.url}/entries?${this.getParams({ ...qualifier, locale })}`,
+            { headers: { Authorization: `Bearer ${this.token}` } }
+          )
+          .pipe(
+            map((data) =>
+              data.items.map((record) => ({
+                fields: this.parseEntryFields(record.fields, types, locale),
+                version: record.sys.version,
+                id: record.sys.id,
+              }))
+            )
+          );
+      })
+    );
+  }
+
+  protected parseEntryFields(
+    fields: ContentfulCmsModel.CrudEntry | ContentfulCmsModel.Entry,
+    types: Record<string, ContentfulCmsModel.Type>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    locale: string
+  ): ContentField[] {
+    return Object.entries(fields).map(([key, value]) => {
+      const { type } = types[key] ?? {};
+
+      return { key, value, type } as ContentField;
+    });
+  }
+
+  protected getParams(qualifier: Record<string, unknown>): string {
     return Object.entries(qualifier).reduce((acc, [key, value]) => {
       if (key === ('id' || 'entries')) return acc;
 

@@ -7,11 +7,8 @@ import {
   SuggestionQualifier,
 } from '@spryker-oryx/search';
 import { Observable, map } from 'rxjs';
+import { CmsArticle } from '../article.model';
 import { ContentfulContentFields } from './contentful.model';
-
-interface CmsSuggestion {
-  heading: string;
-}
 
 export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
   constructor(protected content = inject(ContentService)) {}
@@ -22,7 +19,7 @@ export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
 
   get(qualifier: SuggestionQualifier): Observable<Suggestion> {
     return this.content
-      .getAll<CmsSuggestion>({
+      .getAll<CmsArticle>({
         query: this.getKey({ query: qualifier.query }),
         type: ContentfulContentFields.Article,
         entities: qualifier.entities,

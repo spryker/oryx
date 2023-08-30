@@ -8,7 +8,7 @@ import {
 import { Observable, map } from 'rxjs';
 import { ContentService } from '../content.service';
 
-interface CmsComponent {
+export interface CmsComponent {
   data: Component;
 }
 
