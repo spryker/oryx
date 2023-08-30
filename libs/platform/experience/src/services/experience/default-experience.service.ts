@@ -11,9 +11,9 @@ import {
 } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Component } from '../../models';
-import { ExperienceAdapter } from '../adapter';
 import { ExperienceComponent, ExperienceDataService } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
+import { ExperienceAdapter } from '../experience.adapter';
 import { ComponentQualifier, ExperienceService } from './experience.service';
 
 type DataStore<T = unknown> = Record<string, ReplaySubject<T>>;

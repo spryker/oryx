@@ -4,11 +4,16 @@ import {
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { inject } from '@spryker-oryx/di';
-import { map, Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { StoryblokClientService, StoryblokContentFields } from './client';
 
+// Will be implemented in the next step
 export class StoryblokAdapter implements ContentAdapter {
   constructor(protected storyblok = inject(StoryblokClientService)) {}
+
+  getName(): string {
+    return 'asfasf';
+  }
 
   getKey(qualifier: ContentQualifier): string {
     return qualifier.id ?? qualifier.type ?? '';
@@ -31,7 +36,7 @@ export class StoryblokAdapter implements ContentAdapter {
           )}`,
         }))
       )
-    );
+    ) as any;
   }
 
   get(qualifier: ContentQualifier): Observable<Content | null> {
@@ -49,6 +54,6 @@ export class StoryblokAdapter implements ContentAdapter {
           description: entry.story.content.description,
           content: entry.story.content.content,
         }))
-      );
+      ) as any;
   }
 }

@@ -1,15 +1,5 @@
 import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { ContentfulSpace, ContentfulToken } from '../models';
-import { DefaultExperienceAdapter, ExperienceAdapter } from './adapter';
-import {
-  CmsAdapter,
-  cmsFieldNormalizers,
-  cmsFieldsNormalizers,
-  cmsItemsNormalizers,
-  cmsTypesNormalizers,
-  ContentfulCmsAdapter,
-} from './cms';
 import {
   AppReadyExperienceDataRevealer,
   ColorModeExperienceDataRevealer,
@@ -65,33 +55,10 @@ export const layoutProviders: Provider[] = [
   },
 ];
 
-export const adapterProviders: Provider[] = [
+export const experienceProviders: Provider[] = [
   {
     provide: ContentBackendUrl,
     useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),
-  },
-  {
-    provide: ContentfulToken,
-    useFactory: () => injectEnv('ORYX_CONTENTFUL_TOKEN', ''),
-  },
-  {
-    provide: ContentfulSpace,
-    useFactory: () => injectEnv('ORYX_CONTENTFUL_SPACE', ''),
-  },
-  ...cmsItemsNormalizers,
-  ...cmsTypesNormalizers,
-  ...cmsFieldNormalizers,
-  ...cmsFieldsNormalizers,
-];
-
-export const experienceProviders: Provider[] = [
-  {
-    provide: ExperienceAdapter,
-    useClass: DefaultExperienceAdapter,
-  },
-  {
-    provide: CmsAdapter,
-    useClass: ContentfulCmsAdapter,
   },
   {
     provide: ExperienceService,
@@ -110,7 +77,6 @@ export const experienceProviders: Provider[] = [
     useClass: DefaultExperienceDataService,
   },
   ...layoutProviders,
-  ...adapterProviders,
 ];
 
 export const experiencePreviewProviders: Provider[] = [

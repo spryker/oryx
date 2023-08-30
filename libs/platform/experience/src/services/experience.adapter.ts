@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Component, ExperienceQualifier } from '../../models';
+import { Component, ExperienceQualifier } from '../models';
 
 export const ExperienceAdapter = 'oryx.ExperienceAdapter';
 

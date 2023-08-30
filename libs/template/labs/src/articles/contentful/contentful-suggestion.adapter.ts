@@ -1,12 +1,12 @@
+import { ContentService } from '@spryker-oryx/content';
 import { inject } from '@spryker-oryx/di';
-import { CmsAdapter } from '@spryker-oryx/experience';
 import {
   Suggestion,
   SuggestionAdapter,
   SuggestionField,
   SuggestionQualifier,
 } from '@spryker-oryx/search';
-import { Observable, map, of } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { ContentfulContentFields } from './contentful.model';
 
 interface CmsSuggestion {
@@ -14,33 +14,27 @@ interface CmsSuggestion {
 }
 
 export class DefaultContentfulSuggestionAdapter implements SuggestionAdapter {
-  constructor(protected cmsAdapter = inject(CmsAdapter)) {}
+  constructor(protected content = inject(ContentService)) {}
 
-  getKey({ query }: SuggestionQualifier): string {
-    return query ?? '';
+  getKey(qualifier: SuggestionQualifier): string {
+    return qualifier.query ?? '';
   }
 
-  get({ query, entities }: SuggestionQualifier): Observable<Suggestion> {
-    if (
-      entities?.includes(SuggestionField.Contents) ||
-      entities?.includes(ContentfulContentFields.Article)
-    ) {
-      return this.cmsAdapter
-        .get<CmsSuggestion>({
-          query: this.getKey({ query }),
-          type: ContentfulContentFields.Article,
-        })
-        .pipe(
-          map((data) => ({
-            [SuggestionField.Contents]: data.items.map((entry) => ({
-              name: entry.heading,
-              id: entry.id,
-              type: ContentfulContentFields.Article,
-            })),
-          }))
-        );
-    }
-
-    return of({});
+  get(qualifier: SuggestionQualifier): Observable<Suggestion> {
+    return this.content
+      .getAll<CmsSuggestion>({
+        query: this.getKey({ query: qualifier.query }),
+        type: ContentfulContentFields.Article,
+        entities: qualifier.entities,
+      })
+      .pipe(
+        map((data) => ({
+          [SuggestionField.Contents]: data?.map((entry) => ({
+            name: entry.fields.heading,
+            id: entry.fields.id,
+            type: ContentfulContentFields.Article,
+          })),
+        }))
+      );
   }
 }

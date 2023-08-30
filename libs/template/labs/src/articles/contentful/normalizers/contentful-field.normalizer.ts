@@ -2,15 +2,15 @@ import { Transformer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { marked } from 'marked';
 
-interface ContentLocalField {
+export interface ContentField {
   type: string;
   key: string;
   value: string;
 }
 
-export const CmsFieldNormalizer = 'oryx.CmsFieldNormalizer*';
+export const ContentfulFieldNormalizer = 'oryx.ContentfulFieldNormalizer*';
 
-export function fieldNormalizer(data: ContentLocalField): ContentLocalField {
+export function contentfulFieldNormalizer(data: ContentField): ContentField {
   if (data.type === 'Text') {
     return {
       ...data,
@@ -21,15 +21,15 @@ export function fieldNormalizer(data: ContentLocalField): ContentLocalField {
   return data;
 }
 
-export const cmsFieldNormalizers: Provider[] = [
+export const contentfulFieldNormalizers: Provider[] = [
   {
-    provide: CmsFieldNormalizer,
-    useValue: fieldNormalizer,
+    provide: ContentfulFieldNormalizer,
+    useValue: contentfulFieldNormalizer,
   },
 ];
 
 declare global {
   interface InjectionTokensContractMap {
-    [CmsFieldNormalizer]: Transformer<ContentLocalField>;
+    [ContentfulFieldNormalizer]: Transformer<ContentField>;
   }
 }

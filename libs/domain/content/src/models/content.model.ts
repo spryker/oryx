@@ -1,17 +1,16 @@
-import { RouteType } from '@spryker-oryx/router';
 import { ContentEntities } from '../services';
 
 export interface ContentQualifier {
   type?: string;
   id?: string;
+  query?: string;
   entities?: ContentEntities;
 }
 
-export interface Content {
-  id?: string;
-  type?: RouteType;
-  url?: string;
-  heading: string;
-  description: string;
-  content: string;
+export interface Content<T = Record<string, unknown>> {
+  fields: T & {
+    id: string;
+  };
+  id: string;
+  version: number;
 }
