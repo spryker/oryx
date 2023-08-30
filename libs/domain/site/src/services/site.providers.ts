@@ -33,6 +33,7 @@ import { DefaultStoreService, StoreService } from './store';
 declare global {
   interface AppEnvironment {
     readonly SCOS_BASE_URL?: string;
+    readonly SCOS_PRICE_MODE?: string;
     readonly STORE?: string;
   }
 }
