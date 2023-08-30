@@ -1,6 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   I18nMixin,
@@ -11,7 +12,6 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { DirectiveResult } from 'lit/directive';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { SiteBreadcrumbOptions } from './breadcrumb.model';
 import { siteBreadcrumbStyles } from './breadcrumb.styles';
@@ -50,13 +50,24 @@ export class SiteBreadcrumbComponent extends I18nMixin(
     breadcrumb: BreadcrumbItem,
     isLastItem: boolean
   ): TemplateResult {
-    if (isLastItem) {
-      return html`<span>${this.renderText(breadcrumb)}</span>`;
-    }
+    // if (isLastItem) {
+    //   return html`<span>${this.renderText(breadcrumb)}</span>`;
+    // }
 
-    return html`<a href="${ifDefined(breadcrumb.url)}">
-      ${this.renderText(breadcrumb)}
-    </a>`;
+    // return html`<a href="${ifDefined(breadcrumb.url)}">
+    //   ${this.renderText(breadcrumb)}
+    // </a>`;
+
+    return html`
+      <oryx-button
+        ?disabled="${isLastItem}"
+        .href=${breadcrumb.url}
+        .type=${ButtonType.Text}
+        .size=${ButtonSize.Sm}
+        .color=${ButtonColor.Neutral}
+        >${this.renderText(breadcrumb)}</oryx-button
+      >
+    `;
   }
 
   protected renderDivider(): TemplateResult {
