@@ -11,7 +11,7 @@ import {
 } from './breadcrumb.service';
 import { DefaultBreadcrumbService } from './default-breadcrumb.service';
 
-const breadcrumb = { text: 'test' };
+const breadcrumb = { text: { raw: 'test' } };
 const route: Partial<RouteWithParams> = { type: 'test' };
 
 class TestResolver implements BreadcrumbResolver {

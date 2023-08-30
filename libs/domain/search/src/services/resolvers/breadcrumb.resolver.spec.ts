@@ -117,7 +117,9 @@ describe('CategoryBreadcrumbResolver', () => {
       });
 
       it('should resolve single breadcrumb', () => {
-        expect(callback).toHaveBeenCalledWith([{ text: parent.name, url }]);
+        expect(callback).toHaveBeenCalledWith([
+          { text: { raw: parent.name }, url },
+        ]);
       });
     });
 
@@ -143,8 +145,8 @@ describe('CategoryBreadcrumbResolver', () => {
 
       it('should resolve a trace of breadcrumb', () => {
         expect(callback).toHaveBeenCalledWith([
-          { text: parent.name, url },
-          { text: child.name, url },
+          { text: { raw: parent.name }, url },
+          { text: { raw: child.name }, url },
         ]);
       });
     });

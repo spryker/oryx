@@ -3,9 +3,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 export class MockBreadcrumbService implements BreadcrumbService {
   protected breadcrumbs$ = new BehaviorSubject<BreadcrumbItem[]>([
-    { text: 'Home', url: '/' },
-    { text: 'Cameras & Camcorders', url: '/1' },
-    { text: 'Digital Cameras', url: '/2' },
+    { text: { raw: 'Home' }, url: '/' },
+    { text: { raw: 'Cameras & Camcorders' }, url: '/1' },
+    { text: { raw: 'Digital Cameras' }, url: '/2' },
   ]);
 
   get(): Observable<BreadcrumbItem[]> {

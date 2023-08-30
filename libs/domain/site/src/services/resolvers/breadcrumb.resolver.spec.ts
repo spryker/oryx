@@ -6,10 +6,10 @@ import {
 } from '@spryker-oryx/site';
 import { of } from 'rxjs';
 
-const text = 'test';
+const title = 'test';
 
 class MockPageMetaResolverService implements Partial<PageMetaResolverService> {
-  getTitle = vi.fn().mockReturnValue(of(text));
+  getTitle = vi.fn().mockReturnValue(of(title));
 }
 
 describe('DefaultFallbackBreadcrumbResolver', () => {
@@ -52,7 +52,9 @@ describe('DefaultFallbackBreadcrumbResolver', () => {
     });
 
     it('should build a breadcrumb', () => {
-      expect(callback).toHaveBeenCalledWith(expect.arrayContaining([{ text }]));
+      expect(callback).toHaveBeenCalledWith(
+        expect.arrayContaining([{ text: { raw: title } }])
+      );
     });
   });
 });

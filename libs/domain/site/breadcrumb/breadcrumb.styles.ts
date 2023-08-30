@@ -4,7 +4,7 @@ export const siteBreadcrumbStyles = css`
   :host {
     display: flex;
     align-items: center;
-    gap: 0 8px;
+    gap: 8px 0;
     flex-wrap: wrap;
   }
 

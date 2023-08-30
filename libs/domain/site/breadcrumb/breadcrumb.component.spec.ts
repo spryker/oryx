@@ -12,7 +12,7 @@ import { siteBreadcrumbComponent } from './breadcrumb.def';
 
 const breadcrumb: BreadcrumbItem = {
   url: '/test',
-  text: 'test',
+  text: { raw: 'test' },
 };
 
 const breadcrumbI18n: BreadcrumbItem = {
@@ -20,11 +20,7 @@ const breadcrumbI18n: BreadcrumbItem = {
   text: { token: 'test.test', values: { value: 'test' } },
 };
 
-const breadcrumbNoUrl: BreadcrumbItem = {
-  text: 'test',
-};
-
-const breadcrumbs = [breadcrumb, breadcrumbI18n, breadcrumbNoUrl];
+const breadcrumbs = [breadcrumb, breadcrumbI18n, breadcrumb];
 
 class MockBreadcrumbService implements BreadcrumbService {
   get = vi.fn().mockReturnValue(of([]));
@@ -100,7 +96,7 @@ describe('SiteBreadcrumbComponent', () => {
 
       it('should render the text as a label for item', () => {
         const link = element.renderRoot.querySelector('oryx-button');
-        expect(link?.textContent).toContain(breadcrumb.text);
+        expect(link?.textContent).toContain(breadcrumb.text?.raw);
       });
 
       it('should pass url to the href', () => {
