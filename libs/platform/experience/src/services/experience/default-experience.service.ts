@@ -159,7 +159,6 @@ export class DefaultExperienceService implements ExperienceService {
     adapter
       .pipe(
         tap((page) => {
-          console.log(page, 'page');
           if (page) {
             this.experienceDataService.registerComponent(page, (c) =>
               this.processData(c)
