@@ -210,14 +210,4 @@ describe('DefaultOrderService', () => {
       );
     });
   });
-
-  describe('when clearLastOrder is called', () => {
-    it('should call storage remove', () => {
-      service.clearLastOrder();
-      expect(storage.remove).toHaveBeenCalledWith(
-        orderStorageKey,
-        StorageType.Session
-      );
-    });
-  });
 });

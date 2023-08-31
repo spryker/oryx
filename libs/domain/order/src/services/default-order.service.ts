@@ -1,15 +1,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import {
-  Observable,
-  catchError,
-  map,
-  of,
-  shareReplay,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { Observable, catchError, map, of, shareReplay, switchMap } from 'rxjs';
 import { OrderData, orderStorageKey } from '../models';
 import { GetOrderDataProps, OrderAdapter } from './adapter';
 import { OrderService } from './order.service';
@@ -29,31 +21,27 @@ export class DefaultOrderService implements OrderService {
         const { id } = data;
         if (!user.isAuthenticated || !id) {
           return this.getLastOrder().pipe(
-            map((lastOrder) =>
+            switchMap((lastOrder) =>
               lastOrder?.userId === user.userId && lastOrder?.id === id
-                ? lastOrder
-                : null
-            ),
-            tap((lastOrder) => {
-              if (!lastOrder) {
-                this.clearLastOrder();
-              }
-            })
+                ? of(lastOrder)
+                : this.clearLastOrder().pipe(map(() => null))
+            )
           );
         }
         if (!this.orders$.has(id)) {
           this.orders$.set(
             id,
-            this.identity.get().pipe(
-              switchMap(() => this.adapter.get({ id })),
+            this.adapter.get({ id }).pipe(
               catchError(() => of(null)),
               shareReplay({ bufferSize: 1, refCount: true })
             )
           );
         }
-        this.clearLastOrder();
+
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return this.orders$.get(id)!;
+        return this.clearLastOrder().pipe(
+          switchMap(() => this.orders$.get(id)!)
+        );
       })
     );
   }
@@ -72,7 +60,7 @@ export class DefaultOrderService implements OrderService {
     );
   }
 
-  clearLastOrder(): void {
-    this.storage.remove(orderStorageKey, StorageType.Session);
+  protected clearLastOrder(): Observable<void> {
+    return this.storage.remove(orderStorageKey, StorageType.Session);
   }
 }
