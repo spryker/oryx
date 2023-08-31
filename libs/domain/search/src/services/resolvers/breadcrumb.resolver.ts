@@ -48,7 +48,7 @@ export class CategoryBreadcrumbResolver implements BreadcrumbResolver {
           flatten.map(({ name, value }) =>
             this.linkService
               .get({ id: value, type: RouteType.Category })
-              .pipe(map((url) => ({ text: name, url })))
+              .pipe(map((url) => ({ text: { raw: name }, url })))
           )
         )
       : throwError(() => new Error('Categories breadcrumb list is empty!'));

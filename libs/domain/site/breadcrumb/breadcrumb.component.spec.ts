@@ -2,7 +2,7 @@ import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
 import { IconComponent, IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nContext, useComponent } from '@spryker-oryx/utilities';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
@@ -11,7 +11,7 @@ import { siteBreadcrumbComponent } from './breadcrumb.def';
 
 const breadcrumb: BreadcrumbItem = {
   url: '/test',
-  text: 'test',
+  text: { raw: 'test' },
 };
 
 const breadcrumbI18n: BreadcrumbItem = {
@@ -20,10 +20,10 @@ const breadcrumbI18n: BreadcrumbItem = {
 };
 
 const breadcrumbNoUrl: BreadcrumbItem = {
-  text: 'test',
+  text: { raw: 'test' },
 };
 
-const breadcrumbs = [breadcrumb, breadcrumbI18n, breadcrumbNoUrl];
+const breadcrumbs = [breadcrumb, breadcrumbI18n, breadcrumb];
 
 class MockBreadcrumbService implements BreadcrumbService {
   get = vi.fn().mockReturnValue(of([]));
@@ -63,7 +63,7 @@ describe('SiteBreadcrumbComponent', () => {
     });
 
     it('should not render content', () => {
-      expect(element).not.toContainElement('a');
+      expect(element).not.toContainElement('a, span');
     });
   });
 
@@ -87,7 +87,7 @@ describe('SiteBreadcrumbComponent', () => {
 
     it('should render span as last breadcrumb', () => {
       const last = element.renderRoot.querySelector('span');
-      expect(last?.textContent).toBe(breadcrumbs[2].text);
+      expect(last?.textContent).toBe(breadcrumbs[2].text?.raw);
     });
 
     describe('and breadcrumb has a text label', () => {
@@ -100,7 +100,7 @@ describe('SiteBreadcrumbComponent', () => {
 
       it('should render the text as a label for the link', () => {
         const link = element.renderRoot.querySelector('a');
-        expect(link?.textContent).toContain(breadcrumb.text);
+        expect(link?.textContent).toContain(breadcrumb.text?.raw);
       });
 
       it('should pass url to the href', () => {
@@ -121,11 +121,10 @@ describe('SiteBreadcrumbComponent', () => {
       });
 
       it('should translate the token', () => {
-        const text = breadcrumbI18n.text as {
-          token: string;
-          values?: I18nContext;
-        };
-        expect(spy).toHaveBeenCalledWith(text.token, text.values);
+        expect(spy).toHaveBeenCalledWith(
+          breadcrumbI18n.text?.token,
+          breadcrumbI18n.text?.values
+        );
       });
 
       it('should render a link', () => {

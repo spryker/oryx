@@ -43,7 +43,7 @@ export class SiteBreadcrumbComponent extends I18nMixin(
   protected renderText({
     text,
   }: BreadcrumbItem): string | DirectiveResult | void {
-    return typeof text === 'object' ? this.i18n(text.token, text.values) : text;
+    return text?.token ? this.i18n(text.token, text?.values) : text?.raw;
   }
 
   protected renderBreadcrumb(

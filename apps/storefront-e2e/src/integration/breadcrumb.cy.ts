@@ -85,7 +85,7 @@ describe('Breadcrumb suite', () => {
       .should('contain.text', childCategory.title);
 
     //when click on parent category
-    searchPage.breadcrumb.nthBreadcrumbItem(1).click();
+    searchPage.breadcrumb.nthBreadcrumbItem(1).click({ force: true });
 
     //should have 1 divider
     searchPage.breadcrumb.shouldHaveDividers(1);

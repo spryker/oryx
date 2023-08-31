@@ -8,7 +8,9 @@ export class DefaultFallbackBreadcrumbResolver implements BreadcrumbResolver {
   constructor(protected pageMetaService = inject(PageMetaResolverService)) {}
 
   resolve(): Observable<BreadcrumbItem[]> {
-    return this.pageMetaService.getTitle().pipe(map((text) => [{ text }]));
+    return this.pageMetaService
+      .getTitle()
+      .pipe(map((title) => [{ text: { raw: title as string } }]));
   }
 }
 
