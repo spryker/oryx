@@ -84,6 +84,13 @@ describe('DefaultOrderService', () => {
       expect(adapter.get).toHaveBeenCalledWith(mockGetOrderProps);
     });
 
+    it('should clear last order', () => {
+      expect(storage.remove).toHaveBeenCalledWith(
+        orderStorageKey,
+        StorageType.Session
+      );
+    });
+
     describe('and get is called with the same id', () => {
       it('should not call the adapter', () => {
         service.get(mockGetOrderProps).subscribe();
@@ -110,7 +117,7 @@ describe('DefaultOrderService', () => {
 
   describe('when storeLastOrder is called', () => {
     it('should call storage set', () => {
-      service.storeLastOrder(mockOrderData);
+      service.storeLastOrder(mockOrderData, 'anon-user-id');
       expect(storage.set).toHaveBeenCalledWith(
         orderStorageKey,
         mockSanitizedResponse,

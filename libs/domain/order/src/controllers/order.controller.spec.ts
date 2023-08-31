@@ -160,10 +160,6 @@ describe('OrderController', () => {
       it('should return observable', () => {
         expect(callback).toHaveBeenCalledWith(mockOrderData);
       });
-
-      it('should call clearLastOrder', () => {
-        expect(order.clearLastOrder).toHaveBeenCalled();
-      });
     });
 
     describe('and order id is not provided', () => {

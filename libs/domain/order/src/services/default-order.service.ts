@@ -1,15 +1,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import {
-  Observable,
-  catchError,
-  of,
-  shareReplay,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs';
+import { Observable, catchError, of, shareReplay, switchMap } from 'rxjs';
 import { OrderData, orderStorageKey } from '../models';
 import { GetOrderDataProps, OrderAdapter } from './adapter';
 import { OrderService } from './order.service';
@@ -24,6 +16,7 @@ export class DefaultOrderService implements OrderService {
   ) {}
 
   get(data: GetOrderDataProps): Observable<OrderData | null> {
+    this.clearLastOrder();
     const { id } = data;
     if (!this.orders$.has(id)) {
       this.orders$.set(
@@ -43,22 +36,14 @@ export class DefaultOrderService implements OrderService {
     return this.storage.get<OrderData>(orderStorageKey, StorageType.Session);
   }
 
-  storeLastOrder(order: OrderData): void {
+  storeLastOrder(order: OrderData, userId: string): void {
     // For privacy reasons, we cannot store the address in session storage.
-    this.identity
-      .get()
-      .pipe(
-        take(1),
-        tap((user) => {
-          const { billingAddress, shippingAddress, ...sanitized } = order;
-          this.storage.set(
-            orderStorageKey,
-            { ...sanitized, userId: user.userId },
-            StorageType.Session
-          );
-        })
-      )
-      .subscribe();
+    const { billingAddress, shippingAddress, ...sanitized } = order;
+    this.storage.set(
+      orderStorageKey,
+      { ...sanitized, userId },
+      StorageType.Session
+    );
   }
 
   clearLastOrder(): void {

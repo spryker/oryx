@@ -38,7 +38,6 @@ export class OrderController {
             })
           );
         }
-        this.orderService.clearLastOrder();
         return this.orderService.get({ id });
       })
     )
