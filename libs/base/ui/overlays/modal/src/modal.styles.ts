@@ -25,10 +25,6 @@ export const styles = css`
     flex-direction: column;
   }
 
-  form {
-    display: contents;
-  }
-
   :host([minimal]) dialog {
     min-width: var(--oryx-modal-width, 510px), calc(100vw - 20px);
   }
@@ -40,7 +36,8 @@ export const styles = css`
     min-height: var(--oryx-modal-height, auto);
   }
 
-  oryx-card {
+  form {
+    display: contents;
     flex: 1 1;
   }
 
