@@ -1,4 +1,4 @@
-import { IdentityService } from '@spryker-oryx/auth';
+import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { mockOrderData } from '@spryker-oryx/order/mocks';
@@ -8,12 +8,22 @@ import { OrderAdapter } from './adapter';
 import { DefaultOrderService } from './default-order.service';
 import { OrderService } from './order.service';
 
+const mockAnonymousUser: AuthIdentity = {
+  userId: 'anon-user-id',
+  isAuthenticated: false,
+};
+
+const mockUser: AuthIdentity = {
+  userId: 'userId',
+  isAuthenticated: true,
+};
+
 class MockOrderAdapter implements Partial<OrderAdapter> {
   get = vi.fn().mockReturnValue(of(mockOrderData));
 }
 
 class MockIdentityService implements Partial<IdentityService> {
-  get = vi.fn().mockReturnValue(of({ userId: 'anon-user-id' }));
+  get = vi.fn().mockReturnValue(of(mockAnonymousUser));
 }
 
 class MockStorageService implements Partial<StorageService> {
@@ -31,6 +41,7 @@ describe('DefaultOrderService', () => {
   let service: OrderService;
   let adapter: MockOrderAdapter;
   let storage: MockStorageService;
+  let identity: MockIdentityService;
 
   beforeEach(() => {
     const testInjector = createInjector({
@@ -59,6 +70,9 @@ describe('DefaultOrderService', () => {
     storage = testInjector.inject(
       StorageService
     ) as unknown as MockStorageService;
+    identity = testInjector.inject(
+      IdentityService
+    ) as unknown as MockIdentityService;
   });
 
   afterEach(() => {
@@ -78,23 +92,94 @@ describe('DefaultOrderService', () => {
 
     it('should return an observable', () => {
       expect(service.get(mockGetOrderProps)).toBeInstanceOf(Observable);
+      expect(cb).toHaveBeenCalledWith(mockSanitizedResponse);
     });
 
-    it('should call adapter', () => {
-      expect(adapter.get).toHaveBeenCalledWith(mockGetOrderProps);
+    it('should not call adapter', () => {
+      expect(adapter.get).not.toHaveBeenCalled();
     });
 
-    it('should clear last order', () => {
-      expect(storage.remove).toHaveBeenCalledWith(
+    it('should not clear last order', () => {
+      expect(storage.remove).not.toHaveBeenCalled();
+    });
+
+    it('should call getLastOrder', () => {
+      expect(storage.get).toHaveBeenCalledWith(
         orderStorageKey,
         StorageType.Session
       );
     });
 
-    describe('and get is called with the same id', () => {
+    describe('and get is called with a different id', () => {
+      beforeEach(() => {
+        service.get({ id: 'mockid2' }).subscribe(cb);
+      });
+
+      it('should clear last order', () => {
+        expect(storage.remove).toHaveBeenCalledWith(
+          orderStorageKey,
+          StorageType.Session
+        );
+      });
+
       it('should not call the adapter', () => {
         service.get(mockGetOrderProps).subscribe();
-        expect(adapter.get).toHaveBeenCalledTimes(1);
+        expect(adapter.get).not.toHaveBeenCalled();
+      });
+
+      it('should return a null observable', () => {
+        expect(cb).toHaveBeenCalledWith(null);
+      });
+    });
+
+    describe('and user id does not match', () => {
+      beforeEach(() => {
+        mockAnonymousUser.userId = 'another-anon';
+        service.get(mockGetOrderProps).subscribe(cb);
+      });
+
+      it('should clear last order', () => {
+        expect(storage.remove).toHaveBeenCalledWith(
+          orderStorageKey,
+          StorageType.Session
+        );
+      });
+
+      it('should not call the adapter', () => {
+        service.get(mockGetOrderProps).subscribe();
+        expect(adapter.get).not.toHaveBeenCalled();
+      });
+
+      it('should return a null observable', () => {
+        expect(cb).toHaveBeenCalledWith(null);
+      });
+    });
+
+    describe('and user is logged in', () => {
+      beforeEach(() => {
+        identity.get.mockReturnValue(of(mockUser));
+        service.get(mockGetOrderProps).subscribe(cb);
+      });
+
+      it('should not call getLastOrder', () => {
+        expect(storage.get).toHaveBeenCalledTimes(1);
+      });
+
+      it('should call adapter', () => {
+        service.get(mockGetOrderProps).subscribe();
+        expect(adapter.get).toHaveBeenCalledWith(mockGetOrderProps);
+      });
+
+      it('should clear last order', () => {
+        expect(storage.remove).toHaveBeenCalledWith(
+          orderStorageKey,
+          StorageType.Session
+        );
+      });
+
+      it('should return observable', () => {
+        expect(service.get(mockGetOrderProps)).toBeInstanceOf(Observable);
+        expect(cb).toHaveBeenCalledWith(mockOrderData);
       });
     });
   });

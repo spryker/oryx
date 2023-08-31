@@ -1,7 +1,15 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Observable, catchError, of, shareReplay, switchMap } from 'rxjs';
+import {
+  Observable,
+  catchError,
+  map,
+  of,
+  shareReplay,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { OrderData, orderStorageKey } from '../models';
 import { GetOrderDataProps, OrderAdapter } from './adapter';
 import { OrderService } from './order.service';
@@ -16,20 +24,38 @@ export class DefaultOrderService implements OrderService {
   ) {}
 
   get(data: GetOrderDataProps): Observable<OrderData | null> {
-    this.clearLastOrder();
-    const { id } = data;
-    if (!this.orders$.has(id)) {
-      this.orders$.set(
-        id,
-        this.identity.get().pipe(
-          switchMap(() => this.adapter.get({ id })),
-          catchError(() => of(null)),
-          shareReplay({ bufferSize: 1, refCount: true })
-        )
-      );
-    }
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.orders$.get(id)!;
+    return this.identity.get().pipe(
+      switchMap((user) => {
+        const { id } = data;
+        if (!user.isAuthenticated || !id) {
+          return this.getLastOrder().pipe(
+            map((lastOrder) =>
+              lastOrder?.userId === user.userId && lastOrder?.id === id
+                ? lastOrder
+                : null
+            ),
+            tap((lastOrder) => {
+              if (!lastOrder) {
+                this.clearLastOrder();
+              }
+            })
+          );
+        }
+        if (!this.orders$.has(id)) {
+          this.orders$.set(
+            id,
+            this.identity.get().pipe(
+              switchMap(() => this.adapter.get({ id })),
+              catchError(() => of(null)),
+              shareReplay({ bufferSize: 1, refCount: true })
+            )
+          );
+        }
+        this.clearLastOrder();
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return this.orders$.get(id)!;
+      })
+    );
   }
 
   getLastOrder(): Observable<OrderData | null> {
