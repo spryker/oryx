@@ -1,0 +1,167 @@
+import {
+  Content,
+  ContentAdapter,
+  ContentQualifier,
+} from '@spryker-oryx/content';
+import { HttpService, TransformerService } from '@spryker-oryx/core';
+import { inject } from '@spryker-oryx/di';
+import { LocaleService } from '@spryker-oryx/i18n';
+import { Observable, combineLatest, from, map, reduce, switchMap } from 'rxjs';
+import { ContentfulCmsModel } from './contentful.api.model';
+import { ContentfulSpace, ContentfulToken } from './contentful.model';
+import { ContentField, ContentfulFieldNormalizer } from './normalizers';
+
+export interface ContentfulEntry {
+  id: string;
+  version: number;
+  fields: ContentField[];
+}
+
+export const cmsContentfulName = 'oryx.cms.contentful';
+
+export class ContentfulAdapter implements ContentAdapter {
+  constructor(
+    protected token = inject(ContentfulToken),
+    protected space = inject(ContentfulSpace),
+    protected http = inject(HttpService),
+    protected transformer = inject(TransformerService),
+    protected locale = inject(LocaleService)
+  ) {}
+
+  protected url = `https://cdn.contentful.com/spaces/${this.space}`;
+
+  getName(): string {
+    return cmsContentfulName;
+  }
+
+  getKey(qualifier: ContentQualifier): string {
+    return qualifier.id ?? qualifier.query ?? '';
+  }
+
+  get(qualifier: ContentQualifier): Observable<Content | null> {
+    return this.getAll(qualifier).pipe(
+      map(
+        (data) =>
+          data?.find((content) => content.fields.id === qualifier.id) ?? null
+      )
+    );
+  }
+
+  getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
+    return this.getEntries(qualifier).pipe(
+      switchMap((records) => {
+        return from(records).pipe(
+          switchMap((record) => {
+            return combineLatest(
+              record.fields.map((field) =>
+                this.transformer.transform(field, ContentfulFieldNormalizer)
+              )
+            ).pipe(
+              map(
+                (fields) =>
+                  ({
+                    ...record,
+                    fields: fields.reduce(
+                      (acc, { key, value }) => ({ ...acc, [key]: value }),
+                      {}
+                    ),
+                  } as Content)
+              )
+            );
+          }),
+          reduce((a, c) => [...a, c], [] as Content[])
+        );
+      })
+    );
+  }
+
+  protected getEntries(
+    qualifier: ContentQualifier
+  ): Observable<ContentfulEntry[]> {
+    return combineLatest([
+      this.getLocalLocale(),
+      this.getContentFields(qualifier.type ?? ''),
+    ]).pipe(
+      switchMap(([locale, types]) => {
+        return this.http
+          .get<ContentfulCmsModel.EntriesResponse>(
+            `${this.url}/entries?${this.getParams({ ...qualifier, locale })}`,
+            { headers: { Authorization: `Bearer ${this.token}` } }
+          )
+          .pipe(
+            map((data) =>
+              data.items.map((record) => ({
+                fields: this.parseEntryFields(record.fields, types, locale),
+                version: record.sys.version,
+                id: record.sys.id,
+              }))
+            )
+          );
+      })
+    );
+  }
+
+  protected parseEntryFields(
+    fields: ContentfulCmsModel.CrudEntry | ContentfulCmsModel.Entry,
+    types: Record<string, ContentfulCmsModel.Type>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    locale: string
+  ): ContentField[] {
+    return Object.entries(fields).map(([key, value]) => {
+      const { type } = types[key] ?? {};
+
+      return { key, value, type } as ContentField;
+    });
+  }
+
+  protected getParams(qualifier: Record<string, unknown>): string {
+    return Object.entries(qualifier).reduce((acc, [key, value]) => {
+      if (key === ('id' || 'entries')) return acc;
+
+      const param = `${key === 'type' ? 'content_type' : key}=${value}`;
+
+      if (!acc.length) {
+        return param;
+      }
+
+      return `${acc}&${param}`;
+    }, '');
+  }
+
+  protected getLocalLocale(): Observable<string> {
+    return combineLatest([this.locale.get(), this.locale.getAll()]).pipe(
+      map(
+        ([code, all]) =>
+          all
+            .find((_locale) => _locale.code === code)
+            ?.name.replace('_', '-') ?? ''
+      )
+    );
+  }
+
+  protected getContentFields(
+    type: string
+  ): Observable<Record<string, ContentfulCmsModel.Type>> {
+    return this.http
+      .get<ContentfulCmsModel.TypesResponse>(
+        `${this.url}/content_types?name=${type}`,
+        { headers: { Authorization: `Bearer ${this.token}` } }
+      )
+      .pipe(
+        map((data) =>
+          data.items[0].fields.reduce(
+            (acc, field) => ({ ...acc, [field.id]: field }),
+            {}
+          )
+        )
+      );
+  }
+
+  protected getCmsLocales(): Observable<ContentfulCmsModel.Locale[]> {
+    return this.http
+      .get<ContentfulCmsModel.LocalesResponse>(`${this.url}/locales`, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
+      .pipe(map((data) => data.items));
+  }
+}

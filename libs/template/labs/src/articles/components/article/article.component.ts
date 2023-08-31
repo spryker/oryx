@@ -8,9 +8,9 @@ import {
   signalAware,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { marked } from 'marked';
 import { of } from 'rxjs';
 import { ArticleContext } from '../../article-context';
+import { CmsArticle } from '../../article.model';
 
 @signalAware()
 @hydrate()
@@ -29,18 +29,18 @@ export class ArticleComponent extends LitElement {
     const id = this.$articleId();
     const type = this.$articleType();
 
-    return id && type ? this.contentService.get({ id, type }) : of(null);
+    return id && type
+      ? this.contentService.get<CmsArticle>({ id, type })
+      : of(null);
   });
 
   protected override render(): TemplateResult | void {
     const data = this.$data();
 
-    if (!data?.content) {
+    if (!data?.fields.content) {
       return;
     }
 
-    return html`<oryx-text
-      .content=${marked.parse(data.content)}
-    ></oryx-text> `;
+    return html`<oryx-text .content=${data.fields.content}></oryx-text> `;
   }
 }

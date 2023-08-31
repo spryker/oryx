@@ -3,19 +3,26 @@ import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
 import { combineLatest, map, Observable } from 'rxjs';
 import { Content, ContentQualifier } from '../models';
-import { ContentAdapter } from './content.adapter';
+import { ContentAdapter, ContentConfig } from './adapter/content.adapter';
 import { ContentService } from './content.service';
 
 export class DefaultContentService implements ContentService {
-  constructor(protected adapters = inject(ContentAdapter)) {}
+  protected contents: Record<string, string[]> = {};
+
+  constructor(
+    protected adapters = inject(ContentAdapter),
+    protected config = inject(ContentConfig)
+  ) {
+    this.normalizeConfig();
+  }
 
   protected contentQuery = createQuery<Content | null, ContentQualifier>({
     loader: (q: ContentQualifier) =>
-      combineLatest(this.adapters.map((adapter) => adapter.get(q))).pipe(
+      combineLatest(this.getAdapters(q).map((adapter) => adapter.get(q))).pipe(
         map((contents) =>
           contents.reduce(
-            (acc, curr) => (curr ? { ...acc, ...curr } : acc),
-            null
+            (acc, curr) => ({ ...acc, ...(curr as Content) }),
+            {} as Content
           )
         )
       ),
@@ -24,7 +31,9 @@ export class DefaultContentService implements ContentService {
 
   protected contentsQuery = createQuery<Content[] | null, ContentQualifier>({
     loader: (q: ContentQualifier) =>
-      combineLatest(this.adapters.map((adapter) => adapter.getAll(q))).pipe(
+      combineLatest(
+        this.getAdapters(q).map((adapter) => adapter.getAll(q))
+      ).pipe(
         map((contents) =>
           contents.reduce(
             (acc, curr) => [...(acc ?? []), ...(curr ?? [])],
@@ -45,19 +54,55 @@ export class DefaultContentService implements ContentService {
     refreshOn: [LocaleChanged],
   });
 
-  getAll(
+  getAll<T>(
     qualifier: ContentQualifier
-  ): Observable<Content[] | null | undefined> {
-    return this.contentsQuery.get(qualifier);
+  ): Observable<Content<T>[] | null | undefined> {
+    return this.contentsQuery.get(qualifier) as Observable<
+      Content<T>[] | null | undefined
+    >;
   }
 
-  get(qualifier: ContentQualifier): Observable<Content | null | undefined> {
-    return this.contentQuery.get(qualifier);
+  get<T>(
+    qualifier: ContentQualifier
+  ): Observable<Content<T> | null | undefined> {
+    return this.contentQuery.get(qualifier) as Observable<
+      Content<T> | null | undefined
+    >;
   }
 
   getState(
     qualifier: ContentQualifier
   ): Observable<QueryState<Content | null>> {
     return this.contentQuery.getState(qualifier);
+  }
+
+  protected normalizeConfig(): void {
+    this.contents = this.config.reduce(
+      (config, data) => ({
+        ...config,
+        ...Object.entries(data).reduce(
+          (acc, [key, value]) => ({
+            ...acc,
+            [key]: config[key] ? [...config[key], ...value.types] : value.types,
+          }),
+          {}
+        ),
+      }),
+      {} as Record<string, string[]>
+    );
+  }
+
+  protected getAdapters(qualifier: ContentQualifier): ContentAdapter[] {
+    if (!qualifier.entities) return this.adapters;
+
+    const adapters = this.adapters.filter((adapter) =>
+      this.contents[adapter.getName()]?.some((entity) =>
+        qualifier.entities?.includes(entity)
+      )
+    );
+
+    delete qualifier.entities;
+
+    return adapters;
   }
 }

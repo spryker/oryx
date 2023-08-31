@@ -4,7 +4,7 @@ import {
   DefaultLocaleAdapterConfig,
   Locale,
 } from '@spryker-oryx/i18n';
-import { catchError, filter, map, Observable } from 'rxjs';
+import { Observable, catchError, filter, map, of, switchMap } from 'rxjs';
 import { StoreService } from '../../store';
 
 export class SapiLocaleAdapter extends DefaultLocaleAdapter {
@@ -28,6 +28,16 @@ export class SapiLocaleAdapter extends DefaultLocaleAdapter {
   }
 
   protected getFallbackLocales(): Observable<Locale[]> {
-    return super.getDefault().pipe(map((lang) => [{ code: lang, name: lang }]));
+    return super
+      .getAll()
+      .pipe(
+        switchMap((locales) =>
+          locales.length
+            ? of(locales)
+            : super
+                .getDefault()
+                .pipe(map((lang) => [{ code: lang, name: lang }]))
+        )
+      );
   }
 }

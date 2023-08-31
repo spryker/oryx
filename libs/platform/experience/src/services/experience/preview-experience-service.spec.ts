@@ -27,6 +27,7 @@ class MockExperienceDataClientService implements ExperienceDataClientService {
 
 const mockExperienceDataService = {
   getData: vi.fn().mockReturnValue([]),
+  registerComponent: vi.fn(),
 };
 
 describe('ExperiencePreviewService', () => {

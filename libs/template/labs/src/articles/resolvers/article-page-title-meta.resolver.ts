@@ -1,4 +1,4 @@
-import { ContentFields, ContentService } from '@spryker-oryx/content';
+import { ContentService } from '@spryker-oryx/content';
 import {
   ContextService,
   ElementResolver,
@@ -6,8 +6,10 @@ import {
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { ArticleContext } from '../article-context';
+import { CmsArticle } from '../article.model';
+import { ContentfulContentFields } from '../contentful';
 import { StoryblokContentFields } from '../storyblok';
 
 export class ArticlePageTitleMetaResolver implements PageMetaResolver {
@@ -26,7 +28,7 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
         .pipe(
           map(
             (route) =>
-              route.includes(ContentFields.Article) ||
+              route.includes(ContentfulContentFields.Article) ||
               route.includes(StoryblokContentFields.Faq)
           )
         ),
@@ -43,14 +45,20 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
           return of({});
         }
 
-        // TODO: get entities from component or context
         return this.contentService
-          .get({
+          .get<CmsArticle>({
             id,
             type,
-            entities: [ContentFields.Article, StoryblokContentFields.Faq],
+            entities: [
+              ContentfulContentFields.Article,
+              StoryblokContentFields.Faq,
+            ],
           })
-          .pipe(map((data) => (data?.heading ? { title: data.heading } : {})));
+          .pipe(
+            map((data) =>
+              data?.fields.heading ? { title: data.fields.heading } : {}
+            )
+          );
       })
     );
   }

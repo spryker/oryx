@@ -1,6 +1,6 @@
 import { PageMetaService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { FontService } from './fonts.service';
+import { FontService } from './font.service';
 
 export class DefaultFontService implements FontService {
   constructor(protected pageMetaService = inject(PageMetaService)) {}

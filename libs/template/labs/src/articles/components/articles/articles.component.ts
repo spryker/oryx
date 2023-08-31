@@ -7,9 +7,10 @@ import {
   signal,
   signalAware,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { of } from 'rxjs';
 import { ArticleContext } from '../../article-context';
+import { CmsArticle } from '../../article.model';
 
 @signalAware()
 @hydrate()
@@ -24,7 +25,7 @@ export class ArticlesComponent extends LitElement {
   protected $data = computed(() => {
     const type = this.$articleType();
 
-    return type ? this.contentService.getAll({ type }) : of(null);
+    return type ? this.contentService.getAll<CmsArticle>({ type }) : of(null);
   });
 
   protected override render(): TemplateResult | void {
@@ -35,7 +36,7 @@ export class ArticlesComponent extends LitElement {
     }
 
     return html`${data.map(
-      ({ type, id, url, heading: text }) => html`
+      ({ fields: { type, id, url, heading: text } }) => html`
         <div>
           <oryx-content-link
             .options=${{ type, id, url }}

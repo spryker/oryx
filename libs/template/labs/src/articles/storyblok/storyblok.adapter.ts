@@ -7,8 +7,13 @@ import { inject } from '@spryker-oryx/di';
 import { Observable, map, of } from 'rxjs';
 import { StoryblokClientService, StoryblokContentFields } from './client';
 
+// Will be implemented in the next step
 export class StoryblokAdapter implements ContentAdapter {
   constructor(protected storyblok = inject(StoryblokClientService)) {}
+
+  getName(): string {
+    return 'oryx.cms.storyblok';
+  }
 
   getKey(qualifier: ContentQualifier): string {
     return qualifier.id ?? qualifier.type ?? '';
@@ -32,7 +37,7 @@ export class StoryblokAdapter implements ContentAdapter {
             )}`,
           })) ?? null
       )
-    );
+    ) as any;
   }
 
   get(qualifier: ContentQualifier): Observable<Content | null> {
@@ -45,15 +50,11 @@ export class StoryblokAdapter implements ContentAdapter {
         slug: `${qualifier.type}/${qualifier.id}`,
       })
       .pipe(
-        map((entry) =>
-          entry
-            ? {
-                heading: entry.story.content.heading,
-                description: entry.story.content.description,
-                content: entry.story.content.content,
-              }
-            : null
-        )
-      );
+        map((entry) => ({
+          heading: entry.story.content.heading,
+          description: entry.story.content.description,
+          content: entry.story.content.content,
+        }))
+      ) as any;
   }
 }
