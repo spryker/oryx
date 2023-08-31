@@ -37,7 +37,7 @@ export class OrderController {
     return this.ref$;
   }
 
-  getOrder(): Observable<OrderData | null> {
+  getOrder(): Observable<OrderData | null | void> {
     return this.order$;
   }
 }

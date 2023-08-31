@@ -128,7 +128,7 @@ describe('DefaultOrderService', () => {
       });
 
       it('should return a null observable', () => {
-        expect(cb).toHaveBeenCalledWith(null);
+        expect(cb).toHaveBeenCalledWith(undefined);
       });
     });
 
@@ -151,7 +151,7 @@ describe('DefaultOrderService', () => {
       });
 
       it('should return a null observable', () => {
-        expect(cb).toHaveBeenCalledWith(null);
+        expect(cb).toHaveBeenCalledWith(undefined);
       });
     });
 
