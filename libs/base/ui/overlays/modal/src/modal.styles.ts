@@ -8,8 +8,6 @@ export const styles = css`
   }
 
   dialog {
-    display: flex;
-    flex-direction: column;
     overscroll-behavior: none;
     padding: 0;
     border: none;
@@ -20,6 +18,11 @@ export const styles = css`
     );
     max-width: calc(100vw - var(--oryx-modal-bleed, 0px) * 2);
     max-height: calc(100vh - var(--oryx-modal-bleed, 0px) * 2);
+  }
+
+  dialog[open] {
+    display: flex;
+    flex-direction: column;
   }
 
   form {
