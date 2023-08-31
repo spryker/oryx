@@ -88,9 +88,9 @@ describe('SSR suite', { tags: 'smoke' }, () => {
 
       verifyHeader();
 
-      searchPage.getFacets().should('be.visible');
+      searchPage.getFacet().should('be.visible');
       searchPage.getProductSort().should('be.visible');
-      searchPage.getOryxCards().should('have.length.greaterThan', 1);
+      searchPage.getProductCard().should('have.length.greaterThan', 1);
 
       verifyFooter();
     });
@@ -105,7 +105,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
 
       categoryPage.getFacets().should('be.visible');
       categoryPage.getProductSort().should('be.visible');
-      categoryPage.getOryxCards().should('have.length.greaterThan', 1);
+      categoryPage.getProductCard().should('have.length.greaterThan', 1);
 
       verifyFooter();
     });

@@ -33,7 +33,7 @@ export class DefaultContentService implements ContentService {
       combineLatest(this.getAdapters(q).map((adapter) => adapter.get(q))).pipe(
         map((contents) =>
           contents.reduce(
-            (acc, curr) => ({ ...(acc as Content), ...curr }),
+            (acc, curr) => ({ ...acc, ...(curr as Content) }),
             {} as Content
           )
         )

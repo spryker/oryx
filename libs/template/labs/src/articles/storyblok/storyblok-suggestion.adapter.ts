@@ -5,7 +5,7 @@ import {
   SuggestionField,
   SuggestionQualifier,
 } from '@spryker-oryx/search';
-import { map, Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { StoryblokClientService, StoryblokContentFields } from './client';
 
 export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
@@ -22,7 +22,7 @@ export class DefaultStoryblokSuggestionAdapter implements SuggestionAdapter {
     ) {
       return this.storyblok.getEntries({ query }).pipe(
         map((data) => ({
-          [SuggestionField.Contents]: data.stories?.map((story) => ({
+          [SuggestionField.Contents]: data?.stories?.map((story) => ({
             id: story.content.id,
             name: story.content.heading,
             type: StoryblokContentFields.Faq,

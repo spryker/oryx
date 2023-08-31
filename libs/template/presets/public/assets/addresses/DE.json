@@ -28,7 +28,8 @@
         "id": "address2",
         "label": "Apt, suite, unit, building, floor, etc.",
         "width": 100,
-        "type": "input"
+        "type": "input",
+        "required": true
       },
       {
         "id": "zipCode",

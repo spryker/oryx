@@ -25,16 +25,17 @@ export class StoryblokAdapter implements ContentAdapter {
     }
 
     return this.storyblok.getEntries({ type: qualifier.type }).pipe(
-      map((entries) =>
-        entries.stories.map((entry) => ({
-          id: entry.content.id,
-          heading: entry.content.heading,
-          description: entry.content.description,
-          content: entry.content.content,
-          url: `/${StoryblokContentFields.Faq}/${encodeURIComponent(
-            entry.content.id
-          )}`,
-        }))
+      map(
+        (entries) =>
+          entries?.stories.map((entry) => ({
+            id: entry.content.id,
+            heading: entry.content.heading,
+            description: entry.content.description,
+            content: entry.content.content,
+            url: `/${StoryblokContentFields.Faq}/${encodeURIComponent(
+              entry.content.id
+            )}`,
+          })) ?? null
       )
     ) as any;
   }

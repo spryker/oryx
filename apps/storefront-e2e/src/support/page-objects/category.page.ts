@@ -1,5 +1,5 @@
-import { AbstractSFPage } from './abstract.page';
 import { Category } from '../types/category.type';
+import { AbstractSFPage } from './abstract.page';
 export class CategoryPage extends AbstractSFPage {
   url = '/category/';
   categoryId: string;
@@ -18,6 +18,10 @@ export class CategoryPage extends AbstractSFPage {
   }
 
   getFacets = () => cy.get('oryx-search-facet');
-  getOryxCards = () => cy.get('oryx-product-card');
+  getRadio = () => cy.get('input[type="radio"]');
+  getProductCard = () => cy.get('oryx-product-card');
+  getProductPrice = () => cy.get('oryx-site-price');
   getProductSort = () => cy.get('oryx-search-product-sort');
+  getProductTitle = () => cy.get('oryx-product-title');
+  getOryxCheckbox = () => cy.get('oryx-checkbox');
 }
