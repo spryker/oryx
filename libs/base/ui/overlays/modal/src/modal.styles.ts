@@ -27,6 +27,7 @@ export const styles = css`
 
   form {
     display: contents;
+    flex: 1 1;
   }
 
   :host([minimal]) dialog {
@@ -38,10 +39,6 @@ export const styles = css`
 
     width: var(--oryx-modal-max-width, var(--oryx-modal-width, 510px));
     min-height: var(--oryx-modal-height, auto);
-  }
-
-  oryx-card {
-    flex: 1 1;
   }
 
   :host(:not([minimal])) oryx-card {
