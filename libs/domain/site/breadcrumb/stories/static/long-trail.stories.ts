@@ -6,17 +6,19 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 const breadcrumbs = [
-  { text: 'Home', url: '/' },
-  { text: 'Office Equipments', url: '/1' },
-  { text: 'Electronic Devices', url: '/2' },
+  { text: { raw: 'Home' }, url: '/' },
+  { text: { raw: 'Office Equipments' }, url: '/1' },
+  { text: { raw: 'Electronic Devices' }, url: '/2' },
   {
-    text: 'Computers, tablets, smartphones and other electronic devices and accessories',
+    text: {
+      raw: 'Computers, tablets, smartphones and other electronic devices and accessories',
+    },
     url: '/3',
   },
-  { text: 'Computers & Tablets', url: '/4' },
-  { text: 'Tablets & iPads', url: '/5' },
-  { text: 'iPads', url: '/6' },
-  { text: 'iPad accessories', url: '/7' },
+  { text: { raw: 'Computers & Tablets' }, url: '/4' },
+  { text: { raw: 'Tablets & iPads' }, url: '/5' },
+  { text: { raw: 'iPads' }, url: '/6' },
+  { text: { raw: 'iPad accessories' }, url: '/7' },
 ];
 
 export default {
