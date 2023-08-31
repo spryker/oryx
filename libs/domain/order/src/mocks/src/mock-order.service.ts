@@ -14,4 +14,8 @@ export class MockOrderService implements Partial<OrderService> {
   getLastOrder(): Observable<OrderData | null> {
     return of(MockOrderService.mockOrder);
   }
+
+  clearLastOrder(): void {
+    //mock
+  }
 }

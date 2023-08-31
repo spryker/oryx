@@ -13,7 +13,7 @@ class MockOrderAdapter implements Partial<OrderAdapter> {
 }
 
 class MockIdentityService implements Partial<IdentityService> {
-  get = vi.fn().mockReturnValue(of({}));
+  get = vi.fn().mockReturnValue(of({ userId: 'anon-user-id' }));
 }
 
 class MockStorageService implements Partial<StorageService> {

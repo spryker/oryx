@@ -1,5 +1,4 @@
 export * from './default-order.service';
-export * from './initializers';
 export * from './order-context';
 export * from './order.providers';
 export * from './order.routes';

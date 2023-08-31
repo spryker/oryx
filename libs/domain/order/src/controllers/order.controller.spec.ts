@@ -29,10 +29,11 @@ vi.spyOn(litRxjs, 'ObserveController') as SpyInstance;
 class MockOrderService implements Partial<OrderService> {
   getLastOrder = vi.fn().mockReturnValue(of(mockOrderData));
   get = vi.fn().mockReturnValue(of(mockOrderData));
+  clearLastOrder = vi.fn();
 }
 
 const mockAnonymousUser: AuthIdentity = {
-  userId: 'userId',
+  userId: 'anon-user-id',
   isAuthenticated: false,
 };
 
@@ -87,8 +88,13 @@ describe('OrderController', () => {
 
     describe('and user is anonymous', () => {
       beforeEach(() => {
+        mockContext.get.mockReturnValue(of('mockid'));
         const orderController = new OrderController(mockThis);
         orderController.getOrder().subscribe(callback);
+      });
+
+      afterEach(() => {
+        mockContext.get.mockReturnValue(of(mockRef));
       });
 
       it('should call order service getLastOrder', () => {
@@ -101,6 +107,38 @@ describe('OrderController', () => {
 
       it('should return observable', () => {
         expect(callback).toHaveBeenCalledWith(mockOrderData);
+      });
+
+      describe('and order id does not match', () => {
+        beforeEach(() => {
+          mockContext.get.mockReturnValue(of('mockid2'));
+          const orderController = new OrderController(mockThis);
+          orderController.getOrder().subscribe(callback);
+        });
+
+        it('should return null observable', () => {
+          expect(callback).toHaveBeenCalledWith(null);
+        });
+
+        it('should call clearLastOrder', () => {
+          expect(order.clearLastOrder).toHaveBeenCalled();
+        });
+      });
+
+      describe('and user id does not match', () => {
+        beforeEach(() => {
+          mockAnonymousUser.userId = 'another-anon';
+          const orderController = new OrderController(mockThis);
+          orderController.getOrder().subscribe(callback);
+        });
+
+        it('should return null observable', () => {
+          expect(callback).toHaveBeenCalledWith(null);
+        });
+
+        it('should call clearLastOrder', () => {
+          expect(order.clearLastOrder).toHaveBeenCalled();
+        });
       });
     });
 
@@ -122,6 +160,10 @@ describe('OrderController', () => {
       it('should return observable', () => {
         expect(callback).toHaveBeenCalledWith(mockOrderData);
       });
+
+      it('should call clearLastOrder', () => {
+        expect(order.clearLastOrder).toHaveBeenCalled();
+      });
     });
 
     describe('and order id is not provided', () => {
@@ -139,8 +181,12 @@ describe('OrderController', () => {
         expect(order.get).not.toHaveBeenCalled();
       });
 
-      it('should return observable', () => {
-        expect(callback).toHaveBeenCalledWith(mockOrderData);
+      it('should return null observable', () => {
+        expect(callback).toHaveBeenCalledWith(null);
+      });
+
+      it('should call clearLastOrder', () => {
+        expect(order.clearLastOrder).toHaveBeenCalled();
       });
     });
   });

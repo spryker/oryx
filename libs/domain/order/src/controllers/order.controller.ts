@@ -10,6 +10,7 @@ import {
   Observable,
   shareReplay,
   switchMap,
+  tap,
 } from 'rxjs';
 import { OrderComponentProperties, OrderData } from '../models';
 import { OrderContext, OrderService } from '../services';
@@ -24,10 +25,20 @@ export class OrderController {
     combineLatest([this.getRef(), this.identityService.get()]).pipe(
       switchMap(([id, user]) => {
         if (!user.isAuthenticated || !id) {
-          return this.orderService
-            .getLastOrder()
-            .pipe(map((lastOrder) => lastOrder ?? null));
+          return this.orderService.getLastOrder().pipe(
+            map((lastOrder) =>
+              lastOrder?.userId === user.userId && lastOrder?.id === id
+                ? lastOrder
+                : null
+            ),
+            tap((lastOrder) => {
+              if (!lastOrder) {
+                this.orderService.clearLastOrder();
+              }
+            })
+          );
         }
+        this.orderService.clearLastOrder();
         return this.orderService.get({ id });
       })
     )
