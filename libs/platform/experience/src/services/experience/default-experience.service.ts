@@ -133,7 +133,7 @@ export class DefaultExperienceService implements ExperienceService {
     return this.dataRoutes[route].pipe(
       switchMap((uid: string) => {
         if (!uid) {
-          return of({ id: '', type: '' });
+          return of({} as Component);
         }
 
         if (!this.dataComponent[uid]) {
