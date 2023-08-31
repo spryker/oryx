@@ -1,7 +1,7 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Observable, catchError, map, of, shareReplay, switchMap } from 'rxjs';
+import { Observable, catchError, of, shareReplay, switchMap } from 'rxjs';
 import { OrderData, orderStorageKey } from '../models';
 import { GetOrderDataProps, OrderAdapter } from './adapter';
 import { OrderService } from './order.service';
@@ -15,7 +15,7 @@ export class DefaultOrderService implements OrderService {
     protected storage = inject(StorageService)
   ) {}
 
-  get(data: GetOrderDataProps): Observable<OrderData | null> {
+  get(data: GetOrderDataProps): Observable<OrderData | null | void> {
     return this.identity.get().pipe(
       switchMap((user) => {
         const { id } = data;
@@ -24,7 +24,7 @@ export class DefaultOrderService implements OrderService {
             switchMap((lastOrder) =>
               lastOrder?.userId === user.userId && lastOrder?.id === id
                 ? of(lastOrder)
-                : this.clearLastOrder().pipe(map(() => null))
+                : this.clearLastOrder()
             )
           );
         }
