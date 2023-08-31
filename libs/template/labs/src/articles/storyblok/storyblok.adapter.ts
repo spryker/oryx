@@ -12,7 +12,7 @@ export class StoryblokAdapter implements ContentAdapter {
   constructor(protected storyblok = inject(StoryblokClientService)) {}
 
   getName(): string {
-    return 'asfasf';
+    return 'oryx.cms.storyblok';
   }
 
   getKey(qualifier: ContentQualifier): string {

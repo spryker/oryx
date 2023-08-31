@@ -1,10 +1,8 @@
-import { ContentEntities } from '../services';
-
 export interface ContentQualifier {
   type?: string;
   id?: string;
   query?: string;
-  entities?: ContentEntities;
+  entities?: string[];
 }
 
 export interface Content<T = Record<string, unknown>> {

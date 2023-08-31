@@ -13,22 +13,10 @@ export class DefaultContentService implements ContentService {
     protected adapters = inject(ContentAdapter),
     protected config = inject(ContentConfig)
   ) {
-    this.contents = config.reduce(
-      (config, data) => ({
-        ...config,
-        ...Object.entries(data).reduce(
-          (acc, [key, value]) => ({
-            ...acc,
-            [key]: config[key] ? [...config[key], ...value.types] : value.types,
-          }),
-          {}
-        ),
-      }),
-      {} as Record<string, string[]>
-    );
+    this.normalizeConfig();
   }
 
-  protected getQuery = createQuery<Content | null, ContentQualifier>({
+  protected contentQuery = createQuery<Content | null, ContentQualifier>({
     loader: (q: ContentQualifier) =>
       combineLatest(this.getAdapters(q).map((adapter) => adapter.get(q))).pipe(
         map((contents) =>
@@ -41,7 +29,7 @@ export class DefaultContentService implements ContentService {
     refreshOn: [LocaleChanged],
   });
 
-  protected getAllQuery = createQuery<Content[] | null, ContentQualifier>({
+  protected contentsQuery = createQuery<Content[] | null, ContentQualifier>({
     loader: (q: ContentQualifier) =>
       combineLatest(
         this.getAdapters(q).map((adapter) => adapter.getAll(q))
@@ -56,7 +44,7 @@ export class DefaultContentService implements ContentService {
     onLoad: [
       ({ data }) => {
         data?.forEach((content) => {
-          this.getQuery.set({
+          this.contentQuery.set({
             data: content,
             qualifier: { id: content.id },
           });
@@ -69,7 +57,7 @@ export class DefaultContentService implements ContentService {
   getAll<T>(
     qualifier: ContentQualifier
   ): Observable<Content<T>[] | null | undefined> {
-    return this.getAllQuery.get(qualifier) as Observable<
+    return this.contentsQuery.get(qualifier) as Observable<
       Content<T>[] | null | undefined
     >;
   }
@@ -77,7 +65,7 @@ export class DefaultContentService implements ContentService {
   get<T>(
     qualifier: ContentQualifier
   ): Observable<Content<T> | null | undefined> {
-    return this.getQuery.get(qualifier) as Observable<
+    return this.contentQuery.get(qualifier) as Observable<
       Content<T> | null | undefined
     >;
   }
@@ -85,7 +73,23 @@ export class DefaultContentService implements ContentService {
   getState(
     qualifier: ContentQualifier
   ): Observable<QueryState<Content | null>> {
-    return this.getQuery.getState(qualifier);
+    return this.contentQuery.getState(qualifier);
+  }
+
+  protected normalizeConfig(): void {
+    this.contents = this.config.reduce(
+      (config, data) => ({
+        ...config,
+        ...Object.entries(data).reduce(
+          (acc, [key, value]) => ({
+            ...acc,
+            [key]: config[key] ? [...config[key], ...value.types] : value.types,
+          }),
+          {}
+        ),
+      }),
+      {} as Record<string, string[]>
+    );
   }
 
   protected getAdapters(qualifier: ContentQualifier): ContentAdapter[] {
