@@ -132,6 +132,10 @@ export class DefaultExperienceService implements ExperienceService {
 
     return this.dataRoutes[route].pipe(
       switchMap((uid: string) => {
+        if (!uid) {
+          return of({ id: '', type: '' });
+        }
+
         if (!this.dataComponent[uid]) {
           this.dataComponent[uid] = new ReplaySubject(1);
         }
@@ -155,10 +159,13 @@ export class DefaultExperienceService implements ExperienceService {
     adapter
       .pipe(
         tap((page) => {
+          console.log(page, 'page');
           if (page) {
             this.experienceDataService.registerComponent(page, (c) =>
               this.processData(c)
             );
+          } else {
+            this.storeData('dataRoutes', route, null);
           }
         })
       )
