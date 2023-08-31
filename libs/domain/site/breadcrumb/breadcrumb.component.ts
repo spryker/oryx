@@ -15,6 +15,7 @@ import { DirectiveResult } from 'lit/directive';
 import { when } from 'lit/directives/when.js';
 import { SiteBreadcrumbOptions } from './breadcrumb.model';
 import { siteBreadcrumbStyles } from './breadcrumb.styles';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 @hydrate({ event: 'window:load' })
 @signalAware()
@@ -50,16 +51,13 @@ export class SiteBreadcrumbComponent extends I18nMixin(
     breadcrumb: BreadcrumbItem,
     isLastItem: boolean
   ): TemplateResult {
-    return html`
-      <oryx-button
-        ?disabled="${isLastItem}"
-        .href=${breadcrumb.url}
-        .type=${ButtonType.Text}
-        .size=${ButtonSize.Sm}
-        .color=${ButtonColor.Neutral}
-        >${this.renderText(breadcrumb)}</oryx-button
-      >
-    `;
+    if (isLastItem) {
+      return html`<span>${this.renderText(breadcrumb)}</span>`;
+    }
+
+    return html`<a href="${ifDefined(breadcrumb.url)}">
+      ${this.renderText(breadcrumb)}
+    </a>`;
   }
 
   protected renderDivider(): TemplateResult {

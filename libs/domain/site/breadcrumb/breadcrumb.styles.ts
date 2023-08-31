@@ -4,18 +4,24 @@ export const siteBreadcrumbStyles = css`
   :host {
     display: flex;
     align-items: center;
-    gap: 8px 0;
+    gap: 8px;
     flex-wrap: wrap;
   }
 
-  oryx-button {
+  :host > :not(oryx-icon) {
+    text-decoration: none;
+    color: var(--oryx-color-neutral-12);
     max-width: var(--oryx-breadcrumb-max-width, 480px);
-  }
-
-  oryx-button::part(button) {
-    display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+
+  a:hover {
+    color: var(--oryx-color-primary-10);
+  }
+
+  :host > span {
+    color: var(--oryx-color-neutral-9);
   }
 `;

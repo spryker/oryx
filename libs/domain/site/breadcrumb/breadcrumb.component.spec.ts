@@ -1,7 +1,6 @@
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
-import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { IconComponent, IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nContext, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -18,6 +17,10 @@ const breadcrumb: BreadcrumbItem = {
 const breadcrumbI18n: BreadcrumbItem = {
   url: '/test',
   text: { token: 'test.test', values: { value: 'test' } },
+};
+
+const breadcrumbNoUrl: BreadcrumbItem = {
+  text: { raw: 'test' },
 };
 
 const breadcrumbs = [breadcrumb, breadcrumbI18n, breadcrumb];
@@ -60,7 +63,7 @@ describe('SiteBreadcrumbComponent', () => {
     });
 
     it('should not render content', () => {
-      expect(element).not.toContainElement('oryx-button');
+      expect(element).not.toContainElement('a, span');
     });
   });
 
@@ -73,7 +76,7 @@ describe('SiteBreadcrumbComponent', () => {
     });
 
     it('should render each breadcrumb', () => {
-      const items = element.renderRoot.querySelectorAll('oryx-button');
+      const items = element.renderRoot.querySelectorAll('a, span');
       expect(items.length).toBe(breadcrumbs.length);
     });
 
@@ -82,27 +85,26 @@ describe('SiteBreadcrumbComponent', () => {
       expect(dividers.length).toBe(breadcrumbs.length - 1);
     });
 
-    it('should disable the last breadcrumb', () => {
-      expect(element).toContainElement('oryx-button[disabled]:last-of-type');
+    it('should render span as last breadcrumb', () => {
+      const last = element.renderRoot.querySelector('span');
+      expect(last?.textContent).toBe(breadcrumbs[2].text?.raw);
     });
 
     describe('and breadcrumb has a text label', () => {
       beforeEach(async () => {
-        service.get = vi.fn().mockReturnValue(of([breadcrumb]));
+        service.get = vi.fn().mockReturnValue(of([breadcrumb, breadcrumb]));
         element = await fixture(
           html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
         );
       });
 
-      it('should render the text as a label for item', () => {
-        const link = element.renderRoot.querySelector('oryx-button');
+      it('should render the text as a label for the link', () => {
+        const link = element.renderRoot.querySelector('a');
         expect(link?.textContent).toContain(breadcrumb.text?.raw);
       });
 
       it('should pass url to the href', () => {
-        const item =
-          element.renderRoot.querySelector<ButtonComponent>('oryx-button');
-        expect(item?.href).toBe(breadcrumb.url);
+        expect(element).toContainElement(`a[href="${breadcrumb.url}"]`);
       });
     });
 
@@ -119,11 +121,29 @@ describe('SiteBreadcrumbComponent', () => {
       });
 
       it('should translate the token', () => {
-        const text = breadcrumbI18n.text as {
-          token: string;
-          values?: I18nContext;
-        };
-        expect(spy).toHaveBeenCalledWith(text.token, text.values);
+        expect(spy).toHaveBeenCalledWith(
+          breadcrumbI18n.text?.token, 
+          breadcrumbI18n.text?.values
+        );
+      });
+
+      it('should render a link', () => {
+        expect(element).toContainElement(`a[href="${breadcrumb.url}"]`);
+      });
+    });
+
+    describe('and breadcrumb does not have an url', () => {
+      beforeEach(async () => {
+        service.get = vi
+          .fn()
+          .mockReturnValue(of([breadcrumbNoUrl, breadcrumb]));
+        element = await fixture(
+          html`<oryx-site-breadcrumb></oryx-site-breadcrumb>`
+        );
+      });
+
+      it('should not render href attribute of the link', () => {
+        expect(element).toContainElement('a:not([href])');
       });
     });
 
