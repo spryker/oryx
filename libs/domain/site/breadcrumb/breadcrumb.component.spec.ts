@@ -2,7 +2,7 @@ import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
 import { IconComponent, IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nContext, useComponent } from '@spryker-oryx/utilities';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
@@ -122,7 +122,7 @@ describe('SiteBreadcrumbComponent', () => {
 
       it('should translate the token', () => {
         expect(spy).toHaveBeenCalledWith(
-          breadcrumbI18n.text?.token, 
+          breadcrumbI18n.text?.token,
           breadcrumbI18n.text?.values
         );
       });

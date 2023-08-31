@@ -1,7 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { BreadcrumbItem, BreadcrumbService } from '@spryker-oryx/site';
-import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   I18nMixin,
@@ -12,10 +11,10 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { DirectiveResult } from 'lit/directive';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { SiteBreadcrumbOptions } from './breadcrumb.model';
 import { siteBreadcrumbStyles } from './breadcrumb.styles';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 @hydrate({ event: 'window:load' })
 @signalAware()
