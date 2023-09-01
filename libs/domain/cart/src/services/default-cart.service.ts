@@ -116,15 +116,15 @@ export class DefaultCartService implements CartService {
     PriceModeChanged,
     ({ event }) => {
       if (event.data) {
-        let cartId: string | undefined;
-        this.getCart().subscribe((cart) => {
-          cartId = cart?.id;
-        });
-
-        return this.adapter.updateCartPriceMode({
-          cartId,
-          priceMode: event.data.priceMode,
-        });
+        return this.getCart().pipe(
+          take(1),
+          switchMap((cart) => {
+            return this.adapter.update({
+              cartId: cart?.id,
+              priceMode: event.data?.priceMode,
+            });
+          })
+        );
       }
 
       return;

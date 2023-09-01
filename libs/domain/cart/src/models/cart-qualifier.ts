@@ -16,5 +16,5 @@ export interface UpdateCartEntryQualifier extends CartEntryQualifier {
 }
 
 export interface UpdateCartPriceModeQualifier extends CartEntryQualifier {
-  priceMode: string;
+  priceMode?: string;
 }

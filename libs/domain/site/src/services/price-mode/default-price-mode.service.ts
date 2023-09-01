@@ -1,5 +1,7 @@
 import { QueryService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { NotificationService } from '@spryker-oryx/site';
+import { AlertType } from '@spryker-oryx/ui';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PriceModes } from '../../models';
 import { PriceModeService } from './price-mode.service';
@@ -12,7 +14,8 @@ export class DefaultPriceModeService implements PriceModeService {
 
   constructor(
     protected queryService = inject(QueryService),
-    protected defaultPriceMode = inject('SCOS_PRICE_MODE')
+    protected defaultPriceMode = inject('PRICE_MODE'),
+    protected notificationService = inject(NotificationService)
   ) {}
 
   get(): Observable<string> {
@@ -26,5 +29,13 @@ export class DefaultPriceModeService implements PriceModeService {
     if (prev !== priceMode) {
       this.queryService.emit({ type: PriceModeChanged, data: { priceMode } });
     }
+  }
+
+  sendNotificationError(): void {
+    this.notificationService.push({
+      type: AlertType.Error,
+      content: 'Error',
+      subtext: 'Can’t switch price mode when there are items in the cart',
+    });
   }
 }

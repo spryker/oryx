@@ -79,11 +79,7 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  updateCartPriceMode(data: UpdateCartPriceModeQualifier): Observable<Cart> {
-    const attributes = {
-      priceMode: data.priceMode,
-    };
-
+  update(data: UpdateCartPriceModeQualifier): Observable<Cart> {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
@@ -101,7 +97,7 @@ export class DefaultCartAdapter implements CartAdapter {
             type: identity.isAuthenticated
               ? ApiCartModel.UrlParts.Carts
               : ApiCartModel.UrlParts.GuestCarts,
-            attributes,
+            attributes: { ...data },
           },
         };
 
@@ -173,8 +169,8 @@ export class DefaultCartAdapter implements CartAdapter {
               type: 'carts',
               attributes: {
                 name: 'My Cart',
-                priceMode: priceMode,
-                currency: currency,
+                priceMode,
+                currency,
                 store: store?.id,
               },
             },

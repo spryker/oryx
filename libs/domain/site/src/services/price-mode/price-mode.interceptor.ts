@@ -25,18 +25,6 @@ export class PriceModeInterceptor implements HttpInterceptor {
     );
   }
 
-  protected addPriceModeToUrl(req: Request, priceMode: string): Request {
-    const urlObject = new URL(req.url);
-
-    // we don't want to override priceMode, if set
-    if (urlObject.searchParams.has(this.parameterName)) {
-      return req;
-    }
-
-    urlObject.searchParams.set(this.parameterName, priceMode);
-    return new Request(urlObject.toString(), req.clone());
-  }
-
   shouldInterceptRequest({ url }: Request): boolean {
     if (!this.SCOS_BASE_URL || !url.startsWith(this.SCOS_BASE_URL))
       return false;
@@ -47,5 +35,17 @@ export class PriceModeInterceptor implements HttpInterceptor {
       if (path.startsWith(`/${endpoint}`)) return true;
     }
     return false;
+  }
+
+  private addPriceModeToUrl(req: Request, priceMode: string): Request {
+    const urlObject = new URL(req.url);
+
+    // we don't want to override priceMode, if set
+    if (urlObject.searchParams.has(this.parameterName)) {
+      return req;
+    }
+
+    urlObject.searchParams.set(this.parameterName, priceMode);
+    return new Request(urlObject.toString(), req.clone());
   }
 }

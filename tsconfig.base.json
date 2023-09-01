@@ -246,6 +246,7 @@
         "libs/domain/site/notification-center/index.ts"
       ],
       "@spryker-oryx/site/price": ["libs/domain/site/price/index.ts"],
+      // Release only for 1.1.0 version
       "@spryker-oryx/site/price-mode-selector": [
         "libs/domain/site/price-mode-selector/index.ts"
       ],

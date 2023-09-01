@@ -33,7 +33,7 @@ import { DefaultStoreService, StoreService } from './store';
 declare global {
   interface AppEnvironment {
     readonly SCOS_BASE_URL?: string;
-    readonly SCOS_PRICE_MODE?: string;
+    readonly PRICE_MODE?: string;
     readonly STORE?: string;
   }
 }
@@ -48,8 +48,8 @@ export const siteProviders: Provider[] = [
     useFactory: () => injectEnv('STORE', ''),
   },
   {
-    provide: 'SCOS_PRICE_MODE',
-    useFactory: () => injectEnv('SCOS_PRICE_MODE', ''),
+    provide: 'PRICE_MODE',
+    useFactory: () => injectEnv('PRICE_MODE', 'GROSS_MODE'),
   },
   {
     provide: LinkService,
