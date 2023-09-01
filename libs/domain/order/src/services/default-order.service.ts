@@ -46,7 +46,7 @@ export class DefaultOrderService implements OrderService {
     );
   }
 
-  getLastOrder(): Observable<OrderData | null> {
+  protected getLastOrder(): Observable<OrderData | null> {
     return this.storage.get<OrderData>(orderStorageKey, StorageType.Session);
   }
 

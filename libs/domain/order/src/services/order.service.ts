@@ -4,7 +4,6 @@ import { GetOrderDataProps } from './adapter';
 
 export interface OrderService {
   get(data: GetOrderDataProps): Observable<OrderData | null | void>;
-  getLastOrder(): Observable<OrderData | null>;
   storeLastOrder(order: OrderData, userId: string): void;
 }
 

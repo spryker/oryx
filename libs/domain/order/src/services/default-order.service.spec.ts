@@ -2,8 +2,8 @@ import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { mockOrderData } from '@spryker-oryx/order/mocks';
-import { Observable, firstValueFrom, of } from 'rxjs';
-import { OrderData, orderStorageKey } from '../models';
+import { Observable, of } from 'rxjs';
+import { orderStorageKey } from '../models';
 import { OrderAdapter } from './adapter';
 import { DefaultOrderService } from './default-order.service';
 import { OrderService } from './order.service';
@@ -181,22 +181,6 @@ describe('DefaultOrderService', () => {
         expect(service.get(mockGetOrderProps)).toBeInstanceOf(Observable);
         expect(cb).toHaveBeenCalledWith(mockOrderData);
       });
-    });
-  });
-
-  describe('when getLastOrder is called', () => {
-    let result: OrderData | null;
-    beforeEach(async () => {
-      result = await firstValueFrom(service.getLastOrder());
-    });
-    it('should return previous order details', () => {
-      expect(result).toEqual(mockSanitizedResponse);
-    });
-    it('should call storage get', () => {
-      expect(storage.get).toHaveBeenCalledWith(
-        orderStorageKey,
-        StorageType.Session
-      );
     });
   });
 
