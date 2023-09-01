@@ -1,9 +1,9 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import { featureVersion } from '@spryker-oryx/utilities';
 import {
   AvailabilityNormalizer,
+  CategoriesNormalizer,
   CategoryIdNormalizer,
   ConcreteProductsNormalizer,
   DefaultProductAdapter,
@@ -15,6 +15,7 @@ import {
   ProductAdapter,
   ProductMediaSetNormalizer,
   availabilityNormalizer,
+  categoriesNormalizer,
   categoryIdNormalizer,
   concreteProductsNormalizer,
   facetCategoryNormalizer,
@@ -59,7 +60,7 @@ import {
   ProductRelationsListAdapter,
   ProductRelationsListService,
 } from './related';
-import { ProductListBreadcrumb } from './resolvers';
+import { ProductDetailsBreadcrumb, ProductListBreadcrumb } from './resolvers';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
 import { productRoutes } from './routes';
@@ -165,6 +166,11 @@ export const productProviders: Provider[] = [
     provide: CategoryIdNormalizer,
     useValue: categoryIdNormalizer,
   },
-  ...(featureVersion >= '1.1' ? [ProductListBreadcrumb] : []),
+  {
+    provide: CategoriesNormalizer,
+    useValue: categoriesNormalizer,
+  },
+  ProductListBreadcrumb,
+  ProductDetailsBreadcrumb,
   ...provideLitRoutes({ routes: productRoutes }),
 ];

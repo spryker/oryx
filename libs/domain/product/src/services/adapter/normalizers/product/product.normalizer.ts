@@ -7,6 +7,7 @@ import { AvailabilityNormalizer } from '../availability';
 import { ProductLabelsNormalizer } from '../labels/labels.normalizer';
 import { ProductMediaSetNormalizer } from '../media';
 import { CategoryIdNormalizer } from '../category-id';
+import { CategoriesNormalizer } from '../categories';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 
@@ -101,6 +102,23 @@ export function productNodeNormalizer(
   return transformer.transform(node, CategoryIdNormalizer);
 }
 
+export function productCategoriesNormalizer(
+  data: DeserializedProduct,
+  transformer: TransformerService
+): Observable<Partial<Product>> {
+  const abstractKey = camelize(ApiProductModel.Includes.AbstractProducts);
+  const nodeKey = camelize(ApiProductModel.Includes.CategoryNodes);
+  const { [abstractKey]: abstract } = data;
+
+  if (!abstract?.length) {
+    return of({});
+  }
+
+  const { [nodeKey]: node } = abstract[0];
+  
+  return transformer.transform(node, CategoriesNormalizer);
+}
+
 export const productNormalizer: Provider[] = [
   {
     provide: ProductNormalizer,
@@ -125,6 +143,10 @@ export const productNormalizer: Provider[] = [
   {
     provide: ProductNormalizer,
     useValue: productNodeNormalizer,
+  },
+  {
+    provide: ProductNormalizer,
+    useValue: productCategoriesNormalizer,
   },
 ];
 

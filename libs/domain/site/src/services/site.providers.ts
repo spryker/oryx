@@ -1,7 +1,6 @@
 import { ErrorHandler, HttpInterceptor, injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { LocaleAdapter } from '@spryker-oryx/i18n';
-import { featureVersion } from '@spryker-oryx/utilities';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
 import { BreadcrumbService, DefaultBreadcrumbService } from './breadcrumb';
 import { CountryService, DefaultCountryService } from './country';
@@ -98,18 +97,14 @@ export const siteProviders: Provider[] = [
   },
   localeHydration,
   currencyHydration,
-  ...(featureVersion >= '1.1'
-    ? [
-        {
-          provide: BreadcrumbService,
-          useClass: DefaultBreadcrumbService,
-        },
-        {
-          provide: FallbackBreadcrumbResolver,
-          useClass: DefaultFallbackBreadcrumbResolver,
-        },
-      ]
-    : []),
+  {
+    provide: BreadcrumbService,
+    useClass: DefaultBreadcrumbService,
+  },
+  {
+    provide: FallbackBreadcrumbResolver,
+    useClass: DefaultFallbackBreadcrumbResolver,
+  },
   // TODO: uncomment when CORs header issue is fixed
   // {
   //   provide: HttpInterceptor,

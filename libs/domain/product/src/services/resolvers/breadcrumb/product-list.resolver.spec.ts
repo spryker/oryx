@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import {
   ProductListBreadcrumb,
   ProductListBreadcrumbResolver,
-} from './breadcrumb.resolver';
+} from './product-list.resolver';
 
 const route: Partial<RouteWithParams> = { query: {} };
 const routeWithSearch: Partial<RouteWithParams> = { query: { q: 'test' } };

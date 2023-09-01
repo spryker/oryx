@@ -31,6 +31,7 @@ export interface Product {
    * Ids of the category to which the product belongs.
    */
   categoryIds?: string[];
+  categories?: ProductCategory[];
   attributeNames?: Record<string, string>;
   attributes?: Record<string, string>;
   averageRating?: number;
@@ -212,4 +213,12 @@ export interface ProductAvailability {
    * product that can be fulfilled.
    */
   quantity: number;
+}
+
+export interface ProductCategory {
+  id: string;
+  name: string;
+  description?: string;
+  children: string[];
+  parents: string[];
 }

@@ -5,6 +5,7 @@ import { ApiProductModel, Product } from '../../../../models';
 import { CategoryIdNormalizer } from '../category-id';
 import { ProductNormalizer } from '../product';
 import { DeserializedAbstract } from './model';
+import { CategoriesNormalizer } from '../categories';
 
 export const ConcreteProductsNormalizer = 'oryx.ConcreteProductsNormalizer*';
 
@@ -27,7 +28,8 @@ export function concreteProductsNormalizer(
             ProductNormalizer
           ),
           transformer.transform(abstract[categoryKey], CategoryIdNormalizer),
-        ]).pipe(map(([product, nodeId]) => ({ ...product, ...nodeId })))
+          transformer.transform(abstract[categoryKey], CategoriesNormalizer),
+        ]).pipe(map(([product, nodeId, categories]) => ({ ...product, ...nodeId, ...categories })))
       )
   );
 }
