@@ -22,6 +22,7 @@ import {
 } from './notification';
 import {
   DefaultPriceModeService,
+  PriceMode,
   PriceModeInterceptor,
   PriceModeService,
 } from './price-mode';
@@ -48,8 +49,8 @@ export const siteProviders: Provider[] = [
     useFactory: () => injectEnv('STORE', ''),
   },
   {
-    provide: 'PRICE_MODE',
-    useFactory: () => injectEnv('PRICE_MODE', 'GROSS_MODE'),
+    provide: PriceMode,
+    useFactory: () => injectEnv('PRICE_MODE', ''),
   },
   {
     provide: LinkService,

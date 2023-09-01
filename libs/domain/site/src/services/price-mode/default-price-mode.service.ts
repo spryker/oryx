@@ -4,7 +4,7 @@ import { NotificationService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PriceModes } from '../../models';
-import { PriceModeService } from './price-mode.service';
+import { PriceMode, PriceModeService } from './price-mode.service';
 import { PriceModeChanged } from './state';
 
 export class DefaultPriceModeService implements PriceModeService {
@@ -14,7 +14,7 @@ export class DefaultPriceModeService implements PriceModeService {
 
   constructor(
     protected queryService = inject(QueryService),
-    protected defaultPriceMode = inject('PRICE_MODE'),
+    protected defaultPriceMode = inject(PriceMode),
     protected notificationService = inject(NotificationService)
   ) {}
 
