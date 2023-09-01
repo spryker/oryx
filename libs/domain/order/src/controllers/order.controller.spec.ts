@@ -26,9 +26,7 @@ vi.spyOn(litRxjs, 'ObserveController') as SpyInstance;
 );
 
 class MockOrderService implements Partial<OrderService> {
-  getLastOrder = vi.fn().mockReturnValue(of(mockOrderData));
   get = vi.fn().mockReturnValue(of(mockOrderData));
-  clearLastOrder = vi.fn();
 }
 
 describe('OrderController', () => {
