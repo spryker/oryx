@@ -85,6 +85,16 @@ export class PasswordInputComponent
     this.setValidation();
   }
 
+  protected updated(_changedProperties: PropertyValues): void {
+    if (
+      _changedProperties.has('minLength') ||
+      _changedProperties.has('maxLength')
+    ) {
+      this.setValidation();
+    }
+    super.updated(_changedProperties);
+  }
+
   protected override render(): TemplateResult {
     return html`
       ${this.formControlController.render({

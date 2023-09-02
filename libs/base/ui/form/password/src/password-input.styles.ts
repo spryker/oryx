@@ -40,10 +40,10 @@ export const baseStyles = css`
     line-height: 16px;
   }
   oryx-error-message + .validation-message {
-    margin-top: 10px;
+    margin-block-start: 15px;
   }
   .validation-message:not(:last-child) {
-    margin-bottom: 5px;
+    margin-block-end: 5px;
   }
 
   .validation-message oryx-icon {

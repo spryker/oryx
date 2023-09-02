@@ -10,6 +10,12 @@ interface Props {
   label: string;
   floatLabel: boolean;
   hasError: boolean;
+  errorMessage: string;
+  minLength: number;
+  maxLength: number;
+  requireUpperLetter: boolean;
+  requireNumber: boolean;
+  requireSpecialChar: boolean;
 }
 
 export default {
@@ -43,6 +49,12 @@ const Template: Story<Props> = ({
   label,
   floatLabel,
   hasError,
+  errorMessage,
+  minLength,
+  maxLength,
+  requireUpperLetter,
+  requireNumber,
+  requireSpecialChar,
 }: Props): TemplateResult => {
   return html`<oryx-password-input
     label=${label}
@@ -50,11 +62,12 @@ const Template: Story<Props> = ({
     timeout=${timeout}
     ?hasError=${hasError}
     ?floatLabel=${floatLabel}
-    minLength=${8}
-    maxLength=${20}
-    requireAlpha
-    requireNumber
-    requireSpecialChar
+    errorMessage=${errorMessage}
+    minLength=${minLength}
+    maxLength=${maxLength}
+    ?requireUpperLetter=${requireUpperLetter}
+    ?requireNumber=${requireNumber}
+    ?requireSpecialChar=${requireSpecialChar}
   >
     <input
       type="password"
@@ -74,4 +87,10 @@ PasswordDemo.args = {
   label: 'Password with label',
   floatLabel: false,
   hasError: false,
+  errorMessage: '',
+  minLength: 8,
+  maxLength: 20,
+  requireUpperLetter: true,
+  requireNumber: true,
+  requireSpecialChar: true,
 };
