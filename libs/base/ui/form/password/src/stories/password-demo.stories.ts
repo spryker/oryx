@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { PasswordVisibilityStrategy } from '../password-input.model';
 
@@ -50,6 +50,11 @@ const Template: Story<Props> = ({
     timeout=${timeout}
     ?hasError=${hasError}
     ?floatLabel=${floatLabel}
+    minLength=${8}
+    maxLength=${20}
+    requireAlpha
+    requireNumber
+    requireSpecialChar
   >
     <input
       type="password"

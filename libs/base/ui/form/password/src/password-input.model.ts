@@ -30,3 +30,26 @@ export const enum PasswordVisibilityStrategy {
    */
   Hover = 'hover',
 }
+
+export interface ValidationOptions {
+  /**
+   * Minimum length the password must have
+   */
+  minLength?: number;
+  /**
+   * Maximum allowable length for the password
+   */
+  maxLength?: number;
+  /**
+   * Requires at least one uppercase letter in the password
+   */
+  requireUpperLetter?: boolean;
+  /**
+   * Requires at least one numeric character in the password
+   */
+  requireNumber?: boolean;
+  /**
+   * Requires at least one special character in the password
+   */
+  requireSpecialChar?: boolean;
+}

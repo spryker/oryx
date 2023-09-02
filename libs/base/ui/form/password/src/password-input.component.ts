@@ -2,18 +2,25 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   AffixController,
   AffixOptions,
-  baseStyles as inputBaseStyles,
   FormControlController,
   FormControlOptions,
+  baseStyles as inputBaseStyles,
 } from '@spryker-oryx/ui/input';
-import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import {
+  I18nMixin,
+  I18nTranslationValue,
+  Size,
+  i18n,
+} from '@spryker-oryx/utilities';
+import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
+import { property, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 import { getControl } from '../../utilities/getControl';
 import { PasswordVisibilityStrategy } from './password-input.model';
 import { baseStyles } from './password-input.styles';
 
 export class PasswordInputComponent
-  extends LitElement
+  extends I18nMixin(LitElement)
   implements FormControlOptions, AffixOptions
 {
   static styles = [...inputBaseStyles, baseStyles];
@@ -26,6 +33,11 @@ export class PasswordInputComponent
   @property({ type: Boolean, reflect: true }) prefixFill?: boolean;
   @property() suffixIcon?: string;
   @property({ type: Boolean, reflect: true }) suffixFill?: boolean;
+  @property() minLength?: number;
+  @property() maxLength?: number;
+  @property({ type: Boolean, reflect: true }) requireUpperLetter?: boolean;
+  @property({ type: Boolean, reflect: true }) requireNumber?: boolean;
+  @property({ type: Boolean, reflect: true }) requireSpecialChar?: boolean;
 
   protected formControlController = new FormControlController(this);
   protected affixController = new AffixController(this);
@@ -47,12 +59,107 @@ export class PasswordInputComponent
 
   @property({ type: Boolean }) visible?: boolean;
 
+  @state()
+  minLengthError = false;
+  @state()
+  maxLengthError = false;
+  @state()
+  requireUpperLetterError = false;
+  @state()
+  requireNumberError = false;
+  @state()
+  requireSpecialCharError = false;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.addEventListener('input', this.setValidation);
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener('input', this.setValidation);
+  }
+
+  protected firstUpdated(_changedProperties: PropertyValues): void {
+    super.firstUpdated(_changedProperties);
+    this.setValidation();
+  }
+
   protected override render(): TemplateResult {
     return html`
       ${this.formControlController.render({
         before: this.affixController.renderPrefix(),
         after: this.affixController.renderSuffix(this.renderActionIcon()),
       })}
+      ${this.renderValidation()}
+    `;
+  }
+
+  protected setValidation(): void {
+    this.minLengthError = !!(
+      this.minLength && this.control.value.length < this.minLength
+    );
+    this.maxLengthError = !!(
+      this.maxLength && this.control.value.length > this.maxLength
+    );
+    this.requireUpperLetterError = !!(
+      this.requireUpperLetter && !this.control.value.match(/[A-Z]/)
+    );
+    this.requireNumberError = !!(
+      this.requireNumber && !this.control.value.match(/[0-9]/)
+    );
+    this.requireSpecialCharError = !!(
+      this.requireSpecialChar &&
+      !this.control.value.match(/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/)
+    );
+  }
+
+  protected renderValidation(): TemplateResult {
+    return html`
+      ${when(this.minLength, () =>
+        this.renderValidationMessage(
+          this.minLengthError,
+          i18n('password.at-least-<count>-characters', {
+            count: this.minLength,
+          })
+        )
+      )}
+      ${when(this.maxLength, () =>
+        this.renderValidationMessage(
+          this.maxLengthError,
+          i18n('password.at-most-<count>-characters', { count: this.maxLength })
+        )
+      )}
+      ${when(this.requireUpperLetter, () =>
+        this.renderValidationMessage(
+          this.requireUpperLetterError,
+          i18n('password.upper-and-lowercase-letters')
+        )
+      )}
+      ${when(this.requireNumber, () =>
+        this.renderValidationMessage(
+          this.requireNumberError,
+          i18n('password.a-number')
+        )
+      )}
+      ${when(this.requireSpecialChar, () =>
+        this.renderValidationMessage(
+          this.requireSpecialCharError,
+          i18n('password.a-symbol-(e.g.*$%)')
+        )
+      )}
+    `;
+  }
+
+  protected renderValidationMessage(
+    errorState: boolean,
+    message: I18nTranslationValue
+  ): TemplateResult {
+    return html`
+      <div class="validation-message ${errorState ? '' : 'active'}">
+        <oryx-icon type=${IconTypes.Check} size=${Size.Sm}></oryx-icon>
+        ${message}
+      </div>
     `;
   }
 
