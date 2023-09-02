@@ -39,9 +39,11 @@ export const baseStyles = css`
     font-weight: 600;
     line-height: 16px;
   }
+
   oryx-error-message + .validation-message {
     margin-block-start: 15px;
   }
+
   .validation-message:not(:last-child) {
     margin-block-end: 5px;
   }
