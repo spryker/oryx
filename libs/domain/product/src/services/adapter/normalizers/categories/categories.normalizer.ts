@@ -4,7 +4,7 @@ import { DeserializeCategories } from './model';
 
 export const CategoriesNormalizer = 'oryx.CategoriesNormalizer*';
 
-export function  categoriesNormalizer(
+export function categoriesNormalizer(
   data?: ApiProductModel.CategoryNodes[]
 ): DeserializeCategories | undefined {
   if (!data?.length) {
@@ -12,16 +12,19 @@ export function  categoriesNormalizer(
   }
 
   const categories = data.reduce<ProductCategory[]>(
-    (acc, cat) => (cat.isActive ? [
-      ...acc, 
-      {
-        id: String(cat.nodeId),
-        name: cat.name,
-        description: cat.metaDescription,
-        children: cat.children.map(child => String(child.nodeId)),
-        parents: cat.parents.map(parent => String(parent.nodeId)),
-      }
-    ] : acc), [] 
+    (acc, cat) =>
+      cat.isActive
+        ? [
+            ...acc,
+            {
+              id: String(cat.nodeId),
+              name: cat.name,
+              description: cat.metaDescription,
+              children: cat.children.map((child) => String(child.nodeId)),
+            },
+          ]
+        : acc,
+    []
   );
 
   if (!categories.length) {

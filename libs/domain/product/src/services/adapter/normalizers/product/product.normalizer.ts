@@ -1,13 +1,13 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
-import { map, Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { AvailabilityNormalizer } from '../availability';
+import { CategoriesNormalizer } from '../categories';
+import { CategoryIdNormalizer } from '../category-id';
 import { ProductLabelsNormalizer } from '../labels/labels.normalizer';
 import { ProductMediaSetNormalizer } from '../media';
-import { CategoryIdNormalizer } from '../category-id';
-import { CategoriesNormalizer } from '../categories';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 
@@ -115,7 +115,7 @@ export function productCategoriesNormalizer(
   }
 
   const { [nodeKey]: node } = abstract[0];
-  
+
   return transformer.transform(node, CategoriesNormalizer);
 }
 

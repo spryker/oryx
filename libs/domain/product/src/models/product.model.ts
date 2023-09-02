@@ -220,5 +220,4 @@ export interface ProductCategory {
   name: string;
   description?: string;
   children: string[];
-  parents: string[];
 }
