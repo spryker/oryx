@@ -12,7 +12,11 @@ export const articleRoutes: RouteConfig[] = [
     type: StoryblokContentFields.Faq,
     enter: ({ id }) =>
       resolve(ContentService)
-        .get({ id, type: 'faq' })
+        .get({
+          id,
+          type: StoryblokContentFields.Faq,
+          entities: [StoryblokContentFields.Faq],
+        })
         .pipe(
           take(1),
           map((faq) => (faq ? true : RouteType.NotFound))
@@ -23,10 +27,17 @@ export const articleRoutes: RouteConfig[] = [
     type: ContentfulContentFields.Article,
     enter: ({ id }) =>
       resolve(ContentService)
-        .get({ id, type: 'article' })
+        .get({
+          id,
+          type: ContentfulContentFields.Article,
+          entities: [ContentfulContentFields.Article],
+        })
         .pipe(
           take(1),
-          map((article) => (article ? true : RouteType.NotFound))
+          map((article) => {
+            console.log(article);
+            return article ? true : RouteType.NotFound;
+          })
         ),
   },
 ];

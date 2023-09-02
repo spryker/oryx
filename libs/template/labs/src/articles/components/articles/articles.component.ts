@@ -25,7 +25,9 @@ export class ArticlesComponent extends LitElement {
   protected $data = computed(() => {
     const type = this.$articleType();
 
-    return type ? this.contentService.getAll<CmsArticle>({ type }) : of(null);
+    return type
+      ? this.contentService.getAll<CmsArticle>({ type, entities: [type] })
+      : of(null);
   });
 
   protected override render(): TemplateResult | void {

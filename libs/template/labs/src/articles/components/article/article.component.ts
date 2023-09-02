@@ -30,7 +30,7 @@ export class ArticleComponent extends LitElement {
     const type = this.$articleType();
 
     return id && type
-      ? this.contentService.get<CmsArticle>({ id, type })
+      ? this.contentService.get<CmsArticle>({ id, type, entities: [type] })
       : of(null);
   });
 

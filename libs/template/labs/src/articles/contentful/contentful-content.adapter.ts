@@ -15,11 +15,12 @@ export interface ContentfulEntry {
   id: string;
   version: number;
   fields: ContentField[];
+  type: string;
 }
 
 export const cmsContentfulName = 'oryx.cms.contentful';
 
-export class ContentfulAdapter implements ContentAdapter {
+export class ContentfulContentAdapter implements ContentAdapter {
   constructor(
     protected token = inject(ContentfulToken),
     protected space = inject(ContentfulSpace),
@@ -90,33 +91,44 @@ export class ContentfulAdapter implements ContentAdapter {
           )
           .pipe(
             map((data) =>
-              data.items.map((record) => ({
-                fields: this.parseEntryFields(record.fields, types, locale),
-                version: record.sys.version,
-                id: record.sys.id,
-              }))
+              data.items.map((record) =>
+                this.parseEntry(record, types, locale, qualifier)
+              )
             )
           );
       })
     );
   }
 
+  protected parseEntry(
+    record: ContentfulCmsModel.SimpleResponse<ContentfulCmsModel.Entry>,
+    types: Record<string, ContentfulCmsModel.Type>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    locale: string,
+    qualifier: ContentQualifier
+  ): ContentfulEntry {
+    return {
+      fields: this.parseEntryFields(record.fields, types, locale),
+      version: record.sys.version,
+      id: record.sys.id,
+      type: qualifier.type ?? '',
+    };
+  }
+
   protected parseEntryFields(
-    fields: ContentfulCmsModel.CrudEntry | ContentfulCmsModel.Entry,
+    fields: ContentfulCmsModel.Entry,
     types: Record<string, ContentfulCmsModel.Type>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     locale: string
   ): ContentField[] {
-    return Object.entries(fields).map(([key, value]) => {
-      const { type } = types[key] ?? {};
-
-      return { key, value, type } as ContentField;
-    });
+    return Object.entries(fields).map(
+      ([key, value]) => ({ key, value, type: types[key].type } as ContentField)
+    );
   }
 
   protected getParams(qualifier: Record<string, unknown>): string {
     return Object.entries(qualifier).reduce((acc, [key, value]) => {
-      if (key === ('id' || 'entries')) return acc;
+      if (key === 'id' || key === 'entities') return acc;
 
       const param = `${key === 'type' ? 'content_type' : key}=${value}`;
 

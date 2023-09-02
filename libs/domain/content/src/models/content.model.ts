@@ -11,4 +11,5 @@ export interface Content<T = Record<string, unknown>> {
   };
   id: string;
   version: number;
+  type: string;
 }

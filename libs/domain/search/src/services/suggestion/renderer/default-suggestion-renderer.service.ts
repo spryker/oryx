@@ -34,6 +34,7 @@ export class DefaultSuggestionRendererService
       entities: Object.keys(options ?? {}).filter(
         (key) => options?.[key as keyof SuggestionRendererOptions]
       ),
+      type: options?.type,
     });
   }
 

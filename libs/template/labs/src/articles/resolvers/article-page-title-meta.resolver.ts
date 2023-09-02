@@ -1,4 +1,3 @@
-import { ContentService } from '@spryker-oryx/content';
 import {
   ContextService,
   ElementResolver,
@@ -8,16 +7,15 @@ import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { ArticleContext } from '../article-context';
-import { CmsArticle } from '../article.model';
 import { ContentfulContentFields } from '../contentful';
 import { StoryblokContentFields } from '../storyblok';
 
 export class ArticlePageTitleMetaResolver implements PageMetaResolver {
   constructor(
     protected context = inject(ContextService),
-    protected router = inject(RouterService),
-    protected contentService = inject(ContentService)
-  ) {}
+    protected router = inject(RouterService)
+  ) // protected contentService = inject(ContentService)
+  {}
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
@@ -41,24 +39,22 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
       this.context.get<string>(document.body, ArticleContext.Type),
     ]).pipe(
       switchMap(([id, type]) => {
-        if (!id || !type) {
-          return of({});
-        }
+        return of({});
 
-        return this.contentService
-          .get<CmsArticle>({
-            id,
-            type,
-            entities: [
-              ContentfulContentFields.Article,
-              StoryblokContentFields.Faq,
-            ],
-          })
-          .pipe(
-            map((data) =>
-              data?.fields.heading ? { title: data.fields.heading } : {}
-            )
-          );
+        // return this.contentService
+        //   .get<CmsArticle>({
+        //     id,
+        //     type,
+        //     entities: [
+        //       ContentfulContentFields.Article,
+        //       StoryblokContentFields.Faq,
+        //     ],
+        //   })
+        //   .pipe(
+        //     map((data) =>
+        //       data?.fields.heading ? { title: data.fields.heading } : {}
+        //     )
+        //   );
       })
     );
   }

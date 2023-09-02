@@ -25,6 +25,7 @@ export const articlesPage: ExperienceComponent = {
         [ContentfulContentFields.Article]: {
           max: 8,
         },
+        type: ContentfulContentFields.Article,
       },
     },
     {
@@ -75,6 +76,7 @@ export const faqsPage: ExperienceComponent = {
         [StoryblokContentFields.Faq]: {
           max: 8,
         },
+        type: StoryblokContentFields.Faq,
       },
     },
     {

@@ -1,6 +1,7 @@
 import { createQuery, QueryState } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
+import { SuggestionField } from '@spryker-oryx/search';
 import { combineLatest, map, Observable } from 'rxjs';
 import { Content, ContentQualifier } from '../models';
 import { ContentAdapter, ContentConfig } from './adapter/content.adapter';
@@ -21,8 +22,8 @@ export class DefaultContentService implements ContentService {
       combineLatest(this.getAdapters(q).map((adapter) => adapter.get(q))).pipe(
         map((contents) =>
           contents.reduce(
-            (acc, curr) => ({ ...acc, ...(curr as Content) }),
-            {} as Content
+            (acc, curr) => (curr ? { ...acc, ...curr } : acc),
+            null
           )
         )
       ),
@@ -36,8 +37,8 @@ export class DefaultContentService implements ContentService {
       ).pipe(
         map((contents) =>
           contents.reduce(
-            (acc, curr) => [...(acc ?? []), ...(curr ?? [])],
-            [] as Content[]
+            (acc, curr) => (curr ? [...(acc ?? []), ...curr] : acc),
+            null
           )
         )
       ),
@@ -56,24 +57,30 @@ export class DefaultContentService implements ContentService {
 
   getAll<T>(
     qualifier: ContentQualifier
-  ): Observable<Content<T>[] | null | undefined> {
-    return this.contentsQuery.get(qualifier) as Observable<
-      Content<T>[] | null | undefined
-    >;
+  ): Observable<Content<T>[] | null | undefined>;
+  getAll<T>(
+    qualifier: ContentQualifier
+  ): Observable<Content<T>[] | null | undefined>;
+  getAll(
+    qualifier: ContentQualifier
+  ): Observable<Content[] | null | undefined> {
+    return this.contentsQuery.get({ ...qualifier });
   }
 
   get<T>(
     qualifier: ContentQualifier
-  ): Observable<Content<T> | null | undefined> {
-    return this.contentQuery.get(qualifier) as Observable<
-      Content<T> | null | undefined
-    >;
+  ): Observable<Content<T> | null | undefined>;
+  get<T = Record<string, unknown>>(
+    qualifier: ContentQualifier
+  ): Observable<Content<T> | null | undefined>;
+  get(qualifier: ContentQualifier): Observable<Content | null | undefined> {
+    return this.contentQuery.get({ ...qualifier });
   }
 
   getState(
     qualifier: ContentQualifier
   ): Observable<QueryState<Content | null>> {
-    return this.contentQuery.getState(qualifier);
+    return this.contentQuery.getState({ ...qualifier });
   }
 
   protected normalizeConfig(): void {
@@ -93,15 +100,18 @@ export class DefaultContentService implements ContentService {
   }
 
   protected getAdapters(qualifier: ContentQualifier): ContentAdapter[] {
-    if (!qualifier.entities) return this.adapters;
+    console.log(qualifier.entities);
+    if (
+      !qualifier.entities ||
+      qualifier.entities.includes(SuggestionField.Contents)
+    )
+      return this.adapters;
 
     const adapters = this.adapters.filter((adapter) =>
       this.contents[adapter.getName()]?.some((entity) =>
         qualifier.entities?.includes(entity)
       )
     );
-
-    delete qualifier.entities;
 
     return adapters;
   }

@@ -4,7 +4,7 @@ import { Provider } from '@spryker-oryx/di';
 import { SuggestionAdapter } from '@spryker-oryx/search';
 import { factory } from '../stubs';
 import {
-  ContentfulAdapter,
+  ContentfulContentAdapter,
   cmsContentfulName,
 } from './contentful-content.adapter';
 import { DefaultContentfulSuggestionAdapter } from './contentful-suggestion.adapter';
@@ -30,14 +30,6 @@ export const contentfulArticleProviders: Provider[] = [
       },
     },
   },
-  {
-    provide: SuggestionAdapter,
-    useFactory: () =>
-      factory(DefaultContentfulSuggestionAdapter, [
-        ContentfulToken,
-        ContentfulSpace,
-      ]),
-  },
 ];
 
 export const contentfulProviders: Provider[] = [
@@ -45,7 +37,7 @@ export const contentfulProviders: Provider[] = [
   {
     provide: ContentAdapter,
     useFactory: () =>
-      factory(ContentfulAdapter, [ContentfulToken, ContentfulSpace]),
+      factory(ContentfulContentAdapter, [ContentfulToken, ContentfulSpace]),
   },
   {
     provide: SuggestionAdapter,

@@ -16,6 +16,11 @@ export interface SuggestionFieldOptions {
 }
 
 export type SuggestionRendererOptions = {
+  /**
+   * Specifies the type of the searchable entities;
+   */
+  type?: string;
+} & {
   [P in SuggestionField]?: SuggestionFieldOptions;
 };
 

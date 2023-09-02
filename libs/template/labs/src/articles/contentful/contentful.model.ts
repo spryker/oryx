@@ -3,6 +3,7 @@ export const ContentfulSpace = 'oryx.ContentfulSpace';
 
 export const enum ContentfulContentFields {
   Article = 'article',
+  Component = 'component',
 }
 
 declare global {

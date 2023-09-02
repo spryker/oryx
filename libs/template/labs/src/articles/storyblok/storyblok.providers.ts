@@ -1,15 +1,13 @@
-import { ContentAdapter } from '@spryker-oryx/content';
+import { ContentAdapter, ContentConfig } from '@spryker-oryx/content';
 import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { SuggestionAdapter } from '@spryker-oryx/search';
 import { factory } from '../stubs';
+import { storyblokFieldNormalizers } from './normalizers';
 import {
-  DefaultStoryblokClientService,
-  StoryblokClientService,
-  StoryblokToken,
-} from './client';
-import { DefaultStoryblokSuggestionAdapter } from './storyblok-suggestion.adapter';
-import { StoryblokAdapter } from './storyblok.adapter';
+  StoryblokContentAdapter,
+  cmsStoryblokName,
+} from './storyblok-content.adapter';
+import { StoryblokSpace, StoryblokToken } from './storyblok.model';
 
 export const storyblokProviders: Provider[] = [
   {
@@ -17,16 +15,20 @@ export const storyblokProviders: Provider[] = [
     useFactory: () => injectEnv('ORYX_STORYBLOK_TOKEN', ''),
   },
   {
-    provide: StoryblokClientService,
-    useFactory: () => factory(DefaultStoryblokClientService, [StoryblokToken]),
+    provide: StoryblokSpace,
+    useFactory: () => injectEnv('ORYX_STORYBLOK_SPACE', ''),
   },
   {
     provide: ContentAdapter,
-    useFactory: () => factory(StoryblokAdapter, [StoryblokToken]),
+    useFactory: () => factory(StoryblokContentAdapter, [StoryblokToken]),
   },
   {
-    provide: SuggestionAdapter,
-    useFactory: () =>
-      factory(DefaultStoryblokSuggestionAdapter, [StoryblokToken]),
+    provide: ContentConfig,
+    useValue: {
+      [cmsStoryblokName]: {
+        types: ['faq'],
+      },
+    },
   },
+  ...storyblokFieldNormalizers,
 ];
