@@ -129,7 +129,7 @@ export class PasswordInputComponent
       ${when(this.minLength, () =>
         this.renderValidationMessage(
           this.minLengthError,
-          i18n('password.at-least-<count>-characters', {
+          i18n('ui.password.validation.at-least-<count>-characters', {
             count: this.minLength,
           })
         )
@@ -137,25 +137,27 @@ export class PasswordInputComponent
       ${when(this.maxLength, () =>
         this.renderValidationMessage(
           this.maxLengthError,
-          i18n('password.at-most-<count>-characters', { count: this.maxLength })
+          i18n('ui.password.validation.at-most-<count>-characters', {
+            count: this.maxLength,
+          })
         )
       )}
       ${when(this.requireUpperLetter, () =>
         this.renderValidationMessage(
           this.requireUpperLetterError,
-          i18n('password.upper-and-lowercase-letters')
+          i18n('ui.password.validation.upper-and-lowercase-letters')
         )
       )}
       ${when(this.requireNumber, () =>
         this.renderValidationMessage(
           this.requireNumberError,
-          i18n('password.a-number')
+          i18n('ui.password.validation.a-number')
         )
       )}
       ${when(this.requireSpecialChar, () =>
         this.renderValidationMessage(
           this.requireSpecialCharError,
-          i18n('password.a-symbol-(e.g.*$%)')
+          i18n('ui.password.validation.a-symbol')
         )
       )}
     `;

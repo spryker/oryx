@@ -45,6 +45,10 @@ const picking = {
     '{count} Open Pick {count, plural, one {List} other {Lists}}',
 };
 
+const ui = {
+  'ui.password.validation.a-symbol': 'A symbol (e.g. *$%)',
+};
+
 export default {
   ...product,
   ...cart,
@@ -52,4 +56,5 @@ export default {
   ...order,
   ...user,
   ...picking,
+  ...ui,
 };

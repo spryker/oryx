@@ -53,7 +53,7 @@ export const baseStyles = css`
     width: 20px;
   }
 
-  .active {
+  .validation-message.active {
     color: var(--oryx-color-primary-11);
   }
 `;
