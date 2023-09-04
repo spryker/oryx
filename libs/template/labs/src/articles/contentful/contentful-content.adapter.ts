@@ -122,7 +122,7 @@ export class ContentfulContentAdapter implements ContentAdapter {
       fields: this.parseEntryFields(record.fields, types, locale),
       version: record.sys.version,
       id: record.sys.id,
-      type: qualifier.type ?? '',
+      type: qualifier.type ?? record.sys.contentType.sys.id ?? '',
     };
   }
 

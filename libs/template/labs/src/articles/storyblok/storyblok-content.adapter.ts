@@ -92,7 +92,7 @@ export class StoryblokContentAdapter implements ContentAdapter {
           entries?.stories.map((entry) => ({
             id: String(entry.id),
             version: 1,
-            type: qualifier.type ?? '',
+            type: qualifier.type ?? entry.full_slug.split('/')[0] ?? '',
             fields: { id: entry.slug, heading: entry.name },
           })) ?? null
       )
