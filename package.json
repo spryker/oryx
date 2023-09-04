@@ -87,7 +87,7 @@
     "@storybook/addon-essentials": "6.5.10",
     "@storybook/addon-interactions": "^6.5.10",
     "@storybook/builder-webpack5": "^6.5.14",
-    "@storybook/jest": "^0.0.10",
+    "@storybook/jest": "^0.2.2",
     "@storybook/manager-webpack5": "^6.5.14",
     "@storybook/testing-library": "^0.0.13",
     "@storybook/web-components": "^6.5.10",
