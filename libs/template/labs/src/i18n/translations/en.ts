@@ -45,6 +45,19 @@ const picking = {
     '{count} Open Pick {count, plural, one {List} other {Lists}}',
 };
 
+const ui = {
+  'ui.password.at-least-<count>-characters':
+    'At least {count, plural, one {{count} character} other {{count} characters}}',
+  'ui.password.at-most-<count>-characters':
+    'At most {count, plural, one {{count} character} other {{count} characters}}',
+  'ui.password.at-least-<count>-uppercase-letters':
+    'At least {count, plural, one {{count} uppercase letter} other {{count} uppercase letters}}',
+  'ui.password.at-least-<count>-numbers':
+    'At least {count, plural, one {{count} number} other {{count} numbers}}',
+  'ui.password.at-least-<count>-special-chars':
+    'At least {count, plural, one {{count} special character} other {{count} special characters}} (e.g. *$%)',
+};
+
 export default {
   ...product,
   ...cart,
@@ -52,4 +65,5 @@ export default {
   ...order,
   ...user,
   ...picking,
+  ...ui,
 };
