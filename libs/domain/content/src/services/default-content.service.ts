@@ -1,7 +1,6 @@
 import { createQuery, QueryState } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
-import { SuggestionField } from '@spryker-oryx/search';
 import { combineLatest, map, Observable } from 'rxjs';
 import { Content, ContentQualifier } from '../models';
 import { ContentAdapter, ContentConfig } from './adapter/content.adapter';
@@ -12,7 +11,7 @@ export class DefaultContentService implements ContentService {
 
   constructor(
     protected adapters = inject(ContentAdapter),
-    protected config = inject(ContentConfig)
+    protected config = inject(ContentConfig, [] as ContentConfig[])
   ) {
     this.normalizeConfig();
   }
@@ -100,12 +99,7 @@ export class DefaultContentService implements ContentService {
   }
 
   protected getAdapters(qualifier: ContentQualifier): ContentAdapter[] {
-    console.log(qualifier.entities);
-    if (
-      !qualifier.entities ||
-      qualifier.entities.includes(SuggestionField.Contents)
-    )
-      return this.adapters;
+    if (!qualifier.entities || !this.config.length) return this.adapters;
 
     const adapters = this.adapters.filter((adapter) =>
       this.contents[adapter.getName()]?.some((entity) =>

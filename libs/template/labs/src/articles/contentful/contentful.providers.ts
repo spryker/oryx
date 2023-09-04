@@ -1,13 +1,16 @@
-import { ContentAdapter, ContentConfig } from '@spryker-oryx/content';
+import {
+  ContentAdapter,
+  ContentConfig,
+  ContentFields,
+} from '@spryker-oryx/content';
 import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { SuggestionAdapter } from '@spryker-oryx/search';
-import { factory } from '../stubs';
+import { SuggestionField } from '@spryker-oryx/search';
+import { getClassByRequiredTokens } from '../stubs';
 import {
   ContentfulContentAdapter,
   cmsContentfulName,
 } from './contentful-content.adapter';
-import { DefaultContentfulSuggestionAdapter } from './contentful-suggestion.adapter';
 import { ContentfulSpace, ContentfulToken } from './contentful.model';
 import { contentfulFieldNormalizers } from './normalizers';
 
@@ -26,7 +29,11 @@ export const contentfulArticleProviders: Provider[] = [
     provide: ContentConfig,
     useValue: {
       [cmsContentfulName]: {
-        types: ['component', 'article'],
+        types: [
+          ContentFields.Component,
+          SuggestionField.Contents,
+          ContentFields.Article,
+        ],
       },
     },
   },
@@ -37,12 +44,7 @@ export const contentfulProviders: Provider[] = [
   {
     provide: ContentAdapter,
     useFactory: () =>
-      factory(ContentfulContentAdapter, [ContentfulToken, ContentfulSpace]),
-  },
-  {
-    provide: SuggestionAdapter,
-    useFactory: () =>
-      factory(DefaultContentfulSuggestionAdapter, [
+      getClassByRequiredTokens(ContentfulContentAdapter, [
         ContentfulToken,
         ContentfulSpace,
       ]),

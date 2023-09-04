@@ -1,3 +1,4 @@
+import { ContentFields } from '@spryker-oryx/content';
 import {
   ContextService,
   ElementResolver,
@@ -7,15 +8,12 @@ import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { ArticleContext } from '../article-context';
-import { ContentfulContentFields } from '../contentful';
-import { StoryblokContentFields } from '../storyblok';
 
 export class ArticlePageTitleMetaResolver implements PageMetaResolver {
   constructor(
     protected context = inject(ContextService),
-    protected router = inject(RouterService)
-  ) // protected contentService = inject(ContentService)
-  {}
+    protected router = inject(RouterService) // protected contentService = inject(ContentService)
+  ) {}
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
@@ -26,8 +24,8 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
         .pipe(
           map(
             (route) =>
-              route.includes(ContentfulContentFields.Article) ||
-              route.includes(StoryblokContentFields.Faq)
+              route.includes(ContentFields.Article) ||
+              route.includes(ContentFields.Faq)
           )
         ),
     ]);
@@ -46,8 +44,8 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
         //     id,
         //     type,
         //     entities: [
-        //       ContentfulContentFields.Article,
-        //       StoryblokContentFields.Faq,
+        //       ContentFields.Article,
+        //       ContentFields.Faq,
         //     ],
         //   })
         //   .pipe(

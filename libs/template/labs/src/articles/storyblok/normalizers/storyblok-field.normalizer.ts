@@ -1,15 +1,22 @@
 import { Transformer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { marked } from 'marked';
-import { ContentField } from '../../contentful';
+
+export interface StoryblokContentField {
+  type: string;
+  key: string;
+  value: unknown;
+}
 
 export const StoryblokFieldNormalizer = 'oryx.StoryblokFieldNormalizer*';
 
-export function storyblokFieldNormalizer(data: ContentField): ContentField {
+export function storyblokFieldNormalizer(
+  data: StoryblokContentField
+): StoryblokContentField {
   if (data.type === 'markdown') {
     return {
       ...data,
-      value: marked.parse(data.value),
+      value: marked.parse(data.value as string),
     };
   }
 
@@ -25,6 +32,6 @@ export const storyblokFieldNormalizers: Provider[] = [
 
 declare global {
   interface InjectionTokensContractMap {
-    [StoryblokFieldNormalizer]: Transformer<ContentField>;
+    [StoryblokFieldNormalizer]: Transformer<StoryblokContentField>;
   }
 }

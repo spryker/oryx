@@ -6,15 +6,26 @@ import {
 import { HttpService, TransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { Observable, combineLatest, from, map, reduce, switchMap } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  from,
+  map,
+  of,
+  reduce,
+  switchMap,
+} from 'rxjs';
 import { ContentfulCmsModel } from './contentful.api.model';
 import { ContentfulSpace, ContentfulToken } from './contentful.model';
-import { ContentField, ContentfulFieldNormalizer } from './normalizers';
+import {
+  ContentfulContentField,
+  ContentfulFieldNormalizer,
+} from './normalizers';
 
 export interface ContentfulEntry {
   id: string;
   version: number;
-  fields: ContentField[];
+  fields: ContentfulContentField[];
   type: string;
 }
 
@@ -81,7 +92,7 @@ export class ContentfulContentAdapter implements ContentAdapter {
   ): Observable<ContentfulEntry[]> {
     return combineLatest([
       this.getLocalLocale(),
-      this.getContentFields(qualifier.type ?? ''),
+      qualifier.type ? this.getContentFields(qualifier.type) : of({}),
     ]).pipe(
       switchMap(([locale, types]) => {
         return this.http
@@ -120,10 +131,12 @@ export class ContentfulContentAdapter implements ContentAdapter {
     types: Record<string, ContentfulCmsModel.Type>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     locale: string
-  ): ContentField[] {
-    return Object.entries(fields).map(
-      ([key, value]) => ({ key, value, type: types[key].type } as ContentField)
-    );
+  ): ContentfulContentField[] {
+    return Object.entries(fields).map(([key, value]) => ({
+      key,
+      value,
+      type: types[key]?.type ?? '',
+    }));
   }
 
   protected getParams(qualifier: Record<string, unknown>): string {

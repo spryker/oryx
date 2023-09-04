@@ -2,15 +2,6 @@ import { QueryState } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import { Content, ContentQualifier } from '../models';
 
-/** @deprecated since 1.1 */
-export const enum ContentFields {
-  Article = 'article',
-  Faq = 'faq',
-}
-
-/** @deprecated since 1.1 */
-export type ContentEntities = (ContentFields | string)[];
-
 export interface ContentService {
   get<T>(
     qualifier: ContentQualifier

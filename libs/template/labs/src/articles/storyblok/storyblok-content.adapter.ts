@@ -1,6 +1,7 @@
 import {
   Content,
   ContentAdapter,
+  ContentField,
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
@@ -40,9 +41,9 @@ export class StoryblokContentAdapter implements ContentAdapter {
   }
 
   get(qualifier: ContentQualifier): Observable<Content | null> {
-    const endpoint = `/stories?with_slug=${qualifier.type}/${qualifier.id}`;
-
-    return this.getData<StoryblokCmsModel.EntriesResponse>(endpoint).pipe(
+    return this.getData<StoryblokCmsModel.EntriesResponse>(
+      `/stories?with_slug=${qualifier.type}/${qualifier.id}`
+    ).pipe(
       switchMap((data) => {
         if (!data) return of(null);
 
@@ -56,43 +57,16 @@ export class StoryblokContentAdapter implements ContentAdapter {
           this.locale.get(),
           this.getData(),
         ]).pipe(
-          switchMap(([data, component, locale, space]) => {
+          switchMap(([data, component, locale, spaces]) => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const { content, id } = data!.story;
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const { space } = spaces!;
             const version = 1;
             const types = component?.component.schema ?? {};
-            const shouldLocalize = space?.space.languages.find(
-              (lang) => lang.code === locale
-            );
-
-            const fields$ = combineLatest(
-              Object.entries(types).map(([key, data]) => {
-                const { translatable, type } = data;
-                const translatableKey =
-                  translatable && shouldLocalize
-                    ? `${key}__i18n__${locale}`
-                    : key;
-                const value = translatable
-                  ? content?.[translatableKey]
-                  : content?.[key];
-                const field = { key, value, type };
-
-                return this.transformer.transform(
-                  field,
-                  StoryblokFieldNormalizer
-                );
-              })
-            ).pipe(
-              map((fields) =>
-                fields.reduce(
-                  (acc, { key, value }) => ({ ...acc, [key]: value }),
-                  {} as Record<string, unknown> & { id: string }
-                )
-              )
-            );
 
             return combineLatest([
-              fields$,
+              this.parseEntryFields(content, space, types, locale),
               of({
                 version,
                 type: qualifier.type ?? '',
@@ -125,29 +99,35 @@ export class StoryblokContentAdapter implements ContentAdapter {
     );
   }
 
-  // protected parseEntry(
-  //   record: ContentfulCmsModel.SimpleResponse<ContentfulCmsModel.Entry>,
-  //   types: Record<string, ContentfulCmsModel.Type>,
-  //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //   locale: string
-  // ): ContentfulEntry {
-  //   return {
-  //     fields: this.parseEntryFields(record.fields, types, locale),
-  //     version: record.sys.version,
-  //     id: record.sys.id,
-  //   };
-  // }
+  protected parseEntryFields(
+    content: StoryblokCmsModel.StoryContent,
+    space: StoryblokCmsModel.Space,
+    types: Record<string, StoryblokCmsModel.Field>,
+    locale: string
+  ): Observable<ContentField> {
+    const shouldLocalize = space.languages.find((lang) => lang.code === locale);
 
-  // protected parseEntryFields(
-  //   fields: ContentfulCmsModel.Entry,
-  //   types: Record<string, ContentfulCmsModel.Type>,
-  //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //   locale: string
-  // ): ContentField[] {
-  //   return Object.entries(fields).map(
-  //     ([key, value]) => ({ key, value, type: types[key].type } as ContentField)
-  //   );
-  // }
+    return combineLatest(
+      Object.entries(types).map(([key, data]) => {
+        const { translatable, type } = data;
+        const translatableKey =
+          translatable && shouldLocalize ? `${key}__i18n__${locale}` : key;
+        const value = translatable
+          ? content?.[translatableKey]
+          : content?.[key];
+        const field = { key, value, type };
+
+        return this.transformer.transform(field, StoryblokFieldNormalizer);
+      })
+    ).pipe(
+      map((fields) =>
+        fields.reduce(
+          (acc, { key, value }) => ({ ...acc, [key]: value }),
+          {} as ContentField
+        )
+      )
+    );
+  }
 
   protected getData<T = StoryblokCmsModel.SpaceResponse>(
     endpoint = ''

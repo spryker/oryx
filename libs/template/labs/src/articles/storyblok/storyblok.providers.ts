@@ -1,7 +1,12 @@
-import { ContentAdapter, ContentConfig } from '@spryker-oryx/content';
+import {
+  ContentAdapter,
+  ContentConfig,
+  ContentFields,
+} from '@spryker-oryx/content';
 import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { factory } from '../stubs';
+import { SuggestionField } from '@spryker-oryx/search';
+import { getClassByRequiredTokens } from '../stubs';
 import { storyblokFieldNormalizers } from './normalizers';
 import {
   StoryblokContentAdapter,
@@ -9,7 +14,7 @@ import {
 } from './storyblok-content.adapter';
 import { StoryblokSpace, StoryblokToken } from './storyblok.model';
 
-export const storyblokProviders: Provider[] = [
+export const storyblokArticleProviders: Provider[] = [
   {
     provide: StoryblokToken,
     useFactory: () => injectEnv('ORYX_STORYBLOK_TOKEN', ''),
@@ -18,17 +23,25 @@ export const storyblokProviders: Provider[] = [
     provide: StoryblokSpace,
     useFactory: () => injectEnv('ORYX_STORYBLOK_SPACE', ''),
   },
-  {
-    provide: ContentAdapter,
-    useFactory: () => factory(StoryblokContentAdapter, [StoryblokToken]),
-  },
+  ...storyblokFieldNormalizers,
   {
     provide: ContentConfig,
     useValue: {
       [cmsStoryblokName]: {
-        types: ['faq'],
+        types: [ContentFields.Faq, SuggestionField.Contents],
       },
     },
   },
-  ...storyblokFieldNormalizers,
+];
+
+export const storyblokProviders: Provider[] = [
+  ...storyblokArticleProviders,
+  {
+    provide: ContentAdapter,
+    useFactory: () =>
+      getClassByRequiredTokens(StoryblokContentAdapter, [
+        StoryblokToken,
+        StoryblokSpace,
+      ]),
+  },
 ];

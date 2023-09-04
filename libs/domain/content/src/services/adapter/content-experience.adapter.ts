@@ -6,6 +6,7 @@ import {
   ExperienceQualifier,
 } from '@spryker-oryx/experience';
 import { Observable, map } from 'rxjs';
+import { ContentFields } from '../../models';
 import { ContentService } from '../content.service';
 
 export interface CmsComponent {
@@ -39,7 +40,10 @@ export class ContentExperienceAdapter implements ExperienceAdapter {
 
   getAll(): Observable<Component[] | null> {
     return this.content
-      .getAll<CmsComponent>({ type: 'component', entities: ['component'] })
+      .getAll<CmsComponent>({
+        type: ContentFields.Component,
+        entities: [ContentFields.Component],
+      })
       .pipe(
         map(
           (items) =>

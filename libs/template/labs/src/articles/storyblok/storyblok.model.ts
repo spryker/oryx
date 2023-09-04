@@ -1,10 +1,6 @@
 export const StoryblokToken = 'oryx.StoryblokToken';
 export const StoryblokSpace = 'oryx.StoryblokSpace';
 
-export const enum StoryblokContentFields {
-  Faq = 'faq',
-}
-
 declare global {
   interface Environment {
     readonly ORYX_STORYBLOK_TOKEN?: string;
