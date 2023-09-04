@@ -3,9 +3,8 @@ import { OrderData } from '../models';
 import { GetOrderDataProps } from './adapter';
 
 export interface OrderService {
-  get(data: GetOrderDataProps): Observable<OrderData | null>;
-  getLastOrder(): Observable<OrderData | null>;
-  storeLastOrder(order: OrderData): void;
+  get(data: GetOrderDataProps): Observable<OrderData | null | void>;
+  storeLastOrder(order: OrderData, userId: string): void;
 }
 
 export const OrderService = 'oryx.OrderService';
