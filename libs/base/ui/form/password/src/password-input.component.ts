@@ -14,14 +14,16 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { when } from 'lit/directives/when.js';
 import { getControl } from '../../utilities/getControl';
-import { PasswordVisibilityStrategy } from './password-input.model';
+import {
+  PasswordValidationOptions,
+  PasswordVisibilityStrategy,
+} from './password-input.model';
 import { baseStyles } from './password-input.styles';
 
 export class PasswordInputComponent
   extends I18nMixin(LitElement)
-  implements FormControlOptions, AffixOptions
+  implements FormControlOptions, AffixOptions, PasswordValidationOptions
 {
   static styles = [...inputBaseStyles, baseStyles];
 
@@ -33,11 +35,11 @@ export class PasswordInputComponent
   @property({ type: Boolean, reflect: true }) prefixFill?: boolean;
   @property() suffixIcon?: string;
   @property({ type: Boolean, reflect: true }) suffixFill?: boolean;
-  @property() minLength?: number;
-  @property() maxLength?: number;
-  @property({ type: Boolean, reflect: true }) requireUpperLetter?: boolean;
-  @property({ type: Boolean, reflect: true }) requireNumber?: boolean;
-  @property({ type: Boolean, reflect: true }) requireSpecialChar?: boolean;
+  @property({ type: Number }) minLength?: number;
+  @property({ type: Number }) maxLength?: number;
+  @property({ type: Number }) minUppercaseChars?: number;
+  @property({ type: Number }) minNumbers?: number;
+  @property({ type: Number }) minSpecialChars?: number;
 
   protected formControlController = new FormControlController(this);
   protected affixController = new AffixController(this);
@@ -64,11 +66,11 @@ export class PasswordInputComponent
   @state()
   maxLengthError = false;
   @state()
-  requireUpperLetterError = false;
+  minUppercaseCharsError = false;
   @state()
-  requireNumberError = false;
+  minNumbersError = false;
   @state()
-  requireSpecialCharError = false;
+  minSpecialCharsError = false;
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -106,60 +108,66 @@ export class PasswordInputComponent
   }
 
   protected setValidation(): void {
-    this.minLengthError = !!(
-      this.minLength && this.control.value.length < this.minLength
+    const value = this.control.value;
+
+    this.minLengthError = !!(this.minLength && value.length < this.minLength);
+    this.maxLengthError = !!(this.maxLength && value.length > this.maxLength);
+    this.minUppercaseCharsError = !!(
+      this.minUppercaseChars &&
+      (value.match(/[A-Z]/g) || []).length < this.minUppercaseChars
     );
-    this.maxLengthError = !!(
-      this.maxLength && this.control.value.length > this.maxLength
+    this.minNumbersError = !!(
+      this.minNumbers && (value.match(/[0-9]/g) || []).length < this.minNumbers
     );
-    this.requireUpperLetterError = !!(
-      this.requireUpperLetter && !this.control.value.match(/[A-Z]/)
-    );
-    this.requireNumberError = !!(
-      this.requireNumber && !this.control.value.match(/[0-9]/)
-    );
-    this.requireSpecialCharError = !!(
-      this.requireSpecialChar &&
-      !this.control.value.match(/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/)
+    this.minSpecialCharsError = !!(
+      this.minSpecialChars &&
+      (value.match(/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/g) || []).length <
+        this.minSpecialChars
     );
   }
 
   protected renderValidation(): TemplateResult {
     return html`
-      ${when(this.minLength, () =>
-        this.renderValidationMessage(
-          this.minLengthError,
-          i18n('ui.password.validation.at-least-<count>-characters', {
-            count: this.minLength,
-          })
-        )
-      )}
-      ${when(this.maxLength, () =>
-        this.renderValidationMessage(
-          this.maxLengthError,
-          i18n('ui.password.validation.at-most-<count>-characters', {
-            count: this.maxLength,
-          })
-        )
-      )}
-      ${when(this.requireUpperLetter, () =>
-        this.renderValidationMessage(
-          this.requireUpperLetterError,
-          i18n('ui.password.validation.upper-and-lowercase-letters')
-        )
-      )}
-      ${when(this.requireNumber, () =>
-        this.renderValidationMessage(
-          this.requireNumberError,
-          i18n('ui.password.validation.a-number')
-        )
-      )}
-      ${when(this.requireSpecialChar, () =>
-        this.renderValidationMessage(
-          this.requireSpecialCharError,
-          i18n('ui.password.validation.a-symbol')
-        )
-      )}
+      ${this.minLength
+        ? this.renderValidationMessage(
+            this.minLengthError,
+            i18n('ui.password.at-least-<count>-characters', {
+              count: this.minLength,
+            })
+          )
+        : ''}
+      ${this.maxLength
+        ? this.renderValidationMessage(
+            this.maxLengthError,
+            i18n('ui.password.at-most-<count>-characters', {
+              count: this.maxLength,
+            })
+          )
+        : ''}
+      ${this.minUppercaseChars
+        ? this.renderValidationMessage(
+            this.minUppercaseCharsError,
+            i18n('ui.password.at-least-<count>-uppercase-letters', {
+              count: this.minUppercaseChars,
+            })
+          )
+        : ''}
+      ${this.minNumbers
+        ? this.renderValidationMessage(
+            this.minNumbersError,
+            i18n('ui.password.at-least-<count>-numbers', {
+              count: this.minNumbers,
+            })
+          )
+        : ''}
+      ${this.minSpecialChars
+        ? this.renderValidationMessage(
+            this.minSpecialCharsError,
+            i18n('ui.password.at-least-<count>-special-chars', {
+              count: this.minSpecialChars,
+            })
+          )
+        : ''}
     `;
   }
 
