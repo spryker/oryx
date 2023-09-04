@@ -16,7 +16,10 @@ export function contentfulFieldNormalizer(
   if (data.type === 'Text') {
     return {
       ...data,
-      value: marked.parse(data.value as string),
+      value: marked.parse(data.value as string, {
+        mangle: false,
+        headerIds: false,
+      }),
     };
   }
 

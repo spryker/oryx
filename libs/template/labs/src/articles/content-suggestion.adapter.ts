@@ -7,7 +7,7 @@ import {
   SuggestionQualifier,
 } from '@spryker-oryx/search';
 import { Observable, map } from 'rxjs';
-import { CmsArticle } from './article.model';
+import { ArticleContent } from './article.model';
 
 export class ContentSuggestionAdapter implements SuggestionAdapter {
   constructor(protected content = inject(ContentService)) {}
@@ -18,7 +18,7 @@ export class ContentSuggestionAdapter implements SuggestionAdapter {
 
   get(qualifier: SuggestionQualifier): Observable<Suggestion> {
     return this.content
-      .getAll<CmsArticle>({
+      .getAll<ArticleContent>({
         query: this.getKey({ query: qualifier.query }),
         entities: qualifier.entities,
       })

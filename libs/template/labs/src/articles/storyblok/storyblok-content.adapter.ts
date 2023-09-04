@@ -7,21 +7,12 @@ import {
 import { HttpService, TransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import {
-  Observable,
-  catchError,
-  combineLatest,
-  map,
-  of,
-  switchMap,
-} from 'rxjs';
+import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { StoryblokFieldNormalizer } from './normalizers';
 import { StoryblokCmsModel } from './storyblok.api.model';
 import { StoryblokSpace, StoryblokToken } from './storyblok.model';
 
-export const cmsStoryblokName = 'oryx.cms.storyblok';
-
-export class StoryblokContentAdapter implements ContentAdapter {
+export class DefaultStoryblokContentAdapter implements ContentAdapter {
   constructor(
     protected token = inject(StoryblokToken),
     protected space = inject(StoryblokSpace),
@@ -32,10 +23,6 @@ export class StoryblokContentAdapter implements ContentAdapter {
 
   protected url = `https://mapi.storyblok.com/v1/spaces/${this.space}`;
 
-  getName(): string {
-    return cmsStoryblokName;
-  }
-
   getKey(qualifier: ContentQualifier): string {
     return qualifier.id ?? qualifier.query ?? '';
   }
@@ -45,7 +32,7 @@ export class StoryblokContentAdapter implements ContentAdapter {
       `/stories?with_slug=${qualifier.type}/${qualifier.id}`
     ).pipe(
       switchMap((data) => {
-        if (!data) return of(null);
+        if (!data?.stories.length) return of(null);
 
         return combineLatest([
           this.getData<StoryblokCmsModel.EntryResponse>(
@@ -132,10 +119,8 @@ export class StoryblokContentAdapter implements ContentAdapter {
   protected getData<T = StoryblokCmsModel.SpaceResponse>(
     endpoint = ''
   ): Observable<T | null> {
-    return this.http
-      .get<T>(`${this.url}${endpoint}`, {
-        headers: { Authorization: this.token },
-      })
-      .pipe(catchError(() => of(null)));
+    return this.http.get<T>(`${this.url}${endpoint}`, {
+      headers: { Authorization: this.token },
+    });
   }
 }

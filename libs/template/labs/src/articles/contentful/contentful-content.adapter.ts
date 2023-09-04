@@ -29,9 +29,7 @@ export interface ContentfulEntry {
   type: string;
 }
 
-export const cmsContentfulName = 'oryx.cms.contentful';
-
-export class ContentfulContentAdapter implements ContentAdapter {
+export class DefaultContentfulContentAdapter implements ContentAdapter {
   constructor(
     protected token = inject(ContentfulToken),
     protected space = inject(ContentfulSpace),
@@ -41,10 +39,6 @@ export class ContentfulContentAdapter implements ContentAdapter {
   ) {}
 
   protected url = `https://cdn.contentful.com/spaces/${this.space}`;
-
-  getName(): string {
-    return cmsContentfulName;
-  }
 
   getKey(qualifier: ContentQualifier): string {
     return qualifier.id ?? qualifier.query ?? '';
@@ -174,7 +168,7 @@ export class ContentfulContentAdapter implements ContentAdapter {
       )
       .pipe(
         map((data) =>
-          data.items[0].fields.reduce(
+          data.items[0]?.fields.reduce(
             (acc, field) => ({ ...acc, [field.id]: field }),
             {}
           )

@@ -1,4 +1,4 @@
-export interface CmsArticle {
+export interface ArticleContent {
   heading: string;
   description: string;
   content: string;

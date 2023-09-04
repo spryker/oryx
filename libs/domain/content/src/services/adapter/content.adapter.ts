@@ -5,7 +5,6 @@ export const ContentAdapter = 'oryx.ContentAdapter*';
 export const ContentConfig = 'oryx.ContentConfig*';
 
 export interface ContentAdapter {
-  getName(): string;
   getKey(qualifier: ContentQualifier): string;
   getAll(qualifier: ContentQualifier): Observable<Content[] | null>;
   get(qualifier: ContentQualifier): Observable<Content | null>;

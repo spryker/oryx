@@ -10,7 +10,7 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { of } from 'rxjs';
 import { ArticleContext } from '../../article-context';
-import { CmsArticle } from '../../article.model';
+import { ArticleContent } from '../../article.model';
 
 @signalAware()
 @hydrate()
@@ -30,7 +30,7 @@ export class ArticleComponent extends LitElement {
     const type = this.$articleType();
 
     return id && type
-      ? this.contentService.get<CmsArticle>({ id, type, entities: [type] })
+      ? this.contentService.get<ArticleContent>({ id, type, entities: [type] })
       : of(null);
   });
 

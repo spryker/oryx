@@ -1,5 +1,8 @@
+import { ContentAdapter } from '@spryker-oryx/content';
+
 export const StoryblokToken = 'oryx.StoryblokToken';
 export const StoryblokSpace = 'oryx.StoryblokSpace';
+export const StoryblokContentAdapter = `${ContentAdapter}storyblok`;
 
 declare global {
   interface Environment {

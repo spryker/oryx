@@ -1,17 +1,14 @@
-import {
-  ContentAdapter,
-  ContentConfig,
-  ContentFields,
-} from '@spryker-oryx/content';
+import { ContentConfig, ContentFields } from '@spryker-oryx/content';
 import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { SuggestionField } from '@spryker-oryx/search';
 import { getClassByRequiredTokens } from '../stubs';
+import { DefaultContentfulContentAdapter } from './contentful-content.adapter';
 import {
   ContentfulContentAdapter,
-  cmsContentfulName,
-} from './contentful-content.adapter';
-import { ContentfulSpace, ContentfulToken } from './contentful.model';
+  ContentfulSpace,
+  ContentfulToken,
+} from './contentful.model';
 import { contentfulFieldNormalizers } from './normalizers';
 
 export const contentfulArticleProviders: Provider[] = [
@@ -28,7 +25,7 @@ export const contentfulArticleProviders: Provider[] = [
   {
     provide: ContentConfig,
     useValue: {
-      [cmsContentfulName]: {
+      contentful: {
         types: [
           ContentFields.Component,
           SuggestionField.Contents,
@@ -42,9 +39,9 @@ export const contentfulArticleProviders: Provider[] = [
 export const contentfulProviders: Provider[] = [
   ...contentfulArticleProviders,
   {
-    provide: ContentAdapter,
+    provide: ContentfulContentAdapter,
     useFactory: () =>
-      getClassByRequiredTokens(ContentfulContentAdapter, [
+      getClassByRequiredTokens(DefaultContentfulContentAdapter, [
         ContentfulToken,
         ContentfulSpace,
       ]),
