@@ -14,7 +14,6 @@ import {
   of,
   switchMap,
   take,
-  tap,
   throwError,
 } from 'rxjs';
 import {
@@ -51,12 +50,9 @@ export class DefaultCartAdapter implements CartAdapter {
           !identity.isAuthenticated
         );
 
-        return this.http.get<ApiCartModel.ResponseList>(url).pipe(
-          this.transformer.do(CartsNormalizer),
-          tap((response) => {
-            console.log(response, 'response');
-          })
-        );
+        return this.http
+          .get<ApiCartModel.ResponseList>(url)
+          .pipe(this.transformer.do(CartsNormalizer));
       })
     );
   }
@@ -76,12 +72,9 @@ export class DefaultCartAdapter implements CartAdapter {
           !identity.isAuthenticated
         );
 
-        return this.http.get<ApiCartModel.Response>(url).pipe(
-          this.transformer.do(CartNormalizer),
-          tap((response) => {
-            console.log(response, 'response');
-          })
-        );
+        return this.http
+          .get<ApiCartModel.Response>(url)
+          .pipe(this.transformer.do(CartNormalizer));
       })
     );
   }
@@ -158,9 +151,6 @@ export class DefaultCartAdapter implements CartAdapter {
         return this.http
           .post<ApiCartModel.Response>(url, body)
           .pipe(this.transformer.do(CartNormalizer));
-      }),
-      tap((response) => {
-        console.log(response, 'response');
       })
     );
   }
