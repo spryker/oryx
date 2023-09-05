@@ -9,6 +9,7 @@ import { INJECTOR, inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import {
   Observable,
+  catchError,
   combineLatest,
   forkJoin,
   from,
@@ -51,7 +52,9 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
   get(qualifier: ContentQualifier): Observable<Content | null> {
     return combineLatest([
       this.search<StoryblokCmsModel.EntryResponse>(
-        `${qualifier.type}/${qualifier.id}?`
+        qualifier.type
+          ? `${qualifier.type}/${qualifier.id}?`
+          : `${qualifier.id}?`
       ),
       this.getSpaceData<StoryblokCmsModel.ComponentResponse>(
         `/components/${qualifier.type}`
@@ -67,7 +70,8 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
           },
           component.schema
         )
-      )
+      ),
+      catchError(() => of(null))
     );
   }
 
@@ -145,7 +149,7 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
     return combineLatest([this.locale.get(), this.getSpaceData()]).pipe(
       switchMap(([locale, { space }]) =>
         this.http.get<T>(
-          `${this.readonlyUrl}${endpoint}&token=${space.first_token}&language=${locale}`
+          `${this.readonlyUrl}${endpoint}&version=draft&token=${space.first_token}&language=${locale}`
         )
       )
     );
