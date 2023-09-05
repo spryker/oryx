@@ -21,6 +21,7 @@ export module ApiCartModel {
     thresholds?: unknown[];
     currency?: string;
     store?: string;
+    etag?: string;
   }
 
   export interface Totals {

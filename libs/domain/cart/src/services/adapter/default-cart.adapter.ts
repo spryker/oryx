@@ -14,6 +14,7 @@ import {
   of,
   switchMap,
   take,
+  tap,
   throwError,
 } from 'rxjs';
 import {
@@ -50,9 +51,12 @@ export class DefaultCartAdapter implements CartAdapter {
           !identity.isAuthenticated
         );
 
-        return this.http
-          .get<ApiCartModel.ResponseList>(url)
-          .pipe(this.transformer.do(CartsNormalizer));
+        return this.http.get<ApiCartModel.ResponseList>(url).pipe(
+          this.transformer.do(CartsNormalizer),
+          tap((response) => {
+            console.log(response, 'response');
+          })
+        );
       })
     );
   }
@@ -72,9 +76,12 @@ export class DefaultCartAdapter implements CartAdapter {
           !identity.isAuthenticated
         );
 
-        return this.http
-          .get<ApiCartModel.Response>(url)
-          .pipe(this.transformer.do(CartNormalizer));
+        return this.http.get<ApiCartModel.Response>(url).pipe(
+          this.transformer.do(CartNormalizer),
+          tap((response) => {
+            console.log(response, 'response');
+          })
+        );
       })
     );
   }
@@ -92,6 +99,9 @@ export class DefaultCartAdapter implements CartAdapter {
           !identity.isAuthenticated
         );
 
+        const etag = data.etag;
+        delete data.etag;
+
         const body = {
           data: {
             type: identity.isAuthenticated
@@ -101,8 +111,14 @@ export class DefaultCartAdapter implements CartAdapter {
           },
         };
 
+        const headers = etag
+          ? {
+              'If-Match': etag,
+            }
+          : undefined;
+        console.log(headers, 'headers');
         return this.http
-          .patch<ApiCartModel.Response>(url, body)
+          .patch<ApiCartModel.Response>(url, body, { headers })
           .pipe(this.transformer.do(CartNormalizer));
       })
     );
@@ -142,6 +158,9 @@ export class DefaultCartAdapter implements CartAdapter {
         return this.http
           .post<ApiCartModel.Response>(url, body)
           .pipe(this.transformer.do(CartNormalizer));
+      }),
+      tap((response) => {
+        console.log(response, 'response');
       })
     );
   }

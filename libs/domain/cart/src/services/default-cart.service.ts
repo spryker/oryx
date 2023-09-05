@@ -122,6 +122,7 @@ export class DefaultCartService implements CartService {
             return this.adapter.update({
               cartId: cart?.id,
               priceMode: event.data?.priceMode,
+              etag: cart?.etag,
             });
           })
         );

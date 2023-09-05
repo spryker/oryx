@@ -23,6 +23,7 @@ export interface Cart extends CartId {
   currency?: string;
   store?: string;
   products?: CartEntry[];
+  etag?: string;
 }
 
 export interface CartEntry {
