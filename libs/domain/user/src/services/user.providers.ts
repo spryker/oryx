@@ -1,5 +1,6 @@
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 import {
   AddressAdapter,
   addressesNormalizer,
@@ -56,5 +57,5 @@ export const userProviders: Provider[] = [
   ...addressSerializers,
   ...userNormalizer,
   UserResourceResolver,
-  ...provideLitRoutes({ routes: userRoutes }),
+  ...(featureVersion >= '1.1' ? provideLitRoutes({ routes: userRoutes }) : []),
 ];
