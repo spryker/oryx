@@ -11,7 +11,7 @@ import {
   StoryblokToken,
 } from './storyblok.model';
 
-export const storyblokArticleProviders: Provider[] = [
+export const storyblokProviders: Provider[] = [
   {
     provide: StoryblokToken,
     useFactory: () => injectEnv('ORYX_STORYBLOK_TOKEN', ''),
@@ -25,14 +25,14 @@ export const storyblokArticleProviders: Provider[] = [
     provide: ContentConfig,
     useValue: {
       storyblok: {
-        types: [ContentFields.Faq, SuggestionField.Contents],
+        types: [
+          ContentFields.Component,
+          ContentFields.Faq,
+          SuggestionField.Contents,
+        ],
       },
     },
   },
-];
-
-export const storyblokProviders: Provider[] = [
-  ...storyblokArticleProviders,
   {
     provide: StoryblokContentAdapter,
     useFactory: () =>

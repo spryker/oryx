@@ -54,7 +54,7 @@ export class DefaultContentService implements ContentService {
   getAll<T>(
     qualifier: ContentQualifier
   ): Observable<Content<T>[] | null | undefined>;
-  getAll<T>(
+  getAll<T = Record<string, unknown>>(
     qualifier: ContentQualifier
   ): Observable<Content<T>[] | null | undefined>;
   getAll(

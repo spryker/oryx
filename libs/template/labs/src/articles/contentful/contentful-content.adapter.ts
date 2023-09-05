@@ -4,7 +4,7 @@ import {
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
+import { INJECTOR, inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import {
   Observable,
@@ -24,7 +24,6 @@ import {
 
 export interface ContentfulEntry {
   id: string;
-  version: number;
   fields: ContentfulContentField[];
   type: string;
 }
@@ -35,7 +34,8 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
     protected space = inject(ContentfulSpace),
     protected http = inject(HttpService),
     protected transformer = inject(TransformerService),
-    protected locale = inject(LocaleService)
+    protected locale = inject(LocaleService),
+    protected injector = inject(INJECTOR)
   ) {}
 
   protected url = `https://cdn.contentful.com/spaces/${this.space}`;
@@ -114,7 +114,6 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
   ): ContentfulEntry {
     return {
       fields: this.parseEntryFields(record.fields, types, locale),
-      version: record.sys.version,
       id: record.sys.id,
       type: qualifier.type ?? record.sys.contentType.sys.id ?? '',
     };

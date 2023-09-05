@@ -21,6 +21,6 @@ export interface ContentField {
 export interface Content<T = Record<string, unknown>> {
   fields: T & ContentField;
   id: string;
-  version: number;
   type: string;
+  name?: string;
 }

@@ -11,7 +11,7 @@ import {
 } from './contentful.model';
 import { contentfulFieldNormalizers } from './normalizers';
 
-export const contentfulArticleProviders: Provider[] = [
+export const contentfulProviders: Provider[] = [
   {
     provide: ContentfulToken,
     useFactory: () => injectEnv('ORYX_CONTENTFUL_TOKEN', ''),
@@ -27,17 +27,13 @@ export const contentfulArticleProviders: Provider[] = [
     useValue: {
       contentful: {
         types: [
-          ContentFields.Component,
+          // ContentFields.Component,
           SuggestionField.Contents,
           ContentFields.Article,
         ],
       },
     },
   },
-];
-
-export const contentfulProviders: Provider[] = [
-  ...contentfulArticleProviders,
   {
     provide: ContentfulContentAdapter,
     useFactory: () =>

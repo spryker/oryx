@@ -25,7 +25,7 @@ export class ContentSuggestionAdapter implements SuggestionAdapter {
       .pipe(
         map((data) => ({
           [SuggestionField.Contents]: data?.map((entry) => ({
-            name: entry.fields.heading,
+            name: entry.fields.heading ?? entry.name,
             id: entry.fields.id,
             type: entry.type,
           })),

@@ -3,5 +3,4 @@ export interface ArticleContent {
   description: string;
   content: string;
   type: string;
-  url: string;
 }

@@ -5,7 +5,7 @@ import {
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
+import { INJECTOR, inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { StoryblokFieldNormalizer } from './normalizers';
@@ -18,7 +18,8 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
     protected space = inject(StoryblokSpace),
     protected http = inject(HttpService),
     protected transformer = inject(TransformerService),
-    protected locale = inject(LocaleService)
+    protected locale = inject(LocaleService),
+    protected injector = inject(INJECTOR)
   ) {}
 
   protected url = `https://mapi.storyblok.com/v1/spaces/${this.space}`;
@@ -28,18 +29,23 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
   }
 
   get(qualifier: ContentQualifier): Observable<Content | null> {
+    console;
     return this.getData<StoryblokCmsModel.EntriesResponse>(
       `/stories?with_slug=${qualifier.type}/${qualifier.id}`
     ).pipe(
-      switchMap((data) => {
-        if (!data?.stories.length) return of(null);
+      switchMap((records) => {
+        const stories = records?.stories?.filter(
+          (story) => story.name !== qualifier.type
+        );
+
+        if (!stories?.length) return of(null);
 
         return combineLatest([
           this.getData<StoryblokCmsModel.EntryResponse>(
-            `/stories/${data.stories[0].id}`
+            `/stories/${stories[0].id}`
           ),
           this.getData<StoryblokCmsModel.ComponentResponse>(
-            `/components/${data.stories[0].content_type}`
+            `/components/${stories[0].content_type}`
           ),
           this.locale.get(),
           this.getData(),
@@ -49,13 +55,11 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
             const { content, id } = data!.story;
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const { space } = spaces!;
-            const version = 1;
             const types = component?.component.schema ?? {};
 
             return combineLatest([
               this.parseEntryFields(content, space, types, locale),
               of({
-                version,
                 type: qualifier.type ?? '',
                 id: String(id),
               }),
@@ -76,12 +80,14 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
     ).pipe(
       map(
         (entries) =>
-          entries?.stories.map((entry) => ({
-            id: String(entry.id),
-            version: 1,
-            type: qualifier.type ?? entry.full_slug.split('/')[0] ?? '',
-            fields: { id: entry.slug, heading: entry.name },
-          })) ?? null
+          entries?.stories
+            .filter((story) => story.name !== qualifier.type)
+            .map((entry) => ({
+              id: String(entry.id),
+              type: qualifier.type ?? entry.full_slug.split('/')[0] ?? '',
+              fields: { id: entry.slug },
+              name: entry.name,
+            })) ?? null
       )
     );
   }
