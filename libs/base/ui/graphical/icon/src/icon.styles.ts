@@ -9,8 +9,8 @@ export const styles = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--oryx-icon-size, var(--_size, 24px));
-    aspect-ratio: 1 / 1;
+    height: var(--oryx-icon-size, var(--_size, 24px));
+    width: max-content;
     color: var(--oryx-icon-color, inherit);
     font: var(--oryx-icon-weight, 500) var(--oryx-icon-size, var(--_size, 24px))
       var(--oryx-icon-font, ${font});
