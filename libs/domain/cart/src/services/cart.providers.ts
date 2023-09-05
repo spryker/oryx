@@ -1,10 +1,8 @@
-import { HttpInterceptor } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { PriceModeChangeGuard } from '@spryker-oryx/site';
 import { CartPriceModeChangeGuard } from '../guards/cart-price.guard';
 import {
   CartAdapter,
-  CartEtagInterceptor,
   DefaultCartAdapter,
   cartNormalizer,
   cartsNormalizer,
@@ -39,8 +37,8 @@ export const cartProviders: Provider[] = [
   CartTotalsProvider,
   ...cartNormalizer,
   ...cartsNormalizer,
-  {
-    provide: HttpInterceptor,
-    useClass: CartEtagInterceptor,
-  },
+  // {
+  //   provide: HttpInterceptor,
+  //   useClass: CartEtagInterceptor,
+  // },
 ];
