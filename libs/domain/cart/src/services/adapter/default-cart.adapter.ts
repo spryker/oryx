@@ -116,7 +116,7 @@ export class DefaultCartAdapter implements CartAdapter {
               'If-Match': etag,
             }
           : undefined;
-        console.log(headers, 'headers');
+
         return this.http
           .patch<ApiCartModel.Response>(url, body, { headers })
           .pipe(this.transformer.do(CartNormalizer));
