@@ -50,7 +50,7 @@ export const siteProviders: Provider[] = [
   },
   {
     provide: PriceMode,
-    useFactory: () => injectEnv('PRICE_MODE', ''),
+    useFactory: () => injectEnv('PRICE_MODE'),
   },
   {
     provide: LinkService,

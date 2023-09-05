@@ -23,7 +23,7 @@ import {
   CartEntryQualifier,
   CartQualifier,
   UpdateCartEntryQualifier,
-  UpdateCartPriceModeQualifier,
+  UpdateCartQualifier,
 } from '../../models';
 import { CartAdapter } from './cart.adapter';
 import { CartNormalizer, CartsNormalizer } from './normalizers';
@@ -79,7 +79,7 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  update(data: UpdateCartPriceModeQualifier): Observable<Cart> {
+  update(data: UpdateCartQualifier): Observable<Cart> {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
