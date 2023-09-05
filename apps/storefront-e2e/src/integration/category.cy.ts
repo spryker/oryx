@@ -3,10 +3,11 @@ import {
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { CategoryPage } from '../support/page-objects/category.page';
+import { sortingTestData } from '../support/test-data/search-products';
 
 describe('Category suite', () => {
   describe('Products filtering', () => {
-    let categoryPage: CategoryPage;
+    let categoryPage;
     const query = 'DELL Inspiron 7359';
 
     beforeEach(() => {
@@ -33,59 +34,7 @@ describe('Category suite', () => {
   });
 
   describe('Products sorting', () => {
-    const sortingTestData = {
-      default: [
-        'cable-hdmi-1-1',
-        'cable-vga-1-1',
-        '216_123',
-        '217_123',
-        '215_123',
-      ],
-      rating: [
-        '216_123',
-        '217_123',
-        '215_123',
-        'cable-hdmi-1-1',
-        'cable-vga-1-1',
-      ],
-      name_asc: [
-        '217_123',
-        '215_123',
-        'cable-hdmi-1-1',
-        '216_123',
-        'cable-vga-1-1',
-      ],
-      name_desc: [
-        'cable-vga-1-1',
-        '216_123',
-        'cable-hdmi-1-1',
-        '215_123',
-        '217_123',
-      ],
-      price_asc: [
-        'cable-hdmi-1-1',
-        'cable-vga-1-1',
-        '215_123',
-        '216_123',
-        '217_123',
-      ],
-      price_desc: [
-        '217_123',
-        '216_123',
-        '215_123',
-        'cable-hdmi-1-1',
-        'cable-vga-1-1',
-      ],
-      popularity: [
-        'cable-vga-1-1',
-        'cable-hdmi-1-1',
-        '215_123',
-        '216_123',
-        '217_123',
-      ],
-    };
-
-    let categoryPage: CategoryPage;
+    let categoryPage;
 
     beforeEach(() => {
       categoryPage = new CategoryPage({ id: '15' });

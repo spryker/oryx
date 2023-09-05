@@ -1,7 +1,5 @@
-import {
-  IPageWithFacets,
-  IPageWithProductList,
-} from './interfaces/page-interfaces';
+import { IPageWithFacets } from './mixins/page-with-facets.mixin';
+import { IPageWithProductList } from './mixins/page-with-product-list.mixin';
 
 export function checkProductCardsFilterring(
   page: IPageWithFacets & IPageWithProductList,

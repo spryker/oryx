@@ -3,8 +3,9 @@ import {
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { SearchPage } from '../support/page-objects/search.page';
+import { sortingTestData } from '../support/test-data/search-products';
 
-let searchPage: SearchPage;
+let searchPage;
 
 describe('Search suite', () => {
   describe('Products filtering', () => {
@@ -34,58 +35,6 @@ describe('Search suite', () => {
   });
 
   describe('Products sorting', () => {
-    const sortingTestData = {
-      default: [
-        'cable-hdmi-1-1',
-        'cable-vga-1-1',
-        '216_123',
-        '217_123',
-        '215_123',
-      ],
-      rating: [
-        '216_123',
-        '217_123',
-        '215_123',
-        'cable-hdmi-1-1',
-        'cable-vga-1-1',
-      ],
-      name_asc: [
-        '217_123',
-        '215_123',
-        'cable-hdmi-1-1',
-        '216_123',
-        'cable-vga-1-1',
-      ],
-      name_desc: [
-        'cable-vga-1-1',
-        '216_123',
-        'cable-hdmi-1-1',
-        '215_123',
-        '217_123',
-      ],
-      price_asc: [
-        'cable-hdmi-1-1',
-        'cable-vga-1-1',
-        '215_123',
-        '216_123',
-        '217_123',
-      ],
-      price_desc: [
-        '217_123',
-        '216_123',
-        '215_123',
-        'cable-hdmi-1-1',
-        'cable-vga-1-1',
-      ],
-      popularity: [
-        'cable-vga-1-1',
-        'cable-hdmi-1-1',
-        '215_123',
-        '216_123',
-        '217_123',
-      ],
-    };
-
     beforeEach(() => {
       searchPage = new SearchPage({ q: 'Cable' });
       cy.visit(searchPage.url);
