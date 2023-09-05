@@ -1,12 +1,12 @@
 import { Guard } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
+import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
 import { CartService } from '../services';
 
 export class CartPriceModeChangeGuard implements Guard {
-  constructor(protected cartService = inject(CartService)) {}
+  constructor(protected injector = inject(INJECTOR)) {}
 
   isAllowed(): Observable<boolean> {
-    return this.cartService.isEmpty();
+    return this.injector.inject(CartService).isEmpty();
   }
 }
