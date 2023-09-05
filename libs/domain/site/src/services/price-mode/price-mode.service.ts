@@ -1,3 +1,4 @@
+import { Guard } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 
 export const PriceModeService = 'oryx.PriceModeService';
@@ -12,6 +13,10 @@ export interface PriceModeService {
 declare global {
   interface InjectionTokensContractMap {
     [PriceModeService]: PriceModeService;
+  }
+
+  interface InjectionTokensContractMap {
+    [PriceModeChangeGuard]: Guard;
   }
 
   interface Environment {
