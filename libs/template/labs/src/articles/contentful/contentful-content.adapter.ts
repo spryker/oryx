@@ -62,27 +62,29 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
     return this.getEntries(qualifier).pipe(
       switchMap((records) => {
         return from(records).pipe(
-          switchMap((record) => {
-            return combineLatest(
-              record.fields.map((field) =>
-                this.transformer.transform(field, ContentfulFieldNormalizer)
-              )
-            ).pipe(
-              map(
-                (fields) =>
-                  ({
-                    ...record,
-                    fields: fields.reduce(
-                      (acc, { key, value }) => ({ ...acc, [key]: value }),
-                      {}
-                    ),
-                  } as Content)
-              )
-            );
-          }),
+          switchMap((record) => this.parseEntryItem(record)),
           reduce((a, c) => [...a, c], [] as Content[])
         );
       })
+    );
+  }
+
+  protected parseEntryItem(record: ContentfulEntry): Observable<Content> {
+    return combineLatest(
+      record.fields.map((field) =>
+        this.transformer.transform(field, ContentfulFieldNormalizer)
+      )
+    ).pipe(
+      map(
+        (fields) =>
+          ({
+            ...record,
+            fields: fields.reduce(
+              (acc, { key, value }) => ({ ...acc, [key]: value }),
+              {}
+            ),
+          } as Content)
+      )
     );
   }
 
