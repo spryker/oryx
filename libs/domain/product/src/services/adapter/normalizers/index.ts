@@ -1,5 +1,4 @@
 export * from './availability';
-export * from './categories';
 export * from './category-id';
 export * from './concrete-products';
 export * from './facet';

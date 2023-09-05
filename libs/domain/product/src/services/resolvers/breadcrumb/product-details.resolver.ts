@@ -15,13 +15,15 @@ import {
   throwError,
 } from 'rxjs';
 import { Product, ProductCategory } from '../../../models';
+import { ProductCategoryService } from '../../category';
 import { ProductService } from '../../product.service';
 
 export class ProductDetailsBreadcrumbResolver implements BreadcrumbResolver {
   constructor(
     protected routerService = inject(RouterService),
     protected linkService = inject(LinkService),
-    protected productService = inject(ProductService)
+    protected productService = inject(ProductService),
+    protected categoryService = inject(ProductCategoryService)
   ) {}
 
   resolve(): Observable<BreadcrumbItem[]> {
@@ -43,74 +45,36 @@ export class ProductDetailsBreadcrumbResolver implements BreadcrumbResolver {
   }
 
   protected generateBreadcrumbTrail(
-    product: Product,
-    targetCategoryId?: string
+    product: Product
   ): Observable<BreadcrumbItem[]> {
-    const { categories } = product;
+    const { categoryIds } = product;
 
-    if (
-      !categories ||
-      (targetCategoryId &&
-        !categories.find((cat) => cat.id === targetCategoryId))
-    ) {
+    if (!categoryIds?.length) {
       return of([this.productTitle(product)]);
     }
 
-    const trails = this.collectPossibleTrails(categories);
-    const trail = this.getLongestTrail(trails, targetCategoryId);
-
-    return combineLatest([
-      ...trail.map((id) =>
-        this.linkService.get({ id, type: RouteType.Category }).pipe(
-          map((url) => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const name = categories.find((cat) => cat.id === id)!.name;
-            return { text: { raw: name }, url };
-          })
-        )
-      ),
-      of(this.productTitle(product)),
-    ]);
+    return combineLatest(
+      categoryIds.map((id) => this.categoryService.getTrail(id))
+    ).pipe(
+      switchMap((trails) =>
+        combineLatest([
+          ...this.getLongestTrail(trails).map(({ id, name }) =>
+            this.linkService
+              .get({ id, type: RouteType.Category })
+              .pipe(map((url) => ({ text: { raw: name }, url })))
+          ),
+          of(this.productTitle(product)),
+        ])
+      )
+    );
   }
 
   protected productTitle(product: Product): BreadcrumbItem {
     return { text: { raw: product.name as string } };
   }
 
-  protected collectPossibleTrails(categories: ProductCategory[]): string[][] {
-    const trails: string[][] = [];
-
-    const collectTrails = (collected: string[]): string[][] | void => {
-      const lastId = collected[collected.length - 1];
-      const lastCat = categories.find((cat) => cat.id === lastId);
-
-      if (lastCat?.children.length) {
-        lastCat.children.forEach((id) => {
-          if (!categories.find((cat) => cat.id === id)) return;
-          collectTrails([...collected, id]);
-        });
-        return;
-      }
-
-      trails.push(collected);
-    };
-
-    categories.forEach((cat) => {
-      collectTrails([cat.id]);
-    });
-
-    return trails;
-  }
-
-  protected getLongestTrail(
-    trails: string[][],
-    targetCategoryId?: string
-  ): string[] {
-    return (
-      targetCategoryId
-        ? trails.filter((trail) => trail.includes(targetCategoryId as string))
-        : trails
-    ).sort((a, b) => b.length - a.length)[0];
+  protected getLongestTrail(trails: ProductCategory[][]): ProductCategory[] {
+    return trails.sort((a, b) => b.length - a.length)[0];
   }
 }
 

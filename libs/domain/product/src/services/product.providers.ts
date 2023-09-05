@@ -3,7 +3,6 @@ import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import {
   AvailabilityNormalizer,
-  CategoriesNormalizer,
   CategoryIdNormalizer,
   ConcreteProductsNormalizer,
   DefaultProductAdapter,
@@ -15,7 +14,6 @@ import {
   ProductAdapter,
   ProductMediaSetNormalizer,
   availabilityNormalizer,
-  categoriesNormalizer,
   categoryIdNormalizer,
   concreteProductsNormalizer,
   facetCategoryNormalizer,
@@ -37,6 +35,14 @@ import {
 } from './adapter/normalizers/pagination';
 import { relationsListNormalizer } from './adapter/normalizers/relations-list';
 import { SortNormalizer, sortNormalizer } from './adapter/normalizers/sort';
+import {
+  CategoryTreeNormalizer,
+  DefaultProductCategoryAdapter,
+  DefaultProductCategoryService,
+  ProductCategoryAdapter,
+  ProductCategoryService,
+  categoryTreeNormalizer,
+} from './category';
 import { DefaultProductService } from './default-product.service';
 import { DefaultProductImageService } from './images';
 import { ProductImageService } from './images/product-image.service';
@@ -167,8 +173,16 @@ export const productProviders: Provider[] = [
     useValue: categoryIdNormalizer,
   },
   {
-    provide: CategoriesNormalizer,
-    useValue: categoriesNormalizer,
+    provide: CategoryTreeNormalizer,
+    useValue: categoryTreeNormalizer,
+  },
+  {
+    provide: ProductCategoryAdapter,
+    useClass: DefaultProductCategoryAdapter,
+  },
+  {
+    provide: ProductCategoryService,
+    useClass: DefaultProductCategoryService,
   },
   ProductListBreadcrumb,
   ProductDetailsBreadcrumb,
