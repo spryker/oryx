@@ -3,7 +3,7 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { computed } from '@spryker-oryx/utilities';
+import { computed, elementEffect } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { map } from 'rxjs';
@@ -36,10 +36,18 @@ export class SiteMenuItemComponent extends ContentMixin<
       .pipe(map((route) => route === this.$link()));
   });
 
+  @elementEffect()
+  protected variationEffect = (): void => {
+    const { variation } = this.$options();
+    this.setAttribute(
+      'variation',
+      `${variation ?? SiteMenuItemVariation.Navigation}`
+    );
+  };
+
   protected override render(): TemplateResult {
     const { variation, icon } = this.$options();
     return html`<oryx-button
-      variation=${variation ?? SiteMenuItemVariation.Navigation}
       class=${ifDefined(this.$active() ? 'active' : '')}
       .type="${ButtonType.Text}"
       .text=${this.$content()?.text}

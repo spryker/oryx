@@ -8,6 +8,7 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { SiteMenuItemComponent } from './menu-item.component';
 import { siteMenuItemComponent } from './menu-item.def';
+import { SiteMenuItemVariation } from './menu-item.model';
 
 class MockLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/'));
@@ -81,10 +82,10 @@ describe('SiteMenuItemComponent', () => {
     expect(element.renderRoot.querySelector('.active')).toBeNull();
   });
 
-  it('should have button with variation attribute', () => {
-    expect(
-      element.renderRoot.querySelector('oryx-button[variation="navigation"')
-    ).not.toBeNull();
+  it('should have variation attribute', () => {
+    expect(element.getAttribute('variation')).toBe(
+      SiteMenuItemVariation.Navigation
+    );
   });
 
   describe('when item is active', () => {
