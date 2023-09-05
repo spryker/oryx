@@ -7,10 +7,26 @@ import {
 import { HttpService, TransformerService } from '@spryker-oryx/core';
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  forkJoin,
+  from,
+  map,
+  of,
+  reduce,
+  switchMap,
+} from 'rxjs';
 import { StoryblokFieldNormalizer } from './normalizers';
 import { StoryblokCmsModel } from './storyblok.api.model';
 import { StoryblokSpace, StoryblokToken } from './storyblok.model';
+
+export interface StoryblokEntry {
+  id: string;
+  fields: StoryblokCmsModel.StoryContent;
+  type: string;
+  name: string;
+}
 
 export class DefaultStoryblokContentAdapter implements ContentAdapter {
   constructor(
@@ -23,91 +39,94 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
   ) {}
 
   protected url = `https://mapi.storyblok.com/v1/spaces/${this.space}`;
+  protected readonlyUrl = `https://api.storyblok.com/v2/cdn/stories/`;
 
+  /**
+   * @deprecated Since version 1.1. Will be removed.
+   */
   getKey(qualifier: ContentQualifier): string {
     return qualifier.id ?? qualifier.query ?? '';
   }
 
   get(qualifier: ContentQualifier): Observable<Content | null> {
-    console;
-    return this.getData<StoryblokCmsModel.EntriesResponse>(
-      `/stories?with_slug=${qualifier.type}/${qualifier.id}`
-    ).pipe(
-      switchMap((records) => {
-        const stories = records?.stories?.filter(
-          (story) => story.name !== qualifier.type
-        );
+    return combineLatest([
+      this.search<StoryblokCmsModel.EntryResponse>(
+        `${qualifier.type}/${qualifier.id}?`
+      ),
+      this.getSpaceData<StoryblokCmsModel.ComponentResponse>(
+        `/components/${qualifier.type}`
+      ),
+    ]).pipe(
+      switchMap(([{ story }, { component }]) =>
+        this.parseEntry(
+          {
+            fields: story.content,
+            type: story.content.component ?? qualifier.type,
+            id: String(story.id),
+            name: story.name,
+          },
+          component.schema
+        )
+      )
+    );
+  }
 
-        if (!stories?.length) return of(null);
+  getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
+    let endpoint = '?';
 
-        return combineLatest([
-          this.getData<StoryblokCmsModel.EntryResponse>(
-            `/stories/${stories[0].id}`
+    if (qualifier.query) endpoint += `&search_term=${qualifier.query}`;
+    if (qualifier.type) endpoint += `&by_slugs=${qualifier.type}/*`;
+
+    return this.search<StoryblokCmsModel.EntriesResponse>(endpoint).pipe(
+      switchMap((stories) => {
+        const entities: StoryblokEntry[] = [];
+        const types$: Record<string, Observable<StoryblokCmsModel.Schema>> = {};
+
+        for (const entry of stories.stories) {
+          entities.push({
+            fields: entry.content,
+            id: String(entry.id),
+            type: qualifier.type ?? entry.content.component,
+            name: entry.name,
+          });
+
+          types$[entry.content.component] ??=
+            this.getSpaceData<StoryblokCmsModel.ComponentResponse>(
+              `/components/${entry.content.component}`
+            ).pipe(map((data) => data.component.schema));
+        }
+
+        return combineLatest([of(entities), forkJoin(types$)]);
+      }),
+      switchMap(([entities, types]) => {
+        return from(entities).pipe(
+          switchMap((entry) =>
+            this.parseEntry(entry, types[entry.fields.component])
           ),
-          this.getData<StoryblokCmsModel.ComponentResponse>(
-            `/components/${stories[0].content_type}`
-          ),
-          this.locale.get(),
-          this.getData(),
-        ]).pipe(
-          switchMap(([data, component, locale, spaces]) => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const { content, id } = data!.story;
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const { space } = spaces!;
-            const types = component?.component.schema ?? {};
-
-            return combineLatest([
-              this.parseEntryFields(content, space, types, locale),
-              of({
-                type: qualifier.type ?? '',
-                id: String(id),
-              }),
-            ]);
-          }),
-          map(([fields, data]) => ({ ...data, fields }))
+          reduce((a, c) => [...a, c], [] as Content[])
         );
       })
     );
   }
 
-  getAll(qualifier: ContentQualifier): Observable<Content[] | null> {
-    const endpoint = qualifier.query
-      ? `?text_search=${qualifier.query}`
-      : `?starts_with=${qualifier.type}`;
-    return this.getData<StoryblokCmsModel.EntriesResponse>(
-      `/stories${endpoint}`
-    ).pipe(
-      map(
-        (entries) =>
-          entries?.stories
-            .filter((story) => story.name !== qualifier.type)
-            .map((entry) => ({
-              id: String(entry.id),
-              type: qualifier.type ?? entry.full_slug.split('/')[0] ?? '',
-              fields: { id: entry.slug },
-              name: entry.name,
-            })) ?? null
-      )
-    );
+  protected parseEntry(
+    entry: StoryblokEntry,
+    types: StoryblokCmsModel.Schema
+  ): Observable<Content> {
+    return combineLatest([
+      this.parseEntryFields(entry.fields, types),
+      of(entry),
+    ]).pipe(map(([fields, data]) => ({ ...data, fields })));
   }
 
   protected parseEntryFields(
     content: StoryblokCmsModel.StoryContent,
-    space: StoryblokCmsModel.Space,
-    types: Record<string, StoryblokCmsModel.Field>,
-    locale: string
+    types: Record<string, StoryblokCmsModel.Field>
   ): Observable<ContentField> {
-    const shouldLocalize = space.languages.find((lang) => lang.code === locale);
-
     return combineLatest(
       Object.entries(types).map(([key, data]) => {
-        const { translatable, type } = data;
-        const translatableKey =
-          translatable && shouldLocalize ? `${key}__i18n__${locale}` : key;
-        const value = translatable
-          ? content?.[translatableKey]
-          : content?.[key];
+        const { type } = data;
+        const value = content?.[key];
         const field = { key, value, type };
 
         return this.transformer.transform(field, StoryblokFieldNormalizer);
@@ -122,9 +141,19 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
     );
   }
 
-  protected getData<T = StoryblokCmsModel.SpaceResponse>(
+  protected search<T>(endpoint: string): Observable<T> {
+    return combineLatest([this.locale.get(), this.getSpaceData()]).pipe(
+      switchMap(([locale, { space }]) =>
+        this.http.get<T>(
+          `${this.readonlyUrl}${endpoint}&token=${space.first_token}&language=${locale}`
+        )
+      )
+    );
+  }
+
+  protected getSpaceData<T = StoryblokCmsModel.SpaceResponse>(
     endpoint = ''
-  ): Observable<T | null> {
+  ): Observable<T> {
     return this.http.get<T>(`${this.url}${endpoint}`, {
       headers: { Authorization: this.token },
     });

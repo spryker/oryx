@@ -6,7 +6,7 @@ import {
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { Observable, combineLatest, map, switchMap } from 'rxjs';
+import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { ArticleContext } from '../article-context';
 import { ArticleContent } from '../article.model';
 
@@ -21,6 +21,15 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
     return combineLatest([
       this.context.get(document.body, ArticleContext.Id),
       this.context.get(document.body, ArticleContext.Type),
+      this.context
+        .get(document.body, ArticleContext.Type)
+        .pipe(
+          switchMap((type) =>
+            this.router
+              .currentRoute()
+              .pipe(map((route) => route.includes(`/${type}/`)))
+          )
+        ),
     ]);
   }
 
@@ -29,8 +38,10 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
       this.context.get<string>(document.body, ArticleContext.Id),
       this.context.get<string>(document.body, ArticleContext.Type),
     ]).pipe(
-      switchMap(([id, type]) =>
-        this.content
+      switchMap(([id, type]) => {
+        if (!id || !type) return of({});
+
+        return this.content
           .get<ArticleContent>({
             id,
             type,
@@ -40,8 +51,8 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
             map((data) =>
               data?.fields.heading ? { title: data.fields.heading } : {}
             )
-          )
-      )
+          );
+      })
     );
   }
 }

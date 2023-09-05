@@ -20,14 +20,13 @@ export const contentfulProviders: Provider[] = [
     provide: ContentfulSpace,
     useFactory: () => injectEnv('ORYX_CONTENTFUL_SPACE', ''),
   },
-
   ...contentfulFieldNormalizers,
   {
     provide: ContentConfig,
     useValue: {
       contentful: {
         types: [
-          // ContentFields.Component,
+          ContentFields.Component,
           SuggestionField.Contents,
           ContentFields.Article,
         ],

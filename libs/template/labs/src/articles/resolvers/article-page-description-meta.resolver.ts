@@ -5,20 +5,31 @@ import {
   PageMetaResolver,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { Observable, combineLatest, map, switchMap } from 'rxjs';
+import { RouterService } from '@spryker-oryx/router';
+import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { ArticleContext } from '../article-context';
 import { ArticleContent } from '../article.model';
 
 export class ArticlePageDescriptionMetaResolver implements PageMetaResolver {
   constructor(
     protected context = inject(ContextService),
-    protected content = inject(ContentService)
+    protected content = inject(ContentService),
+    protected router = inject(RouterService)
   ) {}
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
       this.context.get(document.body, ArticleContext.Id),
       this.context.get(document.body, ArticleContext.Type),
+      this.context
+        .get(document.body, ArticleContext.Type)
+        .pipe(
+          switchMap((type) =>
+            this.router
+              .currentRoute()
+              .pipe(map((route) => route.includes(`/${type}/`)))
+          )
+        ),
     ]);
   }
 
@@ -28,6 +39,8 @@ export class ArticlePageDescriptionMetaResolver implements PageMetaResolver {
       this.context.get<string>(document.body, ArticleContext.Type),
     ]).pipe(
       switchMap(([id, type]) => {
+        if (!id || !type) return of({});
+
         return this.content
           .get<ArticleContent>({
             id,

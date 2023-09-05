@@ -9,6 +9,7 @@ import { LocaleService } from '@spryker-oryx/i18n';
 import {
   Observable,
   combineLatest,
+  forkJoin,
   from,
   map,
   of,
@@ -26,6 +27,7 @@ export interface ContentfulEntry {
   id: string;
   fields: ContentfulContentField[];
   type: string;
+  name: string;
 }
 
 export class DefaultContentfulContentAdapter implements ContentAdapter {
@@ -40,6 +42,9 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
 
   protected url = `https://cdn.contentful.com/spaces/${this.space}`;
 
+  /**
+   * @deprecated Since version 1.1. Will be removed.
+   */
   getKey(qualifier: ContentQualifier): string {
     return qualifier.id ?? qualifier.query ?? '';
   }
@@ -84,24 +89,39 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
   protected getEntries(
     qualifier: ContentQualifier
   ): Observable<ContentfulEntry[]> {
-    return combineLatest([
-      this.getLocalLocale(),
-      qualifier.type ? this.getContentFields(qualifier.type) : of({}),
-    ]).pipe(
-      switchMap(([locale, types]) => {
-        return this.http
+    return this.getLocalLocale().pipe(
+      switchMap((locale) =>
+        this.http
           .get<ContentfulCmsModel.EntriesResponse>(
             `${this.url}/entries?${this.getParams({ ...qualifier, locale })}`,
             { headers: { Authorization: `Bearer ${this.token}` } }
           )
           .pipe(
-            map((data) =>
-              data.items.map((record) =>
-                this.parseEntry(record, types, locale, qualifier)
+            switchMap(({ items }) => {
+              const types$: Record<
+                string,
+                Observable<Record<string, ContentfulCmsModel.Type>>
+              > = {};
+
+              for (const entry of items) {
+                const type = entry.sys.contentType.sys.id;
+                types$[type] ??= this.getContentFields(type);
+              }
+
+              return combineLatest([of(items), forkJoin(types$)]);
+            }),
+            map(([items, types]) =>
+              items.map((record) =>
+                this.parseEntry(
+                  record,
+                  types[record.sys.contentType.sys.id],
+                  locale,
+                  qualifier
+                )
               )
             )
-          );
-      })
+          )
+      )
     );
   }
 
@@ -115,7 +135,8 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
     return {
       fields: this.parseEntryFields(record.fields, types, locale),
       id: record.sys.id,
-      type: qualifier.type ?? record.sys.contentType.sys.id ?? '',
+      type: qualifier.type ?? record.sys.contentType.sys.id,
+      name: record.fields.id,
     };
   }
 

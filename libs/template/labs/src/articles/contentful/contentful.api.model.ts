@@ -28,7 +28,7 @@ export module ContentfulCmsModel {
       version: number;
       id: string;
     };
-    fields: T;
+    fields: T & { id: string };
   }
 
   export interface Response<T> {

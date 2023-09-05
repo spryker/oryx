@@ -12,6 +12,7 @@ export module StoryblokCmsModel {
     full_slug: string;
     uuid: string;
     content_type: string;
+    content: StoryContent;
   };
 
   export interface Language {
@@ -23,6 +24,7 @@ export module StoryblokCmsModel {
     name: string;
     id: number;
     languages: Language[];
+    first_token: string;
   }
 
   export interface Field {
@@ -30,15 +32,17 @@ export module StoryblokCmsModel {
     translatable?: boolean;
   }
 
+  export type Schema = Record<string, Field>;
+
   export interface Component {
     name: string;
     display_name: string;
     id: number;
-    schema: Record<string, Field>;
+    schema: Schema;
   }
 
   export interface EntryResponse {
-    story: Story<{ content: StoryContent }>;
+    story: Story;
   }
 
   export interface EntriesResponse {
