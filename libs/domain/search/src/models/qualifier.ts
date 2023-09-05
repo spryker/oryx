@@ -2,7 +2,6 @@ import { SuggestionEntities } from '../services';
 
 export interface SuggestionQualifier {
   query?: string;
-  type?: string;
   entities?: SuggestionEntities;
 }
 
