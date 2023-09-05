@@ -27,7 +27,7 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
   protected priceModes: string[] = [PriceModes.GrossMode, PriceModes.NetMode];
   protected $setMode = signal(
     this.triggerMode$.pipe(
-      switchMap((v) => this.priceModeService.set(v)),
+      switchMap((mode) => this.priceModeService.set(mode)),
       tap(() => {
         // TODO: should be replaced with reactivity
         const optionGrossMode = this.getOptionElement(PriceModes.GrossMode);
