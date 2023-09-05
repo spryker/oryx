@@ -32,7 +32,7 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
         // TODO: should be replaced with reactivity
         const optionGrossMode = this.getOptionElement(PriceModes.GrossMode);
         const optionNetMode = this.getOptionElement(PriceModes.NetMode);
-        console.log(this.$current());
+
         if (this.$current() === PriceModes.GrossMode) {
           optionGrossMode?.setAttribute('active', 'true');
           optionNetMode?.removeAttribute('active');
