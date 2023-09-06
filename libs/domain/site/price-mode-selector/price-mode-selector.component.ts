@@ -2,23 +2,10 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-<<<<<<< HEAD
 import { I18nTranslationValue, hydrate, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { ReplaySubject } from 'rxjs';
-=======
-import {
-  I18nTranslationValue,
-  effect,
-  elementEffect,
-  hydrate,
-  signal,
-} from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult, html } from 'lit';
-import { repeat } from 'lit/directives/repeat.js';
-import { ReplaySubject, switchMap, tap } from 'rxjs';
->>>>>>> feature/hrz-2804-price-mode-component
 import { PriceModes } from '../src/models';
 import { PriceModeService } from '../src/services/price-mode';
 import { sitePriceModeSelectorStyles } from './price-mode-selector.styles';
