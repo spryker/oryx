@@ -1,9 +1,11 @@
 import { Provider } from '@spryker-oryx/di';
+import { PriceModeChangeGuard } from '@spryker-oryx/site';
+import { CartPriceModeChangeGuard } from '../guards/cart-price.guard';
 import {
   CartAdapter,
+  DefaultCartAdapter,
   cartNormalizer,
   cartsNormalizer,
-  DefaultCartAdapter,
 } from './adapter';
 import { CartService } from './cart.service';
 import { DefaultCartService } from './default-cart.service';
@@ -27,8 +29,16 @@ export const cartProviders: Provider[] = [
     provide: TotalsService,
     useClass: DefaultTotalsService,
   },
+  {
+    provide: PriceModeChangeGuard,
+    useClass: CartPriceModeChangeGuard,
+  },
   CartResourceResolver,
   CartTotalsProvider,
   ...cartNormalizer,
   ...cartsNormalizer,
+  // {
+  //   provide: HttpInterceptor,
+  //   useClass: CartVersionInterceptor,
+  // },
 ];
