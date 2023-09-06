@@ -4,8 +4,6 @@ import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { ApiCartModel } from '../../../models';
 
 export class CartVersionInterceptor implements HttpInterceptor {
-  protected parameterName = 'priceMode';
-
   constructor(protected SCOS_BASE_URL = inject('SCOS_BASE_URL')) {}
 
   intercept(req: Request, handle: HttpHandlerFn): Observable<Response> {
@@ -20,7 +18,7 @@ export class CartVersionInterceptor implements HttpInterceptor {
           return new Response(
             JSON.stringify({
               ...body,
-              data: this.addEtagToData(body.data, version),
+              data: this.addVersionToData(body.data, version),
             }),
             response
           );
@@ -42,7 +40,7 @@ export class CartVersionInterceptor implements HttpInterceptor {
     return false;
   }
 
-  protected addEtagToData(
+  protected addVersionToData(
     data: (ApiCartModel.Response | ApiCartModel.ResponseList)['data'],
     version: string
   ): (ApiCartModel.Response | ApiCartModel.ResponseList)['data'] {
