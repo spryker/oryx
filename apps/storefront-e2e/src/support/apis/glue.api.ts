@@ -1,6 +1,5 @@
 import { defaultAddress } from '../test-data/default-address';
-import { Product } from '../types/product.type';
-import { Customer } from '../types/user.type';
+import { Customer, Product } from '../types/domain.types';
 
 export type ApiResponse<T> = {
   data: T;
