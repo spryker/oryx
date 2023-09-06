@@ -1,7 +1,7 @@
 import { ContentLinkAppearance } from '@spryker-oryx/content/link';
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n } from '@spryker-oryx/utilities';
+import { featureVersion, i18n } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
@@ -108,19 +108,21 @@ export const HeaderTemplate: ExperienceComponent = {
                 rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
               },
               components: [
-                {
-                  type: 'oryx-content-link',
-                  options: {
-                    icon: IconTypes.User,
-                    url: '/account/overview',
-                    appearance: ContentLinkAppearance.Dropdown,
-                  },
-                  content: {
-                    data: {
-                      text: i18n('user.account'),
-                    },
-                  },
-                },
+                featureVersion >= '1.1'
+                  ? {
+                      type: 'oryx-content-link',
+                      options: {
+                        icon: IconTypes.User,
+                        url: '/account/overview',
+                        appearance: ContentLinkAppearance.Dropdown,
+                      },
+                      content: {
+                        data: {
+                          text: i18n('user.account'),
+                        },
+                      },
+                    }
+                  : {},
                 { type: 'oryx-auth-login-link' },
               ],
             },
