@@ -23,6 +23,7 @@ import {
   CartEntryQualifier,
   CartQualifier,
   UpdateCartEntryQualifier,
+  UpdateCartQualifier,
 } from '../../models';
 import { CartAdapter } from './cart.adapter';
 import { CartNormalizer, CartsNormalizer } from './normalizers';
@@ -73,6 +74,44 @@ export class DefaultCartAdapter implements CartAdapter {
 
         return this.http
           .get<ApiCartModel.Response>(url)
+          .pipe(this.transformer.do(CartNormalizer));
+      })
+    );
+  }
+
+  update(data: UpdateCartQualifier): Observable<Cart> {
+    return this.identity.get().pipe(
+      take(1),
+      switchMap((identity) => {
+        const url = this.generateUrl(
+          `${
+            identity.isAuthenticated
+              ? ApiCartModel.UrlParts.Carts
+              : ApiCartModel.UrlParts.GuestCarts
+          }/${data.cartId}`,
+          !identity.isAuthenticated
+        );
+
+        const version = data.version;
+        delete data.version;
+
+        const body = {
+          data: {
+            type: identity.isAuthenticated
+              ? ApiCartModel.UrlParts.Carts
+              : ApiCartModel.UrlParts.GuestCarts,
+            attributes: { ...data },
+          },
+        };
+
+        const headers = version
+          ? {
+              'If-Match': version,
+            }
+          : undefined;
+
+        return this.http
+          .patch<ApiCartModel.Response>(url, body, { headers })
           .pipe(this.transformer.do(CartNormalizer));
       })
     );
