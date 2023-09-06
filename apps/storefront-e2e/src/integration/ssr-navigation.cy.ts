@@ -82,30 +82,30 @@ describe('SSR suite', { tags: 'smoke' }, () => {
     });
 
     it('should render Search page', () => {
-      const searchPage = new SearchPage();
+      const searchPage = new SearchPage({ q: 'TomTom' });
 
       searchPage.visit();
 
       verifyHeader();
 
-      searchPage.getFacet().should('be.visible');
-      searchPage.getProductSort().should('be.visible');
-      searchPage.getProductCard().should('have.length.greaterThan', 1);
+      searchPage.getFacets().getWrapper().should('be.visible');
+      searchPage.getProductSorting().getWrapper().should('be.visible');
+      searchPage.getProductCards().should('have.length.greaterThan', 1);
+      searchPage.getProductHeadings().should('contain.text', 'TomTom');
 
       verifyFooter();
     });
 
     it('should render Category page', () => {
-      const categoryData = { id: '6' };
-      const categoryPage = new CategoryPage(categoryData);
+      const categoryPage = new CategoryPage({ id: '6' });
 
       categoryPage.visit();
 
       verifyHeader();
 
-      categoryPage.getFacets().should('be.visible');
-      categoryPage.getProductSort().should('be.visible');
-      categoryPage.getProductCard().should('have.length.greaterThan', 1);
+      categoryPage.getFacets().getWrapper().should('be.visible');
+      categoryPage.getProductSorting().getWrapper().should('be.visible');
+      categoryPage.getProductCards().should('have.length.greaterThan', 1);
 
       verifyFooter();
     });

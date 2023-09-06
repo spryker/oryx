@@ -120,6 +120,7 @@ export interface OrderData {
   shipments: OrderShipment[];
   calculatedDiscounts?: Record<string, OrderDiscount>;
   bundleItems?: unknown[];
+  userId: string;
 }
 
 export interface OrderDiscount {

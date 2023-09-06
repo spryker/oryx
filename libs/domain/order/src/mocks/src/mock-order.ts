@@ -549,4 +549,5 @@ export const mockOrderData = {
   },
   bundleItems: [],
   id: 'mockid',
+  userId: 'anon-user-id',
 };
