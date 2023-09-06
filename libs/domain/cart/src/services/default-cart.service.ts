@@ -10,7 +10,6 @@ import {
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
-import { PriceModeChanged } from '@spryker-oryx/site';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   combineLatest,
@@ -112,26 +111,24 @@ export class DefaultCartService implements CartService {
     },
   ]);
 
-  protected updatePriceMode$ = createEffect<Cart>([
-    PriceModeChanged,
-    ({ event }) => {
-      if (event.data) {
-        return subscribeReplay(
-          this.getCart().pipe(
-            take(1),
-            switchMap((cart) => {
-              return this.adapter.update({
-                cartId: cart?.id,
-                priceMode: event.data?.priceMode,
-              });
-            })
-          )
-        );
-      }
+  update(data: Cart): Observable<Cart | undefined> {
+    if (data) {
+      subscribeReplay(
+        this.getCart().pipe(
+          take(1),
+          switchMap((cart) => {
+            return this.adapter.update({
+              cartId: cart?.id,
+              priceMode: data?.priceMode,
+              version: cart?.version,
+            });
+          })
+        )
+      );
+    }
 
-      return;
-    },
-  ]);
+    return of(undefined);
+  }
 
   protected isCartModified$ = createEffect<Cart>(({ getEvents }) =>
     getEvents([CartModificationStart, CartModificationEnd]).pipe(

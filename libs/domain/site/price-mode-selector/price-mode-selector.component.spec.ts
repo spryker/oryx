@@ -1,7 +1,7 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { useComponent } from '@spryker-oryx/utilities';
-import { PriceModeChangeGuard, PriceModeService } from '../src/services';
+import { PriceModeService } from '../src/services';
 import { SitePriceModeSelectorComponent } from './price-mode-selector.component';
 import { sitePriceModeSelectorComponent } from './price-mode-selector.def';
 
@@ -9,16 +9,6 @@ class MockPriceModeService implements Partial<PriceModeService> {
   get = vi.fn().mockReturnValue('GROSS_MODE');
   set = vi.fn();
 }
-
-class MockCartPriceModeChangeGuard {
-  isAllowed = vi.fn();
-}
-
-// class TestableSitePriceModeSelectorComponent extends SitePriceModeSelectorComponent {
-//   getTriggerMode$() {
-//     return this.triggerMode$;
-//   }
-// }
 
 describe('SitePriceModeSelectorComponent', () => {
   let element: SitePriceModeSelectorComponent;
@@ -35,10 +25,6 @@ describe('SitePriceModeSelectorComponent', () => {
         {
           provide: PriceModeService,
           useClass: MockPriceModeService,
-        },
-        {
-          provide: PriceModeChangeGuard,
-          useClass: MockCartPriceModeChangeGuard,
         },
       ],
     });

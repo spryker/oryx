@@ -2,16 +2,10 @@ import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import {
-  I18nTranslationValue,
-  effect,
-  elementEffect,
-  hydrate,
-  signal,
-} from '@spryker-oryx/utilities';
+import { I18nTranslationValue, hydrate, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { ReplaySubject, switchMap, tap } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { PriceModes } from '../src/models';
 import { PriceModeService } from '../src/services/price-mode';
 import { sitePriceModeSelectorStyles } from './price-mode-selector.styles';
@@ -25,27 +19,6 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
   protected $current = signal(this.priceModeService.get());
   protected triggerMode$ = new ReplaySubject<string>(1);
   protected priceModes: string[] = [PriceModes.GrossMode, PriceModes.NetMode];
-  protected $setMode = signal(
-    this.triggerMode$.pipe(
-      switchMap((v) => this.priceModeService.set(v)),
-      tap(() => {
-        // TODO: should be replaced with reactivity
-        const optionGrossMode = this.getOptionElement(PriceModes.GrossMode);
-        const optionNetMode = this.getOptionElement(PriceModes.NetMode);
-
-        if (this.$current() === PriceModes.GrossMode) {
-          optionGrossMode?.setAttribute('active', 'true');
-          optionNetMode?.removeAttribute('active');
-        } else {
-          optionNetMode?.setAttribute('active', 'true');
-          optionGrossMode?.removeAttribute('active');
-        }
-      })
-    )
-  );
-
-  @elementEffect()
-  protected modeEffect = effect(() => this.$setMode());
 
   protected override render(): TemplateResult | void {
     return html`
@@ -77,7 +50,7 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
   }
 
   protected onClick(mode: string): void {
-    this.triggerMode$.next(mode);
+    this.priceModeService.set(mode);
   }
 
   protected getLabel(priceMode: string): I18nTranslationValue {

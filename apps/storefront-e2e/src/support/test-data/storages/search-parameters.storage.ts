@@ -1,4 +1,4 @@
-import { SearchParameters } from '../../types/search.type';
+import { SearchParameters } from '../../types/domain.types';
 
 const parameters: SearchParameters[] = [
   {
