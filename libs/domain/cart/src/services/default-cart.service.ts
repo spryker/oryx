@@ -111,6 +111,25 @@ export class DefaultCartService implements CartService {
     },
   ]);
 
+  update(data: Cart): Observable<Cart | undefined> {
+    if (data) {
+      subscribeReplay(
+        this.getCart().pipe(
+          take(1),
+          switchMap((cart) => {
+            return this.adapter.update({
+              cartId: cart?.id,
+              priceMode: data?.priceMode,
+              version: cart?.version,
+            });
+          })
+        )
+      );
+    }
+
+    return of(undefined);
+  }
+
   protected isCartModified$ = createEffect<Cart>(({ getEvents }) =>
     getEvents([CartModificationStart, CartModificationEnd]).pipe(
       scan(
