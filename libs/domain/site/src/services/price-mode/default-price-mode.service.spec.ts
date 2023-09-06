@@ -1,29 +1,16 @@
 import { QueryService } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
-import { AlertType } from '@spryker-oryx/ui';
-import { Observable, Subject, of } from 'rxjs';
-import { NotificationService } from '../notification';
+import { Observable } from 'rxjs';
 import { DefaultPriceModeService } from './default-price-mode.service';
-import {
-  PriceMode,
-  PriceModeChangeGuard,
-  PriceModeService,
-} from './price-mode.service';
+import { PriceMode, PriceModeService } from './price-mode.service';
 
 class MockQueryService implements Partial<QueryService> {
   emit = vi.fn();
 }
 
-const notificationTrigger$ = new Subject();
-
-class MockNotificationService implements Partial<NotificationService> {
-  get = vi.fn().mockReturnValue(notificationTrigger$);
-  push = vi.fn();
-}
-
-describe.only('DefaultPriceModeService', () => {
+describe('DefaultPriceModeService', () => {
   let service: PriceModeService;
-  let notificationService: NotificationService;
+  let queryService: QueryService;
 
   let testInjector;
 
@@ -38,23 +25,13 @@ describe.only('DefaultPriceModeService', () => {
         useClass: MockQueryService,
       },
       {
-        provide: NotificationService,
-        useClass: MockNotificationService,
-      },
-      {
         provide: PriceMode,
         useValue: 'GROSS_MODE',
-      },
-      {
-        provide: PriceModeChangeGuard,
-        useValue: {
-          isAllowed: () => of(true),
-        },
       },
     ]);
 
     service = testInjector.inject(PriceModeService);
-    notificationService = testInjector.inject(NotificationService);
+    queryService = testInjector.inject(QueryService);
   });
 
   it('should be provided', () => {
@@ -71,78 +48,26 @@ describe.only('DefaultPriceModeService', () => {
       service.get().subscribe(callback);
       expect(callback).toHaveBeenCalledWith('GROSS_MODE');
     });
-  });
 
-  describe('set', () => {
-    it('should set new price mode', () => {
+    it('should set price mode', () => {
       const mock = 'NET_MODE';
-      const setObservable = service.set(mock);
+      const callback = vi.fn();
 
-      setObservable.subscribe(() => {
-        () => {
-          const newValue = service.get();
-          expect(newValue).toEqual(mock);
-        };
-      });
+      service.get().subscribe(callback);
+      service.set(mock);
+
+      expect(callback).toHaveBeenCalledWith(mock);
+      expect(queryService.emit).toHaveBeenCalled();
     });
 
-    it('should return the same price mode if it is currently selected', () => {
+    it('should not emit query service if price mode is current one', () => {
       const mock = 'GROSS_MODE';
-      const setObservable = service.set(mock);
+      const callback = vi.fn();
 
-      setObservable.subscribe(() => {
-        () => {
-          const newValue = service.get();
-          expect(newValue).toEqual(mock);
-        };
-      });
-    });
-  });
+      service.set(mock);
 
-  describe('if price mode change is not allowed', () => {
-    beforeEach(() => {
-      testInjector = new Injector([
-        {
-          provide: PriceModeService,
-          useClass: DefaultPriceModeService,
-        },
-        {
-          provide: QueryService,
-          useClass: MockQueryService,
-        },
-        {
-          provide: NotificationService,
-          useClass: MockNotificationService,
-        },
-        {
-          provide: PriceMode,
-          useValue: 'GROSS_MODE',
-        },
-        {
-          provide: PriceModeChangeGuard,
-          useValue: {
-            isAllowed: () => of(false),
-          },
-        },
-      ]);
-
-      service = testInjector.inject(PriceModeService);
-      notificationService = testInjector.inject(NotificationService);
-    });
-
-    it('should send a notification error', () => {
-      const mock = 'NET_MODE';
-      const setObservable = service.set(mock);
-
-      setObservable.subscribe({
-        complete: () => {
-          expect(notificationService.push).toHaveBeenCalledWith({
-            type: AlertType.Error,
-            content: 'Error',
-            subtext: 'Can’t switch price mode when there are items in the cart',
-          });
-        },
-      });
+      expect(callback).not.toHaveBeenCalledWith(mock);
+      expect(queryService.emit).not.toHaveBeenCalled();
     });
   });
 });

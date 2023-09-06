@@ -22,7 +22,6 @@ class MockPriceModeService implements Partial<PriceModeService> {
 describe('PriceModeInterceptor', () => {
   const SCOS_BASE_URL = 'http://example.com';
 
-  let interceptor: PriceModeInterceptor;
   let priceModeService: PriceModeService;
   let handler: HttpHandler;
 

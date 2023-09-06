@@ -54,7 +54,7 @@ describe('SitePriceModeSelectorComponent', () => {
 
   describe('when the component renders the options', () => {
     beforeEach(async () => {
-      const element = await fixture(
+      element = await fixture(
         html`<oryx-price-mode-selector></oryx-price-mode-selector>`
       );
     });
@@ -64,7 +64,7 @@ describe('SitePriceModeSelectorComponent', () => {
       expect(options?.length).toEqual(2);
     });
 
-    it('should render the spcific names', () => {
+    it('should render the specific names', () => {
       const options = element.shadowRoot?.querySelectorAll('oryx-option');
       expect(options?.[0].textContent).toContain('GROSS MODE');
       expect(options?.[1].textContent).toContain('NET MODE');
@@ -77,28 +77,22 @@ describe('SitePriceModeSelectorComponent', () => {
       expect(options?.[1].hasAttribute('active')).toBe(false);
     });
 
-    // describe('when the price mode changes', () => {
-    //   beforeEach(async () => {
-    //     element = await fixture(
-    //       html`<oryx-price-mode-selector></oryx-price-mode-selector>`
-    //     );
+    describe('when the price mode changes', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-price-mode-selector></oryx-price-mode-selector>`
+        );
 
-    //     // const triggerMode$ = testElement.getTriggerMode$();
-    //     // triggerMode$.next('NET_MODE');
+        const netModeOption = element.shadowRoot?.querySelector(
+          'oryx-option[value=NET_MODE]'
+        );
 
-    //     // component.triggerMode$ = new Subject<string>();
-    //     // component.triggerMode$.next('NET_MODE');
+        netModeOption?.dispatchEvent(new Event('click'));
+      });
 
-    //     const netModeOption = element.shadowRoot?.querySelector(
-    //       'oryx-option[value=NET_MODE]'
-    //     );
-
-    //     netModeOption?.dispatchEvent(new Event('click'));
-    //   });
-
-    //   it('selects the correct option when the price mode changes', () => {
-    //     expect(priceModeService.set).toHaveBeenCalled();
-    //   });
-    // });
+      it('selects the correct option when the price mode changes', () => {
+        expect(priceModeService.set).toHaveBeenCalledWith('NET_MODE');
+      });
+    });
   });
 });
