@@ -19,12 +19,6 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
   protected $current = signal(this.priceModeService.get());
   protected triggerMode$ = new ReplaySubject<string>(1);
   protected priceModes: string[] = [PriceModes.GrossMode, PriceModes.NetMode];
-  // protected $setMode = signal(
-  //   this.triggerMode$.pipe(switchMap((mode) => this.priceModeService.set(mode)))
-  // );
-
-  // @elementEffect()
-  // protected modeEffect = effect(() => this.$setMode());
 
   protected override render(): TemplateResult | void {
     return html`
@@ -56,7 +50,6 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
   }
 
   protected onClick(mode: string): void {
-    // this.triggerMode$.next(mode);
     this.priceModeService.set(mode);
   }
 
