@@ -3,7 +3,7 @@ import { inject } from '@spryker-oryx/di';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { ApiCartModel } from '../../../models';
 
-export class CartEtagInterceptor implements HttpInterceptor {
+export class CartVersionInterceptor implements HttpInterceptor {
   protected parameterName = 'priceMode';
 
   constructor(protected SCOS_BASE_URL = inject('SCOS_BASE_URL')) {}
@@ -14,13 +14,13 @@ export class CartEtagInterceptor implements HttpInterceptor {
         combineLatest([response.clone().json(), of(response)])
       ),
       map(([body, response]) => {
-        const etag = response.headers.get('etag');
+        const version = response.headers.get('etag');
 
-        if (etag) {
+        if (version) {
           return new Response(
             JSON.stringify({
               ...body,
-              data: this.addEtagToData(body.data, etag),
+              data: this.addEtagToData(body.data, version),
             }),
             response
           );
@@ -44,10 +44,10 @@ export class CartEtagInterceptor implements HttpInterceptor {
 
   protected addEtagToData(
     data: (ApiCartModel.Response | ApiCartModel.ResponseList)['data'],
-    etag: string
+    version: string
   ): (ApiCartModel.Response | ApiCartModel.ResponseList)['data'] {
     return Array.isArray(data)
-      ? data.map((_d) => ({ ..._d, attributes: { ..._d.attributes, etag } }))
-      : { ...data, attributes: { ...data.attributes, etag } };
+      ? data.map((_d) => ({ ..._d, attributes: { ..._d.attributes, version } }))
+      : { ...data, attributes: { ...data.attributes, version } };
   }
 }

@@ -1,1 +1,1 @@
-export * from './cart-etag.interceptor';
+export * from './cart-version.interceptor';

@@ -92,8 +92,8 @@ export class DefaultCartAdapter implements CartAdapter {
           !identity.isAuthenticated
         );
 
-        const etag = data.etag;
-        delete data.etag;
+        const version = data.version;
+        delete data.version;
 
         const body = {
           data: {
@@ -104,9 +104,9 @@ export class DefaultCartAdapter implements CartAdapter {
           },
         };
 
-        const headers = etag
+        const headers = version
           ? {
-              'If-Match': etag,
+              'If-Match': version,
             }
           : undefined;
 

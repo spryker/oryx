@@ -2,11 +2,11 @@ import { HttpHandlerFn } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { lastValueFrom, of } from 'rxjs';
 import { ApiCartModel } from '../../../models';
-import { CartEtagInterceptor } from './cart-etag.interceptor';
+import { CartVersionInterceptor } from './cart-version.interceptor';
 
-describe('StoreInterceptor', () => {
+describe('CartVersionInterceptor', () => {
   const SCOS_BASE_URL = 'http://example.com';
-  let interceptor: CartEtagInterceptor;
+  let interceptor: CartVersionInterceptor;
 
   beforeEach(() => {
     const testInjector = createInjector({
@@ -17,7 +17,7 @@ describe('StoreInterceptor', () => {
         },
         {
           provide: 'interceptor',
-          useClass: CartEtagInterceptor,
+          useClass: CartVersionInterceptor,
         },
       ],
     });
@@ -53,7 +53,7 @@ describe('StoreInterceptor', () => {
     });
   });
 
-  it(`should add etag tag for object response`, async () => {
+  it(`should add version for object response`, async () => {
     const mockData = {
       data: {
         attributes: {
@@ -75,10 +75,10 @@ describe('StoreInterceptor', () => {
     const response = await lastValueFrom(interceptor.intercept(req, handle));
     const body = await response.json();
 
-    expect(body.data.attributes.etag).toBe('etag');
+    expect(body.data.attributes.version).toBe('etag');
   });
 
-  it(`should add etag tag for array response`, async () => {
+  it(`should add version for array response`, async () => {
     const mockData = {
       data: [
         {
@@ -107,8 +107,8 @@ describe('StoreInterceptor', () => {
     const response = await lastValueFrom(interceptor.intercept(req, handle));
     const body = await response.json();
 
-    expect(body.data[0].attributes.etag).toBe('etag');
-    expect(body.data[1].attributes.etag).toBe('etag');
+    expect(body.data[0].attributes.version).toBe('etag');
+    expect(body.data[1].attributes.version).toBe('etag');
   });
 
   it(`should use the same response if etag is not exist`, async () => {

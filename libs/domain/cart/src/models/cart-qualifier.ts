@@ -17,5 +17,5 @@ export interface UpdateCartEntryQualifier extends CartEntryQualifier {
 
 export interface UpdateCartQualifier extends CartEntryQualifier {
   priceMode?: string;
-  etag?: string;
+  version?: string;
 }

@@ -39,6 +39,6 @@ export const cartProviders: Provider[] = [
   ...cartsNormalizer,
   // {
   //   provide: HttpInterceptor,
-  //   useClass: CartEtagInterceptor,
+  //   useClass: CartVersionInterceptor,
   // },
 ];
