@@ -123,6 +123,7 @@ export class DefaultCartService implements CartService {
               return this.adapter.update({
                 cartId: cart?.id,
                 priceMode: event.data?.priceMode,
+                version: cart?.version,
               });
             })
           )
