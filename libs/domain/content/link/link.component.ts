@@ -27,7 +27,7 @@ export class ContentLinkComponent extends ContentMixin<
   protected semanticLinkService = resolve(LinkService);
 
   @elementEffect()
-  protected setDropdown = () => {
+  protected setNavigation = () => {
     const { appearance } = this.$options();
     this.setAttribute('appearance', `${appearance}`);
   };
@@ -42,14 +42,14 @@ export class ContentLinkComponent extends ContentMixin<
   protected override render(): TemplateResult | void {
     const { appearance, button, icon, singleLine, color } = this.$options();
 
-    const dropdown = appearance === ContentLinkAppearance.Dropdown;
+    const navigation = appearance === ContentLinkAppearance.Navigation;
 
     if (button || appearance === ContentLinkAppearance.Button) {
       return html`<oryx-button>${this.renderLink(true)}</oryx-button>`;
     }
 
     return html`<oryx-link
-      .size=${ifDefined(dropdown ? Size.Lg : undefined)}
+      .size=${ifDefined(navigation ? Size.Lg : undefined)}
       .color=${color}
       ?singleLine=${singleLine}
       .icon=${icon}

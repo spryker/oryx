@@ -1,5 +1,5 @@
 import { fixture, html } from '@open-wc/testing-helpers';
-import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
+import { Size, a11yConfig, useComponent } from '@spryker-oryx/utilities';
 import { LinkComponent } from './link.component';
 import { linkComponent } from './link.def';
 import { LinkType } from './link.model';
@@ -76,6 +76,16 @@ describe('LinkComponent', () => {
 
     it('should render icon', () => {
       expect(element?.shadowRoot?.querySelector('oryx-icon')).not.toBeNull();
+    });
+  });
+
+  describe('when link has size property', () => {
+    beforeEach(async () => {
+      element = await fixture(html`<oryx-link size=${Size.Lg}></oryx-link>`);
+    });
+
+    it('should have size attribute', () => {
+      expect(element.getAttribute('size')).toBe(Size.Lg);
     });
   });
 });

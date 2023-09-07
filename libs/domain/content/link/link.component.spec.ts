@@ -2,10 +2,9 @@ import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
-import { ButtonComponent, ButtonType } from '@spryker-oryx/ui/button';
 import { IconComponent } from '@spryker-oryx/ui/icon';
 import { LinkComponent } from '@spryker-oryx/ui/link';
-import { useComponent } from '@spryker-oryx/utilities';
+import { Size, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { ContentLinkComponent } from './link.component';
@@ -264,25 +263,24 @@ describe('ContentLinkComponent', () => {
   });
 
   describe('when appearance is provided', () => {
-    describe('and appearance is dropdown', () => {
+    describe('and appearance is navigation', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-content-link
-            .options=${{ appearance: ContentLinkAppearance.Dropdown }}
+            .options=${{ appearance: ContentLinkAppearance.Navigation }}
           ></oryx-content-link>`
         );
       });
 
-      it('should render button type text', () => {
+      it('should render link size lg', () => {
         expect(
-          (element.renderRoot.querySelector('oryx-button') as ButtonComponent)
-            .type
-        ).toBe(ButtonType.Text);
+          (element.renderRoot.querySelector('oryx-link') as LinkComponent).size
+        ).toBe(Size.Lg);
       });
 
       it('should have attribute dropdown', () => {
         expect(element.getAttribute('appearance')).toBe(
-          ContentLinkAppearance.Dropdown
+          ContentLinkAppearance.Navigation
         );
       });
     });
