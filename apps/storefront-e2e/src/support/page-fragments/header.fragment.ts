@@ -12,6 +12,11 @@ export class HeaderFragment {
   getLocaleButton = () =>
     this.getLocaleSelector().find('oryx-button[slot="trigger"]');
 
+  getPriceModeSelector = () =>
+    this.getWrapper().find('oryx-price-mode-selector');
+  getPriceModeOption = (value) =>
+    this.getPriceModeSelector().find(`oryx-option[value="${value}"]`);
+
   getLogo = () =>
     this.getWrapper().find('oryx-content-image').find('a[href="/"]');
 
@@ -33,7 +38,7 @@ export class HeaderFragment {
 
   changeLocale = (locale: string, isHydrated = false) => {
     if (!isHydrated) {
-      cy.hydrateElemenet('/assets/locale-selector.component-*.js', () => {
+      cy.hydrateElement('/assets/locale-selector.component-*.js', () => {
         this.getLocaleSelector().click();
       });
     }
@@ -49,7 +54,7 @@ export class HeaderFragment {
 
   changeCurrency = (currency: string, isHydrated = false) => {
     if (!isHydrated) {
-      cy.hydrateElemenet('/assets/currency-selector.component-*.js', () => {
+      cy.hydrateElement('/assets/currency-selector.component-*.js', () => {
         this.getCurrencyButton().click();
       });
     }
@@ -60,6 +65,18 @@ export class HeaderFragment {
 
     this.initProductsUpdateInterceptor();
     this.getCurrencySelector().find(selector).click();
+    this.waitForProductsUpdate();
+  };
+
+  changePriceMode = (priceMode: string, isHydrated = false) => {
+    if (!isHydrated) {
+      cy.hydrateElement('/assets/price-mode-selector.component-*.js', () => {
+        this.getCurrencyButton().click();
+      });
+    }
+
+    this.initProductsUpdateInterceptor();
+    this.getPriceModeOption(priceMode).click({ force: true });
     this.waitForProductsUpdate();
   };
 
