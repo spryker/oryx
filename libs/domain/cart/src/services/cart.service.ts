@@ -16,7 +16,7 @@ export interface CartService {
   addEntry(data: AddCartEntryQualifier): Observable<unknown>;
   updateEntry(data: UpdateCartEntryQualifier): Observable<unknown>;
   deleteEntry(data: CartEntryQualifier): Observable<unknown>;
-  update(data: Cart): Observable<Cart | undefined>;
+  updateCart(data: Cart): Observable<unknown>;
 
   /**
    * Get busy state for either cart or individual entry by groupKey
