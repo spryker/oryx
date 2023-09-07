@@ -92,9 +92,6 @@ export class DefaultCartAdapter implements CartAdapter {
           !identity.isAuthenticated
         );
 
-        const version = data.version;
-        delete data.version;
-
         const body = {
           data: {
             type: identity.isAuthenticated
@@ -104,14 +101,8 @@ export class DefaultCartAdapter implements CartAdapter {
           },
         };
 
-        const headers = version
-          ? {
-              'If-Match': version,
-            }
-          : undefined;
-
         return this.http
-          .patch<ApiCartModel.Response>(url, body, { headers })
+          .patch<ApiCartModel.Response>(url, body)
           .pipe(this.transformer.do(CartNormalizer));
       })
     );

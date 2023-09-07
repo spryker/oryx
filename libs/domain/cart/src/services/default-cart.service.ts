@@ -10,7 +10,6 @@ import {
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
-import { PriceModeChanged } from '@spryker-oryx/site';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   combineLatest,
@@ -33,6 +32,7 @@ import {
   CartEntryQualifier,
   CartQualifier,
   UpdateCartEntryQualifier,
+  UpdateCartQualifier,
 } from '../models';
 import { CartAdapter } from './adapter/cart.adapter';
 import { CartService } from './cart.service';
@@ -100,6 +100,13 @@ export class DefaultCartService implements CartService {
     },
   });
 
+  protected updateCartCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: UpdateCartQualifier) => {
+      return this.adapter.update(qualifier);
+    },
+  });
+
   protected updateAfterModification$ = createEffect<Cart>([
     CartModificationSuccess,
     ({ event }) => {
@@ -109,28 +116,6 @@ export class DefaultCartService implements CartService {
           data: event.data,
           qualifier: { cartId: event.data.id },
         });
-    },
-  ]);
-
-  protected updatePriceMode$ = createEffect<Cart>([
-    PriceModeChanged,
-    ({ event }) => {
-      if (event.data) {
-        return subscribeReplay(
-          this.getCart().pipe(
-            take(1),
-            switchMap((cart) => {
-              return this.adapter.update({
-                cartId: cart?.id,
-                priceMode: event.data?.priceMode,
-                version: cart?.version,
-              });
-            })
-          )
-        );
-      }
-
-      return;
     },
   ]);
 
@@ -266,6 +251,10 @@ export class DefaultCartService implements CartService {
 
   updateEntry(qualifier: UpdateCartEntryQualifier): Observable<unknown> {
     return this.executeWithOptionalCart(qualifier, this.updateEntryCommand$);
+  }
+
+  updateCart(qualifier: UpdateCartQualifier): Observable<unknown> {
+    return this.executeWithOptionalCart(qualifier, this.updateCartCommand$);
   }
 
   isBusy({ groupKey }: CartEntryQualifier = {}): Observable<boolean> {
