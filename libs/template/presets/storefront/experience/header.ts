@@ -108,21 +108,23 @@ export const HeaderTemplate: ExperienceComponent = {
                 rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
               },
               components: [
-                featureVersion >= '1.1'
-                  ? {
-                      type: 'oryx-content-link',
-                      options: {
-                        icon: IconTypes.User,
-                        url: '/account/overview',
-                        appearance: ContentLinkAppearance.Dropdown,
-                      },
-                      content: {
-                        data: {
-                          text: i18n('user.account'),
+                ...(featureVersion >= '1.1'
+                  ? [
+                      {
+                        type: 'oryx-content-link',
+                        options: {
+                          icon: IconTypes.User,
+                          url: '/account/overview',
+                          appearance: ContentLinkAppearance.Navigation,
+                        },
+                        content: {
+                          data: {
+                            text: i18n('user.account'),
+                          },
                         },
                       },
-                    }
-                  : {},
+                    ]
+                  : []),
                 { type: 'oryx-auth-login-link' },
               ],
             },

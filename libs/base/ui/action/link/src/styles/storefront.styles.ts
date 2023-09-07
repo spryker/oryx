@@ -6,9 +6,11 @@ export const storefrontLinkStyles = css`
     display: inline-flex;
   }
 
-  :host([icon]) {
+  :host([icon]:not([size])) {
     --oryx-icon-size: 16px;
+  }
 
+  :host([icon]) {
     align-items: baseline;
     gap: 8px;
   }
@@ -19,9 +21,12 @@ export const storefrontLinkStyles = css`
     white-space: nowrap;
   }
 
+  :host(:not([size])) oryx-icon {
+    inset-block-start: 3px;
+  }
+
   oryx-icon {
     position: relative;
-    inset-block-start: 3px;
   }
 
   ::slotted(a) {

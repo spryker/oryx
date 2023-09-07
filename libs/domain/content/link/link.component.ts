@@ -1,8 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/site';
-import { ButtonType } from '@spryker-oryx/ui/button';
-import { computed, elementEffect, hydrate } from '@spryker-oryx/utilities';
+import {
+  Size,
+  computed,
+  elementEffect,
+  hydrate,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
@@ -40,14 +44,12 @@ export class ContentLinkComponent extends ContentMixin<
 
     const dropdown = appearance === ContentLinkAppearance.Dropdown;
 
-    if (button || dropdown || appearance === ContentLinkAppearance.Button) {
-      return html`<oryx-button
-        .type=${ifDefined(dropdown ? ButtonType.Text : undefined)}
-        >${this.renderLink(true)}</oryx-button
-      >`;
+    if (button || appearance === ContentLinkAppearance.Button) {
+      return html`<oryx-button>${this.renderLink(true)}</oryx-button>`;
     }
 
     return html`<oryx-link
+      .size=${ifDefined(dropdown ? Size.Lg : undefined)}
       .color=${color}
       ?singleLine=${singleLine}
       .icon=${icon}
@@ -78,8 +80,7 @@ export class ContentLinkComponent extends ContentMixin<
     const { text } = this.$content() ?? {};
     const { button, icon, appearance } = this.$options();
     const renderIcon =
-      (!!button || (appearance && appearance !== ContentLinkAppearance.Link)) &&
-      !!icon;
+      (!!button || appearance === ContentLinkAppearance.Button) && !!icon;
 
     if (text || icon) {
       return html` ${when(

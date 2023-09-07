@@ -7,7 +7,7 @@ export interface ContentLinkContent {
 
 export const enum ContentLinkAppearance {
   Link = 'link',
-  Dropdown = 'dropdown',
+  Navigation = 'navigation',
   Button = 'button',
 }
 
