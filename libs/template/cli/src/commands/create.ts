@@ -16,12 +16,13 @@ import { CliCommand, CliCommandOption } from '../models';
 import { CliArgsService, NodeUtilService } from '../services';
 
 export class CreateCliCommand implements CliCommand {
-  protected repoUrl = 'https://github.com/spryker/oryx/archive/refs/{ref}.zip';
+  protected repoUrl =
+    'https://github.com/spryker/composable-frontend/archive/refs/{ref}.zip';
   protected repoRefs = {
-    [OryxTemplateRef.Latest]: 'heads/development',
+    [OryxTemplateRef.Latest]: 'heads/master',
   };
   protected repoPaths = {
-    [OryxTemplateRef.Latest]: 'oryx-development',
+    [OryxTemplateRef.Latest]: 'composable-frontend-master',
   };
   protected packageRoot = path.resolve(this.dirPath, '../..');
   protected repoPath = path.resolve(this.packageRoot, 'repo');
@@ -85,12 +86,6 @@ Possible values: ${Object.values(OryxPreset).join(', ')}`
       options.name = await this.promptName();
     } else {
       log.info(`App name: ${c.bold(options.name)}`);
-    }
-
-    if (!options.preset) {
-      options.preset = await this.promptPreset();
-    } else {
-      log.info(`Preset: ${c.bold(options.preset)}`);
     }
 
     const config: CreateAppConfig = {
@@ -160,13 +155,7 @@ Please make sure to not use an existing directory name.`
       );
     }
 
-    const templatePath = path.resolve(
-      repoPath,
-      'apps',
-      this.getTemplateFolder(options.preset)
-    );
-
-    await this.nodeUtilService.copyFolder(templatePath, options.path);
+    await this.nodeUtilService.copyFolder(repoPath, options.path);
 
     s.stop('Template copied!');
   }
@@ -239,13 +228,22 @@ interface CreateAppConfig extends Required<CreateAppOptions> {
 export interface CreateAppOptions {
   name?: string;
   preset?: OryxPreset;
+  options?: OryxOption[];
 }
 
 export enum OryxPreset {
   B2C = 'b2c',
+  B2B = 'b2b',
   Fulfillment = 'fulfillment',
 }
 
 export enum OryxTemplateRef {
   Latest = 'latest',
+}
+
+export enum OryxOption {
+  Labs = 'Labs',
+  Ssr = 'SSR',
+  Sw = 'service-worker',
+  Fa = 'fulfillment-application',
 }
