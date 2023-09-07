@@ -14,15 +14,15 @@ describe('ContentExperienceAdapter', () => {
   let contentService: ContentService;
 
   beforeEach(() => {
-    const injector = createInjector({
+    const testInjector = createInjector({
       providers: [
         { provide: ContentService, useValue: mockContentService },
         { provide: ExperienceAdapter, useClass: ContentExperienceAdapter },
       ],
     });
 
-    contentService = injector.inject(ContentService);
-    adapter = injector.inject(ExperienceAdapter);
+    contentService = testInjector.inject(ContentService);
+    adapter = testInjector.inject(ExperienceAdapter);
   });
 
   afterEach(() => {
@@ -61,7 +61,7 @@ describe('ContentExperienceAdapter', () => {
     mockContentService.getAll.mockReturnValue(of(data));
     const result = await lastValueFrom(adapter.getAll());
     expect(result).toEqual(components);
-    expect(mockContentService.getAll).toHaveBeenCalledWith({
+    expect(contentService.getAll).toHaveBeenCalledWith({
       type: ContentFields.Component,
       entities: [ContentFields.Component],
     });

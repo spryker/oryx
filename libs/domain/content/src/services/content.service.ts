@@ -19,6 +19,9 @@ export interface ContentService {
   ): Observable<Content<T>[] | null | undefined>;
   getAll(qualifier: ContentQualifier): Observable<Content[] | null | undefined>;
 
+  /**
+   * @deprecated Since version 1.1. Will be removed.
+   */
   getState(qualifier: ContentQualifier): Observable<QueryState<Content | null>>;
 }
 

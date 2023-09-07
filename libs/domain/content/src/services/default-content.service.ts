@@ -73,6 +73,9 @@ export class DefaultContentService implements ContentService {
     return this.contentQuery.get({ ...qualifier });
   }
 
+  /**
+   * @deprecated Since version 1.1. Will be removed.
+   */
   getState(
     qualifier: ContentQualifier
   ): Observable<QueryState<Content | null>> {
