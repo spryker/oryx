@@ -49,7 +49,7 @@ class MockCurrencyService implements Partial<CurrencyService> {
 }
 
 class MockPriceModeService implements Partial<PriceModeService> {
-  get = vi.fn<[], Observable<string>>().mockReturnValue(of('EUR'));
+  get = vi.fn<[], Observable<string>>().mockReturnValue(of('GROSS_MODE'));
 }
 
 describe('DefaultCartAdapter', () => {

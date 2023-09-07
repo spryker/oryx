@@ -58,8 +58,4 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
       mode: priceMode.replace('_', ' '),
     });
   }
-
-  private getOptionElement(priceMode: string) {
-    return this.renderRoot?.querySelector(`oryx-option[value="${priceMode}"]`);
-  }
 }
