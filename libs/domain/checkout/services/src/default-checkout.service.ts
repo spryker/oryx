@@ -29,16 +29,6 @@ import {
   take,
   throwError,
 } from 'rxjs';
-import { CheckoutResponse, CheckoutStatus, PlaceOrderData } from '../models';
-import { CheckoutAdapter } from './adapter';
-import { CheckoutService } from './checkout.service';
-import {
-  CheckoutStateService,
-  PlaceOrderEnd,
-  PlaceOrderFail,
-  PlaceOrderStart,
-  PlaceOrderSuccess,
-} from './state';
 
 export class DefaultCheckoutService implements CheckoutService {
   protected cartId$ = this.cartService
