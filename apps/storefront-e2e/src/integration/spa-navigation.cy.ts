@@ -1,3 +1,4 @@
+import '@percy/cypress';
 import { ContactPage } from '../support/page-objects/contact.page';
 import { LandingPage } from '../support/page-objects/landing.page';
 
@@ -13,10 +14,9 @@ describe('SPA navigation suite', () => {
       landingPage.footer.getLinkByUrl('/contact').click();
 
       checkIfContactPageIsOpened();
-
       contactPage.header.getLogo().click();
-
       checkIfHomePageIsOpened();
+      cy.percySnapshot('Homepage');
     }
   );
 });
