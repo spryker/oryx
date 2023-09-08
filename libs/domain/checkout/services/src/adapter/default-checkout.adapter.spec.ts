@@ -1,5 +1,10 @@
 import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import {
+  CheckoutAdapter,
+  CheckoutNormalizer,
+  CheckoutResponseNormalizer,
+} from '@spryker-oryx/checkout';
+import {
   mockCheckout,
   mockGetShipmentResponse,
   mockPlaceOrderData,
@@ -9,9 +14,7 @@ import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { Observable, of } from 'rxjs';
-import { CheckoutAdapter } from './checkout.adapter';
 import { DefaultCheckoutAdapter } from './default-checkout.adapter';
-import { CheckoutNormalizer, CheckoutResponseNormalizer } from './normalizers';
 
 const mockApiUrl = 'mockApiUrl';
 const cartId = 'mockid';

@@ -1,5 +1,9 @@
 import { CartQuery, CartService } from '@spryker-oryx/cart';
-import { CheckoutStateService } from '@spryker-oryx/checkout';
+import {
+  CheckoutAdapter,
+  CheckoutDataService,
+  CheckoutStateService,
+} from '@spryker-oryx/checkout';
 import {
   DefaultQueryService,
   QueryService,
@@ -7,8 +11,7 @@ import {
 } from '@spryker-oryx/core';
 import { Injector, createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of, take } from 'rxjs';
-import { CheckoutAdapter } from '../adapter';
-import { CheckoutDataService, DefaultCheckoutDataService } from './';
+import { DefaultCheckoutDataService } from './';
 
 class MockCartService implements Partial<CartService> {
   getCart = vi.fn().mockReturnValue(of());

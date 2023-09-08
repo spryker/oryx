@@ -2,7 +2,7 @@ import {
   mockNormalizedPaymentMethods,
   mockPaymentMethods,
 } from '@spryker-oryx/checkout/mocks';
-import { DeserializedCheckout } from '../checkout';
+import { DeserializedCheckout } from './model';
 import { paymentsNormalizer } from './payments.normalizer';
 
 const mockCheckoutData: DeserializedCheckout = {

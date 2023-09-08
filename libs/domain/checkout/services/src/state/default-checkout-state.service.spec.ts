@@ -1,13 +1,14 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { Injector, createInjector, destroyInjector } from '@spryker-oryx/di';
-import { BehaviorSubject, of, take } from 'rxjs';
 import {
+  CheckoutStateService,
   ContactDetails,
   PlaceOrderData,
   checkoutDataStorageKey,
-} from '../../models';
-import { CheckoutStateService, DefaultCheckoutStateService } from './';
+} from '@spryker-oryx/checkout';
+import { BehaviorSubject, of, take } from 'rxjs';
+import { DefaultCheckoutStateService } from './default-checkout-state.service';
 
 class MockStorageService implements Partial<StorageService> {
   get = vi.fn().mockReturnValue(of());

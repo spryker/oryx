@@ -1,5 +1,5 @@
-import { Shipment } from '../../../../models';
-import { DeserializedCheckout } from '../checkout/model';
+import { Shipment } from '@spryker-oryx/checkout';
+import { DeserializedCheckout } from './model';
 import { shipmentsNormalizer } from './shipments.normalizer';
 
 const mockBaseShipment = {
