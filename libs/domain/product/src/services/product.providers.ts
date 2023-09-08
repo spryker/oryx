@@ -36,6 +36,7 @@ import {
 import { relationsListNormalizer } from './adapter/normalizers/relations-list';
 import { SortNormalizer, sortNormalizer } from './adapter/normalizers/sort';
 import {
+  CategoryListNormalizer,
   CategoryNodeNormalizer,
   CategoryNormalizer,
   CategoryTreeNormalizer,
@@ -44,8 +45,9 @@ import {
   ProductCategoryAdapter,
   ProductCategoryService,
   categoryEffects,
+  categoryListNormalizerFactory,
   categoryNodeNormalizer,
-  categoryNormalizer,
+  categoryNormalizerFactory,
   categoryTreeNormalizer,
 } from './category';
 import { DefaultProductService } from './default-product.service';
@@ -180,7 +182,11 @@ export const productProviders: Provider[] = [
   },
   {
     provide: CategoryNormalizer,
-    useValue: categoryNormalizer,
+    useFactory: categoryNormalizerFactory,
+  },
+  {
+    provide: CategoryListNormalizer,
+    useFactory: categoryListNormalizerFactory,
   },
   {
     provide: CategoryNodeNormalizer,

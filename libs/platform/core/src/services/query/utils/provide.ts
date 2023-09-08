@@ -45,3 +45,15 @@ export function provideEffect(effect: EffectDefinition): ValueProvider {
     useValue: effect,
   };
 }
+
+export function provideFactoryEffect<Data = unknown, Qualifier = unknown>(
+  callback: () => EffectDefinition<Data, Qualifier>
+): FactoryProvider;
+export function provideFactoryEffect<Data>(
+  callback: () => EffectDefinition<Data>
+): FactoryProvider {
+  return {
+    provide: EFFECT_TOKEN,
+    useFactory: callback,
+  };
+}

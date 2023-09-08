@@ -1,15 +1,15 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
-import { Observable, combineLatest, map, of, tap } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
+import { CategoryNormalizer } from '../../../category';
 import { AvailabilityNormalizer } from '../availability';
 import { CategoryIdNormalizer } from '../category-id';
 import { ProductLabelsNormalizer } from '../labels/labels.normalizer';
 import { ProductMediaSetNormalizer } from '../media';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
-import { CategoryNormalizer } from '../../../category';
 
 export const ProductNormalizer = 'oryx.ProductNormalizer*';
 
@@ -99,12 +99,24 @@ export function productNodeNormalizer(
 
   const { [nodeKey]: node } = abstract[0];
 
-  return combineLatest([
-    transformer.transform(node, CategoryIdNormalizer),
-    transformer.transform(node, CategoryNormalizer)
-  ]).pipe(
-    map(([ids]) => ids)
-  );
+  return transformer.transform(node, CategoryIdNormalizer);
+}
+
+export function productCategoryNormalizer(
+  data: DeserializedProduct,
+  transformer: TransformerService
+): Observable<Partial<Product>> {
+  const abstractKey = camelize(ApiProductModel.Includes.AbstractProducts);
+  const nodeKey = camelize(ApiProductModel.Includes.CategoryNodes);
+  const { [abstractKey]: abstract } = data;
+
+  if (!abstract?.length) {
+    return of({});
+  }
+
+  const { [nodeKey]: node } = abstract[0];
+
+  return transformer.transform(node, CategoryNormalizer);
 }
 
 export const productNormalizer: Provider[] = [
@@ -131,6 +143,10 @@ export const productNormalizer: Provider[] = [
   {
     provide: ProductNormalizer,
     useValue: productNodeNormalizer,
+  },
+  {
+    provide: ProductNormalizer,
+    useValue: productCategoryNormalizer,
   },
 ];
 

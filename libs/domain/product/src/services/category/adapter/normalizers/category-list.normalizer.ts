@@ -1,15 +1,15 @@
 import { QueryService, Transformer } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { ApiProductModel, ProductCategory } from '../../../../models';
+import { ApiProductModel } from '../../../../models';
 import { CategoriesLoaded } from '../../state';
-import { categoryNodeNormalizer } from './category-node.normalizer';
+import { flattenCategoryNodes } from './category-tree.normalizer';
 
-export const CategoryNormalizer = 'oryx.CategoryNormalizer';
+export const CategoryListNormalizer = 'oryx.CategoryListNormalizer';
 
-export const categoryNormalizerFactory =
+export const categoryListNormalizerFactory =
   (queryService = inject(QueryService)) =>
   (data?: ApiProductModel.CategoryNodes[]): object => {
-    const categories = data?.map<ProductCategory>(categoryNodeNormalizer);
+    const categories = flattenCategoryNodes(data ?? []);
 
     if (categories?.length) {
       queryService.emit({ type: CategoriesLoaded, data: categories });
@@ -20,6 +20,6 @@ export const categoryNormalizerFactory =
 
 declare global {
   interface InjectionTokensContractMap {
-    [CategoryNormalizer]: Transformer<object>[];
+    [CategoryListNormalizer]: Transformer<object>[];
   }
 }

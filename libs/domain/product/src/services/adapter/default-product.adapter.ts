@@ -42,7 +42,9 @@ export class DefaultProductAdapter implements ProductAdapter {
         `${this.SCOS_BASE_URL}/${this.productEndpoint}/${sku}${
           include ? '?include=' : ''
         }${include?.join(',') || ''}
-        &fields[${ApiProductModel.Includes.CategoryNodes}]=${categoryNodeFields.join(',')}`
+        &fields[${
+          ApiProductModel.Includes.CategoryNodes
+        }]=${categoryNodeFields.join(',')}`
       )
       .pipe(this.transformer.do(ProductNormalizer));
   }

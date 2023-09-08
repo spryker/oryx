@@ -1,8 +1,5 @@
 import { Transformer } from '@spryker-oryx/core';
-import {
-  ApiProductCategoryModel,
-  ProductCategory,
-} from '../../../../models';
+import { ApiProductCategoryModel, ProductCategory } from '../../../../models';
 
 export const CategoryNodeNormalizer = 'oryx.CategoryNodeNormalizer';
 
@@ -17,7 +14,7 @@ export function categoryNodeNormalizer(
     name,
     description: metaDescription ?? name,
     order,
-    parent: !rootParent ? String(parents[0].nodeId) : undefined
+    parent: !rootParent ? String(parents[0].nodeId) : undefined,
   };
 }
 

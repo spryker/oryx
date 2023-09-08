@@ -1,12 +1,9 @@
 import { Transformer } from '@spryker-oryx/core';
-import {
-  ApiProductCategoryModel,
-  ProductCategory,
-} from '../../../../models';
+import { ApiProductCategoryModel, ProductCategory } from '../../../../models';
 
 export const CategoryTreeNormalizer = 'oryx.CategoryTreeNormalizer';
 
-function mapCategoryNode(
+export function mapCategoryNode(
   category: ApiProductCategoryModel.CategoryNode,
   parent?: string
 ): ProductCategory {
@@ -16,11 +13,11 @@ function mapCategoryNode(
     name,
     description: metaDescription ?? name,
     order,
-    parent
+    parent,
   };
-};
+}
 
-function flattenCategoryNodes(
+export function flattenCategoryNodes(
   categories: ApiProductCategoryModel.CategoryNode[]
 ): ProductCategory[] {
   const result: ProductCategory[] = [];

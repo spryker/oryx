@@ -111,6 +111,7 @@ export module ApiProductModel {
     Order = 'order',
     MetaDescription = 'metaDescription',
     Parents = 'parents',
+    Children = 'children',
   }
 
   export type ResponseIncludes =

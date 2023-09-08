@@ -23,14 +23,20 @@ export class DefaultProductCategoryAdapter implements ProductCategoryAdapter {
 
     return this.http
       .get<ApiProductCategoryModel.Response>(
-        `${this.SCOS_BASE_URL}/category-nodes/${categoryId}?fields[category-nodes]=${fields.join(',')}`
-      ).pipe(this.transformer.do(CategoryNodeNormalizer));
+        `${
+          this.SCOS_BASE_URL
+        }/category-nodes/${categoryId}?fields[category-nodes]=${fields.join(
+          ','
+        )}`
+      )
+      .pipe(this.transformer.do(CategoryNodeNormalizer));
   }
 
   getTree(): Observable<ProductCategory[]> {
     return this.http
       .get<ApiProductCategoryModel.TreeResponse>(
         `${this.SCOS_BASE_URL}/category-trees`
-      ).pipe(this.transformer.do(CategoryTreeNormalizer));
+      )
+      .pipe(this.transformer.do(CategoryTreeNormalizer));
   }
 }

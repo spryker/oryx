@@ -1,13 +1,14 @@
-import { provideEffect } from '@spryker-oryx/core';
-import { CategoriesLoaded } from './events';
-import { resolve } from '@spryker-oryx/di';
+import { provideFactoryEffect } from '@spryker-oryx/core';
+import { inject } from '@spryker-oryx/di';
+import { ProductCategory } from '../../../models';
 import { ProductCategoryService } from '../category.service';
+import { CategoriesLoaded } from './events';
 
 export const categoryEffects = [
-  provideEffect<CategoriesLoaded>([
-    CategoriesLoaded,
-    ({ event }) => {
-      resolve(ProductCategoryService).add(event.data ?? []);
-    },
-  ]),
+  provideFactoryEffect<ProductCategory[]>(
+    (service = inject(ProductCategoryService)) => [
+      CategoriesLoaded,
+      ({ event }) => service.add(event.data ?? []),
+    ]
+  ),
 ];

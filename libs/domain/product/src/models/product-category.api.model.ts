@@ -1,7 +1,6 @@
 import { JsonApiModel } from '@spryker-oryx/utilities';
 
 export module ApiProductCategoryModel {
-
   export const enum Fields {
     NodeId = 'nodeId',
     Name = 'name',
@@ -15,7 +14,6 @@ export module ApiProductCategoryModel {
     order: number;
     name: string;
     metaDescription?: string;
-    url: string;
     children: CategoryNode[];
     parents?: CategoryNode[];
   }

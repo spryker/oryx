@@ -28,29 +28,25 @@ export class ProductDetailsBreadcrumbResolver implements BreadcrumbResolver {
   ) {}
 
   resolve(): Observable<BreadcrumbItem[]> {
-    return this.routerService
-      .current()
-      .pipe(
-        switchMap(({ params }) =>
-          this.productService
-            .get({ sku: params.sku as string })
-            .pipe(
-              delay(0),
-              switchMap((product) =>
-                product
-                  ? this.generateBreadcrumbTrail(product)
-                  : throwError(() => new Error('Product not found'))
-              )
-            )
+    return this.routerService.current().pipe(
+      switchMap(({ params }) =>
+        this.productService.get({ sku: params.sku as string }).pipe(
+          delay(0),
+          switchMap((product) =>
+            product
+              ? this.generateBreadcrumbTrail(product)
+              : throwError(() => new Error('Product not found'))
+          )
         )
-      );
+      )
+    );
   }
 
   protected generateBreadcrumbTrail(
     product: Product
   ): Observable<BreadcrumbItem[]> {
     const { categoryIds } = product;
-    
+
     if (!categoryIds?.length) {
       return of([this.productTitle(product)]);
     }
