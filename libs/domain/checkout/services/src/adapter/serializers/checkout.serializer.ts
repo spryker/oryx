@@ -1,8 +1,4 @@
-import { Serializer } from '@spryker-oryx/core';
-import { Provider } from '@spryker-oryx/di';
-import { ApiCheckoutModel, PlaceOrderData } from '../../../../models';
-
-export const CheckoutSerializer = 'oryx.CheckoutSerializers*';
+import { ApiCheckoutModel, PlaceOrderData } from '@spryker-oryx/checkout';
 
 export function checkoutAttributesSerializer(
   data: PlaceOrderData
@@ -26,17 +22,4 @@ export function checkoutAttributesSerializer(
       payments: serializedPayments,
     },
   };
-}
-
-export const checkoutSerializer: Provider[] = [
-  {
-    provide: CheckoutSerializer,
-    useValue: checkoutAttributesSerializer,
-  },
-];
-
-declare global {
-  interface InjectionTokensContractMap {
-    [CheckoutSerializer]: Serializer<PlaceOrderData>[];
-  }
 }

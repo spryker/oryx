@@ -1,5 +1,5 @@
+import { ApiCheckoutModel } from '@spryker-oryx/checkout';
 import { CamelCase } from '@spryker-oryx/core/utilities';
-import { ApiCheckoutModel } from '../../../models';
 
 export type DeserializedCheckoutIncludes = {
   [P in ApiCheckoutModel.Includes as `${CamelCase<P>}`]?: P extends ApiCheckoutModel.Includes.ShipmentMethods
@@ -14,3 +14,14 @@ export type DeserializedCheckoutIncludes = {
         >)[]
     : never;
 };
+
+export type DeserializedCheckout = ApiCheckoutModel.Attributes &
+  Pick<
+    DeserializedCheckoutIncludes,
+    CamelCase<
+      | ApiCheckoutModel.Includes.Shipments
+      | ApiCheckoutModel.Includes.PaymentMethods
+      | ApiCheckoutModel.Includes.Carts
+      | ApiCheckoutModel.Includes.GuestCarts
+    >
+  >;

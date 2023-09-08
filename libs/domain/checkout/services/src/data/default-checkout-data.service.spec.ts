@@ -2,10 +2,10 @@ import { CartQuery, CartService } from '@spryker-oryx/cart';
 import { CheckoutStateService } from '@spryker-oryx/checkout';
 import {
   DefaultQueryService,
-  provideQuery,
   QueryService,
+  provideQuery,
 } from '@spryker-oryx/core';
-import { createInjector, destroyInjector, Injector } from '@spryker-oryx/di';
+import { Injector, createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of, take } from 'rxjs';
 import { CheckoutAdapter } from '../adapter';
 import { CheckoutDataService, DefaultCheckoutDataService } from './';

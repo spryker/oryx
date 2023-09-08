@@ -1,9 +1,6 @@
-import { Transformer } from '@spryker-oryx/core';
+import { ApiCheckoutModel, PaymentMethod } from '@spryker-oryx/checkout';
 import { camelize } from '@spryker-oryx/core/utilities';
-import { ApiCheckoutModel, PaymentMethod } from '../../../../models';
-import { DeserializedCheckout } from '../checkout/model';
-
-export const PaymentsNormalizer = 'oryx.PaymentsNormalizer*';
+import { DeserializedCheckout } from './model';
 
 export function paymentsNormalizer(
   data?: DeserializedCheckout
@@ -30,10 +27,4 @@ export function paymentsNormalizer(
           : 0
       ) ?? []
   );
-}
-
-declare global {
-  interface InjectionTokensContractMap {
-    [PaymentsNormalizer]: Transformer<PaymentMethod[]>[];
-  }
 }

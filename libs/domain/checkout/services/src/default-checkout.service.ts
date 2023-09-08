@@ -1,13 +1,26 @@
 import { CartService, CartsUpdated } from '@spryker-oryx/cart';
+import {
+  CheckoutAdapter,
+  CheckoutResponse,
+  CheckoutService,
+  CheckoutStateService,
+  CheckoutStatus,
+  PlaceOrderData,
+  PlaceOrderEnd,
+  PlaceOrderFail,
+  PlaceOrderStart,
+  PlaceOrderSuccess,
+} from '@spryker-oryx/checkout';
 import { createCommand, createEffect } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
+import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { AddressModificationSuccess } from '@spryker-oryx/user';
 import {
+  Observable,
   combineLatest,
   map,
-  Observable,
   of,
   scan,
   shareReplay,
@@ -16,17 +29,6 @@ import {
   take,
   throwError,
 } from 'rxjs';
-import { CheckoutResponse, CheckoutStatus, PlaceOrderData } from '../models';
-import { CheckoutAdapter } from './adapter';
-import { CheckoutService } from './checkout.service';
-import {
-  CheckoutStateService,
-  PlaceOrderEnd,
-  PlaceOrderFail,
-  PlaceOrderStart,
-  PlaceOrderSuccess,
-} from './state';
-import { RouteType } from '@spryker-oryx/router';
 
 export class DefaultCheckoutService implements CheckoutService {
   protected cartId$ = this.cartService
@@ -86,7 +88,9 @@ export class DefaultCheckoutService implements CheckoutService {
     protected adapter = inject(CheckoutAdapter),
     protected linkService = inject(LinkService),
     protected orderService = inject(OrderService)
-  ) {}
+  ) {
+    console.log('checkout service constructor');
+  }
 
   getStatus(): Observable<CheckoutStatus> {
     return this.process$;

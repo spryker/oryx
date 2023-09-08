@@ -1,13 +1,12 @@
 import { CartsNormalizer } from '@spryker-oryx/cart';
-import { Transformer, TransformerService } from '@spryker-oryx/core';
-import { Provider } from '@spryker-oryx/di';
-import { map, Observable } from 'rxjs';
-import { CheckoutData } from '../../../../models';
-import { PaymentsNormalizer } from '../payments';
-import { ShipmentsNormalizer } from '../shipments';
+import {
+  CheckoutData,
+  PaymentsNormalizer,
+  ShipmentsNormalizer,
+} from '@spryker-oryx/checkout';
+import { TransformerService } from '@spryker-oryx/core';
+import { Observable, map } from 'rxjs';
 import { DeserializedCheckout } from './model';
-
-export const CheckoutNormalizer = 'oryx.CheckoutNormalizer*';
 
 export function checkoutAttributesNormalizer(
   data: DeserializedCheckout
@@ -54,29 +53,4 @@ export function checkoutCartsNormalizer(
   return transformer
     .transform(data, CartsNormalizer)
     .pipe(map((carts) => ({ carts })));
-}
-
-export const checkoutNormalizer: Provider[] = [
-  {
-    provide: CheckoutNormalizer,
-    useValue: checkoutAttributesNormalizer,
-  },
-  {
-    provide: CheckoutNormalizer,
-    useValue: checkoutShipmentsNormalizer,
-  },
-  {
-    provide: CheckoutNormalizer,
-    useValue: checkoutPaymentsNormalizer,
-  },
-  {
-    provide: CheckoutNormalizer,
-    useValue: checkoutCartsNormalizer,
-  },
-];
-
-declare global {
-  interface InjectionTokensContractMap {
-    [CheckoutNormalizer]: Transformer<CheckoutData>[];
-  }
 }

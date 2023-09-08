@@ -1,7 +1,7 @@
 import { StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Observable, of } from 'rxjs';
-import { DefaultCheckoutStateService } from '../../services';
+import { DefaultCheckoutStateService } from '@spryker-oryx/checkout/services';
 
 class MockStorageService implements StorageService {
   get(): Observable<any> {

@@ -1,19 +1,22 @@
 import { IdentityService } from '@spryker-oryx/auth';
+import {
+  CheckoutStateService,
+  PlaceOrderData,
+  checkoutDataStorageKey,
+} from '@spryker-oryx/checkout';
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
+  Observable,
+  Subscription,
   combineLatest,
   defer,
   distinctUntilChanged,
   map,
-  Observable,
   skip,
-  Subscription,
   take,
 } from 'rxjs';
-import { checkoutDataStorageKey, PlaceOrderData } from '../../models';
-import { CheckoutStateService } from './checkout-state.service';
 
 type CheckoutValue = {
   valid?: boolean;

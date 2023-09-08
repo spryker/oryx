@@ -1,16 +1,18 @@
 import { IdentityService } from '@spryker-oryx/auth';
-import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
-import { combineLatest, map, Observable, switchMap, take } from 'rxjs';
 import {
   ApiCheckoutModel,
+  CheckoutAdapter,
   CheckoutData,
+  CheckoutDataSerializer,
+  CheckoutNormalizer,
   CheckoutResponse,
+  CheckoutResponseNormalizer,
+  CheckoutSerializer,
   PlaceOrderData,
-} from '../../models';
-import { CheckoutAdapter } from './checkout.adapter';
-import { CheckoutNormalizer, CheckoutResponseNormalizer } from './normalizers';
-import { CheckoutDataSerializer, CheckoutSerializer } from './serializers';
+} from '@spryker-oryx/checkout';
+import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
+import { inject } from '@spryker-oryx/di';
+import { Observable, combineLatest, map, switchMap, take } from 'rxjs';
 
 export class DefaultCheckoutAdapter implements CheckoutAdapter {
   constructor(

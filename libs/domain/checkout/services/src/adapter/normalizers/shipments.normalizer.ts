@@ -1,9 +1,10 @@
-import { Transformer } from '@spryker-oryx/core';
+import {
+  ApiCheckoutModel,
+  Shipment,
+  ShipmentMethod,
+} from '@spryker-oryx/checkout';
 import { camelize } from '@spryker-oryx/core/utilities';
-import { ApiCheckoutModel, Shipment, ShipmentMethod } from '../../../../models';
-import { DeserializedCheckout } from '../checkout/model';
-
-export const ShipmentsNormalizer = 'oryx.ShipmentsNormalizer*';
+import { DeserializedCheckout } from './model';
 
 export function shipmentsNormalizer(data?: DeserializedCheckout): Shipment[] {
   if (!data) return [];
@@ -31,10 +32,4 @@ export function shipmentsNormalizer(data?: DeserializedCheckout): Shipment[] {
       }),
     };
   });
-}
-
-declare global {
-  interface InjectionTokensContractMap {
-    [ShipmentsNormalizer]: Transformer<Shipment[]>[];
-  }
 }
