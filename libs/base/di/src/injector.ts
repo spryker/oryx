@@ -1,5 +1,7 @@
+import { createLazyProxy } from './dynamic-proxy';
 import { InferInjectType, setCurrentInjector } from './inject';
 import {
+  AsyncClassProvider,
   ClassProvider,
   ExistingProvider,
   FactoryProvider,
@@ -29,6 +31,12 @@ function isFactoryProvider(provider?: Provider): provider is FactoryProvider {
 
 function isExistingProvider(provider?: Provider): provider is ExistingProvider {
   return (provider as ExistingProvider)?.useExisting !== undefined;
+}
+
+function isAsyncClassProvider(
+  provider?: Provider
+): provider is AsyncClassProvider {
+  return (provider as AsyncClassProvider)?.asyncClass !== undefined;
 }
 
 interface ProviderMap {
@@ -127,12 +135,20 @@ export class Injector {
     }
 
     if (providerInstance.instance === undefined) {
-      const restoreInjector = setCurrentInjector(this);
-
-      if (isClassProvider(providerInstance.provider)) {
+      if (isAsyncClassProvider(providerInstance.provider)) {
+        providerInstance.instance = createLazyProxy(
+          providerInstance.provider.asyncClass,
+          this,
+          (instance) => (providerInstance.instance = instance)
+        );
+      } else if (isClassProvider(providerInstance.provider)) {
+        const restoreInjector = setCurrentInjector(this);
         providerInstance.instance = new providerInstance.provider.useClass();
+        restoreInjector();
       } else if (isFactoryProvider(providerInstance.provider)) {
+        const restoreInjector = setCurrentInjector(this);
         providerInstance.instance = providerInstance.provider.useFactory();
+        restoreInjector();
       } else if (isExistingProvider(providerInstance.provider)) {
         providerInstance.instance = this.getInstance(
           providerInstance.provider.useExisting
@@ -140,8 +156,6 @@ export class Injector {
       } else {
         throw new Error(`Invalid provider for ${token}`);
       }
-
-      restoreInjector();
     }
 
     return providerInstance.instance;
