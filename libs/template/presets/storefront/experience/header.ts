@@ -1,5 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
@@ -25,34 +26,24 @@ export const HeaderTemplate: ExperienceComponent = {
           content: { data: { text: 'CLICK & COLLECT' } },
           options: { url: '/', icon: IconTypes.Check },
         },
-        {
-          type: 'oryx-price-mode-selector',
-          options: {
-            rules: [{ style: 'margin-inline-start: auto' }],
-          },
-        },
+        featureVersion >= '1.1'
+          ? {
+              type: 'oryx-price-mode-selector',
+              options: {
+                rules: [{ style: 'margin-inline-start: auto' }],
+              },
+            }
+          : {},
         {
           type: 'oryx-site-currency-selector',
+          ...(featureVersion < '1.1'
+            ? {
+                options: {
+                  rules: [{ style: 'margin-inline-start: auto' }],
+                },
+              }
+            : {}),
         },
-        // Temporary for e2e tests purposes
-        // featureVersion >= '1.1'
-        //   ? {
-        //       type: 'oryx-price-mode-selector',
-        //       options: {
-        //         rules: [{ style: 'margin-inline-start: auto' }],
-        //       },
-        //     }
-        //   : {},
-        // {
-        //   type: 'oryx-site-currency-selector',
-        //   ...(featureVersion < '1.1'
-        //     ? {
-        //         options: {
-        //           rules: [{ style: 'margin-inline-start: auto' }],
-        //         },
-        //       }
-        //     : {}),
-        // },
         { type: 'oryx-site-locale-selector' },
       ],
       options: {
