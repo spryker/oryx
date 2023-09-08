@@ -65,11 +65,23 @@ export class DefaultProductListAdapter implements ProductListAdapter {
       ApiProductModel.Includes.Labels,
     ];
 
+    const categoryNodeFields = [
+      ApiProductModel.CategoryNodeFields.MetaDescription,
+      ApiProductModel.CategoryNodeFields.NodeId,
+      ApiProductModel.CategoryNodeFields.Order,
+      ApiProductModel.CategoryNodeFields.Name,
+      ApiProductModel.CategoryNodeFields.Children,
+      ApiProductModel.CategoryNodeFields.IsActive,
+    ];
+
     return this.http
       .get<ApiProductModel.Response>(
         `${this.SCOS_BASE_URL}/${this.queryEndpoint}?${this.getKey(
           qualifier
-        )}&include=${include?.join(',')}`
+        )}&include=${include?.join(',')}
+        &fields[${
+          ApiProductModel.Includes.CategoryNodes
+        }]=${categoryNodeFields.join(',')}`
       )
       .pipe(this.transformer.do(ProductListNormalizer));
   }

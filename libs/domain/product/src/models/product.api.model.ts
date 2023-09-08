@@ -112,6 +112,7 @@ export module ApiProductModel {
     MetaDescription = 'metaDescription',
     Parents = 'parents',
     Children = 'children',
+    IsActive = 'isActive',
   }
 
   export type ResponseIncludes =
