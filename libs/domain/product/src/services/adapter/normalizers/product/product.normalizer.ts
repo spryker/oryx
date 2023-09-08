@@ -1,7 +1,7 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
-import { Observable, map, of } from 'rxjs';
+import { Observable, combineLatest, map, of, tap } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { AvailabilityNormalizer } from '../availability';
 import { CategoryIdNormalizer } from '../category-id';
@@ -9,6 +9,7 @@ import { ProductLabelsNormalizer } from '../labels/labels.normalizer';
 import { ProductMediaSetNormalizer } from '../media';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
+import { CategoryNormalizer } from '../../../category';
 
 export const ProductNormalizer = 'oryx.ProductNormalizer*';
 
@@ -98,7 +99,12 @@ export function productNodeNormalizer(
 
   const { [nodeKey]: node } = abstract[0];
 
-  return transformer.transform(node, CategoryIdNormalizer);
+  return combineLatest([
+    transformer.transform(node, CategoryIdNormalizer),
+    transformer.transform(node, CategoryNormalizer)
+  ]).pipe(
+    map(([ids]) => ids)
+  );
 }
 
 export const productNormalizer: Provider[] = [

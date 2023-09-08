@@ -36,11 +36,16 @@ import {
 import { relationsListNormalizer } from './adapter/normalizers/relations-list';
 import { SortNormalizer, sortNormalizer } from './adapter/normalizers/sort';
 import {
+  CategoryNodeNormalizer,
+  CategoryNormalizer,
   CategoryTreeNormalizer,
   DefaultProductCategoryAdapter,
   DefaultProductCategoryService,
   ProductCategoryAdapter,
   ProductCategoryService,
+  categoryEffects,
+  categoryNodeNormalizer,
+  categoryNormalizer,
   categoryTreeNormalizer,
 } from './category';
 import { DefaultProductService } from './default-product.service';
@@ -159,6 +164,7 @@ export const productProviders: Provider[] = [
   ...relationsListNormalizer,
   ...productQueries,
   ...productEffects,
+  ...categoryEffects,
   ProductContextFallback,
   {
     provide: PageMetaResolver,
@@ -171,6 +177,14 @@ export const productProviders: Provider[] = [
   {
     provide: CategoryIdNormalizer,
     useValue: categoryIdNormalizer,
+  },
+  {
+    provide: CategoryNormalizer,
+    useValue: categoryNormalizer,
+  },
+  {
+    provide: CategoryNodeNormalizer,
+    useValue: categoryNodeNormalizer,
   },
   {
     provide: CategoryTreeNormalizer,

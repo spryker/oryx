@@ -9,6 +9,7 @@ import {
 import {
   Observable,
   combineLatest,
+  delay,
   map,
   of,
   switchMap,
@@ -34,6 +35,7 @@ export class ProductDetailsBreadcrumbResolver implements BreadcrumbResolver {
           this.productService
             .get({ sku: params.sku as string })
             .pipe(
+              delay(0),
               switchMap((product) =>
                 product
                   ? this.generateBreadcrumbTrail(product)
@@ -48,7 +50,7 @@ export class ProductDetailsBreadcrumbResolver implements BreadcrumbResolver {
     product: Product
   ): Observable<BreadcrumbItem[]> {
     const { categoryIds } = product;
-
+    
     if (!categoryIds?.length) {
       return of([this.productTitle(product)]);
     }

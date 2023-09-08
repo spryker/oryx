@@ -12,14 +12,14 @@ export function categoryIdNormalizer(
   }
 
   const categoryIds = data.reduce(
-    (acc, curr) => (curr.isActive ? [...acc, String(curr.nodeId)] : acc),
+    (acc, curr) => ([...acc, String(curr.nodeId)]),
     [] as string[]
   );
 
   if (!categoryIds.length) {
     return;
   }
-
+  
   return { categoryIds };
 }
 

@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs';
-import { ProductCategoryNode } from '../../../models';
+import { ProductCategory } from '../../../models';
 
 export interface ProductCategoryAdapter {
-  getTree(): Observable<ProductCategoryNode[]>;
+  get(categoryId: string): Observable<ProductCategory>;
+  getTree(): Observable<ProductCategory[]>;
 }
 
 export const ProductCategoryAdapter = 'oryx.ProductCategoryAdapter';

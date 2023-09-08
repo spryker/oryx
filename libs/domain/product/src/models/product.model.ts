@@ -218,8 +218,6 @@ export interface ProductCategory {
   id: string;
   name: string;
   order: number;
-}
-
-export interface ProductCategoryNode extends ProductCategory {
-  children: ProductCategoryNode[];
+  parent?: string;
+  description?: string;
 }

@@ -1,13 +1,9 @@
 import { Observable } from 'rxjs';
-import { ProductCategory, ProductCategoryNode } from '../../models';
-
-export interface CategoryData {
-  tree: ProductCategoryNode[];
-  trails: string[][];
-}
+import { ProductCategory } from '../../models';
 
 export interface ProductCategoryService {
-  get(): Observable<CategoryData>;
+  add(data: ProductCategory[]): void;
+  get(categoryId?: string): Observable<ProductCategory>;
   getTrail(categoryId?: string): Observable<ProductCategory[]>;
 }
 

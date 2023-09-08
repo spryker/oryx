@@ -1,20 +1,29 @@
 import { JsonApiModel } from '@spryker-oryx/utilities';
 
 export module ApiProductCategoryModel {
+
+  export const enum Fields {
+    NodeId = 'nodeId',
+    Name = 'name',
+    Order = 'order',
+    MetaDescription = 'metaDescription',
+    Parents = 'parents',
+  }
+
   export interface CategoryNode {
     nodeId: number;
     order: number;
     name: string;
+    metaDescription?: string;
     url: string;
-  }
-
-  export interface CategoryTreeNode extends CategoryNode {
-    children: CategoryTreeNode[];
+    children: CategoryNode[];
+    parents?: CategoryNode[];
   }
 
   export interface CategoryNodesStorage {
-    categoryNodesStorage: CategoryTreeNode[];
+    categoryNodesStorage: CategoryNode[];
   }
 
-  export type Response = JsonApiModel<CategoryNodesStorage[], unknown>;
+  export type Response = JsonApiModel<CategoryNode, unknown>;
+  export type TreeResponse = JsonApiModel<CategoryNodesStorage[], unknown>;
 }

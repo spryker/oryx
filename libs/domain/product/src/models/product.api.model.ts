@@ -105,6 +105,14 @@ export module ApiProductModel {
     CategoryNodes = 'category-nodes',
   }
 
+  export const enum CategoryNodeFields {
+    NodeId = 'nodeId',
+    Name = 'name',
+    Order = 'order',
+    MetaDescription = 'metaDescription',
+    Parents = 'parents',
+  }
+
   export type ResponseIncludes =
     | Include<Includes.ConcreteProductImageSets, ImageSets>
     | Include<Includes.ConcreteProductPrices, Prices>
