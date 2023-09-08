@@ -20,7 +20,6 @@ const createProxyHandler = <T>(
 
   const initInstance = async () => {
     if (!instance) {
-      await new Promise((resolve) => setTimeout(resolve, 10000));
       const module = await lazyImport();
       const restoreInjector = setCurrentInjector(injector);
       instance = new module();
