@@ -1,16 +1,16 @@
 import { Observable, of } from 'rxjs';
-import { Salutation } from '../../models';
+import { Option } from '../../models';
 import { SalutationService } from './salutation.service';
 
 export class DefaultSalutationService implements SalutationService {
   protected salutations = [
-    { text: 'Mr.', value: 'mr' },
-    { text: 'Ms.', value: 'ms' },
-    { text: 'Mrs.', value: 'mrs' },
-    { text: 'Dr.', value: 'dr' },
+    { text: 'mr', value: 'Mr' },
+    { text: 'ms', value: 'Ms' },
+    { text: 'mrs', value: 'Mrs' },
+    { text: 'dr', value: 'Dr' },
   ];
 
-  get(): Observable<Salutation[]> {
+  get(): Observable<Option[]> {
     return of(this.salutations);
   }
 }

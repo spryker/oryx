@@ -1,4 +1,4 @@
-export interface Salutation {
+export interface Option {
   text: string;
   value: string;
 }

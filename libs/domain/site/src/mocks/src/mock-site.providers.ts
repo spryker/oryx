@@ -10,15 +10,17 @@ import {
   CurrencyService,
   DefaultCountryService,
   DefaultCurrencyService,
+  DefaultGenderService,
+  DefaultLinkService,
   DefaultNotificationService,
   DefaultPricingService,
   DefaultSalutationService,
-  DefaultLinkService,
+  GenderService,
+  LinkService,
   NotificationService,
   PricingService,
   SalutationService,
   SapiLocaleAdapter,
-  LinkService,
   SiteErrorHandler,
   StoreService,
 } from '@spryker-oryx/site';
@@ -36,6 +38,10 @@ export const mockSiteProviders: Provider[] = [
   {
     provide: SalutationService,
     useClass: DefaultSalutationService,
+  },
+  {
+    provide: GenderService,
+    useClass: DefaultGenderService,
   },
   {
     provide: StoreService,

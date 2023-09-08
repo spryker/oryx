@@ -14,6 +14,7 @@ import {
   loginPage,
   orderConfirmationPage,
   productPage,
+  registrationPage,
   searchPage,
 } from './pages';
 
@@ -28,6 +29,7 @@ export const StaticExperienceFeature: AppFeature = {
       contactPage,
       homePage,
       loginPage,
+      registrationPage,
       orderConfirmationPage,
       productPage,
       searchPage,

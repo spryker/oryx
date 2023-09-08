@@ -4,16 +4,18 @@ import { LocaleAdapter } from '@spryker-oryx/i18n';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
 import { CountryService, DefaultCountryService } from './country';
 import {
-  currencyHydration,
   CurrencyService,
   CurrentCurrencyInterceptor,
   DefaultCurrencyService,
+  currencyHydration,
 } from './currency';
 import { SiteErrorHandler } from './error-handling';
+import { DefaultGenderService, GenderService } from './gender';
+import { DefaultLinkService, LinkService } from './link';
 import {
   AcceptLanguageInterceptor,
-  localeHydration,
   SapiLocaleAdapter,
+  localeHydration,
 } from './locale';
 import {
   DefaultNotificationService,
@@ -21,7 +23,6 @@ import {
 } from './notification';
 import { DefaultPricingService, PricingService } from './pricing';
 import { DefaultSalutationService, SalutationService } from './salutation';
-import { DefaultLinkService, LinkService } from './link';
 import { DefaultStoreService, StoreService } from './store';
 
 declare global {
@@ -80,6 +81,10 @@ export const siteProviders: Provider[] = [
   {
     provide: SalutationService,
     useClass: DefaultSalutationService,
+  },
+  {
+    provide: GenderService,
+    useClass: DefaultGenderService,
   },
   ...storeNormalizer,
   {
