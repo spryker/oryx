@@ -10,8 +10,6 @@ export class DefaultProductCategoryService implements ProductCategoryService {
   protected categories = new Map<string, BehaviorSubject<ProductCategory>>();
 
   add(categories: ProductCategory[]): void {
-    console.log(categories);
-
     categories.forEach((cat) => {
       if (this.categories.has(cat.id)) {
         this.categories.get(cat.id)!.next(cat);
