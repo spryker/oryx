@@ -59,11 +59,11 @@ const smallScreen = css`
     --oryx-icon-size: var(--oryx-icon-size-lg);
   }
 
-  :host([xs-floated][open]) label {
+  :host([float][open]) label {
     display: block;
   }
 
-  :host([xs-floated]) label {
+  :host([float]) label {
     position: absolute;
     display: none;
     inset-inline-start: var(--floating-padding-start, 10px);
@@ -96,11 +96,11 @@ const smallScreen = css`
     z-index: 1;
   }
 
-  :host([xs-floated]) :is(slot[name='label'], .back-button + .search-button) {
+  :host([float]) :is(slot[name='label'], .back-button + .search-button) {
     display: none;
   }
 
-  :host([xs-floated]) :is(.back-button, slot[name='trigger']) {
+  :host([float]) :is(.back-button, slot[name='trigger']) {
     display: block;
   }
 

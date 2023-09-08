@@ -186,8 +186,9 @@ export class SearchboxController implements ReactiveController {
   }
 
   protected onTriggerClick(): void {
-    const isOpened = this.host.hasAttribute('open');
-    this.host.toggleAttribute('open', !isOpened);
+    const isOpened = this.host.open; //this.host.hasAttribute('open');
+    this.host.open = !isOpened;
+    // this.host.toggleAttribute('open', !isOpened);
 
     if (isOpened) {
       this.control.value = '';
@@ -199,7 +200,8 @@ export class SearchboxController implements ReactiveController {
   }
 
   protected onBack(): void {
-    this.host.removeAttribute('open');
+    this.host.open = false;
+    // this.host.removeAttribute('open');
     this.control.value = '';
     this.dispatchToggleEvent(CLOSE_EVENT);
   }
