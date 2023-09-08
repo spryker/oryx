@@ -30,7 +30,7 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
   static styles = styles;
 
   @state() isLoading?: boolean = false;
-  @state() hasGeneralError?: boolean = false;
+  @state() hasGenericError?: boolean = false;
   @state() hasAgreementError?: boolean = false;
   @state() hasPasswordError?: boolean = false;
 
@@ -87,9 +87,9 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
       await firstValueFrom(
         this.registrationService.register(this.getFormData())
       );
-      this.hasGeneralError = false;
+      this.hasGenericError = false;
     } catch (e) {
-      this.hasGeneralError = true;
+      this.hasGenericError = true;
     } finally {
       this.isLoading = false;
     }
@@ -98,7 +98,7 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
   protected override render(): TemplateResult {
     return html`
       ${when(
-        this.hasGeneralError,
+        this.hasGenericError,
         () => html`
           <oryx-notification type="error" scheme="dark">
             ${this.i18n('user.registration.something-went-wrong')}.

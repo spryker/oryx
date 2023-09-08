@@ -2,6 +2,7 @@ import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   ApiUserModel,
+  User,
   UserNormalizer,
   UserSerializer,
 } from '@spryker-oryx/user';
@@ -15,7 +16,7 @@ export class DefaultRegistrationAdapter implements RegistrationAdapter {
     protected transformer = inject(JsonAPITransformerService)
   ) {}
 
-  register(data: ApiUserModel.CreateUser): Observable<ApiUserModel.User> {
+  register(data: User): Observable<ApiUserModel.User> {
     return this.transformer
       .serialize(data, UserSerializer)
       .pipe(

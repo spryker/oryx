@@ -1,17 +1,6 @@
 import { JsonApiModel } from '@spryker-oryx/utilities';
 
 export module ApiUserModel {
-  export interface CreateUser {
-    salutation: string;
-    gender: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    confirmPassword?: string;
-    acceptedTerms: boolean;
-  }
-
   export interface User {
     firstName: string;
     lastName: string;
@@ -30,7 +19,7 @@ export module ApiUserModel {
     type: 'customers';
     id?: string;
     links?: unknown;
-    attributes: Partial<User | CreateUser>;
+    attributes: Partial<User>;
   }
 
   export type Response = JsonApiModel<User, unknown>;
