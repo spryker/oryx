@@ -1,6 +1,6 @@
 import { ProductRelationsFragment } from '../page-fragments/product-relations.fragment';
 import { QuantityInputFragment } from '../page-fragments/quantity-input.fragment';
-import { Product } from '../types/product.type';
+import { Product } from '../types/domain.types';
 import { AbstractSFPage } from './abstract.page';
 
 export class ProductDetailsPage extends AbstractSFPage {
@@ -66,7 +66,7 @@ export class ProductDetailsPage extends AbstractSFPage {
   addItemsToTheCart = (numberOfItems = 1, isHydrated = false) => {
     if (numberOfItems === 1) {
       if (!isHydrated) {
-        cy.hydrateElemenet('/assets/cart-add-*.js', () => {
+        cy.hydrateElement('/assets/cart-add-*.js', () => {
           this.getAddToCartBtn().click();
         });
       }
