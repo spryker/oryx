@@ -190,6 +190,13 @@ describe('OauthService', () => {
     });
   });
 
+  describe('when invokeStoredToken is called', () => {
+    it('should call storage service', () => {
+      getService().invokeStoredToken();
+      expect(mockStorageService.get).toHaveBeenCalledWith('oryx.oauth-state');
+    });
+  });
+
   describe('logout', () => {
     it('should call revoke function from appropriate provider', () => {
       storageTokenTrigger.next({ authorizedBy: 'a' });

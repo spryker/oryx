@@ -29,6 +29,16 @@ import {
   take,
   throwError,
 } from 'rxjs';
+import { CheckoutResponse, CheckoutStatus, PlaceOrderData } from '../models';
+import { CheckoutAdapter } from './adapter';
+import { CheckoutService } from './checkout.service';
+import {
+  CheckoutStateService,
+  PlaceOrderEnd,
+  PlaceOrderFail,
+  PlaceOrderStart,
+  PlaceOrderSuccess,
+} from './state';
 
 export class DefaultCheckoutService implements CheckoutService {
   protected cartId$ = this.cartService
@@ -64,7 +74,12 @@ export class DefaultCheckoutService implements CheckoutService {
               } as PlaceOrderData)
             : throwError(() => new Error('Invalid checkout data'))
         ),
-        switchMap((response) => this.resolveRedirect(response))
+        switchMap((response) => this.resolveRedirect(response)),
+        switchMap((response) =>
+          this.identityService
+            .get()
+            .pipe(map((user) => ({ ...response, userId: user.userId })))
+        )
       );
     },
     onStart: [PlaceOrderStart],
@@ -75,7 +90,7 @@ export class DefaultCheckoutService implements CheckoutService {
       AddressModificationSuccess,
       ({ data }) => {
         if (data?.orders?.length)
-          this.orderService.storeLastOrder(data.orders[0]);
+          this.orderService.storeLastOrder(data.orders[0], data.userId ?? '');
       },
       () => this.stateService.clear(),
     ],
@@ -87,10 +102,9 @@ export class DefaultCheckoutService implements CheckoutService {
     protected cartService = inject(CartService),
     protected adapter = inject(CheckoutAdapter),
     protected linkService = inject(LinkService),
-    protected orderService = inject(OrderService)
-  ) {
-    console.log('checkout service constructor');
-  }
+    protected orderService = inject(OrderService),
+    protected identityService = inject(IdentityService)
+  ) {}
 
   getStatus(): Observable<CheckoutStatus> {
     return this.process$;
