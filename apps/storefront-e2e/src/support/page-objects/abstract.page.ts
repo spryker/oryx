@@ -4,7 +4,14 @@ import { GlobalNotificationCenter } from '../page-fragments/global-notification-
 import { HeaderFragment } from '../page-fragments/header.fragment';
 import { SearchBoxFragment } from '../page-fragments/search-box.fragment';
 
-export abstract class AbstractSFPage {
+export type E2EPage = {
+  url: string;
+  visit(): void;
+  beforeVisit(): void;
+  waitForLoaded(): void;
+};
+
+export abstract class AbstractSFPage implements E2EPage {
   abstract url: string;
 
   visit(): void {
