@@ -1,8 +1,8 @@
-import { ApiUserModel, User } from '@spryker-oryx/user';
 import { Observable } from 'rxjs';
+import { User } from '../../models';
 
 export interface RegistrationAdapter {
-  register: (data: User) => Observable<ApiUserModel.User>;
+  register: (data: User) => Observable<User>;
 }
 
 export const RegistrationAdapter = 'oryx.RegistrationAdapter';

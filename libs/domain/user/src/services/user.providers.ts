@@ -7,9 +7,7 @@ import {
   addressSerializers,
   DefaultAddressAdapter,
   DefaultAddressFormAdapter,
-  DefaultRegistrationAdapter,
   DefaultUserAdapter,
-  RegistrationAdapter,
   UserAdapter,
   userNormalizer,
   userSerializers,
@@ -54,10 +52,10 @@ export const userProviders: Provider[] = [
     provide: AddressStateService,
     useClass: DefaultAddressStateService,
   },
-  {
-    provide: RegistrationAdapter,
-    useClass: DefaultRegistrationAdapter,
-  },
+  // {
+  //   provide: RegistrationAdapter,
+  //   useClass: DefaultRegistrationAdapter,
+  // },
   {
     provide: RegistrationService,
     useClass: DefaultRegistrationService,

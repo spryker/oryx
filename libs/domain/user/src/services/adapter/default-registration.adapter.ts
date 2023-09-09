@@ -1,13 +1,10 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import {
-  ApiUserModel,
-  User,
-  UserNormalizer,
-  UserSerializer,
-} from '@spryker-oryx/user';
 import { Observable, switchMap } from 'rxjs';
+import { ApiUserModel, User } from '../../models';
+import { UserNormalizer } from './normalizers';
 import { RegistrationAdapter } from './registration.adapter';
+import { UserSerializer } from './serializers';
 
 export class DefaultRegistrationAdapter implements RegistrationAdapter {
   constructor(
