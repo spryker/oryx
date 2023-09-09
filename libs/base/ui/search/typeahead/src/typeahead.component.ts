@@ -60,6 +60,7 @@ export class TypeaheadComponent
         after: this.searchController.renderSuffix(),
       })}
       ${this.typeaheadController.renderPopover()}
+      ${this.searchController.renderTrigger()}
     `;
   }
 }

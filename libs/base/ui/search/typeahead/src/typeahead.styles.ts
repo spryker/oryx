@@ -80,8 +80,21 @@ export const screenStyles = [
   ...searchboxScreenStyles,
   ...screenCss({
     sm: css`
+      :host {
+        position: static;
+      }
+
       :host(:not([floatDisabled])) oryx-popover {
-        --oryx-label-height: 4px;
+        --oryx-label-height: 12px;
+      }
+
+      oryx-popover {
+        inset-inline-start: var(--floating-padding-start, 10px);
+        inset-inline-end: var(
+          --floating-padding-end,
+          var(--floating-padding-start, 10px)
+        );
+        width: auto;
       }
     `,
   }),

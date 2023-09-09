@@ -201,7 +201,6 @@ export class SearchboxController implements ReactiveController {
 
   protected onBack(): void {
     this.host.open = false;
-    // this.host.removeAttribute('open');
     this.control.value = '';
     this.dispatchToggleEvent(CLOSE_EVENT);
   }
