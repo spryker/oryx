@@ -10,7 +10,9 @@ import {
   productMediaSetNormalizer,
   productNodeNormalizer,
   productPriceNormalizer,
+  productCategoryNormalizer
 } from './product.normalizer';
+import { CategoryNormalizer } from '../../../category';
 
 let mockDeserializedProduct: DeserializedProduct;
 const mockTokensData = {
@@ -169,6 +171,21 @@ describe('Product Normalizers', () => {
             expect(mockTransformer.transform).toHaveBeenCalledWith(
               mockDeserializedProduct.abstractProducts?.[0].categoryNodes,
               CategoryIdNormalizer
+            );
+            done();
+          });
+      }));
+  });
+
+  describe('Product Category Normalizer', () => {
+    it('should call categories transformer', () =>
+      new Promise<void>((done) => {
+        productCategoryNormalizer(mockDeserializedProduct, mockTransformer)
+          .pipe(take(1))
+          .subscribe(() => {
+            expect(mockTransformer.transform).toHaveBeenCalledWith(
+              mockDeserializedProduct.abstractProducts?.[0].categoryNodes,
+              CategoryNormalizer
             );
             done();
           });

@@ -1,5 +1,5 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { Facet } from '@spryker-oryx/product';
+import { ProductCategoryService } from '@spryker-oryx/product';
 import { LinkService } from '@spryker-oryx/site';
 import { of } from 'rxjs';
 import { FacetListService } from '../facet-list.service';
@@ -10,52 +10,17 @@ import {
 
 const url = '/mock';
 
-const parent = {
-  count: 1,
-  value: 5,
-  selected: false,
-  name: 'mock_parent',
+const category = {
+  id: 'mock',
+  name: 'mock',
+  order: 1,
 };
 
-const child = {
-  count: 1,
-  value: 6,
-  selected: false,
-  name: 'mock_child',
-};
-
-const facet: Facet = {
+const facet = {
   name: 'mock',
   parameter: 'mock',
-  values: [
-    {
-      ...parent,
-      selected: true,
-      children: [child],
-    },
-  ],
-};
-
-const facetSelectedChild: Facet = {
-  name: 'mock',
-  parameter: 'mock',
-  values: [
-    {
-      ...parent,
-      children: [{ ...child, selected: true }],
-    },
-  ],
-};
-
-const facetWithoutSelected: Facet = {
-  name: 'mock',
-  parameter: 'mock',
-  values: [
-    {
-      ...parent,
-      children: [child],
-    },
-  ],
+  selectedValues: ['mock'],
+  values: [],
 };
 
 class MockLinkService implements Partial<LinkService> {
@@ -66,10 +31,15 @@ class MockFacetListService implements Partial<FacetListService> {
   getFacet = vi.fn().mockReturnValue(of(facet));
 }
 
+class MockCategoryService implements Partial<ProductCategoryService> {
+  getTrail = vi.fn().mockReturnValue(of([category]));
+}
+
 describe('CategoryBreadcrumbResolver', () => {
   let service: CategoryBreadcrumbResolver;
   let linkService: MockLinkService;
   let facetService: MockFacetListService;
+  let categoryService: MockCategoryService;
 
   beforeEach(() => {
     const testInjector = createInjector({
@@ -83,11 +53,16 @@ describe('CategoryBreadcrumbResolver', () => {
           provide: FacetListService,
           useClass: MockFacetListService,
         },
+        {
+          provide: ProductCategoryService,
+          useClass: MockCategoryService,
+        },
       ],
     });
 
     linkService = testInjector.inject<MockLinkService>(LinkService);
     facetService = testInjector.inject<MockFacetListService>(FacetListService);
+    categoryService = testInjector.inject<MockCategoryService>(ProductCategoryService);
     service = testInjector.inject(CategoryBreadcrumb.provide);
   });
 
@@ -110,59 +85,20 @@ describe('CategoryBreadcrumbResolver', () => {
         });
       });
 
+      it('should build categories trail', () => {
+        expect(categoryService.getTrail).toHaveBeenCalledWith(facet.selectedValues[0]);
+      });
+
       it('should get the url form the service', () => {
         expect(linkService.get).toHaveBeenCalledWith(
-          expect.objectContaining({ id: String(parent.value) })
+          expect.objectContaining({ id: category.id })
         );
       });
 
       it('should resolve single breadcrumb', () => {
         expect(callback).toHaveBeenCalledWith([
-          { text: { raw: parent.name }, url },
+          { text: { raw: category.name }, url },
         ]);
-      });
-    });
-
-    describe('when the nested category is selected', () => {
-      const callback = vi.fn();
-
-      beforeEach(() => {
-        facetService.getFacet = vi.fn().mockReturnValue(of(facetSelectedChild));
-        linkService.get = vi.fn().mockReturnValue(of(url));
-        service.resolve().subscribe(callback);
-      });
-
-      it('should get the urls form the service', () => {
-        expect(linkService.get).toHaveBeenNthCalledWith(
-          1,
-          expect.objectContaining({ id: String(parent.value) })
-        );
-        expect(linkService.get).toHaveBeenNthCalledWith(
-          2,
-          expect.objectContaining({ id: String(child.value) })
-        );
-      });
-
-      it('should resolve a trace of breadcrumb', () => {
-        expect(callback).toHaveBeenCalledWith([
-          { text: { raw: parent.name }, url },
-          { text: { raw: child.name }, url },
-        ]);
-      });
-    });
-
-    describe('when there are no selected facets', () => {
-      const callback = vi.fn();
-
-      beforeEach(() => {
-        facetService.getFacet = vi
-          .fn()
-          .mockReturnValue(of(facetWithoutSelected));
-        service.resolve().subscribe({ error: callback });
-      });
-
-      it('should throw an error', () => {
-        expect(callback).toHaveBeenCalled();
       });
     });
   });

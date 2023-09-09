@@ -1,5 +1,5 @@
 import { Provider, inject } from '@spryker-oryx/di';
-import { Facet, ProductCategoryService } from '@spryker-oryx/product';
+import { ProductCategoryService } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import {
   BreadcrumbItem,
@@ -17,29 +17,21 @@ export class CategoryBreadcrumbResolver implements BreadcrumbResolver {
     protected linkService = inject(LinkService)
   ) {}
 
-  protected getFlattenCategoriesBreadcrumb({
-    selectedValues,
-  }: Facet): Observable<BreadcrumbItem[]> {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.categoryService
-      .getTrail(String(selectedValues![0]))
-      .pipe(
-        switchMap((trail) =>
-          combineLatest([
-            ...trail.map(({ id, name }) =>
-              this.linkService
-                .get({ id, type: RouteType.Category })
-                .pipe(map((url) => ({ text: { raw: name }, url })))
-            ),
-          ])
-        )
-      );
-  }
-
   resolve(): Observable<BreadcrumbItem[]> {
     return this.facetListService
       .getFacet({ parameter: 'category' })
-      .pipe(switchMap((facet) => this.getFlattenCategoriesBreadcrumb(facet)));
+      .pipe(switchMap(({selectedValues}) => 
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.categoryService.getTrail(String(selectedValues![0]))
+          .pipe(switchMap((trail) =>
+            combineLatest(trail.map(({ id, name }) =>
+                this.linkService
+                  .get({ id, type: RouteType.Category })
+                  .pipe(map((url) => ({ text: { raw: name }, url })))
+              ),
+            ))
+          ))
+        );
   }
 }
 
