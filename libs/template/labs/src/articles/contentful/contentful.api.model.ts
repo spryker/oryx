@@ -21,7 +21,6 @@ export module ContentfulCmsModel {
   }
 
   export type Entry = Record<string, unknown>;
-  export type CrudEntry = Record<string, Entry>;
 
   export interface SimpleResponse<T> {
     sys: {
@@ -29,7 +28,7 @@ export module ContentfulCmsModel {
       version: number;
       id: string;
     };
-    fields: T;
+    fields: T & { id: string };
   }
 
   export interface Response<T> {
@@ -38,6 +37,5 @@ export module ContentfulCmsModel {
 
   export type TypesResponse = Response<Type[]>;
   export type EntriesResponse = Response<Entry>;
-  export type CrudEntriesResponse = Response<CrudEntry>;
   export type LocalesResponse = { items: Locale[] };
 }

@@ -1,7 +1,7 @@
 import { createQuery, QueryState } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
+import { inject, INJECTOR } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
-import { combineLatest, map, Observable } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of } from 'rxjs';
 import { Content, ContentQualifier } from '../models';
 import { ContentAdapter, ContentConfig } from './adapter/content.adapter';
 import { ContentService } from './content.service';
@@ -11,18 +11,23 @@ export class DefaultContentService implements ContentService {
 
   constructor(
     protected adapters = inject(ContentAdapter),
-    protected config = inject(ContentConfig)
+    protected config = inject(ContentConfig, [] as ContentConfig[]),
+    protected injector = inject(INJECTOR)
   ) {
     this.normalizeConfig();
   }
 
   protected contentQuery = createQuery<Content | null, ContentQualifier>({
     loader: (q: ContentQualifier) =>
-      combineLatest(this.getAdapters(q).map((adapter) => adapter.get(q))).pipe(
+      combineLatest(
+        this.getAdapters(q).map((adapter) =>
+          adapter.get(q).pipe(catchError(() => of(null)))
+        )
+      ).pipe(
         map((contents) =>
           contents.reduce(
-            (acc, curr) => ({ ...acc, ...(curr as Content) }),
-            {} as Content
+            (acc, curr) => (curr ? { ...acc, ...curr } : acc),
+            null
           )
         )
       ),
@@ -32,48 +37,46 @@ export class DefaultContentService implements ContentService {
   protected contentsQuery = createQuery<Content[] | null, ContentQualifier>({
     loader: (q: ContentQualifier) =>
       combineLatest(
-        this.getAdapters(q).map((adapter) => adapter.getAll(q))
+        this.getAdapters(q).map((adapter) =>
+          adapter.getAll(q).pipe(catchError(() => of(null)))
+        )
       ).pipe(
         map((contents) =>
           contents.reduce(
-            (acc, curr) => [...(acc ?? []), ...(curr ?? [])],
-            [] as Content[]
+            (acc, curr) => (curr ? [...(acc ?? []), ...curr] : acc),
+            null
           )
         )
       ),
-    onLoad: [
-      ({ data }) => {
-        data?.forEach((content) => {
-          this.contentQuery.set({
-            data: content,
-            qualifier: { id: content.id },
-          });
-        });
-      },
-    ],
     refreshOn: [LocaleChanged],
   });
 
   getAll<T>(
     qualifier: ContentQualifier
-  ): Observable<Content<T>[] | null | undefined> {
-    return this.contentsQuery.get(qualifier) as Observable<
-      Content<T>[] | null | undefined
-    >;
+  ): Observable<Content<T>[] | null | undefined>;
+  getAll<T = Record<string, unknown>>(
+    qualifier: ContentQualifier
+  ): Observable<Content<T>[] | null | undefined>;
+  getAll(
+    qualifier: ContentQualifier
+  ): Observable<Content[] | null | undefined> {
+    return this.contentsQuery.get({ ...qualifier });
   }
 
   get<T>(
     qualifier: ContentQualifier
-  ): Observable<Content<T> | null | undefined> {
-    return this.contentQuery.get(qualifier) as Observable<
-      Content<T> | null | undefined
-    >;
+  ): Observable<Content<T> | null | undefined>;
+  get<T = Record<string, unknown>>(
+    qualifier: ContentQualifier
+  ): Observable<Content<T> | null | undefined>;
+  get(qualifier: ContentQualifier): Observable<Content | null | undefined> {
+    return this.contentQuery.get({ ...qualifier });
   }
 
   getState(
     qualifier: ContentQualifier
   ): Observable<QueryState<Content | null>> {
-    return this.contentQuery.getState(qualifier);
+    return this.contentQuery.getState({ ...qualifier });
   }
 
   protected normalizeConfig(): void {
@@ -93,16 +96,27 @@ export class DefaultContentService implements ContentService {
   }
 
   protected getAdapters(qualifier: ContentQualifier): ContentAdapter[] {
-    if (!qualifier.entities) return this.adapters;
+    if (!qualifier.entities || !this.config.length) return this.adapters;
 
-    const adapters = this.adapters.filter((adapter) =>
-      this.contents[adapter.getName()]?.some((entity) =>
-        qualifier.entities?.includes(entity)
-      )
-    );
+    return qualifier.entities.reduce((adapters: ContentAdapter[], entity) => {
+      for (const [key, data] of Object.entries(this.contents)) {
+        const isAdapter = data.includes(entity);
 
-    delete qualifier.entities;
+        if (!isAdapter) {
+          continue;
+        }
 
-    return adapters;
+        const adapter = this.injector.inject<ContentAdapter | null>(
+          `${ContentAdapter}${key}`,
+          null
+        );
+
+        if (adapter && !adapters.includes(adapter)) {
+          adapters.push(adapter);
+        }
+      }
+
+      return adapters;
+    }, []);
   }
 }

@@ -1,17 +1,17 @@
-import { ContentAdapter, ContentConfig } from '@spryker-oryx/content';
+import { ContentConfig, ContentFields } from '@spryker-oryx/content';
 import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { SuggestionAdapter } from '@spryker-oryx/search';
-import { factory } from '../stubs';
+import { SuggestionField } from '@spryker-oryx/search';
+import { getClassByRequiredTokens } from '../stubs';
+import { DefaultContentfulContentAdapter } from './contentful-content.adapter';
 import {
-  ContentfulAdapter,
-  cmsContentfulName,
-} from './contentful-content.adapter';
-import { DefaultContentfulSuggestionAdapter } from './contentful-suggestion.adapter';
-import { ContentfulSpace, ContentfulToken } from './contentful.model';
+  ContentfulContentAdapter,
+  ContentfulSpace,
+  ContentfulToken,
+} from './contentful.model';
 import { contentfulFieldNormalizers } from './normalizers';
 
-export const contentfulArticleProviders: Provider[] = [
+export const contentfulProviders: Provider[] = [
   {
     provide: ContentfulToken,
     useFactory: () => injectEnv('ORYX_CONTENTFUL_TOKEN', ''),
@@ -20,37 +20,23 @@ export const contentfulArticleProviders: Provider[] = [
     provide: ContentfulSpace,
     useFactory: () => injectEnv('ORYX_CONTENTFUL_SPACE', ''),
   },
-
   ...contentfulFieldNormalizers,
   {
     provide: ContentConfig,
     useValue: {
-      [cmsContentfulName]: {
-        types: ['component', 'article'],
+      contentful: {
+        types: [
+          ContentFields.Component,
+          SuggestionField.Contents,
+          ContentFields.Article,
+        ],
       },
     },
   },
   {
-    provide: SuggestionAdapter,
+    provide: ContentfulContentAdapter,
     useFactory: () =>
-      factory(DefaultContentfulSuggestionAdapter, [
-        ContentfulToken,
-        ContentfulSpace,
-      ]),
-  },
-];
-
-export const contentfulProviders: Provider[] = [
-  ...contentfulArticleProviders,
-  {
-    provide: ContentAdapter,
-    useFactory: () =>
-      factory(ContentfulAdapter, [ContentfulToken, ContentfulSpace]),
-  },
-  {
-    provide: SuggestionAdapter,
-    useFactory: () =>
-      factory(DefaultContentfulSuggestionAdapter, [
+      getClassByRequiredTokens(DefaultContentfulContentAdapter, [
         ContentfulToken,
         ContentfulSpace,
       ]),

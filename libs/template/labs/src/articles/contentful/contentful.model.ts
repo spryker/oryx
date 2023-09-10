@@ -1,9 +1,8 @@
+import { ContentAdapter } from '@spryker-oryx/content';
+
 export const ContentfulToken = 'oryx.ContentfulToken';
 export const ContentfulSpace = 'oryx.ContentfulSpace';
-
-export const enum ContentfulContentFields {
-  Article = 'article',
-}
+export const ContentfulContentAdapter = `${ContentAdapter}contentful`;
 
 declare global {
   interface Environment {

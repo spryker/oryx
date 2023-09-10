@@ -8,7 +8,7 @@ import {
 import { Observable, map } from 'rxjs';
 import { ContentService } from '../content.service';
 
-export interface CmsComponent {
+export interface ContentComponent {
   data: Component;
 }
 
@@ -17,10 +17,6 @@ export class ContentExperienceAdapter implements ExperienceAdapter {
     protected content = inject(ContentService),
     protected http = inject(HttpService)
   ) {}
-
-  getKey(qualifier: ExperienceQualifier): string {
-    return qualifier.id ?? '';
-  }
 
   get(qualifier: ExperienceQualifier): Observable<Component | null> {
     return this.getAll().pipe(
@@ -39,12 +35,14 @@ export class ContentExperienceAdapter implements ExperienceAdapter {
 
   getAll(): Observable<Component[] | null> {
     return this.content
-      .getAll<CmsComponent>({ type: 'component', entities: ['component'] })
+      .getAll<ContentComponent>({ type: 'component', entities: ['component'] })
       .pipe(
         map(
           (items) =>
             items?.map((item) => ({
-              ...item.fields.data,
+              ...(typeof item.fields.data === 'string'
+                ? JSON.parse(item.fields.data)
+                : item.fields.data),
               id: item.fields.id,
             })) ?? null
         )

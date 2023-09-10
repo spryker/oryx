@@ -2,19 +2,24 @@ import { Transformer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { marked } from 'marked';
 
-export interface ContentField {
+export interface ContentfulContentField {
   type: string;
   key: string;
-  value: string;
+  value: unknown;
 }
 
 export const ContentfulFieldNormalizer = 'oryx.ContentfulFieldNormalizer*';
 
-export function contentfulFieldNormalizer(data: ContentField): ContentField {
+export function contentfulFieldNormalizer(
+  data: ContentfulContentField
+): ContentfulContentField {
   if (data.type === 'Text') {
     return {
       ...data,
-      value: marked.parse(data.value),
+      value: marked.parse(data.value as string, {
+        mangle: false,
+        headerIds: false,
+      }),
     };
   }
 
@@ -30,6 +35,6 @@ export const contentfulFieldNormalizers: Provider[] = [
 
 declare global {
   interface InjectionTokensContractMap {
-    [ContentfulFieldNormalizer]: Transformer<ContentField>;
+    [ContentfulFieldNormalizer]: Transformer<ContentfulContentField>;
   }
 }

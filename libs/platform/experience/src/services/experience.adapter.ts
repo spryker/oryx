@@ -4,7 +4,6 @@ import { Component, ExperienceQualifier } from '../models';
 export const ExperienceAdapter = 'oryx.ExperienceAdapter';
 
 export interface ExperienceAdapter {
-  getKey(qualifier: ExperienceQualifier): string;
   get(qualifier: ExperienceQualifier): Observable<Component | null>;
   getAll(): Observable<Component[] | null>;
 }
