@@ -18,24 +18,22 @@ export default {
 const Template: Story = (): TemplateResult => {
   return html`
     <h2>Trigger</h2>
-    <oryx-search>
+    <oryx-search float>
       <input placeholder="Search..." />
     </oryx-search>
 
     <h2>Opened</h2>
-    <oryx-search open>
+    <oryx-search open float>
       <input placeholder="Search..." />
     </oryx-search>
 
     <h2>Opened with value</h2>
-    <oryx-search open>
+    <oryx-search open float>
       <input placeholder="Search..."/ value="Value">
     </oryx-search>
 
     <h2>Not floated</h2>
-    <oryx-search .float=${false}>
-      <input placeholder="Search..."/ value="Value">
-    </oryx-search>
+    <oryx-search> <input placeholder="Search..."/ value="Value"> </oryx-search>
 
     <script>
       ${initMutationObserverForComponent({
