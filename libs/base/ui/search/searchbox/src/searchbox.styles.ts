@@ -90,6 +90,10 @@ export const baseStyles = [
     :host(:not([float])) :is(slot[name='trigger'], .back-button) {
       display: none;
     }
+
+    slot[name='trigger'] {
+      display: inline-flex;
+    }
   `,
 ];
 
