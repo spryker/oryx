@@ -93,7 +93,6 @@ export const baseStyles = [
   `,
 ];
 
-
 export const screenStyles = [
   ...searchboxScreenStyles,
   ...screenCss({
