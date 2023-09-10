@@ -84,7 +84,7 @@ export const screenStyles = [
         position: static;
       }
 
-      :host(:not([floatDisabled])) oryx-popover {
+      :host(:not([floatDisabled][float])) oryx-popover {
         --oryx-label-height: 12px;
       }
 

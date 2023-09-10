@@ -12,13 +12,12 @@ export const baseStyles = [
       cursor: pointer;
     }
 
-    :host([float][open]) label {
-      display: block;
+    :host([float]:not([open])) label {
+      display: none;
     }
 
     :host([float]) label {
       position: absolute;
-      display: none;
       inset-inline-start: var(--floating-padding-start, 10px);
       inset-inline-end: var(
         --floating-padding-end,
@@ -56,10 +55,6 @@ export const baseStyles = [
       display: none;
     }
 
-    :host([float]) :is(.back-button, slot[name='trigger']) {
-      display: block;
-    }
-
     .clear-button[type='remove'] {
       --oryx-icon-size: var(--oryx-icon-size-md);
     }
@@ -92,17 +87,17 @@ export const baseStyles = [
       opacity: 0;
     }
 
-    .back-button {
-      display: none;
-    }
-
-    slot[name='trigger'] {
+    :host(:not([float])) :is(slot[name='trigger'], .back-button) {
       display: none;
     }
   `,
 ];
 
 const smallScreen = css`
+  :host([float]) label {
+    position: absolute;
+  }
+
   .clear-button[type='remove'] {
     --oryx-icon-size: var(--oryx-icon-size-lg);
   }
