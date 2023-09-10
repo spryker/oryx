@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
-import { storybookPrefix } from '../../.constants';
+import { storybookPrefix } from '../.constants';
 import { ContentVideoOptions } from './video.model';
 
 export default {
