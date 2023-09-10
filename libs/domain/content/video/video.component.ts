@@ -1,7 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { VideoAspectRatio } from '@spryker-oryx/ui/video';
 import { ssrShim } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { ContentVideoOptions } from './video.model';
 import { videoStyles } from './video.styles';
 
