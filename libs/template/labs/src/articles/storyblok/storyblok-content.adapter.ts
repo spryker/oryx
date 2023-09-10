@@ -9,7 +9,6 @@ import { INJECTOR, inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
 import {
   Observable,
-  catchError,
   combineLatest,
   forkJoin,
   from,
@@ -70,8 +69,7 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
           },
           component.schema
         )
-      ),
-      catchError(() => of(null))
+      )
     );
   }
 
@@ -90,7 +88,7 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
           entities.push({
             fields: entry.content,
             id: String(entry.id),
-            type: qualifier.type ?? entry.content.component,
+            type: entry.content.component,
             name: entry.name,
           });
 

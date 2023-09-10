@@ -15,6 +15,9 @@
     },
     "paths": {
       "executor": "./tools/executors/components-library:paths"
+    },
+    "test": {
+      "executor": "./tools/executors/oryx-vite:vitest"
     }
   },
   "tags": ["layer:template"]

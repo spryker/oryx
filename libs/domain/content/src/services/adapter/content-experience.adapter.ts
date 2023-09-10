@@ -1,4 +1,3 @@
-import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   Component,
@@ -6,6 +5,7 @@ import {
   ExperienceQualifier,
 } from '@spryker-oryx/experience';
 import { Observable, map } from 'rxjs';
+import { ContentFields } from '../../models';
 import { ContentService } from '../content.service';
 
 export interface ContentComponent {
@@ -13,10 +13,7 @@ export interface ContentComponent {
 }
 
 export class ContentExperienceAdapter implements ExperienceAdapter {
-  constructor(
-    protected content = inject(ContentService),
-    protected http = inject(HttpService)
-  ) {}
+  constructor(protected content = inject(ContentService)) {}
 
   get(qualifier: ExperienceQualifier): Observable<Component | null> {
     return this.getAll().pipe(
@@ -35,7 +32,10 @@ export class ContentExperienceAdapter implements ExperienceAdapter {
 
   getAll(): Observable<Component[] | null> {
     return this.content
-      .getAll<ContentComponent>({ type: 'component', entities: ['component'] })
+      .getAll<ContentComponent>({
+        type: ContentFields.Component,
+        entities: [ContentFields.Component],
+      })
       .pipe(
         map(
           (items) =>
