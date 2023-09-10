@@ -16,6 +16,10 @@ export const baseStyles = [
       display: flex;
     }
 
+    :host([float]) {
+      position: static;
+    }
+
     :host([__closed]) {
       --oryx-popover-visible: 0;
     }
@@ -28,6 +32,19 @@ export const baseStyles = [
         var(--oryx-popover-maxheight, ${unsafecss(POPOVER_HEIGHT)}px)
       );
       width: var(--oryx-popover-width, 100%);
+    }
+
+    :host([float]:not([floatDisabled])) oryx-popover {
+      --oryx-label-height: 12px;
+    }
+
+    :host([float]) oryx-popover {
+      inset-inline-start: var(--floating-padding-start, 10px);
+      inset-inline-end: var(
+        --floating-padding-end,
+        var(--floating-padding-start, 10px)
+      );
+      width: auto;
     }
 
     :host(:not([up]):not([popoverDirection])) oryx-popover,
@@ -76,25 +93,13 @@ export const baseStyles = [
   `,
 ];
 
+
 export const screenStyles = [
   ...searchboxScreenStyles,
   ...screenCss({
     sm: css`
-      :host {
-        position: static;
-      }
-
-      :host(:not([floatDisabled][float])) oryx-popover {
-        --oryx-label-height: 12px;
-      }
-
-      oryx-popover {
-        inset-inline-start: var(--floating-padding-start, 10px);
-        inset-inline-end: var(
-          --floating-padding-end,
-          var(--floating-padding-start, 10px)
-        );
-        width: auto;
+      :host(:not([floatDisabled])) oryx-popover {
+        --oryx-label-height: 4px;
       }
     `,
   }),
