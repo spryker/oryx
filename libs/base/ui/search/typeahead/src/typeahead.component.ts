@@ -47,7 +47,7 @@ export class TypeaheadComponent
   @property() clearIcon?: string;
   @property({ reflect: true }) clearIconPosition?: ClearIconPosition;
   @property() clearIconAppearance?: ClearIconAppearance;
-  @property({ type: Boolean, reflect: true }) float?: boolean = true;
+  @property({ type: Boolean, reflect: true }) float?: boolean;
 
   protected typeaheadController = new TypeaheadController(this);
   protected formControlController = new FormControlController(this);

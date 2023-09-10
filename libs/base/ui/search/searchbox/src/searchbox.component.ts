@@ -21,7 +21,7 @@ export class SearchboxComponent
   static override styles = baseStyles;
 
   @property({ reflect: true, type: Boolean }) open?: boolean;
-  @property({ type: Boolean, reflect: true }) float?: boolean = true;
+  @property({ type: Boolean, reflect: true }) float?: boolean;
   @property() label?: string;
   @property() errorMessage?: string;
   @property({ type: Boolean }) hasError?: boolean;

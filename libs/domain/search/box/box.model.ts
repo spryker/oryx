@@ -12,4 +12,6 @@ export interface SearchBoxOptions extends SuggestionRendererOptions {
    * Minimum amount of characters required for querying the suggestion
    */
   minChars?: number;
+
+  float?: boolean;
 }

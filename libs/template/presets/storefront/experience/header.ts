@@ -105,6 +105,7 @@ export const HeaderTemplate: ExperienceComponent = {
             {
               type: 'oryx-search-box',
               options: {
+                float: true,
                 rules: [
                   { query: { breakpoint: Size.Md }, hide: true },
                   { query: { breakpoint: Size.Lg }, hide: true },

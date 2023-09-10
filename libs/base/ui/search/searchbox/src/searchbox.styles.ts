@@ -12,6 +12,54 @@ export const baseStyles = [
       cursor: pointer;
     }
 
+    :host([float][open]) label {
+      display: block;
+    }
+
+    :host([float]) label {
+      position: absolute;
+      display: none;
+      inset-inline-start: var(--floating-padding-start, 10px);
+      inset-inline-end: var(
+        --floating-padding-end,
+        var(--floating-padding-start, 10px)
+      );
+      width: calc(
+        100vw -
+          calc(
+            var(--floating-padding-start, 10px) +
+              calc(
+                var(--floating-padding-end, var(--floating-padding-start, 10px))
+              )
+          )
+      );
+      max-width: var(
+        --floating-width,
+        calc(
+          100vw -
+            calc(
+              var(--floating-padding-start, 10px) +
+                calc(
+                  var(
+                    --floating-padding-end,
+                    var(--floating-padding-start, 10px)
+                  )
+                )
+            )
+        )
+      );
+      transform: translateY(calc(-50% + var(--floating-vertical-offset, 20px)));
+      z-index: 1;
+    }
+
+    :host([float]) :is(slot[name='label'], .back-button + .search-button) {
+      display: none;
+    }
+
+    :host([float]) :is(.back-button, slot[name='trigger']) {
+      display: block;
+    }
+
     .clear-button[type='remove'] {
       --oryx-icon-size: var(--oryx-icon-size-md);
     }
@@ -57,51 +105,6 @@ export const baseStyles = [
 const smallScreen = css`
   .clear-button[type='remove'] {
     --oryx-icon-size: var(--oryx-icon-size-lg);
-  }
-
-  :host([float][open]) label {
-    display: block;
-  }
-
-  :host([float]) label {
-    position: absolute;
-    display: none;
-    inset-inline-start: var(--floating-padding-start, 10px);
-    inset-inline-end: var(
-      --floating-padding-end,
-      var(--floating-padding-start, 10px)
-    );
-    width: calc(
-      100vw -
-        calc(
-          var(--floating-padding-start, 10px) +
-            calc(
-              var(--floating-padding-end, var(--floating-padding-start, 10px))
-            )
-        )
-    );
-    max-width: var(
-      --floating-width,
-      calc(
-        100vw -
-          calc(
-            var(--floating-padding-start, 10px) +
-              calc(
-                var(--floating-padding-end, var(--floating-padding-start, 10px))
-              )
-          )
-      )
-    );
-    transform: translateY(calc(-50% + var(--floating-vertical-offset, 20px)));
-    z-index: 1;
-  }
-
-  :host([float]) :is(slot[name='label'], .back-button + .search-button) {
-    display: none;
-  }
-
-  :host([float]) :is(.back-button, slot[name='trigger']) {
-    display: block;
   }
 
   :host(oryx-search:not([floatDisabled]):not([label])),

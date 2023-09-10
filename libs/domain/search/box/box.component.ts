@@ -95,6 +95,7 @@ export class SearchBoxComponent
         @oryx.search=${this.onSearch}
         @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 300)}
         .clearIcon=${IconTypes.Close}
+        ?float=${this.$options().float}
       >
         <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
         <input
