@@ -4,94 +4,105 @@ import { SearchPage } from '../support/page-objects/search.page';
 import { CategoryStorage } from '../support/test-data/storages/category.storage';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
-const product = ProductStorage.getByEq(0);
+const product = ProductStorage.getByEq(1);
 const parentCategory = CategoryStorage.getByEq(0);
 const childCategory = CategoryStorage.getByEq(1);
-
-const searchPage = new SearchPage();
-const categoryPage = new CategoryPage(childCategory);
-const pdp = new ProductDetailsPage(product);
+const childCategory2 = CategoryStorage.getByEq(2);
 
 describe('Breadcrumb suite', () => {
   it('should render breadcrumb for the search page', () => {
-    searchPage.visit();
+    const page = new SearchPage();
+    page.visit();
 
-    searchPage.breadcrumb.get().should('be.visible');
+    page.breadcrumb.get().should('be.visible');
 
     //first link should be home
-    searchPage.breadcrumb.shouldHaveHomePageLink();
+    page.breadcrumb.shouldHaveHomePageLink();
     //should have 1 divider
-    searchPage.breadcrumb.shouldHaveDividers(1);
+    page.breadcrumb.shouldHaveDividers(1);
 
     //the last breadcrumb should be "Search"
-    searchPage.breadcrumb
+    page.breadcrumb
       .nthBreadcrumbItem(-1)
       .should('contain.text', 'Search');
 
     //when search query is provided
-    searchPage.url = `${searchPage.url}?q=test`;
-    searchPage.visit();
+    page.url = `${page.url}?q=test`;
+    page.visit();
 
     //first link should be home
-    searchPage.breadcrumb.shouldHaveHomePageLink();
+    page.breadcrumb.shouldHaveHomePageLink();
     //should have 1 divider
-    searchPage.breadcrumb.shouldHaveDividers(1);
+    page.breadcrumb.shouldHaveDividers(1);
 
     //the last breadcrumb should be "Search for <query>"
-    searchPage.breadcrumb
+    page.breadcrumb
       .nthBreadcrumbItem(-1)
       .should('contain.text', 'Search for "test"');
   });
 
   it('should render breadcrumb for the product details page', () => {
-    pdp.visit();
+    const page = new ProductDetailsPage(product);
+    page.visit();
 
-    searchPage.breadcrumb.get().should('be.visible');
+    page.breadcrumb.get().should('be.visible');
 
     //first link should be home
-    searchPage.breadcrumb.shouldHaveHomePageLink();
-    //should have 1 divider
-    searchPage.breadcrumb.shouldHaveDividers(1);
+    page.breadcrumb.shouldHaveHomePageLink();
+    //should have 3 dividers
+    page.breadcrumb.shouldHaveDividers(3);
+
+    //should render parent category as second breadcrumb
+    page.breadcrumb
+      .nthBreadcrumbItem(1)
+      .should('contain.text', parentCategory.title)      
+      .invoke('attr', 'href')
+      .should('eq', `/category/${parentCategory.id}`);
+
+    //should render child category as third breadcrumb
+    page.breadcrumb
+      .nthBreadcrumbItem(2)
+      .should('contain.text', childCategory2.title)
+      .invoke('attr', 'href')
+      .should('eq', `/category/${childCategory2.id}`);
 
     //should render product's title as the last breadcrumb
-    searchPage.breadcrumb
+    page.breadcrumb
       .nthBreadcrumbItem(-1)
       .should('contain.text', product.title);
   });
 
   it('should render breadcrumb for the categories page', () => {
-    categoryPage.visit();
+    const page = new CategoryPage(childCategory);
+    page.visit();
 
-    searchPage.breadcrumb.get().should('be.visible');
+    page.breadcrumb.get().should('be.visible');
 
     //first link should be home
-    searchPage.breadcrumb.shouldHaveHomePageLink();
+    page.breadcrumb.shouldHaveHomePageLink();
     //should have 2 dividers
-    searchPage.breadcrumb.shouldHaveDividers(2);
+    page.breadcrumb.shouldHaveDividers(2);
 
     //should render parent category as second breadcrumb
-    searchPage.breadcrumb
+    page.breadcrumb
       .nthBreadcrumbItem(1)
-      .should('contain.text', parentCategory.title);
-    //should have proper link
-    searchPage.breadcrumb
-      .nthBreadcrumbItem(1)
+      .should('contain.text', parentCategory.title)
       .invoke('attr', 'href')
       .should('eq', `/category/${parentCategory.id}`);
 
     //should render child category as the last breadcrumb
-    searchPage.breadcrumb
+    page.breadcrumb
       .nthBreadcrumbItem(-1)
       .should('contain.text', childCategory.title);
 
     //when click on parent category
-    searchPage.breadcrumb.nthBreadcrumbItem(1).click({ force: true });
+    page.breadcrumb.nthBreadcrumbItem(1).click({ force: true });
 
     //should have 1 divider
-    searchPage.breadcrumb.shouldHaveDividers(1);
+    page.breadcrumb.shouldHaveDividers(1);
 
     //should render parent category as the last breadcrumb
-    searchPage.breadcrumb
+    page.breadcrumb
       .nthBreadcrumbItem(-1)
       .should('contain.text', parentCategory.title);
   });

@@ -136,6 +136,7 @@ describe('DefaultProductService', () => {
         ApiProductModel.CategoryNodeFields.Order,
         ApiProductModel.CategoryNodeFields.Name,
         ApiProductModel.CategoryNodeFields.Parents,
+        ApiProductModel.CategoryNodeFields.IsActive,
       ].forEach((field) => 
         it(`should contain ${field} in the url`, () => {
           expect(http.url?.split(fields)[1]).toContain(field);

@@ -35,6 +35,7 @@ export class DefaultProductAdapter implements ProductAdapter {
       ApiProductModel.CategoryNodeFields.Order,
       ApiProductModel.CategoryNodeFields.Name,
       ApiProductModel.CategoryNodeFields.Parents,
+      ApiProductModel.CategoryNodeFields.IsActive,
     ];
 
     return this.http
