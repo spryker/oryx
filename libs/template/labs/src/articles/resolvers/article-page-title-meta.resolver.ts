@@ -19,24 +19,19 @@ export class ArticlePageTitleMetaResolver implements PageMetaResolver {
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
-      this.context.get(document.body, ArticleContext.Id),
-      this.context.get(document.body, ArticleContext.Type),
-      this.context
-        .get(document.body, ArticleContext.Type)
-        .pipe(
-          switchMap((type) =>
-            this.router
-              .currentRoute()
-              .pipe(map((route) => route.includes(`/${type}/`)))
-          )
-        ),
+      this.context.get(null, ArticleContext.Id),
+      this.context.get(null, ArticleContext.Type),
+      combineLatest([
+        this.context.get(null, ArticleContext.Type),
+        this.router.currentRoute(),
+      ]).pipe(map(([type, route]) => route.includes(`/${type}/`))),
     ]);
   }
 
   resolve(): Observable<ElementResolver> {
     return combineLatest([
-      this.context.get<string>(document.body, ArticleContext.Id),
-      this.context.get<string>(document.body, ArticleContext.Type),
+      this.context.get<string>(null, ArticleContext.Id),
+      this.context.get<string>(null, ArticleContext.Type),
     ]).pipe(
       switchMap(([id, type]) => {
         if (!id || !type) return of({});
