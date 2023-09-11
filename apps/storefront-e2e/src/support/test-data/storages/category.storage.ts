@@ -1,4 +1,4 @@
-import { Category } from '../../types/category.type';
+import { Category } from '../../types/domain.types';
 
 const categories: Category[] = [
   //parent category
@@ -10,6 +10,11 @@ const categories: Category[] = [
   {
     id: '3',
     title: 'Camcorders',
+  },
+  //child category 2
+  {
+    id: '4',
+    title: 'Digital Cameras',
   },
 ];
 

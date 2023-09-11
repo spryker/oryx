@@ -208,7 +208,7 @@ export class DefaultRouterService implements RouterService {
       map(
         ([pathname, routes]) =>
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          routes.find((r) => getPattern(r).test({ pathname: pathname }))!
+          routes.find((r) => getPattern(r).test({ pathname }))!
       )
     );
   }

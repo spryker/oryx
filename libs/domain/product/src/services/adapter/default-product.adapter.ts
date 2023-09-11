@@ -29,11 +29,23 @@ export class DefaultProductAdapter implements ProductAdapter {
       ...(include ?? []),
     ].filter((type, index, arr) => arr.indexOf(type) === index);
 
+    const categoryNodeFields = [
+      ApiProductModel.CategoryNodeFields.MetaDescription,
+      ApiProductModel.CategoryNodeFields.NodeId,
+      ApiProductModel.CategoryNodeFields.Order,
+      ApiProductModel.CategoryNodeFields.Name,
+      ApiProductModel.CategoryNodeFields.Parents,
+      ApiProductModel.CategoryNodeFields.IsActive,
+    ];
+
     return this.http
       .get<ApiProductModel.Response>(
         `${this.SCOS_BASE_URL}/${this.productEndpoint}/${sku}${
           include ? '?include=' : ''
-        }${include?.join(',') || ''}`
+        }${include?.join(',') || ''}
+        &fields[${
+          ApiProductModel.Includes.CategoryNodes
+        }]=${categoryNodeFields.join(',')}`
       )
       .pipe(this.transformer.do(ProductNormalizer));
   }
