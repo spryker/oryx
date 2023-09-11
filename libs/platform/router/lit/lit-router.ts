@@ -371,13 +371,11 @@ export class LitRouter implements ReactiveController {
           return;
         }
 
-        // If enter() returns false, cancel this navigation
         if (result === false) {
           return;
         }
       }
 
-      // Only update route state if the enter handler completes successfully
       this._currentRoute = route;
       this._currentParams = params;
       this._currentPathname =
