@@ -65,7 +65,7 @@
         "libs/domain/checkout/place-order/index.ts"
       ],
       "@spryker-oryx/checkout/services": [
-        "libs/domain/checkout/services/src/index.ts"
+        "libs/domain/checkout/services/index.ts"
       ],
       "@spryker-oryx/checkout/shipping-address": [
         "libs/domain/checkout/shipping-address/index.ts"
