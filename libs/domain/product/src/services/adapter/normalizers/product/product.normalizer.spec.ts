@@ -1,18 +1,18 @@
 import { camelize } from '@spryker-oryx/core/utilities';
 import { of, take } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
-import { ProductMediaSetNormalizer } from '../media';
+import { CategoryNormalizer } from '../../../category';
 import { CategoryIdNormalizer } from '../category-id';
+import { ProductMediaSetNormalizer } from '../media';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 import {
   productAttributeNormalizer,
+  productCategoryNormalizer,
   productMediaSetNormalizer,
   productNodeNormalizer,
   productPriceNormalizer,
-  productCategoryNormalizer
 } from './product.normalizer';
-import { CategoryNormalizer } from '../../../category';
 
 let mockDeserializedProduct: DeserializedProduct;
 const mockTokensData = {

@@ -18,20 +18,24 @@ export class CategoryBreadcrumbResolver implements BreadcrumbResolver {
   ) {}
 
   resolve(): Observable<BreadcrumbItem[]> {
-    return this.facetListService
-      .getFacet({ parameter: 'category' })
-      .pipe(switchMap(({selectedValues}) => 
+    return this.facetListService.getFacet({ parameter: 'category' }).pipe(
+      switchMap(({ selectedValues }) =>
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.categoryService.getTrail(String(selectedValues![0]))
-          .pipe(switchMap((trail) =>
-            combineLatest(trail.map(({ id, name }) =>
-                this.linkService
-                  .get({ id, type: RouteType.Category })
-                  .pipe(map((url) => ({ text: { raw: name }, url })))
-              ),
-            ))
-          ))
-        );
+        this.categoryService
+          .getTrail(String(selectedValues![0]))
+          .pipe(
+            switchMap((trail) =>
+              combineLatest(
+                trail.map(({ id, name }) =>
+                  this.linkService
+                    .get({ id, type: RouteType.Category })
+                    .pipe(map((url) => ({ text: { raw: name }, url })))
+                )
+              )
+            )
+          )
+      )
+    );
   }
 }
 

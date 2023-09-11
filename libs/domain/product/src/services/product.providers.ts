@@ -48,6 +48,7 @@ import {
   categoryListNormalizerFactory,
   categoryNodeNormalizer,
   categoryNormalizerFactory,
+  categoryQuery,
   categoryTreeNormalizer,
 } from './category';
 import { DefaultProductService } from './default-product.service';
@@ -206,5 +207,6 @@ export const productProviders: Provider[] = [
   },
   ProductListBreadcrumb,
   ProductDetailsBreadcrumb,
+  categoryQuery,
   ...provideLitRoutes({ routes: productRoutes }),
 ];

@@ -62,7 +62,9 @@ describe('CategoryBreadcrumbResolver', () => {
 
     linkService = testInjector.inject<MockLinkService>(LinkService);
     facetService = testInjector.inject<MockFacetListService>(FacetListService);
-    categoryService = testInjector.inject<MockCategoryService>(ProductCategoryService);
+    categoryService = testInjector.inject<MockCategoryService>(
+      ProductCategoryService
+    );
     service = testInjector.inject(CategoryBreadcrumb.provide);
   });
 
@@ -86,7 +88,9 @@ describe('CategoryBreadcrumbResolver', () => {
       });
 
       it('should build categories trail', () => {
-        expect(categoryService.getTrail).toHaveBeenCalledWith(facet.selectedValues[0]);
+        expect(categoryService.getTrail).toHaveBeenCalledWith(
+          facet.selectedValues[0]
+        );
       });
 
       it('should get the url form the service', () => {

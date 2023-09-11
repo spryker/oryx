@@ -1,4 +1,4 @@
-import { Category } from "../../types/domain.types";
+import { Category } from '../../types/domain.types';
 
 const categories: Category[] = [
   //parent category

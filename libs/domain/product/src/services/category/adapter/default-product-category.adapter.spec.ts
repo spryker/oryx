@@ -1,11 +1,11 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ApiProductModel } from '../../../models';
 import { of } from 'rxjs';
-import { ProductCategoryAdapter } from './product-category.adapter';
+import { ApiProductModel } from '../../../models';
 import { DefaultProductCategoryAdapter } from './default-product-category.adapter';
 import { CategoryNodeNormalizer, CategoryTreeNormalizer } from './normalizers';
+import { ProductCategoryAdapter } from './product-category.adapter';
 
 const mockApiUrl = 'mockApiUrl';
 const mockTransformer = {
@@ -49,10 +49,8 @@ describe('DefaultProductCategoryAdapter', () => {
 
   describe('get', () => {
     const mockCategoryId = 'mockId';
-    const fields = `fields[${
-      ApiProductModel.Includes.CategoryNodes
-    }]=`;
-   
+    const fields = `fields[${ApiProductModel.Includes.CategoryNodes}]=`;
+
     beforeEach(() => {
       adapter.get(mockCategoryId);
     });
@@ -73,7 +71,7 @@ describe('DefaultProductCategoryAdapter', () => {
       ApiProductModel.CategoryNodeFields.Order,
       ApiProductModel.CategoryNodeFields.Name,
       ApiProductModel.CategoryNodeFields.Parents,
-    ].forEach((field) => 
+    ].forEach((field) =>
       it(`should contain ${field} in the url`, () => {
         expect(http.url?.split(fields)[1]).toContain(field);
       })
@@ -90,9 +88,7 @@ describe('DefaultProductCategoryAdapter', () => {
     });
 
     it('should build the url', () => {
-      expect(http.url).toContain(
-        `${mockApiUrl}/category-trees`
-      );
+      expect(http.url).toContain(`${mockApiUrl}/category-trees`);
     });
 
     it('should call transformer with category tree normalizer', () => {

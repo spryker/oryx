@@ -1,14 +1,18 @@
-import { provideFactoryEffect } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
+import { provideEffect } from '@spryker-oryx/core';
 import { ProductCategory } from '../../../models';
-import { ProductCategoryService } from '../category.service';
 import { CategoriesLoaded } from './events';
+import { CategoryQuery } from './queries';
 
 export const categoryEffects = [
-  provideFactoryEffect<ProductCategory[]>(
-    (service = inject(ProductCategoryService)) => [
-      CategoriesLoaded,
-      ({ event }) => service.add(event.data ?? []),
-    ]
-  ),
+  provideEffect<ProductCategory[]>([
+    CategoriesLoaded,
+    ({ event, query }) => {
+      if (event.data?.length) {
+        const q = query.getQuery(CategoryQuery);
+        event.data.forEach((data) => {
+          q?.set({ data, qualifier: { id: data.id } });
+        });
+      }
+    },
+  ]),
 ];

@@ -2,7 +2,7 @@ import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
-import { ProductListQualifier, ApiProductModel } from '../../../models';
+import { ApiProductModel, ProductListQualifier } from '../../../models';
 import { ProductListNormalizer } from '../../adapter';
 import { DefaultProductListAdapter } from './default-product-list.adapter';
 import { ProductListAdapter } from './product-list.adapter';
@@ -77,14 +77,12 @@ describe('DefaultProductCategoryAdapter', () => {
     });
 
     describe('category-nodes fields', () => {
-      const fields = `fields[${
-        ApiProductModel.Includes.CategoryNodes
-      }]=`;
-  
+      const fields = `fields[${ApiProductModel.Includes.CategoryNodes}]=`;
+
       it('should add fields for category-nodes to the url', () => {
         expect(http.url).toContain(fields);
       });
-  
+
       [
         ApiProductModel.CategoryNodeFields.MetaDescription,
         ApiProductModel.CategoryNodeFields.NodeId,
@@ -92,7 +90,7 @@ describe('DefaultProductCategoryAdapter', () => {
         ApiProductModel.CategoryNodeFields.Name,
         ApiProductModel.CategoryNodeFields.Children,
         ApiProductModel.CategoryNodeFields.IsActive,
-      ].forEach((field) => 
+      ].forEach((field) =>
         it(`should contain ${field} in the url`, () => {
           expect(http.url?.split(fields)[1]).toContain(field);
         })

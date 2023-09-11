@@ -22,9 +22,7 @@ describe('Breadcrumb suite', () => {
     page.breadcrumb.shouldHaveDividers(1);
 
     //the last breadcrumb should be "Search"
-    page.breadcrumb
-      .nthBreadcrumbItem(-1)
-      .should('contain.text', 'Search');
+    page.breadcrumb.nthBreadcrumbItem(-1).should('contain.text', 'Search');
 
     //when search query is provided
     page.url = `${page.url}?q=test`;
@@ -55,7 +53,7 @@ describe('Breadcrumb suite', () => {
     //should render parent category as second breadcrumb
     page.breadcrumb
       .nthBreadcrumbItem(1)
-      .should('contain.text', parentCategory.title)      
+      .should('contain.text', parentCategory.title)
       .invoke('attr', 'href')
       .should('eq', `/category/${parentCategory.id}`);
 
@@ -67,9 +65,7 @@ describe('Breadcrumb suite', () => {
       .should('eq', `/category/${childCategory2.id}`);
 
     //should render product's title as the last breadcrumb
-    page.breadcrumb
-      .nthBreadcrumbItem(-1)
-      .should('contain.text', product.title);
+    page.breadcrumb.nthBreadcrumbItem(-1).should('contain.text', product.title);
   });
 
   it('should render breadcrumb for the categories page', () => {
