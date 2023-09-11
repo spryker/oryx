@@ -36,6 +36,10 @@ export class DefaultProductCategoryService implements ProductCategoryService {
     return this.categoryQuery$.get({ id }) as Observable<ProductCategory>;
   }
 
+  getTree(): Observable<ProductCategory[]> {
+    return this.treeQuery$.get() as Observable<ProductCategory[]>;
+  }
+
   getTrail(categoryId: string): Observable<ProductCategory[]> {
     return this.get(categoryId).pipe(
       switchMap((category) =>

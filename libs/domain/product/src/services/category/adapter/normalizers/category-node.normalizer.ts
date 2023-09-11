@@ -7,6 +7,8 @@ export function categoryNodeNormalizer(
   data: ApiProductCategoryModel.CategoryNode
 ): ProductCategory {
   const { nodeId, name, order, metaDescription, parents } = data;
+  //parent category without other parents is considered root category
+  //and should be ignored
   const rootParent = !parents?.[0]?.parents?.length;
 
   return {
