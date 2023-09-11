@@ -31,8 +31,4 @@ export const cartProviders: Provider[] = [
   CartTotalsProvider,
   ...cartNormalizer,
   ...cartsNormalizer,
-  // {
-  //   provide: HttpInterceptor,
-  //   useClass: CartVersionInterceptor,
-  // },
 ];

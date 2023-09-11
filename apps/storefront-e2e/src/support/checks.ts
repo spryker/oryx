@@ -25,5 +25,5 @@ export function checkProductCardsPriceMode(
   page: IPageWithFacets & IPageWithProductList,
   query: string
 ) {
-  page.getFirstProductPrice().shadow().should('contain.text', query);
+  page.getSalesProductPrice().shadow().should('contain.text', query);
 }

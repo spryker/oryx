@@ -12,7 +12,6 @@ class MockPriceModeService implements Partial<PriceModeService> {
 
 describe('SitePriceModeSelectorComponent', () => {
   let element: SitePriceModeSelectorComponent;
-  // let testElement: TestableSitePriceModeSelectorComponent;
   let priceModeService: MockPriceModeService;
 
   beforeAll(async () => {

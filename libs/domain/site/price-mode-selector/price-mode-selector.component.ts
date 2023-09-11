@@ -5,7 +5,6 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nTranslationValue, hydrate, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { ReplaySubject } from 'rxjs';
 import { PriceModes } from '../src/models';
 import { PriceModeService } from '../src/services/price-mode';
 import { sitePriceModeSelectorStyles } from './price-mode-selector.styles';
@@ -17,7 +16,6 @@ export class SitePriceModeSelectorComponent extends ContentMixin(LitElement) {
   protected priceModeService = resolve(PriceModeService);
 
   protected $current = signal(this.priceModeService.get());
-  protected triggerMode$ = new ReplaySubject<string>(1);
   protected priceModes: string[] = [PriceModes.GrossMode, PriceModes.NetMode];
 
   protected override render(): TemplateResult | void {
