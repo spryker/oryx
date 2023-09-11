@@ -2,14 +2,16 @@ import './cy-actions/api.actions';
 import './cy-actions/cart.actions';
 import './cy-actions/checkout.actions';
 import './cy-actions/login.actions';
+import { isPercyEnabled, isSSREnabled } from './index';
 
-export {};
+export { };
 
 declare global {
   namespace Cypress {
     interface Chainable {
       hydrateElemenet(assetPath: string, triggerHydrationFn): Chainable<void>;
       checkCurrencyFormatting(locale: string): void;
+      takeScreenshot(name: string, options?: object): Chainable<void>;
     }
   }
 }
@@ -17,7 +19,7 @@ declare global {
 Cypress.Commands.add(
   'hydrateElemenet',
   (assetPath: string, triggerHydrationFn) => {
-    if (Cypress.env('isSSR')) {
+    if (isSSREnabled()) {
       cy.intercept(assetPath).as(`${assetPath}Request`);
       triggerHydrationFn();
       cy.wait(`@${assetPath}Request`);
@@ -41,6 +43,14 @@ Cypress.Commands.add(
     }
   }
 );
+
+Cypress.Commands.add('takeScreenshot', (name: string, options = {
+  widths: [375, 1280],
+}) => {
+  if (isSSREnabled() && isPercyEnabled()) {
+    cy.percySnapshot(name, options);
+  }
+});
 
 function checkCurrencyFormatting(
   subject,

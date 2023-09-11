@@ -1,6 +1,7 @@
 import registerCypressGrep from '@cypress/grep/src/support';
 import './commands';
 import { Customer } from './types/domain.types';
+import '@percy/cypress';
 
 registerCypressGrep();
 
@@ -39,6 +40,14 @@ const getRandomCustomer = () => {
 export const isB2B = (): boolean => {
   return Cypress.env('IS_B2B');
 };
+
+export const isSSREnabled = (): boolean => {
+  return Cypress.env('IS_SSR');
+}
+
+export const isPercyEnabled = (): boolean => {
+  return Cypress.env('IS_PERCY');
+}
 
 before(() => {
   removeUselessLogsFromCypressLogs();

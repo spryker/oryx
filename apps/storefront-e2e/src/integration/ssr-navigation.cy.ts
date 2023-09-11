@@ -1,4 +1,5 @@
 import { GlueAPI } from '../support/apis/glue.api';
+import { isSSREnabled } from '../support/index';
 import { FooterFragment } from '../support/page-fragments/footer.fragment';
 import { HeaderFragment } from '../support/page-fragments/header.fragment';
 import { SearchBoxFragment } from '../support/page-fragments/search-box.fragment';
@@ -19,7 +20,7 @@ const header = new HeaderFragment();
 const searchbox = new SearchBoxFragment();
 
 describe('SSR suite', { tags: 'smoke' }, () => {
-  if (Cypress.env('isSSR')) {
+  if (isSSREnabled()) {
     it('should render Landing page', () => {
       const landingPage = new LandingPage();
 
