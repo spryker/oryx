@@ -1,7 +1,7 @@
 import { ProductRelationsFragment } from '../page-fragments/product-relations.fragment';
 import { QuantityInputFragment } from '../page-fragments/quantity-input.fragment';
-import { visibilityCheck } from '../utils';
 import { Product } from '../types/domain.types';
+import { visibilityCheck } from '../utils';
 import { AbstractSFPage } from './abstract.page';
 
 export class ProductDetailsPage extends AbstractSFPage {
