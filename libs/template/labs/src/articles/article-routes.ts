@@ -5,7 +5,7 @@ export const articleRoutes: RouteConfig[] = [
   {
     path: '/faq/:id',
     type: ContentFields.Faq,
-    // TODO: uncomment when performance issue will be solved
+    // TODO: uncomment when HRZ-89741 will be solved
     // enter: ({ id }) =>
     //   resolve(ContentService)
     //     .get({
@@ -21,7 +21,7 @@ export const articleRoutes: RouteConfig[] = [
   {
     path: '/article/:id',
     type: ContentFields.Article,
-    // TODO: uncomment when performance issue will be solved
+    // TODO: uncomment when HRZ-89741 will be solved
     // enter: ({ id }) =>
     //   resolve(ContentService)
     //     .get({
