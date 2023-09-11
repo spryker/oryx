@@ -32,20 +32,7 @@ export class DefaultProductCategoryService implements ProductCategoryService {
     refreshOn: [LocaleChanged],
   });
 
-  // add(categories: ProductCategory[]): void {
-  //   categories.forEach((cat) => {
-  //     if (this.categories.has(cat.id)) {
-  //       this.categories.get(cat.id)!.next(cat);
-  //     }
-  //     this.categories.set(cat.id, new BehaviorSubject(cat));
-  //   });
-  // }
-
   get(id: string): Observable<ProductCategory> {
-    // if (!this.categories.has(categoryId)) {
-    //   this.fetchCategory(categoryId);
-    // }
-    // return this.categories.get(categoryId)!;
     return this.categoryQuery$.get({ id }) as Observable<ProductCategory>;
   }
 
@@ -61,11 +48,4 @@ export class DefaultProductCategoryService implements ProductCategoryService {
       map((trail) => trail.sort((a, b) => (a.id === b.parent ? -1 : 1)))
     );
   }
-
-  // protected fetchCategory(categoryId: string): void {
-  //   this.categories.set(categoryId, new BehaviorSubject({} as ProductCategory));
-  //   this.adapter
-  //     .get(categoryId)
-  //     .subscribe((category) => this.categories.get(categoryId)!.next(category));
-  // }
 }
