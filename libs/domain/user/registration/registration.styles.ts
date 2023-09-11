@@ -5,22 +5,14 @@ export const styles = css`
     margin-block-end: 15px;
   }
 
-  form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--gap, 15px);
-  }
-
-  oryx-input:last-of-type,
-  oryx-password-input,
-  .agreement,
-  oryx-button {
-    grid-column: span 2;
-  }
-
-  .agreement {
-    display: inline-flex;
+  oryx-checkbox {
+    display: flex;
     align-items: center;
+    width: fit-content;
+  }
+
+  oryx-checkbox a {
+    z-index: 1;
   }
 
   oryx-button {

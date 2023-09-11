@@ -1,6 +1,11 @@
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
+  CompositionLayout,
+  ContentMixin,
+  defaultOptions,
+} from '@spryker-oryx/experience';
+import {
+  FormFieldAttributes,
   FormFieldDefinition,
   FormFieldType,
   FormRenderer,
@@ -13,7 +18,7 @@ import {
 } from '@spryker-oryx/ui/password';
 import { ApiUserModel, RegistrationService } from '@spryker-oryx/user';
 import { hydrate, signal } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult, html } from 'lit';
+import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { firstValueFrom } from 'rxjs';
@@ -29,14 +34,13 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
 ) {
   static styles = styles;
 
-  @state() isLoading?: boolean = false;
-  @state() hasGenericError?: boolean = false;
-  @state() hasAgreementError?: boolean = false;
-  @state() hasPasswordError?: boolean = false;
+  @state() isLoading = false;
+  @state() hasGenericError = false;
+  @state() hasAgreementError = false;
+  @state() hasPasswordError = false;
 
   @query('form') form?: HTMLFormElement;
   @query('oryx-password-input') passwordComponent?: PasswordInputComponent;
-
   @query('select[name=salutation]') salutation?: HTMLSelectElement;
   @query('select[name=gender]') gender?: HTMLSelectElement;
   @query('input[name=firstName]') firstName?: HTMLInputElement;
@@ -54,12 +58,34 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
   protected genderService = resolve(GenderService);
   protected genders = signal(this.genderService.get());
 
+  protected firstUpdated(_changedProperties: PropertyValues) {
+    super.firstUpdated(_changedProperties);
+
+    this.password?.addEventListener('input', this.onPasswordInput);
+    this.acceptedTerms?.addEventListener('change', this.onCheckboxChange);
+  }
+
+  disconnectedCallback(): void {
+    this.password?.removeEventListener('input', this.onPasswordInput);
+    this.acceptedTerms?.removeEventListener('change', this.onCheckboxChange);
+
+    super.disconnectedCallback();
+  }
+
   protected onSubmit(event: Event): void {
     event.preventDefault();
 
     if (this.validateForm()) {
       this.registerUser();
     }
+  }
+
+  protected onPasswordInput(): void {
+    this.hasPasswordError = false;
+  }
+
+  protected onCheckboxChange(): void {
+    this.hasAgreementError && this.setCheckboxValidity();
   }
 
   protected validateForm(): boolean {
@@ -107,59 +133,44 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
       )}
 
       <form @submit=${this.onSubmit}>
-        ${this.fieldRenderer.buildForm(this.getFields())}
-        <oryx-password-input
-          .strategy="${this.$options()?.passwordVisibility}"
-          .minLength=${this.$options()?.minLength}
-          .maxLength=${this.$options()?.maxLength}
-          .minUppercaseChars=${this.$options()?.minUppercaseChars}
-          .minNumbers=${this.$options()?.minNumbers}
-          .minSpecialChars=${this.$options()?.minSpecialChars}
-          .label=${this.i18n('login.password')}
-          .errorMessage=${this.hasPasswordError &&
-          this.i18n(
-            'user.registration.password-doesn’t-satisfy-all-the-criteria'
-          )}
-          required
-          @input=${() => (this.hasPasswordError = false)}
+        <oryx-layout
+          .layout=${CompositionLayout.Grid}
+          style="--column-gap: 20px;--row-gap: 15px;"
         >
-          <input type="password" name="password" required />
-        </oryx-password-input>
-        <div class="agreement">
-          <oryx-checkbox ?hasError=${this.hasAgreementError}>
-            <input
-              type="checkbox"
-              name="acceptedTerms"
-              required
-              @change=${this.hasAgreementError && this.setCheckboxValidity}
-            />
-          </oryx-checkbox>
-          <span>
-            ${this.i18n('user.registration.i-accept-the-<terms>', {
-              terms: {
-                value: 'terms and conditions',
-                link: {
-                  href: this.$options()?.termsAndConditionsLink || '',
-                  target: '_blank',
-                },
-              },
-            })}
-          </span>
-        </div>
-        <oryx-button
-          .size=${ButtonSize.Md}
-          ?loading=${this.isLoading}
-          @click=${this.onSubmit}
-        >
-          <button slot="custom" ?disabled=${this.isLoading}>
+          ${this.fieldRenderer.buildForm(this.getFields())}
+
+          <oryx-button
+            .size=${ButtonSize.Md}
+            ?loading=${this.isLoading}
+            @click=${this.onSubmit}
+          >
             ${this.i18n('user.registration.sign-up')}
-          </button>
-        </oryx-button>
+          </oryx-button>
+        </oryx-layout>
       </form>
     `;
   }
 
   protected getFields(): FormFieldDefinition[] {
+    const passwordAttributes: FormFieldAttributes = {
+      minLength: this.$options()?.minLength as number,
+      maxLength: this.$options()?.maxLength as number,
+      minUppercaseChars: this.$options()?.minUppercaseChars as number,
+      minNumbers: this.$options()?.minNumbers as number,
+      minSpecialChars: this.$options()?.minSpecialChars as number,
+      strategy: this.$options()?.passwordVisibility as string,
+      errorMessage: (this.hasPasswordError &&
+        this.i18n(
+          'user.registration.password-doesn’t-satisfy-all-the-criteria'
+        )) as string,
+    };
+
+    const cleanedPasswordAttributes: FormFieldAttributes = Object.fromEntries(
+      Object.entries(passwordAttributes).filter(
+        ([key, value]) => value !== undefined
+      )
+    );
+
     return [
       {
         id: 'salutation',
@@ -198,6 +209,33 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
         type: FormFieldType.Email,
         required: true,
         label: this.i18n('user.registration.email'),
+        width: 100,
+      },
+      {
+        id: 'password',
+        type: FormFieldType.Password,
+        required: true,
+        label: this.i18n('user.registration.password'),
+        attributes: cleanedPasswordAttributes,
+        width: 100,
+      },
+      {
+        id: 'acceptedTerms',
+        type: FormFieldType.Boolean,
+        required: true,
+        label: this.i18n('user.registration.i-accept-the-<terms>', {
+          terms: {
+            value: 'terms and conditions',
+            link: {
+              href: this.$options()?.termsAndConditionsLink || '',
+              target: '_blank',
+            },
+          },
+        }),
+        width: 100,
+        attributes: {
+          hasError: this.hasAgreementError,
+        },
       },
     ];
   }
@@ -210,8 +248,13 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
       lastName: this.secondName?.value ?? '',
       email: this.email?.value ?? '',
       password: this.password?.value ?? '',
-      confirmPassword: this.password?.value ?? '',
       acceptedTerms: this.acceptedTerms?.checked,
     };
+  }
+
+  constructor() {
+    super();
+    this.onPasswordInput = this.onPasswordInput.bind(this);
+    this.onCheckboxChange = this.onCheckboxChange.bind(this);
   }
 }

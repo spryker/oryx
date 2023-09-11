@@ -125,9 +125,50 @@ export class DefaultFormRenderer implements FormRenderer {
       case FormFieldType.RadioList: {
         return this.buildRadioList(field, value as string);
       }
+      case FormFieldType.Password: {
+        return this.buildPasswordField(field, value as string);
+      }
     }
 
     return html``;
+  }
+
+  protected buildPasswordField(
+    field: FormFieldDefinition,
+    value?: string
+  ): TemplateResult {
+    const { pattern, title } = this.fieldValidationPattern(field);
+
+    return html`
+      <oryx-password-input
+        .label=${field.label}
+        floatLabel=${ifDefined(field.floatLabel)}
+        .style=${this.resolveStyles(field)}
+        ?required=${field.required}
+        ?hasError=${field.attributes?.hasError}
+        .prefixIcon=${field.attributes?.prefixIcon}
+        ?prefixFill=${field.attributes?.prefixFill}
+        .suffixIcon=${field.attributes?.suffixIcon}
+        ?suffixFill=${field.attributes?.suffixFill}
+        .strategy=${field.attributes?.strategy}
+        .minLength=${ifDefined(field.attributes?.minLength)}
+        .maxLength=${ifDefined(field.attributes?.maxLength)}
+        .minUppercaseChars=${ifDefined(field.attributes?.minUppercaseChars)}
+        .minNumbers=${ifDefined(field.attributes?.minNumbers)}
+        .minSpecialChars=${ifDefined(field.attributes?.minSpecialChars)}
+        .errorMessage=${field.attributes?.errorMessage}
+      >
+        <input
+          .name=${field.id}
+          value=${value ?? ''}
+          placeholder=${ifDefined(field.placeholder)}
+          type="password"
+          ?required=${field.required}
+          pattern=${ifDefined(pattern)}
+          title=${ifDefined(title)}
+        />
+      </oryx-password-input>
+    `;
   }
 
   protected buildTextField(
@@ -141,6 +182,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
         <input
           .name=${field.id}
@@ -167,6 +209,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
         <input
           name=${field.id}
@@ -191,6 +234,7 @@ export class DefaultFormRenderer implements FormRenderer {
       <oryx-checkbox
         .required=${field.required}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
         <input
           type="checkbox"
@@ -212,6 +256,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
         <textarea
           .name=${field.id}
@@ -232,6 +277,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
         <input
           type="color"
@@ -249,7 +295,10 @@ export class DefaultFormRenderer implements FormRenderer {
     value?: string | boolean
   ): TemplateResult {
     return html`
-      <oryx-toggle .style=${this.resolveStyles(field)}>
+      <oryx-toggle
+        .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
+      >
         <input
           type="checkbox"
           .name=${field.id}
@@ -269,6 +318,7 @@ export class DefaultFormRenderer implements FormRenderer {
       <oryx-input-list
         .heading=${field.label}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
         ${field.options?.map(
           (option) => html`
@@ -304,6 +354,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .style=${this.resolveStyles(field)}
         floatLabel=${ifDefined(field.floatLabel)}
         @oryx.close=${(e: Event): void => e.stopPropagation()}
+        ?hasError=${field.attributes?.hasError}
       >
         <select
           .name=${field.id}
@@ -340,6 +391,7 @@ export class DefaultFormRenderer implements FormRenderer {
         heading=${ifDefined(field.label)}
         direction=${ifDefined(field.attributes?.direction)}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
         ${field.options?.map(
           (option) => html`
