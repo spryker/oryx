@@ -358,6 +358,13 @@ export class LitRouter implements ReactiveController {
         this.timestamp = timestamp;
       }
 
+      this._currentRoute = route;
+      this._currentParams = params;
+      this._currentPathname =
+        tailGroup === undefined
+          ? pathname
+          : pathname.substring(0, pathname.length - tailGroup.length);
+
       if (typeof route.enter === 'function') {
         const enterFn = route.enter(params);
         const result = await (isObservable(enterFn)
@@ -372,17 +379,11 @@ export class LitRouter implements ReactiveController {
 
         // If enter() returns false, cancel this navigation
         if (result === false) {
+          this.routerService.navigate('/');
+
           return;
         }
       }
-
-      // Only update route state if the enter handler completes successfully
-      this._currentRoute = route;
-      this._currentParams = params;
-      this._currentPathname =
-        tailGroup === undefined
-          ? pathname
-          : pathname.substring(0, pathname.length - tailGroup.length);
     }
 
     // Propagate the tail match to children
@@ -489,8 +490,8 @@ export class LitRouter implements ReactiveController {
         tap(async (route) => {
           if (route !== '') {
             const resolve = this.ssrAwaiter?.getAwaiter();
-            await this._goto(route);
             this.routerService.acceptParams(this.params);
+            await this._goto(route);
             resolve?.();
           }
         })
