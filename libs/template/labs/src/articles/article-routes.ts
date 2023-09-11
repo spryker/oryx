@@ -5,7 +5,7 @@ export const articleRoutes: RouteConfig[] = [
   {
     path: '/faq/:id',
     type: ContentFields.Faq,
-    // TODO: commented out
+    // TODO: uncomment when performance issue will be solved
     // enter: ({ id }) =>
     //   resolve(ContentService)
     //     .get({
@@ -21,6 +21,7 @@ export const articleRoutes: RouteConfig[] = [
   {
     path: '/article/:id',
     type: ContentFields.Article,
+    // TODO: uncomment when performance issue will be solved
     // enter: ({ id }) =>
     //   resolve(ContentService)
     //     .get({
