@@ -53,7 +53,6 @@ describe('Category suite', () => {
 
       // clear sorting and check that it is default again
       categoryPage.getProductSorting().clearSorting();
-      categoryPage.waitForSearchRequest();
       checkProductCardsSortingBySku(categoryPage, sortingTestData.default);
     });
 
