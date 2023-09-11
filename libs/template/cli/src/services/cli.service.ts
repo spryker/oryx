@@ -1,8 +1,8 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import c from 'picocolors';
-import { CliCommands } from '../commands';
-import { CliCommand } from '../models';
-import { CliArgsService } from './cli-args.service';
+import { CliCommands } from '../commands/index.js';
+import { CliCommand } from '../models/index.js';
+import { CliArgsService } from './cli-args.service.js';
 
 export class CliService {
   constructor(

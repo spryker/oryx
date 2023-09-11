@@ -2,7 +2,7 @@ import { intro, log, outro } from '@clack/prompts';
 import path from 'path';
 import c from 'picocolors';
 import url from 'url';
-import { CliCommand } from '../models';
+import { CliCommand } from '../models/index.js';
 
 export class VersionCliCommand implements CliCommand {
   protected packagePath = path.resolve(this.dirPath, '../..', 'package.json');

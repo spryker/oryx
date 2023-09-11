@@ -5,8 +5,8 @@ import {
   FeatureOptions,
   InjectionPlugin,
 } from '@spryker-oryx/core';
-import { CliPlugin } from './plugin';
-import { cliProviders } from './providers';
+import { CliPlugin } from './plugin.js';
+import { cliProviders } from './providers.js';
 
 export const cliApp = (cliOptions: Record<string, unknown>): AppBuilder =>
   appBuilder()

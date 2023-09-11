@@ -12,8 +12,8 @@ import fs from 'fs';
 import path from 'path';
 import c from 'picocolors';
 import url from 'url';
-import { CliCommand, CliCommandOption } from '../models';
-import { CliArgsService, NodeUtilService } from '../services';
+import { CliCommand, CliCommandOption } from '../models/index.js';
+import { CliArgsService, NodeUtilService } from '../services/index.js';
 
 export class CreateCliCommand implements CliCommand {
   protected repoUrl =
@@ -102,6 +102,7 @@ Please make sure to not use an existing directory name.`
 
     await this.dowloadTemplate();
     await this.copyTemplate(config);
+    await this.npmInstall(config.path);
 
     outro(`Created Oryx App ${options.name}!`);
   }
@@ -160,29 +161,33 @@ Please make sure to not use an existing directory name.`
     s.stop('Template copied!');
   }
 
+  protected async npmInstall(path: string) {
+    const s = spinner();
+
+    s.start('Installing packages...');
+    await this.nodeUtilService.executeCommand('npm install', path);
+    s.stop('Packages installed.');
+  }
+
   protected getTempalteUrl(ref: OryxTemplateRef): string {
     return this.repoUrl.replace('{ref}', this.repoRefs[ref]);
   }
 
-  protected getTemplateFolder(preset: OryxPreset): string {
-    switch (preset) {
-      case OryxPreset.B2C:
-        return 'storefront';
-      case OryxPreset.Fulfillment:
-        return 'fulfillment';
-    }
-  }
+  // protected getTemplateFolder(preset: OryxPreset): string {
+  //   switch (preset) {
+  //     case OryxPreset.B2C:
+  //       return 'storefront';
+  //     case OryxPreset.Fulfillment:
+  //       return 'fulfillment';
+  //   }
+  // }
 
   protected promptName(): Promise<string> {
     return this.promptValue(
       text({
         message: `What is the name of your app? ${c.dim(`[--name, -n]`)}`,
-        validate: (value) => {
-          if (!value.trim()) {
-            return 'Please enter a name';
-          }
-          return undefined;
-        },
+        placeholder: 'oryx-app',
+        defaultValue: 'oryx-app',
       })
     );
   }

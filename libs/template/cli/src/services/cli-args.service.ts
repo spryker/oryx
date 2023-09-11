@@ -1,14 +1,14 @@
 import { FeatureOptionsService } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { parseArgs, ParseArgsConfig } from 'node:util';
-import { CliCommands } from '../commands';
-import { CliCommand } from '../models';
+import { CliCommands } from '../commands/index.js';
+import { CliCommand } from '../models/index.js';
 
 export class CliArgsService {
   protected options =
     this.featureOptionsService.getFeatureOptions(CliFeatureOptions);
   protected args = [...(this.options.args ?? [])];
-  protected command = this.args.shift();
+  protected command = this.args.shift() ?? 'create';
   protected parsedArgs?: ReturnType<typeof parseArgs>;
 
   constructor(
