@@ -122,7 +122,7 @@ export const HeaderTemplate: ExperienceComponent = {
           type: 'oryx-composition',
           id: 'header-actions',
           components: [
-            featureVersion >= '1.1'
+            ...(featureVersion >= '1.1'
               ? [
                   {
                     type: 'oryx-search-box',
@@ -135,7 +135,7 @@ export const HeaderTemplate: ExperienceComponent = {
                     },
                   },
                 ]
-              : [],
+              : []),
             {
               type: 'oryx-site-navigation-item',
               options: {
