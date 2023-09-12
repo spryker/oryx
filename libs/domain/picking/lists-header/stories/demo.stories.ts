@@ -4,7 +4,7 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Picking list header`,
+  title: `${storybookPrefix}/List header`,
   parameters: {
     layout: 'fullscreen',
     chromatic: {

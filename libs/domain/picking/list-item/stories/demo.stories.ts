@@ -3,12 +3,12 @@ import { Meta, Story } from '@storybook/web-components';
 import { html } from 'lit';
 import { TemplateResult } from 'lit/development';
 import { storybookPrefix } from '../../.constants';
-import { PickingListItemAttributes } from '../picking-list-item.model';
+import { ListItemAttributes } from '../list-item.model';
 
 const pickingListIds = mockPickingListData.map(({ id }) => id);
 
 export default {
-  title: `${storybookPrefix}/Picking list item`,
+  title: `${storybookPrefix}/List item`,
   args: {
     pickingListId: pickingListIds[0],
   },
@@ -25,13 +25,13 @@ export default {
   },
 } as Meta;
 
-const Template: Story<PickingListItemAttributes> = ({
+const Template: Story<ListItemAttributes> = ({
   pickingListId,
 }): TemplateResult => {
   return html`
-    <oryx-picking-picking-list-item
+    <oryx-picking-list-item
       pickingListId=${pickingListId}
-    ></oryx-picking-picking-list-item>
+    ></oryx-picking-list-item>
   `;
 };
 

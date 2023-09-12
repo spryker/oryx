@@ -8,7 +8,7 @@ import { TemplateResult } from 'lit/development';
 import { storybookPrefix } from '../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Picking lists`,
+  title: `${storybookPrefix}/Lists`,
   parameters: {
     layout: 'fullscreen',
     chromatic: {

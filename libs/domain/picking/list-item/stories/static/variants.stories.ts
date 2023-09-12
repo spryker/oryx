@@ -4,7 +4,7 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Picking list item/Static`,
+  title: `${storybookPrefix}/List item/Static`,
   parameters: {
     chromatic: {
       viewports: [storybookDefaultViewports.mobile.min],
@@ -15,14 +15,14 @@ export default {
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <h4>With cart note</h4>
-    <oryx-picking-picking-list-item
+    <oryx-picking-list-item
       pickingListId="withCartNote"
-    ></oryx-picking-picking-list-item>
+    ></oryx-picking-list-item>
 
     <h4>Without cart note</h4>
-    <oryx-picking-picking-list-item
+    <oryx-picking-list-item
       pickingListId="withoutCartNote"
-    ></oryx-picking-picking-list-item>
+    ></oryx-picking-list-item>
   `;
 };
 

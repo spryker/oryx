@@ -2,12 +2,12 @@ import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { PickingListItemAttributes } from '../../picking-list-item/picking-list-item.model';
+import { ListItemAttributes } from '../../list-item/list-item.model';
 
 const pickingListIds = mockPickingListData.map(({ id }) => id);
 
 export default {
-  title: `${storybookPrefix}/Picking header`,
+  title: `${storybookPrefix}/Picker header`,
   parameters: {
     chromatic: {
       disableSnapshot: true,
@@ -22,12 +22,12 @@ export default {
   },
 } as Meta;
 
-const Template: Story<PickingListItemAttributes> = ({
+const Template: Story<ListItemAttributes> = ({
   pickingListId,
 }): TemplateResult => {
-  return html`<oryx-picking-header
+  return html`<oryx-picking-picker-header
     pickingListId=${pickingListId}
-  ></oryx-picking-header>`;
+  ></oryx-picking-picker-header>`;
 };
 
 export const Demo = Template.bind({});

@@ -7,7 +7,7 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Picking header/Static`,
+  title: `${storybookPrefix}/Picker header/Static`,
   decorators: [OverlaysDecorator(320, 568)],
   parameters: {
     chromatic: {
@@ -18,12 +18,14 @@ export default {
 
 const Template: Story<unknown> = (): TemplateResult => {
   return html`<h4>With cart note</h4>
-    <oryx-picking-header pickingListId="withCartNote"></oryx-picking-header>
+    <oryx-picking-picker-header
+      pickingListId="withCartNote"
+    ></oryx-picking-picker-header>
 
     <h4>Without cart note</h4>
-    <oryx-picking-header
+    <oryx-picking-picker-header
       pickingListId="withoutCartNote"
-    ></oryx-picking-header>`;
+    ></oryx-picking-picker-header>`;
 };
 
 export const Variants = Template.bind({});
