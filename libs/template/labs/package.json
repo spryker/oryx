@@ -19,6 +19,7 @@
   },
   "peerDependencies": {
     "marked": "^5.1.0",
+    "@types/marked": "^5.0.0",
     "lit": "^2.4.0",
     "rxjs": "^7.5.0",
     "tslib": "^2.4.0"

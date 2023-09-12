@@ -1,7 +1,7 @@
 import { PageMetaService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { DefaultFontService } from './default-font.service';
-import { FontService } from './fonts.service';
+import { FontService } from './font.service';
 
 class MockPageMetaService implements Partial<PageMetaService> {
   add = vi.fn();
