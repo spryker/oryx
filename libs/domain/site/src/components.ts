@@ -1,3 +1,4 @@
+export * from '../breadcrumb/breadcrumb.def';
 export * from '../currency-selector/currency-selector.def';
 export * from '../date/date.def';
 export * from '../locale-selector/locale-selector.def';

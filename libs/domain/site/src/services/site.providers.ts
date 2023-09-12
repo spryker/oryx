@@ -3,6 +3,7 @@ import { Provider } from '@spryker-oryx/di';
 import { LocaleAdapter } from '@spryker-oryx/i18n';
 import { PriceModes } from '../models';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
+import { BreadcrumbService, DefaultBreadcrumbService } from './breadcrumb';
 import { CountryService, DefaultCountryService } from './country';
 import {
   CurrencyService,
@@ -29,6 +30,10 @@ import {
 } from './price-mode';
 import { priceModeHydration } from './price-mode/price-mode-hydration';
 import { DefaultPricingService, PricingService } from './pricing';
+import {
+  DefaultFallbackBreadcrumbResolver,
+  FallbackBreadcrumbResolver,
+} from './resolvers';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultStoreService, StoreService } from './store';
 
@@ -113,6 +118,14 @@ export const siteProviders: Provider[] = [
   },
   localeHydration,
   currencyHydration,
+  {
+    provide: BreadcrumbService,
+    useClass: DefaultBreadcrumbService,
+  },
+  {
+    provide: FallbackBreadcrumbResolver,
+    useClass: DefaultFallbackBreadcrumbResolver,
+  },
   priceModeHydration,
   // TODO: uncomment when CORs header issue is fixed
   // {

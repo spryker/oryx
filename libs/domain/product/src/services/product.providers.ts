@@ -35,6 +35,22 @@ import {
 } from './adapter/normalizers/pagination';
 import { relationsListNormalizer } from './adapter/normalizers/relations-list';
 import { SortNormalizer, sortNormalizer } from './adapter/normalizers/sort';
+import {
+  CategoryListNormalizer,
+  CategoryNodeNormalizer,
+  CategoryNormalizer,
+  CategoryTreeNormalizer,
+  DefaultProductCategoryAdapter,
+  DefaultProductCategoryService,
+  ProductCategoryAdapter,
+  ProductCategoryService,
+  categoryEffects,
+  categoryListNormalizerFactory,
+  categoryNodeNormalizer,
+  categoryNormalizerFactory,
+  categoryQuery,
+  categoryTreeNormalizer,
+} from './category';
 import { DefaultProductService } from './default-product.service';
 import { DefaultProductImageService } from './images';
 import { ProductImageService } from './images/product-image.service';
@@ -58,6 +74,7 @@ import {
   ProductRelationsListAdapter,
   ProductRelationsListService,
 } from './related';
+import { ProductDetailsBreadcrumb, ProductListBreadcrumb } from './resolvers';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
 import { productRoutes } from './routes';
@@ -150,6 +167,7 @@ export const productProviders: Provider[] = [
   ...relationsListNormalizer,
   ...productQueries,
   ...productEffects,
+  ...categoryEffects,
   ProductContextFallback,
   {
     provide: PageMetaResolver,
@@ -163,5 +181,32 @@ export const productProviders: Provider[] = [
     provide: CategoryIdNormalizer,
     useValue: categoryIdNormalizer,
   },
+  {
+    provide: CategoryNormalizer,
+    useFactory: categoryNormalizerFactory,
+  },
+  {
+    provide: CategoryListNormalizer,
+    useFactory: categoryListNormalizerFactory,
+  },
+  {
+    provide: CategoryNodeNormalizer,
+    useValue: categoryNodeNormalizer,
+  },
+  {
+    provide: CategoryTreeNormalizer,
+    useValue: categoryTreeNormalizer,
+  },
+  {
+    provide: ProductCategoryAdapter,
+    useClass: DefaultProductCategoryAdapter,
+  },
+  {
+    provide: ProductCategoryService,
+    useClass: DefaultProductCategoryService,
+  },
+  ProductListBreadcrumb,
+  ProductDetailsBreadcrumb,
+  categoryQuery,
   ...provideLitRoutes({ routes: productRoutes }),
 ];

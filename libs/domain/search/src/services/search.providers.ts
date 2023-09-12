@@ -13,6 +13,7 @@ import { DefaultFacetListService } from './default-facet-list.service';
 import { DefaultSortingService } from './default-sorting.service';
 import { FacetListService } from './facet-list.service';
 import {
+  CategoryBreadcrumb,
   CategoryPageTitleMetaResolver,
   SearchPageTitleMetaResolver,
 } from './resolvers';
@@ -67,6 +68,7 @@ export const searchProviders: Provider[] = [
       [SuggestionField.Products]: productSuggestionRenderer,
     },
   },
+  CategoryBreadcrumb,
   ...provideLitRoutes({ routes: categoryRoutes }),
 ];
 
