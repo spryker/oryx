@@ -2,11 +2,11 @@ import { componentDef } from '@spryker-oryx/utilities';
 
 declare global {
   interface FeatureOptions {
-    'oryx-auth-registration'?: RegistrationOptions;
+    'oryx-user-registration'?: RegistrationOptions;
   }
 }
 
-export const authRegistrationComponent = componentDef({
+export const userRegistrationComponent = componentDef({
   name: 'oryx-user-registration',
   impl: () =>
     import('./registration.component').then((m) => m.UserRegistrationComponent),

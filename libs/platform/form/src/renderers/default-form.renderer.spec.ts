@@ -6,7 +6,6 @@ import {
 } from '@spryker-oryx/ui/password';
 import { LitElement, TemplateResult, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { describe } from 'vitest';
 import { FormFieldDefinition, FormFieldType } from '../models';
 import { DefaultFormRenderer } from './default-form.renderer';
 import { FormRenderer } from './form.renderer';

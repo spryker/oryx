@@ -17,6 +17,7 @@ export const styles = css`
   }
 
   oryx-button {
+    grid-column: auto / span 2;
     width: 207px;
   }
 `;

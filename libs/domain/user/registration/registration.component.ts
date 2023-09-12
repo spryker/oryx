@@ -27,6 +27,7 @@ import { styles } from './registration.styles';
 
 @defaultOptions({
   passwordVisibility: PasswordVisibilityStrategy.Click,
+  termsAndConditionsLink: '/article/terms-and-conditions',
 })
 @hydrate({ event: ['mouseover', 'focus'] })
 export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>(
@@ -168,7 +169,7 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
 
     const cleanedPasswordAttributes: FormFieldAttributes = Object.fromEntries(
       Object.entries(passwordAttributes).filter(
-        ([key, value]) => value !== undefined
+        ([key, value]) => value !== undefined && value !== ''
       )
     );
 
