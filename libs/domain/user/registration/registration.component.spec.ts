@@ -6,8 +6,8 @@ import { passwordInputComponent } from '@spryker-oryx/ui';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { RegistrationService } from '@spryker-oryx/user';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
-import { html } from 'lit';
-import { of } from 'rxjs';
+import { TemplateResult, html } from 'lit';
+import { of, throwError } from 'rxjs';
 import { UserRegistrationComponent } from './registration.component';
 import { userRegistrationComponent } from './registration.def';
 
@@ -24,6 +24,13 @@ const mockGenders = [
     value: 'Male',
   },
 ];
+
+const validFormFields: TemplateResult = html`
+  <oryx-password-input>
+    <input type="password" />
+  </oryx-password-input>
+  <input type="checkbox" name="acceptedTerms" checked />
+`;
 
 class MockFormRenderer implements Partial<FormRenderer> {
   buildForm = vi.fn().mockReturnValue(html`
@@ -169,12 +176,18 @@ describe('RegistrationComponent', () => {
     ]);
   });
 
-  it('should fetch salutations on initialization', () => {
-    expect(salutationService.get).toHaveBeenCalled();
-  });
+  describe('on initialization', () => {
+    it('should fetch salutations', () => {
+      expect(salutationService.get).toHaveBeenCalled();
+    });
 
-  it('should fetch genders on initialization', () => {
-    expect(genderService.get).toHaveBeenCalled();
+    it('should fetch genders', () => {
+      expect(genderService.get).toHaveBeenCalled();
+    });
+
+    it('should not render error message', () => {
+      expect(element).not.toContainElement('oryx-notification');
+    });
   });
 
   describe('when invalid form is submitted', () => {
@@ -188,19 +201,18 @@ describe('RegistrationComponent', () => {
       form.dispatchEvent(submitEvent);
     });
 
-    it('should not register user', () => {
+    it('should not call `register` method of RegistrationService', () => {
       expect(registrationService.register).not.toHaveBeenCalled();
+    });
+
+    it('should not render error message', () => {
+      expect(element).not.toContainElement('oryx-notification');
     });
   });
 
   describe('when valid form is submitted', () => {
     beforeEach(async () => {
-      renderer.buildForm = vi.fn().mockReturnValue(html`
-        <oryx-password-input>
-          <input type="password" />
-        </oryx-password-input>
-        <input type="checkbox" name="acceptedTerms" checked />
-      `);
+      renderer.buildForm.mockReturnValue(validFormFields);
       element = await fixture(
         html`<oryx-user-registration></oryx-user-registration>`
       );
@@ -214,8 +226,37 @@ describe('RegistrationComponent', () => {
       form.dispatchEvent(submitEvent);
     });
 
-    it('should register user', () => {
+    it('should call `register` method of RegistrationService', () => {
       expect(registrationService.register).toHaveBeenCalled();
+    });
+
+    it('should not render error message', () => {
+      expect(element).not.toContainElement('oryx-notification');
+    });
+  });
+
+  describe('when registration fails', () => {
+    beforeEach(async () => {
+      renderer.buildForm.mockReturnValue(validFormFields);
+      registrationService.register.mockReturnValue(
+        throwError(() => new Error('error'))
+      );
+
+      element = await fixture(
+        html`<oryx-user-registration></oryx-user-registration>`
+      );
+
+      const form = element.shadowRoot!.querySelector<HTMLFormElement>('form')!;
+      const submitEvent = new Event('submit', {
+        bubbles: true,
+        cancelable: true,
+      });
+
+      form.dispatchEvent(submitEvent);
+    });
+
+    it('should render error message', () => {
+      expect(element).toContainElement('oryx-notification');
     });
   });
 });
