@@ -121,14 +121,6 @@ export class DefaultFormRenderer implements FormRenderer {
         ?checked=${inputType === 'checkbox' || inputType === 'radio'
           ? !!value
           : undefined}
-        @click=${field.events?.click}
-        @change=${field.events?.change}
-        @input=${field.events?.input}
-        @focus=${field.events?.focus}
-        @blur=${field.events?.blur}
-        @keydown=${field.events?.keydown}
-        @keyup=${field.events?.keyup}
-        @keypress=${field.events?.keypress}
       />
     `;
   }
@@ -193,22 +185,22 @@ export class DefaultFormRenderer implements FormRenderer {
   ): TemplateResult {
     return html`
       <oryx-password-input
-        .label=${field.label}
+        label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
         ?required=${field.required}
         ?hasError=${field.attributes?.hasError}
-        .prefixIcon=${field.attributes?.prefixIcon}
+        prefixIcon=${field.attributes?.prefixIcon}
         ?prefixFill=${field.attributes?.prefixFill}
-        .suffixIcon=${field.attributes?.suffixIcon}
+        suffixIcon=${field.attributes?.suffixIcon}
         ?suffixFill=${field.attributes?.suffixFill}
-        .strategy=${field.attributes?.strategy}
+        strategy=${field.attributes?.strategy}
         .minLength=${ifDefined(field.attributes?.minLength)}
         .maxLength=${ifDefined(field.attributes?.maxLength)}
         .minUppercaseChars=${ifDefined(field.attributes?.minUppercaseChars)}
         .minNumbers=${ifDefined(field.attributes?.minNumbers)}
         .minSpecialChars=${ifDefined(field.attributes?.minSpecialChars)}
-        .errorMessage=${field.attributes?.errorMessage}
+        errorMessage=${ifDefined(field.attributes?.errorMessage)}
       >
         ${this.renderInput(field, value)}
       </oryx-password-input>
@@ -278,14 +270,6 @@ export class DefaultFormRenderer implements FormRenderer {
           .value=${value ?? ''}
           placeholder=${ifDefined(field.placeholder)}
           ?required=${field.required}
-          @click=${field.events?.click}
-          @change=${field.events?.change}
-          @input=${field.events?.input}
-          @focus=${field.events?.focus}
-          @blur=${field.events?.blur}
-          @keydown=${field.events?.keydown}
-          @keyup=${field.events?.keyup}
-          @keypress=${field.events?.keypress}
         ></textarea>
       </oryx-input>
     `;
@@ -341,14 +325,6 @@ export class DefaultFormRenderer implements FormRenderer {
                 value=${option.value}
                 ?checked=${option.value === value}
                 ?required=${field.required}
-                @click=${field.events?.click}
-                @change=${field.events?.change}
-                @input=${field.events?.input}
-                @focus=${field.events?.focus}
-                @blur=${field.events?.blur}
-                @keydown=${field.events?.keydown}
-                @keyup=${field.events?.keyup}
-                @keypress=${field.events?.keypress}
               />
               <oryx-icon .type=${ifDefined(option.icon)}></oryx-icon>
               ${when(option.text, () => html`<span>${option.text}</span>`)}
@@ -379,14 +355,6 @@ export class DefaultFormRenderer implements FormRenderer {
           .name=${field.id}
           ?disabled=${field.disabled}
           ?required=${field.required}
-          @click=${field.events?.click}
-          @change=${field.events?.change}
-          @input=${field.events?.input}
-          @focus=${field.events?.focus}
-          @blur=${field.events?.blur}
-          @keydown=${field.events?.keydown}
-          @keyup=${field.events?.keyup}
-          @keypress=${field.events?.keypress}
         >
           ${when(
             field.placeholder || field.floatLabel,
@@ -429,14 +397,6 @@ export class DefaultFormRenderer implements FormRenderer {
                 value=${option.value}
                 ?checked=${option.value === value}
                 ?required=${field.required}
-                @click=${field.events?.click}
-                @change=${field.events?.change}
-                @input=${field.events?.input}
-                @focus=${field.events?.focus}
-                @blur=${field.events?.blur}
-                @keydown=${field.events?.keydown}
-                @keyup=${field.events?.keyup}
-                @keypress=${field.events?.keypress}
               />
               ${option.text ?? option.value}
             </oryx-radio>

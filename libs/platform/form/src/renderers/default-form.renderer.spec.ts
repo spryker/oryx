@@ -1,7 +1,12 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { html, LitElement, TemplateResult } from 'lit';
+import {
+  PasswordInputComponent,
+  PasswordVisibilityStrategy,
+} from '@spryker-oryx/ui/password';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { describe } from 'vitest';
 import { FormFieldDefinition, FormFieldType } from '../models';
 import { DefaultFormRenderer } from './default-form.renderer';
 import { FormRenderer } from './form.renderer';
@@ -34,6 +39,7 @@ const inputFields = [
   { type: FormFieldType.Phone },
   { type: FormFieldType.Email },
   { type: FormFieldType.Number },
+  { type: FormFieldType.Password, selector: 'oryx-password-input' },
 ];
 
 describe('DefaultFormRenderer', () => {
@@ -149,6 +155,211 @@ describe('DefaultFormRenderer', () => {
               expect(element).toContainElement(`input:not([placeholder])`);
             });
           });
+        });
+      });
+    });
+
+    describe('when the field type is password', () => {
+      describe('and a minLength is provided', () => {
+        const testValue = 5;
+        beforeEach(async () => {
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Password,
+            attributes: {
+              minLength: testValue,
+            },
+          });
+        });
+
+        it('should set the minLength property', () => {
+          expect(
+            element.querySelector<PasswordInputComponent>('oryx-password-input')
+              ?.minLength
+          ).toBe(testValue);
+        });
+      });
+
+      describe('and a maxLength is provided', () => {
+        const testValue = 5;
+        beforeEach(async () => {
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Password,
+            attributes: {
+              maxLength: testValue,
+            },
+          });
+        });
+
+        it('should set the maxLength property', () => {
+          expect(
+            element.querySelector<PasswordInputComponent>('oryx-password-input')
+              ?.maxLength
+          ).toBe(testValue);
+        });
+      });
+      describe('and a minUppercaseChars is provided', () => {
+        const testValue = 5;
+        beforeEach(async () => {
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Password,
+            attributes: {
+              minUppercaseChars: testValue,
+            },
+          });
+        });
+
+        it('should set the minUppercaseChars property', () => {
+          expect(
+            element.querySelector<PasswordInputComponent>('oryx-password-input')
+              ?.minUppercaseChars
+          ).toBe(testValue);
+        });
+      });
+      describe('and a minNumbers is provided', () => {
+        const testValue = 5;
+        beforeEach(async () => {
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Password,
+            attributes: {
+              minNumbers: testValue,
+            },
+          });
+        });
+
+        it('should set the minNumbers property', () => {
+          expect(
+            element.querySelector<PasswordInputComponent>('oryx-password-input')
+              ?.minNumbers
+          ).toBe(testValue);
+        });
+      });
+
+      describe('and a minSpecialChars is provided', () => {
+        const testValue = 5;
+        beforeEach(async () => {
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Password,
+            attributes: {
+              minSpecialChars: testValue,
+            },
+          });
+        });
+
+        it('should set the minSpecialChars property', () => {
+          expect(
+            element.querySelector<PasswordInputComponent>('oryx-password-input')
+              ?.minSpecialChars
+          ).toBe(testValue);
+        });
+      });
+
+      describe('and a strategy is provided', () => {
+        const testValue = PasswordVisibilityStrategy.Click;
+        beforeEach(async () => {
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Password,
+            attributes: {
+              strategy: testValue,
+            },
+          });
+        });
+
+        it('should set the strategy property', () => {
+          expect(element).toContainElement(
+            `oryx-password-input[strategy='${testValue}']`
+          );
+        });
+      });
+
+      describe('and an errorMessage is provided', () => {
+        const testValue = 'test';
+        beforeEach(async () => {
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Password,
+            attributes: {
+              errorMessage: testValue,
+            },
+          });
+        });
+
+        it('should set the errorMessage property', () => {
+          expect(element).toContainElement(
+            `oryx-password-input[errorMessage='${testValue}']`
+          );
+        });
+      });
+      describe('and prefixIcon is provided', () => {
+        const testValue = 'test';
+        beforeEach(async () => {
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Password,
+            attributes: {
+              prefixIcon: testValue,
+            },
+          });
+        });
+
+        it('should set the prefixIcon property', () => {
+          expect(element).toContainElement(
+            `oryx-password-input[prefixIcon='${testValue}']`
+          );
+        });
+      });
+      describe('and suffixIcon is provided', () => {
+        const testValue = 'test';
+        beforeEach(async () => {
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Password,
+            attributes: {
+              suffixIcon: testValue,
+            },
+          });
+        });
+
+        it('should set the suffixIcon property', () => {
+          expect(element).toContainElement(
+            `oryx-password-input[suffixIcon='${testValue}']`
+          );
+        });
+      });
+      describe('and prefixFill is provided', () => {
+        beforeEach(async () => {
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Password,
+            attributes: {
+              prefixFill: true,
+            },
+          });
+        });
+
+        it('should set the prefixFill property', () => {
+          expect(element).toContainElement(`oryx-password-input[prefixFill]`);
+        });
+      });
+
+      describe('and suffixFill is provided', () => {
+        beforeEach(async () => {
+          element = await mockForm({
+            id: 'foo',
+            type: FormFieldType.Password,
+            attributes: {
+              suffixFill: true,
+            },
+          });
+        });
+
+        it('should set the suffixFill property', () => {
+          expect(element).toContainElement(`oryx-password-input[suffixFill]`);
         });
       });
     });
@@ -354,6 +565,44 @@ describe('DefaultFormRenderer', () => {
           it('should not render a floating label', () => {
             expect(element).toContainElement(
               `${f.selector ?? 'oryx-input'}:not([floatLabel])`
+            );
+          });
+        });
+      });
+    });
+
+    describe('hasError', () => {
+      [
+        ...inputFields,
+        { type: FormFieldType.Textarea },
+        { type: FormFieldType.Select, selector: 'oryx-select' },
+      ].forEach((f: { type: FormFieldType; selector?: string }) => {
+        describe(`when the ${f.type} field has an error`, () => {
+          beforeEach(async () => {
+            element = await mockForm({
+              id: 'f',
+              type: f.type,
+              attributes: {
+                hasError: true,
+              },
+            });
+          });
+
+          it('should render an error', () => {
+            expect(element).toContainElement(
+              `${f.selector ?? 'oryx-input'}[hasError]`
+            );
+          });
+        });
+
+        describe(`when the ${f.type} field has no error`, () => {
+          beforeEach(async () => {
+            element = await mockForm({ id: 'f', type: f.type });
+          });
+
+          it('should not render an error', () => {
+            expect(element).toContainElement(
+              `${f.selector ?? 'oryx-input'}:not([hasError])`
             );
           });
         });

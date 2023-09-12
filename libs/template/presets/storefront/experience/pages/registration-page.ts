@@ -1,7 +1,7 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { featureVersion } from '@spryker-oryx/utilities';
 
-export const registrationPage: ExperienceComponent =
+export const registrationPage: ExperienceComponent | undefined =
   featureVersion === 'latest'
     ? {
         id: 'registration-page',
@@ -32,4 +32,4 @@ export const registrationPage: ExperienceComponent =
           },
         ],
       }
-    : {};
+    : undefined;
