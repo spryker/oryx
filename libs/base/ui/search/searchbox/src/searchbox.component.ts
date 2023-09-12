@@ -21,8 +21,6 @@ export class SearchboxComponent
   static override styles = baseStyles;
 
   @property({ reflect: true, type: Boolean }) open?: boolean;
-  /** @deprecated since 1.1 Use float instead */
-  @property({ type: Boolean, attribute: 'xs-floated' }) xsFloated?: boolean;
   @property({ type: Boolean, reflect: true }) float?: boolean;
   @property() label?: string;
   @property() errorMessage?: string;
