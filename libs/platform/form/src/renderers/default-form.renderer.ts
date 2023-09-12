@@ -79,6 +79,60 @@ export class DefaultFormRenderer implements FormRenderer {
     };
   }
 
+  protected renderInput(
+    field: FormFieldDefinition,
+    value?: string | boolean
+  ): TemplateResult {
+    const { pattern, title } = this.fieldValidationPattern(field);
+    let inputType = field.type || field.attributes?.type;
+
+    switch (field.type) {
+      case FormFieldType.Number:
+        inputType = 'number';
+        break;
+      case FormFieldType.Password:
+        inputType = 'password';
+        break;
+      case FormFieldType.Color:
+        inputType = 'color';
+        break;
+      case FormFieldType.Boolean:
+        inputType = 'checkbox';
+        break;
+      case FormFieldType.Toggle:
+        inputType = 'radio';
+        break;
+    }
+
+    return html`
+      <input
+        name=${field.id}
+        type=${inputType}
+        value=${value ?? ''}
+        placeholder=${ifDefined(field.placeholder)}
+        minlength=${ifDefined(field.min)}
+        maxlength=${ifDefined(field.max)}
+        min=${ifDefined(field.min)}
+        max=${ifDefined(field.max)}
+        step=${ifDefined(field.attributes?.step)}
+        ?required=${field.required}
+        pattern=${ifDefined(pattern)}
+        title=${ifDefined(title)}
+        ?checked=${inputType === 'checkbox' || inputType === 'radio'
+          ? !!value
+          : undefined}
+        @click=${field.events?.click}
+        @change=${field.events?.change}
+        @input=${field.events?.input}
+        @focus=${field.events?.focus}
+        @blur=${field.events?.blur}
+        @keydown=${field.events?.keydown}
+        @keyup=${field.events?.keyup}
+        @keypress=${field.events?.keypress}
+      />
+    `;
+  }
+
   protected buildField(
     field: FormFieldDefinition,
     value?: string | boolean
@@ -137,8 +191,6 @@ export class DefaultFormRenderer implements FormRenderer {
     field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
-    const { pattern, title } = this.fieldValidationPattern(field);
-
     return html`
       <oryx-password-input
         .label=${field.label}
@@ -158,15 +210,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .minSpecialChars=${ifDefined(field.attributes?.minSpecialChars)}
         .errorMessage=${field.attributes?.errorMessage}
       >
-        <input
-          .name=${field.id}
-          value=${value ?? ''}
-          placeholder=${ifDefined(field.placeholder)}
-          type="password"
-          ?required=${field.required}
-          pattern=${ifDefined(pattern)}
-          title=${ifDefined(title)}
-        />
+        ${this.renderInput(field, value)}
       </oryx-password-input>
     `;
   }
@@ -175,8 +219,6 @@ export class DefaultFormRenderer implements FormRenderer {
     field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
-    const { pattern, title } = this.fieldValidationPattern(field);
-
     return html`
       <oryx-input
         .label=${field.label}
@@ -184,17 +226,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .style=${this.resolveStyles(field)}
         ?hasError=${field.attributes?.hasError}
       >
-        <input
-          .name=${field.id}
-          value=${value ?? ''}
-          placeholder=${ifDefined(field.placeholder)}
-          minlength=${ifDefined(field.min)}
-          maxlength=${ifDefined(field.max)}
-          type=${ifDefined(field.attributes?.type ?? field.type)}
-          ?required=${field.required}
-          pattern=${ifDefined(pattern)}
-          title=${ifDefined(title)}
-        />
+        ${this.renderInput(field, value)}
       </oryx-input>
     `;
   }
@@ -203,7 +235,6 @@ export class DefaultFormRenderer implements FormRenderer {
     field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
-    const { pattern, title } = this.fieldValidationPattern(field);
     return html`
       <oryx-input
         .label=${field.label}
@@ -211,17 +242,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .style=${this.resolveStyles(field)}
         ?hasError=${field.attributes?.hasError}
       >
-        <input
-          name=${field.id}
-          value=${value ?? ''}
-          placeholder=${ifDefined(field.placeholder)}
-          type="number"
-          min=${ifDefined(field.min)}
-          max=${ifDefined(field.max)}
-          ?required=${field.required}
-          pattern=${ifDefined(pattern)}
-          title=${ifDefined(title)}
-        />
+        ${this.renderInput(field, value)}
       </oryx-input>
     `;
   }
@@ -236,13 +257,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .style=${this.resolveStyles(field)}
         ?hasError=${field.attributes?.hasError}
       >
-        <input
-          type="checkbox"
-          .name=${field.id}
-          ?checked=${!!value}
-          ?required=${field.required}
-        />
-        ${field.label}
+        ${this.renderInput(field, value)} ${field.label}
       </oryx-checkbox>
     `;
   }
@@ -263,6 +278,14 @@ export class DefaultFormRenderer implements FormRenderer {
           .value=${value ?? ''}
           placeholder=${ifDefined(field.placeholder)}
           ?required=${field.required}
+          @click=${field.events?.click}
+          @change=${field.events?.change}
+          @input=${field.events?.input}
+          @focus=${field.events?.focus}
+          @blur=${field.events?.blur}
+          @keydown=${field.events?.keydown}
+          @keyup=${field.events?.keyup}
+          @keypress=${field.events?.keypress}
         ></textarea>
       </oryx-input>
     `;
@@ -279,13 +302,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .style=${this.resolveStyles(field)}
         ?hasError=${field.attributes?.hasError}
       >
-        <input
-          type="color"
-          .name=${field.id}
-          value=${value ?? ''}
-          placeholder=${ifDefined(field.placeholder)}
-          ?required=${field.required}
-        />
+        ${this.renderInput(field, value)}
       </oryx-input>
     `;
   }
@@ -299,13 +316,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .style=${this.resolveStyles(field)}
         ?hasError=${field.attributes?.hasError}
       >
-        <input
-          type="checkbox"
-          .name=${field.id}
-          ?checked=${!!value}
-          ?required=${field.required}
-        />
-        ${field.label}
+        ${this.renderInput(field, value)} ${field.label}
       </oryx-toggle>
     `;
   }
@@ -330,6 +341,14 @@ export class DefaultFormRenderer implements FormRenderer {
                 value=${option.value}
                 ?checked=${option.value === value}
                 ?required=${field.required}
+                @click=${field.events?.click}
+                @change=${field.events?.change}
+                @input=${field.events?.input}
+                @focus=${field.events?.focus}
+                @blur=${field.events?.blur}
+                @keydown=${field.events?.keydown}
+                @keyup=${field.events?.keyup}
+                @keypress=${field.events?.keypress}
               />
               <oryx-icon .type=${ifDefined(option.icon)}></oryx-icon>
               ${when(option.text, () => html`<span>${option.text}</span>`)}
@@ -360,6 +379,14 @@ export class DefaultFormRenderer implements FormRenderer {
           .name=${field.id}
           ?disabled=${field.disabled}
           ?required=${field.required}
+          @click=${field.events?.click}
+          @change=${field.events?.change}
+          @input=${field.events?.input}
+          @focus=${field.events?.focus}
+          @blur=${field.events?.blur}
+          @keydown=${field.events?.keydown}
+          @keyup=${field.events?.keyup}
+          @keypress=${field.events?.keypress}
         >
           ${when(
             field.placeholder || field.floatLabel,
@@ -402,6 +429,14 @@ export class DefaultFormRenderer implements FormRenderer {
                 value=${option.value}
                 ?checked=${option.value === value}
                 ?required=${field.required}
+                @click=${field.events?.click}
+                @change=${field.events?.change}
+                @input=${field.events?.input}
+                @focus=${field.events?.focus}
+                @blur=${field.events?.blur}
+                @keydown=${field.events?.keydown}
+                @keyup=${field.events?.keyup}
+                @keypress=${field.events?.keypress}
               />
               ${option.text ?? option.value}
             </oryx-radio>

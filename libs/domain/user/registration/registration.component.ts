@@ -18,7 +18,7 @@ import {
 } from '@spryker-oryx/ui/password';
 import { ApiUserModel, RegistrationService } from '@spryker-oryx/user';
 import { hydrate, signal } from '@spryker-oryx/utilities';
-import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { firstValueFrom } from 'rxjs';
@@ -58,34 +58,12 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
   protected genderService = resolve(GenderService);
   protected genders = signal(this.genderService.get());
 
-  protected firstUpdated(_changedProperties: PropertyValues) {
-    super.firstUpdated(_changedProperties);
-
-    this.password?.addEventListener('input', this.onPasswordInput);
-    this.acceptedTerms?.addEventListener('change', this.onCheckboxChange);
-  }
-
-  disconnectedCallback(): void {
-    this.password?.removeEventListener('input', this.onPasswordInput);
-    this.acceptedTerms?.removeEventListener('change', this.onCheckboxChange);
-
-    super.disconnectedCallback();
-  }
-
   protected onSubmit(event: Event): void {
     event.preventDefault();
 
     if (this.validateForm()) {
       this.registerUser();
     }
-  }
-
-  protected onPasswordInput(): void {
-    this.hasPasswordError = false;
-  }
-
-  protected onCheckboxChange(): void {
-    this.hasAgreementError && this.setCheckboxValidity();
   }
 
   protected validateForm(): boolean {
@@ -218,6 +196,9 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
         label: this.i18n('user.registration.password'),
         attributes: cleanedPasswordAttributes,
         width: 100,
+        events: {
+          input: () => (this.hasPasswordError = false),
+        },
       },
       {
         id: 'acceptedTerms',
@@ -236,6 +217,9 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
         attributes: {
           hasError: this.hasAgreementError,
         },
+        events: {
+          change: () => this.hasAgreementError && this.setCheckboxValidity(),
+        },
       },
     ];
   }
@@ -250,11 +234,5 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
       password: this.password?.value ?? '',
       acceptedTerms: this.acceptedTerms?.checked,
     };
-  }
-
-  constructor() {
-    super();
-    this.onPasswordInput = this.onPasswordInput.bind(this);
-    this.onCheckboxChange = this.onCheckboxChange.bind(this);
   }
 }

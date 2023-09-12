@@ -43,6 +43,18 @@ export interface FormFieldDefinition<K = string>
   width?: 50 | 100;
 
   disabled?: boolean;
+  events?: FormFieldEvents;
+}
+
+export interface FormFieldEvents {
+  click?: (e: MouseEvent) => void;
+  change?: (e: Event) => void;
+  input?: (e: InputEvent) => void;
+  blur?: (e: FocusEvent) => void;
+  focus?: (e: FocusEvent) => void;
+  keydown?: (e: KeyboardEvent) => void;
+  keyup?: (e: KeyboardEvent) => void;
+  keypress?: (e: KeyboardEvent) => void;
 }
 
 export type FormValues = Record<string, string | boolean>;
