@@ -1,12 +1,10 @@
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
-import { featureVersion } from '@spryker-oryx/utilities';
-import { css, unsafeCSS } from 'lit';
+import { css } from 'lit';
 
 export const searchBoxStyles = css`
   :host {
     --oryx-popover-maxheight: 526px;
-
-    ${unsafeCSS(featureVersion < '1.1' ? '--oryx-popover-width: 100%;' : '')}
+    --oryx-popover-width: 100%;
   }
 
   [slot='option'] {
