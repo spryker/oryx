@@ -3,6 +3,7 @@ import { FormFieldType } from '@spryker-oryx/form';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { SuggestionField } from '../src/services';
 import { SearchBoxComponent } from './box.component';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const searchBoxComponentSchema: ContentComponentSchema<SearchBoxComponent> =
   {
@@ -14,9 +15,9 @@ export const searchBoxComponentSchema: ContentComponentSchema<SearchBoxComponent
         type: FormFieldType.Number,
         min: 0,
       },
-      float: {
+      ...(featureVersion >= '1.1' ? {float: {
         type: FormFieldType.Boolean,
-      },
+      }} : {}),
       // TODO: improve form for object options
       [`${SuggestionField.Suggestions}Count`]: {
         type: FormFieldType.Number,
