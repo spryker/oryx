@@ -13,6 +13,7 @@ export const styles = css`
 
   oryx-checkbox a {
     z-index: 1;
+    position: relative;
   }
 
   oryx-button {

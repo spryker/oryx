@@ -249,7 +249,8 @@ export class DefaultFormRenderer implements FormRenderer {
         .style=${this.resolveStyles(field)}
         ?hasError=${field.attributes?.hasError}
       >
-        ${this.renderInput(field, value)} ${field.label}
+        ${this.renderInput(field, value)} 
+        <span>${field.label}</span>
       </oryx-checkbox>
     `;
   }
