@@ -41,11 +41,23 @@ export const HeaderTemplate: ExperienceComponent = {
               {rules: [{ query: { breakpoint: Size.Sm }, hide: true }]}: {}),
           },
         },
+        featureVersion >= '1.1'
+          ? {
+              type: 'oryx-price-mode-selector',
+              options: {
+                rules: [{ style: 'margin-inline-start: auto' }],
+              },
+            }
+          : {},
         {
           type: 'oryx-site-currency-selector',
-          options: {
-            rules: [{ style: 'margin-inline-start: auto' }],
-          },
+          ...(featureVersion < '1.1'
+            ? {
+                options: {
+                  rules: [{ style: 'margin-inline-start: auto' }],
+                },
+              }
+            : {}),
         },
         { type: 'oryx-site-locale-selector' },
       ],

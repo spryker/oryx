@@ -11,9 +11,9 @@ export function categoryIdNormalizer(
     return;
   }
 
-  const categoryIds = data.reduce(
+  const categoryIds = data.reduce<string[]>(
     (acc, curr) => (curr.isActive ? [...acc, String(curr.nodeId)] : acc),
-    [] as string[]
+    []
   );
 
   if (!categoryIds.length) {

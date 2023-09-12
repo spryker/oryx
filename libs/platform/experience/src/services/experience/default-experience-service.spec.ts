@@ -81,6 +81,7 @@ const mockStatic = {
 
 const mockExperienceDataService = {
   getData: vi.fn().mockReturnValue([mockStatic]),
+  registerComponent: vi.fn(),
 };
 
 describe('DefaultExperienceService', () => {

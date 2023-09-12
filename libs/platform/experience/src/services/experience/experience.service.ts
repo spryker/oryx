@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Component } from './models';
+import { Component } from '../../models';
 
 export const ExperienceService = 'oryx.ExperienceService';
 

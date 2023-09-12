@@ -3,12 +3,12 @@ import { Injector } from '@spryker-oryx/di';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Size } from '@spryker-oryx/utilities';
 import {
+  Component,
   CompositionProperties,
   LayoutAlign,
   StyleProperties,
 } from '../../models';
 import { Theme, ThemePlugin } from '../../plugins';
-import { Component } from '../experience';
 import { DefaultLayoutBuilder } from './default-layout.builder';
 import { ScreenService } from './screen.service';
 

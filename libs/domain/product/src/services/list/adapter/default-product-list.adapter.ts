@@ -1,5 +1,6 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable } from 'rxjs';
 import {
   ApiProductModel,
@@ -65,11 +66,29 @@ export class DefaultProductListAdapter implements ProductListAdapter {
       ApiProductModel.Includes.Labels,
     ];
 
+    const categoryNodeFields = [
+      ApiProductModel.CategoryNodeFields.MetaDescription,
+      ApiProductModel.CategoryNodeFields.NodeId,
+      ApiProductModel.CategoryNodeFields.Order,
+      ApiProductModel.CategoryNodeFields.Name,
+      ApiProductModel.CategoryNodeFields.Children,
+      ApiProductModel.CategoryNodeFields.IsActive,
+    ];
+
+    const fields =
+      featureVersion >= '1.1'
+        ? `&fields[${
+            ApiProductModel.Includes.CategoryNodes
+          }]=${categoryNodeFields.join(',')}
+    `
+        : '';
+
     return this.http
       .get<ApiProductModel.Response>(
         `${this.SCOS_BASE_URL}/${this.queryEndpoint}?${this.getKey(
           qualifier
-        )}&include=${include?.join(',')}`
+        )}&include=${include?.join(',')}
+        ${fields}`
       )
       .pipe(this.transformer.do(ProductListNormalizer));
   }
