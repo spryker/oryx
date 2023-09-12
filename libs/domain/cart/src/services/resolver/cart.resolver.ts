@@ -4,7 +4,8 @@ import {
   Resolver,
   TokenResourceResolvers,
 } from '@spryker-oryx/core';
-import { Provider, inject } from '@spryker-oryx/di';
+import { Provider, inject, resolve } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { map } from 'rxjs';
 import { CartService } from '..';
 
@@ -14,13 +15,20 @@ export type CartResolvers = {
 };
 
 export class CartResolver extends BaseResolver<CartResolvers> {
-  constructor(protected cartService = inject(CartService)) {
+  /** @deprecated since 1.1 use cartService instead*/
+  protected cartService$ = resolve(CartService);
+  protected cartService?: CartService;
+
+  constructor() {
     super();
+    if (featureVersion >= '1.1') {
+      this.cartService = inject(CartService);
+    }
   }
 
   protected resolvers = {
     SUMMARY: (): ResolvedToken => {
-      return this.cartService.getCart().pipe(
+      return (this.cartService ?? this.cartService$).getCart().pipe(
         map((cart) => {
           const quantity = cart?.products?.reduce(
             (acc, { quantity }) => acc + quantity,
@@ -37,7 +45,7 @@ export class CartResolver extends BaseResolver<CartResolvers> {
       );
     },
     EMPTY: (): ResolvedToken => {
-      return this.cartService
+      return (this.cartService ?? this.cartService$)
         .getCart()
         .pipe(
           map((cart) => !cart?.products?.find(({ quantity }) => !!quantity))

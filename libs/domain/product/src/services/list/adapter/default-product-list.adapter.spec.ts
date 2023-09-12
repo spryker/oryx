@@ -1,6 +1,7 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
 import { ApiProductModel, ProductListQualifier } from '../../../models';
 import { ProductListNormalizer } from '../../adapter';
@@ -76,26 +77,28 @@ describe('DefaultProductCategoryAdapter', () => {
       );
     });
 
-    describe('category-nodes fields', () => {
-      const fields = `fields[${ApiProductModel.Includes.CategoryNodes}]=`;
+    if (featureVersion >= '1.1') {
+      describe('category-nodes fields', () => {
+        const fields = `fields[${ApiProductModel.Includes.CategoryNodes}]=`;
 
-      it('should add fields for category-nodes to the url', () => {
-        expect(http.url).toContain(fields);
+        it('should add fields for category-nodes to the url', () => {
+          expect(http.url).toContain(fields);
+        });
+
+        [
+          ApiProductModel.CategoryNodeFields.MetaDescription,
+          ApiProductModel.CategoryNodeFields.NodeId,
+          ApiProductModel.CategoryNodeFields.Order,
+          ApiProductModel.CategoryNodeFields.Name,
+          ApiProductModel.CategoryNodeFields.Children,
+          ApiProductModel.CategoryNodeFields.IsActive,
+        ].forEach((field) =>
+          it(`should contain ${field} in the url`, () => {
+            expect(http.url?.split(fields)[1]).toContain(field);
+          })
+        );
       });
-
-      [
-        ApiProductModel.CategoryNodeFields.MetaDescription,
-        ApiProductModel.CategoryNodeFields.NodeId,
-        ApiProductModel.CategoryNodeFields.Order,
-        ApiProductModel.CategoryNodeFields.Name,
-        ApiProductModel.CategoryNodeFields.Children,
-        ApiProductModel.CategoryNodeFields.IsActive,
-      ].forEach((field) =>
-        it(`should contain ${field} in the url`, () => {
-          expect(http.url?.split(fields)[1]).toContain(field);
-        })
-      );
-    });
+    }
 
     it('should call transformer with proper normalizer', () => {
       service.get(mockQualifier).subscribe();

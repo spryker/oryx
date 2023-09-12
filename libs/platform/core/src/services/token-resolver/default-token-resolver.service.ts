@@ -1,4 +1,5 @@
-import { INJECTOR, inject } from '@spryker-oryx/di';
+import { INJECTOR, Injector, inject, resolve } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { map, of } from 'rxjs';
 import {
   ResolvedToken,
@@ -11,8 +12,13 @@ const tokenRE = /^[A-Z_-]+\.(!?)[A-Z_-]+$/;
 
 export class DefaultTokenService implements TokenResolver {
   protected resolvers = new Map<string, TokenResourceResolver>();
+  protected injector?: Injector;
 
-  constructor(protected injector = inject(INJECTOR)) {}
+  constructor() {
+    if (featureVersion >= '1.1') {
+      this.injector = inject(INJECTOR);
+    }
+  }
 
   resolveToken(token: string): ResolvedToken {
     if (!this.isToken(token)) {
@@ -55,7 +61,11 @@ export class DefaultTokenService implements TokenResolver {
     const key = this.getResolverKey(resourceResolver);
     if (!this.resolvers.has(key)) {
       try {
-        const resolver = this.injector.inject<TokenResourceResolver>(key);
+        const resolver =
+          featureVersion >= '1.1'
+            ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              this.injector!.inject<TokenResourceResolver>(key)
+            : resolve(key);
         this.resolvers.set(key, resolver);
       } catch {
         //is handled in injector

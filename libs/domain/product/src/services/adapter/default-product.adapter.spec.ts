@@ -1,6 +1,7 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
 import { ApiProductModel } from '../../models';
 import { DefaultProductAdapter } from './default-product.adapter';
@@ -122,29 +123,31 @@ describe('DefaultProductService', () => {
       expect(callback).toHaveBeenCalledWith(mockTransformerData);
     });
 
-    describe('category-nodes fields', () => {
-      const fields = `fields[${ApiProductModel.Includes.CategoryNodes}]=`;
+    if (featureVersion >= '1.1') {
+      describe('category-nodes fields', () => {
+        const fields = `fields[${ApiProductModel.Includes.CategoryNodes}]=`;
 
-      beforeEach(() => {
-        service.get(mockQualifier);
+        beforeEach(() => {
+          service.get(mockQualifier);
+        });
+
+        it('should add fields for category-nodes to the url', () => {
+          expect(http.url).toContain(fields);
+        });
+
+        [
+          ApiProductModel.CategoryNodeFields.MetaDescription,
+          ApiProductModel.CategoryNodeFields.NodeId,
+          ApiProductModel.CategoryNodeFields.Order,
+          ApiProductModel.CategoryNodeFields.Name,
+          ApiProductModel.CategoryNodeFields.Parents,
+          ApiProductModel.CategoryNodeFields.IsActive,
+        ].forEach((field) =>
+          it(`should contain ${field} in the url`, () => {
+            expect(http.url?.split(fields)[1]).toContain(field);
+          })
+        );
       });
-
-      it('should add fields for category-nodes to the url', () => {
-        expect(http.url).toContain(fields);
-      });
-
-      [
-        ApiProductModel.CategoryNodeFields.MetaDescription,
-        ApiProductModel.CategoryNodeFields.NodeId,
-        ApiProductModel.CategoryNodeFields.Order,
-        ApiProductModel.CategoryNodeFields.Name,
-        ApiProductModel.CategoryNodeFields.Parents,
-        ApiProductModel.CategoryNodeFields.IsActive,
-      ].forEach((field) =>
-        it(`should contain ${field} in the url`, () => {
-          expect(http.url?.split(fields)[1]).toContain(field);
-        })
-      );
-    });
+    }
   });
 });
