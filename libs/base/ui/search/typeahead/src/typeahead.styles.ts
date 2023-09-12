@@ -3,12 +3,12 @@ import {
   baseStyles as searchboxBaseStyles,
   screenStyles as searchboxScreenStyles,
 } from '@spryker-oryx/ui/searchbox';
-import { screenCss } from '@spryker-oryx/utilities';
+import { featureVersion, screenCss } from '@spryker-oryx/utilities';
 import { css, unsafeCSS as unsafecss } from 'lit';
 
 export const baseStyles = [
   ...searchboxBaseStyles,
-  css`
+  featureVersion >= '1.1' ? css`
     :host {
       --oryx-popover-vertical-offset: 20px;
 

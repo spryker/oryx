@@ -47,6 +47,8 @@ export class TypeaheadComponent
   @property() clearIcon?: string;
   @property({ reflect: true }) clearIconPosition?: ClearIconPosition;
   @property() clearIconAppearance?: ClearIconAppearance;
+  /** @deprecated since 1.1 Use float instead */
+  @property({ type: Boolean, attribute: 'xs-floated' }) xsFloated?: boolean;
   @property({ type: Boolean, reflect: true }) float?: boolean;
 
   protected typeaheadController = new TypeaheadController(this);
