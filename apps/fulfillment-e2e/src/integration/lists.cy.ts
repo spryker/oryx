@@ -1,5 +1,5 @@
-import { ListsFragment } from '../support/page_fragments/lists.fragment';
 import { ListsHeaderFragment } from '../support/page_fragments/lists-header.fragment';
+import { ListsFragment } from '../support/page_fragments/lists.fragment';
 
 const listsFragment = new ListsFragment();
 const headerFragment = new ListsHeaderFragment();
