@@ -17,35 +17,30 @@ export type CartResolvers = {
 export class CartResolver extends BaseResolver<CartResolvers> {
   /** @deprecated since 1.1 use cartService instead*/
   protected cartService$ = resolve(CartService);
-  protected cartService?: CartService;
-
-  constructor() {
-    super();
-    if (featureVersion >= '1.1') {
-      this.cartService = inject(CartService);
-    }
-  }
+  protected cartService = inject(CartService);
 
   protected resolvers = {
     SUMMARY: (): ResolvedToken => {
-      return (this.cartService ?? this.cartService$).getCart().pipe(
-        map((cart) => {
-          const quantity = cart?.products?.reduce(
-            (acc, { quantity }) => acc + quantity,
-            0
-          );
+      return (featureVersion >= '1.1' ? this.cartService : this.cartService$)
+        .getCart()
+        .pipe(
+          map((cart) => {
+            const quantity = cart?.products?.reduce(
+              (acc, { quantity }) => acc + quantity,
+              0
+            );
 
-          if (!quantity) {
-            return null;
-          }
+            if (!quantity) {
+              return null;
+            }
 
-          //TODO: Make max quantity to show configurable
-          return quantity > 99 ? '99+' : String(quantity);
-        })
-      );
+            //TODO: Make max quantity to show configurable
+            return quantity > 99 ? '99+' : String(quantity);
+          })
+        );
     },
     EMPTY: (): ResolvedToken => {
-      return (this.cartService ?? this.cartService$)
+      return (featureVersion >= '1.1' ? this.cartService : this.cartService$)
         .getCart()
         .pipe(
           map((cart) => !cart?.products?.find(({ quantity }) => !!quantity))

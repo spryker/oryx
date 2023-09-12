@@ -15,15 +15,11 @@ export type UserResolvers = {
 };
 
 export class UserResolver extends BaseResolver<UserResolvers> {
-  protected userService?: UserService;
-  protected user$ = (this.userService ?? resolve(UserService)).getUser();
-
-  constructor() {
-    super();
-    if (featureVersion >= '1.1') {
-      this.userService = inject(UserService);
-    }
-  }
+  protected userService = inject(UserService);
+  protected user$ = (featureVersion >= '1.1'
+    ? this.userService
+    : resolve(UserService)
+  ).getUser();
 
   protected resolvers: UserResolvers = {
     NAME: (): ResolvedToken =>
