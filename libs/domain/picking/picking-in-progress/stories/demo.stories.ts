@@ -12,9 +12,9 @@ export default {
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  return html`<oryx-picking-in-progress-modal
+  return html`<oryx-picking-picking-in-progress-modal
     open
-  ></oryx-picking-in-progress-modal> `;
+  ></oryx-picking-picking-in-progress-modal> `;
 };
 
 export const Demo = Template.bind({});

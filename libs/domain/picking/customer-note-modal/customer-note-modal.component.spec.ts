@@ -19,7 +19,7 @@ describe('CustomerNoteModal', () => {
   describe('when note property is not provided', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-customer-note-modal></oryx-customer-note-modal>`
+        html`<oryx-picking-customer-note-modal></oryx-picking-customer-note-modal>`
       );
     });
 
@@ -32,9 +32,9 @@ describe('CustomerNoteModal', () => {
     const noteText = 'note text';
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-customer-note-modal open>
+        html`<oryx-picking-customer-note-modal open>
           ${noteText}
-        </oryx-customer-note-modal>`
+        </oryx-picking-customer-note-modal>`
       );
     });
 

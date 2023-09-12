@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { PickingListComponentProperties } from '@spryker-oryx/picking/picking-lists';
+import { ListComponentProperties } from '@spryker-oryx/picking/lists';
 import {
   Signal,
   Type,
@@ -22,7 +22,7 @@ import type { PickingList } from '../models';
 import { PickingListService } from '../services';
 
 export declare class PickingListMixinInterface
-  implements PickingListComponentProperties
+  implements ListComponentProperties
 {
   protected pickingListService: PickingListService;
   pickingListId?: string;
@@ -32,7 +32,7 @@ export declare class PickingListMixinInterface
 }
 
 export const PickingListMixin = <
-  T extends Type<LitElement & PickingListComponentProperties>
+  T extends Type<LitElement & ListComponentProperties>
 >(
   superClass: T
 ): Type<PickingListMixinInterface> & T => {

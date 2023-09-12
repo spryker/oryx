@@ -5,7 +5,7 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { discardModalStyles } from './discard-modal.styles';
 
-export class DiscardPickingComponent extends I18nMixin(LitElement) {
+export class DiscardModalComponent extends I18nMixin(LitElement) {
   static styles = discardModalStyles;
 
   @property({ type: Boolean }) open?: boolean;

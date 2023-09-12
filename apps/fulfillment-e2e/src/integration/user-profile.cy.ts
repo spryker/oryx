@@ -1,21 +1,21 @@
-import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
+import { ListsHeaderFragment } from '../support/page_fragments/lists-header.fragment';
+import { ListsFragment } from '../support/page_fragments/lists.fragment';
+import { PickerHeaderFragment } from '../support/page_fragments/picker-header.fragment';
 import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
 import { LoginPage } from '../support/page_objects/login.page';
-import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
-import { PickingListsHeaderFragment } from '../support/page_fragments/picking-lists-header.fragment';
 
-const pickingListsFragment = new PickingListsFragment();
+const listsFragment = new ListsFragment();
 const userProfileFragment = new UserProfileFragment();
 const loginPage = new LoginPage();
-const pickingHeaderFragment = new PickingHeaderFragment();
-const pickingListsHeaderFragment = new PickingListsHeaderFragment();
+const pickerHeaderFragment = new PickerHeaderFragment();
+const listsHeaderFragment = new ListsHeaderFragment();
 
 describe('When a user opens the user profile modal', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();
 
-    pickingListsHeaderFragment.getUserIcon().click();
+    listsHeaderFragment.getUserIcon().click();
   });
 
   it('should display modal', () => {
@@ -40,7 +40,7 @@ describe('When a user opens the user profile modal', () => {
       cy.mockSyncPending();
       cy.visit('/');
 
-      pickingListsHeaderFragment.getUserIcon().click();
+      listsHeaderFragment.getUserIcon().click();
     });
 
     it('should show message and disable log out button', () => {
@@ -58,9 +58,9 @@ describe('When a user opens the user profile modal', () => {
   describe('and picking is in progress', () => {
     beforeEach(() => {
       userProfileFragment.getCloseButton().click();
-      pickingListsFragment.getStartPickingButtons().eq(1).click();
+      listsFragment.getStartPickingButtons().eq(1).click();
 
-      pickingHeaderFragment.getUserIcon().click();
+      pickerHeaderFragment.getUserIcon().click();
     });
 
     it('should show message and disable log out button', () => {
@@ -80,9 +80,9 @@ describe('When a user opens the user profile modal', () => {
     beforeEach(() => {
       cy.mockSyncPending();
       cy.visit('/');
-      pickingListsFragment.getStartPickingButtons().eq(1).click();
+      listsFragment.getStartPickingButtons().eq(1).click();
 
-      pickingHeaderFragment.getUserIcon().click();
+      pickerHeaderFragment.getUserIcon().click();
     });
 
     it('should show picking in progress message and disable log out button', () => {
@@ -103,15 +103,15 @@ describe('When a user opens the user profile modal', () => {
       cy.intercept('PATCH', '**/picking-lists/**').as('startPicking');
 
       userProfileFragment.getCloseButton().click();
-      pickingListsFragment.getStartPickingButtons().eq(1).click();
+      listsFragment.getStartPickingButtons().eq(1).click();
 
       cy.wait('@startPicking', { timeout: 30000 });
 
       cy.visit('/');
 
-      pickingListsFragment.getPickingListsItems().should('have.length', 1);
+      listsFragment.getPickingListsItems().should('have.length', 1);
 
-      pickingListsHeaderFragment.getUserIcon().click();
+      listsHeaderFragment.getUserIcon().click();
 
       userProfileFragment.getWrapper().should('be.visible');
 
@@ -122,7 +122,7 @@ describe('When a user opens the user profile modal', () => {
       userProfileFragment.getWrapper().should('not.be.visible');
       cy.location('pathname').should('not.to.match', /^\/login/);
       loginPage.getWrapper().should('not.exist');
-      pickingListsFragment.getPickingListsItems().should('have.length', 2);
+      listsFragment.getPickingListsItems().should('have.length', 2);
     });
   });
 });

@@ -15,7 +15,7 @@ export class CustomerNoteComponent extends I18nMixin(
 
   protected routerService = resolve(RouterService);
 
-  @query('oryx-picking-in-progress-modal')
+  @query('oryx-picking-picking-in-progress-modal')
   protected pickingInProgressModal!: PickingInProgressModalComponent;
 
   protected onProceed(): void {
@@ -45,7 +45,7 @@ export class CustomerNoteComponent extends I18nMixin(
   protected override render(): TemplateResult {
     return html`
       <section>
-        <oryx-navigate-back></oryx-navigate-back>
+        <oryx-picking-navigate-back></oryx-picking-navigate-back>
         <oryx-image resource="user-note"></oryx-image>
         <oryx-heading as="h2" as-md="h4">
           <h4>${this.i18n('picking.customer-note')}</h4>
@@ -60,9 +60,9 @@ export class CustomerNoteComponent extends I18nMixin(
         @click=${this.onProceed}
       ></oryx-button>
 
-      <oryx-picking-in-progress-modal
+      <oryx-picking-picking-in-progress-modal
         @oryx.back=${this.closePickingInProgressModal}
-      ></oryx-picking-in-progress-modal>
+      ></oryx-picking-picking-in-progress-modal>
     `;
   }
 

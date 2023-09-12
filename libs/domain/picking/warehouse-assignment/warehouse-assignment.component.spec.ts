@@ -85,7 +85,7 @@ describe('WarehouseAssignmentComponent', () => {
     beforeEach(async () => {
       service.getList.mockReturnValue(of(mockWarehouseUserAssignments));
       el = await fixture(
-        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+        html`<oryx-picking-warehouse-assignment></oryx-picking-warehouse-assignment>`
       );
     });
 
@@ -100,7 +100,7 @@ describe('WarehouseAssignmentComponent', () => {
     });
 
     it('should render header', () => {
-      expect(el).toContainElement('oryx-header');
+      expect(el).toContainElement('oryx-picking-header');
     });
 
     mockWarehouseUserAssignments.forEach((item, index) => {
@@ -140,7 +140,7 @@ describe('WarehouseAssignmentComponent', () => {
         of(mockWarehouseUserAssignments.slice(0, 1))
       );
       el = await fixture(
-        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+        html`<oryx-picking-warehouse-assignment></oryx-picking-warehouse-assignment>`
       );
     });
 
@@ -164,7 +164,7 @@ describe('WarehouseAssignmentComponent', () => {
         of(mockWarehouseUserAssignments.slice(0, 0))
       );
       el = await fixture(
-        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+        html`<oryx-picking-warehouse-assignment></oryx-picking-warehouse-assignment>`
       );
     });
 

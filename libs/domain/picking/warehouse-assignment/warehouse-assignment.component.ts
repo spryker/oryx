@@ -32,7 +32,7 @@ export class WarehouseAssignmentComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-header></oryx-header>
+      <oryx-picking-header></oryx-picking-header>
       ${when(
         this.$locations() === null || this.$locations()?.length === 1,
         () => this.renderLoading(),

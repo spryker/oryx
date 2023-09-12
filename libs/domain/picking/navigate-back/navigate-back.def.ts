@@ -1,7 +1,7 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
 export const navigateBackComponent = componentDef({
-  name: 'oryx-navigate-back',
+  name: 'oryx-picking-navigate-back',
   impl: () =>
     import('./navigate-back.component').then((m) => m.NavigateBackComponent),
   schema: () =>

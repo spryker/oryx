@@ -15,7 +15,9 @@ export default {
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  return html` <oryx-warehouse-assignment></oryx-warehouse-assignment> `;
+  return html`
+    <oryx-picking-warehouse-assignment></oryx-picking-warehouse-assignment>
+  `;
 };
 
 export const Demo = Template.bind({});

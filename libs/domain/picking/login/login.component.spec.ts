@@ -12,7 +12,7 @@ describe('LoginPageComponent', () => {
   });
 
   beforeEach(async () => {
-    element = await fixture(html`<oryx-login-page></oryx-login-page`);
+    element = await fixture(html`<oryx-picking-login></oryx-picking-login`);
   });
 
   it('passes the a11y audit', async () => {

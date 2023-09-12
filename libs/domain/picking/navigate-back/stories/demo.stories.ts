@@ -15,11 +15,11 @@ export default {
 const Template: Story<NavigateBackAttributes> = (props): TemplateResult => {
   return html`
     <style>
-      oryx-navigate-back {
+      oryx-picking-navigate-back {
         display: inline-flex;
       }
     </style>
-    <oryx-navigate-back .url=${props.url}></oryx-navigate-back>
+    <oryx-picking-navigate-back .url=${props.url}></oryx-picking-navigate-back>
   `;
 };
 

@@ -13,7 +13,9 @@ describe('NavigateBackComponent', () => {
   });
 
   beforeEach(async () => {
-    element = await fixture(html`<oryx-navigate-back></oryx-navigate-back>`);
+    element = await fixture(
+      html`<oryx-picking-navigate-back></oryx-picking-navigate-back>`
+    );
   });
 
   afterEach(() => {
@@ -34,9 +36,9 @@ describe('NavigateBackComponent', () => {
     const url = '/url';
 
     beforeEach(async () => {
-      element = await fixture(html`<oryx-navigate-back
+      element = await fixture(html`<oryx-picking-navigate-back
         .url=${url}
-      ></oryx-navigate-back>`);
+      ></oryx-picking-navigate-back>`);
     });
 
     it('should build the url based on provided url', () => {

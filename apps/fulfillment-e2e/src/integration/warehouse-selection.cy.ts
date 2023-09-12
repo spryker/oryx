@@ -1,14 +1,14 @@
-import { WarehouseSelectionPage } from '../support/page_objects/warehouse-selection.page';
-import { WarehouseSelectionListFragment } from '../support/page_fragments/warehouse-selection-list.fragment';
 import { HeaderFragment } from '../support/page_fragments/header.fragment';
+import { ListsFragment } from '../support/page_fragments/lists.fragment';
 import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
-import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
+import { WarehouseSelectionListFragment } from '../support/page_fragments/warehouse-selection-list.fragment';
+import { WarehouseSelectionPage } from '../support/page_objects/warehouse-selection.page';
 
 const warehouseSelectionPage = new WarehouseSelectionPage();
 const warehouseSelectionListFragment = new WarehouseSelectionListFragment();
 const headerFragment = new HeaderFragment();
 const userProfileFragment = new UserProfileFragment();
-const pickingListsFragment = new PickingListsFragment();
+const listsFragment = new ListsFragment();
 
 describe('Warehouse selection', () => {
   beforeEach(() => {
@@ -40,6 +40,6 @@ describe('Warehouse selection', () => {
     warehouseSelectionListFragment.getWarehouseSelectionButtons().eq(0).click();
 
     cy.location('pathname').should('be.equal', '/');
-    pickingListsFragment.getWrapper().should('be.visible');
+    listsFragment.getWrapper().should('be.visible');
   });
 });

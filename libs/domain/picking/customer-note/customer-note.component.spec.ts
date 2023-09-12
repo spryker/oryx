@@ -29,7 +29,7 @@ describe('CustomerNoteComponent', () => {
 
   const getPickingInProgressModal = () => {
     return element.renderRoot.querySelector(
-      'oryx-picking-in-progress-modal'
+      'oryx-picking-picking-in-progress-modal'
     ) as PickingInProgressModalComponent;
   };
 
@@ -61,7 +61,9 @@ describe('CustomerNoteComponent', () => {
       RouterService
     ) as unknown as MockRouterService;
     element = await fixture(
-      html`<oryx-customer-note pickingListId="id"></oryx-customer-note>`
+      html`<oryx-picking-customer-note
+        pickingListId="id"
+      ></oryx-picking-customer-note>`
     );
   });
 
@@ -108,7 +110,9 @@ describe('CustomerNoteComponent', () => {
         );
 
         element = await fixture(
-          html`<oryx-customer-note pickingListId="id"></oryx-customer-note>`
+          html`<oryx-picking-customer-note
+            pickingListId="id"
+          ></oryx-picking-customer-note>`
         );
 
         element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();

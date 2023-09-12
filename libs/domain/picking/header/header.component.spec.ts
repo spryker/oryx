@@ -13,7 +13,7 @@ describe('Header Component', () => {
   });
 
   beforeEach(async () => {
-    element = await fixture(`<oryx-header></oryx-header>`);
+    element = await fixture(`<oryx-picking-header></oryx-picking-header>`);
   });
 
   it('is defined', () => {
