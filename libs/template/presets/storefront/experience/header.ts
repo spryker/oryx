@@ -17,8 +17,9 @@ export const HeaderTemplate: ExperienceComponent = {
           options: {
             url: '/',
             icon: IconTypes.Check,
-            ...(featureVersion >= '1.1' ?
-              {rules: [{ query: { breakpoint: Size.Sm }, hide: true }]}: {}),
+            ...(featureVersion >= '1.1'
+              ? { rules: [{ query: { breakpoint: Size.Sm }, hide: true }] }
+              : {}),
           },
         },
         {
@@ -27,8 +28,9 @@ export const HeaderTemplate: ExperienceComponent = {
           options: {
             url: '/',
             icon: IconTypes.Check,
-            ...(featureVersion >= '1.1' ?
-              {rules: [{ query: { breakpoint: Size.Sm }, hide: true }]}: {}),
+            ...(featureVersion >= '1.1'
+              ? { rules: [{ query: { breakpoint: Size.Sm }, hide: true }] }
+              : {}),
           },
         },
         {
@@ -37,8 +39,9 @@ export const HeaderTemplate: ExperienceComponent = {
           options: {
             url: '/',
             icon: IconTypes.Check,
-            ...(featureVersion >= '1.1' ?
-              {rules: [{ query: { breakpoint: Size.Sm }, hide: true }]}: {}),
+            ...(featureVersion >= '1.1'
+              ? { rules: [{ query: { breakpoint: Size.Sm }, hide: true }] }
+              : {}),
           },
         },
         featureVersion >= '1.1'
@@ -109,8 +112,9 @@ export const HeaderTemplate: ExperienceComponent = {
             rules: [
               { colSpan: 6, width: 'auto' },
               { query: { breakpoint: Size.Md }, colSpan: 4 },
-              ...(featureVersion >= '1.1' ? 
-                [{ query: { breakpoint: Size.Sm }, hide: true }] : []),
+              ...(featureVersion >= '1.1'
+                ? [{ query: { breakpoint: Size.Sm }, hide: true }]
+                : []),
             ],
           },
         },
@@ -118,16 +122,20 @@ export const HeaderTemplate: ExperienceComponent = {
           type: 'oryx-composition',
           id: 'header-actions',
           components: [
-            (featureVersion >= '1.1' ? [{
-              type: 'oryx-search-box',
-              options: {
-                float: true,
-                rules: [
-                  { query: { breakpoint: Size.Md }, hide: true },
-                  { query: { breakpoint: Size.Lg }, hide: true },
-                ],
-              },
-            }] : []),
+            featureVersion >= '1.1'
+              ? [
+                  {
+                    type: 'oryx-search-box',
+                    options: {
+                      float: true,
+                      rules: [
+                        { query: { breakpoint: Size.Md }, hide: true },
+                        { query: { breakpoint: Size.Lg }, hide: true },
+                      ],
+                    },
+                  },
+                ]
+              : [],
             {
               type: 'oryx-site-navigation-item',
               options: {
@@ -164,11 +172,15 @@ export const HeaderTemplate: ExperienceComponent = {
                 query: { breakpoint: Size.Md },
                 colSpan: 2,
               },
-              ...(featureVersion >= '1.1' ? [{
-                query: { breakpoint: Size.Sm },
-                width: 'auto',
-                margin: '0 0',
-              }] : []),
+              ...(featureVersion >= '1.1'
+                ? [
+                    {
+                      query: { breakpoint: Size.Sm },
+                      width: 'auto',
+                      margin: '0 0',
+                    },
+                  ]
+                : []),
             ],
           },
         },
@@ -185,12 +197,16 @@ export const HeaderTemplate: ExperienceComponent = {
             sticky: true,
             bleed: true,
           },
-          ...(featureVersion >= '1.1' ? [{
-            query: { breakpoint: Size.Sm },
-            layout: 'flex',
-            justify: 'space-between',
-            padding: '10px 0',
-          }] : []),
+          ...(featureVersion >= '1.1'
+            ? [
+                {
+                  query: { breakpoint: Size.Sm },
+                  layout: 'flex',
+                  justify: 'space-between',
+                  padding: '10px 0',
+                },
+              ]
+            : []),
         ],
       },
     },
