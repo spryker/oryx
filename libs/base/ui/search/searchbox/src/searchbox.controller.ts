@@ -186,9 +186,8 @@ export class SearchboxController implements ReactiveController {
   }
 
   protected onTriggerClick(): void {
-    const isOpened = this.host.open; //this.host.hasAttribute('open');
+    const isOpened = this.host.open;
     this.host.open = !isOpened;
-    // this.host.toggleAttribute('open', !isOpened);
 
     if (isOpened) {
       this.control.value = '';
