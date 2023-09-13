@@ -48,7 +48,10 @@ declare global {
 export const siteProviders: Provider[] = [
   {
     provide: 'SCOS_BASE_URL',
-    useFactory: () => injectEnv('SCOS_BASE_URL', ''),
+    useFactory: (): string => {
+      const url = injectEnv('SCOS_BASE_URL', '');
+      return url.endsWith('/') ? url.slice(0, -1) : url;
+    },
   },
   {
     provide: 'STORE',
