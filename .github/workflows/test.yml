@@ -17,7 +17,7 @@ concurrency:
 env:
   GITHUB_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
   IS_DEV: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/development' }}
-
+  ORYX_FEATURE_VERSION: latest
 jobs:
   test-format:
     runs-on: ubuntu-latest
@@ -148,6 +148,7 @@ jobs:
           SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           STORE: DE
+
         with:
           cmd: npm run sf:e2e:headless:ci
           affectedCmd: npm run sf:e2e:headless:ci:affected

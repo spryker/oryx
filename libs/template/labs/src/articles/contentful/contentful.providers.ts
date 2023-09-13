@@ -1,16 +1,15 @@
-import { ContentAdapter } from '@spryker-oryx/content';
+import { ContentConfig, ContentFields } from '@spryker-oryx/content';
 import { injectEnv } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { SuggestionAdapter } from '@spryker-oryx/search';
-import { factory } from '../stubs';
+import { SuggestionField } from '@spryker-oryx/search';
+import { getClassByRequiredTokens } from '../stubs';
+import { DefaultContentfulContentAdapter } from './contentful-content.adapter';
 import {
-  ContentfulClientService,
+  ContentfulContentAdapter,
   ContentfulSpace,
   ContentfulToken,
-  DefaultContentfulClientService,
-} from './client';
-import { DefaultContentfulSuggestionAdapter } from './contentful-suggestion.adapter';
-import { ContentfulAdapter } from './contentful.adapter';
+} from './contentful.model';
+import { contentfulFieldNormalizers } from './normalizers';
 
 export const contentfulProviders: Provider[] = [
   {
@@ -21,25 +20,25 @@ export const contentfulProviders: Provider[] = [
     provide: ContentfulSpace,
     useFactory: () => injectEnv('ORYX_CONTENTFUL_SPACE', ''),
   },
+  ...contentfulFieldNormalizers,
   {
-    provide: ContentfulClientService,
-    useFactory: () =>
-      factory(DefaultContentfulClientService, [
-        ContentfulSpace,
-        ContentfulToken,
-      ]),
+    provide: ContentConfig,
+    useValue: {
+      contentful: {
+        types: [
+          ContentFields.Component,
+          SuggestionField.Contents,
+          ContentFields.Article,
+        ],
+      },
+    },
   },
   {
-    provide: ContentAdapter,
+    provide: ContentfulContentAdapter,
     useFactory: () =>
-      factory(ContentfulAdapter, [ContentfulSpace, ContentfulToken]),
-  },
-  {
-    provide: SuggestionAdapter,
-    useFactory: () =>
-      factory(DefaultContentfulSuggestionAdapter, [
-        ContentfulSpace,
+      getClassByRequiredTokens(DefaultContentfulContentAdapter, [
         ContentfulToken,
+        ContentfulSpace,
       ]),
   },
 ];

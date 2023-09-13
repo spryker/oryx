@@ -26,6 +26,10 @@ export const defaultExperienceRoutes: RouteConfig[] = [
     ? [
         // deprecated routes in 1.1
         {
+          path: '/search',
+          type: RouteType.ProductList,
+        },
+        {
           path: '/product/:sku',
           type: RouteType.Product,
         },

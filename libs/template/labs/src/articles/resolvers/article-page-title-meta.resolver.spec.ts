@@ -3,7 +3,6 @@ import { ContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { of } from 'rxjs';
-import { StoryblokContentFields } from '../storyblok';
 import { ArticlePageTitleMetaResolver } from './article-page-title-meta.resolver';
 
 const mockContentService = {
@@ -52,18 +51,22 @@ describe('ArticlePageTitleMetaResolver', () => {
   });
 
   describe('getScore', () => {
-    it('should return proper value if product exist', () => {
+    it('should return proper value if article exist', () => {
       const callback = vi.fn();
       mockContextService.get.mockReturnValueOnce(of('id'));
-      mockContextService.get.mockReturnValue(of('type'));
+      mockContextService.get.mockReturnValue(of(ContentFields.Article));
       mockRouterService.currentRoute.mockReturnValue(
         of(`/${ContentFields.Article}/saf`)
       );
       service.getScore().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(['id', 'type', true]);
+      expect(callback).toHaveBeenCalledWith([
+        'id',
+        ContentFields.Article,
+        true,
+      ]);
     });
 
-    it('should return proper value if product is not exist', () => {
+    it('should return proper value if article is not exist', () => {
       const callback = vi.fn();
       mockContextService.get.mockReturnValue(of(undefined));
       mockRouterService.currentRoute.mockReturnValue(of(''));
@@ -74,20 +77,22 @@ describe('ArticlePageTitleMetaResolver', () => {
   });
 
   describe('resolve', () => {
-    it('should return proper object with product title', () => {
+    it('should return proper object with article title', () => {
       const callback = vi.fn();
       mockContextService.get.mockReturnValueOnce(of('id'));
       mockContextService.get.mockReturnValue(of('type'));
       mockContentService.get.mockReturnValue(
         of({
-          heading: 'Name A',
+          fields: {
+            heading: 'Name A',
+          },
         })
       );
       service.resolve().subscribe(callback);
       expect(mockContentService.get).toHaveBeenCalledWith({
         id: 'id',
         type: 'type',
-        entities: [ContentFields.Article, StoryblokContentFields.Faq],
+        entities: ['type'],
       });
       expect(callback).toHaveBeenCalledWith({
         title: 'Name A',

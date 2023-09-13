@@ -1,12 +1,23 @@
 import { DefaultQueryService, QueryService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { Observable, of, switchMap, take } from 'rxjs';
-import { SpyInstance } from 'vitest';
-import { ContentAdapter, ContentService, DefaultContentService } from '.';
+import { of } from 'rxjs';
+import { ContentAdapter, ContentConfig } from './adapter';
+import { ContentService } from './content.service';
+import { DefaultContentService } from './default-content.service';
 
-const mockContentAdapter = {
-  getKey: vi.fn(),
+const mockContentAdapterA = {
   get: vi.fn(),
+  getAll: vi.fn(),
+};
+
+const mockContentAdapterB = {
+  get: vi.fn(),
+  getAll: vi.fn(),
+};
+
+const mockContentAdapterC = {
+  get: vi.fn(),
+  getAll: vi.fn(),
 };
 
 describe('DefaultContentService', () => {
@@ -20,12 +31,34 @@ describe('DefaultContentService', () => {
           useClass: DefaultContentService,
         },
         {
-          provide: ContentAdapter,
-          useValue: mockContentAdapter,
+          provide: `${ContentAdapter}a`,
+          useValue: mockContentAdapterA,
+        },
+        {
+          provide: `${ContentAdapter}b`,
+          useValue: mockContentAdapterB,
+        },
+        {
+          provide: `${ContentAdapter}c`,
+          useValue: mockContentAdapterC,
         },
         {
           provide: QueryService,
           useClass: DefaultQueryService,
+        },
+        {
+          provide: ContentConfig,
+          useValue: {
+            a: {
+              types: ['a', 'both', 'all'],
+            },
+            b: {
+              types: ['b', 'both', 'all'],
+            },
+            c: {
+              types: ['c', 'all'],
+            },
+          },
         },
       ],
     });
@@ -38,86 +71,98 @@ describe('DefaultContentService', () => {
     destroyInjector();
   });
 
-  it('should be provided', () => {
-    expect(service).toBeInstanceOf(DefaultContentService);
-  });
-
   describe('get', () => {
-    it('should return an observable', () => {
-      expect(service.get({})).toBeInstanceOf(Observable);
-    });
-
-    it('should return an observable with a content from adapter', () => {
+    it('should return an observable with a content from `a` adapter', async () => {
       const callback = vi.fn();
-      mockContentAdapter.get.mockReturnValue(of({ name: 'adapter 123' }));
-      service.get({ id: '123' }).subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(
-        expect.objectContaining({ name: 'adapter 123' })
-      );
+      const qualifier = { id: '123', entities: ['a'] };
+      mockContentAdapterA.get.mockReturnValue(of({ name: 'adapter 123' }));
+      service.get(qualifier).subscribe(callback);
+      expect(mockContentAdapterA.get).toHaveBeenCalledWith(qualifier);
+      expect(callback).toHaveBeenNthCalledWith(1, { name: 'adapter 123' });
     });
 
-    it('should call `get` method of adapter only for getting new content', () => {
-      mockContentAdapter.get.mockReturnValue(of({ name: 'adapter 123' }));
-      service.get({ id: '123' }).pipe(take(1)).subscribe();
-      expect(mockContentAdapter.get).toHaveBeenCalledTimes(1);
-      service.get({ id: '123' }).pipe(take(1)).subscribe();
-      expect(mockContentAdapter.get).toHaveBeenCalledTimes(1);
-      service.get({ id: '124' }).pipe(take(1)).subscribe();
-      expect(mockContentAdapter.get).toHaveBeenCalledTimes(2);
-    });
-
-    it('should return an observable with undefined if error has been caught', () => {
-      (mockContentAdapter.get as unknown as SpyInstance).mockReturnValue(
-        of(null).pipe(
-          switchMap(() => {
-            throw 'error';
-          })
-        )
-      );
+    it('should return an observable with a content from `b` adapter', async () => {
       const callback = vi.fn();
-      service.get({}).subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(undefined);
+      const qualifier = { id: '321', entities: ['b'] };
+      mockContentAdapterB.get.mockReturnValue(of({ name: 'adapter 321' }));
+      service.get(qualifier).subscribe(callback);
+      expect(mockContentAdapterB.get).toHaveBeenCalledWith(qualifier);
+      expect(callback).toHaveBeenCalledWith({ name: 'adapter 321' });
+    });
+
+    it('should return an observable with a content from both adapters and return merged value', async () => {
+      const callback = vi.fn();
+      const qualifier = { id: '123', entities: ['both'] };
+      mockContentAdapterA.get.mockReturnValue(of({ nameA: 'adapter 123' }));
+      mockContentAdapterB.get.mockReturnValue(of({ nameB: 'adapter 321' }));
+      service.get(qualifier).subscribe(callback);
+      expect(mockContentAdapterA.get).toHaveBeenCalledWith(qualifier);
+      expect(mockContentAdapterB.get).toHaveBeenCalledWith(qualifier);
+      expect(callback).toHaveBeenCalledWith({
+        nameA: 'adapter 123',
+        nameB: 'adapter 321',
+      });
+    });
+
+    describe('when entities is not defined', () => {
+      it('should return an observable with a content from both adapters and return merged value', async () => {
+        const callback = vi.fn();
+        const qualifier = { id: '123' };
+        mockContentAdapterA.get.mockReturnValue(of({ nameA: 'adapter 123' }));
+        mockContentAdapterB.get.mockReturnValue(of({ nameB: 'adapter 321' }));
+        mockContentAdapterC.get.mockReturnValue(of({ nameC: 'adapter 213' }));
+        service.get(qualifier).subscribe(callback);
+        expect(mockContentAdapterA.get).toHaveBeenCalledWith(qualifier);
+        expect(mockContentAdapterB.get).toHaveBeenCalledWith(qualifier);
+        expect(callback).toHaveBeenCalledWith({
+          nameA: 'adapter 123',
+          nameB: 'adapter 321',
+          nameC: 'adapter 213',
+        });
+      });
     });
   });
 
-  describe('getState', () => {
-    it('should return an observable', () => {
-      expect(service.getState({})).toBeInstanceOf(Observable);
-    });
-
-    it('should return an observable with a content state from adapter', () => {
+  describe('getAll', () => {
+    it('should return an observable with array of contents from proper adapters', async () => {
       const callback = vi.fn();
-      mockContentAdapter.get.mockReturnValue(of({ name: 'adapter 123' }));
-      service.getState({ id: '123' }).subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(
-        expect.objectContaining({ data: { name: 'adapter 123' } })
+      const qualifier = { id: '123', entities: ['a', 'b'] };
+      mockContentAdapterA.getAll.mockReturnValue(
+        of([{ nameA: 'adapter 123' }])
       );
+      mockContentAdapterB.getAll.mockReturnValue(
+        of([{ nameB: 'adapter 321' }])
+      );
+      service.getAll(qualifier).subscribe(callback);
+      expect(mockContentAdapterA.getAll).toHaveBeenCalledWith(qualifier);
+      expect(mockContentAdapterB.getAll).toHaveBeenCalledWith(qualifier);
+      expect(callback).toHaveBeenCalledWith([
+        { nameA: 'adapter 123' },
+        { nameB: 'adapter 321' },
+      ]);
     });
 
-    it('should call `get` method of adapter only for getting new content', () => {
-      mockContentAdapter.get.mockReturnValue(of({ name: 'adapter 123' }));
-      service.getState({ id: '123' }).pipe(take(1)).subscribe();
-      expect(mockContentAdapter.get).toHaveBeenCalledTimes(1);
-      service.getState({ id: '123' }).pipe(take(1)).subscribe();
-      expect(mockContentAdapter.get).toHaveBeenCalledTimes(1);
-      service.getState({ id: '124' }).pipe(take(1)).subscribe();
-      expect(mockContentAdapter.get).toHaveBeenCalledTimes(2);
-    });
-
-    it('should return an observable with error state if error has been caught', () => {
-      const testError = new Error();
-      (mockContentAdapter.get as unknown as SpyInstance).mockReturnValue(
-        of(null).pipe(
-          switchMap(() => {
-            throw testError;
-          })
-        )
-      );
+    it('should return an observable with array of contents from all adapters', async () => {
       const callback = vi.fn();
-      service.getState({}).subscribe(callback);
-      expect(callback).toHaveBeenCalledWith(
-        expect.objectContaining({ data: undefined, error: testError })
+      const qualifier = { id: '123', entities: ['all'] };
+      mockContentAdapterA.getAll.mockReturnValue(
+        of([{ nameA: 'adapter 123' }])
       );
+      mockContentAdapterB.getAll.mockReturnValue(
+        of([{ nameB: 'adapter 321' }])
+      );
+      mockContentAdapterC.getAll.mockReturnValue(
+        of([{ nameC: 'adapter 213' }])
+      );
+      service.getAll(qualifier).subscribe(callback);
+      expect(mockContentAdapterA.getAll).toHaveBeenCalledWith(qualifier);
+      expect(mockContentAdapterB.getAll).toHaveBeenCalledWith(qualifier);
+      expect(mockContentAdapterC.getAll).toHaveBeenCalledWith(qualifier);
+      expect(callback).toHaveBeenCalledWith([
+        { nameA: 'adapter 123' },
+        { nameB: 'adapter 321' },
+        { nameC: 'adapter 213' },
+      ]);
     });
   });
 });

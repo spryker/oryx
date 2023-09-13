@@ -1,9 +1,11 @@
 export interface SearchAttributes {
   open?: boolean;
   /**
-   * Provides floating behaviour on small screens
+   * Provides responsive behavior of the search input element, so that the
+   * search box leaves more space to other elements. This is especially
+   * useful when there's a lack of space, eg. on small screens.
    */
-  xsFloated?: boolean;
+  float?: boolean;
   backIcon?: string;
   searchIcon?: string;
   searchIconPosition?: SearchIconPosition;
