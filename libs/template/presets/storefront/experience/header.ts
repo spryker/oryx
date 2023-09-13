@@ -1,4 +1,3 @@
-import { ContentLinkAppearance } from '@spryker-oryx/content/link';
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { featureVersion, i18n } from '@spryker-oryx/utilities';
@@ -108,14 +107,13 @@ export const HeaderTemplate: ExperienceComponent = {
                 rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
               },
               components: [
-                ...(featureVersion >= '1.1'
+                ...(featureVersion >= '1.2'
                   ? [
                       {
-                        type: 'oryx-content-link',
+                        type: 'oryx-site-dropdown-item',
                         options: {
                           icon: IconTypes.User,
                           url: '/account/overview',
-                          appearance: ContentLinkAppearance.Navigation,
                         },
                         content: {
                           data: {

@@ -4,16 +4,12 @@ import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { IconComponent } from '@spryker-oryx/ui/icon';
 import { LinkComponent } from '@spryker-oryx/ui/link';
-import { Size, useComponent } from '@spryker-oryx/utilities';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { ContentLinkComponent } from './link.component';
 import { contentLinkComponent } from './link.def';
-import {
-  ContentLinkAppearance,
-  ContentLinkContent,
-  ContentLinkOptions,
-} from './link.model';
+import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
 class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/page'));
@@ -62,7 +58,7 @@ describe('ContentLinkComponent', () => {
     });
 
     it('should pass the text to the link', () => {
-      expect(element.renderRoot.textContent?.trim()).toContain('test');
+      expect(element.renderRoot.textContent?.trim()).toBe('test');
     });
   });
 
@@ -226,7 +222,6 @@ describe('ContentLinkComponent', () => {
     });
   });
 
-  // TODO - deprecate these when we no longer support button option
   describe('when button option is provided', () => {
     beforeEach(async () => {
       element = await fixture(
@@ -258,68 +253,6 @@ describe('ContentLinkComponent', () => {
           'oryx-icon'
         ) as IconComponent;
         expect(icon.type).toBe('check');
-      });
-    });
-  });
-
-  describe('when appearance is provided', () => {
-    describe('and appearance is navigation', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-content-link
-            .options=${{ appearance: ContentLinkAppearance.Navigation }}
-          ></oryx-content-link>`
-        );
-      });
-
-      it('should render link size lg', () => {
-        expect(
-          (element.renderRoot.querySelector('oryx-link') as LinkComponent).size
-        ).toBe(Size.Lg);
-      });
-
-      it('should have attribute dropdown', () => {
-        expect(element.getAttribute('appearance')).toBe(
-          ContentLinkAppearance.Navigation
-        );
-      });
-    });
-
-    describe('and appearance is button', () => {
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-content-link
-            .options=${{
-              url: '/test',
-              appearance: ContentLinkAppearance.Button,
-            }}
-          ></oryx-content-link>`
-        );
-      });
-
-      it('should render link inside oryx-button', () => {
-        expect(element).toContainElement('oryx-button a');
-      });
-
-      it('should not render oryx-link', () => {
-        expect(element).not.toContainElement('oryx-link');
-      });
-
-      describe('and an icon is provided', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<oryx-content-link
-              .options=${{ url: '/test', button: true, icon: 'check' }}
-            ></oryx-content-link>`
-          );
-        });
-
-        it('should provide the icon to the oryx-button', () => {
-          const icon = element.renderRoot.querySelector(
-            'oryx-icon'
-          ) as IconComponent;
-          expect(icon.type).toBe('check');
-        });
       });
     });
   });

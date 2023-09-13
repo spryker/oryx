@@ -1,36 +1,18 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LinkService } from '@spryker-oryx/site';
-import {
-  Size,
-  computed,
-  elementEffect,
-  hydrate,
-} from '@spryker-oryx/utilities';
+import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import {
-  ContentLinkAppearance,
-  ContentLinkContent,
-  ContentLinkOptions,
-} from './link.model';
-import { styles } from './link.styles';
+import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
 @hydrate()
 export class ContentLinkComponent extends ContentMixin<
   ContentLinkOptions,
   ContentLinkContent
 >(LitElement) {
-  static styles = styles;
-
   protected semanticLinkService = resolve(LinkService);
-
-  @elementEffect()
-  protected setNavigation = () => {
-    const { appearance } = this.$options();
-    this.setAttribute('appearance', `${appearance}`);
-  };
 
   protected $link = computed(() => {
     const { url, type, id, params } = this.$options();
@@ -40,16 +22,13 @@ export class ContentLinkComponent extends ContentMixin<
   });
 
   protected override render(): TemplateResult | void {
-    const { appearance, button, icon, singleLine, color } = this.$options();
+    const { button, icon, singleLine, color } = this.$options();
 
-    const navigation = appearance === ContentLinkAppearance.Navigation;
-
-    if (button || appearance === ContentLinkAppearance.Button) {
+    if (button) {
       return html`<oryx-button>${this.renderLink(true)}</oryx-button>`;
     }
 
     return html`<oryx-link
-      .size=${ifDefined(navigation ? Size.Lg : undefined)}
       .color=${color}
       ?singleLine=${singleLine}
       .icon=${icon}
@@ -58,7 +37,7 @@ export class ContentLinkComponent extends ContentMixin<
   }
 
   protected renderLink(custom?: boolean): TemplateResult {
-    if (!this.$link()) return html`${this.renderContent()}`;
+    if (!this.$link()) return html`${this.$content()?.text}`;
 
     const { label, target } = this.$options();
 
@@ -78,9 +57,8 @@ export class ContentLinkComponent extends ContentMixin<
 
   protected renderContent(): TemplateResult {
     const { text } = this.$content() ?? {};
-    const { button, icon, appearance } = this.$options();
-    const renderIcon =
-      (!!button || appearance === ContentLinkAppearance.Button) && !!icon;
+    const { button, icon } = this.$options();
+    const renderIcon = !!button && !!icon;
 
     if (text || icon) {
       return html` ${when(

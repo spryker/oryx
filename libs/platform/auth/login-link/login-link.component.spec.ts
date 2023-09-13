@@ -22,8 +22,10 @@ describe('LoginLinkComponent', () => {
   let authService: MockAuthService;
   let routerService: MockRouterService;
 
-  const clickOption = (): void => {
-    element.renderRoot.querySelector<HTMLElement>('oryx-option')?.click();
+  const clickDropdown = (): void => {
+    element.renderRoot
+      .querySelector<HTMLElement>('oryx-site-dropdown-item')
+      ?.click();
   };
 
   beforeAll(async () => {
@@ -66,13 +68,15 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render login title', () => {
-      const link = element.renderRoot.querySelector('oryx-option') as any;
-      expect(link.innerText.trim()).toBe(i18n('auth.login'));
+      const link = element.renderRoot.querySelector(
+        'oryx-site-dropdown-item'
+      ) as any;
+      expect(link.content.text).toBe(i18n('auth.login'));
     });
 
     describe('and link is clicked', () => {
       beforeEach(() => {
-        clickOption();
+        clickDropdown();
       });
 
       it('should navigate to login page', () => {
@@ -94,8 +98,10 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render logout title', () => {
-      const link = element.renderRoot.querySelector('oryx-option') as any;
-      expect(link.innerText.trim()).toBe(i18n('auth.logout'));
+      const link = element.renderRoot.querySelector(
+        'oryx-site-dropdown-item'
+      ) as any;
+      expect(link.content.text).toBe(i18n('auth.logout'));
     });
 
     describe('and logout is not enabled', () => {
@@ -107,13 +113,13 @@ describe('LoginLinkComponent', () => {
       });
 
       it('should not render the link', () => {
-        expect(element).not.toContainElement('oryx-option');
+        expect(element).not.toContainElement('oryx-site-dropdown-item');
       });
     });
 
     describe('and link is clicked', () => {
       beforeEach(() => {
-        clickOption();
+        clickDropdown();
       });
 
       it('should emit the logout', () => {
@@ -132,7 +138,7 @@ describe('LoginLinkComponent', () => {
             .options=${{ logoutRedirectUrl }}
           >
           </oryx-auth-login-link>`);
-          clickOption();
+          clickDropdown();
         });
 
         it('should redirect to the route', () => {

@@ -27,9 +27,12 @@ export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
     const i18nToken = this.$isAuthenticated() ? 'auth.logout' : 'auth.login';
 
     return html`
-      <oryx-option .icon=${IconTypes.Login} @click=${this.onClick}>
-        ${this.i18n(i18nToken)}
-      </oryx-option>
+      <oryx-site-dropdown-item
+        .options=${{ icon: IconTypes.Login }}
+        .content=${{ text: this.i18n(i18nToken) }}
+        @click=${this.onClick}
+      >
+      </oryx-site-dropdown-item>
     `;
   }
 

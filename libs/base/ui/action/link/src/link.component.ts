@@ -14,14 +14,12 @@ export class LinkComponent
   @property({ reflect: true }) icon?: Icons | string;
   @property({ type: Boolean, reflect: true }) disabled?: boolean;
   @property({ type: Boolean, reflect: true }) singleLine?: boolean;
-  @property({ reflect: true }) size?: Size;
 
   protected render(): TemplateResult {
     return html`
       ${when(
         this.icon,
-        () =>
-          html`<oryx-icon .type=${this.icon} .size=${this.size}></oryx-icon>`
+        () => html`<oryx-icon .type=${this.icon} .size=${Size.Md}></oryx-icon>`
       )}
       <slot></slot>
     `;

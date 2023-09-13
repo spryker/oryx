@@ -4,11 +4,9 @@ import { LinkType } from '../link.model';
 const isNeutral = unsafeCSS(`[link-type='${LinkType.Neutral}']`);
 
 export const backOfficeLinkStyles = css`
-  :host(:not([size])) {
-    --oryx-icon-size: 16px;
-  }
-
   :host {
+    --oryx-icon-size: 16px;
+
     display: inline-flex;
     align-items: baseline;
     position: relative;

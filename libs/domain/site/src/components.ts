@@ -1,5 +1,6 @@
 export * from '../currency-selector/currency-selector.def';
 export * from '../date/date.def';
+export * from '../dropdown-item/dropdown-item.def';
 export * from '../locale-selector/locale-selector.def';
 export * from '../navigation-button/navigation-button.def';
 export * from '../navigation-item/navigation-item.def';

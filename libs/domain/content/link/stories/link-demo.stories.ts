@@ -3,11 +3,7 @@ import { RouteType } from '@spryker-oryx/router';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import {
-  ContentLinkAppearance,
-  ContentLinkContent,
-  ContentLinkOptions,
-} from '../link.model';
+import { ContentLinkContent, ContentLinkOptions } from '../link.model';
 
 export default {
   title: `${storybookPrefix}/Link`,
@@ -19,7 +15,6 @@ export default {
     noopener: false,
     nofollow: false,
     button: false,
-    appearance: ContentLinkAppearance.Link,
   },
   argTypes: {
     icon: {
@@ -36,14 +31,6 @@ export default {
     },
     nofollow: {
       options: [true, false],
-      control: { type: 'select' },
-    },
-    appearance: {
-      options: [
-        ContentLinkAppearance.Link,
-        ContentLinkAppearance.Button,
-        ContentLinkAppearance.Dropdown,
-      ],
       control: { type: 'select' },
     },
   },
