@@ -7,7 +7,7 @@ import { modalComponent } from '@spryker-oryx/ui/modal';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of, throwError } from 'rxjs';
-import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
+import { PickingInProgressModalComponent } from '@spryker-oryx/picking/picking-in-progress';
 import { pickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.def';
 import { CustomerNoteComponent } from './customer-note.component';
 import { customerNoteComponent } from './customer-note.def';

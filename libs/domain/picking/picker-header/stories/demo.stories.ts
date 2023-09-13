@@ -1,8 +1,8 @@
+import { ListItemAttributes } from '@spryker-oryx/picking/list-item';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { ListItemAttributes } from '../../list-item/list-item.model';
 
 const pickingListIds = mockPickingListData.map(({ id }) => id);
 

@@ -9,6 +9,7 @@ import {
   PickingTab,
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
+import { ProductCardComponent } from '@spryker-oryx/picking/product-card';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { ChipComponent } from '@spryker-oryx/ui/chip';
@@ -22,7 +23,6 @@ import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { catchError, of, tap } from 'rxjs';
-import { ProductCardComponent } from '../product-card';
 import { pickingComponentStyles } from './picker.styles';
 
 export class PickerComponent extends I18nMixin(PickingListMixin(LitElement)) {
