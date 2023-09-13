@@ -115,7 +115,7 @@ export class ProductPriceComponent extends ProductMixin(
     return html`<span part="tax">
       ${this.i18n(
         `product.price.${
-          this.$product()?.price?.originalPrice?.isNet
+          this.$product()?.price?.defaultPrice?.isNet
             ? 'tax-excluded'
             : 'tax-included'
         }`
