@@ -97,7 +97,6 @@ export const HeaderTemplate: ExperienceComponent = {
               },
               { query: { breakpoint: Size.Md }, colSpan: 2 },
               { query: { breakpoint: Size.Sm }, colSpan: 2 },
-              { style: 'display: initial' },
             ],
             link: '/',
           },
