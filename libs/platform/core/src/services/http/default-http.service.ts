@@ -16,7 +16,7 @@ export class DefaultHttpService implements HttpService {
   constructor(protected handler = inject(HttpHandler)) {}
 
   request<T = unknown>(url: string, options: RequestOptions<T> = {}): any {
-    const req = new Request(url, options);
+    const req = new Request(url.replace(/([^:]\/)\/+/g, '$1'), options);
 
     if (!req.headers.has('Content-Type')) {
       req.headers.set('Content-Type', 'application/json');
