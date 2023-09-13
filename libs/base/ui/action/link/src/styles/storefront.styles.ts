@@ -6,7 +6,7 @@ export const storefrontLinkStyles = css`
     display: inline-flex;
   }
 
-  :host([icon] {
+  :host([icon]) {
     --oryx-icon-size: 16px;
 
     align-items: baseline;
