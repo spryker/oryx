@@ -52,24 +52,19 @@ describe('Search suite', () => {
 
       // clear sorting and check that it is default again
       searchPage.getProductSorting().clearSorting();
-      searchPage.waitForSearchRequest();
       checkProductCardsSortingBySku(searchPage, sortingTestData.default);
     });
 
     it('should apply all sorting options', () => {
-      Object.keys(sortingTestData).forEach((option) => {
-        // default options does not exist in the dropdown
-        // we should skip it
-        if (option === 'default') {
-          return;
-        }
+      Object.keys(sortingTestData)
+        .filter((option) => option !== 'default')
+        .forEach((option) => {
+          cy.log(`Sorting: ${option} is applied`);
+          searchPage.getProductSorting().applySorting(option);
+          searchPage.waitForSearchRequest();
 
-        cy.log(`Sorting: ${option} is applied`);
-        searchPage.getProductSorting().applySorting(option);
-        searchPage.waitForSearchRequest();
-
-        checkProductCardsSortingBySku(searchPage, sortingTestData[option]);
-      });
+          checkProductCardsSortingBySku(searchPage, sortingTestData[option]);
+        });
     });
   });
 });
