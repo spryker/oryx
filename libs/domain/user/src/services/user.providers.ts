@@ -57,5 +57,5 @@ export const userProviders: Provider[] = [
   ...addressSerializers,
   ...userNormalizer,
   UserResourceResolver,
-  ...(featureVersion >= '1.1' ? provideLitRoutes({ routes: userRoutes }) : []),
+  ...(featureVersion >= '1.2' ? provideLitRoutes({ routes: userRoutes }) : []),
 ];
