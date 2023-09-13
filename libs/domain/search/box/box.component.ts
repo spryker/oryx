@@ -96,6 +96,7 @@ export class SearchBoxComponent
         @oryx.search=${this.onSearch}
         @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 300)}
         .clearIcon=${IconTypes.Close}
+        ?float=${this.$options().float}
       >
         <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
         <input
@@ -103,6 +104,10 @@ export class SearchBoxComponent
           placeholder=${ifDefined(this.i18n(['search', 'search.placeholder']))}
         />
         ${this.renderSuggestion()}
+        <oryx-site-navigation-button
+          slot="trigger"
+          icon="${IconTypes.Search}"
+        ></oryx-site-navigation-button>
       </oryx-typeahead>
     `;
   }
