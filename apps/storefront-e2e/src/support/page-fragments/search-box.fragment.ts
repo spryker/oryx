@@ -24,7 +24,7 @@ export class SearchBoxFragment {
   search = (text: string) => {
     const encoded = encodeURIComponent(text).replace(/%20/g, '+');
 
-    cy.hydrateElement('/assets/box.component-*.js', () => {
+    cy.hydrateElemenet('/assets/box.component-*.js', () => {
       this.getInput().click();
     });
 

@@ -67,7 +67,7 @@ export class ProductDetailsPage extends AbstractSFPage {
   addItemsToTheCart = (numberOfItems = 1, isHydrated = false) => {
     if (numberOfItems === 1) {
       if (!isHydrated) {
-        cy.hydrateElement('/assets/cart-add-*.js', () => {
+        cy.hydrateElemenet('/assets/cart-add-*.js', () => {
           this.getAddToCartBtn().click();
         });
       }

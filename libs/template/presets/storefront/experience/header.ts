@@ -1,6 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Size, featureVersion } from '@spryker-oryx/utilities';
+import { Size } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
@@ -38,23 +38,11 @@ export const HeaderTemplate: ExperienceComponent = {
             rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
           },
         },
-        featureVersion >= '1.1'
-          ? {
-              type: 'oryx-price-mode-selector',
-              options: {
-                rules: [{ style: 'margin-inline-start: auto' }],
-              },
-            }
-          : {},
         {
           type: 'oryx-site-currency-selector',
-          ...(featureVersion < '1.1'
-            ? {
-                options: {
-                  rules: [{ style: 'margin-inline-start: auto' }],
-                },
-              }
-            : {}),
+          options: {
+            rules: [{ style: 'margin-inline-start: auto' }],
+          },
         },
         { type: 'oryx-site-locale-selector' },
       ],

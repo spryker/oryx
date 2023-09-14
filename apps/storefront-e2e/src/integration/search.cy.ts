@@ -1,5 +1,5 @@
 import {
-  checkProductCardsFiltering,
+  checkProductCardsFilterring,
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { SearchPage } from '../support/page-objects/search.page';
@@ -20,17 +20,17 @@ describe('Search suite', () => {
       // apply 1st filter
       searchPage.getFacets().setTouchscreen('Yes');
       searchPage.waitForSearchRequest();
-      checkProductCardsFiltering(searchPage, 4, 3, query);
+      checkProductCardsFilterring(searchPage, 4, 3, query);
 
       // apply 2nd filter
       searchPage.getFacets().setColor('Black');
       searchPage.waitForSearchRequest();
-      checkProductCardsFiltering(searchPage, 3, 1, query);
+      checkProductCardsFilterring(searchPage, 3, 1, query);
 
       // clear 2nd filter
       // we don't expect search request here because previous query is cached
       searchPage.getFacets().resetColor();
-      checkProductCardsFiltering(searchPage, 4, 3, query);
+      checkProductCardsFilterring(searchPage, 4, 3, query);
     });
   });
 

@@ -10,7 +10,7 @@ export class LoginFragment {
   getBEValidationError = () => this.getWrapper().find('oryx-notification');
 
   login = (user: Customer) => {
-    cy.hydrateElement('/assets/checkbox.component-*.js', () => {
+    cy.hydrateElemenet('/assets/checkbox.component-*.js', () => {
       this.getEmailInput().click();
     });
 

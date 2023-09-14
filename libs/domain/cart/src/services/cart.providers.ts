@@ -1,9 +1,9 @@
 import { Provider } from '@spryker-oryx/di';
 import {
   CartAdapter,
-  DefaultCartAdapter,
   cartNormalizer,
   cartsNormalizer,
+  DefaultCartAdapter,
 } from './adapter';
 import { CartService } from './cart.service';
 import { DefaultCartService } from './default-cart.service';

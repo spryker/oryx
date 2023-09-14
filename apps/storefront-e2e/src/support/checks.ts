@@ -1,7 +1,7 @@
 import { IPageWithFacets } from './mixins/page-with-facets.mixin';
 import { IPageWithProductList } from './mixins/page-with-product-list.mixin';
 
-export function checkProductCardsFiltering(
+export function checkProductCardsFilterring(
   page: IPageWithFacets & IPageWithProductList,
   numberOfFacets: number,
   numberOfProducts: number,
@@ -19,11 +19,4 @@ export function checkProductCardsSortingBySku(
   page.getProductCards().each((card, index) => {
     cy.wrap(card).should('have.attr', 'sku', sortedSkus[index]);
   });
-}
-
-export function checkProductCardsPriceMode(
-  page: IPageWithFacets & IPageWithProductList,
-  query: string
-) {
-  page.getSalesProductPrice().shadow().should('contain.text', query);
 }
