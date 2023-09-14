@@ -6,7 +6,7 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { computed, elementEffect } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { map } from 'rxjs';
+import { of } from 'rxjs';
 import {
   SiteMenuItemContent,
   SiteMenuItemOptions,
@@ -24,16 +24,12 @@ export class SiteMenuItemComponent extends ContentMixin<
   protected routerService = resolve(RouterService);
 
   protected $link = computed(() => {
-    const { url, type, id } = this.$options();
-    if (url) return url;
-    if (type) return this.linkService.get({ type, id });
-    return null;
+    const { url } = this.$options();
+    return typeof url !== 'object' ? of(url) : this.linkService.get(url);
   });
 
   protected $active = computed(() => {
-    return this.routerService
-      .route()
-      .pipe(map((route) => route === this.$link()));
+    return this.routerService.isCurrentRoute(this.$link() ?? '');
   });
 
   @elementEffect()

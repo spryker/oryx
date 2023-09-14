@@ -8,7 +8,7 @@ export const styles = css`
     white-space: nowrap;
   }
 
-  :host([variation='navigation']) oryx-button:hover {
+  :host([variation='navigation']:hover) oryx-button {
     background-color: var(--oryx-color-neutral-3);
   }
 

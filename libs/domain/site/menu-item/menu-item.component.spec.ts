@@ -15,7 +15,7 @@ class MockLinkService implements Partial<LinkService> {
 }
 
 class MockRouterService implements Partial<RouterService> {
-  route = vi.fn().mockReturnValue(of('/'));
+  isCurrentRoute = vi.fn().mockReturnValue(of(false));
 }
 
 describe('SiteMenuItemComponent', () => {
@@ -69,17 +69,17 @@ describe('SiteMenuItemComponent', () => {
   });
 
   it('should render its components', () => {
-    expect(element.renderRoot.querySelector('oryx-button')).not.toBeNull();
+    expect(element).toContainElement('oryx-button');
   });
 
   it('should pass text to oryx button', () => {
     expect(
-      (element.renderRoot.querySelector('oryx-button') as ButtonComponent).text
+      element.renderRoot.querySelector<ButtonComponent>('oryx-button')?.text
     ).toBe('mock');
   });
 
   it('should not be highlighted', () => {
-    expect(element.renderRoot.querySelector('.active')).toBeNull();
+    expect(element).not.toContainElement('.active');
   });
 
   it('should have variation attribute', () => {
@@ -90,7 +90,7 @@ describe('SiteMenuItemComponent', () => {
 
   describe('when item is active', () => {
     beforeEach(async () => {
-      routerService.route.mockReturnValue(of('/mock'));
+      routerService.isCurrentRoute.mockReturnValue(of(true));
 
       element = await fixture(
         html`<oryx-site-menu-item
@@ -100,7 +100,7 @@ describe('SiteMenuItemComponent', () => {
     });
 
     it('should highlight item', () => {
-      expect(element.renderRoot.querySelector('.active')).not.toBeNull();
+      expect(element).toContainElement('.active');
     });
   });
 
@@ -114,29 +114,21 @@ describe('SiteMenuItemComponent', () => {
     });
 
     it('should render href', () => {
-      expect(
-        element.renderRoot.querySelector('oryx-button[href="/mock"]')
-      ).not.toBeNull();
-    });
-  });
-
-  describe('when type is provided', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-site-menu-item
-          .options=${{ type: 'mock', id: 'id' }}
-        ></oryx-site-menu-item>`
-      );
+      expect(element).toContainElement('oryx-button[href="/mock"]');
     });
 
-    it('should call link service', () => {
-      expect(linkService.get).toHaveBeenCalledWith({ type: 'mock', id: 'id' });
-    });
-  });
+    describe('and url is a LinkOption', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-site-menu-item
+            .options=${{ url: { type: 'mock', id: 'id' } }}
+          ></oryx-site-menu-item>`
+        );
+      });
 
-  describe('when type or url are not provided', () => {
-    it('should not render href attribute', () => {
-      expect(element.renderRoot.querySelector('[href]')).toBeNull();
+      it('should render correct link', () => {
+        expect(element).toContainElement('oryx-button[href="/"]');
+      });
     });
   });
 
@@ -151,8 +143,7 @@ describe('SiteMenuItemComponent', () => {
 
     it('should pass icon to oryx button', () => {
       expect(
-        (element.renderRoot.querySelector('oryx-button') as ButtonComponent)
-          .icon
+        element.renderRoot.querySelector<ButtonComponent>('oryx-button')?.icon
       ).toBe('mockicon');
     });
   });

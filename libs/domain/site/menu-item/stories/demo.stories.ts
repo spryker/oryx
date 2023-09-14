@@ -17,13 +17,8 @@ export default {
       options: getAppIcons(),
       control: { type: 'select' },
     },
-    type: {
-      control: { type: 'text' },
-    },
-    id: {
-      control: { type: 'text' },
-    },
   },
+  parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
 const Template: Story<SiteMenuItemOptions> = (options): TemplateResult => {
