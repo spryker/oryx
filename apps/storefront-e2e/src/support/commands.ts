@@ -8,14 +8,14 @@ export {};
 declare global {
   namespace Cypress {
     interface Chainable {
-      hydrateElement(assetPath: string, triggerHydrationFn): Chainable<void>;
+      hydrateElemenet(assetPath: string, triggerHydrationFn): Chainable<void>;
       checkCurrencyFormatting(locale: string): void;
     }
   }
 }
 
 Cypress.Commands.add(
-  'hydrateElement',
+  'hydrateElemenet',
   (assetPath: string, triggerHydrationFn) => {
     if (Cypress.env('isSSR')) {
       cy.intercept(assetPath).as(`${assetPath}Request`);

@@ -32,7 +32,6 @@ import {
   CartEntryQualifier,
   CartQualifier,
   UpdateCartEntryQualifier,
-  UpdateCartQualifier,
 } from '../models';
 import { CartAdapter } from './adapter/cart.adapter';
 import { CartService } from './cart.service';
@@ -97,13 +96,6 @@ export class DefaultCartService implements CartService {
     ...this.cartCommandBase,
     action: (qualifier: UpdateCartEntryQualifier) => {
       return this.adapter.updateEntry(qualifier);
-    },
-  });
-
-  protected updateCartCommand$ = createCommand({
-    ...this.cartCommandBase,
-    action: (qualifier: UpdateCartQualifier) => {
-      return this.adapter.update(qualifier);
     },
   });
 
@@ -251,10 +243,6 @@ export class DefaultCartService implements CartService {
 
   updateEntry(qualifier: UpdateCartEntryQualifier): Observable<unknown> {
     return this.executeWithOptionalCart(qualifier, this.updateEntryCommand$);
-  }
-
-  updateCart(qualifier: UpdateCartQualifier): Observable<unknown> {
-    return this.executeWithOptionalCart(qualifier, this.updateCartCommand$);
   }
 
   isBusy({ groupKey }: CartEntryQualifier = {}): Observable<boolean> {

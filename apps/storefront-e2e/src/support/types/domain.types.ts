@@ -8,7 +8,6 @@ export type Product = {
   title: string;
   originalPrice: string;
   currentPrice?: string;
-  netModePrice?: string;
   currentPriceWith10pDiscount?: string;
   previewImageURL?: string;
 };
