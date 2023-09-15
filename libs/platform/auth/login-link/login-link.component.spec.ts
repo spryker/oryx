@@ -73,11 +73,7 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render login title', () => {
-      if (isLatest) {
-        expect((getComponent() as any)?.content.text).toBe(i18n('auth.login'));
-      } else {
-        expect(getComponent()).toHaveProperty('text', i18n('auth.login'));
-      }
+      expect(getComponent()).toHaveProperty('text', i18n('auth.login'));
     });
 
     describe(`and ${isLatest ? 'dropdown' : 'button'} is clicked`, () => {
@@ -104,11 +100,7 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render logout title', () => {
-      if (isLatest) {
-        expect((getComponent() as any)?.content.text).toBe(i18n('auth.logout'));
-      } else {
-        expect(getComponent()).toHaveProperty('text', i18n('auth.logout'));
-      }
+      expect(getComponent()).toHaveProperty('text', i18n('auth.logout'));
     });
 
     describe('and logout is not enabled', () => {

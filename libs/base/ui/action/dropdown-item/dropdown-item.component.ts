@@ -1,36 +1,37 @@
-import { ContentMixin } from '@spryker-oryx/experience';
 import { ButtonType } from '@spryker-oryx/ui/button';
+import { Icons } from '@spryker-oryx/ui/icon';
+import { hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
+import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-import {
-  DropdownItemContent,
-  DropdownItemOptions,
-} from './dropdown-item.model';
+import { DropdownItemComponentAttributes } from './dropdown-item.model';
 import { styles } from './dropdown-item.styles';
 
-export class DropdownItemComponent extends ContentMixin<
-  DropdownItemOptions,
-  DropdownItemContent
->(LitElement) {
+@hydrate()
+export class DropdownItemComponent
+  extends LitElement
+  implements DropdownItemComponentAttributes
+{
   static styles = styles;
 
+  @property() text?: string;
+  @property() url?: string;
+  @property() icon?: Icons | string;
+
   protected override render(): TemplateResult {
-    const { url } = this.$options();
     return html`<oryx-button type=${ButtonType.Text}
       >${when(
-        url,
-        () => html`<a href=${url}>${this.renderContent()}</a>`,
+        this.url,
+        () => html`<a href=${this.url}>${this.renderContent()}</a>`,
         () => html`<span>${this.renderContent()}</span>`
       )}
     </oryx-button>`;
   }
 
   protected renderContent(): TemplateResult {
-    const { icon } = this.$options();
-    const { text } = this.$content() ?? {};
     return html`${when(
-      icon,
-      () => html`<oryx-icon type=${icon}></oryx-icon>`
-    )}${text}`;
+      this.icon,
+      () => html`<oryx-icon .type=${this.icon}></oryx-icon>`
+    )}${this.text}`;
   }
 }

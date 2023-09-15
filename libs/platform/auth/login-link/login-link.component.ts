@@ -35,8 +35,8 @@ export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
     return isLatest
       ? html`
           <oryx-dropdown-item
-            .options=${{ icon: IconTypes.Login }}
-            .content=${{ text: this.i18n(i18nToken) }}
+            .icon=${IconTypes.Login}
+            .text=${this.i18n(i18nToken)}
             @click=${this.onClick}
           >
           </oryx-dropdown-item>

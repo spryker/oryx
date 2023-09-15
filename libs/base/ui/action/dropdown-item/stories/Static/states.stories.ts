@@ -7,10 +7,11 @@ export default {
   title: `${storybookPrefix}/Actions/Dropdown Item/Static`,
 } as Meta;
 
-const renderTemplate = (): TemplateResult => html`<oryx-dropdown-item
-  .options=${{ icon: IconTypes.User }}
-  .content=${{ text: 'item' }}
-></oryx-dropdown-item>`;
+const renderTemplate = (): TemplateResult =>
+  html`<oryx-dropdown-item
+    .icon=${IconTypes.User}
+    text="item"
+  ></oryx-dropdown-item>`;
 
 const Template: Story = (): TemplateResult => html`<h4>States</h4>
   <h4>Active</h4>

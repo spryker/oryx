@@ -1,13 +1,16 @@
 import { getAppIcons } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
-import { storybookPrefix } from '../../../.constants';
-import { DropdownItemComponentAttributes } from '../dropdown-item.model';
+import { storybookPrefix } from '../../.constants';
+import {
+  DropdownItemContent,
+  DropdownItemOptions,
+} from '../dropdown-item.model';
 
 const icons = getAppIcons();
 
 export default {
-  title: `${storybookPrefix}/Actions/Dropdown Item`,
+  title: `${storybookPrefix}/Dropdown Item`,
   args: {
     url: '',
     icon: 'person',
@@ -21,15 +24,13 @@ export default {
   },
 } as Meta;
 
-const Template: Story<DropdownItemComponentAttributes> = (
+const Template: Story<DropdownItemOptions & DropdownItemContent> = (
   options
 ): TemplateResult => {
-  const { icon, url, text } = options;
-  return html`<oryx-dropdown-item
-    .text=${text}
-    .url=${url}
-    .icon=${icon}
-  ></oryx-dropdown-item>`;
+  return html`<oryx-site-dropdown-item
+    .options=${options}
+    .content=${options}
+  ></oryx-site-dropdown-item>`;
 };
 
 export const DropdownItemDemo = Template.bind({});

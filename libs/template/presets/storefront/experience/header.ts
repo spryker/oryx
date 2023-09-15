@@ -110,7 +110,7 @@ export const HeaderTemplate: ExperienceComponent = {
                 ...(featureVersion >= '1.1'
                   ? [
                       {
-                        type: 'oryx-dropdown-item',
+                        type: 'oryx-site-dropdown-item',
                         options: {
                           icon: IconTypes.User,
                           url: '/account/overview',
