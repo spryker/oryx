@@ -1,66 +1,26 @@
-import { ProductComponentProperties } from '@spryker-oryx/product';
-import { MockProductService } from '@spryker-oryx/product/mocks';
-import { ProductTitleOptions } from '@spryker-oryx/product/title';
-import { Meta, Story } from '@storybook/web-components';
+import { MockProductCategoryService } from '@spryker-oryx/product/mocks';
+import { Meta } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-
-const tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle', 'caption'];
+import { ProductCategoryLinkOptions } from '../category-link.model';
 
 export default {
-  title: `${storybookPrefix}/Title`,
+  title: `${storybookPrefix}/Category-Link`,
   args: {
-    sku: MockProductService.mockProducts[0].sku,
-    tag: '',
-    link: false,
+    category: MockProductCategoryService.mockCategories[0].id,
   },
   argTypes: {
-    sku: {
+    category: {
       control: { type: 'select' },
-      options: [
-        ...MockProductService.mockProducts.map((p) => p.sku),
-        'not-found',
-      ],
-      table: { category: 'demo' },
-    },
-    tag: {
-      options: tags,
-      control: { type: 'select' },
-    },
-    as: {
-      options: [...tags, 'hide', 'show'],
-      control: { type: 'select' },
-    },
-    asLg: {
-      options: [...tags, 'hide', 'show'],
-      control: { type: 'select' },
-    },
-    asMd: {
-      options: [...tags, 'hide', 'show'],
-      control: { type: 'select' },
-    },
-    asSm: {
-      options: [...tags, 'hide', 'show'],
-      control: { type: 'select' },
-    },
-    maxLines: {
-      control: { type: 'number' },
-    },
-  },
-  parameters: {
-    chromatic: {
-      disableSnapshot: true,
+      options: [...MockProductCategoryService.mockCategories.map((p) => p.id)],
     },
   },
 } as Meta;
 
-type Props = ProductTitleOptions & ProductComponentProperties;
-
-const Template: Story<Props> = (props: Props): TemplateResult => {
-  const { sku, ...options } = props;
-  return html`
-    <oryx-product-title .sku=${sku} .options=${options}></oryx-product-title>
-  `;
+const Template = (props: ProductCategoryLinkOptions): TemplateResult => {
+  return html`<oryx-product-category-link
+    .category=${props.category}
+  ></oryx-product-category-link>`;
 };
 
-export const TitleDemo = Template.bind({});
+export const IdDemo = Template.bind({});

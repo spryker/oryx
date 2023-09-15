@@ -13,7 +13,11 @@ export class DefaultProductCategoryService implements ProductCategoryService {
       CategoryQuery
     ),
     protected adapter = inject(ProductCategoryAdapter)
-  ) {}
+  ) {
+    this.getTree().subscribe((s) => {
+      console.log(s);
+    });
+  }
 
   protected categories = new Map<string, BehaviorSubject<ProductCategory>>();
 

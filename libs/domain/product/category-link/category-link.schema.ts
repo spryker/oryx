@@ -4,9 +4,9 @@ import { ProductCategoryLinkComponent } from './category-link.component';
 
 export const productCategoryLinkSchema: ContentComponentSchema<ProductCategoryLinkComponent> =
   {
-    name: 'Product title',
+    name: 'Product Category Link',
     group: 'Product',
-    icon: IconTypes.Title,
+    icon: IconTypes.Link,
     options: {
       category: {
         width: 100,

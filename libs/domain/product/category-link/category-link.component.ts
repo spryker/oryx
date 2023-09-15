@@ -18,16 +18,14 @@ import { ProductCategoryLinkOptions } from './category-link.model';
 export class ProductCategoryLinkComponent extends ContentMixin<ProductCategoryLinkOptions>(
   LitElement
 ) {
-  @signalProperty() category?: string;
+  @signalProperty({ reflect: true }) category?: string;
 
   protected categoryService = resolve(ProductCategoryService);
 
   protected $category = computed(() => {
     const category = this.category ?? this.$options()?.category;
 
-    if (!category) {
-      return of(null);
-    }
+    if (!category) return of(null);
 
     return this.categoryService.get(category);
   });
