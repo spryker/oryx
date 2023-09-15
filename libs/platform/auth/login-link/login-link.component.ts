@@ -9,7 +9,7 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { LoginLinkOptions } from './login-link.model';
 import { styles } from './login-link.styles';
 
-const isLatest = featureVersion <= '1.2';
+const isLatest = featureVersion >= '1.2';
 
 @defaultOptions({
   enableLogout: true,
@@ -18,7 +18,7 @@ const isLatest = featureVersion <= '1.2';
 export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
   LitElement
 ) {
-  static styles = isLatest ? styles : undefined;
+  static styles = isLatest ? undefined : styles;
 
   protected authService = resolve(AuthService);
   protected routerService = resolve(RouterService);
