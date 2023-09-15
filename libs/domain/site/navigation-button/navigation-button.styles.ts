@@ -2,13 +2,15 @@ import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 const smallScreen = css`
-  a,
-  button {
+  oryx-button::part(button) {
     --oryx-icon-size: 24px;
 
-    padding: 6px;
     height: 38px;
+    min-width: 38px;
+    max-width: auto;
     width: auto;
+    gap: 0;
+    padding: 0;
   }
 
   oryx-heading {
