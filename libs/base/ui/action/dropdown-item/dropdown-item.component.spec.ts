@@ -13,9 +13,7 @@ describe('DropdownItemComponent', () => {
   });
 
   beforeEach(async () => {
-    element = await fixture(
-      html`<oryx-site-dropdown-item></oryx-site-dropdown-item>`
-    );
+    element = await fixture(html`<oryx-dropdown-item></oryx-dropdown-item>`);
   });
 
   it('should be defined', () => {
@@ -27,20 +25,19 @@ describe('DropdownItemComponent', () => {
   });
 
   it('should render components', () => {
-    expect(element.renderRoot.querySelector('oryx-button')).not.toBeNull();
+    expect(element).toContainElement('oryx-button');
   });
 
   describe('when dropdown has content', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-site-dropdown-item
+        html`<oryx-dropdown-item
           .content=${{ text: 'mock' }}
-        ></oryx-site-dropdown-item>`
+        ></oryx-dropdown-item>`
       );
     });
 
     it('should render text', () => {
-      expect(element).toContainElement('span');
       expect(element.renderRoot.querySelector('span')?.innerText).toBe('mock');
     });
   });
@@ -48,33 +45,27 @@ describe('DropdownItemComponent', () => {
   describe('when dropdown has a url', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-site-dropdown-item
+        html`<oryx-dropdown-item
           .options=${{ url: 'mock' }}
-        ></oryx-site-dropdown-item>`
+        ></oryx-dropdown-item>`
       );
     });
 
     it('should render anchor link', () => {
-      expect(element).toContainElement('a[href]');
-      expect(
-        (element.renderRoot.querySelector('a[href]') as HTMLAnchorElement).href
-      ).toContain('mock');
+      expect(element).toContainElement('a[href="mock"]');
     });
   });
 
   describe('when dropdown has an icon', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-site-dropdown-item
+        html`<oryx-dropdown-item
           .options=${{ icon: IconTypes.Add }}
-        ></oryx-site-dropdown-item>`
+        ></oryx-dropdown-item>`
       );
     });
     it('should render icon', () => {
-      expect(element).toContainElement('oryx-icon');
-      expect(
-        element.renderRoot.querySelector('oryx-icon')?.getAttribute('type')
-      ).toBe(IconTypes.Add);
+      expect(element).toContainElement(`oryx-icon[type="${IconTypes.Add}"]`);
     });
   });
 });

@@ -3,12 +3,12 @@ import { DropdownItemOptions } from './dropdown-item.model';
 
 declare global {
   interface FeatureOptions {
-    'oryx-site-dropdown-item'?: DropdownItemOptions;
+    'oryx-dropdown-item'?: DropdownItemOptions;
   }
 }
 
 export const dropdownItemComponent = componentDef({
-  name: 'oryx-site-dropdown-item',
+  name: 'oryx-dropdown-item',
   impl: () =>
     import('./dropdown-item.component').then((m) => m.DropdownItemComponent),
 });

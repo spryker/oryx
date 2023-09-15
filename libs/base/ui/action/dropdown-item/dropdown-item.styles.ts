@@ -2,12 +2,13 @@ import { css } from 'lit';
 
 export const styles = css`
   oryx-button {
-    display: flex;
     --oryx-button-height: auto;
     --oryx-button-border: none;
     --oryx-button-padding: 0;
     --oryx-button-color: var(--oryx-color-neutral-12);
     --oryx-icon-color: var(--oryx-color-neutral-9);
+
+    display: flex;
   }
 
   oryx-button:hover {

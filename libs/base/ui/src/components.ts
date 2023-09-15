@@ -1,5 +1,6 @@
 export * from '../action/button/button.def';
 export * from '../action/color-mode-selector/src/color-mode-selector.def';
+export * from '../action/dropdown-item/dropdown-item.def';
 export * from '../action/link/src/link.def';
 export * from '../action/toggle-icon/src/toggle-icon.def';
 export * from '../action/toggle/src/component';
