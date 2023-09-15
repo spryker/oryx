@@ -9,6 +9,7 @@ export const productCategoryLinkSchema: ContentComponentSchema<ProductCategoryLi
     icon: IconTypes.Link,
     options: {
       category: {
+        type: 'category',
         width: 100,
       },
     },

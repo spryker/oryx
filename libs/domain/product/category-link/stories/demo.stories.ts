@@ -5,7 +5,7 @@ import { storybookPrefix } from '../../.constants';
 import { ProductCategoryLinkOptions } from '../category-link.model';
 
 export default {
-  title: `${storybookPrefix}/Category-Link`,
+  title: `${storybookPrefix}/Category Link`,
   args: {
     category: MockProductCategoryService.mockCategories[0].id,
   },
