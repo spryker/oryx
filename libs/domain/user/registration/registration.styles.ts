@@ -1,3 +1,4 @@
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -21,3 +22,13 @@ export const styles = css`
     width: 207px;
   }
 `;
+
+const smallScreen = css`
+  oryx-input {
+    grid-column: span 2;
+  }
+`;
+
+export const screenStyles = screenCss({
+  sm: smallScreen,
+});

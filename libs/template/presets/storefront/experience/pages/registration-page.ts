@@ -1,5 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { featureVersion } from '@spryker-oryx/utilities';
+import { featureVersion, Size } from '@spryker-oryx/utilities';
 
 export const registrationPage: ExperienceComponent | undefined =
   featureVersion === 'latest'
@@ -20,7 +20,20 @@ export const registrationPage: ExperienceComponent | undefined =
             options: {
               rules: [
                 {
+                  width: '100%',
+                },
+                {
+                  query: {
+                    breakpoint: Size.Lg,
+                  },
                   width: '50%',
+                  margin: 'auto',
+                },
+                {
+                  query: {
+                    breakpoint: Size.Md,
+                  },
+                  width: '80%',
                   margin: 'auto',
                 },
               ],

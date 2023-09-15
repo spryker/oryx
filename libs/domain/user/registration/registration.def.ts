@@ -12,4 +12,9 @@ export const userRegistrationComponent = componentDef({
     import('./registration.component').then((m) => m.UserRegistrationComponent),
   schema: () =>
     import('./registration.schema').then((m) => m.registrationComponentSchema),
+  stylesheets: [
+    {
+      rules: () => import('./registration.styles').then((m) => m.screenStyles),
+    },
+  ],
 });

@@ -1,7 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
-import { ButtonSize } from '@spryker-oryx/ui/button';
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
@@ -17,6 +18,7 @@ import { styles } from './login.styles';
   enableRememberMe: true,
   enableRedirect: true,
   passwordVisibility: PasswordVisibilityStrategy.Click,
+  registrationLink: '/registration',
 })
 @hydrate({ event: ['mouseover', 'focus'] })
 export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
@@ -75,7 +77,12 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   }
 
   protected override render(): TemplateResult {
-    return html` ${when(
+    return html`
+      <oryx-heading as=${HeadingTag.H2}>
+        <h1>${this.i18n('user.login.log-in')}</h1>
+      </oryx-heading>
+
+      ${when(
         this.hasError,
         () => html`
           <oryx-notification type="error" scheme="dark">
@@ -121,7 +128,21 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
             ${this.i18n('user.log-in')}
           </button>
         </oryx-button>
-      </form>`;
+      </form>
+
+      <oryx-heading>
+        <h2>${this.i18n('user.login.new-customer')}</h2>
+
+        <p>${this.i18n('user.login.benefits-of-registering-to-the-website')}</p>
+
+        <oryx-button
+          href=${this.$options()?.registrationLink}
+          type=${ButtonType.Outline}
+        >
+          ${this.i18n('user.login.create-account')}
+        </oryx-button>
+      </oryx-heading>
+    `;
   }
 
   protected renderLoginOptions(): TemplateResult | void {

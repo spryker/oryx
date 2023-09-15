@@ -1,4 +1,3 @@
-import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const styles = css`
@@ -22,7 +21,16 @@ export const styles = css`
   }
 
   h1 {
-    ${headingUtil(HeadingTag.H5)};
+    margin-block-end: 32px;
+  }
+
+  h2 {
+    margin-block-start: 50px;
+    margin-block-end: 20px;
+  }
+
+  p {
+    margin-block-end: 30px;
   }
 
   oryx-notification {

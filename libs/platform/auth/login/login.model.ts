@@ -28,6 +28,11 @@ export interface LoginOptions {
    * is provided, the user get's redirected to the referred page.
    */
   redirectUrl?: string;
+
+  /**
+   * The link to the registration page.
+   */
+  registrationLink?: string;
 }
 
 export interface LoginRequest {
