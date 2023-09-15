@@ -4,6 +4,7 @@ import { ExperienceService } from '@spryker-oryx/experience';
 import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import { passwordInputComponent } from '@spryker-oryx/ui';
+import { ButtonType } from '@spryker-oryx/ui/button';
 import {
   PasswordInputComponent,
   PasswordVisibilityStrategy,
@@ -102,6 +103,13 @@ describe('AuthLoginComponent', () => {
           ) as PasswordInputComponent
         ).strategy
       ).toBe(PasswordVisibilityStrategy.Click);
+    });
+
+    it('should have default registrationUrl', () => {
+      const button = element?.shadowRoot?.querySelector<HTMLButtonElement>(
+        `oryx-button[type=${ButtonType.Outline}]`
+      );
+      expect(button?.getAttribute('href')).toBe('/registration');
     });
 
     it('should have a remember me checkbox', () => {

@@ -11,7 +11,8 @@ import {
   FormRenderer,
 } from '@spryker-oryx/form';
 import { GenderService, SalutationService } from '@spryker-oryx/site';
-import { ButtonSize } from '@spryker-oryx/ui/button';
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import {
   PasswordInputComponent,
   PasswordVisibilityStrategy,
@@ -28,6 +29,7 @@ import { styles } from './registration.styles';
 @defaultOptions({
   passwordVisibility: PasswordVisibilityStrategy.Click,
   termsAndConditionsLink: '/article/terms-and-conditions',
+  loginLink: '/login',
 })
 @hydrate({ event: ['mouseover', 'focus'] })
 export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>(
@@ -130,6 +132,18 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
 
   protected override render(): TemplateResult {
     return html`
+      <oryx-heading as=${HeadingTag.H5}>
+        <h2>${this.i18n('user.registration.have-an-account?')}</h2>
+      </oryx-heading>
+
+      <oryx-button href=${this.$options().loginLink} type=${ButtonType.Outline}>
+        ${this.i18n('user.registration.login')}
+      </oryx-button>
+
+      <oryx-heading>
+        <h1>${this.i18n('user.registration.new-customer')}</h1>
+      </oryx-heading>
+
       ${when(
         this.hasGenericError,
         () => html`

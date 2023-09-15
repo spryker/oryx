@@ -9,6 +9,15 @@ export const styles = css`
     --oryx-grid-item-size: 1fr;
   }
 
+  oryx-button {
+    margin-block-start: 20px;
+    margin-block-end: 30px;
+  }
+
+  h1 {
+    margin-block-end: 20px;
+  }
+
   oryx-notification {
     margin-block-end: 15px;
   }
