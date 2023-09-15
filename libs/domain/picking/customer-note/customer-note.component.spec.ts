@@ -9,8 +9,8 @@ import { html } from 'lit';
 import { of, throwError } from 'rxjs';
 import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { pickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.def';
-import { CustomerNoteComponent } from './customer-note.component';
-import { customerNoteComponent } from './customer-note.def';
+import { PickingCustomerNoteComponent } from './customer-note.component';
+import { pickingCustomerNoteComponent } from './customer-note.def';
 
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
@@ -23,19 +23,19 @@ class MockPickingListService implements Partial<PickingListService> {
 }
 
 describe('CustomerNoteComponent', () => {
-  let element: CustomerNoteComponent;
+  let element: PickingCustomerNoteComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
 
   const getPickingInProgressModal = () => {
     return element.renderRoot.querySelector(
-      'oryx-picking-picking-in-progress-modal'
+      'oryx-picking-in-progress-modal'
     ) as PickingInProgressModalComponent;
   };
 
   beforeAll(async () => {
     await useComponent([
-      customerNoteComponent,
+      pickingCustomerNoteComponent,
       pickingInProgressModalComponent,
       modalComponent,
     ]);

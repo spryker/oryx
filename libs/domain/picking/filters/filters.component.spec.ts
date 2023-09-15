@@ -9,8 +9,8 @@ import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { FiltersComponent } from './filters.component';
-import { filtersComponent } from './filters.def';
+import { PickingFiltersComponent } from './filters.component';
+import { pickingFiltersComponent } from './filters.def';
 import { getFilterFields } from './filters.model';
 
 class MockPickingListService implements Partial<PickingListService> {
@@ -23,12 +23,12 @@ class MockFormRenderer implements Partial<FormRenderer> {
 }
 
 describe('FiltersComponent', () => {
-  let element: FiltersComponent;
+  let element: PickingFiltersComponent;
   let service: MockPickingListService;
   let renderer: MockFormRenderer;
 
   beforeAll(async () => {
-    await useComponent(filtersComponent);
+    await useComponent(pickingFiltersComponent);
   });
 
   beforeEach(async () => {

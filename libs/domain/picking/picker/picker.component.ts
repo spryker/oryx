@@ -22,10 +22,12 @@ import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { catchError, of, tap } from 'rxjs';
-import { ProductCardComponent } from '../product-card';
+import { PickingProductCardComponent } from '../product-card';
 import { pickingComponentStyles } from './picker.styles';
 
-export class PickerComponent extends I18nMixin(PickingListMixin(LitElement)) {
+export class PickingPickerComponent extends I18nMixin(
+  PickingListMixin(LitElement)
+) {
   static styles = pickingComponentStyles;
 
   protected routerService = resolve(RouterService);
@@ -39,7 +41,7 @@ export class PickerComponent extends I18nMixin(PickingListMixin(LitElement)) {
 
   protected $items = computed(() => this.$pickingList()?.items);
 
-  protected productCardRef: Ref<ProductCardComponent> = createRef();
+  protected productCardRef: Ref<PickingProductCardComponent> = createRef();
   protected notPickedTabRef: Ref<TabComponent> = createRef();
   protected tabRefs: Ref<TabComponent>[] = [
     this.notPickedTabRef,
@@ -385,4 +387,4 @@ export class PickerComponent extends I18nMixin(PickingListMixin(LitElement)) {
   }
 }
 
-export default PickerComponent;
+export default PickingPickerComponent;

@@ -1,3 +1,3 @@
-export interface NavigateBackAttributes {
+export interface PickingNavigateBackAttributes {
   url?: string;
 }

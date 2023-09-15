@@ -1,7 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { NavigateBackComponent } from './navigate-back.component';
+import { PickingNavigateBackComponent } from './navigate-back.component';
 
-export const navigateBackComponentSchema: ContentComponentSchema<NavigateBackComponent> =
+export const pickingNavigateBackComponentSchema: ContentComponentSchema<PickingNavigateBackComponent> =
   {
     name: 'Navigate back',
     group: 'Picking',

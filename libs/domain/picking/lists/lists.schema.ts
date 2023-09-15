@@ -1,7 +1,8 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { ListsComponent } from './lists.component';
+import { PickingListsComponent } from './lists.component';
 
-export const listsComponentSchema: ContentComponentSchema<ListsComponent> = {
-  name: 'Lists',
-  group: 'Picking',
-};
+export const pickingListsComponentSchema: ContentComponentSchema<PickingListsComponent> =
+  {
+    name: 'Lists',
+    group: 'Picking',
+  };

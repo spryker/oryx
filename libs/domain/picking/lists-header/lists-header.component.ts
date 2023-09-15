@@ -5,7 +5,7 @@ import { I18nMixin, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { pickingListsHeaderComponentStyles } from './lists-header.styles';
 
-export class ListsHeaderComponent extends I18nMixin(LitElement) {
+export class PickingListsHeaderComponent extends I18nMixin(LitElement) {
   static styles = pickingListsHeaderComponentStyles;
 
   protected localeService = resolve(LocaleService);

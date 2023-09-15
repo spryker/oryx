@@ -12,8 +12,8 @@ import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
-import { PickerComponent } from './picker.component';
-import { pickerComponent } from './picker.def';
+import { PickingPickerComponent } from './picker.component';
+import { pickingPickerComponent } from './picker.def';
 
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
@@ -32,7 +32,7 @@ class MockRouterService implements Partial<RouterService> {
 Element.prototype.scrollIntoView = vi.fn();
 
 describe('PickingComponent', () => {
-  let element: PickerComponent;
+  let element: PickingPickerComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
   let pickingHeaderService: MockPickingHeaderService;
@@ -53,7 +53,7 @@ describe('PickingComponent', () => {
   };
 
   beforeAll(async () => {
-    await useComponent([pickerComponent, tabsComponent]);
+    await useComponent([pickingPickerComponent, tabsComponent]);
   });
 
   beforeEach(async () => {

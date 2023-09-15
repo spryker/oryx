@@ -1,3 +1,3 @@
-export interface ListComponentProperties {
+export interface PickingListComponentProperties {
   pickingListId?: string;
 }

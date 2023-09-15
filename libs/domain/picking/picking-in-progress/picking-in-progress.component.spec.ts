@@ -13,7 +13,7 @@ describe('PickingInProgressModalComponent', () => {
 
   beforeEach(async () => {
     element = await fixture(
-      html`<oryx-picking-picking-in-progress-modal></oryx-picking-picking-in-progress-modal>`
+      html`<oryx-picking-in-progress-modal></oryx-picking-in-progress-modal>`
     );
   });
 

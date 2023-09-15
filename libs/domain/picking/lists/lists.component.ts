@@ -20,7 +20,7 @@ import { PickingInProgressModalComponent } from '../picking-in-progress/picking-
 import { pickingListsComponentStyles } from './lists.styles';
 
 @signalAware()
-export class ListsComponent extends I18nMixin(LitElement) {
+export class PickingListsComponent extends I18nMixin(LitElement) {
   static styles = pickingListsComponentStyles;
   protected pickingListService = resolve(PickingListService);
   protected pickingSyncHandler = resolve(PickingSyncActionHandlerService);
@@ -63,9 +63,9 @@ export class ListsComponent extends I18nMixin(LitElement) {
 
   protected override render(): TemplateResult {
     return html` ${this.renderPickingLists()}
-      <oryx-picking-picking-in-progress-modal
+      <oryx-picking-in-progress-modal
         ${ref(this.pickingInProgressModal)}
-      ></oryx-picking-picking-in-progress-modal>
+      ></oryx-picking-in-progress-modal>
 
       <oryx-picking-customer-note-modal
         ?open=${!!this.customerNote}

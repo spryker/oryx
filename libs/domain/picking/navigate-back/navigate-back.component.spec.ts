@@ -2,14 +2,14 @@ import { fixture } from '@open-wc/testing-helpers';
 import { destroyInjector } from '@spryker-oryx/di';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { NavigateBackComponent } from './navigate-back.component';
-import { navigateBackComponent } from './navigate-back.def';
+import { PickingNavigateBackComponent } from './navigate-back.component';
+import { pickingNavigateBackComponent } from './navigate-back.def';
 
 describe('NavigateBackComponent', () => {
-  let element: NavigateBackComponent;
+  let element: PickingNavigateBackComponent;
 
   beforeAll(async () => {
-    await useComponent(navigateBackComponent);
+    await useComponent(pickingNavigateBackComponent);
   });
 
   beforeEach(async () => {

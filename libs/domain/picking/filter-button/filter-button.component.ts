@@ -12,7 +12,7 @@ import { query } from 'lit/decorators.js';
 import { map, tap } from 'rxjs';
 
 @signalAware()
-export class FilterButtonComponent extends I18nMixin(LitElement) {
+export class PickingFilterButtonComponent extends I18nMixin(LitElement) {
   protected pickingListService = resolve(PickingListService);
 
   @query('oryx-picking-filters') protected filters?: HTMLElement;
