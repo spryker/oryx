@@ -1,5 +1,5 @@
+import { FormFieldOption } from '@spryker-oryx/form';
 import { Observable, of } from 'rxjs';
-import { Option } from '../../models';
 import { SalutationService } from './salutation.service';
 
 export class DefaultSalutationService implements SalutationService {
@@ -10,7 +10,7 @@ export class DefaultSalutationService implements SalutationService {
     { text: 'dr', value: 'Dr' },
   ];
 
-  get(): Observable<Option[]> {
+  get(): Observable<FormFieldOption[]> {
     return of(this.salutations);
   }
 }

@@ -1,5 +1,5 @@
 /**
- * @deprecated Use the `Option` interface instead.
+ * @deprecated Since version 1.1. Use `FormFieldOption` instead.
  */
 export interface Salutation {
   text: string;

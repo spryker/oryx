@@ -1,8 +1,8 @@
+import { FormFieldOption } from '@spryker-oryx/form';
 import { Observable } from 'rxjs';
-import { Option } from '../../models';
 
 export interface GenderService {
-  get(): Observable<Option[]>;
+  get(): Observable<FormFieldOption[]>;
 }
 
 export const GenderService = 'oryx.GenderService';

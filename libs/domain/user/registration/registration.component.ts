@@ -59,6 +59,12 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
   protected genderService = resolve(GenderService);
   protected genders = signal(this.genderService.get());
 
+  constructor() {
+    super();
+    this.onPasswordInput = this.onPasswordInput.bind(this);
+    this.onCheckboxChange = this.onCheckboxChange.bind(this);
+  }
+
   protected firstUpdated(_changedProperties: PropertyValues) {
     super.firstUpdated(_changedProperties);
 
@@ -249,11 +255,5 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
       password: this.password?.value ?? '',
       acceptedTerms: this.acceptedTerms?.checked,
     };
-  }
-
-  constructor() {
-    super();
-    this.onPasswordInput = this.onPasswordInput.bind(this);
-    this.onCheckboxChange = this.onCheckboxChange.bind(this);
   }
 }
