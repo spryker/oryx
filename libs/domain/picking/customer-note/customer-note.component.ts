@@ -1,6 +1,8 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListMixin } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query } from 'lit/decorators.js';
@@ -45,7 +47,14 @@ export class PickingCustomerNoteComponent extends I18nMixin(
   protected override render(): TemplateResult {
     return html`
       <section>
-        <oryx-picking-navigate-back></oryx-picking-navigate-back>
+        <oryx-button
+          .type=${ButtonType.Text}
+          .size=${ButtonSize.Md}
+          .color=${ButtonColor.Neutral}
+          .icon=${IconTypes.ArrowBack}
+          .text=${this.i18n('picking.button.back')}
+          href="/"
+        ></oryx-button>
         <oryx-image resource="user-note"></oryx-image>
         <oryx-heading as="h2" as-md="h4">
           <h4>${this.i18n('picking.customer-note')}</h4>

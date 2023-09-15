@@ -85,7 +85,9 @@ describe('CustomerNoteComponent', () => {
 
   describe('when picking is proceed', () => {
     beforeEach(() => {
-      element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
+      element.renderRoot
+        .querySelectorAll<HTMLElement>('oryx-button')?.[1]
+        ?.click();
     });
 
     it('should start picking with current picking list', () => {
@@ -115,7 +117,9 @@ describe('CustomerNoteComponent', () => {
           ></oryx-picking-customer-note>`
         );
 
-        element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
+        element.renderRoot
+          .querySelectorAll<HTMLElement>('oryx-button')[1]
+          ?.click();
       });
 
       it('should not navigate route', () => {
