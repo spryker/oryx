@@ -184,6 +184,9 @@
       ],
       "@spryker-oryx/product/brand": ["libs/domain/product/brand/index.ts"],
       "@spryker-oryx/product/card": ["libs/domain/product/card/index.ts"],
+      "@spryker-oryx/product/category-link": [
+        "libs/domain/product/category-link/index.ts"
+      ],
       "@spryker-oryx/product/description": [
         "libs/domain/product/description/index.ts"
       ],
