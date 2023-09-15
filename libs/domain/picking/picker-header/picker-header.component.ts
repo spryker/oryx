@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingHeaderService, PickingListMixin } from '@spryker-oryx/picking';
-import { DiscardModalComponent } from '@spryker-oryx/picking/discard-modal';
+import { PickingDiscardModalComponent } from '@spryker-oryx/picking/discard-modal';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
@@ -10,7 +10,7 @@ import { query, state } from 'lit/decorators.js';
 import { tap } from 'rxjs';
 import { styles } from './picker-header.styles';
 
-export class PickerHeaderComponent extends I18nMixin(
+export class PickingPickerHeaderComponent extends I18nMixin(
   PickingListMixin(LitElement)
 ) {
   static styles = styles;
@@ -19,7 +19,7 @@ export class PickerHeaderComponent extends I18nMixin(
   protected pickingHeaderService = resolve(PickingHeaderService);
 
   @query('oryx-picking-discard-modal')
-  protected discardModal?: DiscardModalComponent;
+  protected discardModal?: PickingDiscardModalComponent;
 
   @state() isCartNoteVisible?: boolean;
 
@@ -92,4 +92,4 @@ export class PickerHeaderComponent extends I18nMixin(
   }
 }
 
-export default PickerHeaderComponent;
+export default PickingPickerHeaderComponent;

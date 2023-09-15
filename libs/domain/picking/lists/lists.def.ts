@@ -1,7 +1,8 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const listsComponent = componentDef({
+export const pickingListsComponent = componentDef({
   name: 'oryx-picking-lists',
-  impl: () => import('./lists.component').then((m) => m.ListsComponent),
-  schema: () => import('./lists.schema').then((m) => m.listsComponentSchema),
+  impl: () => import('./lists.component').then((m) => m.PickingListsComponent),
+  schema: () =>
+    import('./lists.schema').then((m) => m.pickingListsComponentSchema),
 });

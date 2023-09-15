@@ -8,12 +8,12 @@ import { I18nMixin, computed } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { catchError, of, tap } from 'rxjs';
-import { ListItemAttributes } from './list-item.model';
+import { PickingListItemAttributes } from './list-item.model';
 import { pickingListItemComponentStyles } from './list-item.styles';
 
-export class ListItemComponent
+export class PickingListItemComponent
   extends I18nMixin(PickingListMixin(LitElement))
-  implements ListItemAttributes
+  implements PickingListItemAttributes
 {
   static styles = pickingListItemComponentStyles;
 

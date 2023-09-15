@@ -10,9 +10,9 @@ import { BACK_EVENT, CLOSE_EVENT } from '@spryker-oryx/ui/modal';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
-import { discardModalComponent } from '../discard-modal/discard-modal.def';
-import { PickerHeaderComponent } from './picker-header.component';
-import { pickerHeaderComponent } from './picker-header.def';
+import { pickingDiscardModalComponent } from '../discard-modal/discard-modal.def';
+import { PickingPickerHeaderComponent } from './picker-header.component';
+import { pickingPickerHeaderComponent } from './picker-header.def';
 
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
@@ -32,13 +32,16 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 describe('PickingHeaderComponent', () => {
-  let element: PickerHeaderComponent;
+  let element: PickingPickerHeaderComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
   let pickingHeaderService: MockPickingHeaderService;
 
   beforeAll(async () => {
-    await useComponent([pickerHeaderComponent, discardModalComponent]);
+    await useComponent([
+      pickingPickerHeaderComponent,
+      pickingDiscardModalComponent,
+    ]);
   });
 
   beforeEach(async () => {
@@ -91,7 +94,7 @@ describe('PickingHeaderComponent', () => {
     });
 
     it('is defined', () => {
-      expect(element).toBeInstanceOf(PickerHeaderComponent);
+      expect(element).toBeInstanceOf(PickingPickerHeaderComponent);
     });
 
     it('passes the a11y audit', async () => {

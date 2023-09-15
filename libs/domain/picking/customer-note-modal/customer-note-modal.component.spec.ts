@@ -3,17 +3,17 @@ import { CLOSE_EVENT, ModalComponent } from '@spryker-oryx/ui/modal';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
-import { CustomerNoteModalComponent } from './customer-note-modal.component';
-import { customerNoteModalComponent } from './customer-note-modal.def';
+import { PickingCustomerNoteModalComponent } from './customer-note-modal.component';
+import { pickingCustomerNoteModalComponent } from './customer-note-modal.def';
 
 describe('CustomerNoteModal', () => {
-  let element: CustomerNoteModalComponent;
+  let element: PickingCustomerNoteModalComponent;
 
   const getModal = (): ModalComponent | null =>
     element.renderRoot.querySelector('oryx-modal');
 
   beforeAll(async () => {
-    await useComponent([customerNoteModalComponent]);
+    await useComponent([pickingCustomerNoteModalComponent]);
   });
 
   describe('when note property is not provided', () => {

@@ -2,14 +2,14 @@ import { fixture } from '@open-wc/testing-helpers';
 import { SiteNavigationItemComponent } from '@spryker-oryx/site/navigation-item';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
-import HeaderComponent from './header.component';
-import { headerComponent } from './header.def';
+import PickingHeaderComponent from './header.component';
+import { pickingHeaderComponent } from './header.def';
 
 describe('Header Component', () => {
-  let element: HeaderComponent;
+  let element: PickingHeaderComponent;
 
   beforeAll(async () => {
-    await useComponent([headerComponent]);
+    await useComponent([pickingHeaderComponent]);
   });
 
   beforeEach(async () => {
@@ -17,7 +17,7 @@ describe('Header Component', () => {
   });
 
   it('is defined', () => {
-    expect(element).toBeInstanceOf(HeaderComponent);
+    expect(element).toBeInstanceOf(PickingHeaderComponent);
   });
 
   it('passes the a11y audit', async () => {

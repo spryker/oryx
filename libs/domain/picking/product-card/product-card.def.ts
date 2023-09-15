@@ -1,9 +1,13 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const productCardComponent = componentDef({
+export const pickingProductCardComponent = componentDef({
   name: 'oryx-picking-product-card',
   impl: () =>
-    import('./product-card.component').then((m) => m.ProductCardComponent),
+    import('./product-card.component').then(
+      (m) => m.PickingProductCardComponent
+    ),
   schema: () =>
-    import('./product-card.schema').then((m) => m.productCardComponentSchema),
+    import('./product-card.schema').then(
+      (m) => m.pickingProductCardComponentSchema
+    ),
 });

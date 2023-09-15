@@ -1,6 +1,7 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const headerComponent = componentDef({
+export const pickingHeaderComponent = componentDef({
   name: 'oryx-picking-header',
-  impl: () => import('./header.component').then((m) => m.HeaderComponent),
+  impl: () =>
+    import('./header.component').then((m) => m.PickingHeaderComponent),
 });

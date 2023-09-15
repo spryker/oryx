@@ -5,8 +5,8 @@ import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import MockDate from 'mockdate';
 import { of } from 'rxjs';
-import { ListsHeaderComponent } from './lists-header.component';
-import { listsHeaderComponent } from './lists-header.def';
+import { PickingListsHeaderComponent } from './lists-header.component';
+import { pickingListsHeaderComponent } from './lists-header.def';
 
 const mockedDate = new Date(1970, 1, 1);
 const formattedDate = 'formattedDate';
@@ -16,11 +16,11 @@ class MockLocaleService implements Partial<LocaleService> {
 }
 
 describe('PickingListsHeaderComponent', () => {
-  let element: ListsHeaderComponent;
+  let element: PickingListsHeaderComponent;
   let locateService: MockLocaleService;
 
   beforeAll(async () => {
-    await useComponent(listsHeaderComponent);
+    await useComponent(pickingListsHeaderComponent);
   });
 
   beforeEach(async () => {

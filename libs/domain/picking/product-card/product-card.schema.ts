@@ -1,7 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { ProductCardComponent } from './product-card.component';
+import { PickingProductCardComponent } from './product-card.component';
 
-export const productCardComponentSchema: ContentComponentSchema<ProductCardComponent> =
+export const pickingProductCardComponentSchema: ContentComponentSchema<PickingProductCardComponent> =
   {
     name: 'Product Card',
     group: 'Picking',

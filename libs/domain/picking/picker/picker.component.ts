@@ -9,7 +9,7 @@ import {
   PickingTab,
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
-import { ProductCardComponent } from '@spryker-oryx/picking/product-card';
+import { PickingProductCardComponent } from '@spryker-oryx/picking/product-card';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { ChipComponent } from '@spryker-oryx/ui/chip';
@@ -25,7 +25,9 @@ import { when } from 'lit/directives/when.js';
 import { catchError, of, tap } from 'rxjs';
 import { pickingComponentStyles } from './picker.styles';
 
-export class PickerComponent extends I18nMixin(PickingListMixin(LitElement)) {
+export class PickingPickerComponent extends I18nMixin(
+  PickingListMixin(LitElement)
+) {
   static styles = pickingComponentStyles;
 
   protected routerService = resolve(RouterService);
@@ -39,7 +41,7 @@ export class PickerComponent extends I18nMixin(PickingListMixin(LitElement)) {
 
   protected $items = computed(() => this.$pickingList()?.items);
 
-  protected productCardRef: Ref<ProductCardComponent> = createRef();
+  protected productCardRef: Ref<PickingProductCardComponent> = createRef();
   protected notPickedTabRef: Ref<TabComponent> = createRef();
   protected tabRefs: Ref<TabComponent>[] = [
     this.notPickedTabRef,
@@ -385,4 +387,4 @@ export class PickerComponent extends I18nMixin(PickingListMixin(LitElement)) {
   }
 }
 
-export default PickerComponent;
+export default PickingPickerComponent;

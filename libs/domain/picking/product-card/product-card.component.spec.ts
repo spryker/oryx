@@ -5,15 +5,15 @@ import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { ImageComponent } from '@spryker-oryx/ui/image';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { ProductCardComponent } from './product-card.component';
-import { productCardComponent } from './product-card.def';
+import { PickingProductCardComponent } from './product-card.component';
+import { pickingProductCardComponent } from './product-card.def';
 
 describe('PickingProductCardComponent', () => {
-  let element: ProductCardComponent;
+  let element: PickingProductCardComponent;
   const productItem: PickingListItem = mockPickingListData[0].items[0];
 
   beforeAll(async () => {
-    await useComponent(productCardComponent);
+    await useComponent(pickingProductCardComponent);
   });
 
   afterEach(() => {

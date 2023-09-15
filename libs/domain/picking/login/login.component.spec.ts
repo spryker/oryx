@@ -1,14 +1,14 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { LoginPageComponent } from './login.component';
-import { loginPageComponent } from './login.def';
+import { PickingLoginPageComponent } from './login.component';
+import { pickingLoginPageComponent } from './login.def';
 
 describe('LoginPageComponent', () => {
-  let element: LoginPageComponent;
+  let element: PickingLoginPageComponent;
 
   beforeAll(async () => {
-    await useComponent([loginPageComponent]);
+    await useComponent([pickingLoginPageComponent]);
   });
 
   beforeEach(async () => {

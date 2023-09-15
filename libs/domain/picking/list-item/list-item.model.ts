@@ -1,3 +1,3 @@
-export interface ListItemAttributes {
+export interface PickingListItemAttributes {
   pickingListId?: string;
 }

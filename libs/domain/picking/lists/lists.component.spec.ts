@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PickingListService } from '@spryker-oryx/picking';
-import { CustomerNoteModalComponent } from '@spryker-oryx/picking/customer-note-modal';
+import { PickingCustomerNoteModalComponent } from '@spryker-oryx/picking/customer-note-modal';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { PickingSyncActionHandlerService } from '@spryker-oryx/picking/offline';
 import { CLOSE_EVENT, ModalComponent } from '@spryker-oryx/ui/modal';
@@ -10,8 +10,8 @@ import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { afterEach, beforeAll, beforeEach } from 'vitest';
-import { ListsComponent } from './lists.component';
-import { listsComponent } from './lists.def';
+import { PickingListsComponent } from './lists.component';
+import { pickingListsComponent } from './lists.def';
 
 const mockOfflineDataPlugin = {
   isRefreshing: vi.fn().mockReturnValue(of(false)),
@@ -33,12 +33,12 @@ class MockPickingListService implements Partial<PickingListService> {
 }
 
 describe('ListsComponent', () => {
-  let element: ListsComponent;
+  let element: PickingListsComponent;
   let service: MockPickingListService;
   let syncService: MockPickingSyncActionHandlerService;
 
   beforeAll(async () => {
-    await useComponent([listsComponent]);
+    await useComponent([pickingListsComponent]);
   });
 
   beforeEach(async () => {
@@ -110,7 +110,7 @@ describe('ListsComponent', () => {
   });
 
   describe('when picking lists is not empty', () => {
-    const getCustomerNoteModal = (): CustomerNoteModalComponent | null =>
+    const getCustomerNoteModal = (): PickingCustomerNoteModalComponent | null =>
       element.renderRoot.querySelector('oryx-picking-customer-note-modal');
 
     const getPickingInProgressModal = (): ModalComponent | null =>

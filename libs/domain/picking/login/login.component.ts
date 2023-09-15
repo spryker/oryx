@@ -2,7 +2,7 @@ import { I18nMixin } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { loginComponentStyles } from './login.styles';
 
-export class LoginPageComponent extends I18nMixin(LitElement) {
+export class PickingLoginPageComponent extends I18nMixin(LitElement) {
   static styles = loginComponentStyles;
 
   protected override render(): TemplateResult {
@@ -18,4 +18,4 @@ export class LoginPageComponent extends I18nMixin(LitElement) {
   }
 }
 
-export default LoginPageComponent;
+export default PickingLoginPageComponent;

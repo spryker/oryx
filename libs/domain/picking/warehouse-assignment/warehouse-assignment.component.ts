@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs';
 import { styles } from './warehouse-assignment.styles';
 
 @signalAware()
-export class WarehouseAssignmentComponent extends LitElement {
+export class PickingWarehouseAssignmentComponent extends LitElement {
   static styles = styles;
 
   protected warehouseUserAssignmentsService = resolve(

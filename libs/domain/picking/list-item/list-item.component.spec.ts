@@ -8,8 +8,8 @@ import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of, throwError } from 'rxjs';
 import { afterEach } from 'vitest';
-import { ListItemComponent } from './list-item.component';
-import { listItemComponent } from './list-item.def';
+import { PickingListItemComponent } from './list-item.component';
+import { pickingListItemComponent } from './list-item.def';
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
@@ -25,13 +25,13 @@ class MockLocaleService implements Partial<LocaleService> {
 }
 
 describe('PickingListItemComponent', () => {
-  let element: ListItemComponent;
+  let element: PickingListItemComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
   let localeService: MockLocaleService;
 
   beforeAll(async () => {
-    await useComponent(listItemComponent);
+    await useComponent(pickingListItemComponent);
   });
 
   beforeEach(() => {

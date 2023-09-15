@@ -8,14 +8,14 @@ import { query } from 'lit/decorators.js';
 import { catchError, of, tap } from 'rxjs';
 import { customerNoteComponentStyles } from './customer-note.styles';
 
-export class CustomerNoteComponent extends I18nMixin(
+export class PickingCustomerNoteComponent extends I18nMixin(
   PickingListMixin(LitElement)
 ) {
   static styles = customerNoteComponentStyles;
 
   protected routerService = resolve(RouterService);
 
-  @query('oryx-picking-picking-in-progress-modal')
+  @query('oryx-picking-in-progress-modal')
   protected pickingInProgressModal!: PickingInProgressModalComponent;
 
   protected onProceed(): void {
@@ -60,9 +60,9 @@ export class CustomerNoteComponent extends I18nMixin(
         @click=${this.onProceed}
       ></oryx-button>
 
-      <oryx-picking-picking-in-progress-modal
+      <oryx-picking-in-progress-modal
         @oryx.back=${this.closePickingInProgressModal}
-      ></oryx-picking-picking-in-progress-modal>
+      ></oryx-picking-in-progress-modal>
     `;
   }
 

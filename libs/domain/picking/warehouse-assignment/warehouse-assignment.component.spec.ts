@@ -3,7 +3,7 @@ import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   WarehouseUserAssignmentsService,
-  warehouseAssignmentComponent,
+  pickingWarehouseAssignmentComponent,
 } from '@spryker-oryx/picking';
 import { mockWarehouseUserAssignments } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
@@ -12,7 +12,7 @@ import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of, switchMap } from 'rxjs';
 import { beforeEach, vi } from 'vitest';
-import { WarehouseAssignmentComponent } from './warehouse-assignment.component';
+import { PickingWarehouseAssignmentComponent } from './warehouse-assignment.component';
 
 const mockOfflineDataPlugin = {
   refreshData: vi.fn().mockReturnValue(
@@ -43,13 +43,13 @@ class MockRouterService implements Partial<RouterService> {
 }
 
 describe('WarehouseAssignmentComponent', () => {
-  let el: WarehouseAssignmentComponent;
+  let el: PickingWarehouseAssignmentComponent;
 
   let service: MockWarehouseUserAssignmentsService;
   let routerService: RouterService;
 
   beforeAll(async () => {
-    await useComponent(warehouseAssignmentComponent);
+    await useComponent(pickingWarehouseAssignmentComponent);
   });
 
   beforeEach(async () => {

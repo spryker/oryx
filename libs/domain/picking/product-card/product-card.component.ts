@@ -17,7 +17,7 @@ import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import { pickingProductCardComponentStyles } from './product-card.styles';
 
-export class ProductCardComponent extends I18nMixin(LitElement) {
+export class PickingProductCardComponent extends I18nMixin(LitElement) {
   static styles = pickingProductCardComponentStyles;
 
   @property() productItem?: PickingListItem;

@@ -1,7 +1,9 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const customerNoteComponent = componentDef({
+export const pickingCustomerNoteComponent = componentDef({
   name: 'oryx-picking-customer-note',
   impl: () =>
-    import('./customer-note.component').then((m) => m.CustomerNoteComponent),
+    import('./customer-note.component').then(
+      (m) => m.PickingCustomerNoteComponent
+    ),
 });
