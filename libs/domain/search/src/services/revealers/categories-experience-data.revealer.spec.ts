@@ -4,13 +4,13 @@ import { MessageType, postMessage } from '@spryker-oryx/experience';
 import { of } from 'rxjs';
 import { SuggestionField } from '../adapter';
 import { SuggestionService } from '../suggestion';
-import { ProductsExperienceDataRevealer } from './products-experience-data.revealer';
+import { CategoriesExperienceDataRevealer } from './categories-experience-data.revealer';
 
 const mockSuggestionService = {
   get: vi.fn().mockReturnValue(of(null)),
 };
 
-describe('ProductsExperienceDataRevealer', () => {
+describe('CategoriesExperienceDataRevealer', () => {
   beforeEach(() => {
     createInjector({
       providers: [
@@ -20,7 +20,7 @@ describe('ProductsExperienceDataRevealer', () => {
         },
         {
           provide: 'service',
-          useClass: ProductsExperienceDataRevealer,
+          useClass: CategoriesExperienceDataRevealer,
         },
       ],
     });
@@ -33,18 +33,18 @@ describe('ProductsExperienceDataRevealer', () => {
   });
 
   describe('reveal', () => {
-    it('should send `MessageType.Products` post message', async () => {
+    it('should send `MessageType.Categories` post message', async () => {
       const mockQuery = 'mockQuery';
       const mockSuggestions = {
-        products: [
+        categories: [
           {
             a: 'a',
-            sku: 'skuA',
+            id: 'idA',
             name: 'nameA',
           },
           {
             b: 'b',
-            sku: 'skuB',
+            id: 'idB',
             name: 'nameB',
           },
         ],
@@ -53,7 +53,7 @@ describe('ProductsExperienceDataRevealer', () => {
       getInjector().inject('service').reveal().subscribe();
       postMessage(
         {
-          type: MessageType.Query,
+          type: MessageType.Category,
           data: mockQuery,
         },
         window
@@ -61,13 +61,13 @@ describe('ProductsExperienceDataRevealer', () => {
       await nextFrame();
       expect(mockSuggestionService.get).toHaveBeenCalledWith({
         query: mockQuery,
-        entities: [SuggestionField.Products],
+        entities: [SuggestionField.Categories],
       });
       expect(window.parent.postMessage).toHaveBeenCalledWith(
         {
-          type: MessageType.Products,
-          data: mockSuggestions.products.map(({ sku, name }) => ({
-            id: sku,
+          type: MessageType.Categories,
+          data: mockSuggestions.categories.map(({ id, name }) => ({
+            id,
             name,
           })),
         },

@@ -8,16 +8,26 @@ export const enum MessageType {
   Options = 'oryx.options',
   Products = 'oryx.products',
   Query = 'oryx.query',
+  Category = 'oryx.Category',
   Static = 'oryx.static',
   ComponentType = 'oryx.component-type',
   ComponentSchemas = 'oryx.component-schemas',
   ColorMode = 'oryx.color-mode',
   AppReady = 'oryx.app-ready',
   Icons = 'oryx.icons',
+  Categories = 'oryx.categories',
 }
 
+/**
+ * @deprecated Since version 1.1. Will be removed.
+ */
 export interface ExperienceProductData {
   sku?: string;
+  name?: string;
+}
+
+export interface ExperienceSuggestionData {
+  id?: string;
   name?: string;
 }
 
@@ -27,9 +37,12 @@ export type ExperienceMessageData<T> = {
     ? (keyof ResourceGraphic)[]
     : T extends MessageType.Options
     ? FeatureOptions[keyof FeatureOptions]
-    : T extends MessageType.Products
-    ? ExperienceProductData[]
-    : T extends MessageType.Query | MessageType.ComponentType
+    : T extends MessageType.Products | MessageType.Categories
+    ? ExperienceSuggestionData[]
+    : T extends
+        | MessageType.Query
+        | MessageType.ComponentType
+        | MessageType.Category
     ? string
     : T extends MessageType.ComponentSchemas
     ? ContentComponentSchema[] | undefined
