@@ -8,15 +8,12 @@ import {
   DropdownItemContent,
   DropdownItemOptions,
 } from './dropdown-item.model';
-import { styles } from './dropdown-item.styles';
 
 @signalAware()
 export class DropdownItemComponent extends ContentMixin<
   DropdownItemOptions,
   DropdownItemContent
 >(LitElement) {
-  static styles = styles;
-
   protected linkService = resolve(LinkService);
   protected $url = computed(() => {
     const url = this.$options().url;
