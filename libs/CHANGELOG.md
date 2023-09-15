@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.2 (2023-09-13)
+
+
+### Bug Fixes
+
+* **search:** search box on small screens ([#754](https://github.com/spryker/oryx/issues/754)) ([5a03136](https://github.com/spryker/oryx/commit/5a031366a128b6c8eaa974241520b4202df26c86))
+* **presets:** change header's layout to grid on small screens ([#760](https://github.com/spryker/oryx/issues/760)) ([d41ac4d](https://github.com/spryker/oryx/commit/d41ac4dc7b302120779c4b508c86981d2c017e33))
+
+
+
+
+
 ## 1.0.1 (2023-08-15)
 
 
