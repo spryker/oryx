@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 import { LoginLinkComponent } from './login-link.component';
 import { loginLinkComponent } from './login-link.def';
 
-const isLatest = featureVersion >= '1.1';
+const isLatest = featureVersion >= '1.2';
 
 class MockAuthService implements Partial<AuthService> {
   logout = vi.fn().mockReturnValue(of(null));

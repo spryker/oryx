@@ -9,7 +9,7 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { LoginLinkOptions } from './login-link.model';
 import { styles } from './login-link.styles';
 
-const isLatest = featureVersion <= '1.1';
+const isLatest = featureVersion <= '1.2';
 
 @defaultOptions({
   enableLogout: true,

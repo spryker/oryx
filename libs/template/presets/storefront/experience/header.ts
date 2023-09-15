@@ -107,7 +107,7 @@ export const HeaderTemplate: ExperienceComponent = {
                 rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
               },
               components: [
-                ...(featureVersion >= '1.1'
+                ...(featureVersion >= '1.2'
                   ? [
                       {
                         type: 'oryx-site-dropdown-item',
