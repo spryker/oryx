@@ -79,7 +79,11 @@ describe('SiteMenuItemComponent', () => {
   });
 
   it('should not be highlighted', () => {
-    expect(element).not.toContainElement('.active');
+    expect(element).not.toContainElement('oryx-button.active');
+  });
+
+  it('should not render href', () => {
+    expect(element).not.toContainElement('oryx-button[href]');
   });
 
   it('should have variation attribute', () => {
@@ -100,7 +104,7 @@ describe('SiteMenuItemComponent', () => {
     });
 
     it('should highlight item', () => {
-      expect(element).toContainElement('.active');
+      expect(element).toContainElement('oryx-button.active');
     });
   });
 
