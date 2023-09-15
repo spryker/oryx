@@ -17,7 +17,10 @@ import {
   CategoryPageTitleMetaResolver,
   SearchPageTitleMetaResolver,
 } from './resolvers';
-import { ProductsExperienceDataRevealer } from './revealers';
+import {
+  CategoriesExperienceDataRevealer,
+  ProductsExperienceDataRevealer,
+} from './revealers';
 import { categoryRoutes } from './routes';
 import { SortingService } from './sorting.service';
 import {
@@ -76,5 +79,9 @@ export const searchPreviewProviders: Provider[] = [
   {
     provide: ExperienceDataRevealer,
     useClass: ProductsExperienceDataRevealer,
+  },
+  {
+    provide: ExperienceDataRevealer,
+    useClass: CategoriesExperienceDataRevealer,
   },
 ];
