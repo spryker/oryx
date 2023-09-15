@@ -134,10 +134,7 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
       )}
 
       <form @submit=${this.onSubmit}>
-        <oryx-layout
-          .layout=${CompositionLayout.Grid}
-          style="--column-gap: 20px;--row-gap: 15px;"
-        >
+        <oryx-layout .layout=${CompositionLayout.Grid}>
           ${this.fieldRenderer.buildForm(this.getFields())}
 
           <oryx-button

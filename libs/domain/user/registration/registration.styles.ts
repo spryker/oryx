@@ -2,6 +2,13 @@ import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
+  oryx-layout {
+    --column-gap: 20px;
+    --row-gap: 15px;
+    --oryx-column-grid: 2;
+    --oryx-grid-item-size: 1fr;
+  }
+
   oryx-notification {
     margin-block-end: 15px;
   }
