@@ -25,7 +25,7 @@ export const StaticExperienceFeature: AppFeature = {
     provideExperienceData([
       HeaderTemplate,
       FooterTemplate,
-      ...(featureVersion >= '1.1' ? [accountMenu, overviewPage] : []),
+      ...(featureVersion >= '1.2' ? [accountMenu, overviewPage] : []),
       cartPage,
       categoryPage,
       checkoutPage,
