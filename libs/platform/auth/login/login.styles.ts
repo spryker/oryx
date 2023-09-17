@@ -11,6 +11,10 @@ export const styles = css`
     gap: var(--gap, 18px);
   }
 
+  oryx-button {
+    width: 207px;
+  }
+
   .options {
     display: flex;
     align-items: center;

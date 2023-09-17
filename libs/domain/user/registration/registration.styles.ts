@@ -10,8 +10,16 @@ export const styles = css`
   }
 
   oryx-button {
+    width: 207px;
+  }
+
+  oryx-button[type='outline'] {
     margin-block-start: 20px;
     margin-block-end: 30px;
+  }
+
+  oryx-input:last-of-type {
+    margin-block-start: 5px;
   }
 
   h1 {
@@ -28,14 +36,18 @@ export const styles = css`
     width: fit-content;
   }
 
+  oryx-password-input {
+    margin-block: 15px 5px;
+  }
+
   oryx-checkbox a {
     z-index: 1;
     position: relative;
   }
 
-  oryx-button {
+  oryx-button:not([type='outline']) {
+    margin-block-start: 5px;
     grid-column: auto / span 2;
-    width: 207px;
   }
 `;
 

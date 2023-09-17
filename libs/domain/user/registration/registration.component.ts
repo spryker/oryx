@@ -136,7 +136,11 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
         <h2>${this.i18n('user.registration.have-an-account?')}</h2>
       </oryx-heading>
 
-      <oryx-button href=${this.$options().loginLink} type=${ButtonType.Outline}>
+      <oryx-button
+        href=${this.$options().loginLink}
+        type=${ButtonType.Outline}
+        size=${ButtonSize.Md}
+      >
         ${this.i18n('user.registration.login')}
       </oryx-button>
 
