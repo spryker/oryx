@@ -6,5 +6,6 @@ export interface SuggestionQualifier {
 }
 
 export interface FacetQualifier {
-  name: string;
+  name?: string;
+  parameter?: string;
 }

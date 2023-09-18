@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { RouterService } from '@spryker-oryx/router';
+import { RouteType, RouterService } from '@spryker-oryx/router';
 import {
   Suggestion,
   SuggestionField,
@@ -12,6 +12,7 @@ import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
 import { TypeaheadComponent } from '@spryker-oryx/ui/typeahead';
 import {
+  Size,
   computed,
   debounce,
   effect,
@@ -19,7 +20,6 @@ import {
   hydrate,
   signalAware,
   signalProperty,
-  Size,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
@@ -28,7 +28,6 @@ import { html } from 'lit/static-html.js';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { searchBoxStyles } from './';
 import { SearchBoxOptions, SearchBoxProperties } from './box.model';
-import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({
   minChars: 2,
@@ -96,6 +95,7 @@ export class SearchBoxComponent
         @oryx.search=${this.onSearch}
         @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 300)}
         .clearIcon=${IconTypes.Close}
+        ?float=${this.$options().float}
       >
         <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
         <input
@@ -103,6 +103,10 @@ export class SearchBoxComponent
           placeholder=${ifDefined(this.i18n(['search', 'search.placeholder']))}
         />
         ${this.renderSuggestion()}
+        <oryx-site-navigation-button
+          slot="trigger"
+          icon="${IconTypes.Search}"
+        ></oryx-site-navigation-button>
       </oryx-typeahead>
     `;
   }

@@ -213,3 +213,11 @@ export interface ProductAvailability {
    */
   quantity: number;
 }
+
+export interface ProductCategory {
+  id: string;
+  name: string;
+  order: number;
+  parent?: string;
+  description?: string;
+}
