@@ -82,18 +82,13 @@ export class SearchBoxComponent
     return withSuggestion ? this.$raw() : null;
   });
 
-  protected $link = computed(() =>
-    this.semanticLinkService.get({
-      type: RouteType.ProductList,
-      ...(this.query ? { params: { q: this.query } } : {}),
-    })
-  );
-
   protected override render(): TemplateResult {
+    console.log(this.query);
+
     return html`
       <oryx-typeahead
         @oryx.search=${this.onSearch}
-        @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 300)}
+        @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 500)}
         .clearIcon=${IconTypes.Close}
         ?float=${this.$options().float}
       >
@@ -149,14 +144,22 @@ export class SearchBoxComponent
   }
 
   protected onSearch(): void {
-    const link = this.$link();
+    const value =
+      this.renderRoot.querySelector<HTMLInputElement>('input')?.value;
 
-    if (!link) {
+    if (!value) {
       return;
     }
 
-    this.routerService.navigate(link);
-    this.onClose();
+    this.semanticLinkService
+      .get({
+        type: RouteType.ProductList,
+        params: { q: value },
+      })
+      .subscribe((link) => {
+        this.routerService.navigate(link!);
+        this.onClose();
+      });
   }
 
   protected isNothingFound(suggestion: Suggestion | null | undefined): boolean {
