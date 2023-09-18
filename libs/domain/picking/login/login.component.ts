@@ -17,5 +17,3 @@ export class PickingLoginPageComponent extends I18nMixin(LitElement) {
       ></oryx-auth-login>`;
   }
 }
-
-export default PickingLoginPageComponent;

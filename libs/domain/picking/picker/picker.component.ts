@@ -386,5 +386,3 @@ export class PickingPickerComponent extends I18nMixin(
     this.items = [...this.items];
   }
 }
-
-export default PickingPickerComponent;

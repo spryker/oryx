@@ -1,5 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import { PickingListComponentProperties } from '@spryker-oryx/picking/lists';
+import { PickingListComponentProperties } from '@spryker-oryx/picking';
 import {
   Signal,
   Type,
