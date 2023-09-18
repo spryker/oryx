@@ -2,42 +2,44 @@ import { css } from 'lit';
 
 export const styles = css`
   :host {
-    margin: 30px 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
   }
 
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap, 18px);
-  }
-
-  oryx-button {
-    width: 207px;
-  }
-
-  .options {
-    display: flex;
-    align-items: center;
-  }
-
-  .options oryx-link {
-    margin-inline-start: auto;
+  oryx-heading,
+  form,
+  oryx-input,
+  oryx-password-input,
+  oryx-checkbox,
+  oryx-notification,
+  p {
+    grid-column: auto / span 2;
   }
 
   h1 {
-    margin-block-end: 32px;
+    margin-block-end: 10px;
+  }
+
+  form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+  }
+
+  oryx-input,
+  oryx-password-input {
+    margin-block-start: 10px;
   }
 
   h2 {
-    margin-block-start: 50px;
-    margin-block-end: 20px;
+    margin-block-start: 30px;
   }
 
   p {
-    margin-block-end: 30px;
-  }
-
-  oryx-notification {
-    margin-block-end: 20px;
+    margin-block-start: 0;
+    margin-block-end: 10px;
   }
 `;

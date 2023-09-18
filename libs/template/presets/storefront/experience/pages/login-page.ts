@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { Size } from '@spryker-oryx/utilities';
 
 export const loginPage: ExperienceComponent = {
   id: 'login-page',
@@ -15,7 +16,25 @@ export const loginPage: ExperienceComponent = {
     {
       type: 'oryx-auth-login',
       options: {
-        rules: [{ width: '50%', margin: 'auto' }],
+        rules: [
+          {
+            width: '100%',
+          },
+          {
+            query: {
+              breakpoint: Size.Lg,
+            },
+            width: '50%',
+            margin: 'auto',
+          },
+          {
+            query: {
+              breakpoint: Size.Md,
+            },
+            width: '80%',
+            margin: 'auto',
+          },
+        ],
       },
     },
   ],

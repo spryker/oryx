@@ -1,5 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import {
+  FormFieldDefinition,
+  FormFieldType,
+  FormRenderer,
+} from '@spryker-oryx/form';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
@@ -30,6 +35,8 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
   @query('input[name=email]') email?: HTMLInputElement;
   @query('input[name=password]') password?: HTMLInputElement;
   @query('input[name=rememberme]') rememberme?: HTMLInputElement;
+
+  protected fieldRenderer = resolve(FormRenderer);
 
   protected routerService = resolve(RouterService);
   protected authLoginStrategy = resolve(
@@ -94,88 +101,71 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
       )}
 
       <form @submit=${this.onSubmit}>
-        <oryx-input
-          .label=${this.i18n('user.login.email')}
-          required
-          ?hasError="${this.hasError}"
-        >
-          <input
-            type="email"
-            name="email"
-            required
-            placeholder=${this.i18n('user.login.email')}
-          />
-        </oryx-input>
-
-        <oryx-password-input
-          .strategy="${this.$options()?.passwordVisibility}"
-          .label=${this.i18n('login.password')}
-          required
-          ?hasError="${this.hasError}"
-        >
-          <input
-            type="password"
-            name="password"
-            required
-            placeholder=${this.i18n('login.password')}
-          />
-        </oryx-password-input>
-
-        ${this.renderLoginOptions()}
+        ${this.fieldRenderer.buildForm(this.getFields())}
 
         <oryx-button .size=${ButtonSize.Md} ?loading=${this.isLoading}>
           <button slot="custom" ?disabled=${this.isLoading}>
             ${this.i18n('user.log-in')}
           </button>
         </oryx-button>
+
+        ${when(
+          this.$options()?.forgotPasswordLink,
+          () => html`
+            <oryx-button href=${this.$options()?.forgotPasswordLink} type=${
+            ButtonType.Text
+          }>
+              ${this.i18n('user.login.forgot-password?')}</a
+            </oryx-button>
+          `
+        )}
       </form>
 
       <oryx-heading>
         <h2>${this.i18n('user.login.new-customer')}</h2>
-
-        <p>${this.i18n('user.login.benefits-of-registering-to-the-website')}</p>
-
-        <oryx-button
-          href=${this.$options()?.registrationLink}
-          type=${ButtonType.Outline}
-        >
-          ${this.i18n('user.login.create-account')}
-        </oryx-button>
       </oryx-heading>
+      <p>${this.i18n('user.login.benefits-of-registering-to-the-website')}</p>
+
+      <oryx-button
+        href=${this.$options()?.registrationLink}
+        type=${ButtonType.Outline}
+      >
+        ${this.i18n('user.login.create-account')}
+      </oryx-button>
     `;
   }
 
-  protected renderLoginOptions(): TemplateResult | void {
-    if (
-      !this.$options()?.forgotPasswordLink &&
-      !this.$options()?.enableRememberMe
-    ) {
-      return;
-    }
-    return html`
-      <div class="options">
-        ${when(
-          this.$options()?.enableRememberMe,
-          () => html`<oryx-checkbox>
-            <input
-              type="checkbox"
-              name="rememberme"
-              aria-label=${this.i18n('user.login.remember-me')}
-              ${this.rememberme}
-            />
-            ${this.i18n('user.login.remember-me')}
-          </oryx-checkbox>`
-        )}
-        ${when(
-          this.$options()?.forgotPasswordLink,
-          () => html`<oryx-link>
-            <a href=${this.$options()?.forgotPasswordLink}
-              >${this.i18n('user.login.forgot-password?')}</a
-            >
-          </oryx-link>`
-        )}
-      </div>
-    `;
+  protected getFields(): FormFieldDefinition[] {
+    const rememberMe = this.$options()?.enableRememberMe
+      ? [
+          {
+            id: 'rememberme',
+            type: FormFieldType.Boolean,
+            label: this.i18n('user.login.remember-me'),
+          },
+        ]
+      : [];
+
+    return [
+      {
+        id: 'email',
+        type: FormFieldType.Email,
+        required: true,
+        label: this.i18n('user.login.email'),
+        placeholder: this.i18n('user.login.email'),
+      },
+      {
+        id: 'password',
+        type: FormFieldType.Password,
+        required: true,
+        label: this.i18n('user.login.password'),
+        placeholder: this.i18n('user.login.password'),
+        attributes: {
+          hasError: !!this.hasError,
+        },
+      },
+      ...rememberMe,
+    ];
   }
 
   protected getState(): LoginRequest {

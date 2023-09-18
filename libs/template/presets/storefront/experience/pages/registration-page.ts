@@ -2,7 +2,7 @@ import { ExperienceComponent } from '@spryker-oryx/experience';
 import { featureVersion, Size } from '@spryker-oryx/utilities';
 
 export const registrationPage: ExperienceComponent | undefined =
-  featureVersion === '1.1'
+  featureVersion >= '1.1'
     ? {
         id: 'registration-page',
         type: 'Page',

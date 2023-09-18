@@ -2,6 +2,19 @@ import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
+  :host {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+  }
+
+  oryx-heading,
+  oryx-notification,
+  form {
+    grid-column: auto / span 2;
+  }
+
   oryx-layout {
     --column-gap: 20px;
     --row-gap: 15px;
@@ -9,25 +22,12 @@ export const styles = css`
     --oryx-grid-item-size: 1fr;
   }
 
-  oryx-button {
-    width: 207px;
-  }
-
   oryx-button[type='outline'] {
-    margin-block-start: 20px;
-    margin-block-end: 30px;
+    margin-block-end: 10px;
   }
 
   oryx-input:last-of-type {
     margin-block-start: 5px;
-  }
-
-  h1 {
-    margin-block-end: 20px;
-  }
-
-  oryx-notification {
-    margin-block-end: 15px;
   }
 
   oryx-checkbox {
@@ -44,16 +44,15 @@ export const styles = css`
     z-index: 1;
     position: relative;
   }
-
-  oryx-button:not([type='outline']) {
-    margin-block-start: 5px;
-    grid-column: auto / span 2;
-  }
 `;
 
 const smallScreen = css`
   oryx-input {
     grid-column: span 2;
+  }
+
+  oryx-button:not([type='outline']) {
+    grid-column: auto / span 2;
   }
 `;
 
