@@ -1,11 +1,11 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListMixin } from '@spryker-oryx/picking';
+import { PickingInProgressModalComponent } from '@spryker-oryx/picking/picking-in-progress';
 import { RouterService } from '@spryker-oryx/router';
 import { I18nMixin } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query } from 'lit/decorators.js';
 import { catchError, of, tap } from 'rxjs';
-import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { customerNoteComponentStyles } from './customer-note.styles';
 
 export class PickingCustomerNoteComponent extends I18nMixin(

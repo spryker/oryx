@@ -1,14 +1,17 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PickingListError, PickingListService } from '@spryker-oryx/picking';
+import {
+  PickingListError,
+  PickingListService,
+  pickingInProgressModalComponent,
+} from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+import { PickingInProgressModalComponent } from '@spryker-oryx/picking/picking-in-progress';
 import { RouterService } from '@spryker-oryx/router';
 import { modalComponent } from '@spryker-oryx/ui/modal';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of, throwError } from 'rxjs';
-import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
-import { pickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.def';
 import { PickingCustomerNoteComponent } from './customer-note.component';
 import { pickingCustomerNoteComponent } from './customer-note.def';
 

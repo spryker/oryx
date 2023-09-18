@@ -9,6 +9,7 @@ import {
   OfflineDataPlugin,
   PickingSyncActionHandlerService,
 } from '@spryker-oryx/picking/offline';
+import { PickingInProgressModalComponent } from '@spryker-oryx/picking/picking-in-progress';
 import { I18nMixin, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -16,7 +17,6 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { Subject, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
-import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { pickingListsComponentStyles } from './lists.styles';
 
 @signalAware()
