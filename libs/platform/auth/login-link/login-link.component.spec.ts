@@ -2,11 +2,13 @@ import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { i18n, useComponent } from '@spryker-oryx/utilities';
+import { featureVersion, i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { LoginLinkComponent } from './login-link.component';
 import { loginLinkComponent } from './login-link.def';
+
+const isLatest = featureVersion >= '1.2';
 
 class MockAuthService implements Partial<AuthService> {
   logout = vi.fn().mockReturnValue(of(null));
@@ -22,8 +24,13 @@ describe('LoginLinkComponent', () => {
   let authService: MockAuthService;
   let routerService: MockRouterService;
 
-  const clickButton = (): void => {
-    element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
+  const getComponent = (): HTMLElement | null => {
+    return isLatest
+      ? element.renderRoot.querySelector<HTMLElement>('oryx-dropdown-item')
+      : element.renderRoot.querySelector<HTMLElement>('oryx-button');
+  };
+  const clickComponent = (): void => {
+    getComponent()?.click();
   };
 
   beforeAll(async () => {
@@ -66,13 +73,12 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render login title', () => {
-      const button = element.renderRoot.querySelector('oryx-button');
-      expect(button).toHaveProperty('text', i18n('auth.login'));
+      expect(getComponent()).toHaveProperty('text', i18n('auth.login'));
     });
 
-    describe('and button is clicked', () => {
+    describe(`and ${isLatest ? 'dropdown' : 'button'} is clicked`, () => {
       beforeEach(() => {
-        clickButton();
+        clickComponent();
       });
 
       it('should navigate to login page', () => {
@@ -94,8 +100,7 @@ describe('LoginLinkComponent', () => {
     });
 
     it('should render logout title', () => {
-      const button = element.renderRoot.querySelector('oryx-button');
-      expect(button).toHaveProperty('text', i18n('auth.logout'));
+      expect(getComponent()).toHaveProperty('text', i18n('auth.logout'));
     });
 
     describe('and logout is not enabled', () => {
@@ -106,14 +111,16 @@ describe('LoginLinkComponent', () => {
         </oryx-auth-login-link>`);
       });
 
-      it('should not render the button', () => {
-        expect(element).not.toContainElement('oryx-button');
+      it(`should not render the ${isLatest ? 'dropdown' : 'button'}`, () => {
+        expect(element).not.toContainElement(
+          isLatest ? 'oryx-dropdown-item' : 'oryx-button'
+        );
       });
     });
 
-    describe('and button is clicked', () => {
+    describe(`and ${isLatest ? 'dropdown' : 'button'} is clicked`, () => {
       beforeEach(() => {
-        clickButton();
+        clickComponent();
       });
 
       it('should emit the logout', () => {
@@ -132,7 +139,7 @@ describe('LoginLinkComponent', () => {
             .options=${{ logoutRedirectUrl }}
           >
           </oryx-auth-login-link>`);
-          clickButton();
+          clickComponent();
         });
 
         it('should redirect to the route', () => {

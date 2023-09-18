@@ -4,10 +4,12 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { hydrate, signal } from '@spryker-oryx/utilities';
+import { featureVersion, hydrate, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { LoginLinkOptions } from './login-link.model';
 import { styles } from './login-link.styles';
+
+const isLatest = featureVersion >= '1.2';
 
 @defaultOptions({
   enableLogout: true,
@@ -16,7 +18,7 @@ import { styles } from './login-link.styles';
 export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
   LitElement
 ) {
-  static styles = styles;
+  static styles = isLatest ? undefined : styles;
 
   protected authService = resolve(AuthService);
   protected routerService = resolve(RouterService);
@@ -30,15 +32,21 @@ export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
 
     const i18nToken = this.$isAuthenticated() ? 'auth.logout' : 'auth.login';
 
-    return html`
-      <oryx-button
-        .type=${ButtonType.Text}
-        .text=${this.i18n(i18nToken)}
-        .icon=${IconTypes.Login}
-        @click=${this.onClick}
-      >
-      </oryx-button>
-    `;
+    return isLatest
+      ? html`
+          <oryx-dropdown-item
+            .icon=${IconTypes.Login}
+            .text=${this.i18n(i18nToken)}
+            @click=${this.onClick}
+          >
+          </oryx-dropdown-item>
+        `
+      : html`<oryx-button
+          .type=${ButtonType.Text}
+          .text=${this.i18n(i18nToken)}
+          .icon="${IconTypes.Login}"
+          @click=${this.onClick}
+        ></oryx-button>`;
   }
 
   protected onClick(): void {

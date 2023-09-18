@@ -232,6 +232,9 @@
         "libs/domain/site/currency-selector/index.ts"
       ],
       "@spryker-oryx/site/date": ["libs/domain/site/date/index.ts"],
+      "@spryker-oryx/site/dropdown-item": [
+        "libs/domain/site/dropdown-item/index.ts"
+      ],
       "@spryker-oryx/site/locale-selector": [
         "libs/domain/site/locale-selector/index.ts"
       ],
@@ -270,6 +273,9 @@
       ],
       "@spryker-oryx/ui/drawer": ["libs/base/ui/overlays/drawer/index.ts"],
       "@spryker-oryx/ui/dropdown": ["libs/base/ui/overlays/dropdown/index.ts"],
+      "@spryker-oryx/ui/dropdown-item": [
+        "libs/base/ui/action/dropdown-item/index.ts"
+      ],
       "@spryker-oryx/ui/error-message": [
         "libs/base/ui/form/error-message/index.ts"
       ],
