@@ -7,7 +7,7 @@
     "e2e": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "browser": "chrome",
+        "browser": "chromium",
         "cypressConfig": "apps/fulfillment-e2e/cypress.config.js",
         "watch": true,
         "testingType": "e2e"
