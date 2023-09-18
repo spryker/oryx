@@ -17,7 +17,7 @@ export const customerNoteComponentStyles = css`
     flex-direction: column;
   }
 
-  oryx-picking-navigate-back {
+  section oryx-button {
     align-self: flex-start;
     margin-block-end: 40px;
   }

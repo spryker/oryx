@@ -133,9 +133,6 @@
       ],
       "@spryker-oryx/picking/login": ["libs/domain/picking/login/index.ts"],
       "@spryker-oryx/picking/mocks": ["libs/domain/picking/mocks/index.ts"],
-      "@spryker-oryx/picking/navigate-back": [
-        "libs/domain/picking/navigate-back/index.ts"
-      ],
       "@spryker-oryx/picking/offline": ["libs/domain/picking/offline/index.ts"],
       "@spryker-oryx/picking/picker": ["libs/domain/picking/picker/index.ts"],
       "@spryker-oryx/picking/picker-header": [
