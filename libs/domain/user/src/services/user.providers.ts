@@ -1,4 +1,6 @@
 import { Provider } from '@spryker-oryx/di';
+import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 import {
   AddressAdapter,
   addressesNormalizer,
@@ -17,6 +19,7 @@ import { DefaultAddressFormService } from './default-address-form.service';
 import { DefaultAddressService } from './default-address.service';
 import { DefaultUserService } from './default-user.service';
 import { UserResourceResolver } from './resolver';
+import { userRoutes } from './routes';
 import { AddressStateService, DefaultAddressStateService } from './state';
 import { UserService } from './user.service';
 
@@ -54,4 +57,5 @@ export const userProviders: Provider[] = [
   ...addressSerializers,
   ...userNormalizer,
   UserResourceResolver,
+  ...(featureVersion >= '1.2' ? provideLitRoutes({ routes: userRoutes }) : []),
 ];

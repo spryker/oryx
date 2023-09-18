@@ -235,6 +235,7 @@
       "@spryker-oryx/site/locale-selector": [
         "libs/domain/site/locale-selector/index.ts"
       ],
+      "@spryker-oryx/site/menu-item": ["libs/domain/site/menu-item/index.ts"],
       "@spryker-oryx/site/mocks": ["libs/domain/site/src/mocks/index.ts"],
       "@spryker-oryx/site/navigation-button": [
         "libs/domain/site/navigation-button/index.ts"

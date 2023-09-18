@@ -403,7 +403,7 @@ export class LitRouter implements ReactiveController {
   outlet(): TemplateResult {
     const path = isRouterPath(this._currentRoute)
       ? this._currentParams.page
-        ? `/${this._currentParams.page}`
+        ? `${this._currentRoute.path.split(':')[0]}${this._currentParams.page}`
         : this._currentRoute.path
       : '/';
 

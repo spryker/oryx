@@ -90,6 +90,10 @@ export class DefaultRouterService implements RouterService {
     return this.router$.pipe(tap((route) => this.storeRoute(route)));
   }
 
+  isCurrentRoute(route: string): Observable<boolean> {
+    return this.route().pipe(map((currentRoute) => currentRoute === route));
+  }
+
   currentParams(): Observable<RouteParams> {
     return this.params$;
   }

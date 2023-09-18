@@ -9,6 +9,7 @@ export interface RouterService {
   getEvents(type: RouterEventType): Observable<RouterEvent>;
   route(): Observable<string>;
   currentRoute(): Observable<string>;
+  isCurrentRoute(route: string): Observable<boolean>;
   currentParams(): Observable<RouteParams>;
   currentQuery(): Observable<RouteParams | undefined>;
   acceptParams(params: RouteParams): void;
@@ -39,6 +40,7 @@ export const enum RouteType {
   Checkout = 'checkout',
   CheckoutLogin = 'checkoutLogin',
   Order = 'order',
+  Account = 'account',
   Cart = 'cart',
   Login = 'login',
   NotFound = 'not-found',

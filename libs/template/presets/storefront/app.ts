@@ -50,6 +50,7 @@ export const storefrontFeatures: AppFeature[] = [
   orderFeature,
   contentFeature,
   formFeature,
+  userFeature,
   experienceFeature,
   experienceRoutesFeature,
   isPreview ? experiencePreviewFeature : {},
@@ -57,7 +58,6 @@ export const storefrontFeatures: AppFeature[] = [
   searchFeature,
   siteFeature,
   applicationFeature,
-  userFeature,
   isServer ? { providers: coreServerProviders } : {},
   isPreview ? { providers: searchPreviewProviders } : {},
   {

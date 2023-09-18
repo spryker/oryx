@@ -63,6 +63,22 @@ describe('DefaultRouterService', () => {
     });
   });
 
+  describe('when current route matches', () => {
+    const callback = vi.fn();
+    it('should return true', () => {
+      service.isCurrentRoute('/').subscribe(callback);
+      expect(callback).toHaveBeenCalledWith(true);
+    });
+  });
+
+  describe('when current route does not match', () => {
+    const callback = vi.fn();
+    it('should return false', () => {
+      service.isCurrentRoute('/mock').subscribe(callback);
+      expect(callback).toHaveBeenCalledWith(false);
+    });
+  });
+
   describe('when query params are provided', () => {
     describe('for current route', () => {
       beforeEach(() => {

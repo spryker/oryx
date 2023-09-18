@@ -1,5 +1,7 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { provideExperienceData } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
+import { accountMenu } from './account-menu';
 import { FooterTemplate } from './footer';
 import { HeaderTemplate } from './header';
 import {
@@ -13,6 +15,7 @@ import {
   homePage,
   loginPage,
   orderConfirmationPage,
+  overviewPage,
   productPage,
   searchPage,
 } from './pages';
@@ -22,6 +25,7 @@ export const StaticExperienceFeature: AppFeature = {
     provideExperienceData([
       HeaderTemplate,
       FooterTemplate,
+      ...(featureVersion >= '1.2' ? [accountMenu, overviewPage] : []),
       cartPage,
       categoryPage,
       checkoutPage,
