@@ -29,6 +29,7 @@ import {
   take,
   throwError,
 } from 'rxjs';
+import { IdentityService } from '@spryker-oryx/auth';
 
 export class DefaultCheckoutService implements CheckoutService {
   protected cartId$ = this.cartService
