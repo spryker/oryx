@@ -1,8 +1,8 @@
 import { storybookDefaultViewports } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
-import { renderVariants } from './common';
+import { applyPseudoClasses, renderVariants } from './common';
 
 export default {
   title: `${storybookPrefix}/Navigation Button/Static`,
@@ -47,3 +47,4 @@ const Template: Story = (): TemplateResult => html` <h4>Variants</h4>
   <oryx-site-navigation-button icon="add"></oryx-site-navigation-button>`;
 
 export const Variants = Template.bind({});
+Variants.play = applyPseudoClasses;
