@@ -84,18 +84,9 @@ export class DefaultFormRenderer implements FormRenderer {
     value?: string | boolean
   ): TemplateResult {
     const { pattern, title } = this.fieldValidationPattern(field);
-    let inputType = field.type || field.attributes?.type;
+    let inputType = field.attributes?.type || field.type;
 
-    switch (field.type) {
-      case FormFieldType.Number:
-        inputType = 'number';
-        break;
-      case FormFieldType.Password:
-        inputType = 'password';
-        break;
-      case FormFieldType.Color:
-        inputType = 'color';
-        break;
+    switch (inputType) {
       case FormFieldType.Boolean:
         inputType = 'checkbox';
         break;
