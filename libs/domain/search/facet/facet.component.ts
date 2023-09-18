@@ -69,7 +69,8 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
     return html`<ul>
       ${repeat(
         values,
-        (facetValue) => String(facetValue.value),
+        (facetValue) =>
+          `${facetValue.value}${facetValue.selected ? '-selected' : ''}`,
         (facetValue) => html`<li>
           ${this.renderValueControl(facetValue)}
           ${this.renderValues(facetValue.children)}
