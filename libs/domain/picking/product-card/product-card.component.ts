@@ -147,28 +147,30 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
       return html``;
     }
 
+    const { quantity, numberOfPicked, numberOfNotPicked } = this.productItem;
+
     if (this.status === ItemsFilters.Picked) {
-      text = `${this.productItem.numberOfPicked}/${this.productItem.quantity}`;
+      text = `${numberOfPicked}`;
 
-      if (this.productItem.numberOfPicked < this.productItem.quantity) {
-        label = this.i18n('picking.product-card.items-picked') as string;
+      if (numberOfPicked < quantity) {
+        label = 'picking.product-card.items-picked';
       } else {
-        subtext = this.i18n('picking.product-card.all-items-picked') as string;
+        subtext = 'picking.product-card.all-items-picked';
       }
-    } else if (this.status === ItemsFilters.NotFound) {
-      text = `${this.productItem.numberOfNotPicked}/${this.productItem.quantity}`;
+    } else {
+      text = `${numberOfNotPicked}`;
 
-      if (this.productItem.numberOfNotPicked < this.productItem.quantity) {
-        label = this.i18n('picking.product-card.items-not-found') as string;
+      if (numberOfNotPicked < quantity) {
+        label = 'picking.product-card.items-not-found';
       } else {
-        subtext = this.i18n('picking.product-card.no-items-found') as string;
+        subtext = 'picking.product-card.no-items-found';
       }
     }
 
     return html`
       <div class="summary-info">
-        <p>${text} ${label}</p>
-        ${when(subtext, () => html`<p>${subtext}</p>`)}
+        <p>${text}/${quantity} ${this.i18n(label)}</p>
+        ${when(subtext, () => html`<p>${this.i18n(subtext)}</p>`)}
       </div>
       <oryx-button
         .icon=${IconTypes.Edit}
