@@ -299,27 +299,6 @@ describe('RegistrationComponent', () => {
     });
   });
 
-  describe('when loginLink option is provided with custom value', () => {
-    const customLink = '/custom/link';
-
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-user-registration
-          .options=${{
-            loginLink: customLink,
-          }}
-        ></oryx-user-registration>`
-      );
-    });
-
-    it('should provide a custom loginLink to login button', () => {
-      const loginButton =
-        element.shadowRoot!.querySelector<HTMLButtonElement>('oryx-button');
-
-      expect(loginButton?.getAttribute('href')).toBe(customLink);
-    });
-  });
-
   describe('when invalid form is submitted', () => {
     beforeEach(() => {
       const form = element.shadowRoot!.querySelector<HTMLFormElement>('form')!;

@@ -9,13 +9,6 @@ export const styles = css`
   }
 
   oryx-input,
-  oryx-password-input,
-  oryx-checkbox,
-  oryx-notification {
-    grid-column: auto / span 2;
-  }
-
-  oryx-input,
   oryx-password-input {
     margin-block-start: 10px;
   }

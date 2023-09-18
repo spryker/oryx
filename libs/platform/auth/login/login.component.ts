@@ -22,7 +22,6 @@ import { styles } from './login.styles';
   enableRememberMe: true,
   enableRedirect: true,
   passwordVisibility: PasswordVisibilityStrategy.Click,
-  registrationLink: '/registration',
 })
 @hydrate({ event: ['mouseover', 'focus'] })
 export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
@@ -125,7 +124,8 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
             id: 'rememberme',
             type: FormFieldType.Boolean,
             label: this.i18n('user.login.remember-me'),
-          },
+            width: 100,
+          } as FormFieldDefinition,
         ]
       : [];
 
@@ -136,6 +136,7 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         required: true,
         label: this.i18n('user.login.email'),
         placeholder: this.i18n('user.login.email'),
+        width: 100,
       },
       {
         id: 'password',
@@ -143,8 +144,10 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         required: true,
         label: this.i18n('user.login.password'),
         placeholder: this.i18n('user.login.password'),
+        width: 100,
         attributes: {
           hasError: !!this.hasError,
+          strategy: this.$options()?.passwordVisibility as string,
         },
       },
       ...rememberMe,

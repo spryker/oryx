@@ -13,9 +13,4 @@ export interface RegistrationOptions extends PasswordValidationOptions {
    * The link to the terms and conditions.
    */
   termsAndConditionsLink?: string;
-
-  /**
-   * The link to the login page.
-   */
-  loginLink?: string;
 }

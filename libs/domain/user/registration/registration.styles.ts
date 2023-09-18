@@ -2,28 +2,15 @@ import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
-  :host {
+  oryx-notification {
+    margin-block-end: 20px;
+  }
+
+  form {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 20px;
-    row-gap: 20px;
-  }
-
-  oryx-heading,
-  oryx-notification,
-  form {
-    grid-column: auto / span 2;
-  }
-
-  oryx-layout {
-    --column-gap: 20px;
-    --row-gap: 15px;
-    --oryx-column-grid: 2;
-    --oryx-grid-item-size: 1fr;
-  }
-
-  oryx-button[type='outline'] {
-    margin-block-end: 10px;
+    row-gap: 15px;
   }
 
   oryx-input:last-of-type {
@@ -44,6 +31,11 @@ export const styles = css`
     z-index: 1;
     position: relative;
   }
+
+  oryx-button {
+    margin-block-start: 5px;
+    width: 100%;
+  }
 `;
 
 const smallScreen = css`
@@ -51,7 +43,7 @@ const smallScreen = css`
     grid-column: span 2;
   }
 
-  oryx-button:not([type='outline']) {
+  oryx-button {
     grid-column: auto / span 2;
   }
 `;
