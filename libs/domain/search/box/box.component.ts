@@ -83,12 +83,10 @@ export class SearchBoxComponent
   });
 
   protected override render(): TemplateResult {
-    console.log(this.query);
-
     return html`
       <oryx-typeahead
         @oryx.search=${this.onSearch}
-        @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 500)}
+        @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 300)}
         .clearIcon=${IconTypes.Close}
         ?float=${this.$options().float}
       >
@@ -143,18 +141,13 @@ export class SearchBoxComponent
     this.query = event.detail.query;
   }
 
-  protected onSearch(): void {
-    const value =
-      this.renderRoot.querySelector<HTMLInputElement>('input')?.value;
-
-    if (!value) {
-      return;
-    }
+  protected onSearch(e: CustomEvent<SearchEventDetail>): void {
+    const q = e.detail.query;
 
     this.semanticLinkService
       .get({
         type: RouteType.ProductList,
-        params: { q: value },
+        ...(q ? { params: { q } } : {}),
       })
       .subscribe((link) => {
         this.routerService.navigate(link!);
