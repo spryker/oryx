@@ -1,10 +1,13 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
+import { ProductCategoryService, ProductService } from '@spryker-oryx/product';
+import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
+import { map } from 'rxjs';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
 @hydrate()
@@ -13,8 +16,8 @@ export class ContentLinkComponent extends ContentMixin<
   ContentLinkContent
 >(LitElement) {
   protected semanticLinkService = resolve(LinkService);
-  // protected categoryService = resolve(ProductCategoryService);
-  // protected productService = resolve(ProductService);
+  protected categoryService = resolve(ProductCategoryService);
+  protected productService = resolve(ProductService);
   // protected contentService = resolve(ContentService);
 
   protected $link = computed(() => {
@@ -43,19 +46,21 @@ export class ContentLinkComponent extends ContentMixin<
     const { type, id } = this.$options();
     const { text } = this.$content() ?? {};
 
-    return text;
+    if (text) return text;
 
-    // if (type === RouteType.Category && id) {
-    //   return this.categoryService
-    //     .get(id)
-    //     .pipe(map((category) => category?.name));
-    // }
+    if (type === RouteType.Category && id) {
+      return this.categoryService
+        .get(id)
+        .pipe(map((category) => category?.name));
+    }
 
-    // if (type === RouteType.Product && id) {
-    //   return this.productService
-    //     .get({ sku: id })
-    //     .pipe(map((product) => product?.name));
-    // }
+    if (type === RouteType.Product && id) {
+      return this.productService
+        .get({ sku: id })
+        .pipe(map((product) => product?.name));
+    }
+
+    return null;
 
     // return this.contentService
     //   .get({ type, id })
