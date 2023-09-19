@@ -8,7 +8,7 @@ export class VersionCliCommand implements CliCommand {
   protected packagePath = path.resolve(this.dirPath, '../..', 'package.json');
 
   constructor(
-    protected dirPath = url.fileURLToPath(new URL('.', import.meta.url))
+    protected dirPath = path.resolve(__dirname, '.')
   ) {}
 
   getName(): string {
