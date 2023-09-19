@@ -60,7 +60,7 @@ export class ContentLinkComponent extends ContentMixin<
     const { button, icon } = this.$options();
     const renderIcon = !!button && !!icon;
 
-    if (text || icon) {
+    if (icon || text) {
       return html` ${when(
         renderIcon,
         () => html`<oryx-icon .type=${icon}></oryx-icon>`
