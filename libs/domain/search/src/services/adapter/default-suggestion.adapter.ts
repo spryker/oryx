@@ -28,7 +28,7 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
 
   get({ query, entities }: SuggestionQualifier): Observable<Suggestion> {
     if (
-      !entities ||
+      !entities?.length ||
       entities.some((entity) =>
         [
           SuggestionField.Categories,
@@ -37,21 +37,26 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
         ].includes(entity as SuggestionField)
       )
     ) {
-      const include = entities?.includes(SuggestionField.Products)
-        ? [
-            ApiProductModel.Includes.AbstractProducts,
-            ApiProductModel.Includes.CategoryNodes,
-            ApiProductModel.Includes.ConcreteProducts,
-            ApiProductModel.Includes.ConcreteProductImageSets,
-            ApiProductModel.Includes.ConcreteProductPrices,
-            ApiProductModel.Includes.ConcreteProductAvailabilities,
-            ApiProductModel.Includes.Labels,
-          ].join(',')
-        : '';
-
+      const product =
+        entities?.includes(SuggestionField.Products) || !entities?.length
+          ? [
+              ApiProductModel.Includes.AbstractProducts,
+              ApiProductModel.Includes.ConcreteProducts,
+              ApiProductModel.Includes.ConcreteProductImageSets,
+              ApiProductModel.Includes.ConcreteProductPrices,
+              ApiProductModel.Includes.ConcreteProductAvailabilities,
+              ApiProductModel.Includes.Labels,
+            ].join(',')
+          : '';
+      const categories =
+        entities?.includes(SuggestionField.Categories) || !entities?.length
+          ? ApiProductModel.Includes.CategoryNodes
+          : '';
+      const includes = [product, categories].filter(Boolean).join(',');
+      console.log(includes);
       return this.http
         .get<ApiSuggestionModel.Response>(
-          `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&include=${include}`
+          `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&include=${includes}`
         )
         .pipe(this.transformer.do(SuggestionNormalizer));
     }
