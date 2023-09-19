@@ -1,7 +1,6 @@
 import {
   CompositionLayout,
   ExperienceComponent,
-  LayoutAlign,
 } from '@spryker-oryx/experience';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { Size, featureVersion } from '@spryker-oryx/utilities';
@@ -19,10 +18,8 @@ export const registrationPage: ExperienceComponent | undefined =
         options: {
           rules: [
             {
-              layout: CompositionLayout.Flex,
-              padding: '20px 16px',
-              width: '100%',
-              justify: 'center',
+              layout: CompositionLayout.Grid,
+              padding: '20px 0',
               gap: '30px',
               style: `box-sizing: border-box;`,
             },
@@ -31,14 +28,12 @@ export const registrationPage: ExperienceComponent | undefined =
                 breakpoint: Size.Lg,
               },
               padding: '50px 0',
-              width: '50%',
             },
             {
               query: {
                 breakpoint: Size.Md,
               },
               padding: '30px 0',
-              width: '80%',
             },
           ],
         },
@@ -47,45 +42,47 @@ export const registrationPage: ExperienceComponent | undefined =
             type: 'oryx-composition',
             options: {
               rules: [
+                { layout: CompositionLayout.List, colSpan: 2 },
                 {
-                  layout: CompositionLayout.Grid,
-                  columns: 2,
-                  gap: '20px',
-                  justify: LayoutAlign.Start,
-                  width: '100%',
+                  query: { breakpoint: Size.Md },
+                  width: '80%',
+                  colSpan: 3,
+                },
+                {
+                  query: { breakpoint: Size.Lg },
+                  gridColumn: 2,
+                  colSpan: 2,
                 },
               ],
             },
             components: [
               {
-                type: 'oryx-content-text',
+                type: 'oryx-composition',
                 options: {
                   rules: [
                     {
-                      colSpan: 2,
+                      layout: CompositionLayout.Grid,
+                      gap: '20px',
+                      style: `grid-template-columns: 1fr 1fr`,
                     },
                   ],
                 },
-                content: {
-                  data: {
-                    text: `
-                      <h5>Have an account?</h5>
-                    `,
+                components: [
+                  {
+                    type: 'oryx-content-text',
+                    options: {
+                      rules: [{ colSpan: 2 }],
+                    },
+                    content: { data: { text: `<h5>Have an account?</h5>` } },
                   },
-                },
-              },
-              {
-                type: 'oryx-content-text',
-                options: {
-                  rules: [
-                    {
-                      width: '100%',
+                  {
+                    type: 'oryx-content-text',
+                    options: {
+                      rules: [{ width: '100%' }],
                     },
-                  ],
-                },
-                content: {
-                  data: {
-                    text: `
+                    content: {
+                      data: {
+                        text: `
                       <oryx-button
                         href="/login"
                         type=${ButtonType.Outline}
@@ -95,42 +92,37 @@ export const registrationPage: ExperienceComponent | undefined =
                         Login
                       </oryx-button>
                     `,
+                      },
+                    },
                   },
-                },
+                  {
+                    type: 'oryx-content-text',
+                    options: {
+                      rules: [
+                        {
+                          colSpan: 2,
+                          margin: '10px 0 0',
+                        },
+                      ],
+                    },
+                    content: {
+                      data: {
+                        text: `<h1>New customer</h1>`,
+                      },
+                    },
+                  },
+                ],
               },
               {
-                type: 'oryx-content-text',
+                type: 'oryx-user-registration',
                 options: {
-                  rules: [
-                    {
-                      colSpan: 2,
-                      margin: '10px 0 0',
-                    },
-                  ],
-                },
-                content: {
-                  data: {
-                    text: `
-                  <h1>New customer</h1>
-                `,
-                  },
+                  minLength: 8,
+                  minUppercaseChars: 1,
+                  minNumbers: 1,
+                  minSpecialChars: 1,
                 },
               },
             ],
-          },
-          {
-            type: 'oryx-user-registration',
-            options: {
-              rules: [
-                {
-                  width: '100%',
-                },
-              ],
-              minLength: 8,
-              minUppercaseChars: 1,
-              minNumbers: 1,
-              minSpecialChars: 1,
-            },
           },
         ],
       }
