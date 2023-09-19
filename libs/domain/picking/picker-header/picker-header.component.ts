@@ -4,10 +4,14 @@ import { PickingDiscardModalComponent } from '@spryker-oryx/picking/discard-moda
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nMixin, elementEffect, signalAware } from '@spryker-oryx/utilities';
+import {
+  I18nMixin,
+  elementEffect,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
-import { tap } from 'rxjs';
 import { styles } from './picker-header.styles';
 
 @signalAware()
@@ -24,16 +28,11 @@ export class PickingPickerHeaderComponent extends I18nMixin(
 
   @state() isCartNoteVisible?: boolean;
 
+  protected $showDialog = signal(this.pickingHeaderService.showDialog());
+
   @elementEffect()
-  protected showDialog = (): void => {
-    this.pickingHeaderService
-      .showDialog()
-      .pipe(
-        tap((showDialog) =>
-          showDialog ? this.openDiscardModal() : this.closeDiscardModal()
-        )
-      )
-      .subscribe();
+  protected $modalAction = (): void => {
+    this.$showDialog() ? this.openDiscardModal() : this.closeDiscardModal();
   };
 
   protected renderCartNoteButton(): TemplateResult {
