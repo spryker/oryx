@@ -1,7 +1,7 @@
 import {
   intro,
   isCancel,
-  log,
+  log, note,
   outro,
   select,
   spinner,
@@ -30,7 +30,7 @@ export class CreateCliCommand implements CliCommand {
   constructor(
     protected argsService = inject(CliArgsService),
     protected nodeUtilService = inject(NodeUtilService),
-    protected dirPath = url.fileURLToPath(new URL('.', import.meta.url))
+    protected dirPath = path.resolve(__dirname, '.')
   ) {}
 
   getName(): string {
@@ -80,6 +80,7 @@ Possible values: ${Object.values(OryxPreset).join(', ')}`
   }
 
   async createApp(options: CreateAppOptions = {}): Promise<void> {
+    console.log(``);
     intro(`Create Oryx App`);
 
     if (!options.name) {
@@ -87,6 +88,8 @@ Possible values: ${Object.values(OryxPreset).join(', ')}`
     } else {
       log.info(`App name: ${c.bold(options.name)}`);
     }
+
+    const startTime = new Date().getTime();
 
     const config: CreateAppConfig = {
       ...(options as Required<CreateAppOptions>),
@@ -100,11 +103,20 @@ Please make sure to not use an existing directory name.`
       );
     }
 
+    const s = spinner();
+
+    s.start('Installing application...');
     await this.dowloadTemplate();
     await this.copyTemplate(config);
+    s.stop('Application installed');
+
     await this.npmInstall(config.path);
 
-    outro(`Created Oryx App ${options.name}!`);
+    const totalTime = (new Date().getTime() - startTime) / 1000;
+
+    note(`${c.bold(`cd ${options.name}`)}\n${c.bold('npm run dev')}`, 'Next steps:');
+
+    outro(`Oryx App "${options.name}" created in ${Math.floor(totalTime)}s`);
   }
 
   protected async dowloadTemplate(
@@ -119,60 +131,45 @@ Please make sure to not use an existing directory name.`
     const archivePath = path.resolve(this.packageRoot, `template-${ref}.zip`);
 
     if (!fs.existsSync(archivePath)) {
-      const s = spinner();
-
-      s.start('Downloading latest template...');
 
       await this.nodeUtilService.downloadFile(
         this.getTempalteUrl(ref),
         archivePath
       );
 
-      s.stop('Template downloaded!');
     }
 
-    const s = spinner();
-
-    s.start('Extracting template...');
-
     await this.nodeUtilService.extractZip(archivePath, repoPath);
-
-    s.stop('Template extracted!');
   }
 
   protected async copyTemplate(
     options: CreateAppConfig,
     ref: OryxTemplateRef = OryxTemplateRef.Latest
   ): Promise<void> {
-    const s = spinner();
-
-    s.start('Copying template...');
-
     const repoPath = path.resolve(this.repoPath, ref, this.repoPaths[ref]);
 
     if (!fs.existsSync(repoPath)) {
       throw new Error(
-        'Template is not found! Please re-run the command again.'
+        'Application template is not found! Please re-run the command again.'
       );
     }
 
     await this.nodeUtilService.copyFolder(repoPath, options.path);
-
-    s.stop('Template copied!');
   }
 
   protected async npmInstall(path: string) {
     const s = spinner();
 
-    s.start('Installing packages...');
+    s.start('Installing dependencies...');
     await this.nodeUtilService.executeCommand('npm install', path);
-    s.stop('Packages installed.');
+    s.stop('Dependencies installed');
   }
 
   protected getTempalteUrl(ref: OryxTemplateRef): string {
     return this.repoUrl.replace('{ref}', this.repoRefs[ref]);
   }
 
+  // WIP
   // protected getTemplateFolder(preset: OryxPreset): string {
   //   switch (preset) {
   //     case OryxPreset.B2C:
@@ -185,7 +182,7 @@ Please make sure to not use an existing directory name.`
   protected promptName(): Promise<string> {
     return this.promptValue(
       text({
-        message: `What is the name of your app? ${c.dim(`[--name, -n]`)}`,
+        message: `What is the name of your app?`,
         placeholder: 'oryx-app',
         defaultValue: 'oryx-app',
       })
