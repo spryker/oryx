@@ -8,6 +8,7 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { map } from 'rxjs';
+import { ContentService } from '../src/services';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
 @hydrate()
@@ -18,6 +19,7 @@ export class ContentLinkComponent extends ContentMixin<
   protected semanticLinkService = resolve(LinkService);
   protected categoryService = resolve(ProductCategoryService);
   protected productService = resolve(ProductService);
+  protected contentService = resolve(ContentService);
 
   protected $link = computed(() => {
     const { url, type, id, params } = this.$options();
@@ -44,7 +46,9 @@ export class ContentLinkComponent extends ContentMixin<
         .pipe(map((product) => product?.name));
     }
 
-    return null;
+    return this.contentService
+      .get({ type, id })
+      .pipe(map((content) => content?.name));
   });
 
   protected override render(): TemplateResult | void {

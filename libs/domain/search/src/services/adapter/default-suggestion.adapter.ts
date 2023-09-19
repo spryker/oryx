@@ -53,7 +53,7 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
           ? ApiProductModel.Includes.CategoryNodes
           : '';
       const includes = [product, categories].filter(Boolean).join(',');
-      console.log(includes);
+
       return this.http
         .get<ApiSuggestionModel.Response>(
           `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&include=${includes}`
