@@ -18,10 +18,11 @@ export const styles = css`
     display: contents;
   }
 
-  .no-methods {
-    --oryx-icon-size: 40px;
+  :host([no-methods]) {
+    align-items: center;
+  }
 
-    text-align: center;
+  :host([no-methods]) p {
     line-height: 22px;
     margin: 0;
   }
