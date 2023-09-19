@@ -41,7 +41,6 @@ export class DefaultSuggestionRendererService
     suggestions: Suggestion,
     options: SuggestionRendererOptions & Record<'query', string>
   ): TemplateResult {
-    // console.log(suggestions, 'suggestionssuggestions');
     const data = Object.keys(options)
       .map((entity) => {
         const records = suggestions?.[entity as keyof Suggestion];

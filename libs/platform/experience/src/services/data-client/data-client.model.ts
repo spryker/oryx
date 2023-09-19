@@ -10,6 +10,9 @@ export const enum MessageType {
    * @deprecated Since version 1.1. Use Suggestions instead.
    */
   Products = 'oryx.products',
+  /**
+   * @deprecated Since version 1.1. Use SuggestionQuery instead.
+   */
   Query = 'oryx.query',
   Static = 'oryx.static',
   ComponentType = 'oryx.component-type',

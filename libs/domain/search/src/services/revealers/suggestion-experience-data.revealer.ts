@@ -16,7 +16,7 @@ export class SuggestionExperienceDataRevealer
 {
   constructor(protected suggestionService = inject(SuggestionService, null)) {}
 
-  protected products$ = catchMessage(MessageType.SuggestionQuery).pipe(
+  protected suggestions$ = catchMessage(MessageType.SuggestionQuery).pipe(
     switchMap((data) => this.suggestionService?.get(data) ?? of(undefined)),
     tap((suggestions?: Suggestion) => {
       if (suggestions) {
@@ -34,6 +34,6 @@ export class SuggestionExperienceDataRevealer
   );
 
   reveal(): Observable<unknown> {
-    return this.products$;
+    return this.suggestions$;
   }
 }
