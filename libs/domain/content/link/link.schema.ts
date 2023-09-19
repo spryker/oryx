@@ -1,6 +1,5 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
-import { RouteType } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ColorType } from '@spryker-oryx/ui/link';
 import { iconInjectable } from '@spryker-oryx/utilities';
@@ -19,27 +18,6 @@ export const linkComponentSchema: ContentComponentSchema<
       width: 100,
     },
     url: { type: FormFieldType.Text },
-    type: {
-      type: FormFieldType.Select,
-      options: [
-        {
-          value: RouteType.Page,
-          text: 'Page',
-        },
-        {
-          value: RouteType.Product,
-          text: 'Product',
-        },
-        {
-          value: RouteType.Category,
-          text: 'Category',
-        },
-        {
-          value: RouteType.ProductList,
-          text: 'Search',
-        },
-      ],
-    },
     target: {
       type: FormFieldType.Select,
       options: [
@@ -60,10 +38,6 @@ export const linkComponentSchema: ContentComponentSchema<
           text: '_top',
         },
       ],
-    },
-    id: {
-      label: 'Product/Category/Page ID',
-      type: FormFieldType.Text,
     },
     color: {
       type: FormFieldType.Select,

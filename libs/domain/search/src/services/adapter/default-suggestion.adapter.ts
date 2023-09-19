@@ -37,10 +37,11 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
         ].includes(entity as SuggestionField)
       )
     ) {
-      const product =
+      const include =
         entities?.includes(SuggestionField.Products) || !entities?.length
           ? [
               ApiProductModel.Includes.AbstractProducts,
+              ApiProductModel.Includes.CategoryNodes,
               ApiProductModel.Includes.ConcreteProducts,
               ApiProductModel.Includes.ConcreteProductImageSets,
               ApiProductModel.Includes.ConcreteProductPrices,
@@ -48,15 +49,10 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
               ApiProductModel.Includes.Labels,
             ].join(',')
           : '';
-      const categories =
-        entities?.includes(SuggestionField.Categories) || !entities?.length
-          ? ApiProductModel.Includes.CategoryNodes
-          : '';
-      const includes = [product, categories].filter(Boolean).join(',');
 
       return this.http
         .get<ApiSuggestionModel.Response>(
-          `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&include=${includes}`
+          `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&include=${include}`
         )
         .pipe(this.transformer.do(SuggestionNormalizer));
     }

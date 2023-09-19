@@ -30,7 +30,7 @@ export class ContentLinkComponent extends ContentMixin<
 
   protected $text = computed(() => {
     const { type, id } = this.$options();
-    const { text } = this.$content();
+    const { text } = this.$content() ?? {};
 
     if (text) return text;
 
