@@ -36,8 +36,6 @@ const order = {
 const user = {
   'user.address.remove-info':
     'Removing this address will not remove any pending orders being dispatched to this` address',
-  'user.login.benefits-of-registering-to-the-website':
-    'New here? Create an account for a smoother shopping experience!',
 };
 
 const picking = {
