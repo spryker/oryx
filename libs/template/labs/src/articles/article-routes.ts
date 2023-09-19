@@ -1,32 +1,39 @@
-import { ContentService } from '@spryker-oryx/content';
-import { resolve } from '@spryker-oryx/di';
-import { RouteType } from '@spryker-oryx/router';
+import { ContentFields } from '@spryker-oryx/content';
 import { RouteConfig } from '@spryker-oryx/router/lit';
-import { map, take } from 'rxjs';
-import { ContentfulContentFields } from './contentful';
-import { StoryblokContentFields } from './storyblok';
 
 export const articleRoutes: RouteConfig[] = [
   {
     path: '/faq/:id',
-    type: StoryblokContentFields.Faq,
-    enter: ({ id }) =>
-      resolve(ContentService)
-        .get({ id, type: 'faq' })
-        .pipe(
-          take(1),
-          map((faq) => (faq ? true : RouteType.NotFound))
-        ),
+    type: ContentFields.Faq,
+    // TODO: uncomment when HRZ-89741 will be solved
+    // enter: ({ id }) =>
+    //   resolve(ContentService)
+    //     .get({
+    //       id,
+    //       type: ContentFields.Faq,
+    //       entities: [ContentFields.Faq],
+    //     })
+    //     .pipe(
+    //       take(1),
+    //       map((faq) => (faq ? true : RouteType.NotFound))
+    //     ),
   },
   {
     path: '/article/:id',
-    type: ContentfulContentFields.Article,
-    enter: ({ id }) =>
-      resolve(ContentService)
-        .get({ id, type: 'article' })
-        .pipe(
-          take(1),
-          map((article) => (article ? true : RouteType.NotFound))
-        ),
+    type: ContentFields.Article,
+    // TODO: uncomment when HRZ-89741 will be solved
+    // enter: ({ id }) =>
+    //   resolve(ContentService)
+    //     .get({
+    //       id,
+    //       type: ContentFields.Article,
+    //       entities: [ContentFields.Article],
+    //     })
+    //     .pipe(
+    //       take(1),
+    //       map((article) => {
+    //         return article ? true : RouteType.NotFound;
+    //       })
+    //     ),
   },
 ];

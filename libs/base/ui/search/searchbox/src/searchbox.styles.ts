@@ -7,9 +7,53 @@ import { css } from 'lit';
 
 export const baseStyles = [
   ...inputBaseStyles,
+
   css`
     [class$='-button'] {
       cursor: pointer;
+    }
+
+    :host([float]:not([open])) label {
+      display: none;
+    }
+
+    :host([float]) label {
+      position: absolute;
+      inset-inline-start: var(--floating-padding-start, 10px);
+      inset-inline-end: var(
+        --floating-padding-end,
+        var(--floating-padding-start, 10px)
+      );
+      width: calc(
+        100vw -
+          calc(
+            var(--floating-padding-start, 10px) +
+              calc(
+                var(--floating-padding-end, var(--floating-padding-start, 10px))
+              )
+          )
+      );
+      max-width: var(
+        --floating-width,
+        calc(
+          100vw -
+            calc(
+              var(--floating-padding-start, 10px) +
+                calc(
+                  var(
+                    --floating-padding-end,
+                    var(--floating-padding-start, 10px)
+                  )
+                )
+            )
+        )
+      );
+      transform: translateY(calc(-50% + var(--floating-vertical-offset, 20px)));
+      z-index: 1;
+    }
+
+    :host([float]) :is(slot[name='label'], .back-button + .search-button) {
+      display: none;
     }
 
     .clear-button[type='remove'] {
@@ -44,64 +88,23 @@ export const baseStyles = [
       opacity: 0;
     }
 
-    .back-button {
+    :host(:not([float])) :is(slot[name='trigger'], .back-button) {
       display: none;
     }
 
     slot[name='trigger'] {
-      display: none;
+      display: inline-flex;
     }
   `,
 ];
 
 const smallScreen = css`
+  :host([float]) label {
+    position: absolute;
+  }
+
   .clear-button[type='remove'] {
     --oryx-icon-size: var(--oryx-icon-size-lg);
-  }
-
-  :host([xs-floated][open]) label {
-    display: block;
-  }
-
-  :host([xs-floated]) label {
-    position: absolute;
-    display: none;
-    inset-inline-start: var(--floating-padding-start, 10px);
-    inset-inline-end: var(
-      --floating-padding-end,
-      var(--floating-padding-start, 10px)
-    );
-    width: calc(
-      100vw -
-        calc(
-          var(--floating-padding-start, 10px) +
-            calc(
-              var(--floating-padding-end, var(--floating-padding-start, 10px))
-            )
-        )
-    );
-    max-width: var(
-      --floating-width,
-      calc(
-        100vw -
-          calc(
-            var(--floating-padding-start, 10px) +
-              calc(
-                var(--floating-padding-end, var(--floating-padding-start, 10px))
-              )
-          )
-      )
-    );
-    transform: translateY(calc(-50% + var(--floating-vertical-offset, 20px)));
-    z-index: 1;
-  }
-
-  :host([xs-floated]) :is(slot[name='label'], .back-button + .search-button) {
-    display: none;
-  }
-
-  :host([xs-floated]) :is(.back-button, slot[name='trigger']) {
-    display: block;
   }
 
   :host(oryx-search:not([floatDisabled]):not([label])),

@@ -24,25 +24,20 @@ export class NavigationButtonComponent extends ContentMixin<NavigationButtonAttr
   @property() badge?: string;
 
   protected override render(): TemplateResult {
-    const buttonContent = html`
-      ${when(this.icon, () => html`<oryx-icon type=${this.icon}></oryx-icon>`)}
-      ${when(
-        this.text,
-        () =>
-          html`<oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}
-            >${this.text}</oryx-heading
-          >`
-      )}
-      ${when(this.badge, () => html`<mark>${this.badge}</mark>`)}
-    `;
-
     return html`
       <oryx-button .href=${this.url}>
         ${when(
-          this.url,
-          () => html`${buttonContent}`,
-          () => html`${buttonContent}`
+          this.icon,
+          () => html`<oryx-icon type=${this.icon}></oryx-icon>`
         )}
+        ${when(
+          this.text,
+          () =>
+            html`<oryx-heading tag=${HeadingTag.Subtitle} .maxLines=${1}
+              >${this.text}</oryx-heading
+            >`
+        )}
+        ${when(this.badge, () => html`<mark>${this.badge}</mark>`)}
       </oryx-button>
     `;
   }

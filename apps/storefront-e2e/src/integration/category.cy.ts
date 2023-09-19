@@ -1,128 +1,74 @@
+import {
+  checkProductCardsFilterring,
+  checkProductCardsSortingBySku,
+} from '../support/checks';
 import { CategoryPage } from '../support/page-objects/category.page';
+import { sortingTestData } from '../support/test-data/search-products';
 
-describe('Filtering on the Category page', () => {
-  let categoryPage;
-  beforeEach(() => {
-    categoryPage = new CategoryPage({ id: '6' });
-    cy.visit(categoryPage.url);
-  });
+describe('Category suite', () => {
+  describe('Products filtering', () => {
+    let categoryPage;
+    const query = 'DELL Inspiron 7359';
 
-  it('should open appropriate Category page', { tags: 'smoke' }, () => {
-    cy.url().should('include', categoryPage.categoryId);
-    categoryPage.getRadio('[value="6"]').should('be.checked');
-  });
-
-  it('should change products list when filters applied', () => {
-    cy.get('input[type="checkbox"][name="color"][value="Silver"]').check();
-    cy.get('oryx-chip').should('contain', '1');
-    cy.get('oryx-checkbox span').should('contain', 2);
-    cy.get('oryx-product-card').should('have.length', 2);
-    cy.get('input[type="radio"][name="brand"][value="DELL"]').check();
-    cy.get('input[type="radio"][name="brand"][value="DELL"]').should(
-      'be.checked'
-    );
-    cy.get('oryx-product-card').should('have.length', 1);
-    cy.get('oryx-heading').should('contain.text', 'DELL Inspiron 7359');
-  });
-
-  it('should change products list when category filter is cleared', () => {
-    cy.get('input[type="checkbox"][name="color"][value="Silver"]').check();
-    cy.get('oryx-chip').should('contain', '1');
-    cy.get('oryx-checkbox span').should('contain', 2);
-    cy.get('oryx-product-card').should('have.length', 2);
-    cy.get('input[type="radio"][name="brand"][value="DELL"]').check();
-    cy.get('input[type="radio"][name="brand"][value="DELL"]').should(
-      'be.checked'
-    );
-    cy.get('oryx-product-card').should('have.length', 1);
-    cy.get('oryx-search-facet').contains('Clear').click();
-    cy.get('oryx-product-card').should('have.length', 2);
-  });
-});
-
-describe('Sorting on the Category page', () => {
-  const sortingOptions = [
-    'rating',
-    'name_asc',
-    'name_desc',
-    'price_asc',
-    'price_desc',
-    'popularity',
-  ];
-  const expectedSkuOrder = [
-    ['216_123', '217_123', '215_123', 'cable-hdmi-1-1', 'cable-vga-1-1'],
-    ['217_123', '215_123', 'cable-hdmi-1-1', '216_123', 'cable-vga-1-1'],
-    ['cable-vga-1-1', '216_123', 'cable-hdmi-1-1', '215_123', '217_123'],
-    ['cable-hdmi-1-1', 'cable-vga-1-1', '215_123', '216_123', '217_123'],
-    ['217_123', '216_123', '215_123', 'cable-hdmi-1-1', 'cable-vga-1-1'],
-    ['cable-vga-1-1', 'cable-hdmi-1-1', '215_123', '216_123', '217_123'],
-  ];
-  const defaultSortingOrder = [
-    'cable-hdmi-1-1',
-    'cable-vga-1-1',
-    '216_123',
-    '217_123',
-    '215_123',
-  ];
-
-  let categoryPage;
-  beforeEach(() => {
-    categoryPage = new CategoryPage({ id: '15' });
-    cy.visit(categoryPage.url);
-  });
-
-  it('default sorting applied even after clearing the sort parameter', () => {
-    cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
-    cy.wait('@catalog-search', { timeout: 5000 });
-    // Wait till JS build the template
-    // TODO Refactor cy.wait into understandable variable
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(200);
-    cy.get('oryx-product-card').each((card, cardIndex) => {
-      cy.wrap(card).should('have.attr', 'sku', defaultSortingOrder[cardIndex]);
+    beforeEach(() => {
+      categoryPage = new CategoryPage({ id: '6' });
+      categoryPage.visit();
     });
-    // Checking that sorted by name ascending
-    categoryPage.getProductSort().click();
-    cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
-    cy.get(`oryx-option[value="${sortingOptions[1]}"]`).click();
-    cy.wait('@catalog-search', { timeout: 5000 });
-    // Wait till JS build the template
-    // TODO Refactor cy.wait into understandable variable
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(200);
-    cy.get('oryx-product-card').each((card, cardIndex) => {
-      cy.wrap(card).should('have.attr', 'sku', expectedSkuOrder[1][cardIndex]);
-    });
-    // Checking that after clear default order applied
-    cy.get('oryx-select')
-      .find('oryx-icon[type="delete_forever"]')
-      .trigger('mouseover')
-      .click();
-    cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
-    cy.wait('@catalog-search', { timeout: 5000 });
-    // Wait till JS build the template
-    // TODO Refactor cy.wait into understandable variable
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(200);
-    cy.get('oryx-product-card').each((card, cardIndex) => {
-      cy.wrap(card).should('have.attr', 'sku', defaultSortingOrder[cardIndex]);
+
+    it('should update products and facets when filters are applied/cleared', () => {
+      // apply 1st filter
+      categoryPage.getFacets().setColor('Silver');
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilterring(categoryPage, 3, 2, query);
+
+      // apply 2nd filter
+      categoryPage.getFacets().setBrand('DELL');
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilterring(categoryPage, 3, 1, query);
+
+      // clear 2nd filter
+      // we don't expect search request here because previous query is cached
+      categoryPage.getFacets().resetBrand();
+      checkProductCardsFilterring(categoryPage, 3, 2, query);
     });
   });
 
-  // Checks sorting through the all sorting options
-  sortingOptions.forEach((option, index) => {
-    it(`should sort products by ${option}`, () => {
-      const expectedSku = expectedSkuOrder[index];
-      categoryPage.getProductSort().click();
-      cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
-      cy.get(`oryx-option[value="${option}"]`).click();
-      cy.wait('@catalog-search', { timeout: 5000 });
-      // Wait till JS build the template
-      // TODO Refactor cy.wait into understandable variable
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(200);
-      cy.get('oryx-product-card').each((card, cardIndex) => {
-        cy.wrap(card).should('have.attr', 'sku', expectedSku[cardIndex]);
+  describe('Products sorting', () => {
+    let categoryPage;
+
+    beforeEach(() => {
+      categoryPage = new CategoryPage({ id: '15' });
+      categoryPage.visit();
+    });
+
+    it('should apply default sorting when sorting is cleared', () => {
+      // check default sorting
+      checkProductCardsSortingBySku(categoryPage, sortingTestData.default);
+
+      // change sorting
+      categoryPage
+        .getProductSorting()
+        .applySorting(Object.keys(sortingTestData)[2]);
+      categoryPage.waitForSearchRequest();
+
+      // clear sorting and check that it is default again
+      categoryPage.getProductSorting().clearSorting();
+      checkProductCardsSortingBySku(categoryPage, sortingTestData.default);
+    });
+
+    it('should apply all sorting options', () => {
+      Object.keys(sortingTestData).forEach((option) => {
+        // default options does not exist in the dropdown
+        // we should skip it
+        if (option === 'default') {
+          return;
+        }
+
+        cy.log(`Sorting: ${option} is applied`);
+        categoryPage.getProductSorting().applySorting(option);
+        categoryPage.waitForSearchRequest();
+
+        checkProductCardsSortingBySku(categoryPage, sortingTestData[option]);
       });
     });
   });

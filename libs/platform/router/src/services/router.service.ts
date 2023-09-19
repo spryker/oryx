@@ -9,6 +9,7 @@ export interface RouterService {
   getEvents(type: RouterEventType): Observable<RouterEvent>;
   route(): Observable<string>;
   currentRoute(): Observable<string>;
+  current(): Observable<RouteWithParams>;
   currentParams(): Observable<RouteParams>;
   currentQuery(): Observable<RouteParams | undefined>;
   acceptParams(params: RouteParams): void;
@@ -63,3 +64,8 @@ export interface RouteParams {
 }
 
 export type QueryParamsHandling = 'merge' | '';
+
+export type RouteWithParams = RouteConfig & {
+  params: RouteParams;
+  query: RouteParams;
+};

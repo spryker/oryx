@@ -1,6 +1,6 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
-import { combineLatest, map, Observable } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { CategoryIdNormalizer } from '../category-id';
 import { ProductNormalizer } from '../product';
@@ -27,7 +27,12 @@ export function concreteProductsNormalizer(
             ProductNormalizer
           ),
           transformer.transform(abstract[categoryKey], CategoryIdNormalizer),
-        ]).pipe(map(([product, nodeId]) => ({ ...product, ...nodeId })))
+        ]).pipe(
+          map(([product, nodeId]) => ({
+            ...product,
+            ...nodeId,
+          }))
+        )
       )
   );
 }

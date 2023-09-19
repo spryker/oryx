@@ -3,7 +3,7 @@ import {
   storybookDefaultViewports,
 } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 export default {
@@ -18,17 +18,17 @@ export default {
 const Template: Story = (): TemplateResult => {
   return html`
     <h2>Trigger</h2>
-    <oryx-search xs-floated>
+    <oryx-search float>
       <input placeholder="Search..." />
     </oryx-search>
 
     <h2>Opened</h2>
-    <oryx-search open xs-floated>
+    <oryx-search open float>
       <input placeholder="Search..." />
     </oryx-search>
 
     <h2>Opened with value</h2>
-    <oryx-search open xs-floated>
+    <oryx-search open float>
       <input placeholder="Search..."/ value="Value">
     </oryx-search>
 

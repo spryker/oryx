@@ -26,7 +26,7 @@ export class OrderTotalsResolver implements TotalsResolver {
     }));
   }
 
-  protected getFromContext(): Observable<OrderData | null> {
+  protected getFromContext(): Observable<OrderData | null | void> {
     return this.context
       .get<string>(
         null /* for now we are happy with global/fallback orderId */,

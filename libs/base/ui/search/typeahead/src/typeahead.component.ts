@@ -8,11 +8,11 @@ import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchAttributes,
-  SearchboxController,
   SearchIconPosition,
+  SearchboxController,
 } from '@spryker-oryx/ui/searchbox';
 import { hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { TypeaheadController } from './controllers';
 import { FilterStrategyType, TypeaheadOptions } from './typeahead.model';
@@ -30,6 +30,7 @@ export class TypeaheadComponent
 {
   static styles = baseStyles;
 
+  @property({ reflect: true, type: Boolean }) open?: boolean;
   @property() filterStrategy?: FilterStrategyType;
   @property({ type: Boolean }) isLoading?: boolean;
   @property({ type: Boolean }) isEmpty?: boolean;
@@ -46,6 +47,7 @@ export class TypeaheadComponent
   @property() clearIcon?: string;
   @property({ reflect: true }) clearIconPosition?: ClearIconPosition;
   @property() clearIconAppearance?: ClearIconAppearance;
+  @property({ type: Boolean, reflect: true }) float?: boolean;
 
   protected typeaheadController = new TypeaheadController(this);
   protected formControlController = new FormControlController(this);
@@ -58,6 +60,7 @@ export class TypeaheadComponent
         after: this.searchController.renderSuffix(),
       })}
       ${this.typeaheadController.renderPopover()}
+      ${this.searchController.renderTrigger()}
     `;
   }
 }

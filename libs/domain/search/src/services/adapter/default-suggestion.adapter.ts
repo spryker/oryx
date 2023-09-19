@@ -19,6 +19,9 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
     protected transformer = inject(JsonAPITransformerService)
   ) {}
 
+  /**
+   * @deprecated Since version 1.1. Will be removed.
+   */
   getKey({ query }: SuggestionQualifier): string {
     return query ?? '';
   }
