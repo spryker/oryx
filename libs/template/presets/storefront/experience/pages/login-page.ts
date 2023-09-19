@@ -4,7 +4,7 @@ import {
   LayoutAlign,
 } from '@spryker-oryx/experience';
 import { ButtonType } from '@spryker-oryx/ui/button';
-import { Size } from '@spryker-oryx/utilities';
+import { Size, featureVersion } from '@spryker-oryx/utilities';
 
 export const loginPage: ExperienceComponent = {
   id: 'login-page',
@@ -67,57 +67,59 @@ export const loginPage: ExperienceComponent = {
         ],
       },
     },
-    {
-      type: 'oryx-composition',
-      options: {
-        rules: [
-          {
-            layout: CompositionLayout.Grid,
-            columns: 2,
-            gap: '20px 30px',
-            justify: LayoutAlign.Start,
-            width: '100%',
-            margin: '20px 0 0',
+    featureVersion >= '1.1'
+      ? {
+          type: 'oryx-composition',
+          options: {
+            rules: [
+              {
+                layout: CompositionLayout.Grid,
+                columns: 2,
+                gap: '20px 30px',
+                justify: LayoutAlign.Start,
+                width: '100%',
+                margin: '20px 0 0',
+              },
+            ],
           },
-        ],
-      },
-      components: [
-        {
-          type: 'oryx-content-text',
-          content: {
-            data: {
-              text: `
+          components: [
+            {
+              type: 'oryx-content-text',
+              content: {
+                data: {
+                  text: `
                 <h2>New customer</h2>
                 <p style="margin-block-start: 20px">New here? Create an account for a smoother shopping experience!</p>
               `,
-            },
-          },
-          options: {
-            rules: [
-              {
-                colSpan: 2,
+                },
               },
-            ],
-          },
-        },
-        {
-          type: 'oryx-content-text',
-          content: {
-            data: {
-              text: `
+              options: {
+                rules: [
+                  {
+                    colSpan: 2,
+                  },
+                ],
+              },
+            },
+            {
+              type: 'oryx-content-text',
+              content: {
+                data: {
+                  text: `
                 <oryx-button href="/registration" type=${ButtonType.Outline} style="width: 100%">Create account</oryx-button>
               `,
-            },
-          },
-          options: {
-            rules: [
-              {
-                width: '100%',
+                },
               },
-            ],
-          },
-        },
-      ],
-    },
+              options: {
+                rules: [
+                  {
+                    width: '100%',
+                  },
+                ],
+              },
+            },
+          ],
+        }
+      : {},
   ],
 };

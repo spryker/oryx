@@ -1,5 +1,5 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
-import { i18n } from '@spryker-oryx/utilities';
+import { featureVersion, i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -241,7 +241,9 @@ export class DefaultFormRenderer implements FormRenderer {
         ?hasError=${field.attributes?.hasError}
       >
         ${this.renderInput(field, value)}
-        <span>${field.label}</span>
+        ${featureVersion >= '1.1'
+          ? html`<span>${field.label}</span>`
+          : field.label}
       </oryx-checkbox>
     `;
   }
