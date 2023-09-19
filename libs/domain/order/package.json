@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/order",
   "type": "module",
-  "version": "1.4.0",
+  "version": "1.0.2",
   "description": "Order features Oryx applications",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -17,15 +17,15 @@
     }
   },
   "dependencies": {
-    "@spryker-oryx/auth": "1.4.0",
-    "@spryker-oryx/cart": "1.4.0",
-    "@spryker-oryx/core": "1.4.0",
-    "@spryker-oryx/di": "1.4.0",
-    "@spryker-oryx/experience": "1.4.0",
-    "@spryker-oryx/router": "1.4.0",
-    "@spryker-oryx/site": "1.4.0",
-    "@spryker-oryx/ui": "1.4.0",
-    "@spryker-oryx/utilities": "1.4.0"
+    "@spryker-oryx/auth": "1.0.2",
+    "@spryker-oryx/cart": "1.0.2",
+    "@spryker-oryx/core": "1.0.2",
+    "@spryker-oryx/di": "1.0.2",
+    "@spryker-oryx/experience": "1.0.2",
+    "@spryker-oryx/router": "1.0.2",
+    "@spryker-oryx/site": "1.0.2",
+    "@spryker-oryx/ui": "1.0.2",
+    "@spryker-oryx/utilities": "1.0.2"
   },
   "peerDependencies": {
     "lit": "^2.4.0",
