@@ -4,7 +4,7 @@ import './cy-actions/checkout.actions';
 import './cy-actions/login.actions';
 import { isPercyEnabled, isSSREnabled } from './index';
 
-export { };
+export {};
 
 declare global {
   namespace Cypress {
@@ -44,13 +44,22 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add('takeScreenshot', (name: string, options = {
-  widths: [375, 1280],
-}) => {
-  if (isSSREnabled() && isPercyEnabled()) {
-    cy.percySnapshot(name, options);
+Cypress.Commands.add(
+  'takeScreenshot',
+  (
+    name: string,
+    options = {
+      widths: [1280],
+      enableJavaScript: true,
+    }
+  ) => {
+    if (isPercyEnabled()) {
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(3000);
+      cy.percySnapshot(name, options);
+    }
   }
-});
+);
 
 function checkCurrencyFormatting(
   subject,

@@ -19,7 +19,7 @@ const footer = new FooterFragment();
 const header = new HeaderFragment();
 const searchbox = new SearchBoxFragment();
 
-describe('SSR suite', { tags: 'smoke' }, () => {
+describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
   if (isSSREnabled()) {
     it('should render Landing page', () => {
       const landingPage = new LandingPage();
@@ -27,10 +27,10 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       landingPage.visit();
 
       verifyHeader();
-
       landingPage.getHeroBanner().should('be.visible');
-
       verifyFooter();
+
+      cy.takeScreenshot('Landing Page');
     });
 
     it('should render Product details page', () => {
@@ -40,10 +40,10 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       pdp.visit();
 
       verifyHeader();
-
       pdp.checkDefaultProduct();
-
       verifyFooter();
+
+      cy.takeScreenshot('Product details page');
     });
 
     it('should render Contact us page', () => {
@@ -52,10 +52,10 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       contactPage.visit();
 
       verifyHeader();
-
       contactPage.getHeading().should('be.visible');
-
       verifyFooter(false);
+
+      cy.takeScreenshot('Contact page');
     });
 
     it('should render Login page', () => {
@@ -64,22 +64,26 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       loginPage.visit();
 
       verifyHeader();
-
       loginPage.loginForm.getWrapper().should('be.visible');
-
       verifyFooter();
+
+      cy.takeScreenshot('Login page');
     });
 
     it('should render Cart page', () => {
       const cartPage = new CartPage();
 
+      api = new GlueAPI();
+
+      cy.createGuestCart(api);
+      cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(4));
       cy.goToGuestCart();
 
       verifyHeader();
-
-      cartPage.checkEmptyCart();
-
+      cartPage.checkNotEmptyCart();
       verifyFooter();
+
+      cy.takeScreenshot('Cart page');
     });
 
     it('should render Search page', () => {
@@ -88,13 +92,13 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       searchPage.visit();
 
       verifyHeader();
-
       searchPage.getFacets().getWrapper().should('be.visible');
       searchPage.getProductSorting().getWrapper().should('be.visible');
       searchPage.getProductCards().should('have.length.greaterThan', 1);
       searchPage.getProductHeadings().should('contain.text', 'TomTom');
-
       verifyFooter();
+
+      cy.takeScreenshot('Search page');
     });
 
     it('should render Category page', () => {
@@ -103,12 +107,12 @@ describe('SSR suite', { tags: 'smoke' }, () => {
       categoryPage.visit();
 
       verifyHeader();
-
       categoryPage.getFacets().getWrapper().should('be.visible');
       categoryPage.getProductSorting().getWrapper().should('be.visible');
       categoryPage.getProductCards().should('have.length.greaterThan', 1);
-
       verifyFooter();
+
+      cy.takeScreenshot('Checkout page');
     });
 
     it('should render Checkout page', () => {
@@ -122,12 +126,11 @@ describe('SSR suite', { tags: 'smoke' }, () => {
 
       // trigger ssr
       cy.reload();
-
       verifyHeader();
-
       checkoutPage.getPlaceOrderBtn().should('be.visible');
-
       verifyFooter();
+
+      cy.takeScreenshot('Category page');
     });
   }
 });

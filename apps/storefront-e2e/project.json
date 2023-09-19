@@ -24,6 +24,15 @@
           "tag": "regression",
           "group": "sf-regression"
         },
+        "headless-ci-visual-regression": {
+          "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
+          "watch": false,
+          "record": false,
+          "env": {
+            "grepTags": "visual-regression",
+            "IS_SSR": true
+          }
+        },
         "headless-ci-release": {
           "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
           "watch": false,

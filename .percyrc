@@ -1,0 +1,8 @@
+version: 2
+discovery:
+  allowed-hostnames:
+    - fonts.googleapis.com
+    - fonts.gstatic.com
+    - glue.de.faas-suite-prod.cloud.spryker.toys
+  launch-options:
+    headless: true

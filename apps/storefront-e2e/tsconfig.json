@@ -4,15 +4,7 @@
     "sourceMap": false,
     "outDir": "../../dist/out-tsc",
     "allowJs": true,
-    "types": [
-      "cypress",
-      "node",
-      "@cypress/grep",
-      "@percy/cypress"
-    ]
+    "types": ["cypress", "node", "@cypress/grep", "@percy/cypress"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.js"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.js"]
 }
