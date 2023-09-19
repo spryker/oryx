@@ -58,7 +58,7 @@ export class NodeUtilService {
     });
   }
 
-  executeCommand(command: string, directory?: string): Promise<void> {
+  executeCommand(command: string, directory?: string, output = false): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       const options = directory ? { cwd: directory } : undefined;
 
@@ -68,7 +68,7 @@ export class NodeUtilService {
           return reject(error);
         }
 
-        if (stdout) {
+        if (stdout && output) {
           console.log(`Standard Output: ${stdout}`);
         }
 
