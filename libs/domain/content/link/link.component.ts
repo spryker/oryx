@@ -1,14 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { ProductCategoryService, ProductService } from '@spryker-oryx/product';
-import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { map } from 'rxjs';
-import { ContentService } from '../src/services';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
 @hydrate()
@@ -17,9 +13,9 @@ export class ContentLinkComponent extends ContentMixin<
   ContentLinkContent
 >(LitElement) {
   protected semanticLinkService = resolve(LinkService);
-  protected categoryService = resolve(ProductCategoryService);
-  protected productService = resolve(ProductService);
-  protected contentService = resolve(ContentService);
+  // protected categoryService = resolve(ProductCategoryService);
+  // protected productService = resolve(ProductService);
+  // protected contentService = resolve(ContentService);
 
   protected $link = computed(() => {
     const { url, type, id, params } = this.$options();
@@ -47,23 +43,23 @@ export class ContentLinkComponent extends ContentMixin<
     const { type, id } = this.$options();
     const { text } = this.$content() ?? {};
 
-    if (text) return text;
+    return text;
 
-    if (type === RouteType.Category && id) {
-      return this.categoryService
-        .get(id)
-        .pipe(map((category) => category?.name));
-    }
+    // if (type === RouteType.Category && id) {
+    //   return this.categoryService
+    //     .get(id)
+    //     .pipe(map((category) => category?.name));
+    // }
 
-    if (type === RouteType.Product && id) {
-      return this.productService
-        .get({ sku: id })
-        .pipe(map((product) => product?.name));
-    }
+    // if (type === RouteType.Product && id) {
+    //   return this.productService
+    //     .get({ sku: id })
+    //     .pipe(map((product) => product?.name));
+    // }
 
-    return this.contentService
-      .get({ type, id })
-      .pipe(map((content) => content?.name));
+    // return this.contentService
+    //   .get({ type, id })
+    //   .pipe(map((content) => content?.name));
   });
 
   protected renderLink(custom?: boolean): TemplateResult {
