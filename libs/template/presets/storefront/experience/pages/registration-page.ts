@@ -3,7 +3,7 @@ import {
   ExperienceComponent,
   LayoutAlign,
 } from '@spryker-oryx/experience';
-import { ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { Size, featureVersion } from '@spryker-oryx/utilities';
 
 export const registrationPage: ExperienceComponent | undefined =
@@ -24,6 +24,7 @@ export const registrationPage: ExperienceComponent | undefined =
               width: '100%',
               justify: 'center',
               gap: '30px',
+              style: `box-sizing: border-box;`,
             },
             {
               query: {
@@ -85,7 +86,14 @@ export const registrationPage: ExperienceComponent | undefined =
                 content: {
                   data: {
                     text: `
-                      <oryx-button type=${ButtonType.Outline} href="/login" style="width: 100%">Login</oryx-button>
+                      <oryx-button
+                        href="/login"
+                        type=${ButtonType.Outline}
+                        size=${ButtonSize.Md}
+                        style="width: 100%"
+                      >
+                        Login
+                      </oryx-button>
                     `,
                   },
                 },
