@@ -144,6 +144,7 @@ export class DefaultFormRenderer implements FormRenderer {
       >
         <input
           .name=${field.id}
+          .value=${value ?? ''}
           value=${value ?? ''}
           placeholder=${ifDefined(field.placeholder)}
           minlength=${ifDefined(field.min)}
