@@ -5,7 +5,7 @@ import { ColorType } from '@spryker-oryx/ui/link';
 import { iconInjectable } from '@spryker-oryx/utilities';
 import { ContentLinkComponent } from './link.component';
 
-export const ContentSuggestionField = 'oryx.ContentSuggestion';
+export const ContentSuggestionField = 'ContentSuggestion';
 
 export const linkComponentSchema: ContentComponentSchema<
   ContentLinkComponent,
