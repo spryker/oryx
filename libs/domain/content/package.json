@@ -18,6 +18,7 @@
     "@spryker-oryx/di": "1.0.2",
     "@spryker-oryx/experience": "1.0.2",
     "@spryker-oryx/router": "1.0.2",
+    "@spryker-oryx/product": "1.0.2",
     "@spryker-oryx/site": "1.0.2",
     "@spryker-oryx/utilities": "1.0.2"
   },
