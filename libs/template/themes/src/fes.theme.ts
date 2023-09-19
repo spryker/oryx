@@ -1,5 +1,5 @@
 import { Theme } from '@spryker-oryx/experience';
-import { materialDesignIcons } from '@spryker-oryx/resources';
+import { backofficeIcons, fontawesomeIcons } from '@spryker-oryx/resources';
 import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
 
 export const fesTheme: Theme = {
@@ -8,6 +8,13 @@ export const fesTheme: Theme = {
   designTokens: () =>
     import('../design-tokens/src/backoffice').then((s) => s.backofficeTokens),
   icons: {
-    resource: materialDesignIcons,
+    resource: fontawesomeIcons,
+    resources: [
+      {
+        resource: backofficeIcons,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        types: Object.keys(backofficeIcons.mapping!),
+      },
+    ],
   },
 };
