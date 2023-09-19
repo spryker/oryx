@@ -28,6 +28,21 @@ export class ContentLinkComponent extends ContentMixin<
     return null;
   });
 
+  protected override render(): TemplateResult | void {
+    const { button, icon, singleLine, color } = this.$options();
+
+    if (button) {
+      return html`<oryx-button>${this.renderLink(true)}</oryx-button>`;
+    }
+
+    return html`<oryx-link
+      .color=${color}
+      ?singleLine=${singleLine}
+      .icon=${icon}
+      >${this.renderLink()}
+    </oryx-link>`;
+  }
+
   protected $text = computed(() => {
     const { type, id } = this.$options();
     const { text } = this.$content() ?? {};
@@ -50,21 +65,6 @@ export class ContentLinkComponent extends ContentMixin<
       .get({ type, id })
       .pipe(map((content) => content?.name));
   });
-
-  protected override render(): TemplateResult | void {
-    const { button, icon, singleLine, color } = this.$options();
-
-    if (button) {
-      return html`<oryx-button>${this.renderLink(true)}</oryx-button>`;
-    }
-
-    return html`<oryx-link
-      .color=${color}
-      ?singleLine=${singleLine}
-      .icon=${icon}
-      >${this.renderLink()}
-    </oryx-link>`;
-  }
 
   protected renderLink(custom?: boolean): TemplateResult {
     if (!this.$link()) return html`${this.$text()}`;
