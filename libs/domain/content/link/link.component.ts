@@ -1,3 +1,4 @@
+import { ContentService } from '@spryker-oryx/content';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductCategoryService, ProductService } from '@spryker-oryx/product';
@@ -18,7 +19,7 @@ export class ContentLinkComponent extends ContentMixin<
   protected semanticLinkService = resolve(LinkService);
   protected categoryService = resolve(ProductCategoryService);
   protected productService = resolve(ProductService);
-  // protected contentService = resolve(ContentService);
+  protected contentService = resolve(ContentService);
 
   protected $link = computed(() => {
     const { url, type, id, params } = this.$options();
@@ -60,11 +61,9 @@ export class ContentLinkComponent extends ContentMixin<
         .pipe(map((product) => product?.name));
     }
 
-    return null;
-
-    // return this.contentService
-    //   .get({ type, id })
-    //   .pipe(map((content) => content?.name));
+    return this.contentService
+      .get({ type, id })
+      .pipe(map((content) => content?.name));
   });
 
   protected renderLink(custom?: boolean): TemplateResult {
