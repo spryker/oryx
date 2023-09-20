@@ -1,5 +1,5 @@
 {
-  "name": "create-oryx",
+  "name": "@spryker-oryx/cli",
   "version": "0.21.0",
   "type": "module",
   "author": "Spryker Systems GmbH",
