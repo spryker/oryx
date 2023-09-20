@@ -19,8 +19,6 @@ export const styles = css`
   }
 
   :host([no-methods]) {
-    --oryx-icon-size: 40px;
-
     align-items: center;
   }
 
