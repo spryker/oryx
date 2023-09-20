@@ -6,7 +6,8 @@ import {
   FormRenderer,
 } from '@spryker-oryx/form';
 import { RouterService } from '@spryker-oryx/router';
-import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { ButtonSize } from '@spryker-oryx/ui/button';
+import { ColorType } from '@spryker-oryx/ui/link';
 import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
 import { hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
@@ -106,11 +107,11 @@ export class AuthLoginComponent extends ContentMixin<LoginOptions>(LitElement) {
         ${when(
           this.$options()?.forgotPasswordLink,
           () => html`
-            <oryx-button href=${this.$options()?.forgotPasswordLink} type=${
-            ButtonType.Text
-          }>
-              ${this.i18n('user.login.forgot-password?')}</a
-            </oryx-button>
+            <oryx-link color=${ColorType.Primary}>
+              <a href=${this.$options()?.forgotPasswordLink}>
+                ${this.i18n('user.login.forgot-password')}
+              </a>
+            </oryx-link>
           `
         )}
       </form>

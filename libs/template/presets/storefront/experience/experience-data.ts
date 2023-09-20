@@ -1,5 +1,6 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { provideExperienceData } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { FooterTemplate } from './footer';
 import { HeaderTemplate } from './header';
 import {
@@ -29,13 +30,13 @@ export const StaticExperienceFeature: AppFeature = {
       contactPage,
       homePage,
       loginPage,
-      registrationPage,
       orderConfirmationPage,
       productPage,
       searchPage,
       addressBookPage,
       createAddressPage,
       editAddressPage,
+      ...(featureVersion >= '1.1' ? [registrationPage] : []),
     ]),
   ],
 };

@@ -12,4 +12,9 @@ export const styles = css`
   oryx-password-input {
     margin-block-start: 10px;
   }
+
+  oryx-link {
+    align-items: center;
+    justify-content: center;
+  }
 `;
