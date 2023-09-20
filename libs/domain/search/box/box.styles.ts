@@ -4,7 +4,7 @@ import { css } from 'lit';
 export const searchBoxStyles = css`
   :host {
     --oryx-popover-maxheight: 526px;
-    --oryx-icon-size: 16px;
+    --oryx-popover-width: 100%;
   }
 
   [slot='option'] {

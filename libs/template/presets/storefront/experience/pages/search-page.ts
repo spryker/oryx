@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { Size, featureVersion } from '@spryker-oryx/utilities';
 
 export const searchPage: ExperienceComponent = {
   id: 'search-page',
@@ -17,6 +18,21 @@ export const searchPage: ExperienceComponent = {
     ],
   },
   components: [
+    ...(featureVersion >= '1.1'
+      ? [
+          {
+            type: 'oryx-site-breadcrumb',
+            options: {
+              rules: [
+                {
+                  colSpan: 2,
+                },
+                { query: { breakpoint: Size.Sm }, hide: true },
+              ],
+            },
+          },
+        ]
+      : []),
     {
       type: 'oryx-search-facet-navigation',
       options: {

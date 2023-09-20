@@ -1,17 +1,26 @@
-import { ContentEntities } from '../services';
-import { RouteType } from '@spryker-oryx/router';
+export const enum ContentFields {
+  Article = 'article',
+  Faq = 'faq',
+  Component = 'component',
+}
+
+export type ContentEntity = ContentFields | string;
 
 export interface ContentQualifier {
   type?: string;
   id?: string;
-  entities?: ContentEntities;
+  query?: string;
+  entities?: ContentEntity[];
 }
 
-export interface Content {
-  id?: string;
-  type?: RouteType;
-  url?: string;
-  heading: string;
-  description: string;
-  content: string;
+export interface ContentField {
+  [key: string]: unknown;
+  id: string;
+}
+
+export interface Content<T = Record<string, unknown>> {
+  fields: T & ContentField;
+  id: string;
+  type: string;
+  name?: string;
 }

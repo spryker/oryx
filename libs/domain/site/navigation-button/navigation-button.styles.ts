@@ -2,13 +2,15 @@ import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 const smallScreen = css`
-  a,
-  button {
+  oryx-button::part(button) {
     --oryx-icon-size: 24px;
 
-    padding: 6px;
     height: 38px;
+    min-width: 38px;
+    max-width: auto;
     width: auto;
+    gap: 0;
+    padding: 0;
   }
 
   oryx-heading {
@@ -41,7 +43,7 @@ export const siteNavigationButtonStyles = css`
     padding: 12px 8px;
   }
 
-  oryx-button::part(button):is(:hover, :focus-within) {
+  oryx-button:hover::part(button) {
     background-color: var(--oryx-color-primary-10);
     box-shadow: none;
   }

@@ -11,6 +11,9 @@ export const enum SuggestionField {
 export type SuggestionEntities = (SuggestionField | string)[];
 
 export interface SuggestionAdapter {
+  /**
+   * @deprecated Since version 1.1. Will be removed.
+   */
   getKey(qualifier: SuggestionQualifier): string;
   get(qualifier: SuggestionQualifier): Observable<Suggestion>;
 }
