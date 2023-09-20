@@ -1,6 +1,6 @@
 import registerCypressGrep from '@cypress/grep/src/support';
 import './commands';
-import { Customer } from './types/user.type';
+import { Customer } from './types/domain.types';
 
 registerCypressGrep();
 

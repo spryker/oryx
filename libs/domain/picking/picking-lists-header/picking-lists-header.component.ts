@@ -49,7 +49,7 @@ export class PickingListsHeaderComponent extends I18nMixin(LitElement) {
 
           <oryx-search
             backIcon=${IconTypes.Back}
-            xs-floated
+            float
             @oryx.open=${(): void => this.onToggleSearch(true)}
             @oryx.close=${(): void => this.onToggleSearch(false)}
           >

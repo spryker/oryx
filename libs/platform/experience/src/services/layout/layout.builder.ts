@@ -1,9 +1,9 @@
 import {
+  Component,
   CompositionProperties,
   StyleProperties,
   StyleRuleSet,
 } from '../../models';
-import { Component } from '../experience';
 
 export const LayoutBuilder = 'oryx.LayoutBuilder';
 

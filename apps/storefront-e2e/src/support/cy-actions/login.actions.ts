@@ -1,6 +1,6 @@
 import { GlueAPI } from '../apis/glue.api';
 import { LoginPage } from '../page-objects/login.page';
-import { Customer } from '../types/user.type';
+import { Customer } from '../types/domain.types';
 
 export {};
 

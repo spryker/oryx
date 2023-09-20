@@ -1,4 +1,4 @@
-import { Customer } from '../types/user.type';
+import { Customer } from '../types/domain.types';
 
 export class LoginFragment {
   getWrapper = () => cy.get('oryx-auth-login');

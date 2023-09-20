@@ -49,6 +49,8 @@ jobs:
       - name: Release patch
         if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
         run: npm run release-patch
+      - name: Release labs
+        run: npm run release-labs
       - name: Release Error Log
         if: failure()
         run: cat libs/lerna-debug.log

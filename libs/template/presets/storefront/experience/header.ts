@@ -1,5 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { Size } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
@@ -13,17 +14,29 @@ export const HeaderTemplate: ExperienceComponent = {
         {
           type: 'oryx-content-link',
           content: { data: { text: 'FREE DELIVERY & RETURNS' } },
-          options: { url: '/', icon: IconTypes.Check },
+          options: {
+            url: '/',
+            icon: IconTypes.Check,
+            rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
+          },
         },
         {
           type: 'oryx-content-link',
           content: { data: { text: '100 DAY RETURN POLICY' } },
-          options: { url: '/', icon: IconTypes.Check },
+          options: {
+            url: '/',
+            icon: IconTypes.Check,
+            rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
+          },
         },
         {
           type: 'oryx-content-link',
           content: { data: { text: 'CLICK & COLLECT' } },
-          options: { url: '/', icon: IconTypes.Check },
+          options: {
+            url: '/',
+            icon: IconTypes.Check,
+            rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
+          },
         },
         {
           type: 'oryx-site-currency-selector',
@@ -70,7 +83,8 @@ export const HeaderTemplate: ExperienceComponent = {
                 justify: 'start',
                 style: 'color: var(--oryx-color-primary-12)',
               },
-              { query: { breakpoint: 'md' }, colSpan: 2 },
+              { query: { breakpoint: Size.Md }, colSpan: 2 },
+              { query: { breakpoint: Size.Sm }, colSpan: 2 },
             ],
             link: '/',
           },
@@ -80,7 +94,8 @@ export const HeaderTemplate: ExperienceComponent = {
           options: {
             rules: [
               { colSpan: 6, width: 'auto' },
-              { query: { breakpoint: 'md' }, colSpan: 4 },
+              { query: { breakpoint: Size.Md }, colSpan: 4 },
+              { query: { breakpoint: Size.Sm }, hide: true },
             ],
           },
         },
@@ -88,6 +103,16 @@ export const HeaderTemplate: ExperienceComponent = {
           type: 'oryx-composition',
           id: 'header-actions',
           components: [
+            {
+              type: 'oryx-search-box',
+              options: {
+                float: true,
+                rules: [
+                  { query: { breakpoint: Size.Md }, hide: true },
+                  { query: { breakpoint: Size.Lg }, hide: true },
+                ],
+              },
+            },
             {
               type: 'oryx-site-navigation-item',
               options: {
@@ -121,9 +146,10 @@ export const HeaderTemplate: ExperienceComponent = {
             rules: [
               { colSpan: 3, layout: 'flex', justify: 'end' },
               {
-                query: { breakpoint: 'md' },
+                query: { breakpoint: Size.Md },
                 colSpan: 2,
               },
+              { query: { breakpoint: Size.Sm }, colSpan: 2 },
             ],
           },
         },

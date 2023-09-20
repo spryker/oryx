@@ -1,3 +1,4 @@
+import { IdentityService } from '@spryker-oryx/auth';
 import { Cart, CartService } from '@spryker-oryx/cart';
 import {
   CheckoutDataService,
@@ -13,6 +14,10 @@ import { OrderService } from '@spryker-oryx/order';
 import { LinkService } from '@spryker-oryx/site';
 import { BehaviorSubject, of, take } from 'rxjs';
 import { CheckoutAdapter } from './adapter';
+
+class MockIdentityService implements Partial<IdentityService> {
+  get = vi.fn().mockReturnValue(of({ userId: 'anon-user-id' }));
+}
 
 class MockCartService implements Partial<CartService> {
   getCart = vi.fn();
@@ -62,6 +67,7 @@ describe('DefaultCheckoutService', () => {
         { provide: CheckoutDataService, useClass: MockCheckoutDataService },
         { provide: CheckoutStateService, useClass: MockCheckoutStateService },
         { provide: QueryService, useClass: DefaultQueryService },
+        { provide: IdentityService, useClass: MockIdentityService },
       ],
     });
 
@@ -178,7 +184,7 @@ describe('DefaultCheckoutService', () => {
       });
 
       it('should store the order', () => {
-        expect(orderService.storeLastOrder).toBeCalled();
+        expect(orderService.storeLastOrder).toBeCalledWith({}, 'anon-user-id');
       });
     });
 
