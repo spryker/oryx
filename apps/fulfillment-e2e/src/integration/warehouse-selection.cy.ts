@@ -18,12 +18,14 @@ describe('Warehouse selection', () => {
   });
 
   it('should check warehouses selection page', () => {
+
     headerFragment.getWrapper().should('be.visible');
     headerFragment.getUserIcon().should('be.visible');
     headerFragment.getUserIcon().click();
-
+// Need to add a check for verification Warehouse in the profile
     userProfileFragment.getWrapper().should('be.visible');
     userProfileFragment.getLogOutButton().should('be.visible');
+    // Why we check it twice?
     userProfileFragment.getWrapper().should('be.visible');
     userProfileFragment.getCloseButton().should('be.visible');
     userProfileFragment.getCloseButton().click();

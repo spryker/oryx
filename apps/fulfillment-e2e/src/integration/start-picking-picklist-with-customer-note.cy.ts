@@ -9,6 +9,8 @@ const customerNoteFragment = new CustomerNoteFragment();
 const pickingHeaderFragment = new PickingHeaderFragment();
 const discardModalFragment = new DiscardModalFragment();
 
+
+// We already have test for the Customer note, maybe need to be adjusted
 describe('Start picking a picklist with customer note', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
@@ -44,6 +46,7 @@ describe('Start picking a picklist with customer note', () => {
     cy.location('pathname').should('be.eq', `/`);
   });
 
+  // Maybe no need to add 'and' part here or adjust common test suite? 
   describe('and “Proceed to picking” button is clicked', () => {
     const pickingFragment = new PickingFragment();
     beforeEach(() => {

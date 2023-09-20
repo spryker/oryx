@@ -76,6 +76,7 @@ describe('When a user opens the user profile modal', () => {
     });
   });
 
+  // Do we need 'and' part here?
   describe('and sync is pending and picking is in progress', () => {
     beforeEach(() => {
       cy.mockSyncPending();
@@ -118,6 +119,7 @@ describe('When a user opens the user profile modal', () => {
       userProfileFragment.getReceiveDataButton().click();
     });
 
+    // I actually faced with 502 error manually at this point
     it('should receive data', () => {
       userProfileFragment.getWrapper().should('not.be.visible');
       cy.location('pathname').should('not.to.match', /^\/login/);

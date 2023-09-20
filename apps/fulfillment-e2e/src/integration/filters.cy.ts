@@ -2,12 +2,14 @@ import { FiltersFragment } from '../support/page_fragments/filters.fragment';
 
 const filtersFragment = new FiltersFragment();
 
+// It should be nor filters, but rather Sorting
+
 describe('When user interacts with the filters', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();
   });
-
+  // Change describe text to more clear
   describe('And filters is closed', () => {
     it('should reset unapplied changes', () => {
       //check whether default configuration is applied
@@ -41,6 +43,7 @@ describe('When user interacts with the filters', () => {
     });
   });
 
+  // Change describe text to more clear
   describe('And filters are applied', () => {
     [
       { option: 'Latest pickup time', shouldChangesTheOrder: true },
@@ -66,6 +69,7 @@ describe('When user interacts with the filters', () => {
     });
   });
 
+    // Change describe text to more clear
   describe('And preselected filters are reset', () => {
     it('should restore default sorting configuration', () => {
       filtersFragment.getFilterButtonTrigger().click();
