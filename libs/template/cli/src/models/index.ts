@@ -1,1 +1,1 @@
-export * from './cli-command.model.js';
+export * from './cli-command.model';

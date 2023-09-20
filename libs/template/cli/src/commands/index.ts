@@ -1,12 +1,12 @@
 import { Provider } from '@spryker-oryx/di';
-import { CliCommand } from '../models/index.js';
-import { CreateCliCommand } from './create.js';
-import { HelpCliCommand } from './help.js';
-import { VersionCliCommand } from './version.js';
+import { CliCommand } from '../models';
+import { CreateCliCommand } from './create';
+import { HelpCliCommand } from './help';
+import { VersionCliCommand } from './version';
 
-export * from './create.js';
-export * from './help.js';
-export * from './version.js';
+export * from './create';
+export * from './help';
+export * from './version';
 
 export const CliCommands = 'oryx.CliCommands*';
 

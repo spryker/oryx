@@ -1,9 +1,9 @@
 import { intro, log, outro } from '@clack/prompts';
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import c from 'picocolors';
-import { CliCommands } from '../commands/index.js';
-import { CliCommand } from '../models/index.js';
-import { CliArgsService } from '../services/index.js';
+import { CliCommands } from '../commands';
+import { CliCommand } from '../models';
+import { CliArgsService } from '../services';
 
 export class HelpCliCommand implements CliCommand {
   constructor(

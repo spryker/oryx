@@ -1,8 +1,8 @@
 import { FeatureOptionsService } from '@spryker-oryx/core';
 import { inject, INJECTOR } from '@spryker-oryx/di';
 import { parseArgs, ParseArgsConfig } from 'node:util';
-import { CliCommands } from '../commands/index.js';
-import { CliCommand } from '../models/index.js';
+import { CliCommands } from '../commands';
+import { CliCommand } from '../models';
 
 export class CliArgsService {
   protected options =

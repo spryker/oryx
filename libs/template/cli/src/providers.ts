@@ -1,10 +1,6 @@
 import { Provider } from '@spryker-oryx/di';
-import { cliCommandsProviders } from './commands/index.js';
-import {
-  CliArgsService,
-  CliService,
-  NodeUtilService,
-} from './services/index.js';
+import { cliCommandsProviders } from './commands';
+import { CliArgsService, CliService, NodeUtilService } from './services';
 
 export const cliProviders: Provider[] = [
   { provide: CliService, useClass: CliService },

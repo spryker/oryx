@@ -5,7 +5,7 @@ import {
   AppPluginAfterApply,
   InjectionPlugin,
 } from '@spryker-oryx/core';
-import { CliArgsService, CliService } from './services/index.js';
+import { CliArgsService, CliService } from './services';
 
 export class CliPlugin implements AppPlugin, AppPluginAfterApply {
   getName(): string {

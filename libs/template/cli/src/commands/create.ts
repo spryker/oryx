@@ -12,8 +12,8 @@ import { inject } from '@spryker-oryx/di';
 import fs from 'fs';
 import path from 'path';
 import c from 'picocolors';
-import { CliCommand, CliCommandOption } from '../models/index.js';
-import { CliArgsService, NodeUtilService } from '../services/index.js';
+import { CliCommand, CliCommandOption } from '../models';
+import { CliArgsService, NodeUtilService } from '../services';
 
 export class CreateCliCommand implements CliCommand {
   protected repoUrl =

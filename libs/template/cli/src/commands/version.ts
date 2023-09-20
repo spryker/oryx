@@ -1,7 +1,7 @@
 import { intro, log, outro } from '@clack/prompts';
 import path from 'path';
 import c from 'picocolors';
-import { CliCommand } from '../models/index.js';
+import { CliCommand } from '../models';
 
 export class VersionCliCommand implements CliCommand {
   protected packagePath = path.resolve(this.dirPath, '../..', 'package.json');
