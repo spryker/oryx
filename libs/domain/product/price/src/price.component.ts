@@ -1,12 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import {
-  ProductContext,
-  ProductMixin,
-  ProductPrice,
-} from '@spryker-oryx/product';
-import { computed, hydrate, signalProperty } from '@spryker-oryx/utilities';
+import { ProductContext, ProductMixin } from '@spryker-oryx/product';
+import { hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { property } from 'lit/decorators.js';
 import { ProductPriceOptions } from './price.model';
 import { ProductPriceStyles } from './price.styles';
 
@@ -17,10 +12,11 @@ import { ProductPriceStyles } from './price.styles';
  * 1. The sales price (AKA "default" price)
  * 2. The original price (AKA "strikethrough" or "from" price)
  *
- * The sales price is always rendered, where as the original price can be configured
- * to not be rendered.
+ * The sales price is always rendered, where as the original price can be
+ * configured to not be rendered.
  *
- *
+ * The <oryx-site-price> component is used to render the price. This component
+ * is responsible for formatting the price and currency.
  */
 @defaultOptions({
   enableOriginalPrice: true,
@@ -31,45 +27,6 @@ export class ProductPriceComponent extends ProductMixin(
   ContentMixin<ProductPriceOptions>(LitElement)
 ) {
   static styles = ProductPriceStyles;
-
-  /**
-   * Indicates the sales price. If the sales price is not given by a property,
-   * it will be resolved from the product data.
-   */
-  @signalProperty() sales?: number;
-
-  /**
-   * The component uses the `PriceComponent` to render prices in the active currency.
-   * If a currency is provided, the price currency must match this currency, otherwise the price
-   * is not rendered
-   */
-  @property() currency?: string;
-
-  protected $salesPrice = computed(() => {
-    if (this.sales) return this.sales;
-
-    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
-
-    if (defaultPrice) {
-      return this.isValid(defaultPrice) && defaultPrice.value;
-    } else {
-      return this.isValid(originalPrice) && originalPrice?.value;
-    }
-  });
-
-  protected $originalPrice = computed(() => {
-    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
-
-    if (this.sales && !originalPrice && this.sales !== defaultPrice?.value) {
-      return this.isValid(defaultPrice) && defaultPrice?.value;
-    } else {
-      return this.isValid(originalPrice) && originalPrice?.value;
-    }
-  });
-
-  protected isValid(price?: ProductPrice): boolean {
-    return !this.currency || this.currency === price?.currency;
-  }
 
   protected override render(): TemplateResult | void {
     return html`
@@ -82,33 +39,56 @@ export class ProductPriceComponent extends ProductMixin(
     `;
   }
 
+  /**
+   * Renders the sales price. The sales price defaults to the `defaultPrice`,
+   * but in case the default price is not set, the `originalPrice` is used
+   * instead.
+   */
   protected renderSalesPrice(): TemplateResult | void {
-    const price = this.$salesPrice();
+    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
+    const price = defaultPrice?.value ? defaultPrice : originalPrice;
+
     if (!price) return;
 
     return html`<oryx-site-price
-      .value=${price}
-      .currency=${this.currency}
+      .value=${price.value}
+      .currency=${price.currency}
       part="sales"
-      ?has-discount=${!!this.$originalPrice()}
+      ?discounted=${defaultPrice?.value !== originalPrice?.value}
     ></oryx-site-price>`;
   }
 
+  /**
+   * When the `enableOriginalPrice` option is `true` and the original price
+   * is different from the sales price, the original price is rendered.
+   */
   protected renderOriginalPrice(): TemplateResult | void {
-    const price = this.$originalPrice();
-    if (!price) return;
+    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
+
+    if (
+      !this.$options().enableOriginalPrice ||
+      defaultPrice?.value === originalPrice?.value
+    )
+      return;
 
     return html`<oryx-site-price
-      .value=${price}
-      .currency=${this.currency}
+      .value=${originalPrice?.value}
+      .currency=${originalPrice?.currency}
+      original
       part="original"
     ></oryx-site-price>`;
   }
 
+  /**
+   * Renders the tax message. The tax message is only rendered when the
+   * `enableTaxMessage` option is `true` and when either the `defaultPrice`
+   * or the `originalPrice` is set.
+   */
   protected renderTaxMessage(): TemplateResult | void {
+    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
     if (
       !this.$options().enableTaxMessage ||
-      (!this.$salesPrice() && !this.$originalPrice())
+      (!defaultPrice?.value && !originalPrice?.value)
     )
       return;
 

@@ -23,14 +23,14 @@ const pricing = css`
     height: auto;
   }
 
-  oryx-site-price {
+  .pricing > oryx-site-price {
     font-size: var(--oryx-typography-h6-size);
     font-weight: var(--oryx-typography-h6-weight);
     line-height: var(--oryx-typography-h6-line);
     align-self: end;
   }
 
-  .item-price {
+  .unit-price {
     font-size: var(--oryx-typography-small-size);
     font-weight: var(--oryx-typography-small-weight);
     line-height: var(--oryx-typography-small-line);

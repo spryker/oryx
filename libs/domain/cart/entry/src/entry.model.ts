@@ -17,8 +17,21 @@ export interface CartEntryAttributes {
   quantity?: number;
 
   /**
-   * The entry price represents the price per item of the entry. This might be a
-   * discounted price because of volume pricing.
+   * Regular unit price of the product, before volume discounts (see `discountedUnitPrice`).
+   *
+   * The given number represents the non formatted price.
+   */
+  unitPrice?: number;
+
+  /**
+   * Unit price after applying volume discount.
+   *
+   * The given number represents the non formatted price.
+   */
+  discountedUnitPrice?: number;
+
+  /**
+   * Subtotal price for the entry (quantity * discountedUnitPrice)
    *
    * The given number represents the non formatted price.
    */
@@ -29,6 +42,8 @@ export interface CartEntryAttributes {
    * a discounted price. Additional discounts can be given by volume pricing, see `price`.
    *
    * The given number represents the non formatted price.
+   *
+   * @deprecated use `unitPrice` instead
    */
   itemPrice?: number;
 

@@ -18,15 +18,10 @@ export const ProductPriceStyles = css`
     line-height: var(--oryx-typography-h2-line);
   }
 
-  [has-discount] {
-    color: var(--oryx-color-highlight-9);
-  }
-
   [part='original'] {
     font-size: var(--oryx-typography-h4-size);
     font-weight: var(--oryx-typography-h4-weight);
     line-height: var(--oryx-typography-h4-line);
-    text-decoration: line-through;
   }
 
   [part='tax'] {

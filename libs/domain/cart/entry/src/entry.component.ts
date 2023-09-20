@@ -6,7 +6,6 @@ import {
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
-import { ProductPriceOptions } from '@spryker-oryx/product/price';
 import { RouteType } from '@spryker-oryx/router';
 import {
   LinkService,
@@ -63,6 +62,8 @@ export class CartEntryComponent
   @property() key?: string;
   @property({ type: Number }) price?: number;
   @property({ type: Number }) itemPrice?: number;
+  @property({ type: Number }) unitPrice?: number;
+  @property({ type: Number }) discountedUnitPrice?: number;
   @property({ type: Boolean }) readonly?: boolean;
   @property() currency?: string;
 
@@ -173,13 +174,20 @@ export class CartEntryComponent
         ${when(
           this.$options()?.enableItemPrice,
           () =>
-            html`<div class="item-price">
+            html`<div class="unit-price">
               <span>${this.i18n('cart.entry.item-price')}</span>
-              <oryx-product-price
-                .options=${{ enableTaxMessage: false } as ProductPriceOptions}
-                .sales=${this.itemPrice}
+
+              <oryx-site-price
+                .value=${this.unitPrice}
                 .currency=${this.currency}
-              ></oryx-product-price>
+                original
+              ></oryx-site-price>
+
+              <oryx-site-price
+                .value=${this.discountedUnitPrice}
+                .currency=${this.currency}
+                discounted
+              ></oryx-site-price>
             </div>`
         )}
       </section>
