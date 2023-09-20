@@ -84,7 +84,7 @@ export class DefaultFormRenderer implements FormRenderer {
     value?: string | boolean
   ): TemplateResult {
     const { pattern, title } = this.fieldValidationPattern(field);
-    let inputType = field.attributes?.type || field.type;
+    let inputType = field.type;
 
     switch (inputType) {
       case FormFieldType.Boolean:
@@ -98,7 +98,7 @@ export class DefaultFormRenderer implements FormRenderer {
     return html`
       <input
         name=${field.id}
-        type=${inputType}
+        type=${field.attributes?.type ?? inputType}
         value=${value ?? ''}
         placeholder=${ifDefined(field.placeholder)}
         minlength=${ifDefined(field.min)}
@@ -380,7 +380,6 @@ export class DefaultFormRenderer implements FormRenderer {
         heading=${ifDefined(field.label)}
         direction=${ifDefined(field.attributes?.direction)}
         .style=${this.resolveStyles(field)}
-        ?hasError=${field.attributes?.hasError}
       >
         ${field.options?.map(
           (option) => html`
