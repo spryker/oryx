@@ -15,8 +15,6 @@ import {
   Size,
   computed,
   debounce,
-  effect,
-  elementEffect,
   hydrate,
   signalAware,
   signalProperty,
@@ -70,8 +68,13 @@ export class SearchBoxComponent
     )
   );
 
-  @elementEffect()
-  protected queryEffect = effect(() => this.query$.next(this.query));
+  protected $link = computed(() =>
+    this.semanticLinkService.get({
+      type: RouteType.ProductList,
+      ...(this.query ? { params: { q: this.query } } : {}),
+    })
+  );
+
   protected $raw = computed(() => this.suggestion$);
   protected $suggestion = computed(() => {
     const query = this.query?.trim();
@@ -86,7 +89,7 @@ export class SearchBoxComponent
     return html`
       <oryx-typeahead
         @oryx.search=${this.onSearch}
-        @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 300)}
+        @oryx.typeahead=${this.onTypeahead}
         .clearIcon=${IconTypes.Close}
         ?float=${this.$options().float}
       >
@@ -139,20 +142,23 @@ export class SearchBoxComponent
 
   protected onTypeahead(event: CustomEvent<SearchEventDetail>): void {
     this.query = event.detail.query;
+
+    this.assignSuggestionQuery();
   }
 
-  protected onSearch(e: CustomEvent<SearchEventDetail>): void {
-    const q = e.detail.query;
+  protected assignSuggestionQuery = debounce(() => {
+    this.query$.next(this.query);
+  }, 300);
 
-    this.semanticLinkService
-      .get({
-        type: RouteType.ProductList,
-        ...(q ? { params: { q } } : {}),
-      })
-      .subscribe((link) => {
-        this.routerService.navigate(link!);
-        this.onClose();
-      });
+  protected onSearch(): void {
+    const link = this.$link();
+
+    if (!link) {
+      return;
+    }
+
+    this.routerService.navigate(link);
+    this.onClose();
   }
 
   protected isNothingFound(suggestion: Suggestion | null | undefined): boolean {

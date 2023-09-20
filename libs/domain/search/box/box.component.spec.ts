@@ -218,8 +218,6 @@ describe('SearchBoxComponent', () => {
   });
 
   describe('when typing a query string', () => {
-    const callback = vi.fn();
-
     beforeEach(async () => {
       element = await fixture(html`<oryx-search-box></oryx-search-box>`);
 
@@ -253,9 +251,7 @@ describe('SearchBoxComponent', () => {
         const typeahead = element.renderRoot.querySelector('oryx-typeahead');
 
         typeahead?.toggleAttribute('open', true);
-        typeahead?.dispatchEvent(
-          new CustomEvent('oryx.search', { detail: {} })
-        );
+        typeahead?.dispatchEvent(new CustomEvent('oryx.search'));
       });
 
       it('should get the link from service without params', () => {
@@ -272,12 +268,12 @@ describe('SearchBoxComponent', () => {
     describe('and query is provided', () => {
       const q = 'test';
       beforeEach(async () => {
-        element = await fixture(html`<oryx-search-box></oryx-search-box>`);
+        element = await fixture(
+          html`<oryx-search-box .query=${q}></oryx-search-box>`
+        );
         element.renderRoot
           .querySelector('oryx-typeahead')
-          ?.dispatchEvent(
-            new CustomEvent('oryx.search', { detail: { query: q } })
-          );
+          ?.dispatchEvent(new CustomEvent('oryx.search'));
       });
 
       it('should get the link from service with params', () => {
