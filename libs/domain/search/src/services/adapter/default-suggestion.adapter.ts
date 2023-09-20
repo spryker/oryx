@@ -28,7 +28,7 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
 
   get({ query, entities }: SuggestionQualifier): Observable<Suggestion> {
     if (
-      !entities ||
+      !entities?.length ||
       entities.some((entity) =>
         [
           SuggestionField.Categories,
@@ -37,17 +37,18 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
         ].includes(entity as SuggestionField)
       )
     ) {
-      const include = entities?.includes(SuggestionField.Products)
-        ? [
-            ApiProductModel.Includes.AbstractProducts,
-            ApiProductModel.Includes.CategoryNodes,
-            ApiProductModel.Includes.ConcreteProducts,
-            ApiProductModel.Includes.ConcreteProductImageSets,
-            ApiProductModel.Includes.ConcreteProductPrices,
-            ApiProductModel.Includes.ConcreteProductAvailabilities,
-            ApiProductModel.Includes.Labels,
-          ].join(',')
-        : '';
+      const include =
+        entities?.includes(SuggestionField.Products) || !entities?.length
+          ? [
+              ApiProductModel.Includes.AbstractProducts,
+              ApiProductModel.Includes.CategoryNodes,
+              ApiProductModel.Includes.ConcreteProducts,
+              ApiProductModel.Includes.ConcreteProductImageSets,
+              ApiProductModel.Includes.ConcreteProductPrices,
+              ApiProductModel.Includes.ConcreteProductAvailabilities,
+              ApiProductModel.Includes.Labels,
+            ].join(',')
+          : '';
 
       return this.http
         .get<ApiSuggestionModel.Response>(
