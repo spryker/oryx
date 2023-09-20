@@ -39,7 +39,7 @@ export class CheckoutShippingMethodComponent
   protected $hasMethods = computed(() => {
     const carriers = this.shipments()?.[0]?.carriers;
 
-    return carriers?.find((carrier) => !!carrier.shipmentMethods?.length);
+    return !!carriers?.find((carrier) => !!carrier.shipmentMethods?.length);
   });
 
   @elementEffect()
@@ -48,9 +48,9 @@ export class CheckoutShippingMethodComponent
   };
 
   protected override render(): TemplateResult | void {
-    const carriers = this.shipments()?.[0]?.carriers;
-
     if (!this.$hasMethods()) return this.renderEmpty();
+
+    const carriers = this.shipments()?.[0]?.carriers;
 
     return html`
       <oryx-checkout-header>
