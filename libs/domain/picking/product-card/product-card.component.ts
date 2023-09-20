@@ -139,18 +139,18 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
   }
 
   protected renderEditStatus(): TemplateResult {
-    let text = '';
-    let label = '';
-    let subtext = '';
-
     if (!this.productItem) {
       return html``;
     }
 
+    let count: number;
+    let label = '';
+    let subtext = '';
+
     const { quantity, numberOfPicked, numberOfNotPicked } = this.productItem;
 
     if (this.status === ItemsFilters.Picked) {
-      text = `${numberOfPicked}`;
+      count = numberOfPicked;
 
       if (numberOfPicked < quantity) {
         label = 'picking.product-card.items-picked';
@@ -158,7 +158,7 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
         subtext = 'picking.product-card.all-items-picked';
       }
     } else {
-      text = `${numberOfNotPicked}`;
+      count = numberOfNotPicked;
 
       if (numberOfNotPicked < quantity) {
         label = 'picking.product-card.items-not-found';
@@ -169,7 +169,7 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
 
     return html`
       <div class="summary-info">
-        <p>${text}/${quantity} ${this.i18n(label)}</p>
+        <p>${count}/${quantity} ${this.i18n(label)}</p>
         ${when(subtext, () => html`<p>${this.i18n(subtext)}</p>`)}
       </div>
       <oryx-button
