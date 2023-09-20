@@ -50,10 +50,12 @@ export class OrderTotalsResolver implements TotalsResolver {
           currencyIsoCode: currency,
           calculatedDiscounts,
           priceMode,
+          shipments,
         } = order;
 
         return {
           ...totals,
+          shipmentTotal: shipments?.[0].defaultGrossPrice,
           priceToPay: totals.grandTotal,
           priceMode,
           currency,
