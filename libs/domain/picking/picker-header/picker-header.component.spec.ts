@@ -31,7 +31,7 @@ class MockRouterService implements Partial<RouterService> {
   back = vi.fn();
 }
 
-describe('PickingHeaderComponent', () => {
+describe('PickingPickerHeaderComponent', () => {
   let element: PickingPickerHeaderComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;

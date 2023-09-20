@@ -6,7 +6,7 @@ import { afterEach, beforeAll, beforeEach } from 'vitest';
 import { PickingCustomerNoteModalComponent } from './customer-note-modal.component';
 import { pickingCustomerNoteModalComponent } from './customer-note-modal.def';
 
-describe('CustomerNoteModal', () => {
+describe('PickingCustomerNoteModal', () => {
   let element: PickingCustomerNoteModalComponent;
 
   const getModal = (): ModalComponent | null =>

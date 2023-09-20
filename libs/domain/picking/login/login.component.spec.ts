@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { PickingLoginComponent } from './login.component';
 import { pickingLoginComponent } from './login.def';
 
-describe('LoginPageComponent', () => {
+describe('PickingLoginPageComponent', () => {
   let element: PickingLoginComponent;
 
   beforeAll(async () => {

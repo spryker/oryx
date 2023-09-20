@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { PickingDiscardModalComponent } from './discard-modal.component';
 import { pickingDiscardModalComponent } from './discard-modal.def';
 
-describe('DiscardModalComponent', () => {
+describe('PickingDiscardModalComponent', () => {
   let element: PickingDiscardModalComponent;
 
   beforeAll(async () => {

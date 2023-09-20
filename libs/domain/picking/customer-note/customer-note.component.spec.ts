@@ -25,7 +25,7 @@ class MockPickingListService implements Partial<PickingListService> {
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
-describe('CustomerNoteComponent', () => {
+describe('PickingCustomerNoteComponent', () => {
   let element: PickingCustomerNoteComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;

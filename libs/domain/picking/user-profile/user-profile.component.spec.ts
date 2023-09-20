@@ -42,7 +42,7 @@ class MockStorageService implements Partial<StorageService> {
   get = vi.fn().mockReturnValue(of(undefined));
 }
 
-describe('UserProfileComponent', () => {
+describe('PickingUserProfileComponent', () => {
   let element: PickingUserProfileComponent;
   let routerService: MockRouterService;
   let syncSchedulerService: MockSyncSchedulerService;

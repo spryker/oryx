@@ -31,7 +31,7 @@ class MockRouterService implements Partial<RouterService> {
 
 Element.prototype.scrollIntoView = vi.fn();
 
-describe('PickingComponent', () => {
+describe('PickingPickerComponent', () => {
   let element: PickingPickerComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;

@@ -5,7 +5,7 @@ import { i18n, useComponent } from '@spryker-oryx/utilities';
 import PickingHeaderComponent from './header.component';
 import { pickingHeaderComponent } from './header.def';
 
-describe('Header Component', () => {
+describe('Picking Header Component', () => {
   let element: PickingHeaderComponent;
 
   beforeAll(async () => {

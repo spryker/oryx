@@ -32,7 +32,7 @@ class MockPickingListService implements Partial<PickingListService> {
   isRefreshing = vi.fn().mockReturnValue(of(false));
 }
 
-describe('ListsComponent', () => {
+describe('PickingListsComponent', () => {
   let element: PickingListsComponent;
   let service: MockPickingListService;
   let syncService: MockPickingSyncActionHandlerService;

@@ -42,7 +42,7 @@ class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-describe('WarehouseAssignmentComponent', () => {
+describe('PickingWarehouseAssignmentComponent', () => {
   let el: PickingWarehouseAssignmentComponent;
 
   let service: MockWarehouseUserAssignmentsService;

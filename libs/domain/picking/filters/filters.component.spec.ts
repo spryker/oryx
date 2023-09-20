@@ -22,7 +22,7 @@ class MockFormRenderer implements Partial<FormRenderer> {
   buildForm = vi.fn().mockReturnValue(html``);
 }
 
-describe('FiltersComponent', () => {
+describe('PickingFiltersComponent', () => {
   let element: PickingFiltersComponent;
   let service: MockPickingListService;
   let renderer: MockFormRenderer;

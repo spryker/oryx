@@ -15,7 +15,7 @@ class MockPickingListService implements Partial<PickingListService> {
   getSortingQualifier = vi.fn().mockReturnValue(of(defaultSortingQualifier));
 }
 
-describe('FilterButtonComponent', () => {
+describe('PickingFilterButtonComponent', () => {
   let element: PickingFilterButtonComponent;
   let service: MockPickingListService;
 
