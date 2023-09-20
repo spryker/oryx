@@ -158,7 +158,7 @@ Please make sure to not use an existing directory name.`
     await this.nodeUtilService.copyFolder(repoPath, options.path);
   }
 
-  protected async npmInstall(path: string) {
+  protected async npmInstall(path: string): Promise<void> {
     const s = spinner();
 
     s.start('Installing dependencies...');
