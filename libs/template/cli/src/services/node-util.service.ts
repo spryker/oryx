@@ -58,7 +58,11 @@ export class NodeUtilService {
     });
   }
 
-  executeCommand(command: string, directory?: string, output = false): Promise<void> {
+  executeCommand(
+    command: string,
+    directory?: string,
+    output = false
+  ): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       const options = directory ? { cwd: directory } : undefined;
 

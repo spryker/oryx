@@ -1,7 +1,8 @@
 import {
   intro,
   isCancel,
-  log, note,
+  log,
+  note,
   outro,
   select,
   spinner,
@@ -11,7 +12,6 @@ import { inject } from '@spryker-oryx/di';
 import fs from 'fs';
 import path from 'path';
 import c from 'picocolors';
-import url from 'url';
 import { CliCommand, CliCommandOption } from '../models/index.js';
 import { CliArgsService, NodeUtilService } from '../services/index.js';
 
@@ -114,7 +114,10 @@ Please make sure to not use an existing directory name.`
 
     const totalTime = (new Date().getTime() - startTime) / 1000;
 
-    note(`${c.bold(`cd ${options.name}`)}\n${c.bold('npm run dev')}`, 'Next steps:');
+    note(
+      `${c.bold(`cd ${options.name}`)}\n${c.bold('npm run dev')}`,
+      'Next steps:'
+    );
 
     outro(`Oryx App "${options.name}" created in ${Math.floor(totalTime)}s`);
   }
@@ -131,12 +134,10 @@ Please make sure to not use an existing directory name.`
     const archivePath = path.resolve(this.packageRoot, `template-${ref}.zip`);
 
     if (!fs.existsSync(archivePath)) {
-
       await this.nodeUtilService.downloadFile(
         this.getTempalteUrl(ref),
         archivePath
       );
-
     }
 
     await this.nodeUtilService.extractZip(archivePath, repoPath);
