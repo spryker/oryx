@@ -1,7 +1,6 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const pickingLoginPageComponent = componentDef({
+export const pickingLoginComponent = componentDef({
   name: 'oryx-picking-login',
-  impl: () =>
-    import('./login.component').then((m) => m.PickingLoginPageComponent),
+  impl: () => import('./login.component').then((m) => m.PickingLoginComponent),
 });
