@@ -22,6 +22,7 @@ import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
+import { map, of, switchMap } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
 
 @signalAware()
@@ -46,16 +47,23 @@ export class CompositionComponent extends LayoutMixin(
     }
 
     const component = signal(
-      this.experienceService.getComponent({ route: this.route })
+      this.experienceService
+        .getComponent({ route: this.route })
+        .pipe(
+          switchMap((component) =>
+            component?.id
+              ? of(component)
+              : this.routerService.redirectNotFound().pipe(map(() => null))
+          )
+        )
     )();
 
-    if (!component?.id) {
-      this.routerService.redirectNotFound();
+    if (component === null || !component?.id) {
       this.uid = undefined;
       return;
     }
 
-    if (this.uid !== component.id) {
+    if (this.uid !== component?.id) {
       this.uid = component.id;
     }
   });

@@ -10,10 +10,11 @@ import {
   throwError,
 } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Component } from '../../models';
 import { ExperienceComponent, ExperienceDataService } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
+import { ExperienceAdapter } from '../experience.adapter';
 import { ComponentQualifier, ExperienceService } from './experience.service';
-import { Component } from './models';
 
 type DataStore<T = unknown> = Record<string, ReplaySubject<T>>;
 
@@ -27,7 +28,8 @@ export class DefaultExperienceService implements ExperienceService {
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
-    protected experienceDataService = inject(ExperienceDataService)
+    protected experienceDataService = inject(ExperienceDataService),
+    protected experienceAdapter = inject(ExperienceAdapter, null)
   ) {
     this.initExperienceData();
   }
@@ -38,12 +40,19 @@ export class DefaultExperienceService implements ExperienceService {
     });
   }
 
+  /**
+   * @deprecated Since version 1.1. Use provided `ExperienceDataService.registerComponent` method.
+   */
   protected processComponent(
     _component: Component | ExperienceComponent
   ): void {
     const components = [_component];
 
     for (const component of components) {
+      if (!component) {
+        continue;
+      }
+
       this.processData(component);
       components.push(...(component.components ?? []));
     }
@@ -103,7 +112,9 @@ export class DefaultExperienceService implements ExperienceService {
       .pipe(
         tap((component) => {
           this.dataComponent[uid].next(component);
-          this.processComponent(component);
+          this.experienceDataService.registerComponent(component, (c) =>
+            this.processData(c)
+          );
         }),
         catchError(() => {
           this.dataComponent[uid].next({ id: uid, type: '' });
@@ -121,6 +132,10 @@ export class DefaultExperienceService implements ExperienceService {
 
     return this.dataRoutes[route].pipe(
       switchMap((uid: string) => {
+        if (!uid) {
+          return of({} as Component);
+        }
+
         if (!this.dataComponent[uid]) {
           this.dataComponent[uid] = new ReplaySubject(1);
         }
@@ -130,17 +145,27 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected reloadComponentByRoute(route: string): void {
+    /**
+     * @deprecated Since version 1.1. Use provided `ExperienceAdapter.get` method.
+     */
     const componentsUrl = `${
       this.contentBackendUrl
     }/components/?meta.route=${encodeURIComponent(route)}`;
-    this.http
-      .get<Component[]>(componentsUrl)
+
+    const adapter = this.experienceAdapter
+      ? this.experienceAdapter.get({ route })
+      : this.http.get<Component>(componentsUrl);
+
+    adapter
       .pipe(
-        catchError(() => of(undefined)),
-        tap((components) => {
-          if (!components?.length) return;
-          const component = components[0];
-          this.processComponent(component);
+        tap((page) => {
+          if (page) {
+            this.experienceDataService.registerComponent(page, (c) =>
+              this.processData(c)
+            );
+          } else {
+            this.storeData('dataRoutes', route, null);
+          }
         })
       )
       .subscribe();

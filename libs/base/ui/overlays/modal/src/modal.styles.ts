@@ -20,6 +20,11 @@ export const styles = css`
     max-height: calc(100vh - var(--oryx-modal-bleed, 0px) * 2);
   }
 
+  dialog[open] {
+    display: flex;
+    flex-direction: column;
+  }
+
   :host([minimal]) dialog {
     min-width: var(--oryx-modal-width, 510px), calc(100vw - 20px);
   }
@@ -31,10 +36,14 @@ export const styles = css`
     min-height: var(--oryx-modal-height, auto);
   }
 
+  form {
+    display: contents;
+    flex: 1 1;
+  }
+
   :host(:not([minimal])) oryx-card {
-    margin-block-start: var(--oryx-modal-bleed, 0);
     min-height: calc(
-      var(--oryx-modal-height, auto) - var(--oryx-modal-bleed, 0px) * 2
+      var(--oryx-modal-height, 100%) - var(--oryx-modal-bleed, 0px) * 2
     );
   }
 

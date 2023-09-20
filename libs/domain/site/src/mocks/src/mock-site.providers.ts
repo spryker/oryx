@@ -6,6 +6,7 @@ import {
   LocaleService,
 } from '@spryker-oryx/i18n';
 import {
+  BreadcrumbService,
   CountryService,
   CurrencyService,
   DefaultCountryService,
@@ -24,6 +25,7 @@ import {
   SiteErrorHandler,
   StoreService,
 } from '@spryker-oryx/site';
+import { MockBreadcrumbService } from './mock-breadcrumb.service';
 import { MockStoreService } from './mock-store.service';
 
 export const mockSiteProviders: Provider[] = [
@@ -78,5 +80,9 @@ export const mockSiteProviders: Provider[] = [
   {
     provide: ErrorHandler,
     useClass: SiteErrorHandler,
+  },
+  {
+    provide: BreadcrumbService,
+    useClass: MockBreadcrumbService,
   },
 ];

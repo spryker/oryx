@@ -1,4 +1,5 @@
 export * from './adapter';
+export * from './category';
 export * from './default-product.service';
 export * from './images';
 export * from './list';

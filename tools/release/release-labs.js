@@ -1,7 +1,7 @@
 const semver = require('semver');
 const { execSync } = require("child_process");
-const libsVersion = require('../../libs/lerna.json').version;
-const labsVersion  = require('../../libs/template/labs/package.json').version;
+const currentLibsVersion = require('../../libs/lerna.json').version;
+const currentLabsVersion  = require('../../libs/template/labs/package.json').version;
 
 function main() {
   const labsVersion = getNewLabsVersion();
@@ -22,28 +22,21 @@ function main() {
 }
 
 function getNewLabsVersion() {
-  const undottedLibsVersion = getUndottedLibsVersion(libsVersion);
-  const isNewLibsRelease = getLabsMinor() !== undottedLibsVersion;
-  const labsPatch = isNewLibsRelease ? 0 : Number(getLabsPatch()) + 1;
-  const prereleaseLibsVersion = getPrereleaseLibsVersion(libsVersion);
+  const labsPatchDelimiter = '-patch.';
+  const oryxVersionDelimiter = '-oryx.';
+  const labsFixedVersion = '0.131.0'; // First available minor for labs
+  const isNewLibsRelease = currentLibsVersion !== getPreviousLibsVersion(oryxVersionDelimiter, labsPatchDelimiter);
+  const labsPatch = isNewLibsRelease ? 0 : Number(getLabsPatch(labsPatchDelimiter)) + 1;
 
-  return `0.${undottedLibsVersion}.${labsPatch}${prereleaseLibsVersion}`;
+  return `${labsFixedVersion}${oryxVersionDelimiter}${currentLibsVersion}${labsPatchDelimiter}${labsPatch}`;
 }
 
-function getLabsPatch() {
-  return String(semver.patch(labsVersion));
+function getLabsPatch(labsPatchDelimiter) {
+  return currentLabsVersion.split(labsPatchDelimiter)[1];
 }
 
-function getLabsMinor() {
-  return String(semver.minor(labsVersion));
-}
-
-function getUndottedLibsVersion(libsVersion) {
-  return `${semver.major(libsVersion)}${semver.minor(libsVersion)}${semver.patch(libsVersion)}`;
-}
-
-function getPrereleaseLibsVersion(libsVersion) {
-  return semver.prerelease(libsVersion) ? `-${semver.prerelease(libsVersion).join('.')}` : '';
+function getPreviousLibsVersion(oryxVersionDelimiter, labsPatchDelimiter) {
+  return currentLabsVersion.split(oryxVersionDelimiter)[1].split(labsPatchDelimiter)[0];
 }
 
 function createTag(version) {
