@@ -97,6 +97,16 @@ export class PasswordInputComponent
     super.updated(_changedProperties);
   }
 
+  isValid(): boolean {
+    return (
+      !this.minLengthError &&
+      !this.maxLengthError &&
+      !this.minUppercaseCharsError &&
+      !this.minNumbersError &&
+      !this.minSpecialCharsError
+    );
+  }
+
   protected override render(): TemplateResult {
     return html`
       ${this.formControlController.render({

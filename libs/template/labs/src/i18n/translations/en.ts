@@ -35,7 +35,7 @@ const order = {
 
 const user = {
   'user.address.remove-info':
-    'Removing this address will not remove any pending orders being dispatched to this address',
+    'Removing this address will not remove any pending orders being dispatched to this` address',
 };
 
 const picking = {

@@ -1,14 +1,14 @@
 import { FormFieldOption } from '@spryker-oryx/form';
 import { Observable } from 'rxjs';
 
-export interface SalutationService {
+export interface GenderService {
   get(): Observable<FormFieldOption[]>;
 }
 
-export const SalutationService = 'oryx.SalutationService';
+export const GenderService = 'oryx.GenderService';
 
 declare global {
   interface InjectionTokensContractMap {
-    [SalutationService]: SalutationService;
+    [GenderService]: GenderService;
   }
 }

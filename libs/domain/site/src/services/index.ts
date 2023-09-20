@@ -3,6 +3,7 @@ export * from './breadcrumb';
 export * from './country';
 export * from './currency';
 export * from './error-handling';
+export * from './gender';
 export * from './link';
 export * from './locale';
 export * from './notification';
