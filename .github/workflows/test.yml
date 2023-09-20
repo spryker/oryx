@@ -168,7 +168,7 @@ jobs:
           SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
           STORE: DE
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-          PERCY_BRANCH: ${{ github.ref_name }}
+          PERCY_BRANCH: ${{ github.head_ref || github.ref_name }}
         with:
           cmd: npm run sf:e2e:headless:ci:visual-regression
           affectedCmd: npm run sf:e2e:headless:ci:visual-regression
