@@ -1,8 +1,8 @@
-import { WarehouseSelectionPage } from '../support/page_objects/warehouse-selection.page';
-import { WarehouseSelectionListFragment } from '../support/page_fragments/warehouse-selection-list.fragment';
 import { HeaderFragment } from '../support/page_fragments/header.fragment';
-import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
+import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
+import { WarehouseSelectionListFragment } from '../support/page_fragments/warehouse-selection-list.fragment';
+import { WarehouseSelectionPage } from '../support/page_objects/warehouse-selection.page';
 
 const warehouseSelectionPage = new WarehouseSelectionPage();
 const warehouseSelectionListFragment = new WarehouseSelectionListFragment();
@@ -18,11 +18,10 @@ describe('Warehouse selection', () => {
   });
 
   it('should check warehouses selection page', () => {
-
     headerFragment.getWrapper().should('be.visible');
     headerFragment.getUserIcon().should('be.visible');
     headerFragment.getUserIcon().click();
-// Need to add a check for verification Warehouse in the profile
+    // Need to add a check for verification Warehouse in the profile
     userProfileFragment.getWrapper().should('be.visible');
     userProfileFragment.getLogOutButton().should('be.visible');
     // Why we check it twice?

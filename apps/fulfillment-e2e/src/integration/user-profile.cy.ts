@@ -1,8 +1,8 @@
+import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
+import { PickingListsHeaderFragment } from '../support/page_fragments/picking-lists-header.fragment';
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
 import { LoginPage } from '../support/page_objects/login.page';
-import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
-import { PickingListsHeaderFragment } from '../support/page_fragments/picking-lists-header.fragment';
 
 const pickingListsFragment = new PickingListsFragment();
 const userProfileFragment = new UserProfileFragment();

@@ -1,5 +1,5 @@
-import { PickingPage } from '../support/page_objects/picking.page';
 import { PickingHeaderFragment } from '../support/page_fragments/picking-header.fragment';
+import { PickingPage } from '../support/page_objects/picking.page';
 
 const pickingListId = 'd5bf20f1-7f36-568d-85b5-e4502acbcc82';
 

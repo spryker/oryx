@@ -69,7 +69,7 @@ describe('When user interacts with the filters', () => {
     });
   });
 
-    // Change describe text to more clear
+  // Change describe text to more clear
   describe('And preselected filters are reset', () => {
     it('should restore default sorting configuration', () => {
       filtersFragment.getFilterButtonTrigger().click();
