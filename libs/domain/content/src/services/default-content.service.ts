@@ -10,7 +10,7 @@ export class DefaultContentService implements ContentService {
   protected contents: Record<string, string[]> = {};
 
   constructor(
-    protected adapters = inject(ContentAdapter, null),
+    protected adapters = inject(ContentAdapter, [] as ContentAdapter[]),
     protected config = inject(ContentConfig, [] as ContentConfig[]),
     protected injector = inject(INJECTOR)
   ) {
@@ -18,36 +18,44 @@ export class DefaultContentService implements ContentService {
   }
 
   protected contentQuery = createQuery<Content | null, ContentQualifier>({
-    loader: (q: ContentQualifier) =>
-      combineLatest(
-        this.getAdapters(q).map((adapter) =>
-          adapter.get(q).pipe(catchError(() => of(null)))
-        )
-      ).pipe(
-        map((contents) =>
-          contents.reduce(
-            (acc, curr) => (curr ? { ...acc, ...curr } : acc),
-            null
+    loader: (q: ContentQualifier) => {
+      const adapters = this.getAdapters(q);
+      return adapters.length > 0
+        ? combineLatest(
+            adapters.map((adapter) =>
+              adapter.get(q).pipe(catchError(() => of(null)))
+            )
+          ).pipe(
+            map((contents) =>
+              contents.reduce(
+                (acc, curr) => (curr ? { ...acc, ...curr } : acc),
+                null
+              )
+            )
           )
-        )
-      ),
+        : of(null);
+    },
     refreshOn: [LocaleChanged],
   });
 
   protected contentsQuery = createQuery<Content[] | null, ContentQualifier>({
-    loader: (q: ContentQualifier) =>
-      combineLatest(
-        this.getAdapters(q).map((adapter) =>
-          adapter.getAll(q).pipe(catchError(() => of(null)))
-        )
-      ).pipe(
-        map((contents) =>
-          contents.reduce(
-            (acc, curr) => (curr ? [...(acc ?? []), ...curr] : acc),
-            null
+    loader: (q: ContentQualifier) => {
+      const adapters = this.getAdapters(q);
+      return adapters.length > 0
+        ? combineLatest(
+            adapters.map((adapter) =>
+              adapter.getAll(q).pipe(catchError(() => of(null)))
+            )
+          ).pipe(
+            map((contents) =>
+              contents.reduce(
+                (acc, curr) => (curr ? [...(acc ?? []), ...curr] : acc),
+                null
+              )
+            )
           )
-        )
-      ),
+        : of(null);
+    },
     refreshOn: [LocaleChanged],
   });
 
