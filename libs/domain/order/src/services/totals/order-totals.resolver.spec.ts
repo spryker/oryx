@@ -76,7 +76,7 @@ describe('OrderTotalsResolver', () => {
           discount1: { displayName: 'Discount 1', sumAmount: -10 },
           discount2: { displayName: 'Discount 2', sumAmount: -5 },
         },
-        priceMode: 'GROSS',
+        priceMode: 'GROSS_MODE',
         shipments: [{ defaultGrossPrice: 400 }],
       } as unknown as OrderData;
 

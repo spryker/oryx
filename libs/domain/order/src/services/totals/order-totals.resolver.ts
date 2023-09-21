@@ -1,6 +1,7 @@
 import {
   CartDiscount,
   NormalizedTotals,
+  PriceMode,
   TotalsResolver,
 } from '@spryker-oryx/cart';
 import { ContextService } from '@spryker-oryx/core';
@@ -55,7 +56,12 @@ export class OrderTotalsResolver implements TotalsResolver {
 
         return {
           ...totals,
-          shipmentTotal: shipments?.[0].defaultGrossPrice,
+          shipmentTotal:
+            shipments?.[0][
+              priceMode === PriceMode.GrossMode
+                ? 'defaultGrossPrice'
+                : 'defaultNetPrice'
+            ],
           priceToPay: totals.grandTotal,
           priceMode,
           currency,
