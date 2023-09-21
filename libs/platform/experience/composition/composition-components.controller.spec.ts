@@ -1,21 +1,24 @@
 import { TokenResolver } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
+import {
+  Component,
+  ExperienceService,
+  ScreenService,
+} from '@spryker-oryx/experience';
 import * as utils from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { of } from 'rxjs';
-import { SpyInstance } from 'vitest';
+import { SpyInstance, describe } from 'vitest';
 import { CompositionComponentsController } from './composition-components.controller';
-import {
-  ExperienceService,
-  ScreenService,
-  Component,
-} from '@spryker-oryx/experience';
 
 const mockElement = {
   tagName: 'tagName',
 } as unknown as LitElement;
 const mockUid = 'mockUid';
+const rules = ['mockRule1', 'mockRule2'];
+
 const hideByRule = 'mockRule';
+const hideByOrConditionalRule = rules.join('||');
 
 const mockComponent: Component = {
   id: 'mockId',
@@ -68,6 +71,22 @@ const mockComponentWithVisibilityRule: Component = {
         rules: [
           {
             hideByRule,
+          },
+        ],
+      },
+    },
+  ],
+};
+
+const mockComponentWithVisibilityConditionalRule: Component = {
+  ...mockComponent,
+  components: [
+    {
+      ...mockComponent,
+      options: {
+        rules: [
+          {
+            hideByRule: hideByOrConditionalRule,
           },
         ],
       },
@@ -372,6 +391,81 @@ describe('CompositionComponentsController', () => {
 
         it('should filter the components', () => {
           expect(callback).toBeCalledWith([]);
+        });
+      });
+
+      describe('and there is `||` conditional rule', () => {
+        describe('and rules are resolved with false', () => {
+          const callback = vi.fn();
+          beforeEach(() => {
+            experienceService.getComponent = vi
+              .fn()
+              .mockReturnValue(of(mockComponentWithVisibilityConditionalRule));
+            const controller = new CompositionComponentsController(mockElement);
+            controller.getComponents().subscribe(callback);
+          });
+
+          it('should resolve tokens', () => {
+            expect(tokenResolver.resolveToken).toBeCalledTimes(rules.length);
+            rules.forEach((rule) => {
+              expect(tokenResolver.resolveToken).toBeCalledWith(rule);
+            });
+          });
+
+          it('should not filter the components', () => {
+            expect(callback).toBeCalledWith(
+              mockComponentWithVisibilityConditionalRule.components
+            );
+          });
+        });
+
+        describe('and rules are resolved with true', () => {
+          const callback = vi.fn();
+          beforeEach(() => {
+            tokenResolver.resolveToken = vi.fn().mockReturnValue(of(true));
+            experienceService.getComponent = vi
+              .fn()
+              .mockReturnValue(of(mockComponentWithVisibilityConditionalRule));
+            const controller = new CompositionComponentsController(mockElement);
+            controller.getComponents().subscribe(callback);
+          });
+
+          it('should resolve tokens', () => {
+            expect(tokenResolver.resolveToken).toBeCalledTimes(rules.length);
+            rules.forEach((rule) => {
+              expect(tokenResolver.resolveToken).toBeCalledWith(rule);
+            });
+          });
+
+          it('should filter the components', () => {
+            expect(callback).toBeCalledWith([]);
+          });
+        });
+
+        describe('and one of rules is resolved with true', () => {
+          const callback = vi.fn();
+          beforeEach(() => {
+            tokenResolver.resolveToken = vi
+              .fn()
+              .mockReturnValueOnce(of(false))
+              .mockReturnValueOnce(of(true));
+            experienceService.getComponent = vi
+              .fn()
+              .mockReturnValue(of(mockComponentWithVisibilityConditionalRule));
+            const controller = new CompositionComponentsController(mockElement);
+            controller.getComponents().subscribe(callback);
+          });
+
+          it('should resolve tokens', () => {
+            expect(tokenResolver.resolveToken).toBeCalledTimes(rules.length);
+            rules.forEach((rule) => {
+              expect(tokenResolver.resolveToken).toBeCalledWith(rule);
+            });
+          });
+
+          it('should filter the components', () => {
+            expect(callback).toBeCalledWith([]);
+          });
         });
       });
     });

@@ -9,7 +9,7 @@ import {
 } from '@spryker-oryx/experience';
 import { ObserveController, Size } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
-import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
+import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 
 export class CompositionComponentsController implements ReactiveController {
   hostConnected?(): void;
@@ -74,11 +74,16 @@ export class CompositionComponentsController implements ReactiveController {
         if (rules.hide) {
           return of(null);
         }
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return this.tokenResolver.resolveToken(rules.hideByRule!).pipe(
-          //hidden by default
-          startWith(true),
-          map((value) => (value ? null : component))
+
+        const hideRules =
+          rules.hideByRule?.split('||').map((rule) => rule.trim()) ?? [];
+
+        return combineLatest(
+          hideRules.map((rule) => this.tokenResolver.resolveToken(rule))
+        ).pipe(
+          map((resolvedValues) =>
+            resolvedValues.some((value) => value) ? null : component
+          )
         );
       })
     ).pipe(map((components) => components.filter(Boolean) as Component[]));

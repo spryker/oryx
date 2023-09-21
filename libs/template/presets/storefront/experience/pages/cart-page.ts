@@ -1,5 +1,4 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { isServer } from 'lit';
 
 export const cartPage: ExperienceComponent = {
   id: 'cart-page',
@@ -28,7 +27,7 @@ export const cartPage: ExperienceComponent = {
       },
       options: {
         rules: [
-          { hideByRule: 'CART.!EMPTY', hide: isServer },
+          { hideByRule: 'CORE.SERVER||CART.!EMPTY' },
           {
             colSpan: 2,
             background: 'var(--oryx-color-neutral-3)',
