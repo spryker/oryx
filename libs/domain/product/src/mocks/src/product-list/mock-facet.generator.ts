@@ -38,3 +38,20 @@ export const generateFacet = (
     values: generateValues(valuesLength, name, selectedValues, children),
   };
 };
+
+
+export const generateRange = (
+  name: string,
+  parameter: string,
+  range: number[],
+  selectedValues?: number[]
+): Facet => {
+  const [ min, max ] = range;
+  return {
+    name,
+    parameter,
+    valuesTreeLength: 1,
+    values: { min, max: max ?? min },
+    selectedValues: selectedValues ?? range,
+  };
+};
