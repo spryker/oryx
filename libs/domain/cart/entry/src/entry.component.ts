@@ -61,7 +61,6 @@ export class CartEntryComponent
   @signalProperty({ type: Number }) quantity?: number;
   @property() key?: string;
   @property({ type: Number }) price?: number;
-  @property({ type: Number }) itemPrice?: number;
   @property({ type: Number }) unitPrice?: number;
   @property({ type: Number }) discountedUnitPrice?: number;
   @property({ type: Boolean }) readonly?: boolean;
@@ -170,6 +169,7 @@ export class CartEntryComponent
         <oryx-site-price
           .value=${this.price}
           .currency=${this.currency}
+          class="subtotal"
         ></oryx-site-price>
         ${when(
           this.$options()?.enableItemPrice,
@@ -181,12 +181,14 @@ export class CartEntryComponent
                 .value=${this.unitPrice}
                 .currency=${this.currency}
                 original
+                class="original"
               ></oryx-site-price>
 
               <oryx-site-price
                 .value=${this.discountedUnitPrice}
                 .currency=${this.currency}
                 discounted
+                class="sales"
               ></oryx-site-price>
             </div>`
         )}

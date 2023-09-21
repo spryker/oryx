@@ -9,21 +9,12 @@ const pricing = css`
     padding-inline-end: 20px;
   }
 
-  oryx-product-price,
-  oryx-product-price::part(original) {
-    color: inherit;
-  }
-
-  oryx-product-price {
-    display: contents;
-  }
-
   .image {
     grid-row: span 2;
     height: auto;
   }
 
-  .pricing > oryx-site-price {
+  oryx-site-price.subtotal {
     font-size: var(--oryx-typography-h6-size);
     font-weight: var(--oryx-typography-h6-weight);
     line-height: var(--oryx-typography-h6-line);
@@ -39,24 +30,6 @@ const pricing = css`
     align-items: center;
     grid-auto-flow: column;
     gap: 4px;
-  }
-
-  oryx-product-price,
-  oryx-product-price::part(sales),
-  oryx-product-price::part(original),
-  oryx-product-price::part(tax) {
-    font-size: inherit;
-    font-weight: inherit;
-    line-height: inherit;
-    grid-column: initial;
-  }
-
-  oryx-product-price::part(original) {
-    grid-column: 2;
-  }
-
-  .item-price oryx-product-price {
-    gap: inherit;
   }
 `;
 

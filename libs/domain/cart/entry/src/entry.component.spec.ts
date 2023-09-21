@@ -232,8 +232,12 @@ describe('CartEntryComponent', () => {
             ></oryx-cart-entry>`);
           });
 
-          it('should render enableItemPrice by default', () => {
-            expect(element).toContainElement('oryx-product-price');
+          it('should render the original unit price by default', () => {
+            expect(element).toContainElement('oryx-site-price.original');
+          });
+
+          it('should render the discounted unit price by default', () => {
+            expect(element).toContainElement('oryx-site-price.sales');
           });
         });
 
@@ -244,8 +248,13 @@ describe('CartEntryComponent', () => {
               .options=${{ enableItemPrice: false }}
             ></oryx-cart-entry>`);
           });
-          it('should not render enableItemPrice', () => {
-            expect(element).not.toContainElement('oryx-product-price');
+
+          it('should not render the original unit price by default', () => {
+            expect(element).not.toContainElement('oryx-site-price.original');
+          });
+
+          it('should not render the discounted unit price by default', () => {
+            expect(element).not.toContainElement('oryx-site-price.sales');
           });
         });
 
@@ -256,8 +265,13 @@ describe('CartEntryComponent', () => {
               .options=${{ enableItemPrice: true }}
             ></oryx-cart-entry>`);
           });
-          it('should render enableItemPrice', () => {
-            expect(element).toContainElement('oryx-product-price');
+
+          it('should render the original unit price by default', () => {
+            expect(element).toContainElement('oryx-site-price.original');
+          });
+
+          it('should render the discounted unit price by default', () => {
+            expect(element).toContainElement('oryx-site-price.sales');
           });
         });
       });
