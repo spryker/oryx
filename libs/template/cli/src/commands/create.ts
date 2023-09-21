@@ -4,7 +4,6 @@ import {
   log,
   note,
   outro,
-  select,
   spinner,
   text,
 } from '@clack/prompts';
@@ -57,24 +56,13 @@ Aliases: ${c.bold('c')}
 
 Options:
   ${c.dim('-n, --name')}    The name of the app and the directory to create.
-  ${c.dim('-p, --preset')}  The preset to use. Possible values: ${Object.values(
-      OryxPreset
-    ).join(', ')}
 `;
   }
 
   async execute(): Promise<void> {
     const options: CreateAppOptions = {
       name: this.argsService.get('name') as string,
-      preset: this.argsService.get('preset') as OryxPreset,
     };
-
-    if (options.preset && !Object.values(OryxPreset).includes(options.preset)) {
-      throw new Error(
-        `Unknown preset '${options.preset}'!
-Possible values: ${Object.values(OryxPreset).join(', ')}`
-      );
-    }
 
     await this.createApp(options);
   }
@@ -170,45 +158,12 @@ Please make sure to not use an existing directory name.`
     return this.repoUrl.replace('{ref}', this.repoRefs[ref]);
   }
 
-  // WIP
-  // protected getTemplateFolder(preset: OryxPreset): string {
-  //   switch (preset) {
-  //     case OryxPreset.B2C:
-  //       return 'storefront';
-  //     case OryxPreset.Fulfillment:
-  //       return 'fulfillment';
-  //   }
-  // }
-
   protected promptName(): Promise<string> {
     return this.promptValue(
       text({
         message: `What is the name of your app?`,
         placeholder: 'oryx-app',
         defaultValue: 'oryx-app',
-      })
-    );
-  }
-
-  protected promptPreset(): Promise<OryxPreset> {
-    return this.promptValue(
-      select({
-        message: `Which preset would you like to use? ${c.dim(
-          `[--preset, -p]`
-        )}`,
-        initialValue: OryxPreset.B2C as OryxPreset,
-        options: [
-          {
-            value: OryxPreset.B2C,
-            label: 'B2C',
-            hint: 'For standard B2C based storefronts',
-          },
-          {
-            value: OryxPreset.Fulfillment,
-            label: 'Fulfillment',
-            hint: 'For fulfillment related applications',
-          },
-        ],
       })
     );
   }
@@ -230,14 +185,7 @@ interface CreateAppConfig extends Required<CreateAppOptions> {
 
 export interface CreateAppOptions {
   name?: string;
-  preset?: OryxPreset;
   options?: OryxOption[];
-}
-
-export enum OryxPreset {
-  B2C = 'b2c',
-  B2B = 'b2b',
-  Fulfillment = 'fulfillment',
 }
 
 export enum OryxTemplateRef {
