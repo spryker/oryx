@@ -30,8 +30,6 @@ appBuilder()
       },
     ],
   })
-  .withFeature(siteFeature)
-  .withFeature(formFeature)
   .withFeature(
     offlineFulfillmentFeatures({
       picking: {

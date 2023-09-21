@@ -228,9 +228,8 @@ const siteLinks = {
 };
 
 export const FooterTemplate: ExperienceComponent = {
+  type: 'oryx-composition',
   id: 'footer',
-  type: 'Page',
-  meta: { title: 'Footer', route: '/_footer' },
   components: [
     {
       type: 'oryx-composition',

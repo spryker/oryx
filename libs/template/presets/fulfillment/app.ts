@@ -2,6 +2,7 @@ import { BapiAuthComponentsFeature, BapiAuthFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { Resources } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
 import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web';
@@ -16,6 +17,8 @@ import {
   FulfillmentRootFeature,
   FulfillmentRootFeatureConfig,
 } from './feature';
+import {siteFeature} from "@spryker-oryx/site";
+import {formFeature} from "@spryker-oryx/form";
 
 export function fulfillmentFeatures(
   config?: FulfillmentFeaturesConfig
@@ -24,18 +27,25 @@ export function fulfillmentFeatures(
     uiFeature,
     cartFeature,
     coreFeature,
+    (featureVersion >= '1.1') ? [
+      siteFeature,
+      formFeature,
+    ] : {},
     new RouterFeature(),
     new I18nFeature(config?.i18n),
     new WebPushNotificationFeature(),
     new BapiAuthFeature(),
     new BapiAuthComponentsFeature(),
     { resources: fulfillmentResources },
-    new FulfillmentRootFeature(config?.fulfillmentRoot),
+    (featureVersion < '1.1') ? new FulfillmentRootFeature(config?.fulfillmentRoot) : {},
     new PickingFeature(config?.picking),
   ];
 }
 
 export interface FulfillmentFeaturesConfig {
+  /**
+   * @deprecated Since version 1.1.
+   */
   fulfillmentRoot?: FulfillmentRootFeatureConfig;
   picking?: PickingFeatureConfig;
   i18n?: I18nFeatureOptions;

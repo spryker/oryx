@@ -3,9 +3,8 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
+  type: 'oryx-composition',
   id: 'header',
-  type: 'Page',
-  meta: { title: 'Header', route: '/_header' },
   components: [
     {
       type: 'oryx-composition',
