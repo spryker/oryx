@@ -10,7 +10,7 @@ export class DefaultContentService implements ContentService {
   protected contents: Record<string, string[]> = {};
 
   constructor(
-    protected adapters = inject(ContentAdapter),
+    protected adapters = inject(ContentAdapter, [] as ContentAdapter[]),
     protected config = inject(ContentConfig, [] as ContentConfig[]),
     protected injector = inject(INJECTOR)
   ) {

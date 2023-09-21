@@ -20,7 +20,10 @@ export type ComponentSchema<Options, Content> = {
 };
 
 export type ContentComponentSchema<
-  T = ContentMixinInterface<unknown, unknown>
-> = T extends ContentMixinInterface<infer Options, infer Content> | LitElement
-  ? ComponentSchema<Options, Content>
+  Component = ContentMixinInterface<unknown, unknown>,
+  CustomOptions = unknown
+> = Component extends
+  | ContentMixinInterface<infer Options, infer Content>
+  | LitElement
+  ? ComponentSchema<Options & CustomOptions, Content>
   : never;

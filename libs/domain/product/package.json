@@ -20,7 +20,6 @@
     }
   },
   "dependencies": {
-    "@spryker-oryx/content": "1.0.2",
     "@spryker-oryx/core": "1.0.2",
     "@spryker-oryx/di": "1.0.2",
     "@spryker-oryx/experience": "1.0.2",
