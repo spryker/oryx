@@ -65,9 +65,10 @@ export class DefaultCheckoutService implements CheckoutService {
         ),
         switchMap((response) => this.resolveRedirect(response)),
         switchMap((response) =>
-          this.identityService
-            .get()
-            .pipe(map((user) => ({ ...response, userId: user.userId })))
+          this.identityService.get().pipe(
+            take(1),
+            map((user) => ({ ...response, userId: user.userId }))
+          )
         )
       );
     },
@@ -113,6 +114,9 @@ export class DefaultCheckoutService implements CheckoutService {
             type: RouteType.Order,
             id: response.orderReference,
           })
-          .pipe(map((redirectUrl) => ({ ...response, redirectUrl })));
+          .pipe(
+            take(1),
+            map((redirectUrl) => ({ ...response, redirectUrl }))
+          );
   }
 }
