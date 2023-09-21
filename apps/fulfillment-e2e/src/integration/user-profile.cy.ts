@@ -24,7 +24,7 @@ describe('When a user opens the user profile modal', () => {
     userProfileFragment.getNotification().should('not.exist');
   });
 
-  describe('and user clicks on log out button', () => {
+  describe('and user clicks on log out button', { tags: 'smoke' }, () => {
     beforeEach(() => {
       userProfileFragment.getLogOutButton().click();
     });

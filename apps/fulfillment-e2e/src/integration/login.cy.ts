@@ -1,12 +1,12 @@
 import { OauthHandlerFragment } from '../support/page_fragments/oauth-handler.fragment';
-import { LoginPage } from '../support/page_objects/login.page';
 import { WarehouseSelectionListFragment } from '../support/page_fragments/warehouse-selection-list.fragment';
+import { LoginPage } from '../support/page_objects/login.page';
 
 const warehouseSelectionListFragment = new WarehouseSelectionListFragment();
 const loginPage = new LoginPage();
 const oauthHandler = new OauthHandlerFragment();
 
-describe('Login Suite', () => {
+describe('Login Suite', { tags: 'smoke' }, () => {
   beforeEach(() => {
     cy.clearIndexedDB();
   });

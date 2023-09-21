@@ -6,7 +6,7 @@ const pickingListsFragment = new PickingListsFragment();
 const headerFragment = new PickingListsHeaderFragment();
 const userProfileFragment = new UserProfileFragment();
 
-describe('Picking Lists Search', () => {
+describe('Picking Lists Search', { tags: 'smoke' }, () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();

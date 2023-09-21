@@ -3,8 +3,8 @@ import { PickingHeaderFragment } from '../support/page_fragments/picking-header.
 import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
 import { PickingProductFragment } from '../support/page_fragments/picking-product.fragment';
 import { PickingFragment } from '../support/page_fragments/picking.fragment';
-import { PickingPage } from '../support/page_objects/picking.page';
 import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
+import { PickingPage } from '../support/page_objects/picking.page';
 
 const pickingListId = '37cb241e-f18a-5768-985c-a2d7aff4875e';
 
@@ -17,7 +17,7 @@ const pickingHeaderFragment = new PickingHeaderFragment();
 const customerNoteModalFragment = new CustomerNoteModalFragment();
 const userProfileFragment = new UserProfileFragment();
 
-describe('Partial picking a picklist', () => {
+describe('Partial picking a picklist', { tags: 'smoke' }, () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();

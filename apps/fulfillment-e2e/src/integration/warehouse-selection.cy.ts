@@ -10,7 +10,7 @@ const headerFragment = new HeaderFragment();
 const userProfileFragment = new UserProfileFragment();
 const pickingListsFragment = new PickingListsFragment();
 
-describe('Warehouse selection', () => {
+describe('Warehouse selection', { tags: 'smoke' }, () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();

@@ -9,7 +9,10 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
+import registerCypressGrep from '@cypress/grep/src/support';
 import './commands';
+
+registerCypressGrep();
 
 Cypress.on('uncaught:exception', (err) => {
   const ignoreErrors = [

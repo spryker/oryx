@@ -4,7 +4,7 @@ import { PickingListsFragment } from '../support/page_fragments/picking-lists.fr
 const pickingListsFragment = new PickingListsFragment();
 const customerNoteFragment = new CustomerNoteModalFragment();
 
-describe('Customer note suite', () => {
+describe('Customer note suite', { tags: 'smoke' }, () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();

@@ -2,7 +2,7 @@ import { PickingProductFragment } from '../support/page_fragments/picking-produc
 import { PickingFragment } from '../support/page_fragments/picking.fragment';
 import { PickingPage } from '../support/page_objects/picking.page';
 
-describe('Fully pick a picking list', () => {
+describe('Fully pick a picking list', { tags: 'smoke' }, () => {
   const pickingListId = '37cb241e-f18a-5768-985c-a2d7aff4875e';
 
   const pickingPage = new PickingPage(pickingListId);
