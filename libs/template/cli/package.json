@@ -10,7 +10,7 @@
   "bin": {
     "oryx": "./bin/cli.js"
   },
-  "devDependencies": {
+  "dependencies": {
     "@clack/prompts": "^0.6.3",
     "@spryker-oryx/core": "*",
     "@spryker-oryx/di": "*",
