@@ -42,10 +42,7 @@ describe('CoreResolver', () => {
     describe('when isServer is true', () => {
       beforeEach(async () => {
         const lit = await import('lit');
-
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        lit.isServer = true;
+        (lit as { isServer: boolean }).isServer = true;
 
         resolver.resolve('SERVER').subscribe(callback);
       });
