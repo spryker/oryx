@@ -30,7 +30,7 @@ describe('CoreResolver', () => {
     const callback = vi.fn();
 
     describe('when isServer is false', () => {
-      beforeEach(async () => {
+      beforeEach(() => {
         resolver.resolve('SERVER').subscribe(callback);
       });
 
