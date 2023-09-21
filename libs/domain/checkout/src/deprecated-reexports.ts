@@ -1,11 +1,11 @@
-import * as services from '@spryker-oryx/checkout/services';
 import { featureVersion } from '@spryker-oryx/utilities';
+import * as services from '../services/src/index';
 
 const reexports: typeof services =
   featureVersion < '1.1' ? services : (undefined as any);
 
 /** @deprecated since 1.1, use DefaultCartService from @spryker-oryx/cart/services */
-export const DefaultCartService = reexports?.DefaultCheckoutService;
+export const DefaultCheckoutService = reexports?.DefaultCheckoutService;
 /** @deprecated since 1.1, use DefaultCheckoutAdapter from @spryker-oryx/cart/services */
 export const DefaultCheckoutAdapter = reexports?.DefaultCheckoutAdapter;
 /** @deprecated since 1.1, use DefaultCheckoutDataService from @spryker-oryx/cart/services */

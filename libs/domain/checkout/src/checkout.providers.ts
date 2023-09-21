@@ -1,4 +1,5 @@
 import { Provider } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import {
   checkoutAttributesNormalizer,
   checkoutCartsNormalizer,
@@ -7,31 +8,29 @@ import {
   checkoutShipmentsNormalizer,
   paymentsNormalizer,
   shipmentsNormalizer,
-} from '../../services/src/adapter/normalizers';
+} from '../services/src/adapter/normalizers';
 import {
-  CheckoutAdapter,
-  CheckoutDataSerializer,
-  CheckoutNormalizer,
-  CheckoutResponseNormalizer,
-  CheckoutSerializer,
-  PaymentsNormalizer,
-  ShipmentsNormalizer,
-} from './adapter';
-
+  checkoutAttributesSerializer,
+  checkoutDataAttributesSerializer,
+} from '../services/src/adapter/serializers';
 import {
   DefaultCheckoutAdapter,
   DefaultCheckoutDataService,
   DefaultCheckoutService,
   DefaultCheckoutStateService,
-} from '@spryker-oryx/checkout/services';
-import { featureVersion } from '@spryker-oryx/utilities';
+} from './deprecated-reexports';
 import {
-  checkoutAttributesSerializer,
-  checkoutDataAttributesSerializer,
-} from '../../services/src/adapter/serializers';
-import { CheckoutService } from './checkout.service';
-import { CheckoutDataService } from './data';
-import { CheckoutStateService } from './state';
+  CheckoutAdapter,
+  CheckoutDataSerializer,
+  CheckoutDataService,
+  CheckoutNormalizer,
+  CheckoutResponseNormalizer,
+  CheckoutSerializer,
+  CheckoutService,
+  CheckoutStateService,
+  PaymentsNormalizer,
+  ShipmentsNormalizer,
+} from './services';
 
 export const checkoutNormalizer: Provider[] = [
   {

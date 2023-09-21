@@ -5,12 +5,6 @@ import {
   CartQuery,
   CartService,
 } from '@spryker-oryx/cart';
-import {
-  CheckoutAdapter,
-  CheckoutData,
-  CheckoutDataService,
-  CheckoutStateService,
-} from '@spryker-oryx/checkout';
 import { createQuery, injectQuery } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
@@ -25,6 +19,21 @@ import {
   take,
   using,
 } from 'rxjs';
+
+/* deprecated since 1.1, we should use imports from @spryker-oryx/checkout:
+import {
+  CheckoutAdapter,
+  CheckoutData,
+  CheckoutDataService,
+  CheckoutStateService,
+} from '@spryker-oryx/checkout';
+ */
+import { CheckoutData } from '../../../src/models';
+import {
+  CheckoutAdapter,
+  CheckoutDataService,
+  CheckoutStateService,
+} from '../../../src/services';
 
 // TODO: on logout, we should clear the data (could be part of logout -> storage)
 export class DefaultCheckoutDataService implements CheckoutDataService {

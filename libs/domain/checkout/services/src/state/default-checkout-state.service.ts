@@ -1,9 +1,5 @@
 import { IdentityService } from '@spryker-oryx/auth';
-import {
-  CheckoutStateService,
-  PlaceOrderData,
-  checkoutDataStorageKey,
-} from '@spryker-oryx/checkout';
+
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
@@ -17,6 +13,16 @@ import {
   skip,
   take,
 } from 'rxjs';
+
+/* deprecated since 1.1, we should use imports from @spryker-oryx/checkout:
+import {
+  CheckoutStateService,
+  PlaceOrderData,
+  checkoutDataStorageKey,
+} from '@spryker-oryx/checkout';
+ */
+import { PlaceOrderData, checkoutDataStorageKey } from '../../../src/models';
+import { CheckoutStateService } from '../../../src/services';
 
 type CheckoutValue = {
   valid?: boolean;
