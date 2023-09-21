@@ -163,6 +163,8 @@ export class CartEntryComponent
           ?disabled=${this.$isBusy()}
         ></oryx-cart-quantity-input>`;
 
+    const isDiscounted = this.unitPrice !== this.discountedUnitPrice;
+
     return html`
       <section class="pricing">
         ${qtyTemplate}
@@ -177,17 +179,22 @@ export class CartEntryComponent
             html`<div class="unit-price">
               <span>${this.i18n('cart.entry.item-price')}</span>
 
-              <oryx-site-price
-                .value=${this.unitPrice}
-                .currency=${this.currency}
-                original
-                class="original"
-              ></oryx-site-price>
+              ${when(
+                isDiscounted,
+                () => html`
+                  <oryx-site-price
+                    .value=${this.unitPrice}
+                    .currency=${this.currency}
+                    original
+                    class="original"
+                  ></oryx-site-price>
+                `
+              )}
 
               <oryx-site-price
                 .value=${this.discountedUnitPrice}
                 .currency=${this.currency}
-                discounted
+                ?discounted=${isDiscounted}
                 class="sales"
               ></oryx-site-price>
             </div>`

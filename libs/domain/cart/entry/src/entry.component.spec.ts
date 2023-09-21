@@ -229,6 +229,8 @@ describe('CartEntryComponent', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               quantity="1"
+              unitPrice="100"
+              discountedUnitPrice="200"
             ></oryx-cart-entry>`);
           });
 
@@ -245,6 +247,8 @@ describe('CartEntryComponent', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               quantity="1"
+              unitPrice="100"
+              discountedUnitPrice="200"
               .options=${{ enableItemPrice: false }}
             ></oryx-cart-entry>`);
           });
@@ -262,6 +266,8 @@ describe('CartEntryComponent', () => {
           beforeEach(async () => {
             element = await fixture(html` <oryx-cart-entry
               quantity="1"
+              unitPrice="100"
+              discountedUnitPrice="200"
               .options=${{ enableItemPrice: true }}
             ></oryx-cart-entry>`);
           });
@@ -374,6 +380,44 @@ describe('CartEntryComponent', () => {
             '.actions oryx-button:not([disabled])'
           );
         });
+      });
+    });
+
+    describe('discounted unit price', () => {
+      describe('when the unit price is the same as the discounted unit price', () => {
+        beforeEach(async () => {
+          element = await fixture(html` <oryx-cart-entry
+            quantity="1"
+            unitPrice="100"
+            discountedUnitPrice="100"
+          ></oryx-cart-entry>`);
+        });
+
+        it('should not render the original price', () => {
+          expect(element).not.toContainElement('oryx-site-price.original');
+        });
+
+        it('should render the sales price', () => {
+          expect(element).toContainElement('oryx-site-price.sales');
+        });
+      });
+    });
+
+    describe('when the unit price is not the same as the discounted unit price', () => {
+      beforeEach(async () => {
+        element = await fixture(html` <oryx-cart-entry
+          quantity="1"
+          unitPrice="100"
+          discountedUnitPrice="200"
+        ></oryx-cart-entry>`);
+      });
+
+      it('should render the original price', () => {
+        expect(element).toContainElement('oryx-site-price.original');
+      });
+
+      it('should render the sales price', () => {
+        expect(element).toContainElement('oryx-site-price.sales');
       });
     });
   });
