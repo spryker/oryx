@@ -108,7 +108,7 @@ export class DefaultCheckoutService implements CheckoutService {
     response: CheckoutResponse
   ): Observable<CheckoutResponse> {
     return response.redirectUrl
-      ? of(response).pipe()
+      ? of(response)
       : this.linkService
           .get({
             type: RouteType.Order,
