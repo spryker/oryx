@@ -1,5 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
-import { FacetValue } from '@spryker-oryx/product';
+import {
+  FacetType,
+  FacetValue,
+  RangeFacet,
+  RangeFacetValue,
+} from '@spryker-oryx/product';
 import { FacetListService } from '@spryker-oryx/search';
 import {
   FACET_CLEAR_EVENT,
@@ -7,9 +12,9 @@ import {
   ToggleFacetEventDetail,
 } from '@spryker-oryx/search/facet-value-navigation';
 import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
-import { computed, ObserveController, signal } from '@spryker-oryx/utilities';
+import { ObserveController, computed, signal } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
-import { defer, Observable, of, switchMap } from 'rxjs';
+import { Observable, defer, of, switchMap } from 'rxjs';
 import {
   FACET_SELECT_EVENT,
   SearchFacetComponentAttributes,
@@ -31,7 +36,7 @@ export class FacetController implements ReactiveController {
           name
             ? (this.facetListService.getFacet({
                 name,
-              }) as Observable<SingleMultiFacet>)
+              }) as Observable<SingleMultiFacet | RangeFacet>)
             : of(null)
         )
       )
@@ -48,13 +53,21 @@ export class FacetController implements ReactiveController {
     const renderLimit = this.$renderLimit();
     const showAll = this.$showAll();
 
+    //TODO: refactor to use facet.type instead typeof 'values' field to recognize single|multi facet
     if (facet && Array.isArray(facet.values)) {
-      const filteredValues = this.filterFacetValues(facet, search);
+      const filteredValues = this.filterFacetValues(
+        facet as SingleMultiFacet,
+        search
+      );
       const limitedValues = this.cutByRenderLimit(
         filteredValues,
         showAll ? Infinity : renderLimit
       );
       return limitedValues;
+    }
+
+    if (facet?.type === FacetType.Range) {
+      return facet;
     }
 
     return null;
@@ -63,24 +76,28 @@ export class FacetController implements ReactiveController {
   protected selectedValues = computed(() => {
     const facet = this.$facet();
 
-    return facet
-      ? facet.values.filter(({ name }) =>
-          (facet.selectedValues ?? []).includes(name as string)
-        )
-      : [];
+    if (!facet) return [];
+
+    if (facet.type === FacetType.Range) {
+      return (facet as RangeFacet).values.selected!;
+    }
+
+    return facet.values.filter(({ name }) =>
+      (facet.selectedValues ?? []).includes(name as string)
+    );
   });
 
   /**
    * Returns modified data based on searching and cutting by renderLimit.
    */
-  getFacet(): SingleMultiFacet | null {
+  getFacet(): SingleMultiFacet | RangeFacet | null {
     return this.computedFacet();
   }
 
   /**
    * Returns an array with all selected facet values
    */
-  getSelectedValues(): FacetValue[] {
+  getSelectedValues(): FacetValue[] | RangeFacetValue {
     return this.selectedValues();
   }
 

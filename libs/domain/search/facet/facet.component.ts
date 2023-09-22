@@ -1,14 +1,15 @@
-import { FacetValue } from '@spryker-oryx/product';
+import { FacetType, FacetValue } from '@spryker-oryx/product';
 import {
-  computed,
   I18nMixin,
+  computed,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { FacetController } from './controllers';
+import { SingleMultiFacet } from './facet.model';
 import { searchFacetStyles } from './facet.styles';
 
 @signalAware()
@@ -35,10 +36,8 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
   }
 
   protected override render(): TemplateResult | void {
-    const facet = this.facet();
+    const facet = this.facet() as SingleMultiFacet;
 
-    console.log(this.name);
-    
     if (!facet) return;
 
     const valuesLength = facet.filteredValueLength ?? facet.valuesTreeLength;
@@ -102,13 +101,17 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
   }
 
   protected get isSearchable(): boolean {
-    return (
-      (this.facet()?.valuesTreeLength ?? 0) > (this.minForSearch ?? Infinity)
-    );
+    const facet = this.facet();
+
+    if (facet?.type === FacetType.Range) return false;
+
+    return (facet?.valuesTreeLength ?? 0) > (this.minForSearch ?? Infinity);
   }
 
   protected get isFoldable(): boolean {
     const facet = this.facet();
+
+    if (facet?.type === FacetType.Range) return false;
 
     return (
       (facet?.filteredValueLength ?? facet?.valuesTreeLength ?? 0) >

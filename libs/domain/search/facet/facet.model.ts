@@ -1,14 +1,15 @@
-import { Facet, FacetValue } from '@spryker-oryx/product';
+import { FacetValue, RangeFacetValue, ValueFacet } from '@spryker-oryx/product';
 
 export const FACET_SELECT_EVENT = 'oryx.select';
 
 export interface SelectFacetEventDetail {
   name: string;
-  value?: Pick<FacetValue, 'value' | 'selected'>;
+  value?:
+    | Pick<FacetValue, 'value' | 'selected'>
+    | Pick<RangeFacetValue, 'selected'>;
 }
 
-export interface SingleMultiFacet extends Omit<Facet, 'values'> {
-  values: FacetValue[];
+export interface SingleMultiFacet extends ValueFacet {
   filteredValueLength?: number;
 }
 

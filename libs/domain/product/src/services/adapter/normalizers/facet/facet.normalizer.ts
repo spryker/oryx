@@ -1,5 +1,10 @@
 import { Transformer } from '@spryker-oryx/core';
-import { ApiProductListModel, Facet, FacetValue } from '../../../../models';
+import {
+  ApiProductListModel,
+  Facet,
+  FacetType,
+  FacetValue,
+} from '../../../../models';
 
 export interface FacetNormalizerValue {
   facetList: ApiProductListModel.ValueFacet[];
@@ -64,11 +69,13 @@ export const parseFacetValue = (
 
   return facetValues.length
     ? {
+        type: config.isMultiValued ? FacetType.Multi : FacetType.Single,
         name: localizedName,
         parameter: config.parameterName,
         values: facetValues,
         selectedValues: selectedValue,
         valuesTreeLength: facetValues.length,
+        //TODO: use type === FacetType.Multi instead
         multiValued: config.isMultiValued,
       }
     : null;
