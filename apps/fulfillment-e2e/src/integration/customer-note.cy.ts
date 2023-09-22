@@ -1,7 +1,7 @@
 import { CustomerNoteModalFragment } from '../support/page_fragments/customer-note-modal.fragment';
-import { PickingListsFragment } from '../support/page_fragments/picking-lists.fragment';
+import { ListsFragment } from '../support/page_fragments/lists.fragment';
 
-const pickingListsFragment = new PickingListsFragment();
+const listsFragment = new ListsFragment();
 const customerNoteFragment = new CustomerNoteModalFragment();
 
 describe('Customer note suite', () => {
@@ -12,7 +12,7 @@ describe('Customer note suite', () => {
 
   it('should show and hide the customer note modal', () => {
     // open
-    pickingListsFragment.getCustomerNoteButtons().click();
+    listsFragment.getCustomerNoteButtons().click();
     customerNoteFragment.getModal().should('be.visible');
 
     // close

@@ -1,6 +1,6 @@
-import { PickingListsFragment } from './picking-lists.fragment';
+import { ListsFragment } from './lists.fragment';
 
-const pickingListsFragment = new PickingListsFragment();
+const listsFragment = new ListsFragment();
 
 export class FiltersFragment {
   getFilterButton = () => cy.get('oryx-picking-filter-button');
@@ -21,7 +21,7 @@ export class FiltersFragment {
   getSortingOption = (eq: number) =>
     this.getFiltersModal().find('input').eq(eq);
   shouldChangePickingListsOrder = (isChange: boolean) =>
-    pickingListsFragment
+    listsFragment
       .getPickingListsItems()
       .eq(0)
       .find('.total oryx-button')

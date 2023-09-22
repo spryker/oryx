@@ -8,19 +8,19 @@ import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { FilterButtonComponent } from './filter-button.component';
-import { filterButtonComponent } from './filter-button.def';
+import { PickingFilterButtonComponent } from './filter-button.component';
+import { pickingFilterButtonComponent } from './filter-button.def';
 
 class MockPickingListService implements Partial<PickingListService> {
   getSortingQualifier = vi.fn().mockReturnValue(of(defaultSortingQualifier));
 }
 
-describe('FilterButtonComponent', () => {
-  let element: FilterButtonComponent;
+describe('PickingFilterButtonComponent', () => {
+  let element: PickingFilterButtonComponent;
   let service: MockPickingListService;
 
   beforeAll(async () => {
-    await useComponent(filterButtonComponent);
+    await useComponent(pickingFilterButtonComponent);
   });
 
   beforeEach(async () => {

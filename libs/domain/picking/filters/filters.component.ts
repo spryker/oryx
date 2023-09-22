@@ -14,7 +14,7 @@ import { map } from 'rxjs';
 import { getFilterFields } from './filters.model';
 import { filtersComponentStyles } from './filters.styles';
 
-export class FiltersComponent extends I18nMixin(LitElement) {
+export class PickingFiltersComponent extends I18nMixin(LitElement) {
   static styles = filtersComponentStyles;
 
   @property({ type: Boolean, reflect: true }) open = false;
