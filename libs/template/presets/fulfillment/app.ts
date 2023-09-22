@@ -24,8 +24,6 @@ import {
 export function fulfillmentFeatures(
   config?: FulfillmentFeaturesConfig
 ): AppFeature[] {
-  console.log(featureVersion);
-
   return [
     uiFeature,
     cartFeature,

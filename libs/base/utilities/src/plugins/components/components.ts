@@ -31,9 +31,6 @@ export class ComponentsPlugin
   ) {
     super(options);
     this.registerComponents(componentsInfo);
-
-    console.log('root: ', this.options.root);
-
     rootInjectable.inject(
       typeof this.options.root === 'string'
         ? this.options.root
