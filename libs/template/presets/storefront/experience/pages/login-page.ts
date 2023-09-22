@@ -1,5 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import {featureVersion} from "@spryker-oryx/utilities";
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const loginPage: ExperienceComponent = {
   id: 'login-page',
@@ -10,9 +10,11 @@ export const loginPage: ExperienceComponent = {
     description: 'Login Page Description',
   },
   components: [
-    (featureVersion >= '1.1') ? {
-      ref: 'header',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'header',
+        }
+      : {},
     {
       type: 'oryx-composition',
       components: [
@@ -27,8 +29,10 @@ export const loginPage: ExperienceComponent = {
         rules: [{ layout: 'flex', padding: '30px 0' }],
       },
     },
-    (featureVersion >= '1.1') ? {
-      ref: 'footer',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'footer',
+        }
+      : {},
   ],
 };

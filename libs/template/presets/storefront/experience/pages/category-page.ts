@@ -11,26 +11,28 @@ export const categoryPage: ExperienceComponent = {
     index: true,
   },
   components: [
-    (featureVersion >= '1.1') ? {
-      ref: 'header',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'header',
+        }
+      : {},
     {
       type: 'oryx-composition',
       components: [
         ...(featureVersion >= '1.1'
           ? [
-            {
-              type: 'oryx-site-breadcrumb',
-              options: {
-                rules: [
-                  {
-                    colSpan: 2,
-                  },
-                  { query: { breakpoint: Size.Sm }, hide: true },
-                ],
+              {
+                type: 'oryx-site-breadcrumb',
+                options: {
+                  rules: [
+                    {
+                      colSpan: 2,
+                    },
+                    { query: { breakpoint: Size.Sm }, hide: true },
+                  ],
+                },
               },
-            },
-          ]
+            ]
           : []),
         {
           type: 'oryx-search-facet-navigation',
@@ -88,8 +90,10 @@ export const categoryPage: ExperienceComponent = {
         ],
       },
     },
-    (featureVersion >= '1.1') ? {
-      ref: 'footer',
-    } : {},
-  ]
+    featureVersion >= '1.1'
+      ? {
+          ref: 'footer',
+        }
+      : {},
+  ],
 };

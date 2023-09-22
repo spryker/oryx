@@ -1,5 +1,5 @@
 import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
-import {featureVersion} from "@spryker-oryx/utilities";
+import { featureVersion } from '@spryker-oryx/utilities';
 
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
   type: 'oryx-content-image',
@@ -19,9 +19,11 @@ export const homePage: ExperienceComponent = {
     description: 'Home Page Description',
   },
   components: [
-    (featureVersion >= '1.1') ? {
-      ref: 'header',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'header',
+        }
+      : {},
     {
       type: 'oryx-composition',
       id: 'home-hero',
@@ -141,8 +143,10 @@ export const homePage: ExperienceComponent = {
         brand('Acer'),
       ],
     },
-    (featureVersion >= '1.1') ? {
-      ref: 'footer',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'footer',
+        }
+      : {},
   ],
 };

@@ -1,5 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import {featureVersion} from "@spryker-oryx/utilities";
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const orderConfirmationPage: ExperienceComponent = {
   id: 'order-confirmation-page',
@@ -10,9 +10,11 @@ export const orderConfirmationPage: ExperienceComponent = {
     description: 'Order Page Description',
   },
   components: [
-    (featureVersion >= '1.1') ? {
-      ref: 'header',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'header',
+        }
+      : {},
     {
       type: 'oryx-composition',
       components: [
@@ -42,8 +44,10 @@ export const orderConfirmationPage: ExperienceComponent = {
         },
       ],
     },
-    (featureVersion >= '1.1') ? {
-      ref: 'footer',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'footer',
+        }
+      : {},
   ],
 };

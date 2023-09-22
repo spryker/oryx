@@ -1,6 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import {featureVersion} from "@spryker-oryx/utilities";
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const contactPage: ExperienceComponent = {
   id: 'contact-page',
@@ -11,9 +11,11 @@ export const contactPage: ExperienceComponent = {
     description: 'Contact Page Description',
   },
   components: [
-    (featureVersion >= '1.1') ? {
-      ref: 'header',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'header',
+        }
+      : {},
     {
       type: 'oryx-composition',
       components: [
@@ -42,8 +44,10 @@ export const contactPage: ExperienceComponent = {
         ],
       },
     },
-    (featureVersion >= '1.1') ? {
-      ref: 'footer',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'footer',
+        }
+      : {},
   ],
 };

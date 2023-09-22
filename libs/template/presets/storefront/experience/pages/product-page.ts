@@ -10,9 +10,11 @@ export const productPage: ExperienceComponent = {
     description: 'Default Product Page Description',
   },
   components: [
-    (featureVersion >= '1.1') ? {
-      ref: 'header',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'header',
+        }
+      : {},
     {
       type: 'oryx-composition',
       components: [
@@ -30,18 +32,18 @@ export const productPage: ExperienceComponent = {
           components: [
             ...(featureVersion >= '1.1'
               ? [
-                {
-                  type: 'oryx-site-breadcrumb',
-                  options: {
-                    rules: [
-                      {
-                        colSpan: 2,
-                      },
-                      { query: { breakpoint: Size.Sm }, hide: true },
-                    ],
+                  {
+                    type: 'oryx-site-breadcrumb',
+                    options: {
+                      rules: [
+                        {
+                          colSpan: 2,
+                        },
+                        { query: { breakpoint: Size.Sm }, hide: true },
+                      ],
+                    },
                   },
-                },
-              ]
+                ]
               : []),
             {
               type: 'oryx-composition',
@@ -112,8 +114,10 @@ export const productPage: ExperienceComponent = {
         },
       ],
     },
-    (featureVersion >= '1.1') ? {
-      ref: 'footer',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'footer',
+        }
+      : {},
   ],
 };

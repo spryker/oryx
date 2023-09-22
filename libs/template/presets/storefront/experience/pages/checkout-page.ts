@@ -1,6 +1,6 @@
 import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import {featureVersion} from "@spryker-oryx/utilities";
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const checkoutPage: ExperienceComponent = {
   id: 'checkout-page',
@@ -11,9 +11,11 @@ export const checkoutPage: ExperienceComponent = {
     description: 'Checkout Page Description',
   },
   components: [
-    (featureVersion >= '1.1') ? {
-      ref: 'header',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'header',
+        }
+      : {},
     {
       type: 'oryx-composition',
       components: [
@@ -73,7 +75,10 @@ export const checkoutPage: ExperienceComponent = {
           type: 'oryx-composition',
           id: 'checkout-totals',
           options: {
-            rules: [{ hideByRule: 'CART.EMPTY' }, { sticky: true, top: '108px' }],
+            rules: [
+              { hideByRule: 'CART.EMPTY' },
+              { sticky: true, top: '108px' },
+            ],
           },
           components: [
             {
@@ -110,8 +115,10 @@ export const checkoutPage: ExperienceComponent = {
         ],
       },
     },
-    (featureVersion >= '1.1') ? {
-      ref: 'footer',
-    } : {},
+    featureVersion >= '1.1'
+      ? {
+          ref: 'footer',
+        }
+      : {},
   ],
 };

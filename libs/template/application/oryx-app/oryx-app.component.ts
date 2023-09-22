@@ -1,5 +1,5 @@
 import { LitRouter } from '@spryker-oryx/router/lit';
-import { hydrate, featureVersion } from '@spryker-oryx/utilities';
+import { featureVersion, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { styles } from './oryx-app.styles';
 
@@ -14,9 +14,7 @@ export class OryxAppComponent extends LitElement {
       ${featureVersion < '1.1'
         ? html`<oryx-composition uid="header"></oryx-composition>`
         : ''}
-
       ${this.router.outlet()}
-
       ${featureVersion < '1.1'
         ? html`<oryx-composition uid="footer"></oryx-composition>`
         : ''}
