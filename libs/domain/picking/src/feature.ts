@@ -7,23 +7,22 @@ import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { ComponentsInfo } from '@spryker-oryx/utilities';
 import {
-  customerNoteComponent,
-  customerNoteModalComponent,
-  discardModalComponent,
-  filterButtonComponent,
-  filtersComponent,
-  headerComponent,
-  loginPageComponent,
-  navigateBackComponent,
-  pickingComponent,
+  pickingCustomerNoteComponent,
+  pickingCustomerNoteModalComponent,
+  pickingDiscardModalComponent,
+  pickingFilterButtonComponent,
+  pickingFiltersComponent,
   pickingHeaderComponent,
   pickingInProgressModalComponent,
   pickingListItemComponent,
   pickingListsComponent,
   pickingListsHeaderComponent,
+  pickingLoginComponent,
+  pickingPickerComponent,
+  pickingPickerHeaderComponent,
   pickingProductCardComponent,
-  userProfileComponent,
-  warehouseAssignmentComponent,
+  pickingUserProfileComponent,
+  pickingWarehouseAssignmentComponent,
 } from './components';
 import { PickingConfig, providePickingConfig } from './config.provider';
 import { defaultPickingRoutes } from './routes';
@@ -45,23 +44,22 @@ import {
 } from './services';
 
 export const pickingComponents = [
-  customerNoteComponent,
-  customerNoteModalComponent,
-  discardModalComponent,
-  filterButtonComponent,
-  filtersComponent,
-  loginPageComponent,
-  headerComponent,
-  navigateBackComponent,
+  pickingCustomerNoteComponent,
+  pickingCustomerNoteModalComponent,
+  pickingDiscardModalComponent,
+  pickingFilterButtonComponent,
+  pickingFiltersComponent,
+  pickingLoginComponent,
+  pickingHeaderComponent,
   pickingListsComponent,
   pickingListsHeaderComponent,
   pickingListItemComponent,
   pickingProductCardComponent,
   pickingInProgressModalComponent,
-  pickingComponent,
-  userProfileComponent,
-  pickingHeaderComponent,
-  warehouseAssignmentComponent,
+  pickingPickerComponent,
+  pickingUserProfileComponent,
+  pickingPickerHeaderComponent,
+  pickingWarehouseAssignmentComponent,
 ];
 
 export interface PickingFeatureConfig extends PickingConfig {

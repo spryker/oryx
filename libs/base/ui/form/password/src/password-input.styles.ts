@@ -30,6 +30,32 @@ export const baseStyles = css`
   :host([visible]) svg .visible {
     opacity: 0;
   }
+
+  .validation-message {
+    display: flex;
+    align-items: center;
+    color: var(--oryx-color-neutral-9);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+  }
+
+  oryx-error-message + .validation-message {
+    margin-block-start: 15px;
+  }
+
+  .validation-message:not(:last-child) {
+    margin-block-end: 5px;
+  }
+
+  .validation-message oryx-icon {
+    height: 16px;
+    width: 20px;
+  }
+
+  .validation-message.active {
+    color: var(--oryx-color-primary-11);
+  }
 `;
 
 export const screenStyles = [...inputScreenStyles];

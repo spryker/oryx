@@ -1,8 +1,8 @@
+import { FormFieldOption } from '@spryker-oryx/form';
 import { Observable } from 'rxjs';
-import { Salutation } from '../../models';
 
 export interface SalutationService {
-  get(): Observable<Salutation[]>;
+  get(): Observable<FormFieldOption[]>;
 }
 
 export const SalutationService = 'oryx.SalutationService';

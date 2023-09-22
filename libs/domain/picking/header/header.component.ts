@@ -7,7 +7,7 @@ import { query } from 'lit/decorators.js';
 import { styles } from './header.styles';
 
 @signalAware()
-export class HeaderComponent extends LitElement {
+export class PickingHeaderComponent extends LitElement {
   static styles = styles;
 
   @query('oryx-site-navigation-item')
@@ -36,4 +36,4 @@ export class HeaderComponent extends LitElement {
   }
 }
 
-export default HeaderComponent;
+export default PickingHeaderComponent;

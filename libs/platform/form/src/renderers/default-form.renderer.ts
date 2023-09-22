@@ -1,5 +1,5 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
-import { i18n } from '@spryker-oryx/utilities';
+import { featureVersion, i18n } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -79,6 +79,43 @@ export class DefaultFormRenderer implements FormRenderer {
     };
   }
 
+  protected renderInput(
+    field: FormFieldDefinition,
+    value?: string | boolean
+  ): TemplateResult {
+    const { pattern, title } = this.fieldValidationPattern(field);
+    let inputType = field.type;
+
+    switch (inputType) {
+      case FormFieldType.Boolean:
+        inputType = 'checkbox';
+        break;
+      case FormFieldType.Toggle:
+        inputType = 'radio';
+        break;
+    }
+
+    return html`
+      <input
+        name=${field.id}
+        type=${field.attributes?.type ?? inputType}
+        value=${value ?? ''}
+        placeholder=${ifDefined(field.placeholder)}
+        minlength=${ifDefined(field.min)}
+        maxlength=${ifDefined(field.max)}
+        min=${ifDefined(field.min)}
+        max=${ifDefined(field.max)}
+        step=${ifDefined(field.attributes?.step)}
+        ?required=${field.required}
+        pattern=${ifDefined(pattern)}
+        title=${ifDefined(title)}
+        ?checked=${inputType === 'checkbox' || inputType === 'radio'
+          ? !!value
+          : undefined}
+      />
+    `;
+  }
+
   protected buildField(
     field: FormFieldDefinition,
     value?: string | boolean
@@ -125,34 +162,54 @@ export class DefaultFormRenderer implements FormRenderer {
       case FormFieldType.RadioList: {
         return this.buildRadioList(field, value as string);
       }
+      case FormFieldType.Password: {
+        return this.buildPasswordField(field, value as string);
+      }
     }
 
     return html``;
+  }
+
+  protected buildPasswordField(
+    field: FormFieldDefinition,
+    value?: string
+  ): TemplateResult {
+    return html`
+      <oryx-password-input
+        label=${field.label}
+        floatLabel=${ifDefined(field.floatLabel)}
+        .style=${this.resolveStyles(field)}
+        ?required=${field.required}
+        ?hasError=${field.attributes?.hasError}
+        prefixIcon=${field.attributes?.prefixIcon}
+        ?prefixFill=${field.attributes?.prefixFill}
+        suffixIcon=${field.attributes?.suffixIcon}
+        ?suffixFill=${field.attributes?.suffixFill}
+        strategy=${field.attributes?.strategy}
+        .minLength=${ifDefined(field.attributes?.minLength)}
+        .maxLength=${ifDefined(field.attributes?.maxLength)}
+        .minUppercaseChars=${ifDefined(field.attributes?.minUppercaseChars)}
+        .minNumbers=${ifDefined(field.attributes?.minNumbers)}
+        .minSpecialChars=${ifDefined(field.attributes?.minSpecialChars)}
+        errorMessage=${ifDefined(field.attributes?.errorMessage)}
+      >
+        ${this.renderInput(field, value)}
+      </oryx-password-input>
+    `;
   }
 
   protected buildTextField(
     field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
-    const { pattern, title } = this.fieldValidationPattern(field);
-
     return html`
       <oryx-input
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
-        <input
-          .name=${field.id}
-          value=${value ?? ''}
-          placeholder=${ifDefined(field.placeholder)}
-          minlength=${ifDefined(field.min)}
-          maxlength=${ifDefined(field.max)}
-          type=${ifDefined(field.attributes?.type ?? field.type)}
-          ?required=${field.required}
-          pattern=${ifDefined(pattern)}
-          title=${ifDefined(title)}
-        />
+        ${this.renderInput(field, value)}
       </oryx-input>
     `;
   }
@@ -161,24 +218,14 @@ export class DefaultFormRenderer implements FormRenderer {
     field: FormFieldDefinition,
     value?: string
   ): TemplateResult {
-    const { pattern, title } = this.fieldValidationPattern(field);
     return html`
       <oryx-input
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
-        <input
-          name=${field.id}
-          value=${value ?? ''}
-          placeholder=${ifDefined(field.placeholder)}
-          type="number"
-          min=${ifDefined(field.min)}
-          max=${ifDefined(field.max)}
-          ?required=${field.required}
-          pattern=${ifDefined(pattern)}
-          title=${ifDefined(title)}
-        />
+        ${this.renderInput(field, value)}
       </oryx-input>
     `;
   }
@@ -191,14 +238,12 @@ export class DefaultFormRenderer implements FormRenderer {
       <oryx-checkbox
         .required=${field.required}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
-        <input
-          type="checkbox"
-          .name=${field.id}
-          ?checked=${!!value}
-          ?required=${field.required}
-        />
-        ${field.label}
+        ${this.renderInput(field, value)}
+        ${featureVersion >= '1.1'
+          ? html`<span>${field.label}</span>`
+          : field.label}
       </oryx-checkbox>
     `;
   }
@@ -212,6 +257,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
         <textarea
           .name=${field.id}
@@ -232,14 +278,9 @@ export class DefaultFormRenderer implements FormRenderer {
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
-        <input
-          type="color"
-          .name=${field.id}
-          value=${value ?? ''}
-          placeholder=${ifDefined(field.placeholder)}
-          ?required=${field.required}
-        />
+        ${this.renderInput(field, value)}
       </oryx-input>
     `;
   }
@@ -249,14 +290,11 @@ export class DefaultFormRenderer implements FormRenderer {
     value?: string | boolean
   ): TemplateResult {
     return html`
-      <oryx-toggle .style=${this.resolveStyles(field)}>
-        <input
-          type="checkbox"
-          .name=${field.id}
-          ?checked=${!!value}
-          ?required=${field.required}
-        />
-        ${field.label}
+      <oryx-toggle
+        .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
+      >
+        ${this.renderInput(field, value)} ${field.label}
       </oryx-toggle>
     `;
   }
@@ -269,6 +307,7 @@ export class DefaultFormRenderer implements FormRenderer {
       <oryx-input-list
         .heading=${field.label}
         .style=${this.resolveStyles(field)}
+        ?hasError=${field.attributes?.hasError}
       >
         ${field.options?.map(
           (option) => html`
@@ -304,6 +343,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .style=${this.resolveStyles(field)}
         floatLabel=${ifDefined(field.floatLabel)}
         @oryx.close=${(e: Event): void => e.stopPropagation()}
+        ?hasError=${field.attributes?.hasError}
       >
         <select
           .name=${field.id}

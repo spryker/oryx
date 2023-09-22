@@ -10,6 +10,9 @@ import { Suggestion } from '../../models';
 import { SuggestionField } from '../adapter';
 import { SuggestionService } from '../suggestion';
 
+/**
+ * @deprecated since 1.1 use SuggestionExperienceDataRevealer instead.
+ */
 export class ProductsExperienceDataRevealer implements ExperienceDataRevealer {
   constructor(protected suggestionService = inject(SuggestionService, null)) {}
 
