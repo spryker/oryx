@@ -208,6 +208,7 @@ export class DefaultFormRenderer implements FormRenderer {
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
         ?hasError=${field.attributes?.hasError}
+        ?required=${field.required}
       >
         ${this.renderInput(field, value)}
       </oryx-input>

@@ -10,6 +10,7 @@ import {
   I18nMixin,
   I18nTranslationValue,
   Size,
+  hydrate,
   i18n,
 } from '@spryker-oryx/utilities';
 import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
@@ -21,6 +22,7 @@ import {
 } from './password-input.model';
 import { baseStyles } from './password-input.styles';
 
+@hydrate()
 export class PasswordInputComponent
   extends I18nMixin(LitElement)
   implements FormControlOptions, AffixOptions, PasswordValidationOptions
@@ -62,15 +64,15 @@ export class PasswordInputComponent
   @property({ type: Boolean }) visible?: boolean;
 
   @state()
-  minLengthError = false;
+  minLengthError = true;
   @state()
-  maxLengthError = false;
+  maxLengthError = true;
   @state()
-  minUppercaseCharsError = false;
+  minUppercaseCharsError = true;
   @state()
-  minNumbersError = false;
+  minNumbersError = true;
   @state()
-  minSpecialCharsError = false;
+  minSpecialCharsError = true;
 
   connectedCallback(): void {
     super.connectedCallback();
