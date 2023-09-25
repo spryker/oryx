@@ -14,6 +14,8 @@ export interface AppInitializer {
 declare global {
   interface InjectionTokensContractMap {
     [AppInitializerService]: AppInitializerService;
-    [AppInitializer]: AppInitializer;
+    [AppInitializer]:
+      | AppInitializer
+      | (() => void | Observable<void> | Promise<void>);
   }
 }
