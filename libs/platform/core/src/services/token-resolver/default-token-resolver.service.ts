@@ -20,18 +20,23 @@ export class DefaultTokenService implements TokenResolver {
       return this.resolveConditionalToken(token);
     }
     if (!this.isToken(token)) {
+      this.warnInvalidToken(token);
       return of(token);
     }
     return this.resolveSimpleToken(token);
   }
 
   protected resolveConditionalToken(token: string): ResolvedToken {
-    const tokensToResolve = token
-      .split('||')
-      .map((token) => token.trim())
-      .filter(
-        (token) => this.isToken(token) && this.getResolver(token.split('.')[0])
-      );
+    const tokens = token.split('||').map((token) => token.trim());
+
+    const invalidTokens = tokens.filter(
+      (token) => !this.isToken(token) || !this.getResolver(token.split('.')[0])
+    );
+    invalidTokens.forEach((token) => this.warnInvalidToken(token));
+
+    const tokensToResolve = tokens.filter(
+      (token) => !invalidTokens.includes(token)
+    );
 
     if (!tokensToResolve.length) {
       return of(false);
@@ -46,13 +51,14 @@ export class DefaultTokenService implements TokenResolver {
     );
   }
 
-  private resolveSimpleToken(token: string): ResolvedToken {
+  protected resolveSimpleToken(token: string): ResolvedToken {
     const [resourceResolver, rawResolver] = token.split('.');
     const isNegative = this.isNegative(rawResolver);
     const resolver = rawResolver.slice(isNegative ? 1 : 0);
     const tokenResolver = this.getResolver(resourceResolver);
 
     if (!tokenResolver) {
+      this.warnInvalidToken(token);
       return of(token);
     }
 
@@ -61,6 +67,10 @@ export class DefaultTokenService implements TokenResolver {
       .pipe(
         map((resolvedValue) => (isNegative ? !resolvedValue : resolvedValue))
       );
+  }
+
+  protected warnInvalidToken(token: string): void {
+    console.error(`DefaultTokenResolver: Invalid token "${token}"`);
   }
 
   protected isConditionalToken(token: string): boolean {

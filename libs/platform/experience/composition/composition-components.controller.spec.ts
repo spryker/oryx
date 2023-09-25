@@ -78,22 +78,6 @@ const mockComponentWithVisibilityRule: Component = {
   ],
 };
 
-const mockComponentWithVisibilityConditionalRule: Component = {
-  ...mockComponent,
-  components: [
-    {
-      ...mockComponent,
-      options: {
-        rules: [
-          {
-            hideByRule: hideByOrConditionalRule,
-          },
-        ],
-      },
-    },
-  ],
-};
-
 const mockComponentWithBreakpointMd: Component = {
   ...mockComponent,
   components: [
