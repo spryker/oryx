@@ -24,6 +24,7 @@ import {
   PageMetaService,
 } from './page-meta';
 import { DefaultQueryService, QueryService } from './query';
+import { CoreResourceResolver } from './resolver';
 import {
   DefaultIndexedDBStorageService,
   DefaultStorageService,
@@ -107,4 +108,5 @@ export const coreProviders: Provider[] = [
     provide: AppInitializer,
     useExisting: PageMetaResolverService,
   },
+  CoreResourceResolver,
 ];
