@@ -106,7 +106,7 @@ describe('DefaultAppInitializerService', () => {
   });
 
   describe('when class initializer is rejected', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       testInjector.provide({
         provide: AppInitializer,
         useValue: mockDInitializer,
@@ -121,7 +121,7 @@ describe('DefaultAppInitializerService', () => {
   });
 
   describe('when function initializer is rejected', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       testInjector.provide({
         provide: AppInitializer,
         useValue: mockFnInitializerD,
