@@ -7,7 +7,7 @@ import {
   ProductMixin,
 } from '@spryker-oryx/product';
 import { computed, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ProductListOptions } from './list.model';

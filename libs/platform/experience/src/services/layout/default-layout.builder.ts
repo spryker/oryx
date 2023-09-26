@@ -16,6 +16,8 @@ export const layoutKeys: (keyof LayoutStylesProperties)[] = [
   'overlap',
   'divider',
   'vertical',
+  'flyout',
+  'dropdown',
 ];
 
 export class DefaultLayoutBuilder implements LayoutBuilder {
@@ -54,6 +56,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     if (rule.query?.childs) {
       selectors.forEach((_, i) => (selectors[i] += ' > *'));
+    }
+
+    if (rule.query?.composition) {
+      selectors.forEach((_, i) => (selectors[i] += ' > oryx-composition'));
     }
 
     if (rule.query?.hover) {

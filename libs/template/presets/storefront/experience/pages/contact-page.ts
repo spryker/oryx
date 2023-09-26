@@ -45,5 +45,89 @@ export const contactPage: ExperienceComponent = {
         ],
       },
     },
+
+    {
+      type: 'oryx-composition',
+
+      options: {
+        rules: [
+          {
+            layout: 'grid',
+          },
+        ],
+      },
+      components: [
+        {
+          type: 'oryx-composition',
+          components: [
+            {
+              type: 'oryx-content-link',
+              content: { data: { text: 'Catalog' } },
+              options: {
+                url: '/search',
+                icon: 'location_on',
+              },
+            },
+            {
+              type: 'oryx-content-link',
+              content: { data: { text: 'Smart Wearables' } },
+              options: {
+                url: '/category/9',
+              },
+            },
+            {
+              type: 'oryx-content-link',
+              content: { data: { text: 'Food' } },
+              options: {
+                url: '/category/16',
+              },
+            },
+          ],
+          options: {
+            rules: [
+              {
+                layout: 'navigation',
+                vertical: true,
+                gap: 0,
+              },
+            ],
+          },
+        },
+        {
+          type: 'oryx-composition',
+          components: [
+            {
+              type: 'oryx-content-link',
+              content: { data: { text: 'Catalog' } },
+              options: {
+                url: '/search',
+              },
+            },
+            {
+              type: 'oryx-content-link',
+              content: { data: { text: 'Smart Wearables' } },
+              options: {
+                url: '/category/9',
+              },
+            },
+            {
+              type: 'oryx-content-link',
+              content: { data: { text: 'Food' } },
+              options: {
+                url: '/category/16',
+              },
+            },
+          ],
+          options: {
+            rules: [
+              {
+                layout: 'navigation',
+                gap: 0,
+              },
+            ],
+          },
+        },
+      ],
+    },
   ],
 };

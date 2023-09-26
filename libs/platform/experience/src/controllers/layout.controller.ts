@@ -5,7 +5,7 @@ import {
 } from '@spryker-oryx/experience/layout';
 import { sizes } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { ContentComponentProperties, StyleRuleSet } from '../models';
 import {
   LayoutBuilder,

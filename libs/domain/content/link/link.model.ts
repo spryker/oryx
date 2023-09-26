@@ -19,6 +19,11 @@ export interface ContentLinkOptions {
   icon?: string;
 
   /**
+   * Indicates the icon should be placed after the text.
+   */
+  iconSuffix?: string;
+
+  /**
    * The label is used for an optimized aria-label on the link. When the label is not
    * provided, screen readers will read the text of the link.
    */

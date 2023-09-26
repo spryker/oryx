@@ -14,8 +14,8 @@ export const styles = css`
     width: min(100%, calc(var(--_container-width)));
   }
 
-  *,
+  /* *,
   ::slotted(*) {
     transition: all var(--oryx-transition-time);
-  }
+  } */
 `;

@@ -22,6 +22,7 @@ export interface StyleRuleSet
   query?: {
     breakpoint?: Breakpoint | string;
     childs?: boolean;
+    composition?: boolean;
     hover?: boolean;
   };
   [key: string]: unknown;
@@ -37,6 +38,8 @@ export enum CompositionLayout {
   Grid = 'grid',
   Flex = 'flex',
   Text = 'text',
+  Navigation = 'navigation',
+  Flyout = 'flyout',
 }
 
 export const enum CompositionLayoutOrientation {
@@ -66,6 +69,8 @@ export interface LayoutStylesProperties {
    */
   overlap?: boolean;
   vertical?: boolean;
+  flyout?: boolean;
+  dropdown?: boolean;
 }
 
 export interface StyleProperties extends LayoutStylesProperties {

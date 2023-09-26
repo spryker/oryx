@@ -6,7 +6,7 @@ export const CategoryNodeNormalizer = 'oryx.CategoryNodeNormalizer';
 export function categoryNodeNormalizer(
   data: ApiProductCategoryModel.CategoryNode
 ): ProductCategory {
-  const { nodeId, name, order, metaDescription, parents } = data;
+  const { nodeId, name, order, metaDescription, parents, children } = data;
   //parent category without other parents is considered root category
   //and should be ignored
   const rootParent = !parents?.[0]?.parents?.length;
@@ -17,6 +17,7 @@ export function categoryNodeNormalizer(
     description: metaDescription ?? name,
     order,
     parent: !rootParent ? String(parents[0].nodeId) : undefined,
+    children: children.map((child) => String(child.nodeId)),
   };
 }
 

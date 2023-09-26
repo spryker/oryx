@@ -1,7 +1,7 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
-import { merge, Observable, of, reduce } from 'rxjs';
+import { Observable, merge, of, reduce } from 'rxjs';
 import { CompositionLayout } from '../../models';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import { LayoutService } from './layout.service';
@@ -76,6 +76,20 @@ export class DefaultLayoutService implements LayoutService {
           )
         );
 
+      case 'flyout':
+        return ssrAwaiter(
+          import('./styles/flyout.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case 'dropdown':
+        return ssrAwaiter(
+          import('./styles/dropdown.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
       case CompositionLayout.Column:
         return ssrAwaiter(
           import('./styles/column-layout.styles').then((m) =>
@@ -128,6 +142,13 @@ export class DefaultLayoutService implements LayoutService {
       case CompositionLayout.Text:
         return ssrAwaiter(
           import('./styles/text-layout.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.Navigation:
+        return ssrAwaiter(
+          import('./styles/navigation-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );

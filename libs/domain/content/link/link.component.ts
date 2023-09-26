@@ -1,21 +1,24 @@
 import { ContentService } from '@spryker-oryx/content';
 import { resolve } from '@spryker-oryx/di';
-import { ContentMixin } from '@spryker-oryx/experience';
+import { ContentMixin, LayoutMixin } from '@spryker-oryx/experience';
 import { ProductCategoryService, ProductService } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import { map } from 'rxjs';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
+import { contentLinkStyles } from './link.styles';
 
 @hydrate()
-export class ContentLinkComponent extends ContentMixin<
-  ContentLinkOptions,
-  ContentLinkContent
->(LitElement) {
+export class ContentLinkComponent extends LayoutMixin(
+  ContentMixin<ContentLinkOptions, ContentLinkContent>(LitElement)
+) {
+  static styles = contentLinkStyles;
+
   protected semanticLinkService = resolve(LinkService);
   protected categoryService = resolve(ProductCategoryService);
   protected productService = resolve(ProductService);
@@ -29,18 +32,24 @@ export class ContentLinkComponent extends ContentMixin<
   });
 
   protected override render(): TemplateResult | void {
-    const { button, icon, singleLine, color } = this.$options();
+    const { button, icon, iconSuffix, singleLine, color } = this.$options();
 
-    if (button) {
-      return html`<oryx-button>${this.renderLink(true)}</oryx-button>`;
-    }
+    const link = button
+      ? html`<oryx-button>${this.renderLink(true)}</oryx-button>`
+      : html`<oryx-link
+          .color=${color}
+          ?singleLine=${singleLine}
+          .icon=${icon}
+          .iconSuffix=${iconSuffix}
+          >${this.renderLink()}
+        </oryx-link>`;
 
-    return html`<oryx-link
-      .color=${color}
-      ?singleLine=${singleLine}
-      .icon=${icon}
-      >${this.renderLink()}
-    </oryx-link>`;
+    return html`
+      ${link}
+      <!-- we want to optimize this one, only render the composition when there are child components -->
+      <oryx-composition .uid=${this.uid}></oryx-composition>
+      ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
+    `;
   }
 
   protected $text = computed(() => {
@@ -91,11 +100,10 @@ export class ContentLinkComponent extends ContentMixin<
     const renderIcon = !!button && !!icon;
 
     if (text || icon) {
-      return html` ${when(
-        renderIcon,
-        () => html`<oryx-icon .type=${icon}></oryx-icon>`
-      )}
-      ${text}`;
+      return html`
+        ${when(renderIcon, () => html`<oryx-icon .type=${icon}></oryx-icon>`)}
+        ${text}
+      `;
     }
     return html`<slot></slot>`;
   }
@@ -107,3 +115,8 @@ export class ContentLinkComponent extends ContentMixin<
       .join(' ');
   }
 }
+
+// ${when(
+//   iconSuffix,
+//   () => html`<oryx-icon .type=${iconSuffix}></oryx-icon>`
+// )}

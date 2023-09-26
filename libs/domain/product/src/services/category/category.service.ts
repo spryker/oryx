@@ -3,6 +3,7 @@ import { ProductCategory } from '../../models';
 
 export interface ProductCategoryService {
   get(categoryId?: string): Observable<ProductCategory>;
+  // getChildren(categoryId?: string): Observable<ProductCategory[]>;
   getTree(): Observable<ProductCategory[]>;
   getTrail(categoryId?: string): Observable<ProductCategory[]>;
 }

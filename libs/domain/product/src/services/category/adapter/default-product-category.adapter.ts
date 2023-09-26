@@ -19,6 +19,7 @@ export class DefaultProductCategoryAdapter implements ProductCategoryAdapter {
       ApiProductCategoryModel.Fields.Order,
       ApiProductCategoryModel.Fields.Name,
       ApiProductCategoryModel.Fields.Parents,
+      ApiProductCategoryModel.Fields.Children,
     ];
 
     return this.http

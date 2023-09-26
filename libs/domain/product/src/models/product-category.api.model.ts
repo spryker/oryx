@@ -7,6 +7,7 @@ export module ApiProductCategoryModel {
     Order = 'order',
     MetaDescription = 'metaDescription',
     Parents = 'parents',
+    Children = 'children',
   }
 
   export interface CategoryNode {

@@ -63,7 +63,6 @@ export const HeaderTemplate: ExperienceComponent = {
     {
       type: 'oryx-composition',
       id: 'header-body',
-      name: 'Composition',
       components: [
         {
           type: 'oryx-content-image',
@@ -168,6 +167,152 @@ export const HeaderTemplate: ExperienceComponent = {
           },
         ],
       },
+    },
+    {
+      type: 'oryx-composition',
+      options: {
+        rules: [
+          {
+            layout: 'navigation',
+            bleed: true,
+            gap: '40px',
+            background: 'var(--oryx-color-neutral-3)',
+            // justify: 'center',
+          },
+        ],
+      },
+      components: [
+        {
+          type: 'oryx-content-link',
+          content: { data: { text: 'All products' } },
+          options: {
+            url: '/search',
+            icon: 'category',
+          },
+        },
+        {
+          type: 'oryx-content-link',
+          content: { data: { text: 'fly out' } },
+          options: {
+            id: '9',
+            type: 'category',
+            rules: [
+              {
+                flyout: true,
+              },
+              {
+                query: { composition: true },
+                // bleed: true,
+                layout: 'grid',
+                background: 'blue',
+              },
+            ],
+          },
+          components: [
+            // {
+            //   type: 'oryx-content-link',
+            //   options: { id: '16', type: 'category' },
+            // },
+            { type: 'oryx-product-category-list' },
+            {
+              type: 'oryx-content-link',
+              options: { id: '5', type: 'category' },
+            },
+          ],
+        },
+        {
+          type: 'oryx-content-link',
+          content: { data: { text: 'fly out (bleed)' } },
+          options: {
+            id: '9',
+            type: 'category',
+            rules: [
+              {
+                flyout: true,
+              },
+              {
+                query: { composition: true },
+                bleed: true,
+                layout: 'grid',
+                background: 'blue',
+              },
+            ],
+          },
+          components: [
+            // {
+            //   type: 'oryx-content-link',
+            //   options: { id: '16', type: 'category' },
+            // },
+            { type: 'oryx-product-category-list' },
+            // {
+            //   type: 'oryx-content-link',
+            //   options: { id: '5', type: 'category' },
+            // },
+          ],
+        },
+        {
+          type: 'oryx-content-link',
+          content: { data: { text: 'dropdown' } },
+          options: {
+            id: '16',
+            type: 'category',
+            rules: [
+              {
+                dropdown: true,
+              },
+              {
+                query: { composition: true },
+                layout: 'grid',
+                gap: 0,
+              },
+            ],
+          },
+          components: [
+            {
+              type: 'oryx-content-link',
+              content: { data: { text: 'contact' } },
+              options: { url: '/contact' },
+            },
+            {
+              type: 'oryx-product-category-list',
+              options: {
+                rules: [{ dropdown: true, background: 'blue' }],
+              },
+            },
+            // {
+            //   type: 'oryx-content-link',
+            //   options: {
+            //     id: '5',
+            //     type: 'category',
+            //     rules: [
+            //       {
+            //         dropdown: true,
+            //       },
+            //     ],
+            //   },
+            //   components: [
+            //     {
+            //       type: 'oryx-content-link',
+            //       options: { id: '16', type: 'category' },
+            //     },
+            //     {
+            //       type: 'oryx-content-link',
+            //       options: { id: '5', type: 'category' },
+            //     },
+            //   ],
+            // },
+          ],
+        },
+        {
+          type: 'oryx-content-link',
+          options: { id: '5', type: 'category' },
+        },
+        {
+          type: 'oryx-content-link',
+          options: { url: '/contact' },
+          content: { data: { text: 'Contact' } },
+        },
+      ],
     },
   ],
 };

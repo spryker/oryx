@@ -4,10 +4,12 @@ export const storefrontLinkStyles = css`
   :host {
     position: relative;
     display: inline-flex;
+    width: 100%;
+    /* justify-content: space-between; */
   }
 
   :host([icon]) {
-    --oryx-icon-size: 16px;
+    /* --oryx-icon-size: 16px; */
 
     align-items: baseline;
     gap: 8px;
@@ -22,6 +24,10 @@ export const storefrontLinkStyles = css`
   oryx-icon {
     position: relative;
     inset-block-start: 3px;
+  }
+
+  oryx-icon.suffix {
+    margin-inline-start: auto;
   }
 
   ::slotted(a) {

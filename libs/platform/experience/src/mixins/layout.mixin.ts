@@ -26,6 +26,8 @@ export declare class LayoutMixinInterface {
   overlap?: boolean;
   divider?: boolean;
   vertical?: boolean;
+  flyout?: boolean;
+  dropdown?: boolean;
   xs?: LayoutProperties;
   sm?: LayoutProperties;
   md?: LayoutProperties;
@@ -73,6 +75,18 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       attribute: 'layout-vertical',
     })
     vertical?: boolean;
+    @signalProperty({
+      type: Boolean,
+      reflect: true,
+      attribute: 'layout-flyout',
+    })
+    flyout?: boolean;
+    @signalProperty({
+      type: Boolean,
+      reflect: true,
+      attribute: 'layout-dropdown',
+    })
+    dropdown?: boolean;
 
     @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
