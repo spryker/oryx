@@ -62,7 +62,7 @@ export const navigationItemStyles = css`
     margin-block-start: calc(var(--oryx-navigation-item-vertical-padding) * 2);
   }
 
-  :host([divider]:host-context([collapsed]))::after {
+  :host([divider][parent-collapsed])::after {
     transform: translateY(var(--oryx-navigation-item-divider-position))
       translateX(-33%);
   }
