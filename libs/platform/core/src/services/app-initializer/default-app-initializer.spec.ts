@@ -41,7 +41,7 @@ const mockFnInitializerD = vi.fn().mockRejectedValue('rejected');
 describe('DefaultAppInitializerService', () => {
   let testInjector: Injector;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     testInjector = createInjector({
       providers: [
         {
