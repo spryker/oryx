@@ -71,7 +71,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
   finishPicking(pickingList: PickingList): Observable<PickingList> {
     const body = {
       data: pickingList.items.map((item) => ({
-        id: item.orderItem.uuid,
+        id: item.id,
         type: 'picking-list-items',
         status: item.status,
         attributes: {
