@@ -55,7 +55,14 @@ export class MockProductListAdapter implements ProductListAdapter {
         ),
         generateFacet('Label', 'label', 3, qualifier.label?.split(','), true),
         generateFacet('Color', 'color', 6, qualifier.color?.split(',')),
-        generateRange('Range', 'range', [0, 100]),
+        generateRange(
+          'Range',
+          'range',
+          [0, 100],
+          'minPrice' in qualifier && 'maxPrice' in qualifier
+            ? [qualifier.minPrice!, qualifier.maxPrice!]
+            : []
+        ),
       ],
     });
   }

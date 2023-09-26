@@ -19,6 +19,7 @@ import {
   FACET_SELECT_EVENT,
   SearchFacetComponentAttributes,
   SelectFacetEventDetail,
+  SelectFacetEventDetailValue,
   SingleMultiFacet,
 } from '../facet.model';
 
@@ -104,7 +105,7 @@ export class FacetController implements ReactiveController {
   /**
    * Dispatch the selected facet value.
    */
-  dispatchSelectEvent(value?: Pick<FacetValue, 'value' | 'selected'>): void {
+  dispatchSelectEvent(value?: SelectFacetEventDetailValue): void {
     const name = this.host.name;
     if (name) {
       this.host.dispatchEvent(

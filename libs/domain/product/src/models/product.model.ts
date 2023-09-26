@@ -75,10 +75,6 @@ export interface RangeFacet {
   name: string;
   parameter: string;
   values: RangeFacetValue;
-  labels?: {
-    min: string;
-    max?: string;
-  };
 }
 
 export interface ValueFacet {

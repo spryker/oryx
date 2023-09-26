@@ -48,6 +48,7 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
       ?enableToggle=${this.isFoldable}
       ?enableSearch=${this.isSearchable}
       ?enableClear="${this.enableClear}"
+      ?dirty=${!!selectedLength}
       .heading=${this.name}
       .selectedLength=${selectedLength}
       .valuesLength=${valuesLength}

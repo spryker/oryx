@@ -1,3 +1,4 @@
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const searchRangeFacetStyles = css`
@@ -11,4 +12,23 @@ export const searchRangeFacetStyles = css`
   oryx-multi-range {
     grid-column: 1 / span 3;
   }
+
+  span {
+    display: block;
+    width: 8px;
+    height: 2px;
+    background-color: var(--oryx-color-neutral-9);
+    align-self: end;
+    margin-block-end: 22px;
+  }
 `;
+
+const largeScreen = css`
+  span {
+    margin-block-end: 19px;
+  }
+`;
+
+export const screenStyles = screenCss({
+  lg: largeScreen,
+});

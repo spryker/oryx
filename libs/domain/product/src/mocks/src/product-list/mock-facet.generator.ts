@@ -53,7 +53,7 @@ export const generateRange = (
     values: {
       min,
       max,
-      selected: { min: selected?.[0] ?? min, max: selected?.[1] ?? max },
+      selected: { min: +(selected?.[0] ?? min), max: +(selected?.[1] ?? max) },
     },
     labels: {
       min: 'Min',
