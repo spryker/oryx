@@ -86,7 +86,7 @@ describe('DefaultAppInitializerService', () => {
       await testInjector.inject(AppInitializerService).initialize();
     });
 
-    it('should call initializers and subscribe to observables', async () => {
+    it('should call initializers and subscribe to observables', () => {
       expect(mockAInitializer.initialize).toHaveBeenCalled();
       expect(mockBInitializer.initialize).toHaveBeenCalled();
       expect(mockCInitializer.initialize).toHaveBeenCalled();
@@ -95,7 +95,7 @@ describe('DefaultAppInitializerService', () => {
       expect(promiseResolve).toHaveBeenCalled();
     });
 
-    it('should call function initializers and subscribe to observables', async () => {
+    it('should call function initializers and subscribe to observables', () => {
       expect(mockFnInitializerA).toHaveBeenCalled();
       expect(mockFnInitializerB).toHaveBeenCalled();
       expect(mockFnInitializerC).toHaveBeenCalled();
