@@ -90,16 +90,6 @@ export interface ValueFacet {
 
 export type Facet = ValueFacet | RangeFacet;
 
-// export interface Facet {
-//   name: string;
-//   parameter: string;
-//   values: FacetValue[] | RangeFacetValue;
-//   selectedValues?: (string | number)[];
-//   valuesTreeLength?: number;
-//   multiValued?: boolean;
-//   type?: FacetType;
-// }
-
 export interface RangeFacetValue {
   min: number;
   max: number;

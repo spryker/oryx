@@ -1,6 +1,4 @@
 import { RangeFacet, RangeFacetValue } from '@spryker-oryx/product';
-import { TemplateResult, html } from 'lit';
-// use relative path for dev ssr server, SearchFacetComponent is undefined
 import { MultiRangeChangeEvent } from '@spryker-oryx/ui/multi-range';
 import {
   computed,
@@ -9,8 +7,10 @@ import {
   elementEffect,
   signalProperty,
 } from '@spryker-oryx/utilities';
+import { TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+// use relative path for dev ssr server, SearchFacetComponent is undefined
 import { SearchFacetComponent } from '../facet/facet.component';
 import {
   SearchFacetRangeComponentAttributes,
