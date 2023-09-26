@@ -1,19 +1,19 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { DiscardPickingComponent } from './discard-modal.component';
-import { discardModalComponent } from './discard-modal.def';
+import { PickingDiscardModalComponent } from './discard-modal.component';
+import { pickingDiscardModalComponent } from './discard-modal.def';
 
-describe('DiscardModalComponent', () => {
-  let element: DiscardPickingComponent;
+describe('PickingDiscardModalComponent', () => {
+  let element: PickingDiscardModalComponent;
 
   beforeAll(async () => {
-    await useComponent(discardModalComponent);
+    await useComponent(pickingDiscardModalComponent);
   });
 
   beforeEach(async () => {
     element = await fixture(
-      html`<oryx-discard-picking></oryx-discard-picking>`
+      html`<oryx-picking-discard-modal></oryx-picking-discard-modal>`
     );
   });
 
