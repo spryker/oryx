@@ -75,7 +75,7 @@ export const parseFacetValue = (
         values: facetValues,
         selectedValues: selectedValue,
         valuesTreeLength: facetValues.length,
-        //TODO: use type === FacetType.Multi instead
+        /** @deprecated since 1.2 use facet.type === FacetType.Multi check instead*/
         multiValued: config.isMultiValued,
       }
     : null;

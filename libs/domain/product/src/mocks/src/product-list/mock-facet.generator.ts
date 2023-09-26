@@ -1,4 +1,9 @@
-import { Facet, FacetType, FacetValue } from '@spryker-oryx/product';
+import {
+  FacetType,
+  FacetValue,
+  RangeFacet,
+  ValueFacet,
+} from '@spryker-oryx/product';
 
 export function generateValues(
   count: number,
@@ -29,7 +34,7 @@ export const generateFacet = (
   valuesLength: number,
   selectedValues?: string[],
   children = false
-): Facet => {
+): ValueFacet => {
   return {
     name,
     parameter,
@@ -45,7 +50,7 @@ export const generateRange = (
   parameter: string,
   range: number[],
   selected?: number[]
-): Facet => {
+): RangeFacet => {
   const [min, max] = range;
   return {
     name,
@@ -54,10 +59,6 @@ export const generateRange = (
       min,
       max,
       selected: { min: +(selected?.[0] ?? min), max: +(selected?.[1] ?? max) },
-    },
-    labels: {
-      min: 'Min',
-      max: 'Max',
     },
     type: FacetType.Range,
   };

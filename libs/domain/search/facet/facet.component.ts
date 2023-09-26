@@ -1,4 +1,4 @@
-import { FacetType, FacetValue } from '@spryker-oryx/product';
+import { FacetValue } from '@spryker-oryx/product';
 import {
   I18nMixin,
   computed,
@@ -25,7 +25,9 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
   @signalProperty({ type: Number }) minForSearch = 13;
   @signalProperty({ type: Boolean }) enableClear = true;
 
-  protected facet = computed(() => this.controller.getFacet());
+  protected facet = computed(
+    () => this.controller.getFacet() as SingleMultiFacet
+  );
 
   protected onChange(e: InputEvent): void {
     const { value, checked: selected } = e.target as HTMLInputElement;
@@ -36,7 +38,7 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
   }
 
   protected override render(): TemplateResult | void {
-    const facet = this.facet() as SingleMultiFacet;
+    const facet = this.facet();
 
     if (!facet) return;
 
@@ -102,18 +104,13 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
   }
 
   protected get isSearchable(): boolean {
-    const facet = this.facet();
-
-    if (facet?.type === FacetType.Range) return false;
-
-    return (facet?.valuesTreeLength ?? 0) > (this.minForSearch ?? Infinity);
+    return (
+      (this.facet()?.valuesTreeLength ?? 0) > (this.minForSearch ?? Infinity)
+    );
   }
 
   protected get isFoldable(): boolean {
     const facet = this.facet();
-
-    if (facet?.type === FacetType.Range) return false;
-
     return (
       (facet?.filteredValueLength ?? facet?.valuesTreeLength ?? 0) >
       (this.renderLimit ?? Infinity)

@@ -84,7 +84,7 @@ export interface ValueFacet {
   values: FacetValue[];
   valuesTreeLength?: number;
   selectedValues?: (string | number)[];
-  //TODO: Refactor to use type === multi instead of multiValued
+  /** @deprecated since 1.2 use facet.type === FacetType.Multi check instead*/
   multiValued?: boolean;
 }
 

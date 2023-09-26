@@ -14,7 +14,7 @@ import {
 import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
 import { ObserveController, computed, signal } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
-import { Observable, defer, of, switchMap } from 'rxjs';
+import { defer, of, switchMap } from 'rxjs';
 import {
   FACET_SELECT_EVENT,
   SearchFacetComponentAttributes,
@@ -32,15 +32,13 @@ export class FacetController implements ReactiveController {
 
   protected $facet = signal(
     defer(() =>
-      this.observe.get('name').pipe(
-        switchMap((name) =>
-          name
-            ? (this.facetListService.getFacet({
-                name,
-              }) as Observable<SingleMultiFacet | RangeFacet>)
-            : of(null)
+      this.observe
+        .get('name')
+        .pipe(
+          switchMap((name) =>
+            name ? this.facetListService.getFacet({ name }) : of(null)
+          )
         )
-      )
     )
   );
 
@@ -50,12 +48,11 @@ export class FacetController implements ReactiveController {
 
   protected computedFacet = computed(() => {
     const facet = this.$facet();
-    const search = this.$searchedValue();
-    const renderLimit = this.$renderLimit();
-    const showAll = this.$showAll();
 
-    //TODO: refactor to use facet.type instead typeof 'values' field to recognize single|multi facet
-    if (facet && Array.isArray(facet.values)) {
+    if (facet?.type === FacetType.Single || facet?.type === FacetType.Multi) {
+      const search = this.$searchedValue();
+      const renderLimit = this.$renderLimit();
+      const showAll = this.$showAll();
       const filteredValues = this.filterFacetValues(
         facet as SingleMultiFacet,
         search
@@ -65,9 +62,7 @@ export class FacetController implements ReactiveController {
         showAll ? Infinity : renderLimit
       );
       return limitedValues;
-    }
-
-    if (facet?.type === FacetType.Range) {
+    } else if (facet?.type === FacetType.Range) {
       return facet;
     }
 
@@ -80,7 +75,8 @@ export class FacetController implements ReactiveController {
     if (!facet) return [];
 
     if (facet.type === FacetType.Range) {
-      return (facet as RangeFacet).values.selected!;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return facet.values.selected!;
     }
 
     return facet.values.filter(({ name }) =>

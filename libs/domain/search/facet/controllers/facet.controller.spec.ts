@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector, resolve } from '@spryker-oryx/di';
-import { FacetValue } from '@spryker-oryx/product';
+import { FacetValue, ValueFacet } from '@spryker-oryx/product';
 import { generateFacet, generateValues } from '@spryker-oryx/product/mocks';
 import { FacetListService } from '@spryker-oryx/search';
 import { SearchFacetComponentAttributes } from '@spryker-oryx/search/facet';
@@ -9,7 +9,7 @@ import {
   FACET_TOGGLE_EVENT,
 } from '@spryker-oryx/search/facet-value-navigation';
 import { computed } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import { FacetController } from './facet.controller';
@@ -32,7 +32,7 @@ class FakeElement extends LitElement implements SearchFacetComponentAttributes {
   @property({ type: Number }) renderLimit?: number;
 
   protected controller = new FacetController(this);
-  facet = computed(() => this.controller.getFacet());
+  facet = computed(() => this.controller.getFacet() as ValueFacet);
   selectedValues = computed(() => this.controller.getSelectedValues());
 
   protected override render(): TemplateResult {

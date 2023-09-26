@@ -2,9 +2,10 @@ import { SearchFacetComponentAttributes } from '@spryker-oryx/search/facet';
 
 export interface SearchFacetRangeComponentAttributes
   extends Omit<
-    SearchFacetComponentAttributes,
-    'multi' | 'renderLimit' | 'minForSearch'
-  > {
+      SearchFacetComponentAttributes,
+      'multi' | 'renderLimit' | 'minForSearch'
+    >,
+    SearchFacetRangeComponentValues {
   /**
    * Step interval for the slider and inputs
    *

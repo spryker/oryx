@@ -164,7 +164,7 @@ describe('SearchFacetValueNavigationComponent', () => {
         element = await fixture(
           html`<oryx-search-facet-value-navigation
             enableClear
-            .selectedLength=${mockSelectedLength}
+            dirty
             @oryx.clear=${callback}
           ></oryx-search-facet-value-navigation>`
         );

@@ -7,11 +7,10 @@ import {
   elementEffect,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { TemplateResult, html } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-// use relative path for dev ssr server, SearchFacetComponent is undefined
-import { SearchFacetComponent } from '../facet/facet.component';
+import { FacetController } from '../facet/controllers';
 import {
   SearchFacetRangeComponentAttributes,
   SearchFacetRangeComponentValues,
@@ -19,34 +18,36 @@ import {
 import { searchRangeFacetStyles } from './facet-range.styles';
 
 export class SearchRangeFacetComponent
-  extends SearchFacetComponent
-  implements
-    SearchFacetRangeComponentAttributes,
-    SearchFacetRangeComponentValues
+  extends LitElement
+  implements SearchFacetRangeComponentAttributes
 {
-  static styles = [...SearchFacetComponent.styles, searchRangeFacetStyles];
+  static styles = [searchRangeFacetStyles];
 
+  protected controller = new FacetController(this);
+
+  @signalProperty() name?: string;
+  @signalProperty({ type: Boolean }) open = false;
+  @signalProperty({ type: Boolean }) enableClear = true;
   @signalProperty({ type: Number }) step = 1;
   @signalProperty() labelMin?: string;
   @signalProperty() labelMax?: string;
+
   @state() min?: number;
   @state() max?: number;
 
+  protected facet = computed(() => this.controller.getFacet() as RangeFacet);
+
   protected $isDirty = computed(() => {
-    const facet = this.facet() as RangeFacet;
-
-    if (!facet) return false;
-
     const {
       values: { min, max, selected },
-    } = facet;
+    } = this.facet();
 
     return selected?.min !== min || selected?.max !== max;
   });
 
   @elementEffect()
   protected $syncValues = effect(() => {
-    const facet = this.facet() as RangeFacet;
+    const facet = this.facet();
 
     if (!facet) return;
 
@@ -84,15 +85,14 @@ export class SearchRangeFacetComponent
   }
 
   protected hasChangedValue({ min, max }: RangeFacetValue): boolean {
-    const facet = this.facet() as RangeFacet;
     const {
       values: { selected },
-    } = facet;
+    } = this.facet();
     return selected?.min !== min || selected?.max !== max;
   }
 
   protected override render(): TemplateResult | void {
-    const facet = this.facet() as RangeFacet;
+    const facet = this.facet();
 
     if (!facet) return;
 

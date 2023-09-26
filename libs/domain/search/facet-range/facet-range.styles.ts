@@ -2,6 +2,10 @@ import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const searchRangeFacetStyles = css`
+  :host {
+    padding: 4px 1px;
+  }
+
   oryx-search-facet-value-navigation > section {
     display: grid;
     grid-template-columns: 1fr min-content 1fr;

@@ -1,4 +1,4 @@
-import { ValueFacet } from '@spryker-oryx/product';
+import { FacetType, ValueFacet } from '@spryker-oryx/product';
 import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
 import { TemplateResult, html } from 'lit';
 import { DefaultFacetComponentRegistryService } from './default-facet-component-registry.service';
@@ -31,7 +31,7 @@ export const facetProviders = [
               .renderLimit=${options.renderLimit}
               .open=${options.open}
               .enableClear="${options.enableClear}"
-              .multi=${facet.multiValued}
+              .multi=${facet.type === FacetType.Multi}
             >
             </oryx-search-facet>
           `;
@@ -49,7 +49,7 @@ export const facetProviders = [
               .name=${facet.name}
               .renderLimit=${options.renderLimit}
               .open=${options.open}
-              .multi=${facet.multiValued}
+              .multi=${facet.type === FacetType.Multi}
             >
             </oryx-search-color-facet>
           `;
