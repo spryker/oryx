@@ -224,6 +224,7 @@ export class DefaultFormRenderer implements FormRenderer {
         .label=${field.label}
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
+        ?required=${field.required}
         ?hasError=${field.attributes?.hasError}
       >
         ${this.renderInput(field, value)}
@@ -259,6 +260,7 @@ export class DefaultFormRenderer implements FormRenderer {
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
         ?hasError=${field.attributes?.hasError}
+        ?required=${field.required}
       >
         <textarea
           .name=${field.id}
@@ -280,6 +282,7 @@ export class DefaultFormRenderer implements FormRenderer {
         floatLabel=${ifDefined(field.floatLabel)}
         .style=${this.resolveStyles(field)}
         ?hasError=${field.attributes?.hasError}
+        ?required=${field.required}
       >
         ${this.renderInput(field, value)}
       </oryx-input>
@@ -345,6 +348,7 @@ export class DefaultFormRenderer implements FormRenderer {
         floatLabel=${ifDefined(field.floatLabel)}
         @oryx.close=${(e: Event): void => e.stopPropagation()}
         ?hasError=${field.attributes?.hasError}
+        ?required=${field.required}
       >
         <select
           .name=${field.id}

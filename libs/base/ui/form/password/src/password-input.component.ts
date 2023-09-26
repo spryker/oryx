@@ -64,15 +64,15 @@ export class PasswordInputComponent
   @property({ type: Boolean }) visible?: boolean;
 
   @state()
-  minLengthError = true;
+  minLengthError = false;
   @state()
-  maxLengthError = true;
+  maxLengthError = false;
   @state()
-  minUppercaseCharsError = true;
+  minUppercaseCharsError = false;
   @state()
-  minNumbersError = true;
+  minNumbersError = false;
   @state()
-  minSpecialCharsError = true;
+  minSpecialCharsError = false;
 
   connectedCallback(): void {
     super.connectedCallback();

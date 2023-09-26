@@ -25,7 +25,7 @@ import { styles } from './registration.styles';
   passwordVisibility: PasswordVisibilityStrategy.Click,
   termsAndConditionsLink: '/article/terms-and-conditions',
 })
-@hydrate({ event: ['mouseover', 'focus'] })
+@hydrate({ event: 'window:load' })
 export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>(
   LitElement
 ) {
