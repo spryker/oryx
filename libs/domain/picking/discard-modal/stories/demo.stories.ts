@@ -17,7 +17,7 @@ export default {
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  return html` <oryx-discard-picking open></oryx-discard-picking> `;
+  return html` <oryx-picking-discard-modal open></oryx-picking-discard-modal>`;
 };
 
 export const Demo = Template.bind({});

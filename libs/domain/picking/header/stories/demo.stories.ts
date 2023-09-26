@@ -14,7 +14,7 @@ export default {
 };
 
 const Template: Story = (): TemplateResult => {
-  return html`<oryx-header></oryx-header>`;
+  return html`<oryx-picking-header></oryx-picking-header>`;
 };
 
 export const Demo = Template.bind({});

@@ -1,18 +1,18 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { LoginPageComponent } from './login.component';
-import { loginPageComponent } from './login.def';
+import { PickingLoginComponent } from './login.component';
+import { pickingLoginComponent } from './login.def';
 
-describe('LoginPageComponent', () => {
-  let element: LoginPageComponent;
+describe('PickingLoginPageComponent', () => {
+  let element: PickingLoginComponent;
 
   beforeAll(async () => {
-    await useComponent([loginPageComponent]);
+    await useComponent([pickingLoginComponent]);
   });
 
   beforeEach(async () => {
-    element = await fixture(html`<oryx-login-page></oryx-login-page`);
+    element = await fixture(html`<oryx-picking-login></oryx-picking-login`);
   });
 
   it('passes the a11y audit', async () => {

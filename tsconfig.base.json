@@ -124,30 +124,25 @@
       ],
       "@spryker-oryx/picking/filters": ["libs/domain/picking/filters/index.ts"],
       "@spryker-oryx/picking/header": ["libs/domain/picking/header/index.ts"],
+      "@spryker-oryx/picking/list-item": [
+        "libs/domain/picking/list-item/index.ts"
+      ],
+      "@spryker-oryx/picking/lists": ["libs/domain/picking/lists/index.ts"],
+      "@spryker-oryx/picking/lists-header": [
+        "libs/domain/picking/lists-header/index.ts"
+      ],
       "@spryker-oryx/picking/login": ["libs/domain/picking/login/index.ts"],
       "@spryker-oryx/picking/mocks": ["libs/domain/picking/mocks/index.ts"],
-      "@spryker-oryx/picking/navigate-back": [
-        "libs/domain/picking/navigate-back/index.ts"
-      ],
       "@spryker-oryx/picking/offline": ["libs/domain/picking/offline/index.ts"],
-      "@spryker-oryx/picking/picking": ["libs/domain/picking/picking/index.ts"],
-      "@spryker-oryx/picking/picking-header": [
-        "libs/domain/picking/picking-header/index.ts"
+      "@spryker-oryx/picking/picker": ["libs/domain/picking/picker/index.ts"],
+      "@spryker-oryx/picking/picker-header": [
+        "libs/domain/picking/picker-header/index.ts"
       ],
       "@spryker-oryx/picking/picking-in-progress": [
         "libs/domain/picking/picking-in-progress/index.ts"
       ],
-      "@spryker-oryx/picking/picking-list-item": [
-        "libs/domain/picking/picking-list-item/index.ts"
-      ],
-      "@spryker-oryx/picking/picking-lists": [
-        "libs/domain/picking/picking-lists/index.ts"
-      ],
-      "@spryker-oryx/picking/picking-lists-header": [
-        "libs/domain/picking/picking-lists-header/index.ts"
-      ],
-      "@spryker-oryx/picking/picking-product-card": [
-        "libs/domain/picking/picking-product-card/index.ts"
+      "@spryker-oryx/picking/product-card": [
+        "libs/domain/picking/product-card/index.ts"
       ],
       "@spryker-oryx/picking/user-profile": [
         "libs/domain/picking/user-profile/index.ts"
@@ -355,6 +350,9 @@
         "libs/domain/user/contact-form/index.ts"
       ],
       "@spryker-oryx/user/mocks": ["libs/domain/user/src/mocks/index.ts"],
+      "@spryker-oryx/user/registration": [
+        "libs/domain/user/registration/index.ts"
+      ],
       "@spryker-oryx/utilities": ["libs/base/utilities/src/index.ts"],
       "@spryker-oryx/utilities/*": ["libs/base/utilities/*/index.ts"],
       "@spryker-oryx/utilities/window-stub": [
