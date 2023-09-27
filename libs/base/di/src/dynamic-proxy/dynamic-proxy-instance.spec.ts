@@ -5,7 +5,7 @@ import { createLazyProxy } from './dynamic-proxy-instance';
 
 describe('Dynamic Proxy Instance', () => {
   const mockLazyImport = vi.fn(async () => MockImplementation);
-  const mockInstanceCallback = vi.fn(() => {});
+  const mockInstanceCallback = vi.fn(() => undefined);
   const mockMethod = vi.fn(() => undefined);
   const mockObservableMethod = vi.fn(() => of('observable value'));
 
