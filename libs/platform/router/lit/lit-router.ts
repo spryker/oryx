@@ -402,7 +402,7 @@ export class LitRouter implements ReactiveController {
    */
   outlet(fallback?: string): TemplateResult {
     if (!this._currentRoute) {
-      return html`<outlet>${unsafeHTML('NO FALLBACK')}</outlet>`;
+      return html`<outlet>${unsafeHTML(fallback)}</outlet>`;
     }
 
     const path = isRouterPath(this._currentRoute)
