@@ -24,6 +24,7 @@ import {
   tap,
 } from 'rxjs';
 
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import { LitRoutesRegistry } from './lit-routes-registry';
 
@@ -399,7 +400,11 @@ export class LitRouter implements ReactiveController {
   /**
    * The result of calling the current route's render() callback.
    */
-  outlet(): TemplateResult {
+  outlet(fallback?: string): TemplateResult {
+    if (!this._currentRoute) {
+      return html`<outlet>${unsafeHTML('NO FALLBACK')}</outlet>`;
+    }
+
     const path = isRouterPath(this._currentRoute)
       ? this._currentParams.page
         ? `/${this._currentParams.page}`
