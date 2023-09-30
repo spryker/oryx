@@ -46,15 +46,12 @@
     };
 
     const addEventsAction = () => {
-      console.log('addEventsAction');
       const elements = treewalk(`[${replayableAttribute}]`);
 
       for (const element of elements) {
         element[EVENTS_DATA] = {
           events: [],
           listener: (event) => {
-            console.log('stopEvent', event.type, element.localName);
-
             event.stopPropagation();
             event.preventDefault();
 
@@ -70,7 +67,11 @@
       }
     };
 
-    addEventsAction();
+    const isShadow = !!document.querySelector?.('oryx-app').shadowRoot;
+
+    if (isShadow) {
+      addEventsAction();
+    }
   </script>
   <script type="module" src="/app.ts"></script>
 </html>
