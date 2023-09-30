@@ -111,16 +111,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
         this.setAttribute(hydratableAttribute, optionsToAttribute(options));
       } else if (this.shadowRoot) {
         this[DEFER_HYDRATION] = 3;
-
-        // const replayableElements =
-        //   this.shadowRoot?.querySelectorAll(`[${replayableAttribute}]`) ?? [];
-
-        // for (const element of replayableElements) {
-        //   if (element[EVENTS_DATA].events.length) {
-        //     console.log('this[HYDRATE_ON_DEMAND]');
-        //     this[HYDRATE_ON_DEMAND]();
-        //   }
-        // }
       }
     }
 
@@ -208,12 +198,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
       const result = super.render();
 
       if (this[SIGNAL_EFFECT]) {
-        // console.log(this.shadowRoot, 'this.shadowRoot');
-        // console.log(this.renderRoot, 'this.renderRoot');
-        // const replayableElements =
-        //   this.shadowRoot?.querySelectorAll(`[${replayableAttribute}]`) ?? [];
-        // console.log(replayableElements, 'replayableElementsreplayableElements');
-
         this[SIGNAL_EFFECT]!.stop();
         delete this[SIGNAL_EFFECT];
       }
