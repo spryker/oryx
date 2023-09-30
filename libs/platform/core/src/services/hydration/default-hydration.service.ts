@@ -2,9 +2,12 @@ import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
 import {
   ComponentsPlugin,
   deferHydrationAttribute,
+  ElementWithEventsData,
+  EVENTS_DATA,
   hydratableAttribute,
   HydratableLitElement,
   HYDRATE_ON_DEMAND,
+  replayableAttribute,
   rootInjectable,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
@@ -74,26 +77,36 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
 
   protected setupEventHydration(element: HTMLElement, event: string): void {
     const parts = event.split(':');
+    const replayable =
+      element.shadowRoot?.querySelectorAll<ElementWithEventsData>(
+        `[${replayableAttribute}]`
+      ) ?? [];
+    const shouldHydrate = [...replayable].some(
+      (el) => el[EVENTS_DATA]?.events?.length
+    );
     const mode = parts[parts.length - 1];
-    let target: HTMLElement | typeof window = element;
-    if (parts.length > 1) {
-      target = parts[0] === 'window' ? window : element;
-    }
+    const target: HTMLElement | typeof window =
+      parts.length > 1 ? (parts[0] === 'window' ? window : element) : element;
 
-    target.addEventListener(mode, async () => {
-      const childs = this.treewalk(
-        `[${deferHydrationAttribute}]`,
-        element,
-        false
-      );
+    (shouldHydrate ? window : target).addEventListener(
+      shouldHydrate ? 'load' : mode,
+      async () => {
+        const childs = this.treewalk(
+          `[${deferHydrationAttribute}]`,
+          element,
+          false
+        );
 
-      if (childs.length) {
-        const promises = childs.map((childEl) => this.hydrateOnDemand(childEl));
-        await Promise.all(promises);
+        if (childs.length) {
+          const promises = childs.map((childEl) =>
+            this.hydrateOnDemand(childEl)
+          );
+          await Promise.all(promises);
+        }
+
+        this.hydrateOnDemand(element);
       }
-
-      this.hydrateOnDemand(element);
-    });
+    );
   }
 
   protected setupContextHydration(element: HTMLElement, context: string): void {

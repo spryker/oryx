@@ -65,6 +65,7 @@ export class CartAddComponent extends ProductMixin(
       ?disabled=${this.isInvalid || !this.$hasStock()}
       @click=${this.onSubmit}
       @mouseup=${this.onMouseUp}
+      replayable="click"
     ></oryx-button>`;
   }
 

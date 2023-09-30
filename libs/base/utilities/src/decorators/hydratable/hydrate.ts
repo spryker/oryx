@@ -4,7 +4,12 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { LitElement, TemplateResult, isServer, render } from 'lit';
-import { Type } from '../../misc';
+import {
+  Type,
+  removeEventsAction,
+  replayEvents,
+  replayableAttribute,
+} from '../../misc';
 import { Effect, effect, resolvingSignals } from '../../signals';
 import { digestForTemplateValues } from './digest-for-template';
 
@@ -106,6 +111,16 @@ function hydratableClass<T extends Type<HTMLElement>>(
         this.setAttribute(hydratableAttribute, optionsToAttribute(options));
       } else if (this.shadowRoot) {
         this[DEFER_HYDRATION] = 3;
+
+        // const replayableElements =
+        //   this.shadowRoot?.querySelectorAll(`[${replayableAttribute}]`) ?? [];
+
+        // for (const element of replayableElements) {
+        //   if (element[EVENTS_DATA].events.length) {
+        //     console.log('this[HYDRATE_ON_DEMAND]');
+        //     this[HYDRATE_ON_DEMAND]();
+        //   }
+        // }
       }
     }
 
@@ -171,6 +186,8 @@ function hydratableClass<T extends Type<HTMLElement>>(
       });
 
       this[SIGNAL_EFFECT] = effect(() => {
+        const replayableElements =
+          this.shadowRoot?.querySelectorAll(`[${replayableAttribute}]`) ?? [];
         const hasResolving = resolvingSignals();
         super.render();
 
@@ -178,6 +195,8 @@ function hydratableClass<T extends Type<HTMLElement>>(
           this[DEFER_HYDRATION] = 1; // hydrating
           super.connectedCallback();
           this.removeAttribute(deferHydrationAttribute);
+          removeEventsAction(replayableElements);
+          setTimeout(() => replayEvents(replayableElements), 0);
           resolve();
         }
       });
@@ -189,6 +208,12 @@ function hydratableClass<T extends Type<HTMLElement>>(
       const result = super.render();
 
       if (this[SIGNAL_EFFECT]) {
+        // console.log(this.shadowRoot, 'this.shadowRoot');
+        // console.log(this.renderRoot, 'this.renderRoot');
+        // const replayableElements =
+        //   this.shadowRoot?.querySelectorAll(`[${replayableAttribute}]`) ?? [];
+        // console.log(replayableElements, 'replayableElementsreplayableElements');
+
         this[SIGNAL_EFFECT]!.stop();
         delete this[SIGNAL_EFFECT];
       }

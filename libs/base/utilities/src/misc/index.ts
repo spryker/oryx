@@ -2,6 +2,7 @@ export * from './a11y';
 export * as AjaxClient from './ajax';
 export * from './debounce';
 export * from './dedupe-arrays';
+export * from './events-repeater';
 export * from './extract-str-props';
 export * from './get-prop-by-path';
 export * from './get-static-prop';
