@@ -145,6 +145,6 @@ export class DefaultPageMetaService implements PageMetaService {
   }
 
   protected getContainer(definition: ElementDefinition): HTMLElement {
-    return definition.toBody ? document.body : document.body;
+    return definition.toBody ? document.body : document.head;
   }
 }
