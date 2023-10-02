@@ -78,8 +78,10 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
   protected setupEventHydration(element: HTMLElement, event: string): void {
     const parts = event.split(':');
     const mode = parts[parts.length - 1];
-    const target: HTMLElement | typeof window =
-      parts.length > 1 ? (parts[0] === 'window' ? window : element) : element;
+    let target: HTMLElement | typeof window = element;
+    if (parts.length > 1) {
+      target = parts[0] === 'window' ? window : element;
+    }
 
     target.addEventListener(mode, async () => {
       const childs = this.treewalk(
