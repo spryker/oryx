@@ -16,7 +16,7 @@ export interface ProductPriceOptions {
 }
 
 /**
- * @deprecated Not in use. Will be removed in the next major release.
+ * @deprecated not used anywhere. Will be removed in 2.0.0.
  */
 export interface Prices {
   original?: string | null;

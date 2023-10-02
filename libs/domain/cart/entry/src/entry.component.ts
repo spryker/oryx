@@ -6,6 +6,7 @@ import {
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
+import { ProductPriceOptions } from '@spryker-oryx/product/price';
 import { RouteType } from '@spryker-oryx/router';
 import {
   LinkService,
@@ -20,6 +21,7 @@ import {
   Size,
   computed,
   elementEffect,
+  featureVersion,
   hydrate,
   signalProperty,
 } from '@spryker-oryx/utilities';
@@ -61,6 +63,7 @@ export class CartEntryComponent
   @signalProperty({ type: Number }) quantity?: number;
   @property() key?: string;
   @property({ type: Number }) price?: number;
+  @property({ type: Number }) itemPrice?: number;
   @property({ type: Number }) unitPrice?: number;
   @property({ type: Number }) discountedUnitPrice?: number;
   @property({ type: Boolean }) readonly?: boolean;
@@ -163,8 +166,6 @@ export class CartEntryComponent
           ?disabled=${this.$isBusy()}
         ></oryx-cart-quantity-input>`;
 
-    const isDiscounted = this.unitPrice !== this.discountedUnitPrice;
-
     return html`
       <section class="pricing">
         ${qtyTemplate}
@@ -173,34 +174,63 @@ export class CartEntryComponent
           .currency=${this.currency}
           class="subtotal"
         ></oryx-site-price>
-        ${when(
-          this.$options()?.enableItemPrice,
-          () =>
-            html`<div class="unit-price">
-              <span>${this.i18n('cart.entry.item-price')}</span>
-
-              ${when(
-                isDiscounted,
-                () => html`
-                  <oryx-site-price
-                    .value=${this.unitPrice}
-                    .currency=${this.currency}
-                    original
-                    class="original"
-                  ></oryx-site-price>
-                `
-              )}
-
-              <oryx-site-price
-                .value=${this.discountedUnitPrice}
-                .currency=${this.currency}
-                ?discounted=${isDiscounted}
-                class="sales"
-              ></oryx-site-price>
-            </div>`
-        )}
+        ${when(this.$options()?.enableItemPrice, () => {
+          return featureVersion >= '1.2'
+            ? this.renderItemPrice()
+            : this.renderDeprecatedItemPrice();
+        })}
       </section>
     `;
+  }
+
+  /**
+   * Renders the item price.
+   *
+   * This is not a public api (yet) but added here to avoid complex (deprecated) render logic.
+   *
+   * Will be cleaned up in version 2.0.0.
+   */
+  private renderItemPrice(): TemplateResult | void {
+    const isDiscounted = this.unitPrice !== this.discountedUnitPrice;
+
+    return html`<div class="unit-price">
+      <span>${this.i18n('cart.entry.item-price')}</span>
+
+      ${when(
+        isDiscounted,
+        () => html`
+          <oryx-site-price
+            .value=${this.unitPrice}
+            .currency=${this.currency}
+            original
+            class="original"
+          ></oryx-site-price>
+        `
+      )}
+
+      <oryx-site-price
+        .value=${this.discountedUnitPrice}
+        .currency=${this.currency}
+        ?discounted=${isDiscounted}
+        class="sales"
+      ></oryx-site-price>
+    </div>`;
+  }
+
+  /**
+   * Temporary fallback for older versions of the item price component.
+   *
+   * We keep this method private to avoid maintenance and deprecations over time.
+   */
+  private renderDeprecatedItemPrice(): TemplateResult | void {
+    return html`<div class="item-price">
+      <span>${this.i18n('cart.entry.item-price')}</span>
+      <oryx-product-price
+        .options=${{ enableTaxMessage: false } as ProductPriceOptions}
+        .sales=${this.itemPrice}
+        .currency=${this.currency}
+      ></oryx-product-price>
+    </div>`;
   }
 
   protected renderConfirmation(): TemplateResult | void {

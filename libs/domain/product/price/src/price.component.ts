@@ -1,9 +1,19 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { ProductContext, ProductMixin } from '@spryker-oryx/product';
-import { hydrate } from '@spryker-oryx/utilities';
+import {
+  ProductContext,
+  ProductMixin,
+  ProductPrice,
+} from '@spryker-oryx/product';
+import {
+  computed,
+  featureVersion,
+  hydrate,
+  signalProperty,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
+import { property } from 'lit/decorators.js';
 import { ProductPriceOptions } from './price.model';
-import { ProductPriceStyles } from './price.styles';
+import { ProductPriceStyles, productPriceStyles } from './price.styles';
 
 /**
  * Renders the (formatted) product price.
@@ -26,7 +36,62 @@ import { ProductPriceStyles } from './price.styles';
 export class ProductPriceComponent extends ProductMixin(
   ContentMixin<ProductPriceOptions>(LitElement)
 ) {
-  static styles = ProductPriceStyles;
+  static styles =
+    featureVersion >= '1.2' ? productPriceStyles : ProductPriceStyles;
+
+  /**
+   * Indicates the sales price. If the sales price is not given by a property,
+   * it will be resolved from the product data.
+   *
+   * @deprecated since 1.2.0. The sales price will only be resolved from the product data going forward.
+   */
+  @signalProperty() sales?: number;
+
+  /**
+   * The component uses the `PriceComponent` to render prices in the active currency.
+   * If a currency is provided, the price currency must match this currency, otherwise the price
+   * is not rendered.
+   *
+   * @deprecated since 1.2.0. The currency will be resolved from the (global) current currency going forward.
+   */
+  @property() currency?: string;
+
+  /**
+   * @deprecated since 1.2.0.
+   */
+  protected $salesPrice = computed(() => {
+    if (this.sales) return this.sales;
+
+    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
+
+    if (defaultPrice) {
+      return this.isValid(defaultPrice) && defaultPrice.value;
+    } else {
+      return this.isValid(originalPrice) && originalPrice?.value;
+    }
+  });
+
+  /**
+   * @deprecated since 1.2.0. The original price will be resolved from the product data going forward,
+   * which makes the use of this signal obsolete.
+   */
+  protected $originalPrice = computed(() => {
+    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
+
+    if (this.sales && !originalPrice && this.sales !== defaultPrice?.value) {
+      return this.isValid(defaultPrice) && defaultPrice?.value;
+    } else {
+      return this.isValid(originalPrice) && originalPrice?.value;
+    }
+  });
+
+  /**
+   * @deprecated since 1.2.0. The original price will be resolved from the product data going forward,
+   * which makes the use of this signal obsolete.
+   */
+  protected isValid(price?: ProductPrice): boolean {
+    return !this.currency || this.currency === price?.currency;
+  }
 
   protected override render(): TemplateResult | void {
     return html`
@@ -45,17 +110,30 @@ export class ProductPriceComponent extends ProductMixin(
    * instead.
    */
   protected renderSalesPrice(): TemplateResult | void {
-    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
-    const price = defaultPrice?.value ? defaultPrice : originalPrice;
+    if (featureVersion > '1.2') {
+      const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
+      const price = defaultPrice?.value ? defaultPrice : originalPrice;
 
-    if (!price) return;
+      if (!price) return;
 
-    return html`<oryx-site-price
-      .value=${price.value}
-      .currency=${price.currency}
-      part="sales"
-      ?discounted=${defaultPrice?.value !== originalPrice?.value}
-    ></oryx-site-price>`;
+      return html`<oryx-site-price
+        .value=${price.value}
+        .currency=${price.currency}
+        part="sales"
+        ?discounted=${originalPrice?.value &&
+        defaultPrice?.value !== originalPrice?.value}
+      ></oryx-site-price>`;
+    } else {
+      const price = this.$salesPrice();
+      if (!price) return;
+
+      return html`<oryx-site-price
+        .value=${price}
+        .currency=${this.currency}
+        part="sales"
+        ?has-discount=${!!this.$originalPrice()}
+      ></oryx-site-price>`;
+    }
   }
 
   /**
@@ -63,20 +141,31 @@ export class ProductPriceComponent extends ProductMixin(
    * is different from the sales price, the original price is rendered.
    */
   protected renderOriginalPrice(): TemplateResult | void {
-    const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
+    if (featureVersion > '1.2') {
+      const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
 
-    if (
-      !this.$options().enableOriginalPrice ||
-      defaultPrice?.value === originalPrice?.value
-    )
-      return;
+      if (
+        !this.$options().enableOriginalPrice ||
+        defaultPrice?.value === originalPrice?.value
+      )
+        return;
 
-    return html`<oryx-site-price
-      .value=${originalPrice?.value}
-      .currency=${originalPrice?.currency}
-      original
-      part="original"
-    ></oryx-site-price>`;
+      return html`<oryx-site-price
+        .value=${originalPrice?.value}
+        .currency=${originalPrice?.currency}
+        original
+        part="original"
+      ></oryx-site-price>`;
+    } else {
+      const price = this.$originalPrice();
+      if (!price) return;
+
+      return html`<oryx-site-price
+        .value=${price}
+        .currency=${this.currency}
+        part="original"
+      ></oryx-site-price>`;
+    }
   }
 
   /**

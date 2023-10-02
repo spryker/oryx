@@ -20,6 +20,8 @@ export interface CartEntryAttributes {
    * Regular unit price of the product, before volume discounts (see `discountedUnitPrice`).
    *
    * The given number represents the non formatted price.
+   *
+   * @since 1.2.0
    */
   unitPrice?: number;
 
@@ -27,6 +29,8 @@ export interface CartEntryAttributes {
    * Unit price after applying volume discount.
    *
    * The given number represents the non formatted price.
+   *
+   * @since 1.2.0
    */
   discountedUnitPrice?: number;
 
@@ -43,7 +47,7 @@ export interface CartEntryAttributes {
    *
    * The given number represents the non formatted price.
    *
-   * @deprecated use `unitPrice` instead
+   * @deprecated use `unitPrice` instead. Will be removed in 2.0.0.
    */
   itemPrice?: number;
 

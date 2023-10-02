@@ -20,7 +20,7 @@ export interface SitePriceComponentAttributes {
    * The discounted property represents whether the price is discounted.
    * If set to true, the price will be rendered with the highlight color.
    *
-   * @since 1.1.0
+   * @since 1.2.0
    */
   discounted?: boolean;
 
@@ -29,7 +29,7 @@ export interface SitePriceComponentAttributes {
    * strikethrough. If set to true, the price will be rendered with a
    * line-through css style.
    *
-   * @since 1.1.0
+   * @since 1.2.0
    */
   original?: boolean;
 }
