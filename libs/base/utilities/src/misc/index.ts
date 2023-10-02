@@ -16,6 +16,8 @@ export * from './subscribe-replay';
 export * from './throttle';
 export * from './time';
 export * from './to-observable';
+export * from './treewalk';
 export * from './type';
 export * from './version';
 export * from './wait';
+
