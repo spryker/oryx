@@ -7,7 +7,7 @@ import {
   hydratableAttribute,
   HydratableLitElement,
   HYDRATE_ON_DEMAND,
-  replayableAttribute,
+  repeatableAttribute,
   rootInjectable,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
@@ -79,7 +79,7 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
     const parts = event.split(':');
     const replayable =
       element.shadowRoot?.querySelectorAll<ElementWithEventsData>(
-        `[${replayableAttribute}]`
+        `[${repeatableAttribute}]`
       ) ?? [];
     const shouldHydrate = [...replayable].some(
       (el) => el[EVENTS_DATA]?.events?.length

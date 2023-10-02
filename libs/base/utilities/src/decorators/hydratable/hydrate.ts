@@ -7,8 +7,8 @@ import { LitElement, TemplateResult, isServer, render } from 'lit';
 import {
   Type,
   removeEventsAction,
-  replayEvents,
-  replayableAttribute,
+  repeatEvents,
+  repeatableAttribute,
 } from '../../misc';
 import { Effect, effect, resolvingSignals } from '../../signals';
 import { digestForTemplateValues } from './digest-for-template';
@@ -177,7 +177,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
       this[SIGNAL_EFFECT] = effect(() => {
         const replayableElements =
-          this.shadowRoot?.querySelectorAll(`[${replayableAttribute}]`) ?? [];
+          this.shadowRoot?.querySelectorAll(`[${repeatableAttribute}]`) ?? [];
         const hasResolving = resolvingSignals();
         super.render();
 
@@ -186,7 +186,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
           super.connectedCallback();
           this.removeAttribute(deferHydrationAttribute);
           removeEventsAction(replayableElements);
-          setTimeout(() => replayEvents(replayableElements), 0);
+          setTimeout(() => repeatEvents(replayableElements), 0);
           resolve();
         }
       });

@@ -4,6 +4,10 @@ import {
   DefaultThemeMetaInitializer,
   ThemeMetaInitializer,
 } from './initializers';
+import {
+  DefaultStopEventsInitializer,
+  StopEventsInitializer,
+} from './initializers/stop-events.initializer';
 import { GlobalPageMetaResolver } from './resolvers';
 
 export const applicationProviders: Provider[] = [
@@ -14,5 +18,9 @@ export const applicationProviders: Provider[] = [
   {
     provide: ThemeMetaInitializer,
     useClass: DefaultThemeMetaInitializer,
+  },
+  {
+    provide: StopEventsInitializer,
+    useClass: DefaultStopEventsInitializer,
   },
 ];

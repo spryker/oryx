@@ -1,5 +1,6 @@
-export const EVENTS_DATA = Symbol.for('EVENTS_DATA');
-export const replayableAttribute = 'replayable';
+const eventsDataIdentifier = 'EVENTS_DATA';
+export const EVENTS_DATA = Symbol.for(eventsDataIdentifier);
+export const repeatableAttribute = 'repeatable';
 
 export type ElementWithEventsData = HTMLElement & {
   [EVENTS_DATA]?: EventsData;
@@ -10,16 +11,16 @@ interface EventsData {
   events: Event[];
 }
 
-const treewalk = (
+function treewalk(
   selector: string,
   rootNode = document.body,
   includeRoot = true
-) => {
+) {
   const nodes: Element[] = [rootNode];
   const elements: HTMLElement[] = [];
 
-  for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i];
+  for (const node of nodes) {
+    if (!node) continue;
 
     if (node.nodeType !== Node.ELEMENT_NODE) {
       continue;
@@ -43,11 +44,29 @@ const treewalk = (
   }
 
   return elements;
-};
+}
 
-export const addEventsAction = (): void => {
+function eventsAction(
+  element: ElementWithEventsData,
+  shouldRemove?: true
+): void {
+  const events = element.getAttribute(repeatableAttribute) as string;
+
+  for (const eventType of events.split(',')) {
+    if (shouldRemove) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      element.removeEventListener(eventType, element[EVENTS_DATA]!.listener);
+      continue;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    element.addEventListener(eventType, element[EVENTS_DATA]!.listener);
+  }
+}
+
+export function addEventsAction(): void {
   const elements = treewalk(
-    `[${replayableAttribute}]`
+    `[${repeatableAttribute}]`
   ) as ElementWithEventsData[];
 
   for (const element of elements) {
@@ -61,28 +80,19 @@ export const addEventsAction = (): void => {
       },
     };
 
-    const events = element.getAttribute(replayableAttribute) as string;
-
-    for (const eventType of events.split(':')) {
-      element.addEventListener(eventType, element[EVENTS_DATA].listener);
-    }
+    eventsAction(element);
   }
-};
+}
 
-export const removeEventsAction = (elements: ElementWithEventsData[]): void => {
+export function removeEventsAction(elements: ElementWithEventsData[]): void {
   for (const element of elements) {
     if (!element[EVENTS_DATA]) continue;
 
-    const events = element.getAttribute(replayableAttribute) as string;
-    for (const eventType of events.split(':')) {
-      element.removeEventListener(eventType, element[EVENTS_DATA].listener);
-    }
+    eventsAction(element, true);
   }
-};
+}
 
-export const replayEvents = async (
-  elements: ElementWithEventsData[]
-): Promise<void> => {
+export function repeatEvents(elements: ElementWithEventsData[]): void {
   for (const element of elements) {
     const events = element[EVENTS_DATA]?.events;
 
@@ -94,4 +104,15 @@ export const replayEvents = async (
 
     delete element[EVENTS_DATA];
   }
-};
+}
+
+export const addEventsActionInsertion = `
+  const EVENTS_DATA = Symbol.for('${eventsDataIdentifier}');
+  const repeatableAttribute = '${repeatableAttribute}';
+
+  ${treewalk.toString()}
+  ${eventsAction.toString()}
+  ${addEventsAction.toString()}
+
+  addEventsAction();
+`;
