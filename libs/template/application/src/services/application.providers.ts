@@ -1,5 +1,6 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { isServer } from 'lit';
 import {
   DefaultThemeMetaInitializer,
   ThemeMetaInitializer,
@@ -19,8 +20,12 @@ export const applicationProviders: Provider[] = [
     provide: ThemeMetaInitializer,
     useClass: DefaultThemeMetaInitializer,
   },
-  {
-    provide: StopEventsInitializer,
-    useClass: DefaultStopEventsInitializer,
-  },
+  ...(isServer
+    ? [
+        {
+          provide: StopEventsInitializer,
+          useClass: DefaultStopEventsInitializer,
+        },
+      ]
+    : []),
 ];

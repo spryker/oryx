@@ -4,12 +4,7 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { LitElement, TemplateResult, isServer, render } from 'lit';
-import {
-  Type,
-  removeEventsAction,
-  repeatEvents,
-  repeatableAttribute,
-} from '../../misc';
+import { Type, removeEventsAction } from '../../misc';
 import { Effect, effect, resolvingSignals } from '../../signals';
 import { digestForTemplateValues } from './digest-for-template';
 
@@ -176,8 +171,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
       });
 
       this[SIGNAL_EFFECT] = effect(() => {
-        const replayableElements =
-          this.shadowRoot?.querySelectorAll(`[${repeatableAttribute}]`) ?? [];
         const hasResolving = resolvingSignals();
         super.render();
 
@@ -185,8 +178,8 @@ function hydratableClass<T extends Type<HTMLElement>>(
           this[DEFER_HYDRATION] = 1; // hydrating
           super.connectedCallback();
           this.removeAttribute(deferHydrationAttribute);
-          removeEventsAction(replayableElements);
-          setTimeout(() => repeatEvents(replayableElements), 0);
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          removeEventsAction(this.shadowRoot!);
           resolve();
         }
       });

@@ -2,12 +2,10 @@ import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
 import {
   ComponentsPlugin,
   deferHydrationAttribute,
-  ElementWithEventsData,
-  EVENTS_DATA,
+  hasEventsAction,
   hydratableAttribute,
   HydratableLitElement,
   HYDRATE_ON_DEMAND,
-  repeatableAttribute,
   rootInjectable,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
@@ -62,6 +60,8 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
 
       const modes = el.getAttribute(hydratableAttribute)?.split?.(',') ?? [];
 
+      if (hasEventsAction(el)) modes.push('window:load');
+
       for (let i = 0; i < modes.length; i++) {
         if (modes[i][0] === '@') {
           this.setupContextHydration(el, modes[i].slice(1));
@@ -77,36 +77,24 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
 
   protected setupEventHydration(element: HTMLElement, event: string): void {
     const parts = event.split(':');
-    const replayable =
-      element.shadowRoot?.querySelectorAll<ElementWithEventsData>(
-        `[${repeatableAttribute}]`
-      ) ?? [];
-    const shouldHydrate = [...replayable].some(
-      (el) => el[EVENTS_DATA]?.events?.length
-    );
     const mode = parts[parts.length - 1];
     const target: HTMLElement | typeof window =
       parts.length > 1 ? (parts[0] === 'window' ? window : element) : element;
 
-    (shouldHydrate ? window : target).addEventListener(
-      shouldHydrate ? 'load' : mode,
-      async () => {
-        const childs = this.treewalk(
-          `[${deferHydrationAttribute}]`,
-          element,
-          false
-        );
+    target.addEventListener(mode, async () => {
+      const childs = this.treewalk(
+        `[${deferHydrationAttribute}]`,
+        element,
+        false
+      );
 
-        if (childs.length) {
-          const promises = childs.map((childEl) =>
-            this.hydrateOnDemand(childEl)
-          );
-          await Promise.all(promises);
-        }
-
-        this.hydrateOnDemand(element);
+      if (childs.length) {
+        const promises = childs.map((childEl) => this.hydrateOnDemand(childEl));
+        await Promise.all(promises);
       }
-    );
+
+      this.hydrateOnDemand(element);
+    });
   }
 
   protected setupContextHydration(element: HTMLElement, context: string): void {

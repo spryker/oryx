@@ -84,14 +84,6 @@ export function addEventsAction(): void {
   }
 }
 
-export function removeEventsAction(elements: ElementWithEventsData[]): void {
-  for (const element of elements) {
-    if (!element[EVENTS_DATA]) continue;
-
-    eventsAction(element, true);
-  }
-}
-
 export function repeatEvents(elements: ElementWithEventsData[]): void {
   for (const element of elements) {
     const events = element[EVENTS_DATA]?.events;
@@ -105,6 +97,28 @@ export function repeatEvents(elements: ElementWithEventsData[]): void {
     delete element[EVENTS_DATA];
   }
 }
+
+export function removeEventsAction(container: HTMLElement): void {
+  const elements = (container?.querySelectorAll(`[${repeatableAttribute}]`) ??
+    []) as unknown as ElementWithEventsData[];
+
+  for (const element of elements) {
+    if (!element[EVENTS_DATA]) continue;
+
+    eventsAction(element, true);
+  }
+
+  setTimeout(() => repeatEvents(elements), 0);
+}
+
+export const hasEventsAction = (element: Element): boolean => {
+  const replayable =
+    element.shadowRoot?.querySelectorAll<ElementWithEventsData>(
+      `[${repeatableAttribute}]`
+    ) ?? [];
+
+  return [...replayable].some((el) => el[EVENTS_DATA]?.events?.length);
+};
 
 export const addEventsActionInsertion = `
   const EVENTS_DATA = Symbol.for('${eventsDataIdentifier}');
