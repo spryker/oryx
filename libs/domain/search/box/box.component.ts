@@ -90,7 +90,7 @@ export class SearchBoxComponent
     super.connectedCallback();
 
     if (this.input?.value) {
-      this.onTypeahead({ detail: { query: this.input?.value } } as CustomEvent);
+      this.query = this.input?.value;
     }
   }
 
