@@ -55,12 +55,15 @@ function eventsAction(
   for (const eventType of events.split(',')) {
     if (shouldRemove) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      element.removeEventListener(eventType, element[EVENTS_DATA]!.listener);
+      element.removeEventListener(
+        eventType.trim(),
+        element[EVENTS_DATA]!.listener
+      );
       continue;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    element.addEventListener(eventType, element[EVENTS_DATA]!.listener);
+    element.addEventListener(eventType.trim(), element[EVENTS_DATA]!.listener);
   }
 }
 
