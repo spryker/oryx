@@ -25,7 +25,8 @@ import { styles } from './registration.styles';
   passwordVisibility: PasswordVisibilityStrategy.Click,
   termsAndConditionsLink: '/article/terms-and-conditions',
 })
-@hydrate({ event: ['mouseover', 'focus'] })
+//TODO - fix password input validation from server before we can remove hydration on window load.
+@hydrate({ event: 'window:load' })
 export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>(
   LitElement
 ) {
