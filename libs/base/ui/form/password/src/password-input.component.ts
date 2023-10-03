@@ -2,19 +2,28 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import {
   AffixController,
   AffixOptions,
-  baseStyles as inputBaseStyles,
   FormControlController,
   FormControlOptions,
+  baseStyles as inputBaseStyles,
 } from '@spryker-oryx/ui/input';
-import { html, LitElement, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import {
+  I18nMixin,
+  I18nTranslationValue,
+  Size,
+  i18n,
+} from '@spryker-oryx/utilities';
+import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
+import { property, state } from 'lit/decorators.js';
 import { getControl } from '../../utilities/getControl';
-import { PasswordVisibilityStrategy } from './password-input.model';
+import {
+  PasswordValidationOptions,
+  PasswordVisibilityStrategy,
+} from './password-input.model';
 import { baseStyles } from './password-input.styles';
 
 export class PasswordInputComponent
-  extends LitElement
-  implements FormControlOptions, AffixOptions
+  extends I18nMixin(LitElement)
+  implements FormControlOptions, AffixOptions, PasswordValidationOptions
 {
   static styles = [...inputBaseStyles, baseStyles];
 
@@ -26,6 +35,11 @@ export class PasswordInputComponent
   @property({ type: Boolean, reflect: true }) prefixFill?: boolean;
   @property() suffixIcon?: string;
   @property({ type: Boolean, reflect: true }) suffixFill?: boolean;
+  @property({ type: Number }) minLength?: number;
+  @property({ type: Number }) maxLength?: number;
+  @property({ type: Number }) minUppercaseChars?: number;
+  @property({ type: Number }) minNumbers?: number;
+  @property({ type: Number }) minSpecialChars?: number;
 
   protected formControlController = new FormControlController(this);
   protected affixController = new AffixController(this);
@@ -47,12 +61,135 @@ export class PasswordInputComponent
 
   @property({ type: Boolean }) visible?: boolean;
 
+  @state()
+  minLengthError = false;
+  @state()
+  maxLengthError = false;
+  @state()
+  minUppercaseCharsError = false;
+  @state()
+  minNumbersError = false;
+  @state()
+  minSpecialCharsError = false;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.addEventListener('input', this.setValidation);
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener('input', this.setValidation);
+  }
+
+  protected firstUpdated(_changedProperties: PropertyValues): void {
+    super.firstUpdated(_changedProperties);
+    this.setValidation();
+  }
+
+  protected updated(_changedProperties: PropertyValues): void {
+    if (
+      _changedProperties.has('minLength') ||
+      _changedProperties.has('maxLength')
+    ) {
+      this.setValidation();
+    }
+    super.updated(_changedProperties);
+  }
+
+  isValid(): boolean {
+    return (
+      !this.minLengthError &&
+      !this.maxLengthError &&
+      !this.minUppercaseCharsError &&
+      !this.minNumbersError &&
+      !this.minSpecialCharsError
+    );
+  }
+
   protected override render(): TemplateResult {
     return html`
       ${this.formControlController.render({
         before: this.affixController.renderPrefix(),
         after: this.affixController.renderSuffix(this.renderActionIcon()),
       })}
+      ${this.renderValidation()}
+    `;
+  }
+
+  protected setValidation(): void {
+    const value = this.control.value;
+
+    this.minLengthError = !!(this.minLength && value.length < this.minLength);
+    this.maxLengthError = !!(this.maxLength && value.length > this.maxLength);
+    this.minUppercaseCharsError = !!(
+      this.minUppercaseChars &&
+      (value.match(/[A-Z]/g) || []).length < this.minUppercaseChars
+    );
+    this.minNumbersError = !!(
+      this.minNumbers && (value.match(/[0-9]/g) || []).length < this.minNumbers
+    );
+    this.minSpecialCharsError = !!(
+      this.minSpecialChars &&
+      (value.match(/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/g) || []).length <
+        this.minSpecialChars
+    );
+  }
+
+  protected renderValidation(): TemplateResult {
+    return html`
+      ${this.minLength
+        ? this.renderValidationMessage(
+            this.minLengthError,
+            i18n('ui.password.at-least-<count>-characters', {
+              count: this.minLength,
+            })
+          )
+        : ''}
+      ${this.maxLength
+        ? this.renderValidationMessage(
+            this.maxLengthError,
+            i18n('ui.password.at-most-<count>-characters', {
+              count: this.maxLength,
+            })
+          )
+        : ''}
+      ${this.minUppercaseChars
+        ? this.renderValidationMessage(
+            this.minUppercaseCharsError,
+            i18n('ui.password.at-least-<count>-uppercase-letters', {
+              count: this.minUppercaseChars,
+            })
+          )
+        : ''}
+      ${this.minNumbers
+        ? this.renderValidationMessage(
+            this.minNumbersError,
+            i18n('ui.password.at-least-<count>-numbers', {
+              count: this.minNumbers,
+            })
+          )
+        : ''}
+      ${this.minSpecialChars
+        ? this.renderValidationMessage(
+            this.minSpecialCharsError,
+            i18n('ui.password.at-least-<count>-special-chars', {
+              count: this.minSpecialChars,
+            })
+          )
+        : ''}
+    `;
+  }
+
+  protected renderValidationMessage(
+    errorState: boolean,
+    message: I18nTranslationValue
+  ): TemplateResult {
+    return html`
+      <div class="validation-message ${errorState ? '' : 'active'}">
+        <oryx-icon type=${IconTypes.Check} size=${Size.Sm}></oryx-icon>
+        ${message}
+      </div>
     `;
   }
 

@@ -7,8 +7,8 @@ import { RouterService } from '@spryker-oryx/router';
 import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { catchError, of, switchMap, throwError } from 'rxjs';
-import { UserProfileComponent } from './user-profile.component';
-import { userProfileComponent } from './user-profile.def';
+import { PickingUserProfileComponent } from './user-profile.component';
+import { pickingUserProfileComponent } from './user-profile.def';
 
 const mockOfflineDataPlugin = {
   refreshData: vi.fn().mockReturnValue(
@@ -42,15 +42,15 @@ class MockStorageService implements Partial<StorageService> {
   get = vi.fn().mockReturnValue(of(undefined));
 }
 
-describe('UserProfileComponent', () => {
-  let element: UserProfileComponent;
+describe('PickingUserProfileComponent', () => {
+  let element: PickingUserProfileComponent;
   let routerService: MockRouterService;
   let syncSchedulerService: MockSyncSchedulerService;
   let authService: MockAuthService;
   let storageService: MockStorageService;
 
   beforeAll(async () => {
-    await useComponent(userProfileComponent);
+    await useComponent(pickingUserProfileComponent);
   });
 
   beforeEach(async () => {
@@ -107,7 +107,7 @@ describe('UserProfileComponent', () => {
   });
 
   it('should be provided', () => {
-    expect(element).toBeInstanceOf(UserProfileComponent);
+    expect(element).toBeInstanceOf(PickingUserProfileComponent);
   });
 
   it('should render its components', () => {

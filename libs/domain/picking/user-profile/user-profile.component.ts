@@ -24,7 +24,7 @@ import {
 import { userProfileComponentStyles } from './user-profile.styles';
 
 @signalAware()
-export class UserProfileComponent extends I18nMixin(LitElement) {
+export class PickingUserProfileComponent extends I18nMixin(LitElement) {
   static styles = userProfileComponentStyles;
 
   protected routerService = resolve(RouterService);

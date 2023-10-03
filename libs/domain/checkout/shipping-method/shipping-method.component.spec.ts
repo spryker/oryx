@@ -91,15 +91,11 @@ describe('CheckoutShipmentComponent', () => {
     });
 
     it('should render an empty message', () => {
-      expect(element).toContainElement('.no-methods');
+      expect(element.hasAttribute('no-methods')).toBe(true);
     });
 
     it('should not render any tiles', () => {
       expect(element).not.toContainElement('oryx-tile');
-    });
-
-    it('should render an empty message', () => {
-      expect(element).toContainElement('.no-methods');
     });
   });
 
@@ -117,7 +113,7 @@ describe('CheckoutShipmentComponent', () => {
     });
 
     it('should render an empty message', () => {
-      expect(element).toContainElement('.no-methods');
+      expect(element.hasAttribute('no-methods')).toBe(true);
     });
   });
 
@@ -155,7 +151,7 @@ describe('CheckoutShipmentComponent', () => {
     });
 
     it('should not render an empty message', () => {
-      expect(element).not.toContainElement('.no-methods');
+      expect(element.hasAttribute('no-methods')).toBe(false);
     });
 
     describe('and there is no selected method', () => {
