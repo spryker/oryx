@@ -18,7 +18,7 @@ import {
   DefaultCheckoutDataService,
   DefaultCheckoutService,
   DefaultCheckoutStateService,
-} from './deprecated-reexports';
+} from './services-reexports';
 import {
   CheckoutAdapter,
   CheckoutDataSerializer,
