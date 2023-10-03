@@ -14,12 +14,6 @@ import {
   checkoutDataAttributesSerializer,
 } from '../services/src/adapter/serializers';
 import {
-  DefaultCheckoutAdapter,
-  DefaultCheckoutDataService,
-  DefaultCheckoutService,
-  DefaultCheckoutStateService,
-} from './services-reexports';
-import {
   CheckoutAdapter,
   CheckoutDataSerializer,
   CheckoutDataService,
@@ -31,6 +25,12 @@ import {
   PaymentsNormalizer,
   ShipmentsNormalizer,
 } from './services';
+import {
+  DefaultCheckoutAdapter,
+  DefaultCheckoutDataService,
+  DefaultCheckoutService,
+  DefaultCheckoutStateService,
+} from './services-reexports';
 
 export const checkoutNormalizer: Provider[] = [
   {
