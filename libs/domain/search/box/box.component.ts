@@ -55,6 +55,7 @@ export class SearchBoxComponent
   @signalProperty() query = '';
 
   @query('oryx-typeahead') protected typeahead!: TypeaheadComponent;
+  @query('input') protected input!: HTMLInputElement;
 
   protected suggestionRendererService = resolve(SuggestionRendererService);
   protected routerService = resolve(RouterService);
@@ -85,6 +86,14 @@ export class SearchBoxComponent
     return withSuggestion ? this.$raw() : null;
   });
 
+  connectedCallback(): void {
+    super.connectedCallback();
+
+    if (this.input?.value) {
+      this.onTypeahead({ detail: { query: this.input?.value } } as CustomEvent);
+    }
+  }
+
   protected override render(): TemplateResult {
     return html`
       <oryx-typeahead
@@ -92,11 +101,13 @@ export class SearchBoxComponent
         @oryx.typeahead=${this.onTypeahead}
         .clearIcon=${IconTypes.Close}
         ?float=${this.$options().float}
+        repeatable="input,change"
       >
         <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
         <input
           .value=${this.query ?? ''}
           placeholder=${ifDefined(this.i18n(['search', 'search.placeholder']))}
+          repeatable="focusin"
         />
         ${this.renderSuggestion()}
         <oryx-site-navigation-button

@@ -4,11 +4,12 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { LitElement, TemplateResult, isServer, render } from 'lit';
-import { Type, removeEventsAction } from '../../misc';
+import { Type, removeEventsAction, repeatEvents } from '../../misc';
 import { Effect, effect, resolvingSignals } from '../../signals';
 import { digestForTemplateValues } from './digest-for-template';
 
 const DEFER_HYDRATION = Symbol('deferHydration');
+const EVENTS = Symbol('EVENTS');
 export const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
 export const hydratableAttribute = 'hydratable';
 export const deferHydrationAttribute = 'defer-hydration';
@@ -98,6 +99,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
      */
     [DEFER_HYDRATION]?: number;
     private [SIGNAL_EFFECT]?: Effect;
+    protected [EVENTS]?: Event[][];
 
     constructor(...args: any[]) {
       super(...args);
@@ -128,7 +130,6 @@ function hydratableClass<T extends Type<HTMLElement>>(
 
     update(changedProperties: PropertyValues) {
       if (this[DEFER_HYDRATION] && this[DEFER_HYDRATION] > 1) return;
-
       // special case for hydration
       if (this[DEFER_HYDRATION] === 1) {
         // delete this[DEFER_HYDRATION];
@@ -156,6 +157,11 @@ function hydratableClass<T extends Type<HTMLElement>>(
       } else {
         super.update(changedProperties);
       }
+
+      setTimeout(() => {
+        repeatEvents(this.shadowRoot, this[EVENTS]);
+        delete this[EVENTS];
+      }, 0);
     }
 
     async [HYDRATE_ON_DEMAND]() {
@@ -178,8 +184,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
           this[DEFER_HYDRATION] = 1; // hydrating
           super.connectedCallback();
           this.removeAttribute(deferHydrationAttribute);
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          removeEventsAction(this.shadowRoot!);
+          this[EVENTS] = removeEventsAction(this.shadowRoot);
           resolve();
         }
       });

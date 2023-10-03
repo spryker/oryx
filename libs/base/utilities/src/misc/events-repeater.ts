@@ -54,9 +54,9 @@ function eventsAction(
 
   for (const eventType of events.split(',')) {
     if (shouldRemove) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       element.removeEventListener(
         eventType.trim(),
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         element[EVENTS_DATA]!.listener
       );
       continue;
@@ -79,7 +79,7 @@ export function addEventsAction(): void {
         event.stopPropagation();
         event.preventDefault();
 
-        element[EVENTS_DATA]?.events.push(event);
+        element[EVENTS_DATA]?.events.unshift(event);
       },
     };
 
@@ -87,9 +87,31 @@ export function addEventsAction(): void {
   }
 }
 
-export function repeatEvents(elements: ElementWithEventsData[]): void {
-  for (const element of elements) {
-    const events = element[EVENTS_DATA]?.events;
+export function removeEventsAction(container: HTMLElement): Event[][] {
+  const elements = (container?.querySelectorAll(`[${repeatableAttribute}]`) ??
+    []) as unknown as ElementWithEventsData[];
+  const events = [];
+
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    if (!element[EVENTS_DATA]) continue;
+
+    events[i] = element[EVENTS_DATA].events;
+    eventsAction(element, true);
+  }
+
+  return events;
+}
+
+export function repeatEvents(container: HTMLElement, data?: Event[][]): void {
+  if (!data?.length) return;
+
+  const elements = (container?.querySelectorAll(`[${repeatableAttribute}]`) ??
+    []) as unknown as ElementWithEventsData[];
+
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    const events = data[i];
 
     if (!events?.length) return;
 
@@ -101,19 +123,6 @@ export function repeatEvents(elements: ElementWithEventsData[]): void {
   }
 }
 
-export function removeEventsAction(container: HTMLElement): void {
-  const elements = (container?.querySelectorAll(`[${repeatableAttribute}]`) ??
-    []) as unknown as ElementWithEventsData[];
-
-  for (const element of elements) {
-    if (!element[EVENTS_DATA]) continue;
-
-    eventsAction(element, true);
-  }
-
-  setTimeout(() => repeatEvents(elements), 0);
-}
-
 export const hasEventsAction = (element: Element): boolean => {
   const replayable =
     element.shadowRoot?.querySelectorAll<ElementWithEventsData>(
@@ -123,13 +132,11 @@ export const hasEventsAction = (element: Element): boolean => {
   return [...replayable].some((el) => el[EVENTS_DATA]?.events?.length);
 };
 
-const test = treewalk;
-
 export const addEventsActionInsertion = `
   const EVENTS_DATA = Symbol.for('${eventsDataIdentifier}');
   const repeatableAttribute = '${repeatableAttribute}';
 
-  ${test.toString()}
+  ${treewalk.toString()}
   ${eventsAction.toString()}
   ${addEventsAction.toString()}
 
