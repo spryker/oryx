@@ -27,6 +27,12 @@ export interface SearchFacetRangeComponentAttributes
 }
 
 export interface SearchFacetRangeComponentValues {
+  /**
+   * Property that specifies the minimum active value of the range and value for min input
+   */
   min?: number;
+  /**
+   * Property that specifies the maximum active value of the range and value for max input
+   */
   max?: number;
 }

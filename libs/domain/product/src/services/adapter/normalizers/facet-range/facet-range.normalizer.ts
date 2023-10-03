@@ -18,12 +18,12 @@ export function facetsRangeNormalizer(
       },
     };
 
-    const normalizedFacet = {
+    const normalizedFacet: RangeFacet = {
       type: FacetType.Range,
       name: localizedName,
       parameter: config.parameterName,
       values,
-    } as RangeFacet;
+    };
 
     return [...normalizedFacetList, normalizedFacet];
   }, []);
