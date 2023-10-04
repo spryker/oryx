@@ -277,39 +277,39 @@ describe('SearchRangeFacetComponent', () => {
         expect(element.min).toBe(+value);
       });
     });
+  });
 
-    describe('max input', () => {
-      const value = '5';
+  describe('max input', () => {
+    const value = '5';
 
-      beforeEach(async () => {
-        element = await fixture(
-          html`<oryx-search-range-facet name=${name}></oryx-search-range-facet>`
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-range-facet name=${name}></oryx-search-range-facet>`
+      );
+
+      getInputField(true).value = value;
+      getInputField(true).focus();
+    });
+
+    describe('when input loses focus', () => {
+      beforeEach(() => {
+        getInputField(true).blur();
+      });
+
+      it('should update the max state', () => {
+        expect(element.max).toBe(+value);
+      });
+    });
+
+    describe('when enter key is pressed', () => {
+      beforeEach(() => {
+        getInputField(true).dispatchEvent(
+          new KeyboardEvent('keydown', { key: 'Enter' })
         );
-
-        getInputField(true).value = value;
-        getInputField(true).focus();
       });
 
-      describe('when input loses focus', () => {
-        beforeEach(() => {
-          getInputField(true).blur();
-        });
-
-        it('should update the max state', () => {
-          expect(element.max).toBe(+value);
-        });
-      });
-
-      describe('when enter key is pressed', () => {
-        beforeEach(() => {
-          getInputField(true).dispatchEvent(
-            new KeyboardEvent('keydown', { key: 'Enter' })
-          );
-        });
-
-        it('should update the max state', () => {
-          expect(element.max).toBe(+value);
-        });
+      it('should update the max state', () => {
+        expect(element.max).toBe(+value);
       });
     });
   });
