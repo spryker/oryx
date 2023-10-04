@@ -1,7 +1,9 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const discardModalComponent = componentDef({
-  name: 'oryx-discard-picking',
+export const pickingDiscardModalComponent = componentDef({
+  name: 'oryx-picking-discard-modal',
   impl: () =>
-    import('./discard-modal.component').then((m) => m.DiscardPickingComponent),
+    import('./discard-modal.component').then(
+      (m) => m.PickingDiscardModalComponent
+    ),
 });

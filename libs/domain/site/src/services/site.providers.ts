@@ -3,6 +3,7 @@ import { Provider } from '@spryker-oryx/di';
 import { LocaleAdapter } from '@spryker-oryx/i18n';
 import { PriceModes } from '../models';
 import { DefaultStoreAdapter, StoreAdapter, storeNormalizer } from './adapter';
+import { BreadcrumbService, DefaultBreadcrumbService } from './breadcrumb';
 import { CountryService, DefaultCountryService } from './country';
 import {
   CurrencyService,
@@ -11,6 +12,7 @@ import {
   currencyHydration,
 } from './currency';
 import { SiteErrorHandler } from './error-handling';
+import { DefaultGenderService, GenderService } from './gender';
 import { DefaultLinkService, LinkService } from './link';
 import {
   AcceptLanguageInterceptor,
@@ -29,6 +31,10 @@ import {
 } from './price-mode';
 import { priceModeHydration } from './price-mode/price-mode-hydration';
 import { DefaultPricingService, PricingService } from './pricing';
+import {
+  DefaultFallbackBreadcrumbResolver,
+  FallbackBreadcrumbResolver,
+} from './resolvers';
 import { DefaultSalutationService, SalutationService } from './salutation';
 import { DefaultStoreService, StoreService } from './store';
 
@@ -43,7 +49,10 @@ declare global {
 export const siteProviders: Provider[] = [
   {
     provide: 'SCOS_BASE_URL',
-    useFactory: () => injectEnv('SCOS_BASE_URL', ''),
+    useFactory: (): string => {
+      const url = injectEnv('SCOS_BASE_URL', '');
+      return url.endsWith('/') ? url.slice(0, -1) : url;
+    },
   },
   {
     provide: 'STORE',
@@ -98,6 +107,10 @@ export const siteProviders: Provider[] = [
     provide: SalutationService,
     useClass: DefaultSalutationService,
   },
+  {
+    provide: GenderService,
+    useClass: DefaultGenderService,
+  },
   ...storeNormalizer,
   {
     provide: HttpInterceptor,
@@ -114,6 +127,14 @@ export const siteProviders: Provider[] = [
   localeHydration,
   currencyHydration,
   priceModeHydration,
+  {
+    provide: BreadcrumbService,
+    useClass: DefaultBreadcrumbService,
+  },
+  {
+    provide: FallbackBreadcrumbResolver,
+    useClass: DefaultFallbackBreadcrumbResolver,
+  },
   // TODO: uncomment when CORs header issue is fixed
   // {
   //   provide: HttpInterceptor,

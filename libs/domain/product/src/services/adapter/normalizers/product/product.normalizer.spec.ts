@@ -1,12 +1,14 @@
 import { camelize } from '@spryker-oryx/core/utilities';
 import { of, take } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
-import { ProductMediaSetNormalizer } from '../media';
+import { CategoryNormalizer } from '../../../category';
 import { CategoryIdNormalizer } from '../category-id';
+import { ProductMediaSetNormalizer } from '../media';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 import {
   productAttributeNormalizer,
+  productCategoryNormalizer,
   productMediaSetNormalizer,
   productNodeNormalizer,
   productPriceNormalizer,
@@ -169,6 +171,21 @@ describe('Product Normalizers', () => {
             expect(mockTransformer.transform).toHaveBeenCalledWith(
               mockDeserializedProduct.abstractProducts?.[0].categoryNodes,
               CategoryIdNormalizer
+            );
+            done();
+          });
+      }));
+  });
+
+  describe('Product Category Normalizer', () => {
+    it('should call categories transformer', () =>
+      new Promise<void>((done) => {
+        productCategoryNormalizer(mockDeserializedProduct, mockTransformer)
+          .pipe(take(1))
+          .subscribe(() => {
+            expect(mockTransformer.transform).toHaveBeenCalledWith(
+              mockDeserializedProduct.abstractProducts?.[0].categoryNodes,
+              CategoryNormalizer
             );
             done();
           });

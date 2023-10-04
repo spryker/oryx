@@ -10,8 +10,11 @@ export const logMissingEnv = (tokens: string[]): void => {
   console.warn(`Missing ${values} environment variable(s)`);
   logged[values]++;
 };
-export const factory = (clazz: Type<unknown>, tokens: string[]): unknown => {
-  if (tokens.some((token) => !inject(token))) {
+export const getClassByRequiredTokens = (
+  clazz: Type<unknown>,
+  tokens: string[]
+): unknown => {
+  if (tokens.some((token) => !inject(token, false))) {
     logMissingEnv(tokens);
     return { get: () => of({}) };
   }

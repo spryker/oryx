@@ -1,3 +1,4 @@
+import { BreadcrumbFragment } from '../page-fragments/breadcrumb.fragment';
 import { FooterFragment } from '../page-fragments/footer.fragment';
 import { GlobalNotificationCenter } from '../page-fragments/global-notification-center.fragment';
 import { HeaderFragment } from '../page-fragments/header.fragment';
@@ -29,6 +30,7 @@ export abstract class AbstractSFPage implements E2EPage {
   footer = new FooterFragment();
   searchbox = new SearchBoxFragment();
   globalNotificationCenter = new GlobalNotificationCenter();
+  breadcrumb = new BreadcrumbFragment();
 
   /**
    * Initializes cypress interceptors
