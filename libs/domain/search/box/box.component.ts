@@ -101,13 +101,12 @@ export class SearchBoxComponent
         @oryx.typeahead=${this.onTypeahead}
         .clearIcon=${IconTypes.Close}
         ?float=${this.$options().float}
-        hydration-events="input,change,mouseover"
       >
         <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
         <input
           .value=${this.query ?? ''}
           placeholder=${ifDefined(this.i18n(['search', 'search.placeholder']))}
-          hydration-events="focusin"
+          hydration-events="input,focusin,focusout"
         />
         ${this.renderSuggestion()}
         <oryx-site-navigation-button

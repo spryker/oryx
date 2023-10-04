@@ -84,7 +84,7 @@ export function stopEventsForHydration(): void {
       listener: (event: Event) => {
         event.stopPropagation();
         event.preventDefault();
-        element[HYDRATION_EVENTS]?.events.unshift(event);
+        element[HYDRATION_EVENTS]?.events.push(event);
         element.dispatchEvent(
           new CustomEvent(HYDRATE_EVENT, {
             bubbles: true,
@@ -139,9 +139,19 @@ export function repeatHydrationEvents(
     const element = elements[i];
     const events = data[i];
 
-    if (!events?.length) return;
+    if (!events?.length) continue;
 
     for (const event of events) {
+      if (event.type === 'focusin') {
+        element.focus();
+        continue;
+      }
+
+      if (event.type === 'focusout') {
+        element.blur();
+        continue;
+      }
+
       element.dispatchEvent(event);
     }
 
