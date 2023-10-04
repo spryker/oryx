@@ -1,21 +1,24 @@
 import { TokenResolver } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
+import {
+  Component,
+  ExperienceService,
+  ScreenService,
+} from '@spryker-oryx/experience';
 import * as utils from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { of } from 'rxjs';
-import { SpyInstance } from 'vitest';
+import { SpyInstance, describe } from 'vitest';
 import { CompositionComponentsController } from './composition-components.controller';
-import {
-  ExperienceService,
-  ScreenService,
-  Component,
-} from '@spryker-oryx/experience';
 
 const mockElement = {
   tagName: 'tagName',
 } as unknown as LitElement;
 const mockUid = 'mockUid';
+const rules = ['mockRule1', 'mockRule2'];
+
 const hideByRule = 'mockRule';
+const hideByOrConditionalRule = rules.join('||');
 
 const mockComponent: Component = {
   id: 'mockId',

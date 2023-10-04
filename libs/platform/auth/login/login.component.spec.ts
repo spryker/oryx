@@ -1,14 +1,12 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector, inject } from '@spryker-oryx/di';
 import { ExperienceService } from '@spryker-oryx/experience';
+import { FormFieldType, FormRenderer } from '@spryker-oryx/form';
 import { I18nService } from '@spryker-oryx/i18n';
 import { RouterService } from '@spryker-oryx/router';
 import { passwordInputComponent } from '@spryker-oryx/ui';
-import {
-  PasswordInputComponent,
-  PasswordVisibilityStrategy,
-} from '@spryker-oryx/ui/password';
-import { useComponent } from '@spryker-oryx/utilities';
+import { PasswordVisibilityStrategy } from '@spryker-oryx/ui/password';
+import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { EMPTY, of, throwError } from 'rxjs';
 import { AuthLoginComponent } from './login.component';
@@ -33,10 +31,54 @@ class MockAuthLoginStrategy implements AuthLoginStrategy {
   login = vi.fn().mockReturnValue(of(undefined));
 }
 
+class MockFormRenderer implements Partial<FormRenderer> {
+  buildForm = vi.fn().mockReturnValue(html`
+    <oryx-input>
+      <input name="email" type="email" aria-label="label" />
+    </oryx-input>
+    <oryx-password-input>
+      <input name="password" type="password" aria-label="label" />
+    </oryx-password-input>
+    <oryx-checkbox>
+      <input name="rememberme" type="checkbox" aria-label="label" />
+    </oryx-checkbox>
+  `);
+}
+
+const defaultFields = [
+  {
+    id: 'email',
+    type: FormFieldType.Email,
+    required: true,
+    label: i18n('user.login.email'),
+    placeholder: i18n('user.login.email'),
+    width: 100,
+  },
+  {
+    id: 'password',
+    type: FormFieldType.Password,
+    required: true,
+    label: i18n('user.login.password'),
+    placeholder: i18n('user.login.password'),
+    width: 100,
+    attributes: {
+      hasError: false,
+      strategy: PasswordVisibilityStrategy.Click,
+    },
+  },
+  {
+    id: 'rememberme',
+    type: FormFieldType.Boolean,
+    label: i18n('user.login.remember-me'),
+    width: 100,
+  },
+];
+
 describe('AuthLoginComponent', () => {
   let element: AuthLoginComponent;
   let authLoginStrategy: MockAuthLoginStrategy;
   let routerService: MockRouterService;
+  let renderer: MockFormRenderer;
 
   beforeAll(async () => {
     await useComponent([authLoginComponent, passwordInputComponent]);
@@ -65,8 +107,14 @@ describe('AuthLoginComponent', () => {
           provide: AuthLoginStrategy,
           useFactory: () => inject(MockAuthLoginStrategy),
         },
+        {
+          provide: FormRenderer,
+          useClass: MockFormRenderer,
+        },
       ],
     });
+
+    renderer = testInjector.inject<MockFormRenderer>(FormRenderer);
     authLoginStrategy = testInjector.inject(MockAuthLoginStrategy);
     routerService = testInjector.inject(
       RouterService
@@ -90,22 +138,8 @@ describe('AuthLoginComponent', () => {
       await expect(element).shadowDom.to.be.accessible();
     });
 
-    it('should render an oryx-input in the light dom', () => {
-      expect(element?.shadowRoot?.querySelector('oryx-input')).toBeDefined();
-    });
-
-    it('should have the click strategy for password visibility', async () => {
-      expect(
-        (
-          element?.shadowRoot?.querySelector(
-            'oryx-password-input'
-          ) as PasswordInputComponent
-        ).strategy
-      ).toBe(PasswordVisibilityStrategy.Click);
-    });
-
-    it('should have a remember me checkbox', () => {
-      expect(element).toContainElement('oryx-checkbox');
+    it('should build a form', () => {
+      expect(renderer.buildForm).toHaveBeenCalledWith(defaultFields);
     });
   });
 
@@ -119,39 +153,44 @@ describe('AuthLoginComponent', () => {
     });
 
     it('should have the HOVER strategy for password visibility', () => {
-      expect(
-        (
-          element?.shadowRoot?.querySelector(
-            'oryx-password-input'
-          ) as PasswordInputComponent
-        ).strategy
-      ).toBe(PasswordVisibilityStrategy.Hover);
+      const expectedFields = defaultFields.map((field) => {
+        if (field.id === 'password') {
+          return {
+            ...field,
+            attributes: {
+              ...field.attributes,
+              strategy: PasswordVisibilityStrategy.Hover,
+            },
+          };
+        }
+        return field;
+      });
+
+      expect(renderer.buildForm).toBeCalledWith(expectedFields);
     });
   });
 
-  describe('when the enableRememberMe property is set to true', () => {
+  describe('when the enableRememberMe property is set to false', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-auth-login
-          .options="${{ enableRememberMe: true }}"
+          .options="${{ enableRememberMe: false }}"
         ></oryx-auth-login>`
       );
     });
 
-    it('should have a checkbox for remember me', () => {
-      expect(element?.shadowRoot?.querySelector('oryx-checkbox')).toBeDefined();
+    it('should not pass checkbox to form builder', () => {
+      const expectedFields = defaultFields.filter(
+        (field) => field.id !== 'rememberme'
+      );
+
+      expect(renderer.buildForm).toBeCalledWith(expectedFields);
     });
   });
 
   describe('when login button is clicked', () => {
     beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-auth-login
-          .options="${{
-            enableRememberMe: true,
-          }}"
-        ></oryx-auth-login>`
-      );
+      element = await fixture(html`<oryx-auth-login></oryx-auth-login>`);
 
       setupLogin();
       routerService.previousRoute.mockReturnValue(of(null));
@@ -297,7 +336,7 @@ describe('AuthLoginComponent', () => {
           await submit();
           await submit();
         });
-        it('should attempt to login again', async () => {
+        it('should attempt to login again', () => {
           expect(authLoginStrategy.login).toHaveBeenCalledTimes(2);
         });
       });

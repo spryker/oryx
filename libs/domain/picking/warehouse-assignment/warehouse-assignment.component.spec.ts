@@ -3,7 +3,7 @@ import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   WarehouseUserAssignmentsService,
-  warehouseAssignmentComponent,
+  pickingWarehouseAssignmentComponent,
 } from '@spryker-oryx/picking';
 import { mockWarehouseUserAssignments } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
@@ -12,7 +12,7 @@ import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of, switchMap } from 'rxjs';
 import { beforeEach, vi } from 'vitest';
-import { WarehouseAssignmentComponent } from './warehouse-assignment.component';
+import { PickingWarehouseAssignmentComponent } from './warehouse-assignment.component';
 
 const mockOfflineDataPlugin = {
   refreshData: vi.fn().mockReturnValue(
@@ -42,14 +42,14 @@ class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-describe('WarehouseAssignmentComponent', () => {
-  let el: WarehouseAssignmentComponent;
+describe('PickingWarehouseAssignmentComponent', () => {
+  let el: PickingWarehouseAssignmentComponent;
 
   let service: MockWarehouseUserAssignmentsService;
   let routerService: RouterService;
 
   beforeAll(async () => {
-    await useComponent(warehouseAssignmentComponent);
+    await useComponent(pickingWarehouseAssignmentComponent);
   });
 
   beforeEach(async () => {
@@ -85,7 +85,7 @@ describe('WarehouseAssignmentComponent', () => {
     beforeEach(async () => {
       service.getList.mockReturnValue(of(mockWarehouseUserAssignments));
       el = await fixture(
-        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+        html`<oryx-picking-warehouse-assignment></oryx-picking-warehouse-assignment>`
       );
     });
 
@@ -100,7 +100,7 @@ describe('WarehouseAssignmentComponent', () => {
     });
 
     it('should render header', () => {
-      expect(el).toContainElement('oryx-header');
+      expect(el).toContainElement('oryx-picking-header');
     });
 
     mockWarehouseUserAssignments.forEach((item, index) => {
@@ -140,7 +140,7 @@ describe('WarehouseAssignmentComponent', () => {
         of(mockWarehouseUserAssignments.slice(0, 1))
       );
       el = await fixture(
-        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+        html`<oryx-picking-warehouse-assignment></oryx-picking-warehouse-assignment>`
       );
     });
 
@@ -164,7 +164,7 @@ describe('WarehouseAssignmentComponent', () => {
         of(mockWarehouseUserAssignments.slice(0, 0))
       );
       el = await fixture(
-        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+        html`<oryx-picking-warehouse-assignment></oryx-picking-warehouse-assignment>`
       );
     });
 

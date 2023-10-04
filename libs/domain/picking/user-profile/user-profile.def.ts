@@ -1,7 +1,9 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const userProfileComponent = componentDef({
+export const pickingUserProfileComponent = componentDef({
   name: 'oryx-picking-user-profile',
   impl: () =>
-    import('./user-profile.component').then((m) => m.UserProfileComponent),
+    import('./user-profile.component').then(
+      (m) => m.PickingUserProfileComponent
+    ),
 });
