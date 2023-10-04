@@ -19,7 +19,7 @@ export class DefaultTokenService implements TokenResolver {
     if (this.isConditionalToken(token)) {
       return this.resolveConditionalToken(token);
     }
-    
+
     if (!this.isToken(token)) {
       return of(token);
     }
