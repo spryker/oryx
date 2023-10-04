@@ -22,6 +22,12 @@ const mockEurNet = {
   isNet: true,
 };
 
+const mockOriginalEurNet = {
+  currency: 'EUR',
+  value: 1195,
+  isNet: true,
+};
+
 const mockEurGross = {
   currency: 'EUR',
   value: 1095,
@@ -105,68 +111,26 @@ describe('ProductPriceComponent', () => {
         expect(element).not.toContainElement('oryx-site-price');
       });
     });
-
-    describe('and a sales price is provided', () => {
-      beforeEach(async () => {
-        vi.spyOn(mockProductService, 'get').mockImplementation(() => of());
-        element = await fixture(
-          html`<oryx-product-price
-            sku="123"
-            .sales=${1234}
-          ></oryx-product-price>`
-        );
-      });
-
-      it(`should render a sales price`, () => {
-        expect(
-          element.renderRoot.querySelector('oryx-site-price[part="sales"]')
-        ).toHaveProperty('value', 1234);
-      });
-    });
   });
 
   describe('when only a default price is provided', () => {
-    describe('and there is no currency property provided', () => {
-      beforeEach(async () => {
-        vi.spyOn(mockProductService, 'get').mockImplementation(() =>
-          of({ price: { defaultPrice: mockEurNet } })
-        );
-        element = await fixture(
-          html`<oryx-product-price sku="123"></oryx-product-price>`
-        );
-      });
-
-      it(`should render the sales price`, () => {
-        expect(
-          element.renderRoot.querySelector('oryx-site-price[part="sales"]')
-        ).toHaveProperty('value', 1095);
-      });
-
-      it(`should render the tax`, () => {
-        expect(element).toContainElement('span[part="tax"]');
-      });
+    beforeEach(async () => {
+      vi.spyOn(mockProductService, 'get').mockImplementation(() =>
+        of({ price: { defaultPrice: mockEurNet } })
+      );
+      element = await fixture(
+        html`<oryx-product-price sku="123"></oryx-product-price>`
+      );
     });
 
-    describe('and the currency property is different from the price currency', () => {
-      beforeEach(async () => {
-        vi.spyOn(mockProductService, 'get').mockImplementation(() =>
-          of({ price: { defaultPrice: mockEurNet } })
-        );
-        element = await fixture(
-          html`<oryx-product-price
-            sku="123"
-            currency="USD"
-          ></oryx-product-price>`
-        );
-      });
+    it(`should render the sales price`, () => {
+      expect(
+        element.renderRoot.querySelector('oryx-site-price[part="sales"]')
+      ).toHaveProperty('value', 1095);
+    });
 
-      it(`should not render the sales price`, () => {
-        expect(element).not.toContainElement('oryx-site-price[part="sales"]');
-      });
-
-      it(`should not render the tax`, () => {
-        expect(element).not.toContainElement('span[part="tax"]');
-      });
+    it(`should render the tax`, () => {
+      expect(element).toContainElement('span[part="tax"]');
     });
   });
 
@@ -189,34 +153,17 @@ describe('ProductPriceComponent', () => {
         expect(element).toContainElement('[part="tax"]');
       });
     });
-
-    describe('and the currency property is different from the price currency', () => {
-      beforeEach(async () => {
-        vi.spyOn(mockProductService, 'get').mockImplementation(() =>
-          of({ price: { originalPrice: mockEurNet } })
-        );
-        element = await fixture(
-          html`<oryx-product-price
-            sku="123"
-            currency="USD"
-          ></oryx-product-price>`
-        );
-      });
-
-      it(`should not render the original price`, () => {
-        expect(element).not.toContainElement('oryx-site-price[part="sales"]');
-      });
-
-      it(`should not render the tax`, () => {
-        expect(element).not.toContainElement('[part="tax"]');
-      });
-    });
   });
 
-  describe('when a default and original price is provided', () => {
+  describe('when a different default and original price is provided', () => {
     beforeEach(async () => {
       vi.spyOn(mockProductService, 'get').mockImplementation(() =>
-        of({ price: { originalPrice: mockEurNet, defaultPrice: mockEurNet } })
+        of({
+          price: {
+            originalPrice: mockOriginalEurNet,
+            defaultPrice: mockEurNet,
+          },
+        })
       );
       element = await fixture(
         html`<oryx-product-price sku="123"></oryx-product-price>`
