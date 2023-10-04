@@ -8,7 +8,7 @@ export class CliArgsService {
   protected options =
     this.featureOptionsService.getFeatureOptions(CliFeatureOptions);
   protected args = [...(this.options.args ?? [])];
-  protected command = this.args.shift() ?? 'create';
+  protected command = this.args.shift();
   protected parsedArgs?: ReturnType<typeof parseArgs>;
 
   constructor(

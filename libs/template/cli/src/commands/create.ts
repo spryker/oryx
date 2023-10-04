@@ -41,10 +41,7 @@ export class CreateCliCommand implements CliCommand {
   }
 
   getOptions(): CliCommandOption[] {
-    return [
-      { name: 'name', short: 'n', type: 'string' },
-      { name: 'preset', short: 'p', type: 'string' },
-    ];
+    return [{ name: 'name', short: 'n', type: 'string' }];
   }
 
   getHelp(): string {
