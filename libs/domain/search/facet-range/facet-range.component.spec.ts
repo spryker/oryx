@@ -122,7 +122,7 @@ describe('SearchRangeFacetComponent', () => {
   });
 
   it('should render divider', () => {
-    expect(element).toContainElement('span');
+    expect(element).toContainElement('hr');
   });
 
   it('should sync min and max states with facet`s selected values', () => {

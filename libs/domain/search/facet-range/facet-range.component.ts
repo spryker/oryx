@@ -136,7 +136,7 @@ export class SearchRangeFacetComponent
     return html`
       ${this.renderInput('min', min, max - 1, this.labelMin)}
 
-      <span></span>
+      <hr />
 
       ${this.renderInput('max', min + 1, max, this.labelMax)}
 

@@ -17,18 +17,17 @@ export const searchRangeFacetStyles = css`
     grid-column: 1 / span 3;
   }
 
-  span {
-    display: block;
+  hr {
+    all: unset;
     width: 8px;
-    height: 2px;
-    background-color: var(--oryx-color-neutral-9);
     align-self: end;
     margin-block-end: 22px;
+    border-block-start: 2px solid var(--oryx-color-neutral-9);
   }
 `;
 
 const largeScreen = css`
-  span {
+  hr {
     margin-block-end: 19px;
   }
 `;

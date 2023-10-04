@@ -144,7 +144,7 @@ describe('SearchFacetValueNavigationComponent', () => {
     });
   });
 
-  describe('when clear is enabled without dirty', () => {
+  describe('when clear is enabled', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-search-facet-value-navigation
