@@ -1,6 +1,6 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const searchColorRangeComponent = componentDef({
+export const searchRangeFacetComponent = componentDef({
   name: 'oryx-search-range-facet',
   impl: () =>
     import('./facet-range.component').then((m) => m.SearchRangeFacetComponent),

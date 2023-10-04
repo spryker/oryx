@@ -118,7 +118,7 @@ export class SearchRangeFacetComponent
           aria-label=${ifDefined(label)}
           name=${name}
           type="number"
-          .value=${String(this[name])}
+          value=${String(this[name])}
           min=${min}
           max=${max}
           step=${this.step}

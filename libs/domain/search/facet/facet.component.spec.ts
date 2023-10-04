@@ -18,13 +18,14 @@ class MockFacetListService implements Partial<FacetListService> {
 
 describe('SearchFacetComponent', () => {
   let element: SearchFacetComponent;
+  let service: MockFacetListService;
 
   beforeAll(async () => {
     await useComponent(searchFacetComponent);
   });
 
   beforeEach(async () => {
-    createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: FacetListService,
@@ -32,6 +33,8 @@ describe('SearchFacetComponent', () => {
         },
       ],
     });
+
+    service = testInjector.inject<MockFacetListService>(FacetListService);
   });
 
   afterEach(() => {
@@ -254,6 +257,23 @@ describe('SearchFacetComponent', () => {
         new CustomEvent(FACET_SELECT_EVENT)
       );
       expect(callback.mock.calls[0][0].detail).toStrictEqual(detail);
+    });
+  });
+
+  describe('when facet has selected values', () => {
+    beforeEach(async () => {
+      service.getFacet.mockReturnValue(
+        of(generateFacet('Mock', 'parameter', 10, ['Mock']))
+      );
+      element = await fixture(
+        html`<oryx-search-facet name="Mock"></oryx-search-facet>`
+      );
+    });
+
+    it('should make value navigation dirty', () => {
+      expect(element).toContainElement(
+        'oryx-search-facet-value-navigation[dirty]'
+      );
     });
   });
 });
