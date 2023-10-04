@@ -2,6 +2,7 @@ import { FacetValue } from '@spryker-oryx/product';
 import {
   I18nMixin,
   computed,
+  featureVersion,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
@@ -23,6 +24,10 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
   @signalProperty({ type: Boolean }) multi = false;
   @signalProperty({ type: Number }) renderLimit = 5;
   @signalProperty({ type: Number }) minForSearch = 13;
+  @signalProperty({ type: Boolean }) disableClear?: boolean;
+  /**
+   * @deprecated Since version 1.2. Use `disableClear` instead.
+   */
   @signalProperty({ type: Boolean }) enableClear = true;
 
   protected facet = computed(
@@ -49,7 +54,9 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
       ?open=${this.open}
       ?enableToggle=${this.isFoldable}
       ?enableSearch=${this.isSearchable}
-      ?enableClear="${this.enableClear}"
+      ?enableClear="${featureVersion >= '1.2'
+        ? !this.disableClear
+        : this.enableClear}"
       ?dirty=${!!selectedLength}
       .heading=${this.name}
       .selectedLength=${selectedLength}

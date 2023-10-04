@@ -51,5 +51,14 @@ export interface SearchFacetComponentAttributes {
    *
    * @default false
    */
+  disableClear?: boolean;
+
+  /**
+   * Show or hide clear action.
+   *
+   * @default true
+   *
+   * @deprecated Since version 1.2. Use disableClear instead.
+   */
   enableClear?: boolean;
 }

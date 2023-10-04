@@ -26,8 +26,8 @@ export class SearchRangeFacetComponent
   protected controller = new FacetController(this);
 
   @signalProperty() name?: string;
-  @signalProperty({ type: Boolean }) open = false;
-  @signalProperty({ type: Boolean }) enableClear = true;
+  @signalProperty({ type: Boolean }) open?: boolean;
+  @signalProperty({ type: Boolean }) disableClear?: boolean;
   @signalProperty({ type: Number }) step = 1;
   @signalProperty() labelMin?: string;
   @signalProperty() labelMax?: string;
@@ -98,7 +98,7 @@ export class SearchRangeFacetComponent
 
     return html`<oryx-search-facet-value-navigation
       ?open="${this.open}"
-      ?enableClear="${this.enableClear}"
+      ?enableClear="${!this.disableClear}"
       ?dirty="${this.$isDirty()}"
       .heading="${this.name}"
     >

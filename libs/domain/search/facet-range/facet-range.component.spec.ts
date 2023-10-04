@@ -167,6 +167,21 @@ describe('SearchRangeFacetComponent', () => {
     });
   });
 
+  describe('when clear is disabled', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-range-facet
+          name=${name}
+          disableClear
+        ></oryx-search-range-facet>`
+      );
+    });
+
+    it('should disable clear action of value navigation', () => {
+      expect(getNavigation().hasAttribute('enableClear')).toBe(false);
+    });
+  });
+
   describe('when range values are changed', () => {
     const callback = vi.fn();
     const selected = { minValue: 1, maxValue: 2 };
