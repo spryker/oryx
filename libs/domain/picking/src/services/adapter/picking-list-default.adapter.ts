@@ -36,7 +36,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
     return this.pickingHttpService
       .post<StartPickingListResponse>(
         `/picking-lists/${pickingList.id}/start-picking`,
-        undefined
+        {}
       )
       .pipe(
         map((response) => {
