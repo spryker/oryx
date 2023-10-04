@@ -1,55 +1,66 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { html } from 'lit';
 import {
-  addEventsAction,
-  removeEventsAction,
-  repeatEvents,
-} from './events-repeater';
+  HYDRATE_EVENT,
+  enableEventsForHydration,
+  repeatHydrationEvents,
+  stopEventsForHydration,
+} from './hydrate-events.js';
 
-describe('addEventsAction', () => {
+describe('stopEventsForHydration', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
     element = await fixture(
       html`<div>
-        <div class="inner" repeatable="click, hover"></div>
+        <div class="inner" hydration-events="click, hover"></div>
       </div>`
     );
   });
 
-  it('should add stoppropogation for element with `repeatable` attribute', () => {
+  it('should add stoppropogation for element with `hydration-events` attribute', () => {
     const callback = vi.fn();
     element.addEventListener('click', callback);
-    addEventsAction();
+    stopEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('click', { bubbles: true }));
     expect(callback).not.toHaveBeenCalled();
   });
 
-  it('should add stoppropogation for element with `repeatable` attribute', () => {
+  it('should add stoppropogation for element with `hydration-events` attribute', () => {
     const callback = vi.fn();
     element.addEventListener('hover', callback);
-    addEventsAction();
+    stopEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('hover', { bubbles: true }));
     expect(callback).not.toHaveBeenCalled();
   });
+
+  it('should dispatchEvent `HYDRATE_EVENT` event', () => {
+    const callback = vi.fn();
+    element.addEventListener(HYDRATE_EVENT, callback);
+    stopEventsForHydration();
+    element
+      .querySelector('.inner')
+      ?.dispatchEvent(new Event('hover', { bubbles: true }));
+    expect(callback).toHaveBeenCalled();
+  });
 });
 
-describe('removeEventsAction', () => {
+describe('enableEventsForHydration', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
     element = await fixture(
       html`<div>
-        <div class="inner" repeatable="click,hover"></div>
+        <div class="inner" hydration-events="click,hover"></div>
       </div>`
     );
   });
 
-  it('should remove stoppropogation from element with `repeatable` attribute and return repeated event', async () => {
+  it('should remove stoppropogation from element with `hydration-events` attribute and return repeated event', async () => {
     const callback = vi.fn();
     let event: Event = {} as Event;
 
@@ -57,20 +68,20 @@ describe('removeEventsAction', () => {
       callback(e);
       event = e;
     });
-    addEventsAction();
+    stopEventsForHydration();
     element
       .querySelector('.inner')
-      ?.dispatchEvent(new Event('click', { bubbles: true }));
+      ?.dispatchEvent(new Event('click', { bubbles: true, composed: true }));
     expect(callback).not.toHaveBeenCalled();
-    const events = removeEventsAction(element);
+    const events = enableEventsForHydration(element as unknown as ShadowRoot);
     element
       .querySelector('.inner')
-      ?.dispatchEvent(new Event('click', { bubbles: true }));
+      ?.dispatchEvent(new Event('click', { bubbles: true, composed: true }));
     expect(callback).toHaveBeenCalled();
     expect([[event]]).toEqual(events);
   });
 
-  it('should remove stoppropogation from element with `repeatable` attribute and return repeated event', async () => {
+  it('should remove stoppropogation from element with `hydration-events` attribute and return repeated event', async () => {
     const callback = vi.fn();
     let event: Event = {} as Event;
 
@@ -78,12 +89,12 @@ describe('removeEventsAction', () => {
       callback(e);
       event = e;
     });
-    addEventsAction();
+    stopEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('hover', { bubbles: true }));
     expect(callback).not.toHaveBeenCalled();
-    const events = removeEventsAction(element);
+    const events = enableEventsForHydration(element as unknown as ShadowRoot);
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('hover', { bubbles: true }));
@@ -92,13 +103,13 @@ describe('removeEventsAction', () => {
   });
 });
 
-describe('repeatEvents', () => {
+describe('repeatHydrationEvents', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
     element = await fixture(
       html`<div>
-        <div class="inner" repeatable="click,hover"></div>
+        <div class="inner" hydration-events="click,hover"></div>
       </div>`
     );
   });
@@ -106,26 +117,26 @@ describe('repeatEvents', () => {
   it('should repeat events by list', async () => {
     const callback = vi.fn();
     element.addEventListener('click', callback);
-    addEventsAction();
+    stopEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('click', { bubbles: true }));
     expect(callback).not.toHaveBeenCalled();
-    const events = removeEventsAction(element);
-    repeatEvents(element, events);
+    const events = enableEventsForHydration(element as unknown as ShadowRoot);
+    repeatHydrationEvents(element as unknown as ShadowRoot, events);
     expect(callback).toHaveBeenCalled();
   });
 
   it('should repeat events by list', async () => {
     const callback = vi.fn();
     element.addEventListener('hover', callback);
-    addEventsAction();
+    stopEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('hover', { bubbles: true }));
     expect(callback).not.toHaveBeenCalled();
-    const events = removeEventsAction(element);
-    repeatEvents(element, events);
+    const events = enableEventsForHydration(element as unknown as ShadowRoot);
+    repeatHydrationEvents(element as unknown as ShadowRoot, events);
     expect(callback).toHaveBeenCalled();
   });
 });

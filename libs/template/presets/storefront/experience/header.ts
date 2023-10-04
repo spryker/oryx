@@ -95,7 +95,7 @@ export const HeaderTemplate: ExperienceComponent = {
             rules: [
               { colSpan: 6, width: 'auto' },
               { query: { breakpoint: Size.Md }, colSpan: 4 },
-              { query: { breakpoint: Size.Sm }, hide: true },
+              // { query: { breakpoint: Size.Sm }, hide: true },
             ],
           },
         },

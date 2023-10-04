@@ -4,7 +4,11 @@ import {
   Constructor,
 } from '@lit/reactive-element/decorators.js';
 import { LitElement, TemplateResult, isServer, render } from 'lit';
-import { Type, removeEventsAction, repeatEvents } from '../../misc';
+import {
+  Type,
+  enableEventsForHydration,
+  repeatHydrationEvents,
+} from '../../misc';
 import { Effect, effect, resolvingSignals } from '../../signals';
 import { digestForTemplateValues } from './digest-for-template';
 
@@ -159,7 +163,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
       }
 
       setTimeout(() => {
-        repeatEvents(this.shadowRoot, this[EVENTS]);
+        repeatHydrationEvents(this.shadowRoot, this[EVENTS]);
         delete this[EVENTS];
       }, 0);
     }
@@ -184,7 +188,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
           this[DEFER_HYDRATION] = 1; // hydrating
           super.connectedCallback();
           this.removeAttribute(deferHydrationAttribute);
-          this[EVENTS] = removeEventsAction(this.shadowRoot);
+          this[EVENTS] = enableEventsForHydration(this.shadowRoot);
           resolve();
         }
       });

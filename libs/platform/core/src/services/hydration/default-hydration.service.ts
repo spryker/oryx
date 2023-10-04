@@ -2,7 +2,7 @@ import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
 import {
   ComponentsPlugin,
   deferHydrationAttribute,
-  hasEventsAction,
+  getHydrationEventsModes,
   hydratableAttribute,
   HydratableLitElement,
   HYDRATE_ON_DEMAND,
@@ -59,9 +59,9 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
         return;
       }
 
-      const modes = el.getAttribute(hydratableAttribute)?.split?.(',') ?? [];
-
-      if (hasEventsAction(el)) modes.push('window:load');
+      const types = el.getAttribute(hydratableAttribute)?.split?.(',') ?? [];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const modes = getHydrationEventsModes(el.shadowRoot!, types);
 
       for (let i = 0; i < modes.length; i++) {
         if (modes[i][0] === '@') {

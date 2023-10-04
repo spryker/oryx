@@ -44,7 +44,7 @@ import { SearchBoxOptions, SearchBoxProperties } from './box.model';
     max: 5,
   },
 })
-@hydrate({ event: ['mouseover', 'focusin'] })
+@hydrate()
 @signalAware()
 export class SearchBoxComponent
   extends ContentMixin<SearchBoxOptions>(LitElement)
@@ -101,13 +101,13 @@ export class SearchBoxComponent
         @oryx.typeahead=${this.onTypeahead}
         .clearIcon=${IconTypes.Close}
         ?float=${this.$options().float}
-        repeatable="input,change"
+        hydration-events="input,change,mouseover"
       >
         <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
         <input
           .value=${this.query ?? ''}
           placeholder=${ifDefined(this.i18n(['search', 'search.placeholder']))}
-          repeatable="focusin"
+          hydration-events="focusin"
         />
         ${this.renderSuggestion()}
         <oryx-site-navigation-button
