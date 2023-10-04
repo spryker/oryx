@@ -169,7 +169,9 @@ export const getHydrationEventsModes = (
 
   const hasEvents = events.some((el) => el[HYDRATION_EVENTS]?.events?.length);
 
-  if (hasEvents) types.push('window:load');
+  if (hasEvents) {
+    return ['window:load'];
+  }
 
   return events.reduce<string[]>(
     (acc, element) => {
