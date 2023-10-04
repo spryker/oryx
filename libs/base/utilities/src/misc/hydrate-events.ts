@@ -184,7 +184,6 @@ export const getHydrationEventsModes = (
 };
 
 export const stopEventsForHydrationInsertion = `
-  const HYDRATE_ON_DEMAND = '$__HYDRATE_ON_DEMAND';
   const HYDRATE_EVENT = '${HYDRATE_EVENT}';
   const HYDRATION_EVENTS = Symbol.for('${hydrationEventsIdentifier}');
   const hydrationEventsAttribute = '${hydrationEventsAttribute}';
