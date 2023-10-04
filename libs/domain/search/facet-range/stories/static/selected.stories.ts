@@ -5,19 +5,16 @@ import { RouterService } from '@spryker-oryx/router';
 import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
-import { storybookPrefix } from '../../.constants';
-import { SearchFacetRangeComponentAttributes } from '../facet-range.model';
+import { storybookPrefix } from '../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Facet Range`,
+  title: `${storybookPrefix}/Facet Range/Static`,
 };
 
-const Template: Story<SearchFacetRangeComponentAttributes> = (
-  props
-): TemplateResult => {
+const Template: Story = (): TemplateResult => {
   const router = resolve<MockRouterService>(RouterService);
 
-  router.params$.next({});
+  router.params$.next({ minPrice: '20', maxPrice: '70' });
 
   const select = (e: CustomEvent<SelectFacetEventDetail>): void => {
     const { min, max } = (e.detail.value?.selected as RangeFacetValue) ?? {};
@@ -29,27 +26,9 @@ const Template: Story<SearchFacetRangeComponentAttributes> = (
 
   return html`<oryx-search-range-facet
     name="Range"
-    .step=${props.step}
-    .labelMin=${props.labelMin}
-    .labelMax=${props.labelMax}
-    ?open=${props.open}
-    ?disableClear=${props.disableClear}
+    open
     @oryx.select=${select}
   ></oryx-search-range-facet>`;
 };
 
-export const Demo = Template.bind({});
-
-Demo.args = {
-  open: true,
-  disableClear: false,
-  step: 1,
-  labelMin: 'Min',
-  labelMax: 'Max',
-};
-
-Demo.argTypes = {
-  step: {
-    type: 'number',
-  },
-};
+export const Selected = Template.bind({});
