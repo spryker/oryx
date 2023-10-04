@@ -100,7 +100,9 @@ describe('When a user opens the user profile modal', () => {
 
   describe('when receive data button is clicked', () => {
     beforeEach(() => {
-      cy.intercept('PATCH', '**/picking-lists/**').as('startPicking');
+      cy.intercept('POST', /.+\/picking-lists\/.+\/start-picking$/).as(
+        'startPicking'
+      );
 
       userProfileFragment.getCloseButton().click();
       listsFragment.getStartPickingButtons().eq(1).click();

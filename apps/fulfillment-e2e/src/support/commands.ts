@@ -1,6 +1,6 @@
 import { TestUserData } from '../types/user.type';
-import { LoginPage } from './page_objects/login.page';
 import { WarehouseSelectionListFragment } from './page_fragments/warehouse-selection-list.fragment';
+import { LoginPage } from './page_objects/login.page';
 export {};
 
 declare global {
@@ -116,7 +116,7 @@ Cypress.Commands.add('mockSyncPending', () => {
 });
 
 Cypress.Commands.add('mockPickingInProgress', () => {
-  cy.intercept('PATCH', '**/picking-lists/*', {
+  cy.intercept('POST', /.+\/picking-lists\/.+\/start-picking$/, {
     statusCode: 409,
     body: {
       errors: [
