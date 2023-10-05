@@ -22,6 +22,14 @@ const bigCart = {
   ],
 };
 
+const bigB2bCart = {
+  products: [
+    { quantity: '50' } as CartEntry,
+    { quantity: 50 } as CartEntry,
+    { quantity: 50 } as CartEntry,
+  ],
+};
+
 class MockCartService implements Partial<CartService> {
   getCart = vi.fn().mockReturnValue(of(null));
 }
@@ -78,6 +86,11 @@ describe('CartResolver', () => {
       'when cart`s summary quantity is bigger then 99',
       '99+',
       bigCart
+    );
+    expectedResult(
+      'when cart`s summary quantity is bigger then 99',
+      '99+',
+      bigB2bCart
     );
   });
 

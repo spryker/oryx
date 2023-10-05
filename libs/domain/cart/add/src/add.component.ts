@@ -96,14 +96,29 @@ export class CartAddComponent extends ProductMixin(
     if (availability?.isNeverOutOfStock) return Infinity;
     if (availability?.quantity)
       return (
-        availability?.quantity -
+        availability.quantity -
         this.$entries()
           .filter((entry) => entry.sku === sku)
-          .map((entry) => entry.quantity)
-          .reduce((a: number, b) => a + b, 0)
+          .map((entry) => Number(entry.quantity))
+          .reduce((a: number, b) => a + Number(b), 0)
       );
     return 0;
   });
+
+  // protected $max = computed(() => {
+  //   const { availability, sku } = this.$product() ?? {};
+
+  //   if (availability?.isNeverOutOfStock) return Infinity;
+  //   if (availability?.quantity) {
+  //     const totalQuantity = this.$entries()
+  //       .filter((entry) => entry.sku === sku)
+  //       .map((entry) => entry.quantity as number) // Type assertion here
+  //       .reduce((a: number, b) => a + Number(b), 0);
+
+  //     return availability.quantity - totalQuantity;
+  //   }
+  //   return 0;
+  // });
 
   protected onUpdate(e: CustomEvent<QuantityEventDetail>): void {
     this.isInvalid = !!e.detail.isInvalid;
