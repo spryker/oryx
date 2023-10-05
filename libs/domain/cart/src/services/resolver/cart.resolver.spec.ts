@@ -22,7 +22,7 @@ const bigCart = {
   ],
 };
 
-const bigB2bCart = {
+const variousValuesTypeCart = {
   products: [
     { quantity: '50' } as CartEntry,
     { quantity: 50 } as CartEntry,
@@ -90,7 +90,7 @@ describe('CartResolver', () => {
     expectedResult(
       'when cart`s summary quantity is bigger then 99',
       '99+',
-      bigB2bCart
+      variousValuesTypeCart
     );
   });
 
