@@ -26,11 +26,12 @@ export class SearchFacetValueNavigationComponent
   @property({ type: Boolean }) enableSearch?: boolean;
   @property({ type: Boolean }) open?: boolean;
   @property({ type: Boolean }) enableClear?: boolean;
+  @property({ type: Boolean }) dirty?: boolean;
 
   @state() protected expanded = false;
 
   protected override render(): TemplateResult {
-    const allowClear = this.enableClear && this.selectedLength;
+    const allowClear = this.enableClear && this.dirty;
 
     return html` <oryx-collapsible
       ?open=${this.open}

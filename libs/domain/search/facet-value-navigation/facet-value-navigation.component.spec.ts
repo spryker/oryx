@@ -144,7 +144,7 @@ describe('SearchFacetValueNavigationComponent', () => {
     });
   });
 
-  describe('when clear is enabled without selectedLength', () => {
+  describe('when clear is enabled', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-search-facet-value-navigation
@@ -157,14 +157,14 @@ describe('SearchFacetValueNavigationComponent', () => {
       expect(element).not.toContainElement('section oryx-button');
     });
 
-    describe('and selectedLength is provided', () => {
+    describe('and value navigation is dirty', () => {
       const callback = vi.fn();
 
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-search-facet-value-navigation
             enableClear
-            .selectedLength=${mockSelectedLength}
+            dirty
             @oryx.clear=${callback}
           ></oryx-search-facet-value-navigation>`
         );
