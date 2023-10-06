@@ -6,6 +6,16 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 # 1.1.0 (2023-09-22)
 
 
+### Features
+
+* **content:** Support product, category and CMS links in link component ([#775](https://github.com/spryker/oryx/issues/775)) ([f9f51e2](https://github.com/spryker/oryx/commit/f9f51e220cbf4a03ec2111d1789cc8be22b3ff3e))
+* **content:** update content service to possibility use adapters by config ([#755](https://github.com/spryker/oryx/issues/755)) ([43089dc](https://github.com/spryker/oryx/commit/43089dc3326448c58f99978e8c42385f238ccc2f))
+* feature level flag to opt-in using breaking changes during a major version lifecycle. ([#725](https://github.com/spryker/oryx/issues/725)) ([d7d6613](https://github.com/spryker/oryx/commit/d7d6613c39554a2e83768815082dbe3bca59a1e9))
+* **presets:** b2b-storefront preset ([#703](https://github.com/spryker/oryx/issues/703)) ([b62f662](https://github.com/spryker/oryx/commit/b62f6625f5293ec8887a585f901794ca5514f3a9))
+* **site:** breadcrumb component ([#735](https://github.com/spryker/oryx/issues/735)) ([8d9ea37](https://github.com/spryker/oryx/commit/8d9ea37fc1ee4decdd40b8a0357909017a2cfd5b))
+* **user:** user register page ([#785](https://github.com/spryker/oryx/issues/785)) ([968fb71](https://github.com/spryker/oryx/commit/968fb71212001efdb54737371c6c344936edaacf))
+
+
 ### Bug Fixes
 
 * **auth:** OauthService wait for initial restoreState ([#712](https://github.com/spryker/oryx/issues/712)) ([3029881](https://github.com/spryker/oryx/commit/30298813aadc450e3aea0e592a464cd875856c4c))
@@ -23,16 +33,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **ui:** button states styles ([#771](https://github.com/spryker/oryx/issues/771)) ([7ffd7eb](https://github.com/spryker/oryx/commit/7ffd7ebb417ef59c87cc4e6ee9f4ed642501d96c))
 * **ui:** modal's height in safari ([#738](https://github.com/spryker/oryx/issues/738)) ([4360576](https://github.com/spryker/oryx/commit/4360576d9b24ed53c95b9e26883f4191446d43b3))
 * **ui:** modal's margins and scrolling behaviour  ([#736](https://github.com/spryker/oryx/issues/736)) ([506c84a](https://github.com/spryker/oryx/commit/506c84a41f07bcc56aca72adad9ce9c661e8acd6))
-
-
-### Features
-
-* **content:** Support product, category and CMS links in link component ([#775](https://github.com/spryker/oryx/issues/775)) ([f9f51e2](https://github.com/spryker/oryx/commit/f9f51e220cbf4a03ec2111d1789cc8be22b3ff3e))
-* **content:** update content service to possibility use adapters by config ([#755](https://github.com/spryker/oryx/issues/755)) ([43089dc](https://github.com/spryker/oryx/commit/43089dc3326448c58f99978e8c42385f238ccc2f))
-* feature level flag to opt-in using breaking changes during a major version lifecycle. ([#725](https://github.com/spryker/oryx/issues/725)) ([d7d6613](https://github.com/spryker/oryx/commit/d7d6613c39554a2e83768815082dbe3bca59a1e9))
-* **presets:** b2b-storefront preset ([#703](https://github.com/spryker/oryx/issues/703)) ([b62f662](https://github.com/spryker/oryx/commit/b62f6625f5293ec8887a585f901794ca5514f3a9))
-* **site:** breadcrumb component ([#735](https://github.com/spryker/oryx/issues/735)) ([8d9ea37](https://github.com/spryker/oryx/commit/8d9ea37fc1ee4decdd40b8a0357909017a2cfd5b))
-* **user:** user register page ([#785](https://github.com/spryker/oryx/issues/785)) ([968fb71](https://github.com/spryker/oryx/commit/968fb71212001efdb54737371c6c344936edaacf))
 
 
 

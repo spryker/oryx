@@ -6,14 +6,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 # 1.1.0 (2023-09-22)
 
 
+### Features
+
+* b2b-storefront preset ([#703](https://github.com/spryker/oryx/issues/703)) ([b62f662](https://github.com/spryker/oryx/commit/b62f6625f5293ec8887a585f901794ca5514f3a9))
+
+
 ### Bug Fixes
 
 * make form second address required ([#733](https://github.com/spryker/oryx/issues/733)) ([1402521](https://github.com/spryker/oryx/commit/140252117f7a04b2c0157443709149ba5562ef3d))
-
-
-### Features
-
-* add b2b-storefront preset ([#703](https://github.com/spryker/oryx/issues/703)) ([b62f662](https://github.com/spryker/oryx/commit/b62f6625f5293ec8887a585f901794ca5514f3a9))
 
 
 

@@ -8,7 +8,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* sign up ([#785](https://github.com/spryker/oryx/issues/785)) ([968fb71](https://github.com/spryker/oryx/commit/968fb71212001efdb54737371c6c344936edaacf))
+* user register page ([#785](https://github.com/spryker/oryx/issues/785)) ([968fb71](https://github.com/spryker/oryx/commit/968fb71212001efdb54737371c6c344936edaacf))
 
 
 
