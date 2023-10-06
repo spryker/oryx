@@ -27,7 +27,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* **content:** resolve product, category and content links ([#775](https://github.com/spryker/oryx/issues/775)) ([f9f51e2](https://github.com/spryker/oryx/commit/f9f51e220cbf4a03ec2111d1789cc8be22b3ff3e))
+* **content:** Support product, category and CMS links in link component ([#775](https://github.com/spryker/oryx/issues/775)) ([f9f51e2](https://github.com/spryker/oryx/commit/f9f51e220cbf4a03ec2111d1789cc8be22b3ff3e))
 * **content:** update content service to possibility use adapters by config ([#755](https://github.com/spryker/oryx/issues/755)) ([43089dc](https://github.com/spryker/oryx/commit/43089dc3326448c58f99978e8c42385f238ccc2f))
 * introduce build time feature level flag, to accomodate breaking changes and feature versioning. ([#725](https://github.com/spryker/oryx/issues/725)) ([d7d6613](https://github.com/spryker/oryx/commit/d7d6613c39554a2e83768815082dbe3bca59a1e9))
 * **presets:** add b2b-storefront preset ([#703](https://github.com/spryker/oryx/issues/703)) ([b62f662](https://github.com/spryker/oryx/commit/b62f6625f5293ec8887a585f901794ca5514f3a9))
