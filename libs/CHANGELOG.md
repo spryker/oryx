@@ -32,7 +32,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * feature level flag to opt-in using breaking changes during a major version lifecycle. ([#725](https://github.com/spryker/oryx/issues/725)) ([d7d6613](https://github.com/spryker/oryx/commit/d7d6613c39554a2e83768815082dbe3bca59a1e9))
 * **presets:** b2b-storefront preset ([#703](https://github.com/spryker/oryx/issues/703)) ([b62f662](https://github.com/spryker/oryx/commit/b62f6625f5293ec8887a585f901794ca5514f3a9))
 * **site:** breadcrumb component ([#735](https://github.com/spryker/oryx/issues/735)) ([8d9ea37](https://github.com/spryker/oryx/commit/8d9ea37fc1ee4decdd40b8a0357909017a2cfd5b))
-* **user:** sign up ([#785](https://github.com/spryker/oryx/issues/785)) ([968fb71](https://github.com/spryker/oryx/commit/968fb71212001efdb54737371c6c344936edaacf))
+* **user:** user register page ([#785](https://github.com/spryker/oryx/issues/785)) ([968fb71](https://github.com/spryker/oryx/commit/968fb71212001efdb54737371c6c344936edaacf))
 
 
 
