@@ -8,7 +8,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* **auth:** OauthService wait for initial restoreState ([#712](https://github.com/spryker/oryx/issues/712)) ([3029881](https://github.com/spryker/oryx/commit/30298813aadc450e3aea0e592a464cd875856c4c))
+* OauthService wait for initial restoreState ([#712](https://github.com/spryker/oryx/issues/712)) ([3029881](https://github.com/spryker/oryx/commit/30298813aadc450e3aea0e592a464cd875856c4c))
 
 
 
