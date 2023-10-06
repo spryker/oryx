@@ -35,7 +35,7 @@ export module ApiCartModel {
 
   export interface Entry {
     sku: string;
-    quantity: number;
+    quantity: number | string;
     groupKey: string;
     abstractSku: string;
     amount?: unknown;
