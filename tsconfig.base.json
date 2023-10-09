@@ -49,6 +49,9 @@
         "libs/domain/checkout/billing-address/index.ts"
       ],
       "@spryker-oryx/checkout/header": ["libs/domain/checkout/header/index.ts"],
+      "@spryker-oryx/checkout/heading": [
+        "libs/domain/checkout/heading/index.ts"
+      ],
       "@spryker-oryx/checkout/link": ["libs/domain/checkout/link/index.ts"],
       "@spryker-oryx/checkout/manage-address": [
         "libs/domain/checkout/manage-address/index.ts"
