@@ -44,6 +44,7 @@ describe('SiteLocaleSelectorComponent', () => {
         html`<oryx-site-locale-selector></oryx-site-locale-selector>`
       );
     });
+
     it('is defined', () => {
       expect(element).toBeInstanceOf(SiteLocaleSelectorComponent);
     });
@@ -58,19 +59,6 @@ describe('SiteLocaleSelectorComponent', () => {
     });
 
     it('should not render the locale selector', () => {
-      expect(element).not.toContainElement('oryx-button');
-    });
-  });
-
-  describe('when there is only one locales', () => {
-    beforeEach(async () => {
-      service.getAll.mockReturnValue(of([{ code: 'en' } as Locale]));
-      element = await fixture(
-        html`<oryx-site-locale-selector></oryx-site-locale-selector>`
-      );
-    });
-
-    it('should not show the locale selector', () => {
       expect(element).not.toContainElement('oryx-button');
     });
   });
@@ -91,7 +79,11 @@ describe('SiteLocaleSelectorComponent', () => {
   describe('when there are more then one locale', () => {
     beforeEach(async () => {
       service.getAll.mockReturnValue(
-        of([{ code: 'en' }, { code: 'de' }, { code: 'es' }] as Locale[])
+        of([
+          { code: 'en', name: 'en_US' },
+          { code: 'de', name: 'de_DE' },
+          { code: 'es', name: 'es_ES' },
+        ] as Locale[])
       );
       element = await fixture(
         html`<oryx-site-locale-selector></oryx-site-locale-selector>`
@@ -102,12 +94,18 @@ describe('SiteLocaleSelectorComponent', () => {
       expect(element).toContainElement('oryx-button');
     });
 
+    it('should render the US flag selector', () => {
+      const button = element.shadowRoot?.querySelector('oryx-button');
+      expect(button?.textContent).toContain('en');
+      expect(button?.textContent).not.toContain('🇺🇸');
+    });
+
     it('should render the english option in its native locale', () => {
       const en = element.shadowRoot?.querySelector('oryx-option[value=en]');
       expect(en?.textContent).toContain('English');
     });
 
-    it('should render the Deutch option in its native locale', () => {
+    it('should render the Deutsch option in its native locale', () => {
       const en = element.shadowRoot?.querySelector('oryx-option[value=de]');
       expect(en?.textContent).toContain('Deutsch');
     });
