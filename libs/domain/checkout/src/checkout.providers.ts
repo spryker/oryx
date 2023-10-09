@@ -29,7 +29,7 @@ import {
 } from './services-reexports';
 
 export const checkoutNormalizer: Provider[] =
-  featureVersion < '1.1'
+  featureVersion < '1.2'
     ? [
         {
           provide: CheckoutNormalizer,
@@ -80,7 +80,7 @@ export const checkoutNormalizer: Provider[] =
       ];
 
 export const checkoutSerializer: Provider[] =
-  featureVersion < '1.1'
+  featureVersion < '1.2'
     ? [
         {
           provide: CheckoutSerializer,
@@ -98,7 +98,7 @@ export const checkoutSerializer: Provider[] =
       ];
 
 export const checkoutDataSerializer: Provider[] =
-  featureVersion < '1.1'
+  featureVersion < '1.2'
     ? [
         {
           provide: CheckoutDataSerializer,
@@ -116,7 +116,7 @@ export const checkoutDataSerializer: Provider[] =
       ];
 
 export const checkoutResponseNormalizer: Provider[] =
-  featureVersion < '1.1'
+  featureVersion < '1.2'
     ? [
         {
           provide: CheckoutResponseNormalizer,
@@ -134,7 +134,7 @@ export const checkoutResponseNormalizer: Provider[] =
       ];
 
 export const checkoutProviders =
-  featureVersion < '1.1'
+  featureVersion < '1.2'
     ? [
         {
           provide: CheckoutService,
