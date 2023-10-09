@@ -1,4 +1,5 @@
 {
+  "name": "checkout",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/domain/checkout",
@@ -14,21 +15,19 @@
       "executor": "./tools/executors/oryx-vite:vitest"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/domain/checkout/**/*.ts"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "storybook": {
-      "executor": "@nrwl/storybook:storybook",
+      "executor": "@nx/storybook:storybook",
       "options": {
         "uiFramework": "@storybook/web-components",
         "port": 4400,
-        "config": {
-          "configFolder": "libs/domain/checkout/.storybook"
-        },
-        "staticDir": ["libs/domain/checkout/public"]
+        "staticDir": ["libs/domain/checkout/public"],
+        "configDir": "libs/domain/checkout/.storybook"
       },
       "configurations": {
         "ci": {

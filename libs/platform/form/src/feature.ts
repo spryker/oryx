@@ -1,4 +1,4 @@
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { AppFeature } from '@spryker-oryx/core';
 import { formProviders } from './renderers';
 

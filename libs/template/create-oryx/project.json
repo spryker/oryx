@@ -1,5 +1,6 @@
 {
-  "root": "libs/template/create-oryx",
+  "name": "create-oryx",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/template/create-oryx/src",
   "projectType": "library",
   "targets": {
@@ -23,7 +24,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/template/create-oryx/**/*.ts"]

@@ -2,7 +2,7 @@ import {
   ProjectGraph,
   ProjectGraphDependency,
   ProjectGraphNode,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 
 const findDependencies = (
   dependencies: Record<string, ProjectGraphDependency[]>,

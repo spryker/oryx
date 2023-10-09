@@ -1,4 +1,6 @@
 {
+  "name": "user",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/domain/user",
   "prefix": "fes",
@@ -10,21 +12,19 @@
       "executor": "./tools/executors/oryx-vite:vitest"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/domain/user/**/*.ts"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "storybook": {
-      "executor": "@nrwl/storybook:storybook",
+      "executor": "@nx/storybook:storybook",
       "options": {
         "uiFramework": "@storybook/web-components",
         "port": 4400,
-        "config": {
-          "configFolder": "libs/domain/user/.storybook"
-        },
-        "staticDir": ["libs/domain/user/public"]
+        "staticDir": ["libs/domain/user/public"],
+        "configDir": "libs/domain/user/.storybook"
       },
       "configurations": {
         "ci": {

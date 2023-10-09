@@ -1,4 +1,4 @@
-import { ExecutorContext } from '@nrwl/devkit';
+import { ExecutorContext } from '@nx/devkit';
 import { existsSync, mkdirSync, rmdirSync, writeFileSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { ModuleKind, ScriptTarget } from 'typescript';

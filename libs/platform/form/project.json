@@ -1,4 +1,5 @@
 {
+  "name": "form",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/platform/form",
@@ -14,21 +15,19 @@
       "executor": "./tools/executors/oryx-vite:vitest"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/platform/form/**/*.ts"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "storybook": {
-      "executor": "@nrwl/storybook:storybook",
+      "executor": "@nx/storybook:storybook",
       "options": {
         "uiFramework": "@storybook/web-components",
         "port": 4400,
-        "config": {
-          "configFolder": "libs/platform/form/.storybook"
-        },
-        "staticDir": ["libs/platform/form/public"]
+        "staticDir": ["libs/platform/form/public"],
+        "configDir": "libs/platform/form/.storybook"
       },
       "configurations": {
         "ci": {

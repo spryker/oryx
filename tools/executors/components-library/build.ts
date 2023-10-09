@@ -3,13 +3,13 @@ import {
   joinPathFragments,
   readJsonFile,
   writeJsonFile,
-} from '@nrwl/devkit';
-import { CopyAssetsHandler } from '@nrwl/js/src/utils/copy-assets-handler';
-import runCommands from '@nrwl/workspace/src/executors/run-commands/run-commands.impl';
-import { AssetGlob } from '@nrwl/workspace/src/utilities/assets';
+} from '@nx/devkit';
+import { CopyAssetsHandler } from '@nx/js/src/utils/assets/copy-assets-handler';
+import runCommands from '@nx/workspace/src/executors/run-commands/run-commands.impl';
+import { AssetGlob } from '@nx/workspace/src/utilities/assets';
 import { existsSync, rmdirSync } from 'fs';
 import { join } from 'path';
-import { DirData, libDirsNormalizer, LibOptions } from './utils';
+import { DirData, LibOptions, libDirsNormalizer } from './utils';
 
 export interface ComponentsLibraryBuildExecutorOptions extends LibOptions {
   tsConfig: string;

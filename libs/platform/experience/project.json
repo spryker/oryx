@@ -1,4 +1,5 @@
 {
+  "name": "experience",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/platform/experience/src",
   "projectType": "library",
@@ -7,7 +8,7 @@
       "executor": "./tools/executors/components-library:build"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/platform/experience/**/*.ts"]

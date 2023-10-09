@@ -1,4 +1,5 @@
 {
+  "name": "utilities",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/base/utilities/src",
   "projectType": "library",
@@ -7,7 +8,7 @@
       "executor": "./tools/executors/components-library:build"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/base/utilities/**/*.ts"]

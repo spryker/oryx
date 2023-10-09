@@ -1,4 +1,5 @@
 {
+  "name": "site",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "targets": {
@@ -12,21 +13,19 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/domain/site/**/*.ts"]
       }
     },
     "storybook": {
-      "executor": "@nrwl/storybook:storybook",
+      "executor": "@nx/storybook:storybook",
       "options": {
         "uiFramework": "@storybook/web-components",
         "port": 4400,
-        "config": {
-          "configFolder": "libs/domain/site/.storybook"
-        },
-        "staticDir": ["libs/domain/site/public"]
+        "staticDir": ["libs/domain/site/public"],
+        "configDir": "libs/domain/site/.storybook"
       },
       "configurations": {
         "ci": {

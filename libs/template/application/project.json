@@ -1,4 +1,6 @@
 {
+  "name": "application",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/template/application/src",
   "prefix": "fes",
@@ -21,7 +23,7 @@
       "executor": "./tools/executors/oryx-vite:vitest"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/template/application/**/*.ts"]

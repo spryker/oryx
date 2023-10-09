@@ -1,14 +1,14 @@
-import { ExecutorContext, joinPathFragments } from '@nrwl/devkit';
+import { ExecutorContext, joinPathFragments } from '@nx/devkit';
 import * as cypress from 'cypress';
 import * as path from 'path';
 import { basename, dirname } from 'path';
 import {
-  build,
-  createServer,
   InlineConfig,
-  preview,
   PreviewServer,
   ViteDevServer,
+  build,
+  createServer,
+  preview,
 } from 'vite';
 import * as istanbul from 'vite-plugin-istanbul';
 import CypressRunResult = CypressCommandLine.CypressRunResult;

@@ -1,4 +1,5 @@
 {
+  "name": "content",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/domain/content",
@@ -14,21 +15,19 @@
       "executor": "./tools/executors/oryx-vite:vitest"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/domain/content/**/*.ts"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "storybook": {
-      "executor": "@nrwl/storybook:storybook",
+      "executor": "@nx/storybook:storybook",
       "options": {
         "uiFramework": "@storybook/web-components",
         "port": 4400,
-        "config": {
-          "configFolder": "libs/domain/content/.storybook"
-        },
-        "staticDir": ["libs/domain/content/public"]
+        "staticDir": ["libs/domain/content/public"],
+        "configDir": "libs/domain/content/.storybook"
       },
       "configurations": {
         "ci": {

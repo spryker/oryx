@@ -1,4 +1,5 @@
 {
+  "name": "i18n",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/platform/i18n/src",
   "projectType": "library",
@@ -15,7 +16,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/platform/i18n/**/*.ts"]

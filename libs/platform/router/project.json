@@ -1,4 +1,5 @@
 {
+  "name": "router",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/platform/router/src",
   "projectType": "library",
@@ -10,7 +11,7 @@
       "executor": "./tools/executors/components-library:paths"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/platform/router/**/*.ts"]

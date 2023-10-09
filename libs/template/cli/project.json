@@ -1,5 +1,6 @@
 {
-  "root": "libs/template/cli",
+  "name": "cli",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/template/cli/src",
   "projectType": "library",
   "targets": {
@@ -15,7 +16,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/template/cli/**/*.ts"]

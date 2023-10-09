@@ -1,5 +1,5 @@
-import { ExecutorContext } from '@nrwl/devkit';
-import { createProjectGraphAsync } from '@nrwl/workspace/src/core/project-graph';
+import { ExecutorContext } from '@nx/devkit';
+import { createProjectGraphAsync } from '@nx/workspace/src/core/project-graph';
 import { readFileSync, writeFileSync } from 'fs';
 import { getDependencies } from './utils';
 
