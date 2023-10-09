@@ -2,7 +2,7 @@ import { featureVersion } from '@spryker-oryx/utilities';
 import * as services from '../services/src/index';
 
 const reexports: typeof services =
-  featureVersion < '1.1' ? services : (undefined as any);
+  featureVersion < '1.2' ? services : (undefined as any);
 
 /** @deprecated since 1.1, use DefaultCheckoutService from @spryker-oryx/checkout/services */
 export const DefaultCheckoutService = reexports?.DefaultCheckoutService;
