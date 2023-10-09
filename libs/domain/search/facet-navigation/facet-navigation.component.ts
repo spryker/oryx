@@ -141,21 +141,16 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
     facet: RangeFacet,
     selectedValues?: RangeFacetValue
   ): void {
-    const rangeParams = this.facetListService.getRangeFacetParams(
-      facet.parameter
-    );
-    const queryParams = Object.entries(rangeParams).reduce(
-      (acc, [_key, paramName]) => {
-        const key = _key as keyof RangeFacetValue;
-        const selected = selectedValues?.[key];
-        const facetValue = facet.values?.[key];
-        return {
-          ...acc,
-          [paramName]: (selected !== facetValue ? selected : undefined) ?? '',
-        };
-      },
-      {}
-    );
+    const rangeParams = ['min', 'max'] as (keyof RangeFacetValue)[];
+    const queryParams = rangeParams.reduce((acc, key) => {
+      const selected = selectedValues?.[key];
+      const facetValue = facet.values?.[key];
+      return {
+        ...acc,
+        [`${facet.parameter}[${key}]`]:
+          (selected !== facetValue ? selected : undefined) ?? '',
+      };
+    }, {});
 
     this.routerService
       .getUrl('', {

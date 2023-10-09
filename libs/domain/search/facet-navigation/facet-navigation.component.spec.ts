@@ -99,10 +99,6 @@ const mockRangeFacet = {
 
 class MockFacetListService implements Partial<FacetListService> {
   get = vi.fn().mockReturnValue(of(null));
-  getRangeFacetParams = vi.fn().mockReturnValue({
-    min: 'mock1',
-    max: 'mock2',
-  });
 }
 
 class MockRouterService implements Partial<RouterService> {
@@ -580,8 +576,8 @@ describe('SearchFacetNavigationComponent', () => {
             '',
             expect.objectContaining({
               queryParams: {
-                mock1: selected.min,
-                mock2: selected.max,
+                [`${mockRangeFacet.parameter}[min]`]: selected.min,
+                [`${mockRangeFacet.parameter}[max]`]: selected.max,
               },
             })
           );
@@ -603,8 +599,8 @@ describe('SearchFacetNavigationComponent', () => {
             '',
             expect.objectContaining({
               queryParams: {
-                mock1: '',
-                mock2: '',
+                [`${mockRangeFacet.parameter}[min]`]: '',
+                [`${mockRangeFacet.parameter}[max]`]: '',
               },
             })
           );
@@ -623,8 +619,8 @@ describe('SearchFacetNavigationComponent', () => {
             '',
             expect.objectContaining({
               queryParams: {
-                mock1: '',
-                mock2: '',
+                [`${mockRangeFacet.parameter}[min]`]: '',
+                [`${mockRangeFacet.parameter}[max]`]: '',
               },
             })
           );
