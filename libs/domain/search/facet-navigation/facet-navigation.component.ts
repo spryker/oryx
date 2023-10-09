@@ -30,10 +30,7 @@ import { searchFacetNavigationStyles } from './facet-navigation.styles';
   minForSearch: 13,
   bury: [
     {
-      facets: [
-        // 'rating',
-        'price',
-      ],
+      facets: ['price'],
     },
   ],
 })
@@ -144,12 +141,17 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
     facet: RangeFacet,
     selectedValues?: RangeFacetValue
   ): void {
-    const queryParams = Object.entries(facet.values).reduce(
-      (acc, [key, value]) => {
-        const selected = selectedValues?.[key as keyof RangeFacetValue];
+    const rangeParams = this.facetListService.getRangeFacetParams(
+      facet.parameter
+    );
+    const queryParams = Object.entries(rangeParams).reduce(
+      (acc, [_key, paramName]) => {
+        const key = _key as keyof RangeFacetValue;
+        const selected = selectedValues?.[key];
+        const facetValue = facet.values?.[key];
         return {
           ...acc,
-          [`${facet.parameter}[${key}]`]: selected !== value ? selected : '',
+          [paramName]: (selected !== facetValue ? selected : undefined) ?? '',
         };
       },
       {}

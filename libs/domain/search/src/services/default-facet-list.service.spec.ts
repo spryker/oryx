@@ -115,4 +115,14 @@ describe('DefaultFacetListService', () => {
       });
     });
   });
+
+  describe('getRangeFacetParams', () => {
+    const parameter = 'mock';
+    it('should return facet that matches name', () => {
+      expect(service.getRangeFacetParams(parameter)).toEqual({
+        min: `${parameter}[min]`,
+        max: `${parameter}[max]`,
+      });
+    });
+  });
 });

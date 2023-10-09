@@ -1,5 +1,9 @@
 import { inject } from '@spryker-oryx/di';
-import { Facet, ProductListPageService } from '@spryker-oryx/product';
+import {
+  Facet,
+  ProductListPageService,
+  RangeFacetValue,
+} from '@spryker-oryx/product';
 import { Observable, map } from 'rxjs';
 import { FacetQualifier } from '../models';
 import { FacetListService } from './facet-list.service';
@@ -20,5 +24,14 @@ export class DefaultFacetListService implements FacetListService {
           ) ?? ({} as Facet)
       )
     );
+  }
+
+  getRangeFacetParams(
+    parameter: string
+  ): Record<keyof Omit<RangeFacetValue, 'selected'>, string> {
+    return {
+      min: `${parameter}[min]`,
+      max: `${parameter}[max]`,
+    };
   }
 }

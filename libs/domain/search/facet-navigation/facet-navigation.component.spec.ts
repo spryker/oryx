@@ -7,7 +7,10 @@ import {
   FacetComponentRegistryService,
   FacetListService,
 } from '@spryker-oryx/search';
-import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
+import {
+  SelectFacetEventDetail,
+  SelectRangeFacetValue,
+} from '@spryker-oryx/search/facet';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -80,8 +83,26 @@ const mockFacet = {
   ],
 };
 
+const mockRangeFacet = {
+  type: 'range',
+  parameter: 'mock',
+  name: 'Mock',
+  values: {
+    max: 100,
+    min: 0,
+    selected: {
+      max: 100,
+      min: 0,
+    },
+  },
+};
+
 class MockFacetListService implements Partial<FacetListService> {
   get = vi.fn().mockReturnValue(of(null));
+  getRangeFacetParams = vi.fn().mockReturnValue({
+    min: 'mock1',
+    max: 'mock2',
+  });
 }
 
 class MockRouterService implements Partial<RouterService> {
@@ -532,6 +553,81 @@ describe('SearchFacetNavigationComponent', () => {
               })
             );
           });
+        });
+      });
+    });
+
+    describe('and facet is range', () => {
+      beforeEach(async () => {
+        listService.get = vi.fn().mockReturnValue(of([mockRangeFacet]));
+        element = await fixture(
+          html`<oryx-search-facet-navigation></oryx-search-facet-navigation>`
+        );
+      });
+
+      describe('and selected values are provided', () => {
+        const selected = { min: 10, max: 20 };
+
+        beforeEach(async () => {
+          callListener({
+            name: mockRangeFacet.name,
+            value: { selected } as SelectRangeFacetValue,
+          });
+        });
+
+        it('should pass min and max values to the parameters', () => {
+          expect(routerService.getUrl).toHaveBeenCalledWith(
+            '',
+            expect.objectContaining({
+              queryParams: {
+                mock1: selected.min,
+                mock2: selected.max,
+              },
+            })
+          );
+        });
+      });
+
+      describe('and selected values are equal to facet`s min and max', () => {
+        const selected = { min: 0, max: 100 };
+
+        beforeEach(async () => {
+          callListener({
+            name: mockRangeFacet.name,
+            value: { selected } as SelectRangeFacetValue,
+          });
+        });
+
+        it('should pass empty strings to the parameters', () => {
+          expect(routerService.getUrl).toHaveBeenCalledWith(
+            '',
+            expect.objectContaining({
+              queryParams: {
+                mock1: '',
+                mock2: '',
+              },
+            })
+          );
+        });
+      });
+
+      describe('and there are no selected values', () => {
+        beforeEach(async () => {
+          callListener({
+            name: mockRangeFacet.name,
+          });
+        });
+
+        it('should pass empty strings to the parameters', () => {
+          expect(routerService.getUrl).toHaveBeenCalledWith(
+            '',
+            expect.objectContaining({
+              queryParams: {
+                mock1: '',
+                mock2: '',
+              },
+            })
+          );
         });
       });
     });
