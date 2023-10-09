@@ -31,6 +31,7 @@ describe('SiteLocaleSelectorComponent (v1.2)', () => {
       ],
     });
     service = injector.inject(LocaleService) as unknown as MockLocaleService;
+    mockFeatureVersion('1.6');
   });
 
   afterEach(() => {
@@ -50,7 +51,6 @@ describe('SiteLocaleSelectorComponent (v1.2)', () => {
       element = await fixture(
         html`<oryx-site-locale-selector></oryx-site-locale-selector>`
       );
-      mockFeatureVersion('1.6');
     });
 
     it('should render the US flag selector', () => {
