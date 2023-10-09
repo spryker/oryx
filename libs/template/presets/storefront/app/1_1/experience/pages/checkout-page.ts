@@ -56,7 +56,10 @@ export const checkoutPage: ExperienceComponent = {
           ],
           options: { rules: [{ layout: 'list', gap: '30px' }] },
         },
-        { type: 'oryx-cart-heading' },
+        {
+          type: 'oryx-checkout-heading',
+          options: { rules: [{ padding: '30px 0 0 0' }] },
+        },
         {
           type: 'oryx-cart-entries',
           options: { readonly: true },
@@ -65,7 +68,7 @@ export const checkoutPage: ExperienceComponent = {
       options: {
         rules: [
           { hideByRule: 'CART.EMPTY' },
-          { gap: '20px', layout: 'flex', vertical: true, align: 'stretch' },
+          { gap: '0', layout: 'flex', vertical: true, align: 'stretch' },
         ],
       },
     },

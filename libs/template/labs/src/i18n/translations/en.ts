@@ -26,6 +26,8 @@ const cart = {
 const checkout = {
   'checkout.guest.continue-without-account':
     'You can checkout without creating an account. You will have a chance to create an account later.',
+  'checkout.totals.<count>-items':
+    'Products ({count, plural, one {one item} other {{count} items}})',
 };
 
 const order = {
