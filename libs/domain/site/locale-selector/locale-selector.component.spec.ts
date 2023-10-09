@@ -94,7 +94,7 @@ describe('SiteLocaleSelectorComponent', () => {
       expect(element).toContainElement('oryx-button');
     });
 
-    it('should render the US flag selector', () => {
+    it('should not render the US flag selector', () => {
       const button = element.shadowRoot?.querySelector('oryx-button');
       expect(button?.textContent).toContain('en');
       expect(button?.textContent).not.toContain('🇺🇸');
@@ -123,6 +123,31 @@ describe('SiteLocaleSelectorComponent', () => {
 
       it('should change set the locale', () => {
         expect(service.set).toHaveBeenCalledWith('de');
+      });
+    });
+
+    describe('when the version >= 1.2', () => {
+      beforeEach(() => {
+        mockFeatureVersion('1.2');
+      });
+
+      beforeEach(async () => {
+        service.getAll.mockReturnValue(
+          of([
+            { code: 'en', name: 'en_US' },
+            { code: 'de', name: 'de_DE' },
+            { code: 'es', name: 'es_ES' },
+          ] as Locale[])
+        );
+        element = await fixture(
+          html`<oryx-site-locale-selector></oryx-site-locale-selector>`
+        );
+      });
+
+      it('should render the US flag selector', () => {
+        const button = element.shadowRoot?.querySelector('oryx-button');
+        expect(button?.textContent).toContain('en');
+        expect(button?.textContent).toContain('🇺🇸');
       });
     });
   });
