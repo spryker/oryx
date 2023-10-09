@@ -3,6 +3,11 @@ import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
+  CurrencyService,
+  PriceModeService,
+  StoreService,
+} from '@spryker-oryx/site';
+import {
   Observable,
   combineLatest,
   map,
