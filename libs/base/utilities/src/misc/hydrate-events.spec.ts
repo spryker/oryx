@@ -2,12 +2,12 @@ import { fixture } from '@open-wc/testing-helpers';
 import { html } from 'lit';
 import {
   HYDRATE_EVENT,
+  captureEventsForHydration,
   enableEventsForHydration,
   repeatHydrationEvents,
-  stopEventsForHydration,
 } from './hydrate-events.js';
 
-describe('stopEventsForHydration', () => {
+describe('captureEventsForHydration', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
@@ -21,7 +21,7 @@ describe('stopEventsForHydration', () => {
   it('should add stoppropogation for element with `hydration-events` attribute', () => {
     const callback = vi.fn();
     element.addEventListener('click', callback);
-    stopEventsForHydration();
+    captureEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('click', { bubbles: true }));
@@ -31,7 +31,7 @@ describe('stopEventsForHydration', () => {
   it('should add stoppropogation for element with `hydration-events` attribute', () => {
     const callback = vi.fn();
     element.addEventListener('hover', callback);
-    stopEventsForHydration();
+    captureEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('hover', { bubbles: true }));
@@ -41,7 +41,7 @@ describe('stopEventsForHydration', () => {
   it('should dispatchEvent `HYDRATE_EVENT` event', () => {
     const callback = vi.fn();
     element.addEventListener(HYDRATE_EVENT, callback);
-    stopEventsForHydration();
+    captureEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('hover', { bubbles: true }));
@@ -68,7 +68,7 @@ describe('enableEventsForHydration', () => {
       callback(e);
       event = e;
     });
-    stopEventsForHydration();
+    captureEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('click', { bubbles: true, composed: true }));
@@ -89,7 +89,7 @@ describe('enableEventsForHydration', () => {
       callback(e);
       event = e;
     });
-    stopEventsForHydration();
+    captureEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('hover', { bubbles: true }));
@@ -117,7 +117,7 @@ describe('repeatHydrationEvents', () => {
   it('should repeat events by list', async () => {
     const callback = vi.fn();
     element.addEventListener('click', callback);
-    stopEventsForHydration();
+    captureEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('click', { bubbles: true }));
@@ -130,7 +130,7 @@ describe('repeatHydrationEvents', () => {
   it('should repeat events by list', async () => {
     const callback = vi.fn();
     element.addEventListener('hover', callback);
-    stopEventsForHydration();
+    captureEventsForHydration();
     element
       .querySelector('.inner')
       ?.dispatchEvent(new Event('hover', { bubbles: true }));

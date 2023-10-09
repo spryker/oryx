@@ -73,7 +73,7 @@ function hydrationEventsAction(
   }
 }
 
-export function stopEventsForHydration(): void {
+export function captureEventsForHydration(): void {
   const elements = treewalk(
     `[${hydrationEventsAttribute}]`
   ) as ElementWithHydrationEvents[];
@@ -183,7 +183,7 @@ export const getHydrationEventsModes = (
   );
 };
 
-export const stopEventsForHydrationInsertion = `
+export const captureEventsForHydrationInsertion = `
   const HYDRATE_EVENT = '${HYDRATE_EVENT}';
   const HYDRATION_EVENTS = Symbol.for('${hydrationEventsIdentifier}');
   const hydrationEventsAttribute = '${hydrationEventsAttribute}';
@@ -191,7 +191,7 @@ export const stopEventsForHydrationInsertion = `
   ${treewalk.toString()}
   ${parseHydrationEventsTypes.toString()}
   ${hydrationEventsAction.toString()}
-  ${stopEventsForHydration.toString()}
+  ${captureEventsForHydration.toString()}
 
-  stopEventsForHydration();
+  captureEventsForHydration();
 `;

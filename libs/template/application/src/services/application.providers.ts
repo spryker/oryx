@@ -6,7 +6,7 @@ import {
   ThemeMetaInitializer,
 } from './initializers';
 import {
-  DefaultStopEventsInitializer,
+  DefaultCaptureEventsInitializer,
   StopEventsInitializer,
 } from './initializers/stop-events.initializer';
 import { GlobalPageMetaResolver } from './resolvers';
@@ -24,7 +24,7 @@ export const applicationProviders: Provider[] = [
     ? [
         {
           provide: StopEventsInitializer,
-          useClass: DefaultStopEventsInitializer,
+          useClass: DefaultCaptureEventsInitializer,
         },
       ]
     : []),
