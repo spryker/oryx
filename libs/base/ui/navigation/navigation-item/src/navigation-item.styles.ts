@@ -49,7 +49,7 @@ export const navigationItemStyles = css`
     height: 1px;
     position: absolute;
     inset-inline-start: 16px;
-    margin-top: -54px;
+    margin-block-start: -54px;
   }
 
   ::slotted(*) {
