@@ -1,11 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
-import { FacetValue, ValueFacet } from '@spryker-oryx/product';
+import { ValueFacet } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import { FacetListService } from '@spryker-oryx/search';
 import {
   SearchFacetComponentAttributes,
   SelectFacetEventDetail,
+  SelectFacetValue,
 } from '@spryker-oryx/search/facet';
 import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
@@ -34,11 +35,7 @@ const Template: Story<SearchFacetComponentAttributes> = (
       .get()
       .pipe(take(1))
       .subscribe((facets) => {
-        //TODO: adjust types during implementation of price facet
-        const selectedFacetValue = value as Pick<
-          FacetValue,
-          'value' | 'selected'
-        >;
+        const selectedFacetValue = value as SelectFacetValue;
 
         if (!selectedFacetValue) {
           router.params$.next({});

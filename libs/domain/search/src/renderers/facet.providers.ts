@@ -1,14 +1,8 @@
-import { FacetType, ValueFacet } from '@spryker-oryx/product';
-import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
-import { TemplateResult, html } from 'lit';
 import { DefaultFacetComponentRegistryService } from './default-facet-component-registry.service';
 import { FacetColorsMapping, colorsMap } from './facet-color-colors.mapping';
 import { FacetComponentRegistryService } from './facet-component-registry.service';
-import {
-  FacetMappingOptions,
-  FacetParams,
-  FacetValueRenderer,
-} from './renderer';
+import { FacetValueRenderer } from './renderer';
+import { colorFacetRenderer, defaultFacetRenderer } from './value-renderer';
 
 export const facetProviders = [
   {
@@ -18,43 +12,8 @@ export const facetProviders = [
   {
     provide: FacetValueRenderer,
     useValue: {
-      [`${FacetParams.Default}`]: {
-        template: (
-          facet: ValueFacet,
-          options: FacetMappingOptions,
-          selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
-        ): TemplateResult => {
-          return html`
-            <oryx-search-facet
-              @oryx.select=${selectListener}
-              .name=${facet.name}
-              .renderLimit=${options.renderLimit}
-              .open=${options.open}
-              .enableClear="${options.enableClear}"
-              .multi=${facet.type === FacetType.Multi}
-            >
-            </oryx-search-facet>
-          `;
-        },
-      },
-      [`${FacetParams.Color}`]: {
-        template: (
-          facet: ValueFacet,
-          options: FacetMappingOptions,
-          selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
-        ): TemplateResult => {
-          return html`
-            <oryx-search-color-facet
-              @oryx.select=${selectListener}
-              .name=${facet.name}
-              .renderLimit=${options.renderLimit}
-              .open=${options.open}
-              .multi=${facet.type === FacetType.Multi}
-            >
-            </oryx-search-color-facet>
-          `;
-        },
-      },
+      ...defaultFacetRenderer,
+      ...colorFacetRenderer,
     },
   },
   {
