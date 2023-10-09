@@ -7,25 +7,6 @@ export class NavigationItemComponent extends LitElement {
 
   @property() icon?: string;
 
-  connectedCallback(): void {
-    super.connectedCallback();
-
-    const parent = this.parentNode as Element;
-    const mutationObserver = new MutationObserver(() => {
-      if (parent.hasAttribute('collapsed')) {
-        this.setAttribute('parent-collapsed', '');
-      } else {
-        this.removeAttribute('parent-collapsed');
-      }
-    });
-
-    mutationObserver.observe(parent, { attributes: true });
-
-    if (parent.hasAttribute('collapsed')) {
-      this.setAttribute('parent-collapsed', '');
-    }
-  }
-
   render(): TemplateResult {
     return html`
       <slot name="icon">

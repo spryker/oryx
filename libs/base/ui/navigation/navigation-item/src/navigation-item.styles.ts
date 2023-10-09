@@ -2,17 +2,10 @@ import { css } from 'lit';
 
 export const navigationItemStyles = css`
   :host {
-    --oryx-navigation-item-vertical-padding: 16px;
-    --oryx-navigation-item-divider-padding: 10px;
-    --oryx-navigation-item-divider-position: calc(
-      0px - var(--oryx-navigation-item-vertical-padding) * 2 -
-        var(--oryx-navigation-item-divider-padding)
-    );
-
     color: var(--oryx-color-neutral-9);
     display: flex;
     box-sizing: border-box;
-    padding: var(--oryx-navigation-item-vertical-padding) 17px;
+    padding: 16px 17px;
     gap: 13px;
     outline: none;
     align-items: center;
@@ -52,19 +45,11 @@ export const navigationItemStyles = css`
   :host([divider])::after {
     content: '';
     background-color: var(--oryx-color-neutral-5);
-    position: absolute;
-    width: 80%;
+    width: calc(100% - 32px);
     height: 1px;
-    transform: translateY(var(--oryx-navigation-item-divider-position));
-  }
-
-  :host([divider]) {
-    margin-block-start: calc(var(--oryx-navigation-item-vertical-padding) * 2);
-  }
-
-  :host([divider][parent-collapsed])::after {
-    transform: translateY(var(--oryx-navigation-item-divider-position))
-      translateX(-33%);
+    position: absolute;
+    inset-inline-start: 16px;
+    margin-top: -54px;
   }
 
   ::slotted(*) {
