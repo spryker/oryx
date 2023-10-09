@@ -50,6 +50,8 @@ export class DefaultTransformerService implements TransformerService {
       (currentData: unknown, cb: Transformer<unknown>) => {
         let cbData = cb(data, this);
 
+        // we assume that transformer returning a promise is a lazy-loaded transformer
+        // so we need to resolve the callback and call it again
         if (isPromise(cbData)) {
           cbData = from(cbData).pipe(
             switchMap((cbFromPromise: SimpleTransformer<unknown>) => {
