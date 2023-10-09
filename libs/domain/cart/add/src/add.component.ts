@@ -23,7 +23,7 @@ import { styles } from './add.styles';
 @defaultOptions({
   enableLabel: true,
 })
-@hydrate({ event: ['mouseover', 'focusin'] })
+@hydrate()
 export class CartAddComponent extends ProductMixin(
   CartComponentMixin(ContentMixin<CartAddOptions>(LitElement))
 ) {
@@ -65,6 +65,7 @@ export class CartAddComponent extends ProductMixin(
       ?disabled=${this.isInvalid || !this.$hasStock()}
       @click=${this.onSubmit}
       @mouseup=${this.onMouseUp}
+      hydration-events="click"
     ></oryx-button>`;
   }
 
