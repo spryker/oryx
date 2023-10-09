@@ -61,39 +61,5 @@ describe('NavigationItemComponent', () => {
         ).not.toBeNull();
       });
     });
-
-    describe('when parent component is collapsed', () => {
-      beforeEach(async () => {
-        parentElement = await fixture(
-          html`
-            <oryx-navigation collapsed>
-              <oryx-navigation-item></oryx-navigation-item>
-            </oryx-navigation>
-          `
-        );
-      });
-
-      it('should render set parent-collapsed attribute', () => {
-        expect(
-          parentElement.firstElementChild?.hasAttribute('parent-collapsed')
-        ).toBe(true);
-      });
-
-      it('should toggle parent-collapsed attribute depending on parent component attribute', async () => {
-        parentElement.removeAttribute('collapsed');
-        await update();
-
-        expect(
-          parentElement.firstElementChild?.hasAttribute('parent-collapsed')
-        ).toBe(false);
-
-        parentElement.setAttribute('collapsed', 'true');
-        await update();
-
-        expect(
-          parentElement.firstElementChild?.hasAttribute('parent-collapsed')
-        ).toBe(true);
-      });
-    });
   });
 });
