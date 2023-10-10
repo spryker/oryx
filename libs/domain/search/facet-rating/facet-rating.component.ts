@@ -7,13 +7,18 @@ import { TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { RatingFacetComponentProperties } from './facet-rating.model';
+import { RatingFacetComponentOptions } from './facet-rating.model';
 import { searchFacetRatingStyles } from './facet-rating.styles';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 
+// Need to use options instaed of props
+@defaultOptions({
+  min: 1,
+  max: 4,
+  scale: 5,
+})
 export class SearchRatingFacetComponent
-  extends SearchFacetComponent
-  implements RatingFacetComponentProperties
-{
+  extends ContentMixin<RatingFacetComponentOptions>(SearchFacetComponent) {
   static styles = [searchFacetStyles, searchFacetRatingStyles];
 
   @property({ type: Number }) min = 1;
@@ -30,11 +35,10 @@ export class SearchRatingFacetComponent
     if (!values?.length) return;
     const maxRating = values[0].value as number;
 
+    const limitedMaxRating = maxRating > this.scale ? this.scale : maxRating;
     const valuesCount =
-      (maxRating
-        ? maxRating - this.min
-        : this.max
-        ? this.max - this.min
+      (limitedMaxRating
+        ? limitedMaxRating - this.min
         : this.scale - this.min) + 1;
 
     const valuesToRender: FacetValue[] = Array.from(

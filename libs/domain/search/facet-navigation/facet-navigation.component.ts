@@ -23,7 +23,7 @@ import { searchFacetNavigationStyles } from './facet-navigation.styles';
   valueRenderLimit: 5,
   minForSearch: 13,
   ratingMin: 2,
-  ratingMax: 5,
+  ratingMax: 4,
   ratingScale: 5,
   bury: [{ facets: ['price'] }],
 })
