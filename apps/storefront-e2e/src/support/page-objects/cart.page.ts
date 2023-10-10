@@ -20,7 +20,7 @@ export class CartPage extends AbstractSFPage {
         );
       });
   getCartEntriesHeading = () =>
-    this.getCartEntriesWrapper().find('oryx-heading');
+    cy.get('oryx-cart-heading').find('oryx-heading');
   getCartTotals = () => new TotalsFragment('oryx-cart-totals');
   getCheckoutBtn = () =>
     cy.get('oryx-checkout-link').find('oryx-button').find('a');
