@@ -12,7 +12,7 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchRatingFacetComponent } from './facet-rating.component';
 
-const mockFacet = generateRatingFacet(5);
+const mockFacet = generateRatingFacet(1, 5, 5);
 class MockFacetListService implements Partial<FacetListService> {
   getFacet = vi.fn().mockReturnValue(of(mockFacet));
 }
@@ -143,7 +143,7 @@ describe('FacetRatingComponent', () => {
     beforeEach(async () => {
       facetListService.getFacet = vi
         .fn()
-        .mockReturnValue(of(generateRatingFacet(4)));
+        .mockReturnValue(of(generateRatingFacet(1, 4, 5)));
 
       element = await fixture(
         html`<oryx-search-facet-rating
@@ -168,6 +168,7 @@ describe('FacetRatingComponent', () => {
     const options = {
       min: 1,
       max: 5,
+      scale: undefined,
     };
 
     beforeEach(async () => {
@@ -179,7 +180,7 @@ describe('FacetRatingComponent', () => {
       );
     });
 
-    it('should not render', () => {
+    it('should not render values', () => {
       const ratings = element.renderRoot.querySelectorAll('oryx-rating');
 
       expect(ratings.length).toBe(0);
@@ -188,6 +189,7 @@ describe('FacetRatingComponent', () => {
 
   describe('when there is no min option provided', () => {
     const options = {
+      min: undefined,
       max: 5,
       scale: 5,
     };
@@ -215,6 +217,7 @@ describe('FacetRatingComponent', () => {
   describe('when there is no max option provided', () => {
     const options = {
       min: 1,
+      max: undefined,
       scale: 5,
     };
 

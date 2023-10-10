@@ -40,25 +40,26 @@ export const generateFacet = (
 };
 
 export const generateRatingFacet = (
-  maxValue: number,
-  selectedValues?: string[]
+  min: number,
+  max: number,
+  scale: number,
+  selectedValue?: number
 ): Facet => {
-  const values: FacetValue[] = [];
-
-  for (let i = 1; i <= maxValue; i++) {
-    const value = String(i);
-    values.push({
-      value,
-      selected: selectedValues?.includes(value),
-      count: 0,
-      name: value,
-    });
-  }
+  const valuesCount = max ? max - min + 1 : 0;
 
   return {
     name: 'Rating',
     parameter: 'rating[min]',
-    valuesTreeLength: maxValue,
-    values: values.reverse(),
+    valuesTreeLength: valuesCount,
+    values: Array.from(new Array(valuesCount).keys())
+      .reverse()
+      .map((i) => {
+        const value = i + min;
+        return {
+          value: String(value),
+          selected: selectedValue ? selectedValue === value : false,
+          count: 0,
+        };
+      }),
   };
 };
