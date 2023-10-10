@@ -22,6 +22,9 @@ import { searchFacetNavigationStyles } from './facet-navigation.styles';
   expandedItemsCount: 5,
   valueRenderLimit: 5,
   minForSearch: 13,
+  ratingMin: 2,
+  ratingMax: 5,
+  ratingScale: 5,
   bury: [{ facets: ['price'] }],
 })
 export class SearchFacetNavigationComponent extends LayoutMixin(
@@ -53,6 +56,9 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
       valueRenderLimit: renderLimit = Infinity,
       expandedItemsCount = 0,
       minForSearch = Infinity,
+      ratingMin,
+      ratingMax,
+      ratingScale,
     } = this.$options();
 
     return html`${facets.map((facet, index) =>
@@ -66,6 +72,9 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
             this.routerService.getPathId('category') &&
             facet.parameter === 'category'
           ),
+          min: ratingMin,
+          max: ratingMax,
+          scale: ratingScale,
         },
         this.applyFilters.bind(this)
       )

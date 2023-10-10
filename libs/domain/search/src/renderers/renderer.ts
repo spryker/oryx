@@ -17,6 +17,12 @@ export interface FacetMappingOptions {
   enableClear?: boolean;
 }
 
+export interface RatingFacetMappingOptions extends FacetMappingOptions {
+  min?: number;
+  max?: number;
+  scale?: number;
+}
+
 export interface FacetRendererMapping {
   [key: string]: {
     template: (

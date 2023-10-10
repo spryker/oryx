@@ -21,15 +21,18 @@ export function facetRatingNormalizer(
       const selectedValues = params?.[ratingParamKey]
         ? [params?.[ratingParamKey] as string]
         : [];
-      const facetValues = Array.from(new Array(5).keys())
+
+      const valuesCount = ratingFacet.max
+        ? ratingFacet.max - ratingFacet.min + 1
+        : 0;
+      const facetValues = Array.from(new Array(valuesCount).keys())
         .reverse()
         .map((i) => {
-          const value = i + 1;
+          const value = i + ratingFacet.min;
           return {
             value: String(value),
             selected: selectedValues.includes(String(value)),
             count: 0,
-            disabled: value < ratingFacet.min || value > ratingFacet.max,
           };
         });
 

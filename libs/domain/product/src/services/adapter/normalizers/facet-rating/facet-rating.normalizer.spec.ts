@@ -22,7 +22,6 @@ class MockRouterService implements Partial<RouterService> {
 
 const generateNoramalizedFacet = (
   facet: ApiProductListModel.RangeFacet,
-  disabledValues?: number[],
   selectedValue?: number
 ) => {
   return {
@@ -36,9 +35,8 @@ const generateNoramalizedFacet = (
         const value = i + 1;
         return {
           value: String(value),
-          selected: selectedValue ? selectedValue === i + 1 : false,
+          selected: selectedValue ? selectedValue === value : false,
           count: 0,
-          disabled: disabledValues ? disabledValues.includes(i + 1) : false,
         };
       }),
   };
