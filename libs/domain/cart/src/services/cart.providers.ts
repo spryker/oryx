@@ -1,18 +1,29 @@
 import { Provider } from '@spryker-oryx/di';
 import {
-  CartAdapter,
-  cartNormalizer,
-  cartsNormalizer,
   DefaultCartAdapter,
-} from './adapter';
-import { CartService } from './cart.service';
-import { DefaultCartService } from './default-cart.service';
-import { CartResourceResolver } from './resolver';
-import {
-  CartTotalsProvider,
+  DefaultCartService,
   DefaultTotalsService,
-  TotalsService,
-} from './totals';
+  cartAttributesNormalizer,
+  cartsItemsNormalizer,
+} from '../services-reexports';
+import { CartAdapter, CartNormalizer, CartsNormalizer } from './adapter';
+import { CartService } from './cart.service';
+import { CartResourceResolver } from './resolver';
+import { CartTotalsProvider, TotalsService } from './totals';
+
+export const cartNormalizer: Provider[] = [
+  {
+    provide: CartNormalizer,
+    useValue: cartAttributesNormalizer,
+  },
+];
+
+export const cartsNormalizer: Provider[] = [
+  {
+    provide: CartsNormalizer,
+    useValue: cartsItemsNormalizer,
+  },
+];
 
 export const cartProviders: Provider[] = [
   {

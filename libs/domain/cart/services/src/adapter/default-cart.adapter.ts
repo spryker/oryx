@@ -1,5 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
+import {
+  AddCartEntryQualifier,
+  ApiCartModel,
+  Cart,
+  CartAdapter,
+  CartEntryQualifier,
+  CartNormalizer,
+  CartQualifier,
+  CartsNormalizer,
+  UpdateCartEntryQualifier,
+} from '@spryker-oryx/cart';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { CurrencyService, StoreService } from '@spryker-oryx/site';
@@ -12,16 +23,6 @@ import {
   take,
   throwError,
 } from 'rxjs';
-import {
-  AddCartEntryQualifier,
-  ApiCartModel,
-  Cart,
-  CartEntryQualifier,
-  CartQualifier,
-  UpdateCartEntryQualifier,
-} from '../../models';
-import { CartAdapter } from './cart.adapter';
-import { CartNormalizer, CartsNormalizer } from './normalizers';
 
 export class DefaultCartAdapter implements CartAdapter {
   constructor(
