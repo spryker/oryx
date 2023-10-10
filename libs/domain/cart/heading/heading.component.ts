@@ -13,12 +13,10 @@ export class CartHeadingComponent extends CartComponentMixin(
   protected override render(): TemplateResult | void {
     if (this.$isEmpty()) return;
 
-    return html`<oryx-heading>
-      <h1>
-        ${this.i18n('cart.totals.<count>-items', {
-          count: this.$totalQuantity(),
-        })}
-      </h1>
+    return html`<oryx-heading tag="h1" as="h3">
+      ${this.i18n('cart.totals.<count>-items', {
+        count: this.$totalQuantity(),
+      })}
     </oryx-heading>`;
   }
 }

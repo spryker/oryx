@@ -26,7 +26,7 @@ export class CartEntriesComponent extends CartComponentMixin(
 
     return html`
       ${when(
-        featureVersion <= '1.2',
+        featureVersion < '1.2',
         () => html`<oryx-heading>
           <h1>
             ${this.i18n('cart.totals.<count>-items', {

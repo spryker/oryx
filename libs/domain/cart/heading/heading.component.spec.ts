@@ -63,10 +63,8 @@ describe('CartHeadingComponent', () => {
   });
 
   it('should render its contents', () => {
-    expect(element).toContainElement('oryx-heading');
-    expect(element.renderRoot.querySelector('h1')?.innerText.trim()).toContain(
-      '5 items'
-    );
+    const heading = element.renderRoot.querySelector('oryx-heading');
+    expect(heading?.textContent).toContain('5 items');
   });
 
   describe('if cart is empty', () => {

@@ -88,11 +88,8 @@ describe('OrderHeadingComponent', () => {
     });
 
     it('should render its contents', () => {
-      expect(element).toContainElement('oryx-heading');
-
-      expect(element.renderRoot.querySelector('h3')?.innerText.trim()).toBe(
-        '8 items'
-      );
+      const heading = element.renderRoot.querySelector('oryx-heading');
+      expect(heading?.textContent).toContain('8 items');
     });
   });
 
