@@ -1,9 +1,10 @@
 import { CartComponentMixin } from '@spryker-oryx/cart';
 import { RemoveByQuantity } from '@spryker-oryx/cart/entry';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { hydrate } from '@spryker-oryx/utilities';
+import { featureVersion, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+import { when } from 'lit/directives/when.js';
 import { CartEntriesOptions } from './entries.model';
 import { cartEntriesStyles } from './entries.styles';
 
@@ -24,6 +25,16 @@ export class CartEntriesComponent extends CartComponentMixin(
     if (this.$isEmpty()) return;
 
     return html`
+      ${when(
+        featureVersion <= '1.2',
+        () => html`<oryx-heading>
+          <h1>
+            ${this.i18n('cart.totals.<count>-items', {
+              count: this.$totalQuantity(),
+            })}
+          </h1>
+        </oryx-heading>`
+      )}
       ${repeat(
         this.$entries(),
         (entry) => entry.groupKey,
