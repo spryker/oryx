@@ -4,24 +4,25 @@ import {
   SearchFacetComponent,
   searchFacetStyles,
 } from '@spryker-oryx/search/facet';
+import { Type } from '@spryker-oryx/utilities';
 import { TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { RatingFacetComponentOptions } from './facet-rating.model';
+import { SearchRatingFacetComponentOptions } from './facet-rating.model';
 import { searchFacetRatingStyles } from './facet-rating.styles';
 
-// Need to use options instaed of props
 @defaultOptions({
   min: 1,
   max: 4,
   scale: 5,
 })
-export class SearchRatingFacetComponent extends ContentMixin<RatingFacetComponentOptions>(
-  SearchFacetComponent
-) {
+export class SearchRatingFacetComponent extends ContentMixin<
+  SearchRatingFacetComponentOptions,
+  unknown,
+  Type<SearchFacetComponent>
+>(SearchFacetComponent) {
   static styles = [searchFacetStyles, searchFacetRatingStyles];
 
-  // @ts-ignore
   protected override renderValues(values: FacetValue[]): TemplateResult | void {
     const { scale, min = 1, max } = this.$options();
 
@@ -29,7 +30,6 @@ export class SearchRatingFacetComponent extends ContentMixin<RatingFacetComponen
       return;
     }
 
-    // @ts-ignore
     const facet = this.facet();
 
     if (!values?.length) return;
@@ -60,7 +60,6 @@ export class SearchRatingFacetComponent extends ContentMixin<RatingFacetComponen
       ${repeat(
         valuesToRender,
         (facetValue) => String(facetValue.value),
-        //@ts-ignore
         (facetValue) => html`<li>${this.renderValueControl(facetValue)}</li>`
       )}
     </ul>`;

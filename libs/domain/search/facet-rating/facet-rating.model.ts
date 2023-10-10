@@ -1,4 +1,4 @@
-export interface RatingFacetComponentOptions {
+export interface SearchRatingFacetComponentOptions {
   /**
    * Indicates the minimum rating value for a rating facet.
    *
