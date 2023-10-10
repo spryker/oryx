@@ -1,6 +1,6 @@
 import { storybookDefaultViewports } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import {
   CartEntryAttributes,
@@ -15,6 +15,8 @@ const createEntry = (
     .sku=${props.sku ?? '1'}
     .quantity=${props.quantity ?? '1'}
     .price=${props.price ?? (props.quantity ?? 1) * 1879}
+    .unitPrice=${props.price ?? (props.quantity ?? 1) * 2879}
+    .discountedUnitPrice=${props.price ?? (props.quantity ?? 1) * 1879}
     .options=${props}
     ?readonly=${props.readonly}
   ></oryx-cart-entry>`;

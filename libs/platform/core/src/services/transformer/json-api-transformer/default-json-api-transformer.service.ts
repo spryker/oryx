@@ -1,16 +1,16 @@
 // organize-imports-ignore
-import './json-api.shim';
 import { inject } from '@spryker-oryx/di';
+import './json-api.shim';
 // Add full import because of issue with naming exports from cjs.
+import { JsonApiPayload } from '@spryker-oryx/utilities';
 import jsonapi from 'jsonapi-serializer';
-import { map, Observable, switchMap, from } from 'rxjs';
+import { Observable, from, map, switchMap } from 'rxjs';
 import {
   InheritTransformerResult,
-  TransformerService,
   SerializerType,
+  TransformerService,
 } from '../transformer.service';
 import { JsonAPITransformerService } from './json-api-transformer.service';
-import { JsonApiPayload } from '@spryker-oryx/utilities';
 
 /**
  * Deserializes json response. Combines relationships, includes into one data (transforms include key e.g. 'include-example' into camelCase e.g 'includeExample').

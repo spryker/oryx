@@ -1,4 +1,5 @@
 export * from './availability';
+export * from './category-id';
 export * from './concrete-products';
 export * from './facet';
 export * from './facet-category';
@@ -6,7 +7,6 @@ export * from './facet-range';
 export * from './labels';
 export * from './media';
 export * from './model';
-export * from './category-id';
 export * from './price';
 export * from './product';
 export * from './product-list';

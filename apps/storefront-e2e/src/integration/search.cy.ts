@@ -1,125 +1,70 @@
+import {
+  checkProductCardsFilterring,
+  checkProductCardsSortingBySku,
+} from '../support/checks';
 import { SearchPage } from '../support/page-objects/search.page';
+import { sortingTestData } from '../support/test-data/search-products';
 
-describe('Filtering on the Search page', () => {
-  let searchPage;
-  beforeEach(() => {
-    searchPage = new SearchPage({ q: 'TomTom' });
-    cy.visit(searchPage.url);
-  });
-  it('should open appropriate Search page', { tags: 'smoke' }, () => {
-    cy.url().should('include', searchPage.queryParameter);
-    cy.get('oryx-heading').should('contain.text', 'TomTom');
-  });
-  it('should change products list when filters applied', () => {
-    cy.get('input[type="radio"][name="touchscreen"][value="Yes"]').check();
-    cy.get('oryx-chip').should('contain', '1');
-    cy.get('input[type="radio"][name="touchscreen"][value="Yes"]').should(
-      'be.checked'
-    );
-    cy.get('oryx-radio span').should('contain', 3);
-    searchPage.getProductCard().should('have.length', 3);
-    cy.get('input[type="checkbox"][name="color"][value="Black"]').check();
-    cy.get('input[type="checkbox"][name="color"][value="Black"]').should(
-      'be.checked'
-    );
-    searchPage.getProductCard().should('have.length', 1);
-    cy.get('oryx-heading').should('contain.text', 'TomTom');
-  });
-  it('should change products list when category filter is cleared', () => {
-    searchPage.getProductCard().should('have.length', 10);
-    cy.get('input[type="radio"][name="touchscreen"][value="Yes"]').check();
-    cy.get('input[type="radio"][name="touchscreen"][value="Yes"]').should(
-      'be.checked'
-    );
-    cy.get('oryx-radio span').should('contain', 3);
-    searchPage.getProductCard().should('have.length', 3);
-    searchPage.getFacet().contains('Clear').click();
-    searchPage.getProductCard().should('have.length', 10);
-  });
-});
+let searchPage;
 
-describe('Sorting on the Search page', () => {
-  const sortingOptions = [
-    'rating',
-    'name_asc',
-    'name_desc',
-    'price_asc',
-    'price_desc',
-    'popularity',
-  ];
-  const expectedSkuOrder = [
-    ['216_123', '217_123', '215_123', 'cable-hdmi-1-1', 'cable-vga-1-1'],
-    ['217_123', '215_123', 'cable-hdmi-1-1', '216_123', 'cable-vga-1-1'],
-    ['cable-vga-1-1', '216_123', 'cable-hdmi-1-1', '215_123', '217_123'],
-    ['cable-hdmi-1-1', 'cable-vga-1-1', '215_123', '216_123', '217_123'],
-    ['217_123', '216_123', '215_123', 'cable-hdmi-1-1', 'cable-vga-1-1'],
-    ['cable-vga-1-1', 'cable-hdmi-1-1', '215_123', '216_123', '217_123'],
-  ];
-  const defaultSortingOrder = [
-    'cable-hdmi-1-1',
-    'cable-vga-1-1',
-    '216_123',
-    '217_123',
-    '215_123',
-  ];
+describe('Search suite', () => {
+  describe('Products filtering', () => {
+    const query = 'TomTom';
 
-  let searchPage;
-  beforeEach(() => {
-    searchPage = new SearchPage({ q: 'Cable' });
-    cy.visit(searchPage.url);
-  });
-  it('default sorting applied even after clearing the sort parameter', () => {
-    cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
-    cy.wait('@catalog-search', { timeout: 5000 });
-    // Wait till JS build the template
-    // TODO Refactor cy.wait into understandable variable
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(200);
-    searchPage.getProductCard().each((card, cardIndex) => {
-      cy.wrap(card).should('have.attr', 'sku', defaultSortingOrder[cardIndex]);
+    beforeEach(() => {
+      searchPage = new SearchPage({ q: query });
+      searchPage.visit();
     });
-    // Checking that sorted by name ascending
-    searchPage.getProductSort().click();
-    cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
-    cy.get(`oryx-option[value="${sortingOptions[1]}"]`).click();
-    cy.wait('@catalog-search', { timeout: 5000 });
-    // Wait till JS build the template
-    // TODO Refactor cy.wait into understandable variable
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(200);
-    searchPage.getProductCard().each((card, cardIndex) => {
-      cy.wrap(card).should('have.attr', 'sku', expectedSkuOrder[1][cardIndex]);
-    });
-    // Checking that after clear default order applied
-    cy.get('oryx-select')
-      .find('oryx-icon[type="delete_forever"]')
-      .trigger('mouseover')
-      .click();
-    cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
-    cy.wait('@catalog-search', { timeout: 5000 });
-    // Wait till JS build the template
-    // TODO Refactor cy.wait into understandable variable
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(200);
-    searchPage.getProductCard().each((card, cardIndex) => {
-      cy.wrap(card).should('have.attr', 'sku', defaultSortingOrder[cardIndex]);
+
+    it('should update products and facets when filters are applied/cleared', () => {
+      // apply 1st filter
+      searchPage.getFacets().setTouchscreen('Yes');
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilterring(searchPage, 4, 3, query);
+
+      // apply 2nd filter
+      searchPage.getFacets().setColor('Black');
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilterring(searchPage, 3, 1, query);
+
+      // clear 2nd filter
+      // we don't expect search request here because previous query is cached
+      searchPage.getFacets().resetColor();
+      checkProductCardsFilterring(searchPage, 4, 3, query);
     });
   });
-  // Checks sorting through the all sorting options
-  sortingOptions.forEach((option, index) => {
-    it(`should sort products by ${option}`, () => {
-      const expectedSku = expectedSkuOrder[index];
-      searchPage.getProductSort().click();
-      cy.intercept('GET', '**/catalog-search?*').as('catalog-search');
-      cy.get(`oryx-option[value="${option}"]`).click();
-      cy.wait('@catalog-search', { timeout: 5000 });
-      // Wait till JS build the template
-      // TODO Refactor cy.wait into understandable variable
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(200);
-      searchPage.getProductCard().each((card, cardIndex) => {
-        cy.wrap(card).should('have.attr', 'sku', expectedSku[cardIndex]);
-      });
+
+  describe('Products sorting', () => {
+    beforeEach(() => {
+      searchPage = new SearchPage({ q: 'Cable' });
+      cy.visit(searchPage.url);
+    });
+
+    it('should apply default sorting when sorting is cleared', () => {
+      // check default sorting
+      checkProductCardsSortingBySku(searchPage, sortingTestData.default);
+
+      // change sorting
+      searchPage
+        .getProductSorting()
+        .applySorting(Object.keys(sortingTestData)[2]);
+      searchPage.waitForSearchRequest();
+
+      // clear sorting and check that it is default again
+      searchPage.getProductSorting().clearSorting();
+      checkProductCardsSortingBySku(searchPage, sortingTestData.default);
+    });
+
+    it('should apply all sorting options', () => {
+      Object.keys(sortingTestData)
+        .filter((option) => option !== 'default')
+        .forEach((option) => {
+          cy.log(`Sorting: ${option} is applied`);
+          searchPage.getProductSorting().applySorting(option);
+          searchPage.waitForSearchRequest();
+
+          checkProductCardsSortingBySku(searchPage, sortingTestData[option]);
+        });
     });
   });
 });

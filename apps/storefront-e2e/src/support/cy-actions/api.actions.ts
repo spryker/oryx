@@ -2,8 +2,7 @@ import { RouteMatcherOptions } from 'node_modules/cypress/types/net-stubbing';
 import { CartData, GlueAPI } from '../apis/glue.api';
 import { AbstractSFPage } from '../page-objects/abstract.page';
 import { ProductStorage } from '../test-data/storages/product.storage';
-import { Product } from '../types/product.type';
-import { Customer } from '../types/user.type';
+import { Customer, Product } from '../types/domain.types';
 
 export {};
 

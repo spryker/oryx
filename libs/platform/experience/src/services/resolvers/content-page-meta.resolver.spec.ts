@@ -1,15 +1,19 @@
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { of } from 'rxjs';
-import { ExperienceDataService } from '../experience';
+import { ExperienceDataService, ExperienceService } from '../experience';
 import { ContentPageMetaResolver } from './content-page-meta.resolver';
 
 const mockRouter = {
-  currentRoute: vi.fn(),
+  currentRoute: vi.fn().mockReturnValue(of('/product/123')),
 };
 
 const mockExperienceDataService = {
   getData: vi.fn(),
+};
+
+const mockExperienceService = {
+  getComponent: vi.fn().mockReturnValue(of({})),
 };
 
 describe('ContentPageMetaResolver', () => {
@@ -21,6 +25,10 @@ describe('ContentPageMetaResolver', () => {
         {
           provide: ContentPageMetaResolver,
           useClass: ContentPageMetaResolver,
+        },
+        {
+          provide: ExperienceService,
+          useValue: mockExperienceService,
         },
         {
           provide: RouterService,
@@ -36,7 +44,7 @@ describe('ContentPageMetaResolver', () => {
 
   afterEach(() => {
     destroyInjector();
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('getScore', () => {
@@ -48,7 +56,6 @@ describe('ContentPageMetaResolver', () => {
         },
       ]);
       service = getInjector().inject(ContentPageMetaResolver);
-      mockRouter.currentRoute.mockReturnValue(of('/product/123'));
       service.getScore().subscribe(callback);
       expect(callback).toHaveBeenCalledWith([{ route: '/product/:id' }]);
     });
@@ -61,7 +68,6 @@ describe('ContentPageMetaResolver', () => {
         },
       ]);
       service = getInjector().inject(ContentPageMetaResolver);
-      mockRouter.currentRoute.mockReturnValue(of('/product/123'));
       service.getScore().subscribe(callback);
       expect(callback).toHaveBeenCalledWith([undefined]);
     });
@@ -82,7 +88,6 @@ describe('ContentPageMetaResolver', () => {
         },
       ]);
       service = getInjector().inject(ContentPageMetaResolver);
-      mockRouter.currentRoute.mockReturnValue(of('/product/123'));
 
       service.resolve().subscribe(callback);
       expect(callback).toHaveBeenCalledWith({

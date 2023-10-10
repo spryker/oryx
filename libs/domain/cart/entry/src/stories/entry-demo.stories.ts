@@ -1,6 +1,6 @@
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 import { CartEntryAttributes, CartEntryOptions } from '../entry.model';
 
@@ -17,6 +17,8 @@ export default {
     confirmBeforeRemove: false,
     notifyOnRemove: false,
     price: 3000,
+    unitPrice: 3100,
+    discountedUnitPrice: 3000,
   } as CartEntryAttributes & CartEntryOptions,
   argTypes: {
     sku: {
@@ -25,6 +27,8 @@ export default {
       table: { category: 'demo' },
     },
     price: { table: { category: 'demo' } },
+    unitPrice: { table: { category: 'demo' } },
+    discountedUnitPrice: { table: { category: 'demo' } },
     quantity: { table: { category: 'demo' } },
   },
   parameters: {
@@ -42,6 +46,8 @@ const Template: Story<CartEntryAttributes & CartEntryOptions> = (
       .sku=${props.sku}
       .quantity=${props.quantity}
       .price=${props.price}
+      .unitPrice=${props.unitPrice}
+      .discountedUnitPrice=${props.discountedUnitPrice}
       .readonly=${props.readonly}
       .options=${props}
     ></oryx-cart-entry>

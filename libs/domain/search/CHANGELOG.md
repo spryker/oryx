@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2023-09-22)
+
+
+### Bug Fixes
+
+* facets and browser history ([#770](https://github.com/spryker/oryx/issues/770)) ([b3ba474](https://github.com/spryker/oryx/commit/b3ba474cd44e2df7909e09281010087bcca50a9a))
+* source for the query that is using for search ([#773](https://github.com/spryker/oryx/issues/773)) ([cd0ddbf](https://github.com/spryker/oryx/commit/cd0ddbfa3ce0dc282100f2c5e6d37adcf947d2f2))
+
+
+
+
+
+## 1.0.2 (2023-09-13)
+
+
+### Bug Fixes
+
+* search box on small screens ([#754](https://github.com/spryker/oryx/issues/754)) ([5a03136](https://github.com/spryker/oryx/commit/5a031366a128b6c8eaa974241520b4202df26c86))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 

@@ -1,7 +1,7 @@
 import * as prompts from '@clack/prompts';
 import fs, { PathLike } from 'fs';
 import path from 'path';
-import { CreateCliCommand, OryxPreset } from './create';
+import { CreateCliCommand } from './create';
 
 vi.mock('@clack/prompts');
 vi.mock('fs');
@@ -16,6 +16,7 @@ describe('CreateCliCommand', () => {
     downloadFile = vi.fn();
     extractZip = vi.fn();
     copyFolder = vi.fn();
+    executeCommand = vi.fn();
   }
 
   function setup() {
@@ -75,7 +76,6 @@ describe('CreateCliCommand', () => {
 
       expect(command.getOptions()).toEqual([
         { name: 'name', short: 'n', type: 'string' },
-        { name: 'preset', short: 'p', type: 'string' },
       ]);
     });
   });
@@ -93,29 +93,12 @@ describe('CreateCliCommand', () => {
 
         Options:
           [2m-n, --name[22m    The name of the app and the directory to create.
-          [2m-p, --preset[22m  The preset to use. Possible values: b2c, fulfillment
         "
       `);
     });
   });
 
   describe('execute()', () => {
-    it('should reject if the preset is unknown', async () => {
-      const { command, cliArgsService } = setup();
-
-      cliArgsService.get.mockImplementation((name: string) => {
-        if (name === 'preset') {
-          return 'unknown';
-        }
-        return;
-      });
-
-      await expect(command.execute()).rejects.toMatchInlineSnapshot(`
-        [Error: Unknown preset 'unknown'!
-        Possible values: b2c, fulfillment]
-      `);
-    });
-
     it('should call createApp() with the correct options', async () => {
       const { command, cliArgsService } = setup();
       const createAppSpy = vi.spyOn(command, 'createApp').mockResolvedValue();
@@ -124,9 +107,6 @@ describe('CreateCliCommand', () => {
         if (name === 'name') {
           return 'my-app';
         }
-        if (name === 'preset') {
-          return OryxPreset.B2C;
-        }
         return;
       });
 
@@ -134,7 +114,6 @@ describe('CreateCliCommand', () => {
 
       expect(createAppSpy).toHaveBeenCalledWith({
         name: 'my-app',
-        preset: OryxPreset.B2C,
       });
     });
 
@@ -146,7 +125,6 @@ describe('CreateCliCommand', () => {
 
       expect(createAppSpy).toHaveBeenCalledWith({
         name: undefined,
-        preset: undefined,
       });
     });
   });
@@ -168,34 +146,14 @@ describe('CreateCliCommand', () => {
           return true;
         });
 
-        await expect(
-          command.createApp({ preset: OryxPreset.B2C })
-        ).resolves.toBeUndefined();
+        await expect(command.createApp({})).resolves.toBeUndefined();
 
         expect(textSpy).toHaveBeenCalledWith({
           message: expect.stringContaining('What is the name of your app?'),
-          validate: expect.any(Function),
+          defaultValue: 'oryx-app',
+          placeholder: 'oryx-app',
         });
         expect(isCancelSpy).toHaveBeenCalledWith('mock-name');
-      });
-
-      it('should validate the app name', async () => {
-        const { command } = setup();
-        const textSpy = vi
-          .spyOn(prompts, 'text')
-          .mockResolvedValue('mock-name');
-
-        await expect(
-          command.createApp({ preset: OryxPreset.B2C })
-        ).resolves.toBeUndefined();
-
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const validateCb = textSpy.mock.calls[0][0].validate!;
-
-        expect(validateCb('')).toMatchInlineSnapshot('"Please enter a name"');
-        expect(validateCb(' ')).toMatchInlineSnapshot('"Please enter a name"');
-        expect(validateCb('my-app')).toBeUndefined();
-        expect(validateCb('my app')).toBeUndefined();
       });
 
       it('should reject if prompt was cancelled', async () => {
@@ -205,63 +163,12 @@ describe('CreateCliCommand', () => {
           .mockResolvedValue('mock-name');
         const isCancelSpy = vi.spyOn(prompts, 'isCancel').mockReturnValue(true);
 
-        await expect(
-          command.createApp({ preset: OryxPreset.B2C })
-        ).rejects.toMatchInlineSnapshot('"Operation cancelled."');
+        await expect(command.createApp({})).rejects.toMatchInlineSnapshot(
+          '"Operation cancelled."'
+        );
 
         expect(textSpy).toHaveBeenCalled();
         expect(isCancelSpy).toHaveBeenCalledWith('mock-name');
-      });
-    });
-
-    describe('without a preset', () => {
-      it('should prompt for the preset', async () => {
-        const { command } = setup();
-        const selectSpy = vi
-          .spyOn(prompts, 'select')
-          .mockResolvedValue('mock-preset');
-        const isCancelSpy = vi
-          .spyOn(prompts, 'isCancel')
-          .mockReturnValue(false);
-
-        await expect(
-          command.createApp({ name: 'mock-name' })
-        ).resolves.toBeUndefined();
-
-        expect(selectSpy).toHaveBeenCalledWith({
-          message: expect.stringContaining(
-            'Which preset would you like to use?'
-          ),
-          initialValue: OryxPreset.B2C,
-          options: [
-            {
-              label: 'B2C',
-              value: OryxPreset.B2C,
-              hint: 'For standard B2C based storefronts',
-            },
-            {
-              label: 'Fulfillment',
-              value: OryxPreset.Fulfillment,
-              hint: 'For fulfillment related applications',
-            },
-          ],
-        });
-        expect(isCancelSpy).toHaveBeenCalledWith('mock-preset');
-      });
-
-      it('should reject if prompt was cancelled', async () => {
-        const { command } = setup();
-        const selectSpy = vi
-          .spyOn(prompts, 'select')
-          .mockResolvedValue('mock-preset');
-        const isCancelSpy = vi.spyOn(prompts, 'isCancel').mockReturnValue(true);
-
-        await expect(
-          command.createApp({ name: 'mock-name' })
-        ).rejects.toMatchInlineSnapshot('"Operation cancelled."');
-
-        expect(selectSpy).toHaveBeenCalled();
-        expect(isCancelSpy).toHaveBeenCalledWith('mock-preset');
       });
     });
 
@@ -272,7 +179,7 @@ describe('CreateCliCommand', () => {
         const isCancelSpy = vi.spyOn(prompts, 'isCancel');
 
         await expect(
-          command.createApp({ name: 'mock-name', preset: OryxPreset.B2C })
+          command.createApp({ name: 'mock-name' })
         ).resolves.toBeUndefined();
 
         expect(textSpy).not.toHaveBeenCalled();
@@ -284,39 +191,11 @@ describe('CreateCliCommand', () => {
         const logSpy = vi.spyOn(prompts.log, 'info');
 
         await expect(
-          command.createApp({ name: 'mock-name', preset: OryxPreset.B2C })
+          command.createApp({ name: 'mock-name' })
         ).resolves.toBeUndefined();
 
         expect(logSpy).toHaveBeenCalledWith(
           expect.stringContaining('mock-name')
-        );
-      });
-    });
-
-    describe('with a preset', () => {
-      it('should not prompt for the preset', async () => {
-        const { command } = setup();
-        const selectSpy = vi.spyOn(prompts, 'select');
-        const isCancelSpy = vi.spyOn(prompts, 'isCancel');
-
-        await expect(
-          command.createApp({ name: 'mock-name', preset: OryxPreset.B2C })
-        ).resolves.toBeUndefined();
-
-        expect(selectSpy).not.toHaveBeenCalled();
-        expect(isCancelSpy).not.toHaveBeenCalled();
-      });
-
-      it('should log preset', async () => {
-        const { command } = setup();
-        const logSpy = vi.spyOn(prompts.log, 'info');
-
-        await expect(
-          command.createApp({ name: 'mock-name', preset: OryxPreset.B2C })
-        ).resolves.toBeUndefined();
-
-        expect(logSpy).toHaveBeenCalledWith(
-          expect.stringContaining(OryxPreset.B2C)
         );
       });
     });
@@ -330,9 +209,8 @@ describe('CreateCliCommand', () => {
         return false;
       });
 
-      await expect(
-        command.createApp({ name: 'existing-app', preset: OryxPreset.B2C })
-      ).rejects.toMatchInlineSnapshot(`
+      await expect(command.createApp({ name: 'existing-app' })).rejects
+        .toMatchInlineSnapshot(`
         [Error: Directory 'existing-app' already exists!
         Please make sure to not use an existing directory name.]
       `);
@@ -353,29 +231,29 @@ describe('CreateCliCommand', () => {
       const { command, nodeUtilService, spinnerMock } = setup();
 
       await expect(
-        command.createApp({ name: 'mock-name', preset: OryxPreset.B2C })
+        command.createApp({ name: 'mock-name' })
       ).resolves.toBeUndefined();
 
       expect(spinnerMock.start).toHaveBeenCalledWith(
-        expect.stringContaining('Downloading latest template')
+        expect.stringContaining('Installing application...')
       );
       expect(nodeUtilService.downloadFile).toHaveBeenCalledWith(
-        'https://github.com/spryker/oryx/archive/refs/heads/development.zip',
+        'https://github.com/spryker/composable-frontend/archive/refs/heads/master.zip',
         '/mock-root/../../template-latest.zip'
       );
       expect(spinnerMock.stop).toHaveBeenCalledWith(
-        expect.stringContaining('Template downloaded')
+        expect.stringContaining('Application installed')
       );
 
       expect(spinnerMock.start).toHaveBeenCalledWith(
-        expect.stringContaining('Extracting template')
+        expect.stringContaining('Installing application...')
       );
       expect(nodeUtilService.extractZip).toHaveBeenCalledWith(
         '/mock-root/../../template-latest.zip',
         '/mock-root/../../repo/latest'
       );
       expect(spinnerMock.stop).toHaveBeenCalledWith(
-        expect.stringContaining('Template extracted')
+        expect.stringContaining('Application installed')
       );
     });
 
@@ -393,7 +271,7 @@ describe('CreateCliCommand', () => {
       const { command, nodeUtilService, spinnerMock } = setup();
 
       await expect(
-        command.createApp({ name: 'mock-name', preset: OryxPreset.B2C })
+        command.createApp({ name: 'mock-name' })
       ).resolves.toBeUndefined();
 
       expect(spinnerMock.start).not.toHaveBeenCalledWith(
@@ -405,11 +283,11 @@ describe('CreateCliCommand', () => {
       );
 
       expect(spinnerMock.start).toHaveBeenCalledWith(
-        expect.stringContaining('Extracting template')
+        expect.stringContaining('Installing application...')
       );
       expect(nodeUtilService.extractZip).toHaveBeenCalled();
       expect(spinnerMock.stop).toHaveBeenCalledWith(
-        expect.stringContaining('Template extracted')
+        expect.stringContaining('Application installed')
       );
     });
 
@@ -424,7 +302,7 @@ describe('CreateCliCommand', () => {
       const { command, nodeUtilService, spinnerMock } = setup();
 
       await expect(
-        command.createApp({ name: 'mock-name', preset: OryxPreset.B2C })
+        command.createApp({ name: 'mock-name' })
       ).resolves.toBeUndefined();
 
       expect(spinnerMock.start).not.toHaveBeenCalledWith(
@@ -436,7 +314,7 @@ describe('CreateCliCommand', () => {
       );
 
       expect(spinnerMock.start).not.toHaveBeenCalledWith(
-        expect.stringContaining('Extracting template')
+        expect.stringContaining('"Installing application...')
       );
       expect(nodeUtilService.extractZip).not.toHaveBeenCalled();
       expect(spinnerMock.stop).not.toHaveBeenCalledWith(
@@ -448,18 +326,18 @@ describe('CreateCliCommand', () => {
       const { command, nodeUtilService, spinnerMock } = setup();
 
       await expect(
-        command.createApp({ name: 'mock-name', preset: OryxPreset.B2C })
+        command.createApp({ name: 'mock-name' })
       ).resolves.toBeUndefined();
 
       expect(spinnerMock.start).toHaveBeenCalledWith(
-        expect.stringContaining('Copying template')
+        expect.stringContaining('Installing dependencies...')
       );
       expect(nodeUtilService.copyFolder).toHaveBeenCalledWith(
-        '/mock-root/../../repo/latest/oryx-development/apps/storefront',
+        '/mock-root/../../repo/latest/composable-frontend-master',
         '/mock-cwd/mock-name'
       );
-      expect(spinnerMock.stop).toHaveBeenCalledWith(
-        expect.stringContaining('Template copied')
+      expect(spinnerMock.stop).toHaveBeenLastCalledWith(
+        expect.stringContaining('Dependencies installed')
       );
     });
   });

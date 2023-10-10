@@ -1,9 +1,9 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const warehouseAssignmentComponent = componentDef({
-  name: 'oryx-warehouse-assignment',
+export const pickingWarehouseAssignmentComponent = componentDef({
+  name: 'oryx-picking-warehouse-assignment',
   impl: () =>
     import('./warehouse-assignment.component').then(
-      (m) => m.WarehouseAssignmentComponent
+      (m) => m.PickingWarehouseAssignmentComponent
     ),
 });

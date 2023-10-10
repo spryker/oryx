@@ -14,7 +14,9 @@ export default {
 
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
-    <oryx-customer-note pickingListId="withCartNote"></oryx-customer-note>
+    <oryx-picking-customer-note
+      pickingListId="withCartNote"
+    ></oryx-picking-customer-note>
   `;
 };
 

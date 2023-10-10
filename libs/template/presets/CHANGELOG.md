@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2023-09-22)
+
+
+### Features
+
+* b2b-storefront preset ([#703](https://github.com/spryker/oryx/issues/703)) ([b62f662](https://github.com/spryker/oryx/commit/b62f6625f5293ec8887a585f901794ca5514f3a9))
+
+
+### Bug Fixes
+
+* make form second address required ([#733](https://github.com/spryker/oryx/issues/733)) ([1402521](https://github.com/spryker/oryx/commit/140252117f7a04b2c0157443709149ba5562ef3d))
+
+
+
+
+
+## 1.0.2 (2023-09-13)
+
+
+### Bug Fixes
+
+* change header's layout to grid on small screens ([#760](https://github.com/spryker/oryx/issues/760)) ([d41ac4d](https://github.com/spryker/oryx/commit/d41ac4dc7b302120779c4b508c86981d2c017e33))
+
+
+
+
+
 ## 1.0.1 (2023-08-15)
 
 

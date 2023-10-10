@@ -1,8 +1,9 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
-import { ProductListQualifier } from '../../../models';
+import { ApiProductModel, ProductListQualifier } from '../../../models';
 import { ProductListNormalizer } from '../../adapter';
 import { DefaultProductListAdapter } from './default-product-list.adapter';
 import { ProductListAdapter } from './product-list.adapter';
@@ -54,6 +55,7 @@ describe('DefaultProductCategoryAdapter', () => {
 
   afterEach(() => {
     destroyInjector();
+    vi.clearAllMocks();
   });
 
   it('should be provided', () => {
@@ -65,19 +67,38 @@ describe('DefaultProductCategoryAdapter', () => {
 
     beforeEach(() => {
       http.flush(mockProducts);
-    });
 
-    afterEach(() => {
-      vi.clearAllMocks();
+      service.get(mockQualifier);
     });
 
     it('should build correct base url', () => {
-      service.get(mockQualifier);
-
       expect(http.url).toContain(
         `${mockApiUrl}/catalog-search?q=${mockQualifier.q}`
       );
     });
+
+    if (featureVersion >= '1.1') {
+      describe('category-nodes fields', () => {
+        const fields = `fields[${ApiProductModel.Includes.CategoryNodes}]=`;
+
+        it('should add fields for category-nodes to the url', () => {
+          expect(http.url).toContain(fields);
+        });
+
+        [
+          ApiProductModel.CategoryNodeFields.MetaDescription,
+          ApiProductModel.CategoryNodeFields.NodeId,
+          ApiProductModel.CategoryNodeFields.Order,
+          ApiProductModel.CategoryNodeFields.Name,
+          ApiProductModel.CategoryNodeFields.Children,
+          ApiProductModel.CategoryNodeFields.IsActive,
+        ].forEach((field) =>
+          it(`should contain ${field} in the url`, () => {
+            expect(http.url?.split(fields)[1]).toContain(field);
+          })
+        );
+      });
+    }
 
     it('should call transformer with proper normalizer', () => {
       service.get(mockQualifier).subscribe();

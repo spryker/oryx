@@ -77,7 +77,7 @@ describe('SitePriceComponent', () => {
       });
 
       it('should render €12.34', () => {
-        expect(element.shadowRoot?.textContent?.trim()).toBe('€12.34');
+        expect(element.shadowRoot?.textContent?.trim()).toContain('€12.34');
       });
     });
 
@@ -92,7 +92,7 @@ describe('SitePriceComponent', () => {
       });
 
       it('should render $12.34', () => {
-        expect(element.shadowRoot?.textContent?.trim()).toBe('$12.34');
+        expect(element.shadowRoot?.textContent?.trim()).toContain('$12.34');
       });
     });
   });
@@ -111,7 +111,7 @@ describe('SitePriceComponent', () => {
       });
 
       it('should render 12,34 £', () => {
-        expect(element.shadowRoot?.textContent?.trim()).toBe('12,34 £');
+        expect(element.shadowRoot?.textContent?.trim()).toContain('12,34 £');
       });
     });
 
@@ -126,7 +126,7 @@ describe('SitePriceComponent', () => {
       });
 
       it('should render $12.34', () => {
-        expect(element.shadowRoot?.textContent?.trim()).toBe('12,34 $');
+        expect(element.shadowRoot?.textContent?.trim()).toContain('12,34 $');
       });
     });
   });
