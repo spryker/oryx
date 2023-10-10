@@ -1,12 +1,12 @@
 import { Facet } from '@spryker-oryx/product';
 import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
 import { TemplateResult } from 'lit';
-import { FacetMappingOptions, RatingFacetMappingOptions } from './renderer';
+import { FacetMappingOptions } from './renderer';
 
 export interface FacetComponentRegistryService {
   renderFacetComponent(
     facet: Facet,
-    options: FacetMappingOptions | RatingFacetMappingOptions,
+    options: FacetMappingOptions,
     selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
   ): TemplateResult;
 }

@@ -31,25 +31,4 @@ export interface SearchFacetNavigationOptions {
    * object with a category.
    */
   bury?: { facets: string[] }[];
-
-  /**
-   * Indicates the minimum rating value for a rating facet.
-   *
-   * @default 1
-   */
-  ratingMin?: number;
-
-  /**
-   * Indicates the maximum rating value for a rating facet.
-   *
-   * @default 4
-   */
-  ratingMax?: number;
-
-  /**
-   * Indicates the scale for a rating facet.
-   *
-   * @default 5
-   */
-  ratingScale?: number;
 }

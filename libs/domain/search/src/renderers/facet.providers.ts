@@ -1,7 +1,6 @@
 import { Facet } from '@spryker-oryx/product';
 import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
 import { html, TemplateResult } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { DefaultFacetComponentRegistryService } from './default-facet-component-registry.service';
 import { colorsMap, FacetColorsMapping } from './facet-color-colors.mapping';
 import { FacetComponentRegistryService } from './facet-component-registry.service';
@@ -9,7 +8,6 @@ import {
   FacetMappingOptions,
   FacetParams,
   FacetValueRenderer,
-  RatingFacetMappingOptions,
 } from './renderer';
 
 export const facetProviders = [
@@ -60,7 +58,7 @@ export const facetProviders = [
       [`${FacetParams.Rating}`]: {
         template: (
           facet: Facet,
-          options: RatingFacetMappingOptions,
+          options: FacetMappingOptions,
           selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
         ): TemplateResult => {
           return html`
@@ -70,9 +68,6 @@ export const facetProviders = [
               .renderLimit=${options.renderLimit}
               .open=${options.open}
               .multi=${facet.multiValued}
-              .min=${ifDefined(options.min)}
-              .max=${ifDefined(options.max)}
-              .scale=${ifDefined(options.scale)}
             >
             </oryx-search-facet-rating>
           `;

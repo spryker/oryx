@@ -18,14 +18,5 @@ export const searchFacetNavigationSchema: ContentComponentSchema<SearchFacetNavi
       minForSearch: {
         type: FormFieldType.Number,
       },
-      ratingMin: {
-        type: FormFieldType.Number,
-      },
-      ratingMax: {
-        type: FormFieldType.Number,
-      },
-      ratingScale: {
-        type: FormFieldType.Number,
-      },
     },
   };
