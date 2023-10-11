@@ -1,0 +1,61 @@
+import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
+import { css } from 'lit';
+
+export const cartListStyles = css`
+  :host {
+    display: grid;
+    gap: 10px;
+  }
+
+  .heading {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  h1 {
+    ${headingUtil(HeadingTag.H3)}
+  }
+
+  oryx-site-price {
+    ${headingUtil(HeadingTag.H6)}
+
+    /* color: var(--oryx-color-primary-9); */
+    margin-inline-start: auto;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--oryx-color-neutral-3);
+    padding: 10px 20px;
+    margin-left: -20px;
+    width: 100%;
+    /* border-top: 2px black solid; */
+    height: 40px;
+    margin-bottom: -12px;
+    border-end-end-radius: var(
+      --oryx-collapsible-border-radius,
+      var(--oryx-border-radius-small)
+    );
+    border-end-start-radius: var(
+      --oryx-collapsible-border-radius,
+      var(--oryx-border-radius-small)
+    );
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  p {
+    text-wrap: initial;
+  }
+
+  oryx-cart-entries {
+    max-height: 500px;
+    overflow: scroll;
+    display: block;
+  }
+`;
