@@ -1,8 +1,8 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
-import { Observable, combineLatest, map } from 'rxjs';
-import { ApiProductListModel, ProductList } from '../../../../models';
+import { Observable, combineLatest, map, of } from 'rxjs';
+import { ApiProductListModel, Facet, ProductList } from '../../../../models';
 import { CategoryListNormalizer } from '../../../category';
 import { ConcreteProductsNormalizer } from '../concrete-products';
 import { FacetNormalizer } from '../facet';
@@ -89,7 +89,7 @@ export function productFacetNormalizer(
     transformer.transform(rangeFacets, FacetRangeNormalizer),
     transformer.transform(categoryTreeFilter, CategoryListNormalizer),
   ]).pipe(
-    map((facets: (Facet | Facet[] | null)[]) => {
+    map((facets) => {
       return {
         facets: facets.filter((facet) => facet).flat() as Facet[],
       };

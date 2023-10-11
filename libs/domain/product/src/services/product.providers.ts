@@ -10,6 +10,7 @@ import {
   FacetCategoryNormalizer,
   FacetNormalizer,
   FacetRangeNormalizer,
+  FacetRatingNormalizer,
   PriceNormalizer,
   ProductAdapter,
   ProductMediaSetNormalizer,
@@ -17,13 +18,14 @@ import {
   categoryIdNormalizer,
   concreteProductsNormalizer,
   facetCategoryNormalizer,
+  facetRatingNormalizer,
   facetsNormalizer,
   facetsRangeNormalizer,
   mediaNormalizer,
   mediaSetNormalizer,
   priceNormalizer,
   productListNormalizer,
-  productNormalizer, FacetRatingNormalizer, facetRatingNormalizer,
+  productNormalizer,
 } from './adapter';
 import {
   ProductLabelsNormalizer,
