@@ -22,7 +22,7 @@ describe('Product details page suite', () => {
     pdp.getRelations().getProducts().should('be.visible');
   });
 
-  it('should update prices when price mode changes', () => {
+  it('should update prices when price mode changes', { tags: 'b2b' }, () => {
     const productData = ProductStorage.getByEq(2);
     const pdp = new ProductDetailsPage(productData);
 
