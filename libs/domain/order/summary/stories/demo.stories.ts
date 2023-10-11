@@ -7,7 +7,7 @@ export default {
 };
 
 const Template: Story = (): TemplateResult => {
-  return html`<oryx-order-summary></oryx-order-summary>`;
+  return html`<oryx-order-summary orderId="mockid"></oryx-order-summary>`;
 };
 
 export const Demo = Template.bind({});

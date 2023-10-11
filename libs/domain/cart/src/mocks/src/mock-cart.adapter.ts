@@ -10,7 +10,7 @@ import {
   UpdateCartEntryQualifier,
 } from '@spryker-oryx/cart';
 import { MockProductService } from '@spryker-oryx/product/mocks';
-import { delay, mapTo, Observable, of, take, tap, timer } from 'rxjs';
+import { Observable, delay, mapTo, of, take, tap, timer } from 'rxjs';
 import {
   mockCartEntry,
   mockCartLarge,
@@ -206,7 +206,7 @@ export class MockCartAdapter implements Partial<CartAdapter> {
     for (let i = 0; i < products.length; i++) {
       total =
         total +
-        products[i].quantity *
+        Number(products[i].quantity) *
           (products[i]?.calculations?.unitPrice ||
             Math.floor(Math.random() * 10 + 1));
     }

@@ -1,4 +1,21 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
+
+const orderEntries = (): ExperienceComponent => {
+  if (featureVersion >= '1.2')
+    return {
+      type: 'oryx-composition',
+      components: [
+        { type: 'oryx-order-heading' },
+        { type: 'oryx-order-entries' },
+      ],
+      options: {
+        rules: [{ layout: 'list', gap: 0 }],
+      },
+    };
+
+  return { type: 'oryx-order-entries' };
+};
 
 export const orderConfirmationPage: ExperienceComponent = {
   id: 'order-confirmation-page',
@@ -27,10 +44,11 @@ export const orderConfirmationPage: ExperienceComponent = {
             { type: 'oryx-cart-totals-subtotal' },
             { type: 'oryx-cart-totals-discount' },
             { type: 'oryx-cart-totals-tax' },
+            { type: 'oryx-cart-totals-delivery' },
             { type: 'oryx-cart-totals-total' },
           ],
         },
-        { type: 'oryx-order-entries' },
+        orderEntries(),
       ],
     },
   ],

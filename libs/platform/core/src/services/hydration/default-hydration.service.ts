@@ -2,10 +2,12 @@ import { inject, INJECTOR, OnDestroy } from '@spryker-oryx/di';
 import {
   ComponentsPlugin,
   deferHydrationAttribute,
+  getHydrationEventsModes,
   hydratableAttribute,
   HydratableLitElement,
   HYDRATE_ON_DEMAND,
   rootInjectable,
+  treewalk,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { skip, Subscription, take } from 'rxjs';
@@ -49,7 +51,7 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
   }
 
   initHydrateHooks(immediate?: boolean): void {
-    const elementsToHydrate = this.treewalk(`[${hydratableAttribute}]`);
+    const elementsToHydrate = treewalk(`[${hydratableAttribute}]`);
 
     elementsToHydrate.forEach((el) => {
       if (immediate) {
@@ -57,7 +59,9 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
         return;
       }
 
-      const modes = el.getAttribute(hydratableAttribute)?.split?.(',') ?? [];
+      const types = el.getAttribute(hydratableAttribute)?.split?.(',') ?? [];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const modes = getHydrationEventsModes(el.shadowRoot!, types);
 
       for (let i = 0; i < modes.length; i++) {
         if (modes[i][0] === '@') {
@@ -81,11 +85,7 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
     }
 
     target.addEventListener(mode, async () => {
-      const childs = this.treewalk(
-        `[${deferHydrationAttribute}]`,
-        element,
-        false
-      );
+      const childs = treewalk(`[${deferHydrationAttribute}]`, element, false);
 
       if (childs.length) {
         const promises = childs.map((childEl) => this.hydrateOnDemand(childEl));
@@ -131,40 +131,5 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
 
   onDestroy(): void {
     this.subscription.unsubscribe();
-  }
-
-  protected treewalk(
-    selector: string,
-    rootNode = document.body,
-    includeRoot = true
-  ): HTMLElement[] {
-    const nodes: Element[] = [rootNode];
-    const elements: HTMLElement[] = [];
-
-    for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i];
-
-      if (node.nodeType !== Node.ELEMENT_NODE) {
-        continue;
-      }
-
-      if (node.children.length) {
-        nodes.push(...node.children);
-      }
-
-      if (node.shadowRoot?.children.length) {
-        nodes.push(...node.shadowRoot.children);
-      }
-
-      if (!includeRoot && node.matches(rootNode.tagName.toLowerCase())) {
-        continue;
-      }
-
-      if (node.matches(selector)) {
-        elements.push(node as HTMLElement);
-      }
-    }
-
-    return elements;
   }
 }

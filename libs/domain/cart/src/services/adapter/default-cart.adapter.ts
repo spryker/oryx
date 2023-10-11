@@ -4,9 +4,9 @@ import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { CurrencyService, StoreService } from '@spryker-oryx/site';
 import {
+  Observable,
   combineLatest,
   map,
-  Observable,
   of,
   switchMap,
   take,

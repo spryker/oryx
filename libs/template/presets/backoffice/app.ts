@@ -1,6 +1,8 @@
+import { contentFeature } from '@spryker-oryx/content';
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { Resources, layoutFeature } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
+import { I18nFeature } from '@spryker-oryx/i18n';
 import {
   commonGraphics,
   fontawesomeLink,
@@ -23,6 +25,13 @@ export const backofficeFeatures: AppFeature[] = [
   formFeature,
   siteFeature,
   layoutFeature,
+  contentFeature,
+  new I18nFeature({
+    locale: {
+      locales: [{ name: 'en_US', code: 'en' }],
+      defaultLocale: 'en',
+    },
+  }),
   {
     resources: backofficeResources,
   },

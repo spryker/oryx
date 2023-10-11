@@ -1,3 +1,4 @@
+export * from './lists-component';
 export * from './pageable-qualifier';
 export * from './picking-list';
 export * from './picking-list-qualifier';

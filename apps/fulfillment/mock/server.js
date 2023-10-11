@@ -83,7 +83,7 @@ exports.createMockServer = function createMockServer() {
     });
   });
 
-  router.patch('/picking-lists/:id', (req, res) => {
+  router.post('/picking-lists/:id/start-picking', (req, res) => {
     const { id } = req.params;
 
     res.send({
@@ -97,7 +97,7 @@ exports.createMockServer = function createMockServer() {
         },
       },
       links: {
-        self: `/picking-lists/${id}`,
+        self: `/picking-lists/${id}/start-picking`,
       },
     });
   });

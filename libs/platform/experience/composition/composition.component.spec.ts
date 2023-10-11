@@ -9,6 +9,7 @@ import {
   LayoutBuilder,
   LayoutService,
 } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import { useComponent } from '@spryker-oryx/utilities';
 import { TemplateResult, html } from 'lit';
 import { Observable, of } from 'rxjs';
@@ -68,6 +69,10 @@ vi.spyOn(
   compositionController.CompositionComponentsController as unknown as SpyInstance
 ).mockReturnValue(mockComponents);
 
+const mockRouter = {
+  redirectNotFound: vi.fn(),
+};
+
 describe('CompositionComponent', () => {
   let element: CompositionComponent;
 
@@ -97,6 +102,10 @@ describe('CompositionComponent', () => {
         {
           provide: SSRAwaiterService,
           useClass: MockSSRAwaiter,
+        },
+        {
+          provide: RouterService,
+          useValue: mockRouter,
         },
       ],
     });

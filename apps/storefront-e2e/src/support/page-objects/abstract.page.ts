@@ -1,9 +1,17 @@
+import { BreadcrumbFragment } from '../page-fragments/breadcrumb.fragment';
 import { FooterFragment } from '../page-fragments/footer.fragment';
 import { GlobalNotificationCenter } from '../page-fragments/global-notification-center.fragment';
 import { HeaderFragment } from '../page-fragments/header.fragment';
 import { SearchBoxFragment } from '../page-fragments/search-box.fragment';
 
-export abstract class AbstractSFPage {
+export type E2EPage = {
+  url: string;
+  visit(): void;
+  beforeVisit(): void;
+  waitForLoaded(): void;
+};
+
+export abstract class AbstractSFPage implements E2EPage {
   abstract url: string;
 
   visit(): void {
@@ -22,6 +30,7 @@ export abstract class AbstractSFPage {
   footer = new FooterFragment();
   searchbox = new SearchBoxFragment();
   globalNotificationCenter = new GlobalNotificationCenter();
+  breadcrumb = new BreadcrumbFragment();
 
   /**
    * Initializes cypress interceptors

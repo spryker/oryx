@@ -8,6 +8,7 @@ import {
   LayoutBuilder,
   LayoutMixin,
 } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import {
   effect,
   elementEffect,
@@ -21,6 +22,7 @@ import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
+import { map, of, switchMap } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
 
 @signalAware()
@@ -32,6 +34,7 @@ export class CompositionComponent extends LayoutMixin(
   @signalProperty({ reflect: true }) route?: string;
 
   protected experienceService = resolve(ExperienceService);
+  protected routerService = resolve(RouterService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
 
@@ -43,11 +46,24 @@ export class CompositionComponent extends LayoutMixin(
       return;
     }
 
-    const component =
-      signal(this.experienceService.getComponent({ route: this.route }))() ??
-      ({} as Component);
+    const component = signal(
+      this.experienceService
+        .getComponent({ route: this.route })
+        .pipe(
+          switchMap((component) =>
+            component?.id
+              ? of(component)
+              : this.routerService.redirectNotFound().pipe(map(() => null))
+          )
+        )
+    )();
 
-    if (this.uid !== component.id) {
+    if (component === null || !component?.id) {
+      this.uid = undefined;
+      return;
+    }
+
+    if (this.uid !== component?.id) {
       this.uid = component.id;
     }
   });

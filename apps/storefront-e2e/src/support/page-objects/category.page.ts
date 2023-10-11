@@ -1,6 +1,10 @@
+import { WithFacets } from '../mixins/page-with-facets.mixin';
+import { WithProductList } from '../mixins/page-with-product-list.mixin';
+import { WithProductSorting } from '../mixins/page-with-product-sorting.mixin';
+import { Category } from '../types/domain.types';
 import { AbstractSFPage } from './abstract.page';
-import { Category } from '../types/category.type';
-export class CategoryPage extends AbstractSFPage {
+
+export class CategoryPageBase extends AbstractSFPage {
   url = '/category/';
   categoryId: string;
 
@@ -14,10 +18,10 @@ export class CategoryPage extends AbstractSFPage {
   }
 
   waitForLoaded(): void {
-    this.getFacets().should('be.visible');
+    //
   }
-
-  getFacets = () => cy.get('oryx-search-facet');
-  getOryxCards = () => cy.get('oryx-product-card');
-  getProductSort = () => cy.get('oryx-search-product-sort');
 }
+
+export const CategoryPage = WithProductSorting(
+  WithProductList(WithFacets(CategoryPageBase))
+);

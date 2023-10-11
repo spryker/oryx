@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
-import { RouterService } from '@spryker-oryx/router';
+import { RouteType, RouterService } from '@spryker-oryx/router';
 import {
   Suggestion,
   SuggestionField,
@@ -12,14 +12,12 @@ import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
 import '@spryker-oryx/ui/typeahead';
 import { TypeaheadComponent } from '@spryker-oryx/ui/typeahead';
 import {
+  Size,
   computed,
   debounce,
-  effect,
-  elementEffect,
   hydrate,
   signalAware,
   signalProperty,
-  Size,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
@@ -28,7 +26,6 @@ import { html } from 'lit/static-html.js';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { searchBoxStyles } from './';
 import { SearchBoxOptions, SearchBoxProperties } from './box.model';
-import { RouteType } from '@spryker-oryx/router';
 
 @defaultOptions({
   minChars: 2,
@@ -47,7 +44,7 @@ import { RouteType } from '@spryker-oryx/router';
     max: 5,
   },
 })
-@hydrate({ event: ['mouseover', 'focusin'] })
+@hydrate()
 @signalAware()
 export class SearchBoxComponent
   extends ContentMixin<SearchBoxOptions>(LitElement)
@@ -58,6 +55,7 @@ export class SearchBoxComponent
   @signalProperty() query = '';
 
   @query('oryx-typeahead') protected typeahead!: TypeaheadComponent;
+  @query('input') protected input!: HTMLInputElement;
 
   protected suggestionRendererService = resolve(SuggestionRendererService);
   protected routerService = resolve(RouterService);
@@ -71,8 +69,13 @@ export class SearchBoxComponent
     )
   );
 
-  @elementEffect()
-  protected queryEffect = effect(() => this.query$.next(this.query));
+  protected $link = computed(() =>
+    this.semanticLinkService.get({
+      type: RouteType.ProductList,
+      ...(this.query ? { params: { q: this.query } } : {}),
+    })
+  );
+
   protected $raw = computed(() => this.suggestion$);
   protected $suggestion = computed(() => {
     const query = this.query?.trim();
@@ -83,26 +86,33 @@ export class SearchBoxComponent
     return withSuggestion ? this.$raw() : null;
   });
 
-  protected $link = computed(() =>
-    this.semanticLinkService.get({
-      type: RouteType.ProductList,
-      ...(this.query ? { params: { q: this.query } } : {}),
-    })
-  );
+  connectedCallback(): void {
+    super.connectedCallback();
+
+    if (this.input?.value) {
+      this.query = this.input?.value;
+    }
+  }
 
   protected override render(): TemplateResult {
     return html`
       <oryx-typeahead
         @oryx.search=${this.onSearch}
-        @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 300)}
+        @oryx.typeahead=${this.onTypeahead}
         .clearIcon=${IconTypes.Close}
+        ?float=${this.$options().float}
       >
         <oryx-icon slot="prefix" type="search" size=${Size.Md}></oryx-icon>
         <input
           .value=${this.query ?? ''}
           placeholder=${ifDefined(this.i18n(['search', 'search.placeholder']))}
+          hydration-events="input,focusin,focusout"
         />
         ${this.renderSuggestion()}
+        <oryx-site-navigation-button
+          slot="trigger"
+          icon="${IconTypes.Search}"
+        ></oryx-site-navigation-button>
       </oryx-typeahead>
     `;
   }
@@ -142,7 +152,13 @@ export class SearchBoxComponent
 
   protected onTypeahead(event: CustomEvent<SearchEventDetail>): void {
     this.query = event.detail.query;
+
+    this.assignSuggestionQuery();
   }
+
+  protected assignSuggestionQuery = debounce(() => {
+    this.query$.next(this.query);
+  }, 300);
 
   protected onSearch(): void {
     const link = this.$link();

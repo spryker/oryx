@@ -15,6 +15,9 @@ export interface ProductPriceOptions {
   enableSalesLabel?: boolean;
 }
 
+/**
+ * @deprecated not used anywhere. Will be removed in 2.0.0.
+ */
 export interface Prices {
   original?: string | null;
   sales?: string | null;

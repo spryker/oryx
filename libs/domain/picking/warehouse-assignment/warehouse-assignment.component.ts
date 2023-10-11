@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs';
 import { styles } from './warehouse-assignment.styles';
 
 @signalAware()
-export class WarehouseAssignmentComponent extends LitElement {
+export class PickingWarehouseAssignmentComponent extends LitElement {
   static styles = styles;
 
   protected warehouseUserAssignmentsService = resolve(
@@ -32,7 +32,7 @@ export class WarehouseAssignmentComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-header></oryx-header>
+      <oryx-picking-header></oryx-picking-header>
       ${when(
         this.$locations() === null || this.$locations()?.length === 1,
         () => this.renderLoading(),

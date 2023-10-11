@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2023-09-22)
+
+
+### Bug Fixes
+
+* store experience data correctly on component reload by route ([#780](https://github.com/spryker/oryx/issues/780)) ([22648d0](https://github.com/spryker/oryx/commit/22648d080005eddd29fa06572df3e7254d7fb763))
+
+
+
+
+
 ## 1.0.1 (2023-08-15)
 
 
