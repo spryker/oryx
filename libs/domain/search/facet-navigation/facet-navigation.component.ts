@@ -10,7 +10,12 @@ import {
   FacetListService,
 } from '@spryker-oryx/search';
 import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
-import { computed, hydrate, signal } from '@spryker-oryx/utilities';
+import {
+  computed,
+  featureVersion,
+  hydrate,
+  signal,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { tap } from 'rxjs/operators';
@@ -22,7 +27,7 @@ import { searchFacetNavigationStyles } from './facet-navigation.styles';
   expandedItemsCount: 5,
   valueRenderLimit: 5,
   minForSearch: 13,
-  bury: [{ facets: ['price'] }],
+  bury: [{ facets: ['price', ...(featureVersion >= '1.2' ? ['rating'] : [])] }],
 })
 export class SearchFacetNavigationComponent extends LayoutMixin(
   ContentMixin<SearchFacetNavigationOptions>(LitElement)
