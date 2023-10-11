@@ -88,14 +88,11 @@ export class CartListComponent extends ContentMixin(LitElement) {
             count: this.$carts().length,
           })}
         </h1>
-        <oryx-button type="text" href="/carts/create">Create cart</oryx-button>
+        <oryx-button type="text" href="/create-cart">Create cart</oryx-button>
       </div>
       <p>
-        Welcome to your cart management hub! Here, you can effortlessly
-        organize, review, and complete your shopping needs. Create new carts,
-        track your purchases, and enjoy a seamless shopping experience. If you
-        have any questions or need assistance, our support team is just a click
-        away. Happy shopping!
+        Manage your carts with ease. Create, track, and shop effortlessly. Need
+        help? Our support team is here for you. Enjoy your shopping!
       </p>
       ${this.$carts().map(
         (cart) => html`
