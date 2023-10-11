@@ -1,9 +1,9 @@
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
-import { storybookPrefix } from '../../../../.constants';
+import { storybookPrefix } from '../../../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Navigations/Navigation`,
+  title: `${storybookPrefix}/Navigations/Navigation/Static`,
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
@@ -11,7 +11,7 @@ const Template: Story<unknown> = (): TemplateResult => {
     <div style="height:500px">
       <oryx-navigation>
         <a href="">
-          <oryx-navigation-item active>
+          <oryx-navigation-item>
             <oryx-icon slot="icon">
               <svg viewBox="0 0 24 24">
                 <path
@@ -47,7 +47,7 @@ const Template: Story<unknown> = (): TemplateResult => {
           Experience builder
         </oryx-navigation-item>
 
-        <oryx-navigation-item divider>
+        <oryx-navigation-item active>
           <oryx-icon slot="icon" type="settings"> </oryx-icon>
           Settings
         </oryx-navigation-item>
@@ -55,4 +55,4 @@ const Template: Story<unknown> = (): TemplateResult => {
     </div>
   `;
 };
-export const NavigationDemo = Template.bind({});
+export const NavigationWithoutDivider = Template.bind({});
