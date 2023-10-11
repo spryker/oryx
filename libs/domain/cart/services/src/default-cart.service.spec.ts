@@ -1,4 +1,5 @@
 import { AuthIdentity, AuthService, IdentityService } from '@spryker-oryx/auth';
+import { CartAdapter, CartService } from '@spryker-oryx/cart';
 import {
   mockBaseCart,
   mockCartEntry,
@@ -15,8 +16,6 @@ import {
   take,
   throwError,
 } from 'rxjs';
-import { CartAdapter } from './adapter/cart.adapter';
-import { CartService } from './cart.service';
 import { DefaultCartService } from './default-cart.service';
 
 const mockErrorMessage = 'Test Error Message';
