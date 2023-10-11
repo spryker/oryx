@@ -1,4 +1,3 @@
-import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { ExperienceComponent } from '@spryker-oryx/experience';
 
 export const checkoutPage: ExperienceComponent = {
@@ -82,7 +81,7 @@ export const checkoutPage: ExperienceComponent = {
             {
               type: 'oryx-cart-totals-discount',
               options: {
-                discountRowsAppearance: DiscountRowsAppearance.Collapsed,
+                discountRowsAppearance: 'collapsed',
               },
             },
             { type: 'oryx-cart-totals-tax' },
