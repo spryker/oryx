@@ -75,7 +75,7 @@ describe('Category suite', () => {
     });
   });
 
-  describe('Product price mode change', () => {
+  describe('Product price mode change', { tags: 'b2b' }, () => {
     let categoryPage;
 
     beforeEach(() => {
