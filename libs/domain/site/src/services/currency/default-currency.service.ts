@@ -1,17 +1,19 @@
 import { QueryService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { BehaviorSubject, filter, map, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, map, Observable, of, switchMap } from 'rxjs';
 import { Currency, Store } from '../../models';
 import { StoreService } from '../store';
 import { CurrencyService } from './currency.service';
 import { CurrencyChanged } from './state';
+import { LocaleService } from '@spryker-oryx/i18n';
 
 export class DefaultCurrencyService implements CurrencyService {
   private active$ = new BehaviorSubject<string | null>(null);
 
   constructor(
     protected storeService = inject(StoreService),
-    protected queryService = inject(QueryService)
+    protected queryService = inject(QueryService),
+    protected localeService = inject(LocaleService)
   ) {}
 
   getAll(): Observable<Currency[]> {
@@ -28,6 +30,23 @@ export class DefaultCurrencyService implements CurrencyService {
     );
   }
 
+  getCurrencySymbol(): Observable<string> {
+    return combineLatest([
+      this.get(),
+      this.localeService.get()
+    ]).pipe(
+      map(([currency, locale]) => (0).toLocaleString(
+        locale,
+        {
+          style: 'currency',
+          currency: currency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        }
+      ).replace(/\d/g, '').trim())
+    );
+  }
+  
   set(value: string): void {
     const prev = this.active$.value;
     this.active$.next(value);

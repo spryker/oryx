@@ -143,8 +143,8 @@ export class SearchRangeFacetComponent
       <oryx-multi-range
         .min="${min}"
         .max="${max}"
-        .minValue="${this.min}"
         .maxValue="${this.max}"
+        .minValue="${this.min}"
         .step="${this.step}"
         @change="${this.onRangeChange}"
       ></oryx-multi-range>

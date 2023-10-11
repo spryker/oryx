@@ -22,8 +22,8 @@ const Template: Story<MultiRangeProperties> = ({
     <oryx-multi-range
       .min="${min}"
       .max="${max}"
-      .minValue="${minValue}"
       .maxValue="${maxValue}"
+      .minValue="${minValue}"
       .step="${step}"
       ?disabled="${disabled}"
     >

@@ -17,11 +17,11 @@ import {
 } from '@spryker-oryx/search/facet';
 import { computed, hydrate, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { tap } from 'rxjs/operators';
 import { SearchFacetNavigationOptions } from './facet-navigation.model';
 import { searchFacetNavigationStyles } from './facet-navigation.styles';
+import { repeat } from 'lit/directives/repeat.js';
 
 @hydrate({ event: ['mouseover', 'focusin'] })
 @defaultOptions({
@@ -30,7 +30,7 @@ import { searchFacetNavigationStyles } from './facet-navigation.styles';
   minForSearch: 13,
   bury: [
     {
-      facets: ['price'],
+      facets: ['rating'],
     },
   ],
 })
@@ -65,27 +65,44 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
       minForSearch = Infinity,
     } = this.$options();
 
-    return html`
-      ${repeat(
-        facets,
-        ({ parameter }) => parameter,
-        (facet, index) =>
-          this.facetComponentRegistryService.renderFacetComponent(
-            facet,
-            {
-              renderLimit,
-              open: index < expandedItemsCount,
-              minForSearch,
-              enableClear: !(
-                this.routerService.getPathId('category') &&
-                facet.parameter === 'category'
-              ),
-            },
-            this.applyFilters.bind(this)
-          )
-      )}
-      ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
-    `;
+    // return html`${facets.map((facet, index) =>
+    //   this.facetComponentRegistryService.renderFacetComponent(
+    //     facet,
+    //     {
+    //       renderLimit,
+    //       open: index < expandedItemsCount,
+    //       minForSearch,
+    //       enableClear: !(
+    //         this.routerService.getPathId('category') &&
+    //         facet.parameter === 'category'
+    //       ),
+    //     },
+    //     this.applyFilters.bind(this)
+    //   )
+    // )}
+    // ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)} `;
+
+return html`
+${repeat(
+  facets,
+  ({ name }) => name,
+  (facet, index) =>
+    this.facetComponentRegistryService.renderFacetComponent(
+      facet,
+      {
+        renderLimit,
+        open: index < expandedItemsCount,
+        minForSearch,
+        enableClear: !(
+          this.routerService.getPathId('category') &&
+          facet.parameter === 'category'
+        ),
+      },
+      this.applyFilters.bind(this)
+    )
+)}
+${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
+`;
   }
 
   protected applyFilters(e: CustomEvent<SelectFacetEventDetail>): void {

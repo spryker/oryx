@@ -2,7 +2,7 @@ import { DefaultFacetComponentRegistryService } from './default-facet-component-
 import { FacetColorsMapping, colorsMap } from './facet-color-colors.mapping';
 import { FacetComponentRegistryService } from './facet-component-registry.service';
 import { FacetValueRenderer } from './renderer';
-import { colorFacetRenderer, defaultFacetRenderer } from './value-renderer';
+import { colorFacetRenderer, defaultFacetRenderer, priceFacetRenderer } from './value-renderer';
 
 export const facetProviders = [
   {
@@ -14,6 +14,7 @@ export const facetProviders = [
     useValue: {
       ...defaultFacetRenderer,
       ...colorFacetRenderer,
+      ...priceFacetRenderer,
     },
   },
   {

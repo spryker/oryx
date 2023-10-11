@@ -1,4 +1,4 @@
-import { facetsRangeNormalizer } from './facet-range.normalizer';
+import { facetsRangeNormalizer } from './facet-price.converter';
 
 const mockRangeFacets = [
   {
@@ -15,12 +15,12 @@ const mockRangeFacets = [
 
 const invalidRangeFacets = [
   {
-    activeMax: 2,
+    activeMax: 1,
     activeMin: 1,
     config: { parameterName: 'mock', isMultiValued: false },
     docCount: 2,
     localizedName: 'mock',
-    max: 2,
+    max: 1,
     min: 1,
     name: 'mock',
   },

@@ -41,25 +41,6 @@ export class MultiRangeComponent
     this.requestUpdate('max', oldValue);
   }
 
-  protected _minValue = 0;
-  @property({ type: Number })
-  get minValue(): number {
-    return this._minValue;
-  }
-  set minValue(value: number) {
-    const oldValue = this._minValue;
-    this._minValue =
-      value <= this.min
-        ? this.min
-        : value >= this.maxValue
-        ? this.maxValue - this.step
-        : value;
-    if (this.inputMinRef && this.inputMinRef.value) {
-      this.inputMinRef.value.value = String(this._minValue);
-    }
-    this.requestUpdate('minValue', oldValue);
-  }
-
   protected _maxValue = 100;
   @property({ type: Number })
   get maxValue(): number {
@@ -77,6 +58,25 @@ export class MultiRangeComponent
       this.inputMaxRef.value.value = String(this._maxValue);
     }
     this.requestUpdate('maxValue', oldValue);
+  }
+
+  protected _minValue = 0;
+  @property({ type: Number })
+  get minValue(): number {
+    return this._minValue;
+  }
+  set minValue(value: number) {
+    const oldValue = this._minValue;
+    this._minValue =
+      value <= this.min
+        ? this.min
+        : value >= this.maxValue
+        ? this.maxValue - this.step
+        : value;
+    if (this.inputMinRef && this.inputMinRef.value) {
+      this.inputMinRef.value.value = String(this._minValue);
+    }
+    this.requestUpdate('minValue', oldValue);
   }
 
   update(changedProperties: PropertyValues): void {
