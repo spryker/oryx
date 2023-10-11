@@ -83,7 +83,7 @@ describe('Category suite', () => {
       categoryPage.visit();
     });
 
-    it('should update price when price mode changes', () => {
+    it('should update price when price mode changes', { tags: 'b2b' }, () => {
       const productData = ProductStorage.getByEq(5);
 
       checkProductCardsPriceMode(categoryPage, productData.originalPrice);
