@@ -24,37 +24,29 @@ export class SearchRatingFacetComponent extends ContentMixin<
   static styles = [searchFacetStyles, searchFacetRatingStyles];
 
   protected override renderValues(values: FacetValue[]): TemplateResult | void {
+    if (!values?.length) return;
+
     const { scale, min = 1, max } = this.$options();
 
-    if (!scale) {
-      return;
-    }
+    if (!scale || scale < 1) return;
+
+    const normalizedMax = max ? Math.min(max, scale) : scale;
+    const normalizedMin = Math.max(min, 1);
 
     const facet = this.facet();
-
-    if (!values?.length) return;
-    const maxRating = values[0].value as number;
-
-    const limitedMaxRating = max
-      ? maxRating > max
-        ? max
-        : maxRating
-      : maxRating;
-    const valuesCount =
-      (limitedMaxRating ? limitedMaxRating - min : scale - min) + 1;
+    const maxRating = Math.min(values[0].value as number, normalizedMax);
+    const valuesCount = Math.max(maxRating - normalizedMin + 1, 0);
 
     const valuesToRender: FacetValue[] = Array.from(
       new Array(valuesCount).keys()
-    )
-      .reverse()
-      .map((i) => {
-        const value = i + min;
-        return {
-          value: String(value),
-          selected: facet?.selectedValues?.includes(String(value)) ?? false,
-          count: 0,
-        };
-      });
+    ).map((i) => {
+      const value = maxRating - i;
+      return {
+        value: String(value),
+        selected: facet?.selectedValues?.includes(String(value)) ?? false,
+        count: 0,
+      };
+    });
 
     return html`<ul>
       ${repeat(
@@ -65,7 +57,9 @@ export class SearchRatingFacetComponent extends ContentMixin<
     </ul>`;
   }
 
-  protected renderValueControlLabel(facetValue: FacetValue): TemplateResult {
+  protected override renderValueControlLabel(
+    facetValue: FacetValue
+  ): TemplateResult {
     const { scale } = this.$options();
 
     if (!scale) {
@@ -80,8 +74,8 @@ export class SearchRatingFacetComponent extends ContentMixin<
           scale=${scale}
         ></oryx-rating>
         ${when(
-          Number(facetValue.value) < Number(scale),
-          () => html`<span>& up</span>`
+          Number(facetValue.value) < scale,
+          () => html`<span>${this.i18n('& up')}</span>`
         )}
       </label>
     `;

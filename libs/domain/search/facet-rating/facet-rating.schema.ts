@@ -11,6 +11,7 @@ export const facetRatingComponentSchema: ContentComponentSchema<SearchRatingFace
     options: {
       min: {
         type: FormFieldType.Number,
+        min: 1,
       },
       max: {
         type: FormFieldType.Number,

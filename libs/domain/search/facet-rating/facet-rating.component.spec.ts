@@ -122,6 +122,10 @@ describe('FacetRatingComponent', () => {
       const ratings = element.renderRoot.querySelectorAll('oryx-rating');
 
       expect(ratings.length).toBe(options.max - options.min + 1);
+
+      ratings.forEach((rating, index) => {
+        expect(rating.getAttribute('value')).toBe(String(options.max - index));
+      });
     });
 
     it('should render "& up" for all values', () => {
@@ -155,6 +159,10 @@ describe('FacetRatingComponent', () => {
 
     it('should render only avaliable values', () => {
       const ratings = element.renderRoot.querySelectorAll('oryx-rating');
+
+      expect(ratings.length).toBe(
+        Number((mockFacet.values as FacetValue[])[0].value) - options.min
+      );
 
       ratings.forEach((rating, index) => {
         expect(rating.getAttribute('value')).toBe(
@@ -206,6 +214,8 @@ describe('FacetRatingComponent', () => {
     it('should render values from 1 to "max"', () => {
       const ratings = element.renderRoot.querySelectorAll('oryx-rating');
 
+      expect(ratings.length).toBe(options.max);
+
       ratings.forEach((rating, index) => {
         expect(rating.getAttribute('value')).toBe(
           String(ratings.length - index)
@@ -238,6 +248,85 @@ describe('FacetRatingComponent', () => {
           String(options.scale - index)
         );
       });
+    });
+  });
+
+  describe('when min less than 1', () => {
+    const options = {
+      min: 0,
+      max: 5,
+      scale: 5,
+    };
+
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-facet-rating
+          name="Rating"
+          .options=${options}
+        ></oryx-search-facet-rating>`
+      );
+    });
+
+    it('should render values from 1 to "max"', () => {
+      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
+
+      expect(ratings.length).toBe(options.max);
+
+      ratings.forEach((rating, index) => {
+        expect(rating.getAttribute('value')).toBe(
+          String(ratings.length - index)
+        );
+      });
+    });
+  });
+  describe('when max is greater then scale', () => {
+    const options = {
+      min: 1,
+      max: 4,
+      scale: 3,
+    };
+
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-facet-rating
+          name="Rating"
+          .options=${options}
+        ></oryx-search-facet-rating>`
+      );
+    });
+
+    it('should render values from 1 to "scale"', () => {
+      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
+
+      expect(ratings.length).toBe(options.scale - options.min + 1);
+
+      ratings.forEach((rating, index) => {
+        expect(rating.getAttribute('value')).toBe(
+          String(ratings.length - index)
+        );
+      });
+    });
+  });
+  describe('when min is greater then max', () => {
+    const options = {
+      min: 4,
+      max: 1,
+      scale: 5,
+    };
+
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-facet-rating
+          name="Rating"
+          .options=${options}
+        ></oryx-search-facet-rating>`
+      );
+    });
+
+    it('should not render values', () => {
+      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
+
+      expect(ratings.length).toBe(0);
     });
   });
 });
