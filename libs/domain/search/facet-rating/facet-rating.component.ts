@@ -75,7 +75,7 @@ export class SearchRatingFacetComponent extends ContentMixin<
         ></oryx-rating>
         ${when(
           Number(facetValue.value) < scale,
-          () => html`<span>${this.i18n('& up')}</span>`
+          () => html`<span>${this.i18n('search.facet.rating.up')}</span>`
         )}
       </label>
     `;

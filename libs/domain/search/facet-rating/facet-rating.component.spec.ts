@@ -7,7 +7,7 @@ import {
   searchRatingFacetComponent,
 } from '@spryker-oryx/search';
 import { SearchFacetComponent } from '@spryker-oryx/search/facet';
-import { useComponent } from '@spryker-oryx/utilities';
+import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchRatingFacetComponent } from './facet-rating.component';
@@ -68,12 +68,14 @@ describe('FacetRatingComponent', () => {
       );
     });
 
-    it('should render "& up" for all values except biggets one', () => {
+    it('should render "& up" for all values except biggest one', () => {
       const ratings = element.renderRoot.querySelectorAll('oryx-rating');
 
       (mockFacet.values as FacetValue[]).forEach((value, index) => {
         if (Number(value) <= 4) {
-          expect(ratings[index]?.nextElementSibling?.textContent).toBe('& up');
+          expect(ratings[index]?.nextElementSibling?.textContent).toBe(
+            i18n('search.facet.rating.up')
+          );
         }
       });
     });
@@ -132,7 +134,9 @@ describe('FacetRatingComponent', () => {
       const ratings = element.renderRoot.querySelectorAll('oryx-rating');
 
       ratings.forEach((rating) => {
-        expect(rating?.nextElementSibling?.textContent).toBe('& up');
+        expect(rating?.nextElementSibling?.textContent).toBe(
+          i18n('search.facet.rating.up')
+        );
       });
     });
   });
