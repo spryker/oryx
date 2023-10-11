@@ -10,4 +10,4 @@ export const cartTotalsComponent = componentDef({
   ],
 });
 
-export * from '../components/component.def';
+export * from './components/component.def';

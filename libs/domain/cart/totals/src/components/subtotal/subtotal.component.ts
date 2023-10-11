@@ -5,22 +5,22 @@ import {
   signalAware,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { TotalsController } from '../../../src/controllers';
+import { TotalsController } from '../../../../src/controllers';
 
 @hydrate({ event: 'window:load' })
 @signalAware()
-export class CartTotalsTaxComponent extends I18nMixin(LitElement) {
+export class CartTotalsSubtotalComponent extends I18nMixin(LitElement) {
   protected totalsController = new TotalsController(this);
 
   protected $totals = signal(this.totalsController.getTotals());
 
   protected override render(): TemplateResult | void {
-    const { taxTotal, currency } = this.$totals() ?? {};
-    if (taxTotal) {
+    const { subtotal, currency } = this.$totals() ?? {};
+    if (subtotal) {
       return html`
-        <span>${this.i18n('cart.totals.tax')}</span>
+        <span>${this.i18n('cart.totals.subtotal')}</span>
         <oryx-site-price
-          .value=${taxTotal}
+          .value=${subtotal}
           .currency=${currency}
         ></oryx-site-price>
       `;
