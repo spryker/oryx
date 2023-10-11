@@ -10,7 +10,10 @@ export class DefaultAppInitializerService implements AppInitializerService {
     const initializers = this.injector.inject(AppInitializer, []);
 
     for (const initializer of initializers) {
-      const result = initializer.initialize();
+      const result =
+        typeof initializer === 'function'
+          ? initializer()
+          : initializer.initialize();
 
       if (isPromise(result)) {
         await result;

@@ -1,7 +1,7 @@
 import { FormFieldDefinition, FormFieldType } from '@spryker-oryx/form';
 import { i18n } from '@spryker-oryx/utilities';
 
-export interface FiltersAttributes {
+export interface PickingFiltersAttributes {
   open?: boolean;
 }
 

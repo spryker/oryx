@@ -9,6 +9,7 @@ export interface RouterService {
   getEvents(type: RouterEventType): Observable<RouterEvent>;
   route(): Observable<string>;
   currentRoute(): Observable<string>;
+  current(): Observable<RouteWithParams>;
   currentParams(): Observable<RouteParams>;
   currentQuery(): Observable<RouteParams | undefined>;
   acceptParams(params: RouteParams): void;
@@ -16,6 +17,7 @@ export interface RouterService {
   getPathId(id: string): string | undefined;
   setRoutes(routes: RouteConfig[]): void;
   getRoutes(): Observable<RouteConfig[] | undefined>;
+  redirectNotFound(): Observable<void>;
 }
 
 export const RouterService = 'oryx.RouterService';
@@ -40,6 +42,7 @@ export const enum RouteType {
   Order = 'order',
   Cart = 'cart',
   Login = 'login',
+  NotFound = 'not-found',
   AddressList = 'address-list',
   AddressBookCreate = 'address-book-create',
   AddressBookEdit = 'address-book-edit',
@@ -61,3 +64,8 @@ export interface RouteParams {
 }
 
 export type QueryParamsHandling = 'merge' | '';
+
+export type RouteWithParams = RouteConfig & {
+  params: RouteParams;
+  query: RouteParams;
+};

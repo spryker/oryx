@@ -1,8 +1,9 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
-import { Observable, combineLatest, map, of } from 'rxjs';
-import { ApiProductListModel, Facet, ProductList } from '../../../../models';
+import { Observable, combineLatest, map } from 'rxjs';
+import { ApiProductListModel, ProductList } from '../../../../models';
+import { CategoryListNormalizer } from '../../../category';
 import { ConcreteProductsNormalizer } from '../concrete-products';
 import { FacetNormalizer } from '../facet';
 import { FacetCategoryNormalizer } from '../facet-category';
@@ -55,8 +56,10 @@ export function productFacetNormalizer(
   data: [DeserializedProductList],
   transformer: TransformerService
 ): Observable<Partial<ProductList>> {
-  const categoryFacet = data[0].valueFacets!.splice(
-    data[0].valueFacets!.findIndex((v) => v.name === 'category'),
+  const { rangeFacets, categoryTreeFilter, valueFacets, pagination } = data[0];
+
+  const categoryFacet = valueFacets!.splice(
+    valueFacets!.findIndex((v) => v.name === 'category'),
     1
   );
 
@@ -69,7 +72,7 @@ export function productFacetNormalizer(
     transformer.transform(
       {
         categoryFacet: categoryFacet[0],
-        categoryTreeFilter: data[0].categoryTreeFilter,
+        categoryTreeFilter,
       },
       FacetCategoryNormalizer
     ),
@@ -78,12 +81,13 @@ export function productFacetNormalizer(
       : of(null),
     transformer.transform(
       {
-        facetList: data[0].valueFacets,
-        numFound: data[0].pagination?.numFound,
+        facetList: valueFacets,
+        numFound: pagination?.numFound,
       },
       FacetNormalizer
     ),
-    transformer.transform(data[0].rangeFacets, FacetRangeNormalizer),
+    transformer.transform(rangeFacets, FacetRangeNormalizer),
+    transformer.transform(categoryTreeFilter, CategoryListNormalizer),
   ]).pipe(
     map((facets: (Facet | Facet[] | null)[]) => {
       return {

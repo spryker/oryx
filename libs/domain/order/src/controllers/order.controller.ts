@@ -1,34 +1,20 @@
-import { IdentityService } from '@spryker-oryx/auth';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ObserveController } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import {
-  combineLatest,
-  defer,
-  map,
-  Observable,
-  shareReplay,
-  switchMap,
-} from 'rxjs';
+import { defer, map, Observable, shareReplay, switchMap } from 'rxjs';
 import { OrderComponentProperties, OrderData } from '../models';
 import { OrderContext, OrderService } from '../services';
 
 export class OrderController {
   protected context: ContextController;
   protected observe: ObserveController<LitElement & OrderComponentProperties>;
-  protected identityService = resolve(IdentityService);
   protected orderService = resolve(OrderService);
 
   protected order$ = defer(() =>
-    combineLatest([this.getRef(), this.identityService.get()]).pipe(
-      switchMap(([id, user]) => {
-        if (!user.isAuthenticated || !id) {
-          return this.orderService
-            .getLastOrder()
-            .pipe(map((lastOrder) => lastOrder ?? null));
-        }
-        return this.orderService.get({ id });
+    this.getRef().pipe(
+      switchMap((id) => {
+        return this.orderService.get({ id: id! });
       })
     )
   ).pipe(shareReplay({ refCount: true, bufferSize: 1 }));
@@ -51,7 +37,7 @@ export class OrderController {
     return this.ref$;
   }
 
-  getOrder(): Observable<OrderData | null> {
+  getOrder(): Observable<OrderData | null | void> {
     return this.order$;
   }
 }

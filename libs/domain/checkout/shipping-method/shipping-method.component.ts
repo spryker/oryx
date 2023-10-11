@@ -1,12 +1,20 @@
 import { CheckoutMixin, isValid, ShipmentMethod } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { hydrate, signal, signalAware } from '@spryker-oryx/utilities';
+import {
+  computed,
+  elementEffect,
+  hydrate,
+  signal,
+  signalAware,
+  ssrShim,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { styles } from './shipping-method.styles';
 
+@ssrShim('style')
 @signalAware()
 @hydrate({ event: 'window:load' })
 export class CheckoutShippingMethodComponent
@@ -28,18 +36,28 @@ export class CheckoutShippingMethodComponent
     return !!this.form?.checkValidity();
   }
 
-  protected override render(): TemplateResult | void {
+  protected $hasMethods = computed(() => {
     const carriers = this.shipments()?.[0]?.carriers;
 
-    if (!carriers?.find((carrier) => !!carrier.shipmentMethods?.length))
-      return this.renderEmpty();
+    return !!carriers?.find((carrier) => !!carrier.shipmentMethods?.length);
+  });
+
+  @elementEffect()
+  protected $toggleNoMethods = (): void => {
+    this.toggleAttribute('no-methods', !this.$hasMethods());
+  };
+
+  protected override render(): TemplateResult | void {
+    if (!this.$hasMethods()) return this.renderEmpty();
+
+    const carriers = this.shipments()?.[0]?.carriers;
 
     return html`
       <oryx-checkout-header>
         <h2>${this.i18n('checkout.shipping-methods')}</h2>
       </oryx-checkout-header>
       <form>
-        ${carriers.map(
+        ${carriers?.map(
           (carrier) => html`
             ${when(carriers.length > 1, () => html`<h3>${carrier.name}</h3>`)}
             ${carrier.shipmentMethods.map((method) =>
@@ -107,8 +125,6 @@ export class CheckoutShippingMethodComponent
 
   protected renderEmpty(): TemplateResult {
     return html`<oryx-icon .type=${IconTypes.Carrier}></oryx-icon>
-      <p class="no-methods">
-        ${this.i18n('checkout.no-shipment-methods-available')}
-      </p>`;
+      <p>${this.i18n('checkout.no-shipment-methods-available')}</p>`;
   }
 }
