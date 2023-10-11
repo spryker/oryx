@@ -6,4 +6,6 @@ export const searchRatingFacetComponent = componentDef({
     import('./facet-rating.component').then(
       (m) => m.SearchRatingFacetComponent
     ),
+  schema: () =>
+    import('./facet-rating.schema').then((m) => m.facetRatingComponentSchema),
 });

@@ -22,23 +22,23 @@ class MockRouterService implements Partial<RouterService> {
 
 const generateNoramalizedFacet = (
   facet: ApiProductListModel.RangeFacet,
-  disabledValues?: number[],
   selectedValue?: number
 ) => {
+  const valuesCount = facet.max ? facet.max - facet.min + 1 : 0;
+
   return {
     name: facet.localizedName,
     parameter: facet.config.parameterName,
     selectedValues: selectedValue ? [String(selectedValue)] : [],
-    valuesTreeLength: facet.max ? facet.max - facet.min + 1 : 0,
-    values: Array.from(new Array(5).keys())
+    valuesTreeLength: valuesCount,
+    values: Array.from(new Array(valuesCount).keys())
       .reverse()
       .map((i) => {
-        const value = i + 1;
+        const value = i + facet.min;
         return {
           value: String(value),
-          selected: selectedValue ? selectedValue === i + 1 : false,
+          selected: selectedValue ? selectedValue === value : false,
           count: 0,
-          disabled: disabledValues ? disabledValues.includes(i + 1) : false,
         };
       }),
   };
@@ -93,7 +93,7 @@ describe('Product Facet Normalizers', () => {
     it('should return normalized rating facet with selected value', () => {
       facetRatingNormalizer(mockRatingFacet).pipe(take(1)).subscribe(callback);
       expect(callback).toHaveBeenCalledWith(
-        generateNoramalizedFacet(mockRatingFacet, [], ratingMin)
+        generateNoramalizedFacet(mockRatingFacet, ratingMin)
       );
     });
   });
@@ -111,9 +111,9 @@ describe('Product Facet Normalizers', () => {
         .subscribe(callback);
     });
 
-    it('should return normalized rating facet with all values as disabled', () => {
+    it('should return normalized rating facet with one value', () => {
       expect(callback).toHaveBeenCalledWith(
-        generateNoramalizedFacet(modifiedMockRatingFacet, [1, 2, 3, 5])
+        generateNoramalizedFacet(modifiedMockRatingFacet)
       );
     });
   });
@@ -130,9 +130,9 @@ describe('Product Facet Normalizers', () => {
         .subscribe(callback);
     });
 
-    it('should return normalized rating facet with all values as disabled', () => {
+    it('should return normalized rating facet with no values', () => {
       expect(callback).toHaveBeenCalledWith(
-        generateNoramalizedFacet(modifiedMockRatingFacet, [1, 2, 3, 4, 5])
+        generateNoramalizedFacet(modifiedMockRatingFacet)
       );
     });
   });
@@ -149,11 +149,9 @@ describe('Product Facet Normalizers', () => {
         .subscribe(callback);
     });
 
-    it('should return normalized rating facet with first value as disabled', () => {
+    it('should return normalized rating facet without first value', () => {
       expect(callback).toHaveBeenCalledWith(
-        generateNoramalizedFacet(modifiedMockRatingFacet, [
-          modifiedMockRatingFacet.min - 1,
-        ])
+        generateNoramalizedFacet(modifiedMockRatingFacet)
       );
     });
   });
@@ -170,11 +168,9 @@ describe('Product Facet Normalizers', () => {
         .subscribe(callback);
     });
 
-    it('should return normalized rating facet with last value as disabled', () => {
+    it('should return normalized rating facet without last value', () => {
       expect(callback).toHaveBeenCalledWith(
-        generateNoramalizedFacet(modifiedMockRatingFacet, [
-          modifiedMockRatingFacet.max + 1,
-        ])
+        generateNoramalizedFacet(modifiedMockRatingFacet)
       );
     });
   });
@@ -194,12 +190,9 @@ describe('Product Facet Normalizers', () => {
         .subscribe(callback);
     });
 
-    it('should return normalized rating facet with first and last values as disabled', () => {
+    it('should return normalized rating facet without first and last values', () => {
       expect(callback).toHaveBeenCalledWith(
-        generateNoramalizedFacet(modifiedMockRatingFacet, [
-          modifiedMockRatingFacet.min - 1,
-          modifiedMockRatingFacet.max + 1,
-        ])
+        generateNoramalizedFacet(modifiedMockRatingFacet)
       );
     });
   });

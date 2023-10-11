@@ -4,7 +4,6 @@ export function generateValues(
   count: number,
   prefix = 'Mock',
   selectedValues?: string[],
-  disabledValues?: string[],
   children?: boolean
 ): FacetValue[] {
   const values: FacetValue[] = [];
@@ -18,9 +17,6 @@ export function generateValues(
       count: Number(`${i}0`),
       name: `${prefix}${i}`,
       ...(children ? { children: generateValues(3, `Sub-${prefix}`) } : {}),
-      disabled:
-        (disabledValues && disabledValues?.indexOf(`${prefix}${i}`) >= 0) ??
-        false,
     });
   }
 
@@ -32,7 +28,6 @@ export const generateFacet = (
   parameter: string,
   valuesLength: number,
   selectedValues?: string[],
-  disabledValues?: string[],
   children = false
 ): Facet => {
   return {
@@ -40,37 +35,31 @@ export const generateFacet = (
     parameter,
     valuesTreeLength: valuesLength,
     ...(selectedValues && { selectedValues }),
-    values: generateValues(
-      valuesLength,
-      name,
-      selectedValues,
-      disabledValues,
-      children
-    ),
+    values: generateValues(valuesLength, name, selectedValues, children),
   };
 };
 
 export const generateRatingFacet = (
-  selectedValues?: string[],
-  disabledValues?: string[]
+  min: number,
+  max: number,
+  scale: number,
+  selectedValue?: number
 ): Facet => {
-  const values: FacetValue[] = [];
-
-  for (let i = 1; i <= 5; i++) {
-    const value = String(i);
-    values.push({
-      value,
-      selected: selectedValues?.includes(value),
-      count: 0,
-      name: value,
-      disabled: disabledValues?.includes(value),
-    });
-  }
+  const valuesCount = max ? max - min + 1 : 0;
 
   return {
     name: 'Rating',
     parameter: 'rating[min]',
-    valuesTreeLength: 5,
-    values: values.reverse(),
+    valuesTreeLength: valuesCount,
+    values: Array.from(new Array(valuesCount).keys())
+      .reverse()
+      .map((i) => {
+        const value = i + min;
+        return {
+          value: String(value),
+          selected: selectedValue ? selectedValue === value : false,
+          count: 0,
+        };
+      }),
   };
 };

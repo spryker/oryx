@@ -17,6 +17,7 @@ const Template: Story = (): TemplateResult => {
   return html`<oryx-search-facet-rating
     name="Rating"
     open
+    .options=${{ max: 5 }}
   ></oryx-search-facet-rating> `;
 };
 

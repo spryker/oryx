@@ -12,14 +12,7 @@ import { searchFacetComponent } from './facet.def';
 import { FACET_SELECT_EVENT } from './facet.model';
 
 const selectedValuesNames = ['Mock8'];
-const disabledValuesNames = ['Mock9'];
-const mockFacet = generateFacet(
-  'Mock',
-  'parameter',
-  10,
-  selectedValuesNames,
-  disabledValuesNames
-);
+const mockFacet = generateFacet('Mock', 'parameter', 10, selectedValuesNames);
 
 class MockFacetListService implements Partial<FacetListService> {
   getFacet = vi.fn().mockReturnValue(of(mockFacet));
@@ -378,14 +371,6 @@ describe('SearchFacetComponent', () => {
       });
     });
 
-    it('should render disabled facet value', () => {
-      disabledValuesNames.forEach((valueName) => {
-        expect(element).toContainElement(
-          `input[value="${valueName}"][disabled]`
-        );
-      });
-    });
-
     it('should render checked facet value', () => {
       selectedValuesNames.forEach((valueName) => {
         expect(element).toContainElement(
@@ -412,16 +397,7 @@ describe('SearchFacetComponent', () => {
       facetListService.getFacet = vi
         .fn()
         .mockReturnValue(
-          of(
-            generateFacet(
-              'Mock',
-              'parameter',
-              10,
-              selectedValuesNames,
-              disabledValuesNames,
-              true
-            )
-          )
+          of(generateFacet('Mock', 'parameter', 10, selectedValuesNames, true))
         );
 
       element = await fixture(
