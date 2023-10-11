@@ -21,14 +21,14 @@ export class CartEditComponent extends ContentMixin(LitElement) {
       <oryx-select label="currency">
         <select>
           <option>EUR</option>
-          <option>USD</option>
+          <option selected>USD</option>
         </select>
       </oryx-select>
 
       <oryx-select label="pricemode">
         <select>
           <option>Gross</option>
-          <option>Net</option>
+          <option selected>Net</option>
         </select>
       </oryx-select>
 
