@@ -14,3 +14,7 @@ export const DefaultTotalsService = reexports?.DefaultTotalsService;
 export const cartAttributesNormalizer = reexports?.cartAttributesNormalizer;
 /** @deprecated since 1.2, use cartsItemsNormalizer from @spryker-oryx/cart/services */
 export const cartsItemsNormalizer = reexports?.cartsItemsNormalizer;
+/** @deprecated since 1.2, use CartResolver from @spryker-oryx/cart/services */
+export const CartResolver = reexports?.CartResolver;
+/** @deprecated since 1.2, use CartTotalsResolver from @spryker-oryx/cart/services */
+export const CartTotalsResolver = reexports?.CartTotalsResolver;
