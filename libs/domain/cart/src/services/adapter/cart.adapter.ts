@@ -24,7 +24,7 @@ export const CartsNormalizer = 'oryx.CartsNormalizer*';
 declare global {
   interface InjectionTokensContractMap {
     [CartAdapter]: CartAdapter;
-    [CartNormalizer]: Transformer<Cart>[];
-    [CartsNormalizer]: Transformer<Cart[]>[];
+    [CartNormalizer]: Transformer<Cart>;
+    [CartsNormalizer]: Transformer<Cart[]>;
   }
 }

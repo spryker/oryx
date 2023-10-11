@@ -1,11 +1,13 @@
 import {
   CartAdapter,
   CartService,
-  DefaultCartService,
-  DefaultTotalsService,
   TotalsResolver,
   TotalsService,
 } from '@spryker-oryx/cart';
+import {
+  DefaultCartService,
+  DefaultTotalsService,
+} from '@spryker-oryx/cart/services';
 import { Provider } from '@spryker-oryx/di';
 import { ExperienceData } from '@spryker-oryx/experience';
 import { cartTotalsStaticData, mockedTotals } from './cart-totals';
