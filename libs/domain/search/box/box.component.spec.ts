@@ -218,8 +218,6 @@ describe('SearchBoxComponent', () => {
   });
 
   describe('when typing a query string', () => {
-    const callback = vi.fn();
-
     beforeEach(async () => {
       element = await fixture(html`<oryx-search-box></oryx-search-box>`);
 

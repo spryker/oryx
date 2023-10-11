@@ -1,7 +1,9 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
+import { ApiProductModel } from '../../models';
 import { DefaultProductAdapter } from './default-product.adapter';
 import { ProductNormalizer } from './normalizers';
 import { ProductAdapter } from './product.adapter';
@@ -98,7 +100,10 @@ describe('DefaultProductService', () => {
 
       service.get(params);
 
-      const includes = http.url?.split('?include=')[1].split(',');
+      const includes = http.url
+        ?.split('?include=')[1]
+        .split('&fields')[0]
+        .split(',');
       expect(includes).toHaveLength(7);
     });
 
@@ -117,5 +122,32 @@ describe('DefaultProductService', () => {
 
       expect(callback).toHaveBeenCalledWith(mockTransformerData);
     });
+
+    if (featureVersion >= '1.1') {
+      describe('category-nodes fields', () => {
+        const fields = `fields[${ApiProductModel.Includes.CategoryNodes}]=`;
+
+        beforeEach(() => {
+          service.get(mockQualifier);
+        });
+
+        it('should add fields for category-nodes to the url', () => {
+          expect(http.url).toContain(fields);
+        });
+
+        [
+          ApiProductModel.CategoryNodeFields.MetaDescription,
+          ApiProductModel.CategoryNodeFields.NodeId,
+          ApiProductModel.CategoryNodeFields.Order,
+          ApiProductModel.CategoryNodeFields.Name,
+          ApiProductModel.CategoryNodeFields.Parents,
+          ApiProductModel.CategoryNodeFields.IsActive,
+        ].forEach((field) =>
+          it(`should contain ${field} in the url`, () => {
+            expect(http.url?.split(fields)[1]).toContain(field);
+          })
+        );
+      });
+    }
   });
 });

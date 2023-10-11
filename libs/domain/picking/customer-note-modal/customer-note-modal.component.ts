@@ -5,7 +5,7 @@ import { I18nMixin } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 
-export class CustomerNoteModalComponent extends I18nMixin(LitElement) {
+export class PickingCustomerNoteModalComponent extends I18nMixin(LitElement) {
   @property({ type: Boolean }) open?: boolean;
 
   protected close(): void {

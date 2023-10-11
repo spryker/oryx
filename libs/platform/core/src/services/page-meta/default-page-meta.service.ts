@@ -47,7 +47,9 @@ export class DefaultPageMetaService implements PageMetaService {
   }
 
   update(definition: ElementDefinition): void {
-    const element = document.head.querySelector<HTMLElement>(definition.name);
+    const element = this.getContainer(definition).querySelector<HTMLElement>(
+      definition.name
+    );
 
     if (!element) {
       this.remove(definition);
@@ -112,7 +114,7 @@ export class DefaultPageMetaService implements PageMetaService {
     }
 
     this.setAttributes(definition.attrs, element);
-    document.head.appendChild(element);
+    this.getContainer(definition).appendChild(element);
   }
 
   protected get(definition: ElementDefinition): HTMLElement | null {
@@ -128,7 +130,7 @@ export class DefaultPageMetaService implements PageMetaService {
     }
 
     const name = this.getTagName(definition.name);
-    return document.head.querySelector(`${name}${attrs}`);
+    return this.getContainer(definition).querySelector(`${name}${attrs}`);
   }
 
   protected escapeValue(value: string): string {
@@ -140,5 +142,9 @@ export class DefaultPageMetaService implements PageMetaService {
       .replace(/>/g, '&gt;')
       .replace(/—/g, '&mdash;')
       .replace(/–/g, '&ndash;');
+  }
+
+  protected getContainer(definition: ElementDefinition): HTMLElement {
+    return definition.toBody ? document.body : document.head;
   }
 }

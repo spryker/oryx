@@ -26,15 +26,22 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     if (!Object.keys(this.records).length) this.initialize();
 
     const data = Object.values(this.records);
+    this.registerComponent(data, cb);
 
-    // Register all components with by id's
-    for (const record of data) {
-      record.id ??= this.getAutoId();
-      cb?.(record);
-      data.push(...(record.components ?? []));
+    return data;
+  }
+
+  registerComponent(
+    c: ExperienceComponent | ExperienceComponent[],
+    cb?: ((c: ExperienceComponent) => void) | undefined
+  ): void {
+    const components = Array.isArray(c) ? [...c] : [c];
+
+    for (const component of components) {
+      component.id ??= this.getAutoId();
+      cb?.(component);
+      components.push(...(component.components ?? []));
     }
-
-    return Object.values(this.records);
   }
 
   protected initialize(): void {
@@ -178,7 +185,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
       return;
     }
 
-    if (type === ExperienceDataMergeType.Remove) {
+    if (type === ExperienceDataMergeType.Remove && !isNaN) {
       components.splice(componentIndex, 1);
 
       return;

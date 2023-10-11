@@ -24,6 +24,7 @@ const Template: Story<OrderEntriesOptions & OrderEntriesAttributes> = ({
   return html`<oryx-order-entries
     ?expanded=${expanded}
     .options=${options}
+    orderId="mockid"
   ></oryx-order-entries>`;
 };
 

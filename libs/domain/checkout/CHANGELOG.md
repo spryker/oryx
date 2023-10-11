@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2023-09-22)
+
+
+### Bug Fixes
+
+* center checkout shipping icon ([#777](https://github.com/spryker/oryx/issues/777)) ([c590e6c](https://github.com/spryker/oryx/commit/c590e6c5bbe5d38d23ea307a3f22f807d5d6080e))
+* place order command completion ([#789](https://github.com/spryker/oryx/issues/789)) ([7366a99](https://github.com/spryker/oryx/commit/7366a99e6b185a98f38c3a5cdc94de7fe9b1ae53))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 

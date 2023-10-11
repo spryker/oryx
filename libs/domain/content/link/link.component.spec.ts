@@ -1,5 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { ContentService } from '@spryker-oryx/content';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { ProductCategoryService, ProductService } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { IconComponent } from '@spryker-oryx/ui/icon';
@@ -15,6 +17,18 @@ class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/page'));
 }
 
+const mockCategoryService = {
+  get: vi.fn().mockReturnValue(of(null)),
+};
+
+const mockProductService = {
+  get: vi.fn().mockReturnValue(of(null)),
+};
+
+const mockContentService = {
+  get: vi.fn().mockReturnValue(of(null)),
+};
+
 describe('ContentLinkComponent', () => {
   let element: ContentLinkComponent;
   let semanticLinkService: MockSemanticLinkService;
@@ -29,6 +43,18 @@ describe('ContentLinkComponent', () => {
         {
           provide: LinkService,
           useClass: MockSemanticLinkService,
+        },
+        {
+          provide: ProductCategoryService,
+          useValue: mockCategoryService,
+        },
+        {
+          provide: ProductService,
+          useValue: mockProductService,
+        },
+        {
+          provide: ContentService,
+          useValue: mockContentService,
         },
       ],
     });
@@ -95,24 +121,86 @@ describe('ContentLinkComponent', () => {
       element = await fixture(
         html`<oryx-content-link
           .options=${{
-            type: RouteType.Product,
+            type: RouteType.Cart,
             id: '123',
             params: { foo: 'bar' },
           }}
         ></oryx-content-link>`
       );
+
+      mockContentService.get.mockReturnValue(of({ name: 'content' }));
     });
 
     it('should resolve the link from the LinkService', () => {
       expect(semanticLinkService.get).toHaveBeenCalledWith({
-        type: RouteType.Product,
+        type: RouteType.Cart,
         id: '123',
         params: { foo: 'bar' },
       });
     });
 
+    it('should resolve the text from the ContentService', () => {
+      expect(mockContentService.get).toHaveBeenCalledWith({
+        id: '123',
+        type: RouteType.Cart,
+      });
+    });
+
+    it('should render the proper text', () => {
+      const link = element.renderRoot.querySelector('a');
+      expect(link?.textContent).toContain('content');
+    });
+
     it('should build the correct link', () => {
       expect(element).toContainElement('a[href="/page"]');
+    });
+
+    describe('when type is RouteType.Category', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-content-link
+            .options=${{
+              type: RouteType.Category,
+              id: '123',
+            }}
+          ></oryx-content-link>`
+        );
+
+        mockCategoryService.get.mockReturnValue(of({ name: 'category' }));
+      });
+
+      it('should resolve the text from the ProductCategoryService', () => {
+        expect(mockCategoryService.get).toHaveBeenCalledWith('123');
+      });
+
+      it('should render the proper text', () => {
+        const link = element.renderRoot.querySelector('a');
+        expect(link?.textContent).toContain('category');
+      });
+    });
+
+    describe('when type is RouteType.Product', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-content-link
+            .options=${{
+              type: RouteType.Product,
+              id: '123',
+            }}
+          ></oryx-content-link>`
+        );
+
+        mockProductService.get.mockReturnValue(of({ name: 'product' }));
+      });
+
+      it('should resolve the text from the ProductService', () => {
+        expect(mockProductService.get).toHaveBeenCalledWith({ sku: '123' });
+      });
+
+      it('should render the proper text', () => {
+        const link = element.renderRoot.querySelector('a');
+        expect(link?.textContent).toContain('product');
+      });
     });
   });
 

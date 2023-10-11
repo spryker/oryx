@@ -33,4 +33,5 @@ export interface ElementDefinition {
    * Works only with link meta with stylesheet rel attribute.
    */
   disablePreload?: boolean;
+  toBody?: boolean;
 }

@@ -1,10 +1,14 @@
 import { getShadowElementBySelector } from '@/tools/testing';
 import { fixtureCleanup } from '@open-wc/testing-helpers';
+import * as exports from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 
 const { getComputedStyle } = window;
 
 window.getComputedStyle = (elt): CSSStyleDeclaration => getComputedStyle(elt);
+globalThis.mockFeatureVersion = (version: string) => {
+  vi.spyOn(exports, 'featureVersion', 'get').mockReturnValue(version);
+};
 
 const querySlottedElements = (
   type: keyof HTMLElementTagNameMap,
@@ -90,6 +94,8 @@ export interface CustomMatchers<R = unknown> {
 
 /* eslint-disable */
 declare global {
+  function mockFeatureVersion(version: string): void;
+
   namespace Vi {
     interface Assertion extends CustomMatchers {}
     interface AsymmetricMatchersContaining extends CustomMatchers {}

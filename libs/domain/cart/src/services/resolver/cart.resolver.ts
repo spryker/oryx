@@ -4,7 +4,8 @@ import {
   Resolver,
   TokenResourceResolvers,
 } from '@spryker-oryx/core';
-import { Provider, resolve } from '@spryker-oryx/di';
+import { Provider, inject, resolve } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { map } from 'rxjs';
 import { CartService } from '..';
 
@@ -14,28 +15,31 @@ export type CartResolvers = {
 };
 
 export class CartResolver extends BaseResolver<CartResolvers> {
+  /** @deprecated since 1.1 use cartService instead*/
   protected cartService$ = resolve(CartService);
+  protected cartService = inject(CartService);
 
   protected resolvers = {
     SUMMARY: (): ResolvedToken => {
-      return this.cartService$.getCart().pipe(
-        map((cart) => {
-          const quantity = cart?.products?.reduce(
-            (acc, { quantity }) => acc + quantity,
-            0
-          );
+      return (featureVersion >= '1.1' ? this.cartService : this.cartService$)
+        .getCart()
+        .pipe(
+          map((cart) => {
+            const quantity = cart?.products?.reduce(
+              (acc, { quantity }) => acc + Number(quantity),
+              0
+            );
 
-          if (!quantity) {
-            return null;
-          }
-
-          //TODO: Make max quantity to show configurable
-          return quantity > 99 ? '99+' : String(quantity);
-        })
-      );
+            if (!quantity) {
+              return null;
+            }
+            //TODO: Make max quantity to show configurable
+            return quantity > 99 ? '99+' : String(quantity);
+          })
+        );
     },
     EMPTY: (): ResolvedToken => {
-      return this.cartService$
+      return (featureVersion >= '1.1' ? this.cartService : this.cartService$)
         .getCart()
         .pipe(
           map((cart) => !cart?.products?.find(({ quantity }) => !!quantity))

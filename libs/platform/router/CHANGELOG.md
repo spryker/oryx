@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2023-09-22)
+
+
+### Bug Fixes
+
+* fix displaying not found page for simple/product:sku/category:id routes ([#697](https://github.com/spryker/oryx/issues/697)) ([cd26d34](https://github.com/spryker/oryx/commit/cd26d347b1b02f95ee6c17a7e452ec3e1022ae52))
+
+
+
+
+
 ## 1.0.1 (2023-08-15)
 
 

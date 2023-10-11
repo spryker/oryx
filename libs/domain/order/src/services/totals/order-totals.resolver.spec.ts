@@ -76,7 +76,8 @@ describe('OrderTotalsResolver', () => {
           discount1: { displayName: 'Discount 1', sumAmount: -10 },
           discount2: { displayName: 'Discount 2', sumAmount: -5 },
         },
-        priceMode: 'GROSS',
+        priceMode: 'GROSS_MODE',
+        shipments: [{ defaultGrossPrice: 400 }],
       } as unknown as OrderData;
 
       beforeEach(() => {
@@ -93,6 +94,9 @@ describe('OrderTotalsResolver', () => {
           expect(value?.expenseTotal).toBe(mock.totals.expenseTotal);
           expect(value?.priceMode).toBe(mock.priceMode);
           expect(value?.priceToPay).toBe(mock.totals.grandTotal);
+          expect(value?.shipmentTotal).toBe(
+            mock.shipments[0].defaultGrossPrice
+          );
           expect(value?.discounts).toEqual([
             {
               displayName: 'Discount 1',

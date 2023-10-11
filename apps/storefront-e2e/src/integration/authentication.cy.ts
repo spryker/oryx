@@ -1,6 +1,6 @@
 import { LandingPage } from '../support/page-objects/landing.page';
 import { LoginPage } from '../support/page-objects/login.page';
-import { Customer } from '../support/types/user.type';
+import { Customer } from '../support/types/domain.types';
 
 const loginPage = new LoginPage();
 const landingPage = new LandingPage();

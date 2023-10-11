@@ -3,9 +3,9 @@ import { injectEnv, PageMetaResolver } from '@spryker-oryx/core';
 import { ContentBackendUrl, experienceFeature } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import { labsFeatures } from '@spryker-oryx/labs';
-import { offlineFulfillmentFeatures } from '../../../libs/template/presets/fulfillment';
 import { siteFeature } from '@spryker-oryx/site';
 import { fulfillmentTheme } from '@spryker-oryx/themes';
+import { offlineFulfillmentFeatures } from '../../../libs/template/presets/fulfillment';
 import { fallbackEnv } from './fallback-env';
 
 const env = import.meta.env;

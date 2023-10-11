@@ -35,6 +35,7 @@ export default defineConfig(() => {
     ssr: {
       noExternal: true,
     },
+    define: viteConfig.define,
     plugins: [...viteConfig.plugins()],
   } as UserConfig;
 });

@@ -4,6 +4,7 @@ const baseStyles = css`
   :host {
     color: var(--oryx-button-color, var(--_text-color));
     isolation: isolate;
+    border-radius: var(--oryx-button-border-radius, 4px);
   }
 
   :is(a, button),
@@ -49,8 +50,8 @@ const baseStyles = css`
     --_box-shadow: 0 4px 8px 0 rgba(0 0 0 / 10%);
   }
 
-  :focus-visible,
-  ::slotted(:focus-visible) {
+  :is(a, button):focus-visible,
+  ::slotted(:is(a, button):focus-visible) {
     outline: solid 2px var(--oryx-color-focus);
     outline-offset: 2px;
   }
@@ -158,7 +159,7 @@ const colorStyles = css`
 
   :host(:is([type='solid'], :not([type]))),
   :host([type='outline']),
-  :host([type='icon']:is(:active, [active])) {
+  :host([type='icon']:is(:hover:active, [active])) {
     --_border-color: var(--_c7);
   }
 
@@ -172,7 +173,7 @@ const colorStyles = css`
     --_border-color: var(--_c10);
   }
 
-  :host([type='solid'][color='neutral']):is(:active, [active]) {
+  :host([type='solid'][color='neutral']:is(:hover:active, [active])) {
     --_background-color: var(--oryx-color-neutral-12);
   }
 
@@ -207,7 +208,7 @@ const colorStyles = css`
     );
   }
 
-  :host([type='solid'][color='neutral']) button:is(:hover:active, [active]) {
+  :host([type='solid'][color='neutral']:is(:hover:active, [active])) button {
     --_background-color: var(
       --oryx-color-neutral-12,
       var(--oryx-color-primary-12)
