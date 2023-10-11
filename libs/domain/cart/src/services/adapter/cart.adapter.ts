@@ -1,3 +1,4 @@
+import { Transformer } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import {
   AddCartEntryQualifier,
@@ -17,8 +18,13 @@ export interface CartAdapter {
 
 export const CartAdapter = 'oryx.CartAdapter';
 
+export const CartNormalizer = 'oryx.CartNormalizer*';
+export const CartsNormalizer = 'oryx.CartsNormalizer*';
+
 declare global {
   interface InjectionTokensContractMap {
     [CartAdapter]: CartAdapter;
+    [CartNormalizer]: Transformer<Cart>[];
+    [CartsNormalizer]: Transformer<Cart[]>[];
   }
 }

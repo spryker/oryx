@@ -1,22 +1,39 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { IdentityService } from '@spryker-oryx/auth';
 import {
+  AddCartEntryQualifier,
+  Cart,
+  CartAdapter,
+  CartEntry,
+  CartEntryQualifier,
+  CartEntryRemoved,
+  CartModificationEnd,
+  CartModificationFail,
+  CartModificationStart,
+  CartModificationSuccess,
+  CartQualifier,
+  CartQuery,
+  CartService,
+  CartsUpdated,
+  UpdateCartEntryQualifier,
+} from '@spryker-oryx/cart';
+import {
   Command,
+  QueryService,
+  QueryState,
   createCommand,
   createEffect,
   createQuery,
-  QueryService,
-  QueryState,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
+  Observable,
   combineLatest,
   distinctUntilChanged,
   filter,
   map,
-  Observable,
   of,
   scan,
   shareReplay,
@@ -25,25 +42,6 @@ import {
   switchMap,
   take,
 } from 'rxjs';
-import {
-  AddCartEntryQualifier,
-  Cart,
-  CartEntry,
-  CartEntryQualifier,
-  CartQualifier,
-  UpdateCartEntryQualifier,
-} from '../models';
-import { CartAdapter } from './adapter/cart.adapter';
-import { CartService } from './cart.service';
-import {
-  CartEntryRemoved,
-  CartModificationEnd,
-  CartModificationFail,
-  CartModificationStart,
-  CartModificationSuccess,
-  CartQuery,
-  CartsUpdated,
-} from './state';
 
 export class DefaultCartService implements CartService {
   // TODO: find a better fix for storybook

@@ -1,7 +1,10 @@
-import { inject, INJECTOR } from '@spryker-oryx/di';
+import {
+  NormalizedTotals,
+  TotalsResolver,
+  TotalsService,
+} from '@spryker-oryx/cart';
+import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Observable, of } from 'rxjs';
-import { NormalizedTotals } from '../../models';
-import { TotalsResolver, TotalsService } from './totals.service';
 
 export class DefaultTotalsService implements TotalsService {
   constructor(protected injector = inject(INJECTOR)) {}

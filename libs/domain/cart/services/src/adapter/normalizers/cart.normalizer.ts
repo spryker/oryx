@@ -1,10 +1,6 @@
-import { Transformer } from '@spryker-oryx/core';
+import { ApiCartModel, Cart } from '@spryker-oryx/cart';
 import { camelize } from '@spryker-oryx/core/utilities';
-import { Provider } from '@spryker-oryx/di';
-import { ApiCartModel, Cart } from '../../../../models';
 import { DeserializedCart } from './model';
-
-export const CartNormalizer = 'oryx.CartNormalizer*';
 
 export function cartAttributesNormalizer(data: DeserializedCart): Cart {
   const guestItemsKey = camelize(ApiCartModel.Includes.GuestCartItems);
@@ -25,17 +21,4 @@ export function cartAttributesNormalizer(data: DeserializedCart): Cart {
     ...data,
     products,
   };
-}
-
-export const cartNormalizer: Provider[] = [
-  {
-    provide: CartNormalizer,
-    useValue: cartAttributesNormalizer,
-  },
-];
-
-declare global {
-  interface InjectionTokensContractMap {
-    [CartNormalizer]: Transformer<Cart>[];
-  }
 }

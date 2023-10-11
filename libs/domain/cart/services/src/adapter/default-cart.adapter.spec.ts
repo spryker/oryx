@@ -1,14 +1,17 @@
 import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
+import {
+  ApiCartModel,
+  CartAdapter,
+  CartNormalizer,
+  CartsNormalizer,
+} from '@spryker-oryx/cart';
 import { mockGetCartsResponse } from '@spryker-oryx/cart/mocks';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { CurrencyService, Store, StoreService } from '@spryker-oryx/site';
 import { Observable, of } from 'rxjs';
-import { ApiCartModel } from '../../models';
-import { CartAdapter } from './cart.adapter';
 import { DefaultCartAdapter } from './default-cart.adapter';
-import { CartNormalizer, CartsNormalizer } from './normalizers';
 
 const mockApiUrl = 'mockApiUrl';
 

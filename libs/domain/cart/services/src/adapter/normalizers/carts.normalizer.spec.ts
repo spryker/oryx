@@ -1,5 +1,5 @@
+import { CartNormalizer } from '@spryker-oryx/cart';
 import { of, take } from 'rxjs';
-import { CartNormalizer } from './cart.normalizer';
 import { cartsItemsNormalizer } from './carts.normalizer';
 import { DeserializedCart } from './model';
 
