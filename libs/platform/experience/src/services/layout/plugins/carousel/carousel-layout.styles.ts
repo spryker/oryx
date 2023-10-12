@@ -3,7 +3,7 @@ import { LayoutStyles } from '../../layout.model';
 import { gridSystem } from '../grid-system.styles';
 
 // TODO: support multi-row carousels by using template rows
-// carousel-template-rows: repeat(2, auto);
+// grid-template-rows: repeat(2, auto);
 export const styles: LayoutStyles = {
   styles: css`
     ${gridSystem}

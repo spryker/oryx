@@ -57,6 +57,8 @@ export const productPage: ExperienceComponent = {
           options: {
             rules: [
               {
+                layoutVertical: true,
+                // @deprecated since 1.2 will be removed.
                 vertical: true,
                 top: '108px',
                 layoutSticky: true,

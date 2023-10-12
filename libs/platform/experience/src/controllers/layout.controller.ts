@@ -31,6 +31,49 @@ export class LayoutController {
     properties: (keyof LayoutProperties)[],
     rules: StyleRuleSet[]
   ): Observable<string> {
+    const props = this.normalizeProperties(properties, rules);
+    const infos = this.getLayoutInfos(props, rules);
+    const componentStyles = this.collectStyles(props, rules, this.host.uid);
+
+    return this.layoutService
+      .getStyles(infos)
+      .pipe(map((layoutStyles) => `${layoutStyles}${componentStyles}`));
+  }
+
+  /**
+   * Collects dynamic styles provided by component options.
+   *
+   * When the component does not have a layout, we add a rule to
+   * ensure that the component children can transparently work with the
+   * layout provided outside:
+   *
+   * ```css
+   * :host {
+   *   display: contents;
+   * }
+   * ```
+   * @deprecated will be protected since 1.2
+   */
+  collectStyles(
+    layoutProperties: LayoutProperty[],
+    rules: StyleRuleSet[] = [],
+    uid?: string
+  ): string {
+    let styles = '';
+
+    if (!layoutProperties.length) {
+      styles += ':host {display: contents;}\n';
+    }
+
+    styles += this.layoutBuilder.createStylesFromOptions(rules, uid);
+
+    return styles;
+  }
+
+  protected normalizeProperties(
+    properties: (keyof LayoutProperties)[],
+    rules: StyleRuleSet[]
+  ): LayoutProperty[] {
     const props = [...properties].map((hostProp) => {
       const prop = hostProp.replace('layout-', '');
 
@@ -73,42 +116,7 @@ export class LayoutController {
       }
     }
 
-    const infos = this.getLayoutInfos(props, rules);
-    const componentStyles = this.collectStyles(props, rules, this.host.uid);
-
-    return this.layoutService
-      .getStyles(infos)
-      .pipe(map((layoutStyles) => `${layoutStyles}${componentStyles}`));
-  }
-
-  /**
-   * Collects dynamic styles provided by component options.
-   *
-   * When the component does not have a layout, we add a rule to
-   * ensure that the component children can transparently work with the
-   * layout provided outside:
-   *
-   * ```css
-   * :host {
-   *   display: contents;
-   * }
-   * ```
-   * @deprecated will be protected since 1.2
-   */
-  collectStyles(
-    layoutProperties: LayoutProperty[],
-    rules: StyleRuleSet[] = [],
-    uid?: string
-  ): string {
-    let styles = '';
-
-    if (!layoutProperties.length) {
-      styles += ':host {display: contents;}\n';
-    }
-
-    styles += this.layoutBuilder.createStylesFromOptions(rules, uid);
-
-    return styles;
+    return props;
   }
 
   protected getLayoutInfos(
