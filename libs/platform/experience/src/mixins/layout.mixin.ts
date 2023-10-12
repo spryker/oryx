@@ -1,6 +1,8 @@
+import { resolve } from '@spryker-oryx/di';
 import {
-  CompositionLayout,
   ContentMixin,
+  LayoutService,
+  LayoutTypes,
   StyleRuleSet,
 } from '@spryker-oryx/experience';
 import {
@@ -15,22 +17,29 @@ import {
   signalProperty,
   ssrShim,
 } from '@spryker-oryx/utilities';
-import { LitElement } from 'lit';
+import { LitElement, TemplateResult } from 'lit';
 import { LayoutController } from '../controllers/layout.controller';
 
 export declare class LayoutMixinInterface {
-  layout?: CompositionLayout;
+  /**
+   * @deprecated since 1.2 will be deleted.
+   * Use attributes with the same name but together with layout- prefix instead.
+   */
+  layout?: LayoutTypes;
   bleed?: boolean;
   sticky?: boolean;
   overlap?: boolean;
   divider?: boolean;
   vertical?: boolean;
+
   xs?: LayoutProperties;
   sm?: LayoutProperties;
   md?: LayoutProperties;
   lg?: LayoutProperties;
   xl?: LayoutProperties;
   protected layoutStyles: ConnectableSignal<string | undefined>;
+  protected layoutPrerender: ConnectableSignal<(TemplateResult | undefined)[]>;
+  protected layoutPostrender: ConnectableSignal<(TemplateResult | undefined)[]>;
 }
 
 interface LayoutContentOptions {
@@ -45,6 +54,11 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
   class LayoutMixinClass extends ContentMixin<LayoutContentOptions>(
     superClass
   ) {
+    constructor() {
+      super();
+      this.observe();
+    }
+
     @signalProperty() attributeWatchers: (keyof LayoutProperties)[] = [];
     @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
@@ -64,11 +78,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       this.observer.disconnect();
       this.observe();
     });
-
-    constructor() {
-      super();
-      this.observe();
-    }
 
     protected observe(layoutSpecificAttrs = []): void {
       const attrs = [...this.attributes].reduce((acc: string[], attr) => {
@@ -91,11 +100,24 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     }
 
     protected layoutController = new LayoutController(this);
+    protected layoutService = resolve(LayoutService);
 
     protected layoutStyles = computed(() => {
       return this.layoutController.getStyles(
         this.attributeWatchers,
         this.$options().rules
+      );
+    });
+
+    protected layoutPrerender = computed(() => {
+      return this.attributeWatchers.map(
+        (attr) => this.layoutService.getRender(attr)?.pre
+      );
+    });
+
+    protected layoutPostrender = computed(() => {
+      return this.attributeWatchers.map(
+        (attr) => this.layoutService.getRender(attr)?.post
       );
     });
 

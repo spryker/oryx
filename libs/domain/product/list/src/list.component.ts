@@ -34,7 +34,6 @@ export class ProductListComponent extends ProductMixin(
   });
 
   protected override render(): TemplateResult {
-    console.log(this.layoutStyles());
     return html`
       ${this.renderList()}
       ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}

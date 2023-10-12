@@ -74,7 +74,6 @@ export class LayoutController {
     }
 
     const infos = this.getLayoutInfos(props, rules);
-    console.log(infos, 'infos');
     const componentStyles = this.collectStyles(props, rules, this.host.uid);
 
     return this.layoutService
@@ -116,7 +115,6 @@ export class LayoutController {
     properties: LayoutProperty[],
     rules: StyleRuleSet[] = []
   ): ResponsiveLayoutInfo {
-    console.log(properties, 'properties');
     return properties.reduce((info, props) => {
       const { ruleProp, hostProp, prop } = props;
       const isLayout = prop === 'layout';

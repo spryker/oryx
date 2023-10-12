@@ -9,8 +9,10 @@ export class LayoutComponent extends LayoutMixin(
   ContentMixin<LayoutAttributes>(LitElement)
 ) {
   protected override render(): TemplateResult {
-    console.log('render');
-    return html`${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}<slot
-      ></slot>`;
+    return html`
+      ${this.layoutPrerender()}
+      ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}<slot></slot>
+      ${this.layoutPostrender()}
+    `;
   }
 }

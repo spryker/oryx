@@ -4,7 +4,11 @@ import { Breakpoint, sizes } from '@spryker-oryx/utilities';
 import { Observable, map, merge, of, reduce } from 'rxjs';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import { LayoutService } from './layout.service';
-import { LayoutPlugin } from './plugins';
+import {
+  LayoutPlugin,
+  LayoutPluginImplementation,
+  LayoutPluginRender,
+} from './plugins';
 import { ScreenService } from './screen.service';
 
 export class DefaultLayoutService implements LayoutService {
@@ -36,6 +40,14 @@ export class DefaultLayoutService implements LayoutService {
       : of('');
   }
 
+  getImplementation(token: string): LayoutPluginImplementation | undefined {
+    return this.getPlugin(token)?.getImplementation?.();
+  }
+
+  getRender(token: string): LayoutPluginRender | undefined {
+    return this.getPlugin(token)?.getRender?.();
+  }
+
   protected resolveCommonStyles(): Observable<string> {
     return ssrAwaiter(
       import('./base.styles').then((m) => m.styles?.toString() ?? '')
@@ -47,7 +59,6 @@ export class DefaultLayoutService implements LayoutService {
     included: Breakpoint[] = [],
     excluded: Breakpoint[] = []
   ): Observable<string> | void {
-    console.log(token, 'resolveStyles');
     return this.getPlugin(token)
       ?.getStyles()
       .pipe(

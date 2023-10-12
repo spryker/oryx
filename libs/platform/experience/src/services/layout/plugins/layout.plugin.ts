@@ -4,13 +4,20 @@ import { LayoutStyles } from '../layout.model';
 
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
 
+export interface LayoutPluginRender {
+  pre?: TemplateResult;
+  post?: TemplateResult;
+}
+
+export type LayoutPluginImplementation = Record<
+  string,
+  (...args: unknown[]) => unknown
+>;
+
 export interface LayoutPlugin {
   getStyles(): Observable<LayoutStyles>;
-  getImplementation?(): Record<string, (...args: unknown[]) => unknown>;
-  getRender?(): {
-    pre?: TemplateResult;
-    post?: TemplateResult;
-  };
+  getImplementation?(): LayoutPluginImplementation;
+  getRender?(): LayoutPluginRender;
 }
 
 declare global {

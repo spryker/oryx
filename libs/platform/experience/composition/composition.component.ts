@@ -88,11 +88,7 @@ export class CompositionComponent extends LayoutMixin(
   });
 
   protected override render(): TemplateResult | void {
-    // console.log(CompositionComponent.properties);
     const components = this.$components();
-    (this as any).layoutTest();
-    // console.log(this.getAttribute('test'), 'test');
-    console.log((this as any).test, 'test');
 
     if (!components?.length) return;
 
@@ -100,12 +96,16 @@ export class CompositionComponent extends LayoutMixin(
     const layoutStyles = this.layoutStyles() ?? '';
     const styles = inlineStyles + layoutStyles;
 
-    return html`${repeat(
-      components,
-      (component) => component.id,
-      (component) => this.renderComponent(component)
-    )}
-    ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))} `;
+    return html`
+      ${this.layoutPrerender()}
+      ${repeat(
+        components,
+        (component) => component.id,
+        (component) => this.renderComponent(component)
+      )}
+      ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))}
+      ${this.layoutPostrender()}
+    `;
   }
 
   protected renderComponent(
