@@ -50,31 +50,17 @@ export const cartsNormalizer: Provider[] =
         },
       ];
 
-export const CartResourceResolver: Provider =
-  featureVersion < '1.2'
-    ? {
-        provide: `${TokenResourceResolvers}CART`,
-        useClass: CartResolver,
-      }
-    : {
-        provide: `${TokenResourceResolvers}CART`,
-        asyncClass: () =>
-          import('@spryker-oryx/cart/services').then((m) => m.CartResolver),
-      };
+/** @deprecated since 1.2 */
+export const CartResourceResolver: Provider = {
+  provide: `${TokenResourceResolvers}CART`,
+  useClass: CartResolver,
+};
 
-export const CartTotalsProvider: Provider =
-  featureVersion < '1.2'
-    ? {
-        provide: `${TotalsResolver}CART`,
-        useClass: CartTotalsResolver,
-      }
-    : {
-        provide: `${TotalsResolver}CART`,
-        asyncClass: () =>
-          import('@spryker-oryx/cart/services').then(
-            (m) => m.CartTotalsResolver
-          ),
-      };
+/** @deprecated since 1.2 */
+export const CartTotalsProvider: Provider = {
+  provide: `${TotalsResolver}CART`,
+  useClass: CartTotalsResolver,
+};
 
 export const cartProviders: Provider[] =
   featureVersion < '1.2'
@@ -111,6 +97,8 @@ export const cartProviders: Provider[] =
               (m) => m.DefaultCartService
             ),
         },
+        ...cartNormalizer,
+        ...cartsNormalizer,
         {
           provide: TotalsService,
           asyncClass: () =>
@@ -118,8 +106,16 @@ export const cartProviders: Provider[] =
               (m) => m.DefaultTotalsService
             ),
         },
-        CartResourceResolver,
-        CartTotalsProvider,
-        ...cartNormalizer,
-        ...cartsNormalizer,
+        {
+          provide: `${TokenResourceResolvers}CART`,
+          asyncClass: () =>
+            import('@spryker-oryx/cart/services').then((m) => m.CartResolver),
+        },
+        {
+          provide: `${TotalsResolver}CART`,
+          asyncClass: () =>
+            import('@spryker-oryx/cart/services').then(
+              (m) => m.CartTotalsResolver
+            ),
+        },
       ];

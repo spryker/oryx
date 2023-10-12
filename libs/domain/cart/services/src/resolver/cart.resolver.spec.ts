@@ -2,7 +2,7 @@ import { Cart, CartEntry, CartService } from '@spryker-oryx/cart';
 import { TokenResourceResolvers } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { of } from 'rxjs';
-import { CartResolver, CartResourceResolver } from './cart.resolver';
+import { CartResolver } from './cart.resolver';
 
 const emptyCart = {};
 
@@ -45,7 +45,10 @@ describe('CartResolver', () => {
           provide: CartService,
           useClass: MockCartService,
         },
-        CartResourceResolver,
+        {
+          provide: `${TokenResourceResolvers}CART`,
+          useClass: CartResolver,
+        },
       ],
     });
 
