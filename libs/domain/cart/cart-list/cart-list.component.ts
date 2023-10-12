@@ -146,6 +146,11 @@ export class CartListComponent extends ContentMixin(LitElement) {
                   .size=${size}
                 ></oryx-button>
                 <oryx-button
+                  icon="download"
+                  type="icon"
+                  .size=${size}
+                ></oryx-button>
+                <oryx-button
                   icon="delete"
                   type="icon"
                   .size=${size}
