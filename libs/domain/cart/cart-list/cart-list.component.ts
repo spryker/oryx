@@ -118,12 +118,27 @@ export class CartListComponent extends ContentMixin(LitElement) {
               .value=${cart.price.value}
               .currency=${cart.price.currency}
             ></oryx-site-price>
+            <span slot="heading"
+              >(${cart.price.inclVat ? `Gross` : `Net`})</span
+            >
 
             <oryx-cart-entries
               .options=${{ readonly: false }}
             ></oryx-cart-entries>
+
             <div class="meta">
-              <p>Euro, Gross mode</p>
+              ${when(
+                !cart.current,
+                () =>
+                  html`<oryx-button
+                    type="outline"
+                    color="neutral"
+                    .size=${size}
+                  >
+                    Make current
+                  </oryx-button>`
+              )}
+
               <div class="actions">
                 <oryx-button
                   icon="edit"
