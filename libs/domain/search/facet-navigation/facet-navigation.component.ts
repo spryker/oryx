@@ -27,7 +27,9 @@ import { searchFacetNavigationStyles } from './facet-navigation.styles';
   expandedItemsCount: 5,
   valueRenderLimit: 5,
   minForSearch: 13,
-  bury: [{ facets: ['price', ...(featureVersion >= '1.2' ? ['rating'] : [])] }],
+  bury: [
+    { facets: ['price', ...(featureVersion < '1.2' ? ['rating[min]'] : [])] },
+  ],
 })
 export class SearchFacetNavigationComponent extends LayoutMixin(
   ContentMixin<SearchFacetNavigationOptions>(LitElement)
