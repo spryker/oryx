@@ -14,6 +14,9 @@ import { CartAdapter, CartNormalizer, CartsNormalizer } from './adapter';
 import { CartService } from './cart.service';
 import { TotalsResolver, TotalsService } from './totals';
 
+export const TotalsResolverCartToken = `${TotalsResolver}CART`;
+export const CartTokenResourceResolverToken = `${TokenResourceResolvers}CART`;
+
 export const cartNormalizer: Provider[] =
   featureVersion < '1.2'
     ? [
@@ -52,13 +55,13 @@ export const cartsNormalizer: Provider[] =
 
 /** @deprecated since 1.2 */
 export const CartResourceResolver: Provider = {
-  provide: `${TokenResourceResolvers}CART`,
+  provide: CartTokenResourceResolverToken,
   useClass: CartResolver,
 };
 
 /** @deprecated since 1.2 */
 export const CartTotalsProvider: Provider = {
-  provide: `${TotalsResolver}CART`,
+  provide: TotalsResolverCartToken,
   useClass: CartTotalsResolver,
 };
 
@@ -107,12 +110,12 @@ export const cartProviders: Provider[] =
             ),
         },
         {
-          provide: `${TokenResourceResolvers}CART`,
+          provide: CartTokenResourceResolverToken,
           asyncClass: () =>
             import('@spryker-oryx/cart/services').then((m) => m.CartResolver),
         },
         {
-          provide: `${TotalsResolver}CART`,
+          provide: TotalsResolverCartToken,
           asyncClass: () =>
             import('@spryker-oryx/cart/services').then(
               (m) => m.CartTotalsResolver
