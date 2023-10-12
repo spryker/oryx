@@ -5,6 +5,7 @@ import { LayoutPlugin } from '../layout.plugin';
 
 export class CarouselLayoutPlugin implements LayoutPlugin {
   getStyles(): Observable<LayoutStyles> {
+    console.log('getStyles');
     return ssrAwaiter(import('./carousel-layout.styles').then((m) => m.styles));
   }
 }

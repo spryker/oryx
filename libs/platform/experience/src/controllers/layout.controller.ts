@@ -120,10 +120,11 @@ export class LayoutController {
     return properties.reduce((info, props) => {
       const { ruleProp, hostProp, prop } = props;
       const isLayout = prop === 'layout';
-      const mainValue = (this.host[ruleProp] ??
-        rules.find((rule) => !rule.query?.breakpoint && rule[hostProp])?.[
-          hostProp
+      const mainValue = (this.host[hostProp] ??
+        rules.find((rule) => !rule.query?.breakpoint && rule[ruleProp])?.[
+          ruleProp
         ]) as string;
+
       const mainKey = isLayout ? mainValue : prop;
       const withMainValue = typeof mainValue !== 'undefined';
 
