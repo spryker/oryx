@@ -4,6 +4,7 @@ export const cartTotalsCouponStyles = css`
   oryx-collapsible {
     border: none;
   }
+
   ul {
     list-style-type: none;
     margin: 0;

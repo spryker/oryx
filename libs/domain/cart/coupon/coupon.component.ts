@@ -14,7 +14,10 @@ export class CouponComponent extends ContentMixin(LitElement) {
     return html`
       <h3>Have a coupon?</h3>
       <form>
-        <oryx-input><input placeholder="Coupon code" /></oryx-input>
+        <oryx-input
+          errorMessage="The code is invalid, it might already have been used or is expired"
+          ><input placeholder="Coupon code"
+        /></oryx-input>
         <oryx-button
           type="outline"
           color="neutral"

@@ -7,5 +7,5 @@ export const cartTotalsCouponComponent = componentDef({
   name: 'oryx-cart-totals-coupon',
   impl: () =>
     import('./coupon.component').then((m) => m.CartTotalsCouponComponent),
-  // stylesheets: [{ rules }],
+  stylesheets: [{ rules }],
 });

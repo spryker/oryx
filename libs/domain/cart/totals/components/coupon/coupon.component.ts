@@ -13,15 +13,17 @@ export class CartTotalsCouponComponent extends I18nMixin(LitElement) {
 
   protected override render(): TemplateResult | void {
     return html`
-      <!-- <span>${this.i18n('cart.totals.coupons')}</span> -->
+      <span>${this.i18n('cart.totals.coupons')}</span>
 
-      <oryx-collapsible heading="Coupons" open>
-        <ul>
-          <li>
-            <oryx-icon type="check_circle" valid></oryx-icon> 1234-ABC-1234-01
-          </li>
-        </ul>
-      </oryx-collapsible>
+      <!-- <oryx-collapsible heading="Coupons" open> -->
+
+      <ul>
+        <li>
+          <oryx-icon type="check_circle" valid></oryx-icon> 1234-ABC-1234-01
+        </li>
+      </ul>
+
+      <!-- </oryx-collapsible> -->
     `;
   }
 }
