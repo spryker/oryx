@@ -94,22 +94,21 @@ export class CartListComponent extends ContentMixin(LitElement) {
         Manage your carts with ease. Create, track, and shop effortlessly. Need
         help? Our support team is here for you. Enjoy your shopping!
       </p>
+
       ${this.$carts().map(
         (cart) => html`
           <oryx-collapsible>
             <oryx-link slot="heading">
-              <a href="/cart"
-                >${cart.name}
-                ${this.i18n('carts.cart.totals.<count>-items', {
-                  count: cart.entries.length,
-                })}
-              </a>
+              ${cart.name}
+              ${this.i18n('carts.cart.totals.<count>-items', {
+                count: cart.entries.length,
+              })}
             </oryx-link>
             ${when(
               cart.current,
               () =>
                 html`<oryx-chip slot="heading" appearance="success">
-                  ${this.i18n('current')}
+                  ${this.i18n('default')}
                 </oryx-chip>`
             )}
 
@@ -122,20 +121,23 @@ export class CartListComponent extends ContentMixin(LitElement) {
               >(${cart.price.inclVat ? `Gross` : `Net`})</span
             >
 
-            <oryx-cart-entries
-              .options=${{ readonly: false }}
-            ></oryx-cart-entries>
+            ${when(
+              !cart.entries?.length,
+              () =>
+                html`<p>There are no cart entries for this cart available.</p>`,
+              () => html`
+                <oryx-cart-entries
+                  .options=${{ readonly: false }}
+                ></oryx-cart-entries>
+              `
+            )}
 
             <div class="meta">
               ${when(
                 !cart.current,
                 () =>
-                  html`<oryx-button
-                    type="outline"
-                    color="neutral"
-                    .size=${size}
-                  >
-                    Make current
+                  html`<oryx-button type="outline" .size=${size}>
+                    Make default
                   </oryx-button>`
               )}
 
@@ -149,11 +151,13 @@ export class CartListComponent extends ContentMixin(LitElement) {
                   icon="content_copy"
                   type="icon"
                   .size=${size}
+                  ?disabled=${!cart.entries?.length}
                 ></oryx-button>
                 <oryx-button
                   icon="playlist_add"
                   type="icon"
                   .size=${size}
+                  ?disabled=${!cart.entries?.length}
                 ></oryx-button>
                 <oryx-button
                   icon="share"
@@ -164,6 +168,7 @@ export class CartListComponent extends ContentMixin(LitElement) {
                   icon="download"
                   type="icon"
                   .size=${size}
+                  ?disabled=${!cart.entries?.length}
                 ></oryx-button>
                 <oryx-button
                   icon="delete"
@@ -177,18 +182,5 @@ export class CartListComponent extends ContentMixin(LitElement) {
       )}
       <oryx-pagination> <a>1</a><a>2</a><a>3</a> </oryx-pagination>
     `;
-    // return html`<div>Cart List</div>
-
-    //   <li>
-    //     <h3>Cart name</h3>
-    //     <oryx-site-price value="21000"></oryx-site-price>
-    //     <span class="tax">Tax included</span>
-    //     <oryx-chip appearance="info">Active</oryx-chip>
-    //     <oryx-button type="outline" color="neutral" size="md"
-    //       >select</oryx-button
-    //     >
-    //     <oryx-button icon="delete" type="icon" size="md"></oryx-button>
-    //     <oryx-button icon="edit" type="icon" size="md"></oryx-button>
-    //   </li> `;
   }
 }

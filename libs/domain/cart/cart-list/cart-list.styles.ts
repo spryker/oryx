@@ -26,7 +26,8 @@ export const cartListStyles = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--oryx-color-neutral-3);
+    /* background: var(--oryx-color-neutral-3); */
+    border-top: 1px solid var(--oryx-color-neutral-7);
     padding: 10px 20px;
     margin-left: -20px;
     width: 100%;
@@ -50,6 +51,7 @@ export const cartListStyles = css`
 
   p {
     text-wrap: initial;
+    margin-top: 0;
   }
 
   oryx-cart-entries {
