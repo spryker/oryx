@@ -5,7 +5,7 @@ import {
   signalAware,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
-import { TotalsController } from '../../../../src/controllers';
+import { TotalsController } from '../../../src/controllers';
 
 @hydrate({ event: 'window:load' })
 @signalAware()
