@@ -19,7 +19,6 @@ export const cartListStyles = css`
   oryx-site-price {
     ${headingUtil(HeadingTag.H6)}
 
-    /* color: var(--oryx-color-primary-9); */
     margin-inline-start: auto;
   }
 
@@ -31,7 +30,6 @@ export const cartListStyles = css`
     padding: 10px 20px;
     margin-left: -20px;
     width: 100%;
-    /* border-top: 2px black solid; */
     height: 40px;
     margin-bottom: -12px;
     border-end-end-radius: var(
@@ -47,6 +45,7 @@ export const cartListStyles = css`
   .actions {
     display: flex;
     gap: 10px;
+    margin-inline-start: auto;
   }
 
   p {
