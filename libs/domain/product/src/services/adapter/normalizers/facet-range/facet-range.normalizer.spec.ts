@@ -15,12 +15,12 @@ const mockRangeFacets = [
 
 const invalidRangeFacets = [
   {
-    activeMax: 1,
+    activeMax: 2,
     activeMin: 1,
     config: { parameterName: 'mock', isMultiValued: false },
     docCount: 2,
     localizedName: 'mock',
-    max: 1,
+    max: 2,
     min: 1,
     name: 'mock',
   },

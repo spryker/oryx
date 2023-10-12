@@ -30,7 +30,7 @@ import { searchFacetNavigationStyles } from './facet-navigation.styles';
   minForSearch: 13,
   bury: [
     {
-      facets: ['price'],
+      facets: ['rating'],
     },
   ],
 })
@@ -68,7 +68,7 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
     return html`
       ${repeat(
         facets,
-        ({ parameter }) => parameter,
+        ({ name }) => name,
         (facet, index) =>
           this.facetComponentRegistryService.renderFacetComponent(
             facet,

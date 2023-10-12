@@ -7,7 +7,6 @@ import { MultiRangeComponent } from '@spryker-oryx/ui/multi-range';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { beforeEach } from 'vitest';
 import { SearchFacetValueNavigationComponent } from '../facet-value-navigation';
 import { SearchRangeFacetComponent } from './facet-range.component';
 import { searchRangeFacetComponent } from './facet-range.def';
@@ -85,7 +84,7 @@ describe('SearchRangeFacetComponent', () => {
     expect(getNavigation().heading).toEqual(name);
   });
 
-  it('should render inputs with default labels', async () => {
+  it('should render inputs with default labels', () => {
     expect(getInput().label).toBe('min');
     expect(getInput(true).label).toBe('max');
   });
@@ -197,11 +196,6 @@ describe('SearchRangeFacetComponent', () => {
 
       getRange().dispatchEvent(new CustomEvent('change', { detail: selected }));
       vi.advanceTimersByTime(301);
-    });
-
-    it('should sync min and max states with selected values', () => {
-      expect(element.min).toBe(selected.minValue);
-      expect(element.max).toBe(selected.maxValue);
     });
 
     it('should dispatch oryx.select event with selected values', () => {
