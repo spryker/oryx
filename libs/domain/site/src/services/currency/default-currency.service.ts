@@ -21,7 +21,7 @@ export class DefaultCurrencyService implements CurrencyService {
   constructor(
     protected storeService = inject(StoreService),
     protected queryService = inject(QueryService),
-    protected localeService = inject(LocaleService)
+    protected localeService = inject(LocaleService, null)
   ) {}
 
   getAll(): Observable<Currency[]> {
@@ -39,6 +39,8 @@ export class DefaultCurrencyService implements CurrencyService {
   }
 
   getCurrencySymbol(): Observable<string> {
+    if (!this.localeService) return of('');
+
     return combineLatest([this.get(), this.localeService.get()]).pipe(
       map(([currency, locale]) =>
         (0)

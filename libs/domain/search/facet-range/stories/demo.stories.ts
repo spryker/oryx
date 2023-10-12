@@ -10,7 +10,6 @@ import { SearchFacetRangeComponentAttributes } from '../facet-range.model';
 
 export default {
   title: `${storybookPrefix}/Facet Range`,
-  // disables Chromatic's snapshotting on a story level
   parameters: { chromatic: { disableSnapshot: true } },
   args: {
     open: true,

@@ -102,13 +102,11 @@ export class SearchRangeFacetComponent
   }
 
   protected syncInputsValues(min: number, max: number): void {
-    const minInput = this.renderRoot.querySelector(
-      `input[name="min"]`
-    ) as HTMLInputElement;
+    const minInput =
+      this.renderRoot.querySelector<HTMLInputElement>(`input[name="min"]`);
 
-    const maxInput = this.renderRoot.querySelector(
-      `input[name="max"]`
-    ) as HTMLInputElement;
+    const maxInput =
+      this.renderRoot.querySelector<HTMLInputElement>(`input[name="max"]`);
 
     if (minInput) {
       minInput.value = String(min);
