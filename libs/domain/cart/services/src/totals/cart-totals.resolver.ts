@@ -1,8 +1,10 @@
-import { inject, Provider } from '@spryker-oryx/di';
-import { map, Observable } from 'rxjs';
-import { NormalizedTotals } from '../../models';
-import { CartService } from '../cart.service';
-import { TotalsResolver } from './totals.service';
+import {
+  CartService,
+  NormalizedTotals,
+  TotalsResolver,
+} from '@spryker-oryx/cart';
+import { inject } from '@spryker-oryx/di';
+import { Observable, map } from 'rxjs';
 
 export class CartTotalsResolver implements TotalsResolver {
   constructor(protected cartService = inject(CartService)) {}
@@ -24,8 +26,3 @@ export class CartTotalsResolver implements TotalsResolver {
     );
   }
 }
-
-export const CartTotalsProvider: Provider = {
-  provide: `${TotalsResolver}CART`,
-  useClass: CartTotalsResolver,
-};

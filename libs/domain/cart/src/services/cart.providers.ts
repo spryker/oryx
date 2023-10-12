@@ -1,6 +1,9 @@
+import { TokenResourceResolvers } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
 import {
+  CartResolver,
+  CartTotalsResolver,
   DefaultCartAdapter,
   DefaultCartService,
   DefaultTotalsService,
@@ -9,8 +12,10 @@ import {
 } from '../services-reexports';
 import { CartAdapter, CartNormalizer, CartsNormalizer } from './adapter';
 import { CartService } from './cart.service';
-import { CartResourceResolver } from './resolver';
-import { CartTotalsProvider, TotalsService } from './totals';
+import { TotalsResolver, TotalsService } from './totals';
+
+export const TotalsResolverCartToken = `${TotalsResolver}CART`;
+export const CartTokenResourceResolverToken = `${TokenResourceResolvers}CART`;
 
 export const cartNormalizer: Provider[] =
   featureVersion < '1.2'
@@ -48,6 +53,18 @@ export const cartsNormalizer: Provider[] =
         },
       ];
 
+/** @deprecated since 1.2 */
+export const CartResourceResolver: Provider = {
+  provide: CartTokenResourceResolverToken,
+  useClass: CartResolver,
+};
+
+/** @deprecated since 1.2 */
+export const CartTotalsProvider: Provider = {
+  provide: TotalsResolverCartToken,
+  useClass: CartTotalsResolver,
+};
+
 export const cartProviders: Provider[] =
   featureVersion < '1.2'
     ? [
@@ -83,6 +100,8 @@ export const cartProviders: Provider[] =
               (m) => m.DefaultCartService
             ),
         },
+        ...cartNormalizer,
+        ...cartsNormalizer,
         {
           provide: TotalsService,
           asyncClass: () =>
@@ -90,8 +109,16 @@ export const cartProviders: Provider[] =
               (m) => m.DefaultTotalsService
             ),
         },
-        CartResourceResolver,
-        CartTotalsProvider,
-        ...cartNormalizer,
-        ...cartsNormalizer,
+        {
+          provide: CartTokenResourceResolverToken,
+          asyncClass: () =>
+            import('@spryker-oryx/cart/services').then((m) => m.CartResolver),
+        },
+        {
+          provide: TotalsResolverCartToken,
+          asyncClass: () =>
+            import('@spryker-oryx/cart/services').then(
+              (m) => m.CartTotalsResolver
+            ),
+        },
       ];

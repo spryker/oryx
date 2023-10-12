@@ -1,13 +1,8 @@
-import {
-  BaseResolver,
-  ResolvedToken,
-  Resolver,
-  TokenResourceResolvers,
-} from '@spryker-oryx/core';
-import { Provider, inject, resolve } from '@spryker-oryx/di';
+import { CartService } from '@spryker-oryx/cart';
+import { BaseResolver, ResolvedResult, Resolver } from '@spryker-oryx/core';
+import { inject, resolve } from '@spryker-oryx/di';
 import { featureVersion } from '@spryker-oryx/utilities';
-import { map } from 'rxjs';
-import { CartService } from '..';
+import { Observable, map } from 'rxjs';
 
 export type CartResolvers = {
   SUMMARY: Resolver;
@@ -20,7 +15,7 @@ export class CartResolver extends BaseResolver<CartResolvers> {
   protected cartService = inject(CartService);
 
   protected resolvers = {
-    SUMMARY: (): ResolvedToken => {
+    SUMMARY: (): Observable<ResolvedResult> => {
       return (featureVersion >= '1.1' ? this.cartService : this.cartService$)
         .getCart()
         .pipe(
@@ -38,7 +33,7 @@ export class CartResolver extends BaseResolver<CartResolvers> {
           })
         );
     },
-    EMPTY: (): ResolvedToken => {
+    EMPTY: (): Observable<ResolvedResult> => {
       return (featureVersion >= '1.1' ? this.cartService : this.cartService$)
         .getCart()
         .pipe(
@@ -47,8 +42,3 @@ export class CartResolver extends BaseResolver<CartResolvers> {
     },
   };
 }
-
-export const CartResourceResolver: Provider = {
-  provide: `${TokenResourceResolvers}CART`,
-  useClass: CartResolver,
-};
