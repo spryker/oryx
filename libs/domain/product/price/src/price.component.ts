@@ -110,7 +110,7 @@ export class ProductPriceComponent extends ProductMixin(
    * instead.
    */
   protected renderSalesPrice(): TemplateResult | void {
-    if (featureVersion > '1.2') {
+    if (featureVersion >= '1.2') {
       const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
       const price = defaultPrice?.value ? defaultPrice : originalPrice;
 
@@ -141,7 +141,7 @@ export class ProductPriceComponent extends ProductMixin(
    * is different from the sales price, the original price is rendered.
    */
   protected renderOriginalPrice(): TemplateResult | void {
-    if (featureVersion > '1.2') {
+    if (featureVersion >= '1.2') {
       const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
 
       if (
