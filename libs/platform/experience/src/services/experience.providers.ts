@@ -25,6 +25,7 @@ import {
   DefaultLayoutService,
   DefaultScreenService,
   LayoutBuilder,
+  layoutPluginsProviders,
   LayoutService,
   ScreenService,
 } from './layout';
@@ -53,6 +54,7 @@ export const layoutProviders: Provider[] = [
     provide: LayoutService,
     useClass: DefaultLayoutService,
   },
+  ...layoutPluginsProviders,
 ];
 
 export const experienceProviders: Provider[] = [

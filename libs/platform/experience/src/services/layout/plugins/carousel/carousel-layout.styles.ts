@@ -1,29 +1,29 @@
 import { css } from 'lit';
-import { LayoutStyles } from '../layout.model';
-import { gridSystem } from './grid-system.styles';
+import { LayoutStyles } from '../../layout.model';
+import { gridSystem } from '../grid-system.styles';
 
 // TODO: support multi-row carousels by using template rows
-// grid-template-rows: repeat(2, auto);
+// carousel-template-rows: repeat(2, auto);
 export const styles: LayoutStyles = {
   styles: css`
     ${gridSystem}
 
     :host {
-      --oryx-column-count: var(--oryx-column-grid);
+      --oryx-column-count: var(--oryx-column-carousel);
 
       overscroll-behavior-x: contain;
       scroll-snap-type: both mandatory;
       scroll-behavior: smooth;
-      grid-auto-columns: var(--_item-size);
+      carousel-auto-columns: var(--_item-size);
     }
 
     :host(:not([layout-vertical])) {
-      grid-auto-flow: column;
+      carousel-auto-flow: column;
       overflow: auto hidden;
     }
 
     :host([layout-vertical]) {
-      grid-auto-flow: row;
+      carousel-auto-flow: row;
       overflow: hidden auto;
     }
 

@@ -78,3 +78,14 @@ export function signalProperty(options?: PropertyDeclaration) {
       ? legacySignalProperty(options!, protoOrDescriptor as T, name as keyof T)
       : standardSignalProperty(options!, protoOrDescriptor as DecoratorContext);
 }
+
+export function signalssss(values?: any[]) {
+  return <T extends LitElement>(
+    protoOrDescriptor: T | DecoratorContext,
+    name?: PropertyKey
+  ): any => {
+    console.log(values, 'values');
+    signalProperty()(protoOrDescriptor, 'test');
+    return;
+  };
+}

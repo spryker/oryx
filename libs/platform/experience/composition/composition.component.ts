@@ -88,7 +88,11 @@ export class CompositionComponent extends LayoutMixin(
   });
 
   protected override render(): TemplateResult | void {
+    // console.log(CompositionComponent.properties);
     const components = this.$components();
+    (this as any).layoutTest();
+    // console.log(this.getAttribute('test'), 'test');
+    console.log((this as any).test, 'test');
 
     if (!components?.length) return;
 

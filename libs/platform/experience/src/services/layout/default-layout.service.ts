@@ -1,14 +1,17 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { inject } from '@spryker-oryx/di';
+import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
-import { merge, Observable, of, reduce } from 'rxjs';
-import { CompositionLayout } from '../../models';
+import { Observable, map, merge, of, reduce } from 'rxjs';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import { LayoutService } from './layout.service';
+import { LayoutPlugin } from './plugins';
 import { ScreenService } from './screen.service';
 
 export class DefaultLayoutService implements LayoutService {
-  constructor(protected screenService = inject(ScreenService)) {}
+  constructor(
+    protected screenService = inject(ScreenService),
+    protected injector = inject(INJECTOR)
+  ) {}
 
   getStyles(layoutInfo: ResponsiveLayoutInfo): Observable<string> {
     const observables: Observable<string>[] = [];
@@ -35,103 +38,30 @@ export class DefaultLayoutService implements LayoutService {
 
   protected resolveCommonStyles(): Observable<string> {
     return ssrAwaiter(
-      import('./styles/base.styles').then((m) => m.styles?.toString() ?? '')
+      import('./base.styles').then((m) => m.styles?.toString() ?? '')
     );
   }
 
-  // TODO: consider breaking up styles in plugins
-  // this allows to add more layouts going forwards without breaking changes,
-  // as well as customers can add layouts
   protected resolveStyles(
-    layout: string,
+    token: string,
     included: Breakpoint[] = [],
     excluded: Breakpoint[] = []
   ): Observable<string> | void {
-    switch (layout) {
-      case 'bleed':
-        return ssrAwaiter(
-          import('./styles/bleed.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
+    console.log(token, 'resolveStyles');
+    return this.getPlugin(token)
+      ?.getStyles()
+      .pipe(
+        map((styles) =>
+          this.resolveStylesForBreakpoint(styles, included, excluded)
+        )
+      );
+  }
 
-      case 'sticky':
-        return ssrAwaiter(
-          import('./styles/sticky.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
-
-      case 'overlap':
-        return ssrAwaiter(
-          import('./styles/overlap.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
-
-      case 'divider':
-        return ssrAwaiter(
-          import('./styles/divider.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
-
-      case CompositionLayout.Column:
-        return ssrAwaiter(
-          import('./styles/column-layout.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
-
-      case CompositionLayout.Grid:
-        return ssrAwaiter(
-          import('./styles/grid-layout.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
-
-      case CompositionLayout.Carousel:
-        return ssrAwaiter(
-          import('./styles/carousel-layout.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
-
-      case CompositionLayout.Flex:
-        return ssrAwaiter(
-          import('./styles/flex-layout.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
-
-      case CompositionLayout.Split:
-        return ssrAwaiter(
-          import('./styles/split-layout.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
-
-      case CompositionLayout.SplitMain:
-        return ssrAwaiter(
-          import('./styles/split-main.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
-
-      case CompositionLayout.SplitAside:
-        return ssrAwaiter(
-          import('./styles/split-aside.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
-
-      case CompositionLayout.Text:
-        return ssrAwaiter(
-          import('./styles/text-layout.styles').then((m) =>
-            this.resolveStylesForBreakpoint(m.styles, included, excluded)
-          )
-        );
-    }
+  protected getPlugin(token: string): LayoutPlugin | null {
+    return this.injector.inject<LayoutPlugin | null>(
+      `${LayoutPlugin}${token}`,
+      null
+    );
   }
 
   protected resolveStylesForBreakpoint(

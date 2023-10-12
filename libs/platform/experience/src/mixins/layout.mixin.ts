@@ -38,6 +38,8 @@ interface LayoutContentOptions {
   rules: StyleRuleSet[];
 }
 
+const COUNTER = Symbol.for('COUNTER');
+
 export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
   superClass: T
 ): Type<LayoutMixinInterface> & T => {
@@ -46,33 +48,45 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
   class LayoutMixinClass extends ContentMixin<LayoutContentOptions>(
     superClass
   ) {
-    @signalProperty() layout?: CompositionLayout;
-    @signalProperty({ type: Boolean, reflect: true, attribute: 'layout-bleed' })
-    bleed?: boolean;
-    @signalProperty({
-      type: Boolean,
-      reflect: true,
-      attribute: 'layout-sticky',
-    })
-    sticky?: boolean;
-    @signalProperty({
-      type: Boolean,
-      reflect: true,
-      attribute: 'layout-overlap',
-    })
-    overlap?: boolean;
-    @signalProperty({
-      type: Boolean,
-      reflect: true,
-      attribute: 'layout-divider',
-    })
-    divider?: boolean;
-    @signalProperty({
-      type: Boolean,
-      reflect: true,
-      attribute: 'layout-vertical',
-    })
-    vertical?: boolean;
+    @signalProperty() [COUNTER] = 0;
+
+    protected observer = new MutationObserver((mutationRecords) => {
+      mutationRecords.map((record) => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const attrName = record.attributeName!;
+        const attrValue = this.getAttribute(attrName);
+        (this as Record<string, unknown>)[this.getPropertyName(attrName)] =
+          attrValue;
+      });
+
+      this[COUNTER]++;
+      this.observer.disconnect();
+      this.observe();
+    });
+
+    constructor() {
+      super();
+      this.observe();
+    }
+
+    protected observe(layoutSpecificAttrs = []): void {
+      const attrs = [...this.attributes].reduce((acc: string[], attr) => {
+        if (!attr.name.startsWith('layout')) return acc;
+        (this as Record<string, unknown>)[this.getPropertyName(attr.name)] =
+          attr.value;
+        return [...acc, attr.name];
+      }, []);
+
+      this.observer.observe(this, {
+        attributes: true,
+        attributeFilter: [...attrs, ...layoutSpecificAttrs],
+      });
+    }
+
+    protected getPropertyName(attrName: string): string {
+      const parts = attrName.split('-');
+      return parts[1] ?? parts[0];
+    }
 
     @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
@@ -82,12 +96,20 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected layoutController = new LayoutController(this);
 
-    protected layoutStyles = computed(() =>
-      this.layoutController.getStyles(
+    protected layoutStyles = computed(() => {
+      console.log(this[COUNTER], 'counter');
+      return this.layoutController.getStyles(
         ['layout', ...layoutKeys],
         this.$options().rules
-      )
-    );
+      );
+    });
+
+    protected layoutTest = computed(() => console.log(this.layoutStyles()));
+
+    disconnectedCallback(): void {
+      super.disconnectedCallback();
+      this.observer.disconnect();
+    }
   }
 
   // Cast return type to your mixin's interface intersected with the superClass type
