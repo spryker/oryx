@@ -4,14 +4,14 @@ import { CSSResult } from 'lit';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface PlugableLayouts {}
+  export interface PluggableLayouts {}
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface PlugableLayoutsStyles {}
+  export interface PluggableLayoutProperties {}
 }
 
-export type LayoutTypes = keyof PlugableLayouts | string;
+export type LayoutTypes = keyof PluggableLayouts | string;
 
-export interface LayoutStylesProperties extends PlugableLayoutsStyles {
+export interface LayoutStylesProperties extends PluggableLayoutProperties {
   vertical?: boolean;
 }
 

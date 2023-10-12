@@ -2,14 +2,10 @@ import { App, AppRef } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Size } from '@spryker-oryx/utilities';
-import {
-  Component,
-  CompositionProperties,
-  LayoutAlign,
-  StyleProperties,
-} from '../../models';
+import { Component, CompositionProperties } from '../../models';
 import { Theme, ThemePlugin } from '../../plugins';
 import { DefaultLayoutBuilder } from './default-layout.builder';
+import { LayoutAlign, StyleProperties } from './layout.model';
 import { ScreenService } from './screen.service';
 
 const mockTheme: Theme = {
@@ -254,18 +250,21 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule({ height: '100px' }, 'height: 100px');
     expectStyleRule({ width: '100px' }, 'width: 100px');
     expectStyleRule(
-      { sticky: true, height: '100px' },
+      { sticky: true, height: '100px' } as StyleProperties,
       'max-height: calc(100px - 0px)'
     );
     expectStyleRule(
-      { sticky: true, height: '100px', top: '10px' },
+      { sticky: true, height: '100px', top: '10px' } as StyleProperties,
       'max-height: calc(100px - 10px)'
     );
     expectStyleRule(
-      { sticky: true, top: '10px' },
+      { sticky: true, top: '10px' } as StyleProperties,
       'max-height: calc(100vh - 10px)'
     );
-    expectStyleRule({ sticky: true }, 'max-height: calc(100vh - 0px)');
+    expectStyleRule(
+      { sticky: true } as StyleProperties,
+      'max-height: calc(100vh - 0px)'
+    );
     expectStyleRule({ margin: '10' }, 'margin: 10px');
     expectStyleRule({ margin: '10%' }, 'margin: 10%');
     expectStyleRule({ padding: '15' }, 'padding-block: 15px');

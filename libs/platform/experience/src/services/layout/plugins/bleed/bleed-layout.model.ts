@@ -3,7 +3,7 @@ import { LayoutPlugin } from '../layout.plugin';
 export const BleedLayoutPluginToken = `${LayoutPlugin}bleed`;
 
 declare global {
-  export interface PlugableLayoutsStyles {
+  export interface PluggableLayoutProperties {
     /**
      * Components are bound inside the page bleed by default. The page bleed is
      * the space that is outside the main container size of the layout. Both the

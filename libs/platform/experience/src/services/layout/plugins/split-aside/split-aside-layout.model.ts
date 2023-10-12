@@ -3,7 +3,7 @@ import { LayoutPlugin } from '../layout.plugin';
 export const SplitAsideLayoutPluginToken = `${LayoutPlugin}split`;
 
 declare global {
-  export interface PlugableLayouts {
+  export interface PluggableLayouts {
     'split-aside': undefined;
   }
 }

@@ -27,7 +27,7 @@ export interface StyleRuleSet
   [key: string]: unknown;
 }
 
-export type CompositionLayoutTypes = keyof PlugableLayouts | string;
+export type CompositionLayoutTypes = keyof PluggableLayouts | string;
 
 /**
  * @deprecated since 1.2. Changed enum approach to union in order to add augmentation possibility.
