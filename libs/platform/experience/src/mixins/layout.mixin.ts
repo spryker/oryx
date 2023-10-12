@@ -1,7 +1,6 @@
 import {
   CompositionLayout,
   ContentMixin,
-  layoutKeys,
   StyleRuleSet,
 } from '@spryker-oryx/experience';
 import {
@@ -9,12 +8,12 @@ import {
   LayoutProperties,
 } from '@spryker-oryx/experience/layout';
 import {
-  computed,
   ConnectableSignal,
+  Type,
+  computed,
   signalAware,
   signalProperty,
   ssrShim,
-  Type,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { LayoutController } from '../controllers/layout.controller';
@@ -38,8 +37,6 @@ interface LayoutContentOptions {
   rules: StyleRuleSet[];
 }
 
-const COUNTER = Symbol.for('COUNTER');
-
 export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
   superClass: T
 ): Type<LayoutMixinInterface> & T => {
@@ -48,7 +45,12 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
   class LayoutMixinClass extends ContentMixin<LayoutContentOptions>(
     superClass
   ) {
-    @signalProperty() [COUNTER] = 0;
+    @signalProperty() attributeWatchers: (keyof LayoutProperties)[] = [];
+    @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) md?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) lg?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) xl?: LayoutProperties;
 
     protected observer = new MutationObserver((mutationRecords) => {
       mutationRecords.map((record) => {
@@ -59,7 +61,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
           attrValue;
       });
 
-      this[COUNTER]++;
       this.observer.disconnect();
       this.observe();
     });
@@ -75,11 +76,12 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         (this as Record<string, unknown>)[this.getPropertyName(attr.name)] =
           attr.value;
         return [...acc, attr.name];
-      }, []);
+      }, layoutSpecificAttrs);
 
+      this.attributeWatchers = attrs as (keyof LayoutProperties)[];
       this.observer.observe(this, {
         attributes: true,
-        attributeFilter: [...attrs, ...layoutSpecificAttrs],
+        attributeFilter: attrs,
       });
     }
 
@@ -88,23 +90,16 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       return parts[1] ?? parts[0];
     }
 
-    @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
-    @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
-    @signalProperty({ type: Object, reflect: true }) md?: LayoutProperties;
-    @signalProperty({ type: Object, reflect: true }) lg?: LayoutProperties;
-    @signalProperty({ type: Object, reflect: true }) xl?: LayoutProperties;
-
     protected layoutController = new LayoutController(this);
 
     protected layoutStyles = computed(() => {
-      console.log(this[COUNTER], 'counter');
       return this.layoutController.getStyles(
-        ['layout', ...layoutKeys],
+        this.attributeWatchers,
         this.$options().rules
       );
     });
 
-    protected layoutTest = computed(() => console.log(this.layoutStyles()));
+    protected layoutTest = computed(() => console.log());
 
     disconnectedCallback(): void {
       super.disconnectedCallback();

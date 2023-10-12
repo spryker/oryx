@@ -12,23 +12,9 @@ export class OryxAppComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <button
-        @click=${() => {
-          this.test = this.test === 'flex' ? 'grid' : 'flex';
-        }}
-      >
-        test
-      </button>
-
-      <oryx-composition
-        layout="carousel"
-        layout-vertical="true"
-        layout-bleed="true"
-      ></oryx-composition>
-
-      <oryx-composition layout="grid"></oryx-composition>
-
-      <!-- <oryx-composition uid="footer"></oryx-composition> -->
+      <oryx-composition uid="header"></oryx-composition>
+      ${this.router.outlet()}
+      <oryx-composition uid="footer"></oryx-composition>
     `;
   }
 }

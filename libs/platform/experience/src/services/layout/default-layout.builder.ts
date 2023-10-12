@@ -136,9 +136,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       add({
         'padding-block': this.findCssValues(data.padding, 'top', 'bottom'),
       });
-      if (!data.bleed) {
-        // consider moving to bleed layout plugin
-        // avoid adding padding for layouts that bleed into the side
+      if (!data.layoutBleed) {
+        // consider moving to layoutBleed layout plugin
+        // avoid adding padding for layouts that layoutBleed into the side
         // as this can harm the calculated width
         add({
           'padding-inline': this.findCssValues(data.padding, 'start', 'end'),
@@ -172,7 +172,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add({ '--column-gap': gaps?.[1] ?? gaps?.[0] }, { emptyValue: true });
     add({ '--row-gap': gaps?.[0] }, { emptyValue: true });
 
-    if (data.sticky) {
+    if (data.layoutSticky) {
       add({
         'max-height': `calc(${data.height ?? '100vh'} - ${data.top ?? '0px'})`,
       });

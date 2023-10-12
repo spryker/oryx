@@ -72,7 +72,15 @@ export const checkoutPage: ExperienceComponent = {
       type: 'oryx-composition',
       id: 'checkout-totals',
       options: {
-        rules: [{ hideByRule: 'CART.EMPTY' }, { sticky: true, top: '108px' }],
+        rules: [
+          { hideByRule: 'CART.EMPTY' },
+          {
+            layoutSticky: true,
+            // @deprecated since 1.2 will be removed.
+            sticky: true,
+            top: '108px',
+          },
+        ],
       },
       components: [
         {

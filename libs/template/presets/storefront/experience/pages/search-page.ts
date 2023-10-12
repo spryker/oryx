@@ -40,7 +40,11 @@ export const searchPage: ExperienceComponent = {
           {
             layout: 'grid',
             gap: '1px',
+            layoutDivider: true,
+            // @deprecated since 1.2 will be removed.
             divider: true,
+            layoutSticky: true,
+            // @deprecated since 1.2 will be removed.
             sticky: true,
             top: '108px',
             margin: '0 0 30px',

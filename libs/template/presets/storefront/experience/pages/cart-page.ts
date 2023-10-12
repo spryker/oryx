@@ -62,7 +62,16 @@ export const cartPage: ExperienceComponent = {
         },
         { type: 'oryx-checkout-link' },
       ],
-      options: { rules: [{ sticky: true, top: '108px' }] },
+      options: {
+        rules: [
+          {
+            layoutSticky: true,
+            // @deprecated since 1.2 will be removed.
+            sticky: true,
+            top: '108px',
+          },
+        ],
+      },
     },
   ],
 };

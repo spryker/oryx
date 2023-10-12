@@ -250,21 +250,18 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule({ height: '100px' }, 'height: 100px');
     expectStyleRule({ width: '100px' }, 'width: 100px');
     expectStyleRule(
-      { sticky: true, height: '100px' } as StyleProperties,
+      { sticky: true, height: '100px' },
       'max-height: calc(100px - 0px)'
     );
     expectStyleRule(
-      { sticky: true, height: '100px', top: '10px' } as StyleProperties,
+      { sticky: true, height: '100px', top: '10px' },
       'max-height: calc(100px - 10px)'
     );
     expectStyleRule(
-      { sticky: true, top: '10px' } as StyleProperties,
+      { sticky: true, top: '10px' },
       'max-height: calc(100vh - 10px)'
     );
-    expectStyleRule(
-      { sticky: true } as StyleProperties,
-      'max-height: calc(100vh - 0px)'
-    );
+    expectStyleRule({ sticky: true }, 'max-height: calc(100vh - 0px)');
     expectStyleRule({ margin: '10' }, 'margin: 10px');
     expectStyleRule({ margin: '10%' }, 'margin: 10%');
     expectStyleRule({ padding: '15' }, 'padding-block: 15px');

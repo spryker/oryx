@@ -76,6 +76,8 @@ export const homePage: ExperienceComponent = {
             height: '550px',
             layout: 'split',
             align: 'end',
+            layoutBleed: true,
+            // @deprecated since 1.2 will be removed.
             bleed: true,
           },
         ],

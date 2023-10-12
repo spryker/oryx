@@ -11,9 +11,17 @@ declare global {
 
 export type LayoutTypes = keyof PluggableLayouts | string;
 
-export interface LayoutStylesProperties extends PluggableLayoutProperties {
+export type LayoutStylesProperties = {
+  [P in keyof PluggableLayoutProperties as `layout${Capitalize<P>}`]?: PluggableLayoutProperties[P];
+} & {
+  layoutVertical?: boolean;
+  // @deprecated since 1.2 will be removed.
   vertical?: boolean;
-}
+  sticky?: boolean;
+  overlap?: boolean;
+  bleed?: boolean;
+  divider?: boolean;
+};
 
 export type LayoutStyles = {
   /**

@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import { ResponsiveLayoutInfo } from './layout.model';
-import { Size } from '@spryker-oryx/utilities';
 
 export const LayoutService = 'oryx.LayoutService';
 

@@ -35,7 +35,14 @@ const legalLinks = {
   ],
   options: {
     rules: [
-      { layout: 'flex', divider: true, gap: '0 20px', padding: '20px 0 0' },
+      {
+        layout: 'flex',
+        layoutDivider: true,
+        // @deprecated since 1.2 will be removed.
+        divider: true,
+        gap: '0 20px',
+        padding: '20px 0 0',
+      },
     ],
   },
 };
@@ -244,7 +251,11 @@ export const FooterTemplate: ExperienceComponent = {
             rules: [
               {
                 layout: 'flex',
+                layoutVertical: true,
+                // @deprecated since 1.2 will be removed.
                 vertical: true,
+                layoutDivider: true,
+                // @deprecated since 1.2 will be removed.
                 divider: true,
                 gap: '40px 18px',
               },
@@ -259,11 +270,17 @@ export const FooterTemplate: ExperienceComponent = {
     rules: [
       {
         layout: 'flex',
-        divider: true,
         top: '100%',
         background: 'var(--oryx-color-neutral-3)',
         padding: '30 0',
+        layoutDivider: true,
+        // @deprecated since 1.2 will be removed.
+        divider: true,
+        layoutBleed: true,
+        // @deprecated since 1.2 will be removed.
         bleed: true,
+        layoutSticky: true,
+        // @deprecated since 1.2 will be removed.
         sticky: true,
         typography: 'small',
         style: 'line-height: 24px;',

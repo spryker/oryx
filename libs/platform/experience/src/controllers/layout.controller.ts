@@ -5,13 +5,20 @@ import {
 } from '@spryker-oryx/experience/layout';
 import { sizes } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { ContentComponentProperties, StyleRuleSet } from '../models';
 import {
   LayoutBuilder,
   LayoutService,
   ResponsiveLayoutInfo,
 } from '../services';
+
+interface LayoutProperty {
+  hostProp: keyof LayoutProperties;
+  ruleProp: keyof LayoutProperties;
+  prop: string;
+}
+
 export class LayoutController {
   constructor(
     protected host: LitElement & LayoutAttributes & ContentComponentProperties
@@ -22,31 +29,102 @@ export class LayoutController {
 
   getStyles(
     properties: (keyof LayoutProperties)[],
-    rules: StyleRuleSet[] = []
+    rules: StyleRuleSet[]
   ): Observable<string> {
-    const infos = this.getLayoutInfos(properties, rules);
+    const props = [...properties].map((hostProp) => {
+      const prop = hostProp.replace('layout-', '');
 
-    const componentStyles = this.collectStyles(
-      properties,
-      rules,
-      this.host.uid
-    );
+      return {
+        prop: !prop.length ? hostProp : prop,
+        hostProp,
+        ruleProp:
+          hostProp === 'layout'
+            ? hostProp
+            : (`layout${prop.charAt(0).toUpperCase()}${prop.slice(
+                1
+              )}` as keyof LayoutProperties),
+      };
+    });
+
+    const ruleProps: (StyleRuleSet | string)[] = [...(rules ?? [])];
+
+    for (const ruleProp of ruleProps) {
+      if (typeof ruleProp === 'object') {
+        ruleProps.push(...Object.keys(ruleProp));
+        continue;
+      }
+
+      if (
+        ruleProp.startsWith('layout') &&
+        !props.some((props) => props.ruleProp === ruleProp)
+      ) {
+        const prop = ruleProp.replace('layout', '');
+
+        props.push({
+          prop: !prop.length ? ruleProp : prop.toLowerCase(),
+          ruleProp: ruleProp as keyof LayoutProperties,
+          hostProp:
+            ruleProp === 'layout'
+              ? ruleProp
+              : (`layout-${prop.charAt(0).toLowerCase()}${prop.slice(
+                  1
+                )}` as keyof LayoutProperties),
+        });
+      }
+    }
+
+    const infos = this.getLayoutInfos(props, rules);
+    console.log(infos, 'infos');
+    const componentStyles = this.collectStyles(props, rules, this.host.uid);
 
     return this.layoutService
       .getStyles(infos)
       .pipe(map((layoutStyles) => `${layoutStyles}${componentStyles}`));
   }
 
+  /**
+   * Collects dynamic styles provided by component options.
+   *
+   * When the component does not have a layout, we add a rule to
+   * ensure that the component children can transparently work with the
+   * layout provided outside:
+   *
+   * ```css
+   * :host {
+   *   display: contents;
+   * }
+   * ```
+   * @deprecated will be protected since 1.2
+   */
+  collectStyles(
+    layoutProperties: LayoutProperty[],
+    rules: StyleRuleSet[] = [],
+    uid?: string
+  ): string {
+    let styles = '';
+
+    if (!layoutProperties.length) {
+      styles += ':host {display: contents;}\n';
+    }
+
+    styles += this.layoutBuilder.createStylesFromOptions(rules, uid);
+
+    return styles;
+  }
+
   protected getLayoutInfos(
-    properties: (keyof LayoutProperties)[],
+    properties: LayoutProperty[],
     rules: StyleRuleSet[] = []
   ): ResponsiveLayoutInfo {
-    return properties.reduce((info, prop) => {
+    console.log(properties, 'properties');
+    return properties.reduce((info, props) => {
+      const { ruleProp, hostProp, prop } = props;
       const isLayout = prop === 'layout';
-      const mainValue =
-        this.host[prop] ??
-        rules.find((rule) => !rule.query?.breakpoint && rule[prop])?.[prop];
-      const mainKey = (isLayout ? mainValue : prop) as string;
+      const mainValue = (this.host[ruleProp] ??
+        rules.find((rule) => !rule.query?.breakpoint && rule[hostProp])?.[
+          hostProp
+        ]) as string;
+      const mainKey = isLayout ? mainValue : prop;
       const withMainValue = typeof mainValue !== 'undefined';
 
       if (withMainValue) {
@@ -55,12 +133,12 @@ export class LayoutController {
 
       for (const size of sizes) {
         const sizeValue =
-          this.host[size]?.[prop] ??
+          this.host[size]?.[hostProp] ??
           rules.find(
             (rule) =>
               rule.query?.breakpoint === size &&
-              typeof rule[prop] !== 'undefined'
-          )?.[prop];
+              typeof rule[ruleProp] !== 'undefined'
+          )?.[ruleProp];
         const sizeKey = (isLayout ? sizeValue : prop) as string;
 
         if (
@@ -89,51 +167,5 @@ export class LayoutController {
 
       return info;
     }, {} as ResponsiveLayoutInfo);
-  }
-
-  /**
-   * Collects dynamic styles provided by component options.
-   *
-   * When the component does not have a layout, we add a rule to
-   * ensure that the component children can transparently work with the
-   * layout provided outside:
-   *
-   * ```css
-   * :host {
-   *   display: contents;
-   * }
-   * ```
-   */
-  collectStyles(
-    layoutProperties: (keyof LayoutProperties)[],
-    rules: StyleRuleSet[] = [],
-    uid?: string
-  ): string {
-    let styles = '';
-
-    if (!this.hasLayout(rules, layoutProperties)) {
-      styles += ':host {display: contents;}\n';
-    }
-
-    styles += this.layoutBuilder.createStylesFromOptions(rules, uid);
-
-    return styles;
-  }
-
-  /**
-   * Indicates whether the component has any layout associated to it.
-   *
-   * Layout can be either applied by using properties or by using options.
-   */
-  protected hasLayout(
-    rules: StyleRuleSet[],
-    layoutProperties: (keyof LayoutProperties)[] = []
-  ): boolean {
-    const has = (obj: LayoutAttributes): boolean =>
-      layoutProperties.some(
-        (prop) => obj[prop] || sizes.some((size) => obj[size]?.[prop])
-      );
-
-    return has(this.host) || rules?.some((rule) => has(rule));
   }
 }
