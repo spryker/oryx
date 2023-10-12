@@ -7,7 +7,6 @@ import { MultiRangeComponent } from '@spryker-oryx/ui/multi-range';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { beforeEach } from 'vitest';
 import { SearchFacetValueNavigationComponent } from '../facet-value-navigation';
 import { SearchRangeFacetComponent } from './facet-range.component';
 import { searchRangeFacetComponent } from './facet-range.def';
@@ -85,7 +84,7 @@ describe('SearchRangeFacetComponent', () => {
     expect(getNavigation().heading).toEqual(name);
   });
 
-  it('should render inputs with default labels', async () => {
+  it('should render inputs with default labels', () => {
     expect(getInput().label).toBe('min');
     expect(getInput(true).label).toBe('max');
   });

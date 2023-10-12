@@ -2,27 +2,27 @@ import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { generateRange } from '@spryker-oryx/product/mocks';
 import { FacetListService } from '@spryker-oryx/search';
+import { CurrencyService } from '@spryker-oryx/site';
 import { InputComponent } from '@spryker-oryx/ui/input';
 import { MultiRangeComponent } from '@spryker-oryx/ui/multi-range';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { beforeEach } from 'vitest';
-import { SearchFacetValueNavigationComponent } from '../facet-value-navigation';
-
-import { CurrencyService } from '@spryker-oryx/site';
+import { SearchPriceFacetComponent } from './facet-price.component';
+import { searchPriceFacetComponent } from './facet-price.def';
 
 const name = 'Mock';
-const min = 0;
-const max = 10;
+const min = 100;
+const max = 1000;
 const mockFacet = generateRange(name, 'parameter', [min, max]);
+const mockCurrency = 'mockCurrency';
 
 class MockFacetListService implements Partial<FacetListService> {
   getFacet = vi.fn().mockReturnValue(of(mockFacet));
 }
 
 class MockCurrencyService implements Partial<CurrencyService> {
-  getFacet = vi.fn().mockReturnValue(of(mockFacet));
+  getCurrencySymbol = vi.fn().mockReturnValue(of(mockCurrency));
 }
 
 describe('SearchPriceFacetComponent', () => {
@@ -35,16 +35,6 @@ describe('SearchPriceFacetComponent', () => {
     ] as InputComponent;
   };
 
-  const getInputField = (isMax = false): HTMLInputElement => {
-    return getInput(isMax).querySelector('input') as HTMLInputElement;
-  };
-
-  const getNavigation = (): SearchFacetValueNavigationComponent => {
-    return element.renderRoot.querySelector(
-      'oryx-search-facet-value-navigation'
-    ) as SearchFacetValueNavigationComponent;
-  };
-
   const getRange = (): MultiRangeComponent => {
     return element.renderRoot.querySelector(
       'oryx-multi-range'
@@ -52,7 +42,7 @@ describe('SearchPriceFacetComponent', () => {
   };
 
   beforeAll(async () => {
-    await useComponent(searchRangeFacetComponent);
+    await useComponent(searchPriceFacetComponent);
   });
 
   beforeEach(async () => {
@@ -62,11 +52,15 @@ describe('SearchPriceFacetComponent', () => {
           provide: FacetListService,
           useClass: MockFacetListService,
         },
+        {
+          provide: CurrencyService,
+          useClass: MockCurrencyService,
+        },
       ],
     });
 
     element = await fixture(
-      html`<oryx-search-range-facet name=${name}></oryx-search-range-facet>`
+      html`<oryx-search-price-facet name=${name}></oryx-search-price-facet>`
     );
 
     service = testInjector.inject<MockFacetListService>(FacetListService);
@@ -75,256 +69,45 @@ describe('SearchPriceFacetComponent', () => {
   afterEach(() => {
     destroyInjector();
     vi.resetAllMocks();
-    vi.clearAllTimers();
   });
 
   it('passes the a11y audit', async () => {
     await expect(element).shadowDom.to.be.accessible();
   });
 
-  it('should render facet value navigation with default configuration', () => {
-    expect(getNavigation().hasAttribute('open')).toBe(false);
-    expect(getNavigation().hasAttribute('enableClear')).toBe(true);
-    expect(getNavigation().hasAttribute('dirty')).toBe(false);
-    expect(getNavigation().heading).toEqual(name);
+  it('should have default labels', () => {
+    expect(element.labelMin).toBe('price.label.min-<currency>');
+    expect(element.labelMax).toBe('price.label.max-<currency>');
   });
 
-  it('should render inputs with default labels', async () => {
-    expect(getInput().label).toBe('min');
-    expect(getInput(true).label).toBe('max');
+  it('should add currency to the input`s labels', () => {
+    expect(getInput().label).toContain(mockCurrency);
+    expect(getInput(true).label).toContain(mockCurrency);
   });
 
-  it('should render min input field with proper configuration', () => {
-    const input = getInputField();
-    expect(input.getAttribute('aria-label')).toBe('min');
-    expect(input.name).toBe('min');
-    expect(input.type).toBe('number');
-    expect(input.value).toBe(String(min));
-    expect(input.min).toBe(String(min));
-    expect(input.max).toBe(String(max - 1));
-    expect(input.step).toBe('1');
-  });
-
-  it('should render max input field with proper configuration', () => {
-    const input = getInputField(true);
-    expect(input.getAttribute('aria-label')).toBe('max');
-    expect(input.name).toBe('max');
-    expect(input.type).toBe('number');
-    expect(input.value).toBe(String(max));
-    expect(input.min).toBe(String(min + 1));
-    expect(input.max).toBe(String(max));
-    expect(input.step).toBe('1');
-  });
-
-  it('should render the range component with proper configuration', () => {
+  it('should convert the price values', () => {
     const range = getRange();
-    expect(range.min).toBe(min);
-    expect(range.max).toBe(max);
-    expect(range.minValue).toBe(min);
-    expect(range.maxValue).toBe(max);
-    expect(range.step).toBe(1);
+    expect(range.min).toBe(min / 100);
+    expect(range.max).toBe(max / 100);
+    expect(range.minValue).toBe(min / 100);
+    expect(range.maxValue).toBe(max / 100);
   });
 
-  it('should render divider', () => {
-    expect(element).toContainElement('hr');
-  });
-
-  it('should sync min and max states with facet`s selected values', () => {
-    expect(element.min).toBe(mockFacet?.values?.selected?.min);
-    expect(element.max).toBe(mockFacet?.values?.selected?.max);
-  });
-
-  describe('when facet is not existing', () => {
+  describe('when values are not round', () => {
     beforeEach(async () => {
-      service.getFacet.mockReturnValue(of(null));
+      const mockFacet = generateRange(name, 'parameter', [99, 999]);
+      service.getFacet.mockReturnValue(of(mockFacet));
       element = await fixture(
-        html`<oryx-search-range-facet
-          name="fakeMock"
-        ></oryx-search-range-facet>`
+        html`<oryx-search-price-facet name=${name}></oryx-search-price-facet>`
       );
     });
 
-    it('should not render the content', () => {
-      expect(getNavigation()).toBeNull();
-    });
-  });
-
-  describe('when labels are specified', () => {
-    const labelMin = 'labelMin';
-    const labelMax = 'labelMax';
-
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-range-facet
-          name=${name}
-          .labelMin=${labelMin}
-          .labelMax=${labelMax}
-        ></oryx-search-range-facet>`
-      );
-    });
-
-    it('should render correct labels', () => {
-      expect(getInput().label).toBe(labelMin);
-      expect(getInputField().getAttribute('aria-label')).toBe(labelMin);
-      expect(getInput(true).label).toBe(labelMax);
-      expect(getInputField(true).getAttribute('aria-label')).toBe(labelMax);
-    });
-  });
-
-  describe('when clear is disabled', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-range-facet
-          name=${name}
-          disableClear
-        ></oryx-search-range-facet>`
-      );
-    });
-
-    it('should disable clear action of value navigation', () => {
-      expect(getNavigation().hasAttribute('enableClear')).toBe(false);
-    });
-  });
-
-  describe('when range values are changed', () => {
-    const callback = vi.fn();
-    const selected = { minValue: 1, maxValue: 2 };
-
-    beforeEach(async () => {
-      vi.useFakeTimers();
-      element = await fixture(
-        html`<oryx-search-range-facet
-          name=${name}
-          @oryx.select=${callback}
-        ></oryx-search-range-facet>`
-      );
-
-      getRange().dispatchEvent(new CustomEvent('change', { detail: selected }));
-      vi.advanceTimersByTime(301);
-    });
-
-    it('should dispatch oryx.select event with selected values', () => {
-      expect(callback).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: expect.objectContaining({
-            name,
-            value: expect.objectContaining({
-              selected: { min: selected.minValue, max: selected.maxValue },
-            }),
-          }),
-        })
-      );
-    });
-
-    describe('and values are without changes', () => {
-      const callback = vi.fn();
-
-      beforeEach(async () => {
-        vi.useFakeTimers();
-
-        element = await fixture(
-          html`<oryx-search-range-facet
-            name=${name}
-            @oryx.select=${callback}
-          ></oryx-search-range-facet>`
-        );
-
-        getRange().dispatchEvent(
-          new CustomEvent('change', {
-            detail: { minValue: min, maxValue: max },
-          })
-        );
-        vi.advanceTimersByTime(301);
-      });
-
-      it('should not dispatch oryx.select', () => {
-        expect(callback).not.toHaveBeenCalled();
-      });
-    });
-  });
-
-  describe('min input', () => {
-    const value = '2';
-
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-range-facet name=${name}></oryx-search-range-facet>`
-      );
-
-      getInputField().value = value;
-      getInputField().focus();
-    });
-
-    describe('when input loses focus', () => {
-      beforeEach(() => {
-        getInputField().blur();
-      });
-
-      it('should update the min state', () => {
-        expect(element.min).toBe(+value);
-      });
-    });
-
-    describe('when enter key is pressed', () => {
-      beforeEach(() => {
-        getInputField().dispatchEvent(
-          new KeyboardEvent('keydown', { key: 'Enter' })
-        );
-      });
-
-      it('should update the min state', () => {
-        expect(element.min).toBe(+value);
-      });
-    });
-  });
-
-  describe('max input', () => {
-    const value = '5';
-
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-range-facet name=${name}></oryx-search-range-facet>`
-      );
-
-      getInputField(true).value = value;
-      getInputField(true).focus();
-    });
-
-    describe('when input loses focus', () => {
-      beforeEach(() => {
-        getInputField(true).blur();
-      });
-
-      it('should update the max state', () => {
-        expect(element.max).toBe(+value);
-      });
-    });
-
-    describe('when enter key is pressed', () => {
-      beforeEach(() => {
-        getInputField(true).dispatchEvent(
-          new KeyboardEvent('keydown', { key: 'Enter' })
-        );
-      });
-
-      it('should update the max state', () => {
-        expect(element.max).toBe(+value);
-      });
-    });
-  });
-
-  describe('when facet selected values are not equal to the min and max', () => {
-    beforeEach(async () => {
-      service.getFacet.mockReturnValue(
-        of(generateRange(name, 'parameter', [0, 10], [1, 2]))
-      );
-      element = await fixture(
-        html`<oryx-search-range-facet name=${name}></oryx-search-range-facet>`
-      );
-    });
-
-    it('should make value navigation dirty', () => {
-      expect(getNavigation().hasAttribute('dirty')).toBe(true);
+    it('should round min values down and max values up', () => {
+      const range = getRange();
+      expect(range.min).toBe(0);
+      expect(range.max).toBe(10);
+      expect(range.minValue).toBe(0);
+      expect(range.maxValue).toBe(10);
     });
   });
 });

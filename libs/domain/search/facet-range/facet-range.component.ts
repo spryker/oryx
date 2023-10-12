@@ -23,6 +23,10 @@ export class SearchRangeFacetComponent
 {
   static styles = [searchRangeFacetStyles];
 
+  //need to check the mounted state of the component to avoid memory leaks
+  //in case if the component is removed from the DOM before the debounce is executed
+  protected _mounted = false;
+
   protected controller = new FacetController(this);
 
   @signalProperty() name?: string;
@@ -38,9 +42,13 @@ export class SearchRangeFacetComponent
   protected $facet = computed(() => this.controller.getFacet() as RangeFacet);
 
   protected $isDirty = computed(() => {
+    const facet = this.$facet();
+
+    if (!facet) return false;
+
     const {
       values: { min, max, selected },
-    } = this.$facet();
+    } = facet;
 
     return selected?.min !== min || selected?.max !== max;
   });
@@ -63,6 +71,8 @@ export class SearchRangeFacetComponent
 
   protected onRangeChange = debounce(
     (e: CustomEvent<MultiRangeChangeEvent>): void => {
+      if (!this._mounted) return;
+
       const { minValue: min, maxValue: max } = e.detail;
       const selected = { min, max };
 
@@ -170,5 +180,15 @@ export class SearchRangeFacetComponent
         @change="${this.onRangeChange}"
       ></oryx-multi-range>
     `;
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this._mounted = true;
+  }
+
+  disconnectedCallback(): void {
+    this._mounted = false;
+    super.disconnectedCallback();
   }
 }

@@ -1,11 +1,11 @@
 import { QueryService } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
+import { LocaleService } from '@spryker-oryx/i18n';
 import { Observable, of } from 'rxjs';
 import { mockStore } from '../../mocks';
 import { StoreService } from '../store';
 import { CurrencyService } from './currency.service';
 import { DefaultCurrencyService } from './default-currency.service';
-import { LocaleService } from '@spryker-oryx/i18n';
 
 class MockStoreService implements Partial<StoreService> {
   get = vi.fn().mockReturnValue(of(mockStore));
@@ -47,7 +47,7 @@ describe('DefaultCurrencyService', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
-  })
+  });
 
   it('should be provided', () => {
     expect(service).toBeInstanceOf(DefaultCurrencyService);
@@ -88,8 +88,8 @@ describe('DefaultCurrencyService', () => {
     beforeEach(() => {
       service.get = vi.fn().mockReturnValue(of('EUR'));
       service.getCurrencySymbol().subscribe(callback);
-    })
-    
+    });
+
     it('should get current currency', () => {
       expect(service.get).toHaveBeenCalled();
     });
