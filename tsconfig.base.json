@@ -212,6 +212,9 @@
       "@spryker-oryx/search/facet-navigation": [
         "libs/domain/search/facet-navigation/index.ts"
       ],
+      "@spryker-oryx/search/facet-price": [
+        "libs/domain/search/facet-price/index.ts"
+      ],
       "@spryker-oryx/search/facet-range": [
         "libs/domain/search/facet-range/index.ts"
       ],

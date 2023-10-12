@@ -1,4 +1,5 @@
 import { RangeFacet, RangeFacetValue } from '@spryker-oryx/product';
+import { FacetController } from '@spryker-oryx/search/facet';
 import { MultiRangeChangeEvent } from '@spryker-oryx/ui/multi-range';
 import {
   computed,
@@ -10,7 +11,6 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { FacetController } from '../facet/controllers';
 import {
   SearchFacetRangeComponentAttributes,
   SearchFacetRangeComponentValues,
@@ -35,19 +35,19 @@ export class SearchRangeFacetComponent
   @state() min?: number;
   @state() max?: number;
 
-  protected facet = computed(() => this.controller.getFacet() as RangeFacet);
+  protected $facet = computed(() => this.controller.getFacet() as RangeFacet);
 
   protected $isDirty = computed(() => {
     const {
       values: { min, max, selected },
-    } = this.facet();
+    } = this.$facet();
 
     return selected?.min !== min || selected?.max !== max;
   });
 
   @elementEffect()
   protected $syncValues = effect(() => {
-    const facet = this.facet();
+    const facet = this.$facet();
 
     if (!facet) return;
 
@@ -57,6 +57,8 @@ export class SearchRangeFacetComponent
 
     this.min = selected?.min ?? min;
     this.max = selected?.max ?? max;
+
+    this.syncInputsValues(this.min, this.max);
   });
 
   protected onRangeChange = debounce(
@@ -65,8 +67,6 @@ export class SearchRangeFacetComponent
       const selected = { min, max };
 
       if (this.hasChangedValue(selected)) {
-        this.min = min;
-        this.max = max;
         this.controller.dispatchSelectEvent({ selected });
       }
     },
@@ -87,12 +87,32 @@ export class SearchRangeFacetComponent
   protected hasChangedValue({ min, max }: RangeFacetValue): boolean {
     const {
       values: { selected },
-    } = this.facet();
+    } = this.$facet();
     return selected?.min !== min || selected?.max !== max;
   }
 
+  protected syncInputsValues(min: number, max: number): void {
+    const minInput = this.renderRoot.querySelector(
+      `input[name="min"]`
+    ) as HTMLInputElement;
+
+    const maxInput = this.renderRoot.querySelector(
+      `input[name="max"]`
+    ) as HTMLInputElement;
+
+    if (minInput) {
+      minInput.value = String(min);
+    }
+
+    if (maxInput) {
+      maxInput.value = String(max);
+    }
+
+    this.requestUpdate();
+  }
+
   protected override render(): TemplateResult | void {
-    const facet = this.facet();
+    const facet = this.$facet();
 
     if (!facet) return;
 
@@ -133,6 +153,7 @@ export class SearchRangeFacetComponent
     const {
       values: { min, max },
     } = facet;
+
     return html`
       ${this.renderInput('min', min, max - 1, this.labelMin)}
 

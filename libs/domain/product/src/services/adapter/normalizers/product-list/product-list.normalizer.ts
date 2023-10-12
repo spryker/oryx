@@ -12,7 +12,6 @@ import { DeserializedProductListIncludes } from '../model';
 import { PaginationNormalizer } from '../pagination';
 import { SortNormalizer } from '../sort';
 import { DeserializedProductList } from './model';
-import { facetsPriceConverter } from '../../converters';
 
 export const ProductListNormalizer = 'oryx.ProductListNormalizer*';
 
@@ -78,14 +77,12 @@ export function productFacetNormalizer(
       },
       FacetNormalizer
     ),
-    transformer.transform(rangeFacets, FacetRangeNormalizer).pipe(
-      map((facets) => facets.map(facetsPriceConverter))
-    ),
+    transformer.transform(rangeFacets, FacetRangeNormalizer),
     transformer.transform(categoryTreeFilter, CategoryListNormalizer),
   ]).pipe(
     map(([categoryFacet, facetValues, rangeValues]) => {
       return {
-        facets: [ categoryFacet, ...facetValues, ...rangeValues ],
+        facets: [categoryFacet, ...facetValues, ...rangeValues],
       };
     })
   );

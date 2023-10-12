@@ -3,21 +3,19 @@ import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { RangeFacetValue } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
+import { SearchFacetRangeComponentAttributes } from '@spryker-oryx/search/facet-range';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { SearchFacetRangeComponentAttributes } from '../facet-range.model';
 
 export default {
-  title: `${storybookPrefix}/Facet Range`,
-  // disables Chromatic's snapshotting on a story level
-  parameters: { chromatic: { disableSnapshot: true } },
+  title: `${storybookPrefix}/Facet Price`,
   args: {
     open: true,
     disableClear: false,
     step: 1,
-    labelMin: 'Min',
-    labelMax: 'Max',
+    labelMin: 'price.label.min-<currency>',
+    labelMax: 'price.label.max-<currency>',
   },
   argTypes: {
     step: {
@@ -41,15 +39,15 @@ const Template: Story<SearchFacetRangeComponentAttributes> = (
     );
   };
 
-  return html`<oryx-search-range-facet
-    name="Range"
+  return html`<oryx-search-price-facet
+    name="Price"
     .step=${props.step}
     .labelMin=${props.labelMin}
     .labelMax=${props.labelMax}
     ?open=${props.open}
     ?disableClear=${props.disableClear}
     @oryx.select=${select}
-  ></oryx-search-range-facet>`;
+  ></oryx-search-price-facet>`;
 };
 
 export const Demo = Template.bind({});

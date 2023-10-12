@@ -65,7 +65,6 @@ import {
   ProductListAdapter,
   ProductListPageService,
   ProductListService,
-  productListEffects,
 } from './list';
 import { ProductContextFallback } from './product-context';
 import { ProductService } from './product.service';
@@ -169,7 +168,6 @@ export const productProviders: Provider[] = [
   ...productQueries,
   ...productEffects,
   ...categoryEffects,
-  // ...productListEffects,
   ProductContextFallback,
   {
     provide: PageMetaResolver,
