@@ -9,21 +9,21 @@ export const styles: LayoutStyles = {
     ${gridSystem}
 
     :host {
-      --oryx-column-count: var(--oryx-column-carousel);
+      --oryx-column-count: var(--oryx-column-grid);
 
       overscroll-behavior-x: contain;
       scroll-snap-type: both mandatory;
       scroll-behavior: smooth;
-      carousel-auto-columns: var(--_item-size);
+      grid-auto-columns: var(--_item-size);
     }
 
     :host(:not([layout-vertical])) {
-      carousel-auto-flow: column;
+      grid-auto-flow: column;
       overflow: auto hidden;
     }
 
     :host([layout-vertical]) {
-      carousel-auto-flow: row;
+      grid-auto-flow: row;
       overflow: hidden auto;
     }
 
