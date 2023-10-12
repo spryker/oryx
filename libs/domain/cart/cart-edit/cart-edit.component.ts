@@ -41,9 +41,6 @@ export class CartEditComponent extends ContentMixin(LitElement) {
           </select>
         </oryx-select>
 
-        <oryx-checkbox>
-          <input type="checkbox" checked /> Make this cart my current cart
-        </oryx-checkbox>
         <oryx-button>create</oryx-button>
       </form>
     `;
