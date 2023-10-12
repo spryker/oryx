@@ -41,7 +41,11 @@ export class DefaultCurrencyService implements CurrencyService {
   getCurrencySymbol(): Observable<string> {
     if (!this.localeService) return of('');
 
-    return combineLatest([this.get(), this.localeService.get()]).pipe(
+    //TODO: drop typecasting after typescript version is updated
+    return combineLatest([
+      this.get(),
+      this.localeService.get() as Observable<string>,
+    ]).pipe(
       map(([currency, locale]) =>
         (0)
           .toLocaleString(locale, {
