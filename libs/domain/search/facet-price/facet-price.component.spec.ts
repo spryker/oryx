@@ -9,8 +9,8 @@ import { html } from 'lit';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
 import { SearchFacetValueNavigationComponent } from '../facet-value-navigation';
-import { SearchRangeFacetComponent } from './facet-range.component';
-import { searchRangeFacetComponent } from './facet-range.def';
+
+import { CurrencyService } from '@spryker-oryx/site';
 
 const name = 'Mock';
 const min = 0;
@@ -21,8 +21,12 @@ class MockFacetListService implements Partial<FacetListService> {
   getFacet = vi.fn().mockReturnValue(of(mockFacet));
 }
 
-describe('SearchRangeFacetComponent', () => {
-  let element: SearchRangeFacetComponent;
+class MockCurrencyService implements Partial<CurrencyService> {
+  getFacet = vi.fn().mockReturnValue(of(mockFacet));
+}
+
+describe('SearchPriceFacetComponent', () => {
+  let element: SearchPriceFacetComponent;
   let service: MockFacetListService;
 
   const getInput = (isMax = false): InputComponent => {

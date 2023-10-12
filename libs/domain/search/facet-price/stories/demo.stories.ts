@@ -14,8 +14,8 @@ export default {
     open: true,
     disableClear: false,
     step: 1,
-    labelMin: 'price.label.min-<currency>',
-    labelMax: 'price.label.max-<currency>',
+    labelMin: 'min-<currency>',
+    labelMax: 'max-<currency>',
   },
   argTypes: {
     step: {
