@@ -37,37 +37,37 @@ describe('Search suite', () => {
     });
   });
 
-  // describe('Products sorting', () => {
-  //   beforeEach(() => {
-  //     searchPage = new SearchPage({ q: 'Cable' });
-  //     cy.visit(searchPage.url);
-  //   });
-  //
-  //   it('should apply default sorting when sorting is cleared', () => {
-  //     // check default sorting
-  //     checkProductCardsSortingBySku(searchPage, sortingTestData.default);
-  //
-  //     // change sorting
-  //     searchPage
-  //       .getProductSorting()
-  //       .applySorting(Object.keys(sortingTestData)[2]);
-  //     searchPage.waitForSearchRequest();
-  //
-  //     // clear sorting and check that it is default again
-  //     searchPage.getProductSorting().clearSorting();
-  //     checkProductCardsSortingBySku(searchPage, sortingTestData.default);
-  //   });
-  //
-  //   it('should apply all sorting options', () => {
-  //     Object.keys(sortingTestData)
-  //       .filter((option) => option !== 'default')
-  //       .forEach((option) => {
-  //         cy.log(`Sorting: ${option} is applied`);
-  //         searchPage.getProductSorting().applySorting(option);
-  //         searchPage.waitForSearchRequest();
-  //
-  //         checkProductCardsSortingBySku(searchPage, sortingTestData[option]);
-  //       });
-  //   });
-  // });
+  describe('Products sorting', () => {
+    beforeEach(() => {
+      searchPage = new SearchPage({ q: 'Cable' });
+      cy.visit(searchPage.url);
+    });
+
+    it('should apply default sorting when sorting is cleared', () => {
+      // check default sorting
+      checkProductCardsSortingBySku(searchPage, sortingTestData.default);
+
+      // change sorting
+      searchPage
+        .getProductSorting()
+        .applySorting(Object.keys(sortingTestData)[2]);
+      searchPage.waitForSearchRequest();
+
+      // clear sorting and check that it is default again
+      searchPage.getProductSorting().clearSorting();
+      checkProductCardsSortingBySku(searchPage, sortingTestData.default);
+    });
+
+    it('should apply all sorting options', () => {
+      Object.keys(sortingTestData)
+        .filter((option) => option !== 'default')
+        .forEach((option) => {
+          cy.log(`Sorting: ${option} is applied`);
+          searchPage.getProductSorting().applySorting(option);
+          searchPage.waitForSearchRequest();
+
+          checkProductCardsSortingBySku(searchPage, sortingTestData[option]);
+        });
+    });
+  });
 });

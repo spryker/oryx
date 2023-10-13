@@ -1,5 +1,9 @@
-import { checkProductCardsFilterring } from '../support/checks';
+import {
+  checkProductCardsFilterring,
+  checkProductCardsSortingBySku,
+} from '../support/checks';
 import { CategoryPage } from '../support/page-objects/category.page';
+import { sortingTestData } from '../support/test-data/search-products';
 
 describe('Category suite', () => {
   describe('Products filtering', () => {
@@ -41,43 +45,43 @@ describe('Category suite', () => {
     });
   });
 
-  // describe('Products sorting', () => {
-  //   let categoryPage;
-  //
-  //   beforeEach(() => {
-  //     categoryPage = new CategoryPage({ id: '15' });
-  //     categoryPage.visit();
-  //   });
-  //
-  //   it('should apply default sorting when sorting is cleared', () => {
-  //     // check default sorting
-  //     checkProductCardsSortingBySku(categoryPage, sortingTestData.default);
-  //
-  //     // change sorting
-  //     categoryPage
-  //       .getProductSorting()
-  //       .applySorting(Object.keys(sortingTestData)[2]);
-  //     categoryPage.waitForSearchRequest();
-  //
-  //     // clear sorting and check that it is default again
-  //     categoryPage.getProductSorting().clearSorting();
-  //     checkProductCardsSortingBySku(categoryPage, sortingTestData.default);
-  //   });
-  //
-  //   it('should apply all sorting options', () => {
-  //     Object.keys(sortingTestData).forEach((option) => {
-  //       // default options does not exist in the dropdown
-  //       // we should skip it
-  //       if (option === 'default') {
-  //         return;
-  //       }
-  //
-  //       cy.log(`Sorting: ${option} is applied`);
-  //       categoryPage.getProductSorting().applySorting(option);
-  //       categoryPage.waitForSearchRequest();
-  //
-  //       checkProductCardsSortingBySku(categoryPage, sortingTestData[option]);
-  //     });
-  //   });
-  // });
+  describe('Products sorting', () => {
+    let categoryPage;
+
+    beforeEach(() => {
+      categoryPage = new CategoryPage({ id: '15' });
+      categoryPage.visit();
+    });
+
+    it('should apply default sorting when sorting is cleared', () => {
+      // check default sorting
+      checkProductCardsSortingBySku(categoryPage, sortingTestData.default);
+
+      // change sorting
+      categoryPage
+        .getProductSorting()
+        .applySorting(Object.keys(sortingTestData)[2]);
+      categoryPage.waitForSearchRequest();
+
+      // clear sorting and check that it is default again
+      categoryPage.getProductSorting().clearSorting();
+      checkProductCardsSortingBySku(categoryPage, sortingTestData.default);
+    });
+
+    it('should apply all sorting options', () => {
+      Object.keys(sortingTestData).forEach((option) => {
+        // default options does not exist in the dropdown
+        // we should skip it
+        if (option === 'default') {
+          return;
+        }
+
+        cy.log(`Sorting: ${option} is applied`);
+        categoryPage.getProductSorting().applySorting(option);
+        categoryPage.waitForSearchRequest();
+
+        checkProductCardsSortingBySku(categoryPage, sortingTestData[option]);
+      });
+    });
+  });
 });
