@@ -26,6 +26,24 @@ export class CouponComponent extends ContentMixin(LitElement) {
           >Apply</oryx-button
         >
       </form>
+
+      <ul>
+        <li>
+          <oryx-icon type="done"></oryx-icon>
+          <span class="code">1234-ABC-1234-01</span>
+          <oryx-button icon="delete" type="icon" size="md"></oryx-button>
+          <span class="name"
+            >5% discount on all white products
+            <span>(valid till 2021-02-28)</span>
+          </span>
+        </li>
+        <li>
+          <oryx-icon type="done"></oryx-icon>
+          <span class="code">#birthday</span>
+          <oryx-button icon="delete" type="icon" size="md"></oryx-button>
+          <span class="name">Free product (valid till July 6th, 2023)</span>
+        </li>
+      </ul>
     `;
   }
 

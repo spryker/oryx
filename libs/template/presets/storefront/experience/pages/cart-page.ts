@@ -63,7 +63,6 @@ export const cartPage: ExperienceComponent = {
           type: 'oryx-cart-totals',
           components: [
             { type: 'oryx-cart-totals-subtotal' },
-            { type: 'oryx-cart-totals-coupon' },
             { type: 'oryx-cart-totals-discount' },
             { type: 'oryx-cart-totals-tax' },
             { type: 'oryx-cart-totals-delivery' },

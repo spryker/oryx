@@ -1,4 +1,3 @@
-export * from './coupon/coupon.def';
 export * from './delivery/delivery.def';
 export * from './discount/discount.def';
 export * from './expense/expense.def';
