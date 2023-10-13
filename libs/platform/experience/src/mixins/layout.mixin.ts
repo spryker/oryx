@@ -123,6 +123,11 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected layoutTest = computed(() => console.log());
 
+    connectedCallback(): void {
+      super.connectedCallback();
+      this.observe();
+    }
+
     disconnectedCallback(): void {
       super.disconnectedCallback();
       this.observer.disconnect();

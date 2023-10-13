@@ -1,6 +1,6 @@
 import { LayoutPlugin } from '../layout.plugin';
 
-export const SplitAsideLayoutPluginToken = `${LayoutPlugin}split`;
+export const SplitAsideLayoutPluginToken = `${LayoutPlugin}split-aside`;
 
 declare global {
   export interface PluggableLayouts {
