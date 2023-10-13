@@ -50,6 +50,7 @@ export const headlineStyles = css`
   :host([style*='--max-lines']) ::slotted(*) {
     max-height: calc(var(--_line-height) * var(--max-lines));
     transition: max-height 2s;
+    /* stylelint-disable-next-line */
     display: var(--display, -webkit-box);
     overflow: hidden;
     -webkit-line-clamp: var(--max-lines);
