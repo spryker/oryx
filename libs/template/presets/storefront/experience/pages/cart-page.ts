@@ -1,4 +1,18 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
+
+const cartEntries = (): ExperienceComponent => {
+  const components: ExperienceComponent[] = [];
+  if (featureVersion >= '1.2') components.push({ type: 'oryx-cart-heading' });
+  components.push({ type: 'oryx-cart-entries' });
+
+  return {
+    type: 'oryx-composition',
+    id: 'cart-entries',
+    components,
+    options: { rules: [{ layout: 'list' }] },
+  };
+};
 
 export const cartPage: ExperienceComponent = {
   id: 'cart-page',
@@ -40,12 +54,7 @@ export const cartPage: ExperienceComponent = {
         ],
       },
     },
-    {
-      type: 'oryx-composition',
-      id: 'cart-entries',
-      components: [{ type: 'oryx-cart-entries' }],
-      options: { rules: [{ layout: 'list' }] },
-    },
+    cartEntries(),
     {
       type: 'oryx-composition',
       id: 'cart-totals',

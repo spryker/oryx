@@ -10,7 +10,7 @@ export class NavigationComponent extends LitElement {
   static styles = [navigationStyles];
 
   /**
-   * Label that is used for assistive technology to vocalise the usage
+   * Label that is used for assistive technology to vocalize the usage
    * of the collapse button.
    *
    * Defaults to "collapse navigation".

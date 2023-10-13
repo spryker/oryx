@@ -42,6 +42,16 @@ export const navigationItemStyles = css`
     border-radius: 4px;
   }
 
+  :host([divider])::after {
+    content: '';
+    background-color: var(--oryx-color-neutral-5);
+    width: calc(100% - 32px);
+    height: 1px;
+    position: absolute;
+    inset-inline-start: 16px;
+    margin-block-start: -54px;
+  }
+
   ::slotted(*) {
     display: contents;
     text-decoration: none;

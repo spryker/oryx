@@ -1,5 +1,46 @@
 import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
+
+const checkoutInformation = (): ExperienceComponent => {
+  const components: ExperienceComponent[] = [];
+  if (featureVersion >= '1.2')
+    components.push({
+      type: 'oryx-checkout-heading',
+      options: { rules: [{ padding: '30px 0 0 0' }] },
+    });
+  components.push({
+    type: 'oryx-cart-entries',
+    options: { readonly: true },
+  });
+
+  const gap = featureVersion >= '1.2' ? '0' : '20px';
+
+  return {
+    type: 'oryx-composition',
+    id: 'checkout-information',
+    components: [
+      {
+        type: 'oryx-checkout-orchestrator',
+        components: [
+          { type: 'oryx-checkout-account' },
+          { type: 'oryx-checkout-shipping-address' },
+          { type: 'oryx-checkout-billing-address' },
+          { type: 'oryx-checkout-shipping-method' },
+          { type: 'oryx-checkout-payment-method' },
+        ],
+        options: { rules: [{ layout: 'list', gap: '30px' }] },
+      },
+      ...components,
+    ],
+    options: {
+      rules: [
+        { hideByRule: 'CART.EMPTY' },
+        { gap, layout: 'flex', vertical: true, align: 'stretch' },
+      ],
+    },
+  };
+};
 
 export const checkoutPage: ExperienceComponent = {
   id: 'checkout-page',
@@ -41,33 +82,7 @@ export const checkoutPage: ExperienceComponent = {
         ],
       },
     },
-    {
-      type: 'oryx-composition',
-      id: 'checkout-information',
-      components: [
-        {
-          type: 'oryx-checkout-orchestrator',
-          components: [
-            { type: 'oryx-checkout-account' },
-            { type: 'oryx-checkout-shipping-address' },
-            { type: 'oryx-checkout-billing-address' },
-            { type: 'oryx-checkout-shipping-method' },
-            { type: 'oryx-checkout-payment-method' },
-          ],
-          options: { rules: [{ layout: 'list', gap: '30px' }] },
-        },
-        {
-          type: 'oryx-cart-entries',
-          options: { readonly: true },
-        },
-      ],
-      options: {
-        rules: [
-          { hideByRule: 'CART.EMPTY' },
-          { gap: '20px', layout: 'flex', vertical: true, align: 'stretch' },
-        ],
-      },
-    },
+    checkoutInformation(),
     {
       type: 'oryx-composition',
       id: 'checkout-totals',
