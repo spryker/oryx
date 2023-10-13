@@ -5,8 +5,8 @@ import {
   writeJsonFile,
 } from '@nx/devkit';
 import { CopyAssetsHandler } from '@nx/js/src/utils/assets/copy-assets-handler';
-import runCommands from '@nx/workspace/src/executors/run-commands/run-commands.impl';
-import { AssetGlob } from '@nx/workspace/src/utilities/assets';
+import runCommands from 'nx/src/executors/run-commands/run-commands.impl';
+import { AssetGlob } from '@nx/js/src/utils/assets/assets';
 import { existsSync, rmdirSync } from 'fs';
 import { join } from 'path';
 import { DirData, LibOptions, libDirsNormalizer } from './utils';

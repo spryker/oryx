@@ -33,13 +33,13 @@
       "executor": "./tools/executors/dependency-tree:deps"
     },
     "visual-regression-pr": {
-      "executor": "@nx/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "command": "chromatic --ci --only-changed --exit-zero-on-changes"
       }
     },
     "visual-regression-branch": {
-      "executor": "@nx/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "command": "chromatic --ci --only-changed --exit-zero-on-changes --auto-accept-changes"
       }

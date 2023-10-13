@@ -6,14 +6,14 @@
   "tags": ["type:app"],
   "targets": {
     "serve": {
-      "executor": "@nx/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "command": "npm run dev",
         "cwd": "apps/storefront"
       }
     },
     "serve-e2e": {
-      "executor": "@nx/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "commands": [
           "npx vite build -c vite.config.prod-no-ssr.ts",
@@ -24,14 +24,14 @@
       }
     },
     "serve-ssr": {
-      "executor": "@nx/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "command": "npm run dev:ssr",
         "cwd": "apps/storefront"
       }
     },
     "serve-prod": {
-      "executor": "@nx/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "commands": [
           "nx build-client storefront",
@@ -43,21 +43,21 @@
       }
     },
     "build-client": {
-      "executor": "@nx/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "command": "npm run build:client",
         "cwd": "apps/storefront"
       }
     },
     "build-ssr": {
-      "executor": "@nx/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "command": "npm run build:ssr",
         "cwd": "apps/storefront"
       }
     },
     "build": {
-      "executor": "@nx/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "command": "npm run build",
         "cwd": "apps/storefront"
