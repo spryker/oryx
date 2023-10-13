@@ -16,9 +16,13 @@ describe('Product details page suite', () => {
     const productData = ProductStorage.getByEq(3);
     const pdp = new ProductDetailsPage(productData);
 
+    cy.intercept('**/concrete-alternative-products?**').as(
+      'product-relations-request'
+    );
     pdp.visit();
-    pdp.checkDefaultProduct();
+    cy.wait('@product-relations-request');
 
+    pdp.checkDefaultProduct();
     pdp.getRelations().getProducts().should('be.visible');
   });
 
