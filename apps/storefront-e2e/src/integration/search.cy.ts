@@ -1,5 +1,9 @@
-import { checkProductCardsFilterring } from '../support/checks';
+import {
+  checkProductCardsFilterring,
+  checkProductCardsSortingBySku,
+} from '../support/checks';
 import { SearchPage } from '../support/page-objects/search.page';
+import { sortingTestData } from '../support/test-data/search-products';
 
 let searchPage;
 
