@@ -21,9 +21,7 @@
       "executor": "@nx/storybook:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "config": {
-          "configFolder": "apps/storybook/.storybook"
-        },
+        "configDir": "apps/storybook/.storybook",
         "outputPath": "dist/storybook/all",
         "outputDir": "dist/storybook/all",
         "webpackStatsJson": "dist/storybook/all"

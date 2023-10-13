@@ -4,10 +4,10 @@ import {
   readJsonFile,
   writeJsonFile,
 } from '@nx/devkit';
-import { CopyAssetsHandler } from '@nx/js/src/utils/assets/copy-assets-handler';
-import runCommands from 'nx/src/executors/run-commands/run-commands.impl';
 import { AssetGlob } from '@nx/js/src/utils/assets/assets';
+import { CopyAssetsHandler } from '@nx/js/src/utils/assets/copy-assets-handler';
 import { existsSync, rmdirSync } from 'fs';
+import runCommands from 'nx/src/executors/run-commands/run-commands.impl';
 import { join } from 'path';
 import { DirData, LibOptions, libDirsNormalizer } from './utils';
 
