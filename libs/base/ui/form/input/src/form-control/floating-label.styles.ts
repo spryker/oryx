@@ -26,7 +26,6 @@ const floatingLabelStyles = (attribute = true) => {
       max-width: calc(100% - 26px - var(--float-label-start-gap, 0px));
       z-index: 1;
       transition: 100ms;
-      /* stylelint-disable-next-line */
       background: linear-gradient(
         to bottom,
         transparent 10px,

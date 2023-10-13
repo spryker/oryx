@@ -34,7 +34,6 @@ export const contentTextStyles = css`
     height: 100%;
     z-index: 1;
     transition: opacity var(--oryx-transition-time) ease;
-    /* stylelint-disable-next-line */
     background: linear-gradient(
       to bottom,
       transparent,

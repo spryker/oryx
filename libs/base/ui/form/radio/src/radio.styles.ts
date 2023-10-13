@@ -19,7 +19,6 @@ export const baseStyles = css`
 
   ::slotted(input:checked) {
     background-clip: content-box;
-    /* stylelint-disable-next-line */
     background-image: linear-gradient(currentColor 0%, currentColor 100%);
     color: var(--oryx-color-primary-9);
   }
