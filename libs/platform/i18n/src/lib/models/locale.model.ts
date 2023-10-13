@@ -3,6 +3,6 @@ export interface Locale {
   code: string;
 }
 
-export interface I18nString extends String {
+export type I18nString = string & {
   hasHtml?: boolean;
-}
+};

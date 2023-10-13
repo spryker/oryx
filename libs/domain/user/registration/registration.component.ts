@@ -62,7 +62,7 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
     this.onCheckboxChange = this.onCheckboxChange.bind(this);
   }
 
-  protected firstUpdated(_changedProperties: PropertyValues) {
+  protected firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
 
     this.password?.addEventListener('input', this.onPasswordInput);

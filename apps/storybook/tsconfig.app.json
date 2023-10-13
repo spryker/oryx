@@ -2,8 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "emitDecoratorMetadata": true,
-    "useDefineForClassFields": false
+    "declaration": true,
+    "types": []
   },
   "exclude": ["src/test.ts", "**/*.spec.ts", "**/*.test.ts"],
   "include": ["**/*.ts"]

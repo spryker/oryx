@@ -1,5 +1,5 @@
 import { ExecutorContext, joinPathFragments } from '@nx/devkit';
-import runCommands from '@nx/workspace/src/executors/run-commands/run-commands.impl';
+import runCommands from 'nx/src/executors/run-commands/run-commands.impl';
 import { UserConfig } from 'vitest';
 
 export default async function vitestExecutor(
