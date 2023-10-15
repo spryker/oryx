@@ -2,7 +2,7 @@ import { OverlaysDecorator } from '@/tools/storybook';
 import { expect } from '@storybook/jest';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 import { ModalComponent } from '../../modal.component';
@@ -33,5 +33,5 @@ CloseNestedModal.play = async (obj: {
   userEvent.click(closeNestedModalBtn);
   await new Promise((r) => setTimeout(r, 1000));
 
-  expect(nestedModal.hasAttribute('open')).toBeFalsy();
+  await expect(nestedModal.hasAttribute('open')).toBeFalsy();
 };

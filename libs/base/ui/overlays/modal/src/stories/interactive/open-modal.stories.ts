@@ -1,8 +1,8 @@
 import { OverlaysDecorator } from '@/tools/storybook';
 import { expect } from '@storybook/jest';
-import { userEvent } from '@storybook/testing-library';
+import { userEvent, waitFor } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 import { ModalComponent } from '../../modal.component';
@@ -41,5 +41,5 @@ OpenModal.play = async (obj: { canvasElement: HTMLElement }): Promise<void> => {
 
   await new Promise((r) => setTimeout(r, 1000));
   userEvent.click(openBtn);
-  expect(modal.hasAttribute('open')).toBeTruthy();
+  await waitFor(() => expect(modal.hasAttribute('open')).toBeTruthy());
 };

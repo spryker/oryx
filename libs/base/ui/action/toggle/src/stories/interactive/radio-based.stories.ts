@@ -1,7 +1,7 @@
 import { expect } from '@storybook/jest';
-import { userEvent } from '@storybook/testing-library';
+import { userEvent, waitFor } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 export default {
@@ -65,13 +65,17 @@ Radio.play = async (obj: {
 
   await new Promise((r) => setTimeout(r, 1000));
   userEvent.click(secondRadio);
-  expect(firstRadio.checked).toBeFalsy();
-  expect(secondRadio.checked).toBeTruthy();
-  expect(thirdRadio.checked).toBeFalsy();
+  await waitFor(() => {
+    expect(firstRadio.checked).toBeFalsy();
+    expect(secondRadio.checked).toBeTruthy();
+    expect(thirdRadio.checked).toBeFalsy();
+  });
 
   await new Promise((r) => setTimeout(r, 1000));
   userEvent.click(thirdRadio);
-  expect(firstRadio.checked).toBeFalsy();
-  expect(secondRadio.checked).toBeFalsy();
-  expect(thirdRadio.checked).toBeTruthy();
+  await waitFor(() => {
+    expect(firstRadio.checked).toBeFalsy();
+    expect(secondRadio.checked).toBeFalsy();
+    expect(thirdRadio.checked).toBeTruthy();
+  });
 };

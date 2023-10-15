@@ -1,7 +1,7 @@
 import { expect } from '@storybook/jest';
-import { userEvent } from '@storybook/testing-library';
+import { userEvent, waitFor } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 import { PasswordInputComponent } from '../../index';
@@ -35,10 +35,10 @@ HoverStrategy.play = async (obj: {
 
   userEvent.clear(input);
   await userEvent.type(input, 'Change123$', { delay: 100 });
-  expect(input.type).toBe('password');
+  await waitFor(() => expect(input.type).toBe('password'));
   userEvent.hover(icon);
   await new Promise((r) => setTimeout(r, 500));
-  expect(input.type).toBe('text');
+  await waitFor(() => expect(input.type).toBe('text'));
   userEvent.unhover(icon);
-  expect(input.type).toBe('password');
+  await waitFor(() => expect(input.type).toBe('password'));
 };
