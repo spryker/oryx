@@ -18,6 +18,7 @@ export const multiRangeStyles = css`
   :host {
     --_height: 24px;
 
+    padding: 0 calc(var(--_height) / 2);
     background: var(--oryx-color-neutral-8);
     height: 6px;
     display: grid;
@@ -31,7 +32,12 @@ export const multiRangeStyles = css`
     margin: 9px 0;
   }
 
-  :host > * {
+  :host([invalid]) {
+    display: none;
+  }
+
+  :host::before,
+  label {
     grid-row: 1;
   }
 
@@ -47,11 +53,11 @@ export const multiRangeStyles = css`
     cursor: pointer;
   }
 
-  label:nth-of-type(1) {
+  label:first-child {
     grid-column: 1 / span 2;
   }
 
-  label:nth-of-type(2) {
+  label:last-child {
     grid-column: 3 / span 4;
   }
 
@@ -68,9 +74,16 @@ export const multiRangeStyles = css`
     width: 100%;
     height: 0;
     inset-block-start: 3px;
-    inset-inline-start: 0;
     outline: none;
     pointer-events: var(--_pointer-events, none);
+  }
+
+  label:first-child input {
+    inset-inline-start: 0;
+  }
+
+  label:last-child input {
+    inset-inline-end: 0;
   }
 
   input::-webkit-slider-thumb {
@@ -86,13 +99,15 @@ export const multiRangeStyles = css`
     box-shadow: 0 0 3px var(--oryx-color-primary-9);
   }
 
-  .active {
+  :host::before {
+    content: '';
+    display: block;
     background-color: var(--oryx-color-primary-9);
     grid-column: 2 / span 2;
     height: inherit;
   }
 
-  :host([disabled]) .active {
+  :host([disabled])::before {
     background-color: var(--oryx-color-neutral-8);
   }
 
