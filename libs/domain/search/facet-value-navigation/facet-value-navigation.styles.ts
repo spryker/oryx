@@ -25,7 +25,7 @@ export const facetValueNavigationStyles = css`
 
   slot:not([name]) + oryx-button {
     width: fit-content;
-    padding-block-end: 10px;
+    padding-block-start: 10px;
   }
 
   oryx-collapsible {
