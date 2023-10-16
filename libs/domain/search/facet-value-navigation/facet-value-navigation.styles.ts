@@ -1,3 +1,4 @@
+import { featureVersion } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const facetValueNavigationStyles = css`
@@ -25,7 +26,13 @@ export const facetValueNavigationStyles = css`
 
   slot:not([name]) + oryx-button {
     width: fit-content;
-    padding-block-start: 10px;
+    ${featureVersion <= '1.2'
+      ? css`
+          padding-block-end: 10px;
+        `
+      : css`
+          padding-block-start: 10px;
+        `}
   }
 
   oryx-collapsible {

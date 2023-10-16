@@ -23,11 +23,6 @@ export class CollapsibleComponent
 
   @query('details') protected details?: HTMLDetailsElement;
 
-  /**
-   * Indicates that the collapsible was opened by a user. We need this info since
-   * we need to scroll the collapsible into the view port whenever it is opened by
-   * the user. We do not like to do this when it's (initially) rendered `open`.
-   */
   protected isManuallyOpened = false;
 
   protected override render(): TemplateResult {

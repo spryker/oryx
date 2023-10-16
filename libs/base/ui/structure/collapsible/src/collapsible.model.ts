@@ -21,6 +21,13 @@ export interface CollapsibleAttributes {
    * Prevent focus by keyboard navigation
    */
   nonTabbable?: boolean;
+
+  /**
+   * Indicates that the collapsible was opened by a user. We need this info since
+   * we need to scroll the collapsible into the view port whenever it is opened by
+   * the user. We do not like to do this when it's (initially) rendered `open`.
+   */
+  isManuallyOpened?: boolean;
 }
 
 export const enum CollapsibleAppearance {
