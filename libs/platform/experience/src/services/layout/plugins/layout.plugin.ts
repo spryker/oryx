@@ -41,18 +41,18 @@ export interface LayoutPlugin {
    *
    * Usage LayoutPlugin.getImplementation().method1() | LayoutPlugin.getImplementation().method2()
    */
-  getImplementation?(component?: unknown): LayoutPluginImplementation;
+  getImplementation?(data?: unknown): LayoutPluginImplementation;
   /**
    * Returns object with pre and post render templates.
    * Together with composition component it's possible to specify global post\pre render and per component depends on argument.
    * For global render we don't pass component as argument while per component argument is defined.
    *
-   * getRender(component?: Component): LayoutPluginRender {
-   *   specifying render per component.
-   *   if (component) {
+   * getRender(data?: unknown): LayoutPluginRender {
+   *   specifying render per component. (first we need guard for checking if data is Component)
+   *   if (data === Component) {
    *    return  {
-   *      pre: html`<div>pre ${component.id} render</div>`,
-   *      post: html`<div>post ${component.id} render</div>`,
+   *      pre: html`<div>pre ${data.id} render</div>`,
+   *      post: html`<div>post ${data.id} render</div>`,
    *    }
    *
    *   specifying global render.
@@ -63,7 +63,7 @@ export interface LayoutPlugin {
    *  }
    * }
    */
-  getRender?(component?: unknown): LayoutPluginRender;
+  getRender?(data?: unknown): LayoutPluginRender;
 }
 
 declare global {
