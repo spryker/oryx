@@ -1,6 +1,5 @@
 import { TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
-import { Component } from '../../../models';
 import { LayoutStyles } from '../layout.model';
 
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
@@ -42,7 +41,7 @@ export interface LayoutPlugin {
    *
    * Usage LayoutPlugin.getImplementation().method1() | LayoutPlugin.getImplementation().method2()
    */
-  getImplementation?(component?: Component): LayoutPluginImplementation;
+  getImplementation?(component?: unknown): LayoutPluginImplementation;
   /**
    * Returns object with pre and post render templates.
    * Together with composition component it's possible to specify global post\pre render and per component depends on argument.
@@ -64,7 +63,7 @@ export interface LayoutPlugin {
    *  }
    * }
    */
-  getRender?(component?: Component): LayoutPluginRender;
+  getRender?(component?: unknown): LayoutPluginRender;
 }
 
 declare global {

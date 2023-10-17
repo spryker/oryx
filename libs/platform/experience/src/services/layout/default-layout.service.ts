@@ -46,13 +46,13 @@ export class DefaultLayoutService implements LayoutService {
   getImplementation(
     config: LayoutIncomingConfig
   ): LayoutPluginImplementation | undefined {
-    const { token, type, component } = config;
-    return this.getPlugin(token, type)?.getImplementation?.(component);
+    const { token, type, data } = config;
+    return this.getPlugin(token, type)?.getImplementation?.(data);
   }
 
   getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined {
-    const { token, type, component } = config;
-    return this.getPlugin(token, type)?.getRender?.(component);
+    const { token, type, data } = config;
+    return this.getPlugin(token, type)?.getRender?.(data);
   }
 
   protected resolveCommonStyles(): Observable<string> {

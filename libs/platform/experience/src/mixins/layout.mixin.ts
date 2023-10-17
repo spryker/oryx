@@ -148,7 +148,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         ${this.layoutService.getRender({
           type,
           token,
-          component,
+          data: component,
         })?.[place]}`;
       }, html``);
     }

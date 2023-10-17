@@ -12,7 +12,7 @@ export const LayoutService = 'oryx.LayoutService';
 export interface LayoutIncomingConfig {
   token: string;
   type: LayoutPluginType;
-  component?: Component;
+  data?: Component | unknown;
 }
 
 export interface LayoutService {
