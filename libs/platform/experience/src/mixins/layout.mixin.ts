@@ -72,8 +72,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       this.observe();
     }
 
-    protected _layout?: CompositionLayout | LayoutTypes;
-
     @signalProperty() attributeWatchers: (keyof LayoutProperties)[] = [];
     @signalProperty() layout?: CompositionLayout | LayoutTypes;
     @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
