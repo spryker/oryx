@@ -2,11 +2,13 @@ import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
 import { Observable, map, merge, of, reduce } from 'rxjs';
+import { StyleProperties } from '../../models';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import { LayoutIncomingConfig, LayoutService } from './layout.service';
 import {
   LayoutPlugin,
   LayoutPluginImplementation,
+  LayoutPluginProperties,
   LayoutPluginRender,
   LayoutPluginType,
   LayoutPropertyPlugin,
@@ -48,6 +50,15 @@ export class DefaultLayoutService implements LayoutService {
   ): LayoutPluginImplementation | undefined {
     const { token, type, data } = config;
     return this.getPlugin(token, type)?.getImplementation?.(data);
+  }
+
+  getProperties(
+    config: LayoutIncomingConfig
+  ): LayoutPluginProperties | undefined {
+    const { token, type, data } = config;
+    return this.getPlugin(token, type)?.getProperties?.(
+      data as StyleProperties
+    );
   }
 
   getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined {

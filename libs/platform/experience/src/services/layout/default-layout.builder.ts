@@ -6,8 +6,11 @@ import {
   StyleProperties,
   StyleRuleSet,
 } from '../../models';
+import { findCssValue, findCssValues } from './css.utilities';
 import { LayoutBuilder } from './layout.builder';
 import { LayoutStylesOptions, LayoutStylesProperties } from './layout.model';
+import { LayoutService } from './layout.service';
+import { LayoutPluginType } from './plugins';
 import { ScreenService } from './screen.service';
 
 /**
@@ -22,7 +25,10 @@ export const layoutKeys: (keyof LayoutStylesProperties)[] = [
 ];
 
 export class DefaultLayoutBuilder implements LayoutBuilder {
-  constructor(protected screenService = inject(ScreenService)) {}
+  constructor(
+    protected screenService = inject(ScreenService),
+    protected layoutService = inject(LayoutService)
+  ) {}
 
   collectStyles(components: Component[]): string {
     return components
@@ -144,24 +150,17 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add({ '--oryx-column-count': data.columnCount }, { omitUnit: true });
 
     if (data.padding) {
-      add({ 'scroll-padding': this.findCssValue(data.padding, 'start') });
+      add({ 'scroll-padding': findCssValue(data.padding, 'start') });
       add({
-        'padding-block': this.findCssValues(data.padding, 'top', 'bottom'),
+        'padding-block': findCssValues(data.padding, 'top', 'bottom'),
       });
       add({
-        'padding-inline': this.findCssValues(data.padding, 'start', 'end'),
+        'padding-inline': findCssValues(data.padding, 'start', 'end'),
       });
-
-      if (typeof data.layout === 'object' && data.layout.bleed) {
-        // consider moving to layoutBleed layout plugin
-        // avoid adding padding for layouts that layoutBleed into the side
-        // as this can harm the calculated width
-        add({ 'padding-inline': '0' });
-      }
 
       // nested padding is usedd to calculate the size of nested grid based elements
       add({
-        '--inline-padding': this.findCssValues(data.padding, 'start', 'end'),
+        '--inline-padding': findCssValues(data.padding, 'start', 'end'),
       });
     }
 
@@ -185,12 +184,6 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     const gaps = data.gap?.toString().split(' ');
     add({ '--column-gap': gaps?.[1] ?? gaps?.[0] }, { emptyValue: true });
     add({ '--row-gap': gaps?.[0] }, { emptyValue: true });
-
-    if (typeof data.layout === 'object' && data.layout.sticky) {
-      add({
-        'max-height': `calc(${data.height ?? '100vh'} - ${data.top ?? '0px'})`,
-      });
-    }
 
     add({
       '--align': data.align,
@@ -222,49 +215,31 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       }
     }
 
-    return rules;
-  }
+    if (typeof data.layout === 'string') {
+      const layoutProps = this.layoutService.getProperties?.({
+        token: data.layout,
+        type: LayoutPluginType.Layout,
+        data,
+      });
 
-  protected findCssValues(
-    data: string,
-    startPos: 'start' | 'top',
-    endPos: 'end' | 'bottom'
-  ): string | undefined {
-    const start = this.findCssValue(data, startPos);
-    const end = this.findCssValue(data, endPos);
-    if (!start && !end) return;
-    if (start === end) return start;
-    return `${start ?? 'auto'} ${end ?? 'auto'}`;
-  }
-
-  /**
-   * Extracts a specified position value from a given string.
-   *
-   * @param data - A string representing CSS values, with each value separated by a space.
-   * @param pos - The position to extract the value for, one of: 'top', 'end', 'bottom', or 'start'.
-   * @returns The extracted value or `undefined` if the position is not found.
-   *
-   * @example
-   * const padding = '10px 5px 20px';
-   * findCssValue(padding, 'top'); // '10px'
-   * findCssValue(padding, 'end'); // '5px'
-   * findCssValue(padding, 'bottom'); // '20px'
-   * findCssValue(padding, 'start'); // '5px'
-   */
-  protected findCssValue(
-    data: string,
-    pos: 'top' | 'bottom' | 'start' | 'end'
-  ): string | undefined {
-    const positions = data.split(' ');
-    switch (pos) {
-      case 'top':
-        return positions[0];
-      case 'end':
-        return positions[1] ?? positions[0];
-      case 'bottom':
-        return positions[2] ?? positions[0];
-      case 'start':
-        return positions[3] ?? positions[1] ?? positions[0];
+      if (layoutProps) add(layoutProps);
     }
+
+    if (typeof data.layout === 'object') {
+      for (const [key, value] of Object.entries(data.layout)) {
+        const layoutProps = this.layoutService.getProperties?.({
+          token: key === 'type' ? value : key,
+          type:
+            key === 'type'
+              ? LayoutPluginType.Layout
+              : LayoutPluginType.Property,
+          data,
+        });
+        console.log(layoutProps);
+        if (layoutProps) add(layoutProps);
+      }
+    }
+
+    return rules;
   }
 }

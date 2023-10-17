@@ -1,5 +1,6 @@
 import { TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
+import { StyleProperties } from '../../../models';
 import { LayoutStyles } from '../layout.model';
 
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
@@ -25,9 +26,12 @@ export interface LayoutPluginConfig {
   properties?: Record<string, unknown>;
 }
 
+export type LayoutPluginProperties = Record<string, string | number>;
+
 export interface LayoutPlugin {
   getStyles(): Observable<LayoutStyles>;
   getConfig(): LayoutPluginConfig;
+  getProperties?(data: StyleProperties): LayoutPluginProperties;
   /**
    * Returns object with implementation methods.
    * Possible usage with additional component.
