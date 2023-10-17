@@ -20,8 +20,6 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { when } from 'lit/directives/when.js';
 import { map, of, switchMap } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
 
@@ -92,20 +90,18 @@ export class CompositionComponent extends LayoutMixin(
 
     if (!components?.length) return;
 
-    const inlineStyles = this.layoutBuilder.collectStyles(components);
-    const layoutStyles = this.layoutStyles() ?? '';
-    const styles = inlineStyles + layoutStyles;
-
-    return html`
-      ${this.layoutPrerender()}
-      ${repeat(
+    return this.renderLayout(
+      repeat(
         components,
         (component) => component.id,
-        (component) => this.renderComponent(component)
-      )}
-      ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))}
-      ${this.layoutPostrender()}
-    `;
+        (component) => html`
+          ${this.getLayoutRender('pre', component)}
+          ${this.renderComponent(component)}
+          ${this.getLayoutRender('post', component)}
+        `
+      ) as TemplateResult,
+      components
+    );
   }
 
   protected renderComponent(

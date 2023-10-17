@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { Component } from '../../models';
 import { ResponsiveLayoutInfo } from './layout.model';
 import {
   LayoutPluginImplementation,
@@ -8,16 +9,18 @@ import {
 
 export const LayoutService = 'oryx.LayoutService';
 
+export interface LayoutIncomingConfig {
+  token: string;
+  type: LayoutPluginType;
+  component?: Component;
+}
+
 export interface LayoutService {
   getStyles(sheets: ResponsiveLayoutInfo): Observable<string>;
   getImplementation(
-    token: string,
-    type: LayoutPluginType
+    config: LayoutIncomingConfig
   ): LayoutPluginImplementation | undefined;
-  getRender(
-    token: string,
-    type: LayoutPluginType
-  ): LayoutPluginRender | undefined;
+  getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined;
 }
 
 declare global {

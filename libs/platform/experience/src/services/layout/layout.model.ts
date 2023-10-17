@@ -13,11 +13,13 @@ declare global {
 
 export type LayoutTypes = keyof Layouts | 'list';
 
+export interface LayoutStylesOptions extends LayoutsProperty {
+  type?: LayoutTypes;
+}
+
 export interface LayoutStylesProperties {
   layout?:
-    | (LayoutsProperty & {
-        type?: LayoutTypes;
-      })
+    | LayoutStylesOptions
     | LayoutTypes
     // @deprecated since 1.2
     | string;

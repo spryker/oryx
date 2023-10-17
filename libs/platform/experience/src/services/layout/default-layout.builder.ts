@@ -7,7 +7,7 @@ import {
   StyleRuleSet,
 } from '../../models';
 import { LayoutBuilder } from './layout.builder';
-import { LayoutStylesProperties } from './layout.model';
+import { LayoutStylesOptions, LayoutStylesProperties } from './layout.model';
 import { ScreenService } from './screen.service';
 
 /**
@@ -80,31 +80,26 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       if (!ruleSet) return acc;
 
       const ruleMarkers =
-        typeof ruleSet.layout === 'string'
-          ? ['layout']
-          : Object.keys(ruleSet.layout ?? {}).reduce((acc, key) => {
-              const value =
-                typeof ruleSet.layout === 'string'
-                  ? ruleSet[key]
-                  : ruleSet.layout?.[key as keyof typeof ruleSet.layout];
+        typeof ruleSet.layout === 'object'
+          ? Object.keys(ruleSet.layout ?? {}).reduce((acc, key) => {
+              const value = (ruleSet.layout as LayoutStylesOptions)?.[
+                key as keyof LayoutStylesOptions
+              ];
 
-              if (!value) return acc;
+              if (!value || key === 'type') return acc;
 
-              const layoutKey =
-                typeof ruleSet.layout === 'object' && key === 'type'
-                  ? 'layout'
-                  : key;
               const breakpoint = ruleSet.query?.breakpoint;
               const markerKey = breakpoint
-                ? `${markerPrefix}${breakpoint}-${layoutKey}`
-                : `${markerPrefix}${layoutKey}`;
-              console.log(markerKey, 'markerKey');
+                ? `${markerPrefix}${breakpoint}-${key}`
+                : `${markerPrefix}${key}`;
+
               return `${acc} ${
                 typeof value === 'boolean'
                   ? markerKey
                   : `${markerKey}="${value}"`
               }`;
-            }, '');
+            }, '')
+          : '';
 
       return `${acc}${ruleMarkers}`;
     }, '');

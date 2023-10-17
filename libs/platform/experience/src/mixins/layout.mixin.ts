@@ -1,7 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
 import {
+  Component,
   CompositionLayout,
   ContentMixin,
+  LayoutBuilder,
+  LayoutPluginRender,
   LayoutPluginType,
   LayoutService,
   LayoutTypes,
@@ -19,7 +22,9 @@ import {
   signalProperty,
   ssrShim,
 } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { when } from 'lit/directives/when.js';
 import { LayoutController } from '../controllers/layout.controller';
 
 export declare class LayoutMixinInterface {
@@ -40,8 +45,14 @@ export declare class LayoutMixinInterface {
   lg?: LayoutProperties;
   xl?: LayoutProperties;
   protected layoutStyles: ConnectableSignal<string | undefined>;
-  protected layoutPrerender: ConnectableSignal<(TemplateResult | undefined)[]>;
-  protected layoutPostrender: ConnectableSignal<(TemplateResult | undefined)[]>;
+  protected renderLayout: (
+    template: TemplateResult,
+    components?: Component[]
+  ) => TemplateResult;
+  protected getLayoutRender(
+    place: keyof LayoutPluginRender,
+    component?: Component
+  ): TemplateResult;
 }
 
 interface LayoutContentOptions {
@@ -61,13 +72,19 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       this.observe();
     }
 
+    protected _layout?: CompositionLayout | LayoutTypes;
+
     @signalProperty() attributeWatchers: (keyof LayoutProperties)[] = [];
-    @signalProperty() layout?: CompositionLayout | LayoutTypes | undefined;
+    @signalProperty() layout?: CompositionLayout | LayoutTypes;
     @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) md?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) lg?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) xl?: LayoutProperties;
+
+    protected layoutController = new LayoutController(this);
+    protected layoutService = resolve(LayoutService);
+    protected layoutBuilder = resolve(LayoutBuilder);
 
     protected observer = new MutationObserver((mutationRecords) => {
       mutationRecords.map((record) => {
@@ -96,11 +113,10 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     }
 
     protected getPropertyName(attrName: string): keyof LayoutProperties {
-      return attrName.replace('layout-', '') as keyof LayoutProperties;
+      return attrName === 'layout'
+        ? attrName
+        : (attrName.replace('layout-', '') as keyof LayoutProperties);
     }
-
-    protected layoutController = new LayoutController(this);
-    protected layoutService = resolve(LayoutService);
 
     protected layoutStyles = computed(() => {
       this.layout;
@@ -111,35 +127,50 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       );
     });
 
-    protected layoutPrerender = computed(() => {
-      return [
+    protected getLayoutRender(
+      place: keyof LayoutPluginRender,
+      component?: Component
+    ): TemplateResult {
+      const props = [
         'layout',
         ...this.attributeWatchers.map(this.getPropertyName),
-      ].map(
-        (attr) =>
-          this.layoutService.getRender(
-            attr,
-            attr === 'layout'
-              ? LayoutPluginType.Layout
-              : LayoutPluginType.Property
-          )?.pre
-      );
-    });
+      ];
 
-    protected layoutPostrender = computed(() => {
-      return [
-        'layout',
-        ...this.attributeWatchers.map(this.getPropertyName),
-      ].map(
-        (attr) =>
-          this.layoutService.getRender(
-            attr,
-            attr === 'layout'
-              ? LayoutPluginType.Layout
-              : LayoutPluginType.Property
-          )?.post
-      );
-    });
+      return props.reduce((acc, prop) => {
+        const token = prop === 'layout' ? this.layout : prop;
+
+        if (!token) return acc;
+
+        const type =
+          prop === 'layout'
+            ? LayoutPluginType.Layout
+            : LayoutPluginType.Property;
+
+        return html`${acc}
+        ${this.layoutService.getRender({
+          type,
+          token,
+          component,
+        })?.[place]}`;
+      }, html``);
+    }
+
+    protected renderLayout(
+      template: TemplateResult,
+      components?: Component[]
+    ): TemplateResult {
+      const layoutStyles = this.layoutStyles() ?? '';
+      const inlineStyles = components
+        ? this.layoutBuilder.collectStyles(components)
+        : '';
+      const styles = inlineStyles + layoutStyles;
+
+      return html`
+        ${this.getLayoutRender('pre')} ${template}
+        ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))}
+        ${this.getLayoutRender('post')}
+      `;
+    }
 
     connectedCallback(): void {
       super.connectedCallback();

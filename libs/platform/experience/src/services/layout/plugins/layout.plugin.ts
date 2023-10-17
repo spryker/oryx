@@ -1,5 +1,6 @@
 import { TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
+import { Component } from '../../../models';
 import { LayoutStyles } from '../layout.model';
 
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
@@ -28,8 +29,8 @@ export interface LayoutPluginConfig {
 export interface LayoutPlugin {
   getStyles(): Observable<LayoutStyles>;
   getConfig(): LayoutPluginConfig;
-  getImplementation?(): LayoutPluginImplementation;
-  getRender?(): LayoutPluginRender;
+  getImplementation?(component?: Component): LayoutPluginImplementation;
+  getRender?(component?: Component): LayoutPluginRender;
 }
 
 declare global {

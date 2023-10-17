@@ -36,7 +36,19 @@ const checkoutInformation = (): ExperienceComponent => {
     options: {
       rules: [
         { hideByRule: 'CART.EMPTY' },
-        { gap, layout: 'flex', vertical: true, align: 'stretch' },
+        {
+          gap,
+          layout:
+            featureVersion >= '1.2'
+              ? {
+                  type: 'flex',
+                  vertical: true,
+                }
+              : 'flex',
+          // @deprecated since 1.2 will be removed.
+          vertical: true,
+          align: 'stretch',
+        },
       ],
     },
   };

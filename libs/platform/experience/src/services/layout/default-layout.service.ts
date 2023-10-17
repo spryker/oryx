@@ -3,7 +3,7 @@ import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
 import { Observable, map, merge, of, reduce } from 'rxjs';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
-import { LayoutService } from './layout.service';
+import { LayoutIncomingConfig, LayoutService } from './layout.service';
 import {
   LayoutPlugin,
   LayoutPluginImplementation,
@@ -44,17 +44,15 @@ export class DefaultLayoutService implements LayoutService {
   }
 
   getImplementation(
-    token: string,
-    type: LayoutPluginType
+    config: LayoutIncomingConfig
   ): LayoutPluginImplementation | undefined {
-    return this.getPlugin(token, type)?.getImplementation?.();
+    const { token, type, component } = config;
+    return this.getPlugin(token, type)?.getImplementation?.(component);
   }
 
-  getRender(
-    token: string,
-    type: LayoutPluginType
-  ): LayoutPluginRender | undefined {
-    return this.getPlugin(token, type)?.getRender?.();
+  getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined {
+    const { token, type, component } = config;
+    return this.getPlugin(token, type)?.getRender?.(component);
   }
 
   protected resolveCommonStyles(): Observable<string> {
@@ -69,7 +67,6 @@ export class DefaultLayoutService implements LayoutService {
     excluded: Breakpoint[] = [],
     type: LayoutPluginType
   ): Observable<string> | void {
-    console.log(this.getPlugin(token, type));
     return this.getPlugin(token, type)
       ?.getStyles()
       .pipe(
@@ -83,7 +80,6 @@ export class DefaultLayoutService implements LayoutService {
     token: string,
     type: LayoutPluginType
   ): LayoutPlugin | null {
-    console.log(token, type);
     return this.injector.inject<LayoutPlugin | null>(
       `${
         type === LayoutPluginType.Layout ? LayoutPlugin : LayoutPropertyPlugin

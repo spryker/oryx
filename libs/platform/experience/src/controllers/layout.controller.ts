@@ -62,7 +62,7 @@ export class LayoutController {
   ): string {
     let styles = '';
 
-    if (!layoutProperties.length) {
+    if (layoutProperties.length === 1 && !this.hasLayout(rules)) {
       styles += ':host {display: contents;}\n';
     }
 
@@ -156,9 +156,7 @@ export class LayoutController {
           info[mainKey].excluded?.push(size);
         }
 
-        if (withMainValue && sizeKey === mainKey) {
-          continue;
-        }
+        if (withMainValue && sizeKey === mainKey) continue;
 
         info[sizeKey] ??= { type: getType(isLayout) };
         const dataSize = info[sizeKey];
@@ -169,5 +167,9 @@ export class LayoutController {
 
       return info;
     }, {} as ResponsiveLayoutInfo);
+  }
+
+  protected hasLayout(rules: StyleRuleSet[]): boolean {
+    return !!this.host.layout || rules?.some((rule) => rule.layout);
   }
 }
