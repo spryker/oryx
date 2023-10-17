@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2023-09-22)
+
+
+### Features
+
+* resolve product, category and content links ([#775](https://github.com/spryker/oryx/issues/775)) ([f9f51e2](https://github.com/spryker/oryx/commit/f9f51e220cbf4a03ec2111d1789cc8be22b3ff3e))
+* update content service to possibility use adapters by config ([#755](https://github.com/spryker/oryx/issues/755)) ([43089dc](https://github.com/spryker/oryx/commit/43089dc3326448c58f99978e8c42385f238ccc2f))
+
+
+### Bug Fixes
+
+* blank screen instead of 404 page ([#788](https://github.com/spryker/oryx/issues/788)) ([720eb12](https://github.com/spryker/oryx/commit/720eb12bea26167de0868218f445429ebb3e8e8e))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 

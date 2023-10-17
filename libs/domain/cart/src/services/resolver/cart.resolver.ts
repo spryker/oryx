@@ -26,14 +26,13 @@ export class CartResolver extends BaseResolver<CartResolvers> {
         .pipe(
           map((cart) => {
             const quantity = cart?.products?.reduce(
-              (acc, { quantity }) => acc + quantity,
+              (acc, { quantity }) => acc + Number(quantity),
               0
             );
 
             if (!quantity) {
               return null;
             }
-
             //TODO: Make max quantity to show configurable
             return quantity > 99 ? '99+' : String(quantity);
           })

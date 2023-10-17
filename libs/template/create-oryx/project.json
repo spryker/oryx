@@ -4,7 +4,15 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "./tools/executors/components-library:build"
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "esbuild --bundle ./libs/template/create-oryx/src/main.ts --platform=node --outfile=./dist/libs/template/create-oryx/bin/main.cjs",
+          "cp ./libs/template/create-oryx/package.json ./dist/libs/template/create-oryx/",
+          "cp ./libs/template/create-oryx/README.md ./dist/libs/template/create-oryx/"
+        ],
+        "parallel": false
+      }
     },
     "test": {
       "executor": "./tools/executors/oryx-vite:vitest",

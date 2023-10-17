@@ -5,6 +5,7 @@ export * from './dedupe-arrays';
 export * from './extract-str-props';
 export * from './get-prop-by-path';
 export * from './get-static-prop';
+export * from './hydrate-events';
 export * from './intersect-arrays';
 export * from './next-tick';
 export * from './query.util';
