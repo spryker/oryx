@@ -101,13 +101,7 @@ export class CompositionComponent extends LayoutMixin(
       ${repeat(
         components,
         (component) => component.id,
-        (component) => {
-          return `
-          ${this.layoutPrerender()}
-          ${this.renderComponent(component)}
-          ${this.layoutPostrender()}
-          `;
-        }
+        (component) => this.renderComponent(component)
       )}
       ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))}
       ${this.layoutPostrender()}

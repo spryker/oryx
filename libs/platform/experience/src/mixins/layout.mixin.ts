@@ -1,5 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import {
+  CompositionLayout,
   ContentMixin,
   LayoutService,
   LayoutTypes,
@@ -25,13 +26,13 @@ export declare class LayoutMixinInterface {
    * @deprecated since 1.2 will be deleted.
    * Use attributes with the same name but together with layout- prefix instead.
    */
-  layout?: LayoutTypes;
   bleed?: boolean;
   sticky?: boolean;
   overlap?: boolean;
   divider?: boolean;
   vertical?: boolean;
 
+  layout?: CompositionLayout | LayoutTypes;
   xs?: LayoutProperties;
   sm?: LayoutProperties;
   md?: LayoutProperties;
@@ -60,6 +61,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     }
 
     @signalProperty() attributeWatchers: (keyof LayoutProperties)[] = [];
+    @signalProperty() layout?: CompositionLayout | LayoutTypes;
     @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) md?: LayoutProperties;
@@ -70,9 +72,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       mutationRecords.map((record) => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const attrName = record.attributeName!;
-        const attrValue = this.getAttribute(attrName);
-        (this as Record<string, unknown>)[this.getPropertyName(attrName)] =
-          attrValue;
+        (this as Record<string, unknown>)[attrName] =
+          this.getAttribute(attrName);
       });
 
       this.observer.disconnect();
@@ -81,9 +82,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected observe(layoutSpecificAttrs = []): void {
       const attrs = [...this.attributes].reduce((acc: string[], attr) => {
-        if (!attr.name.startsWith('layout')) return acc;
-        (this as Record<string, unknown>)[this.getPropertyName(attr.name)] =
-          attr.value;
+        if (!attr.name.startsWith('layout-')) return acc;
+        (this as Record<string, unknown>)[attr.name] = attr.value;
         return [...acc, attr.name];
       }, layoutSpecificAttrs);
 
@@ -94,9 +94,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       });
     }
 
-    protected getPropertyName(attrName: string): string {
-      const parts = attrName.split('-');
-      return parts[1] ?? parts[0];
+    protected getPropertyName(attrName: string): keyof LayoutProperties {
+      return attrName.replace('layout-', '') as keyof LayoutProperties;
     }
 
     protected layoutController = new LayoutController(this);
@@ -104,7 +103,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected layoutStyles = computed(() => {
       return this.layoutController.getStyles(
-        this.attributeWatchers,
+        ['layout', ...this.attributeWatchers.map(this.getPropertyName)],
         this.$options().rules
       );
     });
@@ -120,8 +119,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         (attr) => this.layoutService.getRender(attr)?.post
       );
     });
-
-    protected layoutTest = computed(() => console.log());
 
     connectedCallback(): void {
       super.connectedCallback();

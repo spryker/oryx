@@ -55,7 +55,7 @@ export class LayoutController {
    * @deprecated will be protected since 1.2
    */
   collectStyles(
-    layoutProperties: LayoutProperty[],
+    layoutProperties: (keyof LayoutProperties)[],
     rules: StyleRuleSet[] = [],
     uid?: string
   ): string {
@@ -73,46 +73,26 @@ export class LayoutController {
   protected normalizeProperties(
     properties: (keyof LayoutProperties)[],
     rules: StyleRuleSet[]
-  ): LayoutProperty[] {
-    const props = [...properties].map((hostProp) => {
-      const prop = hostProp.replace('layout-', '');
+  ): (keyof LayoutProperties)[] {
+    const props = [...properties];
 
-      return {
-        prop: !prop.length ? hostProp : prop,
-        hostProp,
-        ruleProp:
-          hostProp === 'layout'
-            ? hostProp
-            : (`layout${prop.charAt(0).toUpperCase()}${prop.slice(
-                1
-              )}` as keyof LayoutProperties),
-      };
-    });
-
-    const ruleProps: (StyleRuleSet | string)[] = [...(rules ?? [])];
+    const ruleProps: StyleRuleSet[] = [...(rules ?? [])];
 
     for (const ruleProp of ruleProps) {
-      if (typeof ruleProp === 'object') {
-        ruleProps.push(...Object.keys(ruleProp));
+      if (typeof ruleProp.layout === 'string' && !props.includes('layout')) {
+        props.push('layout');
         continue;
       }
 
-      if (
-        ruleProp.startsWith('layout') &&
-        !props.some((props) => props.ruleProp === ruleProp)
-      ) {
-        const prop = ruleProp.replace('layout', '');
+      if (typeof ruleProp.layout === 'object') {
+        for (const prop of Object.keys(ruleProp.layout)) {
+          if (prop === 'type' && !props.includes('layout')) {
+            props.push('layout');
+            continue;
+          }
 
-        props.push({
-          prop: !prop.length ? ruleProp : prop.toLowerCase(),
-          ruleProp: ruleProp as keyof LayoutProperties,
-          hostProp:
-            ruleProp === 'layout'
-              ? ruleProp
-              : (`layout-${prop.charAt(0).toLowerCase()}${prop.slice(
-                  1
-                )}` as keyof LayoutProperties),
-        });
+          props.push(prop as keyof LayoutProperties);
+        }
       }
     }
 
@@ -120,18 +100,31 @@ export class LayoutController {
   }
 
   protected getLayoutInfos(
-    properties: LayoutProperty[],
+    properties: (keyof LayoutProperties)[],
     rules: StyleRuleSet[] = []
   ): ResponsiveLayoutInfo {
-    return properties.reduce((info, props) => {
-      const { ruleProp, hostProp, prop } = props;
-      const isLayout = prop === 'layout';
-      const mainValue = (this.host[hostProp] ??
-        rules.find((rule) => !rule.query?.breakpoint && rule[ruleProp])?.[
-          ruleProp
-        ]) as string;
+    const isRule = (rule: StyleRuleSet, isLayout: boolean, ruleProp: string) =>
+      (typeof rule.layout === 'string' && isLayout) ||
+      (typeof rule.layout === 'object' &&
+        rule.layout[ruleProp as keyof typeof rule.layout]);
+    const getRuleValue = (rule?: StyleRuleSet, prop?: string) =>
+      typeof rule?.layout === 'string'
+        ? rule.layout
+        : rule?.layout?.[prop as keyof typeof rule.layout];
 
-      const mainKey = isLayout ? mainValue : prop;
+    return properties.reduce((info, prop) => {
+      const host = this.host;
+      const isLayout = prop === 'layout';
+      const hostProp = (
+        isLayout ? prop : `layout-${prop}`
+      ) as keyof typeof host;
+      const ruleProp = isLayout ? 'type' : prop;
+      const ruleValue = rules.find(
+        (rule) => !rule.query?.breakpoint && isRule(rule, isLayout, ruleProp)
+      );
+      const mainValue = host[hostProp] ?? getRuleValue(ruleValue, ruleProp);
+
+      const mainKey = (isLayout ? mainValue : prop) as string;
       const withMainValue = typeof mainValue !== 'undefined';
 
       if (withMainValue) {
@@ -139,13 +132,12 @@ export class LayoutController {
       }
 
       for (const size of sizes) {
+        const ruleSizeValue = rules.find(
+          (rule) =>
+            rule.query?.breakpoint === size && isRule(rule, isLayout, ruleProp)
+        );
         const sizeValue =
-          this.host[size]?.[hostProp] ??
-          rules.find(
-            (rule) =>
-              rule.query?.breakpoint === size &&
-              typeof rule[ruleProp] !== 'undefined'
-          )?.[ruleProp];
+          host[size]?.[prop] ?? getRuleValue(ruleSizeValue, ruleProp);
         const sizeKey = (isLayout ? sizeValue : prop) as string;
 
         if (

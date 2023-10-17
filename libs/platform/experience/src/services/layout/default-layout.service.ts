@@ -8,6 +8,7 @@ import {
   LayoutPlugin,
   LayoutPluginImplementation,
   LayoutPluginRender,
+  LayoutPropertyPlugin,
 } from './plugins';
 import { ScreenService } from './screen.service';
 
@@ -69,10 +70,9 @@ export class DefaultLayoutService implements LayoutService {
   }
 
   protected getPlugin(token: string): LayoutPlugin | null {
-    return this.injector.inject<LayoutPlugin | null>(
-      `${LayoutPlugin}${token}`,
-      null
-    );
+    const getPlugin = (part: string) =>
+      this.injector.inject<LayoutPlugin | null>(`${part}${token}`, null);
+    return getPlugin(LayoutPlugin) ?? getPlugin(LayoutPropertyPlugin);
   }
 
   protected resolveStylesForBreakpoint(

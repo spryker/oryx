@@ -4,8 +4,10 @@ import { CSSResult } from 'lit';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Layouts {}
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface LayoutsProperty {}
+
+  export interface LayoutsProperty {
+    vertical?: boolean;
+  }
 }
 
 export type LayoutTypes = keyof Layouts | 'list';
@@ -14,7 +16,6 @@ export interface LayoutStylesProperties {
   layout?:
     | (LayoutsProperty & {
         type?: LayoutTypes;
-        vertical?: boolean;
       })
     | LayoutTypes
     // @deprecated since 1.2

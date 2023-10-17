@@ -1,7 +1,6 @@
 import {
   CompositionLayout,
   CompositionLayoutOrientation,
-  LayoutStylesProperties,
   LayoutTypes,
 } from '@spryker-oryx/experience';
 import { Breakpoint } from '@spryker-oryx/utilities';
@@ -15,8 +14,7 @@ export interface LayoutSpecificAttributes {
   orientation?: CompositionLayoutOrientation;
 }
 
-export interface LayoutProperties
-  extends Omit<LayoutStylesProperties['layout'], 'type'> {
+export interface LayoutProperties extends LayoutsProperty {
   /**
    * Layout type that is used all screen sizes.
    *
