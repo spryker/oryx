@@ -70,9 +70,10 @@ export class ServerPageMetaService extends DefaultPageMetaService {
   }
 
   protected addTags(): void {
-    let stream = ``;
+    const stream = { head: '', body: '' };
 
-    for (const { name, attrs } of this.metas) {
+    for (const { name, attrs, toBody } of this.metas) {
+      const type = toBody ? 'body' : 'head';
       const tag = this.getTagName(name);
 
       if (tag === 'html') {
@@ -85,7 +86,7 @@ export class ServerPageMetaService extends DefaultPageMetaService {
       }
 
       if (attrs.text) {
-        stream += `\n<${tag}>${attrs.text}</${tag}>`;
+        stream[type] += `\n<${tag}>${attrs.text}</${tag}>`;
 
         continue;
       }
@@ -94,10 +95,12 @@ export class ServerPageMetaService extends DefaultPageMetaService {
         attrs.name = name;
       }
 
-      stream += `\n<${tag}${this.setAttributes(attrs)} />`;
+      stream[type] += `\n<${tag}${this.setAttributes(attrs)} />`;
     }
 
     const marker = this.template.includes('</head') ? '</head' : '<body';
-    this.template = this.template.replace(marker, `${stream}\n${marker}`);
+    this.template = this.template
+      .replace(marker, `${stream.head}\n${marker}`)
+      .replace('</body>', `${stream.body}\n</body>`);
   }
 }

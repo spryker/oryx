@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2023-09-22)
+
+
+### Bug Fixes
+
+* button states styles ([#771](https://github.com/spryker/oryx/issues/771)) ([7ffd7eb](https://github.com/spryker/oryx/commit/7ffd7ebb417ef59c87cc4e6ee9f4ed642501d96c))
+* modal's height in safari ([#738](https://github.com/spryker/oryx/issues/738)) ([4360576](https://github.com/spryker/oryx/commit/4360576d9b24ed53c95b9e26883f4191446d43b3))
+* modal's margins and scrolling behaviour  ([#736](https://github.com/spryker/oryx/issues/736)) ([506c84a](https://github.com/spryker/oryx/commit/506c84a41f07bcc56aca72adad9ce9c661e8acd6))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 

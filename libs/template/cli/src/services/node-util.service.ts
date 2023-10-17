@@ -1,3 +1,4 @@
+import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import request from 'request';
@@ -54,6 +55,33 @@ export class NodeUtilService {
       }
 
       resolve();
+    });
+  }
+
+  executeCommand(
+    command: string,
+    directory?: string,
+    output = false
+  ): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const options = directory ? { cwd: directory } : undefined;
+
+      exec(command, options, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error executing command: ${error}`);
+          return reject(error);
+        }
+
+        if (stdout && output) {
+          console.log(`Standard Output: ${stdout}`);
+        }
+
+        if (stderr) {
+          console.error(`Standard Error: ${stderr}`);
+        }
+
+        resolve();
+      });
     });
   }
 }

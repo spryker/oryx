@@ -92,9 +92,7 @@ describe('OrderEntriesComponent', () => {
     });
 
     it('should render its contents', () => {
-      expect(element).toContainElement(
-        'oryx-heading, oryx-cart-entry, oryx-button'
-      );
+      expect(element).toContainElement('oryx-cart-entry, oryx-button');
     });
 
     describe('and order items are above the threshold', () => {
@@ -165,9 +163,7 @@ describe('OrderEntriesComponent', () => {
     });
 
     it('should not render content', () => {
-      expect(element).not.toContainElement(
-        'oryx-heading, oryx-cart-entry, oryx-button'
-      );
+      expect(element).not.toContainElement('oryx-cart-entry, oryx-button');
     });
   });
 });
