@@ -8,6 +8,7 @@ import {
   LayoutPlugin,
   LayoutPluginImplementation,
   LayoutPluginRender,
+  LayoutPluginType,
   LayoutPropertyPlugin,
 } from './plugins';
 import { ScreenService } from './screen.service';
@@ -29,7 +30,8 @@ export class DefaultLayoutService implements LayoutService {
       const styles = this.resolveStyles(
         key,
         layoutInfo[key].included,
-        layoutInfo[key].excluded
+        layoutInfo[key].excluded,
+        layoutInfo[key].type
       );
       if (styles) {
         observables.push(styles);
@@ -41,12 +43,18 @@ export class DefaultLayoutService implements LayoutService {
       : of('');
   }
 
-  getImplementation(token: string): LayoutPluginImplementation | undefined {
-    return this.getPlugin(token)?.getImplementation?.();
+  getImplementation(
+    token: string,
+    type: LayoutPluginType
+  ): LayoutPluginImplementation | undefined {
+    return this.getPlugin(token, type)?.getImplementation?.();
   }
 
-  getRender(token: string): LayoutPluginRender | undefined {
-    return this.getPlugin(token)?.getRender?.();
+  getRender(
+    token: string,
+    type: LayoutPluginType
+  ): LayoutPluginRender | undefined {
+    return this.getPlugin(token, type)?.getRender?.();
   }
 
   protected resolveCommonStyles(): Observable<string> {
@@ -58,9 +66,10 @@ export class DefaultLayoutService implements LayoutService {
   protected resolveStyles(
     token: string,
     included: Breakpoint[] = [],
-    excluded: Breakpoint[] = []
+    excluded: Breakpoint[] = [],
+    type: LayoutPluginType
   ): Observable<string> | void {
-    return this.getPlugin(token)
+    return this.getPlugin(token, type)
       ?.getStyles()
       .pipe(
         map((styles) =>
@@ -69,10 +78,16 @@ export class DefaultLayoutService implements LayoutService {
       );
   }
 
-  protected getPlugin(token: string): LayoutPlugin | null {
-    const getPlugin = (part: string) =>
-      this.injector.inject<LayoutPlugin | null>(`${part}${token}`, null);
-    return getPlugin(LayoutPlugin) ?? getPlugin(LayoutPropertyPlugin);
+  protected getPlugin(
+    token: string,
+    type: LayoutPluginType
+  ): LayoutPlugin | null {
+    return this.injector.inject<LayoutPlugin | null>(
+      `${
+        type === LayoutPluginType.Layout ? LayoutPlugin : LayoutPropertyPlugin
+      }${token}`,
+      null
+    );
   }
 
   protected resolveStylesForBreakpoint(

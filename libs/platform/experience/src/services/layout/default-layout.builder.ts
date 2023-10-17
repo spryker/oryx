@@ -141,13 +141,15 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       add({
         'padding-block': this.findCssValues(data.padding, 'top', 'bottom'),
       });
-      if (typeof data.layout === 'object' && !data.layout.bleed) {
+      add({
+        'padding-inline': this.findCssValues(data.padding, 'start', 'end'),
+      });
+
+      if (typeof data.layout === 'object' && data.layout.bleed) {
         // consider moving to layoutBleed layout plugin
         // avoid adding padding for layouts that layoutBleed into the side
         // as this can harm the calculated width
-        add({
-          'padding-inline': this.findCssValues(data.padding, 'start', 'end'),
-        });
+        add({ 'padding-inline': '0' });
       }
 
       // nested padding is usedd to calculate the size of nested grid based elements

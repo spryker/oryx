@@ -9,6 +9,7 @@ import { Observable, map } from 'rxjs';
 import { ContentComponentProperties, StyleRuleSet } from '../models';
 import {
   LayoutBuilder,
+  LayoutPluginType,
   LayoutService,
   ResponsiveLayoutInfo,
 } from '../services';
@@ -111,6 +112,8 @@ export class LayoutController {
       typeof rule?.layout === 'string'
         ? rule.layout
         : rule?.layout?.[prop as keyof typeof rule.layout];
+    const getType = (isLayout: boolean) =>
+      isLayout ? LayoutPluginType.Layout : LayoutPluginType.Property;
 
     return properties.reduce((info, prop) => {
       const host = this.host;
@@ -128,7 +131,7 @@ export class LayoutController {
       const withMainValue = typeof mainValue !== 'undefined';
 
       if (withMainValue) {
-        info[mainKey] = {};
+        info[mainKey] = { type: getType(isLayout) };
       }
 
       for (const size of sizes) {
@@ -157,7 +160,7 @@ export class LayoutController {
           continue;
         }
 
-        info[sizeKey] ??= {};
+        info[sizeKey] ??= { type: getType(isLayout) };
         const dataSize = info[sizeKey];
 
         dataSize.included ??= [];

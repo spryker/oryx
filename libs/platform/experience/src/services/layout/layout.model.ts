@@ -1,5 +1,6 @@
 import { Breakpoint, Size } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
+import { LayoutPluginType } from './plugins';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -54,6 +55,7 @@ export interface ResponsiveLayoutInfo {
 export interface ResponsiveLayout {
   included?: Breakpoint[];
   excluded?: Breakpoint[];
+  type: LayoutPluginType;
 }
 
 export const enum LayoutAlign {

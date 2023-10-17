@@ -2,6 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import {
   CompositionLayout,
   ContentMixin,
+  LayoutPluginType,
   LayoutService,
   LayoutTypes,
   StyleRuleSet,
@@ -61,7 +62,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     }
 
     @signalProperty() attributeWatchers: (keyof LayoutProperties)[] = [];
-    @signalProperty() layout?: CompositionLayout | LayoutTypes;
+    @signalProperty() layout?: CompositionLayout | LayoutTypes | undefined;
     @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) md?: LayoutProperties;
@@ -102,6 +103,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     protected layoutService = resolve(LayoutService);
 
     protected layoutStyles = computed(() => {
+      this.layout;
+
       return this.layoutController.getStyles(
         ['layout', ...this.attributeWatchers.map(this.getPropertyName)],
         this.$options().rules
@@ -110,13 +113,25 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected layoutPrerender = computed(() => {
       return this.attributeWatchers.map(
-        (attr) => this.layoutService.getRender(attr)?.pre
+        (attr) =>
+          this.layoutService.getRender(
+            attr,
+            attr === 'layout'
+              ? LayoutPluginType.Layout
+              : LayoutPluginType.Property
+          )?.pre
       );
     });
 
     protected layoutPostrender = computed(() => {
       return this.attributeWatchers.map(
-        (attr) => this.layoutService.getRender(attr)?.post
+        (attr) =>
+          this.layoutService.getRender(
+            attr,
+            attr === 'layout'
+              ? LayoutPluginType.Layout
+              : LayoutPluginType.Property
+          )?.post
       );
     });
 

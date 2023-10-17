@@ -5,6 +5,11 @@ import { LayoutStyles } from '../layout.model';
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
 export const LayoutPropertyPlugin = 'oryx.LayoutPropertyPlugin*';
 
+export const enum LayoutPluginType {
+  Layout,
+  Property,
+}
+
 export interface LayoutPluginRender {
   pre?: TemplateResult;
   post?: TemplateResult;
