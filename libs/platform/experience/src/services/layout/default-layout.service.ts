@@ -69,6 +69,7 @@ export class DefaultLayoutService implements LayoutService {
     excluded: Breakpoint[] = [],
     type: LayoutPluginType
   ): Observable<string> | void {
+    console.log(this.getPlugin(token, type));
     return this.getPlugin(token, type)
       ?.getStyles()
       .pipe(
@@ -82,6 +83,7 @@ export class DefaultLayoutService implements LayoutService {
     token: string,
     type: LayoutPluginType
   ): LayoutPlugin | null {
+    console.log(token, type);
     return this.injector.inject<LayoutPlugin | null>(
       `${
         type === LayoutPluginType.Layout ? LayoutPlugin : LayoutPropertyPlugin

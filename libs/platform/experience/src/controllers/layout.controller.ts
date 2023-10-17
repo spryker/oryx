@@ -107,7 +107,7 @@ export class LayoutController {
     const isRule = (rule: StyleRuleSet, isLayout: boolean, ruleProp: string) =>
       (typeof rule.layout === 'string' && isLayout) ||
       (typeof rule.layout === 'object' &&
-        rule.layout[ruleProp as keyof typeof rule.layout]);
+        rule.layout[ruleProp as keyof typeof rule.layout] !== undefined);
     const getRuleValue = (rule?: StyleRuleSet, prop?: string) =>
       typeof rule?.layout === 'string'
         ? rule.layout

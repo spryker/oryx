@@ -112,7 +112,10 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     });
 
     protected layoutPrerender = computed(() => {
-      return this.attributeWatchers.map(
+      return [
+        'layout',
+        ...this.attributeWatchers.map(this.getPropertyName),
+      ].map(
         (attr) =>
           this.layoutService.getRender(
             attr,
@@ -124,7 +127,10 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     });
 
     protected layoutPostrender = computed(() => {
-      return this.attributeWatchers.map(
+      return [
+        'layout',
+        ...this.attributeWatchers.map(this.getPropertyName),
+      ].map(
         (attr) =>
           this.layoutService.getRender(
             attr,

@@ -79,20 +79,32 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     return data?.rules?.reduce((acc, ruleSet) => {
       if (!ruleSet) return acc;
 
-      const ruleMarkers = layoutKeys.reduce((acc, key) => {
-        const value = ruleSet[key];
+      const ruleMarkers =
+        typeof ruleSet.layout === 'string'
+          ? ['layout']
+          : Object.keys(ruleSet.layout ?? {}).reduce((acc, key) => {
+              const value =
+                typeof ruleSet.layout === 'string'
+                  ? ruleSet[key]
+                  : ruleSet.layout?.[key as keyof typeof ruleSet.layout];
 
-        if (!value) return acc;
+              if (!value) return acc;
 
-        const breakpoint = ruleSet.query?.breakpoint;
-        const markerKey = breakpoint
-          ? `${markerPrefix}${breakpoint}-${key}`
-          : `${markerPrefix}${key}`;
-
-        return `${acc} ${
-          typeof value === 'boolean' ? markerKey : `${markerKey}="${value}"`
-        }`;
-      }, '');
+              const layoutKey =
+                typeof ruleSet.layout === 'object' && key === 'type'
+                  ? 'layout'
+                  : key;
+              const breakpoint = ruleSet.query?.breakpoint;
+              const markerKey = breakpoint
+                ? `${markerPrefix}${breakpoint}-${layoutKey}`
+                : `${markerPrefix}${layoutKey}`;
+              console.log(markerKey, 'markerKey');
+              return `${acc} ${
+                typeof value === 'boolean'
+                  ? markerKey
+                  : `${markerKey}="${value}"`
+              }`;
+            }, '');
 
       return `${acc}${ruleMarkers}`;
     }, '');
