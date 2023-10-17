@@ -14,7 +14,7 @@ export function generateValues(
       selected:
         (selectedValues && selectedValues?.indexOf(`${prefix}${i}`) >= 0) ??
         false,
-      count: Number(`${i}0`),
+      count: Number(`${i + 1}0`),
       name: `${prefix}${i}`,
       ...(children ? { children: generateValues(3, `Sub-${prefix}`) } : {}),
     });
