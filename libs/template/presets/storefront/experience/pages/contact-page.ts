@@ -1,6 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { featureVersion } from '@spryker-oryx/utilities';
+import { Size, featureVersion } from '@spryker-oryx/utilities';
 
 export const contactPage: ExperienceComponent = {
   id: 'contact-page',
@@ -9,6 +9,14 @@ export const contactPage: ExperienceComponent = {
     title: 'Contact Page',
     route: '/contact',
     description: 'Contact Page Description',
+  },
+  options: {
+    rules: [
+      {
+        layout: 'list',
+        padding: '30px 0',
+      },
+    ],
   },
   components: [
     featureVersion >= '1.1'
@@ -20,6 +28,12 @@ export const contactPage: ExperienceComponent = {
       type: 'oryx-composition',
       components: [
         {
+          type: 'oryx-site-breadcrumb',
+          options: {
+            rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
+          },
+        },
+        {
           type: 'oryx-content-link',
           content: {
             data: {
@@ -30,6 +44,13 @@ export const contactPage: ExperienceComponent = {
             type: 'rawUrl',
             url: '/contact',
             icon: IconTypes.Check,
+            rules: [
+              {
+                layout: 'list',
+                padding: '10px',
+                background: 'var(--oryx-color-primary-3)',
+              },
+            ],
           },
         },
       ],
@@ -37,9 +58,7 @@ export const contactPage: ExperienceComponent = {
         rules: [
           {
             layout: 'list',
-            padding: '10px 0',
-            bleed: true,
-            background: 'var(--oryx-color-primary-3)',
+            padding: '30px 0',
           },
         ],
       },

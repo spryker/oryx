@@ -11,6 +11,7 @@ import {
   currencyHydration,
 } from './currency';
 import { SiteErrorHandler } from './error-handling';
+import { DefaultGenderService, GenderService } from './gender';
 import { DefaultLinkService, LinkService } from './link';
 import {
   AcceptLanguageInterceptor,
@@ -88,6 +89,10 @@ export const siteProviders: Provider[] = [
   {
     provide: SalutationService,
     useClass: DefaultSalutationService,
+  },
+  {
+    provide: GenderService,
+    useClass: DefaultGenderService,
   },
   ...storeNormalizer,
   {

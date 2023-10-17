@@ -2,8 +2,9 @@ import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   Observable,
-  of,
   ReplaySubject,
+  map,
+  of,
   switchMap,
   take,
   tap,
@@ -154,7 +155,9 @@ export class DefaultExperienceService implements ExperienceService {
 
     const adapter = this.experienceAdapter
       ? this.experienceAdapter.get({ route })
-      : this.http.get<Component>(componentsUrl);
+      : this.http
+          .get<Component[]>(componentsUrl)
+          .pipe(map((result) => result[0]));
 
     adapter
       .pipe(

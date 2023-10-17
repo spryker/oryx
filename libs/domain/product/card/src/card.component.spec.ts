@@ -1,5 +1,4 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { contentLinkComponent } from '@spryker-oryx/content';
 import * as core from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { mockProductProviders } from '@spryker-oryx/product/mocks';
@@ -34,7 +33,7 @@ describe('ProductCardComponent', () => {
   let element: ProductCardComponent;
 
   beforeAll(async () => {
-    await useComponent([productCardComponent, contentLinkComponent]);
+    await useComponent([productCardComponent]);
   });
 
   beforeEach(async () => {

@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/i18n",
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Internationalization features for Oryx applications",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -11,9 +11,9 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "dependencies": {
-    "@spryker-oryx/core": "1.0.2",
-    "@spryker-oryx/di": "1.0.2",
-    "@spryker-oryx/utilities": "1.0.2",
+    "@spryker-oryx/core": "1.1.0",
+    "@spryker-oryx/di": "1.1.0",
+    "@spryker-oryx/utilities": "1.1.0",
     "globalize": "^1.7.0"
   },
   "peerDependencies": {

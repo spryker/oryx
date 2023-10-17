@@ -15,8 +15,6 @@ import {
   Size,
   computed,
   debounce,
-  effect,
-  elementEffect,
   hydrate,
   signalAware,
   signalProperty,
@@ -46,7 +44,7 @@ import { SearchBoxOptions, SearchBoxProperties } from './box.model';
     max: 5,
   },
 })
-@hydrate({ event: ['mouseover', 'focusin'] })
+@hydrate()
 @signalAware()
 export class SearchBoxComponent
   extends ContentMixin<SearchBoxOptions>(LitElement)
@@ -57,6 +55,7 @@ export class SearchBoxComponent
   @signalProperty() query = '';
 
   @query('oryx-typeahead') protected typeahead!: TypeaheadComponent;
+  @query('input') protected input!: HTMLInputElement;
 
   protected suggestionRendererService = resolve(SuggestionRendererService);
   protected routerService = resolve(RouterService);
@@ -70,8 +69,13 @@ export class SearchBoxComponent
     )
   );
 
-  @elementEffect()
-  protected queryEffect = effect(() => this.query$.next(this.query));
+  protected $link = computed(() =>
+    this.semanticLinkService.get({
+      type: RouteType.ProductList,
+      ...(this.query ? { params: { q: this.query } } : {}),
+    })
+  );
+
   protected $raw = computed(() => this.suggestion$);
   protected $suggestion = computed(() => {
     const query = this.query?.trim();
@@ -82,18 +86,19 @@ export class SearchBoxComponent
     return withSuggestion ? this.$raw() : null;
   });
 
-  protected $link = computed(() =>
-    this.semanticLinkService.get({
-      type: RouteType.ProductList,
-      ...(this.query ? { params: { q: this.query } } : {}),
-    })
-  );
+  connectedCallback(): void {
+    super.connectedCallback();
+
+    if (this.input?.value) {
+      this.query = this.input?.value;
+    }
+  }
 
   protected override render(): TemplateResult {
     return html`
       <oryx-typeahead
         @oryx.search=${this.onSearch}
-        @oryx.typeahead=${debounce(this.onTypeahead.bind(this), 300)}
+        @oryx.typeahead=${this.onTypeahead}
         .clearIcon=${IconTypes.Close}
         ?float=${this.$options().float}
       >
@@ -101,6 +106,7 @@ export class SearchBoxComponent
         <input
           .value=${this.query ?? ''}
           placeholder=${ifDefined(this.i18n(['search', 'search.placeholder']))}
+          hydration-events="input,focusin,focusout"
         />
         ${this.renderSuggestion()}
         <oryx-site-navigation-button
@@ -146,7 +152,13 @@ export class SearchBoxComponent
 
   protected onTypeahead(event: CustomEvent<SearchEventDetail>): void {
     this.query = event.detail.query;
+
+    this.assignSuggestionQuery();
   }
+
+  protected assignSuggestionQuery = debounce(() => {
+    this.query$.next(this.query);
+  }, 300);
 
   protected onSearch(): void {
     const link = this.$link();

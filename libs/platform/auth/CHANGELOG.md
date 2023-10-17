@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2023-09-22)
+
+
+### Bug Fixes
+
+* OauthService wait for initial restoreState ([#712](https://github.com/spryker/oryx/issues/712)) ([3029881](https://github.com/spryker/oryx/commit/30298813aadc450e3aea0e592a464cd875856c4c))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 
