@@ -15,4 +15,21 @@ export interface SitePriceComponentAttributes {
    * currencies used worldwide.
    */
   currency?: string;
+
+  /**
+   * The discounted property represents whether the price is discounted.
+   * If set to true, the price will be rendered with the highlight color.
+   *
+   * @since 1.2.0
+   */
+  discounted?: boolean;
+
+  /**
+   * The original property represents whether the price should be
+   * strikethrough. If set to true, the price will be rendered with a
+   * line-through css style.
+   *
+   * @since 1.2.0
+   */
+  original?: boolean;
 }
