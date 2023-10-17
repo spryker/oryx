@@ -1,10 +1,12 @@
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
-import { property, query } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import {
   MultiRangeChangeEvent,
   MultiRangeProperties,
 } from './multi-range.model';
 import { multiRangeStyles } from './multi-range.styles';
+import { createRef, Ref, ref } from 'lit/directives/ref.js';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export class MultiRangeComponent
   extends LitElement
@@ -12,20 +14,8 @@ export class MultiRangeComponent
 {
   static styles = multiRangeStyles;
 
-  @query('input[isFirst]') protected inputMin?: HTMLInputElement;
-
-  @query('input:not([isFirst])') protected inputMax?: HTMLInputElement;
-
-  @property({ type: Boolean }) disabled?: boolean;
-  @property({ type: Number }) step = 1;
-  @property({ type: Number }) min?: number;
-  @property({ type: Number }) max?: number;
-  @property({ type: Number }) minValue?: number;
-  @property({ type: Number }) maxValue?: number;
-  @property({ reflect: true, type: Boolean }) invalid = false;
-
-  protected _min?: number;
-  protected _max?: number;
+  protected inputMinRef = createRef<HTMLInputElement>();
+  protected inputMaxRef = createRef<HTMLInputElement>();
 
   protected observedKeys: (keyof MultiRangeComponent)[] = [
     'min',
@@ -34,10 +24,86 @@ export class MultiRangeComponent
     'maxValue',
   ];
 
-  protected willUpdate(properties: PropertyValues<MultiRangeProperties>): void {
-    this.ensureValues(properties);
+  protected _activeMin?: number;
+  protected _activeMax?: number;
 
-    super.willUpdate(properties);
+  @property({ type: Boolean }) disabled?: boolean;
+  @property({ type: Number }) step = 1;
+
+  protected _min = 0;
+  @property({ type: Number })
+  get min(): number {
+    return this._min;
+  }
+  set min(value: number) {
+    if (featureVersion > '1.1') {
+      this._min = value;
+    } else {
+      const oldValue = this._min;
+      this._min = value >= this.max ? this.max - this.step : value;
+      this.requestUpdate('min', oldValue);
+    }
+  }
+
+  protected _max = 100;
+  @property({ type: Number })
+  get max(): number {
+    return this._max;
+  }
+  set max(value: number) {
+    if (featureVersion > '1.1') {
+      this._max = value;
+    } else {
+      const oldValue = this._max;
+      this._max = value <= this.min ? this.min + this.step : value;
+      this.requestUpdate('max', oldValue);
+    }
+  }
+
+  protected _minValue = 0;
+  @property({ type: Number })
+  get minValue(): number {
+    return this._minValue;
+  }
+  set minValue(value: number) {
+    if (featureVersion > '1.1') {
+      this._minValue = value;
+    } else {
+      const oldValue = this._minValue;
+      this._minValue =
+        value <= this.min
+          ? this.min
+          : value >= this.maxValue
+          ? this.maxValue - this.step
+          : value;
+      if (this.inputMinRef && this.inputMinRef.value) {
+        this.inputMinRef.value.value = String(this._minValue);
+      }
+      this.requestUpdate('minValue', oldValue);
+    }
+  }
+
+  protected _maxValue = 100;
+  @property({ type: Number })
+  get maxValue(): number {
+    return this._maxValue;
+  }
+  set maxValue(value: number) {
+    if (featureVersion > '1.1') {
+      this._maxValue = value;
+    } else {
+      const oldValue = this._maxValue;
+      this._maxValue =
+        value >= this.max
+          ? this.max
+          : value <= this.minValue
+          ? this.minValue + this.step
+          : value;
+      if (this.inputMaxRef && this.inputMaxRef.value) {
+        this.inputMaxRef.value.value = String(this._maxValue);
+      }
+      this.requestUpdate('maxValue', oldValue);
+    }
   }
 
   protected setPercentages(minValue: number, maxValue: number): void {
@@ -53,16 +119,31 @@ export class MultiRangeComponent
     );
   }
 
-  protected syncNativeInputValues(minValue: number, maxValue: number): void {
-    this._min = minValue;
-    this._max = maxValue;
+  update(changedProperties: PropertyValues): void {
+    if (featureVersion <= '1.1') {
+      this.setPercentages(this.minValue, this.maxValue);
+    }
+ 
+    super.update(changedProperties);
+  }
 
-    if (this.inputMin) {
-      this.inputMin.value = String(minValue);
+  updated(): void {
+    if (featureVersion <= '1.1') {
+      this.syncNativeInputValues();
+
+      this.dispatchSelectEvent(this.minValue, this.maxValue);
     }
-    if (this.inputMax) {
-      this.inputMax.value = String(maxValue);
-    }
+  }
+
+  protected syncNativeInputValues(): void {
+    this.minValue = Number(this.inputMinRef?.value?.value ?? this.minValue);
+    this.maxValue = Number(this.inputMaxRef?.value?.value ?? this.maxValue);
+  }
+
+  protected willUpdate(properties: PropertyValues<MultiRangeProperties>): void {
+    this.ensureValues(properties);
+
+    super.willUpdate(properties);
   }
 
   protected ensureValues(
@@ -86,7 +167,7 @@ export class MultiRangeComponent
     this.maxValue = maxValue;
 
     this.setPercentages(minValue, maxValue);
-    this.syncNativeInputValues(minValue, maxValue);
+    this.syncValues(minValue, maxValue);
   }
 
   protected hasDiffs(
@@ -98,33 +179,54 @@ export class MultiRangeComponent
     });
   }
 
+  protected syncValues(minValue: number, maxValue: number): void {
+    this._activeMin = minValue;
+    this._activeMax = maxValue;
+
+    if (this.inputMinRef?.value) {
+      this.inputMinRef.value.value = String(minValue);
+    }
+    if (this.inputMaxRef?.value) {
+      this.inputMaxRef.value.value = String(maxValue);
+    }
+  }
+
   protected hasInvalidRange(): boolean {
-    this.invalid =
-      this.observedKeys.some((key) => typeof this[key] === 'undefined') ||
+    return this.observedKeys.some((key) => typeof this[key] === 'undefined') ||
       this.min! > this.max! - this.step ||
       this.max! < this.min! + this.step;
-
-    return this.invalid;
   }
 
   protected override render(): TemplateResult | void {
-    if (this.invalid) return;
+    if (featureVersion > '1.1' && this.hasInvalidRange()) return;
 
     return html`
-      ${this.renderRangeInput(this._min!, true)}
-      ${this.renderRangeInput(this._max!)}
+      ${this.renderRangeInput(
+        featureVersion > '1.1' ? this._activeMin!: this.minValue,
+        this.inputMinRef,
+        true)}
+      ${this.renderRangeInput(
+        featureVersion > '1.1' ? this._activeMax!: this.maxValue,
+        this.inputMaxRef
+      )}
+      <div class="active"></div>
     `;
   }
 
-  protected renderRangeInput(value: number, isFirst = false): TemplateResult {
+  protected renderRangeInput(
+    value: number,
+    inputRef: Ref,
+    isFirst = false
+  ): TemplateResult {
     return html`
       <label aria-label=${isFirst ? 'min' : 'max'}>
         <input
+          ref="${ref(inputRef)}"
           type="range"
           ?disabled=${this.disabled}
           ?isFirst=${isFirst}
-          min="${this.min!}"
-          max="${this.max!}"
+          min="${this.min}"
+          max="${this.max}"
           value="${value}"
           step="${this.step}"
           @input="${this.onUpdate}"
@@ -139,25 +241,45 @@ export class MultiRangeComponent
     const value = Number(input.value);
     const isFirst = input.hasAttribute('isFirst');
 
-    //prevent penetration of one slider after another
-    if ((isFirst && value >= this._max!) || (!isFirst && value <= this._min!)) {
-      input.value = String(isFirst ? this._min : this._max);
-      return;
-    }
+    if (featureVersion > '1.1') {
+      const activeMin = this._activeMin!;
+      const activeMax = this._activeMax!;
+      //prevent penetration of one slider after another
+      if ((isFirst && value >= activeMax) || (!isFirst && value <= activeMin)) {
+        input.value = String(isFirst ? activeMin : activeMax);
+        return;
+      }
 
-    if (isFirst) {
-      this._min = value;
+      if (isFirst) {
+        this._activeMin = value;
+      } else {
+        this._activeMax = value;
+      }
+
+      this.setPercentages(activeMin, activeMax);
     } else {
-      this._max = value;
+      if (isFirst) {
+        if (value >= this.maxValue) {
+          input.value = String(this.maxValue - this.step);
+        }
+        this.minValue = Number(input.value);
+      } else {
+        if (value <= this.minValue) {
+          input.value = String(this.minValue + this.step);
+        }
+        this.maxValue = Number(input.value);
+      }
     }
-
-    this.setPercentages(this._min!, this._max!);
   }
 
   protected onSelect(): void {
-    const minValue = (this.minValue = this._min!);
-    const maxValue = (this.maxValue = this._max!);
+    const minValue = (this.minValue = this._activeMin!);
+    const maxValue = (this.maxValue = this._activeMax!);
 
+    this.dispatchSelectEvent(minValue, maxValue);
+  }
+
+  protected dispatchSelectEvent(minValue: number, maxValue: number): void {
     this.dispatchEvent(
       new CustomEvent<MultiRangeChangeEvent>('change', {
         bubbles: true,

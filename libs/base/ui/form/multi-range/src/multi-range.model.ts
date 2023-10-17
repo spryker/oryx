@@ -5,7 +5,7 @@ export interface MultiRangeProperties {
    *
    * @default 0
    */
-  min?: number;
+  min: number;
 
   /**
    * Provides a maximum value leveraging standard input attribute under the hood.
@@ -13,7 +13,7 @@ export interface MultiRangeProperties {
    *
    * @default 100
    */
-  max?: number;
+  max: number;
 
   /**
    * Provides the minimum value of the selected range. Must be in [min, max] range.
@@ -21,7 +21,7 @@ export interface MultiRangeProperties {
    *
    * @default 0
    */
-  minValue?: number;
+  minValue: number;
 
   /**
    * Provides the maximum value of the selected range. Must be in [min, max] range.
@@ -29,7 +29,7 @@ export interface MultiRangeProperties {
    *
    * @default 100
    */
-  maxValue?: number;
+  maxValue: number;
 
   /**
    * Provides a stepping interval between minValue and MaxValue and leveraging standard input attribute under the hood.

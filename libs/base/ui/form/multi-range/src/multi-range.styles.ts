@@ -1,4 +1,5 @@
 import { css, unsafeCSS } from 'lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 const disabledThumbStyles = unsafeCSS(`
   border: 1px solid var(--oryx-color-neutral-8);
@@ -18,26 +19,25 @@ export const multiRangeStyles = css`
   :host {
     --_height: 24px;
 
-    padding: 0 calc(var(--_height) / 2);
-    background: var(--oryx-color-neutral-8);
-    height: 6px;
-    display: grid;
-    grid-template-columns: var(--_multi-range-min) 1fr 1fr var(
-        --_multi-range-max
-      );
-    align-items: center;
-    align-content: center;
-    position: relative;
-    border-radius: 3px;
-    margin: 9px 0;
+    ${unsafeCSS(
+      featureVersion <= '1.1' ? `
+        background: var(--oryx-color-neutral-8);
+        height: 6px;
+        display: grid;
+        grid-template-columns: var(--_multi-range-min) 1fr 1fr var(
+            --_multi-range-max
+          );
+        align-items: center;
+        align-content: center;
+        position: relative;
+        border-radius: 3px;
+        margin: 9px 0;
+      ` : ''
+    )}
   }
 
-  :host([invalid]) {
-    display: none;
-  }
-
-  :host::before,
-  label {
+  :host > *,
+  .active::before {
     grid-row: 1;
   }
 
@@ -53,11 +53,11 @@ export const multiRangeStyles = css`
     cursor: pointer;
   }
 
-  label:first-child {
+  label:nth-of-type(1) {
     grid-column: 1 / span 2;
   }
 
-  label:last-child {
+  label:nth-of-type(2) {
     grid-column: 3 / span 4;
   }
 
@@ -74,17 +74,17 @@ export const multiRangeStyles = css`
     width: 100%;
     height: 0;
     inset-block-start: 3px;
+    inset-inline-start: 0;
     outline: none;
     pointer-events: var(--_pointer-events, none);
   }
 
-  label:first-child input {
-    inset-inline-start: 0;
-  }
-
-  label:last-child input {
-    inset-inline-end: 0;
-  }
+  ${unsafeCSS(featureVersion > '1.1' ? `
+    label:nth-of-type(2) input {
+      inset-inline-start: auto;
+      inset-inline-end: 0;
+    }
+  `: '')}
 
   input::-webkit-slider-thumb {
     ${thumbStyles}
@@ -99,7 +99,28 @@ export const multiRangeStyles = css`
     box-shadow: 0 0 3px var(--oryx-color-primary-9);
   }
 
-  :host::before {
+  .active {
+    ${featureVersion > '1.1' ? unsafeCSS(`
+      padding: 0 calc(var(--_height) / 2);
+      background: var(--oryx-color-neutral-8);
+      height: 6px;
+      display: grid;
+      grid-template-columns: var(--_multi-range-min) 1fr 1fr var(
+          --_multi-range-max
+        );
+      align-items: center;
+      align-content: center;
+      position: relative;
+      border-radius: 3px;
+      margin: 9px 0;
+    `) : unsafeCSS(`
+      background-color: var(--oryx-color-primary-9);
+      grid-column: 2 / span 2;
+      height: inherit;
+    `)}
+  }
+
+  .active::before {
     content: '';
     display: block;
     background-color: var(--oryx-color-primary-9);
@@ -107,7 +128,7 @@ export const multiRangeStyles = css`
     height: inherit;
   }
 
-  :host([disabled])::before {
+  :host([disabled]) active::before {
     background-color: var(--oryx-color-neutral-8);
   }
 
