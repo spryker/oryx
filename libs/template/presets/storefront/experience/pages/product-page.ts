@@ -10,7 +10,7 @@ export const productPage: ExperienceComponent = {
     description: 'Default Product Page Description',
   },
   components: [
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'header',
         }
@@ -114,7 +114,7 @@ export const productPage: ExperienceComponent = {
         },
       ],
     },
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'footer',
         }

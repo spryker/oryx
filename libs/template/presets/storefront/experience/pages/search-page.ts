@@ -9,7 +9,7 @@ export const searchPage: ExperienceComponent = {
     route: '/search',
   },
   components: [
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'header',
         }
@@ -85,7 +85,7 @@ export const searchPage: ExperienceComponent = {
         ],
       },
     },
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'footer',
         }

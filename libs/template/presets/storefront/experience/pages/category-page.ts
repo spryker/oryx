@@ -11,7 +11,7 @@ export const categoryPage: ExperienceComponent = {
     index: true,
   },
   components: [
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'header',
         }
@@ -90,7 +90,7 @@ export const categoryPage: ExperienceComponent = {
         ],
       },
     },
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'footer',
         }

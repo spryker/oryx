@@ -23,7 +23,7 @@ export const cartPage: ExperienceComponent = {
     description: 'Cart Page Description',
   },
   components: [
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'header',
         }
@@ -39,43 +39,51 @@ export const cartPage: ExperienceComponent = {
           <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
           <p>Your shopping cart is empty</p><oryx-button>
           <a href="/search">Shop now</a></oryx-button>`,
+            },
+          },
+          options: {
+            rules: [
+              { hideByRule: 'CORE.SERVER||CART.!EMPTY' },
+              {
+                colSpan: 2,
+                background: 'var(--oryx-color-neutral-3)',
+                width: '66%',
+                margin: 'auto',
+                padding: '20px',
+                radius: '4px',
+                style: `display: grid;gap:14px;justify-items: center;`,
+              },
+            ],
+          },
         },
-      },
+        cartEntries(),
+        {
+          type: 'oryx-composition',
+          id: 'cart-totals',
+          components: [
+            {
+              type: 'oryx-cart-totals',
+              components: [
+                { type: 'oryx-cart-totals-subtotal' },
+                { type: 'oryx-cart-totals-discount' },
+                { type: 'oryx-cart-totals-tax' },
+                { type: 'oryx-cart-totals-delivery' },
+                { type: 'oryx-cart-totals-total' },
+              ],
+            },
+            { type: 'oryx-checkout-link' },
+          ],
+          options: { rules: [{ sticky: true, top: '108px' }] },
+        },
+      ],
       options: {
         rules: [
-          { hideByRule: 'CORE.SERVER||CART.!EMPTY' },
-          {
-            colSpan: 2,
-            background: 'var(--oryx-color-neutral-3)',
-            width: '66%',
-            margin: 'auto',
-            padding: '20px',
-            radius: '4px',
-            style: `display: grid;gap:14px;justify-items: center;`,
-          },
+          { layout: 'split-main', padding: '30px 0' },
+          { query: { breakpoint: 'sm' }, gap: '0' },
         ],
       },
     },
-    cartEntries(),
-    {
-      type: 'oryx-composition',
-      id: 'cart-totals',
-      components: [
-        {
-          type: 'oryx-cart-totals',
-          components: [
-            { type: 'oryx-cart-totals-subtotal' },
-            { type: 'oryx-cart-totals-discount' },
-            { type: 'oryx-cart-totals-tax' },
-            { type: 'oryx-cart-totals-delivery' },
-            { type: 'oryx-cart-totals-total' },
-          ],
-        },
-        { type: 'oryx-checkout-link' },
-      ],
-      options: { rules: [{ sticky: true, top: '108px' }] },
-    },
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
         ref: 'footer',
       }

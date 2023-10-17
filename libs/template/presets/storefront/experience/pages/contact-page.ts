@@ -19,7 +19,7 @@ export const contactPage: ExperienceComponent = {
     ],
   },
   components: [
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'header',
         }
@@ -63,7 +63,7 @@ export const contactPage: ExperienceComponent = {
         ],
       },
     },
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'footer',
         }

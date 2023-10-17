@@ -26,7 +26,7 @@ export const orderConfirmationPage: ExperienceComponent = {
     description: 'Order Page Description',
   },
   components: [
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'header',
         }
@@ -55,7 +55,7 @@ export const orderConfirmationPage: ExperienceComponent = {
         orderEntries(),
       ],
     },
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'footer',
         }
