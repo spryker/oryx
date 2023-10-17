@@ -19,8 +19,8 @@ export const loginPage: ExperienceComponent = {
         components: [
           featureVersion >= '1.2'
             ? {
-              ref: 'header',
-            }
+                ref: 'header',
+              }
             : {},
           {
             type: 'oryx-composition',
@@ -132,8 +132,8 @@ export const loginPage: ExperienceComponent = {
           },
           featureVersion >= '1.2'
             ? {
-              ref: 'footer',
-            }
+                ref: 'footer',
+              }
             : {},
         ],
       }

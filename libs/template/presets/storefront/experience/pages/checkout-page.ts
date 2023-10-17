@@ -96,7 +96,10 @@ export const checkoutPage: ExperienceComponent = {
           type: 'oryx-composition',
           id: 'checkout-totals',
           options: {
-            rules: [{ hideByRule: 'CART.EMPTY' }, { sticky: true, top: '108px' }],
+            rules: [
+              { hideByRule: 'CART.EMPTY' },
+              { sticky: true, top: '108px' },
+            ],
           },
           components: [
             {
@@ -129,8 +132,8 @@ export const checkoutPage: ExperienceComponent = {
     },
     featureVersion >= '1.1'
       ? {
-        ref: 'footer',
-      }
+          ref: 'footer',
+        }
       : {},
   ],
 };

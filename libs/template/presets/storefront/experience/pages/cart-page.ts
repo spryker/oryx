@@ -85,8 +85,8 @@ export const cartPage: ExperienceComponent = {
     },
     featureVersion >= '1.2'
       ? {
-        ref: 'footer',
-      }
+          ref: 'footer',
+        }
       : {},
   ],
 };
