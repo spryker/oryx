@@ -26,6 +26,7 @@ const Template: Story<MultiRangeProperties> = ({
       .minValue="${minValue}"
       .step="${step}"
       ?disabled="${disabled}"
+      @change=${console.log}
     >
     </oryx-multi-range>
   `;

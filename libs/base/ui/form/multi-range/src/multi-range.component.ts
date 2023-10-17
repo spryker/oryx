@@ -36,13 +36,13 @@ export class MultiRangeComponent
     return this._min;
   }
   set min(value: number) {
+    const oldValue = this._min;
     if (featureVersion > '1.1') {
       this._min = value;
     } else {
-      const oldValue = this._min;
       this._min = value >= this.max ? this.max - this.step : value;
-      this.requestUpdate('min', oldValue);
     }
+    this.requestUpdate('min', oldValue);
   }
 
   protected _max = 100;
@@ -51,13 +51,13 @@ export class MultiRangeComponent
     return this._max;
   }
   set max(value: number) {
+    const oldValue = this._max;
     if (featureVersion > '1.1') {
       this._max = value;
     } else {
-      const oldValue = this._max;
       this._max = value <= this.min ? this.min + this.step : value;
-      this.requestUpdate('max', oldValue);
     }
+    this.requestUpdate('max', oldValue);
   }
 
   protected _minValue = 0;
@@ -66,10 +66,10 @@ export class MultiRangeComponent
     return this._minValue;
   }
   set minValue(value: number) {
+    const oldValue = this._minValue;
     if (featureVersion > '1.1') {
       this._minValue = value;
     } else {
-      const oldValue = this._minValue;
       this._minValue =
         value <= this.min
           ? this.min
@@ -79,8 +79,8 @@ export class MultiRangeComponent
       if (this.inputMinRef && this.inputMinRef.value) {
         this.inputMinRef.value.value = String(this._minValue);
       }
-      this.requestUpdate('minValue', oldValue);
     }
+    this.requestUpdate('minValue', oldValue);
   }
 
   protected _maxValue = 100;
@@ -89,10 +89,10 @@ export class MultiRangeComponent
     return this._maxValue;
   }
   set maxValue(value: number) {
+    const oldValue = this._maxValue;
     if (featureVersion > '1.1') {
       this._maxValue = value;
     } else {
-      const oldValue = this._maxValue;
       this._maxValue =
         value >= this.max
           ? this.max
@@ -102,8 +102,8 @@ export class MultiRangeComponent
       if (this.inputMaxRef && this.inputMaxRef.value) {
         this.inputMaxRef.value.value = String(this._maxValue);
       }
-      this.requestUpdate('maxValue', oldValue);
     }
+    this.requestUpdate('maxValue', oldValue);
   }
 
   protected setPercentages(minValue: number, maxValue: number): void {
@@ -149,6 +149,9 @@ export class MultiRangeComponent
   protected ensureValues(
     properties: PropertyValues<MultiRangeProperties>
   ): void {
+    console.log(`1`);
+    console.log(properties);
+    
     if (this.hasInvalidRange() || !this.hasDiffs(properties)) return;
 
     let minValue = this.minValue!;
@@ -165,6 +168,9 @@ export class MultiRangeComponent
 
     this.minValue = minValue;
     this.maxValue = maxValue;
+
+    console.log('minValue', minValue);
+    
 
     this.setPercentages(minValue, maxValue);
     this.syncValues(minValue, maxValue);
@@ -198,19 +204,22 @@ export class MultiRangeComponent
   }
 
   protected override render(): TemplateResult | void {
-    if (featureVersion > '1.1' && this.hasInvalidRange()) return;
+    if (featureVersion > '1.1') {
+      if (this.hasInvalidRange()) return;
 
-    return html`
-      ${this.renderRangeInput(
-        featureVersion > '1.1' ? this._activeMin!: this.minValue,
-        this.inputMinRef,
-        true)}
-      ${this.renderRangeInput(
-        featureVersion > '1.1' ? this._activeMax!: this.maxValue,
-        this.inputMaxRef
-      )}
-      <div class="active"></div>
-    `;
+      return html`
+        <div class="active">
+          ${this.renderRangeInput(this._activeMin!, this.inputMinRef, true)}
+          ${this.renderRangeInput(this._activeMax!, this.inputMaxRef)}
+        </div>
+      `;
+    } else {
+      return html`
+        ${this.renderRangeInput(this.minValue, this.inputMinRef, true)}
+        ${this.renderRangeInput(this.maxValue, this.inputMaxRef)}
+        <div class="active"></div>
+      `;
+    }
   }
 
   protected renderRangeInput(
@@ -244,6 +253,7 @@ export class MultiRangeComponent
     if (featureVersion > '1.1') {
       const activeMin = this._activeMin!;
       const activeMax = this._activeMax!;
+
       //prevent penetration of one slider after another
       if ((isFirst && value >= activeMax) || (!isFirst && value <= activeMin)) {
         input.value = String(isFirst ? activeMin : activeMax);
