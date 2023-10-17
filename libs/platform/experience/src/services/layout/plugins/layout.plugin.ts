@@ -26,12 +26,12 @@ export interface LayoutPluginConfig {
   properties?: Record<string, unknown>;
 }
 
-export type LayoutPluginProperties = Record<string, string | number>;
+export type LayoutPluginStyleProperties = Record<string, string | number>;
 
 export interface LayoutPlugin {
   getStyles(): Observable<LayoutStyles>;
   getConfig(): LayoutPluginConfig;
-  getProperties?(data: StyleProperties): LayoutPluginProperties;
+  getStyleProperties?(data: StyleProperties): LayoutPluginStyleProperties;
   /**
    * Returns object with implementation methods.
    * Possible usage with additional component.

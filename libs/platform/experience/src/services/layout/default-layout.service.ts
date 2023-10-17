@@ -8,8 +8,8 @@ import { LayoutIncomingConfig, LayoutService } from './layout.service';
 import {
   LayoutPlugin,
   LayoutPluginImplementation,
-  LayoutPluginProperties,
   LayoutPluginRender,
+  LayoutPluginStyleProperties,
   LayoutPluginType,
   LayoutPropertyPlugin,
 } from './plugins';
@@ -52,11 +52,11 @@ export class DefaultLayoutService implements LayoutService {
     return this.getPlugin(token, type)?.getImplementation?.(data);
   }
 
-  getProperties(
+  getStyleProperties(
     config: LayoutIncomingConfig
-  ): LayoutPluginProperties | undefined {
+  ): LayoutPluginStyleProperties | undefined {
     const { token, type, data } = config;
-    return this.getPlugin(token, type)?.getProperties?.(
+    return this.getPlugin(token, type)?.getStyleProperties?.(
       data as StyleProperties
     );
   }

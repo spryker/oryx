@@ -4,7 +4,7 @@ import { LayoutStyles } from '../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
-  LayoutPluginProperties,
+  LayoutPluginStyleProperties,
 } from '../layout.plugin';
 
 export class BleedLayoutPlugin implements LayoutPlugin {
@@ -16,7 +16,7 @@ export class BleedLayoutPlugin implements LayoutPlugin {
     return { name: 'bleed' };
   }
 
-  getProperties(): LayoutPluginProperties {
+  getStyleProperties(): LayoutPluginStyleProperties {
     return {
       'padding-inline': '0',
     };

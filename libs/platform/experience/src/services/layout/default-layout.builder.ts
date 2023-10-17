@@ -215,19 +215,12 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       }
     }
 
-    if (typeof data.layout === 'string') {
-      const layoutProps = this.layoutService.getProperties?.({
-        token: data.layout,
-        type: LayoutPluginType.Layout,
-        data,
-      });
+    if (data.layout) {
+      const layoutData =
+        typeof data.layout === 'string' ? { type: data.layout } : data.layout;
 
-      if (layoutProps) add(layoutProps);
-    }
-
-    if (typeof data.layout === 'object') {
-      for (const [key, value] of Object.entries(data.layout)) {
-        const layoutProps = this.layoutService.getProperties?.({
+      for (const [key, value] of Object.entries(layoutData)) {
+        const layoutProps = this.layoutService.getStyleProperties?.({
           token: key === 'type' ? value : key,
           type:
             key === 'type'
@@ -235,7 +228,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
               : LayoutPluginType.Property,
           data,
         });
-        console.log(layoutProps);
+
         if (layoutProps) add(layoutProps);
       }
     }
