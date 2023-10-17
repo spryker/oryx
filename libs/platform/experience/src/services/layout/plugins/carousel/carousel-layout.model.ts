@@ -3,7 +3,7 @@ import { LayoutPlugin } from '../layout.plugin';
 export const CarouselLayoutPluginToken = `${LayoutPlugin}carousel`;
 
 declare global {
-  export interface PluggableLayouts {
+  export interface Layouts {
     carousel: undefined;
   }
 }

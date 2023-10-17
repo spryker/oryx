@@ -1,8 +1,13 @@
 import { inject } from '@spryker-oryx/di';
 import { Breakpoint } from '@spryker-oryx/utilities';
-import { Component, CompositionProperties, StyleRuleSet } from '../../models';
+import {
+  Component,
+  CompositionProperties,
+  StyleProperties,
+  StyleRuleSet,
+} from '../../models';
 import { LayoutBuilder } from './layout.builder';
-import { LayoutStylesProperties, StyleProperties } from './layout.model';
+import { LayoutStylesProperties } from './layout.model';
 import { ScreenService } from './screen.service';
 
 /**

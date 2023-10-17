@@ -90,7 +90,7 @@ export const checkoutPage: ExperienceComponent = {
         rules: [
           { hideByRule: 'CART.EMPTY' },
           {
-            layoutSticky: true,
+            layout: { sticky: true },
             // @deprecated since 1.2 will be removed.
             sticky: true,
             top: '108px',

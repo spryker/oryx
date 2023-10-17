@@ -1,5 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 const image = (graphic: string) => ({
   type: 'oryx-content-image',
@@ -18,7 +19,7 @@ const link = (text: string, url = '/', icon?: string) => ({
   content: { data: { text } },
 });
 
-const legalLinks = {
+const legalLinks: ExperienceComponent = {
   type: 'oryx-composition',
   name: 'legal links',
   id: 'legal-links',
@@ -36,8 +37,13 @@ const legalLinks = {
   options: {
     rules: [
       {
-        layout: 'flex',
-        layoutDivider: true,
+        layout:
+          featureVersion >= '1.2'
+            ? {
+                type: 'flex',
+                divider: true,
+              }
+            : 'flex',
         // @deprecated since 1.2 will be removed.
         divider: true,
         gap: '0 20px',
@@ -63,7 +69,7 @@ const customerSupport = {
   },
 };
 
-const promises = {
+const promises: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'corporate-promises',
   options: { rules: [{ layout: 'list', gap: '0' }] },
@@ -92,7 +98,7 @@ const aboutUs = {
   },
 };
 
-const selfService = {
+const selfService: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'self-service',
   name: 'Self service',
@@ -106,7 +112,7 @@ const selfService = {
   components: [customerSupport, promises, aboutUs],
 };
 
-const paymentLinks = {
+const paymentLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'payment',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
@@ -140,7 +146,7 @@ const paymentLinks = {
   ],
 };
 
-const shippingLinks = {
+const shippingLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'shipping',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
@@ -168,7 +174,7 @@ const shippingLinks = {
   ],
 };
 
-const mobileAppsLinks = {
+const mobileAppsLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'apps',
   options: { rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }] },
@@ -185,7 +191,7 @@ const mobileAppsLinks = {
   ],
 };
 
-const socialLinks = {
+const socialLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'social',
   options: {
@@ -209,7 +215,7 @@ const socialLinks = {
   ],
 };
 
-const externalLinks = {
+const externalLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'external-links',
   options: { rules: [{ layout: 'list' }] },
@@ -227,7 +233,7 @@ const externalLinks = {
   ],
 };
 
-const siteLinks = {
+const siteLinks: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'site-links',
   options: { rules: [{ layout: 'split', gap: '10px' }] },
@@ -250,11 +256,16 @@ export const FooterTemplate: ExperienceComponent = {
           options: {
             rules: [
               {
-                layout: 'flex',
-                layoutVertical: true,
+                layout:
+                  featureVersion >= '1.2'
+                    ? {
+                        type: 'flex',
+                        vertical: true,
+                        divider: true,
+                      }
+                    : 'flex',
                 // @deprecated since 1.2 will be removed.
                 vertical: true,
-                layoutDivider: true,
                 // @deprecated since 1.2 will be removed.
                 divider: true,
                 gap: '40px 18px',
@@ -269,17 +280,22 @@ export const FooterTemplate: ExperienceComponent = {
   options: {
     rules: [
       {
-        layout: 'flex',
+        layout:
+          featureVersion >= '1.2'
+            ? {
+                type: 'flex',
+                divider: true,
+                bleed: true,
+                sticky: true,
+              }
+            : 'flex',
         top: '100%',
         background: 'var(--oryx-color-neutral-3)',
         padding: '30 0',
-        layoutDivider: true,
         // @deprecated since 1.2 will be removed.
         divider: true,
-        layoutBleed: true,
         // @deprecated since 1.2 will be removed.
         bleed: true,
-        layoutSticky: true,
         // @deprecated since 1.2 will be removed.
         sticky: true,
         typography: 'small',

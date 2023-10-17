@@ -1,9 +1,9 @@
-import { LayoutPlugin } from '../layout.plugin';
+import { LayoutPropertyPlugin } from '../layout.plugin';
 
-export const DividerLayoutPluginToken = `${LayoutPlugin}divider`;
+export const DividerLayoutPluginToken = `${LayoutPropertyPlugin}divider`;
 
 declare global {
-  export interface PluggableLayoutProperties {
+  export interface LayoutsProperty {
     divider?: boolean;
   }
 }

@@ -3,7 +3,7 @@ import { LayoutPlugin } from '../layout.plugin';
 export const ColumnLayoutPluginToken = `${LayoutPlugin}column`;
 
 declare global {
-  export interface PluggableLayouts {
+  export interface Layouts {
     column: undefined;
   }
 }

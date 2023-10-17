@@ -2,10 +2,14 @@ import { App, AppRef } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Size } from '@spryker-oryx/utilities';
-import { Component, CompositionProperties } from '../../models';
+import {
+  Component,
+  CompositionProperties,
+  StyleProperties,
+} from '../../models';
 import { Theme, ThemePlugin } from '../../plugins';
 import { DefaultLayoutBuilder } from './default-layout.builder';
-import { LayoutAlign, StyleProperties } from './layout.model';
+import { LayoutAlign } from './layout.model';
 import { ScreenService } from './screen.service';
 
 const mockTheme: Theme = {

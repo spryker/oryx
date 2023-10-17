@@ -3,7 +3,7 @@ import { LayoutPlugin } from '../layout.plugin';
 export const FlexLayoutPluginToken = `${LayoutPlugin}flex`;
 
 declare global {
-  export interface PluggableLayouts {
+  export interface Layouts {
     flex: undefined;
   }
 }

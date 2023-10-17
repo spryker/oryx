@@ -40,12 +40,17 @@ export const categoryPage: ExperienceComponent = {
       options: {
         rules: [
           {
-            layout: 'grid',
+            layout:
+              featureVersion >= '1.2'
+                ? {
+                    type: 'grid',
+                    divider: true,
+                    sticky: true,
+                  }
+                : 'grid',
             gap: '1px',
-            layoutDivider: true,
             // @deprecated since 1.2 will be removed.
             divider: true,
-            layoutSticky: true,
             // @deprecated since 1.2 will be removed.
             sticky: true,
             top: '108px',

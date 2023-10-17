@@ -2,16 +2,21 @@ import {
   CompositionLayout,
   CompositionLayoutOrientation,
   LayoutStylesProperties,
+  LayoutTypes,
 } from '@spryker-oryx/experience';
 import { Breakpoint } from '@spryker-oryx/utilities';
 
 export interface LayoutAttributes
   extends LayoutProperties,
-    ScreenLayoutProperties {
+    ScreenLayoutProperties,
+    LayoutSpecificAttributes {}
+
+export interface LayoutSpecificAttributes {
   orientation?: CompositionLayoutOrientation;
 }
 
-export interface LayoutProperties extends LayoutStylesProperties {
+export interface LayoutProperties
+  extends Omit<LayoutStylesProperties['layout'], 'type'> {
   /**
    * Layout type that is used all screen sizes.
    *
@@ -19,9 +24,9 @@ export interface LayoutProperties extends LayoutStylesProperties {
    * in the `<style></style>` property dynamically.
    *
    * Whenever a layout for a specific screen size should be used, other layout properties
-   * should be used (eg `layoutSm`).
+   * should be used (eg `xs: {layout: "grid"}`).
    */
-  layout?: CompositionLayout | string;
+  layout?: CompositionLayout | LayoutTypes;
 }
 
 type ScreenLayoutProperties = {
