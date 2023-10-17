@@ -51,7 +51,8 @@ export class SearchRatingFacetComponent extends ContentMixin<
     return html`<ul>
       ${repeat(
         valuesToRender,
-        (facetValue) => String(facetValue.value),
+        (facetValue) =>
+          `${facetValue.value}${facetValue.selected ? '-selected' : ''}`,
         (facetValue) => html`<li>${this.renderValueControl(facetValue)}</li>`
       )}
     </ul>`;
