@@ -55,12 +55,12 @@ export class CollapsibleComponent
 
   protected onToggle(): void {
     this.open = this.details?.open;
-    if (this.isManuallyOpened && this.open) {
-      if (featureVersion >= '1.2') {
+    if (featureVersion >= '1.2') {
+      if (this.isManuallyOpened && this.open) {
         this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
+      this.isManuallyOpened = false;
     }
-    this.isManuallyOpened = false;
   }
 
   protected onClick(): void {
