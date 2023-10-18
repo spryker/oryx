@@ -9,6 +9,7 @@ const disabledThumbStyles = unsafeCSS(`
 const thumbStyles = unsafeCSS(`
   width: var(--_height);
   height: var(--_height);
+  
   background: var(--oryx-color-neutral-4);
   border: 1px solid var(--oryx-color-neutral-9);
   border-radius: 50%;
@@ -19,31 +20,26 @@ export const multiRangeStyles = css`
   :host {
     --_height: 24px;
 
-    ${unsafeCSS(featureVersion <= '1.1' ? `
-      position: relative;
-      height: 6px;
-      display: grid;
-      grid-template-columns: var(--_multi-range-min) 1fr 1fr var(
-          --_multi-range-max
-        );
-      align-items: center;
-      align-content: center;
-      border-radius: 3px;
-      margin: 9px 0;
-      background: var(--oryx-color-neutral-8);
+    position: relative;
+    height: 6px;
+    display: grid;
+    grid-template-columns: var(--_multi-range-min) 1fr 1fr var(
+        --_multi-range-max
+      );
+    align-items: center;
+    align-content: center;
+    border-radius: 3px;
+    margin: 9px 0;
+    background: var(--oryx-color-neutral-8);
+
+    ${unsafeCSS(featureVersion >= '1.2' ? `
+      padding: 0 calc(var(--_height) / 2);
     `: '')}
   }
 
-  ${unsafeCSS(featureVersion > '1.1' ? `
-    .active > *,
-    .active::before {
-      grid-row: 1;
-    }
-  `: `
-    :host > * {
-      grid-row: 1;
-    }
-  `)}
+  :host > * {
+    grid-row: 1;
+  }
 
   label {
     height: var(--_height);
@@ -83,7 +79,7 @@ export const multiRangeStyles = css`
     pointer-events: var(--_pointer-events, none);
   }
 
-  ${unsafeCSS(featureVersion > '1.1' ? `
+  ${unsafeCSS(featureVersion >= '1.2' ? `
     label:nth-of-type(2) input {
       inset-inline-start: auto;
       inset-inline-end: 0;
@@ -104,39 +100,14 @@ export const multiRangeStyles = css`
   }
 
   .active {
-    ${featureVersion > '1.1' ? unsafeCSS(`
-      padding: 0 calc(var(--_height) / 2);
-      background: var(--oryx-color-neutral-8);
-      height: 6px;
-      display: grid;
-      grid-template-columns: var(--_multi-range-min) 1fr 1fr var(
-          --_multi-range-max
-        );
-      align-items: center;
-      align-content: center;
-      position: relative;
-      border-radius: 3px;
-      margin: 9px 0;
-    `) : unsafeCSS(`
-      background-color: var(--oryx-color-primary-9);
-      grid-column: 2 / span 2;
-      height: inherit;
-    `)}
+    background-color: var(--oryx-color-primary-9);
+    grid-column: 2 / span 2;
+    height: inherit;
   }
 
-  ${unsafeCSS(featureVersion > '1.1' ? `
-    .active::before {
-      content: '';
-      display: block;
-      background-color: var(--oryx-color-primary-9);
-      grid-column: 2 / span 2;
-      height: inherit;
-    }
-
-    :host([disabled]) active::before {
-      background-color: var(--oryx-color-neutral-8);
-    }
-  ` : '')}
+  :host([disabled]) .active {
+    background-color: var(--oryx-color-neutral-8);
+  }
 
   input:disabled {
     cursor: default;

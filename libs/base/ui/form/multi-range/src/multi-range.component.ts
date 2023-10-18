@@ -7,6 +7,11 @@ import {
 import { multiRangeStyles } from './multi-range.styles';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { featureVersion } from '@spryker-oryx/utilities';
+import { when } from 'lit/directives/when.js';
+
+
+const defaultMin = 0;
+const defaultMax = 100;
 
 export class MultiRangeComponent
   extends LitElement
@@ -18,6 +23,7 @@ export class MultiRangeComponent
   protected inputMaxRef = createRef<HTMLInputElement>();
 
   protected observedKeys: (keyof MultiRangeComponent)[] = [
+    'step',
     'min',
     'max',
     'minValue',
@@ -30,14 +36,14 @@ export class MultiRangeComponent
   @property({ type: Boolean }) disabled?: boolean;
   @property({ type: Number }) step = 1;
 
-  protected _min = 0;
+  protected _min = defaultMin;
   @property({ type: Number })
   get min(): number {
     return this._min;
   }
   set min(value: number) {
     const oldValue = this._min;
-    if (featureVersion > '1.1') {
+    if (featureVersion >= '1.2') {
       this._min = value;
     } else {
       this._min = value >= this.max ? this.max - this.step : value;
@@ -45,14 +51,14 @@ export class MultiRangeComponent
     this.requestUpdate('min', oldValue);
   }
 
-  protected _max = 100;
+  protected _max = defaultMax;
   @property({ type: Number })
   get max(): number {
     return this._max;
   }
   set max(value: number) {
     const oldValue = this._max;
-    if (featureVersion > '1.1') {
+    if (featureVersion >= '1.2') {
       this._max = value;
     } else {
       this._max = value <= this.min ? this.min + this.step : value;
@@ -60,14 +66,14 @@ export class MultiRangeComponent
     this.requestUpdate('max', oldValue);
   }
 
-  protected _minValue = 0;
+  protected _minValue = defaultMin;
   @property({ type: Number })
   get minValue(): number {
     return this._minValue;
   }
   set minValue(value: number) {
     const oldValue = this._minValue;
-    if (featureVersion > '1.1') {
+    if (featureVersion >= '1.2') {
       this._minValue = value;
     } else {
       this._minValue =
@@ -83,14 +89,14 @@ export class MultiRangeComponent
     this.requestUpdate('minValue', oldValue);
   }
 
-  protected _maxValue = 100;
+  protected _maxValue = defaultMax;
   @property({ type: Number })
   get maxValue(): number {
     return this._maxValue;
   }
   set maxValue(value: number) {
     const oldValue = this._maxValue;
-    if (featureVersion > '1.1') {
+    if (featureVersion >= '1.2') {
       this._maxValue = value;
     } else {
       this._maxValue =
@@ -120,7 +126,7 @@ export class MultiRangeComponent
   }
 
   update(changedProperties: PropertyValues): void {
-    if (featureVersion <= '1.1') {
+    if (featureVersion < '1.2') {
       this.setPercentages(this.minValue, this.maxValue);
     }
  
@@ -128,7 +134,7 @@ export class MultiRangeComponent
   }
 
   updated(): void {
-    if (featureVersion <= '1.1') {
+    if (featureVersion < '1.2') {
       this.syncNativeInputValues();
 
       this.dispatchSelectEvent(this.minValue, this.maxValue);
@@ -141,7 +147,9 @@ export class MultiRangeComponent
   }
 
   protected willUpdate(properties: PropertyValues<MultiRangeProperties>): void {
-    this.ensureValues(properties);
+    if (featureVersion >= '1.2') {
+      this.ensureValues(properties);
+    }
 
     super.willUpdate(properties);
   }
@@ -149,9 +157,6 @@ export class MultiRangeComponent
   protected ensureValues(
     properties: PropertyValues<MultiRangeProperties>
   ): void {
-    console.log(`1`);
-    console.log(properties);
-    
     if (this.hasInvalidRange() || !this.hasDiffs(properties)) return;
 
     let minValue = this.minValue!;
@@ -168,9 +173,6 @@ export class MultiRangeComponent
 
     this.minValue = minValue;
     this.maxValue = maxValue;
-
-    console.log('minValue', minValue);
-    
 
     this.setPercentages(minValue, maxValue);
     this.syncValues(minValue, maxValue);
@@ -204,22 +206,20 @@ export class MultiRangeComponent
   }
 
   protected override render(): TemplateResult | void {
-    if (featureVersion > '1.1') {
-      if (this.hasInvalidRange()) return;
-
-      return html`
-        <div class="active">
-          ${this.renderRangeInput(this._activeMin!, this.inputMinRef, true)}
-          ${this.renderRangeInput(this._activeMax!, this.inputMaxRef)}
-        </div>
-      `;
-    } else {
-      return html`
-        ${this.renderRangeInput(this.minValue, this.inputMinRef, true)}
-        ${this.renderRangeInput(this.maxValue, this.inputMaxRef)}
-        <div class="active"></div>
-      `;
-    }
+    const invalid = featureVersion >= '1.2' && this.hasInvalidRange();
+    
+    return html`
+      ${this.renderRangeInput(
+        featureVersion >= '1.2' ? invalid ? defaultMin : this._activeMin! : this.minValue, 
+        this.inputMinRef,
+        true
+      )}
+      ${this.renderRangeInput(
+        featureVersion >= '1.2' ? invalid ? defaultMax : this._activeMax! : this.maxValue,
+        this.inputMaxRef
+      )}
+      ${when(!invalid, () => html`<div class="active"></div>`)}
+    `;
   }
 
   protected renderRangeInput(
@@ -227,17 +227,19 @@ export class MultiRangeComponent
     inputRef: Ref,
     isFirst = false
   ): TemplateResult {
+    const invalid = featureVersion >= '1.2' && this.hasInvalidRange();
+
     return html`
       <label aria-label=${isFirst ? 'min' : 'max'}>
         <input
           ref="${ref(inputRef)}"
           type="range"
-          ?disabled=${this.disabled}
+          ?disabled=${invalid || this.disabled}
           ?isFirst=${isFirst}
-          min="${this.min}"
-          max="${this.max}"
+          min="${invalid ? defaultMin: this.min}"
+          max="${invalid ? defaultMax: this.max}"
           value="${value}"
-          step="${this.step}"
+          step="${invalid ? 1 : this.step}"
           @input="${this.onUpdate}"
           @change="${this.onSelect}"
         />
@@ -250,13 +252,13 @@ export class MultiRangeComponent
     const value = Number(input.value);
     const isFirst = input.hasAttribute('isFirst');
 
-    if (featureVersion > '1.1') {
+    if (featureVersion >= '1.2') {
       const activeMin = this._activeMin!;
       const activeMax = this._activeMax!;
 
       //prevent penetration of one slider after another
       if ((isFirst && value >= activeMax) || (!isFirst && value <= activeMin)) {
-        input.value = String(isFirst ? activeMin : activeMax);
+        input.value = String(isFirst ? activeMax - this.step : activeMin + this.step);
         return;
       }
 
@@ -266,7 +268,7 @@ export class MultiRangeComponent
         this._activeMax = value;
       }
 
-      this.setPercentages(activeMin, activeMax);
+      this.setPercentages(this._activeMin!, this._activeMax!);
     } else {
       if (isFirst) {
         if (value >= this.maxValue) {
@@ -283,6 +285,8 @@ export class MultiRangeComponent
   }
 
   protected onSelect(): void {
+    if (featureVersion < '1.2') return;
+
     const minValue = (this.minValue = this._activeMin!);
     const maxValue = (this.maxValue = this._activeMax!);
 
