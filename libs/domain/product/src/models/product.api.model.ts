@@ -82,6 +82,20 @@ export module ApiProductModel {
     quantity: string;
   }
 
+  export interface ProductOffer {
+    id: string;
+    merchantReference: string;
+    price?: number;
+    merchants: Merchant[];
+    productOfferPrices: ProductOfferPrice[];
+  }
+
+  export interface ProductOfferPrice {
+    id: string;
+    price: number;
+    prices: Price[];
+  }
+
   export interface CategoryNodes {
     id: string;
     isActive: boolean;
@@ -95,6 +109,20 @@ export module ApiProductModel {
     children: CategoryNodes[];
   }
 
+  export interface Merchant {
+    id: string;
+    merchantName: string;
+    merchantUrl: string;
+  }
+
+  export interface ProductOffer {
+    id: string;
+  }
+
+  export interface ProductOfferPrice {
+    id: string;
+  }
+
   export const enum Includes {
     ConcreteProductImageSets = 'concrete-product-image-sets',
     ConcreteProductPrices = 'concrete-product-prices',
@@ -103,6 +131,9 @@ export module ApiProductModel {
     Labels = 'product-labels',
     ConcreteProductAvailabilities = 'concrete-product-availabilities',
     CategoryNodes = 'category-nodes',
+    ProductOffers = 'product-offers',
+    ProductOfferPrices = 'product-offer-prices',
+    Merchants = 'merchants',
   }
 
   export const enum CategoryNodeFields {
@@ -121,7 +152,10 @@ export module ApiProductModel {
     | Include<Includes.ConcreteProductAvailabilities, ProductAvailability>
     | Include<Includes.Labels, ProductLabels>
     | Include<Includes.AbstractProducts, Abstract>
-    | Include<Includes.CategoryNodes, CategoryNodes>;
+    | Include<Includes.CategoryNodes, CategoryNodes>
+    | Include<Includes.ProductOffers, ProductOffer>
+    | Include<Includes.ProductOfferPrices, ProductOfferPrice>
+    | Include<Includes.Merchants, Merchant>;
 
   export type Response = JsonApiModel<Concrete, ResponseIncludes[]>;
 }

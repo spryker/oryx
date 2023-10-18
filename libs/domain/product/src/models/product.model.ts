@@ -41,6 +41,17 @@ export interface Product {
   mediaSet?: ProductMediaSet[];
   labels?: ProductLabel[];
   availability?: ProductAvailability;
+  offers: ProductOffer[];
+}
+
+export interface ProductOffer {
+  id: string;
+  price: number;
+  merchant: {
+    id: string;
+    name: string;
+    url: string;
+  };
 }
 
 export interface ProductLabel {

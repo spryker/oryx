@@ -77,6 +77,7 @@ export class DefaultCartAdapter implements CartAdapter {
     const attributes = {
       sku: data.sku,
       quantity: data.quantity,
+      productOfferReference: 'offer358',
     };
 
     return this.identity.get().pipe(
