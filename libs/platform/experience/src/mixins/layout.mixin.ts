@@ -27,6 +27,12 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import { LayoutController } from '../controllers/layout.controller';
 
+interface LayoutMixinRender {
+  template: TemplateResult;
+  components?: Component[];
+  data?: LitElement;
+}
+
 export declare class LayoutMixinInterface {
   /**
    * @deprecated since 1.2 will be deleted.
@@ -45,13 +51,10 @@ export declare class LayoutMixinInterface {
   lg?: LayoutProperties;
   xl?: LayoutProperties;
   protected layoutStyles: ConnectableSignal<string | undefined>;
-  protected renderLayout: (
-    template: TemplateResult,
-    components?: Component[]
-  ) => TemplateResult;
+  protected renderLayout: (props: LayoutMixinRender) => TemplateResult;
   protected getLayoutRender(
     place: keyof LayoutPluginRender,
-    component?: Component
+    component?: Component | LitElement
   ): TemplateResult;
 }
 
@@ -127,7 +130,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected getLayoutRender(
       place: keyof LayoutPluginRender,
-      component?: Component
+      component?: Component | LitElement
     ): TemplateResult {
       const props = [
         'layout',
@@ -135,7 +138,16 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       ];
 
       return props.reduce((acc, prop) => {
-        const token = prop === 'layout' ? this.layout : prop;
+        const getRuleProp = (): string => {
+          const data = this.$options().rules?.find((rule) =>
+            typeof rule.layout === 'string' ? rule.layout : rule.layout?.type
+          );
+
+          if (typeof data === 'string') return data;
+
+          return data?.[prop] as string;
+        };
+        const token = prop === 'layout' ? this.layout ?? getRuleProp() : prop;
 
         if (!token) return acc;
 
@@ -153,10 +165,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       }, html``);
     }
 
-    protected renderLayout(
-      template: TemplateResult,
-      components?: Component[]
-    ): TemplateResult {
+    protected renderLayout(props: LayoutMixinRender): TemplateResult {
+      const { components, template, data } = props;
       const layoutStyles = this.layoutStyles() ?? '';
       const inlineStyles = components
         ? this.layoutBuilder.collectStyles(components)
@@ -164,9 +174,9 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       const styles = inlineStyles + layoutStyles;
 
       return html`
-        ${this.getLayoutRender('pre')} ${template}
+        ${this.getLayoutRender('pre', data)} ${template}
         ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))}
-        ${this.getLayoutRender('post')}
+        ${this.getLayoutRender('post', data)}
       `;
     }
 

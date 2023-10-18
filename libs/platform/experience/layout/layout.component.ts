@@ -8,6 +8,6 @@ export class LayoutComponent extends LayoutMixin(
   ContentMixin<LayoutAttributes>(LitElement)
 ) {
   protected override render(): TemplateResult {
-    return this.renderLayout(html`<slot></slot>`);
+    return this.renderLayout({ template: html`<slot></slot>` });
   }
 }

@@ -1,3 +1,4 @@
+import { LitElement } from 'lit';
 import { Observable } from 'rxjs';
 import { Component, StyleProperties } from '../../models';
 import { ResponsiveLayoutInfo } from './layout.model';
@@ -13,7 +14,7 @@ export const LayoutService = 'oryx.LayoutService';
 export interface LayoutIncomingConfig {
   token: string;
   type: LayoutPluginType;
-  data?: Component | unknown | StyleProperties;
+  data?: LitElement | Component | unknown | StyleProperties;
 }
 
 export interface LayoutService {

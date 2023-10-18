@@ -90,8 +90,8 @@ export class CompositionComponent extends LayoutMixin(
 
     if (!components?.length) return;
 
-    return this.renderLayout(
-      repeat(
+    return this.renderLayout({
+      template: repeat(
         components,
         (component) => component.id,
         (component) => html`
@@ -100,8 +100,8 @@ export class CompositionComponent extends LayoutMixin(
           ${this.getLayoutRender('post', component)}
         `
       ) as TemplateResult,
-      components
-    );
+      components,
+    });
   }
 
   protected renderComponent(
