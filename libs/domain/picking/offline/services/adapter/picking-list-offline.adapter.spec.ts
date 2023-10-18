@@ -332,6 +332,7 @@ describe('PickingListOfflineAdapter', () => {
     it('should call store', () => {
       expect(mockTable.update).toHaveBeenCalledWith(mockPickingListData[0].id, {
         localStatus: PickingListStatus.PickingFinished,
+        items: mockPickingListData[0].items,
       });
       expect(mockTable.get).toHaveBeenCalledWith(mockPickingListData[0].id);
     });

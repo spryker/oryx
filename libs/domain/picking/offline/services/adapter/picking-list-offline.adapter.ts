@@ -8,8 +8,8 @@ import {
   PickingListStatus,
 } from '@spryker-oryx/picking';
 import { intersectArrays } from '@spryker-oryx/utilities';
-import { Collection, liveQuery, Table } from 'dexie';
-import { combineLatestWith, map, Observable, switchMap } from 'rxjs';
+import { Collection, Table, liveQuery } from 'dexie';
+import { Observable, combineLatestWith, map, switchMap } from 'rxjs';
 import {
   MappedQualifier,
   PickingListEntity,
@@ -204,6 +204,7 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
               pickingList.id,
               {
                 localStatus: PickingListStatus.PickingFinished,
+                items: pickingList.items,
               }
             );
 
