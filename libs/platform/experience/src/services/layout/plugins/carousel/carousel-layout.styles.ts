@@ -10,6 +10,10 @@ export const styles: LayoutStyles = {
 
     :host {
       --oryx-column-count: var(--oryx-column-grid);
+      --indicator-area-height: 50px;
+
+      isolation: isolate;
+      margin-block-end: var(--indicator-area-height);
 
       overscroll-behavior-x: contain;
       scroll-snap-type: both mandatory;

@@ -13,7 +13,10 @@ export const experienceComponents = [components.compositionComponent];
 
 export const layoutFeature: AppFeature = {
   providers: layoutProviders,
-  components: [components.layoutComponent],
+  components: [
+    components.layoutComponent,
+    components.carouselNavigationComponent,
+  ],
 };
 
 export const experienceFeature: AppFeature = {

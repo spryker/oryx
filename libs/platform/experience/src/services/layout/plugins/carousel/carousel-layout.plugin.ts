@@ -18,10 +18,10 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
   }
 
   getRender(data?: unknown): LayoutPluginRender {
-    console.log(data);
+    // console.log(data);
     return {
-      pre: html`pre`,
-      post: html`post`,
+      pre: html`<oryx-carousel-navigation></oryx-carousel-navigation>`,
+      post: html``,
     };
   }
 }
