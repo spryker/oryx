@@ -87,9 +87,6 @@
       "@spryker-oryx/core/utilities": ["libs/platform/core/utilities/index.ts"],
       "@spryker-oryx/di": ["libs/base/di/src/index.ts"],
       "@spryker-oryx/experience": ["libs/platform/experience/src/index.ts"],
-      "@spryker-oryx/experience/carousel-indicators": [
-        "libs/platform/experience/carousel-indicators/index.ts"
-      ],
       "@spryker-oryx/experience/carousel-navigation": [
         "libs/platform/experience/carousel-navigation/index.ts"
       ],
