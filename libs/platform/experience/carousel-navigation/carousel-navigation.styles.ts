@@ -34,7 +34,7 @@ export const carouselNavigationStyles = css`
     align-self: end;
     width: var(--width);
     height: var(--indicator-area-height);
-    margin-bottom: calc(var(--indicator-area-height) * -1);
+    margin-block-end: calc(var(--indicator-area-height) * -1);
   }
 
   input {

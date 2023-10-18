@@ -12,13 +12,14 @@ export const styles: LayoutStyles = {
       --oryx-column-count: var(--oryx-column-grid);
       --indicator-area-height: 50px;
 
-      isolation: isolate;
-      margin-block-end: var(--indicator-area-height);
-
       overscroll-behavior-x: contain;
       scroll-snap-type: both mandatory;
       scroll-behavior: smooth;
       grid-auto-columns: var(--_item-size);
+
+      /* TODO: only add the below when the indicators are required/needed */
+      isolation: isolate;
+      margin-block-end: var(--indicator-area-height);
     }
 
     :host(:not([layout-vertical])) {
