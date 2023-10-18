@@ -31,7 +31,7 @@ export class FacetsFragment {
   };
 
   setRating = () => {
-    cy.get(`input[type="radio"][name="rating[min]"][value="4"]`).check();
+    cy.get(`input[type="radio"][name="rating"][value="4"]`).check();
   };
 
   resetRating = () => {

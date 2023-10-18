@@ -49,7 +49,7 @@ export const generateRatingFacet = (
 
   return {
     name: 'Rating',
-    parameter: 'rating[min]',
+    parameter: 'rating',
     valuesTreeLength: valuesCount,
     values: Array.from(new Array(valuesCount).keys())
       .reverse()

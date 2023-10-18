@@ -9,10 +9,10 @@ export const FacetRatingNormalizer = 'oryx.FacetRatingNormalizer*';
 export function facetRatingNormalizer(
   ratingFacet: ApiProductListModel.RangeFacet
 ): Observable<Facet> {
-  const ratingParamKey = 'rating[min]';
+  const ratingParamKey = 'rating';
 
   //TODO: temporary solution. Should be fixed after https://spryker.atlassian.net/browse/CC-31032.
-  // For now, it is only way to get current rating[min] value because the backend wrongly returns the rating[min] value.
+  // For now, it is only way to get current rating value because the backend wrongly returns the rating value.
   const routerService = resolve(RouterService);
 
   return routerService.currentQuery().pipe(

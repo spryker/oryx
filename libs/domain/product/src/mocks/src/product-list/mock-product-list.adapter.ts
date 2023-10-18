@@ -15,7 +15,7 @@ export class MockProductListAdapter implements ProductListAdapter {
     minPrice: 'price[min]',
     maxPrice: 'price[max]',
     storageCapacity: 'storage_capacity[]',
-    minRating: 'rating[min]',
+    minRating: 'rating',
   };
 
   getKey(qualifier: ProductListQualifier): string {

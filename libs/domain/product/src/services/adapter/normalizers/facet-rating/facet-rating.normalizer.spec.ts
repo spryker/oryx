@@ -8,7 +8,7 @@ import { facetRatingNormalizer } from './facet-rating.normalizer';
 const mockRatingFacet: ApiProductListModel.RangeFacet = {
   activeMax: 5,
   activeMin: 4,
-  config: { parameterName: 'rating[min]', isMultiValued: false },
+  config: { parameterName: 'rating', isMultiValued: false },
   docCount: null,
   localizedName: 'Product rating',
   max: 5,
@@ -79,13 +79,13 @@ describe('Product Facet Normalizers', () => {
     });
   });
 
-  describe('when router has "rating[min]" param', () => {
+  describe('when router has "rating" param', () => {
     const ratingMin = 4;
 
     beforeEach(() => {
       routerService.currentQuery = vi.fn().mockReturnValue(
         of({
-          'rating[min]': String(ratingMin),
+          rating: String(ratingMin),
         })
       );
     });

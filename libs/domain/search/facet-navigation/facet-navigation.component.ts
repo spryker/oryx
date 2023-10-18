@@ -27,9 +27,7 @@ import { searchFacetNavigationStyles } from './facet-navigation.styles';
   expandedItemsCount: 5,
   valueRenderLimit: 5,
   minForSearch: 13,
-  bury: [
-    { facets: ['price', ...(featureVersion < '1.2' ? ['rating[min]'] : [])] },
-  ],
+  bury: [{ facets: ['price', ...(featureVersion < '1.2' ? ['rating'] : [])] }],
 })
 export class SearchFacetNavigationComponent extends LayoutMixin(
   ContentMixin<SearchFacetNavigationOptions>(LitElement)
@@ -47,7 +45,11 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
     const { bury } = this.$options();
 
     return this.$facets()?.filter(
-      (facet) => !bury?.find((b) => b.facets.includes(facet.parameter))
+      (facet) =>
+        !bury?.find((b) => {
+          console.log(facet);
+          return b.facets.includes(facet.parameter);
+        })
     );
   });
 
