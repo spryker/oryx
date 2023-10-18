@@ -9,10 +9,6 @@ export class CarouselNavigationComponent extends LitElement {
 
   protected resizeObserver?: ResizeObserver;
 
-  protected get hostElement(): HTMLElement {
-    return this.getRootNode().host as HTMLElement;
-  }
-
   @state() protected indicators: { n: number }[] = [];
 
   connectedCallback(): void {
@@ -191,6 +187,10 @@ export class CarouselNavigationComponent extends LitElement {
       inline: inline,
       block: 'nearest',
     });
+  }
+
+  protected get hostElement(): HTMLElement {
+    return this.getRootNode().host as HTMLElement;
   }
 
   /**
