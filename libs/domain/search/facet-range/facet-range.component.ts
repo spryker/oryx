@@ -1,9 +1,8 @@
-import { RangeFacet, RangeFacetValue } from '@spryker-oryx/product';
+import { RangeFacet } from '@spryker-oryx/product';
 import { FacetController } from '@spryker-oryx/search/facet';
 import { MultiRangeChangeEvent } from '@spryker-oryx/ui/multi-range';
 import {
   computed,
-  debounce,
   effect,
   elementEffect,
   signalProperty,
@@ -22,10 +21,6 @@ export class SearchRangeFacetComponent
   implements SearchFacetRangeComponentAttributes
 {
   static styles = [searchRangeFacetStyles];
-
-  //need to check the mounted state of the component to avoid memory leaks
-  //in case if the component is removed from the DOM before the debounce is executed
-  protected _mounted = false;
 
   protected controller = new FacetController(this);
 
@@ -69,19 +64,12 @@ export class SearchRangeFacetComponent
     this.syncInputsValues(this.min, this.max);
   });
 
-  protected onRangeChange = debounce(
-    (e: CustomEvent<MultiRangeChangeEvent>): void => {
-      if (!this._mounted) return;
+  protected onRangeChange = (e: CustomEvent<MultiRangeChangeEvent>): void => {
+    const { minValue: min, maxValue: max } = e.detail;
+    const selected = { min, max };
 
-      const { minValue: min, maxValue: max } = e.detail;
-      const selected = { min, max };
-
-      if (this.hasChangedValue(selected)) {
-        this.controller.dispatchSelectEvent({ selected });
-      }
-    },
-    300
-  );
+    this.controller.dispatchSelectEvent({ selected });
+  };
 
   protected onBlur(e: InputEvent): void {
     const { value, name } = e.target as HTMLInputElement;
@@ -92,13 +80,6 @@ export class SearchRangeFacetComponent
     if (e.key === 'Enter') {
       (e.target as HTMLInputElement).blur();
     }
-  }
-
-  protected hasChangedValue({ min, max }: RangeFacetValue): boolean {
-    const {
-      values: { selected },
-    } = this.$facet();
-    return selected?.min !== min || selected?.max !== max;
   }
 
   protected syncInputsValues(min: number, max: number): void {
@@ -178,15 +159,5 @@ export class SearchRangeFacetComponent
         @change="${this.onRangeChange}"
       ></oryx-multi-range>
     `;
-  }
-
-  connectedCallback(): void {
-    super.connectedCallback();
-    this._mounted = true;
-  }
-
-  disconnectedCallback(): void {
-    this._mounted = false;
-    super.disconnectedCallback();
   }
 }

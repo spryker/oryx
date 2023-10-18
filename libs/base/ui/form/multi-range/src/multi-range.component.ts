@@ -1,14 +1,13 @@
+import { featureVersion } from '@spryker-oryx/utilities';
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+import { createRef, Ref, ref } from 'lit/directives/ref.js';
+import { when } from 'lit/directives/when.js';
 import {
   MultiRangeChangeEvent,
   MultiRangeProperties,
 } from './multi-range.model';
 import { multiRangeStyles } from './multi-range.styles';
-import { createRef, Ref, ref } from 'lit/directives/ref.js';
-import { featureVersion } from '@spryker-oryx/utilities';
-import { when } from 'lit/directives/when.js';
-
 
 const defaultMin = 0;
 const defaultMax = 100;
@@ -129,7 +128,7 @@ export class MultiRangeComponent
     if (featureVersion < '1.2') {
       this.setPercentages(this.minValue, this.maxValue);
     }
- 
+
     super.update(changedProperties);
   }
 
@@ -200,22 +199,32 @@ export class MultiRangeComponent
   }
 
   protected hasInvalidRange(): boolean {
-    return this.observedKeys.some((key) => typeof this[key] === 'undefined') ||
+    return (
+      this.observedKeys.some((key) => typeof this[key] === 'undefined') ||
       this.min! > this.max! - this.step ||
-      this.max! < this.min! + this.step;
+      this.max! < this.min! + this.step
+    );
   }
 
   protected override render(): TemplateResult | void {
     const invalid = featureVersion >= '1.2' && this.hasInvalidRange();
-    
+
     return html`
       ${this.renderRangeInput(
-        featureVersion >= '1.2' ? invalid ? defaultMin : this._activeMin! : this.minValue, 
+        featureVersion >= '1.2'
+          ? invalid
+            ? defaultMin
+            : this._activeMin!
+          : this.minValue,
         this.inputMinRef,
         true
       )}
       ${this.renderRangeInput(
-        featureVersion >= '1.2' ? invalid ? defaultMax : this._activeMax! : this.maxValue,
+        featureVersion >= '1.2'
+          ? invalid
+            ? defaultMax
+            : this._activeMax!
+          : this.maxValue,
         this.inputMaxRef
       )}
       ${when(!invalid, () => html`<div class="active"></div>`)}
@@ -236,8 +245,8 @@ export class MultiRangeComponent
           type="range"
           ?disabled=${invalid || this.disabled}
           ?isFirst=${isFirst}
-          min="${invalid ? defaultMin: this.min}"
-          max="${invalid ? defaultMax: this.max}"
+          min="${invalid ? defaultMin : this.min}"
+          max="${invalid ? defaultMax : this.max}"
           value="${value}"
           step="${invalid ? 1 : this.step}"
           @input="${this.onUpdate}"
@@ -258,7 +267,9 @@ export class MultiRangeComponent
 
       //prevent penetration of one slider after another
       if ((isFirst && value >= activeMax) || (!isFirst && value <= activeMin)) {
-        input.value = String(isFirst ? activeMax - this.step : activeMin + this.step);
+        input.value = String(
+          isFirst ? activeMax - this.step : activeMin + this.step
+        );
         return;
       }
 

@@ -70,7 +70,6 @@ describe('SearchRangeFacetComponent', () => {
   afterEach(() => {
     destroyInjector();
     vi.resetAllMocks();
-    vi.clearAllTimers();
   });
 
   it('passes the a11y audit', async () => {
@@ -186,7 +185,6 @@ describe('SearchRangeFacetComponent', () => {
     const selected = { minValue: 1, maxValue: 2 };
 
     beforeEach(async () => {
-      vi.useFakeTimers();
       element = await fixture(
         html`<oryx-search-range-facet
           name=${name}
@@ -195,7 +193,6 @@ describe('SearchRangeFacetComponent', () => {
       );
 
       getRange().dispatchEvent(new CustomEvent('change', { detail: selected }));
-      vi.advanceTimersByTime(301);
     });
 
     it('should dispatch oryx.select event with selected values', () => {
@@ -209,32 +206,6 @@ describe('SearchRangeFacetComponent', () => {
           }),
         })
       );
-    });
-
-    describe('and values are without changes', () => {
-      const callback = vi.fn();
-
-      beforeEach(async () => {
-        vi.useFakeTimers();
-
-        element = await fixture(
-          html`<oryx-search-range-facet
-            name=${name}
-            @oryx.select=${callback}
-          ></oryx-search-range-facet>`
-        );
-
-        getRange().dispatchEvent(
-          new CustomEvent('change', {
-            detail: { minValue: min, maxValue: max },
-          })
-        );
-        vi.advanceTimersByTime(301);
-      });
-
-      it('should not dispatch oryx.select', () => {
-        expect(callback).not.toHaveBeenCalled();
-      });
     });
   });
 

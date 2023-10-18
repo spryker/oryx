@@ -7,7 +7,7 @@ describe('MultiRangeComponent', () => {
   let element: MultiRangeComponent;
   const callback = vi.fn();
 
-  const getInput = ( isMax = false ): HTMLInputElement => 
+  const getInput = (isMax = false): HTMLInputElement =>
     element.renderRoot.querySelectorAll<HTMLInputElement>('input')[+isMax];
 
   beforeAll(async () => {
@@ -15,7 +15,9 @@ describe('MultiRangeComponent', () => {
   });
 
   beforeEach(async () => {
-    element = await fixture(html`<oryx-multi-range @change=${callback}></oryx-multi-range>`);
+    element = await fixture(
+      html`<oryx-multi-range @change=${callback}></oryx-multi-range>`
+    );
   });
 
   it('is defined', () => {
@@ -62,7 +64,8 @@ describe('MultiRangeComponent', () => {
     expect(callback).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: expect.objectContaining({
-          minValue: element.minValue, maxValue: element.maxValue,
+          minValue: element.minValue,
+          maxValue: element.maxValue,
         }),
       })
     );
@@ -194,13 +197,16 @@ describe('MultiRangeComponent', () => {
       const newValue = '20';
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-multi-range minValue="10" maxValue="90"></oryx-multi-range>`
+          html`<oryx-multi-range
+            minValue="10"
+            maxValue="90"
+          ></oryx-multi-range>`
         );
 
         getInput().value = newValue;
         getInput().dispatchEvent(new Event('input'));
       });
-  
+
       it('should apply new value', () => {
         expect(element.minValue).toBe(+newValue);
       });
@@ -210,7 +216,7 @@ describe('MultiRangeComponent', () => {
           getInput().value = '90';
           getInput().dispatchEvent(new Event('input'));
         });
-    
+
         it('should recalculate minValue relatively maxValue', () => {
           expect(element.minValue).toBe(element.maxValue - element.step);
         });
@@ -221,13 +227,16 @@ describe('MultiRangeComponent', () => {
       const newValue = '50';
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-multi-range minValue="10" maxValue="90"></oryx-multi-range>`
+          html`<oryx-multi-range
+            minValue="10"
+            maxValue="90"
+          ></oryx-multi-range>`
         );
 
         getInput(true).value = newValue;
         getInput(true).dispatchEvent(new Event('input'));
       });
-  
+
       it('should apply new value', () => {
         expect(element.maxValue).toBe(+newValue);
       });
@@ -237,7 +246,7 @@ describe('MultiRangeComponent', () => {
           getInput(true).value = '0';
           getInput(true).dispatchEvent(new Event('input'));
         });
-    
+
         it('should recalculate maxValue relatively minValue', () => {
           expect(element.maxValue).toBe(element.minValue + element.step);
         });
@@ -250,38 +259,42 @@ describe('MultiRangeComponent', () => {
       mockFeatureVersion('1.2');
     });
 
-    [{
-      title: 'when step is greater than max - min',
-      step: 101,
-    },{
-      title: 'when min >= max',
-      min: 200,
-    },{
-      title: 'when max <= min',
-      max: -1,
-    }].forEach(({ title, step = 2, min = 20, max = 70 }) => {
+    [
+      {
+        title: 'when step is greater than max - min',
+        step: 101,
+      },
+      {
+        title: 'when min >= max',
+        min: 200,
+      },
+      {
+        title: 'when max <= min',
+        max: -1,
+      },
+    ].forEach(({ title, step = 2, min = 20, max = 70 }) => {
       describe(title, () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-multi-range 
+            html`<oryx-multi-range
               step=${step}
               min=${min}
               max=${max}
             ></oryx-multi-range>`
           );
         });
-    
+
         it('should not render the bar', () => {
           expect(element).not.toContainElement('div.active');
         });
-  
+
         it('should apply default values to the inputs and disable them', () => {
           expect(getInput().value).toBe('0');
           expect(getInput().min).toBe('0');
           expect(getInput().max).toBe('100');
           expect(getInput().step).toBe('1');
           expect(getInput().disabled).toBe(true);
-      
+
           expect(getInput(true).value).toBe('100');
           expect(getInput(true).min).toBe('0');
           expect(getInput(true).max).toBe('100');
@@ -289,7 +302,7 @@ describe('MultiRangeComponent', () => {
           expect(getInput(true).disabled).toBe(true);
         });
       });
-    })
+    });
 
     describe('when minValue is out of the range', () => {
       beforeEach(async () => {
@@ -297,7 +310,7 @@ describe('MultiRangeComponent', () => {
           html`<oryx-multi-range minValue="200"></oryx-multi-range>`
         );
       });
-  
+
       it('should apply min as a value for minValue', () => {
         expect(element.minValue).toBe(element.min);
       });
@@ -309,7 +322,7 @@ describe('MultiRangeComponent', () => {
           html`<oryx-multi-range maxValue="-1"></oryx-multi-range>`
         );
       });
-  
+
       it('should apply max as a value for maxValue', () => {
         expect(element.maxValue).toBe(element.max);
       });
@@ -318,10 +331,13 @@ describe('MultiRangeComponent', () => {
     describe('when minValue is larger than maxValue', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-multi-range minValue="50" maxValue="20"></oryx-multi-range>`
+          html`<oryx-multi-range
+            minValue="50"
+            maxValue="20"
+          ></oryx-multi-range>`
         );
       });
-  
+
       it('should apply range boundaries as values for minValue and maxValue', () => {
         expect(element.minValue).toBe(element.min);
         expect(element.maxValue).toBe(element.max);
@@ -336,13 +352,15 @@ describe('MultiRangeComponent', () => {
           element = await fixture(
             html`<oryx-multi-range @change=${callback}></oryx-multi-range>`
           );
-  
+
           getInput().value = newValue;
           getInput().dispatchEvent(new Event('input'));
         });
-    
+
         it('should re-calculate min range css var', () => {
-          expect(element.style.getPropertyValue('--_multi-range-min')).toBe('10%');
+          expect(element.style.getPropertyValue('--_multi-range-min')).toBe(
+            '10%'
+          );
         });
 
         it('should not apply the value', () => {
@@ -353,7 +371,7 @@ describe('MultiRangeComponent', () => {
           beforeEach(async () => {
             getInput().dispatchEvent(new Event('change'));
           });
-      
+
           it('should apply the value', () => {
             expect(element.minValue).toBe(10);
           });
@@ -362,7 +380,8 @@ describe('MultiRangeComponent', () => {
             expect(callback).toHaveBeenCalledWith(
               expect.objectContaining({
                 detail: expect.objectContaining({
-                  minValue: +newValue, maxValue: element.maxValue,
+                  minValue: +newValue,
+                  maxValue: element.maxValue,
                 }),
               })
             );
@@ -374,11 +393,11 @@ describe('MultiRangeComponent', () => {
             element = await fixture(
               html`<oryx-multi-range></oryx-multi-range>`
             );
-            
+
             getInput().value = '100';
             getInput().dispatchEvent(new Event('input'));
           });
-      
+
           it('should re-calculate input`s value relatively maxValue', () => {
             expect(getInput().value).toBe('99');
           });
@@ -392,13 +411,15 @@ describe('MultiRangeComponent', () => {
           element = await fixture(
             html`<oryx-multi-range @change=${callback}></oryx-multi-range>`
           );
-  
+
           getInput(true).value = newValue;
           getInput(true).dispatchEvent(new Event('input'));
         });
-    
+
         it('should re-calculate max range css var', () => {
-          expect(element.style.getPropertyValue('--_multi-range-max')).toBe('25%');
+          expect(element.style.getPropertyValue('--_multi-range-max')).toBe(
+            '25%'
+          );
         });
 
         it('should not apply the value', () => {
@@ -409,7 +430,7 @@ describe('MultiRangeComponent', () => {
           beforeEach(async () => {
             getInput(true).dispatchEvent(new Event('change'));
           });
-      
+
           it('should apply the value', () => {
             expect(element.maxValue).toBe(75);
           });
@@ -418,7 +439,8 @@ describe('MultiRangeComponent', () => {
             expect(callback).toHaveBeenCalledWith(
               expect.objectContaining({
                 detail: expect.objectContaining({
-                  minValue: element.minValue, maxValue: +newValue,
+                  minValue: element.minValue,
+                  maxValue: +newValue,
                 }),
               })
             );
@@ -430,7 +452,7 @@ describe('MultiRangeComponent', () => {
             getInput(true).value = '0';
             getInput(true).dispatchEvent(new Event('input'));
           });
-      
+
           it('should re-calculate input`s value relatively minValue', () => {
             expect(getInput(true).value).toBe('1');
           });
