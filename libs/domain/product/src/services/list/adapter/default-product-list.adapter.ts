@@ -66,6 +66,7 @@ export class DefaultProductListAdapter implements ProductListAdapter {
       ApiProductModel.Includes.Labels,
       ApiProductModel.Includes.ProductOffers,
       ApiProductModel.Includes.ProductOfferPrices,
+      ApiProductModel.Includes.ProductOfferAvailabilities,
       ApiProductModel.Includes.Merchants,
     ];
 

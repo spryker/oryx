@@ -133,6 +133,7 @@ export module ApiProductModel {
     CategoryNodes = 'category-nodes',
     ProductOffers = 'product-offers',
     ProductOfferPrices = 'product-offer-prices',
+    ProductOfferAvailabilities = 'product-offer-availabilities',
     Merchants = 'merchants',
   }
 
@@ -155,6 +156,7 @@ export module ApiProductModel {
     | Include<Includes.CategoryNodes, CategoryNodes>
     | Include<Includes.ProductOffers, ProductOffer>
     | Include<Includes.ProductOfferPrices, ProductOfferPrice>
+    | Include<Includes.ProductOfferAvailabilities, ProductAvailability>
     | Include<Includes.Merchants, Merchant>;
 
   export type Response = JsonApiModel<Concrete, ResponseIncludes[]>;

@@ -29,6 +29,7 @@ export class DefaultProductAdapter implements ProductAdapter {
       ApiProductModel.Includes.CategoryNodes,
       ApiProductModel.Includes.ProductOffers,
       ApiProductModel.Includes.ProductOfferPrices,
+      ApiProductModel.Includes.ProductOfferAvailabilities,
       ApiProductModel.Includes.Merchants,
       ...(include ?? []),
     ].filter((type, index, arr) => arr.indexOf(type) === index);
