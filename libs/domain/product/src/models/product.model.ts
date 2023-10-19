@@ -52,6 +52,7 @@ export interface ProductOffer {
     name: string;
     url: string;
   };
+  availability?: ProductAvailability;
 }
 
 export interface ProductLabel {

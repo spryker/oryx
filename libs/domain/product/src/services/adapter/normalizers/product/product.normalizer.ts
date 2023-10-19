@@ -2,12 +2,13 @@ import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
 import { Observable, combineLatest, map, of } from 'rxjs';
-import { ApiProductModel, Product, ProductOffer } from '../../../../models';
+import { ApiProductModel, Product } from '../../../../models';
 import { CategoryNormalizer } from '../../../category';
 import { AvailabilityNormalizer } from '../availability';
 import { CategoryIdNormalizer } from '../category-id';
 import { ProductLabelsNormalizer } from '../labels/labels.normalizer';
 import { ProductMediaSetNormalizer } from '../media';
+import { OfferNormalizer } from '../offer/offer.normalizer';
 import { PriceNormalizer } from '../price';
 import { DeserializedProduct } from './model';
 
@@ -128,24 +129,7 @@ export function productOfferNormalizer(
   if (!offers?.length) return of({});
 
   return combineLatest(
-    offers.map((offer) =>
-      transformer
-        .transform(offer.productOfferPrices?.[0], PriceNormalizer)
-        .pipe(
-          map(
-            (price) =>
-              ({
-                id: offer.id,
-                price,
-                merchant: {
-                  id: offer.merchants?.[0]?.id,
-                  name: offer.merchants?.[0]?.merchantName,
-                  url: offer.merchants?.[0]?.merchantUrl,
-                },
-              } as ProductOffer)
-          )
-        )
-    )
+    offers.map((offer) => transformer.transform(offer, OfferNormalizer))
   ).pipe(map((offers) => ({ offers })));
 }
 

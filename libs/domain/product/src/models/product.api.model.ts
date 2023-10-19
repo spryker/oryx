@@ -88,6 +88,7 @@ export module ApiProductModel {
     price?: number;
     merchants: Merchant[];
     productOfferPrices: ProductOfferPrice[];
+    productOfferAvailabilities: ProductAvailability[];
   }
 
   export interface ProductOfferPrice {

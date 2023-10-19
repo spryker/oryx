@@ -30,6 +30,12 @@ import {
   productLabelNormalizer,
 } from './adapter/normalizers/labels/labels.normalizer';
 import {
+  OfferNormalizer,
+  offerAvailabilityNormalizer,
+  offerNormalizer,
+  offerPriceNormalizer,
+} from './adapter/normalizers/offer/offer.normalizer';
+import {
   PaginationNormalizer,
   paginationNormalizer,
 } from './adapter/normalizers/pagination';
@@ -113,6 +119,18 @@ export const productProviders: Provider[] = [
   {
     provide: PriceNormalizer,
     useValue: priceNormalizer,
+  },
+  {
+    provide: OfferNormalizer,
+    useValue: offerNormalizer,
+  },
+  {
+    provide: OfferNormalizer,
+    useValue: offerPriceNormalizer,
+  },
+  {
+    provide: OfferNormalizer,
+    useValue: offerAvailabilityNormalizer,
   },
   {
     provide: FacetNormalizer,
