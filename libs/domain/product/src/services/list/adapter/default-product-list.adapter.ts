@@ -48,8 +48,6 @@ export class DefaultProductListAdapter implements ProductListAdapter {
                   : `${this.alias[qualifierKey] ?? qualifierKey}=${param}`
               );
             }
-
-            console.log('params', param);
             return params;
           }, [])
           .join('&')

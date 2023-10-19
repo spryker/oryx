@@ -19,7 +19,7 @@ describe('Category suite', () => {
     it('should update products and facets when filters are applied/cleared', () => {
       categoryPage.getFacets().setRating('4');
       categoryPage.waitForSearchRequest();
-      checkProductCardsFilterring(
+      checkProductCardsFiltering(
         categoryPage,
         2,
         1,
