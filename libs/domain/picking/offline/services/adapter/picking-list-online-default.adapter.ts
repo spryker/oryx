@@ -79,7 +79,7 @@ export class PickingListOnlineDefaultAdapter
       // Merge local status
       const localStatus =
         !existingPickingList ||
-        pickingList.status === existingPickingList.localStatus
+        pickingList.status !== existingPickingList.localStatus
           ? pickingList.status
           : existingPickingList.localStatus;
 
