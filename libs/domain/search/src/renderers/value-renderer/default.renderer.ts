@@ -1,5 +1,6 @@
 import { Facet, FacetType } from '@spryker-oryx/product';
 import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { TemplateResult, html } from 'lit';
 import { FacetMappingOptions, FacetParams } from '../renderer';
 
@@ -10,7 +11,7 @@ export const defaultFacetRenderer = {
       options: FacetMappingOptions,
       selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
     ): TemplateResult => {
-      if (facet.type === FacetType.Range) {
+      if (featureVersion >= '1.2' && facet.type === FacetType.Range) {
         return html` <oryx-search-range-facet
           @oryx.select=${selectListener}
           .name=${facet.name}
