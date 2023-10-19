@@ -10,7 +10,6 @@ import { ProductStorage } from '../support/test-data/storages/product.storage';
 describe('Category suite', () => {
   describe('Products filtering', () => {
     let categoryPage;
-    const query = 'DELL Inspiron 7359';
 
     beforeEach(() => {
       categoryPage = new CategoryPage({ id: '6' });
@@ -18,6 +17,19 @@ describe('Category suite', () => {
     });
 
     it('should update products and facets when filters are applied/cleared', () => {
+      categoryPage.getFacets().setRating('4');
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilterring(
+        categoryPage,
+        2,
+        1,
+        'Asus Transformer Book T200TA'
+      );
+
+      // we don't expect search request here because previous query is cached
+      categoryPage.getFacets().resetRating();
+
+      const query = 'DELL Inspiron 7359';
       // apply 1st filter
       categoryPage.getFacets().setColor('Silver');
       categoryPage.waitForSearchRequest();

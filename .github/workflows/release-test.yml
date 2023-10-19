@@ -16,6 +16,7 @@ jobs:
       SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
       FES_CONTENT_BACKEND_URL: ${{ secrets.FES_CONTENT_BACKEND_URL }}
       STORE: ${{ vars.STORE }}
+      ORYX_FEATURE_VERSION: latest
     steps:
       - uses: actions/setup-node@v3
         with:
