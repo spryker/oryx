@@ -39,8 +39,11 @@ export const baseStyles = [
     }
 
     :host([float]) oryx-popover {
-      inset-inline: var(--floating-padding-start, 10px)
-        var(--floating-padding-end, var(--floating-padding-start, 10px));
+      inset-inline-start: var(--floating-padding-start, 10px);
+      inset-inline-end: var(
+        --floating-padding-end,
+        var(--floating-padding-start, 10px)
+      );
       width: auto;
     }
 

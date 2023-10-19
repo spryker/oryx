@@ -9,7 +9,8 @@ export const collapsibleTextStyles = css`
   }
 
   ::slotted(p) {
-    margin-block: var(--oryx-line-height, 22px) 0;
+    margin-block-start: var(--oryx-line-height, 22px);
+    margin-block-end: 0;
   }
 
   ::slotted(p:first-child) {

@@ -25,13 +25,16 @@ export const gridSystem = css`
   }
 
   :host(:not([layout-vertical])) {
-    place-content: var(--align, start) var(--justify);
-    place-items: var(--align, start) var(--justify);
+    align-items: var(--align, start);
+    align-content: var(--align, start);
+    justify-content: var(--justify);
+    justify-items: var(--justify);
   }
 
   *,
   ::slotted(*) {
-    place-self: var(--align) var(--justify);
+    justify-self: var(--justify);
+    align-self: var(--align);
   }
 
   *:not(style),

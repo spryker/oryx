@@ -8,8 +8,8 @@ export const styles = css`
     );
 
     display: grid;
-    gap: var(--row-gap, var(--oryx-row-gap))
-      var(--column-gap, var(--oryx-column-gap, 0));
+    column-gap: var(--column-gap, var(--oryx-column-gap, 0));
+    row-gap: var(--row-gap, var(--oryx-row-gap));
     margin-inline: auto;
     width: min(100%, calc(var(--_container-width)));
   }
