@@ -52,7 +52,7 @@ export const checkoutPage: ExperienceComponent = {
     description: 'Checkout Page Description',
   },
   components: [
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'header',
         }
@@ -130,7 +130,7 @@ export const checkoutPage: ExperienceComponent = {
         },
       ],
     },
-    featureVersion >= '1.1'
+    featureVersion >= '1.2'
       ? {
           ref: 'footer',
         }

@@ -4,14 +4,14 @@ import { ComponentInfo, ComponentsInfo } from '@spryker-oryx/utilities';
 import { fulfillmentRootComponent } from './components';
 
 /**
- * @deprecated Since version 1.1.
+ * @deprecated Since version 1.2.
  */
 export interface FulfillmentRootFeatureConfig {
   selector?: string;
 }
 
 /**
- * @deprecated Since version 1.1.
+ * @deprecated Since version 1.2.
  */
 export class FulfillmentRootFeature implements AppFeature {
   options: ModularAppBuilderOptions;
