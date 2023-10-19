@@ -43,7 +43,7 @@ export class FacetsFragment {
       if (key === 'max' || key === 'min') {
         this.getPriceFacetInput(key === 'max').then((input) => {
           //apply value and emit Enter key down to simulate interaction
-          input.val = value;
+          input.focus().val = value;
           input.trigger('keydown', { key: 'Enter' });
         });
       }
