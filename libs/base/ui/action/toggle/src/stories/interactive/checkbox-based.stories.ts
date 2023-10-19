@@ -1,5 +1,5 @@
 import { expect } from '@storybook/jest';
-import { userEvent, waitFor } from '@storybook/testing-library';
+import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -52,13 +52,10 @@ Checkbox.play = async (obj: {
   ) as HTMLInputElement;
 
   await new Promise((r) => setTimeout(r, 1000));
-  userEvent.click(firstCheckbox);
-
+  await userEvent.click(firstCheckbox);
   await new Promise((r) => setTimeout(r, 1000));
-  userEvent.click(secondCheckbox);
+  await userEvent.click(secondCheckbox);
 
-  await waitFor(() => {
-    expect(firstCheckbox.checked).toBeFalsy();
-    expect(secondCheckbox.checked).toBeTruthy();
-  });
+  await expect(firstCheckbox.checked).toBeFalsy();
+  await expect(secondCheckbox.checked).toBeTruthy();
 };

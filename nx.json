@@ -5,7 +5,7 @@
   },
   "tasksRunnerOptions": {
     "default": {
-      "runner": "nx-cloud",
+      "runner": "nx/tasks-runners/default",
       "options": {
         "cacheableOperations": [
           "build",
@@ -15,8 +15,7 @@
           "stylelint",
           "paths"
         ],
-        "parallel": 1,
-        "accessToken": "OGI1YjE1ZTMtMDJhMi00MDVlLTkwNWItMWViY2ZjNmNmZTFjfHJlYWQtd3JpdGU="
+        "parallel": 1
       }
     }
   },
@@ -41,20 +40,6 @@
     },
     "test": {
       "inputs": ["default", "^default"]
-    },
-    "build-storybook": {
-      "inputs": [
-        "default",
-        "^production",
-        "{projectRoot}/.storybook/**/*",
-        "{projectRoot}/tsconfig.storybook.json"
-      ]
-    },
-    "e2e": {
-      "inputs": ["default", "^production"]
-    },
-    "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
     }
   },
   "namedInputs": {

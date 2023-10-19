@@ -29,9 +29,7 @@ CloseNestedModal.play = async (obj: {
     'button[value=cancel]'
   ) as HTMLButtonElement;
 
-  await new Promise((r) => setTimeout(r, 1000));
-  userEvent.click(closeNestedModalBtn);
-  await new Promise((r) => setTimeout(r, 1000));
+  await userEvent.click(closeNestedModalBtn, { delay: 1000 });
 
   await expect(nestedModal.hasAttribute('open')).toBeFalsy();
 };

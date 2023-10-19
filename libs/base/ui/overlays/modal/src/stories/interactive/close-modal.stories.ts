@@ -27,9 +27,6 @@ CloseModal.play = async (obj: {
     'button[value=cancel]'
   ) as HTMLButtonElement;
 
-  await new Promise((r) => setTimeout(r, 1000));
-  userEvent.click(closeBtn);
-  await new Promise((r) => setTimeout(r, 1000));
-
+  await userEvent.click(closeBtn, { delay: 1000 });
   await expect(modal.hasAttribute('open')).toBeFalsy();
 };

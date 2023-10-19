@@ -1,6 +1,6 @@
 import { OverlaysDecorator } from '@/tools/storybook';
 import { expect } from '@storybook/jest';
-import { userEvent, waitFor } from '@storybook/testing-library';
+import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -46,6 +46,6 @@ OpenNestedModal.play = async (obj: {
   ) as HTMLButtonElement;
 
   await new Promise((r) => setTimeout(r, 1000));
-  userEvent.click(openNestedModalBtn);
-  await waitFor(() => expect(nestedModal.hasAttribute('open')).toBeTruthy());
+  await userEvent.click(openNestedModalBtn);
+  await expect(nestedModal.hasAttribute('open')).toBeTruthy();
 };

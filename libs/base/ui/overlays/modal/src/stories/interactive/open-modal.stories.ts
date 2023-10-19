@@ -1,6 +1,6 @@
 import { OverlaysDecorator } from '@/tools/storybook';
 import { expect } from '@storybook/jest';
-import { userEvent, waitFor } from '@storybook/testing-library';
+import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -40,6 +40,6 @@ OpenModal.play = async (obj: { canvasElement: HTMLElement }): Promise<void> => {
   ) as HTMLButtonElement;
 
   await new Promise((r) => setTimeout(r, 1000));
-  userEvent.click(openBtn);
-  await waitFor(() => expect(modal.hasAttribute('open')).toBeTruthy());
+  await userEvent.click(openBtn);
+  await expect(modal.hasAttribute('open')).toBeTruthy();
 };

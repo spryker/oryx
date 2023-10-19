@@ -1,5 +1,5 @@
 import { expect } from '@storybook/jest';
-import { userEvent, waitFor } from '@storybook/testing-library';
+import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
@@ -33,11 +33,11 @@ ClickStrategy.play = async (obj: {
   const input = component.querySelector('input') as HTMLInputElement;
   const icon = component.shadowRoot?.querySelector('oryx-icon') as HTMLElement;
 
-  userEvent.clear(input);
+  await userEvent.clear(input);
   await userEvent.type(input, 'Change123$', { delay: 100 });
-  await waitFor(() => expect(input.type).toBe('password'));
-  userEvent.click(icon);
-  await waitFor(() => expect(input.type).toBe('text'));
+  await expect(input.type).toBe('password');
+  await userEvent.click(icon);
+  await expect(input.type).toBe('text');
   await new Promise((r) => setTimeout(r, 1000));
-  await waitFor(() => expect(input.type).toBe('password'));
+  await expect(input.type).toBe('password');
 };
