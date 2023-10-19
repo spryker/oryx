@@ -9,30 +9,36 @@ export const ProductQuery = 'oryx.productQuery';
 
 export type ProductQuery = Query<Product, ProductQualifier>;
 
+/**
+ * This transform is used to update details (like price) of the product when specific offer is requested.
+ */
+export function productForOfferTransform(
+  data: Product,
+  qualifier: ProductQualifier
+): Product | void {
+  if (data && qualifier.offer) {
+    console.log(data, qualifier);
+    return {
+      ...data,
+      // TODO: Improve this logic when full price will be normalized in offer
+      price: {
+        ...data.price,
+        defaultPrice: {
+          ...data.price?.defaultPrice,
+          value:
+            data.offers?.find((o) => o.id === qualifier.offer)?.price ??
+            data.price?.defaultPrice?.value,
+        },
+      },
+    };
+  }
+}
+
 export const productQueries = [
   provideQuery(ProductQuery, (adapter = inject(ProductAdapter)) => ({
+    cacheKey: (q: ProductQualifier) => q?.sku ?? '',
     loader: (q: ProductQualifier) => adapter.get(q),
     refreshOn: [LocaleChanged, CurrencyChanged],
-    postTransforms: [
-      (data: Product, qualifier: ProductQualifier) => {
-        if (data && qualifier.offer) {
-          console.log(data, qualifier);
-          return {
-            ...data,
-            price: {
-              ...data.price,
-              defaultPrice: {
-                ...data.price?.defaultPrice,
-                value:
-                  data.offers?.find((o) => o.id === qualifier.offer)?.price ??
-                  data.price?.defaultPrice?.value,
-              },
-            },
-          };
-        }
-      },
-    ],
-    // qualifierEnhancers: [(q: ProductQualifier) => ({ ...q, offer: '12321' })],
-    cacheKey: (q: ProductQualifier) => q?.sku ?? '',
+    postTransforms: [productForOfferTransform],
   })),
 ];
