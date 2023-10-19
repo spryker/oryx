@@ -10,6 +10,7 @@ import {
   FacetCategoryNormalizer,
   FacetNormalizer,
   FacetRangeNormalizer,
+  FacetRatingNormalizer,
   PriceNormalizer,
   ProductAdapter,
   ProductMediaSetNormalizer,
@@ -17,6 +18,7 @@ import {
   categoryIdNormalizer,
   concreteProductsNormalizer,
   facetCategoryNormalizer,
+  facetRatingNormalizer,
   facetsNormalizer,
   facetsRangeNormalizer,
   mediaNormalizer,
@@ -121,6 +123,10 @@ export const productProviders: Provider[] = [
   {
     provide: FacetRangeNormalizer,
     useValue: facetsRangeNormalizer,
+  },
+  {
+    provide: FacetRatingNormalizer,
+    useValue: facetRatingNormalizer,
   },
   {
     provide: SortNormalizer,

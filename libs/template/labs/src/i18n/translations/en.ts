@@ -60,6 +60,10 @@ const ui = {
     'At least {count, plural, one {{count} special character} other {{count} special characters}} (e.g. *$%)',
 };
 
+const search = {
+  'search.facet.rating.up': '& up',
+};
+
 export default {
   ...product,
   ...cart,
@@ -68,4 +72,5 @@ export default {
   ...user,
   ...picking,
   ...ui,
+  ...search,
 };
