@@ -20,7 +20,11 @@ export class ProductOffersComponent extends ProductMixin(
         'url?'
       )}
       ${this.$product()?.offers?.map((offer) =>
-        this.renderOffer(offer.merchant.name, offer.price, offer.merchant.url)
+        this.renderOffer(
+          offer.merchant.name,
+          offer.price.defaultPrice?.value,
+          offer.merchant.url
+        )
       )}
     `;
   }

@@ -46,7 +46,7 @@ export interface Product {
 
 export interface ProductOffer {
   id: string;
-  price: number;
+  price: ProductPrices;
   merchant: {
     id: string;
     name: string;

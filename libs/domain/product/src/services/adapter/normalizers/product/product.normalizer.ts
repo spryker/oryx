@@ -1,7 +1,7 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
-import { Observable, map, of } from 'rxjs';
+import { Observable, combineLatest, map, of } from 'rxjs';
 import { ApiProductModel, Product, ProductOffer } from '../../../../models';
 import { CategoryNormalizer } from '../../../category';
 import { AvailabilityNormalizer } from '../availability';
@@ -123,23 +123,30 @@ export function productOfferNormalizer(
   data: DeserializedProduct, // source
   transformer: TransformerService
 ): Observable<Partial<Product>> {
-  // TODO: include also in product list normalizers
   const offers = data.productOffers as any as ApiProductModel.ProductOffer[];
 
-  return of({
-    offers: offers?.map(
-      (offer) =>
-        ({
-          id: offer.id,
-          price: offer.productOfferPrices?.[0]?.price,
-          merchant: {
-            id: offer.merchants?.[0]?.id,
-            name: offer.merchants?.[0]?.merchantName,
-            url: offer.merchants?.[0]?.merchantUrl,
-          },
-        } as ProductOffer)
-    ),
-  });
+  if (!offers?.length) return of({});
+
+  return combineLatest(
+    offers.map((offer) =>
+      transformer
+        .transform(offer.productOfferPrices?.[0], PriceNormalizer)
+        .pipe(
+          map(
+            (price) =>
+              ({
+                id: offer.id,
+                price,
+                merchant: {
+                  id: offer.merchants?.[0]?.id,
+                  name: offer.merchants?.[0]?.merchantName,
+                  url: offer.merchants?.[0]?.merchantUrl,
+                },
+              } as ProductOffer)
+          )
+        )
+    )
+  ).pipe(map((offers) => ({ offers })));
 }
 
 export const productNormalizer: Provider[] = [

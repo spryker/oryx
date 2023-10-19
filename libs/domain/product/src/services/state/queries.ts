@@ -17,19 +17,10 @@ export function productForOfferTransform(
   qualifier: ProductQualifier
 ): Product | void {
   if (data && qualifier.offer) {
-    console.log(data, qualifier);
     return {
       ...data,
-      // TODO: Improve this logic when full price will be normalized in offer
-      price: {
-        ...data.price,
-        defaultPrice: {
-          ...data.price?.defaultPrice,
-          value:
-            data.offers?.find((o) => o.id === qualifier.offer)?.price ??
-            data.price?.defaultPrice?.value,
-        },
-      },
+      price:
+        data.offers?.find((o) => o.id === qualifier.offer)?.price ?? data.price,
     };
   }
 }
