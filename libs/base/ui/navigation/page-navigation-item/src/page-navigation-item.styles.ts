@@ -10,8 +10,7 @@ export const styles = css`
     position: relative;
     display: block;
     padding-block: 10px;
-    padding-inline-end: 20px;
-    padding-inline-start: 38px;
+    padding-inline: 38px 20px;
     min-height: 22px;
     cursor: pointer;
   }

@@ -9,8 +9,7 @@ export const styles = css`
   form {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 20px;
-    row-gap: 15px;
+    gap: 15px 20px;
   }
 
   oryx-input:last-of-type {

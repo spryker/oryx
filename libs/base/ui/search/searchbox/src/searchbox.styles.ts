@@ -19,11 +19,8 @@ export const baseStyles = [
 
     :host([float]) label {
       position: absolute;
-      inset-inline-start: var(--floating-padding-start, 10px);
-      inset-inline-end: var(
-        --floating-padding-end,
-        var(--floating-padding-start, 10px)
-      );
+      inset-inline-start: var(--floating-padding-start, 10px)
+        var(--floating-padding-end, var(--floating-padding-start, 10px));
       width: calc(
         100vw -
           calc(

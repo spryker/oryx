@@ -51,8 +51,7 @@ export const drawerBaseStyles = css`
   }
 
   :host([position='${unsafeCSS(Position.END)}']) dialog::before {
-    inset-inline-start: auto;
-    inset-inline-end: 0;
+    inset-inline: auto 0;
   }
 
   :host([maximize]) {

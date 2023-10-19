@@ -21,8 +21,7 @@ export const pickingProductCardComponentStyles = css`
   }
 
   form div {
-    margin-block-start: 14px;
-    margin-block-end: 9px;
+    margin-block: 14px 9px;
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
@@ -47,8 +46,7 @@ export const pickingProductCardComponentStyles = css`
   }
 
   .summary-info {
-    margin-block-start: 12px;
-    margin-block-end: 14px;
+    margin-block: 12px 14px;
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
