@@ -30,17 +30,19 @@ export class ProductDetailsBreadcrumbResolver implements BreadcrumbResolver {
   resolve(): Observable<BreadcrumbItem[]> {
     return this.routerService.current().pipe(
       switchMap(({ params }) =>
-        this.productService.get({ sku: params.sku as string }).pipe(
-          //add a delay to make sure that categories data are already populated
-          //from product's included resources and stored in category service
-          //before the trail is requested
-          delay(0),
-          switchMap((product) =>
-            product
-              ? this.generateBreadcrumbTrail(product)
-              : throwError(() => new Error('Product not found'))
+        this.productService
+          .get({ sku: (params.sku as string).split(',')[0] })
+          .pipe(
+            //add a delay to make sure that categories data are already populated
+            //from product's included resources and stored in category service
+            //before the trail is requested
+            delay(0),
+            switchMap((product) =>
+              product
+                ? this.generateBreadcrumbTrail(product)
+                : throwError(() => new Error('Product not found'))
+            )
           )
-        )
       )
     );
   }

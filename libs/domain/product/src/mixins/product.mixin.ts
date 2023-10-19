@@ -10,7 +10,7 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { of } from 'rxjs';
-import type { Product } from '../models';
+import type { Product, ProductQualifier } from '../models';
 import { ProductComponentProperties } from '../models';
 import { ProductContext, ProductService } from '../services';
 
@@ -19,6 +19,7 @@ export declare class ProductMixinInterface
 {
   sku?: string;
   protected $product: Signal<Product | null>;
+  protected $productQualifier: Signal<ProductQualifier | null>;
 }
 
 export const ProductMixin = <
@@ -38,9 +39,23 @@ export const ProductMixin = <
       this.contextController.get<string>(ProductContext.SKU)
     );
 
+    protected $productQualifier: Signal<ProductQualifier | null> = computed(
+      () => {
+        const sku_context = (this.sku ?? this.$productContext() ?? '')?.split(
+          ','
+        );
+        return sku_context
+          ? {
+              sku: sku_context[0],
+              ...(sku_context[1] ? { offer: sku_context[1] } : {}),
+            }
+          : null;
+      }
+    );
+
     protected $product = computed(() => {
-      const sku = this.sku ?? this.$productContext();
-      return sku ? this.productService?.get({ sku }) : of(null);
+      const qualifier = this.$productQualifier();
+      return qualifier ? this.productService?.get(qualifier) : of(null);
     });
   }
   return ProductMixinClass as unknown as Type<ProductMixinInterface> & T;

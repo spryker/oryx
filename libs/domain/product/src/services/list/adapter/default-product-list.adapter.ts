@@ -64,6 +64,9 @@ export class DefaultProductListAdapter implements ProductListAdapter {
       ApiProductModel.Includes.ConcreteProductPrices,
       ApiProductModel.Includes.ConcreteProductAvailabilities,
       ApiProductModel.Includes.Labels,
+      ApiProductModel.Includes.ProductOffers,
+      ApiProductModel.Includes.ProductOfferPrices,
+      ApiProductModel.Includes.Merchants,
     ];
 
     const categoryNodeFields = [

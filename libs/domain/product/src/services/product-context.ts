@@ -12,5 +12,7 @@ export const ProductContextFallback: Provider = {
   useFactory: () =>
     inject(RouterService)
       .currentParams()
-      .pipe(map((params) => params?.sku)),
+      .pipe(
+        map((params) => params?.sku + (params?.offer ? `,${params.offer}` : ''))
+      ),
 };

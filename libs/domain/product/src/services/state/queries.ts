@@ -13,5 +13,26 @@ export const productQueries = [
   provideQuery(ProductQuery, (adapter = inject(ProductAdapter)) => ({
     loader: (q: ProductQualifier) => adapter.get(q),
     refreshOn: [LocaleChanged, CurrencyChanged],
+    postTransforms: [
+      (data: Product, qualifier: ProductQualifier) => {
+        if (data && qualifier.offer) {
+          console.log(data, qualifier);
+          return {
+            ...data,
+            price: {
+              ...data.price,
+              defaultPrice: {
+                ...data.price?.defaultPrice,
+                value:
+                  data.offers?.find((o) => o.id === qualifier.offer)?.price ??
+                  data.price?.defaultPrice?.value,
+              },
+            },
+          };
+        }
+      },
+    ],
+    // qualifierEnhancers: [(q: ProductQualifier) => ({ ...q, offer: '12321' })],
+    cacheKey: (q: ProductQualifier) => q?.sku ?? '',
   })),
 ];
