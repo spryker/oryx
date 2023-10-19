@@ -1,5 +1,5 @@
 import {
-  checkProductCardsFilterring,
+  checkProductCardsFiltering,
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { SearchPage } from '../support/page-objects/search.page';
@@ -19,7 +19,7 @@ describe('Search suite', () => {
     it('should update products and facets when filters are applied/cleared', () => {
       searchPage.getFacets().setRating('4');
       searchPage.waitForSearchRequest();
-      checkProductCardsFilterring(searchPage, 2, 1, query);
+      checkProductCardsFiltering(searchPage, 2, 1, query);
 
       // we don't expect search request here because previous query is cached
       searchPage.getFacets().resetRating();
@@ -27,17 +27,17 @@ describe('Search suite', () => {
       // apply 1st filter
       searchPage.getFacets().setLabel('New');
       searchPage.waitForSearchRequest();
-      checkProductCardsFilterring(searchPage, 3, 2, query);
+      checkProductCardsFiltering(searchPage, 3, 2, query);
 
       // apply 2nd filter
       searchPage.getFacets().setColor('Black');
       searchPage.waitForSearchRequest();
-      checkProductCardsFilterring(searchPage, 3, 1, query);
+      checkProductCardsFiltering(searchPage, 3, 1, query);
 
       // clear 2nd filter
       // we don't expect search request here because previous query is cached
       searchPage.getFacets().resetColor();
-      checkProductCardsFilterring(searchPage, 3, 2, query);
+      checkProductCardsFiltering(searchPage, 3, 2, query);
     });
   });
 
