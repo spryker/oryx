@@ -55,7 +55,9 @@ export const productPage: ExperienceComponent = {
           type: 'oryx-composition',
           id: 'product-info',
           options: {
-            rules: [{ vertical: true, top: '108px', sticky: true }],
+            rules: [
+              { vertical: true, top: '108px', sticky: true, gap: '10px' },
+            ],
           },
           components: [
             {
@@ -66,6 +68,7 @@ export const productPage: ExperienceComponent = {
               type: 'oryx-product-brand',
               options: { rules: [{ width: '70px' }] },
             },
+            { type: 'oryx-product-sold-by' },
             { type: 'oryx-product-average-rating' },
             { type: 'oryx-product-id' },
             {

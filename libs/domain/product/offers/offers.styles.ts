@@ -8,20 +8,33 @@ export const productOffersStyles = css`
     width: 100px;
   }
 
-  .offer {
+  /* .offer {
     display: grid;
     grid-template-columns: 1fr auto;
     justify-items: start;
+    align-items: center;
     gap: 4px;
+  } */
+  oryx-button {
+    justify-self: start;
+    /* grid-column: 2 / span 2; */
+  }
+  oryx-collapsible oryx-radio {
+    grid-template-columns: min-content 1fr auto;
   }
 
   oryx-product-media {
-    height: 70px;
+    height: 50px;
     margin-inline-start: 30px;
   }
 
+  oryx-product-price {
+    /* justify-self: end; */
+    /* grid-column: 2; */
+  }
+
   oryx-product-availability {
-    grid-column: 1;
+    /* grid-column: 1; */
   }
   oryx-radio {
     display: grid;
@@ -49,5 +62,11 @@ export const productOffersStyles = css`
   oryx-product-price::part(original),
   oryx-product-price::part(sales) {
     font-size: initial;
+  }
+
+  .delivery {
+    display: flex;
+    gap: 10px;
+    grid-column: 2;
   }
 `;

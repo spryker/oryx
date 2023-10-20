@@ -1,9 +1,9 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
 import { ProductOffersComponent } from './offers.component';
 
-export const merchantOfferListSchema: ContentComponentSchema<ProductOffersComponent> =
+export const productOffersSchema: ContentComponentSchema<ProductOffersComponent> =
   {
-    name: 'Offer List',
-    group: 'Merchant',
+    name: 'Offers',
+    group: 'Product',
     options: {},
   };

@@ -12,4 +12,5 @@ export * from '../media/src/media.def';
 export * from '../offers/offers.def';
 export * from '../price/src/price.def';
 export * from '../relations/relations.def';
+export * from '../sold-by/sold-by.def';
 export * from '../title/src/title.def';

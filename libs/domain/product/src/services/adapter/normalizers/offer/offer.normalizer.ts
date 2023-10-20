@@ -10,10 +10,12 @@ export function offerNormalizer(
 ): ProductOffer {
   return {
     id: data.id,
+    isDefault: data.isDefault,
     merchant: {
       id: data.merchants?.[0]?.id,
       name: data.merchants?.[0]?.merchantName,
       url: data.merchants?.[0]?.merchantUrl,
+      deliveryTime: data.merchants?.[0]?.deliveryTime,
     },
   } as ProductOffer;
 }

@@ -114,10 +114,12 @@ export module ApiProductModel {
     id: string;
     merchantName: string;
     merchantUrl: string;
+    deliveryTime: string;
   }
 
   export interface ProductOffer {
     id: string;
+    isDefault?: boolean;
   }
 
   export interface ProductOfferPrice {

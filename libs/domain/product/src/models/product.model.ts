@@ -46,11 +46,13 @@ export interface Product {
 
 export interface ProductOffer {
   id: string;
+  isDefault?: boolean;
   price: ProductPrices;
   merchant: {
     id: string;
     name: string;
     url: string;
+    deliveryTime?: string;
   };
   availability?: ProductAvailability;
 }

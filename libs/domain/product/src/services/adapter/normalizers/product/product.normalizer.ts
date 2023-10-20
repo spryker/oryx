@@ -130,7 +130,15 @@ export function productOfferNormalizer(
 
   return combineLatest(
     offers.map((offer) => transformer.transform(offer, OfferNormalizer))
-  ).pipe(map((offers) => ({ offers })));
+  ).pipe(
+    map((offers) => {
+      const defaultOffer = offers.find((offer) => offer.isDefault);
+      // console.log(data);
+      // console.log(defaultOffer);
+      const price = defaultOffer?.price;
+      return { offers, ...(price ? { price } : {}) };
+    })
+  );
 }
 
 export const productNormalizer: Provider[] = [
