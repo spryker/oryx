@@ -1,5 +1,6 @@
 import {
-  checkProductCardsFilterring,
+  checkProductCardsFilterringByName,
+  checkProductCardsFilterringByPrice,
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { CategoryPage } from '../support/page-objects/category.page';
@@ -19,17 +20,59 @@ describe('Category suite', () => {
       // apply 1st filter
       categoryPage.getFacets().setColor('Silver');
       categoryPage.waitForSearchRequest();
-      checkProductCardsFilterring(categoryPage, 3, 2, query);
+      checkProductCardsFilterringByName(categoryPage, 3, 2, query);
 
       // apply 2nd filter
       categoryPage.getFacets().setBrand('DELL');
       categoryPage.waitForSearchRequest();
-      checkProductCardsFilterring(categoryPage, 3, 1, query);
+      checkProductCardsFilterringByName(categoryPage, 3, 1, query);
 
       // clear 2nd filter
       // we don't expect search request here because previous query is cached
       categoryPage.getFacets().resetBrand();
-      checkProductCardsFilterring(categoryPage, 3, 2, query);
+      checkProductCardsFilterringByName(categoryPage, 3, 2, query);
+    });
+
+    it('should apply price filterring', () => {
+      const minPrice = 100;
+      const maxPrice = 700;
+
+      // set min price
+      // TODO: min price change does not trigger product list update
+      // categoryPage.getFacets().setMinPrice(minPrice);
+      // categoryPage.waitForSearchRequest();
+      // checkProductCardsPriceFilterringByPrice(categoryPage, minPrice);
+
+      // reset prices, set max price
+      // TODO: reset prices button never appears. If it is not implemented -> refresh the page
+      // and remove resetPrices method
+      // TODO: max price change does not trigger product list update
+      // categoryPage.getFacets().resetPrices();
+      // categoryPage.waitForSearchRequest();
+      // categoryPage.getFacets().setMaxPrice(maxPrice);
+      // categoryPage.waitForSearchRequest();
+      // checkProductCardsPriceFilterringByPrice(categoryPage, 0, maxPrice);
+
+      // reset prices, change min price range
+      // TODO: reset prices button never appears. If it is not implemented -> refresh the page
+      // and remove resetPrices method
+      // categoryPage.getFacets().resetPrices();
+      // categoryPage.waitForSearchRequest();
+      // TODO: check the interaction: just setting the value and triggeing the 'change' event is not enought
+      // categoryPage.getFacets().setMinPriceRange(minPrice);
+      // categoryPage.waitForSearchRequest();
+      // checkProductCardsPriceFilterringByPrice(categoryPage, minPrice);
+
+      // reset prices, change max price range
+      // TODO: not commented just to have a test failure
+      categoryPage.getFacets().resetPrices();
+      categoryPage.waitForSearchRequest();
+      categoryPage.getFacets().setMaxPriceRange(maxPrice);
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilterringByPrice(categoryPage, maxPrice);
+
+      // TODO: when all these checks are done -> move these to searcy.cy.ts
+      // price filterring should also work on Search page
     });
   });
 

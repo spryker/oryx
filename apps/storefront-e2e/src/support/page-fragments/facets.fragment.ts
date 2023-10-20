@@ -1,5 +1,3 @@
-import { RangeFacetValues } from '../types/facet.types';
-
 export class FacetsFragment {
   getWrapper = () => cy.get('oryx-search-facet-navigation');
   getSearchFacets = () => cy.get('oryx-search-facet, oryx-search-color-facet');
@@ -31,46 +29,34 @@ export class FacetsFragment {
 
   getPriceFacet = () => cy.get('oryx-search-price-facet');
 
-  getPriceFacetInput = (isMax = false) =>
-    this.getPriceFacet().find(`oryx-input:nth-of-type(${isMax ? 2 : 1}) input`);
-  getPriceFacetRange = (isMax = false) =>
+  setMinPrice = (price: number) =>
+    this.getPriceFacet()
+      .find('oryx-input:nth-of-type(1) input')
+      .clear()
+      .type(`${price}{enter}`);
+
+  setMaxPrice = (price: number) =>
+    this.getPriceFacet()
+      .find('oryx-input:nth-of-type(2) input')
+      .clear()
+      .type(`${price}{enter}`);
+
+  setMinPriceRange = (price: number) =>
     this.getPriceFacet()
       .find('oryx-multi-range')
-      .find(`input:nth-of-type(${isMax ? 2 : 1})`);
+      .find(`label:nth-of-type(1) input`)
+      .then((input) => {
+        input.val(price).trigger('change');
+      });
 
-  setPriceFacetValues = (values: RangeFacetValues) => {
-    Object.entries(values).forEach(([key, value]) => {
-      if (key === 'max' || key === 'min') {
-        this.getPriceFacetInput(key === 'max').then((input) => {
-          //apply value and emit Enter key down to simulate interaction
-          input.focus().val = value;
-          input.trigger('keydown', { key: 'Enter' });
-        });
-      }
+  setMaxPriceRange = (price: number) =>
+    this.getPriceFacet()
+      .find('oryx-multi-range')
+      .find(`label:nth-of-type(2) input`)
+      .then((input) => {
+        input.val(price).trigger('change');
+      });
 
-      if (key === 'maxValue' || key === 'minValue') {
-        this.getPriceFacetRange(key === 'maxValue').then((input) => {
-          //apply value and emit change event to simulate interaction
-          input.val = value;
-          input.trigger('change');
-        });
-      }
-    });
-  };
-
-  validatePriceFacetValues = (values: RangeFacetValues) => {
-    Object.entries(values).forEach(([key, value]) => {
-      if (key === 'max' || key === 'min') {
-        this.getPriceFacetInput(key === 'max')
-          .invoke('attr', 'value')
-          .should('eq', value);
-      }
-
-      if (key === 'maxValue' || key === 'minValue') {
-        this.getPriceFacetRange(key === 'maxValue')
-          .invoke('attr', 'value')
-          .should('eq', value);
-      }
-    });
-  };
+  resetPrices = () =>
+    this.getPriceFacet().find('button[aria-label="Clear"]').click();
 }
