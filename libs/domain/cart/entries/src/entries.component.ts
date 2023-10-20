@@ -41,7 +41,7 @@ export class CartEntriesComponent extends CartComponentMixin(
         (entry) => {
           return html`
             <oryx-cart-entry
-              .sku=${entry.sku}
+              .entry=${entry}
               .currency=${this.$cart()?.currency}
               .quantity=${entry.quantity}
               .price=${entry.calculations?.sumPriceToPayAggregation}

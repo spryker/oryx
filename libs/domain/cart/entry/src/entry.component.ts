@@ -1,3 +1,4 @@
+import { CartEntry } from '@spryker-oryx/cart';
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
@@ -62,6 +63,7 @@ export class CartEntryComponent
 
   @signalProperty({ type: Number }) quantity?: number;
   @property() key?: string;
+  @signalProperty() entry?: CartEntry;
   @property({ type: Number }) price?: number;
   @property({ type: Number }) itemPrice?: number;
   @property({ type: Number }) unitPrice?: number;
@@ -83,8 +85,14 @@ export class CartEntryComponent
 
   @elementEffect()
   protected setProductContext = (): void => {
-    if (this.sku) {
-      this.contextController.provide(ProductContext.SKU, this.sku);
+    if (this.entry?.sku) {
+      this.contextController.provide(
+        ProductContext.SKU,
+        this.entry.sku +
+          (this.entry?.productOfferReference
+            ? `,${this.entry.productOfferReference}`
+            : '')
+      );
     }
   };
 
@@ -95,7 +103,7 @@ export class CartEntryComponent
   protected $productLink = computed(() => {
     return this.semanticLinkService.get({
       type: RouteType.Product,
-      id: this.$product()?.sku,
+      qualifier: this.$productQualifier() as Record<string, string>,
     });
   });
 
@@ -242,7 +250,7 @@ export class CartEntryComponent
       heading=${this.i18n('cart.entry.confirm')}
       @oryx.close=${() => this.revert()}
     >
-      ${this.i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.sku })}
+      ${this.i18n(`cart.entry.confirm-remove-<sku>`, { sku: this.entry?.sku })}
 
       <oryx-button
         slot="footer-more"
@@ -283,7 +291,7 @@ export class CartEntryComponent
     this.cartService.updateEntry({ groupKey: this.key, quantity }).subscribe({
       next: () => {
         if (this.$options().notifyOnUpdate) {
-          this.notify('cart.cart-entry-updated', this.sku);
+          this.notify('cart.cart-entry-updated', this.entry?.sku);
         }
       },
       error: (e: Error) => this.revert(e),
@@ -299,7 +307,7 @@ export class CartEntryComponent
     this.cartService.deleteEntry({ groupKey: this.key }).subscribe({
       next: () => {
         if (this.$options().notifyOnRemove) {
-          this.notify('cart.confirm-removed', this.sku);
+          this.notify('cart.confirm-removed', this.entry?.sku);
         }
       },
       error: (e: Error) => this.revert(e),
