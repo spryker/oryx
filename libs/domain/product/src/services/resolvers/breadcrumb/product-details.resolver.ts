@@ -31,7 +31,7 @@ export class ProductDetailsBreadcrumbResolver implements BreadcrumbResolver {
     return this.routerService.current().pipe(
       switchMap(({ params }) =>
         this.productService
-          .get({ sku: (params.sku as string).split(',')[0] })
+          .get({ sku: (params.sku as string)?.split(',')[0] })
           .pipe(
             //add a delay to make sure that categories data are already populated
             //from product's included resources and stored in category service

@@ -21,12 +21,22 @@ export class DefaultLinkService implements LinkService {
           return throwError(() => new Error('Link type is not supported'));
         }
 
-        const dynamicId =
-          link.type && link.id
-            ? encodeURIComponent(link.id)
-            : route.type === RouteType.Page
-            ? encodeURIComponent(link.type)
-            : encodeURIComponent(link.id ?? '');
+        let dynamicId = '';
+
+        if (link.qualifier && !link.id) {
+          // TODO: hardcoded for product for now, let's improve and make it generic
+          dynamicId = link.id = `${encodeURIComponent(
+            link.qualifier.sku
+          )},${encodeURIComponent(link.qualifier.offer)}`;
+        } else {
+          dynamicId =
+            link.type && link.id
+              ? encodeURIComponent(link.id)
+              : route.type === RouteType.Page
+              ? encodeURIComponent(link.type)
+              : encodeURIComponent(link.id ?? '');
+        }
+
         const dynamicParams = link.params
           ? `?${this.getUrlParams(link.params)}`
           : '';
