@@ -1,4 +1,5 @@
 import { inject } from '@spryker-oryx/di';
+import { ProductQualifier } from '@spryker-oryx/product';
 import { BASE_ROUTE, RouteType, RouterService } from '@spryker-oryx/router';
 import { isRouterPath } from '@spryker-oryx/router/lit';
 import { Observable, of, switchMap, throwError } from 'rxjs';
@@ -25,9 +26,13 @@ export class DefaultLinkService implements LinkService {
 
         if (link.qualifier && !link.id) {
           // TODO: hardcoded for product for now, let's improve and make it generic
-          dynamicId = link.id = `${encodeURIComponent(
-            link.qualifier.sku
-          )},${encodeURIComponent(link.qualifier.offer)}`;
+          dynamicId = link.id =
+            `${encodeURIComponent((link.qualifier as ProductQualifier).sku!)}` +
+            ((link.qualifier as ProductQualifier).offer
+              ? `,${encodeURIComponent(
+                  (link.qualifier as ProductQualifier).offer!
+                )}`
+              : '');
         } else {
           dynamicId =
             link.type && link.id
