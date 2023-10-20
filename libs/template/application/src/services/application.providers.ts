@@ -7,8 +7,8 @@ import {
 } from './initializers';
 import {
   DefaultCaptureEventsInitializer,
-  StopEventsInitializer,
-} from './initializers/stop-events.initializer';
+  CaptureEventsInitializer,
+} from './initializers/capture-events.initializer';
 import { GlobalPageMetaResolver } from './resolvers';
 
 export const applicationProviders: Provider[] = [
@@ -23,7 +23,7 @@ export const applicationProviders: Provider[] = [
   ...(isServer
     ? [
         {
-          provide: StopEventsInitializer,
+          provide: CaptureEventsInitializer,
           useClass: DefaultCaptureEventsInitializer,
         },
       ]
