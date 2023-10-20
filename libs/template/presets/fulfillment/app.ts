@@ -21,6 +21,8 @@ import {
   FulfillmentRootFeatureConfig,
 } from './feature';
 
+delete applicationFeature.plugins;
+
 export function fulfillmentFeatures(
   config?: FulfillmentFeaturesConfig
 ): AppFeature[] {
@@ -28,7 +30,7 @@ export function fulfillmentFeatures(
     uiFeature,
     cartFeature,
     coreFeature,
-    ...(featureVersion >= '1.1'
+    ...(featureVersion >= '1.2'
       ? [siteFeature, formFeature, applicationFeature]
       : []),
     new RouterFeature(),
@@ -37,7 +39,7 @@ export function fulfillmentFeatures(
     new BapiAuthFeature(),
     new BapiAuthComponentsFeature(),
     { resources: fulfillmentResources },
-    featureVersion < '1.1'
+    featureVersion < '1.2'
       ? new FulfillmentRootFeature(config?.fulfillmentRoot)
       : [],
     new PickingFeature(config?.picking),
