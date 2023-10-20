@@ -48,7 +48,7 @@ export function fulfillmentFeatures(
 
 export interface FulfillmentFeaturesConfig {
   /**
-   * @deprecated Since version 1.1.
+   * @deprecated Since version 1.2.
    */
   fulfillmentRoot?: FulfillmentRootFeatureConfig;
   picking?: PickingFeatureConfig;
