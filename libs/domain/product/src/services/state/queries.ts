@@ -21,6 +21,9 @@ export function productForOfferTransform(
       ...data,
       price:
         data.offers?.find((o) => o.id === qualifier.offer)?.price ?? data.price,
+      availability:
+        data.offers?.find((o) => o.id === qualifier.offer)?.availability ??
+        data.availability,
     };
   }
 }
