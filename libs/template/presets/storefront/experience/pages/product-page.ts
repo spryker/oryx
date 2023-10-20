@@ -55,9 +55,7 @@ export const productPage: ExperienceComponent = {
           type: 'oryx-composition',
           id: 'product-info',
           options: {
-            rules: [
-              { vertical: true, top: '108px', sticky: true, gap: '10px' },
-            ],
+            rules: [{ vertical: true, top: '108px', sticky: true }],
           },
           components: [
             {

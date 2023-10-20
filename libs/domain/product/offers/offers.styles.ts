@@ -69,4 +69,18 @@ export const productOffersStyles = css`
     gap: 10px;
     grid-column: 2;
   }
+
+  a {
+    text-decoration: none;
+    color: var(--oryx-color-neutral-12);
+  }
+
+  .delivery-time {
+    --oryx-icon-fill: 1;
+    --oryx-icon-weight: 800;
+
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
 `;

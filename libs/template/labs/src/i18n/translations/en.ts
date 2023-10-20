@@ -7,7 +7,7 @@ const product = {
   'product.availability.available-<stock>':
     'Available online ({stock, plural, one {one product} other {{stock} products}})',
   'product.offer.available-<count>-merchants':
-    'Sold by {count, plural, one {one partner} other {{count} partners}}',
+    'Sold by {count, plural, one {one merchant} other {{count} merchants}}',
 };
 
 const cart = {
