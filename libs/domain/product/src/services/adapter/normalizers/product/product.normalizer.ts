@@ -142,6 +142,11 @@ export function productOfferNormalizer(
 }
 
 export const productNormalizer: Provider[] = [
+  /** TODO: This one should not have to be first, but last :/ **/
+  {
+    provide: ProductNormalizer,
+    useValue: productOfferNormalizer,
+  },
   {
     provide: ProductNormalizer,
     useValue: productAttributeNormalizer,
@@ -169,10 +174,6 @@ export const productNormalizer: Provider[] = [
   {
     provide: ProductNormalizer,
     useValue: productCategoryNormalizer,
-  },
-  {
-    provide: ProductNormalizer,
-    useValue: productOfferNormalizer,
   },
 ];
 
