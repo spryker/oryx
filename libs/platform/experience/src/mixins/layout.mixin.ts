@@ -138,14 +138,14 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       ];
 
       return props.reduce((acc, prop) => {
-        const getRuleProp = (): string => {
+        const getRuleProp = (): string | undefined => {
           const data = this.$options().rules?.find((rule) =>
             typeof rule.layout === 'string' ? rule.layout : rule.layout?.type
           );
 
-          if (typeof data === 'string') return data;
+          if (typeof data?.layout === 'string') return data.layout;
 
-          return data?.[prop] as string;
+          return data?.layout?.type;
         };
         const token = prop === 'layout' ? this.layout ?? getRuleProp() : prop;
 
