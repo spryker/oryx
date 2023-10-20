@@ -116,7 +116,7 @@ export class PickingSyncActionHandlerService
             return true;
           });
 
-        await productsStore.bulkAdd(products);
+        await productsStore.bulkPut(products);
         await pickingListsStore.bulkPut(pickingLists, {
           allKeys: true,
         });
