@@ -7,7 +7,9 @@ import {
   LayoutPluginRender,
   LayoutPluginType,
   LayoutService,
+  LayoutStylesOptions,
   LayoutTypes,
+  ScreenService,
   StyleRuleSet,
 } from '@spryker-oryx/experience';
 import {
@@ -75,7 +77,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       this.observe();
     }
 
-    @signalProperty() attributeWatchers: (keyof LayoutProperties)[] = [];
+    @signalProperty() attributeFilter: (keyof LayoutProperties)[] = [];
     @signalProperty() layout?: CompositionLayout | LayoutTypes;
     @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
@@ -86,6 +88,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     protected layoutController = new LayoutController(this);
     protected layoutService = resolve(LayoutService);
     protected layoutBuilder = resolve(LayoutBuilder);
+    protected screenService = resolve(ScreenService);
 
     protected observer = new MutationObserver((mutationRecords) => {
       mutationRecords.map((record) => {
@@ -100,16 +103,19 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     });
 
     protected observe(layoutSpecificAttrs = []): void {
-      const attrs = [...this.attributes].reduce((acc: string[], attr) => {
-        if (!attr.name.startsWith('layout-')) return acc;
-        (this as Record<string, unknown>)[attr.name] = attr.value;
-        return [...acc, attr.name];
-      }, layoutSpecificAttrs);
+      const attributeFilter = [...this.attributes].reduce(
+        (acc: string[], attr) => {
+          if (!attr.name.startsWith('layout-')) return acc;
+          (this as Record<string, unknown>)[attr.name] = attr.value;
+          return [...acc, attr.name];
+        },
+        layoutSpecificAttrs
+      ) as (keyof LayoutProperties)[];
 
-      this.attributeWatchers = attrs as (keyof LayoutProperties)[];
+      this.attributeFilter = attributeFilter;
       this.observer.observe(this, {
         attributes: true,
-        attributeFilter: attrs,
+        attributeFilter,
       });
     }
 
@@ -123,31 +129,75 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       this.layout;
 
       return this.layoutController.getStyles(
-        ['layout', ...this.attributeWatchers.map(this.getPropertyName)],
+        ['layout', ...this.attributeFilter.map(this.getPropertyName)],
         this.$options().rules
       );
     });
+
+    protected screen = computed(() => this.screenService.getScreenSize());
 
     protected getLayoutRender(
       place: keyof LayoutPluginRender,
       component?: Component | LitElement
     ): TemplateResult {
+      const screen = this.screen();
       const props = [
         'layout',
-        ...this.attributeWatchers.map(this.getPropertyName),
+        ...this.attributeFilter.map(this.getPropertyName),
       ];
 
+      if (screen) {
+        for (const prop of Object.values(this[screen] ?? {})) {
+          if (!props.includes(prop)) props.push(prop);
+        }
+      }
+
+      const getHostProp = (prop: string): string | void => {
+        if (
+          screen &&
+          (this as unknown as Record<string, Record<string, unknown>>)[
+            screen
+          ]?.[prop]
+        ) {
+          return prop;
+        }
+
+        if ((this as Record<string, unknown>)[prop]) return prop;
+      };
+
+      const getLayoutRule = (
+        param: string,
+        data?: string | LayoutStylesOptions
+      ): string | void => {
+        const prop = param as keyof LayoutStylesOptions & 'layout';
+
+        if (typeof data === 'string' && prop === 'layout') return data;
+
+        if (typeof data === 'object') {
+          if (prop === 'layout') return data.type;
+
+          if (data[prop]) return prop;
+        }
+      };
+
+      const getRuleProp = (prop: string) => {
+        const bpData = this.$options().rules?.find(
+          (rule) => rule.query?.breakpoint === screen && rule.layout
+        )?.layout;
+
+        const bpProp = getLayoutRule(prop, bpData);
+
+        if (bpProp) return bpProp;
+
+        const data = this.$options().rules?.find(
+          (rule) => !rule.query?.breakpoint && rule.layout
+        )?.layout;
+
+        return getLayoutRule(prop, data);
+      };
+
       return props.reduce((acc, prop) => {
-        const getRuleProp = (): string | undefined => {
-          const data = this.$options().rules?.find((rule) =>
-            typeof rule.layout === 'string' ? rule.layout : rule.layout?.type
-          );
-
-          if (typeof data?.layout === 'string') return data.layout;
-
-          return data?.layout?.type;
-        };
-        const token = prop === 'layout' ? this.layout ?? getRuleProp() : prop;
+        const token = getHostProp(prop) ?? getRuleProp(prop);
 
         if (!token) return acc;
 
