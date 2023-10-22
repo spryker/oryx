@@ -5,7 +5,7 @@ import { formFeature } from '@spryker-oryx/form';
 import { labsFeatures } from '@spryker-oryx/labs';
 import { siteFeature } from '@spryker-oryx/site';
 import { fulfillmentTheme } from '@spryker-oryx/themes';
-import { offlineFulfillmentFeatures } from '../../../libs/template/presets/fulfillment';
+import { offlineFulfillmentFeatures } from '@spryker-oryx/presets/fulfillment';
 import { fallbackEnv } from './fallback-env';
 
 const env = import.meta.env;

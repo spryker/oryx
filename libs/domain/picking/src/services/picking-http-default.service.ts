@@ -52,7 +52,11 @@ export class PickingHttpDefaultService implements PickingHttpService {
   }
 
   protected createFullUrl(url: string): string {
-    return `${this.baseUrl}${url}`;
+    const isAuth = /.*\/(token|authorize|warehouse-user-assignments|push-notification-subscriptions)/.test(url);
+    return `${isAuth ? 
+      this.baseUrl:
+      'https://glue-backend.de.b2c.internal-testing.demo-spryker.com'
+    }${url}`;
   }
 
   protected expandContentType<T = unknown>(

@@ -10,7 +10,7 @@ const {
 } = require('http-proxy-middleware');
 const bodyParser = require('body-parser');
 
-const db = require('./db.json');
+// const db = require('./db.json');
 const routes = require('./routes.json');
 const proxyRoutes = require('./proxy-routes.json');
 const components = require('./components.json');
@@ -23,7 +23,7 @@ exports.createMockServer = function createMockServer() {
   const router = express.Router();
 
   router.use(cors());
-  router.use(corsMiddleware());
+  // router.use(corsMiddleware());
   router.use(bodyParser.urlencoded({ extended: false }));
 
   router.post('/authorize', fixOauthParams);
@@ -33,74 +33,74 @@ exports.createMockServer = function createMockServer() {
     router.use(createProxyRouter(PROXY_URL, proxyRoutes, BASE_PATH));
   }
 
-  router.use(jsonServer.defaults({ noCors: true }));
+  // router.use(jsonServer.defaults({ noCors: true }));
 
-  router.post('/authorize', mapRequestToGet);
-  router.post('/token', mapRequestToGet);
-  router.post('/push-notification-subscriptions', mapRequestToGet);
+  // router.post('/authorize', mapRequestToGet);
+  // router.post('/token', mapRequestToGet);
+  // router.post('/push-notification-subscriptions', mapRequestToGet);
 
-  router.patch('/warehouse-user-assignments/:id', (req, res) => {
-    const { id } = req.params;
+  // router.patch('/warehouse-user-assignments/:id', (req, res) => {
+  //   const { id } = req.params;
 
-    res.send({
-      data: {
-        type: 'warehouse-user-assignments',
-        id,
-        attributes: {
-          userUuid: 'userUuid1',
-          isActive: true,
-          warehouse: {
-            name: 'warehouse 1',
-            uuid: 'warehouseUuid1',
-            isActive: true,
-          },
-        },
-        links: {
-          self: `https://backend-api.de.demo-picking-app.cloud.spryker.toys/warehouse-user-assignments/${id}`,
-        },
-      },
-    });
-  });
+  //   res.send({
+  //     data: {
+  //       type: 'warehouse-user-assignments',
+  //       id,
+  //       attributes: {
+  //         userUuid: 'userUuid1',
+  //         isActive: true,
+  //         warehouse: {
+  //           name: 'warehouse 1',
+  //           uuid: 'warehouseUuid1',
+  //           isActive: true,
+  //         },
+  //       },
+  //       links: {
+  //         self: `https://backend-api.de.demo-picking-app.cloud.spryker.toys/warehouse-user-assignments/${id}`,
+  //       },
+  //     },
+  //   });
+  // });
 
-  router.patch('/picking-lists/:id/picking-list-items', (req, res) => {
-    const { id } = req.params;
+  // router.patch('/picking-lists/:id/picking-list-items', (req, res) => {
+  //   const { id } = req.params;
 
-    res.send({
-      data: [
-        {
-          type: 'picking-lists',
-          id,
-          attributes: {
-            status: 'picking-finished',
-            updatedAt: new Date().toISOString(),
-            createdAt: new Date().toISOString(),
-          },
-        },
-      ],
-      links: {
-        self: `/picking-lists/${id}/picking-list-items`,
-      },
-    });
-  });
+  //   res.send({
+  //     data: [
+  //       {
+  //         type: 'picking-lists',
+  //         id,
+  //         attributes: {
+  //           status: 'picking-finished',
+  //           updatedAt: new Date().toISOString(),
+  //           createdAt: new Date().toISOString(),
+  //         },
+  //       },
+  //     ],
+  //     links: {
+  //       self: `/picking-lists/${id}/picking-list-items`,
+  //     },
+  //   });
+  // });
 
-  router.post('/picking-lists/:id/start-picking', (req, res) => {
-    const { id } = req.params;
+  // router.post('/picking-lists/:id/start-picking', (req, res) => {
+  //   const { id } = req.params;
 
-    res.send({
-      data: {
-        type: 'picking-list',
-        id,
-        attributes: {
-          status: 'picking-started',
-          updatedAt: new Date().toISOString(),
-          createdAt: new Date().toISOString(),
-        },
-      },
-      links: {
-        self: `/picking-lists/${id}/start-picking`,
-      },
-    });
-  });
+  //   res.send({
+  //     data: {
+  //       type: 'picking-list',
+  //       id,
+  //       attributes: {
+  //         status: 'picking-started',
+  //         updatedAt: new Date().toISOString(),
+  //         createdAt: new Date().toISOString(),
+  //       },
+  //     },
+  //     links: {
+  //       self: `/picking-lists/${id}/start-picking`,
+  //     },
+  //   });
+  // });
 
   // TEMPORARY EXPERIENCE COMPOSITION RESOLVER
   // TODO: remove after EB integration
@@ -117,7 +117,7 @@ exports.createMockServer = function createMockServer() {
   });
 
   router.use(jsonServer.rewriter(routes));
-  router.use(jsonServer.router(db));
+  // router.use(jsonServer.router(db));
 
   // eslint-disable-next-line no-console
   console.log('Mounting mock server on path:', BASE_PATH);
@@ -135,10 +135,10 @@ function fixOauthParams(req, _, next) {
   next();
 }
 
-function mapRequestToGet(req, _, next) {
-  req.method = 'GET';
-  next();
-}
+// function mapRequestToGet(req, _, next) {
+//   req.method = 'GET';
+//   next();
+// }
 
 function createProxyRouter(proxyUrl, proxyRoutes, basePath) {
   const router = express.Router();
@@ -201,28 +201,28 @@ function createProxyRouter(proxyUrl, proxyRoutes, basePath) {
   return router;
 }
 
-function corsMiddleware(origin = '*') {
-  return (_, res, next) => {
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header(
-      'Access-Control-Allow-Methods',
-      'GET,HEAD,OPTIONS,POST,PATCH,PUT'
-    );
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
-    next();
-  };
-}
+// function corsMiddleware(origin = '*') {
+//   return (_, res, next) => {
+//     res.setHeader('Access-Control-Allow-Credentials', 'true');
+//     res.header('Access-Control-Allow-Origin', origin);
+//     res.header(
+//       'Access-Control-Allow-Methods',
+//       'GET,HEAD,OPTIONS,POST,PATCH,PUT'
+//     );
+//     res.header(
+//       'Access-Control-Allow-Headers',
+//       'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+//     );
+//     next();
+//   };
+// }
 
-/**
- * Read and parse file content as JSONC (Json with Comments)
- * @param {string} path
- * @param {BufferEncoding} encoding
- */
-function readJsoncSync(path, encoding = 'utf-8') {
-  const content = readFileSync(path, encoding);
-  return JSON.parse(content.replace(/^\s*\/\/.*/gm, ''));
-}
+// /**
+//  * Read and parse file content as JSONC (Json with Comments)
+//  * @param {string} path
+//  * @param {BufferEncoding} encoding
+//  */
+// function readJsoncSync(path, encoding = 'utf-8') {
+//   const content = readFileSync(path, encoding);
+//   return JSON.parse(content.replace(/^\s*\/\/.*/gm, ''));
+// }
