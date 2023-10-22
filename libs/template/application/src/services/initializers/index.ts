@@ -1,2 +1,2 @@
-export * from './theme-meta.initializer';
 export * from './capture-events.initializer';
+export * from './theme-meta.initializer';

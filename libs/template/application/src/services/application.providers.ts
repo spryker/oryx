@@ -6,8 +6,8 @@ import {
   ThemeMetaInitializer,
 } from './initializers';
 import {
-  DefaultCaptureEventsInitializer,
   CaptureEventsInitializer,
+  DefaultCaptureEventsInitializer,
 } from './initializers/capture-events.initializer';
 import { GlobalPageMetaResolver } from './resolvers';
 

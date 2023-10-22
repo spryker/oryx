@@ -31,6 +31,7 @@ export const orderConfirmationPage: ExperienceComponent = {
           ref: 'header',
         }
       : {},
+    { type: 'oryx-order-confirmation-banner' },
     {
       type: 'oryx-composition',
       id: 'order-totals',
