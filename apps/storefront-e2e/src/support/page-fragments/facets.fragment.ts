@@ -33,7 +33,7 @@ export class FacetsFragment {
     this.getPriceFacet()
       .find('oryx-input:nth-of-type(1) input')
       .focus()
-      .clear()
+      .clear({ force: true })
       .type(`${price}`)
       //apply on blur
       .trigger('blur');
@@ -42,7 +42,7 @@ export class FacetsFragment {
     this.getPriceFacet()
       .find('oryx-input:nth-of-type(2) input')
       .focus()
-      .clear()
+      .clear({ force: true })
       //apply on enter
       .type(`${price}{enter}`);
 
