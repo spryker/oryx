@@ -17,10 +17,4 @@ export const styles = css`
   ::placeholder {
     color: var(--oryx-color-placeholder);
   }
-
-  :host([type='mobile']) {
-    display: block;
-    max-width: var(--oryx-layout-container-width);
-    margin: auto;
-  }
 `;
