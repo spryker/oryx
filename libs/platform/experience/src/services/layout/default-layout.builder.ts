@@ -225,7 +225,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
             key === 'type'
               ? LayoutPluginType.Layout
               : LayoutPluginType.Property,
-          data,
+          data: {
+            options: data as CompositionProperties,
+          },
         });
 
         if (layoutProps) add(layoutProps);

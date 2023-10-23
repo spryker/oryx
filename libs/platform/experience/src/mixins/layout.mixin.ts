@@ -1,17 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import {
-  Component,
-  CompositionLayout,
-  ContentMixin,
-  LayoutBuilder,
-  LayoutPluginRender,
-  LayoutPluginType,
-  LayoutService,
-  LayoutStylesOptions,
-  LayoutTypes,
-  ScreenService,
-  StyleRuleSet,
-} from '@spryker-oryx/experience';
+
 import {
   LayoutAttributes,
   LayoutProperties,
@@ -28,11 +16,25 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import { LayoutController } from '../controllers/layout.controller';
+import {
+  Component,
+  CompositionLayout,
+  CompositionProperties,
+  StyleRuleSet,
+} from '../models';
+import {
+  LayoutBuilder,
+  LayoutPluginParams,
+  LayoutPluginRender,
+  LayoutTypes,
+  ScreenService,
+} from '../services';
+import { ContentMixin } from './content.mixin';
 
 interface LayoutMixinRender {
+  element?: LitElement;
+  composition?: Component[];
   template: TemplateResult;
-  components?: Component[];
-  data?: LitElement;
 }
 
 export declare class LayoutMixinInterface {
@@ -56,7 +58,7 @@ export declare class LayoutMixinInterface {
   protected renderLayout: (props: LayoutMixinRender) => TemplateResult;
   protected getLayoutRender(
     place: keyof LayoutPluginRender,
-    component?: Component | LitElement
+    data: LayoutPluginParams
   ): TemplateResult;
 }
 
@@ -79,14 +81,14 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     @signalProperty() attributeFilter: (keyof LayoutProperties)[] = [];
     @signalProperty() layout?: CompositionLayout | LayoutTypes;
-    @signalProperty({ type: Object, reflect: true }) xs?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true })
+    layoutXs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) md?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) lg?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) xl?: LayoutProperties;
 
     protected layoutController = new LayoutController(this);
-    protected layoutService = resolve(LayoutService);
     protected layoutBuilder = resolve(LayoutBuilder);
     protected screenService = resolve(ScreenService);
 
@@ -126,17 +128,10 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     }
 
     protected layoutStyles = computed(() => {
-      const screen = this.screen();
       const props = [
         'layout',
         ...this.attributeFilter.map(this.getPropertyName),
       ] as (keyof LayoutProperties)[];
-
-      if (screen) {
-        for (const prop of Object.values(this[screen] ?? {})) {
-          if (!props.includes(prop)) props.push(prop);
-        }
-      }
 
       return this.layoutController.getStyles(props, this.$options().rules);
     });
@@ -145,90 +140,28 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected getLayoutRender(
       place: keyof LayoutPluginRender,
-      component?: Component | LitElement
+      data: LayoutPluginParams
     ): TemplateResult {
-      const screen = this.screen();
-      const props = [
-        'layout',
-        ...this.attributeFilter.map(this.getPropertyName),
-      ];
-
-      if (screen) {
-        for (const prop of Object.values(this[screen] ?? {})) {
-          if (!props.includes(prop)) props.push(prop);
-        }
-      }
-
-      const getHostProp = (prop: string): string | void => {
-        if (
-          screen &&
-          (this as unknown as Record<string, Record<string, unknown>>)[
-            screen
-          ]?.[prop]
-        ) {
-          return prop;
-        }
-
-        if ((this as Record<string, unknown>)[prop]) return prop;
-      };
-
-      const getLayoutRule = (
-        param: string,
-        data?: string | LayoutStylesOptions
-      ): string | void => {
-        const prop = param as keyof LayoutStylesOptions & 'layout';
-
-        if (typeof data === 'string' && prop === 'layout') return data;
-
-        if (typeof data === 'object') {
-          if (prop === 'layout') return data.type;
-
-          if (data[prop]) return prop;
-        }
-      };
-
-      const getRuleProp = (prop: string) => {
-        const bpData = this.$options().rules?.find(
-          (rule) => rule.query?.breakpoint === screen && rule.layout
-        )?.layout;
-
-        const bpProp = getLayoutRule(prop, bpData);
-
-        if (bpProp) return bpProp;
-
-        const data = this.$options().rules?.find(
-          (rule) => !rule.query?.breakpoint && rule.layout
-        )?.layout;
-
-        return getLayoutRule(prop, data);
-      };
-
-      return props.reduce((acc, prop) => {
-        const token = getHostProp(prop) ?? getRuleProp(prop);
-
-        if (!token) return acc;
-
-        const type =
-          prop === 'layout'
-            ? LayoutPluginType.Layout
-            : LayoutPluginType.Property;
-
-        return html`${acc}
-        ${this.layoutService.getRender({
-          type,
-          token,
-          data: component,
-        })?.[place]}`;
-      }, html``);
+      return this.layoutController.getRender({
+        place,
+        data,
+        props: ['layout', ...this.attributeFilter.map(this.getPropertyName)],
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        screen: this.screen()!,
+      });
     }
 
     protected renderLayout(props: LayoutMixinRender): TemplateResult {
-      const { components, template, data } = props;
+      const { composition, element, template } = props;
       const layoutStyles = this.layoutStyles() ?? '';
-      const inlineStyles = components
-        ? this.layoutBuilder.collectStyles(components)
+      const inlineStyles = composition
+        ? this.layoutBuilder.collectStyles(composition)
         : '';
       const styles = inlineStyles + layoutStyles;
+      const data = {
+        element: element ?? this,
+        options: this.$options() as CompositionProperties,
+      };
 
       return html`
         ${this.getLayoutRender('pre', data)} ${template}

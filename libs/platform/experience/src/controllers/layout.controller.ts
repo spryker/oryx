@@ -3,30 +3,34 @@ import {
   LayoutAttributes,
   LayoutProperties,
 } from '@spryker-oryx/experience/layout';
-import { sizes } from '@spryker-oryx/utilities';
-import { LitElement } from 'lit';
+import { Size, sizes } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { Observable, map } from 'rxjs';
 import { ContentComponentProperties, StyleRuleSet } from '../models';
 import {
   LayoutBuilder,
+  LayoutPluginParams,
+  LayoutPluginRender,
   LayoutPluginType,
   LayoutService,
+  LayoutStylesOptions,
   ResponsiveLayoutInfo,
 } from '../services';
 
-interface LayoutProperty {
-  hostProp: keyof LayoutProperties;
-  ruleProp: keyof LayoutProperties;
-  prop: string;
+interface LayoutRenderParams {
+  place: keyof LayoutPluginRender;
+  props: string[];
+  data: LayoutPluginParams;
+  screen: Size;
 }
 
 export class LayoutController {
+  protected layoutBuilder = resolve(LayoutBuilder);
+  protected layoutService = resolve(LayoutService);
+
   constructor(
     protected host: LitElement & LayoutAttributes & ContentComponentProperties
   ) {}
-
-  protected layoutBuilder = resolve(LayoutBuilder);
-  protected layoutService = resolve(LayoutService);
 
   getStyles(
     properties: (keyof LayoutProperties)[],
@@ -39,6 +43,65 @@ export class LayoutController {
     return this.layoutService
       .getStyles(infos)
       .pipe(map((layoutStyles) => `${layoutStyles}${componentStyles}`));
+  }
+
+  getRender(config: LayoutRenderParams): TemplateResult {
+    const { screen, props, place, data } = config;
+
+    if (screen) {
+      for (const prop of Object.values(this.host[screen] ?? {})) {
+        if (!props.includes(prop)) props.push(prop);
+      }
+    }
+
+    const getHostProp = (prop: string): string | void => {
+      const attr = data.element?.[screen]?.[prop] ?? data.element?.[prop];
+
+      if (attr) return prop === 'layout' ? attr : prop;
+    };
+
+    const getLayoutRule = (
+      param: string,
+      options?: string | LayoutStylesOptions
+    ): string | void => {
+      const prop = param as keyof LayoutStylesOptions & 'layout';
+
+      if (typeof options === 'string' && prop === 'layout') return options;
+
+      if (typeof options === 'object') {
+        if (prop === 'layout') return options.type;
+
+        if (options[prop]) return prop;
+      }
+    };
+
+    const getRuleProp = (prop: string) => {
+      const rules =
+        data.options?.rules?.find(
+          (rule) => rule.query?.breakpoint === screen && rule.layout
+        )?.layout ??
+        data.options?.rules?.find(
+          (rule) => !rule.query?.breakpoint && rule.layout
+        )?.layout;
+
+      return getLayoutRule(prop, rules);
+    };
+
+    return props.reduce((acc, prop) => {
+      const token = getHostProp(prop) ?? getRuleProp(prop);
+
+      if (!token) return acc;
+
+      const type =
+        prop === 'layout' ? LayoutPluginType.Layout : LayoutPluginType.Property;
+
+      return html`${acc}
+      ${this.layoutService.getRender({
+        type,
+        token,
+        data,
+      })?.[place]}`;
+    }, html``);
   }
 
   /**

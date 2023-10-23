@@ -36,7 +36,6 @@ export class ProductListComponent extends ProductMixin(
     return html`
       ${this.renderLayout({
         template: this.renderList(),
-        data: this,
       })}
     `;
   }

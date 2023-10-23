@@ -5,6 +5,7 @@ import { LayoutStyles } from '../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
+  LayoutPluginParams,
   LayoutPluginRender,
 } from '../layout.plugin';
 
@@ -17,10 +18,11 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
     return { name: 'carousel' };
   }
 
-  getRender(data?: unknown): LayoutPluginRender {
-    console.log(data);
+  getRender(data: LayoutPluginParams): LayoutPluginRender | undefined {
+    if (data?.experience) return;
+
     return {
-      pre: html`pre`,
+      pre: html`pre2`,
       post: html`post`,
     };
   }

@@ -1,6 +1,10 @@
-import { TemplateResult } from 'lit';
+import { LitElement, TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
-import { StyleProperties } from '../../../models';
+import {
+  Component,
+  CompositionProperties,
+  StyleProperties,
+} from '../../../models';
 import { LayoutStyles } from '../layout.model';
 
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
@@ -28,6 +32,13 @@ export interface LayoutPluginConfig {
 
 export type LayoutPluginStyleProperties = Record<string, string | number>;
 
+export interface LayoutPluginParams {
+  options?: CompositionProperties;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  element?: LitElement & Record<string, any>;
+  experience?: Component;
+}
+
 export interface LayoutPlugin {
   getStyles(): Observable<LayoutStyles>;
   getConfig(): LayoutPluginConfig;
@@ -45,13 +56,15 @@ export interface LayoutPlugin {
    *
    * Usage LayoutPlugin.getImplementation().method1() | LayoutPlugin.getImplementation().method2()
    */
-  getImplementation?(data?: unknown): LayoutPluginImplementation;
+  getImplementation?(
+    data: LayoutPluginParams
+  ): LayoutPluginImplementation | undefined;
   /**
    * Returns object with pre and post render templates.
    * Together with composition component it's possible to specify global post\pre render and per component depends on argument.
    * For global render we don't pass component as argument while per component argument is defined.
    *
-   * getRender(data?: unknown): LayoutPluginRender {
+   * getRender(data: LayoutPluginParams): LayoutPluginRender {
    *   specifying render per component. (first we need guard for checking if data is Component)
    *   if (data === Component) {
    *    return  {
@@ -67,7 +80,7 @@ export interface LayoutPlugin {
    *  }
    * }
    */
-  getRender?(data?: unknown): LayoutPluginRender;
+  getRender?(data: LayoutPluginParams): LayoutPluginRender | undefined;
 }
 
 declare global {
