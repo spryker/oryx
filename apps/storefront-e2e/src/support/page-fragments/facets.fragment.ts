@@ -41,7 +41,7 @@ export class FacetsFragment {
   setRating = (value: string) => {
     this.getWrapper()
       .find(`input[type="radio"][name="rating"][value="${value}"]`)
-      .check();
+      .check({force: true});
   };
 
   resetRating = () => {
