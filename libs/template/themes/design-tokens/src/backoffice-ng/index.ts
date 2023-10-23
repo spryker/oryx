@@ -8,8 +8,7 @@ import {
   typographySmallTokens,
   typographyTokens,
 } from '../backoffice/typography.tokens';
-import { commonTokensSmall } from '../common-tokens';
-import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
+import { layoutSmTokens, layoutTokens } from '../layout.tokens';
 
 export const backofficeNgTokens: DesignToken[] = [
   ...buttonTokens,
@@ -22,30 +21,18 @@ export const backofficeNgTokens: DesignToken[] = [
       typographySmallTokens.typography
     ),
     ...layoutTokens,
-    layout: {
-      container: {
-        width: '414px',
-        bleed: '10px',
-      },
+    container: {
+      // 510px (or 530px) would be align better width min width of modals
+      // alternatively, we could introduce max-width to modals to be not
+      // larger than the container width
+      width: '414px',
+      bleed: '0px',
     },
-  },
-  {
-    media: {
-      screen: Size.Lg,
-    },
-    ...layoutTokens,
-  },
-  {
-    media: {
-      screen: Size.Md,
-    },
-    ...layoutMdTokens,
   },
   {
     media: {
       screen: Size.Sm,
     },
     ...layoutSmTokens,
-    ...commonTokensSmall,
   },
 ];

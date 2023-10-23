@@ -1,11 +1,14 @@
 import { Theme } from '@spryker-oryx/experience';
 import { fulfillmentIcons, materialDesignIcons } from '@spryker-oryx/resources';
-import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
+import { Size } from '@spryker-oryx/utilities';
 
 export const fulfillmentTheme: Theme = {
   name: 'fulfillment',
-  breakpoints: defaultBreakpoints,
+  breakpoints: {
+    [Size.Sm]: {},
+  },
   designTokens: () =>
+    // TODO: consider renaming the tokens
     import('../design-tokens/src/backoffice-ng').then(
       (s) => s.backofficeNgTokens
     ),
