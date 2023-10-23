@@ -13,6 +13,7 @@ import {
   editAddressPage,
   homePage,
   loginPage,
+  merchantPage,
   orderConfirmationPage,
   productPage,
   registrationPage,
@@ -37,6 +38,7 @@ export const StaticExperienceFeature: AppFeature = {
       createAddressPage,
       editAddressPage,
       ...(featureVersion >= '1.1' ? [registrationPage] : []),
+      merchantPage,
     ]),
   ],
 };
