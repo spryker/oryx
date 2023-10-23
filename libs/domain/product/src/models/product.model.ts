@@ -42,6 +42,7 @@ export interface Product {
   labels?: ProductLabel[];
   availability?: ProductAvailability;
   offers: ProductOffer[];
+  merchantId?: string;
 }
 
 export interface ProductOffer {

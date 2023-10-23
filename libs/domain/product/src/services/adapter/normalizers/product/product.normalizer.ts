@@ -133,8 +133,6 @@ export function productOfferNormalizer(
   ).pipe(
     map((offers) => {
       const defaultOffer = offers.find((offer) => offer.isDefault);
-      // console.log(data);
-      // console.log(defaultOffer);
       const price = defaultOffer?.price;
       return { offers, ...(price ? { price } : {}) };
     })

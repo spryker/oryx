@@ -1,6 +1,7 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { merchantProviders } from '../merchant/providers';
 import {
   AvailabilityNormalizer,
   CategoryIdNormalizer,
@@ -227,4 +228,5 @@ export const productProviders: Provider[] = [
   ProductDetailsBreadcrumb,
   categoryQuery,
   ...provideLitRoutes({ routes: productRoutes }),
+  ...merchantProviders,
 ];

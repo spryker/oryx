@@ -16,14 +16,15 @@ export function productForOfferTransform(
   data: Product,
   qualifier: ProductQualifier
 ): Product | void {
-  if (data && qualifier.offer) {
+  if (data && data.offers?.length) {
+    const selectedOffer = qualifier.offer
+      ? data.offers?.find((o) => o.id === qualifier.offer)
+      : data.offers?.find((o) => o.isDefault);
     return {
       ...data,
-      price:
-        data.offers?.find((o) => o.id === qualifier.offer)?.price ?? data.price,
-      availability:
-        data.offers?.find((o) => o.id === qualifier.offer)?.availability ??
-        data.availability,
+      merchantId: selectedOffer?.merchant?.id ?? undefined,
+      price: selectedOffer?.price ?? data.price,
+      availability: selectedOffer?.availability ?? data.availability,
     };
   }
 }
