@@ -6,6 +6,16 @@ export const loginComponentStyles = css`
     flex-direction: column;
     justify-content: center;
     height: 100vh;
+
+    /* tmp, we rather use pages with layout */
+    width: min(
+      100%,
+      min(
+        var(--oryx-container-width),
+        calc(100vw - (2 * var(--oryx-container-bleed, 0px)))
+      )
+    );
+    margin: auto;
   }
 
   oryx-image {
