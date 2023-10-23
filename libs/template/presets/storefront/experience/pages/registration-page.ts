@@ -3,7 +3,7 @@ import {
   ExperienceComponent,
 } from '@spryker-oryx/experience';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
-import {featureVersion, Size} from '@spryker-oryx/utilities';
+import { Size, featureVersion } from '@spryker-oryx/utilities';
 
 export const registrationPage: ExperienceComponent = {
   id: 'registration-page',
@@ -17,8 +17,8 @@ export const registrationPage: ExperienceComponent = {
   components: [
     featureVersion >= '1.2'
       ? {
-        ref: 'header',
-      }
+          ref: 'header',
+        }
       : {},
     {
       type: 'oryx-composition',
@@ -130,13 +130,13 @@ export const registrationPage: ExperienceComponent = {
               },
             },
           ],
-        }
+        },
       ],
     },
     featureVersion >= '1.2'
       ? {
-        ref: 'footer',
-      }
+          ref: 'footer',
+        }
       : {},
   ],
 };
