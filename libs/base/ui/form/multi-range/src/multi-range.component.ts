@@ -81,7 +81,7 @@ export class MultiRangeComponent
           : value >= this.maxValue
           ? this.maxValue - this.step
           : value;
-      if (this.inputMinRef && this.inputMinRef.value) {
+      if (this.inputMinRef?.value) {
         this.inputMinRef.value.value = String(this._minValue);
       }
     }
@@ -104,7 +104,7 @@ export class MultiRangeComponent
           : value <= this.minValue
           ? this.minValue + this.step
           : value;
-      if (this.inputMaxRef && this.inputMaxRef.value) {
+      if (this.inputMaxRef?.value) {
         this.inputMaxRef.value.value = String(this._maxValue);
       }
     }
@@ -170,11 +170,12 @@ export class MultiRangeComponent
     if (!minInRange || !minBeforeMax) minValue = min;
     if (!maxInRange || !minBeforeMax) maxValue = max;
 
-    this.minValue = minValue;
-    this.maxValue = maxValue;
+    if (this.minValue !== minValue) this.minValue = minValue;
+    if (this.maxValue !== maxValue) this.maxValue = maxValue;
 
     this.setPercentages(minValue, maxValue);
     this.syncValues(minValue, maxValue);
+    this.dispatchSelectEvent(minValue, maxValue);
   }
 
   protected hasDiffs(

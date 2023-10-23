@@ -1,7 +1,7 @@
 import { IPageWithFacets } from './mixins/page-with-facets.mixin';
 import { IPageWithProductList } from './mixins/page-with-product-list.mixin';
 
-export function checkProductCardsFilterringByName(
+export function checkProductCardsFilteringByName(
   page: IPageWithFacets & IPageWithProductList,
   numberOfFacets: number,
   numberOfProducts: number,
@@ -12,7 +12,7 @@ export function checkProductCardsFilterringByName(
   page.getProductHeadings().should('contain.text', query);
 }
 
-export function checkProductCardsFilterringByPrice(
+export function checkProductCardsFilteringByPrice(
   page: IPageWithFacets & IPageWithProductList,
   minPrice = 0,
   maxPrice = Infinity

@@ -32,31 +32,38 @@ export class FacetsFragment {
   setMinPrice = (price: number) =>
     this.getPriceFacet()
       .find('oryx-input:nth-of-type(1) input')
+      .focus()
       .clear()
-      .type(`${price}{enter}`);
+      .type(`${price}`)
+      //apply on blur
+      .trigger('blur');
 
   setMaxPrice = (price: number) =>
     this.getPriceFacet()
       .find('oryx-input:nth-of-type(2) input')
+      .focus()
       .clear()
+      //apply on enter
       .type(`${price}{enter}`);
 
   setMinPriceRange = (price: number) =>
     this.getPriceFacet()
       .find('oryx-multi-range')
       .find(`label:nth-of-type(1) input`)
-      .then((input) => {
-        input.val(price).trigger('change');
-      });
+      .invoke('val', price)
+      .trigger('input', { force: true })
+      .trigger('change', { force: true });
 
   setMaxPriceRange = (price: number) =>
     this.getPriceFacet()
       .find('oryx-multi-range')
       .find(`label:nth-of-type(2) input`)
-      .then((input) => {
-        input.val(price).trigger('change');
-      });
+      .invoke('val', price)
+      .trigger('input', { force: true })
+      .trigger('change', { force: true });
 
   resetPrices = () =>
-    this.getPriceFacet().find('button[aria-label="Clear"]').click();
+    this.getPriceFacet()
+      .find('button[aria-label="Clear"]')
+      .click({ force: true });
 }
