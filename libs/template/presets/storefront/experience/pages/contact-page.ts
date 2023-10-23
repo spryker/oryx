@@ -10,14 +10,6 @@ export const contactPage: ExperienceComponent = {
     route: '/contact',
     description: 'Contact Page Description',
   },
-  options: {
-    rules: [
-      {
-        layout: 'list',
-        padding: '30px 0',
-      },
-    ],
-  },
   components: [
     featureVersion >= '1.2'
       ? {
