@@ -126,12 +126,19 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     }
 
     protected layoutStyles = computed(() => {
-      this.layout;
+      const screen = this.screen();
+      const props = [
+        'layout',
+        ...this.attributeFilter.map(this.getPropertyName),
+      ] as (keyof LayoutProperties)[];
 
-      return this.layoutController.getStyles(
-        ['layout', ...this.attributeFilter.map(this.getPropertyName)],
-        this.$options().rules
-      );
+      if (screen) {
+        for (const prop of Object.values(this[screen] ?? {})) {
+          if (!props.includes(prop)) props.push(prop);
+        }
+      }
+
+      return this.layoutController.getStyles(props, this.$options().rules);
     });
 
     protected screen = computed(() => this.screenService.getScreenSize());
