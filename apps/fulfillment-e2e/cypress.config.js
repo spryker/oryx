@@ -23,5 +23,6 @@ module.exports = defineConfig({
   },
   env: {
     ORYX_FULFILLMENT_BACKEND_URL: process.env.ORYX_FULFILLMENT_BACKEND_URL,
+    ORYX_FULFILLMENT_CLIENT_ID: process.env.ORYX_FULFILLMENT_CLIENT_ID,
   },
 });

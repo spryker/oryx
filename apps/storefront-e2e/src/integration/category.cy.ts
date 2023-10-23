@@ -1,9 +1,11 @@
 import {
-  checkProductCardsFilterring,
+  checkProductCardsFiltering,
+  checkProductCardsPriceMode,
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { CategoryPage } from '../support/page-objects/category.page';
 import { sortingTestData } from '../support/test-data/search-products';
+import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 describe('Category suite', () => {
   describe('Products filtering', () => {
@@ -17,7 +19,7 @@ describe('Category suite', () => {
     it('should update products and facets when filters are applied/cleared', () => {
       categoryPage.getFacets().setRating('4');
       categoryPage.waitForSearchRequest();
-      checkProductCardsFilterring(
+      checkProductCardsFiltering(
         categoryPage,
         2,
         1,
@@ -31,17 +33,17 @@ describe('Category suite', () => {
       // apply 1st filter
       categoryPage.getFacets().setColor('Silver');
       categoryPage.waitForSearchRequest();
-      checkProductCardsFilterring(categoryPage, 3, 2, query);
+      checkProductCardsFiltering(categoryPage, 3, 2, query);
 
       // apply 2nd filter
       categoryPage.getFacets().setBrand('DELL');
       categoryPage.waitForSearchRequest();
-      checkProductCardsFilterring(categoryPage, 3, 1, query);
+      checkProductCardsFiltering(categoryPage, 3, 1, query);
 
       // clear 2nd filter
       // we don't expect search request here because previous query is cached
       categoryPage.getFacets().resetBrand();
-      checkProductCardsFilterring(categoryPage, 3, 2, query);
+      checkProductCardsFiltering(categoryPage, 3, 2, query);
     });
   });
 
@@ -82,6 +84,27 @@ describe('Category suite', () => {
 
         checkProductCardsSortingBySku(categoryPage, sortingTestData[option]);
       });
+    });
+  });
+
+  describe('Product price mode change', { tags: 'b2b' }, () => {
+    let categoryPage;
+
+    beforeEach(() => {
+      categoryPage = new CategoryPage({ id: '7' });
+      categoryPage.visit();
+    });
+
+    it('should update price when price mode changes', () => {
+      const productData = ProductStorage.getByEq(5);
+
+      checkProductCardsPriceMode(categoryPage, productData.originalPrice);
+
+      categoryPage.header.changePriceMode('NET_MODE');
+      checkProductCardsPriceMode(categoryPage, productData.netModePrice);
+
+      categoryPage.header.changePriceMode('GROSS_MODE');
+      checkProductCardsPriceMode(categoryPage, productData.originalPrice);
     });
   });
 });
