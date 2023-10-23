@@ -52,10 +52,6 @@
         "cwd": "apps/fulfillment"
       },
       "configurations": {
-        "mock": {
-          "command": "cp .env.mock .env",
-          "cwd": "apps/fulfillment"
-        },
         "netlify-test": {
           "command": "cp .env.netlify-test .env",
           "cwd": "apps/fulfillment"
@@ -79,13 +75,6 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "npx vite preview",
-        "cwd": "apps/fulfillment"
-      }
-    },
-    "mock": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node mock/index.js",
         "cwd": "apps/fulfillment"
       }
     },

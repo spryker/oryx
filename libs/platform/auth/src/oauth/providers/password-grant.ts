@@ -2,8 +2,8 @@ import { HttpService, StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   Observable,
-  of,
   ReplaySubject,
+  of,
   switchMap,
   take,
   tap,
