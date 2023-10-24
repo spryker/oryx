@@ -1,6 +1,6 @@
 import { Transformer } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
-import { Merchant, MerchantQualifier } from '../models';
+import { Merchant, MerchantQualifier } from '../merchant.model';
 
 export const MerchantAdapter = 'oryx.MerchantAdapter';
 export const MerchantNormalizer = 'oryx.MerchantNormalizer*';

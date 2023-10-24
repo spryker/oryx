@@ -1,4 +1,6 @@
 import { Include, JsonApiModel } from '@spryker-oryx/utilities';
+import { Merchant } from '../merchant/merchant.model';
+import { ProductOffer } from './product.model';
 
 export module ApiProductModel {
   export interface Attributes {
@@ -82,21 +84,6 @@ export module ApiProductModel {
     quantity: string;
   }
 
-  export interface ProductOffer {
-    id: string;
-    merchantReference: string;
-    price?: number;
-    merchants: Merchant[];
-    productOfferPrices: ProductOfferPrice[];
-    productOfferAvailabilities: ProductAvailability[];
-  }
-
-  export interface ProductOfferPrice {
-    id: string;
-    price: number;
-    prices: Price[];
-  }
-
   export interface CategoryNodes {
     id: string;
     isActive: boolean;
@@ -108,22 +95,6 @@ export module ApiProductModel {
     order: number;
     parents: CategoryNodes[];
     children: CategoryNodes[];
-  }
-
-  export interface Merchant {
-    id: string;
-    merchantName: string;
-    merchantUrl: string;
-    deliveryTime: string;
-  }
-
-  export interface ProductOffer {
-    id: string;
-    isDefault?: boolean;
-  }
-
-  export interface ProductOfferPrice {
-    id: string;
   }
 
   export const enum Includes {
@@ -158,7 +129,7 @@ export module ApiProductModel {
     | Include<Includes.AbstractProducts, Abstract>
     | Include<Includes.CategoryNodes, CategoryNodes>
     | Include<Includes.ProductOffers, ProductOffer>
-    | Include<Includes.ProductOfferPrices, ProductOfferPrice>
+    | Include<Includes.ProductOfferPrices, ProductOffer>
     | Include<Includes.ProductOfferAvailabilities, ProductAvailability>
     | Include<Includes.Merchants, Merchant>;
 

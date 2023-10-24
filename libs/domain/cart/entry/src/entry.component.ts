@@ -132,11 +132,11 @@ export class CartEntryComponent
       <oryx-product-title
         .options=${{ linkType: LinkType.Neutral }}
       ></oryx-product-title>
-
       ${when(
         this.$options()?.enableItemId,
         () => html`<oryx-product-id></oryx-product-id>`
       )}
+      !<oryx-product-sold-by></oryx-product-sold-by>!
     </section>`;
   }
 

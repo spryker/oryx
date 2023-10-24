@@ -1,8 +1,8 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
-import { ApiProductModel } from '../../models';
-import { Merchant, MerchantQualifier } from '../models';
+import { Merchant, MerchantQualifier } from '../merchant.model';
+import { ApiMerchantModel } from '../merchant.model.api';
 import { MerchantAdapter, MerchantNormalizer } from './merchant.adapter';
 
 export class DefaultMerchantAdapter implements MerchantAdapter {
@@ -15,9 +15,12 @@ export class DefaultMerchantAdapter implements MerchantAdapter {
   ) {}
 
   get({ id }: MerchantQualifier): Observable<Merchant> {
+    const include = ['merchant-opening-hours', 'merchant-addresses'];
     return this.http
-      .get<ApiProductModel.Merchant>(
-        `${this.SCOS_BASE_URL}/${this.merchantEndpoint}/${id}`
+      .get<ApiMerchantModel.Merchant>(
+        `${this.SCOS_BASE_URL}/${this.merchantEndpoint}/${id}${
+          include?.length ? '?include=' : ''
+        }${include?.join(',') || ''}`
       )
       .pipe(this.transformer.do(MerchantNormalizer));
   }

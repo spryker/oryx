@@ -1,6 +1,7 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
+import { ApiMerchantModel } from 'libs/domain/product/src/merchant/merchant.model.api';
 import { Observable, combineLatest, map, of } from 'rxjs';
 import { ApiProductModel, Product } from '../../../../models';
 import { CategoryNormalizer } from '../../../category';
@@ -124,7 +125,7 @@ export function productOfferNormalizer(
   data: DeserializedProduct, // source
   transformer: TransformerService
 ): Observable<Partial<Product>> {
-  const offers = data.productOffers as any as ApiProductModel.ProductOffer[];
+  const offers = data.productOffers as any as ApiMerchantModel.ProductOffer[];
 
   if (!offers?.length) return of({});
 

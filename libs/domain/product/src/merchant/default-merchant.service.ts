@@ -1,7 +1,7 @@
 import { injectQuery, QueryState } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
+import { Merchant, MerchantQualifier } from './merchant.model';
 import { MerchantService } from './merchant.service';
-import { Merchant, MerchantQualifier } from './models';
 import { MerchantQuery } from './state';
 
 export class DefaultMerchantService implements MerchantService {

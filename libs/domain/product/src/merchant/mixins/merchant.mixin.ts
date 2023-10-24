@@ -10,8 +10,8 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { MerchantContext } from '../merchant.context';
+import { Merchant, MerchantComponentProperties } from '../merchant.model';
 import { MerchantService } from '../merchant.service';
-import { Merchant, MerchantComponentProperties } from '../models';
 
 export declare class MerchantMixinInterface
   implements MerchantComponentProperties

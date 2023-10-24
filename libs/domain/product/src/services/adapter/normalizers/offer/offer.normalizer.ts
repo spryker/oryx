@@ -1,12 +1,13 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { AvailabilityNormalizer, PriceNormalizer } from '@spryker-oryx/product';
 import { Observable, map } from 'rxjs';
-import { ApiProductModel, ProductOffer } from '../../../../models';
+import { ApiMerchantModel } from '../../../../merchant/merchant.model.api';
+import { ProductOffer } from '../../../../models';
 
 export const OfferNormalizer = 'oryx.OfferNormalizer*';
 
 export function offerNormalizer(
-  data: ApiProductModel.ProductOffer
+  data: ApiMerchantModel.ProductOffer
 ): ProductOffer {
   return {
     id: data.id,
@@ -21,7 +22,7 @@ export function offerNormalizer(
 }
 
 export function offerPriceNormalizer(
-  data: ApiProductModel.ProductOffer,
+  data: ApiMerchantModel.ProductOffer,
   transformer: TransformerService
 ): Observable<Partial<ProductOffer>> {
   return transformer
@@ -30,7 +31,7 @@ export function offerPriceNormalizer(
 }
 
 export function offerAvailabilityNormalizer(
-  data: ApiProductModel.ProductOffer,
+  data: ApiMerchantModel.ProductOffer,
   transformer: TransformerService
 ): Observable<Partial<ProductOffer>> {
   return transformer

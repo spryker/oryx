@@ -67,7 +67,7 @@ export const productOffersStyles = css`
   .delivery {
     display: flex;
     gap: 10px;
-    grid-column: 2;
+    grid-column: 2 / span 3;
   }
 
   a {

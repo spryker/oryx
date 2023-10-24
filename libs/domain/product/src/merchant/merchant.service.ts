@@ -1,6 +1,6 @@
 import { QueryState } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
-import { Merchant, MerchantQualifier } from './models';
+import { Merchant, MerchantQualifier } from './merchant.model';
 
 export interface MerchantService {
   get(qualifier: MerchantQualifier): Observable<Merchant | undefined>;

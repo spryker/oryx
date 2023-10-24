@@ -1,6 +1,6 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const productSoldByComponent = componentDef({
+export const merchantSoldByComponent = componentDef({
   name: 'oryx-product-sold-by',
   impl: () =>
     import('./sold-by.component').then((m) => m.ProductSoldByComponent),
