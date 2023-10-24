@@ -33,6 +33,7 @@ import {
 import {
   OfferNormalizer,
   offerAvailabilityNormalizer,
+  offerMerchantNormalizer,
   offerNormalizer,
   offerPriceNormalizer,
 } from './adapter/normalizers/offer/offer.normalizer';
@@ -132,6 +133,10 @@ export const productProviders: Provider[] = [
   {
     provide: OfferNormalizer,
     useValue: offerAvailabilityNormalizer,
+  },
+  {
+    provide: OfferNormalizer,
+    useValue: offerMerchantNormalizer,
   },
   {
     provide: FacetNormalizer,

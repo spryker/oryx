@@ -8,7 +8,9 @@ import { ApiMerchantModel } from '../../merchant.model.api';
 
 function normalizeOpeningHours(
   hours: ApiMerchantModel.MerchantOpeningHours
-): MerchantSchedule {
+): MerchantSchedule | undefined {
+  if (!hours) return undefined;
+
   const uniqueDays: MerchantScheduleSlot[] = [];
   for (const entry of hours.weekdaySchedule) {
     let dayEntry = uniqueDays.find(
@@ -30,8 +32,11 @@ function normalizeOpeningHours(
   };
 }
 
-function normalizeLegal(data: ApiMerchantModel.MerchantLegal): MerchantLegal {
-  // console.log(data);
+function normalizeLegal(
+  data: ApiMerchantModel.MerchantLegal
+): MerchantLegal | undefined {
+  if (!data) return undefined;
+
   return {
     dataPrivacy: data.dataPrivacy,
     cancellationPolicy: data.cancellationPolicy,
@@ -40,7 +45,11 @@ function normalizeLegal(data: ApiMerchantModel.MerchantLegal): MerchantLegal {
   };
 }
 
-export function merchantNormalizer(data: ApiMerchantModel.Merchant): Merchant {
+export function merchantNormalizer(
+  data: ApiMerchantModel.Merchant
+): Merchant | undefined {
+  if (!data) return;
+
   return {
     id: data.id,
     name: data.merchantName,
