@@ -9,4 +9,3 @@
    - `ORYX_LABS` - the boolean indicator to let Fulfillment app know if it should use `labs` features
    - `ORYX_FULFILLMENT_CLIENT_ID` - the client id for the OAuth flow
 2. Run `nx run fulfillment:serve` to start the app in development mode.
-
