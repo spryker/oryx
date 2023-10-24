@@ -5,10 +5,13 @@ import { LinkService } from '@spryker-oryx/site';
 import { computed } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { MerchantMixin } from '../src/merchant/mixins';
+import { merchantSoldByStyles } from './sold-by.styles';
 
 export class ProductSoldByComponent extends MerchantMixin(
   ContentMixin(LitElement)
 ) {
+  static styles = merchantSoldByStyles;
+
   protected linkService = resolve(LinkService);
 
   // we can consider switching to content link component instead
@@ -22,7 +25,7 @@ export class ProductSoldByComponent extends MerchantMixin(
     if (!merchant) return;
 
     return html`
-      Sold by
+      <span part="prefix">${this.i18n('merchant.sold-by')}</span>
       <oryx-link
         ><a href=${this.$link()}>${merchant.name}</a><oryx-link> </oryx-link
       ></oryx-link>

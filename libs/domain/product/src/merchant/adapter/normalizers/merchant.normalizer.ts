@@ -1,5 +1,6 @@
 import {
   Merchant,
+  MerchantLegal,
   MerchantSchedule,
   MerchantScheduleSlot,
 } from '../../merchant.model';
@@ -8,8 +9,6 @@ import { ApiMerchantModel } from '../../merchant.model.api';
 function normalizeOpeningHours(
   hours: ApiMerchantModel.MerchantOpeningHours
 ): MerchantSchedule {
-  console.log(hours);
-
   const uniqueDays: MerchantScheduleSlot[] = [];
   for (const entry of hours.weekdaySchedule) {
     let dayEntry = uniqueDays.find(
@@ -31,15 +30,24 @@ function normalizeOpeningHours(
   };
 }
 
-export function merchantNormalizer(data: ApiMerchantModel.Merchant): Merchant {
+function normalizeLegal(data: ApiMerchantModel.MerchantLegal): MerchantLegal {
   console.log(data);
+  return {
+    dataPrivacy: data.dataPrivacy,
+    cancellationPolicy: data.cancellationPolicy,
+    terms: data.terms?.replace('<br><br>', '<br />'),
+    imprint: data.imprint,
+  };
+}
+
+export function merchantNormalizer(data: ApiMerchantModel.Merchant): Merchant {
   return {
     id: data.id,
     name: data.merchantName,
     description: data.description,
     url: data.merchantUrl,
     deliveryTime: data.deliveryTime,
-    legal: data.legalInformation,
+    legal: normalizeLegal(data.legalInformation),
     schedule: normalizeOpeningHours(data.merchantOpeningHours?.[0]),
     logo: data.logoUrl,
     banner: data.bannerUrl,

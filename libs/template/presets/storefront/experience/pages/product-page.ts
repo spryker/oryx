@@ -66,7 +66,7 @@ export const productPage: ExperienceComponent = {
               type: 'oryx-product-brand',
               options: { rules: [{ width: '70px' }] },
             },
-            { type: 'oryx-product-sold-by' },
+            { type: 'oryx-merchant-sold-by' },
             { type: 'oryx-product-average-rating' },
             { type: 'oryx-product-id' },
             {

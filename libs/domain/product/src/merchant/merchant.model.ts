@@ -24,12 +24,14 @@ export interface Merchant {
       phone?: string;
     };
   };
-  legal?: {
-    cancellationPolicy?: string;
-    terms?: string;
-    dataPrivacy?: string;
-    imprint?: string;
-  };
+  legal?: MerchantLegal;
+}
+
+export interface MerchantLegal {
+  cancellationPolicy?: string;
+  terms?: string;
+  dataPrivacy?: string;
+  imprint?: string;
 }
 
 export interface MerchantSchedule {

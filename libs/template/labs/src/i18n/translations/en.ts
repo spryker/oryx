@@ -10,6 +10,10 @@ const product = {
     'Sold by {count, plural, one {one merchant} other {{count} merchants}}',
 };
 
+const merchant = {
+  'merchant.sold-by': 'Sold by:',
+};
+
 const cart = {
   'cart.totals.<count>-items':
     'My cart ({count, plural, one {one item} other {{count} items}})',
@@ -70,4 +74,5 @@ export default {
   ...user,
   ...picking,
   ...ui,
+  ...merchant,
 };

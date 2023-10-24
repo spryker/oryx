@@ -53,13 +53,15 @@ export class ProductOffersComponent extends ProductMixin(
   });
 
   @queryAll('input') protected inputElements?: HTMLInputElement[];
+
   protected selectRadioElements = effect(() => {
     const addressId = this.$active()?.id;
-    this.inputElements?.forEach((el) => {
-      // console.log('addressId', el.value === addressId);
-      el.checked = el.value === addressId;
-      el.dispatchEvent(new Event('change', { bubbles: true }));
-    });
+    setTimeout(() => {
+      this.inputElements?.forEach((el) => {
+        el.checked = el.value === addressId;
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+    }, 0);
   });
 
   protected renderOffer(offer: ProductOffer): HTMLTemplateResult | void {
@@ -95,7 +97,7 @@ export class ProductOffersComponent extends ProductMixin(
 
           <span class="delivery">
             <span class="delivery-time">
-              <!-- <oryx-icon type="schedule" size="sm"></oryx-icon> -->
+              <oryx-icon type="schedule" size="sm"></oryx-icon>
               ${offer.merchant.deliveryTime}
             </span>
             <oryx-product-availability></oryx-product-availability>

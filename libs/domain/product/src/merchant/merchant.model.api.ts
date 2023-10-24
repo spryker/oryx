@@ -8,17 +8,19 @@ export module ApiMerchantModel {
     description: string;
     merchantUrl: string;
     deliveryTime: string;
-    legalInformation: {
-      cancellationPolicy?: string;
-      terms?: string;
-      dataPrivacy?: string;
-      imprint?: string;
-    };
+    legalInformation: MerchantLegal;
     merchantOpeningHours: MerchantOpeningHours[];
     logoUrl: string;
     bannerUrl: string;
     publicEmail: string;
     publicPhone: string;
+  }
+
+  export interface MerchantLegal {
+    cancellationPolicy?: string;
+    terms?: string;
+    dataPrivacy?: string;
+    imprint?: string;
   }
 
   export interface MerchantOpeningHours {
