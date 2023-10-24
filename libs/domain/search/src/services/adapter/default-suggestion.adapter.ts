@@ -50,6 +50,7 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
               ApiProductModel.Includes.ProductOffers,
               ApiProductModel.Includes.ProductOfferPrices,
               ApiProductModel.Includes.ProductOfferAvailabilities,
+              ApiProductModel.Includes.Merchants,
             ].join(',')
           : '';
 
