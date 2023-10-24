@@ -32,18 +32,13 @@ export class FacetsFragment {
   setMinPrice = (price: number) =>
     this.getPriceFacet()
       .find('oryx-input:nth-of-type(1) input')
-      .focus()
-      .clear({ force: true })
-      .type(`${price}`)
-      //apply on blur
-      .trigger('blur');
+      .clear()
+      .type(`${price}{enter}`);
 
   setMaxPrice = (price: number) =>
     this.getPriceFacet()
       .find('oryx-input:nth-of-type(2) input')
-      .focus()
-      .clear({ force: true })
-      //apply on enter
+      .clear()
       .type(`${price}{enter}`);
 
   setMinPriceRange = (price: number) =>

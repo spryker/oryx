@@ -17,8 +17,16 @@ export function checkProductCardsFilteringByPrice(
   minPrice = 0,
   maxPrice = Infinity
 ) {
-  page.getProductPrices().should('be.gte', minPrice);
-  page.getProductPrices().should('be.lte', maxPrice);
+  page
+    .getProductPrices()
+    .shadow()
+    .each(($price: DocumentFragment) => {
+      const price = $price.textContent;
+      const value = parseFloat(price.replace('€', ''));
+
+      cy.wrap(value).should('be.gte', minPrice);
+      cy.wrap(value).should('be.lte', maxPrice);
+    });
 }
 
 export function checkProductCardsSortingBySku(

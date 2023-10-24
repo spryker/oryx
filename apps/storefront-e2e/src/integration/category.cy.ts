@@ -1,5 +1,6 @@
 import {
   checkProductCardsFilteringByName,
+  checkProductCardsFilteringByPrice,
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { CategoryPage } from '../support/page-objects/category.page';
@@ -32,59 +33,41 @@ describe('Category suite', () => {
       checkProductCardsFilteringByName(categoryPage, 3, 2, query);
     });
 
-    it('should apply price filtering', () => {
-      const minPrice = 100;
+    it('should apply price filterring', () => {
+      // set brand to limit a number of products displayed
+      // and avoid issues with concrete products displaying
+      categoryPage = new CategoryPage({ id: '2' });
+      categoryPage.visit();
+      categoryPage.getFacets().setBrand('Kodak');
+
+      const minPrice = 200;
       const maxPrice = 400;
-      const minPriceRange = 110;
-      const maxPriceRange = 390;
 
-      const expectedParamsMin = { 'price[min]': `${minPrice}` };
-      const expectedParamsMinAndMax = {
-        'price[min]': `${minPrice}`,
-        'price[max]': `${maxPrice}`,
-      };
-
-      //min and max price search params are not specified in the url
-      categoryPage.checkUrlParams({
-        'price[min]': null,
-        'price[max]': null,
-      });
-
-      // set min price by input
+      cy.log('set minimum price');
       categoryPage.getFacets().setMinPrice(minPrice);
-      categoryPage.waitForSearchRequest(expectedParamsMin);
-      categoryPage.checkUrlParams(expectedParamsMin);
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(categoryPage, minPrice);
 
-      //set max price by input
-      categoryPage.getFacets().setMaxPrice(maxPrice);
-      categoryPage.waitForSearchRequest(expectedParamsMinAndMax);
-      categoryPage.checkUrlParams(expectedParamsMinAndMax);
-
-      // reset prices
+      cy.log('reset prices, set max price');
       categoryPage.getFacets().resetPrices();
-      categoryPage.checkUrlParams({
-        'price[min]': null,
-        'price[max]': null,
-      });
+      categoryPage.waitForSearchRequest();
+      categoryPage.getFacets().setMaxPrice(maxPrice);
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(categoryPage, 0, maxPrice);
 
-      const expectedParamsMinRange = { 'price[min]': `${minPriceRange}` };
-      const expectedParamsMinAndMaxRange = {
-        'price[min]': `${minPriceRange}`,
-        'price[max]': `${maxPriceRange}`,
-      };
+      cy.log('reset prices, change min price range');
+      categoryPage.getFacets().resetPrices();
+      categoryPage.waitForSearchRequest();
+      categoryPage.getFacets().setMinPriceRange(minPrice);
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(categoryPage, minPrice);
 
-      //set min price on the range slider
-      categoryPage.getFacets().setMinPriceRange(minPriceRange);
-      categoryPage.waitForSearchRequest(expectedParamsMinRange);
-      categoryPage.checkUrlParams(expectedParamsMinRange);
-
-      //set max price on the range slider
-      categoryPage.getFacets().setMaxPriceRange(maxPriceRange);
-      categoryPage.waitForSearchRequest(expectedParamsMinAndMaxRange);
-      categoryPage.checkUrlParams(expectedParamsMinAndMaxRange);
-
-      // TODO: when all these checks are done -> move these to searcy.cy.ts
-      // price filtering should also work on Search page
+      cy.log('reset prices, change max price range');
+      categoryPage.getFacets().resetPrices();
+      categoryPage.waitForSearchRequest();
+      categoryPage.getFacets().setMaxPriceRange(maxPrice);
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(categoryPage, 0, maxPrice);
     });
   });
 
