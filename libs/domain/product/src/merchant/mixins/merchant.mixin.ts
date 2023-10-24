@@ -39,13 +39,14 @@ export const MerchantMixin = <
       this.contextController.get<string>(MerchantContext.ID)
     );
 
-    protected $merchant = computed(() =>
-      this.$merchantContext()
+    protected $merchant = computed(() => {
+      const id = this.merchant ?? this.$merchantContext();
+      return id
         ? this.merchantService.get({
-            id: this.merchant ?? this.$merchantContext(),
+            id,
           })
-        : undefined
-    );
+        : undefined;
+    });
   }
   return MerchantMixinClass as unknown as Type<MerchantMixinInterface> & T;
 };

@@ -136,7 +136,9 @@ export class CartEntryComponent
         this.$options()?.enableItemId,
         () => html`<oryx-product-id></oryx-product-id>`
       )}
-      !<oryx-product-sold-by></oryx-product-sold-by>!
+      <oryx-product-sold-by
+        .merchant=${this.entry?.merchantReference}
+      ></oryx-product-sold-by>
     </section>`;
   }
 

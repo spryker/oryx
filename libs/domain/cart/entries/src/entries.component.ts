@@ -41,7 +41,6 @@ export class CartEntriesComponent extends CartComponentMixin(
         (entry) => {
           return html`
             <oryx-cart-entry
-              data-merchant=${entry.merchantReference}
               .entry=${entry}
               .currency=${this.$cart()?.currency}
               .quantity=${entry.quantity}
