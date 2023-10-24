@@ -31,7 +31,7 @@ function normalizeOpeningHours(
 }
 
 function normalizeLegal(data: ApiMerchantModel.MerchantLegal): MerchantLegal {
-  console.log(data);
+  // console.log(data);
   return {
     dataPrivacy: data.dataPrivacy,
     cancellationPolicy: data.cancellationPolicy,
