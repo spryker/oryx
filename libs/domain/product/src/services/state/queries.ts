@@ -4,6 +4,7 @@ import { LocaleChanged } from '@spryker-oryx/i18n';
 import { CurrencyChanged } from '@spryker-oryx/site';
 import { Product, ProductQualifier } from '../../models';
 import { ProductAdapter } from '../adapter';
+import { ProductLoaded } from './events';
 
 export const ProductQuery = 'oryx.productQuery';
 
@@ -33,6 +34,7 @@ export const productQueries = [
   provideQuery(ProductQuery, (adapter = inject(ProductAdapter)) => ({
     cacheKey: (q: ProductQualifier) => q?.sku ?? '',
     loader: (q: ProductQualifier) => adapter.get(q),
+    onLoad: [ProductLoaded],
     refreshOn: [LocaleChanged, CurrencyChanged],
     postTransforms: [productForOfferTransform],
   })),

@@ -16,11 +16,14 @@ export class ProductSoldByComponent extends MerchantMixin(
 
   // we can consider switching to content link component instead
   protected $link = computed(() =>
-    this.linkService.get({ type: RouteType.Merchant, id: this.$merchant()?.id })
+    this.linkService.get({
+      type: RouteType.Merchant,
+      id: this.$merchantMinimal()?.id,
+    })
   );
 
   protected override render(): TemplateResult | void {
-    const merchant = this.$merchant();
+    const merchant = this.$merchantMinimal();
 
     if (!merchant) return;
 

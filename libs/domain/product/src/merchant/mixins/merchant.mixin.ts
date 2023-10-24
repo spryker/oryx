@@ -20,6 +20,7 @@ export declare class MerchantMixinInterface
 
   merchant?: string;
   protected $merchant: Signal<Merchant | null>;
+  protected $merchantMinimal: Signal<Merchant | null>;
 }
 
 const MixinInternals = Symbol('MerchantMixinInternals');
@@ -47,6 +48,16 @@ export const MerchantMixin = <
       return id
         ? this[MixinInternals].merchantService?.get({
             id,
+          })
+        : undefined;
+    });
+
+    protected $merchantMinimal = computed(() => {
+      const id = this.merchant ?? this.$merchantContext();
+      return id
+        ? this[MixinInternals].merchantService?.get({
+            id,
+            scope: 'minimal',
           })
         : undefined;
     });

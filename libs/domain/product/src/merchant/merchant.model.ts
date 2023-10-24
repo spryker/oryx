@@ -1,5 +1,6 @@
 export interface MerchantQualifier {
   id?: string;
+  scope?: string;
 }
 
 export interface Merchant {
