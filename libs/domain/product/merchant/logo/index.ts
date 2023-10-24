@@ -1,1 +1,2 @@
-export * from './banner.component';
+export * from './logo.component';
+export * from './logo.schema';

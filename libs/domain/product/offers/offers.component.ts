@@ -78,7 +78,7 @@ export class ProductOffersComponent extends ProductMixin(
     );
 
     return html`
-      <a href=${$link()}>
+      <a href=${$link()} tabindex="-1">
         <oryx-radio data-sku=${sku2}>
           <input
             type="radio"
@@ -86,11 +86,12 @@ export class ProductOffersComponent extends ProductMixin(
             value=${offer.id}
             ?checked=${this.$active()?.id === offer.id}
           />
-          <oryx-button
+          <h5>${offer.merchant.name}</h5>
+          <!-- <oryx-button
             type="text"
             text=${offer.merchant.name}
             .href=${$link()}
-          ></oryx-button>
+          ></oryx-button> -->
           <oryx-product-price
             .options=${{ enableTaxMessage: false }}
           ></oryx-product-price>

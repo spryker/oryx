@@ -6,4 +6,6 @@ export const merchantDescriptionComponent = componentDef({
     import('./description.component').then(
       (m) => m.MerchantDescriptionComponent
     ),
+  schema: () =>
+    import('./description.schema').then((m) => m.merchantDescriptionSchema),
 });

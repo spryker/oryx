@@ -6,4 +6,6 @@ export const merchantOpeningsHoursComponent = componentDef({
     import('./opening-hours.component').then(
       (m) => m.MerchantOpeningsHoursComponent
     ),
+  schema: () =>
+    import('./opening-hours.schema').then((m) => m.merchantOpeningHoursSchema),
 });

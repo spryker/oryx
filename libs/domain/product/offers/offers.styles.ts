@@ -8,6 +8,10 @@ export const productOffersStyles = css`
     width: 100px;
   }
 
+  h5 {
+    ${headingUtil(HeadingTag.H6)}
+  }
+
   /* .offer {
     display: grid;
     grid-template-columns: 1fr auto;
