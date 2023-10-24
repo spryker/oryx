@@ -7,11 +7,11 @@ export const labsI18nFeature = new I18nFeature({
   load: (localeId) => {
     switch (localeId) {
       case 'de':
-        return import(`./translations/de.js`);
+        return import('./translations/de.js');
       case 'ar':
-        return import(`./translations/ar.js`);
+        return import('./translations/ar.js');
       default:
-        return import(`./translations/en.js`);
+        return import('./translations/en.js');
     }
   },
 });
