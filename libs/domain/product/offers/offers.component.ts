@@ -4,7 +4,7 @@ import { HTMLTemplateResult, LitElement, TemplateResult, html } from 'lit';
 import { resolve } from '@spryker-oryx/di';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
-import { computed, signal } from '@spryker-oryx/utilities';
+import { computed, effect, signal } from '@spryker-oryx/utilities';
 import { queryAll } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { ProductMixin } from '../src/mixins';
@@ -28,7 +28,7 @@ export class ProductOffersComponent extends ProductMixin(
         </h4>
         <oryx-product-media slot="heading"></oryx-product-media>
         <oryx-layout layout="list">
-          <form @input=${this.updateList}>
+          <form>
             ${repeat(
               this.$product()?.offers ?? [],
               (offer) => offer.id,
@@ -44,13 +44,28 @@ export class ProductOffersComponent extends ProductMixin(
 
   protected $active = computed(() => {
     const { offer: offerId } = this.$productQualifier() ?? {};
-    return this.$product()?.offers?.find((offer) => offer.id === offerId);
+    let selected = this.$product()?.offers?.find(
+      (offer) => offer.id === offerId
+    );
+    if (!selected)
+      selected = this.$product()?.offers?.find((offer) => offer.isDefault);
+    return selected;
+  });
+
+  @queryAll('input') protected inputElements?: HTMLInputElement[];
+  protected selectRadioElements = effect(() => {
+    const addressId = this.$active()?.id;
+    this.inputElements?.forEach((el) => {
+      // console.log('addressId', el.value === addressId);
+      el.checked = el.value === addressId;
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    });
   });
 
   protected renderOffer(offer: ProductOffer): HTMLTemplateResult | void {
     const sku2 = `${this.$product()?.sku}${offer ? `,${offer.id}` : ''}`;
     const sku = this.$product()?.sku;
-    // const { offer: offerId } = this.$productQualifier() ?? {};
+
     if (!sku) return;
 
     const $link = signal(
@@ -59,15 +74,15 @@ export class ProductOffersComponent extends ProductMixin(
         qualifier: { sku, offer: offer.id },
       })
     );
+
     return html`
-      <a .href=${$link()}>
+      <a href=${$link()}>
         <oryx-radio data-sku=${sku2}>
           <input
             type="radio"
             name="offer"
             value=${offer.id}
-            .checked=${offer.id === this.$active()?.id}
-            @input=${this.updateList}
+            ?checked=${this.$active()?.id === offer.id}
           />
           <oryx-button
             type="text"
@@ -80,7 +95,7 @@ export class ProductOffersComponent extends ProductMixin(
 
           <span class="delivery">
             <span class="delivery-time">
-              <oryx-icon type="schedule" size="sm"></oryx-icon>
+              <!-- <oryx-icon type="schedule" size="sm"></oryx-icon> -->
               ${offer.merchant.deliveryTime}
             </span>
             <oryx-product-availability></oryx-product-availability>
@@ -89,23 +104,4 @@ export class ProductOffersComponent extends ProductMixin(
       </a>
     `;
   }
-
-  @queryAll('input') protected inputs?: HTMLInputElement[];
-
-  protected updateList(value: boolean): void {
-    const inputElements = this.inputs;
-    console.log(inputElements?.length);
-
-    inputElements?.forEach((inputElement: HTMLInputElement) => {
-      console.log(inputElement.value);
-      // inputElement.checked = value;
-      // inputElement.dispatchEvent(
-      //   new InputEvent('input', { bubbles: true, composed: true })
-      // );
-    });
-  }
 }
-
-// <!-- <oryx-link>
-// <a href="/merchants/${slug}">About this seller</a>
-// </oryx-link> -->

@@ -1,10 +1,11 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { Size } from '@spryker-oryx/utilities';
 
 export const merchantPage: ExperienceComponent = {
   id: 'merchant-page',
   type: 'Page',
   meta: {
-    title: 'Merchant Page',
+    title: 'Merchant',
     route: '/merchant/:merchant',
     description: 'Default Merchant Page Description',
   },
@@ -18,6 +19,18 @@ export const merchantPage: ExperienceComponent = {
   },
 
   components: [
+    {
+      type: 'oryx-site-breadcrumb',
+      options: {
+        rules: [
+          {
+            colSpan: 2,
+          },
+          { query: { breakpoint: Size.Sm }, hide: true },
+        ],
+      },
+    },
+
     {
       type: 'oryx-merchant-banner',
       options: {
