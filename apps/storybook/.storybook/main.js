@@ -1,8 +1,7 @@
-const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
+const { mergeConfig } = require('vite');
 
 module.exports = {
   stories: ['../../../libs/**/*.stories.@(ts|tsx|mdx)'],
-
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-a11y',
@@ -22,25 +21,18 @@ module.exports = {
     '@storybook/addon-mdx-gfm',
   ],
 
-  webpackFinal: async (config, { configType }) => {
-    // add your own webpack tweaks if needed
-    config.resolve.plugins = [
-      new TsconfigPathsPlugin({ extensions: config.resolve.extensions }),
-    ];
-
-    // A hack needed for webpack to fix resolution of CLDR package
-    // See https://github.com/globalizejs/globalize/issues/603
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      cldr$: 'cldrjs',
-      cldr: 'cldrjs/dist/cldr',
-    };
-
-    return config;
+  async viteFinal(config) {
+    // Merge custom configuration into the default config
+    return mergeConfig(config, {
+      // Add dependencies to pre-optimization
+      optimizeDeps: {
+        include: ['storybook-dark-mode'],
+      },
+    });
   },
 
   framework: {
-    name: '@storybook/web-components-webpack5',
+    name: '@storybook/web-components-vite',
     options: {},
   },
 
