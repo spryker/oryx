@@ -95,7 +95,6 @@ export class CompositionComponent extends LayoutMixin(
         components,
         (component) => component.id,
         (component) => {
-          const template = this.renderComponent(component);
           const data = {
             element: this,
             options: component.options,
@@ -103,7 +102,8 @@ export class CompositionComponent extends LayoutMixin(
           };
 
           return html`
-            ${this.getLayoutRender('pre', data)} ${template}
+            ${this.getLayoutRender('pre', data)}
+            ${this.renderComponent(component)}
             ${this.getLayoutRender('post', data)}
           `;
         }

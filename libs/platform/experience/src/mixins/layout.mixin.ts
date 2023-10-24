@@ -173,7 +173,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       return this.layoutController.getRender({
         place,
         data,
-        attrs: ['layout', ...this.attributeFilter.map(this.getPropertyName)],
+        attrs: ['layout', ...this.attributeFilter],
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         screen: this.screen()!,
       });
