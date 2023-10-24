@@ -5,7 +5,7 @@ import {
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { ProductContext } from '../product-context';
 import { ProductService } from '../product.service';
 
@@ -33,7 +33,10 @@ export class ProductPageTitleMetaResolver implements PageMetaResolver {
         }
 
         return this.productService
-          .get({ sku: sku as string })
+          .get({
+            sku: (sku as string)?.split(',')[0],
+            offer: (sku as string)?.split(',')[1],
+          })
           .pipe(
             map((product) => (product?.name ? { title: product.name } : {}))
           );
