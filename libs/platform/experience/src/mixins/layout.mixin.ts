@@ -40,20 +40,25 @@ interface LayoutMixinRender {
 export declare class LayoutMixinInterface {
   /**
    * @deprecated since 1.2 will be deleted.
-   * Use attributes with the same name but together with layout- prefix instead.
+   * Use attributes with the same name but together with layout prefix instead.
    */
   bleed?: boolean;
   sticky?: boolean;
   overlap?: boolean;
   divider?: boolean;
   vertical?: boolean;
-
-  layout?: CompositionLayout | LayoutTypes;
   xs?: LayoutProperties;
   sm?: LayoutProperties;
   md?: LayoutProperties;
   lg?: LayoutProperties;
   xl?: LayoutProperties;
+
+  layout?: CompositionLayout | LayoutTypes;
+  layoutXs?: LayoutProperties;
+  layoutSm?: LayoutProperties;
+  layoutMd?: LayoutProperties;
+  layoutLg?: LayoutProperties;
+  layoutXl?: LayoutProperties;
   protected layoutStyles: ConnectableSignal<string | undefined>;
   protected renderLayout: (props: LayoutMixinRender) => TemplateResult;
   protected getLayoutRender(
@@ -83,8 +88,19 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     @signalProperty() attributeFilter: (keyof LayoutProperties)[] = [];
     @signalProperty() layout?: CompositionLayout | LayoutTypes;
-    @signalProperty({ type: Object, reflect: true })
+    @signalProperty({ type: Object, reflect: true, attribute: 'layout-xs' })
     layoutXs?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true, attribute: 'layout-sm' })
+    layoutSm?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true, attribute: 'layout-md' })
+    layoutMd?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true, attribute: 'layout-lg' })
+    layoutLg?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true, attribute: 'layout-xl' })
+    layoutXl?: LayoutProperties;
+
+    @signalProperty({ type: Object, reflect: true })
+    xs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) md?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true }) lg?: LayoutProperties;
@@ -107,9 +123,17 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     });
 
     protected observe(layoutSpecificAttrs = []): void {
+      const exception = [
+        'layout-xs',
+        'layout-sm',
+        'layout-md',
+        'layout-lg',
+        'layout-xl',
+      ];
       const attributeFilter = [...this.attributes].reduce(
         (acc: string[], attr) => {
-          if (!attr.name.startsWith('layout-')) return acc;
+          if (!attr.name.startsWith('layout-') || exception.includes(attr.name))
+            return acc;
           (this as Record<string, unknown>)[attr.name] = attr.value;
           return [...acc, attr.name];
         },

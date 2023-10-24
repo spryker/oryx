@@ -1,7 +1,11 @@
 import { LayoutProperties } from '@spryker-oryx/experience/layout';
 import { LitElement, TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
-import { Component, StyleProperties } from '../../../models';
+import {
+  Component,
+  ContentComponentSchema,
+  StyleProperties,
+} from '../../../models';
 import { LayoutStyles } from '../layout.model';
 
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
@@ -23,8 +27,8 @@ export type LayoutPluginImplementation = Record<
 >;
 
 export interface LayoutPluginConfig {
-  name?: string;
-  properties?: Record<string, unknown>;
+  name: string;
+  schema?: ContentComponentSchema;
 }
 
 export type LayoutPluginStyleProperties = Record<string, string | number>;
