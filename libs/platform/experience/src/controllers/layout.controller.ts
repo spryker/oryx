@@ -18,7 +18,6 @@ import {
   LayoutPluginType,
   LayoutService,
   LayoutStylesOptions,
-  LayoutTypes,
   ResponsiveLayoutInfo,
 } from '../services';
 
@@ -63,10 +62,8 @@ export class LayoutController {
         (rule) => !rule.query?.breakpoint && rule.layout
       )?.layout;
       const properties: LayoutStylesOptions & LayoutProperties = {
-        ...(typeof rules === 'string' ? { type: rules as LayoutTypes } : rules),
-        ...(typeof bpRules === 'string'
-          ? { type: bpRules as LayoutTypes }
-          : bpRules),
+        ...(typeof rules === 'string' ? { type: rules } : rules),
+        ...(typeof bpRules === 'string' ? { type: bpRules } : bpRules),
       };
 
       if (properties.type) {

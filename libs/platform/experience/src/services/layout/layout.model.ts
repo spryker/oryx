@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-export type LayoutTypes = keyof Layouts | 'list';
+export type LayoutTypes = keyof Layouts | string;
 
 export interface LayoutStylesOptions extends LayoutsProperty {
   type?: LayoutTypes;
