@@ -33,13 +33,10 @@ export class ContentPageMetaResolver implements PageMetaResolver {
   );
 
   getScore(): Observable<unknown[]> {
-    console.log(2);
     return combineLatest([this.getMeta$]);
   }
 
   resolve(): Observable<ElementResolver> {
-    console.log(1);
-
     return this.getMeta$.pipe(
       map((defaultMeta) => {
         const meta = {
