@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { StyleProperties } from '../../models';
 import { ResponsiveLayoutInfo } from './layout.model';
 import {
   LayoutPluginImplementation,
@@ -16,6 +17,12 @@ export interface LayoutIncomingConfig {
   data: LayoutPluginParams;
 }
 
+export interface LayoutStyleConfig {
+  token: string;
+  type: LayoutPluginType;
+  data: StyleProperties;
+}
+
 export interface LayoutService {
   getStyles(sheets: ResponsiveLayoutInfo): Observable<string>;
   getImplementation(
@@ -23,7 +30,7 @@ export interface LayoutService {
   ): LayoutPluginImplementation | undefined;
   getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined;
   getStyleProperties?(
-    data: LayoutIncomingConfig
+    data: LayoutStyleConfig
   ): LayoutPluginStyleProperties | undefined;
 }
 

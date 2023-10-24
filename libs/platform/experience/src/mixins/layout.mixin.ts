@@ -58,7 +58,9 @@ export declare class LayoutMixinInterface {
   protected renderLayout: (props: LayoutMixinRender) => TemplateResult;
   protected getLayoutRender(
     place: keyof LayoutPluginRender,
-    data: LayoutPluginParams
+    data: Omit<LayoutPluginParams, 'options'> & {
+      options?: CompositionProperties;
+    }
   ): TemplateResult;
 }
 
@@ -140,12 +142,14 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected getLayoutRender(
       place: keyof LayoutPluginRender,
-      data: LayoutPluginParams
+      data: Omit<LayoutPluginParams, 'options'> & {
+        options?: CompositionProperties;
+      }
     ): TemplateResult {
       return this.layoutController.getRender({
         place,
         data,
-        props: ['layout', ...this.attributeFilter.map(this.getPropertyName)],
+        attrs: ['layout', ...this.attributeFilter.map(this.getPropertyName)],
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         screen: this.screen()!,
       });

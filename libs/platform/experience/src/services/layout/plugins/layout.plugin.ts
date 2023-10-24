@@ -1,10 +1,7 @@
+import { LayoutProperties } from '@spryker-oryx/experience/layout';
 import { LitElement, TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
-import {
-  Component,
-  CompositionProperties,
-  StyleProperties,
-} from '../../../models';
+import { Component, StyleProperties } from '../../../models';
 import { LayoutStyles } from '../layout.model';
 
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
@@ -33,7 +30,7 @@ export interface LayoutPluginConfig {
 export type LayoutPluginStyleProperties = Record<string, string | number>;
 
 export interface LayoutPluginParams {
-  options?: CompositionProperties;
+  options?: LayoutProperties;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   element?: LitElement & Record<string, any>;
   experience?: Component;

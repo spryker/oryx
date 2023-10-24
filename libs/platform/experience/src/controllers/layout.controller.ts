@@ -6,7 +6,11 @@ import {
 import { Size, sizes } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { Observable, map } from 'rxjs';
-import { ContentComponentProperties, StyleRuleSet } from '../models';
+import {
+  CompositionProperties,
+  ContentComponentProperties,
+  StyleRuleSet,
+} from '../models';
 import {
   LayoutBuilder,
   LayoutPluginParams,
@@ -14,13 +18,16 @@ import {
   LayoutPluginType,
   LayoutService,
   LayoutStylesOptions,
+  LayoutTypes,
   ResponsiveLayoutInfo,
 } from '../services';
 
-interface LayoutRenderParams {
+export interface LayoutRenderParams {
   place: keyof LayoutPluginRender;
-  props: string[];
-  data: LayoutPluginParams;
+  attrs: string[];
+  data: Omit<LayoutPluginParams, 'options'> & {
+    options?: CompositionProperties;
+  };
   screen: Size;
 }
 
@@ -46,52 +53,54 @@ export class LayoutController {
   }
 
   getRender(config: LayoutRenderParams): TemplateResult {
-    const { screen, props, place, data } = config;
+    const { screen, attrs, place, data } = config;
 
-    if (screen) {
-      for (const prop of Object.values(this.host[screen] ?? {})) {
-        if (!props.includes(prop)) props.push(prop);
+    const getLayoutRules = (): LayoutProperties => {
+      const bpRules = data.options?.rules?.find(
+        (rule) => rule.query?.breakpoint === screen && rule.layout
+      )?.layout;
+      const rules = data.options?.rules?.find(
+        (rule) => !rule.query?.breakpoint && rule.layout
+      )?.layout;
+      const properties: LayoutStylesOptions & LayoutProperties = {
+        ...(typeof rules === 'string' ? { type: rules as LayoutTypes } : rules),
+        ...(typeof bpRules === 'string'
+          ? { type: bpRules as LayoutTypes }
+          : bpRules),
+      };
+
+      if (properties.type) {
+        const layout = properties.type;
+        delete properties.type;
+        properties.layout = layout;
       }
-    }
 
-    const getHostProp = (prop: string): string | void => {
-      const attr = data.element?.[screen]?.[prop] ?? data.element?.[prop];
-
-      if (attr) return prop === 'layout' ? attr : prop;
+      return properties;
     };
 
-    const getLayoutRule = (
-      param: string,
-      options?: string | LayoutStylesOptions
-    ): string | void => {
-      const prop = param as keyof LayoutStylesOptions & 'layout';
+    const hostProperties = attrs.reduce((acc, prop) => {
+      const host = this.host;
+      const value = host[prop as keyof typeof host];
 
-      if (typeof options === 'string' && prop === 'layout') return options;
-
-      if (typeof options === 'object') {
-        if (prop === 'layout') return options.type;
-
-        if (options[prop]) return prop;
+      if (prop === 'layout' && value) {
+        return { ...acc, layout: value };
       }
+
+      if (host.hasAttribute(prop)) {
+        return { ...acc, [prop]: host.getAttribute(prop) ?? true };
+      }
+
+      return acc;
+    }, {});
+
+    const layoutOptions = {
+      ...getLayoutRules(),
+      ...hostProperties,
+      ...this.host[screen],
     };
 
-    const getRuleProp = (prop: string) => {
-      const rules =
-        data.options?.rules?.find(
-          (rule) => rule.query?.breakpoint === screen && rule.layout
-        )?.layout ??
-        data.options?.rules?.find(
-          (rule) => !rule.query?.breakpoint && rule.layout
-        )?.layout;
-
-      return getLayoutRule(prop, rules);
-    };
-
-    return props.reduce((acc, prop) => {
-      const token = getHostProp(prop) ?? getRuleProp(prop);
-
-      if (!token) return acc;
-
+    return Object.entries(layoutOptions).reduce((acc, [prop, value]) => {
+      const token = prop === 'layout' ? (value as string) : prop;
       const type =
         prop === 'layout' ? LayoutPluginType.Layout : LayoutPluginType.Property;
 
@@ -99,7 +108,10 @@ export class LayoutController {
       ${this.layoutService.getRender({
         type,
         token,
-        data,
+        data: {
+          ...data,
+          options: layoutOptions,
+        },
       })?.[place]}`;
     }, html``);
   }
