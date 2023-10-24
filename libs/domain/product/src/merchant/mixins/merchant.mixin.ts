@@ -1,12 +1,12 @@
-import { ContextController } from '@spryker-oryx/core';
+import { ContextController, ContextService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
-  computed,
   Signal,
+  Type,
+  computed,
   signal,
   signalAware,
   signalProperty,
-  Type,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
 import { MerchantContext } from '../merchant.context';
@@ -22,6 +22,8 @@ export declare class MerchantMixinInterface
   protected $merchant: Signal<Merchant | null>;
 }
 
+const MixinInternals = Symbol('MerchantMixinInternals');
+
 export const MerchantMixin = <
   T extends Type<LitElement & MerchantComponentProperties>
 >(
@@ -31,18 +33,19 @@ export const MerchantMixin = <
   class MerchantMixinClass extends superClass {
     @signalProperty({ reflect: true }) merchant?: string;
 
-    protected merchantService = resolve(MerchantService, null);
-
-    protected contextController = new ContextController(this);
+    protected [MixinInternals] = {
+      merchantService: resolve(MerchantService, null),
+      contextService: resolve(ContextService, null),
+    };
 
     protected $merchantContext = signal(
-      this.contextController.get<string>(MerchantContext.ID)
+      this[MixinInternals].contextService?.get(this, MerchantContext.ID)
     );
 
     protected $merchant = computed(() => {
       const id = this.merchant ?? this.$merchantContext();
       return id
-        ? this.merchantService.get({
+        ? this[MixinInternals].merchantService?.get({
             id,
           })
         : undefined;
