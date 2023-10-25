@@ -94,7 +94,7 @@ const Template: Story<DemoProps & StyleRuleSet> = (
     rules: [props],
   };
   return html`
-    <oryx-layout layout=${props.mainLayout} class="outer">
+    <oryx-layout .layout=${props.mainLayout} class="outer">
       ${Array.from({ length: 12 }, (_, i) => {
         const item = (id: number, postfix?: string) =>
           html`<div id="item-${id}">${id}${postfix}</div>`;
@@ -102,7 +102,7 @@ const Template: Story<DemoProps & StyleRuleSet> = (
           return html`
             <oryx-layout
               uid="item-${i + 1}"
-              layout=${props.layout}
+              .layout=${props.layout}
               ?layout-sticky=${props.sticky}
               ?layout-bleed=${props.bleed}
               .options=${innerOptions}
