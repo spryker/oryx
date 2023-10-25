@@ -85,7 +85,7 @@ export class LayoutController {
 
       if (host.hasAttribute(attr)) {
         const prop = attr.replace('layout-', '');
-        return { ...acc, [prop]: host.getAttribute(attr) ?? true };
+        return { ...acc, [prop]: host.getAttribute(attr) || true };
       }
 
       return acc;
