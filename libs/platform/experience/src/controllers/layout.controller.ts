@@ -53,6 +53,7 @@ export class LayoutController {
 
   getRender(config: LayoutRenderParams): TemplateResult {
     const { screen, attrs, place, data } = config;
+    const host = this.host;
 
     const getLayoutRules = (): LayoutProperties => {
       const bpRules = data.options?.rules?.find(
@@ -75,16 +76,16 @@ export class LayoutController {
       return properties;
     };
 
-    const hostProperties = attrs.reduce((acc, prop) => {
-      const host = this.host;
-      const value = host[prop as keyof typeof host];
+    const hostProperties = attrs.reduce((acc, attr) => {
+      const value = host[attr as keyof typeof host];
 
-      if (prop === 'layout' && value) {
+      if (attr === 'layout' && value) {
         return { ...acc, layout: value };
       }
 
-      if (host.hasAttribute(prop)) {
-        return { ...acc, [prop]: host.getAttribute(prop) ?? true };
+      if (host.hasAttribute(attr)) {
+        const prop = attr.replace('layout-', '');
+        return { ...acc, [prop]: host.getAttribute(attr) ?? true };
       }
 
       return acc;
@@ -93,7 +94,11 @@ export class LayoutController {
     const layoutOptions = {
       ...getLayoutRules(),
       ...hostProperties,
-      ...this.host[screen],
+      ...((host[
+        `layout${screen.charAt(0).toUpperCase()}${screen.slice(
+          1
+        )}` as keyof typeof host
+      ] as Record<string, unknown>) ?? {}),
     };
 
     return Object.entries(layoutOptions).reduce((acc, [prop, value]) => {
