@@ -1,5 +1,5 @@
 import {
-  checkProductCardsFilterring,
+  checkProductCardsFiltering,
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { SearchPage } from '../support/page-objects/search.page';
@@ -9,7 +9,7 @@ let searchPage;
 
 describe('Search suite', () => {
   describe('Products filtering', () => {
-    const query = 'TomTom';
+    const query = 'Canon';
 
     beforeEach(() => {
       searchPage = new SearchPage({ q: query });
@@ -17,20 +17,27 @@ describe('Search suite', () => {
     });
 
     it('should update products and facets when filters are applied/cleared', () => {
-      // apply 1st filter
-      searchPage.getFacets().setTouchscreen('Yes');
+      searchPage.getFacets().setRating('4');
       searchPage.waitForSearchRequest();
-      checkProductCardsFilterring(searchPage, 4, 3, query);
+      checkProductCardsFiltering(searchPage, 2, 1, query);
+
+      // we don't expect search request here because previous query is cached
+      searchPage.getFacets().resetRating();
+
+      // apply 1st filter
+      searchPage.getFacets().setLabel('New');
+      searchPage.waitForSearchRequest();
+      checkProductCardsFiltering(searchPage, 3, 2, query);
 
       // apply 2nd filter
       searchPage.getFacets().setColor('Black');
       searchPage.waitForSearchRequest();
-      checkProductCardsFilterring(searchPage, 3, 1, query);
+      checkProductCardsFiltering(searchPage, 3, 1, query);
 
       // clear 2nd filter
       // we don't expect search request here because previous query is cached
       searchPage.getFacets().resetColor();
-      checkProductCardsFilterring(searchPage, 4, 3, query);
+      checkProductCardsFiltering(searchPage, 3, 2, query);
     });
   });
 

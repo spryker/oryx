@@ -6,4 +6,7 @@ export const siteLocaleSelectorSchema: ContentComponentSchema<SiteLocaleSelector
     name: 'Locale selector',
     group: 'Site',
     icon: 'language',
+    options: {
+      enableFlag: { type: 'boolean' },
+    },
   };

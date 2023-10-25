@@ -97,6 +97,13 @@ export class DefaultCartService implements CartService {
     },
   });
 
+  protected updateCartCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: UpdateCartQualifier) => {
+      return this.adapter.update(qualifier);
+    },
+  });
+
   protected updateAfterModification$ = createEffect<Cart>([
     CartModificationSuccess,
     ({ event }) => {
@@ -241,6 +248,10 @@ export class DefaultCartService implements CartService {
 
   updateEntry(qualifier: UpdateCartEntryQualifier): Observable<unknown> {
     return this.executeWithOptionalCart(qualifier, this.updateEntryCommand$);
+  }
+
+  updateCart(qualifier: UpdateCartQualifier): Observable<unknown> {
+    return this.executeWithOptionalCart(qualifier, this.updateCartCommand$);
   }
 
   isBusy({ groupKey }: CartEntryQualifier = {}): Observable<boolean> {

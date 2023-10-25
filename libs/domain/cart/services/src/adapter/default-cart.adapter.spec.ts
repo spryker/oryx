@@ -9,7 +9,12 @@ import { mockGetCartsResponse } from '@spryker-oryx/cart/mocks';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { CurrencyService, Store, StoreService } from '@spryker-oryx/site';
+import {
+  CurrencyService,
+  PriceModeService,
+  Store,
+  StoreService,
+} from '@spryker-oryx/site';
 import { Observable, of } from 'rxjs';
 import { DefaultCartAdapter } from './default-cart.adapter';
 
@@ -44,6 +49,10 @@ class MockStoreService implements Partial<StoreService> {
 
 class MockCurrencyService implements Partial<CurrencyService> {
   get = vi.fn<[], Observable<string>>().mockReturnValue(of('EUR'));
+}
+
+class MockPriceModeService implements Partial<PriceModeService> {
+  get = vi.fn<[], Observable<string>>().mockReturnValue(of('GROSS_MODE'));
 }
 
 describe('DefaultCartAdapter', () => {
@@ -88,6 +97,10 @@ describe('DefaultCartAdapter', () => {
         {
           provide: CurrencyService,
           useClass: MockCurrencyService,
+        },
+        {
+          provide: PriceModeService,
+          useClass: MockPriceModeService,
         },
       ],
     });

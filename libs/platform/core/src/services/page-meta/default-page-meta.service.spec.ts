@@ -97,6 +97,7 @@ describe('DefaultPageMetaService', () => {
       const preloadLink = document.head.querySelector('link[rel="preload"]');
       expect(originalLink?.getAttribute('href')).toBe('href-stylesheet');
       expect(preloadLink?.getAttribute('href')).toBe('href-stylesheet');
+      expect(preloadLink?.getAttribute('as')).toBe('style');
     });
 
     it('should not add preload link if disablePreload is true', () => {

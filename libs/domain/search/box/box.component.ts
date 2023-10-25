@@ -44,7 +44,7 @@ import { SearchBoxOptions, SearchBoxProperties } from './box.model';
     max: 5,
   },
 })
-@hydrate({ event: ['mouseover', 'focusin'] })
+@hydrate()
 @signalAware()
 export class SearchBoxComponent
   extends ContentMixin<SearchBoxOptions>(LitElement)
@@ -55,6 +55,7 @@ export class SearchBoxComponent
   @signalProperty() query = '';
 
   @query('oryx-typeahead') protected typeahead!: TypeaheadComponent;
+  @query('input') protected input!: HTMLInputElement;
 
   protected suggestionRendererService = resolve(SuggestionRendererService);
   protected routerService = resolve(RouterService);
@@ -85,6 +86,14 @@ export class SearchBoxComponent
     return withSuggestion ? this.$raw() : null;
   });
 
+  connectedCallback(): void {
+    super.connectedCallback();
+
+    if (this.input?.value) {
+      this.query = this.input?.value;
+    }
+  }
+
   protected override render(): TemplateResult {
     return html`
       <oryx-typeahead
@@ -97,6 +106,7 @@ export class SearchBoxComponent
         <input
           .value=${this.query ?? ''}
           placeholder=${ifDefined(this.i18n(['search', 'search.placeholder']))}
+          hydration-events="input,focusin,focusout"
         />
         ${this.renderSuggestion()}
         <oryx-site-navigation-button

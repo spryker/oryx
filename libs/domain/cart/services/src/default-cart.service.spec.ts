@@ -90,7 +90,7 @@ describe('DefaultCartService', () => {
     });
 
     service = testInjector.inject(CartService);
-    adapter = testInjector.inject(CartAdapter) as MockCartAdapter;
+    adapter = testInjector.inject(CartAdapter) as unknown as MockCartAdapter;
   });
 
   afterEach(() => {

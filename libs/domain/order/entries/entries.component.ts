@@ -2,7 +2,7 @@ import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { OrderMixin } from '@spryker-oryx/order';
 import { ButtonType } from '@spryker-oryx/ui/button';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
-import { computed, hydrate } from '@spryker-oryx/utilities';
+import { computed, featureVersion, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -35,19 +35,11 @@ export class OrderEntriesComponent
   protected override render(): TemplateResult | void {
     if (!this.$order()) return;
 
-    return html`
-      ${this.renderHeading()} ${this.renderEntries()} ${this.renderButton()}
-    `;
-  }
-
-  protected renderHeading(): TemplateResult {
-    return html`<oryx-heading .as=${HeadingTag.H6}>
-      <h3>
-        ${this.i18n('order.<count>-items', {
-          count: this.$order().items.length,
-        })}
-      </h3>
-    </oryx-heading>`;
+    return html`${[
+      this.renderHeading(),
+      this.renderEntries(),
+      this.renderButton(),
+    ]} `;
   }
 
   protected renderEntries(): TemplateResult {
@@ -67,6 +59,21 @@ export class OrderEntriesComponent
           readonly
         ></oryx-cart-entry>`
     )}`;
+  }
+
+  /**
+   * @deprecated use `oryx-order-heading` component instead
+   */
+  protected renderHeading(): TemplateResult {
+    if (featureVersion >= '1.2') return html``;
+
+    return html`<oryx-heading .as=${HeadingTag.H6}>
+      <h3>
+        ${this.i18n('order.<count>-items', {
+          count: this.$order().items.length,
+        })}
+      </h3>
+    </oryx-heading>`;
   }
 
   protected renderButton(): TemplateResult | void {

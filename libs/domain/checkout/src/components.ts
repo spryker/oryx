@@ -2,6 +2,7 @@ export * from '../account/account.def';
 export * from '../address/address.def';
 export * from '../billing-address/billing-address.def';
 export * from '../header/header.def';
+export * from '../heading/heading.def';
 export * from '../link/link.def';
 export * from '../manage-address/manage-address.def';
 export * from '../orchestrator/orchestrator.def';

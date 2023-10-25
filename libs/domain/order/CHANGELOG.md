@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2023-09-22)
+
+
+### Bug Fixes
+
+* clear guest order session storage on login ([#731](https://github.com/spryker/oryx/issues/731)) ([a0bdb81](https://github.com/spryker/oryx/commit/a0bdb810ec81edab111caa21aeac6e14e52ab07d))
+
+
+
+
+
 ## 1.0.1 (2023-08-15)
 
 

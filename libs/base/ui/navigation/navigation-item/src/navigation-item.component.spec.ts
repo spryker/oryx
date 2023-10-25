@@ -1,14 +1,23 @@
 import { getShadowElementBySelector } from '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
 import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
+import { navigationComponent } from '../../navigation/src/component';
+import { NavigationComponent } from '../../navigation/src/navigation.component';
 import { navigationItemComponent } from './component';
 import { NavigationItemComponent } from './navigation-item.component';
 
 describe('NavigationItemComponent', () => {
   let element: NavigationItemComponent;
+  let parentElement: NavigationComponent;
+
+  const update = async (): Promise<void> => {
+    element.requestUpdate();
+    await element.updateComplete;
+  };
 
   beforeAll(async () => {
     await useComponent(navigationItemComponent);
+    await useComponent(navigationComponent);
   });
 
   it('is defined', () => {
