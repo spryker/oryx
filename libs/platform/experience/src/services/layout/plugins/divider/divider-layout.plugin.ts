@@ -9,6 +9,8 @@ export class DividerLayoutPlugin implements LayoutPlugin {
   }
 
   getConfig(): LayoutPluginConfig {
-    return { name: 'divider' };
+    return {
+      schema: () => import('./divider-layout.schema').then((m) => m.schema),
+    };
   }
 }

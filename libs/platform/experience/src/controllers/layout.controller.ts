@@ -27,7 +27,7 @@ export interface LayoutRenderParams {
   data: Omit<LayoutPluginParams, 'options'> & {
     options?: CompositionProperties;
   };
-  screen: Size;
+  screen?: Size;
 }
 
 export class LayoutController {
@@ -38,10 +38,7 @@ export class LayoutController {
     protected host: LitElement & LayoutAttributes & ContentComponentProperties
   ) {}
 
-  getStyles(
-    properties: (keyof LayoutProperties)[],
-    rules: StyleRuleSet[]
-  ): Observable<string> {
+  getStyles(properties: string[], rules: StyleRuleSet[]): Observable<string> {
     const props = this.normalizeProperties(properties, rules);
     const infos = this.getLayoutInfos(props, rules);
     const componentStyles = this.collectStyles(props, rules, this.host.uid);
@@ -76,7 +73,7 @@ export class LayoutController {
       return properties;
     };
 
-    const hostProperties = attrs.reduce((acc, attr) => {
+    const hostProperties = ['layout', ...attrs].reduce((acc, attr) => {
       const value = host[attr as keyof typeof host];
 
       if (attr === 'layout' && value) {
@@ -94,14 +91,18 @@ export class LayoutController {
     const layoutOptions = {
       ...getLayoutRules(),
       ...hostProperties,
-      ...((host[
-        `layout${screen.charAt(0).toUpperCase()}${screen.slice(
-          1
-        )}` as keyof typeof host
-      ] as Record<string, unknown>) ?? {}),
+      ...(screen
+        ? (host[
+            `layout${screen.charAt(0).toUpperCase()}${screen.slice(
+              1
+            )}` as keyof typeof host
+          ] as Record<string, unknown>)
+        : {}),
     };
 
     return Object.entries(layoutOptions).reduce((acc, [prop, value]) => {
+      if (!value) return acc;
+
       const token = prop === 'layout' ? (value as string) : prop;
       const type =
         prop === 'layout' ? LayoutPluginType.Layout : LayoutPluginType.Property;
@@ -149,16 +150,16 @@ export class LayoutController {
   }
 
   protected normalizeProperties(
-    properties: (keyof LayoutProperties)[],
+    properties: string[],
     rules: StyleRuleSet[]
   ): (keyof LayoutProperties)[] {
-    const props = [...properties];
-
+    const props = ['layout', ...properties.map(this.getPropertyName)];
     const ruleProps: StyleRuleSet[] = [...(rules ?? [])];
 
     for (const ruleProp of ruleProps) {
       if (typeof ruleProp.layout === 'string' && !props.includes('layout')) {
         props.push('layout');
+
         continue;
       }
 
@@ -166,15 +167,24 @@ export class LayoutController {
         for (const prop of Object.keys(ruleProp.layout)) {
           if (prop === 'type' && !props.includes('layout')) {
             props.push('layout');
+
             continue;
           }
 
-          props.push(prop as keyof LayoutProperties);
+          if (prop === 'type') continue;
+
+          if (!props.includes(prop)) props.push(prop);
         }
       }
     }
 
-    return props;
+    return props as (keyof LayoutProperties)[];
+  }
+
+  protected getPropertyName(attrName: string): keyof LayoutProperties {
+    return attrName === 'layout'
+      ? attrName
+      : (attrName.replace('layout-', '') as keyof LayoutProperties);
   }
 
   protected getLayoutInfos(

@@ -9,6 +9,8 @@ export class GridLayoutPlugin implements LayoutPlugin {
   }
 
   getConfig(): LayoutPluginConfig {
-    return { name: 'grid' };
+    return {
+      schema: () => import('./grid-layout.schema').then((m) => m.schema),
+    };
   }
 }

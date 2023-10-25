@@ -15,6 +15,7 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
+import { of } from 'rxjs';
 import { LayoutController } from '../controllers/layout.controller';
 import {
   Component,
@@ -47,10 +48,15 @@ export declare class LayoutMixinInterface {
   overlap?: boolean;
   divider?: boolean;
   vertical?: boolean;
+  // @deprecated since 1.2 will be removed, use layoutXs instead
   xs?: LayoutProperties;
+  // @deprecated since 1.2 will be removed, use layoutSm instead
   sm?: LayoutProperties;
+  // @deprecated since 1.2 will be removed, use layoutMd instead
   md?: LayoutProperties;
+  // @deprecated since 1.2 will be removed, use layoutLg instead
   lg?: LayoutProperties;
+  // @deprecated since 1.2 will be removed, use layoutXl instead
   xl?: LayoutProperties;
 
   layout?: CompositionLayout | LayoutTypes;
@@ -108,7 +114,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected layoutController = new LayoutController(this);
     protected layoutBuilder = resolve(LayoutBuilder);
-    protected screenService = resolve(ScreenService);
+    protected screenService = resolve(ScreenService, null);
 
     protected observer = new MutationObserver((mutationRecords) => {
       mutationRecords.map((record) => {
@@ -147,22 +153,16 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       });
     }
 
-    protected getPropertyName(attrName: string): keyof LayoutProperties {
-      return attrName === 'layout'
-        ? attrName
-        : (attrName.replace('layout-', '') as keyof LayoutProperties);
-    }
+    protected layoutStyles = computed(() =>
+      this.layoutController.getStyles(
+        this.attributeFilter,
+        this.$options().rules
+      )
+    );
 
-    protected layoutStyles = computed(() => {
-      const props = [
-        'layout',
-        ...this.attributeFilter.map(this.getPropertyName),
-      ] as (keyof LayoutProperties)[];
-
-      return this.layoutController.getStyles(props, this.$options().rules);
-    });
-
-    protected screen = computed(() => this.screenService.getScreenSize());
+    protected screen = computed(
+      () => this.screenService?.getScreenSize() ?? of(undefined)
+    );
 
     protected getLayoutRender(
       place: keyof LayoutPluginRender,
@@ -173,9 +173,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       return this.layoutController.getRender({
         place,
         data,
-        attrs: ['layout', ...this.attributeFilter],
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        screen: this.screen()!,
+        attrs: this.attributeFilter,
+        screen: this.screen(),
       });
     }
 

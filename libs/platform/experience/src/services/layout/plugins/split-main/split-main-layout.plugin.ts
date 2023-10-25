@@ -11,6 +11,8 @@ export class SplitMainLayoutPlugin implements LayoutPlugin {
   }
 
   getConfig(): LayoutPluginConfig {
-    return { name: 'split-main' };
+    return {
+      schema: () => import('./split-main-layout.schema').then((m) => m.schema),
+    };
   }
 }

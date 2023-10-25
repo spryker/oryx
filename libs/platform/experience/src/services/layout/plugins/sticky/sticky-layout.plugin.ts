@@ -14,7 +14,9 @@ export class StickyLayoutPlugin implements LayoutPlugin {
   }
 
   getConfig(): LayoutPluginConfig {
-    return { name: 'sticky' };
+    return {
+      schema: () => import('./sticky-layout.schema').then((m) => m.schema),
+    };
   }
 
   getStyleProperties(data: StyleProperties): LayoutPluginStyleProperties {

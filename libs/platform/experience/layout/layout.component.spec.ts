@@ -1,6 +1,10 @@
 import { fixture, html } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { LayoutBuilder, LayoutService } from '@spryker-oryx/experience';
+import {
+  LayoutBuilder,
+  LayoutPluginType,
+  LayoutService,
+} from '@spryker-oryx/experience';
 import { useComponent } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
 import { LayoutComponent } from './layout.component';
@@ -8,6 +12,7 @@ import { layoutComponent } from './layout.def';
 
 const mockLayoutService = {
   getStyles: vi.fn(),
+  getRender: vi.fn(),
 };
 
 const mockLayoutBuilder = {
@@ -44,7 +49,11 @@ describe('LayoutComponent', () => {
     mockLayoutService.getStyles.mockReturnValue(of('stylesResult'));
     element = await fixture(html`<oryx-layout layout="grid"></oryx-layout>`);
     const style = element.renderRoot.querySelector('style');
-    expect(mockLayoutService.getStyles).toHaveBeenCalledWith({ grid: {} });
+    expect(mockLayoutService.getStyles).toHaveBeenCalledWith({
+      grid: {
+        type: LayoutPluginType.Layout,
+      },
+    });
     expect(style?.textContent).toContain('stylesResult');
   });
 });

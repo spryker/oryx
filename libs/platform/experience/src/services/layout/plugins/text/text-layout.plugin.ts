@@ -9,6 +9,8 @@ export class TextLayoutPlugin implements LayoutPlugin {
   }
 
   getConfig(): LayoutPluginConfig {
-    return { name: 'text' };
+    return {
+      schema: () => import('./text-layout.schema').then((m) => m.schema),
+    };
   }
 }

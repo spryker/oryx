@@ -11,6 +11,8 @@ export class SplitAsideLayoutPlugin implements LayoutPlugin {
   }
 
   getConfig(): LayoutPluginConfig {
-    return { name: 'split-aside' };
+    return {
+      schema: () => import('./split-aside-layout.schema').then((m) => m.schema),
+    };
   }
 }

@@ -29,7 +29,7 @@ export interface LayoutService {
     config: LayoutIncomingConfig
   ): LayoutPluginImplementation | undefined;
   getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined;
-  getStyleProperties?(
+  getStyleProperties(
     data: LayoutStyleConfig
   ): LayoutPluginStyleProperties | undefined;
 }

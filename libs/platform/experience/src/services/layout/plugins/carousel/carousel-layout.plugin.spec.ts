@@ -1,0 +1,32 @@
+import { lastValueFrom } from 'rxjs';
+import { CarouselLayoutPlugin } from './carousel-layout.plugin';
+
+describe('CarouselLayoutPlugin', () => {
+  let plugin: CarouselLayoutPlugin;
+
+  beforeEach(() => {
+    plugin = new CarouselLayoutPlugin();
+  });
+
+  describe('getStyles', () => {
+    it('should return an Observable of LayoutStyles', async () => {
+      const styles = await import('./carousel-layout.styles').then(
+        (module) => module.styles
+      );
+      const result = await lastValueFrom(plugin.getStyles());
+
+      expect(result).toEqual(styles);
+    });
+  });
+
+  describe('getConfig', () => {
+    it('should return proper schema in the object', async () => {
+      const schema = await import('./carousel-layout.schema').then(
+        (module) => module.schema
+      );
+      const result = await (plugin.getConfig?.().schema as () => unknown)();
+
+      expect(result).toEqual(schema);
+    });
+  });
+});

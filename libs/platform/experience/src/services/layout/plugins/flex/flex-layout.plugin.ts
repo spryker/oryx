@@ -9,6 +9,8 @@ export class FlexLayoutPlugin implements LayoutPlugin {
   }
 
   getConfig(): LayoutPluginConfig {
-    return { name: 'flex' };
+    return {
+      schema: () => import('./flex-layout.schema').then((m) => m.schema),
+    };
   }
 }
