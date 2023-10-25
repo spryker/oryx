@@ -10,6 +10,7 @@ import {
   CartQualifier,
   CartsNormalizer,
   UpdateCartEntryQualifier,
+  UpdateCartQualifier,
 } from '@spryker-oryx/cart';
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';

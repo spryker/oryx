@@ -16,6 +16,7 @@ import {
   CartService,
   CartsUpdated,
   UpdateCartEntryQualifier,
+  UpdateCartQualifier,
 } from '@spryker-oryx/cart';
 import {
   Command,
