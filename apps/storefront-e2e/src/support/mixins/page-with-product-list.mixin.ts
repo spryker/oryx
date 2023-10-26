@@ -4,6 +4,7 @@ import { Constructor } from '../types/utils.types';
 export interface IPageWithProductList {
   getProductCards(): Cypress.Chainable<JQuery<HTMLElement>>;
   getProductHeadings(): Cypress.Chainable<JQuery<HTMLElement>>;
+  getProductPrices(): Cypress.Chainable<JQuery<HTMLElement>>;
 }
 
 export function WithProductList<TPage extends Constructor<E2EPage>>(
@@ -37,5 +38,9 @@ export function WithProductList<TPage extends Constructor<E2EPage>>(
 
     getProductCards = () => cy.get('oryx-product-card');
     getProductHeadings = () => this.getProductCards().find('oryx-heading');
+    getProductPrices = () =>
+      this.getProductCards()
+        .find('oryx-product-price')
+        .find('oryx-site-price[part="sales"]');
   };
 }

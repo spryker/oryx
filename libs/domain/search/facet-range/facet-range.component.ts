@@ -1,4 +1,4 @@
-import { RangeFacet } from '@spryker-oryx/product';
+import { RangeFacet, RangeFacetValue } from '@spryker-oryx/product';
 import { FacetController } from '@spryker-oryx/search/facet';
 import { MultiRangeChangeEvent } from '@spryker-oryx/ui/multi-range';
 import {
@@ -68,7 +68,11 @@ export class SearchRangeFacetComponent
     const { minValue: min, maxValue: max } = e.detail;
     const selected = { min, max };
 
-    this.controller.dispatchSelectEvent({ selected });
+    this.syncInputsValues(min, max);
+
+    if (this.hasChangedValue(selected)) {
+      this.controller.dispatchSelectEvent({ selected });
+    }
   };
 
   protected onBlur(e: InputEvent): void {
@@ -80,6 +84,13 @@ export class SearchRangeFacetComponent
     if (e.key === 'Enter') {
       (e.target as HTMLInputElement).blur();
     }
+  }
+
+  protected hasChangedValue({ min, max }: RangeFacetValue): boolean {
+    const {
+      values: { selected },
+    } = this.$facet();
+    return selected?.min !== min || selected?.max !== max;
   }
 
   protected syncInputsValues(min: number, max: number): void {

@@ -1,5 +1,6 @@
 import {
-  checkProductCardsFilterring,
+  checkProductCardsFilteringByName,
+  checkProductCardsFilteringByPrice,
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { CategoryPage } from '../support/page-objects/category.page';
@@ -19,17 +20,54 @@ describe('Category suite', () => {
       // apply 1st filter
       categoryPage.getFacets().setColor('Silver');
       categoryPage.waitForSearchRequest();
-      checkProductCardsFilterring(categoryPage, 3, 2, query);
+      checkProductCardsFilteringByName(categoryPage, 3, 2, query);
 
       // apply 2nd filter
       categoryPage.getFacets().setBrand('DELL');
       categoryPage.waitForSearchRequest();
-      checkProductCardsFilterring(categoryPage, 3, 1, query);
+      checkProductCardsFilteringByName(categoryPage, 3, 1, query);
 
       // clear 2nd filter
       // we don't expect search request here because previous query is cached
       categoryPage.getFacets().resetBrand();
-      checkProductCardsFilterring(categoryPage, 3, 2, query);
+      checkProductCardsFilteringByName(categoryPage, 3, 2, query);
+    });
+
+    it('should apply price filterring', () => {
+      // set brand to limit a number of products displayed
+      // and avoid issues with concrete products displaying
+      categoryPage = new CategoryPage({ id: '2' });
+      categoryPage.visit();
+      categoryPage.getFacets().setBrand('Kodak');
+
+      const minPrice = 200;
+      const maxPrice = 400;
+
+      cy.log('set minimum price');
+      categoryPage.getFacets().setMinPrice(minPrice);
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(categoryPage, minPrice);
+
+      cy.log('reset prices, set max price');
+      categoryPage.getFacets().resetPrices();
+      categoryPage.waitForSearchRequest();
+      categoryPage.getFacets().setMaxPrice(maxPrice);
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(categoryPage, 0, maxPrice);
+
+      cy.log('reset prices, change min price range');
+      categoryPage.getFacets().resetPrices();
+      categoryPage.waitForSearchRequest();
+      categoryPage.getFacets().setMinPriceRange(minPrice);
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(categoryPage, minPrice);
+
+      cy.log('reset prices, change max price range');
+      categoryPage.getFacets().resetPrices();
+      categoryPage.waitForSearchRequest();
+      categoryPage.getFacets().setMaxPriceRange(maxPrice);
+      categoryPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(categoryPage, 0, maxPrice);
     });
   });
 
