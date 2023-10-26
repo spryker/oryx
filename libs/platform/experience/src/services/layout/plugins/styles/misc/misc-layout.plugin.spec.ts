@@ -1,27 +1,15 @@
-import { lastValueFrom } from 'rxjs';
-import { StickyLayoutPlugin } from './sticky-layout.plugin';
+import { MiscLayoutPlugin } from './misc-layout.plugin';
 
-describe('StickyLayoutPlugin', () => {
-  let plugin: StickyLayoutPlugin;
+describe('MiscLayoutPlugin', () => {
+  let plugin: MiscLayoutPlugin;
 
   beforeEach(() => {
-    plugin = new StickyLayoutPlugin();
-  });
-
-  describe('getStyles', () => {
-    it('should return an Observable of LayoutStyles', async () => {
-      const styles = await import('./sticky.styles').then(
-        (module) => module.styles
-      );
-      const result = await lastValueFrom(plugin.getStyles());
-
-      expect(result).toEqual(styles);
-    });
+    plugin = new MiscLayoutPlugin();
   });
 
   describe('getConfig', () => {
     it('should return proper schema in the object', async () => {
-      const schema = await import('./sticky-layout.schema').then(
+      const schema = await import('./misc-layout.schema').then(
         (module) => module.schema
       );
       const result = await (plugin.getConfig?.().schema as () => unknown)();

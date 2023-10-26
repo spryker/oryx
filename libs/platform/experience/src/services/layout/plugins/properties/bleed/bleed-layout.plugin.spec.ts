@@ -31,7 +31,7 @@ describe('BleedLayoutPlugin', () => {
   });
 
   describe('getStyleProperties', () => {
-    it('should return a LayoutPluginStyleProperties object', () => {
+    it('should return a LayoutStyleProperties object', () => {
       const styleProperties = { 'padding-inline': '0' };
 
       expect(plugin.getStyleProperties()).toEqual(styleProperties);

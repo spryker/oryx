@@ -3,8 +3,8 @@ import { ResponsiveLayoutInfo } from './layout.model';
 import {
   LayoutPluginParams,
   LayoutPluginRender,
-  LayoutPluginStyleProperties,
   LayoutPluginType,
+  LayoutStyleParameters,
   LayoutStyleProperties,
 } from './plugins';
 
@@ -19,7 +19,7 @@ export interface LayoutIncomingConfig {
 export interface LayoutStyleConfig {
   token: string;
   type: LayoutPluginType;
-  data: LayoutStyleProperties;
+  data: LayoutStyleParameters;
 }
 
 export interface LayoutService {
@@ -27,7 +27,7 @@ export interface LayoutService {
   getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined;
   getStyleProperties(
     data: LayoutStyleConfig
-  ): LayoutPluginStyleProperties | undefined;
+  ): LayoutStyleProperties | undefined;
 }
 
 declare global {

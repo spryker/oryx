@@ -9,7 +9,7 @@ import {
 import { LayoutBuilder } from './layout.builder';
 import { LayoutStylesOptions, LayoutStylesProperties } from './layout.model';
 import { LayoutService } from './layout.service';
-import { LayoutPluginType } from './plugins';
+import { LayoutPluginType, LayoutStylePlugin } from './plugins';
 import { ScreenService } from './screen.service';
 
 /**
@@ -26,7 +26,8 @@ export const layoutKeys: (keyof LayoutStylesProperties)[] = [
 export class DefaultLayoutBuilder implements LayoutBuilder {
   constructor(
     protected screenService = inject(ScreenService),
-    protected layoutService = inject(LayoutService, null)
+    protected layoutService = inject(LayoutService, null),
+    protected stylesPlugins = inject(LayoutStylePlugin, [])
   ) {}
 
   collectStyles(components: Component[]): string {
@@ -121,6 +122,13 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     if (!data) return rules;
 
+    const layoutData =
+      typeof data.layout === 'string' ? { type: data.layout } : data.layout;
+    const pluginData = {
+      ...data,
+      layout: layoutData,
+    };
+
     const addUnit = (value: string | number | undefined, unit?: string) => {
       return `${value}${unit ?? 'px'}`;
     };
@@ -146,78 +154,21 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       });
     };
 
-    add({ '--oryx-column-count': data.columnCount }, { omitUnit: true });
+    for (const plugin of this.stylesPlugins) {
+      const styleProps = plugin.getStyleProperties?.(pluginData);
 
-    if (data.padding) {
-      add({ 'scroll-padding': this.findCssValue(data.padding, 'start') });
-      add({
-        'padding-block': this.findCssValues(data.padding, 'top', 'bottom'),
-      });
-      add({
-        'padding-inline': this.findCssValues(data.padding, 'start', 'end'),
-      });
+      if (styleProps && !Array.isArray(styleProps)) {
+        add(styleProps);
 
-      // nested padding is usedd to calculate the size of nested grid based elements
-      add({
-        '--inline-padding': this.findCssValues(data.padding, 'start', 'end'),
-      });
-    }
+        continue;
+      }
 
-    add({ rotate: data.rotate }, { unit: 'deg' });
-    add({ 'z-index': data.zIndex }, { omitUnit: true });
-
-    if (data.gridColumn && data.colSpan) {
-      add({ 'grid-column': `${data.gridColumn} / span ${data.colSpan}` });
-    } else {
-      if (data.gridColumn)
-        add({ 'grid-column': data.gridColumn }, { omitUnit: true });
-      if (data.colSpan) add({ 'grid-column': `span ${data.colSpan}` });
-    }
-    if (data.gridRow && data.rowSpan) {
-      add({ 'grid-row': `${data.gridRow} / span ${data.rowSpan}` });
-    } else {
-      if (data.gridRow) add({ 'grid-row': data.gridRow }, { omitUnit: true });
-      if (data.rowSpan) add({ 'grid-row': `span ${data.rowSpan}` });
-    }
-
-    const gaps = data.gap?.toString().split(' ');
-    add({ '--column-gap': gaps?.[1] ?? gaps?.[0] }, { emptyValue: true });
-    add({ '--row-gap': gaps?.[0] }, { emptyValue: true });
-
-    add({
-      '--align': data.align,
-      '--justify': data.justify,
-      'inset-block-start': data.top,
-      height: data.height,
-      width: data.width,
-      margin: data.margin,
-      border: data.border,
-      'border-radius': data.radius,
-      background: data.background,
-      '--oryx-fill': data.fill,
-      'aspect-ratio': data.ratio,
-      overflow: data?.overflow,
-    });
-
-    if (data.scale) {
-      add({ transform: `scale(${data?.scale})` });
-    }
-
-    if (data.typography) {
-      add({ 'font-size': `var(--oryx-typography-${data.typography}-size)` });
-      add({
-        'font-weight': `var(--oryx-typography-${data.typography}-weight)`,
-      });
-      add({ 'line-height': `var(--oryx-typography-${data.typography}-line)` });
-      if (!data.margin) {
-        add({ margin: `0` }, { emptyValue: true });
+      for (const [rules, options] of styleProps ?? []) {
+        if (styleProps) add(rules, options);
       }
     }
 
-    if (data.layout) {
-      const layoutData =
-        typeof data.layout === 'string' ? { type: data.layout } : data.layout;
-
+    if (layoutData) {
       for (const [key, value] of Object.entries(layoutData)) {
         const layoutProps = this.layoutService?.getStyleProperties?.({
           token: key === 'type' ? value : key,
@@ -225,59 +176,21 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
             key === 'type'
               ? LayoutPluginType.Layout
               : LayoutPluginType.Property,
-          data: {
-            ...data,
-            layout: layoutData,
-          },
+          data: pluginData,
         });
 
-        if (layoutProps) add(layoutProps);
+        if (layoutProps && !Array.isArray(layoutProps)) {
+          add(layoutProps);
+
+          continue;
+        }
+
+        for (const [rules, options] of layoutProps ?? []) {
+          if (layoutProps) add(rules, options);
+        }
       }
     }
 
     return rules;
-  }
-
-  protected findCssValues(
-    data: string,
-    startPos: 'start' | 'top',
-    endPos: 'end' | 'bottom'
-  ): string | undefined {
-    const start = this.findCssValue(data, startPos);
-    const end = this.findCssValue(data, endPos);
-    if (!start && !end) return;
-    if (start === end) return start;
-    return `${start ?? 'auto'} ${end ?? 'auto'}`;
-  }
-
-  /**
-   * Extracts a specified position value from a given string.
-   *
-   * @param data - A string representing CSS values, with each value separated by a space.
-   * @param pos - The position to extract the value for, one of: 'top', 'end', 'bottom', or 'start'.
-   * @returns The extracted value or `undefined` if the position is not found.
-   *
-   * @example
-   * const padding = '10px 5px 20px';
-   * findCssValue(padding, 'top'); // '10px'
-   * findCssValue(padding, 'end'); // '5px'
-   * findCssValue(padding, 'bottom'); // '20px'
-   * findCssValue(padding, 'start'); // '5px'
-   */
-  protected findCssValue(
-    data: string,
-    pos: 'top' | 'bottom' | 'start' | 'end'
-  ): string | undefined {
-    const positions = data.split(' ');
-    switch (pos) {
-      case 'top':
-        return positions[0];
-      case 'end':
-        return positions[1] ?? positions[0];
-      case 'bottom':
-        return positions[2] ?? positions[0];
-      case 'start':
-        return positions[3] ?? positions[1] ?? positions[0];
-    }
   }
 }

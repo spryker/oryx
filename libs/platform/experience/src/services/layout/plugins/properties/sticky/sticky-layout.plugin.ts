@@ -4,7 +4,7 @@ import { LayoutStyles } from '../../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
-  LayoutPluginStyleProperties,
+  LayoutStyleParameters,
   LayoutStyleProperties,
 } from '../../layout.plugin';
 
@@ -19,7 +19,7 @@ export class StickyLayoutPlugin implements LayoutPlugin {
     };
   }
 
-  getStyleProperties(data: LayoutStyleProperties): LayoutPluginStyleProperties {
+  getStyleProperties(data: LayoutStyleParameters): LayoutStyleProperties {
     return {
       'max-height': `calc(${data.height ?? '100vh'} - ${data.top ?? '0px'})`,
     };

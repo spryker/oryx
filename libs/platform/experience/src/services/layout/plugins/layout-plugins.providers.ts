@@ -1,4 +1,5 @@
 import { Provider } from '@spryker-oryx/di';
+import { LayoutStylePlugin } from './layout.plugin';
 import {
   BleedLayoutPlugin,
   BleedLayoutPluginToken,
@@ -7,6 +8,12 @@ import {
   StickyLayoutPlugin,
   StickyLayoutPluginToken,
 } from './properties';
+import {
+  MiscLayoutPlugin,
+  SpacingLayoutPlugin,
+  TransformLayoutPlugin,
+  TypographyLayoutPlugin,
+} from './styles';
 import {
   CarouselLayoutPlugin,
   CarouselLayoutPluginToken,
@@ -29,6 +36,22 @@ import {
 } from './types';
 
 export const layoutPluginsProviders: Provider[] = [
+  {
+    provide: LayoutStylePlugin,
+    useClass: TypographyLayoutPlugin,
+  },
+  {
+    provide: LayoutStylePlugin,
+    useClass: MiscLayoutPlugin,
+  },
+  {
+    provide: LayoutStylePlugin,
+    useClass: SpacingLayoutPlugin,
+  },
+  {
+    provide: LayoutStylePlugin,
+    useClass: TransformLayoutPlugin,
+  },
   {
     provide: GridLayoutPluginToken,
     useClass: GridLayoutPlugin,

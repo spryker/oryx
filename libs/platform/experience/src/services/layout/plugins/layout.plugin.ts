@@ -33,7 +33,17 @@ export interface LayoutPluginConfig {
   schema?: LazyLoadable<ContentComponentSchema>;
 }
 
-export type LayoutPluginStyleProperties = Record<string, string | number>;
+export interface LayoutStyleOptions {
+  unit?: string;
+  omitUnit?: boolean;
+  emptyValue?: boolean;
+}
+
+export type LayoutStyleList = Record<string, string | number | undefined>;
+
+export type LayoutStyleProperties =
+  | LayoutStyleList
+  | [LayoutStyleList, LayoutStyleOptions?][];
 
 export interface LayoutPluginParams {
   options?: LayoutProperties;
@@ -42,14 +52,14 @@ export interface LayoutPluginParams {
   experience?: Component;
 }
 
-export interface LayoutStyleProperties extends Omit<StyleProperties, 'layout'> {
+export interface LayoutStyleParameters extends Omit<StyleProperties, 'layout'> {
   layout?: LayoutStylesOptions;
 }
 
 export interface LayoutPlugin {
-  getStyles(): Observable<LayoutStyles>;
   getConfig(): LayoutPluginConfig;
-  getStyleProperties?(data: LayoutStyleProperties): LayoutPluginStyleProperties;
+  getStyles?(): Observable<LayoutStyles>;
+  getStyleProperties?(data: LayoutStyleParameters): LayoutStyleProperties;
   /**
    * Returns object with pre and post render templates.
    * Together with composition component it's possible to specify global post\pre render and per component depends on argument.

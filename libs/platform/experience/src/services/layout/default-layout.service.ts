@@ -11,9 +11,9 @@ import {
 import {
   LayoutPlugin,
   LayoutPluginRender,
-  LayoutPluginStyleProperties,
   LayoutPluginType,
   LayoutPropertyPlugin,
+  LayoutStyleProperties,
 } from './plugins';
 import { ScreenService } from './screen.service';
 
@@ -50,7 +50,7 @@ export class DefaultLayoutService implements LayoutService {
 
   getStyleProperties(
     config: LayoutStyleConfig
-  ): LayoutPluginStyleProperties | undefined {
+  ): LayoutStyleProperties | undefined {
     const { token, type, data } = config;
     return this.getPlugin(token, type)?.getStyleProperties?.(data);
   }
@@ -73,7 +73,7 @@ export class DefaultLayoutService implements LayoutService {
     type: LayoutPluginType
   ): Observable<string> | void {
     return this.getPlugin(token, type)
-      ?.getStyles()
+      ?.getStyles?.()
       .pipe(
         map((styles) =>
           this.resolveStylesForBreakpoint(styles, included, excluded)
