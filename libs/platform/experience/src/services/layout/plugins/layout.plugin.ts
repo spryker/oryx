@@ -40,10 +40,8 @@ export interface LayoutStyleOptions {
 }
 
 export type LayoutStyleList = Record<string, string | number | undefined>;
-
-export type LayoutStyleProperties =
-  | LayoutStyleList
-  | [LayoutStyleList, LayoutStyleOptions?][];
+export type LayoutStylePropertiesArr = [LayoutStyleList, LayoutStyleOptions?][];
+export type LayoutStyleProperties = LayoutStyleList | LayoutStylePropertiesArr;
 
 export interface LayoutPluginParams {
   options?: LayoutProperties;
@@ -57,7 +55,7 @@ export interface LayoutStyleParameters extends Omit<StyleProperties, 'layout'> {
 }
 
 export interface LayoutPlugin {
-  getConfig(): LayoutPluginConfig;
+  getConfig(): Observable<LayoutPluginConfig>;
   getStyles?(): Observable<LayoutStyles>;
   getStyleProperties?(data: LayoutStyleParameters): LayoutStyleProperties;
   /**

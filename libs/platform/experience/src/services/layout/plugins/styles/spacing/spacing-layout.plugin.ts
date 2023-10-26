@@ -1,3 +1,4 @@
+import { Observable, of } from 'rxjs';
 import { findCssValue, findCssValues } from '../../../layout-styles.utilities';
 import {
   LayoutPlugin,
@@ -7,10 +8,10 @@ import {
 } from '../../layout.plugin';
 
 export class SpacingLayoutPlugin implements LayoutPlugin {
-  getConfig(): LayoutPluginConfig {
-    return {
+  getConfig(): Observable<LayoutPluginConfig> {
+    return of({
       schema: () => import('./spacing-layout.schema').then((m) => m.schema),
-    };
+    });
   }
 
   getStyleProperties(data: LayoutStyleParameters): LayoutStyleProperties {

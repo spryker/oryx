@@ -1,3 +1,4 @@
+import { lastValueFrom } from 'rxjs';
 import { SpacingLayoutPlugin } from './spacing-layout.plugin';
 
 describe('SpacingLayoutPlugin', () => {
@@ -12,7 +13,8 @@ describe('SpacingLayoutPlugin', () => {
       const schema = await import('./spacing-layout.schema').then(
         (module) => module.schema
       );
-      const result = await (plugin.getConfig?.().schema as () => unknown)();
+      const config = await lastValueFrom(plugin.getConfig?.());
+      const result = await (config.schema as () => unknown)();
 
       expect(result).toEqual(schema);
     });

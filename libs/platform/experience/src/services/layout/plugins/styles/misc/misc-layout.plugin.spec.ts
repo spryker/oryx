@@ -1,3 +1,4 @@
+import { lastValueFrom } from 'rxjs';
 import { MiscLayoutPlugin } from './misc-layout.plugin';
 
 describe('MiscLayoutPlugin', () => {
@@ -12,7 +13,8 @@ describe('MiscLayoutPlugin', () => {
       const schema = await import('./misc-layout.schema').then(
         (module) => module.schema
       );
-      const result = await (plugin.getConfig?.().schema as () => unknown)();
+      const config = await lastValueFrom(plugin.getConfig?.());
+      const result = await (config.schema as () => unknown)();
 
       expect(result).toEqual(schema);
     });

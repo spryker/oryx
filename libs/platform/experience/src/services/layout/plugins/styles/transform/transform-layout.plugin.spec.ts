@@ -1,3 +1,4 @@
+import { lastValueFrom } from 'rxjs';
 import { TransformLayoutPlugin } from './transform-layout.plugin';
 
 describe('TransformLayoutPlugin', () => {
@@ -12,7 +13,8 @@ describe('TransformLayoutPlugin', () => {
       const schema = await import('./transform-layout.schema').then(
         (module) => module.schema
       );
-      const result = await (plugin.getConfig?.().schema as () => unknown)();
+      const config = await lastValueFrom(plugin.getConfig?.());
+      const result = await (config.schema as () => unknown)();
 
       expect(result).toEqual(schema);
     });

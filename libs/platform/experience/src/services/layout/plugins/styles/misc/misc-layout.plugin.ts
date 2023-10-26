@@ -1,3 +1,4 @@
+import { Observable, of } from 'rxjs';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
@@ -6,10 +7,10 @@ import {
 } from '../../layout.plugin';
 
 export class MiscLayoutPlugin implements LayoutPlugin {
-  getConfig(): LayoutPluginConfig {
-    return {
+  getConfig(): Observable<LayoutPluginConfig> {
+    return of({
       schema: () => import('./misc-layout.schema').then((m) => m.schema),
-    };
+    });
   }
 
   getStyleProperties(data: LayoutStyleParameters): LayoutStyleProperties {

@@ -9,7 +9,12 @@ import {
 import { LayoutBuilder } from './layout.builder';
 import { LayoutStylesOptions, LayoutStylesProperties } from './layout.model';
 import { LayoutService } from './layout.service';
-import { LayoutPluginType, LayoutStylePlugin } from './plugins';
+import {
+  LayoutPluginType,
+  LayoutStylePlugin,
+  LayoutStyleProperties,
+  LayoutStylePropertiesArr,
+} from './plugins';
 import { ScreenService } from './screen.service';
 
 /**
@@ -154,18 +159,20 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       });
     };
 
+    const addProps = (props: LayoutStyleProperties = []) => {
+      if (props && !Array.isArray(props)) {
+        add(props);
+
+        return;
+      }
+
+      for (const [rules, options] of props as LayoutStylePropertiesArr) {
+        if (props) add(rules, options);
+      }
+    };
+
     for (const plugin of this.stylesPlugins) {
-      const styleProps = plugin.getStyleProperties?.(pluginData);
-
-      if (styleProps && !Array.isArray(styleProps)) {
-        add(styleProps);
-
-        continue;
-      }
-
-      for (const [rules, options] of styleProps ?? []) {
-        if (styleProps) add(rules, options);
-      }
+      addProps(plugin.getStyleProperties?.(pluginData));
     }
 
     if (layoutData) {
@@ -179,15 +186,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
           data: pluginData,
         });
 
-        if (layoutProps && !Array.isArray(layoutProps)) {
-          add(layoutProps);
-
-          continue;
-        }
-
-        for (const [rules, options] of layoutProps ?? []) {
-          if (layoutProps) add(rules, options);
-        }
+        addProps(layoutProps);
       }
     }
 

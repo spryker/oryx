@@ -1,3 +1,4 @@
+import { Observable, of } from 'rxjs';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
@@ -6,10 +7,10 @@ import {
 } from '../../layout.plugin';
 
 export class TypographyLayoutPlugin implements LayoutPlugin {
-  getConfig(): LayoutPluginConfig {
-    return {
+  getConfig(): Observable<LayoutPluginConfig> {
+    return of({
       schema: () => import('./typography-layout.schema').then((m) => m.schema),
-    };
+    });
   }
 
   getStyleProperties(data: LayoutStyleParameters): LayoutStyleProperties {

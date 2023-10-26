@@ -1,5 +1,5 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { LayoutStyles } from '../../../layout.model';
 import {
   LayoutPlugin,
@@ -12,10 +12,10 @@ export class BleedLayoutPlugin implements LayoutPlugin {
     return ssrAwaiter(import('./bleed.styles').then((m) => m.styles));
   }
 
-  getConfig(): LayoutPluginConfig {
-    return {
+  getConfig(): Observable<LayoutPluginConfig> {
+    return of({
       schema: () => import('./bleed-layout.schema').then((m) => m.schema),
-    };
+    });
   }
 
   getStyleProperties(): LayoutStyleProperties {

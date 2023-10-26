@@ -164,7 +164,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       )
     );
 
-    protected screen = computed(
+    protected screen$ = computed(
       () =>
         this[LayoutMixinInternals].screenService?.getScreenSize() ??
         of(undefined)
@@ -180,7 +180,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         place,
         data,
         attrs: this.attributeFilter,
-        screen: this.screen(),
+        screen: this.screen$(),
       });
     }
 
