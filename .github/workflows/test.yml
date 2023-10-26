@@ -187,7 +187,6 @@ jobs:
         uses: ./.github/actions/run-optimal
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY_FA }}
-          ORYX_FULFILLMENT_BACKEND_URL: ${{ secrets.ORYX_FULFILLMENT_BACKEND_URL }}
           ORYX_FULFILLMENT_PUBLIC_VAPID_KEY: ${{ secrets.ORYX_FULFILLMENT_PUBLIC_VAPID_KEY }}
           ORYX_FULFILLMENT_CLIENT_ID: ${{ secrets.ORYX_FULFILLMENT_CLIENT_ID }}
         with:
