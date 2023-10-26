@@ -1,11 +1,11 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { Observable } from 'rxjs';
-import { StyleProperties } from '../../../../models';
 import { LayoutStyles } from '../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
   LayoutPluginStyleProperties,
+  LayoutStyleProperties,
 } from '../layout.plugin';
 
 export class StickyLayoutPlugin implements LayoutPlugin {
@@ -19,7 +19,7 @@ export class StickyLayoutPlugin implements LayoutPlugin {
     };
   }
 
-  getStyleProperties(data: StyleProperties): LayoutPluginStyleProperties {
+  getStyleProperties(data: LayoutStyleProperties): LayoutPluginStyleProperties {
     return {
       'max-height': `calc(${data.height ?? '100vh'} - ${data.top ?? '0px'})`,
     };

@@ -3,15 +3,10 @@ import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
 import { Observable, map, merge, of, reduce } from 'rxjs';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
-import {
-  LayoutIncomingConfig,
-  LayoutService,
-  LayoutStyleConfig,
-} from './layout.service';
+import { LayoutIncomingConfig, LayoutService } from './layout.service';
 import {
   LayoutPlugin,
   LayoutPluginRender,
-  LayoutPluginStyleProperties,
   LayoutPluginType,
   LayoutPropertyPlugin,
 } from './plugins';
@@ -46,13 +41,6 @@ export class DefaultLayoutService implements LayoutService {
     return observables.length > 0
       ? merge(...observables).pipe(reduce((acc, curr) => acc + curr, ''))
       : of('');
-  }
-
-  getStyleProperties(
-    config: LayoutStyleConfig
-  ): LayoutPluginStyleProperties | undefined {
-    const { token, type, data } = config;
-    return this.getPlugin(token, type)?.getStyleProperties?.(data);
   }
 
   getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined {

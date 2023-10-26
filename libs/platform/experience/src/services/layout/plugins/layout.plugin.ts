@@ -7,7 +7,7 @@ import {
   ContentComponentSchema,
   StyleProperties,
 } from '../../../models';
-import { LayoutStyles } from '../layout.model';
+import { LayoutStyles, LayoutStylesOptions } from '../layout.model';
 
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
 export const LayoutPropertyPlugin = 'oryx.LayoutPropertyPlugin*';
@@ -40,10 +40,14 @@ export interface LayoutPluginParams {
   experience?: Component;
 }
 
+export interface LayoutStyleProperties extends Omit<StyleProperties, 'layout'> {
+  layout?: LayoutStylesOptions;
+}
+
 export interface LayoutPlugin {
   getStyles(): Observable<LayoutStyles>;
   getConfig(): LayoutPluginConfig;
-  getStyleProperties?(data: StyleProperties): LayoutPluginStyleProperties;
+  getStyleProperties?(data: LayoutStyleProperties): LayoutPluginStyleProperties;
   /**
    * Returns object with pre and post render templates.
    * Together with composition component it's possible to specify global post\pre render and per component depends on argument.

@@ -4,7 +4,6 @@ import { ResponsiveLayoutInfo } from './layout.model';
 import {
   LayoutPluginParams,
   LayoutPluginRender,
-  LayoutPluginStyleProperties,
   LayoutPluginType,
 } from './plugins';
 
@@ -25,9 +24,6 @@ export interface LayoutStyleConfig {
 export interface LayoutService {
   getStyles(sheets: ResponsiveLayoutInfo): Observable<string>;
   getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined;
-  getStyleProperties(
-    data: LayoutStyleConfig
-  ): LayoutPluginStyleProperties | undefined;
 }
 
 declare global {
