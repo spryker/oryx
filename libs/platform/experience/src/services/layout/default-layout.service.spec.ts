@@ -1,13 +1,30 @@
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/utilities';
-import { CSSResult } from 'lit';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, of } from 'rxjs';
 import { DefaultLayoutService } from './default-layout.service';
 import { LayoutService } from './layout.service';
+import {
+  LayoutPlugin,
+  LayoutPluginParams,
+  LayoutPluginType,
+  LayoutPropertyPlugin,
+} from './plugins';
 import { ScreenService } from './screen.service';
 
 const mockLayoutService = {
   getScreenMedia: vi.fn(),
+};
+
+const aLayoutPlugin = {
+  getStyles: vi.fn(),
+  getRender: vi.fn(),
+  getStyleProperties: vi.fn(),
+};
+
+const aLayoutPropertyPlugin = {
+  getStyles: vi.fn(),
+  getRender: vi.fn(),
+  getStyleProperties: vi.fn(),
 };
 
 describe('DefaultLayoutService', () => {
@@ -24,6 +41,14 @@ describe('DefaultLayoutService', () => {
           provide: ScreenService,
           useValue: mockLayoutService,
         },
+        {
+          provide: `${LayoutPlugin}a`,
+          useValue: aLayoutPlugin,
+        },
+        {
+          provide: `${LayoutPropertyPlugin}a`,
+          useValue: aLayoutPropertyPlugin,
+        },
       ],
     });
 
@@ -37,7 +62,9 @@ describe('DefaultLayoutService', () => {
 
   describe('getStyles', () => {
     it('should resolve common styles', async () => {
-      const promise = service.getStyles({ layout: {} });
+      const promise = service.getStyles({
+        layout: { type: LayoutPluginType.Layout },
+      });
       const expected = (
         await import('./base.styles').then((module) => module.styles)
       ).toString();
@@ -45,46 +72,94 @@ describe('DefaultLayoutService', () => {
       expect(styles).toBe(expected);
     });
 
-    Object.entries(layout).forEach(([key, path]) => {
-      it(`should resolve ${key} styles`, async () => {
-        const promise = service.getStyles({ [key]: {} });
-        const common = (
-          await import('./base.styles').then((module) => module.styles)
-        ).toString();
-        const layoutStyles = Object.values(
-          await import(path).then((module) => module.styles)
-        ).reduce(
-          (acc: string, style) => acc + (style as CSSResult).toString(),
-          ''
-        );
-        const styles = await lastValueFrom(promise);
-        expect(styles).toBe(`${common}${layoutStyles}`);
+    it('should resolve styles from layout plugin', async () => {
+      const pluginStyles = { styles: 'a-styles' };
+      aLayoutPlugin.getStyles.mockReturnValue(of(pluginStyles));
+      const promise = service.getStyles({
+        a: { type: LayoutPluginType.Layout },
       });
+      const styles = await lastValueFrom(promise);
+      expect(aLayoutPlugin.getStyles).toHaveBeenCalled();
+      expect(styles).toContain(pluginStyles.styles);
     });
 
-    Object.entries(layout).forEach(([key, path]) => {
-      it(`should resolve ${key} styles by breakpoint`, async () => {
-        mockLayoutService.getScreenMedia.mockReturnValue('@media');
-        const promise = service.getStyles({
-          [key]: { included: [Size.Md], excluded: [Size.Lg] },
-        });
-        const common = (
-          await import('./base.styles').then((module) => module.styles)
-        ).toString();
-        const layoutStyles = Object.values(
-          await import(path).then((module) => module.styles)
-        ).reduce(
-          (acc: string, style) =>
-            acc + `@media {${(style as CSSResult).toString()}}\n`,
-          ''
-        );
-        const styles = await lastValueFrom(promise);
-        expect(mockLayoutService.getScreenMedia).toHaveBeenCalledWith(
-          [Size.Md],
-          [Size.Lg]
-        );
-        expect(styles).toBe(`${common}${layoutStyles}`);
+    it('should resolve styles from layout property plugin', async () => {
+      const pluginStyles = { styles: 'a-styles' };
+      aLayoutPropertyPlugin.getStyles.mockReturnValue(of(pluginStyles));
+      const promise = service.getStyles({
+        a: { type: LayoutPluginType.Property },
       });
+      const styles = await lastValueFrom(promise);
+      expect(aLayoutPropertyPlugin.getStyles).toHaveBeenCalled();
+      expect(styles).toContain(pluginStyles.styles);
+    });
+
+    it('should resolve styles from layout plugin by breakpoints', async () => {
+      const pluginStyles = { styles: 'styles', sm: 'a-styles' };
+      aLayoutPlugin.getStyles.mockReturnValue(of(pluginStyles));
+      mockLayoutService.getScreenMedia.mockReturnValue('@media');
+      const promise = service.getStyles({
+        a: {
+          type: LayoutPluginType.Layout,
+          included: [Size.Md],
+          excluded: [Size.Lg],
+        },
+      });
+      const styles = await lastValueFrom(promise);
+      expect(mockLayoutService.getScreenMedia).toHaveBeenNthCalledWith(
+        1,
+        [Size.Md],
+        [Size.Lg]
+      );
+      expect(mockLayoutService.getScreenMedia).toHaveBeenNthCalledWith(
+        2,
+        Size.Sm
+      );
+
+      expect(aLayoutPlugin.getStyles).toHaveBeenCalled();
+      expect(styles).toContain(`@media {${pluginStyles.styles}}`);
+      expect(styles).toContain(`@media {${pluginStyles.sm}}`);
     });
   });
+
+  const methods = [
+    { name: 'getRender', text: 'render' },
+    { name: 'getStyleProperties', text: 'style properties' },
+  ];
+
+  methods.forEach(({ name, text }) =>
+    describe(name, () => {
+      it(`should resolve ${text} from layout plugin`, () => {
+        const _name = name as keyof typeof aLayoutPlugin;
+        const mockData = 'mockData';
+        aLayoutPlugin[_name].mockReturnValue(mockData);
+        const result = service[
+          name as Exclude<keyof typeof service, 'getStyles'>
+        ]({
+          token: 'a',
+          type: LayoutPluginType.Layout,
+          data: mockData as LayoutPluginParams,
+        });
+
+        expect(aLayoutPlugin[_name]).toHaveBeenCalledWith(mockData);
+        expect(result).toBe(mockData);
+      });
+
+      it(`should resolve ${text} from layout property plugin`, () => {
+        const _name = name as keyof typeof aLayoutPropertyPlugin;
+        const mockData = 'mockData';
+        aLayoutPropertyPlugin[_name].mockReturnValue(mockData);
+        const result = service[
+          name as Exclude<keyof typeof service, 'getStyles'>
+        ]({
+          token: 'a',
+          type: LayoutPluginType.Property,
+          data: mockData as LayoutPluginParams,
+        });
+
+        expect(aLayoutPropertyPlugin[_name]).toHaveBeenCalledWith(mockData);
+        expect(result).toBe(mockData);
+      });
+    })
+  );
 });

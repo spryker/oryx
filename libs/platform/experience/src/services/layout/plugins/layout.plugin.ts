@@ -1,4 +1,5 @@
 import { LayoutProperties } from '@spryker-oryx/experience/layout';
+import { LazyLoadable } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { Observable } from 'rxjs';
 import {
@@ -27,8 +28,7 @@ export type LayoutPluginImplementation = Record<
 >;
 
 export interface LayoutPluginConfig {
-  name: string;
-  schema?: ContentComponentSchema;
+  schema?: LazyLoadable<ContentComponentSchema>;
 }
 
 export type LayoutPluginStyleProperties = Record<string, string | number>;

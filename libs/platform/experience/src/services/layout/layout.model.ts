@@ -21,11 +21,7 @@ export interface LayoutStylesOptions extends LayoutsProperty {
 }
 
 export interface LayoutStylesProperties {
-  layout?:
-    | LayoutStylesOptions
-    | LayoutTypes
-    // @deprecated since 1.2
-    | string;
+  layout?: LayoutStylesOptions | LayoutTypes;
 
   // @deprecated since 1.2 will be removed.
   vertical?: boolean;

@@ -13,7 +13,9 @@ export class BleedLayoutPlugin implements LayoutPlugin {
   }
 
   getConfig(): LayoutPluginConfig {
-    return { name: 'bleed' };
+    return {
+      schema: () => import('./bleed-layout.schema').then((m) => m.schema),
+    };
   }
 
   getStyleProperties(): LayoutPluginStyleProperties {

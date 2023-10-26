@@ -253,19 +253,6 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule({ top: '10vh' }, 'inset-block-start: 10vh');
     expectStyleRule({ height: '100px' }, 'height: 100px');
     expectStyleRule({ width: '100px' }, 'width: 100px');
-    expectStyleRule(
-      { sticky: true, height: '100px' },
-      'max-height: calc(100px - 0px)'
-    );
-    expectStyleRule(
-      { sticky: true, height: '100px', top: '10px' },
-      'max-height: calc(100px - 10px)'
-    );
-    expectStyleRule(
-      { sticky: true, top: '10px' },
-      'max-height: calc(100vh - 10px)'
-    );
-    expectStyleRule({ sticky: true }, 'max-height: calc(100vh - 0px)');
     expectStyleRule({ margin: '10' }, 'margin: 10px');
     expectStyleRule({ margin: '10%' }, 'margin: 10%');
     expectStyleRule({ padding: '15' }, 'padding-block: 15px');
@@ -328,7 +315,7 @@ describe('DefaultLayoutBuilder', () => {
       describe(`when ${prop} is configured`, () => {
         beforeEach(() => {
           layoutMarkers = service.getLayoutMarkers({
-            rules: [{ [prop]: true }],
+            rules: [{ layout: { [prop]: true } }],
           });
         });
 
@@ -341,7 +328,9 @@ describe('DefaultLayoutBuilder', () => {
         describe(`when ${prop} is configured for ${size}`, () => {
           beforeEach(() => {
             layoutMarkers = service.getLayoutMarkers({
-              rules: [{ [prop]: true, query: { breakpoint: size } }],
+              rules: [
+                { layout: { [prop]: true }, query: { breakpoint: size } },
+              ],
             });
           });
 

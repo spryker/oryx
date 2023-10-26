@@ -9,6 +9,8 @@ export class SplitLayoutPlugin implements LayoutPlugin {
   }
 
   getConfig(): LayoutPluginConfig {
-    return { name: 'slit' };
+    return {
+      schema: () => import('./split-layout.schema').then((m) => m.schema),
+    };
   }
 }

@@ -9,6 +9,8 @@ export class OverlapLayoutPlugin implements LayoutPlugin {
   }
 
   getConfig(): LayoutPluginConfig {
-    return { name: 'overlap' };
+    return {
+      schema: () => import('./overlap-layout.schema').then((m) => m.schema),
+    };
   }
 }

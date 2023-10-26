@@ -9,6 +9,8 @@ export class ColumnLayoutPlugin implements LayoutPlugin {
   }
 
   getConfig(): LayoutPluginConfig {
-    return { name: 'column' };
+    return {
+      schema: () => import('./column-layout.schema').then((m) => m.schema),
+    };
   }
 }

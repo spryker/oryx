@@ -26,7 +26,7 @@ export const layoutKeys: (keyof LayoutStylesProperties)[] = [
 export class DefaultLayoutBuilder implements LayoutBuilder {
   constructor(
     protected screenService = inject(ScreenService),
-    protected layoutService = inject(LayoutService)
+    protected layoutService = inject(LayoutService, null)
   ) {}
 
   collectStyles(components: Component[]): string {
@@ -82,7 +82,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     const markerPrefix = 'layout-';
 
     return data?.rules?.reduce((acc, ruleSet) => {
-      if (!ruleSet) return acc;
+      if (!ruleSet?.layout) return acc;
 
       const ruleMarkers =
         typeof ruleSet.layout === 'object'
@@ -219,7 +219,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
         typeof data.layout === 'string' ? { type: data.layout } : data.layout;
 
       for (const [key, value] of Object.entries(layoutData)) {
-        const layoutProps = this.layoutService.getStyleProperties?.({
+        const layoutProps = this.layoutService?.getStyleProperties?.({
           token: key === 'type' ? value : key,
           type:
             key === 'type'

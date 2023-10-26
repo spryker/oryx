@@ -37,6 +37,7 @@ export class DefaultLayoutService implements LayoutService {
         layoutInfo[key].excluded,
         layoutInfo[key].type
       );
+
       if (styles) {
         observables.push(styles);
       }
