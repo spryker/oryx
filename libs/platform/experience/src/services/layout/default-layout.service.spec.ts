@@ -18,14 +18,12 @@ const mockLayoutService = {
 const aLayoutPlugin = {
   getStyles: vi.fn(),
   getRender: vi.fn(),
-  getImplementation: vi.fn(),
   getStyleProperties: vi.fn(),
 };
 
 const aLayoutPropertyPlugin = {
   getStyles: vi.fn(),
   getRender: vi.fn(),
-  getImplementation: vi.fn(),
   getStyleProperties: vi.fn(),
 };
 
@@ -125,7 +123,6 @@ describe('DefaultLayoutService', () => {
   });
 
   const methods = [
-    { name: 'getImplementation', text: 'implementation' },
     { name: 'getRender', text: 'render' },
     { name: 'getStyleProperties', text: 'style properties' },
   ];
