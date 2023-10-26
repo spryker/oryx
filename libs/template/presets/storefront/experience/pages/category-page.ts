@@ -49,12 +49,9 @@ export const categoryPage: ExperienceComponent = {
                   }
                 : 'grid',
             gap: '1px',
-            // @deprecated since 1.2 will be removed.
-            divider: true,
-            // @deprecated since 1.2 will be removed.
-            sticky: true,
             top: '108px',
             margin: '0 0 30px',
+            ...(featureVersion >= '1.2' ? {} : { divider: true, sticky: true }),
           },
         ],
       },

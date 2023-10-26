@@ -60,9 +60,8 @@ export const HeaderTemplate: ExperienceComponent = {
             padding: '10px 0',
             gap: '10px',
             align: 'center',
-            // @deprecated since 1.2 will be removed.
-            bleed: true,
             style: 'color: white',
+            ...(featureVersion >= '1.2' ? {} : { bleed: true }),
           },
         ],
       },
@@ -177,10 +176,7 @@ export const HeaderTemplate: ExperienceComponent = {
             zIndex: 1,
             padding: '5px 0',
             gap: '5px',
-            // @deprecated since 1.2 will be removed.
-            sticky: true,
-            // @deprecated since 1.2 will be removed.
-            bleed: true,
+            ...(featureVersion >= '1.2' ? {} : { bleed: true, sticky: true }),
           },
         ],
       },

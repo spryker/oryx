@@ -61,11 +61,10 @@ export const productPage: ExperienceComponent = {
                   vertical: true,
                   sticky: true,
                 },
-                // @deprecated since 1.2 will be removed.
-                vertical: true,
                 top: '108px',
-                // @deprecated since 1.2 will be removed.
-                sticky: true,
+                ...(featureVersion >= '1.2'
+                  ? {}
+                  : { sticky: true, vertical: true }),
               },
             ],
           },

@@ -47,12 +47,9 @@ export const searchPage: ExperienceComponent = {
                   }
                 : 'grid',
             gap: '1px',
-            // @deprecated since 1.2 will be removed.
-            divider: true,
-            // @deprecated since 1.2 will be removed.
-            sticky: true,
             top: '108px',
             margin: '0 0 30px',
+            ...(featureVersion >= '1.2' ? {} : { sticky: true, divider: true }),
           },
         ],
       },
@@ -71,9 +68,8 @@ export const searchPage: ExperienceComponent = {
                     vertical: true,
                   }
                 : 'flex',
-            // @deprecated since 1.2 will be removed.
-            vertical: true,
             gap: '20px',
+            ...(featureVersion >= '1.2' ? {} : { vertical: true }),
           },
         ],
       },

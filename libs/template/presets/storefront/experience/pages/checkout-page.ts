@@ -45,9 +45,8 @@ const checkoutInformation = (): ExperienceComponent => {
                   vertical: true,
                 }
               : 'flex',
-          // @deprecated since 1.2 will be removed.
-          vertical: true,
           align: 'stretch',
+          ...(featureVersion >= '1.2' ? {} : { vertical: true }),
         },
       ],
     },
@@ -103,9 +102,8 @@ export const checkoutPage: ExperienceComponent = {
           { hideByRule: 'CART.EMPTY' },
           {
             layout: { sticky: true },
-            // @deprecated since 1.2 will be removed.
-            sticky: true,
             top: '108px',
+            ...(featureVersion >= '1.2' ? {} : { sticky: true }),
           },
         ],
       },

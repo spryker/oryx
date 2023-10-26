@@ -44,10 +44,10 @@ const legalLinks: ExperienceComponent = {
                 divider: true,
               }
             : 'flex',
-        // @deprecated since 1.2 will be removed.
         divider: true,
         gap: '0 20px',
         padding: '20px 0 0',
+        ...(featureVersion >= '1.2' ? {} : { divider: true }),
       },
     ],
   },
@@ -264,11 +264,10 @@ export const FooterTemplate: ExperienceComponent = {
                         divider: true,
                       }
                     : 'flex',
-                // @deprecated since 1.2 will be removed.
-                vertical: true,
-                // @deprecated since 1.2 will be removed.
-                divider: true,
                 gap: '40px 18px',
+                ...(featureVersion >= '1.2'
+                  ? {}
+                  : { divider: true, vertical: true }),
               },
             ],
           },
@@ -292,14 +291,11 @@ export const FooterTemplate: ExperienceComponent = {
         top: '100%',
         background: 'var(--oryx-color-neutral-3)',
         padding: '30 0',
-        // @deprecated since 1.2 will be removed.
-        divider: true,
-        // @deprecated since 1.2 will be removed.
-        bleed: true,
-        // @deprecated since 1.2 will be removed.
-        sticky: true,
         typography: 'small',
         style: 'line-height: 24px;',
+        ...(featureVersion >= '1.2'
+          ? {}
+          : { divider: true, bleed: true, sticky: true }),
       },
     ],
   },
