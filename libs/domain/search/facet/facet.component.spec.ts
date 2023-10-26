@@ -4,7 +4,7 @@ import { FacetValue } from '@spryker-oryx/product';
 import { generateFacet } from '@spryker-oryx/product/mocks';
 import { FacetListService } from '@spryker-oryx/search';
 import { SearchFacetValueNavigationComponent } from '@spryker-oryx/search/facet-value-navigation';
-import { i18n, useComponent, featureVersion } from '@spryker-oryx/utilities';
+import { featureVersion, i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchFacetComponent } from './facet.component';
@@ -25,8 +25,6 @@ describe('SearchFacetComponent', () => {
   beforeAll(async () => {
     await useComponent(searchFacetComponent);
   });
-
-  let facetListService: MockFacetListService;
 
   beforeEach(async () => {
     const testInjector = createInjector({
@@ -267,7 +265,7 @@ describe('SearchFacetComponent', () => {
             'oryx-search-facet-value-navigation[enableClear]'
           );
         });
-      
+
         describe('and clear disabled', () => {
           beforeEach(async () => {
             element = await fixture(
@@ -364,7 +362,7 @@ describe('SearchFacetComponent', () => {
     it('should make value navigation dirty', () => {
       expect(element).toContainElement(
         'oryx-search-facet-value-navigation[dirty]'
-      )
+      );
     });
   });
 
@@ -443,11 +441,9 @@ describe('SearchFacetComponent', () => {
 
   describe('when facet values have children', () => {
     beforeEach(async () => {
-      facetListService.getFacet = vi
-        .fn()
-        .mockReturnValue(
-          of(generateFacet('Mock', 'parameter', 10, selectedValuesNames, true))
-        );
+      service.getFacet.mockReturnValue(
+        of(generateFacet('Mock', 'parameter', 10, selectedValuesNames, true))
+      );
 
       element = await fixture(
         html` <oryx-search-facet
@@ -464,9 +460,9 @@ describe('SearchFacetComponent', () => {
 
   describe('when facet has no values', () => {
     beforeEach(async () => {
-      facetListService.getFacet = vi
-        .fn()
-        .mockReturnValue(of(generateFacet('Mock', 'parameter', 0)));
+      service.getFacet.mockReturnValue(
+        of(generateFacet('Mock', 'parameter', 0))
+      );
 
       element = await fixture(
         html` <oryx-search-facet name="Mock"></oryx-search-facet>`

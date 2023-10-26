@@ -1,4 +1,5 @@
 import {
+  Facet,
   FacetType,
   FacetValue,
   RangeFacet,
@@ -73,6 +74,7 @@ export const generateRatingFacet = (
   const valuesCount = max ? max - min + 1 : 0;
 
   return {
+    type: FacetType.Multi,
     name: 'Rating',
     parameter: 'rating',
     valuesTreeLength: valuesCount,

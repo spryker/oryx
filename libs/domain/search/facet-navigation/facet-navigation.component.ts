@@ -46,11 +46,7 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
     const { bury } = this.$options();
 
     return this.$facets()?.filter(
-      (facet) =>
-        !bury?.find((b) => {
-          console.log(facet);
-          return b.facets.includes(facet.parameter);
-        })
+      (facet) => !bury?.find((b) => b.facets.includes(facet.parameter))
     );
   });
 

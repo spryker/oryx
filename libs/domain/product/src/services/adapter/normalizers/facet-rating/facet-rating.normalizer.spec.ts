@@ -1,5 +1,5 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { ApiProductListModel } from '@spryker-oryx/product';
+import { ApiProductListModel, FacetType } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import { of, take } from 'rxjs';
 import { beforeEach } from 'vitest';
@@ -27,6 +27,7 @@ const generateNoramalizedFacet = (
   const valuesCount = facet.max ? facet.max - facet.min + 1 : 0;
 
   return {
+    type: FacetType.Single,
     name: facet.localizedName,
     parameter: facet.config.parameterName,
     selectedValues: selectedValue ? [String(selectedValue)] : [],
