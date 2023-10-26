@@ -19,7 +19,7 @@ export function generateValues(
       selected:
         (selectedValues && selectedValues?.indexOf(`${prefix}${i}`) >= 0) ??
         false,
-      count: Number(`${i}0`),
+      count: Number(`${i + 1}0`),
       name: `${prefix}${i}`,
       ...(children ? { children: generateValues(3, `Sub-${prefix}`) } : {}),
     });
@@ -61,5 +61,30 @@ export const generateRange = (
       selected: { min: +(selected?.[0] ?? min), max: +(selected?.[1] ?? max) },
     },
     type: FacetType.Range,
+  };
+};
+
+export const generateRatingFacet = (
+  min: number,
+  max: number,
+  scale: number,
+  selectedValue?: number
+): Facet => {
+  const valuesCount = max ? max - min + 1 : 0;
+
+  return {
+    name: 'Rating',
+    parameter: 'rating',
+    valuesTreeLength: valuesCount,
+    values: Array.from(new Array(valuesCount).keys())
+      .reverse()
+      .map((i) => {
+        const value = i + min;
+        return {
+          value: String(value),
+          selected: selectedValue ? selectedValue === value : false,
+          count: 0,
+        };
+      }),
   };
 };

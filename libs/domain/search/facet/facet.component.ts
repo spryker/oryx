@@ -102,7 +102,7 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
       />
       <div>
         ${this.renderValueControlLabel(facetValue)}
-        <span>${facetValue.count}</span>
+        ${when(facetValue.count, () => html`<span>${facetValue.count}</span>`)}
       </div> `;
 
     return this.multi

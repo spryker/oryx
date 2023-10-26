@@ -55,6 +55,24 @@ export const facetProviders = [
           `;
         },
       },
+      [`${FacetParams.Rating}`]: {
+        template: (
+          facet: Facet,
+          options: FacetMappingOptions,
+          selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
+        ): TemplateResult => {
+          return html`
+            <oryx-search-facet-rating
+              @oryx.select=${selectListener}
+              .name=${facet.name}
+              .renderLimit=${options.renderLimit}
+              .open=${options.open}
+              .multi=${facet.multiValued}
+            >
+            </oryx-search-facet-rating>
+          `;
+        },
+      },
     },
   },
   {
