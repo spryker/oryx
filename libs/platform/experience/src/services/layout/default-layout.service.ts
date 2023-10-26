@@ -10,7 +10,6 @@ import {
 } from './layout.service';
 import {
   LayoutPlugin,
-  LayoutPluginImplementation,
   LayoutPluginRender,
   LayoutPluginStyleProperties,
   LayoutPluginType,
@@ -46,13 +45,6 @@ export class DefaultLayoutService implements LayoutService {
     return observables.length > 0
       ? merge(...observables).pipe(reduce((acc, curr) => acc + curr, ''))
       : of('');
-  }
-
-  getImplementation(
-    config: LayoutIncomingConfig
-  ): LayoutPluginImplementation | undefined {
-    const { token, type, data } = config;
-    return this.getPlugin(token, type)?.getImplementation?.(data);
   }
 
   getStyleProperties(
