@@ -161,7 +161,11 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       this[LayoutMixinInternals].layoutController.getStyles(
         this.attributeFilter,
         this.$options().rules
-      )
+      );
+    });
+
+    protected screen = computed(() =>
+      this[LayoutMixinInternals].screenService.getScreenSize()
     );
 
     protected screen = computed(
