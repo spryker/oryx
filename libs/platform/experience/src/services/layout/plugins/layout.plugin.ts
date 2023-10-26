@@ -11,10 +11,12 @@ import { LayoutStyles, LayoutStylesOptions } from '../layout.model';
 
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
 export const LayoutPropertyPlugin = 'oryx.LayoutPropertyPlugin*';
+export const LayoutStylePlugin = 'oryx.LayoutStylePlugin*';
 
 export const enum LayoutPluginType {
   Layout,
   Property,
+  Style,
 }
 
 export interface LayoutPluginRender {
@@ -76,5 +78,6 @@ declare global {
   interface InjectionTokensContractMap {
     [LayoutPlugin]: LayoutPlugin;
     [LayoutPropertyPlugin]: LayoutPlugin;
+    [LayoutStylePlugin]: LayoutPlugin;
   }
 }

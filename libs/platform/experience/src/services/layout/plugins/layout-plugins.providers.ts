@@ -1,22 +1,32 @@
 import { Provider } from '@spryker-oryx/di';
-import { BleedLayoutPlugin, BleedLayoutPluginToken } from './bleed';
-import { CarouselLayoutPlugin, CarouselLayoutPluginToken } from './carousel';
-import { ColumnLayoutPlugin, ColumnLayoutPluginToken } from './column';
-import { DividerLayoutPlugin, DividerLayoutPluginToken } from './divider';
-import { FlexLayoutPlugin, FlexLayoutPluginToken } from './flex';
-import { GridLayoutPlugin, GridLayoutPluginToken } from './grid';
-import { OverlapLayoutPlugin, OverlapLayoutPluginToken } from './overlap';
-import { SplitLayoutPlugin, SplitLayoutPluginToken } from './split';
 import {
+  BleedLayoutPlugin,
+  BleedLayoutPluginToken,
+  DividerLayoutPlugin,
+  DividerLayoutPluginToken,
+  StickyLayoutPlugin,
+  StickyLayoutPluginToken,
+} from './properties';
+import {
+  CarouselLayoutPlugin,
+  CarouselLayoutPluginToken,
+  ColumnLayoutPlugin,
+  ColumnLayoutPluginToken,
+  FlexLayoutPlugin,
+  FlexLayoutPluginToken,
+  GridLayoutPlugin,
+  GridLayoutPluginToken,
+  OverlapLayoutPlugin,
+  OverlapLayoutPluginToken,
   SplitAsideLayoutPlugin,
   SplitAsideLayoutPluginToken,
-} from './split-aside';
-import {
+  SplitLayoutPlugin,
+  SplitLayoutPluginToken,
   SplitMainLayoutPlugin,
   SplitMainLayoutPluginToken,
-} from './split-main';
-import { StickyLayoutPlugin, StickyLayoutPluginToken } from './sticky';
-import { TextLayoutPlugin, TextLayoutPluginToken } from './text';
+  TextLayoutPlugin,
+  TextLayoutPluginToken,
+} from './types';
 
 export const layoutPluginsProviders: Provider[] = [
   {
