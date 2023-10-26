@@ -1,6 +1,6 @@
 import { css, unsafeCSS } from 'lit';
-import { LayoutStyles } from '../layout.model';
-import { gridSystem } from './grid-system.styles';
+import { LayoutStyles } from '../../layout.model';
+import { gridSystem } from '../grid-system.styles';
 
 export const splitLayout = (type: 'equal' | 'main' | 'aside'): LayoutStyles => {
   const cssVar = unsafeCSS(`var(--oryx-column-split-${type})`);

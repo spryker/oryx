@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { LayoutStyles } from '../layout.model';
+import { LayoutStyles } from '../../layout.model';
 
 export const styles: LayoutStyles = {
   styles: css`

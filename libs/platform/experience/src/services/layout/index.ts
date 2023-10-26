@@ -4,5 +4,5 @@ export * from './default-screen.service';
 export * from './layout.builder';
 export * from './layout.model';
 export * from './layout.service';
+export * from './plugins';
 export * from './screen.service';
-export * from './styles';

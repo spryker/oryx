@@ -1,6 +1,6 @@
 import { css } from 'lit';
-import { LayoutStyles } from '../layout.model';
-import { gridSystem } from './grid-system.styles';
+import { LayoutStyles } from '../../layout.model';
+import { gridSystem } from '../grid-system.styles';
 
 // TODO: support multi-row carousels by using template rows
 // grid-template-rows: repeat(2, auto);

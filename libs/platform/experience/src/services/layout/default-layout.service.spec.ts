@@ -2,28 +2,12 @@ import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
 import { lastValueFrom } from 'rxjs';
-import { CompositionLayout } from '../../models';
 import { DefaultLayoutService } from './default-layout.service';
 import { LayoutService } from './layout.service';
 import { ScreenService } from './screen.service';
 
 const mockLayoutService = {
   getScreenMedia: vi.fn(),
-};
-
-const layout = {
-  bleed: './styles/bleed.styles',
-  sticky: './styles/sticky.styles',
-  divider: './styles/divider.styles',
-  overlap: './styles/overlap.styles',
-  [CompositionLayout.Column]: './styles/column-layout.styles',
-  [CompositionLayout.Grid]: './styles/grid-layout.styles',
-  [CompositionLayout.Carousel]: './styles/carousel-layout.styles',
-  [CompositionLayout.Flex]: './styles/flex-layout.styles',
-  [CompositionLayout.Split]: './styles/split-layout.styles',
-  [CompositionLayout.SplitMain]: './styles/split-main.styles',
-  [CompositionLayout.SplitAside]: './styles/split-aside.styles',
-  [CompositionLayout.Text]: './styles/text-layout.styles',
 };
 
 describe('DefaultLayoutService', () => {
@@ -55,7 +39,7 @@ describe('DefaultLayoutService', () => {
     it('should resolve common styles', async () => {
       const promise = service.getStyles({ layout: {} });
       const expected = (
-        await import('./styles/base.styles').then((module) => module.styles)
+        await import('./base.styles').then((module) => module.styles)
       ).toString();
       const styles = await lastValueFrom(promise);
       expect(styles).toBe(expected);
@@ -65,7 +49,7 @@ describe('DefaultLayoutService', () => {
       it(`should resolve ${key} styles`, async () => {
         const promise = service.getStyles({ [key]: {} });
         const common = (
-          await import('./styles/base.styles').then((module) => module.styles)
+          await import('./base.styles').then((module) => module.styles)
         ).toString();
         const layoutStyles = Object.values(
           await import(path).then((module) => module.styles)
@@ -85,7 +69,7 @@ describe('DefaultLayoutService', () => {
           [key]: { included: [Size.Md], excluded: [Size.Lg] },
         });
         const common = (
-          await import('./styles/base.styles').then((module) => module.styles)
+          await import('./base.styles').then((module) => module.styles)
         ).toString();
         const layoutStyles = Object.values(
           await import(path).then((module) => module.styles)

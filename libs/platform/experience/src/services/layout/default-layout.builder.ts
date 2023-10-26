@@ -3,13 +3,18 @@ import { Breakpoint } from '@spryker-oryx/utilities';
 import {
   Component,
   CompositionProperties,
-  LayoutStylesProperties,
   StyleProperties,
   StyleRuleSet,
 } from '../../models';
 import { LayoutBuilder } from './layout.builder';
+import { LayoutStylesOptions, LayoutStylesProperties } from './layout.model';
+import { LayoutService } from './layout.service';
+import { LayoutPluginType } from './plugins';
 import { ScreenService } from './screen.service';
 
+/**
+ * @deprecated will be removed since 1.2.
+ */
 export const layoutKeys: (keyof LayoutStylesProperties)[] = [
   'sticky',
   'bleed',
@@ -19,7 +24,10 @@ export const layoutKeys: (keyof LayoutStylesProperties)[] = [
 ];
 
 export class DefaultLayoutBuilder implements LayoutBuilder {
-  constructor(protected screenService = inject(ScreenService)) {}
+  constructor(
+    protected screenService = inject(ScreenService),
+    protected layoutService = inject(LayoutService)
+  ) {}
 
   collectStyles(components: Component[]): string {
     return components
@@ -76,20 +84,27 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     return data?.rules?.reduce((acc, ruleSet) => {
       if (!ruleSet) return acc;
 
-      const ruleMarkers = layoutKeys.reduce((acc, key) => {
-        const value = ruleSet[key];
+      const ruleMarkers =
+        typeof ruleSet.layout === 'object'
+          ? Object.keys(ruleSet.layout ?? {}).reduce((acc, key) => {
+              const value = (ruleSet.layout as LayoutStylesOptions)?.[
+                key as keyof LayoutStylesOptions
+              ];
 
-        if (!value) return acc;
+              if (!value || key === 'type') return acc;
 
-        const breakpoint = ruleSet.query?.breakpoint;
-        const markerKey = breakpoint
-          ? `${markerPrefix}${breakpoint}-${key}`
-          : `${markerPrefix}${key}`;
+              const breakpoint = ruleSet.query?.breakpoint;
+              const markerKey = breakpoint
+                ? `${markerPrefix}${breakpoint}-${key}`
+                : `${markerPrefix}${key}`;
 
-        return `${acc} ${
-          typeof value === 'boolean' ? markerKey : `${markerKey}="${value}"`
-        }`;
-      }, '');
+              return `${acc} ${
+                typeof value === 'boolean'
+                  ? markerKey
+                  : `${markerKey}="${value}"`
+              }`;
+            }, '')
+          : '';
 
       return `${acc}${ruleMarkers}`;
     }, '');
@@ -138,14 +153,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       add({
         'padding-block': this.findCssValues(data.padding, 'top', 'bottom'),
       });
-      if (!data.bleed) {
-        // consider moving to bleed layout plugin
-        // avoid adding padding for layouts that bleed into the side
-        // as this can harm the calculated width
-        add({
-          'padding-inline': this.findCssValues(data.padding, 'start', 'end'),
-        });
-      }
+      add({
+        'padding-inline': this.findCssValues(data.padding, 'start', 'end'),
+      });
 
       // nested padding is usedd to calculate the size of nested grid based elements
       add({
@@ -174,12 +184,6 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add({ '--column-gap': gaps?.[1] ?? gaps?.[0] }, { emptyValue: true });
     add({ '--row-gap': gaps?.[0] }, { emptyValue: true });
 
-    if (data.sticky) {
-      add({
-        'max-height': `calc(${data.height ?? '100vh'} - ${data.top ?? '0px'})`,
-      });
-    }
-
     add({
       '--align': data.align,
       '--justify': data.justify,
@@ -207,6 +211,24 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       add({ 'line-height': `var(--oryx-typography-${data.typography}-line)` });
       if (!data.margin) {
         add({ margin: `0` }, { emptyValue: true });
+      }
+    }
+
+    if (data.layout) {
+      const layoutData =
+        typeof data.layout === 'string' ? { type: data.layout } : data.layout;
+
+      for (const [key, value] of Object.entries(layoutData)) {
+        const layoutProps = this.layoutService.getStyleProperties?.({
+          token: key === 'type' ? value : key,
+          type:
+            key === 'type'
+              ? LayoutPluginType.Layout
+              : LayoutPluginType.Property,
+          data,
+        });
+
+        if (layoutProps) add(layoutProps);
       }
     }
 

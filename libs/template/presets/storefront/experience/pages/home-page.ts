@@ -1,4 +1,5 @@
 import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
   type: 'oryx-content-image',
@@ -74,8 +75,15 @@ export const homePage: ExperienceComponent = {
         rules: [
           {
             height: '550px',
-            layout: 'split',
+            layout:
+              featureVersion >= '1.2'
+                ? {
+                    type: 'split',
+                    bleed: true,
+                  }
+                : 'split',
             align: 'end',
+            // @deprecated since 1.2, will be removed.
             bleed: true,
           },
         ],

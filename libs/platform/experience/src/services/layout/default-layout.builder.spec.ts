@@ -5,11 +5,11 @@ import { Size } from '@spryker-oryx/utilities';
 import {
   Component,
   CompositionProperties,
-  LayoutAlign,
   StyleProperties,
 } from '../../models';
 import { Theme, ThemePlugin } from '../../plugins';
 import { DefaultLayoutBuilder } from './default-layout.builder';
+import { LayoutAlign } from './layout.model';
 import { ScreenService } from './screen.service';
 
 const mockTheme: Theme = {

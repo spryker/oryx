@@ -1,6 +1,7 @@
-import { LayoutAttributes } from '@spryker-oryx/experience/layout';
+import { LayoutSpecificAttributes } from '@spryker-oryx/experience/layout';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Breakpoint } from '@spryker-oryx/utilities';
+import { LayoutAlign, LayoutStylesProperties } from '../services';
 
 export interface CompositionProperties {
   rules?: StyleRuleSet[];
@@ -14,7 +15,7 @@ export interface ComponentVisibility {
 
 export interface StyleRuleSet
   extends StyleProperties,
-    LayoutAttributes,
+    LayoutSpecificAttributes,
     ComponentVisibility {
   /**
    * Allows to apply a style rule set for specific selectors.
@@ -25,47 +26,6 @@ export interface StyleRuleSet
     hover?: boolean;
   };
   [key: string]: unknown;
-}
-
-export enum CompositionLayout {
-  List = 'list',
-  Column = 'column',
-  Split = 'split',
-  SplitAside = 'split-aside',
-  SplitMain = 'split-main',
-  Carousel = 'carousel',
-  Grid = 'grid',
-  Flex = 'flex',
-  Text = 'text',
-}
-
-export const enum CompositionLayoutOrientation {
-  horizontal = 'horizontal',
-  Vertical = 'vertical',
-}
-
-export interface LayoutStylesProperties {
-  /**
-   * Indicates that the composition will stick on the screen at a certain position. The position
-   * defaults to 0px from the top, but can be customised using the styling. For a footer for example
-   * the top can be configured to be 100%.
-   */
-  sticky?: boolean;
-  /**
-   * Components are bound inside the page bleed by default. The page bleed is
-   * the space that is outside the main container size of the layout. Both the
-   * maximum container width and minimum page bleed size are configurable by design tokens.
-   *
-   * To _break out_ the container width, the bleed flag can be used. This allows to apply
-   * styling and content outside the container.
-   */
-  bleed?: boolean;
-  divider?: boolean;
-  /**
-   * Overlapping elements are rendered in the same grid row/column.
-   */
-  overlap?: boolean;
-  vertical?: boolean;
 }
 
 export interface StyleProperties extends LayoutStylesProperties {
@@ -227,12 +187,18 @@ export interface StyleProperties extends LayoutStylesProperties {
   style?: string;
 }
 
-export const enum LayoutAlign {
-  Start = 'start',
-  Stretch = 'stretch',
-  End = 'end',
-  Center = 'center',
-  SpaceBetween = 'space-between',
-  SpaceAround = 'space-around',
-  SpaceEvenly = 'space-evenly',
+/**
+ * @deprecated since 1.2. Changed enum approach to union in order to add augmentation possibility.
+ * Use LayoutTypes instead.
+ */
+export enum CompositionLayout {
+  List = 'list',
+  Column = 'column',
+  Split = 'split',
+  SplitAside = 'split-aside',
+  SplitMain = 'split-main',
+  Carousel = 'carousel',
+  Grid = 'grid',
+  Flex = 'flex',
+  Text = 'text',
 }
