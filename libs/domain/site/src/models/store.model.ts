@@ -37,3 +37,8 @@ export interface Store {
   locales: Locale[];
   timeZone: string;
 }
+
+export const enum PriceModes {
+  GrossMode = 'GROSS_MODE',
+  NetMode = 'NET_MODE',
+}

@@ -24,7 +24,7 @@ const removeUselessLogsFromCypressLogs = () => {
     return origLog(opts, ...other);
   };
 
-  cy.log('Useless logs filterring is applied');
+  cy.log('Useless logs filtering is applied');
 };
 
 const getRandomCustomer = () => {
