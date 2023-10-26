@@ -6,11 +6,7 @@ import { fulfillmentTheme } from '@spryker-oryx/themes';
 const env = import.meta.env;
 
 appBuilder()
-  .withEnvironment({
-    ...(env as AppEnvironment),
-    //TODO: drop it and specify env var on netlify
-    ORYX_FULFILLMENT_BACKEND_URL: env.ORYX_FULFILLMENT_MOCK_PROXY_URL,
-  })
+  .withEnvironment(env)
   .withFeature(
     offlineFulfillmentFeatures({
       picking: {

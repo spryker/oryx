@@ -4,10 +4,7 @@ import { appBuilder } from '@spryker-oryx/application';
 import { offlineServiceWorkerFulfillmentFeatures } from '../../../libs/template/presets/fulfillment';
 
 appBuilder()
-  .withEnvironment({
-    ...process.env,
-    ORYX_FULFILLMENT_BACKEND_URL: process.env.ORYX_FULFILLMENT_MOCK_PROXY_URL,
-  })
+  .withEnvironment(process.env)
   .withFeature(offlineServiceWorkerFulfillmentFeatures())
   .create()
   .then(() => console.debug('Service worker app started!'))
