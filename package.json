@@ -30,7 +30,7 @@
     "fa:serve": "npx concurrently --kill-others --success first \"npx nx run fulfillment:serve\"",
     "fa:serve:ci": "npx concurrently --kill-others --success first \"npx nx run fulfillment:build && npx nx run fulfillment:preview\"",
     "fa:wait-on": "wait-on -i=2000 -c wait-on-config.json http-get://localhost:4200 && wait-on -i=2000 -t=60000 -v apps/fulfillment/dev-dist/sw/app.js",
-    "fa:wait-on:ci": "wait-on -i=2000 -c wait-on-config.json http-get://localhost:4173 && wait-on -i=2000 -t=60000 -v apps/fulfillment/dev-dist/sw/app.js",
+    "fa:wait-on:ci": "wait-on -i=2000 -c wait-on-config.json http-get://localhost:4200 && wait-on -i=2000 -t=60000 -v apps/fulfillment/dev-dist/sw/app.js",
     "fa:e2e:open": "npx concurrently --kill-others --success first \"npm run fa:serve\" \"npm run fa:wait-on && npx nx run fulfillment-e2e:e2e\"",
     "fa:e2e:headless": "npx concurrently --kill-others --success first \"npm run fa:serve\" \"npm run fa:wait-on && npx nx run fulfillment-e2e:e2e:headless\"",
     "fa:e2e:headless:ci": "npx concurrently --kill-others --success first \"npm run fa:serve:ci\" \"npm run fa:wait-on:ci && npx nx run fulfillment-e2e:e2e:headless-ci\"",
