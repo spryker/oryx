@@ -166,7 +166,7 @@ export class SearchRangeFacetComponent
         .max="${max}"
         .maxValue="${this.max}"
         .minValue="${this.min}"
-        step="${ifDefined(this.step)}"
+        .step="${this.step}"
         @change="${this.onRangeChange}"
       ></oryx-multi-range>
     `;
