@@ -1,4 +1,3 @@
-import { Injector } from '@spryker-oryx/di';
 import {
   defer,
   EMPTY,
@@ -9,6 +8,7 @@ import {
   switchMap,
 } from 'rxjs';
 import { setCurrentInjector } from '../inject';
+import { Injector } from '../injector';
 import { Type } from '../models/type';
 
 const createProxyHandler = <T>(

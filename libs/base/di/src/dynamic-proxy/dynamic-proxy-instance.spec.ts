@@ -1,6 +1,7 @@
-import { inject, Injector } from '@spryker-oryx/di'; // Replace with your actual import
 import { lastValueFrom, of } from 'rxjs';
 import { describe, expect } from 'vitest';
+import { inject } from '../inject';
+import { Injector } from '../inject.spec';
 import { createLazyProxy } from './dynamic-proxy-instance';
 
 describe('Dynamic Proxy Instance', () => {

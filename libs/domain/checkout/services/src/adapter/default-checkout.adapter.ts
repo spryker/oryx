@@ -1,9 +1,4 @@
 import { IdentityService } from '@spryker-oryx/auth';
-import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
-import { Observable, combineLatest, map, switchMap, take } from 'rxjs';
-
-/* deprecated since 1.1, we should use imports from @spryker-oryx/checkout:
 import {
   ApiCheckoutModel,
   CheckoutAdapter,
@@ -15,20 +10,9 @@ import {
   CheckoutSerializer,
   PlaceOrderData,
 } from '@spryker-oryx/checkout';
- */
-import {
-  ApiCheckoutModel,
-  CheckoutData,
-  CheckoutResponse,
-  PlaceOrderData,
-} from '../../../src/models';
-import {
-  CheckoutAdapter,
-  CheckoutDataSerializer,
-  CheckoutNormalizer,
-  CheckoutResponseNormalizer,
-  CheckoutSerializer,
-} from '../../../src/services';
+import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
+import { inject } from '@spryker-oryx/di';
+import { Observable, combineLatest, map, switchMap, take } from 'rxjs';
 
 export class DefaultCheckoutAdapter implements CheckoutAdapter {
   constructor(
