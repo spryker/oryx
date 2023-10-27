@@ -1,7 +1,8 @@
 import { BapiAuthComponentsFeature, BapiAuthFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
-import { AppFeature, coreFeature } from '@spryker-oryx/core';
-import { Resources } from '@spryker-oryx/experience';
+import { AppFeature, PageMetaResolver, coreFeature } from '@spryker-oryx/core';
+import { Resources, experienceFeature } from '@spryker-oryx/experience';
+import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
 import { WebPushNotificationFeature } from '@spryker-oryx/push-notification/web';
@@ -11,7 +12,9 @@ import {
   materialDesignLink,
 } from '@spryker-oryx/resources';
 import { RouterFeature } from '@spryker-oryx/router';
+import { siteFeature } from '@spryker-oryx/site';
 import { uiFeature } from '@spryker-oryx/ui';
+import { StaticExperienceFeature } from './experience';
 import {
   FulfillmentRootFeature,
   FulfillmentRootFeatureConfig,
@@ -24,6 +27,16 @@ export function fulfillmentFeatures(
     uiFeature,
     cartFeature,
     coreFeature,
+    siteFeature,
+    formFeature,
+    {
+      //drop PageMetaResolver from experienceFeature
+      //to exclude unnecessary functionality from SPA
+      providers: experienceFeature.providers?.filter(
+        (feature) => ![PageMetaResolver].includes(feature.provide)
+      ),
+      components: experienceFeature.components,
+    },
     new RouterFeature(),
     new I18nFeature(config?.i18n),
     new WebPushNotificationFeature(),
@@ -32,6 +45,7 @@ export function fulfillmentFeatures(
     { resources: fulfillmentResources },
     new FulfillmentRootFeature(config?.fulfillmentRoot),
     new PickingFeature(config?.picking),
+    StaticExperienceFeature,
   ];
 }
 
