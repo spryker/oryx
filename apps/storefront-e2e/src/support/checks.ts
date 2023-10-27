@@ -37,3 +37,10 @@ export function checkProductCardsSortingBySku(
     cy.wrap(card).should('have.attr', 'sku', sortedSkus[index]);
   });
 }
+
+export function checkProductCardsPriceMode(
+  page: IPageWithFacets & IPageWithProductList,
+  query: string
+) {
+  page.getProductPrices().shadow().should('contain.text', query);
+}

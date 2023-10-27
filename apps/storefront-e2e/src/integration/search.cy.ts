@@ -10,7 +10,7 @@ let searchPage;
 
 describe('Search suite', () => {
   describe('Products filtering', () => {
-    const query = 'TomTom';
+    const query = 'Canon';
 
     beforeEach(() => {
       searchPage = new SearchPage({ q: query });
@@ -18,10 +18,17 @@ describe('Search suite', () => {
     });
 
     it('should update products and facets when filters are applied/cleared', () => {
-      // apply 1st filter
-      searchPage.getFacets().setTouchscreen('Yes');
+      searchPage.getFacets().setRating('4');
       searchPage.waitForSearchRequest();
       checkProductCardsFilteringByName(searchPage, 4, 3, query);
+
+      // we don't expect search request here because previous query is cached
+      searchPage.getFacets().resetRating();
+
+      // apply 1st filter
+      searchPage.getFacets().setLabel('New');
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilteringByName(searchPage, 3, 2, query);
 
       // apply 2nd filter
       searchPage.getFacets().setColor('Black');

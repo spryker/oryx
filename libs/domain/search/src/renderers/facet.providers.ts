@@ -7,6 +7,7 @@ import {
   colorFacetRenderer,
   defaultFacetRenderer,
   priceFacetRenderer,
+  ratingFacetRenderer,
 } from './value-renderer';
 
 export const facetProviders = [
@@ -20,6 +21,7 @@ export const facetProviders = [
       ...defaultFacetRenderer,
       ...colorFacetRenderer,
       ...(featureVersion >= '1.2' ? priceFacetRenderer : []),
+      ...(featureVersion >= '1.2' ? ratingFacetRenderer : []),
     },
   },
   {

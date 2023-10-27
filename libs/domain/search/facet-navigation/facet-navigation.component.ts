@@ -15,7 +15,12 @@ import {
   SelectFacetValue,
   SelectRangeFacetValue,
 } from '@spryker-oryx/search/facet';
-import { computed, hydrate, signal } from '@spryker-oryx/utilities';
+import {
+  computed,
+  featureVersion,
+  hydrate,
+  signal,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
@@ -28,11 +33,7 @@ import { searchFacetNavigationStyles } from './facet-navigation.styles';
   expandedItemsCount: 5,
   valueRenderLimit: 5,
   minForSearch: 13,
-  bury: [
-    {
-      facets: ['rating'],
-    },
-  ],
+  bury: [{ facets: featureVersion < '1.2' ? ['price', 'rating'] : [] }],
 })
 export class SearchFacetNavigationComponent extends LayoutMixin(
   ContentMixin<SearchFacetNavigationOptions>(LitElement)

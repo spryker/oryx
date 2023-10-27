@@ -8,6 +8,7 @@ export enum FacetParams {
   Default = 'default',
   Color = 'color',
   Price = 'price',
+  Rating = 'rating',
 }
 
 export interface FacetMappingOptions {
