@@ -27,7 +27,7 @@ export class SearchRangeFacetComponent
   @signalProperty() name?: string;
   @signalProperty({ type: Boolean }) open?: boolean;
   @signalProperty({ type: Boolean }) disableClear?: boolean;
-  @signalProperty({ type: Number }) step = 1;
+  @signalProperty({ type: Number, reflect: true }) step = 1;
   @signalProperty() labelMin?: string;
   @signalProperty() labelMax?: string;
 
@@ -166,7 +166,7 @@ export class SearchRangeFacetComponent
         .max="${max}"
         .maxValue="${this.max}"
         .minValue="${this.min}"
-        .step="${this.step}"
+        step="${ifDefined(this.step)}"
         @change="${this.onRangeChange}"
       ></oryx-multi-range>
     `;

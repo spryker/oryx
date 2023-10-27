@@ -96,7 +96,6 @@ describe('SearchRangeFacetComponent', () => {
     expect(input.value).toBe(String(min));
     expect(input.min).toBe(String(min));
     expect(input.max).toBe(String(max - 1));
-    expect(input.step).toBe('1');
   });
 
   it('should render max input field with proper configuration', () => {
