@@ -1,9 +1,5 @@
-import {
-  Component,
-  CompositionProperties,
-  StyleProperties,
-  StyleRuleSet,
-} from '../../models';
+import { Observable } from 'rxjs';
+import { Component, CompositionProperties, StyleRuleSet } from '../../models';
 
 export const LayoutBuilder = 'oryx.LayoutBuilder';
 
@@ -27,21 +23,18 @@ export interface LayoutBuilder {
    *
    * The concatenated styles can be used inside a `<style>` tag.
    */
-  collectStyles(components: Component[]): string;
+  collectStyles(components: Component[]): Observable<string>;
 
-  createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string;
+  createStylesFromOptions(
+    rules?: StyleRuleSet[],
+    id?: string
+  ): Observable<string>;
 
   /**
    * Generates an list of layout values that is driven by layout properties on the
    * composition.
    */
   getLayoutMarkers(data?: CompositionProperties): string | undefined;
-
-  /**
-   * Generates an inline style, driven by the style properties
-   * from the data.
-   */
-  getLayoutStyles(data?: StyleProperties): string | undefined;
 }
 
 declare global {

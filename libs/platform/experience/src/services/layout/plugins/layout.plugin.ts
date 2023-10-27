@@ -57,7 +57,9 @@ export interface LayoutStyleParameters extends Omit<StyleProperties, 'layout'> {
 export interface LayoutPlugin {
   getConfig(): Observable<LayoutPluginConfig>;
   getStyles?(): Observable<LayoutStyles>;
-  getStyleProperties?(data: LayoutStyleParameters): LayoutStyleProperties;
+  getStyleProperties?(
+    data: LayoutStyleParameters
+  ): Observable<LayoutStyleProperties>;
   /**
    * Returns object with pre and post render templates.
    * Together with composition component it's possible to specify global post\pre render and per component depends on argument.

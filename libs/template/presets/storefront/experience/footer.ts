@@ -44,7 +44,6 @@ const legalLinks: ExperienceComponent = {
                 divider: true,
               }
             : 'flex',
-        divider: true,
         gap: '0 20px',
         padding: '20px 0 0',
         ...(featureVersion >= '1.2' ? {} : { divider: true }),

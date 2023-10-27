@@ -13,10 +13,12 @@ export class TransformLayoutPlugin implements LayoutPlugin {
     });
   }
 
-  getStyleProperties(data: LayoutStyleParameters): LayoutStyleProperties {
-    return [
+  getStyleProperties(
+    data: LayoutStyleParameters
+  ): Observable<LayoutStyleProperties> {
+    return of([
       [{ rotate: data.rotate }, { unit: 'deg' }],
       [{ scale: data.scale }],
-    ];
+    ]);
   }
 }

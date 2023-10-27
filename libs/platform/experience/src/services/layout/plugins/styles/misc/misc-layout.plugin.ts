@@ -13,7 +13,9 @@ export class MiscLayoutPlugin implements LayoutPlugin {
     });
   }
 
-  getStyleProperties(data: LayoutStyleParameters): LayoutStyleProperties {
+  getStyleProperties(
+    data: LayoutStyleParameters
+  ): Observable<LayoutStyleProperties> {
     const gaps = data.gap?.toString().split(' ');
     const isGridColumnAlias = data.gridColumn && data.colSpan;
     const isGridRowAlias = data.gridRow && data.rowSpan;
@@ -30,7 +32,7 @@ export class MiscLayoutPlugin implements LayoutPlugin {
           [data.rowSpan ? { 'grid-row': `span ${data.rowSpan}` } : {}],
         ];
 
-    return [
+    return of([
       [
         {
           '--align': data.align,
@@ -53,6 +55,6 @@ export class MiscLayoutPlugin implements LayoutPlugin {
       ],
       ...gridColumn,
       ...gridRow,
-    ];
+    ]);
   }
 }

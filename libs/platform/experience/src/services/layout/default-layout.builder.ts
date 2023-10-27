@@ -1,5 +1,6 @@
-import { inject } from '@spryker-oryx/di';
+import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Breakpoint } from '@spryker-oryx/utilities';
+import { Observable, of } from 'rxjs';
 import {
   Component,
   CompositionProperties,
@@ -8,8 +9,8 @@ import {
 } from '../../models';
 import { LayoutBuilder } from './layout.builder';
 import { LayoutStylesOptions, LayoutStylesProperties } from './layout.model';
-import { LayoutService } from './layout.service';
 import {
+  LayoutPlugin,
   LayoutPluginType,
   LayoutStylePlugin,
   LayoutStyleProperties,
@@ -31,26 +32,35 @@ export const layoutKeys: (keyof LayoutStylesProperties)[] = [
 export class DefaultLayoutBuilder implements LayoutBuilder {
   constructor(
     protected screenService = inject(ScreenService),
-    protected layoutService = inject(LayoutService, null),
-    protected stylesPlugins = inject(LayoutStylePlugin, [])
+    protected stylePlugins = inject(LayoutStylePlugin),
+    protected injector = inject(INJECTOR)
   ) {}
 
-  collectStyles(components: Component[]): string {
-    return components
-      .map((component) =>
-        this.createStylesFromOptions(component.options?.rules, component.id)
-      )
-      .join('');
+  collectStyles(components: Component[]): Observable<string> {
+    return of(
+      components
+        .map((component) =>
+          this.createStylesFromOptions(component.options?.rules, component.id)
+        )
+        .join('')
+    );
   }
 
-  createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string {
-    if (!rules?.length) return '';
-    return rules
-      .map((rule) => {
-        const styles = this.getLayoutStyles(rule);
-        return styles ? this.getSelector(rule, styles, id) : '';
-      })
-      .join('');
+  createStylesFromOptions(
+    rules?: StyleRuleSet[],
+    id?: string
+  ): Observable<string> {
+    if (!rules?.length) return of('');
+
+    return of(
+      rules
+        .map((rule) => {
+          const styles = this.getLayoutStyles(rule);
+
+          return styles ? this.getSelector(rule, styles, id) : '';
+        })
+        .join('')
+    );
   }
 
   protected getSelector(
@@ -84,6 +94,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     }
   }
 
+  // TODO: drop it
   getLayoutMarkers(data?: CompositionProperties): string | undefined {
     const markerPrefix = 'layout-';
 
@@ -116,7 +127,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     }, '');
   }
 
-  getLayoutStyles(data?: StyleProperties): string | undefined {
+  protected getLayoutStyles(data?: StyleProperties): string | undefined {
     let styles = this.getProperties(data).join(';');
     if (data?.style) styles += `;${data.style}`;
     return styles === '' ? undefined : styles;
@@ -171,22 +182,22 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       }
     };
 
-    for (const plugin of this.stylesPlugins) {
+    for (const plugin of this.stylePlugins) {
       addProps(plugin.getStyleProperties?.(pluginData));
     }
 
     if (layoutData) {
       for (const [key, value] of Object.entries(layoutData)) {
-        const layoutProps = this.layoutService?.getStyleProperties?.({
-          token: key === 'type' ? value : key,
-          type:
-            key === 'type'
-              ? LayoutPluginType.Layout
-              : LayoutPluginType.Property,
-          data: pluginData,
-        });
+        const token = key === 'type' ? value : key;
+        const type =
+          key === 'type' ? LayoutPluginType.Layout : LayoutPluginType.Property;
 
-        addProps(layoutProps);
+        const plugin = this.injector.inject<LayoutPlugin | null>(
+          `${type}${token}`,
+          null
+        );
+
+        addProps(plugin?.getStyleProperties?.(pluginData));
       }
     }
 

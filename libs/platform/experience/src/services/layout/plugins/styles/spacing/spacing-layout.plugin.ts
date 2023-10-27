@@ -14,7 +14,9 @@ export class SpacingLayoutPlugin implements LayoutPlugin {
     });
   }
 
-  getStyleProperties(data: LayoutStyleParameters): LayoutStyleProperties {
+  getStyleProperties(
+    data: LayoutStyleParameters
+  ): Observable<LayoutStyleProperties> {
     const properties: LayoutStyleProperties = [
       [
         {
@@ -37,6 +39,6 @@ export class SpacingLayoutPlugin implements LayoutPlugin {
       ]);
     }
 
-    return properties;
+    return of(properties);
   }
 }

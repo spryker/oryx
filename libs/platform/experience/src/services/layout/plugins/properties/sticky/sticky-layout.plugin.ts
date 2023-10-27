@@ -19,9 +19,11 @@ export class StickyLayoutPlugin implements LayoutPlugin {
     });
   }
 
-  getStyleProperties(data: LayoutStyleParameters): LayoutStyleProperties {
-    return {
+  getStyleProperties(
+    data: LayoutStyleParameters
+  ): Observable<LayoutStyleProperties> {
+    return of({
       'max-height': `calc(${data.height ?? '100vh'} - ${data.top ?? '0px'})`,
-    };
+    });
   }
 }

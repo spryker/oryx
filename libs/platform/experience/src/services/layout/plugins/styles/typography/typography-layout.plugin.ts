@@ -13,13 +13,15 @@ export class TypographyLayoutPlugin implements LayoutPlugin {
     });
   }
 
-  getStyleProperties(data: LayoutStyleParameters): LayoutStyleProperties {
-    if (!data.typography) return {};
+  getStyleProperties(
+    data: LayoutStyleParameters
+  ): Observable<LayoutStyleProperties> {
+    if (!data.typography) return of({});
 
-    return {
+    return of({
       'font-size': `var(--oryx-typography-${data.typography}-size)`,
       'font-weight': `var(--oryx-typography-${data.typography}-weight)`,
       'line-height': `var(--oryx-typography-${data.typography}-line)`,
-    };
+    });
   }
 }

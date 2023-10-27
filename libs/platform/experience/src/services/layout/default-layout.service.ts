@@ -2,6 +2,7 @@ import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
 import { Observable, map, merge, of, reduce } from 'rxjs';
+import { LayoutBuilder } from './layout.builder';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import {
   LayoutIncomingConfig,
@@ -13,14 +14,16 @@ import {
   LayoutPluginRender,
   LayoutPluginType,
   LayoutPropertyPlugin,
-  LayoutStyleProperties,
+  LayoutStylePlugin,
 } from './plugins';
 import { ScreenService } from './screen.service';
 
 export class DefaultLayoutService implements LayoutService {
   constructor(
     protected screenService = inject(ScreenService),
-    protected injector = inject(INJECTOR)
+    protected stylePlugins = inject(LayoutStylePlugin),
+    protected injector = inject(INJECTOR),
+    protected layoutBuilder = inject(LayoutBuilder)
   ) {}
 
   getStyles(layoutInfo: ResponsiveLayoutInfo): Observable<string> {
@@ -48,11 +51,12 @@ export class DefaultLayoutService implements LayoutService {
       : of('');
   }
 
-  getStyleProperties(
-    config: LayoutStyleConfig
-  ): LayoutStyleProperties | undefined {
-    const { token, type, data } = config;
-    return this.getPlugin(token, type)?.getStyleProperties?.(data);
+  getStylesFromOptions(data: LayoutStyleConfig): Observable<string> {
+    if (data.components) {
+      return this.layoutBuilder.collectStyles(data.components);
+    }
+
+    return this.layoutBuilder.createStylesFromOptions(data.rules, data.id);
   }
 
   getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined {

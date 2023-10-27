@@ -18,7 +18,7 @@ export class BleedLayoutPlugin implements LayoutPlugin {
     });
   }
 
-  getStyleProperties(): LayoutStyleProperties {
-    return { 'padding-inline': '0' };
+  getStyleProperties(): Observable<LayoutStyleProperties> {
+    return of({ 'padding-inline': '0' });
   }
 }

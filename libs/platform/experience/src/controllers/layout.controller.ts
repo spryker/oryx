@@ -5,14 +5,13 @@ import {
 } from '@spryker-oryx/experience/layout';
 import { Size, sizes } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { Observable, map } from 'rxjs';
+import { Observable, map, withLatestFrom } from 'rxjs';
 import {
   CompositionProperties,
   ContentComponentProperties,
   StyleRuleSet,
 } from '../models';
 import {
-  LayoutBuilder,
   LayoutPluginParams,
   LayoutPluginRender,
   LayoutPluginType,
@@ -31,7 +30,6 @@ export interface LayoutRenderParams {
 }
 
 export class LayoutController {
-  protected layoutBuilder = resolve(LayoutBuilder);
   protected layoutService = resolve(LayoutService);
 
   constructor(
@@ -41,11 +39,13 @@ export class LayoutController {
   getStyles(properties: string[], rules: StyleRuleSet[]): Observable<string> {
     const props = this.normalizeProperties(properties, rules);
     const infos = this.getLayoutInfos(props, rules);
-    const componentStyles = this.collectStyles(props, rules, this.host.uid);
 
-    return this.layoutService
-      .getStyles(infos)
-      .pipe(map((layoutStyles) => `${layoutStyles}${componentStyles}`));
+    return this.layoutService.getStyles(infos).pipe(
+      withLatestFrom(this.getComponentStyles(props, rules, this.host.uid)),
+      map(
+        ([layoutStyles, componentStyles]) => `${layoutStyles}${componentStyles}`
+      )
+    );
   }
 
   getRender(config: LayoutRenderParams): TemplateResult {
@@ -131,22 +131,21 @@ export class LayoutController {
    *   display: contents;
    * }
    * ```
-   * @deprecated will be protected since 1.2
    */
-  collectStyles(
+  protected getComponentStyles(
     layoutProperties: (keyof LayoutProperties)[],
     rules: StyleRuleSet[] = [],
     uid?: string
-  ): string {
+  ): Observable<string> {
     let styles = '';
 
     if (layoutProperties.length === 1 && !this.hasLayout(rules)) {
       styles += ':host {display: contents;}\n';
     }
 
-    styles += this.layoutBuilder.createStylesFromOptions(rules, uid);
-
-    return styles;
+    return this.layoutService
+      .getStylesFromOptions({ rules, id: uid })
+      .pipe(map((optionsStyles) => `${styles}${optionsStyles}`));
   }
 
   protected normalizeProperties(
