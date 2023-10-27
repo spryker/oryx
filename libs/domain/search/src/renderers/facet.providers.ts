@@ -41,6 +41,7 @@ export const facetProviders = [
               .renderLimit=${options.renderLimit}
               .open=${options.open}
               ?disableClear="${!options.enableClear}"
+              ?enableClear=${featureVersion < '1.2' && options.enableClear}
               .multi=${facet.type === FacetType.Multi}
             >
             </oryx-search-facet>

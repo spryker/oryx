@@ -142,29 +142,15 @@ describe('SearchFacetValueNavigationComponent', () => {
       const chip = element.renderRoot.querySelector('oryx-chip');
       expect(chip?.textContent).toContain(String(mockSelectedLength));
     });
-  });
 
-  describe('when clear is enabled', () => {
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-facet-value-navigation
-          enableClear
-        ></oryx-search-facet-value-navigation>`
-      );
-    });
-
-    it('should not render clear button', () => {
-      expect(element).not.toContainElement('section oryx-button');
-    });
-
-    describe('and value navigation is dirty', () => {
+    describe('and clear is enabled', () => {
       const callback = vi.fn();
 
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-search-facet-value-navigation
+            .selectedLength=${mockSelectedLength}
             enableClear
-            dirty
             @oryx.clear=${callback}
           ></oryx-search-facet-value-navigation>`
         );
@@ -183,6 +169,56 @@ describe('SearchFacetValueNavigationComponent', () => {
 
         it('should dispatch oryx.clear event', () => {
           expect(callback).toHaveBeenCalled();
+        });
+      });
+    });
+  });
+
+  describe('when featureVersion >= 1.2', () => {
+    beforeEach(() => {
+      mockFeatureVersion('1.2');
+    });
+
+    describe('and clear is enabled', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-search-facet-value-navigation
+            enableClear
+          ></oryx-search-facet-value-navigation>`
+        );
+      });
+
+      it('should not render clear button', () => {
+        expect(element).not.toContainElement('section oryx-button');
+      });
+
+      describe('and value navigation is dirty', () => {
+        const callback = vi.fn();
+
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-search-facet-value-navigation
+              enableClear
+              dirty
+              @oryx.clear=${callback}
+            ></oryx-search-facet-value-navigation>`
+          );
+        });
+
+        it('should render clear button', () => {
+          expect(element).toContainElement('section oryx-button');
+        });
+
+        describe('and clear button is clicked', () => {
+          beforeEach(() => {
+            element.renderRoot
+              .querySelector<HTMLElement>('section oryx-button')
+              ?.click();
+          });
+
+          it('should dispatch oryx.clear event', () => {
+            expect(callback).toHaveBeenCalled();
+          });
         });
       });
     });
