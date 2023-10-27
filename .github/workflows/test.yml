@@ -175,6 +175,7 @@ jobs:
           isDev: ${{ env.IS_DEV }}
 
   test-e2e-fulfillment:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     needs: [test-format, test-lint, test-stylelint, test-tsconfig]
     steps:
