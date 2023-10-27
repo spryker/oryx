@@ -20,7 +20,7 @@ describe('Search suite', () => {
     it('should update products and facets when filters are applied/cleared', () => {
       searchPage.getFacets().setRating('4');
       searchPage.waitForSearchRequest();
-      checkProductCardsFilteringByName(searchPage, 4, 3, query);
+      checkProductCardsFilteringByName(searchPage, 2, 1, query);
 
       // we don't expect search request here because previous query is cached
       searchPage.getFacets().resetRating();
@@ -38,7 +38,7 @@ describe('Search suite', () => {
       // clear 2nd filter
       // we don't expect search request here because previous query is cached
       searchPage.getFacets().resetColor();
-      checkProductCardsFilteringByName(searchPage, 4, 3, query);
+      checkProductCardsFilteringByName(searchPage, 3, 2, query);
     });
 
     it('should apply price filterring', () => {
