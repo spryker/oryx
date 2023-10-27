@@ -15,7 +15,7 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { of } from 'rxjs';
+import { BehaviorSubject, of, switchMap } from 'rxjs';
 import {
   LayoutController,
   LayoutControllerRender,
@@ -145,16 +145,25 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       });
     }
 
-    protected renderLayout(props: LayoutMixinRender): TemplateResult {
-      const { composition, element, template } = props;
-      const layoutStyles = this.layoutStyles() ?? '';
-      const inlineStyles = composition
-        ? computed(() =>
-            this[LayoutMixinInternals].layoutService.getStylesFromOptions({
+    protected composition$ = new BehaviorSubject<Component[] | undefined>(
+      undefined
+    );
+    protected compositionStyles$ = this.composition$.pipe(
+      switchMap((composition) =>
+        composition
+          ? this[LayoutMixinInternals].layoutService.getStylesFromOptions({
               composition,
             })
-          )()
-        : '';
+          : of('')
+      )
+    );
+    protected $compositionStyles = computed(() => this.compositionStyles$);
+
+    protected renderLayout(props: LayoutMixinRender): TemplateResult {
+      const { composition, element, template } = props;
+      this.composition$.next(composition);
+      const layoutStyles = this.layoutStyles() ?? '';
+      const inlineStyles = this.$compositionStyles();
 
       const styles = inlineStyles + layoutStyles;
       const data = {
