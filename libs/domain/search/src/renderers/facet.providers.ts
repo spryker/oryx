@@ -1,5 +1,6 @@
 import { Facet, FacetType, ValueFacet } from '@spryker-oryx/product';
 import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { TemplateResult, html } from 'lit';
 import { DefaultFacetComponentRegistryService } from './default-facet-component-registry.service';
 import { FacetColorsMapping, colorsMap } from './facet-color-colors.mapping';
@@ -20,17 +21,26 @@ export const facetProviders = [
     useValue: {
       [`${FacetParams.Default}`]: {
         template: (
-          facet: ValueFacet,
+          facet: Facet,
           options: FacetMappingOptions,
           selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
         ): TemplateResult => {
+          if (featureVersion >= '1.2' && facet.type === FacetType.Range) {
+            return html` <oryx-search-range-facet
+              @oryx.select=${selectListener}
+              .name=${facet.name}
+              ?open=${options.open}
+              ?disableClear="${!options.enableClear}"
+            ></oryx-search-range-facet>`;
+          }
+
           return html`
             <oryx-search-facet
               @oryx.select=${selectListener}
               .name=${facet.name}
               .renderLimit=${options.renderLimit}
               .open=${options.open}
-              .enableClear="${options.enableClear}"
+              ?disableClear="${!options.enableClear}"
               .multi=${facet.type === FacetType.Multi}
             >
             </oryx-search-facet>
@@ -57,7 +67,7 @@ export const facetProviders = [
       },
       [`${FacetParams.Rating}`]: {
         template: (
-          facet: Facet,
+          facet: ValueFacet,
           options: FacetMappingOptions,
           selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
         ): TemplateResult => {
