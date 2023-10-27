@@ -16,17 +16,14 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import { of } from 'rxjs';
-import { LayoutController } from '../controllers/layout.controller';
 import {
-  Component,
-  CompositionLayout,
-  CompositionProperties,
-  StyleRuleSet,
-} from '../models';
+  LayoutController,
+  LayoutControllerRender,
+} from '../controllers/layout.controller';
+import { Component, CompositionProperties, StyleRuleSet } from '../models';
 import {
-  LayoutBuilder,
-  LayoutPluginParams,
   LayoutPluginRender,
+  LayoutService,
   LayoutTypes,
   ScreenService,
 } from '../services';
@@ -39,27 +36,7 @@ interface LayoutMixinRender {
 }
 
 export declare class LayoutMixinInterface {
-  /**
-   * @deprecated since 1.2 will be deleted.
-   * Use attributes with the same name but together with layout prefix instead.
-   */
-  bleed?: boolean;
-  sticky?: boolean;
-  overlap?: boolean;
-  divider?: boolean;
-  vertical?: boolean;
-  // @deprecated since 1.2 will be removed, use layoutXs instead
-  xs?: LayoutProperties;
-  // @deprecated since 1.2 will be removed, use layoutSm instead
-  sm?: LayoutProperties;
-  // @deprecated since 1.2 will be removed, use layoutMd instead
-  md?: LayoutProperties;
-  // @deprecated since 1.2 will be removed, use layoutLg instead
-  lg?: LayoutProperties;
-  // @deprecated since 1.2 will be removed, use layoutXl instead
-  xl?: LayoutProperties;
-
-  layout?: CompositionLayout | LayoutTypes;
+  layout?: LayoutTypes;
   layoutXs?: LayoutProperties;
   layoutSm?: LayoutProperties;
   layoutMd?: LayoutProperties;
@@ -69,9 +46,7 @@ export declare class LayoutMixinInterface {
   protected renderLayout: (props: LayoutMixinRender) => TemplateResult;
   protected getLayoutRender(
     place: keyof LayoutPluginRender,
-    data: Omit<LayoutPluginParams, 'options'> & {
-      options?: CompositionProperties;
-    }
+    data: LayoutControllerRender
   ): TemplateResult;
 }
 
@@ -90,7 +65,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     superClass
   ) {
     @signalProperty() attributeFilter: (keyof LayoutProperties)[] = [];
-    @signalProperty() layout?: CompositionLayout | LayoutTypes;
+    @signalProperty() layout?: LayoutTypes;
     @signalProperty({ type: Object, reflect: true, attribute: 'layout-xs' })
     layoutXs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true, attribute: 'layout-sm' })
@@ -102,23 +77,11 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     @signalProperty({ type: Object, reflect: true, attribute: 'layout-xl' })
     layoutXl?: LayoutProperties;
 
-    @signalProperty({ type: Object, reflect: true })
-    xs?: LayoutProperties;
-    @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
-    @signalProperty({ type: Object, reflect: true }) md?: LayoutProperties;
-    @signalProperty({ type: Object, reflect: true }) lg?: LayoutProperties;
-    @signalProperty({ type: Object, reflect: true }) xl?: LayoutProperties;
-
     protected [LayoutMixinInternals] = {
       layoutController: new LayoutController(this),
-      layoutBuilder: resolve(LayoutBuilder),
-      screenService: resolve(ScreenService, null),
+      layoutService: resolve(LayoutService),
+      screenService: resolve(ScreenService),
     };
-
-    // @deprecated since 1.2 will be deleted. Use LayoutMixinInternals instead
-    protected layoutController = new LayoutController(this);
-    // @deprecated since 1.2 will be deleted. Use LayoutMixinInternals instead
-    protected layoutBuilder = resolve(LayoutBuilder);
 
     protected observer = new MutationObserver((mutationRecords) => {
       mutationRecords.map((record) => {
@@ -172,9 +135,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected getLayoutRender(
       place: keyof LayoutPluginRender,
-      data: Omit<LayoutPluginParams, 'options'> & {
-        options?: CompositionProperties;
-      }
+      data: LayoutControllerRender
     ): TemplateResult {
       return this[LayoutMixinInternals].layoutController.getRender({
         place,
@@ -188,8 +149,13 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       const { composition, element, template } = props;
       const layoutStyles = this.layoutStyles() ?? '';
       const inlineStyles = composition
-        ? this[LayoutMixinInternals].layoutBuilder.collectStyles(composition)
+        ? computed(() =>
+            this[LayoutMixinInternals].layoutService.getStylesFromOptions({
+              composition,
+            })
+          )()
         : '';
+
       const styles = inlineStyles + layoutStyles;
       const data = {
         element: element ?? this,

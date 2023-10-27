@@ -16,7 +16,7 @@ export interface LayoutIncomingConfig {
 }
 
 export interface LayoutStyleConfig {
-  components?: Component[];
+  composition?: Component[];
   rules?: StyleRuleSet[];
   id?: string;
 }

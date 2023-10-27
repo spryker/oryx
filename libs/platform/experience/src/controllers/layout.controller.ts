@@ -20,12 +20,14 @@ import {
   ResponsiveLayoutInfo,
 } from '../services';
 
+export type LayoutControllerRender = Omit<LayoutPluginParams, 'options'> & {
+  options?: CompositionProperties;
+};
+
 export interface LayoutRenderParams {
   place: keyof LayoutPluginRender;
   attrs: string[];
-  data: Omit<LayoutPluginParams, 'options'> & {
-    options?: CompositionProperties;
-  };
+  data: LayoutControllerRender;
   screen?: Size;
 }
 

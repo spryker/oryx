@@ -1,6 +1,6 @@
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Breakpoint } from '@spryker-oryx/utilities';
-import { Observable, of } from 'rxjs';
+import { Observable, concatMap, from, map, merge, of, reduce } from 'rxjs';
 import {
   Component,
   CompositionProperties,
@@ -8,26 +8,17 @@ import {
   StyleRuleSet,
 } from '../../models';
 import { LayoutBuilder } from './layout.builder';
-import { LayoutStylesOptions, LayoutStylesProperties } from './layout.model';
+import { LayoutStylesOptions } from './layout.model';
 import {
   LayoutPlugin,
   LayoutPluginType,
+  LayoutStyleList,
+  LayoutStyleOptions,
   LayoutStylePlugin,
   LayoutStyleProperties,
   LayoutStylePropertiesArr,
 } from './plugins';
 import { ScreenService } from './screen.service';
-
-/**
- * @deprecated will be removed since 1.2.
- */
-export const layoutKeys: (keyof LayoutStylesProperties)[] = [
-  'sticky',
-  'bleed',
-  'overlap',
-  'divider',
-  'vertical',
-];
 
 export class DefaultLayoutBuilder implements LayoutBuilder {
   constructor(
@@ -37,12 +28,11 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   ) {}
 
   collectStyles(components: Component[]): Observable<string> {
-    return of(
-      components
-        .map((component) =>
-          this.createStylesFromOptions(component.options?.rules, component.id)
-        )
-        .join('')
+    return from(components).pipe(
+      concatMap((component) =>
+        this.createStylesFromOptions(component.options?.rules, component.id)
+      ),
+      reduce((acc, curr) => `${acc}${curr}`, '')
     );
   }
 
@@ -52,14 +42,13 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   ): Observable<string> {
     if (!rules?.length) return of('');
 
-    return of(
-      rules
-        .map((rule) => {
-          const styles = this.getLayoutStyles(rule);
-
-          return styles ? this.getSelector(rule, styles, id) : '';
-        })
-        .join('')
+    return from(rules).pipe(
+      concatMap((rule) =>
+        this.getLayoutStyles(rule).pipe(
+          map((styles) => (styles ? this.getSelector(rule, styles, id) : ''))
+        )
+      ),
+      reduce((acc, curr) => `${acc}${curr}`, '')
     );
   }
 
@@ -127,17 +116,23 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     }, '');
   }
 
-  protected getLayoutStyles(data?: StyleProperties): string | undefined {
-    let styles = this.getProperties(data).join(';');
-    if (data?.style) styles += `;${data.style}`;
-    return styles === '' ? undefined : styles;
+  protected getLayoutStyles(
+    data?: StyleProperties
+  ): Observable<string | undefined> {
+    return merge(...this.getProperties(data)).pipe(
+      map((props) => {
+        let styles = this.convertProperties(props).join(';');
+        if (data?.style) styles += `;${data.style}`;
+        return styles === '' ? undefined : styles;
+      })
+    );
   }
 
-  protected getProperties(data?: StyleProperties): string[] {
-    const rules: string[] = [];
-
-    if (!data) return rules;
-
+  protected getProperties(
+    data?: StyleProperties
+  ): Observable<LayoutStyleProperties>[] {
+    if (!data) return [];
+    const observables: Observable<LayoutStyleProperties>[] = [];
     const layoutData =
       typeof data.layout === 'string' ? { type: data.layout } : data.layout;
     const pluginData = {
@@ -145,14 +140,40 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       layout: layoutData,
     };
 
+    for (const plugin of this.stylePlugins) {
+      const observable = plugin.getStyleProperties?.(pluginData);
+
+      if (observable) observables.push(observable);
+    }
+
+    if (!layoutData) {
+      return observables;
+    }
+
+    for (const [key, value] of Object.entries(layoutData)) {
+      const token = key === 'type' ? value : key;
+      const type =
+        key === 'type' ? LayoutPluginType.Layout : LayoutPluginType.Property;
+      const plugin = this.injector.inject<LayoutPlugin | null>(
+        `${type}${token}`,
+        null
+      );
+      const observable = plugin?.getStyleProperties?.(pluginData);
+
+      if (observable) observables.push(observable);
+    }
+
+    return observables;
+  }
+
+  protected convertProperties(props: LayoutStyleProperties = []): string[] {
+    const rules: string[] = [];
+
     const addUnit = (value: string | number | undefined, unit?: string) => {
       return `${value}${unit ?? 'px'}`;
     };
 
-    const add = (
-      rulesObj: { [key: string]: string | number | undefined },
-      options?: { unit?: string; omitUnit?: boolean; emptyValue?: boolean }
-    ) => {
+    const add = (rulesObj: LayoutStyleList, options?: LayoutStyleOptions) => {
       Object.entries(rulesObj).forEach(([rule, value]) => {
         if ((!value || value === '0') && !options?.emptyValue) return;
         if (!isNaN(Number(value))) {
@@ -170,35 +191,14 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       });
     };
 
-    const addProps = (props: LayoutStyleProperties = []) => {
-      if (props && !Array.isArray(props)) {
-        add(props);
+    if (props && !Array.isArray(props)) {
+      add(props);
 
-        return;
-      }
-
-      for (const [rules, options] of props as LayoutStylePropertiesArr) {
-        if (props) add(rules, options);
-      }
-    };
-
-    for (const plugin of this.stylePlugins) {
-      addProps(plugin.getStyleProperties?.(pluginData));
+      return rules;
     }
 
-    if (layoutData) {
-      for (const [key, value] of Object.entries(layoutData)) {
-        const token = key === 'type' ? value : key;
-        const type =
-          key === 'type' ? LayoutPluginType.Layout : LayoutPluginType.Property;
-
-        const plugin = this.injector.inject<LayoutPlugin | null>(
-          `${type}${token}`,
-          null
-        );
-
-        addProps(plugin?.getStyleProperties?.(pluginData));
-      }
+    for (const [rules, options] of props as LayoutStylePropertiesArr) {
+      if (props) add(rules, options);
     }
 
     return rules;
