@@ -37,6 +37,7 @@
       "@spryker-oryx/cart/quantity-input": [
         "libs/domain/cart/quantity-input/index.ts"
       ],
+      "@spryker-oryx/cart/services": ["libs/domain/cart/services/index.ts"],
       "@spryker-oryx/cart/totals": ["libs/domain/cart/totals/index.ts"],
       "@spryker-oryx/checkout": ["libs/domain/checkout/src/index.ts"],
       "@spryker-oryx/checkout/account": [
@@ -67,6 +68,9 @@
       ],
       "@spryker-oryx/checkout/place-order": [
         "libs/domain/checkout/place-order/index.ts"
+      ],
+      "@spryker-oryx/checkout/services": [
+        "libs/domain/checkout/services/index.ts"
       ],
       "@spryker-oryx/checkout/shipping-address": [
         "libs/domain/checkout/shipping-address/index.ts"

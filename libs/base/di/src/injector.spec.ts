@@ -1,3 +1,4 @@
+import { of } from 'rxjs';
 import { inject } from './inject';
 import { INJECTOR, Injector } from './injector';
 import { OnDestroy } from './models/on-destroy';
@@ -15,6 +16,14 @@ class ServiceWithDestroy implements OnDestroy {
 }
 class MockMultiA {}
 class MockMultiB {}
+
+class AsyncMockImplementation {
+  asyncMethod() {
+    return of('async result');
+  }
+}
+
+const mockAsyncImport = vi.fn(async () => AsyncMockImplementation);
 
 describe('Injector', () => {
   let injector: Injector;
@@ -214,6 +223,31 @@ describe('Injector', () => {
       expect(service[0]).toBeInstanceOf(MockImplementation);
       expect(service[1]).toBe('test');
       expect(service[2]).toBe('testFactory');
+    });
+  });
+
+  describe('asyncClass provider', () => {
+    beforeEach(() => {
+      injector.provide({
+        provide: 'asyncService',
+        asyncClass: mockAsyncImport,
+      });
+    });
+
+    it('should provide a proxy for async service', () => {
+      const service = injector.inject('asyncService');
+      expect(service).toBeDefined();
+    });
+
+    it('should not load the async service until a method is called', () => {
+      const service = injector.inject('asyncService');
+      expect(mockAsyncImport).not.toHaveBeenCalled();
+
+      service.asyncMethod().subscribe((result: unknown) => {
+        expect(result).toBe('async result');
+      });
+
+      expect(mockAsyncImport).toHaveBeenCalled();
     });
   });
 });
