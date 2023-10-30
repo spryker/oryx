@@ -9,6 +9,21 @@ declare global {
   export interface LayoutsProperty {
     vertical?: boolean;
   }
+
+  export interface LayoutStylesProperties {
+    layout?: LayoutStylesOptions | LayoutTypes;
+
+    // @deprecated since 1.2 will be removed.
+    vertical?: boolean;
+    // @deprecated since 1.2 will be removed.
+    sticky?: boolean;
+    // @deprecated since 1.2 will be removed.
+    overlap?: boolean;
+    // @deprecated since 1.2 will be removed.
+    bleed?: boolean;
+    // @deprecated since 1.2 will be removed.
+    divider?: boolean;
+  }
 }
 
 // Object is workaround for autocomplete. Typescript incorrect parse metadata when define union and strict type.
@@ -18,21 +33,6 @@ export type LayoutTypes = keyof Layouts | (string & {});
 
 export interface LayoutStylesOptions extends LayoutsProperty {
   type?: LayoutTypes;
-}
-
-export interface LayoutStylesProperties {
-  layout?: LayoutStylesOptions | LayoutTypes;
-
-  // @deprecated since 1.2 will be removed.
-  vertical?: boolean;
-  // @deprecated since 1.2 will be removed.
-  sticky?: boolean;
-  // @deprecated since 1.2 will be removed.
-  overlap?: boolean;
-  // @deprecated since 1.2 will be removed.
-  bleed?: boolean;
-  // @deprecated since 1.2 will be removed.
-  divider?: boolean;
 }
 
 export type LayoutStyles = {

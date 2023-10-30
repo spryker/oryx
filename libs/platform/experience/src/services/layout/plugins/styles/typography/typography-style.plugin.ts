@@ -6,10 +6,10 @@ import {
   LayoutStyleProperties,
 } from '../../layout.plugin';
 
-export class TypographyLayoutPlugin implements LayoutPlugin {
+export class TypographyStylePlugin implements LayoutPlugin {
   getConfig(): Observable<LayoutPluginConfig> {
     return of({
-      schema: () => import('./typography-layout.schema').then((m) => m.schema),
+      schema: () => import('./typography-style.schema').then((m) => m.schema),
     });
   }
 

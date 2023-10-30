@@ -6,10 +6,10 @@ import {
   LayoutStyleProperties,
 } from '../../layout.plugin';
 
-export class MiscLayoutPlugin implements LayoutPlugin {
+export class LayoutStylePlugin implements LayoutPlugin {
   getConfig(): Observable<LayoutPluginConfig> {
     return of({
-      schema: () => import('./misc-layout.schema').then((m) => m.schema),
+      schema: () => import('./layout-style.schema').then((m) => m.schema),
     });
   }
 
@@ -33,26 +33,12 @@ export class MiscLayoutPlugin implements LayoutPlugin {
         ];
 
     return of([
-      [
-        {
-          '--align': data.align,
-          '--justify': data.justify,
-          border: data.border,
-          'border-radius': data.radius,
-          background: data.background,
-          '--oryx-fill': data.fill,
-          'aspect-ratio': data.ratio,
-          overflow: data.overflow,
-        },
-      ],
+      [{ '--align': data.align, '--justify': data.justify }],
       [
         { '--column-gap': gaps?.[1] ?? gaps?.[0], '--row-gap': gaps?.[0] },
         { emptyValue: true },
       ],
-      [
-        { 'z-index': data.zIndex, '--oryx-column-count': data.columnCount },
-        { omitUnit: true },
-      ],
+      [{ '--oryx-column-count': data.columnCount }, { omitUnit: true }],
       ...gridColumn,
       ...gridRow,
     ]);

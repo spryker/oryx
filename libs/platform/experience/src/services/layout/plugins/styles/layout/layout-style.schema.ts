@@ -22,17 +22,7 @@ export const schema: ContentComponentSchema = {
     gridColumn: { type: FormFieldType.Number },
     gridRow: { type: FormFieldType.Number },
     rowSpan: { type: FormFieldType.Number },
-    zIndex: { type: FormFieldType.Number },
-    overflow: {
-      type: FormFieldType.Select,
-      options: [{ value: 'auto' }, { value: 'scroll' }, { value: 'hidden' }],
-    },
-    background: { type: FormFieldType.Color, width: 100 },
-    fill: { type: FormFieldType.Color, width: 100 },
-    radius: { type: FormFieldType.Text },
-    border: { type: FormFieldType.Text },
     gap: { type: FormFieldType.Text },
     columnCount: { type: FormFieldType.Number },
-    ratio: { type: FormFieldType.Text },
   },
 };

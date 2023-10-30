@@ -11,7 +11,7 @@ import {
 import { Theme, ThemePlugin } from '../../plugins';
 import { DefaultLayoutBuilder } from './default-layout.builder';
 import { LayoutAlign } from './layout.model';
-import { LayoutPlugin, LayoutStylePlugin } from './plugins';
+import { LayoutPlugin, LayoutStylesPlugin } from './plugins';
 import { ScreenService } from './screen.service';
 
 const mockTheme: Theme = {
@@ -98,7 +98,7 @@ describe('DefaultLayoutBuilder', () => {
         useValue: mockLayoutPlugin,
       },
       {
-        provide: LayoutStylePlugin,
+        provide: LayoutStylesPlugin,
         useValue: mockStylePlugin,
       },
     ]);

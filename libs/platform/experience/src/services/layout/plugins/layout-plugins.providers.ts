@@ -1,18 +1,21 @@
 import { Provider } from '@spryker-oryx/di';
-import { LayoutStylePlugin } from './layout.plugin';
+import { LayoutStylesPlugin } from './layout.plugin';
 import {
   BleedLayoutPlugin,
   BleedLayoutPluginToken,
   DividerLayoutPlugin,
   DividerLayoutPluginToken,
+  OverlapLayoutPlugin,
+  OverlapLayoutPluginToken,
   StickyLayoutPlugin,
   StickyLayoutPluginToken,
 } from './properties';
 import {
-  MiscLayoutPlugin,
-  SpacingLayoutPlugin,
-  TransformLayoutPlugin,
-  TypographyLayoutPlugin,
+  CanvasStylePlugin,
+  LayoutStylePlugin,
+  SpacingStylePlugin,
+  TransformStylePlugin,
+  TypographyStylePlugin,
 } from './styles';
 import {
   CarouselLayoutPlugin,
@@ -23,8 +26,6 @@ import {
   FlexLayoutPluginToken,
   GridLayoutPlugin,
   GridLayoutPluginToken,
-  OverlapLayoutPlugin,
-  OverlapLayoutPluginToken,
   SplitAsideLayoutPlugin,
   SplitAsideLayoutPluginToken,
   SplitLayoutPlugin,
@@ -37,20 +38,24 @@ import {
 
 export const layoutPluginsProviders: Provider[] = [
   {
-    provide: LayoutStylePlugin,
-    useClass: TypographyLayoutPlugin,
+    provide: LayoutStylesPlugin,
+    useClass: CanvasStylePlugin,
   },
   {
-    provide: LayoutStylePlugin,
-    useClass: MiscLayoutPlugin,
+    provide: LayoutStylesPlugin,
+    useClass: TypographyStylePlugin,
   },
   {
-    provide: LayoutStylePlugin,
-    useClass: SpacingLayoutPlugin,
+    provide: LayoutStylesPlugin,
+    useClass: LayoutStylePlugin,
   },
   {
-    provide: LayoutStylePlugin,
-    useClass: TransformLayoutPlugin,
+    provide: LayoutStylesPlugin,
+    useClass: SpacingStylePlugin,
+  },
+  {
+    provide: LayoutStylesPlugin,
+    useClass: TransformStylePlugin,
   },
   {
     provide: GridLayoutPluginToken,

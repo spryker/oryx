@@ -1,1 +1,2 @@
-export * from './transform-layout.plugin';
+export * from './transform-style.model';
+export * from './transform-style.plugin';
