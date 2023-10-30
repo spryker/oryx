@@ -1,5 +1,17 @@
 import { IdentityService } from '@spryker-oryx/auth';
 import { CartService, CartsUpdated } from '@spryker-oryx/cart';
+import {
+  CheckoutAdapter,
+  CheckoutResponse,
+  CheckoutService,
+  CheckoutStateService,
+  CheckoutStatus,
+  PlaceOrderData,
+  PlaceOrderEnd,
+  PlaceOrderFail,
+  PlaceOrderStart,
+  PlaceOrderSuccess,
+} from '@spryker-oryx/checkout';
 import { createCommand, createEffect } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { OrderService } from '@spryker-oryx/order';
@@ -18,35 +30,6 @@ import {
   take,
   throwError,
 } from 'rxjs';
-
-/* deprecated since 1.1, we should use imports from @spryker-oryx/checkout:
-import {
-  CheckoutAdapter,
-  CheckoutResponse,
-  CheckoutService,
-  CheckoutStateService,
-  CheckoutStatus,
-  PlaceOrderData,
-  PlaceOrderEnd,
-  PlaceOrderFail,
-  PlaceOrderStart,
-  PlaceOrderSuccess,
-} from '@spryker-oryx/checkout';
- */
-import {
-  CheckoutResponse,
-  CheckoutStatus,
-  PlaceOrderData,
-} from '../../src/models';
-import {
-  CheckoutAdapter,
-  CheckoutService,
-  CheckoutStateService,
-  PlaceOrderEnd,
-  PlaceOrderFail,
-  PlaceOrderStart,
-  PlaceOrderSuccess,
-} from '../../src/services';
 
 export class DefaultCheckoutService implements CheckoutService {
   protected cartId$ = this.cartService
