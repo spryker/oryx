@@ -4,7 +4,7 @@ import { FacetValue } from '@spryker-oryx/product';
 import { generateFacet } from '@spryker-oryx/product/mocks';
 import { FacetListService } from '@spryker-oryx/search';
 import { SearchFacetValueNavigationComponent } from '@spryker-oryx/search/facet-value-navigation';
-import { i18n, useComponent } from '@spryker-oryx/utilities';
+import { featureVersion, i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SearchFacetComponent } from './facet.component';
@@ -20,15 +20,14 @@ class MockFacetListService implements Partial<FacetListService> {
 
 describe('SearchFacetComponent', () => {
   let element: SearchFacetComponent;
+  let service: MockFacetListService;
 
   beforeAll(async () => {
     await useComponent(searchFacetComponent);
   });
 
-  let facetListService: MockFacetListService;
-
   beforeEach(async () => {
-    const injector = createInjector({
+    const testInjector = createInjector({
       providers: [
         {
           provide: FacetListService,
@@ -37,7 +36,7 @@ describe('SearchFacetComponent', () => {
       ],
     });
 
-    facetListService = injector.inject<MockFacetListService>(FacetListService);
+    service = testInjector.inject<MockFacetListService>(FacetListService);
 
     element = await fixture(
       html`<oryx-search-facet name="Mock"></oryx-search-facet>`
@@ -253,25 +252,8 @@ describe('SearchFacetComponent', () => {
       });
     });
 
-    describe('enableClear', () => {
-      describe('is set to false', () => {
-        beforeEach(async () => {
-          element = await fixture(
-            html`<oryx-search-facet
-              .enableClear=${false}
-              name="Mock"
-            ></oryx-search-facet>`
-          );
-        });
-
-        it('should not provide "enableClear" attribute to oryx-search-facet-value-navigation', () => {
-          expect(element).toContainElement(
-            'oryx-search-facet-value-navigation:not([enableClear])'
-          );
-        });
-      });
-
-      describe('is not provided', () => {
+    if (featureVersion >= '1.2') {
+      describe('disableClear', () => {
         beforeEach(async () => {
           element = await fixture(
             html`<oryx-search-facet name="Mock"></oryx-search-facet>`
@@ -283,8 +265,56 @@ describe('SearchFacetComponent', () => {
             'oryx-search-facet-value-navigation[enableClear]'
           );
         });
+
+        describe('and clear disabled', () => {
+          beforeEach(async () => {
+            element = await fixture(
+              html`<oryx-search-facet
+                name="Mock"
+                disableClear
+              ></oryx-search-facet>`
+            );
+          });
+
+          it('should disable clear on value navigation', () => {
+            expect(element).toContainElement(
+              'oryx-search-facet-value-navigation:not([enableClear])'
+            );
+          });
+        });
       });
-    });
+    } else {
+      describe('enableClear', () => {
+        beforeEach(async () => {
+          element = await fixture(
+            html`<oryx-search-facet name="Mock"></oryx-search-facet>`
+          );
+        });
+
+        it('should enable clear on value navigation', () => {
+          expect(element).toContainElement(
+            'oryx-search-facet-value-navigation[enableClear]'
+          );
+        });
+
+        describe('and disabled', () => {
+          beforeEach(async () => {
+            element = await fixture(
+              html`<oryx-search-facet
+                name="Mock"
+                .enableClear=${false}
+              ></oryx-search-facet>`
+            );
+          });
+
+          it('should disable clear on value navigation', () => {
+            expect(element).toContainElement(
+              'oryx-search-facet-value-navigation:not([enableClear])'
+            );
+          });
+        });
+      });
+    }
   });
 
   describe('select event', () => {
@@ -316,6 +346,23 @@ describe('SearchFacetComponent', () => {
         new CustomEvent(FACET_SELECT_EVENT)
       );
       expect(callback.mock.calls[0][0].detail).toStrictEqual(detail);
+    });
+  });
+
+  describe('when facet has selected values', () => {
+    beforeEach(async () => {
+      service.getFacet.mockReturnValue(
+        of(generateFacet('Mock', 'parameter', 10, ['Mock']))
+      );
+      element = await fixture(
+        html`<oryx-search-facet name="Mock"></oryx-search-facet>`
+      );
+    });
+
+    it('should make value navigation dirty', () => {
+      expect(element).toContainElement(
+        'oryx-search-facet-value-navigation[dirty]'
+      );
     });
   });
 
@@ -394,11 +441,9 @@ describe('SearchFacetComponent', () => {
 
   describe('when facet values have children', () => {
     beforeEach(async () => {
-      facetListService.getFacet = vi
-        .fn()
-        .mockReturnValue(
-          of(generateFacet('Mock', 'parameter', 10, selectedValuesNames, true))
-        );
+      service.getFacet.mockReturnValue(
+        of(generateFacet('Mock', 'parameter', 10, selectedValuesNames, true))
+      );
 
       element = await fixture(
         html` <oryx-search-facet
@@ -415,9 +460,9 @@ describe('SearchFacetComponent', () => {
 
   describe('when facet has no values', () => {
     beforeEach(async () => {
-      facetListService.getFacet = vi
-        .fn()
-        .mockReturnValue(of(generateFacet('Mock', 'parameter', 0)));
+      service.getFacet.mockReturnValue(
+        of(generateFacet('Mock', 'parameter', 0))
+      );
 
       element = await fixture(
         html` <oryx-search-facet name="Mock"></oryx-search-facet>`

@@ -28,6 +28,7 @@ describe('Product Facet Normalizers', () => {
   it('should return normalized product facet-navigation', () => {
     expect(facetsNormalizer({ facetList: mockFacets })).toEqual([
       {
+        type: 'multi',
         name: 'Color',
         parameter: 'color',
         values: [
