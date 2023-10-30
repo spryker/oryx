@@ -41,3 +41,8 @@ export interface MultiRangeProperties {
 
   disabled?: boolean;
 }
+
+export interface MultiRangeChangeEvent {
+  minValue: number;
+  maxValue: number;
+}

@@ -4,6 +4,7 @@ import {
   defaultOptions,
   LayoutMixin,
 } from '@spryker-oryx/experience';
+import { FacetType, FacetValue } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import {
   FacetComponentRegistryService,
@@ -45,11 +46,7 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
     const { bury } = this.$options();
 
     return this.$facets()?.filter(
-      (facet) =>
-        !bury?.find((b) => {
-          console.log(facet);
-          return b.facets.includes(facet.parameter);
-        })
+      (facet) => !bury?.find((b) => b.facets.includes(facet.parameter))
     );
   });
 
@@ -83,26 +80,30 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
   }
 
   protected applyFilters(e: CustomEvent<SelectFacetEventDetail>): void {
-    const { name, value: selectedFacetValue } = e.detail;
+    const { name, value } = e.detail;
 
     const facet = this.$facets()?.find((facet) => facet.name === name);
 
     if (!facet) return;
-    if (!selectedFacetValue) {
+    if (!value) {
       this.navigate(facet.parameter);
       return;
     }
 
-    const values = facet.multiValued
-      ? [
-          ...(facet.selectedValues ?? []),
-          ...(selectedFacetValue.selected ? [selectedFacetValue.value] : []),
-        ].filter(
-          (selectedValue) =>
-            selectedFacetValue.selected ||
-            selectedValue !== selectedFacetValue.value
-        )
-      : [selectedFacetValue.value];
+    //TODO: adjust types during implementation of price facet
+    const selectedFacetValue = value as Pick<FacetValue, 'value' | 'selected'>;
+
+    const values =
+      facet.type === FacetType.Multi
+        ? [
+            ...(facet.selectedValues ?? []),
+            ...(selectedFacetValue.selected ? [selectedFacetValue.value] : []),
+          ].filter(
+            (selectedValue) =>
+              selectedFacetValue.selected ||
+              selectedValue !== selectedFacetValue.value
+          )
+        : [selectedFacetValue.value];
 
     this.navigate(facet.parameter, values as string[]);
   }

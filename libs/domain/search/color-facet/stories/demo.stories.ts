@@ -1,5 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
+import { FacetValue, ValueFacet } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import { FacetListService } from '@spryker-oryx/search';
 import {
@@ -27,18 +28,26 @@ const Template: Story<SearchFacetComponentAttributes> = (
     e: CustomEvent<SelectFacetEventDetail>,
     multiValued = true
   ) => {
-    const { name, value: selectedFacetValue } = e.detail;
+    const { name, value } = e.detail;
 
     service
       .get()
       .pipe(take(1))
       .subscribe((facets) => {
+        //TODO: adjust types during implementation of price facet
+        const selectedFacetValue = value as Pick<
+          FacetValue,
+          'value' | 'selected'
+        >;
+
         if (!selectedFacetValue) {
           router.params$.next({});
           return;
         }
 
-        const facet = facets?.find((facet) => facet.name === name);
+        const facet = facets?.find(
+          (facet) => facet.name === name
+        ) as ValueFacet;
 
         const values = multiValued
           ? [
