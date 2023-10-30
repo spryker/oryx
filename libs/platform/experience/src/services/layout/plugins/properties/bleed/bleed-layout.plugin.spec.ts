@@ -32,10 +32,11 @@ describe('BleedLayoutPlugin', () => {
   });
 
   describe('getStyleProperties', () => {
-    it('should return a LayoutStyleProperties object', () => {
+    it('should return a LayoutStyleProperties object', async () => {
       const styleProperties = { 'padding-inline': '0' };
+      const result = await lastValueFrom(plugin.getStyleProperties());
 
-      expect(plugin.getStyleProperties()).toEqual(styleProperties);
+      expect(result).toEqual(styleProperties);
     });
   });
 });

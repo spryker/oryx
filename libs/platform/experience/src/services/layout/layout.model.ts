@@ -56,7 +56,7 @@ export interface ResponsiveLayoutInfo {
 export interface ResponsiveLayout {
   included?: Breakpoint[];
   excluded?: Breakpoint[];
-  type: LayoutPluginType;
+  type?: LayoutPluginType;
 }
 
 export const enum LayoutAlign {

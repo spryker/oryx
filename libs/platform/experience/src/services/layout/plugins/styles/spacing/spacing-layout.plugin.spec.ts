@@ -21,13 +21,27 @@ describe('SpacingLayoutPlugin', () => {
   });
 
   describe('getStyleProperties', () => {
-    it('should return a LayoutStyleProperties object', () => {
-      const data = { height: '100px', top: '10' };
-      const styleProperties = {
-        'max-height': `calc(${data.height} - ${data.top})`,
+    it('should return a LayoutStyleProperties object', async () => {
+      const data = {
+        margin: '10px',
+        top: '10',
+        height: '15px',
+        width: '120px',
+        padding: '10px 5px 2px 3px',
       };
+      const styleProperties = {
+        margin: data.margin,
+        'inset-block-start': data.top,
+        height: data.height,
+        width: data.width,
+        'scroll-padding': '3px',
+        'padding-block': '10px 2px',
+        'padding-inline': '3px 5px',
+        '--inline-padding': '3px 5px',
+      };
+      const result = await lastValueFrom(plugin.getStyleProperties(data));
 
-      expect(plugin.getStyleProperties(data)).toEqual(styleProperties);
+      expect(result).toEqual(styleProperties);
     });
   });
 });

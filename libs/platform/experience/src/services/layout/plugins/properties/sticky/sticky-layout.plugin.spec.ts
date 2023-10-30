@@ -32,13 +32,14 @@ describe('StickyLayoutPlugin', () => {
   });
 
   describe('getStyleProperties', () => {
-    it('should return a LayoutStyleProperties object', () => {
+    it('should return a LayoutStyleProperties object', async () => {
       const data = { height: '100px', top: '10' };
       const styleProperties = {
         'max-height': `calc(${data.height} - ${data.top})`,
       };
+      const result = await lastValueFrom(plugin.getStyleProperties(data));
 
-      expect(plugin.getStyleProperties(data)).toEqual(styleProperties);
+      expect(result).toEqual(styleProperties);
     });
   });
 });

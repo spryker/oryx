@@ -2,6 +2,7 @@ import { App, AppRef } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Size } from '@spryker-oryx/utilities';
+import { lastValueFrom, of } from 'rxjs';
 import {
   Component,
   CompositionProperties,
@@ -10,6 +11,7 @@ import {
 import { Theme, ThemePlugin } from '../../plugins';
 import { DefaultLayoutBuilder } from './default-layout.builder';
 import { LayoutAlign } from './layout.model';
+import { LayoutPlugin, LayoutStylePlugin } from './plugins';
 import { ScreenService } from './screen.service';
 
 const mockTheme: Theme = {
@@ -34,6 +36,14 @@ class MockApp implements Partial<App> {
 class MockScreenService implements Partial<ScreenService> {
   getScreenMedia = vi.fn();
 }
+
+const mockStylePlugin = {
+  getStyleProperties: vi.fn(),
+};
+
+const mockLayoutPlugin = {
+  getStyleProperties: vi.fn(),
+};
 
 describe('DefaultLayoutBuilder', () => {
   let service: DefaultLayoutBuilder;
@@ -82,6 +92,14 @@ describe('DefaultLayoutBuilder', () => {
       {
         provide: ScreenService,
         useClass: MockScreenService,
+      },
+      {
+        provide: `${LayoutPlugin}grid`,
+        useValue: mockLayoutPlugin,
+      },
+      {
+        provide: LayoutStylePlugin,
+        useValue: mockStylePlugin,
       },
     ]);
 
@@ -348,6 +366,64 @@ describe('DefaultLayoutBuilder', () => {
         it(`should not add the ${prop} marker`, () => {
           expect(layoutMarkers).toBeUndefined();
         });
+      });
+    });
+  });
+
+  describe('getCompositionStyles', () => {
+    it('should return proper style from composition of components', async () => {
+      mockStylePlugin.getStyleProperties.mockReturnValue(
+        of({ a: 'a', b: 'b' })
+      );
+      mockLayoutPlugin.getStyleProperties.mockReturnValue(
+        of({ c: 'c', d: 'd' })
+      );
+
+      const result = await lastValueFrom(
+        service.getCompositionStyles([
+          {
+            id: 'idA',
+            type: 'typeA',
+            options: {
+              rules: [{ layout: 'grid' }],
+            },
+          },
+        ])
+      );
+
+      expect(result).toContain(':host([uid="idA"]), [uid="idA"]');
+      expect(result).toContain('a: a;b: b');
+      expect(result).toContain('c: c;d: d');
+      expect(mockStylePlugin.getStyleProperties).toHaveBeenCalledWith({
+        layout: { type: 'grid' },
+      });
+      expect(mockLayoutPlugin.getStyleProperties).toHaveBeenCalledWith({
+        layout: { type: 'grid' },
+      });
+    });
+  });
+
+  describe('getStylesFromOptions', () => {
+    it('should return proper style from rules', async () => {
+      mockStylePlugin.getStyleProperties.mockReturnValue(
+        of({ a: 'a', b: 'b' })
+      );
+      mockLayoutPlugin.getStyleProperties.mockReturnValue(
+        of({ c: 'c', d: 'd' })
+      );
+
+      const result = await lastValueFrom(
+        service.getStylesFromOptions([{ layout: 'grid' }], 'idA')
+      );
+
+      expect(result).toContain(':host([uid="idA"]), [uid="idA"]');
+      expect(result).toContain('a: a;b: b');
+      expect(result).toContain('c: c;d: d');
+      expect(mockStylePlugin.getStyleProperties).toHaveBeenCalledWith({
+        layout: { type: 'grid' },
+      });
+      expect(mockLayoutPlugin.getStyleProperties).toHaveBeenCalledWith({
+        layout: { type: 'grid' },
       });
     });
   });

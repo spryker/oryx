@@ -14,14 +14,12 @@ import {
   LayoutPluginRender,
   LayoutPluginType,
   LayoutPropertyPlugin,
-  LayoutStylePlugin,
 } from './plugins';
 import { ScreenService } from './screen.service';
 
 export class DefaultLayoutService implements LayoutService {
   constructor(
     protected screenService = inject(ScreenService),
-    protected stylePlugins = inject(LayoutStylePlugin),
     protected injector = inject(INJECTOR),
     protected layoutBuilder = inject(LayoutBuilder)
   ) {}
@@ -38,7 +36,8 @@ export class DefaultLayoutService implements LayoutService {
         key,
         layoutInfo[key].included,
         layoutInfo[key].excluded,
-        layoutInfo[key].type
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        layoutInfo[key].type!
       );
 
       if (styles) {
@@ -53,10 +52,10 @@ export class DefaultLayoutService implements LayoutService {
 
   getStylesFromOptions(data: LayoutStyleConfig): Observable<string> {
     if (data.composition) {
-      return this.layoutBuilder.collectStyles(data.composition);
+      return this.layoutBuilder.getCompositionStyles(data.composition);
     }
 
-    return this.layoutBuilder.createStylesFromOptions(data.rules, data.id);
+    return this.layoutBuilder.getStylesFromOptions(data.rules, data.id);
   }
 
   getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined {

@@ -21,13 +21,15 @@ describe('TransformLayoutPlugin', () => {
   });
 
   describe('getStyleProperties', () => {
-    it('should return a LayoutStyleProperties object', () => {
-      const data = { height: '100px', top: '10' };
-      const styleProperties = {
-        'max-height': `calc(${data.height} - ${data.top})`,
-      };
+    it('should return a LayoutStyleProperties object', async () => {
+      const data = { scale: 1.5, rotate: 60 };
+      const styleProperties = [
+        [{ rotate: data.rotate }, { unit: 'deg' }],
+        [{ scale: data.scale }],
+      ];
+      const result = await lastValueFrom(plugin.getStyleProperties(data));
 
-      expect(plugin.getStyleProperties(data)).toEqual(styleProperties);
+      expect(result).toEqual(styleProperties);
     });
   });
 });

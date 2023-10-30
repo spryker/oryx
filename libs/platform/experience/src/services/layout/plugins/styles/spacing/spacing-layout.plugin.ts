@@ -17,28 +17,19 @@ export class SpacingLayoutPlugin implements LayoutPlugin {
   getStyleProperties(
     data: LayoutStyleParameters
   ): Observable<LayoutStyleProperties> {
-    const properties: LayoutStyleProperties = [
-      [
-        {
-          margin: data.margin,
-          'inset-block-start': data.top,
-          height: data.height,
-          width: data.width,
-        },
-      ],
-    ];
-
-    if (data.padding) {
-      properties.push([
-        {
-          'scroll-padding': findCssValue(data.padding, 'start'),
-          'padding-block': findCssValues(data.padding, 'top', 'bottom'),
-          'padding-inline': findCssValues(data.padding, 'start', 'end'),
-          '--inline-padding': findCssValues(data.padding, 'start', 'end'),
-        },
-      ]);
-    }
-
-    return of(properties);
+    return of({
+      margin: data.margin,
+      'inset-block-start': data.top,
+      height: data.height,
+      width: data.width,
+      ...(data.padding
+        ? {
+            'scroll-padding': findCssValue(data.padding, 'start'),
+            'padding-block': findCssValues(data.padding, 'top', 'bottom'),
+            'padding-inline': findCssValues(data.padding, 'start', 'end'),
+            '--inline-padding': findCssValues(data.padding, 'start', 'end'),
+          }
+        : {}),
+    });
   }
 }

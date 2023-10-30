@@ -4,6 +4,7 @@ import {
   LayoutBuilder,
   LayoutPluginType,
   LayoutService,
+  ScreenService,
 } from '@spryker-oryx/experience';
 import { useComponent } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
@@ -13,10 +14,15 @@ import { layoutComponent } from './layout.def';
 const mockLayoutService = {
   getStyles: vi.fn(),
   getRender: vi.fn(),
+  getStylesFromOptions: vi.fn(),
 };
 
 const mockLayoutBuilder = {
   createStylesFromOptions: vi.fn(),
+};
+
+const mockScreenService = {
+  getScreenSize: vi.fn(),
 };
 
 describe('LayoutComponent', () => {
@@ -37,6 +43,10 @@ describe('LayoutComponent', () => {
           provide: LayoutBuilder,
           useValue: mockLayoutBuilder,
         },
+        {
+          provide: ScreenService,
+          useValue: mockScreenService,
+        },
       ],
     });
   });
@@ -50,10 +60,30 @@ describe('LayoutComponent', () => {
     element = await fixture(html`<oryx-layout layout="grid"></oryx-layout>`);
     const style = element.renderRoot.querySelector('style');
     expect(mockLayoutService.getStyles).toHaveBeenCalledWith({
-      grid: {
-        type: LayoutPluginType.Layout,
-      },
+      grid: {},
     });
     expect(style?.textContent).toContain('stylesResult');
+  });
+
+  describe('when the version >= 1.2', () => {
+    beforeEach(() => {
+      mockFeatureVersion('1.2');
+    });
+
+    it('should render style tag with content from service', async () => {
+      mockLayoutService.getStyles.mockReturnValue(of('stylesResult'));
+      mockLayoutService.getStylesFromOptions.mockReturnValue(
+        of('inlineResult')
+      );
+      element = await fixture(html`<oryx-layout layout="grid"></oryx-layout>`);
+      const style = element.renderRoot.querySelector('style');
+      expect(mockLayoutService.getStyles).toHaveBeenCalledWith({
+        grid: {
+          type: LayoutPluginType.Layout,
+        },
+      });
+      expect(style?.textContent).toContain('stylesResult');
+      expect(style?.textContent).toContain('inlineResult');
+    });
   });
 });

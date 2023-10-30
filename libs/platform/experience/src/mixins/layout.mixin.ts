@@ -8,6 +8,7 @@ import {
   ConnectableSignal,
   Type,
   computed,
+  featureVersion,
   signalAware,
   signalProperty,
   ssrShim,
@@ -20,12 +21,19 @@ import {
   LayoutController,
   LayoutControllerRender,
 } from '../controllers/layout.controller';
-import { Component, CompositionProperties, StyleRuleSet } from '../models';
 import {
+  Component,
+  CompositionLayout,
+  CompositionProperties,
+  StyleRuleSet,
+} from '../models';
+import {
+  LayoutBuilder,
   LayoutPluginRender,
   LayoutService,
   LayoutTypes,
   ScreenService,
+  layoutKeys,
 } from '../services';
 import { ContentMixin } from './content.mixin';
 
@@ -36,7 +44,27 @@ interface LayoutMixinRender {
 }
 
 export declare class LayoutMixinInterface {
-  layout?: LayoutTypes;
+  /**
+   * @deprecated since 1.2 will be deleted.
+   * Use attributes with the same name but together with layout prefix instead.
+   */
+  bleed?: boolean;
+  sticky?: boolean;
+  overlap?: boolean;
+  divider?: boolean;
+  vertical?: boolean;
+  // @deprecated since 1.2 will be removed, use layoutXs instead
+  xs?: LayoutProperties;
+  // @deprecated since 1.2 will be removed, use layoutSm instead
+  sm?: LayoutProperties;
+  // @deprecated since 1.2 will be removed, use layoutMd instead
+  md?: LayoutProperties;
+  // @deprecated since 1.2 will be removed, use layoutLg instead
+  lg?: LayoutProperties;
+  // @deprecated since 1.2 will be removed, use layoutXl instead
+  xl?: LayoutProperties;
+
+  layout?: CompositionLayout | LayoutTypes;
   layoutXs?: LayoutProperties;
   layoutSm?: LayoutProperties;
   layoutMd?: LayoutProperties;
@@ -65,7 +93,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     superClass
   ) {
     @signalProperty() attributeFilter: (keyof LayoutProperties)[] = [];
-    @signalProperty() layout?: LayoutTypes;
+    @signalProperty() layout?: CompositionLayout | LayoutTypes;
     @signalProperty({ type: Object, reflect: true, attribute: 'layout-xs' })
     layoutXs?: LayoutProperties;
     @signalProperty({ type: Object, reflect: true, attribute: 'layout-sm' })
@@ -77,11 +105,23 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     @signalProperty({ type: Object, reflect: true, attribute: 'layout-xl' })
     layoutXl?: LayoutProperties;
 
+    @signalProperty({ type: Object, reflect: true })
+    xs?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) sm?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) md?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) lg?: LayoutProperties;
+    @signalProperty({ type: Object, reflect: true }) xl?: LayoutProperties;
+
     protected [LayoutMixinInternals] = {
       layoutController: new LayoutController(this),
       layoutService: resolve(LayoutService),
-      screenService: resolve(ScreenService),
+      screenService: resolve(ScreenService, null),
     };
+
+    // @deprecated since 1.2 will be deleted. Use LayoutMixinInternals instead
+    protected layoutController = new LayoutController(this);
+    // @deprecated since 1.2 will be deleted. Use LayoutMixinInternals instead
+    protected layoutBuilder = resolve(LayoutBuilder);
 
     protected observer = new MutationObserver((mutationRecords) => {
       mutationRecords.map((record) => {
@@ -122,7 +162,9 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected layoutStyles = computed(() =>
       this[LayoutMixinInternals].layoutController.getStyles(
-        this.attributeFilter,
+        featureVersion >= '1.2'
+          ? this.attributeFilter
+          : ['layout', ...layoutKeys],
         this.$options().rules
       )
     );
