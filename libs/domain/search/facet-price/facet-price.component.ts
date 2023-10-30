@@ -65,6 +65,7 @@ export class SearchPriceFacetComponent extends I18nMixin(
         .maxValue="${this.max}"
         .minValue="${this.min}"
         .step="${this.step}"
+        @drag="${this.onRangeDrag}"
         @change="${this.onRangeChange}"
       ></oryx-multi-range>
     `;

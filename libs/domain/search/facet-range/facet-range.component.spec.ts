@@ -3,7 +3,11 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { generateRange } from '@spryker-oryx/product/mocks';
 import { FacetListService } from '@spryker-oryx/search';
 import { InputComponent } from '@spryker-oryx/ui/input';
-import { MultiRangeComponent } from '@spryker-oryx/ui/multi-range';
+import {
+  CHANGE_EVENT,
+  DRAG_EVENT,
+  MultiRangeComponent,
+} from '@spryker-oryx/ui/multi-range';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -191,7 +195,9 @@ describe('SearchRangeFacetComponent', () => {
         ></oryx-search-range-facet>`
       );
 
-      getRange().dispatchEvent(new CustomEvent('change', { detail: selected }));
+      getRange().dispatchEvent(
+        new CustomEvent(CHANGE_EVENT, { detail: selected })
+      );
     });
 
     it('should dispatch oryx.select event with selected values', () => {
@@ -205,6 +211,25 @@ describe('SearchRangeFacetComponent', () => {
           }),
         })
       );
+    });
+  });
+
+  describe('when range is dragged', () => {
+    const selected = { minValue: 3, maxValue: 5 };
+
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-range-facet name=${name}></oryx-search-range-facet>`
+      );
+
+      getRange().dispatchEvent(
+        new CustomEvent(DRAG_EVENT, { detail: selected })
+      );
+    });
+
+    it('should sync inputs`s values', () => {
+      expect(getInputField().value).toBe(String(selected.minValue));
+      expect(getInputField(true).value).toBe(String(selected.maxValue));
     });
   });
 

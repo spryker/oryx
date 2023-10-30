@@ -61,19 +61,23 @@ export class SearchRangeFacetComponent
     this.min = selected?.min ?? min;
     this.max = selected?.max ?? max;
 
-    this.syncInputsValues(this.min, this.max);
+    this.syncInputsValues(this.min!, this.max!);
   });
 
-  protected onRangeChange = (e: CustomEvent<MultiRangeChangeEvent>): void => {
+  protected onRangeChange(e: CustomEvent<MultiRangeChangeEvent>): void {
     const { minValue: min, maxValue: max } = e.detail;
     const selected = { min, max };
-
-    this.syncInputsValues(min, max);
 
     if (this.hasChangedValue(selected)) {
       this.controller.dispatchSelectEvent({ selected });
     }
-  };
+  }
+
+  protected onRangeDrag(e: CustomEvent<MultiRangeChangeEvent>): void {
+    const { minValue, maxValue } = e.detail;
+
+    this.syncInputsValues(minValue, maxValue);
+  }
 
   protected onBlur(e: InputEvent): void {
     const { value, name } = e.target as HTMLInputElement;
@@ -166,6 +170,7 @@ export class SearchRangeFacetComponent
         .maxValue="${this.max}"
         .minValue="${this.min}"
         .step="${this.step}"
+        @drag="${this.onRangeDrag}"
         @change="${this.onRangeChange}"
       ></oryx-multi-range>
     `;

@@ -346,11 +346,15 @@ describe('MultiRangeComponent', () => {
 
     describe('when inputs change the values', () => {
       describe('when min input changes its value', () => {
-        const callback = vi.fn();
+        const callbackInput = vi.fn();
+        const callbackChange = vi.fn();
         const newValue = '10';
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-multi-range @change=${callback}></oryx-multi-range>`
+            html`<oryx-multi-range
+              @drag=${callbackInput}
+              @change=${callbackChange}
+            ></oryx-multi-range>`
           );
 
           getInput().value = newValue;
@@ -367,6 +371,17 @@ describe('MultiRangeComponent', () => {
           expect(element.minValue).toBe(0);
         });
 
+        it('should dispatch drag event with actual min and max values', () => {
+          expect(callbackInput).toHaveBeenCalledWith(
+            expect.objectContaining({
+              detail: expect.objectContaining({
+                minValue: +newValue,
+                maxValue: element.maxValue,
+              }),
+            })
+          );
+        });
+
         describe('and input emits change event', () => {
           beforeEach(async () => {
             getInput().dispatchEvent(new Event('change'));
@@ -377,7 +392,7 @@ describe('MultiRangeComponent', () => {
           });
 
           it('should dispatch change event with actual min and max values', () => {
-            expect(callback).toHaveBeenCalledWith(
+            expect(callbackChange).toHaveBeenCalledWith(
               expect.objectContaining({
                 detail: expect.objectContaining({
                   minValue: +newValue,

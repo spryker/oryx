@@ -4,6 +4,8 @@ import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { when } from 'lit/directives/when.js';
 import {
+  CHANGE_EVENT,
+  DRAG_EVENT,
   MultiRangeChangeEvent,
   MultiRangeProperties,
 } from './multi-range.model';
@@ -136,7 +138,7 @@ export class MultiRangeComponent
     if (featureVersion < '1.2') {
       this.syncNativeInputValues();
 
-      this.dispatchSelectEvent(this.minValue, this.maxValue);
+      this.dispatchRangeEvent(CHANGE_EVENT, this.minValue, this.maxValue);
     }
   }
 
@@ -175,7 +177,7 @@ export class MultiRangeComponent
 
     this.setPercentages(minValue, maxValue);
     this.syncValues(minValue, maxValue);
-    this.dispatchSelectEvent(minValue, maxValue);
+    this.dispatchRangeEvent(CHANGE_EVENT, minValue, maxValue);
   }
 
   protected hasDiffs(
@@ -280,6 +282,7 @@ export class MultiRangeComponent
         this.activeMax = value;
       }
 
+      this.dispatchRangeEvent(DRAG_EVENT, this.activeMin!, this.activeMax!);
       this.setPercentages(this.activeMin!, this.activeMax!);
     } else {
       if (isFirst) {
@@ -302,12 +305,16 @@ export class MultiRangeComponent
     const minValue = (this.minValue = this.activeMin!);
     const maxValue = (this.maxValue = this.activeMax!);
 
-    this.dispatchSelectEvent(minValue, maxValue);
+    this.dispatchRangeEvent(CHANGE_EVENT, minValue, maxValue);
   }
 
-  protected dispatchSelectEvent(minValue: number, maxValue: number): void {
+  protected dispatchRangeEvent(
+    event: typeof CHANGE_EVENT | typeof DRAG_EVENT,
+    minValue: number,
+    maxValue: number
+  ): void {
     this.dispatchEvent(
-      new CustomEvent<MultiRangeChangeEvent>('change', {
+      new CustomEvent<MultiRangeChangeEvent>(event, {
         bubbles: true,
         composed: true,
         detail: { minValue, maxValue },
