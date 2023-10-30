@@ -1,7 +1,10 @@
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
-import { MultiRangeProperties } from './multi-range.model';
+import {
+  MultiRangeChangeEvent,
+  MultiRangeProperties,
+} from './multi-range.model';
 import { multiRangeStyles } from './multi-range.styles';
 
 export class MultiRangeComponent
@@ -105,7 +108,7 @@ export class MultiRangeComponent
     this.syncNativeInputValues();
 
     this.dispatchEvent(
-      new CustomEvent('change', {
+      new CustomEvent<MultiRangeChangeEvent>('change', {
         bubbles: true,
         composed: true,
         detail: {

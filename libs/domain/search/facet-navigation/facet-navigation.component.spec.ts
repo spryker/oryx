@@ -1,6 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LayoutBuilder, LayoutService } from '@spryker-oryx/experience';
+import { FacetType } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import {
   FacetComponentRegistryService,
@@ -16,6 +17,7 @@ import { searchFacetNavigationComponent } from './facet-navigation.def';
 const mockCategoryFacet = {
   name: 'Categories',
   parameter: 'category',
+  type: FacetType.Single,
   values: [
     {
       value: 2,
@@ -45,7 +47,7 @@ const mockCategoryFacet = {
 const mockMultiValuedFacet = {
   name: 'Color',
   parameter: 'color',
-  multiValued: true,
+  type: FacetType.Multi,
   values: [
     {
       value: 'Black',

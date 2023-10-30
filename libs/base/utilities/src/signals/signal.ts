@@ -64,11 +64,16 @@ export function computed<T>(
     const value = instance.value;
     if (isObservable(value)) {
       if (value !== last) {
+        let previousValue = undefined;
+        if (isObservable(last)) {
+          previousValue = observableSignal!();
+        }
         last = value;
-        observableSignal = signalFrom(
-          value as Observable<T>,
-          options as ConnectableSignalOptions<T, undefined>
-        );
+        observableSignal = signalFrom(value as Observable<T>, {
+          ...(options as ConnectableSignalOptions<T, undefined>),
+          initialValue:
+            previousValue !== undefined ? previousValue : options?.initialValue,
+        });
       }
       return observableSignal!();
     }

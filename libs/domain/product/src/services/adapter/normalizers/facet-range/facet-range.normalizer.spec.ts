@@ -17,9 +17,9 @@ describe('Product Facet Normalizers', () => {
   it('should return normalized product facet-navigation', () => {
     expect(facetsRangeNormalizer(mockRangeFacets)).toEqual([
       {
+        type: 'range',
         parameter: 'price',
         name: 'Price range',
-        selectedValue: [],
         values: {
           max: 36660,
           min: 175,
