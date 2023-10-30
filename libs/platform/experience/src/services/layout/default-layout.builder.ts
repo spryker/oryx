@@ -8,7 +8,7 @@ import {
   StyleRuleSet,
 } from '../../models';
 import { LayoutBuilder } from './layout.builder';
-import { LayoutStylesOptions, LayoutStylesProperties } from './layout.model';
+import { LayoutStylesOptions } from './layout.model';
 import {
   LayoutPlugin,
   LayoutPropertyPlugin,
