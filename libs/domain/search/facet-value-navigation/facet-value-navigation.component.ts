@@ -1,6 +1,6 @@
 import { AlertType } from '@spryker-oryx/ui';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
-import { I18nMixin } from '@spryker-oryx/utilities';
+import { I18nMixin, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { DirectiveResult } from 'lit/async-directive';
 import { property, state } from 'lit/decorators.js';
@@ -31,7 +31,9 @@ export class SearchFacetValueNavigationComponent
   @state() protected expanded = false;
 
   protected override render(): TemplateResult {
-    const allowClear = this.enableClear && this.dirty;
+    const allowClear =
+      this.enableClear &&
+      (featureVersion >= '1.2' ? this.dirty : this.selectedLength);
 
     return html` <oryx-collapsible
       ?open=${this.open}
