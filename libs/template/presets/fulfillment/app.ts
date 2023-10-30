@@ -15,8 +15,8 @@ import {
 import { RouterFeature } from '@spryker-oryx/router';
 import { siteFeature } from '@spryker-oryx/site';
 import { uiFeature } from '@spryker-oryx/ui';
-import { StaticExperienceFeature } from './experience';
 import { featureVersion } from '@spryker-oryx/utilities';
+import { StaticExperienceFeature } from './experience';
 import {
   FulfillmentRootFeature,
   FulfillmentRootFeatureConfig,
@@ -31,8 +31,9 @@ export function fulfillmentFeatures(
     uiFeature,
     cartFeature,
     coreFeature,
-    siteFeature,
-    formFeature,
+    ...(featureVersion >= '1.2'
+      ? [siteFeature, formFeature, applicationFeature]
+      : []),
     {
       //drop PageMetaResolver from experienceFeature
       //to exclude unnecessary functionality from SPA
