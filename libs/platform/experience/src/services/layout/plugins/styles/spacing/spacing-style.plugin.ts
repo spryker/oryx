@@ -7,10 +7,10 @@ import {
   LayoutStyleProperties,
 } from '../../layout.plugin';
 
-export class SpacingLayoutPlugin implements LayoutPlugin {
+export class SpacingStylePlugin implements LayoutPlugin {
   getConfig(): Observable<LayoutPluginConfig> {
     return of({
-      schema: () => import('./spacing-layout.schema').then((m) => m.schema),
+      schema: () => import('./spacing-style.schema').then((m) => m.schema),
     });
   }
 
@@ -22,6 +22,7 @@ export class SpacingLayoutPlugin implements LayoutPlugin {
       'inset-block-start': data.top,
       height: data.height,
       width: data.width,
+      'aspect-ratio': data.ratio,
       ...(data.padding
         ? {
             'scroll-padding': findCssValue(data.padding, 'start'),

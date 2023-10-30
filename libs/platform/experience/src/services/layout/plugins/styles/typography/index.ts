@@ -1,2 +1,2 @@
-export * from './typography-layout.model';
-export * from './typography-layout.plugin';
+export * from './typography-style.model';
+export * from './typography-style.plugin';

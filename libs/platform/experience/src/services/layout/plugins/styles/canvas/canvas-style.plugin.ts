@@ -6,19 +6,21 @@ import {
   LayoutStyleProperties,
 } from '../../layout.plugin';
 
-export class TransformLayoutPlugin implements LayoutPlugin {
+export class CanvasStylePlugin implements LayoutPlugin {
   getConfig(): Observable<LayoutPluginConfig> {
     return of({
-      schema: () => import('./transform-layout.schema').then((m) => m.schema),
+      schema: () => import('./canvas-style.schema').then((m) => m.schema),
     });
   }
 
   getStyleProperties(
     data: LayoutStyleParameters
   ): Observable<LayoutStyleProperties> {
-    return of([
-      [{ rotate: data.rotate }, { unit: 'deg' }],
-      [{ scale: data.scale }],
-    ]);
+    return of({
+      border: data.border,
+      'border-radius': data.radius,
+      background: data.background,
+      '--oryx-fill': data.fill,
+    });
   }
 }

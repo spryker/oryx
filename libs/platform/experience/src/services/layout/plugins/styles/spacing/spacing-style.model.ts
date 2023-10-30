@@ -36,5 +36,7 @@ declare global {
      * layout should stick.
      */
     top?: string;
+
+    ratio?: string;
   }
 }

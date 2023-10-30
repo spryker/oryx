@@ -1,16 +1,16 @@
 import { lastValueFrom } from 'rxjs';
-import { TransformLayoutPlugin } from './transform-layout.plugin';
+import { TypographyStylePlugin } from './typography-style.plugin';
 
-describe('TransformLayoutPlugin', () => {
-  let plugin: TransformLayoutPlugin;
+describe('TypographyStylePlugin', () => {
+  let plugin: TypographyStylePlugin;
 
   beforeEach(() => {
-    plugin = new TransformLayoutPlugin();
+    plugin = new TypographyStylePlugin();
   });
 
   describe('getConfig', () => {
     it('should return proper schema in the object', async () => {
-      const schema = await import('./transform-layout.schema').then(
+      const schema = await import('./typography-style.schema').then(
         (module) => module.schema
       );
       const config = await lastValueFrom(plugin.getConfig?.());
@@ -22,11 +22,12 @@ describe('TransformLayoutPlugin', () => {
 
   describe('getStyleProperties', () => {
     it('should return a LayoutStyleProperties object', async () => {
-      const data = { scale: 1.5, rotate: 60 };
-      const styleProperties = [
-        [{ rotate: data.rotate }, { unit: 'deg' }],
-        [{ scale: data.scale }],
-      ];
+      const data = { typography: 'small' };
+      const styleProperties = {
+        'font-size': `var(--oryx-typography-${data.typography}-size)`,
+        'font-weight': `var(--oryx-typography-${data.typography}-weight)`,
+        'line-height': `var(--oryx-typography-${data.typography}-line)`,
+      };
       const result = await lastValueFrom(plugin.getStyleProperties(data));
 
       expect(result).toEqual(styleProperties);

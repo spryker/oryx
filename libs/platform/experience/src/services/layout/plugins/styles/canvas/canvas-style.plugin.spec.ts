@@ -1,16 +1,16 @@
 import { lastValueFrom } from 'rxjs';
-import { SpacingLayoutPlugin } from './spacing-layout.plugin';
+import { CanvasStylePlugin } from './canvas-style.plugin';
 
-describe('SpacingLayoutPlugin', () => {
-  let plugin: SpacingLayoutPlugin;
+describe('CanvasStylePlugin', () => {
+  let plugin: CanvasStylePlugin;
 
   beforeEach(() => {
-    plugin = new SpacingLayoutPlugin();
+    plugin = new CanvasStylePlugin();
   });
 
   describe('getConfig', () => {
     it('should return proper schema in the object', async () => {
-      const schema = await import('./spacing-layout.schema').then(
+      const schema = await import('./canvas-style.schema').then(
         (module) => module.schema
       );
       const config = await lastValueFrom(plugin.getConfig?.());
@@ -23,21 +23,16 @@ describe('SpacingLayoutPlugin', () => {
   describe('getStyleProperties', () => {
     it('should return a LayoutStyleProperties object', async () => {
       const data = {
-        margin: '10px',
-        top: '10',
-        height: '15px',
-        width: '120px',
-        padding: '10px 5px 2px 3px',
+        radius: 'radius',
+        border: 'border',
+        background: 'background',
+        fill: 'fill',
       };
       const styleProperties = {
-        margin: data.margin,
-        'inset-block-start': data.top,
-        height: data.height,
-        width: data.width,
-        'scroll-padding': '3px',
-        'padding-block': '10px 2px',
-        'padding-inline': '3px 5px',
-        '--inline-padding': '3px 5px',
+        border: data.border,
+        'border-radius': data.radius,
+        background: data.background,
+        '--oryx-fill': data.fill,
       };
       const result = await lastValueFrom(plugin.getStyleProperties(data));
 

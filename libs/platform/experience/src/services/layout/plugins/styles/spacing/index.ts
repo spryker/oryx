@@ -1,2 +1,2 @@
-export * from './spacing-layout.model';
-export * from './spacing-layout.plugin';
+export * from './spacing-style.model';
+export * from './spacing-style.plugin';

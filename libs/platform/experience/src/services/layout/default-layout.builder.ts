@@ -14,9 +14,9 @@ import {
   LayoutPropertyPlugin,
   LayoutStyleList,
   LayoutStyleOptions,
-  LayoutStylePlugin,
   LayoutStyleProperties,
   LayoutStylePropertiesArr,
+  LayoutStylesPlugin,
 } from './plugins';
 import { ScreenService } from './screen.service';
 
@@ -34,7 +34,7 @@ export const layoutKeys: (keyof LayoutStylesProperties)[] = [
 export class DefaultLayoutBuilder implements LayoutBuilder {
   constructor(
     protected screenService = inject(ScreenService),
-    protected stylePlugins = inject(LayoutStylePlugin, []),
+    protected stylePlugins = inject(LayoutStylesPlugin, []),
     protected injector = inject(INJECTOR)
   ) {}
 
