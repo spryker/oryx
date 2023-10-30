@@ -5,6 +5,8 @@ import {
   BleedLayoutPluginToken,
   DividerLayoutPlugin,
   DividerLayoutPluginToken,
+  OverlapLayoutPlugin,
+  OverlapLayoutPluginToken,
   StickyLayoutPlugin,
   StickyLayoutPluginToken,
 } from './properties';
@@ -24,8 +26,6 @@ import {
   FlexLayoutPluginToken,
   GridLayoutPlugin,
   GridLayoutPluginToken,
-  OverlapLayoutPlugin,
-  OverlapLayoutPluginToken,
   SplitAsideLayoutPlugin,
   SplitAsideLayoutPluginToken,
   SplitLayoutPlugin,
