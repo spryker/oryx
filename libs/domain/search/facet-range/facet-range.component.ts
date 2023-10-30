@@ -153,7 +153,6 @@ export class SearchRangeFacetComponent
     const {
       values: { min, max },
     } = facet;
-
     return html`
       ${this.renderInput('min', min, max - 1, this.labelMin)}
 
