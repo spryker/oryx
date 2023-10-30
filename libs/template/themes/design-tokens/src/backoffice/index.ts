@@ -2,43 +2,36 @@ import { DesignToken } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
 import { color } from '../color.tokens';
 import { tokens } from './other.tokens';
+import { buttonTokens } from './button.token';
 import {
-  typographyMediumAndLargerTokens,
   typographySmallTokens,
   typographyTokens,
 } from './typography.tokens';
-
-import { commonTokensSmall } from '../common-tokens';
-import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
-import { buttonTokens } from './button.token';
+import { layoutSmTokens, layoutTokens } from '../layout.tokens';
 
 export const backofficeTokens: DesignToken[] = [
   ...buttonTokens,
   {
     color,
     ...tokens,
-    ...typographyTokens,
+    typography: Object.assign(
+      {},
+      typographyTokens.typography,
+      typographySmallTokens.typography
+    ),
     ...layoutTokens,
+    container: {
+      // 510px (or 530px) would be align better width min width of modals
+      // alternatively, we could introduce max-width to modals to be not
+      // larger than the container width
+      width: '414px',
+      bleed: '0px',
+    },
   },
   {
     media: {
       screen: Size.Sm,
     },
     ...layoutSmTokens,
-    ...typographySmallTokens,
-    ...commonTokensSmall,
-  },
-  {
-    media: {
-      screen: Size.Md,
-    },
-    ...layoutMdTokens,
-    ...typographyMediumAndLargerTokens,
-  },
-  {
-    media: {
-      screen: Size.Lg,
-    },
-    ...typographyMediumAndLargerTokens,
   },
 ];

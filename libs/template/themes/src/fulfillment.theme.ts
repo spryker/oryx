@@ -5,12 +5,18 @@ import { Size } from '@spryker-oryx/utilities';
 export const fulfillmentTheme: Theme = {
   name: 'fulfillment',
   breakpoints: {
-    [Size.Sm]: {},
+    [Size.Sm]: {
+      max: 414,
+    },
+    [Size.Md]: {
+      min: 415,
+      max: 1023,
+    }
   },
   designTokens: () =>
     // TODO: consider renaming the tokens
-    import('../design-tokens/src/backoffice-ng').then(
-      (s) => s.backofficeNgTokens
+    import('../design-tokens/src/mobile-backoffice').then(
+      (s) => s.mobileBackofficeTokens
     ),
   icons: {
     resource: materialDesignIcons,

@@ -6,8 +6,8 @@ export const backofficeNgTheme: Theme = {
   name: 'backoffice-ng',
   breakpoints: defaultBreakpoints,
   designTokens: () =>
-    import('../design-tokens/src/backoffice-ng').then(
-      (s) => s.backofficeNgTokens
+    import('../design-tokens/src/backoffice').then(
+      (s) => s.backofficeTokens
     ),
   icons: {
     resource: backofficeNgIcons,

@@ -27,7 +27,6 @@ export const resource = {
   list: {
     storefront: storefrontResources,
     backoffice: backofficeResources,
-    'backoffice-ng': backofficeNgResources,
     fulfillment: fulfillmentResources,
     fes: fesResources,
   },

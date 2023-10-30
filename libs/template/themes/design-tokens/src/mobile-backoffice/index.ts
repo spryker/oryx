@@ -1,8 +1,7 @@
 import { DesignToken } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
 import { color } from '../color.tokens';
-import { tokens } from './other.tokens';
-
+import { tokens } from '../backoffice/other.tokens';
 import { buttonTokens } from '../backoffice/button.token';
 import {
   typographySmallTokens,
@@ -10,7 +9,7 @@ import {
 } from '../backoffice/typography.tokens';
 import { layoutSmTokens, layoutTokens } from '../layout.tokens';
 
-export const backofficeNgTokens: DesignToken[] = [
+export const mobileBackofficeTokens: DesignToken[] = [
   ...buttonTokens,
   {
     color,
