@@ -29,8 +29,8 @@ export class MultiRangeComponent
     'maxValue',
   ];
 
-  protected _activeMin?: number;
-  protected _activeMax?: number;
+  protected activeMin?: number;
+  protected activeMax?: number;
 
   @property({ type: Boolean }) disabled?: boolean;
   @property({ type: Number }) step = 1;
@@ -147,13 +147,13 @@ export class MultiRangeComponent
 
   protected willUpdate(properties: PropertyValues<MultiRangeProperties>): void {
     if (featureVersion >= '1.2') {
-      this.ensureValues(properties);
+      this.updateValues(properties);
     }
 
     super.willUpdate(properties);
   }
 
-  protected ensureValues(
+  protected updateValues(
     properties: PropertyValues<MultiRangeProperties>
   ): void {
     if (this.hasInvalidRange() || !this.hasDiffs(properties)) return;
@@ -188,8 +188,8 @@ export class MultiRangeComponent
   }
 
   protected syncValues(minValue: number, maxValue: number): void {
-    this._activeMin = minValue;
-    this._activeMax = maxValue;
+    this.activeMin = minValue;
+    this.activeMax = maxValue;
 
     if (this.inputMinRef?.value) {
       this.inputMinRef.value.value = String(minValue);
@@ -215,7 +215,7 @@ export class MultiRangeComponent
         featureVersion >= '1.2'
           ? invalid
             ? defaultMin
-            : this._activeMin!
+            : this.activeMin!
           : this.minValue,
         this.inputMinRef,
         true
@@ -224,7 +224,7 @@ export class MultiRangeComponent
         featureVersion >= '1.2'
           ? invalid
             ? defaultMax
-            : this._activeMax!
+            : this.activeMax!
           : this.maxValue,
         this.inputMaxRef
       )}
@@ -263,8 +263,8 @@ export class MultiRangeComponent
     const isFirst = input.hasAttribute('isFirst');
 
     if (featureVersion >= '1.2') {
-      const activeMin = this._activeMin!;
-      const activeMax = this._activeMax!;
+      const activeMin = this.activeMin!;
+      const activeMax = this.activeMax!;
 
       //prevent penetration of one slider after another
       if ((isFirst && value >= activeMax) || (!isFirst && value <= activeMin)) {
@@ -275,12 +275,12 @@ export class MultiRangeComponent
       }
 
       if (isFirst) {
-        this._activeMin = value;
+        this.activeMin = value;
       } else {
-        this._activeMax = value;
+        this.activeMax = value;
       }
 
-      this.setPercentages(this._activeMin!, this._activeMax!);
+      this.setPercentages(this.activeMin!, this.activeMax!);
     } else {
       if (isFirst) {
         if (value >= this.maxValue) {
@@ -299,8 +299,8 @@ export class MultiRangeComponent
   protected onSelect(): void {
     if (featureVersion < '1.2') return;
 
-    const minValue = (this.minValue = this._activeMin!);
-    const maxValue = (this.maxValue = this._activeMax!);
+    const minValue = (this.minValue = this.activeMin!);
+    const maxValue = (this.maxValue = this.activeMax!);
 
     this.dispatchSelectEvent(minValue, maxValue);
   }
