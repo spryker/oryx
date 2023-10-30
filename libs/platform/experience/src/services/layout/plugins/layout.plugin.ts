@@ -81,7 +81,9 @@ export interface LayoutPlugin {
    *  }
    * }
    */
-  getRender?(data: LayoutPluginParams): LayoutPluginRender | undefined;
+  getRender?(
+    data: LayoutPluginParams
+  ): Observable<LayoutPluginRender | undefined>;
 }
 
 declare global {

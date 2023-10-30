@@ -5,7 +5,15 @@ import {
 } from '@spryker-oryx/experience/layout';
 import { Size, featureVersion, sizes } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { Observable, map, withLatestFrom } from 'rxjs';
+import {
+  Observable,
+  concatMap,
+  from,
+  map,
+  of,
+  reduce,
+  withLatestFrom,
+} from 'rxjs';
 import {
   CompositionProperties,
   ContentComponentProperties,
@@ -19,6 +27,7 @@ import {
   LayoutService,
   LayoutStylesOptions,
   ResponsiveLayoutInfo,
+  ScreenService,
 } from '../services';
 
 export type LayoutControllerRender = Omit<LayoutPluginParams, 'options'> & {
@@ -34,6 +43,7 @@ export interface LayoutRenderParams {
 
 export class LayoutController {
   protected layoutService = resolve(LayoutService);
+  protected screenService = resolve(ScreenService);
   // @deprecated since 1.2 will be removed.
   protected layoutBuilder = resolve(LayoutBuilder);
 
@@ -104,7 +114,7 @@ export class LayoutController {
     return styles;
   }
 
-  getRender(config: LayoutRenderParams): TemplateResult {
+  getRender(config: LayoutRenderParams): Observable<TemplateResult> {
     const { screen, attrs, place, data } = config;
     const host = this.host;
 
@@ -137,7 +147,10 @@ export class LayoutController {
       }
 
       if (host.hasAttribute(attr)) {
-        const prop = attr.replace('layout-', '');
+        const prop = attr
+          .replace('layout-', '')
+          .replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+
         return { ...acc, [prop]: host.getAttribute(attr) || true };
       }
 
@@ -156,23 +169,30 @@ export class LayoutController {
         : {}),
     };
 
-    return Object.entries(layoutOptions).reduce((acc, [prop, value]) => {
-      if (!value) return acc;
+    return from(Object.entries(layoutOptions)).pipe(
+      concatMap(([prop, value]) => {
+        if (!value) return of(null);
 
-      const token = prop === 'layout' ? (value as string) : prop;
-      const type =
-        prop === 'layout' ? LayoutPluginType.Layout : LayoutPluginType.Property;
+        const token = prop === 'layout' ? (value as string) : prop;
+        const type =
+          prop === 'layout'
+            ? LayoutPluginType.Layout
+            : LayoutPluginType.Property;
 
-      return html`${acc}
-      ${this.layoutService.getRender({
-        type,
-        token,
-        data: {
-          ...data,
-          options: layoutOptions,
-        },
-      })?.[place]}`;
-    }, html``);
+        return this.layoutService.getRender({
+          type,
+          token,
+          data: {
+            ...data,
+            options: layoutOptions,
+          },
+        });
+      }),
+      reduce(
+        (acc, curr) => (!curr?.[place] ? acc : html`${acc}${curr[place]}`),
+        html``
+      )
+    );
   }
 
   /**
