@@ -1,7 +1,7 @@
 import { lastValueFrom, of } from 'rxjs';
 import { describe, expect } from 'vitest';
 import { inject } from '../inject';
-import { Injector } from '../inject.spec';
+import { Injector } from '../injector';
 import { createLazyProxy } from './dynamic-proxy-instance';
 
 describe('Dynamic Proxy Instance', () => {
