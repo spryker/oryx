@@ -19,22 +19,11 @@ export const pickingListsPage: ExperienceComponent = {
         query: { breakpoint: Size.Sm },
         width: '100%',
       },
-      {
-        query: { breakpoint: Size.Md },
-        width: '414px',
-      },
     ],
   },
   components: [
     {
       type: 'oryx-picking-lists',
-      options: {
-        rules: [
-          {
-            width: '100%',
-          },
-        ],
-      },
     },
   ],
 };

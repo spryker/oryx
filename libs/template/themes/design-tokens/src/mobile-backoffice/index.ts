@@ -24,10 +24,6 @@ export const mobileBackofficeTokens: DesignToken[] = [
       width: '414px',
       bleed: '0px',
     },
-    modal: {
-      width: '404px',
-      bleed: '5px',
-    },
   },
   {
     media: {

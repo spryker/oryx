@@ -16,22 +16,11 @@ export const fulfillmentLoginPage: ExperienceComponent = {
         query: { breakpoint: Size.Sm },
         width: '100%',
       },
-      {
-        query: { breakpoint: Size.Md },
-        width: '414px',
-      },
     ],
   },
   components: [
     {
       type: 'oryx-picking-login',
-      options: {
-        rules: [
-          {
-            width: '100%',
-          },
-        ],
-      },
     },
   ],
 };

@@ -16,7 +16,11 @@ export const styles = css`
       calc(100vw - (var(--oryx-container-bleed, 0px) * 2)),
       var(--oryx-modal-width, 100%)
     );
-    max-width: calc(100vw - var(--oryx-modal-bleed, 0px) * 2);
+    //max-width: calc(100vw - var(--oryx-modal-bleed, 0px) * 2);
+    max-width: calc(
+      var(--oryx-container-width, --oryx-modal-width) -
+        var(--oryx-modal-bleed, 0px) * 2
+    );
     max-height: calc(100vh - var(--oryx-modal-bleed, 0px) * 2);
   }
 

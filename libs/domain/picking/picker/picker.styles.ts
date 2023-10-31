@@ -4,7 +4,7 @@ export const pickingComponentStyles = css`
   :host {
     --sticky-offset: 66px;
 
-    /* tmp, we rather use pages with layout */
+    /* TODO: use pages with layout */
     display: block;
     width: min(
       100%,
