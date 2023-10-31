@@ -10,6 +10,7 @@ export const styles: LayoutStyles = {
 
     :host {
       --oryx-column-count: var(--oryx-column-grid);
+
       grid-auto-flow: column;
       overflow: auto hidden;
       overscroll-behavior-x: contain;
