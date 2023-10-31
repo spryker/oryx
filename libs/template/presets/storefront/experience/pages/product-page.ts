@@ -1,7 +1,4 @@
-import {
-  CarouselIndicatorPosition,
-  ExperienceComponent,
-} from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { Size, featureVersion } from '@spryker-oryx/utilities';
 
 export const productPage: ExperienceComponent = {
@@ -111,14 +108,7 @@ export const productPage: ExperienceComponent = {
         heading: 'Related Products',
         rules: [
           {
-            layout: {
-              type: 'carousel',
-              showArrows: true,
-              showIndicators: true,
-              indicatorsPosition: CarouselIndicatorPosition.Below,
-              scrollWithMouse: true,
-              scrollWithTouch: true,
-            },
+            layout: { type: 'carousel' },
             padding: '20 0',
             colSpan: 2,
           },

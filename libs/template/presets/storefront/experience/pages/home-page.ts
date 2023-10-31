@@ -1,10 +1,4 @@
-import {
-  CarouselIndicatorAlignment,
-  CarouselIndicatorPosition,
-  CarouselScrollBehavior,
-  ExperienceComponent,
-  StyleRuleSet,
-} from '@spryker-oryx/experience';
+import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
 import { featureVersion } from '@spryker-oryx/utilities';
 
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
@@ -105,17 +99,7 @@ export const homePage: ExperienceComponent = {
       options: {
         rules: [
           {
-            layout: {
-              type: 'carousel',
-              showArrows: true,
-              showIndicators: true,
-              // arrowNavigationBehavior: ArrowNavigationBehavior.Item,
-              // scrollWithMouse: true,
-              scrollWithTouch: true,
-              indicatorsPosition: CarouselIndicatorPosition.Below,
-              indicatorsAlignment: CarouselIndicatorAlignment.Center,
-              scrollBehavior: CarouselScrollBehavior.Smooth,
-            },
+            layout: { type: 'carousel' },
             padding: '30px 0 5px',
             align: 'stretch',
           },
@@ -123,30 +107,21 @@ export const homePage: ExperienceComponent = {
         ],
       },
     },
-    // {
-    //   type: 'oryx-product-list',
-    //   options: {
-    //     rules: [
-    //       {
-    //         layout: {
-    //           type: 'carousel',
-    //           arrowsPosition: CarouselArrowPosition.Inline,
-    //           indicatorsPosition: CarouselIndicatorPosition.Below,
-    //           indicatorsAlignment: CarouselIndicatorAlignment.Center,
-    //           scrollWithMouse: true,
-    //           scrollWithTouch: true,
-    //           snap: 'slide',
-    //           scrollBehavior: CarouselScrollBehavior.Instant,
-    //         },
-    //         padding: '30px 0 5px',
-    //         align: 'stretch',
-    //       },
-    //       { query: { breakpoint: 'sm' }, padding: '20px' },
-    //     ],
-    //     category: '10',
-    //     sort: 'rating',
-    //   },
-    // },
+    {
+      type: 'oryx-product-list',
+      options: {
+        rules: [
+          {
+            layout: { type: 'carousel' },
+            padding: '30px 0 5px',
+            align: 'stretch',
+          },
+          { query: { breakpoint: 'sm' }, padding: '20px' },
+        ],
+        category: '10',
+        sort: 'rating',
+      },
+    },
     {
       type: 'oryx-composition',
       id: 'brands',

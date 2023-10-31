@@ -87,6 +87,7 @@ export class ProductImagesComponent extends ProductMixin(
       class="main"
       layout=${ifDefined(imageLayout)}
       behavior=${ifDefined(scrollBehavior)}
+      .options=${{ showIndicators: false }}
       style="--oryx-column-count: 1;--image-fit:${objectFit};--cols: ${cols}"
     >
       ${media.map(

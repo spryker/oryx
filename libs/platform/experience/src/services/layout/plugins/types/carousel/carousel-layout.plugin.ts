@@ -1,4 +1,5 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
+import { signal } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { LayoutStyles } from '../../../layout.model';
@@ -10,6 +11,13 @@ import {
   LayoutStyleParameters,
   LayoutStyleProperties,
 } from '../../layout.plugin';
+import {
+  ArrowNavigationBehavior,
+  CarouselIndicatorAlignment,
+  CarouselIndicatorPosition,
+  CarouselLayoutProperties,
+  CarouselScrollBehavior,
+} from './carousel-layout.model';
 
 export class CarouselLayoutPlugin implements LayoutPlugin {
   getStyles(): Observable<LayoutStyles> {
@@ -25,9 +33,10 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
   getStyleProperties(
     data: LayoutStyleParameters
   ): Observable<LayoutStyleProperties> {
+    const options = { ...data.layout, ...this.$options() };
     return of({
-      '--scroll-with-mouse': data.layout?.scrollWithMouse ? 'auto' : 'hidden',
-      '--scroll-with-touch': data.layout?.scrollWithTouch ? 'auto' : 'hidden',
+      '--scroll-with-mouse': options.scrollWithMouse ? 'auto' : 'hidden',
+      '--scroll-with-touch': options.scrollWithTouch ? 'auto' : 'hidden',
     });
   }
 
@@ -35,23 +44,39 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
    * @override Returns a render function that renders the carousel navigation
    */
   getRender(data: LayoutPluginParams): LayoutPluginRender | undefined {
-    console.log('render carousel navigation');
+    const options = { ...data.options, ...this.$options() };
     if (
       data.experience || // we have nested components
-      (!data.options?.showArrows && !data.options?.showIndicators)
+      (!options?.showArrows && !options?.showIndicators)
     ) {
       return;
     }
-
     return {
       pre: html`<oryx-carousel-navigation
-        ?showArrows=${data.options?.showArrows}
-        ?showIndicators=${data.options?.showIndicators}
-        .arrowNavigationBehavior=${data.options?.arrowNavigationBehavior}
-        .indicatorsPosition=${data.options?.indicatorsPosition}
-        .indicatorsAlignment=${data.options?.indicatorsAlignment}
-        .scrollBehavior=${data.options?.scrollBehavior}
+        ?showArrows=${options?.showArrows}
+        ?showIndicators=${options?.showIndicators}
+        ?scrollWithMouse=${options?.scrollWithMouse}
+        ?scrollWithTouch=${options?.scrollWithTouch}
+        .arrowNavigationBehavior=${options?.arrowNavigationBehavior}
+        .indicatorsPosition=${options?.indicatorsPosition}
+        .indicatorsAlignment=${options?.indicatorsAlignment}
+        .scrollBehavior=${options?.scrollBehavior}
       ></oryx-carousel-navigation>`,
     };
+  }
+
+  protected $options = signal(this.getDefaultProperties());
+
+  getDefaultProperties(): Observable<CarouselLayoutProperties> {
+    return of({
+      showArrows: true,
+      showIndicators: true,
+      scrollBehavior: CarouselScrollBehavior.Smooth,
+      arrowNavigationBehavior: ArrowNavigationBehavior.Item,
+      scrollWithMouse: true,
+      scrollWithTouch: true,
+      indicatorsAlignment: CarouselIndicatorAlignment.Center,
+      indicatorsPosition: CarouselIndicatorPosition.Below,
+    });
   }
 }

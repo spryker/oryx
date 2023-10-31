@@ -19,10 +19,10 @@ export const styles: LayoutStyles = {
       /* scroll-behavior: smooth; */
     }
 
-    :host([layout-indicatorsPosition='below']) {
+    /* :host([indicatorsPosition='below']) {
       isolation: isolate;
       margin-block-end: var(--indicator-area-height);
-    }
+    } */
 
     :host(:not([layout-vertical])) {
       grid-auto-flow: column;

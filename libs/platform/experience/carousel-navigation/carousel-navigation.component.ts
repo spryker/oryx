@@ -66,7 +66,7 @@ export class CarouselNavigationComponent
     this.intersectionObserver = new IntersectionObserver(
       throttle((entries: IntersectionObserverEntry[]) => {
         return entries.forEach((entry) => {
-          console.log('entry', entry.isIntersecting);
+          // console.log('entry', entry.isIntersecting);
           if (entry.isIntersecting) {
             this.buildNavigation();
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -108,6 +108,8 @@ export class CarouselNavigationComponent
 
   protected buildNavigation(): void {
     this.style.setProperty('--width', `${this.hostElement.clientWidth}px`);
+    if (this.showIndicators)
+      this.hostElement.style.setProperty('margin-block-end', '50px');
 
     const items = this.resolveItems();
     if (
@@ -224,13 +226,13 @@ export class CarouselNavigationComponent
         (this.hostElement.clientWidth + gap)
     );
 
-    console.log(
-      'slideCount',
-      this.hostElement.tagName,
-      this.hostElement.scrollWidth,
-      this.hostElement.clientWidth,
-      slideCount
-    );
+    // console.log(
+    //   'slideCount',
+    //   this.hostElement.tagName,
+    //   this.hostElement.scrollWidth,
+    //   this.hostElement.clientWidth,
+    //   slideCount
+    // );
 
     if (slideCount === this.slides.length) return;
 
