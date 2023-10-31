@@ -24,7 +24,8 @@ describe('SplitMainLayoutPlugin', () => {
       const schema = await import('./split-main-layout.schema').then(
         (module) => module.schema
       );
-      const result = await (plugin.getConfig?.().schema as () => unknown)();
+      const config = await lastValueFrom(plugin.getConfig?.());
+      const result = await (config.schema as () => unknown)();
 
       expect(result).toEqual(schema);
     });

@@ -3,9 +3,9 @@ import {
   LayoutAttributes,
   LayoutProperties,
 } from '@spryker-oryx/experience/layout';
-import { Size, sizes } from '@spryker-oryx/utilities';
+import { Size, featureVersion, sizes } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { Observable, map } from 'rxjs';
+import { Observable, map, withLatestFrom } from 'rxjs';
 import {
   CompositionProperties,
   ContentComponentProperties,
@@ -21,31 +21,87 @@ import {
   ResponsiveLayoutInfo,
 } from '../services';
 
+export type LayoutControllerRender = Omit<LayoutPluginParams, 'options'> & {
+  options?: CompositionProperties;
+};
+
 export interface LayoutRenderParams {
   place: keyof LayoutPluginRender;
   attrs: string[];
-  data: Omit<LayoutPluginParams, 'options'> & {
-    options?: CompositionProperties;
-  };
+  data: LayoutControllerRender;
   screen?: Size;
 }
 
 export class LayoutController {
-  protected layoutBuilder = resolve(LayoutBuilder);
   protected layoutService = resolve(LayoutService);
+  // @deprecated since 1.2 will be removed.
+  protected layoutBuilder = resolve(LayoutBuilder);
 
   constructor(
     protected host: LitElement & LayoutAttributes & ContentComponentProperties
   ) {}
 
-  getStyles(properties: string[], rules: StyleRuleSet[]): Observable<string> {
+  getStyles(
+    properties: string[],
+    rules: StyleRuleSet[] = []
+  ): Observable<string> {
+    return featureVersion >= '1.2'
+      ? this.getStandardStyles(properties, rules)
+      : this.getLegacyStyles(properties, rules);
+  }
+
+  private getStandardStyles(
+    properties: string[],
+    rules: StyleRuleSet[]
+  ): Observable<string> {
     const props = this.normalizeProperties(properties, rules);
     const infos = this.getLayoutInfos(props, rules);
-    const componentStyles = this.collectStyles(props, rules, this.host.uid);
+
+    return this.layoutService.getStyles(infos).pipe(
+      withLatestFrom(this.getComponentStyles(props, rules, this.host.uid)),
+      map(
+        ([layoutStyles, componentStyles]) => `${layoutStyles}${componentStyles}`
+      )
+    );
+  }
+
+  private getLegacyStyles(
+    properties: string[],
+    rules: StyleRuleSet[]
+  ): Observable<string> {
+    const infos = this.getLayoutInfos(
+      properties as (keyof LayoutProperties)[],
+      rules
+    );
+
+    const componentStyles = this.collectStyles(
+      properties as (keyof LayoutProperties)[],
+      rules,
+      this.host.uid
+    );
 
     return this.layoutService
       .getStyles(infos)
       .pipe(map((layoutStyles) => `${layoutStyles}${componentStyles}`));
+  }
+
+  /**
+   * @deprecated since 1.2 will be removed.
+   */
+  collectStyles(
+    layoutProperties: (keyof LayoutProperties)[],
+    rules: StyleRuleSet[] = [],
+    uid?: string
+  ): string {
+    let styles = '';
+
+    if (!this.hasLayout(rules, layoutProperties)) {
+      styles += ':host {display: contents;}\n';
+    }
+
+    styles += this.layoutBuilder.createStylesFromOptions(rules, uid);
+
+    return styles;
   }
 
   getRender(config: LayoutRenderParams): TemplateResult {
@@ -81,7 +137,10 @@ export class LayoutController {
       }
 
       if (host.hasAttribute(attr)) {
-        const prop = attr.replace('layout-', '');
+        const prop = attr
+          .replace('layout-', '')
+          .replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+
         return { ...acc, [prop]: host.getAttribute(attr) || true };
       }
 
@@ -120,7 +179,7 @@ export class LayoutController {
   }
 
   /**
-   * Collects dynamic styles provided by component options.
+   * Returns dynamic styles provided by component options.
    *
    * When the component does not have a layout, we add a rule to
    * ensure that the component children can transparently work with the
@@ -131,22 +190,21 @@ export class LayoutController {
    *   display: contents;
    * }
    * ```
-   * @deprecated will be protected since 1.2
    */
-  collectStyles(
+  protected getComponentStyles(
     layoutProperties: (keyof LayoutProperties)[],
     rules: StyleRuleSet[] = [],
     uid?: string
-  ): string {
+  ): Observable<string> {
     let styles = '';
 
     if (layoutProperties.length === 1 && !this.hasLayout(rules)) {
       styles += ':host {display: contents;}\n';
     }
 
-    styles += this.layoutBuilder.createStylesFromOptions(rules, uid);
-
-    return styles;
+    return this.layoutService
+      .getStylesFromOptions({ rules, id: uid })
+      .pipe(map((optionsStyles) => `${styles}${optionsStyles}`));
   }
 
   protected normalizeProperties(
@@ -188,6 +246,15 @@ export class LayoutController {
   }
 
   protected getLayoutInfos(
+    properties: (keyof LayoutProperties)[],
+    rules: StyleRuleSet[] = []
+  ): ResponsiveLayoutInfo {
+    return featureVersion >= '1.2'
+      ? this.getStandardLayoutInfos(properties, rules)
+      : this.getLegacyLayoutInfos(properties, rules);
+  }
+
+  private getStandardLayoutInfos(
     properties: (keyof LayoutProperties)[],
     rules: StyleRuleSet[] = []
   ): ResponsiveLayoutInfo {
@@ -256,7 +323,87 @@ export class LayoutController {
     }, {} as ResponsiveLayoutInfo);
   }
 
-  protected hasLayout(rules: StyleRuleSet[]): boolean {
+  /**
+   * @deprecated since 1.2 will be removed.
+   */
+  private getLegacyLayoutInfos(
+    properties: (keyof LayoutProperties)[],
+    rules: StyleRuleSet[] = []
+  ): ResponsiveLayoutInfo {
+    return properties.reduce((info, prop) => {
+      const isLayout = prop === 'layout';
+      const mainValue =
+        this.host[prop] ??
+        rules.find((rule) => !rule.query?.breakpoint && rule[prop])?.[prop];
+      const mainKey = (isLayout ? mainValue : prop) as string;
+      const withMainValue = typeof mainValue !== 'undefined';
+
+      if (withMainValue) {
+        info[mainKey] = {};
+      }
+
+      for (const size of sizes) {
+        const sizeValue =
+          this.host[size]?.[prop] ??
+          rules.find(
+            (rule) =>
+              rule.query?.breakpoint === size &&
+              typeof rule[prop] !== 'undefined'
+          )?.[prop];
+        const sizeKey = (isLayout ? sizeValue : prop) as string;
+
+        if (
+          typeof sizeValue === 'undefined' ||
+          !sizeKey ||
+          String(sizeValue) === String(mainValue)
+        ) {
+          continue;
+        }
+
+        if (withMainValue && String(sizeValue) !== String(mainValue)) {
+          info[mainKey].excluded ??= [];
+          info[mainKey].excluded?.push(size);
+        }
+
+        if (withMainValue && sizeKey === mainKey) {
+          continue;
+        }
+
+        info[sizeKey] ??= {};
+        const dataSize = info[sizeKey];
+
+        dataSize.included ??= [];
+        dataSize.included.push(size);
+      }
+
+      return info;
+    }, {} as ResponsiveLayoutInfo);
+  }
+
+  protected hasLayout(
+    rules: StyleRuleSet[],
+    layoutProperties: (keyof LayoutProperties)[] = []
+  ): boolean {
+    if (featureVersion < '1.2') {
+      return this.legacyHasLayout(rules, layoutProperties);
+    }
+
     return !!this.host.layout || rules?.some((rule) => rule.layout);
+  }
+
+  /**
+   * @deprecated since 1.2 will be removed.
+   */
+  private legacyHasLayout(
+    rules: StyleRuleSet[],
+    layoutProperties: (keyof LayoutProperties)[] = []
+  ): boolean {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const has = (obj: any): boolean =>
+      layoutProperties.some(
+        (prop) => obj[prop] || sizes.some((size) => obj[size]?.[prop])
+      );
+
+    return has(this.host) || rules?.some((rule) => has(rule));
   }
 }

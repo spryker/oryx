@@ -6,8 +6,22 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Layouts {}
 
-  export interface LayoutsProperty {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface LayoutProperty {}
+
+  export interface LayoutStylesProperties {
+    layout?: LayoutStylesOptions | LayoutTypes;
+
+    // @deprecated since 1.2 will be removed.
     vertical?: boolean;
+    // @deprecated since 1.2 will be removed.
+    sticky?: boolean;
+    // @deprecated since 1.2 will be removed.
+    overlap?: boolean;
+    // @deprecated since 1.2 will be removed.
+    bleed?: boolean;
+    // @deprecated since 1.2 will be removed.
+    divider?: boolean;
   }
 }
 
@@ -16,23 +30,8 @@ declare global {
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type LayoutTypes = keyof Layouts | (string & {});
 
-export interface LayoutStylesOptions extends LayoutsProperty {
+export interface LayoutStylesOptions extends LayoutProperty {
   type?: LayoutTypes;
-}
-
-export interface LayoutStylesProperties {
-  layout?: LayoutStylesOptions | LayoutTypes;
-
-  // @deprecated since 1.2 will be removed.
-  vertical?: boolean;
-  // @deprecated since 1.2 will be removed.
-  sticky?: boolean;
-  // @deprecated since 1.2 will be removed.
-  overlap?: boolean;
-  // @deprecated since 1.2 will be removed.
-  bleed?: boolean;
-  // @deprecated since 1.2 will be removed.
-  divider?: boolean;
 }
 
 export type LayoutStyles = {
@@ -56,7 +55,7 @@ export interface ResponsiveLayoutInfo {
 export interface ResponsiveLayout {
   included?: Breakpoint[];
   excluded?: Breakpoint[];
-  type: LayoutPluginType;
+  type?: LayoutPluginType;
 }
 
 export const enum LayoutAlign {

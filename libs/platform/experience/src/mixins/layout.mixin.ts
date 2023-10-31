@@ -8,6 +8,7 @@ import {
   ConnectableSignal,
   Type,
   computed,
+  featureVersion,
   signalAware,
   signalProperty,
   ssrShim,
@@ -15,8 +16,11 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { of } from 'rxjs';
-import { LayoutController } from '../controllers/layout.controller';
+import { BehaviorSubject, of, switchMap } from 'rxjs';
+import {
+  LayoutController,
+  LayoutControllerRender,
+} from '../controllers/layout.controller';
 import {
   Component,
   CompositionLayout,
@@ -25,10 +29,11 @@ import {
 } from '../models';
 import {
   LayoutBuilder,
-  LayoutPluginParams,
   LayoutPluginRender,
+  LayoutService,
   LayoutTypes,
   ScreenService,
+  layoutKeys,
 } from '../services';
 import { ContentMixin } from './content.mixin';
 
@@ -69,9 +74,7 @@ export declare class LayoutMixinInterface {
   protected renderLayout: (props: LayoutMixinRender) => TemplateResult;
   protected getLayoutRender(
     place: keyof LayoutPluginRender,
-    data: Omit<LayoutPluginParams, 'options'> & {
-      options?: CompositionProperties;
-    }
+    data: LayoutControllerRender
   ): TemplateResult;
 }
 
@@ -111,7 +114,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected [LayoutMixinInternals] = {
       layoutController: new LayoutController(this),
-      layoutBuilder: resolve(LayoutBuilder),
+      layoutService: resolve(LayoutService),
       screenService: resolve(ScreenService, null),
     };
 
@@ -159,12 +162,14 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected layoutStyles = computed(() =>
       this[LayoutMixinInternals].layoutController.getStyles(
-        this.attributeFilter,
+        featureVersion >= '1.2'
+          ? this.attributeFilter
+          : ['layout', ...layoutKeys],
         this.$options().rules
       )
     );
 
-    protected screen = computed(
+    protected $screen = computed(
       () =>
         this[LayoutMixinInternals].screenService?.getScreenSize() ??
         of(undefined)
@@ -172,24 +177,36 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     protected getLayoutRender(
       place: keyof LayoutPluginRender,
-      data: Omit<LayoutPluginParams, 'options'> & {
-        options?: CompositionProperties;
-      }
+      data: LayoutControllerRender
     ): TemplateResult {
       return this[LayoutMixinInternals].layoutController.getRender({
         place,
         data,
         attrs: this.attributeFilter,
-        screen: this.screen(),
+        screen: this.$screen(),
       });
     }
 
+    protected composition$ = new BehaviorSubject<Component[] | undefined>(
+      undefined
+    );
+    protected compositionStyles$ = this.composition$.pipe(
+      switchMap((composition) =>
+        composition
+          ? this[LayoutMixinInternals].layoutService.getStylesFromOptions({
+              composition,
+            })
+          : of('')
+      )
+    );
+    protected $compositionStyles = computed(() => this.compositionStyles$);
+
     protected renderLayout(props: LayoutMixinRender): TemplateResult {
       const { composition, element, template } = props;
+      this.composition$.next(composition);
       const layoutStyles = this.layoutStyles() ?? '';
-      const inlineStyles = composition
-        ? this[LayoutMixinInternals].layoutBuilder.collectStyles(composition)
-        : '';
+      const inlineStyles = this.$compositionStyles();
+
       const styles = inlineStyles + layoutStyles;
       const data = {
         element: element ?? this,

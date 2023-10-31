@@ -24,20 +24,33 @@ describe('StickyLayoutPlugin', () => {
       const schema = await import('./sticky-layout.schema').then(
         (module) => module.schema
       );
-      const result = await (plugin.getConfig?.().schema as () => unknown)();
+      const config = await lastValueFrom(plugin.getConfig?.());
+      const result = await (config.schema as () => unknown)();
 
       expect(result).toEqual(schema);
     });
   });
 
   describe('getStyleProperties', () => {
-    it('should return a LayoutPluginStyleProperties object', () => {
-      const data = { height: '100px', top: '10' };
-      const styleProperties = {
-        'max-height': `calc(${data.height} - ${data.top})`,
+    it('should return a LayoutStyleProperties object', async () => {
+      const data = {
+        height: '100px',
+        top: '10',
+        overflow: 'overflow',
+        zIndex: 1,
       };
+      const styleProperties = [
+        [
+          {
+            'max-height': `calc(${data.height} - ${data.top})`,
+            overflow: data.overflow,
+          },
+        ],
+        [{ 'z-index': data.zIndex }, { omitUnit: true }],
+      ];
+      const result = await lastValueFrom(plugin.getStyleProperties(data));
 
-      expect(plugin.getStyleProperties(data)).toEqual(styleProperties);
+      expect(result).toEqual(styleProperties);
     });
   });
 });

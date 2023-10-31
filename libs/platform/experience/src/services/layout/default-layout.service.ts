@@ -2,6 +2,7 @@ import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
 import { Observable, map, merge, of, reduce } from 'rxjs';
+import { LayoutBuilder } from './layout.builder';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import {
   LayoutIncomingConfig,
@@ -11,7 +12,6 @@ import {
 import {
   LayoutPlugin,
   LayoutPluginRender,
-  LayoutPluginStyleProperties,
   LayoutPluginType,
   LayoutPropertyPlugin,
 } from './plugins';
@@ -20,7 +20,8 @@ import { ScreenService } from './screen.service';
 export class DefaultLayoutService implements LayoutService {
   constructor(
     protected screenService = inject(ScreenService),
-    protected injector = inject(INJECTOR)
+    protected injector = inject(INJECTOR),
+    protected layoutBuilder = inject(LayoutBuilder)
   ) {}
 
   getStyles(layoutInfo: ResponsiveLayoutInfo): Observable<string> {
@@ -35,7 +36,8 @@ export class DefaultLayoutService implements LayoutService {
         key,
         layoutInfo[key].included,
         layoutInfo[key].excluded,
-        layoutInfo[key].type
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        layoutInfo[key].type!
       );
 
       if (styles) {
@@ -48,11 +50,12 @@ export class DefaultLayoutService implements LayoutService {
       : of('');
   }
 
-  getStyleProperties(
-    config: LayoutStyleConfig
-  ): LayoutPluginStyleProperties | undefined {
-    const { token, type, data } = config;
-    return this.getPlugin(token, type)?.getStyleProperties?.(data);
+  getStylesFromOptions(data: LayoutStyleConfig): Observable<string> {
+    if (data.composition) {
+      return this.layoutBuilder.getCompositionStyles(data.composition);
+    }
+
+    return this.layoutBuilder.getStylesFromOptions(data.rules, data.id);
   }
 
   getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined {
@@ -73,7 +76,7 @@ export class DefaultLayoutService implements LayoutService {
     type: LayoutPluginType
   ): Observable<string> | void {
     return this.getPlugin(token, type)
-      ?.getStyles()
+      ?.getStyles?.()
       .pipe(
         map((styles) =>
           this.resolveStylesForBreakpoint(styles, included, excluded)

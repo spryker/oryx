@@ -1,5 +1,5 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { LayoutStyles } from '../../../layout.model';
 import { LayoutPlugin, LayoutPluginConfig } from '../../layout.plugin';
 
@@ -10,9 +10,9 @@ export class SplitMainLayoutPlugin implements LayoutPlugin {
     );
   }
 
-  getConfig(): LayoutPluginConfig {
-    return {
+  getConfig(): Observable<LayoutPluginConfig> {
+    return of({
       schema: () => import('./split-main-layout.schema').then((m) => m.schema),
-    };
+    });
   }
 }
