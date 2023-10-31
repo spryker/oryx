@@ -97,6 +97,9 @@
       "@spryker-oryx/experience/layout": [
         "libs/platform/experience/layout/index.ts"
       ],
+      "@spryker-oryx/experience/carousel-navigation": [
+        "libs/platform/experience/carousel-navigation/index.ts"
+      ],
       "@spryker-oryx/experience/mocks": [
         "libs/platform/experience/src/mocks/index.ts"
       ],

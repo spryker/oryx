@@ -10,30 +10,55 @@ export const styles: LayoutStyles = {
 
     :host {
       --oryx-column-count: var(--oryx-column-grid);
+      --indicator-area-height: 50px;
 
       overscroll-behavior-x: contain;
       scroll-snap-type: both mandatory;
-      scroll-behavior: smooth;
       grid-auto-columns: var(--_item-size);
+
+      /* scroll-behavior: smooth; */
+    }
+
+    :host([layout-indicatorsPosition='below']) {
+      isolation: isolate;
+      margin-block-end: var(--indicator-area-height);
     }
 
     :host(:not([layout-vertical])) {
       grid-auto-flow: column;
-      overflow: auto hidden;
+      overflow: var(--_scroll, auto) hidden;
     }
 
     :host([layout-vertical]) {
       grid-auto-flow: row;
-      overflow: hidden auto;
+      overflow: hidden var(--_scroll, auto);
+    }
+
+    @media (hover: hover) {
+      :host {
+        --_scroll: var(--scroll-with-mouse);
+      }
+    }
+
+    @media (hover: none) {
+      :host {
+        --_scroll: var(--scroll-with-touch);
+      }
     }
 
     :host::-webkit-scrollbar {
       display: none;
     }
 
-    *,
+    /* *,
     ::slotted(*) {
       scroll-snap-align: start;
+    } */
+
+    @media (prefers-reduced-motion: reduce) {
+      :host {
+        scroll-behavior: auto;
+      }
     }
   `,
 };
