@@ -27,7 +27,7 @@ export default defineConfig({
     VitePWA({
       devOptions: { enabled: !skipSw, type: 'module' },
       registerType: 'prompt',
-      injectRegister: 'auto',
+      injectRegister: 'inline',
       strategies: 'injectManifest',
       srcDir: 'dev-dist/sw',
       filename: 'app.js',
