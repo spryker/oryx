@@ -68,6 +68,14 @@ export class MockProductListAdapter implements ProductListAdapter {
             ? [qualifier.minPrice!, qualifier.maxPrice!]
             : []
         ),
+        generateRange(
+          'Price',
+          'price',
+          [0, 100000],
+          'minPrice' in qualifier && 'maxPrice' in qualifier
+            ? [qualifier.minPrice! * 100, qualifier.maxPrice! * 100]
+            : []
+        ),
       ],
     });
   }

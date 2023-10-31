@@ -28,6 +28,7 @@ const Template: Story = (): TemplateResult => {
     name="Range"
     open
     @oryx.select=${select}
+    step="1"
   ></oryx-search-range-facet>`;
 };
 

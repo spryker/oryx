@@ -2,9 +2,12 @@ import { FacetValue, RangeFacetValue, ValueFacet } from '@spryker-oryx/product';
 
 export const FACET_SELECT_EVENT = 'oryx.select';
 
+export type SelectRangeFacetValue = Pick<RangeFacetValue, 'selected'>;
+export type SelectFacetValue = Pick<FacetValue, 'value' | 'selected'>;
+
 export type SelectFacetEventDetailValue =
-  | Pick<FacetValue, 'value' | 'selected'>
-  | Pick<RangeFacetValue, 'selected'>;
+  | SelectFacetValue
+  | SelectRangeFacetValue;
 
 export interface SelectFacetEventDetail {
   name: string;
