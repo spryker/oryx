@@ -13,7 +13,7 @@ describe('GridLayoutPlugin', () => {
       const styles = await import('./grid-layout.styles').then(
         (module) => module.styles
       );
-      const result = await lastValueFrom(plugin.getStyles());
+      const result = await lastValueFrom(plugin.getStyles({ options: {} }));
 
       expect(result).toEqual(styles);
     });

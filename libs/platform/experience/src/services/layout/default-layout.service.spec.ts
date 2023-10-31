@@ -137,7 +137,7 @@ describe('DefaultLayoutService', () => {
       const result = service.getRender({
         token: 'a',
         type: LayoutPluginType.Layout,
-        data: mockData as LayoutPluginRenderParams,
+        data: mockData as unknown as LayoutPluginRenderParams,
       });
 
       expect(aLayoutPlugin.getRender).toHaveBeenCalledWith(mockData);
@@ -150,7 +150,7 @@ describe('DefaultLayoutService', () => {
       const result = service.getRender({
         token: 'a',
         type: LayoutPluginType.Property,
-        data: mockData as LayoutPluginRenderParams,
+        data: mockData as unknown as LayoutPluginRenderParams,
       });
 
       expect(aLayoutPropertyPlugin.getRender).toHaveBeenCalledWith(mockData);
