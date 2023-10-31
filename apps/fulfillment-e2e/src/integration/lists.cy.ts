@@ -6,7 +6,6 @@ const headerFragment = new ListsHeaderFragment();
 
 describe('Picking Lists', () => {
   beforeEach(() => {
-    cy.clearIndexedDB();
     cy.login();
   });
 

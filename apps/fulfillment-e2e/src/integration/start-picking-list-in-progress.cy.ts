@@ -6,7 +6,6 @@ const customerNoteFragment = new CustomerNoteFragment();
 
 describe('pick a picking list in progress', () => {
   beforeEach(() => {
-    cy.clearIndexedDB();
     cy.login();
     cy.mockPickingInProgress();
 

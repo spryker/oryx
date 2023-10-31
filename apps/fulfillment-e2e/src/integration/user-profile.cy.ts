@@ -12,7 +12,6 @@ const listsHeaderFragment = new ListsHeaderFragment();
 
 describe('When a user opens the user profile modal', () => {
   beforeEach(() => {
-    cy.clearIndexedDB();
     cy.login();
 
     listsHeaderFragment.getUserIcon().click();

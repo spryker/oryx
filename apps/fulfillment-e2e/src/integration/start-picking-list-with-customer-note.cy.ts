@@ -11,7 +11,6 @@ const discardModalFragment = new DiscardModalFragment();
 
 describe('Start picking a picklist with customer note', () => {
   beforeEach(() => {
-    cy.clearIndexedDB();
     cy.login();
 
     listsFragment.getStartPickingButtons().eq(0).click();

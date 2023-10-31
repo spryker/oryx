@@ -4,7 +4,6 @@ const filtersFragment = new FiltersFragment();
 
 describe('When user interacts with the filters', () => {
   beforeEach(() => {
-    cy.clearIndexedDB();
     cy.login();
   });
 

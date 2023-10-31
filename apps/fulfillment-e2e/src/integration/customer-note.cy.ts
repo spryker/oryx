@@ -6,7 +6,6 @@ const customerNoteFragment = new CustomerNoteModalFragment();
 
 describe('Customer note suite', () => {
   beforeEach(() => {
-    cy.clearIndexedDB();
     cy.login();
   });
 

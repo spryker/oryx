@@ -1,8 +1,8 @@
 import { OauthHandlerFragment } from '../support/page_fragments/oauth-handler.fragment';
 import { LoginPage } from '../support/page_objects/login.page';
-import { WarehouseSelectionListFragment } from '../support/page_fragments/warehouse-selection-list.fragment';
+import { WarehouseSelectionPage } from '../support/page_objects/warehouse-selection.page';
 
-const warehouseSelectionListFragment = new WarehouseSelectionListFragment();
+const warehouseSelectionListFragment = new WarehouseSelectionPage();
 const loginPage = new LoginPage();
 const oauthHandler = new OauthHandlerFragment();
 

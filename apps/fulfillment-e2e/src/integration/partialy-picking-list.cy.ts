@@ -19,7 +19,6 @@ const userProfileFragment = new UserProfileFragment();
 
 describe('Partial picking a picklist', () => {
   beforeEach(() => {
-    cy.clearIndexedDB();
     cy.login();
     pickerPage.visit();
     pickerPage.productFragment.getProducts().should('be.visible');

@@ -11,7 +11,6 @@ describe('Fully pick a picking list', () => {
   const productFragment = new ProductFragment();
 
   beforeEach(() => {
-    cy.clearIndexedDB();
     cy.login();
     pickerPage.visit();
     pickerPage.productFragment.getProducts().should('be.visible');

@@ -8,7 +8,6 @@ const pickerHeaderFragment = new PickerHeaderFragment();
 
 describe('picking header with no customer note', () => {
   beforeEach(() => {
-    cy.clearIndexedDB();
     cy.login();
     pickerPage.visit();
   });

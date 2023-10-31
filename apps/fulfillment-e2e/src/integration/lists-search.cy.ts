@@ -8,7 +8,6 @@ const userProfileFragment = new UserProfileFragment();
 
 describe('Picking Lists Search', () => {
   beforeEach(() => {
-    cy.clearIndexedDB();
     cy.login();
 
     headerFragment.getSearch().click();

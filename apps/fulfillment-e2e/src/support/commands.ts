@@ -1,6 +1,7 @@
 import { TestUserData } from '../types/user.type';
-import { WarehouseSelectionListFragment } from './page_fragments/warehouse-selection-list.fragment';
 import { LoginPage } from './page_objects/login.page';
+import { PickListsPage } from './page_objects/pick-lists.page';
+import { WarehouseSelectionPage } from './page_objects/warehouse-selection.page';
 export {};
 
 declare global {
@@ -17,35 +18,20 @@ declare global {
 
 const indexedDBName = 'fulfillment-app-db';
 const indexedDBStorageName = 'oryx-local-db-storage';
-const defaultUser = { email: 'admin@spryker.com', password: 'change123' };
-const loginPage = new LoginPage();
+const defaultUser = { email: 'harald@spryker.com', password: 'change123' };
 
 Cypress.Commands.add('login', (user = defaultUser) => {
-  const warehouseSelectionListFragment = new WarehouseSelectionListFragment();
+  const loginPage = new LoginPage();
+  const warehouseSelectionPage = new WarehouseSelectionPage();
+  const pickListsPage = new PickListsPage();
 
-  cy.intercept('POST', '**/token').as('token');
+  cy.clearIndexedDB();
 
   loginPage.visit();
-  loginPage.loginForm.login(user);
-
-  // we have to wait for 5++ seconds here
-  // because our bundle is huge and Cypress is not able
-  // to cache all 500++ files fast enough
-  cy.wait('@token', { timeout: 30000 });
-
-  cy.intercept('GET', '**/warehouse-user-assignments').as(
-    'warehouse-user-assignments'
-  );
-  cy.wait('@warehouse-user-assignments');
-  warehouseSelectionListFragment.getWarehouseSelectionButtons().eq(0).click();
-
-  cy.intercept('GET', '**/picking-lists?include*').as('picking-lists');
-  cy.wait('@picking-lists');
-
-  cy.waitForIndexedDB();
-  // this wait is needed to populate the DB with data
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(800);
+  loginPage.login(user);
+  warehouseSelectionPage.waitForLoaded();
+  warehouseSelectionPage.selectByEq(0);
+  pickListsPage.waitForLoaded();
 });
 
 Cypress.Commands.add('clearIndexedDB', () => {

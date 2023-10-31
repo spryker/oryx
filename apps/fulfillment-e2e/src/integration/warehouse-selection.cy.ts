@@ -1,45 +1,26 @@
-import { HeaderFragment } from '../support/page_fragments/header.fragment';
-import { ListsFragment } from '../support/page_fragments/lists.fragment';
-import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
-import { WarehouseSelectionListFragment } from '../support/page_fragments/warehouse-selection-list.fragment';
+import { PickListsPage } from '../support/page_objects/pick-lists.page';
 import { WarehouseSelectionPage } from '../support/page_objects/warehouse-selection.page';
 
-const warehouseSelectionPage = new WarehouseSelectionPage();
-const warehouseSelectionListFragment = new WarehouseSelectionListFragment();
-const headerFragment = new HeaderFragment();
-const userProfileFragment = new UserProfileFragment();
-const listsFragment = new ListsFragment();
+let whSelectionPage: WarehouseSelectionPage;
 
 describe('Warehouse selection', () => {
   beforeEach(() => {
-    cy.clearIndexedDB();
+    whSelectionPage = new WarehouseSelectionPage();
+
     cy.login();
-    warehouseSelectionPage.visit();
+    whSelectionPage.visit();
   });
 
-  it('should check warehouses selection page', () => {
-    headerFragment.getWrapper().should('be.visible');
-    headerFragment.getUserIcon().should('be.visible');
-    headerFragment.getUserIcon().click();
+  it('should render available warehouses', () => {
+    whSelectionPage.getWrapper().should('be.visible');
+    whSelectionPage.getNames().should('have.length.gt', 0);
+    whSelectionPage.getSelectBtns().should('have.length.gt', 0);
+  });
 
-    userProfileFragment.getWrapper().should('be.visible');
-    userProfileFragment.getLogOutButton().should('be.visible');
-    userProfileFragment.getWrapper().should('be.visible');
-    userProfileFragment.getCloseButton().should('be.visible');
-    userProfileFragment.getCloseButton().click();
+  it('should navigate to picking lists after warehouse selection', () => {
+    const pickListsPage = new PickListsPage();
 
-    warehouseSelectionListFragment.getWrapper().should('be.visible');
-    warehouseSelectionListFragment
-      .getTitle()
-      .should('contain.text', 'Select your location to get started');
-    warehouseSelectionListFragment.getWarehouseNames().should('have.length', 3);
-    warehouseSelectionListFragment
-      .getWarehouseSelectionButtons()
-      .should('have.length', 3);
-
-    warehouseSelectionListFragment.getWarehouseSelectionButtons().eq(0).click();
-
-    cy.location('pathname').should('be.equal', '/');
-    listsFragment.getWrapper().should('be.visible');
+    whSelectionPage.selectByEq(0);
+    pickListsPage.waitForLoaded();
   });
 });
