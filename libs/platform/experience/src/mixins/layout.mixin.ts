@@ -16,7 +16,15 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject, of, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  concatMap,
+  from,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import {
   LayoutController,
   LayoutControllerRender,
@@ -175,16 +183,59 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         of(undefined)
     );
 
+    protected test$ = new BehaviorSubject<any>(new Map());
+    protected test2$ = this.test$.pipe(
+      switchMap((data) => {
+        return from(data.entries()).pipe(
+          concatMap(([key, value]) => {
+            return value.pipe(
+              map((value) => {
+                return {
+                  key,
+                  value,
+                };
+              }),
+              tap((value) => {
+                console.log(value);
+              })
+            );
+          })
+        );
+      })
+    );
+
+    protected $test = computed(() => this.test2$);
+
     protected getLayoutRender(
       place: keyof LayoutPluginRender,
       data: LayoutControllerRender
     ): TemplateResult {
-      return this[LayoutMixinInternals].layoutController.getRender({
+      const data2 = this.test$.getValue();
+      const obs$ = this[LayoutMixinInternals].layoutController.getRender({
         place,
         data,
         attrs: this.attributeFilter,
         screen: this.$screen(),
       });
+      const templates = this.$test() as any;
+
+      if (data.experience && !data2.has(data.experience)) {
+        data2.set(data.experience, obs$);
+        this.test$.next(data2);
+
+        // return templates[data.experience as any]?.[place];
+      }
+
+      if (!data2.has(data.element)) {
+        data2.set(data.element, obs$);
+        this.test$.next(data2);
+
+        // return templates[data.element as any]?.[place];
+      }
+
+      return html`hellp`;
+
+      return templates[(data.experience ?? data.element) as any]?.[place];
     }
 
     protected composition$ = new BehaviorSubject<Component[] | undefined>(
