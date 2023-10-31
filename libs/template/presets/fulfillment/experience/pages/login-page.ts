@@ -1,7 +1,4 @@
-import {
-  CompositionLayout,
-  ExperienceComponent,
-} from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
 
 export const fulfillmentLoginPage: ExperienceComponent = {
@@ -14,16 +11,27 @@ export const fulfillmentLoginPage: ExperienceComponent = {
   },
   options: {
     rules: [
-      { layout: CompositionLayout.Flex, justify: 'center' },
+      { layout: 'flex', justify: 'center' },
       {
         query: { breakpoint: Size.Sm },
         width: '100%',
       },
       {
         query: { breakpoint: Size.Md },
-        width: '530px',
+        width: '414px',
       },
     ],
   },
-  components: [{ type: 'oryx-picking-login' }],
+  components: [
+    {
+      type: 'oryx-picking-login',
+      options: {
+        rules: [
+          {
+            width: '100%',
+          },
+        ],
+      },
+    },
+  ],
 };

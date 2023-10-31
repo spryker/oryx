@@ -6,6 +6,16 @@ import { PickingHeaderService } from './services';
 
 export const defaultPickingRoutes: RouteConfig[] = [
   {
+    path: '/',
+    render: () =>
+      html`<oryx-composition uid="picking-lists"></oryx-composition>`,
+  },
+  {
+    path: '/warehouse-selection',
+    render: () =>
+      html`<oryx-composition uid="warehouse-selection"></oryx-composition>`,
+  },
+  {
     path: '/picking-list/picking/:id',
     render: ({ id }) =>
       html`<oryx-picking-picker

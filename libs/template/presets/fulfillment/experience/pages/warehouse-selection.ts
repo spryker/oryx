@@ -21,13 +21,20 @@ export const warehouseSelectionPage: ExperienceComponent = {
       },
       {
         query: { breakpoint: Size.Md },
-        width: '530px',
+        width: '414px',
       },
     ],
   },
   components: [
     {
       type: 'oryx-picking-warehouse-assignment',
+      options: {
+        rules: [
+          {
+            width: '100%',
+          },
+        ],
+      },
     },
   ],
 };

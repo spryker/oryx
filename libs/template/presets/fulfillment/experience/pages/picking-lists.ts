@@ -14,20 +14,30 @@ export const pickingListsPage: ExperienceComponent = {
   },
   options: {
     rules: [
-      { layout: CompositionLayout.Flex, justify: 'center' },
+      {
+        layout: CompositionLayout.Flex,
+        justify: 'center',
+      },
       {
         query: { breakpoint: Size.Sm },
         width: '100%',
       },
       {
         query: { breakpoint: Size.Md },
-        width: '530px',
+        width: '414px',
       },
     ],
   },
   components: [
     {
       type: 'oryx-picking-lists',
+      options: {
+        rules: [
+          {
+            width: '100%',
+          },
+        ],
+      },
     },
   ],
 };

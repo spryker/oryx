@@ -21,8 +21,12 @@ export const mobileBackofficeTokens: DesignToken[] = [
     ),
     ...layoutTokens,
     container: {
-      width: '530px',
+      width: '414px',
       bleed: '0px',
+    },
+    modal: {
+      width: '404px',
+      bleed: '5px',
     },
   },
   {
