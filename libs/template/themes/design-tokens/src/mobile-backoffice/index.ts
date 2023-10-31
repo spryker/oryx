@@ -1,12 +1,12 @@
 import { DesignToken } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
-import { color } from '../color.tokens';
-import { tokens } from '../backoffice/other.tokens';
 import { buttonTokens } from '../backoffice/button.token';
+import { tokens } from '../backoffice/other.tokens';
 import {
   typographySmallTokens,
   typographyTokens,
 } from '../backoffice/typography.tokens';
+import { color } from '../color.tokens';
 import { layoutSmTokens, layoutTokens } from '../layout.tokens';
 
 export const mobileBackofficeTokens: DesignToken[] = [
@@ -21,10 +21,7 @@ export const mobileBackofficeTokens: DesignToken[] = [
     ),
     ...layoutTokens,
     container: {
-      // 510px (or 530px) would be align better width min width of modals
-      // alternatively, we could introduce max-width to modals to be not
-      // larger than the container width
-      width: '414px',
+      width: '530px',
       bleed: '0px',
     },
   },

@@ -1,6 +1,7 @@
 import { applicationFeature } from '@spryker-oryx/application';
 import { BapiAuthComponentsFeature, BapiAuthFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
+import { contentFeature } from '@spryker-oryx/content';
 import { AppFeature, PageMetaResolver, coreFeature } from '@spryker-oryx/core';
 import { Resources, experienceFeature } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
@@ -32,7 +33,7 @@ export function fulfillmentFeatures(
     cartFeature,
     coreFeature,
     ...(featureVersion >= '1.2'
-      ? [siteFeature, formFeature, applicationFeature]
+      ? [siteFeature, formFeature, applicationFeature, contentFeature]
       : []),
     {
       //drop PageMetaResolver from experienceFeature
