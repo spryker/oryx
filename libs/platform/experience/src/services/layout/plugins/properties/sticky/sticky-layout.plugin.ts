@@ -1,10 +1,10 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { LayoutStyles } from '../../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
-  LayoutPluginStyleProperties,
+  LayoutStyleParameters,
   LayoutStyleProperties,
 } from '../../layout.plugin';
 
@@ -13,15 +13,25 @@ export class StickyLayoutPlugin implements LayoutPlugin {
     return ssrAwaiter(import('./sticky.styles').then((m) => m.styles));
   }
 
-  getConfig(): LayoutPluginConfig {
-    return {
+  getConfig(): Observable<LayoutPluginConfig> {
+    return of({
       schema: () => import('./sticky-layout.schema').then((m) => m.schema),
-    };
+    });
   }
 
-  getStyleProperties(data: LayoutStyleProperties): LayoutPluginStyleProperties {
-    return {
-      'max-height': `calc(${data.height ?? '100vh'} - ${data.top ?? '0px'})`,
-    };
+  getStyleProperties(
+    data: LayoutStyleParameters
+  ): Observable<LayoutStyleProperties> {
+    return of([
+      [
+        {
+          'max-height': `calc(${data.height ?? '100vh'} - ${
+            data.top ?? '0px'
+          })`,
+          overflow: data.overflow,
+        },
+      ],
+      [{ 'z-index': data.zIndex }, { omitUnit: true }],
+    ]);
   }
 }

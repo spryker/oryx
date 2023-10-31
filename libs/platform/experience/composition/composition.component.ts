@@ -12,6 +12,7 @@ import { RouterService } from '@spryker-oryx/router';
 import {
   effect,
   elementEffect,
+  featureVersion,
   hydratableAttribute,
   hydrate,
   signal,
@@ -20,6 +21,8 @@ import {
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { when } from 'lit/directives/when.js';
 import { map, of, switchMap } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
 
@@ -86,6 +89,10 @@ export class CompositionComponent extends LayoutMixin(
   });
 
   protected override render(): TemplateResult | void {
+    return featureVersion < '1.2' ? this.legacyRender() : this.standardRender();
+  }
+
+  private standardRender(): TemplateResult | void {
     const components = this.$components();
 
     if (!components?.length) return;
@@ -110,6 +117,23 @@ export class CompositionComponent extends LayoutMixin(
       ) as TemplateResult,
       composition: components,
     });
+  }
+
+  private legacyRender(): TemplateResult | void {
+    const components = this.$components();
+
+    if (!components?.length) return;
+
+    const inlineStyles = this.layoutBuilder.collectStyles(components);
+    const layoutStyles = this.layoutStyles() ?? '';
+    const styles = inlineStyles + layoutStyles;
+
+    return html`${repeat(
+      components,
+      (component) => component.id,
+      (component) => this.renderComponent(component)
+    )}
+    ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))} `;
   }
 
   protected renderComponent(

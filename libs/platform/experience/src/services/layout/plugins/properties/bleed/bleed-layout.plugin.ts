@@ -1,10 +1,10 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { LayoutStyles } from '../../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
-  LayoutPluginStyleProperties,
+  LayoutStyleProperties,
 } from '../../layout.plugin';
 
 export class BleedLayoutPlugin implements LayoutPlugin {
@@ -12,15 +12,13 @@ export class BleedLayoutPlugin implements LayoutPlugin {
     return ssrAwaiter(import('./bleed.styles').then((m) => m.styles));
   }
 
-  getConfig(): LayoutPluginConfig {
-    return {
+  getConfig(): Observable<LayoutPluginConfig> {
+    return of({
       schema: () => import('./bleed-layout.schema').then((m) => m.schema),
-    };
+    });
   }
 
-  getStyleProperties(): LayoutPluginStyleProperties {
-    return {
-      'padding-inline': '0',
-    };
+  getStyleProperties(): Observable<LayoutStyleProperties> {
+    return of({ 'padding-inline': '0' });
   }
 }

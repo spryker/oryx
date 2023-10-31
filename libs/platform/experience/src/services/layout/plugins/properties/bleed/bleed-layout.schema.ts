@@ -1,4 +1,4 @@
-import { ContentComponentSchema } from '@spryker-oryx/experience';
+import { ContentComponentSchema } from '../../../../../models';
 
 export const schema: ContentComponentSchema = {
   name: 'bleed',

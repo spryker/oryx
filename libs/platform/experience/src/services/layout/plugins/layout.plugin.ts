@@ -11,7 +11,7 @@ import { LayoutStyles, LayoutStylesOptions } from '../layout.model';
 
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
 export const LayoutPropertyPlugin = 'oryx.LayoutPropertyPlugin*';
-export const LayoutStylePlugin = 'oryx.LayoutStylePlugin*';
+export const LayoutStylesPlugin = 'oryx.LayoutStylesPlugin*';
 
 export const enum LayoutPluginType {
   Layout,
@@ -33,7 +33,15 @@ export interface LayoutPluginConfig {
   schema?: LazyLoadable<ContentComponentSchema>;
 }
 
-export type LayoutPluginStyleProperties = Record<string, string | number>;
+export interface LayoutStyleOptions {
+  unit?: string;
+  omitUnit?: boolean;
+  emptyValue?: boolean;
+}
+
+export type LayoutStyleList = Record<string, string | number | undefined>;
+export type LayoutStylePropertiesArr = [LayoutStyleList, LayoutStyleOptions?][];
+export type LayoutStyleProperties = LayoutStyleList | LayoutStylePropertiesArr;
 
 export interface LayoutPluginParams {
   options?: LayoutProperties;
@@ -42,14 +50,16 @@ export interface LayoutPluginParams {
   experience?: Component;
 }
 
-export interface LayoutStyleProperties extends Omit<StyleProperties, 'layout'> {
+export interface LayoutStyleParameters extends Omit<StyleProperties, 'layout'> {
   layout?: LayoutStylesOptions;
 }
 
 export interface LayoutPlugin {
-  getStyles(): Observable<LayoutStyles>;
-  getConfig(): LayoutPluginConfig;
-  getStyleProperties?(data: LayoutStyleProperties): LayoutPluginStyleProperties;
+  getConfig(): Observable<LayoutPluginConfig>;
+  getStyles?(): Observable<LayoutStyles>;
+  getStyleProperties?(
+    data: LayoutStyleParameters
+  ): Observable<LayoutStyleProperties>;
   /**
    * Returns object with pre and post render templates.
    * Together with composition component it's possible to specify global post\pre render and per component depends on argument.
@@ -78,6 +88,6 @@ declare global {
   interface InjectionTokensContractMap {
     [LayoutPlugin]: LayoutPlugin;
     [LayoutPropertyPlugin]: LayoutPlugin;
-    [LayoutStylePlugin]: LayoutPlugin;
+    [LayoutStylesPlugin]: LayoutPlugin;
   }
 }

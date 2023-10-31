@@ -2,6 +2,7 @@ import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { Size } from '@spryker-oryx/utilities';
 import { lastValueFrom, of } from 'rxjs';
 import { DefaultLayoutService } from './default-layout.service';
+import { LayoutBuilder } from './layout.builder';
 import { LayoutService } from './layout.service';
 import {
   LayoutPlugin,
@@ -18,13 +19,16 @@ const mockLayoutService = {
 const aLayoutPlugin = {
   getStyles: vi.fn(),
   getRender: vi.fn(),
-  getStyleProperties: vi.fn(),
 };
 
 const aLayoutPropertyPlugin = {
   getStyles: vi.fn(),
   getRender: vi.fn(),
-  getStyleProperties: vi.fn(),
+};
+
+const layoutBuilder = {
+  getCompositionStyles: vi.fn(),
+  getStylesFromOptions: vi.fn(),
 };
 
 describe('DefaultLayoutService', () => {
@@ -48,6 +52,10 @@ describe('DefaultLayoutService', () => {
         {
           provide: `${LayoutPropertyPlugin}a`,
           useValue: aLayoutPropertyPlugin,
+        },
+        {
+          provide: LayoutBuilder,
+          useValue: layoutBuilder,
         },
       ],
     });
@@ -122,44 +130,31 @@ describe('DefaultLayoutService', () => {
     });
   });
 
-  const methods = [
-    { name: 'getRender', text: 'render' },
-    { name: 'getStyleProperties', text: 'style properties' },
-  ];
-
-  methods.forEach(({ name, text }) =>
-    describe(name, () => {
-      it(`should resolve ${text} from layout plugin`, () => {
-        const _name = name as keyof typeof aLayoutPlugin;
-        const mockData = 'mockData';
-        aLayoutPlugin[_name].mockReturnValue(mockData);
-        const result = service[
-          name as Exclude<keyof typeof service, 'getStyles'>
-        ]({
-          token: 'a',
-          type: LayoutPluginType.Layout,
-          data: mockData as LayoutPluginParams,
-        });
-
-        expect(aLayoutPlugin[_name]).toHaveBeenCalledWith(mockData);
-        expect(result).toBe(mockData);
+  describe('getRender', () => {
+    it(`should resolve render from layout plugin`, () => {
+      const mockData = 'mockData';
+      aLayoutPlugin.getRender.mockReturnValue(mockData);
+      const result = service.getRender({
+        token: 'a',
+        type: LayoutPluginType.Layout,
+        data: mockData as LayoutPluginParams,
       });
 
-      it(`should resolve ${text} from layout property plugin`, () => {
-        const _name = name as keyof typeof aLayoutPropertyPlugin;
-        const mockData = 'mockData';
-        aLayoutPropertyPlugin[_name].mockReturnValue(mockData);
-        const result = service[
-          name as Exclude<keyof typeof service, 'getStyles'>
-        ]({
-          token: 'a',
-          type: LayoutPluginType.Property,
-          data: mockData as LayoutPluginParams,
-        });
+      expect(aLayoutPlugin.getRender).toHaveBeenCalledWith(mockData);
+      expect(result).toBe(mockData);
+    });
 
-        expect(aLayoutPropertyPlugin[_name]).toHaveBeenCalledWith(mockData);
-        expect(result).toBe(mockData);
+    it(`should resolve render from layout property plugin`, () => {
+      const mockData = 'mockData';
+      aLayoutPropertyPlugin.getRender.mockReturnValue(mockData);
+      const result = service.getRender({
+        token: 'a',
+        type: LayoutPluginType.Property,
+        data: mockData as LayoutPluginParams,
       });
-    })
-  );
+
+      expect(aLayoutPropertyPlugin.getRender).toHaveBeenCalledWith(mockData);
+      expect(result).toBe(mockData);
+    });
+  });
 });

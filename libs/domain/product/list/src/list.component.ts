@@ -6,9 +6,10 @@ import {
   ProductListService,
   ProductMixin,
 } from '@spryker-oryx/product';
-import { computed, hydrate } from '@spryker-oryx/utilities';
+import { computed, featureVersion, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ProductListOptions } from './list.model';
 
 @hydrate()
@@ -33,6 +34,13 @@ export class ProductListComponent extends ProductMixin(
   });
 
   protected override render(): TemplateResult {
+    if (featureVersion < '1.2') {
+      return html`
+        ${this.renderList()}
+        ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
+      `;
+    }
+
     return html`
       ${this.renderLayout({
         template: this.renderList(),
