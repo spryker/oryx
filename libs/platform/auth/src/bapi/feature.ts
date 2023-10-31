@@ -43,7 +43,7 @@ export class BapiAuthFeature extends OauthFeature implements AppFeature {
           ),
           redirectUrl: new URL(
             '/oauth/cb/spryker',
-            globalThis.location.origin
+            'http://localhost:4200'
           ).toString(),
         },
       ],
