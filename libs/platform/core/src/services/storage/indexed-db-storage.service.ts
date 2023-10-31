@@ -11,9 +11,9 @@ export const indexedDbTableName = 'oryx.storage';
 /** @deprecated since 1.2 */
 export interface IndexedDBStorageService {
   getItem(key: string): Observable<string | null>;
-  setItem(key: string, value: string): void;
-  removeItem(key: string): void;
-  clear(): void;
+  setItem(key: string, value: string): Observable<unknown>;
+  removeItem(key: string): Observable<unknown>;
+  clear(): Observable<unknown>;
 }
 
 declare global {
