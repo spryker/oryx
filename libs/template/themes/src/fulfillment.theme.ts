@@ -14,7 +14,6 @@ export const fulfillmentTheme: Theme = {
     },
   },
   designTokens: () =>
-    // TODO: consider renaming the tokens
     import('../design-tokens/src/mobile-backoffice').then(
       (s) => s.mobileBackofficeTokens
     ),

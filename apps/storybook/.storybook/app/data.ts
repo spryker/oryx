@@ -8,7 +8,7 @@ import {
   fulfillmentTheme,
   storefrontTheme,
 } from '@spryker-oryx/themes';
-import { fulfillmentResources } from '../../../../libs/template/presets/fulfillment';
+import { fulfillmentResources } from '@spryker-oryx/presets/fulfillment';
 
 export const theme = {
   default: 'backoffice',
