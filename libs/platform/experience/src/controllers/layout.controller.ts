@@ -21,15 +21,18 @@ import {
 } from '../models';
 import {
   LayoutBuilder,
-  LayoutPluginParams,
   LayoutPluginRender,
+  LayoutPluginRenderParams,
   LayoutPluginType,
   LayoutService,
   LayoutStylesOptions,
   ResponsiveLayoutInfo,
 } from '../services';
 
-export type LayoutControllerRender = Omit<LayoutPluginParams, 'options'> & {
+export type LayoutControllerRender = Omit<
+  LayoutPluginRenderParams,
+  'options'
+> & {
   options?: CompositionProperties;
 };
 

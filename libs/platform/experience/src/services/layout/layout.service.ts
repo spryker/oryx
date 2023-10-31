@@ -2,8 +2,8 @@ import { Observable } from 'rxjs';
 import { Component, StyleRuleSet } from '../../models';
 import { ResponsiveLayoutInfo } from './layout.model';
 import {
-  LayoutPluginParams,
   LayoutPluginRender,
+  LayoutPluginRenderParams,
   LayoutPluginType,
 } from './plugins';
 
@@ -12,7 +12,7 @@ export const LayoutService = 'oryx.LayoutService';
 export interface LayoutIncomingConfig {
   token: string;
   type: LayoutPluginType;
-  data: LayoutPluginParams;
+  data: LayoutPluginRenderParams;
 }
 
 export interface LayoutStyleConfig {

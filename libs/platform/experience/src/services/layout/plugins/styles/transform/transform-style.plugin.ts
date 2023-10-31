@@ -2,7 +2,7 @@ import { Observable, of } from 'rxjs';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
-  LayoutStyleParameters,
+  LayoutPluginPropertiesParams,
   LayoutStyleProperties,
 } from '../../layout.plugin';
 
@@ -14,11 +14,13 @@ export class TransformStylePlugin implements LayoutPlugin {
   }
 
   getStyleProperties(
-    data: LayoutStyleParameters
+    data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
+    const { styles } = data;
+
     return of([
-      [{ rotate: data.rotate }, { unit: 'deg' }],
-      [{ scale: data.scale }],
+      [{ rotate: styles.rotate }, { unit: 'deg' }],
+      [{ scale: styles.scale }],
     ]);
   }
 }

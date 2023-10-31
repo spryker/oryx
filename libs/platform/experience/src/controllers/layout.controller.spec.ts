@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { CompositionLayout } from '../models';
 import {
   LayoutBuilder,
-  LayoutPluginParams,
+  LayoutPluginRenderParams,
   LayoutPluginType,
   LayoutService,
 } from '../services';
@@ -337,7 +337,7 @@ describe('LayoutController', () => {
       const mockData = {
         element: 'element',
         experience: 'experience',
-      } as unknown as Omit<LayoutPluginParams, 'options'>;
+      } as unknown as Omit<LayoutPluginRenderParams, 'options'>;
 
       beforeEach(() => {
         mockLayoutService.getRender.mockReturnValue(of());
