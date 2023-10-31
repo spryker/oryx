@@ -94,9 +94,7 @@ export const homePage: ExperienceComponent = {
       options: {
         rules: [
           {
-            layout: {
-              type: 'carousel',
-            },
+            layout: 'carousel',
             padding: '30px 0 5px',
             align: 'stretch',
           },
