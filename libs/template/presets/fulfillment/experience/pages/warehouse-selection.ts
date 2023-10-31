@@ -1,7 +1,4 @@
-import {
-  CompositionLayout,
-  ExperienceComponent,
-} from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
 
 export const warehouseSelectionPage: ExperienceComponent = {
@@ -14,7 +11,7 @@ export const warehouseSelectionPage: ExperienceComponent = {
   },
   options: {
     rules: [
-      { layout: CompositionLayout.Flex, justify: 'center' },
+      { layout: 'flex', justify: 'center' },
       {
         query: { breakpoint: Size.Sm },
         width: '100%',

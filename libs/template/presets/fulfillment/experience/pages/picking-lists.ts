@@ -1,7 +1,4 @@
-import {
-  CompositionLayout,
-  ExperienceComponent,
-} from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
 
 export const pickingListsPage: ExperienceComponent = {
@@ -15,7 +12,7 @@ export const pickingListsPage: ExperienceComponent = {
   options: {
     rules: [
       {
-        layout: CompositionLayout.Flex,
+        layout: 'flex',
         justify: 'center',
       },
       {
