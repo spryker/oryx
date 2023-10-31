@@ -18,7 +18,7 @@ export * as carouselLayout from './types/carousel/carousel-layout.styles';
 export * from './types/column/column-layout.plugin';
 export * as columnLayout from './types/column/column-layout.styles';
 export * from './types/flex/flex-layout.plugin';
-export * as freeLayout from './types/flex/flex-layout.styles';
+export * as flexLayout from './types/flex/flex-layout.styles';
 export * from './types/grid/grid-layout.plugin';
 export * as gridLayout from './types/grid/grid-layout.styles';
 export * from './types/split-aside/split-aside-layout.plugin';

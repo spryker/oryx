@@ -352,12 +352,14 @@ describe('LayoutController', () => {
             layoutLg: { layout: 'grid' },
             layoutMd: { layout: 'column', bleed: false, overlap: true },
             layoutXl: { layout: 'carousel', sticky: true },
-          }).getRender({
-            attrs: ['layout-bleed', 'layout-sticky'],
-            place: 'pre',
-            screen: Size.Md,
-            data: mockData,
-          });
+          })
+            .getRender({
+              attrs: ['layout-bleed', 'layout-sticky'],
+              place: 'pre',
+              screen: Size.Md,
+              data: mockData,
+            })
+            .subscribe();
         });
 
         it('mockLayoutService.getRender with proper params', () => {
@@ -383,50 +385,52 @@ describe('LayoutController', () => {
 
       describe('when there are layout options provided', () => {
         beforeEach(() => {
-          setupController({}).getRender({
-            attrs: ['layout-bleed', 'layout-sticky'],
-            place: 'pre',
-            screen: Size.Md,
-            data: {
-              ...mockData,
-              options: {
-                rules: [
-                  {
-                    layout: {
-                      type: 'grid',
-                      bleed: true,
+          setupController({})
+            .getRender({
+              attrs: ['layout-bleed', 'layout-sticky'],
+              place: 'pre',
+              screen: Size.Md,
+              data: {
+                ...mockData,
+                options: {
+                  rules: [
+                    {
+                      layout: {
+                        type: 'grid',
+                        bleed: true,
+                      },
                     },
-                  },
-                  {
-                    query: { breakpoint: Size.Xs },
-                    layout: {
-                      type: 'column',
-                      sticky: true,
+                    {
+                      query: { breakpoint: Size.Xs },
+                      layout: {
+                        type: 'column',
+                        sticky: true,
+                      },
                     },
-                  },
-                  {
-                    query: { breakpoint: Size.Lg },
-                    layout: 'grid',
-                  },
-                  {
-                    query: { breakpoint: Size.Md },
-                    layout: {
-                      type: 'column',
-                      bleed: false,
-                      overlap: true,
+                    {
+                      query: { breakpoint: Size.Lg },
+                      layout: 'grid',
                     },
-                  },
-                  {
-                    query: { breakpoint: Size.Xl },
-                    layout: {
-                      type: 'carousel',
-                      sticky: true,
+                    {
+                      query: { breakpoint: Size.Md },
+                      layout: {
+                        type: 'column',
+                        bleed: false,
+                        overlap: true,
+                      },
                     },
-                  },
-                ],
+                    {
+                      query: { breakpoint: Size.Xl },
+                      layout: {
+                        type: 'carousel',
+                        sticky: true,
+                      },
+                    },
+                  ],
+                },
               },
-            },
-          });
+            })
+            .subscribe();
         });
 
         it('mockLayoutService.getRender with proper params', () => {
@@ -456,30 +460,32 @@ describe('LayoutController', () => {
             'layout-bleed': true,
             md: { layout: 'column', bleed: false },
             xl: { layout: 'carousel', sticky: true },
-          }).getRender({
-            attrs: ['layout-bleed', 'layout-sticky'],
-            place: 'pre',
-            screen: Size.Md,
-            data: {
-              ...mockData,
-              options: {
-                rules: [
-                  { layout: 'grid' },
-                  {
-                    query: { breakpoint: Size.Xs },
-                    layout: {
-                      type: 'column',
-                      sticky: true,
+          })
+            .getRender({
+              attrs: ['layout-bleed', 'layout-sticky'],
+              place: 'pre',
+              screen: Size.Md,
+              data: {
+                ...mockData,
+                options: {
+                  rules: [
+                    { layout: 'grid' },
+                    {
+                      query: { breakpoint: Size.Xs },
+                      layout: {
+                        type: 'column',
+                        sticky: true,
+                      },
                     },
-                  },
-                  {
-                    query: { breakpoint: Size.Lg },
-                    layout: 'grid',
-                  },
-                ],
+                    {
+                      query: { breakpoint: Size.Lg },
+                      layout: 'grid',
+                    },
+                  ],
+                },
               },
-            },
-          });
+            })
+            .subscribe();
         });
 
         it('mockLayoutService.getRender with proper params', () => {

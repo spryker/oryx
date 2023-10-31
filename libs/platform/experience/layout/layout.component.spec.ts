@@ -13,7 +13,7 @@ import { layoutComponent } from './layout.def';
 
 const mockLayoutService = {
   getStyles: vi.fn(),
-  getRender: vi.fn(),
+  getRender: vi.fn().mockReturnValue(of('')),
   getStylesFromOptions: vi.fn(),
 };
 
