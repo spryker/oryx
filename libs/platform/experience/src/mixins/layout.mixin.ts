@@ -18,12 +18,13 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
 import {
   BehaviorSubject,
+  Observable,
   concatMap,
   from,
   map,
   of,
+  reduce,
   switchMap,
-  tap,
 } from 'rxjs';
 import {
   LayoutController,
@@ -183,64 +184,10 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         of(undefined)
     );
 
-    protected test$ = new BehaviorSubject<any>(new Map());
-    protected test2$ = this.test$.pipe(
-      switchMap((data) => {
-        return from(data.entries()).pipe(
-          concatMap(([key, value]) => {
-            return value.pipe(
-              map((value) => {
-                return {
-                  key,
-                  value,
-                };
-              }),
-              tap((value) => {
-                console.log(value);
-              })
-            );
-          })
-        );
-      })
-    );
-
-    protected $test = computed(() => this.test2$);
-
-    protected getLayoutRender(
-      place: keyof LayoutPluginRender,
-      data: LayoutControllerRender
-    ): TemplateResult {
-      const data2 = this.test$.getValue();
-      const obs$ = this[LayoutMixinInternals].layoutController.getRender({
-        place,
-        data,
-        attrs: this.attributeFilter,
-        screen: this.$screen(),
-      });
-      const templates = this.$test() as any;
-
-      if (data.experience && !data2.has(data.experience)) {
-        data2.set(data.experience, obs$);
-        this.test$.next(data2);
-
-        // return templates[data.experience as any]?.[place];
-      }
-
-      if (!data2.has(data.element)) {
-        data2.set(data.element, obs$);
-        this.test$.next(data2);
-
-        // return templates[data.element as any]?.[place];
-      }
-
-      return html`hellp`;
-
-      return templates[(data.experience ?? data.element) as any]?.[place];
-    }
-
     protected composition$ = new BehaviorSubject<Component[] | undefined>(
       undefined
     );
+    protected element$ = new BehaviorSubject<LitElement>(this);
     protected compositionStyles$ = this.composition$.pipe(
       switchMap((composition) =>
         composition
@@ -250,24 +197,88 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
           : of('')
       )
     );
+
+    protected getCompositionLayoutRender(
+      place: keyof LayoutPluginRender
+    ): Observable<Record<string, TemplateResult>> {
+      return this.composition$.pipe(
+        switchMap((composition) => {
+          if (!composition) {
+            return of({});
+          }
+
+          return from(composition).pipe(
+            concatMap((component) => {
+              return this[LayoutMixinInternals].layoutController
+                .getRender({
+                  place,
+                  data: {
+                    element: this,
+                    options: component.options,
+                    experience: component,
+                  },
+                  attrs: this.attributeFilter,
+                  screen: this.$screen(),
+                })
+                .pipe(map((template) => ({ [component.id]: template })));
+            }),
+            reduce((acc, curr) => ({ ...acc, ...(curr ?? {}) }), {})
+          );
+        })
+      );
+    }
+
+    protected getElementLayoutRender(
+      place: keyof LayoutPluginRender
+    ): Observable<TemplateResult> {
+      return this.element$.pipe(
+        switchMap((element) =>
+          this[LayoutMixinInternals].layoutController.getRender({
+            place,
+            data: {
+              element,
+              options: this.$options() as CompositionProperties,
+            },
+            attrs: this.attributeFilter,
+            screen: this.$screen(),
+          })
+        )
+      );
+    }
+
     protected $compositionStyles = computed(() => this.compositionStyles$);
+    protected $preLayoutRenderComposition = computed(() =>
+      this.getCompositionLayoutRender('pre')
+    );
+    protected $postLayoutRenderComposition = computed(() =>
+      this.getCompositionLayoutRender('post')
+    );
+    protected $preLayoutRenderElement = computed(() =>
+      this.getElementLayoutRender('pre')
+    );
+    protected $postLayoutRenderElement = computed(() =>
+      this.getElementLayoutRender('post')
+    );
 
     protected renderLayout(props: LayoutMixinRender): TemplateResult {
       const { composition, element, template } = props;
-      this.composition$.next(composition);
+
+      if (composition) {
+        this.composition$.next(composition);
+      }
+
+      if (element) {
+        this.element$.next(element);
+      }
+
       const layoutStyles = this.layoutStyles() ?? '';
       const inlineStyles = this.$compositionStyles();
-
       const styles = inlineStyles + layoutStyles;
-      const data = {
-        element: element ?? this,
-        options: this.$options() as CompositionProperties,
-      };
 
       return html`
-        ${this.getLayoutRender('pre', data)} ${template}
+        ${this.$preLayoutRenderElement()} ${template}
         ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))}
-        ${this.getLayoutRender('post', data)}
+        ${this.$postLayoutRenderElement()}
       `;
     }
 
