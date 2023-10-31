@@ -1,16 +1,5 @@
 import { FormFieldType } from '@spryker-oryx/form';
 import { ContentComponentSchema } from '../../../../../models';
-import { LayoutAlign } from '../../../layout.model';
-
-const alignOptions = [
-  { value: LayoutAlign.Start },
-  { value: LayoutAlign.End },
-  { value: LayoutAlign.Stretch },
-  { value: LayoutAlign.Center },
-  { value: LayoutAlign.SpaceBetween },
-  { value: LayoutAlign.SpaceAround },
-  { value: LayoutAlign.SpaceEvenly },
-];
 
 export const schema: ContentComponentSchema = {
   name: 'canvas',

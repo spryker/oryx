@@ -6,9 +6,8 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Layouts {}
 
-  export interface LayoutsProperty {
-    vertical?: boolean;
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface LayoutProperty {}
 
   export interface LayoutStylesProperties {
     layout?: LayoutStylesOptions | LayoutTypes;
@@ -31,7 +30,7 @@ declare global {
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type LayoutTypes = keyof Layouts | (string & {});
 
-export interface LayoutStylesOptions extends LayoutsProperty {
+export interface LayoutStylesOptions extends LayoutProperty {
   type?: LayoutTypes;
 }
 

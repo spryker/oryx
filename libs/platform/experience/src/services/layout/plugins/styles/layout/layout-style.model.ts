@@ -86,4 +86,8 @@ declare global {
      */
     radius?: string | number;
   }
+
+  export interface LayoutProperty {
+    vertical?: boolean;
+  }
 }

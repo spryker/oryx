@@ -24,5 +24,6 @@ export const schema: ContentComponentSchema = {
     rowSpan: { type: FormFieldType.Number },
     gap: { type: FormFieldType.Text },
     columnCount: { type: FormFieldType.Number },
+    vertical: { type: FormFieldType.Boolean },
   },
 };
