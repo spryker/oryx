@@ -5,7 +5,15 @@ import {
 } from '@spryker-oryx/experience/layout';
 import { Size, featureVersion, sizes } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { Observable, map } from 'rxjs';
+import {
+  Observable,
+  concatMap,
+  from,
+  map,
+  of,
+  reduce,
+  withLatestFrom,
+} from 'rxjs';
 import {
   CompositionProperties,
   ContentComponentProperties,
@@ -16,6 +24,7 @@ import {
   LayoutPluginParams,
   LayoutPluginRender,
   LayoutPluginType,
+  LayoutService,
   LayoutStylesOptions,
   ResponsiveLayoutInfo,
 } from '../services';
@@ -32,6 +41,7 @@ export interface LayoutRenderParams {
 }
 
 export class LayoutController {
+  protected layoutService = resolve(LayoutService);
   protected layoutBuilder = resolve(LayoutBuilder);
 
   constructor(
@@ -80,25 +90,6 @@ export class LayoutController {
     return this.layoutService
       .getStyles(infos)
       .pipe(map((layoutStyles) => `${layoutStyles}${componentStyles}`));
-  }
-
-  /**
-   * @deprecated since 1.2 will be removed.
-   */
-  collectStyles(
-    layoutProperties: (keyof LayoutProperties)[],
-    rules: StyleRuleSet[] = [],
-    uid?: string
-  ): string {
-    let styles = '';
-
-    if (!this.hasLayout(rules, layoutProperties)) {
-      styles += ':host {display: contents;}\n';
-    }
-
-    styles += this.layoutBuilder.createStylesFromOptions(rules, uid);
-
-    return styles;
   }
 
   /**
