@@ -67,7 +67,7 @@ export class DefaultLayoutService implements LayoutService {
 
   protected resolveCommonStyles(): Observable<string> {
     return ssrAwaiter(
-      import('./base.styles').then((m) => m.styles?.toString() ?? '')
+      import('./plugins/base.styles').then((m) => m.styles?.toString() ?? '')
     );
   }
 

@@ -26,10 +26,7 @@ import {
   reduce,
   switchMap,
 } from 'rxjs';
-import {
-  LayoutController,
-  LayoutControllerRender,
-} from '../controllers/layout.controller';
+import { LayoutController } from '../controllers/layout.controller';
 import {
   Component,
   CompositionLayout,
@@ -72,6 +69,8 @@ export declare class LayoutMixinInterface {
   lg?: LayoutProperties;
   // @deprecated since 1.2 will be removed, use layoutXl instead
   xl?: LayoutProperties;
+  // @deprecated since 1.2 will be removed from class declaration
+  protected layoutStyles: ConnectableSignal<string | undefined>;
 
   layout?: CompositionLayout | LayoutTypes;
   layoutXs?: LayoutProperties;
@@ -79,12 +78,13 @@ export declare class LayoutMixinInterface {
   layoutMd?: LayoutProperties;
   layoutLg?: LayoutProperties;
   layoutXl?: LayoutProperties;
-  protected layoutStyles: ConnectableSignal<string | undefined>;
   protected renderLayout: (props: LayoutMixinRender) => TemplateResult;
-  protected getLayoutRender(
-    place: keyof LayoutPluginRender,
-    data: LayoutControllerRender
-  ): TemplateResult;
+  protected $preLayoutRenderComposition: ConnectableSignal<
+    Record<string, TemplateResult> | undefined
+  >;
+  protected $postLayoutRenderComposition: ConnectableSignal<
+    Record<string, TemplateResult> | undefined
+  >;
 }
 
 interface LayoutContentOptions {

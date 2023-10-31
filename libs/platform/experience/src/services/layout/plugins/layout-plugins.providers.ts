@@ -1,108 +1,134 @@
 import { Provider } from '@spryker-oryx/di';
 import { LayoutStylesPlugin } from './layout.plugin';
 import {
-  BleedLayoutPlugin,
   BleedLayoutPluginToken,
-  DividerLayoutPlugin,
   DividerLayoutPluginToken,
-  OverlapLayoutPlugin,
   OverlapLayoutPluginToken,
-  StickyLayoutPlugin,
   StickyLayoutPluginToken,
 } from './properties';
 import {
-  CanvasStylePlugin,
-  LayoutStylePlugin,
-  SpacingStylePlugin,
-  TransformStylePlugin,
-  TypographyStylePlugin,
-} from './styles';
-import {
-  CarouselLayoutPlugin,
   CarouselLayoutPluginToken,
-  ColumnLayoutPlugin,
   ColumnLayoutPluginToken,
-  FlexLayoutPlugin,
   FlexLayoutPluginToken,
-  GridLayoutPlugin,
   GridLayoutPluginToken,
-  SplitAsideLayoutPlugin,
   SplitAsideLayoutPluginToken,
-  SplitLayoutPlugin,
   SplitLayoutPluginToken,
-  SplitMainLayoutPlugin,
   SplitMainLayoutPluginToken,
-  TextLayoutPlugin,
   TextLayoutPluginToken,
 } from './types';
 
 export const layoutPluginsProviders: Provider[] = [
   {
     provide: LayoutStylesPlugin,
-    useClass: CanvasStylePlugin,
+    asyncClass: () =>
+      import('./styles/canvas/canvas-style.plugin').then(
+        (m) => m.CanvasStylePlugin
+      ),
   },
   {
     provide: LayoutStylesPlugin,
-    useClass: TypographyStylePlugin,
+    asyncClass: () =>
+      import('./styles/typography/typography-style.plugin').then(
+        (m) => m.TypographyStylePlugin
+      ),
   },
   {
     provide: LayoutStylesPlugin,
-    useClass: LayoutStylePlugin,
+    asyncClass: () =>
+      import('./styles/layout/layout-style.plugin').then(
+        (m) => m.LayoutStylePlugin
+      ),
   },
   {
     provide: LayoutStylesPlugin,
-    useClass: SpacingStylePlugin,
+    asyncClass: () =>
+      import('./styles/spacing/spacing-style.plugin').then(
+        (m) => m.SpacingStylePlugin
+      ),
   },
   {
     provide: LayoutStylesPlugin,
-    useClass: TransformStylePlugin,
+    asyncClass: () =>
+      import('./styles/transform/transform-style.plugin').then(
+        (m) => m.TransformStylePlugin
+      ),
   },
   {
     provide: GridLayoutPluginToken,
-    useClass: GridLayoutPlugin,
+    asyncClass: () =>
+      import('./types/grid/grid-layout.plugin').then((m) => m.GridLayoutPlugin),
   },
   {
     provide: CarouselLayoutPluginToken,
-    useClass: CarouselLayoutPlugin,
+    asyncClass: () =>
+      import('./types/carousel/carousel-layout.plugin').then(
+        (m) => m.CarouselLayoutPlugin
+      ),
   },
   {
     provide: ColumnLayoutPluginToken,
-    useClass: ColumnLayoutPlugin,
+    asyncClass: () =>
+      import('./types/column/column-layout.plugin').then(
+        (m) => m.ColumnLayoutPlugin
+      ),
   },
   {
     provide: FlexLayoutPluginToken,
-    useClass: FlexLayoutPlugin,
+    asyncClass: () =>
+      import('./types/flex/flex-layout.plugin').then((m) => m.FlexLayoutPlugin),
   },
   {
     provide: SplitLayoutPluginToken,
-    useClass: SplitLayoutPlugin,
+    asyncClass: () =>
+      import('./types/split/split-layout.plugin').then(
+        (m) => m.SplitLayoutPlugin
+      ),
   },
   {
     provide: SplitAsideLayoutPluginToken,
-    useClass: SplitAsideLayoutPlugin,
+    asyncClass: () =>
+      import('./types/split-aside/split-aside-layout.plugin').then(
+        (m) => m.SplitAsideLayoutPlugin
+      ),
   },
   {
     provide: SplitMainLayoutPluginToken,
-    useClass: SplitMainLayoutPlugin,
+    asyncClass: () =>
+      import('./types/split-main/split-main-layout.plugin').then(
+        (m) => m.SplitMainLayoutPlugin
+      ),
   },
   {
     provide: TextLayoutPluginToken,
-    useClass: TextLayoutPlugin,
+    asyncClass: () =>
+      import('./types/text/text-layout.plugin').then((m) => m.TextLayoutPlugin),
   },
   {
     provide: StickyLayoutPluginToken,
-    useClass: StickyLayoutPlugin,
+    asyncClass: () =>
+      import('./properties/sticky/sticky-layout.plugin').then(
+        (m) => m.StickyLayoutPlugin
+      ),
   },
   {
     provide: BleedLayoutPluginToken,
-    useClass: BleedLayoutPlugin,
+    asyncClass: () =>
+      import('./properties/bleed/bleed-layout.plugin').then(
+        (m) => m.BleedLayoutPlugin
+      ),
   },
   {
     provide: DividerLayoutPluginToken,
-    useClass: DividerLayoutPlugin,
+    asyncClass: () =>
+      import('./properties/divider/divider-layout.plugin').then(
+        (m) => m.DividerLayoutPlugin
+      ),
   },
   {
     provide: OverlapLayoutPluginToken,
-    useClass: OverlapLayoutPlugin,
+    asyncClass: () =>
+      import('./properties/overlap/overlap-layout.plugin').then(
+        (m) => m.OverlapLayoutPlugin
+      ),
   },
 ];
