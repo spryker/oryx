@@ -1,34 +1,6 @@
 import { Breakpoint, Size } from '@spryker-oryx/utilities';
 import { CSSResult } from 'lit';
-import { LayoutPluginType } from './plugins';
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface Layouts {}
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface LayoutProperty {}
-
-  export interface LayoutStylesProperties {
-    layout?: LayoutStylesOptions | LayoutTypes;
-
-    // @deprecated since 1.2 will be removed.
-    vertical?: boolean;
-    // @deprecated since 1.2 will be removed.
-    sticky?: boolean;
-    // @deprecated since 1.2 will be removed.
-    overlap?: boolean;
-    // @deprecated since 1.2 will be removed.
-    bleed?: boolean;
-    // @deprecated since 1.2 will be removed.
-    divider?: boolean;
-  }
-}
-
-// Object is workaround for autocomplete. Typescript incorrect parse metadata when define union and strict type.
-// Opened issue https://github.com/Microsoft/TypeScript/issues/29729
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type LayoutTypes = keyof Layouts | (string & {});
+import { LayoutPluginType, LayoutTypes } from './plugins';
 
 export interface LayoutStylesOptions extends LayoutProperty {
   type?: LayoutTypes;

@@ -9,9 +9,37 @@ import {
 } from '../../../models';
 import { LayoutStyles, LayoutStylesOptions } from '../layout.model';
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface Layouts {}
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface LayoutProperty {}
+
+  export interface LayoutStylesProperties {
+    layout?: LayoutStylesOptions | LayoutTypes;
+
+    // @deprecated since 1.2 will be removed.
+    vertical?: boolean;
+    // @deprecated since 1.2 will be removed.
+    sticky?: boolean;
+    // @deprecated since 1.2 will be removed.
+    overlap?: boolean;
+    // @deprecated since 1.2 will be removed.
+    bleed?: boolean;
+    // @deprecated since 1.2 will be removed.
+    divider?: boolean;
+  }
+}
+
 export const LayoutPlugin = 'oryx.LayoutPlugin*';
 export const LayoutPropertyPlugin = 'oryx.LayoutPropertyPlugin*';
 export const LayoutStylesPlugin = 'oryx.LayoutStylesPlugin*';
+
+// Object is workaround for autocomplete. Typescript incorrect parse metadata when define union and strict type.
+// Opened issue https://github.com/Microsoft/TypeScript/issues/29729
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type LayoutTypes = keyof Layouts | (string & {});
 
 export const enum LayoutPluginType {
   Layout,
@@ -60,6 +88,7 @@ export interface LayoutPlugin {
   getStyleProperties?(
     data: LayoutStyleParameters
   ): Observable<LayoutStyleProperties>;
+  getDefaults?(): Observable<LayoutStylesProperties>;
   /**
    * Returns object with pre and post render templates.
    * Together with composition component it's possible to specify global post\pre render and per component depends on argument.
