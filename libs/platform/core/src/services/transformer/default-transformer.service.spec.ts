@@ -1,5 +1,5 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { of } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { DefaultTransformerService } from './default-transformer.service';
 import { TransformerService } from './transformer.service';
 
@@ -25,6 +25,10 @@ describe('DefaultTransformerService', () => {
         {
           provide: 'mockBTransformer',
           useValue: [mockBTransformer, mockATransformer],
+        },
+        {
+          provide: 'mockLazyATransformer',
+          useValue: () => Promise.resolve(mockATransformer),
         },
       ],
     });
@@ -131,5 +135,19 @@ describe('DefaultTransformerService', () => {
           ...mockBTransformerResult,
         });
       });
+  });
+
+  it('should handle promises / lazy-loaded transformers', async () => {
+    const mockATransformerResult = 'mockLazyATransformerResult';
+    mockATransformer.mockReturnValue(mockATransformerResult);
+
+    const result = await firstValueFrom(
+      service.transform(
+        mockData,
+        'mockLazyATransformer' as keyof InjectionTokensContractMap
+      )
+    );
+    expect(mockATransformer).toHaveBeenCalledWith(mockData, service);
+    expect(result).toBe(mockATransformerResult);
   });
 });

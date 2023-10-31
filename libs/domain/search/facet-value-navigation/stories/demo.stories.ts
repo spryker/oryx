@@ -15,6 +15,7 @@ const Template: Story<SearchFacetValueNavigationComponentAttributes> = (
     heading=${attrs.heading}
     valuesLength=${attrs.valuesLength}
     selectedLength=${attrs.selectedLength}
+    ?dirty=${attrs.dirty}
     ?enableToggle=${attrs.enableToggle}
     ?enableSearch=${attrs.enableSearch}
     ?open=${attrs.open}
@@ -34,4 +35,5 @@ Demo.args = {
   enableSearch: false,
   open: true,
   enableClear: false,
+  dirty: false,
 };

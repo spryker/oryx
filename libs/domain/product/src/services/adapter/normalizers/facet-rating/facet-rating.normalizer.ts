@@ -2,7 +2,7 @@ import { Transformer } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { map, Observable, take } from 'rxjs';
-import { ApiProductListModel, Facet } from '../../../../models';
+import { ApiProductListModel, Facet, FacetType } from '../../../../models';
 
 export const FacetRatingNormalizer = 'oryx.FacetRatingNormalizer*';
 
@@ -39,6 +39,7 @@ export function facetRatingNormalizer(
       const { config, localizedName } = ratingFacet;
 
       return {
+        type: FacetType.Single,
         name: localizedName,
         parameter: ratingParamKey,
         values: facetValues,

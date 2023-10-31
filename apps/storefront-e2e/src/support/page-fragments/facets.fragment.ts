@@ -14,7 +14,7 @@ export class FacetsFragment {
   setBrand = (value: string) => {
     this.getWrapper()
       .find(`input[type="radio"][name="brand"][value="${value}"]`)
-      .click();
+      .click({ force: true });
   };
 
   resetBrand = () => {
@@ -41,7 +41,7 @@ export class FacetsFragment {
   setRating = (value: string) => {
     this.getWrapper()
       .find(`input[type="radio"][name="rating"][value="${value}"]`)
-      .check();
+      .check({ force: true });
   };
 
   resetRating = () => {
@@ -64,4 +64,39 @@ export class FacetsFragment {
       .find('button[aria-label="Clear"]')
       .click();
   };
+
+  getPriceFacet = () => cy.get('oryx-search-price-facet');
+
+  setMinPrice = (price: number) =>
+    this.getPriceFacet()
+      .find('oryx-input:nth-of-type(1) input')
+      .clear()
+      .type(`${price}{enter}`);
+
+  setMaxPrice = (price: number) =>
+    this.getPriceFacet()
+      .find('oryx-input:nth-of-type(2) input')
+      .clear()
+      .type(`${price}{enter}`);
+
+  setMinPriceRange = (price: number) =>
+    this.getPriceFacet()
+      .find('oryx-multi-range')
+      .find(`label:nth-of-type(1) input`)
+      .invoke('val', price)
+      .trigger('input', { force: true })
+      .trigger('change', { force: true });
+
+  setMaxPriceRange = (price: number) =>
+    this.getPriceFacet()
+      .find('oryx-multi-range')
+      .find(`label:nth-of-type(2) input`)
+      .invoke('val', price)
+      .trigger('input', { force: true })
+      .trigger('change', { force: true });
+
+  resetPrices = () =>
+    this.getPriceFacet()
+      .find('button[aria-label="Clear"]')
+      .click({ force: true });
 }
