@@ -1,52 +1,73 @@
-import { Dexie, liveQuery } from 'dexie';
-import { Observable, shareReplay, switchMap } from 'rxjs';
+import { subscribeReplay } from '@spryker-oryx/utilities';
+import { map, Observable, shareReplay, Subscriber, switchMap } from 'rxjs';
 import {
   indexedDbStorageName,
   IndexedDBStorageService,
   indexedDbTableName,
 } from './indexed-db-storage.service';
-import { StoredValue } from './model';
 
+/** @deprecated since 1.2 */
 export class DefaultIndexedDBStorageService implements IndexedDBStorageService {
-  protected storage = new Observable<Dexie>((subscriber) => {
-    const db = new Dexie(indexedDbStorageName);
-    db.version(1).stores({
-      [indexedDbTableName]: '&key,value',
-    });
+  private db$: Observable<IDBDatabase> = new Observable(
+    (subscriber: Subscriber<IDBDatabase>) => {
+      const request = indexedDB.open(indexedDbStorageName, 1);
 
-    subscriber.next(db);
+      request.onerror = () => subscriber.error('DB: error');
+      request.onupgradeneeded = (evt: IDBVersionChangeEvent) => {
+        const db = (evt.target as IDBOpenDBRequest).result;
+        db.createObjectStore(indexedDbTableName, { keyPath: 'key' });
+      };
+      request.onsuccess = () => {
+        subscriber.next(request.result);
+        subscriber.complete();
+      };
+    }
+  ).pipe(shareReplay(1));
 
-    return () => {
-      db.close();
-    };
-  }).pipe(
-    switchMap(async (db) => {
-      await db.open();
+  private transactionRequest<T>(
+    mode: IDBTransactionMode,
+    storeAction: (store: IDBObjectStore) => IDBRequest<T>
+  ): Observable<T> {
+    return this.db$.pipe(
+      switchMap(
+        (db) =>
+          new Observable<T>((subscriber) => {
+            const transaction = db.transaction(indexedDbTableName, mode);
+            const objectStore = transaction.objectStore(indexedDbTableName);
+            const request = storeAction(objectStore);
 
-      return db.table(indexedDbTableName);
-    }),
-    shareReplay({ refCount: false, bufferSize: 1 })
-  );
-
-  getItem(key: string): Observable<StoredValue> {
-    return this.storage.pipe(
-      switchMap((storage) =>
-        liveQuery<StoredValue>(async () => {
-          return (await storage.get(key))?.value;
-        })
+            request.onerror = () =>
+              subscriber.error('IndexedDB: transaction error');
+            request.onsuccess = () => {
+              subscriber.next(request.result);
+              subscriber.complete();
+            };
+          })
       )
     );
   }
 
-  setItem(key: string, value: string): void {
-    this.storage.subscribe((storage) => storage.put({ key, value }));
+  getItem(key: string): Observable<string | null> {
+    return this.transactionRequest('readonly', (store) => store.get(key)).pipe(
+      map((x) => x.value)
+    );
   }
 
-  removeItem(key: string): void {
-    this.storage.subscribe((storage) => storage.delete(key));
+  setItem(key: string, value: string): Observable<unknown> {
+    return subscribeReplay(
+      this.transactionRequest('readwrite', (store) => store.put({ key, value }))
+    );
   }
 
-  clear(): void {
-    this.storage.subscribe((storage) => storage.clear());
+  removeItem(key: string): Observable<unknown> {
+    return subscribeReplay(
+      this.transactionRequest('readwrite', (store) => store.delete(key))
+    );
+  }
+
+  clear(): Observable<unknown> {
+    return subscribeReplay(
+      this.transactionRequest('readwrite', (store) => store.clear())
+    );
   }
 }
