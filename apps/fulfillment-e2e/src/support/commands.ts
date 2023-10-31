@@ -18,7 +18,10 @@ declare global {
 
 const indexedDBName = 'fulfillment-app-db';
 const indexedDBStorageName = 'oryx-local-db-storage';
-const defaultUser = { email: 'harald@spryker.com', password: 'change123' };
+export const defaultUser = {
+  email: 'harald@spryker.com',
+  password: 'change123',
+};
 
 Cypress.Commands.add('login', (user = defaultUser) => {
   const loginPage = new LoginPage();
