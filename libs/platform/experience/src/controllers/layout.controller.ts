@@ -137,7 +137,10 @@ export class LayoutController {
       }
 
       if (host.hasAttribute(attr)) {
-        const prop = attr.replace('layout-', '');
+        const prop = attr
+          .replace('layout-', '')
+          .replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+
         return { ...acc, [prop]: host.getAttribute(attr) || true };
       }
 

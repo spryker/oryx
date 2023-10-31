@@ -14,7 +14,7 @@ export interface LayoutSpecificAttributes {
   orientation?: CompositionLayoutOrientation;
 }
 
-export interface LayoutProperties extends LayoutsProperty {
+export interface LayoutProperties extends LayoutProperty {
   /**
    * Layout type that is used all screen sizes.
    *
