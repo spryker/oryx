@@ -1,3 +1,4 @@
+import { LayoutProperties } from '@spryker-oryx/experience/layout';
 import { Observable } from 'rxjs';
 import { Component, StyleRuleSet } from '../../models';
 import { ResponsiveLayoutInfo } from './layout.model';
@@ -22,7 +23,10 @@ export interface LayoutStyleConfig {
 }
 
 export interface LayoutService {
-  getStyles(sheets: ResponsiveLayoutInfo): Observable<string>;
+  getStyles(
+    sheets: ResponsiveLayoutInfo,
+    options?: LayoutProperties
+  ): Observable<string>;
   getRender(
     config: LayoutIncomingConfig
   ): Observable<LayoutPluginRender | undefined>;

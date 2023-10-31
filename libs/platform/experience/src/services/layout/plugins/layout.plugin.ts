@@ -71,8 +71,11 @@ export type LayoutStyleList = Record<string, string | number | undefined>;
 export type LayoutStylePropertiesArr = [LayoutStyleList, LayoutStyleOptions?][];
 export type LayoutStyleProperties = LayoutStyleList | LayoutStylePropertiesArr;
 
-export interface LayoutPluginRenderParams {
-  options?: LayoutProperties;
+export interface LayoutPluginOptionsParams {
+  options: LayoutProperties;
+}
+
+export interface LayoutPluginRenderParams extends LayoutPluginOptionsParams {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   element?: LitElement & Record<string, any>;
   experience?: Component;
@@ -88,7 +91,7 @@ export interface LayoutPluginPropertiesParams {
 
 export interface LayoutPlugin {
   getConfig(): Observable<LayoutPluginConfig>;
-  getStyles?(): Observable<LayoutStyles>;
+  getStyles?(data: LayoutPluginOptionsParams): Observable<LayoutStyles>;
   getStyleProperties?(
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties>;

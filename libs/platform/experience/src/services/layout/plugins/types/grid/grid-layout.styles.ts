@@ -8,13 +8,14 @@ export const styles: LayoutStyles = {
 
     :host {
       --oryx-column-count: var(--oryx-column-grid);
-    }
-
-    :host(:not([layout-vertical])) {
       grid-template-columns: repeat(auto-fill, var(--_item-size));
     }
+  `,
+};
 
-    :host([layout-vertical]) {
+export const verticalStyles: LayoutStyles = {
+  styles: css`
+    :host {
       grid-auto-flow: column;
       grid-template-rows: repeat(auto-fill, var(--_item-size));
       grid-auto-columns: var(--_item-size);

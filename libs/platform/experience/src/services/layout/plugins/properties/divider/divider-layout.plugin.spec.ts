@@ -13,7 +13,7 @@ describe('DividerLayoutPlugin', () => {
       const styles = await import('./divider.styles').then(
         (module) => module.styles
       );
-      const result = await lastValueFrom(plugin.getStyles());
+      const result = await lastValueFrom(plugin.getStyles({ options: {} }));
 
       expect(result).toEqual(styles);
     });
