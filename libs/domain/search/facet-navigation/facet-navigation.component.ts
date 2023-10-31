@@ -4,12 +4,17 @@ import {
   defaultOptions,
   LayoutMixin,
 } from '@spryker-oryx/experience';
+import { FacetType, RangeFacet, RangeFacetValue } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import {
   FacetComponentRegistryService,
   FacetListService,
 } from '@spryker-oryx/search';
-import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
+import {
+  SelectFacetEventDetail,
+  SelectFacetValue,
+  SelectRangeFacetValue,
+} from '@spryker-oryx/search/facet';
 import {
   computed,
   featureVersion,
@@ -17,6 +22,7 @@ import {
   signal,
 } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { tap } from 'rxjs/operators';
 import { SearchFacetNavigationOptions } from './facet-navigation.model';
@@ -27,7 +33,7 @@ import { searchFacetNavigationStyles } from './facet-navigation.styles';
   expandedItemsCount: 5,
   valueRenderLimit: 5,
   minForSearch: 13,
-  bury: [{ facets: ['price', ...(featureVersion < '1.2' ? ['rating'] : [])] }],
+  bury: [{ facets: featureVersion < '1.2' ? ['price', 'rating'] : [] }],
 })
 export class SearchFacetNavigationComponent extends LayoutMixin(
   ContentMixin<SearchFacetNavigationOptions>(LitElement)
@@ -60,47 +66,59 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
       minForSearch = Infinity,
     } = this.$options();
 
-    return html`${facets.map((facet, index) =>
-      this.facetComponentRegistryService.renderFacetComponent(
-        facet,
-        {
-          renderLimit,
-          open: index < expandedItemsCount,
-          minForSearch,
-          enableClear: !(
-            this.routerService.getPathId('category') &&
-            facet.parameter === 'category'
-          ),
-        },
-        this.applyFilters.bind(this)
-      )
-    )}
-    ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)} `;
+    return html`
+      ${repeat(
+        facets,
+        ({ name }) => name,
+        (facet, index) =>
+          this.facetComponentRegistryService.renderFacetComponent(
+            facet,
+            {
+              renderLimit,
+              open: index < expandedItemsCount,
+              minForSearch,
+              enableClear: !(
+                this.routerService.getPathId('category') &&
+                facet.parameter === 'category'
+              ),
+            },
+            this.applyFilters.bind(this)
+          )
+      )}
+      ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
+    `;
   }
 
   protected applyFilters(e: CustomEvent<SelectFacetEventDetail>): void {
-    const { name, value: selectedFacetValue } = e.detail;
+    const { name, value } = e.detail;
 
     const facet = this.$facets()?.find((facet) => facet.name === name);
 
     if (!facet) return;
-    if (!selectedFacetValue) {
-      this.navigate(facet.parameter);
-      return;
+
+    if (facet.type !== FacetType.Range) {
+      const selectedFacetValue = value as SelectFacetValue;
+      const values = selectedFacetValue
+        ? facet.type === FacetType.Multi
+          ? [
+              ...(facet.selectedValues ?? []),
+              ...(selectedFacetValue.selected
+                ? [selectedFacetValue.value]
+                : []),
+            ].filter(
+              (selectedValue) =>
+                selectedFacetValue.selected ||
+                selectedValue !== selectedFacetValue.value
+            )
+          : [selectedFacetValue.value]
+        : [];
+      const stringifiedValues = values.map((value) => value.toString());
+
+      this.navigate(facet.parameter, stringifiedValues);
+    } else {
+      const selectedFacetValue = value as SelectRangeFacetValue;
+      this.navigateRange(facet, selectedFacetValue?.selected);
     }
-
-    const values = facet.multiValued
-      ? [
-          ...(facet.selectedValues ?? []),
-          ...(selectedFacetValue.selected ? [selectedFacetValue.value] : []),
-        ].filter(
-          (selectedValue) =>
-            selectedFacetValue.selected ||
-            selectedValue !== selectedFacetValue.value
-        )
-      : [selectedFacetValue.value];
-
-    this.navigate(facet.parameter, values as string[]);
   }
 
   protected navigate(parameter: string, values: string[] = []): void {
@@ -113,6 +131,31 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
           : {
               [parameter.toLowerCase()]: values,
             },
+        queryParamsHandling: 'merge',
+        ignoreQueryParams: ['page'],
+      })
+      .pipe(tap((url) => this.routerService.navigate(url)))
+      .subscribe();
+  }
+
+  protected navigateRange(
+    facet: RangeFacet,
+    selectedValues?: RangeFacetValue
+  ): void {
+    const rangeParams = ['min', 'max'] as (keyof RangeFacetValue)[];
+    const queryParams = rangeParams.reduce((acc, key) => {
+      const selected = selectedValues?.[key];
+      const facetValue = facet.values?.[key];
+      return {
+        ...acc,
+        [`${facet.parameter}[${key}]`]:
+          (selected !== facetValue ? selected : undefined) ?? '',
+      };
+    }, {});
+
+    this.routerService
+      .getUrl('', {
+        queryParams,
         queryParamsHandling: 'merge',
         ignoreQueryParams: ['page'],
       })

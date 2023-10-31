@@ -1,7 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { CollapsibleAppearance } from '@spryker-oryx/ui/collapsible';
 import { hydrate, signal, signalAware } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { TotalsController } from '../../../src/controllers';
 import { CartDiscount } from '../../../src/models';
 import {

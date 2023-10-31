@@ -1,4 +1,10 @@
-import { Facet, FacetValue } from '@spryker-oryx/product';
+import {
+  Facet,
+  FacetType,
+  FacetValue,
+  RangeFacet,
+  ValueFacet,
+} from '@spryker-oryx/product';
 
 export function generateValues(
   count: number,
@@ -29,13 +35,33 @@ export const generateFacet = (
   valuesLength: number,
   selectedValues?: string[],
   children = false
-): Facet => {
+): ValueFacet => {
   return {
     name,
     parameter,
     valuesTreeLength: valuesLength,
     ...(selectedValues && { selectedValues }),
     values: generateValues(valuesLength, name, selectedValues, children),
+    type: FacetType.Single,
+  };
+};
+
+export const generateRange = (
+  name: string,
+  parameter: string,
+  range: number[],
+  selected?: number[]
+): RangeFacet => {
+  const [min, max] = range;
+  return {
+    name,
+    parameter,
+    values: {
+      min,
+      max,
+      selected: { min: +(selected?.[0] ?? min), max: +(selected?.[1] ?? max) },
+    },
+    type: FacetType.Range,
   };
 };
 
@@ -48,6 +74,7 @@ export const generateRatingFacet = (
   const valuesCount = max ? max - min + 1 : 0;
 
   return {
+    type: FacetType.Multi,
     name: 'Rating',
     parameter: 'rating',
     valuesTreeLength: valuesCount,

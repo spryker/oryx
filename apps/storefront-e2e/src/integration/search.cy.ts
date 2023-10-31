@@ -1,5 +1,6 @@
 import {
-  checkProductCardsFiltering,
+  checkProductCardsFilteringByName,
+  checkProductCardsFilteringByPrice,
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { SearchPage } from '../support/page-objects/search.page';
@@ -19,7 +20,7 @@ describe('Search suite', () => {
     it('should update products and facets when filters are applied/cleared', () => {
       searchPage.getFacets().setRating('4');
       searchPage.waitForSearchRequest();
-      checkProductCardsFiltering(searchPage, 2, 1, query);
+      checkProductCardsFilteringByName(searchPage, 2, 1, query);
 
       // we don't expect search request here because previous query is cached
       searchPage.getFacets().resetRating();
@@ -27,17 +28,54 @@ describe('Search suite', () => {
       // apply 1st filter
       searchPage.getFacets().setLabel('New');
       searchPage.waitForSearchRequest();
-      checkProductCardsFiltering(searchPage, 3, 2, query);
+      checkProductCardsFilteringByName(searchPage, 3, 2, query);
 
       // apply 2nd filter
       searchPage.getFacets().setColor('Black');
       searchPage.waitForSearchRequest();
-      checkProductCardsFiltering(searchPage, 3, 1, query);
+      checkProductCardsFilteringByName(searchPage, 3, 1, query);
 
       // clear 2nd filter
       // we don't expect search request here because previous query is cached
       searchPage.getFacets().resetColor();
-      checkProductCardsFiltering(searchPage, 3, 2, query);
+      checkProductCardsFilteringByName(searchPage, 3, 2, query);
+    });
+
+    it('should apply price filterring', () => {
+      // set brand to limit a number of products displayed
+      // and avoid issues with concrete products displaying
+      searchPage = new SearchPage({ q: 'Cameras' });
+      searchPage.visit();
+      searchPage.getFacets().setBrand('Kodak');
+
+      const minPrice = 200;
+      const maxPrice = 400;
+
+      cy.log('set minimum price');
+      searchPage.getFacets().setMinPrice(minPrice);
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(searchPage, minPrice);
+
+      cy.log('reset prices, set max price');
+      searchPage.getFacets().resetPrices();
+      searchPage.waitForSearchRequest();
+      searchPage.getFacets().setMaxPrice(maxPrice);
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(searchPage, 0, maxPrice);
+
+      cy.log('reset prices, change min price range');
+      searchPage.getFacets().resetPrices();
+      searchPage.waitForSearchRequest();
+      searchPage.getFacets().setMinPriceRange(minPrice);
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(searchPage, minPrice);
+
+      cy.log('reset prices, change max price range');
+      searchPage.getFacets().resetPrices();
+      searchPage.waitForSearchRequest();
+      searchPage.getFacets().setMaxPriceRange(maxPrice);
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(searchPage, 0, maxPrice);
     });
   });
 

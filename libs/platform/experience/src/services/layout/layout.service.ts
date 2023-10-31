@@ -23,10 +23,10 @@ export interface LayoutStyleConfig {
 
 export interface LayoutService {
   getStyles(sheets: ResponsiveLayoutInfo): Observable<string>;
-  getRender(
-    config: LayoutIncomingConfig
-  ): Observable<LayoutPluginRender | undefined>;
-  getStylesFromOptions(data: LayoutStyleConfig): Observable<string>;
+  getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined;
+  getStyleProperties(
+    data: LayoutStyleConfig
+  ): LayoutPluginStyleProperties | undefined;
 }
 
 declare global {
