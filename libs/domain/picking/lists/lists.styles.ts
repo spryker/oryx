@@ -7,16 +7,6 @@ export const pickingListsComponentStyles = css`
     gap: 20px;
     min-height: 100vh;
     background-color: var(--oryx-color-neutral-3);
-
-    /* tmp, we rather use pages with layout */
-    width: min(
-      100%,
-      min(
-        var(--oryx-container-width),
-        calc(100vw - (2 * var(--oryx-container-bleed, 0px)))
-      )
-    );
-    margin: auto;
   }
 
   section {

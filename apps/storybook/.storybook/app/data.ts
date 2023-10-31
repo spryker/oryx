@@ -1,5 +1,6 @@
 import { backofficeResources } from '@spryker-oryx/presets/backoffice';
 import { fesResources } from '@spryker-oryx/presets/fes';
+import { fulfillmentResources } from '@spryker-oryx/presets/fulfillment';
 import { storefrontResources } from '@spryker-oryx/presets/storefront';
 import {
   backofficeNgTheme,
@@ -8,7 +9,6 @@ import {
   fulfillmentTheme,
   storefrontTheme,
 } from '@spryker-oryx/themes';
-import { fulfillmentResources } from '@spryker-oryx/presets/fulfillment';
 
 export const theme = {
   default: 'backoffice',

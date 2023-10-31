@@ -34,7 +34,7 @@ export const baseStyles = [
               )
           )
       );
-      transform: translateY(calc(-50% + var(--floating-vertical-offset, 20px)));
+      transform: translateY(calc(-50% + var(--floating-vertical-offset, 18px)));
       z-index: 1;
     }
 
