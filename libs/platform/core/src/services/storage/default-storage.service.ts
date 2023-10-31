@@ -1,14 +1,28 @@
-import { inject } from '@spryker-oryx/di';
+import { inject, INJECTOR } from '@spryker-oryx/di';
 import { isObservable, map, Observable, of } from 'rxjs';
 import { IndexedDBStorageService } from './indexed-db-storage.service';
-import { StorageType, StoredValue } from './model';
-import { StorageService } from './storage.service';
+import { StorageType } from './model';
+import { StorageService, StorageStrategy } from './storage.service';
+
+function toObservable<T>(value: Observable<T> | T): Observable<T> {
+  return isObservable(value) ? value : of(value);
+}
 
 export class DefaultStorageService implements StorageService {
   constructor(
-    protected defaultStorageType = StorageType.Local,
-    protected ibdStorage = inject(IndexedDBStorageService)
+    protected defaultStorageType: StorageType | string = StorageType.Local,
+    /** @deprecated since 1.2 */
+    protected ibdStorage = inject(IndexedDBStorageService),
+    protected injector = inject(INJECTOR)
   ) {}
+
+  protected storages: Record<StorageType | string, Storage | StorageStrategy> =
+    {
+      [StorageType.Session]: sessionStorage,
+      [StorageType.Local]: localStorage,
+      /** @deprecated since 1.2, remove */
+      [StorageType.Idb]: this.ibdStorage,
+    };
 
   get<T = unknown>(key: string, type?: StorageType): Observable<T | null> {
     try {
@@ -23,34 +37,40 @@ export class DefaultStorageService implements StorageService {
   }
 
   set(key: string, value: unknown, type?: StorageType): Observable<void> {
-    this.getStorage(type).setItem(key, JSON.stringify(value));
-    return of(undefined);
+    return toObservable(
+      this.getStorage(type).setItem(key, JSON.stringify(value))
+    ) as Observable<void>;
   }
 
   remove(key: string, type?: StorageType): Observable<void> {
-    this.getStorage(type).removeItem(key);
-    return of(undefined);
+    return toObservable(
+      this.getStorage(type).removeItem(key)
+    ) as Observable<void>;
   }
 
   clear(type?: StorageType): Observable<void> {
-    this.getStorage(type).clear();
-    return of(undefined);
+    return toObservable(this.getStorage(type).clear()) as Observable<void>;
   }
 
   protected getStorage(
     type = this.defaultStorageType
-  ): Storage | IndexedDBStorageService {
-    switch (type) {
-      case StorageType.Idb:
-        return this.ibdStorage;
-      case StorageType.Session:
-        return sessionStorage;
-      default:
-        return localStorage;
+  ): Storage | StorageStrategy {
+    if (!this.storages[type]) {
+      const implementation = this.injector.inject(
+        `${StorageStrategy}${type}`,
+        null
+      );
+      if (!implementation) {
+        throw new Error(`No implementation for ${StorageStrategy}${type}`);
+      }
+
+      this.storages[type] = implementation;
     }
+
+    return this.storages[type];
   }
 
-  protected parseValue<T>(value: StoredValue | null): T | null {
+  protected parseValue<T>(value: string | null): T | null {
     return value ? JSON.parse(value) : null;
   }
 }
