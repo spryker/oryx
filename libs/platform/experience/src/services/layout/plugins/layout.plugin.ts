@@ -19,15 +19,15 @@ declare global {
   export interface LayoutStylesProperties {
     layout?: LayoutStylesOptions | LayoutTypes;
 
-    // @deprecated since 1.2 will be removed.
+    // @deprecated since 1.2 will be removed. Use properties from layout object instead.
     vertical?: boolean;
-    // @deprecated since 1.2 will be removed.
+    // @deprecated since 1.2 will be removed. Use properties from layout object instead.
     sticky?: boolean;
-    // @deprecated since 1.2 will be removed.
+    // @deprecated since 1.2 will be removed. Use properties from layout object instead.
     overlap?: boolean;
-    // @deprecated since 1.2 will be removed.
+    // @deprecated since 1.2 will be removed. Use properties from layout object instead.
     bleed?: boolean;
-    // @deprecated since 1.2 will be removed.
+    // @deprecated since 1.2 will be removed. Use properties from layout object instead.
     divider?: boolean;
   }
 }
