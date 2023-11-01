@@ -49,7 +49,7 @@ export class DefaultIndexedDBStorageService implements IndexedDBStorageService {
 
   getItem(key: string): Observable<string | null> {
     return this.transactionRequest('readonly', (store) => store.get(key)).pipe(
-      map((x) => x.value)
+      map((x) => x?.value)
     );
   }
 
