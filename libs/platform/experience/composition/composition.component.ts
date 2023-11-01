@@ -133,7 +133,9 @@ export class CompositionComponent extends LayoutMixin(
   }
 
   protected override render(): TemplateResult | void {
-    return featureVersion < '1.2' ? this.legacyRender() : this.standardRender();
+    return featureVersion >= '1.2'
+      ? this.standardRender()
+      : this.legacyRender();
   }
 
   private standardRender(): TemplateResult | void {

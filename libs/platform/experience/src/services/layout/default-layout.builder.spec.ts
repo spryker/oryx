@@ -395,10 +395,14 @@ describe('DefaultLayoutBuilder', () => {
       expect(result).toContain('a: a;b: b');
       expect(result).toContain('c: c;d: d');
       expect(mockStylePlugin.getStyleProperties).toHaveBeenCalledWith({
-        layout: { type: 'grid' },
+        styles: {
+          layout: { type: 'grid' },
+        },
       });
       expect(mockLayoutPlugin.getStyleProperties).toHaveBeenCalledWith({
-        layout: { type: 'grid' },
+        styles: {
+          layout: { type: 'grid' },
+        },
       });
     });
   });
@@ -420,10 +424,14 @@ describe('DefaultLayoutBuilder', () => {
       expect(result).toContain('a: a;b: b');
       expect(result).toContain('c: c;d: d');
       expect(mockStylePlugin.getStyleProperties).toHaveBeenCalledWith({
-        layout: { type: 'grid' },
+        styles: {
+          layout: { type: 'grid' },
+        },
       });
       expect(mockLayoutPlugin.getStyleProperties).toHaveBeenCalledWith({
-        layout: { type: 'grid' },
+        styles: {
+          layout: { type: 'grid' },
+        },
       });
     });
   });

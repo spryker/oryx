@@ -34,17 +34,17 @@ export class ProductListComponent extends ProductMixin(
   });
 
   protected override render(): TemplateResult {
-    if (featureVersion < '1.2') {
+    if (featureVersion >= '1.2') {
       return html`
-        ${this.renderList()}
-        ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
+        ${this.renderLayout({
+          template: this.renderList(),
+        })}
       `;
     }
 
     return html`
-      ${this.renderLayout({
-        template: this.renderList(),
-      })}
+      ${this.renderList()}
+      ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
     `;
   }
 

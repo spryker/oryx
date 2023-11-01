@@ -1,4 +1,5 @@
 import { inject } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ComponentMapping } from '../experience-tokens';
@@ -32,6 +33,10 @@ export class DefaultComponentsRegistryService
 
     return component.template
       ? component.template(uid, markers)
-      : html`${unsafeHTML(`<${tag} uid=${uid} ${markers ?? ''}></${tag}>`)}`;
+      : html`${unsafeHTML(
+          `<${tag} uid=${uid} ${
+            featureVersion >= '1.2' ? '' : markers ?? ''
+          }></${tag}>`
+        )}`;
   }
 }

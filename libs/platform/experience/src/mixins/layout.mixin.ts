@@ -166,7 +166,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         featureVersion >= '1.2'
           ? this.attributeFilter
           : ['layout', ...layoutKeys],
-        this.$options().rules
+        this.$options().rules,
+        this.$screen()
       )
     );
 

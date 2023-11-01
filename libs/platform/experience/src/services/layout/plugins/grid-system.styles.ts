@@ -22,9 +22,6 @@ export const gridSystem = css`
     display: grid;
     max-width: 100%;
     max-height: 100%;
-  }
-
-  :host(:not([layout-vertical])) {
     align-items: var(--align, start);
     align-content: var(--align, start);
     justify-content: var(--justify);

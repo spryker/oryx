@@ -1,9 +1,14 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { INJECTOR, inject } from '@spryker-oryx/di';
+import { LayoutProperties } from '@spryker-oryx/experience/layout';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
 import { Observable, map, merge, of, reduce } from 'rxjs';
 import { LayoutBuilder } from './layout.builder';
-import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
+import {
+  LayoutStyles,
+  ResponsiveLayout,
+  ResponsiveLayoutInfo,
+} from './layout.model';
 import {
   LayoutIncomingConfig,
   LayoutService,
@@ -17,6 +22,12 @@ import {
 } from './plugins';
 import { ScreenService } from './screen.service';
 
+interface ResolveLayoutParams {
+  token: string;
+  data: ResponsiveLayout;
+  options: LayoutProperties;
+}
+
 export class DefaultLayoutService implements LayoutService {
   constructor(
     protected screenService = inject(ScreenService),
@@ -24,7 +35,10 @@ export class DefaultLayoutService implements LayoutService {
     protected layoutBuilder = inject(LayoutBuilder)
   ) {}
 
-  getStyles(layoutInfo: ResponsiveLayoutInfo): Observable<string> {
+  getStyles(
+    layoutInfo: ResponsiveLayoutInfo,
+    layoutOptions: LayoutProperties
+  ): Observable<string> {
     const observables: Observable<string>[] = [];
 
     const keys = Object.keys(layoutInfo);
@@ -32,13 +46,11 @@ export class DefaultLayoutService implements LayoutService {
     if (keys.length > 0) observables.push(this.resolveCommonStyles());
 
     keys.forEach((key) => {
-      const styles = this.resolveStyles(
-        key,
-        layoutInfo[key].included,
-        layoutInfo[key].excluded,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        layoutInfo[key].type!
-      );
+      const styles = this.resolveStyles({
+        token: key,
+        data: layoutInfo[key],
+        options: layoutOptions,
+      });
 
       if (styles) {
         observables.push(styles);
@@ -72,13 +84,17 @@ export class DefaultLayoutService implements LayoutService {
   }
 
   protected resolveStyles(
-    token: string,
-    included: Breakpoint[] = [],
-    excluded: Breakpoint[] = [],
-    type: LayoutPluginType
+    params: ResolveLayoutParams
   ): Observable<string> | void {
-    return this.getPlugin(token, type)
-      ?.getStyles?.()
+    const {
+      token,
+      data: { included, excluded, type },
+      options,
+    } = params;
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.getPlugin(token, type!)
+      ?.getStyles?.({ options })
       .pipe(
         map((styles) =>
           this.resolveStylesForBreakpoint(styles, included, excluded)
@@ -100,8 +116,8 @@ export class DefaultLayoutService implements LayoutService {
 
   protected resolveStylesForBreakpoint(
     style: LayoutStyles,
-    included: Breakpoint[],
-    excluded: Breakpoint[]
+    included: Breakpoint[] = [],
+    excluded: Breakpoint[] = []
   ): string {
     let result = '';
     if (style.styles) {

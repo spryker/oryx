@@ -6,7 +6,7 @@ import { LayoutBuilder } from './layout.builder';
 import { LayoutService } from './layout.service';
 import {
   LayoutPlugin,
-  LayoutPluginParams,
+  LayoutPluginRenderParams,
   LayoutPluginType,
   LayoutPropertyPlugin,
 } from './plugins';
@@ -137,7 +137,7 @@ describe('DefaultLayoutService', () => {
       const result = service.getRender({
         token: 'a',
         type: LayoutPluginType.Layout,
-        data: mockData as LayoutPluginParams,
+        data: mockData as unknown as LayoutPluginRenderParams,
       });
 
       expect(aLayoutPlugin.getRender).toHaveBeenCalledWith(mockData);
@@ -150,7 +150,7 @@ describe('DefaultLayoutService', () => {
       const result = service.getRender({
         token: 'a',
         type: LayoutPluginType.Property,
-        data: mockData as LayoutPluginParams,
+        data: mockData as unknown as LayoutPluginRenderParams,
       });
 
       expect(aLayoutPropertyPlugin.getRender).toHaveBeenCalledWith(mockData);

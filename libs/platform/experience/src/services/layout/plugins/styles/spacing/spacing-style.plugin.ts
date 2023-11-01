@@ -3,7 +3,7 @@ import { findCssValue, findCssValues } from '../../../layout-styles.utilities';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
-  LayoutStyleParameters,
+  LayoutPluginPropertiesParams,
   LayoutStyleProperties,
 } from '../../layout.plugin';
 
@@ -15,20 +15,22 @@ export class SpacingStylePlugin implements LayoutPlugin {
   }
 
   getStyleProperties(
-    data: LayoutStyleParameters
+    data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
+    const { styles } = data;
+
     return of({
-      margin: data.margin,
-      'inset-block-start': data.top,
-      height: data.height,
-      width: data.width,
-      'aspect-ratio': data.ratio,
-      ...(data.padding
+      margin: styles.margin,
+      'inset-block-start': styles.top,
+      height: styles.height,
+      width: styles.width,
+      'aspect-ratio': styles.ratio,
+      ...(styles.padding
         ? {
-            'scroll-padding': findCssValue(data.padding, 'start'),
-            'padding-block': findCssValues(data.padding, 'top', 'bottom'),
-            'padding-inline': findCssValues(data.padding, 'start', 'end'),
-            '--inline-padding': findCssValues(data.padding, 'start', 'end'),
+            'scroll-padding': findCssValue(styles.padding, 'start'),
+            'padding-block': findCssValues(styles.padding, 'top', 'bottom'),
+            'padding-inline': findCssValues(styles.padding, 'start', 'end'),
+            '--inline-padding': findCssValues(styles.padding, 'start', 'end'),
           }
         : {}),
     });

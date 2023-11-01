@@ -11,20 +11,12 @@ export const styles: LayoutStyles = {
     :host {
       --oryx-column-count: var(--oryx-column-grid);
 
+      grid-auto-flow: column;
+      overflow: auto hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: both mandatory;
       scroll-behavior: smooth;
       grid-auto-columns: var(--_item-size);
-    }
-
-    :host(:not([layout-vertical])) {
-      grid-auto-flow: column;
-      overflow: auto hidden;
-    }
-
-    :host([layout-vertical]) {
-      grid-auto-flow: row;
-      overflow: hidden auto;
     }
 
     :host::-webkit-scrollbar {
@@ -38,4 +30,11 @@ export const styles: LayoutStyles = {
   `,
 };
 
-// width: 100%; on slotted causes issues
+export const verticalStyles: LayoutStyles = {
+  styles: css`
+    :host {
+      grid-auto-flow: row;
+      overflow: hidden auto;
+    }
+  `,
+};

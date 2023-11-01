@@ -39,7 +39,9 @@ describe('SpacingStylePlugin', () => {
         'padding-inline': '3px 5px',
         '--inline-padding': '3px 5px',
       };
-      const result = await lastValueFrom(plugin.getStyleProperties(data));
+      const result = await lastValueFrom(
+        plugin.getStyleProperties({ styles: data })
+      );
 
       expect(result).toEqual(styleProperties);
     });

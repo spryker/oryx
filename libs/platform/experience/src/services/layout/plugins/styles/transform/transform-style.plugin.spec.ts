@@ -27,7 +27,9 @@ describe('TransformStylePlugin', () => {
         [{ rotate: data.rotate }, { unit: 'deg' }],
         [{ scale: data.scale }],
       ];
-      const result = await lastValueFrom(plugin.getStyleProperties(data));
+      const result = await lastValueFrom(
+        plugin.getStyleProperties({ styles: data })
+      );
 
       expect(result).toEqual(styleProperties);
     });

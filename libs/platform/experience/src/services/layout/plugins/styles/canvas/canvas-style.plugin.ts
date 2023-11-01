@@ -2,7 +2,7 @@ import { Observable, of } from 'rxjs';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
-  LayoutStyleParameters,
+  LayoutPluginPropertiesParams,
   LayoutStyleProperties,
 } from '../../layout.plugin';
 
@@ -14,13 +14,15 @@ export class CanvasStylePlugin implements LayoutPlugin {
   }
 
   getStyleProperties(
-    data: LayoutStyleParameters
+    data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
+    const { styles } = data;
+
     return of({
-      border: data.border,
-      'border-radius': data.radius,
-      background: data.background,
-      '--oryx-fill': data.fill,
+      border: styles.border,
+      'border-radius': styles.radius,
+      background: styles.background,
+      '--oryx-fill': styles.fill,
     });
   }
 }

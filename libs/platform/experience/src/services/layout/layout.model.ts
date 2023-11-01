@@ -10,14 +10,14 @@ export type LayoutStyles = {
   /**
    * The layout styles are used for all screen sizes.
    */
-  styles?: CSSResult;
+  styles?: CSSResult | string;
 } & {
   /**
    * Screen specific styles are loaded for the given screen size only; This is rarely used,
    * since styles are written in strict media queries. Together with encapsulated styles the
    * styles won't leak out.
    */
-  [key in Size]?: CSSResult;
+  [key in Size]?: CSSResult | string;
 };
 
 export interface ResponsiveLayoutInfo {

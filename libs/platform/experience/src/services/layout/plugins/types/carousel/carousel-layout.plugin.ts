@@ -1,11 +1,26 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { LayoutStyles } from '../../../layout.model';
-import { LayoutPlugin, LayoutPluginConfig } from '../../layout.plugin';
+import {
+  LayoutPlugin,
+  LayoutPluginConfig,
+  LayoutPluginOptionsParams,
+} from '../../layout.plugin';
 
 export class CarouselLayoutPlugin implements LayoutPlugin {
-  getStyles(): Observable<LayoutStyles> {
-    return ssrAwaiter(import('./carousel-layout.styles').then((m) => m.styles));
+  getStyles(data: LayoutPluginOptionsParams): Observable<LayoutStyles> {
+    const { options } = data;
+
+    return ssrAwaiter(import('./carousel-layout.styles')).pipe(
+      map((m) => {
+        if (!options.vertical) return m.styles;
+
+        return {
+          ...m.styles,
+          styles: `${m.styles.styles}${m.verticalStyles.styles}`,
+        };
+      })
+    );
   }
 
   getConfig(): Observable<LayoutPluginConfig> {

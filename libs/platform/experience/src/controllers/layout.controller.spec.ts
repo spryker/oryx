@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { CompositionLayout } from '../models';
 import {
   LayoutBuilder,
-  LayoutPluginParams,
+  LayoutPluginRenderParams,
   LayoutPluginType,
   LayoutService,
 } from '../services';
@@ -222,16 +222,22 @@ describe('LayoutController', () => {
         });
 
         it('should call mockLayoutService.getStyle with proper params', () => {
-          expect(mockLayoutService.getStyles).toHaveBeenCalledWith({
-            bleed: { type: LayoutPluginType.Property, excluded: ['md'] },
-            grid: {
-              type: LayoutPluginType.Layout,
-              excluded: ['xs', 'md', 'xl'],
+          expect(mockLayoutService.getStyles).toHaveBeenCalledWith(
+            {
+              bleed: { type: LayoutPluginType.Property, excluded: ['md'] },
+              grid: {
+                type: LayoutPluginType.Layout,
+                excluded: ['xs', 'md', 'xl'],
+              },
+              column: { type: LayoutPluginType.Layout, included: ['xs', 'md'] },
+              carousel: { type: LayoutPluginType.Layout, included: ['xl'] },
+              sticky: {
+                type: LayoutPluginType.Property,
+                included: ['xs', 'xl'],
+              },
             },
-            column: { type: LayoutPluginType.Layout, included: ['xs', 'md'] },
-            carousel: { type: LayoutPluginType.Layout, included: ['xl'] },
-            sticky: { type: LayoutPluginType.Property, included: ['xs', 'xl'] },
-          });
+            { layout: 'grid', bleed: true }
+          );
         });
       });
 
@@ -278,16 +284,25 @@ describe('LayoutController', () => {
         });
 
         it('should call mockLayoutService.getStyle with proper params', () => {
-          expect(mockLayoutService.getStyles).toHaveBeenCalledWith({
-            grid: {
-              type: LayoutPluginType.Layout,
-              excluded: ['xs', 'md', 'xl'],
+          expect(mockLayoutService.getStyles).toHaveBeenCalledWith(
+            {
+              grid: {
+                type: LayoutPluginType.Layout,
+                excluded: ['xs', 'md', 'xl'],
+              },
+              column: { type: LayoutPluginType.Layout, included: ['xs', 'md'] },
+              carousel: { type: LayoutPluginType.Layout, included: ['xl'] },
+              bleed: { type: LayoutPluginType.Property, excluded: ['md'] },
+              sticky: {
+                type: LayoutPluginType.Property,
+                included: ['xs', 'xl'],
+              },
             },
-            column: { type: LayoutPluginType.Layout, included: ['xs', 'md'] },
-            carousel: { type: LayoutPluginType.Layout, included: ['xl'] },
-            bleed: { type: LayoutPluginType.Property, excluded: ['md'] },
-            sticky: { type: LayoutPluginType.Property, included: ['xs', 'xl'] },
-          });
+            {
+              layout: 'grid',
+              bleed: true,
+            }
+          );
         });
       });
 
@@ -319,16 +334,22 @@ describe('LayoutController', () => {
         });
 
         it('should call mockLayoutService.getStyle with proper params', () => {
-          expect(mockLayoutService.getStyles).toHaveBeenCalledWith({
-            bleed: { type: LayoutPluginType.Property, excluded: ['md'] },
-            grid: {
-              type: LayoutPluginType.Layout,
-              excluded: ['xs', 'md', 'xl'],
+          expect(mockLayoutService.getStyles).toHaveBeenCalledWith(
+            {
+              bleed: { type: LayoutPluginType.Property, excluded: ['md'] },
+              grid: {
+                type: LayoutPluginType.Layout,
+                excluded: ['xs', 'md', 'xl'],
+              },
+              column: { type: LayoutPluginType.Layout, included: ['xs', 'md'] },
+              carousel: { type: LayoutPluginType.Layout, included: ['xl'] },
+              sticky: {
+                type: LayoutPluginType.Property,
+                included: ['xs', 'xl'],
+              },
             },
-            column: { type: LayoutPluginType.Layout, included: ['xs', 'md'] },
-            carousel: { type: LayoutPluginType.Layout, included: ['xl'] },
-            sticky: { type: LayoutPluginType.Property, included: ['xs', 'xl'] },
-          });
+            { layout: 'grid', bleed: true }
+          );
         });
       });
     });
@@ -337,7 +358,7 @@ describe('LayoutController', () => {
       const mockData = {
         element: 'element',
         experience: 'experience',
-      } as unknown as Omit<LayoutPluginParams, 'options'>;
+      } as unknown as Omit<LayoutPluginRenderParams, 'options'>;
 
       beforeEach(() => {
         mockLayoutService.getRender.mockReturnValue(of());

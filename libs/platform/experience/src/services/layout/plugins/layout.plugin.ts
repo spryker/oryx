@@ -71,8 +71,11 @@ export type LayoutStyleList = Record<string, string | number | undefined>;
 export type LayoutStylePropertiesArr = [LayoutStyleList, LayoutStyleOptions?][];
 export type LayoutStyleProperties = LayoutStyleList | LayoutStylePropertiesArr;
 
-export interface LayoutPluginParams {
-  options?: LayoutProperties;
+export interface LayoutPluginOptionsParams {
+  options: LayoutProperties;
+}
+
+export interface LayoutPluginRenderParams extends LayoutPluginOptionsParams {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   element?: LitElement & Record<string, any>;
   experience?: Component;
@@ -82,19 +85,23 @@ export interface LayoutStyleParameters extends Omit<StyleProperties, 'layout'> {
   layout?: LayoutStylesOptions;
 }
 
+export interface LayoutPluginPropertiesParams {
+  styles: LayoutStyleParameters;
+}
+
 export interface LayoutPlugin {
   getConfig(): Observable<LayoutPluginConfig>;
-  getStyles?(): Observable<LayoutStyles>;
+  getStyles?(data: LayoutPluginOptionsParams): Observable<LayoutStyles>;
   getStyleProperties?(
-    data: LayoutStyleParameters
+    data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties>;
-  getDefaults?(): Observable<LayoutStylesProperties>;
+  getDefaultProperties?(): Observable<LayoutStylesProperties>;
   /**
    * Returns object with pre and post render templates.
    * Together with composition component it's possible to specify global post\pre render and per component depends on argument.
    * For global render we don't pass component as argument while per component argument is defined.
    *
-   * getRender(data: LayoutPluginParams): LayoutPluginRender {
+   * getRender(data: LayoutPluginRenderParams): LayoutPluginRender {
    *   specifying render per component. (first we need guard for checking if data is Component)
    *   if (data === Component) {
    *    return  {
@@ -111,7 +118,7 @@ export interface LayoutPlugin {
    * }
    */
   getRender?(
-    data: LayoutPluginParams
+    data: LayoutPluginRenderParams
   ): Observable<LayoutPluginRender | undefined>;
 }
 
