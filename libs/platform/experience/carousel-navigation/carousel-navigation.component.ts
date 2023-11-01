@@ -66,7 +66,6 @@ export class CarouselNavigationComponent
     this.intersectionObserver = new IntersectionObserver(
       throttle((entries: IntersectionObserverEntry[]) => {
         return entries.forEach((entry) => {
-          // console.log('entry', entry.isIntersecting);
           if (entry.isIntersecting) {
             this.buildNavigation();
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -196,12 +195,6 @@ export class CarouselNavigationComponent
       window.getComputedStyle(this.hostElement).getPropertyValue('column-gap') // || '0'
     );
 
-    console.log(
-      'slideCount',
-      this.hostElement.scrollWidth,
-      this.hostElement.clientWidth,
-      window.getComputedStyle(this.hostElement).getPropertyValue('column-gap') // || 0
-    );
     const slideCount = Math.ceil(
       (this.hostElement.scrollWidth + gap) /
         (this.hostElement.clientWidth + gap)
@@ -247,7 +240,6 @@ export class CarouselNavigationComponent
     }
 
     if (this.showIndicators) {
-      console.log(this.slides);
       results.push(html`<div class="indicators">
         ${this.slides.map(
           (n) =>
@@ -379,7 +371,9 @@ export class CarouselNavigationComponent
     } else {
       if (!this.slides.length) this.setSlides();
       this.slides.forEach((indicator) => {
-        this.items[indicator.index].style.scrollSnapAlign = 'start';
+        if (this.items[indicator.index]) {
+          this.items[indicator.index].style.scrollSnapAlign = 'start';
+        }
       });
     }
   }

@@ -40,8 +40,10 @@ class MockLayout extends LitElement {
   static styles = [
     css`
       :host {
-        display: block;
         width: 800px;
+        display: grid;
+        grid-auto-columns: 200px;
+        grid-auto-flow: column;
         overflow: auto;
       }
       div {
@@ -102,43 +104,60 @@ describe('CarouselNavigationComponent', () => {
     destroyInjector();
   });
 
-  describe('when showArrow is true', () => {
-    beforeEach(async () => {
-      await layout({ showArrows: true });
-    });
+  describe('when there are 12 carousel items', () => {
+    const itemCount = 12;
 
-    it('should render the arrows', () => {
-      expect(nav).toContainElement('oryx-button.previous');
-      expect(nav).toContainElement('oryx-button.next');
-    });
-  });
-
-  describe('when showArrow is false', () => {
-    beforeEach(async () => {
-      await layout({ showArrows: false });
-    });
-
-    it('should not render the arrows', () => {
-      expect(nav).not.toContainElement('oryx-button.previous');
-      expect(nav).not.toContainElement('oryx-button.next');
-    });
-  });
-
-  describe('when showIndicators is true', () => {
     beforeEach(async () => {
       vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(
         800
       );
       vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(
-        2400
+        itemCount * 200
       );
-
-      await layout({ showIndicators: true });
     });
 
-    it('should render the indicators', () => {
-      expect(nav).toContainElement('.indicators');
-      expect(nav).toContainElement('.indicators input');
+    describe('when showArrow is true', () => {
+      beforeEach(async () => {
+        await layout({ showArrows: true });
+      });
+
+      it('should render the arrows', () => {
+        expect(nav).toContainElement('oryx-button.previous');
+        expect(nav).toContainElement('oryx-button.next');
+      });
+    });
+
+    describe('when showArrow is false', () => {
+      beforeEach(async () => {
+        await layout({ showArrows: false });
+      });
+
+      it('should not render the arrows', () => {
+        expect(nav).not.toContainElement('oryx-button.previous');
+        expect(nav).not.toContainElement('oryx-button.next');
+      });
+    });
+
+    describe('when showIndicators is true', () => {
+      beforeEach(async () => {
+        await layout({ showIndicators: true });
+      });
+
+      it(`should render ${itemCount / 4} indicators`, () => {
+        expect(nav).toContainElement(
+          `.indicators input:nth-child(${itemCount / 4})`
+        );
+      });
+    });
+
+    describe('when showIndicators is false', () => {
+      beforeEach(async () => {
+        await layout({ showIndicators: false });
+      });
+
+      it(`should not render indicators`, () => {
+        expect(nav).not.toContainElement(`.indicators`);
+      });
     });
   });
 });
