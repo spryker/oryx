@@ -12,6 +12,7 @@ import {
   map,
   of,
   reduce,
+  startWith,
   withLatestFrom,
 } from 'rxjs';
 import {
@@ -71,7 +72,9 @@ export class LayoutController {
     const layoutOptions = this.getLayoutOptions(properties, rules, screen);
 
     return this.layoutService.getStyles(infos, layoutOptions).pipe(
-      withLatestFrom(this.getComponentStyles(props, rules, this.host.uid)),
+      withLatestFrom(
+        this.getComponentStyles(props, rules, this.host.uid).pipe(startWith(''))
+      ),
       map(
         ([layoutStyles, componentStyles]) => `${layoutStyles}${componentStyles}`
       )
