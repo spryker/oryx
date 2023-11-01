@@ -1,15 +1,15 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { signal } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { Observable, of } from 'rxjs';
 import { Observable, map, of } from 'rxjs';
 import { LayoutStyles } from '../../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
-  LayoutPluginParams,
+  LayoutPluginOptionsParams,
+  LayoutPluginPropertiesParams,
   LayoutPluginRender,
-  LayoutStyleParameters,
+  LayoutPluginRenderParams,
   LayoutStyleProperties,
 } from '../../layout.plugin';
 import {
@@ -19,8 +19,6 @@ import {
   CarouselLayoutProperties,
   CarouselScrollBehavior,
 } from './carousel-layout.model';
-  LayoutPluginOptionsParams,
-} from '../../layout.plugin';
 
 export class CarouselLayoutPlugin implements LayoutPlugin {
   getStyles(data: LayoutPluginOptionsParams): Observable<LayoutStyles> {
@@ -45,27 +43,41 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
   }
 
   getStyleProperties(
-    data: LayoutStyleParameters
+    data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
-    const options = { ...data.layout, ...this.$options() };
-    return of({
-      '--scroll-with-mouse': options.scrollWithMouse ? 'auto' : 'hidden',
-      '--scroll-with-touch': options.scrollWithTouch ? 'auto' : 'hidden',
-    });
+    // here we have layout options inside data.styles.layout
+    const options = { ...data.styles.layout, ...this.$options() };
+    const props: {
+      '--scroll-with-mouse'?: string;
+      '--scroll-with-touch'?: string;
+    } = {};
+
+    if (options.scrollWithMouse) props['--scroll-with-mouse'] = 'auto';
+    if (options.scrollWithTouch) props['--scroll-with-touch'] = 'auto';
+
+    return of(props);
   }
 
   /**
    * @override Returns a render function that renders the carousel navigation
+   * in the pre render template position.
    */
-  getRender(data: LayoutPluginParams): LayoutPluginRender | undefined {
-    const options = { ...data.options, ...this.$options() };
+  getRender(
+    data: LayoutPluginRenderParams
+  ): Observable<LayoutPluginRender | undefined> {
+    // here we have layout options inside data.options
+    const options = {
+      ...data.options,
+      ...(this.$options().layout as CarouselLayoutProperties),
+    };
+
     if (
       data.experience || // we have nested components
       (!options?.showArrows && !options?.showIndicators)
     ) {
-      return;
+      return of();
     }
-    return {
+    return of({
       pre: html`<oryx-carousel-navigation
         ?showArrows=${options?.showArrows}
         ?showIndicators=${options?.showIndicators}
@@ -76,21 +88,30 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
         .indicatorsAlignment=${options?.indicatorsAlignment}
         .scrollBehavior=${options?.scrollBehavior}
       ></oryx-carousel-navigation>`,
-    };
+    });
   }
 
   protected $options = signal(this.getDefaultProperties());
 
-  getDefaultProperties(): Observable<CarouselLayoutProperties> {
+  /**
+   * The default properties are redefined by the layout options, which can
+   * be set in the experience data options or directly when using a layout
+   * component.
+   *
+   * @returns Default properties for the carousel layout.
+   */
+  getDefaultProperties(): Observable<LayoutStylesProperties> {
     return of({
-      showArrows: true,
-      showIndicators: true,
-      scrollBehavior: CarouselScrollBehavior.Smooth,
-      arrowNavigationBehavior: ArrowNavigationBehavior.Item,
-      scrollWithMouse: true,
-      scrollWithTouch: true,
-      indicatorsAlignment: CarouselIndicatorAlignment.Center,
-      indicatorsPosition: CarouselIndicatorPosition.Below,
+      layout: {
+        showArrows: true,
+        showIndicators: true,
+        scrollBehavior: CarouselScrollBehavior.Smooth,
+        arrowNavigationBehavior: ArrowNavigationBehavior.Slide,
+        scrollWithMouse: true,
+        scrollWithTouch: true,
+        indicatorsAlignment: CarouselIndicatorAlignment.Center,
+        indicatorsPosition: CarouselIndicatorPosition.Below,
+      } as CarouselLayoutProperties,
     });
   }
 }
