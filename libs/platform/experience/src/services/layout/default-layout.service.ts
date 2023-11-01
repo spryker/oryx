@@ -58,14 +58,16 @@ export class DefaultLayoutService implements LayoutService {
     return this.layoutBuilder.getStylesFromOptions(data.rules, data.id);
   }
 
-  getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined {
+  getRender(
+    config: LayoutIncomingConfig
+  ): Observable<LayoutPluginRender | undefined> {
     const { token, type, data } = config;
-    return this.getPlugin(token, type)?.getRender?.(data);
+    return this.getPlugin(token, type)?.getRender?.(data) ?? of(undefined);
   }
 
   protected resolveCommonStyles(): Observable<string> {
     return ssrAwaiter(
-      import('./base.styles').then((m) => m.styles?.toString() ?? '')
+      import('./plugins/base.styles').then((m) => m.styles?.toString() ?? '')
     );
   }
 

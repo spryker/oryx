@@ -5,7 +5,15 @@ import {
 } from '@spryker-oryx/experience/layout';
 import { Size, featureVersion, sizes } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { Observable, map, withLatestFrom } from 'rxjs';
+import {
+  Observable,
+  concatMap,
+  from,
+  map,
+  of,
+  reduce,
+  withLatestFrom,
+} from 'rxjs';
 import {
   CompositionProperties,
   ContentComponentProperties,
@@ -34,7 +42,6 @@ export interface LayoutRenderParams {
 
 export class LayoutController {
   protected layoutService = resolve(LayoutService);
-  // @deprecated since 1.2 will be removed.
   protected layoutBuilder = resolve(LayoutBuilder);
 
   constructor(
@@ -104,7 +111,7 @@ export class LayoutController {
     return styles;
   }
 
-  getRender(config: LayoutRenderParams): TemplateResult {
+  getRender(config: LayoutRenderParams): Observable<TemplateResult> {
     const { screen, attrs, place, data } = config;
     const host = this.host;
 
@@ -159,23 +166,30 @@ export class LayoutController {
         : {}),
     };
 
-    return Object.entries(layoutOptions).reduce((acc, [prop, value]) => {
-      if (!value) return acc;
+    return from(Object.entries(layoutOptions)).pipe(
+      concatMap(([prop, value]) => {
+        if (!value) return of(null);
 
-      const token = prop === 'layout' ? (value as string) : prop;
-      const type =
-        prop === 'layout' ? LayoutPluginType.Layout : LayoutPluginType.Property;
+        const token = prop === 'layout' ? (value as string) : prop;
+        const type =
+          prop === 'layout'
+            ? LayoutPluginType.Layout
+            : LayoutPluginType.Property;
 
-      return html`${acc}
-      ${this.layoutService.getRender({
-        type,
-        token,
-        data: {
-          ...data,
-          options: layoutOptions,
-        },
-      })?.[place]}`;
-    }, html``);
+        return this.layoutService.getRender({
+          type,
+          token,
+          data: {
+            ...data,
+            options: layoutOptions,
+          },
+        });
+      }),
+      reduce(
+        (acc, curr) => (!curr?.[place] ? acc : html`${acc}${curr[place]}`),
+        html``
+      )
+    );
   }
 
   /**
@@ -384,11 +398,11 @@ export class LayoutController {
     rules: StyleRuleSet[],
     layoutProperties: (keyof LayoutProperties)[] = []
   ): boolean {
-    if (featureVersion < '1.2') {
-      return this.legacyHasLayout(rules, layoutProperties);
+    if (featureVersion >= '1.2') {
+      return !!this.host.layout || rules?.some((rule) => rule.layout);
     }
 
-    return !!this.host.layout || rules?.some((rule) => rule.layout);
+    return this.legacyHasLayout(rules, layoutProperties);
   }
 
   /**

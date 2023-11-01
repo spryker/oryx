@@ -74,7 +74,7 @@ describe('DefaultLayoutService', () => {
         layout: { type: LayoutPluginType.Layout },
       });
       const expected = (
-        await import('./base.styles').then((module) => module.styles)
+        await import('./plugins/base.styles').then((module) => module.styles)
       ).toString();
       const styles = await lastValueFrom(promise);
       expect(styles).toBe(expected);
