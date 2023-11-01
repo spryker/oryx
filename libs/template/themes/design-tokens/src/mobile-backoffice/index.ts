@@ -7,7 +7,7 @@ import {
   typographyTokens,
 } from '../backoffice/typography.tokens';
 import { color } from '../color.tokens';
-import { layoutSmTokens, layoutTokens } from '../layout.tokens';
+import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
 
 export const mobileBackofficeTokens: DesignToken[] = [
   ...buttonTokens,
@@ -20,15 +20,24 @@ export const mobileBackofficeTokens: DesignToken[] = [
       typographySmallTokens.typography
     ),
     ...layoutTokens,
-    container: {
-      width: '414px',
-      bleed: '0px',
-    },
   },
   {
     media: {
       screen: Size.Sm,
     },
     ...layoutSmTokens,
+    container: {
+      bleed: '0',
+    },
+  },
+  {
+    media: {
+      screen: Size.Md,
+    },
+    ...layoutMdTokens,
+    container: {
+      width: '414px',
+      bleed: '8px',
+    },
   },
 ];

@@ -6,10 +6,10 @@ export const fulfillmentTheme: Theme = {
   name: 'fulfillment',
   breakpoints: {
     [Size.Sm]: {
-      max: 414,
+      max: 767,
     },
     [Size.Md]: {
-      min: 415,
+      min: 768,
     },
   },
   designTokens: () =>

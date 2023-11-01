@@ -1,5 +1,4 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { Size } from '@spryker-oryx/utilities';
 
 export const fulfillmentLoginPage: ExperienceComponent = {
   id: 'fulfillment-login-page',
@@ -10,13 +9,7 @@ export const fulfillmentLoginPage: ExperienceComponent = {
     description: 'Login Page Description',
   },
   options: {
-    rules: [
-      { layout: 'flex', justify: 'center' },
-      {
-        query: { breakpoint: Size.Sm },
-        width: '100%',
-      },
-    ],
+    rules: [{ layout: 'list' }],
   },
   components: [
     {
