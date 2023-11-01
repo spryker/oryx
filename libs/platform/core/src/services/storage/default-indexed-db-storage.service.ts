@@ -8,7 +8,7 @@ import {
 
 /** @deprecated since 1.2 */
 export class DefaultIndexedDBStorageService implements IndexedDBStorageService {
-  private db$: Observable<IDBDatabase> = new Observable(
+  protected db$: Observable<IDBDatabase> = new Observable(
     (subscriber: Subscriber<IDBDatabase>) => {
       const request = indexedDB.open(indexedDbStorageName, 1);
 
@@ -24,7 +24,7 @@ export class DefaultIndexedDBStorageService implements IndexedDBStorageService {
     }
   ).pipe(shareReplay(1));
 
-  private transactionRequest<T>(
+  protected transactionRequest<T>(
     mode: IDBTransactionMode,
     storeAction: (store: IDBObjectStore) => IDBRequest<T>
   ): Observable<T> {
