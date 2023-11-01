@@ -40,7 +40,6 @@ const mockRequest = {
   result: null,
 };
 
-global.indexedDB = mockIndexedDB as any;
 mockIndexedDB.open.mockReturnValue(mockOpenRequest);
 mockDB.transaction.mockReturnValue(mockTransaction);
 mockTransaction.objectStore.mockReturnValue(mockObjectStore);
@@ -66,6 +65,8 @@ describe('DefaultIndexedDBStorageService', () => {
 
     service = getInjector().inject(IndexedDBStorageService);
 
+    vi.stubGlobal('indexedDB', mockIndexedDB)
+
     mockSuccessfulRequest(mockIndexedDB.open(indexedDbStorageName), mockDB);
     mockSuccessfulRequest(
       mockDB.transaction(indexedDbTableName),
@@ -80,6 +81,7 @@ describe('DefaultIndexedDBStorageService', () => {
   afterEach(() => {
     destroyInjector();
     vi.clearAllMocks();
+    vi.unstubAllGlobals();
   });
 
   describe('getItem', () => {
