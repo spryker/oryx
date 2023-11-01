@@ -147,7 +147,8 @@ export class CarouselNavigationComponent
   protected updateIndicatorState(): void {
     if (!this.indicatorElements?.length || !this.showIndicators) return;
     const clientWidth = this.hostElement.clientWidth;
-    const scrollLeft = this.hostElement.scrollLeft;
+    const isRtl = window.getComputedStyle(this).direction === 'rtl';
+    const scrollLeft = this.hostElement.scrollLeft * (isRtl ? -1 : 1);
     const scrollWidth = this.hostElement.scrollWidth;
 
     this.indicatorElements.forEach((indicator, index) => {
@@ -156,8 +157,11 @@ export class CarouselNavigationComponent
       const percentage = distance / this.hostElement.clientWidth;
       let opacity = percentage >= 0 ? 1 - percentage : 1 + percentage;
       if (clientWidth + scrollLeft >= scrollWidth) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         if (index === this.indicatorElements!.length - 1) {
-          opacity = 1; // opacity = index === this.indicatorElements!.length - 1 ? 1 : 0;
+          // we could consider making the previous slide indicator to 0
+          // (opacity = index === this.indicatorElements!.length - 1 ? 1 : 0;)
+          opacity = 1;
         }
       }
       indicator.style.setProperty('--opacity', `${opacity}`);
@@ -170,19 +174,20 @@ export class CarouselNavigationComponent
    */
   protected updateArrowState(): void {
     if (!this.items.length || !this.showArrows) return;
+    const isRtl = window.getComputedStyle(this).direction === 'rtl';
 
-    this.toggleAttribute(
-      'has-previous',
-      this.hostElement.scrollLeft >
-        this.items?.[0]?.getBoundingClientRect().width
-    );
+    const scrollLeft = this.hostElement.scrollLeft * (isRtl ? -1 : 1);
+    const scrollWidth = this.hostElement.scrollWidth;
+    const firstItemWidth = this.items?.[0].getBoundingClientRect().width;
+    const lastItemWidth =
+      this.items?.[this.items.length - 1].getBoundingClientRect().width;
+
+    this.toggleAttribute('has-previous', scrollLeft > firstItemWidth);
 
     this.toggleAttribute(
       'has-next',
-      this.hostElement.scrollLeft +
-        this.hostElement.getBoundingClientRect().width <
-        this.hostElement.scrollWidth -
-          this.items?.[this.items.length - 1]?.getBoundingClientRect().width
+      scrollLeft + this.hostElement.getBoundingClientRect().width <
+        scrollWidth - lastItemWidth
     );
   }
 
@@ -292,41 +297,22 @@ export class CarouselNavigationComponent
     if ((e as KeyboardEvent).altKey) {
       index = this.items.length - 1;
     } else {
-      const isSSR = window.getComputedStyle(this).direction === 'rtl';
-      // if (isSSR) {
-      //   console.log('rtl');
-      //   const { right, width } = this.hostElement.getBoundingClientRect();
-      //   const x =
-      //     this.arrowNavigationBehavior === ArrowNavigationBehavior.Item
-      //       ? right + 10
-      //       : right + width;
-      //   index = this.items.findIndex(
-      //     (el) => el.getBoundingClientRect().right < x
-      //   );
-      // } else {
+      const isRtl = window.getComputedStyle(this).direction === 'rtl';
+
       const { left, width } = this.hostElement.getBoundingClientRect();
-      const x =
-        this.arrowNavigationBehavior === ArrowNavigationBehavior.Item
-          ? left + 10
-          : left + width;
-      index = this.items.findIndex((el) => el.getBoundingClientRect().left > x);
-      if (isSSR) {
-        index = this.items.findIndex((el, i) => {
-          console.log(
-            i,
-            x,
-            el.textContent,
-            el.getBoundingClientRect().right,
-            el.getBoundingClientRect().right < x
-          );
-          return false; // el.getBoundingClientRect().right < x;
+      if (isRtl) {
+        index = this.items.findIndex((el) => {
+          return el.getBoundingClientRect().left <= left;
         });
       } else {
+        const x =
+          this.arrowNavigationBehavior === ArrowNavigationBehavior.Item
+            ? left + 10
+            : left + width;
         index = this.items.findIndex(
           (el) => el.getBoundingClientRect().left > x
         );
       }
-      // }
     }
     this.scrollElementToIndex(index);
   }
@@ -343,12 +329,17 @@ export class CarouselNavigationComponent
    * Scrolls the carousel to the given index.
    */
   protected scrollElementToIndex(targetIndex: number): void {
-    const hostRect = this.hostElement.getBoundingClientRect();
     const targetElement = this.items[targetIndex];
-
     if (!targetElement) return;
-    const scrollPosition =
-      targetElement.getBoundingClientRect().left - hostRect.left;
+
+    const hostRect = this.hostElement.getBoundingClientRect();
+    const targetElementRect = targetElement.getBoundingClientRect();
+
+    const isRtl = window.getComputedStyle(this).direction === 'rtl';
+
+    const scrollPosition = isRtl
+      ? -(hostRect.right - targetElementRect.right)
+      : targetElementRect.left - hostRect.left;
 
     const behavior =
       this.scrollBehavior === CarouselScrollBehavior.Smooth ? 'smooth' : 'auto';
