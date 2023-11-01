@@ -7,35 +7,21 @@ import {
 } from '../../src/services';
 import { items } from './util';
 
-const demoTable = { category: 'demo' };
-
 export default {
-  title: `${storybookPrefix}/Layout/Carousel`,
+  title: `${storybookPrefix}/Layout/Carousel/Navigation`,
 } as Meta;
-
-const options = (props: CarouselLayoutProperties) => ({
-  rules: [
-    {
-      layout: {
-        type: 'carousel',
-        showArrows: true,
-        showIndicators: true,
-        scrollBehavior: 'smooth',
-        scrollWithMouse: true,
-        indicatorsAlignment: 'center',
-        ...props,
-      },
-    },
-  ],
-});
 
 const navigation = (
   title: string,
   props?: CarouselLayoutProperties,
+  style?: string,
   itemCount = 12
 ) => html`
   <h3>Carousel with ${title}</h3>
-  <oryx-layout .options=${options(props ?? {})}>
+  <oryx-layout
+    .options=${{ rules: [{ layout: { type: 'carousel', ...(props ?? {}) } }] }}
+    .style=${style}
+  >
     ${items(itemCount)}
   </oryx-layout>
 `;
@@ -49,10 +35,11 @@ const Template: Story<CarouselLayoutProperties> = (): TemplateResult => {
       }),
       navigation('arrows', { showIndicators: false }),
       navigation('indicators', { showArrows: false }),
+      navigation('more padding', {}, '--column-gap: 50px'),
+      ...[24, 12, 8, 7, 6, 5, 4, 3, 2, 1].map((count) => [
+        navigation(`${count} Items`, {}, undefined, count),
+      ]),
     ]}
-    ${[24, 12, 8, 7, 6, 5, 4, 3, 2, 1].map((count) => [
-      navigation(`${count} Items`, {}, count),
-    ])}
 
     <style>
       oryx-layout {

@@ -86,4 +86,6 @@ export enum IconTypes {
   Card = 'view_carousel',
   Input = 'input',
   Forward = 'chevron_right',
+  Next = 'next',
+  Previous = 'previous',
 }

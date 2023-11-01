@@ -1,7 +1,12 @@
 import { IconMapper } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 
 export const materialDesignIcons: IconMapper = {
   id: 'material-icons',
+  mapping: {
+    [IconTypes.Previous]: 'arrow_back',
+    [IconTypes.Next]: 'arrow_forward',
+  },
 };
 
 export const materialDesignLink = {

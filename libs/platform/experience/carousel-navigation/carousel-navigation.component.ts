@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { throttle } from '@spryker-oryx/utilities';
 import { LitElement, PropertyValueMap, TemplateResult, html } from 'lit';
 import { property, queryAll, state } from 'lit/decorators.js';
@@ -226,13 +227,13 @@ export class CarouselNavigationComponent
 
     if (this.showArrows) {
       results.push(html`<oryx-button
-          icon="arrow_back"
+          icon=${IconTypes.Previous}
           type="icon"
           class="previous"
           @click=${this.handlePrevious}
         ></oryx-button>
         <oryx-button
-          icon="arrow_forward"
+          icon=${IconTypes.Next}
           type="icon"
           class="next"
           @click=${this.handleNext}
@@ -242,12 +243,12 @@ export class CarouselNavigationComponent
     if (this.showIndicators) {
       results.push(html`<div class="indicators">
         ${this.slides.map(
-          (n) =>
+          (slide) =>
             html`<input
-              value=${n.index}
+              value=${slide.index}
               type="radio"
               name="indicators"
-              @input=${() => this.scrollElementToIndex(n.index)}
+              @input=${this.handleIndicatorClick}
             />`
         )}
       </div>`);
@@ -291,16 +292,56 @@ export class CarouselNavigationComponent
     if ((e as KeyboardEvent).altKey) {
       index = this.items.length - 1;
     } else {
+      const isSSR = window.getComputedStyle(this).direction === 'rtl';
+      // if (isSSR) {
+      //   console.log('rtl');
+      //   const { right, width } = this.hostElement.getBoundingClientRect();
+      //   const x =
+      //     this.arrowNavigationBehavior === ArrowNavigationBehavior.Item
+      //       ? right + 10
+      //       : right + width;
+      //   index = this.items.findIndex(
+      //     (el) => el.getBoundingClientRect().right < x
+      //   );
+      // } else {
       const { left, width } = this.hostElement.getBoundingClientRect();
       const x =
         this.arrowNavigationBehavior === ArrowNavigationBehavior.Item
           ? left + 10
           : left + width;
       index = this.items.findIndex((el) => el.getBoundingClientRect().left > x);
+      if (isSSR) {
+        index = this.items.findIndex((el, i) => {
+          console.log(
+            i,
+            x,
+            el.textContent,
+            el.getBoundingClientRect().right,
+            el.getBoundingClientRect().right < x
+          );
+          return false; // el.getBoundingClientRect().right < x;
+        });
+      } else {
+        index = this.items.findIndex(
+          (el) => el.getBoundingClientRect().left > x
+        );
+      }
+      // }
     }
     this.scrollElementToIndex(index);
   }
 
+  /**
+   * Handles the click on an indicator.
+   */
+  protected handleIndicatorClick(e: Event): void {
+    const target = e.target as HTMLInputElement;
+    this.scrollElementToIndex(parseInt(target.value));
+  }
+
+  /**
+   * Scrolls the carousel to the given index.
+   */
   protected scrollElementToIndex(targetIndex: number): void {
     const hostRect = this.hostElement.getBoundingClientRect();
     const targetElement = this.items[targetIndex];

@@ -9,10 +9,8 @@ import {
 } from '../../src/services';
 import { items } from './util';
 
-const demoTable = { category: 'demo' };
-
 export default {
-  title: `${storybookPrefix}/Layout/Carousel`,
+  title: `${storybookPrefix}/Layout/Carousel/Navigation`,
   args: {
     showArrows: true,
     showIndicators: true,

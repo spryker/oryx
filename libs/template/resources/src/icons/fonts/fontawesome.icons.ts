@@ -46,6 +46,8 @@ export const fontawesomeIcons: IconMapper = {
     [IconTypes.Input]: '&#xf2f6;',
     [IconTypes.Parcel]: '&#xf466;',
     [IconTypes.Forward]: '&#xf054;',
+    [IconTypes.Previous]: '&#xf060;',
+    [IconTypes.Next]: '&#xf061;',
   },
 };
 

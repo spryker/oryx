@@ -5,11 +5,14 @@ export const CarouselLayoutPluginToken = `${LayoutPlugin}carousel`;
 export interface CarouselLayoutProperties {
   /**
    * If true, display arrow buttons for navigation.
+   *
+   * The arrow buttons are only visible when they can be used
+   * (e.g., the previous button is not visible on the first slide).
    */
   showArrows?: boolean;
 
   /**
-   * If true, display indicators for slide tracking.
+   * If true, display indicators for slide navigation.
    */
   showIndicators?: boolean;
 
