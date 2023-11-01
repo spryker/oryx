@@ -398,11 +398,11 @@ export class LayoutController {
     rules: StyleRuleSet[],
     layoutProperties: (keyof LayoutProperties)[] = []
   ): boolean {
-    if (featureVersion < '1.2') {
-      return this.legacyHasLayout(rules, layoutProperties);
+    if (featureVersion >= '1.2') {
+      return !!this.host.layout || rules?.some((rule) => rule.layout);
     }
 
-    return !!this.host.layout || rules?.some((rule) => rule.layout);
+    return this.legacyHasLayout(rules, layoutProperties);
   }
 
   /**

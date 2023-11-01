@@ -1,3 +1,8 @@
+/**
+ * Do NOT export any plugin files in the main entry points, as we'd break lazy loading otherwise.
+ * All plugin artifacts are publicly available in a static entry point, to allow for customizations.
+ */
+
 export * as baseLayout from './base.styles';
 export * as gridSystemLayout from './grid-system.styles';
 export * from './properties/bleed/bleed-layout.plugin';
