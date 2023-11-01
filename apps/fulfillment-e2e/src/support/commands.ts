@@ -1,4 +1,7 @@
 import { TestUserData } from '../types/user.type';
+import { CheckoutApi } from './glue-api/checkout.api';
+import { GuestCartsItemsApi } from './glue-api/guest-carts-items.api';
+import { GuestCartsApi } from './glue-api/guest-carts.api';
 import { LoginPage } from './page_objects/login.page';
 import { PickListsPage } from './page_objects/pick-lists.page';
 import { WarehouseSelectionPage } from './page_objects/warehouse-selection.page';
@@ -7,11 +10,15 @@ export {};
 declare global {
   namespace Cypress {
     interface Chainable {
-      login(user?: TestUserData): Chainable<void>;
+      login(user?: TestUserData): void;
       clearIndexedDB(): void;
       waitForIndexedDB(): void;
       mockPickingInProgress(): void;
       mockSyncPending(): void;
+      createPicking(): void;
+      glueApiCreateOrder(): Chainable<string>;
+      zedMakeOrderReadyForPicking(orderId: string): Chainable<string>;
+      backofficeApiWaitForPicking(orderId: string): Chainable<string>;
     }
   }
 }
@@ -35,6 +42,40 @@ Cypress.Commands.add('login', (user = defaultUser) => {
   warehouseSelectionPage.waitForLoaded();
   warehouseSelectionPage.selectByEq(0);
   pickListsPage.waitForLoaded();
+});
+
+Cypress.Commands.add('createPicking', () => {
+  cy.glueApiCreateOrder()
+    .then((orderId) => cy.zedMakeOrderReadyForPicking(orderId))
+    .then((orderId) => cy.backofficeApiWaitForPicking(orderId));
+});
+
+Cypress.Commands.add('glueApiCreateOrder', () => {
+  const customerUniqueId = Math.random();
+  const guestCartsApi = new GuestCartsApi();
+  const guestCartsItemsApi = new GuestCartsItemsApi();
+  const checkoutApi = new CheckoutApi();
+
+  guestCartsApi.customerUniqueId = customerUniqueId;
+  guestCartsItemsApi.customerUniqueId = customerUniqueId;
+  checkoutApi.customerUniqueId = customerUniqueId;
+
+  return guestCartsItemsApi
+    .postGuestCartsItems('086_30521602', 1)
+    .then(() => guestCartsApi.getGuestCarts())
+    .then((res) => res.body.data[0].id)
+    .then((idCart) => checkoutApi.checkout(idCart))
+    .then((res) => res.body.data.attributes.orderReference);
+});
+
+Cypress.Commands.add('zedMakeOrderReadyForPicking', (orderId: string) => {
+  cy.log(`TODO: implement zedMakeOrderReadyForPicking, order is ${orderId}`);
+  return cy.wrap(orderId);
+});
+
+Cypress.Commands.add('backofficeApiWaitForPicking', (orderId: string) => {
+  cy.log(`TODO: implement backofficeApiWaitForPicking, order is ${orderId}`);
+  return cy.wrap(orderId);
 });
 
 Cypress.Commands.add('clearIndexedDB', () => {

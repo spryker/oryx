@@ -22,6 +22,7 @@ module.exports = defineConfig({
     supportFile: './src/support/index.ts',
   },
   env: {
+    glueApiUrl: 'https://glue.de.faas-suite-prod.cloud.spryker.toys',
     ORYX_FULFILLMENT_BACKEND_URL: process.env.ORYX_FULFILLMENT_BACKEND_URL,
     ORYX_FULFILLMENT_CLIENT_ID: process.env.ORYX_FULFILLMENT_CLIENT_ID,
   },

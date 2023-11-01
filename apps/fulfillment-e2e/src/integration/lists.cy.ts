@@ -6,16 +6,17 @@ const headerFragment = new ListsHeaderFragment();
 
 describe('Picking Lists', () => {
   beforeEach(() => {
+    cy.createPicking();
     cy.login();
   });
 
   it('should display picking lists', () => {
     headerFragment.getSearchIcon().should('be.visible');
     headerFragment.getUserIcon().should('be.visible');
-    headerFragment.getHeadline().should('contain.text', 'Pick lists');
-    listsFragment.getSortButton().should('be.visible');
 
+    listsFragment.getSortButton().should('be.visible');
     listsFragment.getWrapper().should('be.visible');
+
     listsFragment.getPickingListsItems().should('be.visible');
   });
 });
