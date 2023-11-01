@@ -7,9 +7,12 @@ import {
   ExperienceService,
   LayoutBuilder,
   LayoutMixin,
+  LayoutMixinInternals,
+  LayoutPluginRender,
 } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import {
+  computed,
   effect,
   elementEffect,
   featureVersion,
@@ -23,7 +26,7 @@ import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { map, of, switchMap } from 'rxjs';
+import { Observable, concatMap, from, map, of, reduce, switchMap } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
 
 @signalAware()
@@ -70,6 +73,21 @@ export class CompositionComponent extends LayoutMixin(
   });
 
   protected $components = signal(this.componentsController.getComponents());
+  protected $componentsStyles = computed(() => {
+    const components = this.$components();
+
+    if (!components?.length) return of('');
+
+    return this[LayoutMixinInternals].layoutService.getStylesFromOptions({
+      composition: components,
+    });
+  });
+  protected $preLayoutRenderComposition = computed(() =>
+    this.getCompositionLayoutRender('pre')
+  );
+  protected $postLayoutRenderComposition = computed(() =>
+    this.getCompositionLayoutRender('post')
+  );
 
   protected $hasDynamicallyVisibleComponent = signal(
     this.componentsController.hasDynamicallyVisibleComponent()
@@ -87,6 +105,32 @@ export class CompositionComponent extends LayoutMixin(
       this.setAttribute(hydratableAttribute, 'window:load');
     }
   });
+
+  protected getCompositionLayoutRender(
+    place: keyof LayoutPluginRender
+  ): Observable<Record<string, TemplateResult>> {
+    const components = this.$components();
+
+    if (!components?.length) return of({});
+
+    return from(components).pipe(
+      concatMap((component) => {
+        return this[LayoutMixinInternals].layoutController
+          .getRender({
+            place,
+            data: {
+              element: this,
+              options: component.options,
+              experience: component,
+            },
+            attrs: this.attributeFilter,
+            screen: this.$screen(),
+          })
+          .pipe(map((template) => ({ [component.id]: template })));
+      }),
+      reduce((acc, curr) => ({ ...acc, ...(curr ?? {}) }), {})
+    );
+  }
 
   protected override render(): TemplateResult | void {
     return featureVersion >= '1.2'
@@ -109,7 +153,7 @@ export class CompositionComponent extends LayoutMixin(
           ${this.$postLayoutRenderComposition()?.[component.id]}
         `
       ) as TemplateResult,
-      composition: components,
+      inlineStyles: this.$componentsStyles(),
     });
   }
 
