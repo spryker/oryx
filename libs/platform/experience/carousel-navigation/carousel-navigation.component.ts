@@ -164,32 +164,6 @@ export class CarouselNavigationComponent
     });
   }
 
-  protected updateIndicatorStateN(): void {
-    if (!this.indicatorElements?.length || !this.showIndicators) return;
-    const scrollLeft = this.hostElement.scrollLeft;
-    const clientWidth = this.hostElement.clientWidth;
-
-    let activeIndex = -1; // To track the index of the active slide
-    this.indicatorElements.forEach((indicator, index) => {
-      const slideStart = clientWidth * index;
-      const slideEnd = slideStart + clientWidth;
-
-      if (scrollLeft >= slideStart && scrollLeft < slideEnd) {
-        // The slide is active
-        activeIndex = index;
-        indicator.style.setProperty('--opacity', '1');
-      } else {
-        // The slide is not active
-        indicator.style.setProperty('--opacity', '0.5'); // You can adjust the opacity as needed
-      }
-    });
-
-    // Check if the last slide is active, and update its opacity
-    if (activeIndex === this.indicatorElements.length - 1) {
-      this.indicatorElements[activeIndex].style.setProperty('--opacity', '1');
-    }
-  }
-
   /**
    * Updates the state of the carousel arrows based on the current scroll position. The method
    * is called on scroll and on resize, to ensure that the state is always up to date.
@@ -219,20 +193,19 @@ export class CarouselNavigationComponent
     if (!this.items.length) return;
 
     const gap = parseFloat(
-      window.getComputedStyle(this.hostElement).getPropertyValue('column-gap')
+      window.getComputedStyle(this.hostElement).getPropertyValue('column-gap') // || '0'
+    );
+
+    console.log(
+      'slideCount',
+      this.hostElement.scrollWidth,
+      this.hostElement.clientWidth,
+      window.getComputedStyle(this.hostElement).getPropertyValue('column-gap') // || 0
     );
     const slideCount = Math.ceil(
       (this.hostElement.scrollWidth + gap) /
         (this.hostElement.clientWidth + gap)
     );
-
-    // console.log(
-    //   'slideCount',
-    //   this.hostElement.tagName,
-    //   this.hostElement.scrollWidth,
-    //   this.hostElement.clientWidth,
-    //   slideCount
-    // );
 
     if (slideCount === this.slides.length) return;
 
@@ -274,6 +247,7 @@ export class CarouselNavigationComponent
     }
 
     if (this.showIndicators) {
+      console.log(this.slides);
       results.push(html`<div class="indicators">
         ${this.slides.map(
           (n) =>

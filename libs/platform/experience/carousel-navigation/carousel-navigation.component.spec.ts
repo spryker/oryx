@@ -21,6 +21,19 @@ class MockIntersectionObserver implements IntersectionObserver {
 }
 window.IntersectionObserver = MockIntersectionObserver;
 
+// Add the mock implementation for window.getComputedStyle
+(window as any).getComputedStyle = (element: Element) => {
+  return {
+    getPropertyValue: (property: string) => {
+      if (property === 'column-gap') {
+        return '0px'; // Replace with the desired value for testing
+      }
+      // Add more property values as needed for your tests
+      return '';
+    },
+  };
+};
+
 @customElement('mock-layout')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MockLayout extends LitElement {
@@ -113,12 +126,19 @@ describe('CarouselNavigationComponent', () => {
 
   describe('when showIndicators is true', () => {
     beforeEach(async () => {
+      vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(
+        800
+      );
+      vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(
+        2400
+      );
+
       await layout({ showIndicators: true });
     });
 
     it('should render the indicators', () => {
       expect(nav).toContainElement('.indicators');
-      // expect(nav).toContainElement('.indicators input');
+      expect(nav).toContainElement('.indicators input');
     });
   });
 });
