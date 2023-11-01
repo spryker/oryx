@@ -2,7 +2,7 @@ import { Observable, of } from 'rxjs';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
-  LayoutStyleParameters,
+  LayoutPluginPropertiesParams,
   LayoutStyleProperties,
 } from '../../layout.plugin';
 
@@ -14,14 +14,16 @@ export class TypographyStylePlugin implements LayoutPlugin {
   }
 
   getStyleProperties(
-    data: LayoutStyleParameters
+    data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
-    if (!data.typography) return of({});
+    const { styles } = data;
+
+    if (!styles.typography) return of({});
 
     return of({
-      'font-size': `var(--oryx-typography-${data.typography}-size)`,
-      'font-weight': `var(--oryx-typography-${data.typography}-weight)`,
-      'line-height': `var(--oryx-typography-${data.typography}-line)`,
+      'font-size': `var(--oryx-typography-${styles.typography}-size)`,
+      'font-weight': `var(--oryx-typography-${styles.typography}-weight)`,
+      'line-height': `var(--oryx-typography-${styles.typography}-line)`,
     });
   }
 }

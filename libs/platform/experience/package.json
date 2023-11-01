@@ -17,6 +17,10 @@
     "./mocks": {
       "types": "./src/mocks/index.d.ts",
       "default": "./src/mocks/index.js"
+    },
+    "./static": {
+      "types": "./src/static.d.ts",
+      "default": "./src/static.js"
     }
   },
   "dependencies": {

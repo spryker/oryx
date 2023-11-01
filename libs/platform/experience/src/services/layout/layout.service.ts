@@ -1,9 +1,10 @@
+import { LayoutProperties } from '@spryker-oryx/experience/layout';
 import { Observable } from 'rxjs';
 import { Component, StyleRuleSet } from '../../models';
 import { ResponsiveLayoutInfo } from './layout.model';
 import {
-  LayoutPluginParams,
   LayoutPluginRender,
+  LayoutPluginRenderParams,
   LayoutPluginType,
 } from './plugins';
 
@@ -12,7 +13,7 @@ export const LayoutService = 'oryx.LayoutService';
 export interface LayoutIncomingConfig {
   token: string;
   type: LayoutPluginType;
-  data: LayoutPluginParams;
+  data: LayoutPluginRenderParams;
 }
 
 export interface LayoutStyleConfig {
@@ -22,8 +23,13 @@ export interface LayoutStyleConfig {
 }
 
 export interface LayoutService {
-  getStyles(sheets: ResponsiveLayoutInfo): Observable<string>;
-  getRender(config: LayoutIncomingConfig): LayoutPluginRender | undefined;
+  getStyles(
+    sheets: ResponsiveLayoutInfo,
+    options?: LayoutProperties
+  ): Observable<string>;
+  getRender(
+    config: LayoutIncomingConfig
+  ): Observable<LayoutPluginRender | undefined>;
   getStylesFromOptions(data: LayoutStyleConfig): Observable<string>;
 }
 

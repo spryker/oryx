@@ -9,11 +9,14 @@ export class LayoutComponent extends LayoutMixin(
   ContentMixin<LayoutAttributes>(LitElement)
 ) {
   protected override render(): TemplateResult {
-    if (featureVersion < '1.2') {
-      return html`${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}<slot
-        ></slot>`;
+    if (featureVersion >= '1.2') {
+      return this.renderLayout({
+        template: html`<slot></slot>`,
+        element: this,
+      });
     }
 
-    return this.renderLayout({ template: html`<slot></slot>`, element: this });
+    return html`${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}<slot
+      ></slot>`;
   }
 }

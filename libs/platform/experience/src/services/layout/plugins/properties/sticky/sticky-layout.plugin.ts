@@ -4,7 +4,7 @@ import { LayoutStyles } from '../../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
-  LayoutStyleParameters,
+  LayoutPluginPropertiesParams,
   LayoutStyleProperties,
 } from '../../layout.plugin';
 
@@ -20,18 +20,20 @@ export class StickyLayoutPlugin implements LayoutPlugin {
   }
 
   getStyleProperties(
-    data: LayoutStyleParameters
+    data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
+    const { styles } = data;
+
     return of([
       [
         {
-          'max-height': `calc(${data.height ?? '100vh'} - ${
-            data.top ?? '0px'
+          'max-height': `calc(${styles.height ?? '100vh'} - ${
+            styles.top ?? '0px'
           })`,
-          overflow: data.overflow,
+          overflow: styles.overflow,
         },
       ],
-      [{ 'z-index': data.zIndex }, { omitUnit: true }],
+      [{ 'z-index': styles.zIndex }, { omitUnit: true }],
     ]);
   }
 }

@@ -2,6 +2,7 @@ import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { signal } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { LayoutStyles } from '../../../layout.model';
 import {
   LayoutPlugin,
@@ -18,10 +19,23 @@ import {
   CarouselLayoutProperties,
   CarouselScrollBehavior,
 } from './carousel-layout.model';
+  LayoutPluginOptionsParams,
+} from '../../layout.plugin';
 
 export class CarouselLayoutPlugin implements LayoutPlugin {
-  getStyles(): Observable<LayoutStyles> {
-    return ssrAwaiter(import('./carousel-layout.styles').then((m) => m.styles));
+  getStyles(data: LayoutPluginOptionsParams): Observable<LayoutStyles> {
+    const { options } = data;
+
+    return ssrAwaiter(import('./carousel-layout.styles')).pipe(
+      map((m) => {
+        if (!options.vertical) return m.styles;
+
+        return {
+          ...m.styles,
+          styles: `${m.styles.styles}${m.verticalStyles.styles}`,
+        };
+      })
+    );
   }
 
   getConfig(): Observable<LayoutPluginConfig> {

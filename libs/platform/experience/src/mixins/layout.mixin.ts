@@ -6,6 +6,7 @@ import {
 } from '@spryker-oryx/experience/layout';
 import {
   ConnectableSignal,
+  Size,
   Type,
   computed,
   featureVersion,
@@ -16,13 +17,9 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject, of, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
+import { LayoutController } from '../controllers/layout.controller';
 import {
-  LayoutController,
-  LayoutControllerRender,
-} from '../controllers/layout.controller';
-import {
-  Component,
   CompositionLayout,
   CompositionProperties,
   StyleRuleSet,
@@ -39,7 +36,7 @@ import { ContentMixin } from './content.mixin';
 
 interface LayoutMixinRender {
   element?: LitElement;
-  composition?: Component[];
+  inlineStyles?: string;
   template: TemplateResult;
 }
 
@@ -63,6 +60,8 @@ export declare class LayoutMixinInterface {
   lg?: LayoutProperties;
   // @deprecated since 1.2 will be removed, use layoutXl instead
   xl?: LayoutProperties;
+  // @deprecated since 1.2 will be removed from class declaration
+  protected layoutStyles: ConnectableSignal<string | undefined>;
 
   layout?: CompositionLayout | LayoutTypes;
   layoutXs?: LayoutProperties;
@@ -70,12 +69,14 @@ export declare class LayoutMixinInterface {
   layoutMd?: LayoutProperties;
   layoutLg?: LayoutProperties;
   layoutXl?: LayoutProperties;
-  protected layoutStyles: ConnectableSignal<string | undefined>;
   protected renderLayout: (props: LayoutMixinRender) => TemplateResult;
-  protected getLayoutRender(
-    place: keyof LayoutPluginRender,
-    data: LayoutControllerRender
-  ): TemplateResult;
+  protected [LayoutMixinInternals]: {
+    layoutController: LayoutController;
+    layoutService: LayoutService;
+    screenService: ScreenService;
+  };
+  protected attributeFilter: string[];
+  protected $screen: ConnectableSignal<Size>;
 }
 
 interface LayoutContentOptions {
@@ -165,7 +166,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         featureVersion >= '1.2'
           ? this.attributeFilter
           : ['layout', ...layoutKeys],
-        this.$options().rules
+        this.$options().rules,
+        this.$screen()
       )
     );
 
@@ -175,48 +177,47 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         of(undefined)
     );
 
-    protected getLayoutRender(
-      place: keyof LayoutPluginRender,
-      data: LayoutControllerRender
-    ): TemplateResult {
-      return this[LayoutMixinInternals].layoutController.getRender({
-        place,
-        data,
-        attrs: this.attributeFilter,
-        screen: this.$screen(),
-      });
+    protected element$ = new BehaviorSubject<LitElement>(this);
+
+    protected getElementLayoutRender(
+      place: keyof LayoutPluginRender
+    ): Observable<TemplateResult> {
+      return this.element$.pipe(
+        switchMap((element) =>
+          this[LayoutMixinInternals].layoutController.getRender({
+            place,
+            data: {
+              element,
+              options: this.$options() as CompositionProperties,
+            },
+            attrs: this.attributeFilter,
+            screen: this.$screen(),
+          })
+        )
+      );
     }
 
-    protected composition$ = new BehaviorSubject<Component[] | undefined>(
-      undefined
+    protected $preLayoutRenderElement = computed(() =>
+      this.getElementLayoutRender('pre')
     );
-    protected compositionStyles$ = this.composition$.pipe(
-      switchMap((composition) =>
-        composition
-          ? this[LayoutMixinInternals].layoutService.getStylesFromOptions({
-              composition,
-            })
-          : of('')
-      )
+    protected $postLayoutRenderElement = computed(() =>
+      this.getElementLayoutRender('post')
     );
-    protected $compositionStyles = computed(() => this.compositionStyles$);
 
     protected renderLayout(props: LayoutMixinRender): TemplateResult {
-      const { composition, element, template } = props;
-      this.composition$.next(composition);
-      const layoutStyles = this.layoutStyles() ?? '';
-      const inlineStyles = this.$compositionStyles();
+      const { inlineStyles, element, template } = props;
 
-      const styles = inlineStyles + layoutStyles;
-      const data = {
-        element: element ?? this,
-        options: this.$options() as CompositionProperties,
-      };
+      if (element) {
+        this.element$.next(element);
+      }
+
+      const layoutStyles = this.layoutStyles() ?? '';
+      const styles = (inlineStyles ?? '') + layoutStyles;
 
       return html`
-        ${this.getLayoutRender('pre', data)} ${template}
+        ${this.$preLayoutRenderElement()} ${template}
         ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))}
-        ${this.getLayoutRender('post', data)}
+        ${this.$postLayoutRenderElement()}
       `;
     }
 

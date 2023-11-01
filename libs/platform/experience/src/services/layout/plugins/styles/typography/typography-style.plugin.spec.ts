@@ -28,7 +28,9 @@ describe('TypographyStylePlugin', () => {
         'font-weight': `var(--oryx-typography-${data.typography}-weight)`,
         'line-height': `var(--oryx-typography-${data.typography}-line)`,
       };
-      const result = await lastValueFrom(plugin.getStyleProperties(data));
+      const result = await lastValueFrom(
+        plugin.getStyleProperties({ styles: data })
+      );
 
       expect(result).toEqual(styleProperties);
     });

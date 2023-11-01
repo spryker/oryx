@@ -47,7 +47,9 @@ describe('LayoutStylePlugin', () => {
         [{ 'grid-column': `${data.gridColumn} / span ${data.colSpan}` }],
         [{ 'grid-row': `${data.gridRow} / span ${data.rowSpan}` }],
       ];
-      const result = await lastValueFrom(plugin.getStyleProperties(data));
+      const result = await lastValueFrom(
+        plugin.getStyleProperties({ styles: data })
+      );
 
       expect(result).toEqual(styleProperties);
     });

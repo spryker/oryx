@@ -5,7 +5,15 @@ import {
 } from '@spryker-oryx/experience/layout';
 import { Size, featureVersion, sizes } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { Observable, map, withLatestFrom } from 'rxjs';
+import {
+  Observable,
+  concatMap,
+  from,
+  map,
+  of,
+  reduce,
+  withLatestFrom,
+} from 'rxjs';
 import {
   CompositionProperties,
   ContentComponentProperties,
@@ -13,15 +21,18 @@ import {
 } from '../models';
 import {
   LayoutBuilder,
-  LayoutPluginParams,
   LayoutPluginRender,
+  LayoutPluginRenderParams,
   LayoutPluginType,
   LayoutService,
   LayoutStylesOptions,
   ResponsiveLayoutInfo,
 } from '../services';
 
-export type LayoutControllerRender = Omit<LayoutPluginParams, 'options'> & {
+export type LayoutControllerRender = Omit<
+  LayoutPluginRenderParams,
+  'options'
+> & {
   options?: CompositionProperties;
 };
 
@@ -34,7 +45,6 @@ export interface LayoutRenderParams {
 
 export class LayoutController {
   protected layoutService = resolve(LayoutService);
-  // @deprecated since 1.2 will be removed.
   protected layoutBuilder = resolve(LayoutBuilder);
 
   constructor(
@@ -43,21 +53,24 @@ export class LayoutController {
 
   getStyles(
     properties: string[],
-    rules: StyleRuleSet[] = []
+    rules: StyleRuleSet[] = [],
+    screen?: string
   ): Observable<string> {
     return featureVersion >= '1.2'
-      ? this.getStandardStyles(properties, rules)
+      ? this.getStandardStyles(properties, rules, screen)
       : this.getLegacyStyles(properties, rules);
   }
 
   private getStandardStyles(
     properties: string[],
-    rules: StyleRuleSet[]
+    rules: StyleRuleSet[],
+    screen?: string
   ): Observable<string> {
     const props = this.normalizeProperties(properties, rules);
     const infos = this.getLayoutInfos(props, rules);
+    const layoutOptions = this.getLayoutOptions(properties, rules, screen);
 
-    return this.layoutService.getStyles(infos).pipe(
+    return this.layoutService.getStyles(infos, layoutOptions).pipe(
       withLatestFrom(this.getComponentStyles(props, rules, this.host.uid)),
       map(
         ([layoutStyles, componentStyles]) => `${layoutStyles}${componentStyles}`
@@ -104,15 +117,52 @@ export class LayoutController {
     return styles;
   }
 
-  getRender(config: LayoutRenderParams): TemplateResult {
+  getRender(config: LayoutRenderParams): Observable<TemplateResult> {
     const { screen, attrs, place, data } = config;
+    const layoutOptions = this.getLayoutOptions(
+      attrs,
+      data.options?.rules,
+      screen
+    );
+
+    return from(Object.entries(layoutOptions)).pipe(
+      concatMap(([prop, value]) => {
+        if (!value) return of(null);
+
+        const token = prop === 'layout' ? (value as string) : prop;
+        const type =
+          prop === 'layout'
+            ? LayoutPluginType.Layout
+            : LayoutPluginType.Property;
+
+        return this.layoutService.getRender({
+          type,
+          token,
+          data: {
+            ...data,
+            options: layoutOptions,
+          },
+        });
+      }),
+      reduce(
+        (acc, curr) => (!curr?.[place] ? acc : html`${acc}${curr[place]}`),
+        html``
+      )
+    );
+  }
+
+  protected getLayoutOptions(
+    attrs: string[],
+    styles: StyleRuleSet[] = [],
+    screen?: string
+  ): LayoutProperties {
     const host = this.host;
 
     const getLayoutRules = (): LayoutProperties => {
-      const bpRules = data.options?.rules?.find(
+      const bpRules = styles.find(
         (rule) => rule.query?.breakpoint === screen && rule.layout
       )?.layout;
-      const rules = data.options?.rules?.find(
+      const rules = styles.find(
         (rule) => !rule.query?.breakpoint && rule.layout
       )?.layout;
       const properties: LayoutStylesOptions & LayoutProperties = {
@@ -147,7 +197,7 @@ export class LayoutController {
       return acc;
     }, {});
 
-    const layoutOptions = {
+    return {
       ...getLayoutRules(),
       ...hostProperties,
       ...(screen
@@ -158,24 +208,6 @@ export class LayoutController {
           ] as Record<string, unknown>)
         : {}),
     };
-
-    return Object.entries(layoutOptions).reduce((acc, [prop, value]) => {
-      if (!value) return acc;
-
-      const token = prop === 'layout' ? (value as string) : prop;
-      const type =
-        prop === 'layout' ? LayoutPluginType.Layout : LayoutPluginType.Property;
-
-      return html`${acc}
-      ${this.layoutService.getRender({
-        type,
-        token,
-        data: {
-          ...data,
-          options: layoutOptions,
-        },
-      })?.[place]}`;
-    }, html``);
   }
 
   /**
@@ -384,11 +416,11 @@ export class LayoutController {
     rules: StyleRuleSet[],
     layoutProperties: (keyof LayoutProperties)[] = []
   ): boolean {
-    if (featureVersion < '1.2') {
-      return this.legacyHasLayout(rules, layoutProperties);
+    if (featureVersion >= '1.2') {
+      return !!this.host.layout || rules?.some((rule) => rule.layout);
     }
 
-    return !!this.host.layout || rules?.some((rule) => rule.layout);
+    return this.legacyHasLayout(rules, layoutProperties);
   }
 
   /**

@@ -149,13 +149,13 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     const observables: Observable<LayoutStyleProperties>[] = [];
     const layoutData =
       typeof data.layout === 'string' ? { type: data.layout } : data.layout;
-    const pluginData = {
+    const pluginStyles = {
       ...data,
       layout: layoutData,
     };
 
     for (const plugin of this.stylePlugins) {
-      const observable = plugin.getStyleProperties?.(pluginData);
+      const observable = plugin.getStyleProperties?.({ styles: pluginStyles });
 
       if (observable) observables.push(observable);
     }
@@ -171,7 +171,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
         `${type}${token}`,
         null
       );
-      const observable = plugin?.getStyleProperties?.(pluginData);
+      const observable = plugin?.getStyleProperties?.({ styles: pluginStyles });
 
       if (observable) observables.push(observable);
     }
