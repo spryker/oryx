@@ -208,6 +208,24 @@ export class LayoutController {
           ] as Record<string, unknown>)
         : {}),
     };
+
+    return Object.entries(layoutOptions).reduce((acc, [prop, value]) => {
+      if (!value) return acc;
+
+      const token = prop === 'layout' ? (value as string) : prop;
+      const type =
+        prop === 'layout' ? LayoutPluginType.Layout : LayoutPluginType.Property;
+
+      return html`${acc}
+      ${this.layoutService.getRender({
+        type,
+        token,
+        data: {
+          ...data,
+          options: layoutOptions,
+        },
+      })?.[place]}`;
+    }, html``);
   }
 
   /**
