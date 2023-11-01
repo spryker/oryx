@@ -6,8 +6,8 @@ export const styles: LayoutStyles = {
     :host {
       display: flex;
       flex-wrap: wrap;
-      align-items: var(--align, start);
-      justify-content: var(--justify, start);
+      align-items: var(--align, normal);
+      justify-content: var(--justify, flex-start);
     }
   `,
 };
