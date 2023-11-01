@@ -95,7 +95,7 @@ export interface LayoutPlugin {
   getStyleProperties?(
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties>;
-  getDefaults?(): Observable<LayoutStylesProperties>;
+  getDefaultProperties?(): Observable<LayoutStylesProperties>;
   /**
    * Returns object with pre and post render templates.
    * Together with composition component it's possible to specify global post\pre render and per component depends on argument.
