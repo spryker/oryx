@@ -1,1 +1,1 @@
-export * from './services/layout/plugins/layout.static';
+export * from './services/layout/plugins/static';
