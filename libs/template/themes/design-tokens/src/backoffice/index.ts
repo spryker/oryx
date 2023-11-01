@@ -1,23 +1,21 @@
 import { DesignToken } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
 import { color } from '../color.tokens';
-import { tokens } from './other.tokens';
-import {
-  typographyMediumAndLargerTokens,
-  typographySmallTokens,
-  typographyTokens,
-} from './typography.tokens';
-
-import { commonTokensSmall } from '../common-tokens';
-import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
+import { layoutSmTokens, layoutTokens } from '../layout.tokens';
 import { buttonTokens } from './button.token';
+import { tokens } from './other.tokens';
+import { typographySmallTokens, typographyTokens } from './typography.tokens';
 
 export const backofficeTokens: DesignToken[] = [
   ...buttonTokens,
   {
     color,
     ...tokens,
-    ...typographyTokens,
+    typography: Object.assign(
+      {},
+      typographyTokens.typography,
+      typographySmallTokens.typography
+    ),
     ...layoutTokens,
   },
   {
@@ -25,20 +23,5 @@ export const backofficeTokens: DesignToken[] = [
       screen: Size.Sm,
     },
     ...layoutSmTokens,
-    ...typographySmallTokens,
-    ...commonTokensSmall,
-  },
-  {
-    media: {
-      screen: Size.Md,
-    },
-    ...layoutMdTokens,
-    ...typographyMediumAndLargerTokens,
-  },
-  {
-    media: {
-      screen: Size.Lg,
-    },
-    ...typographyMediumAndLargerTokens,
   },
 ];
