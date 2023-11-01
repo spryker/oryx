@@ -22,16 +22,16 @@ export const gridSystem = css`
     display: grid;
     max-width: 100%;
     max-height: 100%;
-    align-items: var(--align, normal);
-    align-content: var(--align, stretch);
-    justify-content: var(--justify, flex-start);
-    justify-items: var(--justify, legacy);
+    align-items: var(--align, start);
+    align-content: var(--align, start);
+    justify-content: var(--justify);
+    justify-items: var(--justify);
   }
 
   *,
   ::slotted(*) {
-    justify-self: var(--justify, auto);
-    align-self: var(--align, auto);
+    justify-self: var(--justify);
+    align-self: var(--align);
   }
 
   *:not(style),

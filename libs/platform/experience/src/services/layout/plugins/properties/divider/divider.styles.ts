@@ -3,6 +3,10 @@ import { LayoutStyles } from '../../../layout.model';
 
 export const styles: LayoutStyles = {
   styles: css`
+    :host {
+      align-items: var(--align, normal);
+    }
+
     *:not(:first-child),
     ::slotted(*:not(:first-child)) {
       position: relative;
