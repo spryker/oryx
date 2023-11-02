@@ -23,7 +23,7 @@ export declare class MerchantMixinInterface
   protected $merchantMinimal: Signal<Merchant | null>;
 }
 
-const MixinInternals = Symbol('MerchantMixinInternals');
+export const MerchantMixinInternals = Symbol('MerchantMixinInternals');
 
 export const MerchantMixin = <
   T extends Type<LitElement & MerchantComponentProperties>
@@ -34,19 +34,19 @@ export const MerchantMixin = <
   class MerchantMixinClass extends superClass {
     @signalProperty({ reflect: true }) merchant?: string;
 
-    protected [MixinInternals] = {
+    protected [MerchantMixinInternals] = {
       merchantService: resolve(MerchantService, null),
       contextService: resolve(ContextService, null),
     };
 
     protected $merchantContext = signal(
-      this[MixinInternals].contextService?.get(this, MerchantContext.ID)
+      this[MerchantMixinInternals].contextService?.get(this, MerchantContext.ID)
     );
 
     protected $merchant = computed(() => {
       const id = this.merchant ?? this.$merchantContext();
       return id
-        ? this[MixinInternals].merchantService?.get({
+        ? this[MerchantMixinInternals].merchantService?.get({
             id,
           })
         : undefined;
@@ -55,7 +55,7 @@ export const MerchantMixin = <
     protected $merchantMinimal = computed(() => {
       const id = this.merchant ?? this.$merchantContext();
       return id
-        ? this[MixinInternals].merchantService?.get({
+        ? this[MerchantMixinInternals].merchantService?.get({
             id,
             scope: 'minimal',
           })
