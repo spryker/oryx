@@ -11,9 +11,7 @@ import {
   ColumnLayoutPluginToken,
   FlexLayoutPluginToken,
   GridLayoutPluginToken,
-  SplitAsideLayoutPluginToken,
   SplitLayoutPluginToken,
-  SplitMainLayoutPluginToken,
   TextLayoutPluginToken,
 } from './types';
 
@@ -82,20 +80,6 @@ export const layoutPluginsProviders: Provider[] = [
     asyncClass: () =>
       import('./types/split/split-layout.plugin').then(
         (m) => m.SplitLayoutPlugin
-      ),
-  },
-  {
-    provide: SplitAsideLayoutPluginToken,
-    asyncClass: () =>
-      import('./types/split-aside/split-aside-layout.plugin').then(
-        (m) => m.SplitAsideLayoutPlugin
-      ),
-  },
-  {
-    provide: SplitMainLayoutPluginToken,
-    asyncClass: () =>
-      import('./types/split-main/split-main-layout.plugin').then(
-        (m) => m.SplitMainLayoutPlugin
       ),
   },
   {
