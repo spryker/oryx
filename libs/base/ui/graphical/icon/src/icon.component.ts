@@ -34,6 +34,8 @@ export class IconComponent extends LitElement implements IconProperties {
   protected override render(): TemplateResult {
     const renderResult = this.renderer();
 
+    this.direction = this.hasDirectionExpression();
+
     if (renderResult) return html`${renderResult}`;
 
     if (this.spriteUrl) {
@@ -45,6 +47,23 @@ export class IconComponent extends LitElement implements IconProperties {
     }
 
     return html`<slot></slot>`;
+  }
+
+  /**
+   * Returns true if the icon expresses direction, e.g. an arrow icon.
+   *
+   * TODO: resolve icon config, and set direction based on the icon type
+   */
+  protected hasDirectionExpression(): boolean {
+    return (
+      !!this.type &&
+      (this.type.includes('arrow') ||
+        this.type.includes('right') ||
+        this.type.includes('left') ||
+        this.type.includes('next') ||
+        this.type.includes('previous') ||
+        ['local_shipping'].includes(this.type))
+    );
   }
 
   /**
