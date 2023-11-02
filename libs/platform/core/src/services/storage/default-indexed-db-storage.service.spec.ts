@@ -65,7 +65,7 @@ describe('DefaultIndexedDBStorageService', () => {
 
     service = getInjector().inject(IndexedDBStorageService);
 
-    vi.stubGlobal('indexedDB', mockIndexedDB)
+    vi.stubGlobal('indexedDB', mockIndexedDB);
 
     mockSuccessfulRequest(mockIndexedDB.open(indexedDbStorageName), mockDB);
     mockSuccessfulRequest(
