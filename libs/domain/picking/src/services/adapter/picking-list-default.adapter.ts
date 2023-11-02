@@ -33,15 +33,11 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
   }
 
   startPicking(pickingList: PickingList): Observable<PickingList> {
-    const body = {
-      type: 'picking-lists',
-      attributes: {
-        action: 'startPicking',
-      },
-    };
-
     return this.pickingHttpService
-      .patch<StartPickingListResponse>(`/picking-lists/${pickingList.id}`, body)
+      .post<StartPickingListResponse>(
+        `/picking-lists/${pickingList.id}/start-picking`,
+        {}
+      )
       .pipe(
         map((response) => {
           if (response.errors) {
@@ -71,7 +67,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
   finishPicking(pickingList: PickingList): Observable<PickingList> {
     const body = {
       data: pickingList.items.map((item) => ({
-        id: item.orderItem.uuid,
+        id: item.id,
         type: 'picking-list-items',
         status: item.status,
         attributes: {
@@ -152,10 +148,10 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       sku: product.sku,
       productName: product.name,
       image:
-        product.concreteProductImageSets[0].imageSets[0].images[0]
+        product.concreteProductImageSets?.[0].imageSets[0].images[0]
           .externalUrlSmall,
       imageLarge:
-        product.concreteProductImageSets[0].imageSets[0].images[0]
+        product.concreteProductImageSets?.[0].imageSets[0].images[0]
           .externalUrlLarge,
     }));
 

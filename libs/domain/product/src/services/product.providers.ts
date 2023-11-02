@@ -1,45 +1,64 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import {
-  availabilityNormalizer,
   AvailabilityNormalizer,
+  CategoryIdNormalizer,
   ConcreteProductsNormalizer,
-  concreteProductsNormalizer,
   DefaultProductAdapter,
   DefaultProductMediaNormalizer,
-  facetCategoryNormalizer,
   FacetCategoryNormalizer,
   FacetNormalizer,
   FacetRangeNormalizer,
+  FacetRatingNormalizer,
+  PriceNormalizer,
+  ProductAdapter,
+  ProductMediaSetNormalizer,
+  availabilityNormalizer,
+  categoryIdNormalizer,
+  concreteProductsNormalizer,
+  facetCategoryNormalizer,
+  facetRatingNormalizer,
   facetsNormalizer,
   facetsRangeNormalizer,
   mediaNormalizer,
   mediaSetNormalizer,
-  categoryIdNormalizer,
-  CategoryIdNormalizer,
-  PriceNormalizer,
   priceNormalizer,
-  ProductAdapter,
   productListNormalizer,
-  ProductMediaSetNormalizer,
   productNormalizer,
 } from './adapter';
 import {
-  productLabelNormalizer,
   ProductLabelsNormalizer,
+  productLabelNormalizer,
 } from './adapter/normalizers/labels/labels.normalizer';
 import {
-  paginationNormalizer,
   PaginationNormalizer,
+  paginationNormalizer,
 } from './adapter/normalizers/pagination';
 import { relationsListNormalizer } from './adapter/normalizers/relations-list';
-import { sortNormalizer, SortNormalizer } from './adapter/normalizers/sort';
+import { SortNormalizer, sortNormalizer } from './adapter/normalizers/sort';
+import {
+  CategoryListNormalizer,
+  CategoryNodeNormalizer,
+  CategoryNormalizer,
+  CategoryTreeNormalizer,
+  DefaultProductCategoryAdapter,
+  DefaultProductCategoryService,
+  ProductCategoryAdapter,
+  ProductCategoryService,
+  categoryEffects,
+  categoryListNormalizerFactory,
+  categoryNodeNormalizer,
+  categoryNormalizerFactory,
+  categoryQuery,
+  categoryTreeNormalizer,
+} from './category';
 import { DefaultProductService } from './default-product.service';
 import { DefaultProductImageService } from './images';
 import { ProductImageService } from './images/product-image.service';
 import {
-  productMediaConfig,
   ProductMediaConfig,
+  productMediaConfig,
 } from './images/product-media.config';
 import {
   DefaultProductListAdapter,
@@ -57,8 +76,10 @@ import {
   ProductRelationsListAdapter,
   ProductRelationsListService,
 } from './related';
+import { ProductDetailsBreadcrumb, ProductListBreadcrumb } from './resolvers';
 import { ProductPageDescriptionMetaResolver } from './resolvers/product-page-description-meta.resolver';
 import { ProductPageTitleMetaResolver } from './resolvers/product-page-title-meta.resolver';
+import { productRoutes } from './routes';
 import { productEffects } from './state/effects';
 import { productQueries } from './state/queries';
 
@@ -102,6 +123,10 @@ export const productProviders: Provider[] = [
   {
     provide: FacetRangeNormalizer,
     useValue: facetsRangeNormalizer,
+  },
+  {
+    provide: FacetRatingNormalizer,
+    useValue: facetRatingNormalizer,
   },
   {
     provide: SortNormalizer,
@@ -148,6 +173,7 @@ export const productProviders: Provider[] = [
   ...relationsListNormalizer,
   ...productQueries,
   ...productEffects,
+  ...categoryEffects,
   ProductContextFallback,
   {
     provide: PageMetaResolver,
@@ -161,4 +187,32 @@ export const productProviders: Provider[] = [
     provide: CategoryIdNormalizer,
     useValue: categoryIdNormalizer,
   },
+  {
+    provide: CategoryNormalizer,
+    useFactory: categoryNormalizerFactory,
+  },
+  {
+    provide: CategoryListNormalizer,
+    useFactory: categoryListNormalizerFactory,
+  },
+  {
+    provide: CategoryNodeNormalizer,
+    useValue: categoryNodeNormalizer,
+  },
+  {
+    provide: CategoryTreeNormalizer,
+    useValue: categoryTreeNormalizer,
+  },
+  {
+    provide: ProductCategoryAdapter,
+    useClass: DefaultProductCategoryAdapter,
+  },
+  {
+    provide: ProductCategoryService,
+    useClass: DefaultProductCategoryService,
+  },
+  ProductListBreadcrumb,
+  ProductDetailsBreadcrumb,
+  categoryQuery,
+  ...provideLitRoutes({ routes: productRoutes }),
 ];

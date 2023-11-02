@@ -1,31 +1,31 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 
 const image = (graphic: string) => ({
   type: 'oryx-content-image',
-  content: { graphic, alt: graphic },
+  content: { data: { graphic, alt: graphic } },
 });
 
 const heading = (text: string, rule = {}) => ({
   type: 'oryx-content-text',
-  content: { text: `<strong>${text}</strong>` },
+  content: { data: { text: `<b>${text}</b>` } },
   options: { rules: [rule] },
 });
 
 const link = (text: string, url = '/', icon?: string) => ({
   type: 'oryx-content-link',
   options: { url, icon },
-  content: { text },
+  content: { data: { text } },
 });
 
 const legalLinks = {
   type: 'oryx-composition',
   name: 'legal links',
-  id: 'bottomFooter',
+  id: 'legal-links',
   components: [
     {
       type: 'oryx-content-text',
-      content: { text: `©️ 2023 Spryker` },
+      content: { data: { text: `©️ 2023 Spryker` } },
     },
     link('Imprint', '/faq/imprint'),
     link('Terms & conditions', '/article/terms-and-conditions'),
@@ -42,20 +42,24 @@ const legalLinks = {
 
 const customerSupport = {
   type: 'oryx-content-text',
+  id: 'customer-support',
   content: {
-    text: `<strong>Customer Support</strong><br/>
-      <a href="/contact">Contact us</a><br/>
-      <a href="/">Help center</a><br/>
-      <a href="/">Payment</a><br/>
-      <a href="/">Shipping information</a><br/>
-      <a href="/">Returns & Exchanges</a><br/>
-      <a href="/">Withdrawal rights</a>`,
+    data: {
+      text: `<b>Customer Support</b><br/>
+        <a href="/contact">Contact us</a><br/>
+        <a href="/">Help center</a><br/>
+        <a href="/">Payment</a><br/>
+        <a href="/">Shipping information</a><br/>
+        <a href="/">Returns & Exchanges</a><br/>
+        <a href="/">Withdrawal rights</a>`,
+    },
   },
 };
 
 const promises = {
   type: 'oryx-composition',
-  options: { rules: [{ layout: 'list', gap: 0 }] },
+  id: 'corporate-promises',
+  options: { rules: [{ layout: 'list', gap: '0' }] },
   components: [
     heading('Our promises'),
     link('Free delivery', '/', IconTypes.Carrier),
@@ -66,8 +70,10 @@ const promises = {
 
 const aboutUs = {
   type: 'oryx-content-text',
+  id: 'corporate-info',
   content: {
-    text: `<strong>About us</strong><br/>
+    data: {
+      text: `<b>About us</b><br/>
         <a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>
@@ -75,11 +81,13 @@ const aboutUs = {
         <a href="/">Press</a><br/>
         <a href="/">Corporate information</a>
         `,
+    },
   },
 };
 
-const selfServiceLinks = {
+const selfService = {
   type: 'oryx-composition',
+  id: 'self-service',
   name: 'Self service',
   options: {
     rules: [
@@ -93,12 +101,13 @@ const selfServiceLinks = {
 
 const paymentLinks = {
   type: 'oryx-composition',
-  id: 'paymentLinks',
+  id: 'payment',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
     heading('Safe Payment methods'),
     {
       type: 'oryx-composition',
+      id: 'payment-links',
       options: {
         rules: [
           { layout: 'column', columnCount: 3 },
@@ -126,12 +135,13 @@ const paymentLinks = {
 
 const shippingLinks = {
   type: 'oryx-composition',
-  id: 'shippingLinks',
+  id: 'shipping',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
     heading('Shipping partners'),
     {
       type: 'oryx-composition',
+      id: 'shipping-links',
       options: {
         rules: [
           { layout: 'column', columnCount: 3 },
@@ -153,12 +163,13 @@ const shippingLinks = {
 
 const mobileAppsLinks = {
   type: 'oryx-composition',
-  id: 'mobileAppsLinks',
+  id: 'apps',
   options: { rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }] },
   components: [
     heading('Spryker apps'),
     {
       type: 'oryx-composition',
+      id: 'app-links',
       options: {
         rules: [{ layout: 'flex', align: 'center' }],
       },
@@ -169,6 +180,7 @@ const mobileAppsLinks = {
 
 const socialLinks = {
   type: 'oryx-composition',
+  id: 'social',
   options: {
     rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }],
   },
@@ -176,6 +188,7 @@ const socialLinks = {
     heading('You can also find us on'),
     {
       type: 'oryx-composition',
+      id: 'social-links',
       options: {
         rules: [{ layout: 'flex', align: 'center', gap: 20 }],
       },
@@ -189,8 +202,9 @@ const socialLinks = {
   ],
 };
 
-const otherLinks = {
+const externalLinks = {
   type: 'oryx-composition',
+  id: 'external-links',
   options: { rules: [{ layout: 'list' }] },
   components: [
     {
@@ -206,25 +220,26 @@ const otherLinks = {
   ],
 };
 
-const topFooter = {
+const siteLinks = {
   type: 'oryx-composition',
-  id: 'topFooter',
+  id: 'site-links',
   options: { rules: [{ layout: 'split', gap: '10px' }] },
-  components: [selfServiceLinks, otherLinks],
+  components: [selfService, externalLinks],
 };
 
-export const FooterTemplate: StaticComponent = {
+export const FooterTemplate: ExperienceComponent = {
   id: 'footer',
   type: 'Page',
   meta: { title: 'Footer', route: '/_footer' },
   components: [
     {
       type: 'oryx-composition',
+      id: 'footerLinks',
       name: 'footer',
       components: [
         {
           type: 'oryx-composition',
-          components: [topFooter, legalLinks],
+          components: [siteLinks, legalLinks],
           options: {
             rules: [
               {

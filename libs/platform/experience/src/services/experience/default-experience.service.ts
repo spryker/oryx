@@ -2,66 +2,69 @@ import { HttpService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   Observable,
-  of,
   ReplaySubject,
+  map,
+  of,
   switchMap,
   take,
   tap,
   throwError,
 } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Component } from '../../models';
+import { ExperienceComponent, ExperienceDataService } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
+import { ExperienceAdapter } from '../experience.adapter';
 import { ComponentQualifier, ExperienceService } from './experience.service';
-import { Component } from './models';
-import { ExperienceStaticData, StaticComponent } from './static-data';
 
 type DataStore<T = unknown> = Record<string, ReplaySubject<T>>;
 
 export class DefaultExperienceService implements ExperienceService {
-  protected autoComponentId = 0;
   protected dataRoutes: DataStore<string> = {};
   protected dataComponent: DataStore<Component> = {};
   protected dataContent: DataStore = {};
   protected dataOptions: DataStore = {};
+  protected experienceData: ExperienceComponent[] = [];
 
   constructor(
     protected contentBackendUrl = inject(ContentBackendUrl),
     protected http = inject(HttpService),
-    protected staticData = inject(ExperienceStaticData, []).flat()
+    protected experienceDataService = inject(ExperienceDataService),
+    protected experienceAdapter = inject(ExperienceAdapter, null)
   ) {
-    this.initStaticData();
+    this.initExperienceData();
   }
 
-  protected initStaticData(): void {
-    this.staticData = this.processStaticData();
-  }
-
-  protected processStaticData(shouldStore = true): Component[] {
-    return this.staticData.map((component) => {
-      this.processComponent(component, shouldStore);
-
-      if (shouldStore) {
-        this.storeData('dataRoutes', component.meta?.route, component.id);
-      }
-      return component as Component;
+  protected initExperienceData(): void {
+    this.experienceData = this.experienceDataService.getData((c) => {
+      this.processData(c);
     });
   }
 
+  /**
+   * @deprecated Since version 1.1. Use provided `ExperienceDataService.registerComponent` method.
+   */
   protected processComponent(
-    _component: Component | StaticComponent,
-    shouldStore = true
+    _component: Component | ExperienceComponent
   ): void {
     const components = [_component];
 
     for (const component of components) {
-      component.id ??= this.getAutoId();
-
-      if (shouldStore) {
-        this.storeData('dataComponent', component.id, component);
+      if (!component) {
+        continue;
       }
 
+      this.processData(component);
       components.push(...(component.components ?? []));
     }
+  }
+
+  protected processData(component: Component | ExperienceComponent): void {
+    if (component.meta?.route) {
+      this.storeData('dataRoutes', component.meta.route, component.id);
+    }
+
+    this.storeData('dataComponent', component.id, component);
   }
 
   protected storeData(
@@ -110,7 +113,9 @@ export class DefaultExperienceService implements ExperienceService {
       .pipe(
         tap((component) => {
           this.dataComponent[uid].next(component);
-          this.processComponent(component);
+          this.experienceDataService.registerComponent(component, (c) =>
+            this.processData(c)
+          );
         }),
         catchError(() => {
           this.dataComponent[uid].next({ id: uid, type: '' });
@@ -128,6 +133,10 @@ export class DefaultExperienceService implements ExperienceService {
 
     return this.dataRoutes[route].pipe(
       switchMap((uid: string) => {
+        if (!uid) {
+          return of({} as Component);
+        }
+
         if (!this.dataComponent[uid]) {
           this.dataComponent[uid] = new ReplaySubject(1);
         }
@@ -137,20 +146,29 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected reloadComponentByRoute(route: string): void {
+    /**
+     * @deprecated Since version 1.1. Use provided `ExperienceAdapter.get` method.
+     */
     const componentsUrl = `${
       this.contentBackendUrl
     }/components/?meta.route=${encodeURIComponent(route)}`;
-    this.http
-      .get<Component[]>(componentsUrl)
+
+    const adapter = this.experienceAdapter
+      ? this.experienceAdapter.get({ route })
+      : this.http
+          .get<Component[]>(componentsUrl)
+          .pipe(map((result) => result[0]));
+
+    adapter
       .pipe(
-        tap((components) => {
-          // TODO: why only first one
-          if (!components?.length) {
-            return;
+        tap((page) => {
+          if (page) {
+            this.experienceDataService.registerComponent(page, (c) =>
+              this.processData(c)
+            );
+          } else {
+            this.storeData('dataRoutes', route, null);
           }
-          const component = components[0];
-          this.processComponent(component);
-          this.storeData('dataRoutes', route, component.id);
         })
       )
       .subscribe();
@@ -193,9 +211,5 @@ export class DefaultExperienceService implements ExperienceService {
         const options = component?.options ?? {};
         this.dataOptions[uid].next(options);
       });
-  }
-
-  protected getAutoId(): string {
-    return `static${this.autoComponentId++}`;
   }
 }

@@ -2,13 +2,13 @@ import { resolve } from '@spryker-oryx/di';
 import {
   Component,
   ComponentsRegistryService,
-  CompositionLayout,
   CompositionProperties,
   ContentMixin,
   ExperienceService,
   LayoutBuilder,
   LayoutMixin,
 } from '@spryker-oryx/experience';
+import { RouterService } from '@spryker-oryx/router';
 import {
   effect,
   elementEffect,
@@ -22,6 +22,7 @@ import { LitElement, TemplateResult, html, isServer } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
+import { map, of, switchMap } from 'rxjs';
 import { CompositionComponentsController } from './composition-components.controller';
 
 @signalAware()
@@ -33,6 +34,7 @@ export class CompositionComponent extends LayoutMixin(
   @signalProperty({ reflect: true }) route?: string;
 
   protected experienceService = resolve(ExperienceService);
+  protected routerService = resolve(RouterService);
   protected registryService = resolve(ComponentsRegistryService);
   protected layoutBuilder = resolve(LayoutBuilder);
 
@@ -44,11 +46,24 @@ export class CompositionComponent extends LayoutMixin(
       return;
     }
 
-    const component =
-      signal(this.experienceService.getComponent({ route: this.route }))() ??
-      ({} as Component);
+    const component = signal(
+      this.experienceService
+        .getComponent({ route: this.route })
+        .pipe(
+          switchMap((component) =>
+            component?.id
+              ? of(component)
+              : this.routerService.redirectNotFound().pipe(map(() => null))
+          )
+        )
+    )();
 
-    if (this.uid !== component.id) {
+    if (component === null || !component?.id) {
+      this.uid = undefined;
+      return;
+    }
+
+    if (this.uid !== component?.id) {
       this.uid = component.id;
     }
   });
@@ -84,33 +99,19 @@ export class CompositionComponent extends LayoutMixin(
     return html`${repeat(
       components,
       (component) => component.id,
-      (component, index) => this.renderComponent(component, index)
+      (component) => this.renderComponent(component)
     )}
     ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))} `;
   }
 
   protected renderComponent(
-    component: Component<CompositionProperties>,
-    index: number
+    component: Component<CompositionProperties>
   ): TemplateResult {
     const template = this.registryService.resolveTemplate({
       type: component.type,
       uid: component.id,
       markers: this.layoutBuilder.getLayoutMarkers(component.options),
     });
-    if (this.$options()?.rules?.[0]?.layout === CompositionLayout.Tabular) {
-      return html`
-        <input
-          type="radio"
-          name="tab"
-          id=${component.id}
-          ?checked=${index === 0}
-        />
-        <label for=${component.id}>${component.name ?? component.type}</label>
-        ${template}
-      `;
-    }
-
     return html`${template}`;
   }
 }

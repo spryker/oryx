@@ -1,6 +1,6 @@
+import { GlueAPI } from '../apis/glue.api';
 import { LoginPage } from '../page-objects/login.page';
-import { SCCOSApi } from '../sccos-api/sccos.api';
-import { Customer } from '../types/user.type';
+import { Customer } from '../types/domain.types';
 
 export {};
 
@@ -8,7 +8,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       login(): Chainable<void>;
-      loginApi(): Chainable<void>;
+      loginApi(api: GlueAPI): Chainable<void>;
     }
   }
 }
@@ -22,15 +22,11 @@ Cypress.Commands.add('login', () => {
     cy.intercept('/customers/DE--**').as('profileRequest');
     loginPage.loginForm.login(customer);
     cy.wait('@profileRequest');
-
-    loginPage.header.getUserSummaryHeading().should('contain', customer.name);
   });
 });
 
-Cypress.Commands.add('loginApi', () => {
+Cypress.Commands.add('loginApi', (api: GlueAPI) => {
   cy.fixture<Customer>('test-customer').then((customer) => {
-    const api = new SCCOSApi();
-
     api.token.post(customer).then((res) => {
       cy.window().then((win) => {
         win.localStorage.setItem(

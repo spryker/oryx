@@ -1,12 +1,13 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
-import { combineLatest, map, Observable } from 'rxjs';
-import { ApiProductListModel, ProductList } from '../../../../models';
+import { Observable, combineLatest, map, of } from 'rxjs';
+import { ApiProductListModel, Facet, ProductList } from '../../../../models';
 import { ConcreteProductsNormalizer } from '../concrete-products';
 import { FacetNormalizer } from '../facet';
 import { FacetCategoryNormalizer } from '../facet-category';
 import { FacetRangeNormalizer } from '../facet-range';
+import { FacetRatingNormalizer } from '../facet-rating';
 import { DeserializedProductListIncludes } from '../model';
 import { PaginationNormalizer } from '../pagination';
 import { SortNormalizer } from '../sort';
@@ -54,8 +55,15 @@ export function productFacetNormalizer(
   data: [DeserializedProductList],
   transformer: TransformerService
 ): Observable<Partial<ProductList>> {
-  const categoryFacet = data[0].valueFacets!.splice(
-    data[0].valueFacets!.findIndex((v) => v.name === 'category'),
+  const { rangeFacets, categoryTreeFilter, valueFacets, pagination } = data[0];
+
+  const categoryFacet = valueFacets!.splice(
+    valueFacets!.findIndex((v) => v.name === 'category'),
+    1
+  );
+
+  const ratingFacet = data[0].rangeFacets!.splice(
+    data[0].rangeFacets!.findIndex((v) => v.name === 'rating'),
     1
   );
 
@@ -63,22 +71,25 @@ export function productFacetNormalizer(
     transformer.transform(
       {
         categoryFacet: categoryFacet[0],
-        categoryTreeFilter: data[0].categoryTreeFilter,
+        categoryTreeFilter,
       },
       FacetCategoryNormalizer
     ),
+    ratingFacet[0]?.max
+      ? transformer.transform(ratingFacet[0], FacetRatingNormalizer)
+      : of(null),
     transformer.transform(
       {
-        facetList: data[0].valueFacets,
-        numFound: data[0].pagination?.numFound,
+        facetList: valueFacets,
+        numFound: pagination?.numFound,
       },
       FacetNormalizer
     ),
-    transformer.transform(data[0].rangeFacets, FacetRangeNormalizer),
+    transformer.transform(rangeFacets, FacetRangeNormalizer),
   ]).pipe(
-    map(([categoryFacet, facetValues, rangeValues]) => {
+    map((facets) => {
       return {
-        facets: [categoryFacet, ...facetValues, ...rangeValues],
+        facets: facets.filter((facet) => facet).flat() as Facet[],
       };
     })
   );

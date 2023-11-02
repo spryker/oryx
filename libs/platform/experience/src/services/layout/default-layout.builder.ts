@@ -1,11 +1,12 @@
 import { inject } from '@spryker-oryx/di';
+import { Breakpoint } from '@spryker-oryx/utilities';
 import {
+  Component,
   CompositionProperties,
   LayoutStylesProperties,
   StyleProperties,
   StyleRuleSet,
 } from '../../models';
-import { Component } from '../experience';
 import { LayoutBuilder } from './layout.builder';
 import { ScreenService } from './screen.service';
 
@@ -61,7 +62,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
     if (rule.query?.breakpoint) {
       const mediaQuery = this.screenService.getScreenMedia(
-        rule.query.breakpoint
+        rule.query.breakpoint as Breakpoint
       );
       return `${mediaQuery}{\n${selectors.join(', ')} {\n${styles}\n}}`;
     } else {

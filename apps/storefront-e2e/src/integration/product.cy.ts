@@ -1,41 +1,42 @@
 import { ProductDetailsPage } from '../support/page-objects/product-details.page';
-import { SCCOSApi } from '../support/sccos-api/sccos.api';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
-const productDetailPage = new ProductDetailsPage();
-
-let scosApi: SCCOSApi;
-
-describe('Product Detail Page', () => {
-  beforeEach(() => {
-    scosApi = new SCCOSApi();
-    scosApi.guestCarts.get();
-  });
-
-  describe('when the product page visited', () => {
-    const productData = ProductStorage.getProductByEq(2);
+describe('Product details page suite', () => {
+  it('should show product details', { tags: 'smoke' }, () => {
+    const productData = ProductStorage.getByEq(2);
     const pdp = new ProductDetailsPage(productData);
 
-    beforeEach(() => {
-      pdp.visit();
-    });
+    pdp.visit();
+    pdp.checkDefaultProduct();
 
-    it('should show correct content', { tags: 'smoke' }, () => {
-      productDetailPage.getAvailability().should('be.visible');
-      pdp.getRelations().getProducts().should('not.exist');
-    });
+    pdp.getRelations().getProducts().should('not.exist');
   });
 
-  describe('when product has reference products', () => {
-    const productData = ProductStorage.getProductByEq(3);
+  it('should show product with relations', () => {
+    const productData = ProductStorage.getByEq(3);
     const pdp = new ProductDetailsPage(productData);
 
-    beforeEach(() => {
-      pdp.visit();
-    });
+    cy.intercept('**/concrete-alternative-products?**').as(
+      'product-relations-request'
+    );
+    pdp.visit();
+    cy.wait('@product-relations-request');
 
-    it('should show product references', () => {
-      pdp.getRelations().getProducts().should('be.visible');
-    });
+    pdp.checkDefaultProduct();
+    pdp.getRelations().getProducts().should('be.visible');
+  });
+
+  it('should update prices when price mode changes', { tags: 'b2b' }, () => {
+    const productData = ProductStorage.getByEq(2);
+    const pdp = new ProductDetailsPage(productData);
+
+    pdp.visit();
+    pdp.checkDefaultProduct();
+
+    pdp.header.changePriceMode('NET_MODE');
+    pdp.getPrice().should('contain.text', productData.netModePrice);
+
+    pdp.header.changePriceMode('GROSS_MODE');
+    pdp.getPrice().should('contain.text', productData.originalPrice);
   });
 });

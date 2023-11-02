@@ -1,37 +1,65 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { Size, featureVersion } from '@spryker-oryx/utilities';
 
-export const HeaderTemplate: StaticComponent = {
-  id: 'header',
-  type: 'Page',
-  meta: { title: 'Header', route: '/_header' },
-  components: [
+const siteLinks = (): ExperienceComponent[] => {
+  const components: ExperienceComponent[] = [
+    {
+      type: 'oryx-content-link',
+      content: { data: { text: 'FREE DELIVERY & RETURNS' } },
+      options: {
+        url: '/',
+        icon: IconTypes.Check,
+        rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
+      },
+    },
+    {
+      type: 'oryx-content-link',
+      content: { data: { text: '100 DAY RETURN POLICY' } },
+      options: {
+        url: '/',
+        icon: IconTypes.Check,
+        rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
+      },
+    },
+    {
+      type: 'oryx-content-link',
+      content: { data: { text: 'CLICK & COLLECT' } },
+      options: {
+        url: '/',
+        icon: IconTypes.Check,
+        rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
+      },
+    },
+  ];
+  return components;
+};
+
+const siteContextComponents = (options?: {
+  priceModeSelector?: boolean;
+}): ExperienceComponent[] => {
+  const components: ExperienceComponent[] = [];
+
+  if (options?.priceModeSelector && featureVersion >= '1.1') {
+    components.push({ type: 'oryx-price-mode-selector' });
+  }
+
+  components.push({ type: 'oryx-site-currency-selector' });
+  components.push({ type: 'oryx-site-locale-selector' });
+
+  components[0].options = { rules: [{ style: 'margin-inline-start: auto' }] };
+
+  return components;
+};
+
+export const topHeader = (options?: {
+  priceModeSelector?: boolean;
+}): ExperienceComponent[] => {
+  return [
     {
       type: 'oryx-composition',
-      components: [
-        {
-          type: 'oryx-content-link',
-          content: { text: 'FREE DELIVERY & RETURNS' },
-          options: { url: '/', icon: IconTypes.Check },
-        },
-        {
-          type: 'oryx-content-link',
-          content: { text: '100 DAY RETURN POLICY' },
-          options: { url: '/', icon: IconTypes.Check },
-        },
-        {
-          type: 'oryx-content-link',
-          content: { text: 'CLICK & COLLECT' },
-          options: { url: '/', icon: IconTypes.Check },
-        },
-        {
-          type: 'oryx-site-currency-selector',
-          options: {
-            rules: [{ style: 'margin-inline-start: auto' }],
-          },
-        },
-        { type: 'oryx-site-locale-selector' },
-      ],
+      id: 'header-links',
+      components: [...siteLinks(), ...siteContextComponents(options)],
       options: {
         rules: [
           {
@@ -46,16 +74,25 @@ export const HeaderTemplate: StaticComponent = {
         ],
       },
     },
+  ];
+};
+
+export const mainHeader = (): ExperienceComponent[] => {
+  return [
     {
       type: 'oryx-composition',
+      id: 'header-body',
       name: 'Composition',
       components: [
         {
           type: 'oryx-content-image',
+          id: 'site-logo',
           content: {
-            graphic: 'logo',
-            link: '/',
-            label: 'Composable Storefront based on Oryx',
+            data: {
+              graphic: 'logo',
+              link: '/',
+              label: 'Composable Storefront based on Oryx',
+            },
           },
           options: {
             rules: [
@@ -65,7 +102,8 @@ export const HeaderTemplate: StaticComponent = {
                 justify: 'start',
                 style: 'color: var(--oryx-color-primary-12)',
               },
-              { query: { breakpoint: 'md' }, colSpan: 2 },
+              { query: { breakpoint: Size.Md }, colSpan: 2 },
+              { query: { breakpoint: Size.Sm }, colSpan: 2 },
             ],
             link: '/',
           },
@@ -75,13 +113,25 @@ export const HeaderTemplate: StaticComponent = {
           options: {
             rules: [
               { colSpan: 6, width: 'auto' },
-              { query: { breakpoint: 'md' }, colSpan: 4 },
+              { query: { breakpoint: Size.Md }, colSpan: 4 },
+              { query: { breakpoint: Size.Sm }, hide: true },
             ],
           },
         },
         {
           type: 'oryx-composition',
+          id: 'header-actions',
           components: [
+            {
+              type: 'oryx-search-box',
+              options: {
+                float: true,
+                rules: [
+                  { query: { breakpoint: Size.Md }, hide: true },
+                  { query: { breakpoint: Size.Lg }, hide: true },
+                ],
+              },
+            },
             {
               type: 'oryx-site-navigation-item',
               options: {
@@ -115,9 +165,10 @@ export const HeaderTemplate: StaticComponent = {
             rules: [
               { colSpan: 3, layout: 'flex', justify: 'end' },
               {
-                query: { breakpoint: 'md' },
+                query: { breakpoint: Size.Md },
                 colSpan: 2,
               },
+              { query: { breakpoint: Size.Sm }, colSpan: 2 },
             ],
           },
         },
@@ -128,7 +179,7 @@ export const HeaderTemplate: StaticComponent = {
             layout: 'column',
             background: 'var(--oryx-color-primary-9)',
             align: 'center',
-            zIndex: '1',
+            zIndex: 1,
             padding: '5px 0',
             gap: '5px',
             sticky: true,
@@ -137,5 +188,12 @@ export const HeaderTemplate: StaticComponent = {
         ],
       },
     },
-  ],
+  ];
+};
+
+export const HeaderTemplate: ExperienceComponent = {
+  id: 'header',
+  type: 'Page',
+  meta: { title: 'Header', route: '/_header' },
+  components: [...topHeader(), ...mainHeader()],
 };

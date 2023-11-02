@@ -1,22 +1,24 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListMixin } from '@spryker-oryx/picking';
+import { PickingInProgressModalComponent } from '@spryker-oryx/picking/picking-in-progress';
 import { RouterService } from '@spryker-oryx/router';
+import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { createRef, ref } from 'lit/directives/ref.js';
+import { query } from 'lit/decorators.js';
 import { catchError, of, tap } from 'rxjs';
-import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
 import { customerNoteComponentStyles } from './customer-note.styles';
 
-export class CustomerNoteComponent extends I18nMixin(
+export class PickingCustomerNoteComponent extends I18nMixin(
   PickingListMixin(LitElement)
 ) {
   static styles = customerNoteComponentStyles;
 
   protected routerService = resolve(RouterService);
 
-  protected pickingInProgressModal =
-    createRef<PickingInProgressModalComponent>();
+  @query('oryx-picking-in-progress-modal')
+  protected pickingInProgressModal!: PickingInProgressModalComponent;
 
   protected onProceed(): void {
     //TODO: provide more complex validation
@@ -34,8 +36,7 @@ export class CustomerNoteComponent extends I18nMixin(
         ),
         catchError((e) => {
           if (e.status === 409) {
-            const modal = this.pickingInProgressModal.value;
-            modal && (modal.open = true);
+            this.pickingInProgressModal.open = true;
           }
           return of(undefined);
         })
@@ -46,7 +47,14 @@ export class CustomerNoteComponent extends I18nMixin(
   protected override render(): TemplateResult {
     return html`
       <section>
-        <oryx-navigate-back></oryx-navigate-back>
+        <oryx-button
+          .type=${ButtonType.Text}
+          .size=${ButtonSize.Md}
+          .color=${ButtonColor.Neutral}
+          .icon=${IconTypes.ArrowBack}
+          .text=${this.i18n('picking.button.back')}
+          href="/"
+        ></oryx-button>
         <oryx-image resource="user-note"></oryx-image>
         <oryx-heading as="h2" as-md="h4">
           <h4>${this.i18n('picking.customer-note')}</h4>
@@ -63,7 +71,6 @@ export class CustomerNoteComponent extends I18nMixin(
 
       <oryx-picking-in-progress-modal
         @oryx.back=${this.closePickingInProgressModal}
-        ${ref(this.pickingInProgressModal)}
       ></oryx-picking-in-progress-modal>
     `;
   }

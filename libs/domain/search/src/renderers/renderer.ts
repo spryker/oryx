@@ -7,6 +7,8 @@ export const FacetValueRenderer = 'oryx.FacetValueRenderer*';
 export enum FacetParams {
   Default = 'default',
   Color = 'color',
+  Price = 'price',
+  Rating = 'rating',
 }
 
 export interface FacetMappingOptions {

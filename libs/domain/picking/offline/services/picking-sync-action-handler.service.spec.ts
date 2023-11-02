@@ -12,7 +12,15 @@ import {
 } from './picking-sync-action-handler.service';
 
 class MockIndexedDbService implements Partial<IndexedDbService> {
-  getStore = vi.fn().mockImplementation(() => of(mockTable));
+  getStore = vi
+    .fn()
+    .mockImplementation((entityType) =>
+      of(
+        entityType === PickingListEntity
+          ? mockPickingListsTable
+          : mockProductsTable
+      )
+    );
 }
 
 class MockPickingListOnlineAdapter
@@ -37,7 +45,8 @@ class MockTable implements Partial<Table> {
   });
 }
 
-const mockTable = new MockTable();
+const mockPickingListsTable = new MockTable();
+const mockProductsTable = new MockTable();
 
 const mockSync = {
   action: PickingSyncAction.FinishPicking,
@@ -134,13 +143,16 @@ describe('PickingSyncActionHandlerService', () => {
       expect(callback).toHaveBeenCalled();
       expect(adapter.finishPicking).toHaveBeenCalledWith(mockSync.payload);
       expect(indexeddb.getStore).toHaveBeenCalledWith(PickingListEntity);
-      expect(mockTable.update).toHaveBeenCalledWith(mockSync.payload.id, []);
+      expect(mockPickingListsTable.update).toHaveBeenCalledWith(
+        mockSync.payload.id,
+        []
+      );
     });
 
     describe('and store is not updated', () => {
       const callback = vi.fn();
       beforeEach(() => {
-        mockTable.update.mockReturnValue(0);
+        mockPickingListsTable.update.mockReturnValue(0);
 
         service.handleSync(mockSync).subscribe({ error: callback });
       });
@@ -156,7 +168,38 @@ describe('PickingSyncActionHandlerService', () => {
   });
 
   describe('when Push action is handled', () => {
-    const mockPickingLists = [{ id: 'id1' }, { id: 'id2' }];
+    const mockPickingLists = [
+      {
+        id: 'id1',
+        items: [
+          {
+            product: {
+              id: 'product-id-1',
+            },
+          },
+          {
+            product: {
+              id: 'product-id-2',
+            },
+          },
+        ],
+      },
+      {
+        id: 'id2',
+        items: [
+          {
+            product: {
+              id: 'product-id-2',
+            },
+          },
+          {
+            product: {
+              id: 'product-id-3',
+            },
+          },
+        ],
+      },
+    ];
 
     const pickingListsIdsToRemove = ['id3'];
     const mockPickingListsIdsToCreate = mockPickingLists.map((pl) => pl.id);
@@ -171,15 +214,20 @@ describe('PickingSyncActionHandlerService', () => {
       },
     };
 
+    const syncCallback = vi.fn();
+
     beforeEach(() => {
       adapter.get.mockReturnValue(of(mockPickingLists));
-      mockTable.bulkPut.mockReturnValue(mockPickingListsIdsToCreate);
-      mockTable.where = vi.fn().mockReturnValue({
+      mockPickingListsTable.bulkPut.mockReturnValue(
+        mockPickingListsIdsToCreate
+      );
+      mockPickingListsTable.where = vi.fn().mockReturnValue({
         anyOf: vi.fn().mockReturnValue({
           count: vi.fn().mockResolvedValue(pickingListsIdsToRemove.length),
         }),
       });
       service.handleSync(mockSyncPush).subscribe(callback);
+      service.isSyncing().subscribe(syncCallback);
     });
 
     it('should call online adapter and update indexedDB', () => {
@@ -188,12 +236,24 @@ describe('PickingSyncActionHandlerService', () => {
         ids: mockSyncPush.payload.ids,
       });
       expect(indexeddb.getStore).toHaveBeenCalledWith(PickingListEntity);
-      expect(mockTable.bulkDelete).toHaveBeenCalledWith(
+      expect(mockPickingListsTable.bulkDelete).toHaveBeenCalledWith(
         pickingListsIdsToRemove
       );
-      expect(mockTable.bulkPut).toHaveBeenCalledWith(mockPickingLists, {
-        allKeys: true,
-      });
+      expect(mockPickingListsTable.bulkPut).toHaveBeenCalledWith(
+        mockPickingLists,
+        {
+          allKeys: true,
+        }
+      );
+      expect(mockProductsTable.bulkPut).toHaveBeenLastCalledWith([
+        { id: 'product-id-1' },
+        { id: 'product-id-2' },
+        { id: 'product-id-3' },
+      ]);
+    });
+    it('should update syncing status', () => {
+      expect(syncCallback).toHaveBeenNthCalledWith(1, true);
+      expect(syncCallback).toHaveBeenLastCalledWith(false);
     });
   });
 });

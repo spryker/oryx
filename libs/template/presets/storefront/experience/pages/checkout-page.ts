@@ -1,7 +1,48 @@
-import { DiscountRowsAppearance } from '@spryker-oryx/cart/totals';
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
 
-export const checkoutPage: StaticComponent = {
+const checkoutInformation = (): ExperienceComponent => {
+  const components: ExperienceComponent[] = [];
+  if (featureVersion >= '1.2')
+    components.push({
+      type: 'oryx-checkout-heading',
+      options: { rules: [{ padding: '30px 0 0 0' }] },
+    });
+  components.push({
+    type: 'oryx-cart-entries',
+    options: { readonly: true },
+  });
+
+  const gap = featureVersion >= '1.2' ? '0' : '20px';
+
+  return {
+    type: 'oryx-composition',
+    id: 'checkout-information',
+    components: [
+      {
+        type: 'oryx-checkout-orchestrator',
+        components: [
+          { type: 'oryx-checkout-account' },
+          { type: 'oryx-checkout-shipping-address' },
+          { type: 'oryx-checkout-billing-address' },
+          { type: 'oryx-checkout-shipping-method' },
+          { type: 'oryx-checkout-payment-method' },
+        ],
+        options: { rules: [{ layout: 'list', gap: '30px' }] },
+      },
+      ...components,
+    ],
+    options: {
+      rules: [
+        { hideByRule: 'CART.EMPTY' },
+        { gap, layout: 'flex', vertical: true, align: 'stretch' },
+      ],
+    },
+  };
+};
+
+export const checkoutPage: ExperienceComponent = {
+  id: 'checkout-page',
   type: 'Page',
   meta: {
     title: 'Checkout Page',
@@ -18,10 +59,12 @@ export const checkoutPage: StaticComponent = {
     {
       type: 'oryx-content-text',
       content: {
-        text: `
+        data: {
+          text: `
           <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
           <p>Your shopping cart is empty</p><oryx-button>
           <a href="/search">Shop now</a></oryx-button>`,
+        },
       },
       options: {
         rules: [
@@ -38,34 +81,10 @@ export const checkoutPage: StaticComponent = {
         ],
       },
     },
+    checkoutInformation(),
     {
       type: 'oryx-composition',
-      components: [
-        {
-          type: 'oryx-checkout-orchestrator',
-          components: [
-            { type: 'oryx-checkout-account' },
-            { type: 'oryx-checkout-shipping-address' },
-            { type: 'oryx-checkout-billing-address' },
-            { type: 'oryx-checkout-shipping-method' },
-            { type: 'oryx-checkout-payment-method' },
-          ],
-          options: { rules: [{ layout: 'list', gap: '30px' }] },
-        },
-        {
-          type: 'oryx-cart-entries',
-          options: { readonly: true },
-        },
-      ],
-      options: {
-        rules: [
-          { hideByRule: 'CART.EMPTY' },
-          { gap: '20px', layout: 'flex', vertical: true, align: 'stretch' },
-        ],
-      },
-    },
-    {
-      type: 'oryx-composition',
+      id: 'checkout-totals',
       options: {
         rules: [{ hideByRule: 'CART.EMPTY' }, { sticky: true, top: '108px' }],
       },
@@ -77,7 +96,7 @@ export const checkoutPage: StaticComponent = {
             {
               type: 'oryx-cart-totals-discount',
               options: {
-                discountRowsAppearance: DiscountRowsAppearance.Collapsed,
+                discountRowsAppearance: 'collapsed',
               },
             },
             { type: 'oryx-cart-totals-tax' },
@@ -88,7 +107,9 @@ export const checkoutPage: StaticComponent = {
         {
           type: 'oryx-content-text',
           content: {
-            text: '<p>The <a href="/article/terms-and-conditions" target="_blank" data-color="primary">Terms and conditions</a> apply.<br/>Please also see our <a href="/article/privacy" target="_blank"  data-color="primary">Privacy notice</a>.</p>',
+            data: {
+              text: '<p>The <a href="/article/terms-and-conditions" target="_blank" data-color="primary">Terms and conditions</a> apply.<br/>Please also see our <a href="/article/privacy" target="_blank"  data-color="primary">Privacy notice</a>.</p>',
+            },
           },
         },
         { type: 'oryx-checkout-place-order' },

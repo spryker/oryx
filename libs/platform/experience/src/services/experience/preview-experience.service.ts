@@ -8,23 +8,23 @@ import { isDefined } from '@spryker-oryx/utilities';
 import {
   BehaviorSubject,
   EMPTY,
+  Observable,
+  Subject,
   filter,
   fromEvent,
   map,
   merge,
-  Observable,
   shareReplay,
-  Subject,
   takeUntil,
   tap,
 } from 'rxjs';
+import { Component } from '../../models';
 import {
   ExperienceDataClientService,
   MessageType,
   postMessage,
 } from '../data-client';
 import { DefaultExperienceService } from './default-experience.service';
-import { Component } from './models';
 
 export const REQUEST_MESSAGE_TYPE = 'sf-preview-request';
 export const POST_MESSAGE_TYPE = 'experience-builder-preview';
@@ -45,7 +45,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     protected dataClient = inject(ExperienceDataClientService)
   ) {
     super();
-    this.sendStaticData();
+    this.sendExperienceData();
     merge(
       this.dataClient.initialize(),
       this.structureDataEvent$,
@@ -103,7 +103,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
         return;
       }
 
-      this.storeData('dataOptions', options.id, options);
+      this.storeData('dataOptions', options.id, options.data);
     })
   );
 
@@ -120,8 +120,8 @@ export class PreviewExperienceService extends DefaultExperienceService {
     filter(isDefined)
   );
 
-  protected initStaticData(): void {
-    this.staticData = this.processStaticData(false);
+  protected initExperienceData(): void {
+    this.experienceData = this.experienceDataService.getData();
   }
 
   protected reloadComponent(uid: string): void {
@@ -152,10 +152,10 @@ export class PreviewExperienceService extends DefaultExperienceService {
     });
   }
 
-  protected sendStaticData(): void {
+  protected sendExperienceData(): void {
     postMessage({
       type: MessageType.Static,
-      data: this.staticData,
+      data: this.experienceData,
     });
   }
 

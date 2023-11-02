@@ -5,7 +5,7 @@ export class LoginPage extends AbstractFAPage {
   url = '/';
 
   loginForm = new LoginFragment();
-  getWrapper = () => cy.get('oryx-login-page');
+  getWrapper = () => cy.get('oryx-picking-login');
   getLogo = () => this.getWrapper().find('oryx-image[resource="logo"]');
   getTitle = () => this.getWrapper().find('oryx-heading');
   getErrorNotification = () =>

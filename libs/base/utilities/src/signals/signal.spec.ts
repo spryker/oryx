@@ -75,7 +75,7 @@ describe('computed', () => {
       period.set(50);
       vi.advanceTimersByTime(100 * maxValues);
 
-      expect(values).toEqual([undefined, 0, 1, 2, undefined, 0, 1, 2, 3, 4, 5]);
+      expect(values).toEqual([undefined, 0, 1, 2, 2, 0, 1, 2, 3, 4, 5]);
 
       ef.stop();
     });

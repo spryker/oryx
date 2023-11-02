@@ -1,65 +1,104 @@
+import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
-const pricing = css`
-  section.pricing {
-    display: grid;
-    grid-row: 1 / span 2;
-    grid-column: 3;
-    justify-items: end;
-    padding-inline-end: 20px;
-  }
+const pricing =
+  featureVersion >= '1.2'
+    ? css`
+        section.pricing {
+          display: grid;
+          grid-row: 1 / span 2;
+          grid-column: 3;
+          justify-items: end;
+          padding-inline-end: 20px;
+        }
 
-  oryx-product-price,
-  oryx-product-price::part(original) {
-    color: inherit;
-  }
+        .image {
+          grid-row: span 2;
+          height: auto;
+        }
 
-  oryx-product-price {
-    display: contents;
-  }
+        oryx-site-price.subtotal {
+          ${headingUtil(HeadingTag.H6)}
 
-  .image {
-    grid-row: span 2;
-    height: auto;
-  }
+          align-self: end;
+        }
 
-  oryx-site-price {
-    font-size: var(--oryx-typography-h6-size);
-    font-weight: var(--oryx-typography-h6-weight);
-    line-height: var(--oryx-typography-h6-line);
-    align-self: end;
-  }
+        .unit-price {
+          ${headingUtil(HeadingTag.Small)}
 
-  .item-price {
-    font-size: var(--oryx-typography-small-size);
-    font-weight: var(--oryx-typography-small-weight);
-    line-height: var(--oryx-typography-small-line);
-    color: var(--oryx-color-neutral-9);
-    display: grid;
-    align-items: center;
-    grid-auto-flow: column;
-    gap: 4px;
-  }
+          color: var(--oryx-color-neutral-9);
+          display: grid;
+          align-items: center;
+          grid-auto-flow: column;
+          gap: 4px;
+        }
+      `
+    : css`
+        section.pricing {
+          display: grid;
+          grid-row: 1 / span 2;
+          grid-column: 3;
+          justify-items: end;
+          padding-inline-end: 20px;
+        }
 
-  oryx-product-price,
-  oryx-product-price::part(sales),
-  oryx-product-price::part(original),
-  oryx-product-price::part(tax) {
-    font-size: inherit;
-    font-weight: inherit;
-    line-height: inherit;
-    grid-column: initial;
-  }
+        oryx-product-price,
+        oryx-product-price::part(original) {
+          color: inherit;
+        }
 
-  oryx-product-price::part(original) {
-    grid-column: 2;
-  }
+        oryx-product-price {
+          display: contents;
+        }
 
-  .item-price oryx-product-price {
-    gap: inherit;
-  }
-`;
+        .image {
+          grid-row: span 2;
+          height: auto;
+        }
 
+        oryx-site-price {
+          font-size: var(--oryx-typography-h6-size);
+          font-weight: var(--oryx-typography-h6-weight);
+          line-height: var(--oryx-typography-h6-line);
+          align-self: end;
+        }
+
+        .item-price {
+          font-size: var(--oryx-typography-small-size);
+          font-weight: var(--oryx-typography-small-weight);
+          line-height: var(--oryx-typography-small-line);
+          color: var(--oryx-color-neutral-9);
+          display: grid;
+          align-items: center;
+          grid-auto-flow: column;
+          gap: 4px;
+        }
+
+        oryx-product-price,
+        oryx-product-price::part(sales),
+        oryx-product-price::part(original),
+        oryx-product-price::part(tax) {
+          font-size: inherit;
+          font-weight: inherit;
+          line-height: inherit;
+          grid-column: initial;
+        }
+
+        oryx-product-price::part(original) {
+          grid-column: 2;
+        }
+
+        .item-price oryx-product-price {
+          gap: inherit;
+        }
+      `;
+
+/**
+ * We change a couple of small styles in 2.0.0 since the underlying components have changed. The main difference is that
+ * we now use the `oryx-site-price` component instead of the `oryx-product-price` component. The price component is now
+ * now equipped to handle discounted and from prices, with the associated styling (highlight color or strikethrough).
+ */
 export const cartEntryStyles = css`
   :host {
     --image-fit: contain;

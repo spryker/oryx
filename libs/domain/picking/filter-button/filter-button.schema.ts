@@ -1,7 +1,7 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { FilterButtonComponent } from './filter-button.component';
+import { PickingFilterButtonComponent } from './filter-button.component';
 
-export const filterButtonComponentSchema: ContentComponentSchema<FilterButtonComponent> =
+export const pickingFilterButtonComponentSchema: ContentComponentSchema<PickingFilterButtonComponent> =
   {
     name: 'Filters',
     group: 'Picking',

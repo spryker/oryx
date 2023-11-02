@@ -21,7 +21,7 @@ export interface LayoutProperties extends LayoutStylesProperties {
    * Whenever a layout for a specific screen size should be used, other layout properties
    * should be used (eg `layoutSm`).
    */
-  layout?: CompositionLayout;
+  layout?: CompositionLayout | string;
 }
 
 type ScreenLayoutProperties = {

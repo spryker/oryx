@@ -1,6 +1,21 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
 
-export const cartPage: StaticComponent = {
+const cartEntries = (): ExperienceComponent => {
+  const components: ExperienceComponent[] = [];
+  if (featureVersion >= '1.2') components.push({ type: 'oryx-cart-heading' });
+  components.push({ type: 'oryx-cart-entries' });
+
+  return {
+    type: 'oryx-composition',
+    id: 'cart-entries',
+    components,
+    options: { rules: [{ layout: 'list' }] },
+  };
+};
+
+export const cartPage: ExperienceComponent = {
+  id: 'cart-page',
   type: 'Page',
   meta: {
     title: 'Cart Page',
@@ -17,14 +32,16 @@ export const cartPage: StaticComponent = {
     {
       type: 'oryx-content-text',
       content: {
-        text: `
+        data: {
+          text: `
           <oryx-icon type="shopping_cart" style="--oryx-icon-size: 40px;"></oryx-icon>
           <p>Your shopping cart is empty</p><oryx-button>
           <a href="/search">Shop now</a></oryx-button>`,
+        },
       },
       options: {
         rules: [
-          { hideByRule: 'CART.!EMPTY' },
+          { hideByRule: 'CORE.SERVER||CART.!EMPTY' },
           {
             colSpan: 2,
             background: 'var(--oryx-color-neutral-3)',
@@ -37,9 +54,10 @@ export const cartPage: StaticComponent = {
         ],
       },
     },
-    { type: 'oryx-cart-entries' },
+    cartEntries(),
     {
       type: 'oryx-composition',
+      id: 'cart-totals',
       components: [
         {
           type: 'oryx-cart-totals',

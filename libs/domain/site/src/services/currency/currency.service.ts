@@ -4,6 +4,7 @@ import { Currency } from '../../models';
 export interface CurrencyService {
   getAll(): Observable<Currency[]>;
   get(): Observable<string>;
+  getCurrencySymbol(): Observable<string>;
   set(value: string): void;
 }
 

@@ -24,6 +24,7 @@ import {
   tap,
 } from 'rxjs';
 
+import { when } from 'lit/directives/when.js';
 import { LitRoutesRegistry } from './lit-routes-registry';
 
 export interface BaseRouteConfig {
@@ -31,7 +32,11 @@ export interface BaseRouteConfig {
   render?: (params: { [key: string]: string | undefined }) => unknown;
   enter?: (params: {
     [key: string]: string | undefined;
-  }) => Promise<boolean> | Observable<boolean> | boolean;
+  }) =>
+    | Promise<boolean | string>
+    | Observable<boolean | string>
+    | boolean
+    | string;
   leave?: (params: {
     [key: string]: string | undefined;
   }) => Promise<boolean> | Observable<boolean> | boolean;
@@ -178,14 +183,14 @@ export class LitRouter implements ReactiveController {
         .map((registry) => registry.routes)
         .flat(),
       ...routes,
-    ].sort((a) => {
-      // moves 404 page to the end in order not to break new provided routes
-      if ((a as PathRouteConfig).path === '/*') {
-        return 0;
-      }
-
-      return -1;
-    });
+    ]
+      // moves 404 page and other pages (/:page) to the end in order not to break new provided routes
+      .sort((a) =>
+        (a as PathRouteConfig).path === '/*' ||
+        (a as PathRouteConfig).path === '/:page'
+          ? 0
+          : -1
+      );
 
     const baseRoute = resolve(BASE_ROUTE, null);
     if (baseRoute) {
@@ -220,7 +225,9 @@ export class LitRouter implements ReactiveController {
     (this._host = host).addController(this);
 
     this.routes = [...routes];
-    this.fallback = options?.fallback;
+    this.fallback =
+      options?.fallback ??
+      this.routes.find((route) => route.type === RouteType.NotFound);
 
     this.routerService.setRoutes(routes);
 
@@ -298,6 +305,7 @@ export class LitRouter implements ReactiveController {
       this._currentParams = { 0: tailGroup };
     } else {
       const route = this._getRoute(pathname);
+
       if (route === undefined) {
         throw new Error(`No route found for ${pathname}`);
       }
@@ -335,11 +343,10 @@ export class LitRouter implements ReactiveController {
             this.canDisableRouteLeaveInProgress = true;
           };
           window.addEventListener('popstate', callback);
-          success = await (isObservable(this._currentRoute.leave(params))
-            ? lastValueFrom(
-                this._currentRoute.leave(params) as Observable<boolean>
-              )
-            : this._currentRoute.leave(params));
+          const leaveFn = this._currentRoute.leave(params);
+          success = await (isObservable(leaveFn)
+            ? lastValueFrom(leaveFn)
+            : leaveFn);
 
           // If leave() returns false, cancel this navigation
           if (success === false) {
@@ -353,16 +360,22 @@ export class LitRouter implements ReactiveController {
       }
 
       if (typeof route.enter === 'function') {
-        const success = await (isObservable(route.enter(params))
-          ? lastValueFrom(route.enter(params) as Observable<boolean>)
-          : route.enter(params));
-        // If enter() returns false, cancel this navigation
-        if (success === false) {
+        const enterFn = route.enter(params);
+        const result = await (isObservable(enterFn)
+          ? lastValueFrom(enterFn)
+          : enterFn);
+
+        if (typeof result === 'string') {
+          this.routerService.navigate(result);
+
+          return;
+        }
+
+        if (result === false) {
           return;
         }
       }
 
-      // Only update route state if the enter handler completes successfully
       this._currentRoute = route;
       this._currentParams = params;
       this._currentPathname =
@@ -387,21 +400,19 @@ export class LitRouter implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): TemplateResult {
-    if (this._currentRoute?.render) {
-      return html`<outlet
-        >${this._currentRoute?.render?.(this._currentParams)}</outlet
-      >`;
-    }
-
-    if (isRouterPath(this._currentRoute)) {
-      const path = this._currentParams.page
+    const path = isRouterPath(this._currentRoute)
+      ? this._currentParams.page
         ? `/${this._currentParams.page}`
-        : this._currentRoute.path;
+        : this._currentRoute.path
+      : '/';
 
-      return html`<oryx-composition route=${path}></oryx-composition>`;
-    }
-
-    return html`<oryx-composition route="/"></oryx-composition>`;
+    return html`<outlet>
+      ${when(
+        this._currentRoute?.render,
+        () => this._currentRoute?.render?.(this._currentParams),
+        () => html`<oryx-composition route=${path}></oryx-composition>`
+      )}
+    </outlet>`;
   }
 
   protected storeUrlSearchParams(): void {
@@ -428,6 +439,7 @@ export class LitRouter implements ReactiveController {
     const matchedRoute = this.routes.find((r) =>
       getPattern(r).test({ pathname: pathname })
     );
+
     if (matchedRoute || this.fallback === undefined) {
       return matchedRoute;
     }

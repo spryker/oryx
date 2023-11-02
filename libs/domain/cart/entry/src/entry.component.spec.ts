@@ -1,15 +1,15 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { CartService } from '@spryker-oryx/cart';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ProductService } from '@spryker-oryx/product';
 import { MockProductService } from '@spryker-oryx/product/mocks';
 import { LinkService, PricingService, siteProviders } from '@spryker-oryx/site';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { useComponent } from '@spryker-oryx/utilities';
+import { featureVersion, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { QuantityInputComponent } from '../../quantity-input/src';
-import { CartService } from '../../src/services';
 import { CartEntryComponent } from './entry.component';
 import { cartEntryComponent } from './entry.def';
 import { RemoveByQuantity } from './entry.model';
@@ -225,41 +225,101 @@ describe('CartEntryComponent', () => {
       });
 
       describe('enableItemPrice', () => {
-        describe('when enableItemPrice is not provided', () => {
-          beforeEach(async () => {
-            element = await fixture(html` <oryx-cart-entry
-              quantity="1"
-            ></oryx-cart-entry>`);
+        if (featureVersion < '1.2') {
+          describe('when enableItemPrice is not provided', () => {
+            beforeEach(async () => {
+              element = await fixture(html` <oryx-cart-entry
+                quantity="1"
+              ></oryx-cart-entry>`);
+            });
+
+            it('should render enableItemPrice by default', () => {
+              expect(element).toContainElement('oryx-product-price');
+            });
           });
 
-          it('should render enableItemPrice by default', () => {
-            expect(element).toContainElement('oryx-product-price');
+          describe('when enableItemPrice is false', () => {
+            beforeEach(async () => {
+              element = await fixture(html` <oryx-cart-entry
+                quantity="1"
+                .options=${{ enableItemPrice: false }}
+              ></oryx-cart-entry>`);
+            });
+            it('should not render enableItemPrice', () => {
+              expect(element).not.toContainElement('oryx-product-price');
+            });
           });
-        });
 
-        describe('when enableItemPrice is false', () => {
-          beforeEach(async () => {
-            element = await fixture(html` <oryx-cart-entry
-              quantity="1"
-              .options=${{ enableItemPrice: false }}
-            ></oryx-cart-entry>`);
+          describe('when enableItemPrice is true', () => {
+            beforeEach(async () => {
+              element = await fixture(html` <oryx-cart-entry
+                quantity="1"
+                .options=${{ enableItemPrice: true }}
+              ></oryx-cart-entry>`);
+            });
+            it('should render enableItemPrice', () => {
+              expect(element).toContainElement('oryx-product-price');
+            });
           });
-          it('should not render enableItemPrice', () => {
-            expect(element).not.toContainElement('oryx-product-price');
-          });
-        });
+        }
 
-        describe('when enableItemPrice is true', () => {
-          beforeEach(async () => {
-            element = await fixture(html` <oryx-cart-entry
-              quantity="1"
-              .options=${{ enableItemPrice: true }}
-            ></oryx-cart-entry>`);
+        if (featureVersion >= '1.2') {
+          describe('when enableItemPrice is not provided', () => {
+            beforeEach(async () => {
+              element = await fixture(html` <oryx-cart-entry
+                quantity="1"
+                unitPrice="100"
+                discountedUnitPrice="200"
+              ></oryx-cart-entry>`);
+            });
+
+            it('should render the original unit price by default', () => {
+              expect(element).toContainElement('oryx-site-price.original');
+            });
+
+            it('should render the discounted unit price by default', () => {
+              expect(element).toContainElement('oryx-site-price.sales');
+            });
           });
-          it('should render enableItemPrice', () => {
-            expect(element).toContainElement('oryx-product-price');
+
+          describe('when enableItemPrice is false', () => {
+            beforeEach(async () => {
+              element = await fixture(html` <oryx-cart-entry
+                quantity="1"
+                unitPrice="100"
+                discountedUnitPrice="200"
+                .options=${{ enableItemPrice: false }}
+              ></oryx-cart-entry>`);
+            });
+
+            it('should not render the original unit price by default', () => {
+              expect(element).not.toContainElement('oryx-site-price.original');
+            });
+
+            it('should not render the discounted unit price by default', () => {
+              expect(element).not.toContainElement('oryx-site-price.sales');
+            });
           });
-        });
+
+          describe('when enableItemPrice is true', () => {
+            beforeEach(async () => {
+              element = await fixture(html` <oryx-cart-entry
+                quantity="1"
+                unitPrice="100"
+                discountedUnitPrice="200"
+                .options=${{ enableItemPrice: true }}
+              ></oryx-cart-entry>`);
+            });
+
+            it('should render the original unit price by default', () => {
+              expect(element).toContainElement('oryx-site-price.original');
+            });
+
+            it('should render the discounted unit price by default', () => {
+              expect(element).toContainElement('oryx-site-price.sales');
+            });
+          });
+        }
       });
 
       describe('removeByQuantity', () => {
@@ -362,5 +422,45 @@ describe('CartEntryComponent', () => {
         });
       });
     });
+
+    if (featureVersion >= '1.2') {
+      describe('discounted unit price', () => {
+        describe('when the unit price is the same as the discounted unit price', () => {
+          beforeEach(async () => {
+            element = await fixture(html` <oryx-cart-entry
+              quantity="1"
+              unitPrice="100"
+              discountedUnitPrice="100"
+            ></oryx-cart-entry>`);
+          });
+
+          it('should not render the original price', () => {
+            expect(element).not.toContainElement('oryx-site-price.original');
+          });
+
+          it('should render the sales price', () => {
+            expect(element).toContainElement('oryx-site-price.sales');
+          });
+        });
+      });
+
+      describe('when the unit price is not the same as the discounted unit price', () => {
+        beforeEach(async () => {
+          element = await fixture(html` <oryx-cart-entry
+            quantity="1"
+            unitPrice="100"
+            discountedUnitPrice="200"
+          ></oryx-cart-entry>`);
+        });
+
+        it('should render the original price', () => {
+          expect(element).toContainElement('oryx-site-price.original');
+        });
+
+        it('should render the sales price', () => {
+          expect(element).toContainElement('oryx-site-price.sales');
+        });
+      });
+    }
   });
 });

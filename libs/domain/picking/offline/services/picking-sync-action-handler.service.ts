@@ -2,13 +2,14 @@ import { inject } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import { Sync, SyncActionHandler } from '@spryker-oryx/offline';
 import {
-  combineLatestWith,
+  BehaviorSubject,
   Observable,
+  combineLatestWith,
   switchMap,
   tap,
   throwError,
 } from 'rxjs';
-import { PickingListEntity } from '../entities';
+import { PickingListEntity, PickingProductEntity } from '../entities';
 import { PickingListOnlineAdapter } from './adapter';
 
 declare global {
@@ -38,6 +39,8 @@ export class PickingSyncActionHandlerService
     protected onlineAdapter = inject(PickingListOnlineAdapter)
   ) {}
 
+  protected syncing$ = new BehaviorSubject(false);
+
   handleSync(sync: Sync<PickingSyncAction>): Observable<void> {
     switch (sync.action) {
       case PickingSyncAction.FinishPicking:
@@ -54,6 +57,10 @@ export class PickingSyncActionHandlerService
             )
         );
     }
+  }
+
+  isSyncing(): Observable<boolean> {
+    return this.syncing$;
   }
 
   protected handleFinishPicking(
@@ -86,17 +93,37 @@ export class PickingSyncActionHandlerService
       );
     }
 
+    this.syncing$.next(true);
     return this.onlineAdapter.get({ ids: sync.payload.ids }).pipe(
-      combineLatestWith(this.indexedDbService.getStore(PickingListEntity)),
-      switchMap(async ([pickingLists, store]) => {
+      combineLatestWith(
+        this.indexedDbService.getStore(PickingListEntity),
+        this.indexedDbService.getStore(PickingProductEntity)
+      ),
+      switchMap(async ([pickingLists, pickingListsStore, productsStore]) => {
         const pickingListsIdsToRemove = sync.payload.ids.filter((id) => {
           return !pickingLists.find((pl) => pl.id === id);
         });
 
-        await store.bulkDelete(pickingListsIdsToRemove);
-        await store.bulkPut(pickingLists, {
+        await pickingListsStore.bulkDelete(pickingListsIdsToRemove);
+
+        const productIds = new Set<string>();
+        const products = pickingLists
+          .map((pickingList) => pickingList.items.map((item) => item.product))
+          .flat()
+          .filter((product) => {
+            if (productIds.has(product.id)) return false;
+            productIds.add(product.id);
+            return true;
+          });
+
+        await productsStore.bulkPut(products);
+        await pickingListsStore.bulkPut(pickingLists, {
           allKeys: true,
         });
+      }),
+      tap({
+        next: () => this.syncing$.next(false),
+        error: () => this.syncing$.next(false),
       })
     );
   }

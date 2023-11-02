@@ -1,6 +1,6 @@
-import './commands';
 import registerCypressGrep from '@cypress/grep/src/support';
-import { Customer } from './types/user.type';
+import './commands';
+import { Customer } from './types/domain.types';
 
 registerCypressGrep();
 
@@ -24,7 +24,7 @@ const removeUselessLogsFromCypressLogs = () => {
     return origLog(opts, ...other);
   };
 
-  cy.log('Useless logs filterring is applied');
+  cy.log('Useless logs filtering is applied');
 };
 
 const getRandomCustomer = () => {
@@ -34,6 +34,10 @@ const getRandomCustomer = () => {
 
     cy.writeFile(path, JSON.stringify(randomUser));
   });
+};
+
+export const isB2B = (): boolean => {
+  return Cypress.env('IS_B2B');
 };
 
 before(() => {

@@ -1,4 +1,4 @@
-import { ContentFields, ContentService } from '@spryker-oryx/content';
+import { ContentService } from '@spryker-oryx/content';
 import {
   ContextService,
   ElementResolver,
@@ -6,51 +6,47 @@ import {
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
-import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { ArticleContext } from '../article-context';
-import { StoryblokContentFields } from '../storyblok';
+import { ArticleContent } from '../article.model';
 
 export class ArticlePageTitleMetaResolver implements PageMetaResolver {
   constructor(
     protected context = inject(ContextService),
     protected router = inject(RouterService),
-    protected contentService = inject(ContentService)
+    protected content = inject(ContentService)
   ) {}
 
   getScore(): Observable<unknown[]> {
     return combineLatest([
-      this.context.get(document.body, ArticleContext.Id),
-      this.context.get(document.body, ArticleContext.Type),
-      this.router
-        .currentRoute()
-        .pipe(
-          map(
-            (route) =>
-              route.includes(ContentFields.Article) ||
-              route.includes(StoryblokContentFields.Faq)
-          )
-        ),
+      this.context.get(null, ArticleContext.Id),
+      this.context.get(null, ArticleContext.Type),
+      combineLatest([
+        this.context.get(null, ArticleContext.Type),
+        this.router.currentRoute(),
+      ]).pipe(map(([type, route]) => route.includes(`/${type}/`))),
     ]);
   }
 
   resolve(): Observable<ElementResolver> {
     return combineLatest([
-      this.context.get<string>(document.body, ArticleContext.Id),
-      this.context.get<string>(document.body, ArticleContext.Type),
+      this.context.get<string>(null, ArticleContext.Id),
+      this.context.get<string>(null, ArticleContext.Type),
     ]).pipe(
       switchMap(([id, type]) => {
-        if (!id || !type) {
-          return of({});
-        }
+        if (!id || !type) return of({});
 
-        // TODO: get entities from component or context
-        return this.contentService
-          .get({
+        return this.content
+          .get<ArticleContent>({
             id,
             type,
-            entities: [ContentFields.Article, StoryblokContentFields.Faq],
+            entities: [type],
           })
-          .pipe(map((data) => (data?.heading ? { title: data.heading } : {})));
+          .pipe(
+            map((data) =>
+              data?.fields.heading ? { title: data.fields.heading } : {}
+            )
+          );
       })
     );
   }

@@ -1,6 +1,7 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { ExperienceDataRevealer } from '@spryker-oryx/experience';
+import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { facetProviders } from '../renderers';
 import {
   DefaultSuggestionAdapter,
@@ -12,19 +13,24 @@ import { DefaultFacetListService } from './default-facet-list.service';
 import { DefaultSortingService } from './default-sorting.service';
 import { FacetListService } from './facet-list.service';
 import {
+  CategoryBreadcrumb,
   CategoryPageTitleMetaResolver,
   SearchPageTitleMetaResolver,
 } from './resolvers';
-import { ProductsExperienceDataRevealer } from './revealers';
+import {
+  ProductsExperienceDataRevealer,
+  SuggestionExperienceDataRevealer,
+} from './revealers';
+import { categoryRoutes } from './routes';
 import { SortingService } from './sorting.service';
 import {
-  defaultSuggestionRenderer,
   DefaultSuggestionRendererService,
   DefaultSuggestionService,
-  productSuggestionRenderer,
   SuggestionRenderer,
   SuggestionRendererService,
   SuggestionService,
+  defaultSuggestionRenderer,
+  productSuggestionRenderer,
 } from './suggestion';
 
 export const searchProviders: Provider[] = [
@@ -65,11 +71,17 @@ export const searchProviders: Provider[] = [
       [SuggestionField.Products]: productSuggestionRenderer,
     },
   },
+  CategoryBreadcrumb,
+  ...provideLitRoutes({ routes: categoryRoutes }),
 ];
 
 export const searchPreviewProviders: Provider[] = [
   {
     provide: ExperienceDataRevealer,
     useClass: ProductsExperienceDataRevealer,
+  },
+  {
+    provide: ExperienceDataRevealer,
+    useClass: SuggestionExperienceDataRevealer,
   },
 ];

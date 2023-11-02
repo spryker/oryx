@@ -49,6 +49,12 @@ jobs:
       - name: Release minor
         if: ${{ startsWith(env.RELEASE_BRANCH, 'refs/heads/release/') }}
         run: npm run release-minor
+      - name: Release labs
+        run: npm run release-labs
       - name: Release Error Log
         if: failure()
         run: cat libs/lerna-debug.log
+      - name: Run b2c stable env update
+        run: curl -X POST -d {} https://api.netlify.com/build_hooks/64b4f98cb4ec05454bd6c23b?clear_cache=true
+      - name: Run b2b stable env update
+        run: curl -X POST -d {} https://api.netlify.com/build_hooks/64b4f9b48ca8dd49b432a8c1?clear_cache=true

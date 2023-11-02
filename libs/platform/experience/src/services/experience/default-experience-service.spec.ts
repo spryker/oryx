@@ -2,10 +2,10 @@ import { HttpService } from '@spryker-oryx/core';
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { BehaviorSubject, switchMap } from 'rxjs';
+import { ExperienceDataService } from '../experience-data';
 import { ContentBackendUrl } from '../experience-tokens';
 import { DefaultExperienceService } from './default-experience.service';
 import { ExperienceService } from './experience.service';
-import { provideExperienceData } from './static-data';
 
 const mockStructureKey = 'bannerSlider';
 const mockDataKey = 'homepage-banner';
@@ -79,6 +79,11 @@ const mockStatic = {
   components: [{ type: 'pageA' }, { type: 'pageB' }],
 };
 
+const mockExperienceDataService = {
+  getData: vi.fn().mockReturnValue([mockStatic]),
+  registerComponent: vi.fn(),
+};
+
 describe('DefaultExperienceService', () => {
   let service: ExperienceService;
   let http: HttpTestService;
@@ -98,7 +103,10 @@ describe('DefaultExperienceService', () => {
           provide: 'ExperienceService',
           useClass: DefaultExperienceService,
         },
-        provideExperienceData(mockStatic),
+        {
+          provide: ExperienceDataService,
+          useValue: mockExperienceDataService,
+        },
       ],
     });
 
@@ -109,17 +117,6 @@ describe('DefaultExperienceService', () => {
   afterEach(() => {
     destroyInjector();
     http.clear();
-  });
-
-  it('should parse static data and add ids', () => {
-    const callback = vi.fn();
-    service.getComponent({ uid: 'static0' }).subscribe(callback);
-    expect(callback).toHaveBeenCalledWith(expect.objectContaining(mockStatic));
-    service.getComponent({ uid: 'static2' }).subscribe(callback);
-    expect(callback).toHaveBeenCalledWith({
-      ...mockStatic.components[1],
-      id: 'static2',
-    });
   });
 
   describe('getComponent', () => {

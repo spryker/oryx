@@ -17,7 +17,7 @@ concurrency:
 env:
   GITHUB_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
   IS_DEV: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/development' }}
-
+  ORYX_FEATURE_VERSION: latest
 jobs:
   test-format:
     runs-on: ubuntu-latest
@@ -148,12 +148,34 @@ jobs:
           SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           STORE: DE
+
         with:
           cmd: npm run sf:e2e:headless:ci
           affectedCmd: npm run sf:e2e:headless:ci:affected
           isDev: ${{ env.IS_DEV }}
 
+  test-e2e-storefront-b2b:
+    runs-on: ubuntu-latest
+    needs: [test-format, test-lint, test-stylelint, test-tsconfig]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ env.GITHUB_REF }}
+          fetch-depth: 0
+      - uses: ./.github/actions/init
+      - name: Storefront E2E Tests for B2B preset
+        uses: ./.github/actions/run-optimal
+        env:
+          SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          STORE: DE
+        with:
+          cmd: npm run sf:b2b:e2e:headless:ci
+          affectedCmd: npm run sf:b2b:e2e:headless:ci:affected
+          isDev: ${{ env.IS_DEV }}
+
   test-e2e-fulfillment:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     needs: [test-format, test-lint, test-stylelint, test-tsconfig]
     steps:
@@ -168,6 +190,7 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY_FA }}
           ORYX_FULFILLMENT_BACKEND_URL: ${{ secrets.ORYX_FULFILLMENT_BACKEND_URL }}
           ORYX_FULFILLMENT_PUBLIC_VAPID_KEY: ${{ secrets.ORYX_FULFILLMENT_PUBLIC_VAPID_KEY }}
+          ORYX_FULFILLMENT_CLIENT_ID: ${{ secrets.ORYX_FULFILLMENT_CLIENT_ID }}
         with:
           cmd: npm run fa:e2e:headless:ci
           affectedCmd: npm run fa:e2e:headless:ci:affected

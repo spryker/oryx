@@ -101,7 +101,10 @@ export class CartController {
    */
   protected cumulateQuantity(cart: Cart | undefined): number | null {
     return (
-      cart?.products?.reduce((acc, { quantity }) => acc + quantity, 0) ?? null
+      cart?.products?.reduce(
+        (acc, { quantity }) => acc + Number(quantity),
+        0
+      ) ?? null
     );
   }
 

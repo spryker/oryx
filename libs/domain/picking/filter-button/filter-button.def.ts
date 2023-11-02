@@ -1,9 +1,13 @@
 import { componentDef } from '@spryker-oryx/utilities';
 
-export const filterButtonComponent = componentDef({
+export const pickingFilterButtonComponent = componentDef({
   name: 'oryx-picking-filter-button',
   impl: () =>
-    import('./filter-button.component').then((m) => m.FilterButtonComponent),
+    import('./filter-button.component').then(
+      (m) => m.PickingFilterButtonComponent
+    ),
   schema: () =>
-    import('./filter-button.schema').then((m) => m.filterButtonComponentSchema),
+    import('./filter-button.schema').then(
+      (m) => m.pickingFilterButtonComponentSchema
+    ),
 });

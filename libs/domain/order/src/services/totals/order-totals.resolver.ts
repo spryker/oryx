@@ -1,6 +1,7 @@
 import {
   CartDiscount,
   NormalizedTotals,
+  PriceMode,
   TotalsResolver,
 } from '@spryker-oryx/cart';
 import { ContextService } from '@spryker-oryx/core';
@@ -26,7 +27,7 @@ export class OrderTotalsResolver implements TotalsResolver {
     }));
   }
 
-  protected getFromContext(): Observable<OrderData | null> {
+  protected getFromContext(): Observable<OrderData | null | void> {
     return this.context
       .get<string>(
         null /* for now we are happy with global/fallback orderId */,
@@ -50,10 +51,17 @@ export class OrderTotalsResolver implements TotalsResolver {
           currencyIsoCode: currency,
           calculatedDiscounts,
           priceMode,
+          shipments,
         } = order;
 
         return {
           ...totals,
+          shipmentTotal:
+            shipments?.[0][
+              priceMode === PriceMode.GrossMode
+                ? 'defaultGrossPrice'
+                : 'defaultNetPrice'
+            ],
           priceToPay: totals.grandTotal,
           priceMode,
           currency,

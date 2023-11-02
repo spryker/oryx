@@ -3,7 +3,11 @@ import {
   ProductListAdapter,
   ProductListQualifier,
 } from '@spryker-oryx/product';
-import { generateFacet } from '@spryker-oryx/product/mocks';
+import {
+  generateFacet,
+  generateRange,
+  generateRatingFacet,
+} from '@spryker-oryx/product/mocks';
 import { Observable, of } from 'rxjs';
 import { createProductListMock } from './mock-product-list.generator';
 
@@ -12,7 +16,7 @@ export class MockProductListAdapter implements ProductListAdapter {
     minPrice: 'price[min]',
     maxPrice: 'price[max]',
     storageCapacity: 'storage_capacity[]',
-    minRating: 'rating[min]',
+    minRating: 'rating',
   };
 
   getKey(qualifier: ProductListQualifier): string {
@@ -54,7 +58,24 @@ export class MockProductListAdapter implements ProductListAdapter {
           qualifier.category?.split(',')
         ),
         generateFacet('Label', 'label', 3, qualifier.label?.split(','), true),
+        generateRatingFacet(1, 5, 5),
         generateFacet('Color', 'color', 6, qualifier.color?.split(',')),
+        generateRange(
+          'Range',
+          'range',
+          [0, 100],
+          'minPrice' in qualifier && 'maxPrice' in qualifier
+            ? [qualifier.minPrice!, qualifier.maxPrice!]
+            : []
+        ),
+        generateRange(
+          'Price',
+          'price',
+          [0, 100000],
+          'minPrice' in qualifier && 'maxPrice' in qualifier
+            ? [qualifier.minPrice! * 100, qualifier.maxPrice! * 100]
+            : []
+        ),
       ],
     });
   }

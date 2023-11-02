@@ -25,5 +25,6 @@ module.exports = defineConfig({
   },
   env: {
     SCOS_BASE_URL: process.env.SCOS_BASE_URL,
+    IS_B2B: process.env.ORYX_PRESET === 'b2b',
   },
 });

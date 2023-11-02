@@ -1,6 +1,8 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
+import { Size, featureVersion } from '@spryker-oryx/utilities';
 
-export const searchPage: StaticComponent = {
+export const searchPage: ExperienceComponent = {
+  id: 'search-page',
   type: 'Page',
   meta: {
     title: 'Search',
@@ -16,6 +18,21 @@ export const searchPage: StaticComponent = {
     ],
   },
   components: [
+    ...(featureVersion >= '1.1'
+      ? [
+          {
+            type: 'oryx-site-breadcrumb',
+            options: {
+              rules: [
+                {
+                  colSpan: 2,
+                },
+                { query: { breakpoint: Size.Sm }, hide: true },
+              ],
+            },
+          },
+        ]
+      : []),
     {
       type: 'oryx-search-facet-navigation',
       options: {
@@ -33,6 +50,7 @@ export const searchPage: StaticComponent = {
     },
     {
       type: 'oryx-composition',
+      id: 'product-listing',
       name: 'Product listing',
       options: {
         rules: [{ layout: 'flex', vertical: true, gap: '20px' }],
@@ -40,6 +58,7 @@ export const searchPage: StaticComponent = {
       components: [
         {
           type: 'oryx-composition',
+          id: 'product-listing-header',
           name: 'Product list header',
           components: [{ type: 'oryx-search-product-sort' }],
           options: { rules: [{ layout: 'flex', justify: 'end' }] },

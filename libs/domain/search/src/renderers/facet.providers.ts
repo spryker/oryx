@@ -1,14 +1,14 @@
-import { Facet } from '@spryker-oryx/product';
-import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
-import { html, TemplateResult } from 'lit';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { DefaultFacetComponentRegistryService } from './default-facet-component-registry.service';
-import { colorsMap, FacetColorsMapping } from './facet-color-colors.mapping';
+import { FacetColorsMapping, colorsMap } from './facet-color-colors.mapping';
 import { FacetComponentRegistryService } from './facet-component-registry.service';
+import { FacetValueRenderer } from './renderer';
 import {
-  FacetMappingOptions,
-  FacetParams,
-  FacetValueRenderer,
-} from './renderer';
+  colorFacetRenderer,
+  defaultFacetRenderer,
+  priceFacetRenderer,
+  ratingFacetRenderer,
+} from './value-renderer';
 
 export const facetProviders = [
   {
@@ -18,43 +18,10 @@ export const facetProviders = [
   {
     provide: FacetValueRenderer,
     useValue: {
-      [`${FacetParams.Default}`]: {
-        template: (
-          facet: Facet,
-          options: FacetMappingOptions,
-          selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
-        ): TemplateResult => {
-          return html`
-            <oryx-search-facet
-              @oryx.select=${selectListener}
-              .name=${facet.name}
-              .renderLimit=${options.renderLimit}
-              .open=${options.open}
-              .enableClear="${options.enableClear}"
-              .multi=${facet.multiValued}
-            >
-            </oryx-search-facet>
-          `;
-        },
-      },
-      [`${FacetParams.Color}`]: {
-        template: (
-          facet: Facet,
-          options: FacetMappingOptions,
-          selectListener: (e: CustomEvent<SelectFacetEventDetail>) => void
-        ): TemplateResult => {
-          return html`
-            <oryx-search-color-facet
-              @oryx.select=${selectListener}
-              .name=${facet.name}
-              .renderLimit=${options.renderLimit}
-              .open=${options.open}
-              .multi=${facet.multiValued}
-            >
-            </oryx-search-color-facet>
-          `;
-        },
-      },
+      ...defaultFacetRenderer,
+      ...colorFacetRenderer,
+      ...(featureVersion >= '1.2' ? priceFacetRenderer : []),
+      ...(featureVersion >= '1.2' ? ratingFacetRenderer : []),
     },
   },
   {

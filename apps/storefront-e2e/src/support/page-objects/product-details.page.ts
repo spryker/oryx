@@ -1,24 +1,27 @@
 import { ProductRelationsFragment } from '../page-fragments/product-relations.fragment';
 import { QuantityInputFragment } from '../page-fragments/quantity-input.fragment';
-import { Product } from '../types/product.type';
+import { Product } from '../types/domain.types';
+import { visibilityCheck } from '../utils';
 import { AbstractSFPage } from './abstract.page';
 
 export class ProductDetailsPage extends AbstractSFPage {
   url = '/product/';
-  productId: string;
+  productData: Product;
   quantityInput: QuantityInputFragment;
 
   constructor(productData?: Product) {
     super();
 
     if (productData) {
-      this.productId = productData.id;
+      this.productData = productData;
       this.url += productData.id;
     }
   }
 
   beforeVisit(): void {
-    cy.intercept(`/concrete-products/${this.productId}*`).as('productRequest');
+    cy.intercept(`/concrete-products/${this.productData.id}*`).as(
+      'productRequest'
+    );
   }
 
   waitForLoaded(): void {
@@ -28,9 +31,9 @@ export class ProductDetailsPage extends AbstractSFPage {
 
   getWrapper = () => cy.get('oryx-composition[route="/product/:sku"]');
   getDetailsWrapper = () =>
-    this.getWrapper().find('oryx-composition:first-child');
+    this.getWrapper().find('oryx-composition[uid="product-preview"]');
   getInfoWrapper = () =>
-    this.getWrapper().find('oryx-composition:nth-child(2)');
+    this.getWrapper().find('oryx-composition[uid="product-info"]');
   getTitle = () =>
     this.getInfoWrapper().find('oryx-product-title').find('oryx-heading');
   getRating = () => this.getInfoWrapper().find('oryx-product-average-rating');
@@ -51,19 +54,20 @@ export class ProductDetailsPage extends AbstractSFPage {
   };
 
   getAddToCartBtn = () => this.getAddToCartWrapper().find('oryx-button');
-  getImages = () => this.getWrapper().find('oryx-product-media');
+  getImages = () => this.getWrapper().find('oryx-product-images');
   getDescription = () => this.getWrapper().find('oryx-product-description');
   getDescriptionText = () => this.getDescription().find('p');
-  getAttributeTerms = () =>
-    this.getWrapper().find('oryx-product-attributes').find('dt');
+  getAttributes = () => this.getWrapper().find('oryx-product-attributes');
+  getAttributeTerms = () => this.getAttributes().find('dt');
 
   getRelations = () => new ProductRelationsFragment();
+  getProductsList = () => cy.get('oryx-product-list');
   getAvailability = () => this.getWrapper().find('oryx-product-availability');
 
   addItemsToTheCart = (numberOfItems = 1, isHydrated = false) => {
     if (numberOfItems === 1) {
       if (!isHydrated) {
-        cy.hydrateElemenet('/assets/cart-add-*.js', () => {
+        cy.hydrateElement('/assets/cart-add-*.js', () => {
           this.getAddToCartBtn().click();
         });
       }
@@ -83,5 +87,21 @@ export class ProductDetailsPage extends AbstractSFPage {
     } else {
       throw new Error('Add multiple items to the Cart is not implemented yet.');
     }
+  };
+
+  checkDefaultProduct = () => {
+    visibilityCheck(this.getImages());
+    visibilityCheck(this.getDescription());
+    visibilityCheck(this.getAttributes());
+
+    this.getTitle().should('contain.text', this.productData.title);
+    visibilityCheck(this.getRating());
+    this.getSKU().should('contain.text', this.productData.id);
+    this.getPrice().should('contain.text', this.productData.originalPrice);
+
+    this.getQuantityComponent().getInput().should('have.value', 1);
+    visibilityCheck(this.getAddToCartBtn());
+    visibilityCheck(this.getAvailability());
+    visibilityCheck(this.getProductsList());
   };
 }

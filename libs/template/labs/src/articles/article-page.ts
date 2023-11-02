@@ -1,113 +1,102 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ContentFields } from '@spryker-oryx/content';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { SuggestionField } from '@spryker-oryx/search';
-import { ContentfulContentFields } from './contentful';
-import { StoryblokContentFields } from './storyblok';
 
-export const articlesPage: StaticComponent = {
+export const articlesPage: ExperienceComponent = {
   type: 'Page',
-  meta: { route: `/${ContentfulContentFields.Article}` },
+  id: 'articles',
+  meta: {
+    title: 'Articles Page',
+    route: `/${ContentFields.Article}`,
+  },
   options: {
-    data: {
-      rules: [{ layout: 'flex', padding: '30px 0' }],
-    },
+    rules: [{ layout: 'flex', padding: '30px 0' }],
   },
   components: [
     {
       type: 'oryx-search-box',
       options: {
-        data: {
-          rules: [{ margin: 'auto', width: '580px' }],
-          [SuggestionField.Suggestions]: undefined,
-          [SuggestionField.Categories]: undefined,
-          [SuggestionField.Contents]: undefined,
-          [SuggestionField.Products]: undefined,
-          [ContentfulContentFields.Article]: {
-            max: 8,
-          },
+        rules: [{ margin: 'auto', width: '580px' }],
+        [SuggestionField.Suggestions]: null,
+        [SuggestionField.Categories]: null,
+        [SuggestionField.Contents]: null,
+        [SuggestionField.Products]: null,
+        [ContentFields.Article]: {
+          max: 8,
         },
       },
     },
     {
       type: 'oryx-content-articles',
       options: {
-        data: {
-          rules: [{ width: '80%', margin: 'auto' }],
-        },
+        rules: [{ width: '80%', margin: 'auto' }],
       },
     },
   ],
 };
 
-export const articlePage: StaticComponent = {
+export const articlePage: ExperienceComponent = {
   type: 'Page',
-  meta: { route: `/${ContentfulContentFields.Article}/:id` },
+  id: 'article',
+  meta: {
+    title: 'Article Page',
+    route: `/${ContentFields.Article}/:id`,
+  },
   options: {
-    data: {
-      rules: [{ layout: 'flex', padding: '30px 0' }],
-    },
+    rules: [{ layout: 'flex', padding: '30px 0' }],
   },
   components: [
     {
       type: 'oryx-content-article',
       options: {
-        data: {
-          rules: [{ width: '80%', margin: 'auto' }],
-        },
+        rules: [{ width: '80%', margin: 'auto' }],
       },
     },
   ],
 };
 
-export const faqsPage: StaticComponent = {
+export const faqsPage: ExperienceComponent = {
   type: 'Page',
-  meta: { route: `/${StoryblokContentFields.Faq}` },
+  id: 'faqs',
+  meta: { title: 'FAQs Page', route: `/${ContentFields.Faq}` },
   options: {
-    data: {
-      rules: [{ layout: 'flex', padding: '30px 0' }],
-    },
+    rules: [{ layout: 'flex', padding: '30px 0' }],
   },
   components: [
     {
       type: 'oryx-search-box',
       options: {
-        data: {
-          rules: [{ margin: 'auto', width: '580px' }],
-          [SuggestionField.Suggestions]: undefined,
-          [SuggestionField.Categories]: undefined,
-          [SuggestionField.Contents]: undefined,
-          [SuggestionField.Products]: undefined,
-          [StoryblokContentFields.Faq]: {
-            max: 8,
-          },
+        rules: [{ margin: 'auto', width: '580px' }],
+        [SuggestionField.Suggestions]: null,
+        [SuggestionField.Categories]: null,
+        [SuggestionField.Contents]: null,
+        [SuggestionField.Products]: null,
+        [ContentFields.Faq]: {
+          max: 8,
         },
       },
     },
     {
       type: 'oryx-content-articles',
       options: {
-        data: {
-          rules: [{ width: '80%', margin: 'auto' }],
-        },
+        rules: [{ width: '80%', margin: 'auto' }],
       },
     },
   ],
 };
 
-export const faqPage: StaticComponent = {
+export const faqPage: ExperienceComponent = {
   type: 'Page',
-  meta: { route: `/${StoryblokContentFields.Faq}/:id` },
+  id: 'faq',
+  meta: { title: 'FAQ Page', route: `/${ContentFields.Faq}/:id` },
   options: {
-    data: {
-      rules: [{ layout: 'flex', padding: '30px 0' }],
-    },
+    rules: [{ layout: 'flex', padding: '30px 0' }],
   },
   components: [
     {
       type: 'oryx-content-article',
       options: {
-        data: {
-          rules: [{ width: '80%', margin: 'auto' }],
-        },
+        rules: [{ width: '80%', margin: 'auto' }],
       },
     },
   ],

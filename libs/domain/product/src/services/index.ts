@@ -1,4 +1,5 @@
 export * from './adapter';
+export * from './category';
 export * from './default-product.service';
 export * from './images';
 export * from './list';
@@ -7,4 +8,5 @@ export * from './product.providers';
 export * from './product.service';
 export * from './related';
 export * from './resolvers';
+export * from './routes';
 export * from './state';

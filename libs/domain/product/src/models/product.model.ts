@@ -70,14 +70,25 @@ export interface SortValues {
   sortName: string;
 }
 
-export interface Facet {
+export interface RangeFacet {
+  type: FacetType.Range;
   name: string;
   parameter: string;
-  values: FacetValue[] | RangeFacetValue;
-  selectedValues?: (string | number)[];
+  values: RangeFacetValue;
+}
+
+export interface ValueFacet {
+  type: FacetType.Single | FacetType.Multi;
+  name: string;
+  parameter: string;
+  values: FacetValue[];
   valuesTreeLength?: number;
+  selectedValues?: (string | number)[];
+  /** @deprecated since 1.2 use facet.type === FacetType.Multi check instead*/
   multiValued?: boolean;
 }
+
+export type Facet = ValueFacet | RangeFacet;
 
 export interface RangeFacetValue {
   min: number;
@@ -212,4 +223,18 @@ export interface ProductAvailability {
    * product that can be fulfilled.
    */
   quantity: number;
+}
+
+export interface ProductCategory {
+  id: string;
+  name: string;
+  order: number;
+  parent?: string;
+  description?: string;
+}
+
+export const enum FacetType {
+  Single = 'single',
+  Multi = 'multi',
+  Range = 'range',
 }

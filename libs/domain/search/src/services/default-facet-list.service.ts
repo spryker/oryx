@@ -1,6 +1,6 @@
 import { inject } from '@spryker-oryx/di';
 import { Facet, ProductListPageService } from '@spryker-oryx/product';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { FacetQualifier } from '../models';
 import { FacetListService } from './facet-list.service';
 
@@ -11,11 +11,15 @@ export class DefaultFacetListService implements FacetListService {
     return this.productListService.get().pipe(map((pl) => pl?.facets ?? []));
   }
 
-  getFacet(options: FacetQualifier): Observable<Facet> {
+  getFacet({ parameter, name }: FacetQualifier): Observable<Facet> {
     return this.get().pipe(
       map(
         (facets) =>
-          facets?.find((facet) => facet.name === options.name) ?? ({} as Facet)
+          facets?.find(
+            (facet) =>
+              (name && facet.name === name) ||
+              (parameter && facet.parameter === parameter)
+          ) ?? ({} as Facet)
       )
     );
   }

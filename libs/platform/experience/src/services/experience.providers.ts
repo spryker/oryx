@@ -15,6 +15,10 @@ import {
   ExperienceService,
   PreviewExperienceService,
 } from './experience';
+import {
+  DefaultExperienceDataService,
+  ExperienceDataService,
+} from './experience-data';
 import { ContentBackendUrl } from './experience-tokens';
 import {
   DefaultLayoutBuilder,
@@ -36,15 +40,7 @@ declare global {
   }
 }
 
-export const experienceProviders: Provider[] = [
-  {
-    provide: ContentBackendUrl,
-    useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),
-  },
-  {
-    provide: ExperienceService,
-    useClass: DefaultExperienceService,
-  },
+export const layoutProviders: Provider[] = [
   {
     provide: ScreenService,
     useClass: DefaultScreenService,
@@ -57,6 +53,17 @@ export const experienceProviders: Provider[] = [
     provide: LayoutService,
     useClass: DefaultLayoutService,
   },
+];
+
+export const experienceProviders: Provider[] = [
+  {
+    provide: ContentBackendUrl,
+    useFactory: () => injectEnv('FES_CONTENT_BACKEND_URL', ''),
+  },
+  {
+    provide: ExperienceService,
+    useClass: DefaultExperienceService,
+  },
   {
     provide: ComponentsRegistryService,
     useClass: DefaultComponentsRegistryService,
@@ -65,6 +72,11 @@ export const experienceProviders: Provider[] = [
     provide: PageMetaResolver,
     useClass: ContentPageMetaResolver,
   },
+  {
+    provide: ExperienceDataService,
+    useClass: DefaultExperienceDataService,
+  },
+  ...layoutProviders,
 ];
 
 export const experiencePreviewProviders: Provider[] = [

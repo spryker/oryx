@@ -1,6 +1,6 @@
 import { getShadowElementBySelector } from '@/tools/testing';
 import { fixture, html } from '@open-wc/testing-helpers';
-import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
+import { a11yConfig, i18n, useComponent } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
 import { getControl } from '../../utilities/getControl';
 import { PasswordInputComponent } from './password-input.component';
@@ -218,6 +218,350 @@ describe('PasswordComponent', () => {
               'password'
             );
           });
+        });
+      });
+    });
+  });
+
+  describe('validation', () => {
+    const messageSelector = '.validation-message';
+    const activeMessageSelector = '.validation-message.active';
+
+    describe('when minLength is set', () => {
+      const minLength = 5;
+      const message = i18n('ui.password.at-least-<count>-characters', {
+        count: minLength,
+      });
+
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-password-input .minLength=${minLength}>
+            <input type="password" aria-label="password" />
+          </oryx-password-input>`
+        );
+      });
+
+      it('should render inactive validation messages initially', () => {
+        expect(
+          element.renderRoot.querySelector(messageSelector)?.textContent
+        ).toContain(message);
+        expect(element).not.toContainElement(activeMessageSelector);
+      });
+
+      describe('and the password contains less than minLength characters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'pass';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render inactive validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(messageSelector)?.textContent
+          ).toContain(message);
+          expect(element).not.toContainElement(activeMessageSelector);
+        });
+      });
+
+      describe('and the password contains exactly minLength characters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'passe';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render active validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(activeMessageSelector)?.textContent
+          ).toContain(message);
+        });
+      });
+
+      describe('and the password contains more than minLength characters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'password';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render active validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(activeMessageSelector)?.textContent
+          ).toContain(message);
+        });
+      });
+    });
+
+    describe('when maxLength is set', () => {
+      const maxLength = 8;
+      const message = i18n('ui.password.at-most-<count>-characters', {
+        count: maxLength,
+      });
+
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-password-input .maxLength=${maxLength}>
+            <input type="password" aria-label="password" />
+          </oryx-password-input>`
+        );
+      });
+
+      it('should render active validation messages', () => {
+        expect(
+          element.renderRoot.querySelector(activeMessageSelector)?.textContent
+        ).toContain(message);
+      });
+
+      describe('and the password contains more than maxLength characters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'longpassw';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render inactive validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(messageSelector)?.textContent
+          ).toContain(message);
+          expect(element).not.toContainElement(activeMessageSelector);
+        });
+      });
+
+      describe('and the password contains exactly maxLength characters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'longpass';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render active validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(activeMessageSelector)?.textContent
+          ).toContain(message);
+        });
+      });
+
+      describe('and the password contains less than maxLength characters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'short';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render active validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(activeMessageSelector)?.textContent
+          ).toContain(message);
+        });
+      });
+    });
+
+    describe('when minUppercaseChars is set', () => {
+      const minUppercaseChars = 2;
+      const message = i18n('ui.password.at-least-<count>-uppercase-letters', {
+        count: minUppercaseChars,
+      });
+
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-password-input .minUppercaseChars=${minUppercaseChars}>
+            <input type="password" aria-label="password" />
+          </oryx-password-input>`
+        );
+      });
+
+      it('should render inactive validation messages initially', () => {
+        expect(
+          element.renderRoot.querySelector(messageSelector)?.textContent
+        ).toContain(message);
+        expect(element).not.toContainElement(activeMessageSelector);
+      });
+
+      describe('and the password contains less than the required uppercase letters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'Pass';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render inactive validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(messageSelector)?.textContent
+          ).toContain(message);
+          expect(element).not.toContainElement(activeMessageSelector);
+        });
+      });
+
+      describe('and the password contains the exact required number of uppercase letters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'PAss';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render active validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(activeMessageSelector)?.textContent
+          ).toContain(message);
+        });
+      });
+
+      describe('and the password contains more than the required number of uppercase letters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'PASs';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render active validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(activeMessageSelector)?.textContent
+          ).toContain(message);
+        });
+      });
+    });
+
+    describe('when minNumbers is set', () => {
+      const minNumbers = 2;
+      const message = i18n('ui.password.at-least-<count>-numbers', {
+        count: minNumbers,
+      });
+
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-password-input .minNumbers=${minNumbers}>
+            <input type="password" aria-label="password" />
+          </oryx-password-input>`
+        );
+      });
+
+      it('should render inactive validation messages initially', () => {
+        expect(
+          element.renderRoot.querySelector(messageSelector)?.textContent
+        ).toContain(message);
+        expect(element).not.toContainElement(activeMessageSelector);
+      });
+
+      describe('and the password contains less than the required numbers', () => {
+        beforeEach(() => {
+          getControl(element).value = 'Pass1';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render inactive validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(messageSelector)?.textContent
+          ).toContain(message);
+          expect(element).not.toContainElement(activeMessageSelector);
+        });
+      });
+
+      describe('and the password contains the exact required number of numbers', () => {
+        beforeEach(() => {
+          getControl(element).value = 'Pass12';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render active validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(activeMessageSelector)?.textContent
+          ).toContain(message);
+        });
+      });
+
+      describe('and the password contains more than the required number of numbers', () => {
+        beforeEach(() => {
+          getControl(element).value = 'Pass123';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render active validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(activeMessageSelector)?.textContent
+          ).toContain(message);
+        });
+      });
+    });
+
+    describe('when minSpecialChars is set', () => {
+      const minSpecialChars = 2; // Adjust as necessary
+      const message = i18n('ui.password.at-least-<count>-special-chars', {
+        count: minSpecialChars,
+      });
+
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-password-input .minSpecialChars=${minSpecialChars}>
+            <input type="password" aria-label="password" />
+          </oryx-password-input>`
+        );
+      });
+
+      it('should render inactive validation messages initially', () => {
+        expect(
+          element.renderRoot.querySelector(messageSelector)?.textContent
+        ).toContain(message);
+        expect(element).not.toContainElement(activeMessageSelector);
+      });
+
+      describe('and the password contains less than the required special characters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'p@ssword';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render inactive validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(messageSelector)?.textContent
+          ).toContain(message);
+          expect(element).not.toContainElement(activeMessageSelector);
+        });
+      });
+
+      describe('and the password contains the exact number of required special characters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'p@s$word';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render active validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(activeMessageSelector)?.textContent
+          ).toContain(message);
+        });
+      });
+
+      describe('and the password contains more than the required special characters', () => {
+        beforeEach(() => {
+          getControl(element).value = 'p@s$w#rd';
+          getControl(element).dispatchEvent(
+            new InputEvent('input', { bubbles: true })
+          );
+        });
+
+        it('should render active validation messages', () => {
+          expect(
+            element.renderRoot.querySelector(activeMessageSelector)?.textContent
+          ).toContain(message);
         });
       });
     });

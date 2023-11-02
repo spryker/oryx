@@ -1,9 +1,10 @@
+import { LayoutAttributes } from '@spryker-oryx/experience/layout';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Breakpoint } from '@spryker-oryx/utilities';
-import { LayoutAttributes } from '@spryker-oryx/experience/layout';
 
 export interface CompositionProperties {
   rules?: StyleRuleSet[];
+  [key: string]: unknown;
 }
 
 export interface ComponentVisibility {
@@ -19,7 +20,7 @@ export interface StyleRuleSet
    * Allows to apply a style rule set for specific selectors.
    */
   query?: {
-    breakpoint?: Breakpoint;
+    breakpoint?: Breakpoint | string;
     childs?: boolean;
     hover?: boolean;
   };
@@ -36,7 +37,6 @@ export enum CompositionLayout {
   Grid = 'grid',
   Flex = 'flex',
   Text = 'text',
-  Tabular = 'tabular',
 }
 
 export const enum CompositionLayoutOrientation {
@@ -89,8 +89,8 @@ export interface StyleProperties extends LayoutStylesProperties {
    * child items are aligned over the vertical axis. For example, the item(s) are stretched
    * or centered.
    */
-  align?: LayoutAlign;
-  justify?: LayoutAlign;
+  align?: LayoutAlign | string;
+  justify?: LayoutAlign | string;
 
   /**
    * Makes it possible for an element to span across the given columns or rows.
@@ -126,7 +126,7 @@ export interface StyleProperties extends LayoutStylesProperties {
   /**
    * Sets the gaps (gutters) between rows and columns. The gap is applied to all layouts.
    */
-  gap?: string;
+  gap?: string | number;
 
   /**
    * Specifies the stack order of a component. This is useful in combination with sticky layouts,
@@ -208,7 +208,7 @@ export interface StyleProperties extends LayoutStylesProperties {
   /**
    * Rounds the corners of an element's outer border edge.
    */
-  radius?: string;
+  radius?: string | number;
 
   ratio?: string;
 
@@ -222,7 +222,7 @@ export interface StyleProperties extends LayoutStylesProperties {
    * The typography is applied to the component and all it's sub components, including those components
    * with a shadow dom, since typography is inherited in shadow dom.
    */
-  typography?: HeadingTag;
+  typography?: HeadingTag | string;
 
   style?: string;
 }

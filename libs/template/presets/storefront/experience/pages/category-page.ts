@@ -1,6 +1,8 @@
-import { StaticComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
+import { Size, featureVersion } from '@spryker-oryx/utilities';
 
-export const categoryPage: StaticComponent = {
+export const categoryPage: ExperienceComponent = {
+  id: 'category-page',
   type: 'Page',
   meta: {
     title: 'Category Page',
@@ -18,6 +20,21 @@ export const categoryPage: StaticComponent = {
     ],
   },
   components: [
+    ...(featureVersion >= '1.1'
+      ? [
+          {
+            type: 'oryx-site-breadcrumb',
+            options: {
+              rules: [
+                {
+                  colSpan: 2,
+                },
+                { query: { breakpoint: Size.Sm }, hide: true },
+              ],
+            },
+          },
+        ]
+      : []),
     {
       type: 'oryx-search-facet-navigation',
       options: {
@@ -35,6 +52,7 @@ export const categoryPage: StaticComponent = {
     },
     {
       type: 'oryx-composition',
+      id: 'category-product-listing',
       name: 'Product listing',
       options: {
         rules: [{ layout: 'list', gap: '20px' }],
@@ -42,6 +60,7 @@ export const categoryPage: StaticComponent = {
       components: [
         {
           type: 'oryx-composition',
+          id: 'category-product-listing-header',
           name: 'Product list header',
           options: { rules: [{ layout: 'flex' }] },
           components: [

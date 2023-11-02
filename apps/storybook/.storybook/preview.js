@@ -1,6 +1,7 @@
 // organize-imports-ignore
 import './global.css';
 import './app/build';
+import MockDate from 'mockdate';
 
 export const parameters = {
   options: {
@@ -15,3 +16,11 @@ export const parameters = {
     },
   },
 };
+
+export const decorators = [
+  (storyFn, context) => {
+    //automatically reset mocked date for each story that does not use MockDateDecorator
+    MockDate.reset();
+    return storyFn(context);
+  },
+];
