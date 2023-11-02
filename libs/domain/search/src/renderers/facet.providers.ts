@@ -20,10 +20,12 @@ export const facetProviders = [
     useValue: {
       ...defaultFacetRenderer,
       ...colorFacetRenderer,
-      ...(featureVersion >= '1.2' ? {
-        ...priceFacetRenderer,
-        ...ratingFacetRenderer
-      } : {}),
+      ...(featureVersion >= '1.2'
+        ? {
+            ...priceFacetRenderer,
+            ...ratingFacetRenderer,
+          }
+        : {}),
     },
   },
   {

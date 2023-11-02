@@ -1,28 +1,27 @@
 import { RangeFacet } from '@spryker-oryx/product';
-import {
-  FacetController,
-  searchFacetStyles,
-} from '@spryker-oryx/search/facet';
-import { computed, signalProperty, I18nMixin } from '@spryker-oryx/utilities';
+import { FacetController, searchFacetStyles } from '@spryker-oryx/search/facet';
+import { I18nMixin, computed } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
+import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { SearchRatingFacetComponentProperties } from './facet-rating.model';
 import { searchFacetRatingStyles } from './facet-rating.styles';
 
-export class SearchRatingFacetComponent 
-  extends I18nMixin(LitElement) 
-  implements SearchRatingFacetComponentProperties {
+export class SearchRatingFacetComponent
+  extends I18nMixin(LitElement)
+  implements SearchRatingFacetComponentProperties
+{
   static styles = [searchFacetStyles, searchFacetRatingStyles];
 
   protected controller = new FacetController(this);
 
-  @signalProperty() name?: string;
-  @signalProperty({ type: Boolean }) open?: boolean;
-  @signalProperty({ type: Boolean }) disableClear?: boolean;
-  @signalProperty({type: Number, reflect: true}) min = 1;
-  @signalProperty({type: Number, reflect: true}) max = 5;
-  @signalProperty({type: Number, reflect: true}) scale = 5;
+  @property() name?: string;
+  @property({ type: Boolean }) open?: boolean;
+  @property({ type: Boolean }) disableClear?: boolean;
+  @property({ type: Number, reflect: true }) min?: number;
+  @property({ type: Number, reflect: true }) max?: number;
+  @property({ type: Number, reflect: true }) scale = 5;
 
   protected $facet = computed(() => this.controller.getFacet<RangeFacet>());
 
@@ -38,24 +37,21 @@ export class SearchRatingFacetComponent
     return selected?.min !== min || selected?.max !== max;
   });
 
-  protected $values = computed(() => {
+  protected getValues(): number[] {
     const facet = this.$facet();
 
-    if (!facet || !this.scale || this.scale < 1) return [];
+    if (!facet || !this.scale) return [];
 
     const {
       values: { min, max },
     } = facet;
 
-    const normalizedMax = (this.max ?? max) ? Math.min((this.max ?? max), this.scale) : this.scale;
-    const normalizedMin = this.min ?? min;
-
-    const valuesCount = Math.max(normalizedMax - normalizedMin + 1, 0);
+    const normalizedMax = Math.min(this.max ?? max, this.scale);
 
     return Array.from(
-      new Array(valuesCount).keys()
+      new Array(normalizedMax - Math.max(this.min ?? min, 0) + 1).keys()
     ).map((i) => normalizedMax - i);
-  });
+  }
 
   protected override render(): TemplateResult | void {
     const facet = this.$facet();
@@ -67,13 +63,13 @@ export class SearchRatingFacetComponent
       ?enableClear="${!this.disableClear}"
       ?dirty=${!!this.$isDirty()}
       .heading=${this.name}
-    >${this.renderValues(this.$values())}
+      >${this.renderValues(this.getValues())}
     </oryx-search-facet-value-navigation>`;
   }
 
   protected onChange(e: InputEvent): void {
     const { value } = e.target as HTMLInputElement;
-    
+
     this.controller.dispatchSelectEvent({
       selected: { min: +value },
     });
@@ -92,7 +88,7 @@ export class SearchRatingFacetComponent
   }
 
   protected renderValue(facetValue: number): TemplateResult {
-    const selected  = this.$facet()?.values?.selected?.min === facetValue;
+    const selected = this.$facet()?.values?.selected?.min === facetValue;
 
     return html`<li>
       <oryx-radio>

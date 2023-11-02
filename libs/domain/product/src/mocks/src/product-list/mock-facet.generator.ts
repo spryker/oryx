@@ -1,5 +1,4 @@
 import {
-  Facet,
   FacetType,
   FacetValue,
   RangeFacet,

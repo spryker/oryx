@@ -10,7 +10,6 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { FacetController } from './controllers';
-import { SingleMultiFacet } from './facet.model';
 import { searchFacetStyles } from './facet.styles';
 
 @signalAware()

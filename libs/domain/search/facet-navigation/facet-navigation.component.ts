@@ -4,7 +4,7 @@ import {
   defaultOptions,
   LayoutMixin,
 } from '@spryker-oryx/experience';
-import { FacetType, RangeFacet, RangeFacetValue } from '@spryker-oryx/product';
+import { FacetType, RangeFacet } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
 import {
   FacetComponentRegistryService,

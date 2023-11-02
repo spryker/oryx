@@ -9,6 +9,7 @@ import {
   signalProperty,
 } from '@spryker-oryx/utilities';
 import { TemplateResult, html } from 'lit';
+import { keyed } from 'lit/directives/keyed.js';
 
 export class SearchPriceFacetComponent extends I18nMixin(
   SearchRangeFacetComponent
@@ -17,8 +18,8 @@ export class SearchPriceFacetComponent extends I18nMixin(
   @signalProperty() labelMax = 'price.label.max-<currency>';
 
   protected currencyService = resolve(CurrencyService);
-  protected override $facet = computed(
-    () => this.convertValues(this.controller.getFacet<RangeFacet>())
+  protected override $facet = computed(() =>
+    this.convertValues(this.controller.getFacet<RangeFacet>())
   );
   protected $currencySymbol = signal(this.currencyService.getCurrencySymbol());
 
@@ -55,16 +56,20 @@ export class SearchPriceFacetComponent extends I18nMixin(
       <hr />
 
       ${this.renderInput('max', min + 1, max, labelMax)}
-
-      <oryx-multi-range
-        .min="${min}"
-        .max="${max}"
-        .maxValue="${this.max}"
-        .minValue="${this.min}"
-        .step="${this.step}"
-        @drag="${this.onRangeDrag}"
-        @change="${this.onRangeChange}"
-      ></oryx-multi-range>
+      ${keyed(
+        `${min}-${max}`,
+        html`
+          <oryx-multi-range
+            .min="${min}"
+            .max="${max}"
+            .maxValue="${this.max}"
+            .minValue="${this.min}"
+            .step="${this.step}"
+            @drag="${this.onRangeDrag}"
+            @change="${this.onRangeChange}"
+          ></oryx-multi-range>
+        `
+      )}
     `;
   }
 }

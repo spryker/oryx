@@ -16,6 +16,7 @@ export const ratingFacetRenderer = {
           .name=${facet.name}
           .open=${options.open}
           ?disableClear="${!options.enableClear}"
+          min="1"
           max="4"
         ></oryx-search-facet-rating>
       `;

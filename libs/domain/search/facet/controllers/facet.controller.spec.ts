@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector, resolve } from '@spryker-oryx/di';
-import { FacetValue, ValueFacet } from '@spryker-oryx/product';
+import { FacetValue } from '@spryker-oryx/product';
 import {
   generateFacet,
   generateRange,

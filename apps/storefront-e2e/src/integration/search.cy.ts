@@ -28,17 +28,17 @@ describe('Search suite', () => {
       // apply 1st filter
       searchPage.getFacets().setLabel('New');
       searchPage.waitForSearchRequest();
-      checkProductCardsFilteringByName(searchPage, 3, 2, query);
+      checkProductCardsFilteringByName(searchPage, 4, 2, query);
 
       // apply 2nd filter
       searchPage.getFacets().setColor('Black');
       searchPage.waitForSearchRequest();
-      checkProductCardsFilteringByName(searchPage, 3, 1, query);
+      checkProductCardsFilteringByName(searchPage, 4, 1, query);
 
       // clear 2nd filter
       // we don't expect search request here because previous query is cached
       searchPage.getFacets().resetColor();
-      checkProductCardsFilteringByName(searchPage, 3, 2, query);
+      checkProductCardsFilteringByName(searchPage, 4, 2, query);
     });
 
     it('should apply price filterring', () => {

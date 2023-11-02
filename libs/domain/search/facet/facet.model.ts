@@ -3,8 +3,10 @@ import { RequireAtLeastOneProp } from '@spryker-oryx/utilities';
 
 export const FACET_SELECT_EVENT = 'oryx.select';
 
-
-export type SelectRangeFacetValues = RequireAtLeastOneProp<{min?: number, max?: number}, 'min' | 'max'>;
+export type SelectRangeFacetValues = RequireAtLeastOneProp<
+  { min?: number; max?: number },
+  'min' | 'max'
+>;
 export type SelectRangeFacetValue = { selected: SelectRangeFacetValues };
 
 export type SelectFacetValue = Pick<FacetValue, 'value' | 'selected'>;
