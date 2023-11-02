@@ -15,6 +15,14 @@ export class TextComponent extends LitElement implements TextProperties {
     return html`${unsafeHTML(c)}`;
   }
 
+  /**
+   * Modifies an HTML string by adding custom inline styles to specific HTML elements
+   * based on their tags, classes, and screen sizes. The styles align roughly with the
+   * Oryx design system without reusing the design system components directly.
+   *
+   * @param htmlString - The HTML string to be modified.
+   * @returns The modified HTML string with custom inline styles.
+   */
   protected appendStyleToHeaders(htmlString: string): string {
     const headerRegex = /<(\w+)([^>]*)>(.*?)<\/\1>|<(\w+)([^>]*)\/>/gis;
 
@@ -37,11 +45,11 @@ export class TextComponent extends LitElement implements TextProperties {
             attributes?.match(/style="(.*?)"/i)?.[1] ?? '';
           if (styleRules && !styleRules.endsWith(';')) styleRules += ';';
 
-          styleRules += this.getStyle(headerFromClass ?? headerTag);
+          styleRules += this.getHeaderStyle(headerFromClass ?? headerTag);
 
           headerScreenClass.forEach((cls) => {
             const parts = cls.split('-');
-            styleRules += this.getStyle(parts[1], parts[0]);
+            styleRules += this.getHeaderStyle(parts[1], parts[0]);
           });
 
           const style = `style="${styleRules}"`;
@@ -59,7 +67,14 @@ export class TextComponent extends LitElement implements TextProperties {
     return modifiedHtmlString;
   }
 
-  protected getStyle(tag: string, screenSize?: string): string {
+  /**
+   * Generates custom inline styles for a given HTML tag representing a header and, optionally, a screen size prefix for responsive styles.
+   *
+   * @param headerTag - The HTML tag (e.g., 'h1', 'strong') for which to generate header styles.
+   * @param screenSize - (Optional) The screen size prefix for responsive header styles (e.g., 'lg', 'md', 'sm').
+   * @returns The custom inline styles for the header as a string.
+   */
+  protected getHeaderStyle(tag: string, screenSize?: string): string {
     if (!tag) return '';
     const size = screenSize ? `-${screenSize}` : '';
 

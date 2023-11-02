@@ -1,4 +1,5 @@
-import { css } from 'lit';
+import { featureVersion } from '@spryker-oryx/utilities';
+import { css, unsafeCSS } from 'lit';
 
 export const styles = css`
   :host {
@@ -11,6 +12,9 @@ export const styles = css`
     background-color: var(--oryx-color-neutral-1);
     min-height: 100vh;
     box-sizing: border-box;
+    ${featureVersion <= '1.3'
+      ? unsafeCSS('text-wrap: balance;')
+      : unsafeCSS('')}
   }
 
   ::placeholder {

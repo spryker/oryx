@@ -1,4 +1,5 @@
 import { ThemeToken } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const typographyTokens: ThemeToken = {
   typography: {
@@ -18,6 +19,11 @@ export const typographyTokens: ThemeToken = {
   },
 };
 
+const smallStrongTypographyToken: ThemeToken =
+  featureVersion <= '1.3'
+    ? { bold: { size: '1.1428571429rem', line: '1em', weight: '600' } }
+    : { strong: { size: '1.1428571429rem', weight: '600', line: '1em' } };
+
 export const typographySmallTokens: ThemeToken = {
   typography: {
     h1: {
@@ -31,9 +37,14 @@ export const typographySmallTokens: ThemeToken = {
     h4: { size: '1rem', line: '1.5714285714em', weight: '600' },
     h5: { size: '1rem', line: '1.5714285714em', weight: '700' },
     h6: { size: '0.8571428571rem', line: '1.3333333333em', weight: '600' },
-    strong: { size: '1.1428571429rem', weight: '600', line: '1em' },
+    ...smallStrongTypographyToken,
   },
 };
+
+const mediumStrongTypographyToken: ThemeToken =
+  featureVersion <= '1.3'
+    ? { bold: { size: '1rem', weight: '600' } }
+    : { strong: { size: '1rem', weight: '600' } };
 
 export const typographyMediumAndLargerTokens: ThemeToken = {
   typography: {
@@ -44,5 +55,6 @@ export const typographyMediumAndLargerTokens: ThemeToken = {
     h5: { size: '1.1428571429rem', line: '1.5em', weight: '600' },
     h6: { size: '1.1428571429rem', line: '1.5em', weight: '500' },
     strong: { size: '1rem', weight: '600' },
+    ...mediumStrongTypographyToken,
   },
 };

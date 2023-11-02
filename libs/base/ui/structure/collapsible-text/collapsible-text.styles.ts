@@ -5,6 +5,7 @@ export const collapsibleTextStyles = css`
     display: grid;
     gap: 10px;
     line-height: var(--oryx-line-height, 22px);
+    justify-items: center;
   }
 
   ::slotted(p) {
@@ -59,7 +60,6 @@ export const collapsibleTextStyles = css`
   oryx-button {
     transition: transform var(--oryx-transition-time-long) ease-in-out;
     color: var(--oryx-color-primary-9);
-    justify-self: center;
   }
 
   :host([expanded]) oryx-button {

@@ -1,16 +1,28 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { featureVersion, i18n } from '@spryker-oryx/utilities';
 
 const image = (graphic: string) => ({
   type: 'oryx-content-image',
   content: { data: { graphic, alt: graphic } },
 });
 
-const heading = (text: string, rule = {}) => ({
+const heading = (token: string, rule = {}) => ({
   type: 'oryx-content-text',
-  content: { data: { text: `<b>${text}</b>` } },
+  content: {
+    data: {
+      text: `${text(token)}`,
+    },
+  },
   options: { rules: [rule] },
 });
+
+const text = (token: string): string => {
+  const text = i18n(token);
+  return `${
+    featureVersion <= '1.3' ? `<b>${text}</b>` : `<strong>${text}</strong>`
+  }`;
+};
 
 const link = (text: string, url = '/', icon?: string) => ({
   type: 'oryx-content-link',
@@ -45,7 +57,7 @@ const customerSupport = {
   id: 'customer-support',
   content: {
     data: {
-      text: `<b>Customer Support</b><br/>
+      text: `${text('footer.customer-support')}<br/>
         <a href="/contact">Contact us</a><br/>
         <a href="/">Help center</a><br/>
         <a href="/">Payment</a><br/>
@@ -61,7 +73,7 @@ const promises = {
   id: 'corporate-promises',
   options: { rules: [{ layout: 'list', gap: '0' }] },
   components: [
-    heading('Our promises'),
+    heading('footer.our-promises'),
     link('Free delivery', '/', IconTypes.Carrier),
     link('100-day return policy', '/', IconTypes.Parcel),
     link('Click & Collect', '/', 'storefront'),
@@ -73,7 +85,7 @@ const aboutUs = {
   id: 'corporate-info',
   content: {
     data: {
-      text: `<b>About us</b><br/>
+      text: `${text('footer.corporate-info')}<br/>
         <a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>
@@ -104,7 +116,7 @@ const paymentLinks = {
   id: 'payment',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
-    heading('Safe Payment methods'),
+    heading('footer.safe-payment-methods'),
     {
       type: 'oryx-composition',
       id: 'payment-links',
@@ -138,7 +150,7 @@ const shippingLinks = {
   id: 'shipping',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
-    heading('Shipping partners'),
+    heading('footer.shipping-partners'),
     {
       type: 'oryx-composition',
       id: 'shipping-links',
@@ -166,7 +178,7 @@ const mobileAppsLinks = {
   id: 'apps',
   options: { rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }] },
   components: [
-    heading('Spryker apps'),
+    heading('footer.spryker-apps'),
     {
       type: 'oryx-composition',
       id: 'app-links',
@@ -185,7 +197,7 @@ const socialLinks = {
     rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }],
   },
   components: [
-    heading('You can also find us on'),
+    heading('footer.you-can-also-find-us-on'),
     {
       type: 'oryx-composition',
       id: 'social-links',

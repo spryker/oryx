@@ -6,23 +6,21 @@ export const textStyles = css`
     display: contents;
   }
 
-  * {
-    margin: 0;
-    font-size: var(--_fs);
-    font-weight: var(--_fw);
-    line-height: var(--_lh);
-    text-wrap: balance;
-  }
-
   h1,
   h2,
   h3,
   h4,
   h5,
   h6,
-  caption {
+  caption,
+  strong {
     display: block;
+    margin: 0;
+    font-size: var(--_fs);
+    font-weight: var(--_fw);
+    line-height: var(--_lh);
     text-align: start;
+    text-wrap: balance;
   }
 
   .subtitle {
@@ -81,31 +79,3 @@ export const textStyles = css`
     text-decoration: none;
   }
 `;
-
-// caption {
-//   /* display: inline-block; */
-//   display: contents;
-// }
-
-// caption,
-// .caption {
-//   ${headingUtil(HeadingTag.Caption)}
-// }
-
-// .subtitle {
-//   ${headingUtil(HeadingTag.Subtitle)}
-
-//   text-transform: uppercase;
-// }
-
-// .subtitle-small {
-//   ${headingUtil(HeadingTag.SubtitleSmall)}
-// }
-
-// small {
-//   ${headingUtil(HeadingTag.Small)}
-// }
-
-// b {
-//   ${headingUtil(HeadingTag.Bold)}
-// }

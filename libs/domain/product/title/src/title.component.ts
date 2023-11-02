@@ -4,7 +4,7 @@ import { ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { LinkType } from '@spryker-oryx/ui/link';
-import { computed, hydrate } from '@spryker-oryx/utilities';
+import { computed, featureVersion, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { html } from 'lit/static-html.js';
@@ -33,8 +33,38 @@ export class ProductTitleComponent extends ProductMixin(
   protected override render(): TemplateResult | void {
     const name = this.$product()?.name;
     if (!name) return;
+    if (featureVersion <= '1.3') {
+      const { tag, as, asLg, asMd, asSm, maxLines } = this.$options();
+      return html`<oryx-heading
+        .tag=${tag}
+        .maxLines=${maxLines}
+        .as=${as}
+        .asLg=${asLg}
+        .asMd=${asMd}
+        .asSm=${asSm}
+      >
+        ${this.$link() ? this.renderLink() : html`${this.$product()?.name}`}
+      </oryx-heading>`;
+    }
 
     return this.$link() ? this.renderLink(name) : this.renderTitle(name);
+  }
+
+  renderLink(name: string): TemplateResult;
+  /**
+   * @deprecated Use the version of renderLink that accepts the 'name' argument.
+   */
+  renderLink(): TemplateResult;
+
+  renderLink(name?: string): TemplateResult {
+    const target =
+      this.$options().linkType === LinkType.ExternalLink ? '_blank' : undefined;
+    if (!name) name = this.$product()?.name ?? '';
+    return html`<oryx-link>
+      <a href=${this.$link()} target=${ifDefined(target)}>
+        ${this.renderTitle(name)}
+      </a>
+    </oryx-link>`;
   }
 
   protected renderTitle(name: string): TemplateResult | void {
@@ -60,16 +90,5 @@ export class ProductTitleComponent extends ProductMixin(
     if (asSm) add(`lg-${asSm}`);
     const style = cls ? `class=${cls}` : undefined;
     return `<${tag} ${style ?? ''}>${name}</${tag}>`;
-  }
-
-  protected renderLink(name: string): TemplateResult {
-    const target =
-      this.$options().linkType === LinkType.ExternalLink ? '_blank' : undefined;
-
-    return html`<oryx-link>
-      <a href=${this.$link()} target=${ifDefined(target)}>
-        ${this.renderTitle(name)}
-      </a>
-    </oryx-link>`;
   }
 }
