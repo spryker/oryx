@@ -3,9 +3,9 @@ import { css } from 'lit';
 export const collapsibleTextStyles = css`
   :host {
     display: grid;
+    justify-items: center;
     gap: 10px;
     line-height: var(--oryx-line-height, 22px);
-    justify-items: center;
   }
 
   ::slotted(p) {

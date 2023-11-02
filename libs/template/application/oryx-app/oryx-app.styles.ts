@@ -12,7 +12,7 @@ export const styles = css`
     background-color: var(--oryx-color-neutral-1);
     min-height: 100vh;
     box-sizing: border-box;
-    ${featureVersion <= '1.3'
+    ${featureVersion <= '1.4'
       ? unsafeCSS('text-wrap: balance;')
       : unsafeCSS('')}
   }

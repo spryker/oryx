@@ -33,7 +33,7 @@ export class ProductTitleComponent extends ProductMixin(
   protected override render(): TemplateResult | void {
     const name = this.$product()?.name;
     if (!name) return;
-    if (featureVersion <= '1.3') {
+    if (featureVersion <= '1.4') {
       const { tag, as, asLg, asMd, asSm, maxLines } = this.$options();
       return html`<oryx-heading
         .tag=${tag}

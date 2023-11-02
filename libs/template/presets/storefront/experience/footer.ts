@@ -20,7 +20,7 @@ const heading = (token: string, rule = {}) => ({
 const text = (token: string): string => {
   const text = i18n(token);
   return `${
-    featureVersion <= '1.3' ? `<b>${text}</b>` : `<strong>${text}</strong>`
+    featureVersion <= '1.4' ? `<b>${text}</b>` : `<strong>${text}</strong>`
   }`;
 };
 
