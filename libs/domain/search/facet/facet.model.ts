@@ -1,8 +1,12 @@
-import { FacetValue, RangeFacetValue, ValueFacet } from '@spryker-oryx/product';
+import { FacetValue, ValueFacet } from '@spryker-oryx/product';
+import { RequireAtLeastOneProp } from '@spryker-oryx/utilities';
 
 export const FACET_SELECT_EVENT = 'oryx.select';
 
-export type SelectRangeFacetValue = Pick<RangeFacetValue, 'selected'>;
+
+export type SelectRangeFacetValues = RequireAtLeastOneProp<{min?: number, max?: number}, 'min' | 'max'>;
+export type SelectRangeFacetValue = { selected: SelectRangeFacetValues };
+
 export type SelectFacetValue = Pick<FacetValue, 'value' | 'selected'>;
 
 export type SelectFacetEventDetailValue =

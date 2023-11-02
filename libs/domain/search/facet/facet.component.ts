@@ -30,9 +30,7 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
    */
   @signalProperty({ type: Boolean }) enableClear = true;
 
-  protected facet = computed(
-    () => this.controller.getFacet() as SingleMultiFacet
-  );
+  protected facet = computed(() => this.controller.getFacet());
 
   protected onChange(e: InputEvent): void {
     const { value, checked: selected } = e.target as HTMLInputElement;

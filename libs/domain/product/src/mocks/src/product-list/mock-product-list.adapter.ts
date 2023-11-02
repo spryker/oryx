@@ -6,7 +6,6 @@ import {
 import {
   generateFacet,
   generateRange,
-  generateRatingFacet,
 } from '@spryker-oryx/product/mocks';
 import { Observable, of } from 'rxjs';
 import { createProductListMock } from './mock-product-list.generator';
@@ -16,7 +15,7 @@ export class MockProductListAdapter implements ProductListAdapter {
     minPrice: 'price[min]',
     maxPrice: 'price[max]',
     storageCapacity: 'storage_capacity[]',
-    minRating: 'rating',
+    minRating: 'rating[min]',
   };
 
   getKey(qualifier: ProductListQualifier): string {
@@ -58,7 +57,6 @@ export class MockProductListAdapter implements ProductListAdapter {
           qualifier.category?.split(',')
         ),
         generateFacet('Label', 'label', 3, qualifier.label?.split(','), true),
-        generateRatingFacet(1, 5, 5),
         generateFacet('Color', 'color', 6, qualifier.color?.split(',')),
         generateRange(
           'Range',
@@ -75,6 +73,18 @@ export class MockProductListAdapter implements ProductListAdapter {
           'minPrice' in qualifier && 'maxPrice' in qualifier
             ? [qualifier.minPrice! * 100, qualifier.maxPrice! * 100]
             : []
+        ),
+        generateRange(
+          'Rating',
+          'rating',
+          [1, 5],
+          'minRating' in qualifier ? [qualifier.minRating!]: []
+        ),
+        generateRange(
+          'RatingPreselected',
+          'rating-preselected',
+          [1, 5],
+          [qualifier.minRating ?? 4]
         ),
       ],
     });

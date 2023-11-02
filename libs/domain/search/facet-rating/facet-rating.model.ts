@@ -1,4 +1,7 @@
-export interface SearchRatingFacetComponentOptions {
+import { SearchFacetComponentAttributes } from '@spryker-oryx/search/facet'
+
+export interface SearchRatingFacetComponentProperties extends Omit<
+  SearchFacetComponentAttributes, 'multi' | 'renderLimit' | 'minForSearch'> {
   /**
    * Indicates the minimum rating value for a rating facet.
    * This value must be greater than 0 and must be less than or equal to the `max` rating value.

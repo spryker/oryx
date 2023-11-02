@@ -17,16 +17,13 @@ export class SearchPriceFacetComponent extends I18nMixin(
   @signalProperty() labelMax = 'price.label.max-<currency>';
 
   protected currencyService = resolve(CurrencyService);
-  protected $rawFacet = computed(
-    () => this.controller.getFacet() as RangeFacet
-  );
   protected override $facet = computed(
-    () => this.convertValues(this.$rawFacet()) as RangeFacet
+    () => this.convertValues(this.controller.getFacet<RangeFacet>())
   );
   protected $currencySymbol = signal(this.currencyService.getCurrencySymbol());
 
-  protected convertValues(facet: RangeFacet): RangeFacet | void {
-    if (!facet) return;
+  protected convertValues(facet: RangeFacet | null): RangeFacet | null {
+    if (!facet) return null;
 
     const { min, max, selected } = facet.values;
 

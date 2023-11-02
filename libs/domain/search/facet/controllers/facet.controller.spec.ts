@@ -37,7 +37,7 @@ class FakeElement extends LitElement implements SearchFacetComponentAttributes {
   @property({ type: Number }) renderLimit?: number;
 
   protected controller = new FacetController(this);
-  facet = computed(() => this.controller.getFacet() as ValueFacet);
+  facet = computed(() => this.controller.getFacet());
   selectedValues = computed(() => this.controller.getSelectedValues());
 
   protected override render(): TemplateResult {

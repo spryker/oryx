@@ -4,7 +4,6 @@ export * from './concrete-products';
 export * from './facet';
 export * from './facet-category';
 export * from './facet-range';
-export * from './facet-rating';
 export * from './labels';
 export * from './media';
 export * from './model';

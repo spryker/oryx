@@ -14,23 +14,21 @@ export default {
 const Template: Story = (): TemplateResult => {
   resolve<MockRouterService>(RouterService).params$.next({});
 
-  return html`<oryx-search-facet-rating
-    name="Rating"
-    open
-    .options=${{ max: 5 }}
-  ></oryx-search-facet-rating> `;
+  return html`
+    <h4>Default</h4>
+    <oryx-search-facet-rating
+      name="Rating"
+      open
+    ></oryx-search-facet-rating>
+
+    <h4>Selected value</h4>
+    <oryx-search-facet-rating
+      name="RatingPreselected"
+      open
+    ></oryx-search-facet-rating>
+  `;
 };
+
+
 
 export const SelectedOption = Template.bind({});
-
-SelectedOption.play = async (obj: {
-  canvasElement: HTMLElement;
-}): Promise<void> => {
-  const component = <SearchRatingFacetComponent>(
-    obj.canvasElement.querySelector('oryx-search-facet-rating')
-  );
-  await waitForShadowDom(component);
-  component.renderRoot.querySelector<HTMLInputElement>(
-    'input[value="4"]'
-  )!.checked = true;
-};

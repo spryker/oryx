@@ -34,7 +34,7 @@ export class SearchRangeFacetComponent
   @state() min?: number;
   @state() max?: number;
 
-  protected $facet = computed(() => this.controller.getFacet() as RangeFacet);
+  protected $facet = computed(() => this.controller.getFacet<RangeFacet>());
 
   protected $isDirty = computed(() => {
     const facet = this.$facet();
@@ -93,7 +93,7 @@ export class SearchRangeFacetComponent
   protected hasChangedValue({ min, max }: RangeFacetValue): boolean {
     const {
       values: { selected },
-    } = this.$facet();
+    } = this.$facet()!;
     return selected?.min !== min || selected?.max !== max;
   }
 

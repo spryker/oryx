@@ -87,8 +87,8 @@ export class FacetController implements ReactiveController {
   /**
    * Returns modified data based on searching and cutting by renderLimit.
    */
-  getFacet(): SingleMultiFacet | RangeFacet | null {
-    return this.computedFacet();
+  getFacet<T extends SingleMultiFacet | RangeFacet = SingleMultiFacet>(): T | null {
+    return this.computedFacet() as T;
   }
 
   /**

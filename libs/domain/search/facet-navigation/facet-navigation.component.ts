@@ -14,6 +14,7 @@ import {
   SelectFacetEventDetail,
   SelectFacetValue,
   SelectRangeFacetValue,
+  SelectRangeFacetValues,
 } from '@spryker-oryx/search/facet';
 import {
   computed,
@@ -140,9 +141,9 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
 
   protected navigateRange(
     facet: RangeFacet,
-    selectedValues?: RangeFacetValue
+    selectedValues?: SelectRangeFacetValues
   ): void {
-    const rangeParams = ['min', 'max'] as (keyof RangeFacetValue)[];
+    const rangeParams = ['min', 'max'] as (keyof SelectRangeFacetValues)[];
     const queryParams = rangeParams.reduce((acc, key) => {
       const selected = selectedValues?.[key];
       const facetValue = facet.values?.[key];
