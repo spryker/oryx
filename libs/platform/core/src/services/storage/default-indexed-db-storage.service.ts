@@ -13,8 +13,8 @@ export class DefaultIndexedDBStorageService implements IndexedDBStorageService {
       const request = indexedDB.open(indexedDbStorageName, 1);
 
       request.onerror = () => subscriber.error('DB: error');
-      request.onupgradeneeded = (evt: IDBVersionChangeEvent) => {
-        const db = (evt.target as IDBOpenDBRequest).result;
+      request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
+        const db = (event.target as IDBOpenDBRequest).result;
         db.createObjectStore(indexedDbTableName, { keyPath: 'key' });
       };
       request.onsuccess = () => {
