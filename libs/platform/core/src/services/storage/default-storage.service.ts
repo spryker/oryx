@@ -1,12 +1,9 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
+import { toObservable } from '@spryker-oryx/utilities';
 import { isObservable, map, Observable, of } from 'rxjs';
 import { IndexedDBStorageService } from './indexed-db-storage.service';
 import { StorageType } from './model';
 import { StorageService, StorageStrategy } from './storage.service';
-
-function toObservable<T>(value: Observable<T> | T): Observable<T> {
-  return isObservable(value) ? value : of(value);
-}
 
 export class DefaultStorageService implements StorageService {
   constructor(
