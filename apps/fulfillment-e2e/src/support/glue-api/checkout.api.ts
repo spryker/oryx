@@ -4,7 +4,7 @@ export class CheckoutApi extends GlueApi {
   checkout = (idCart: string) => {
     return cy.request({
       method: 'POST',
-      url: `${Cypress.env('glueApiUrl')}/checkout?include=orders`,
+      url: `${this.baseUrl}/checkout?include=orders`,
       headers: this.getHeaders(),
       body: {
         data: {

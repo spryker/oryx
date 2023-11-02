@@ -1,4 +1,6 @@
 export class GlueApi {
+  baseUrl = Cypress.env('glueApiUrl');
+
   private _customerUniqueId: number = Math.random();
 
   public get customerUniqueId(): number {

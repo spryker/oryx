@@ -1,8 +1,8 @@
 import { TestUserData } from '../../types/user.type';
 import { LoginFragment } from '../page_fragments/login.fragment';
-import { AbstractFAPage } from './abstract.page';
+import { AFAPage } from './abstract-fa.page';
 
-export class LoginPage extends AbstractFAPage {
+export class LoginPage extends AFAPage {
   url = '/';
 
   loginForm = new LoginFragment();

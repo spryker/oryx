@@ -17,7 +17,7 @@ declare global {
       mockSyncPending(): void;
       createPicking(): void;
       glueApiCreateOrder(): Chainable<string>;
-      zedMakeOrderReadyForPicking(orderId: string): Chainable<string>;
+      backofficeMakeOrderReadyForPicking(orderId: string): Chainable<string>;
       backofficeApiWaitForPicking(orderId: string): Chainable<string>;
     }
   }
@@ -46,7 +46,7 @@ Cypress.Commands.add('login', (user = defaultUser) => {
 
 Cypress.Commands.add('createPicking', () => {
   cy.glueApiCreateOrder()
-    .then((orderId) => cy.zedMakeOrderReadyForPicking(orderId))
+    .then((orderId) => cy.backofficeMakeOrderReadyForPicking(orderId))
     .then((orderId) => cy.backofficeApiWaitForPicking(orderId));
 });
 
@@ -68,10 +68,15 @@ Cypress.Commands.add('glueApiCreateOrder', () => {
     .then((res) => res.body.data.attributes.orderReference);
 });
 
-Cypress.Commands.add('zedMakeOrderReadyForPicking', (orderId: string) => {
-  cy.log(`TODO: implement zedMakeOrderReadyForPicking, order is ${orderId}`);
-  return cy.wrap(orderId);
-});
+Cypress.Commands.add(
+  'backofficeMakeOrderReadyForPicking',
+  (orderId: string) => {
+    cy.log(
+      `TODO: implement backofficeMakeOrderReadyForPicking, order is ${orderId}`
+    );
+    return cy.wrap(orderId);
+  }
+);
 
 Cypress.Commands.add('backofficeApiWaitForPicking', (orderId: string) => {
   cy.log(`TODO: implement backofficeApiWaitForPicking, order is ${orderId}`);

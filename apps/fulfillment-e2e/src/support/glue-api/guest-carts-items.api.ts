@@ -4,7 +4,7 @@ export class GuestCartsItemsApi extends GlueApi {
   postGuestCartsItems = (sku: string | undefined, quantity: number) => {
     return cy.request({
       method: 'POST',
-      url: `${Cypress.env('glueApiUrl')}/guest-cart-items`,
+      url: `${this.baseUrl}/guest-cart-items`,
       headers: this.getHeaders(),
       body: {
         data: {

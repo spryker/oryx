@@ -1,6 +1,6 @@
-import { AbstractFAPage } from './abstract.page';
+import { AFAPage } from './abstract-fa.page';
 
-export class WarehouseSelectionPage extends AbstractFAPage {
+export class WarehouseSelectionPage extends AFAPage {
   url = '/warehouse-selection';
 
   constructor() {

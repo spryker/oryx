@@ -1,8 +1,8 @@
 import { PickerFragment } from '../page_fragments/picker.fragment';
 import { ProductFragment } from '../page_fragments/product.fragment';
-import { AbstractFAPage } from './abstract.page';
+import { AFAPage } from './abstract-fa.page';
 
-export class PickerPage extends AbstractFAPage {
+export class PickerPage extends AFAPage {
   constructor(protected id: string) {
     super();
   }
