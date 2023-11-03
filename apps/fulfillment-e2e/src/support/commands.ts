@@ -1,4 +1,5 @@
 import { TestUserData } from '../types/user.type';
+import './backoffice/commands';
 import { CheckoutApi } from './glue-api/checkout.api';
 import { GuestCartsItemsApi } from './glue-api/guest-carts-items.api';
 import { GuestCartsApi } from './glue-api/guest-carts.api';
@@ -17,7 +18,6 @@ declare global {
       mockSyncPending(): void;
       createPicking(): void;
       glueApiCreateOrder(): Chainable<string>;
-      backofficeMakeOrderReadyForPicking(orderId: string): Chainable<string>;
       backofficeApiWaitForPicking(orderId: string): Chainable<string>;
     }
   }
@@ -45,6 +45,9 @@ Cypress.Commands.add('login', (user = defaultUser) => {
 });
 
 Cypress.Commands.add('createPicking', () => {
+  // initializes FA as a base domain
+  cy.visit('/');
+
   cy.glueApiCreateOrder()
     .then((orderId) => cy.backofficeMakeOrderReadyForPicking(orderId))
     .then((orderId) => cy.backofficeApiWaitForPicking(orderId));
@@ -67,16 +70,6 @@ Cypress.Commands.add('glueApiCreateOrder', () => {
     .then((idCart) => checkoutApi.checkout(idCart))
     .then((res) => res.body.data.attributes.orderReference);
 });
-
-Cypress.Commands.add(
-  'backofficeMakeOrderReadyForPicking',
-  (orderId: string) => {
-    cy.log(
-      `TODO: implement backofficeMakeOrderReadyForPicking, order is ${orderId}`
-    );
-    return cy.wrap(orderId);
-  }
-);
 
 Cypress.Commands.add('backofficeApiWaitForPicking', (orderId: string) => {
   cy.log(`TODO: implement backofficeApiWaitForPicking, order is ${orderId}`);

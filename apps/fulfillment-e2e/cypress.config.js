@@ -18,9 +18,10 @@ module.exports = defineConfig({
     baseUrl: 'http://localhost:4200',
     specPattern: './src/integration/*.cy.{js,jsx,ts,tsx}',
     supportFile: './src/support/index.ts',
+    experimentalOriginDependencies: true,
   },
   env: {
-    glueApiUrl: 'https://glue.de.faas-suite-prod.cloud.spryker.toys',
+    glueApiUrl: 'https://api.de.demo-picking-app.cloud.spryker.toys',
     backofficeUrl: 'https://backoffice.de.demo-picking-app.cloud.spryker.toys',
   },
 });
