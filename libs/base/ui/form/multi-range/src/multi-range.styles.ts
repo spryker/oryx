@@ -1,3 +1,4 @@
+import { featureVersion } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
 const disabledThumbStyles = unsafeCSS(`
@@ -8,6 +9,7 @@ const disabledThumbStyles = unsafeCSS(`
 const thumbStyles = unsafeCSS(`
   width: var(--_height);
   height: var(--_height);
+  
   background: var(--oryx-color-neutral-4);
   border: 1px solid var(--oryx-color-neutral-9);
   border-radius: 50%;
@@ -18,7 +20,7 @@ export const multiRangeStyles = css`
   :host {
     --_height: 24px;
 
-    background: var(--oryx-color-neutral-8);
+    position: relative;
     height: 6px;
     display: grid;
     grid-template-columns: var(--_multi-range-min) 1fr 1fr var(
@@ -26,9 +28,17 @@ export const multiRangeStyles = css`
       );
     align-items: center;
     align-content: center;
-    position: relative;
     border-radius: 3px;
     margin: 9px 0;
+    background: var(--oryx-color-neutral-8);
+
+    ${unsafeCSS(
+      featureVersion >= '1.2'
+        ? `
+      padding: 0 calc(var(--_height) / 2);
+    `
+        : ''
+    )}
   }
 
   :host > * {
@@ -72,6 +82,17 @@ export const multiRangeStyles = css`
     outline: none;
     pointer-events: var(--_pointer-events, none);
   }
+
+  ${unsafeCSS(
+    featureVersion >= '1.2'
+      ? `
+    label:nth-of-type(2) input {
+      inset-inline-start: auto;
+      inset-inline-end: 0;
+    }
+  `
+      : ''
+  )}
 
   input::-webkit-slider-thumb {
     ${thumbStyles}

@@ -1,15 +1,12 @@
 import { resolve } from '@spryker-oryx/di';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { RouterService } from '@spryker-oryx/router';
-import { FacetListService } from '@spryker-oryx/search';
+import { FacetListService, SelectFacetEventDetail } from '@spryker-oryx/search';
 import { Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { take } from 'rxjs';
 import { storybookPrefix } from '../../.constants';
-import {
-  SearchFacetComponentAttributes,
-  SelectFacetEventDetail,
-} from '../facet.model';
+import { SearchFacetComponentAttributes } from '../facet.model';
 
 export default {
   title: `${storybookPrefix}/Facet`,

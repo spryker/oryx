@@ -1,5 +1,5 @@
 import { Provider, inject } from '@spryker-oryx/di';
-import { ProductCategoryService } from '@spryker-oryx/product';
+import { ProductCategoryService, ValueFacet } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import {
   BreadcrumbItem,
@@ -19,10 +19,10 @@ export class CategoryBreadcrumbResolver implements BreadcrumbResolver {
 
   resolve(): Observable<BreadcrumbItem[]> {
     return this.facetListService.getFacet({ parameter: 'category' }).pipe(
-      switchMap(({ selectedValues }) =>
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      switchMap((category) =>
         this.categoryService
-          .getTrail(String(selectedValues![0]))
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          .getTrail(String((category as ValueFacet).selectedValues![0]))
           .pipe(
             switchMap((trail) =>
               combineLatest(

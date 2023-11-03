@@ -8,8 +8,10 @@ import {
   DexieIndexedDbConfig,
   DexieIndexedDbService,
   IndexedDbService,
+  IndexedDbStorageStrategy,
   provideDexieConfig,
 } from './services';
+import { IndexedDbStorageStrategyToken } from './services/storage-strategy/indexed-db-storage-method';
 
 export interface IndexedDbFeatureConfig extends DexieIndexedDbConfig {
   entityTypes?: IndexedDbEntities;
@@ -25,6 +27,10 @@ export class IndexedDbFeature implements AppFeature {
   protected getProviders(config?: IndexedDbFeatureConfig): Provider[] {
     return [
       { provide: DexieIndexedDbService, useClass: DexieIndexedDbService },
+      {
+        provide: IndexedDbStorageStrategyToken,
+        useClass: IndexedDbStorageStrategy,
+      },
       {
         provide: IndexedDbService,
         useFactory: () => inject(DexieIndexedDbService),

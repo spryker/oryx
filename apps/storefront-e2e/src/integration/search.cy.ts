@@ -1,5 +1,6 @@
 import {
-  checkProductCardsFilterring,
+  checkProductCardsFilteringByName,
+  checkProductCardsFilteringByPrice,
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { SearchPage } from '../support/page-objects/search.page';
@@ -9,7 +10,7 @@ let searchPage;
 
 describe('Search suite', () => {
   describe('Products filtering', () => {
-    const query = 'TomTom';
+    const query = 'Canon';
 
     beforeEach(() => {
       searchPage = new SearchPage({ q: query });
@@ -17,20 +18,64 @@ describe('Search suite', () => {
     });
 
     it('should update products and facets when filters are applied/cleared', () => {
-      // apply 1st filter
-      searchPage.getFacets().setTouchscreen('Yes');
+      searchPage.getFacets().setRating('4');
       searchPage.waitForSearchRequest();
-      checkProductCardsFilterring(searchPage, 4, 3, query);
+      checkProductCardsFilteringByName(searchPage, 2, 1, query);
+
+      // we don't expect search request here because previous query is cached
+      searchPage.getFacets().resetRating();
+
+      // apply 1st filter
+      searchPage.getFacets().setLabel('New');
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilteringByName(searchPage, 4, 2, query);
 
       // apply 2nd filter
       searchPage.getFacets().setColor('Black');
       searchPage.waitForSearchRequest();
-      checkProductCardsFilterring(searchPage, 3, 1, query);
+      checkProductCardsFilteringByName(searchPage, 4, 1, query);
 
       // clear 2nd filter
       // we don't expect search request here because previous query is cached
       searchPage.getFacets().resetColor();
-      checkProductCardsFilterring(searchPage, 4, 3, query);
+      checkProductCardsFilteringByName(searchPage, 4, 2, query);
+    });
+
+    it('should apply price filterring', () => {
+      // set brand to limit a number of products displayed
+      // and avoid issues with concrete products displaying
+      searchPage = new SearchPage({ q: 'Cameras' });
+      searchPage.visit();
+      searchPage.getFacets().setBrand('Kodak');
+
+      const minPrice = 200;
+      const maxPrice = 400;
+
+      cy.log('set minimum price');
+      searchPage.getFacets().setMinPrice(minPrice);
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(searchPage, minPrice);
+
+      cy.log('reset prices, set max price');
+      searchPage.getFacets().resetPrices();
+      searchPage.waitForSearchRequest();
+      searchPage.getFacets().setMaxPrice(maxPrice);
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(searchPage, 0, maxPrice);
+
+      cy.log('reset prices, change min price range');
+      searchPage.getFacets().resetPrices();
+      searchPage.waitForSearchRequest();
+      searchPage.getFacets().setMinPriceRange(minPrice);
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(searchPage, minPrice);
+
+      cy.log('reset prices, change max price range');
+      searchPage.getFacets().resetPrices();
+      searchPage.waitForSearchRequest();
+      searchPage.getFacets().setMaxPriceRange(maxPrice);
+      searchPage.waitForSearchRequest();
+      checkProductCardsFilteringByPrice(searchPage, 0, maxPrice);
     });
   });
 

@@ -153,7 +153,7 @@ export const paginationStyles = css`
     background-color: var(--oryx-color-neutral-3);
   }
 
-  slot[name='previous'] oryx-icon {
+  a[direction='previous'] {
     transform: scaleX(-1);
   }
 `;
