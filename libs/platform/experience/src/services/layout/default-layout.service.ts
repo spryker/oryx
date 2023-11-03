@@ -1,8 +1,9 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { LayoutProperties } from '@spryker-oryx/experience/layout';
-import { Breakpoint, sizes } from '@spryker-oryx/utilities';
+import { Breakpoint, featureVersion, sizes } from '@spryker-oryx/utilities';
 import { Observable, map, merge, of, reduce } from 'rxjs';
+import { CompositionLayout } from '../../models';
 import { LayoutBuilder } from './layout.builder';
 import {
   LayoutStyles,
@@ -92,14 +93,110 @@ export class DefaultLayoutService implements LayoutService {
       options,
     } = params;
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.getPlugin(token, type!)
-      ?.getStyles?.({ options })
-      .pipe(
-        map((styles) =>
-          this.resolveStylesForBreakpoint(styles, included, excluded)
-        )
-      );
+    if (featureVersion >= '1.2') {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.getPlugin(token, type!)
+        ?.getStyles?.({ options })
+        .pipe(
+          map((styles) =>
+            this.resolveStylesForBreakpoint(styles, included, excluded)
+          )
+        );
+    }
+
+    return this.legacyResolveStyles(token, included, excluded);
+  }
+
+  private legacyResolveStyles(
+    layout: string,
+    included: Breakpoint[] = [],
+    excluded: Breakpoint[] = []
+  ): Observable<string> | void {
+    switch (layout) {
+      case 'bleed':
+        return ssrAwaiter(
+          import('./plugins/properties/bleed/bleed.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case 'sticky':
+        return ssrAwaiter(
+          import('./plugins/properties/sticky/sticky.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case 'overlap':
+        return ssrAwaiter(
+          import('./plugins/properties/overlap/overlap.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case 'divider':
+        return ssrAwaiter(
+          import('./plugins/properties/divider/divider.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.Column:
+        return ssrAwaiter(
+          import('./plugins/types/column/column-layout.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.Grid:
+        return ssrAwaiter(
+          import('./plugins/types/grid/grid-layout.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.Carousel:
+        return ssrAwaiter(
+          import('./plugins/types/carousel/carousel-layout.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.Flex:
+        return ssrAwaiter(
+          import('./plugins/types/flex/flex-layout.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.Split:
+        return ssrAwaiter(
+          import('./plugins/types/split/split-layout.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.SplitMain:
+        return ssrAwaiter(
+          import('./plugins/types/split-main/split-main-layout.styles').then(
+            (m) => this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.SplitAside:
+        return ssrAwaiter(
+          import('./plugins/types/split-aside/split-aside-layout.styles').then(
+            (m) => this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+
+      case CompositionLayout.Text:
+        return ssrAwaiter(
+          import('./plugins/types/text/text-layout.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          )
+        );
+    }
   }
 
   protected getPlugin(
