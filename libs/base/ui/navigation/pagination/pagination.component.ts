@@ -51,6 +51,7 @@ export class PaginationComponent
         @click=${(e: MouseEvent): void => this.onClick(e, nav)}
         ?disabled=${!nav}
         ?inert=${!nav}
+        direction=${direction}
       >
         <slot name=${direction}>
           <oryx-icon type=${IconTypes.ArrowForward}></oryx-icon>
