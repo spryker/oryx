@@ -9,13 +9,11 @@ import { RouterService } from '@spryker-oryx/router';
 import {
   FacetComponentRegistryService,
   FacetListService,
-} from '@spryker-oryx/search';
-import {
   SelectFacetEventDetail,
   SelectFacetValue,
   SelectRangeFacetValue,
   SelectRangeFacetValues,
-} from '@spryker-oryx/search/facet';
+} from '@spryker-oryx/search';
 import {
   computed,
   featureVersion,

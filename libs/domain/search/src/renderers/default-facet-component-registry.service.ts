@@ -1,6 +1,6 @@
 import { inject } from '@spryker-oryx/di';
 import { Facet } from '@spryker-oryx/product';
-import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
+import { SelectFacetEventDetail } from '@spryker-oryx/search';
 import { TemplateResult } from 'lit';
 import { FacetComponentRegistryService } from './facet-component-registry.service';
 import {

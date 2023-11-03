@@ -61,7 +61,7 @@ export class SearchRatingFacetComponent
     return html`<oryx-search-facet-value-navigation
       ?open=${this.open}
       ?enableClear="${!this.disableClear}"
-      ?dirty=${!!this.$isDirty()}
+      ?dirty=${this.$isDirty()}
       .heading=${this.name}
       >${this.renderValues(this.getValues())}
     </oryx-search-facet-value-navigation>`;

@@ -6,11 +6,9 @@ import { RouterService } from '@spryker-oryx/router';
 import {
   FacetComponentRegistryService,
   FacetListService,
-} from '@spryker-oryx/search';
-import {
   SelectFacetEventDetail,
   SelectRangeFacetValue,
-} from '@spryker-oryx/search/facet';
+} from '@spryker-oryx/search';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';

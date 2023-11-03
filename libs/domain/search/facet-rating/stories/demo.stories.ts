@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { RangeFacetValue } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
+import { SelectFacetEventDetail } from '@spryker-oryx/search';
 import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';

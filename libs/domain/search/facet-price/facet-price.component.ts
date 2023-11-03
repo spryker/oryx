@@ -1,7 +1,9 @@
 import { resolve } from '@spryker-oryx/di';
 import { RangeFacet } from '@spryker-oryx/product';
+import { SelectRangeFacetValues } from '@spryker-oryx/search';
 import { SearchRangeFacetComponent } from '@spryker-oryx/search/facet-range';
 import { CurrencyService } from '@spryker-oryx/site';
+import { MultiRangeChangeEvent } from '@spryker-oryx/ui/multi-range';
 import {
   I18nMixin,
   computed,
@@ -39,6 +41,21 @@ export class SearchPriceFacetComponent extends I18nMixin(
         },
       },
     };
+  }
+
+  protected onRangeChange(e: CustomEvent<MultiRangeChangeEvent>): void {
+    const { min, max } = this.$facet()!.values;
+    const { minValue, maxValue } = e.detail;
+    const selected = {
+      min: minValue !== min ? minValue : undefined,
+      max: maxValue !== max ? maxValue : undefined,
+    } as SelectRangeFacetValues;
+
+    if (this.hasChangedValue(selected)) {
+      console.log(this.$facet(), selected);
+
+      this.controller.dispatchSelectEvent({ selected });
+    }
   }
 
   protected renderControls(facet: RangeFacet): TemplateResult {
