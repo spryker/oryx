@@ -35,6 +35,7 @@ describe('DefaultLayoutService', () => {
   let service: LayoutService;
 
   beforeEach(() => {
+    mockFeatureVersion('1.2');
     createInjector({
       providers: [
         {
