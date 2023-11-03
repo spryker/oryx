@@ -34,7 +34,8 @@
     "@spryker-oryx/search": "1.1.0",
     "@spryker-oryx/site": "1.1.0",
     "@spryker-oryx/ui": "1.1.0",
-    "@spryker-oryx/user": "1.1.0"
+    "@spryker-oryx/user": "1.1.0",
+    "@spryker-oryx/picking": "0.13.0"
   },
   "peerDependencies": {
     "lit": "^2.4.0",
