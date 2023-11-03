@@ -98,15 +98,14 @@ export class UserAddressFormComponent
     if (
       this.enableDefaultBilling &&
       !addresses?.find((address) => address.isDefaultBilling)
-    ) {
+    )
       values.isDefaultBilling = true;
-    }
+
     if (
       this.enableDefaultShipping &&
       !addresses?.find((address) => address.isDefaultShipping)
-    ) {
+    )
       values.isDefaultShipping = true;
-    }
 
     values.firstName ??= firstName;
     values.lastName ??= lastName;

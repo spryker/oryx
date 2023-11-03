@@ -27,9 +27,7 @@ export async function createDevSever(
   app.get('/*', async (req, res, next) => {
     const route = generateUrl(req);
 
-    if (!route) {
-      return next();
-    }
+    if (!route) return next();
 
     try {
       const template = readFileSync(`${indexPath}/index.html`, 'utf-8');

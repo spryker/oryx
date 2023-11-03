@@ -28,9 +28,7 @@ export class DefaultGraphicInjectable implements GraphicInjectable {
       .requirePlugin(ResourcePlugin)
       .getGraphic(token, key);
 
-    if (!graphic) {
-      return;
-    }
+    if (!graphic) return;
 
     return ssrAwaiter(
       isPromise(graphic) ? graphic : Promise.resolve(graphic)

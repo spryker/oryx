@@ -108,12 +108,13 @@ export class DefaultCartService implements CartService {
   protected updateAfterModification$ = createEffect<Cart>([
     CartModificationSuccess,
     ({ event }) => {
-      if (event.data)
+      if (event.data) {
         // Use result of modification commands to update cart state
         this.cartQuery$.set({
           data: event.data,
           qualifier: { cartId: event.data.id },
         });
+      }
     },
   ]);
 
@@ -143,11 +144,8 @@ export class DefaultCartService implements CartService {
           );
         } else {
           const newValue = (acc.get(event.qualifier!.groupKey!) ?? 0) - 1;
-          if (newValue > 0) {
-            acc.set(event.qualifier!.groupKey!, newValue);
-          } else {
-            acc.delete(event.qualifier!.groupKey!);
-          }
+          if (newValue > 0) acc.set(event.qualifier!.groupKey!, newValue);
+          else acc.delete(event.qualifier!.groupKey!);
         }
         return acc;
       }, new Map<string, number>())
@@ -157,9 +155,7 @@ export class DefaultCartService implements CartService {
   protected activeCartId$ = this.cartsQuery$.get().pipe(
     map((carts) => {
       for (const cart of carts ?? []) {
-        if (cart.isDefault) {
-          return cart.id;
-        }
+        if (cart.isDefault) return cart.id;
       }
       return carts?.[0]?.id ?? null;
     }),
@@ -189,9 +185,7 @@ export class DefaultCartService implements CartService {
   );
 
   getCart(qualifier?: CartQualifier): Observable<Cart | undefined> {
-    if (qualifier?.cartId) {
-      return this.cartQuery$.get(qualifier);
-    }
+    if (qualifier?.cartId) return this.cartQuery$.get(qualifier);
 
     return this.activeCartId$.pipe(
       switchMap((id) =>
@@ -201,9 +195,7 @@ export class DefaultCartService implements CartService {
   }
 
   getCartState(qualifier?: CartQualifier): Observable<QueryState<Cart>> {
-    if (qualifier?.cartId) {
-      return this.cartQuery$.getState(qualifier);
-    }
+    if (qualifier?.cartId) return this.cartQuery$.getState(qualifier);
 
     return this.activeCartId$.pipe(
       switchMap((id) => this.cartQuery$.getState({ cartId: id! }))

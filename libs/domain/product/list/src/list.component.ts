@@ -7,7 +7,7 @@ import {
   ProductMixin,
 } from '@spryker-oryx/product';
 import { computed, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ProductListOptions } from './list.model';
@@ -88,9 +88,8 @@ export class ProductListComponent extends ProductMixin(
         params: Record<string | number, string>,
         key: keyof ProductListQualifier
       ) => {
-        if (options[key]) {
-          params[key] = options[key] as string;
-        }
+        if (options[key]) params[key] = options[key] as string;
+
         return params;
       },
       {}

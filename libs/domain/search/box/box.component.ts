@@ -89,9 +89,7 @@ export class SearchBoxComponent
   connectedCallback(): void {
     super.connectedCallback();
 
-    if (this.input?.value) {
-      this.query = this.input?.value;
-    }
+    if (this.input?.value) this.query = this.input?.value;
   }
 
   protected override render(): TemplateResult {
@@ -163,9 +161,7 @@ export class SearchBoxComponent
   protected onSearch(): void {
     const link = this.$link();
 
-    if (!link) {
-      return;
-    }
+    if (!link) return;
 
     this.routerService.navigate(link);
     this.onClose();

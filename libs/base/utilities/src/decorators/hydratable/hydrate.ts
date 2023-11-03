@@ -71,9 +71,8 @@ function optionsToAttribute(options?: HydratableOptions): string {
 
   const attributes: string[] = [];
 
-  if (options.event) {
+  if (options.event)
     attributes.push(...([] as string[]).concat(options.event ?? []));
-  }
 
   if (options.context) {
     attributes.push(
@@ -108,11 +107,9 @@ function hydratableClass<T extends Type<HTMLElement>>(
     constructor(...args: any[]) {
       super(...args);
 
-      if (isServer) {
+      if (isServer)
         this.setAttribute(hydratableAttribute, optionsToAttribute(options));
-      } else if (this.shadowRoot) {
-        this[DEFER_HYDRATION] = 3;
-      }
+      else if (this.shadowRoot) this[DEFER_HYDRATION] = 3;
     }
 
     willUpdate(_changedProperties: PropertyValues): void {
@@ -140,9 +137,7 @@ function hydratableClass<T extends Type<HTMLElement>>(
         // This is part of the workaround for hydration mismatch, we would not need this property otherwise
         this[DEFER_HYDRATION] = 0;
 
-        if (HYDRATION_DEBUG) {
-          this['__hydration-status'] = 'blue';
-        }
+        if (HYDRATION_DEBUG) this['__hydration-status'] = 'blue';
 
         try {
           super.update(changedProperties);
@@ -150,17 +145,13 @@ function hydratableClass<T extends Type<HTMLElement>>(
           // catch hydration error and recover by clearing and re-rendering
           // may become obsolete in future versions of lit
 
-          if (HYDRATION_DEBUG) {
-            this['__hydration-status'] = 'red';
-          }
+          if (HYDRATION_DEBUG) this['__hydration-status'] = 'red';
 
           this.renderRoot.innerHTML =
             this.renderRoot.innerHTML.split('<!--lit-part ')[0];
           render(this.render(), this.renderRoot, this.renderOptions);
         }
-      } else {
-        super.update(changedProperties);
-      }
+      } else super.update(changedProperties);
 
       setTimeout(() => {
         repeatHydrationEvents(this.shadowRoot, this[EVENTS]);

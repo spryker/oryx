@@ -42,9 +42,7 @@ export class CompositionComponent extends LayoutMixin(
 
   @elementEffect()
   protected $uidFromRoute = effect(() => {
-    if (!this.route) {
-      return;
-    }
+    if (!this.route) return;
 
     const component = signal(
       this.experienceService
@@ -63,9 +61,7 @@ export class CompositionComponent extends LayoutMixin(
       return;
     }
 
-    if (this.uid !== component?.id) {
-      this.uid = component.id;
-    }
+    if (this.uid !== component?.id) this.uid = component.id;
   });
 
   protected $components = signal(this.componentsController.getComponents());
@@ -82,9 +78,8 @@ export class CompositionComponent extends LayoutMixin(
       isServer &&
       this.$hasDynamicallyVisibleComponent() &&
       this.getAttribute(hydratableAttribute) !== 'window:load'
-    ) {
+    )
       this.setAttribute(hydratableAttribute, 'window:load');
-    }
   });
 
   protected override render(): TemplateResult | void {

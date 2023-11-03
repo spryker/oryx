@@ -57,9 +57,8 @@ export class OauthCodeGrantProvider implements OauthProvider {
     return this.state$.pipe(
       take(1),
       switchMap(async (state) => {
-        if (state?.state === 'authenticated') {
+        if (state?.state === 'authenticated')
           throw new Error('Already authenticated!');
-        }
 
         const pkce = await this.generatePKCE();
         const authUrl = this.getAuthUrlFor(request, pkce);
@@ -87,9 +86,7 @@ export class OauthCodeGrantProvider implements OauthProvider {
   }
 
   revoke(): Observable<void> {
-    if (!this.config.revocationUrl) {
-      return this.updateState();
-    }
+    if (!this.config.revocationUrl) return this.updateState();
 
     return this.revocationRequest().pipe(
       switchMap((response) => this.handleRevocationResponse(response))
@@ -105,9 +102,8 @@ export class OauthCodeGrantProvider implements OauthProvider {
   getToken(): Observable<OauthResponseSuccess> {
     return this.state$.pipe(
       map((state) => {
-        if (state?.state !== 'authenticated') {
+        if (state?.state !== 'authenticated')
           throw new Error('Not authenticated!');
-        }
 
         return state.token;
       })
@@ -125,9 +121,7 @@ export class OauthCodeGrantProvider implements OauthProvider {
 
     const scope = this.getScopeFor(request);
 
-    if (scope) {
-      authUrl.searchParams.set('scope', scope);
-    }
+    if (scope) authUrl.searchParams.set('scope', scope);
 
     if (pkce) {
       authUrl.searchParams.set('code_challenge', pkce.codeChallenge);
@@ -190,9 +184,8 @@ export class OauthCodeGrantProvider implements OauthProvider {
     return this.state$.pipe(
       take(1),
       switchMap((state) => {
-        if (state?.state !== 'authenticating') {
+        if (state?.state !== 'authenticating')
           throw new Error('Invalid Oauth state!');
-        }
 
         const params = validateAuthResponse(
           this.getAuthServer(),
@@ -201,9 +194,8 @@ export class OauthCodeGrantProvider implements OauthProvider {
           skipStateCheck
         );
 
-        if (isOAuth2Error(params)) {
+        if (isOAuth2Error(params))
           throw new Error(`Oauth token request error: ${String(params)}`);
-        }
 
         return authorizationCodeGrantRequest(
           this.getAuthServer(),
@@ -220,9 +212,7 @@ export class OauthCodeGrantProvider implements OauthProvider {
     return defer(() => {
       const challenges = parseWwwAuthenticateChallenges(response);
 
-      if (challenges) {
-        return this.handleWwwAuthenticateChallenges(challenges);
-      }
+      if (challenges) return this.handleWwwAuthenticateChallenges(challenges);
 
       return of(undefined);
     }).pipe(
@@ -233,9 +223,8 @@ export class OauthCodeGrantProvider implements OauthProvider {
           response
         );
 
-        if (isOAuth2Error(result)) {
+        if (isOAuth2Error(result))
           throw new Error(`Oauth token response error: ${String(result)}`);
-        }
 
         return result as OauthResponseSuccess;
       }),
@@ -259,9 +248,8 @@ export class OauthCodeGrantProvider implements OauthProvider {
     return this.state$.pipe(
       take(1),
       switchMap((state) => {
-        if (state?.state !== 'authenticated') {
+        if (state?.state !== 'authenticated')
           throw new Error('Invalid Oauth state!');
-        }
 
         if (!state.token.refresh_token) {
           throw new Error(
@@ -286,9 +274,8 @@ export class OauthCodeGrantProvider implements OauthProvider {
         response
       );
 
-      if (isOAuth2Error(result)) {
+      if (isOAuth2Error(result))
         throw new Error(`Oauth token refresh error: ${String(result)}`);
-      }
 
       return result as OauthResponseSuccess;
     }).pipe(
@@ -300,9 +287,8 @@ export class OauthCodeGrantProvider implements OauthProvider {
     return this.state$.pipe(
       take(1),
       switchMap((state) => {
-        if (state?.state !== 'authenticated') {
+        if (state?.state !== 'authenticated')
           throw new Error('Invalid Oauth state!');
-        }
 
         return revocationRequest(
           this.getAuthServer(),
@@ -322,9 +308,8 @@ export class OauthCodeGrantProvider implements OauthProvider {
     return defer(async () => {
       const result = await processRevocationResponse(response);
 
-      if (isOAuth2Error(result)) {
+      if (isOAuth2Error(result))
         throw new Error(`Oauth token revocation error: ${String(result)}`);
-      }
     }).pipe(switchMap(() => this.updateState()));
   }
 

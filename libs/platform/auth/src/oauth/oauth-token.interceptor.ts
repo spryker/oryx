@@ -1,13 +1,9 @@
-import {
-  HttpHandlerFn,
-  HttpInterceptor,
-  RequestOptions,
-} from '@spryker-oryx/core';
+import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
+  Observable,
   catchError,
   finalize,
-  Observable,
   of,
   shareReplay,
   switchMap,
@@ -34,9 +30,7 @@ export class OauthTokenInterceptor
     req: Request,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    if (this.isOauthRequest(req)) {
-      return handle(this.removeOauthHeader(req));
-    }
+    if (this.isOauthRequest(req)) return handle(this.removeOauthHeader(req));
 
     // Pause all request before refresh request finishes
     return (this.refresh$ ?? of(undefined)).pipe(
@@ -62,9 +56,7 @@ export class OauthTokenInterceptor
     req: Request,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    if (response.ok || response.status !== 401) {
-      return of(response);
-    }
+    if (response.ok || response.status !== 401) return of(response);
 
     if (!this.refresh$) {
       this.refresh$ = this.oauthService.refreshToken().pipe(

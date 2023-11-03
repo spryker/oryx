@@ -102,9 +102,7 @@ export class DimensionController implements ReactiveController {
       ?.getComputedStyle(element)
       .getPropertyValue(propName);
 
-    if (!property) {
-      return;
-    }
+    if (!property) return;
 
     return parseFloat(property);
   }

@@ -15,9 +15,7 @@ class MockI18nFilter {
   constructor(name: string, processValue?: unknown) {
     this.getName.mockReturnValue(name);
 
-    if (processValue) {
-      this.process.mockReturnValue(processValue);
-    }
+    if (processValue) this.process.mockReturnValue(processValue);
   }
 }
 

@@ -31,9 +31,7 @@ export class SiteLocaleSelectorComponent extends ContentMixin<LocaleSelectorOpti
     const locales = this.$locales();
     const current = this.$current();
 
-    if (!current || !locales?.length || locales.length < 2) {
-      return;
-    }
+    if (!current || !locales?.length || locales.length < 2) return;
 
     return html`
       <oryx-dropdown vertical-align position="start">

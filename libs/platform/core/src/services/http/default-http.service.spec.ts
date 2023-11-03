@@ -25,13 +25,10 @@ class MockHttpHandler implements HttpHandler {
     this.request.method = req.method;
     this.request.headers = {};
 
-    for (const [key, value] of req.headers.entries()) {
+    for (const [key, value] of req.headers.entries())
       this.request.headers[key] = value;
-    }
 
-    if (req.body) {
-      this.request.body = req.json();
-    }
+    if (req.body) this.request.body = req.json();
 
     return of({ ok: true });
   });

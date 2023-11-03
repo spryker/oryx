@@ -81,9 +81,9 @@ export class InputListComponent
   }
 
   toggle(force?: boolean): void {
-    if (force === undefined) {
+    if (force === undefined)
       force = this.getGroupStatus() !== InputListStatus.checked;
-    }
+
     this.updateList(force);
   }
 

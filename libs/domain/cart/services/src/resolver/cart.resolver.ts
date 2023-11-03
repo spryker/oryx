@@ -25,9 +25,8 @@ export class CartResolver extends BaseResolver<CartResolvers> {
               0
             );
 
-            if (!quantity) {
-              return null;
-            }
+            if (!quantity) return null;
+
             //TODO: Make max quantity to show configurable
             return quantity > 99 ? '99+' : String(quantity);
           })

@@ -21,9 +21,7 @@ function setResolvingStatus(state = true): void {
     return;
   }
 
-  if (_resolvingSignalsNotifier) {
-    _resolvingSignalsNotifier.set(_ss_counter++);
-  }
+  if (_resolvingSignalsNotifier) _resolvingSignalsNotifier.set(_ss_counter++);
 }
 
 export function resolvingSignals(): () => boolean | number {
@@ -62,9 +60,8 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
         ((this.options as ConnectableSignalOptions<T, K>).initialValue as K)
       );
     }
-    if (this.resolving) {
-      setResolvingStatus(true);
-    }
+    if (this.resolving) setResolvingStatus(true);
+
     return this.state;
   }
 

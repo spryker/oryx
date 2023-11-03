@@ -41,9 +41,9 @@ describe('computed', () => {
       results.push(result());
     });
 
-    while (results.length < values.length) {
+    while (results.length < values.length)
       observable.next(values[results.length]);
-    }
+
     ef.stop();
     expect(results).toEqual(values);
   });

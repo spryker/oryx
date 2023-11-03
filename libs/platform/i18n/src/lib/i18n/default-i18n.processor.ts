@@ -1,9 +1,9 @@
 import { inject } from '@spryker-oryx/di';
 import { DefaultI18nInjectable, I18nContext } from '@spryker-oryx/utilities';
 import {
+  Observable,
   combineLatest,
   distinctUntilChanged,
-  Observable,
   shareReplay,
   switchMap,
 } from 'rxjs';
@@ -54,16 +54,11 @@ export class DefaultI18nProcessor implements I18nProcessor {
   ): I18nString {
     const result = this.i18nInjectable.translate(token, context);
 
-    if (typeof result === 'string') {
-      return result;
-    }
+    if (typeof result === 'string') return result;
 
     if ('text' in result) {
-      if (result.hasHtml) {
-        return this.createHtmlString(result.text);
-      } else {
-        return String(result.text);
-      }
+      if (result.hasHtml) return this.createHtmlString(result.text);
+      else return String(result.text);
     }
 
     return String(result);
@@ -74,9 +69,7 @@ export class DefaultI18nProcessor implements I18nProcessor {
     localeId: string,
     context?: I18nContext
   ): Promise<I18nString | undefined> {
-    if (typeof tokens === 'string') {
-      tokens = [tokens];
-    }
+    if (typeof tokens === 'string') tokens = [tokens];
 
     for (const token of tokens) {
       const msg = await this.resolveTokenPieces(token, localeId, context);
@@ -84,9 +77,7 @@ export class DefaultI18nProcessor implements I18nProcessor {
       if (msg !== undefined) {
         const hasHtml = this.i18nInjectable.hasHtml(token, context);
 
-        if (hasHtml) {
-          return this.createHtmlString(msg);
-        }
+        if (hasHtml) return this.createHtmlString(msg);
 
         return msg;
       }
@@ -112,9 +103,7 @@ export class DefaultI18nProcessor implements I18nProcessor {
         context
       );
 
-      if (msg !== undefined) {
-        return msg;
-      }
+      if (msg !== undefined) return msg;
     } while ((nextDotIdx = tokenPart.indexOf('.')) !== -1);
 
     return;

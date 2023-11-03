@@ -2,7 +2,7 @@ import { ElementResolver, PageMetaResolver } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { FacetValue } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { FacetListService } from '../facet-list.service';
 
 export class CategoryPageTitleMetaResolver implements PageMetaResolver {
@@ -27,9 +27,7 @@ export class CategoryPageTitleMetaResolver implements PageMetaResolver {
       switchMap(() => {
         const categoryId = this.router.getPathId('category');
 
-        if (!categoryId) {
-          return of({});
-        }
+        if (!categoryId) return of({});
 
         return this.facets.get().pipe(
           map((facets) => {
@@ -46,9 +44,7 @@ export class CategoryPageTitleMetaResolver implements PageMetaResolver {
                 };
               }
 
-              if (item.children) {
-                list.push(...item.children);
-              }
+              if (item.children) list.push(...item.children);
             }
 
             return {};

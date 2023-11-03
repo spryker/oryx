@@ -40,8 +40,6 @@ export class CartEntryFragment {
 
     // if numberOfItems === 0 - the modal should appear
     // and we don't want to close it by clicking on body
-    if (numberOfItems !== 0) {
-      cy.get('body').click();
-    }
+    if (numberOfItems !== 0) cy.get('body').click();
   };
 }

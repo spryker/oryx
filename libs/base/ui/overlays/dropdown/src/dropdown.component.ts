@@ -59,8 +59,7 @@ export class DropdownComponent
     if (
       this.matches(':focus-within') &&
       !this.trigger?.matches(':focus-within')
-    ) {
+    )
       queryFirstFocusable(this.trigger as HTMLElement)?.focus();
-    }
   }
 }

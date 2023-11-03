@@ -51,12 +51,9 @@ function checkCurrencyFormatting(
     .then((price) => {
       const symbolPosition = price.indexOf('€');
 
-      if (expectedSignPosition === 'start') {
-        expect(symbolPosition).to.eq(0);
-      }
+      if (expectedSignPosition === 'start') expect(symbolPosition).to.eq(0);
 
-      if (expectedSignPosition === 'end') {
+      if (expectedSignPosition === 'end')
         expect(symbolPosition).to.eq(price.length - 1);
-      }
     });
 }

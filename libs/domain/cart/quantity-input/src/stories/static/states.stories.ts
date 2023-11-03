@@ -4,7 +4,7 @@ import {
   variantsGroupTemplate,
 } from '@/tools/storybook';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { QuantityInputComponent } from '../../quantity-input.component';
 import { CategoryY, getInputVariants, groups } from './common';
@@ -15,9 +15,7 @@ export default {
 
 const Template: Story = (): TemplateResult => {
   const interval = setInterval(() => {
-    if (!customElements.get('oryx-cart-quantity-input')) {
-      return;
-    }
+    if (!customElements.get('oryx-cart-quantity-input')) return;
 
     clearInterval(interval);
 
@@ -28,9 +26,7 @@ const Template: Story = (): TemplateResult => {
       const state = (element as HTMLElement).dataset.state;
       const disabled = (element as HTMLElement).dataset.disabled;
 
-      if (!state && !disabled) {
-        return;
-      }
+      if (!state && !disabled) return;
 
       const [selector, childSelector] = (
         (element as HTMLElement).dataset.selector as string

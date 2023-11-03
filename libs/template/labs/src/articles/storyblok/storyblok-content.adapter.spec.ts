@@ -106,9 +106,8 @@ describe('DefaultStoryblokContentAdapter', () => {
 
       if (
         reqUrl.includes(`stories/${mockStories.stories[0].content.component}`)
-      ) {
+      )
         return of({ story: mockStories.stories[0] });
-      }
 
       if (reqUrl.includes('&by_slugs')) return of(mockStories);
 
@@ -116,17 +115,15 @@ describe('DefaultStoryblokContentAdapter', () => {
         reqUrl.includes(
           `${url}/components/${mockStories.stories[0].content.component}`
         )
-      ) {
+      )
         return of(mockAComponent);
-      }
 
       if (
         reqUrl.includes(
           `${url}/components/${mockStories.stories[1].content.component}`
         )
-      ) {
+      )
         return of(mockBComponent);
-      }
 
       return of(null);
     });

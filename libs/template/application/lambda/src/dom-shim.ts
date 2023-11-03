@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import {
-  HTMLElement,
-  Element,
   CustomElementRegistry,
+  Element,
+  HTMLElement,
 } from '@lit-labs/ssr-dom-shim';
 
 export const getWindow: ({
@@ -82,9 +82,7 @@ export const getWindow: ({
           console.error(...args);
         },
         assert(bool: boolean, msg: string) {
-          if (!bool) {
-            throw new Error(msg);
-          }
+          if (!bool) throw new Error(msg);
         },
       },
     });

@@ -27,22 +27,17 @@ export class ExecPlugin
   }
 
   beforeApply(): void | Promise<void> {
-    if (this.runtime === ExecPluginRuntime.beforeApply) {
+    if (this.runtime === ExecPluginRuntime.beforeApply)
       return this.fn(this.app);
-    }
   }
 
   apply(app: App): void | Promise<void> {
     this.app = app;
 
-    if (this.runtime === undefined) {
-      return this.fn(this.app);
-    }
+    if (this.runtime === undefined) return this.fn(this.app);
   }
 
   afterApply(): void | Promise<void> {
-    if (this.runtime === ExecPluginRuntime.afterApply) {
-      return this.fn(this.app);
-    }
+    if (this.runtime === ExecPluginRuntime.afterApply) return this.fn(this.app);
   }
 }

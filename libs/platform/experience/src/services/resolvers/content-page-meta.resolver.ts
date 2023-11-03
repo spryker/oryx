@@ -20,9 +20,7 @@ export class ContentPageMetaResolver implements PageMetaResolver {
     switchMap((route) => {
       const staticMeta = this.getData(route);
 
-      if (staticMeta) {
-        return of(staticMeta);
-      }
+      if (staticMeta) return of(staticMeta);
 
       return (
         this.experienceService
@@ -44,9 +42,7 @@ export class ContentPageMetaResolver implements PageMetaResolver {
         };
 
         for (const by of ['follow', 'index']) {
-          if (typeof meta?.[by] !== 'boolean') {
-            continue;
-          }
+          if (typeof meta?.[by] !== 'boolean') continue;
 
           const content = meta?.[by] ? by : `no${by}`;
 

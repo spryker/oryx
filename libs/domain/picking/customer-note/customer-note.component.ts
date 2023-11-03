@@ -22,9 +22,7 @@ export class PickingCustomerNoteComponent extends I18nMixin(
 
   protected onProceed(): void {
     //TODO: provide more complex validation
-    if (!this.$pickingList()) {
-      return;
-    }
+    if (!this.$pickingList()) return;
 
     this.pickingListService
       .startPicking(this.$pickingList())
@@ -35,9 +33,8 @@ export class PickingCustomerNoteComponent extends I18nMixin(
           )
         ),
         catchError((e) => {
-          if (e.status === 409) {
-            this.pickingInProgressModal.open = true;
-          }
+          if (e.status === 409) this.pickingInProgressModal.open = true;
+
           return of(undefined);
         })
       )

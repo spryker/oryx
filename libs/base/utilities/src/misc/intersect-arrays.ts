@@ -15,9 +15,8 @@ export function intersectArrays<T>(
       : // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         (v1) => v1;
 
-  if (typeof arr1OrIdentityFn !== 'function') {
+  if (typeof arr1OrIdentityFn !== 'function')
     arrays = [arr1OrIdentityFn, ...arrays];
-  }
 
   const [firstArray, ...restArrays] = arrays;
 

@@ -83,9 +83,7 @@ describe('BapiPushNotificationDefaultService', () => {
     });
 
     afterEach(() => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
+      if (subscription) subscription.unsubscribe();
     });
 
     it('should subscribe and send subscription', () => {

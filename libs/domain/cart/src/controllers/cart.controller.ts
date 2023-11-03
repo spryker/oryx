@@ -138,12 +138,10 @@ export class CartController {
         Object.entries(cart.totals ?? {}).reduce((acc$, [priceType, price]) => {
           return acc$.pipe(
             switchMap((acc) => {
-              if (!price) {
-                return of({ ...acc });
-              }
-              if (priceType === 'discountTotal') {
-                price = -price;
-              }
+              if (!price) return of({ ...acc });
+
+              if (priceType === 'discountTotal') price = -price;
+
               return this.pricingService.format(price).pipe(
                 map((formattedPrice) => ({
                   ...acc,

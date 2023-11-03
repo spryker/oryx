@@ -11,9 +11,7 @@ export class CollapseToggleController implements ReactiveController {
     this.toggle(this.isCollapsed);
 
     window.addEventListener('keydown', (ev: KeyboardEvent) => {
-      if (!this.isTyping(ev) && ev.key === '[') {
-        this.toggle();
-      }
+      if (!this.isTyping(ev) && ev.key === '[') this.toggle();
     });
   }
 

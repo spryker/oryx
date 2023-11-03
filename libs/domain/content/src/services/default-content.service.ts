@@ -113,18 +113,14 @@ export class DefaultContentService implements ContentService {
       for (const [key, data] of Object.entries(this.contents)) {
         const isAdapter = data.includes(entity);
 
-        if (!isAdapter) {
-          continue;
-        }
+        if (!isAdapter) continue;
 
         const adapter = this.injector.inject<ContentAdapter | null>(
           `${ContentAdapter}${key}`,
           null
         );
 
-        if (adapter && !adapters.includes(adapter)) {
-          adapters.push(adapter);
-        }
+        if (adapter && !adapters.includes(adapter)) adapters.push(adapter);
       }
 
       return adapters;

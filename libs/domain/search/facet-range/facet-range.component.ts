@@ -69,9 +69,8 @@ export class SearchRangeFacetComponent
     const { minValue: min, maxValue: max } = e.detail;
     const selected = { min, max };
 
-    if (this.hasChangedValue(selected)) {
+    if (this.hasChangedValue(selected))
       this.controller.dispatchSelectEvent({ selected });
-    }
   }
 
   protected onRangeDrag(e: CustomEvent<MultiRangeChangeEvent>): void {
@@ -86,9 +85,7 @@ export class SearchRangeFacetComponent
   }
 
   protected onKeydown(e: KeyboardEvent): void {
-    if (e.key === 'Enter') {
-      (e.target as HTMLInputElement).blur();
-    }
+    if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
   }
 
   protected hasChangedValue({ min, max }: SelectRangeFacetValues): boolean {
@@ -105,13 +102,9 @@ export class SearchRangeFacetComponent
     const maxInput =
       this.renderRoot.querySelector<HTMLInputElement>(`input[name="max"]`);
 
-    if (minInput) {
-      minInput.value = String(min);
-    }
+    if (minInput) minInput.value = String(min);
 
-    if (maxInput) {
-      maxInput.value = String(max);
-    }
+    if (maxInput) maxInput.value = String(max);
 
     this.requestUpdate();
   }

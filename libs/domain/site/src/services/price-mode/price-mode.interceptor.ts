@@ -31,9 +31,9 @@ export class PriceModeInterceptor implements HttpInterceptor {
 
     const path = url.substring(this.SCOS_BASE_URL.length);
 
-    for (const endpoint of this.includedEndpoints) {
+    for (const endpoint of this.includedEndpoints)
       if (path.startsWith(`/${endpoint}`)) return true;
-    }
+
     return false;
   }
 
@@ -41,9 +41,7 @@ export class PriceModeInterceptor implements HttpInterceptor {
     const urlObject = new URL(req.url);
 
     // we don't want to override priceMode, if set
-    if (urlObject.searchParams.has(this.parameterName)) {
-      return req;
-    }
+    if (urlObject.searchParams.has(this.parameterName)) return req;
 
     urlObject.searchParams.set(this.parameterName, priceMode);
     return new Request(urlObject.toString(), req.clone());

@@ -13,9 +13,7 @@ declare global {
 }
 
 export function providePickingConfig(config?: PickingConfig): Provider[] {
-  if (!config) {
-    return [];
-  }
+  if (!config) return [];
 
   return [{ provide: PickingConfig, useValue: config }];
 }

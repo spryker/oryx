@@ -16,9 +16,8 @@ export const postMessage = <T>(
       return;
     }
 
-    if (typeof window !== 'undefined' && window.parent) {
+    if (typeof window !== 'undefined' && window.parent)
       window.parent.postMessage(message, '*');
-    }
   });
 };
 

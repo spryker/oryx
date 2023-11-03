@@ -36,17 +36,13 @@ export class DefaultIconInjectable implements IconInjectable {
   }
 
   protected setStyles(styles: IconStyles | undefined, host: IconHost): void {
-    if (!styles) {
-      return undefined;
-    }
+    if (!styles) return undefined;
 
     const getValue = (key: string, value: unknown): string =>
       key === 'font' ? `"${value}"` : `${value}`;
 
     for (const [key, value] of Object.entries(styles)) {
-      if (key === 'direction') {
-        continue;
-      }
+      if (key === 'direction') continue;
 
       host.style.setProperty(`--oryx-icon-${key}`, getValue(key, value));
     }
@@ -96,9 +92,7 @@ export class DefaultIconInjectable implements IconInjectable {
   protected renderSvgIcon(
     lazyIcon?: LazyLoadable<string>
   ): Observable<TemplateResult | undefined> {
-    if (!lazyIcon) {
-      return of(undefined);
-    }
+    if (!lazyIcon) return of(undefined);
 
     const icon = resolveLazyLoadable(lazyIcon);
 

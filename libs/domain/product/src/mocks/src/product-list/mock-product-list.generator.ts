@@ -8,9 +8,8 @@ import { MockProductService } from '../mock-product.service';
 const createProducts = (qualifier: ProductListQualifier): Product[] => {
   const listLength = qualifier?.ipp || 12;
 
-  if (listLength > MockProductService.mockProducts.length) {
+  if (listLength > MockProductService.mockProducts.length)
     return MockProductService.mockProducts;
-  }
 
   return [...MockProductService.mockProducts].splice(0, listLength);
 };

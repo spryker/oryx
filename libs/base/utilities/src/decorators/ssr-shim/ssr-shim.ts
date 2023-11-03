@@ -9,9 +9,8 @@ import { Type } from '../../misc';
 export const ssrShim =
   (features: string[] | string) =>
   (classOrDescriptor: Type<LitElement> | ClassDescriptor): void => {
-    if (!isServer) {
-      return;
-    }
+    if (!isServer) return;
+
     typeof classOrDescriptor === 'function'
       ? legacyCustomElement(classOrDescriptor, features)
       : standardCustomElement(classOrDescriptor as ClassDescriptor, features);
@@ -45,8 +44,8 @@ function shimClass<T extends Type<LitElement>>(
   if (
     features === 'style' ||
     (Array.isArray(features) && features.includes('style'))
-  ) {
+  )
     ssrStyleShim(target);
-  }
+
   return target;
 }

@@ -114,9 +114,8 @@ export class CheckoutBillingAddressComponent
     if (
       e.detail?.address &&
       (!this.$isSameAsShippingAddress() || this.$addresses()?.length)
-    ) {
+    )
       this.persist(e.detail.address, e.detail.valid);
-    }
   }
 
   protected persist(value: Address, valid?: boolean): void {

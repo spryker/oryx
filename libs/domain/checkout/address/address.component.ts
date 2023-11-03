@@ -8,7 +8,7 @@ import {
 import { UserAddressFormComponent } from '@spryker-oryx/user/address-form';
 import { AddressDefaults } from '@spryker-oryx/user/address-list-item';
 import { signalAware } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { query } from 'lit/decorators.js';
 import { CheckoutAddressOptions } from './address.model';
 
@@ -49,9 +49,8 @@ export class CheckoutAddressComponent
     if (this.$addressId()) return true;
 
     const form = this.addressComponent?.getForm();
-    if (!form?.checkValidity() && report) {
-      form?.reportValidity();
-    }
+    if (!form?.checkValidity() && report) form?.reportValidity();
+
     return !!form?.checkValidity();
   }
 }

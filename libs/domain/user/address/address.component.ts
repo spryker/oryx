@@ -1,15 +1,15 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { Address, AddressMixin } from '@spryker-oryx/user';
 import { computed, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import {
   AddressOptions,
   AddressSchema,
+  Match,
   defaultMultilineSchema,
   defaultSimpleSchema,
   defaultSinglelineSchema,
   lineBreaksRe,
-  Match,
   templateRe,
 } from './address.model';
 import { styles } from './address.styles';
@@ -57,9 +57,7 @@ export class UserAddressComponent extends AddressMixin(
     const str = Array.isArray(schema) ? schema.join(' ') : schema;
     const matches = this.findMatches(str);
 
-    if (!matches.length) {
-      return str;
-    }
+    if (!matches.length) return str;
 
     return [
       ...(matches[0].index ? [str.substring(0, matches[0].index)] : []),
@@ -81,9 +79,7 @@ export class UserAddressComponent extends AddressMixin(
     while ((result = templateRe.exec(str)) !== null) {
       const cfg = this.parseMatch(result);
 
-      if (cfg) {
-        config.push(cfg);
-      }
+      if (cfg) config.push(cfg);
     }
 
     return config;
@@ -94,9 +90,7 @@ export class UserAddressComponent extends AddressMixin(
       result;
     const { index } = result;
 
-    if (!key && conditionStart !== conditionEnd) {
-      return null;
-    }
+    if (!key && conditionStart !== conditionEnd) return null;
 
     return {
       keys: (key ?? conditionStart).split('|'),
@@ -114,9 +108,7 @@ export class UserAddressComponent extends AddressMixin(
       ([key, value]) => keys.includes(key) && value
     )?.[1];
 
-    if (!!value === exclude) {
-      return '';
-    }
+    if (!!value === exclude) return '';
 
     return template ?? value ?? '';
   }

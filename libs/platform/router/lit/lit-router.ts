@@ -83,9 +83,8 @@ const isPatternConfig = (route: RouteConfig): route is URLPatternRouteConfig =>
   (route as URLPatternRouteConfig).pattern !== undefined;
 
 const getPattern = (route: RouteConfig) => {
-  if (isPatternConfig(route)) {
-    return route.pattern;
-  }
+  if (isPatternConfig(route)) return route.pattern;
+
   let pattern = patternCache.get(route);
   if (pattern === undefined) {
     patternCache.set(
@@ -231,13 +230,9 @@ export class LitRouter implements ReactiveController {
 
     this.routerService.setRoutes(routes);
 
-    if (baseRoute) {
-      this.baseRoute = baseRoute;
-    }
+    if (baseRoute) this.baseRoute = baseRoute;
 
-    if (isServer) {
-      this.subscribe();
-    }
+    if (isServer) this.subscribe();
   }
 
   /**
@@ -245,12 +240,10 @@ export class LitRouter implements ReactiveController {
    * optionally replacing the local path with `pathname`.
    */
   link(pathname?: string): string {
-    if (pathname?.startsWith('/')) {
-      return pathname;
-    }
-    if (pathname?.startsWith('.')) {
-      throw new Error('Not implemented');
-    }
+    if (pathname?.startsWith('/')) return pathname;
+
+    if (pathname?.startsWith('.')) throw new Error('Not implemented');
+
     pathname ??= this._currentPathname;
     return (this._parentRoutes?.link() ?? '') + pathname;
   }
@@ -273,9 +266,8 @@ export class LitRouter implements ReactiveController {
     if (
       this.baseRoute &&
       (!pathname.startsWith(this.baseRoute) || pathname === this.baseRoute)
-    ) {
+    )
       return;
-    }
 
     this.storeUrlSearchParams();
 
@@ -306,9 +298,9 @@ export class LitRouter implements ReactiveController {
     } else {
       const route = this._getRoute(pathname);
 
-      if (route === undefined) {
+      if (route === undefined)
         throw new Error(`No route found for ${pathname}`);
-      }
+
       const pattern = getPattern(route);
       const result = pattern.exec({ pathname });
       const params = result?.pathname.groups ?? {};
@@ -335,9 +327,7 @@ export class LitRouter implements ReactiveController {
           // So we wait for the first history.go to complete.
           const callback = async () => {
             window.removeEventListener('popstate', callback);
-            if (success === false) {
-              return;
-            }
+            if (success === false) return;
 
             await globalThis.history.go(-direction);
             this.canDisableRouteLeaveInProgress = true;
@@ -355,9 +345,7 @@ export class LitRouter implements ReactiveController {
           }
         }
         this.timestamp = timestamp;
-      } else {
-        this.timestamp = timestamp;
-      }
+      } else this.timestamp = timestamp;
 
       if (typeof route.enter === 'function') {
         const enterFn = route.enter(params);
@@ -371,9 +359,7 @@ export class LitRouter implements ReactiveController {
           return;
         }
 
-        if (result === false) {
-          return;
-        }
+        if (result === false) return;
       }
 
       this._currentRoute = route;
@@ -386,14 +372,10 @@ export class LitRouter implements ReactiveController {
 
     // Propagate the tail match to children
     if (tailGroup !== undefined) {
-      for (const childRoutes of this._childRoutes) {
-        childRoutes.goto(tailGroup);
-      }
+      for (const childRoutes of this._childRoutes) childRoutes.goto(tailGroup);
     }
     this._host.requestUpdate();
-    if (!isServer) {
-      await this._host.updateComplete;
-    }
+    if (!isServer) await this._host.updateComplete;
   }
 
   /**
@@ -440,9 +422,8 @@ export class LitRouter implements ReactiveController {
       getPattern(r).test({ pathname: pathname })
     );
 
-    if (matchedRoute || this.fallback === undefined) {
-      return matchedRoute;
-    }
+    if (matchedRoute || this.fallback === undefined) return matchedRoute;
+
     if (this.fallback) {
       // The fallback route behaves like it has a "/*" path. This is hidden from
       // the public API but is added here to return a valid RouteConfig.
@@ -500,9 +481,7 @@ export class LitRouter implements ReactiveController {
   private _onRoutesConnected = (e: RoutesConnectedEvent) => {
     // Don't handle the event fired by this routes controller, which we get
     // because we do this.dispatchEvent(...)
-    if (e.routes === this) {
-      return;
-    }
+    if (e.routes === this) return;
 
     const childRoutes = e.routes;
     this._childRoutes.push(childRoutes);
@@ -519,17 +498,13 @@ export class LitRouter implements ReactiveController {
     };
 
     const tailGroup = getTailGroup(this._currentParams);
-    if (tailGroup !== undefined) {
-      childRoutes.goto(tailGroup);
-    }
+    if (tailGroup !== undefined) childRoutes.goto(tailGroup);
   };
 
   private _onClick = (e: MouseEvent) => {
     const isNonNavigationClick =
       e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey;
-    if (e.defaultPrevented || isNonNavigationClick) {
-      return;
-    }
+    if (e.defaultPrevented || isNonNavigationClick) return;
 
     const anchor = e
       .composedPath()
@@ -541,19 +516,14 @@ export class LitRouter implements ReactiveController {
       anchor.target !== '' ||
       anchor.hasAttribute('download') ||
       anchor.getAttribute('rel') === 'external'
-    ) {
+    )
       return;
-    }
 
     const href = anchor.href;
-    if (href === '' || href.startsWith('mailto:')) {
-      return;
-    }
+    if (href === '' || href.startsWith('mailto:')) return;
 
     const location = window.location;
-    if (anchor.origin !== origin) {
-      return;
-    }
+    if (anchor.origin !== origin) return;
 
     e.preventDefault();
     if (href !== location.href) {
@@ -564,9 +534,9 @@ export class LitRouter implements ReactiveController {
 
   private _onPopState = (_e: PopStateEvent) => {
     if (this.routeLeaveInProgress) {
-      if (this.canDisableRouteLeaveInProgress) {
+      if (this.canDisableRouteLeaveInProgress)
         this.routeLeaveInProgress = false;
-      }
+
       return;
     }
     this.goto(window.location.pathname);
@@ -580,9 +550,8 @@ export class LitRouter implements ReactiveController {
 const getTailGroup = (groups: { [key: string]: string | undefined }) => {
   let tailKey: string | undefined;
   for (const key of Object.keys(groups)) {
-    if (/\d+/.test(key) && (tailKey === undefined || key > tailKey!)) {
+    if (/\d+/.test(key) && (tailKey === undefined || key > tailKey!))
       tailKey = key;
-    }
   }
   return tailKey && groups[tailKey];
 };

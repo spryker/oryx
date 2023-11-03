@@ -19,9 +19,8 @@ const parameters: SearchParameters[] = [
 
 export class SearchParamsStorage {
   static getByEq(eq: number): SearchParameters {
-    if (eq >= parameters.length) {
+    if (eq >= parameters.length)
       throw new Error(`Search Query with eq = ${eq} does not exist.`);
-    }
 
     return parameters[eq];
   }

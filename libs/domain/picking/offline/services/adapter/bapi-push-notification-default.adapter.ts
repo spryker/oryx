@@ -18,9 +18,8 @@ export class BapiPushNotificationDefaultAdapter
   sendSubscription(subscription: PushSubscriptionJSON): Observable<void> {
     return this.warehouseUserAssignmentsService.getUserAssignment().pipe(
       switchMap((userAssignment) => {
-        if (!userAssignment?.warehouse.uuid) {
+        if (!userAssignment?.warehouse.uuid)
           throw new Error('No warehouse user assignment found!');
-        }
 
         return this.pickingHttpService.post(
           '/push-notification-subscriptions',

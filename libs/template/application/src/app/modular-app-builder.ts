@@ -68,9 +68,8 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
     };
 
     for (const feat of features) {
-      for (const [key, value] of Object.entries(feat)) {
+      for (const [key, value] of Object.entries(feat))
         featureMapper[key](value);
-      }
     }
 
     return this;
@@ -115,13 +114,10 @@ export class ModularAppBuilder extends SimpleAppBuilder<AppBuilderWithModules> {
       );
     }
 
-    if (this.resources) {
+    if (this.resources)
       this.plugins.unshift(new ResourcePlugin(this.resources));
-    }
 
-    if (this.themes) {
-      this.plugins.unshift(new ThemePlugin(this.themes));
-    }
+    if (this.themes) this.plugins.unshift(new ThemePlugin(this.themes));
 
     if (this.componentsInfo.length) {
       this.plugins.unshift(

@@ -30,9 +30,8 @@ export class ToggleIconComponent extends LitElement {
     if (
       this.isInRadioGroup(el) &&
       e.detail?.toString() !== GENERATED_INPUT_EVENT
-    ) {
+    )
       this.updateSiblings(el);
-    }
   }
 
   protected isInRadioGroup(el: HTMLInputElement): boolean {
@@ -66,9 +65,8 @@ export class ToggleIconComponent extends LitElement {
 
     const controlAttrObserver = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
-        if (typeof mutation.attributeName === 'string') {
+        if (typeof mutation.attributeName === 'string')
           this.toggleAttribute(mutation.attributeName);
-        }
       }
     });
     controlAttrObserver.observe(input, {

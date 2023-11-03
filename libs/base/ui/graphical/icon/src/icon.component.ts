@@ -58,9 +58,7 @@ export class IconComponent extends LitElement implements IconProperties {
    * Defaults to use '/assets/icons.svg'.
    */
   protected get spriteUrl(): string | undefined {
-    if (!this.sprite) {
-      return;
-    }
+    if (!this.sprite) return;
 
     return `${this.sprite}#${this.type}`;
   }

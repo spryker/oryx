@@ -161,9 +161,7 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
 
       const param = `${key === 'type' ? 'content_type' : key}=${value}`;
 
-      if (!acc.length) {
-        return param;
-      }
+      if (!acc.length) return param;
 
       return `${acc}&${param}`;
     }, '');

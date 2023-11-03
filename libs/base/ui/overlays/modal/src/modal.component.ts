@@ -28,9 +28,7 @@ export class ModalComponent
   @property({ type: Boolean }) enableNavigateBack?: boolean;
 
   requestUpdate(name?: PropertyKey, oldValue?: unknown): void {
-    if (name === 'isOpen' && this.isOpen !== oldValue) {
-      this.setDialogState();
-    }
+    if (name === 'isOpen' && this.isOpen !== oldValue) this.setDialogState();
 
     super.requestUpdate(name, oldValue);
   }
@@ -42,19 +40,14 @@ export class ModalComponent
   }
 
   disconnectedCallback(): void {
-    if (this.isOpen) {
-      this.toggleScrollLock();
-    }
+    if (this.isOpen) this.toggleScrollLock();
 
     super.disconnectedCallback();
   }
 
   protected setDialogState(): void {
-    if (this.isOpen) {
-      this.dialog?.showModal();
-    } else {
-      this.dialog?.close();
-    }
+    if (this.isOpen) this.dialog?.showModal();
+    else this.dialog?.close();
 
     this.toggleScrollLock(this.isOpen);
   }
@@ -92,11 +85,8 @@ export class ModalComponent
 
     const target = e.composedPath()[0] as HTMLElement;
     if (target.tagName.toLowerCase() === this.backdropTargetTag) {
-      if (this.enableNavigateBack) {
-        this.onGoBack();
-      } else {
-        this.close();
-      }
+      if (this.enableNavigateBack) this.onGoBack();
+      else this.close();
     }
   }
 
@@ -107,9 +97,7 @@ export class ModalComponent
       this.onGoBack();
       return;
     }
-    if (!this.preventCloseByEscape) {
-      this.close();
-    }
+    if (!this.preventCloseByEscape) this.close();
   }
 
   protected onGoBack(): void {

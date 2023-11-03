@@ -37,9 +37,8 @@ export class FormControlController implements ReactiveController {
     // we do not focus the control in case another (custom) focusable
     // element is used inside the form control (ie inside prefix)
     if (!isFocusable(e.target as HTMLElement)) {
-      if (e.target === this.host) {
-        e.preventDefault();
-      }
+      if (e.target === this.host) e.preventDefault();
+
       this.control?.focus();
     }
   }
@@ -108,9 +107,8 @@ export class FormControlController implements ReactiveController {
     let timesToTry = 30;
 
     const interval = setInterval(() => {
-      if (timesToTry === 0) {
-        clearInterval(interval);
-      }
+      if (timesToTry === 0) clearInterval(interval);
+
       timesToTry--;
 
       // try catch is needed here to avoid JSDOM tests error

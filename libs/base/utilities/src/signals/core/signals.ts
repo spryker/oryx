@@ -31,9 +31,7 @@ export class SignalProducer<T> {
 
   changed(): void {
     this.version++;
-    for (const consumer of this.consumers) {
-      consumer.notify();
-    }
+    for (const consumer of this.consumers) consumer.notify();
   }
 
   watch(sniffer: SignalConsumer): void {
@@ -71,9 +69,7 @@ export class SignalConsumer {
     if (this.isConnected) {
       this.unusedVersions = this.versions;
       this.versions = new Map();
-    } else {
-      this.versions.clear();
-    }
+    } else this.versions.clear();
   }
 
   uninstall(): void {
@@ -81,9 +77,8 @@ export class SignalConsumer {
     this.prev = undefined;
 
     if (this.isConnected && this.unusedVersions) {
-      for (const producer of this.unusedVersions.keys()) {
-        producer.unwatch(this);
-      }
+      for (const producer of this.unusedVersions.keys()) producer.unwatch(this);
+
       this.unusedVersions = undefined;
     }
   }
@@ -98,9 +93,9 @@ export class SignalConsumer {
 
   reveal(producer: SignalProducer<any>): void {
     if (this.isConnected) {
-      if (!this.unusedVersions?.has(producer) && !this.versions.has(producer)) {
+      if (!this.unusedVersions?.has(producer) && !this.versions.has(producer))
         producer.watch(this);
-      }
+
       this.unusedVersions?.delete(producer);
     }
     this.versions.set(producer, producer.version);
@@ -108,9 +103,7 @@ export class SignalConsumer {
 
   isStale(): boolean {
     for (const [signal, version] of this.versions) {
-      if (version !== signal.version) {
-        return true;
-      }
+      if (version !== signal.version) return true;
     }
     return false;
   }
@@ -121,9 +114,7 @@ export class SignalConsumer {
 
       if (this.isStale()) this.notify();
 
-      for (const signal of this.versions.keys()) {
-        signal.watch(this);
-      }
+      for (const signal of this.versions.keys()) signal.watch(this);
     }
   }
 
@@ -131,9 +122,7 @@ export class SignalConsumer {
     if (this.isConnected) {
       this.isConnected = false;
 
-      for (const signal of this.versions.keys()) {
-        signal.unwatch(this);
-      }
+      for (const signal of this.versions.keys()) signal.unwatch(this);
     }
   }
 }
@@ -188,9 +177,9 @@ export class Computed<T> extends SignalProducer<T> {
     if (
       this.version < 0 ||
       (!this.consumer.isConnected && this.consumer.isStale())
-    ) {
+    )
       this.compute(false);
-    }
+
     return this.result;
   }
 
@@ -207,18 +196,15 @@ export class Computed<T> extends SignalProducer<T> {
   watch(consumer: SignalConsumer): void {
     super.watch(consumer);
     if (!this.consumer.isConnected) {
-      if (this.consumer.isStale()) {
-        this.compute(false);
-      }
+      if (this.consumer.isStale()) this.compute(false);
+
       this.consumer.start();
     }
   }
 
   unwatch(consumer: SignalConsumer): void {
     super.unwatch(consumer);
-    if (this.consumers.size === 0) {
-      this.consumer.stop();
-    }
+    if (this.consumers.size === 0) this.consumer.stop();
   }
 }
 
@@ -261,9 +247,7 @@ export class Effect {
           this.consumer.run(this.effect);
         });
       }
-    } else {
-      this.consumer.run(this.effect);
-    }
+    } else this.consumer.run(this.effect);
   }
 
   start(): void {

@@ -124,9 +124,8 @@ export class DexieIndexedDbService implements IndexedDbService<OryxDexieDb> {
   }
 
   protected async persistStorage(): Promise<void> {
-    if (!navigator.storage.persist || (await navigator.storage.persisted())) {
+    if (!navigator.storage.persist || (await navigator.storage.persisted()))
       return;
-    }
 
     const isPersisted = await navigator.storage.persist();
 
@@ -161,9 +160,8 @@ export class DexieIndexedDbService implements IndexedDbService<OryxDexieDb> {
       );
 
       metadataGroup.metadata.forEach((metadata) => {
-        if (metadata.storeName) {
+        if (metadata.storeName)
           this.storeNameMap.set(metadata.entityType, metadata.storeName);
-        }
       });
 
       dbVersion.stores(schema);
@@ -209,9 +207,7 @@ export class DexieIndexedDbService implements IndexedDbService<OryxDexieDb> {
     metadata: IndexedDbSchemaMetadata,
     metadatas: IndexedDbSchemaMetadata[]
   ): string | null {
-    if (metadata.unset) {
-      return null;
-    }
+    if (metadata.unset) return null;
 
     const primaryIndex = this.mapIndex(metadata.primaryKey);
     const indexes = metadata.indexes.map((index) => this.mapIndex(index));
@@ -226,13 +222,9 @@ export class DexieIndexedDbService implements IndexedDbService<OryxDexieDb> {
   protected mapIndex(
     index?: IndexedDbPrimaryKeyMetadata | IndexedDbIndexMetadata
   ): string | undefined {
-    if (!index) {
-      return '';
-    }
+    if (!index) return '';
 
-    if (index.unset) {
-      return;
-    }
+    if (index.unset) return;
 
     const modifier = (index as IndexedDbIndexAutoIncrement).autoIncrement
       ? '++'

@@ -52,12 +52,11 @@ export class PaginationController implements ReactiveController {
 
   protected getRange(length: number): { start: number; end: number } {
     let start = this.host.current - (this.host.max - 1) / 2;
-    if (this.host.current < this.host.max) {
-      start = 1;
-    }
-    if (this.host.current - 1 > length - this.host.max) {
+    if (this.host.current < this.host.max) start = 1;
+
+    if (this.host.current - 1 > length - this.host.max)
       start = length - this.host.max + 1;
-    }
+
     return {
       start,
       end: start + this.host.max - 1,
@@ -75,13 +74,9 @@ export class PaginationController implements ReactiveController {
   }
 
   protected ensureCurrent(pages: HTMLElement[]): void {
-    if (!this.host.current || this.host.current < 1) {
-      this.host.current = 1;
-    }
+    if (!this.host.current || this.host.current < 1) this.host.current = 1;
 
-    if (this.host.current > pages.length - 1) {
-      this.host.current = pages.length;
-    }
+    if (this.host.current > pages.length - 1) this.host.current = pages.length;
   }
 
   constructor(protected host: PaginationProperties & LitElement) {

@@ -36,9 +36,8 @@ export class DefaultTransformerService implements TransformerService {
         fullData === null ||
         Array.isArray(fullData) ||
         typeof fullData !== 'object'
-      ) {
+      )
         return currentData;
-      }
 
       return {
         ...(currentData as Record<string, unknown>),

@@ -38,9 +38,8 @@ export const digestForTemplateValues = (templateResult: TemplateResult) => {
   // Workaround: add values to the digest
   for (const s of templateResult.values) {
     const z = sortedStringify(s) ?? '';
-    for (let i = 0; i < z.length; i++) {
+    for (let i = 0; i < z.length; i++)
       hashes[i % digestSize] = (hashes[i % digestSize] * 33) ^ z.charCodeAt(i);
-    }
   }
 
   const str = String.fromCharCode(...new Uint8Array(hashes.buffer));

@@ -65,9 +65,7 @@ export function i18n<T extends string | readonly string[]>(
     text = (text as Observable<I18nTranslation>).pipe(
       map((result) => unwrapText(result))
     );
-  } else {
-    text = unwrapText(text);
-  }
+  } else text = unwrapText(text);
 
   const $text = signal(text);
 
@@ -77,20 +75,14 @@ export function i18n<T extends string | readonly string[]>(
 }
 
 function unwrapText(result?: I18nTranslation): I18nTranslationValue {
-  if (!result) {
-    return '';
-  }
+  if (!result) return '';
 
-  if (typeof result === 'string') {
-    return result;
-  }
+  if (typeof result === 'string') return result;
 
   if ('text' in result) {
-    if (result.hasHtml && typeof result.text === 'string') {
+    if (result.hasHtml && typeof result.text === 'string')
       return html`${unsafeHTML(result.text)}`;
-    } else {
-      return result.text;
-    }
+    else return result.text;
   }
 
   return result;

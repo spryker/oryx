@@ -63,16 +63,11 @@ export class DefaultFormRenderer implements FormRenderer {
     control: HTMLInputElement | HTMLSelectElement
   ): Record<string, unknown> {
     let value;
-    if (control instanceof HTMLInputElement && control.type === 'checkbox') {
+    if (control instanceof HTMLInputElement && control.type === 'checkbox')
       value = !!control.checked;
-    } else if (
-      control instanceof HTMLInputElement &&
-      control.type === 'number'
-    ) {
+    else if (control instanceof HTMLInputElement && control.type === 'number')
       value = Number(control.value);
-    } else {
-      value = control.value;
-    }
+    else value = control.value;
 
     return {
       [control.name]: value,
@@ -120,17 +115,15 @@ export class DefaultFormRenderer implements FormRenderer {
     field: FormFieldDefinition,
     value?: string | boolean
   ): TemplateResult {
-    if (!field.label || field.label === '') {
+    if (!field.label || field.label === '')
       field.label = this.resolveLabel(field.id);
-    }
 
     const template = this.injector.inject(
       `${FormFieldRenderer}-${field.type}`,
       null
     );
-    if (template) {
-      return template.render(field, value);
-    }
+    if (template) return template.render(field, value);
+
     switch (field.type) {
       case 'input':
       case FormFieldType.Text:
@@ -405,9 +398,7 @@ export class DefaultFormRenderer implements FormRenderer {
   }
 
   protected resolveStyles(params: FormFieldDefinition): string | void {
-    if (params.width === 100) {
-      return `grid-column: auto / span 2;`;
-    }
+    if (params.width === 100) return `grid-column: auto / span 2;`;
   }
 
   /**

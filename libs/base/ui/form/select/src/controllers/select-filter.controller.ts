@@ -31,9 +31,7 @@ export class SelectFilterController implements ReactiveController {
   }
 
   protected onFocus(): void {
-    if (this.selectFilteringEnabled) {
-      this.filterControl.focus();
-    }
+    if (this.selectFilteringEnabled) this.filterControl.focus();
   }
 
   protected onUpdate(): void {
@@ -50,9 +48,9 @@ export class SelectFilterController implements ReactiveController {
   }
 
   protected setFilterValue(): void {
-    if (this.initialized && this.host.isEmpty && !!this.filterControl.value) {
+    if (this.initialized && this.host.isEmpty && !!this.filterControl.value)
       return;
-    }
+
     const value = this.control.value;
     const selected = value
       ? Array.from(this.options).find((option) => option.value === value)

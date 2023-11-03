@@ -13,9 +13,7 @@ export function priceNormalizer(data: ApiProductModel.Prices): ProductPrices {
   ): ProductPrice | undefined => {
     const value = data?.grossAmount ?? data?.netAmount;
 
-    if (!data || !value) {
-      return;
-    }
+    if (!data || !value) return;
 
     return {
       value,

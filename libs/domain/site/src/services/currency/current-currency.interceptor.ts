@@ -1,6 +1,6 @@
 import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
-import { inject, INJECTOR } from '@spryker-oryx/di';
-import { map, Observable, switchMap, take } from 'rxjs';
+import { INJECTOR, inject } from '@spryker-oryx/di';
+import { Observable, map, switchMap, take } from 'rxjs';
 import { CurrencyService } from './currency.service';
 
 export class CurrentCurrencyInterceptor implements HttpInterceptor {
@@ -41,9 +41,9 @@ export class CurrentCurrencyInterceptor implements HttpInterceptor {
 
     const path = url.substring(this.SCOS_BASE_URL.length);
 
-    for (const endpoint of this.includedEndpoints) {
+    for (const endpoint of this.includedEndpoints)
       if (path.startsWith(`/${endpoint}`)) return true;
-    }
+
     return false;
   }
 }

@@ -20,9 +20,8 @@ class PreHydrateDirective extends Directive {
     dryFunction: (host: LitElement) => void | Promise<void>,
     tag: string
   ): unknown {
-    if (!isServer) {
-      return html``;
-    }
+    if (!isServer) return html``;
+
     if (components[tag]) {
       return html`${unsafeHTML(
         `<script>try{__dryFn('${tag}')}catch{}</script>`

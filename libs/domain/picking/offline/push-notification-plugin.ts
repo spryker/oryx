@@ -1,7 +1,7 @@
 import { OauthService } from '@spryker-oryx/auth';
 import { ExecPlugin, InjectionPlugin } from '@spryker-oryx/core';
-import { BapiPushNotificationService } from './services';
 import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking';
+import { BapiPushNotificationService } from './services';
 
 export class PushNotificationPlugin extends ExecPlugin {
   constructor() {
@@ -15,15 +15,12 @@ export class PushNotificationPlugin extends ExecPlugin {
       const isUserAssigned = injector.inject(WarehouseUserAssignmentsService);
 
       isUserAssigned.getUserAssignment().subscribe((userAssignment) => {
-        if (userAssignment) {
+        if (userAssignment)
           pushNotificationService.initSubscription().subscribe();
-        }
       });
 
       authService.isAuthenticated().subscribe((isAuthenticated) => {
-        if (!isAuthenticated) {
-          pushNotificationService.unsubscribe().subscribe();
-        }
+        if (!isAuthenticated) pushNotificationService.unsubscribe().subscribe();
       });
     });
   }

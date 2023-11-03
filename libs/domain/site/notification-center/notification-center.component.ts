@@ -6,7 +6,7 @@ import {
   NotificationPosition,
 } from '@spryker-oryx/ui/notification-center';
 import { elementEffect, hydrate, signal } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { SiteNotificationCenterOptions } from './notification-center.model';
 
@@ -31,13 +31,11 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
     const notification = this.$notification();
 
     if (!notification || Object.keys(notification).length === 0) return;
-    if (!(this.centerRef.value && 'open' in this.centerRef.value)) {
+    if (!(this.centerRef.value && 'open' in this.centerRef.value))
       await customElements.whenDefined('oryx-notification-center');
-    }
+
     const autoCloseTime = this.$options().autoCloseTime;
-    if (autoCloseTime) {
-      notification.autoCloseTime ??= autoCloseTime * 1000;
-    }
+    if (autoCloseTime) notification.autoCloseTime ??= autoCloseTime * 1000;
 
     this.centerRef.value?.open(notification);
   };

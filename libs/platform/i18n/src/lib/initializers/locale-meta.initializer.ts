@@ -29,9 +29,7 @@ export class DefaultLocaleMetaInitializer implements AppInitializer, OnDestroy {
   protected subscription = new Subscription();
 
   initialize(): void {
-    if (!this.localeService?.get() || !this.metaService) {
-      return;
-    }
+    if (!this.localeService?.get() || !this.metaService) return;
 
     this.subscription.add(
       this.localeService

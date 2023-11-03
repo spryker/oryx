@@ -23,25 +23,16 @@ export function treewalk(
   for (const node of nodes) {
     if (!node) continue;
 
-    if (node.nodeType !== Node.ELEMENT_NODE) {
-      continue;
-    }
+    if (node.nodeType !== Node.ELEMENT_NODE) continue;
 
-    if (node.children.length) {
-      nodes.push(...node.children);
-    }
+    if (node.children.length) nodes.push(...node.children);
 
-    if (node.shadowRoot?.children.length) {
+    if (node.shadowRoot?.children.length)
       nodes.push(...node.shadowRoot.children);
-    }
 
-    if (!includeRoot && node.matches(rootNode.tagName.toLowerCase())) {
-      continue;
-    }
+    if (!includeRoot && node.matches(rootNode.tagName.toLowerCase())) continue;
 
-    if (node.matches(selector)) {
-      elements.push(node as HTMLElement);
-    }
+    if (node.matches(selector)) elements.push(node as HTMLElement);
   }
 
   return elements;
@@ -173,9 +164,8 @@ export const getHydrationEventsModes = (
 
   return events.reduce<string[]>(
     (acc, element) => {
-      for (const event of parseHydrationEventsTypes(element)) {
+      for (const event of parseHydrationEventsTypes(element))
         if (!acc.includes(event.trim())) acc.push(event.trim());
-      }
 
       return acc;
     },

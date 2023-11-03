@@ -34,9 +34,8 @@ export class NodeUtilService {
   copyFolder(source: string, destination: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       // Create the destination directory if it doesn't exist
-      if (!this._fs.existsSync(destination)) {
+      if (!this._fs.existsSync(destination))
         this._fs.mkdirSync(destination, { recursive: true });
-      }
 
       const files = this._fs.readdirSync(source);
 
@@ -49,9 +48,7 @@ export class NodeUtilService {
           this.copyFolder(sourcePath, destinationPath)
             .then(resolve)
             .catch((error) => reject(error));
-        } else {
-          this._fs.copyFileSync(sourcePath, destinationPath);
-        }
+        } else this._fs.copyFileSync(sourcePath, destinationPath);
       }
 
       resolve();
@@ -72,13 +69,9 @@ export class NodeUtilService {
           return reject(error);
         }
 
-        if (stdout && output) {
-          console.log(`Standard Output: ${stdout}`);
-        }
+        if (stdout && output) console.log(`Standard Output: ${stdout}`);
 
-        if (stderr) {
-          console.error(`Standard Error: ${stderr}`);
-        }
+        if (stderr) console.error(`Standard Error: ${stderr}`);
 
         resolve();
       });

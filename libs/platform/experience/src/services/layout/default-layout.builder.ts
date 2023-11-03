@@ -48,26 +48,20 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     if (id) {
       selectors.push(`:host([uid="${id}"])`);
       selectors.push(`[uid="${id}"]`);
-    } else {
-      selectors.push(':host');
-    }
+    } else selectors.push(':host');
 
-    if (rule.query?.childs) {
+    if (rule.query?.childs)
       selectors.forEach((_, i) => (selectors[i] += ' > *'));
-    }
 
-    if (rule.query?.hover) {
+    if (rule.query?.hover)
       selectors.forEach((_, i) => (selectors[i] += ':hover'));
-    }
 
     if (rule.query?.breakpoint) {
       const mediaQuery = this.screenService.getScreenMedia(
         rule.query.breakpoint as Breakpoint
       );
       return `${mediaQuery}{\n${selectors.join(', ')} {\n${styles}\n}}`;
-    } else {
-      return `${selectors.join(', ')} {\n${styles}\n}`;
-    }
+    } else return `${selectors.join(', ')} {\n${styles}\n}`;
   }
 
   getLayoutMarkers(data?: CompositionProperties): string | undefined {
@@ -117,11 +111,8 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       Object.entries(rulesObj).forEach(([rule, value]) => {
         if ((!value || value === '0') && !options?.emptyValue) return;
         if (!isNaN(Number(value))) {
-          if (!options?.omitUnit) {
-            value = addUnit(value, options?.unit);
-          } else {
-            value = String(value);
-          }
+          if (!options?.omitUnit) value = addUnit(value, options?.unit);
+          else value = String(value);
         }
 
         // do not add empty values unless explicitly asked
@@ -156,16 +147,16 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add({ rotate: data.rotate }, { unit: 'deg' });
     add({ 'z-index': data.zIndex }, { omitUnit: true });
 
-    if (data.gridColumn && data.colSpan) {
+    if (data.gridColumn && data.colSpan)
       add({ 'grid-column': `${data.gridColumn} / span ${data.colSpan}` });
-    } else {
+    else {
       if (data.gridColumn)
         add({ 'grid-column': data.gridColumn }, { omitUnit: true });
       if (data.colSpan) add({ 'grid-column': `span ${data.colSpan}` });
     }
-    if (data.gridRow && data.rowSpan) {
+    if (data.gridRow && data.rowSpan)
       add({ 'grid-row': `${data.gridRow} / span ${data.rowSpan}` });
-    } else {
+    else {
       if (data.gridRow) add({ 'grid-row': data.gridRow }, { omitUnit: true });
       if (data.rowSpan) add({ 'grid-row': `span ${data.rowSpan}` });
     }
@@ -195,9 +186,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       overflow: data?.overflow,
     });
 
-    if (data.scale) {
-      add({ transform: `scale(${data?.scale})` });
-    }
+    if (data.scale) add({ transform: `scale(${data?.scale})` });
 
     if (data.typography) {
       add({ 'font-size': `var(--oryx-typography-${data.typography}-size)` });
@@ -205,9 +194,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
         'font-weight': `var(--oryx-typography-${data.typography}-weight)`,
       });
       add({ 'line-height': `var(--oryx-typography-${data.typography}-line)` });
-      if (!data.margin) {
-        add({ margin: `0` }, { emptyValue: true });
-      }
+      if (!data.margin) add({ margin: `0` }, { emptyValue: true });
     }
 
     return rules;

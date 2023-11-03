@@ -5,7 +5,7 @@ import {
   IdentityService,
 } from '@spryker-oryx/auth';
 import { inject } from '@spryker-oryx/di';
-import { map, Observable, shareReplay } from 'rxjs';
+import { Observable, map, shareReplay } from 'rxjs';
 import { parseToken } from './utils';
 
 export class SapiIdentityService implements IdentityService {
@@ -21,17 +21,15 @@ export class SapiIdentityService implements IdentityService {
   }
 
   protected getFromToken(token: AuthTokenData): AuthIdentity {
-    if (token.type === 'anon') {
+    if (token.type === 'anon')
       return { isAuthenticated: false, userId: token.token };
-    }
 
     try {
       const tokenPayload = parseToken<SapiJWTPayload>(token.token);
       const userId = tokenPayload.sub.customer_reference;
 
-      if (!userId) {
+      if (!userId)
         throw new Error('customer_reference is missing in sub claim!');
-      }
 
       return { isAuthenticated: true, userId };
     } catch (e) {

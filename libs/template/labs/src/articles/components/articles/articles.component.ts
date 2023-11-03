@@ -33,9 +33,7 @@ export class ArticlesComponent extends LitElement {
   protected override render(): TemplateResult | void {
     const data = this.$data();
 
-    if (!data?.length) {
-      return;
-    }
+    if (!data?.length) return;
 
     return html`${data.map(
       ({ fields: { type, id, url, heading: text } }) => html`

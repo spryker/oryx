@@ -36,9 +36,8 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
     super();
     this.propertiesCollector(themes);
 
-    if (!(iconInjectable.get() instanceof DefaultIconInjectable)) {
+    if (!(iconInjectable.get() instanceof DefaultIconInjectable))
       iconInjectable.inject(new DefaultIconInjectable());
-    }
   }
 
   getName(): string {
@@ -50,9 +49,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
   }
 
   getIcons(): ThemeIcons | undefined {
-    if (!Object.keys(this.icons).length) {
-      return;
-    }
+    if (!Object.keys(this.icons).length) return;
 
     return this.icons as ThemeIcons;
   }
@@ -102,16 +99,13 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
         (theme) => styles?.theme === theme.name
       );
 
-      if (!component) {
-        continue;
-      }
+      if (!component) continue;
 
       implementations.push(resolveLazyLoadable(styles.rules));
     }
 
-    if (rootInjectable.get() === name) {
+    if (rootInjectable.get() === name)
       implementations.unshift(this.getStylesFromTokens(this.themes));
-    }
 
     const themes = await Promise.all(implementations);
 
@@ -146,9 +140,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
     const { extendedClass, themes } = mapper;
     const componentClass = Object.getPrototypeOf(extendedClass);
 
-    if (!themes) {
-      return;
-    }
+    if (!themes) return;
 
     const base = componentClass.styles ?? [];
     const bases = Array.isArray(base) ? base : [base];
@@ -162,9 +154,7 @@ export class ThemePlugin extends ThemeTokens implements AppPlugin {
     let innerTheme = [...bases, ...this.normalizeStyles(stylesheet)];
 
     for (const theme of themes) {
-      if (!isThemeStyles(theme)) {
-        continue;
-      }
+      if (!isThemeStyles(theme)) continue;
 
       const { styles, strategy } = theme;
 

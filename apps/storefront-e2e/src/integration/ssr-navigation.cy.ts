@@ -132,9 +132,7 @@ describe('SSR suite', { tags: 'smoke' }, () => {
 });
 
 function verifyFooter(isPageScrollable = true) {
-  if (isPageScrollable) {
-    cy.scrollTo('bottom');
-  }
+  if (isPageScrollable) cy.scrollTo('bottom');
 
   footer.getLinkByUrl('/contact').should('be.visible');
 

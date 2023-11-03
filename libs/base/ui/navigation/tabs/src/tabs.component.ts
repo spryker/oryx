@@ -36,15 +36,11 @@ export class TabsComponent extends LitElement implements TabsProperties {
   }
 
   protected select(tab?: TabComponent | null): void {
-    if (!tab) {
-      return;
-    }
+    if (!tab) return;
 
     this.tabs?.forEach((t, index) => {
       t.selected = t === tab;
-      if (t.selected) {
-        this.rangeValue = index + 1;
-      }
+      if (t.selected) this.rangeValue = index + 1;
     });
     if (tab.hasAttribute('for')) {
       this.panels?.forEach((panel) =>

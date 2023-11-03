@@ -73,9 +73,7 @@ export class DefaultI18nService implements I18nService {
   ): Observable<I18nString> {
     const cachedText$ = this.textCache.get(getI18nTextHash(token, context));
 
-    if (cachedText$) {
-      return cachedText$;
-    }
+    if (cachedText$) return cachedText$;
 
     return this.getNewText(token, context, context$, factoryFn);
   }
@@ -91,9 +89,8 @@ export class DefaultI18nService implements I18nService {
     const hash = getI18nTextHash(token, context);
 
     // Check if new context is already in cache
-    if (this.textCache.has(hash)) {
+    if (this.textCache.has(hash))
       return this.getCachedText(token, context, context$, factoryFn);
-    }
 
     const text$ = factoryFn(context$);
     this.textCache.set(hash, text$);

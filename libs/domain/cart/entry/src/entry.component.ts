@@ -83,9 +83,7 @@ export class CartEntryComponent
 
   @elementEffect()
   protected setProductContext = (): void => {
-    if (this.sku) {
-      this.contextController.provide(ProductContext.SKU, this.sku);
-    }
+    if (this.sku) this.contextController.provide(ProductContext.SKU, this.sku);
   };
 
   protected cartService = resolve(CartService);
@@ -272,19 +270,15 @@ export class CartEntryComponent
 
   protected onSubmit(ev: CustomEvent<QuantityEventDetail>): void {
     const { quantity } = ev.detail;
-    if (quantity > 0) {
-      this.updateEntry(quantity);
-    } else {
-      this.removeEntry(ev);
-    }
+    if (quantity > 0) this.updateEntry(quantity);
+    else this.removeEntry(ev);
   }
 
   protected updateEntry(quantity: number): void {
     this.cartService.updateEntry({ groupKey: this.key, quantity }).subscribe({
       next: () => {
-        if (this.$options().notifyOnUpdate) {
+        if (this.$options().notifyOnUpdate)
           this.notify('cart.cart-entry-updated', this.sku);
-        }
       },
       error: (e: Error) => this.revert(e),
     });
@@ -298,9 +292,8 @@ export class CartEntryComponent
 
     this.cartService.deleteEntry({ groupKey: this.key }).subscribe({
       next: () => {
-        if (this.$options().notifyOnRemove) {
+        if (this.$options().notifyOnRemove)
           this.notify('cart.confirm-removed', this.sku);
-        }
       },
       error: (e: Error) => this.revert(e),
     });

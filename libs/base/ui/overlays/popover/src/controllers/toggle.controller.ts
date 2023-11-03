@@ -92,9 +92,7 @@ export class ToggleController implements ReactiveController {
   protected handleBlur(): void {
     this.skipOpeningOnNextFocus = true;
 
-    if (this.isOpen) {
-      this.toggle(false);
-    }
+    if (this.isOpen) this.toggle(false);
   }
 
   protected handleFocusin(): void {
@@ -107,9 +105,7 @@ export class ToggleController implements ReactiveController {
   }
 
   protected async handleFocusout(): Promise<void> {
-    if (!this.host.matches(':focus-within')) {
-      this.toggle(false);
-    }
+    if (!this.host.matches(':focus-within')) this.toggle(false);
 
     this.focusShouldBeFocusedMaybe();
   }
@@ -146,38 +142,32 @@ export class ToggleController implements ReactiveController {
     const isEmitterOutside =
       timePassed(this.timeStarted) && !this.emitterIsInsidePopover(e);
 
-    if ((await this.shouldClosePopover(e)) || isEmitterOutside) {
+    if ((await this.shouldClosePopover(e)) || isEmitterOutside)
       this.toggle(false);
-    }
   }
 
   protected handleKeydown(e: KeyboardEvent): void {
-    if (this.keyIsPressed) {
-      return;
-    }
+    if (this.keyIsPressed) return;
 
     this.keyIsPressed = true;
 
     switch (e.key) {
       case 'Enter':
       case ' ':
-        if (this.emitterIsInsidePopover(e) && !this.shouldClosePopover(e)) {
+        if (this.emitterIsInsidePopover(e) && !this.shouldClosePopover(e))
           return;
-        }
 
         this.toggle();
         break;
       case 'Escape':
-        if (this.isOpen) {
-          this.toggle(false);
-        }
+        if (this.isOpen) this.toggle(false);
+
         break;
       default:
         // avoid toggle the element when the user cmd-tabs away from the browser
         // or dispatching Tab keyhandleMouseup
-        if (!((e.key === 'Meta' && e.metaKey) || e.key === 'Tab')) {
+        if (!((e.key === 'Meta' && e.metaKey) || e.key === 'Tab'))
           this.toggle(true);
-        }
     }
   }
 
@@ -202,9 +192,8 @@ export class ToggleController implements ReactiveController {
    * Toggles the visibility of the element.
    */
   toggle(force?: boolean): void {
-    if (force ?? !this.isOpen) {
-      this.show();
-    } else {
+    if (force ?? !this.isOpen) this.show();
+    else {
       this.host.toggleAttribute('open', false);
       this.element?.toggleAttribute('show', false);
 
@@ -215,9 +204,7 @@ export class ToggleController implements ReactiveController {
   }
 
   protected show(): void {
-    if (this.isOpen) {
-      return;
-    }
+    if (this.isOpen) return;
 
     this.setBoundingBox();
 

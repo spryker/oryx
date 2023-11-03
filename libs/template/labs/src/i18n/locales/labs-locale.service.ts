@@ -6,9 +6,9 @@ export class LabsLocaleService extends DefaultLocaleService {
     return super.getAll().pipe(
       map((locales) => {
         const result = [...locales];
-        if (!locales.find((locale) => locale.code === 'ar')) {
+        if (!locales.find((locale) => locale.code === 'ar'))
           result.push({ code: 'ar', name: 'ar_AR' });
-        }
+
         return result;
       })
     );

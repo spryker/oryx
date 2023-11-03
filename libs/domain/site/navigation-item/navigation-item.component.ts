@@ -56,9 +56,8 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
   }
 
   protected onTriggerHover(e: MouseEvent): void {
-    if (this.$options().triggerBehavior !== NavigationTriggerBehavior.Hover) {
+    if (this.$options().triggerBehavior !== NavigationTriggerBehavior.Hover)
       return;
-    }
 
     //imitate mousedown behavior
     const trigger = e.target as LitElement;

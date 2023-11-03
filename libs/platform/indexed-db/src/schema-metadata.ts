@@ -69,25 +69,20 @@ export class IndexedDbSchemaMetadata {
       partialMetadata.version
     );
 
-    if (partialMetadata.storeName !== undefined) {
+    if (partialMetadata.storeName !== undefined)
       metadata.storeName = partialMetadata.storeName;
-    }
 
-    if (partialMetadata.compound !== undefined) {
+    if (partialMetadata.compound !== undefined)
       metadata.compound = partialMetadata.compound;
-    }
 
-    if (partialMetadata.foreignKeys) {
+    if (partialMetadata.foreignKeys)
       metadata.foreignKeys.push(...partialMetadata.foreignKeys);
-    }
 
-    if (partialMetadata.unset !== undefined) {
+    if (partialMetadata.unset !== undefined)
       metadata.unset = partialMetadata.unset;
-    }
 
-    if (partialMetadata.migration !== undefined) {
+    if (partialMetadata.migration !== undefined)
       metadata.migration = partialMetadata.migration;
-    }
 
     if (partialMetadata.primaryKey !== undefined) {
       const metadata = this.getMetadataVersion(
@@ -138,9 +133,8 @@ export class IndexedDbSchemaMetadata {
     entityType: IndexedDbEntityType,
     version = 1
   ): IndexedDbSchemaMetadata {
-    if (!this.schemaMetadataMap.has(entityType)) {
+    if (!this.schemaMetadataMap.has(entityType))
       this.schemaMetadataMap.set(entityType, {});
-    }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const metadataVersions = this.schemaMetadataMap.get(entityType)!;

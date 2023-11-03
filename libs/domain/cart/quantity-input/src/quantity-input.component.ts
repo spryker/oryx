@@ -165,11 +165,9 @@ export class QuantityInputComponent
    */
   protected onChange(): void {
     this.updateValue();
-    if (this.submitOnChange && this.input?.validity.valid) {
+    if (this.submitOnChange && this.input?.validity.valid)
       this.dispatch(SUBMIT_EVENT);
-    } else {
-      this.dispatch(UPDATE_EVENT);
-    }
+    else this.dispatch(UPDATE_EVENT);
   }
 
   protected updateValue(value?: string): void {
@@ -189,23 +187,18 @@ export class QuantityInputComponent
    * so that the user understands why the input is not submitted.
    */
   protected onKeydown(ev: KeyboardEvent): void {
-    if (ev.key !== 'Enter') {
-      return;
-    }
-    if (this.input?.validity.valid) {
-      this.dispatch(SUBMIT_EVENT);
-    } else {
-      this.checkValidity();
-    }
+    if (ev.key !== 'Enter') return;
+
+    if (this.input?.validity.valid) this.dispatch(SUBMIT_EVENT);
+    else this.checkValidity();
   }
 
   protected dispatch<T extends QuantityEventDetail>(
     eventName: typeof UPDATE_EVENT | typeof SUBMIT_EVENT
   ): void {
     const detail = { quantity: Number(this.input?.value) } as T;
-    if (!this.input?.validity.valid) {
-      detail.isInvalid = true;
-    }
+    if (!this.input?.validity.valid) detail.isInvalid = true;
+
     this.dispatchEvent(
       new CustomEvent<T>(eventName, { detail, bubbles: true, composed: true })
     );

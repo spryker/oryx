@@ -31,9 +31,7 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
   protected initialize(): void {
     const initializers = this.injector.inject(HydrationTrigger, null);
 
-    if (!initializers) {
-      return;
-    }
+    if (!initializers) return;
 
     for (const initializer of initializers) {
       this.subscription.add(
@@ -64,11 +62,9 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
       const modes = getHydrationEventsModes(el.shadowRoot!, types);
 
       for (let i = 0; i < modes.length; i++) {
-        if (modes[i][0] === '@') {
+        if (modes[i][0] === '@')
           this.setupContextHydration(el, modes[i].slice(1));
-        } else {
-          this.setupEventHydration(el, modes[i]);
-        }
+        else this.setupEventHydration(el, modes[i]);
       }
     });
 
@@ -80,9 +76,7 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
     const parts = event.split(':');
     const mode = parts[parts.length - 1];
     let target: HTMLElement | typeof window = element;
-    if (parts.length > 1) {
-      target = parts[0] === 'window' ? window : element;
-    }
+    if (parts.length > 1) target = parts[0] === 'window' ? window : element;
 
     target.addEventListener(mode, async () => {
       const childs = treewalk(`[${deferHydrationAttribute}]`, element, false);
@@ -111,15 +105,11 @@ export class DefaultHydrationService implements HydrationService, OnDestroy {
             delete this.contextChange[context];
           })
       );
-    } else {
-      this.contextChange[context].push(element);
-    }
+    } else this.contextChange[context].push(element);
   }
 
   async hydrateOnDemand(element: HTMLElement): Promise<void> {
-    if (!element?.hasAttribute(hydratableAttribute)) {
-      return;
-    }
+    if (!element?.hasAttribute(hydratableAttribute)) return;
 
     if (!customElements.get(element.localName)) {
       await this.componentsPlugin.loadComponent(element.localName);

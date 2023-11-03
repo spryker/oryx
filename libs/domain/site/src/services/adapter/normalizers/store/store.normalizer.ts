@@ -10,9 +10,9 @@ export function storeAttributesNormalizer(data: DeserializedStores): Store[] {
   // multi-store backend is exposing numbers rather than the locale isocode.
   data.map((store) =>
     store.locales.map((locale) => {
-      if (!isNaN(Number(locale.code))) {
+      if (!isNaN(Number(locale.code)))
         locale.code = locale.name.split(/_|-/)?.[0];
-      }
+
       return locale;
     })
   );

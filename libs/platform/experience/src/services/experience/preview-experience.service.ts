@@ -87,9 +87,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     map((data) => data.data.content),
     filter(isDefined),
     tap((content) => {
-      if (!content?.id) {
-        return;
-      }
+      if (!content?.id) return;
 
       this.storeData('dataContent', content.id, content);
     })
@@ -99,9 +97,7 @@ export class PreviewExperienceService extends DefaultExperienceService {
     map((data) => data.data.options),
     filter(isDefined),
     tap((options) => {
-      if (!options?.id) {
-        return;
-      }
+      if (!options?.id) return;
 
       this.storeData('dataOptions', options.id, options.data);
     })
@@ -160,9 +156,8 @@ export class PreviewExperienceService extends DefaultExperienceService {
   }
 
   routeChangeHandler(route: string): void {
-    if (this.baseRoute && route.startsWith(this.baseRoute)) {
+    if (this.baseRoute && route.startsWith(this.baseRoute))
       route = route.replace(this.baseRoute, '');
-    }
 
     postMessage({
       type: REQUEST_MESSAGE_TYPE,

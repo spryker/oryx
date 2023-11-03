@@ -10,17 +10,13 @@ export class NDSModalComponent extends ModalComponent {
     if (this.isOpen) {
       window.addEventListener('keydown', this.onKeydown);
       this.addEventListener('click', this.onBackdropClick);
-    } else {
-      this.onDestroy();
-    }
+    } else this.onDestroy();
   }
 
   protected onKeydown = (e: KeyboardEvent): void => {
     e.preventDefault();
 
-    if (e.key === 'Escape' && !this.preventCloseByEscape) {
-      this.close();
-    }
+    if (e.key === 'Escape' && !this.preventCloseByEscape) this.close();
   };
 
   protected onDestroy(): void {

@@ -1,5 +1,5 @@
 import { hydrate, ssrShim } from '@spryker-oryx/utilities';
-import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
+import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { VideoAspectRatio, VideoAttributes, VideoPreload } from './video.model';
@@ -30,9 +30,7 @@ export default class VideoComponent
 
     const video = this.renderRoot.querySelector<HTMLVideoElement>('video');
 
-    if (video) {
-      video.muted = !!this.muted;
-    }
+    if (video) video.muted = !!this.muted;
   }
 
   protected override render(): TemplateResult | void {
@@ -64,12 +62,11 @@ export default class VideoComponent
     if (!this.url) return;
 
     const resolveId = (url: string): string | undefined => {
-      if (url.includes('youtu.be')) {
-        return url.split('/').pop();
-      } else if (url.includes('youtube.com')) {
-        if (url.includes('/embed/')) {
+      if (url.includes('youtu.be')) return url.split('/').pop();
+      else if (url.includes('youtube.com')) {
+        if (url.includes('/embed/'))
           return url.split('/embed/').pop()?.split('?')[0];
-        }
+
         return new URL(url).searchParams.get('v') ?? undefined;
       }
       return;

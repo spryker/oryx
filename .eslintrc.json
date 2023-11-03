@@ -55,7 +55,8 @@
             "allowArgumentsExplicitlyTypedAsAny": true,
             "allowTypedFunctionExpressions": true
           }
-        ]
+        ],
+        "curly": ["error", "multi-or-nest"]
       }
     },
     {

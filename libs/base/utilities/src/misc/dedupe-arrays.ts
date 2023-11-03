@@ -15,9 +15,8 @@ export function dedupeArrays<T>(
       : // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         (v1) => v1;
 
-  if (typeof arr1OrIdentityFn !== 'function') {
+  if (typeof arr1OrIdentityFn !== 'function')
     arrays = [arr1OrIdentityFn, ...arrays];
-  }
 
   const uniqueArray: T[] = [];
   const existingIdSet = new Set<unknown>();
@@ -26,9 +25,7 @@ export function dedupeArrays<T>(
     for (const item of array) {
       const id = identityFn(item);
 
-      if (existingIdSet.has(id)) {
-        continue;
-      }
+      if (existingIdSet.has(id)) continue;
 
       existingIdSet.add(id);
       uniqueArray.push(item);

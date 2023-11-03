@@ -42,16 +42,13 @@ export function inject<K, L>(
 ): InferInjectType<K> | L;
 export function inject<K = any>(token: string, defaultValue?: K): K;
 export function inject(token: any, defaultValue?: any): any {
-  if (_currentInjector === undefined) {
+  if (_currentInjector === undefined)
     throw new Error(`inject() can't be used outside injection context!'`);
-  }
 
   try {
     return _currentInjector.inject(token);
   } catch (error) {
-    if (defaultValue !== undefined) {
-      return defaultValue;
-    }
+    if (defaultValue !== undefined) return defaultValue;
 
     throw error;
   }

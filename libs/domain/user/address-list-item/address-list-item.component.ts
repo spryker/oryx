@@ -39,9 +39,7 @@ export class UserAddressListItemComponent extends AddressMixin(
       return html`<oryx-radio>
         <slot></slot>${this.renderContent()}
       </oryx-radio>`;
-    } else {
-      return html`<section>${this.renderContent()}</section> `;
-    }
+    } else return html`<section>${this.renderContent()}</section> `;
   }
 
   protected renderContent(): TemplateResult | void {

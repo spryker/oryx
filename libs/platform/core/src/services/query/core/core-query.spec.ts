@@ -14,13 +14,9 @@ describe('CoreQuery', () => {
     coreQuery = new CoreQuery(
       {
         loader: (qualifier) => {
-          if (qualifier && qualifier.id === 1) {
-            return of(100);
-          } else if (qualifier && qualifier.id === 2) {
-            return of(200);
-          } else {
-            return throwError(new Error('Invalid ID'));
-          }
+          if (qualifier && qualifier.id === 1) return of(100);
+          else if (qualifier && qualifier.id === 2) return of(200);
+          else return throwError(new Error('Invalid ID'));
         },
       },
       queryManager

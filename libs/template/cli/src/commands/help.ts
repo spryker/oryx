@@ -54,9 +54,7 @@ ${this.getCliCommandsWithHelp()
         command.getAliases?.().includes(commandName)
     );
 
-    if (!command) {
-      throw new Error(`Unknown command '${commandName}'!`);
-    }
+    if (!command) throw new Error(`Unknown command '${commandName}'!`);
 
     intro(`Oryx command: ${command.getName()}`);
 

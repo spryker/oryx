@@ -84,9 +84,8 @@ export class DefaultLocaleService implements LocaleService {
     const prev = this.setActive$.value;
     this.setActive$.next(value);
 
-    if (prev !== value) {
+    if (prev !== value)
       this.queryService.emit({ type: LocaleChanged, data: value });
-    }
   }
 
   formatDate(stamp: string | number | Date): Observable<string> {

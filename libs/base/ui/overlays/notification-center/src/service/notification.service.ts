@@ -14,9 +14,8 @@ export class NotificationService {
       `${parentSelector} ${TAG_NAME}${ensurePosition(position)}`
     );
 
-    if (!(center instanceof NotificationCenterComponent)) {
+    if (!(center instanceof NotificationCenterComponent))
       center = this.createCenter(parentSelector, position);
-    }
 
     return center;
   }
@@ -35,9 +34,7 @@ export class NotificationService {
 
     const notificationCenter = document.createElement(TAG_NAME);
 
-    if (position) {
-      notificationCenter.setAttribute('position', position);
-    }
+    if (position) notificationCenter.setAttribute('position', position);
 
     parent.append(notificationCenter);
     return notificationCenter as NotificationCenterComponent;

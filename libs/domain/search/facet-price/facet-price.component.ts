@@ -51,9 +51,8 @@ export class SearchPriceFacetComponent extends I18nMixin(
       max: maxValue !== max ? maxValue : undefined,
     } as SelectRangeFacetValues;
 
-    if (this.hasChangedValue(selected)) {
+    if (this.hasChangedValue(selected))
       this.controller.dispatchSelectEvent({ selected });
-    }
   }
 
   protected renderControls(facet: RangeFacet): TemplateResult {

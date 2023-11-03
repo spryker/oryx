@@ -112,9 +112,7 @@ describe('Category suite', () => {
       Object.keys(sortingTestData).forEach((option) => {
         // default options does not exist in the dropdown
         // we should skip it
-        if (option === 'default') {
-          return;
-        }
+        if (option === 'default') return;
 
         cy.log(`Sorting: ${option} is applied`);
         categoryPage.getProductSorting().applySorting(option);

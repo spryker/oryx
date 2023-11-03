@@ -25,9 +25,7 @@ export class CheckoutPlaceOrderComponent extends I18nMixin(
 
   protected onClick(): void {
     this.checkoutService.placeOrder().subscribe((response) => {
-      if (response.redirectUrl) {
-        this.redirect(response.redirectUrl);
-      }
+      if (response.redirectUrl) this.redirect(response.redirectUrl);
     });
   }
 

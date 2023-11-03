@@ -28,9 +28,8 @@ const isPatternConfig = (route: RouteConfig): route is URLPatternRouteConfig =>
   (route as URLPatternRouteConfig).pattern !== undefined;
 
 const getPattern = (route: RouteConfig) => {
-  if (isPatternConfig(route)) {
-    return route.pattern;
-  }
+  if (isPatternConfig(route)) return route.pattern;
+
   return new URLPattern({ pathname: route.path });
 };
 
@@ -55,9 +54,8 @@ export class DefaultRouterService implements RouterService {
       this.router$.value === url[0] &&
       JSON.stringify(this.urlSearchParams$.value) ===
         JSON.stringify(queryParams)
-    ) {
+    )
       return;
-    }
 
     this.storageService.set(
       PREVIOUS_PAGE,
@@ -175,9 +173,7 @@ export class DefaultRouterService implements RouterService {
   protected createUrlParams(params?: {
     [x: string]: string | string[] | undefined;
   }): string | undefined {
-    if (!params) {
-      return;
-    }
+    if (!params) return;
 
     return Object.entries(params).reduce((params, [k, v]) => {
       const encodedValue = Array.isArray(v)

@@ -1,7 +1,7 @@
 import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { LitElement, ReactiveController } from 'lit';
-import { defer, Observable, shareReplay, switchMap } from 'rxjs';
+import { Observable, defer, shareReplay, switchMap } from 'rxjs';
 import { NormalizedTotals } from '../models';
 import {
   TotalsContext,
@@ -21,9 +21,7 @@ export class TotalsController implements ReactiveController {
   hostDisconnected?(): void;
 
   provideContext(context?: string): void {
-    if (context) {
-      this.context.provide(TotalsContext.Reference, context);
-    }
+    if (context) this.context.provide(TotalsContext.Reference, context);
   }
 
   getTotals(): Observable<NormalizedTotals | null> {

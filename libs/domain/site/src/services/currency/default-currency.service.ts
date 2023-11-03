@@ -63,9 +63,8 @@ export class DefaultCurrencyService implements CurrencyService {
   set(value: string): void {
     const prev = this.active$.value;
     this.active$.next(value);
-    if (prev !== value) {
+    if (prev !== value)
       this.queryService.emit({ type: CurrencyChanged, data: value });
-    }
   }
 
   protected loadStore(): Observable<Store> {

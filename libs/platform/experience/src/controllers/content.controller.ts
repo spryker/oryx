@@ -29,9 +29,8 @@ export class ContentController<T = unknown, K = unknown> {
   getContent(): Observable<T | undefined> {
     return this.observe.get('content').pipe(
       switchMap((content) => {
-        if (content !== undefined) {
-          return of(content);
-        }
+        if (content !== undefined) return of(content);
+
         return this.observe.get('uid').pipe(
           switchMap((uid) =>
             uid && this.experienceContent

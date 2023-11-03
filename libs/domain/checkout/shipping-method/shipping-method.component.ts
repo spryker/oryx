@@ -30,9 +30,8 @@ export class CheckoutShippingMethodComponent
   protected form?: HTMLFormElement;
 
   isValid(report: boolean): boolean {
-    if (!this.form?.checkValidity() && report) {
-      this.form?.reportValidity();
-    }
+    if (!this.form?.checkValidity() && report) this.form?.reportValidity();
+
     return !!this.form?.checkValidity();
   }
 
@@ -111,9 +110,8 @@ export class CheckoutShippingMethodComponent
     if (
       methodId ===
       this.shipments()?.[0]?.carriers?.[0]?.shipmentMethods?.[0]?.id
-    ) {
+    )
       this.select(methodId);
-    }
   }
 
   protected select(id: string): void {

@@ -93,9 +93,9 @@ export class PasswordInputComponent
     if (
       _changedProperties.has('minLength') ||
       _changedProperties.has('maxLength')
-    ) {
+    )
       this.setValidation();
-    }
+
     super.updated(_changedProperties);
   }
 
@@ -240,11 +240,8 @@ export class PasswordInputComponent
   }
 
   protected toggleVisibility(): void {
-    if (this.hasAttribute('visible')) {
-      this.hideVisibility();
-    } else {
-      this.showVisibility();
-    }
+    if (this.hasAttribute('visible')) this.hideVisibility();
+    else this.showVisibility();
   }
 
   protected showVisibility(): void {
@@ -252,9 +249,7 @@ export class PasswordInputComponent
     this.control.setAttribute('type', 'text');
     if (this.timeout > 0) {
       setTimeout(() => {
-        if (this.hasAttribute('visible')) {
-          this.hideVisibility();
-        }
+        if (this.hasAttribute('visible')) this.hideVisibility();
       }, this.timeout);
     }
   }

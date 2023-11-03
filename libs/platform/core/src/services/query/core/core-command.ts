@@ -79,9 +79,9 @@ export class CoreCommand<
   ): Observable<ResultType> {
     const result = new ReplaySubject<ResultType>(1);
     if (this.currentSubscription && !this.currentSubscription.closed) {
-      if (this.options.strategy === CommandStrategy.Override) {
+      if (this.options.strategy === CommandStrategy.Override)
         this.currentResult!.error('Command cancelled');
-      }
+
       this.currentSubscription.unsubscribe();
       this.currentResult!.complete();
     }
@@ -93,9 +93,9 @@ export class CoreCommand<
   protected executeSkipStrategy(qualifier: Qualifier): Observable<ResultType> {
     const result = new ReplaySubject<ResultType>(1);
     if (this.currentResult && !this.currentResult?.closed) {
-      if (this.options.strategy === CommandStrategy.Cancel) {
+      if (this.options.strategy === CommandStrategy.Cancel)
         result.error('Command cancelled');
-      }
+
       result.complete();
     } else {
       this.currentResult = result;
@@ -162,8 +162,6 @@ export class CoreCommand<
       data,
       error
     );
-    if (event) {
-      this.manager.emit(event);
-    }
+    if (event) this.manager.emit(event);
   }
 }

@@ -63,9 +63,8 @@ export class UserAddressEditComponent extends AddressMixin(
       this.$options().inline &&
       this.$addressState().action !== CrudState.Create &&
       this.$addressState().action !== CrudState.Update
-    ) {
+    )
       return;
-    }
 
     return html`
       <oryx-user-address-form
@@ -97,9 +96,7 @@ export class UserAddressEditComponent extends AddressMixin(
 
   protected onChange(e: CustomEvent<AddressEventDetail>): void {
     this.preselected = e.detail;
-    if (this.$options().save === SaveOption.Instant) {
-      this.submit().subscribe();
-    }
+    if (this.$options().save === SaveOption.Instant) this.submit().subscribe();
   }
 
   protected onClose(): void {

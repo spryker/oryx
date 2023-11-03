@@ -1,7 +1,7 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { inject } from '@spryker-oryx/di';
 import { Breakpoint, sizes } from '@spryker-oryx/utilities';
-import { merge, Observable, of, reduce } from 'rxjs';
+import { Observable, merge, of, reduce } from 'rxjs';
 import { CompositionLayout } from '../../models';
 import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
 import { LayoutService } from './layout.service';
@@ -23,9 +23,7 @@ export class DefaultLayoutService implements LayoutService {
         layoutInfo[key].included,
         layoutInfo[key].excluded
       );
-      if (styles) {
-        observables.push(styles);
-      }
+      if (styles) observables.push(styles);
     });
 
     return observables.length > 0
@@ -142,21 +140,15 @@ export class DefaultLayoutService implements LayoutService {
     let result = '';
     if (style.styles) {
       const query = this.screenService.getScreenMedia(included, excluded);
-      if (query) {
-        result += `${query} {${style?.styles}}\n`;
-      } else {
-        result += style?.styles;
-      }
+      if (query) result += `${query} {${style?.styles}}\n`;
+      else result += style?.styles;
     }
 
     sizes.forEach((size) => {
       if (style[size]) {
         const query = this.screenService.getScreenMedia(size as Breakpoint);
-        if (query) {
-          result += `${query} {${style[size]}}\n`;
-        } else {
-          result += style[size];
-        }
+        if (query) result += `${query} {${style[size]}}\n`;
+        else result += style[size];
       }
     });
 

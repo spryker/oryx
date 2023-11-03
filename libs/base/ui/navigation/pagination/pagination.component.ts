@@ -78,9 +78,7 @@ export class PaginationComponent
   }
 
   protected onClick(event: MouseEvent, element?: HTMLElement): void {
-    if (event.ctrlKey || event.metaKey) {
-      return;
-    }
+    if (event.ctrlKey || event.metaKey) return;
 
     event.preventDefault();
     element?.click();

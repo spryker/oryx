@@ -37,9 +37,8 @@ export class BapiPushNotificationDefaultService
             if (
               error.body.errors[0].status === 400 &&
               error.body.errors[0].code === 5003
-            ) {
+            )
               return of(undefined);
-            }
 
             return this.unsubscribe().pipe(switchMap(() => throwError(error)));
           })

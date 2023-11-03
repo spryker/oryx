@@ -31,9 +31,7 @@ export const parseFacetValue = (
   facet?: ApiProductListModel.ValueFacet,
   numFound?: number
 ): Facet | null => {
-  if (!facet) {
-    return null;
-  }
+  if (!facet) return null;
 
   const { config, localizedName } = facet;
 
@@ -52,9 +50,8 @@ export const parseFacetValue = (
       const selected =
         (selectedValue ?? []).includes(String(value.value)) ?? false;
 
-      if (!value.docCount || (!selected && value.docCount === numFound)) {
+      if (!value.docCount || (!selected && value.docCount === numFound))
         return facetList;
-      }
 
       const parsedFacedValue = {
         value: value.value,

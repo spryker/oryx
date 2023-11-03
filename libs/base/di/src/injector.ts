@@ -55,9 +55,7 @@ export class Injector {
   private multiCounter = 0;
 
   constructor(providers: Provider[] = [], protected parent?: Injector) {
-    for (const provider of providers) {
-      this.provide(provider);
-    }
+    for (const provider of providers) this.provide(provider);
   }
 
   /**
@@ -70,9 +68,8 @@ export class Injector {
    * @param provider
    */
   provide(provider: Provider): void {
-    if (this._locked) {
+    if (this._locked)
       throw new Error(`Providing is only possible before the first injection!`);
-    }
 
     const token = this.isMultiProvider(provider.provide)
       ? `${provider.provide}ϴ${this.multiCounter++}`
@@ -95,25 +92,20 @@ export class Injector {
   inject<K, L>(token: K, defaultValue?: L): InferInjectType<K> | L;
   inject<K = any>(token: string, defaultValue?: K): K;
   inject(token: any, defaultInstance?: any): any {
-    if (token === INJECTOR) {
-      return this;
-    }
+    if (token === INJECTOR) return this;
 
     this._locked = true;
 
-    if (!this.providers.has(token) && this.isMultiProvider(token)) {
+    if (!this.providers.has(token) && this.isMultiProvider(token))
       this.setupMultiProvider(token);
-    }
 
     if (!this.providers.get(token)) {
       // no local provider
-      if (this.parent) {
-        return this.parent.inject(token, defaultInstance);
-      }
+      if (this.parent) return this.parent.inject(token, defaultInstance);
+
       // use default instance provided
-      if (defaultInstance !== undefined) {
-        return defaultInstance;
-      }
+      if (defaultInstance !== undefined) return defaultInstance;
+
       throw new Error(`No provider for token ${token}!!!`);
     }
 
@@ -130,9 +122,8 @@ export class Injector {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const providerInstance = this.providers.get(token)!;
 
-    if (isValueProvider(providerInstance.provider)) {
+    if (isValueProvider(providerInstance.provider))
       return providerInstance.provider.useValue;
-    }
 
     if (providerInstance.instance === undefined) {
       if (isAsyncClassProvider(providerInstance.provider)) {
@@ -153,9 +144,7 @@ export class Injector {
         providerInstance.instance = this.getInstance(
           providerInstance.provider.useExisting
         );
-      } else {
-        throw new Error(`Invalid provider for ${token}`);
-      }
+      } else throw new Error(`Invalid provider for ${token}`);
     }
 
     return providerInstance.instance;
@@ -166,9 +155,8 @@ export class Injector {
       .filter((key) => typeof key === 'string' && key.startsWith(token))
       .map((key) => this.getInstance(key));
 
-    if (instance.length) {
-      this.providers.set(token, { instance });
-    } else {
+    if (instance.length) this.providers.set(token, { instance });
+    else {
       // no providers for multi token, thus no multi provider in this injector
       this.providers.set(token, undefined);
     }

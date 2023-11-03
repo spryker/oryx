@@ -1,7 +1,7 @@
 import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
-import { inject, INJECTOR } from '@spryker-oryx/di';
+import { INJECTOR, inject } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { map, Observable, switchMap, take } from 'rxjs';
+import { Observable, map, switchMap, take } from 'rxjs';
 
 export class AcceptLanguageInterceptor implements HttpInterceptor {
   protected headerName = 'Accept-Language';
@@ -33,9 +33,8 @@ export class AcceptLanguageInterceptor implements HttpInterceptor {
   }
 
   shouldInterceptRequest({ url }: Request): boolean {
-    if (!this.SCOS_BASE_URL || !url.startsWith(this.SCOS_BASE_URL)) {
+    if (!this.SCOS_BASE_URL || !url.startsWith(this.SCOS_BASE_URL))
       return false;
-    }
 
     const path = new URL(url).pathname;
 

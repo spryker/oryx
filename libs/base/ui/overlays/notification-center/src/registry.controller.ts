@@ -38,9 +38,8 @@ export class RegistryController implements ReactiveController {
       ...defaultOptions,
       ...notification,
     };
-    if (registryItem.autoClose) {
-      this.scheduleAutoClosing(registryItem);
-    }
+    if (registryItem.autoClose) this.scheduleAutoClosing(registryItem);
+
     this.items.unshift(registryItem);
     this.host.requestUpdate();
     setTimeout(() => {
@@ -100,9 +99,8 @@ export class RegistryController implements ReactiveController {
 
   protected remove(item: NotificationRegistry): void {
     const index = this.items.indexOf(item, 0);
-    if (index > -1) {
-      this.items.splice(index, 1);
-    }
+    if (index > -1) this.items.splice(index, 1);
+
     this.host.requestUpdate();
   }
 }

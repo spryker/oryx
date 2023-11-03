@@ -6,9 +6,9 @@ import {
   ToggleController,
 } from './controllers';
 import {
+  POPOVER_EVENT,
   PopoverOptions,
   PopoverSelectEvent,
-  POPOVER_EVENT,
 } from './popover.model';
 import { TAG_NAME } from './tag';
 
@@ -52,23 +52,22 @@ export class PopoverController implements ReactiveController {
   selectByValue(value: string, omitDispatchEvent?: boolean): void {
     const index = this.items.findIndex((item) => item.value === value);
     this.selectedController.select(index, omitDispatchEvent);
-    if (this.toggleController.isOpen) {
+    if (this.toggleController.isOpen)
       this.items[index]?.scrollIntoView({ block: 'nearest' });
-    }
   }
 
   protected handleKeydown(e: KeyboardEvent): void {
     switch (e.key) {
       case 'Enter':
-        if (this.toggleController.isOpen) {
+        if (this.toggleController.isOpen)
           this.selectedController.select(this.highlightController.highlight);
-        }
+
         break;
       case ' ':
         if (e.target instanceof HTMLElement && this.isReadonly(e.target)) {
-          if (this.toggleController.isOpen) {
+          if (this.toggleController.isOpen)
             this.selectedController.select(this.highlightController.highlight);
-          }
+
           e.preventDefault();
         }
         break;
@@ -76,18 +75,15 @@ export class PopoverController implements ReactiveController {
   }
 
   protected handleInput(e: InputEvent): void {
-    if (!e.inputType) {
-      return;
-    }
+    if (!e.inputType) return;
+
     const composedTarget = e.composedPath()[0];
     if (
       (e.target as HTMLInputElement | HTMLSelectElement)?.value ||
       (composedTarget instanceof HTMLInputElement && composedTarget?.value)
-    ) {
+    )
       this.toggleController.toggle(true);
-    } else {
-      this.selectedController.deselect();
-    }
+    else this.selectedController.deselect();
   }
 
   protected handleSelectEvent(e: CustomEvent<PopoverSelectEvent>): void {
@@ -96,9 +92,7 @@ export class PopoverController implements ReactiveController {
         (item) => item === e.detail.selected
       );
       this.selectedController.select(itemIndex);
-    } else {
-      this.selectedController.deselect();
-    }
+    } else this.selectedController.deselect();
   }
 
   protected isReadonly(target: HTMLElement): boolean {

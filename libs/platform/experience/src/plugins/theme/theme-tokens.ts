@@ -45,13 +45,10 @@ export class ThemeTokens {
   protected breakpoints: Breakpoints = {};
 
   normalizeStyles(styles: CssStyles | ThemeStylesCollection[]): CSSResult[] {
-    if (this.isThemeCollection(styles)) {
+    if (this.isThemeCollection(styles))
       return this.getStylesFromCollection(styles);
-    }
 
-    if (typeof styles === 'string') {
-      return [unsafeCSS(styles)];
-    }
+    if (typeof styles === 'string') return [unsafeCSS(styles)];
 
     return Array.isArray(styles) ? styles : [styles];
   }
@@ -77,9 +74,7 @@ export class ThemeTokens {
     include: string | string[] = [],
     exclude: string | string[] = []
   ): string | null {
-    if (!include?.length && !exclude.length) {
-      return null;
-    }
+    if (!include?.length && !exclude.length) return null;
 
     include = Array.isArray(include) ? include : [include];
     exclude = Array.isArray(exclude) ? exclude : [exclude];
@@ -143,9 +138,7 @@ export class ThemeTokens {
     for (const media in tokens) {
       const tokensList = tokens[media];
 
-      if (tokensList && !Object.keys(tokensList).length) {
-        continue;
-      }
+      if (tokensList && !Object.keys(tokensList).length) continue;
 
       const isMode = media.includes(DefaultMedia.Mode);
       let start = '';
@@ -167,13 +160,9 @@ export class ThemeTokens {
 
         end += '}';
         start += ` ${mediaMode} { ${modeOrder} } @layer ${media} { [${attr}],${mode} {`;
-      } else {
-        start += ` ${root} {`;
-      }
+      } else start += ` ${root} {`;
 
-      for (const key in tokensList) {
-        start += `${key}: ${tokensList[key]};`;
-      }
+      for (const key in tokensList) start += `${key}: ${tokensList[key]};`;
 
       styles += `${start}${end}`;
     }
@@ -192,9 +181,7 @@ export class ThemeTokens {
     for (const theme of themes) {
       const designTokens = await resolveLazyLoadable(theme.designTokens);
 
-      if (!designTokens) {
-        continue;
-      }
+      if (!designTokens) continue;
 
       this.sortByBreakpoints(designTokens);
       tokensList.push(...designTokens);
@@ -235,9 +222,9 @@ export class ThemeTokens {
       }
 
       if (tokens.media) {
-        for (const key in tokens.media) {
+        for (const key in tokens.media)
           tokenMedia = `${key}.${tokens.media[key as keyof CssMediaQueries]}`;
-        }
+
         delete tokens.media;
       }
 
@@ -296,9 +283,8 @@ export class ThemeTokens {
 
       let media = '';
 
-      for (const key in style.media) {
+      for (const key in style.media)
         media = `${key}.${style.media[key as keyof CssMediaQueries]}`;
-      }
 
       stylesStream += ` ${this.generateMedia(media)} {${stringifiedStyles(
         style.css

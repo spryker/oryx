@@ -11,9 +11,8 @@ export const categoryListNormalizerFactory =
   (data?: ApiProductModel.CategoryNodes[]): object => {
     const categories = flattenCategoryNodes(data ?? []);
 
-    if (categories?.length) {
+    if (categories?.length)
       queryService.emit({ type: CategoriesLoaded, data: categories });
-    }
 
     return {};
   };

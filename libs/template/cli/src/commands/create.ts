@@ -68,11 +68,8 @@ Options:
     console.log(``);
     intro(`Create Oryx App`);
 
-    if (!options.name) {
-      options.name = await this.promptName();
-    } else {
-      log.info(`App name: ${c.bold(options.name)}`);
-    }
+    if (!options.name) options.name = await this.promptName();
+    else log.info(`App name: ${c.bold(options.name)}`);
 
     const startTime = new Date().getTime();
 
@@ -112,9 +109,7 @@ Please make sure to not use an existing directory name.`
   ): Promise<void> {
     const repoPath = path.resolve(this.repoPath, ref);
 
-    if (fs.existsSync(repoPath)) {
-      return;
-    }
+    if (fs.existsSync(repoPath)) return;
 
     const archivePath = path.resolve(this.packageRoot, `template-${ref}.zip`);
 
@@ -168,9 +163,7 @@ Please make sure to not use an existing directory name.`
   protected async promptValue<T>(input: Promise<T | symbol>): Promise<T> {
     const value = await input;
 
-    if (isCancel(value)) {
-      return Promise.reject('Operation cancelled.');
-    }
+    if (isCancel(value)) return Promise.reject('Operation cancelled.');
 
     return value;
   }

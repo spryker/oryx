@@ -20,9 +20,8 @@ export class CheckoutPaymentMethodComponent
   protected form?: HTMLFormElement;
 
   isValid(report: boolean): boolean {
-    if (!this.form?.checkValidity() && report) {
-      this.form?.reportValidity();
-    }
+    if (!this.form?.checkValidity() && report) this.form?.reportValidity();
+
     return !!this.form?.checkValidity();
   }
 
@@ -74,9 +73,7 @@ export class CheckoutPaymentMethodComponent
   }
 
   protected autoSelect(methodId: string): void {
-    if (methodId === this.paymentMethods()?.[0]?.id) {
-      this.select(methodId);
-    }
+    if (methodId === this.paymentMethods()?.[0]?.id) this.select(methodId);
   }
 
   protected select(id: string): void {

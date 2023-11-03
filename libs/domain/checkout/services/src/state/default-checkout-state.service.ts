@@ -96,9 +96,7 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
         if (complete && Array.from(data).find((item) => !item[1].valid)) {
           this.isInvalid$.next(true);
           return null;
-        } else {
-          this.isInvalid$.next(false);
-        }
+        } else this.isInvalid$.next(false);
 
         const result: Partial<PlaceOrderData> = {};
         data.forEach((item, key) => {

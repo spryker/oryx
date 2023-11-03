@@ -10,9 +10,8 @@ interface DecoratorProps<T = TargetDecorator | ReactiveElement> {
 }
 
 const throwSubjectError = (subject$: unknown): void => {
-  if (subject$ && !(subject$ as Record<string, unknown>).next) {
+  if (subject$ && !(subject$ as Record<string, unknown>).next)
     throw `Invalid observe value: incorrect ${subject$} for observe decorator, please use rxjs subjects`;
-  }
 };
 
 const getReactiveDescriptor = (
@@ -25,16 +24,13 @@ const getReactiveDescriptor = (
   while (prototype.constructor.name !== 'LitElement') {
     ownDescriptor = Object.getOwnPropertyDescriptor(prototype, propertyKey);
 
-    if (ownDescriptor) {
-      break;
-    }
+    if (ownDescriptor) break;
 
     prototype = Object.getPrototypeOf(prototype);
   }
 
-  if (!ownDescriptor) {
+  if (!ownDescriptor)
     throw `Invalid observed property name: incorrect ${propertyKey} for observe decorator, please use already created reactive property name as an element to observe`;
-  }
 
   return ownDescriptor;
 };
@@ -120,11 +116,9 @@ const standardObserve = ({
 
       throwSubjectError(subject$);
 
-      if (Array.isArray(property)) {
+      if (Array.isArray(property))
         subject$.next(property.map((propertyKey) => this[propertyKey]));
-      } else {
-        subject$.next(this[property]);
-      }
+      else subject$.next(this[property]);
 
       return subject$;
     },

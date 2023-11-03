@@ -28,20 +28,15 @@ export class DefaultPricingService implements PricingService {
     currency: string,
     locale: string
   ): string | null {
-    if (typeof price === 'undefined') {
-      return null;
-    }
+    if (typeof price === 'undefined') return null;
 
     const isComplexPrice = typeof price === 'object';
     const value = isComplexPrice ? price.value : price;
 
-    if (isComplexPrice && price.currency !== currency) {
-      return null;
-    }
+    if (isComplexPrice && price.currency !== currency) return null;
 
-    if (isNaN(+value)) {
+    if (isNaN(+value))
       throw new Error(`Price error: ${price} is invalid value`);
-    }
 
     return new Intl.NumberFormat(locale, {
       style: 'currency',

@@ -27,9 +27,8 @@ export class SiteCurrencySelectorComponent extends ContentMixin(LitElement) {
   protected override render(): TemplateResult | void {
     const currencies = this.$currencies();
 
-    if (!this.$current() || !currencies?.length || currencies.length < 2) {
+    if (!this.$current() || !currencies?.length || currencies.length < 2)
       return;
-    }
 
     return html`
       <oryx-dropdown vertical-align position="start">

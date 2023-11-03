@@ -58,9 +58,9 @@ export class GlobalizeService {
     ];
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    if ((globalize.cldr.attributes as any).bundle) {
+    if ((globalize.cldr.attributes as any).bundle)
       locales.push((globalize.cldr.attributes as any).bundle);
-    }
+
     /* eslint-enable @typescript-eslint/no-explicit-any */
 
     return locales;
@@ -69,9 +69,7 @@ export class GlobalizeService {
   protected async getFor(localeId: string): Promise<Globalize> {
     await this.init();
 
-    if (localeId in this.globalizeCaches) {
-      return this.globalizeCaches[localeId];
-    }
+    if (localeId in this.globalizeCaches) return this.globalizeCaches[localeId];
 
     return (this.globalizeCaches[localeId] = this.globalize(localeId));
   }
@@ -128,13 +126,10 @@ export class GlobalizeService {
 
           const fullValues = this.normalizeContext(value, fullKey);
 
-          if (!fullValues && fullValues !== 0) {
-            return ctx;
-          }
+          if (!fullValues && fullValues !== 0) return ctx;
 
-          if (typeof fullValues === 'object') {
+          if (typeof fullValues === 'object')
             return [...ctx, ...Object.entries(fullValues)];
-          }
 
           return [...ctx, [fullKey, fullValues]];
         }, [] as [string, I18nContext | I18nContextValue][])

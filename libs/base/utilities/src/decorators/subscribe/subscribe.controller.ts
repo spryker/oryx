@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { isObservable, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, isObservable } from 'rxjs';
 
 interface ObservablesData {
   observable$: Observable<unknown>;
@@ -19,9 +19,8 @@ export class SubscribeController implements ReactiveController {
   }
 
   hostConnected(): void {
-    for (const observable$ of this.observables.keys()) {
+    for (const observable$ of this.observables.keys())
       this.subscribe(observable$);
-    }
   }
 
   hostDisconnected(): void {
@@ -29,13 +28,10 @@ export class SubscribeController implements ReactiveController {
   }
 
   add(observable$: unknown, key: string): void {
-    if (this.observables.has(key)) {
-      return;
-    }
+    if (this.observables.has(key)) return;
 
-    if (!isObservable(observable$)) {
+    if (!isObservable(observable$))
       throw `Invalid SubscribeController value: incorrect ${observable$} for SubscribeController, use observable`;
-    }
 
     this.observables.set(key, {
       observable$,
@@ -47,9 +43,7 @@ export class SubscribeController implements ReactiveController {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const data = this.observables.get(key)!;
 
-    if (data?.subscription) {
-      return;
-    }
+    if (data?.subscription) return;
 
     data.subscription = data.observable$.subscribe();
   }

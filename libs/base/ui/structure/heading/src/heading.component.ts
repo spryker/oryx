@@ -1,5 +1,5 @@
 import { hydrate, ssrShim } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { HeadingAttributes, HeadingTag } from './heading.model';
 import { headlineStyles } from './styles/base.styles';
@@ -28,9 +28,7 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
     | 'show';
 
   @property() set maxLines(value: number) {
-    if (value > 0) {
-      this.style.setProperty('--max-lines', String(value));
-    }
+    if (value > 0) this.style.setProperty('--max-lines', String(value));
   }
 
   protected override render(): TemplateResult {

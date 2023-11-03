@@ -84,9 +84,8 @@ export class ProductDetailsPage extends AbstractSFPage {
       // wait till loading animation is finished
       this.getAddToCartBtn().should('not.have.attr', 'loading');
       this.getAddToCartBtn().should('not.have.attr', 'confirmed');
-    } else {
+    } else
       throw new Error('Add multiple items to the Cart is not implemented yet.');
-    }
   };
 
   checkDefaultProduct = () => {

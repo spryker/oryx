@@ -21,9 +21,8 @@ export class OauthHandlerComponent extends I18nMixin(LitElement) {
   override connectedCallback(): void {
     super.connectedCallback();
 
-    if (!this.providerId) {
+    if (!this.providerId)
       throw new Error(`OauthHandlerComponent: Unknown Oauth provider ID!`);
-    }
 
     this.oauthService.handleCallback(this.providerId);
   }

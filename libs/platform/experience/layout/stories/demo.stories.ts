@@ -4,7 +4,7 @@ import {
   StyleRuleSet,
 } from '@spryker-oryx/experience';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 const demoTable = { category: 'Demo' };
@@ -110,9 +110,7 @@ const Template: Story<DemoProps & StyleRuleSet> = (
               ${Array.from({ length: 8 }, (_, j) => item(j + 1, ` (n)`))}
             </oryx-layout>
           `;
-        } else {
-          return item(i + 1);
-        }
+        } else return item(i + 1);
       })}
     </oryx-layout>
 

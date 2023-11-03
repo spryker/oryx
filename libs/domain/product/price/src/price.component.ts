@@ -64,11 +64,8 @@ export class ProductPriceComponent extends ProductMixin(
 
     const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
 
-    if (defaultPrice) {
-      return this.isValid(defaultPrice) && defaultPrice.value;
-    } else {
-      return this.isValid(originalPrice) && originalPrice?.value;
-    }
+    if (defaultPrice) return this.isValid(defaultPrice) && defaultPrice.value;
+    else return this.isValid(originalPrice) && originalPrice?.value;
   });
 
   /**
@@ -78,11 +75,9 @@ export class ProductPriceComponent extends ProductMixin(
   protected $originalPrice = computed(() => {
     const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
 
-    if (this.sales && !originalPrice && this.sales !== defaultPrice?.value) {
+    if (this.sales && !originalPrice && this.sales !== defaultPrice?.value)
       return this.isValid(defaultPrice) && defaultPrice?.value;
-    } else {
-      return this.isValid(originalPrice) && originalPrice?.value;
-    }
+    else return this.isValid(originalPrice) && originalPrice?.value;
   });
 
   /**

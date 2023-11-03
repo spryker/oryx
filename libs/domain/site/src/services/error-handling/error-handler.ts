@@ -15,9 +15,8 @@ export class SiteErrorHandler implements ErrorHandler {
   handle(error: unknown): void {
     let message;
 
-    if (this.isErrorObject(error)) {
+    if (this.isErrorObject(error))
       message = this.getMessage(error?.body) || error?.message;
-    }
 
     this.notificationService.push({
       type: AlertType.Error,

@@ -3,11 +3,12 @@ import { featureVersion } from '@spryker-oryx/utilities';
 
 const checkoutInformation = (): ExperienceComponent => {
   const components: ExperienceComponent[] = [];
-  if (featureVersion >= '1.2')
+  if (featureVersion >= '1.2') {
     components.push({
       type: 'oryx-checkout-heading',
       options: { rules: [{ padding: '30px 0 0 0' }] },
     });
+  }
   components.push({
     type: 'oryx-cart-entries',
     options: { readonly: true },

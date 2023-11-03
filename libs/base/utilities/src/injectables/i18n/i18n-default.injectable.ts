@@ -107,9 +107,8 @@ export class DefaultI18nInjectable implements I18nInjectable {
   ): I18nTranslationResult {
     const valueOrConfig = context?.[token];
 
-    if (typeof valueOrConfig !== 'object') {
+    if (typeof valueOrConfig !== 'object')
       return { text: this.tokenToStr(valueOrConfig) };
-    }
 
     const { value, filters } = this.extractFilters(token, context);
     let hasHtml = false;
@@ -128,9 +127,7 @@ export class DefaultI18nInjectable implements I18nInjectable {
   private extractFilters(token: string, context?: I18nContext) {
     const valueOrConfig = context?.[token];
 
-    if (typeof valueOrConfig !== 'object') {
-      return { value: token, filters: {} };
-    }
+    if (typeof valueOrConfig !== 'object') return { value: token, filters: {} };
 
     const { value = token, ...filters } = valueOrConfig ?? {};
 

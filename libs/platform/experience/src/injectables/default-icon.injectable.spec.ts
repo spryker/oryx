@@ -1,14 +1,14 @@
 import { fixture, nextFrame } from '@open-wc/testing-helpers';
 import { AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { defaultIconFont, IconTypes } from '@spryker-oryx/ui/icon';
+import { IconTypes, defaultIconFont } from '@spryker-oryx/ui/icon';
 import {
   computed,
   fontInjectable,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import { ThemePlugin } from '../plugins';
@@ -25,9 +25,7 @@ class MockComponent extends LitElement {
   );
 
   render(): TemplateResult {
-    if (!this.icon) {
-      return html``;
-    }
+    if (!this.icon) return html``;
 
     return this.renderer() ?? html``;
   }

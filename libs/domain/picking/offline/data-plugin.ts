@@ -39,9 +39,9 @@ export class OfflineDataPlugin implements AppPlugin {
           const redirectUrl = new URL(
             oauthConfig.providers[0].redirectUrl as string
           );
-          if (currentRoute.startsWith(redirectUrl.pathname)) {
+          if (currentRoute.startsWith(redirectUrl.pathname))
             return authService.isAuthenticated();
-          }
+
           return of(undefined);
         }),
         switchMap((authenticated) => {

@@ -28,9 +28,8 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
 
     const { discountRowsAppearance } = this.$options();
 
-    if (discountRowsAppearance === DiscountRowsAppearance.None) {
+    if (discountRowsAppearance === DiscountRowsAppearance.None)
       return this.renderHeading();
-    }
 
     if (discountRowsAppearance === DiscountRowsAppearance.Inline) {
       return html`${this.renderHeading()}${this.renderDiscounts(

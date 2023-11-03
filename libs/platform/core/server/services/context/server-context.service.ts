@@ -20,9 +20,7 @@ export class ServerContextService extends DefaultContextService {
         for (let i = counter; i >= 0; i--) {
           const value = stack[i][key];
 
-          if (value === undefined) {
-            continue;
-          }
+          if (value === undefined) continue;
 
           return of(JSON.parse(value));
         }

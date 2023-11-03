@@ -1,6 +1,6 @@
 import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { catchError, map, Observable, of, switchMap, take } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, take } from 'rxjs';
 import { AuthTokenData, AuthTokenService } from './auth-token.service';
 
 export class AnonTokenInterceptor implements HttpInterceptor {
@@ -25,9 +25,7 @@ export class AnonTokenInterceptor implements HttpInterceptor {
   }
 
   protected addAnonHeader(token: AuthTokenData, req: Request): Request {
-    if (token.type !== 'anon') {
-      return req;
-    }
+    if (token.type !== 'anon') return req;
 
     const newReq = req.clone();
     newReq.headers.set(this.headerName, token.token);

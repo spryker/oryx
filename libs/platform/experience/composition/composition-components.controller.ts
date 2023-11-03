@@ -67,13 +67,10 @@ export class CompositionComponentsController implements ReactiveController {
       components.map((component) => {
         const rules = this.getRules(component, screenSize);
 
-        if (!rules) {
-          return of(component);
-        }
+        if (!rules) return of(component);
 
-        if (rules.hide) {
-          return of(null);
-        }
+        if (rules.hide) return of(null);
+
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return this.tokenResolver.resolveToken(rules.hideByRule!).pipe(
           //hidden by default

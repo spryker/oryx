@@ -5,7 +5,7 @@ import {
   PopoverSelectEvent,
 } from '@spryker-oryx/ui/popover';
 import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
-import { html, LitElement, ReactiveController, TemplateResult } from 'lit';
+import { LitElement, ReactiveController, TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { OptionComponent } from '../../../../form/option';
 import { getControl } from '../../../../form/utilities/getControl';
@@ -42,14 +42,11 @@ export class TypeaheadController implements ReactiveController {
         //ensure that option has necessary attribute for closing popover
         option.toggleAttribute(CLOSE_POPOVER_ATTR, true);
 
-        if (!option.slot) {
-          option.slot = 'option';
-        }
+        if (!option.slot) option.slot = 'option';
       });
 
-    if (!this.lastValue && this.control.value) {
+    if (!this.lastValue && this.control.value)
       this.lastValue = this.control.value;
-    }
 
     this.onChange();
   }
@@ -95,18 +92,15 @@ export class TypeaheadController implements ReactiveController {
   protected onChange(): void {
     const value = this.control.value;
     this.popoverController.selectByValue(value, this.lastValue === value);
-    if (value === '') {
-      this.lastValue = undefined;
-    }
+    if (value === '') this.lastValue = undefined;
   }
 
   protected onSelect(e: CustomEvent<PopoverSelectEvent>): void {
     if (e.detail.selected) {
       const value = this.getValue(e.detail.selected);
       const text = this.getText(e.detail.selected);
-      if (!value) {
-        return;
-      }
+      if (!value) return;
+
       // the control value might have been reset during filtering, hence we'll set it always
       this.control.value = value;
       this.control.dispatchEvent(
@@ -115,9 +109,7 @@ export class TypeaheadController implements ReactiveController {
           { bubbles: true, composed: true }
         )
       );
-      if (text && this.typeaheadControl) {
-        this.typeaheadControl.value = text;
-      }
+      if (text && this.typeaheadControl) this.typeaheadControl.value = text;
     }
   }
 

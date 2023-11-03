@@ -1,12 +1,12 @@
+import { inject } from '@spryker-oryx/di';
+import { TokenEndpointResponse, getValidatedIdTokenClaims } from 'oauth4webapi';
+import { Observable, catchError, map, of, shareReplay, switchMap } from 'rxjs';
 import {
   AuthIdentity,
   IdentityService,
   OauthResponseSuccess,
   OauthService,
 } from '../index';
-import { inject } from '@spryker-oryx/di';
-import { getValidatedIdTokenClaims, TokenEndpointResponse } from 'oauth4webapi';
-import { catchError, map, Observable, of, shareReplay, switchMap } from 'rxjs';
 
 export class BapiIdentityService implements IdentityService {
   protected indentity$: Observable<AuthIdentity> = this.oauthService
@@ -37,16 +37,13 @@ export class BapiIdentityService implements IdentityService {
     try {
       const claims = getValidatedIdTokenClaims(token as TokenEndpointResponse);
 
-      if (!claims?.sub) {
+      if (!claims?.sub)
         throw new Error(`'sub' claim is not available in the token!`);
-      }
 
       const sub = JSON.parse(claims.sub) as BapiOauthTokenSubClaims;
       const userId = sub.id_user;
 
-      if (!userId) {
-        throw new Error(`'id_user' does not exist in 'sub' claim!`);
-      }
+      if (!userId) throw new Error(`'id_user' does not exist in 'sub' claim!`);
 
       return userId;
     } catch (e) {

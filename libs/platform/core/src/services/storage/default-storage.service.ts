@@ -57,9 +57,8 @@ export class DefaultStorageService implements StorageService {
         `${StorageStrategy}${type}`,
         null
       );
-      if (!implementation) {
+      if (!implementation)
         throw new Error(`No implementation for ${StorageStrategy}${type}`);
-      }
 
       this.storages[type] = implementation;
     }

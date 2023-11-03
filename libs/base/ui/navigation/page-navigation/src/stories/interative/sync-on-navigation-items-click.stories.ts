@@ -5,7 +5,7 @@ import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 import { PageNavigationItemComponent } from '../../../../page-navigation-item';
-import { getTemplate, TemplateProps } from './common';
+import { TemplateProps, getTemplate } from './common';
 
 export default {
   title: `${storybookPrefix}/Navigations/Page navigation/Interactive`,
@@ -34,9 +34,7 @@ SyncOnNavigationItemsClick.play = async (obj: {
   const sectionsContainer = window.document.querySelector('.scroll-container');
   expect(sectionsContainer).not.toBeNull();
 
-  if (!sectionsContainer) {
-    return;
-  }
+  if (!sectionsContainer) return;
 
   for (const navItem of navItems) {
     userEvent.click(navItem);

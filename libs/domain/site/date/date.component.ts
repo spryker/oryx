@@ -7,7 +7,7 @@ import {
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { DateComponentAttributes } from './date.model';
 
 @hydrate()
@@ -26,10 +26,8 @@ export class DateComponent extends ContentMixin<DateComponentAttributes>(
 
   protected override render(): TemplateResult | void {
     if (!this.$date()) return;
-    if (this.i18nToken) {
+    if (this.i18nToken)
       return html`${this.i18n(this.i18nToken, { date: this.$date() })}`;
-    } else {
-      return html`${this.$date()}`;
-    }
+    else return html`${this.$date()}`;
   }
 }

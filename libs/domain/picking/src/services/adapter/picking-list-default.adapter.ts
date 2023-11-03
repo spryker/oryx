@@ -102,9 +102,8 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
       params.append('filter[picking-lists.uuids][]', id)
     );
 
-    if (qualifier?.status) {
+    if (qualifier?.status)
       params.set('filter[picking-lists.status]', qualifier.status);
-    }
 
     if (
       qualifier?.limit !== undefined ||
@@ -182,9 +181,7 @@ export class PickingListDefaultAdapter implements PickingListAdapter {
           (prod) => prod.sku === item.concreteProducts[0].sku
         );
 
-        if (!product) {
-          throw new Error(`Missing product for item '${item.id}'`);
-        }
+        if (!product) throw new Error(`Missing product for item '${item.id}'`);
 
         return {
           id: item.id,

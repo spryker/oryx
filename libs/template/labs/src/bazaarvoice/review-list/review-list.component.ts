@@ -54,9 +54,7 @@ export class BazaarvoiceReviewListComponent extends ProductMixin(
 
       const move = () => {
         const el = document.getElementById(id);
-        if (el) {
-          this.shadowRoot?.appendChild(el);
-        }
+        if (el) this.shadowRoot?.appendChild(el);
       };
 
       setTimeout(() => {

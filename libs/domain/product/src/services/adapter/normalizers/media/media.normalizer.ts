@@ -12,13 +12,10 @@ export function mediaNormalizer(
   if (data) {
     const { externalUrlSmall, externalUrlLarge } = data;
 
-    if (externalUrlSmall) {
-      sources[Size.Sm] = externalUrlSmall;
-    }
+    if (externalUrlSmall) sources[Size.Sm] = externalUrlSmall;
 
-    if (externalUrlLarge !== externalUrlSmall) {
+    if (externalUrlLarge !== externalUrlSmall)
       sources[Size.Lg] = externalUrlLarge;
-    }
   }
   return sources;
 }

@@ -180,28 +180,20 @@ describe('NodeUtilService', () => {
       const { service, mockFs } = caseSetup();
 
       mockFs.readdirSync.mockImplementation((path: string) => {
-        if (path === '/source') {
-          return ['file1', 'file2', 'dir1', 'file3'];
-        }
-        if (path === '/source/dir1') {
-          return ['file4', 'file5', 'dir2'];
-        }
+        if (path === '/source') return ['file1', 'file2', 'dir1', 'file3'];
+
+        if (path === '/source/dir1') return ['file4', 'file5', 'dir2'];
 
         return [];
       });
 
       mockFs.statSync.mockImplementation((path: string) => {
-        if (path.match(/dir\d+$/)) {
-          return { isDirectory: () => true };
-        } else {
-          return { isDirectory: () => false };
-        }
+        if (path.match(/dir\d+$/)) return { isDirectory: () => true };
+        else return { isDirectory: () => false };
       });
 
       mockFs.existsSync.mockImplementation((path: string) => {
-        if (path === '/destination') {
-          return true;
-        }
+        if (path === '/destination') return true;
 
         return false;
       });

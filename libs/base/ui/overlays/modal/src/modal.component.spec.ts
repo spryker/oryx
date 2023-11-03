@@ -18,11 +18,8 @@ describe('Modal', () => {
   const expectDialogOpen = (shouldBeOpen: boolean): void => {
     const dialog = element?.renderRoot?.querySelector('dialog');
 
-    if (shouldBeOpen) {
-      expect(dialog?.hasAttribute('open')).toBe(true);
-    } else {
-      expect(dialog?.hasAttribute('open')).toBe(false);
-    }
+    if (shouldBeOpen) expect(dialog?.hasAttribute('open')).toBe(true);
+    else expect(dialog?.hasAttribute('open')).toBe(false);
   };
 
   const expectBodyOverflow = (overflow: string): void => {

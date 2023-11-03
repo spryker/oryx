@@ -39,9 +39,8 @@ export class SearchboxController implements ReactiveController {
       return html`${this.clearButton}${this.affixController.renderSuffix(
         this.suffixContent
       )}`;
-    } else {
+    } else
       return html`${this.affixController.renderSuffix(this.suffixContent)}`;
-    }
   }
 
   renderTrigger(): TemplateResult {
@@ -87,9 +86,7 @@ export class SearchboxController implements ReactiveController {
     const searchContent =
       searchPos === SearchIconPosition.Suffix ? this.searchButton : undefined;
 
-    if (!clearContent && !searchContent) {
-      return;
-    }
+    if (!clearContent && !searchContent) return;
 
     return html`${clearContent}${searchContent}`;
   }
@@ -176,9 +173,7 @@ export class SearchboxController implements ReactiveController {
   }
 
   protected handleKeyEvent(ev: KeyboardEvent): void {
-    if (ev.key === 'Enter') {
-      this.search();
-    }
+    if (ev.key === 'Enter') this.search();
   }
 
   protected handleInputValue(): void {
@@ -189,11 +184,8 @@ export class SearchboxController implements ReactiveController {
     const isOpened = this.host.open;
     this.host.open = !isOpened;
 
-    if (isOpened) {
-      this.control.value = '';
-    } else {
-      this.control.focus();
-    }
+    if (isOpened) this.control.value = '';
+    else this.control.focus();
 
     this.dispatchToggleEvent(isOpened ? CLOSE_EVENT : OPEN_EVENT);
   }

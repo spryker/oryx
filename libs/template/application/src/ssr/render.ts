@@ -28,9 +28,7 @@ export const renderApp = async (
   config: RenderAppConfig,
   app: Promise<App>
 ): Promise<string> => {
-  if (!orchestrator) {
-    orchestrator = await app;
-  }
+  if (!orchestrator) orchestrator = await app;
 
   const { route, element, template } = config;
 

@@ -40,13 +40,10 @@ export class OauthPasswordGrantProvider implements OauthProvider {
     return this.token$.pipe(
       take(1),
       switchMap((token) => {
-        if (token) {
-          return throwError(() => new Error('Already authenticated!'));
-        }
+        if (token) return throwError(() => new Error('Already authenticated!'));
 
-        if (!request || !request.username || !request.password) {
+        if (!request || !request.username || !request.password)
           return throwError(() => new Error('Missing username/password!'));
-        }
 
         request.grant_type = this.config.grantType;
         request.client_id = this.config.clientId;
@@ -68,9 +65,7 @@ export class OauthPasswordGrantProvider implements OauthProvider {
     return this.token$.pipe(
       take(1),
       switchMap((token) => {
-        if (!token?.refresh_token) {
-          return of(undefined);
-        }
+        if (!token?.refresh_token) return of(undefined);
 
         const data = {
           grant_type: 'refresh_token',

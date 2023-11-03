@@ -29,9 +29,8 @@ export class ResourcePlugin implements AppPlugin {
   constructor(protected resources: Resources) {
     graphicInjectable.inject(new DefaultGraphicInjectable());
 
-    if (!(iconInjectable.get() instanceof DefaultIconInjectable)) {
+    if (!(iconInjectable.get() instanceof DefaultIconInjectable))
       iconInjectable.inject(new DefaultIconInjectable());
-    }
 
     fontInjectable.inject(new DefaultFontInjectable());
   }
@@ -47,9 +46,7 @@ export class ResourcePlugin implements AppPlugin {
   getGraphic(token: string, key: keyof Graphic): GraphicValue {
     const value = this.getGraphics()?.[token]?.[key];
 
-    if (!value) {
-      return;
-    }
+    if (!value) return;
 
     return resolveLazyLoadable(value);
   }

@@ -15,9 +15,7 @@ export class DefaultAddressFormService implements AddressFormService {
   getForm(qualifier: AddressFormQualifier): Observable<AddressForm | null> {
     return this.adapter.get(qualifier).pipe(
       switchMap((response) => {
-        if (!response?.id) {
-          throw new Error();
-        }
+        if (!response?.id) throw new Error();
 
         return of(response);
       }),
@@ -25,9 +23,7 @@ export class DefaultAddressFormService implements AddressFormService {
         return qualifier.fallbackCountry
           ? this.adapter.get({ country: qualifier.fallbackCountry }).pipe(
               switchMap((response) => {
-                if (!response.id) {
-                  return this.handlerError();
-                }
+                if (!response.id) return this.handlerError();
 
                 return of(response);
               }),

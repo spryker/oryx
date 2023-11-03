@@ -110,9 +110,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
           break;
         }
 
-        if (templateId && template.id !== templateId) {
-          continue;
-        }
+        if (templateId && template.id !== templateId) continue;
 
         this.recursiveSearch({ template, paths, strategy });
       }
@@ -124,9 +122,7 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     const { type } = strategy.merge!;
     const { components } = template;
 
-    if (!components) {
-      return;
-    }
+    if (!components) return;
 
     const path = paths[0];
     const isMergeElement = paths.length === 1;
@@ -194,11 +190,8 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     if (type === ExperienceDataMergeType.Replace) {
       strategy.type ??= 'oryx-composition';
 
-      if (!isNaN) {
-        components[componentIndex] = strategy;
-      } else {
-        template.components = [strategy];
-      }
+      if (!isNaN) components[componentIndex] = strategy;
+      else template.components = [strategy];
 
       return;
     }

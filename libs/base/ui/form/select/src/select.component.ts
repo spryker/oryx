@@ -4,8 +4,8 @@ import {
   ClearIconAppearance,
   ClearIconPosition,
   SearchAttributes,
-  SearchboxController,
   SearchIconPosition,
+  SearchboxController,
 } from '@spryker-oryx/ui/searchbox';
 import {
   FilterStrategyType,
@@ -14,7 +14,7 @@ import {
 } from '@spryker-oryx/ui/typeahead';
 import { getControl } from '@spryker-oryx/ui/utilities';
 import { hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { SelectController, SelectFilterController } from './controllers';
 import { baseStyles } from './styles';
@@ -52,9 +52,8 @@ export class SelectComponent
    */
   setValue(value: string): void {
     const control = getControl(this);
-    if (control.value === value) {
-      return;
-    }
+    if (control.value === value) return;
+
     control.value = value;
     control.dispatchEvent(
       new Event('change', { bubbles: true, composed: true })

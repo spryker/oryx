@@ -2,7 +2,7 @@ import { ExperienceComponent } from '@spryker-oryx/experience';
 import { featureVersion } from '@spryker-oryx/utilities';
 
 const orderEntries = (): ExperienceComponent => {
-  if (featureVersion >= '1.2')
+  if (featureVersion >= '1.2') {
     return {
       type: 'oryx-composition',
       components: [
@@ -13,6 +13,7 @@ const orderEntries = (): ExperienceComponent => {
         rules: [{ layout: 'list', gap: 0 }],
       },
     };
+  }
 
   return { type: 'oryx-order-entries' };
 };

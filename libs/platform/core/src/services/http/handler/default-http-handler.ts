@@ -21,9 +21,7 @@ export class DefaultHttpHandler implements HttpHandler {
     if (this.chain === null) {
       const interceptors = this.injector.inject(HttpInterceptor, null);
 
-      if (!interceptors) {
-        return fromFetch(initialRequest);
-      }
+      if (!interceptors) return fromFetch(initialRequest);
 
       const initialFn = (
         req: Request,
@@ -39,9 +37,8 @@ export class DefaultHttpHandler implements HttpHandler {
           if (
             interceptor.shouldInterceptRequest &&
             !interceptor.shouldInterceptRequest(req)
-          ) {
+          )
             return chainFn(req, handle);
-          }
 
           return interceptor.intercept(req, (req) => chainFn(req, handle));
         };

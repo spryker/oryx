@@ -104,9 +104,8 @@ describe('CreateCliCommand', () => {
       const createAppSpy = vi.spyOn(command, 'createApp').mockResolvedValue();
 
       cliArgsService.get.mockImplementation((name: string) => {
-        if (name === 'name') {
-          return 'my-app';
-        }
+        if (name === 'name') return 'my-app';
+
         return;
       });
 
@@ -140,9 +139,8 @@ describe('CreateCliCommand', () => {
           .spyOn(prompts, 'isCancel')
           .mockReturnValue(false);
         vi.spyOn(fs, 'existsSync').mockImplementation((path: PathLike) => {
-          if (path === '/mock-cwd/mock-name') {
-            return false;
-          }
+          if (path === '/mock-cwd/mock-name') return false;
+
           return true;
         });
 
@@ -203,9 +201,8 @@ describe('CreateCliCommand', () => {
     it('should reject if directory with app name already exists', async () => {
       const { command } = setup();
       vi.spyOn(fs, 'existsSync').mockImplementation((path: PathLike) => {
-        if (path === '/mock-cwd/existing-app') {
-          return true;
-        }
+        if (path === '/mock-cwd/existing-app') return true;
+
         return false;
       });
 
@@ -222,9 +219,9 @@ describe('CreateCliCommand', () => {
           path === '/mock-cwd/mock-name' ||
           path === '/mock-root/../../repo/latest' ||
           path === '/mock-root/../../template-latest.zip'
-        ) {
+        )
           return false;
-        }
+
         return true;
       });
 
@@ -262,9 +259,9 @@ describe('CreateCliCommand', () => {
         if (
           path === '/mock-cwd/mock-name' ||
           path === '/mock-root/../../repo/latest'
-        ) {
+        )
           return false;
-        }
+
         return true;
       });
 
@@ -293,9 +290,8 @@ describe('CreateCliCommand', () => {
 
     it('should skip downloading and extracting latest template if already extracted', async () => {
       vi.spyOn(fs, 'existsSync').mockImplementation((path: PathLike) => {
-        if (path === '/mock-cwd/mock-name') {
-          return false;
-        }
+        if (path === '/mock-cwd/mock-name') return false;
+
         return true;
       });
 

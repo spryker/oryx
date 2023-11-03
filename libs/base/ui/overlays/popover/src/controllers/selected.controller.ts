@@ -27,9 +27,8 @@ export class SelectedController implements ReactiveController {
   }
 
   select(index: number, omitDispatchEvent?: boolean): void {
-    if (this.selected === index) {
-      return;
-    }
+    if (this.selected === index) return;
+
     this.items
       .find((item) => item.hasAttribute('active'))
       ?.removeAttribute('active');
@@ -50,9 +49,7 @@ export class SelectedController implements ReactiveController {
 
   protected handleMouseup(e: Event): void {
     const index = this.items.indexOf(e.target as HTMLElement);
-    if (index > -1) {
-      this.select(index);
-    }
+    if (index > -1) this.select(index);
   }
 
   protected get selected(): number {

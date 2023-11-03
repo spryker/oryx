@@ -96,9 +96,7 @@ describe('StoreInterceptor', () => {
       const req = new Request(testCase.url, options);
       const expected = req.clone();
 
-      if (testCase.shouldIntercept) {
-        expected.headers.set('X-Store', STORE);
-      }
+      if (testCase.shouldIntercept) expected.headers.set('X-Store', STORE);
 
       handler.handle(req).subscribe();
       await nextFrame();

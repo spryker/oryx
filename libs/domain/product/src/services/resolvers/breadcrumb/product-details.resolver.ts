@@ -50,9 +50,7 @@ export class ProductDetailsBreadcrumbResolver implements BreadcrumbResolver {
   ): Observable<BreadcrumbItem[]> {
     const { categoryIds } = product;
 
-    if (!categoryIds?.length) {
-      return of([this.productTitle(product)]);
-    }
+    if (!categoryIds?.length) return of([this.productTitle(product)]);
 
     return combineLatest(
       categoryIds.map((id) => this.categoryService.getTrail(id))

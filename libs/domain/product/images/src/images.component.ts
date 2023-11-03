@@ -6,17 +6,17 @@ import {
   ProductMixin,
 } from '@spryker-oryx/product';
 import { hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import {
+  ProductImagesNavigationLayout as NavigationLayout,
+  ProductImagesNavigationPosition as NavigationPosition,
   ProductImagesComponentOptions,
   ProductImagesMainLayout,
   ProductImagesNavigationDisplay,
-  ProductImagesNavigationLayout as NavigationLayout,
   ProductImagesNavigationMouseEvent,
-  ProductImagesNavigationPosition as NavigationPosition,
 } from './images.model';
 import { productImageStyles } from './images.styles';
 
@@ -79,9 +79,7 @@ export class ProductImagesComponent extends ProductMixin(
       scrollBehavior,
     } = this.$options();
 
-    if (!media.length || imageLayout === ProductImagesMainLayout.None) {
-      return;
-    }
+    if (!media.length || imageLayout === ProductImagesMainLayout.None) return;
 
     return html`<oryx-layout
       class="main"
@@ -117,9 +115,8 @@ export class ProductImagesComponent extends ProductMixin(
       navigationObjectFit: objectFit = defaultImagesOptions.navigationObjectFit,
     } = this.$options();
 
-    if (media.length < 2 || display === ProductImagesNavigationDisplay.None) {
+    if (media.length < 2 || display === ProductImagesNavigationDisplay.None)
       return;
-    }
 
     const isVertical =
       position === NavigationPosition.Start ||

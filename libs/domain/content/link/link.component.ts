@@ -31,9 +31,8 @@ export class ContentLinkComponent extends ContentMixin<
   protected override render(): TemplateResult | void {
     const { button, icon, singleLine, color } = this.$options();
 
-    if (button) {
+    if (button)
       return html`<oryx-button>${this.renderLink(true)}</oryx-button>`;
-    }
 
     return html`<oryx-link
       .color=${color}

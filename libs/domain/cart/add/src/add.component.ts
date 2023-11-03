@@ -95,13 +95,14 @@ export class CartAddComponent extends ProductMixin(
     const { availability, sku } = this.$product() ?? {};
 
     if (availability?.isNeverOutOfStock) return Infinity;
-    if (availability?.quantity)
+    if (availability?.quantity) {
       return (
         availability.quantity -
         this.$entries()
           .filter((entry) => entry.sku === sku)
           .reduce((a, { quantity }) => a + Number(quantity), 0)
       );
+    }
     return 0;
   });
 

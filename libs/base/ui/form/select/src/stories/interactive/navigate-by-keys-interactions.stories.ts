@@ -1,7 +1,7 @@
 import { states } from '@/tools/storybook';
 import { userEvent } from '@storybook/testing-library';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../.constants';
 
 import { SelectComponent } from '../../index';
@@ -26,9 +26,7 @@ NavigateByKeys.play = async (obj: {
   canvasElement: HTMLElement;
 }): Promise<void> => {
   const forEach = async (arr: unknown[], cb: any): Promise<void> => {
-    for (const item of arr) {
-      await cb(item);
-    }
+    for (const item of arr) await cb(item);
   };
 
   const keyboard = async (key: string, times = 1): Promise<void> => {

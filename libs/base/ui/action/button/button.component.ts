@@ -86,11 +86,8 @@ export class ButtonComponent
     const templates = [this.renderLoader(), this.renderConfirmed()];
 
     const button = this.href ? this.renderLink() : this.renderButton();
-    if (this.text || this.icon) {
-      templates.push(button);
-    } else {
-      templates.push(html`<slot name="custom">${button}</slot>`);
-    }
+    if (this.text || this.icon) templates.push(button);
+    else templates.push(html`<slot name="custom">${button}</slot>`);
 
     return html`
       ${templates} ${preHydrate(hydrateSlotChange, this.tagName.toLowerCase())}

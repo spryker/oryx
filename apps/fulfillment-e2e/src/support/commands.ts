@@ -89,9 +89,8 @@ Cypress.Commands.add('waitForIndexedDB', () => {
     const checkExistenceLoop = () => {
       return checkIndexedDBExistence().catch((error) => {
         attempts++;
-        if (attempts >= maxAttempts) {
-          throw error;
-        } else {
+        if (attempts >= maxAttempts) throw error;
+        else {
           // eslint-disable-next-line cypress/no-unnecessary-waiting
           cy.wait(checkInterval).then(checkExistenceLoop);
         }
@@ -132,9 +131,8 @@ Cypress.Commands.add('mockPickingInProgress', () => {
 
 async function indexedDbExists(dbName) {
   const dbs = await indexedDB.databases();
-  if (!dbs.map((db) => db.name).includes(dbName)) {
+  if (!dbs.map((db) => db.name).includes(dbName))
     throw `DB "${dbName}" not found`;
-  }
 
   console.log(`DB "${dbName}" exists`);
 }

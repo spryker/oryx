@@ -80,9 +80,7 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
   }
 
   protected renderPickingProduct(): TemplateResult {
-    if (!this.productItem) {
-      return html``;
-    }
+    if (!this.productItem) return html``;
 
     const quantityForm = html`
       <form @submit=${this.onSubmit}>
@@ -139,9 +137,7 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
   }
 
   protected renderEditStatus(): TemplateResult {
-    if (!this.productItem) {
-      return html``;
-    }
+    if (!this.productItem) return html``;
 
     let count: number;
     let label = '';
@@ -152,19 +148,15 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
     if (this.status === ItemsFilters.Picked) {
       count = numberOfPicked;
 
-      if (numberOfPicked < quantity) {
+      if (numberOfPicked < quantity)
         label = 'picking.product-card.items-picked';
-      } else {
-        subtext = 'picking.product-card.all-items-picked';
-      }
+      else subtext = 'picking.product-card.all-items-picked';
     } else {
       count = numberOfNotPicked;
 
-      if (numberOfNotPicked < quantity) {
+      if (numberOfNotPicked < quantity)
         label = 'picking.product-card.items-not-found';
-      } else {
-        subtext = 'picking.product-card.no-items-found';
-      }
+      else subtext = 'picking.product-card.no-items-found';
     }
 
     return html`

@@ -8,7 +8,7 @@ import {
 } from '@spryker-oryx/product';
 import { LoadingStrategy } from '@spryker-oryx/ui/image';
 import { computed, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { ProductMediaOptions } from './media.model';
 
 @defaultOptions({
@@ -31,11 +31,8 @@ export class ProductMediaComponent extends ProductMixin(
     const url = sources?.[0]?.url;
     if (!url) return this.renderImage();
 
-    if (this.isVideo(url)) {
-      return html`<oryx-video url=${url}></oryx-video>`;
-    } else {
-      return this.renderImage(url, this.getSrcSet(sources));
-    }
+    if (this.isVideo(url)) return html`<oryx-video url=${url}></oryx-video>`;
+    else return this.renderImage(url, this.getSrcSet(sources));
   }
 
   protected renderImage(src?: string, srcSet?: string): TemplateResult | void {
@@ -56,11 +53,8 @@ export class ProductMediaComponent extends ProductMixin(
   protected $mediaSet = computed(() => {
     const medias = this.$product()?.mediaSet;
     const { mediaSet } = this.$options();
-    if (mediaSet) {
-      return medias?.find((set) => set.name === mediaSet);
-    } else {
-      return medias?.[0];
-    }
+    if (mediaSet) return medias?.find((set) => set.name === mediaSet);
+    else return medias?.[0];
   });
 
   /**
@@ -68,9 +62,7 @@ export class ProductMediaComponent extends ProductMixin(
    * query and density.
    */
   protected getSrcSet(sources: ImageSource[]): string | undefined {
-    if (sources.length < 2) {
-      return;
-    }
+    if (sources.length < 2) return;
 
     return (
       sources
