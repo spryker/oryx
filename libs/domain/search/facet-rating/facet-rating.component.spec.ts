@@ -37,7 +37,7 @@ describe('SearchRatingFacetComponent', () => {
   };
 
   const shouldHaveProperOptions = (
-    length = 5,
+    length = 4,
     start = 1,
     checked = 1,
     scale = 5
@@ -179,30 +179,30 @@ describe('SearchRatingFacetComponent', () => {
       element = await fixture(
         html`<oryx-search-facet-rating
           name=${name}
-          min=${min}
+          .options=${{ min }}
         ></oryx-search-facet-rating>`
       );
     });
 
-    it('should render 3 options with proper values', () => {
-      shouldHaveProperOptions(3, min);
+    it('should render 2 options with proper values', () => {
+      shouldHaveProperOptions(2, min);
     });
   });
 
   describe('when max property is specified', () => {
-    const max = 4;
+    const max = 5;
 
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-search-facet-rating
           name=${name}
-          max=${max}
+          .options=${{ max }}
         ></oryx-search-facet-rating>`
       );
     });
 
-    it('should render 4 options with proper values', () => {
-      shouldHaveProperOptions(4);
+    it('should render 3 options with proper values', () => {
+      shouldHaveProperOptions(5);
     });
   });
 
@@ -213,8 +213,7 @@ describe('SearchRatingFacetComponent', () => {
       element = await fixture(
         html`<oryx-search-facet-rating
           name=${name}
-          max="5"
-          scale=${scale}
+          .options=${{ max: 5, scale }}
         ></oryx-search-facet-rating>`
       );
     });

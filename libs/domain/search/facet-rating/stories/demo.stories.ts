@@ -6,7 +6,10 @@ import { SelectFacetEventDetail } from '@spryker-oryx/search';
 import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { SearchRatingFacetComponentProperties } from '../facet-rating.model';
+import {
+  SearchRatingFacetComponentOptions,
+  SearchRatingFacetComponentProperties,
+} from '../facet-rating.model';
 
 export default {
   title: `${storybookPrefix}/Facet Rating`,
@@ -23,12 +26,9 @@ export default {
   },
 };
 
-const Template: Story<SearchRatingFacetComponentProperties> = ({
-  open,
-  min,
-  max,
-  scale,
-}): TemplateResult => {
+const Template: Story<
+  SearchRatingFacetComponentProperties & SearchRatingFacetComponentOptions
+> = ({ open, min, max, scale }): TemplateResult => {
   const router = resolve<MockRouterService>(RouterService);
 
   router.params$.next({});
@@ -42,9 +42,11 @@ const Template: Story<SearchRatingFacetComponentProperties> = ({
   return html`<oryx-search-facet-rating
     name="Rating"
     ?open=${open}
-    min=${min}
-    max=${max}
-    scale=${scale}
+    .options=${{
+      min,
+      max,
+      scale,
+    }}
     @oryx.select=${select}
   ></oryx-search-facet-rating>`;
 };

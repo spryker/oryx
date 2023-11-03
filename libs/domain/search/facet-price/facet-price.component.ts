@@ -52,8 +52,6 @@ export class SearchPriceFacetComponent extends I18nMixin(
     } as SelectRangeFacetValues;
 
     if (this.hasChangedValue(selected)) {
-      console.log(this.$facet(), selected);
-
       this.controller.dispatchSelectEvent({ selected });
     }
   }

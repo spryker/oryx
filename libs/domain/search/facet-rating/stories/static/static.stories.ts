@@ -20,23 +20,29 @@ const Template: Story = (): TemplateResult => {
     <oryx-search-facet-rating
       name="Selected rating"
       open
-      min="1"
-      max="4"
+      .options=${{
+        min: 0,
+        max: 5,
+      }}
     ></oryx-search-facet-rating>
 
     <h4>Scaled</h4>
     <oryx-search-facet-rating
       name="Rating"
       open
-      scale="7"
-      max="7"
+      .options=${{
+        max: 7,
+        scale: 7,
+      }}
     ></oryx-search-facet-rating>
 
-    <h4>Scaled with limited max</h4>
+    <h4>Scaled limited</h4>
     <oryx-search-facet-rating
       name="Rating"
       open
-      scale="7"
+      .options=${{
+        scale: 3,
+      }}
     ></oryx-search-facet-rating>
   `;
 };
