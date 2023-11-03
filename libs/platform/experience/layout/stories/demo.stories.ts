@@ -23,12 +23,12 @@ export default {
   },
   argTypes: {
     mainLayout: {
-      options: ['list', 'column', 'split-column', 'carousel', 'grid', 'flex'],
+      options: ['list', 'column', 'split', 'carousel', 'grid', 'flex'],
       control: { type: 'select' },
       table: demoTable,
     },
     layout: {
-      options: ['list', 'column', 'split-column', 'carousel', 'grid', 'flex'],
+      options: ['list', 'column', 'split', 'carousel', 'grid', 'flex'],
       control: { type: 'select' },
     },
     background: {

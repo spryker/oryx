@@ -38,8 +38,8 @@ export const styles = {
     :host {
       grid-template-columns:
         calc(
-          var(--split, var(--oryx-column-split-main)) * var(--_item-size) +
-            (var(--split, var(--oryx-column-split-main)) - 1) *
+          var(--split, var(--oryx-column-split-equal)) * var(--_item-size) +
+            (var(--split, var(--oryx-column-split-equal)) - 1) *
             var(--column-gap, var(--oryx-column-gap, 0px))
         )
         auto;
