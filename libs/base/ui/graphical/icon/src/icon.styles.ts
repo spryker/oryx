@@ -20,6 +20,10 @@ export const styles = css`
     -webkit-font-smoothing: antialiased;
   }
 
+  :host([direction]:dir(rtl)) {
+    transform: scaleX(-1);
+  }
+
   svg,
   ::slotted(svg) {
     fill: var(--oryx-icon-color, currentColor);
