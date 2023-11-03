@@ -186,7 +186,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       return `${value}${unit ?? 'px'}`;
     };
 
-    const add = (rulesObj: LayoutStyleList, options?: LayoutStyleOptions) => {
+    const add = (rulesObj?: LayoutStyleList, options?: LayoutStyleOptions) => {
+      if (!rulesObj) return;
+
       Object.entries(rulesObj).forEach(([rule, value]) => {
         if ((!value || value === '0') && !options?.emptyValue) return;
         if (!isNaN(Number(value))) {
