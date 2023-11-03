@@ -1,6 +1,4 @@
-import {
-  ExperienceComponent,
-} from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { Size, featureVersion } from '@spryker-oryx/utilities';
 
