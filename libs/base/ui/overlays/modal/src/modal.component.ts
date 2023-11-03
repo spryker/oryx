@@ -157,7 +157,7 @@ export class ModalComponent
                 .type=${ButtonType.Icon}
                 .size=${ButtonSize.Md}
                 .color=${ButtonColor.Neutral}
-                .icon=${IconTypes.ArrowBack}
+                .icon=${IconTypes.ArrowBackward}
                 .label=${this.i18n('modal.back')}
               ></oryx-button>
             </slot>

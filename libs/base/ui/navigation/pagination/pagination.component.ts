@@ -53,7 +53,7 @@ export class PaginationComponent
         ?inert=${!nav}
       >
         <slot name=${direction}>
-          <oryx-icon type=${IconTypes.NavigationArrow}></oryx-icon>
+          <oryx-icon type=${IconTypes.ArrowForward}></oryx-icon>
         </slot>
       </a>
     `;
