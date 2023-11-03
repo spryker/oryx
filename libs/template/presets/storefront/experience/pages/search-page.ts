@@ -11,7 +11,10 @@ export const searchPage: ExperienceComponent = {
   options: {
     rules: [
       {
-        layout: 'split-aside',
+        layout:
+          featureVersion >= '1.2'
+            ? { type: 'split', columnWidthType: 'aside' }
+            : 'split-aside',
         padding: '30px 0 0',
       },
       { query: { breakpoint: 'md' }, splitColumnFactor: 1 / 3 },

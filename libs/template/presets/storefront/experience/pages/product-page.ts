@@ -16,7 +16,10 @@ export const productPage: ExperienceComponent = {
       options: {
         rules: [
           {
-            layout: 'split-main',
+            layout:
+              featureVersion >= '1.2'
+                ? { type: 'split', columnWidthType: 'main' }
+                : 'split-main',
             padding: '30px 0 0',
           },
         ],

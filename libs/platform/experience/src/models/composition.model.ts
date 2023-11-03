@@ -38,7 +38,13 @@ export enum CompositionLayout {
   List = 'list',
   Column = 'column',
   Split = 'split',
+  /**
+   * @deprecated since 1.2. Use split plugin instead with `columnWidthType: 'aside'`
+   */
   SplitAside = 'split-aside',
+  /**
+   * @deprecated since 1.2. Use split plugin instead with `columnWidthType: 'main'`
+   */
   SplitMain = 'split-main',
   Carousel = 'carousel',
   Grid = 'grid',
