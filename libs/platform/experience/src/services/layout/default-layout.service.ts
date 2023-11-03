@@ -171,22 +171,22 @@ export class DefaultLayoutService implements LayoutService {
 
       case CompositionLayout.Split:
         return ssrAwaiter(
-          import('./plugins/types/split/split-layout.styles').then((m) =>
+          import('./deprecated-split-styles/split-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.SplitMain:
         return ssrAwaiter(
-          import('./plugins/types/split-main/split-main-layout.styles').then(
-            (m) => this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          import('./deprecated-split-styles/split-main.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.SplitAside:
         return ssrAwaiter(
-          import('./plugins/types/split-aside/split-aside-layout.styles').then(
-            (m) => this.resolveStylesForBreakpoint(m.styles, included, excluded)
+          import('./deprecated-split-styles/split-aside.styles').then((m) =>
+            this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
