@@ -26,7 +26,7 @@ export class CheckoutApi extends GlueApi {
               idShipmentMethod: '1',
             },
             customer: {
-              email: 'andrew@ottom.de',
+              email: 'spencor.hopkin@spryker.com',
               salutation: 'Mr',
               firstName: 'Sonia',
               lastName: 'Test',

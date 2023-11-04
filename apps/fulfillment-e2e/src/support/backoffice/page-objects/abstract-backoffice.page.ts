@@ -1,5 +1,5 @@
 export abstract class ABackofficePage {
-  url: string;
+  abstract url: string;
 
   visit = () => {
     cy.visit(`${Cypress.env('backofficeUrl')}${this.url}`);
