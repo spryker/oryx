@@ -18,6 +18,7 @@ import {
   LayoutStylesOptions,
   LayoutStylesPlugin,
 } from '../../layout';
+import { MessageType } from '../data-client.model';
 import { ExperienceDataRevealer } from '../data-client.service';
 import { catchMessage, postMessage } from '../utilities';
 
@@ -101,7 +102,7 @@ export class LayoutExperienceDataRevealer implements ExperienceDataRevealer {
         })
       );
     }),
-    tap((data) => postMessage({ type: 'layout', data }))
+    tap((data) => postMessage({ type: MessageType.StylesOptions, data }))
   );
 
   protected transformLayoutOptions(

@@ -17,7 +17,7 @@ declare global {
   export interface LayoutProperty {}
 
   export interface LayoutStylesProperties {
-    layout?: LayoutStylesOptions | LayoutTypes;
+    layout?: LayoutTypeStyles;
 
     // @deprecated since 1.2 will be removed. Use properties from layout object instead.
     vertical?: boolean;
@@ -40,6 +40,7 @@ export const LayoutStylesPlugin = 'oryx.LayoutStylesPlugin*';
 // Opened issue https://github.com/Microsoft/TypeScript/issues/29729
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type LayoutTypes = keyof Layouts | (string & {});
+export type LayoutTypeStyles = LayoutStylesOptions | LayoutTypes;
 
 export const enum LayoutPluginType {
   Layout,
