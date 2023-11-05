@@ -83,8 +83,7 @@ export const homePage: ExperienceComponent = {
                   }
                 : 'split',
             align: 'end',
-            // @deprecated since 1.2, will be removed.
-            bleed: true,
+            ...(featureVersion >= '1.2' ? { bleed: true } : {}),
           },
         ],
       },

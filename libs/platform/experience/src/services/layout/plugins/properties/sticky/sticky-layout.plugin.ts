@@ -1,6 +1,6 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { Observable, of } from 'rxjs';
-import { LayoutStyles } from '../../../layout.model';
+import { LayoutStyles, LayoutStylesOptions } from '../../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
@@ -35,5 +35,11 @@ export class StickyLayoutPlugin implements LayoutPlugin {
       ],
       [{ 'z-index': styles.layout?.zIndex }, { omitUnit: true }],
     ]);
+  }
+
+  getDefaultProperties(): Observable<LayoutStylesOptions> {
+    return of({
+      zIndex: 5,
+    });
   }
 }
