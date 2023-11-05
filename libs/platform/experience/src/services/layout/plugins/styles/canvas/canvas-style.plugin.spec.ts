@@ -35,7 +35,7 @@ describe('CanvasStylePlugin', () => {
         '--oryx-fill': data.fill,
       };
       const result = await lastValueFrom(
-        plugin.getStyleProperties({ styles: data })
+        plugin.getStyleProperties({ styles: data, options: {} })
       );
 
       expect(result).toEqual(styleProperties);

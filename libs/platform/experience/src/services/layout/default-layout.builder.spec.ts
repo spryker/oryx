@@ -380,29 +380,29 @@ describe('DefaultLayoutBuilder', () => {
       );
 
       const result = await lastValueFrom(
-        service.getCompositionStyles([
-          {
-            id: 'idA',
-            type: 'typeA',
-            options: {
-              rules: [{ layout: 'grid' }],
+        service.getCompositionStyles({
+          composition: [
+            {
+              id: 'idA',
+              type: 'typeA',
+              options: {
+                rules: [{ layout: 'grid' }],
+              },
             },
-          },
-        ])
+          ],
+        })
       );
 
       expect(result).toContain(':host([uid="idA"]), [uid="idA"]');
       expect(result).toContain('a: a;b: b');
       expect(result).toContain('c: c;d: d');
       expect(mockStylePlugin.getStyleProperties).toHaveBeenCalledWith({
-        styles: {
-          layout: { type: 'grid' },
-        },
+        styles: { layout: { type: 'grid' } },
+        options: { layout: 'grid' },
       });
       expect(mockLayoutPlugin.getStyleProperties).toHaveBeenCalledWith({
-        styles: {
-          layout: { type: 'grid' },
-        },
+        styles: { layout: { type: 'grid' } },
+        options: { layout: 'grid' },
       });
     });
   });
@@ -417,22 +417,40 @@ describe('DefaultLayoutBuilder', () => {
       );
 
       const result = await lastValueFrom(
-        service.getStylesFromOptions([{ layout: 'grid' }], 'idA')
+        service.getStylesFromOptions({
+          rules: [{ layout: 'grid' }],
+          id: 'idA',
+        })
       );
 
       expect(result).toContain(':host([uid="idA"]), [uid="idA"]');
       expect(result).toContain('a: a;b: b');
       expect(result).toContain('c: c;d: d');
       expect(mockStylePlugin.getStyleProperties).toHaveBeenCalledWith({
-        styles: {
-          layout: { type: 'grid' },
-        },
+        styles: { layout: { type: 'grid' } },
+        options: { layout: 'grid' },
       });
       expect(mockLayoutPlugin.getStyleProperties).toHaveBeenCalledWith({
-        styles: {
-          layout: { type: 'grid' },
-        },
+        styles: { layout: { type: 'grid' } },
+        options: { layout: 'grid' },
       });
+    });
+  });
+
+  describe('getActiveLayoutRules', () => {
+    it('should return active layout styles depends on screen', async () => {
+      const result = await lastValueFrom(
+        service.getActiveLayoutRules(
+          [
+            { layout: { bleed: true, type: 'grid', divider: false } },
+            { query: { breakpoint: 'md' }, layout: { bleed: false } },
+            { query: { breakpoint: 'sm' }, layout: 'split' },
+          ],
+          'sm'
+        )
+      );
+
+      expect(result).toEqual({ bleed: true, layout: 'split', divider: false });
     });
   });
 });

@@ -3,7 +3,7 @@ import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { ComponentsPlugin } from '@spryker-oryx/utilities';
 import { of } from 'rxjs';
-import { MessageType } from '../data-client.model';
+import { MessageType } from '../../data-client.model';
 import { SchemaExperienceDataRevealer } from './schema-experience-data.revealer';
 
 const mockAppFn = {

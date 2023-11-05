@@ -14,6 +14,7 @@ import { LayoutController } from './layout.controller';
 
 const mockLayoutBuilder = {
   createStylesFromOptions: vi.fn(),
+  getActiveLayoutRules: vi.fn(),
 };
 
 const mockLayoutService = {
@@ -205,6 +206,12 @@ describe('LayoutController', () => {
     describe('getStyles', () => {
       beforeEach(() => {
         mockLayoutService.getStyles.mockReturnValue(of());
+        mockLayoutBuilder.getActiveLayoutRules.mockReturnValue(
+          of({
+            a: 'builderA',
+            b: 'builderB',
+          })
+        );
       });
 
       describe('when there are layout component properties provided', () => {
@@ -236,54 +243,55 @@ describe('LayoutController', () => {
                 included: ['xs', 'xl'],
               },
             },
-            { layout: 'grid', bleed: true }
+            { layout: 'grid', bleed: true, a: 'builderA', b: 'builderB' }
           );
         });
       });
 
       describe('when there are layout options provided', () => {
+        const rules = [
+          {
+            layout: {
+              type: 'grid',
+              bleed: true,
+            },
+          },
+          {
+            query: { breakpoint: Size.Xs },
+            layout: {
+              type: 'column',
+              sticky: true,
+            },
+          },
+          {
+            query: { breakpoint: Size.Lg },
+            layout: 'grid',
+          },
+          {
+            query: { breakpoint: Size.Md },
+            layout: {
+              type: 'column',
+              bleed: false,
+            },
+          },
+          {
+            query: { breakpoint: Size.Xl },
+            layout: {
+              type: 'carousel',
+              sticky: true,
+            },
+          },
+        ];
+
         beforeEach(() => {
-          setupController({})
-            .getStyles(
-              [],
-              [
-                {
-                  layout: {
-                    type: 'grid',
-                    bleed: true,
-                  },
-                },
-                {
-                  query: { breakpoint: Size.Xs },
-                  layout: {
-                    type: 'column',
-                    sticky: true,
-                  },
-                },
-                {
-                  query: { breakpoint: Size.Lg },
-                  layout: 'grid',
-                },
-                {
-                  query: { breakpoint: Size.Md },
-                  layout: {
-                    type: 'column',
-                    bleed: false,
-                  },
-                },
-                {
-                  query: { breakpoint: Size.Xl },
-                  layout: {
-                    type: 'carousel',
-                    sticky: true,
-                  },
-                },
-              ]
-            )
-            .subscribe();
+          setupController({}).getStyles([], rules, Size.Xl).subscribe();
         });
 
         it('should call mockLayoutService.getStyle with proper params', () => {
+          expect(mockLayoutBuilder.getActiveLayoutRules).toHaveBeenCalledWith(
+            rules,
+            Size.Xl
+          );
           expect(mockLayoutService.getStyles).toHaveBeenCalledWith(
             {
               grid: {
@@ -299,41 +307,44 @@ describe('LayoutController', () => {
               },
             },
             {
-              layout: 'grid',
-              bleed: true,
+              a: 'builderA',
+              b: 'builderB',
             }
           );
         });
       });
 
       describe('when theres a mix of layout component properties and options provided', () => {
+        const rules = [
+          { layout: 'grid' },
+          {
+            query: { breakpoint: Size.Xs },
+            layout: {
+              type: 'column',
+              sticky: true,
+            },
+          },
+          {
+            query: { breakpoint: Size.Lg },
+            layout: 'grid',
+          },
+        ];
+
         beforeEach(() => {
           setupController({
             'layout-bleed': true,
             md: { layout: 'column', bleed: false },
             xl: { layout: 'carousel', sticky: true },
           })
-            .getStyles(
-              ['layout-bleed', 'layout-sticky'],
-              [
-                { layout: 'grid' },
-                {
-                  query: { breakpoint: Size.Xs },
-                  layout: {
-                    type: 'column',
-                    sticky: true,
-                  },
-                },
-                {
-                  query: { breakpoint: Size.Lg },
-                  layout: 'grid',
-                },
-              ]
-            )
+            .getStyles(['layout-bleed', 'layout-sticky'], rules, Size.Lg)
             .subscribe();
         });
 
         it('should call mockLayoutService.getStyle with proper params', () => {
+          expect(mockLayoutBuilder.getActiveLayoutRules).toHaveBeenCalledWith(
+            rules,
+            Size.Lg
+          );
           expect(mockLayoutService.getStyles).toHaveBeenCalledWith(
             {
               bleed: { type: LayoutPluginType.Property, excluded: ['md'] },
@@ -348,7 +359,7 @@ describe('LayoutController', () => {
                 included: ['xs', 'xl'],
               },
             },
-            { layout: 'grid', bleed: true }
+            { a: 'builderA', b: 'builderB', bleed: true }
           );
         });
       });
@@ -361,6 +372,11 @@ describe('LayoutController', () => {
       } as unknown as Omit<LayoutPluginRenderParams, 'options'>;
 
       beforeEach(() => {
+        mockLayoutBuilder.getActiveLayoutRules.mockReturnValue(
+          of({
+            rule: 'a',
+          })
+        );
         mockLayoutService.getRender.mockReturnValue(of());
       });
 
@@ -384,11 +400,21 @@ describe('LayoutController', () => {
         });
 
         it('mockLayoutService.getRender with proper params', () => {
-          const options = { bleed: false, layout: 'column', overlap: true };
+          const options = {
+            bleed: false,
+            layout: 'column',
+            overlap: true,
+            rule: 'a',
+          };
 
           expect(mockLayoutService.getRender).toHaveBeenCalledWith({
             token: 'column',
             type: LayoutPluginType.Layout,
+            data: { ...mockData, options },
+          });
+          expect(mockLayoutService.getRender).toHaveBeenCalledWith({
+            token: 'rule',
+            type: LayoutPluginType.Property,
             data: { ...mockData, options },
           });
           expect(mockLayoutService.getRender).toHaveBeenCalledWith({
@@ -455,22 +481,10 @@ describe('LayoutController', () => {
         });
 
         it('mockLayoutService.getRender with proper params', () => {
-          const options = { bleed: false, layout: 'column', overlap: true };
-
           expect(mockLayoutService.getRender).toHaveBeenCalledWith({
-            token: 'column',
-            type: LayoutPluginType.Layout,
-            data: { ...mockData, options },
-          });
-          expect(mockLayoutService.getRender).toHaveBeenCalledWith({
-            token: 'overlap',
+            token: 'rule',
             type: LayoutPluginType.Property,
-            data: { ...mockData, options },
-          });
-          expect(mockLayoutService.getRender).not.toHaveBeenCalledWith({
-            token: 'bleed',
-            type: LayoutPluginType.Property,
-            data: { ...mockData, options },
+            data: { ...mockData, options: { rule: 'a' } },
           });
         });
       });
@@ -510,11 +524,11 @@ describe('LayoutController', () => {
         });
 
         it('mockLayoutService.getRender with proper params', () => {
-          const options = { layout: 'grid', bleed: true };
+          const options = { rule: 'a', bleed: true };
 
           expect(mockLayoutService.getRender).toHaveBeenCalledWith({
-            token: 'grid',
-            type: LayoutPluginType.Layout,
+            token: 'rule',
+            type: LayoutPluginType.Property,
             data: { ...mockData, options },
           });
           expect(mockLayoutService.getRender).toHaveBeenCalledWith({

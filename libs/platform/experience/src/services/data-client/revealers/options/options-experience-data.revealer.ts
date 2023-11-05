@@ -2,10 +2,10 @@ import { AppRef, FeatureOptionsService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { ComponentsPlugin } from '@spryker-oryx/utilities';
 import { Observable, tap } from 'rxjs';
-import { optionsKey } from '../../../decorators';
-import { MessageType } from '../data-client.model';
-import { ExperienceDataRevealer } from '../data-client.service';
-import { catchMessage, postMessage } from '../utilities';
+import { optionsKey } from '../../../../decorators';
+import { MessageType } from '../../data-client.model';
+import { ExperienceDataRevealer } from '../../data-client.service';
+import { catchMessage, postMessage } from '../../utilities';
 
 export class OptionsExperienceDataRevealer implements ExperienceDataRevealer {
   constructor(

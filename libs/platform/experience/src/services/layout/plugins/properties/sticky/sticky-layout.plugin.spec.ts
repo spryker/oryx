@@ -51,7 +51,7 @@ describe('StickyLayoutPlugin', () => {
         [{ 'z-index': data.layout.zIndex }, { omitUnit: true }],
       ];
       const result = await lastValueFrom(
-        plugin.getStyleProperties({ styles: data })
+        plugin.getStyleProperties({ styles: data, options: {} })
       );
 
       expect(result).toEqual(styleProperties);

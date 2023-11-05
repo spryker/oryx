@@ -3,9 +3,9 @@ import {
   toggleMode,
 } from '@spryker-oryx/ui/color-mode-selector';
 import { Observable, tap } from 'rxjs';
-import { MessageType } from '../data-client.model';
-import { ExperienceDataRevealer } from '../data-client.service';
-import { catchMessage } from '../utilities';
+import { MessageType } from '../../data-client.model';
+import { ExperienceDataRevealer } from '../../data-client.service';
+import { catchMessage } from '../../utilities';
 
 export class ColorModeExperienceDataRevealer implements ExperienceDataRevealer {
   protected colorMode$ = catchMessage(MessageType.ColorMode).pipe(

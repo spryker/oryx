@@ -28,7 +28,7 @@ describe('TransformStylePlugin', () => {
         [{ scale: data.scale }],
       ];
       const result = await lastValueFrom(
-        plugin.getStyleProperties({ styles: data })
+        plugin.getStyleProperties({ styles: data, options: {} })
       );
 
       expect(result).toEqual(styleProperties);
