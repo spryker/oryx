@@ -1,154 +1,209 @@
-import { inject, INJECTOR } from '@spryker-oryx/di';
+import { nextFrame } from '@open-wc/testing-helpers';
+import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { FormFieldType } from '@spryker-oryx/form';
-import { resolveLazyLoadable } from '@spryker-oryx/utilities';
-import {
-  combineLatest,
-  forkJoin,
-  map,
-  Observable,
-  of,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs';
-import { ContentComponentSchema, FieldDefinition } from '../../../models';
+import { of } from 'rxjs';
 import {
   LayoutPlugin,
   LayoutPropertyPlugin,
-  LayoutStylesOptions,
   LayoutStylesPlugin,
-} from '../../layout';
-import { MessageType } from '../data-client.model';
-import { ExperienceDataRevealer } from '../data-client.service';
-import { catchMessage, postMessage } from '../utilities';
+  LayoutTypeStyles,
+} from '../../../layout';
+import { MessageType } from '../../data-client.model';
+import { postMessage } from '../../utilities';
+import { LayoutExperienceDataRevealer } from './layout-experience-data.revealer';
 
-interface ResolvedPlugin {
-  options: ContentComponentSchema['options'];
-  defaults?: LayoutStylesOptions;
-}
+const mockALayout: LayoutPlugin = {
+  getConfig: vi.fn().mockReturnValue(of({ schema: { name: 'aLayout' } })),
+};
 
-export class LayoutExperienceDataRevealer implements ExperienceDataRevealer {
-  constructor(
-    protected layouts = inject(LayoutPlugin),
-    protected properties = inject(LayoutPropertyPlugin),
-    protected styles = inject(LayoutStylesPlugin),
-    protected injector = inject(INJECTOR)
-  ) {}
+const mockBLayout: LayoutPlugin = {
+  getConfig: vi.fn().mockReturnValue(
+    of({
+      schema: {
+        name: 'bLayout',
+        options: {
+          bSpecialLayout: { type: FormFieldType.Boolean },
+        },
+      },
+    })
+  ),
+  getDefaultProperties: vi
+    .fn()
+    .mockReturnValue(of({ bSpecialLayout: 'default' })),
+};
 
-  protected types$ = this.resolvePlugin(this.layouts);
-  protected properties$ = this.resolvePlugin(this.properties);
-  protected styles$ = this.resolvePlugin(this.styles);
+const mockAProperties: LayoutPlugin = {
+  getConfig: vi.fn().mockReturnValue(of({ schema: { name: 'aProperty' } })),
+};
 
-  protected layouts$ = catchMessage('getLayout' as any).pipe(
-    startWith({}),
-    switchMap((selectedLayout) => {
-      const layout: LayoutStylesOptions =
-        typeof selectedLayout === 'string'
-          ? {
-              type: selectedLayout,
-            }
-          : selectedLayout ?? {};
+const mockBProperties: LayoutPlugin = {
+  getConfig: vi.fn().mockReturnValue(
+    of({
+      schema: {
+        name: 'bProperty',
+        options: {
+          bSpecialProperty: { type: FormFieldType.Text },
+        },
+      },
+    })
+  ),
+  getDefaultProperties: vi
+    .fn()
+    .mockReturnValue(of({ bSpecialProperty: 'default' })),
+};
 
-      return combineLatest([this.types$, this.properties$, this.styles$]).pipe(
-        map(([types, properties, styles]) => {
-          const typeField: FieldDefinition = {
-            id: 'layout-type',
-            label: 'layout',
-            type: FormFieldType.Select,
-            options: Object.keys(types).map((value) => ({ value })),
-          };
-          const propertiesSchema = Object.keys(properties).map((property) => ({
-            id: `layout-${property}`,
-            label: property,
-            type: FormFieldType.Boolean,
-          }));
-          const data: Record<string, FieldDefinition[]> = {
-            container: [typeField, ...propertiesSchema],
-          };
-          let defaults = {};
+const mockAStyles: LayoutPlugin = {
+  getConfig: vi.fn().mockReturnValue(
+    of({
+      schema: {
+        name: 'aStyle',
+        options: {
+          padding: { type: FormFieldType.Text },
+          margin: { type: FormFieldType.Text },
+        },
+      },
+    })
+  ),
+};
 
-          for (const [key, selected] of Object.entries(layout ?? {})) {
-            const isLayout = key === 'type';
-            const hasOptions = isLayout
-              ? types[selected as string].options
-              : properties[key]?.options;
+const mockBStyles: LayoutPlugin = {
+  getConfig: vi.fn().mockReturnValue(
+    of({
+      schema: {
+        name: 'bStyle',
+        options: {
+          zIndex: { type: FormFieldType.Text },
+          marginCameCase: { type: FormFieldType.Text },
+        },
+      },
+    })
+  ),
+};
 
-            if (!selected || !hasOptions) continue;
+describe('LayoutExperienceDataRevealer', () => {
+  beforeEach(() => {
+    createInjector({
+      providers: [
+        {
+          provide: 'service',
+          useClass: LayoutExperienceDataRevealer,
+        },
+        {
+          provide: LayoutPlugin,
+          useValue: mockALayout,
+        },
+        {
+          provide: LayoutPlugin,
+          useValue: mockBLayout,
+        },
+        {
+          provide: LayoutPropertyPlugin,
+          useValue: mockAProperties,
+        },
+        {
+          provide: LayoutPropertyPlugin,
+          useValue: mockBProperties,
+        },
+        {
+          provide: LayoutStylesPlugin,
+          useValue: mockAStyles,
+        },
+        {
+          provide: LayoutStylesPlugin,
+          useValue: mockBStyles,
+        },
+      ],
+    });
+    vi.spyOn(window.parent, 'postMessage');
+  });
 
-            const schema = isLayout ? types : properties;
-            const id = isLayout ? selected : key;
+  afterEach(() => {
+    destroyInjector();
+    vi.clearAllMocks();
+  });
 
-            data.special ??= [];
-            data.special.push(
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              ...this.transformLayoutOptions(schema[id].options!)
-            );
-            defaults = { ...defaults, ...schema[id].defaults };
-          }
-
-          const stylesSchema = Object.entries(styles).reduce(
-            (acc, [key, value]) => ({
-              ...acc,
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              [key]: this.transformLayoutOptions(value.options!, true),
-            }),
-            {} as Record<string, FieldDefinition[]>
-          );
-
-          return {
-            fields: { ...data, ...stylesSchema },
-            defaults,
-          };
-        })
+  describe('reveal', () => {
+    it('should send `MessageType.StylesOptions` post message with proper data', async () => {
+      getInjector().inject('service').reveal().subscribe();
+      postMessage(
+        {
+          type: MessageType.SelectedStyles,
+          data: {
+            type: 'bLayout',
+            bProperty: true,
+          } as LayoutTypeStyles,
+        },
+        window
       );
-    }),
-    tap((data) => postMessage({ type: MessageType.StylesOptions, data }))
-  );
-
-  protected transformLayoutOptions(
-    props: Record<string, Omit<FieldDefinition, 'id'>>,
-    isStyles = false
-  ): FieldDefinition[] {
-    return Object.entries(props).map(([key, _value]) => ({
-      id: isStyles ? key : `layout-${key}`,
-      ..._value,
-      label: key.replace(/([A-Z])/g, (g) => ` ${g}`),
-    }));
-  }
-
-  protected resolvePlugin(
-    plugins: LayoutPlugin[]
-  ): Observable<Record<string, ResolvedPlugin>> {
-    return combineLatest(
-      plugins.map((plugin) =>
-        forkJoin({
-          config: plugin.getConfig(),
-          defaults:
-            plugin.getDefaultProperties?.()?.pipe(startWith({})) ??
-            of(undefined),
-        })
-      )
-    ).pipe(
-      switchMap(async (resolved) => {
-        const data: Record<string, ResolvedPlugin> = {};
-
-        for (const plugin of resolved) {
-          const { config, defaults } = plugin;
-          const schema = await resolveLazyLoadable(config.schema);
-
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          data[schema!.name] = {
-            options: schema?.options,
-            defaults,
-          };
-        }
-
-        return data;
-      })
-    );
-  }
-
-  reveal(): Observable<unknown> {
-    return this.layouts$;
-  }
-}
+      await nextFrame();
+      expect(window.parent.postMessage).toHaveBeenCalledWith(
+        {
+          type: MessageType.StylesOptions,
+          data: {
+            defaults: {
+              bSpecialLayout: 'default',
+              bSpecialProperty: 'default',
+            },
+            fields: {
+              container: [
+                {
+                  id: 'layout-type',
+                  label: 'layout',
+                  type: FormFieldType.Select,
+                  options: [{ value: 'aLayout' }, { value: 'bLayout' }],
+                },
+                {
+                  id: 'layout-aProperty',
+                  label: 'aProperty',
+                  type: FormFieldType.Boolean,
+                },
+                {
+                  id: 'layout-bProperty',
+                  label: 'bProperty',
+                  type: FormFieldType.Boolean,
+                },
+              ],
+              special: [
+                {
+                  id: 'layout-bSpecialLayout',
+                  type: FormFieldType.Boolean,
+                  label: 'b Special Layout',
+                },
+                {
+                  id: 'layout-bSpecialProperty',
+                  type: FormFieldType.Text,
+                  label: 'b Special Property',
+                },
+              ],
+              aStyle: [
+                {
+                  id: 'padding',
+                  label: 'padding',
+                  type: FormFieldType.Text,
+                },
+                {
+                  id: 'margin',
+                  label: 'margin',
+                  type: FormFieldType.Text,
+                },
+              ],
+              bStyle: [
+                {
+                  id: 'zIndex',
+                  label: 'z Index',
+                  type: FormFieldType.Text,
+                },
+                {
+                  id: 'marginCameCase',
+                  label: 'margin Came Case',
+                  type: FormFieldType.Text,
+                },
+              ],
+            },
+          },
+        },
+        '*'
+      );
+    });
+  });
+});

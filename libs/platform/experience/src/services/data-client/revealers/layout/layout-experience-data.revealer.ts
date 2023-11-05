@@ -1,4 +1,4 @@
-import { inject, INJECTOR } from '@spryker-oryx/di';
+import { inject } from '@spryker-oryx/di';
 import { FormFieldType } from '@spryker-oryx/form';
 import { resolveLazyLoadable } from '@spryker-oryx/utilities';
 import {
@@ -31,15 +31,14 @@ export class LayoutExperienceDataRevealer implements ExperienceDataRevealer {
   constructor(
     protected layouts = inject(LayoutPlugin),
     protected properties = inject(LayoutPropertyPlugin),
-    protected styles = inject(LayoutStylesPlugin),
-    protected injector = inject(INJECTOR)
+    protected styles = inject(LayoutStylesPlugin)
   ) {}
 
   protected types$ = this.resolvePlugin(this.layouts);
   protected properties$ = this.resolvePlugin(this.properties);
   protected styles$ = this.resolvePlugin(this.styles);
 
-  protected layouts$ = catchMessage('getLayout' as any).pipe(
+  protected layouts$ = catchMessage(MessageType.SelectedStyles).pipe(
     startWith({}),
     switchMap((selectedLayout) => {
       const layout: LayoutStylesOptions =
@@ -48,7 +47,7 @@ export class LayoutExperienceDataRevealer implements ExperienceDataRevealer {
               type: selectedLayout,
             }
           : selectedLayout ?? {};
-
+      console.log(layout, 'layout');
       return combineLatest([this.types$, this.properties$, this.styles$]).pipe(
         map(([types, properties, styles]) => {
           const typeField: FieldDefinition = {
