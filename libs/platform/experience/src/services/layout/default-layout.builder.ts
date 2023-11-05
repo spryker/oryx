@@ -4,7 +4,6 @@ import { Breakpoint } from '@spryker-oryx/utilities';
 import {
   Observable,
   concatMap,
-  filter,
   from,
   map,
   merge,
@@ -18,7 +17,11 @@ import {
   StyleProperties,
   StyleRuleSet,
 } from '../../models';
-import { LayoutBuilder, StylesFromOptionsParams } from './layout.builder';
+import {
+  CompositionStylesParams,
+  LayoutBuilder,
+  StylesFromOptionsParams,
+} from './layout.builder';
 import { LayoutStylesOptions } from './layout.model';
 import {
   LayoutPlugin,
@@ -49,16 +52,16 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     protected injector = inject(INJECTOR)
   ) {}
 
-  getCompositionStyles(
-    components: Component[],
-    activeHostOptions: LayoutProperties
-  ): Observable<string> {
-    return from(components).pipe(
+  getCompositionStyles(data: CompositionStylesParams): Observable<string> {
+    const { activeHostOptions, screen, composition } = data;
+
+    return from(composition).pipe(
       concatMap((component) =>
         this.getStylesFromOptions({
           rules: component.options?.rules,
           id: component.id,
           activeHostOptions,
+          screen,
         })
       ),
       reduce((acc, curr) => `${acc}${curr}`, '')
@@ -66,13 +69,11 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   }
 
   getStylesFromOptions(data: StylesFromOptionsParams): Observable<string> {
-    const { rules, id, activeHostOptions } = data;
+    const { rules, id, activeHostOptions, screen } = data;
 
     if (!rules?.length) return of('');
 
-    return this.screenService.getScreenSize().pipe(
-      filter(Boolean),
-      switchMap((screen) => this.getActiveLayoutRules(rules, screen)),
+    return this.getActiveLayoutRules(rules, screen).pipe(
       map((rulesOptions) => ({ ...rulesOptions, ...activeHostOptions })),
       switchMap((layoutOptions) =>
         from(rules).pipe(

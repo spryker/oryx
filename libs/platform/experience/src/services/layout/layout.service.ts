@@ -19,6 +19,7 @@ export interface LayoutIncomingConfig {
 
 export interface LayoutStyleConfig extends StylesFromOptionsParams {
   composition?: Component[];
+  screen?: string;
 }
 
 export interface LayoutService {

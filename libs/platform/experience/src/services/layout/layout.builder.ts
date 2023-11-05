@@ -9,10 +9,18 @@ import {
 
 export const LayoutBuilder = 'oryx.LayoutBuilder';
 
-export interface StylesFromOptionsParams {
+interface HostStylesParams {
+  activeHostOptions?: LayoutProperties;
+  screen?: string;
+}
+
+export interface StylesFromOptionsParams extends HostStylesParams {
   rules?: StyleRuleSet[];
   id?: string;
-  activeHostOptions?: LayoutProperties;
+}
+
+export interface CompositionStylesParams extends HostStylesParams {
+  composition: Component[];
 }
 
 export interface LayoutBuilder {
@@ -35,10 +43,7 @@ export interface LayoutBuilder {
    *
    * The concatenated styles can be used inside a `<style>` tag.
    */
-  getCompositionStyles(
-    components: Component[],
-    activeHostOptions?: LayoutProperties
-  ): Observable<string>;
+  getCompositionStyles(data: CompositionStylesParams): Observable<string>;
   getStylesFromOptions(params: StylesFromOptionsParams): Observable<string>;
   getActiveLayoutRules(
     rules?: StyleRuleSet[],

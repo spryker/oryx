@@ -75,11 +75,12 @@ export class CompositionComponent extends LayoutMixin(
   protected $components = signal(this.componentsController.getComponents());
   protected $componentsStyles = computed(() => {
     const components = this.$components();
-    this.$screen();
+
     if (!components?.length) return of('');
 
     return this[LayoutMixinInternals].layoutService.getStylesFromOptions({
       composition: components,
+      screen: this.$screen(),
     });
   });
   protected $preLayoutRenderComposition = computed(() =>
@@ -142,7 +143,7 @@ export class CompositionComponent extends LayoutMixin(
     const components = this.$components();
 
     if (!components?.length) return;
-    console.log(this.$componentsStyles(), 'this.$componentsStyles()');
+
     return this.renderLayout({
       template: repeat(
         components,
