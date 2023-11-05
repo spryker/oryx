@@ -30,10 +30,10 @@ export class StickyLayoutPlugin implements LayoutPlugin {
           'max-height': `calc(${styles.height ?? '100vh'} - ${
             styles.top ?? '0px'
           })`,
-          overflow: styles.overflow,
+          overflow: styles.layout?.overflow,
         },
       ],
-      [{ 'z-index': styles.zIndex }, { omitUnit: true }],
+      [{ 'z-index': styles.layout?.zIndex }, { omitUnit: true }],
     ]);
   }
 }

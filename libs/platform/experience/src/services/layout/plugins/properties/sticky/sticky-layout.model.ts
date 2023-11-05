@@ -10,9 +10,7 @@ declare global {
      * the top can be configured to be 100%.
      */
     sticky?: boolean;
-  }
 
-  export interface LayoutStylesProperties {
     /**
      * Specifies the stack order of a component. This is useful in combination with sticky layouts,
      * where the stacking order cannot be controlled by static css rules.
