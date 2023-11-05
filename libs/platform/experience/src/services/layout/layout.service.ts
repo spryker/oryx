@@ -1,6 +1,7 @@
 import { LayoutProperties } from '@spryker-oryx/experience/layout';
 import { Observable } from 'rxjs';
-import { Component, StyleRuleSet } from '../../models';
+import { Component } from '../../models';
+import { StylesFromOptionsParams } from './layout.builder';
 import { ResponsiveLayoutInfo } from './layout.model';
 import {
   LayoutPluginRender,
@@ -16,10 +17,8 @@ export interface LayoutIncomingConfig {
   data: LayoutPluginRenderParams;
 }
 
-export interface LayoutStyleConfig {
+export interface LayoutStyleConfig extends StylesFromOptionsParams {
   composition?: Component[];
-  rules?: StyleRuleSet[];
-  id?: string;
 }
 
 export interface LayoutService {

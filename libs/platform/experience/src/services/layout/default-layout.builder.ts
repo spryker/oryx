@@ -1,13 +1,24 @@
 import { INJECTOR, inject } from '@spryker-oryx/di';
+import { LayoutProperties } from '@spryker-oryx/experience/layout';
 import { Breakpoint } from '@spryker-oryx/utilities';
-import { Observable, concatMap, from, map, merge, of, reduce } from 'rxjs';
+import {
+  Observable,
+  concatMap,
+  filter,
+  from,
+  map,
+  merge,
+  of,
+  reduce,
+  switchMap,
+} from 'rxjs';
 import {
   Component,
   CompositionProperties,
   StyleProperties,
   StyleRuleSet,
 } from '../../models';
-import { LayoutBuilder } from './layout.builder';
+import { LayoutBuilder, StylesFromOptionsParams } from './layout.builder';
 import { LayoutStylesOptions } from './layout.model';
 import {
   LayoutPlugin,
@@ -38,29 +49,68 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     protected injector = inject(INJECTOR)
   ) {}
 
-  getCompositionStyles(components: Component[]): Observable<string> {
+  getCompositionStyles(
+    components: Component[],
+    activeHostOptions: LayoutProperties
+  ): Observable<string> {
     return from(components).pipe(
       concatMap((component) =>
-        this.getStylesFromOptions(component.options?.rules, component.id)
+        this.getStylesFromOptions({
+          rules: component.options?.rules,
+          id: component.id,
+          activeHostOptions,
+        })
       ),
       reduce((acc, curr) => `${acc}${curr}`, '')
     );
   }
 
-  getStylesFromOptions(
-    rules?: StyleRuleSet[],
-    id?: string
-  ): Observable<string> {
+  getStylesFromOptions(data: StylesFromOptionsParams): Observable<string> {
+    const { rules, id, activeHostOptions } = data;
+
     if (!rules?.length) return of('');
 
-    return from(rules).pipe(
-      concatMap((rule) =>
-        this.getRuleStyles(rule).pipe(
-          map((styles) => (styles ? this.getSelector(rule, styles, id) : ''))
+    return this.screenService.getScreenSize().pipe(
+      filter(Boolean),
+      switchMap((screen) => this.getActiveLayoutRules(rules, screen)),
+      map((rulesOptions) => ({ ...rulesOptions, ...activeHostOptions })),
+      switchMap((layoutOptions) =>
+        from(rules).pipe(
+          concatMap((rule) =>
+            this.getRuleStyles(layoutOptions, rule).pipe(
+              map((styles) =>
+                styles ? this.getSelector(rule, styles, id) : ''
+              )
+            )
+          ),
+          reduce((acc, curr) => `${acc}${curr}`, '')
         )
-      ),
-      reduce((acc, curr) => `${acc}${curr}`, '')
+      )
     );
+  }
+
+  getActiveLayoutRules(
+    rules?: StyleRuleSet[],
+    screen?: string
+  ): Observable<LayoutProperties> {
+    const bpOptions = rules?.find(
+      (rule) => rule.query?.breakpoint === screen && rule.layout
+    )?.layout;
+    const options = rules?.find(
+      (rule) => !rule.query?.breakpoint && rule.layout
+    )?.layout;
+    const properties: LayoutStylesOptions & LayoutProperties = {
+      ...(typeof options === 'string' ? { type: options } : options),
+      ...(typeof bpOptions === 'string' ? { type: bpOptions } : bpOptions),
+    };
+
+    if (properties.type) {
+      const layout = properties.type;
+      delete properties.type;
+      properties.layout = layout;
+    }
+
+    return of(properties);
   }
 
   protected getSelector(
@@ -130,9 +180,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   }
 
   protected getRuleStyles(
+    activeOptions: LayoutProperties,
     data?: StyleProperties
   ): Observable<string | undefined> {
-    return merge(...this.getStyleProperties(data)).pipe(
+    return merge(...this.getStyleProperties(activeOptions, data)).pipe(
       map((props) => {
         let styles = this.convertProperties(props).join(';');
         if (data?.style) styles += `;${data.style}`;
@@ -142,6 +193,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   }
 
   protected getStyleProperties(
+    activeOptions: LayoutProperties,
     data?: StyleProperties
   ): Observable<LayoutStyleProperties>[] {
     if (!data) return [];
@@ -149,13 +201,16 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     const observables: Observable<LayoutStyleProperties>[] = [];
     const layoutData =
       typeof data.layout === 'string' ? { type: data.layout } : data.layout;
-    const pluginStyles = {
-      ...data,
-      layout: layoutData,
+    const pluginParams = {
+      styles: {
+        ...data,
+        layout: layoutData,
+      },
+      options: activeOptions,
     };
 
     for (const plugin of this.stylePlugins) {
-      const observable = plugin.getStyleProperties?.({ styles: pluginStyles });
+      const observable = plugin.getStyleProperties?.(pluginParams);
 
       if (observable) observables.push(observable);
     }
@@ -171,7 +226,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
         `${type}${token}`,
         null
       );
-      const observable = plugin?.getStyleProperties?.({ styles: pluginStyles });
+      const observable = plugin?.getStyleProperties?.(pluginParams);
 
       if (observable) observables.push(observable);
     }

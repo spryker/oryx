@@ -85,7 +85,8 @@ export interface LayoutStyleParameters extends Omit<StyleProperties, 'layout'> {
   layout?: LayoutStylesOptions;
 }
 
-export interface LayoutPluginPropertiesParams {
+export interface LayoutPluginPropertiesParams
+  extends LayoutPluginOptionsParams {
   styles: LayoutStyleParameters;
 }
 
