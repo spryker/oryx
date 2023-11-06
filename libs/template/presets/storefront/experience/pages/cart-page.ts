@@ -24,7 +24,13 @@ export const cartPage: ExperienceComponent = {
   },
   options: {
     rules: [
-      { layout: 'split-main', padding: '30px 0' },
+      {
+        layout:
+          featureVersion >= '1.2'
+            ? { type: 'split', columnWidthType: 'main' }
+            : 'split-main',
+        padding: '30px 0',
+      },
       { query: { breakpoint: 'sm' }, gap: '0' },
     ],
   },

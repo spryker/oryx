@@ -7,12 +7,12 @@ import { Size, featureVersion, sizes } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import {
   Observable,
+  combineLatest,
   concatMap,
   from,
   map,
   of,
   reduce,
-  withLatestFrom,
 } from 'rxjs';
 import {
   CompositionProperties,
@@ -70,8 +70,10 @@ export class LayoutController {
     const infos = this.getLayoutInfos(props, rules);
     const layoutOptions = this.getLayoutOptions(properties, rules, screen);
 
-    return this.layoutService.getStyles(infos, layoutOptions).pipe(
-      withLatestFrom(this.getComponentStyles(props, rules, this.host.uid)),
+    return combineLatest([
+      this.layoutService.getStyles(infos, layoutOptions),
+      this.getComponentStyles(props, rules, this.host.uid),
+    ]).pipe(
       map(
         ([layoutStyles, componentStyles]) => `${layoutStyles}${componentStyles}`
       )

@@ -4,6 +4,7 @@ import {
   LayoutPluginConfig,
   LayoutPluginPropertiesParams,
   LayoutStyleProperties,
+  LayoutStylePropertiesArr,
 } from '../../layout.plugin';
 
 export class LayoutStylePlugin implements LayoutPlugin {
@@ -20,18 +21,26 @@ export class LayoutStylePlugin implements LayoutPlugin {
     const gaps = styles.gap?.toString().split(' ');
     const isGridColumnAlias = styles.gridColumn && styles.colSpan;
     const isGridRowAlias = styles.gridRow && styles.rowSpan;
-    const gridColumn: LayoutStyleProperties = isGridColumnAlias
+    const gridColumn: LayoutStylePropertiesArr = isGridColumnAlias
       ? [[{ 'grid-column': `${styles.gridColumn} / span ${styles.colSpan}` }]]
-      : [
-          [{ 'grid-column': styles.gridColumn }, { omitUnit: true }],
+      : ([
+          [
+            ...(styles.gridColumn
+              ? [{ 'grid-column': styles.gridColumn }, { omitUnit: true }]
+              : []),
+          ],
           [styles.colSpan ? { 'grid-column': `span ${styles.colSpan}` } : {}],
-        ];
-    const gridRow: LayoutStyleProperties = isGridRowAlias
+        ] as LayoutStylePropertiesArr);
+    const gridRow: LayoutStylePropertiesArr = isGridRowAlias
       ? [[{ 'grid-row': `${styles.gridRow} / span ${styles.rowSpan}` }]]
-      : [
-          [{ 'grid-row': styles.gridRow }, { omitUnit: true }],
+      : ([
+          [
+            ...(styles.gridRow
+              ? [{ 'grid-row': styles.gridRow }, { omitUnit: true }]
+              : []),
+          ],
           [styles.rowSpan ? { 'grid-row': `span ${styles.rowSpan}` } : {}],
-        ];
+        ] as LayoutStylePropertiesArr);
 
     return of([
       [{ '--align': styles.align, '--justify': styles.justify }],
