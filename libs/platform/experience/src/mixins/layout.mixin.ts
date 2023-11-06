@@ -205,14 +205,14 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     );
 
     protected renderLayout(props: LayoutMixinRender): TemplateResult {
-      const { inlineStyles, element, template } = props;
+      const { inlineStyles = '', element, template } = props;
 
       if (element) {
         this.element$.next(element);
       }
 
       const layoutStyles = this.layoutStyles() ?? '';
-      const styles = (inlineStyles ?? '') + layoutStyles;
+      const styles = inlineStyles + layoutStyles;
 
       return html`
         ${this.$preLayoutRenderElement()} ${template}
@@ -223,12 +223,12 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
     connectedCallback(): void {
       super.connectedCallback();
-      this.observe();
+      if (featureVersion >= '1.2') this.observe();
     }
 
     disconnectedCallback(): void {
       super.disconnectedCallback();
-      this.observer.disconnect();
+      if (featureVersion >= '1.2') this.observer.disconnect();
     }
   }
 
