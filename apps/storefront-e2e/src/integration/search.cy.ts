@@ -6,76 +6,81 @@ import {
 import { SearchPage } from '../support/page-objects/search.page';
 import { sortingTestData } from '../support/test-data/search-products';
 
-let searchPage;
-
 describe('Search suite', () => {
+  let searchPage;
+
   describe('Products filtering', () => {
-    const query = 'Canon';
+    describe('by value facets', () => {
+      const query = 'Canon';
 
-    beforeEach(() => {
-      searchPage = new SearchPage({ q: query });
-      searchPage.visit();
+      beforeEach(() => {
+        searchPage = new SearchPage({ q: query });
+        searchPage.visit();
+      });
+
+      it('should update products and facets when filters are applied/cleared', () => {
+        searchPage.getFacets().setRating('4');
+        searchPage.waitForSearchRequest();
+        checkProductCardsFilteringByName(searchPage, 2, 1, query);
+
+        // we don't expect search request here because previous query is cached
+        searchPage.getFacets().resetRating();
+
+        // apply 1st filter
+        searchPage.getFacets().setLabel('New');
+        searchPage.waitForSearchRequest();
+        checkProductCardsFilteringByName(searchPage, 4, 2, query);
+
+        // apply 2nd filter
+        searchPage.getFacets().setColor('Black');
+        searchPage.waitForSearchRequest();
+        checkProductCardsFilteringByName(searchPage, 4, 1, query);
+
+        // clear 2nd filter
+        // we don't expect search request here because previous query is cached
+        searchPage.getFacets().resetColor();
+        checkProductCardsFilteringByName(searchPage, 4, 2, query);
+      });
     });
 
-    it('should update products and facets when filters are applied/cleared', () => {
-      searchPage.getFacets().setRating('4');
-      searchPage.waitForSearchRequest();
-      checkProductCardsFilteringByName(searchPage, 2, 1, query);
-
-      // we don't expect search request here because previous query is cached
-      searchPage.getFacets().resetRating();
-
-      // apply 1st filter
-      searchPage.getFacets().setLabel('New');
-      searchPage.waitForSearchRequest();
-      checkProductCardsFilteringByName(searchPage, 4, 2, query);
-
-      // apply 2nd filter
-      searchPage.getFacets().setColor('Black');
-      searchPage.waitForSearchRequest();
-      checkProductCardsFilteringByName(searchPage, 4, 1, query);
-
-      // clear 2nd filter
-      // we don't expect search request here because previous query is cached
-      searchPage.getFacets().resetColor();
-      checkProductCardsFilteringByName(searchPage, 4, 2, query);
-    });
-
-    it('should apply price filterring', () => {
-      // set brand to limit a number of products displayed
-      // and avoid issues with concrete products displaying
-      searchPage = new SearchPage({ q: 'Cameras' });
-      searchPage.visit();
-      searchPage.getFacets().setBrand('Kodak');
-
+    describe('by price', () => {
       const minPrice = 200;
       const maxPrice = 400;
 
-      cy.log('set minimum price');
-      searchPage.getFacets().setMinPrice(minPrice);
-      searchPage.waitForSearchRequest();
-      checkProductCardsFilteringByPrice(searchPage, minPrice);
+      beforeEach(() => {
+        // set brand to limit a number of products displayed
+        // and avoid issues with concrete products displaying
+        searchPage = new SearchPage({ q: 'Cameras', search: 'brand=Kodak' });
+        searchPage.visit();
+      });
 
-      cy.log('reset prices, set max price');
-      searchPage.getFacets().resetPrices();
-      searchPage.waitForSearchRequest();
-      searchPage.getFacets().setMaxPrice(maxPrice);
-      searchPage.waitForSearchRequest();
-      checkProductCardsFilteringByPrice(searchPage, 0, maxPrice);
+      it('should apply price filtering', () => {
+        cy.log('set minimum price');
+        searchPage.getFacets().setMinPrice(minPrice);
+        searchPage.waitForSearchRequest();
+        checkProductCardsFilteringByPrice(searchPage, minPrice);
 
-      cy.log('reset prices, change min price range');
-      searchPage.getFacets().resetPrices();
-      searchPage.waitForSearchRequest();
-      searchPage.getFacets().setMinPriceRange(minPrice);
-      searchPage.waitForSearchRequest();
-      checkProductCardsFilteringByPrice(searchPage, minPrice);
+        cy.log('reset prices, set max price');
+        searchPage.getFacets().resetPrices();
+        searchPage.waitForSearchRequest(true);
+        searchPage.getFacets().setMaxPrice(maxPrice);
+        searchPage.waitForSearchRequest();
+        checkProductCardsFilteringByPrice(searchPage, 0, maxPrice);
 
-      cy.log('reset prices, change max price range');
-      searchPage.getFacets().resetPrices();
-      searchPage.waitForSearchRequest();
-      searchPage.getFacets().setMaxPriceRange(maxPrice);
-      searchPage.waitForSearchRequest();
-      checkProductCardsFilteringByPrice(searchPage, 0, maxPrice);
+        cy.log('reset prices, change min price range');
+        searchPage.getFacets().resetPrices();
+        searchPage.waitForSearchRequest(true);
+        searchPage.getFacets().setMinPriceRange(minPrice);
+        searchPage.waitForSearchRequest(true);
+        checkProductCardsFilteringByPrice(searchPage, minPrice);
+
+        cy.log('reset prices, change max price range');
+        searchPage.getFacets().resetPrices();
+        searchPage.waitForSearchRequest(true);
+        searchPage.getFacets().setMaxPriceRange(maxPrice);
+        searchPage.waitForSearchRequest(true);
+        checkProductCardsFilteringByPrice(searchPage, 0, maxPrice);
+      });
     });
   });
 
@@ -97,6 +102,7 @@ describe('Search suite', () => {
 
       // clear sorting and check that it is default again
       searchPage.getProductSorting().clearSorting();
+      searchPage.waitForSearchRequest(true);
       checkProductCardsSortingBySku(searchPage, sortingTestData.default);
     });
 
