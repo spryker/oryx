@@ -31,12 +31,12 @@ describe('QuantityInputComponent', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-cart-quantity-input
+        html`<oryx-quantity-input
           value="5"
           @update=${updateCallback}
           @submit=${submitCallback}
         >
-        </oryx-cart-quantity-input>`
+        </oryx-quantity-input>`
       );
       increaseButton = element.shadowRoot?.querySelector(
         `button[part='increase']`
@@ -87,13 +87,13 @@ describe('QuantityInputComponent', () => {
       describe('when the input is invalid', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-cart-quantity-input
+            html`<oryx-quantity-input
               min="5"
               value="2"
               @update=${updateCallback}
               @submit=${submitCallback}
             >
-            </oryx-cart-quantity-input>`
+            </oryx-quantity-input>`
           );
 
           vi.spyOn(getInput(), 'reportValidity');
@@ -181,7 +181,7 @@ describe('QuantityInputComponent', () => {
     describe('when the step is not provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input></oryx-cart-quantity-input>`
+          html`<oryx-quantity-input></oryx-quantity-input>`
         );
       });
 
@@ -193,7 +193,7 @@ describe('QuantityInputComponent', () => {
     describe('when the step is set to 0.1', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input step="0.1"></oryx-cart-quantity-input>`
+          html`<oryx-quantity-input step="0.1"></oryx-quantity-input>`
         );
       });
 
@@ -204,10 +204,10 @@ describe('QuantityInputComponent', () => {
       describe('and value is not match the step', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-cart-quantity-input
+            html`<oryx-quantity-input
               step="0.1"
               value="0.01"
-            ></oryx-cart-quantity-input>`
+            ></oryx-quantity-input>`
           );
         });
 
@@ -222,7 +222,7 @@ describe('QuantityInputComponent', () => {
     describe('when min is not provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input></oryx-cart-quantity-input>`
+          html`<oryx-quantity-input></oryx-quantity-input>`
         );
       });
 
@@ -238,7 +238,7 @@ describe('QuantityInputComponent', () => {
     describe('when "min" property is set to a value', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input min="4"></oryx-cart-quantity-input>`
+          html`<oryx-quantity-input min="4"></oryx-quantity-input>`
         );
       });
 
@@ -253,10 +253,10 @@ describe('QuantityInputComponent', () => {
       describe('and the value is greater then the minimum', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-cart-quantity-input
+            html`<oryx-quantity-input
               min="4"
               value="8"
-            ></oryx-cart-quantity-input>`
+            ></oryx-quantity-input>`
           );
         });
 
@@ -287,10 +287,10 @@ describe('QuantityInputComponent', () => {
       describe('and the value equals the minimum', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-cart-quantity-input
+            html`<oryx-quantity-input
               min="4"
               value="4"
-            ></oryx-cart-quantity-input>`
+            ></oryx-quantity-input>`
           );
         });
 
@@ -306,10 +306,10 @@ describe('QuantityInputComponent', () => {
       describe('and the value is smaller than the minimum', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-cart-quantity-input
+            html`<oryx-quantity-input
               min="4"
               value="1"
-            ></oryx-cart-quantity-input>`
+            ></oryx-quantity-input>`
           );
         });
 
@@ -341,7 +341,7 @@ describe('QuantityInputComponent', () => {
     describe('when a value is given', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input value="3"></oryx-cart-quantity-input>`
+          html`<oryx-quantity-input value="3"></oryx-quantity-input>`
         );
       });
 
@@ -362,7 +362,7 @@ describe('QuantityInputComponent', () => {
       describe('and no min value is given', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-cart-quantity-input></oryx-cart-quantity-input>`
+            html`<oryx-quantity-input></oryx-quantity-input>`
           );
         });
 
@@ -378,7 +378,7 @@ describe('QuantityInputComponent', () => {
       describe('and a min value is given', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-cart-quantity-input min="5"></oryx-cart-quantity-input>`
+            html`<oryx-quantity-input min="5"></oryx-quantity-input>`
           );
         });
 
@@ -395,11 +395,11 @@ describe('QuantityInputComponent', () => {
     describe('when value is between min and max', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input
+          html`<oryx-quantity-input
             min="1"
             value="5"
             max="10"
-          ></oryx-cart-quantity-input>`
+          ></oryx-quantity-input>`
         );
       });
 
@@ -464,7 +464,7 @@ describe('QuantityInputComponent', () => {
     describe('when max is not provided', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input></oryx-cart-quantity-input>`
+          html`<oryx-quantity-input></oryx-quantity-input>`
         );
       });
 
@@ -476,7 +476,7 @@ describe('QuantityInputComponent', () => {
     describe('when "max" property is set to a value', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input max="4"></oryx-cart-quantity-input>`
+          html`<oryx-quantity-input max="4"></oryx-quantity-input>`
         );
       });
 
@@ -491,10 +491,10 @@ describe('QuantityInputComponent', () => {
       describe('and the value is smaller then the maximum', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-cart-quantity-input
+            html`<oryx-quantity-input
               max="4"
               value="1"
-            ></oryx-cart-quantity-input>`
+            ></oryx-quantity-input>`
           );
         });
 
@@ -529,10 +529,10 @@ describe('QuantityInputComponent', () => {
       describe('and the value equals the maximum', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-cart-quantity-input
+            html`<oryx-quantity-input
               max="4"
               value="4"
-            ></oryx-cart-quantity-input>`
+            ></oryx-quantity-input>`
           );
         });
 
@@ -578,7 +578,7 @@ describe('QuantityInputComponent', () => {
   describe('validate input', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-cart-quantity-input></oryx-cart-quantity-input>`
+        html`<oryx-quantity-input></oryx-quantity-input>`
       );
       vi.spyOn(getInput(), 'reportValidity');
     });
@@ -607,7 +607,7 @@ describe('QuantityInputComponent', () => {
   describe('when the disabled attribute is set', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-cart-quantity-input disabled></oryx-cart-quantity-input>`
+        html`<oryx-quantity-input disabled></oryx-quantity-input>`
       );
     });
 
@@ -627,10 +627,10 @@ describe('QuantityInputComponent', () => {
   describe('when the value changes to invalid', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-cart-quantity-input
+        html`<oryx-quantity-input
           max="3"
           value="2"
-        ></oryx-cart-quantity-input>`
+        ></oryx-quantity-input>`
       );
       getInput().value = '4';
       getInput().dispatchEvent(new InputEvent('input', { bubbles: true }));
@@ -645,7 +645,7 @@ describe('QuantityInputComponent', () => {
     describe('when the decrease icon is not specified', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input></oryx-cart-quantity-input>`
+          html`<oryx-quantity-input></oryx-quantity-input>`
         );
       });
 
@@ -659,9 +659,9 @@ describe('QuantityInputComponent', () => {
     describe('when the decrease icon is specified', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input
+          html`<oryx-quantity-input
             .decreaseIcon=${'decreaseIconType'}
-          ></oryx-cart-quantity-input>`
+          ></oryx-quantity-input>`
         );
       });
 
@@ -675,7 +675,7 @@ describe('QuantityInputComponent', () => {
     describe('when the increase icon is not specified', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input></oryx-cart-quantity-input>`
+          html`<oryx-quantity-input></oryx-quantity-input>`
         );
       });
 
@@ -689,9 +689,9 @@ describe('QuantityInputComponent', () => {
     describe('when the increase icon is specified', () => {
       beforeEach(async () => {
         element = await fixture(
-          html`<oryx-cart-quantity-input
+          html`<oryx-quantity-input
             .increaseIcon=${'increaseIconType'}
-          ></oryx-cart-quantity-input>`
+          ></oryx-quantity-input>`
         );
       });
 
@@ -708,10 +708,10 @@ describe('QuantityInputComponent', () => {
 
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-cart-quantity-input
+        html`<oryx-quantity-input
           value=${1}
           label=${label}
-        ></oryx-cart-quantity-input>`
+        ></oryx-quantity-input>`
       );
     });
 

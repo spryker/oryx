@@ -13,6 +13,7 @@ export * from '../form/password/src/password-input.def';
 export * from '../form/radio/src/radio.def';
 export * from '../form/select/src/select.def';
 export * from '../form/tag/src/component';
+export * from '../form/quantity-input/quantity-input.def';
 export * from '../graphical/components';
 export * from '../navigation/navigation-item/src/component';
 export * from '../navigation/navigation/src/component';

@@ -58,7 +58,7 @@ describe('PickingProductCardComponent', () => {
       expect(
         (
           element.shadowRoot?.querySelector(
-            'oryx-cart-quantity-input'
+            'oryx-quantity-input'
           ) as QuantityInputComponent
         ).max
       ).toBe(productItem.quantity);
@@ -66,7 +66,7 @@ describe('PickingProductCardComponent', () => {
       expect(
         (
           element.shadowRoot?.querySelector(
-            'oryx-cart-quantity-input'
+            'oryx-quantity-input'
           ) as QuantityInputComponent
         ).value
       ).toBe(productItem.numberOfPicked);
@@ -80,7 +80,7 @@ describe('PickingProductCardComponent', () => {
       describe('and when an update is dispatched with an invalid quantity', () => {
         beforeEach(() => {
           const input = element.shadowRoot?.querySelector(
-            'oryx-cart-quantity-input'
+            'oryx-quantity-input'
           );
           input?.dispatchEvent(
             new CustomEvent<unknown>('update', {
@@ -152,7 +152,7 @@ describe('PickingProductCardComponent', () => {
       });
 
       it('should not render form quantity input', () => {
-        expect(element).not.toContainElement('oryx-cart-quantity-input');
+        expect(element).not.toContainElement('oryx-quantity-input');
       });
     });
   });
@@ -170,7 +170,7 @@ describe('PickingProductCardComponent', () => {
     });
 
     it('should not render quantity input', () => {
-      expect(element).not.toContainElement('oryx-cart-quantity-input');
+      expect(element).not.toContainElement('oryx-quantity-input');
     });
 
     it('should render summary info', () => {
@@ -206,7 +206,7 @@ describe('PickingProductCardComponent', () => {
     });
 
     it('should not render quantity input', () => {
-      expect(element).not.toContainElement('oryx-cart-quantity-input');
+      expect(element).not.toContainElement('oryx-quantity-input');
     });
 
     it('should render summary info', () => {

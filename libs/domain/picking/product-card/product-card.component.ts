@@ -86,13 +86,13 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
 
     const quantityForm = html`
       <form @submit=${this.onSubmit}>
-        <oryx-cart-quantity-input
+        <oryx-quantity-input
           ${ref(this.quantityInputRef)}
           min="0"
           .max="${this.productItem.quantity}"
           .value="${this.productItem.numberOfPicked}"
           @update=${this.onChangeQuantity}
-        ></oryx-cart-quantity-input>
+        ></oryx-quantity-input>
 
         <div>
           ${this.i18n('picking.product-card.of-<count>-items', {

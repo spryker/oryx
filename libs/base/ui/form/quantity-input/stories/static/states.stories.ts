@@ -15,14 +15,14 @@ export default {
 
 const Template: Story = (): TemplateResult => {
   const interval = setInterval(() => {
-    if (!customElements.get('oryx-cart-quantity-input')) {
+    if (!customElements.get('oryx-quantity-input')) {
       return;
     }
 
     clearInterval(interval);
 
     const elements: NodeListOf<QuantityInputComponent> =
-      document.querySelectorAll('oryx-cart-quantity-input');
+      document.querySelectorAll('oryx-quantity-input');
 
     elements.forEach((element) => {
       const state = (element as HTMLElement).dataset.state;
@@ -75,7 +75,7 @@ const Template: Story = (): TemplateResult => {
               []
             ) as any,
             ({ categoryY, options: { isDisabled, className } }) => html`
-              <oryx-cart-quantity-input
+              <oryx-quantity-input
                 data-selector=${getSelector(
                   categoryY as CategoryY,
                   isDisabled as boolean
@@ -85,7 +85,7 @@ const Template: Story = (): TemplateResult => {
                 min=${group.options.min}
                 max=${group.options.max}
                 value=${group.options.value}
-              ></oryx-cart-quantity-input>
+              ></oryx-quantity-input>
             `
           ),
         { title: group.title, addSeparator: index < groups.length - 1 }

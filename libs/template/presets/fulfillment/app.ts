@@ -1,5 +1,4 @@
 import { BapiAuthComponentsFeature, BapiAuthFeature } from '@spryker-oryx/auth';
-import { cartFeature } from '@spryker-oryx/cart';
 import { AppFeature, PageMetaResolver, coreFeature } from '@spryker-oryx/core';
 import { Resources, experienceFeature } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
@@ -25,7 +24,6 @@ export function fulfillmentFeatures(
 ): AppFeature[] {
   return [
     uiFeature,
-    cartFeature,
     coreFeature,
     siteFeature,
     formFeature,

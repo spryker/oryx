@@ -173,6 +173,9 @@
       "@spryker-oryx/presets/fulfillment": [
         "libs/template/presets/fulfillment/index.ts"
       ],
+      "@spryker-oryx/presets/fulfillment-sw": [
+        "libs/template/presets/fulfillment-sw/index.ts"
+      ],
       "@spryker-oryx/presets/storefront": [
         "libs/template/presets/storefront/index.ts"
       ],
@@ -323,6 +326,9 @@
       ],
       "@spryker-oryx/ui/password": ["libs/base/ui/form/password/index.ts"],
       "@spryker-oryx/ui/popover": ["libs/base/ui/overlays/popover/index.ts"],
+      "@spryker-oryx/ui/quantity-input": [
+        "libs/base/ui/form/quantity-input/index.ts"
+      ],
       "@spryker-oryx/ui/radio": ["libs/base/ui/form/radio/index.ts"],
       "@spryker-oryx/ui/rating": ["libs/base/ui/graphical/rating/index.ts"],
       "@spryker-oryx/ui/searchbox": ["libs/base/ui/search/searchbox/index.ts"],
