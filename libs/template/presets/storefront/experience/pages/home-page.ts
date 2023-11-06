@@ -80,7 +80,6 @@ export const homePage: ExperienceComponent = {
                 ? {
                     type: 'split',
                     bleed: true,
-                    sticky: false,
                   }
                 : 'split',
             align: 'end',
