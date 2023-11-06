@@ -23,7 +23,9 @@ export function generateMarkedHtml(
   // parts before the first mark
   if (indexes.length > 0 && indexes[0] > -1) {
     let i = indexes[0];
-    if (isNextDelimiter(content, i, filter, strategy.delimiters)) i++;
+    if (isNextDelimiter(content, i, filter, strategy.delimiters)) {
+      i++;
+    }
 
     value += `${content.substring(0, i)}`;
   }
@@ -33,8 +35,9 @@ export function generateMarkedHtml(
       let part = '';
 
       if (valueIndex !== undefined) {
-        if (isNextDelimiter(content, valueIndex, filter, strategy.delimiters))
+        if (isNextDelimiter(content, valueIndex, filter, strategy.delimiters)) {
           valueIndex++;
+        }
 
         part += `<mark>${content.substring(
           valueIndex,
@@ -42,11 +45,13 @@ export function generateMarkedHtml(
         )}</mark>`;
 
         let nextIndex = indexes[i + 1];
-        if (isNextDelimiter(content, nextIndex, filter, strategy.delimiters))
+        if (isNextDelimiter(content, nextIndex, filter, strategy.delimiters)) {
           nextIndex++;
+        }
 
-        if (nextIndex > -1)
+        if (nextIndex > -1) {
           part += content.substring(valueIndex + filter.length, nextIndex);
+        }
       }
       return part;
     })
@@ -55,8 +60,9 @@ export function generateMarkedHtml(
   let lastIndex = indexes[indexes.length - 1];
 
   if (lastIndex !== undefined) {
-    if (isNextDelimiter(content, lastIndex, filter, strategy.delimiters))
+    if (isNextDelimiter(content, lastIndex, filter, strategy.delimiters)) {
       lastIndex++;
+    }
 
     value += content.substring(lastIndex + filter.length);
   }

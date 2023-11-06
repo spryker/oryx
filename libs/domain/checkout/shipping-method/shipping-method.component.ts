@@ -30,7 +30,9 @@ export class CheckoutShippingMethodComponent
   protected form?: HTMLFormElement;
 
   isValid(report: boolean): boolean {
-    if (!this.form?.checkValidity() && report) this.form?.reportValidity();
+    if (!this.form?.checkValidity() && report) {
+      this.form?.reportValidity();
+    }
 
     return !!this.form?.checkValidity();
   }
@@ -47,7 +49,9 @@ export class CheckoutShippingMethodComponent
   };
 
   protected override render(): TemplateResult | void {
-    if (!this.$hasMethods()) return this.renderEmpty();
+    if (!this.$hasMethods()) {
+      return this.renderEmpty();
+    }
 
     const carriers = this.shipments()?.[0]?.carriers;
 
@@ -98,7 +102,9 @@ export class CheckoutShippingMethodComponent
    * If there's no method selected, a method can be auto selected.
    */
   protected isSelected(methodId: string): boolean {
-    if (!this.selected()) this.autoSelect(methodId);
+    if (!this.selected()) {
+      this.autoSelect(methodId);
+    }
     return this.selected()?.idShipmentMethod === methodId;
   }
 
@@ -110,8 +116,9 @@ export class CheckoutShippingMethodComponent
     if (
       methodId ===
       this.shipments()?.[0]?.carriers?.[0]?.shipmentMethods?.[0]?.id
-    )
+    ) {
       this.select(methodId);
+    }
   }
 
   protected select(id: string): void {

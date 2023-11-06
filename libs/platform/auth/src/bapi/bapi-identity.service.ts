@@ -37,13 +37,16 @@ export class BapiIdentityService implements IdentityService {
     try {
       const claims = getValidatedIdTokenClaims(token as TokenEndpointResponse);
 
-      if (!claims?.sub)
+      if (!claims?.sub) {
         throw new Error(`'sub' claim is not available in the token!`);
+      }
 
       const sub = JSON.parse(claims.sub) as BapiOauthTokenSubClaims;
       const userId = sub.id_user;
 
-      if (!userId) throw new Error(`'id_user' does not exist in 'sub' claim!`);
+      if (!userId) {
+        throw new Error(`'id_user' does not exist in 'sub' claim!`);
+      }
 
       return userId;
     } catch (e) {

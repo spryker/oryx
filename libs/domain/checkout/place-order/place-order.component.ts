@@ -13,7 +13,9 @@ export class CheckoutPlaceOrderComponent extends I18nMixin(
   protected router = resolve(RouterService);
 
   protected override render(): TemplateResult | void {
-    if (this.$isEmpty()) return;
+    if (this.$isEmpty()) {
+      return;
+    }
 
     return html`<oryx-button
       .text=${this.i18n('checkout.place-order')}
@@ -25,11 +27,15 @@ export class CheckoutPlaceOrderComponent extends I18nMixin(
 
   protected onClick(): void {
     this.checkoutService.placeOrder().subscribe((response) => {
-      if (response.redirectUrl) this.redirect(response.redirectUrl);
+      if (response.redirectUrl) {
+        this.redirect(response.redirectUrl);
+      }
     });
   }
 
   protected redirect(url: string): void {
-    if (url) this.router.navigate(url);
+    if (url) {
+      this.router.navigate(url);
+    }
   }
 }

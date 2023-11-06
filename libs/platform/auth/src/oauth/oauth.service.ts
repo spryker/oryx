@@ -93,8 +93,9 @@ export class OauthService implements AuthService, AuthTokenService {
             );
           }
 
-          if (this.config.defaultProvider)
+          if (this.config.defaultProvider) {
             return this.loginWith(this.config.defaultProvider);
+          }
 
           this.routerService.navigate(this.config.loginRoute);
 

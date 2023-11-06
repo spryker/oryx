@@ -55,12 +55,16 @@ export class UserAddressFormComponent
   protected $user = signal(this.userService.getUser());
   protected $addresses = signal(this.addressService.getList());
   protected $currentCountry = computed(() => {
-    if (this.country) return this.country;
+    if (this.country) {
+      return this.country;
+    }
     return this.$currentAddress()?.iso2Code ?? this.$countries()?.[0].iso2Code;
   });
   protected $formModel = computed(() => {
     const country = this.$currentCountry();
-    if (!country) return;
+    if (!country) {
+      return;
+    }
 
     return this.addressFormService.getForm({
       country,
@@ -98,14 +102,16 @@ export class UserAddressFormComponent
     if (
       this.enableDefaultBilling &&
       !addresses?.find((address) => address.isDefaultBilling)
-    )
+    ) {
       values.isDefaultBilling = true;
+    }
 
     if (
       this.enableDefaultShipping &&
       !addresses?.find((address) => address.isDefaultShipping)
-    )
+    ) {
       values.isDefaultShipping = true;
+    }
 
     values.firstName ??= firstName;
     values.lastName ??= lastName;
@@ -140,7 +146,9 @@ export class UserAddressFormComponent
   protected renderCountrySelector(): TemplateResult | void {
     const countries = this.$countries();
     const activeCountry = this.$currentCountry();
-    if (!countries?.length || countries?.length < 2) return;
+    if (!countries?.length || countries?.length < 2) {
+      return;
+    }
 
     return html`<oryx-select
       label="country"

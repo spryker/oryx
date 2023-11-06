@@ -50,7 +50,9 @@ export class SiteBreadcrumbComponent extends I18nMixin(
     breadcrumb: BreadcrumbItem,
     isLastItem: boolean
   ): TemplateResult {
-    if (isLastItem) return html`<span>${this.renderText(breadcrumb)}</span>`;
+    if (isLastItem) {
+      return html`<span>${this.renderText(breadcrumb)}</span>`;
+    }
 
     return html`<a href="${ifDefined(breadcrumb.url)}">
       ${this.renderText(breadcrumb)}

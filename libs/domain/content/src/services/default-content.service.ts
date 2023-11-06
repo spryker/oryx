@@ -107,20 +107,26 @@ export class DefaultContentService implements ContentService {
   }
 
   protected getAdapters(qualifier: ContentQualifier): ContentAdapter[] {
-    if (!qualifier.entities || !this.config.length) return this.adapters;
+    if (!qualifier.entities || !this.config.length) {
+      return this.adapters;
+    }
 
     return qualifier.entities.reduce((adapters: ContentAdapter[], entity) => {
       for (const [key, data] of Object.entries(this.contents)) {
         const isAdapter = data.includes(entity);
 
-        if (!isAdapter) continue;
+        if (!isAdapter) {
+          continue;
+        }
 
         const adapter = this.injector.inject<ContentAdapter | null>(
           `${ContentAdapter}${key}`,
           null
         );
 
-        if (adapter && !adapters.includes(adapter)) adapters.push(adapter);
+        if (adapter && !adapters.includes(adapter)) {
+          adapters.push(adapter);
+        }
       }
 
       return adapters;

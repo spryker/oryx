@@ -18,8 +18,9 @@ export class WarehouseUserAssignmentsDefaultService
     protected authService = inject(AuthService)
   ) {
     authService.isAuthenticated().subscribe((isAuthenticated) => {
-      if (!isAuthenticated)
+      if (!isAuthenticated) {
         this.storageService.remove(warehouseUserAssignmentStorageKey);
+      }
     });
   }
 

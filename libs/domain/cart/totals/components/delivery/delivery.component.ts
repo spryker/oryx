@@ -21,15 +21,18 @@ export class CartTotalsDeliveryComponent extends I18nMixin(LitElement) {
         <span>${this.i18n('cart.totals.delivery')}</span>
         ${this.renderPrice(shipmentTotal, currency)}
       `;
-    } else return this.renderUnknownMessage();
+    } else {
+      return this.renderUnknownMessage();
+    }
   }
 
   protected renderPrice(
     value: number,
     currency: string | undefined
   ): TemplateResult {
-    if (value === 0)
+    if (value === 0) {
       return html`<span class="free">${this.i18n('cart.totals.free')}</span>`;
+    }
 
     return html`<oryx-site-price
       .value=${value}

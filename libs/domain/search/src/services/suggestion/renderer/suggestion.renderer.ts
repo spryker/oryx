@@ -46,7 +46,9 @@ export const productSuggestionRenderer: SuggestionRenderer<Product[]> = (
 export const defaultSuggestionRenderer: SuggestionRenderer<
   SuggestionResource[]
 > = (suggestion, params) => {
-  if (!suggestion?.length) return;
+  if (!suggestion?.length) {
+    return;
+  }
 
   const { title, icon, max } = params;
 

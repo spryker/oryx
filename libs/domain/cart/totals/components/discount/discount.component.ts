@@ -24,12 +24,15 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
   protected override render(): TemplateResult | void {
     const { discountTotal, discounts, currency } = this.$totals() ?? {};
 
-    if (!discountTotal) return;
+    if (!discountTotal) {
+      return;
+    }
 
     const { discountRowsAppearance } = this.$options();
 
-    if (discountRowsAppearance === DiscountRowsAppearance.None)
+    if (discountRowsAppearance === DiscountRowsAppearance.None) {
       return this.renderHeading();
+    }
 
     if (discountRowsAppearance === DiscountRowsAppearance.Inline) {
       return html`${this.renderHeading()}${this.renderDiscounts(
@@ -62,7 +65,9 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
     discounts?: CartDiscount[],
     currency?: string
   ): TemplateResult | void {
-    if (!discounts?.length) return;
+    if (!discounts?.length) {
+      return;
+    }
     return html`<ul>
       ${discounts.map(
         ({ displayName, amount }) =>
@@ -79,7 +84,9 @@ export class CartTotalsDiscountComponent extends ContentMixin<CartTotalsDiscount
 
   protected renderCollapsible(): TemplateResult | void {
     const { discountTotal, discounts, currency } = this.$totals() ?? {};
-    if (!discountTotal || !discounts?.length) return;
+    if (!discountTotal || !discounts?.length) {
+      return;
+    }
     return html`<oryx-collapsible
       appearance="${CollapsibleAppearance.Inline}"
       ?open=${this.$options().discountRowsAppearance !==

@@ -74,18 +74,23 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
                 );
               }
 
-              if (andCollections.length === 0)
+              if (andCollections.length === 0) {
                 andCollections.push(pickingListStore.toCollection());
+              }
 
               const andGroups = await Promise.all(
                 andCollections.map((collection) => {
-                  if (qualifier.offset)
+                  if (qualifier.offset) {
                     collection = collection.offset(qualifier.offset);
+                  }
 
-                  if (qualifier.limit)
+                  if (qualifier.limit) {
                     collection = collection.limit(qualifier.limit);
+                  }
 
-                  if (qualifier.sortDesc) collection = collection.reverse();
+                  if (qualifier.sortDesc) {
+                    collection = collection.reverse();
+                  }
 
                   if (qualifier.sortBy) {
                     return collection.sortBy(
@@ -100,7 +105,9 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
               let data = intersectArrays((item) => item.id, ...andGroups);
 
               // Drop any excess data after merging groups
-              if (qualifier.limit) data = data.slice(0, qualifier.limit);
+              if (qualifier.limit) {
+                data = data.slice(0, qualifier.limit);
+              }
 
               return await this.deserializePickingLists(data, productStore);
             }

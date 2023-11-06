@@ -34,7 +34,9 @@ export class CheckoutBillingAddressComponent
   @elementEffect()
   protected autoSelect = (): void => {
     const addresses = this.$addresses();
-    if (!addresses?.length) return;
+    if (!addresses?.length) {
+      return;
+    }
     const selected = this.$selected();
 
     if (!selected || !addresses.find((address) => selected.id === address.id)) {
@@ -62,7 +64,9 @@ export class CheckoutBillingAddressComponent
   protected checkoutAddress?: CheckoutAddressComponent;
 
   protected override render(): TemplateResult | void {
-    if (this.$addresses() === undefined) return;
+    if (this.$addresses() === undefined) {
+      return;
+    }
     return html`${this.renderHeading()}${this.renderBody()}`;
   }
 
@@ -114,8 +118,9 @@ export class CheckoutBillingAddressComponent
     if (
       e.detail?.address &&
       (!this.$isSameAsShippingAddress() || this.$addresses()?.length)
-    )
+    ) {
       this.persist(e.detail.address, e.detail.valid);
+    }
   }
 
   protected persist(value: Address, valid?: boolean): void {

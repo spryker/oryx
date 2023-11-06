@@ -65,8 +65,11 @@ describe('SearchRatingFacetComponent', () => {
         expect(rating.getAttribute('value')).toBe(String(value));
         expect(rating.getAttribute('scale')).toBe(String(scale));
 
-        if (hasText) expect(container).toContainElement('span');
-        else expect(container).not.toContainElement('span');
+        if (hasText) {
+          expect(container).toContainElement('span');
+        } else {
+          expect(container).not.toContainElement('span');
+        }
       });
   };
 

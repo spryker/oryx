@@ -67,12 +67,15 @@ const standardCustomElement = (
 };
 
 function optionsToAttribute(options?: HydratableOptions): string {
-  if (!options) return '';
+  if (!options) {
+    return '';
+  }
 
   const attributes: string[] = [];
 
-  if (options.event)
+  if (options.event) {
     attributes.push(...([] as string[]).concat(options.event ?? []));
+  }
 
   if (options.context) {
     attributes.push(
@@ -107,9 +110,11 @@ function hydratableClass<T extends Type<HTMLElement>>(
     constructor(...args: any[]) {
       super(...args);
 
-      if (isServer)
+      if (isServer) {
         this.setAttribute(hydratableAttribute, optionsToAttribute(options));
-      else if (this.shadowRoot) this[DEFER_HYDRATION] = 3;
+      } else if (this.shadowRoot) {
+        this[DEFER_HYDRATION] = 3;
+      }
     }
 
     willUpdate(_changedProperties: PropertyValues): void {
@@ -119,25 +124,33 @@ function hydratableClass<T extends Type<HTMLElement>>(
         this[SIGNAL_EFFECT] = effect(() => {
           const result = super.render();
           const digest = digestForTemplateValues(result);
-          if (digest) this.setAttribute(hydrationValuesAttribute, digest);
+          if (digest) {
+            this.setAttribute(hydrationValuesAttribute, digest);
+          }
         });
       }
     }
 
     connectedCallback() {
-      if (this[DEFER_HYDRATION]) return;
+      if (this[DEFER_HYDRATION]) {
+        return;
+      }
       super.connectedCallback();
     }
 
     update(changedProperties: PropertyValues) {
-      if (this[DEFER_HYDRATION] && this[DEFER_HYDRATION] > 1) return;
+      if (this[DEFER_HYDRATION] && this[DEFER_HYDRATION] > 1) {
+        return;
+      }
       // special case for hydration
       if (this[DEFER_HYDRATION] === 1) {
         // delete this[DEFER_HYDRATION];
         // This is part of the workaround for hydration mismatch, we would not need this property otherwise
         this[DEFER_HYDRATION] = 0;
 
-        if (HYDRATION_DEBUG) this['__hydration-status'] = 'blue';
+        if (HYDRATION_DEBUG) {
+          this['__hydration-status'] = 'blue';
+        }
 
         try {
           super.update(changedProperties);
@@ -145,13 +158,17 @@ function hydratableClass<T extends Type<HTMLElement>>(
           // catch hydration error and recover by clearing and re-rendering
           // may become obsolete in future versions of lit
 
-          if (HYDRATION_DEBUG) this['__hydration-status'] = 'red';
+          if (HYDRATION_DEBUG) {
+            this['__hydration-status'] = 'red';
+          }
 
           this.renderRoot.innerHTML =
             this.renderRoot.innerHTML.split('<!--lit-part ')[0];
           render(this.render(), this.renderRoot, this.renderOptions);
         }
-      } else super.update(changedProperties);
+      } else {
+        super.update(changedProperties);
+      }
 
       setTimeout(() => {
         repeatHydrationEvents(this.shadowRoot, this[EVENTS]);
@@ -160,7 +177,9 @@ function hydratableClass<T extends Type<HTMLElement>>(
     }
 
     async [HYDRATE_ON_DEMAND]() {
-      if (this[DEFER_HYDRATION] !== 3) return;
+      if (this[DEFER_HYDRATION] !== 3) {
+        return;
+      }
 
       this.removeAttribute(hydratableAttribute);
 
@@ -202,7 +221,9 @@ function hydratableClass<T extends Type<HTMLElement>>(
         if (digestFromAttribute) {
           const digest = digestForTemplateValues(result);
           // Returning undefined will be catched by lit as template mismatch
-          if (digest !== digestFromAttribute) return;
+          if (digest !== digestFromAttribute) {
+            return;
+          }
         }
       }
 

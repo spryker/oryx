@@ -52,7 +52,9 @@ export class SelectComponent
    */
   setValue(value: string): void {
     const control = getControl(this);
-    if (control.value === value) return;
+    if (control.value === value) {
+      return;
+    }
 
     control.value = value;
     control.dispatchEvent(

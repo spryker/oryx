@@ -168,7 +168,9 @@ export class MockCartAdapter implements Partial<CartAdapter> {
   protected findCart(id: string): Cart {
     const cart = this.carts.find((item) => item.id === id);
 
-    if (!cart) throw new Error(`Cart with id ${id} is not exist`);
+    if (!cart) {
+      throw new Error(`Cart with id ${id} is not exist`);
+    }
 
     return cart;
   }

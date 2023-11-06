@@ -16,12 +16,15 @@ export class PreviewPlugin implements AppPlugin, AppPluginBeforeApply {
   beforeApply(): void {
     const root = rootInjectable.get();
 
-    if (!isServer && root === 'body') return;
+    if (!isServer && root === 'body') {
+      return;
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const rootElement = document.querySelector(root)!;
 
-    if (!isServer && rootElement.shadowRoot)
+    if (!isServer && rootElement.shadowRoot) {
       rootElement.outerHTML = `<${root}></${root}>`;
+    }
   }
 }

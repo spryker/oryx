@@ -58,6 +58,8 @@ export class NDSDrawerComponent extends DrawerComponent {
   }
 
   protected handleClick(e: MouseEvent): void {
-    if (e.target === this.closeButtonElement) this.close();
+    if (e.target === this.closeButtonElement) {
+      this.close();
+    }
   }
 }

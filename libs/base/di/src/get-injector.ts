@@ -19,9 +19,9 @@ const REGISTRY_KEY = '_oryxInjectorsRegistry';
 
 function getRegistry(): Map<InjectorContext, Injector> {
   if (!_injectorsRegistry) {
-    if ((globalThis as any)[REGISTRY_KEY])
+    if ((globalThis as any)[REGISTRY_KEY]) {
       _injectorsRegistry = (globalThis as any)[REGISTRY_KEY];
-    else {
+    } else {
       _injectorsRegistry = new Map<InjectorContext, Injector>();
       (globalThis as any)[REGISTRY_KEY] = _injectorsRegistry;
     }
@@ -69,7 +69,9 @@ export function getInjector(
 export function createInjector(options: InjectorOptions): Injector {
   const isAppInjector = (context?: InjectorContext): boolean => {
     if (context === InjectorContextKey.App) {
-      if (!_theAppContext) _theAppContext = Symbol();
+      if (!_theAppContext) {
+        _theAppContext = Symbol();
+      }
 
       return true;
     }
@@ -112,10 +114,14 @@ export function destroyInjector(context: InjectorContext = ''): void {
 
   const registry = getRegistry();
 
-  if (!registry.has(context)) return;
+  if (!registry.has(context)) {
+    return;
+  }
 
   registry.get(context)?.destroy();
   registry.delete(context);
 
-  if (context === InjectorContextKey.App) _theAppContext = undefined;
+  if (context === InjectorContextKey.App) {
+    _theAppContext = undefined;
+  }
 }

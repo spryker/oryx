@@ -68,9 +68,13 @@ export const AddressMixin = <T extends Type<LitElement>>(
     });
 
     protected $address = computed(() => {
-      if (this.address) return this.address;
+      if (this.address) {
+        return this.address;
+      }
       const addressId = this.$addressId();
-      if (addressId) return this.addressService.get(addressId);
+      if (addressId) {
+        return this.addressService.get(addressId);
+      }
 
       return null;
     });

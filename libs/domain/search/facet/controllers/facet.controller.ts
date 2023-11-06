@@ -64,7 +64,9 @@ export class FacetController implements ReactiveController {
         showAll ? Infinity : renderLimit
       );
       return limitedValues;
-    } else if (facet?.type === FacetType.Range) return facet;
+    } else if (facet?.type === FacetType.Range) {
+      return facet;
+    }
 
     return null;
   });
@@ -72,7 +74,9 @@ export class FacetController implements ReactiveController {
   protected selectedValues = computed(() => {
     const facet = this.$facet();
 
-    if (!facet) return [];
+    if (!facet) {
+      return [];
+    }
 
     if (facet.type === FacetType.Range) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -124,8 +128,9 @@ export class FacetController implements ReactiveController {
     facet: SingleMultiFacet,
     searchedValue: string
   ): SingleMultiFacet {
-    if (!searchedValue || !facet?.values?.length)
+    if (!searchedValue || !facet?.values?.length) {
       return facet as SingleMultiFacet;
+    }
 
     let filteredValueLength = 0;
 
@@ -168,7 +173,9 @@ export class FacetController implements ReactiveController {
     facet: SingleMultiFacet,
     renderLimit = Infinity
   ): SingleMultiFacet {
-    if (!renderLimit || facet.values.length < renderLimit) return facet;
+    if (!renderLimit || facet.values.length < renderLimit) {
+      return facet;
+    }
 
     return {
       ...facet,

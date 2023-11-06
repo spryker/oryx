@@ -18,21 +18,30 @@ export class DefaultHttpService implements HttpService {
   request<T = unknown>(url: string, options: RequestOptions<T> = {}): any {
     const req = new Request(url, options);
 
-    if (!req.headers.has('Content-Type'))
+    if (!req.headers.has('Content-Type')) {
       req.headers.set('Content-Type', 'application/json');
+    }
 
     return this.handler.handle(req).pipe(
       switchMap((response) => {
-        if (options.parser) return options.parser(response);
+        if (options.parser) {
+          return options.parser(response);
+        }
 
         const contentType = response.headers.get('content-type') ?? '';
         let body;
 
-        if (jsonRegex.test(contentType)) body = response.json();
+        if (jsonRegex.test(contentType)) {
+          body = response.json();
+        }
 
-        if (htmlRegex.test(contentType)) body = response.text();
+        if (htmlRegex.test(contentType)) {
+          body = response.text();
+        }
 
-        if (!response.ok) return this.throwError(response, body);
+        if (!response.ok) {
+          return this.throwError(response, body);
+        }
 
         return body ?? of(null);
       })
@@ -93,7 +102,9 @@ export class DefaultHttpService implements HttpService {
           ] = response[field];
         }
 
-        if (responseBody) error.body = responseBody;
+        if (responseBody) {
+          error.body = responseBody;
+        }
 
         throw error;
       })

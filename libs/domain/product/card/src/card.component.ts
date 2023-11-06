@@ -50,25 +50,34 @@ export class ProductCardComponent extends ProductMixin(
   @elementEffect()
   protected skuController = (): void => {
     const sku = this.$options().sku;
-    if (sku !== undefined)
+    if (sku !== undefined) {
       this.contextController.provide(ProductContext.SKU, sku);
+    }
   };
 
   @elementEffect()
   protected setProductContext = (): void => {
-    if (this.sku) this.contextController.provide(ProductContext.SKU, this.sku);
+    if (this.sku) {
+      this.contextController.provide(ProductContext.SKU, this.sku);
+    }
   };
 
   protected override render(): TemplateResult | void {
     const { template } = this.$options();
 
-    if (template === 'grid') return this.renderGridItem();
-    if (template === 'list') return this.renderListItem();
+    if (template === 'grid') {
+      return this.renderGridItem();
+    }
+    if (template === 'list') {
+      return this.renderListItem();
+    }
   }
 
   protected renderGridItem(): TemplateResult | void {
     const product = this.$product();
-    if (!product) return;
+    if (!product) {
+      return;
+    }
     return html`<a href=${this.$link()} aria-label=${product?.name}>
       ${[this.renderLabels(), this.renderMedia()]}
       <div class="details">
@@ -106,8 +115,9 @@ export class ProductCardComponent extends ProductMixin(
   }
 
   protected renderLabels(): TemplateResult | void {
-    if (this.$options().enableLabels)
+    if (this.$options().enableLabels) {
       return html`<oryx-product-labels></oryx-product-labels>`;
+    }
   }
 
   // TODO: move to wishlist component
@@ -162,7 +172,9 @@ export class ProductCardComponent extends ProductMixin(
 
   protected renderAddToCart(): TemplateResult | void {
     const { enableAddToCart, template } = this.$options();
-    if (!enableAddToCart) return;
+    if (!enableAddToCart) {
+      return;
+    }
 
     return html`<oryx-cart-add
       tabindex="-1"

@@ -11,8 +11,9 @@ export const queryAssignedElements = (
     host.renderRoot ?? host.shadowRoot
   )?.querySelector<HTMLSlotElement>(slotSelector);
   const elements = slotEl?.assignedElements(options);
-  if (selector && elements)
+  if (selector && elements) {
     return elements.filter((node) => node.matches(selector));
+  }
 
   return elements ?? [];
 };
@@ -45,7 +46,9 @@ export const isFocusable = (element: Element): boolean => {
     .filter((attr) => focusableSelectors.includes(`[${attr.name}]`))
     .map((attr) => attr.value);
 
-  if (elementAttrsValue.length) return !elementAttrsValue.includes('false');
+  if (elementAttrsValue.length) {
+    return !elementAttrsValue.includes('false');
+  }
 
   return focusableSelectors.includes(element.tagName.toLowerCase());
 };

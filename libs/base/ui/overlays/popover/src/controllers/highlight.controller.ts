@@ -62,13 +62,19 @@ export class HighlightController implements ReactiveController {
   protected handleKeydown(e: KeyboardEvent): void {
     switch (e.key) {
       case 'ArrowUp':
-        if (e.metaKey) this.move(e, -10, 0);
-        else this.move(e, -1, this.items.length - 1);
+        if (e.metaKey) {
+          this.move(e, -10, 0);
+        } else {
+          this.move(e, -1, this.items.length - 1);
+        }
 
         break;
       case 'ArrowDown':
-        if (e.metaKey) this.move(e, 10, this.items.length - 1);
-        else this.move(e, 1, 0);
+        if (e.metaKey) {
+          this.move(e, 10, this.items.length - 1);
+        } else {
+          this.move(e, 1, 0);
+        }
 
         break;
       case 'PageUp':
@@ -89,14 +95,21 @@ export class HighlightController implements ReactiveController {
   protected move(e: KeyboardEvent, moveBy?: number, fallback = 0): void {
     e.preventDefault();
 
-    if (this.highlight === OUT_OF_INDEX) this.highlight = this.selected;
+    if (this.highlight === OUT_OF_INDEX) {
+      this.highlight = this.selected;
+    }
 
     let highlight = this.highlight;
 
-    if (moveBy) highlight = this.highlight + moveBy;
-    else highlight = fallback;
+    if (moveBy) {
+      highlight = this.highlight + moveBy;
+    } else {
+      highlight = fallback;
+    }
 
-    if (highlight < 0 || highlight >= this.items.length) highlight = fallback;
+    if (highlight < 0 || highlight >= this.items.length) {
+      highlight = fallback;
+    }
 
     this.highlight = highlight;
   }

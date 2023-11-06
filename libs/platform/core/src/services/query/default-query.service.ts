@@ -31,7 +31,9 @@ export class DefaultQueryService
     Qualifier extends object | undefined = undefined
   >(id: string): Query<ValueType, Qualifier> | undefined {
     const query = super.getQuery<ValueType, Qualifier>(id);
-    if (query) return query;
+    if (query) {
+      return query;
+    }
 
     const providedQuery = this.injector.inject(`${QUERY_TOKEN}${id}`, null);
     if (providedQuery) {
@@ -47,7 +49,9 @@ export class DefaultQueryService
     Qualifier extends object | undefined = undefined
   >(id: string): Command<ResultType, Qualifier> | undefined {
     const command = super.getCommand<ResultType, Qualifier>(id);
-    if (command) return command;
+    if (command) {
+      return command;
+    }
 
     const providedCommand = this.injector.inject(`${COMMAND_TOKEN}${id}`, null);
     if (providedCommand) {

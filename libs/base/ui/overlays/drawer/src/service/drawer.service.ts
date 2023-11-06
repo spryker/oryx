@@ -14,8 +14,9 @@ export class DrawerService extends OverlayService<DrawerComponent> {
   }: DrawerServiceToggleOptions): DrawerComponent {
     const element = super.getParent(parent).querySelector(selector);
 
-    if (!(element instanceof DrawerComponent))
+    if (!(element instanceof DrawerComponent)) {
       throw new Error('Drawer element not found');
+    }
 
     return element;
   }
@@ -28,7 +29,9 @@ export class DrawerService extends OverlayService<DrawerComponent> {
   }: DrawerServiceToggleOptions): void {
     const element = this.get({ selector, parent });
 
-    if (closeOtherDrawers) this.findAndCloseOtherDrawers(element);
+    if (closeOtherDrawers) {
+      this.findAndCloseOtherDrawers(element);
+    }
 
     element?.dialog?.[force ?? !element?.dialog?.open ? 'show' : 'close']?.();
   }
@@ -38,7 +41,9 @@ export class DrawerService extends OverlayService<DrawerComponent> {
       document.querySelectorAll(TAG_NAME);
 
     otherDrawers.forEach((drawer: DrawerComponent): void => {
-      if (drawer !== current && drawer.dialog?.open) drawer.dialog?.close();
+      if (drawer !== current && drawer.dialog?.open) {
+        drawer.dialog?.close();
+      }
     });
   }
 }

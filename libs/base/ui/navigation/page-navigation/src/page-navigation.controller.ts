@@ -24,7 +24,9 @@ export class PageNavigationController implements ReactiveController {
   protected sectionsContainerSelector!: string;
 
   hostConnected(): void {
-    if (!this.host.disableNavigation) this.setNavigationItemsListeners();
+    if (!this.host.disableNavigation) {
+      this.setNavigationItemsListeners();
+    }
 
     this.disableNavigation = this.host.disableNavigation;
 
@@ -33,8 +35,11 @@ export class PageNavigationController implements ReactiveController {
 
   hostUpdated(): void {
     if (this.disableNavigation !== this.host.disableNavigation) {
-      if (!this.host.disableNavigation) this.setNavigationItemsListeners();
-      else this.removeNavigationItemsListeners();
+      if (!this.host.disableNavigation) {
+        this.setNavigationItemsListeners();
+      } else {
+        this.removeNavigationItemsListeners();
+      }
 
       this.disableNavigation = this.host.disableNavigation;
     }
@@ -52,16 +57,18 @@ export class PageNavigationController implements ReactiveController {
 
   hostDisconnected(): void {
     const sectionsContainer = this.getSectionsContainer();
-    if (sectionsContainer)
+    if (sectionsContainer) {
       sectionsContainer.removeEventListener('scroll', this.onScroll);
+    }
 
     this.removeNavigationItemsListeners();
   }
 
   protected setScrollListener(): void {
     const sectionsContainer = this.getSectionsContainer();
-    if (sectionsContainer)
+    if (sectionsContainer) {
       sectionsContainer.addEventListener('scroll', this.onScroll);
+    }
   }
 
   protected setNavigationItemsListeners(): void {
@@ -79,7 +86,9 @@ export class PageNavigationController implements ReactiveController {
   }
 
   protected onKeydown(e: KeyboardEvent): void {
-    if (e.key === 'Enter') this.onNavigationItemActivated(e);
+    if (e.key === 'Enter') {
+      this.onNavigationItemActivated(e);
+    }
   }
 
   protected onClick(e: MouseEvent): void {
@@ -90,12 +99,16 @@ export class PageNavigationController implements ReactiveController {
     const targetId = (e.target as HTMLElement)
       .closest('oryx-page-navigation-item')
       ?.getAttribute('targetId');
-    if (targetId) document.getElementById(targetId)?.scrollIntoView();
+    if (targetId) {
+      document.getElementById(targetId)?.scrollIntoView();
+    }
   }
 
   protected getVisibleSections(): VisibleSection[] {
     const sectionsContainer = this.getSectionsContainer();
-    if (!sectionsContainer) return [];
+    if (!sectionsContainer) {
+      return [];
+    }
 
     const sections: HTMLElement[] = this.getSections(this.navItems);
     const { clientHeight: viewportHeight, scrollTop } = sectionsContainer;
@@ -113,10 +126,11 @@ export class PageNavigationController implements ReactiveController {
 
         let visibilityPercentage = 100;
 
-        if (hiddenBefore > 0)
+        if (hiddenBefore > 0) {
           visibilityPercentage -= (hiddenBefore * 100) / elHeight;
-        else if (hiddenAfter > 0)
+        } else if (hiddenAfter > 0) {
           visibilityPercentage -= (hiddenAfter * 100) / elHeight;
+        }
 
         acc.push({ id: section.id, percent: visibilityPercentage });
       }
@@ -129,8 +143,9 @@ export class PageNavigationController implements ReactiveController {
     let mostVisibleSection = sections[0];
 
     for (let i = 1; i < sections.length; i++) {
-      if (sections[i].percent > mostVisibleSection.percent)
+      if (sections[i].percent > mostVisibleSection.percent) {
         mostVisibleSection = sections[i];
+      }
     }
 
     return mostVisibleSection;
@@ -147,7 +162,9 @@ export class PageNavigationController implements ReactiveController {
 
   protected detectActiveSection(): void {
     const activeSections = this.getVisibleSections();
-    if (!activeSections.length) return;
+    if (!activeSections.length) {
+      return;
+    }
 
     const mostVisibleSection = this.getMostVisibleSection(activeSections);
 

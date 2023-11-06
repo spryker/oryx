@@ -37,13 +37,17 @@ export class DefaultSSRStreamParserService implements SSRStreamParserService {
     for (let i = 0; i < stream.length; i++) {
       const streamEl = stream[i].slice(0, stream[i].lastIndexOf('>') + 1);
 
-      if (!streamEl.endsWith('>') || streamEl.startsWith('?')) continue;
+      if (!streamEl.endsWith('>') || streamEl.startsWith('?')) {
+        continue;
+      }
 
       const tagData = streamEl.slice(0, -1);
       const tagDataArr = tagData.split(' ');
       const tagName = tagDataArr[0];
 
-      if (this.excluded[tagName]) continue;
+      if (this.excluded[tagName]) {
+        continue;
+      }
 
       const dataAttributes: Record<string, string> = {};
 

@@ -81,8 +81,9 @@ describe('Core Command', () => {
         rxjsTestScheduler().run(({ cold, expectObservable }) => {
           const command = createCommand({
             action: (qualifier) => {
-              if (qualifier === '1')
+              if (qualifier === '1') {
                 return throwError(() => new Error('testError'));
+              }
 
               return cold('----a|', { a: 'test2' });
             },

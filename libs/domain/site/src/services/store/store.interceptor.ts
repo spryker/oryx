@@ -38,13 +38,17 @@ export class StoreInterceptor implements HttpInterceptor {
   }
 
   shouldInterceptRequest({ url }: Request): boolean {
-    if (!this.SCOS_BASE_URL || !url.startsWith(this.SCOS_BASE_URL))
+    if (!this.SCOS_BASE_URL || !url.startsWith(this.SCOS_BASE_URL)) {
       return false;
+    }
 
     const path = url.substring(this.SCOS_BASE_URL.length);
 
-    for (const endpoint of this.excludedEndpoints)
-      if (path.startsWith(`/${endpoint}`)) return false;
+    for (const endpoint of this.excludedEndpoints) {
+      if (path.startsWith(`/${endpoint}`)) {
+        return false;
+      }
+    }
 
     return true;
   }

@@ -6,7 +6,9 @@ export class OrderHeadingComponent extends OrderMixin(
   ContentMixin(LitElement)
 ) {
   protected override render(): TemplateResult | void {
-    if (!this.$order()) return;
+    if (!this.$order()) {
+      return;
+    }
 
     return html`<oryx-heading tag="h3" as="h6">
       ${this.i18n('order.<count>-items', {

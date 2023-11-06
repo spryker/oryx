@@ -32,8 +32,9 @@ export function signal<T>(
   value: T | Observable<T>,
   options?: SignalOptions<T> | ConnectableSignalOptions<T, undefined>
 ): SettableSignal<T> | ConnectableSignal<T | any> {
-  if (isObservable(value))
+  if (isObservable(value)) {
     return signalFrom(value, options as ConnectableSignalOptions<T, undefined>);
+  }
 
   return createSignal(value, options as SignalOptions<T>);
 }
@@ -64,7 +65,9 @@ export function computed<T>(
     if (isObservable(value)) {
       if (value !== last) {
         let previousValue = undefined;
-        if (isObservable(last)) previousValue = observableSignal!();
+        if (isObservable(last)) {
+          previousValue = observableSignal!();
+        }
 
         last = value;
         observableSignal = signalFrom(value as Observable<T>, {

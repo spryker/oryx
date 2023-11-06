@@ -38,8 +38,9 @@ export class RootPlugin
   }
 
   apply(): void {
-    if (!document.querySelector(rootInjectable.get())?.shadowRoot)
+    if (!document.querySelector(rootInjectable.get())?.shadowRoot) {
       resolve(RouterService).go(window.location.pathname);
+    }
   }
 
   afterApply(): void {

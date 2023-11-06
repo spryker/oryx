@@ -35,7 +35,9 @@ export class UserAddressRemoveComponent extends I18nMixin(
   }
 
   protected renderRemoveConfirmationModal(): TemplateResult | void {
-    if (!this.requestsConfirmation) return;
+    if (!this.requestsConfirmation) {
+      return;
+    }
 
     return html`<oryx-modal
       open

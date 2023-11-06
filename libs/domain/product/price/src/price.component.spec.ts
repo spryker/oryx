@@ -36,7 +36,9 @@ const mockEurGross = {
 
 class MockPricingService implements Partial<PricingService> {
   format(price: ProductPrice) {
-    if (!price) return of(null);
+    if (!price) {
+      return of(null);
+    }
     return of(`${price.currency} ${price.value}`);
   }
 }

@@ -16,7 +16,9 @@ export class AffixController implements ReactiveController {
         content = html`<oryx-icon .type="${icon}"></oryx-icon>`;
         this.host.setAttribute('has-prefix', '');
       }
-    } else this.host.setAttribute('has-prefix', '');
+    } else {
+      this.host.setAttribute('has-prefix', '');
+    }
 
     return this.renderContent('prefix', content);
   }
@@ -24,8 +26,9 @@ export class AffixController implements ReactiveController {
   renderSuffix(content?: TemplateResult): TemplateResult {
     let iconContent;
     const icon = this.host.suffixIcon;
-    if (this.hasContent('suffix', icon))
+    if (this.hasContent('suffix', icon)) {
       iconContent = html`<oryx-icon .type="${icon}"></oryx-icon>`;
+    }
 
     return this.renderContent('suffix', html`${content}${iconContent}`);
   }

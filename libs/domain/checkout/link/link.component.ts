@@ -19,7 +19,9 @@ export class CheckoutLinkComponent extends I18nMixin(
   );
 
   protected override render(): TemplateResult | void {
-    if (this.$isEmpty()) return;
+    if (this.$isEmpty()) {
+      return;
+    }
 
     return html`
       <oryx-button

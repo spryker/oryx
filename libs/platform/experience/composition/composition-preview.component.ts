@@ -36,7 +36,9 @@ export class CompositionPreviewComponent extends CompositionComponent {
     const actions = ['mouseover', 'click', 'mouseout', 'add'];
     const interaction = this.$interaction();
 
-    if (!actions.includes(interaction?.action)) return;
+    if (!actions.includes(interaction?.action)) {
+      return;
+    }
 
     const focusedNameAttr = 'name';
     const targetComponent = this.shadowRoot?.querySelector(
@@ -46,8 +48,9 @@ export class CompositionPreviewComponent extends CompositionComponent {
     if (
       targetComponent &&
       getComputedStyle(targetComponent).display === 'inline'
-    )
+    ) {
       (targetComponent as HTMLElement)?.style.setProperty('display', 'block');
+    }
 
     this.focusedComponent?.classList.remove(EB_PREVIEW_FOCUS_CLASS);
     this.focusedComponent?.removeAttribute(focusedNameAttr);

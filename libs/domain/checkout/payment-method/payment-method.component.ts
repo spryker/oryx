@@ -20,7 +20,9 @@ export class CheckoutPaymentMethodComponent
   protected form?: HTMLFormElement;
 
   isValid(report: boolean): boolean {
-    if (!this.form?.checkValidity() && report) this.form?.reportValidity();
+    if (!this.form?.checkValidity() && report) {
+      this.form?.reportValidity();
+    }
 
     return !!this.form?.checkValidity();
   }
@@ -28,7 +30,9 @@ export class CheckoutPaymentMethodComponent
   protected override render(): TemplateResult | void {
     const methods = this.paymentMethods();
 
-    if (!methods?.length) return this.renderEmpty();
+    if (!methods?.length) {
+      return this.renderEmpty();
+    }
 
     return html`<oryx-checkout-header>
         <h2>${this.i18n('checkout.payment-methods')}</h2>
@@ -63,7 +67,9 @@ export class CheckoutPaymentMethodComponent
    * If there's no method selected, a method can be auto selected.
    */
   protected isSelected(methodId: string): boolean {
-    if (!this.selected()) this.autoSelect(methodId);
+    if (!this.selected()) {
+      this.autoSelect(methodId);
+    }
     return this.selected()?.[0]?.id === methodId;
   }
 
@@ -73,7 +79,9 @@ export class CheckoutPaymentMethodComponent
   }
 
   protected autoSelect(methodId: string): void {
-    if (methodId === this.paymentMethods()?.[0]?.id) this.select(methodId);
+    if (methodId === this.paymentMethods()?.[0]?.id) {
+      this.select(methodId);
+    }
   }
 
   protected select(id: string): void {

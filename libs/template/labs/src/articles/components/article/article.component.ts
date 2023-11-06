@@ -37,7 +37,9 @@ export class ArticleComponent extends LitElement {
   protected override render(): TemplateResult | void {
     const data = this.$data();
 
-    if (!data?.fields.content) return;
+    if (!data?.fields.content) {
+      return;
+    }
 
     return html`<oryx-text .content=${data.fields.content}></oryx-text> `;
   }

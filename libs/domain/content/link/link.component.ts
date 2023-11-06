@@ -23,16 +23,21 @@ export class ContentLinkComponent extends ContentMixin<
 
   protected $link = computed(() => {
     const { url, type, id, params } = this.$options();
-    if (url) return url;
-    if (type) return this.semanticLinkService.get({ type: type, id, params });
+    if (url) {
+      return url;
+    }
+    if (type) {
+      return this.semanticLinkService.get({ type: type, id, params });
+    }
     return null;
   });
 
   protected override render(): TemplateResult | void {
     const { button, icon, singleLine, color } = this.$options();
 
-    if (button)
+    if (button) {
       return html`<oryx-button>${this.renderLink(true)}</oryx-button>`;
+    }
 
     return html`<oryx-link
       .color=${color}
@@ -46,7 +51,9 @@ export class ContentLinkComponent extends ContentMixin<
     const { type, id } = this.$options();
     const { text } = this.$content() ?? {};
 
-    if (text) return text;
+    if (text) {
+      return text;
+    }
 
     if (type === RouteType.Category && id) {
       return this.categoryService
@@ -66,7 +73,9 @@ export class ContentLinkComponent extends ContentMixin<
   });
 
   protected renderLink(custom?: boolean): TemplateResult {
-    if (!this.$link()) return html`${this.$text()}`;
+    if (!this.$link()) {
+      return html`${this.$text()}`;
+    }
 
     const { label, target } = this.$options();
 

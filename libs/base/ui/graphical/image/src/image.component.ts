@@ -43,7 +43,9 @@ export class ImageComponent
   );
 
   protected override render(): TemplateResult | void {
-    if (this.hasFailure()) return this.renderFallback();
+    if (this.hasFailure()) {
+      return this.renderFallback();
+    }
 
     return html`<slot>${this.renderImage()}</slot>`;
   }
@@ -52,12 +54,16 @@ export class ImageComponent
     if (this.resource) {
       const sourceResult = this.source();
 
-      if (sourceResult) return html`${sourceResult}`;
+      if (sourceResult) {
+        return html`${sourceResult}`;
+      }
     }
 
     const src = this.resource ? this.url() : this.src;
 
-    if (!src) return this.renderFallback();
+    if (!src) {
+      return this.renderFallback();
+    }
 
     return html`
       <img
@@ -71,7 +77,9 @@ export class ImageComponent
   }
 
   protected renderFallback(): TemplateResult | void {
-    if (this.skipFallback) return;
+    if (this.skipFallback) {
+      return;
+    }
     return html`<oryx-icon
       type=${IconTypes.Image}
       part="fallback"

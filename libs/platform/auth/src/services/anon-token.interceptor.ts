@@ -25,7 +25,9 @@ export class AnonTokenInterceptor implements HttpInterceptor {
   }
 
   protected addAnonHeader(token: AuthTokenData, req: Request): Request {
-    if (token.type !== 'anon') return req;
+    if (token.type !== 'anon') {
+      return req;
+    }
 
     const newReq = req.clone();
     newReq.headers.set(this.headerName, token.token);

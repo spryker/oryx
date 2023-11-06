@@ -16,7 +16,9 @@ declare global {
 export function provideLitRoutes(
   routesRegistry?: LitRoutesRegistry | (() => LitRoutesRegistry)
 ): Provider[] {
-  if (!routesRegistry) return [];
+  if (!routesRegistry) {
+    return [];
+  }
 
   const routesFactory =
     typeof routesRegistry === 'function'

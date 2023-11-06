@@ -14,13 +14,17 @@ export class ContentImageComponent extends ContentMixin<
   protected override render(): TemplateResult | void {
     const { image, graphic, link, label, alt } = this.$content();
 
-    if (!image && !graphic) return;
+    if (!image && !graphic) {
+      return;
+    }
 
     if (link) {
       return html`<a href=${link} aria-label=${ifDefined(label || alt)}>
         ${this.renderImage()}
       </a>`;
-    } else return this.renderImage();
+    } else {
+      return this.renderImage();
+    }
   }
 
   protected renderImage(): TemplateResult | void {
@@ -37,8 +41,12 @@ export class ContentImageComponent extends ContentMixin<
   protected getStyles(): string | undefined {
     const { fit, position } = this.$options();
     let styles = '';
-    if (fit) styles += `--image-fit:${fit};`;
-    if (position) styles += `--image-position:${position};`;
+    if (fit) {
+      styles += `--image-fit:${fit};`;
+    }
+    if (position) {
+      styles += `--image-position:${position};`;
+    }
     return styles || undefined;
   }
 }

@@ -23,7 +23,9 @@ export class DefaultExperienceDataService implements ExperienceDataService {
   constructor(protected experienceData = inject(ExperienceData, [])) {}
 
   getData(cb: (c: ExperienceComponent) => void): ExperienceComponent[] {
-    if (!Object.keys(this.records).length) this.initialize();
+    if (!Object.keys(this.records).length) {
+      this.initialize();
+    }
 
     const data = Object.values(this.records);
     this.registerComponent(data, cb);
@@ -110,7 +112,9 @@ export class DefaultExperienceDataService implements ExperienceDataService {
           break;
         }
 
-        if (templateId && template.id !== templateId) continue;
+        if (templateId && template.id !== templateId) {
+          continue;
+        }
 
         this.recursiveSearch({ template, paths, strategy });
       }
@@ -122,7 +126,9 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     const { type } = strategy.merge!;
     const { components } = template;
 
-    if (!components) return;
+    if (!components) {
+      return;
+    }
 
     const path = paths[0];
     const isMergeElement = paths.length === 1;
@@ -145,10 +151,13 @@ export class DefaultExperienceDataService implements ExperienceDataService {
         if (
           type === ExperienceDataMergeType.Before ||
           type === ExperienceDataMergeType.After
-        )
+        ) {
           i++;
+        }
 
-        if (type === ExperienceDataMergeType.Remove) i--;
+        if (type === ExperienceDataMergeType.Remove) {
+          i--;
+        }
 
         continue;
       }
@@ -190,8 +199,11 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     if (type === ExperienceDataMergeType.Replace) {
       strategy.type ??= 'oryx-composition';
 
-      if (!isNaN) components[componentIndex] = strategy;
-      else template.components = [strategy];
+      if (!isNaN) {
+        components[componentIndex] = strategy;
+      } else {
+        template.components = [strategy];
+      }
 
       return;
     }

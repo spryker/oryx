@@ -11,7 +11,9 @@ export class CheckoutHeadingComponent extends CartComponentMixin(
   static styles = styles;
 
   protected override render(): TemplateResult | void {
-    if (this.$isEmpty()) return;
+    if (this.$isEmpty()) {
+      return;
+    }
 
     return html`<oryx-checkout-header>
       <h2>

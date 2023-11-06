@@ -57,7 +57,9 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
   protected override render(): TemplateResult | void {
     const facets = this.filteredFacets();
 
-    if (!facets?.length) return;
+    if (!facets?.length) {
+      return;
+    }
 
     const {
       valueRenderLimit: renderLimit = Infinity,
@@ -93,7 +95,9 @@ export class SearchFacetNavigationComponent extends LayoutMixin(
 
     const facet = this.$facets()?.find((facet) => facet.name === name);
 
-    if (!facet) return;
+    if (!facet) {
+      return;
+    }
 
     if (facet.type !== FacetType.Range) {
       const selectedFacetValue = value as SelectFacetValue;

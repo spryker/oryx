@@ -59,7 +59,9 @@ export class DefaultCartAdapter implements CartAdapter {
   }
 
   get(data: CartQualifier): Observable<Cart> {
-    if (!data.cartId) return throwError(() => new Error('Cart ID is required'));
+    if (!data.cartId) {
+      return throwError(() => new Error('Cart ID is required'));
+    }
 
     return this.identity.get().pipe(
       take(1),
@@ -151,7 +153,9 @@ export class DefaultCartAdapter implements CartAdapter {
     identity: AuthIdentity,
     cartId: string | undefined
   ): Observable<[AuthIdentity, string | undefined]> {
-    if (!identity.isAuthenticated || cartId) return of([identity, cartId]);
+    if (!identity.isAuthenticated || cartId) {
+      return of([identity, cartId]);
+    }
 
     // if we are a registered user and we do not have a cartId, we need to create a cart first
     return combineLatest([

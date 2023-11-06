@@ -39,7 +39,9 @@ export class DefaultCurrencyService implements CurrencyService {
   }
 
   getCurrencySymbol(): Observable<string> {
-    if (!this.localeService) return of('');
+    if (!this.localeService) {
+      return of('');
+    }
 
     //TODO: drop typecasting after typescript version is updated
     return combineLatest([
@@ -63,8 +65,9 @@ export class DefaultCurrencyService implements CurrencyService {
   set(value: string): void {
     const prev = this.active$.value;
     this.active$.next(value);
-    if (prev !== value)
+    if (prev !== value) {
       this.queryService.emit({ type: CurrencyChanged, data: value });
+    }
   }
 
   protected loadStore(): Observable<Store> {

@@ -93,7 +93,9 @@ export function productNodeNormalizer(
   const nodeKey = camelize(ApiProductModel.Includes.CategoryNodes);
   const { [abstractKey]: abstract } = data;
 
-  if (!abstract?.length) return of({});
+  if (!abstract?.length) {
+    return of({});
+  }
 
   const { [nodeKey]: node } = abstract[0];
 
@@ -108,7 +110,9 @@ export function productCategoryNormalizer(
   const nodeKey = camelize(ApiProductModel.Includes.CategoryNodes);
   const { [abstractKey]: abstract } = data;
 
-  if (!abstract?.length) return of({});
+  if (!abstract?.length) {
+    return of({});
+  }
 
   const { [nodeKey]: node } = abstract[0];
 

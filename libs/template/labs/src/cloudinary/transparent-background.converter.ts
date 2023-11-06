@@ -50,7 +50,9 @@ export const cloudinaryImageConverter: Provider = {
 
 let logged = 0;
 const logMissingEnv = (): void => {
-  if (logged > 0) return;
+  if (logged > 0) {
+    return;
+  }
   console.warn('Missing ORYX_CLOUDINARY_ID environment variable');
   logged++;
 };

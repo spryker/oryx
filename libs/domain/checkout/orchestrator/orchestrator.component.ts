@@ -1,7 +1,7 @@
 import { CheckoutMixin, isValid } from '@spryker-oryx/checkout';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { elementEffect, hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { checkoutOrchestratorStyles } from './orchestrator.styles';
 
 @hydrate({ event: 'window:load' })
@@ -12,11 +12,15 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
 
   @elementEffect()
   protected eff = (): void => {
-    if (this.$isInvalid()) this.report();
+    if (this.$isInvalid()) {
+      this.report();
+    }
   };
 
   protected override render(): TemplateResult | void {
-    if (this.$isEmpty()) return;
+    if (this.$isEmpty()) {
+      return;
+    }
 
     return html` <oryx-composition .uid=${this.uid}></oryx-composition> `;
   }
@@ -25,7 +29,9 @@ export class CheckoutOrchestratorComponent extends CheckoutMixin(
     const showReport = true;
     let isValid: boolean;
     this.components().forEach((el) => {
-      if (el.isValid && isValid !== false) isValid = el.isValid(showReport);
+      if (el.isValid && isValid !== false) {
+        isValid = el.isValid(showReport);
+      }
     });
   }
 

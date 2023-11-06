@@ -89,7 +89,9 @@ export class SearchBoxComponent
   connectedCallback(): void {
     super.connectedCallback();
 
-    if (this.input?.value) this.query = this.input?.value;
+    if (this.input?.value) {
+      this.query = this.input?.value;
+    }
   }
 
   protected override render(): TemplateResult {
@@ -118,9 +120,13 @@ export class SearchBoxComponent
   protected renderSuggestion(): TemplateResult | void {
     const suggestion = this.$suggestion();
 
-    if (!suggestion) return;
+    if (!suggestion) {
+      return;
+    }
 
-    if (this.isNothingFound(suggestion)) return this.renderNothingFound();
+    if (this.isNothingFound(suggestion)) {
+      return this.renderNothingFound();
+    }
 
     return html`<div slot="option">
       ${this.suggestionRendererService.render(suggestion, {
@@ -161,7 +167,9 @@ export class SearchBoxComponent
   protected onSearch(): void {
     const link = this.$link();
 
-    if (!link) return;
+    if (!link) {
+      return;
+    }
 
     this.routerService.navigate(link);
     this.onClose();

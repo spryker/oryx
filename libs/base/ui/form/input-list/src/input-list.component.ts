@@ -59,12 +59,19 @@ export class InputListComponent
     let partiallyChecked = false;
 
     inputElements.forEach((input) => {
-      if (isChecked(input)) partiallyChecked = true;
-      else checked = false;
+      if (isChecked(input)) {
+        partiallyChecked = true;
+      } else {
+        checked = false;
+      }
     });
 
-    if (checked) return InputListStatus.checked;
-    if (partiallyChecked) return InputListStatus.partiallyChecked;
+    if (checked) {
+      return InputListStatus.checked;
+    }
+    if (partiallyChecked) {
+      return InputListStatus.partiallyChecked;
+    }
 
     return InputListStatus.unchecked;
   }
@@ -81,8 +88,9 @@ export class InputListComponent
   }
 
   toggle(force?: boolean): void {
-    if (force === undefined)
+    if (force === undefined) {
       force = this.getGroupStatus() !== InputListStatus.checked;
+    }
 
     this.updateList(force);
   }

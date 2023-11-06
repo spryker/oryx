@@ -15,8 +15,11 @@ describe('NDS Modal', () => {
   let element: NDSModalComponent;
 
   const expectDialogOpen = (shouldBeOpen: boolean): void => {
-    if (shouldBeOpen) expect(element.hasAttribute('open')).toBe(true);
-    else expect(element.hasAttribute('open')).toBe(false);
+    if (shouldBeOpen) {
+      expect(element.hasAttribute('open')).toBe(true);
+    } else {
+      expect(element.hasAttribute('open')).toBe(false);
+    }
   };
 
   const testCloseStrategies = (): void => {

@@ -40,7 +40,9 @@ export class SearchRangeFacetComponent
   protected $isDirty = computed(() => {
     const facet = this.$facet();
 
-    if (!facet) return false;
+    if (!facet) {
+      return false;
+    }
 
     const {
       values: { min, max, selected },
@@ -53,7 +55,9 @@ export class SearchRangeFacetComponent
   protected $syncValues = effect(() => {
     const facet = this.$facet();
 
-    if (!facet) return;
+    if (!facet) {
+      return;
+    }
 
     const {
       values: { min, max, selected },
@@ -69,8 +73,9 @@ export class SearchRangeFacetComponent
     const { minValue: min, maxValue: max } = e.detail;
     const selected = { min, max };
 
-    if (this.hasChangedValue(selected))
+    if (this.hasChangedValue(selected)) {
       this.controller.dispatchSelectEvent({ selected });
+    }
   }
 
   protected onRangeDrag(e: CustomEvent<MultiRangeChangeEvent>): void {
@@ -85,7 +90,9 @@ export class SearchRangeFacetComponent
   }
 
   protected onKeydown(e: KeyboardEvent): void {
-    if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
+    if (e.key === 'Enter') {
+      (e.target as HTMLInputElement).blur();
+    }
   }
 
   protected hasChangedValue({ min, max }: SelectRangeFacetValues): boolean {
@@ -102,9 +109,13 @@ export class SearchRangeFacetComponent
     const maxInput =
       this.renderRoot.querySelector<HTMLInputElement>(`input[name="max"]`);
 
-    if (minInput) minInput.value = String(min);
+    if (minInput) {
+      minInput.value = String(min);
+    }
 
-    if (maxInput) maxInput.value = String(max);
+    if (maxInput) {
+      maxInput.value = String(max);
+    }
 
     this.requestUpdate();
   }
@@ -112,7 +123,9 @@ export class SearchRangeFacetComponent
   protected override render(): TemplateResult | void {
     const facet = this.$facet();
 
-    if (!facet) return;
+    if (!facet) {
+      return;
+    }
 
     return html`<oryx-search-facet-value-navigation
       ?open="${this.open}"

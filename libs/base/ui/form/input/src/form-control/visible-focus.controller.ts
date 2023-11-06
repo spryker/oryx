@@ -44,7 +44,9 @@ export class VisibleFocusController implements ReactiveController {
     });
 
     this.host.addEventListener('keyup', () => {
-      if (!this.mouseWasUsed) this.host.toggleAttribute('visible-focus', true);
+      if (!this.mouseWasUsed) {
+        this.host.toggleAttribute('visible-focus', true);
+      }
 
       this.focusableElements().forEach((el) => {
         el.addEventListener('blur', () => onBlur());

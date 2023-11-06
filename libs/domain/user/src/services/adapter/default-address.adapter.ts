@@ -19,7 +19,9 @@ export class DefaultAddressAdapter implements AddressAdapter {
     return this.identityService.get().pipe(
       take(1),
       switchMap((identity) => {
-        if (!identity.isAuthenticated || !identity.userId) return of([]);
+        if (!identity.isAuthenticated || !identity.userId) {
+          return of([]);
+        }
 
         return this.httpService
           .get(this.generateUrl(identity.userId))

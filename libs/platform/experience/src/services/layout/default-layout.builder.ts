@@ -30,7 +30,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   }
 
   createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string {
-    if (!rules?.length) return '';
+    if (!rules?.length) {
+      return '';
+    }
     return rules
       .map((rule) => {
         const styles = this.getLayoutStyles(rule);
@@ -48,32 +50,42 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     if (id) {
       selectors.push(`:host([uid="${id}"])`);
       selectors.push(`[uid="${id}"]`);
-    } else selectors.push(':host');
+    } else {
+      selectors.push(':host');
+    }
 
-    if (rule.query?.childs)
+    if (rule.query?.childs) {
       selectors.forEach((_, i) => (selectors[i] += ' > *'));
+    }
 
-    if (rule.query?.hover)
+    if (rule.query?.hover) {
       selectors.forEach((_, i) => (selectors[i] += ':hover'));
+    }
 
     if (rule.query?.breakpoint) {
       const mediaQuery = this.screenService.getScreenMedia(
         rule.query.breakpoint as Breakpoint
       );
       return `${mediaQuery}{\n${selectors.join(', ')} {\n${styles}\n}}`;
-    } else return `${selectors.join(', ')} {\n${styles}\n}`;
+    } else {
+      return `${selectors.join(', ')} {\n${styles}\n}`;
+    }
   }
 
   getLayoutMarkers(data?: CompositionProperties): string | undefined {
     const markerPrefix = 'layout-';
 
     return data?.rules?.reduce((acc, ruleSet) => {
-      if (!ruleSet) return acc;
+      if (!ruleSet) {
+        return acc;
+      }
 
       const ruleMarkers = layoutKeys.reduce((acc, key) => {
         const value = ruleSet[key];
 
-        if (!value) return acc;
+        if (!value) {
+          return acc;
+        }
 
         const breakpoint = ruleSet.query?.breakpoint;
         const markerKey = breakpoint
@@ -91,14 +103,18 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
 
   getLayoutStyles(data?: StyleProperties): string | undefined {
     let styles = this.getProperties(data).join(';');
-    if (data?.style) styles += `;${data.style}`;
+    if (data?.style) {
+      styles += `;${data.style}`;
+    }
     return styles === '' ? undefined : styles;
   }
 
   protected getProperties(data?: StyleProperties): string[] {
     const rules: string[] = [];
 
-    if (!data) return rules;
+    if (!data) {
+      return rules;
+    }
 
     const addUnit = (value: string | number | undefined, unit?: string) => {
       return `${value}${unit ?? 'px'}`;
@@ -109,14 +125,21 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       options?: { unit?: string; omitUnit?: boolean; emptyValue?: boolean }
     ) => {
       Object.entries(rulesObj).forEach(([rule, value]) => {
-        if ((!value || value === '0') && !options?.emptyValue) return;
+        if ((!value || value === '0') && !options?.emptyValue) {
+          return;
+        }
         if (!isNaN(Number(value))) {
-          if (!options?.omitUnit) value = addUnit(value, options?.unit);
-          else value = String(value);
+          if (!options?.omitUnit) {
+            value = addUnit(value, options?.unit);
+          } else {
+            value = String(value);
+          }
         }
 
         // do not add empty values unless explicitly asked
-        if (!value) return;
+        if (!value) {
+          return;
+        }
 
         rules.push(`${rule}: ${value}`);
       });
@@ -147,18 +170,25 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     add({ rotate: data.rotate }, { unit: 'deg' });
     add({ 'z-index': data.zIndex }, { omitUnit: true });
 
-    if (data.gridColumn && data.colSpan)
+    if (data.gridColumn && data.colSpan) {
       add({ 'grid-column': `${data.gridColumn} / span ${data.colSpan}` });
-    else {
-      if (data.gridColumn)
+    } else {
+      if (data.gridColumn) {
         add({ 'grid-column': data.gridColumn }, { omitUnit: true });
-      if (data.colSpan) add({ 'grid-column': `span ${data.colSpan}` });
+      }
+      if (data.colSpan) {
+        add({ 'grid-column': `span ${data.colSpan}` });
+      }
     }
-    if (data.gridRow && data.rowSpan)
+    if (data.gridRow && data.rowSpan) {
       add({ 'grid-row': `${data.gridRow} / span ${data.rowSpan}` });
-    else {
-      if (data.gridRow) add({ 'grid-row': data.gridRow }, { omitUnit: true });
-      if (data.rowSpan) add({ 'grid-row': `span ${data.rowSpan}` });
+    } else {
+      if (data.gridRow) {
+        add({ 'grid-row': data.gridRow }, { omitUnit: true });
+      }
+      if (data.rowSpan) {
+        add({ 'grid-row': `span ${data.rowSpan}` });
+      }
     }
 
     const gaps = data.gap?.toString().split(' ');
@@ -186,7 +216,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       overflow: data?.overflow,
     });
 
-    if (data.scale) add({ transform: `scale(${data?.scale})` });
+    if (data.scale) {
+      add({ transform: `scale(${data?.scale})` });
+    }
 
     if (data.typography) {
       add({ 'font-size': `var(--oryx-typography-${data.typography}-size)` });
@@ -194,7 +226,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
         'font-weight': `var(--oryx-typography-${data.typography}-weight)`,
       });
       add({ 'line-height': `var(--oryx-typography-${data.typography}-line)` });
-      if (!data.margin) add({ margin: `0` }, { emptyValue: true });
+      if (!data.margin) {
+        add({ margin: `0` }, { emptyValue: true });
+      }
     }
 
     return rules;
@@ -207,8 +241,12 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   ): string | undefined {
     const start = this.findCssValue(data, startPos);
     const end = this.findCssValue(data, endPos);
-    if (!start && !end) return;
-    if (start === end) return start;
+    if (!start && !end) {
+      return;
+    }
+    if (start === end) {
+      return start;
+    }
     return `${start ?? 'auto'} ${end ?? 'auto'}`;
   }
 

@@ -15,9 +15,13 @@ export class DefaultAppInitializerService implements AppInitializerService {
           ? initializer()
           : initializer.initialize();
 
-      if (isPromise(result)) await result;
+      if (isPromise(result)) {
+        await result;
+      }
 
-      if (isObservable(result)) await lastValueFrom(result);
+      if (isObservable(result)) {
+        await lastValueFrom(result);
+      }
     }
   }
 }

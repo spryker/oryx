@@ -30,11 +30,15 @@ export default class VideoComponent
 
     const video = this.renderRoot.querySelector<HTMLVideoElement>('video');
 
-    if (video) video.muted = !!this.muted;
+    if (video) {
+      video.muted = !!this.muted;
+    }
   }
 
   protected override render(): TemplateResult | void {
-    if (!this.url) return;
+    if (!this.url) {
+      return;
+    }
 
     if (this.isYoutube()) {
       return html`<object
@@ -59,13 +63,17 @@ export default class VideoComponent
   }
 
   protected resolveYoutubeUrl(): string | undefined {
-    if (!this.url) return;
+    if (!this.url) {
+      return;
+    }
 
     const resolveId = (url: string): string | undefined => {
-      if (url.includes('youtu.be')) return url.split('/').pop();
-      else if (url.includes('youtube.com')) {
-        if (url.includes('/embed/'))
+      if (url.includes('youtu.be')) {
+        return url.split('/').pop();
+      } else if (url.includes('youtube.com')) {
+        if (url.includes('/embed/')) {
           return url.split('/embed/').pop()?.split('?')[0];
+        }
 
         return new URL(url).searchParams.get('v') ?? undefined;
       }

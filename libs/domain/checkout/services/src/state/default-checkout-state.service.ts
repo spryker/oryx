@@ -55,9 +55,15 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
   ): void {
     const collected = this.subject.value;
     const existing = collected.get(key);
-    if (existing && item.valid !== undefined) existing.valid = item.valid;
-    if (existing && item.value !== undefined) existing.value = item.value;
-    if (!existing) collected.set(key, item);
+    if (existing && item.valid !== undefined) {
+      existing.valid = item.valid;
+    }
+    if (existing && item.value !== undefined) {
+      existing.value = item.value;
+    }
+    if (!existing) {
+      collected.set(key, item);
+    }
     this.subject.next(collected);
     this.setupClearLogic();
 
@@ -75,7 +81,9 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
   ): Observable<PlaceOrderData[K] | null> {
     return this.subject.pipe(
       map((data) => {
-        if (!data.get(key)) this.set(key, {});
+        if (!data.get(key)) {
+          this.set(key, {});
+        }
         return (data.get(key)?.value ?? null) as PlaceOrderData[K] | null;
       }),
       distinctUntilChanged()
@@ -96,7 +104,9 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
         if (complete && Array.from(data).find((item) => !item[1].valid)) {
           this.isInvalid$.next(true);
           return null;
-        } else this.isInvalid$.next(false);
+        } else {
+          this.isInvalid$.next(false);
+        }
 
         const result: Partial<PlaceOrderData> = {};
         data.forEach((item, key) => {
@@ -115,12 +125,15 @@ export class DefaultCheckoutStateService implements CheckoutStateService {
     data: Partial<PlaceOrderData>
   ): Partial<PlaceOrderData> {
     if (data.customer) {
-      if (!data.customer.salutation && data.shippingAddress?.salutation)
+      if (!data.customer.salutation && data.shippingAddress?.salutation) {
         data.customer.salutation = data.shippingAddress.salutation;
-      if (!data.customer.lastName && data.shippingAddress?.lastName)
+      }
+      if (!data.customer.lastName && data.shippingAddress?.lastName) {
         data.customer.lastName = data.shippingAddress.lastName;
-      if (!data.customer.firstName && data.shippingAddress?.firstName)
+      }
+      if (!data.customer.firstName && data.shippingAddress?.firstName) {
         data.customer.firstName = data.shippingAddress.firstName;
+      }
     }
     return data;
   }

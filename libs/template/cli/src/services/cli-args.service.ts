@@ -67,7 +67,9 @@ export class CliArgsService {
   protected getArgsSchemaFor(
     commandName?: string
   ): Record<string, NodeArgsConfig> {
-    if (!commandName) return {};
+    if (!commandName) {
+      return {};
+    }
 
     const command = this.getCliCommands().find(
       (command) =>
@@ -75,7 +77,9 @@ export class CliArgsService {
         command.getAliases?.().includes(commandName)
     );
 
-    if (!command) return {};
+    if (!command) {
+      return {};
+    }
 
     const options = command.getOptions?.() ?? [];
 

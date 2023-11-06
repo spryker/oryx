@@ -10,7 +10,9 @@ export class TextComponent extends LitElement implements TextProperties {
   @property() content?: string;
 
   protected render(): TemplateResult | void {
-    if (!this.content) return;
+    if (!this.content) {
+      return;
+    }
     return html`${unsafeHTML(this.content)}`;
   }
 }

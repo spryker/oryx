@@ -33,12 +33,15 @@ export class UserAddressComponent extends AddressMixin(
     | TemplateResult[]
     | void {
     const address = this.$address();
-    if (!address) return;
+    if (!address) {
+      return;
+    }
 
     const { multiline, schema } = this.$options();
 
-    if (multiline)
+    if (multiline) {
       return this.renderMultiline(schema ?? defaultMultilineSchema, address);
+    }
 
     return this.formatLine(this.addressFormat(), address);
   }
@@ -57,7 +60,9 @@ export class UserAddressComponent extends AddressMixin(
     const str = Array.isArray(schema) ? schema.join(' ') : schema;
     const matches = this.findMatches(str);
 
-    if (!matches.length) return str;
+    if (!matches.length) {
+      return str;
+    }
 
     return [
       ...(matches[0].index ? [str.substring(0, matches[0].index)] : []),
@@ -79,7 +84,9 @@ export class UserAddressComponent extends AddressMixin(
     while ((result = templateRe.exec(str)) !== null) {
       const cfg = this.parseMatch(result);
 
-      if (cfg) config.push(cfg);
+      if (cfg) {
+        config.push(cfg);
+      }
     }
 
     return config;
@@ -90,7 +97,9 @@ export class UserAddressComponent extends AddressMixin(
       result;
     const { index } = result;
 
-    if (!key && conditionStart !== conditionEnd) return null;
+    if (!key && conditionStart !== conditionEnd) {
+      return null;
+    }
 
     return {
       keys: (key ?? conditionStart).split('|'),
@@ -108,7 +117,9 @@ export class UserAddressComponent extends AddressMixin(
       ([key, value]) => keys.includes(key) && value
     )?.[1];
 
-    if (!!value === exclude) return '';
+    if (!!value === exclude) {
+      return '';
+    }
 
     return template ?? value ?? '';
   }

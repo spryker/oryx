@@ -53,7 +53,9 @@ export class UserAddressEditComponent extends AddressMixin(
       take(1),
       tap(() => {
         this.loading = false;
-        if (!this.$options().inline) this.addressStateService.clear();
+        if (!this.$options().inline) {
+          this.addressStateService.clear();
+        }
       })
     );
   }
@@ -63,8 +65,9 @@ export class UserAddressEditComponent extends AddressMixin(
       this.$options().inline &&
       this.$addressState().action !== CrudState.Create &&
       this.$addressState().action !== CrudState.Update
-    )
+    ) {
       return;
+    }
 
     return html`
       <oryx-user-address-form
@@ -96,21 +99,27 @@ export class UserAddressEditComponent extends AddressMixin(
 
   protected onChange(e: CustomEvent<AddressEventDetail>): void {
     this.preselected = e.detail;
-    if (this.$options().save === SaveOption.Instant) this.submit().subscribe();
+    if (this.$options().save === SaveOption.Instant) {
+      this.submit().subscribe();
+    }
   }
 
   protected onClose(): void {
     this.addressStateService.clear();
 
     const route = this.$listPageRoute();
-    if (route) this.routerService.navigate(route);
+    if (route) {
+      this.routerService.navigate(route);
+    }
   }
 
   protected onSave(): void {
     this.submit()
       .pipe(
         tap(() => {
-          if (!this.$options().inline) this.onClose();
+          if (!this.$options().inline) {
+            this.onClose();
+          }
         })
       )
       .subscribe();

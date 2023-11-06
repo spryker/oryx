@@ -19,7 +19,9 @@ export class DefaultPriceModeService implements PriceModeService {
   set(priceMode: string): void {
     const prev = this.priceMode$.value;
 
-    if (prev === priceMode) return;
+    if (prev === priceMode) {
+      return;
+    }
 
     this.priceMode$.next(priceMode);
     this.queryService.emit({ type: PriceModeChanged, data: { priceMode } });

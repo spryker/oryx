@@ -10,8 +10,8 @@ import {
   AddressDefaults,
   EditTarget,
 } from '@spryker-oryx/user/address-list-item';
-import { effect, hydrate, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { Size, effect, hydrate } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { queryAll } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { UserAddressListOptions } from './address-list.model';
@@ -43,7 +43,9 @@ export class UserAddressListComponent extends AddressMixin(
 
   protected override render(): TemplateResult | TemplateResult[] | void {
     const addresses = this.$addresses();
-    if (!addresses?.length) return this.renderEmpty();
+    if (!addresses?.length) {
+      return this.renderEmpty();
+    }
     return addresses.map((address) => this.renderAddress(address));
   }
 

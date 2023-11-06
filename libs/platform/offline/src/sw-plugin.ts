@@ -13,7 +13,9 @@ export class OfflineServiceWorkerPlugin implements AppPlugin {
 
   apply(app: App): void | Promise<void> {
     self.addEventListener('sync', (event) => {
-      if (event.tag !== ProcessSyncsBackgroundSyncTag) return;
+      if (event.tag !== ProcessSyncsBackgroundSyncTag) {
+        return;
+      }
 
       event.waitUntil(this.processSyncs(app));
     });

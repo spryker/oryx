@@ -3,7 +3,9 @@ import { featureVersion } from '@spryker-oryx/utilities';
 
 const cartEntries = (): ExperienceComponent => {
   const components: ExperienceComponent[] = [];
-  if (featureVersion >= '1.2') components.push({ type: 'oryx-cart-heading' });
+  if (featureVersion >= '1.2') {
+    components.push({ type: 'oryx-cart-heading' });
+  }
   components.push({ type: 'oryx-cart-entries' });
 
   return {

@@ -20,8 +20,9 @@ export class ErrorController implements ReactiveController {
     const hasErrorContentAttr = errorMessage?.hasAttribute('hasErrorContent');
 
     errorMessage?.toggleAttribute('hasErrorContent', hasErrorContent);
-    if (!this.host.hasAttribute('hasError') || hasErrorContentAttr)
+    if (!this.host.hasAttribute('hasError') || hasErrorContentAttr) {
       this.host.toggleAttribute('hasError', hasErrorContent);
+    }
   }
 
   protected get message(): string | undefined {

@@ -432,8 +432,11 @@ describe('nested computed inside effect with conditional', () => {
     signal3 = new StateSignal<number>(0);
     cmp = new Computed(() => signal3.value);
     effectFn = vi.fn(() => {
-      if (signal1.value) value = cmp.value;
-      else value = -1;
+      if (signal1.value) {
+        value = cmp.value;
+      } else {
+        value = -1;
+      }
     });
     effect = new Effect(effectFn);
   });
@@ -491,9 +494,13 @@ describe('nested computed inside effect with two levels and conditionals', () =>
     cmp1 = new Computed(() => signal3.value * 2);
     cmp2 = new Computed(() => signal3.value * 3);
     effectFn = vi.fn(() => {
-      if (signal1.value) value = cmp1.value;
-      else if (signal2.value) value = cmp2.value;
-      else value = -1;
+      if (signal1.value) {
+        value = cmp1.value;
+      } else if (signal2.value) {
+        value = cmp2.value;
+      } else {
+        value = -1;
+      }
     });
     effect = new Effect(effectFn);
   });

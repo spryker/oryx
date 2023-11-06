@@ -133,8 +133,9 @@ function checkCartEntry(entry: {
         .getInput()
         .should('have.value', entry.quantity);
     }
-    if (entry.subTotal)
+    if (entry.subTotal) {
       entries[0].getSubtotal().shadow().should('contain.text', entry.subTotal);
+    }
 
     if (entry.salesPrice) {
       entries[0]

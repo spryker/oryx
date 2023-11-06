@@ -48,14 +48,17 @@ export class FilterController implements ReactiveController {
       this.host.filterStrategy &&
       e.key === ' ' &&
       this.controlItem.value === ''
-    )
+    ) {
       e.preventDefault();
+    }
   }
 
   protected onFocusOut(): void {
     if (this.host.filterStrategy) {
       const hasSelectedItem = this.items.find((item) => item.active);
-      if (!hasSelectedItem) this.clearInput();
+      if (!hasSelectedItem) {
+        this.clearInput();
+      }
     }
   }
 
@@ -70,15 +73,17 @@ export class FilterController implements ReactiveController {
   }
 
   hostUpdated(): void {
-    if (this.host.filterStrategy && this.filterValue)
+    if (this.host.filterStrategy && this.filterValue) {
       this.filterOptionsByValue(this.controlItem.value);
+    }
   }
 
   protected clearInput(): void {
     if (this.control) {
       this.control.value = '';
-      if (this.host.filterStrategy)
+      if (this.host.filterStrategy) {
         this.filterOptionsByValue(this.control.value);
+      }
 
       this.control.dispatchEvent(
         new Event(
@@ -100,13 +105,17 @@ export class FilterController implements ReactiveController {
   }
 
   protected onChange(): void {
-    if (this.filterValue === this.controlItem.value) return;
+    if (this.filterValue === this.controlItem.value) {
+      return;
+    }
 
     this.filterOptions('', true);
   }
 
   protected filterOptions(value = '', omitDispatchEvent?: boolean): void {
-    if (!this.host.filterStrategy) return;
+    if (!this.host.filterStrategy) {
+      return;
+    }
 
     let visibleOptionCount = 0;
     const strategy = this.strategies[this.host.filterStrategy];
@@ -131,14 +140,17 @@ export class FilterController implements ReactiveController {
       }
     });
 
-    if (!omitDispatchEvent) this.dispatchMatchEvent(visibleOptionCount, value);
+    if (!omitDispatchEvent) {
+      this.dispatchMatchEvent(visibleOptionCount, value);
+    }
 
     this.setEmptyState(visibleOptionCount === 0);
   }
 
   protected filterOptionsByValue(value = ''): void {
-    if (this.filterValue === value || (!this.filterValue && value === ''))
+    if (this.filterValue === value || (!this.filterValue && value === '')) {
       return;
+    }
 
     this.filterValue = value;
 
@@ -153,7 +165,9 @@ export class FilterController implements ReactiveController {
     if (visibleOptionCount === 1) {
       const option = this.items.find((el) => !el.hasAttribute('hide'));
       const optionText = option?.innerText?.trim() || option?.value || '';
-      if (optionText.toLowerCase() === value.toLowerCase()) selected = option;
+      if (optionText.toLowerCase() === value.toLowerCase()) {
+        selected = option;
+      }
     }
 
     const event = new CustomEvent<PopoverSelectEvent>(POPOVER_EVENT, {
@@ -178,8 +192,11 @@ export class FilterController implements ReactiveController {
   }
 
   protected get controlItem(): HTMLInputElement | HTMLSelectElement {
-    if (this.host.hasAttribute('filterSelect')) return this.filterControl;
-    else return this.control;
+    if (this.host.hasAttribute('filterSelect')) {
+      return this.filterControl;
+    } else {
+      return this.control;
+    }
   }
 
   protected get items(): OptionComponent[] {

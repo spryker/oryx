@@ -79,7 +79,9 @@ export class UserRegistrationComponent extends ContentMixin<RegistrationOptions>
   protected onSubmit(event: Event): void {
     event.preventDefault();
 
-    if (this.validateForm()) this.registerUser();
+    if (this.validateForm()) {
+      this.registerUser();
+    }
   }
 
   protected onPasswordInput(): void {

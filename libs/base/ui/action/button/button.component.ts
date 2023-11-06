@@ -86,8 +86,11 @@ export class ButtonComponent
     const templates = [this.renderLoader(), this.renderConfirmed()];
 
     const button = this.href ? this.renderLink() : this.renderButton();
-    if (this.text || this.icon) templates.push(button);
-    else templates.push(html`<slot name="custom">${button}</slot>`);
+    if (this.text || this.icon) {
+      templates.push(button);
+    } else {
+      templates.push(html`<slot name="custom">${button}</slot>`);
+    }
 
     return html`
       ${templates} ${preHydrate(hydrateSlotChange, this.tagName.toLowerCase())}
@@ -148,7 +151,9 @@ export class ButtonComponent
   }
 
   protected renderIcon(): TemplateResult | void {
-    if (!this.icon) return;
+    if (!this.icon) {
+      return;
+    }
     return html`<oryx-icon .type=${this.icon}></oryx-icon>`;
   }
 
@@ -156,7 +161,9 @@ export class ButtonComponent
    * The loader icon will be rendered when the component is not disabled.
    */
   protected renderLoader(): TemplateResult | void {
-    if (!this.loading || this.disabled) return;
+    if (!this.loading || this.disabled) {
+      return;
+    }
     return html`<oryx-icon loader .type=${IconTypes.Loader}></oryx-icon>`;
   }
 
@@ -164,7 +171,9 @@ export class ButtonComponent
    * The loader icon will be rendered when the component state is not disabled nor loading
    */
   protected renderConfirmed(): TemplateResult | void {
-    if (!this.confirmed || this.disabled || this.loading) return;
+    if (!this.confirmed || this.disabled || this.loading) {
+      return;
+    }
     return html`<oryx-icon confirmed .type=${IconTypes.Check}></oryx-icon>`;
   }
 }

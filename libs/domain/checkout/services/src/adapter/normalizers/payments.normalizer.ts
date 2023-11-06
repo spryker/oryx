@@ -5,7 +5,9 @@ import { DeserializedCheckout } from './model';
 export function paymentsNormalizer(
   data?: DeserializedCheckout
 ): PaymentMethod[] {
-  if (!data) return [];
+  if (!data) {
+    return [];
+  }
 
   const paymentsKey = camelize(ApiCheckoutModel.Includes.PaymentMethods);
   return (

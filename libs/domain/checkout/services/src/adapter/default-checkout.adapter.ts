@@ -36,8 +36,9 @@ export class DefaultCheckoutAdapter implements CheckoutAdapter {
               if (
                 !props.shipment?.idShipmentMethod &&
                 !data?.carts?.[0]?.totals?.shipmentTotal
-              )
+              ) {
                 delete data?.carts?.[0]?.totals?.shipmentTotal;
+              }
 
               return data;
             })

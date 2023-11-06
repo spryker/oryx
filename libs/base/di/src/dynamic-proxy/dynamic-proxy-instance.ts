@@ -35,14 +35,19 @@ const createProxyHandler = <T>(
     get(target: any, propKey: string): any {
       if (typeof propKey === 'string' && propKey !== 'then') {
         return (...methodArgs: any[]) => {
-          if (instance) return (instance as any)[propKey](...methodArgs);
+          if (instance) {
+            return (instance as any)[propKey](...methodArgs);
+          }
 
           const result = instance$.pipe(
             map((instance) => {
               const result: any = (instance as any)[propKey](...methodArgs);
 
-              if (result instanceof Observable) return result;
-              else return EMPTY;
+              if (result instanceof Observable) {
+                return result;
+              } else {
+                return EMPTY;
+              }
             }),
             switchMap((result) => result),
             shareReplay()

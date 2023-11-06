@@ -34,16 +34,21 @@ export class CodeGrantAuthLoginStrategy implements AuthLoginStrategy {
   protected redirectWith(
     response: CodeGrantAuthLoginResponse
   ): Observable<never> {
-    if (!response.code) throw new Error('Missing code in response!');
+    if (!response.code) {
+      throw new Error('Missing code in response!');
+    }
 
     const redirectUri = this.getUrlParams().get('redirect_uri');
 
-    if (!redirectUri) throw new Error('Missing redirect_uri in URL params!');
+    if (!redirectUri) {
+      throw new Error('Missing redirect_uri in URL params!');
+    }
 
     const redirectUrl = new URL(redirectUri);
 
-    for (const [key, value] of Object.entries(response))
+    for (const [key, value] of Object.entries(response)) {
       redirectUrl.searchParams.set(key, value);
+    }
 
     globalThis.location.href = redirectUrl.toString();
 

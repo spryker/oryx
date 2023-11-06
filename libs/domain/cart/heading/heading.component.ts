@@ -11,7 +11,9 @@ export class CartHeadingComponent extends CartComponentMixin(
   static styles = styles;
 
   protected override render(): TemplateResult | void {
-    if (this.$isEmpty()) return;
+    if (this.$isEmpty()) {
+      return;
+    }
 
     return html`<oryx-heading tag="h1" as="h3">
       ${this.i18n('cart.totals.<count>-items', {

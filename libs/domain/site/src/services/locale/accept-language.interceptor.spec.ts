@@ -94,8 +94,9 @@ describe('AcceptLanguageInterceptor', () => {
       const req = new Request(testCase.url, options);
       const expected = req.clone();
 
-      if (testCase.shouldIntercept)
+      if (testCase.shouldIntercept) {
         expected.headers.set('Accept-Language', locale);
+      }
 
       handler.handle(req).subscribe();
       await nextFrame();

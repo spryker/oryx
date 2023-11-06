@@ -17,18 +17,25 @@ export class EffectController implements ReactiveController {
   }
 
   hostConnected(): void {
-    for (const effect of this.effects.values()) effect.start();
+    for (const effect of this.effects.values()) {
+      effect.start();
+    }
   }
 
   hostDisconnected(): void {
-    for (const effect of this.effects.values()) effect.stop();
+    for (const effect of this.effects.values()) {
+      effect.stop();
+    }
   }
 
   add(effect: Effect | (() => void), key: string): void {
-    if (this.effects.has(key)) this.effects.get(key)?.stop();
+    if (this.effects.has(key)) {
+      this.effects.get(key)?.stop();
+    }
 
-    if (typeof effect === 'function')
+    if (typeof effect === 'function') {
       effect = new Effect(effect, { defer: true });
+    }
 
     // add some logic to check if it is an effect, allow for specifying full effect
     this.effects.set(key, effect);

@@ -54,7 +54,9 @@ export class DefaultCheckoutDataService implements CheckoutDataService {
       combineLatest([this.cartId$, this.checkoutState$]).pipe(
         take(1),
         switchMap(([cartId, checkoutState]) => {
-          if (!cartId) return of(null);
+          if (!cartId) {
+            return of(null);
+          }
           return this.adapter.get({ ...checkoutState, cartId });
         })
       ),

@@ -15,7 +15,9 @@ export class DefaultLayoutService implements LayoutService {
 
     const keys = Object.keys(layoutInfo);
 
-    if (keys.length > 0) observables.push(this.resolveCommonStyles());
+    if (keys.length > 0) {
+      observables.push(this.resolveCommonStyles());
+    }
 
     keys.forEach((key) => {
       const styles = this.resolveStyles(
@@ -23,7 +25,9 @@ export class DefaultLayoutService implements LayoutService {
         layoutInfo[key].included,
         layoutInfo[key].excluded
       );
-      if (styles) observables.push(styles);
+      if (styles) {
+        observables.push(styles);
+      }
     });
 
     return observables.length > 0
@@ -140,15 +144,21 @@ export class DefaultLayoutService implements LayoutService {
     let result = '';
     if (style.styles) {
       const query = this.screenService.getScreenMedia(included, excluded);
-      if (query) result += `${query} {${style?.styles}}\n`;
-      else result += style?.styles;
+      if (query) {
+        result += `${query} {${style?.styles}}\n`;
+      } else {
+        result += style?.styles;
+      }
     }
 
     sizes.forEach((size) => {
       if (style[size]) {
         const query = this.screenService.getScreenMedia(size as Breakpoint);
-        if (query) result += `${query} {${style[size]}}\n`;
-        else result += style[size];
+        if (query) {
+          result += `${query} {${style[size]}}\n`;
+        } else {
+          result += style[size];
+        }
       }
     });
 

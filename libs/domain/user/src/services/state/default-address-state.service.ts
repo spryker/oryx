@@ -8,7 +8,9 @@ export class DefaultAddressStateService implements AddressStateService {
 
   set(action: CrudState, id?: string | null): void {
     this.action.next(action);
-    if (id !== undefined) this.selected.next(id);
+    if (id !== undefined) {
+      this.selected.next(id);
+    }
   }
 
   get(): Observable<{ action: CrudState; selected: string | null }> {

@@ -15,7 +15,9 @@ export default {
 
 const Template: Story = (): TemplateResult => {
   const interval = setInterval(() => {
-    if (!customElements.get('oryx-cart-quantity-input')) return;
+    if (!customElements.get('oryx-cart-quantity-input')) {
+      return;
+    }
 
     clearInterval(interval);
 
@@ -26,7 +28,9 @@ const Template: Story = (): TemplateResult => {
       const state = (element as HTMLElement).dataset.state;
       const disabled = (element as HTMLElement).dataset.disabled;
 
-      if (!state && !disabled) return;
+      if (!state && !disabled) {
+        return;
+      }
 
       const [selector, childSelector] = (
         (element as HTMLElement).dataset.selector as string

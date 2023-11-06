@@ -21,7 +21,9 @@ export class TotalsController implements ReactiveController {
   hostDisconnected?(): void;
 
   provideContext(context?: string): void {
-    if (context) this.context.provide(TotalsContext.Reference, context);
+    if (context) {
+      this.context.provide(TotalsContext.Reference, context);
+    }
   }
 
   getTotals(): Observable<NormalizedTotals | null> {

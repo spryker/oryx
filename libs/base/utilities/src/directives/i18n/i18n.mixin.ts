@@ -21,7 +21,9 @@ import { i18n } from './i18n.directive';
 export function I18nMixin<T extends Type<ReactiveElement>>(
   base: T & { [i18nMixinMark]?: boolean }
 ): Type<I18nMixinType> & T {
-  if (base[i18nMixinMark] === true) return base as Type<I18nMixinType> & T;
+  if (base[i18nMixinMark] === true) {
+    return base as Type<I18nMixinType> & T;
+  }
 
   const i18n = I18nMixin.i18n;
 

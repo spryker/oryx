@@ -46,10 +46,14 @@ export class CheckoutAddressComponent
   }
 
   isValid(report: boolean): boolean {
-    if (this.$addressId()) return true;
+    if (this.$addressId()) {
+      return true;
+    }
 
     const form = this.addressComponent?.getForm();
-    if (!form?.checkValidity() && report) form?.reportValidity();
+    if (!form?.checkValidity() && report) {
+      form?.reportValidity();
+    }
 
     return !!form?.checkValidity();
   }

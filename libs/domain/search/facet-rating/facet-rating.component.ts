@@ -34,7 +34,9 @@ export class SearchRatingFacetComponent
   protected $isDirty = computed(() => {
     const facet = this.$facet();
 
-    if (!facet) return false;
+    if (!facet) {
+      return false;
+    }
 
     const {
       values: { min, max, selected },
@@ -46,7 +48,9 @@ export class SearchRatingFacetComponent
   protected getValues(): number[] {
     const facet = this.$facet();
 
-    if (!facet || !this.$options().scale) return [];
+    if (!facet || !this.$options().scale) {
+      return [];
+    }
 
     const {
       values: { min, max },
@@ -75,7 +79,9 @@ export class SearchRatingFacetComponent
   protected override render(): TemplateResult | void {
     const facet = this.$facet();
 
-    if (!facet) return;
+    if (!facet) {
+      return;
+    }
 
     return html`<oryx-search-facet-value-navigation
       ?open=${this.open}
@@ -87,7 +93,9 @@ export class SearchRatingFacetComponent
   }
 
   protected renderValues(values: number[]): TemplateResult | void {
-    if (!values?.length) return;
+    if (!values?.length) {
+      return;
+    }
 
     return html`<ul>
       ${repeat(

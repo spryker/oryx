@@ -1,7 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { hydrate, ssrShim } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { ProductAttributesOptions } from './attributes.model';
 import { productAttributeStyles } from './attributes.styles';
 
@@ -16,7 +16,9 @@ export class ProductAttributesComponent extends ProductMixin(
   protected override render(): TemplateResult | void {
     const { attributeNames: names, attributes: values } = this.$product() ?? {};
 
-    if (!names || !values) return;
+    if (!names || !values) {
+      return;
+    }
 
     return html`
       <dl style="--column-count: ${this.$options().columnCount}">

@@ -19,7 +19,9 @@ export class UserAddressEditButtonComponent extends AddressMixin(
 
   protected editLink = computed(() => {
     const id = this.$addressId();
-    if (!id) return;
+    if (!id) {
+      return;
+    }
     return this.semanticLinkService.get({
       type: RouteType.AddressBookEdit,
       id,

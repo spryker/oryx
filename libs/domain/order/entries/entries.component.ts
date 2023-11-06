@@ -33,7 +33,9 @@ export class OrderEntriesComponent
   });
 
   protected override render(): TemplateResult | void {
-    if (!this.$order()) return;
+    if (!this.$order()) {
+      return;
+    }
 
     return html`${[
       this.renderHeading(),
@@ -65,7 +67,9 @@ export class OrderEntriesComponent
    * @deprecated use `oryx-order-heading` component instead
    */
   protected renderHeading(): TemplateResult {
-    if (featureVersion >= '1.2') return html``;
+    if (featureVersion >= '1.2') {
+      return html``;
+    }
 
     return html`<oryx-heading .as=${HeadingTag.H6}>
       <h3>
@@ -77,7 +81,9 @@ export class OrderEntriesComponent
   }
 
   protected renderButton(): TemplateResult | void {
-    if (!this.$isLimited()) return;
+    if (!this.$isLimited()) {
+      return;
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const restItemsCount = this.$order().items.length - this.$options().limit!;

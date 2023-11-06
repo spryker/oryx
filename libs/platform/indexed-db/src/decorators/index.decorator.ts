@@ -16,8 +16,9 @@ function addIndexes(
   propPath: string,
   options?: IndexedDbIndexOptions
 ): void {
-  if (typeof propPath === 'symbol')
+  if (typeof propPath === 'symbol') {
     throw new Error(`A ${String(propPath)} cannot be an index in IndexedDb!`);
+  }
 
   IndexedDbSchemaMetadata.add(target, {
     indexes: [

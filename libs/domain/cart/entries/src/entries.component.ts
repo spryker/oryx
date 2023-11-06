@@ -22,7 +22,9 @@ export class CartEntriesComponent extends CartComponentMixin(
   static styles = cartEntriesStyles;
 
   protected override render(): TemplateResult | void {
-    if (this.$isEmpty()) return;
+    if (this.$isEmpty()) {
+      return;
+    }
 
     return html`
       ${when(

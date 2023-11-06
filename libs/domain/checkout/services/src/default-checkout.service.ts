@@ -81,8 +81,9 @@ export class DefaultCheckoutService implements CheckoutService {
       CartsUpdated,
       AddressModificationSuccess,
       ({ data }) => {
-        if (data?.orders?.length)
+        if (data?.orders?.length) {
           this.orderService.storeLastOrder(data.orders[0], data.userId ?? '');
+        }
       },
       () => this.stateService.clear(),
     ],

@@ -23,8 +23,11 @@ function createSignalPropertyDescriptor<T extends LitElement & SignalKeys>(
       return this[signalKey]();
     },
     set(this: SignalKeys, value: string): void {
-      if (!this[signalKey]) this[signalKey] = signal(value);
-      else this[signalKey].set(value);
+      if (!this[signalKey]) {
+        this[signalKey] = signal(value);
+      } else {
+        this[signalKey].set(value);
+      }
 
       (this as any).requestUpdate(propertyKey);
     },

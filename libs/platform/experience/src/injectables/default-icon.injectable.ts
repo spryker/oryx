@@ -28,21 +28,28 @@ export class DefaultIconInjectable implements IconInjectable {
       mappers?.resources?.find((resource) => resource.types.includes(type))
         ?.resource ?? mappers?.resource;
 
-    if (!source || !type) return of(undefined);
-    if (source.svg)
+    if (!source || !type) {
+      return of(undefined);
+    }
+    if (source.svg) {
       return this.renderSvgIcon(source.mapping?.[type] as LazyLoadable<string>);
+    }
 
     return this.renderFontIcon(source as IconMapper, type, host);
   }
 
   protected setStyles(styles: IconStyles | undefined, host: IconHost): void {
-    if (!styles) return undefined;
+    if (!styles) {
+      return undefined;
+    }
 
     const getValue = (key: string, value: unknown): string =>
       key === 'font' ? `"${value}"` : `${value}`;
 
     for (const [key, value] of Object.entries(styles)) {
-      if (key === 'direction') continue;
+      if (key === 'direction') {
+        continue;
+      }
 
       host.style.setProperty(`--oryx-icon-${key}`, getValue(key, value));
     }
@@ -56,9 +63,15 @@ export class DefaultIconInjectable implements IconInjectable {
     const mapper = (source?.mapping?.[type] ?? type) as IconProps | string;
     const isText = typeof mapper === 'string';
 
-    if (!isText && host && mapper.styles?.direction) host.direction = true;
-    if (host) this.setStyles(source.styles, host);
-    if (!isText && host) this.setStyles(mapper.styles, host);
+    if (!isText && host && mapper.styles?.direction) {
+      host.direction = true;
+    }
+    if (host) {
+      this.setStyles(source.styles, host);
+    }
+    if (!isText && host) {
+      this.setStyles(mapper.styles, host);
+    }
 
     const text = isText ? mapper : mapper.text ?? type;
     const weight = isText
@@ -92,7 +105,9 @@ export class DefaultIconInjectable implements IconInjectable {
   protected renderSvgIcon(
     lazyIcon?: LazyLoadable<string>
   ): Observable<TemplateResult | undefined> {
-    if (!lazyIcon) return of(undefined);
+    if (!lazyIcon) {
+      return of(undefined);
+    }
 
     const icon = resolveLazyLoadable(lazyIcon);
 

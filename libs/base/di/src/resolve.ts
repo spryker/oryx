@@ -32,7 +32,9 @@ export function resolve<K = any>(
   try {
     return getInjector(context).inject(token, defaultValue);
   } catch (error) {
-    if (defaultValue !== undefined) return defaultValue;
+    if (defaultValue !== undefined) {
+      return defaultValue;
+    }
 
     throw error;
   }

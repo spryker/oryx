@@ -70,7 +70,9 @@ export class CheckoutManageAddressComponent extends I18nMixin(
 
   protected renderList(): TemplateResult | void {
     const action = this.$addressState().action;
-    if (action !== CrudState.Read && action !== CrudState.Delete) return;
+    if (action !== CrudState.Read && action !== CrudState.Delete) {
+      return;
+    }
 
     return html`<oryx-user-address-add-button
         .options=${{ target: Target.Inline }}
@@ -90,7 +92,9 @@ export class CheckoutManageAddressComponent extends I18nMixin(
 
   protected renderEditor(): TemplateResult | void {
     const action = this.$addressState().action;
-    if (action !== CrudState.Create && action !== CrudState.Update) return;
+    if (action !== CrudState.Create && action !== CrudState.Update) {
+      return;
+    }
 
     return html`
       <oryx-user-address-edit
@@ -133,10 +137,12 @@ export class CheckoutManageAddressComponent extends I18nMixin(
 
   protected getHeading(): DirectiveResult {
     const action = this.$addressState().action;
-    if (action === CrudState.Create)
+    if (action === CrudState.Create) {
       return this.i18n('checkout.address.add-address');
-    if (action === CrudState.Update)
+    }
+    if (action === CrudState.Update) {
       return this.i18n('checkout.address.edit-address');
+    }
 
     return this.i18n('checkout.address.addresses');
   }

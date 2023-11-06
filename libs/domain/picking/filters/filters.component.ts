@@ -64,7 +64,9 @@ export class PickingFiltersComponent extends I18nMixin(LitElement) {
   }
 
   protected onApply(event: Event): void {
-    if (event instanceof KeyboardEvent && event.key !== 'Enter') return;
+    if (event instanceof KeyboardEvent && event.key !== 'Enter') {
+      return;
+    }
     event.preventDefault();
 
     //For safari 15- and other old browsers

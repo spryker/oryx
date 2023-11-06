@@ -37,13 +37,17 @@ export class ComponentsLoader {
   ): Promise<ComponentType | undefined> {
     const { impl } = def;
 
-    if (isComponentImplStrategy(impl)) return await impl.load(def, meta);
-    else return await resolveLazyLoadable(impl);
+    if (isComponentImplStrategy(impl)) {
+      return await impl.load(def, meta);
+    } else {
+      return await resolveLazyLoadable(impl);
+    }
   }
 
   protected findComponentDefBy(name: string): ComponentDef {
-    if (!this.componentDefMap.has(name))
+    if (!this.componentDefMap.has(name)) {
       throw new ComponentsPluginError(`Component '${name}' is not registered!`);
+    }
 
     // ComponentDef is checked above
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -90,7 +94,9 @@ export class ComponentsLoader {
     const extendedClass = await this.loadComponentDef(def, meta);
 
     // If component not yet loaded - skip definition
-    if (!extendedClass) return;
+    if (!extendedClass) {
+      return;
+    }
 
     this.useComponent(name, true);
 
@@ -147,7 +153,9 @@ export class ComponentsLoader {
     def: ComponentDef,
     meta: ComponentImplMeta
   ): Promise<ComponentDef | undefined> {
-    if (!isComponentImplStrategy(def.impl) && !this.options.preload) return;
+    if (!isComponentImplStrategy(def.impl) && !this.options.preload) {
+      return;
+    }
 
     const componentDef = await this.loadComponentDef(def, meta);
 
@@ -170,15 +178,20 @@ export class ComponentsLoader {
     ]);
     const { componentClass, ...restResolvers } = resolved.reduce(
       (acc: ComponentMap, value, index) => {
-        if (index === 0) acc.componentClass = value as ComponentType;
-        else acc[resolversEntries[index - 1][0]] = value;
+        if (index === 0) {
+          acc.componentClass = value as ComponentType;
+        } else {
+          acc[resolversEntries[index - 1][0]] = value;
+        }
 
         return acc;
       },
       {} as ComponentMap
     ) as ComponentMap;
 
-    if (!componentClass) return;
+    if (!componentClass) {
+      return;
+    }
 
     const extendedClass = componentExtender(componentClass, def.name);
 
@@ -193,7 +206,9 @@ export class ComponentsLoader {
   getComponentClass(tag: string): (ComponentType & ComponentStatic) | void {
     const component = this.componentMap.get(tag);
 
-    if (component) return Object.getPrototypeOf(component.extendedClass);
+    if (component) {
+      return Object.getPrototypeOf(component.extendedClass);
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

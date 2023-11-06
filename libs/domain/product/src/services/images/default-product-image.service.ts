@@ -27,20 +27,25 @@ export class DefaultProductImageService implements ProductImageService {
     image?: ProductMedia,
     format?: ProductMediaContainerSize
   ): ImageSource[] {
-    if (!image || !format) return [];
+    if (!image || !format) {
+      return [];
+    }
 
     const config = this.mediaConfig[format];
     const sources = [];
 
     config?.sizes?.forEach(({ size, context }) => {
       const url = image[size];
-      if (url && this.compliesWithContext(context))
+      if (url && this.compliesWithContext(context)) {
         sources.push({ url, size, context });
+      }
     });
 
     if (!sources.length) {
       const alternative = this.resolveAlternative(image, format);
-      if (alternative) sources.push(alternative);
+      if (alternative) {
+        sources.push(alternative);
+      }
     }
     return sources;
   }
@@ -75,7 +80,9 @@ export class DefaultProductImageService implements ProductImageService {
         }
       });
     }
-    if (!source) source = this.findUnassignedSize(image);
+    if (!source) {
+      source = this.findUnassignedSize(image);
+    }
 
     return source;
   }

@@ -23,8 +23,9 @@ export class ProductTitleComponent extends ProductMixin(
   protected semanticLinkService = resolve(LinkService);
 
   protected $link = computed(() => {
-    if (!this.$options().linkType || this.$options().linkType === 'none')
+    if (!this.$options().linkType || this.$options().linkType === 'none') {
       return null;
+    }
 
     return this.semanticLinkService.get({
       type: RouteType.Product,

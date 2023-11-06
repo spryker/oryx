@@ -157,11 +157,15 @@ export class DefaultContentfulContentAdapter implements ContentAdapter {
 
   protected getParams(qualifier: Record<string, unknown>): string {
     return Object.entries(qualifier).reduce((acc, [key, value]) => {
-      if (key === 'id' || key === 'entities') return acc;
+      if (key === 'id' || key === 'entities') {
+        return acc;
+      }
 
       const param = `${key === 'type' ? 'content_type' : key}=${value}`;
 
-      if (!acc.length) return param;
+      if (!acc.length) {
+        return param;
+      }
 
       return `${acc}&${param}`;
     }, '');

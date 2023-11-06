@@ -16,10 +16,13 @@ export class DefaultTokenService implements TokenResolver {
   protected injector = inject(INJECTOR);
 
   resolveToken(token: string): ResolvedToken {
-    if (this.isConditionalToken(token))
+    if (this.isConditionalToken(token)) {
       return this.resolveConditionalToken(token);
+    }
 
-    if (!this.isToken(token)) return of(token);
+    if (!this.isToken(token)) {
+      return of(token);
+    }
 
     return this.resolveSimpleToken(token);
   }
@@ -36,7 +39,9 @@ export class DefaultTokenService implements TokenResolver {
       (token) => !invalidTokens.includes(token)
     );
 
-    if (!tokensToResolve.length) return of(false);
+    if (!tokensToResolve.length) {
+      return of(false);
+    }
 
     const resolvedTokens = tokensToResolve.map((token) =>
       this.resolveToken(token)

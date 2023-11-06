@@ -44,7 +44,9 @@ export class OrderTotalsResolver implements TotalsResolver {
       : this.getFromContext();
     return source.pipe(
       map((order) => {
-        if (!order) return null;
+        if (!order) {
+          return null;
+        }
 
         const {
           totals,

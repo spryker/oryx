@@ -8,18 +8,22 @@ const waitForBVObject = (
   const startTime = Date.now();
   const timeout = 10000;
 
-  if ((window as any).$BV) resolve((window as any).$BV);
-  else if (Date.now() - startTime > timeout)
+  if ((window as any).$BV) {
+    resolve((window as any).$BV);
+  } else if (Date.now() - startTime > timeout) {
     reject('Timed out waiting for $BV object to be available.');
-  else setTimeout(() => waitForBVObject(resolve, reject), 100);
+  } else {
+    setTimeout(() => waitForBVObject(resolve, reject), 100);
+  }
 };
 
 export const loadBvScript = (): Promise<any> => {
   return new Promise(function (resolve, reject) {
     const scriptElement = document.getElementById(scriptId);
 
-    if (scriptElement) waitForBVObject(resolve, reject);
-    else {
+    if (scriptElement) {
+      waitForBVObject(resolve, reject);
+    } else {
       const script = document.createElement('script');
       script.src = scriptSrc;
       script.id = scriptId;

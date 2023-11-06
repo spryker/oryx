@@ -101,7 +101,9 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
 
   protected renderLoading(): TemplateResult {
     const locations = this.$locations();
-    if (locations?.length === 1) this.selectWarehouse(locations[0].id);
+    if (locations?.length === 1) {
+      this.selectWarehouse(locations[0].id);
+    }
 
     return html`
       <div class="loading">

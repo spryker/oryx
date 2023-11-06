@@ -176,7 +176,9 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
   }
 
   protected scheduleSync(): void {
-    if (this.scheduleSyncTimer !== undefined) return;
+    if (this.scheduleSyncTimer !== undefined) {
+      return;
+    }
 
     this.scheduleSyncTimer = setTimeout(async () => {
       const sync = (await this.getServiceWorker()).sync;

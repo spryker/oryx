@@ -24,7 +24,9 @@ export class SimpleAppBuilder<T = ''> implements AppBuilder<T> {
 
     await this.forEveryPlugin((plugin) => {
       app.registerPlugin(plugin);
-      if (isAppPluginBeforeApply(plugin)) return plugin.beforeApply(app);
+      if (isAppPluginBeforeApply(plugin)) {
+        return plugin.beforeApply(app);
+      }
     });
 
     await this.forEveryPlugin((plugin) => {
@@ -32,7 +34,9 @@ export class SimpleAppBuilder<T = ''> implements AppBuilder<T> {
     });
 
     await this.forEveryPlugin((plugin) => {
-      if (isAppPluginAfterApply(plugin)) return plugin.afterApply(app);
+      if (isAppPluginAfterApply(plugin)) {
+        return plugin.afterApply(app);
+      }
     });
 
     app.markReady();

@@ -60,12 +60,17 @@ export class ProductPriceComponent extends ProductMixin(
    * @deprecated since 1.2.0.
    */
   protected $salesPrice = computed(() => {
-    if (this.sales) return this.sales;
+    if (this.sales) {
+      return this.sales;
+    }
 
     const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
 
-    if (defaultPrice) return this.isValid(defaultPrice) && defaultPrice.value;
-    else return this.isValid(originalPrice) && originalPrice?.value;
+    if (defaultPrice) {
+      return this.isValid(defaultPrice) && defaultPrice.value;
+    } else {
+      return this.isValid(originalPrice) && originalPrice?.value;
+    }
   });
 
   /**
@@ -75,9 +80,11 @@ export class ProductPriceComponent extends ProductMixin(
   protected $originalPrice = computed(() => {
     const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
 
-    if (this.sales && !originalPrice && this.sales !== defaultPrice?.value)
+    if (this.sales && !originalPrice && this.sales !== defaultPrice?.value) {
       return this.isValid(defaultPrice) && defaultPrice?.value;
-    else return this.isValid(originalPrice) && originalPrice?.value;
+    } else {
+      return this.isValid(originalPrice) && originalPrice?.value;
+    }
   });
 
   /**
@@ -109,7 +116,9 @@ export class ProductPriceComponent extends ProductMixin(
       const { defaultPrice, originalPrice } = this.$product()?.price ?? {};
       const price = defaultPrice?.value ? defaultPrice : originalPrice;
 
-      if (!price) return;
+      if (!price) {
+        return;
+      }
 
       return html`<oryx-site-price
         .value=${price.value}
@@ -120,7 +129,9 @@ export class ProductPriceComponent extends ProductMixin(
       ></oryx-site-price>`;
     } else {
       const price = this.$salesPrice();
-      if (!price) return;
+      if (!price) {
+        return;
+      }
 
       return html`<oryx-site-price
         .value=${price}
@@ -142,8 +153,9 @@ export class ProductPriceComponent extends ProductMixin(
       if (
         !this.$options().enableOriginalPrice ||
         defaultPrice?.value === originalPrice?.value
-      )
+      ) {
         return;
+      }
 
       return html`<oryx-site-price
         .value=${originalPrice?.value}
@@ -153,7 +165,9 @@ export class ProductPriceComponent extends ProductMixin(
       ></oryx-site-price>`;
     } else {
       const price = this.$originalPrice();
-      if (!price) return;
+      if (!price) {
+        return;
+      }
 
       return html`<oryx-site-price
         .value=${price}
@@ -173,8 +187,9 @@ export class ProductPriceComponent extends ProductMixin(
     if (
       !this.$options().enableTaxMessage ||
       (!defaultPrice?.value && !originalPrice?.value)
-    )
+    ) {
       return;
+    }
 
     return html`<span part="tax">
       ${this.i18n(
@@ -188,7 +203,9 @@ export class ProductPriceComponent extends ProductMixin(
   }
 
   protected renderSalesLabel(): TemplateResult | void {
-    if (!this.$options().enableSalesLabel) return;
+    if (!this.$options().enableSalesLabel) {
+      return;
+    }
 
     return html`
       <oryx-product-labels

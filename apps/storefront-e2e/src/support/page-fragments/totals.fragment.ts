@@ -24,20 +24,25 @@ export class TotalsFragment {
   }) {
     this.getWrapper().should('be.visible');
 
-    if (totals.subTotal)
+    if (totals.subTotal) {
       this.getSubtotalPrice().shadow().should('contain.text', totals.subTotal);
+    }
 
     if (totals.discountsTotal) {
       this.getDiscountsTotal()
         .shadow()
         .should('contain.text', totals.discountsTotal);
-    } else this.getDiscountsWrapper().should('not.exist');
+    } else {
+      this.getDiscountsWrapper().should('not.exist');
+    }
 
-    if (totals.totalPrice)
+    if (totals.totalPrice) {
       this.getTotalPrice().shadow().should('contain.text', totals.totalPrice);
+    }
 
-    if (totals.taxTotal)
+    if (totals.taxTotal) {
       this.getTaxTotalPrice().shadow().should('contain.text', totals.taxTotal);
+    }
 
     this.getTaxMessage()
       .should('be.visible')

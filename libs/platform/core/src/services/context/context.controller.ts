@@ -2,11 +2,11 @@ import { resolve } from '@spryker-oryx/di';
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import {
   BehaviorSubject,
+  EMPTY,
+  Observable,
   combineLatest,
   distinctUntilChanged,
-  EMPTY,
   map,
-  Observable,
   of,
   skip,
   startWith,
@@ -39,8 +39,9 @@ export class ContextController implements ReactiveController {
     ]).pipe(
       skip(1),
       tap(([overrideContext, context]) => {
-        if (overrideContext)
+        if (overrideContext) {
           this.context?.provide(this.host, key, overrideContext);
+        }
       }),
       map(([overrideContext, context]) => overrideContext ?? context),
       distinctUntilChanged()

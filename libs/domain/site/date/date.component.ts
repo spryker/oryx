@@ -25,9 +25,13 @@ export class DateComponent extends ContentMixin<DateComponentAttributes>(
   );
 
   protected override render(): TemplateResult | void {
-    if (!this.$date()) return;
-    if (this.i18nToken)
+    if (!this.$date()) {
+      return;
+    }
+    if (this.i18nToken) {
       return html`${this.i18n(this.i18nToken, { date: this.$date() })}`;
-    else return html`${this.$date()}`;
+    } else {
+      return html`${this.$date()}`;
+    }
   }
 }

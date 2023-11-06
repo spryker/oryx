@@ -41,7 +41,9 @@ export class ProductImagesComponent extends ProductMixin(
   @state() active?: number;
 
   protected override render(): TemplateResult | void {
-    if (!this.$product()) return;
+    if (!this.$product()) {
+      return;
+    }
 
     const {
       navigationPosition = defaultImagesOptions.navigationPosition,
@@ -79,7 +81,9 @@ export class ProductImagesComponent extends ProductMixin(
       scrollBehavior,
     } = this.$options();
 
-    if (!media.length || imageLayout === ProductImagesMainLayout.None) return;
+    if (!media.length || imageLayout === ProductImagesMainLayout.None) {
+      return;
+    }
 
     return html`<oryx-layout
       class="main"
@@ -115,8 +119,9 @@ export class ProductImagesComponent extends ProductMixin(
       navigationObjectFit: objectFit = defaultImagesOptions.navigationObjectFit,
     } = this.$options();
 
-    if (media.length < 2 || display === ProductImagesNavigationDisplay.None)
+    if (media.length < 2 || display === ProductImagesNavigationDisplay.None) {
       return;
+    }
 
     const isVertical =
       position === NavigationPosition.Start ||

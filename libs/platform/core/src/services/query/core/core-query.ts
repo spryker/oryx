@@ -63,7 +63,9 @@ export class CoreQuery<
 
   protected prepareKey(qualifier: Qualifier): string {
     const key = this.getKey(qualifier);
-    if (!this.queryCache.has(key)) this.setupQueryState(key, qualifier);
+    if (!this.queryCache.has(key)) {
+      this.setupQueryState(key, qualifier);
+    }
 
     return key;
   }
@@ -92,7 +94,9 @@ export class CoreQuery<
       reset$,
     ]).pipe(
       tap(() => {
-        if (subject$.value !== initialState) subject$.next(initialState);
+        if (subject$.value !== initialState) {
+          subject$.next(initialState);
+        }
       })
     );
 
@@ -152,7 +156,9 @@ export class CoreQuery<
           unsubscribe: () => {
             subscription.unsubscribe();
             // we have to reset loading flag, if loading was interrupted by unsubscribe
-            if (subject$.value.loading) subject$.value.loading = false;
+            if (subject$.value.loading) {
+              subject$.value.loading = false;
+            }
 
             if (this.options.volatile) {
               // if query is volatile set it to initial state
@@ -215,14 +221,16 @@ export class CoreQuery<
 
   reset(qualifier: Qualifier): void {
     const key = this.getKey(qualifier);
-    if (this.queryCache.has(key))
+    if (this.queryCache.has(key)) {
       this.queryCache.get(key)!.reset$.next(undefined);
+    }
   }
 
   refresh(qualifier: Qualifier): void {
     const key = this.getKey(qualifier);
-    if (this.queryCache.has(key))
+    if (this.queryCache.has(key)) {
       this.queryCache.get(key)!.refresh$.next(undefined);
+    }
   }
 
   protected onLoad(data: ValueType, qualifier?: Qualifier): void {
@@ -249,7 +257,9 @@ export class CoreQuery<
       data,
       error
     );
-    if (event) this.manager.emit(event);
+    if (event) {
+      this.manager.emit(event);
+    }
   }
 
   protected getTriggerStream(

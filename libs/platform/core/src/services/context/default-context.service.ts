@@ -35,7 +35,9 @@ export class DefaultContextService implements ContextService {
     element.setAttribute(this.getAttributeName(key), stringifiedValue);
 
     if (!this.hasKey(element, key)) {
-      if (!this.manifest.has(element)) this.manifest.set(element, new Map());
+      if (!this.manifest.has(element)) {
+        this.manifest.set(element, new Map());
+      }
 
       this.manifest.get(element)!.set(key, new BehaviorSubject(value));
 
@@ -55,8 +57,9 @@ export class DefaultContextService implements ContextService {
           const { element: currentElement, elementWithAttr } =
             this.closestPassShadow(element, this.getAttributeName(key));
 
-          if (currentElement && this.hasKey(currentElement, key))
+          if (currentElement && this.hasKey(currentElement, key)) {
             return this.manifest.get(currentElement)!.get(key)!;
+          }
 
           if (elementWithAttr) {
             let value: string | undefined = elementWithAttr.getAttribute(
@@ -84,7 +87,9 @@ export class DefaultContextService implements ContextService {
   remove(element: Element, key: string): void {
     element.removeAttribute(this.getAttributeName(key));
 
-    if (!this.hasKey(element, key)) return;
+    if (!this.hasKey(element, key)) {
+      return;
+    }
 
     const namespaceValues = this.manifest.get(element)!;
     const subject$ = namespaceValues.get(key)!;
@@ -93,7 +98,9 @@ export class DefaultContextService implements ContextService {
     subject$.complete();
     namespaceValues.delete(key);
 
-    if (!namespaceValues.size) this.manifest.delete(element);
+    if (!namespaceValues.size) {
+      this.manifest.delete(element);
+    }
 
     this.triggerManifest$.next();
   }
@@ -119,7 +126,9 @@ export class DefaultContextService implements ContextService {
   }
 
   protected hasKey(element: Element, key: string): boolean {
-    if (!this.manifest.has(element)) return false;
+    if (!this.manifest.has(element)) {
+      return false;
+    }
 
     return this.manifest.get(element)!.has(key);
   }
@@ -140,7 +149,9 @@ export class DefaultContextService implements ContextService {
     while (isElement(element)) {
       const result = this.closest(element, selector);
 
-      if (result) return result;
+      if (result) {
+        return result;
+      }
 
       element = element.getRootNode?.().host;
     }

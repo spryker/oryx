@@ -88,7 +88,9 @@ export class ProductListComponent extends ProductMixin(
         params: Record<string | number, string>,
         key: keyof ProductListQualifier
       ) => {
-        if (options[key]) params[key] = options[key] as string;
+        if (options[key]) {
+          params[key] = options[key] as string;
+        }
 
         return params;
       },

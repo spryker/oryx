@@ -23,7 +23,9 @@ export class DefaultFontService implements FontService {
     const regex = /font(-family)?\s*:\s*[^'"]*['|"](.*?)['|"]/g;
 
     let match;
-    while ((match = regex.exec(text)) !== null) fontsSet.add(match[2]);
+    while ((match = regex.exec(text)) !== null) {
+      fontsSet.add(match[2]);
+    }
 
     const fonts = Array.from(fontsSet);
     return fonts;

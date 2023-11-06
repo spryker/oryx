@@ -44,8 +44,11 @@ export class MultiRangeComponent
   }
   set min(value: number) {
     const oldValue = this._min;
-    if (featureVersion >= '1.2') this._min = value;
-    else this._min = value >= this.max ? this.max - this.step : value;
+    if (featureVersion >= '1.2') {
+      this._min = value;
+    } else {
+      this._min = value >= this.max ? this.max - this.step : value;
+    }
 
     this.requestUpdate('min', oldValue);
   }
@@ -57,8 +60,11 @@ export class MultiRangeComponent
   }
   set max(value: number) {
     const oldValue = this._max;
-    if (featureVersion >= '1.2') this._max = value;
-    else this._max = value <= this.min ? this.min + this.step : value;
+    if (featureVersion >= '1.2') {
+      this._max = value;
+    } else {
+      this._max = value <= this.min ? this.min + this.step : value;
+    }
 
     this.requestUpdate('max', oldValue);
   }
@@ -70,16 +76,18 @@ export class MultiRangeComponent
   }
   set minValue(value: number) {
     const oldValue = this._minValue;
-    if (featureVersion >= '1.2') this._minValue = value;
-    else {
+    if (featureVersion >= '1.2') {
+      this._minValue = value;
+    } else {
       this._minValue =
         value <= this.min
           ? this.min
           : value >= this.maxValue
           ? this.maxValue - this.step
           : value;
-      if (this.inputMinRef?.value)
+      if (this.inputMinRef?.value) {
         this.inputMinRef.value.value = String(this._minValue);
+      }
     }
     this.requestUpdate('minValue', oldValue);
   }
@@ -91,16 +99,18 @@ export class MultiRangeComponent
   }
   set maxValue(value: number) {
     const oldValue = this._maxValue;
-    if (featureVersion >= '1.2') this._maxValue = value;
-    else {
+    if (featureVersion >= '1.2') {
+      this._maxValue = value;
+    } else {
       this._maxValue =
         value >= this.max
           ? this.max
           : value <= this.minValue
           ? this.minValue + this.step
           : value;
-      if (this.inputMaxRef?.value)
+      if (this.inputMaxRef?.value) {
         this.inputMaxRef.value.value = String(this._maxValue);
+      }
     }
     this.requestUpdate('maxValue', oldValue);
   }
@@ -119,8 +129,9 @@ export class MultiRangeComponent
   }
 
   update(changedProperties: PropertyValues): void {
-    if (featureVersion < '1.2')
+    if (featureVersion < '1.2') {
       this.setPercentages(this.minValue, this.maxValue);
+    }
 
     super.update(changedProperties);
   }
@@ -139,7 +150,9 @@ export class MultiRangeComponent
   }
 
   protected willUpdate(properties: PropertyValues<MultiRangeProperties>): void {
-    if (featureVersion >= '1.2') this.updateValues(properties);
+    if (featureVersion >= '1.2') {
+      this.updateValues(properties);
+    }
 
     super.willUpdate(properties);
   }
@@ -147,7 +160,9 @@ export class MultiRangeComponent
   protected updateValues(
     properties: PropertyValues<MultiRangeProperties>
   ): void {
-    if (this.hasInvalidRange() || !this.hasDiffs(properties)) return;
+    if (this.hasInvalidRange() || !this.hasDiffs(properties)) {
+      return;
+    }
 
     let minValue = this.minValue!;
     let maxValue = this.maxValue!;
@@ -158,11 +173,19 @@ export class MultiRangeComponent
     const maxInRange = maxValue >= min + this.step && maxValue <= max;
     const minBeforeMax = minValue <= maxValue - this.step;
 
-    if (!minInRange || !minBeforeMax) minValue = min;
-    if (!maxInRange || !minBeforeMax) maxValue = max;
+    if (!minInRange || !minBeforeMax) {
+      minValue = min;
+    }
+    if (!maxInRange || !minBeforeMax) {
+      maxValue = max;
+    }
 
-    if (this.minValue !== minValue) this.minValue = minValue;
-    if (this.maxValue !== maxValue) this.maxValue = maxValue;
+    if (this.minValue !== minValue) {
+      this.minValue = minValue;
+    }
+    if (this.maxValue !== maxValue) {
+      this.maxValue = maxValue;
+    }
 
     this.setPercentages(minValue, maxValue);
     this.syncValues(minValue, maxValue);
@@ -182,11 +205,13 @@ export class MultiRangeComponent
     this.activeMin = minValue;
     this.activeMax = maxValue;
 
-    if (this.inputMinRef?.value)
+    if (this.inputMinRef?.value) {
       this.inputMinRef.value.value = String(minValue);
+    }
 
-    if (this.inputMaxRef?.value)
+    if (this.inputMaxRef?.value) {
       this.inputMaxRef.value.value = String(maxValue);
+    }
   }
 
   protected hasInvalidRange(): boolean {
@@ -264,20 +289,25 @@ export class MultiRangeComponent
         return;
       }
 
-      if (isFirst) this.activeMin = value;
-      else this.activeMax = value;
+      if (isFirst) {
+        this.activeMin = value;
+      } else {
+        this.activeMax = value;
+      }
 
       this.dispatchRangeEvent(DRAG_EVENT, this.activeMin!, this.activeMax!);
       this.setPercentages(this.activeMin!, this.activeMax!);
     } else {
       if (isFirst) {
-        if (value >= this.maxValue)
+        if (value >= this.maxValue) {
           input.value = String(this.maxValue - this.step);
+        }
 
         this.minValue = Number(input.value);
       } else {
-        if (value <= this.minValue)
+        if (value <= this.minValue) {
           input.value = String(this.minValue + this.step);
+        }
 
         this.maxValue = Number(input.value);
       }
@@ -285,7 +315,9 @@ export class MultiRangeComponent
   }
 
   protected onSelect(): void {
-    if (featureVersion < '1.2') return;
+    if (featureVersion < '1.2') {
+      return;
+    }
 
     const minValue = (this.minValue = this.activeMin!);
     const maxValue = (this.maxValue = this.activeMax!);

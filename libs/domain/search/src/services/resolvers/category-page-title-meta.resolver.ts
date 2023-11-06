@@ -27,7 +27,9 @@ export class CategoryPageTitleMetaResolver implements PageMetaResolver {
       switchMap(() => {
         const categoryId = this.router.getPathId('category');
 
-        if (!categoryId) return of({});
+        if (!categoryId) {
+          return of({});
+        }
 
         return this.facets.get().pipe(
           map((facets) => {
@@ -44,7 +46,9 @@ export class CategoryPageTitleMetaResolver implements PageMetaResolver {
                 };
               }
 
-              if (item.children) list.push(...item.children);
+              if (item.children) {
+                list.push(...item.children);
+              }
             }
 
             return {};

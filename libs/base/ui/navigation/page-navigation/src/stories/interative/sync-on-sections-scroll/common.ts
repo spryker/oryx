@@ -33,7 +33,9 @@ export const playStory = async (
   const sectionsContainer = window.document.querySelector('.scroll-container');
 
   expect(sectionsContainer).not.toBeNull();
-  if (!sectionsContainer) return;
+  if (!sectionsContainer) {
+    return;
+  }
 
   const getActiveNavItem = (): PageNavigationItemComponent => {
     return canvasElement.querySelector(

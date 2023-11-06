@@ -31,7 +31,9 @@ export const serverContext = (options: ContextOptions): any => {
     },
   });
 
-  if (!window.fetch) window.fetch = fetch;
+  if (!window.fetch) {
+    window.fetch = fetch;
+  }
 
   window.setTimeout = setTimeout;
   window.clearTimeout = clearTimeout;

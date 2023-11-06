@@ -39,7 +39,9 @@ export class CoreQueryManager implements QueryManager {
       this,
       this.destroy$
     );
-    if (options.id) this.queries.set(options.id, query);
+    if (options.id) {
+      this.queries.set(options.id, query);
+    }
 
     return query;
   }
@@ -59,7 +61,9 @@ export class CoreQueryManager implements QueryManager {
       this,
       this.destroy$
     );
-    if (options.id) this.commands.set(options.id, command);
+    if (options.id) {
+      this.commands.set(options.id, command);
+    }
 
     return command;
   }

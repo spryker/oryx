@@ -24,7 +24,9 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
         combineLatest([
           resolver.getScore().pipe(
             map((score) => {
-              if (Array.isArray(score)) return score.filter((x) => !!x).length;
+              if (Array.isArray(score)) {
+                return score.filter((x) => !!x).length;
+              }
 
               return score;
             })
@@ -52,8 +54,9 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
         if (
           newData[key as keyof typeof newData] !==
           oldData[key as keyof typeof oldData]
-        )
+        ) {
           continue;
+        }
 
         delete oldData[key as keyof typeof oldData];
       }
@@ -86,8 +89,9 @@ export class DefaultPageMetaResolverService implements PageMetaResolverService {
 
   protected normalize(data: Record<string, string>): ElementDefinition[] {
     return Object.entries(data).map(([name, content]) => {
-      if (name === 'description' && (content as string)?.length > 400)
+      if (name === 'description' && (content as string)?.length > 400) {
         content = `${(content as string).substring(0, 400)}...`;
+      }
 
       return {
         name,

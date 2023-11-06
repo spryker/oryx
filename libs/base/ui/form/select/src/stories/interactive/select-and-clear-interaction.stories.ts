@@ -26,7 +26,9 @@ SelectAndClear.play = async (obj: {
   canvasElement: HTMLElement;
 }): Promise<void> => {
   const forEach = async (arr: unknown[], cb: any): Promise<void> => {
-    for (const item of arr) await cb(item);
+    for (const item of arr) {
+      await cb(item);
+    }
   };
 
   const keyboard = async (key: string, times = 1): Promise<void> => {

@@ -21,18 +21,29 @@ export function treewalk(
   const elements: HTMLElement[] = [];
 
   for (const node of nodes) {
-    if (!node) continue;
+    if (!node) {
+      continue;
+    }
 
-    if (node.nodeType !== Node.ELEMENT_NODE) continue;
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      continue;
+    }
 
-    if (node.children.length) nodes.push(...node.children);
+    if (node.children.length) {
+      nodes.push(...node.children);
+    }
 
-    if (node.shadowRoot?.children.length)
+    if (node.shadowRoot?.children.length) {
       nodes.push(...node.shadowRoot.children);
+    }
 
-    if (!includeRoot && node.matches(rootNode.tagName.toLowerCase())) continue;
+    if (!includeRoot && node.matches(rootNode.tagName.toLowerCase())) {
+      continue;
+    }
 
-    if (node.matches(selector)) elements.push(node as HTMLElement);
+    if (node.matches(selector)) {
+      elements.push(node as HTMLElement);
+    }
   }
 
   return elements;
@@ -105,11 +116,15 @@ export function enableEventsForHydration(
   const elements = getHydrationElements(container);
   const events = [];
 
-  if (elements.length === 0) return;
+  if (elements.length === 0) {
+    return;
+  }
 
   for (let i = 0; i < elements.length; i++) {
     const element = elements[i];
-    if (!element[HYDRATION_EVENTS]) continue;
+    if (!element[HYDRATION_EVENTS]) {
+      continue;
+    }
 
     events[i] = element[HYDRATION_EVENTS].events;
     hydrationEventsAction(element, true);
@@ -122,7 +137,9 @@ export function repeatHydrationEvents(
   container: ShadowRoot,
   data?: Event[][]
 ): void {
-  if (!data?.length) return;
+  if (!data?.length) {
+    return;
+  }
 
   const elements = getHydrationElements(container);
 
@@ -130,7 +147,9 @@ export function repeatHydrationEvents(
     const element = elements[i];
     const events = data[i];
 
-    if (!events?.length) continue;
+    if (!events?.length) {
+      continue;
+    }
 
     for (const event of events) {
       if (event.type === 'focusin') {
@@ -156,16 +175,23 @@ export const getHydrationEventsModes = (
 ): string[] => {
   const events = getHydrationElements(container);
 
-  if (!events.length) return types;
+  if (!events.length) {
+    return types;
+  }
 
   const hasEvents = events.some((el) => el[HYDRATION_EVENTS]?.events?.length);
 
-  if (hasEvents) return ['window:load'];
+  if (hasEvents) {
+    return ['window:load'];
+  }
 
   return events.reduce<string[]>(
     (acc, element) => {
-      for (const event of parseHydrationEventsTypes(element))
-        if (!acc.includes(event.trim())) acc.push(event.trim());
+      for (const event of parseHydrationEventsTypes(element)) {
+        if (!acc.includes(event.trim())) {
+          acc.push(event.trim());
+        }
+      }
 
       return acc;
     },

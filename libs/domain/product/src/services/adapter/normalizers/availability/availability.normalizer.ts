@@ -7,7 +7,9 @@ export const AvailabilityNormalizer = 'oryx.AvailabilityNormalizer*';
 export function availabilityNormalizer(
   data: DeserializedAvailability | undefined
 ): ProductAvailability | undefined {
-  if (!data) return;
+  if (!data) {
+    return;
+  }
 
   const { id, ...availability } = data;
 

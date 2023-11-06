@@ -20,7 +20,9 @@ export function getControl<
     flatten: true,
   });
 
-  if (control === undefined) throw new NoFormControlError();
+  if (control === undefined) {
+    throw new NoFormControlError();
+  }
 
   return control;
 }

@@ -21,7 +21,9 @@ export class ContentVideoComponent extends ContentMixin<ContentVideoOptions>(
   protected override render(): TemplateResult | void {
     const options = this.$options();
 
-    if (!options?.src) return;
+    if (!options?.src) {
+      return;
+    }
 
     return html`<oryx-video
       .url=${options.src}

@@ -42,7 +42,9 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
   protected override render(): TemplateResult | void {
     const facet = this.facet();
 
-    if (!facet) return;
+    if (!facet) {
+      return;
+    }
 
     const valuesLength = facet.filteredValueLength ?? facet.valuesTreeLength;
     const selectedLength = facet.selectedValues?.length;
@@ -72,7 +74,9 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
   }
 
   protected renderValues(values?: FacetValue[]): TemplateResult | void {
-    if (!values?.length) return;
+    if (!values?.length) {
+      return;
+    }
 
     return html`<ul>
       ${repeat(

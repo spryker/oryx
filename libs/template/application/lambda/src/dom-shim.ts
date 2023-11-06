@@ -82,7 +82,9 @@ export const getWindow: ({
           console.error(...args);
         },
         assert(bool: boolean, msg: string) {
-          if (!bool) throw new Error(msg);
+          if (!bool) {
+            throw new Error(msg);
+          }
         },
       },
     });

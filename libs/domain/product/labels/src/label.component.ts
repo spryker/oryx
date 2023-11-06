@@ -20,7 +20,9 @@ export class ProductLabelsComponent extends ProductMixin(
 
   protected override render(): TemplateResult | void {
     const labels = this.$labels();
-    if (!labels) return;
+    if (!labels) {
+      return;
+    }
 
     return html`${labels.map(
       (label) => html`<oryx-chip
@@ -42,7 +44,9 @@ export class ProductLabelsComponent extends ProductMixin(
     const options = this.$options();
     const labels = this.$product()?.labels;
 
-    if (!options || !labels) return labels;
+    if (!options || !labels) {
+      return labels;
+    }
 
     return labels?.filter(
       (label) =>

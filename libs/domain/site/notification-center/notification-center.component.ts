@@ -30,12 +30,17 @@ export class SiteNotificationCenterComponent extends ContentMixin<SiteNotificati
   protected notification$ = async (): Promise<void> => {
     const notification = this.$notification();
 
-    if (!notification || Object.keys(notification).length === 0) return;
-    if (!(this.centerRef.value && 'open' in this.centerRef.value))
+    if (!notification || Object.keys(notification).length === 0) {
+      return;
+    }
+    if (!(this.centerRef.value && 'open' in this.centerRef.value)) {
       await customElements.whenDefined('oryx-notification-center');
+    }
 
     const autoCloseTime = this.$options().autoCloseTime;
-    if (autoCloseTime) notification.autoCloseTime ??= autoCloseTime * 1000;
+    if (autoCloseTime) {
+      notification.autoCloseTime ??= autoCloseTime * 1000;
+    }
 
     this.centerRef.value?.open(notification);
   };

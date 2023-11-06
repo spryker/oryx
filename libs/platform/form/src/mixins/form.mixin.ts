@@ -32,12 +32,17 @@ export const FormMixin = <
     submit(): void {
       const form = this.getForm();
 
-      if (!form) throw new Error('Form element is not provided');
+      if (!form) {
+        throw new Error('Form element is not provided');
+      }
 
       // For safari 15- and other old browsers
       if (!form.requestSubmit) {
-        if (!form.checkValidity()) form.reportValidity();
-        else form.submit();
+        if (!form.checkValidity()) {
+          form.reportValidity();
+        } else {
+          form.submit();
+        }
 
         return;
       }

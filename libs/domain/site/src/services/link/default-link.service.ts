@@ -17,8 +17,9 @@ export class DefaultLinkService implements LinkService {
           routes?.find((route) => route.type === link.type) ??
           routes?.find((route) => route.type === RouteType.Page);
 
-        if (!route || !isRouterPath(route))
+        if (!route || !isRouterPath(route)) {
           return throwError(() => new Error('Link type is not supported'));
+        }
 
         const dynamicId =
           link.type && link.id
@@ -30,7 +31,9 @@ export class DefaultLinkService implements LinkService {
           ? `?${this.getUrlParams(link.params)}`
           : '';
         const parts = route.path.split('/');
-        if (dynamicId) parts.pop();
+        if (dynamicId) {
+          parts.pop();
+        }
 
         const path = `${parts.join('/')}${
           dynamicId ? `/${dynamicId}` : ''

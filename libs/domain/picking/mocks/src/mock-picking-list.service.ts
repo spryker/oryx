@@ -32,7 +32,9 @@ export class MockPickingListService implements Partial<PickingListService> {
   }
 
   get(qualifier?: PickingListQualifier): Observable<PickingList[]> {
-    if (this.isEmpty) return of([]);
+    if (this.isEmpty) {
+      return of([]);
+    }
 
     const { ids: qIds, status: qStatus } = qualifier ?? {};
     const filteredData = mockPickingListData.filter(({ id, status }) => {

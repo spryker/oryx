@@ -18,12 +18,16 @@ export class ContentTextComponent extends ContentMixin<
   @elementEffect()
   protected installFonts = (): void => {
     const text = this.$content()?.text;
-    if (text && this.$options().autoInstallFont) this.fontService.install(text);
+    if (text && this.$options().autoInstallFont) {
+      this.fontService.install(text);
+    }
   };
 
   protected override render(): TemplateResult | void {
     const text = this.$content()?.text;
-    if (!text) return;
+    if (!text) {
+      return;
+    }
     return html`<oryx-text .content=${text}></oryx-text>`;
   }
 }

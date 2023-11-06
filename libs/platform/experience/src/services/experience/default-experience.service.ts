@@ -50,7 +50,9 @@ export class DefaultExperienceService implements ExperienceService {
     const components = [_component];
 
     for (const component of components) {
-      if (!component) continue;
+      if (!component) {
+        continue;
+      }
 
       this.processData(component);
       components.push(...(component.components ?? []));
@@ -58,8 +60,9 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected processData(component: Component | ExperienceComponent): void {
-    if (component.meta?.route)
+    if (component.meta?.route) {
       this.storeData('dataRoutes', component.meta.route, component.id);
+    }
 
     this.storeData('dataComponent', component.id, component);
   }
@@ -69,11 +72,15 @@ export class DefaultExperienceService implements ExperienceService {
     byKey: keyof DataStore | undefined,
     data: unknown
   ): void {
-    if (!byKey) return;
+    if (!byKey) {
+      return;
+    }
 
     const dataStore = this[dataStoreKey as keyof this] as unknown as DataStore;
 
-    if (!dataStore[byKey]) dataStore[byKey] = new ReplaySubject(1);
+    if (!dataStore[byKey]) {
+      dataStore[byKey] = new ReplaySubject(1);
+    }
 
     dataStore[byKey].next(data);
   }
@@ -87,7 +94,9 @@ export class DefaultExperienceService implements ExperienceService {
       return this.dataComponent[uid];
     }
 
-    if (route) return this.getComponentByRoute(route);
+    if (route) {
+      return this.getComponentByRoute(route);
+    }
 
     return throwError(() => {
       return new Error('Invalid qualifier for getComponent');
@@ -124,10 +133,13 @@ export class DefaultExperienceService implements ExperienceService {
 
     return this.dataRoutes[route].pipe(
       switchMap((uid: string) => {
-        if (!uid) return of({} as Component);
+        if (!uid) {
+          return of({} as Component);
+        }
 
-        if (!this.dataComponent[uid])
+        if (!this.dataComponent[uid]) {
           this.dataComponent[uid] = new ReplaySubject(1);
+        }
 
         return this.dataComponent[uid];
       })
@@ -155,7 +167,9 @@ export class DefaultExperienceService implements ExperienceService {
             this.experienceDataService.registerComponent(page, (c) =>
               this.processData(c)
             );
-          } else this.storeData('dataRoutes', route, null);
+          } else {
+            this.storeData('dataRoutes', route, null);
+          }
         })
       )
       .subscribe();

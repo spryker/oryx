@@ -15,12 +15,15 @@ export class PushNotificationPlugin extends ExecPlugin {
       const isUserAssigned = injector.inject(WarehouseUserAssignmentsService);
 
       isUserAssigned.getUserAssignment().subscribe((userAssignment) => {
-        if (userAssignment)
+        if (userAssignment) {
           pushNotificationService.initSubscription().subscribe();
+        }
       });
 
       authService.isAuthenticated().subscribe((isAuthenticated) => {
-        if (!isAuthenticated) pushNotificationService.unsubscribe().subscribe();
+        if (!isAuthenticated) {
+          pushNotificationService.unsubscribe().subscribe();
+        }
       });
     });
   }

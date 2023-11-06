@@ -270,9 +270,11 @@ export class PickingPickerComponent extends I18nMixin(
   }
 
   protected renderFallback(): TemplateResult {
-    if (!this.items?.length || !this.allItemsPicked)
+    if (!this.items?.length || !this.allItemsPicked) {
       return this.renderNoItemsFallback();
-    else return this.renderFinishPickingFallback();
+    } else {
+      return this.renderFinishPickingFallback();
+    }
   }
 
   protected get allItemsPicked(): boolean {
@@ -280,7 +282,9 @@ export class PickingPickerComponent extends I18nMixin(
   }
 
   protected renderFinishButton(hasShadow?: boolean): TemplateResult | void {
-    if (!this.allItemsPicked) return;
+    if (!this.allItemsPicked) {
+      return;
+    }
 
     return html`
       <div
@@ -356,11 +360,16 @@ export class PickingPickerComponent extends I18nMixin(
   protected onTabChange(): void {
     for (let i = 0; i < this.tabRefs.length; i++) {
       const tab = this.tabRefs[i].value;
-      if (!tab) continue;
+      if (!tab) {
+        continue;
+      }
 
       const chip = this.chipRefs[i].value;
-      if (tab.selected) chip?.setAttribute('appearance', 'success');
-      else chip?.removeAttribute('appearance');
+      if (tab.selected) {
+        chip?.setAttribute('appearance', 'success');
+      } else {
+        chip?.removeAttribute('appearance');
+      }
     }
   }
 

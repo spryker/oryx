@@ -2,7 +2,7 @@
 import { SSRAwaiterService } from '@spryker-oryx/core';
 import { inject, resolve } from '@spryker-oryx/di';
 import { isPromise } from '@spryker-oryx/utilities';
-import { defer, finalize, from, Observable, tap } from 'rxjs';
+import { Observable, defer, finalize, from, tap } from 'rxjs';
 
 export const ssrAwaiter = <T>(
   object: Observable<T> | Promise<T>
@@ -16,7 +16,9 @@ export const ssrAwaiter = <T>(
     ssrAwaiter = resolve(SSRAwaiterService, null);
   }
 
-  if (!ssrAwaiter) return observable;
+  if (!ssrAwaiter) {
+    return observable;
+  }
 
   return defer(() => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

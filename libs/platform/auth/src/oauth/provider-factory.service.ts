@@ -55,8 +55,9 @@ export class DefaultOauthProviderFactoryService
       this.getProviderMatcher(config)
     ) as OauthProviderRegistry<T>;
 
-    if (!provider)
+    if (!provider) {
       throw new Error(`Unknown Oauth grant type '${config.grantType}'!`);
+    }
 
     const factory = await provider.resolver();
 

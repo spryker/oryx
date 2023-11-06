@@ -34,7 +34,9 @@ export class IconComponent extends LitElement implements IconProperties {
   protected override render(): TemplateResult {
     const renderResult = this.renderer();
 
-    if (renderResult) return html`${renderResult}`;
+    if (renderResult) {
+      return html`${renderResult}`;
+    }
 
     if (this.spriteUrl) {
       return svg`
@@ -58,7 +60,9 @@ export class IconComponent extends LitElement implements IconProperties {
    * Defaults to use '/assets/icons.svg'.
    */
   protected get spriteUrl(): string | undefined {
-    if (!this.sprite) return;
+    if (!this.sprite) {
+      return;
+    }
 
     return `${this.sprite}#${this.type}`;
   }

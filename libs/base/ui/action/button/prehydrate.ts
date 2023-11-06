@@ -5,7 +5,9 @@ export const hydrateSlotChange = async (host: LitElement): Promise<void> => {
 
   function handler() {
     const hasIcon = !!host.querySelector('oryx-icon');
-    if (hasIcon) host.toggleAttribute('has-text', !!host.textContent?.trim());
+    if (hasIcon) {
+      host.toggleAttribute('has-text', !!host.textContent?.trim());
+    }
 
     slot?.removeEventListener('slotchange', handler);
   }

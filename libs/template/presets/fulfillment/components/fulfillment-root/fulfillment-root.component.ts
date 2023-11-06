@@ -25,7 +25,9 @@ export class FulfillmentRootComponent extends LitElement {
       // Remove old routes
       changedProps.get('extraRoutes')?.forEach((oldRoute) => {
         const idx = this.router.routes.indexOf(oldRoute);
-        if (idx !== -1) this.router.routes.splice(idx, 1);
+        if (idx !== -1) {
+          this.router.routes.splice(idx, 1);
+        }
       });
 
       // Add new routes

@@ -9,7 +9,9 @@ export const generateUrl = (req: Request): void | URL => {
     headers: { host },
   } = req;
 
-  if (originalUrl.startsWith('/node_modules')) return;
+  if (originalUrl.startsWith('/node_modules')) {
+    return;
+  }
 
   return new URL(`${protocol}://${host}${originalUrl}`);
 };

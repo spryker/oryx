@@ -13,7 +13,9 @@ export class ProductFragment {
   pickAllProductItems = () => {
     this.getQuantityInputPlusButton().then(($button) => {
       // click button while it is active
-      if ($button.attr('disabled')) return;
+      if ($button.attr('disabled')) {
+        return;
+      }
 
       cy.wrap($button).click();
       this.pickAllProductItems();

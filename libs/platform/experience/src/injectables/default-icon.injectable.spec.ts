@@ -25,7 +25,9 @@ class MockComponent extends LitElement {
   );
 
   render(): TemplateResult {
-    if (!this.icon) return html``;
+    if (!this.icon) {
+      return html``;
+    }
 
     return this.renderer() ?? html``;
   }

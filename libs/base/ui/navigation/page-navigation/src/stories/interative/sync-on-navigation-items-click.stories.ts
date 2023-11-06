@@ -34,7 +34,9 @@ SyncOnNavigationItemsClick.play = async (obj: {
   const sectionsContainer = window.document.querySelector('.scroll-container');
   expect(sectionsContainer).not.toBeNull();
 
-  if (!sectionsContainer) return;
+  if (!sectionsContainer) {
+    return;
+  }
 
   for (const navItem of navItems) {
     userEvent.click(navItem);

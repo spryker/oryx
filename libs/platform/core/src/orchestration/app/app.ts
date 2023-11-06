@@ -24,8 +24,9 @@ export class SimpleApp implements App {
   requirePlugin<T extends AppPlugin>(nameOrType: string | Type<T>): T {
     const maybePlugin = this.findPlugin(nameOrType);
 
-    if (!maybePlugin)
+    if (!maybePlugin) {
       throw new Error(`SimpleApp: Missing required plugin '${nameOrType}'!`);
+    }
 
     return maybePlugin;
   }

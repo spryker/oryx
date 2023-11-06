@@ -12,7 +12,9 @@ export class SignalController implements ReactiveController {
     }
   ) {
     // to avoid adding the same controller twice
-    if (this.host[signalControllerMark]) return;
+    if (this.host[signalControllerMark]) {
+      return;
+    }
 
     this.host[signalControllerMark] = this;
     this.consumer = new SignalConsumer(() => this.host.requestUpdate());

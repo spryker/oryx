@@ -144,9 +144,13 @@ describe('CliPlugin', () => {
         const mockClicArgsService = new MockCliArgsService();
 
         ctx.mockInjector.inject.mockImplementation((token) => {
-          if (token === CliService) return ctx.mockCliService;
+          if (token === CliService) {
+            return ctx.mockCliService;
+          }
 
-          if (token === CliArgsService) return mockClicArgsService;
+          if (token === CliArgsService) {
+            return mockClicArgsService;
+          }
 
           return null;
         });

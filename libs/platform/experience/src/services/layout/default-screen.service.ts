@@ -6,8 +6,6 @@ import {
   Size,
   throttle,
 } from '@spryker-oryx/utilities';
-import { ThemePlugin } from '../../plugins';
-import { ScreenService } from './screen.service';
 import {
   Observable,
   ReplaySubject,
@@ -15,6 +13,8 @@ import {
   map,
   startWith,
 } from 'rxjs';
+import { ThemePlugin } from '../../plugins';
+import { ScreenService } from './screen.service';
 
 export class DefaultScreenService implements ScreenService, OnDestroy {
   protected themePlugin: ThemePlugin;
@@ -55,7 +55,9 @@ export class DefaultScreenService implements ScreenService, OnDestroy {
   }
 
   protected setupBreakpointsObserver(target?: HTMLElement): void {
-    if (!target) return;
+    if (!target) {
+      return;
+    }
 
     this.screenWidth$.next(window.innerWidth);
 
@@ -72,7 +74,9 @@ export class DefaultScreenService implements ScreenService, OnDestroy {
   }
 
   protected convertWidthToSize(width?: number): Size | undefined {
-    if (typeof width === 'undefined') return;
+    if (typeof width === 'undefined') {
+      return;
+    }
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return Object.entries(this.getBreakpoints()).find(
       ([_b, { min = 0, max = Infinity }]) => {

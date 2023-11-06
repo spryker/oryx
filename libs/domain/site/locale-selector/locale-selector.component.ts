@@ -31,7 +31,9 @@ export class SiteLocaleSelectorComponent extends ContentMixin<LocaleSelectorOpti
     const locales = this.$locales();
     const current = this.$current();
 
-    if (!current || !locales?.length || locales.length < 2) return;
+    if (!current || !locales?.length || locales.length < 2) {
+      return;
+    }
 
     return html`
       <oryx-dropdown vertical-align position="start">
@@ -81,7 +83,9 @@ export class SiteLocaleSelectorComponent extends ContentMixin<LocaleSelectorOpti
    * @since 1.2
    */
   protected getFlag(locale: string): TemplateResult {
-    if (featureVersion < '1.2') return html``;
+    if (featureVersion < '1.2') {
+      return html``;
+    }
     const item = this.$locales().find((item) => item.code === locale);
     const country = item?.name.split('_')[1];
     return html`<span>

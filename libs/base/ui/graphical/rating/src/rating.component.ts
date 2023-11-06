@@ -104,7 +104,9 @@ export class RatingComponent extends LitElement implements RatingProperties {
   }
 
   protected getChar(position: number): string | undefined {
-    if (!this.hasChar(position)) return;
+    if (!this.hasChar(position)) {
+      return;
+    }
 
     return [...(this.characters ?? [])][position];
   }

@@ -10,11 +10,13 @@ export const toggleBehavior = (behavior?: BehaviorType): void => {
     AddressService
   ) as unknown as MockAddressService;
 
-  if (behavior === 'with-address')
+  if (behavior === 'with-address') {
     addressService.changeMockAddressType(MockAddressType.Two);
-  else if (behavior === 'long-list')
+  } else if (behavior === 'long-list') {
     addressService.changeMockAddressType(MockAddressType.LongList);
-  else addressService.changeMockAddressType(MockAddressType.None);
+  } else {
+    addressService.changeMockAddressType(MockAddressType.None);
+  }
 };
 
 const getManageAddressElement = (): LitElement =>

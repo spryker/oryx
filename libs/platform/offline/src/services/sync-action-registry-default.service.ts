@@ -19,8 +19,9 @@ export class SyncActionRegistryDefaultService
     action: TAction,
     handler: SyncActionHandler<TAction>
   ): void {
-    if (!this.actionHandlersMap.has(action))
+    if (!this.actionHandlersMap.has(action)) {
       this.actionHandlersMap.set(action, []);
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.actionHandlersMap.get(action)!.push(handler);

@@ -38,7 +38,9 @@ export class NotificationComponent
   }
 
   protected renderIcon(): TemplateResult | void {
-    if (!this.type) return;
+    if (!this.type) {
+      return;
+    }
     const mapper = {
       [AlertType.Info]: IconTypes.Info,
       [AlertType.Success]: IconTypes.Success,
@@ -53,7 +55,9 @@ export class NotificationComponent
   }
 
   protected renderCloseButton(): TemplateResult | void {
-    if (!this.closable) return;
+    if (!this.closable) {
+      return;
+    }
 
     return html`<oryx-button
       .type=${ButtonType.Icon}

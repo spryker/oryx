@@ -3,7 +3,9 @@ import { PageMetaService } from './page-meta.service';
 
 export class DefaultPageMetaService implements PageMetaService {
   add(definitions: ElementDefinition | ElementDefinition[]): void {
-    if (!Array.isArray(definitions)) definitions = [definitions];
+    if (!Array.isArray(definitions)) {
+      definitions = [definitions];
+    }
 
     for (const definition of definitions) {
       if (definition.name === 'html') {
@@ -12,25 +14,35 @@ export class DefaultPageMetaService implements PageMetaService {
         continue;
       }
 
-      if (!this.get(definition)) this.insert(definition);
+      if (!this.get(definition)) {
+        this.insert(definition);
+      }
 
       const preload = this.getPreload(definition);
 
-      if (preload) definitions.push(preload);
+      if (preload) {
+        definitions.push(preload);
+      }
     }
   }
 
   remove(definitions: ElementDefinition | ElementDefinition[]): void {
-    if (!Array.isArray(definitions)) definitions = [definitions];
+    if (!Array.isArray(definitions)) {
+      definitions = [definitions];
+    }
 
     for (const definition of definitions) {
       const existed = this.get(definition);
 
-      if (existed) existed?.remove();
+      if (existed) {
+        existed?.remove();
+      }
 
       const preload = this.getPreload(definition);
 
-      if (preload) definitions.push(preload);
+      if (preload) {
+        definitions.push(preload);
+      }
     }
   }
 
@@ -56,7 +68,9 @@ export class DefaultPageMetaService implements PageMetaService {
   protected getPreload(
     definition: ElementDefinition
   ): ElementDefinition | void {
-    if (definition.disablePreload) return;
+    if (definition.disablePreload) {
+      return;
+    }
 
     if (definition.name === 'link' && definition.attrs.rel === 'stylesheet') {
       return {
@@ -96,8 +110,9 @@ export class DefaultPageMetaService implements PageMetaService {
     const name = this.getTagName(definition.name);
     const element = document.createElement(name);
 
-    if (name === 'meta' && definition.name !== 'meta')
+    if (name === 'meta' && definition.name !== 'meta') {
       definition.attrs.name = definition.name;
+    }
 
     this.setAttributes(definition.attrs, element);
     this.getContainer(definition).appendChild(element);
@@ -107,7 +122,9 @@ export class DefaultPageMetaService implements PageMetaService {
     let attrs = '';
 
     for (const [key, value] of Object.entries(definition.attrs)) {
-      if (key === 'text') continue;
+      if (key === 'text') {
+        continue;
+      }
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       attrs += `[${key}="${this.escapeValue(value!)}"]`;

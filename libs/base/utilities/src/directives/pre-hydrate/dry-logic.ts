@@ -16,12 +16,15 @@ export const dryLogic = (): ((
     function getNextElement(node: Element) {
       function nextSibling(node: Element) {
         while (node && !node.nextElementSibling) {
-          if (node.parentElement) node = node.parentElement;
-          else {
+          if (node.parentElement) {
+            node = node.parentElement;
+          } else {
             node =
               (node.getRootNode() as Node & { host: Element }).host ??
               (node.getRootNode() as Element);
-            if (node.firstElementChild) return node.firstElementChild;
+            if (node.firstElementChild) {
+              return node.firstElementChild;
+            }
           }
         }
         return node?.nextElementSibling;
@@ -36,12 +39,16 @@ export const dryLogic = (): ((
 
     while (node) {
       node = getNextElement(node);
-      if (node?.matches(selector)) return node;
+      if (node?.matches(selector)) {
+        return node;
+      }
     }
   }
 
   return (tag, fn) => {
-    if (fn) scriptFns[tag] = fn;
+    if (fn) {
+      scriptFns[tag] = fn;
+    }
 
     lastNode = findNext(tag, lastNode) as Element | null;
     scriptFns[tag](lastNode as LitElement);

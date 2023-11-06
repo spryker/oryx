@@ -41,9 +41,11 @@ export class ComponentsObserver
     if (isNodeElement(node)) {
       const tag = this.processName(node.nodeName);
 
-      if (node.shadowRoot) this.observe(node.shadowRoot);
-      else if (isObservableShadowElement(node)) this.observeShadow(node);
-      else {
+      if (node.shadowRoot) {
+        this.observe(node.shadowRoot);
+      } else if (isObservableShadowElement(node)) {
+        this.observeShadow(node);
+      } else {
         this.tryLoadAndDefineComponent(tag, this.implMetaInDom).then(() => {
           customElements.upgrade(node);
           this.maybeObserveShadow(node);
@@ -55,7 +57,9 @@ export class ComponentsObserver
   }
 
   protected maybeObserveShadow(element: HTMLElement): void {
-    if (isObservableShadowElement(element)) this.observeShadow(element);
+    if (isObservableShadowElement(element)) {
+      this.observeShadow(element);
+    }
   }
 
   protected observeShadow(element: ObservableShadowElement): void {

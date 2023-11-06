@@ -6,12 +6,12 @@ import {
   AddressService,
 } from '@spryker-oryx/user';
 import {
+  I18nMixin,
   elementEffect,
   hydrate,
-  I18nMixin,
   signal,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { query } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { CheckoutAddressComponent } from '../address';
@@ -31,7 +31,9 @@ export class CheckoutShippingAddressComponent
   @elementEffect()
   protected autoSelect = (): void => {
     const addresses = this.$addresses();
-    if (!addresses?.length) return;
+    if (!addresses?.length) {
+      return;
+    }
     const selected = this.$selected();
 
     if (!selected || !addresses.find((address) => selected.id === address.id)) {
@@ -44,7 +46,9 @@ export class CheckoutShippingAddressComponent
   protected checkoutAddress?: CheckoutAddressComponent;
 
   protected override render(): TemplateResult | void {
-    if (this.$addresses() === undefined) return;
+    if (this.$addresses() === undefined) {
+      return;
+    }
 
     return html`
       <oryx-checkout-header>
@@ -70,7 +74,9 @@ export class CheckoutShippingAddressComponent
   }
 
   protected onChange(e: CustomEvent<AddressEventDetail>): void {
-    if (e.detail?.address) this.persist(e.detail.address, e.detail.valid);
+    if (e.detail?.address) {
+      this.persist(e.detail.address, e.detail.valid);
+    }
   }
 
   protected persist(value: Address, valid?: boolean): void {

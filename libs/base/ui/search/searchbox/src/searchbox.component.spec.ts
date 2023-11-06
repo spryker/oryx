@@ -254,7 +254,9 @@ describe('SearchComponent', () => {
       describe('and when the value is changed ', () => {
         beforeEach(async () => {
           const input = element.querySelector('input') as HTMLInputElement;
-          if (input) input.value = 'foo-bar';
+          if (input) {
+            input.value = 'foo-bar';
+          }
         });
         itShouldDispatchSearchEvent('foo-bar');
       });
@@ -295,7 +297,9 @@ describe('SearchComponent', () => {
       describe('and the value is changed ', () => {
         beforeEach(async () => {
           const input = element.querySelector('input');
-          if (input) input.value = 'foo-bar';
+          if (input) {
+            input.value = 'foo-bar';
+          }
         });
         itShouldDispatchSearchEvent('foo-bar');
       });

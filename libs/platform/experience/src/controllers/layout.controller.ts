@@ -49,7 +49,9 @@ export class LayoutController {
       const mainKey = (isLayout ? mainValue : prop) as string;
       const withMainValue = typeof mainValue !== 'undefined';
 
-      if (withMainValue) info[mainKey] = {};
+      if (withMainValue) {
+        info[mainKey] = {};
+      }
 
       for (const size of sizes) {
         const sizeValue =
@@ -65,15 +67,18 @@ export class LayoutController {
           typeof sizeValue === 'undefined' ||
           !sizeKey ||
           String(sizeValue) === String(mainValue)
-        )
+        ) {
           continue;
+        }
 
         if (withMainValue && String(sizeValue) !== String(mainValue)) {
           info[mainKey].excluded ??= [];
           info[mainKey].excluded?.push(size);
         }
 
-        if (withMainValue && sizeKey === mainKey) continue;
+        if (withMainValue && sizeKey === mainKey) {
+          continue;
+        }
 
         info[sizeKey] ??= {};
         const dataSize = info[sizeKey];
@@ -106,8 +111,9 @@ export class LayoutController {
   ): string {
     let styles = '';
 
-    if (!this.hasLayout(rules, layoutProperties))
+    if (!this.hasLayout(rules, layoutProperties)) {
       styles += ':host {display: contents;}\n';
+    }
 
     styles += this.layoutBuilder.createStylesFromOptions(rules, uid);
 

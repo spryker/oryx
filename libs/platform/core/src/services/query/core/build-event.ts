@@ -15,8 +15,12 @@ export function buildEvent<Data = unknown, Qualifier = unknown>(
       type: handler,
       qualifier,
     };
-    if (data) event.data = data;
-    if (error) event.error = error;
+    if (data) {
+      event.data = data;
+    }
+    if (error) {
+      event.error = error;
+    }
     return event;
   }
 }

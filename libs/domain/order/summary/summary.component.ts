@@ -16,12 +16,16 @@ export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
   protected localeService = resolve(LocaleService);
 
   protected $createdAt = computed(() => {
-    if (!this.$order()?.createdAt) return;
+    if (!this.$order()?.createdAt) {
+      return;
+    }
     return this.localeService.formatDateTime(this.$order()!.createdAt);
   });
 
   protected override render(): TemplateResult | void {
-    if (!this.$order()) return;
+    if (!this.$order()) {
+      return;
+    }
 
     return html` <oryx-heading .as=${HeadingTag.H3}>
         <h2>${this.i18n('order.summary.order-details')}</h2>
@@ -103,7 +107,9 @@ export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
     detail?: string | number | Address,
     detailTemplate?: TemplateResult
   ): TemplateResult | void {
-    if (!detail) return;
+    if (!detail) {
+      return;
+    }
 
     return html`
       <div class="title">${this.i18n(title)}:</div>

@@ -14,7 +14,9 @@ declare global {
 }
 
 export function provideDexieConfig(config?: DexieIndexedDbConfig): Provider[] {
-  if (!config) return [];
+  if (!config) {
+    return [];
+  }
 
   return [{ provide: DexieIndexedDbConfig, useValue: config }];
 }

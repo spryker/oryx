@@ -11,8 +11,9 @@ const isDefGuard = (def: ComponentInfo): def is ComponentDef =>
 const resolveComponent = async (
   impl: ComponentDefImpl
 ): Promise<ComponentType> => {
-  if (typeof impl === 'object')
+  if (typeof impl === 'object') {
     return (await impl.load({} as ComponentDef, {})) as ComponentType;
+  }
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,7 +39,9 @@ export async function useComponent(
       ? componentDef
       : componentDef();
 
-    if (customElements.get(name)) continue;
+    if (customElements.get(name)) {
+      continue;
+    }
 
     const component = await resolveComponent(impl);
 

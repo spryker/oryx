@@ -56,7 +56,7 @@
             "allowTypedFunctionExpressions": true
           }
         ],
-        "curly": ["error", "multi-or-nest"]
+        "curly": ["error", "all"]
       }
     },
     {

@@ -6,17 +6,24 @@ import { MockAddressService, MockAddressType } from '@spryker-oryx/user/mocks';
 export type BehaviorType = 'guest' | 'no-address' | 'with-address';
 
 export const toggleBehavior = (behavior?: BehaviorType): void => {
-  if (!behavior) return;
+  if (!behavior) {
+    return;
+  }
 
   const addressService = resolve(
     AddressService
   ) as unknown as MockAddressService;
   const authService = resolve(MockAuthService);
 
-  if (behavior === 'guest') authService.setAuthenticated(false);
-  else authService.setAuthenticated(true);
+  if (behavior === 'guest') {
+    authService.setAuthenticated(false);
+  } else {
+    authService.setAuthenticated(true);
+  }
 
-  if (behavior === 'with-address')
+  if (behavior === 'with-address') {
     addressService.changeMockAddressType(MockAddressType.Two);
-  else addressService.changeMockAddressType(MockAddressType.None);
+  } else {
+    addressService.changeMockAddressType(MockAddressType.None);
+  }
 };

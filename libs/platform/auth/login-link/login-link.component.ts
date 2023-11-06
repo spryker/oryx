@@ -24,7 +24,9 @@ export class LoginLinkComponent extends ContentMixin<LoginLinkOptions>(
   protected $isAuthenticated = signal(this.authService.isAuthenticated());
 
   protected override render(): TemplateResult | void {
-    if (!this.$options()?.enableLogout && this.$isAuthenticated()) return;
+    if (!this.$options()?.enableLogout && this.$isAuthenticated()) {
+      return;
+    }
 
     const i18nToken = this.$isAuthenticated() ? 'auth.logout' : 'auth.login';
 

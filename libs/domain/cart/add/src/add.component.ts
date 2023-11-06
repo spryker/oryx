@@ -36,12 +36,16 @@ export class CartAddComponent extends ProductMixin(
   @query('oryx-cart-quantity-input') protected input?: QuantityInputComponent;
 
   protected override render(): TemplateResult | void {
-    if (!this.$product()?.sku) return;
+    if (!this.$product()?.sku) {
+      return;
+    }
     return html`${this.renderQuantity()} ${this.renderButton()}`;
   }
 
   protected renderQuantity(): TemplateResult | void {
-    if (this.$options().hideQuantityInput) return;
+    if (this.$options().hideQuantityInput) {
+      return;
+    }
 
     return html`<oryx-cart-quantity-input
       .min=${this.$min()}
@@ -75,7 +79,9 @@ export class CartAddComponent extends ProductMixin(
 
   @elementEffect()
   protected reset = (): void => {
-    if (this.$product()) this.input?.reset?.();
+    if (this.$product()) {
+      this.input?.reset?.();
+    }
   };
 
   protected $hasStock = computed(() => {
@@ -94,7 +100,9 @@ export class CartAddComponent extends ProductMixin(
   protected $max = computed(() => {
     const { availability, sku } = this.$product() ?? {};
 
-    if (availability?.isNeverOutOfStock) return Infinity;
+    if (availability?.isNeverOutOfStock) {
+      return Infinity;
+    }
     if (availability?.quantity) {
       return (
         availability.quantity -
@@ -114,7 +122,9 @@ export class CartAddComponent extends ProductMixin(
     e.preventDefault();
     e.stopPropagation();
     const sku = this.$product()?.sku;
-    if (!sku || !this.button) return;
+    if (!sku || !this.button) {
+      return;
+    }
 
     const quantity =
       (e as CustomEvent).detail?.quantity ?? this.input?.value ?? this.$min();

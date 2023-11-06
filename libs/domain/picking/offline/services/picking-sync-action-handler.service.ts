@@ -111,7 +111,9 @@ export class PickingSyncActionHandlerService
           .map((pickingList) => pickingList.items.map((item) => item.product))
           .flat()
           .filter((product) => {
-            if (productIds.has(product.id)) return false;
+            if (productIds.has(product.id)) {
+              return false;
+            }
             productIds.add(product.id);
             return true;
           });

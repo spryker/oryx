@@ -22,8 +22,9 @@ export class SelectController implements ReactiveController {
 
   protected initSelect(): void {
     const control = getControl(this.host);
-    if (control instanceof HTMLSelectElement) this.reflectSelect(control);
-    else {
+    if (control instanceof HTMLSelectElement) {
+      this.reflectSelect(control);
+    } else {
       control.toggleAttribute(
         'readonly',
         this.host.filterStrategy === undefined ||
@@ -45,10 +46,13 @@ export class SelectController implements ReactiveController {
           value: nativeOption.value,
         };
         const text = nativeOption.textContent?.trim();
-        if (text !== '' && text !== nativeOption.value)
+        if (text !== '' && text !== nativeOption.value) {
           reflectedOption.text = text;
+        }
 
-        if (nativeOption.selected) reflectedOption.selected = true;
+        if (nativeOption.selected) {
+          reflectedOption.selected = true;
+        }
 
         return reflectedOption;
       });

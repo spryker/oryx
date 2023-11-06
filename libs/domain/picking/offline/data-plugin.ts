@@ -39,8 +39,9 @@ export class OfflineDataPlugin implements AppPlugin {
           const redirectUrl = new URL(
             oauthConfig.providers[0].redirectUrl as string
           );
-          if (currentRoute.startsWith(redirectUrl.pathname))
+          if (currentRoute.startsWith(redirectUrl.pathname)) {
             return authService.isAuthenticated();
+          }
 
           return of(undefined);
         }),
@@ -107,7 +108,9 @@ export class OfflineDataPlugin implements AppPlugin {
             .map((pickingList) => pickingList.items.map((item) => item.product))
             .flat()
             .filter((product) => {
-              if (productIds.has(product.id)) return false;
+              if (productIds.has(product.id)) {
+                return false;
+              }
               productIds.add(product.id);
 
               return true;

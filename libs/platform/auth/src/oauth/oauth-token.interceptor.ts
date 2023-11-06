@@ -30,7 +30,9 @@ export class OauthTokenInterceptor
     req: Request,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    if (this.isOauthRequest(req)) return handle(this.removeOauthHeader(req));
+    if (this.isOauthRequest(req)) {
+      return handle(this.removeOauthHeader(req));
+    }
 
     // Pause all request before refresh request finishes
     return (this.refresh$ ?? of(undefined)).pipe(
@@ -56,7 +58,9 @@ export class OauthTokenInterceptor
     req: Request,
     handle: HttpHandlerFn
   ): Observable<Response> {
-    if (response.ok || response.status !== 401) return of(response);
+    if (response.ok || response.status !== 401) {
+      return of(response);
+    }
 
     if (!this.refresh$) {
       this.refresh$ = this.oauthService.refreshToken().pipe(

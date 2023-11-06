@@ -46,7 +46,9 @@ export class SyncExecutorDefaultService implements SyncExecutorService {
     return this.syncSchedulerService.getPending().pipe(
       take(1),
       switchMap((pendingSyncs) => {
-        if (pendingSyncs.length === 0) return of([]);
+        if (pendingSyncs.length === 0) {
+          return of([]);
+        }
 
         return forkJoin(
           pendingSyncs.map((pendingSync) => this.handleSync(pendingSync))

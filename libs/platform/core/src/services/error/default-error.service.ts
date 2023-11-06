@@ -10,7 +10,9 @@ export class DefaultErrorService implements ErrorService {
   ) {}
 
   initialize(): void {
-    if (!this.handler || isServer) return;
+    if (!this.handler || isServer) {
+      return;
+    }
 
     this.element.addEventListener('error', this.handle as EventListener);
     this.element.addEventListener(
@@ -20,7 +22,9 @@ export class DefaultErrorService implements ErrorService {
   }
 
   onDestroy(): void {
-    if (!this.handler) return;
+    if (!this.handler) {
+      return;
+    }
 
     this.element.removeEventListener('error', this.handle as EventListener);
     this.element.removeEventListener(

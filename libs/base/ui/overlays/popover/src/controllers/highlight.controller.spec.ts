@@ -31,9 +31,11 @@ describe('HighlightController', () => {
 
     const expectElementHighLight = (highlight: number): void => {
       items.forEach((item, index) => {
-        if (index === highlight)
+        if (index === highlight) {
           expect(item.hasAttribute('highlight')).toBe(true);
-        else expect(item.hasAttribute('highlight')).toBe(false);
+        } else {
+          expect(item.hasAttribute('highlight')).toBe(false);
+        }
       });
     };
 

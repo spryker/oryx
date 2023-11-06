@@ -32,14 +32,17 @@ function sortedStringify(obj: any): string {
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const digestForTemplateValues = (templateResult: TemplateResult) => {
   // we don't have to cover cases where there are no values, as it should be catched by default lit checks
-  if (!templateResult || !templateResult.values?.length) return undefined;
+  if (!templateResult || !templateResult.values?.length) {
+    return undefined;
+  }
   const hashes = new Uint32Array(digestSize).fill(5381);
 
   // Workaround: add values to the digest
   for (const s of templateResult.values) {
     const z = sortedStringify(s) ?? '';
-    for (let i = 0; i < z.length; i++)
+    for (let i = 0; i < z.length; i++) {
       hashes[i % digestSize] = (hashes[i % digestSize] * 33) ^ z.charCodeAt(i);
+    }
   }
 
   const str = String.fromCharCode(...new Uint8Array(hashes.buffer));

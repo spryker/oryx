@@ -12,7 +12,9 @@ export class CartTotalsResolver implements TotalsResolver {
   getTotals(): Observable<NormalizedTotals | null> {
     return this.cartService.getCart().pipe(
       map((cart) => {
-        if (!cart?.products?.length) return null;
+        if (!cart?.products?.length) {
+          return null;
+        }
 
         const { totals, currency, discounts, priceMode } = cart;
 

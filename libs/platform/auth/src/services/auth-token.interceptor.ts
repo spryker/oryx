@@ -25,7 +25,9 @@ export class AuthTokenInterceptor implements HttpInterceptor {
   }
 
   protected addBearerAuthHeader(token: AuthTokenData, req: Request): Request {
-    if (token.type.toLowerCase() !== 'bearer') return req;
+    if (token.type.toLowerCase() !== 'bearer') {
+      return req;
+    }
 
     const newReq = req.clone();
     newReq.headers.set(this.headerName, `Bearer ${token.token}`);

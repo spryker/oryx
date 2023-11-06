@@ -40,8 +40,9 @@ const siteContextComponents = (options?: {
 }): ExperienceComponent[] => {
   const components: ExperienceComponent[] = [];
 
-  if (options?.priceModeSelector && featureVersion >= '1.1')
+  if (options?.priceModeSelector && featureVersion >= '1.1') {
     components.push({ type: 'oryx-price-mode-selector' });
+  }
 
   components.push({ type: 'oryx-site-currency-selector' });
   components.push({ type: 'oryx-site-locale-selector' });

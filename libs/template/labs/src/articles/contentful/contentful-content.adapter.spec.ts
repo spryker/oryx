@@ -114,8 +114,12 @@ describe('DefaultContentfulContentAdapter', () => {
     mockLocaleService.get.mockReturnValue(of(mockLocales[0].code));
     mockLocaleService.getAll.mockReturnValue(of(mockLocales));
     mockHttpService.get.mockImplementation((url) => {
-      if (url.includes('/entries')) return of(mockEntries);
-      if (url.includes('/content_types')) return of(mockContentTypes);
+      if (url.includes('/entries')) {
+        return of(mockEntries);
+      }
+      if (url.includes('/content_types')) {
+        return of(mockContentTypes);
+      }
       return of(null);
     });
     mockTransformerService.transform.mockImplementation((data) => of(data));

@@ -33,13 +33,17 @@ export class UserAddressListItemComponent extends AddressMixin(
   });
 
   protected override render(): TemplateResult | void {
-    if (!this.$address()) return;
+    if (!this.$address()) {
+      return;
+    }
 
     if (this.$options()?.selectable) {
       return html`<oryx-radio>
         <slot></slot>${this.renderContent()}
       </oryx-radio>`;
-    } else return html`<section>${this.renderContent()}</section> `;
+    } else {
+      return html`<section>${this.renderContent()}</section> `;
+    }
   }
 
   protected renderContent(): TemplateResult | void {
@@ -57,7 +61,9 @@ export class UserAddressListItemComponent extends AddressMixin(
   protected renderDefaults(): TemplateResult | void {
     const address = this.$address();
     const { addressDefaults } = this.$options();
-    if (!address) return;
+    if (!address) {
+      return;
+    }
 
     const showAll = addressDefaults === AddressDefaults.All;
     const showBilling = addressDefaults === AddressDefaults.Billing;
@@ -67,7 +73,9 @@ export class UserAddressListItemComponent extends AddressMixin(
     const defaultShipping =
       address.isDefaultShipping && (showAll || showShipping);
 
-    if (!defaultBilling && !defaultShipping) return;
+    if (!defaultBilling && !defaultShipping) {
+      return;
+    }
 
     const chip = (token: string) =>
       html`<oryx-chip .appearance=${AlertType.Success}
@@ -87,7 +95,9 @@ export class UserAddressListItemComponent extends AddressMixin(
   protected renderActions(): TemplateResult | void {
     const address = this.$address();
     const { editable, removable } = this.$options();
-    if (!address || (!editable && !removable)) return;
+    if (!address || (!editable && !removable)) {
+      return;
+    }
 
     return html`<div class="controls">
       ${this.renderEditTrigger()} ${this.renderRemoveTrigger()}
@@ -97,7 +107,9 @@ export class UserAddressListItemComponent extends AddressMixin(
   protected renderEditTrigger(): TemplateResult | void {
     const address = this.$address();
     const { editable, editTarget } = this.$options();
-    if (!address || !editable) return;
+    if (!address || !editable) {
+      return;
+    }
 
     if (editTarget === EditTarget.Link) {
       return html`
@@ -123,7 +135,9 @@ export class UserAddressListItemComponent extends AddressMixin(
   }
 
   protected renderRemoveTrigger(): TemplateResult | void {
-    if (!this.$options().removable) return;
+    if (!this.$options().removable) {
+      return;
+    }
     return html`
       <oryx-user-address-remove
         .addressId=${this.$address()?.id}

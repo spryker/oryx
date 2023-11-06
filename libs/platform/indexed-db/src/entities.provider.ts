@@ -14,7 +14,9 @@ declare global {
 export function provideIndexedDbEntities(
   entityTypes?: IndexedDbEntities
 ): Provider<typeof IndexedDbEntities>[] {
-  if (!entityTypes) return [];
+  if (!entityTypes) {
+    return [];
+  }
 
   return [{ provide: IndexedDbEntities, useValue: entityTypes }];
 }

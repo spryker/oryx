@@ -17,6 +17,7 @@ Cypress.on('uncaught:exception', (err) => {
     'Background Sync is disabled',
   ];
 
-  if (ignoreErrors.some((ignoreError) => err.message.includes(ignoreError)))
+  if (ignoreErrors.some((ignoreError) => err.message.includes(ignoreError))) {
     return false;
+  }
 });

@@ -22,7 +22,9 @@ export class PickingFilterButtonComponent extends I18nMixin(LitElement) {
     this.pickingListService.getSortingQualifier().pipe(
       map(this.hasSelectedFilter),
       tap((hasSelected) => {
-        if (this.input) this.input.checked = hasSelected;
+        if (this.input) {
+          this.input.checked = hasSelected;
+        }
       })
     )
   );

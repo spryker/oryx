@@ -41,8 +41,12 @@ export class ColorModeSelectorComponent extends I18nMixin(LitElement) {
   protected getMode(): string {
     const root = document.querySelector(rootInjectable.get());
 
-    if (root?.hasAttribute(ColorMode.Dark)) return ColorMode.Dark;
-    if (root?.hasAttribute(ColorMode.Light)) return ColorMode.Light;
+    if (root?.hasAttribute(ColorMode.Dark)) {
+      return ColorMode.Dark;
+    }
+    if (root?.hasAttribute(ColorMode.Light)) {
+      return ColorMode.Light;
+    }
 
     return this.darkModeMatcher().matches ? ColorMode.Dark : ColorMode.Light;
   }

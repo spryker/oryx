@@ -34,7 +34,9 @@ export class ArticlePageDescriptionMetaResolver implements PageMetaResolver {
       this.context.get<string>(null, ArticleContext.Type),
     ]).pipe(
       switchMap(([id, type]) => {
-        if (!id || !type) return of({});
+        if (!id || !type) {
+          return of({});
+        }
 
         return this.content
           .get<ArticleContent>({

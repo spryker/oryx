@@ -17,11 +17,15 @@ let _ss_counter = 0;
 
 function setResolvingStatus(state = true): void {
   if (state) {
-    if (_resolvingSignals !== undefined) _resolvingSignals++;
+    if (_resolvingSignals !== undefined) {
+      _resolvingSignals++;
+    }
     return;
   }
 
-  if (_resolvingSignalsNotifier) _resolvingSignalsNotifier.set(_ss_counter++);
+  if (_resolvingSignalsNotifier) {
+    _resolvingSignalsNotifier.set(_ss_counter++);
+  }
 }
 
 export function resolvingSignals(): () => boolean | number {
@@ -29,9 +33,12 @@ export function resolvingSignals(): () => boolean | number {
   _resolvingSignals = 0;
 
   return () => {
-    if (!_resolvingSignals) return false;
-    if (!_resolvingSignalsNotifier)
+    if (!_resolvingSignals) {
+      return false;
+    }
+    if (!_resolvingSignalsNotifier) {
       _resolvingSignalsNotifier = new StateSignal<number>(_ss_counter++);
+    }
     _resolvingSignalsNotifier.accessed();
     const result = _resolvingSignals;
     _resolvingSignals = prevResolving;
@@ -60,18 +67,24 @@ export class SignalObservable<T, K = undefined> extends StateSignal<T | K> {
         ((this.options as ConnectableSignalOptions<T, K>).initialValue as K)
       );
     }
-    if (this.resolving) setResolvingStatus(true);
+    if (this.resolving) {
+      setResolvingStatus(true);
+    }
 
     return this.state;
   }
 
   watch(sniffer: SignalConsumer): void {
-    if (this.consumers.size === 0) this.connect();
+    if (this.consumers.size === 0) {
+      this.connect();
+    }
     super.watch(sniffer);
   }
 
   unwatch(sniffer: SignalConsumer): void {
-    if (this.consumers.size === 1) this.disconnect();
+    if (this.consumers.size === 1) {
+      this.disconnect();
+    }
     super.unwatch(sniffer);
   }
 

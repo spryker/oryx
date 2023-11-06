@@ -26,7 +26,9 @@ export class SearchPriceFacetComponent extends I18nMixin(
   protected $currencySymbol = signal(this.currencyService.getCurrencySymbol());
 
   protected convertValues(facet: RangeFacet | null): RangeFacet | null {
-    if (!facet) return null;
+    if (!facet) {
+      return null;
+    }
 
     const { min, max, selected } = facet.values;
 
@@ -51,8 +53,9 @@ export class SearchPriceFacetComponent extends I18nMixin(
       max: maxValue !== max ? maxValue : undefined,
     } as SelectRangeFacetValues;
 
-    if (this.hasChangedValue(selected))
+    if (this.hasChangedValue(selected)) {
       this.controller.dispatchSelectEvent({ selected });
+    }
   }
 
   protected renderControls(facet: RangeFacet): TemplateResult {

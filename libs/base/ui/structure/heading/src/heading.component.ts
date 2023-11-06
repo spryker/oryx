@@ -28,7 +28,9 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
     | 'show';
 
   @property() set maxLines(value: number) {
-    if (value > 0) this.style.setProperty('--max-lines', String(value));
+    if (value > 0) {
+      this.style.setProperty('--max-lines', String(value));
+    }
   }
 
   protected override render(): TemplateResult {

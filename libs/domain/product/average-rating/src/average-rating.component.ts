@@ -1,7 +1,7 @@
 import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { ProductContext, ProductMixin } from '@spryker-oryx/product';
-import { computed, hydrate, Size } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { Size, computed, hydrate } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult, html } from 'lit';
 import { ProductAverageRatingOptions } from './average-rating.model';
 
 @defaultOptions({ enableCount: true, size: Size.Lg })
@@ -10,7 +10,9 @@ export class ProductAverageRatingComponent extends ProductMixin(
   ContentMixin<ProductAverageRatingOptions>(LitElement)
 ) {
   protected $reviewCount = computed(() => {
-    if (!this.$options().enableCount) return;
+    if (!this.$options().enableCount) {
+      return;
+    }
     return this.$product()?.reviewCount ?? 0;
   });
 

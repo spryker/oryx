@@ -43,7 +43,9 @@ export class CheckoutAccountComponent
   protected redirectEffect = (): void => {
     if (!this.$options().enableGuestCheckout && !this.isAuthenticated()) {
       const route = this.loginRoute();
-      if (route) this.routerService.navigate(route);
+      if (route) {
+        this.routerService.navigate(route);
+      }
     }
   };
 
@@ -70,7 +72,9 @@ export class CheckoutAccountComponent
         </oryx-checkout-header>
         <p>${firstName} ${lastName}<br />${email}</p>
       `;
-    } else if (this.$options().enableGuestCheckout) return this.renderGuest();
+    } else if (this.$options().enableGuestCheckout) {
+      return this.renderGuest();
+    }
   }
 
   protected renderGuest(): TemplateResult {
@@ -102,9 +106,13 @@ export class CheckoutAccountComponent
   }
 
   isValid(report?: boolean): boolean {
-    if (this.hasCustomerData) return true;
+    if (this.hasCustomerData) {
+      return true;
+    }
 
-    if (report) this.form?.reportValidity();
+    if (report) {
+      this.form?.reportValidity();
+    }
 
     return !!this.form?.checkValidity();
   }
