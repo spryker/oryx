@@ -47,6 +47,8 @@ export class DefaultLayoutService implements LayoutService {
     if (keys.length > 0) observables.push(this.resolveCommonStyles());
 
     keys.forEach((key) => {
+      if (layoutOptions?.[key as keyof LayoutProperties] === false) return;
+
       const styles = this.resolveStyles({
         token: key,
         data: layoutInfo[key],

@@ -47,7 +47,7 @@ export class LayoutExperienceDataRevealer implements ExperienceDataRevealer {
               type: selectedLayout,
             }
           : selectedLayout ?? {};
-      console.log(layout, 'layout');
+
       return combineLatest([this.types$, this.properties$, this.styles$]).pipe(
         map(([types, properties, styles]) => {
           const typeField: FieldDefinition = {
