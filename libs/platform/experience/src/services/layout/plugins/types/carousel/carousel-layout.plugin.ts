@@ -2,7 +2,7 @@ import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { signal } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { Observable, of } from 'rxjs';
-import { LayoutStyles } from '../../../layout.model';
+import { LayoutStyles, LayoutStylesOptions } from '../../../layout.model';
 import {
   LayoutPlugin,
   LayoutPluginConfig,
@@ -16,7 +16,6 @@ import {
   ArrowNavigationBehavior,
   CarouselIndicatorAlignment,
   CarouselIndicatorPosition,
-  CarouselLayoutProperties,
   CarouselScrollBehavior,
 } from './carousel-layout.model';
 
@@ -46,7 +45,7 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
     // here we have layout options inside data.styles.layout
-    const options = { ...data.styles.layout, ...this.$options() };
+    const options = { ...data.styles.layout, ...this.$defaultOptions() };
     const props: {
       '--scroll-with-mouse'?: string;
       '--scroll-with-touch'?: string;
@@ -67,9 +66,15 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
   ): Observable<LayoutPluginRender | undefined> {
     // here we have layout options inside data.options
     const options = {
+      ...this.$defaultOptions(),
       ...data.options,
-      ...(this.$options().layout as CarouselLayoutProperties),
     };
+
+    console.log(
+      data.experience,
+      !options?.showArrows,
+      !options?.showIndicators
+    );
 
     if (
       data.experience || // we have nested components
@@ -77,6 +82,7 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
     ) {
       return of();
     }
+
     return of({
       pre: html`<oryx-carousel-navigation
         ?showArrows=${options?.showArrows}
@@ -91,7 +97,7 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
     });
   }
 
-  protected $options = signal(this.getDefaultProperties());
+  protected $defaultOptions = signal(this.getDefaultProperties());
 
   /**
    * The default properties are redefined by the layout options, which can
@@ -100,18 +106,16 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
    *
    * @returns Default properties for the carousel layout.
    */
-  getDefaultProperties(): Observable<LayoutStylesProperties> {
+  getDefaultProperties(): Observable<LayoutStylesOptions> {
     return of({
-      layout: {
-        showArrows: true,
-        showIndicators: true,
-        scrollBehavior: CarouselScrollBehavior.Smooth,
-        arrowNavigationBehavior: ArrowNavigationBehavior.Slide,
-        scrollWithMouse: true,
-        scrollWithTouch: true,
-        indicatorsAlignment: CarouselIndicatorAlignment.Center,
-        indicatorsPosition: CarouselIndicatorPosition.Below,
-      } as CarouselLayoutProperties,
+      showArrows: true,
+      showIndicators: true,
+      scrollBehavior: CarouselScrollBehavior.Smooth,
+      arrowNavigationBehavior: ArrowNavigationBehavior.Slide,
+      scrollWithMouse: true,
+      scrollWithTouch: true,
+      indicatorsAlignment: CarouselIndicatorAlignment.Center,
+      indicatorsPosition: CarouselIndicatorPosition.Below,
     });
   }
 }
