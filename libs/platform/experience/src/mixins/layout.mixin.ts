@@ -183,9 +183,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       place: keyof LayoutPluginRender
     ): Observable<TemplateResult> {
       return this.element$.pipe(
-        switchMap((element) => {
-          console.log(element, 'element');
-          return this[LayoutMixinInternals].layoutController.getRender({
+        switchMap((element) =>
+          this[LayoutMixinInternals].layoutController.getRender({
             place,
             data: {
               element,
@@ -193,8 +192,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
             },
             attrs: this.attributeFilter,
             screen: this.$screen(),
-          });
-        })
+          })
+        )
       );
     }
 
