@@ -232,13 +232,13 @@ export class CarouselNavigationComponent
 
     if (this.showArrows) {
       results.push(html`<oryx-button
-          icon=${IconTypes.Previous}
+          icon=${IconTypes.ArrowBackward}
           type="icon"
           class="previous"
           @click=${this.handlePrevious}
         ></oryx-button>
         <oryx-button
-          icon=${IconTypes.Next}
+          icon=${IconTypes.ArrowForward}
           type="icon"
           class="next"
           @click=${this.handleNext}
