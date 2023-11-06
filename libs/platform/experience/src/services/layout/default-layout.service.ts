@@ -64,11 +64,22 @@ export class DefaultLayoutService implements LayoutService {
   }
 
   getStylesFromOptions(data: LayoutStyleConfig): Observable<string> {
-    if (data.composition) {
-      return this.layoutBuilder.getCompositionStyles(data.composition);
+    const { activeHostOptions, id, rules, composition, screen } = data;
+
+    if (composition) {
+      return this.layoutBuilder.getCompositionStyles({
+        composition,
+        activeHostOptions,
+        screen,
+      });
     }
 
-    return this.layoutBuilder.getStylesFromOptions(data.rules, data.id);
+    return this.layoutBuilder.getStylesFromOptions({
+      rules,
+      id,
+      activeHostOptions,
+      screen,
+    });
   }
 
   getRender(

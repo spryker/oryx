@@ -7,6 +7,7 @@ import {
   ExperienceDataClientService,
   ExperienceDataRevealer,
   GraphicsExperienceDataRevealer,
+  LayoutExperienceDataRevealer,
   OptionsExperienceDataRevealer,
   SchemaExperienceDataRevealer,
 } from './data-client';
@@ -112,6 +113,6 @@ export const experiencePreviewProviders: Provider[] = [
   },
   {
     provide: ExperienceDataRevealer,
-    useClass: ColorModeExperienceDataRevealer,
+    useClass: LayoutExperienceDataRevealer,
   },
 ];

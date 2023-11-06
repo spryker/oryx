@@ -18,6 +18,7 @@ const mockLayoutService = {
 
 const mockLayoutBuilder = {
   createStylesFromOptions: vi.fn(),
+  getActiveLayoutRules: vi.fn().mockReturnValue(of({})),
 };
 
 const mockScreenService = {

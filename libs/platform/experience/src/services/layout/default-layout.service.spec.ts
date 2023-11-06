@@ -158,4 +158,28 @@ describe('DefaultLayoutService', () => {
       expect(result).toBe(mockData);
     });
   });
+
+  describe('getStylesFromOptions', () => {
+    it(`should call layoutBuilder.getCompositionStyles if composition in parameters`, () => {
+      const data = {
+        composition: [{ id: 'idA', type: 'type' }],
+        screen: 'sm',
+        activeHostOptions: { bleed: true },
+      };
+      service.getStylesFromOptions(data);
+      expect(layoutBuilder.getCompositionStyles).toHaveBeenCalledWith(data);
+    });
+
+    it(`should call layoutBuilder.getStylesFromOptions if composition is not in parameters`, () => {
+      const data = {
+        rules: [{ id: 'idA', type: 'type' }],
+        screen: 'sm',
+        id: 'main',
+        activeHostOptions: { bleed: true },
+      };
+      service.getStylesFromOptions(data);
+      expect(layoutBuilder.getStylesFromOptions).toHaveBeenCalledWith(data);
+      expect(layoutBuilder.getCompositionStyles).not.toHaveBeenCalled();
+    });
+  });
 });

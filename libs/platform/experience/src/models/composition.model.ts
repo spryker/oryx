@@ -28,6 +28,12 @@ export interface StyleRuleSet
 
 export interface StyleProperties extends LayoutStylesProperties {
   style?: string;
+
+  /**
+   * @deprecated since 1.2, will be deleted. Use these properties from layout object.
+   */
+  zIndex?: number;
+  overflow?: string;
 }
 
 /**

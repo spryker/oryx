@@ -1,8 +1,8 @@
 import { nextFrame } from '@open-wc/testing-helpers';
 import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
-import { ResourcePlugin } from '../../../plugins';
-import { MessageType } from '../data-client.model';
+import { ResourcePlugin } from '../../../../plugins';
+import { MessageType } from '../../data-client.model';
 import { GraphicsExperienceDataRevealer } from './graphics-experience-data.revealer';
 
 const mockAppFn = {

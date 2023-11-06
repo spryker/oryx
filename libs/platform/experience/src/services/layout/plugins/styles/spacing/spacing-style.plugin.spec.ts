@@ -40,7 +40,7 @@ describe('SpacingStylePlugin', () => {
         '--inline-padding': '3px 5px',
       };
       const result = await lastValueFrom(
-        plugin.getStyleProperties({ styles: data })
+        plugin.getStyleProperties({ styles: data, options: {} })
       );
 
       expect(result).toEqual(styleProperties);
