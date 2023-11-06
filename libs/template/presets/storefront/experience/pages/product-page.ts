@@ -98,7 +98,7 @@ export const productPage: ExperienceComponent = {
         heading: 'Alternative Products',
         rules: [
           {
-            layout: 'carousel',
+            layout: featureVersion >= '1.2' ? { type: 'carousel' } : 'carousel',
             padding: '20 0',
             colSpan: 2,
           },
@@ -111,7 +111,7 @@ export const productPage: ExperienceComponent = {
         heading: 'Related Products',
         rules: [
           {
-            layout: { type: 'carousel' },
+            layout: featureVersion >= '1.2' ? { type: 'carousel' } : 'carousel',
             padding: '20 0',
             colSpan: 2,
           },

@@ -1,4 +1,8 @@
-import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import {
+  CarouselLayoutProperties,
+  ContentMixin,
+  defaultOptions,
+} from '@spryker-oryx/experience';
 import {
   ProductContext,
   ProductMedia,
@@ -85,9 +89,18 @@ export class ProductImagesComponent extends ProductMixin(
 
     return html`<oryx-layout
       class="main"
-      layout=${ifDefined(imageLayout)}
       behavior=${ifDefined(scrollBehavior)}
-      .options=${{ showIndicators: false }}
+      layout=${ifDefined(imageLayout)}
+      .options=${{
+        rules: [
+          {
+            layout: {
+              showArrows: false,
+              showIndicators: false,
+            },
+          },
+        ],
+      } as CarouselLayoutProperties}
       style="--oryx-column-count: 1;--image-fit:${objectFit};--cols: ${cols}"
     >
       ${media.map(
@@ -131,6 +144,16 @@ export class ProductImagesComponent extends ProductMixin(
       layout=${layout || NavigationLayout.Carousel}
       ?layout-vertical=${isVertical}
       style="--oryx-grid-item-size:${height};--image-fit:${objectFit};"
+      .options=${{
+        rules: [
+          {
+            layout: {
+              showArrows: false,
+              showIndicators: false,
+            },
+          },
+        ],
+      } as CarouselLayoutProperties}
     >
       ${media.map(
         (_, i) => html`

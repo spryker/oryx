@@ -67,18 +67,7 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
   getRender(
     data: LayoutPluginRenderParams
   ): Observable<LayoutPluginRender | undefined> {
-    // here we have layout options inside data.options
-    const options = {
-      ...this.$defaultOptions(),
-      ...data.options,
-    };
-
-    console.log(
-      data.experience,
-      !options?.showArrows,
-      !options?.showIndicators
-    );
-
+    const options = { ...this.$defaultOptions(), ...data.options };
     if (
       data.experience || // we have nested components
       (!options?.showArrows && !options?.showIndicators)

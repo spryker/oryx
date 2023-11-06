@@ -62,6 +62,11 @@ const v1_2_styles = css`
       scroll-behavior: auto;
     }
   }
+
+  *,
+  ::slotted(*) {
+    scroll-snap-align: start;
+  }
 `;
 
 export const styles: LayoutStyles = {

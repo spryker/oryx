@@ -396,17 +396,13 @@ export class CarouselNavigationComponent
   }
 
   protected setScrollSnap(): void {
-    if (this.arrowNavigationBehavior === ArrowNavigationBehavior.Item) {
-      this.items.forEach((item) => {
-        item.style.scrollSnapAlign = 'start';
-      });
-    } else {
-      if (!this.slides.length) this.setSlides();
-      this.slides.forEach((indicator) => {
-        if (this.items[indicator.index]) {
-          this.items[indicator.index].style.scrollSnapAlign = 'start';
-        }
-      });
-    }
+    this.items.forEach((item, index) => {
+      const align =
+        this.arrowNavigationBehavior === ArrowNavigationBehavior.Item ||
+        this.slides.find((slide) => slide.index === index)
+          ? 'start'
+          : 'none';
+      item.style.scrollSnapAlign = align;
+    });
   }
 }
