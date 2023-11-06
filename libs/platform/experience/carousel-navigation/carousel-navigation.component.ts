@@ -68,14 +68,16 @@ export class CarouselNavigationComponent
       throttle((entries: IntersectionObserverEntry[]) => {
         return entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            this.buildNavigation();
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this.intersectionObserver!.disconnect();
-            this.initializeScrollListener();
-            this.initializeResizeObserver();
+            if (this.resolveItems().length) {
+              this.buildNavigation();
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              this.intersectionObserver!.disconnect();
+              this.initializeScrollListener();
+              this.initializeResizeObserver();
+            }
           }
         });
-      }, 300),
+      }, 150),
       { root: null, rootMargin: '0px', threshold: 1.0 }
     );
     this.intersectionObserver.observe(this.hostElement);
@@ -87,7 +89,7 @@ export class CarouselNavigationComponent
    */
   protected initializeResizeObserver(): void {
     if (this.resizeObserver) return;
-    const throttleTime = this.hostElement.clientWidth === 0 ? 0 : 100;
+    const throttleTime = this.hostElement.clientWidth === 0 ? 0 : 150;
     this.resizeObserver = new ResizeObserver(
       throttle(() => {
         this.buildNavigation();
