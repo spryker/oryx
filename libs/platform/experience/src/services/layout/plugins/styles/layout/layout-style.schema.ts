@@ -13,7 +13,7 @@ const alignOptions = [
 ];
 
 export const schema: ContentComponentSchema = {
-  name: 'misc',
+  name: 'layout',
   group: 'layout',
   options: {
     align: { type: FormFieldType.Select, options: alignOptions },
