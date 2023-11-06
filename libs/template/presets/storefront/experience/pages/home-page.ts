@@ -90,7 +90,7 @@ export const homePage: ExperienceComponent = {
             padding: '30px 0 5px',
             align: 'stretch',
           },
-          { query: { breakpoint: 'sm' }, padding: '20px' },
+          { query: { breakpoint: 'sm' }, padding: '20px 0' },
         ],
         category: '10',
         sort: 'rating',
