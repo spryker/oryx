@@ -5,7 +5,12 @@ import {
   RangeFacet,
   RangeFacetValue,
 } from '@spryker-oryx/product';
-import { FacetListService } from '@spryker-oryx/search';
+import {
+  FacetListService,
+  SelectFacetEventDetail,
+  SelectFacetEventDetailValue,
+  SingleMultiFacet,
+} from '@spryker-oryx/search';
 import {
   FACET_CLEAR_EVENT,
   FACET_TOGGLE_EVENT,
@@ -18,9 +23,6 @@ import { defer, of, switchMap } from 'rxjs';
 import {
   FACET_SELECT_EVENT,
   SearchFacetComponentAttributes,
-  SelectFacetEventDetail,
-  SelectFacetEventDetailValue,
-  SingleMultiFacet,
 } from '../facet.model';
 
 export class FacetController implements ReactiveController {
@@ -87,8 +89,10 @@ export class FacetController implements ReactiveController {
   /**
    * Returns modified data based on searching and cutting by renderLimit.
    */
-  getFacet(): SingleMultiFacet | RangeFacet | null {
-    return this.computedFacet();
+  getFacet<
+    T extends SingleMultiFacet | RangeFacet = SingleMultiFacet
+  >(): T | null {
+    return this.computedFacet() as T;
   }
 
   /**

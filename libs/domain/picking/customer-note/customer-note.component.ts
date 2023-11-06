@@ -51,7 +51,7 @@ export class PickingCustomerNoteComponent extends I18nMixin(
           .type=${ButtonType.Text}
           .size=${ButtonSize.Md}
           .color=${ButtonColor.Neutral}
-          .icon=${IconTypes.ArrowBack}
+          .icon=${IconTypes.ArrowBackward}
           .text=${this.i18n('picking.button.back')}
           href="/"
         ></oryx-button>
