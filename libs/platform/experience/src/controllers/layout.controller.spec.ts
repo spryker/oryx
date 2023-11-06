@@ -300,7 +300,7 @@ describe('LayoutController', () => {
               },
               column: { type: LayoutPluginType.Layout, included: ['xs', 'md'] },
               carousel: { type: LayoutPluginType.Layout, included: ['xl'] },
-              bleed: { type: LayoutPluginType.Property, excluded: ['md'] },
+              bleed: { type: LayoutPluginType.Property },
               sticky: {
                 type: LayoutPluginType.Property,
                 included: ['xs', 'xl'],

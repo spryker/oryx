@@ -2,7 +2,7 @@ import { FormFieldType } from '@spryker-oryx/form';
 import { ContentComponentSchema } from '../../../../../models';
 
 export const schema: ContentComponentSchema = {
-  name: 'layout',
+  name: 'spacing',
   group: 'layout',
   options: {
     padding: { type: FormFieldType.Text },
