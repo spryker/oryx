@@ -1,31 +1,83 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { FacetValue } from '@spryker-oryx/product';
-import { generateRatingFacet } from '@spryker-oryx/product/mocks';
-import {
-  FacetListService,
-  searchRatingFacetComponent,
-} from '@spryker-oryx/search';
-import { SearchFacetComponent } from '@spryker-oryx/search/facet';
-import { i18n, useComponent } from '@spryker-oryx/utilities';
+import { generateRange } from '@spryker-oryx/product/mocks';
+import { FacetListService } from '@spryker-oryx/search';
+import { RatingComponent } from '@spryker-oryx/ui/rating';
+import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
+import { SearchFacetValueNavigationComponent } from '../facet-value-navigation';
 import { SearchRatingFacetComponent } from './facet-rating.component';
+import { searchRatingFacetComponent } from './facet-rating.def';
 
-const mockFacet = generateRatingFacet(1, 5, 5);
+const name = 'Rating';
+const param = 'parameter';
+const min = 1;
+const max = 5;
+const mockFacet = generateRange(name, param, [min, max]);
+
 class MockFacetListService implements Partial<FacetListService> {
   getFacet = vi.fn().mockReturnValue(of(mockFacet));
 }
 
-describe('FacetRatingComponent', () => {
-  let facetListService: FacetListService;
+describe('SearchRatingFacetComponent', () => {
   let element: SearchRatingFacetComponent;
+  let service: MockFacetListService;
+
+  const getInput = (value?: number): HTMLInputElement => {
+    return element.renderRoot.querySelector(
+      `input[value="${value}"]`
+    ) as HTMLInputElement;
+  };
+
+  const getNavigation = (): SearchFacetValueNavigationComponent => {
+    return element.renderRoot.querySelector(
+      'oryx-search-facet-value-navigation'
+    ) as SearchFacetValueNavigationComponent;
+  };
+
+  const shouldHaveProperOptions = (
+    length = 4,
+    start = 1,
+    checked = 1,
+    scale = 5
+  ) => {
+    const options = element.renderRoot.querySelectorAll('li');
+
+    expect(options.length).toBe(length);
+
+    Array.from(options)
+      .reverse()
+      .forEach((option, i) => {
+        const value = start + i;
+        const input = option.querySelector('input') as HTMLInputElement;
+        const container = input.nextElementSibling;
+        const rating = container?.querySelector(
+          'oryx-rating'
+        ) as RatingComponent;
+        const hasText = value < scale;
+
+        expect(input.value).toBe(String(value));
+        expect(input.name).toBe(param);
+        expect(input.getAttribute('aria-label')).toBe(String(value));
+        expect(input.checked).toBe(value === checked);
+
+        expect(rating.getAttribute('value')).toBe(String(value));
+        expect(rating.getAttribute('scale')).toBe(String(scale));
+
+        if (hasText) {
+          expect(container).toContainElement('span');
+        } else {
+          expect(container).not.toContainElement('span');
+        }
+      });
+  };
 
   beforeAll(async () => {
     await useComponent(searchRatingFacetComponent);
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     const testInjector = createInjector({
       providers: [
         {
@@ -35,302 +87,160 @@ describe('FacetRatingComponent', () => {
       ],
     });
 
-    facetListService = testInjector.inject(FacetListService);
+    element = await fixture(
+      html`<oryx-search-facet-rating name=${name}></oryx-search-facet-rating>`
+    );
+
+    service = testInjector.inject<MockFacetListService>(FacetListService);
   });
 
   afterEach(() => {
     destroyInjector();
+    vi.resetAllMocks();
   });
 
-  describe('when there is no options limitation', () => {
-    const options = {
-      min: 1,
-      max: 5,
-      scale: 5,
-    };
+  it('passes the a11y audit', async () => {
+    await expect(element).shadowDom.to.be.accessible();
+  });
 
+  it('should render facet value navigation with default configuration', () => {
+    expect(getNavigation().hasAttribute('open')).toBe(false);
+    expect(getNavigation().hasAttribute('enableClear')).toBe(true);
+    expect(getNavigation().hasAttribute('dirty')).toBe(false);
+    expect(getNavigation().heading).toEqual(name);
+  });
+
+  it('should render 5 options with proper values', () => {
+    shouldHaveProperOptions();
+  });
+
+  describe('when facet is not existing', () => {
     beforeEach(async () => {
+      service.getFacet.mockReturnValue(of(null));
       element = await fixture(
         html`<oryx-search-facet-rating
-          name="Rating"
-          .options=${options}
+          name="fakeMock"
         ></oryx-search-facet-rating>`
       );
     });
 
-    it('should extend SearchFacetComponent', () => {
-      expect(element).toBeInstanceOf(SearchFacetComponent);
-    });
-
-    it('should override renderValueControlLabel', () => {
-      expect(element.renderRoot.querySelectorAll('oryx-rating').length).toBe(
-        (mockFacet.values as FacetValue[]).length
-      );
-    });
-
-    it('should render "& up" for all values except biggest one', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      (mockFacet.values as FacetValue[]).forEach((value, index) => {
-        if (Number(value) <= 4) {
-          expect(ratings[index]?.nextElementSibling?.textContent).toBe(
-            i18n('search.facet.rating.up')
-          );
-        }
-      });
-    });
-
-    it('should not render "& up" for biggest value', () => {
-      expect(
-        element.renderRoot.querySelector(`oryx-rating[value="${options.max}"]`)
-          ?.nextElementSibling
-      ).toBe(null);
-    });
-
-    it('should render each oryx-rating with "readonly" attribute', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      ratings.forEach((rating) => {
-        expect(rating.hasAttribute('readonly')).toBe(true);
-      });
-    });
-
-    it('should render each oryx-rating with provided scale', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      ratings.forEach((rating) => {
-        expect(rating.getAttribute('scale')).toBe(options.scale.toString());
-      });
+    it('should not render the content', () => {
+      expect(getNavigation()).toBeNull();
     });
   });
 
-  describe('when there are options limitations', () => {
-    const options = {
-      min: 2,
-      max: 4,
-      scale: 5,
-    };
-
+  describe('when clear is disabled', () => {
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-search-facet-rating
-          name="Rating"
-          .options=${options}
+          name=${name}
+          disableClear
         ></oryx-search-facet-rating>`
       );
     });
 
-    it('should render values from min to max', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      expect(ratings.length).toBe(options.max - options.min + 1);
-
-      ratings.forEach((rating, index) => {
-        expect(rating.getAttribute('value')).toBe(String(options.max - index));
-      });
-    });
-
-    it('should render "& up" for all values', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      ratings.forEach((rating) => {
-        expect(rating?.nextElementSibling?.textContent).toBe(
-          i18n('search.facet.rating.up')
-        );
-      });
+    it('should disable clear action of value navigation', () => {
+      expect(getNavigation().hasAttribute('enableClear')).toBe(false);
     });
   });
 
-  describe('when avaliable rating is smaller then limitation', () => {
-    const options = {
-      min: 1,
-      max: 5,
-      scale: 5,
-    };
-
-    beforeEach(async () => {
-      facetListService.getFacet = vi
-        .fn()
-        .mockReturnValue(of(generateRatingFacet(1, 4, 5)));
-
-      element = await fixture(
-        html`<oryx-search-facet-rating
-          name="Rating"
-          .options=${options}
-        ></oryx-search-facet-rating>`
-      );
-    });
-
-    it('should render only avaliable values', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      expect(ratings.length).toBe(
-        Number((mockFacet.values as FacetValue[])[0].value) - options.min
-      );
-
-      ratings.forEach((rating, index) => {
-        expect(rating.getAttribute('value')).toBe(
-          String(ratings.length - index)
-        );
-      });
-    });
-  });
-
-  describe('when there is no scale option provided', () => {
-    const options = {
-      min: 1,
-      max: 5,
-      scale: undefined,
-    };
+  describe('when rating option is selected', () => {
+    const callback = vi.fn();
 
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-search-facet-rating
-          name="Rating"
-          .options=${options}
+          name=${name}
+          @oryx.select=${callback}
         ></oryx-search-facet-rating>`
       );
+
+      getInput(3).dispatchEvent(new InputEvent('change'));
     });
 
-    it('should not render values', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      expect(ratings.length).toBe(0);
+    it('should dispatch oryx.select event with selected value', () => {
+      expect(callback).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: expect.objectContaining({
+            name,
+            value: expect.objectContaining({
+              selected: { min: 3 },
+            }),
+          }),
+        })
+      );
     });
   });
 
-  describe('when there is no min option provided', () => {
-    const options = {
-      min: undefined,
-      max: 5,
-      scale: 5,
-    };
+  describe('when min property is specified', () => {
+    const min = 3;
 
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-search-facet-rating
-          name="Rating"
-          .options=${options}
+          name=${name}
+          .options=${{ min }}
         ></oryx-search-facet-rating>`
       );
     });
 
-    it('should render values from 1 to "max"', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      expect(ratings.length).toBe(options.max);
-
-      ratings.forEach((rating, index) => {
-        expect(rating.getAttribute('value')).toBe(
-          String(ratings.length - index)
-        );
-      });
+    it('should render 2 options with proper values', () => {
+      shouldHaveProperOptions(2, min);
     });
   });
 
-  describe('when there is no max option provided', () => {
-    const options = {
-      min: 1,
-      max: undefined,
-      scale: 5,
-    };
+  describe('when max property is specified', () => {
+    const max = 5;
 
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-search-facet-rating
-          name="Rating"
-          .options=${options}
+          name=${name}
+          .options=${{ max }}
         ></oryx-search-facet-rating>`
       );
     });
 
-    it('should render values from "min" to "scale"', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      ratings.forEach((rating, index) => {
-        expect(rating.getAttribute('value')).toBe(
-          String(options.scale - index)
-        );
-      });
+    it('should render 3 options with proper values', () => {
+      shouldHaveProperOptions(5);
     });
   });
 
-  describe('when min less than 1', () => {
-    const options = {
-      min: 0,
-      max: 5,
-      scale: 5,
-    };
+  describe('when scale is less than max value', () => {
+    const scale = 4;
 
     beforeEach(async () => {
       element = await fixture(
         html`<oryx-search-facet-rating
-          name="Rating"
-          .options=${options}
+          name=${name}
+          .options=${{ max: 5, scale }}
         ></oryx-search-facet-rating>`
       );
     });
 
-    it('should render values from 1 to "max"', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      expect(ratings.length).toBe(options.max);
-
-      ratings.forEach((rating, index) => {
-        expect(rating.getAttribute('value')).toBe(
-          String(ratings.length - index)
-        );
-      });
+    it('should render 4 options with proper values', () => {
+      shouldHaveProperOptions(4, 1, 1, scale);
     });
   });
-  describe('when max is greater then scale', () => {
-    const options = {
-      min: 1,
-      max: 4,
-      scale: 3,
-    };
+
+  describe('when option is selected', () => {
+    const selected = 3;
 
     beforeEach(async () => {
+      service.getFacet.mockReturnValue(
+        of(generateRange(name, param, [min, max], [selected, max]))
+      );
       element = await fixture(
-        html`<oryx-search-facet-rating
-          name="Rating"
-          .options=${options}
-        ></oryx-search-facet-rating>`
+        html`<oryx-search-facet-rating name=${name}></oryx-search-facet-rating>`
       );
     });
 
-    it('should render values from 1 to "scale"', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      expect(ratings.length).toBe(options.scale - options.min + 1);
-
-      ratings.forEach((rating, index) => {
-        expect(rating.getAttribute('value')).toBe(
-          String(ratings.length - index)
-        );
-      });
-    });
-  });
-  describe('when min is greater then max', () => {
-    const options = {
-      min: 4,
-      max: 1,
-      scale: 5,
-    };
-
-    beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-search-facet-rating
-          name="Rating"
-          .options=${options}
-        ></oryx-search-facet-rating>`
-      );
+    it(`should select the input with value: ${selected}`, () => {
+      expect(getInput(selected).checked).toBe(true);
     });
 
-    it('should not render values', () => {
-      const ratings = element.renderRoot.querySelectorAll('oryx-rating');
-
-      expect(ratings.length).toBe(0);
+    it('should render value navigation with dirty state', () => {
+      expect(getNavigation().hasAttribute('dirty')).toBe(true);
     });
   });
 });
