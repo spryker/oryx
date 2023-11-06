@@ -53,14 +53,14 @@ const Template: Story<CarouselLayoutProperties> = (
 ): TemplateResult => {
   const options = { rules: [{ layout: { type: 'carousel', ...props } }] };
   return html`
-    <oryx-layout .options=${options}> ${items(5)} </oryx-layout>
+    <oryx-layout .options=${options}> ${items(12)} </oryx-layout>
 
     <style>
       oryx-layout {
         margin-bottom: 50px;
       }
       oryx-layout > * {
-        background: red;
+        background: var(--oryx-color-neutral-5);
         padding: 50px;
         text-align: center;
       }

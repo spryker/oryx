@@ -46,7 +46,7 @@ const Template: Story<CarouselLayoutProperties> = (): TemplateResult => {
         margin-bottom: 50px;
       }
       oryx-layout > * {
-        background: red;
+        background: var(--oryx-color-neutral-5);
         padding: 50px;
         text-align: center;
       }
