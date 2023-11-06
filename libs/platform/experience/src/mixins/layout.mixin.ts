@@ -17,7 +17,7 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
+import { Observable, ReplaySubject, of, switchMap } from 'rxjs';
 import { LayoutController } from '../controllers/layout.controller';
 import {
   CompositionLayout,
@@ -177,14 +177,15 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         of(undefined)
     );
 
-    protected element$ = new BehaviorSubject<LitElement>(this);
+    protected element$ = new ReplaySubject<LitElement>(1);
 
     protected getElementLayoutRender(
       place: keyof LayoutPluginRender
     ): Observable<TemplateResult> {
       return this.element$.pipe(
-        switchMap((element) =>
-          this[LayoutMixinInternals].layoutController.getRender({
+        switchMap((element) => {
+          console.log(element, 'element');
+          return this[LayoutMixinInternals].layoutController.getRender({
             place,
             data: {
               element,
@@ -192,8 +193,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
             },
             attrs: this.attributeFilter,
             screen: this.$screen(),
-          })
-        )
+          });
+        })
       );
     }
 
@@ -207,10 +208,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     protected renderLayout(props: LayoutMixinRender): TemplateResult {
       const { inlineStyles = '', element, template } = props;
 
-      if (element) {
-        this.element$.next(element);
-      }
-
+      this.element$.next(element ?? this);
       const layoutStyles = this.layoutStyles() ?? '';
       const styles = inlineStyles + layoutStyles;
 
