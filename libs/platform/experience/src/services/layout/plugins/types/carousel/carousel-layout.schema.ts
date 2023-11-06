@@ -4,12 +4,12 @@ import {
   ContentComponentSchema,
 } from '@spryker-oryx/experience';
 import { FormFieldType } from '@spryker-oryx/form';
-
+import { ArrowNavigationBehavior } from './carousel-layout.model';
 export const schema: ContentComponentSchema = {
   name: 'carousel',
   group: 'layout',
   options: {
-    showArrow: { type: FormFieldType.Boolean },
+    showArrows: { type: FormFieldType.Boolean },
     showIndicators: { type: FormFieldType.Boolean },
     indicatorsPosition: {
       type: FormFieldType.Select,
@@ -26,6 +26,14 @@ export const schema: ContentComponentSchema = {
         { value: CarouselIndicatorAlignment.End },
       ],
     },
-    navigatePerItem: { type: FormFieldType.Boolean },
+    arrowNavigationBehavior: {
+      type: FormFieldType.Select,
+      options: [
+        { value: ArrowNavigationBehavior.Slide },
+        { value: ArrowNavigationBehavior.Item },
+      ],
+    },
+    scrollWithMouse: { type: FormFieldType.Boolean },
+    scrollWithTouch: { type: FormFieldType.Boolean },
   },
 };

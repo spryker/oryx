@@ -89,29 +89,11 @@ export const homePage: ExperienceComponent = {
       },
     },
     {
-      type: 'oryx-composition',
-      components: [
-        { type: 'oryx-product-card', options: { sku: '086_30521602' } },
-        { type: 'oryx-product-list' },
-        { type: 'oryx-product-list' },
-      ],
-      options: {
-        rules: [
-          {
-            layout: { type: 'carousel' },
-            padding: '30px 0 5px',
-            align: 'stretch',
-          },
-          { query: { breakpoint: 'sm' }, padding: '20px' },
-        ],
-      },
-    },
-    {
       type: 'oryx-product-list',
       options: {
         rules: [
           {
-            layout: { type: 'carousel' },
+            layout: featureVersion >= '1.2' ? { type: 'carousel' } : 'carousel',
             padding: '30px 0 5px',
             align: 'stretch',
           },

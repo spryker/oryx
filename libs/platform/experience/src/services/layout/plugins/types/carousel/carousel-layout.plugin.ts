@@ -44,15 +44,18 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
   getStyleProperties(
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
-    // here we have layout options inside data.styles.layout
-    const options = { ...data.styles.layout, ...this.$defaultOptions() };
-    const props: {
-      '--scroll-with-mouse'?: string;
-      '--scroll-with-touch'?: string;
-    } = {};
+    const options = { ...this.$defaultOptions(), ...data.styles.layout };
+    const props: any = {};
 
-    if (options.scrollWithMouse) props['--scroll-with-mouse'] = 'auto';
-    if (options.scrollWithTouch) props['--scroll-with-touch'] = 'auto';
+    if (!options.scrollWithMouse) props['--scroll-with-mouse'] = 'hidden';
+    if (!options.scrollWithTouch) props['--scroll-with-touch'] = 'hidden';
+    if (
+      options.showIndicators &&
+      options.indicatorsPosition === CarouselIndicatorPosition.Below
+    )
+      props['--indicator-area-height'] = '50px;';
+
+    props['margin-block-end'] = 'var(--indicator-area-height)';
 
     return of(props);
   }
