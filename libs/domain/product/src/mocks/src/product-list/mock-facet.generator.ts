@@ -1,5 +1,4 @@
 import {
-  Facet,
   FacetType,
   FacetValue,
   RangeFacet,
@@ -62,31 +61,5 @@ export const generateRange = (
       selected: { min: +(selected?.[0] ?? min), max: +(selected?.[1] ?? max) },
     },
     type: FacetType.Range,
-  };
-};
-
-export const generateRatingFacet = (
-  min: number,
-  max: number,
-  scale: number,
-  selectedValue?: number
-): Facet => {
-  const valuesCount = max ? max - min + 1 : 0;
-
-  return {
-    type: FacetType.Multi,
-    name: 'Rating',
-    parameter: 'rating',
-    valuesTreeLength: valuesCount,
-    values: Array.from(new Array(valuesCount).keys())
-      .reverse()
-      .map((i) => {
-        const value = i + min;
-        return {
-          value: String(value),
-          selected: selectedValue ? selectedValue === value : false,
-          count: 0,
-        };
-      }),
   };
 };

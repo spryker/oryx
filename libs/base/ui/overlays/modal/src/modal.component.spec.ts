@@ -270,7 +270,7 @@ describe('Modal', () => {
       const button = element.renderRoot.querySelector(
         'oryx-button'
       ) as ButtonComponent;
-      expect(button.icon).toBe(IconTypes.ArrowBack);
+      expect(button.icon).toBe(IconTypes.ArrowBackward);
     });
 
     describe('and the button is clicked', () => {

@@ -1,11 +1,15 @@
 import { resolve } from '@spryker-oryx/di';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
+import { RangeFacetValue } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { SearchFacetComponentAttributes } from '@spryker-oryx/search/facet';
+import { SelectFacetEventDetail } from '@spryker-oryx/search';
 import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
-import { SearchRatingFacetComponentOptions } from '../facet-rating.model';
+import {
+  SearchRatingFacetComponentOptions,
+  SearchRatingFacetComponentProperties,
+} from '../facet-rating.model';
 
 export default {
   title: `${storybookPrefix}/Facet Rating`,
@@ -15,17 +19,6 @@ export default {
     max: 5,
     scale: 5,
   },
-  argTypes: {
-    min: {
-      table: { category: 'Options' },
-    },
-    max: {
-      table: { category: 'Options' },
-    },
-    scale: {
-      table: { category: 'Options' },
-    },
-  },
   parameters: {
     chromatic: {
       disableSnapshot: true,
@@ -34,9 +27,17 @@ export default {
 };
 
 const Template: Story<
-  SearchFacetComponentAttributes & SearchRatingFacetComponentOptions
+  SearchRatingFacetComponentProperties & SearchRatingFacetComponentOptions
 > = ({ open, min, max, scale }): TemplateResult => {
-  resolve<MockRouterService>(RouterService).params$.next({});
+  const router = resolve<MockRouterService>(RouterService);
+
+  router.params$.next({});
+
+  const select = (e: CustomEvent<SelectFacetEventDetail>): void => {
+    const { min } = (e.detail.value?.selected as RangeFacetValue) ?? {};
+
+    router.params$.next({ minRating: String(min) });
+  };
 
   return html`<oryx-search-facet-rating
     name="Rating"
@@ -46,6 +47,7 @@ const Template: Story<
       max,
       scale,
     }}
+    @oryx.select=${select}
   ></oryx-search-facet-rating>`;
 };
 

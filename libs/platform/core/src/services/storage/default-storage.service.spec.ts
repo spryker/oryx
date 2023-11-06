@@ -1,12 +1,22 @@
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { lastValueFrom, of } from 'rxjs';
+import { beforeEach, describe } from 'vitest';
 import { DefaultStorageService } from './default-storage.service';
 import { IndexedDBStorageService } from './indexed-db-storage.service';
 import { StorageType } from './model';
-import { StorageService } from './storage.service';
+import { StorageService, StorageStrategy } from './storage.service';
 
 class MockedDBservice implements Partial<IndexedDBStorageService> {
   getItem = vi.fn().mockReturnValue(of(JSON.stringify('')));
+}
+
+const customStorage = 'custom';
+const CustomStorageStrategyToken = `${StorageStrategy}${customStorage}`;
+class CustomStorageStrategy implements StorageStrategy {
+  clear = vi.fn();
+  getItem = vi.fn().mockReturnValue(of(undefined));
+  removeItem = vi.fn();
+  setItem = vi.fn();
 }
 
 describe('DefaultStorageService', () => {
@@ -24,6 +34,10 @@ describe('DefaultStorageService', () => {
         {
           provide: IndexedDBStorageService,
           useClass: MockedDBservice,
+        },
+        {
+          provide: CustomStorageStrategyToken,
+          useClass: CustomStorageStrategy,
         },
       ],
     });
@@ -181,6 +195,41 @@ describe('DefaultStorageService', () => {
       it('should clear session storage', () => {
         expect(globalThis.sessionStorage.clear).toHaveBeenCalled();
       });
+    });
+  });
+
+  describe('when storage type is custom', () => {
+    let customStorageStrategy: CustomStorageStrategy;
+
+    beforeEach(() => {
+      customStorageStrategy = getInjector().inject(CustomStorageStrategyToken);
+    });
+
+    it('should use custom storage strategy for get', () => {
+      service.get('mock', customStorage);
+
+      expect(customStorageStrategy.getItem).toHaveBeenCalledWith('mock');
+    });
+
+    it('should use custom storage strategy for set', () => {
+      service.set('mock', 'custom', customStorage);
+
+      expect(customStorageStrategy.setItem).toHaveBeenCalledWith(
+        'mock',
+        JSON.stringify('custom')
+      );
+    });
+
+    it('should use custom storage strategy for remove', () => {
+      service.remove('mock', customStorage);
+
+      expect(customStorageStrategy.removeItem).toHaveBeenCalledWith('mock');
+    });
+
+    it('should use custom storage strategy for clear', () => {
+      service.clear(customStorage);
+
+      expect(customStorageStrategy.clear).toHaveBeenCalled();
     });
   });
 });

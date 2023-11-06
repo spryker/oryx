@@ -64,7 +64,7 @@ export class DefaultIconInjectable implements IconInjectable {
     if (host) this.setStyles(source.styles, host);
     if (!isText && host) this.setStyles(mapper.styles, host);
 
-    const text = isText ? mapper : mapper.text;
+    const text = isText ? mapper : mapper.text ?? type;
     const weight = isText
       ? source.styles?.weight ?? ''
       : mapper.styles?.weight ?? source.styles?.weight ?? '';

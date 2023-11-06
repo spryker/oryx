@@ -125,10 +125,6 @@ export const productProviders: Provider[] = [
     useValue: facetsRangeNormalizer,
   },
   {
-    provide: FacetRatingNormalizer,
-    useValue: facetRatingNormalizer,
-  },
-  {
     provide: SortNormalizer,
     useValue: sortNormalizer,
   },
@@ -139,6 +135,11 @@ export const productProviders: Provider[] = [
   {
     provide: FacetCategoryNormalizer,
     useValue: facetCategoryNormalizer,
+  },
+  //TODO: drop and use ordinary range normalizer after https://spryker.atlassian.net/browse/CC-31032
+  {
+    provide: FacetRatingNormalizer,
+    useValue: facetRatingNormalizer,
   },
   {
     provide: AvailabilityNormalizer,

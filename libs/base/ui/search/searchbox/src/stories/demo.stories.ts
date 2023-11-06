@@ -18,7 +18,7 @@ export default {
     value: '',
     searchIcon: IconTypes.Search,
     clearIcon: IconTypes.Remove,
-    backIcon: IconTypes.Back,
+    backIcon: IconTypes.Backward,
     searchIconPosition: SearchIconPosition.Prefix,
     clearIconPosition: ClearIconPosition.After,
     clearIconAppearance: ClearIconAppearance.Show,

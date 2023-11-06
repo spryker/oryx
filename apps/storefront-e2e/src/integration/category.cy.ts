@@ -34,17 +34,17 @@ describe('Category suite', () => {
       // apply 1st filter
       categoryPage.getFacets().setColor('Silver');
       categoryPage.waitForSearchRequest();
-      checkProductCardsFilteringByName(categoryPage, 3, 2, query);
+      checkProductCardsFilteringByName(categoryPage, 4, 2, query);
 
       // apply 2nd filter
       categoryPage.getFacets().setBrand('DELL');
       categoryPage.waitForSearchRequest();
-      checkProductCardsFilteringByName(categoryPage, 3, 1, query);
+      checkProductCardsFilteringByName(categoryPage, 4, 1, query);
 
       // clear 2nd filter
       // we don't expect search request here because previous query is cached
       categoryPage.getFacets().resetBrand();
-      checkProductCardsFilteringByName(categoryPage, 3, 2, query);
+      checkProductCardsFilteringByName(categoryPage, 4, 2, query);
     });
 
     it('should apply price filterring', () => {

@@ -5,11 +5,13 @@ import {
   DefaultStorageService,
   injectEnv,
   StorageService,
-  StorageType,
 } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { DefaultLocaleAdapter, LocaleAdapter } from '@spryker-oryx/i18n';
-import { provideIndexedDbEntities } from '@spryker-oryx/indexed-db';
+import {
+  IndexedDbStorageMethod,
+  provideIndexedDbEntities,
+} from '@spryker-oryx/indexed-db';
 import { provideSyncActionsHandler } from '@spryker-oryx/offline';
 import {
   PickingHttpDefaultService,
@@ -80,7 +82,7 @@ export class OfflinePickingFeature implements AppFeature {
       { provide: PickingHttpService, useClass: PickingHttpDefaultService },
       {
         provide: StorageService,
-        useFactory: () => new DefaultStorageService(StorageType.Idb),
+        useFactory: () => new DefaultStorageService(IndexedDbStorageMethod),
       },
       {
         provide: LocaleAdapter,
