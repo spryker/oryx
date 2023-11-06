@@ -10,14 +10,16 @@ export class OryxAppComponent extends LitElement {
   protected router = new LitRouter(this, []);
 
   protected override render(): TemplateResult {
+    const outletHtml = html`${this.router.outlet()}`;
+
+    if (featureVersion >= '1.2') {
+      return outletHtml;
+    }
+
     return html`
-      ${featureVersion < '1.2'
-        ? html`<oryx-composition uid="header"></oryx-composition>`
-        : ''}
-      ${this.router.outlet()}
-      ${featureVersion < '1.2'
-        ? html`<oryx-composition uid="footer"></oryx-composition>`
-        : ''}
+      <oryx-composition uid="header"></oryx-composition>
+      ${outletHtml}
+      <oryx-composition uid="footer"></oryx-composition>
     `;
   }
 }

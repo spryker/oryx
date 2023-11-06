@@ -49,9 +49,9 @@ export function fulfillmentFeatures(
     new BapiAuthFeature(),
     new BapiAuthComponentsFeature(),
     { resources: fulfillmentResources },
-    featureVersion < '1.2'
-      ? new FulfillmentRootFeature(config?.fulfillmentRoot)
-      : [],
+    featureVersion >= '1.2'
+      ? []
+      : new FulfillmentRootFeature(config?.fulfillmentRoot),
     new PickingFeature(config?.picking),
     StaticExperienceFeature,
   ];
