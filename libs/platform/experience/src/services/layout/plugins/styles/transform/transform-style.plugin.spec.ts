@@ -25,7 +25,7 @@ describe('TransformStylePlugin', () => {
       const data = { scale: 1.5, rotate: 60 };
       const styleProperties = [
         [{ rotate: data.rotate }, { unit: 'deg' }],
-        [{ scale: data.scale }],
+        [{ scale: data.scale }, { omitUnit: true }],
       ];
       const result = await lastValueFrom(
         plugin.getStyleProperties({ styles: data, options: {} })
