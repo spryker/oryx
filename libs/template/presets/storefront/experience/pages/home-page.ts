@@ -1,5 +1,5 @@
 import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
-
+console.log('ExperienceComponent');
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
   type: 'oryx-content-image',
   name,
