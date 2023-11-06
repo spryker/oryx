@@ -15,7 +15,7 @@ export class DefaultProductListAdapter implements ProductListAdapter {
   protected readonly alias: Record<string, string> = {
     minPrice: 'price[min]',
     maxPrice: 'price[max]',
-    rating: 'rating[min]',
+    minRating: 'rating[min]',
     storageCapacity: 'storage_capacity[]',
   };
 

@@ -29,7 +29,7 @@ describe('TypographyStylePlugin', () => {
         'line-height': `var(--oryx-typography-${data.typography}-line)`,
       };
       const result = await lastValueFrom(
-        plugin.getStyleProperties({ styles: data })
+        plugin.getStyleProperties({ styles: data, options: {} })
       );
 
       expect(result).toEqual(styleProperties);

@@ -20,7 +20,7 @@ export class TransformStylePlugin implements LayoutPlugin {
 
     return of([
       [{ rotate: styles.rotate }, { unit: 'deg' }],
-      [{ scale: styles.scale }],
+      [{ scale: styles.scale }, { omitUnit: true }],
     ]);
   }
 }

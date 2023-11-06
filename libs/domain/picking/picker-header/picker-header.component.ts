@@ -61,7 +61,7 @@ export class PickingPickerHeaderComponent extends I18nMixin(
         <oryx-button
           .type=${ButtonType.Icon}
           .size=${ButtonSize.Md}
-          .icon=${IconTypes.ArrowBack}
+          .icon=${IconTypes.ArrowBackward}
           .label=${this.i18n('oryx.picking.back-to-pick-lists')}
           @click=${this.back}
         ></oryx-button>

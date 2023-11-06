@@ -1,4 +1,5 @@
-import { RangeFacet, RangeFacetValue } from '@spryker-oryx/product';
+import { RangeFacet } from '@spryker-oryx/product';
+import { SelectRangeFacetValues } from '@spryker-oryx/search';
 import { FacetController } from '@spryker-oryx/search/facet';
 import { MultiRangeChangeEvent } from '@spryker-oryx/ui/multi-range';
 import {
@@ -34,7 +35,7 @@ export class SearchRangeFacetComponent
   @state() min?: number;
   @state() max?: number;
 
-  protected $facet = computed(() => this.controller.getFacet() as RangeFacet);
+  protected $facet = computed(() => this.controller.getFacet<RangeFacet>());
 
   protected $isDirty = computed(() => {
     const facet = this.$facet();
@@ -90,10 +91,10 @@ export class SearchRangeFacetComponent
     }
   }
 
-  protected hasChangedValue({ min, max }: RangeFacetValue): boolean {
+  protected hasChangedValue({ min, max }: SelectRangeFacetValues): boolean {
     const {
       values: { selected },
-    } = this.$facet();
+    } = this.$facet()!;
     return selected?.min !== min || selected?.max !== max;
   }
 

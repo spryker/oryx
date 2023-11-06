@@ -36,20 +36,22 @@ describe('StickyLayoutPlugin', () => {
       const data = {
         height: '100px',
         top: '10',
-        overflow: 'overflow',
-        zIndex: 1,
+        layout: {
+          overflow: 'overflow',
+          zIndex: 1,
+        },
       };
       const styleProperties = [
         [
           {
             'max-height': `calc(${data.height} - ${data.top})`,
-            overflow: data.overflow,
+            overflow: data.layout.overflow,
           },
         ],
-        [{ 'z-index': data.zIndex }, { omitUnit: true }],
+        [{ 'z-index': data.layout.zIndex }, { omitUnit: true }],
       ];
       const result = await lastValueFrom(
-        plugin.getStyleProperties({ styles: data })
+        plugin.getStyleProperties({ styles: data, options: {} })
       );
 
       expect(result).toEqual(styleProperties);

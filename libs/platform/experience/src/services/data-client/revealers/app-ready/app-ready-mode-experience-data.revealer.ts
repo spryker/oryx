@@ -1,9 +1,9 @@
 import { AppRef } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { from, Observable, tap } from 'rxjs';
-import { MessageType } from '../data-client.model';
-import { ExperienceDataRevealer } from '../data-client.service';
-import { postMessage } from '../utilities';
+import { MessageType } from '../../data-client.model';
+import { ExperienceDataRevealer } from '../../data-client.service';
+import { postMessage } from '../../utilities';
 
 export class AppReadyExperienceDataRevealer implements ExperienceDataRevealer {
   constructor(protected appRef = inject(AppRef)) {}

@@ -37,9 +37,40 @@ export enum IconTypes {
   Planet = 'language',
   Actions = 'more_vert',
   ActionsHorizontal = 'more_horiz',
+
+  Backward = 'backward',
+  Forward = 'forward',
+  ArrowBackward = 'arrow_backward',
+  ArrowForward = 'arrow_forward',
+  ArrowDownward = 'arrow_downward',
+  ArrowUpward = 'arrow_upward',
+  ArrowOutward = 'arrow_outward',
+
+  /**
+   * @deprecated use Backward instead
+   */
   Back = 'chevron_left',
+  /**
+   * @deprecated use ArrowBackward instead
+   */
   ArrowBack = 'arrow_back',
+  /**
+   * @deprecated use ArrowForward instead
+   */
+  NavigationArrow = 'arrow_right_alt',
+  /**
+   * @deprecated use ArrowDownward instead
+   */
   Bottom = 'arrow_downward',
+  /**
+   * @deprecated use ArrowUpward instead
+   */
+  Top = 'arrow_upward',
+  /**
+   * @deprecated use ArrowOutward instead
+   */
+  ArrowsOutward = 'arrows_outward',
+
   Calendar = 'calendar_month',
   Copy = 'content_copy',
   Create = 'create',
@@ -59,21 +90,18 @@ export enum IconTypes {
   Maximize = 'maximize',
   Menu = 'menu',
   Minimize = 'minimize',
-  NavigationArrow = 'arrow_right_alt',
   Reset = 'restart_alt',
   Settings = 'settings',
   Sort = 'sort',
   Star = 'star',
-  Top = 'arrow_upward',
   Filter = 'filter',
   Refresh = 'refresh',
-  Carrier = 'local_shipping',
+  Carrier = 'carrier',
   Location = 'location_on',
   Login = 'login',
   List = 'list',
   ViewList = 'view_list',
   BulletList = 'format_list_bulleted',
-  ArrowsOutward = 'arrows_outward',
   Composition = 'view_quilt',
   Video = 'play_circle',
   Description = 'description',
@@ -85,7 +113,4 @@ export enum IconTypes {
   Title = 'title',
   Card = 'view_carousel',
   Input = 'input',
-  Forward = 'chevron_right',
-  Next = 'next',
-  Previous = 'previous',
 }

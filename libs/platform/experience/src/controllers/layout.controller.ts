@@ -1,3 +1,4 @@
+import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { resolve } from '@spryker-oryx/di';
 import {
   LayoutAttributes,
@@ -13,6 +14,7 @@ import {
   map,
   of,
   reduce,
+  switchMap,
 } from 'rxjs';
 import {
   CompositionProperties,
@@ -25,7 +27,6 @@ import {
   LayoutPluginRenderParams,
   LayoutPluginType,
   LayoutService,
-  LayoutStylesOptions,
   ResponsiveLayoutInfo,
 } from '../services';
 
@@ -68,12 +69,17 @@ export class LayoutController {
   ): Observable<string> {
     const props = this.normalizeProperties(properties, rules);
     const infos = this.getLayoutInfos(props, rules);
-    const layoutOptions = this.getLayoutOptions(properties, rules, screen);
 
-    return combineLatest([
-      this.layoutService.getStyles(infos, layoutOptions),
-      this.getComponentStyles(props, rules, this.host.uid),
-    ]).pipe(
+    return ssrAwaiter(
+      combineLatest([
+        this.getLayoutOptions(properties, rules, screen).pipe(
+          switchMap((layoutOptions) =>
+            this.layoutService.getStyles(infos, layoutOptions)
+          )
+        ),
+        this.getComponentStyles(props, rules, this.host.uid),
+      ])
+    ).pipe(
       map(
         ([layoutStyles, componentStyles]) => `${layoutStyles}${componentStyles}`
       )
@@ -121,34 +127,33 @@ export class LayoutController {
 
   getRender(config: LayoutRenderParams): Observable<TemplateResult> {
     const { screen, attrs, place, data } = config;
-    const layoutOptions = this.getLayoutOptions(
-      attrs,
-      data.options?.rules,
-      screen
-    );
 
-    return from(Object.entries(layoutOptions)).pipe(
-      concatMap(([prop, value]) => {
-        if (!value) return of(null);
+    return this.getLayoutOptions(attrs, data.options?.rules, screen).pipe(
+      switchMap((layoutOptions) =>
+        from(Object.entries(layoutOptions)).pipe(
+          concatMap(([prop, value]) => {
+            if (!value) return of(null);
 
-        const token = prop === 'layout' ? (value as string) : prop;
-        const type =
-          prop === 'layout'
-            ? LayoutPluginType.Layout
-            : LayoutPluginType.Property;
+            const token = prop === 'layout' ? (value as string) : prop;
+            const type =
+              prop === 'layout'
+                ? LayoutPluginType.Layout
+                : LayoutPluginType.Property;
 
-        return this.layoutService.getRender({
-          type,
-          token,
-          data: {
-            ...data,
-            options: layoutOptions,
-          },
-        });
-      }),
-      reduce(
-        (acc, curr) => (!curr?.[place] ? acc : html`${acc}${curr[place]}`),
-        html``
+            return this.layoutService.getRender({
+              type,
+              token,
+              data: {
+                ...data,
+                options: layoutOptions,
+              },
+            });
+          }),
+          reduce(
+            (acc, curr) => (!curr?.[place] ? acc : html`${acc}${curr[place]}`),
+            html``
+          )
+        )
       )
     );
   }
@@ -157,29 +162,8 @@ export class LayoutController {
     attrs: string[],
     styles: StyleRuleSet[] = [],
     screen?: string
-  ): LayoutProperties {
+  ): Observable<LayoutProperties> {
     const host = this.host;
-
-    const getLayoutRules = (): LayoutProperties => {
-      const bpRules = styles.find(
-        (rule) => rule.query?.breakpoint === screen && rule.layout
-      )?.layout;
-      const rules = styles.find(
-        (rule) => !rule.query?.breakpoint && rule.layout
-      )?.layout;
-      const properties: LayoutStylesOptions & LayoutProperties = {
-        ...(typeof rules === 'string' ? { type: rules } : rules),
-        ...(typeof bpRules === 'string' ? { type: bpRules } : bpRules),
-      };
-
-      if (properties.type) {
-        const layout = properties.type;
-        delete properties.type;
-        properties.layout = layout;
-      }
-
-      return properties;
-    };
 
     const hostProperties = ['layout', ...attrs].reduce((acc, attr) => {
       const value = host[attr as keyof typeof host];
@@ -199,17 +183,19 @@ export class LayoutController {
       return acc;
     }, {});
 
-    return {
-      ...getLayoutRules(),
-      ...hostProperties,
-      ...(screen
-        ? (host[
-            `layout${screen.charAt(0).toUpperCase()}${screen.slice(
-              1
-            )}` as keyof typeof host
-          ] as Record<string, unknown>)
-        : {}),
-    };
+    return this.layoutBuilder.getActiveLayoutRules(styles, screen).pipe(
+      map((layoutProperties) => ({
+        ...layoutProperties,
+        ...hostProperties,
+        ...(screen
+          ? (host[
+              `layout${screen.charAt(0).toUpperCase()}${screen.slice(
+                1
+              )}` as keyof typeof host
+            ] as Record<string, unknown>)
+          : {}),
+      }))
+    );
   }
 
   /**
@@ -295,7 +281,7 @@ export class LayoutController {
     const isRule = (rule: StyleRuleSet, isLayout: boolean, ruleProp: string) =>
       (typeof rule.layout === 'string' && isLayout) ||
       (typeof rule.layout === 'object' &&
-        rule.layout[ruleProp as keyof typeof rule.layout] !== undefined);
+        rule.layout[ruleProp as keyof typeof rule.layout]);
     const getRuleValue = (rule?: StyleRuleSet, prop?: string) =>
       typeof rule?.layout === 'string'
         ? rule.layout

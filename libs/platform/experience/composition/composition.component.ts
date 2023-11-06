@@ -80,6 +80,7 @@ export class CompositionComponent extends LayoutMixin(
 
     return this[LayoutMixinInternals].layoutService.getStylesFromOptions({
       composition: components,
+      screen: this.$screen(),
     });
   });
   protected $preLayoutRenderComposition = computed(() =>

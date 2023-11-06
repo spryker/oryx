@@ -1,3 +1,4 @@
+import { LayoutProperties } from '@spryker-oryx/experience/layout';
 import { Observable } from 'rxjs';
 import {
   Component,
@@ -7,6 +8,20 @@ import {
 } from '../../models';
 
 export const LayoutBuilder = 'oryx.LayoutBuilder';
+
+interface HostStylesParams {
+  activeHostOptions?: LayoutProperties;
+  screen?: string;
+}
+
+export interface StylesFromOptionsParams extends HostStylesParams {
+  rules?: StyleRuleSet[];
+  id?: string;
+}
+
+export interface CompositionStylesParams extends HostStylesParams {
+  composition: Component[];
+}
 
 export interface LayoutBuilder {
   /**
@@ -28,8 +43,12 @@ export interface LayoutBuilder {
    *
    * The concatenated styles can be used inside a `<style>` tag.
    */
-  getCompositionStyles(components: Component[]): Observable<string>;
-  getStylesFromOptions(rules?: StyleRuleSet[], id?: string): Observable<string>;
+  getCompositionStyles(data: CompositionStylesParams): Observable<string>;
+  getStylesFromOptions(params: StylesFromOptionsParams): Observable<string>;
+  getActiveLayoutRules(
+    rules?: StyleRuleSet[],
+    screen?: string
+  ): Observable<LayoutProperties>;
 
   /**
    * Generates an list of layout values that is driven by layout properties on the

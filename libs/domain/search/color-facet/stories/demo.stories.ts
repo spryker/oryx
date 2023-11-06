@@ -2,12 +2,12 @@ import { resolve } from '@spryker-oryx/di';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { ValueFacet } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { FacetListService } from '@spryker-oryx/search';
 import {
-  SearchFacetComponentAttributes,
+  FacetListService,
   SelectFacetEventDetail,
   SelectFacetValue,
-} from '@spryker-oryx/search/facet';
+} from '@spryker-oryx/search';
+import { SearchFacetComponentAttributes } from '@spryker-oryx/search/facet';
 import { Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { take } from 'rxjs';

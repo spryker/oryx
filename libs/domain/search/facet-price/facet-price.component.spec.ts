@@ -4,7 +4,10 @@ import { generateRange } from '@spryker-oryx/product/mocks';
 import { FacetListService } from '@spryker-oryx/search';
 import { CurrencyService } from '@spryker-oryx/site';
 import { InputComponent } from '@spryker-oryx/ui/input';
-import { MultiRangeComponent } from '@spryker-oryx/ui/multi-range';
+import {
+  CHANGE_EVENT,
+  MultiRangeComponent,
+} from '@spryker-oryx/ui/multi-range';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -108,6 +111,75 @@ describe('SearchPriceFacetComponent', () => {
       expect(range.max).toBe(10);
       expect(range.minValue).toBe(0);
       expect(range.maxValue).toBe(10);
+    });
+  });
+
+  describe('when range values are changed', () => {
+    const callback = vi.fn();
+    const selected = { minValue: 200, maxValue: 900 };
+
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-price-facet
+          name=${name}
+          @oryx.select=${callback}
+        ></oryx-search-price-facet>`
+      );
+
+      getRange().dispatchEvent(
+        new CustomEvent(CHANGE_EVENT, { detail: selected })
+      );
+    });
+
+    it('should dispatch oryx.select event with selected values', () => {
+      expect(callback).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: expect.objectContaining({
+            name,
+            value: expect.objectContaining({
+              selected: { min: selected.minValue, max: selected.maxValue },
+            }),
+          }),
+        })
+      );
+    });
+
+    describe('and values are equal facet`s min and max', () => {
+      const callback = vi.fn();
+      const selected = { minValue: min / 100, maxValue: max / 100 };
+
+      beforeEach(async () => {
+        const mockFacet = generateRange(
+          name,
+          'parameter',
+          [min, max],
+          [200, 900]
+        );
+        service.getFacet.mockReturnValue(of(mockFacet));
+        element = await fixture(
+          html`<oryx-search-price-facet
+            name=${name}
+            @oryx.select=${callback}
+          ></oryx-search-price-facet>`
+        );
+
+        getRange().dispatchEvent(
+          new CustomEvent(CHANGE_EVENT, { detail: selected })
+        );
+      });
+
+      it('should dispatch oryx.select event with min and max equal to undefined', () => {
+        expect(callback).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: expect.objectContaining({
+              name,
+              value: expect.objectContaining({
+                selected: { min: undefined, max: undefined },
+              }),
+            }),
+          })
+        );
+      });
     });
   });
 });
