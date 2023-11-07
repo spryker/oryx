@@ -66,16 +66,17 @@ describe('LayoutComponent', () => {
   });
 
   describe('when the version >= 1.2', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       mockFeatureVersion('1.2');
-    });
 
-    it('should render style tag with content from service', async () => {
       mockLayoutService.getStyles.mockReturnValue(of('stylesResult'));
       mockLayoutService.getStylesFromOptions.mockReturnValue(
         of('inlineResult')
       );
       element = await fixture(html`<oryx-layout layout="grid"></oryx-layout>`);
+    });
+
+    it('should render style tag with content from service', async () => {
       const style = element.renderRoot.querySelector('style');
       expect(style?.textContent).toContain('stylesResult');
       expect(style?.textContent).toContain('inlineResult');

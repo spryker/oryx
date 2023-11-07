@@ -43,7 +43,9 @@ interface LayoutMixinRender {
 export declare class LayoutMixinInterface {
   /**
    * @deprecated since 1.2 will be deleted.
+   * Property binding is not supported anymore.
    * Use attributes with the same name but together with layout prefix instead.
+   * For example: bleed -> layout-grid.
    */
   bleed?: boolean;
   sticky?: boolean;
