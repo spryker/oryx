@@ -40,7 +40,7 @@ export class CarouselNavigationComponent
   protected scrollThrottleTime = 50;
 
   @state() protected items: HTMLElement[] = [];
-  @state() protected slides: { index: number }[] = [];
+  @state() protected slides: number[] = [];
 
   @queryAll('input') protected indicatorElements?: NodeListOf<HTMLInputElement>;
 
@@ -243,8 +243,18 @@ export class CarouselNavigationComponent
           : el.getBoundingClientRect().left;
         return scrollX + y >= i * clientD;
       });
-      return { index: firstElementInSlide };
+      return firstElementInSlide;
     });
+
+    // this.slides = [...Array(slideCount).keys()].map((i) => {
+    //   const firstElementInSlide = this.items.findIndex((el) => {
+    //     const y = this.isVertical
+    //       ? el.getBoundingClientRect().top
+    //       : el.getBoundingClientRect().left;
+    //     return scrollX + y >= i * clientD;
+    //   });
+    //   return { index: firstElementInSlide };
+    // });
   }
 
   /**
@@ -278,7 +288,7 @@ export class CarouselNavigationComponent
             ${this.slides.map(
               (slide) =>
                 html`<input
-                  value=${slide.index}
+                  value=${slide}
                   type="radio"
                   name="indicators"
                   @input=${this.handleIndicatorClick}
@@ -428,9 +438,10 @@ export class CarouselNavigationComponent
 
   protected setScrollSnap(): void {
     this.items.forEach((item, index) => {
+      const hasMatch = this.slides.find((slide) => slide === index) ?? -1;
       const align =
         this.arrowNavigationBehavior === ArrowNavigationBehavior.Item ||
-        this.slides.find((slide) => slide.index === index)
+        hasMatch > -1
           ? 'start'
           : 'none';
       item.style.scrollSnapAlign = align;
