@@ -15,7 +15,6 @@ export const baseStyles = [
 
     :host([float]:not([open])) label {
       display: none;
-      position: relative;
     }
 
     :host([float]) label {
@@ -26,7 +25,7 @@ export const baseStyles = [
         var(--floating-padding-start, 10px)
       );
       width: calc(
-        100% -
+        100vw -
           calc(
             var(--floating-padding-start, 10px) +
               calc(
@@ -34,7 +33,22 @@ export const baseStyles = [
               )
           )
       );
-      transform: translateY(calc(-50% + var(--floating-vertical-offset, 18px)));
+      max-width: var(
+        --floating-width,
+        calc(
+          100vw -
+            calc(
+              var(--floating-padding-start, 10px) +
+                calc(
+                  var(
+                    --floating-padding-end,
+                    var(--floating-padding-start, 10px)
+                  )
+                )
+            )
+        )
+      );
+      transform: translateY(calc(-50% + var(--floating-vertical-offset, 20px)));
       z-index: 1;
     }
 
