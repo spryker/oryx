@@ -35,22 +35,8 @@ export const ProductMixin = <
 
     protected contextController = new ContextController(this);
 
-    protected $productContext = signal(
-      this.contextController.get<string>(ProductContext.SKU)
-    );
-
-    protected $productQualifier: Signal<ProductQualifier | null> = computed(
-      () => {
-        const sku_context = (this.sku ?? this.$productContext() ?? '')?.split(
-          ','
-        );
-        return sku_context
-          ? {
-              sku: sku_context[0],
-              ...(sku_context[1] ? { offer: sku_context[1] } : {}),
-            }
-          : null;
-      }
+    protected $productQualifier: Signal<ProductQualifier | undefined> = signal(
+      this.contextController.get<ProductQualifier>(ProductContext.SKU)
     );
 
     protected $product = computed(() => {

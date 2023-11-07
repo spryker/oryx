@@ -27,16 +27,13 @@ export class ProductPageTitleMetaResolver implements PageMetaResolver {
 
   resolve(): Observable<ElementResolver> {
     return this.context.get(null, ProductContext.SKU).pipe(
-      switchMap((sku) => {
-        if (!sku) {
+      switchMap((qualifier) => {
+        if (!qualifier) {
           return of({});
         }
 
         return this.productService
-          .get({
-            sku: (sku as string)?.split(',')[0],
-            offer: (sku as string)?.split(',')[1],
-          })
+          .get(qualifier)
           .pipe(
             map((product) => (product?.name ? { title: product.name } : {}))
           );

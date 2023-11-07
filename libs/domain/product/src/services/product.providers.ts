@@ -74,7 +74,11 @@ import {
   ProductListPageService,
   ProductListService,
 } from './list';
-import { ProductContextFallback } from './product-context';
+import {
+  ProductContextFallback,
+  ProductContextSerializer,
+  ProductContextSerializerToken,
+} from './product-context';
 import { ProductService } from './product.service';
 import {
   DefaultProductRelationsListAdapter,
@@ -234,4 +238,8 @@ export const productProviders: Provider[] = [
   categoryQuery,
   ...provideLitRoutes({ routes: productRoutes }),
   ...merchantProviders,
+  {
+    provide: ProductContextSerializerToken,
+    useClass: ProductContextSerializer,
+  },
 ];

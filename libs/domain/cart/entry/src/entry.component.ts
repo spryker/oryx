@@ -86,13 +86,10 @@ export class CartEntryComponent
   @elementEffect()
   protected setProductContext = (): void => {
     if (this.entry?.sku) {
-      this.contextController.provide(
-        ProductContext.SKU,
-        this.entry.sku +
-          (this.entry?.productOfferReference
-            ? `,${this.entry.productOfferReference}`
-            : '')
-      );
+      this.contextController.provide(ProductContext.SKU, {
+        sku: this.entry.sku,
+        offer: this.entry.productOfferReference,
+      });
     }
   };
 
