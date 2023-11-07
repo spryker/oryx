@@ -13,15 +13,17 @@ export class DefaultStorageService implements StorageService {
     protected injector = inject(INJECTOR)
   ) {}
 
-  protected storages: Record<StorageType | string, Storage | StorageStrategy> =
-    {
-      [StorageType.Session]:
-        typeof sessionStorage !== 'undefined' ? sessionStorage : undefined,
-      [StorageType.Local]:
-        typeof localStorage !== 'undefined' ? localStorage : undefined,
-      /** @deprecated since 1.2, remove */
-      [StorageType.Idb]: this.ibdStorage,
-    };
+  protected storages: Record<
+    StorageType | string,
+    Storage | StorageStrategy | undefined | null
+  > = {
+    [StorageType.Session]:
+      typeof sessionStorage !== 'undefined' ? sessionStorage : undefined,
+    [StorageType.Local]:
+      typeof localStorage !== 'undefined' ? localStorage : undefined,
+    /** @deprecated since 1.2, remove */
+    [StorageType.Idb]: this.ibdStorage ?? undefined,
+  };
 
   get<T = unknown>(key: string, type?: StorageType): Observable<T | null> {
     try {
