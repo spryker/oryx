@@ -43,9 +43,7 @@ export class LayoutExperienceDataRevealer implements ExperienceDataRevealer {
     switchMap((selectedLayout) => {
       const layout: LayoutStylesOptions =
         typeof selectedLayout === 'string'
-          ? {
-              type: selectedLayout,
-            }
+          ? { type: selectedLayout }
           : selectedLayout ?? {};
 
       return combineLatest([this.types$, this.properties$, this.styles$]).pipe(
