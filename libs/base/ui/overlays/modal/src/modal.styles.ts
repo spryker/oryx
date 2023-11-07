@@ -18,7 +18,7 @@ export const styles = css`
     );
     max-width: calc(
       var(--oryx-container-width, --oryx-modal-width) -
-      var(--oryx-modal-bleed, 0px) * 2
+        var(--oryx-modal-bleed, 0px) * 2
     );
     max-height: calc(100vh - var(--oryx-modal-bleed, 0px) * 2);
   }
