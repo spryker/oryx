@@ -1,5 +1,5 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { throttle } from '@spryker-oryx/utilities';
+import { hydrate, throttle } from '@spryker-oryx/utilities';
 import { LitElement, PropertyValueMap, TemplateResult, html } from 'lit';
 import { property, queryAll, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -18,6 +18,7 @@ import {
   getScrollDimensions,
 } from './util';
 
+@hydrate({ event: 'window:load' })
 export class CarouselNavigationComponent
   extends LitElement
   implements CarouselLayoutProperties
