@@ -79,13 +79,7 @@ export class CarouselNavigationComponent
     this.intersectionObserver = new IntersectionObserver(
       throttle((entries: IntersectionObserverEntry[]) => {
         return entries.forEach((entry) => {
-          let initialized = false;
-          if (
-            !initialized &&
-            entry.isIntersecting &&
-            this.resolveItems().length
-          ) {
-            initialized = true;
+          if (this.resolveItems().length) {
             this.buildNavigation();
             this.initializeScrollListener();
             this.initializeResizeObserver();

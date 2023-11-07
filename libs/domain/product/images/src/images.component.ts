@@ -98,7 +98,6 @@ export class ProductImagesComponent extends ProductMixin(
       class="main"
       layout=${ifDefined(imageLayout)}
       behavior=${ifDefined(scrollBehavior)}
-      layout=${ifDefined(imageLayout)}
       .options=${options}
       style="--oryx-column-count: 1;--image-fit:${objectFit};--cols: ${cols}"
     >
