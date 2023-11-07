@@ -8,8 +8,13 @@ import {
   startWith,
   Subject,
   switchMap,
+  tap,
 } from 'rxjs';
-import { ContextFallback, ContextService } from './context.service';
+import {
+  ContextFallback,
+  ContextSerializer,
+  ContextService,
+} from './context.service';
 
 declare global {
   interface Node {
@@ -26,13 +31,14 @@ export class DefaultContextService implements ContextService {
   >();
   protected triggerManifest$ = new Subject<void>();
 
+  protected serializers = new Map<string, ContextSerializer | null>();
+
   constructor(protected injector = inject(INJECTOR)) {}
 
   provide(element: Element, key: string, value: unknown): void {
-    const stringifiedValue =
-      typeof value === 'string' ? value : JSON.stringify(value);
-
-    element.setAttribute(this.getAttributeName(key), stringifiedValue);
+    this.serialize(key, value).subscribe((serialized) =>
+      element.setAttribute(this.getAttributeName(key), serialized)
+    );
 
     if (!this.hasKey(element, key)) {
       if (!this.manifest.has(element)) {
@@ -49,7 +55,7 @@ export class DefaultContextService implements ContextService {
     this.manifest.get(element)!.get(key)!.next(value);
   }
 
-  get<T>(element: Element | null, key: string): Observable<T> {
+  get<T>(element: Element | null, key: string): Observable<T | undefined> {
     return this.triggerManifest$.pipe(
       startWith(undefined),
       switchMap(() => {
@@ -62,19 +68,13 @@ export class DefaultContextService implements ContextService {
           }
 
           if (elementWithAttr) {
-            let value: string | undefined = elementWithAttr.getAttribute(
-              this.getAttributeName(key)
-            )!;
-
-            try {
-              value = JSON.parse(value);
-            } catch {
-              // fallback to string value if JSON.parse will fail
-            }
-
-            this.provide(elementWithAttr, key, value);
-
-            return this.manifest.get(elementWithAttr)!.get(key)!;
+            return this.deserialize(
+              key,
+              elementWithAttr.getAttribute(this.getAttributeName(key))!
+            ).pipe(
+              tap((value) => this.provide(elementWithAttr, key, value)),
+              switchMap(() => this.manifest.get(elementWithAttr)!.get(key)!)
+            );
           }
         }
         return of(undefined);
@@ -187,5 +187,38 @@ export class DefaultContextService implements ContextService {
     }
 
     return null;
+  }
+
+  private getSerializer<T>(key: string): ContextSerializer<T> | null {
+    if (!this.serializers.has(key)) {
+      this.serializers.set(
+        key,
+        this.injector.inject(`${ContextSerializer}${key}`, null)
+      );
+    }
+    return this.serializers.get(key)! as ContextSerializer<T> | null;
+  }
+
+  public serialize<T>(key: string, value: T): Observable<string> {
+    const serializer = this.getSerializer(key);
+    if (serializer) return serializer.serialize(value);
+    return typeof value === 'string' ? of(value) : of(JSON.stringify(value));
+  }
+
+  public deserialize<T = unknown>(
+    key: string,
+    value: string | undefined
+  ): Observable<T> {
+    if (value !== undefined) {
+      const serializer = this.getSerializer<T>(key);
+      if (serializer) return serializer.deserialize(value);
+
+      try {
+        value = JSON.parse(value);
+      } catch {
+        // fallback to string value if JSON.parse will fail
+      }
+    }
+    return of(value as T);
   }
 }
