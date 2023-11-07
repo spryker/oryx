@@ -12,6 +12,7 @@ import {
 } from '../src/services';
 import { carouselNavigationStyles } from './carousel-navigation.styles';
 import {
+  findLastIndexCondition,
   getComputedGapInPixels,
   getDimensions,
   getScrollDimensions,
@@ -299,17 +300,20 @@ export class CarouselNavigationComponent
     if ((e as KeyboardEvent).altKey) {
       index = 0;
     } else {
-      const hostSize = getDimensions(this.hostElement, this.isVertical);
+      const hostDimensions = getDimensions(this.hostElement, this.isVertical);
 
       index =
         this.arrowNavigationBehavior === ArrowNavigationBehavior.Item
-          ? this.items.findLastIndex((el) => {
-              console.log(el.getBoundingClientRect(), el.offsetTop);
-              return getDimensions(el, this.isVertical).position < 0;
+          ? // findLastIndex not yet supported by our compiler
+            findLastIndexCondition(this.items, (el) => {
+              return (
+                getDimensions(el, this.isVertical).position <
+                hostDimensions.position
+              );
             })
           : this.items.findIndex((el) => {
               const dimensions = getDimensions(el, this.isVertical);
-              return dimensions.position > -hostSize.size;
+              return dimensions.position > -hostDimensions.size;
             });
     }
     this.scrollElementToIndex(index);

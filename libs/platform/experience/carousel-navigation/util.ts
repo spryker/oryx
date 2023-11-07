@@ -71,3 +71,15 @@ export function getComputedGapInPixels(
 
   return gapInPixels;
 }
+
+export function findLastIndexCondition<T>(
+  arr: T[],
+  condition: (element: T) => boolean
+): number {
+  for (let i = arr.length - 1; i >= 0; i--) {
+    if (condition(arr[i])) {
+      return i;
+    }
+  }
+  return -1; // Return -1 if no element satisfies the condition
+}
