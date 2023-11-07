@@ -13,6 +13,19 @@ export default defineConfig({
     outDir: '../../dist/apps/fulfillment',
     emptyOutDir: true,
     sourcemap: true,
+    rollupOptions: {
+      input: {
+        app: './index.html',
+        'service-worker': './dev-dist/sw/app.js',
+      },
+      output: {
+        entryFileNames: assetInfo => {
+          return assetInfo.name === 'service-worker'
+             ? 'app.js'
+             : 'assets/[name].js'
+        }
+      },
+    },
   },
   define: {
     'import.meta.env.ORYX_FULFILLMENT_APP_VERSION': JSON.stringify(version),

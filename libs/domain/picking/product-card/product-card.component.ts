@@ -1,4 +1,4 @@
-import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
+import { QuantityInputComponent } from '@spryker-oryx/ui/quantity-input';
 import {
   EVENT_EDIT,
   EVENT_SUBMIT,

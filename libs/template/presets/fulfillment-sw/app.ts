@@ -1,6 +1,6 @@
-import { AppFeature, coreFeature, PageMetaService } from '@spryker-oryx/core';
-import { ServerPageMetaService } from '@spryker-oryx/core/server';
-import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
+import { AppFeature, coreFeature } from '@spryker-oryx/core';
+// import { ServerPageMetaService } from '@spryker-oryx/core/server';
+// import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import {
   IndexedDbFeature,
   IndexedDbFeatureConfig,
@@ -12,7 +12,7 @@ import {
   SwAuthFeature,
   SwOfflinePickingFeature,
 } from '@spryker-oryx/picking/offline';
-import { RouterFeature } from '@spryker-oryx/router';
+import { RouterFeature } from '@spryker-oryx/router'; 
 
 export interface SharedOfflineFulfillmentFeaturesConfig {
   indexedDb?: IndexedDbFeatureConfig;
@@ -27,7 +27,7 @@ export const defaultOfflineFulfillmentConfig: SharedOfflineFulfillmentFeaturesCo
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface OfflineServiceWorkerFulfillmentFeaturesConfig
   extends SharedOfflineFulfillmentFeaturesConfig {
-  i18n?: I18nFeatureOptions;
+  // i18n?: I18nFeatureOptions;
 }
 
 export function offlineServiceWorkerFulfillmentFeatures(
@@ -40,19 +40,19 @@ export function offlineServiceWorkerFulfillmentFeatures(
 
   return [
     coreFeature,
-    new I18nFeature(config?.i18n),
+    // new I18nFeature(config?.i18n),
     new IndexedDbFeature(config?.indexedDb),
     new RouterFeature(),
     new SwAuthFeature(),
     new OfflineServiceWorkerFeature(),
-    {
-      providers: [
-        {
-          provide: PageMetaService,
-          useClass: ServerPageMetaService,
-        },
-      ],
-    },
+    // {
+    //   providers: [
+    //     {
+    //       provide: PageMetaService,
+    //       useClass: ServerPageMetaService,
+    //     },
+    //   ],
+    // },
     new SwOfflinePickingFeature(),
   ];
 }
