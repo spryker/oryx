@@ -83,7 +83,7 @@ export const homePage: ExperienceComponent = {
                   }
                 : 'split',
             align: 'end',
-            ...(featureVersion >= '1.2' ? { bleed: true } : {}),
+            ...(featureVersion >= '1.2' ? {} : { bleed: true }),
           },
         ],
       },
@@ -93,7 +93,7 @@ export const homePage: ExperienceComponent = {
       options: {
         rules: [
           {
-            layout: featureVersion >= '1.2' ? { type: 'carousel' } : 'carousel',
+            layout: 'carousel',
             padding: '30px 0 5px',
             align: 'stretch',
           },

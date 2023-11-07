@@ -43,7 +43,15 @@ export const productPage: ExperienceComponent = {
         {
           type: 'oryx-composition',
           id: 'product-preview',
-          options: { rules: [{ layout: 'flex', vertical: true }] },
+          options: {
+            rules: [
+              {
+                ...(featureVersion >= '1.2'
+                  ? { layout: { type: 'flex', vertical: true } }
+                  : { layout: 'flex', vertical: true }),
+              },
+            ],
+          },
           components: [
             {
               type: 'oryx-product-labels',
@@ -111,7 +119,7 @@ export const productPage: ExperienceComponent = {
         heading: 'Related Products',
         rules: [
           {
-            layout: featureVersion >= '1.2' ? { type: 'carousel' } : 'carousel',
+            layout: 'carousel',
             padding: '20 0',
             colSpan: 2,
           },

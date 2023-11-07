@@ -16,6 +16,8 @@ export const verticalStyles: LayoutStyles = {
   styles: css`
     :host {
       flex-direction: column;
+      align-items: var(--align, stretch);
+      justify-content: var(--justify, flex-start);
     }
   `,
 };
