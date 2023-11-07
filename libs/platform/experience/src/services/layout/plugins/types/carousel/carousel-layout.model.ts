@@ -2,6 +2,15 @@ import { LayoutPlugin } from '../../layout.plugin';
 
 export const CarouselLayoutPluginToken = `${LayoutPlugin}carousel`;
 
+declare global {
+  export interface Layouts {
+    carousel: undefined;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface LayoutProperty extends CarouselLayoutProperties {}
+}
+
 export interface CarouselLayoutProperties {
   /**
    * If true, display arrow buttons for navigation.
@@ -58,15 +67,6 @@ export const enum ArrowNavigationBehavior {
 export const enum CarouselScrollBehavior {
   Smooth = 'smooth',
   Instant = 'instant',
-}
-
-declare global {
-  export interface Layouts {
-    carousel: undefined;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface LayoutProperty extends CarouselLayoutProperties {}
 }
 
 export enum CarouselIndicatorPosition {

@@ -89,6 +89,7 @@ export class ProductImagesComponent extends ProductMixin(
 
     return html`<oryx-layout
       class="main"
+      layout=${ifDefined(imageLayout)}
       behavior=${ifDefined(scrollBehavior)}
       layout=${ifDefined(imageLayout)}
       .options=${{
