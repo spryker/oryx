@@ -50,7 +50,7 @@ export class DefaultStorageService implements StorageService {
   }
 
   clear(type?: StorageType): Observable<void> {
-    return toObservable(this.getStorage(type).clear()) as Observable<void>;
+    return toObservable(this.getStorage(type)?.clear()) as Observable<void>;
   }
 
   protected getStorage(
