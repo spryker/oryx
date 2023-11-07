@@ -10,6 +10,11 @@ import {
   CarouselScrollBehavior,
 } from '../src/services';
 import { carouselNavigationStyles } from './carousel-navigation.styles';
+import {
+  getComputedGapInPixels,
+  getDimensions,
+  getScrollDimensions,
+} from './util';
 
 export class CarouselNavigationComponent
   extends LitElement
@@ -99,17 +104,16 @@ export class CarouselNavigationComponent
   }
 
   protected initializeScrollListener(): void {
-    // if (this.scrollBehavior === CarouselScrollBehavior.Smooth) {
     this.throttledScrollListener = throttle(() => {
       this.updateState();
     }, 50);
     this.hostElement.addEventListener('scroll', this.throttledScrollListener);
-    // }
     this.hostElement.addEventListener('scrollend', this.updateState.bind(this));
   }
 
   protected buildNavigation(): void {
     this.style.setProperty('--width', `${this.hostElement.clientWidth}px`);
+    this.style.setProperty('--height', `${this.hostElement.clientHeight}px`);
     if (this.showIndicators)
       this.hostElement.style.setProperty('margin-block-end', '50px');
 
@@ -140,6 +144,28 @@ export class CarouselNavigationComponent
   }
 
   /**
+   * Updates the state of the carousel arrows based on the current scroll position. The method
+   * is called on scroll and on resize, to ensure that the state is always up to date.
+   */
+  protected updateArrowState(): void {
+    if (!this.items.length || !this.showArrows) return;
+
+    this.toggleAttribute(
+      'has-previous',
+      getScrollDimensions(this.hostElement, this.isVertical).position >
+        getDimensions(this.items?.[0], this.isVertical).size
+    );
+
+    this.toggleAttribute(
+      'has-next',
+      getScrollDimensions(this.hostElement, this.isVertical).position +
+        this.hostElement.getBoundingClientRect().width <
+        getScrollDimensions(this.hostElement, this.isVertical).size -
+          getDimensions(this.items?.[0], this.isVertical).size
+    );
+  }
+
+  /**
    * Updates the state of the carousel indicators based on the current scroll position. The opacity
    * of the indicators is calculated based on the distance between the current scroll
    * position and the start of the slide.
@@ -148,17 +174,23 @@ export class CarouselNavigationComponent
    */
   protected updateIndicatorState(): void {
     if (!this.indicatorElements?.length || !this.showIndicators) return;
-    const clientWidth = this.hostElement.clientWidth;
-    const isRtl = window.getComputedStyle(this).direction === 'rtl';
-    const scrollLeft = this.hostElement.scrollLeft * (isRtl ? -1 : 1);
-    const scrollWidth = this.hostElement.scrollWidth;
+    const clientDimension = this.isVertical
+      ? this.hostElement.clientHeight
+      : this.hostElement.clientWidth;
+    const scrollDimensions = getScrollDimensions(
+      this.hostElement,
+      this.isVertical
+    );
 
     this.indicatorElements.forEach((indicator, index) => {
-      const slideStart = clientWidth * index;
-      const distance = scrollLeft - slideStart;
-      const percentage = distance / this.hostElement.clientWidth;
+      const slideStart = clientDimension * index;
+      const distance = scrollDimensions.position - slideStart;
+      const percentage = distance / clientDimension;
       let opacity = percentage >= 0 ? 1 - percentage : 1 + percentage;
-      if (clientWidth + scrollLeft >= scrollWidth) {
+      if (
+        clientDimension + scrollDimensions.position >=
+        scrollDimensions.size
+      ) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         if (index === this.indicatorElements!.length - 1) {
           // we could consider making the previous slide indicator to 0
@@ -171,42 +203,24 @@ export class CarouselNavigationComponent
   }
 
   /**
-   * Updates the state of the carousel arrows based on the current scroll position. The method
-   * is called on scroll and on resize, to ensure that the state is always up to date.
-   */
-  protected updateArrowState(): void {
-    if (!this.items.length || !this.showArrows) return;
-    const isRtl = window.getComputedStyle(this).direction === 'rtl';
-
-    const scrollLeft = this.hostElement.scrollLeft * (isRtl ? -1 : 1);
-    const scrollWidth = this.hostElement.scrollWidth;
-    const firstItemWidth = this.items?.[0].getBoundingClientRect().width;
-    const lastItemWidth =
-      this.items?.[this.items.length - 1].getBoundingClientRect().width;
-
-    this.toggleAttribute('has-previous', scrollLeft > firstItemWidth);
-
-    this.toggleAttribute(
-      'has-next',
-      scrollLeft + this.hostElement.getBoundingClientRect().width <
-        scrollWidth - lastItemWidth
-    );
-  }
-
-  /**
    * Calculate and update indicators for the carousel based on its current state.
    */
   protected setSlides(): void {
     if (!this.items.length) return;
 
-    const gap = parseFloat(
-      window.getComputedStyle(this.hostElement).getPropertyValue('column-gap') // || '0'
-    );
+    const gap = getComputedGapInPixels(this.hostElement, this.isVertical);
 
-    const slideCount = Math.ceil(
-      (this.hostElement.scrollWidth + gap) /
-        (this.hostElement.clientWidth + gap)
-    );
+    const scrollD = this.isVertical
+      ? this.hostElement.scrollHeight
+      : this.hostElement.scrollWidth;
+    const scrollX = this.isVertical
+      ? this.hostElement.scrollTop
+      : this.hostElement.scrollLeft;
+    const clientD = this.isVertical
+      ? this.hostElement.clientHeight
+      : this.hostElement.clientWidth;
+
+    const slideCount = Math.ceil((scrollD + gap) / (clientD + gap));
 
     if (slideCount === this.slides.length) return;
 
@@ -217,10 +231,10 @@ export class CarouselNavigationComponent
 
     this.slides = [...Array(slideCount).keys()].map((i) => {
       const firstElementInSlide = this.items.findIndex((el) => {
-        return (
-          this.hostElement.scrollLeft + el.getBoundingClientRect().left >=
-          i * this.hostElement.clientWidth
-        );
+        const y = this.isVertical
+          ? el.getBoundingClientRect().top
+          : el.getBoundingClientRect().left;
+        return scrollX + y >= i * clientD;
       });
       return { index: firstElementInSlide };
     });
@@ -234,13 +248,17 @@ export class CarouselNavigationComponent
 
     if (this.showArrows) {
       results.push(html`<oryx-button
-          icon=${IconTypes.ArrowBackward}
+          icon=${this.isVertical
+            ? IconTypes.ArrowUpward
+            : IconTypes.ArrowBackward}
           type="icon"
           class="previous"
           @click=${this.handlePrevious}
         ></oryx-button>
         <oryx-button
-          icon=${IconTypes.ArrowForward}
+          icon=${this.isVertical
+            ? IconTypes.ArrowDownward
+            : IconTypes.ArrowForward}
           type="icon"
           class="next"
           @click=${this.handleNext}
@@ -274,16 +292,18 @@ export class CarouselNavigationComponent
     if ((e as KeyboardEvent).altKey) {
       index = 0;
     } else {
+      const hostSize = getDimensions(this.hostElement, this.isVertical);
+
       index =
         this.arrowNavigationBehavior === ArrowNavigationBehavior.Item
-          ? this.items.findLastIndex(
-              (el) => el.getBoundingClientRect().left < 0
-            )
-          : this.items.findIndex(
-              (el) =>
-                el.getBoundingClientRect().left >
-                -this.hostElement.getBoundingClientRect().width
-            );
+          ? this.items.findLastIndex((el) => {
+              console.log(el.getBoundingClientRect(), el.offsetTop);
+              return getDimensions(el, this.isVertical).position < 0;
+            })
+          : this.items.findIndex((el) => {
+              const dimensions = getDimensions(el, this.isVertical);
+              return dimensions.position > -hostSize.size;
+            });
     }
     this.scrollElementToIndex(index);
   }
@@ -299,23 +319,16 @@ export class CarouselNavigationComponent
     if ((e as KeyboardEvent).altKey) {
       index = this.items.length - 1;
     } else {
-      const isRtl = window.getComputedStyle(this).direction === 'rtl';
-
-      const { left, width } = this.hostElement.getBoundingClientRect();
-      if (isRtl) {
-        index = this.items.findIndex((el) => {
-          return el.getBoundingClientRect().left <= left;
-        });
-      } else {
-        const x =
-          this.arrowNavigationBehavior === ArrowNavigationBehavior.Item
-            ? left + 10
-            : left + width;
-        index = this.items.findIndex(
-          (el) => el.getBoundingClientRect().left > x
-        );
-      }
+      const dimensions = getDimensions(this.hostElement, this.isVertical);
+      const offset =
+        this.arrowNavigationBehavior === ArrowNavigationBehavior.Item
+          ? dimensions.position + 10
+          : dimensions.position + dimensions.size;
+      index = this.items.findIndex(
+        (el) => getDimensions(el, this.isVertical).position > offset
+      );
     }
+
     this.scrollElementToIndex(index);
   }
 
@@ -339,21 +352,26 @@ export class CarouselNavigationComponent
 
     const isRtl = window.getComputedStyle(this).direction === 'rtl';
 
-    const scrollPosition = isRtl
+    const scrollPosition = this.isVertical
+      ? targetElementRect.top - hostRect.top
+      : isRtl
       ? -(hostRect.right - targetElementRect.right)
       : targetElementRect.left - hostRect.left;
 
     const behavior =
       this.scrollBehavior === CarouselScrollBehavior.Smooth ? 'smooth' : 'auto';
 
-    this.hostElement.scrollTo({
-      left: this.hostElement.scrollLeft + scrollPosition,
-      behavior,
-    });
-  }
-
-  protected get hostElement(): HTMLElement {
-    return this.getRootNode().host as HTMLElement;
+    if (this.isVertical) {
+      this.hostElement.scrollTo({
+        top: this.hostElement.scrollTop + scrollPosition,
+        behavior,
+      });
+    } else {
+      this.hostElement.scrollTo({
+        left: this.hostElement.scrollLeft + scrollPosition,
+        behavior,
+      });
+    }
   }
 
   /**
@@ -406,5 +424,13 @@ export class CarouselNavigationComponent
           : 'none';
       item.style.scrollSnapAlign = align;
     });
+  }
+
+  protected get isVertical(): boolean {
+    return this.hasAttribute('vertical');
+  }
+
+  protected get hostElement(): HTMLElement {
+    return this.getRootNode().host as HTMLElement;
   }
 }

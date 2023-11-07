@@ -21,6 +21,7 @@ const navigation = (
   <oryx-layout
     .options=${{ rules: [{ layout: { type: 'carousel', ...(props ?? {}) } }] }}
     .style=${style}
+    layout-vertical
   >
     ${items(itemCount)}
   </oryx-layout>
@@ -28,30 +29,30 @@ const navigation = (
 
 const Template: Story<CarouselLayoutProperties> = (): TemplateResult => {
   return html`
-    ${[
-      navigation('default navigation'),
-      navigation('scroll behavior per item', {
-        arrowNavigationBehavior: ArrowNavigationBehavior.Item,
-      }),
-      navigation('arrows', { showIndicators: false }),
-      navigation('indicators', { showArrows: false }),
-      navigation('more padding', {}, '--column-gap: 50px'),
-      ...[24, 12, 8, 7, 6, 5, 4, 3, 2, 1].map((count) => [
-        navigation(`${count} Items`, {}, undefined, count),
-      ]),
-    ]}
+    ${[navigation('default navigation')]}
+    ${navigation('scroll behavior per item', {
+      arrowNavigationBehavior: ArrowNavigationBehavior.Item,
+    })}
 
     <style>
       oryx-layout {
+        width: 400px;
         margin-bottom: 50px;
+        max-height: 500px;
+        row-gap: 25px;
       }
       oryx-layout > * {
         background: var(--oryx-color-neutral-5);
+        height: 50px;
         padding: 50px;
         text-align: center;
+      }
+
+      oryx-layout[layout-vertical] > * {
+        box-sizing: content-box;
       }
     </style>
   `;
 };
 
-export const Static = Template.bind({});
+export const Vertical = Template.bind({});

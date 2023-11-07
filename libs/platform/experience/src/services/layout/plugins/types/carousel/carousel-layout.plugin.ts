@@ -85,6 +85,7 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
         .indicatorsPosition=${options?.indicatorsPosition}
         .indicatorsAlignment=${options?.indicatorsAlignment}
         .scrollBehavior=${options?.scrollBehavior}
+        ?vertical=${options?.vertical}
       ></oryx-carousel-navigation>`,
     });
   }

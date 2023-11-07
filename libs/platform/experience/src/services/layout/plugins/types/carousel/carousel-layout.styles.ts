@@ -76,8 +76,12 @@ export const styles: LayoutStyles = {
 export const verticalStyles: LayoutStyles = {
   styles: css`
     :host {
+      display: inline-grid;
+      width: auto;
       grid-auto-flow: row;
       overflow: hidden auto;
+      scroll-snap-type: y mandatory;
+      grid-auto-columns: initial;
     }
   `,
 };

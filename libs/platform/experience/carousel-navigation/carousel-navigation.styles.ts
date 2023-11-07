@@ -13,15 +13,32 @@ export const carouselNavigationStyles = css`
   }
 
   oryx-button {
-    align-self: center;
     transition: opacity 0.3s;
   }
 
-  oryx-button.previous {
+  :host(:not([vertical])) oryx-button {
+    align-self: center;
+  }
+
+  :host([vertical]) oryx-button {
+    justify-self: center;
+  }
+
+  :host([vertical]) oryx-button.previous {
+    align-self: start;
+    margin-block-start: 8px;
+  }
+
+  :host([vertical]) oryx-button.next {
+    align-self: end;
+    margin-block-end: 8px;
+  }
+
+  :host(:not([vertical])) oryx-button.previous {
     margin-inline-start: 8px;
   }
 
-  oryx-button.next {
+  :host(:not([vertical])) oryx-button.next {
     margin-inline-start: calc(var(--width) - 44px);
   }
 
