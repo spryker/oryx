@@ -1,11 +1,12 @@
 import { FacetValue } from '@spryker-oryx/product';
 import {
-  computed,
   I18nMixin,
+  computed,
+  featureVersion,
   signalAware,
   signalProperty,
 } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { FacetController } from './controllers';
@@ -22,6 +23,10 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
   @signalProperty({ type: Boolean }) multi = false;
   @signalProperty({ type: Number }) renderLimit = 5;
   @signalProperty({ type: Number }) minForSearch = 13;
+  @signalProperty({ type: Boolean }) disableClear?: boolean;
+  /**
+   * @deprecated Since version 1.2. Use `disableClear` instead.
+   */
   @signalProperty({ type: Boolean }) enableClear = true;
 
   protected facet = computed(() => this.controller.getFacet());
@@ -46,7 +51,10 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
       ?open=${this.open}
       ?enableToggle=${this.isFoldable}
       ?enableSearch=${this.isSearchable}
-      ?enableClear="${this.enableClear}"
+      ?enableClear="${featureVersion >= '1.2'
+        ? !this.disableClear
+        : this.enableClear}"
+      ?dirty=${!!selectedLength}
       .heading=${this.name}
       .selectedLength=${selectedLength}
       .valuesLength=${valuesLength}
@@ -91,7 +99,7 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
       />
       <div>
         ${this.renderValueControlLabel(facetValue)}
-        <span>${facetValue.count}</span>
+        ${when(facetValue.count, () => html`<span>${facetValue.count}</span>`)}
       </div> `;
 
     return this.multi
@@ -107,7 +115,6 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
 
   protected get isFoldable(): boolean {
     const facet = this.facet();
-
     return (
       (facet?.filteredValueLength ?? facet?.valuesTreeLength ?? 0) >
       (this.renderLimit ?? Infinity)

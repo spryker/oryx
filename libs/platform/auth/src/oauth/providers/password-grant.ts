@@ -2,8 +2,8 @@ import { HttpService, StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
   Observable,
-  of,
   ReplaySubject,
+  of,
   switchMap,
   take,
   tap,
@@ -96,7 +96,7 @@ export class OauthPasswordGrantProvider implements OauthProvider {
     return this.http
       .request<OauthResponseSuccess>(this.config.tokenUrl, {
         body: new URLSearchParams(data as Record<string, string>),
-        method: 'POST',
+        method: this.config.tokenMethod ?? 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           [OauthTokenInterceptor.HEADER_NAME]: 'password',
@@ -124,6 +124,7 @@ export interface OauthPasswordGrantProviderConfig
   extends OauthProviderConfigBase {
   grantType: 'password';
   tokenUrl: string;
+  tokenMethod?: string;
 }
 
 export interface OauthPasswordProviderRequest extends OauthProviderRequest {

@@ -1,7 +1,8 @@
 import { ModeEvent } from '@spryker-oryx/ui/color-mode-selector';
-import { ContentComponentSchema } from '../../models';
+import { ContentComponentSchema, FieldDefinition } from '../../models';
 import { ResourceGraphic } from '../../plugins';
 import { ExperienceComponent } from '../experience-data';
+import { LayoutStylesOptions, LayoutTypeStyles } from '../layout';
 
 export const enum MessageType {
   Graphics = 'oryx.graphics',
@@ -22,6 +23,8 @@ export const enum MessageType {
   Icons = 'oryx.icons',
   SuggestionQuery = 'oryx.suggestion-query',
   Suggestions = 'oryx.suggestions',
+  StylesOptions = 'oryx.styles-options',
+  SelectedStyles = 'oryx.selected-styles',
 }
 
 /**
@@ -43,6 +46,11 @@ export interface ExperienceSuggestionsData {
   id?: string;
   type: string;
   params?: Record<string, string>;
+}
+
+export interface ExperienceLayoutData {
+  fields: Record<string, FieldDefinition[]>;
+  defaults: LayoutStylesOptions;
 }
 
 export type ExperienceSuggestionRecords =
@@ -73,6 +81,10 @@ export type ExperienceMessageData<T> = {
     ? null
     : T extends MessageType.Icons
     ? string[] | undefined
+    : T extends MessageType.StylesOptions
+    ? ExperienceLayoutData
+    : T extends MessageType.SelectedStyles
+    ? LayoutTypeStyles
     : never;
 };
 

@@ -4,11 +4,17 @@ export type Provider<T = any> =
   | ClassProvider<T>
   | ValueProvider<T>
   | FactoryProvider<T>
-  | ExistingProvider<T>;
+  | ExistingProvider<T>
+  | AsyncClassProvider<T>;
 
 export interface ClassProvider<T = any> {
   provide: T;
   useClass: Type<InferProviderType<T>>;
+}
+
+export interface AsyncClassProvider<T = any> {
+  provide: T;
+  asyncClass: () => Promise<Type<InferProviderType<T>>>;
 }
 
 export interface ValueProvider<T = any> {

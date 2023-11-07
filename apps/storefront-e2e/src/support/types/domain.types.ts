@@ -1,6 +1,7 @@
 export type Category = {
   id: string;
   title?: string;
+  search?: string;
 };
 
 export type Product = {
@@ -8,12 +9,14 @@ export type Product = {
   title: string;
   originalPrice: string;
   currentPrice?: string;
+  netModePrice?: string;
   currentPriceWith10pDiscount?: string;
   previewImageURL?: string;
 };
 
 export type SearchParameters = {
   q: string;
+  search?: string;
 };
 
 export type Customer = {

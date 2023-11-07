@@ -62,7 +62,7 @@ export interface IconStyles {
 }
 
 export interface IconProps {
-  text: string;
+  text?: string;
   styles?: Exclude<IconStyles, 'font'>;
 }
 
