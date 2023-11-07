@@ -41,7 +41,7 @@ const createProxyHandler = <T>(
 
           const result = instance$.pipe(
             map((instance) => {
-              const result: any = (instance as any)[propKey](...methodArgs);
+              const result: any = (instance as any)[propKey]?.(...methodArgs);
 
               if (result instanceof Observable) {
                 return result;

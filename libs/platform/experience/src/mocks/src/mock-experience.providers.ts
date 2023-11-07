@@ -14,6 +14,7 @@ import {
   LayoutBuilder,
   LayoutService,
   ScreenService,
+  layoutPluginsProviders,
 } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { MockRouterService } from './mock-router.service';
@@ -51,4 +52,5 @@ export const mockExperienceProviders: Provider[] = [
     provide: ExperienceDataService,
     useClass: DefaultExperienceDataService,
   },
+  ...layoutPluginsProviders,
 ];
