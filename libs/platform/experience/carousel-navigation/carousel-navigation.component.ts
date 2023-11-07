@@ -410,23 +410,20 @@ export class CarouselNavigationComponent
    * @returns An array of HTMLElements representing the child elements of the host component.
    */
   protected resolveItems(): HTMLElement[] {
-    const query =
-      '*:not(:is(oryx-carousel-navigation,slot,style,.indicators,button,oryx-button, input)';
-
     const items = [
-      ...(this.hostElement?.shadowRoot?.querySelectorAll(query) ?? []),
-      ...(this.hostElement?.querySelectorAll(query) ?? []),
+      ...(this.hostElement?.shadowRoot?.querySelectorAll(
+        ':not(:is(oryx-carousel-navigation,slot,style)'
+      ) ?? []),
+      ...this.hostElement.children,
     ];
 
     const result: HTMLElement[] = [];
 
     for (const item of items) {
+      // If the display is 'contents' we collect all the child elements to the result
       if (window.getComputedStyle(item).display === 'contents') {
-        // If the display is 'contents' we collect all the child elements to the result
         result.push(
-          ...Array.from(
-            (item.shadowRoot?.querySelectorAll(query) ?? []) as HTMLElement[]
-          )
+          ...Array.from((item.shadowRoot?.children ?? []) as HTMLElement[])
         );
       } else {
         result.push(item as HTMLElement);
