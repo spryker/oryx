@@ -3,11 +3,14 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { generateRange } from '@spryker-oryx/product/mocks';
 import { FacetListService } from '@spryker-oryx/search';
 import { InputComponent } from '@spryker-oryx/ui/input';
-import { MultiRangeComponent } from '@spryker-oryx/ui/multi-range';
+import {
+  CHANGE_EVENT,
+  DRAG_EVENT,
+  MultiRangeComponent,
+} from '@spryker-oryx/ui/multi-range';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { beforeEach } from 'vitest';
 import { SearchFacetValueNavigationComponent } from '../facet-value-navigation';
 import { SearchRangeFacetComponent } from './facet-range.component';
 import { searchRangeFacetComponent } from './facet-range.def';
@@ -71,7 +74,6 @@ describe('SearchRangeFacetComponent', () => {
   afterEach(() => {
     destroyInjector();
     vi.resetAllMocks();
-    vi.clearAllTimers();
   });
 
   it('passes the a11y audit', async () => {
@@ -85,7 +87,7 @@ describe('SearchRangeFacetComponent', () => {
     expect(getNavigation().heading).toEqual(name);
   });
 
-  it('should render inputs with default labels', async () => {
+  it('should render inputs with default labels', () => {
     expect(getInput().label).toBe('min');
     expect(getInput(true).label).toBe('max');
   });
@@ -98,7 +100,6 @@ describe('SearchRangeFacetComponent', () => {
     expect(input.value).toBe(String(min));
     expect(input.min).toBe(String(min));
     expect(input.max).toBe(String(max - 1));
-    expect(input.step).toBe('1');
   });
 
   it('should render max input field with proper configuration', () => {
@@ -187,7 +188,6 @@ describe('SearchRangeFacetComponent', () => {
     const selected = { minValue: 1, maxValue: 2 };
 
     beforeEach(async () => {
-      vi.useFakeTimers();
       element = await fixture(
         html`<oryx-search-range-facet
           name=${name}
@@ -195,13 +195,9 @@ describe('SearchRangeFacetComponent', () => {
         ></oryx-search-range-facet>`
       );
 
-      getRange().dispatchEvent(new CustomEvent('change', { detail: selected }));
-      vi.advanceTimersByTime(301);
-    });
-
-    it('should sync min and max states with selected values', () => {
-      expect(element.min).toBe(selected.minValue);
-      expect(element.max).toBe(selected.maxValue);
+      getRange().dispatchEvent(
+        new CustomEvent(CHANGE_EVENT, { detail: selected })
+      );
     });
 
     it('should dispatch oryx.select event with selected values', () => {
@@ -216,31 +212,24 @@ describe('SearchRangeFacetComponent', () => {
         })
       );
     });
+  });
 
-    describe('and values are without changes', () => {
-      const callback = vi.fn();
+  describe('when range is dragged', () => {
+    const selected = { minValue: 3, maxValue: 5 };
 
-      beforeEach(async () => {
-        vi.useFakeTimers();
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-search-range-facet name=${name}></oryx-search-range-facet>`
+      );
 
-        element = await fixture(
-          html`<oryx-search-range-facet
-            name=${name}
-            @oryx.select=${callback}
-          ></oryx-search-range-facet>`
-        );
+      getRange().dispatchEvent(
+        new CustomEvent(DRAG_EVENT, { detail: selected })
+      );
+    });
 
-        getRange().dispatchEvent(
-          new CustomEvent('change', {
-            detail: { minValue: min, maxValue: max },
-          })
-        );
-        vi.advanceTimersByTime(301);
-      });
-
-      it('should not dispatch oryx.select', () => {
-        expect(callback).not.toHaveBeenCalled();
-      });
+    it('should sync inputs`s values', () => {
+      expect(getInputField().value).toBe(String(selected.minValue));
+      expect(getInputField(true).value).toBe(String(selected.maxValue));
     });
   });
 

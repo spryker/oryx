@@ -29,7 +29,7 @@ export class NavigationComponent extends LitElement {
         .size=${Size.Sm}
         .color=${ButtonColor.Neutral}
         .label=${this.toggleButtonAriaLabel}
-        .icon=${IconTypes.Back}
+        .icon=${IconTypes.Backward}
         @click=${this.toggle}
       ></oryx-button>
     `;

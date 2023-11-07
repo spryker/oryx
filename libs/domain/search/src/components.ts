@@ -1,6 +1,7 @@
 export * from '../box/box.def';
 export * from '../color-facet/facet-color.def';
 export * from '../facet-navigation/facet-navigation.def';
+export * from '../facet-price/facet-price.def';
 export * from '../facet-range/facet-range.def';
 export * from '../facet-rating/facet-rating.def';
 export * from '../facet-value-navigation/facet-value-navigation.def';

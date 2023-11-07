@@ -3,7 +3,7 @@ import { articleProviders } from './articles';
 import { bazaarVoiceComponentMapping } from './bazaarvoice';
 import { cloudinaryImageConverter } from './cloudinary';
 import * as components from './components';
-import { labsI18nFeature } from './i18n';
+import { i18nLabsProviders, labsI18nFeature } from './i18n';
 export * from './components';
 export { labsI18nFeature } from './i18n';
 
@@ -16,13 +16,14 @@ export const labsComponents = Object.values(components);
  * and not covered with automated tests.
  */
 export const labsFeatures: AppFeature[] = [
+  labsI18nFeature,
   {
     components: labsComponents,
     providers: [
       cloudinaryImageConverter,
       bazaarVoiceComponentMapping,
       ...articleProviders,
+      ...i18nLabsProviders,
     ],
   },
-  labsI18nFeature,
 ];

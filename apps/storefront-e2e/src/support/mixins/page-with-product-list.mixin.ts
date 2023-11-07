@@ -4,7 +4,7 @@ import { Constructor } from '../types/utils.types';
 export interface IPageWithProductList {
   getProductCards(): Cypress.Chainable<JQuery<HTMLElement>>;
   getProductHeadings(): Cypress.Chainable<JQuery<HTMLElement>>;
-  getSalesProductPrice(): Cypress.Chainable<JQuery<HTMLElement>>;
+  getProductPrices(): Cypress.Chainable<JQuery<HTMLElement>>;
 }
 
 export function WithProductList<TPage extends Constructor<E2EPage>>(
@@ -26,7 +26,12 @@ export function WithProductList<TPage extends Constructor<E2EPage>>(
 
     waitForSearchRequest(): void {
       cy.wait('@catalogSearch');
-      // wait till product cards are re-renreded after search
+
+      this.waitForTemplateRebuild();
+    }
+
+    waitForTemplateRebuild(): void {
+      // wait till product cards and facets are re-renreded after search
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);
     }
@@ -38,7 +43,9 @@ export function WithProductList<TPage extends Constructor<E2EPage>>(
 
     getProductCards = () => cy.get('oryx-product-card');
     getProductHeadings = () => this.getProductCards().find('oryx-heading');
-    getSalesProductPrice = () =>
-      this.getProductCards().first().find('oryx-site-price[part="sales"]');
+    getProductPrices = () =>
+      this.getProductCards()
+        .find('oryx-product-price')
+        .find('oryx-site-price[part="sales"]');
   };
 }

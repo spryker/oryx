@@ -1,11 +1,14 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
   title: `${storybookPrefix}/Layout/Static/Features`,
   args: {},
   argTypes: {},
+  chromatic: {
+    delay: 1000,
+  },
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

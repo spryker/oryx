@@ -13,6 +13,19 @@ const mockRangeFacets = [
   },
 ];
 
+const invalidRangeFacets = [
+  {
+    activeMax: 2,
+    activeMin: 1,
+    config: { parameterName: 'mock', isMultiValued: false },
+    docCount: 2,
+    localizedName: 'mock',
+    max: 2,
+    min: 1,
+    name: 'mock',
+  },
+];
+
 describe('Product Facet Normalizers', () => {
   it('should return normalized product facet-navigation', () => {
     expect(facetsRangeNormalizer(mockRangeFacets)).toEqual([
@@ -30,5 +43,9 @@ describe('Product Facet Normalizers', () => {
         },
       },
     ]);
+  });
+
+  it('should ignore invalid range facet', () => {
+    expect(facetsRangeNormalizer(invalidRangeFacets)).toEqual([]);
   });
 });

@@ -7,6 +7,11 @@ export function facetsRangeNormalizer(
   rangeFacets: ApiProductListModel.RangeFacet[]
 ): RangeFacet[] {
   return rangeFacets.reduce((normalizedFacetList: RangeFacet[], facet) => {
+    //ignore the facet if difference between min and max is 1
+    if (facet.max - facet.min <= 1) {
+      return normalizedFacetList;
+    }
+
     const { config, localizedName } = facet;
 
     const values = {

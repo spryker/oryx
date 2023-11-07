@@ -14,6 +14,9 @@ export class SearchPageBase extends AbstractSFPage {
     if (searchData) {
       this.queryParameter = searchData.q;
       this.url += `?q=${searchData.q}`;
+      if (searchData.search) {
+        this.url += `&${searchData.search}`;
+      }
     }
   }
 

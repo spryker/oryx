@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { RangeFacetValue } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
+import { SelectFacetEventDetail } from '@spryker-oryx/search';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../.constants';
@@ -10,6 +10,19 @@ import { SearchFacetRangeComponentAttributes } from '../facet-range.model';
 
 export default {
   title: `${storybookPrefix}/Facet Range`,
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    open: true,
+    disableClear: false,
+    step: 1,
+    labelMin: 'Min',
+    labelMax: 'Max',
+  },
+  argTypes: {
+    step: {
+      type: 'number',
+    },
+  },
 };
 
 const Template: Story<SearchFacetRangeComponentAttributes> = (
@@ -39,17 +52,3 @@ const Template: Story<SearchFacetRangeComponentAttributes> = (
 };
 
 export const Demo = Template.bind({});
-
-Demo.args = {
-  open: true,
-  disableClear: false,
-  step: 1,
-  labelMin: 'Min',
-  labelMax: 'Max',
-};
-
-Demo.argTypes = {
-  step: {
-    type: 'number',
-  },
-};

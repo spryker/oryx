@@ -6,6 +6,15 @@ export const searchRangeFacetStyles = css`
     padding: 4px 1px;
   }
 
+  input {
+    appearance: textfield;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    appearance: none;
+  }
+
   oryx-search-facet-value-navigation > section {
     display: grid;
     grid-template-columns: 1fr min-content 1fr;

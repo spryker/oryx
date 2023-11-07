@@ -37,12 +37,18 @@ export const searchPage: ExperienceComponent = {
           options: {
             rules: [
               {
-                layout: 'grid',
+                layout:
+                  featureVersion >= '1.2'
+                    ? {
+                      type: 'grid',
+                      divider: true,
+                      sticky: true,
+                    }
+                    : 'grid',
                 gap: '1px',
-                divider: true,
-                sticky: true,
                 top: '108px',
                 margin: '0 0 30px',
+                ...(featureVersion >= '1.2' ? {} : { sticky: true, divider: true }),
               },
             ],
           },
@@ -52,7 +58,19 @@ export const searchPage: ExperienceComponent = {
           id: 'product-listing',
           name: 'Product listing',
           options: {
-            rules: [{ layout: 'flex', vertical: true, gap: '20px' }],
+            rules: [
+              {
+                layout:
+                  featureVersion >= '1.2'
+                    ? {
+                      type: 'flex',
+                      vertical: true,
+                    }
+                    : 'flex',
+                gap: '20px',
+                ...(featureVersion >= '1.2' ? {} : { vertical: true }),
+              },
+            ],
           },
           components: [
             {
@@ -78,7 +96,10 @@ export const searchPage: ExperienceComponent = {
       options: {
         rules: [
           {
-            layout: 'split-aside',
+            layout:
+              featureVersion >= '1.2'
+                ? { type: 'split', columnWidthType: 'aside' }
+                : 'split-aside',
             padding: '30px 0 0',
           },
           { query: { breakpoint: 'md' }, splitColumnFactor: 1 / 3 },

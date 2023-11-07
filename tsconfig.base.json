@@ -100,6 +100,9 @@
       "@spryker-oryx/experience/mocks": [
         "libs/platform/experience/src/mocks/index.ts"
       ],
+      "@spryker-oryx/experience/static": [
+        "libs/platform/experience/src/static.ts"
+      ],
       "@spryker-oryx/form": ["libs/platform/form/src/index.ts"],
       "@spryker-oryx/i18n": ["libs/platform/i18n/src/index.ts"],
       "@spryker-oryx/indexed-db": ["libs/platform/indexed-db/src/index.ts"],
@@ -220,6 +223,9 @@
       "@spryker-oryx/search/facet": ["libs/domain/search/facet/index.ts"],
       "@spryker-oryx/search/facet-navigation": [
         "libs/domain/search/facet-navigation/index.ts"
+      ],
+      "@spryker-oryx/search/facet-price": [
+        "libs/domain/search/facet-price/index.ts"
       ],
       "@spryker-oryx/search/facet-range": [
         "libs/domain/search/facet-range/index.ts"

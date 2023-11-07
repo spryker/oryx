@@ -1,8 +1,9 @@
-import { RangeFacet, RangeFacetValue } from '@spryker-oryx/product';
+import { RangeFacet } from '@spryker-oryx/product';
+import { SelectRangeFacetValues } from '@spryker-oryx/search';
+import { FacetController } from '@spryker-oryx/search/facet';
 import { MultiRangeChangeEvent } from '@spryker-oryx/ui/multi-range';
 import {
   computed,
-  debounce,
   effect,
   elementEffect,
   signalProperty,
@@ -10,7 +11,6 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { FacetController } from '../facet/controllers';
 import {
   SearchFacetRangeComponentAttributes,
   SearchFacetRangeComponentValues,
@@ -28,26 +28,30 @@ export class SearchRangeFacetComponent
   @signalProperty() name?: string;
   @signalProperty({ type: Boolean }) open?: boolean;
   @signalProperty({ type: Boolean }) disableClear?: boolean;
-  @signalProperty({ type: Number }) step = 1;
+  @signalProperty({ type: Number, reflect: true }) step = 1;
   @signalProperty() labelMin?: string;
   @signalProperty() labelMax?: string;
 
   @state() min?: number;
   @state() max?: number;
 
-  protected facet = computed(() => this.controller.getFacet() as RangeFacet);
+  protected $facet = computed(() => this.controller.getFacet<RangeFacet>());
 
   protected $isDirty = computed(() => {
+    const facet = this.$facet();
+
+    if (!facet) return false;
+
     const {
       values: { min, max, selected },
-    } = this.facet();
+    } = facet;
 
     return selected?.min !== min || selected?.max !== max;
   });
 
   @elementEffect()
   protected $syncValues = effect(() => {
-    const facet = this.facet();
+    const facet = this.$facet();
 
     if (!facet) return;
 
@@ -57,21 +61,24 @@ export class SearchRangeFacetComponent
 
     this.min = selected?.min ?? min;
     this.max = selected?.max ?? max;
+
+    this.syncInputsValues(this.min!, this.max!);
   });
 
-  protected onRangeChange = debounce(
-    (e: CustomEvent<MultiRangeChangeEvent>): void => {
-      const { minValue: min, maxValue: max } = e.detail;
-      const selected = { min, max };
+  protected onRangeChange(e: CustomEvent<MultiRangeChangeEvent>): void {
+    const { minValue: min, maxValue: max } = e.detail;
+    const selected = { min, max };
 
-      if (this.hasChangedValue(selected)) {
-        this.min = min;
-        this.max = max;
-        this.controller.dispatchSelectEvent({ selected });
-      }
-    },
-    300
-  );
+    if (this.hasChangedValue(selected)) {
+      this.controller.dispatchSelectEvent({ selected });
+    }
+  }
+
+  protected onRangeDrag(e: CustomEvent<MultiRangeChangeEvent>): void {
+    const { minValue, maxValue } = e.detail;
+
+    this.syncInputsValues(minValue, maxValue);
+  }
 
   protected onBlur(e: InputEvent): void {
     const { value, name } = e.target as HTMLInputElement;
@@ -84,15 +91,33 @@ export class SearchRangeFacetComponent
     }
   }
 
-  protected hasChangedValue({ min, max }: RangeFacetValue): boolean {
+  protected hasChangedValue({ min, max }: SelectRangeFacetValues): boolean {
     const {
       values: { selected },
-    } = this.facet();
+    } = this.$facet()!;
     return selected?.min !== min || selected?.max !== max;
   }
 
+  protected syncInputsValues(min: number, max: number): void {
+    const minInput =
+      this.renderRoot.querySelector<HTMLInputElement>(`input[name="min"]`);
+
+    const maxInput =
+      this.renderRoot.querySelector<HTMLInputElement>(`input[name="max"]`);
+
+    if (minInput) {
+      minInput.value = String(min);
+    }
+
+    if (maxInput) {
+      maxInput.value = String(max);
+    }
+
+    this.requestUpdate();
+  }
+
   protected override render(): TemplateResult | void {
-    const facet = this.facet();
+    const facet = this.$facet();
 
     if (!facet) return;
 
@@ -143,9 +168,10 @@ export class SearchRangeFacetComponent
       <oryx-multi-range
         .min="${min}"
         .max="${max}"
-        .minValue="${this.min}"
         .maxValue="${this.max}"
+        .minValue="${this.min}"
         .step="${this.step}"
+        @drag="${this.onRangeDrag}"
         @change="${this.onRangeChange}"
       ></oryx-multi-range>
     `;

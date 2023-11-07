@@ -10,7 +10,6 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import { FacetController } from './controllers';
-import { SingleMultiFacet } from './facet.model';
 import { searchFacetStyles } from './facet.styles';
 
 @signalAware()
@@ -30,9 +29,7 @@ export class SearchFacetComponent extends I18nMixin(LitElement) {
    */
   @signalProperty({ type: Boolean }) enableClear = true;
 
-  protected facet = computed(
-    () => this.controller.getFacet() as SingleMultiFacet
-  );
+  protected facet = computed(() => this.controller.getFacet());
 
   protected onChange(e: InputEvent): void {
     const { value, checked: selected } = e.target as HTMLInputElement;

@@ -35,7 +35,17 @@ export const orderConfirmationPage: ExperienceComponent = {
     {
       type: 'oryx-composition',
       id: 'order-totals',
-      options: { rules: [{ layout: 'split-main', padding: '30px 0 0' }] },
+      options: {
+        rules: [
+          {
+            layout:
+              featureVersion >= '1.2'
+                ? { type: 'split', columnWidthType: 'main' }
+                : 'split-main',
+            padding: '30px 0 0',
+          },
+        ],
+      },
       components: [
         {
           type: 'oryx-order-summary',

@@ -39,12 +39,18 @@ export const categoryPage: ExperienceComponent = {
           options: {
             rules: [
               {
-                layout: 'grid',
+                layout:
+                  featureVersion >= '1.2'
+                    ? {
+                      type: 'grid',
+                      divider: true,
+                      sticky: true,
+                    }
+                    : 'grid',
                 gap: '1px',
-                divider: true,
-                sticky: true,
                 top: '108px',
                 margin: '0 0 30px',
+                ...(featureVersion >= '1.2' ? {} : { divider: true, sticky: true }),
               },
             ],
           },
@@ -83,7 +89,10 @@ export const categoryPage: ExperienceComponent = {
       options: {
         rules: [
           {
-            layout: 'split-aside',
+            layout:
+              featureVersion >= '1.2'
+                ? { type: 'split', columnWidthType: 'aside' }
+                : 'split-aside',
             padding: '30px 0 0',
           },
           { query: { breakpoint: 'md' }, splitColumnFactor: 1 / 3 },

@@ -2,7 +2,7 @@ import { resolve } from '@spryker-oryx/di';
 import { MockRouterService } from '@spryker-oryx/experience/mocks';
 import { RangeFacetValue } from '@spryker-oryx/product';
 import { RouterService } from '@spryker-oryx/router';
-import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
+import { SelectFacetEventDetail } from '@spryker-oryx/search';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
@@ -28,6 +28,7 @@ const Template: Story = (): TemplateResult => {
     name="Range"
     open
     @oryx.select=${select}
+    step="1"
   ></oryx-search-range-facet>`;
 };
 
