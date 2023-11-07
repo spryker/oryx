@@ -177,7 +177,11 @@ export class LayoutController {
           .replace('layout-', '')
           .replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 
-        return { ...acc, [prop]: host.getAttribute(attr) || true };
+        return {
+          ...acc,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          [prop]: this.parseAttribute(host.getAttribute(attr)!),
+        };
       }
 
       return acc;
@@ -196,6 +200,14 @@ export class LayoutController {
           : {}),
       }))
     );
+  }
+
+  protected parseAttribute(attribute: string): string | boolean | number {
+    if (/^-?\d*\.?\d+$/.test(attribute)) return Number(attribute);
+    if (attribute === 'false') return false;
+    if (attribute === 'true') return true;
+
+    return attribute || true;
   }
 
   /**

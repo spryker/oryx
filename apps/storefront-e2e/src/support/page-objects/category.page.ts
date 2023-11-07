@@ -14,6 +14,9 @@ export class CategoryPageBase extends AbstractSFPage {
     if (categoryData) {
       this.categoryId = categoryData.id;
       this.url += categoryData.id;
+      if (categoryData.search) {
+        this.url += `?${categoryData.search}`;
+      }
     }
   }
 

@@ -188,7 +188,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
       map((props) => {
         let styles = this.convertProperties(props).join(';');
         if (data?.style) styles += `;${data.style}`;
-        return styles === '' ? undefined : styles;
+        return styles || undefined;
       })
     );
   }
@@ -305,7 +305,7 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
   getLayoutStyles(data?: StyleProperties): string | undefined {
     let styles = this.getProperties(data).join(';');
     if (data?.style) styles += `;${data.style}`;
-    return styles === '' ? undefined : styles;
+    return styles || undefined;
   }
 
   /**

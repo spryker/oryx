@@ -26,9 +26,14 @@ export function WithProductList<TPage extends Constructor<E2EPage>>(
 
     waitForSearchRequest(): void {
       cy.wait('@catalogSearch');
+
+      this.waitForTemplateRebuild();
+    }
+
+    waitForTemplateRebuild(): void {
       // wait till product cards and facets are re-renreded after search
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(1000);
+      cy.wait(500);
     }
 
     waitForLoaded(): void {
