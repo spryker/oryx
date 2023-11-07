@@ -30,7 +30,7 @@ describe('Category suite', () => {
 
         // we don't expect search request here because previous query is cached
         categoryPage.getFacets().resetRating();
-        categoryPage.waitForSearchRequest(true);
+        categoryPage.waitForTemplateRebuild();
 
         const query = 'DELL Inspiron 7359';
         // apply 1st filter
@@ -46,7 +46,7 @@ describe('Category suite', () => {
         // clear 2nd filter
         // we don't expect search request here because previous query is cached
         categoryPage.getFacets().resetBrand();
-        categoryPage.waitForSearchRequest(true);
+        categoryPage.waitForTemplateRebuild();
         checkProductCardsFilteringByName(categoryPage, 4, 2, query);
       });
     });
@@ -70,23 +70,23 @@ describe('Category suite', () => {
 
         cy.log('reset prices, set max price');
         categoryPage.getFacets().resetPrices();
-        categoryPage.waitForSearchRequest(true);
+        categoryPage.waitForTemplateRebuild();
         categoryPage.getFacets().setMaxPrice(maxPrice);
         categoryPage.waitForSearchRequest();
         checkProductCardsFilteringByPrice(categoryPage, 0, maxPrice);
 
         cy.log('reset prices, change min price range');
         categoryPage.getFacets().resetPrices();
-        categoryPage.waitForSearchRequest(true);
+        categoryPage.waitForTemplateRebuild();
         categoryPage.getFacets().setMinPriceRange(minPrice);
-        categoryPage.waitForSearchRequest(true);
+        categoryPage.waitForTemplateRebuild();
         checkProductCardsFilteringByPrice(categoryPage, minPrice);
 
         cy.log('reset prices, change max price range');
         categoryPage.getFacets().resetPrices();
-        categoryPage.waitForSearchRequest(true);
+        categoryPage.waitForTemplateRebuild();
         categoryPage.getFacets().setMaxPriceRange(maxPrice);
-        categoryPage.waitForSearchRequest(true);
+        categoryPage.waitForTemplateRebuild();
         checkProductCardsFilteringByPrice(categoryPage, 0, maxPrice);
       });
     });
@@ -110,7 +110,7 @@ describe('Category suite', () => {
 
       // clear sorting and check that it is default again
       categoryPage.getProductSorting().clearSorting();
-      categoryPage.waitForSearchRequest(true);
+      categoryPage.waitForTemplateRebuild();
       checkProductCardsSortingBySku(categoryPage, sortingTestData.default);
     });
 

@@ -62,23 +62,23 @@ describe('Search suite', () => {
 
         cy.log('reset prices, set max price');
         searchPage.getFacets().resetPrices();
-        searchPage.waitForSearchRequest(true);
+        searchPage.waitForTemplateRebuild();
         searchPage.getFacets().setMaxPrice(maxPrice);
         searchPage.waitForSearchRequest();
         checkProductCardsFilteringByPrice(searchPage, 0, maxPrice);
 
         cy.log('reset prices, change min price range');
         searchPage.getFacets().resetPrices();
-        searchPage.waitForSearchRequest(true);
+        searchPage.waitForTemplateRebuild();
         searchPage.getFacets().setMinPriceRange(minPrice);
-        searchPage.waitForSearchRequest(true);
+        searchPage.waitForTemplateRebuild();
         checkProductCardsFilteringByPrice(searchPage, minPrice);
 
         cy.log('reset prices, change max price range');
         searchPage.getFacets().resetPrices();
-        searchPage.waitForSearchRequest(true);
+        searchPage.waitForTemplateRebuild();
         searchPage.getFacets().setMaxPriceRange(maxPrice);
-        searchPage.waitForSearchRequest(true);
+        searchPage.waitForTemplateRebuild();
         checkProductCardsFilteringByPrice(searchPage, 0, maxPrice);
       });
     });
@@ -102,7 +102,7 @@ describe('Search suite', () => {
 
       // clear sorting and check that it is default again
       searchPage.getProductSorting().clearSorting();
-      searchPage.waitForSearchRequest(true);
+      searchPage.waitForTemplateRebuild();
       checkProductCardsSortingBySku(searchPage, sortingTestData.default);
     });
 
