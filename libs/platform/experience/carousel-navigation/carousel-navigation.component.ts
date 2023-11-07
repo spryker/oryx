@@ -195,6 +195,7 @@ export class CarouselNavigationComponent
     const clientDimension = this.isVertical
       ? this.hostElement.clientHeight
       : this.hostElement.clientWidth;
+
     const scrollDimensions = getScrollDimensions(
       this.hostElement,
       this.isVertical
@@ -288,7 +289,7 @@ export class CarouselNavigationComponent
                   value=${slide}
                   type="radio"
                   name="indicators"
-                  @input=${this.handleIndicatorClick}
+                  @focusin=${this.handleIndicatorClick}
                 />`
             )}
           </div>
@@ -320,7 +321,10 @@ export class CarouselNavigationComponent
             })
           : this.items.findIndex((el) => {
               const dimensions = getDimensions(el, this.isVertical);
-              return dimensions.position > -hostDimensions.size;
+              return (
+                dimensions.position + hostDimensions.position >
+                -hostDimensions.size
+              );
             });
     }
     this.scrollElementToIndex(index);
