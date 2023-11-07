@@ -177,9 +177,9 @@ export class LayoutController {
           .replace('layout-', '')
           .replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return {
           ...acc,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           [prop]: this.parseAttribute(host.getAttribute(attr)!),
         };
       }
