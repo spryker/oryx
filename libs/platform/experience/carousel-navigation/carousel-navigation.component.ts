@@ -2,6 +2,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { throttle } from '@spryker-oryx/utilities';
 import { LitElement, PropertyValueMap, TemplateResult, html } from 'lit';
 import { property, queryAll, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 import {
   ArrowNavigationBehavior,
   CarouselIndicatorAlignment,
@@ -34,6 +35,9 @@ export class CarouselNavigationComponent
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected throttledScrollListener: () => void = () => {};
 
+  protected intersectionThrottleTime = 150;
+  protected scrollThrottleTime = 50;
+
   @state() protected items: HTMLElement[] = [];
   @state() protected slides: { index: number }[] = [];
 
@@ -57,7 +61,10 @@ export class CarouselNavigationComponent
         'scroll',
         this.throttledScrollListener
       );
-      this.hostElement.removeEventListener('scrollend', this.updateState);
+      this.hostElement.removeEventListener(
+        'scrollend',
+        this.throttledScrollListener
+      );
     }
     super.disconnectedCallback();
   }
@@ -72,17 +79,21 @@ export class CarouselNavigationComponent
     this.intersectionObserver = new IntersectionObserver(
       throttle((entries: IntersectionObserverEntry[]) => {
         return entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (this.resolveItems().length) {
-              this.buildNavigation();
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              this.intersectionObserver!.disconnect();
-              this.initializeScrollListener();
-              this.initializeResizeObserver();
-            }
+          let initialized = false;
+          if (
+            !initialized &&
+            entry.isIntersecting &&
+            this.resolveItems().length
+          ) {
+            initialized = true;
+            this.buildNavigation();
+            this.initializeScrollListener();
+            this.initializeResizeObserver();
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.intersectionObserver!.disconnect();
           }
         });
-      }, 150),
+      }, this.intersectionThrottleTime),
       { root: null, rootMargin: '0px', threshold: 1.0 }
     );
     this.intersectionObserver.observe(this.hostElement);
@@ -94,7 +105,9 @@ export class CarouselNavigationComponent
    */
   protected initializeResizeObserver(): void {
     if (this.resizeObserver) return;
-    const throttleTime = this.hostElement.clientWidth === 0 ? 0 : 150;
+    const throttleTime = this.hostElement.clientWidth
+      ? this.intersectionThrottleTime
+      : 0;
     this.resizeObserver = new ResizeObserver(
       throttle(() => {
         this.buildNavigation();
@@ -106,9 +119,12 @@ export class CarouselNavigationComponent
   protected initializeScrollListener(): void {
     this.throttledScrollListener = throttle(() => {
       this.updateState();
-    }, 50);
+    }, this.scrollThrottleTime);
     this.hostElement.addEventListener('scroll', this.throttledScrollListener);
-    this.hostElement.addEventListener('scrollend', this.updateState.bind(this));
+    this.hostElement.addEventListener(
+      'scrollend',
+      this.throttledScrollListener
+    );
   }
 
   protected buildNavigation(): void {
@@ -188,15 +204,11 @@ export class CarouselNavigationComponent
       const percentage = distance / clientDimension;
       let opacity = percentage >= 0 ? 1 - percentage : 1 + percentage;
       if (
-        clientDimension + scrollDimensions.position >=
-        scrollDimensions.size
-      ) {
+        clientDimension + scrollDimensions.position >= scrollDimensions.size &&
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        if (index === this.indicatorElements!.length - 1) {
-          // we could consider making the previous slide indicator to 0
-          // (opacity = index === this.indicatorElements!.length - 1 ? 1 : 0;)
-          opacity = 1;
-        }
+        index === this.indicatorElements!.length - 1
+      ) {
+        opacity = 1;
       }
       indicator.style.setProperty('--opacity', `${opacity}`);
     });
@@ -243,43 +255,44 @@ export class CarouselNavigationComponent
   /**
    * @override Renders the navigation arrow buttons (previous/next) and indicators.
    */
-  protected override render(): TemplateResult[] {
-    const results: TemplateResult[] = [];
-
-    if (this.showArrows) {
-      results.push(html`<oryx-button
-          icon=${this.isVertical
-            ? IconTypes.ArrowUpward
-            : IconTypes.ArrowBackward}
-          type="icon"
-          class="previous"
-          @click=${this.handlePrevious}
-        ></oryx-button>
-        <oryx-button
-          icon=${this.isVertical
-            ? IconTypes.ArrowDownward
-            : IconTypes.ArrowForward}
-          type="icon"
-          class="next"
-          @click=${this.handleNext}
-        ></oryx-button>`);
-    }
-
-    if (this.showIndicators) {
-      results.push(html`<div class="indicators">
-        ${this.slides.map(
-          (slide) =>
-            html`<input
-              value=${slide.index}
-              type="radio"
-              name="indicators"
-              @input=${this.handleIndicatorClick}
-            />`
-        )}
-      </div>`);
-    }
-
-    return results;
+  protected override render(): TemplateResult {
+    return html`
+      ${when(
+        this.showArrows,
+        () => html` <oryx-button
+            icon=${this.isVertical
+              ? IconTypes.ArrowUpward
+              : IconTypes.ArrowBackward}
+            type="icon"
+            class="previous"
+            @click=${this.handlePrevious}
+          ></oryx-button>
+          <oryx-button
+            icon=${this.isVertical
+              ? IconTypes.ArrowDownward
+              : IconTypes.ArrowForward}
+            type="icon"
+            class="next"
+            @click=${this.handleNext}
+          ></oryx-button>`
+      )}
+      ${when(
+        this.showIndicators,
+        () => html`
+          <div class="indicators">
+            ${this.slides.map(
+              (slide) =>
+                html`<input
+                  value=${slide.index}
+                  type="radio"
+                  name="indicators"
+                  @input=${this.handleIndicatorClick}
+                />`
+            )}
+          </div>
+        `
+      )}
+    `;
   }
 
   /**
@@ -322,7 +335,7 @@ export class CarouselNavigationComponent
       const dimensions = getDimensions(this.hostElement, this.isVertical);
       const offset =
         this.arrowNavigationBehavior === ArrowNavigationBehavior.Item
-          ? dimensions.position + 10
+          ? dimensions.position
           : dimensions.position + dimensions.size;
       index = this.items.findIndex(
         (el) => getDimensions(el, this.isVertical).position > offset
