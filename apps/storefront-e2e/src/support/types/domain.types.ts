@@ -1,6 +1,7 @@
 export type Category = {
   id: string;
   title?: string;
+  search?: string;
 };
 
 export type Product = {
@@ -15,6 +16,7 @@ export type Product = {
 
 export type SearchParameters = {
   q: string;
+  search?: string;
 };
 
 export type Customer = {
