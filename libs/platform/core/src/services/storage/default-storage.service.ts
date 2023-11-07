@@ -15,7 +15,7 @@ export class DefaultStorageService implements StorageService {
 
   protected storages: Record<
     StorageType | string,
-    Storage | StorageStrategy | undefined | null
+    Storage | StorageStrategy | undefined
   > = {
     [StorageType.Session]:
       typeof sessionStorage !== 'undefined' ? sessionStorage : undefined,
@@ -27,7 +27,7 @@ export class DefaultStorageService implements StorageService {
 
   get<T = unknown>(key: string, type?: StorageType): Observable<T | null> {
     try {
-      const value = this.getStorage(type)?.getItem(key);
+      const value = this.getStorage(type).getItem(key);
       return isObservable(value)
         ? value.pipe(map((v) => this.parseValue<T>(v)))
         : of(this.parseValue<T>(value));
@@ -39,24 +39,24 @@ export class DefaultStorageService implements StorageService {
 
   set(key: string, value: unknown, type?: StorageType): Observable<void> {
     return toObservable(
-      this.getStorage(type)?.setItem(key, JSON.stringify(value))
+      this.getStorage(type).setItem(key, JSON.stringify(value))
     ) as Observable<void>;
   }
 
   remove(key: string, type?: StorageType): Observable<void> {
     return toObservable(
-      this.getStorage(type)?.removeItem(key)
+      this.getStorage(type).removeItem(key)
     ) as Observable<void>;
   }
 
   clear(type?: StorageType): Observable<void> {
-    return toObservable(this.getStorage(type)?.clear()) as Observable<void>;
+    return toObservable(this.getStorage(type).clear()) as Observable<void>;
   }
 
   protected getStorage(
     type = this.defaultStorageType
-  ): Storage | StorageStrategy | null {
-    if (this.storages[type] === undefined) {
+  ): Storage | StorageStrategy {
+    if (!this.storages[type]) {
       const implementation = this.injector.inject(
         `${StorageStrategy}${type}`,
         null
@@ -64,11 +64,10 @@ export class DefaultStorageService implements StorageService {
       if (!implementation) {
         throw new Error(`No implementation for ${StorageStrategy}${type}`);
       }
-
       this.storages[type] = implementation;
     }
 
-    return this.storages[type];
+    return this.storages[type]!;
   }
 
   protected parseValue<T>(value: string | null): T | null {
