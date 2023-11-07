@@ -145,7 +145,9 @@ export class CarouselNavigationComponent
   }
 
   protected updated(
-    changes: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    changes:
+      | PropertyValueMap<CarouselNavigationComponent>
+      | Map<PropertyKey, unknown>
   ): void {
     if (changes.has('showIndicators') && this.showIndicators) {
       this.buildNavigation();
@@ -250,16 +252,6 @@ export class CarouselNavigationComponent
       });
       return firstElementInSlide;
     });
-
-    // this.slides = [...Array(slideCount).keys()].map((i) => {
-    //   const firstElementInSlide = this.items.findIndex((el) => {
-    //     const y = this.isVertical
-    //       ? el.getBoundingClientRect().top
-    //       : el.getBoundingClientRect().left;
-    //     return scrollX + y >= i * clientD;
-    //   });
-    //   return { index: firstElementInSlide };
-    // });
   }
 
   /**

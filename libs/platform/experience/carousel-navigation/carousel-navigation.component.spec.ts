@@ -1,57 +1,35 @@
-import { fixture } from '@open-wc/testing-helpers';
-import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { fixture, nextFrame } from '@open-wc/testing-helpers';
+import { destroyInjector } from '@spryker-oryx/di';
 import { useComponent } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult, css, html } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { LayoutComponent } from '../layout';
-import { layoutComponent } from '../layout/layout.def';
 import { CarouselLayoutProperties } from '../src/services';
 import { CarouselNavigationComponent } from './carousel-navigation.component';
 import { carouselNavigationComponent } from './carousel-navigation.def';
 
 class MockIntersectionObserver implements IntersectionObserver {
+  constructor(public callback: any, options?: IntersectionObserverInit) {}
+
   root: Document | Element | null = null;
   rootMargin = ``;
   thresholds: readonly number[] = [];
 
   disconnect = vi.fn();
-  observe = vi.fn();
+  observe = () => this.callback(['']);
   takeRecords = vi.fn();
   unobserve = vi.fn();
 }
 window.IntersectionObserver = MockIntersectionObserver;
 
-// Add the mock implementation for window.getComputedStyle
-(window as any).getComputedStyle = (element: Element) => {
-  return {
-    getPropertyValue: (property: string) => {
-      if (property === 'column-gap') {
-        return '0px'; // Replace with the desired value for testing
-      }
-      // Add more property values as needed for your tests
-      return '';
-    },
-  };
-};
+(window as any).getComputedStyle = () => ({
+  getPropertyValue: (property: string) =>
+    property === 'column-gap' ? '0px' : '',
+});
 
 @customElement('mock-layout')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MockLayout extends LitElement {
-  static styles = [
-    css`
-      :host {
-        width: 800px;
-        display: grid;
-        grid-auto-columns: 200px;
-        grid-auto-flow: column;
-        overflow: auto;
-      }
-      div {
-        width: 200px;
-      }
-    `,
-  ];
-
   @property({ type: Object }) options?: CarouselLayoutProperties;
 
   protected override render(): TemplateResult {
@@ -70,7 +48,9 @@ describe('CarouselNavigationComponent', () => {
   const layout = async (options: CarouselLayoutProperties) => {
     element = await fixture(
       html`<mock-layout .options=${options}>
-        ${[...Array(12).keys()].map((key) => html`<div>${key}</div>`)}
+        ${[...Array(12).keys()].map(
+          (key) => html`<div width="200">${key}</div>`
+        )}
       </mock-layout>`
     );
     nav = element.renderRoot.querySelector('oryx-carousel-navigation');
@@ -78,35 +58,16 @@ describe('CarouselNavigationComponent', () => {
 
   beforeAll(async () => {
     mockFeatureVersion('1.2');
-    await useComponent([layoutComponent, carouselNavigationComponent]);
-  });
-
-  beforeEach(async () => {
-    createInjector({
-      providers: [
-        // {
-        //   provide: LayoutService,
-        //   useClass: MockLayoutService,
-        // },
-        // {
-        //   provide: LayoutBuilder,
-        //   useClass: MockLayoutBuilder,
-        // },
-        // {
-        //   provide: CarouselLayoutPluginToken,
-        //   useClass: CarouselLayoutPlugin,
-        // },
-      ],
-    });
+    await useComponent([carouselNavigationComponent]);
   });
 
   afterEach(() => {
     destroyInjector();
   });
 
-  describe('when there are 12 carousel items', () => {
-    const itemCount = 12;
+  const itemCount = 12;
 
+  describe('when vertical is false', () => {
     beforeEach(async () => {
       vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(
         800
@@ -116,7 +77,7 @@ describe('CarouselNavigationComponent', () => {
       );
     });
 
-    describe('when showArrow is true', () => {
+    describe('and showArrow is true', () => {
       beforeEach(async () => {
         await layout({ showArrows: true });
       });
@@ -127,7 +88,7 @@ describe('CarouselNavigationComponent', () => {
       });
     });
 
-    describe('when showArrow is false', () => {
+    describe('and showArrow is false', () => {
       beforeEach(async () => {
         await layout({ showArrows: false });
       });
@@ -138,7 +99,7 @@ describe('CarouselNavigationComponent', () => {
       });
     });
 
-    describe('when showIndicators is true', () => {
+    describe('and showIndicators is true', () => {
       beforeEach(async () => {
         await layout({ showIndicators: true });
       });
@@ -148,9 +109,41 @@ describe('CarouselNavigationComponent', () => {
           `.indicators input:nth-child(${itemCount / 4})`
         );
       });
+
+      it(`should have active first indicator`, () => {
+        const firstIndicator = nav?.shadowRoot?.querySelector(
+          '.indicators input:nth-child(1)'
+        ) as HTMLInputElement & {
+          style: { getPropertyValue: (property: string) => string };
+        };
+
+        expect(firstIndicator.style.getPropertyValue('--opacity')).toBe('1');
+      });
+
+      it(`should change indicators length depends on clientWidth`, async () => {
+        vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(
+          400
+        );
+        element.dispatchEvent(new Event('resize'));
+        await nextFrame();
+        await nextFrame();
+        expect(nav).toContainElement(
+          `.indicators input:nth-child(${itemCount / 2})`
+        );
+      });
+
+      it(`should not show indicators when clientWidth more then slides width`, async () => {
+        vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(
+          itemCount * 300
+        );
+        element.dispatchEvent(new Event('resize'));
+        await nextFrame();
+        await nextFrame();
+        expect(nav).not.toContainElement(`.indicators input`);
+      });
     });
 
-    describe('when showIndicators is false', () => {
+    describe('and showIndicators is false', () => {
       beforeEach(async () => {
         await layout({ showIndicators: false });
       });
