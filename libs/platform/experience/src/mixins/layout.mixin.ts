@@ -17,7 +17,7 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { BehaviorSubject, Observable, distinctUntilChanged, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { LayoutController, LayoutControllerRender } from '../controllers';
 import {
   CompositionLayout,
@@ -140,12 +140,9 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     });
 
     layoutAttributes$ = new BehaviorSubject<(keyof LayoutProperties)[]>([]);
-    layoutFilter$ = this.layoutAttributes$.pipe(
-      distinctUntilChanged(
-        (prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)
-      )
-    );
-    attributeFilter = computed(() => this.layoutFilter$);
+    attributeFilter = computed(() => this.layoutAttributes$, {
+      equal: (a, b) => JSON.stringify(a) === JSON.stringify(b),
+    });
 
     protected observe(layoutSpecificAttrs = []): void {
       const exception = [
