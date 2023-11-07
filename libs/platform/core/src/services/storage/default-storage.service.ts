@@ -9,21 +9,23 @@ export class DefaultStorageService implements StorageService {
   constructor(
     protected defaultStorageType: StorageType | string = StorageType.Local,
     /** @deprecated since 1.2 */
-    protected ibdStorage = inject(IndexedDBStorageService),
+    protected ibdStorage = inject(IndexedDBStorageService, null),
     protected injector = inject(INJECTOR)
   ) {}
 
   protected storages: Record<StorageType | string, Storage | StorageStrategy> =
     {
-      [StorageType.Session]: sessionStorage,
-      [StorageType.Local]: localStorage,
+      [StorageType.Session]:
+        typeof sessionStorage !== 'undefined' ? sessionStorage : undefined,
+      [StorageType.Local]:
+        typeof localStorage !== 'undefined' ? localStorage : undefined,
       /** @deprecated since 1.2, remove */
       [StorageType.Idb]: this.ibdStorage,
     };
 
   get<T = unknown>(key: string, type?: StorageType): Observable<T | null> {
     try {
-      const value = this.getStorage(type).getItem(key);
+      const value = this.getStorage(type)?.getItem(key);
       return isObservable(value)
         ? value.pipe(map((v) => this.parseValue<T>(v)))
         : of(this.parseValue<T>(value));
@@ -35,13 +37,13 @@ export class DefaultStorageService implements StorageService {
 
   set(key: string, value: unknown, type?: StorageType): Observable<void> {
     return toObservable(
-      this.getStorage(type).setItem(key, JSON.stringify(value))
+      this.getStorage(type)?.setItem(key, JSON.stringify(value))
     ) as Observable<void>;
   }
 
   remove(key: string, type?: StorageType): Observable<void> {
     return toObservable(
-      this.getStorage(type).removeItem(key)
+      this.getStorage(type)?.removeItem(key)
     ) as Observable<void>;
   }
 
@@ -51,8 +53,8 @@ export class DefaultStorageService implements StorageService {
 
   protected getStorage(
     type = this.defaultStorageType
-  ): Storage | StorageStrategy {
-    if (!this.storages[type]) {
+  ): Storage | StorageStrategy | null {
+    if (this.storages[type] === undefined) {
       const implementation = this.injector.inject(
         `${StorageStrategy}${type}`,
         null
