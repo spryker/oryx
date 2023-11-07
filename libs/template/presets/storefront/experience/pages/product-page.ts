@@ -16,7 +16,10 @@ export const productPage: ExperienceComponent = {
       options: {
         rules: [
           {
-            layout: 'split-main',
+            layout:
+              featureVersion >= '1.2'
+                ? { type: 'split', columnWidthType: 'main' }
+                : 'split-main',
             padding: '30px 0 0',
           },
         ],
@@ -55,7 +58,18 @@ export const productPage: ExperienceComponent = {
           type: 'oryx-composition',
           id: 'product-info',
           options: {
-            rules: [{ vertical: true, top: '108px', sticky: true }],
+            rules: [
+              {
+                layout: {
+                  vertical: true,
+                  sticky: true,
+                },
+                top: '108px',
+                ...(featureVersion >= '1.2'
+                  ? {}
+                  : { sticky: true, vertical: true }),
+              },
+            ],
           },
           components: [
             {

@@ -7,6 +7,7 @@ import {
   ExperienceDataClientService,
   ExperienceDataRevealer,
   GraphicsExperienceDataRevealer,
+  LayoutExperienceDataRevealer,
   OptionsExperienceDataRevealer,
   SchemaExperienceDataRevealer,
 } from './data-client';
@@ -25,6 +26,7 @@ import {
   DefaultLayoutService,
   DefaultScreenService,
   LayoutBuilder,
+  layoutPluginsProviders,
   LayoutService,
   ScreenService,
 } from './layout';
@@ -53,6 +55,7 @@ export const layoutProviders: Provider[] = [
     provide: LayoutService,
     useClass: DefaultLayoutService,
   },
+  ...layoutPluginsProviders,
 ];
 
 export const experienceProviders: Provider[] = [
@@ -110,6 +113,6 @@ export const experiencePreviewProviders: Provider[] = [
   },
   {
     provide: ExperienceDataRevealer,
-    useClass: ColorModeExperienceDataRevealer,
+    useClass: LayoutExperienceDataRevealer,
   },
 ];

@@ -1,15 +1,42 @@
-import { inject } from '@spryker-oryx/di';
+import { INJECTOR, inject } from '@spryker-oryx/di';
+import { LayoutProperties } from '@spryker-oryx/experience/layout';
 import { Breakpoint } from '@spryker-oryx/utilities';
+import {
+  Observable,
+  concatMap,
+  from,
+  map,
+  merge,
+  of,
+  reduce,
+  switchMap,
+} from 'rxjs';
 import {
   Component,
   CompositionProperties,
-  LayoutStylesProperties,
   StyleProperties,
   StyleRuleSet,
 } from '../../models';
-import { LayoutBuilder } from './layout.builder';
+import {
+  CompositionStylesParams,
+  LayoutBuilder,
+  StylesFromOptionsParams,
+} from './layout.builder';
+import { LayoutStylesOptions } from './layout.model';
+import {
+  LayoutPlugin,
+  LayoutPropertyPlugin,
+  LayoutStyleList,
+  LayoutStyleOptions,
+  LayoutStyleProperties,
+  LayoutStylePropertiesArr,
+  LayoutStylesPlugin,
+} from './plugins';
 import { ScreenService } from './screen.service';
 
+/**
+ * @deprecated since 1.2. Will be deleted.
+ */
 export const layoutKeys: (keyof LayoutStylesProperties)[] = [
   'sticky',
   'bleed',
@@ -19,24 +46,72 @@ export const layoutKeys: (keyof LayoutStylesProperties)[] = [
 ];
 
 export class DefaultLayoutBuilder implements LayoutBuilder {
-  constructor(protected screenService = inject(ScreenService)) {}
+  constructor(
+    protected screenService = inject(ScreenService),
+    protected stylePlugins = inject(LayoutStylesPlugin, []),
+    protected injector = inject(INJECTOR)
+  ) {}
 
-  collectStyles(components: Component[]): string {
-    return components
-      .map((component) =>
-        this.createStylesFromOptions(component.options?.rules, component.id)
-      )
-      .join('');
+  getCompositionStyles(data: CompositionStylesParams): Observable<string> {
+    const { activeHostOptions, screen, composition } = data;
+
+    return from(composition).pipe(
+      concatMap((component) =>
+        this.getStylesFromOptions({
+          rules: component.options?.rules,
+          id: component.id,
+          activeHostOptions,
+          screen,
+        })
+      ),
+      reduce((acc, curr) => `${acc}${curr}`, '')
+    );
   }
 
-  createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string {
-    if (!rules?.length) return '';
-    return rules
-      .map((rule) => {
-        const styles = this.getLayoutStyles(rule);
-        return styles ? this.getSelector(rule, styles, id) : '';
-      })
-      .join('');
+  getStylesFromOptions(data: StylesFromOptionsParams): Observable<string> {
+    const { rules, id, activeHostOptions, screen } = data;
+
+    if (!rules?.length) return of('');
+
+    return this.getActiveLayoutRules(rules, screen).pipe(
+      map((rulesOptions) => ({ ...rulesOptions, ...activeHostOptions })),
+      switchMap((layoutOptions) =>
+        from(rules).pipe(
+          concatMap((rule) =>
+            this.getRuleStyles(layoutOptions, rule).pipe(
+              map((styles) =>
+                styles ? this.getSelector(rule, styles, id) : ''
+              )
+            )
+          ),
+          reduce((acc, curr) => `${acc}${curr}`, '')
+        )
+      )
+    );
+  }
+
+  getActiveLayoutRules(
+    rules?: StyleRuleSet[],
+    screen?: string
+  ): Observable<LayoutProperties> {
+    const bpOptions = rules?.find(
+      (rule) => rule.query?.breakpoint === screen && rule.layout
+    )?.layout;
+    const options = rules?.find(
+      (rule) => !rule.query?.breakpoint && rule.layout
+    )?.layout;
+    const properties: LayoutStylesOptions & LayoutProperties = {
+      ...(typeof options === 'string' ? { type: options } : options),
+      ...(typeof bpOptions === 'string' ? { type: bpOptions } : bpOptions),
+    };
+
+    if (properties.type) {
+      const layout = properties.type;
+      delete properties.type;
+      properties.layout = layout;
+    }
+
+    return of(properties);
   }
 
   protected getSelector(
@@ -70,37 +145,172 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     }
   }
 
+  /**
+   * @deprecated since 1.2. Will be deleted.
+   */
   getLayoutMarkers(data?: CompositionProperties): string | undefined {
     const markerPrefix = 'layout-';
 
     return data?.rules?.reduce((acc, ruleSet) => {
-      if (!ruleSet) return acc;
+      if (!ruleSet?.layout) return acc;
 
-      const ruleMarkers = layoutKeys.reduce((acc, key) => {
-        const value = ruleSet[key];
+      const ruleMarkers =
+        typeof ruleSet.layout === 'object'
+          ? Object.keys(ruleSet.layout ?? {}).reduce((acc, key) => {
+              const value = (ruleSet.layout as LayoutStylesOptions)?.[
+                key as keyof LayoutStylesOptions
+              ];
 
-        if (!value) return acc;
+              if (!value || key === 'type') return acc;
 
-        const breakpoint = ruleSet.query?.breakpoint;
-        const markerKey = breakpoint
-          ? `${markerPrefix}${breakpoint}-${key}`
-          : `${markerPrefix}${key}`;
+              const breakpoint = ruleSet.query?.breakpoint;
+              const markerKey = breakpoint
+                ? `${markerPrefix}${breakpoint}-${key}`
+                : `${markerPrefix}${key}`;
 
-        return `${acc} ${
-          typeof value === 'boolean' ? markerKey : `${markerKey}="${value}"`
-        }`;
-      }, '');
+              return `${acc} ${
+                typeof value === 'boolean'
+                  ? markerKey
+                  : `${markerKey}="${value}"`
+              }`;
+            }, '')
+          : '';
 
       return `${acc}${ruleMarkers}`;
     }, '');
   }
 
+  protected getRuleStyles(
+    activeOptions: LayoutProperties,
+    data?: StyleProperties
+  ): Observable<string | undefined> {
+    return merge(...this.getStyleProperties(activeOptions, data)).pipe(
+      map((props) => {
+        let styles = this.convertProperties(props).join(';');
+        if (data?.style) styles += `;${data.style}`;
+        return styles || undefined;
+      })
+    );
+  }
+
+  protected getStyleProperties(
+    activeOptions: LayoutProperties,
+    data?: StyleProperties
+  ): Observable<LayoutStyleProperties>[] {
+    if (!data) return [];
+
+    const observables: Observable<LayoutStyleProperties>[] = [];
+    const layoutData =
+      typeof data.layout === 'string' ? { type: data.layout } : data.layout;
+    const pluginParams = {
+      styles: {
+        ...data,
+        layout: layoutData,
+      },
+      options: activeOptions,
+    };
+
+    for (const plugin of this.stylePlugins) {
+      const observable = plugin.getStyleProperties?.(pluginParams);
+
+      if (observable) observables.push(observable);
+    }
+
+    if (!layoutData) {
+      return observables;
+    }
+
+    for (const [key, value] of Object.entries(layoutData)) {
+      const token = key === 'type' ? value : key;
+      const type = key === 'type' ? LayoutPlugin : LayoutPropertyPlugin;
+      const plugin = this.injector.inject<LayoutPlugin | null>(
+        `${type}${token}`,
+        null
+      );
+      const observable = plugin?.getStyleProperties?.(pluginParams);
+
+      if (observable) observables.push(observable);
+    }
+
+    return observables;
+  }
+
+  protected convertProperties(props: LayoutStyleProperties = []): string[] {
+    const rules: string[] = [];
+
+    const addUnit = (value: string | number | undefined, unit?: string) => {
+      return `${value}${unit ?? 'px'}`;
+    };
+
+    const add = (rulesObj?: LayoutStyleList, options?: LayoutStyleOptions) => {
+      if (!rulesObj) return;
+
+      Object.entries(rulesObj).forEach(([rule, value]) => {
+        if ((!value || value === '0') && !options?.emptyValue) return;
+        if (!isNaN(Number(value))) {
+          if (!options?.omitUnit) {
+            value = addUnit(value, options?.unit);
+          } else {
+            value = String(value);
+          }
+        }
+
+        // do not add empty values unless explicitly asked
+        if (!value) return;
+
+        rules.push(`${rule}: ${value}`);
+      });
+    };
+
+    if (props && !Array.isArray(props)) {
+      add(props);
+
+      return rules;
+    }
+
+    for (const [rules, options] of props as LayoutStylePropertiesArr) {
+      if (props) add(rules, options);
+    }
+
+    return rules;
+  }
+
+  /**
+   * @deprecated since 1.2. Will be deleted, use `getCompositionStyles` instead.
+   */
+  collectStyles(components: Component[]): string {
+    return components
+      .map((component) =>
+        this.createStylesFromOptions(component.options?.rules, component.id)
+      )
+      .join('');
+  }
+
+  /**
+   * @deprecated since 1.2. Will be deleted, use `getStyles` instead.
+   */
+  createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string {
+    if (!rules?.length) return '';
+    return rules
+      .map((rule) => {
+        const styles = this.getLayoutStyles(rule);
+        return styles ? this.getSelector(rule, styles, id) : '';
+      })
+      .join('');
+  }
+
+  /**
+   * @deprecated since 1.2. Will be deleted. Use getStyleProperties instead.
+   */
   getLayoutStyles(data?: StyleProperties): string | undefined {
     let styles = this.getProperties(data).join(';');
     if (data?.style) styles += `;${data.style}`;
-    return styles === '' ? undefined : styles;
+    return styles || undefined;
   }
 
+  /**
+   * @deprecated since 1.2. Will be deleted. Use protected getRuleStyles instead.
+   */
   protected getProperties(data?: StyleProperties): string[] {
     const rules: string[] = [];
 
@@ -213,6 +423,9 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
     return rules;
   }
 
+  /**
+   * @deprecated since 1.2. Will be deleted. Use import from layout.utilities
+   */
   protected findCssValues(
     data: string,
     startPos: 'start' | 'top',
@@ -238,6 +451,8 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
    * findCssValue(padding, 'end'); // '5px'
    * findCssValue(padding, 'bottom'); // '20px'
    * findCssValue(padding, 'start'); // '5px'
+   *
+   * @deprecated since 1.2. Will be deleted. Use import from layout.utilities
    */
   protected findCssValue(
     data: string,

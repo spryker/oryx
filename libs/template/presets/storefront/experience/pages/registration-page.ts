@@ -1,7 +1,4 @@
-import {
-  CompositionLayout,
-  ExperienceComponent,
-} from '@spryker-oryx/experience';
+import { ExperienceComponent } from '@spryker-oryx/experience';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { Size } from '@spryker-oryx/utilities';
 
@@ -16,7 +13,7 @@ export const registrationPage: ExperienceComponent = {
   options: {
     rules: [
       {
-        layout: CompositionLayout.Grid,
+        layout: 'grid',
         padding: '20px 0',
         gap: '30px',
         style: `box-sizing: border-box;`,
@@ -40,7 +37,7 @@ export const registrationPage: ExperienceComponent = {
       type: 'oryx-composition',
       options: {
         rules: [
-          { layout: CompositionLayout.List, colSpan: 2 },
+          { layout: 'list', colSpan: 2 },
           {
             query: { breakpoint: Size.Md },
             width: '80%',
@@ -59,7 +56,7 @@ export const registrationPage: ExperienceComponent = {
           options: {
             rules: [
               {
-                layout: CompositionLayout.Grid,
+                layout: 'grid',
                 gap: '20px',
                 style: `grid-template-columns: 1fr 1fr`,
               },
