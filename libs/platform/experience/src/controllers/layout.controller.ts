@@ -32,7 +32,7 @@ import {
 
 export type LayoutControllerRender = Omit<
   LayoutPluginRenderParams,
-  'options'
+  'options' | 'element'
 > & {
   options?: CompositionProperties;
 };
@@ -145,6 +145,7 @@ export class LayoutController {
               token,
               data: {
                 ...data,
+                element: this.host,
                 options: layoutOptions,
               },
             });

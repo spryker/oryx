@@ -116,18 +116,10 @@ export class CompositionComponent extends LayoutMixin(
 
     return from(components).pipe(
       concatMap((component) => {
-        return this[LayoutMixinInternals].layoutController
-          .getRender({
-            place,
-            data: {
-              element: this,
-              options: component.options,
-              experience: component,
-            },
-            attrs: this.attributeFilter,
-            screen: this.$screen(),
-          })
-          .pipe(map((template) => ({ [component.id]: template })));
+        return this.getLayoutPluginsRender(place, {
+          options: component.options,
+          experience: component,
+        }).pipe(map((template) => ({ [component.id]: template })));
       }),
       reduce((acc, curr) => ({ ...acc, ...(curr ?? {}) }), {})
     );
