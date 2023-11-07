@@ -25,12 +25,16 @@ export class CarouselNavigationComponent
 {
   static styles = carouselNavigationStyles;
 
+  @property({ type: Boolean }) vertical?: boolean;
   @property({ type: Boolean }) showArrows?: boolean;
   @property({ type: Boolean }) showIndicators?: boolean;
-  @property() arrowNavigationBehavior?: ArrowNavigationBehavior;
+  @property({ type: Boolean }) scrollWithMouse?: boolean;
+  @property({ type: Boolean }) scrollWithTouch?: boolean;
+  @property({ reflect: true })
+  arrowNavigationBehavior?: ArrowNavigationBehavior;
   @property({ reflect: true }) indicatorsPosition?: CarouselIndicatorPosition;
   @property({ reflect: true }) indicatorsAlignment?: CarouselIndicatorAlignment;
-  @property() scrollBehavior?: CarouselScrollBehavior;
+  @property({ reflect: true }) scrollBehavior?: CarouselScrollBehavior;
 
   protected resizeObserver?: ResizeObserver;
   protected intersectionObserver?: IntersectionObserver;

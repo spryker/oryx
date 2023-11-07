@@ -13,6 +13,11 @@ declare global {
 
 export interface CarouselLayoutProperties {
   /**
+   * If true, the carousel is displayed vertically.
+   */
+  vertical?: boolean;
+
+  /**
    * If true, display arrow buttons for navigation.
    *
    * The arrow buttons are only visible when they can be used
