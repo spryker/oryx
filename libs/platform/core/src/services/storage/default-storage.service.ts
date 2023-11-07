@@ -9,17 +9,21 @@ export class DefaultStorageService implements StorageService {
   constructor(
     protected defaultStorageType: StorageType | string = StorageType.Local,
     /** @deprecated since 1.2 */
-    protected ibdStorage = inject(IndexedDBStorageService),
+    protected ibdStorage = inject(IndexedDBStorageService, null),
     protected injector = inject(INJECTOR)
   ) {}
 
-  protected storages: Record<StorageType | string, Storage | StorageStrategy> =
-    {
-      [StorageType.Session]: sessionStorage,
-      [StorageType.Local]: localStorage,
-      /** @deprecated since 1.2, remove */
-      [StorageType.Idb]: this.ibdStorage,
-    };
+  protected storages: Record<
+    StorageType | string,
+    Storage | StorageStrategy | undefined
+  > = {
+    [StorageType.Session]:
+      typeof sessionStorage !== 'undefined' ? sessionStorage : undefined,
+    [StorageType.Local]:
+      typeof localStorage !== 'undefined' ? localStorage : undefined,
+    /** @deprecated since 1.2, remove */
+    [StorageType.Idb]: this.ibdStorage ?? undefined,
+  };
 
   get<T = unknown>(key: string, type?: StorageType): Observable<T | null> {
     try {
@@ -60,11 +64,10 @@ export class DefaultStorageService implements StorageService {
       if (!implementation) {
         throw new Error(`No implementation for ${StorageStrategy}${type}`);
       }
-
       this.storages[type] = implementation;
     }
 
-    return this.storages[type];
+    return this.storages[type]!;
   }
 
   protected parseValue<T>(value: string | null): T | null {
