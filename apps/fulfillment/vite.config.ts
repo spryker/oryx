@@ -15,8 +15,8 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       input: {
-        app: './index.html',
         'service-worker': './dev-dist/sw/app.js',
+        app: './index.html',
       },
       output: {
         entryFileNames: assetInfo => {
@@ -80,6 +80,7 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
       },
       injectManifest: {
+        globIgnores: ['**/assets/*.js'],
         globPatterns: ['**/*.{js,css,html,ico,png,svg,ttf,otf}'],
       },
     }),
