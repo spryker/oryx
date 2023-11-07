@@ -1,41 +1,98 @@
 import {
-  checkProductCardsFilterring,
+  checkProductCardsFilteringByName,
+  checkProductCardsFilteringByPrice,
+  checkProductCardsPriceMode,
   checkProductCardsSortingBySku,
 } from '../support/checks';
 import { CategoryPage } from '../support/page-objects/category.page';
 import { sortingTestData } from '../support/test-data/search-products';
+import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 describe('Category suite', () => {
-  describe('Products filtering', () => {
-    let categoryPage;
-    const query = 'DELL Inspiron 7359';
+  let categoryPage;
 
-    beforeEach(() => {
-      categoryPage = new CategoryPage({ id: '6' });
-      categoryPage.visit();
+  describe('Products filtering', () => {
+    describe('by value facets', () => {
+      beforeEach(() => {
+        categoryPage = new CategoryPage({ id: '6' });
+        categoryPage.visit();
+      });
+
+      it('should update products and facets when filters are applied/cleared', () => {
+        categoryPage.getFacets().setRating('4');
+        categoryPage.waitForSearchRequest();
+        checkProductCardsFilteringByName(
+          categoryPage,
+          2,
+          1,
+          'Asus Transformer Book T200TA'
+        );
+
+        // we don't expect search request here because previous query is cached
+        categoryPage.getFacets().resetRating();
+        categoryPage.waitForTemplateRebuild();
+
+        const query = 'DELL Inspiron 7359';
+        // apply 1st filter
+        categoryPage.getFacets().setColor('Silver');
+        categoryPage.waitForSearchRequest();
+        checkProductCardsFilteringByName(categoryPage, 4, 2, query);
+
+        // apply 2nd filter
+        categoryPage.getFacets().setBrand('DELL');
+        categoryPage.waitForSearchRequest();
+        checkProductCardsFilteringByName(categoryPage, 4, 1, query);
+
+        // clear 2nd filter
+        // we don't expect search request here because previous query is cached
+        categoryPage.getFacets().resetBrand();
+        categoryPage.waitForTemplateRebuild();
+        checkProductCardsFilteringByName(categoryPage, 4, 2, query);
+      });
     });
 
-    it('should update products and facets when filters are applied/cleared', () => {
-      // apply 1st filter
-      categoryPage.getFacets().setColor('Silver');
-      categoryPage.waitForSearchRequest();
-      checkProductCardsFilterring(categoryPage, 3, 2, query);
+    describe('by price', () => {
+      const minPrice = 200;
+      const maxPrice = 400;
 
-      // apply 2nd filter
-      categoryPage.getFacets().setBrand('DELL');
-      categoryPage.waitForSearchRequest();
-      checkProductCardsFilterring(categoryPage, 3, 1, query);
+      beforeEach(() => {
+        // set brand to limit a number of products displayed
+        // and avoid issues with concrete products displaying
+        categoryPage = new CategoryPage({ id: '2', search: 'brand=Kodak' });
+        categoryPage.visit();
+      });
 
-      // clear 2nd filter
-      // we don't expect search request here because previous query is cached
-      categoryPage.getFacets().resetBrand();
-      checkProductCardsFilterring(categoryPage, 3, 2, query);
+      it('should apply price filtering', () => {
+        cy.log('set minimum price');
+        categoryPage.getFacets().setMinPrice(minPrice);
+        categoryPage.waitForSearchRequest();
+        checkProductCardsFilteringByPrice(categoryPage, minPrice);
+
+        cy.log('reset prices, set max price');
+        categoryPage.getFacets().resetPrices();
+        categoryPage.waitForTemplateRebuild();
+        categoryPage.getFacets().setMaxPrice(maxPrice);
+        categoryPage.waitForSearchRequest();
+        checkProductCardsFilteringByPrice(categoryPage, 0, maxPrice);
+
+        cy.log('reset prices, change min price range');
+        categoryPage.getFacets().resetPrices();
+        categoryPage.waitForTemplateRebuild();
+        categoryPage.getFacets().setMinPriceRange(minPrice);
+        categoryPage.waitForTemplateRebuild();
+        checkProductCardsFilteringByPrice(categoryPage, minPrice);
+
+        cy.log('reset prices, change max price range');
+        categoryPage.getFacets().resetPrices();
+        categoryPage.waitForTemplateRebuild();
+        categoryPage.getFacets().setMaxPriceRange(maxPrice);
+        categoryPage.waitForTemplateRebuild();
+        checkProductCardsFilteringByPrice(categoryPage, 0, maxPrice);
+      });
     });
   });
 
   describe('Products sorting', () => {
-    let categoryPage;
-
     beforeEach(() => {
       categoryPage = new CategoryPage({ id: '15' });
       categoryPage.visit();
@@ -53,6 +110,7 @@ describe('Category suite', () => {
 
       // clear sorting and check that it is default again
       categoryPage.getProductSorting().clearSorting();
+      categoryPage.waitForTemplateRebuild();
       checkProductCardsSortingBySku(categoryPage, sortingTestData.default);
     });
 
@@ -70,6 +128,25 @@ describe('Category suite', () => {
 
         checkProductCardsSortingBySku(categoryPage, sortingTestData[option]);
       });
+    });
+  });
+
+  describe('Product price mode change', { tags: 'b2b' }, () => {
+    beforeEach(() => {
+      categoryPage = new CategoryPage({ id: '7' });
+      categoryPage.visit();
+    });
+
+    it('should update price when price mode changes', () => {
+      const productData = ProductStorage.getByEq(5);
+
+      checkProductCardsPriceMode(categoryPage, productData.originalPrice);
+
+      categoryPage.header.changePriceMode('NET_MODE');
+      checkProductCardsPriceMode(categoryPage, productData.netModePrice);
+
+      categoryPage.header.changePriceMode('GROSS_MODE');
+      checkProductCardsPriceMode(categoryPage, productData.originalPrice);
     });
   });
 });

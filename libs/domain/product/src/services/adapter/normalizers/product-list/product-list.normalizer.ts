@@ -2,12 +2,12 @@ import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { camelize } from '@spryker-oryx/core/utilities';
 import { Provider } from '@spryker-oryx/di';
 import { Observable, combineLatest, map } from 'rxjs';
-import { ApiProductListModel, ProductList } from '../../../../models';
-import { CategoryListNormalizer } from '../../../category';
+import { ApiProductListModel, Facet, ProductList } from '../../../../models';
 import { ConcreteProductsNormalizer } from '../concrete-products';
 import { FacetNormalizer } from '../facet';
 import { FacetCategoryNormalizer } from '../facet-category';
 import { FacetRangeNormalizer } from '../facet-range';
+import { FacetRatingNormalizer } from '../facet-rating';
 import { DeserializedProductListIncludes } from '../model';
 import { PaginationNormalizer } from '../pagination';
 import { SortNormalizer } from '../sort';
@@ -62,6 +62,12 @@ export function productFacetNormalizer(
     1
   );
 
+  //TODO: drop and use ordinary range normalizer after https://spryker.atlassian.net/browse/CC-31032
+  const ratingFacet = data[0].rangeFacets!.splice(
+    data[0].rangeFacets!.findIndex((v) => v.name === 'rating'),
+    1
+  );
+
   return combineLatest([
     transformer.transform(
       {
@@ -70,6 +76,9 @@ export function productFacetNormalizer(
       },
       FacetCategoryNormalizer
     ),
+    //TODO: drop and use ordinary range normalizer after https://spryker.atlassian.net/browse/CC-31032
+    transformer.transform(ratingFacet[0], FacetRatingNormalizer),
+    transformer.transform(rangeFacets, FacetRangeNormalizer),
     transformer.transform(
       {
         facetList: valueFacets,
@@ -77,12 +86,10 @@ export function productFacetNormalizer(
       },
       FacetNormalizer
     ),
-    transformer.transform(rangeFacets, FacetRangeNormalizer),
-    transformer.transform(categoryTreeFilter, CategoryListNormalizer),
   ]).pipe(
-    map(([categoryFacet, facetValues, rangeValues]) => {
+    map((facets) => {
       return {
-        facets: [categoryFacet, ...facetValues, ...rangeValues],
+        facets: facets.filter((facet) => facet).flat() as Facet[],
       };
     })
   );

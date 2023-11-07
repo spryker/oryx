@@ -1,4 +1,3 @@
-import { CompositionLayout } from '@spryker-oryx/experience';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
@@ -150,7 +149,7 @@ const Template: Story = (): TemplateResult => {
       ${generateLayoutItems(13, 3, 'prefix')}
     </oryx-layout>
 
-    ${generateNestedLayout(CompositionLayout.Carousel)}
+    ${generateNestedLayout('carousel')}
 
     <style>
       ${layoutStaticStyles}

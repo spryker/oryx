@@ -1,5 +1,5 @@
+import { LayoutTypes } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
-import { CompositionLayout } from '../../../src/models';
 
 export const generateLayoutItems = (
   length = 1,
@@ -19,7 +19,7 @@ export const generateLayoutItems = (
 };
 
 export const generateNestedLayout = (
-  layout: CompositionLayout
+  layout: LayoutTypes
 ): TemplateResult => html`
   <h1>Nested layout</h1>
 

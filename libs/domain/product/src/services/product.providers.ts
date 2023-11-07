@@ -11,6 +11,7 @@ import {
   FacetCategoryNormalizer,
   FacetNormalizer,
   FacetRangeNormalizer,
+  FacetRatingNormalizer,
   PriceNormalizer,
   ProductAdapter,
   ProductMediaSetNormalizer,
@@ -18,6 +19,7 @@ import {
   categoryIdNormalizer,
   concreteProductsNormalizer,
   facetCategoryNormalizer,
+  facetRatingNormalizer,
   facetsNormalizer,
   facetsRangeNormalizer,
   mediaNormalizer,
@@ -161,6 +163,11 @@ export const productProviders: Provider[] = [
   {
     provide: FacetCategoryNormalizer,
     useValue: facetCategoryNormalizer,
+  },
+  //TODO: drop and use ordinary range normalizer after https://spryker.atlassian.net/browse/CC-31032
+  {
+    provide: FacetRatingNormalizer,
+    useValue: facetRatingNormalizer,
   },
   {
     provide: AvailabilityNormalizer,

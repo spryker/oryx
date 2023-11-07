@@ -1,20 +1,28 @@
 import { resolve } from '@spryker-oryx/di';
-import { FacetValue } from '@spryker-oryx/product';
-import { FacetListService } from '@spryker-oryx/search';
+import {
+  FacetType,
+  FacetValue,
+  RangeFacet,
+  RangeFacetValue,
+} from '@spryker-oryx/product';
+import {
+  FacetListService,
+  SelectFacetEventDetail,
+  SelectFacetEventDetailValue,
+  SingleMultiFacet,
+} from '@spryker-oryx/search';
 import {
   FACET_CLEAR_EVENT,
   FACET_TOGGLE_EVENT,
   ToggleFacetEventDetail,
 } from '@spryker-oryx/search/facet-value-navigation';
 import { SearchEventDetail } from '@spryker-oryx/ui/searchbox';
-import { computed, ObserveController, signal } from '@spryker-oryx/utilities';
+import { ObserveController, computed, signal } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
-import { defer, Observable, of, switchMap } from 'rxjs';
+import { defer, of, switchMap } from 'rxjs';
 import {
   FACET_SELECT_EVENT,
   SearchFacetComponentAttributes,
-  SelectFacetEventDetail,
-  SingleMultiFacet,
 } from '../facet.model';
 
 export class FacetController implements ReactiveController {
@@ -26,15 +34,13 @@ export class FacetController implements ReactiveController {
 
   protected $facet = signal(
     defer(() =>
-      this.observe.get('name').pipe(
-        switchMap((name) =>
-          name
-            ? (this.facetListService.getFacet({
-                name,
-              }) as Observable<SingleMultiFacet>)
-            : of(null)
+      this.observe
+        .get('name')
+        .pipe(
+          switchMap((name) =>
+            name ? this.facetListService.getFacet({ name }) : of(null)
+          )
         )
-      )
     )
   );
 
@@ -44,17 +50,22 @@ export class FacetController implements ReactiveController {
 
   protected computedFacet = computed(() => {
     const facet = this.$facet();
-    const search = this.$searchedValue();
-    const renderLimit = this.$renderLimit();
-    const showAll = this.$showAll();
 
-    if (facet && Array.isArray(facet.values)) {
-      const filteredValues = this.filterFacetValues(facet, search);
+    if (facet?.type === FacetType.Single || facet?.type === FacetType.Multi) {
+      const search = this.$searchedValue();
+      const renderLimit = this.$renderLimit();
+      const showAll = this.$showAll();
+      const filteredValues = this.filterFacetValues(
+        facet as SingleMultiFacet,
+        search
+      );
       const limitedValues = this.cutByRenderLimit(
         filteredValues,
         showAll ? Infinity : renderLimit
       );
       return limitedValues;
+    } else if (facet?.type === FacetType.Range) {
+      return facet;
     }
 
     return null;
@@ -63,31 +74,38 @@ export class FacetController implements ReactiveController {
   protected selectedValues = computed(() => {
     const facet = this.$facet();
 
-    return facet
-      ? facet.values.filter(({ name }) =>
-          (facet.selectedValues ?? []).includes(name as string)
-        )
-      : [];
+    if (!facet) return [];
+
+    if (facet.type === FacetType.Range) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return facet.values.selected!;
+    }
+
+    return facet.values.filter(({ name }) =>
+      (facet.selectedValues ?? []).includes(name as string)
+    );
   });
 
   /**
    * Returns modified data based on searching and cutting by renderLimit.
    */
-  getFacet(): SingleMultiFacet | null {
-    return this.computedFacet();
+  getFacet<
+    T extends SingleMultiFacet | RangeFacet = SingleMultiFacet
+  >(): T | null {
+    return this.computedFacet() as T;
   }
 
   /**
    * Returns an array with all selected facet values
    */
-  getSelectedValues(): FacetValue[] {
+  getSelectedValues(): FacetValue[] | RangeFacetValue {
     return this.selectedValues();
   }
 
   /**
    * Dispatch the selected facet value.
    */
-  dispatchSelectEvent(value?: Pick<FacetValue, 'value' | 'selected'>): void {
+  dispatchSelectEvent(value?: SelectFacetEventDetailValue): void {
     const name = this.host.name;
     if (name) {
       this.host.dispatchEvent(

@@ -37,6 +37,7 @@
       "@spryker-oryx/cart/quantity-input": [
         "libs/domain/cart/quantity-input/index.ts"
       ],
+      "@spryker-oryx/cart/services": ["libs/domain/cart/services/index.ts"],
       "@spryker-oryx/cart/totals": ["libs/domain/cart/totals/index.ts"],
       "@spryker-oryx/checkout": ["libs/domain/checkout/src/index.ts"],
       "@spryker-oryx/checkout/account": [
@@ -68,6 +69,9 @@
       "@spryker-oryx/checkout/place-order": [
         "libs/domain/checkout/place-order/index.ts"
       ],
+      "@spryker-oryx/checkout/services": [
+        "libs/domain/checkout/services/index.ts"
+      ],
       "@spryker-oryx/checkout/shipping-address": [
         "libs/domain/checkout/shipping-address/index.ts"
       ],
@@ -95,6 +99,9 @@
       ],
       "@spryker-oryx/experience/mocks": [
         "libs/platform/experience/src/mocks/index.ts"
+      ],
+      "@spryker-oryx/experience/static": [
+        "libs/platform/experience/src/static.ts"
       ],
       "@spryker-oryx/form": ["libs/platform/form/src/index.ts"],
       "@spryker-oryx/i18n": ["libs/platform/i18n/src/index.ts"],
@@ -211,12 +218,21 @@
       "@spryker-oryx/router/lit": ["libs/platform/router/lit/index.ts"],
       "@spryker-oryx/search": ["libs/domain/search/src/index.ts"],
       "@spryker-oryx/search/box": ["libs/domain/search/box/index.ts"],
-      "@spryker-oryx/search/facet": ["libs/domain/search/facet/index.ts"],
-      "@spryker-oryx/search/facet-color": [
-        "libs/domain/search/facet-color/index.ts"
+      "@spryker-oryx/search/color-facet": [
+        "libs/domain/search/color-facet/index.ts"
       ],
+      "@spryker-oryx/search/facet": ["libs/domain/search/facet/index.ts"],
       "@spryker-oryx/search/facet-navigation": [
         "libs/domain/search/facet-navigation/index.ts"
+      ],
+      "@spryker-oryx/search/facet-price": [
+        "libs/domain/search/facet-price/index.ts"
+      ],
+      "@spryker-oryx/search/facet-range": [
+        "libs/domain/search/facet-range/index.ts"
+      ],
+      "@spryker-oryx/search/facet-rating": [
+        "libs/domain/search/facet-rating/index.ts"
       ],
       "@spryker-oryx/search/facet-value-navigation": [
         "libs/domain/search/facet-value-navigation/index.ts"
@@ -248,6 +264,9 @@
         "libs/domain/site/notification-center/index.ts"
       ],
       "@spryker-oryx/site/price": ["libs/domain/site/price/index.ts"],
+      "@spryker-oryx/site/price-mode-selector": [
+        "libs/domain/site/price-mode-selector/index.ts"
+      ],
       "@spryker-oryx/themes": ["libs/template/themes/src/index.ts"],
       "@spryker-oryx/themes/breakpoints": [
         "libs/template/themes/breakpoints/index.ts"
