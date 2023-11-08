@@ -1,9 +1,14 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector, resolve } from '@spryker-oryx/di';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { of } from 'rxjs';
-import { ContextFallback, ContextService } from './context.service';
+import { firstValueFrom, lastValueFrom, of } from 'rxjs';
+import { afterEach } from 'vitest';
+import {
+  ContextFallback,
+  ContextSerializer,
+  ContextService,
+} from './context.service';
 import { DefaultContextService } from './default-context.service';
 
 const mockKey = 'mockKey';
@@ -37,6 +42,10 @@ export class TestChildContext extends LitElement {
   context = resolve(ContextService);
 }
 
+const mockSerializerKey = 'mockSerializerKey';
+const mockSerializedValue = 'serializedValue';
+const mockDeserializedValue = { key: 'value' };
+
 describe('ContextService', () => {
   let element: OverlayParentContext;
 
@@ -50,6 +59,13 @@ describe('ContextService', () => {
         {
           provide: `${ContextFallback}${mockKeyFallback}`,
           useValue: of(mockFallbackValue),
+        },
+        {
+          provide: `${ContextSerializer}${mockSerializerKey}`,
+          useValue: {
+            serialize: vi.fn(() => of(mockSerializedValue)),
+            deserialize: vi.fn(() => of(mockDeserializedValue)),
+          },
         },
       ],
     });
@@ -242,6 +258,53 @@ describe('ContextService', () => {
         .subscribe(mockCallback);
 
       expect(mockCallback).toHaveBeenCalledWith(mockFallbackValue);
+    });
+  });
+
+  describe('Context Serializers', () => {
+    it('should use the correct serializer for serialization', async () => {
+      const mockValue = { some: 'data' };
+
+      const a = await lastValueFrom(
+        element.context.serialize(mockSerializerKey, mockValue)
+      );
+
+      expect(a).toBe(mockSerializedValue);
+    });
+
+    it('should fall back to JSON serialization when no serializer is provided', () => {
+      const mockValue = { some: 'data' };
+      const noSerializerKey = 'noSerializerKey';
+
+      element.context
+        .serialize(noSerializerKey, mockValue)
+        .subscribe((serializedValue) => {
+          expect(serializedValue).toEqual(JSON.stringify(mockValue));
+        });
+    });
+
+    it('should serialize the value using the provided serializer', () => {
+      const mockValue = { some: 'data' };
+
+      element.context.provide(element, mockSerializerKey, mockValue);
+
+      expect(element.getAttribute(`data-${mockSerializerKey}`)).toBe(
+        mockSerializedValue
+      );
+    });
+
+    it.only('should deserialize the value using the provided serializer', async () => {
+      element = await fixture(html`
+        <!-- @ts-ignore  -->
+        <overlay-parent-context data-mockSerializerKey=${mockSerializedValue}>
+          <test-child-context></test-child-context>
+        </overlay-parent-context>
+      `);
+
+      const value = await firstValueFrom(
+        element.context.get(element, mockSerializerKey)
+      );
+      expect(value).toEqual(mockDeserializedValue);
     });
   });
 });
