@@ -78,6 +78,6 @@ export default {
   ...user,
   ...picking,
   ...ui,
-  ...merchant,
   ...search,
+  ...merchant,
 };

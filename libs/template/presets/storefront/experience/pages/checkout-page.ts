@@ -35,7 +35,18 @@ const checkoutInformation = (): ExperienceComponent => {
     options: {
       rules: [
         { hideByRule: 'CART.EMPTY' },
-        { gap, layout: 'flex', vertical: true, align: 'stretch' },
+        {
+          gap,
+          layout:
+            featureVersion >= '1.2'
+              ? {
+                  type: 'flex',
+                  vertical: true,
+                }
+              : 'flex',
+          align: 'stretch',
+          ...(featureVersion >= '1.2' ? {} : { vertical: true }),
+        },
       ],
     },
   };
@@ -51,7 +62,13 @@ export const checkoutPage: ExperienceComponent = {
   },
   options: {
     rules: [
-      { layout: 'split-main', padding: '30px 0' },
+      {
+        layout:
+          featureVersion >= '1.2'
+            ? { type: 'split', columnWidthType: 'main' }
+            : 'split-main',
+        padding: '30px 0',
+      },
       { query: { breakpoint: 'sm' }, gap: '0' },
     ],
   },
@@ -86,7 +103,14 @@ export const checkoutPage: ExperienceComponent = {
       type: 'oryx-composition',
       id: 'checkout-totals',
       options: {
-        rules: [{ hideByRule: 'CART.EMPTY' }, { sticky: true, top: '108px' }],
+        rules: [
+          { hideByRule: 'CART.EMPTY' },
+          {
+            layout: { sticky: true },
+            top: '108px',
+            ...(featureVersion >= '1.2' ? {} : { sticky: true }),
+          },
+        ],
       },
       components: [
         {

@@ -67,20 +67,24 @@ export class FacetsFragment {
 
   getPriceFacet = () => cy.get('oryx-search-price-facet');
 
-  setMinPrice = (price: number) =>
+  setMinPrice = (price: number) => {
     this.getPriceFacet()
+      .should('be.visible')
       .find('oryx-input:nth-of-type(1) input')
       .clear({ force: true })
       .type(`${price}{enter}`);
+  };
 
   setMaxPrice = (price: number) =>
     this.getPriceFacet()
+      .should('be.visible')
       .find('oryx-input:nth-of-type(2) input')
       .clear({ force: true })
       .type(`${price}{enter}`);
 
   setMinPriceRange = (price: number) =>
     this.getPriceFacet()
+      .should('be.visible')
       .find('oryx-multi-range')
       .find(`label:nth-of-type(1) input`)
       .invoke('val', price)
@@ -89,6 +93,7 @@ export class FacetsFragment {
 
   setMaxPriceRange = (price: number) =>
     this.getPriceFacet()
+      .should('be.visible')
       .find('oryx-multi-range')
       .find(`label:nth-of-type(2) input`)
       .invoke('val', price)
@@ -97,6 +102,7 @@ export class FacetsFragment {
 
   resetPrices = () =>
     this.getPriceFacet()
+      .should('be.visible')
       .find('button[aria-label="Clear"]')
       .click({ force: true });
 }

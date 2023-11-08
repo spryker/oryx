@@ -6,17 +6,17 @@ import {
   ProductMixin,
 } from '@spryker-oryx/product';
 import { hydrate } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import {
+  ProductImagesNavigationLayout as NavigationLayout,
+  ProductImagesNavigationPosition as NavigationPosition,
   ProductImagesComponentOptions,
   ProductImagesMainLayout,
   ProductImagesNavigationDisplay,
-  ProductImagesNavigationLayout as NavigationLayout,
   ProductImagesNavigationMouseEvent,
-  ProductImagesNavigationPosition as NavigationPosition,
 } from './images.model';
 import { productImageStyles } from './images.styles';
 
@@ -85,7 +85,7 @@ export class ProductImagesComponent extends ProductMixin(
 
     return html`<oryx-layout
       class="main"
-      layout=${imageLayout}
+      layout=${ifDefined(imageLayout)}
       behavior=${ifDefined(scrollBehavior)}
       style="--oryx-column-count: 1;--image-fit:${objectFit};--cols: ${cols}"
     >

@@ -1,4 +1,3 @@
-import { CompositionLayout } from '@spryker-oryx/experience';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
@@ -98,7 +97,7 @@ const Template: Story = (): TemplateResult => {
       </p>
     </oryx-layout>
 
-    ${generateNestedLayout(CompositionLayout.Text)}
+    ${generateNestedLayout('text')}
 
     <style>
       ${layoutStaticStyles} p {
