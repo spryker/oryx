@@ -55,12 +55,12 @@ export const carouselNavigationStyles = css`
     padding-inline: 10px;
     align-self: end;
     width: var(--width);
-    height: var(--indicator-area-height);
+    height: var(--indicator-area-height, 50px);
   }
 
   :host(:is([indicatorsPosition='below'], :not([indicatorsPosition])))
     .indicators {
-    margin-block-end: calc(var(--indicator-area-height) * -1);
+    margin-block-end: calc(var(--indicator-area-height, 50px) * -1);
   }
 
   :host([indicatorsAlignment='center']) .indicators {
