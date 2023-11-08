@@ -96,4 +96,8 @@ export const productImageStyles = css`
     align-items: center;
     height: 100%;
   }
+
+  oryx-layout {
+    scroll-behavior: smooth;
+  }
 `;

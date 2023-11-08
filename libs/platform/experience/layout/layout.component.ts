@@ -12,7 +12,6 @@ export class LayoutComponent extends LayoutMixin(
     if (featureVersion >= '1.2') {
       return this.renderLayout({
         template: html`<slot></slot>`,
-        element: this,
       });
     }
 
