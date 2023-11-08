@@ -113,9 +113,9 @@ export class DefaultContextService implements ContextService {
         switchMap((value) =>
           value === undefined
             ? this.injector.inject<Observable<T>>(
-              `${ContextFallback}${token}`,
-              of(value)
-            )
+                `${ContextFallback}${token}`,
+                of(value)
+              )
             : of(value)
         )
       );
