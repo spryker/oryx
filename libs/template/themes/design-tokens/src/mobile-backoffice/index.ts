@@ -24,13 +24,9 @@ export const mobileBackofficeTokens: DesignToken[] = [
   },
   {
     media: {
-      screen: Size.Sm,
+      screen: Size.Lg,
     },
-    ...layoutSmTokens,
-    ...commonTokensSmall,
-    container: {
-      bleed: '0',
-    },
+    ...layoutTokens,
   },
   {
     media: {
@@ -40,6 +36,16 @@ export const mobileBackofficeTokens: DesignToken[] = [
     container: {
       width: '414px',
       bleed: '8px',
+    },
+  },
+  {
+    media: {
+      screen: Size.Sm,
+    },
+    ...layoutSmTokens,
+    ...commonTokensSmall,
+    container: {
+      bleed: '0',
     },
   },
 ];
