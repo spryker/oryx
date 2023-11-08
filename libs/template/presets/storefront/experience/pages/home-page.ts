@@ -88,7 +88,7 @@ export const homePage: ExperienceComponent = {
                   }
                 : 'split',
             align: 'end',
-            ...(featureVersion >= '1.2' ? { bleed: true } : {}),
+            ...(featureVersion >= '1.2' ? {} : { bleed: true }),
           },
         ],
       },
