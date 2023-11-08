@@ -1,3 +1,4 @@
+import { ProductListFragment } from '../page-fragments/product-list.fragment';
 import { ProductRelationsFragment } from '../page-fragments/product-relations.fragment';
 import { QuantityInputFragment } from '../page-fragments/quantity-input.fragment';
 import { Product } from '../types/domain.types';
@@ -61,6 +62,7 @@ export class ProductDetailsPage extends AbstractSFPage {
   getAttributeTerms = () => this.getAttributes().find('dt');
 
   getRelations = () => new ProductRelationsFragment();
+  getCarousel = () => new ProductListFragment();
   getProductsList = () => cy.get('oryx-product-list');
   getAvailability = () => this.getWrapper().find('oryx-product-availability');
 
