@@ -20,7 +20,7 @@ export declare class ProductMixinInterface
 {
   sku?: string;
   protected $product: Signal<Product | null>;
-  protected $productQualifier: Signal<ProductQualifier | null>;
+  protected $productQualifier: Signal<ProductQualifier | undefined>;
 }
 
 export const ProductMixin = <
@@ -37,13 +37,12 @@ export const ProductMixin = <
     protected contextController = new ContextController(this);
 
     protected $productQualifier: Signal<ProductQualifier | undefined> = signal(
-      this.contextController
-        .get<ProductQualifier>(ProductContext.SKU)
-        .pipe(
-          map((sku) =>
-            featureVersion >= '1.3' ? sku : ({ sku } as ProductQualifier)
-          )
+      this.contextController.get<ProductQualifier>(ProductContext.SKU).pipe(
+        // TODO: deprecated since 1.3, mapping won't be needed as context will always return qualifier in 1.3+
+        map((sku) =>
+          featureVersion >= '1.3' ? sku : ({ sku } as ProductQualifier)
         )
+      )
     );
 
     protected $product = computed(() => {
