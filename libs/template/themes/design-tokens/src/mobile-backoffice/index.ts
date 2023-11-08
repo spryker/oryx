@@ -1,13 +1,14 @@
 import { DesignToken } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
 import { buttonTokens } from '../backoffice/button.token';
-import { tokens } from '../backoffice/other.tokens';
 import {
   typographySmallTokens,
   typographyTokens,
 } from '../backoffice/typography.tokens';
 import { color } from '../color.tokens';
-import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
+import { commonTokensSmall } from '../common-tokens';
+import { layoutMdTokens, layoutSmTokens, layoutTokens } from './layout.tokens';
+import { tokens } from './other.tokens';
 
 export const mobileBackofficeTokens: DesignToken[] = [
   ...buttonTokens,
@@ -26,6 +27,7 @@ export const mobileBackofficeTokens: DesignToken[] = [
       screen: Size.Sm,
     },
     ...layoutSmTokens,
+    ...commonTokensSmall,
     container: {
       bleed: '0',
     },
