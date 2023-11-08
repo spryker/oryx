@@ -2,6 +2,9 @@ import { Theme } from '@spryker-oryx/experience';
 import { backofficeNgIcons } from '@spryker-oryx/resources';
 import { defaultBreakpoints } from '@spryker-oryx/themes/breakpoints';
 
+/**
+ * @deprecated since version 1.2 use backofficeTheme instead
+ * */
 export const backofficeNgTheme: Theme = {
   name: 'backoffice-ng',
   breakpoints: defaultBreakpoints,

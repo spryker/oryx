@@ -3,7 +3,6 @@ import { fesResources } from '@spryker-oryx/presets/fes';
 import { fulfillmentResources } from '@spryker-oryx/presets/fulfillment';
 import { storefrontResources } from '@spryker-oryx/presets/storefront';
 import {
-  backofficeNgTheme,
   backofficeTheme,
   fesTheme,
   fulfillmentTheme,
@@ -15,7 +14,6 @@ export const theme = {
   list: {
     storefront: [storefrontTheme],
     backoffice: [backofficeTheme],
-    'backoffice-ng': [backofficeNgTheme],
     fulfillment: [fulfillmentTheme],
     fes: [fesTheme],
   },
