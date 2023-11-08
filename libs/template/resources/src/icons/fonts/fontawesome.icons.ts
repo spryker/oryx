@@ -17,6 +17,7 @@ export const fontawesomeIcons: IconMapper = {
     [IconTypes.Desktop]: '&#xf390;',
     [IconTypes.Mobile]: '&#xf3cd;',
     [IconTypes.Tablet]: '&#xf3fa;',
+    [IconTypes.Backward]: '&#xf053;',
     [IconTypes.Forward]: '&#xf054;',
     [IconTypes.ArrowBackward]: '&#xf060;',
     [IconTypes.ArrowForward]: '&#xf061;',
