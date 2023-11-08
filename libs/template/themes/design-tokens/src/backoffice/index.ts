@@ -6,37 +6,39 @@ import { layoutSmTokens, layoutTokens } from '../layout.tokens';
 import { buttonTokens } from './button.token';
 import { layoutMdTokens } from './layout.tokens';
 import { tokens } from './other.tokens';
-import { typographySmallTokens, typographyTokens } from './typography.tokens';
+import {
+  typographyMediumAndLargerTokens,
+  typographySmallTokens,
+  typographyTokens,
+} from './typography.tokens';
 
 export const backofficeTokens: DesignToken[] = [
   ...buttonTokens,
   {
     color,
     ...tokens,
-    typography: Object.assign(
-      {},
-      typographyTokens.typography,
-      typographySmallTokens.typography
-    ),
+    ...typographyTokens,
     ...layoutTokens,
-  },
-  {
-    media: {
-      screen: Size.Lg,
-    },
-    ...layoutTokens,
-  },
-  {
-    media: {
-      screen: Size.Md,
-    },
-    ...layoutMdTokens,
   },
   {
     media: {
       screen: Size.Sm,
     },
     ...layoutSmTokens,
+    ...typographySmallTokens,
     ...commonTokensSmall,
+  },
+  {
+    media: {
+      screen: Size.Md,
+    },
+    ...layoutMdTokens,
+    ...typographyMediumAndLargerTokens,
+  },
+  {
+    media: {
+      screen: Size.Lg,
+    },
+    ...typographyMediumAndLargerTokens,
   },
 ];
