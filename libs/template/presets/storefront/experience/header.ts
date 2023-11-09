@@ -205,9 +205,57 @@ export const mainHeader = (): ExperienceComponent[] => {
   ];
 };
 
+export const categoryNavigation = (
+  categories: (string | number)[] = []
+): ExperienceComponent[] => {
+  if (featureVersion >= '1.3') {
+    const categoryLinks = categories.map((id) => ({
+      type: 'oryx-content-link',
+      options: { id, type: 'category' },
+    }));
+    return [
+      {
+        type: 'oryx-composition',
+        options: {
+          rules: [
+            {
+              layout: {
+                type: 'navigation',
+                bleed: true,
+                sticky: true,
+                shadow: true,
+              },
+              top: '78px',
+              gap: '40px',
+              background: 'var(--oryx-color-neutral-1)',
+            },
+          ],
+        },
+        components: [
+          {
+            type: 'oryx-content-link',
+            content: { data: { text: 'All products' } },
+            options: {
+              url: '/search',
+              icon: 'category',
+            },
+          },
+          ...categoryLinks,
+        ],
+      },
+    ];
+  } else {
+    return [];
+  }
+};
+
 export const HeaderTemplate: ExperienceComponent = {
   id: 'header',
   type: 'Page',
   meta: { title: 'Header', route: '/_header' },
-  components: [...topHeader(), ...mainHeader()],
+  components: [
+    ...topHeader(),
+    ...mainHeader(),
+    ...categoryNavigation(['2', '5', '9', '11']),
+  ],
 };
