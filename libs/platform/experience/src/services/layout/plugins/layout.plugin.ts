@@ -97,7 +97,6 @@ export interface LayoutPlugin {
   getStyleProperties?(
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties>;
-
   /**
    * Retrieves the default layout styles options. These default properties
    * are redefined by the layout options, which can be set in the experience
