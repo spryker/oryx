@@ -367,7 +367,7 @@ describe('LayoutController', () => {
 
     describe('getRender', () => {
       const mockData = {
-        element: 'element',
+        element: expect.anything(),
         experience: 'experience',
       } as unknown as Omit<LayoutPluginRenderParams, 'options'>;
 

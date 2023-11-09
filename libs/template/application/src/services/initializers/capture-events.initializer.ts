@@ -2,7 +2,7 @@ import { AppInitializer, PageMetaService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { captureEventsForHydrationInsertion } from '@spryker-oryx/utilities';
 
-export const StopEventsInitializer = `${AppInitializer}StopEvents`;
+export const CaptureEventsInitializer = `${AppInitializer}CaptureEvents`;
 
 export class DefaultCaptureEventsInitializer implements AppInitializer {
   constructor(protected metaService = inject(PageMetaService, null)) {}

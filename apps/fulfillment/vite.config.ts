@@ -30,6 +30,7 @@ export default defineConfig({
   },
   define: {
     'import.meta.env.ORYX_FULFILLMENT_APP_VERSION': JSON.stringify(version),
+    __ORYX_FEATURE_VERSION__: `"${process.env.ORYX_FEATURE_VERSION ?? ''}"`,
   },
 
   server: {

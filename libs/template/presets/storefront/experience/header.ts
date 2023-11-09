@@ -206,8 +206,7 @@ export const mainHeader = (): ExperienceComponent[] => {
 };
 
 export const HeaderTemplate: ExperienceComponent = {
+  type: 'oryx-composition',
   id: 'header',
-  type: 'Page',
-  meta: { title: 'Header', route: '/_header' },
   components: [...topHeader(), ...mainHeader()],
 };
