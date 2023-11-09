@@ -49,7 +49,7 @@ export class CompositionComponent extends LayoutMixin(
     if (!this.route) {
       return;
     }
-
+    console.log(this.route, 'this.route');
     const component = signal(
       this.experienceService
         .getComponent({ route: this.route })

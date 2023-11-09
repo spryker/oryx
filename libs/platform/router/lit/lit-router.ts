@@ -172,12 +172,15 @@ export class LitRouter implements ReactiveController {
   // TODO (justinfagnani): Do we need this now that we have a direct reference
   // to the parent? We can call `this._parentRoutes.disconnect(this)`.
   private _onDisconnect: (() => void) | undefined;
+  private isTest: any;
 
   constructor(
     host: ReactiveControllerHost & HTMLElement,
     routes: Array<RouteConfig>,
     options?: { fallback?: BaseRouteConfig }
   ) {
+    this.isTest = host.shadowRoot;
+
     routes = [
       ...resolve(LitRoutesRegistry, [])
         .map((registry) => registry.routes)
@@ -205,14 +208,8 @@ export class LitRouter implements ReactiveController {
         if ((route as URLPatternRouteConfig).pattern) {
           const oldPattern = (route as URLPatternRouteConfig).pattern;
           const pattern = new URLPattern({
-            protocol: oldPattern.protocol,
-            username: oldPattern.username,
-            password: oldPattern.password,
-            hostname: oldPattern.hostname,
-            port: oldPattern.port,
+            ...oldPattern,
             pathname: baseRoute + oldPattern.pathname,
-            search: oldPattern.search,
-            hash: oldPattern.hash,
           });
 
           return { ...route, pattern };
@@ -304,14 +301,8 @@ export class LitRouter implements ReactiveController {
       // Simulate a tail group with the whole pathname
       this._currentParams = { 0: tailGroup };
     } else {
-      const route = this._getRoute(pathname);
+      const { route, params } = this.parsePathname(pathname);
 
-      if (route === undefined) {
-        throw new Error(`No route found for ${pathname}`);
-      }
-      const pattern = getPattern(route);
-      const result = pattern.exec({ pathname });
-      const params = result?.pathname.groups ?? {};
       tailGroup = getTailGroup(params);
       const timestamp =
         globalThis.history?.state?.timestamp ?? new Date().getTime();
@@ -390,22 +381,27 @@ export class LitRouter implements ReactiveController {
         childRoutes.goto(tailGroup);
       }
     }
-    this._host.requestUpdate();
-    if (!isServer) {
-      await this._host.updateComplete;
-    }
+    // this._host.requestUpdate();
+    // if (!isServer) {
+    //   await this._host.updateComplete;
+    // }
   }
 
   /**
    * The result of calling the current route's render() callback.
    */
   outlet(): TemplateResult {
+    if (!this._currentRoute && window?.location.pathname !== '/') {
+      this.parsePathname(window?.location.pathname, true);
+    }
+
     const path = isRouterPath(this._currentRoute)
       ? this._currentParams.page
         ? `/${this._currentParams.page}`
         : this._currentRoute.path
       : '/';
 
+    console.log(path, 'pathpath', this._currentRoute, 'asfasf');
     return html`<outlet>
       ${when(
         this._currentRoute?.render,
@@ -421,6 +417,31 @@ export class LitRouter implements ReactiveController {
         decodeURIComponent(globalThis.location?.search)
       ).entries()
     );
+  }
+
+  protected parsePathname(
+    pathname: string,
+    force = false
+  ): {
+    params: Record<string, string | undefined>;
+    route: RouteConfig;
+  } {
+    const route = this._getRoute(pathname);
+
+    if (route === undefined) {
+      throw new Error(`No route found for ${pathname}`);
+    }
+
+    const params = getPattern(route).exec({ pathname })?.pathname.groups ?? {};
+
+    if (force) {
+      this._currentRoute = route;
+      this._currentParams = params;
+      this._currentPathname = pathname;
+      this.routerService.acceptParams(params);
+    }
+
+    return { route, params };
   }
 
   /**
@@ -463,7 +484,7 @@ export class LitRouter implements ReactiveController {
     window.addEventListener('click', this._onClick);
     window.addEventListener('popstate', this._onPopState);
     // Kick off routed rendering by going to the current URL
-    this.goto(window.location.pathname);
+    // this.goto(window.location.pathname);
 
     this.subscribe();
   }
