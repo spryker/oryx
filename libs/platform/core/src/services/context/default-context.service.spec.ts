@@ -293,7 +293,7 @@ describe('ContextService', () => {
       );
     });
 
-    it.only('should deserialize the value using the provided serializer', async () => {
+    it('should deserialize the value using the provided serializer', async () => {
       element = await fixture(html`
         <!-- @ts-ignore  -->
         <overlay-parent-context data-mockSerializerKey=${mockSerializedValue}>
