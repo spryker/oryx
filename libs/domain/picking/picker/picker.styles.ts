@@ -3,6 +3,17 @@ import { css } from 'lit';
 export const pickingComponentStyles = css`
   :host {
     --sticky-offset: 66px;
+
+    /* TODO: use pages with layout */
+    display: block;
+    width: min(
+      100%,
+      min(
+        var(--oryx-container-width),
+        calc(100vw - (2 * var(--oryx-container-bleed, 0px)))
+      )
+    );
+    margin: auto;
   }
 
   [slot='panels'] {
