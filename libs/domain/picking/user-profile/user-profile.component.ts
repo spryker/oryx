@@ -1,7 +1,7 @@
 import { AuthService } from '@spryker-oryx/auth';
 import { AppRef, StorageService } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
-import { SyncSchedulerService } from '@spryker-oryx/offline';
+import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';

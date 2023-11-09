@@ -1,8 +1,8 @@
 import { App, InjectionPlugin } from '@spryker-oryx/core';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { ProcessSyncsBackgroundSyncTag, SyncExecutorService } from './services';
-import { OfflineServiceWorkerPlugin } from './sw-plugin';
+import { ProcessSyncsBackgroundSyncTag, SyncExecutorService } from '@spryker-oryx/offline/sync';
+import { OfflineServiceWorkerPlugin } from './plugin';
 
 describe('OfflineServiceWorkerPlugin', () => {
   let plugin: OfflineServiceWorkerPlugin;

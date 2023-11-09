@@ -1,6 +1,6 @@
 import { inject } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
-import { SyncSchedulerService } from '@spryker-oryx/offline';
+import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import {
   PickingListAdapter,
   PickingListQualifier,

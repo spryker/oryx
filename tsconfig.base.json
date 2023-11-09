@@ -111,6 +111,10 @@
       "@spryker-oryx/offline/mocks": [
         "libs/platform/offline/src/mocks/index.ts"
       ],
+      "@spryker-oryx/offline/service-worker": [
+        "libs/platform/offline/service-worker/index.ts"
+      ],
+      "@spryker-oryx/offline/sync": ["libs/platform/offline/sync/index.ts"],
       "@spryker-oryx/order": ["libs/domain/order/src/index.ts"],
       "@spryker-oryx/order/confirmation-banner": [
         "libs/domain/order/confirmation-banner/index.ts"

@@ -1,7 +1,7 @@
 import { OauthService } from '@spryker-oryx/auth';
 import { AppInitializer } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { SyncSchedulerService } from '@spryker-oryx/offline';
+import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { firstValueFrom, Observable } from 'rxjs';
 import {
   PickingSyncAction,

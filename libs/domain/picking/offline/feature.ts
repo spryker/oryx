@@ -12,7 +12,7 @@ import {
   IndexedDbStorageMethod,
   provideIndexedDbEntities,
 } from '@spryker-oryx/indexed-db';
-import { provideSyncActionsHandler } from '@spryker-oryx/offline';
+import { provideSyncActionsHandler } from '@spryker-oryx/offline/sync';
 import {
   PickingHttpDefaultService,
   PickingHttpService,

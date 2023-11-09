@@ -1,4 +1,4 @@
-import { SyncStatus } from '@spryker-oryx/offline';
+import { SyncStatus } from '@spryker-oryx/offline/sync';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 

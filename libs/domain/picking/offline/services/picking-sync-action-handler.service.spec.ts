@@ -1,6 +1,6 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
-import { Sync, SyncStatus } from '@spryker-oryx/offline';
+import { Sync, SyncStatus } from '@spryker-oryx/offline/sync';
 import { PickingListStatus } from '@spryker-oryx/picking';
 import { Table } from 'dexie';
 import { of } from 'rxjs';

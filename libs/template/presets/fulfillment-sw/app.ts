@@ -7,7 +7,7 @@ import {
 } from '@spryker-oryx/indexed-db';
 import {
   OfflineServiceWorkerFeature,
-} from '@spryker-oryx/offline';
+} from '@spryker-oryx/offline/service-worker';
 import {
   SwAuthFeature,
   SwOfflinePickingFeature,

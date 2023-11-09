@@ -2,7 +2,7 @@
 
 import { App, AppPlugin, InjectionPlugin } from '@spryker-oryx/core';
 import { firstValueFrom } from 'rxjs';
-import { ProcessSyncsBackgroundSyncTag, SyncExecutorService } from './services';
+import { ProcessSyncsBackgroundSyncTag, SyncExecutorService } from '@spryker-oryx/offline/sync';
 
 declare let self: ServiceWorkerGlobalScope;
 
