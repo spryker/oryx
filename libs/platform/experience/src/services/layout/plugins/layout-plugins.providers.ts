@@ -4,6 +4,7 @@ import {
   BleedLayoutPluginToken,
   DividerLayoutPluginToken,
   OverlapLayoutPluginToken,
+  ShadowLayoutPluginToken,
   StickyLayoutPluginToken,
 } from './properties';
 import {
@@ -113,6 +114,13 @@ export const layoutPluginsProviders: Provider[] = [
     asyncClass: () =>
       import('./properties/overlap/overlap-layout.plugin').then(
         (m) => m.OverlapLayoutPlugin
+      ),
+  },
+  {
+    provide: ShadowLayoutPluginToken,
+    asyncClass: () =>
+      import('./properties/shadow/shadow.plugin').then(
+        (m) => m.ShadowLayoutPlugin
       ),
   },
 ];
