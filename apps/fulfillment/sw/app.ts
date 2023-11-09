@@ -1,7 +1,7 @@
 // organize-imports-ignore
 import { bootstrap } from '@spryker-oryx/application/service-worker';
 import { appBuilder } from '@spryker-oryx/application';
-import { offlineServiceWorkerFulfillmentFeatures } from '../../../libs/template/presets/fulfillment';
+import { offlineServiceWorkerFulfillmentFeatures } from '@spryker-oryx/presets/fulfillment';
 
 appBuilder()
   .withEnvironment(process.env)
