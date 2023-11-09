@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.2.0 (2023-11-09)
+
+
+### Features
+
+* carousel navigation ([#856](https://github.com/spryker/oryx/issues/856)) ([deb2f3d](https://github.com/spryker/oryx/commit/deb2f3ddee91aea827b78eef0b361cf4f222a7e4))
+
+
+
+
+
 # 1.1.0 (2023-09-22)
 
 
