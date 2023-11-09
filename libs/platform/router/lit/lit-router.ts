@@ -381,10 +381,10 @@ export class LitRouter implements ReactiveController {
         childRoutes.goto(tailGroup);
       }
     }
-    // this._host.requestUpdate();
-    // if (!isServer) {
-    //   await this._host.updateComplete;
-    // }
+    this._host.requestUpdate();
+    if (!isServer) {
+      await this._host.updateComplete;
+    }
   }
 
   /**
@@ -484,7 +484,7 @@ export class LitRouter implements ReactiveController {
     window.addEventListener('click', this._onClick);
     window.addEventListener('popstate', this._onPopState);
     // Kick off routed rendering by going to the current URL
-    // this.goto(window.location.pathname);
+    this.goto(window.location.pathname);
 
     this.subscribe();
   }

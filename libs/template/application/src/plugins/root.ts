@@ -6,6 +6,7 @@ import {
   HydrationService,
 } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
+import { RouterService } from '@spryker-oryx/router';
 import { rootInjectable } from '@spryker-oryx/utilities';
 import { hydrateShadowRoots } from '@webcomponents/template-shadowroot/template-shadowroot.js';
 import { LitElement } from 'lit';
@@ -38,7 +39,7 @@ export class RootPlugin
 
   apply(): void {
     if (!document.querySelector(rootInjectable.get())?.shadowRoot) {
-      // resolve(RouterService).go(window.location.pathname);
+      resolve(RouterService).go(window.location.pathname);
     }
   }
 
