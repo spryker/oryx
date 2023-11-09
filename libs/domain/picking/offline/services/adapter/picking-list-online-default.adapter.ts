@@ -5,9 +5,9 @@ import {
   PickingHttpService,
   PickingList,
   PickingListQualifier,
-} from '@spryker-oryx/picking';
+  PickingListDefaultAdapter
+} from '@spryker-oryx/picking/api';
 import { isDefined } from '@spryker-oryx/utilities';
-import { PickingListDefaultAdapter } from '../../../src/services';
 // Add full import because of issue with naming exports from cjs.
 import * as jsonapi from 'jsonapi-serializer';
 import { firstValueFrom, Observable } from 'rxjs';

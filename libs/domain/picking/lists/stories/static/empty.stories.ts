@@ -3,7 +3,7 @@ import {
   storybookDefaultViewports,
 } from '@/tools/storybook';
 import { resolve } from '@spryker-oryx/di';
-import { PickingListService } from '@spryker-oryx/picking';
+import { PickingListService } from '@spryker-oryx/picking/api';
 import { MockPickingListService } from '@spryker-oryx/picking/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';

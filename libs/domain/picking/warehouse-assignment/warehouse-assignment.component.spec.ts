@@ -4,7 +4,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   WarehouseUserAssignmentsService,
   pickingWarehouseAssignmentComponent,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 import { mockWarehouseUserAssignments } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonComponent } from '@spryker-oryx/ui/button';

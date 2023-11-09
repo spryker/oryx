@@ -20,7 +20,7 @@ import { tap } from 'rxjs';
 import {
   WarehouseUserAssignment,
   warehouseUserAssignmentStorageKey,
-} from '../src/models/warehouse-user-assignment';
+} from '@spryker-oryx/picking/api';
 import { userProfileComponentStyles } from './user-profile.styles';
 
 @signalAware()

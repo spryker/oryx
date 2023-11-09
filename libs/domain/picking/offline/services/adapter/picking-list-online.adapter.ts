@@ -1,7 +1,7 @@
 import {
   PickingListAdapter,
   PickingListQualifier,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 import { Observable } from 'rxjs';
 import { PickingListEntity } from '../../entities';
 

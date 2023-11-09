@@ -18,8 +18,7 @@ import {
   map,
   switchMap,
 } from 'rxjs';
-import type { PickingList } from '../models';
-import { PickingListService } from '../services';
+import { PickingListService, PickingList } from '@spryker-oryx/picking/api';
 
 export declare class PickingListMixinInterface
   implements PickingListComponentProperties

@@ -5,7 +5,7 @@ import {
   PickingListQualifierSortBy,
   PickingListService,
   SortableQualifier,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { mockPickingListData } from './mock-picking-list';
 

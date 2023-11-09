@@ -2,9 +2,11 @@ import { AppRef } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   FallbackType,
+} from '@spryker-oryx/picking';
+import {
   PickingListService,
   PickingListStatus,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 import {
   OfflineDataPlugin,
   PickingSyncActionHandlerService,

@@ -1,8 +1,10 @@
 import { Provider } from '@spryker-oryx/di';
 import {
   PickingHeaderService,
-  PickingListService,
 } from '@spryker-oryx/picking';
+import {
+  PickingListService,
+} from '@spryker-oryx/picking/api';
 import { PickingSyncActionHandlerService } from '@spryker-oryx/picking/offline';
 import { MockPickingHeaderService } from './mock-picking-header.service';
 import { MockPickingListService } from './mock-picking-list.service';

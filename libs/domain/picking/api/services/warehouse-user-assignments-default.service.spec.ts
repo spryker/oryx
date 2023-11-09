@@ -8,7 +8,7 @@ import {
   WarehouseUserAssignmentsAdapter,
   WarehouseUserAssignmentsDefaultService,
   WarehouseUserAssignmentsService,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 import { of } from 'rxjs';
 import { beforeEach, describe } from 'vitest';
 import {

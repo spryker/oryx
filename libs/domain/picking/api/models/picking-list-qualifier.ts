@@ -1,7 +1,18 @@
-import { PageableQualifier } from './pageable-qualifier';
 import { PickingListStatus } from './picking-list';
-import { SearchQualifier } from './search-qualifier';
-import { SortableQualifier } from './sortable-qualifier';
+
+export interface SearchQualifier {
+  searchOrderReference?: string;
+}
+
+export interface PageableQualifier {
+  limit?: number;
+  offset?: number;
+}
+
+export interface SortableQualifier<SortBy extends string> {
+  sortBy?: SortBy;
+  sortDesc?: boolean;
+}
 
 export interface PickingListQualifier
   extends SortableQualifier<PickingListQualifierSortBy>,

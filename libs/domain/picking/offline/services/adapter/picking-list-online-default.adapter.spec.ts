@@ -6,7 +6,7 @@ import {
   PickingHttpService,
   PickingListDefaultAdapter,
   PickingListStatus,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Table } from 'dexie';

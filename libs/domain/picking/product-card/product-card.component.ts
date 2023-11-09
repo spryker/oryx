@@ -2,10 +2,12 @@ import { QuantityInputComponent } from '@spryker-oryx/ui/quantity-input';
 import {
   EVENT_EDIT,
   EVENT_SUBMIT,
-  ItemsFilters,
-  PickingListItem,
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
+import {
+  ItemsFilters,
+  PickingListItem,
+} from '@spryker-oryx/picking/api';
 import { ButtonSize } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin } from '@spryker-oryx/utilities';

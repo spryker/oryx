@@ -1,6 +1,6 @@
 import { AppRef } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
-import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking';
+import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking/api';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonSize } from '@spryker-oryx/ui/button';

@@ -4,7 +4,7 @@ import {
   GetWarehouseUserAssignmentsResponse,
   PatchWarehouseUserAssignmentsResponse,
   PickingHttpService,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 import * as jsonapi from 'jsonapi-serializer';
 import { Observable } from 'rxjs';
 import { WarehouseUserAssignment } from '../../models/warehouse-user-assignment';

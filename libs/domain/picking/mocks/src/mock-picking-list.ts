@@ -2,7 +2,7 @@ import {
   ItemsFilters,
   PickingList,
   PickingListStatus,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 
 export const mockPickingListData: PickingList[] = [
   {

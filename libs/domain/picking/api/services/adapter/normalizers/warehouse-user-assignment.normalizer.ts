@@ -1,7 +1,7 @@
 import { Transformer } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { DeserializedWarehouseUserAssignment } from '@spryker-oryx/picking';
-import { WarehouseUserAssignment } from '../../../models/warehouse-user-assignment';
+import { DeserializedWarehouseUserAssignment } from '@spryker-oryx/picking/api';
+import { WarehouseUserAssignment } from '../../../models';
 
 export const WarehouseUserAssignmentNormalizer =
   'oryx.WarehouseUserAssignmentNormalizer*';

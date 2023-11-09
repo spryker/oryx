@@ -2,7 +2,7 @@ import {
   DeserializedWarehouseUserAssignment,
   warehouseUserAssignmentItemsNormalizer,
   WarehouseUserAssignmentNormalizer,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 import { of, take } from 'rxjs';
 
 const mockWarehouseUserAssignmentsDeserializedData: DeserializedWarehouseUserAssignment[] =

@@ -1,6 +1,5 @@
 import {
   AppFeature,
-  AppInitializer,
   AppPlugin,
   DefaultStorageService,
   injectEnv,
@@ -19,7 +18,7 @@ import {
   PickingListAdapter,
   PickingListDefaultService,
   PickingListService,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 import { PushProvider } from '@spryker-oryx/push-notification';
 import { WebPushProvider } from '@spryker-oryx/push-notification/web';
 import { OfflineDataPlugin } from './data-plugin';
@@ -35,7 +34,6 @@ import {
   PickingListOnlineDefaultAdapter,
   PickingSyncAction,
   PickingSyncActionHandlerService,
-  SwPushInitializerService,
 } from './services';
 
 export class OfflinePickingFeature implements AppFeature {
@@ -52,10 +50,6 @@ export class OfflinePickingFeature implements AppFeature {
         PickingSyncAction,
         PickingSyncActionHandlerService
       ),
-      {
-        provide: AppInitializer,
-        useClass: SwPushInitializerService,
-      },
       {
         provide: PushProvider,
         useFactory: () =>

@@ -2,8 +2,10 @@ import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   PickingHeaderService,
-  PickingListService,
 } from '@spryker-oryx/picking';
+import {
+  PickingListService,
+} from '@spryker-oryx/picking/api';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { BACK_EVENT, CLOSE_EVENT } from '@spryker-oryx/ui/modal';

@@ -3,7 +3,7 @@ import {
   indexedDbIndex,
   indexedDbPrimaryKey,
 } from '@spryker-oryx/indexed-db';
-import { PickingProduct } from '@spryker-oryx/picking';
+import { PickingProduct } from '@spryker-oryx/picking/api';
 import { Table } from 'dexie';
 
 declare global {

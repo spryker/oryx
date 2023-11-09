@@ -2,7 +2,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   PickingHttpService,
   WarehouseUserAssignmentsService,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 import { of } from 'rxjs';
 import { beforeEach } from 'vitest';
 import { BapiPushNotificationDefaultAdapter } from './bapi-push-notification-default.adapter';

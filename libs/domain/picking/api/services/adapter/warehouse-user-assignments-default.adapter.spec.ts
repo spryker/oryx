@@ -5,7 +5,7 @@ import {
   PickingHttpService,
   WarehouseUserAssignmentsAdapter,
   WarehouseUserAssignmentsDefaultAdapter,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/api';
 import { of } from 'rxjs';
 
 const mockResponseWarehouseUserAssignment = {
