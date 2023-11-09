@@ -2,7 +2,7 @@ import { applicationFeature } from '@spryker-oryx/application';
 import { BapiAuthComponentsFeature, BapiAuthFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
 import { contentFeature } from '@spryker-oryx/content';
-import { AppFeature, PageMetaResolver, coreFeature } from '@spryker-oryx/core';
+import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import { Resources, experienceFeature } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
@@ -35,14 +35,7 @@ export function fulfillmentFeatures(
     ...(featureVersion >= '1.2'
       ? [siteFeature, formFeature, applicationFeature, contentFeature]
       : []),
-    {
-      //drop PageMetaResolver from experienceFeature
-      //to exclude unnecessary functionality from SPA
-      providers: experienceFeature.providers?.filter(
-        (feature) => ![PageMetaResolver].includes(feature.provide)
-      ),
-      components: experienceFeature.components,
-    },
+    experienceFeature,
     new RouterFeature(),
     new I18nFeature(config?.i18n),
     new WebPushNotificationFeature(),
