@@ -160,6 +160,9 @@
       "@spryker-oryx/picking/product-card": [
         "libs/domain/picking/product-card/index.ts"
       ],
+      "@spryker-oryx/picking/service-worker": [
+        "libs/domain/picking/service-worker/index.ts"
+      ],
       "@spryker-oryx/picking/user-profile": [
         "libs/domain/picking/user-profile/index.ts"
       ],

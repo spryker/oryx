@@ -12,6 +12,7 @@ export default defineConfig(() => {
         formats: ['es'],
         fileName: (format, entryName) => `${entryName}.js`,
       },
+      minify: false
     },
     define: {
       'process.env.NODE_ENV': JSON.stringify(

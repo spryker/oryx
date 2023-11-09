@@ -10,7 +10,7 @@ import {
 
 declare let self: ServiceWorkerGlobalScope;
 
-export class SwPushInitializerService implements AppInitializer {
+export class PushInitializerService implements AppInitializer {
   constructor(
     private syncSchedulerService = inject(SyncSchedulerService),
     private authService = inject(OauthService)

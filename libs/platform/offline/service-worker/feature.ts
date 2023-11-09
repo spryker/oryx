@@ -1,6 +1,3 @@
-import { AppFeature, AppPlugin } from '@spryker-oryx/core';
-import { Provider } from '@spryker-oryx/di';
-import { provideIndexedDbEntities } from '@spryker-oryx/indexed-db';
 import {
   SyncEntity,
   SyncActionRegistryDefaultService,
@@ -10,6 +7,9 @@ import {
   SyncSchedulerDefaultService,
   SyncSchedulerService,
 } from '@spryker-oryx/offline/sync';
+import { AppFeature, AppPlugin } from '@spryker-oryx/core';
+import { Provider } from '@spryker-oryx/di';
+import { provideIndexedDbEntities } from '@spryker-oryx/indexed-db';
 import { OfflineServiceWorkerPlugin } from './plugin';
 
 export class OfflineServiceWorkerFeature

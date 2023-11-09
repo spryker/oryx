@@ -1,17 +1,15 @@
-import { AppFeature, PageMetaService, coreFeature } from '@spryker-oryx/core';
-import { ServerPageMetaService } from '@spryker-oryx/core/server';
-import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
+import {
+  OfflineServiceWorkerFeature,
+} from '@spryker-oryx/offline/service-worker';
+import { AppFeature, coreFeature } from '@spryker-oryx/core';
 import {
   IndexedDbFeature,
   IndexedDbFeatureConfig,
 } from '@spryker-oryx/indexed-db';
 import {
-  OfflineServiceWorkerFeature,
-} from '@spryker-oryx/offline/service-worker';
-import {
-  SwAuthFeature,
-  SwOfflinePickingFeature,
-} from '@spryker-oryx/picking/offline';
+//   AuthFeature,
+  OfflinePickingFeature,
+} from '@spryker-oryx/picking/service-worker';
 import { RouterFeature } from '@spryker-oryx/router'; 
 
 export interface SharedOfflineFulfillmentFeaturesConfig {
@@ -24,14 +22,8 @@ export const defaultOfflineFulfillmentConfig: SharedOfflineFulfillmentFeaturesCo
     indexedDb: { dbName: 'fulfillment-app-db' },
   };
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface OfflineServiceWorkerFulfillmentFeaturesConfig
-  extends SharedOfflineFulfillmentFeaturesConfig {
-  i18n?: I18nFeatureOptions;
-}
-
 export function offlineServiceWorkerFulfillmentFeatures(
-  config?: OfflineServiceWorkerFulfillmentFeaturesConfig
+  config?: SharedOfflineFulfillmentFeaturesConfig
 ): AppFeature[] {
   config = {
     ...defaultOfflineFulfillmentConfig,
@@ -40,19 +32,10 @@ export function offlineServiceWorkerFulfillmentFeatures(
 
   return [
     coreFeature,
-    new I18nFeature(config?.i18n),
     new IndexedDbFeature(config?.indexedDb),
     new RouterFeature(),
-    new SwAuthFeature(),
     new OfflineServiceWorkerFeature(),
-    {
-      providers: [
-        {
-          provide: PageMetaService,
-          useClass: ServerPageMetaService,
-        },
-      ],
-    },
-    new SwOfflinePickingFeature(),
+    // new AuthFeature(),
+    new OfflinePickingFeature(),
   ];
 }
