@@ -12,6 +12,7 @@ import {
   ColumnLayoutPluginToken,
   FlexLayoutPluginToken,
   GridLayoutPluginToken,
+  NavigationLayoutPluginToken,
   SplitLayoutPluginToken,
   TextLayoutPluginToken,
 } from './types';
@@ -87,6 +88,13 @@ export const layoutPluginsProviders: Provider[] = [
     provide: TextLayoutPluginToken,
     asyncClass: () =>
       import('./types/text/text-layout.plugin').then((m) => m.TextLayoutPlugin),
+  },
+  {
+    provide: NavigationLayoutPluginToken,
+    asyncClass: () =>
+      import('./types/navigation/navigation-layout.plugin').then(
+        (m) => m.NavigationLayoutPlugin
+      ),
   },
   {
     provide: StickyLayoutPluginToken,
