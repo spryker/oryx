@@ -83,7 +83,3 @@ export const flyoutStyles = css`
     /* padding: var(--oryx-navigation-padding, 10px); */
   }
 `;
-
-// bleed
-// inset-inline-start: 0;
-// padding-inline: var(--_bleed);
