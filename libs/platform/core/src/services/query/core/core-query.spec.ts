@@ -133,4 +133,70 @@ describe('CoreQuery', () => {
       });
     });
   });
+
+  describe('CoreQuery with cacheKey', () => {
+    let coreQuery: CoreQuery<any, any>;
+    let loader: any;
+
+    beforeEach(() => {
+      loader = vi.fn((qualifier) => {
+        return of(`Data for ${qualifier.id}`);
+      });
+
+      coreQuery = new CoreQuery(
+        {
+          loader,
+          cacheKey: (qualifier) => `cache_for_${qualifier.type}`,
+        },
+        queryManager
+      );
+    });
+
+    it('should return the same data for different qualifiers with the same cache key', async () => {
+      const firstQualifier = { id: 1, type: 'common' };
+      const secondQualifier = { id: 2, type: 'common' };
+
+      const firstData = await firstValueFrom(coreQuery.get(firstQualifier));
+      const secondData = await firstValueFrom(coreQuery.get(secondQualifier));
+
+      expect(loader).toHaveBeenCalledTimes(1);
+      expect(firstData).toBe(secondData);
+    });
+
+    it('should return the different data for different qualifiers with different cache key', async () => {
+      const firstQualifier = { id: 1, type: 'common' };
+      const secondQualifier = { id: 2, type: 'special' };
+
+      const firstData = await firstValueFrom(coreQuery.get(firstQualifier));
+      const secondData = await firstValueFrom(coreQuery.get(secondQualifier));
+
+      expect(loader).toHaveBeenCalledTimes(2);
+      expect(firstData).not.toBe(secondData);
+    });
+  });
+
+  describe('postTransforms', () => {
+    it('should apply postTransforms to the data', async () => {
+      const postTransformFn = vi.fn((data) => data + 1);
+      coreQuery = new CoreQuery(
+        {
+          loader: (qualifier) => of(qualifier.id * 100),
+          postTransforms: [postTransformFn],
+        },
+        queryManager
+      );
+
+      const dataWithoutTransform = await firstValueFrom(
+        coreQuery.get({ id: 1 })
+      );
+      expect(dataWithoutTransform).toBe(101);
+      expect(postTransformFn).toHaveBeenCalledTimes(1);
+
+      const stateWithTransform = await firstValueFrom(
+        coreQuery.getState({ id: 1 })
+      );
+      expect(stateWithTransform.data).toBe(101);
+      expect(postTransformFn).toHaveBeenCalledTimes(2);
+    });
+  });
 });

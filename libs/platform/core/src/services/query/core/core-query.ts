@@ -51,6 +51,14 @@ export class CoreQuery<
   ) {}
 
   protected getKey(qualifier: Qualifier): string {
+    if (!qualifier) return '';
+
+    if (this.options.cacheKey) {
+      const key = this.options.cacheKey(qualifier);
+      if (typeof key === 'string') return key;
+      qualifier = key as Qualifier;
+    }
+
     return qualifier
       ? JSON.stringify(
           Object.entries(qualifier)
@@ -184,12 +192,42 @@ export class CoreQuery<
     this.queryCache.set(key, { subject$, state$, data$, reset$, refresh$ });
   }
 
+  protected applyPostTransforms(
+    data: ValueType,
+    qualifier: Qualifier
+  ): ValueType | undefined {
+    return this.options.postTransforms?.reduce(
+      (acc, modifier) => modifier(acc, qualifier) ?? data,
+      data
+    ) as ValueType | undefined;
+  }
+
   get(qualifier: Qualifier): Observable<ValueType | undefined> {
-    return this.queryCache.get(this.prepareKey(qualifier))!.data$;
+    const data = this.queryCache.get(this.prepareKey(qualifier))!.data$;
+
+    if (this.options.postTransforms?.length) {
+      return data.pipe(
+        map((data) => (data ? this.applyPostTransforms(data, qualifier) : data))
+      );
+    }
+
+    return data;
   }
 
   getState(qualifier: Qualifier): Observable<QueryState<ValueType>> {
-    return this.queryCache.get(this.prepareKey(qualifier))!.state$;
+    const state = this.queryCache.get(this.prepareKey(qualifier))!.state$;
+
+    if (this.options.postTransforms?.length) {
+      return state.pipe(
+        map((state) => ({
+          ...state,
+          data: state.data
+            ? this.applyPostTransforms(state.data, qualifier)
+            : state.data,
+        }))
+      );
+    }
+    return state;
   }
 
   set({
