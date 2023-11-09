@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/offline",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "description": "Functionality for offline first applications",
   "author": "Spryker Systems GmbH",
@@ -17,10 +17,10 @@
     }
   },
   "dependencies": {
-    "@spryker-oryx/core": "1.1.0",
-    "@spryker-oryx/di": "1.1.0",
-    "@spryker-oryx/indexed-db": "1.1.0",
-    "@spryker-oryx/utilities": "1.1.0"
+    "@spryker-oryx/core": "1.2.0",
+    "@spryker-oryx/di": "1.2.0",
+    "@spryker-oryx/indexed-db": "1.2.0",
+    "@spryker-oryx/utilities": "1.2.0"
   },
   "peerDependencies": {
     "dexie": "^3.2.2",
