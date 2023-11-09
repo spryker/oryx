@@ -6,9 +6,9 @@ import {
   ThemeMetaInitializer,
 } from './initializers';
 import {
+  CaptureEventsInitializer,
   DefaultCaptureEventsInitializer,
-  StopEventsInitializer,
-} from './initializers/stop-events.initializer';
+} from './initializers/capture-events.initializer';
 import { GlobalPageMetaResolver } from './resolvers';
 
 export const applicationProviders: Provider[] = [
@@ -23,7 +23,7 @@ export const applicationProviders: Provider[] = [
   ...(isServer
     ? [
         {
-          provide: StopEventsInitializer,
+          provide: CaptureEventsInitializer,
           useClass: DefaultCaptureEventsInitializer,
         },
       ]
