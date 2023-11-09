@@ -96,6 +96,11 @@ const getPattern = (route: RouteConfig) => {
   return pattern;
 };
 
+interface ParsedPathname {
+  params: Record<string, string | undefined>;
+  route: RouteConfig;
+}
+
 /**
  * A reactive controller that performs location-based routing using a
  * configuration of URL patterns and associated render callbacks.
@@ -415,13 +420,7 @@ export class LitRouter implements ReactiveController {
     );
   }
 
-  protected parsePathname(
-    pathname: string,
-    force = false
-  ): {
-    params: Record<string, string | undefined>;
-    route: RouteConfig;
-  } {
+  protected parsePathname(pathname: string, force = false): ParsedPathname {
     const route = this._getRoute(pathname);
 
     if (route === undefined) {
