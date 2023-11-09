@@ -35,14 +35,7 @@ export function fulfillmentFeatures(
     ...(featureVersion >= '1.2'
       ? [siteFeature, formFeature, applicationFeature, contentFeature]
       : []),
-    {
-      //drop PageMetaResolver from experienceFeature
-      //to exclude unnecessary functionality from SPA
-      providers: experienceFeature.providers?.filter(
-        (feature) => ![PageMetaResolver].includes(feature.provide)
-      ),
-      components: experienceFeature.components,
-    },
+    experienceFeature,
     new RouterFeature(),
     new I18nFeature(config?.i18n),
     new WebPushNotificationFeature(),
