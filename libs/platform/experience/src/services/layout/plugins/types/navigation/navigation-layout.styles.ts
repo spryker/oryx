@@ -41,7 +41,7 @@ export const horizontalStyles = css`
 
   oryx-content-link::after {
     content: '';
-    margin-top: -4px;
+    margin-block-start: -4px;
     display: block;
     height: 4px;
     transition: background-color 0.3s ease-in-out;
@@ -57,8 +57,7 @@ export const horizontalStyles = css`
 `;
 
 export const verticalStyles = css`
-  :host {
-  }
+  /** tslint:disable-next-line  */
 `;
 
 export const flyoutStyles = css`
@@ -73,13 +72,10 @@ export const flyoutStyles = css`
   }
 
   oryx-composition {
-    /* opacity: 0; */
     position: absolute;
     transition: all 0.3s ease-in-out 0.1s;
     width: min(100%, calc(var(--_container-width)));
-    /** depends on outer bleed, move it up! */
     inset-inline-start: var(--_bleed);
     z-index: 100;
-    /* padding: var(--oryx-navigation-padding, 10px); */
   }
 `;
