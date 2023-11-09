@@ -196,7 +196,7 @@ export class DefaultContextService implements ContextService {
         this.injector.inject(`${ContextSerializer}${key}`, null)
       );
     }
-    return this.serializers.get(key)! as ContextSerializer<T> | null;
+    return this.serializers.get(key) as ContextSerializer<T> | null;
   }
 
   public serialize<T>(key: string, value: T): Observable<string> {
