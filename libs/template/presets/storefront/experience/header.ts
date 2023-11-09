@@ -222,7 +222,6 @@ export const categoryNavigation = (
               layout: {
                 type: 'navigation',
                 bleed: true,
-                sticky: true,
                 shadow: true,
               },
               top: '78px',
