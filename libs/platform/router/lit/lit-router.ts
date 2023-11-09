@@ -172,15 +172,12 @@ export class LitRouter implements ReactiveController {
   // TODO (justinfagnani): Do we need this now that we have a direct reference
   // to the parent? We can call `this._parentRoutes.disconnect(this)`.
   private _onDisconnect: (() => void) | undefined;
-  private isTest: any;
 
   constructor(
     host: ReactiveControllerHost & HTMLElement,
     routes: Array<RouteConfig>,
     options?: { fallback?: BaseRouteConfig }
   ) {
-    this.isTest = host.shadowRoot;
-
     routes = [
       ...resolve(LitRoutesRegistry, [])
         .map((registry) => registry.routes)
@@ -401,7 +398,6 @@ export class LitRouter implements ReactiveController {
         : this._currentRoute.path
       : '/';
 
-    console.log(path, 'pathpath', this._currentRoute, 'asfasf');
     return html`<outlet>
       ${when(
         this._currentRoute?.render,
