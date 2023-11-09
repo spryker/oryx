@@ -35,7 +35,7 @@ describe('Product details page suite', () => {
     pdp.visit();
     cy.wait('@catalog-search');
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(5000);
+    cy.wait(7000);
 
     cy.log('initial state');
     pdp.getCarousel().getButton('next').should('be.visible');
@@ -75,7 +75,7 @@ describe('Product details page suite', () => {
     pdp.visit();
     cy.wait('@catalog-search');
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(5000);
+    cy.wait(7000);
 
     cy.log('initial state');
     pdp
