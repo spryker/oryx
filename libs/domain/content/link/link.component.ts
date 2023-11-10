@@ -4,11 +4,11 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductCategoryService, ProductService } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
-import { computed, hydrate } from '@spryker-oryx/utilities';
+import { computed, elementEffect, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
-import { map } from 'rxjs';
+import { map, of } from 'rxjs';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
 @hydrate()
@@ -23,19 +23,34 @@ export class ContentLinkComponent extends ContentMixin<
 
   protected $link = computed(() => {
     const { url, type, id, params } = this.$options();
-    if (url) return url;
+    if (url) return of(url);
     if (type) return this.semanticLinkService.get({ type: type, id, params });
-    return null;
+    return of(undefined);
   });
+
+  protected $isCurrent = computed(() => {
+    const link = this.$link();
+    if (link) return this.semanticLinkService.isCurrent(link);
+    return of(false);
+  });
+
+  @elementEffect()
+  protected reflectCurrent = (): void => {
+    const current = this.$isCurrent();
+    this.toggleAttribute('current', current);
+  };
 
   protected override render(): TemplateResult | void {
     const { button, icon, singleLine, color } = this.$options();
 
     if (button) {
-      return html`<oryx-button>${this.renderLink(true)}</oryx-button>`;
+      return html`<oryx-button part="link" }
+        >${this.renderLink(true)}</oryx-button
+      >`;
     }
 
     return html`<oryx-link
+      part="link"
       .color=${color}
       ?singleLine=${singleLine}
       .icon=${icon}
