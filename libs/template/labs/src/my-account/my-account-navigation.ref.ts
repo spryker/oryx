@@ -69,7 +69,6 @@ export const myAccountNavigation: ExperienceComponent = {
         layout: {
           type: 'navigation',
           vertical: true,
-          // divider: true,
         },
         gap: '0px',
       },

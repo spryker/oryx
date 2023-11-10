@@ -25,7 +25,7 @@ export class ContentLinkComponent extends ContentMixin<
     const { url, type, id, params } = this.$options();
     if (url) return of(url);
     if (type) return this.semanticLinkService.get({ type: type, id, params });
-    return of(undefined);
+    return of(null);
   });
 
   protected $isCurrent = computed(() => {
