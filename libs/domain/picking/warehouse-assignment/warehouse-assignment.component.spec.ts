@@ -1,10 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  WarehouseUserAssignmentsService,
-  pickingWarehouseAssignmentComponent,
-} from '@spryker-oryx/picking/api';
+import { pickingWarehouseAssignmentComponent } from '@spryker-oryx/picking';
+import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking/api';
 import { mockWarehouseUserAssignments } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonComponent } from '@spryker-oryx/ui/button';

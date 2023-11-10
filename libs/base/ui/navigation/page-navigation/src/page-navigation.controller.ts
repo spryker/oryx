@@ -1,6 +1,6 @@
+import { PageNavigationItemComponent } from '@spryker-oryx/ui/page-navigation-item';
 import { queryAssignedElements, throttle } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
-import { PageNavigationItemComponent } from '../../page-navigation-item';
 import { PageNavigationProperties } from './page-navigation.model';
 
 interface VisibleSection {
