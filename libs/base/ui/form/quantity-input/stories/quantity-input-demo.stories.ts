@@ -3,7 +3,7 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Quantity input`,
+  title: `${storybookPrefix}/Form/Quantity input`,
   parameters: {
     chromatic: {
       disableSnapshot: true,

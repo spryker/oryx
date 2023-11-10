@@ -1,7 +1,23 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { mockSync } from '../../src/mocks/src/mock-sync';
+import { of } from 'rxjs';
+import { SyncStatus } from '../models';
 import { SyncActionRegistryDefaultService } from './sync-action-registry-default.service';
 import { SyncActionRegistryService } from './sync-action-registry.service';
+
+export const mockSync = {
+  action: 'mock' as any,
+  id: 123,
+  prevSyncIds: [],
+  status: SyncStatus.Processing,
+  payload: {} as any,
+  scheduledAt: new Date(),
+  retries: 0,
+  errors: [],
+  whenCompleted: vi.fn(),
+  cancel: vi.fn(),
+  handleSync: vi.fn().mockReturnValue(of(undefined)),
+  isSyncing: vi.fn().mockReturnValue(of(false)),
+};
 
 describe('SyncActionRegistryDefaultService', () => {
   let service: SyncActionRegistryService;

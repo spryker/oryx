@@ -4,7 +4,7 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/Quantity input/Static`,
+  title: `${storybookPrefix}/Form/Quantity input/Static`,
 } as Meta;
 
 const Template: Story = (): TemplateResult => {

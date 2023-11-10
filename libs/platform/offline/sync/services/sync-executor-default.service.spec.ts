@@ -3,7 +3,6 @@ import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Table } from 'dexie';
 import { of } from 'rxjs';
-import { mockSync } from '../../src/mocks/src/mock-sync';
 import { SyncStatus } from '../models';
 import { SyncActionRegistryService } from './sync-action-registry.service';
 import { SyncExecutorDefaultService } from './sync-executor-default.service';
@@ -13,6 +12,21 @@ import { SyncSchedulerService } from './sync-scheduler.service';
 const mockError = String(
   new Error('SyncExecutorDefaultService: Could not complete Sync(123)!')
 );
+
+export const mockSync = {
+  action: 'mock' as any,
+  id: 123,
+  prevSyncIds: [],
+  status: SyncStatus.Processing,
+  payload: {} as any,
+  scheduledAt: new Date(),
+  retries: 0,
+  errors: [],
+  whenCompleted: vi.fn(),
+  cancel: vi.fn(),
+  handleSync: vi.fn().mockReturnValue(of(undefined)),
+  isSyncing: vi.fn().mockReturnValue(of(false)),
+};
 
 class MockIndexedDbService implements Partial<IndexedDbService> {
   getStore = vi.fn().mockImplementation(() => of(mockTable));

@@ -10,7 +10,7 @@ import { QuantityInputComponent } from '../../quantity-input.component';
 import { CategoryY, getInputVariants, groups } from './common';
 
 export default {
-  title: `${storybookPrefix}/Quantity input/Static`,
+  title: `${storybookPrefix}/Form/Quantity input/Static`,
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
