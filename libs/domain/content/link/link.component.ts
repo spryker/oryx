@@ -4,13 +4,19 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { ProductCategoryService, ProductService } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
-import { computed, elementEffect, hydrate } from '@spryker-oryx/utilities';
+import {
+  computed,
+  elementEffect,
+  hydrate,
+  ssrShim,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { map, of } from 'rxjs';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
+@ssrShim('style')
 @hydrate()
 export class ContentLinkComponent extends ContentMixin<
   ContentLinkOptions,
