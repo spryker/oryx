@@ -4,60 +4,63 @@ import { LayoutStyles } from '../../../layout.model';
 export const styles: LayoutStyles = {
   styles: css`
     :host {
+      --oryx-link-icon-size: 24px;
+      --oryx-link-width: 100%;
+      --oryx-link-color: currentColor;
+      --oryx-link-decoration: none;
+
       display: flex;
     }
 
-    oryx-content-link {
-      display: block;
-    }
-
-    oryx-content-link::part(anchor) {
-      width: 100%;
-      text-decoration: none;
+    oryx-content-link,
+    ::slotted(oryx-content-link) {
+      display: flex;
+      flex-wrap: wrap;
+      align-self: stretch;
     }
   `,
 };
 
 export const horizontalStyles = css`
   :host {
+    --oryx-link-padding: 16px 0;
+
     align-items: var(--align, start);
     justify-content: var(--justify, start);
   }
 
-  oryx-content-link {
-    display: flex;
-    flex-wrap: wrap;
-    align-self: stretch;
-  }
-
-  oryx-content-link::part(anchor) {
-    padding-block: 16px;
-  }
-
-  oryx-content-link:hover,
-  oryx-content-link:focus-visible {
-    color: var(--oryx-color-primary-9);
-  }
-
-  oryx-content-link::after {
-    content: '';
-    margin-block-start: -4px;
-    display: block;
-    height: 4px;
-    transition: background-color 0.3s ease-in-out;
-    flex: 100%;
-    align-self: end;
-  }
-
-  oryx-content-link:focus-within::after,
-  oryx-content-link:hover::after {
-    background-color: var(--oryx-color-primary-9);
-    transition-delay: 0;
+  ::slotted(oryx-content-link:is([current], :hover, :focus-within)),
+  oryx-content-link:is([current], :hover, :focus-within) {
+    box-shadow: 0px -4px 0px 0px var(--oryx-color-primary-9) inset;
   }
 `;
 
 export const verticalStyles = css`
-  /** tslint:disable-next-line  */
+  :host {
+    --oryx-link-padding: 8px 12px 8px 0;
+
+    flex-direction: column;
+  }
+
+  oryx-content-link,
+  ::slotted(oryx-content-link) {
+    padding-inline-start: 12px;
+  }
+
+  oryx-content-link[current],
+  ::slotted(oryx-content-link[current]) {
+    box-shadow: 4px 0px 0px 0px var(--oryx-color-primary-9) inset;
+  }
+
+  oryx-content-link:hover,
+  ::slotted(oryx-content-link:hover) {
+    background-color: var(--oryx-color-neutral-3);
+  }
+
+  oryx-content-link:active,
+  ::slotted(oryx-content-link:active) {
+    background-color: var(--oryx-color-primary-5);
+  }
 `;
 
 export const flyoutStyles = css`
