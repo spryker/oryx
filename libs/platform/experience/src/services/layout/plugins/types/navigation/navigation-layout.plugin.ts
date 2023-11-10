@@ -18,11 +18,8 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
           ? m.verticalStyles
           : m.horizontalStyles;
 
-        let navigationType = css``;
-
-        if (options.navigationType === 'flyout') {
-          navigationType = m.flyoutStyles;
-        }
+        const navigationType =
+          options.navigationType === 'flyout' ? m.flyoutStyles : css``;
 
         return {
           styles: `${m.styles.styles}${direction}${navigationType}`,

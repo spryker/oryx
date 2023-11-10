@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
 import {
   categoryNavigation,
   mainHeader,
@@ -11,6 +12,8 @@ export const HeaderTemplate: ExperienceComponent = {
   components: [
     ...topHeader({ priceModeSelector: true }),
     ...mainHeader(),
-    ...categoryNavigation(['2', '11', '23', '31']),
+    ...(featureVersion >= '1.3'
+      ? categoryNavigation(['2', '11', '23', '31'])
+      : []),
   ],
 };
