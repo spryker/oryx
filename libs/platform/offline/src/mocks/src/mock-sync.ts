@@ -1,6 +1,5 @@
-import { SyncStatus } from '@spryker-oryx/offline/sync';
 import { of } from 'rxjs';
-import { vi } from 'vitest';
+import { SyncStatus } from '../../../sync';
 
 export const mockSync = {
   action: 'mock',
@@ -11,8 +10,16 @@ export const mockSync = {
   scheduledAt: new Date(),
   retries: 0,
   errors: [],
-  whenCompleted: vi.fn(),
-  cancel: vi.fn(),
-  handleSync: vi.fn().mockReturnValue(of(undefined)),
-  isSyncing: vi.fn().mockReturnValue(of(false)),
+  whenCompleted() {
+    return;
+  },
+  cancel() {
+    return;
+  },
+  handleSync() {
+    return of(undefined);
+  },
+  isSyncing() {
+    return of(false);
+  },
 };
