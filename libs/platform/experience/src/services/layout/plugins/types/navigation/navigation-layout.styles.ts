@@ -31,7 +31,7 @@ export const horizontalStyles = css`
 
   ::slotted(oryx-content-link:is([current], :hover, :focus-within)),
   oryx-content-link:is([current], :hover, :focus-within) {
-    box-shadow: 0 -4 0 0 var(--oryx-color-primary-9) inset;
+    box-shadow: 0 -4px 0 0 var(--oryx-color-primary-9) inset;
   }
 `;
 
