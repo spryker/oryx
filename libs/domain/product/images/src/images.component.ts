@@ -1,11 +1,15 @@
-import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
+import {
+  CarouselLayoutProperties,
+  ContentMixin,
+  defaultOptions,
+} from '@spryker-oryx/experience';
 import {
   ProductContext,
   ProductMedia,
   ProductMediaContainerSize,
   ProductMixin,
 } from '@spryker-oryx/product';
-import { hydrate } from '@spryker-oryx/utilities';
+import { featureVersion, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -83,10 +87,18 @@ export class ProductImagesComponent extends ProductMixin(
       return;
     }
 
+    const options =
+      featureVersion >= '1.2'
+        ? ({
+            rules: [{ layout: { showArrows: false, showIndicators: false } }],
+          } as CarouselLayoutProperties)
+        : undefined;
+
     return html`<oryx-layout
       class="main"
       layout=${ifDefined(imageLayout)}
       behavior=${ifDefined(scrollBehavior)}
+      .options=${options}
       style="--oryx-column-count: 1;--image-fit:${objectFit};--cols: ${cols}"
     >
       ${media.map(
@@ -125,11 +137,19 @@ export class ProductImagesComponent extends ProductMixin(
       position === NavigationPosition.Start ||
       position === NavigationPosition.End;
 
+    const options =
+      featureVersion >= '1.2'
+        ? ({
+            rules: [{ layout: { showArrows: false, showIndicators: false } }],
+          } as CarouselLayoutProperties)
+        : undefined;
+
     return html`<oryx-layout
       class="navigation"
       layout=${layout || NavigationLayout.Carousel}
       ?layout-vertical=${isVertical}
       style="--oryx-grid-item-size:${height};--image-fit:${objectFit};"
+      .options=${options}
     >
       ${media.map(
         (_, i) => html`

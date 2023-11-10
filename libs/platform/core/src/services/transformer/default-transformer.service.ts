@@ -41,8 +41,8 @@ export class DefaultTransformerService implements TransformerService {
       }
 
       return {
-        ...(currentData as Record<string, unknown>),
         ...(fullData as Record<string, unknown>),
+        ...(currentData as Record<string, unknown>),
       };
     };
     const asyncData: Observable<unknown>[] = [];
