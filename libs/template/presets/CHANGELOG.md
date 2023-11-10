@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.2.0 (2023-11-09)
+
+
+### Bug Fixes
+
+* additional white space at the end of product list on the home page ([#865](https://github.com/spryker/oryx/issues/865)) ([bb629ac](https://github.com/spryker/oryx/commit/bb629ac38da37d0117d39a1edf4dcc68a2c36aa4))
+
+
+
+
+
 # 1.1.0 (2023-09-22)
 
 
