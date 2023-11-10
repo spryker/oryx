@@ -8,6 +8,7 @@ import {
   computed,
   elementEffect,
   hydrate,
+  signalAware,
   ssrShim,
 } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
@@ -18,6 +19,7 @@ import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
 @ssrShim('style')
 @hydrate()
+@signalAware()
 export class ContentLinkComponent extends ContentMixin<
   ContentLinkOptions,
   ContentLinkContent

@@ -21,6 +21,8 @@ export * from './types/flex/flex-layout.plugin';
 export * as flexLayout from './types/flex/flex-layout.styles';
 export * from './types/grid/grid-layout.plugin';
 export * as gridLayout from './types/grid/grid-layout.styles';
+export * from './types/navigation/navigation-layout.plugin';
+export * as navigationLayout from './types/navigation/navigation-layout.styles';
 export * from './types/split/split-layout.plugin';
 export * as splitLayout from './types/split/split-layout.styles';
 export * from './types/text/text-layout.plugin';
