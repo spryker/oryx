@@ -27,7 +27,7 @@ export class CanvasStylePlugin implements LayoutPlugin {
       properties['isolation'] = 'isolate';
     }
 
-    if (styles.background) properties['background-color'] = styles.background;
+    if (styles.background) properties['background'] = styles.background;
     if (styles.radius) properties['border-radius'] = styles.radius;
     if (styles.border) properties['border'] = styles.border;
     if (styles.fill) properties['--oryx-fill'] = styles.fill;
