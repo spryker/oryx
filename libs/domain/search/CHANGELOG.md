@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.2.0 (2023-11-09)
+
+
+### Features
+
+* facet rating component ([#830](https://github.com/spryker/oryx/issues/830)) ([adb1a61](https://github.com/spryker/oryx/commit/adb1a613df099c332ac585150898c84468ff2913))
+* price facet component ([#849](https://github.com/spryker/oryx/issues/849)) ([9c14c1f](https://github.com/spryker/oryx/commit/9c14c1ff5a045813eb400b906d83e9b492a93c15))
+* range facet component ([#847](https://github.com/spryker/oryx/issues/847)) ([dd6ca19](https://github.com/spryker/oryx/commit/dd6ca19237cea8f96747c5cf75aea52931cd0b9f))
+
+
+
+
+
 # 1.1.0 (2023-09-22)
 
 

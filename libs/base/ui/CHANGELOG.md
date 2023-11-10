@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.2.0 (2023-11-09)
+
+
+### Bug Fixes
+
+* modal maximum width to depend on container width ([#870](https://github.com/spryker/oryx/issues/870)) ([5c6a63d](https://github.com/spryker/oryx/commit/5c6a63d7af39dcb47178f0ccfe2990b1564fbaea))
+* searchbox positioning depends on container but not viewport width ([#871](https://github.com/spryker/oryx/issues/871)) ([0aa44c2](https://github.com/spryker/oryx/commit/0aa44c234211f80b3aec2d2fe779999461adfe99))
+
+
+
+
+
 # 1.1.0 (2023-09-22)
 
 
