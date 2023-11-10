@@ -19,7 +19,15 @@ export const myAccountNavigation: ExperienceComponent = {
       content: { data: { text: i18n('my-account.navigation.profile') } },
       options: {
         url: '/my-account/profile',
-        icon: IconTypes.User,
+        icon: 'badge',
+      },
+    },
+    {
+      type: 'oryx-content-link',
+      content: { data: { text: i18n('my-account.navigation.consent') } },
+      options: {
+        url: '/my-account/consent',
+        icon: 'shield_locked',
       },
     },
     {

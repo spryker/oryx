@@ -35,7 +35,7 @@ export class ContentLinkComponent extends ContentMixin<
   });
 
   @elementEffect()
-  protected reflectCurrent = (): void => {
+  protected reflectCurrentRoute = (): void => {
     const current = this.$isCurrent();
     this.toggleAttribute('current', current);
   };
