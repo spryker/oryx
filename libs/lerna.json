@@ -1,31 +1,8 @@
 {
   "packages": [
-    "template/application",
-    "platform/push-notification",
-    "platform/auth",
-    "domain/cart",
-    "domain/checkout",
-    "domain/content",
-    "platform/core",
-    "platform/experience",
-    "platform/form",
-    "platform/i18n",
-    "base/di",
-    "template/presets",
-    "template/resources",
-    "domain/product",
-    "domain/order",
-    "platform/router",
-    "platform/indexed-db",
-    "platform/offline",
-    "domain/search",
-    "domain/site",
-    "template/themes",
-    "base/ui",
-    "domain/user",
-    "base/utilities"
+    "domain/picking"
   ],
-  "version": "1.2.0",
+  "version": "0.13.0",
   "npmClient": "npm",
   "command": {
     "publish": {
