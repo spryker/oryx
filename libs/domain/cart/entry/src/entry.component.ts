@@ -154,7 +154,7 @@ export class CartEntryComponent
       ? this.i18n('cart.entry.<quantity>-items', {
           quantity: this.quantity,
         })
-      : html`<oryx-quantity-input
+      : html`<oryx-cart-quantity-input
           .min=${Number(
             this.$options().removeByQuantity === RemoveByQuantity.NotAllowed
           )}
@@ -164,7 +164,7 @@ export class CartEntryComponent
           submitOnChange
           @submit=${this.onSubmit}
           ?disabled=${this.$isBusy()}
-        ></oryx-quantity-input>`;
+        ></oryx-cart-quantity-input>`;
 
     return html`
       <section class="pricing">
@@ -264,7 +264,7 @@ export class CartEntryComponent
   protected revert(e?: Error): void {
     this.requiresRemovalConfirmation = false;
     const el = this.shadowRoot?.querySelector<QuantityInputComponent>(
-      'oryx-quantity-input'
+      'oryx-cart-quantity-input'
     );
     if (el) el.value = this.quantity;
     if (e) throw e;

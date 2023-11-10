@@ -1,5 +1,4 @@
-import { featureVersion } from '@spryker-oryx/utilities';
-import { css, unsafeCSS } from 'lit';
+import { css } from 'lit';
 
 export const pickingProductCardComponentStyles = css`
   :host {
@@ -44,11 +43,7 @@ export const pickingProductCardComponentStyles = css`
   }
 
   oryx-quantity-input {
-    ${unsafeCSS(
-      featureVersion >= '1.2'
-        ? '--oryx-quantity-input-width: 102px;'
-        : '--oryx-cart-quantity-input-width: 102px;'
-    )}
+    --oryx-quantity-input-width: 102px;
   }
 
   .summary-info {

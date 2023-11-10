@@ -145,7 +145,7 @@ export const cartEntryStyles = css`
 
   ${pricing}
 
-  oryx-quantity-input {
+  oryx-cart-quantity-input {
     margin-block-end: 14px;
   }
 

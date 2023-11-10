@@ -88,7 +88,7 @@ describe('CartAddComponent', () => {
     });
 
     it('should have an quantity element', () => {
-      expect(element).toContainElement('oryx-quantity-input');
+      expect(element).toContainElement('oryx-cart-quantity-input');
     });
 
     it('should have an button element', () => {
@@ -107,7 +107,7 @@ describe('CartAddComponent', () => {
     });
 
     it('should not have a quantity element', () => {
-      expect(element).not.toContainElement('oryx-quantity-input');
+      expect(element).not.toContainElement('oryx-cart-quantity-input');
     });
 
     it('should not have a submit button', () => {
@@ -132,14 +132,16 @@ describe('CartAddComponent', () => {
 
     it('should have a max quantity of 10', () => {
       const quantityInput = element.renderRoot.querySelector(
-        'oryx-quantity-input'
+        'oryx-cart-quantity-input'
       ) as QuantityInputComponent;
       expect(quantityInput.max).toBe(10);
     });
 
     describe('and when an update is dispatched with an invalid quantity', () => {
       beforeEach(() => {
-        const input = element.shadowRoot?.querySelector('oryx-quantity-input');
+        const input = element.shadowRoot?.querySelector(
+          'oryx-cart-quantity-input'
+        );
         input?.dispatchEvent(
           new CustomEvent<QuantityEventDetail>('update', {
             detail: { quantity: 5, isInvalid: true },
@@ -170,7 +172,7 @@ describe('CartAddComponent', () => {
 
     it('should have max quantity of 0', () => {
       const quantityInput = element.renderRoot.querySelector(
-        'oryx-quantity-input'
+        'oryx-cart-quantity-input'
       ) as QuantityInputComponent;
       expect(quantityInput.max).toBe(0);
     });
@@ -195,7 +197,7 @@ describe('CartAddComponent', () => {
 
     it('should have an infinite max quantity', () => {
       const quantityInput = element.renderRoot.querySelector(
-        'oryx-quantity-input'
+        'oryx-cart-quantity-input'
       ) as QuantityInputComponent;
       expect(quantityInput.max).toBe(Infinity);
     });
@@ -216,7 +218,7 @@ describe('CartAddComponent', () => {
       describe('when the submit event is received from the quantity component', () => {
         beforeEach(() => {
           const input = element.shadowRoot?.querySelector(
-            'oryx-quantity-input'
+            'oryx-cart-quantity-input'
           );
           input?.dispatchEvent(
             new CustomEvent<QuantityEventDetail>('submit', {
@@ -383,7 +385,7 @@ describe('CartAddComponent', () => {
       });
 
       it('should render quantity controls', () => {
-        expect(element).toContainElement('oryx-quantity-input');
+        expect(element).toContainElement('oryx-cart-quantity-input');
       });
     });
 
@@ -398,7 +400,7 @@ describe('CartAddComponent', () => {
       });
 
       it('should not render quantity controls', () => {
-        expect(element).not.toContainElement('oryx-quantity-input');
+        expect(element).not.toContainElement('oryx-cart-quantity-input');
       });
     });
   });
@@ -435,7 +437,7 @@ describe('CartAddComponent', () => {
     describe('and the quantity is set to 5', () => {
       beforeEach(() => {
         const quantity = element.shadowRoot?.querySelector(
-          'oryx-quantity-input'
+          'oryx-cart-quantity-input'
         ) as QuantityInputComponent;
         quantity.value = 5;
       });
@@ -462,7 +464,7 @@ describe('CartAddComponent', () => {
           describe('and when the product has changed', () => {
             const quantity = () =>
               element.shadowRoot?.querySelector(
-                'oryx-quantity-input'
+                'oryx-cart-quantity-input'
               ) as QuantityInputComponent;
 
             beforeEach(async () => {

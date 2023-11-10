@@ -85,7 +85,7 @@ describe('CartEntryComponent', () => {
         });
 
         it('should render quantity input', () => {
-          expect(element).toContainElement('oryx-quantity-input');
+          expect(element).toContainElement('oryx-cart-quantity-input');
         });
       });
 
@@ -97,7 +97,7 @@ describe('CartEntryComponent', () => {
         });
 
         it('should not render quantity input', () => {
-          expect(element).not.toContainElement('oryx-quantity-input');
+          expect(element).not.toContainElement('oryx-cart-quantity-input');
         });
       });
     });
@@ -112,7 +112,7 @@ describe('CartEntryComponent', () => {
 
         it('should set the max property of the quantity input to 3', () => {
           const quantityInput = element.shadowRoot?.querySelector(
-            'oryx-quantity-input'
+            'oryx-cart-quantity-input'
           );
           expect((quantityInput as QuantityInputComponent).max).toBe(3);
         });
@@ -127,7 +127,7 @@ describe('CartEntryComponent', () => {
 
         it('should set the max property to Infinity', () => {
           const quantityInput = element.shadowRoot?.querySelector(
-            'oryx-quantity-input'
+            'oryx-cart-quantity-input'
           );
           expect((quantityInput as QuantityInputComponent).max).toBe(Infinity);
         });
@@ -142,7 +142,7 @@ describe('CartEntryComponent', () => {
 
         it('should set the max property to Infinity', () => {
           const quantityInput = element.shadowRoot?.querySelector(
-            'oryx-quantity-input'
+            'oryx-cart-quantity-input'
           );
           expect((quantityInput as QuantityInputComponent).max).toBe(Infinity);
         });
@@ -325,7 +325,7 @@ describe('CartEntryComponent', () => {
       describe('removeByQuantity', () => {
         const quantityInput = () =>
           element.shadowRoot?.querySelector(
-            'oryx-quantity-input'
+            'oryx-cart-quantity-input'
           ) as QuantityInputComponent;
 
         describe('when removeByQuantity is Not Allowed', () => {
@@ -396,8 +396,8 @@ describe('CartEntryComponent', () => {
         ></oryx-cart-entry>`);
       });
 
-      it('should disable the oryx-quantity-input', () => {
-        expect(element).toContainElement('oryx-quantity-input[disabled]');
+      it('should disable the oryx-cart-quantity-input', () => {
+        expect(element).toContainElement('oryx-cart-quantity-input[disabled]');
       });
 
       it('should disable the actions', () => {
@@ -409,9 +409,9 @@ describe('CartEntryComponent', () => {
           isBusy$.next(false);
         });
 
-        it('should enable the oryx-quantity-input', () => {
+        it('should enable the oryx-cart-quantity-input', () => {
           expect(element).toContainElement(
-            'oryx-quantity-input:not([disabled])'
+            'oryx-cart-quantity-input:not([disabled])'
           );
         });
 

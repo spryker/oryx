@@ -33,7 +33,7 @@ export class CartAddComponent extends ProductMixin(
 
   @state() protected isInvalid = false;
   @query('oryx-button') protected button?: ButtonComponent;
-  @query('oryx-quantity-input') protected input?: QuantityInputComponent;
+  @query('oryx-cart-quantity-input') protected input?: QuantityInputComponent;
 
   protected override render(): TemplateResult | void {
     if (!this.$product()?.sku) return;
@@ -43,12 +43,12 @@ export class CartAddComponent extends ProductMixin(
   protected renderQuantity(): TemplateResult | void {
     if (this.$options().hideQuantityInput) return;
 
-    return html`<oryx-quantity-input
+    return html`<oryx-cart-quantity-input
       .min=${this.$min()}
       .max=${this.$max()}
       @update=${this.onUpdate}
       @submit=${this.onSubmit}
-    ></oryx-quantity-input>`;
+    ></oryx-cart-quantity-input>`;
   }
 
   protected renderButton(): TemplateResult | void {

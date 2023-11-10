@@ -46,7 +46,7 @@ const smallScreen = css`
     margin-inline-start: 16px;
   }
 
-  oryx-quantity-input {
+  oryx-cart-quantity-input {
     margin-block: 18px;
   }
 
