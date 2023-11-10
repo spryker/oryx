@@ -139,9 +139,7 @@ describe('CartAddComponent', () => {
 
     describe('and when an update is dispatched with an invalid quantity', () => {
       beforeEach(() => {
-        const input = element.shadowRoot?.querySelector(
-          'oryx-quantity-input'
-        );
+        const input = element.shadowRoot?.querySelector('oryx-quantity-input');
         input?.dispatchEvent(
           new CustomEvent<QuantityEventDetail>('update', {
             detail: { quantity: 5, isInvalid: true },

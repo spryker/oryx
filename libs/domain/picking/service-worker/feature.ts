@@ -1,9 +1,9 @@
 import {
   AppFeature,
+  AppInitializer,
   AppPlugin,
   DefaultStorageService,
   StorageService,
-  AppInitializer,
 } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import {
@@ -19,21 +19,19 @@ import {
   PickingListService,
 } from '@spryker-oryx/picking/api';
 import {
-  PickingListEntity, 
-  PickingProductEntity,
   BapiPushNotificationAdapter,
   BapiPushNotificationDefaultAdapter,
   BapiPushNotificationDefaultService,
   BapiPushNotificationService,
+  PickingListEntity,
   PickingListOfflineAdapter,
   PickingListOnlineAdapter,
   PickingListOnlineDefaultAdapter,
+  PickingProductEntity,
   PickingSyncAction,
   PickingSyncActionHandlerService,
 } from '@spryker-oryx/picking/offline';
-import {
-  PushInitializerService,
-} from './services';
+import { PushInitializerService } from './services';
 
 export class OfflinePickingFeature implements AppFeature {
   providers: Provider[] = this.getProviders();
@@ -72,5 +70,3 @@ export class OfflinePickingFeature implements AppFeature {
     ];
   }
 }
-
-

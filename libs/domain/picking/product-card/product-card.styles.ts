@@ -44,9 +44,10 @@ export const pickingProductCardComponentStyles = css`
   }
 
   oryx-quantity-input {
-    ${unsafeCSS(featureVersion >= '1.2' ?
-      '--oryx-quantity-input-width: 102px;':
-      '--oryx-cart-quantity-input-width: 102px;'
+    ${unsafeCSS(
+      featureVersion >= '1.2'
+        ? '--oryx-quantity-input-width: 102px;'
+        : '--oryx-cart-quantity-input-width: 102px;'
     )}
   }
 

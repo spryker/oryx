@@ -1,7 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { LocaleService } from '@spryker-oryx/i18n';
-import { PickingListError, PickingListService } from '@spryker-oryx/picking/api';
+import {
+  PickingListError,
+  PickingListService,
+} from '@spryker-oryx/picking/api';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n, useComponent } from '@spryker-oryx/utilities';

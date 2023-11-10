@@ -1,11 +1,7 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  PickingHeaderService,
-} from '@spryker-oryx/picking';
-import {
-  PickingListService,
-} from '@spryker-oryx/picking/api';
+import { PickingHeaderService } from '@spryker-oryx/picking';
+import { PickingListService } from '@spryker-oryx/picking/api';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { RouterService } from '@spryker-oryx/router';
 import { TabComponent } from '@spryker-oryx/ui/tab';

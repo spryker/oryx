@@ -19,11 +19,11 @@ export default defineConfig({
         app: './index.html',
       },
       output: {
-        entryFileNames: assetInfo => {
+        entryFileNames: (assetInfo) => {
           return assetInfo.name === 'service-worker'
-             ? 'app.js'
-             : 'assets/[name].js'
-        }
+            ? 'app.js'
+            : 'assets/[name].js';
+        },
       },
     },
   },

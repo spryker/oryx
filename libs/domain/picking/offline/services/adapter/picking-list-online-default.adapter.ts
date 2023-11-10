@@ -4,8 +4,8 @@ import {
   GetPickingListResponse,
   PickingHttpService,
   PickingList,
+  PickingListDefaultAdapter,
   PickingListQualifier,
-  PickingListDefaultAdapter
 } from '@spryker-oryx/picking/api';
 import { isDefined } from '@spryker-oryx/utilities';
 // Add full import because of issue with naming exports from cjs.

@@ -1,15 +1,12 @@
-import { QuantityInputComponent } from '@spryker-oryx/ui/quantity-input';
 import {
   EVENT_EDIT,
   EVENT_SUBMIT,
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
-import {
-  ItemsFilters,
-  PickingListItem,
-} from '@spryker-oryx/picking/api';
+import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking/api';
 import { ButtonSize } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { QuantityInputComponent } from '@spryker-oryx/ui/quantity-input';
 import { I18nMixin } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';

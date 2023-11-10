@@ -1,5 +1,5 @@
-import { componentDef } from '@spryker-oryx/utilities';
 import { QuantityInputAttributes } from '@spryker-oryx/ui/quantity-input';
+import { componentDef } from '@spryker-oryx/utilities';
 
 declare global {
   interface FeatureOptions {

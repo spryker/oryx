@@ -1,8 +1,6 @@
 import { AppRef } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
-import {
-  FallbackType,
-} from '@spryker-oryx/picking';
+import { FallbackType } from '@spryker-oryx/picking';
 import {
   PickingListService,
   PickingListStatus,

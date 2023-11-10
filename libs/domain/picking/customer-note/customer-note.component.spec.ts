@@ -5,9 +5,9 @@ import {
   PickingListService,
 } from '@spryker-oryx/picking/api';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
-import { 
+import {
   PickingInProgressModalComponent,
-  pickingInProgressModalComponent
+  pickingInProgressModalComponent,
 } from '@spryker-oryx/picking/picking-in-progress';
 import { RouterService } from '@spryker-oryx/router';
 import { modalComponent } from '@spryker-oryx/ui/modal';

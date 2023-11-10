@@ -6,9 +6,7 @@ import {
   SimpleAppBuilder,
 } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import {
-  ComponentsInfo,
-} from '@spryker-oryx/utilities';
+import { ComponentsInfo } from '@spryker-oryx/utilities';
 import { AppBuilderWithModules, ModularAppBuilderOptions } from './app.model';
 
 /**

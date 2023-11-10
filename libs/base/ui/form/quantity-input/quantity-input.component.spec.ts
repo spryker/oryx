@@ -253,10 +253,7 @@ describe('QuantityInputComponent', () => {
       describe('and the value is greater then the minimum', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-quantity-input
-              min="4"
-              value="8"
-            ></oryx-quantity-input>`
+            html`<oryx-quantity-input min="4" value="8"></oryx-quantity-input>`
           );
         });
 
@@ -287,10 +284,7 @@ describe('QuantityInputComponent', () => {
       describe('and the value equals the minimum', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-quantity-input
-              min="4"
-              value="4"
-            ></oryx-quantity-input>`
+            html`<oryx-quantity-input min="4" value="4"></oryx-quantity-input>`
           );
         });
 
@@ -306,10 +300,7 @@ describe('QuantityInputComponent', () => {
       describe('and the value is smaller than the minimum', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-quantity-input
-              min="4"
-              value="1"
-            ></oryx-quantity-input>`
+            html`<oryx-quantity-input min="4" value="1"></oryx-quantity-input>`
           );
         });
 
@@ -491,10 +482,7 @@ describe('QuantityInputComponent', () => {
       describe('and the value is smaller then the maximum', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-quantity-input
-              max="4"
-              value="1"
-            ></oryx-quantity-input>`
+            html`<oryx-quantity-input max="4" value="1"></oryx-quantity-input>`
           );
         });
 
@@ -529,10 +517,7 @@ describe('QuantityInputComponent', () => {
       describe('and the value equals the maximum', () => {
         beforeEach(async () => {
           element = await fixture(
-            html`<oryx-quantity-input
-              max="4"
-              value="4"
-            ></oryx-quantity-input>`
+            html`<oryx-quantity-input max="4" value="4"></oryx-quantity-input>`
           );
         });
 
@@ -627,10 +612,7 @@ describe('QuantityInputComponent', () => {
   describe('when the value changes to invalid', () => {
     beforeEach(async () => {
       element = await fixture(
-        html`<oryx-quantity-input
-          max="3"
-          value="2"
-        ></oryx-quantity-input>`
+        html`<oryx-quantity-input max="3" value="2"></oryx-quantity-input>`
       );
       getInput().value = '4';
       getInput().dispatchEvent(new InputEvent('input', { bubbles: true }));

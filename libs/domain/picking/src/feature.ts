@@ -1,4 +1,6 @@
 import { Provider } from '@spryker-oryx/di';
+import { DefaultLocaleAdapter, LocaleAdapter } from '@spryker-oryx/i18n';
+import { PickingApiFeature } from '@spryker-oryx/picking/api';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { ComponentsInfo } from '@spryker-oryx/utilities';
 import {
@@ -21,13 +23,7 @@ import {
 } from './components';
 import { PickingConfig, providePickingConfig } from './config.provider';
 import { defaultPickingRoutes } from './routes';
-import {
- PickingApiFeature
-} from '@spryker-oryx/picking/api';
-import {
-  PickingHeaderDefaultService,
-  PickingHeaderService,
-} from './services';
+import { PickingHeaderDefaultService, PickingHeaderService } from './services';
 
 export const pickingComponents = [
   pickingCustomerNoteComponent,
@@ -72,7 +68,13 @@ export class PickingFeature extends PickingApiFeature {
         provide: PickingHeaderService,
         useClass: PickingHeaderDefaultService,
       },
-      ...super.getProviders()
+      //override SapiLocaleAdapter that is provided by siteFeature with default one
+      //to eliminate unnecessary request to the store endpoint
+      {
+        provide: LocaleAdapter,
+        useClass: DefaultLocaleAdapter,
+      },
+      ...super.getProviders(),
     ];
   }
 }

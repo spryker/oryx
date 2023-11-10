@@ -1,3 +1,5 @@
+import { AuthService } from '@spryker-oryx/auth';
+import { StorageService } from '@spryker-oryx/core';
 import {
   createInjector,
   destroyInjector,
@@ -15,8 +17,6 @@ import {
   WarehouseUserAssignment,
   warehouseUserAssignmentStorageKey,
 } from '../models/warehouse-user-assignment';
-import { StorageService } from '@spryker-oryx/core';
-import { AuthService } from '@spryker-oryx/auth';
 
 const mockWarehouseUserAssignment: WarehouseUserAssignment = {
   id: 'id1',

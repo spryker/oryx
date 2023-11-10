@@ -1,3 +1,5 @@
+import { AuthService } from '@spryker-oryx/auth';
+import { StorageService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { WarehouseUserAssignmentsAdapter } from '@spryker-oryx/picking/api';
 import { Observable, tap } from 'rxjs';
@@ -6,8 +8,6 @@ import {
   warehouseUserAssignmentStorageKey,
 } from '../models/warehouse-user-assignment';
 import { WarehouseUserAssignmentsService } from './warehouse-user-assignments.service';
-import { StorageService } from '@spryker-oryx/core';
-import { AuthService } from '@spryker-oryx/auth';
 
 export class WarehouseUserAssignmentsDefaultService
   implements WarehouseUserAssignmentsService

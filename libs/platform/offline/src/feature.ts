@@ -1,7 +1,7 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideIndexedDbEntities } from '@spryker-oryx/indexed-db';
-import { 
+import {
   SyncEntity,
   SyncSchedulerDefaultService,
   SyncSchedulerService,

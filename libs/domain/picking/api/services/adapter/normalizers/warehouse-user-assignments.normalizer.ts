@@ -4,7 +4,7 @@ import {
   DeserializedWarehouseUserAssignment,
   WarehouseUserAssignmentNormalizer,
 } from '@spryker-oryx/picking/api';
-import { combineLatest, Observable, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { WarehouseUserAssignment } from '../../../models';
 
 export const WarehouseUserAssignmentsNormalizer =

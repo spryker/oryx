@@ -1,11 +1,9 @@
 import { resolve } from '@spryker-oryx/di';
 import {
+  PartialPicking,
   PickingHeaderService,
   PickingListMixin,
-} from '@spryker-oryx/picking';
-import {
   PickingTab,
-  PartialPicking,
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
 import {

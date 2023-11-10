@@ -1,7 +1,7 @@
 import { StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { PushService } from '@spryker-oryx/push-notification';
-import { of, Subscription, throwError } from 'rxjs';
+import { Subscription, of, throwError } from 'rxjs';
 import { BapiPushNotificationAdapter } from './adapter';
 import { BapiPushNotificationDefaultService } from './bapi-push-notification-default.service';
 

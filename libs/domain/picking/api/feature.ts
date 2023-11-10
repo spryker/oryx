@@ -21,7 +21,7 @@ import {
 
 export class PickingApiFeature implements AppFeature {
   providers = this.getProviders();
-  
+
   protected getProviders(): Provider[] {
     return [
       {

@@ -1,5 +1,8 @@
 // organize-imports-ignore
-import { bootstrap, appBuilder } from '@spryker-oryx/application/service-worker';
+import {
+  bootstrap,
+  appBuilder,
+} from '@spryker-oryx/application/service-worker';
 import { offlineServiceWorkerFulfillmentFeatures } from '@spryker-oryx/presets/fulfillment-sw';
 
 appBuilder()
