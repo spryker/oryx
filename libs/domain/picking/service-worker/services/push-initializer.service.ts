@@ -27,6 +27,8 @@ export class PushInitializerService implements AppInitializer {
 
       const payload: PushSyncPayload = event.data.json();
 
+      console.log('Push', this.syncSchedulerService);
+
       event.waitUntil(
         firstValueFrom(
           this.syncSchedulerService.schedule({

@@ -15,6 +15,7 @@ import { OfflineServiceWorkerPlugin } from './plugin';
 export class OfflineServiceWorkerFeature
   implements AppFeature
 {
+  providers: Provider[] = this.getProviders();
   plugins: AppPlugin[] = this.getPlugins();
 
   protected getProviders(): Provider[] {

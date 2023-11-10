@@ -7,7 +7,7 @@ import {
   IndexedDbFeatureConfig,
 } from '@spryker-oryx/indexed-db';
 import {
-//   AuthFeature,
+  AuthFeature,
   OfflinePickingFeature,
 } from '@spryker-oryx/picking/service-worker';
 import { RouterFeature } from '@spryker-oryx/router'; 
@@ -35,7 +35,7 @@ export function offlineServiceWorkerFulfillmentFeatures(
     new IndexedDbFeature(config?.indexedDb),
     new RouterFeature(),
     new OfflineServiceWorkerFeature(),
-    // new AuthFeature(),
+    new AuthFeature(),
     new OfflinePickingFeature(),
   ];
 }

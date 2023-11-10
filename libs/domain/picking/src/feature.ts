@@ -72,7 +72,7 @@ export class PickingFeature extends PickingApiFeature {
         provide: PickingHeaderService,
         useClass: PickingHeaderDefaultService,
       },
-      ...super.providers,
+      ...super.getProviders()
     ];
   }
 }

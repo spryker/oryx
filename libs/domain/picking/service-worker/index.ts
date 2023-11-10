@@ -1,2 +1,3 @@
 export * from './feature';
-// export * from './auth.feature'
+export * from './services';
+export * from './auth.feature';

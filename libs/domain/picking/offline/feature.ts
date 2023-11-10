@@ -6,7 +6,6 @@ import {
   StorageService,
 } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { DefaultLocaleAdapter, LocaleAdapter } from '@spryker-oryx/i18n';
 import {
   IndexedDbStorageMethod,
   provideIndexedDbEntities,
@@ -77,10 +76,6 @@ export class OfflinePickingFeature implements AppFeature {
       {
         provide: StorageService,
         useFactory: () => new DefaultStorageService(IndexedDbStorageMethod),
-      },
-      {
-        provide: LocaleAdapter,
-        useClass: DefaultLocaleAdapter,
       },
     ];
   }
