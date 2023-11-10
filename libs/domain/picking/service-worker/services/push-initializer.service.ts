@@ -6,7 +6,7 @@ import {
   PickingSyncAction,
   PushSyncPayload,
 } from '@spryker-oryx/picking/offline';
-import { firstValueFrom, Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 
 declare let self: ServiceWorkerGlobalScope;
 
