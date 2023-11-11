@@ -3,8 +3,6 @@ import { css } from 'lit';
 export const categoryListStyles = css`
   :host {
     display: contents;
-    /* display: block;
-    padding: 10px; */
   }
 
   div {
@@ -14,8 +12,8 @@ export const categoryListStyles = css`
 
   oryx-product-category-list {
     position: absolute;
-    left: 100%;
-    top: 0;
+    inset-inline-start: 100%;
+    inset-block-start: 0;
   }
 
   div:not(:hover) oryx-product-category-list {

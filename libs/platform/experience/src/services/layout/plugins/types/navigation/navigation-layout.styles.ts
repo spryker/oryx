@@ -25,8 +25,8 @@ export const horizontalStyles = css`
   :host {
     --oryx-link-padding: 16px 0;
     --oryx-link-hover-shadow: 0 -4px 0 0 var(--oryx-color-primary-9) inset;
-    --oryx-link-current-shadow: var(--oryx-link-hover-shadow);
     --oryx-link-active-shadow: var(--oryx-link-hover-shadow);
+    --oryx-link-current-shadow: var(--oryx-link-hover-shadow);
 
     /* align-items: var(--align, start);
     justify-content: var(--justify, start); */

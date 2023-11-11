@@ -35,6 +35,7 @@ export class DefaultProductCategoryAdapter implements ProductCategoryAdapter {
   }
 
   getTree(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]> {
+    // TODO: use qualifier to filter excludes
     return this.http
       .get<ApiProductCategoryModel.TreeResponse>(
         `${this.SCOS_BASE_URL}/category-trees`
