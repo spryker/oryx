@@ -24,42 +24,24 @@ export const styles: LayoutStyles = {
 export const horizontalStyles = css`
   :host {
     --oryx-link-padding: 16px 0;
+    --oryx-link-hover-shadow: 0 -4px 0 0 var(--oryx-color-primary-9) inset;
+    --oryx-link-current-shadow: var(--oryx-link-hover-shadow);
+    --oryx-link-active-shadow: var(--oryx-link-hover-shadow);
 
-    align-items: var(--align, start);
-    justify-content: var(--justify, start);
-  }
-
-  ::slotted(oryx-content-link:is([current], :hover, :focus-within)),
-  oryx-content-link:is([current], :hover, :focus-within) {
-    box-shadow: 0 -4px 0 0 var(--oryx-color-primary-9) inset;
+    /* align-items: var(--align, start);
+    justify-content: var(--justify, start); */
   }
 `;
 
 export const verticalStyles = css`
   :host {
+    --oryx-content-link-padding: 0 0 0 12px;
     --oryx-link-padding: 8px 12px 8px 0;
+    --oryx-link-hover-background: var(--oryx-color-neutral-3);
+    --oryx-link-active-background: var(--oryx-color-primary-5);
+    --oryx-link-current-shadow: 4px 0 0 0 var(--oryx-color-primary-9) inset;
 
     flex-direction: column;
-  }
-
-  oryx-content-link,
-  ::slotted(oryx-content-link) {
-    padding-inline-start: 12px;
-  }
-
-  oryx-content-link[current],
-  ::slotted(oryx-content-link[current]) {
-    box-shadow: 4px 0 0 0 var(--oryx-color-primary-9) inset;
-  }
-
-  oryx-content-link:hover,
-  ::slotted(oryx-content-link:hover) {
-    background-color: var(--oryx-color-neutral-3);
-  }
-
-  oryx-content-link:active,
-  ::slotted(oryx-content-link:active) {
-    background-color: var(--oryx-color-primary-5);
   }
 `;
 

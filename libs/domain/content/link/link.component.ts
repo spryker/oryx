@@ -16,6 +16,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { map, of } from 'rxjs';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
+import { contentLinkStyles } from './link.styles';
 
 @ssrShim('style')
 @hydrate()
@@ -24,6 +25,8 @@ export class ContentLinkComponent extends ContentMixin<
   ContentLinkOptions,
   ContentLinkContent
 >(LitElement) {
+  static styles = contentLinkStyles;
+
   protected semanticLinkService = resolve(LinkService);
   protected categoryService = resolve(ProductCategoryService);
   protected productService = resolve(ProductService);
@@ -74,7 +77,7 @@ export class ContentLinkComponent extends ContentMixin<
 
     if (type === RouteType.Category && id) {
       return this.categoryService
-        .get(id)
+        .get({ id })
         .pipe(map((category) => category?.name));
     }
 

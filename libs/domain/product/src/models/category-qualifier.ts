@@ -1,3 +1,4 @@
-export interface CategoryQualifier {
-  id: string;
+export interface ProductCategoryQualifier {
+  id?: string;
+  exclude?: string[] | string;
 }

@@ -22,7 +22,7 @@ export class CategoryBreadcrumbResolver implements BreadcrumbResolver {
       switchMap((category) =>
         this.categoryService
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          .getTrail(String((category as ValueFacet).selectedValues![0]))
+          .getTrail({ id: String((category as ValueFacet).selectedValues![0]) })
           .pipe(
             switchMap((trail) =>
               combineLatest(

@@ -206,12 +206,8 @@ export const mainHeader = (): ExperienceComponent[] => {
 };
 
 export const categoryNavigation = (
-  categories: (string | number)[] = []
+  exclude: string | string[] = []
 ): ExperienceComponent[] => {
-  const categoryLinks = categories.map((id) => ({
-    type: 'oryx-content-link',
-    options: { id, type: 'category' },
-  }));
   return [
     {
       type: 'oryx-composition',
@@ -238,7 +234,7 @@ export const categoryNavigation = (
             icon: 'category',
           },
         },
-        ...categoryLinks,
+        { type: 'oryx-product-category-list', options: { exclude } },
       ],
     },
   ];
@@ -250,8 +246,6 @@ export const HeaderTemplate: ExperienceComponent = {
   components: [
     ...topHeader(),
     ...mainHeader(),
-    ...(featureVersion >= '1.3'
-      ? categoryNavigation(['2', '5', '9', '11'])
-      : []),
+    ...(featureVersion >= '1.3' ? categoryNavigation('15,16') : []),
   ],
 };

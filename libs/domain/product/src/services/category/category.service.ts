@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs';
-import { ProductCategory } from '../../models';
+import { ProductCategory, ProductCategoryQualifier } from '../../models';
 
 export interface ProductCategoryService {
-  get(categoryId?: string): Observable<ProductCategory>;
-  getTree(): Observable<ProductCategory[]>;
-  getTrail(categoryId?: string): Observable<ProductCategory[]>;
+  get(qualifier: ProductCategoryQualifier): Observable<ProductCategory>;
+  getTree(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]>;
+  getTrail(qualifier: ProductCategoryQualifier): Observable<ProductCategory[]>;
 }
 
 export const ProductCategoryService = 'oryx.ProductCategoryService';

@@ -17,7 +17,7 @@ export const myAccountPage: ExperienceComponent = {
         rules: [
           {
             layout: { type: 'split', columnWidthType: 'aside' },
-            padding: '30px 0 0',
+            padding: '30px 0',
           },
         ],
       },

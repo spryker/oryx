@@ -55,7 +55,7 @@ export class ProductDetailsBreadcrumbResolver implements BreadcrumbResolver {
     }
 
     return combineLatest(
-      categoryIds.map((id) => this.categoryService.getTrail(id))
+      categoryIds.map((id) => this.categoryService.getTrail({ id }))
     ).pipe(
       switchMap((trails) =>
         combineLatest([

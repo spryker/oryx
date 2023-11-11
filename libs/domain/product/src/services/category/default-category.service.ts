@@ -2,16 +2,17 @@ import { createQuery, injectQuery } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
 import { BehaviorSubject, Observable, map, of, switchMap } from 'rxjs';
-import { CategoryQualifier, ProductCategory } from '../../models';
+import { ProductCategory, ProductCategoryQualifier } from '../../models';
 import { ProductCategoryAdapter } from './adapter/product-category.adapter';
 import { ProductCategoryService } from './category.service';
 import { CategoryQuery } from './state';
 
 export class DefaultProductCategoryService implements ProductCategoryService {
   constructor(
-    protected categoryQuery$ = injectQuery<ProductCategory, CategoryQualifier>(
-      CategoryQuery
-    ),
+    protected categoryQuery$ = injectQuery<
+      ProductCategory,
+      ProductCategoryQualifier
+    >(CategoryQuery),
     protected adapter = inject(ProductCategoryAdapter)
   ) {}
 
@@ -32,19 +33,21 @@ export class DefaultProductCategoryService implements ProductCategoryService {
     refreshOn: [LocaleChanged],
   });
 
-  get(id: string): Observable<ProductCategory> {
-    return this.categoryQuery$.get({ id }) as Observable<ProductCategory>;
+  get(qualifier: ProductCategoryQualifier): Observable<ProductCategory> {
+    return this.categoryQuery$.get(qualifier) as Observable<ProductCategory>;
   }
 
-  getTree(): Observable<ProductCategory[]> {
+  getTree(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]> {
+    // TODO: we like to reuse qualifier inside the treeQuery, so that we can use qualifier fields
+    // such as exclude
     return this.treeQuery$.get() as Observable<ProductCategory[]>;
   }
 
-  getTrail(categoryId: string): Observable<ProductCategory[]> {
-    return this.get(categoryId).pipe(
+  getTrail(qualifier: ProductCategoryQualifier): Observable<ProductCategory[]> {
+    return this.get(qualifier).pipe(
       switchMap((category) =>
         category.parent
-          ? this.getTrail(category.parent).pipe(
+          ? this.getTrail({ ...qualifier, id: category.parent }).pipe(
               map((trail) => [...trail, category])
             )
           : of([category])
