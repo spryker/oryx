@@ -5,7 +5,6 @@ export const styles: LayoutStyles = {
   styles: css`
     :host {
       display: flex;
-      flex-wrap: wrap;
       align-items: var(--align, start);
       justify-content: var(--justify, start);
     }
