@@ -33,14 +33,14 @@ describe('FlexLayoutPlugin', () => {
   });
 
   describe('getDefaultProperties', () => {
-    it('should return wrap = false', async () => {
+    it('should return wrap = true', async () => {
       const result = await lastValueFrom(plugin.getDefaultProperties());
-      expect(result.wrap).toEqual(false);
+      expect(result.wrap).toEqual(true);
     });
   });
 
   describe('getStyleProperties', () => {
-    describe('When the wrap option is set to true', () => {
+    describe('when the wrap option is set to true', () => {
       let result: any;
       beforeEach(async () => {
         result = await lastValueFrom(
@@ -49,12 +49,13 @@ describe('FlexLayoutPlugin', () => {
           } as LayoutPluginPropertiesParams)
         );
       });
+
       it('should return flex-wrap', async () => {
         expect(result['flex-wrap']).toEqual('wrap');
       });
     });
 
-    describe('When the wrap option is set to false', () => {
+    describe('when the wrap option is set to false', () => {
       let result: any;
       beforeEach(async () => {
         result = await lastValueFrom(
@@ -63,6 +64,7 @@ describe('FlexLayoutPlugin', () => {
           } as LayoutPluginPropertiesParams)
         );
       });
+
       it('should return flex-wrap', async () => {
         expect(result['flex-wrap']).toBeFalsy();
       });

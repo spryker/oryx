@@ -53,7 +53,7 @@ export class FlexLayoutPlugin implements LayoutPlugin {
    */
   getDefaultProperties(): Observable<LayoutStylesOptions> {
     return of({
-      wrap: false,
+      wrap: true,
     });
   }
 }
