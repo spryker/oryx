@@ -11,16 +11,14 @@ import {
 } from '../../layout.plugin';
 
 export class FlexLayoutPlugin implements LayoutPlugin {
+  /**
+   * @override adds a `flex-wrap: wrap` when the layout option wrap is set to true.
+   */
   getStyleProperties(
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
     const options = { ...this.$defaultOptions(), ...data.options };
-    const props: LayoutStyleProperties = {};
-    if (options.wrap) {
-      props['flex-wrap'] = 'wrap';
-    }
-
-    return of(props);
+    return of(options.wrap ? { 'flex-wrap': 'wrap' } : {});
   }
 
   getStyles(data: LayoutPluginOptionsParams): Observable<LayoutStyles> {
