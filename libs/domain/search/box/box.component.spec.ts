@@ -93,7 +93,9 @@ describe('SearchBoxComponent', () => {
         },
       ],
     });
-    linkService = testInjector.inject(LinkService) as MockSemanticLinkService;
+    linkService = testInjector.inject(
+      LinkService
+    ) as unknown as MockSemanticLinkService;
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;
