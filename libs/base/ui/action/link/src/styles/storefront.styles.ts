@@ -21,8 +21,9 @@ export const storefrontLinkStyles = css`
   }
 
   oryx-icon {
+    pointer-events: none;
     position: relative;
-    inset-block-start: calc((var(--oryx-icon-size, 24px) / 4));
+    inset-block-start: calc(var(--oryx-icon-size, 24px) / 4);
   }
 
   ::slotted(a) {
@@ -30,6 +31,8 @@ export const storefrontLinkStyles = css`
     color: currentColor;
     width: var(--oryx-link-width);
     padding: var(--oryx-link-padding);
+    margin-inline-start: calc((var(--oryx-icon-size, 24px) + 8px) * -1);
+    padding-inline-start: calc(var(--oryx-icon-size, 24px) + 8px);
   }
 
   :host(:hover) ::slotted(a) {
