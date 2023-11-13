@@ -215,6 +215,7 @@ export const categoryNavigation = (
   return [
     {
       type: 'oryx-composition',
+      id: 'category-navigation',
       options: {
         rules: [
           {
