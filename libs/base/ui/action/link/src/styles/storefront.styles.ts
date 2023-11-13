@@ -7,7 +7,7 @@ export const storefrontLinkStyles = css`
   }
 
   :host([icon]) {
-    --oryx-icon-size: var(--oryx-link-icon-size, 16px);
+    --oryx-icon-size: 16px;
 
     align-items: baseline;
     gap: 8px;
