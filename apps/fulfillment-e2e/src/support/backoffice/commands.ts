@@ -1,3 +1,4 @@
+import 'cypress-wait-until';
 import { LoginPage } from './page-objects/login.page';
 import { OrderPage } from './page-objects/order.page';
 
@@ -52,8 +53,16 @@ Cypress.Commands.add(
   (orderId: string) => {
     const orderPage = new OrderPage(orderId);
 
-    cy.wait(30000);
     orderPage.visit();
+
+    cy.waitUntil(
+      () => {
+        return cy
+          .reload()
+          .then(() => Cypress.$('[action*="?event=pay"]').length);
+      },
+      { timeout: 120000, interval: 5000 }
+    );
 
     orderPage.payForOrder();
     orderPage.skipTimeout();
