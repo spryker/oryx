@@ -2,25 +2,18 @@
   "packages": [
     "domain/picking"
   ],
-  "version": "0.15.0",
+  "version": "0.13.0",
   "npmClient": "npm",
   "command": {
     "publish": {
       "conventionalCommits": true,
       "forcePublish": true,
       "contents": "dist",
-      "ignoreChanges": [
-        "*.md",
-        "**/*.spec.ts",
-        "**/*.stories.ts"
-      ],
+      "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
       "message": "chore(release): publish libs release [skip ci]",
       "tagVersionPrefix": "lib@",
       "verifyAccess": false,
-      "allowBranch": [
-        "development",
-        "release/*"
-      ],
+      "allowBranch": ["development", "release/*"],
       "exact": true
     }
   }
