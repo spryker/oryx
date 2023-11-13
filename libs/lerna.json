@@ -1,26 +1,42 @@
 {
   "packages": [
-    "domain/picking"
+    "template/application",
+    "platform/push-notification",
+    "platform/auth",
+    "domain/cart",
+    "domain/checkout",
+    "domain/content",
+    "platform/core",
+    "platform/experience",
+    "platform/form",
+    "platform/i18n",
+    "base/di",
+    "template/presets",
+    "template/resources",
+    "domain/product",
+    "domain/order",
+    "platform/router",
+    "platform/indexed-db",
+    "platform/offline",
+    "domain/search",
+    "domain/site",
+    "template/themes",
+    "base/ui",
+    "domain/user",
+    "base/utilities"
   ],
-  "version": "0.14.0",
+  "version": "1.2.0",
   "npmClient": "npm",
   "command": {
     "publish": {
       "conventionalCommits": true,
       "forcePublish": true,
       "contents": "dist",
-      "ignoreChanges": [
-        "*.md",
-        "**/*.spec.ts",
-        "**/*.stories.ts"
-      ],
+      "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
       "message": "chore(release): publish libs release [skip ci]",
       "tagVersionPrefix": "lib@",
       "verifyAccess": false,
-      "allowBranch": [
-        "development",
-        "release/*"
-      ],
+      "allowBranch": ["development", "release/*"],
       "exact": true
     }
   }
