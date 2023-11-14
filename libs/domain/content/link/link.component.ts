@@ -7,6 +7,7 @@ import { LinkService } from '@spryker-oryx/site';
 import {
   computed,
   elementEffect,
+  featureVersion,
   hydrate,
   signalAware,
   ssrShim,
@@ -16,6 +17,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 import { map, of } from 'rxjs';
 import { ContentLinkContent, ContentLinkOptions } from './link.model';
+import { contentLinkStyles } from './link.styles';
 
 @ssrShim('style')
 @hydrate()
@@ -24,6 +26,8 @@ export class ContentLinkComponent extends ContentMixin<
   ContentLinkOptions,
   ContentLinkContent
 >(LitElement) {
+  static styles = featureVersion >= '1.3' ? contentLinkStyles : undefined;
+
   protected semanticLinkService = resolve(LinkService);
   protected categoryService = resolve(ProductCategoryService);
   protected productService = resolve(ProductService);
