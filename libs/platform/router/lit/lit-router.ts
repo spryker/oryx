@@ -17,10 +17,12 @@ import {
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { html, isServer, TemplateResult } from 'lit';
 import {
+  asyncScheduler,
   from,
   isObservable,
   lastValueFrom,
   Observable,
+  observeOn,
   Subscription,
   tap,
 } from 'rxjs';
@@ -375,13 +377,13 @@ export class LitRouter implements ReactiveController {
 
       if (route.afterEnter) {
         const enterFn = route.afterEnter(params);
-        (isObservable(enterFn) ? enterFn : from(enterFn)).subscribe(
-          (path: string | void) => {
+        (isObservable(enterFn) ? enterFn : from(enterFn))
+          .pipe(observeOn(asyncScheduler))
+          .subscribe((path: string | void) => {
             if (typeof path === 'string') {
               this.routerService.navigate(path);
             }
-          }
-        );
+          });
       }
 
       this._currentRoute = route;
