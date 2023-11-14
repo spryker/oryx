@@ -8,12 +8,14 @@ export const productRoutes: RouteConfig[] = [
   {
     path: '/product/:sku',
     type: RouteType.Product,
-    enter: ({ sku }) =>
+    afterEnter: ({ sku }) =>
       resolve(ProductService)
         .get({ sku })
         .pipe(
           take(1),
-          map((product) => (product ? true : RouteType.NotFound))
+          map((product) => {
+            if (!product) return RouteType.NotFound;
+          })
         ),
   },
   {

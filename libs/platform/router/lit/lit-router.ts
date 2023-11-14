@@ -38,6 +38,9 @@ export interface BaseRouteConfig {
     | Observable<boolean | string>
     | boolean
     | string;
+  afterEnter?: (params: {
+    [key: string]: string | undefined;
+  }) => Promise<void | string> | Observable<void | string>;
   leave?: (params: {
     [key: string]: string | undefined;
   }) => Promise<boolean> | Observable<boolean> | boolean;
@@ -355,17 +358,27 @@ export class LitRouter implements ReactiveController {
 
       if (typeof route.enter === 'function') {
         const enterFn = route.enter(params);
+        const result = await (isObservable(enterFn)
+          ? lastValueFrom(enterFn)
+          : enterFn);
 
-        if (enterFn === false) {
+        if (typeof result === 'string') {
+          this.routerService.navigate(result);
+
           return;
         }
 
-        (isObservable(enterFn) ? enterFn : from(enterFn as any)).subscribe(
-          (result) => {
-            if (typeof result === 'string') {
-              this.routerService.navigate(result);
+        if (result === false) {
+          return;
+        }
+      }
 
-              return;
+      if (route.afterEnter) {
+        const enterFn = route.afterEnter(params);
+        (isObservable(enterFn) ? enterFn : from(enterFn)).subscribe(
+          (path: string | void) => {
+            if (typeof path === 'string') {
+              this.routerService.navigate(path);
             }
           }
         );
@@ -395,9 +408,9 @@ export class LitRouter implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): TemplateResult {
-    if (!this._currentRoute && window?.location.pathname !== '/') {
-      this.parsePathname(window?.location.pathname, true);
-    }
+    // if (!this._currentRoute && window?.location.pathname !== '/') {
+    //   this.parsePathname(window?.location.pathname, true);
+    // }
 
     const path = isRouterPath(this._currentRoute)
       ? this._currentParams.page
