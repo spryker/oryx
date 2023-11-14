@@ -21,5 +21,8 @@ export class ListsFragment {
       .find('.identifier')
       .should('be.visible')
       .invoke('text');
+  getPickingListItemByOrderId = (orderId: string) => {
+    this.getPickingListsItems().contains('.identifier', orderId);
+  };
   pickingInProgressModal = new PickingInProgressModalFragment();
 }

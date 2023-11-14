@@ -22,4 +22,12 @@ export class WarehouseSelectionPage extends AFAPage {
   selectByEq = (eq: number) => {
     this.getSelectBtns().eq(eq).click();
   };
+
+  selectByName = (name: string) => {
+    this.getNames()
+      .contains(name)
+      .parent('oryx-heading')
+      .next('oryx-button')
+      .click();
+  };
 }

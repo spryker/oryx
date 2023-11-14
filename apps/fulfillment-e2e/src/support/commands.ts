@@ -3,6 +3,7 @@ import './backoffice/commands';
 import { CheckoutApi } from './glue-api/checkout.api';
 import { GuestCartsItemsApi } from './glue-api/guest-carts-items.api';
 import { GuestCartsApi } from './glue-api/guest-carts.api';
+import { ListsFragment } from './page_fragments/lists.fragment';
 import { LoginPage } from './page_objects/login.page';
 import { PickListsPage } from './page_objects/pick-lists.page';
 import { WarehouseSelectionPage } from './page_objects/warehouse-selection.page';
@@ -16,9 +17,9 @@ declare global {
       waitForIndexedDB(): void;
       mockPickingInProgress(): void;
       mockSyncPending(): void;
-      createPicking(): void;
+      createPicking(): Chainable<string>;
       glueApiCreateOrder(): Chainable<string>;
-      backofficeApiWaitForPicking(orderId: string): Chainable<string>;
+      waitForPickingToAppear(orderId: string): Chainable<string>;
     }
   }
 }
@@ -28,6 +29,7 @@ const indexedDBStorageName = 'oryx-local-db-storage';
 export const defaultUser = {
   email: 'harald@spryker.com',
   password: 'change123',
+  warehouseName: 'Spryker MER000001 Warehouse 1',
 };
 
 Cypress.Commands.add('login', (user = defaultUser) => {
@@ -35,12 +37,10 @@ Cypress.Commands.add('login', (user = defaultUser) => {
   const warehouseSelectionPage = new WarehouseSelectionPage();
   const pickListsPage = new PickListsPage();
 
-  cy.clearIndexedDB();
-
   loginPage.visit();
   loginPage.login(user);
   warehouseSelectionPage.waitForLoaded();
-  warehouseSelectionPage.selectByEq(0);
+  warehouseSelectionPage.selectByName(user.warehouseName);
   pickListsPage.waitForLoaded();
 });
 
@@ -48,9 +48,9 @@ Cypress.Commands.add('createPicking', () => {
   // initializes FA as a base domain
   cy.visit('/');
 
-  cy.glueApiCreateOrder()
-    .then((orderId) => cy.backofficeMakeOrderReadyForPicking(orderId))
-    .then((orderId) => cy.backofficeApiWaitForPicking(orderId));
+  return cy
+    .glueApiCreateOrder()
+    .then((orderId) => cy.backofficeMakeOrderReadyForPicking(orderId));
 });
 
 Cypress.Commands.add('glueApiCreateOrder', () => {
@@ -71,8 +71,16 @@ Cypress.Commands.add('glueApiCreateOrder', () => {
     .then((res) => res.body.data.attributes.orderReference);
 });
 
-Cypress.Commands.add('backofficeApiWaitForPicking', (orderId: string) => {
-  cy.log(`TODO: implement backofficeApiWaitForPicking, order is ${orderId}`);
+Cypress.Commands.add('waitForPickingToAppear', (orderId: string) => {
+  const list = new ListsFragment();
+
+  cy.waitUntil(
+    () => {
+      return cy.reload().then(() => list.getPickingListItemByOrderId(orderId));
+    },
+    { timeout: 120000, interval: 5000 }
+  );
+
   return cy.wrap(orderId);
 });
 

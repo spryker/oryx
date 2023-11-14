@@ -6,8 +6,11 @@ const headerFragment = new ListsHeaderFragment();
 
 describe('Picking Lists', () => {
   beforeEach(() => {
-    cy.createPicking();
-    cy.login();
+    cy.clearIndexedDB();
+    cy.createPicking().then((orderId) => {
+      cy.login();
+      cy.waitForPickingToAppear(orderId);
+    });
   });
 
   it('should display picking lists', () => {
