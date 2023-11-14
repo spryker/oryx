@@ -408,9 +408,9 @@ export class LitRouter implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): TemplateResult {
-    // if (!this._currentRoute && window?.location.pathname !== '/') {
-    //   this.parsePathname(window?.location.pathname, true);
-    // }
+    if (!this._currentRoute && window?.location.pathname !== '/') {
+      this.parsePathname(window?.location.pathname, true);
+    }
 
     const path = isRouterPath(this._currentRoute)
       ? this._currentParams.page
