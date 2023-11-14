@@ -6,4 +6,4 @@ const defaultVersion = '1.0';
 export const featureVersion =
   typeof __ORYX_FEATURE_VERSION__ !== 'undefined'
     ? __ORYX_FEATURE_VERSION__ || defaultVersion
-    : defaultVersion;
+    : import.meta.env.ORYX_FEATURE_VERSION || defaultVersion;
