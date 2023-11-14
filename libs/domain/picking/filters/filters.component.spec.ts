@@ -4,7 +4,7 @@ import { FormRenderer } from '@spryker-oryx/form';
 import {
   PickingListService,
   defaultSortingQualifier,
-} from '@spryker-oryx/picking/api';
+} from '@spryker-oryx/picking/services';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';

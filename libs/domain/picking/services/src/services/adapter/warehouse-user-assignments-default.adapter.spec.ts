@@ -1,12 +1,10 @@
 import { JsonAPITransformerService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  GetWarehouseUserAssignmentsResponse,
-  PickingHttpService,
-  WarehouseUserAssignmentsAdapter,
-  WarehouseUserAssignmentsDefaultAdapter,
-} from '@spryker-oryx/picking/api';
 import { of } from 'rxjs';
+import { GetWarehouseUserAssignmentsResponse } from '../../models';
+import { PickingHttpService } from '../picking-http.service';
+import { WarehouseUserAssignmentsDefaultAdapter } from './warehouse-user-assignments-default.adapter';
+import { WarehouseUserAssignmentsAdapter } from './warehouse-user-assignments.adapter';
 
 const mockResponseWarehouseUserAssignment = {
   type: 'warehouse-user-assignments',

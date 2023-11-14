@@ -161,7 +161,7 @@ export class QuantityInputComponent
   }
 
   /**
-   * Dispatches an update event
+   * Dispatches an update event.
    */
   protected onChange(): void {
     this.updateValue();

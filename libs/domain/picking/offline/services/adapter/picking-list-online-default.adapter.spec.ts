@@ -1,13 +1,13 @@
 import { HttpTestService } from '@spryker-oryx/core/testing';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
+import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import {
   ItemsFilters,
   PickingHttpService,
   PickingListDefaultAdapter,
   PickingListStatus,
-} from '@spryker-oryx/picking/api';
-import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+} from '@spryker-oryx/picking/services';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Table } from 'dexie';
 import { of } from 'rxjs';

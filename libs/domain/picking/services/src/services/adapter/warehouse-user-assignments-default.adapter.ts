@@ -1,13 +1,13 @@
 import { JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import * as jsonapi from 'jsonapi-serializer';
+import { Observable } from 'rxjs';
 import {
   GetWarehouseUserAssignmentsResponse,
   PatchWarehouseUserAssignmentsResponse,
-  PickingHttpService,
-} from '@spryker-oryx/picking/api';
-import * as jsonapi from 'jsonapi-serializer';
-import { Observable } from 'rxjs';
+} from '../../models';
 import { WarehouseUserAssignment } from '../../models/warehouse-user-assignment';
+import { PickingHttpService } from '../picking-http.service';
 import {
   WarehouseUserAssignmentNormalizer,
   WarehouseUserAssignmentsNormalizer,

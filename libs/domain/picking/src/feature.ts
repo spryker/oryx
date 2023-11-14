@@ -1,6 +1,6 @@
 import { Provider } from '@spryker-oryx/di';
 import { DefaultLocaleAdapter, LocaleAdapter } from '@spryker-oryx/i18n';
-import { PickingApiFeature } from '@spryker-oryx/picking/api';
+import { PickingServicesFeature } from '@spryker-oryx/picking/services';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { ComponentsInfo } from '@spryker-oryx/utilities';
 import {
@@ -48,7 +48,7 @@ export interface PickingFeatureConfig extends PickingConfig {
   noDefaultRoutes?: boolean;
 }
 
-export class PickingFeature extends PickingApiFeature {
+export class PickingFeature extends PickingServicesFeature {
   providers: Provider[];
   components: ComponentsInfo;
 
@@ -70,6 +70,7 @@ export class PickingFeature extends PickingApiFeature {
       },
       //override SapiLocaleAdapter that is provided by siteFeature with default one
       //to eliminate unnecessary request to the store endpoint
+      //was implemented in https://spryker.atlassian.net/browse/HRZ-89955
       {
         provide: LocaleAdapter,
         useClass: DefaultLocaleAdapter,

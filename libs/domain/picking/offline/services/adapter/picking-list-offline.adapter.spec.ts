@@ -1,12 +1,12 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
 import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
+import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import {
   PickingListAdapter,
   PickingListQualifierSortBy,
   PickingListStatus,
-} from '@spryker-oryx/picking/api';
-import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+} from '@spryker-oryx/picking/services';
 import { nextTick } from '@spryker-oryx/utilities';
 import { Collection, Table } from 'dexie';
 import { of } from 'rxjs';

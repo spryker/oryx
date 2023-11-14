@@ -19,7 +19,7 @@ import {
   warehouseUserAssignmentsNormalizer,
 } from './services';
 
-export class PickingApiFeature implements AppFeature {
+export class PickingServicesFeature implements AppFeature {
   providers = this.getProviders();
 
   protected getProviders(): Provider[] {

@@ -1,6 +1,9 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListComponentProperties } from '@spryker-oryx/picking';
-import { PickingList, PickingListService } from '@spryker-oryx/picking/api';
+import {
+  PickingList,
+  PickingListService,
+} from '@spryker-oryx/picking/services';
 import {
   Signal,
   Type,

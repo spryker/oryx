@@ -10,7 +10,7 @@ import { Observable, firstValueFrom } from 'rxjs';
 
 declare let self: ServiceWorkerGlobalScope;
 
-export class PushInitializerService implements AppInitializer {
+export class PushInitializer implements AppInitializer {
   constructor(
     private syncSchedulerService = inject(SyncSchedulerService),
     private authService = inject(OauthService)

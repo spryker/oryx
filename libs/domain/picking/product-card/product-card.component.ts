@@ -3,7 +3,7 @@ import {
   EVENT_SUBMIT,
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
-import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking/api';
+import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking/services';
 import { ButtonSize } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { QuantityInputComponent } from '@spryker-oryx/ui/quantity-input';

@@ -12,13 +12,6 @@ import {
 } from '@spryker-oryx/indexed-db';
 import { provideSyncActionsHandler } from '@spryker-oryx/offline/sync';
 import {
-  PickingHttpDefaultService,
-  PickingHttpService,
-  PickingListAdapter,
-  PickingListDefaultService,
-  PickingListService,
-} from '@spryker-oryx/picking/api';
-import {
   BapiPushNotificationAdapter,
   BapiPushNotificationDefaultAdapter,
   BapiPushNotificationDefaultService,
@@ -31,7 +24,14 @@ import {
   PickingSyncAction,
   PickingSyncActionHandlerService,
 } from '@spryker-oryx/picking/offline';
-import { PushInitializerService } from './services';
+import {
+  PickingHttpDefaultService,
+  PickingHttpService,
+  PickingListAdapter,
+  PickingListDefaultService,
+  PickingListService,
+} from '@spryker-oryx/picking/services';
+import { PushInitializer } from './push.initializer';
 
 export class OfflinePickingFeature implements AppFeature {
   providers: Provider[] = this.getProviders();
@@ -46,7 +46,7 @@ export class OfflinePickingFeature implements AppFeature {
       ),
       {
         provide: AppInitializer,
-        useClass: PushInitializerService,
+        useClass: PushInitializer,
       },
       {
         provide: BapiPushNotificationService,

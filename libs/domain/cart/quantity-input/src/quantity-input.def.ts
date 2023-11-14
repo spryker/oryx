@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-/** @deprecated since 1.3. Use quantity input from @spryker-oryx/ui/quantity-input*/
+/** @deprecated since 1.3. Use oryx-quantity-input from @spryker-oryx/ui/quantity-input*/
 export const quantityInputComponent = componentDef({
   name: 'oryx-cart-quantity-input',
   impl: () =>

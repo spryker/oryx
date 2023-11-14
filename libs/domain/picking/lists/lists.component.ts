@@ -2,14 +2,14 @@ import { AppRef } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { FallbackType } from '@spryker-oryx/picking';
 import {
-  PickingListService,
-  PickingListStatus,
-} from '@spryker-oryx/picking/api';
-import {
   OfflineDataPlugin,
   PickingSyncActionHandlerService,
 } from '@spryker-oryx/picking/offline';
 import { PickingInProgressModalComponent } from '@spryker-oryx/picking/picking-in-progress';
+import {
+  PickingListService,
+  PickingListStatus,
+} from '@spryker-oryx/picking/services';
 import { I18nMixin, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';

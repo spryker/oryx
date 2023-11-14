@@ -9,7 +9,7 @@ import {
   PickingListItem,
   PickingListQualifierSortBy,
   PickingListStatus,
-} from '@spryker-oryx/picking/api';
+} from '@spryker-oryx/picking/services';
 import { Type } from '@spryker-oryx/utilities';
 import { Table } from 'dexie';
 import { PickingProductEntity } from './picking-product.entity';

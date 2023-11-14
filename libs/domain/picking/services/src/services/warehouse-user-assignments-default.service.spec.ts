@@ -6,17 +6,15 @@ import {
   Injector,
   Provider,
 } from '@spryker-oryx/di';
-import {
-  WarehouseUserAssignmentsAdapter,
-  WarehouseUserAssignmentsDefaultService,
-  WarehouseUserAssignmentsService,
-} from '@spryker-oryx/picking/api';
 import { of } from 'rxjs';
 import { beforeEach, describe } from 'vitest';
 import {
   WarehouseUserAssignment,
   warehouseUserAssignmentStorageKey,
-} from '../models/warehouse-user-assignment';
+} from '../models';
+import { WarehouseUserAssignmentsAdapter } from './adapter';
+import { WarehouseUserAssignmentsDefaultService } from './warehouse-user-assignments-default.service';
+import { WarehouseUserAssignmentsService } from './warehouse-user-assignments.service';
 
 const mockWarehouseUserAssignment: WarehouseUserAssignment = {
   id: 'id1',

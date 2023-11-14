@@ -2,11 +2,11 @@ import { AuthService } from '@spryker-oryx/auth';
 import { AppRef, StorageService } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
 import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
+import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import {
   WarehouseUserAssignment,
   warehouseUserAssignmentStorageKey,
-} from '@spryker-oryx/picking/api';
-import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
+} from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';

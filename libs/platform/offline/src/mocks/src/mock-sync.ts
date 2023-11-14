@@ -1,5 +1,5 @@
+import { SyncStatus } from '@spryker-oryx/offline/sync';
 import { of } from 'rxjs';
-import { SyncStatus } from '../../../sync';
 
 export const mockSync = {
   action: 'mock',

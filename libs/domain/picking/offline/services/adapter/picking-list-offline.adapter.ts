@@ -6,7 +6,7 @@ import {
   PickingListQualifier,
   PickingListQualifierSortBy,
   PickingListStatus,
-} from '@spryker-oryx/picking/api';
+} from '@spryker-oryx/picking/services';
 import { intersectArrays } from '@spryker-oryx/utilities';
 import { Collection, Table, liveQuery } from 'dexie';
 import { Observable, combineLatestWith, map, switchMap } from 'rxjs';

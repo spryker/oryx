@@ -1,11 +1,11 @@
 import { Transformer, TransformerService } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { Observable, combineLatest, of } from 'rxjs';
 import {
   DeserializedWarehouseUserAssignment,
-  WarehouseUserAssignmentNormalizer,
-} from '@spryker-oryx/picking/api';
-import { Observable, combineLatest, of } from 'rxjs';
-import { WarehouseUserAssignment } from '../../../models';
+  WarehouseUserAssignment,
+} from '../../../models';
+import { WarehouseUserAssignmentNormalizer } from './warehouse-user-assignment.normalizer';
 
 export const WarehouseUserAssignmentsNormalizer =
   'oryx.WarehouseUserAssignmentsNormalizer*';

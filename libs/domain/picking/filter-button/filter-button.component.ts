@@ -4,7 +4,7 @@ import {
   PickingListQualifierSortBy,
   PickingListService,
   SortableQualifier,
-} from '@spryker-oryx/picking/api';
+} from '@spryker-oryx/picking/services';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin, signal, signalAware, Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';

@@ -1,4 +1,4 @@
-import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking/api';
+import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking/services';
 
 export interface PickingTab {
   id: ItemsFilters;

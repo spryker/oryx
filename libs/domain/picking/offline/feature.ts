@@ -17,7 +17,7 @@ import {
   PickingListAdapter,
   PickingListDefaultService,
   PickingListService,
-} from '@spryker-oryx/picking/api';
+} from '@spryker-oryx/picking/services';
 import { PushProvider } from '@spryker-oryx/push-notification';
 import { WebPushProvider } from '@spryker-oryx/push-notification/web';
 import { OfflineDataPlugin } from './data-plugin';

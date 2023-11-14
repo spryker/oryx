@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking/api';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking/services';
 import { ImageComponent } from '@spryker-oryx/ui/image';
 import { QuantityInputComponent } from '@spryker-oryx/ui/quantity-input';
 import { useComponent } from '@spryker-oryx/utilities';

@@ -2,7 +2,7 @@ import { inject } from '@spryker-oryx/di';
 import {
   PickingHttpService,
   WarehouseUserAssignmentsService,
-} from '@spryker-oryx/picking/api';
+} from '@spryker-oryx/picking/services';
 import { Observable, switchMap } from 'rxjs';
 import { BapiPushNotificationAdapter } from './bapi-push-notification.adapter';
 

@@ -1,6 +1,12 @@
 import { featureVersion } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 
+const widthCSSVarName = unsafeCSS(
+  featureVersion >= '1.3'
+    ? '--oryx-quantity-input-width'
+    : '--oryx-cart-quantity-input-width'
+);
+
 export const styles = css`
   :host {
     display: inline-flex;
@@ -21,11 +27,7 @@ export const styles = css`
   oryx-input {
     --oryx-form-control-border-radius: 0;
 
-    ${unsafeCSS(
-      featureVersion >= '1.3'
-        ? 'width: var(--oryx-quantity-input-width, 71px);'
-        : 'width: var(--oryx-cart-quantity-input-width, 71px);'
-    )}
+    width: var(${widthCSSVarName}, 71px);
   }
 
   input::-webkit-outer-spin-button,

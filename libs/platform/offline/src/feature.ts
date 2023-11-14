@@ -5,7 +5,7 @@ import {
   SyncEntity,
   SyncSchedulerDefaultService,
   SyncSchedulerService,
-} from '../sync';
+} from '@spryker-oryx/offline/sync';
 
 export class OfflineFeature implements AppFeature {
   providers: Provider[] = this.getProviders();

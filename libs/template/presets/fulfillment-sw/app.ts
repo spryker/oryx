@@ -4,10 +4,7 @@ import {
   IndexedDbFeatureConfig,
 } from '@spryker-oryx/indexed-db';
 import { OfflineServiceWorkerFeature } from '@spryker-oryx/offline/service-worker';
-import {
-  AuthFeature,
-  OfflinePickingFeature,
-} from '@spryker-oryx/picking/service-worker';
+import { OfflinePickingFeature } from '@spryker-oryx/picking/service-worker';
 import { RouterFeature } from '@spryker-oryx/router';
 
 export interface SharedOfflineFulfillmentFeaturesConfig {

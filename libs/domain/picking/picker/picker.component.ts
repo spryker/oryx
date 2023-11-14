@@ -6,12 +6,12 @@ import {
   PickingTab,
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
+import { PickingProductCardComponent } from '@spryker-oryx/picking/product-card';
 import {
   ItemsFilters,
   PickingListItem,
   PickingListStatus,
-} from '@spryker-oryx/picking/api';
-import { PickingProductCardComponent } from '@spryker-oryx/picking/product-card';
+} from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { ChipComponent } from '@spryker-oryx/ui/chip';
