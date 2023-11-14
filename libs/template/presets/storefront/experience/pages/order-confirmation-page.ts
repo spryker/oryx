@@ -26,11 +26,26 @@ export const orderConfirmationPage: ExperienceComponent = {
     description: 'Order Page Description',
   },
   components: [
+    featureVersion >= '1.2'
+      ? {
+          ref: 'header',
+        }
+      : {},
     { type: 'oryx-order-confirmation-banner' },
     {
       type: 'oryx-composition',
       id: 'order-totals',
-      options: { rules: [{ layout: 'split-main', padding: '30px 0 0' }] },
+      options: {
+        rules: [
+          {
+            layout:
+              featureVersion >= '1.2'
+                ? { type: 'split', columnWidthType: 'main' }
+                : 'split-main',
+            padding: '30px 0 0',
+          },
+        ],
+      },
       components: [
         {
           type: 'oryx-order-summary',
@@ -51,5 +66,10 @@ export const orderConfirmationPage: ExperienceComponent = {
         orderEntries(),
       ],
     },
+    featureVersion >= '1.2'
+      ? {
+          ref: 'footer',
+        }
+      : {},
   ],
 };

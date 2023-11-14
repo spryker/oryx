@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/experience",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "description": "Experience features for Oryx applications",
   "author": "Spryker Systems GmbH",
@@ -17,14 +17,18 @@
     "./mocks": {
       "types": "./src/mocks/index.d.ts",
       "default": "./src/mocks/index.js"
+    },
+    "./static": {
+      "types": "./src/static.d.ts",
+      "default": "./src/static.js"
     }
   },
   "dependencies": {
-    "@spryker-oryx/core": "1.1.0",
-    "@spryker-oryx/di": "1.1.0",
-    "@spryker-oryx/router": "1.1.0",
-    "@spryker-oryx/ui": "1.1.0",
-    "@spryker-oryx/utilities": "1.1.0"
+    "@spryker-oryx/core": "1.2.0",
+    "@spryker-oryx/di": "1.2.0",
+    "@spryker-oryx/router": "1.2.0",
+    "@spryker-oryx/ui": "1.2.0",
+    "@spryker-oryx/utilities": "1.2.0"
   },
   "peerDependencies": {
     "lit": "^2.4.0",

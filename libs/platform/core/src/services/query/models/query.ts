@@ -3,6 +3,11 @@ import { QueryEventHandler } from './query-event';
 
 export type QueryTrigger = string | Observable<any>;
 
+export type QueryTransformer<ValueType, Qualifier> = (
+  data: ValueType,
+  qualifier: Qualifier
+) => ValueType /*| Observable<ValueType>*/ | void;
+
 export interface QueryOptions<
   ValueType,
   Qualifier extends object | undefined = undefined
@@ -15,6 +20,19 @@ export interface QueryOptions<
 
   onLoad?: QueryEventHandler<ValueType, Qualifier>[];
   onError?: QueryEventHandler<ValueType, Qualifier>[];
+
+  /**
+   * Determines the cache key based on the provided qualifier.
+   * This is useful to cache different data under the same key if they represent the same entity.
+   * If not provided, the default behavior would be using the qualifier itself.
+   */
+  cacheKey?: (qualifier: Qualifier) => string | Partial<Qualifier>;
+
+  /**
+   * Transforms the data returned by the loader based on the qualifier or the model itself.
+   * Useful for applying context-specific modifications to the model before it's consumed.
+   */
+  postTransforms?: QueryTransformer<ValueType, Qualifier>[];
 
   /**
    * Query is not cached between subscriptions

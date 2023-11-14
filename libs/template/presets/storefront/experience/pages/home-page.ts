@@ -1,4 +1,5 @@
 import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
   type: 'oryx-content-image',
@@ -18,6 +19,11 @@ export const homePage: ExperienceComponent = {
     description: 'Home Page Description',
   },
   components: [
+    featureVersion >= '1.2'
+      ? {
+          ref: 'header',
+        }
+      : {},
     {
       type: 'oryx-composition',
       id: 'home-hero',
@@ -74,9 +80,15 @@ export const homePage: ExperienceComponent = {
         rules: [
           {
             height: '550px',
-            layout: 'split',
+            layout:
+              featureVersion >= '1.2'
+                ? {
+                    type: 'split',
+                    bleed: true,
+                  }
+                : 'split',
             align: 'end',
-            bleed: true,
+            ...(featureVersion >= '1.2' ? {} : { bleed: true }),
           },
         ],
       },
@@ -90,7 +102,7 @@ export const homePage: ExperienceComponent = {
             padding: '30px 0 5px',
             align: 'stretch',
           },
-          { query: { breakpoint: 'sm' }, padding: '20px' },
+          { query: { breakpoint: 'sm' }, padding: '20px 0' },
         ],
         category: '10',
         sort: 'rating',
@@ -137,5 +149,10 @@ export const homePage: ExperienceComponent = {
         brand('Acer'),
       ],
     },
+    featureVersion >= '1.2'
+      ? {
+          ref: 'footer',
+        }
+      : {},
   ],
 };

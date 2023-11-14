@@ -2,14 +2,16 @@ import { App, AppRef } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Size } from '@spryker-oryx/utilities';
+import { lastValueFrom, of } from 'rxjs';
 import {
   Component,
   CompositionProperties,
-  LayoutAlign,
   StyleProperties,
 } from '../../models';
 import { Theme, ThemePlugin } from '../../plugins';
 import { DefaultLayoutBuilder } from './default-layout.builder';
+import { LayoutAlign } from './layout.model';
+import { LayoutPlugin, LayoutStylesPlugin } from './plugins';
 import { ScreenService } from './screen.service';
 
 const mockTheme: Theme = {
@@ -34,6 +36,14 @@ class MockApp implements Partial<App> {
 class MockScreenService implements Partial<ScreenService> {
   getScreenMedia = vi.fn();
 }
+
+const mockStylePlugin = {
+  getStyleProperties: vi.fn(),
+};
+
+const mockLayoutPlugin = {
+  getStyleProperties: vi.fn(),
+};
 
 describe('DefaultLayoutBuilder', () => {
   let service: DefaultLayoutBuilder;
@@ -82,6 +92,14 @@ describe('DefaultLayoutBuilder', () => {
       {
         provide: ScreenService,
         useClass: MockScreenService,
+      },
+      {
+        provide: `${LayoutPlugin}grid`,
+        useValue: mockLayoutPlugin,
+      },
+      {
+        provide: LayoutStylesPlugin,
+        useValue: mockStylePlugin,
       },
     ]);
 
@@ -253,19 +271,6 @@ describe('DefaultLayoutBuilder', () => {
     expectStyleRule({ top: '10vh' }, 'inset-block-start: 10vh');
     expectStyleRule({ height: '100px' }, 'height: 100px');
     expectStyleRule({ width: '100px' }, 'width: 100px');
-    expectStyleRule(
-      { sticky: true, height: '100px' },
-      'max-height: calc(100px - 0px)'
-    );
-    expectStyleRule(
-      { sticky: true, height: '100px', top: '10px' },
-      'max-height: calc(100px - 10px)'
-    );
-    expectStyleRule(
-      { sticky: true, top: '10px' },
-      'max-height: calc(100vh - 10px)'
-    );
-    expectStyleRule({ sticky: true }, 'max-height: calc(100vh - 0px)');
     expectStyleRule({ margin: '10' }, 'margin: 10px');
     expectStyleRule({ margin: '10%' }, 'margin: 10%');
     expectStyleRule({ padding: '15' }, 'padding-block: 15px');
@@ -328,7 +333,7 @@ describe('DefaultLayoutBuilder', () => {
       describe(`when ${prop} is configured`, () => {
         beforeEach(() => {
           layoutMarkers = service.getLayoutMarkers({
-            rules: [{ [prop]: true }],
+            rules: [{ layout: { [prop]: true } }],
           });
         });
 
@@ -341,7 +346,9 @@ describe('DefaultLayoutBuilder', () => {
         describe(`when ${prop} is configured for ${size}`, () => {
           beforeEach(() => {
             layoutMarkers = service.getLayoutMarkers({
-              rules: [{ [prop]: true, query: { breakpoint: size } }],
+              rules: [
+                { layout: { [prop]: true }, query: { breakpoint: size } },
+              ],
             });
           });
 
@@ -360,6 +367,90 @@ describe('DefaultLayoutBuilder', () => {
           expect(layoutMarkers).toBeUndefined();
         });
       });
+    });
+  });
+
+  describe('getCompositionStyles', () => {
+    it('should return proper style from composition of components', async () => {
+      mockStylePlugin.getStyleProperties.mockReturnValue(
+        of({ a: 'a', b: 'b' })
+      );
+      mockLayoutPlugin.getStyleProperties.mockReturnValue(
+        of({ c: 'c', d: 'd' })
+      );
+
+      const result = await lastValueFrom(
+        service.getCompositionStyles({
+          composition: [
+            {
+              id: 'idA',
+              type: 'typeA',
+              options: {
+                rules: [{ layout: 'grid' }],
+              },
+            },
+          ],
+        })
+      );
+
+      expect(result).toContain(':host([uid="idA"]), [uid="idA"]');
+      expect(result).toContain('a: a;b: b');
+      expect(result).toContain('c: c;d: d');
+      expect(mockStylePlugin.getStyleProperties).toHaveBeenCalledWith({
+        styles: { layout: { type: 'grid' } },
+        options: { layout: 'grid' },
+      });
+      expect(mockLayoutPlugin.getStyleProperties).toHaveBeenCalledWith({
+        styles: { layout: { type: 'grid' } },
+        options: { layout: 'grid' },
+      });
+    });
+  });
+
+  describe('getStylesFromOptions', () => {
+    it('should return proper style from rules', async () => {
+      mockStylePlugin.getStyleProperties.mockReturnValue(
+        of({ a: 'a', b: 'b' })
+      );
+      mockLayoutPlugin.getStyleProperties.mockReturnValue(
+        of({ c: 'c', d: 'd' })
+      );
+
+      const result = await lastValueFrom(
+        service.getStylesFromOptions({
+          rules: [{ layout: 'grid' }],
+          id: 'idA',
+        })
+      );
+
+      expect(result).toContain(':host([uid="idA"]), [uid="idA"]');
+      expect(result).toContain('a: a;b: b');
+      expect(result).toContain('c: c;d: d');
+      expect(mockStylePlugin.getStyleProperties).toHaveBeenCalledWith({
+        styles: { layout: { type: 'grid' } },
+        options: { layout: 'grid' },
+      });
+      expect(mockLayoutPlugin.getStyleProperties).toHaveBeenCalledWith({
+        styles: { layout: { type: 'grid' } },
+        options: { layout: 'grid' },
+      });
+    });
+  });
+
+  describe('getActiveLayoutRules', () => {
+    it('should return active layout styles depends on screen', async () => {
+      const result = await lastValueFrom(
+        service.getActiveLayoutRules(
+          [
+            { layout: { bleed: true, type: 'grid', divider: false } },
+            { query: { breakpoint: 'md' }, layout: { bleed: false } },
+            { query: { breakpoint: 'sm' }, layout: 'split' },
+          ],
+          'sm'
+        )
+      );
+
+      expect(result).toEqual({ bleed: true, layout: 'split', divider: false });
     });
   });
 });

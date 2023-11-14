@@ -8,7 +8,8 @@ export const defaultBapiRoutes = (
 ): RouteConfig[] => [
   {
     path: loginPath,
-    render: () => html`<oryx-picking-login></oryx-picking-login>`,
+    render: () =>
+      html`<oryx-composition uid="fulfillment-login-page"></oryx-composition>`,
   },
   {
     path: callbackPath,
