@@ -53,7 +53,15 @@ export const defaultExperienceRoutes: RouteConfig[] = [
                 map((component) => (component.id ? void 0 : RouteType.NotFound))
               ),
         }
-      : {}),
+      : {
+          enter: ({ page }) =>
+            resolve(ExperienceService)
+              .getComponent({ route: `/${page}` })
+              .pipe(
+                take(1),
+                map((component) => (component.id ? true : RouteType.NotFound))
+              ),
+        }),
   },
   {
     path: '/*',
