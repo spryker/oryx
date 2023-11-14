@@ -17,6 +17,7 @@ import {
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { html, isServer, TemplateResult } from 'lit';
 import {
+  from,
   isObservable,
   lastValueFrom,
   Observable,
@@ -354,19 +355,20 @@ export class LitRouter implements ReactiveController {
 
       if (typeof route.enter === 'function') {
         const enterFn = route.enter(params);
-        const result = await (isObservable(enterFn)
-          ? lastValueFrom(enterFn)
-          : enterFn);
 
-        if (typeof result === 'string') {
-          this.routerService.navigate(result);
-
+        if (enterFn === false) {
           return;
         }
 
-        if (result === false) {
-          return;
-        }
+        (isObservable(enterFn) ? enterFn : from(enterFn as any)).subscribe(
+          (result) => {
+            if (typeof result === 'string') {
+              this.routerService.navigate(result);
+
+              return;
+            }
+          }
+        );
       }
 
       this._currentRoute = route;
