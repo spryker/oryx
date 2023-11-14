@@ -6,6 +6,7 @@ import { featureVersion } from '@spryker-oryx/utilities';
 import { html, TemplateResult } from 'lit';
 import { map, take } from 'rxjs';
 import 'urlpattern-polyfill';
+import { ExperienceService } from './services';
 
 export const defaultExperienceRoutes: RouteConfig[] = [
   {
@@ -42,6 +43,13 @@ export const defaultExperienceRoutes: RouteConfig[] = [
   {
     path: '/:page',
     type: RouteType.Page,
+    enter: ({ page }) =>
+      resolve(ExperienceService)
+        .getComponent({ route: page })
+        .pipe(
+          take(1),
+          map((component) => (component.id ? true : RouteType.NotFound))
+        ),
   },
   {
     path: '/*',
