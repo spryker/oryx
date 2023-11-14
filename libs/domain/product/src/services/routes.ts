@@ -15,6 +15,7 @@ export const productRoutes: RouteConfig[] = [
           take(1),
           map((product) => {
             if (!product) return RouteType.NotFound;
+            return;
           })
         ),
   },
