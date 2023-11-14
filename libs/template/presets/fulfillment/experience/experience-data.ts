@@ -6,6 +6,7 @@ import {
   warehouseSelectionPage,
 } from './pages';
 import { UserProfileComponent } from './user-profile';
+import { ServiceTemplate } from './service';
 
 export const StaticExperienceFeature: AppFeature = {
   providers: [
@@ -14,6 +15,7 @@ export const StaticExperienceFeature: AppFeature = {
       fulfillmentLoginPage,
       warehouseSelectionPage,
       pickingListsPage,
+      ServiceTemplate
     ]),
   ],
 };

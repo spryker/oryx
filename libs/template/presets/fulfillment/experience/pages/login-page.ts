@@ -15,5 +15,6 @@ export const fulfillmentLoginPage: ExperienceComponent = {
     {
       type: 'oryx-picking-login',
     },
+    { ref: 'service' }
   ],
 };

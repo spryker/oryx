@@ -1,5 +1,5 @@
 import { PushProvider } from '@spryker-oryx/push-notification';
-import { from, map, Observable, of, switchMap } from 'rxjs';
+import { from, map, Observable, of, switchMap, tap } from 'rxjs';
 
 export interface WebPushProviderOptions {
   /**
@@ -34,6 +34,7 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
       switchMap((subscription) =>
         subscription ? of(subscription) : this.createSubscription()
       ),
+      tap(() => {this.getPermissionState().subscribe(console.log)}),
       map((subscription) => subscription.toJSON())
     );
   }
@@ -44,17 +45,16 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
     );
   }
 
+  getPermissionState(): Observable<PermissionState> {
+    return this.pushManager$.pipe(
+      switchMap((pushManager) => pushManager.permissionState(this.getOptions()))
+    );
+  }
+
   protected createSubscription(): Observable<PushSubscription> {
-    const userVisibleOnly = this.options?.userVisibleOnly ?? true;
-    const applicationServerKey = this.options?.applicationServerKey
-      ? this.encodeKey(this.options.applicationServerKey)
-      : undefined;
     return this.pushManager$.pipe(
       switchMap((pushManager) =>
-        pushManager.subscribe({
-          applicationServerKey,
-          userVisibleOnly,
-        })
+        pushManager.subscribe(this.getOptions())
       )
     );
   }
@@ -63,6 +63,15 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
     return this.pushManager$.pipe(
       switchMap((pushManager) => pushManager.getSubscription())
     );
+  }
+
+  protected getOptions(): Partial<WebPushProviderOptions> {
+    return {
+      userVisibleOnly: this.options?.userVisibleOnly ?? true,
+      applicationServerKey: this.options?.applicationServerKey
+        ? this.encodeKey(this.options.applicationServerKey)
+        : undefined
+    }
   }
 
   /**

@@ -20,7 +20,9 @@ declare let self: ServiceWorkerGlobalScope;
 export class SyncSchedulerDefaultService implements SyncSchedulerService {
   protected scheduleSyncTimer?: ReturnType<typeof setTimeout>;
 
-  constructor(protected indexedDbService = inject(IndexedDbService)) {}
+  constructor(
+    protected indexedDbService = inject(IndexedDbService),
+  ) {}
 
   protected async getServiceWorker(): Promise<ServiceWorkerRegistration> {
     return navigator.serviceWorker

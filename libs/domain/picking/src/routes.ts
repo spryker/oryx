@@ -21,7 +21,10 @@ export const defaultPickingRoutes: RouteConfig[] = [
       html`<oryx-picking-picker
         .pickingListId="${id}"
         mode-light
-      ></oryx-picking-picker>`,
+      ></oryx-picking-picker>
+      <!-- TODO: drop after complete migration to the experience data -->
+      <oryx-site-notification-center></oryx-site-notification-center>
+      `,
     leave: (): Observable<boolean> =>
       resolve(PickingHeaderService).guardWithDialog(),
   },
@@ -32,6 +35,8 @@ export const defaultPickingRoutes: RouteConfig[] = [
         .pickingListId=${id}
         mode-light
       ></oryx-picking-customer-note>
+      <!-- TODO: drop after complete migration to the experience data -->
+      <oryx-site-notification-center></oryx-site-notification-center>
     `,
   },
 ];

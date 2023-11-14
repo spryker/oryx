@@ -16,6 +16,7 @@ export class PushNotificationPlugin extends ExecPlugin {
 
       isUserAssigned.getUserAssignment().subscribe((userAssignment) => {
         if (userAssignment) {
+          
           pushNotificationService.initSubscription().subscribe();
         }
       });
