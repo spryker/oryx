@@ -5,6 +5,8 @@ import {
   LayoutPlugin,
   LayoutPluginConfig,
   LayoutPluginOptionsParams,
+  LayoutPluginRender,
+  LayoutPluginRenderParams,
 } from '../../layout.plugin';
 
 export class NavigationLayoutPlugin implements LayoutPlugin {
@@ -17,7 +19,15 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
           ? m.verticalStyles
           : m.horizontalStyles;
 
-        return { styles: `${m.styles.styles}${direction}` };
+        // const navigationType =
+        //   options.navigationType === 'flyout' ? m.flyoutStyles : css``;
+
+        // const dropdown =
+        //   options.navigationType === 'dropdown' ? m.dropdownStyles : css``;
+
+        return {
+          styles: `${m.styles.styles}${direction}`,
+        };
       })
     );
   }
@@ -26,5 +36,28 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
     return of({
       schema: () => import('./navigation-layout.schema').then((m) => m.schema),
     });
+  }
+
+  getRender(
+    data: LayoutPluginRenderParams
+  ): Observable<LayoutPluginRender | undefined> {
+    console.log(data);
+    return of();
+    if (data.options.navigationType !== 'dropdown') {
+      return of(undefined);
+    }
+    // console.log(data.experience?.id);
+
+    // return of({
+    //   post: html`<oryx-composition
+    //       .uid=${data.experience?.id}
+    //     ></oryx-composition>
+    //     <style>
+    //       oryx-composition {
+    //         outline: solid 1px red;
+    //         /* position: absolute; */
+    //       }
+    //     </style>`,
+    // });
   }
 }

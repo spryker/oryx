@@ -50,6 +50,7 @@ export const enum LayoutPluginType {
 
 export interface LayoutPluginRender {
   pre?: TemplateResult;
+  main?: TemplateResult;
   post?: TemplateResult;
 }
 

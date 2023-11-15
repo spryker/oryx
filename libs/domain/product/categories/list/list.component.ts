@@ -110,6 +110,7 @@ export class ProductCategoryListComponent
         id: categoryId,
         type: 'category',
         iconSuffix: iconSuffix,
+        singleLine: true,
       }}
     ></oryx-content-link>`;
 

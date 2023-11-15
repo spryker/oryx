@@ -24,7 +24,7 @@ export class CanvasStylePlugin implements LayoutPlugin {
         'box-shadow'
       ] = `var(--oryx-shadow-${styles.shadow}) var(--oryx-shadow-color)`;
       properties['z-index'] = 'var(--oryx-z-index, 1)';
-      properties['isolation'] = 'isolate';
+      // properties['isolation'] = 'isolate'; // debatable...
     }
 
     if (styles.background) properties['background'] = styles.background;

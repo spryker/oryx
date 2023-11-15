@@ -1,6 +1,6 @@
 import { ExperienceComponent, ShadowElevation } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Size, featureVersion } from '@spryker-oryx/utilities';
+import { Size, featureVersion, i18n } from '@spryker-oryx/utilities';
 
 const siteLinks = (): ExperienceComponent[] => {
   const components: ExperienceComponent[] = [
@@ -10,6 +10,7 @@ const siteLinks = (): ExperienceComponent[] => {
       options: {
         url: '/',
         icon: IconTypes.Check,
+        singleLine: true,
         rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
       },
     },
@@ -19,6 +20,7 @@ const siteLinks = (): ExperienceComponent[] => {
       options: {
         url: '/',
         icon: IconTypes.Check,
+        singleLine: true,
         rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
       },
     },
@@ -28,6 +30,7 @@ const siteLinks = (): ExperienceComponent[] => {
       options: {
         url: '/',
         icon: IconTypes.Check,
+        singleLine: true,
         rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
       },
     },
@@ -228,13 +231,35 @@ export const categoryNavigation = (
       components: [
         {
           type: 'oryx-content-link',
-          content: { data: { text: 'All products' } },
+          id: 'all-products-navigation',
+          content: { data: { text: i18n('product.all-products') } },
           options: {
-            url: '/search',
+            // url: '/search',
             icon: 'category',
+            singleLine: true,
+            rules: [
+              {
+                layout: { type: 'navigation', navigationType: 'dropdown' },
+              },
+            ],
           },
+          components: [{ type: 'oryx-product-category-list' }],
         },
+
         { type: 'oryx-product-category-list', options: { exclude } },
+        {
+          type: 'oryx-content-link',
+          id: 'merchant-nav',
+          content: { data: { text: 'Merchants' } },
+          options: {
+            rules: [
+              {
+                layout: { type: 'navigation', navigationType: 'dropdown' },
+              },
+            ],
+          },
+          components: [{ type: 'oryx-product-category-list' }],
+        },
       ],
     },
   ];

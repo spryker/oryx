@@ -21,6 +21,7 @@ export const storefrontLinkStyles = css`
   }
 
   oryx-icon {
+    pointer-events: none;
     position: relative;
     inset-block-start: calc(var(--oryx-icon-size, 24px) / 4);
   }
