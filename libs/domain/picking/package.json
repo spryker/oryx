@@ -1,19 +1,19 @@
 {
   "name": "@spryker-oryx/picking",
-  "version": "1.0.0-rc.0",
+  "version": "0.14.0",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "type": "module",
   "author": "Spryker Sytems GmbH",
   "license": "See license in LICENSE",
   "dependencies": {
-    "@spryker-oryx/core": "1.0.0-rc.0",
-    "@spryker-oryx/di": "1.0.0-rc.0",
-    "@spryker-oryx/indexed-db": "1.0.0-rc.0",
-    "@spryker-oryx/offline": "1.0.0-rc.0",
-    "@spryker-oryx/router": "1.0.0-rc.0",
-    "@spryker-oryx/ui": "1.0.0-rc.0",
-    "@spryker-oryx/utilities": "1.0.0-rc.0",
+    "@spryker-oryx/core": "1.2.0",
+    "@spryker-oryx/di": "1.2.0",
+    "@spryker-oryx/indexed-db": "1.2.0",
+    "@spryker-oryx/offline": "1.2.0",
+    "@spryker-oryx/router": "1.2.0",
+    "@spryker-oryx/ui": "1.2.0",
+    "@spryker-oryx/utilities": "1.2.0",
     "jsonapi-serializer": "~3.6.7"
   },
   "peerDependencies": {
