@@ -78,6 +78,7 @@ export class DefaultPageMetaService implements PageMetaService {
         attrs: {
           rel: 'preload',
           href: definition.attrs.href,
+          as: 'style',
         },
       };
     }

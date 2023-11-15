@@ -24,6 +24,7 @@ export interface Cart extends CartId {
   store?: string;
   products?: CartEntry[];
   coupons?: Coupons[];
+  version?: string;
 }
 
 export interface Coupons {

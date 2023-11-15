@@ -1,7 +1,7 @@
 import { IPageWithFacets } from './mixins/page-with-facets.mixin';
 import { IPageWithProductList } from './mixins/page-with-product-list.mixin';
 
-export function checkProductCardsFilterring(
+export function checkProductCardsFilteringByName(
   page: IPageWithFacets & IPageWithProductList,
   numberOfFacets: number,
   numberOfProducts: number,
@@ -12,6 +12,23 @@ export function checkProductCardsFilterring(
   page.getProductHeadings().should('contain.text', query);
 }
 
+export function checkProductCardsFilteringByPrice(
+  page: IPageWithFacets & IPageWithProductList,
+  minPrice = 0,
+  maxPrice = Infinity
+) {
+  page
+    .getProductPrices()
+    .shadow()
+    .each(($price: DocumentFragment) => {
+      const price = $price.textContent;
+      const value = parseFloat(price.replace('€', ''));
+
+      cy.wrap(value).should('be.gte', minPrice);
+      cy.wrap(value).should('be.lte', maxPrice);
+    });
+}
+
 export function checkProductCardsSortingBySku(
   page: IPageWithProductList,
   sortedSkus: string[]
@@ -19,4 +36,11 @@ export function checkProductCardsSortingBySku(
   page.getProductCards().each((card, index) => {
     cy.wrap(card).should('have.attr', 'sku', sortedSkus[index]);
   });
+}
+
+export function checkProductCardsPriceMode(
+  page: IPageWithFacets & IPageWithProductList,
+  query: string
+) {
+  page.getProductPrices().shadow().should('contain.text', query);
 }

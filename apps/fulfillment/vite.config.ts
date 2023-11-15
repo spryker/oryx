@@ -13,9 +13,23 @@ export default defineConfig({
     outDir: '../../dist/apps/fulfillment',
     emptyOutDir: true,
     sourcemap: true,
+    rollupOptions: {
+      input: {
+        'service-worker': './dev-dist/sw/app.js',
+        app: './index.html',
+      },
+      output: {
+        entryFileNames: (assetInfo) => {
+          return assetInfo.name === 'service-worker'
+            ? 'app.js'
+            : 'assets/[name].js';
+        },
+      },
+    },
   },
   define: {
     'import.meta.env.ORYX_FULFILLMENT_APP_VERSION': JSON.stringify(version),
+    __ORYX_FEATURE_VERSION__: `"${process.env.ORYX_FEATURE_VERSION ?? ''}"`,
   },
 
   server: {
@@ -67,6 +81,7 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
       },
       injectManifest: {
+        globIgnores: ['**/assets/*.js'],
         globPatterns: ['**/*.{js,css,html,ico,png,svg,ttf,otf}'],
       },
     }),

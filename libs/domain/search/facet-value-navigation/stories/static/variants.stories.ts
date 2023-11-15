@@ -12,6 +12,7 @@ const facetNavigationComponent = (
   heading="Heading"
   valuesLength=${attrs.valuesLength}
   selectedLength=${attrs.selectedLength}
+  ?dirty=${!!attrs.selectedLength}
   ?enableToggle=${attrs.enableToggle}
   ?enableSearch=${attrs.enableSearch}
   ?open=${attrs.open}

@@ -1,7 +1,17 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
-import { isObservable, merge, Observable, reduce, switchMap } from 'rxjs';
+import { isPromise } from '@spryker-oryx/utilities';
+import {
+  from,
+  isObservable,
+  merge,
+  Observable,
+  of,
+  reduce,
+  switchMap,
+} from 'rxjs';
 import {
   InheritTransformerResult,
+  SimpleTransformer,
   Transformer,
   TransformerService,
   TransformerType,
@@ -31,14 +41,25 @@ export class DefaultTransformerService implements TransformerService {
       }
 
       return {
-        ...(currentData as Record<string, unknown>),
         ...(fullData as Record<string, unknown>),
+        ...(currentData as Record<string, unknown>),
       };
     };
     const asyncData: Observable<unknown>[] = [];
     const syncData = this.getTransformers(token).reduce(
       (currentData: unknown, cb: Transformer<unknown>) => {
-        const cbData = cb(data, this);
+        let cbData = cb(data, this);
+
+        // we assume that transformer returning a promise is a lazy-loaded transformer
+        // so we need to resolve the callback and call it again
+        if (isPromise(cbData)) {
+          cbData = from(cbData).pipe(
+            switchMap((cbFromPromise: SimpleTransformer<unknown>) => {
+              const dbData = cbFromPromise(data, this);
+              return isObservable(dbData) ? dbData : of(dbData);
+            })
+          );
+        }
 
         if (isObservable(cbData)) {
           asyncData.push(cbData);

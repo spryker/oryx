@@ -20,13 +20,16 @@ export const storefrontLinkStyles = css`
   }
 
   oryx-icon {
+    pointer-events: none;
     position: relative;
-    inset-block-start: 3px;
+    inset-block-start: calc(var(--oryx-icon-size, 24px) / 4);
   }
 
   ::slotted(a) {
     text-decoration: none;
     color: currentColor;
+    margin-inline-start: calc((var(--oryx-icon-size, 24px) + 8px) * -1);
+    padding-inline-start: calc(var(--oryx-icon-size, 24px) + 8px);
   }
 
   :host(:hover) ::slotted(a) {

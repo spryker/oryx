@@ -1,3 +1,6 @@
+export const DRAG_EVENT = 'drag';
+export const CHANGE_EVENT = 'change';
+
 export interface MultiRangeProperties {
   /**
    * Provides a minimum value leveraging standard input attribute under the hood.
@@ -40,4 +43,9 @@ export interface MultiRangeProperties {
   step?: number;
 
   disabled?: boolean;
+}
+
+export interface MultiRangeChangeEvent {
+  minValue: number;
+  maxValue: number;
 }

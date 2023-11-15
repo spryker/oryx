@@ -1,4 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
+import { CartService } from '@spryker-oryx/cart';
 import { ContextService, DefaultContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { ProductService } from '@spryker-oryx/product';
@@ -9,7 +10,6 @@ import { featureVersion, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
 import { QuantityInputComponent } from '../../quantity-input/src';
-import { CartService } from '../../src/services';
 import { CartEntryComponent } from './entry.component';
 import { cartEntryComponent } from './entry.def';
 import { RemoveByQuantity } from './entry.model';

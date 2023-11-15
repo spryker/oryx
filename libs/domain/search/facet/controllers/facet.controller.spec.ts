@@ -1,7 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector, resolve } from '@spryker-oryx/di';
 import { FacetValue } from '@spryker-oryx/product';
-import { generateFacet, generateValues } from '@spryker-oryx/product/mocks';
+import {
+  generateFacet,
+  generateRange,
+  generateValues,
+} from '@spryker-oryx/product/mocks';
 import { FacetListService } from '@spryker-oryx/search';
 import { SearchFacetComponentAttributes } from '@spryker-oryx/search/facet';
 import {
@@ -9,13 +13,14 @@ import {
   FACET_TOGGLE_EVENT,
 } from '@spryker-oryx/search/facet-value-navigation';
 import { computed } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { of } from 'rxjs';
 import { FacetController } from './facet.controller';
 
 const valuesLength = 10;
 const mockFacet = generateFacet('Mock', 'parameter', valuesLength);
+const mockRange = generateRange('Range', 'parameter', [0, 10]);
 const mockSelected = 'Mock2';
 const mockWithSelected = {
   value: mockSelected,
@@ -260,6 +265,21 @@ describe('FacetController', () => {
     it('should deselect the inputs and dispatches input events', () => {
       expect(input.checked).toBe(false);
       expect(inputCallback).toHaveBeenCalled();
+    });
+  });
+
+  describe('when facet is range', () => {
+    beforeEach(async () => {
+      service.getFacet.mockReturnValue(of(mockRange));
+      element = await fixture(html`<fake-el></fake-el>`);
+    });
+
+    it('should return range facet without filtration', () => {
+      expect(element.facet()).toBe(mockRange);
+    });
+
+    it('should return selected values of the range', () => {
+      expect(element.selectedValues()).toBe(mockRange.values.selected);
     });
   });
 });

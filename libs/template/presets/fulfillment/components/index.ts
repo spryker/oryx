@@ -1,1 +1,1 @@
-export * from './fulfillment-root/component';
+export * from './fulfillment-root/component.def';

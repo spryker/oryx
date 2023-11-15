@@ -1,7 +1,17 @@
 import { IconMapper } from '@spryker-oryx/experience';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 
+const styles = { direction: true };
 export const materialDesignIcons: IconMapper = {
   id: 'material-icons',
+  mapping: {
+    [IconTypes.Carrier]: { text: 'local_shipping', styles },
+    [IconTypes.Forward]: { text: 'chevron_right', styles },
+    [IconTypes.Backward]: { text: 'chevron_left', styles },
+    [IconTypes.ArrowBackward]: { text: 'arrow_back', styles },
+    [IconTypes.ArrowForward]: { styles },
+    [IconTypes.ArrowOutward]: { styles },
+  },
 };
 
 export const materialDesignLink = {

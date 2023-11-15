@@ -1,4 +1,3 @@
-import { CompositionLayout } from '@spryker-oryx/experience';
 import { Story } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit';
 import { storybookPrefix } from '../../../.constants';
@@ -36,6 +35,7 @@ const Template: Story = (): TemplateResult => {
     <oryx-layout layout="split"> ${generateLayoutItems(5)} </oryx-layout>
 
     <h2>Split aside</h2>
+    https://ca.slack-edge.com/T03DJE6T8-U0212T0H9AP-21d134dc0cda-512
     <ul>
       <li>
         The
@@ -44,7 +44,13 @@ const Template: Story = (): TemplateResult => {
       </li>
       <li>Uses 3 columns on lg and 2 on md</li>
     </ul>
-    <oryx-layout layout="split-aside"> ${generateLayoutItems(5)} </oryx-layout>
+    <oryx-layout
+      .options=${{
+        rules: [{ layout: { type: 'split', columnWidthType: 'aside' } }],
+      }}
+    >
+      ${generateLayoutItems(5)}
+    </oryx-layout>
 
     <h2>Split main</h2>
     <ul>
@@ -55,16 +61,30 @@ const Template: Story = (): TemplateResult => {
       </li>
       <li>Uses 8 columns on lg and 5 on md</li>
     </ul>
-    <oryx-layout layout="split-main"> ${generateLayoutItems(5)} </oryx-layout>
+    <oryx-layout
+      .options=${{
+        rules: [{ layout: { type: 'split', columnWidthType: 'main' } }],
+      }}
+    >
+      ${generateLayoutItems(5)}
+    </oryx-layout>
 
     <h2>Span</h2>
-    <oryx-layout layout="split-main">
+    <oryx-layout
+      .options=${{
+        rules: [{ layout: { type: 'split', columnWidthType: 'main' } }],
+      }}
+    >
       <div style="grid-column:span 2">1</div>
       ${generateLayoutItems(3, 3)}
     </oryx-layout>
 
     <h2>Sticky</h2>
-    <oryx-layout layout="split-main">
+    <oryx-layout
+      .options=${{
+        rules: [{ layout: { type: 'split', columnWidthType: 'main' } }],
+      }}
+    >
       <div style="grid-column:span 2">1</div>
       <oryx-layout layout-sticky>
         <div style="background:var(--oryx-color-secondary-9);">2 (sticky)</div>
@@ -72,7 +92,7 @@ const Template: Story = (): TemplateResult => {
       ${generateLayoutItems(3, 3)}
     </oryx-layout>
 
-    ${generateNestedLayout(CompositionLayout.Split)}
+    ${generateNestedLayout('split')}
 
     <style>
       ${layoutStaticStyles}

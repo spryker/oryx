@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.2.0 (2023-11-09)
+
+
+### Features
+
+* separate cart heading component ([#726](https://github.com/spryker/oryx/issues/726)) ([5ff1061](https://github.com/spryker/oryx/commit/5ff106139ae2e38e2b5ba4579cddfdd6e4387041))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 
