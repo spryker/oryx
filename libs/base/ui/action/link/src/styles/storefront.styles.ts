@@ -22,7 +22,7 @@ export const storefrontLinkStyles = css`
 
   oryx-icon {
     position: relative;
-    inset-block-start: calc((var(--oryx-icon-size, 24px) / 4));
+    inset-block-start: calc(var(--oryx-icon-size, 24px) / 4);
   }
 
   ::slotted(a) {
