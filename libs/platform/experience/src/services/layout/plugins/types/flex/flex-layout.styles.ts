@@ -14,6 +14,12 @@ export const styles: LayoutStyles = {
             flex-wrap: wrap;
           `}
     }
+
+    *,
+    ::slotted(*) {
+      justify-self: var(--justify);
+      align-self: var(--align);
+    }
   `,
 };
 
