@@ -15,6 +15,7 @@ export const fulfillmentLoginPage: ExperienceComponent = {
         layout: { type: 'flex', vertical: true },
         gap: '30px',
         height: '100vh',
+        width: 'min(440px, calc(100% - 16px))',
         justify: 'center',
         padding: '8px',
       },
