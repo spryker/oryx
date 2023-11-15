@@ -1,4 +1,4 @@
-import { WarehouseUserAssignment } from '../../src/models/warehouse-user-assignment';
+import { WarehouseUserAssignment } from '@spryker-oryx/picking/services';
 
 export const mockWarehouseUserAssignments: WarehouseUserAssignment[] = [
   {

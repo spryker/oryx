@@ -1,10 +1,10 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PickingListService } from '@spryker-oryx/picking';
 import { PickingCustomerNoteModalComponent } from '@spryker-oryx/picking/customer-note-modal';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { PickingSyncActionHandlerService } from '@spryker-oryx/picking/offline';
+import { PickingListService } from '@spryker-oryx/picking/services';
 import { CLOSE_EVENT, ModalComponent } from '@spryker-oryx/ui/modal';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';

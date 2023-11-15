@@ -1,25 +1,23 @@
 import {
   AppFeature,
-  AppInitializer,
   AppPlugin,
   DefaultStorageService,
   injectEnv,
   StorageService,
 } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
-import { DefaultLocaleAdapter, LocaleAdapter } from '@spryker-oryx/i18n';
 import {
   IndexedDbStorageMethod,
   provideIndexedDbEntities,
 } from '@spryker-oryx/indexed-db';
-import { provideSyncActionsHandler } from '@spryker-oryx/offline';
+import { provideSyncActionsHandler } from '@spryker-oryx/offline/sync';
 import {
   PickingHttpDefaultService,
   PickingHttpService,
   PickingListAdapter,
   PickingListDefaultService,
   PickingListService,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/services';
 import { PushProvider } from '@spryker-oryx/push-notification';
 import { WebPushProvider } from '@spryker-oryx/push-notification/web';
 import { OfflineDataPlugin } from './data-plugin';
@@ -35,7 +33,6 @@ import {
   PickingListOnlineDefaultAdapter,
   PickingSyncAction,
   PickingSyncActionHandlerService,
-  SwPushInitializerService,
 } from './services';
 
 export class OfflinePickingFeature implements AppFeature {
@@ -52,10 +49,6 @@ export class OfflinePickingFeature implements AppFeature {
         PickingSyncAction,
         PickingSyncActionHandlerService
       ),
-      {
-        provide: AppInitializer,
-        useClass: SwPushInitializerService,
-      },
       {
         provide: PushProvider,
         useFactory: () =>
@@ -83,10 +76,6 @@ export class OfflinePickingFeature implements AppFeature {
       {
         provide: StorageService,
         useFactory: () => new DefaultStorageService(IndexedDbStorageMethod),
-      },
-      {
-        provide: LocaleAdapter,
-        useClass: DefaultLocaleAdapter,
       },
     ];
   }

@@ -10,6 +10,7 @@ export * from '../form/input/src/input.def';
 export * from '../form/multi-range/src/multi-range.def';
 export * from '../form/option/src/component';
 export * from '../form/password/src/password-input.def';
+export * from '../form/quantity-input/quantity-input.def';
 export * from '../form/radio/src/radio.def';
 export * from '../form/select/src/select.def';
 export * from '../form/tag/src/component';
