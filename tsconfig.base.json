@@ -210,6 +210,9 @@
         "libs/domain/product/description/index.ts"
       ],
       "@spryker-oryx/product/id": ["libs/domain/product/id/index.ts"],
+      "@spryker-oryx/product/image-list": [
+        "libs/domain/product/image-list/index.ts"
+      ],
       "@spryker-oryx/product/images": ["libs/domain/product/images/index.ts"],
       "@spryker-oryx/product/labels": ["libs/domain/product/labels/index.ts"],
       "@spryker-oryx/product/list": ["libs/domain/product/list/index.ts"],

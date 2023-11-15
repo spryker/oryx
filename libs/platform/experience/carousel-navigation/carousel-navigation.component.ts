@@ -36,6 +36,7 @@ export class CarouselNavigationComponent
   @property({ reflect: true }) indicatorsAlignment?: CarouselIndicatorAlignment;
   @property({ reflect: true }) scrollBehavior?: CarouselScrollBehavior;
 
+  protected mutationObserver?: MutationObserver;
   protected resizeObserver?: ResizeObserver;
   protected intersectionObserver?: IntersectionObserver;
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -56,12 +57,14 @@ export class CarouselNavigationComponent
    */
   connectedCallback(): void {
     this.initializeIntersectionObserver();
+    this.initializeMutationObserver();
     super.connectedCallback();
   }
 
   disconnectedCallback(): void {
-    this.resizeObserver?.disconnect();
+    this.mutationObserver?.disconnect();
     this.intersectionObserver?.disconnect();
+    this.resizeObserver?.disconnect();
     if (this.hostElement) {
       this.hostElement.removeEventListener(
         'scroll',
@@ -76,6 +79,15 @@ export class CarouselNavigationComponent
   }
 
   /**
+   * Navigates the carousel item into the view.
+   */
+  navigate(index: number): void {
+    this.scrollElementToIndex(index);
+  }
+
+  protected isIntersected = false;
+
+  /**
    * Initializes the IntersectionObserver to detect when the carousel becomes visible.
    * This is necessary to calculate the carousel's width and to build the navigation.
    */
@@ -85,6 +97,7 @@ export class CarouselNavigationComponent
     this.intersectionObserver = new IntersectionObserver(
       throttle((entries: IntersectionObserverEntry[]) => {
         return entries.forEach((entry) => {
+          this.isIntersected = true;
           if (this.resolveItems().length) {
             this.buildNavigation();
             this.initializeScrollListener();
@@ -97,6 +110,26 @@ export class CarouselNavigationComponent
       { root: null, rootMargin: '0px', threshold: 1.0 }
     );
     this.intersectionObserver.observe(this.hostElement);
+  }
+
+  protected initializeMutationObserver(): void {
+    if (this.mutationObserver) return;
+    this.mutationObserver = new MutationObserver(() =>
+      setTimeout(() => {
+        if (this.isIntersected) {
+          this.buildNavigation();
+          this.initializeScrollListener();
+          this.initializeResizeObserver();
+        }
+      }, 50)
+    );
+    const shadowRoot = this.getRootNode();
+    if (shadowRoot instanceof ShadowRoot) {
+      this.mutationObserver.observe(shadowRoot, {
+        childList: true,
+        subtree: true,
+      });
+    }
   }
 
   /**
@@ -142,8 +175,8 @@ export class CarouselNavigationComponent
       !items.find((e, index) => !e.isEqualNode(this.items[index]))
     ) {
       this.items = items;
+      this.setSlides();
       this.setScrollSnap();
-      if (this.showIndicators) this.setSlides();
     }
   }
 

@@ -1,4 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { ProductMediaContainerSize } from '@spryker-oryx/product';
+import { ProductImageListNavigate } from '@spryker-oryx/product/image-list';
 import { Size, featureVersion } from '@spryker-oryx/utilities';
 
 export const productPage: ExperienceComponent = {
@@ -65,7 +67,30 @@ export const productPage: ExperienceComponent = {
                   type: 'oryx-product-labels',
                   options: { excluded: 'sale %' },
                 },
-                { type: 'oryx-product-images' },
+                {
+                  type: 'oryx-product-image-list',
+                  options: {
+                    size: ProductMediaContainerSize.Full,
+                    rules: [
+                      {
+                        layout: { type: 'carousel', showIndicators: false },
+                        columnCount: 1,
+                      },
+                    ],
+                  },
+                },
+                {
+                  type: 'oryx-product-image-list',
+                  options: {
+                    navigate: ProductImageListNavigate.Click,
+                    rules: [
+                      {
+                        layout: { type: 'carousel', showIndicators: false },
+                        style: '--oryx-grid-item-size:80px',
+                      },
+                    ],
+                  },
+                },
                 { type: 'oryx-product-description' },
                 { type: 'oryx-product-attributes' },
               ],
@@ -137,10 +162,6 @@ export const productPage: ExperienceComponent = {
         },
       ],
     },
-    featureVersion >= '1.2'
-      ? {
-          ref: 'footer',
-        }
-      : {},
+    featureVersion >= '1.2' ? { ref: 'footer' } : {},
   ],
 };
