@@ -1,4 +1,4 @@
-import { CartComponentMixin } from '@spryker-oryx/cart';
+import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
 import { LocaleService } from '@spryker-oryx/i18n';
@@ -14,6 +14,7 @@ export class CouponComponent extends CartComponentMixin(
 ) {
   static styles = couponStyles;
 
+  protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
   protected localeService = resolve(LocaleService);
 
@@ -43,7 +44,7 @@ export class CouponComponent extends CartComponentMixin(
               .formatDate(coupon.expirationDateTime)
               .pipe(
                 tap((date) => {
-                  expirationDateTime = date;
+                  expirationDateTime = date ?? '';
                 })
               )
               .subscribe();
@@ -64,9 +65,14 @@ export class CouponComponent extends CartComponentMixin(
   }
 
   protected handleClick(): void {
-    this.notificationService.push({
-      type: AlertType.Success,
-      content: '"1234-ABC-1234-01" successfully applied',
+    this.cartService.addCoupon({ code: '12345wu2ca' }).subscribe({
+      next: () => {
+        this.notificationService.push({
+          type: AlertType.Success,
+          content: '"12345wu2ca" successfully applied',
+        });
+      },
+      error: (e: Error) => console.log('coupon error:', e),
     });
   }
 }

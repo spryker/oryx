@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { IdentityService } from '@spryker-oryx/auth';
 import {
+  AddCartCouponQualifier,
   AddCartEntryQualifier,
   Cart,
   CartAdapter,
@@ -81,6 +82,13 @@ export class DefaultCartService implements CartService {
     ...this.cartCommandBase,
     action: (qualifier: AddCartEntryQualifier) => {
       return this.adapter.addEntry(qualifier);
+    },
+  });
+
+  protected addCouponCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: AddCartCouponQualifier) => {
+      return this.adapter.addCoupon(qualifier);
     },
   });
 
@@ -246,6 +254,10 @@ export class DefaultCartService implements CartService {
 
   addEntry(qualifier: AddCartEntryQualifier): Observable<unknown> {
     return this.executeWithOptionalCart(qualifier, this.addEntryCommand$);
+  }
+
+  addCoupon(qualifier: AddCartCouponQualifier): Observable<unknown> {
+    return this.executeWithOptionalCart(qualifier, this.addCouponCommand$);
   }
 
   deleteEntry(qualifier: CartEntryQualifier): Observable<unknown> {

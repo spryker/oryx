@@ -1,6 +1,7 @@
 import { QueryState } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import {
+  AddCartCouponQualifier,
   AddCartEntryQualifier,
   Cart,
   CartEntry,
@@ -16,6 +17,7 @@ export interface CartService {
   getCartState(data?: CartQualifier): Observable<QueryState<Cart>>;
   getEntries(data?: CartQualifier): Observable<CartEntry[]>;
   getCoupons(data?: CartQualifier): Observable<Coupons[]>;
+  addCoupon(data?: AddCartCouponQualifier): Observable<unknown>;
   addEntry(data: AddCartEntryQualifier): Observable<unknown>;
   updateEntry(data: UpdateCartEntryQualifier): Observable<unknown>;
   deleteEntry(data: CartEntryQualifier): Observable<unknown>;

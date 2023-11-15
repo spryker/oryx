@@ -1,6 +1,7 @@
 import { Transformer } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import {
+  AddCartCouponQualifier,
   AddCartEntryQualifier,
   Cart,
   CartEntryQualifier,
@@ -13,6 +14,7 @@ export interface CartAdapter {
   getAll: () => Observable<Cart[]>;
   get: (data: CartQualifier) => Observable<Cart>;
   addEntry: (data: AddCartEntryQualifier) => Observable<Cart>;
+  addCoupon: (data: AddCartCouponQualifier) => Observable<unknown>;
   deleteEntry: (data: CartEntryQualifier) => Observable<unknown>;
   updateEntry: (data: UpdateCartEntryQualifier) => Observable<Cart>;
   update: (data: UpdateCartQualifier) => Observable<Cart>;

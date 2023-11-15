@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import {
+  AddCartCouponQualifier,
   AddCartEntryQualifier,
   ApiCartModel,
   Cart,
@@ -82,26 +83,6 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  addCoupon(data: any): void {
-    const attributes = {
-      code: data.code,
-    };
-
-    const url = this.generateUrl(
-      `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}`,
-      false
-    );
-
-    const body = {
-      data: {
-        type: ApiCartModel.UrlParts.Coupons,
-        attributes,
-      },
-    };
-
-    this.http.post<ApiCartModel.Response>(url, body);
-  }
-
   update(data: UpdateCartQualifier): Observable<Cart> {
     return this.identity.get().pipe(
       take(1),
@@ -127,6 +108,32 @@ export class DefaultCartAdapter implements CartAdapter {
         return this.http
           .patch<ApiCartModel.Response>(url, body)
           .pipe(this.transformer.do(CartNormalizer));
+      })
+    );
+  }
+
+  addCoupon(data: AddCartCouponQualifier): Observable<unknown> {
+    const attributes = {
+      code: data.code,
+    };
+
+    return this.identity.get().pipe(
+      take(1),
+      switchMap((identity) => this.createCartIfNeeded(identity, data.cartId)),
+      switchMap(() => {
+        const url = this.generateUrl(
+          `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}`,
+          false
+        );
+
+        const body = {
+          data: {
+            type: ApiCartModel.UrlParts.Coupons,
+            attributes,
+          },
+        };
+
+        return this.http.post<ApiCartModel.Response>(url, body);
       })
     );
   }
