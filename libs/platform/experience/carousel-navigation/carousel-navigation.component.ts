@@ -36,6 +36,7 @@ export class CarouselNavigationComponent
   @property({ reflect: true }) indicatorsAlignment?: CarouselIndicatorAlignment;
   @property({ reflect: true }) scrollBehavior?: CarouselScrollBehavior;
 
+  protected mutationObserver?: MutationObserver;
   protected resizeObserver?: ResizeObserver;
   protected intersectionObserver?: IntersectionObserver;
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -43,6 +44,7 @@ export class CarouselNavigationComponent
 
   protected intersectionThrottleTime = 150;
   protected scrollThrottleTime = 50;
+  protected isIntersected = false;
 
   @state() protected items: HTMLElement[] = [];
   @state() protected slides: number[] = [];
@@ -55,13 +57,15 @@ export class CarouselNavigationComponent
    * and listens to scroll events to always keep the state up to date.
    */
   connectedCallback(): void {
+    this.initializeMutationObserver();
     this.initializeIntersectionObserver();
     super.connectedCallback();
   }
 
   disconnectedCallback(): void {
-    this.resizeObserver?.disconnect();
+    this.mutationObserver?.disconnect();
     this.intersectionObserver?.disconnect();
+    this.resizeObserver?.disconnect();
     if (this.hostElement) {
       this.hostElement.removeEventListener(
         'scroll',
@@ -80,11 +84,10 @@ export class CarouselNavigationComponent
    * This is necessary to calculate the carousel's width and to build the navigation.
    */
   protected initializeIntersectionObserver(): void {
-    if (this.intersectionObserver) return;
-
     this.intersectionObserver = new IntersectionObserver(
       throttle((entries: IntersectionObserverEntry[]) => {
-        return entries.forEach((entry) => {
+        return entries.forEach(() => {
+          this.isIntersected = true;
           if (this.resolveItems().length) {
             this.buildNavigation();
             this.initializeScrollListener();
@@ -97,6 +100,21 @@ export class CarouselNavigationComponent
       { root: null, rootMargin: '0px', threshold: 1.0 }
     );
     this.intersectionObserver.observe(this.hostElement);
+  }
+
+  protected initializeMutationObserver(): void {
+    this.mutationObserver = new MutationObserver(() =>
+      setTimeout(() => {
+        if (this.isIntersected) this.buildNavigation();
+      }, 50)
+    );
+    const shadowRoot = this.getRootNode();
+    if (shadowRoot instanceof ShadowRoot) {
+      this.mutationObserver.observe(shadowRoot, {
+        childList: true,
+        subtree: true,
+      });
+    }
   }
 
   /**
@@ -415,14 +433,15 @@ export class CarouselNavigationComponent
    * @returns An array of HTMLElements representing the child elements of the host component.
    */
   protected resolveItems(): HTMLElement[] {
-    const items = [
-      ...(this.hostElement?.shadowRoot?.querySelectorAll(
-        ':not(:is(oryx-carousel-navigation,slot,style)'
-      ) ?? []),
-      ...this.hostElement.children,
-    ];
-
     const result: HTMLElement[] = [];
+
+    const items = [
+      ...Array.from(this.hostElement.shadowRoot?.children ?? []),
+      ...this.hostElement.children,
+    ].filter(
+      (e) =>
+        !['style', 'oryx-carousel-navigation'].includes(e.tagName.toLowerCase())
+    );
 
     for (const item of items) {
       // If the display is 'contents' we collect all the child elements to the result
