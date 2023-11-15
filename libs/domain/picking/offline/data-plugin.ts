@@ -16,7 +16,7 @@ import {
 } from 'rxjs';
 import { PickingListEntity, PickingProductEntity } from './entities';
 import { PickingListOnlineAdapter } from './services';
-import { SyncExecutorService, SyncSchedulerService } from '@spryker-oryx/offline';
+import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 
 export class OfflineDataPlugin implements AppPlugin {
   protected subscription?: Subscription;

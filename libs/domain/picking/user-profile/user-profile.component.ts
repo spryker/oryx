@@ -22,6 +22,7 @@ import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs';
 import { userProfileComponentStyles } from './user-profile.styles';
+import { NetworkStateService } from '@spryker-oryx/offline';
 
 @signalAware()
 export class PickingUserProfileComponent extends I18nMixin(LitElement) {
@@ -30,6 +31,7 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
   protected storageService = resolve(StorageService);
+  protected networkStateService = resolve(NetworkStateService);
 
   protected injector = resolve(INJECTOR);
   protected injectorDataPlugin =
@@ -55,6 +57,7 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
       "user.profile.you-can't-log-out-because-of-a-pending-synchronization"
     )
   );
+  protected $networkState = signal(this.networkStateService.get());
 
   protected override render(): TemplateResult {
     return html`
@@ -109,6 +112,7 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
                 .text=${this.i18n('user.profile.sync-data')}
                 block
                 ?loading=${this.loading}
+                ?disabled=${this.$networkState() === 'offline'}
                 @click=${this.onSyncData}
               ></oryx-button>
             `

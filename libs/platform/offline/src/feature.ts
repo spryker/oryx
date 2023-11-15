@@ -6,6 +6,7 @@ import {
   SyncSchedulerDefaultService,
   SyncSchedulerService,
 } from '@spryker-oryx/offline/sync';
+import { NetworkStateService, NetworkStateDefaultService } from './services';
 
 export class OfflineFeature implements AppFeature {
   providers: Provider[] = this.getProviders();
@@ -16,6 +17,10 @@ export class OfflineFeature implements AppFeature {
       {
         provide: SyncSchedulerService,
         useClass: SyncSchedulerDefaultService,
+      },
+      {
+        provide: NetworkStateService,
+        useClass: NetworkStateDefaultService,
       },
     ];
   }
