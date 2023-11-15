@@ -14,6 +14,6 @@ export const errorStyles = css`
 
   oryx-error-message::part(icon) {
     align-self: start;
-    margin-top: 3px;
+    margin-block-start: 3px;
   }
 `;
