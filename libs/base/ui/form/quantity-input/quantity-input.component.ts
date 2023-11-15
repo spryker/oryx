@@ -7,6 +7,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   QuantityEventDetail,
   QuantityInputAttributes,
+  QuantityInputMethods,
   SUBMIT_EVENT,
   UPDATE_EVENT,
 } from './quantity-input.model';
@@ -27,7 +28,7 @@ import { styles } from './quantity-input.styles';
 @hydrate({ event: ['window:load'] })
 export class QuantityInputComponent
   extends I18nMixin(LitElement)
-  implements QuantityInputAttributes
+  implements QuantityInputAttributes, QuantityInputMethods
 {
   static styles = styles;
 

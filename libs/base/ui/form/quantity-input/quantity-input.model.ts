@@ -68,6 +68,18 @@ export interface QuantityInputAttributes {
   increaseIcon?: string;
 }
 
+export interface QuantityInputMethods {
+  /**
+   * Reset input's value to the initial one
+   */
+  reset(): void;
+
+  /**
+   * Focus the input element inside component
+   */
+  focus(): void;
+}
+
 export interface QuantityEventDetail {
   quantity: number;
   isInvalid?: boolean;

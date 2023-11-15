@@ -703,4 +703,34 @@ describe('QuantityInputComponent', () => {
       ).toBe(label);
     });
   });
+
+  describe('reset method', () => {
+    const min = 3;
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-quantity-input .min=${min}></oryx-quantity-input>`
+      );
+
+      getInput().value = '6';
+      element.reset();
+    });
+
+    it('should reset input`s value to the initial (min)', () => {
+      expect(getInput().value).toBe(String(min));
+    });
+  });
+
+  describe('focus method', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-quantity-input></oryx-quantity-input>`
+      );
+
+      element.focus();
+    });
+
+    it('should focus the input', () => {
+      expect(element.matches(':focus-within')).toBe(true);
+    });
+  });
 });
