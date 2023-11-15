@@ -1,58 +1,49 @@
 import { resolve } from '@spryker-oryx/di';
-import { PickingListComponentProperties } from '@spryker-oryx/picking';
+import { PickingListContext } from '@spryker-oryx/picking';
 import {
   Signal,
   Type,
-  isDefined,
-  observe,
+  computed,
   signal,
   signalAware,
+  signalProperty,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { property } from 'lit/decorators.js';
 import {
-  BehaviorSubject,
   Observable,
-  distinctUntilChanged,
-  filter,
-  map,
-  switchMap,
+  of,
 } from 'rxjs';
 import type { PickingList } from '../models';
 import { PickingListService } from '../services';
+import { ContextController } from '@spryker-oryx/core';
 
-export declare class PickingListMixinInterface
-  implements PickingListComponentProperties
-{
-  protected pickingListService: PickingListService;
+export declare class PickingListMixinInterface {
   pickingListId?: string;
-  protected pickingList$: Observable<PickingList>;
+  protected context: Observable<string | undefined>;
+  protected pickingListService: PickingListService;
   protected $pickingList: Signal<PickingList>;
   protected $upcomingPickingListId: Signal<string | null>;
 }
 
 export const PickingListMixin = <
-  T extends Type<LitElement & PickingListComponentProperties>
+  T extends Type<LitElement>
 >(
   superClass: T
 ): Type<PickingListMixinInterface> & T => {
   @signalAware()
   class PickingListMixinClass extends superClass {
+    @signalProperty({ reflect: true }) pickingListId?: string;
+    
     protected pickingListService = resolve(PickingListService);
 
-    @property() pickingListId?: string;
+    protected contextController = new ContextController(this);
+    protected $context = signal(this.contextController.get<string>(PickingListContext.PickingListId));
 
-    @observe()
-    protected pickingListId$ = new BehaviorSubject(this.pickingListId);
-
-    protected pickingList$ = this.pickingListId$.pipe(
-      distinctUntilChanged(),
-      filter(isDefined),
-      switchMap((id) => this.pickingListService.get({ ids: [id] })),
-      map((list) => list?.[0] ?? null)
-    );
-
-    protected $pickingList = signal(this.pickingList$);
+    protected $pickingList = computed(() => {
+      const id = this.pickingListId ?? this.$context();
+      
+      return id ? this.pickingListService.getList(id): of(null)
+    })
 
     protected $upcomingPickingListId = signal(
       this.pickingListService.getUpcomingPickingListId()

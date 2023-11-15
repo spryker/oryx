@@ -11,7 +11,7 @@ import { PickingUserProfileComponent } from './user-profile.component';
 import { pickingUserProfileComponent } from './user-profile.def';
 
 const mockOfflineDataPlugin = {
-  refreshData: vi.fn().mockReturnValue(
+  syncData: vi.fn().mockReturnValue(
     of(undefined).pipe(
       switchMap(async () => {
         await nextTick(2);
@@ -205,27 +205,27 @@ describe('PickingUserProfileComponent', () => {
 
   describe('when user is on the main page', () => {
     it('should render receive data button', () => {
-      expect(element).toContainElement('.receive-data');
+      expect(element).toContainElement('.sync-data');
     });
 
     describe('and the receive data button is clicked', () => {
       beforeEach(() => {
-        element.renderRoot.querySelector<HTMLElement>('.receive-data')?.click();
+        element.renderRoot.querySelector<HTMLElement>('.sync-data')?.click();
       });
 
       it('should call offline data plugin', () => {
-        expect(mockOfflineDataPlugin.refreshData).toHaveBeenCalled();
+        expect(mockOfflineDataPlugin.syncData).toHaveBeenCalled();
       });
 
       it('should render loading indicator', async () => {
-        const button = element.renderRoot.querySelector('.receive-data');
+        const button = element.renderRoot.querySelector('.sync-data');
         expect(button).toHaveProperty('text', 'Receive data');
         expect(button?.hasAttribute('loading')).toBe(true);
       });
 
       describe('and receive data completes', () => {
         beforeEach(async () => {
-          mockOfflineDataPlugin.refreshData.mockReturnValue(of(undefined));
+          mockOfflineDataPlugin.syncData.mockReturnValue(of(undefined));
 
           element = await fixture(
             `<oryx-picking-user-profile></oryx-picking-user-profile>`
@@ -236,7 +236,7 @@ describe('PickingUserProfileComponent', () => {
         });
 
         it('should not show loading indicator', () => {
-          const button = element.renderRoot.querySelector('.receive-data');
+          const button = element.renderRoot.querySelector('.sync-data');
           expect(button).toHaveProperty('text', 'Receive data');
           expect(button?.hasAttribute('loading')).toBe(false);
         });

@@ -103,13 +103,13 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
           () =>
             html`
               <oryx-button
-                class="receive-data"
+                class="sync-data"
                 .type=${ButtonType.Outline}
                 .color=${ButtonColor.Neutral}
-                .text=${this.i18n('user.profile.receive-data')}
+                .text=${this.i18n('user.profile.sync-data')}
                 block
                 ?loading=${this.loading}
-                @click=${this.onReceiveData}
+                @click=${this.onSyncData}
               ></oryx-button>
             `
         )}
@@ -119,11 +119,11 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
     `;
   }
 
-  protected onReceiveData(): void {
+  protected onSyncData(): void {
     this.loading = true;
 
     this.injectorDataPlugin
-      .refreshData(this.injector)
+      .syncData(this.injector)
       .pipe(tap(() => (this.loading = false)))
       .subscribe(() => {
         this.dispatchEvent(

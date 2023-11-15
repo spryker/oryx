@@ -16,6 +16,7 @@ import {
 } from 'rxjs';
 import { PickingListEntity, PickingProductEntity } from './entities';
 import { PickingListOnlineAdapter } from './services';
+import { SyncExecutorService, SyncSchedulerService } from '@spryker-oryx/offline';
 
 export class OfflineDataPlugin implements AppPlugin {
   protected subscription?: Subscription;
@@ -60,19 +61,10 @@ export class OfflineDataPlugin implements AppPlugin {
     this.subscription?.unsubscribe();
   }
 
-  refreshData(injector: Injector): Observable<void> {
+  syncData(injector: Injector): Observable<void> {
     this.refreshing$.next(true);
-    return this.clearDb(injector).pipe(
-      switchMap(() => this.populateDb(injector)),
-      tap({
-        next: () => {
-          this.refreshing$.next(false);
-        },
-        error: () => {
-          this.refreshing$.next(false);
-        },
-      })
-    );
+    this.processPendingSyncs(injector);
+    return this.populateData(injector);
   }
 
   isRefreshing(): Observable<boolean> {
@@ -132,5 +124,23 @@ export class OfflineDataPlugin implements AppPlugin {
         }
       )
     );
+  }
+
+  protected processPendingSyncs(injector: Injector): void {
+    injector.inject(SyncSchedulerService).forceSync();
+  }
+
+  protected populateData(injector: Injector): Observable<void> {
+    return this.clearDb(injector).pipe(
+      switchMap(() => this.populateDb(injector)),
+      tap({
+        next: () => {
+          this.refreshing$.next(false);
+        },
+        error: () => {
+          this.refreshing$.next(false);
+        },
+      })
+    )
   }
 }

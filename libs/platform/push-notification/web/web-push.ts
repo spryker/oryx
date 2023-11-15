@@ -1,5 +1,5 @@
 import { PushProvider } from '@spryker-oryx/push-notification';
-import { from, map, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, from, map, Observable, of, switchMap, throwError } from 'rxjs';
 
 export interface WebPushProviderOptions {
   /**
@@ -20,7 +20,7 @@ export interface WebPushProviderOptions {
 
 export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
   protected pushManager$ = from(navigator.serviceWorker.ready).pipe(
-    map((serviceWorker) => serviceWorker.pushManager)
+    map((serviceWorker) => serviceWorker.pushManager),
   );
 
   constructor(protected options?: WebPushProviderOptions) {}
@@ -34,8 +34,15 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
       switchMap((subscription) =>
         subscription ? of(subscription) : this.createSubscription()
       ),
-      tap(() => {this.getPermissionState().subscribe(console.log)}),
-      map((subscription) => subscription.toJSON())
+      map((subscription) => subscription.toJSON()),
+      //catch permission error or pass the original one
+      catchError(e => this.getPermissionState().pipe(
+        switchMap(state => throwError(() => state === 'denied'?
+          new Error(
+            'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission'
+          ): e
+        ))
+      ))
     );
   }
 

@@ -10,6 +10,7 @@ export interface SyncSchedulerService {
   hasPending(): Observable<boolean>;
   getFailed(): Observable<Sync[]>;
   hasFailed(): Observable<boolean>;
+  forceSync(): void;
 }
 
 export const SyncSchedulerService = 'oryx.SyncSchedulerService';

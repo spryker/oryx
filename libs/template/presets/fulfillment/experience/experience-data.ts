@@ -4,6 +4,8 @@ import {
   fulfillmentLoginPage,
   pickingListsPage,
   warehouseSelectionPage,
+  customerNotePage,
+  pickingPickerPage
 } from './pages';
 import { UserProfileComponent } from './user-profile';
 import { ServiceTemplate } from './service';
@@ -15,6 +17,8 @@ export const StaticExperienceFeature: AppFeature = {
       fulfillmentLoginPage,
       warehouseSelectionPage,
       pickingListsPage,
+      customerNotePage,
+      pickingPickerPage,
       ServiceTemplate
     ]),
   ],

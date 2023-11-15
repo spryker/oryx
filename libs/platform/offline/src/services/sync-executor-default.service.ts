@@ -49,7 +49,7 @@ export class SyncExecutorDefaultService implements SyncExecutorService {
         if (pendingSyncs.length === 0) {
           return of([]);
         }
-
+        
         return forkJoin(
           pendingSyncs.map((pendingSync) => this.handleSync(pendingSync))
         );

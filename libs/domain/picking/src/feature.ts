@@ -42,6 +42,7 @@ import {
   warehouseUserAssignmentNormalizer,
   warehouseUserAssignmentsNormalizer,
 } from './services';
+import { PickingListContextFallback } from './picking-list.context';
 
 export const pickingComponents = [
   pickingCustomerNoteComponent,
@@ -99,6 +100,7 @@ export class PickingFeature implements AppFeature {
         provide: WarehouseUserAssignmentsService,
         useClass: WarehouseUserAssignmentsDefaultService,
       },
+      PickingListContextFallback
     ];
   }
 }
