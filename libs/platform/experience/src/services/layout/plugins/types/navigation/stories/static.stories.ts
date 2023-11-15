@@ -1,3 +1,4 @@
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../../../.constants';
@@ -13,7 +14,7 @@ interface DemoProps {
 
 const Template: Story = (): TemplateResult => {
   const items = html` <oryx-content-link
-      .options=${{ url: '/', icon: 'home' }}
+      .options=${{ url: '/', icon: IconTypes.Home }}
       .content=${{ text: 'Home' }}
     ></oryx-content-link>
 
