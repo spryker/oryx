@@ -1,6 +1,7 @@
 import { PageMetaResolver } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
+import { ActiveImageService } from './active-image.service';
 import {
   AvailabilityNormalizer,
   CategoryIdNormalizer,
@@ -53,6 +54,7 @@ import {
   categoryQuery,
   categoryTreeNormalizer,
 } from './category';
+import { DefaultActiveImageService } from './default-active-image.service';
 import { DefaultProductService } from './default-product.service';
 import { DefaultProductImageService } from './images';
 import { ProductImageService } from './images/product-image.service';
@@ -211,6 +213,10 @@ export const productProviders: Provider[] = [
   {
     provide: ProductCategoryService,
     useClass: DefaultProductCategoryService,
+  },
+  {
+    provide: ActiveImageService,
+    useClass: DefaultActiveImageService,
   },
   ProductListBreadcrumb,
   ProductDetailsBreadcrumb,

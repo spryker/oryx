@@ -1,5 +1,7 @@
+export * from './active-image.service';
 export * from './adapter';
 export * from './category';
+export * from './default-active-image.service';
 export * from './default-product.service';
 export * from './images';
 export * from './list';
