@@ -16,6 +16,7 @@ export const fulfillmentLoginPage: ExperienceComponent = {
         gap: '30px',
         height: '100vh',
         justify: 'center',
+        padding: '8px',
       },
     ],
   },
