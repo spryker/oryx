@@ -1,6 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListContext } from '@spryker-oryx/picking';
 import {
+  PickingList,
+  PickingListService,
+} from '@spryker-oryx/picking/services';
+import {
   Signal,
   Type,
   computed,
@@ -13,8 +17,6 @@ import {
   Observable,
   of,
 } from 'rxjs';
-import type { PickingList } from '../models';
-import { PickingListService } from '../services';
 import { ContextController } from '@spryker-oryx/core';
 
 export declare class PickingListMixinInterface {

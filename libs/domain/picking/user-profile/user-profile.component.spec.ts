@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
 import { App, AppRef, StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { SyncSchedulerService } from '@spryker-oryx/offline';
+import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';

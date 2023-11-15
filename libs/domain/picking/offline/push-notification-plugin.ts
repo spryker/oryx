@@ -1,7 +1,7 @@
 import { OauthService } from '@spryker-oryx/auth';
 import { ExecPlugin, InjectionPlugin } from '@spryker-oryx/core';
+import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking/services';
 import { BapiPushNotificationService } from './services';
-import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking';
 
 export class PushNotificationPlugin extends ExecPlugin {
   constructor() {

@@ -1,8 +1,12 @@
 import { AuthService } from '@spryker-oryx/auth';
 import { AppRef, StorageService } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
-import { SyncSchedulerService } from '@spryker-oryx/offline';
+import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
+import {
+  WarehouseUserAssignment,
+  warehouseUserAssignmentStorageKey,
+} from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
@@ -17,10 +21,6 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs';
-import {
-  WarehouseUserAssignment,
-  warehouseUserAssignmentStorageKey,
-} from '../src/models/warehouse-user-assignment';
 import { userProfileComponentStyles } from './user-profile.styles';
 
 @signalAware()

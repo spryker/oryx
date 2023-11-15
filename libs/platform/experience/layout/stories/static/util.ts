@@ -162,7 +162,7 @@ export const generateNestedLayout = (
 
     <oryx-layout layout=${layout}>
       <div>1</div>
-      <oryx-layout layout="flex">
+      <oryx-layout .options=${{ rules: [{ layout: { type: 'flex' } }] }}>
         ${generateLayoutItems(3, 1, 'N', true)}
       </oryx-layout>
       ${generateLayoutItems(10, 5)}
@@ -174,7 +174,9 @@ export const generateNestedLayout = (
     </ul>
     <oryx-layout layout=${layout}>
       <div>1</div>
-      <oryx-layout layout="flex" .options=${{ rules: [{ colSpan: 2 }] }}>
+      <oryx-layout  .options=${{
+        rules: [{ layout: { type: 'flex' }, colSpan: 2 }],
+      }}>
         <div style="background:var(--oryx-color-secondary-9);">
           N1 - lengthy content
         </div>

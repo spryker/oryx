@@ -1,9 +1,6 @@
-import {
-  AppFeature,
-  DefaultJsonAPITransformerService,
-  JsonAPITransformerService,
-} from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { DefaultLocaleAdapter, LocaleAdapter } from '@spryker-oryx/i18n';
+import { PickingServicesFeature } from '@spryker-oryx/picking/services';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { ComponentsInfo } from '@spryker-oryx/utilities';
 import {
@@ -17,7 +14,6 @@ import {
   pickingListItemComponent,
   pickingListsComponent,
   pickingListsHeaderComponent,
-  pickingLoginComponent,
   pickingPickerComponent,
   pickingPickerHeaderComponent,
   pickingProductCardComponent,
@@ -26,22 +22,7 @@ import {
 } from './components';
 import { PickingConfig, providePickingConfig } from './config.provider';
 import { defaultPickingRoutes } from './routes';
-import {
-  PickingHeaderDefaultService,
-  PickingHeaderService,
-  PickingHttpDefaultService,
-  PickingHttpService,
-  PickingListAdapter,
-  PickingListDefaultAdapter,
-  PickingListDefaultService,
-  PickingListService,
-  WarehouseUserAssignmentsAdapter,
-  WarehouseUserAssignmentsDefaultAdapter,
-  WarehouseUserAssignmentsDefaultService,
-  WarehouseUserAssignmentsService,
-  warehouseUserAssignmentNormalizer,
-  warehouseUserAssignmentsNormalizer,
-} from './services';
+import { PickingHeaderDefaultService, PickingHeaderService } from './services';
 import { PickingListContextFallback } from './picking-list.context';
 
 export const pickingComponents = [
@@ -50,7 +31,6 @@ export const pickingComponents = [
   pickingDiscardModalComponent,
   pickingFilterButtonComponent,
   pickingFiltersComponent,
-  pickingLoginComponent,
   pickingHeaderComponent,
   pickingListsComponent,
   pickingListsHeaderComponent,
@@ -67,40 +47,35 @@ export interface PickingFeatureConfig extends PickingConfig {
   noDefaultRoutes?: boolean;
 }
 
-export class PickingFeature implements AppFeature {
+export class PickingFeature extends PickingServicesFeature {
   providers: Provider[];
   components: ComponentsInfo;
 
   constructor(config?: PickingFeatureConfig) {
+    super();
     this.providers = this.getProviders(config);
     this.components = pickingComponents;
   }
 
-  protected getProviders(config?: PickingFeatureConfig): Provider[] {
+  protected override getProviders(config?: PickingFeatureConfig): Provider[] {
     return [
       ...provideLitRoutes(
         !config?.noDefaultRoutes ? { routes: defaultPickingRoutes } : undefined
       ),
       ...providePickingConfig(config),
       {
-        provide: JsonAPITransformerService,
-        useClass: DefaultJsonAPITransformerService,
+        provide: PickingHeaderService,
+        useClass: PickingHeaderDefaultService,
       },
-      ...warehouseUserAssignmentNormalizer,
-      ...warehouseUserAssignmentsNormalizer,
-      { provide: PickingListService, useClass: PickingListDefaultService },
-      { provide: PickingListAdapter, useClass: PickingListDefaultAdapter },
-      { provide: PickingHttpService, useClass: PickingHttpDefaultService },
-      { provide: PickingHeaderService, useClass: PickingHeaderDefaultService },
+      //override SapiLocaleAdapter that is provided by siteFeature with default one
+      //to eliminate unnecessary request to the store endpoint
+      //was implemented in https://spryker.atlassian.net/browse/HRZ-89955
       {
-        provide: WarehouseUserAssignmentsAdapter,
-        useClass: WarehouseUserAssignmentsDefaultAdapter,
+        provide: LocaleAdapter,
+        useClass: DefaultLocaleAdapter,
       },
-      {
-        provide: WarehouseUserAssignmentsService,
-        useClass: WarehouseUserAssignmentsDefaultService,
-      },
-      PickingListContextFallback
+      PickingListContextFallback,
+      ...super.getProviders(),
     ];
   }
 }

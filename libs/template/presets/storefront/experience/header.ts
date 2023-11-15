@@ -64,11 +64,10 @@ export const topHeader = (options?: {
         rules: [
           {
             layout:
-              featureVersion >= '1.2'
-                ? {
-                    type: 'flex',
-                    bleed: true,
-                  }
+              featureVersion >= '1.3'
+                ? { type: 'flex', bleed: true, wrap: false }
+                : featureVersion >= '1.2'
+                ? { type: 'flex', bleed: true }
                 : 'flex',
             background: 'hsl(0, 0%, 9.0%)',
             padding: '10px 0',
