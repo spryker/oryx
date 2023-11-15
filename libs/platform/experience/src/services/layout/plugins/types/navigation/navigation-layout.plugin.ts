@@ -1,5 +1,4 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { css } from 'lit';
 import { Observable, of } from 'rxjs';
 import { LayoutStyles } from '../../../layout.model';
 import {
@@ -18,12 +17,7 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
           ? m.verticalStyles
           : m.horizontalStyles;
 
-        const navigationType =
-          options.navigationType === 'flyout' ? m.flyoutStyles : css``;
-
-        return {
-          styles: `${m.styles.styles}${direction}${navigationType}`,
-        };
+        return { styles: `${m.styles.styles}${direction}` };
       })
     );
   }

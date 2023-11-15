@@ -32,6 +32,11 @@ export const storefrontLinkStyles = css`
     padding: var(--oryx-link-padding);
   }
 
+  :host([icon]) ::slotted(a) {
+    margin-inline-start: calc((var(--oryx-icon-size, 24px) + 8px) * -1);
+    padding-inline-start: calc(var(--oryx-icon-size, 24px) + 8px);
+  }
+
   :host(:hover) ::slotted(a) {
     text-decoration: var(
       --oryx-link-decoration,

@@ -17,6 +17,7 @@ export const contentLinkStyles = css`
   }
 
   :host([current]) {
+    color: var(--oryx-link-current-color);
     box-shadow: var(--oryx-link-current-shadow);
   }
 `;

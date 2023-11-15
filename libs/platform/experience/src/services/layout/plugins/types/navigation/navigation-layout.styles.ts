@@ -28,8 +28,8 @@ export const horizontalStyles = css`
     --oryx-link-active-shadow: var(--oryx-link-hover-shadow);
     --oryx-link-current-shadow: var(--oryx-link-hover-shadow);
 
-    /* align-items: var(--align, start);
-    justify-content: var(--justify, start); */
+    align-items: var(--align, start);
+    justify-content: var(--justify, start);
   }
 `;
 
@@ -42,25 +42,5 @@ export const verticalStyles = css`
     --oryx-link-current-shadow: 4px 0 0 0 var(--oryx-color-primary-9) inset;
 
     flex-direction: column;
-  }
-`;
-
-export const flyoutStyles = css`
-  :host {
-    margin-inline: initial; /* reverted from base layout */
-    width: initial; /* reverted from base layout */
-  }
-
-  :host(:not(:hover)) oryx-composition {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  oryx-composition {
-    position: absolute;
-    transition: all 0.3s ease-in-out 0.1s;
-    width: min(100%, calc(var(--_container-width)));
-    inset-inline-start: var(--_bleed);
-    z-index: 100;
   }
 `;

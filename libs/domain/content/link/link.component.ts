@@ -7,6 +7,7 @@ import { LinkService } from '@spryker-oryx/site';
 import {
   computed,
   elementEffect,
+  featureVersion,
   hydrate,
   signalAware,
   ssrShim,
@@ -25,7 +26,7 @@ export class ContentLinkComponent extends ContentMixin<
   ContentLinkOptions,
   ContentLinkContent
 >(LitElement) {
-  static styles = contentLinkStyles;
+  static styles = featureVersion >= '1.3' ? contentLinkStyles : undefined;
 
   protected semanticLinkService = resolve(LinkService);
   protected categoryService = resolve(ProductCategoryService);
