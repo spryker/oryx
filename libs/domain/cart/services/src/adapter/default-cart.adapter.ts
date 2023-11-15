@@ -21,6 +21,7 @@ import {
 } from '@spryker-oryx/site';
 import {
   Observable,
+  catchError,
   combineLatest,
   map,
   of,
@@ -51,9 +52,10 @@ export class DefaultCartAdapter implements CartAdapter {
           !identity.isAuthenticated
         );
 
-        return this.http
-          .get<ApiCartModel.ResponseList>(url)
-          .pipe(this.transformer.do(CartsNormalizer));
+        return this.http.get<ApiCartModel.ResponseList>(url).pipe(
+          this.transformer.do(CartsNormalizer),
+          catchError(() => of([]))
+        );
       })
     );
   }
