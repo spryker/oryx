@@ -6,6 +6,7 @@ import {
   CartEntry,
   CartEntryQualifier,
   CartQualifier,
+  Coupons,
   UpdateCartEntryQualifier,
 } from '../models';
 
@@ -16,6 +17,7 @@ export interface CartService {
   addEntry(data: AddCartEntryQualifier): Observable<unknown>;
   updateEntry(data: UpdateCartEntryQualifier): Observable<unknown>;
   deleteEntry(data: CartEntryQualifier): Observable<unknown>;
+  getCoupons(data?: CartQualifier): Observable<Coupons[]>;
   /**
    * Get busy state for either cart or individual entry by groupKey
    */

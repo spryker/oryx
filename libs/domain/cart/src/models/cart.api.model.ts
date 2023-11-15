@@ -21,6 +21,19 @@ export module ApiCartModel {
     thresholds?: unknown[];
     currency?: string;
     store?: string;
+    vouchers?: Coupons[];
+  }
+
+  export interface Coupons {
+    id: string;
+    code: string;
+    amount: number;
+    discountPromotionAbstractSku?: string;
+    discountPromotionQuantity?: number;
+    discountType: string;
+    displayName: string;
+    expirationDateTime: Date;
+    isExclusive: boolean;
   }
 
   export interface Totals {
@@ -75,6 +88,7 @@ export module ApiCartModel {
     Items = 'items',
     GuestCartItems = 'guest-cart-items',
     ProductOptions = 'product-options',
+    Coupons = 'vouchers',
   }
 
   export enum UrlParts {
@@ -83,6 +97,7 @@ export module ApiCartModel {
     Items = 'items',
     GuestCarts = 'guest-carts',
     GuestCartItems = 'guest-cart-items',
+    Coupons = 'vouchers',
   }
 
   export type ResponseIncludes =

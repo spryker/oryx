@@ -23,6 +23,16 @@ export interface Cart extends CartId {
   currency?: string;
   store?: string;
   products?: CartEntry[];
+  coupons?: Coupons[];
+}
+
+export interface Coupons {
+  id: string;
+  code: string;
+  amount: number;
+  discountType: string;
+  displayName: string;
+  expirationDateTime: Date;
 }
 
 export interface CartEntry {

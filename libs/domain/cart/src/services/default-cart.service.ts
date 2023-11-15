@@ -31,6 +31,7 @@ import {
   CartEntry,
   CartEntryQualifier,
   CartQualifier,
+  Coupons,
   UpdateCartEntryQualifier,
 } from '../models';
 import { CartAdapter } from './adapter/cart.adapter';
@@ -206,6 +207,10 @@ export class DefaultCartService implements CartService {
 
   getEntries(data?: CartQualifier): Observable<CartEntry[]> {
     return this.getCart(data).pipe(map((cart) => cart?.products ?? []));
+  }
+
+  getCoupons(data?: CartQualifier | undefined): Observable<Coupons[]> {
+    return this.getCart(data).pipe(map((cart) => cart?.coupons ?? []));
   }
 
   isEmpty(data?: CartQualifier): Observable<boolean> {

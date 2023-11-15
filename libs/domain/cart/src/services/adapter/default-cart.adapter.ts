@@ -73,6 +73,26 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
+  addCoupon(data: any): void {
+    const attributes = {
+      code: data.code,
+    };
+
+    const url = this.generateUrl(
+      `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}`,
+      false
+    );
+
+    const body = {
+      data: {
+        type: ApiCartModel.UrlParts.Coupons,
+        attributes,
+      },
+    };
+
+    this.http.post<ApiCartModel.Response>(url, body);
+  }
+
   addEntry(data: AddCartEntryQualifier): Observable<Cart> {
     const attributes = {
       sku: data.sku,
@@ -188,7 +208,7 @@ export class DefaultCartAdapter implements CartAdapter {
   protected generateUrl(path: string, isAnonymous: boolean): string {
     const includes = isAnonymous
       ? [ApiCartModel.Includes.GuestCartItems]
-      : [ApiCartModel.Includes.Items];
+      : [ApiCartModel.Includes.Items, ApiCartModel.Includes.Coupons];
 
     return `${this.SCOS_BASE_URL}/${path}${`?include=${includes.join(',')}`}`;
   }
