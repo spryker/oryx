@@ -1,6 +1,10 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingListComponentProperties } from '@spryker-oryx/picking';
 import {
+  PickingList,
+  PickingListService,
+} from '@spryker-oryx/picking/services';
+import {
   Signal,
   Type,
   isDefined,
@@ -18,8 +22,6 @@ import {
   map,
   switchMap,
 } from 'rxjs';
-import type { PickingList } from '../models';
-import { PickingListService } from '../services';
 
 export declare class PickingListMixinInterface
   implements PickingListComponentProperties

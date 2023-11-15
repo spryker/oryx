@@ -1,5 +1,4 @@
 import { appBuilder } from '@spryker-oryx/application';
-import { labsFeatures } from '@spryker-oryx/labs';
 import { offlineFulfillmentFeatures } from '@spryker-oryx/presets/fulfillment';
 import { fulfillmentTheme } from '@spryker-oryx/themes';
 
@@ -14,7 +13,6 @@ appBuilder()
       },
     })
   )
-  .withFeature([...(env.ORYX_LABS ? labsFeatures : [])])
   .withTheme(fulfillmentTheme)
   .create()
   .then(() => console.debug('Fulfillment App started!'))
