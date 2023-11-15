@@ -93,15 +93,11 @@ describe('SearchBoxComponent', () => {
         },
       ],
     });
-    linkService = testInjector.inject<MockLinkService>(
-      LinkService
-    ) as MockLinkService;
-    routerService = testInjector.inject<MockRouterService>(
-      RouterService
-    ) as MockRouterService;
-    suggestionService = testInjector.inject(
+    linkService = testInjector.inject<MockLinkService>(LinkService);
+    routerService = testInjector.inject<MockRouterService>(RouterService);
+    suggestionService = testInjector.inject<MockSuggestionRendererService>(
       SuggestionRendererService
-    ) as MockSuggestionRendererService;
+    );
     element = await fixture(html`<oryx-search-box></oryx-search-box>`);
   });
 
