@@ -30,6 +30,7 @@
       ],
       "@spryker-oryx/cart": ["libs/domain/cart/src/index.ts"],
       "@spryker-oryx/cart/add": ["libs/domain/cart/add/index.ts"],
+      "@spryker-oryx/cart/coupon": ["libs/domain/cart/coupon/index.ts"],
       "@spryker-oryx/cart/entries": ["libs/domain/cart/entries/index.ts"],
       "@spryker-oryx/cart/entry": ["libs/domain/cart/entry/index.ts"],
       "@spryker-oryx/cart/heading": ["libs/domain/cart/heading/index.ts"],
