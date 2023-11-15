@@ -171,6 +171,7 @@ export class CarouselNavigationComponent
   protected updateArrowState(): void {
     if (!this.items.length || !this.showArrows) return;
 
+    this.setScrollSnap();
     this.toggleAttribute(
       'has-previous',
       getScrollDimensions(this.hostElement, this.isVertical).position >
