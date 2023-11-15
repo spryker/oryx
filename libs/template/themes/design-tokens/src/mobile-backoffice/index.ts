@@ -37,6 +37,9 @@ export const mobileBackofficeTokens: DesignToken[] = [
       width: '414px',
       bleed: '8px',
     },
+    modal: {
+      bleed: '8px',
+    },
   },
   {
     media: {
@@ -46,6 +49,9 @@ export const mobileBackofficeTokens: DesignToken[] = [
     ...commonTokensSmall,
     container: {
       bleed: '0',
+    },
+    modal: {
+      bleed: '16px',
     },
   },
 ];

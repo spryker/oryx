@@ -1,13 +1,12 @@
-import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
 import {
   EVENT_EDIT,
   EVENT_SUBMIT,
-  ItemsFilters,
-  PickingListItem,
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
+import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking/services';
 import { ButtonSize } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { QuantityInputComponent } from '@spryker-oryx/ui/quantity-input';
 import { I18nMixin } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -86,13 +85,13 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
 
     const quantityForm = html`
       <form @submit=${this.onSubmit}>
-        <oryx-cart-quantity-input
+        <oryx-quantity-input
           ${ref(this.quantityInputRef)}
           min="0"
           .max="${this.productItem.quantity}"
           .value="${this.productItem.numberOfPicked}"
           @update=${this.onChangeQuantity}
-        ></oryx-cart-quantity-input>
+        ></oryx-quantity-input>
 
         <div>
           ${this.i18n('picking.product-card.of-<count>-items', {
