@@ -14,7 +14,7 @@ export const notificationStyles = css`
     border-inline-start: 6px solid transparent;
     align-items: start;
     box-sizing: border-box;
-    word-break: break-all;
+    word-break: break-word;
   }
 
   :host([scheme='${unsafeCSS(Scheme.Light)}']),

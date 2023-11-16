@@ -2,7 +2,6 @@ import { OauthService, OauthServiceConfig } from '@spryker-oryx/auth';
 import { App, AppPlugin, InjectionPlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
-import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { RouterService } from '@spryker-oryx/router';
 import {
   BehaviorSubject,
@@ -63,8 +62,9 @@ export class OfflineDataPlugin implements AppPlugin {
 
   syncData(injector: Injector): Observable<void> {
     this.refreshing$.next(true);
-    // this.processPendingSyncs(injector);
-    return this.populateData(injector);
+    return this.populateData(injector).pipe(
+      tap(() => this.refreshing$.next(false))
+    );
   }
 
   isRefreshing(): Observable<boolean> {
@@ -126,21 +126,9 @@ export class OfflineDataPlugin implements AppPlugin {
     );
   }
 
-  protected processPendingSyncs(injector: Injector): void {
-    injector.inject(SyncSchedulerService).forceSync();
-  }
-
   protected populateData(injector: Injector): Observable<void> {
     return this.clearDb(injector).pipe(
       switchMap(() => this.populateDb(injector)),
-      tap({
-        next: () => {
-          this.refreshing$.next(false);
-        },
-        error: () => {
-          this.refreshing$.next(false);
-        },
-      })
     );
   }
 }
