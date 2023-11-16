@@ -1,12 +1,12 @@
 import { inject } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
-import { SyncSchedulerService } from '@spryker-oryx/offline';
+import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import {
   PickingListAdapter,
   PickingListQualifier,
   PickingListQualifierSortBy,
   PickingListStatus,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/services';
 import { intersectArrays } from '@spryker-oryx/utilities';
 import { Collection, Table, liveQuery } from 'dexie';
 import { Observable, combineLatestWith, map, switchMap } from 'rxjs';

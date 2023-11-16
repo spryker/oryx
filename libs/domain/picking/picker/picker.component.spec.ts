@@ -1,13 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  PickingHeaderService,
-  PickingListService,
-} from '@spryker-oryx/picking';
+import { PickingHeaderService } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+import { PickingListService } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
+import { tabsComponent } from '@spryker-oryx/ui';
 import { TabComponent } from '@spryker-oryx/ui/tab';
-import { tabsComponent } from '@spryker-oryx/ui/tabs';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
