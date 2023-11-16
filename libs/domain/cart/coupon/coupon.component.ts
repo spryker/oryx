@@ -1,16 +1,14 @@
 import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import {
-  FormFieldDefinition,
-  FormFieldType,
-  FormRenderer,
-} from '@spryker-oryx/form';
+import { FormRenderer } from '@spryker-oryx/form';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { NotificationService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ColorType } from '@spryker-oryx/ui/link';
+import { ClearIconAppearance } from '@spryker-oryx/ui/searchbox';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -44,6 +42,11 @@ export class CouponComponent extends CartComponentMixin(
             .errorMessage="${this.hasError ? this.errorMessageDescription : ''}"
           >
             <input placeholder="Coupon code" name="coupon" />
+            <oryx-icon
+              type=${IconTypes.Close}
+              appearance=${ClearIconAppearance.Hover}
+              @click=${(): void => this.clear()}
+            ></oryx-icon>
           </oryx-input>
           <oryx-button
             .type="${ButtonType.Outline}"
@@ -86,19 +89,8 @@ export class CouponComponent extends CartComponentMixin(
     `;
   }
 
-  protected getCouponField(): FormFieldDefinition[] {
-    return [
-      {
-        id: 'coupon',
-        type: FormFieldType.Text,
-        label: ' ',
-        placeholder: this.i18n('coupon.coupon-code'),
-        attributes: {
-          hasError: this.hasError,
-          errorMessage: this.hasError ? this.errorMessageDescription : '',
-        },
-      },
-    ];
+  protected clear(): void {
+    this.coupon!.value = '';
   }
 
   protected onSubmit(): void {
@@ -111,6 +103,8 @@ export class CouponComponent extends CartComponentMixin(
           type: AlertType.Success,
           content: `'${this.coupon?.value}' successfully applied`,
         });
+
+        this.coupon!.value = '';
       },
       error: (e: Error) => {
         this.hasError = true;

@@ -24,7 +24,7 @@ export const couponStyles = css`
   }
 
   li .code {
-    ${headingUtil(HeadingTag.Caption)}
+    ${headingUtil(HeadingTag.Caption)};
   }
 
   li .name {
