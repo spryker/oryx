@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 declare const __ORYX_FEATURE_VERSION__: string;
 
 // this one should be adjusted per major version
@@ -10,4 +12,4 @@ interface ImportMeta {
 export const featureVersion =
   typeof __ORYX_FEATURE_VERSION__ !== 'undefined'
     ? __ORYX_FEATURE_VERSION__ || defaultVersion
-    : (import.meta as ImportMeta)?.env?.ORYX_FEATURE_VERSION || defaultVersion;
+    : import.meta.env.ORYX_FEATURE_VERSION || defaultVersion;
