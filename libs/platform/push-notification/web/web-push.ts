@@ -75,12 +75,6 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
     );
   }
 
-  getPermissionState(): Observable<PermissionState> {
-    return this.pushManager$.pipe(
-      switchMap((pushManager) => pushManager.permissionState(this.getOptions()))
-    );
-  }
-
   protected createSubscription(): Observable<PushSubscription> {
     return this.pushManager$.pipe(
       switchMap((pushManager) => pushManager.subscribe(this.getOptions()))

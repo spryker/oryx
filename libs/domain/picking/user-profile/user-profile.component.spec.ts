@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
 import { App, AppRef, StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { NetworkStateService } from '@spryker-oryx/offline';
 import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
@@ -42,6 +43,10 @@ class MockStorageService implements Partial<StorageService> {
   get = vi.fn().mockReturnValue(of(undefined));
 }
 
+class MockNetworkStateService implements Partial<NetworkStateService> {
+  get = vi.fn().mockReturnValue(of(true));
+}
+
 describe('PickingUserProfileComponent', () => {
   let element: PickingUserProfileComponent;
   let routerService: MockRouterService;
@@ -75,6 +80,10 @@ describe('PickingUserProfileComponent', () => {
         {
           provide: StorageService,
           useClass: MockStorageService,
+        },
+        {
+          provide: NetworkStateService,
+          useClass: MockNetworkStateService,
         },
       ],
     });
@@ -219,7 +228,7 @@ describe('PickingUserProfileComponent', () => {
 
       it('should render loading indicator', async () => {
         const button = element.renderRoot.querySelector('.sync-data');
-        expect(button).toHaveProperty('text', 'Receive data');
+        expect(button).toHaveProperty('text', 'Sync data');
         expect(button?.hasAttribute('loading')).toBe(true);
       });
 
@@ -237,7 +246,7 @@ describe('PickingUserProfileComponent', () => {
 
         it('should not show loading indicator', () => {
           const button = element.renderRoot.querySelector('.sync-data');
-          expect(button).toHaveProperty('text', 'Receive data');
+          expect(button).toHaveProperty('text', 'Sync data');
           expect(button?.hasAttribute('loading')).toBe(false);
         });
       });
