@@ -52,7 +52,7 @@ export class PickingListDefaultService implements PickingListService {
   }
 
   getList(id: string): Observable<PickingList> {
-    return this.get({ids: [id]}).pipe(map(list => list[0] ?? null));
+    return this.get({ ids: [id] }).pipe(map((list) => list[0] ?? null));
   }
 
   startPicking(pickingList: PickingList): Observable<PickingList | null> {

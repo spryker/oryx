@@ -1,6 +1,7 @@
 import { AuthService } from '@spryker-oryx/auth';
 import { AppRef, StorageService } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
+import { NetworkStateService } from '@spryker-oryx/offline';
 import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import {
@@ -22,7 +23,6 @@ import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs';
 import { userProfileComponentStyles } from './user-profile.styles';
-import { NetworkStateService } from '@spryker-oryx/offline';
 
 @signalAware()
 export class PickingUserProfileComponent extends I18nMixin(LitElement) {

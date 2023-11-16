@@ -1,12 +1,12 @@
 import {
-  fromEvent,
-  merge,
   Observable,
-  of,
+  distinctUntilChanged,
+  fromEvent,
   map,
-  distinctUntilChanged
+  merge,
+  of,
 } from 'rxjs';
-import { NetworkStateService, NetworkState } from './network-state.service';
+import { NetworkState, NetworkStateService } from './network-state.service';
 
 export class NetworkStateDefaultService implements NetworkStateService {
   get(): Observable<NetworkState> {
@@ -15,8 +15,8 @@ export class NetworkStateDefaultService implements NetworkStateService {
       fromEvent(window, 'online'),
       fromEvent(window, 'offline')
     ).pipe(
-      map(() => navigator.onLine ? 'online': 'offline'),
-      distinctUntilChanged(),
-    )
+      map(() => (navigator.onLine ? 'online' : 'offline')),
+      distinctUntilChanged()
+    );
   }
 }

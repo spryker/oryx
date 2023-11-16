@@ -2,6 +2,7 @@ import { OauthService, OauthServiceConfig } from '@spryker-oryx/auth';
 import { App, AppPlugin, InjectionPlugin } from '@spryker-oryx/core';
 import { Injector } from '@spryker-oryx/di';
 import { DexieIndexedDbService } from '@spryker-oryx/indexed-db';
+import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { RouterService } from '@spryker-oryx/router';
 import {
   BehaviorSubject,
@@ -16,7 +17,6 @@ import {
 } from 'rxjs';
 import { PickingListEntity, PickingProductEntity } from './entities';
 import { PickingListOnlineAdapter } from './services';
-import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 
 export class OfflineDataPlugin implements AppPlugin {
   protected subscription?: Subscription;
@@ -141,6 +141,6 @@ export class OfflineDataPlugin implements AppPlugin {
           this.refreshing$.next(false);
         },
       })
-    )
+    );
   }
 }

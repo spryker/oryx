@@ -15,6 +15,6 @@ export const customerNotePage: ExperienceComponent = {
     {
       type: 'oryx-picking-customer-note',
     },
-    { ref: 'service' }
+    { ref: 'service' },
   ],
 };

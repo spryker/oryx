@@ -8,23 +8,35 @@ export const defaultPickingRoutes: RouteConfig[] = [
   {
     path: '/',
     render: () =>
-      html`<oryx-composition uid="picking-lists" mode-light></oryx-composition>`,
+      html`<oryx-composition
+        uid="picking-lists"
+        mode-light
+      ></oryx-composition>`,
   },
   {
     path: '/warehouse-selection',
     render: () =>
-      html`<oryx-composition uid="warehouse-selection" mode-light></oryx-composition>`,
+      html`<oryx-composition
+        uid="warehouse-selection"
+        mode-light
+      ></oryx-composition>`,
   },
   {
     path: '/picking-list/picking/:pickingListId',
     render: () =>
-      html`<oryx-composition uid="picking-picker" mode-light></oryx-composition>`,
+      html`<oryx-composition
+        uid="picking-picker"
+        mode-light
+      ></oryx-composition>`,
     leave: (): Observable<boolean> =>
       resolve(PickingHeaderService).guardWithDialog(),
   },
   {
     path: '/customer-note-info/:pickingListId',
-    render: () => 
-      html`<oryx-composition uid="customer-note" mode-light></oryx-composition>`,
+    render: () =>
+      html`<oryx-composition
+        uid="customer-note"
+        mode-light
+      ></oryx-composition>`,
   },
 ];

@@ -21,9 +21,9 @@ import {
   pickingWarehouseAssignmentComponent,
 } from './components';
 import { PickingConfig, providePickingConfig } from './config.provider';
+import { PickingListContextFallback } from './picking-list.context';
 import { defaultPickingRoutes } from './routes';
 import { PickingHeaderDefaultService, PickingHeaderService } from './services';
-import { PickingListContextFallback } from './picking-list.context';
 
 export const pickingComponents = [
   pickingCustomerNoteComponent,

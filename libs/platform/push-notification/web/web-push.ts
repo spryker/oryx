@@ -1,5 +1,13 @@
 import { PushProvider } from '@spryker-oryx/push-notification';
-import { catchError, from, map, Observable, of, switchMap, throwError } from 'rxjs';
+import {
+  catchError,
+  from,
+  map,
+  Observable,
+  of,
+  switchMap,
+  throwError,
+} from 'rxjs';
 
 export interface WebPushProviderOptions {
   /**
@@ -20,7 +28,7 @@ export interface WebPushProviderOptions {
 
 export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
   protected pushManager$ = from(navigator.serviceWorker.ready).pipe(
-    map((serviceWorker) => serviceWorker.pushManager),
+    map((serviceWorker) => serviceWorker.pushManager)
   );
 
   constructor(protected options?: WebPushProviderOptions) {}
@@ -36,13 +44,19 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
       ),
       map((subscription) => subscription.toJSON()),
       //catch permission error or pass the original one
-      catchError(e => this.getPermissionState().pipe(
-        switchMap(state => throwError(() => state === 'denied'?
-          new Error(
-            'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission'
-          ): e
-        ))
-      ))
+      catchError((e) =>
+        this.getPermissionState().pipe(
+          switchMap((state) =>
+            throwError(() =>
+              state === 'denied'
+                ? new Error(
+                    'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission'
+                  )
+                : e
+            )
+          )
+        )
+      )
     );
   }
 
@@ -60,9 +74,7 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
 
   protected createSubscription(): Observable<PushSubscription> {
     return this.pushManager$.pipe(
-      switchMap((pushManager) =>
-        pushManager.subscribe(this.getOptions())
-      )
+      switchMap((pushManager) => pushManager.subscribe(this.getOptions()))
     );
   }
 
@@ -77,8 +89,8 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
       userVisibleOnly: this.options?.userVisibleOnly ?? true,
       applicationServerKey: this.options?.applicationServerKey
         ? this.encodeKey(this.options.applicationServerKey)
-        : undefined
-    }
+        : undefined,
+    };
   }
 
   /**

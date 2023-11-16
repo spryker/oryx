@@ -15,6 +15,6 @@ export const pickingPickerPage: ExperienceComponent = {
     {
       type: 'oryx-picking-picker',
     },
-    { ref: 'service' }
+    { ref: 'service' },
   ],
 };

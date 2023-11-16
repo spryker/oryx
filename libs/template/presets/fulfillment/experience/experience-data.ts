@@ -1,14 +1,14 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { provideExperienceData } from '@spryker-oryx/experience';
 import {
+  customerNotePage,
   fulfillmentLoginPage,
   pickingListsPage,
+  pickingPickerPage,
   warehouseSelectionPage,
-  customerNotePage,
-  pickingPickerPage
 } from './pages';
-import { UserProfileComponent } from './user-profile';
 import { ServiceTemplate } from './service';
+import { UserProfileComponent } from './user-profile';
 
 export const StaticExperienceFeature: AppFeature = {
   providers: [
@@ -19,7 +19,7 @@ export const StaticExperienceFeature: AppFeature = {
       pickingListsPage,
       customerNotePage,
       pickingPickerPage,
-      ServiceTemplate
+      ServiceTemplate,
     ]),
   ],
 };
