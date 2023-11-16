@@ -12,7 +12,9 @@ export const notificationStyles = css`
     border-radius: var(--oryx-border-radius-small);
     line-height: 24px;
     border-inline-start: 6px solid transparent;
+    align-items: start;
     box-sizing: border-box;
+    word-break: break-all;
   }
 
   :host([scheme='${unsafeCSS(Scheme.Light)}']),
