@@ -21,6 +21,7 @@ import {
   pickingWarehouseAssignmentComponent,
 } from './components';
 import { PickingConfig, providePickingConfig } from './config.provider';
+import { PickingListContextFallback } from './picking-list.context';
 import { defaultPickingRoutes } from './routes';
 import { PickingHeaderDefaultService, PickingHeaderService } from './services';
 
@@ -73,6 +74,7 @@ export class PickingFeature extends PickingServicesFeature {
         provide: LocaleAdapter,
         useClass: DefaultLocaleAdapter,
       },
+      PickingListContextFallback,
       ...super.getProviders(),
     ];
   }

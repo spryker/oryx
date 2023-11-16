@@ -2,6 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { AuthService } from '@spryker-oryx/auth';
 import { App, AppRef, StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
+import { NetworkStateService } from '@spryker-oryx/offline';
 import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
@@ -11,7 +12,7 @@ import { PickingUserProfileComponent } from './user-profile.component';
 import { pickingUserProfileComponent } from './user-profile.def';
 
 const mockOfflineDataPlugin = {
-  refreshData: vi.fn().mockReturnValue(
+  syncData: vi.fn().mockReturnValue(
     of(undefined).pipe(
       switchMap(async () => {
         await nextTick(2);
@@ -40,6 +41,10 @@ class MockAuthService implements Partial<AuthService> {
 
 class MockStorageService implements Partial<StorageService> {
   get = vi.fn().mockReturnValue(of(undefined));
+}
+
+class MockNetworkStateService implements Partial<NetworkStateService> {
+  get = vi.fn().mockReturnValue(of(true));
 }
 
 describe('PickingUserProfileComponent', () => {
@@ -75,6 +80,10 @@ describe('PickingUserProfileComponent', () => {
         {
           provide: StorageService,
           useClass: MockStorageService,
+        },
+        {
+          provide: NetworkStateService,
+          useClass: MockNetworkStateService,
         },
       ],
     });
@@ -205,27 +214,27 @@ describe('PickingUserProfileComponent', () => {
 
   describe('when user is on the main page', () => {
     it('should render receive data button', () => {
-      expect(element).toContainElement('.receive-data');
+      expect(element).toContainElement('.sync-data');
     });
 
     describe('and the receive data button is clicked', () => {
       beforeEach(() => {
-        element.renderRoot.querySelector<HTMLElement>('.receive-data')?.click();
+        element.renderRoot.querySelector<HTMLElement>('.sync-data')?.click();
       });
 
       it('should call offline data plugin', () => {
-        expect(mockOfflineDataPlugin.refreshData).toHaveBeenCalled();
+        expect(mockOfflineDataPlugin.syncData).toHaveBeenCalled();
       });
 
       it('should render loading indicator', async () => {
-        const button = element.renderRoot.querySelector('.receive-data');
-        expect(button).toHaveProperty('text', 'Receive data');
+        const button = element.renderRoot.querySelector('.sync-data');
+        expect(button).toHaveProperty('text', 'Sync data');
         expect(button?.hasAttribute('loading')).toBe(true);
       });
 
       describe('and receive data completes', () => {
         beforeEach(async () => {
-          mockOfflineDataPlugin.refreshData.mockReturnValue(of(undefined));
+          mockOfflineDataPlugin.syncData.mockReturnValue(of(undefined));
 
           element = await fixture(
             `<oryx-picking-user-profile></oryx-picking-user-profile>`
@@ -236,8 +245,8 @@ describe('PickingUserProfileComponent', () => {
         });
 
         it('should not show loading indicator', () => {
-          const button = element.renderRoot.querySelector('.receive-data');
-          expect(button).toHaveProperty('text', 'Receive data');
+          const button = element.renderRoot.querySelector('.sync-data');
+          expect(button).toHaveProperty('text', 'Sync data');
           expect(button?.hasAttribute('loading')).toBe(false);
         });
       });

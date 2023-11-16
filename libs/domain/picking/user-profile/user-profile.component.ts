@@ -1,6 +1,7 @@
 import { AuthService } from '@spryker-oryx/auth';
 import { AppRef, StorageService } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
+import { NetworkStateService } from '@spryker-oryx/offline';
 import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
 import {
@@ -30,6 +31,7 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
   protected storageService = resolve(StorageService);
+  protected networkStateService = resolve(NetworkStateService);
 
   protected injector = resolve(INJECTOR);
   protected injectorDataPlugin =
@@ -55,6 +57,7 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
       "user.profile.you-can't-log-out-because-of-a-pending-synchronization"
     )
   );
+  protected $networkState = signal(this.networkStateService.get());
 
   protected override render(): TemplateResult {
     return html`
@@ -103,13 +106,14 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
           () =>
             html`
               <oryx-button
-                class="receive-data"
+                class="sync-data"
                 .type=${ButtonType.Outline}
                 .color=${ButtonColor.Neutral}
-                .text=${this.i18n('user.profile.receive-data')}
+                .text=${this.i18n('user.profile.sync-data')}
                 block
                 ?loading=${this.loading}
-                @click=${this.onReceiveData}
+                ?disabled=${this.$networkState() === 'offline'}
+                @click=${this.onSyncData}
               ></oryx-button>
             `
         )}
@@ -119,11 +123,11 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
     `;
   }
 
-  protected onReceiveData(): void {
+  protected onSyncData(): void {
     this.loading = true;
 
     this.injectorDataPlugin
-      .refreshData(this.injector)
+      .syncData(this.injector)
       .pipe(tap(() => (this.loading = false)))
       .subscribe(() => {
         this.dispatchEvent(

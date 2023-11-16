@@ -29,12 +29,43 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
     return of(undefined);
   }
 
+  protected async checkSupportAndPermission(): Promise<void> {
+    let error = '';
+
+    if (!('serviceWorker' in navigator)) {
+      error = 'Browser does not support service-worker API';
+    } else if (!('SyncManager' in window)) {
+      error = 'Browser does not support background sync API';
+    } else if (
+      (await navigator.permissions.query({ name: 'notifications' })).state ===
+      'denied'
+    ) {
+      error =
+        'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission';
+    } else if (
+      (
+        await navigator.permissions.query({
+          name: 'background-sync' as PermissionName,
+        })
+      ).state === 'denied'
+    ) {
+      error =
+        'Permission to perform background sync is not granted. Check the browser configuration or reset the permission';
+    }
+
+    if (error) throw new Error(error);
+  }
+
   getSubscription(): Observable<PushSubscriptionJSON> {
-    return this.getExistingSubscription().pipe(
-      switchMap((subscription) =>
-        subscription ? of(subscription) : this.createSubscription()
-      ),
-      map((subscription) => subscription.toJSON())
+    return from(this.checkSupportAndPermission()).pipe(
+      switchMap(() =>
+        this.getExistingSubscription().pipe(
+          switchMap((subscription) =>
+            subscription ? of(subscription) : this.createSubscription()
+          ),
+          map((subscription) => subscription.toJSON())
+        )
+      )
     );
   }
 
@@ -45,17 +76,8 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
   }
 
   protected createSubscription(): Observable<PushSubscription> {
-    const userVisibleOnly = this.options?.userVisibleOnly ?? true;
-    const applicationServerKey = this.options?.applicationServerKey
-      ? this.encodeKey(this.options.applicationServerKey)
-      : undefined;
     return this.pushManager$.pipe(
-      switchMap((pushManager) =>
-        pushManager.subscribe({
-          applicationServerKey,
-          userVisibleOnly,
-        })
-      )
+      switchMap((pushManager) => pushManager.subscribe(this.getOptions()))
     );
   }
 
@@ -63,6 +85,15 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
     return this.pushManager$.pipe(
       switchMap((pushManager) => pushManager.getSubscription())
     );
+  }
+
+  protected getOptions(): Partial<WebPushProviderOptions> {
+    return {
+      userVisibleOnly: this.options?.userVisibleOnly ?? true,
+      applicationServerKey: this.options?.applicationServerKey
+        ? this.encodeKey(this.options.applicationServerKey)
+        : undefined,
+    };
   }
 
   /**
