@@ -187,13 +187,6 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
     }
 
     this.scheduleSyncTimer = setTimeout(async () => {
-      //when browser is not supporting SyncManager API
-      if (!('SyncManager' in window)) {
-        throw new Error(
-          `SyncManager is not supported by the browser`
-        );
-      }
-  
       const sync = (await this.getServiceWorker()).sync;
 
       //when there is no registered service worker

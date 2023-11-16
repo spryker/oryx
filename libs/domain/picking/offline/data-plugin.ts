@@ -63,7 +63,7 @@ export class OfflineDataPlugin implements AppPlugin {
 
   syncData(injector: Injector): Observable<void> {
     this.refreshing$.next(true);
-    this.processPendingSyncs(injector);
+    // this.processPendingSyncs(injector);
     return this.populateData(injector);
   }
 
