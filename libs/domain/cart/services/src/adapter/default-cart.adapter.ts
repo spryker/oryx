@@ -112,7 +112,7 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  addCoupon(data: AddCartCouponQualifier): Observable<unknown> {
+  addCoupon(data: AddCartCouponQualifier): Observable<Cart> {
     const attributes = {
       code: data.code,
     };
@@ -133,9 +133,18 @@ export class DefaultCartAdapter implements CartAdapter {
           },
         };
 
-        return this.http.post<ApiCartModel.Response>(url, body);
+        return this.http
+          .post<ApiCartModel.Response>(url, body)
+          .pipe(this.transformer.do(CartNormalizer));
       })
     );
+
+    // .pipe(
+    //   catchError((e) => {
+    //     console.log('error', e);
+    //     return throwError(() => new Error("Cart code can't be added."));
+    //   })
+    // );
   }
 
   addEntry(data: AddCartEntryQualifier): Observable<Cart> {

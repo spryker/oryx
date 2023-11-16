@@ -14,7 +14,7 @@ export interface CartAdapter {
   getAll: () => Observable<Cart[]>;
   get: (data: CartQualifier) => Observable<Cart>;
   addEntry: (data: AddCartEntryQualifier) => Observable<Cart>;
-  addCoupon: (data: AddCartCouponQualifier) => Observable<unknown>;
+  addCoupon: (data: AddCartCouponQualifier) => Observable<Cart>;
   deleteEntry: (data: CartEntryQualifier) => Observable<unknown>;
   updateEntry: (data: UpdateCartEntryQualifier) => Observable<Cart>;
   update: (data: UpdateCartQualifier) => Observable<Cart>;

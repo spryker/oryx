@@ -1,10 +1,18 @@
 import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
+import {
+  FormFieldDefinition,
+  FormFieldType,
+  FormRenderer,
+} from '@spryker-oryx/form';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { NotificationService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
+import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { ColorType } from '@spryker-oryx/ui/link';
 import { LitElement, TemplateResult, html } from 'lit';
+import { query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { tap } from 'rxjs';
 import { couponStyles } from './coupon.styles';
@@ -14,26 +22,40 @@ export class CouponComponent extends CartComponentMixin(
 ) {
   static styles = couponStyles;
 
+  @state() hasError = false;
+  @state() errorMessageDescription: '' | string = '';
+
+  @query('input[name=coupon]') coupon?: HTMLInputElement;
+
+  protected fieldRenderer = resolve(FormRenderer);
+
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
   protected localeService = resolve(LocaleService);
 
   protected override render(): TemplateResult {
-    console.log('this.coupons()', this.$coupons());
-
     return html`
-      <h3>Have a coupon?</h3>
-      <form>
-        <!-- errorMessage="The code is invalid, it might already have been used or is expired" -->
-        <oryx-input><input placeholder="Coupon code" /></oryx-input>
-        <oryx-button
-          type="outline"
-          color="neutral"
-          size="md"
-          @click=${this.handleClick}
-          >Apply</oryx-button
-        >
-      </form>
+      <oryx-layout>
+        <h3>${this.i18n('coupon.have-a-coupon')}?</h3>
+
+        <form>
+          <oryx-input
+            ?hasError="${this.hasError}"
+            .errorMessage="${this.hasError ? this.errorMessageDescription : ''}"
+          >
+            <input placeholder="Coupon code" name="coupon" />
+          </oryx-input>
+          <oryx-button
+            .type="${ButtonType.Outline}"
+            .color="${ColorType.Neutral}"
+            .size=${ButtonSize.Md}
+            @click=${this.onSubmit}
+          >
+            ${this.i18n('coupon.apply')}
+          </oryx-button>
+        </form>
+      </oryx-layout>
+
       <ul>
         ${repeat(
           this.$coupons(),
@@ -64,15 +86,36 @@ export class CouponComponent extends CartComponentMixin(
     `;
   }
 
-  protected handleClick(): void {
-    this.cartService.addCoupon({ code: '12345wu2ca' }).subscribe({
+  protected getCouponField(): FormFieldDefinition[] {
+    return [
+      {
+        id: 'coupon',
+        type: FormFieldType.Text,
+        label: ' ',
+        placeholder: this.i18n('coupon.coupon-code'),
+        attributes: {
+          hasError: this.hasError,
+          errorMessage: this.hasError ? this.errorMessageDescription : '',
+        },
+      },
+    ];
+  }
+
+  protected onSubmit(): void {
+    this.hasError = false;
+
+    // '12345wu2ca'
+    this.cartService.addCoupon({ code: this.coupon?.value ?? '' }).subscribe({
       next: () => {
         this.notificationService.push({
           type: AlertType.Success,
-          content: '"12345wu2ca" successfully applied',
+          content: `'${this.coupon?.value}' successfully applied`,
         });
       },
-      error: (e: Error) => console.log('coupon error:', e),
+      error: (e: Error) => {
+        this.hasError = true;
+        this.errorMessageDescription = `Cart code can't be added`;
+      },
     });
   }
 }
