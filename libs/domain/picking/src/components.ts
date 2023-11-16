@@ -7,7 +7,6 @@ export * from '../header/header.def';
 export * from '../list-item/list-item.def';
 export * from '../lists-header/lists-header.def';
 export * from '../lists/lists.def';
-export * from '../login/login.def';
 export * from '../picker-header/picker-header.def';
 export * from '../picker/picker.def';
 export * from '../picking-in-progress/picking-in-progress.def';

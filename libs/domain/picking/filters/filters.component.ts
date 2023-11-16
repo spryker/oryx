@@ -5,7 +5,7 @@ import {
   PickingListQualifierSortBy,
   PickingListService,
   SortableQualifier,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/services';
 import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
