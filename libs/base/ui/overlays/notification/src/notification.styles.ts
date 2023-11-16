@@ -14,7 +14,6 @@ export const notificationStyles = css`
     border-inline-start: 6px solid transparent;
     align-items: start;
     box-sizing: border-box;
-    word-break: break-word;
   }
 
   :host([scheme='${unsafeCSS(Scheme.Light)}']),
@@ -34,6 +33,10 @@ export const notificationStyles = css`
 
   :host([floating]) {
     box-shadow: var(--oryx-elevation-3) var(--oryx-color-elevation);
+  }
+
+  slot {
+    word-break: break-word;
   }
 
   slot:not([name]) {

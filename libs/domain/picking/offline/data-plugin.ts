@@ -128,7 +128,7 @@ export class OfflineDataPlugin implements AppPlugin {
 
   protected populateData(injector: Injector): Observable<void> {
     return this.clearDb(injector).pipe(
-      switchMap(() => this.populateDb(injector)),
+      switchMap(() => this.populateDb(injector))
     );
   }
 }

@@ -1,13 +1,5 @@
 import { PushProvider } from '@spryker-oryx/push-notification';
-import {
-  catchError,
-  from,
-  map,
-  Observable,
-  of,
-  switchMap,
-  throwError,
-} from 'rxjs';
+import { from, map, Observable, of, switchMap } from 'rxjs';
 
 export interface WebPushProviderOptions {
   /**
@@ -37,24 +29,41 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
     return of(undefined);
   }
 
+  protected async checkSupportAndPermission(): Promise<void> {
+    let error = '';
+
+    if (!('serviceWorker' in navigator)) {
+      error = 'Browser does not support service-worker API';
+    } else if (!('SyncManager' in window)) {
+      error = 'Browser does not support background sync API';
+    } else if (
+      (await navigator.permissions.query({ name: 'notifications' })).state ===
+      'denied'
+    ) {
+      error =
+        'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission';
+    } else if (
+      (
+        await navigator.permissions.query({
+          name: 'background-sync' as PermissionName,
+        })
+      ).state === 'denied'
+    ) {
+      error =
+        'Permission to perform background sync is not granted. Check the browser configuration or reset the permission';
+    }
+
+    if (error) throw new Error(error);
+  }
+
   getSubscription(): Observable<PushSubscriptionJSON> {
-    return this.getExistingSubscription().pipe(
-      switchMap((subscription) =>
-        subscription ? of(subscription) : this.createSubscription()
-      ),
-      map((subscription) => subscription.toJSON()),
-      //catch permission error or pass the original one
-      catchError((e) =>
-        this.getPermissionState().pipe(
-          switchMap((state) =>
-            throwError(() =>
-              state === 'denied'
-                ? new Error(
-                    'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission'
-                  )
-                : e
-            )
-          )
+    return from(this.checkSupportAndPermission()).pipe(
+      switchMap(() =>
+        this.getExistingSubscription().pipe(
+          switchMap((subscription) =>
+            subscription ? of(subscription) : this.createSubscription()
+          ),
+          map((subscription) => subscription.toJSON())
         )
       )
     );
