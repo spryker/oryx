@@ -57,7 +57,7 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
       "user.profile.you-can't-log-out-because-of-a-pending-synchronization"
     )
   );
-  protected $networkState = signal(this.networkStateService.get());
+  protected $isOnline = signal(this.networkStateService.online());
 
   protected override render(): TemplateResult {
     return html`
@@ -112,7 +112,7 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
                 .text=${this.i18n('user.profile.sync-data')}
                 block
                 ?loading=${this.loading}
-                ?disabled=${this.$networkState() === 'offline'}
+                ?disabled=${!this.$isOnline()}
                 @click=${this.onSyncData}
               ></oryx-button>
             `
