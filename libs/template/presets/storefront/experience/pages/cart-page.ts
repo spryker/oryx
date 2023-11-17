@@ -22,6 +22,7 @@ export const cartPage: ExperienceComponent = {
     route: '/cart',
     description: 'Cart Page Description',
   },
+
   components: [
     featureVersion >= '1.2'
       ? {
