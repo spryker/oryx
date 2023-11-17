@@ -1,9 +1,7 @@
 import { Observable } from 'rxjs';
 
-export type NetworkState = 'online' | 'offline';
-
 export interface NetworkStateService {
-  get(): Observable<NetworkState>;
+  online(): Observable<boolean>;
 }
 
 export const NetworkStateService = 'oryx.NetworkStateService';

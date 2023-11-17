@@ -6,16 +6,16 @@ import {
   merge,
   of,
 } from 'rxjs';
-import { NetworkState, NetworkStateService } from './network-state.service';
+import { NetworkStateService } from './network-state.service';
 
 export class NetworkStateDefaultService implements NetworkStateService {
-  get(): Observable<NetworkState> {
+  online(): Observable<boolean> {
     return merge(
       of(null),
       fromEvent(window, 'online'),
       fromEvent(window, 'offline')
     ).pipe(
-      map(() => (navigator.onLine ? 'online' : 'offline')),
+      map(() => navigator.onLine),
       distinctUntilChanged()
     );
   }
