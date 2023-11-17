@@ -1,7 +1,6 @@
 import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { FormRenderer } from '@spryker-oryx/form';
 import { LocaleService } from '@spryker-oryx/i18n';
 import { NotificationService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
@@ -9,12 +8,14 @@ import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ColorType } from '@spryker-oryx/ui/link';
 import { ClearIconAppearance } from '@spryker-oryx/ui/searchbox';
+import { hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { tap } from 'rxjs';
 import { couponStyles } from './coupon.styles';
 
+@hydrate({ event: ['window:load'] })
 export class CouponComponent extends CartComponentMixin(
   ContentMixin(LitElement)
 ) {
@@ -25,18 +26,25 @@ export class CouponComponent extends CartComponentMixin(
 
   @query('input[name=coupon]') coupon?: HTMLInputElement;
 
-  protected fieldRenderer = resolve(FormRenderer);
-
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
   protected localeService = resolve(LocaleService);
 
-  protected override render(): TemplateResult {
+  protected override render(): TemplateResult | void {
+    if (this.$isEmpty()) {
+      return;
+    }
+
+    this.errorMessageDescription =
+      this.coupon?.value === ''
+        ? `${this.i18n('coupon.insert-a-coupon')}`
+        : `${this.i18n('coupon.cart-code-can-not-be-added')}`;
+
     return html`
       <oryx-layout>
         <h3>${this.i18n('coupon.have-a-coupon')}?</h3>
 
-        <form>
+        <section>
           <oryx-input
             ?hasError="${this.hasError}"
             .errorMessage="${this.hasError ? this.errorMessageDescription : ''}"
@@ -44,6 +52,7 @@ export class CouponComponent extends CartComponentMixin(
             <input placeholder="Coupon code" name="coupon" />
             <oryx-icon
               type=${IconTypes.Close}
+              class="clear-icon"
               appearance=${ClearIconAppearance.Hover}
               @click=${(): void => this.clear()}
             ></oryx-icon>
@@ -56,7 +65,7 @@ export class CouponComponent extends CartComponentMixin(
           >
             ${this.i18n('coupon.apply')}
           </oryx-button>
-        </form>
+        </section>
       </oryx-layout>
 
       <ul>
@@ -96,7 +105,12 @@ export class CouponComponent extends CartComponentMixin(
   protected onSubmit(): void {
     this.hasError = false;
 
-    // '12345wu2ca'
+    if (this.coupon?.value === '') {
+      this.hasError = true;
+
+      return;
+    }
+
     this.cartService.addCoupon({ code: this.coupon?.value ?? '' }).subscribe({
       next: () => {
         this.notificationService.push({
@@ -106,9 +120,8 @@ export class CouponComponent extends CartComponentMixin(
 
         this.coupon!.value = '';
       },
-      error: (e: Error) => {
+      error: () => {
         this.hasError = true;
-        this.errorMessageDescription = `Cart code can't be added`;
       },
     });
   }

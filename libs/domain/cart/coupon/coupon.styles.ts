@@ -2,7 +2,7 @@ import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const couponStyles = css`
-  form {
+  section {
     display: grid;
     grid-template-columns: 1fr min-content;
     gap: 20px;
@@ -34,5 +34,9 @@ export const couponStyles = css`
 
   oryx-icon {
     color: var(--oryx-color-success-9);
+  }
+
+  .clear-icon {
+    color: currentColor;
   }
 `;
