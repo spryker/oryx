@@ -72,7 +72,11 @@ export const cartPage: ExperienceComponent = {
               ],
             },
             { type: 'oryx-checkout-link' },
-            { type: 'oryx-cart-coupon' },
+            featureVersion >= '1.3'
+              ? {
+                  type: 'oryx-cart-coupon',
+                }
+              : {},
           ],
           options: {
             rules: [
@@ -97,26 +101,6 @@ export const cartPage: ExperienceComponent = {
           { query: { breakpoint: 'sm' }, gap: '0' },
         ],
       },
-    },
-    cartEntries(),
-    {
-      type: 'oryx-composition',
-      id: 'cart-totals',
-      components: [
-        {
-          type: 'oryx-cart-totals',
-          components: [
-            { type: 'oryx-cart-totals-subtotal' },
-            { type: 'oryx-cart-totals-discount' },
-            { type: 'oryx-cart-totals-tax' },
-            { type: 'oryx-cart-totals-delivery' },
-            { type: 'oryx-cart-totals-total' },
-          ],
-        },
-        { type: 'oryx-checkout-link' },
-        { type: 'oryx-cart-coupon' },
-      ],
-      options: { rules: [{ sticky: true, top: '108px' }] },
     },
     featureVersion >= '1.2'
       ? {
