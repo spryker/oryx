@@ -38,5 +38,6 @@ export const fulfillmentLoginPage: ExperienceComponent = {
       type: 'oryx-auth-login',
       options: { enableRememberMe: false },
     },
+    { ref: 'service' },
   ],
 };
