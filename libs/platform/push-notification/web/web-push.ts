@@ -31,14 +31,11 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
 
   getSubscription(): Observable<PushSubscriptionJSON> {
     return this.precondition().pipe(
-      switchMap(() =>
-        this.getExistingSubscription().pipe(
-          switchMap((subscription) =>
-            subscription ? of(subscription) : this.createSubscription()
-          ),
-          map((subscription) => subscription.toJSON())
-        )
-      )
+      switchMap(() => this.getExistingSubscription()),
+      switchMap((subscription) =>
+        subscription ? of(subscription) : this.createSubscription()
+      ),
+      map((subscription) => subscription.toJSON())
     );
   }
 
@@ -49,8 +46,18 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
   }
 
   protected createSubscription(): Observable<PushSubscription> {
+    const userVisibleOnly = this.options?.userVisibleOnly ?? true;
+    const applicationServerKey = this.options?.applicationServerKey
+      ? this.encodeKey(this.options.applicationServerKey)
+      : undefined;
+
     return this.pushManager$.pipe(
-      switchMap((pushManager) => pushManager.subscribe(this.getOptions()))
+      switchMap((pushManager) =>
+        pushManager.subscribe({
+          userVisibleOnly,
+          applicationServerKey,
+        })
+      )
     );
   }
 
@@ -60,25 +67,22 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
     );
   }
 
-  protected getOptions(): Partial<WebPushProviderOptions> {
-    return {
-      userVisibleOnly: this.options?.userVisibleOnly ?? true,
-      applicationServerKey: this.options?.applicationServerKey
-        ? this.encodeKey(this.options.applicationServerKey)
-        : undefined,
-    };
-  }
-
   protected async checkSupportAndPermission(): Promise<void> {
     if (!('serviceWorker' in navigator)) {
       throw new Error('Browser does not support service-worker API');
-    } else if (!('SyncManager' in window)) {
+    }
+
+    if (!('SyncManager' in window)) {
       throw new Error('Browser does not support background sync API');
-    } else if (await this.permissionDenied('notifications')) {
+    }
+
+    if (await this.permissionDenied('notifications')) {
       throw new Error(
         'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission'
       );
-    } else if (await this.permissionDenied('background-sync')) {
+    }
+
+    if (await this.permissionDenied('background-sync')) {
       throw new Error(
         'Permission to perform background sync is not granted. Check the browser configuration or reset the permission'
       );
