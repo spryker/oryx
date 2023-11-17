@@ -33,6 +33,8 @@ export class CouponComponent extends CartComponentMixin(
 
   protected isAuthenticated = signal(this.authService.isAuthenticated());
 
+  private successMessage: '' | string = '';
+
   protected override render(): TemplateResult | void {
     if (this.$isEmpty() || !this.isAuthenticated()) {
       return;
@@ -42,6 +44,8 @@ export class CouponComponent extends CartComponentMixin(
       this.coupon?.value === ''
         ? `${this.i18n('coupon.insert-a-coupon')}`
         : `${this.i18n('coupon.cart-code-can-not-be-added')}`;
+
+    this.successMessage = `${this.i18n('coupon.-successfully-applied')}`;
 
     return html`
       <oryx-layout>
@@ -106,7 +110,7 @@ export class CouponComponent extends CartComponentMixin(
   protected onSubmit(): void {
     this.hasError = false;
 
-    if (this.coupon?.value === '') {
+    if (!this.coupon?.value) {
       this.hasError = true;
 
       return;
@@ -116,9 +120,7 @@ export class CouponComponent extends CartComponentMixin(
       next: () => {
         this.notificationService.push({
           type: AlertType.Success,
-          content: `${this.coupon?.value} ${this.i18n(
-            'coupon.-successfully-applied'
-          )}`,
+          content: `${this.coupon?.value} ${this.successMessage}`,
         });
 
         this.coupon!.value = '';
