@@ -130,7 +130,6 @@ jobs:
 
   test-e2e-storefront:
     runs-on: ubuntu-latest
-    needs: [test-format, test-lint, test-stylelint, test-tsconfig]
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -147,7 +146,7 @@ jobs:
           SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           STORE: DE
-
+          ORYX_FEATURE_VERSION: latest
         with:
           cmd: npm run sf:e2e:headless:ci
           affectedCmd: npm run sf:e2e:headless:ci:affected
@@ -168,6 +167,7 @@ jobs:
           SCOS_BASE_URL: ${{ secrets.SCOS_BASE_URL }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           STORE: DE
+          ORYX_FEATURE_VERSION: latest
         with:
           cmd: npm run sf:b2b:e2e:headless:ci
           affectedCmd: npm run sf:b2b:e2e:headless:ci:affected
