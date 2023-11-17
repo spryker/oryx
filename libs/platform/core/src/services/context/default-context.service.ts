@@ -208,7 +208,7 @@ export class DefaultContextService implements ContextService {
   public deserialize<T = unknown>(
     key: string,
     value: string | undefined
-  ): Observable<T> {
+  ): Observable<T | undefined> {
     if (value !== undefined) {
       const serializer = this.getSerializer<T>(key);
       if (serializer) return serializer.deserialize(value);

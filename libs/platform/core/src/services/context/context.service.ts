@@ -17,12 +17,12 @@ export interface ContextService {
    * Serializes the value for the given key, making it suitable for usage as a data attribute.
    */
   serialize<T>(key: string, value: T): Observable<string>;
-  deserialize<T>(key: string, value: string): Observable<T>;
+  deserialize<T>(key: string, value: string): Observable<T | undefined>;
 }
 
 export interface ContextSerializer<T = unknown> {
   serialize(value: T): Observable<string>;
-  deserialize(value: string): Observable<T>;
+  deserialize(value: string): Observable<T | undefined>;
 }
 
 declare global {

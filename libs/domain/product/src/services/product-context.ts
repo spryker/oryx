@@ -35,10 +35,12 @@ export class ProductContextSerializer
     return value?.sku ? of(value.sku) : of('');
   }
 
-  deserialize(value: string): Observable<ProductQualifier> {
-    return of({
-      sku: value,
-    });
+  deserialize(value: string): Observable<ProductQualifier | undefined> {
+    return value
+      ? of({
+          sku: value,
+        })
+      : of(undefined);
   }
 }
 
