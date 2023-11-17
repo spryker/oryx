@@ -113,10 +113,6 @@ export class DefaultCartAdapter implements CartAdapter {
   }
 
   addCoupon(data: AddCartCouponQualifier): Observable<Cart> {
-    const attributes = {
-      code: data.code,
-    };
-
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => this.createCartIfNeeded(identity, data.cartId)),
@@ -129,7 +125,9 @@ export class DefaultCartAdapter implements CartAdapter {
         const body = {
           data: {
             type: ApiCartModel.UrlParts.Coupons,
-            attributes,
+            attributes: {
+              code: data.code,
+            },
           },
         };
 
@@ -138,13 +136,6 @@ export class DefaultCartAdapter implements CartAdapter {
           .pipe(this.transformer.do(CartNormalizer));
       })
     );
-
-    // .pipe(
-    //   catchError((e) => {
-    //     console.log('error', e);
-    //     return throwError(() => new Error("Cart code can't be added."));
-    //   })
-    // );
   }
 
   addEntry(data: AddCartEntryQualifier): Observable<Cart> {

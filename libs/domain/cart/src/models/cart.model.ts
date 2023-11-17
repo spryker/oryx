@@ -33,7 +33,7 @@ export interface Coupons {
   amount: number;
   discountType: string;
   displayName: string;
-  expirationDateTime: Date;
+  expirationDateTime: Date | string;
 }
 
 export interface CartEntry {

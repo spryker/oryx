@@ -12,7 +12,6 @@ import { hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { tap } from 'rxjs';
 import { couponStyles } from './coupon.styles';
 
 @hydrate({ event: ['window:load'] })
@@ -73,22 +72,13 @@ export class CouponComponent extends CartComponentMixin(
           this.$coupons(),
           (coupon) => coupon.code,
           (coupon) => {
-            let expirationDateTime = '';
-            this.localeService
-              .formatDate(coupon.expirationDateTime)
-              .pipe(
-                tap((date) => {
-                  expirationDateTime = date ?? '';
-                })
-              )
-              .subscribe();
             return html`
               <li>
                 <oryx-icon type="done"></oryx-icon>
                 <span class="code">${coupon.code} </span>
                 <span class="name"
                   >${coupon.displayName}
-                  <span>(valid till ${expirationDateTime})</span>
+                  <span>(valid till ${coupon.expirationDateTime})</span>
                 </span>
               </li>
             `;
@@ -100,6 +90,7 @@ export class CouponComponent extends CartComponentMixin(
 
   protected clear(): void {
     this.coupon!.value = '';
+    this.hasError = false;
   }
 
   protected onSubmit(): void {

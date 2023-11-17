@@ -29,7 +29,7 @@ import {
   createQuery,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { LocaleChanged } from '@spryker-oryx/i18n';
+import { LocaleChanged, LocaleService } from '@spryker-oryx/i18n';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   Observable,
@@ -51,6 +51,7 @@ export class DefaultCartService implements CartService {
   protected adapter = inject(CartAdapter);
   protected identity = inject(IdentityService);
   protected query = inject(QueryService);
+  protected localeService = inject(LocaleService);
 
   protected cartCommandBase = {
     onStart: [CartModificationStart],
@@ -224,7 +225,37 @@ export class DefaultCartService implements CartService {
   }
 
   getCoupons(data?: CartQualifier | undefined): Observable<Coupons[]> {
-    return this.getCart(data).pipe(map((cart) => cart?.coupons ?? []));
+    return this.getCart(data).pipe(
+      switchMap((cart) => {
+        return this.formatCoupons(cart?.coupons);
+      })
+    );
+  }
+
+  formatCoupons(coupons: Coupons[] | undefined): Observable<Coupons[]> {
+    if (!coupons) {
+      return of([]);
+    }
+
+    const formattedCouponsObservables = coupons.map((coupon) =>
+      this.formatDate(coupon.expirationDateTime).pipe(
+        map(
+          (formattedDate) =>
+            ({
+              ...coupon,
+              expirationDateTime: formattedDate,
+            } as Coupons)
+        )
+      )
+    );
+
+    return combineLatest(formattedCouponsObservables).pipe(
+      map((formattedCoupons) => formattedCoupons)
+    );
+  }
+
+  formatDate(date: Date | string): Observable<string> {
+    return this.localeService.formatDate(date);
   }
 
   isEmpty(data?: CartQualifier): Observable<boolean> {
