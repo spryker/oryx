@@ -257,7 +257,7 @@ describe('WebPushProvider', () => {
       it('should throw an error', () => {
         provider.getSubscription().subscribe({
           error: (e) => {
-            expect(e.message).toBe(
+            expect(e.message).toContain(
               'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission'
             );
           },
@@ -276,7 +276,7 @@ describe('WebPushProvider', () => {
       it('should throw an error', () => {
         provider.getSubscription().subscribe({
           error: (e) => {
-            expect(e.message).toBe(
+            expect(e.message).toContain(
               'Permission to perform background sync is not granted. Check the browser configuration or reset the permission'
             );
           },

@@ -1,10 +1,10 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { take } from 'rxjs';
 import { NetworkStateDefaultService } from './network-state-default.service';
 import { NetworkStateService } from './network-state.service';
 
 describe('NetworkStateDefaultService', () => {
   let service: NetworkStateService;
+  const callback = vi.fn();
 
   beforeAll(() => {
     vi.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
@@ -19,6 +19,8 @@ describe('NetworkStateDefaultService', () => {
     });
 
     service = testInjector.inject(NetworkStateService);
+
+    service.online().subscribe(callback);
   });
 
   afterEach(() => {
@@ -27,12 +29,7 @@ describe('NetworkStateDefaultService', () => {
   });
 
   it('should return default online state', () => {
-    service
-      .online()
-      .pipe(take(1))
-      .subscribe((online) => {
-        expect(online).toBe(true);
-      });
+    expect(callback).toHaveBeenCalledWith(true);
   });
 
   describe('and network has gone offline', () => {
@@ -42,12 +39,7 @@ describe('NetworkStateDefaultService', () => {
     });
 
     it('should trigger the state', () => {
-      service
-        .online()
-        .pipe(take(1))
-        .subscribe((online) => {
-          expect(online).toBe(false);
-        });
+      expect(callback).toHaveBeenCalledWith(false);
     });
 
     describe('and connection was restored', () => {
@@ -57,12 +49,7 @@ describe('NetworkStateDefaultService', () => {
       });
 
       it('should trigger the state', () => {
-        service
-          .online()
-          .pipe(take(1))
-          .subscribe((online) => {
-            expect(online).toBe(true);
-          });
+        expect(callback).toHaveBeenCalledWith(true);
       });
     });
   });

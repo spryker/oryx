@@ -70,30 +70,19 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
   }
 
   protected async checkSupportAndPermission(): Promise<void> {
-    let error = '';
-
     if (!('serviceWorker' in navigator)) {
-      error = 'Browser does not support service-worker API';
+      throw new Error('Browser does not support service-worker API');
     } else if (!('SyncManager' in window)) {
-      error = 'Browser does not support background sync API';
-    } else if (
-      (await navigator.permissions.query({ name: 'notifications' })).state ===
-      'denied'
-    ) {
-      error =
-        'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission';
-    } else if (
-      (
-        await navigator.permissions.query({
-          name: 'background-sync' as PermissionName,
-        })
-      ).state === 'denied'
-    ) {
-      error =
-        'Permission to perform background sync is not granted. Check the browser configuration or reset the permission';
+      throw new Error('Browser does not support background sync API');
+    } else if (await this.permissionDenied('notifications')) {
+      throw new Error(
+        'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission'
+      );
+    } else if (await this.permissionDenied('background-sync')) {
+      throw new Error(
+        'Permission to perform background sync is not granted. Check the browser configuration or reset the permission'
+      );
     }
-
-    if (error) throw new Error(error);
   }
 
   protected precondition(): Observable<void> {
@@ -106,5 +95,12 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
    */
   protected encodeKey(key: string): string {
     return encodeURIComponent(key.replace(/([^=].)=+$/, '$1'));
+  }
+
+  protected async permissionDenied(name: string): Promise<boolean> {
+    return (
+      (await navigator.permissions.query({ name: name as PermissionName }))
+        ?.state === 'denied'
+    );
   }
 }
