@@ -12,6 +12,7 @@ export const warehouseSelectionPage: ExperienceComponent = {
     rules: [{ layout: 'list' }],
   },
   components: [
+    { ref: 'header' },
     {
       type: 'oryx-picking-warehouse-assignment',
     },

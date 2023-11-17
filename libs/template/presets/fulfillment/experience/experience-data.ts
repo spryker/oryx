@@ -8,18 +8,18 @@ import {
   warehouseSelectionPage,
 } from './pages';
 import { ServiceTemplate } from './service';
-import { UserProfileComponent } from './user-profile';
+import { HeaderTemplate } from './header';
 
 export const StaticExperienceFeature: AppFeature = {
   providers: [
     provideExperienceData([
-      UserProfileComponent,
       fulfillmentLoginPage,
       warehouseSelectionPage,
       pickingListsPage,
       customerNotePage,
       pickingPickerPage,
       ServiceTemplate,
+      HeaderTemplate,
     ]),
   ],
 };

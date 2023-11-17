@@ -23,7 +23,6 @@ export class PickingHeaderComponent extends LitElement {
     return html`
       <slot></slot>
       <oryx-site-navigation-item
-        uid="user-profile"
         @oryx.close=${this.onClose}
         .options=${{
           icon: IconTypes.User,

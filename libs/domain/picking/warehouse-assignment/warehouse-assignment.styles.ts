@@ -7,10 +7,6 @@ export const styles = css`
     background: var(--oryx-color-neutral-3);
   }
 
-  oryx-picking-header {
-    box-shadow: var(--oryx-elevation-2) var(--oryx-elevation-color-2);
-  }
-
   .warehouses-list {
     padding: 25px 30px;
   }
