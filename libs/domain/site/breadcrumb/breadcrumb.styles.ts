@@ -1,3 +1,4 @@
+import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const siteBreadcrumbStyles = css`
@@ -25,3 +26,11 @@ export const siteBreadcrumbStyles = css`
     color: var(--oryx-color-neutral-9);
   }
 `;
+
+export const screenStyles = screenCss({
+  sm: css`
+    :host {
+      display: none;
+    }
+  `,
+});
