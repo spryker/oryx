@@ -21,7 +21,7 @@ export class CouponComponent extends CartComponentMixin(
   static styles = couponStyles;
 
   @state() hasError = false;
-  @state() errorMessageDescription: '' | string = '';
+  @state() errorMessage: '' | string = '';
 
   @query('input[name=coupon]') coupon?: HTMLInputElement;
 
@@ -34,7 +34,7 @@ export class CouponComponent extends CartComponentMixin(
       return;
     }
 
-    this.errorMessageDescription =
+    this.errorMessage =
       this.coupon?.value === ''
         ? `${this.i18n('coupon.insert-a-coupon')}`
         : `${this.i18n('coupon.cart-code-can-not-be-added')}`;
@@ -46,9 +46,12 @@ export class CouponComponent extends CartComponentMixin(
         <section>
           <oryx-input
             ?hasError="${this.hasError}"
-            .errorMessage="${this.hasError ? this.errorMessageDescription : ''}"
+            .errorMessage="${this.hasError ? this.errorMessage : ''}"
           >
-            <input placeholder="Coupon code" name="coupon" />
+            <input
+              placeholder="${this.i18n('coupon.coupon-code')}"
+              name="coupon"
+            />
             <oryx-icon
               type=${IconTypes.Close}
               class="clear-icon"
@@ -78,7 +81,10 @@ export class CouponComponent extends CartComponentMixin(
                 <span class="code">${coupon.code} </span>
                 <span class="name"
                   >${coupon.displayName}
-                  <span>(valid till ${coupon.expirationDateTime})</span>
+                  <span
+                    >(${this.i18n('coupon.-valid-till')}
+                    ${coupon.expirationDateTime})</span
+                  >
                 </span>
               </li>
             `;
@@ -106,7 +112,9 @@ export class CouponComponent extends CartComponentMixin(
       next: () => {
         this.notificationService.push({
           type: AlertType.Success,
-          content: `'${this.coupon?.value}' successfully applied`,
+          content: `${this.coupon?.value} ${this.i18n(
+            'coupon.-successfully-applied'
+          )}`,
         });
 
         this.coupon!.value = '';

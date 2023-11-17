@@ -7,7 +7,7 @@ import {
   CartEntry,
   CartEntryQualifier,
   CartQualifier,
-  Coupons,
+  Coupon,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '../models';
@@ -16,7 +16,7 @@ export interface CartService {
   getCart(data?: CartQualifier): Observable<Cart | undefined>;
   getCartState(data?: CartQualifier): Observable<QueryState<Cart>>;
   getEntries(data?: CartQualifier): Observable<CartEntry[]>;
-  getCoupons(data?: CartQualifier): Observable<Coupons[]>;
+  getCoupons(data?: CartQualifier): Observable<Coupon[]>;
   addCoupon(data?: AddCartCouponQualifier): Observable<unknown>;
   addEntry(data: AddCartEntryQualifier): Observable<unknown>;
   updateEntry(data: UpdateCartEntryQualifier): Observable<unknown>;

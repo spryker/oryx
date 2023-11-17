@@ -16,7 +16,7 @@ import {
   CartQuery,
   CartService,
   CartsUpdated,
-  Coupons,
+  Coupon,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
@@ -224,7 +224,7 @@ export class DefaultCartService implements CartService {
     return this.getCart(data).pipe(map((cart) => cart?.products ?? []));
   }
 
-  getCoupons(data?: CartQualifier | undefined): Observable<Coupons[]> {
+  getCoupons(data?: CartQualifier): Observable<Coupon[]> {
     return this.getCart(data).pipe(
       switchMap((cart) => {
         return this.formatCoupons(cart?.coupons);
@@ -232,7 +232,7 @@ export class DefaultCartService implements CartService {
     );
   }
 
-  formatCoupons(coupons: Coupons[] | undefined): Observable<Coupons[]> {
+  formatCoupons(coupons: Coupon[] | undefined): Observable<Coupon[]> {
     if (!coupons) {
       return of([]);
     }
@@ -244,7 +244,7 @@ export class DefaultCartService implements CartService {
             ({
               ...coupon,
               expirationDateTime: formattedDate,
-            } as Coupons)
+            } as Coupon)
         )
       )
     );

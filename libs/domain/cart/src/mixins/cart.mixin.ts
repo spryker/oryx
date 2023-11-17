@@ -6,7 +6,7 @@ import type {
   Cart,
   CartComponentAttributes,
   CartEntry,
-  Coupons,
+  Coupon,
   FormattedCartTotals,
 } from '../models';
 
@@ -22,7 +22,7 @@ export declare class CartMixinInterface implements CartComponentAttributes {
   protected $entries: Signal<CartEntry[]>;
   protected $totals: Signal<FormattedCartTotals | null>;
   protected $totalQuantity: Signal<number>;
-  protected $coupons: Signal<Coupons[]>;
+  protected $coupons: Signal<Coupon[]>;
 }
 
 export const CartComponentMixin = <

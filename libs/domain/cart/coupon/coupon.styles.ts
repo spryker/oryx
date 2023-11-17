@@ -23,11 +23,11 @@ export const couponStyles = css`
     grid-template-columns: max-content 1fr max-content;
   }
 
-  li .code {
+  .code {
     ${headingUtil(HeadingTag.Caption)};
   }
 
-  li .name {
+  .name {
     grid-column: 2;
     color: var(--oryx-color-neutral-9);
   }

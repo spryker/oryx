@@ -10,7 +10,7 @@ import {
   CartEntry,
   CartQualifier,
   CartTotalCalculations,
-  Coupons,
+  Coupon,
   FormattedCartTotals,
   FormattedDiscount,
 } from '../models';
@@ -54,7 +54,7 @@ export class CartController {
     );
   }
 
-  getCoupons(): Observable<Coupons[]> {
+  getCoupons(): Observable<Coupon[]> {
     return this.cartQualifier.pipe(
       switchMap((qualifier) => this.cartService.getCoupons(qualifier))
     );

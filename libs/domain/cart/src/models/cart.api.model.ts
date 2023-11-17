@@ -22,10 +22,10 @@ export module ApiCartModel {
     currency?: string;
     store?: string;
     version?: string;
-    vouchers?: Coupons[];
+    vouchers?: Coupon[];
   }
 
-  export interface Coupons {
+  export interface Coupon {
     id: string;
     code: string;
     amount: number;

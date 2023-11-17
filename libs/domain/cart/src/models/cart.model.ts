@@ -23,11 +23,11 @@ export interface Cart extends CartId {
   currency?: string;
   store?: string;
   products?: CartEntry[];
-  coupons?: Coupons[];
+  coupons?: Coupon[];
   version?: string;
 }
 
-export interface Coupons {
+export interface Coupon {
   id: string;
   code: string;
   amount: number;
