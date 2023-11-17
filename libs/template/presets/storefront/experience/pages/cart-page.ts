@@ -28,6 +28,7 @@ export const cartPage: ExperienceComponent = {
           ref: 'header',
         }
       : {},
+
     {
       type: 'oryx-composition',
       components: [
