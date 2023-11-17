@@ -1,4 +1,8 @@
-import { applicationFeature } from '@spryker-oryx/application';
+import {
+  applicationFeature,
+  applicationProviders,
+  ThemeMetaInitializer
+} from '@spryker-oryx/application';
 import { BapiAuthComponentsFeature, BapiAuthFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
 import { contentFeature } from '@spryker-oryx/content';
@@ -22,6 +26,7 @@ import {
   FulfillmentRootFeature,
   FulfillmentRootFeatureConfig,
 } from './feature';
+import { PWAThemeMetaInitializer } from './theme-meta';
 
 delete applicationFeature.plugins;
 
@@ -47,6 +52,15 @@ export function fulfillmentFeatures(
       : new FulfillmentRootFeature(config?.fulfillmentRoot),
     new PickingFeature(config?.picking),
     StaticExperienceFeature,
+    featureVersion >= '1.3'
+      ? {
+        providers: [
+          {
+            provide: ThemeMetaInitializer,
+            useClass: PWAThemeMetaInitializer,
+          }
+        ]
+      } : []
   ];
 }
 
