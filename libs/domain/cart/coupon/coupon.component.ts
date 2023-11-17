@@ -1,3 +1,4 @@
+import { AuthService } from '@spryker-oryx/auth';
 import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
@@ -8,7 +9,7 @@ import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ColorType } from '@spryker-oryx/ui/link';
 import { ClearIconAppearance } from '@spryker-oryx/ui/searchbox';
-import { hydrate } from '@spryker-oryx/utilities';
+import { hydrate, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -25,12 +26,15 @@ export class CouponComponent extends CartComponentMixin(
 
   @query('input[name=coupon]') coupon?: HTMLInputElement;
 
+  protected authService = resolve(AuthService);
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
   protected localeService = resolve(LocaleService);
 
+  protected isAuthenticated = signal(this.authService.isAuthenticated());
+
   protected override render(): TemplateResult | void {
-    if (this.$isEmpty()) {
+    if (this.$isEmpty() || !this.isAuthenticated()) {
       return;
     }
 
