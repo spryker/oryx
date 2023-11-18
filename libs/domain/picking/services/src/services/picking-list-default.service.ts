@@ -2,6 +2,7 @@ import { inject } from '@spryker-oryx/di';
 import {
   BehaviorSubject,
   catchError,
+  map,
   Observable,
   switchMap,
   tap,
@@ -48,6 +49,10 @@ export class PickingListDefaultService implements PickingListService {
         })
       )
     );
+  }
+
+  getList(id: string): Observable<PickingList | null> {
+    return this.get({ ids: [id] }).pipe(map((list) => list[0] ?? null));
   }
 
   startPicking(pickingList: PickingList): Observable<PickingList | null> {

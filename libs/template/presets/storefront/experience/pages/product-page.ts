@@ -1,5 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { Size, featureVersion } from '@spryker-oryx/utilities';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const productPage: ExperienceComponent = {
   id: 'product-page',
@@ -38,12 +38,7 @@ export const productPage: ExperienceComponent = {
                   {
                     type: 'oryx-site-breadcrumb',
                     options: {
-                      rules: [
-                        {
-                          colSpan: 2,
-                        },
-                        { query: { breakpoint: Size.Sm }, hide: true },
-                      ],
+                      rules: [{ colSpan: 2 }],
                     },
                   },
                 ]

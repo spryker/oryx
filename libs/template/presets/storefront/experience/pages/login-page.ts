@@ -120,6 +120,12 @@ export const loginPage: ExperienceComponent = {
                             text: `<oryx-button href="/registration" type=${ButtonType.Outline} size=${ButtonSize.Md} style="width: 100%">Create account</oryx-button>`,
                           },
                         },
+                        options: {
+                          rules:
+                            featureVersion >= '1.3'
+                              ? [{ query: { breakpoint: Size.Sm }, colSpan: 2 }]
+                              : [],
+                        },
                       },
                     ],
                   },
