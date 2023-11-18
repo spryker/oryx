@@ -84,7 +84,10 @@ export class CartEntryComponent
   @elementEffect()
   protected setProductContext = (): void => {
     if (this.sku) {
-      this.contextController.provide(ProductContext.SKU, this.sku);
+      this.contextController.provide(
+        ProductContext.SKU,
+        featureVersion >= '1.3' ? { sku: this.sku } : this.sku
+      );
     }
   };
 

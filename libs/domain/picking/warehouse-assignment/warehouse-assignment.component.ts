@@ -52,7 +52,7 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
       .pipe(
         switchMap(() => {
           this.routerService.navigate('/');
-          return this.injectorDataPlugin.refreshData(this.injector);
+          return this.injectorDataPlugin.syncData(this.injector);
         })
       )
       .subscribe();
