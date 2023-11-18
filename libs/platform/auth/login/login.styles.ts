@@ -1,3 +1,4 @@
+import { Size, screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const styles = css`
@@ -22,3 +23,11 @@ export const styles = css`
     grid-column: var(--oryx-button-span, auto);
   }
 `;
+
+export const screenStyles = screenCss({
+  [Size.Sm]: css`
+    oryx-button {
+      grid-column: span 2;
+    }
+  `,
+});
