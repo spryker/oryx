@@ -183,6 +183,7 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
     this.scheduleSyncTimer = setTimeout(async () => {
       const sync = (await this.getServiceWorker()).sync;
 
+      //when there is no registered service worker
       if (!sync) {
         throw new Error(
           `SyncSchedulerDefaultService: Unable to register background sync!
@@ -190,7 +191,15 @@ export class SyncSchedulerDefaultService implements SyncSchedulerService {
         );
       }
 
-      await sync.register(ProcessSyncsBackgroundSyncTag);
+      try {
+        await sync.register(ProcessSyncsBackgroundSyncTag);
+      } catch {
+        //when background sync is denied
+        throw new Error(
+          `The application does not have permissions to process data from and to the backend. 
+          Please, provide your permission to enable background sync in the browser`
+        );
+      }
 
       this.scheduleSyncTimer = undefined;
     });

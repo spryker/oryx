@@ -1,8 +1,9 @@
 import { ContextService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { ProductContext } from '@spryker-oryx/product';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
@@ -22,7 +23,11 @@ interface Props {
 }
 
 const Template: Story<Props> = ({ sku }: Props): TemplateResult => {
-  resolve(ContextService).provide(document.body, ProductContext.SKU, sku);
+  resolve(ContextService).provide(
+    document.body,
+    ProductContext.SKU,
+    featureVersion >= '1.3' ? { sku } : sku
+  );
 
   return html`<oryx-product-relations></oryx-product-relations>`;
 };
