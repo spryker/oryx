@@ -62,7 +62,7 @@ describe('DefaultCartAdapter', () => {
 
   function requestIncludes(isAuthenticated = false): string {
     return `?include=${(isAuthenticated
-      ? [ApiCartModel.Includes.Items]
+      ? [ApiCartModel.Includes.Items, ApiCartModel.Includes.Coupons]
       : [ApiCartModel.Includes.GuestCartItems]
     ).join(',')}`;
   }
@@ -466,7 +466,7 @@ describe('DefaultCartAdapter', () => {
 
       expect(http.urls).toStrictEqual([
         `${mockApiUrl}/carts`,
-        `${mockApiUrl}/carts/newCartId/items?include=items`,
+        `${mockApiUrl}/carts/newCartId/items?include=items,vouchers`,
       ]);
 
       http.flush(mockResponse);
@@ -496,7 +496,7 @@ describe('DefaultCartAdapter', () => {
       );
 
       expect(http.urls).toStrictEqual([
-        `${mockApiUrl}/carts/testCartId/items?include=items`,
+        `${mockApiUrl}/carts/testCartId/items?include=items,vouchers`,
       ]);
       expect(callback).toHaveBeenCalledWith(mockResponse);
     });
