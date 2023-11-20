@@ -39,6 +39,7 @@ describe('Login Suite', () => {
     loginPage.loginForm.login({
       email: 'admin@spryker.com',
       password: '123abc',
+      warehouseName: '123',
     });
 
     cy.location('pathname').should('match', /^\/login/);

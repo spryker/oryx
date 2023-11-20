@@ -16,6 +16,6 @@ export class LoginPage extends AFAPage {
   login = (user: TestUserData) => {
     cy.intercept('POST', '**/token').as('token');
     this.loginForm.login(user);
-    cy.wait('@token', { timeout: 30000 });
+    cy.wait('@token');
   };
 }

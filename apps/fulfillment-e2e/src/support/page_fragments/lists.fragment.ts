@@ -22,7 +22,7 @@ export class ListsFragment {
       .should('be.visible')
       .invoke('text');
   getPickingListItemByOrderId = (orderId: string) => {
-    this.getPickingListsItems().contains('.identifier', orderId);
+    return this.getPickingListsItems().contains('.identifier', orderId);
   };
   pickingInProgressModal = new PickingInProgressModalFragment();
 }

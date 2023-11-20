@@ -1,9 +1,13 @@
+import { Interception } from 'node_modules/cypress/types/net-stubbing';
 import { TestUserData } from '../types/user.type';
+import { PickingApi } from './backoffice-api/picking.api';
 import './backoffice/commands';
 import { CheckoutApi } from './glue-api/checkout.api';
 import { GuestCartsItemsApi } from './glue-api/guest-carts-items.api';
 import { GuestCartsApi } from './glue-api/guest-carts.api';
+import { ListsHeaderFragment } from './page_fragments/lists-header.fragment';
 import { ListsFragment } from './page_fragments/lists.fragment';
+import { UserProfileFragment } from './page_fragments/user-profile-modal.fragment';
 import { LoginPage } from './page_objects/login.page';
 import { PickListsPage } from './page_objects/pick-lists.page';
 import { WarehouseSelectionPage } from './page_objects/warehouse-selection.page';
@@ -17,7 +21,9 @@ declare global {
       waitForIndexedDB(): void;
       mockPickingInProgress(): void;
       mockSyncPending(): void;
+      receiveData(): Chainable<any>;
       createPicking(): Chainable<string>;
+      cleanupPickings(): void;
       glueApiCreateOrder(): Chainable<string>;
       waitForPickingToAppear(orderId: string): Chainable<string>;
     }
@@ -53,6 +59,30 @@ Cypress.Commands.add('createPicking', () => {
     .then((orderId) => cy.backofficeMakeOrderReadyForPicking(orderId));
 });
 
+Cypress.Commands.add('cleanupPickings', () => {
+  const api = new PickingApi();
+
+  // picking list requests should already be intercepted and available in this place
+  cy.get<Interception>('@picking-lists').then((interception: Interception) => {
+    api.accessToken = interception.request.headers.authorization as string;
+
+    interception.response.body.data
+      .filter((picking) => picking.attributes.status === 'ready-for-picking')
+      .map((picking) => picking.id)
+      .map((pickingId) => api.startPicking(pickingId));
+  });
+});
+
+Cypress.Commands.add('receiveData', () => {
+  const header = new ListsHeaderFragment();
+  const profile = new UserProfileFragment();
+
+  header.getUserIcon().click();
+  profile.getReceiveDataButton().click();
+
+  return cy.wrap(null);
+});
+
 Cypress.Commands.add('glueApiCreateOrder', () => {
   const customerUniqueId = Math.random();
   const guestCartsApi = new GuestCartsApi();
@@ -63,23 +93,24 @@ Cypress.Commands.add('glueApiCreateOrder', () => {
   guestCartsItemsApi.customerUniqueId = customerUniqueId;
   checkoutApi.customerUniqueId = customerUniqueId;
 
-  return guestCartsItemsApi
-    .postGuestCartsItems('086_30521602', 1)
-    .then(() => guestCartsApi.getGuestCarts())
-    .then((res) => res.body.data[0].id)
-    .then((idCart) => checkoutApi.checkout(idCart))
-    .then((res) => res.body.data.attributes.orderReference);
+  return (
+    guestCartsItemsApi
+      // add product that is always available in the stock
+      // 086_30521602 adjusted manually in backoffice, we have to
+      // find another product to use here later
+      .postGuestCartsItems('086_30521602', 1)
+      .then(() => guestCartsApi.getGuestCarts())
+      .then((res) => res.body.data[0].id)
+      .then((idCart) => checkoutApi.checkout(idCart))
+      .then((res) => res.body.data.attributes.orderReference)
+  );
 });
 
 Cypress.Commands.add('waitForPickingToAppear', (orderId: string) => {
   const list = new ListsFragment();
 
-  cy.waitUntil(
-    () => {
-      return cy.reload().then(() => list.getPickingListItemByOrderId(orderId));
-    },
-    { timeout: 120000, interval: 5000 }
-  );
+  list.getPickingListsItems().should('have.length', 1);
+  list.getPickingListItemByOrderId(orderId).should('be.visible');
 
   return cy.wrap(orderId);
 });

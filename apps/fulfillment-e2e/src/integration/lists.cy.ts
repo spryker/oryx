@@ -7,8 +7,10 @@ const headerFragment = new ListsHeaderFragment();
 describe('Picking Lists', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
+    cy.login();
+    cy.cleanupPickings();
     cy.createPicking().then((orderId) => {
-      cy.login();
+      cy.receiveData();
       cy.waitForPickingToAppear(orderId);
     });
   });

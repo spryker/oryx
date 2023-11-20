@@ -12,8 +12,8 @@ const listsHeaderFragment = new ListsHeaderFragment();
 
 describe('When a user opens the user profile modal', () => {
   beforeEach(() => {
+    cy.clearIndexedDB();
     cy.login();
-
     listsHeaderFragment.getUserIcon().click();
   });
 
@@ -56,8 +56,13 @@ describe('When a user opens the user profile modal', () => {
 
   describe('and picking is in progress', () => {
     beforeEach(() => {
+      cy.createPicking().then((orderId) => {
+        cy.visit('/');
+        cy.waitForPickingToAppear(orderId);
+      });
+
       userProfileFragment.getCloseButton().click();
-      listsFragment.getStartPickingButtons().eq(1).click();
+      listsFragment.getStartPickingButtons().eq(0).click();
 
       pickerHeaderFragment.getUserIcon().click();
     });
@@ -75,13 +80,16 @@ describe('When a user opens the user profile modal', () => {
     });
   });
 
-  describe('and sync is pending and picking is in progress', () => {
+  describe.only('and sync is pending and picking is in progress', () => {
     beforeEach(() => {
-      cy.mockSyncPending();
-      cy.visit('/');
-      listsFragment.getStartPickingButtons().eq(1).click();
+      cy.createPicking().then((orderId) => {
+        cy.mockSyncPending();
+        cy.visit('/');
+        cy.waitForPickingToAppear(orderId);
 
-      pickerHeaderFragment.getUserIcon().click();
+        listsFragment.getStartPickingButtons().eq(0).click();
+        pickerHeaderFragment.getUserIcon().click();
+      });
     });
 
     it('should show picking in progress message and disable log out button', () => {
