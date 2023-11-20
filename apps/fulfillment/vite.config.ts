@@ -7,16 +7,16 @@ import { version } from './package.json';
 const skipSw = !!process.env.NO_SW;
 
 export default defineConfig({
-  root: '.',
+  root: './src',
   envPrefix: 'ORYX_',
   build: {
-    outDir: '../../dist/apps/fulfillment',
+    outDir: '../../../dist/apps/fulfillment',
     emptyOutDir: true,
     sourcemap: true,
     rollupOptions: {
       input: {
         'service-worker': './dev-dist/sw/app.js',
-        app: './index.html',
+        app: '/index.html',
       },
       output: {
         entryFileNames: (assetInfo) => {
@@ -43,7 +43,7 @@ export default defineConfig({
       registerType: 'prompt',
       injectRegister: 'auto',
       strategies: 'injectManifest',
-      srcDir: 'dev-dist/sw',
+      srcDir: '../dev-dist/sw',
       filename: 'app.js',
       manifest: {
         name: 'Fulfillment App',
@@ -85,7 +85,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,ttf,otf}'],
       },
     }),
-    tsconfigPaths({ root: '../../' }),
+    tsconfigPaths({ root: '../../../' }),
     checker({
       typescript: {
         tsconfigPath: 'tsconfig.app.json',

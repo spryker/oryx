@@ -12,7 +12,6 @@ export class GlobalPageMetaResolver implements PageMetaResolver {
 
   resolve(): Observable<ElementResolver> {
     return of({
-      viewport: 'width=device-width, initial-scale=1.0',
       title: 'Composable Storefront',
     });
   }
