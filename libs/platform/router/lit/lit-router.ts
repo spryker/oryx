@@ -199,7 +199,7 @@ export class LitRouter implements ReactiveController {
       .sort((a) =>
         (a as PathRouteConfig).path === '/*' ||
         (a as PathRouteConfig).path === '/:page'
-          ? 0
+          ? 1
           : -1
       );
 
