@@ -46,6 +46,22 @@ export class PWAThemeMetaInitializer implements AppInitializer {
           color: 'ffffff',
         },
       },
+      {
+        name: 'link',
+        attrs: {
+          rel: 'icon',
+          href: '/icons/favicon.ico',
+          type: 'image/x-icon',
+        },
+      },
+      {
+        name: 'link',
+        attrs: {
+          rel: 'apple-touch-icon',
+          href: '/icons/apple-touch-icon-180x180.png',
+          sizes: '180x180',
+        },
+      },
     ]);
   }
 }
