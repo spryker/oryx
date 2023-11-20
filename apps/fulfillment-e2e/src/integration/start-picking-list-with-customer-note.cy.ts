@@ -11,6 +11,7 @@ const discardModalFragment = new DiscardModalFragment();
 
 describe('Start picking a picklist with customer note', () => {
   beforeEach(() => {
+    cy.clearIndexedDB();
     cy.login();
 
     listsFragment.getStartPickingButtons().eq(0).click();
@@ -18,6 +19,7 @@ describe('Start picking a picklist with customer note', () => {
 
   it('check Customer Note page', () => {
     // should display customer note
+    // TODO: hardcoded data
     customerNoteFragment
       .getNote()
       .should('be.visible')
@@ -52,6 +54,7 @@ describe('Start picking a picklist with customer note', () => {
       customerNoteFragment.getProceedToPickingButton().click();
     });
 
+    // TODO: this is a mess
     it('check Picking page', () => {
       // should display tabs
       pickingFragment.getTabs().should('be.visible');

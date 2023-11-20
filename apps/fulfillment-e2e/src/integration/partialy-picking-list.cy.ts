@@ -6,8 +6,8 @@ import { ProductFragment } from '../support/page_fragments/product.fragment';
 import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
 import { PickerPage } from '../support/page_objects/picker.page';
 
+// TODO: ???? hardcoded data
 const pickingListId = '37cb241e-f18a-5768-985c-a2d7aff4875e';
-
 const pickerPage = new PickerPage(pickingListId);
 
 const listsFragment = new ListsFragment();
@@ -17,8 +17,10 @@ const pickerHeaderFragment = new PickerHeaderFragment();
 const customerNoteModalFragment = new CustomerNoteModalFragment();
 const userProfileFragment = new UserProfileFragment();
 
+// TODO: this suite is a complete 150-line mess
 describe('Partial picking a picklist', () => {
   beforeEach(() => {
+    cy.clearIndexedDB();
     cy.login();
     pickerPage.visit();
     pickerPage.productFragment.getProducts().should('be.visible');
@@ -26,6 +28,7 @@ describe('Partial picking a picklist', () => {
 
   it('should check partial picking', () => {
     // See picking lists id
+    // TODO: ???? hardcoded data
     pickerHeaderFragment
       .getPickingListsTitle()
       .should('be.visible')

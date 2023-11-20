@@ -3,15 +3,17 @@ import { ProductFragment } from '../support/page_fragments/product.fragment';
 import { PickerPage } from '../support/page_objects/picker.page';
 
 describe('Fully pick a picking list', () => {
+  // TODO: ????
+  // hardcoded data
   const pickingListId = '37cb241e-f18a-5768-985c-a2d7aff4875e';
-
   const pickerPage = new PickerPage(pickingListId);
-
   const pickerFragment = new PickerFragment();
   const productFragment = new ProductFragment();
 
   beforeEach(() => {
+    cy.clearIndexedDB();
     cy.login();
+
     pickerPage.visit();
     pickerPage.productFragment.getProducts().should('be.visible');
 

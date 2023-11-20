@@ -7,6 +7,8 @@ const customerNoteFragment = new CustomerNoteFragment();
 describe('pick a picking list in progress', () => {
   beforeEach(() => {
     cy.login();
+
+    // TODO: remove mock
     cy.mockPickingInProgress();
 
     // open first picking which is mocked as In Progress

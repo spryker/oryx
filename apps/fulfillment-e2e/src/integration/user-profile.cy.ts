@@ -10,6 +10,7 @@ const loginPage = new LoginPage();
 const pickerHeaderFragment = new PickerHeaderFragment();
 const listsHeaderFragment = new ListsHeaderFragment();
 
+// TODO: this suite is a mess
 describe('When a user opens the user profile modal', () => {
   beforeEach(() => {
     cy.clearIndexedDB();

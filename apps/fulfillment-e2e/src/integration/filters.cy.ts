@@ -4,13 +4,18 @@ const filtersFragment = new FiltersFragment();
 
 describe('When user interacts with the filters', () => {
   beforeEach(() => {
+    cy.clearIndexedDB();
     cy.login();
   });
 
   describe('And filters is closed', () => {
+    // TODO: ????
+    // what is being tested here?
     it('should reset unapplied changes', () => {
       //check whether default configuration is applied
       filtersFragment.getFilterButtonTrigger().should('not.be.checked');
+
+      // TODO: ???? methods with boolean flags that change behavior
       filtersFragment.shouldChangePickingListsOrder(false);
 
       filtersFragment.getFilterButtonTrigger().click();
@@ -40,6 +45,8 @@ describe('When user interacts with the filters', () => {
     });
   });
 
+  // TODO: ????
+  // what is being tested here?
   describe('And filters are applied', () => {
     [
       { option: 'Latest pickup time', shouldChangesTheOrder: true },
@@ -65,6 +72,8 @@ describe('When user interacts with the filters', () => {
     });
   });
 
+  // TODO: ????
+  // what is being tested here + too many actions for a test?
   describe('And preselected filters are reset', () => {
     it('should restore default sorting configuration', () => {
       filtersFragment.getFilterButtonTrigger().click();

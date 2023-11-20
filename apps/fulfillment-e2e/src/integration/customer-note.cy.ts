@@ -6,9 +6,12 @@ const customerNoteFragment = new CustomerNoteModalFragment();
 
 describe('Customer note suite', () => {
   beforeEach(() => {
+    cy.clearIndexedDB();
     cy.login();
   });
 
+  // TODO: ????
+  // test requires order with customer note
   it('should show and hide the customer note modal', () => {
     // open
     listsFragment.getCustomerNoteButtons().click();

@@ -5,8 +5,10 @@ let whSelectionPage: WarehouseSelectionPage;
 
 describe('Warehouse selection', () => {
   beforeEach(() => {
+    // TODO: ???
     whSelectionPage = new WarehouseSelectionPage();
 
+    cy.clearIndexedDB();
     cy.login();
     whSelectionPage.visit();
   });
