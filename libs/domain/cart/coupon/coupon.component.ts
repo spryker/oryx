@@ -21,7 +21,6 @@ export class CouponComponent extends CartComponentMixin(
   static styles = couponStyles;
 
   @state() hasError = false;
-  @state() errorMessage: '' | string = '';
 
   @query('input[name=coupon]') coupon?: HTMLInputElement;
 
@@ -29,17 +28,20 @@ export class CouponComponent extends CartComponentMixin(
   protected notificationService = resolve(NotificationService);
   protected localeService = resolve(LocaleService);
 
-  private successMessage: '' | string = '';
+  private errorMessage = '';
+  private successMessage = '';
 
   protected override render(): TemplateResult | void {
     if (this.$isEmpty()) {
       return;
     }
 
-    this.errorMessage =
-      this.coupon?.value === ''
-        ? `${this.i18n('coupon.insert-a-coupon')}`
-        : `${this.i18n('coupon.cart-code-can-not-be-added')}`;
+    if (this.hasError) {
+      this.errorMessage =
+        this.coupon?.value === ''
+          ? `${this.i18n('coupon.insert-a-coupon')}`
+          : `${this.i18n('coupon.cart-code-can-not-be-added')}`;
+    }
 
     this.successMessage = `${this.i18n('coupon.-successfully-applied')}`;
 
