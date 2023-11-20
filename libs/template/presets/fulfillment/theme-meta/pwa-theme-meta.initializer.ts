@@ -5,8 +5,6 @@ export class PWAThemeMetaInitializer implements AppInitializer {
   constructor(protected metaService = inject(PageMetaService, null)) {}
 
   initialize(): void {
-    console.log('PWAThemeMetaInitializer');
-
     this.metaService?.add([
       {
         name: 'link',
