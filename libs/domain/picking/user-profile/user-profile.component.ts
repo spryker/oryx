@@ -1,4 +1,4 @@
-import { AuthService } from '@spryker-oryx/auth';
+import { AuthService, IdentityService } from '@spryker-oryx/auth';
 import { AppRef, StorageService } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
 import { NetworkStateService } from '@spryker-oryx/offline';
@@ -31,6 +31,7 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
   protected storageService = resolve(StorageService);
+  protected identityService = resolve(IdentityService);
   protected networkStateService = resolve(NetworkStateService);
 
   protected injector = resolve(INJECTOR);
@@ -59,6 +60,8 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
   );
   protected $isOnline = signal(this.networkStateService.online());
 
+  protected $identity = signal(this.identityService.get());
+
   protected override render(): TemplateResult {
     return html`
       <div class="info-block">
@@ -73,7 +76,10 @@ export class PickingUserProfileComponent extends I18nMixin(LitElement) {
         )}
         <dl>
           <dt class="info-label">${this.i18n('user.profile.employee-id')}</dt>
-          <dd class="info-value">admin@spryker.com</dd>
+          <dd class="info-value">
+            ${this.$identity().userId ??
+            this.i18n('user.profile.unknown-user-id')}
+          </dd>
         </dl>
       </div>
 
