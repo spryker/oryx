@@ -63,7 +63,7 @@ describe('DefaultCartAdapter', () => {
   function requestIncludes(isAuthenticated = false): string {
     return `?include=${(isAuthenticated
       ? [ApiCartModel.Includes.Items, ApiCartModel.Includes.Coupons]
-      : [ApiCartModel.Includes.GuestCartItems]
+      : [ApiCartModel.Includes.GuestCartItems, ApiCartModel.Includes.Coupons]
     ).join(',')}`;
   }
 

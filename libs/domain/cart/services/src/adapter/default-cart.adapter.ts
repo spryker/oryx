@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AuthIdentity, IdentityService } from '@spryker-oryx/auth';
 import {
-  AddCartCouponQualifier,
   AddCartEntryQualifier,
   ApiCartModel,
   Cart,
@@ -10,6 +9,7 @@ import {
   CartNormalizer,
   CartQualifier,
   CartsNormalizer,
+  CouponQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
@@ -112,14 +112,16 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  addCoupon(data: AddCartCouponQualifier): Observable<Cart> {
+  addCoupon(data: CouponQualifier): Observable<Cart> {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => this.createCartIfNeeded(identity, data.cartId)),
-      switchMap(() => {
+      switchMap(([identity]) => {
         const url = this.generateUrl(
-          `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}`,
-          false
+          identity.isAuthenticated
+            ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}`
+            : `${ApiCartModel.UrlParts.GuestCarts}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}`,
+          !identity.isAuthenticated
         );
 
         const body = {
@@ -260,7 +262,7 @@ export class DefaultCartAdapter implements CartAdapter {
 
   protected generateUrl(path: string, isAnonymous: boolean): string {
     const includes = isAnonymous
-      ? [ApiCartModel.Includes.GuestCartItems]
+      ? [ApiCartModel.Includes.GuestCartItems, ApiCartModel.Includes.Coupons]
       : [ApiCartModel.Includes.Items, ApiCartModel.Includes.Coupons];
 
     return `${this.SCOS_BASE_URL}/${path}${`?include=${includes.join(',')}`}`;

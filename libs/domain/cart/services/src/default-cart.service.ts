@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { IdentityService } from '@spryker-oryx/auth';
 import {
-  AddCartCouponQualifier,
   AddCartEntryQualifier,
   Cart,
   CartAdapter,
@@ -17,6 +16,7 @@ import {
   CartService,
   CartsUpdated,
   Coupon,
+  CouponQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
@@ -88,7 +88,7 @@ export class DefaultCartService implements CartService {
 
   protected addCouponCommand$ = createCommand({
     ...this.cartCommandBase,
-    action: (qualifier: AddCartCouponQualifier) => {
+    action: (qualifier: CouponQualifier) => {
       return this.adapter.addCoupon(qualifier);
     },
   });
@@ -225,37 +225,7 @@ export class DefaultCartService implements CartService {
   }
 
   getCoupons(data?: CartQualifier): Observable<Coupon[]> {
-    return this.getCart(data).pipe(
-      switchMap((cart) => {
-        return this.formatCoupons(cart?.coupons);
-      })
-    );
-  }
-
-  formatCoupons(coupons: Coupon[] | undefined): Observable<Coupon[]> {
-    if (!coupons) {
-      return of([]);
-    }
-
-    const formattedCouponsObservables = coupons.map((coupon) =>
-      this.formatDate(coupon.expirationDateTime).pipe(
-        map(
-          (formattedDate) =>
-            ({
-              ...coupon,
-              expirationDateTime: formattedDate,
-            } as Coupon)
-        )
-      )
-    );
-
-    return combineLatest(formattedCouponsObservables).pipe(
-      map((formattedCoupons) => formattedCoupons)
-    );
-  }
-
-  formatDate(date: Date | string): Observable<string> {
-    return this.localeService.formatDate(date);
+    return this.getCart(data).pipe(map((cart) => cart?.coupons ?? []));
   }
 
   isEmpty(data?: CartQualifier): Observable<boolean> {
@@ -287,7 +257,7 @@ export class DefaultCartService implements CartService {
     return this.executeWithOptionalCart(qualifier, this.addEntryCommand$);
   }
 
-  addCoupon(qualifier: AddCartCouponQualifier): Observable<unknown> {
+  addCoupon(qualifier: CouponQualifier): Observable<unknown> {
     return this.executeWithOptionalCart(qualifier, this.addCouponCommand$);
   }
 

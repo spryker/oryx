@@ -11,7 +11,7 @@ export interface AddCartEntryQualifier extends CartQualifier {
   quantity?: number;
 }
 
-export interface AddCartCouponQualifier extends CartQualifier {
+export interface CouponQualifier extends CartQualifier {
   code: string;
 }
 

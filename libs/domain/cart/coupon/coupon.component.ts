@@ -1,4 +1,3 @@
-import { AuthService } from '@spryker-oryx/auth';
 import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
@@ -9,7 +8,7 @@ import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ColorType } from '@spryker-oryx/ui/link';
 import { ClearIconAppearance } from '@spryker-oryx/ui/searchbox';
-import { hydrate, signal } from '@spryker-oryx/utilities';
+import { hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -26,17 +25,14 @@ export class CouponComponent extends CartComponentMixin(
 
   @query('input[name=coupon]') coupon?: HTMLInputElement;
 
-  protected authService = resolve(AuthService);
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
   protected localeService = resolve(LocaleService);
 
-  protected isAuthenticated = signal(this.authService.isAuthenticated());
-
   private successMessage: '' | string = '';
 
   protected override render(): TemplateResult | void {
-    if (this.$isEmpty() || !this.isAuthenticated()) {
+    if (this.$isEmpty()) {
       return;
     }
 
@@ -87,12 +83,13 @@ export class CouponComponent extends CartComponentMixin(
               <li>
                 <oryx-icon type="done"></oryx-icon>
                 <span class="code">${coupon.code} </span>
-                <span class="name"
-                  >${coupon.displayName}
-                  <span
-                    >(${this.i18n('coupon.-valid-till')}
-                    ${coupon.expirationDateTime})</span
-                  >
+                <span class="name">
+                  ${coupon.displayName}
+                  <oryx-date
+                    slot="subtext"
+                    .stamp=${coupon.expirationDateTime}
+                    .i18nToken=${'coupon.(valid-till-<date>)'}
+                  ></oryx-date>
                 </span>
               </li>
             `;

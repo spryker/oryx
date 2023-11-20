@@ -1,11 +1,11 @@
 import { Transformer } from '@spryker-oryx/core';
 import { Observable } from 'rxjs';
 import {
-  AddCartCouponQualifier,
   AddCartEntryQualifier,
   Cart,
   CartEntryQualifier,
   CartQualifier,
+  CouponQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '../../models';
@@ -14,7 +14,7 @@ export interface CartAdapter {
   getAll: () => Observable<Cart[]>;
   get: (data: CartQualifier) => Observable<Cart>;
   addEntry: (data: AddCartEntryQualifier) => Observable<Cart>;
-  addCoupon: (data: AddCartCouponQualifier) => Observable<Cart>;
+  addCoupon: (data: CouponQualifier) => Observable<Cart>;
   deleteEntry: (data: CartEntryQualifier) => Observable<unknown>;
   updateEntry: (data: UpdateCartEntryQualifier) => Observable<Cart>;
   update: (data: UpdateCartQualifier) => Observable<Cart>;
