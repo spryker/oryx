@@ -34,6 +34,10 @@ export const notificationStyles = css`
     box-shadow: var(--oryx-elevation-3) var(--oryx-color-elevation);
   }
 
+  slot {
+    word-break: break-word;
+  }
+
   slot:not([name]) {
     display: block;
     grid-row: 1;

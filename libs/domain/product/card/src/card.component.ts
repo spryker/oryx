@@ -13,6 +13,7 @@ import {
   Size,
   computed,
   elementEffect,
+  featureVersion,
   hydrate,
   ssrShim,
 } from '@spryker-oryx/utilities';
@@ -51,14 +52,20 @@ export class ProductCardComponent extends ProductMixin(
   protected skuController = (): void => {
     const sku = this.$options().sku;
     if (sku !== undefined) {
-      this.contextController.provide(ProductContext.SKU, sku);
+      this.contextController.provide(
+        ProductContext.SKU,
+        featureVersion >= '1.3' ? { sku } : sku
+      );
     }
   };
 
   @elementEffect()
   protected setProductContext = (): void => {
     if (this.sku) {
-      this.contextController.provide(ProductContext.SKU, this.sku);
+      this.contextController.provide(
+        ProductContext.SKU,
+        featureVersion >= '1.3' ? { sku: this.sku } : this.sku
+      );
     }
   };
 

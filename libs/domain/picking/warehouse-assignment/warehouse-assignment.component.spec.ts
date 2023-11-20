@@ -13,7 +13,7 @@ import { beforeEach, vi } from 'vitest';
 import { PickingWarehouseAssignmentComponent } from './warehouse-assignment.component';
 
 const mockOfflineDataPlugin = {
-  refreshData: vi.fn().mockReturnValue(
+  syncData: vi.fn().mockReturnValue(
     of(undefined).pipe(
       switchMap(async () => {
         await nextTick(2);
