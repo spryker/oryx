@@ -1,13 +1,12 @@
 import {
   applicationFeature,
-  applicationProviders,
-  ThemeMetaInitializer
+  ThemeMetaInitializer,
 } from '@spryker-oryx/application';
 import { BapiAuthComponentsFeature, BapiAuthFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
 import { contentFeature } from '@spryker-oryx/content';
 import { AppFeature, coreFeature } from '@spryker-oryx/core';
-import { Resources, experienceFeature } from '@spryker-oryx/experience';
+import { experienceFeature, Resources } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
 import { PickingFeature, PickingFeatureConfig } from '@spryker-oryx/picking';
@@ -54,13 +53,14 @@ export function fulfillmentFeatures(
     StaticExperienceFeature,
     featureVersion >= '1.3'
       ? {
-        providers: [
-          {
-            provide: ThemeMetaInitializer,
-            useClass: PWAThemeMetaInitializer,
-          }
-        ]
-      } : []
+          providers: [
+            {
+              provide: ThemeMetaInitializer,
+              useClass: PWAThemeMetaInitializer,
+            },
+          ],
+        }
+      : [],
   ];
 }
 
