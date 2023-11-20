@@ -8,36 +8,29 @@ import {
 import { PickingInProgressModalComponent } from '@spryker-oryx/picking/picking-in-progress';
 import {
   PickingListService,
-  PickingListStatus,
 } from '@spryker-oryx/picking/services';
 import { I18nMixin, i18n, signal, signalAware } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { state } from 'lit/decorators.js';
-import { createRef, ref } from 'lit/directives/ref.js';
+import { query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { Subject, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { pickingListsComponentStyles } from './lists.styles';
 
 @signalAware()
 export class PickingListsComponent extends I18nMixin(LitElement) {
   static styles = pickingListsComponentStyles;
+  
   protected pickingListService = resolve(PickingListService);
   protected pickingSyncHandler = resolve(PickingSyncActionHandlerService);
 
-  @state()
-  protected isSearchActive = false;
+  protected $isActiveSearch = signal(this.pickingListService.isActiveSearch());
+  protected $qualifier = signal(this.pickingListService.getQualifier());
 
   @state()
   protected customerNote?: string;
 
-  protected pickingInProgressModal =
-    createRef<PickingInProgressModalComponent>();
-
-  @state()
-  protected searchValueLength?: number = 0;
-
-  protected searchValue$ = new Subject<string>();
+  @query('oryx-picking-in-progress-modal')
+  protected pickingInProgressModal!: PickingInProgressModalComponent
 
   protected injectorDataPlugin =
     resolve(AppRef).requirePlugin(OfflineDataPlugin);
@@ -45,27 +38,11 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
   protected $syncing = signal(this.pickingSyncHandler.isSyncing());
   protected $refreshing = signal(this.injectorDataPlugin.isRefreshing());
 
-  protected pickingLists$ = this.searchValue$.pipe(
-    startWith(''),
-    map((q) => q.trim()),
-    distinctUntilChanged(),
-    switchMap((value) => {
-      this.searchValueLength = value.length;
-
-      return this.pickingListService.get({
-        status: PickingListStatus.ReadyForPicking,
-        searchOrderReference: value,
-      });
-    })
-  );
-
-  protected $pickingLists = signal(this.pickingLists$);
+  protected $pickingLists = signal(this.pickingListService.get());
 
   protected override render(): TemplateResult {
     return html` ${this.renderPickingLists()}
-      <oryx-picking-in-progress-modal
-        ${ref(this.pickingInProgressModal)}
-      ></oryx-picking-in-progress-modal>
+      <oryx-picking-in-progress-modal></oryx-picking-in-progress-modal>
 
       <oryx-picking-customer-note-modal
         ?open=${!!this.customerNote}
@@ -76,10 +53,8 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
   }
 
   protected renderPickingLists(): TemplateResult {
-    return html` <oryx-picking-lists-header
-        @oryx.search=${this.searchOrderReference}
-      ></oryx-picking-lists-header>
-
+    const noValueSearchProvided = this.$isActiveSearch() && !this.$qualifier().searchOrderReference;
+    return html`
       ${this.renderFilters()}
       ${when(
         this.$refreshing(),
@@ -90,12 +65,12 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
             () => this.renderResultsFallback(),
             () => html`
               ${when(
-                this.noValueSearchProvided(),
+                noValueSearchProvided,
                 () => this.renderSearchFallback(),
                 () => html`
                   <section>
                     ${when(
-                      this.isSearchActive,
+                      this.$isActiveSearch(),
                       () => html`
                         <oryx-heading slot="heading">
                           <h4>
@@ -126,7 +101,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
   }
 
   protected renderResultsFallback(): TemplateResult {
-    const fallbackType = !this.isSearchActive
+    const fallbackType = !this.$isActiveSearch()
       ? FallbackType.noResults
       : FallbackType.noSearchingResults;
 
@@ -177,12 +152,6 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
     `;
   }
 
-  protected searchOrderReference(event: CustomEvent): void {
-    this.isSearchActive = event.detail.open;
-
-    this.searchValue$.next(event.detail.search);
-  }
-
   protected openCustomerNoteModal(event: CustomEvent): void {
     this.customerNote = event.detail.note;
   }
@@ -191,13 +160,8 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
     this.customerNote = undefined;
   }
 
-  protected openPickingInProgressModal(event: CustomEvent): void {
-    const modal = this.pickingInProgressModal.value;
-    modal && (modal.open = true);
-  }
-
-  private noValueSearchProvided(): boolean {
-    return this.isSearchActive && !(this.searchValueLength! >= 2);
+  protected openPickingInProgressModal(): void {
+    this.pickingInProgressModal.open = true;
   }
 
   private getFallbackTitle(fallbackType: FallbackType) {

@@ -4,7 +4,7 @@ import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
-  title: `${storybookPrefix}/List header`,
+  title: `${storybookPrefix}/Search`,
   parameters: {
     layout: 'fullscreen',
     chromatic: {
@@ -15,7 +15,7 @@ export default {
 } as Meta;
 
 const Template: Story<unknown> = (): TemplateResult => {
-  return html`<oryx-picking-lists-header></oryx-picking-lists-header>`;
+  return html`<oryx-picking-search></oryx-picking-search>`;
 };
 
 export const Demo = Template.bind({});

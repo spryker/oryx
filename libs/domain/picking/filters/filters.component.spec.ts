@@ -3,7 +3,7 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { FormRenderer } from '@spryker-oryx/form';
 import {
   PickingListService,
-  defaultSortingQualifier,
+  defaultQualifier,
 } from '@spryker-oryx/picking/services';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -14,8 +14,8 @@ import { pickingFiltersComponent } from './filters.def';
 import { getFilterFields } from './filters.model';
 
 class MockPickingListService implements Partial<PickingListService> {
-  getSortingQualifier = vi.fn().mockReturnValue(of(defaultSortingQualifier));
-  setSortingQualifier = vi.fn();
+  getQualifier = vi.fn().mockReturnValue(of(defaultQualifier));
+  setQualifier = vi.fn();
 }
 
 class MockFormRenderer implements Partial<FormRenderer> {
@@ -70,9 +70,9 @@ describe('PickingFiltersComponent', () => {
 
   describe('when qualifier changes', () => {
     beforeEach(async () => {
-      service.getSortingQualifier = vi.fn().mockReturnValue(
+      service.getQualifier = vi.fn().mockReturnValue(
         of({
-          ...defaultSortingQualifier,
+          ...defaultQualifier,
           sortDesc: false,
         })
       );
@@ -131,8 +131,8 @@ describe('PickingFiltersComponent', () => {
       });
 
       it('should set default qualifiers', () => {
-        expect(service.setSortingQualifier).toHaveBeenCalledWith(
-          defaultSortingQualifier
+        expect(service.setQualifier).toHaveBeenCalledWith(
+          defaultQualifier
         );
       });
 
@@ -169,7 +169,7 @@ describe('PickingFiltersComponent', () => {
       });
 
       it('should update the qualifier', () => {
-        expect(service.setSortingQualifier).toHaveBeenCalledWith({
+        expect(service.setQualifier).toHaveBeenCalledWith({
           sortBy,
           sortDesc: true,
         });
@@ -208,7 +208,7 @@ describe('PickingFiltersComponent', () => {
       });
 
       it('should update the qualifier', () => {
-        expect(service.setSortingQualifier).toHaveBeenCalledWith({
+        expect(service.setQualifier).toHaveBeenCalledWith({
           sortBy,
           sortDesc: true,
         });

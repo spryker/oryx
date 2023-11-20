@@ -4,7 +4,7 @@ export const pickingListsPage: ExperienceComponent = {
   id: 'picking-lists',
   type: 'Page',
   meta: {
-    title: 'Warehouse Selection',
+    title: 'Picking Lists Page',
     route: '/',
     description: 'Picking Lists Page Description',
   },
@@ -12,9 +12,8 @@ export const pickingListsPage: ExperienceComponent = {
     rules: [{ layout: 'list' }],
   },
   components: [
-    {
-      type: 'oryx-picking-lists',
-    },
+    { ref: 'header-picking-lists' },
+    { type: 'oryx-picking-lists' },
     { ref: 'service' },
   ],
 };

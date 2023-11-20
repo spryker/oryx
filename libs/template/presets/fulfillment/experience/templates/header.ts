@@ -1,5 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
+import { i18n } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
   type: 'oryx-composition',
@@ -9,28 +10,24 @@ export const HeaderTemplate: ExperienceComponent = {
       type: 'oryx-site-navigation-item',
       options: {
         contentBehavior: 'modal',
-        label: 'Account',
+        label: i18n('picking.account'),
         icon: IconTypes.User,
         triggerType: 'icon',
+        rules: [{ style: '--oryx-icon-color: var(--oryx-color-primary-9)' }],
       },
       components: [
-        { 
+        {
           type: 'oryx-picking-user-profile',
-          options: {
-            rules: [
-              { style: '--oryx-icon-color: var(--oryx-color-primary-9)' }
-            ]
-          }
-        }
+        },
       ],
     },
   ],
   options: {
     rules: [
       {
-        layout: { 
-          type: 'flex', 
-          sticky: true, 
+        layout: {
+          type: 'flex',
+          sticky: true,
           zIndex: 1,
           bleed: true,
         },
@@ -39,8 +36,9 @@ export const HeaderTemplate: ExperienceComponent = {
         padding: '0 24px',
         gap: '12px',
         align: 'center',
-        justify: 'flex-end',
-        style: 'box-shadow: var(--oryx-elevation-2) var(--oryx-elevation-color-2);'
+        justify: 'end',
+        style:
+          'box-shadow: var(--oryx-elevation-2) var(--oryx-elevation-color-2); box-sizing: border-box;',
       },
     ],
   },

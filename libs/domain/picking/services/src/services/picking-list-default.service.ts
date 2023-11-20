@@ -9,50 +9,53 @@ import {
   throwError,
 } from 'rxjs';
 import {
-  defaultSortingQualifier,
+  defaultQualifier,
   PickingList,
   PickingListQualifier,
-  PickingListQualifierSortBy,
-  SortableQualifier,
 } from '../models';
 import { PickingListAdapter } from './adapter';
 import { PickingListService } from './picking-list.service';
 
 export class PickingListDefaultService implements PickingListService {
+  constructor(protected adapter = inject(PickingListAdapter)) {}
+
   protected upcomingPickingListId$ = new BehaviorSubject<string | null>(null);
   protected allowDiscardPicking$ = new BehaviorSubject<boolean>(true);
 
-  constructor(protected adapter = inject(PickingListAdapter)) {}
+  protected activeSearch$ = new BehaviorSubject<boolean>(false);
 
-  protected sortingQualifier$ = new BehaviorSubject<
-    SortableQualifier<PickingListQualifierSortBy>
-  >(defaultSortingQualifier);
-
-  getSortingQualifier(): Observable<
-    SortableQualifier<PickingListQualifierSortBy>
-  > {
-    return this.sortingQualifier$;
+  isActiveSearch(): Observable<boolean> {
+    return this.activeSearch$;
   }
 
-  setSortingQualifier(
-    qualifier: SortableQualifier<PickingListQualifierSortBy>
+  toggleActiveSearch(state: boolean): void {
+    this.activeSearch$.next(state);
+  }
+
+  protected _qualifier: PickingListQualifier = defaultQualifier;
+  protected qualifier$ = new BehaviorSubject<
+    PickingListQualifier
+  >(this._qualifier);
+
+  getQualifier(): Observable<PickingListQualifier> {
+    return this.qualifier$;
+  }
+
+  setQualifier(
+    qualifier: PickingListQualifier
   ): void {
-    this.sortingQualifier$.next(qualifier);
+    this._qualifier = { ...this._qualifier, ...qualifier };
+    this.qualifier$.next(this._qualifier);
   }
 
-  get(qualifier: PickingListQualifier): Observable<PickingList[]> {
-    return this.sortingQualifier$.pipe(
-      switchMap((sortingQualifier) =>
-        this.adapter.get({
-          ...sortingQualifier,
-          ...qualifier,
-        })
-      )
+  get(): Observable<PickingList[]> {
+    return this.qualifier$.pipe(
+      switchMap((qualifier) => this.adapter.get(qualifier))
     );
   }
 
   getList(id: string): Observable<PickingList | null> {
-    return this.get({ ids: [id] }).pipe(map((list) => list[0] ?? null));
+    return this.adapter.get({ ids: [id] }).pipe(map((list) => list[0] ?? null));
   }
 
   startPicking(pickingList: PickingList): Observable<PickingList | null> {

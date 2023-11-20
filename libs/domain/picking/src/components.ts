@@ -5,7 +5,7 @@ export * from '../filter-button/filter-button.def';
 export * from '../filters/filters.def';
 export * from '../header/header.def';
 export * from '../list-item/list-item.def';
-export * from '../lists-header/lists-header.def';
+export * from '../search/search.def';
 export * from '../lists/lists.def';
 export * from '../picker-header/picker-header.def';
 export * from '../picker/picker.def';

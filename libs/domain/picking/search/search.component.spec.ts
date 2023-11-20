@@ -5,8 +5,8 @@ import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import MockDate from 'mockdate';
 import { of } from 'rxjs';
-import { PickingListsHeaderComponent } from './lists-header.component';
-import { pickingListsHeaderComponent } from './lists-header.def';
+import { PickingListsHeaderComponent } from './search.component';
+import { pickingListsHeaderComponent } from './search.def';
 
 const mockedDate = new Date(1970, 1, 1);
 const formattedDate = 'formattedDate';
