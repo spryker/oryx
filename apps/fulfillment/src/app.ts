@@ -9,7 +9,7 @@ appBuilder()
   .withEnvironment(env)
   .withFeature(
     fulfillmentFeatures({
-      picking: { appVersion: env.ORYX_FULFILLMENT_APP_VERSION },
+      picking: { appVersion: env.ORYX_APP_VERSION },
     })
   )
   .withOptions({
