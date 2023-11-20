@@ -1,4 +1,4 @@
-import { ExperienceComponent } from '@spryker-oryx/experience';
+import { ExperienceComponent, ShadowElevation } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size, featureVersion } from '@spryker-oryx/utilities';
 
@@ -204,8 +204,54 @@ export const mainHeader = (): ExperienceComponent[] => {
   ];
 };
 
+export const categoryNavigation = (
+  categories: (string | number)[] = []
+): ExperienceComponent[] => {
+  const categoryLinks = categories.map((id) => ({
+    type: 'oryx-content-link',
+    options: { id, type: 'category' },
+  }));
+  return [
+    {
+      type: 'oryx-composition',
+      id: 'category-navigation',
+      options: {
+        rules: [
+          {
+            layout: {
+              type: 'navigation',
+              bleed: true,
+            },
+            shadow: ShadowElevation.Raised,
+            top: '78px',
+            gap: '40px',
+            background: 'var(--oryx-color-neutral-1)',
+          },
+        ],
+      },
+      components: [
+        {
+          type: 'oryx-content-link',
+          content: { data: { text: 'All products' } },
+          options: {
+            url: '/search',
+            icon: 'category',
+          },
+        },
+        ...categoryLinks,
+      ],
+    },
+  ];
+};
+
 export const HeaderTemplate: ExperienceComponent = {
   type: 'oryx-composition',
   id: 'header',
-  components: [...topHeader(), ...mainHeader()],
+  components: [
+    ...topHeader(),
+    ...mainHeader(),
+    ...(featureVersion >= '1.3'
+      ? categoryNavigation(['2', '5', '9', '11'])
+      : []),
+  ],
 };

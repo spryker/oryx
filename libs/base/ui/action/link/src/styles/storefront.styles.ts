@@ -4,10 +4,11 @@ export const storefrontLinkStyles = css`
   :host {
     position: relative;
     display: inline-flex;
+    width: var(--oryx-link-width);
   }
 
   :host([icon]) {
-    --oryx-icon-size: 16px;
+    --oryx-icon-size: var(--oryx-link-icon-size, 16px);
 
     align-items: baseline;
     gap: 8px;
@@ -28,12 +29,20 @@ export const storefrontLinkStyles = css`
   ::slotted(a) {
     text-decoration: none;
     color: currentColor;
+    width: var(--oryx-link-width);
+    padding: var(--oryx-link-padding);
+  }
+
+  :host([icon]) ::slotted(a) {
     margin-inline-start: calc((var(--oryx-icon-size, 24px) + 8px) * -1);
     padding-inline-start: calc(var(--oryx-icon-size, 24px) + 8px);
   }
 
   :host(:hover) ::slotted(a) {
-    text-decoration: solid underline currentColor 1px;
+    text-decoration: var(
+      --oryx-link-decoration,
+      solid underline currentColor 1px
+    );
     text-underline-offset: 5px;
   }
 
@@ -55,6 +64,6 @@ export const storefrontLinkStyles = css`
   :host([color='primary']),
   :host([color='primary']:hover:not(:active)),
   :host(:active) {
-    color: var(--oryx-color-primary-10);
+    color: var(--oryx-link-color, var(--oryx-color-primary-10));
   }
 `;

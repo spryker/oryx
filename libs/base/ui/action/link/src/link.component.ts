@@ -1,5 +1,4 @@
 import { Icons } from '@spryker-oryx/ui/icon';
-import { Size } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -17,10 +16,7 @@ export class LinkComponent
 
   protected render(): TemplateResult {
     return html`
-      ${when(
-        this.icon,
-        () => html`<oryx-icon .type=${this.icon} .size=${Size.Md}></oryx-icon>`
-      )}
+      ${when(this.icon, () => html`<oryx-icon .type=${this.icon}></oryx-icon>`)}
       <slot></slot>
     `;
   }
