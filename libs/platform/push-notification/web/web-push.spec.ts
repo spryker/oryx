@@ -22,14 +22,7 @@ const mockServiceWorker = {
   ready: of({ pushManager: new PushManagerMock() }),
 };
 
-const defaultPermissions = {
-  notification: 'granted',
-  'background-sync': 'granted',
-} as Record<string, string>;
-
-const mockPermissions = (permissions = defaultPermissions) => ({
-  query: ({ name }: { name: string }) => ({ state: permissions[name] }),
-});
+const callback = vi.fn();
 
 describe('WebPushProvider', () => {
   async function getPushManager() {
@@ -46,11 +39,7 @@ describe('WebPushProvider', () => {
   let provider: WebPushProvider;
 
   beforeEach(() => {
-    vi.stubGlobal('navigator', {
-      serviceWorker: mockServiceWorker,
-      permissions: mockPermissions(),
-    });
-    vi.stubGlobal('window', { SyncManager: {} });
+    vi.stubGlobal('navigator', { serviceWorker: mockServiceWorker });
 
     const testInjector = createInjector({
       providers: [
@@ -91,17 +80,18 @@ describe('WebPushProvider', () => {
     });
 
     it('should create and return Promise of subscription data from PushManager', async () => {
-      const pushManager = await getPushManager();
       const mockSubscription = { endpoint: 'mock-endpoint' };
 
       pushManager.subscription.toJSON.mockReturnValue(mockSubscription);
       pushManager.getSubscription.mockReturnValue(of(undefined));
-      provider.getSubscription().subscribe((subscription) => {
-        expect(pushManager.subscribe).toHaveBeenCalledWith({
-          userVisibleOnly: true,
-        });
-        expect(subscription).toBe(mockSubscription);
+      provider.getSubscription().subscribe(callback);
+
+      expect(pushManager.subscribe).toHaveBeenCalledWith({
+        userVisibleOnly: true,
       });
+      expect(callback).toHaveBeenCalledWith(mockSubscription);
+      // Should be a different object then original subscription
+      expect(callback).not.toHaveBeenCalledWith(pushManager.subscription);
     });
 
     describe('when using app server key', () => {
@@ -124,14 +114,13 @@ describe('WebPushProvider', () => {
       });
 
       it('should use app server key to create subscription if configured', async () => {
-        provider.getSubscription().subscribe(() => {
-          expect(
-            pushManager.subscribe,
-            'applicationServerKey should be URL-safe without base64 padding'
-          ).toHaveBeenCalledWith({
-            applicationServerKey: 'mock-app%26-server%20key',
-            userVisibleOnly: true,
-          });
+        provider.getSubscription().subscribe(callback);
+        expect(
+          pushManager.subscribe,
+          'applicationServerKey should be URL-safe without base64 padding'
+        ).toHaveBeenCalledWith({
+          applicationServerKey: 'mock-app%26-server%20key',
+          userVisibleOnly: true,
         });
       });
     });
@@ -155,10 +144,9 @@ describe('WebPushProvider', () => {
         pushManager = await getPushManager();
       });
       it('should use custom userVisibleOnly flag', async () => {
-        provider.getSubscription().subscribe(() => {
-          expect(pushManager.subscribe).toHaveBeenCalledWith({
-            userVisibleOnly: false,
-          });
+        provider.getSubscription().subscribe(callback);
+        expect(pushManager.subscribe).toHaveBeenCalledWith({
+          userVisibleOnly: false,
         });
       });
     });
@@ -170,10 +158,9 @@ describe('WebPushProvider', () => {
       pushSubscription.toJSON.mockReturnValue(mockSubscription);
       pushManager.getSubscription.mockReturnValue(of(pushSubscription));
 
-      provider.getSubscription().subscribe((subscription) => {
-        expect(pushManager.subscribe).not.toHaveBeenCalled();
-        expect(subscription).toBe(mockSubscription);
-      });
+      provider.getSubscription().subscribe(callback);
+      expect(pushManager.subscribe).not.toHaveBeenCalled();
+      expect(callback).toHaveBeenCalledWith(mockSubscription);
     });
   });
 
@@ -188,17 +175,15 @@ describe('WebPushProvider', () => {
       it('should cancel existing subscription and return Promise of `true` if successful', () => {
         pushSubscription.unsubscribe.mockReturnValue(of(true));
 
-        provider.deleteSubscription().subscribe((result) => {
-          expect(result).toBe(true);
-        });
+        provider.deleteSubscription().subscribe(callback);
+        expect(callback).toHaveBeenCalledWith(true);
       });
 
       it('should cancel existing subscription and return Promise of `false` if unsuccessful', () => {
         pushSubscription.unsubscribe.mockReturnValue(of(false));
 
-        provider.deleteSubscription().subscribe((result) => {
-          expect(result).toBe(false);
-        });
+        provider.deleteSubscription().subscribe(callback);
+        expect(callback).toHaveBeenCalledWith(false);
       });
     });
 
@@ -206,81 +191,8 @@ describe('WebPushProvider', () => {
       it('should return Promise of `true`', () => {
         pushManager.getSubscription.mockReturnValue(of(null));
 
-        provider.deleteSubscription().subscribe((result) => {
-          expect(result).toBe(true);
-        });
-      });
-    });
-  });
-
-  describe('error handling', () => {
-    describe('when service-worker API is not supported', () => {
-      beforeEach(() => {
-        vi.stubGlobal('navigator', {});
-      });
-
-      it('should throw an error', () => {
-        provider.getSubscription().subscribe({
-          error: (e) => {
-            expect(e.message).toBe(
-              'Browser does not support service-worker API'
-            );
-          },
-        });
-      });
-    });
-
-    describe('when syncManager API is not supported', () => {
-      beforeEach(() => {
-        vi.stubGlobal('window', {});
-      });
-
-      it('should throw an error', () => {
-        provider.getSubscription().subscribe({
-          error: (e) => {
-            expect(e.message).toBe(
-              'Browser does not support background sync API'
-            );
-          },
-        });
-      });
-    });
-
-    describe('when notifications are not allowed', () => {
-      beforeEach(() => {
-        vi.stubGlobal('navigator', {
-          serviceWorker: mockServiceWorker,
-          permissions: mockPermissions({ notification: 'denied' }),
-        });
-      });
-
-      it('should throw an error', () => {
-        provider.getSubscription().subscribe({
-          error: (e) => {
-            expect(e.message).toBe(
-              'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission'
-            );
-          },
-        });
-      });
-    });
-
-    describe('when background sync is not allowed', () => {
-      beforeEach(() => {
-        vi.stubGlobal('navigator', {
-          serviceWorker: mockServiceWorker,
-          permissions: mockPermissions({ 'background-sync': 'denied' }),
-        });
-      });
-
-      it('should throw an error', () => {
-        provider.getSubscription().subscribe({
-          error: (e) => {
-            expect(e.message).toBe(
-              'Permission to perform background sync is not granted. Check the browser configuration or reset the permission'
-            );
-          },
-        });
+        provider.deleteSubscription().subscribe(callback);
+        expect(callback).toHaveBeenCalledWith(true);
       });
     });
   });

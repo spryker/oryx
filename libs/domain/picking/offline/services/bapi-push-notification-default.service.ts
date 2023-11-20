@@ -3,10 +3,13 @@ import { inject } from '@spryker-oryx/di';
 import { PushService } from '@spryker-oryx/push-notification';
 import {
   catchError,
+  defer,
   filter,
+  from,
   Observable,
   of,
   switchMap,
+  take,
   throwError,
 } from 'rxjs';
 import { BapiPushNotificationAdapter } from './adapter';
@@ -27,7 +30,10 @@ export class BapiPushNotificationDefaultService
   ) {}
 
   initSubscription(): Observable<void> {
-    return this.storageService.get<boolean>(this.subscriptionFlagKey).pipe(
+    return this.precondition().pipe(
+      switchMap(() =>
+        this.storageService.get<boolean>(this.subscriptionFlagKey)
+      ),
       filter((isSubscribed) => !isSubscribed),
       switchMap(() => this.pushService.subscribe()),
       switchMap((subscription) =>
@@ -41,7 +47,9 @@ export class BapiPushNotificationDefaultService
               return of(undefined);
             }
 
-            return this.unsubscribe().pipe(switchMap(() => throwError(error)));
+            return this.unsubscribe().pipe(
+              switchMap(() => throwError(() => error))
+            );
           })
         )
       ),
@@ -55,5 +63,38 @@ export class BapiPushNotificationDefaultService
       .pipe(
         switchMap(() => this.storageService.remove(this.subscriptionFlagKey))
       );
+  }
+
+  protected async checkSupportAndPermission(): Promise<void> {
+    if (!('serviceWorker' in navigator)) {
+      throw new Error('Browser does not support service-worker API');
+    }
+
+    if (!('SyncManager' in window)) {
+      throw new Error('Browser does not support background sync API');
+    }
+
+    if (await this.permissionDenied('notifications')) {
+      throw new Error(
+        'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission'
+      );
+    }
+
+    if (await this.permissionDenied('background-sync')) {
+      throw new Error(
+        'Permission to perform background sync is not granted. Check the browser configuration or reset the permission'
+      );
+    }
+  }
+
+  protected precondition(): Observable<void> {
+    return defer(() => from(this.checkSupportAndPermission())).pipe(take(1));
+  }
+
+  protected async permissionDenied(name: string): Promise<boolean> {
+    return (
+      (await navigator.permissions.query({ name: name as PermissionName }))
+        ?.state === 'denied'
+    );
   }
 }
