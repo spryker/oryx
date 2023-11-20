@@ -1,5 +1,5 @@
 import { PushProvider } from '@spryker-oryx/push-notification';
-import { from, map, Observable, of, switchMap } from 'rxjs';
+import { defer, from, map, Observable, of, switchMap, take } from 'rxjs';
 
 export interface WebPushProviderOptions {
   /**
@@ -30,7 +30,8 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
   }
 
   getSubscription(): Observable<PushSubscriptionJSON> {
-    return this.getExistingSubscription().pipe(
+    return this.precondition().pipe(
+      switchMap(() => this.getExistingSubscription()),
       switchMap((subscription) =>
         subscription ? of(subscription) : this.createSubscription()
       ),
@@ -66,11 +67,44 @@ export class WebPushProvider implements PushProvider<PushSubscriptionJSON> {
     );
   }
 
+  protected async checkSupportAndPermission(): Promise<void> {
+    if (!('serviceWorker' in navigator)) {
+      throw new Error('Browser does not support service-worker API');
+    }
+
+    if (!('SyncManager' in window)) {
+      throw new Error('Browser does not support background sync API');
+    }
+
+    if (await this.permissionDenied('notifications')) {
+      throw new Error(
+        'Permission to accept push notifications is not granted. Check the browser configuration or reset the permission'
+      );
+    }
+
+    if (await this.permissionDenied('background-sync')) {
+      throw new Error(
+        'Permission to perform background sync is not granted. Check the browser configuration or reset the permission'
+      );
+    }
+  }
+
+  protected precondition(): Observable<void> {
+    return defer(() => from(this.checkSupportAndPermission())).pipe(take(1));
+  }
+
   /**
    * The key should be URL-safe base64 encoded without padding (no trailing =)
    * @see https://developer.mozilla.org/en-US/docs/Web/API/PushManager/subscribe#parameters
    */
   protected encodeKey(key: string): string {
     return encodeURIComponent(key.replace(/([^=].)=+$/, '$1'));
+  }
+
+  protected async permissionDenied(name: string): Promise<boolean> {
+    return (
+      (await navigator.permissions.query({ name: name as PermissionName }))
+        ?.state === 'denied'
+    );
   }
 }
