@@ -7,6 +7,9 @@ export class PWAThemeMetaInitializer implements AppInitializer {
   initialize(): void {
     this.metaService?.add([
       {
+        title: 'Fullfillment Application',
+      },
+      {
         name: 'link',
         attrs: {
           rel: 'stylesheet',
