@@ -5,8 +5,8 @@ import {
   PickingListQualifierSortBy,
   PickingListService,
   SortableQualifier,
-} from '@spryker-oryx/picking';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+} from '@spryker-oryx/picking/services';
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import { mockPickingListData } from './mock-picking-list';
 
 export class MockPickingListService implements Partial<PickingListService> {
@@ -40,6 +40,10 @@ export class MockPickingListService implements Partial<PickingListService> {
       return (!qIds || qIds?.includes(id)) && (!qStatus || status === qStatus);
     });
     return of(filteredData);
+  }
+
+  getList(id: string): Observable<PickingList | null> {
+    return this.get({ ids: [id] }).pipe(map((list) => list[0] ?? null));
   }
 
   startPicking(pickingList: PickingList): Observable<PickingList> {

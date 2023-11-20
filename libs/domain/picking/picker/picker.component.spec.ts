@@ -1,13 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  PickingHeaderService,
-  PickingListService,
-} from '@spryker-oryx/picking';
+import { PickingHeaderService } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+import { PickingListService } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
+import { tabsComponent } from '@spryker-oryx/ui';
 import { TabComponent } from '@spryker-oryx/ui/tab';
-import { tabsComponent } from '@spryker-oryx/ui/tabs';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -16,7 +14,7 @@ import { PickingPickerComponent } from './picker.component';
 import { pickingPickerComponent } from './picker.def';
 
 class MockPickingListService implements Partial<PickingListService> {
-  get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
+  getList = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   finishPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
@@ -127,7 +125,7 @@ describe('PickingPickerComponent', () => {
 
   describe('when there is no picking lists', () => {
     beforeEach(async () => {
-      service.get = vi.fn().mockReturnValue(of([]));
+      service.getList = vi.fn().mockReturnValue(of(null));
 
       element = await fixture(
         html`<oryx-picking-picker pickingListId="id"></oryx-picking-picker>`
@@ -157,7 +155,7 @@ describe('PickingPickerComponent', () => {
 
   describe('when all items are already picked', () => {
     beforeEach(async () => {
-      service.get = vi.fn().mockReturnValue(of([mockPickingListData[1]]));
+      service.getList = vi.fn().mockReturnValue(of(mockPickingListData[1]));
       service.finishPicking = vi
         .fn()
         .mockReturnValue(of(mockPickingListData[1]));
@@ -224,7 +222,7 @@ describe('PickingPickerComponent', () => {
         ],
       };
 
-      service.get = vi.fn().mockReturnValue(of([partiallyPickedPickingList]));
+      service.getList = vi.fn().mockReturnValue(of(partiallyPickedPickingList));
       service.finishPicking = vi
         .fn()
         .mockReturnValue(of(partiallyPickedPickingList));

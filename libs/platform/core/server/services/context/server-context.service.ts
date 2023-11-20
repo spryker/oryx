@@ -8,10 +8,12 @@ export class ServerContextService extends DefaultContextService {
   rendered$ = new ReplaySubject<void>(1);
 
   provide(element: Element, key: string, value: unknown): void {
-    element.setAttribute(`${this.dataKey}${key}`, JSON.stringify(value));
+    this.serialize(key, value).subscribe((serialized) =>
+      element.setAttribute(`${this.dataKey}${key}`, serialized)
+    );
   }
 
-  get<T>(element: Element | null, key: string): Observable<T> {
+  get<T>(element: Element | null, key: string): Observable<T | undefined> {
     return defer(() => {
       if (element) {
         const stack = this.streamParser.getStreamStack();
@@ -24,7 +26,7 @@ export class ServerContextService extends DefaultContextService {
             continue;
           }
 
-          return of(JSON.parse(value));
+          return this.deserialize<T>(key, value);
         }
       }
 

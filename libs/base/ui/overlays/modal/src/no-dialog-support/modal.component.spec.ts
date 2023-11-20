@@ -2,17 +2,19 @@ import { checkSlots, dispatchKeydown } from '@/tools/testing';
 import { fixture } from '@open-wc/testing-helpers';
 import { a11yConfig, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { modalComponent } from '../../index';
+import { modalComponent } from '../modal.def';
 import { NDSModalComponent } from './modal.component';
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-window.HTMLDialogElement = null;
-
-useComponent(modalComponent);
 
 describe('NDS Modal', () => {
   let element: NDSModalComponent;
+
+  beforeAll(async () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.HTMLDialogElement = null;
+
+    await useComponent(modalComponent);
+  });
 
   const expectDialogOpen = (shouldBeOpen: boolean): void => {
     if (shouldBeOpen) {

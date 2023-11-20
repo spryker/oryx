@@ -1,11 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  WarehouseUserAssignmentsService,
-  pickingWarehouseAssignmentComponent,
-} from '@spryker-oryx/picking';
+import { pickingWarehouseAssignmentComponent } from '@spryker-oryx/picking';
 import { mockWarehouseUserAssignments } from '@spryker-oryx/picking/mocks';
+import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
@@ -15,7 +13,7 @@ import { beforeEach, vi } from 'vitest';
 import { PickingWarehouseAssignmentComponent } from './warehouse-assignment.component';
 
 const mockOfflineDataPlugin = {
-  refreshData: vi.fn().mockReturnValue(
+  syncData: vi.fn().mockReturnValue(
     of(undefined).pipe(
       switchMap(async () => {
         await nextTick(2);

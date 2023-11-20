@@ -1,11 +1,12 @@
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { RouterService, RouteType } from '@spryker-oryx/router';
+import { RouteType, RouterService } from '@spryker-oryx/router';
 import { Observable, of } from 'rxjs';
 import { DefaultLinkService } from './default-link.service';
-import { LinkService, LinkOptions } from './link.service';
+import { LinkOptions, LinkService } from './link.service';
 
 const mockRouterService = {
   getRoutes: vi.fn(),
+  currentRoute: vi.fn(),
 };
 
 describe('DefaultLinkService', () => {
@@ -164,6 +165,65 @@ describe('DefaultLinkService', () => {
         it('should resolve link to search page', () => {
           expect(callback).toHaveBeenCalledWith('/search');
         });
+      });
+    });
+  });
+
+  describe('isCurrent method', () => {
+    const callback = vi.fn();
+
+    describe('when the current route exactly matches the provided URL', () => {
+      beforeEach(async () => {
+        mockRouterService.currentRoute.mockReturnValue(of('/about'));
+        service.isCurrent('/about', true).subscribe(callback);
+      });
+
+      it('should resolve to true', () => {
+        expect(callback).toHaveBeenCalledWith(true);
+      });
+    });
+
+    describe('when the current route starts with the provided URL', () => {
+      beforeEach(() => {
+        mockRouterService.currentRoute.mockReturnValue(of('/about-us'));
+        service.isCurrent('/about').subscribe(callback);
+      });
+
+      it('should resolve to true', () => {
+        expect(callback).toHaveBeenCalledWith(true);
+      });
+    });
+
+    describe('when the current route does not match the provided URL', () => {
+      beforeEach(() => {
+        mockRouterService.currentRoute.mockReturnValue(of('/contact'));
+        service.isCurrent('/about').subscribe(callback);
+      });
+
+      it('should resolve to false', () => {
+        expect(callback).toHaveBeenCalledWith(false);
+      });
+    });
+
+    describe('when the current route exactly matches but exactMatch is false', () => {
+      beforeEach(() => {
+        mockRouterService.currentRoute.mockReturnValue(of('/about'));
+        service.isCurrent('/about', false).subscribe(callback);
+      });
+
+      it('should resolve to true', () => {
+        expect(callback).toHaveBeenCalledWith(true);
+      });
+    });
+
+    describe('when the current route starts with but exactMatch is false', () => {
+      beforeEach(() => {
+        mockRouterService.currentRoute.mockReturnValue(of('/about'));
+        service.isCurrent('/about/us', false).subscribe(callback);
+      });
+
+      it('should resolve to true', () => {
+        expect(callback).toHaveBeenCalledWith(false);
       });
     });
   });

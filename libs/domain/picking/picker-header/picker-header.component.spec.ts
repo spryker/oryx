@@ -1,10 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  PickingHeaderService,
-  PickingListService,
-} from '@spryker-oryx/picking';
+import { PickingHeaderService } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+import { PickingListService } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { BACK_EVENT, CLOSE_EVENT } from '@spryker-oryx/ui/modal';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
@@ -15,7 +13,7 @@ import { PickingPickerHeaderComponent } from './picker-header.component';
 import { pickingPickerHeaderComponent } from './picker-header.def';
 
 class MockPickingListService implements Partial<PickingListService> {
-  get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
+  getList = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
@@ -157,7 +155,7 @@ describe('PickingPickerHeaderComponent', () => {
 
   describe('when picking list does not have customer note', () => {
     beforeEach(async () => {
-      service.get = vi.fn().mockReturnValue(of([mockPickingListData[1]]));
+      service.getList = vi.fn().mockReturnValue(of(mockPickingListData[1]));
 
       element = await fixture(
         html`<oryx-picking-picker-header

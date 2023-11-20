@@ -15,7 +15,7 @@ class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-class MockSemanticLinkService implements Partial<LinkService> {
+class MockLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of(''));
 }
 
@@ -34,7 +34,7 @@ const query = 'pro';
 
 describe('SearchBoxComponent', () => {
   let element: SearchBoxComponent;
-  let linkService: MockSemanticLinkService;
+  let linkService: MockLinkService;
   let routerService: MockRouterService;
   let suggestionService: MockSuggestionRendererService;
 
@@ -81,7 +81,7 @@ describe('SearchBoxComponent', () => {
         },
         {
           provide: LinkService,
-          useClass: MockSemanticLinkService,
+          useClass: MockLinkService,
         },
         {
           provide: I18nService,
@@ -93,13 +93,11 @@ describe('SearchBoxComponent', () => {
         },
       ],
     });
-    linkService = testInjector.inject(LinkService) as MockSemanticLinkService;
-    routerService = testInjector.inject(
-      RouterService
-    ) as unknown as MockRouterService;
-    suggestionService = testInjector.inject(
+    linkService = testInjector.inject<MockLinkService>(LinkService);
+    routerService = testInjector.inject<MockRouterService>(RouterService);
+    suggestionService = testInjector.inject<MockSuggestionRendererService>(
       SuggestionRendererService
-    ) as unknown as MockSuggestionRendererService;
+    );
     element = await fixture(html`<oryx-search-box></oryx-search-box>`);
   });
 

@@ -43,6 +43,24 @@ export class DefaultLinkService implements LinkService {
     );
   }
 
+  isCurrent(url: string, exactMatch?: boolean): Observable<boolean> {
+    return this.routerService.currentRoute().pipe(
+      switchMap((currentRoute) => {
+        if (!currentRoute || !isRouterPath({ path: currentRoute })) {
+          return throwError(() => new Error('Current route is not available'));
+        }
+
+        const currentUrl = `${this.baseRoute}${currentRoute}`;
+
+        if (exactMatch) {
+          return of(currentUrl === url);
+        } else {
+          return of(currentUrl.startsWith(url));
+        }
+      })
+    );
+  }
+
   private getUrlParams(params: Record<string, string>): string {
     const encodedParams = Object.fromEntries(
       Object.entries(params).map(([k, v]) => [k, encodeURIComponent(v)])

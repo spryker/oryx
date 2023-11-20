@@ -15,6 +15,7 @@ import { ContentLinkContent, ContentLinkOptions } from './link.model';
 
 class MockSemanticLinkService implements Partial<LinkService> {
   get = vi.fn().mockReturnValue(of('/page'));
+  isCurrent = vi.fn().mockReturnValue(of(false));
 }
 
 const mockCategoryService = {
@@ -99,6 +100,36 @@ describe('ContentLinkComponent', () => {
 
     it('should render the url', () => {
       expect(element).toContainElement('a[href="/test"]');
+    });
+
+    describe('when the current route exactly matches the link', () => {
+      beforeEach(async () => {
+        semanticLinkService.isCurrent.mockReturnValue(of(true));
+        element = await fixture(
+          html`<oryx-content-link
+            .options=${{ type: RouteType.Page }}
+          ></oryx-content-link>`
+        );
+      });
+
+      it('should have "current" attribute set', async () => {
+        expect(element.hasAttribute('current')).toBe(true);
+      });
+    });
+
+    describe('when the current route does not match the link', () => {
+      beforeEach(async () => {
+        semanticLinkService.isCurrent.mockReturnValue(of(false));
+        element = await fixture(
+          html`<oryx-content-link
+            .options=${{ type: RouteType.Page }}
+          ></oryx-content-link>`
+        );
+      });
+
+      it('should not have "current" attribute set', async () => {
+        expect(element.hasAttribute('current')).toBe(false);
+      });
     });
   });
 
