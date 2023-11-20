@@ -66,7 +66,7 @@ export class DefaultSSRStreamParserService implements SSRStreamParserService {
           const [key, value] = attribute.split('=');
           const dataName = key.replace('data-', '');
 
-          dataAttributes[dataName] = value.replace(/&quot;/g, '');
+          dataAttributes[dataName] = value.replace(/^"|"$/g, '');
         }
       }
 
