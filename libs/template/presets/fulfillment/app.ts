@@ -64,9 +64,9 @@ export function fulfillmentFeatures(
       new OfflineFeature(),
       new OfflinePickingFeature(),
     ];
-  } else {
-    return onlineFeatures;
   }
+
+  return onlineFeatures;
 }
 
 export interface FulfillmentFeaturesConfig {
