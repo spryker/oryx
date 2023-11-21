@@ -1,5 +1,5 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { LayoutStyles, LayoutStylesOptions } from '../../../layout.model';
 import {
   LayoutPlugin,
@@ -17,9 +17,9 @@ export class FlexLayoutPlugin implements LayoutPlugin {
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
     return this.getDefaultProperties().pipe(
-      switchMap((defaultOptions) => {
+      map((defaultOptions) => {
         const options = { ...defaultOptions, ...data.options };
-        return of(options.wrap ? { 'flex-wrap': 'wrap' } : {});
+        return options.wrap ? { 'flex-wrap': 'wrap' } : {};
       })
     );
   }

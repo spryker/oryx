@@ -1,6 +1,6 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { html } from 'lit';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { LayoutStyles, LayoutStylesOptions } from '../../../layout.model';
 import {
   LayoutPlugin,
@@ -44,7 +44,7 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
     return this.getDefaultProperties().pipe(
-      switchMap((defaultOptions) => {
+      map((defaultOptions) => {
         const options = { ...defaultOptions, ...data.styles.layout };
         const props: LayoutStyleProperties = {};
 
@@ -58,7 +58,7 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
 
         props['margin-block-end'] = 'var(--indicator-area-height)';
 
-        return of(props);
+        return props;
       })
     );
   }
@@ -71,17 +71,17 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
     data: LayoutPluginRenderParams
   ): Observable<LayoutPluginRender | undefined> {
     return this.getDefaultProperties().pipe(
-      switchMap((defaultOptions) => {
+      map((defaultOptions) => {
         const options = { ...defaultOptions, ...data.options };
 
         if (
           data.experience || // we have nested components
           (!options?.showArrows && !options?.showIndicators)
         ) {
-          return of(undefined);
+          return;
         }
 
-        return of({
+        return {
           pre: html`<oryx-carousel-navigation
             ?showArrows=${options?.showArrows}
             ?showIndicators=${options?.showIndicators}
@@ -96,7 +96,7 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
           wrapper: html`<span class="navigation-layout__wrapper"
             >${data.template}</span
           >`,
-        });
+        };
       })
     );
   }
