@@ -252,9 +252,9 @@ export class PickingPickerComponent extends I18nMixin(
       <section>
         <oryx-image resource="picking-items-processed"></oryx-image>
         <oryx-heading>
-          <h1>${this.i18n(`picking.great-job`)}!</h1>
+          <h1>${this.i18n(`picking.processed.success`)}!</h1>
         </oryx-heading>
-        <span>${this.i18n(`picking.all-items-are-processed`)}!</span>
+        <span>${this.i18n(`picking.processed.all`)}!</span>
       </section>
       ${this.renderFinishButton()}
     `;

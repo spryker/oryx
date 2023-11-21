@@ -248,7 +248,7 @@ describe('PickingPickerComponent', () => {
 
         expect(
           tabContent?.querySelector('section span')?.textContent
-        ).toContain(i18n('picking.all-items-are-processed'));
+        ).toContain(i18n('picking.processed.all'));
       });
     });
 
