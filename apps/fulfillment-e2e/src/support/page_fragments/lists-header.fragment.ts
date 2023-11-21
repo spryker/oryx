@@ -8,4 +8,6 @@ export class ListsHeaderFragment {
   getSearchClearButton = () => this.getSearch().find('.clear-button');
   getUserIcon = () => this.getWrapper().find('oryx-site-navigation-item');
   getTitle = () => this.getWrapper().find('oryx-heading');
+
+  openSearch = () => this.getSearch().click();
 }
