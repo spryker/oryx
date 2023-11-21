@@ -40,6 +40,5 @@ export const gridSystem = css`
 
     max-width: calc(100% - (var(--margin, 0px) * 2));
     max-height: calc(100% - (var(--margin, 0px) * 2));
-    box-sizing: border-box;
   }
 `;

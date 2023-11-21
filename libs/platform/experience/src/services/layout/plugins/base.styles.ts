@@ -16,6 +16,6 @@ export const styles = css`
 
   *,
   ::slotted(*) {
-    transition: all var(--oryx-transition-time);
+    box-sizing: border-box;
   }
 `;
