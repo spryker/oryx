@@ -1,6 +1,5 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { signal } from '@spryker-oryx/utilities';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { LayoutStyles, LayoutStylesOptions } from '../../../layout.model';
 import {
   LayoutPlugin,
@@ -17,8 +16,12 @@ export class FlexLayoutPlugin implements LayoutPlugin {
   getStyleProperties(
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
-    const options = { ...this.$defaultOptions(), ...data.options };
-    return of(options.wrap ? { 'flex-wrap': 'wrap' } : {});
+    return this.getDefaultProperties().pipe(
+      map((defaultOptions) => {
+        const options = { ...defaultOptions, ...data.options };
+        return options.wrap ? { 'flex-wrap': 'wrap' } : {};
+      })
+    );
   }
 
   getStyles(data: LayoutPluginOptionsParams): Observable<LayoutStyles> {
@@ -41,8 +44,6 @@ export class FlexLayoutPlugin implements LayoutPlugin {
       schema: () => import('./flex-layout.schema').then((m) => m.schema),
     });
   }
-
-  protected $defaultOptions = signal(this.getDefaultProperties());
 
   /**
    * The default properties are redefined by the layout options, which can
