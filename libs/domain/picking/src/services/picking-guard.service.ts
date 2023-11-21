@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
 
 export interface PickingGuardService {
-  guard(): Observable<void>;
+  guard(): void;
   isProtected(): Observable<boolean>;
-  allow(): Observable<void>;
+  allow(): void;
 }
 
 export const PickingGuardService = 'oryx.PickingGuardService';

@@ -24,7 +24,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { catchError, of, switchMap, tap } from 'rxjs';
+import { catchError, of, switchMap, take, tap } from 'rxjs';
 import { pickingComponentStyles } from './picker.styles';
 
 export class PickingPickerComponent extends I18nMixin(
@@ -161,9 +161,13 @@ export class PickingPickerComponent extends I18nMixin(
     this.pickingListService
       .finishPicking(this.$pickingList())
       .pipe(
+        take(1),
         catchError(() => of(null)),
-        switchMap(() => this.pickingGuardService.allow()),
-        tap(() => this.routerService.navigate(`/`))
+        tap(() => {
+          this.pickingGuardService.allow();
+          this.routerService.navigate(`/`);
+
+        }),
       )
       .subscribe();
   }

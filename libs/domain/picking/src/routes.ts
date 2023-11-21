@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import { RouteConfig } from '@spryker-oryx/router/lit';
 import { html } from 'lit';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map, of, take, tap } from 'rxjs';
 import { PickingGuardService } from './services';
 
 export const defaultPickingRoutes: RouteConfig[] = [
@@ -28,10 +28,15 @@ export const defaultPickingRoutes: RouteConfig[] = [
         uid="picking-picker"
         mode-light
       ></oryx-composition>`,
-    // afterEnter: (): Observable<void> => 
-    //   resolve(PickingGuardService).guard(),
-    leave: (): Observable<boolean> =>
-      resolve(PickingGuardService).isProtected().pipe(map(isProtected => !isProtected)),
+    enter: (): Observable<boolean> => {
+      resolve(PickingGuardService).guard();
+      return of(true);
+    },
+    leave: (): Observable<boolean> =>{
+      return resolve(PickingGuardService).isProtected().pipe(
+        take(1),
+        map(isProtected => !isProtected),
+      )},
   },
   {
     path: '/customer-note-info/:pickingListId',

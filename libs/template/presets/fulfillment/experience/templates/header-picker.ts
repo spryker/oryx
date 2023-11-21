@@ -6,6 +6,8 @@ export const HeaderPickerTemplate: ExperienceComponent = {
   id: 'header-picker',
   components: [
     { type: 'oryx-picking-discard-modal' },
+    { type: 'oryx-picking-order-reference' },
+    { type: 'oryx-picking-customer-note-modal' },
    ...HeaderTemplate.components!,
   ],
 };

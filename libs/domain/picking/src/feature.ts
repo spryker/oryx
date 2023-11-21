@@ -17,6 +17,7 @@ import {
   pickingProductCardComponent,
   pickingUserProfileComponent,
   pickingWarehouseAssignmentComponent,
+  pickingOrderReferenceComponent
 } from './components';
 import { PickingConfig, providePickingConfig } from './config.provider';
 import { PickingListContextFallback } from './picking-list.context';
@@ -37,6 +38,7 @@ export const pickingComponents = [
   pickingPickerComponent,
   pickingUserProfileComponent,
   pickingWarehouseAssignmentComponent,
+  pickingOrderReferenceComponent
 ];
 
 export interface PickingFeatureConfig extends PickingConfig {

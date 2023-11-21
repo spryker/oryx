@@ -79,8 +79,8 @@ export class PickingDiscardModalComponent extends I18nMixin(LitElement) {
   }
 
   protected discard(): void {
+    this.pickingGuardService.allow();
     this.routerService.back();
-    this.pickingGuardService.allow()
     this.open = false;
   }
 }

@@ -11,3 +11,4 @@ export * from '../picking-in-progress/picking-in-progress.def';
 export * from '../product-card/product-card.def';
 export * from '../user-profile/user-profile.def';
 export * from '../warehouse-assignment/warehouse-assignment.def';
+export * from '../order-reference/order-reference.def';
