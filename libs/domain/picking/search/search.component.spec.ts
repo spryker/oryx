@@ -1,61 +1,128 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { LocaleService } from '@spryker-oryx/i18n';
-import { useComponent } from '@spryker-oryx/utilities';
+import { IconTypes } from '@spryker-oryx/ui/icon';
+import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import MockDate from 'mockdate';
-import { of } from 'rxjs';
-import { PickingListsHeaderComponent } from './search.component';
-import { pickingListsHeaderComponent } from './search.def';
+import { PickingListService } from '../services';
+import { PickingSearchComponent } from './search.component';
+import { pickingSearchComponent } from './search.def';
 
-const mockedDate = new Date(1970, 1, 1);
-const formattedDate = 'formattedDate';
-
-class MockLocaleService implements Partial<LocaleService> {
-  formatDate = vi.fn().mockReturnValue(of(formattedDate));
+class MockPickingListService implements Partial<PickingListService> {
+  setQualifier = vi.fn();
+  toggleActiveSearch = vi.fn();
 }
 
-describe('PickingListsHeaderComponent', () => {
-  let element: PickingListsHeaderComponent;
-  let locateService: MockLocaleService;
+describe('PickingSearchComponent', () => {
+  let element: PickingSearchComponent;
+  let service: MockPickingListService;
 
   beforeAll(async () => {
-    await useComponent(pickingListsHeaderComponent);
+    await useComponent(pickingSearchComponent);
   });
 
   beforeEach(async () => {
     const testInjector = createInjector({
       providers: [
         {
-          provide: LocaleService,
-          useClass: MockLocaleService,
+          provide: PickingListService,
+          useClass: MockPickingListService,
         },
       ],
     });
 
-    locateService = testInjector.inject(
-      LocaleService
-    ) as unknown as MockLocaleService;
+    service = testInjector.inject<MockPickingListService>(PickingListService);
 
-    MockDate.set(mockedDate);
-
-    element = await fixture(
-      html`<oryx-picking-lists-header></oryx-picking-lists-header>`
-    );
+    element = await fixture(html`<oryx-picking-search></oryx-picking-search>`);
   });
 
   afterEach(() => {
     vi.clearAllMocks();
     destroyInjector();
-    MockDate.reset();
   });
 
-  it('should format current date', () => {
-    expect(locateService.formatDate).toBeCalledWith(+mockedDate);
+  it('should render the search', () => {
+    expect(element).toContainElement(
+      `oryx-search[float][backIcon="${IconTypes.Backward}"]`
+    );
   });
 
-  it('should render current date', () => {
-    const header = element.renderRoot.querySelector('h4');
-    expect(header?.textContent).toContain(formattedDate);
+  it('should render the input', () => {
+    expect(element).toContainElement(
+      `input[placeholder="${i18n('picking.header.order-ID')}"]`
+    );
+  });
+
+  describe('when search is opened', () => {
+    beforeEach(() => {
+      element.renderRoot
+        .querySelector('oryx-search')
+        ?.dispatchEvent(new CustomEvent('oryx.open'));
+    });
+
+    it('should set empty search qualifier', () => {
+      expect(service.setQualifier).toHaveBeenCalledWith(
+        expect.objectContaining({
+          searchOrderReference: '',
+        })
+      );
+    });
+
+    it('should turn on active search', () => {
+      expect(service.toggleActiveSearch).toHaveBeenCalledWith(true);
+    });
+
+    describe('and typing is started', () => {
+      const searchOrderReference = 'test';
+      beforeEach(() => {
+        const input = element.renderRoot.querySelector(
+          'input'
+        ) as HTMLInputElement;
+        input.value = searchOrderReference;
+        input.dispatchEvent(new InputEvent('input'));
+      });
+
+      it('should set search qualifier', () => {
+        expect(service.setQualifier).toHaveBeenCalledWith(
+          expect.objectContaining({
+            searchOrderReference,
+          })
+        );
+      });
+
+      describe('and test is to short', () => {
+        const searchOrderReference = 't';
+        beforeEach(() => {
+          const input = element.renderRoot.querySelector(
+            'input'
+          ) as HTMLInputElement;
+          input.value = searchOrderReference;
+          input.dispatchEvent(new InputEvent('input'));
+        });
+
+        it('should not set search qualifier', () => {
+          expect(service.setQualifier).not.toHaveBeenCalledWith();
+        });
+      });
+    });
+  });
+
+  describe('when search is closed', () => {
+    beforeEach(() => {
+      element.renderRoot
+        .querySelector('oryx-search')
+        ?.dispatchEvent(new CustomEvent('oryx.close'));
+    });
+
+    it('should set empty search qualifier', () => {
+      expect(service.setQualifier).toHaveBeenCalledWith(
+        expect.objectContaining({
+          searchOrderReference: '',
+        })
+      );
+    });
+
+    it('should turn off active search', () => {
+      expect(service.toggleActiveSearch).toHaveBeenCalledWith(false);
+    });
   });
 });

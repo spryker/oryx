@@ -9,7 +9,6 @@ import { storybookPrefix } from '../../../.constants';
 export default {
   title: `${storybookPrefix}/Search/Static`,
   parameters: {
-    layout: 'fullscreen',
     chromatic: {
       viewports: [storybookDefaultViewports.mobile.min],
     },
@@ -33,9 +32,13 @@ Variants.play = async (obj: {
   args: unknown;
   canvasElement: HTMLElement;
 }): Promise<void> => {
-  await customElements.whenDefined('oryx-picking-search');
+  await Promise.all([
+    customElements.whenDefined('oryx-picking-search'),
+    customElements.whenDefined('oryx-search'),
+  ]);
   const searchOpened =
     obj.canvasElement.querySelector<LitElement>('#search-opened');
+
   searchOpened?.renderRoot
     .querySelector('oryx-search')
     ?.toggleAttribute('open', true);

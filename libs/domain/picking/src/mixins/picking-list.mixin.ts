@@ -14,7 +14,7 @@ import {
   signalProperty,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { Observable, map, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 export declare class PickingListMixinInterface {
   pickingListId?: string;
@@ -41,11 +41,7 @@ export const PickingListMixin = <T extends Type<LitElement>>(
     protected $pickingList = computed(() => {
       const id = this.pickingListId ?? this.$context();
 
-      return id
-        ? this.pickingListService
-            .getList(id)
-            .pipe(map((list) => ({ ...list, cartNote: 'test' })))
-        : of(null);
+      return id ? this.pickingListService.getList(id) : of(null);
     });
 
     protected $upcomingPickingListId = signal(

@@ -152,7 +152,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
   }
 
   protected openCustomerNoteModal(event: CustomEvent): void {
-    this.customerNoteOrderId = event.detail.note;
+    this.customerNoteOrderId = event.detail.id;
   }
 
   protected closeCustomerNoteModal(): void {

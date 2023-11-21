@@ -23,9 +23,9 @@ export class PickingCustomerNoteModalComponent
       ${when(
         !this.hideTrigger,
         () => html`<oryx-button
-          .type=${ButtonType.Icon}
-          .label=${this.i18n('oryx.picking.customer-note')}
-          .icon=${IconTypes.Info}
+          type=${ButtonType.Icon}
+          label=${this.i18n('oryx.picking.customer-note')}
+          icon=${IconTypes.Info}
           @click=${() => (this.open = true)}
         ></oryx-button> `
       )}
@@ -39,10 +39,10 @@ export class PickingCustomerNoteModalComponent
 
         <oryx-button
           slot="footer"
-          .color=${ButtonColor.Primary}
-          .size=${ButtonSize.Md}
-          .icon=${IconTypes.Check}
-          .text=${this.i18n('picking-lists.customer-note.got-it')}
+          color=${ButtonColor.Primary}
+          size=${ButtonSize.Md}
+          icon=${IconTypes.Check}
+          text=${this.i18n('picking-lists.customer-note.got-it')}
           @click=${() => (this.open = false)}
         ></oryx-button>
       </oryx-modal>

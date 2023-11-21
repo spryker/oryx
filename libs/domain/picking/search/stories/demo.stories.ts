@@ -6,7 +6,6 @@ import { storybookPrefix } from '../../.constants';
 export default {
   title: `${storybookPrefix}/Search`,
   parameters: {
-    layout: 'fullscreen',
     chromatic: {
       disableSnapshot: true,
     },
