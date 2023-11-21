@@ -1,5 +1,5 @@
 [[redirects]]
   from = "/*"
-  to = "index.html"
+  to = "/apps/fulfillment/index.html"
   status = 200
-  force = root
+  force = true
