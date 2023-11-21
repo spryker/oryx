@@ -5,17 +5,8 @@ import {
   LayoutProperties,
 } from '@spryker-oryx/experience/layout';
 import { Size, featureVersion, sizes } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult, html } from 'lit';
-import {
-  Observable,
-  combineLatest,
-  concatMap,
-  from,
-  map,
-  of,
-  reduce,
-  switchMap,
-} from 'rxjs';
+import { LitElement, html } from 'lit';
+import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
 import {
   CompositionProperties,
   ContentComponentProperties,
@@ -38,7 +29,6 @@ export type LayoutControllerRender = Omit<
 };
 
 export interface LayoutRenderParams {
-  place: keyof LayoutPluginRender;
   attrs: string[];
   data: LayoutControllerRender;
   screen?: Size;
@@ -125,37 +115,70 @@ export class LayoutController {
     return styles;
   }
 
-  getRender(config: LayoutRenderParams): Observable<TemplateResult> {
-    const { screen, attrs, place, data } = config;
+  getRender(config: LayoutRenderParams): Observable<LayoutPluginRender> {
+    const { screen, attrs, data } = config;
 
     return this.getLayoutOptions(attrs, data.options?.rules, screen).pipe(
-      switchMap((layoutOptions) =>
-        from(Object.entries(layoutOptions)).pipe(
-          concatMap(([prop, value]) => {
-            if (!value) return of(null);
+      switchMap((layoutOptions) => {
+        return Object.entries(layoutOptions).reduce(
+          (prevData$, [prop, value]) => {
+            return prevData$.pipe(
+              switchMap((prevData) => {
+                const token = prop === 'layout' ? (value as string) : prop;
+                const type =
+                  prop === 'layout'
+                    ? LayoutPluginType.Layout
+                    : LayoutPluginType.Property;
 
-            const token = prop === 'layout' ? (value as string) : prop;
-            const type =
-              prop === 'layout'
-                ? LayoutPluginType.Layout
-                : LayoutPluginType.Property;
+                return this.layoutService
+                  .getRender({
+                    type,
+                    token,
+                    data: {
+                      ...data,
+                      template: prevData?.wrapper ?? data.template,
+                      element: this.host,
+                      options: layoutOptions,
+                    },
+                  })
+                  .pipe(
+                    startWith(undefined),
+                    map((templates) => {
+                      const mapper = { ...prevData, ...templates };
 
-            return this.layoutService.getRender({
-              type,
-              token,
-              data: {
-                ...data,
-                element: this.host,
-                options: layoutOptions,
-              },
-            });
-          }),
-          reduce(
-            (acc, curr) => (!curr?.[place] ? acc : html`${acc}${curr[place]}`),
-            html``
-          )
-        )
-      )
+                      return (
+                        Object.keys(mapper) as (keyof LayoutPluginRender)[]
+                      ).reduce((acc, key) => {
+                        const template = templates?.[key];
+                        const prevTemplate = prevData?.[key];
+
+                        if (!template && !prevTemplate) {
+                          return acc;
+                        }
+
+                        if (key === 'wrapper') {
+                          const mergedValue = template ?? prevTemplate;
+
+                          return { ...acc, [key]: mergedValue };
+                        }
+
+                        const mergedValue =
+                          template && prevTemplate
+                            ? html`${template}${prevTemplate}`
+                            : template
+                            ? html`${template}`
+                            : html`${prevTemplate}`;
+
+                        return { ...acc, [key]: mergedValue };
+                      }, {});
+                    })
+                  );
+              })
+            );
+          },
+          of({} as LayoutPluginRender)
+        );
+      })
     );
   }
 

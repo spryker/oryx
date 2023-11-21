@@ -86,6 +86,12 @@ export class DefaultLayoutService implements LayoutService {
     config: LayoutIncomingConfig
   ): Observable<LayoutPluginRender | undefined> {
     const { token, type, data } = config;
+    console.log(
+      token,
+      type,
+      this.getPlugin(token, type)?.getRender?.(data),
+      'this.getPlugin(token, type)'
+    );
     return this.getPlugin(token, type)?.getRender?.(data) ?? of(undefined);
   }
 
