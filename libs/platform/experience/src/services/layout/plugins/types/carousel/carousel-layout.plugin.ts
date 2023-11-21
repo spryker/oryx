@@ -93,9 +93,6 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
             .scrollBehavior=${options?.scrollBehavior}
             ?vertical=${options?.vertical}
           ></oryx-carousel-navigation>`,
-          wrapper: html`<span class="navigation-layout__wrapper"
-            >${data.template}</span
-          >`,
         };
       })
     );
