@@ -260,7 +260,7 @@ describe('PickingListsComponent', () => {
       expect(
         element.renderRoot.querySelector('.no-items-fallback oryx-heading')
           ?.textContent
-      ).toContain(i18n('picking-lists.search-by-order-ID'));
+      ).toContain(i18n('picking.list.search-by-order-ID'));
 
       expect(
         element.renderRoot

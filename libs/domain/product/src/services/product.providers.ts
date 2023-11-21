@@ -68,7 +68,7 @@ import {
   ProductListPageService,
   ProductListService,
 } from './list';
-import { ProductContextFallback } from './product-context';
+import { productContextProviders } from './product-context';
 import { ProductService } from './product.service';
 import {
   DefaultProductRelationsListAdapter,
@@ -175,7 +175,7 @@ export const productProviders: Provider[] = [
   ...productQueries,
   ...productEffects,
   ...categoryEffects,
-  ProductContextFallback,
+  ...productContextProviders,
   {
     provide: PageMetaResolver,
     useClass: ProductPageTitleMetaResolver,

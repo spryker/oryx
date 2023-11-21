@@ -6,7 +6,7 @@ export class MockOfflineDataPlugin extends OfflineDataPlugin {
     //mock
   }
 
-  refreshData(): Observable<void> {
+  syncData(): Observable<void> {
     return of(undefined);
   }
 }

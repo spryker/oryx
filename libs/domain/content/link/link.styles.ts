@@ -3,7 +3,6 @@ import { css } from 'lit';
 export const contentLinkStyles = css`
   :host {
     padding: var(--oryx-content-link-padding);
-    min-width: 0;
   }
 
   :host(:hover) {

@@ -78,12 +78,6 @@ export class CompositionComponent extends LayoutMixin(
       screen: this.$screen(),
     });
   });
-  protected $preLayoutRenderComposition = computed(() =>
-    this.getCompositionLayoutRender('pre')
-  );
-  protected $postLayoutRenderComposition = computed(() =>
-    this.getCompositionLayoutRender('post')
-  );
 
   protected $hasDynamicallyVisibleComponent = signal(
     this.componentsController.hasDynamicallyVisibleComponent()
@@ -102,23 +96,28 @@ export class CompositionComponent extends LayoutMixin(
     }
   });
 
-  protected getCompositionLayoutRender(
-    place: keyof LayoutPluginRender
-  ): Observable<Record<string, TemplateResult>> {
+  protected getCompositionLayoutRender(): Observable<
+    Record<string, LayoutPluginRender>
+  > {
     const components = this.$components();
 
     if (!components?.length) return of({});
 
     return from(components).pipe(
       concatMap((component) => {
-        return this.getLayoutPluginsRender(place, {
+        return this.getLayoutPluginsRender({
           options: component.options,
           experience: component,
+          template: this.renderComponent(component),
         }).pipe(map((template) => ({ [component.id]: template })));
       }),
       reduce((acc, curr) => ({ ...acc, ...(curr ?? {}) }), {})
     );
   }
+
+  protected $layoutRenderComposition = computed(() =>
+    this.getCompositionLayoutRender()
+  );
 
   protected override render(): TemplateResult | void {
     return featureVersion >= '1.2'
@@ -130,21 +129,22 @@ export class CompositionComponent extends LayoutMixin(
     const components = this.$components();
 
     if (!components?.length) return;
-    // if (this.uid === 'merchant-nav')
-    //   console.log(
-    //     '',
-    //     (this.$options()?.rules?.[0].layout as LayoutStylesOptions)
-    //       ?.navigationType === 'dropdown'
-    //   );
+
+    const layoutComposition = this.$layoutRenderComposition();
+
     return this.renderLayout({
       template: repeat(
         components,
         (component) => component.id,
-        (component) => html`
-          ${this.$preLayoutRenderComposition()?.[component.id]}
-          ${this.renderComponent(component)}
-          ${this.$postLayoutRenderComposition()?.[component.id]}
-        `
+        (component) => {
+          const layoutTemplate = layoutComposition?.[component.id];
+
+          return html`
+            ${layoutTemplate?.pre}
+            ${layoutTemplate?.wrapper ?? this.renderComponent(component)}
+            ${layoutTemplate?.post}
+          `;
+        }
       ) as TemplateResult,
       inlineStyles: this.$componentsStyles(),
     });

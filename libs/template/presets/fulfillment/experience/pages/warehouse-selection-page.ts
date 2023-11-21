@@ -15,5 +15,6 @@ export const warehouseSelectionPage: ExperienceComponent = {
     {
       type: 'oryx-picking-warehouse-assignment',
     },
+    { ref: 'service' },
   ],
 };

@@ -34,7 +34,7 @@ describe('Picking Header Component', () => {
       icon: IconTypes.User,
       triggerType: 'icon',
       contentBehavior: 'modal',
-      label: i18n('oryx.picking.account'),
+      label: i18n('picking.account'),
     });
   });
 });

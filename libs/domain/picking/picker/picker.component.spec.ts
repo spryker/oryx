@@ -14,7 +14,7 @@ import { PickingPickerComponent } from './picker.component';
 import { pickingPickerComponent } from './picker.def';
 
 class MockPickingListService implements Partial<PickingListService> {
-  get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
+  getList = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   finishPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
@@ -125,7 +125,7 @@ describe('PickingPickerComponent', () => {
 
   describe('when there is no picking lists', () => {
     beforeEach(async () => {
-      service.get = vi.fn().mockReturnValue(of([]));
+      service.getList = vi.fn().mockReturnValue(of(null));
 
       element = await fixture(
         html`<oryx-picking-picker pickingListId="id"></oryx-picking-picker>`
@@ -155,7 +155,7 @@ describe('PickingPickerComponent', () => {
 
   describe('when all items are already picked', () => {
     beforeEach(async () => {
-      service.get = vi.fn().mockReturnValue(of([mockPickingListData[1]]));
+      service.getList = vi.fn().mockReturnValue(of(mockPickingListData[1]));
       service.finishPicking = vi
         .fn()
         .mockReturnValue(of(mockPickingListData[1]));
@@ -176,12 +176,12 @@ describe('PickingPickerComponent', () => {
     it('should render success message on "Not Picked" and "NotFound" tabs', () => {
       onTabs([getTabs()[0], getTabs()[2]], (tabContent) => {
         expect(tabContent?.querySelector('section h1')?.textContent).toContain(
-          i18n('picking.great-job')
+          i18n('picking.success')
         );
 
         expect(
           tabContent?.querySelector('section span')?.textContent
-        ).toContain(i18n('picking.all-items-are-processed'));
+        ).toContain(i18n('picking.processed.all'));
       });
     });
 
@@ -222,7 +222,7 @@ describe('PickingPickerComponent', () => {
         ],
       };
 
-      service.get = vi.fn().mockReturnValue(of([partiallyPickedPickingList]));
+      service.getList = vi.fn().mockReturnValue(of(partiallyPickedPickingList));
       service.finishPicking = vi
         .fn()
         .mockReturnValue(of(partiallyPickedPickingList));
@@ -243,12 +243,12 @@ describe('PickingPickerComponent', () => {
     it('should render success message on "Not Picked" tab', () => {
       onTabs([getTabs()[0]], (tabContent) => {
         expect(tabContent?.querySelector('section h1')?.textContent).toContain(
-          i18n('picking.great-job')
+          i18n('picking.processed.success')
         );
 
         expect(
           tabContent?.querySelector('section span')?.textContent
-        ).toContain(i18n('picking.all-items-are-processed'));
+        ).toContain(i18n('picking.processed.all'));
       });
     });
 

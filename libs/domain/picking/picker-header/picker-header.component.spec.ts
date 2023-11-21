@@ -13,7 +13,7 @@ import { PickingPickerHeaderComponent } from './picker-header.component';
 import { pickingPickerHeaderComponent } from './picker-header.def';
 
 class MockPickingListService implements Partial<PickingListService> {
-  get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
+  getList = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
@@ -110,7 +110,7 @@ describe('PickingPickerHeaderComponent', () => {
 
       expect(backButton).toHaveProperty(
         'label',
-        i18n('oryx.picking.back-to-pick-lists')
+        i18n('picking.back-to-pick-lists')
       );
     });
 
@@ -155,7 +155,7 @@ describe('PickingPickerHeaderComponent', () => {
 
   describe('when picking list does not have customer note', () => {
     beforeEach(async () => {
-      service.get = vi.fn().mockReturnValue(of([mockPickingListData[1]]));
+      service.getList = vi.fn().mockReturnValue(of(mockPickingListData[1]));
 
       element = await fixture(
         html`<oryx-picking-picker-header

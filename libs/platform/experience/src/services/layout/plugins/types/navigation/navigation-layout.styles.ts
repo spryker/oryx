@@ -44,33 +44,3 @@ export const verticalStyles = css`
     flex-direction: column;
   }
 `;
-
-// export const dropdownStyles = css`
-//   oryx-composition {
-//     position: absolute;
-//     transition: all 0.3s ease-in-out 0.1s;
-//     width: min(100%, calc(var(--_container-width)));
-//     inset-inline-start: var(--_bleed);
-//     z-index: 100;
-//   }
-// `;
-
-// export const flyoutStyles = css`
-//   :host {
-//     margin-inline: initial; /* reverted from base layout */
-//     width: initial; /* reverted from base layout */
-//   }
-
-//   :host(:not(:hover)) oryx-composition {
-//     opacity: 0;
-//     pointer-events: none;
-//   }
-
-//   oryx-composition {
-//     position: absolute;
-//     transition: all 0.3s ease-in-out 0.1s;
-//     width: min(100%, calc(var(--_container-width)));
-//     inset-inline-start: var(--_bleed);
-//     z-index: 100;
-//   }
-// `;
