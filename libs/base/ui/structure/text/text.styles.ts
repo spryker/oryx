@@ -1,5 +1,4 @@
 import { css } from 'lit';
-import { HeadingTag, headingUtil } from '../heading';
 
 export const textStyles = css`
   :host {
@@ -13,30 +12,25 @@ export const textStyles = css`
   h5,
   h6,
   caption,
+  small,
+  .subtitle,
+  .subtitle-small,
   strong {
     display: block;
+    text-align: start;
+    text-wrap: balance;
     margin: 0;
     font-size: var(--_fs);
     font-weight: var(--_fw);
     line-height: var(--_lh);
-    text-align: start;
-    text-wrap: balance;
+  }
+
+  strong {
+    display: inline;
   }
 
   .subtitle {
     text-transform: uppercase;
-  }
-
-  .subtitle-small {
-    ${headingUtil(HeadingTag.SubtitleSmall)}
-  }
-
-  small {
-    ${headingUtil(HeadingTag.Small)}
-  }
-
-  b {
-    ${headingUtil(HeadingTag.Bold)}
   }
 
   p:first-of-type {

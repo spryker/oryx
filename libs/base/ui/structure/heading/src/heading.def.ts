@@ -6,7 +6,7 @@ export const headingComponent = componentDef({
   stylesheets: [
     {
       rules: () =>
-        import('./styles/screen.styles').then((m) => m.headlineScreenStyles),
+        import('./heading.styles').then((m) => m.headingScreenStyles),
     },
   ],
 });

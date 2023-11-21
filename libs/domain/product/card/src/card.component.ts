@@ -152,7 +152,7 @@ export class ProductCardComponent extends ProductMixin(
       return html`<oryx-product-title
         .options="${{
           tag: HeadingTag.Caption,
-          maxLines: 1,
+          maxLines: 2,
         } as ProductTitleOptions}"
       ></oryx-product-title>`;
     }

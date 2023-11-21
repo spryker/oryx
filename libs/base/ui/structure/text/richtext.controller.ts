@@ -1,5 +1,6 @@
 import { LitElement, ReactiveController, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { renderHeading } from '../heading/src/heading.util';
 import { TextProperties } from './text.model';
 
 export class RichTextController implements ReactiveController {
@@ -28,12 +29,10 @@ export class RichTextController implements ReactiveController {
   private screenClassRegex = /\b(lg-|md-|sm-)h[1-6]\b/gi;
   private fromClassRegex =
     /\b(?<!lg-)(?<!md-)(?<!sm-)(h[1-6]|subtitle|caption|small|strong)\b/gi;
-  private styleRegex = /style="(.*?)"/i;
-  private styleReplace = /style="([^"]*)"/i;
 
   /**
    * Modifies an HTML string by adding custom inline styles to specific HTML elements
-   * based on their tags, classes, and screen sizes. The styles align roughly with the
+   * based on their tags, classes, and screen sizes. The typography styles align with the
    * Oryx design system without reusing the design system components directly.
    *
    * @param htmlString - The HTML string to be modified.
@@ -53,46 +52,22 @@ export class RichTextController implements ReactiveController {
         if (!headerTag && !headerFromClass && !headerScreenClass.length) {
           return match;
         } else {
-          let styleRules: string =
-            attributes?.match(this.styleRegex)?.[1] ?? '';
-          if (styleRules && !styleRules.endsWith(';')) styleRules += ';';
-
-          styleRules += this.getHeaderStyle(headerFromClass ?? headerTag);
-
-          headerScreenClass.forEach((cls) => {
+          const mergedObject = headerScreenClass.reduce((acc, cls) => {
             const parts = cls.split('-');
-            styleRules += this.getHeaderStyle(parts[1], parts[0]);
-          });
+            const key = `as${parts[0].charAt(0).toUpperCase()}${parts[0].slice(
+              1
+            )}`;
+            return { ...acc, [key]: parts[1] };
+          }, {});
 
-          const style = `style="${styleRules}"`;
-
-          if (!attributes || !/style=/i.test(attributes)) {
-            attributes = `${attributes.trim() ?? ''} ${style}`;
-          } else {
-            attributes = attributes.replace(this.styleReplace, style);
-          }
-
-          return `<${tag} ${attributes.trim()}>${content}</${tag}>`;
+          return `${renderHeading(
+            content,
+            { tag, ...mergedObject },
+            attributes
+          )}`;
         }
       }
     );
     return modifiedHtmlString;
-  }
-
-  /**
-   * Generates custom inline styles for a given HTML tag representing a header and, optionally, a screen size prefix for responsive styles.
-   *
-   * @param headerTag - The HTML tag (e.g., 'h1', 'strong') for which to generate header styles.
-   * @param screenSize - (Optional) The screen size prefix for responsive header styles (e.g., 'lg', 'md', 'sm').
-   * @returns The custom inline styles for the header as a string.
-   */
-  protected getHeaderStyle(tag: string, screenSize?: string): string {
-    if (!tag) return '';
-    const size = screenSize ? `-${screenSize}` : '';
-
-    return `
-    --_fs${size}: var(--oryx-typography-${tag}-size);
-    --_fw${size}: var(--oryx-typography-${tag}-weight);
-    --_lh${size}: var(--oryx-typography-${tag}-line);`;
   }
 }

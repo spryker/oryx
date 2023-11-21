@@ -1,17 +1,28 @@
-import { hydrate, ssrShim } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { featureVersion, hydrate, ssrShim } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { HeadingAttributes, HeadingTag } from './heading.model';
-import { headlineStyles } from './styles/base.styles';
+import { html, unsafeStatic } from 'lit/static-html.js';
+import {
+  HeadingAttributes,
+  HeadingTag,
+  HeadingTypography,
+} from './heading.model';
+import { headingStyles } from './heading.styles';
+import { renderHeading } from './heading.util';
 
 @ssrShim('style')
 @hydrate()
 export class HeadingComponent extends LitElement implements HeadingAttributes {
-  static styles = headlineStyles;
+  static styles = headingStyles;
 
-  @property({ reflect: true }) tag?: HeadingTag;
-  @property({ reflect: true }) as?: HeadingTag | 'hide';
+  @property({ reflect: true }) tag?: HeadingTypography | HeadingTag;
 
+  @property({ reflect: true }) typography?: HeadingTypography;
+  @property({ reflect: true }) lg?: HeadingTypography;
+  @property({ reflect: true }) md?: HeadingTypography;
+  @property({ reflect: true }) sm?: HeadingTypography;
+
+  @property({ reflect: true }) as?: HeadingTag | 'hide' | 'show';
   @property({ reflect: true, attribute: 'as-lg' }) asLg?:
     | HeadingTag
     | 'hide'
@@ -27,21 +38,29 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
     | 'hide'
     | 'show';
 
+  private _maxLines?: number;
   @property() set maxLines(value: number) {
-    if (value > 0) {
+    this._maxLines = value;
+    if (featureVersion < '1.4' && value > 0) {
       this.style.setProperty('--max-lines', String(value));
     }
   }
 
   protected override render(): TemplateResult {
-    return html`${this.renderTag(html`<slot></slot>`)}`;
+    return html`${unsafeStatic(
+      renderHeading(`<slot></slot>`, {
+        tag: this.tag,
+        typography: this.typography ?? (this.as as HeadingTypography),
+        lg: this.lg ?? (this.asLg as HeadingTypography),
+        md: this.md ?? (this.asMd as HeadingTypography),
+        sm: this.sm ?? (this.asSm as HeadingTypography),
+        maxLines: this._maxLines,
+      })
+    )}`;
   }
 
   /**
-   * Generates the TAG (h1 - h6 and subtitle) based on the tag.
-   *
-   * We'd prefer using the `unsafeStatic` directive, however, there's an SSR related
-   * issue that blocks us from using this: https://github.com/lit/lit/issues/2246.
+   * @deprecated use heading directive instead.
    */
   protected renderTag(template: TemplateResult): TemplateResult {
     switch (this.tag) {
