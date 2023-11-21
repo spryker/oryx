@@ -1,7 +1,6 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { signal } from '@spryker-oryx/utilities';
 import { html } from 'lit';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { LayoutStyles, LayoutStylesOptions } from '../../../layout.model';
 import {
   LayoutPlugin,
@@ -44,20 +43,24 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
   getStyleProperties(
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
-    const options = { ...this.$defaultOptions(), ...data.styles.layout };
-    const props: any = {};
+    return this.getDefaultProperties().pipe(
+      map((defaultOptions) => {
+        const options = { ...defaultOptions, ...data.styles.layout };
+        const props: LayoutStyleProperties = {};
 
-    if (!options.scrollWithMouse) props['--scroll-with-mouse'] = 'hidden';
-    if (!options.scrollWithTouch) props['--scroll-with-touch'] = 'hidden';
-    if (
-      options.showIndicators &&
-      options.indicatorsPosition === CarouselIndicatorPosition.Below
-    )
-      props['--indicator-area-height'] = '50px;';
+        if (!options.scrollWithMouse) props['--scroll-with-mouse'] = 'hidden';
+        if (!options.scrollWithTouch) props['--scroll-with-touch'] = 'hidden';
+        if (
+          options.showIndicators &&
+          options.indicatorsPosition === CarouselIndicatorPosition.Below
+        )
+          props['--indicator-area-height'] = '50px;';
 
-    props['margin-block-end'] = 'var(--indicator-area-height)';
+        props['margin-block-end'] = 'var(--indicator-area-height)';
 
-    return of(props);
+        return props;
+      })
+    );
   }
 
   /**
@@ -67,30 +70,33 @@ export class CarouselLayoutPlugin implements LayoutPlugin {
   getRender(
     data: LayoutPluginRenderParams
   ): Observable<LayoutPluginRender | undefined> {
-    const options = { ...this.$defaultOptions(), ...data.options };
-    if (
-      data.experience || // we have nested components
-      (!options?.showArrows && !options?.showIndicators)
-    ) {
-      return of();
-    }
+    return this.getDefaultProperties().pipe(
+      map((defaultOptions) => {
+        const options = { ...defaultOptions, ...data.options };
 
-    return of({
-      pre: html`<oryx-carousel-navigation
-        ?showArrows=${options?.showArrows}
-        ?showIndicators=${options?.showIndicators}
-        ?scrollWithMouse=${options?.scrollWithMouse}
-        ?scrollWithTouch=${options?.scrollWithTouch}
-        .arrowNavigationBehavior=${options?.arrowNavigationBehavior}
-        .indicatorsPosition=${options?.indicatorsPosition}
-        .indicatorsAlignment=${options?.indicatorsAlignment}
-        .scrollBehavior=${options?.scrollBehavior}
-        ?vertical=${options?.vertical}
-      ></oryx-carousel-navigation>`,
-    });
+        if (
+          data.experience || // we have nested components
+          (!options?.showArrows && !options?.showIndicators)
+        ) {
+          return;
+        }
+
+        return {
+          pre: html`<oryx-carousel-navigation
+            ?showArrows=${options?.showArrows}
+            ?showIndicators=${options?.showIndicators}
+            ?scrollWithMouse=${options?.scrollWithMouse}
+            ?scrollWithTouch=${options?.scrollWithTouch}
+            .arrowNavigationBehavior=${options?.arrowNavigationBehavior}
+            .indicatorsPosition=${options?.indicatorsPosition}
+            .indicatorsAlignment=${options?.indicatorsAlignment}
+            .scrollBehavior=${options?.scrollBehavior}
+            ?vertical=${options?.vertical}
+          ></oryx-carousel-navigation>`,
+        };
+      })
+    );
   }
-
-  protected $defaultOptions = signal(this.getDefaultProperties());
 
   /**
    * The default properties are redefined by the layout options, which can

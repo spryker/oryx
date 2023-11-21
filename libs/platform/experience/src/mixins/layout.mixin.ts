@@ -77,9 +77,8 @@ export declare class LayoutMixinInterface {
     screenService: ScreenService;
   };
   protected getLayoutPluginsRender(
-    place: keyof LayoutPluginRender,
     data: LayoutControllerRender
-  ): Observable<TemplateResult>;
+  ): Observable<LayoutPluginRender>;
   protected $screen: ConnectableSignal<Size>;
 }
 
@@ -187,27 +186,21 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     );
 
     protected getLayoutPluginsRender(
-      place: keyof LayoutPluginRender,
-      data: LayoutControllerRender
-    ): Observable<TemplateResult> {
+      data?: LayoutControllerRender
+    ): Observable<LayoutPluginRender> {
       return this[LayoutMixinInternals].layoutController.getRender({
-        place,
-        data,
+        data: {
+          ...data,
+          options: this.$options() as CompositionProperties,
+        },
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         attrs: this.attributeFilter()!,
         screen: this.$screen(),
       });
     }
 
-    protected $preLayoutRenderElement = computed(() =>
-      this.getLayoutPluginsRender('pre', {
-        options: this.$options() as CompositionProperties,
-      })
-    );
-    protected $postLayoutRenderElement = computed(() =>
-      this.getLayoutPluginsRender('post', {
-        options: this.$options() as CompositionProperties,
-      })
+    protected $layoutRenderElement = computed(() =>
+      this.getLayoutPluginsRender()
     );
 
     protected renderLayout(props: LayoutMixinRender): TemplateResult {
@@ -215,11 +208,12 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
 
       const layoutStyles = this.layoutStyles() ?? '';
       const styles = inlineStyles + layoutStyles;
+      const layoutTemplate = this.$layoutRenderElement();
 
       return html`
-        ${this.$preLayoutRenderElement()} ${template}
+        ${layoutTemplate?.pre} ${template}
         ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))}
-        ${this.$postLayoutRenderElement()}
+        ${layoutTemplate?.post}
       `;
     }
 

@@ -9,8 +9,9 @@ const skipSw = !!process.env.NO_SW;
 export default defineConfig({
   root: './src',
   envPrefix: 'ORYX_',
+
   build: {
-    outDir: '../../../dist/apps/fulfillment',
+    outDir: '../dist',
     emptyOutDir: true,
     sourcemap: true,
     rollupOptions: {

@@ -203,11 +203,11 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
   private getFallbackTitle(fallbackType: FallbackType) {
     switch (fallbackType) {
       case FallbackType.noResults:
-        return this.i18n('picking-lists.no-results-found');
+        return this.i18n('picking.list.no-results-found');
       case FallbackType.noSearchingResults:
-        return this.i18n('picking-lists.no-picking-results');
+        return this.i18n('picking.list.no-picking-results');
       case FallbackType.noValueProvided:
-        return this.i18n('picking-lists.search-by-order-ID');
+        return this.i18n('picking.list.search-by-order-ID');
       default:
         return '';
     }

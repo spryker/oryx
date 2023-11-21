@@ -29,7 +29,7 @@ export class PickingHeaderComponent extends LitElement {
           icon: IconTypes.User,
           triggerType: 'icon',
           contentBehavior: 'modal',
-          label: i18n('oryx.picking.account'),
+          label: i18n('picking.account'),
         }}
       ></oryx-site-navigation-item>
     `;
