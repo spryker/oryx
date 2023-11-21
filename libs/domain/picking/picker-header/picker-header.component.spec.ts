@@ -110,7 +110,7 @@ describe('PickingPickerHeaderComponent', () => {
 
       expect(backButton).toHaveProperty(
         'label',
-        i18n('oryx.picking.back-to-pick-lists')
+        i18n('picking.back-to-pick-lists')
       );
     });
 

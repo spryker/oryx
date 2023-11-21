@@ -4,17 +4,17 @@ import {
   fromEvent,
   map,
   merge,
-  of,
+  startWith,
 } from 'rxjs';
 import { NetworkStateService } from './network-state.service';
 
 export class NetworkStateDefaultService implements NetworkStateService {
   online(): Observable<boolean> {
     return merge(
-      of(null),
       fromEvent(window, 'online'),
       fromEvent(window, 'offline')
     ).pipe(
+      startWith(navigator.onLine),
       map(() => navigator.onLine),
       distinctUntilChanged()
     );

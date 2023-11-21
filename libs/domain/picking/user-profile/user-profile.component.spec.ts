@@ -1,5 +1,5 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { AuthService } from '@spryker-oryx/auth';
+import { AuthService, IdentityService } from '@spryker-oryx/auth';
 import { App, AppRef, StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { NetworkStateService } from '@spryker-oryx/offline';
@@ -47,6 +47,10 @@ class MockNetworkStateService implements Partial<NetworkStateService> {
   online = vi.fn().mockReturnValue(of(true));
 }
 
+class MockIdentityService implements IdentityService {
+  get = vi.fn().mockReturnValue(of({}));
+}
+
 describe('PickingUserProfileComponent', () => {
   let element: PickingUserProfileComponent;
   let routerService: MockRouterService;
@@ -85,6 +89,10 @@ describe('PickingUserProfileComponent', () => {
         {
           provide: NetworkStateService,
           useClass: MockNetworkStateService,
+        },
+        {
+          provide: IdentityService,
+          useClass: MockIdentityService,
         },
       ],
     });

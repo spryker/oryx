@@ -1,3 +1,4 @@
+import { ContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   RouteType,
@@ -46,10 +47,14 @@ class MockCategoryService implements Partial<ProductCategoryService> {
   getTrail = vi.fn().mockReturnValue(of([category]));
 }
 
+class MockContextService implements Partial<ContextService> {
+  get = vi.fn().mockReturnValue(of(sku));
+}
+
 describe('ProductDetailsBreadcrumbResolver', () => {
   let service: ProductDetailsBreadcrumbResolver;
   let linkService: MockLinkService;
-  let routerService: MockRouterService;
+  let contextService: ContextService;
   let productService: MockProductService;
   let categoryService: MockCategoryService;
 
@@ -73,11 +78,15 @@ describe('ProductDetailsBreadcrumbResolver', () => {
           provide: ProductCategoryService,
           useClass: MockCategoryService,
         },
+        {
+          provide: ContextService,
+          useClass: MockContextService,
+        },
       ],
     });
 
     linkService = testInjector.inject<MockLinkService>(LinkService);
-    routerService = testInjector.inject<MockRouterService>(RouterService);
+    contextService = testInjector.inject(ContextService);
     productService = testInjector.inject<MockProductService>(ProductService);
     categoryService = testInjector.inject<MockCategoryService>(
       ProductCategoryService
@@ -103,7 +112,7 @@ describe('ProductDetailsBreadcrumbResolver', () => {
     });
 
     it('should get the current route', () => {
-      expect(routerService.current).toHaveBeenCalled();
+      expect(contextService.get).toHaveBeenCalled();
     });
 
     it('should get the product by sku', () => {

@@ -1,5 +1,3 @@
-export {};
-
 declare global {
   export interface LayoutStylesProperties {
     /**
@@ -24,5 +22,18 @@ declare global {
      * Rounds the corners of an element's outer border edge.
      */
     radius?: string | number;
+
+    /**
+     * Sets the shadow elevation of the element. The shadow elevation can be used to create a
+     * 3D effect. The elevation sets the 3D depth of the element.
+     */
+    shadow?: ShadowElevation;
   }
+}
+
+export const enum ShadowElevation {
+  Flat = 'flat',
+  Raised = 'raised',
+  Floating = 'floating',
+  Hovering = 'hovering',
 }

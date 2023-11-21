@@ -36,12 +36,12 @@ export class PickingDiscardModalComponent extends I18nMixin(LitElement) {
         minimal
       >
         <oryx-heading slot="heading">
-          <h2>${this.i18n('picking.discard-pick-list?')}</h2>
+          <h2>${this.i18n('picking.discard.pick-list')}</h2>
         </oryx-heading>
 
-        ${this.i18n('picking.discard.stop-picking-and-discard-pick-list?')}
+        ${this.i18n('picking.discard.stop-picking')}
         <span class="additional-text"
-          >${this.i18n('picking.discard.the-pick-list-will-be-lost!')}</span
+          >${this.i18n('picking.discard.warning')}</span
         >
 
         <oryx-button

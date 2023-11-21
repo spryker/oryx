@@ -49,6 +49,8 @@ export const fontawesomeIcons: IconMapper = {
     [IconTypes.Card]: '&#xf249;',
     [IconTypes.Input]: '&#xf2f6;',
     [IconTypes.Parcel]: '&#xf466;',
+    [IconTypes.History]: '&#xf1da',
+    [IconTypes.Home]: '&#xf015',
   },
 };
 

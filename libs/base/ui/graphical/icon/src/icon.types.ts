@@ -25,6 +25,7 @@ export enum IconTypes {
   ModeDark = 'dark_mode',
   ModeLight = 'light_mode',
   Orders = 'shop_two',
+  History = 'history',
   Parcel = 'deployed_code',
   Printer = 'print',
   Products = 'inventory_2',
@@ -113,4 +114,5 @@ export enum IconTypes {
   Title = 'title',
   Card = 'view_carousel',
   Input = 'input',
+  Home = 'home',
 }

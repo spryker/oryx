@@ -62,8 +62,8 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
       <div class="fallback">
         <oryx-heading as="h2">
           <h1>
-            ${i18n('picking.you-are-not-assigned-to-any-locations')}.
-            ${i18n('picking.please-reach-out-to-your-manager')}
+            ${i18n('picking.location.unassigned')}.
+            ${i18n('picking.location.help')}
           </h1>
         </oryx-heading>
 
@@ -76,7 +76,7 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
     return html`
       <div class="warehouses-list">
         <oryx-heading as="h4">
-          <h1>${i18n('picking.select-your-location-to-get-started')}</h1>
+          <h1>${i18n('picking.location.select')}</h1>
         </oryx-heading>
         ${repeat(
           this.$locations() || [],
@@ -88,7 +88,7 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
 
             <oryx-button
               .size=${ButtonSize.Sm}
-              .text=${i18n('picking.select')}
+              .text=${i18n('select')}
               @click=${() => this.selectWarehouse(item.id)}
             ></oryx-button>
             <hr />
@@ -106,7 +106,7 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
 
     return html`
       <div class="loading">
-        <span>${i18n('picking.loading-locations')}</span>
+        <span>${i18n('picking.location.loading')}</span>
         <oryx-spinner></oryx-spinner>
       </div>
     `;
