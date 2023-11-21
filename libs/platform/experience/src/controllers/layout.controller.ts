@@ -6,7 +6,15 @@ import {
 } from '@spryker-oryx/experience/layout';
 import { Size, featureVersion, sizes } from '@spryker-oryx/utilities';
 import { LitElement, html } from 'lit';
-import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  map,
+  of,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 import {
   CompositionProperties,
   ContentComponentProperties,
@@ -117,13 +125,16 @@ export class LayoutController {
 
   getRender(config: LayoutRenderParams): Observable<LayoutPluginRender> {
     const { screen, attrs, data } = config;
-
+    console.log(attrs, data.options?.rules, screen);
     return this.getLayoutOptions(attrs, data.options?.rules, screen).pipe(
       switchMap((layoutOptions) => {
+        console.log(layoutOptions, 'layoutOptions');
         return Object.entries(layoutOptions).reduce(
           (prevData$, [prop, value]) => {
             return prevData$.pipe(
               switchMap((prevData) => {
+                if (!value) return of({});
+
                 const token = prop === 'layout' ? (value as string) : prop;
                 const type =
                   prop === 'layout'
@@ -171,7 +182,8 @@ export class LayoutController {
 
                         return { ...acc, [key]: mergedValue };
                       }, {});
-                    })
+                    }),
+                    tap((s) => console.log(s, 'log'))
                   );
               })
             );
