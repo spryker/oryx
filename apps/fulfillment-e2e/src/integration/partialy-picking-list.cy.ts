@@ -4,11 +4,11 @@ import { PickerHeaderFragment } from '../support/page_fragments/picker-header.fr
 import { PickerFragment } from '../support/page_fragments/picker.fragment';
 import { ProductFragment } from '../support/page_fragments/product.fragment';
 import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
-import { PickerPage } from '../support/page_objects/picker.page';
+import { PickingPage } from '../support/page_objects/picking.page';
 
 // TODO: ???? hardcoded data
 const pickingListId = '37cb241e-f18a-5768-985c-a2d7aff4875e';
-const pickerPage = new PickerPage(pickingListId);
+const pickerPage = new PickingPage(pickingListId);
 
 const listsFragment = new ListsFragment();
 const productFragment = new ProductFragment();

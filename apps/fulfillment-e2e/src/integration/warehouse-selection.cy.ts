@@ -1,4 +1,4 @@
-import { PickListsPage } from '../support/page_objects/pick-lists.page';
+import { PickingListPage } from '../support/page_objects/picking-list.page';
 import { WarehouseSelectionPage } from '../support/page_objects/warehouse-selection.page';
 
 let whSelectionPage: WarehouseSelectionPage;
@@ -20,7 +20,7 @@ describe('Warehouse selection', () => {
   });
 
   it('should navigate to picking lists after warehouse selection', () => {
-    const pickListsPage = new PickListsPage();
+    const pickListsPage = new PickingListPage();
 
     whSelectionPage.selectByEq(0);
     pickListsPage.waitForLoaded();

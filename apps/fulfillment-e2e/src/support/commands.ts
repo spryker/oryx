@@ -9,7 +9,7 @@ import { ListsHeaderFragment } from './page_fragments/lists-header.fragment';
 import { ListsFragment } from './page_fragments/lists.fragment';
 import { UserProfileFragment } from './page_fragments/user-profile-modal.fragment';
 import { LoginPage } from './page_objects/login.page';
-import { PickListsPage } from './page_objects/pick-lists.page';
+import { PickingListPage } from './page_objects/picking-list.page';
 import { WarehouseSelectionPage } from './page_objects/warehouse-selection.page';
 export {};
 
@@ -41,7 +41,7 @@ export const defaultUser = {
 Cypress.Commands.add('login', (user = defaultUser) => {
   const loginPage = new LoginPage();
   const warehouseSelectionPage = new WarehouseSelectionPage();
-  const pickListsPage = new PickListsPage();
+  const pickListsPage = new PickingListPage();
 
   loginPage.visit();
   loginPage.login(user);
@@ -77,8 +77,12 @@ Cypress.Commands.add('receiveData', () => {
   const header = new ListsHeaderFragment();
   const profile = new UserProfileFragment();
 
+  cy.intercept('GET', '**/picking-lists?include*').as('picking-lists-update');
+
   header.getUserIcon().click();
   profile.getReceiveDataButton().click();
+
+  cy.wait('@picking-lists-update');
 
   return cy.wrap(null);
 });
