@@ -437,7 +437,8 @@ export class LitRouter implements ReactiveController {
     );
   }
 
-  protected parsePathname(pathname: string, force = false): ParsedPathname {
+  protected parsePathname(path: string, force = false): ParsedPathname {
+    const pathname = path.endsWith('/') ? path.slice(0, -1) : path;
     const route = this._getRoute(pathname);
 
     if (route === undefined) {
