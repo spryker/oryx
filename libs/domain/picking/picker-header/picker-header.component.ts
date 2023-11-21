@@ -41,7 +41,7 @@ export class PickingPickerHeaderComponent extends I18nMixin(
           <oryx-button
             .type=${ButtonType.Icon}
             .size=${ButtonSize.Md}
-            .label=${this.i18n('oryx.picking.customer-note')}
+            .label=${this.i18n('picking.customer-note')}
             .icon=${IconTypes.Info}
             @click=${() => (this.isCartNoteVisible = true)}
           ></oryx-button>
@@ -62,7 +62,7 @@ export class PickingPickerHeaderComponent extends I18nMixin(
           .type=${ButtonType.Icon}
           .size=${ButtonSize.Md}
           .icon=${IconTypes.ArrowBackward}
-          .label=${this.i18n('oryx.picking.back-to-pick-lists')}
+          .label=${this.i18n('picking.back-to-pick-lists')}
           @click=${this.back}
         ></oryx-button>
         <div class="title">${this.$pickingList()?.orderReferences[0]}</div>

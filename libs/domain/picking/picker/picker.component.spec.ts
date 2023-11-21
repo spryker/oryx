@@ -176,12 +176,12 @@ describe('PickingPickerComponent', () => {
     it('should render success message on "Not Picked" and "NotFound" tabs', () => {
       onTabs([getTabs()[0], getTabs()[2]], (tabContent) => {
         expect(tabContent?.querySelector('section h1')?.textContent).toContain(
-          i18n('picking.great-job')
+          i18n('picking.success')
         );
 
         expect(
           tabContent?.querySelector('section span')?.textContent
-        ).toContain(i18n('picking.all-items-are-processed'));
+        ).toContain(i18n('picking.processed.all'));
       });
     });
 
@@ -243,12 +243,12 @@ describe('PickingPickerComponent', () => {
     it('should render success message on "Not Picked" tab', () => {
       onTabs([getTabs()[0]], (tabContent) => {
         expect(tabContent?.querySelector('section h1')?.textContent).toContain(
-          i18n('picking.great-job')
+          i18n('picking.processed.success')
         );
 
         expect(
           tabContent?.querySelector('section span')?.textContent
-        ).toContain(i18n('picking.all-items-are-processed'));
+        ).toContain(i18n('picking.processed.all'));
       });
     });
 
