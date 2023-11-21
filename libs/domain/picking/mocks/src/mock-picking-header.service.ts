@@ -1,16 +1,16 @@
-import { PickingHeaderService } from '@spryker-oryx/picking';
+import { PickingGuardService } from '@spryker-oryx/picking';
 import { Observable, of } from 'rxjs';
 
-export class MockPickingHeaderService implements Partial<PickingHeaderService> {
-  cancel(): void {
-    //mock
+export class MockPickingGuardService implements PickingGuardService {
+  guard(): Observable<void> {
+    return of()
   }
 
-  discard(): void {
-    //mock
+  allow(): Observable<void> {
+    return of()
   }
 
-  showDialog(): Observable<boolean> {
+  isProtected(): Observable<boolean> {
     return of(false);
   }
 }

@@ -3,7 +3,8 @@ import { provideExperienceData } from '@spryker-oryx/experience';
 import { 
   HeaderTemplate,
   ServiceTemplate,
-  HeaderPickingListsTemplate
+  HeaderPickingListsTemplate,
+  HeaderPickerTemplate
 } from './templates';
 import {
   customerNotePage,
@@ -24,6 +25,7 @@ export const StaticExperienceFeature: AppFeature = {
       ServiceTemplate,
       HeaderTemplate,
       HeaderPickingListsTemplate,
+      HeaderPickerTemplate
     ]),
   ],
 };

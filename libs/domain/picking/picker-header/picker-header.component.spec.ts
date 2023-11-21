@@ -8,7 +8,7 @@ import { BACK_EVENT, CLOSE_EVENT } from '@spryker-oryx/ui/modal';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { BehaviorSubject, of } from 'rxjs';
-import { pickingDiscardModalComponent } from '../discard-modal/discard-modal.def';
+import { pickingDiscardModalComponent } from '../discard-warning/discard-warning.def';
 import { PickingPickerHeaderComponent } from './picker-header.component';
 import { pickingPickerHeaderComponent } from './picker-header.def';
 

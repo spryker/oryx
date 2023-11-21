@@ -9,13 +9,11 @@ import {
   pickingDiscardModalComponent,
   pickingFilterButtonComponent,
   pickingFiltersComponent,
-  pickingHeaderComponent,
   pickingInProgressModalComponent,
   pickingListItemComponent,
   pickingListsComponent,
   pickingSearchComponent,
   pickingPickerComponent,
-  pickingPickerHeaderComponent,
   pickingProductCardComponent,
   pickingUserProfileComponent,
   pickingWarehouseAssignmentComponent,
@@ -23,7 +21,7 @@ import {
 import { PickingConfig, providePickingConfig } from './config.provider';
 import { PickingListContextFallback } from './picking-list.context';
 import { defaultPickingRoutes } from './routes';
-import { PickingHeaderDefaultService, PickingHeaderService } from './services';
+import { PickingGuardDefaultService, PickingGuardService } from './services';
 
 export const pickingComponents = [
   pickingCustomerNoteComponent,
@@ -31,7 +29,6 @@ export const pickingComponents = [
   pickingDiscardModalComponent,
   pickingFilterButtonComponent,
   pickingFiltersComponent,
-  pickingHeaderComponent,
   pickingListsComponent,
   pickingSearchComponent,
   pickingListItemComponent,
@@ -39,7 +36,6 @@ export const pickingComponents = [
   pickingInProgressModalComponent,
   pickingPickerComponent,
   pickingUserProfileComponent,
-  pickingPickerHeaderComponent,
   pickingWarehouseAssignmentComponent,
 ];
 
@@ -64,8 +60,8 @@ export class PickingFeature extends PickingServicesFeature {
       ),
       ...providePickingConfig(config),
       {
-        provide: PickingHeaderService,
-        useClass: PickingHeaderDefaultService,
+        provide: PickingGuardService,
+        useClass: PickingGuardDefaultService,
       },
       //override SapiLocaleAdapter that is provided by siteFeature with default one
       //to eliminate unnecessary request to the store endpoint

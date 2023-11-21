@@ -12,6 +12,7 @@ export const pickingPickerPage: ExperienceComponent = {
     rules: [{ layout: 'list' }],
   },
   components: [
+    { ref: 'header-picker' },
     {
       type: 'oryx-picking-picker',
     },

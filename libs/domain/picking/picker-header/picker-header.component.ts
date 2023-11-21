@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { PickingHeaderService, PickingListMixin } from '@spryker-oryx/picking';
-import { PickingDiscardModalComponent } from '@spryker-oryx/picking/discard-modal';
+import { PickingDiscardModalComponent } from '@spryker-oryx/picking/discard-warning';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
@@ -58,13 +58,6 @@ export class PickingPickerHeaderComponent extends I18nMixin(
   protected override render(): TemplateResult {
     return html`
       <oryx-picking-header>
-        <oryx-button
-          .type=${ButtonType.Icon}
-          .size=${ButtonSize.Md}
-          .icon=${IconTypes.ArrowBackward}
-          .label=${this.i18n('oryx.picking.back-to-pick-lists')}
-          @click=${this.back}
-        ></oryx-button>
         <div class="title">${this.$pickingList()?.orderReferences[0]}</div>
         ${this.renderCartNoteButton()}
         <oryx-picking-discard-modal

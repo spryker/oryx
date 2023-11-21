@@ -37,7 +37,7 @@ export interface BaseRouteConfig {
     [key: string]: string | undefined;
   }) =>
     | Promise<boolean | string>
-    | Observable<boolean | string>
+    | Observable<boolean | string | void>
     | boolean
     | string;
   afterEnter?: (params: {
