@@ -50,7 +50,7 @@ export class PWAThemeMetaInitializer implements AppInitializer {
         name: 'link',
         attrs: {
           rel: 'icon',
-          href: '/icons/favicon.ico',
+          href: '/favicon.ico',
           type: 'image/x-icon',
         },
       },
