@@ -3,7 +3,6 @@ import { css } from 'lit';
 export const styles = css`
   :host {
     display: block;
-    min-height: 100vh;
     background: var(--oryx-color-neutral-3);
   }
 

@@ -41,9 +41,11 @@ export const PickingListMixin = <T extends Type<LitElement>>(
     protected $pickingList = computed(() => {
       const id = this.pickingListId ?? this.$context();
 
-      return id ? this.pickingListService.getList(id).pipe(
-        map(list => ({ ...list, cartNote: 'test'  }))
-      ) : of(null);
+      return id
+        ? this.pickingListService
+            .getList(id)
+            .pipe(map((list) => ({ ...list, cartNote: 'test' })))
+        : of(null);
     });
 
     protected $upcomingPickingListId = signal(

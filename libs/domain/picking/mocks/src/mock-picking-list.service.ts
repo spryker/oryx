@@ -4,7 +4,7 @@ import {
   PickingListQualifier,
   PickingListService,
 } from '@spryker-oryx/picking/services';
-import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { mockPickingListData } from './mock-picking-list';
 
 export class MockPickingListService implements Partial<PickingListService> {
@@ -19,11 +19,11 @@ export class MockPickingListService implements Partial<PickingListService> {
   toggleActiveSearch(state: boolean): void {
     this.activeSearch$.next(state);
   }
-  
+
   protected _qualifier: PickingListQualifier = defaultQualifier;
-  protected qualifier$ = new BehaviorSubject<
-    PickingListQualifier
-  >(this._qualifier);
+  protected qualifier$ = new BehaviorSubject<PickingListQualifier>(
+    this._qualifier
+  );
 
   protected searchQualifier$ = new BehaviorSubject<string>('');
 
@@ -31,9 +31,7 @@ export class MockPickingListService implements Partial<PickingListService> {
     return this.qualifier$;
   }
 
-  setQualifier(
-    qualifier: PickingListQualifier
-  ): void {
+  setQualifier(qualifier: PickingListQualifier): void {
     this._qualifier = { ...this._qualifier, ...qualifier };
     this.qualifier$.next(this._qualifier);
   }

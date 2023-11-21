@@ -61,7 +61,7 @@ export class PickingListItemComponent
     this.dispatchEvent(
       new CustomEvent('oryx.show-note', {
         detail: {
-          note: this.$pickingList().cartNote,
+          note: this.$pickingList().id,
         },
       })
     );

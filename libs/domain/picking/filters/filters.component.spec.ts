@@ -131,9 +131,7 @@ describe('PickingFiltersComponent', () => {
       });
 
       it('should set default qualifiers', () => {
-        expect(service.setQualifier).toHaveBeenCalledWith(
-          defaultQualifier
-        );
+        expect(service.setQualifier).toHaveBeenCalledWith(defaultQualifier);
       });
 
       it('should close the modal', () => {

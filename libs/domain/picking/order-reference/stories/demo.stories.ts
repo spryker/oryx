@@ -21,7 +21,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<{pickingListId: string}> = ({
+const Template: Story<{ pickingListId: string }> = ({
   pickingListId,
 }): TemplateResult => {
   return html`<oryx-picking-order-reference

@@ -8,11 +8,7 @@ import {
   tap,
   throwError,
 } from 'rxjs';
-import {
-  defaultQualifier,
-  PickingList,
-  PickingListQualifier,
-} from '../models';
+import { defaultQualifier, PickingList, PickingListQualifier } from '../models';
 import { PickingListAdapter } from './adapter';
 import { PickingListService } from './picking-list.service';
 
@@ -33,17 +29,15 @@ export class PickingListDefaultService implements PickingListService {
   }
 
   protected _qualifier: PickingListQualifier = defaultQualifier;
-  protected qualifier$ = new BehaviorSubject<
-    PickingListQualifier
-  >(this._qualifier);
+  protected qualifier$ = new BehaviorSubject<PickingListQualifier>(
+    this._qualifier
+  );
 
   getQualifier(): Observable<PickingListQualifier> {
     return this.qualifier$;
   }
 
-  setQualifier(
-    qualifier: PickingListQualifier
-  ): void {
+  setQualifier(qualifier: PickingListQualifier): void {
     this._qualifier = { ...this._qualifier, ...qualifier };
     this.qualifier$.next(this._qualifier);
   }

@@ -6,7 +6,6 @@ export const pickingListsComponentStyles = css`
     flex-direction: column;
     gap: 20px;
     padding-block-start: 20px;
-    min-height: 100vh;
     background-color: var(--oryx-color-neutral-3);
   }
 

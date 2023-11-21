@@ -1,11 +1,5 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { provideExperienceData } from '@spryker-oryx/experience';
-import { 
-  HeaderTemplate,
-  ServiceTemplate,
-  HeaderPickingListsTemplate,
-  HeaderPickerTemplate
-} from './templates';
 import {
   customerNotePage,
   fulfillmentLoginPage,
@@ -13,6 +7,12 @@ import {
   pickingPickerPage,
   warehouseSelectionPage,
 } from './pages';
+import {
+  HeaderPickerTemplate,
+  HeaderPickingListsTemplate,
+  HeaderTemplate,
+  ServiceTemplate,
+} from './templates';
 
 export const StaticExperienceFeature: AppFeature = {
   providers: [
@@ -25,7 +25,7 @@ export const StaticExperienceFeature: AppFeature = {
       ServiceTemplate,
       HeaderTemplate,
       HeaderPickingListsTemplate,
-      HeaderPickerTemplate
+      HeaderPickerTemplate,
     ]),
   ],
 };

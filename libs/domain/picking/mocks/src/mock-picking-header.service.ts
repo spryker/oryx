@@ -3,11 +3,11 @@ import { Observable, of } from 'rxjs';
 
 export class MockPickingGuardService implements PickingGuardService {
   guard(): Observable<void> {
-    return of()
+    return of();
   }
 
   allow(): Observable<void> {
-    return of()
+    return of();
   }
 
   isProtected(): Observable<boolean> {

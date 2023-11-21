@@ -12,12 +12,12 @@ import {
   pickingInProgressModalComponent,
   pickingListItemComponent,
   pickingListsComponent,
-  pickingSearchComponent,
+  pickingOrderReferenceComponent,
   pickingPickerComponent,
   pickingProductCardComponent,
+  pickingSearchComponent,
   pickingUserProfileComponent,
   pickingWarehouseAssignmentComponent,
-  pickingOrderReferenceComponent
 } from './components';
 import { PickingConfig, providePickingConfig } from './config.provider';
 import { PickingListContextFallback } from './picking-list.context';
@@ -38,7 +38,7 @@ export const pickingComponents = [
   pickingPickerComponent,
   pickingUserProfileComponent,
   pickingWarehouseAssignmentComponent,
-  pickingOrderReferenceComponent
+  pickingOrderReferenceComponent,
 ];
 
 export interface PickingFeatureConfig extends PickingConfig {

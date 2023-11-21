@@ -1,7 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import {
-  PickingListService,
-} from '@spryker-oryx/picking/services';
+import { PickingListService } from '@spryker-oryx/picking/services';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
@@ -14,7 +12,7 @@ export class PickingSearchComponent extends I18nMixin(LitElement) {
 
   protected onSearch(e: KeyboardEvent): void {
     const value = (e.target as HTMLInputElement).value;
-    
+
     if (value.length < 2) return;
 
     this.pickingListService.setQualifier({
@@ -26,7 +24,7 @@ export class PickingSearchComponent extends I18nMixin(LitElement) {
     this.pickingListService.setQualifier({
       searchOrderReference: '',
     });
-    this.pickingListService.toggleActiveSearch(isSearch)
+    this.pickingListService.toggleActiveSearch(isSearch);
   }
 
   protected override render(): TemplateResult {

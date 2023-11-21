@@ -13,7 +13,16 @@ export const pickingListsPage: ExperienceComponent = {
   },
   components: [
     { ref: 'header-picking-lists' },
-    { type: 'oryx-picking-lists' },
+    {
+      type: 'oryx-picking-lists',
+      options: {
+        rules: [
+          {
+            style: 'min-height: calc(100vh - 66px); box-sizing: border-box;',
+          },
+        ],
+      },
+    },
     { ref: 'service' },
   ],
 };

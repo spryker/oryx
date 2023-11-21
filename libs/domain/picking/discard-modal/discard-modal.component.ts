@@ -1,12 +1,12 @@
+import { resolve } from '@spryker-oryx/di';
+import { PickingGuardService } from '@spryker-oryx/picking';
+import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { I18nMixin, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { discardModalStyles } from './discard-modal.styles';
-import { resolve } from '@spryker-oryx/di';
-import { PickingGuardService } from '@spryker-oryx/picking';
-import { IconTypes } from '@spryker-oryx/ui/icon';
-import { RouterService } from '@spryker-oryx/router';
 
 export class PickingDiscardModalComponent extends I18nMixin(LitElement) {
   static styles = discardModalStyles;
