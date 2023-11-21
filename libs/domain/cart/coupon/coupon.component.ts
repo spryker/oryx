@@ -28,22 +28,10 @@ export class CouponComponent extends CartComponentMixin(
   protected notificationService = resolve(NotificationService);
   protected localeService = resolve(LocaleService);
 
-  private errorMessage = '';
-  private successMessage = '';
-
   protected override render(): TemplateResult | void {
     if (this.$isEmpty()) {
       return;
     }
-
-    if (this.hasError) {
-      this.errorMessage =
-        this.coupon?.value === ''
-          ? `${this.i18n('coupon.insert-a-coupon')}`
-          : `${this.i18n('coupon.cart-code-can-not-be-added')}`;
-    }
-
-    this.successMessage = `${this.i18n('coupon.-successfully-applied')}`;
 
     return html`
       <oryx-layout>
@@ -52,7 +40,11 @@ export class CouponComponent extends CartComponentMixin(
         <section>
           <oryx-input
             ?hasError="${this.hasError}"
-            .errorMessage="${this.hasError ? this.errorMessage : ''}"
+            .errorMessage="${this.hasError
+              ? this.coupon?.value === ''
+                ? `${this.i18n('coupon.insert-a-coupon')}`
+                : `${this.i18n('coupon.cart-code-can-not-be-added')}`
+              : ''}"
           >
             <input
               placeholder="${this.i18n('coupon.coupon-code')}"
@@ -69,7 +61,8 @@ export class CouponComponent extends CartComponentMixin(
             .type="${ButtonType.Outline}"
             .color="${ColorType.Neutral}"
             .size=${ButtonSize.Md}
-            @click=${this.onSubmit}
+            @click=${() =>
+              this.onSubmit(`${this.i18n('coupon.-successfully-applied')}`)}
           >
             ${this.i18n('coupon.apply')}
           </oryx-button>
@@ -88,7 +81,6 @@ export class CouponComponent extends CartComponentMixin(
                 <span class="name">
                   ${coupon.displayName}
                   <oryx-date
-                    slot="subtext"
                     .stamp=${coupon.expirationDateTime}
                     .i18nToken=${'coupon.(valid-till-<date>)'}
                   ></oryx-date>
@@ -106,7 +98,7 @@ export class CouponComponent extends CartComponentMixin(
     this.hasError = false;
   }
 
-  protected onSubmit(): void {
+  protected onSubmit(successMessage: string): void {
     this.hasError = false;
 
     if (!this.coupon?.value) {
@@ -119,7 +111,7 @@ export class CouponComponent extends CartComponentMixin(
       next: () => {
         this.notificationService.push({
           type: AlertType.Success,
-          content: `${this.coupon?.value} ${this.successMessage}`,
+          content: `${this.coupon?.value} ${successMessage}`,
         });
 
         this.coupon!.value = '';
