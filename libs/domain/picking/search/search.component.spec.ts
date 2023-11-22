@@ -99,8 +99,12 @@ describe('PickingSearchComponent', () => {
           input.dispatchEvent(new InputEvent('input'));
         });
 
-        it('should not set search qualifier', () => {
-          expect(service.setQualifier).not.toHaveBeenCalledWith();
+        it('should set empty search qualifier', () => {
+          expect(service.setQualifier).toHaveBeenCalledWith(
+            expect.objectContaining({
+              searchOrderReference: '',
+            })
+          );
         });
       });
     });

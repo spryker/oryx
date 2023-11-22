@@ -13,10 +13,8 @@ export class PickingSearchComponent extends I18nMixin(LitElement) {
   protected onSearch(e: KeyboardEvent): void {
     const value = (e.target as HTMLInputElement).value;
 
-    if (value.length < 2) return;
-
     this.pickingListService.setQualifier({
-      searchOrderReference: value,
+      searchOrderReference: value.length >= 2 ? value : '',
     });
   }
 
