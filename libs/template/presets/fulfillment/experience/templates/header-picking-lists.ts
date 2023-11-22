@@ -4,6 +4,9 @@ import { HeaderTemplate } from './header';
 export const HeaderPickingListsTemplate: ExperienceComponent = {
   ...HeaderTemplate,
   id: 'header-picking-lists',
+  options: {
+    rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
+  },
   components: [
     {
       type: 'oryx-content-text',

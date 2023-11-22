@@ -17,6 +17,7 @@ export const pickingListsPage: ExperienceComponent = {
       type: 'oryx-picking-lists',
       options: {
         rules: [
+          { hideByRule: 'USER.!AUTHENTICATED' },
           {
             style: 'min-height: calc(100vh - 66px); box-sizing: border-box;',
           },
