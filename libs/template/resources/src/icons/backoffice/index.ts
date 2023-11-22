@@ -33,7 +33,7 @@ export const backofficeIcons: IconMapper = {
       import('./icons/drag-small').then((s) => s.default),
     [IconTypes.Help]: () => import('./icons/help').then((s) => s.default),
     [IconTypes.Locker]: () => import('./icons/locker').then((s) => s.default),
-    [IconTypes.NavigationArrow]: () =>
+    [IconTypes.ArrowForward]: () =>
       import('./icons/navigation-arrow').then((s) => s.default),
     [IconTypes.Reset]: () => import('./icons/reset').then((s) => s.default),
     [IconTypes.Settings]: () =>
@@ -47,8 +47,8 @@ export const backofficeIcons: IconMapper = {
     [IconTypes.Actions]: () => import('./icons/actions').then((s) => s.default),
     [IconTypes.ActionsHorizontal]: () =>
       import('./icons/actions-horizontal').then((s) => s.default),
-    [IconTypes.Back]: () => import('./icons/back').then((s) => s.default),
-    [IconTypes.ArrowBack]: () =>
+    [IconTypes.Backward]: () => import('./icons/back').then((s) => s.default),
+    [IconTypes.ArrowBackward]: () =>
       import('./icons/arrow-back').then((s) => s.default),
     [IconTypes.Front]: () => import('./icons/front').then((s) => s.default),
     [IconTypes.Check]: () => import('./icons/check').then((s) => s.default),

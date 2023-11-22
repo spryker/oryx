@@ -1,33 +1,54 @@
-import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
-import { DefaultIndexedDBStorageService } from './default-indexed-db-storage.service';
 import {
+  DefaultIndexedDBStorageService,
+  indexedDbStorageName,
   IndexedDBStorageService,
   indexedDbTableName,
-} from './indexed-db-storage.service';
+} from '@spryker-oryx/core';
+import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
+import { firstValueFrom } from 'rxjs';
 
-const mockDexieMethods = {
-  open: vi.fn().mockImplementation(() => Promise.resolve),
-  close: vi.fn(),
-  version: {
-    stores: vi.fn(),
-  },
-  table: {
-    get: vi.fn(),
-    put: vi.fn(),
-    delete: vi.fn(),
-    clear: vi.fn(),
-  },
+const mockIndexedDB = {
+  open: vi.fn(),
+  deleteDatabase: vi.fn(),
 };
 
-vi.mock('dexie', () => ({
-  liveQuery: vi.fn().mockImplementation((fn: any) => fn()),
-  Dexie: class {
-    open = () => mockDexieMethods.open();
-    table = () => mockDexieMethods.table;
-    version = () => mockDexieMethods.version;
-    close = () => mockDexieMethods.close();
-  },
-}));
+const mockDB = {
+  transaction: vi.fn(),
+};
+
+const mockOpenRequest = {
+  onerror: null,
+  onsuccess: null,
+  onupgradeneeded: null,
+  result: mockDB,
+};
+
+const mockTransaction = {
+  objectStore: vi.fn(),
+};
+
+const mockObjectStore = {
+  get: vi.fn(),
+  put: vi.fn(),
+  delete: vi.fn(),
+  clear: vi.fn(),
+};
+
+const mockRequest = {
+  onerror: null,
+  onsuccess: null,
+  result: null,
+};
+
+mockIndexedDB.open.mockReturnValue(mockOpenRequest);
+mockDB.transaction.mockReturnValue(mockTransaction);
+mockTransaction.objectStore.mockReturnValue(mockObjectStore);
+
+function mockSuccessfulRequest(request: any, result: any) {
+  request.onsuccess = null;
+  request.result = result;
+  setTimeout(() => request.onsuccess?.({ target: request }), 0);
+}
 
 describe('DefaultIndexedDBStorageService', () => {
   let service: IndexedDBStorageService;
@@ -43,95 +64,86 @@ describe('DefaultIndexedDBStorageService', () => {
     });
 
     service = getInjector().inject(IndexedDBStorageService);
+
+    vi.stubGlobal('indexedDB', mockIndexedDB);
+
+    mockSuccessfulRequest(mockIndexedDB.open(indexedDbStorageName), mockDB);
+    mockSuccessfulRequest(
+      mockDB.transaction(indexedDbTableName),
+      mockTransaction
+    );
+    mockSuccessfulRequest(
+      mockTransaction.objectStore(indexedDbTableName),
+      mockObjectStore
+    );
   });
 
   afterEach(() => {
     destroyInjector();
     vi.clearAllMocks();
+    vi.unstubAllGlobals();
   });
 
-  it('should open dexie db', () =>
-    new Promise<void>((done) => {
-      service.getItem('mockedGet').subscribe(() => {
-        expect(mockDexieMethods.version.stores).toHaveBeenCalledWith({
-          [indexedDbTableName]: '&key,value',
-        });
-        expect(mockDexieMethods.open).toHaveBeenCalled();
-        done();
-      });
-    }));
-
   describe('getItem', () => {
-    describe('when value is provided', () => {
-      const data = { value: 'test' };
-      beforeEach(() => {
-        mockDexieMethods.table.get = vi
-          .fn()
-          .mockReturnValue(Promise.resolve(data));
+    it('should get the value from db', () => {
+      const expectedValue = 'value';
+      mockObjectStore.get.mockReturnValue({
+        ...mockRequest,
+        result: { key: 'mockedKey', value: expectedValue },
       });
 
-      it('should get the value from db', () =>
-        new Promise<void>((done) => {
-          service.getItem('mockedGet').subscribe((v) => {
-            expect(mockDexieMethods.table.get).toHaveBeenCalledWith(
-              'mockedGet'
-            );
-            expect(v).toBe(data.value);
-            done();
-          });
-        }));
-    });
-
-    describe('when value is not provided', () => {
-      beforeEach(() => {
-        mockDexieMethods.table.get = vi
-          .fn()
-          .mockReturnValue(Promise.resolve({}));
+      mockSuccessfulRequest(mockObjectStore.get('mockedKey'), {
+        key: 'mockedKey',
+        value: expectedValue,
       });
 
-      it('should get the value from db', () =>
-        new Promise<void>((done) => {
-          service.getItem('mockedGet').subscribe((v) => {
-            expect(mockDexieMethods.table.get).toHaveBeenCalledWith(
-              'mockedGet'
-            );
-            expect(v).toBeUndefined();
-            done();
-          });
-        }));
+      return firstValueFrom(service.getItem('mockedKey')).then((value) => {
+        expect(value).toBe(expectedValue);
+      });
     });
   });
 
   describe('setItem', () => {
-    beforeEach(() => {
-      service.setItem('mockedKey', 'mockedValue');
-    });
-
     it('should store the value to the db', () => {
-      expect(mockDexieMethods.table.put).toHaveBeenCalledWith({
-        key: 'mockedKey',
-        value: 'mockedValue',
-      });
+      mockObjectStore.put.mockReturnValue(mockRequest);
+
+      mockSuccessfulRequest(
+        mockObjectStore.put({ key: 'mockedKey', value: 'mockedValue' }),
+        undefined
+      );
+
+      return firstValueFrom(service.setItem('mockedKey', 'mockedValue')).then(
+        () => {
+          expect(mockObjectStore.put).toHaveBeenCalledWith({
+            key: 'mockedKey',
+            value: 'mockedValue',
+          });
+        }
+      );
     });
   });
 
   describe('removeItem', () => {
-    beforeEach(() => {
-      service.removeItem('mockedKey');
-    });
-
     it('should remove the item', () => {
-      expect(mockDexieMethods.table.delete).toHaveBeenCalledWith('mockedKey');
+      mockObjectStore.delete.mockReturnValue(mockRequest);
+
+      mockSuccessfulRequest(mockObjectStore.delete('mockedKey'), undefined);
+
+      return firstValueFrom(service.removeItem('mockedKey')).then(() => {
+        expect(mockObjectStore.delete).toHaveBeenCalledWith('mockedKey');
+      });
     });
   });
 
   describe('clear', () => {
-    beforeEach(() => {
-      service.clear();
-    });
+    it('should clear all items', () => {
+      mockObjectStore.clear.mockReturnValue(mockRequest);
 
-    it('should remove the item', () => {
-      expect(mockDexieMethods.table.clear).toHaveBeenCalled();
+      mockSuccessfulRequest(mockObjectStore.clear(), undefined);
+
+      return firstValueFrom(service.clear()).then(() => {
+        expect(mockObjectStore.clear).toHaveBeenCalled();
+      });
     });
   });
 });

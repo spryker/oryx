@@ -10,6 +10,7 @@ import {
   FacetCategoryNormalizer,
   FacetNormalizer,
   FacetRangeNormalizer,
+  FacetRatingNormalizer,
   PriceNormalizer,
   ProductAdapter,
   ProductMediaSetNormalizer,
@@ -17,6 +18,7 @@ import {
   categoryIdNormalizer,
   concreteProductsNormalizer,
   facetCategoryNormalizer,
+  facetRatingNormalizer,
   facetsNormalizer,
   facetsRangeNormalizer,
   mediaNormalizer,
@@ -66,7 +68,7 @@ import {
   ProductListPageService,
   ProductListService,
 } from './list';
-import { ProductContextFallback } from './product-context';
+import { productContextProviders } from './product-context';
 import { ProductService } from './product.service';
 import {
   DefaultProductRelationsListAdapter,
@@ -134,6 +136,11 @@ export const productProviders: Provider[] = [
     provide: FacetCategoryNormalizer,
     useValue: facetCategoryNormalizer,
   },
+  //TODO: drop and use ordinary range normalizer after https://spryker.atlassian.net/browse/CC-31032
+  {
+    provide: FacetRatingNormalizer,
+    useValue: facetRatingNormalizer,
+  },
   {
     provide: AvailabilityNormalizer,
     useValue: availabilityNormalizer,
@@ -168,7 +175,7 @@ export const productProviders: Provider[] = [
   ...productQueries,
   ...productEffects,
   ...categoryEffects,
-  ProductContextFallback,
+  ...productContextProviders,
   {
     provide: PageMetaResolver,
     useClass: ProductPageTitleMetaResolver,

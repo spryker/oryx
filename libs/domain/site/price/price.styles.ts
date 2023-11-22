@@ -5,7 +5,7 @@ import { css } from 'lit';
  * @since 1.2.0
  */
 export const priceStyles =
-  featureVersion > '1.2'
+  featureVersion >= '1.2'
     ? css`
         :host([discounted]) {
           color: var(--oryx-color-highlight-9);

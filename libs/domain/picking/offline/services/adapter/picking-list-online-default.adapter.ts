@@ -4,10 +4,10 @@ import {
   GetPickingListResponse,
   PickingHttpService,
   PickingList,
+  PickingListDefaultAdapter,
   PickingListQualifier,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/services';
 import { isDefined } from '@spryker-oryx/utilities';
-import { PickingListDefaultAdapter } from '../../../src/services';
 // Add full import because of issue with naming exports from cjs.
 import * as jsonapi from 'jsonapi-serializer';
 import { firstValueFrom, Observable } from 'rxjs';
@@ -79,7 +79,7 @@ export class PickingListOnlineDefaultAdapter
       // Merge local status
       const localStatus =
         !existingPickingList ||
-        pickingList.status === existingPickingList.localStatus
+        pickingList.status !== existingPickingList.localStatus
           ? pickingList.status
           : existingPickingList.localStatus;
 

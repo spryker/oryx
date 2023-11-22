@@ -4,7 +4,8 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 export const backofficeNgIcons: IconMapper = {
   svg: true,
   mapping: {
-    [IconTypes.Back]: () => import('./icons/back-arrow').then((s) => s.default),
+    [IconTypes.Backward]: () =>
+      import('./icons/back-arrow').then((s) => s.default),
     [IconTypes.Search]: () => import('./icons/search').then((s) => s.default),
     [IconTypes.Close]: () => import('./icons/close').then((s) => s.default),
     [IconTypes.Edit]: () => import('./icons/edit').then((s) => s.default),

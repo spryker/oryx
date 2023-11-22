@@ -45,10 +45,17 @@ export interface TransformerService {
   ): (source$: Observable<unknown>) => InheritTransformerResult<T>;
 }
 
-export type Transformer<O = unknown, I = unknown> = (
+export type SimpleTransformer<O = unknown, I = unknown> = (
   data: I,
   transformer: TransformerService
 ) => O | Observable<O>;
+export type LazyTransformer<O = unknown, I = unknown> = () => Promise<
+  SimpleTransformer<O, I>
+>;
+
+export type Transformer<O = unknown, I = unknown> =
+  | SimpleTransformer<O, I>
+  | LazyTransformer<O, I>;
 
 export type Serializer<I = unknown, O = unknown> = Transformer<O, I>;
 

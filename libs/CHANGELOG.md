@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.2.0 (2023-11-09)
+
+
+### Features
+
+* add divider option attribute to navigation component ([#791](https://github.com/spryker/oryx/issues/791)) ([7b7594a](https://github.com/spryker/oryx/commit/7b7594a5ec3b5eb0d7025249cc26b4e30fdf39ea))
+* asynchronous providers ([#751](https://github.com/spryker/oryx/issues/751)) ([6b8ecda](https://github.com/spryker/oryx/commit/6b8ecdab32c9691d643d47adebbf9536e5c2a663))
+* **cart:** separate cart heading component ([#726](https://github.com/spryker/oryx/issues/726)) ([5ff1061](https://github.com/spryker/oryx/commit/5ff106139ae2e38e2b5ba4579cddfdd6e4387041))
+* **core:** query postTransform and cacheKey ([#875](https://github.com/spryker/oryx/issues/875)) ([d8f906c](https://github.com/spryker/oryx/commit/d8f906cd94fb56a4dc9f760cb31616ae53b7c19d))
+* event repeater ([#799](https://github.com/spryker/oryx/issues/799)) ([4078fed](https://github.com/spryker/oryx/commit/4078fed93c93ce7843d6e526d0396c27657855b5))
+* **experience:** carousel navigation ([#856](https://github.com/spryker/oryx/issues/856)) ([deb2f3d](https://github.com/spryker/oryx/commit/deb2f3ddee91aea827b78eef0b361cf4f222a7e4))
+* fulfillment app boilerplate improvements ([#790](https://github.com/spryker/oryx/issues/790)) ([055ca1b](https://github.com/spryker/oryx/commit/055ca1bff348fb82beb896d7f9442ae2fced814b))
+* icon directionality ([#857](https://github.com/spryker/oryx/issues/857)) ([764ee63](https://github.com/spryker/oryx/commit/764ee634f7764c931b1ee1cd1018acd055b7f385))
+* pluggable layouts ([#846](https://github.com/spryker/oryx/issues/846)) ([c1596ba](https://github.com/spryker/oryx/commit/c1596ba1462e45c13a8420b4054b887c1177293a))
+* price mode only used in b2b ([#813](https://github.com/spryker/oryx/issues/813)) ([bec6d2e](https://github.com/spryker/oryx/commit/bec6d2ee07a34a36d3dc6930d84b66845f8344ec))
+* scroll facet values into view on toggle ([#826](https://github.com/spryker/oryx/issues/826)) ([82a016d](https://github.com/spryker/oryx/commit/82a016d420e925bd4d1c41120712a1418d8f05f0))
+* **search:** price facet component ([#849](https://github.com/spryker/oryx/issues/849)) ([9c14c1f](https://github.com/spryker/oryx/commit/9c14c1ff5a045813eb400b906d83e9b492a93c15))
+* **search:** range facet component ([#847](https://github.com/spryker/oryx/issues/847)) ([dd6ca19](https://github.com/spryker/oryx/commit/dd6ca19237cea8f96747c5cf75aea52931cd0b9f))
+* **search:** facet rating component ([#830](https://github.com/spryker/oryx/issues/830)) ([adb1a61](https://github.com/spryker/oryx/commit/adb1a613df099c332ac585150898c84468ff2913))
+* show flag before to current locale ([#810](https://github.com/spryker/oryx/issues/810)) ([3d26e09](https://github.com/spryker/oryx/commit/3d26e09c4e7b655a99a135c39a32af15dfd8c4c4))
+* storage service strategies ([#855](https://github.com/spryker/oryx/issues/855)) ([38bca16](https://github.com/spryker/oryx/commit/38bca16c8bd2cf8b807e7d22ad5a97e671875500))
+
+
+### Bug Fixes
+
+* **core:** add `as` attribute for preload links ([#825](https://github.com/spryker/oryx/issues/825)) ([4eeba05](https://github.com/spryker/oryx/commit/4eeba057aed62df32ec82e4a326f6f57022d7eda))
+* improve computed observable switch ([#845](https://github.com/spryker/oryx/issues/845)) ([2bd665e](https://github.com/spryker/oryx/commit/2bd665e2d21b557919fba9f3f0b1e58d41fec47c))
+* **presets:** additional white space at the end of product list on the home page ([#865](https://github.com/spryker/oryx/issues/865)) ([bb629ac](https://github.com/spryker/oryx/commit/bb629ac38da37d0117d39a1edf4dcc68a2c36aa4))
+* transfomer ordering ([#877](https://github.com/spryker/oryx/issues/877)) ([c2aa643](https://github.com/spryker/oryx/commit/c2aa643278b6588e04f63c93664545f9f08f5677))
+* **ui:** modal maximum width to depend on container width ([#870](https://github.com/spryker/oryx/issues/870)) ([5c6a63d](https://github.com/spryker/oryx/commit/5c6a63d7af39dcb47178f0ccfe2990b1564fbaea))
+* **ui:** searchbox positioning depends on container but not viewport width ([#871](https://github.com/spryker/oryx/issues/871)) ([0aa44c2](https://github.com/spryker/oryx/commit/0aa44c234211f80b3aec2d2fe779999461adfe99))
+
+
+
+
+
 # 1.1.0 (2023-09-22)
 
 

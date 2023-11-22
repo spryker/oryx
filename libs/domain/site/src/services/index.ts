@@ -7,6 +7,7 @@ export * from './gender';
 export * from './link';
 export * from './locale';
 export * from './notification';
+export * from './price-mode';
 export * from './pricing';
 export * from './resolvers';
 export * from './salutation';

@@ -36,7 +36,6 @@
     },
     "build-netlify": {
       "executor": "nx:run-commands",
-      "outputs": ["dist/apps/fulfillment"],
       "options": {
         "commands": [
           "npx nx run fulfillment:init-env:netlify-test",
@@ -52,12 +51,8 @@
         "cwd": "apps/fulfillment"
       },
       "configurations": {
-        "mock": {
-          "command": "cp .env.mock .env",
-          "cwd": "apps/fulfillment"
-        },
         "netlify-test": {
-          "command": "cp .env.netlify-test .env",
+          "command": "cp .env.template .env",
           "cwd": "apps/fulfillment"
         }
       }
@@ -78,14 +73,7 @@
     "preview": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx vite preview",
-        "cwd": "apps/fulfillment"
-      }
-    },
-    "mock": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node mock/index.js",
+        "command": "npx vite preview --port 4200",
         "cwd": "apps/fulfillment"
       }
     },

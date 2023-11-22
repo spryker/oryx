@@ -3,7 +3,7 @@ import {
   ProductListAdapter,
   ProductListQualifier,
 } from '@spryker-oryx/product';
-import { generateFacet } from '@spryker-oryx/product/mocks';
+import { generateFacet, generateRange } from '@spryker-oryx/product/mocks';
 import { Observable, of } from 'rxjs';
 import { createProductListMock } from './mock-product-list.generator';
 
@@ -55,6 +55,34 @@ export class MockProductListAdapter implements ProductListAdapter {
         ),
         generateFacet('Label', 'label', 3, qualifier.label?.split(','), true),
         generateFacet('Color', 'color', 6, qualifier.color?.split(',')),
+        generateRange(
+          'Range',
+          'range',
+          [0, 100],
+          'minPrice' in qualifier && 'maxPrice' in qualifier
+            ? [qualifier.minPrice!, qualifier.maxPrice!]
+            : []
+        ),
+        generateRange(
+          'Price',
+          'price',
+          [0, 100000],
+          'minPrice' in qualifier && 'maxPrice' in qualifier
+            ? [qualifier.minPrice! * 100, qualifier.maxPrice! * 100]
+            : []
+        ),
+        generateRange(
+          'Rating',
+          'rating',
+          [0, 5],
+          'minRating' in qualifier ? [qualifier.minRating!] : []
+        ),
+        generateRange(
+          'Selected rating',
+          'selected-rating',
+          [0, 5],
+          [qualifier.minRating ?? 3]
+        ),
       ],
     });
   }

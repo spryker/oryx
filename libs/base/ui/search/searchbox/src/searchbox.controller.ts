@@ -106,7 +106,7 @@ export class SearchboxController implements ReactiveController {
   }
 
   protected get backButton(): TemplateResult {
-    const { backIcon: icon = IconTypes.Back } = this.host;
+    const { backIcon: icon = IconTypes.Backward } = this.host;
     return html`
       <oryx-icon
         type=${icon}

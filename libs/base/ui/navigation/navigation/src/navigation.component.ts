@@ -10,7 +10,7 @@ export class NavigationComponent extends LitElement {
   static styles = [navigationStyles];
 
   /**
-   * Label that is used for assistive technology to vocalise the usage
+   * Label that is used for assistive technology to vocalize the usage
    * of the collapse button.
    *
    * Defaults to "collapse navigation".
@@ -29,7 +29,7 @@ export class NavigationComponent extends LitElement {
         .size=${Size.Sm}
         .color=${ButtonColor.Neutral}
         .label=${this.toggleButtonAriaLabel}
-        .icon=${IconTypes.Back}
+        .icon=${IconTypes.Backward}
         @click=${this.toggle}
       ></oryx-button>
     `;

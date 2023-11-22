@@ -3,7 +3,7 @@ import { featureVersion } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 const pricing =
-  featureVersion > '1.2'
+  featureVersion >= '1.2'
     ? css`
         section.pricing {
           display: grid;

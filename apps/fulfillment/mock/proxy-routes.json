@@ -1,7 +1,0 @@
-[
-  "/authorize",
-  "/token",
-  "/picking-lists",
-  "/push-notification-subscriptions",
-  "/warehouse-user-assignments"
-]

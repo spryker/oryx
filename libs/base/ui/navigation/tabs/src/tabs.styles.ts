@@ -1,8 +1,12 @@
-import { screenCss } from '@spryker-oryx/utilities';
+import { featureVersion, screenCss } from '@spryker-oryx/utilities';
 import { css, unsafeCSS } from 'lit';
 import { TabsAppearance } from './tabs.model';
 
 const secondary = unsafeCSS(TabsAppearance.Secondary);
+const shadowCSSVar =
+  featureVersion >= '1.3'
+    ? unsafeCSS('var(--oryx-shadow-raised) var(--oryx-shadow-color)')
+    : unsafeCSS('0 4px 8px var(--oryx-elevation-color-2)');
 
 export const baseStyles = css`
   slot:not([name]) {
@@ -27,7 +31,7 @@ export const baseStyles = css`
   }
 
   :host([shadow]) slot:not([name]) {
-    box-shadow: 0 4px 8px var(--oryx-elevation-color-2);
+    box-shadow: ${shadowCSSVar};
   }
 
   input[type='range'] {
