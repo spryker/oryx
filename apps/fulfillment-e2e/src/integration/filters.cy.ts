@@ -6,6 +6,19 @@ describe('When user interacts with the filters', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();
+    cy.cleanupPickings();
+
+    // create picking #1
+    cy.createPicking().then((orderId) => {
+      cy.receiveData();
+      cy.waitForPickingToAppear(orderId);
+    });
+
+    // create picking #2
+    cy.createPicking().then((orderId) => {
+      cy.receiveData();
+      cy.waitForPickingToAppear(orderId);
+    });
   });
 
   describe('And filters is closed', () => {
