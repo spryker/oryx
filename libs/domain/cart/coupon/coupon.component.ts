@@ -61,8 +61,7 @@ export class CouponComponent extends CartComponentMixin(
             .type="${ButtonType.Outline}"
             .color="${ColorType.Neutral}"
             .size=${ButtonSize.Md}
-            @click=${() =>
-              this.onSubmit(`${this.i18n('coupon.-successfully-applied')}`)}
+            @click=${this.onSubmit}
           >
             ${this.i18n('coupon.apply')}
           </oryx-button>
@@ -98,7 +97,7 @@ export class CouponComponent extends CartComponentMixin(
     this.hasError = false;
   }
 
-  protected onSubmit(successMessage: string): void {
+  protected onSubmit(): void {
     this.hasError = false;
 
     if (!this.coupon?.value) {
@@ -111,7 +110,9 @@ export class CouponComponent extends CartComponentMixin(
       next: () => {
         this.notificationService.push({
           type: AlertType.Success,
-          content: `${this.coupon?.value} ${successMessage}`,
+          content: `${this.coupon?.value} ${`${this.i18n(
+            'coupon.-successfully-applied'
+          )}`}`,
         });
 
         this.coupon!.value = '';
