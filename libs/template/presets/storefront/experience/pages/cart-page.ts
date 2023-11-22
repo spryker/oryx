@@ -72,7 +72,7 @@ export const cartPage: ExperienceComponent = {
               ],
             },
             { type: 'oryx-checkout-link' },
-            featureVersion >= '1.3'
+            featureVersion >= '1.4'
               ? {
                   type: 'oryx-cart-coupon',
                 }
