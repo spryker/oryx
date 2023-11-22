@@ -1,11 +1,15 @@
 {
   "name": "@spryker-oryx/picking",
-  "version": "0.14.0",
+  "version": "1.2.0",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "type": "module",
   "author": "Spryker Sytems GmbH",
   "license": "See license in LICENSE",
+  "description": "Picking features for Oryx applications",
+  "files": [
+    "**/*"
+  ],
   "dependencies": {
     "@spryker-oryx/core": "1.2.0",
     "@spryker-oryx/di": "1.2.0",
@@ -19,16 +23,10 @@
   "peerDependencies": {
     "dexie": "^3.2.2",
     "lit": "^2.4.0",
-    "rxjs": "^7.5.6",
-    "tslib": "^2.4.1"
+    "rxjs": "^7.5.0",
+    "tslib": "^2.4.0"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "exports": {
-    "./*": {
-      "types": "./*/index.d.ts",
-      "default": "./*/index.js"
-    }
   }
 }
