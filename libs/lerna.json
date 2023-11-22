@@ -15,6 +15,7 @@
     "template/resources",
     "domain/product",
     "domain/order",
+    "domain/picking",
     "platform/router",
     "platform/indexed-db",
     "platform/offline",

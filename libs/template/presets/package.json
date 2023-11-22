@@ -27,7 +27,7 @@
     "@spryker-oryx/indexed-db": "1.2.0",
     "@spryker-oryx/offline": "1.2.0",
     "@spryker-oryx/order": "1.2.0",
-    "@spryker-oryx/picking": "latest",
+    "@spryker-oryx/picking": "1.2.0",
     "@spryker-oryx/product": "1.2.0",
     "@spryker-oryx/push-notification": "1.2.0",
     "@spryker-oryx/resources": "1.2.0",
