@@ -1,6 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { i18n } from '@spryker-oryx/utilities';
 
 export const HeaderTemplate: ExperienceComponent = {
   type: 'oryx-composition',
@@ -10,7 +9,7 @@ export const HeaderTemplate: ExperienceComponent = {
       type: 'oryx-site-navigation-item',
       options: {
         contentBehavior: 'modal',
-        label: i18n('picking.account'),
+        label: 'Account',
         icon: IconTypes.User,
         triggerType: 'icon',
         rules: [{ style: '--oryx-icon-color: var(--oryx-color-primary-9)' }],
