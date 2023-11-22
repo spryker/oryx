@@ -5,7 +5,7 @@ export interface AuthTokenService {
 }
 
 export interface AuthTokenData {
-  token: string;
+  token: string | null;
   type: string;
 }
 

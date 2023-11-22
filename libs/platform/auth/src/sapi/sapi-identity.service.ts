@@ -28,13 +28,11 @@ export class SapiIdentityService implements IdentityService {
   protected generateGuest$ = new BehaviorSubject<boolean>(false);
 
   protected identity$ = this.authService.getToken().pipe(
-    tap((x) => console.log('token', x)),
     featureVersion >= '1.3'
-      ? switchMap((token) => this.getFromToken2(token))
+      ? switchMap((token) => this.getUserIdFromToken(token))
       : map((token) => this.getFromToken(token)),
     tap(() => this.clearAnonymousId()),
     catchError(() => this.guestIdentity$),
-    tap((x) => console.log('identity', x)),
     shareReplay(1)
   );
 
@@ -70,11 +68,15 @@ export class SapiIdentityService implements IdentityService {
 
   protected getFromToken(token: AuthTokenData): AuthIdentity {
     if (token.type === 'anon') {
-      return { isAuthenticated: false, userId: token.token };
+      return {
+        isAuthenticated: false,
+        userId: token.token as string | undefined,
+      };
     }
 
     try {
-      const tokenPayload = parseToken<SapiJWTPayload>(token.token);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const tokenPayload = parseToken<SapiJWTPayload>(token.token!);
       const userId = tokenPayload.sub.customer_reference;
 
       if (!userId) {
@@ -87,14 +89,10 @@ export class SapiIdentityService implements IdentityService {
     }
   }
 
-  protected getFromToken2(token: AuthTokenData): Observable<AuthIdentity> {
-    console.log('et from token 2');
-    if (token.type === 'anon') {
-      return this.guestIdentity$;
-    }
-
+  protected getUserIdFromToken(token: AuthTokenData): Observable<AuthIdentity> {
     try {
-      const tokenPayload = parseToken<SapiJWTPayload>(token.token);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const tokenPayload = parseToken<SapiJWTPayload>(token.token!);
       const userId = tokenPayload.sub.customer_reference;
 
       if (!userId) {
