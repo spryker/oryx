@@ -88,9 +88,7 @@ export class OauthCodeGrantProvider implements OauthProvider {
 
   revoke(): Observable<void> {
     if (!this.config.revocationUrl) {
-      this.state$.next(undefined);
-
-      return of();
+      return this.updateState();
     }
 
     return this.revocationRequest().pipe(

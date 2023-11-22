@@ -419,15 +419,14 @@ describe('OauthPasswordGrantProvider', () => {
   });
 
   describe('revoke', () => {
-    // Temporary solution: do not remove token from storage, create new one instead
-    // it('should remove token from storage if config has not `revocationUrl`', async () => {
-    //   mockStorage.get.mockReturnValue(of(null));
-    //   mockStorage.remove.mockReturnValue(of(null));
-    //   const service = setup();
-    //   service.revoke().subscribe();
-    //   await nextFrame();
-    //   expect(mockStorage.remove).toHaveBeenCalledWith('oryx.oauth-token');
-    // });
+    it('should remove token from storage if config has not `revocationUrl`', async () => {
+      mockStorage.get.mockReturnValue(of(null));
+      mockStorage.remove.mockReturnValue(of(null));
+      const service = setup();
+      service.revoke().subscribe();
+      await nextFrame();
+      expect(mockStorage.remove).toHaveBeenCalledWith('oryx.oauth-token');
+    });
 
     it('should throw error if token is not `authenticated`', async () => {
       mockStorage.get.mockReturnValue(of({ state: 'authenticating' }));
