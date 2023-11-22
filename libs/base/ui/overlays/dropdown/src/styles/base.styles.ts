@@ -38,6 +38,13 @@ export const dropdownBaseStyles = css`
       var(--_oryx-dropdown-end-offset, auto);
     transform-origin: var(--_dropdown-origin-x, left)
       var(--_dropdown-origin-y, top);
+
+    ${featureVersion >= `1.3`
+      ? css``
+      : css`
+          transform: scaleX(var(--oryx-popover-visible, 0))
+            scaleY(var(--oryx-popover-visible, 0));
+        `}
   }
 
   ${featureVersion >= `1.3`
@@ -46,17 +53,8 @@ export const dropdownBaseStyles = css`
           transform: scaleX(var(--oryx-popover-visible, 0))
             scaleY(var(--oryx-popover-visible, 0));
         }
-
-        :host([vertical-align]) oryx-popover {
-          transform: scaleY(var(--oryx-popover-visible, 0));
-        }
       `
-    : css`
-        oryx-popover {
-          transform: scaleX(var(--oryx-popover-visible, 0))
-            scaleY(var(--oryx-popover-visible, 0));
-        }
-      `}
+    : css``}
 
   slot[name='trigger'] {
     cursor: pointer;
@@ -118,6 +116,12 @@ export const dropdownBaseStyles = css`
       var(--_available-popover-height, ${unsafecss(POPOVER_HEIGHT)}px),
       var(--oryx-popover-maxheight, ${unsafecss(POPOVER_HEIGHT)}px)
     );
+
+    ${featureVersion >= `1.3`
+      ? css``
+      : css`
+          transform: scaleY(var(--oryx-popover-visible, 0));
+        `}
   }
 
   :host([vertical-align][position=${unsafecss(Position.END)}]) oryx-popover,
