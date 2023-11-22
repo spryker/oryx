@@ -38,9 +38,11 @@ export const fontMeta = (): ElementDefinition[] => [
   },
 ];
 
-export const bodyStyles = (): ElementDefinition[] => [
+export const bodyStyles = (
+  config: { fontSize: string } = { fontSize: '14px' }
+): ElementDefinition[] => [
   {
     name: 'style',
-    attrs: { text: ':root{font-size: 16px}body {margin: 0;}' },
+    attrs: { text: `:root{font-size:${config.fontSize}}body {margin: 0;}` },
   },
 ];

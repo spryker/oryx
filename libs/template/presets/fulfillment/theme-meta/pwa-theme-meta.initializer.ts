@@ -6,6 +6,10 @@ export class PWAThemeMetaInitializer implements AppInitializer {
   constructor(protected metaService = inject(PageMetaService, null)) {}
 
   initialize(): void {
-    this.metaService?.add([...fontMeta(), ...bodyStyles(), ...iconMeta()]);
+    this.metaService?.add([
+      ...fontMeta(),
+      ...bodyStyles({ fontSize: '16px' }),
+      ...iconMeta(),
+    ]);
   }
 }
