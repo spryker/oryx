@@ -1,3 +1,4 @@
+import { featureVersion } from '@spryker-oryx/utilities';
 import { css, unsafeCSS as unsafecss } from 'lit';
 import { POPOVER_HEIGHT } from '../../../popover';
 import { Position } from '../dropdown.model';
@@ -37,9 +38,25 @@ export const dropdownBaseStyles = css`
       var(--_oryx-dropdown-end-offset, auto);
     transform-origin: var(--_dropdown-origin-x, left)
       var(--_dropdown-origin-y, top);
-    transform: scaleX(var(--oryx-popover-visible, 0))
-      scaleY(var(--oryx-popover-visible, 0));
   }
+
+  ${featureVersion >= `1.3`
+    ? css`
+        :host(:not([vertical-align])) oryx-popover {
+          transform: scaleX(var(--oryx-popover-visible, 0))
+            scaleY(var(--oryx-popover-visible, 0));
+        }
+
+        :host([vertical-align]) oryx-popover {
+          transform: scaleY(var(--oryx-popover-visible, 0));
+        }
+      `
+    : css`
+        oryx-popover {
+          transform: scaleX(var(--oryx-popover-visible, 0))
+            scaleY(var(--oryx-popover-visible, 0));
+        }
+      `}
 
   slot[name='trigger'] {
     cursor: pointer;
