@@ -5,8 +5,8 @@ import { TabsAppearance } from './tabs.model';
 const secondary = unsafeCSS(TabsAppearance.Secondary);
 const shadowCSSVar =
   featureVersion >= '1.3'
-    ? unsafeCSS('--oryx-shadow-color')
-    : unsafeCSS('--oryx-elevation-color-2');
+    ? unsafeCSS('var(--oryx-shadow-raised) var(--oryx-shadow-color)')
+    : unsafeCSS('0 4px 8px var(--oryx-elevation-color-2)');
 
 export const baseStyles = css`
   slot:not([name]) {
@@ -31,7 +31,7 @@ export const baseStyles = css`
   }
 
   :host([shadow]) slot:not([name]) {
-    box-shadow: 0 4px 8px var(${shadowCSSVar});
+    box-shadow: ${shadowCSSVar};
   }
 
   input[type='range'] {
