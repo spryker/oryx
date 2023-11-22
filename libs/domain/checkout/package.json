@@ -1,7 +1,7 @@
 {
   "name": "@spryker-oryx/checkout",
   "type": "module",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Checkout features Oryx applications",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
@@ -17,18 +17,18 @@
     }
   },
   "dependencies": {
-    "@spryker-oryx/auth": "1.2.0",
-    "@spryker-oryx/cart": "1.2.0",
-    "@spryker-oryx/content": "1.2.0",
-    "@spryker-oryx/core": "1.2.0",
-    "@spryker-oryx/di": "1.2.0",
-    "@spryker-oryx/experience": "1.2.0",
-    "@spryker-oryx/order": "1.2.0",
-    "@spryker-oryx/router": "1.2.0",
-    "@spryker-oryx/site": "1.2.0",
-    "@spryker-oryx/ui": "1.2.0",
-    "@spryker-oryx/user": "1.2.0",
-    "@spryker-oryx/utilities": "1.2.0"
+    "@spryker-oryx/auth": "1.3.0",
+    "@spryker-oryx/cart": "1.3.0",
+    "@spryker-oryx/content": "1.3.0",
+    "@spryker-oryx/core": "1.3.0",
+    "@spryker-oryx/di": "1.3.0",
+    "@spryker-oryx/experience": "1.3.0",
+    "@spryker-oryx/order": "1.3.0",
+    "@spryker-oryx/router": "1.3.0",
+    "@spryker-oryx/site": "1.3.0",
+    "@spryker-oryx/ui": "1.3.0",
+    "@spryker-oryx/user": "1.3.0",
+    "@spryker-oryx/utilities": "1.3.0"
   },
   "peerDependencies": {
     "lit": "^2.4.0",
