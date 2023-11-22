@@ -22,9 +22,9 @@ const mockServiceWorker = {
   ready: of({ pushManager: new PushManagerMock() }),
 };
 
-const callback = vi.fn();
-
 describe('WebPushProvider', () => {
+  const callback = vi.fn();
+
   async function getPushManager() {
     return await lastValueFrom(
       from(navigator.serviceWorker.ready).pipe(

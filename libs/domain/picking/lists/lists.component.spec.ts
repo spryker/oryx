@@ -30,6 +30,8 @@ class MockApp implements Partial<App> {
 class MockPickingListService implements Partial<PickingListService> {
   get = vi.fn().mockReturnValue(of(mockPickingListData));
   isRefreshing = vi.fn().mockReturnValue(of(false));
+  isActiveSearch = vi.fn().mockReturnValue(of(false));
+  getQualifier = vi.fn().mockReturnValue(of({}));
 }
 
 describe('PickingListsComponent', () => {
@@ -150,7 +152,7 @@ describe('PickingListsComponent', () => {
     });
 
     describe('when customer note modal is opened', () => {
-      const customerNoteText = 'Customer note';
+      const id = 'id';
 
       beforeEach(() => {
         const pickingListCard = element.renderRoot.querySelector(
@@ -159,7 +161,7 @@ describe('PickingListsComponent', () => {
 
         pickingListCard?.dispatchEvent(
           new CustomEvent('oryx.show-note', {
-            detail: { note: customerNoteText },
+            detail: { id },
           })
         );
       });
@@ -241,15 +243,8 @@ describe('PickingListsComponent', () => {
 
   describe('when start searching', () => {
     beforeEach(async () => {
-      const pickingListHeader = element.renderRoot.querySelector(
-        'oryx-picking-lists-header'
-      );
-
-      pickingListHeader?.dispatchEvent(
-        new CustomEvent('oryx.search', {
-          detail: { search: '', open: true },
-        })
-      );
+      service.isActiveSearch = vi.fn().mockReturnValue(of(true));
+      element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
     });
 
     it('should render a fallback', () => {
@@ -273,15 +268,11 @@ describe('PickingListsComponent', () => {
   describe('when there is no results while searching', () => {
     beforeEach(async () => {
       service.get = vi.fn().mockReturnValue(of([]));
-      const pickingListHeader = element.renderRoot.querySelector(
-        'oryx-picking-lists-header'
-      );
-
-      pickingListHeader?.dispatchEvent(
-        new CustomEvent('oryx.search', {
-          detail: { search: 'ddd', open: true },
-        })
-      );
+      service.isActiveSearch = vi.fn().mockReturnValue(of(true));
+      service.getQualifier = vi
+        .fn()
+        .mockReturnValue(of({ searchOrderReference: 'test' }));
+      element = await fixture(html`<oryx-picking-lists></oryx-picking-lists>`);
     });
 
     it('should render a fallback', () => {

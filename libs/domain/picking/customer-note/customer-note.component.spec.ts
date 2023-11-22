@@ -63,6 +63,7 @@ describe('PickingCustomerNoteComponent', () => {
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;
+
     element = await fixture(
       html`<oryx-picking-customer-note
         pickingListId="id"

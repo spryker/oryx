@@ -142,26 +142,23 @@
         "libs/domain/picking/filter-button/index.ts"
       ],
       "@spryker-oryx/picking/filters": ["libs/domain/picking/filters/index.ts"],
-      "@spryker-oryx/picking/header": ["libs/domain/picking/header/index.ts"],
       "@spryker-oryx/picking/list-item": [
         "libs/domain/picking/list-item/index.ts"
       ],
       "@spryker-oryx/picking/lists": ["libs/domain/picking/lists/index.ts"],
-      "@spryker-oryx/picking/lists-header": [
-        "libs/domain/picking/lists-header/index.ts"
-      ],
       "@spryker-oryx/picking/mocks": ["libs/domain/picking/mocks/index.ts"],
       "@spryker-oryx/picking/offline": ["libs/domain/picking/offline/index.ts"],
-      "@spryker-oryx/picking/picker": ["libs/domain/picking/picker/index.ts"],
-      "@spryker-oryx/picking/picker-header": [
-        "libs/domain/picking/picker-header/index.ts"
+      "@spryker-oryx/picking/order-reference": [
+        "libs/domain/picking/order-reference/index.ts"
       ],
+      "@spryker-oryx/picking/picker": ["libs/domain/picking/picker/index.ts"],
       "@spryker-oryx/picking/picking-in-progress": [
         "libs/domain/picking/picking-in-progress/index.ts"
       ],
       "@spryker-oryx/picking/product-card": [
         "libs/domain/picking/product-card/index.ts"
       ],
+      "@spryker-oryx/picking/search": ["libs/domain/picking/search/index.ts"],
       "@spryker-oryx/picking/service-worker": [
         "libs/domain/picking/service-worker/index.ts"
       ],

@@ -7,9 +7,8 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../.constants';
 
 export default {
-  title: `${storybookPrefix}/List header/Static`,
+  title: `${storybookPrefix}/Search/Static`,
   parameters: {
-    layout: 'fullscreen',
     chromatic: {
       viewports: [storybookDefaultViewports.mobile.min],
     },
@@ -20,10 +19,10 @@ export default {
 const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <h2>Default</h2>
-    <oryx-picking-lists-header></oryx-picking-lists-header>
+    <oryx-picking-search></oryx-picking-search>
 
     <h2>Search opened</h2>
-    <oryx-picking-lists-header id="search-opened"></oryx-picking-lists-header>
+    <oryx-picking-search id="search-opened"></oryx-picking-search>
   `;
 };
 
@@ -33,9 +32,13 @@ Variants.play = async (obj: {
   args: unknown;
   canvasElement: HTMLElement;
 }): Promise<void> => {
-  await customElements.whenDefined('oryx-picking-lists-header');
+  await Promise.all([
+    customElements.whenDefined('oryx-picking-search'),
+    customElements.whenDefined('oryx-search'),
+  ]);
   const searchOpened =
     obj.canvasElement.querySelector<LitElement>('#search-opened');
+
   searchOpened?.renderRoot
     .querySelector('oryx-search')
     ?.toggleAttribute('open', true);
