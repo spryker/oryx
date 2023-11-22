@@ -38,15 +38,17 @@ export class IndexedDbStorageStrategy implements StorageStrategy {
     );
   }
 
-  setItem(key: string, value: string): void {
-    this.storage.subscribe((storage) => storage.put({ key, value }));
+  setItem(key: string, value: string): Observable<unknown> {
+    return this.storage.pipe(
+      switchMap((storage) => storage.put({ key, value }))
+    );
   }
 
-  removeItem(key: string): void {
-    this.storage.subscribe((storage) => storage.delete(key));
+  removeItem(key: string): Observable<unknown> {
+    return this.storage.pipe(switchMap((storage) => storage.delete(key)));
   }
 
-  clear(): void {
-    this.storage.subscribe((storage) => storage.clear());
+  clear(): Observable<unknown> {
+    return this.storage.pipe(switchMap((storage) => storage.clear()));
   }
 }

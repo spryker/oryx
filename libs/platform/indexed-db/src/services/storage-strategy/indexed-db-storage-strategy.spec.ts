@@ -1,4 +1,5 @@
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
+import { of } from 'rxjs';
 import { IndexedDbStorageStrategyToken } from './indexed-db-storage-method';
 import { IndexedDbStorageStrategy } from './indexed-db-storage-strategy';
 
@@ -103,34 +104,51 @@ describe('DefaultIndexedDBStorageService', () => {
 
   describe('setItem', () => {
     beforeEach(() => {
-      service.setItem('mockedKey', 'mockedValue');
+      mockDexieMethods.table.put = vi.fn().mockReturnValue(of({}));
     });
 
     it('should store the value to the db', () => {
-      expect(mockDexieMethods.table.put).toHaveBeenCalledWith({
-        key: 'mockedKey',
-        value: 'mockedValue',
+      new Promise<void>((done) => {
+        service.setItem('mockedKey', 'mockedValue').subscribe(() => {
+          expect(mockDexieMethods.table.put).toHaveBeenCalledWith({
+            key: 'mockedKey',
+            value: 'mockedValue',
+          });
+          done();
+        });
       });
     });
   });
 
   describe('removeItem', () => {
     beforeEach(() => {
-      service.removeItem('mockedKey');
+      mockDexieMethods.table.delete = vi.fn().mockReturnValue(of({}));
     });
 
     it('should remove the item', () => {
-      expect(mockDexieMethods.table.delete).toHaveBeenCalledWith('mockedKey');
+      new Promise<void>((done) => {
+        service.removeItem('mockedKey').subscribe(() => {
+          expect(mockDexieMethods.table.delete).toHaveBeenCalledWith(
+            'mockedKey'
+          );
+          done();
+        });
+      });
     });
   });
 
   describe('clear', () => {
     beforeEach(() => {
-      service.clear();
+      mockDexieMethods.table.clear = vi.fn().mockReturnValue(of({}));
     });
 
     it('should remove the item', () => {
-      expect(mockDexieMethods.table.clear).toHaveBeenCalled();
+      new Promise<void>((done) => {
+        service.clear().subscribe(() => {
+          expect(mockDexieMethods.table.clear).toHaveBeenCalledWith();
+          done();
+        });
+      });
     });
   });
 });
