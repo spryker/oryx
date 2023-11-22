@@ -1,5 +1,4 @@
 import {
-  AnonAuthTokenService,
   AnonTokenInterceptor,
   AnonTokenInterceptorConfig,
   authLoginComponent,
@@ -56,8 +55,7 @@ export class SapiAuthFeature extends OauthFeature implements AppFeature {
       {
         provide: AuthTokenService,
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-        useFactory: () =>
-          new AnonAuthTokenService(inject(OauthService), inject(OauthService)),
+        useFactory: () => inject(OauthService),
       },
       { provide: IdentityService, useClass: SapiIdentityService },
       { provide: HttpInterceptor, useClass: AnonTokenInterceptor },

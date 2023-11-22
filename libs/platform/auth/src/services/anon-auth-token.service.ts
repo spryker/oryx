@@ -1,9 +1,10 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 import {
+  Observable,
   catchError,
   map,
-  Observable,
   of,
   shareReplay,
   switchMap,
@@ -13,6 +14,7 @@ import { AuthTokenData, AuthTokenService } from './auth-token.service';
 import { AuthService } from './auth.service';
 import { generateID } from './utils';
 
+/** deprecated since 1.4 */
 export class AnonAuthTokenService implements AuthTokenService {
   protected ANONYMOUS_USER_IDENTIFIER = 'oryx.anonymous-user';
 
@@ -41,7 +43,11 @@ export class AnonAuthTokenService implements AuthTokenService {
       .get<string>(this.ANONYMOUS_USER_IDENTIFIER, StorageType.Session)
       .pipe(
         switchMap((userId) => {
-          return userId ? of(userId) : this.createAnonymousId();
+          return featureVersion >= '1.3'
+            ? of(userId)
+            : userId
+            ? of(userId)
+            : this.createAnonymousId();
         }),
         map((userId) => ({ type: 'anon', token: userId }))
       );
