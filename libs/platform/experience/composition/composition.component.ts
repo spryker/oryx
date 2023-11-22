@@ -9,7 +9,6 @@ import {
   LayoutMixin,
   LayoutMixinInternals,
   LayoutPluginRender,
-  LayoutStylesOptions,
 } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import {
@@ -177,29 +176,29 @@ export class CompositionComponent extends LayoutMixin(
     });
 
     // TODO: move to plugin infrastructure, similar to pre/post, we need to be able to wrap
-    if (
-      (component.options?.rules?.[0].layout as LayoutStylesOptions)
-        ?.navigationType === 'dropdown'
-    ) {
-      return html`
-        <oryx-dropdown vertical-align position="end">
-          <span slot="trigger">${template}</span>
-          <oryx-composition
-            .uid=${component?.id}
-            close-popover
-            .options=${{ rules: [{ layout: { type: 'list' }, gap: '0px' }] }}
-            style="--oryx-content-link-padding: 0 0 0 12px;
-    --oryx-link-padding: 8px 12px 8px 0;
-    --oryx-link-hover-background: var(--oryx-color-neutral-3);
-    --oryx-link-active-background: var(--oryx-color-primary-5);
-    --oryx-link-hover-shadow:none;
-    --oryx-link-active-shadow:none;
-    --oryx-link-current-shadow:none;
-    --oryx-link-current-color:var(--oryx-color-primary-9);"
-          ></oryx-composition
-        ></oryx-dropdown>
-      `;
-    }
+    // if (
+    //   (component.options?.rules?.[0].layout as LayoutStylesOptions)
+    //     ?.navigationType === 'dropdown'
+    // ) {
+    //   return html`
+    //     <oryx-dropdown vertical-align position="end">
+    //       <span slot="trigger">${template}</span>
+    //       <oryx-composition
+    //         .uid=${component?.id}
+    //         close-popover
+    //         .options=${{ rules: [{ layout: { type: 'list' }, gap: '0px' }] }}
+    //         style="--oryx-content-link-padding: 0 0 0 12px;
+    // --oryx-link-padding: 8px 12px 8px 0;
+    // --oryx-link-hover-background: var(--oryx-color-neutral-3);
+    // --oryx-link-active-background: var(--oryx-color-primary-5);
+    // --oryx-link-hover-shadow:none;
+    // --oryx-link-active-shadow:none;
+    // --oryx-link-current-shadow:none;
+    // --oryx-link-current-color:var(--oryx-color-primary-9);"
+    //       ></oryx-composition
+    //     ></oryx-dropdown>
+    //   `;
+    // }
 
     return html`${template}`;
   }

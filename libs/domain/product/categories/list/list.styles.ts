@@ -14,6 +14,7 @@ export const categoryListStyles = css`
     position: absolute;
     inset-inline-start: 100%;
     inset-block-start: 0;
+    outline: solid 1px red;
   }
 
   div:not(:hover) oryx-product-category-list {

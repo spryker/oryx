@@ -3,6 +3,7 @@ import { ProductCategory, ProductCategoryQualifier } from '../../models';
 
 export interface ProductCategoryService {
   get(qualifier: ProductCategoryQualifier): Observable<ProductCategory>;
+  getList(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]>;
   getTree(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]>;
   getTrail(qualifier: ProductCategoryQualifier): Observable<ProductCategory[]>;
 }

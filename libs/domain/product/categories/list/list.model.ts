@@ -1,9 +1,13 @@
 export interface ProductCategoryListOptions {
   heading?: string;
+
+  id?: string;
+
   /**
    * Whether to render nested categories or not.
    */
   nested?: boolean;
+
   /**
    * Excludes categories from the list.
    *

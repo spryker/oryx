@@ -1,7 +1,7 @@
 import { createQuery, injectQuery } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { LocaleChanged } from '@spryker-oryx/i18n';
-import { BehaviorSubject, Observable, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, map, of, switchMap, tap } from 'rxjs';
 import { ProductCategory, ProductCategoryQualifier } from '../../models';
 import { ProductCategoryAdapter } from './adapter/product-category.adapter';
 import { ProductCategoryService } from './category.service';
@@ -37,9 +37,20 @@ export class DefaultProductCategoryService implements ProductCategoryService {
     return this.categoryQuery$.get(qualifier) as Observable<ProductCategory>;
   }
 
+  getList(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]> {
+    const list = this.treeQuery$.get() as Observable<ProductCategory[]>;
+    return list.pipe(
+      map((items) =>
+        items.filter((category) => {
+          return !qualifier?.parent
+            ? !category.parent
+            : category.parent === qualifier?.parent;
+        })
+      )
+    );
+  }
+
   getTree(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]> {
-    // TODO: we like to reuse qualifier inside the treeQuery, so that we can use qualifier fields
-    // such as exclude
     return this.treeQuery$.get() as Observable<ProductCategory[]>;
   }
 
@@ -52,7 +63,8 @@ export class DefaultProductCategoryService implements ProductCategoryService {
             )
           : of([category])
       ),
-      map((trail) => trail.sort((a, b) => (a.id === b.parent ? -1 : 1)))
+      map((trail) => trail.sort((a, b) => (a.id === b.parent ? -1 : 1))),
+      tap(console.log)
     );
   }
 }

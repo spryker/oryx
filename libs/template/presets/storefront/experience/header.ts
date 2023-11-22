@@ -245,7 +245,6 @@ export const categoryNavigation = (
           },
           components: [{ type: 'oryx-product-category-list' }],
         },
-
         { type: 'oryx-product-category-list', options: { exclude } },
         {
           type: 'oryx-content-link',
@@ -258,7 +257,9 @@ export const categoryNavigation = (
               },
             ],
           },
-          components: [{ type: 'oryx-product-category-list' }],
+          components: [
+            { type: 'oryx-product-category-list', options: { exclude } },
+          ],
         },
       ],
     },
