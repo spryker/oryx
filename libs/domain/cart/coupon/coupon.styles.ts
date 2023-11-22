@@ -35,8 +35,4 @@ export const couponStyles = css`
   oryx-icon {
     color: var(--oryx-color-success-9);
   }
-
-  .clear-icon {
-    color: currentColor;
-  }
 `;

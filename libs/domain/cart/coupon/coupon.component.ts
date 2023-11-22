@@ -5,9 +5,7 @@ import { LocaleService } from '@spryker-oryx/i18n';
 import { NotificationService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
-import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ColorType } from '@spryker-oryx/ui/link';
-import { ClearIconAppearance } from '@spryker-oryx/ui/searchbox';
 import { hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
@@ -22,7 +20,7 @@ export class CouponComponent extends CartComponentMixin(
 
   @state() hasError = false;
 
-  @query('input[name=coupon]') coupon?: HTMLInputElement;
+  @query('input[name=coupon]') coupon!: HTMLInputElement;
 
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
@@ -41,21 +39,17 @@ export class CouponComponent extends CartComponentMixin(
           <oryx-input
             ?hasError="${this.hasError}"
             .errorMessage="${this.hasError
-              ? this.coupon?.value === ''
-                ? `${this.i18n('coupon.insert-a-coupon')}`
-                : `${this.i18n('coupon.cart-code-can-not-be-added')}`
+              ? `${
+                  !this.coupon?.value
+                    ? this.i18n('coupon.insert-a-coupon')
+                    : this.i18n('coupon.cart-code-can-not-be-added')
+                }`
               : ''}"
           >
             <input
               placeholder="${this.i18n('coupon.coupon-code')}"
               name="coupon"
             />
-            <oryx-icon
-              type=${IconTypes.Close}
-              class="clear-icon"
-              appearance=${ClearIconAppearance.Hover}
-              @click=${(): void => this.clear()}
-            ></oryx-icon>
           </oryx-input>
           <oryx-button
             .type="${ButtonType.Outline}"
@@ -92,30 +86,26 @@ export class CouponComponent extends CartComponentMixin(
     `;
   }
 
-  protected clear(): void {
-    this.coupon!.value = '';
-    this.hasError = false;
-  }
-
   protected onSubmit(): void {
     this.hasError = false;
+    const coupon = this.coupon?.value;
 
-    if (!this.coupon?.value) {
+    if (!coupon) {
       this.hasError = true;
 
       return;
     }
 
-    this.cartService.addCoupon({ code: this.coupon?.value ?? '' }).subscribe({
+    this.cartService.addCoupon({ code: coupon ?? '' }).subscribe({
       next: () => {
         this.notificationService.push({
           type: AlertType.Success,
-          content: `${this.coupon?.value} ${`${this.i18n(
+          content: `${coupon} ${`${this.i18n(
             'coupon.-successfully-applied'
           )}`}`,
         });
 
-        this.coupon!.value = '';
+        this.coupon.value = '';
       },
       error: () => {
         this.hasError = true;
