@@ -3,8 +3,8 @@ import { css } from 'lit';
 
 export const couponStyles = css`
   h3 {
-    ${headingUtil(HeadingTag.H5)};
     margin-block-end: 8px;
+    ${headingUtil(HeadingTag.H5)};
   }
 
   section {
