@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2023-11-22)
+
+
+### Features
+
+* favicon dark mode ([#929](https://github.com/spryker/oryx/issues/929)) ([09ba468](https://github.com/spryker/oryx/commit/09ba4688b30d65568b29dccb4552e5e4043d40e1))
+* fulfillment boilerplate html cleanup ([#916](https://github.com/spryker/oryx/issues/916)) ([ed1ebd4](https://github.com/spryker/oryx/commit/ed1ebd4c11b6ca69b39f42f26383456bd4664a45))
+
+
+
+
+
 # 1.2.0 (2023-11-09)
 
 
