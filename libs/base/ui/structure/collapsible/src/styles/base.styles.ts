@@ -54,8 +54,11 @@ export const collapsibleBaseStyle = css`
     color: var(--oryx-color-neutral-11);
   }
 
+  :host(:not(${inlineSelector})) summary {
+    justify-content: space-between;
+  }
+
   :host(:not(${inlineSelector})) oryx-button {
-    margin-inline-start: auto;
     pointer-events: none;
   }
 

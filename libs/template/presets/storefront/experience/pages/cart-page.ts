@@ -4,7 +4,17 @@ import { featureVersion } from '@spryker-oryx/utilities';
 const cartEntries = (): ExperienceComponent => {
   const components: ExperienceComponent[] = [];
   if (featureVersion >= '1.2') components.push({ type: 'oryx-cart-heading' });
-  components.push({ type: 'oryx-cart-entries' });
+  components.push(
+    {
+      type: 'oryx-content-text',
+      content: {
+        data: {
+          text: 'You have <oryx-link><a href="/carts">3 other carts</a></oryx-link> available.',
+        },
+      },
+    },
+    { type: 'oryx-cart-entries' }
+  );
 
   return {
     type: 'oryx-composition',
