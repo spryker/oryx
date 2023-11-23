@@ -88,7 +88,7 @@ export class CouponComponent extends CartComponentMixin(
 
   protected onSubmit(): void {
     this.hasError = false;
-    const coupon = this.coupon?.value;
+    const coupon = this.coupon.value;
 
     if (!coupon) {
       this.hasError = true;
