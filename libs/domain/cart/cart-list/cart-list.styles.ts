@@ -26,7 +26,6 @@ export const cartListStyles = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* background: var(--oryx-color-neutral-3); */
     border-block-start: 1px solid var(--oryx-color-neutral-7);
     padding: 10px 20px;
     margin-inline-start: -20px;
