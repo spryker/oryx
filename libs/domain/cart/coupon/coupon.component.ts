@@ -1,10 +1,10 @@
 import { CartComponentMixin, CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
-import { LocaleService } from '@spryker-oryx/i18n';
 import { NotificationService } from '@spryker-oryx/site';
 import { AlertType } from '@spryker-oryx/ui';
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ColorType } from '@spryker-oryx/ui/link';
 import { hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
@@ -20,11 +20,10 @@ export class CouponComponent extends CartComponentMixin(
 
   @state() hasError = false;
 
-  @query('input[name=coupon]') coupon!: HTMLInputElement;
+  @query('input[name=coupon]') coupon?: HTMLInputElement;
 
   protected cartService = resolve(CartService);
   protected notificationService = resolve(NotificationService);
-  protected localeService = resolve(LocaleService);
 
   protected override render(): TemplateResult | void {
     if (this.$isEmpty()) {
@@ -33,7 +32,7 @@ export class CouponComponent extends CartComponentMixin(
 
     return html`
       <oryx-layout>
-        <h3>${this.i18n('coupon.have-a-coupon')}?</h3>
+        <h3>${this.i18n('coupon.have-a-coupon')}</h3>
 
         <section>
           <oryx-input
@@ -41,8 +40,8 @@ export class CouponComponent extends CartComponentMixin(
             .errorMessage="${this.hasError
               ? `${
                   !this.coupon?.value
-                    ? this.i18n('coupon.insert-a-coupon')
-                    : this.i18n('coupon.cart-code-can-not-be-added')
+                    ? this.i18n('coupon.insert')
+                    : this.i18n('coupon.invalid')
                 }`
               : ''}"
           >
@@ -69,7 +68,7 @@ export class CouponComponent extends CartComponentMixin(
           (coupon) => {
             return html`
               <li>
-                <oryx-icon type="done"></oryx-icon>
+                <oryx-icon .type="${IconTypes.Check}"></oryx-icon>
                 <span class="code">${coupon.code} </span>
                 <span class="name">
                   ${coupon.displayName}
@@ -88,7 +87,7 @@ export class CouponComponent extends CartComponentMixin(
 
   protected onSubmit(): void {
     this.hasError = false;
-    const coupon = this.coupon.value;
+    const coupon = this.coupon?.value;
 
     if (!coupon) {
       this.hasError = true;
@@ -100,12 +99,10 @@ export class CouponComponent extends CartComponentMixin(
       next: () => {
         this.notificationService.push({
           type: AlertType.Success,
-          content: `${coupon} ${`${this.i18n(
-            'coupon.-successfully-applied'
-          )}`}`,
+          content: `${coupon} ${`${this.i18n('coupon.successfully-applied')}`}`,
         });
 
-        this.coupon.value = '';
+        this.coupon!.value = '';
       },
       error: () => {
         this.hasError = true;

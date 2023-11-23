@@ -2,6 +2,11 @@ import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const couponStyles = css`
+  h3 {
+    ${headingUtil(HeadingTag.H5)};
+    margin-block-end: 8px;
+  }
+
   section {
     display: grid;
     grid-template-columns: 1fr min-content;

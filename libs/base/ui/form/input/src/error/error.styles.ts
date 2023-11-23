@@ -11,9 +11,4 @@ export const errorStyles = css`
   :host([disabled]) slot[name='error'] ::slotted(oryx-icon) {
     color: var(--oryx-color-neutral-8);
   }
-
-  oryx-error-message::part(icon) {
-    align-self: start;
-    margin-block-start: 3px;
-  }
 `;

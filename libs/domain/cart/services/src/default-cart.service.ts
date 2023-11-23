@@ -29,7 +29,7 @@ import {
   createQuery,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { LocaleChanged, LocaleService } from '@spryker-oryx/i18n';
+import { LocaleChanged } from '@spryker-oryx/i18n';
 import { subscribeReplay } from '@spryker-oryx/utilities';
 import {
   Observable,
@@ -51,7 +51,6 @@ export class DefaultCartService implements CartService {
   protected adapter = inject(CartAdapter);
   protected identity = inject(IdentityService);
   protected query = inject(QueryService);
-  protected localeService = inject(LocaleService);
 
   protected cartCommandBase = {
     onStart: [CartModificationStart],

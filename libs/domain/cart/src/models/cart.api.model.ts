@@ -22,6 +22,9 @@ export module ApiCartModel {
     currency?: string;
     store?: string;
     version?: string;
+    /**
+     * Coupons are called `Vouchers` in SCOS. In Oryx, however, we tend to stick to industry names.
+     */
     vouchers?: Coupon[];
   }
 
