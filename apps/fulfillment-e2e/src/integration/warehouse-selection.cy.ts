@@ -3,9 +3,8 @@ import { WarehouseSelectionPage } from '../support/page_objects/warehouse-select
 
 let whSelectionPage: WarehouseSelectionPage;
 
-describe('Warehouse selection', () => {
+describe('Warehouse selection suite', () => {
   beforeEach(() => {
-    // TODO: ???
     whSelectionPage = new WarehouseSelectionPage();
 
     cy.clearIndexedDB();
@@ -13,16 +12,18 @@ describe('Warehouse selection', () => {
     whSelectionPage.visit();
   });
 
-  it('should render available warehouses', () => {
-    whSelectionPage.getWrapper().should('be.visible');
-    whSelectionPage.getNames().should('have.length.gt', 0);
-    whSelectionPage.getSelectBtns().should('have.length.gt', 0);
-  });
-
   it('should navigate to picking lists after warehouse selection', () => {
+    verifyWarehouseListVisibility();
+
     const pickListsPage = new PickingListPage();
 
     whSelectionPage.selectByEq(0);
     pickListsPage.waitForLoaded();
   });
 });
+
+function verifyWarehouseListVisibility() {
+  whSelectionPage.getWrapper().should('be.visible');
+  whSelectionPage.getNames().should('have.length.gt', 0);
+  whSelectionPage.getSelectBtns().should('have.length.gt', 0);
+}

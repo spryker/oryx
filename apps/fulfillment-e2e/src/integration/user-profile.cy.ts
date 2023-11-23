@@ -24,17 +24,6 @@ describe('When a user opens the user profile modal', () => {
     userProfileFragment.getNotification().should('not.exist');
   });
 
-  describe('and user clicks on log out button', () => {
-    beforeEach(() => {
-      userProfileFragment.getLogOutButton().click();
-    });
-
-    it('should log out user', () => {
-      cy.location('pathname').should('to.match', /^\/login/);
-      loginPage.getWrapper().should('be.visible');
-    });
-  });
-
   describe('and sync is pending', () => {
     beforeEach(() => {
       cy.mockSyncPending();

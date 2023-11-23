@@ -2,7 +2,7 @@ import 'cypress-wait-until';
 import { LoginPage } from './page-objects/login.page';
 import { OrderPage } from './page-objects/order.page';
 
-export { };
+export {};
 
 declare global {
   namespace Cypress {
