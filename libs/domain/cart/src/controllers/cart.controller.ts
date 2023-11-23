@@ -13,11 +13,14 @@ import {
   FormattedCartTotals,
   FormattedDiscount,
 } from '../models';
+import { ContextController } from '@spryker-oryx/core';
+import { CartContext } from '@spryker-oryx/cart/services';
 
 export class CartController {
   protected observe: ObserveController<LitElement & CartComponentAttributes>;
   protected cartService = resolve(CartService);
   protected pricingService = resolve(PricingService);
+  protected contextController = new ContextController(this.host);
 
   constructor(protected host: LitElement & CartComponentAttributes) {
     this.observe = new ObserveController(host);
@@ -26,7 +29,13 @@ export class CartController {
   protected get cartQualifier(): Observable<CartQualifier | undefined> {
     return this.observe
       .get('cartId')
-      .pipe(switchMap((cartId) => of(cartId ? { cartId } : undefined)));
+      .pipe(
+        switchMap((cartId) => cartId ? 
+          of(cartId): 
+          this.contextController.get<string>(CartContext.CartID)
+        ),
+        map((cartId) => cartId ? { cartId } : undefined),
+      );
   }
 
   isEmpty(): Observable<boolean> {

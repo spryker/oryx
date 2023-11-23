@@ -13,6 +13,7 @@ import {
 import { CartAdapter, CartNormalizer, CartsNormalizer } from './adapter';
 import { CartService } from './cart.service';
 import { TotalsResolver, TotalsService } from './totals';
+import { cartContextProviders } from '@spryker-oryx/cart/services';
 
 export const TotalsResolverCartToken = `${TotalsResolver}CART`;
 export const CartTokenResourceResolverToken = `${TokenResourceResolvers}CART`;
@@ -121,4 +122,5 @@ export const cartProviders: Provider[] =
               (m) => m.CartTotalsResolver
             ),
         },
+        ...cartContextProviders,
       ];
