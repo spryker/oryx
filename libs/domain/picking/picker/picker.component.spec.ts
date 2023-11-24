@@ -1,6 +1,6 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PickingHeaderService } from '@spryker-oryx/picking';
+import { PickingGuardService } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { PickingListService } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
@@ -19,8 +19,8 @@ class MockPickingListService implements Partial<PickingListService> {
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
-class MockPickingHeaderService implements Partial<PickingHeaderService> {
-  discard = vi.fn();
+class MockPickingGuardService implements Partial<PickingGuardService> {
+  allow = vi.fn();
 }
 
 class MockRouterService implements Partial<RouterService> {
@@ -33,7 +33,7 @@ describe('PickingPickerComponent', () => {
   let element: PickingPickerComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
-  let pickingHeaderService: MockPickingHeaderService;
+  let guardService: MockPickingGuardService;
 
   const getTabs = () =>
     element.renderRoot.querySelectorAll<TabComponent>('oryx-tab');
@@ -66,23 +66,16 @@ describe('PickingPickerComponent', () => {
           useClass: MockRouterService,
         },
         {
-          provide: PickingHeaderService,
-          useClass: MockPickingHeaderService,
+          provide: PickingGuardService,
+          useClass: MockPickingGuardService,
         },
       ],
     });
 
-    service = testInjector.inject(
-      PickingListService
-    ) as unknown as MockPickingListService;
-
-    routerService = testInjector.inject(
-      RouterService
-    ) as unknown as MockRouterService;
-
-    pickingHeaderService = testInjector.inject(
-      PickingHeaderService
-    ) as unknown as MockPickingHeaderService;
+    service = testInjector.inject<MockPickingListService>(PickingListService);
+    routerService = testInjector.inject<MockRouterService>(RouterService);
+    guardService =
+      testInjector.inject<MockPickingGuardService>(PickingGuardService);
 
     element = await fixture(
       html`<oryx-picking-picker pickingListId="id"></oryx-picking-picker>`
@@ -273,7 +266,7 @@ describe('PickingPickerComponent', () => {
 
       expect(service.finishPicking).toHaveBeenCalled();
       expect(routerService.navigate).toHaveBeenCalledWith(`/`);
-      expect(pickingHeaderService.discard).toHaveBeenCalled();
+      expect(guardService.allow).toHaveBeenCalled();
     });
   });
 });

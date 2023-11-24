@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2023-11-22)
+
+
+### Bug Fixes
+
+* fixed animation for vertical dropdown ([#934](https://github.com/spryker/oryx/issues/934)) ([942485a](https://github.com/spryker/oryx/commit/942485a21a7b4b0f88a0d14581f6c949d7cbe5c1))
+* modal bleed and width ([#899](https://github.com/spryker/oryx/issues/899)) ([24c1c23](https://github.com/spryker/oryx/commit/24c1c23c17791987391b20d902547563cd665ea3))
+* icons are rendered outside the clickable area of a link ([#888](https://github.com/spryker/oryx/issues/888)) ([867f387](https://github.com/spryker/oryx/commit/867f3870e38e3a10f80d67a8430f57be4157eff4))
+
+
+
 # 1.2.0 (2023-11-09)
 
 

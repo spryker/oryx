@@ -1,4 +1,3 @@
-import { ListItemAttributes } from '@spryker-oryx/picking/list-item';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
 import { Meta, Story } from '@storybook/web-components';
 import { TemplateResult, html } from 'lit';
@@ -7,7 +6,7 @@ import { storybookPrefix } from '../../.constants';
 const pickingListIds = mockPickingListData.map(({ id }) => id);
 
 export default {
-  title: `${storybookPrefix}/Picker header`,
+  title: `${storybookPrefix}/Order Reference`,
   parameters: {
     chromatic: {
       disableSnapshot: true,
@@ -22,12 +21,12 @@ export default {
   },
 } as Meta;
 
-const Template: Story<ListItemAttributes> = ({
+const Template: Story<{ pickingListId: string }> = ({
   pickingListId,
 }): TemplateResult => {
-  return html`<oryx-picking-picker-header
+  return html`<oryx-picking-order-reference
     pickingListId=${pickingListId}
-  ></oryx-picking-picker-header>`;
+  ></oryx-picking-order-reference>`;
 };
 
 export const Demo = Template.bind({});

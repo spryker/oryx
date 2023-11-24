@@ -14,19 +14,6 @@ export default defineConfig({
     outDir: '../dist',
     emptyOutDir: true,
     sourcemap: true,
-    rollupOptions: {
-      input: {
-        'service-worker': './dev-dist/sw/app.js',
-        app: '/index.html',
-      },
-      output: {
-        entryFileNames: (assetInfo) => {
-          return assetInfo.name === 'service-worker'
-            ? 'app.js'
-            : 'assets/[name].js';
-        },
-      },
-    },
   },
   define: {
     'import.meta.env.ORYX_APP_VERSION': JSON.stringify(version),
@@ -80,9 +67,38 @@ export default defineConfig({
         navigateFallback: '/index.html',
         clientsClaim: true,
         cleanupOutdatedCaches: true,
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
       },
       injectManifest: {
-        globIgnores: ['**/assets/*.js'],
         globPatterns: ['**/*.{js,css,html,ico,png,svg,ttf,otf}'],
       },
     }),
