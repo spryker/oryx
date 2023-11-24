@@ -12,13 +12,14 @@ module.exports = defineConfig({
   chromeWebSecurity: false,
   includeShadowDom: true,
   viewportWidth: 1024,
+  viewportHeight: 760,
   e2e: {
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
       return require('./src/plugins/index.ts')(on, config);
     },
-    baseUrl: 'http://localhost:3001',
+    baseUrl: 'http://localhost:3000',
     specPattern: './src/integration/*.cy.{js,jsx,ts,tsx}',
     supportFile: './src/support/index.ts',
     fixturesFolder: './src/fixtures',

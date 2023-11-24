@@ -28,6 +28,14 @@ export class CartPage extends AbstractSFPage {
   getSubmitDeleteBtn = () =>
     this.getDeleteModal().find('oryx-button[slot="footer-more"]');
 
+  getCouponComponent = () => cy.get('oryx-cart-coupon');
+  getCouponInput = () => this.getCouponComponent().find('input');
+  getCouponInputError = () =>
+    this.getCouponComponent().find('oryx-error-message');
+  getCouponBtn = () => this.getCouponComponent().find('oryx-button');
+  getCouponDate = () => this.getCouponComponent().find('oryx-date');
+  getNotification = () => cy.get('oryx-notification');
+
   checkout = () => {
     this.getCheckoutBtn().click({ force: true });
   };

@@ -38,6 +38,12 @@ const products: Product[] = [
     originalPrice: '345.00',
     netModePrice: '310.50',
   },
+  // product with coupon
+  {
+    id: '012_25904598',
+    title: 'Canon IXUS 165',
+    originalPrice: '366.00',
+  },
 ];
 
 export class ProductStorage {

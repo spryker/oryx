@@ -1,10 +1,14 @@
 import { GlueAPI } from '../support/apis/glue.api';
 import { CartPage } from '../support/page-objects/cart.page';
+import { CheckoutPage } from '../support/page-objects/checkout.page';
 import { ProductStorage } from '../support/test-data/storages/product.storage';
 
 const cartPage = new CartPage();
+const checkoutPage = new CheckoutPage();
 
 let api: GlueAPI;
+
+const coupon = { code: '12345wu2ca', expiredDate: '11/30/2023' };
 
 // TODO: this might be extracted further into something bigger
 // for now let's keep it here
@@ -22,6 +26,9 @@ const users = [
     addProduct: () => {
       cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(2));
     },
+    addProductWithCoupon: () => {
+      cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(6));
+    },
     updateCartItemsUrl: '/guest-carts/*/guest-cart-items/*',
   },
   {
@@ -38,6 +45,9 @@ const users = [
     },
     addProduct: () => {
       cy.addProductToCart(api, 1, ProductStorage.getByEq(2));
+    },
+    addProductWithCoupon: () => {
+      cy.addProductToCart(api, 1, ProductStorage.getByEq(6));
     },
     updateCartItemsUrl: '/carts/*/items/*',
   },
@@ -114,6 +124,97 @@ describe('Cart suite', () => {
           );
 
           cy.checkGlobalNotificationAfterFailedApiCall(cartPage);
+        });
+      });
+
+      describe('with items in the cart and a valid coupon', () => {
+        beforeEach(() => {
+          user.addProductWithCoupon();
+          user.goToCart();
+        });
+
+        it('should update prices if the coupon is applied', () => {
+          cartPage.checkNotEmptyCart();
+          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
+
+          cartPage.getCartTotals().checkTotals({
+            subTotal: '€366.00',
+            discountsTotal: '-€102.48',
+            taxTotal: '€42.07',
+            totalPrice: '€263.52',
+          });
+
+          cartPage.getCouponInput().type(coupon.code);
+          cartPage.getCouponBtn().click();
+
+          cartPage.getNotification().should('contain.text', '12345wu2ca');
+          cartPage
+            .getNotification()
+            .invoke('attr', 'type')
+            .should('eq', 'success');
+
+          cartPage.getCouponInput().should('have.value', '');
+
+          cartPage
+            .getCouponDate()
+            .shadow()
+            .should('contain.text', coupon.expiredDate);
+
+          cy.scrollTo('top');
+
+          cartPage.getCartTotals().checkTotals({
+            subTotal: '€366.00',
+            discountsTotal: '-€202.48',
+            taxTotal: '€26.11',
+            totalPrice: '€163.52',
+          });
+
+          if (user.userType === 'guest') {
+            cy.goToGuestCheckout();
+          } else {
+            cy.goToCheckout;
+          }
+
+          checkoutPage.getCartTotals().checkTotals({
+            subTotal: '€366.00',
+            discountsTotal: '-€202.48',
+            taxTotal: '€26.11',
+            totalPrice: '€163.52',
+          });
+        });
+      });
+
+      describe('when invalid coupon', () => {
+        beforeEach(() => {
+          user.addProductWithCoupon();
+          user.goToCart();
+        });
+
+        it('should show error message below input field amd keep value', () => {
+          cartPage.checkNotEmptyCart();
+          cartPage.getCartEntriesHeading().should('contain.text', '1 items');
+
+          cartPage.getCartTotals().checkTotals({
+            subTotal: '€366.00',
+            discountsTotal: '-€102.48',
+            taxTotal: '€42.07',
+            totalPrice: '€263.52',
+          });
+
+          cartPage.getCouponInput().type('111111');
+          cartPage.getCouponBtn().click();
+
+          cartPage.getCouponInput().should('have.value', '111111');
+          cartPage.getCouponInputError().should('be.visible');
+
+          cy.scrollTo('top');
+
+          cartPage.getCartTotals().checkTotals({
+            subTotal: '€366.00',
+            discountsTotal: '-€102.48',
+            taxTotal: '€42.07',
+            totalPrice: '€263.52',
+          });
         });
       });
     });
