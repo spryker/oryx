@@ -4,7 +4,7 @@ import {
 } from '@spryker-oryx/application';
 import { BapiAuthComponentsFeature, BapiAuthFeature } from '@spryker-oryx/auth';
 import { contentFeature } from '@spryker-oryx/content';
-import { AppFeature, coreFeature } from '@spryker-oryx/core';
+import { AppFeature, coreFeature, FeatureOptions } from '@spryker-oryx/core';
 import { experienceFeature, Resources } from '@spryker-oryx/experience';
 import { formFeature } from '@spryker-oryx/form';
 import { I18nFeature, I18nFeatureOptions } from '@spryker-oryx/i18n';
@@ -24,7 +24,7 @@ import {
 import { RouterFeature } from '@spryker-oryx/router';
 import { siteFeature } from '@spryker-oryx/site';
 import { uiFeature } from '@spryker-oryx/ui';
-import { featureVersion } from '@spryker-oryx/utilities';
+import { ColorMode, featureVersion } from '@spryker-oryx/utilities';
 import { StaticExperienceFeature } from './experience';
 import {
   FulfillmentRootFeature,
@@ -61,6 +61,10 @@ export function fulfillmentFeatures(
             {
               provide: ThemeMetaInitializer,
               useClass: PWAThemeMetaInitializer,
+            },
+            {
+              provide: FeatureOptions,
+              useValue: { 'oryx-app': { colorMode: ColorMode.Light } },
             },
           ],
         }
