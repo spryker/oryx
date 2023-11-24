@@ -13,10 +13,11 @@ import path from 'path';
 import c from 'picocolors';
 import { CliCommand, CliCommandOption } from '../models';
 import { CliArgsService, NodeUtilService } from '../services';
+import url from 'url';
 
 export class CreateCliCommand implements CliCommand {
   protected repoUrl =
-    'https://github.com/spryker/composable-frontend/archive/refs/{ref}.zip';
+    'https://github.com/spryker/oryx-starter/archive/refs/{ref}.zip';
   protected repoRefs = {
     [OryxTemplateRef.Latest]: 'heads/master',
   };
@@ -29,7 +30,7 @@ export class CreateCliCommand implements CliCommand {
   constructor(
     protected argsService = inject(CliArgsService),
     protected nodeUtilService = inject(NodeUtilService),
-    protected dirPath = path.resolve(__dirname, '.')
+    protected dirPath = typeof __dirname === 'undefined' ? url.fileURLToPath(new URL('.', import.meta.url)) : path.resolve(__dirname, '.')
   ) {}
 
   getName(): string {
@@ -91,7 +92,7 @@ Please make sure to not use an existing directory name.`
     const s = spinner();
 
     s.start('Installing application...');
-    await this.dowloadTemplate();
+    await this.downloadTemplate();
     await this.copyTemplate(config);
     s.stop('Application installed');
 
@@ -107,23 +108,20 @@ Please make sure to not use an existing directory name.`
     outro(`Oryx App "${options.name}" created in ${Math.floor(totalTime)}s`);
   }
 
-  protected async dowloadTemplate(
+  protected async downloadTemplate(
     ref: OryxTemplateRef = OryxTemplateRef.Latest
   ): Promise<void> {
     const repoPath = path.resolve(this.repoPath, ref);
-
     if (fs.existsSync(repoPath)) {
-      return;
+      await fs.rmSync(repoPath, { recursive: true });
     }
 
     const archivePath = path.resolve(this.packageRoot, `template-${ref}.zip`);
 
-    if (!fs.existsSync(archivePath)) {
       await this.nodeUtilService.downloadFile(
         this.getTempalteUrl(ref),
         archivePath
       );
-    }
 
     await this.nodeUtilService.extractZip(archivePath, repoPath);
   }
