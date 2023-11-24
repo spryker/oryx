@@ -26,18 +26,25 @@
     "domain/user",
     "base/utilities"
   ],
-  "version": "1.3.0",
+  "version": "1.3.1",
   "npmClient": "npm",
   "command": {
     "publish": {
       "conventionalCommits": true,
       "forcePublish": true,
       "contents": "dist",
-      "ignoreChanges": ["*.md", "**/*.spec.ts", "**/*.stories.ts"],
+      "ignoreChanges": [
+        "*.md",
+        "**/*.spec.ts",
+        "**/*.stories.ts"
+      ],
       "message": "chore(release): publish libs release [skip ci]",
       "tagVersionPrefix": "lib@",
       "verifyAccess": false,
-      "allowBranch": ["development", "release/*"],
+      "allowBranch": [
+        "development",
+        "release/*"
+      ],
       "exact": true
     }
   }
