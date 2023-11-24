@@ -104,6 +104,7 @@ export class ButtonComponent
         type="button"
         ?disabled=${this.disabled}
         aria-label=${ifDefined(this.label ?? this.text)}
+        ?inert=${this.loading || this.confirmed || this.disabled}
       >
         ${this.renderContent()}
       </button>
@@ -116,6 +117,7 @@ export class ButtonComponent
         part="button"
         href=${this.href}
         aria-label=${ifDefined(this.label ?? this.text)}
+        ?inert=${this.loading || this.confirmed || this.disabled}
       >
         ${this.renderContent()}
       </a>
