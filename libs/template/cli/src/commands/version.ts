@@ -2,11 +2,12 @@ import { intro, log, outro } from '@clack/prompts';
 import path from 'path';
 import c from 'picocolors';
 import { CliCommand } from '../models';
+import url from "url";
 
 export class VersionCliCommand implements CliCommand {
   protected packagePath = path.resolve(this.dirPath, '../..', 'package.json');
 
-  constructor(protected dirPath = path.resolve(__dirname, '.')) {}
+  constructor(protected dirPath = typeof __dirname === 'undefined' ? url.fileURLToPath(new URL('.', import.meta.url)) : path.resolve(__dirname, '.')) {}
 
   getName(): string {
     return 'version';
