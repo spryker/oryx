@@ -129,7 +129,6 @@
       "@spryker-oryx/order/summary": ["libs/domain/order/summary/index.ts"],
       "@spryker-oryx/order/totals": ["libs/domain/order/totals/index.ts"],
       "@spryker-oryx/picking": ["libs/domain/picking/src/index.ts"],
-      "@spryker-oryx/picking/*": ["libs/domain/picking/*/index.ts"],
       "@spryker-oryx/picking/customer-note": [
         "libs/domain/picking/customer-note/index.ts"
       ],

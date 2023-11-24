@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2023-11-22)
+
+
+### Bug Fixes
+
+* hydration breadcrumbs composition on window load ([#908](https://github.com/spryker/oryx/issues/908)) ([8b13ba6](https://github.com/spryker/oryx/commit/8b13ba6ec249b4cf57095d2f91f0cb919790ab91))
+
+
+
+
+
 # 1.1.0 (2023-09-22)
 
 
