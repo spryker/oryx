@@ -190,7 +190,7 @@ export const mainHeader = (): ExperienceComponent[] => {
                     type: 'column',
                     sticky: true,
                     bleed: true,
-                    zIndex: 1,
+                    zIndex: featureVersion >= '1.4' ? 3 : 1,
                   }
                 : 'column',
             background: 'var(--oryx-color-primary-9)',
@@ -220,6 +220,7 @@ export const categoryNavigation = (
             layout: {
               type: 'navigation',
               bleed: true,
+              // sticky: true,
             },
             shadow: ShadowElevation.Raised,
             top: '78px',
@@ -243,7 +244,9 @@ export const categoryNavigation = (
               },
             ],
           },
-          components: [{ type: 'oryx-product-category-list' }],
+          components: [
+            { type: 'oryx-product-category-list', options: { nested: true } },
+          ],
         },
         { type: 'oryx-product-category-list', options: { exclude } },
         {

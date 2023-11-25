@@ -35,9 +35,13 @@ export class ProductCategoryListComponent
 
   protected $list = computed(() => {
     const { id, nested } = this.$options();
-    const parent =
-      (id || this.categoryId) && !nested ? id || this.categoryId : undefined;
-    return this.productCategoryService.getList({ parent });
+    if (!(id || this.categoryId) || !nested) {
+      return this.productCategoryService.getList();
+    } else {
+      return this.productCategoryService.getList({
+        parent: id || this.categoryId,
+      });
+    }
   });
 
   protected $filteredList = computed(() => {
@@ -46,47 +50,36 @@ export class ProductCategoryListComponent
     return items.filter((c) => !excludes.includes(c.id));
   });
 
-  // protected $tree = signal(this.productCategoryService.getTree());
-
-  // protected $categories = computed(() => {
-  //   // const { id, nested } = this.$options();
-  //   // if (id || (this.categoryId && !nested)) {
-  //   //   const items = this.$tree()?.filter((c) => c.parent === id);
-  //   //   //   const item = this.$item();
-  //   //   //   if (item) return [item];
-  //   //   if (items) {
-  //   //     const excludes = this.getExcludes(items.map((c) => c.id));
-  //   //     return items.filter((c) => !excludes.includes(c.id));
-  //   //   }
-  //   // } else {
-  //   //   const items = this.$tree()?.filter((c) => !c.parent);
-  //   //   if (items) {
-  //   //     const excludes = this.getExcludes(items.map((c) => c.id));
-  //   //     return items.filter((c) => !excludes.includes(c.id));
-  //   //   }
-  //   // }
-  //   // return [];
-  // });
-
   protected override render(): TemplateResult {
     return html`
-      ${repeat(
-        this.$filteredList(),
-        (c) => c.id,
-        (c) => this.renderList(c.id)
-      )}
+      <section>
+        ${repeat(
+          this.$filteredList(),
+          (c) => c.id,
+          (c) => this.renderItem(c.id)
+        )}
+      </section>
+      <section>
+        <oryx-content-link
+          .options=${{
+            id: 5,
+            type: 'category',
+            singleLine: true,
+          }}
+        ></oryx-content-link>
+      </section>
       ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
     `;
   }
 
-  protected renderList(categoryId: string): TemplateResult {
-    const hasChildren = this.hasChildren(categoryId);
+  protected renderItem(id: string): TemplateResult {
+    const hasChildren = this.hasChildren(id);
     const iconSuffix =
       this.dropdown && hasChildren ? 'navigate_next' : undefined;
 
     const link = html`<oryx-content-link
       .options=${{
-        id: categoryId,
+        id,
         type: 'category',
         iconSuffix: iconSuffix,
         singleLine: true,
@@ -98,7 +91,7 @@ export class ProductCategoryListComponent
       return html`<div>
         ${link}
         <oryx-product-category-list
-          .options=${{ id: categoryId, nested: true }}
+          .options=${{ id, nested }}
         ></oryx-product-category-list>
       </div>`;
     } else {
@@ -146,9 +139,3 @@ export class ProductCategoryListComponent
     return excludedIds;
   }
 }
-
-// <oryx-product-category-list
-// .categoryId=${categoryId}
-// ?layout-dropdown=${this.dropdown}
-// nested
-// ></oryx-product-category-list>

@@ -1,4 +1,5 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
+import { html } from 'lit';
 import { Observable, of } from 'rxjs';
 import { LayoutStyles } from '../../../layout.model';
 import {
@@ -22,11 +23,11 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
         // const navigationType =
         //   options.navigationType === 'flyout' ? m.flyoutStyles : css``;
 
-        // const dropdown =
-        //   options.navigationType === 'dropdown' ? m.dropdownStyles : css``;
+        // TODO: only load dropdown styles if one of the components requires dropdown
+        const dropdownStyles = m.dropdownStyles;
 
         return {
-          styles: `${m.styles.styles}${direction}`,
+          styles: `${m.styles.styles}${direction}${dropdownStyles}`,
         };
       })
     );
@@ -41,23 +42,22 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
   getRender(
     data: LayoutPluginRenderParams
   ): Observable<LayoutPluginRender | undefined> {
-    // console.log(data);
-    return of();
-    // if (data.options.navigationType !== 'dropdown') {
-    //   return of(undefined);
-    // }
-    // console.log(data.experience?.id);
+    const isDropdown = data.experience?.options?.rules?.find(
+      (rule) => (rule.layout as Layouts)?.navigationType === 'dropdown'
+    );
+    if (isDropdown) {
+      return of({
+        wrapper: html`<oryx-dropdown vertical-align position="end">
+          <span slot="trigger">${data.template}</span>
+          <oryx-composition
+            .uid=${data.experience?.id}
+            close-popover
+            .options=${{ rules: [{ layout: { type: 'list' }, gap: '0px' }] }}
+          ></oryx-composition>
+        </oryx-dropdown>`,
+      });
+    }
 
-    // return of({
-    //   post: html`<oryx-composition
-    //       .uid=${data.experience?.id}
-    //     ></oryx-composition>
-    //     <style>
-    //       oryx-composition {
-    //         outline: solid 1px red;
-    //         /* position: absolute; */
-    //       }
-    //     </style>`,
-    // });
+    return of();
   }
 }
