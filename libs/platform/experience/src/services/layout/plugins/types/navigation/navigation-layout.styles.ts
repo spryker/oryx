@@ -47,10 +47,7 @@ export const verticalStyles = css`
 
 export const dropdownStyles = css`
   :host {
-    /* --oryx-dropdown-width: 400px; */
-
     --oryx-popover-border-radius: 0;
-    /* --oryx-popover-top-space: 0px; */
   }
 
   oryx-composition {
@@ -64,9 +61,5 @@ export const dropdownStyles = css`
     --oryx-link-current-color: var(--oryx-color-primary-9);
 
     display: contents;
-  }
-
-  div {
-    outline: solid 10px red;
   }
 `;

@@ -56,9 +56,9 @@ export class ContentLinkComponent extends ContentMixin<
     const { button, icon, singleLine, color } = this.$options();
 
     if (button) {
-      return html`<oryx-button part="link" }
-        >${this.renderLink(true)}</oryx-button
-      >`;
+      return html`<oryx-button part="link">
+        ${this.renderLink(true)}
+      </oryx-button>`;
     }
 
     return html`<oryx-link

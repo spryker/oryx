@@ -1,6 +1,6 @@
 import { ExperienceComponent, ShadowElevation } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { Size, featureVersion, i18n } from '@spryker-oryx/utilities';
+import { Size, featureVersion } from '@spryker-oryx/utilities';
 
 const siteLinks = (): ExperienceComponent[] => {
   const components: ExperienceComponent[] = [
@@ -10,7 +10,6 @@ const siteLinks = (): ExperienceComponent[] => {
       options: {
         url: '/',
         icon: IconTypes.Check,
-        singleLine: true,
         rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
       },
     },
@@ -20,7 +19,6 @@ const siteLinks = (): ExperienceComponent[] => {
       options: {
         url: '/',
         icon: IconTypes.Check,
-        singleLine: true,
         rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
       },
     },
@@ -30,7 +28,6 @@ const siteLinks = (): ExperienceComponent[] => {
       options: {
         url: '/',
         icon: IconTypes.Check,
-        singleLine: true,
         rules: [{ query: { breakpoint: Size.Sm }, hide: true }],
       },
     },
@@ -220,7 +217,6 @@ export const categoryNavigation = (
             layout: {
               type: 'navigation',
               bleed: true,
-              // sticky: true,
             },
             shadow: ShadowElevation.Raised,
             top: '78px',
@@ -233,15 +229,12 @@ export const categoryNavigation = (
         {
           type: 'oryx-content-link',
           id: 'all-products-navigation',
-          content: { data: { text: i18n('product.all-products') } },
+          content: { data: { text: 'All products' } },
           options: {
-            // url: '/search',
             icon: 'category',
             singleLine: true,
             rules: [
-              {
-                layout: { type: 'navigation', navigationType: 'dropdown' },
-              },
+              { layout: { type: 'navigation', navigationType: 'dropdown' } },
             ],
           },
           components: [
@@ -249,21 +242,6 @@ export const categoryNavigation = (
           ],
         },
         { type: 'oryx-product-category-list', options: { exclude } },
-        {
-          type: 'oryx-content-link',
-          id: 'merchant-nav',
-          content: { data: { text: 'Merchants' } },
-          options: {
-            rules: [
-              {
-                layout: { type: 'navigation', navigationType: 'dropdown' },
-              },
-            ],
-          },
-          components: [
-            { type: 'oryx-product-category-list', options: { exclude } },
-          ],
-        },
       ],
     },
   ];

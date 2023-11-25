@@ -62,7 +62,6 @@ export const myAccountNavigation: ExperienceComponent = {
         icon: IconTypes.Wishlist,
       },
     },
-    { type: 'oryx-product-category-list', options: { nested: true } },
   ],
   options: {
     rules: [
