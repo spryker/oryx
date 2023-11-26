@@ -1,7 +1,11 @@
 import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { Observable } from 'rxjs';
-import { ApiProductCategoryModel, ProductCategory } from '../../../models';
+import {
+  ApiProductCategoryModel,
+  ProductCategory,
+  ProductCategoryQualifier,
+} from '../../../models';
 import { CategoryNodeNormalizer, CategoryTreeNormalizer } from './normalizers';
 import { ProductCategoryAdapter } from './product-category.adapter';
 
@@ -12,7 +16,7 @@ export class DefaultProductCategoryAdapter implements ProductCategoryAdapter {
     protected transformer = inject(JsonAPITransformerService)
   ) {}
 
-  get(categoryId: string): Observable<ProductCategory> {
+  get(qualifier: ProductCategoryQualifier): Observable<ProductCategory> {
     const fields = [
       ApiProductCategoryModel.Fields.MetaDescription,
       ApiProductCategoryModel.Fields.NodeId,
@@ -23,16 +27,15 @@ export class DefaultProductCategoryAdapter implements ProductCategoryAdapter {
 
     return this.http
       .get<ApiProductCategoryModel.Response>(
-        `${
-          this.SCOS_BASE_URL
-        }/category-nodes/${categoryId}?fields[category-nodes]=${fields.join(
-          ','
-        )}`
+        `${this.SCOS_BASE_URL}/category-nodes/${
+          qualifier.id
+        }?fields[category-nodes]=${fields.join(',')}`
       )
       .pipe(this.transformer.do(CategoryNodeNormalizer));
   }
 
-  getTree(): Observable<ProductCategory[]> {
+  getTree(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]> {
+    // TODO: use qualifier to filter excludes
     return this.http
       .get<ApiProductCategoryModel.TreeResponse>(
         `${this.SCOS_BASE_URL}/category-trees`
