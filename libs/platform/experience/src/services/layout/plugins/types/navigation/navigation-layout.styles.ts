@@ -11,6 +11,13 @@ export const styles: LayoutStyles = {
 
       display: flex;
     }
+
+    oryx-content-link,
+    ::slotted(oryx-content-link) {
+      display: flex;
+      flex-wrap: wrap;
+      align-self: stretch;
+    }
   `,
 };
 
