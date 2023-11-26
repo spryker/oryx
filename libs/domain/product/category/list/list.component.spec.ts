@@ -23,6 +23,7 @@ class MockLayoutService implements Partial<LayoutService> {
 
 class MockLayoutBuilder implements Partial<LayoutBuilder> {
   createStylesFromOptions = vi.fn();
+  getActiveLayoutRules = vi.fn().mockReturnValue(of());
 }
 
 describe('ProductCategoryListComponent', () => {
