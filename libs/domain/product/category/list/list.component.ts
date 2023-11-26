@@ -10,7 +10,6 @@ import {
   ProductCategoryListAttributes,
   ProductCategoryListOptions,
 } from './list.model';
-import { categoryListStyles } from './list.styles';
 
 @hydrate()
 export class ProductCategoryListComponent
@@ -19,8 +18,6 @@ export class ProductCategoryListComponent
   )
   implements ProductCategoryListAttributes
 {
-  static styles = categoryListStyles;
-
   @property() categoryId?: string;
 
   protected productCategoryService = resolve(ProductCategoryService);
@@ -34,14 +31,16 @@ export class ProductCategoryListComponent
   });
 
   protected override render(): TemplateResult {
-    return html`
-      ${repeat(
-        this.$list() ?? [],
-        (category) => category.id,
-        (category) => this.renderItem(category.id)
-      )}
-      ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
-    `;
+    return this.renderLayout({
+      template: html`
+        ${repeat(
+          this.$list() ?? [],
+          (category) => category.id,
+          (category) => this.renderItem(category.id)
+        )}
+        ${unsafeHTML(`<style>${this.layoutStyles()}</style>`)}
+      `,
+    });
   }
 
   protected renderItem(id: string): TemplateResult {
