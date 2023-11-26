@@ -137,15 +137,27 @@ export const mainHeader = (): ExperienceComponent[] => {
                 ],
               },
             },
-            {
-              type: 'oryx-site-navigation-item',
-              options: {
-                label: 'login',
-                icon: IconTypes.User,
-                url: { type: 'login' },
-                rules: [{ hideByRule: 'USER.AUTHENTICATED' }],
-              },
-            },
+            // {
+            //   type: 'oryx-auth-mini-login',
+            //   components: [
+            //     {
+            //       type: 'oryx-content-link',
+            //       options: { id: '5', type: 'category' },
+            //     },
+            //   ],
+            //   options: {
+            //     rules: [{ layout: 'navigation', navigationType: 'dropdown' }],
+            //   },
+            // },
+            // {
+            //   type: 'oryx-site-navigation-item',
+            //   options: {
+            //     label: 'login',
+            //     icon: IconTypes.User,
+            //     url: { type: 'login' },
+            //     rules: [{ hideByRule: 'USER.AUTHENTICATED' }],
+            //   },
+            // },
             {
               type: 'oryx-site-navigation-item',
               options: {
@@ -187,7 +199,7 @@ export const mainHeader = (): ExperienceComponent[] => {
                     type: 'column',
                     sticky: true,
                     bleed: true,
-                    zIndex: featureVersion >= '1.4' ? 3 : 1,
+                    zIndex: 1,
                   }
                 : 'column',
             background: 'var(--oryx-color-primary-9)',
@@ -205,8 +217,15 @@ export const mainHeader = (): ExperienceComponent[] => {
 };
 
 export const categoryNavigation = (
-  exclude: string | string[] = []
+  exclude: string | (string | number)[]
 ): ExperienceComponent[] => {
+  const categoryLinks =
+    featureVersion >= '1.4'
+      ? [{ type: 'oryx-product-category-list', options: { exclude } }]
+      : ((exclude as string[]) ?? []).map((id) => ({
+          type: 'oryx-content-link',
+          options: { id, type: 'category' },
+        }));
   return [
     {
       type: 'oryx-composition',
@@ -228,20 +247,13 @@ export const categoryNavigation = (
       components: [
         {
           type: 'oryx-content-link',
-          id: 'all-products-navigation',
           content: { data: { text: 'All products' } },
           options: {
+            url: '/search',
             icon: 'category',
-            singleLine: true,
-            rules: [
-              { layout: { type: 'navigation', navigationType: 'dropdown' } },
-            ],
           },
-          components: [
-            { type: 'oryx-product-category-list', options: { nested: true } },
-          ],
         },
-        { type: 'oryx-product-category-list', options: { exclude } },
+        ...categoryLinks,
       ],
     },
   ];
@@ -253,6 +265,10 @@ export const HeaderTemplate: ExperienceComponent = {
   components: [
     ...topHeader(),
     ...mainHeader(),
-    ...(featureVersion >= '1.3' ? categoryNavigation('15,16') : []),
+    ...(featureVersion >= '1.3'
+      ? categoryNavigation(
+          featureVersion >= '1.4' ? '15,16' : ['2', '5', '9', '11']
+        )
+      : []),
   ],
 };

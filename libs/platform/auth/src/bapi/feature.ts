@@ -4,6 +4,7 @@ import {
   CodeGrantAuthLoginStrategyConfig,
   IdentityService,
   loginLinkComponent,
+  miniLoginComponent,
   OauthFeature,
   OauthFeatureConfig,
   oauthHandlerComponent,
@@ -100,6 +101,7 @@ export class BapiAuthComponentsFeature implements AppFeature {
   components: ComponentsInfo = [
     authLoginComponent,
     loginLinkComponent,
+    miniLoginComponent,
     oauthHandlerComponent,
   ];
 }
