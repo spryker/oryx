@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin, LayoutMixin } from '@spryker-oryx/experience';
-import { ProductCategoryService, ProductMixin } from '@spryker-oryx/product';
+import { ProductCategoryService } from '@spryker-oryx/product';
 import { computed, hydrate } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -13,9 +13,7 @@ import {
 
 @hydrate()
 export class ProductCategoryListComponent
-  extends ProductMixin(
-    LayoutMixin(ContentMixin<ProductCategoryListOptions>(LitElement))
-  )
+  extends LayoutMixin(ContentMixin<ProductCategoryListOptions>(LitElement))
   implements ProductCategoryListAttributes
 {
   @property() categoryId?: string;
