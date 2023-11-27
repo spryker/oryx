@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.3.1 (2023-11-24)
+
+
+### Bug Fixes
+
+* move light mode color mode out of boilerplate ([#938](https://github.com/spryker/oryx/issues/938)) ([191db5d](https://github.com/spryker/oryx/commit/191db5d10189704cb25889c333f2389ebc010b27))
+
+
+
+
+
 # 1.3.0 (2023-11-22)
 
 
