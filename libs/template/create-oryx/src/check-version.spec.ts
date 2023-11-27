@@ -42,7 +42,6 @@ describe('checkLatestVersion', () => {
     );
   });
 
-  // Optional: Test for error handling
   it('handles errors gracefully', async () => {
     (latestVersion as Mock).mockRejectedValue(new Error('Network error'));
 
