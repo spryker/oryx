@@ -1,10 +1,14 @@
-import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
+import {
+  HeadingTag,
+  headingNoMarginUtil,
+  headingUtil,
+} from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const couponStyles = css`
   h3 {
     margin-block-end: 8px;
-    ${headingUtil(HeadingTag.H5)};
+    ${headingNoMarginUtil(HeadingTag.H5)};
   }
 
   section {
