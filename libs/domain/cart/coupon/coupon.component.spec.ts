@@ -24,7 +24,6 @@ class mockPricingService {
 describe.only('CouponComponent', () => {
   let element: CouponComponent;
   let service: MockCartService;
-  // let notificationService: MockNotificationService;
 
   const coupons: Coupon[] = [
     {
@@ -69,9 +68,6 @@ describe.only('CouponComponent', () => {
     element = await fixture(html`<oryx-cart-coupon></oryx-cart-coupon>`);
 
     service = testInjector.inject(CartService) as unknown as MockCartService;
-    // notificationService = testInjector.inject(
-    //   NotificationService
-    // ) as unknown as MockNotificationService;
   });
 
   afterEach(() => {
@@ -130,22 +126,6 @@ describe.only('CouponComponent', () => {
 
       expect(service.addCoupon).toHaveBeenCalledWith({ code: couponCode });
     });
-
-    // it('should show notification', async () => {
-    //   const couponCode = '12grVfg';
-    //   element.coupon.value = couponCode;
-
-    //   const button =
-    //     element.shadowRoot?.querySelector<HTMLElement>('oryx-button');
-    //   button?.click();
-
-    //   expect(service.addCoupon).toHaveBeenCalledWith({ code: couponCode });
-
-    //   element.requestUpdate();
-    //   await element.updateComplete;
-
-    //   expect(element.coupon.value).toBe('');
-    // });
   });
 
   describe('when applying coupon with error', () => {
