@@ -23,20 +23,18 @@ const products: Product[] = [
     title: 'Acer TravelMate P258-M',
     originalPrice: '264.32',
   },
-  // product with discount
+];
+
+const productsWithCoupons: Product[] = [
   {
-    id: '095_24235707',
-    title: 'TomTom Golf',
-    originalPrice: '180.00',
-    currentPrice: '179.94',
-    currentPriceWith10pDiscount: '161.95',
-    previewImageURL: '/img/norm/medium/24235707-6105.jpg',
+    id: '012_25904598',
+    title: 'Canon IXUS 165',
+    originalPrice: '366.00',
   },
   {
-    id: '115_27295368',
-    title: 'DELL OptiPlex 3020',
-    originalPrice: '345.00',
-    netModePrice: '310.50',
+    id: '029_26976109',
+    title: 'Sony Cyber-shot DSC-WX500',
+    originalPrice: '410.24',
   },
 ];
 
@@ -47,5 +45,13 @@ export class ProductStorage {
     }
 
     return products[eq];
+  }
+
+  static getProductWithCouponByEq(eq: number): Product {
+    if (eq >= productsWithCoupons.length) {
+      throw new Error(`Product with eq = ${eq} does not exist.`);
+    }
+
+    return productsWithCoupons[eq];
   }
 }
