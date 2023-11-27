@@ -33,6 +33,7 @@ export class CartPage extends AbstractSFPage {
   getCouponInputError = () =>
     this.getCouponComponent().find('oryx-error-message');
   getCouponBtn = () => this.getCouponComponent().find('oryx-button');
+  getCouponCode = () => this.getCouponComponent().find('li');
   getCouponDate = () => this.getCouponComponent().find('oryx-date');
   getNotification = () => cy.get('oryx-notification');
 

@@ -8,7 +8,10 @@ const checkoutPage = new CheckoutPage();
 
 let api: GlueAPI;
 
-const coupon = { code: '12345wu2ca', expiredDate: '11/30/2023' };
+const coupon = [
+  { code: '12345wu2ca', expiredDate: '11/30/2023' },
+  { code: 'sprykerze4t', expiredDate: '12/31/2037' },
+];
 
 // TODO: this might be extracted further into something bigger
 // for now let's keep it here
@@ -27,7 +30,18 @@ const users = [
       cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(2));
     },
     addProductWithCoupon: () => {
-      cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(6));
+      cy.addProductToGuestCart(
+        api,
+        1,
+        ProductStorage.getProductWithCouponByEq(0)
+      );
+    },
+    addSecondProductWithCoupon: () => {
+      cy.addProductToGuestCart(
+        api,
+        1,
+        ProductStorage.getProductWithCouponByEq(1)
+      );
     },
     updateCartItemsUrl: '/guest-carts/*/guest-cart-items/*',
   },
@@ -47,7 +61,10 @@ const users = [
       cy.addProductToCart(api, 1, ProductStorage.getByEq(2));
     },
     addProductWithCoupon: () => {
-      cy.addProductToCart(api, 1, ProductStorage.getByEq(6));
+      cy.addProductToCart(api, 1, ProductStorage.getProductWithCouponByEq(0));
+    },
+    addSecondProductWithCoupon: () => {
+      cy.addProductToCart(api, 1, ProductStorage.getProductWithCouponByEq(1));
     },
     updateCartItemsUrl: '/carts/*/items/*',
   },
@@ -144,7 +161,7 @@ describe('Cart suite', () => {
             totalPrice: '€263.52',
           });
 
-          cartPage.getCouponInput().type(coupon.code);
+          cartPage.getCouponInput().type(coupon[0].code);
           cartPage.getCouponBtn().click();
 
           cartPage.getNotification().should('contain.text', '12345wu2ca');
@@ -158,7 +175,7 @@ describe('Cart suite', () => {
           cartPage
             .getCouponDate()
             .shadow()
-            .should('contain.text', coupon.expiredDate);
+            .should('contain.text', coupon[0].expiredDate);
 
           cy.scrollTo('top');
 
@@ -214,6 +231,69 @@ describe('Cart suite', () => {
             discountsTotal: '-€102.48',
             taxTotal: '€42.07',
             totalPrice: '€263.52',
+          });
+        });
+      });
+
+      describe('when items in the cart with multiple coupons', () => {
+        beforeEach(() => {
+          user.addProductWithCoupon();
+          user.addSecondProductWithCoupon();
+          user.goToCart();
+        });
+
+        it('should update prices if the coupon is applied', () => {
+          cartPage.checkNotEmptyCart();
+          cartPage.getCartEntriesHeading().should('contain.text', '2 items');
+
+          cartPage.getCartTotals().checkTotals({
+            subTotal: '€776.24',
+            discountsTotal: '-€217.35',
+            taxTotal: '€89.23',
+            totalPrice: '€558.89',
+          });
+
+          cartPage.getCouponInput().type(coupon[0].code);
+          cartPage.getCouponBtn().click();
+
+          cartPage.getNotification().should('contain.text', coupon[0].code);
+          cartPage
+            .getNotification()
+            .invoke('attr', 'type')
+            .should('eq', 'success');
+
+          cartPage.getCouponInput().type(coupon[1].code);
+          cartPage.getCouponBtn().click();
+
+          cartPage.getNotification().should('contain.text', coupon[1].code);
+          cartPage
+            .getNotification()
+            .invoke('attr', 'type')
+            .should('eq', 'success');
+
+          cartPage.getCouponCode().should('contain.text', coupon[0].code);
+          cartPage.getCouponCode().should('contain.text', coupon[1].code);
+
+          cy.scrollTo('top');
+
+          cartPage.getCartTotals().checkTotals({
+            subTotal: '€776.24',
+            discountsTotal: '-€337.86',
+            taxTotal: '€69.99',
+            totalPrice: '€438.38',
+          });
+
+          if (user.userType === 'guest') {
+            cy.goToGuestCheckout();
+          } else {
+            cy.goToCheckout;
+          }
+
+          checkoutPage.getCartTotals().checkTotals({
+            subTotal: '€776.24',
+            discountsTotal: '-€337.86',
+            taxTotal: '€69.99',
+            totalPrice: '€438.38',
           });
         });
       });
