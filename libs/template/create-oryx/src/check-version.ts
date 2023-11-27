@@ -13,5 +13,6 @@ export async function checkLatestVersion(): Promise<void> {
         `Warning: You are using ${packageName} version ${currentVersion}, but version ${latest} is available. Consider updating to the latest version.`
       );
     }
+    // eslint-disable-next-line no-empty
   } catch (e) {}
 }
