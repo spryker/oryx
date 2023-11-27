@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Content, ContentQualifier } from '../../models';
+import { Content, ContentEntity, ContentQualifier } from '../../models';
 
 export const ContentAdapter = 'oryx.ContentAdapter*';
 export const ContentConfig = 'oryx.ContentConfig*';
@@ -15,7 +15,7 @@ export interface ContentAdapter {
 
 export interface ContentConfig {
   [cms: string]: {
-    types: string[];
+    types: ContentEntity[];
   };
 }
 

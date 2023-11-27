@@ -7,3 +7,4 @@ export * from './components';
 export * from './contentful';
 export * from './resolvers';
 export * from './storyblok';
+export * from './strapi';

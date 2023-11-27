@@ -1,3 +1,9 @@
+declare global {
+  interface DynamicContentFields {
+    article: undefined;
+  }
+}
+
 export interface ArticleContent {
   heading: string;
   description: string;
