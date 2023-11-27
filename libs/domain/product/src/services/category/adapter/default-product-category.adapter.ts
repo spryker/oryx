@@ -16,7 +16,11 @@ export class DefaultProductCategoryAdapter implements ProductCategoryAdapter {
     protected transformer = inject(JsonAPITransformerService)
   ) {}
 
-  get(qualifier: ProductCategoryQualifier): Observable<ProductCategory> {
+  get(
+    qualifier: ProductCategoryQualifier | string
+  ): Observable<ProductCategory> {
+    if (typeof qualifier === 'string') return this.get({ id: qualifier });
+
     const fields = [
       ApiProductCategoryModel.Fields.MetaDescription,
       ApiProductCategoryModel.Fields.NodeId,
@@ -35,7 +39,6 @@ export class DefaultProductCategoryAdapter implements ProductCategoryAdapter {
   }
 
   getTree(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]> {
-    // TODO: use qualifier to filter excludes
     return this.http
       .get<ApiProductCategoryModel.TreeResponse>(
         `${this.SCOS_BASE_URL}/category-trees`
