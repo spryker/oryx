@@ -21,7 +21,7 @@ class mockPricingService {
   format = vi.fn().mockReturnValue(of('price'));
 }
 
-describe.only('CouponComponent', () => {
+describe('CouponComponent', () => {
   let element: CouponComponent;
   let service: MockCartService;
 
