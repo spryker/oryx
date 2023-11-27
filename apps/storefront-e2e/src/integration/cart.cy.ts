@@ -26,6 +26,9 @@ const users = [
     goToCart: () => {
       cy.goToGuestCart();
     },
+    goToCheckout: () => {
+      cy.goToGuestCheckout();
+    },
     addProduct: () => {
       cy.addProductToGuestCart(api, 1, ProductStorage.getByEq(2));
     },
@@ -56,6 +59,9 @@ const users = [
     },
     goToCart: () => {
       cy.goToCart();
+    },
+    goToCheckout: () => {
+      cy.goToCheckout();
     },
     addProduct: () => {
       cy.addProductToCart(api, 1, ProductStorage.getByEq(2));
@@ -186,11 +192,7 @@ describe('Cart suite', () => {
             totalPrice: '€163.52',
           });
 
-          if (user.userType === 'guest') {
-            cy.goToGuestCheckout();
-          } else {
-            cy.goToCheckout;
-          }
+          user.goToCheckout();
 
           checkoutPage.getCartTotals().checkTotals({
             subTotal: '€366.00',
@@ -283,11 +285,7 @@ describe('Cart suite', () => {
             totalPrice: '€438.38',
           });
 
-          if (user.userType === 'guest') {
-            cy.goToGuestCheckout();
-          } else {
-            cy.goToCheckout;
-          }
+          user.goToCheckout();
 
           checkoutPage.getCartTotals().checkTotals({
             subTotal: '€776.24',

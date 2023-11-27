@@ -92,8 +92,8 @@ describe('CouponComponent', () => {
       couponElements?.forEach((couponElement, index) => {
         const coupon = coupons[index];
 
-        expect(couponElement.textContent).to.contain(coupon.code);
-        expect(couponElement.textContent).to.contain(coupon.displayName);
+        expect(couponElement.textContent).toContain(coupon.code);
+        expect(couponElement.textContent).toContain(coupon.displayName);
       });
     });
   });
