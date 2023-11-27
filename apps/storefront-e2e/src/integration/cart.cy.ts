@@ -170,9 +170,9 @@ describe('Cart suite', () => {
           cartPage.getCouponInput().type(coupon[0].code);
           cartPage.getCouponBtn().click();
 
-          cartPage.getNotification().should('contain.text', '12345wu2ca');
+          cartPage.getCouponNotification().should('contain.text', '12345wu2ca');
           cartPage
-            .getNotification()
+            .getCouponNotification()
             .invoke('attr', 'type')
             .should('eq', 'success');
 
@@ -258,18 +258,22 @@ describe('Cart suite', () => {
           cartPage.getCouponInput().type(coupon[0].code);
           cartPage.getCouponBtn().click();
 
-          cartPage.getNotification().should('contain.text', coupon[0].code);
           cartPage
-            .getNotification()
+            .getCouponNotification()
+            .should('contain.text', coupon[0].code);
+          cartPage
+            .getCouponNotification()
             .invoke('attr', 'type')
             .should('eq', 'success');
 
           cartPage.getCouponInput().type(coupon[1].code);
           cartPage.getCouponBtn().click();
 
-          cartPage.getNotification().should('contain.text', coupon[1].code);
           cartPage
-            .getNotification()
+            .getCouponNotification()
+            .should('contain.text', coupon[1].code);
+          cartPage
+            .getCouponNotification()
             .invoke('attr', 'type')
             .should('eq', 'success');
 
