@@ -16,6 +16,7 @@ export interface ContentAdapter {
 export interface ContentConfig {
   [cms: string]: {
     types: ContentEntity[];
+    defaultType?: ContentEntity;
   };
 }
 

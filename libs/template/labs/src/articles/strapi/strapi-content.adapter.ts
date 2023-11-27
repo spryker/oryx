@@ -1,6 +1,7 @@
 import {
   Content,
   ContentAdapter,
+  ContentConfig,
   ContentQualifier,
 } from '@spryker-oryx/content';
 import { HttpService, TransformerService } from '@spryker-oryx/core';
@@ -26,14 +27,21 @@ export interface TypeData {
 }
 
 export class DefaultStrapiContentAdapter implements ContentAdapter {
+  protected defaultType?: string;
   constructor(
     protected token = inject(StrapiToken),
+    protected config = inject(ContentConfig),
     protected url = inject(StrapiApiUrl),
     protected http = inject(HttpService),
     protected transformer = inject(TransformerService),
     protected locale = inject(LocaleService),
     protected injector = inject(INJECTOR)
-  ) {}
+  ) {
+    this.defaultType = config.reduce(
+      (acc, item) => ({ ...acc, ...item }),
+      {}
+    ).strapi.defaultType;
+  }
 
   /**
    * @deprecated Since version 1.1. Will be removed.
@@ -97,21 +105,25 @@ export class DefaultStrapiContentAdapter implements ContentAdapter {
       'content-type-builder/content-types'
     ).pipe(
       map(({ data }) => {
-        if (qualifier.type) {
-          const component = data.find(
-            (t) => t.schema.singularName === qualifier.type
-          );
+        const getData = (type: string) => {
+          const component = data.find((t) => t.schema.singularName === type);
 
           if (!component) throw new Error('Content type not found');
 
           return {
-            type: qualifier.type,
+            type,
             pluralType: component.schema.pluralName,
             attributes: component.schema.attributes,
           };
+        };
+
+        if (qualifier.type || this.defaultType) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          return getData(qualifier.type ?? this.defaultType!);
         }
 
         let component!: StrapiCmsModel.Type;
+
         const type = qualifier.entities?.find((id) => {
           const record = data.find((t) => t.schema.singularName === id);
 

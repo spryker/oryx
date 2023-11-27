@@ -25,6 +25,7 @@ export const strapiProviders: Provider[] = [
     useValue: {
       strapi: {
         types: ['component', 'about', 'contents'],
+        defaultType: 'about',
       },
     },
   },
