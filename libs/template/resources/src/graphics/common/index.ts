@@ -1,7 +1,5 @@
 import { ResourceGraphic } from '@spryker-oryx/experience';
 
-export * from './logo';
-
 export const commonGraphics: ResourceGraphic = {
   logo: {
     source: () => import('./logo').then((m) => m.logo),

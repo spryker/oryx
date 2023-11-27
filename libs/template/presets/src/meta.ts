@@ -1,10 +1,4 @@
 import { ElementDefinition } from '@spryker-oryx/core';
-import { logoSymbol } from '@spryker-oryx/resources';
-
-// base64 requires a single line and using double quotes, so we need to replace them
-const base64Icon = `data:image/svg+xml,${logoSymbol
-  .replace(/\n/g, '')
-  .replace(/"/g, `'`)}`;
 
 /**
  * Icons for both light and dark mode.
@@ -18,13 +12,13 @@ const base64Icon = `data:image/svg+xml,${logoSymbol
 export const iconMeta = (): ElementDefinition[] => [
   {
     name: 'link',
-    attrs: { rel: 'icon', href: base64Icon },
+    attrs: { rel: 'icon', href: '/public/icon.svg' },
   },
   {
     name: 'link',
     attrs: {
       rel: 'icon',
-      href: base64Icon,
+      href: '/public/icon.svg',
       media: '(prefers-color-scheme: dark)',
     },
   },

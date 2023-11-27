@@ -1,3 +1,3 @@
 export { brandGraphics } from './brands';
-export * from './common';
+export { commonGraphics } from './common';
 export { fulfillmentResourceGraphics } from './fulfillment';
