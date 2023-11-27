@@ -11,9 +11,10 @@ import { inject } from '@spryker-oryx/di';
 import fs from 'fs';
 import path from 'path';
 import c from 'picocolors';
+import url from 'url';
 import { CliCommand, CliCommandOption } from '../models';
 import { CliArgsService, NodeUtilService } from '../services';
-import url from 'url';
+``;
 
 export class CreateCliCommand implements CliCommand {
   protected repoUrl =
@@ -22,15 +23,17 @@ export class CreateCliCommand implements CliCommand {
     [OryxTemplateRef.Latest]: 'heads/master',
   };
   protected repoPaths = {
-    [OryxTemplateRef.Latest]: 'composable-frontend-master',
+    [OryxTemplateRef.Latest]: 'oryx-starter-master',
   };
   protected packageRoot = path.resolve(this.dirPath, '../..');
-  protected repoPath = path.resolve(this.packageRoot, 'repo');
+  protected repoPath = path.resolve(this.packageRoot, 'template');
 
   constructor(
     protected argsService = inject(CliArgsService),
     protected nodeUtilService = inject(NodeUtilService),
-    protected dirPath = typeof __dirname === 'undefined' ? url.fileURLToPath(new URL('.', import.meta.url)) : path.resolve(__dirname, '.')
+    protected dirPath = typeof __dirname === 'undefined'
+      ? url.fileURLToPath(new URL('.', import.meta.url))
+      : path.resolve(__dirname, '.')
   ) {}
 
   getName(): string {
@@ -118,10 +121,10 @@ Please make sure to not use an existing directory name.`
 
     const archivePath = path.resolve(this.packageRoot, `template-${ref}.zip`);
 
-      await this.nodeUtilService.downloadFile(
-        this.getTempalteUrl(ref),
-        archivePath
-      );
+    await this.nodeUtilService.downloadFile(
+      this.getTempalteUrl(ref),
+      archivePath
+    );
 
     await this.nodeUtilService.extractZip(archivePath, repoPath);
   }
