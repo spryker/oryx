@@ -8,22 +8,21 @@ import { ProductCategoryService } from './category.service';
 import { CategoryQuery } from './state';
 
 export class DefaultProductCategoryService implements ProductCategoryService {
-  constructor(
-    protected categoryQuery$ = injectQuery<
-      ProductCategory,
-      ProductCategoryQualifier
-    >(CategoryQuery),
-    protected adapter = inject(ProductCategoryAdapter)
-  ) {}
+  protected categoryQuery = injectQuery<
+    ProductCategory,
+    ProductCategoryQualifier
+  >(CategoryQuery);
+
+  constructor(protected adapter = inject(ProductCategoryAdapter)) {}
 
   protected categories = new Map<string, BehaviorSubject<ProductCategory>>();
 
-  protected treeQuery$ = createQuery({
+  protected listQuery$ = createQuery({
     loader: () => this.adapter.getTree(),
     onLoad: [
       ({ data: categories }) => {
         categories?.forEach((category) => {
-          this.categoryQuery$.set({
+          this.categoryQuery.set({
             data: category,
             qualifier: { id: category.id },
           });
@@ -33,28 +32,42 @@ export class DefaultProductCategoryService implements ProductCategoryService {
     refreshOn: [LocaleChanged],
   });
 
-  get(qualifier: ProductCategoryQualifier): Observable<ProductCategory> {
-    return this.categoryQuery$.get(qualifier) as Observable<ProductCategory>;
+  /**
+   * @deprecated since 1.4 use listQuery$ instead
+   */
+  protected treeQuery$ = this.listQuery$;
+
+  get(
+    qualifier: ProductCategoryQualifier | string
+  ): Observable<ProductCategory> {
+    if (typeof qualifier === 'string') return this.get({ id: qualifier });
+    return this.categoryQuery.get(qualifier) as Observable<ProductCategory>;
   }
 
   getList(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]> {
-    const list = this.treeQuery$.get() as Observable<ProductCategory[]>;
+    const list = this.listQuery$.get() as Observable<ProductCategory[]>;
     return list.pipe(
-      map((items) =>
-        items.filter((category) => {
-          return !qualifier?.parent
-            ? !category.parent
-            : category.parent === qualifier?.parent;
-        })
-      )
+      map((items: ProductCategory[]) => {
+        const excludes = this.getExcludes(
+          items.map((c) => c.id),
+          qualifier?.exclude
+        );
+        return items
+          .filter((category) => {
+            return !qualifier?.parent
+              ? !category.parent
+              : category.parent === qualifier?.parent;
+          })
+          .filter((category) => !excludes.includes(category.id));
+      })
     );
   }
 
-  getTree(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]> {
-    return this.treeQuery$.get() as Observable<ProductCategory[]>;
-  }
+  getTrail(
+    qualifier: ProductCategoryQualifier | string
+  ): Observable<ProductCategory[]> {
+    if (typeof qualifier === 'string') return this.getTrail({ id: qualifier });
 
-  getTrail(qualifier: ProductCategoryQualifier): Observable<ProductCategory[]> {
     return this.get(qualifier).pipe(
       switchMap((category) =>
         category.parent
@@ -66,5 +79,46 @@ export class DefaultProductCategoryService implements ProductCategoryService {
       map((trail) => trail.sort((a, b) => (a.id === b.parent ? -1 : 1)))
       // tap(console.log)
     );
+  }
+
+  getTree(): Observable<ProductCategory[]> {
+    return this.listQuery$.get() as Observable<ProductCategory[]>;
+  }
+
+  protected getExcludes(
+    categories: string[],
+    exclude?: string | string[]
+  ): string[] {
+    if (!exclude) return [];
+    let excludedIds: string[] = [];
+
+    // Convert both string and array notations to array of strings
+    const excludeIds = Array.isArray(exclude)
+      ? exclude.map(String)
+      : exclude.split(',').map((id) => id.trim());
+
+    // Handle range notations like >5, <4, 4..11
+    excludedIds = categories.filter((categoryId) => {
+      return excludeIds.some((excludedId) => {
+        if (excludedId.includes('..')) {
+          const [start, end] = excludedId
+            .split('..')
+            .map((num) => parseInt(num, 10));
+          const num = parseInt(categoryId, 10);
+          return num >= start && num <= end;
+        } else if (excludedId.startsWith('>')) {
+          const threshold = parseInt(excludedId.slice(1), 10);
+          return parseInt(categoryId, 10) > threshold;
+        } else if (excludedId.startsWith('<')) {
+          const threshold = parseInt(excludedId.slice(1), 10);
+          return parseInt(categoryId, 10) < threshold;
+        } else {
+          // Regular ID match
+          return categoryId === excludedId;
+        }
+      });
+    });
+
+    return excludedIds;
   }
 }

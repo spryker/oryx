@@ -12,6 +12,10 @@ export const HeaderTemplate: ExperienceComponent = {
   components: [
     ...topHeader({ priceModeSelector: true }),
     ...mainHeader(),
-    ...(featureVersion >= '1.3' ? categoryNavigation('35,38') : []),
+    ...(featureVersion >= '1.3'
+      ? categoryNavigation(
+          featureVersion >= '1.4' ? '35,38' : ['2', '11', '23', '31']
+        )
+      : []),
   ],
 };

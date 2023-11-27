@@ -52,7 +52,7 @@ describe('DefaultProductCategoryAdapter', () => {
     const fields = `fields[${ApiProductModel.Includes.CategoryNodes}]=`;
 
     beforeEach(() => {
-      adapter.get(mockCategoryId);
+      adapter.get({ id: mockCategoryId });
     });
 
     it('should build url based on category id', () => {

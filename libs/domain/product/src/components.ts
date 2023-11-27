@@ -3,7 +3,7 @@ export * from '../availability/availability.def';
 export * from '../average-rating/src/average-rating.def';
 export * from '../brand/brand.def';
 export * from '../card/src/card.def';
-export * from '../categories/list/list.def';
+export * from '../category/list/list.def';
 export * from '../description/description.def';
 export * from '../id/src/id.def';
 export * from '../images/src/images.def';
