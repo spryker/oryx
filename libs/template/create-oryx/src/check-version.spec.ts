@@ -20,6 +20,7 @@ describe('checkLatestVersion', () => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     consoleWarnMock = vi
       .spyOn(console, 'warn')
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .mockImplementation(() => {}) as Mock;
   });
 
