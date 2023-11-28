@@ -1,8 +1,8 @@
 import {
+  AnonAuthTokenService,
   AnonTokenInterceptor,
   AnonTokenInterceptorConfig,
   authLoginComponent,
-  AuthTokenInterceptorConfig,
   AuthTokenService,
   IdentityService,
   loginLinkComponent,
@@ -15,7 +15,11 @@ import {
 import { AuthLoginStrategy } from '@spryker-oryx/auth/login';
 import { AppFeature, HttpInterceptor } from '@spryker-oryx/core';
 import { inject, Provider } from '@spryker-oryx/di';
-import { ComponentsInfo } from '@spryker-oryx/utilities';
+import { ComponentsInfo, featureVersion } from '@spryker-oryx/utilities';
+import {
+  GuestIdentityInterceptor,
+  GuestIdentityInterceptorConfig,
+} from './guest-identity.interceptor';
 import { SapiIdentityService } from './sapi-identity.service';
 
 /**
@@ -55,27 +59,42 @@ export class SapiAuthFeature extends OauthFeature implements AppFeature {
       {
         provide: AuthTokenService,
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-        useFactory: () => inject(OauthService),
+        useFactory:
+          featureVersion >= '1.4'
+            ? () => inject(OauthService)
+            : () =>
+                new AnonAuthTokenService(
+                  inject(OauthService),
+                  inject(OauthService)
+                ),
       },
       { provide: IdentityService, useClass: SapiIdentityService },
-      { provide: HttpInterceptor, useClass: AnonTokenInterceptor },
       {
-        provide: AuthTokenInterceptorConfig,
-        useFactory: () =>
-          ({
-            baseUrl: inject('SCOS_BASE_URL'),
-            ...configFactory().tokenInterceptor,
-          } as AuthTokenInterceptorConfig),
+        provide: HttpInterceptor,
+        useClass:
+          featureVersion >= '1.4'
+            ? GuestIdentityInterceptor
+            : AnonTokenInterceptor,
       },
-      {
-        provide: AnonTokenInterceptorConfig,
-        useFactory: () =>
-          ({
-            baseUrl: inject('SCOS_BASE_URL'),
-            headerName: 'X-Anonymous-Customer-Unique-Id',
-            ...configFactory().anonTokenInterceptor,
-          } as AnonTokenInterceptorConfig),
-      },
+      featureVersion >= '1.4'
+        ? {
+            provide: GuestIdentityInterceptorConfig,
+            useFactory: () =>
+              ({
+                baseUrl: inject('SCOS_BASE_URL'),
+                headerName: 'X-Anonymous-Customer-Unique-Id',
+                ...configFactory().guestIdentityInterceptor,
+              } as GuestIdentityInterceptorConfig),
+          }
+        : {
+            provide: AnonTokenInterceptorConfig,
+            useFactory: () =>
+              ({
+                baseUrl: inject('SCOS_BASE_URL'),
+                headerName: 'X-Anonymous-Customer-Unique-Id',
+                ...configFactory().anonTokenInterceptor,
+              } as AnonTokenInterceptorConfig),
+          },
       { provide: AuthLoginStrategy, useClass: PasswordGrantAuthLoginStrategy },
       {
         provide: PasswordGrantAuthLoginStrategyConfig,
@@ -90,7 +109,9 @@ export class SapiAuthFeature extends OauthFeature implements AppFeature {
 
 export interface SapiAuthFeatureConfig extends OauthFeatureConfig {
   skipRoutes?: boolean;
+  /** deprecated since 1.4 */
   anonTokenInterceptor?: AnonTokenInterceptorConfig;
+  guestIdentityInterceptor?: GuestIdentityInterceptorConfig;
 }
 
 export class SapiAuthComponentsFeature implements AppFeature {
