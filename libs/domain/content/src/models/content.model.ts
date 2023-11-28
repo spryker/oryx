@@ -1,11 +1,11 @@
 declare global {
-  interface DynamicContentFields {
+  interface ContentFields {
     component: undefined;
   }
 }
 
 /**
- * @deprecated since 1.4 will be removed. Use DynamicContentFields interface instead.
+ * @deprecated since 1.4 will be removed. Use ContentFields interface instead.
  */
 export const enum ContentFields {
   Article = 'article',
@@ -16,7 +16,7 @@ export const enum ContentFields {
 // Object is workaround for autocomplete. Typescript incorrect parse metadata when define union and strict type.
 // Opened issue https://github.com/Microsoft/TypeScript/issues/29729
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type ContentEntity = keyof DynamicContentFields | (string & {});
+export type ContentEntity = keyof ContentFields | (string & {});
 
 export interface ContentQualifier {
   type?: string;
