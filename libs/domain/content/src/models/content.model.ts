@@ -5,7 +5,7 @@ declare global {
 }
 
 /**
- * @deprecated since 1.3.1 will be removed. Use DynamicContentFields interface instead.
+ * @deprecated since 1.4 will be removed. Use DynamicContentFields interface instead.
  */
 export const enum ContentFields {
   Article = 'article',
