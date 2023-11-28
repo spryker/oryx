@@ -33,19 +33,17 @@ export class ProductTitleComponent extends ProductMixin(
 
     const { linkType, ...options } = this.$options();
 
-    const titleHeading = html`<oryx-heading
+    return html`<oryx-heading
       .tag=${options.tag}
       .typography=${options.typography}
       .sm=${options.sm}
       .md=${options.md}
       .lg=${options.lg}
       .maxLines=${options.maxLines}
-      >${title}</oryx-heading
+      >${!linkType || linkType === 'none'
+        ? title
+        : this.renderLink(title)}</oryx-heading
     >`;
-
-    return !linkType || linkType === 'none'
-      ? titleHeading
-      : this.renderLink(titleHeading);
   }
 
   protected renderLink(title?: TemplateResult | string): TemplateResult;

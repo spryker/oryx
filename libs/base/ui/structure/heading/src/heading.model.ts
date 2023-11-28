@@ -4,7 +4,7 @@ export interface HeadingAttributes {
   /**
    * Indicates the heading tag that will be generated.
    */
-  tag?: HeadingTypography | HeadingTag;
+  tag?: HeadingTag | HeadingTag;
   /**
    * The given typography might be different from the element tag, such as using a `h1` tag.
    * Using a different typography than the tag allows to keep screen readers happy, while still
@@ -12,19 +12,19 @@ export interface HeadingAttributes {
    *
    * A screen specific typography can be set using the `lg`, `md`, and `sm` attributes.
    */
-  typography?: HeadingTypography;
+  typography?: HeadingTag;
   /**
    * Set the typography for large screens.
    */
-  lg?: HeadingTypography;
+  lg?: HeadingTag;
   /**
    * Set the typography for medium screens.
    */
-  md?: HeadingTypography;
+  md?: HeadingTag;
   /**
    * Set the typography for small screens.
    */
-  sm?: HeadingTypography;
+  sm?: HeadingTag;
   /**
    * Indicate the max number of lines that are used for the title.
    *
@@ -59,26 +59,8 @@ export interface HeadingAttributes {
 }
 
 /**
- * The heading typography is used to generate a wrapping DOM element inside the heading to
+ * The heading tag is used to generate a wrapping DOM element inside the heading to
  * provide the right styles.
- */
-export const enum HeadingTypography {
-  None = 'none',
-  H1 = 'h1',
-  H2 = 'h2',
-  H3 = 'h3',
-  H4 = 'h4',
-  H5 = 'h5',
-  H6 = 'h6',
-  Caption = 'caption',
-  Subtitle = 'subtitle',
-  SubtitleSmall = 'subtitle-small',
-  Small = 'small',
-  Bold = 'bold',
-}
-
-/**
- * @deprecated use `HeadingTypography` instead.
  */
 export const enum HeadingTag {
   H1 = 'h1',
@@ -92,4 +74,5 @@ export const enum HeadingTag {
   SubtitleSmall = 'subtitle-small',
   Small = 'small',
   Bold = 'bold',
+  Strong = 'strong',
 }

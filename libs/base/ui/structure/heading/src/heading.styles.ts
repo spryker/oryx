@@ -2,54 +2,62 @@ import { screenCss } from '@spryker-oryx/utilities';
 import { css } from 'lit';
 
 export const headingStyles = css`
-  :host > *,
-  ::slotted(*) {
-    font-size: var(--_fs);
-    font-weight: var(--_fw);
-    line-height: var(--_lh);
-    margin: 0;
+  :host {
+    display: inline-block;
+    text-align: start;
     text-wrap: balance;
+  }
+
+  :host([style*='--max-lines']) {
     /* stylelint-disable-next-line */
     display: -webkit-inline-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: var(--line-clamp);
+    -webkit-line-clamp: var(--max-lines);
     overflow: hidden;
-    text-align: start;
   }
 
-  strong {
+  :host > *,
+  ::slotted(*) {
+    font-size: var(--_f-r, var(--_f));
+    font-weight: var(--_w-r, var(--_w));
+    line-height: var(--_l-r, var(--_l));
+    margin: 0;
+  }
+
+  caption {
     display: inline;
   }
 
-  .subtitle {
+  :host([typography='subtitle']),
+  :host([tag='subtitle']) {
     text-transform: uppercase;
   }
 `;
 
 /**
- * The following styles are used to set the font-size, font-weight and line-height
- * for different screen sizes.
+ * The following styles are used to set the font-size, font-weight
+ * and line-height for different screen sizes.
  */
 export const headingScreenStyles = screenCss({
   lg: css`
-    [style*='-lg'] {
-      font-size: var(--_fs-lg, var(--_fs));
-      font-weight: var(--_fw-lg, var(--_fw));
-      line-height: var(--_lh-lg, var(--_lh));
+    :host {
+      --_f-r: var(--_f-lg);
+      --_w-r: var(--w-lg);
+      --_l-r: var(--_l-lg);
     }
   `,
   md: css`
-    [style*='-md'] {
-      font-size: var(--_fs-md, var(--_fs));
-      font-weight: var(--_fw-md, var(--_fw));
-      line-height: var(--_lh-md, var(--_lh));
+    :host {
+      --_f-r: var(--_f-md);
+      --_w-r: var(--w-md);
+      --_l-r: var(--_l-md);
     }
   `,
   sm: css`
-    [style*='-sm'] {
-      font-size: var(--_fs-sm, var(--_fs));
-      font-weight: var(--_fw-sm, var(--_fw));
-      line-height: var(--_lh-sm, var(--_lh));
+    :host {
+      --_f-r: var(--_f-sm);
+      --_w-r: var(--w-sm);
+      --_l-r: var(--_l-sm);
     }
   `,
 });
