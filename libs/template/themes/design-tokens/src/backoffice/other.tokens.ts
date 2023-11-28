@@ -12,17 +12,6 @@ export const tokens: ThemeToken = {
       focus: '0 0 3px var(--oryx-color-focus)',
     },
   },
-  /** @deprecated use oryx-shadow instead */
-  elevation: {
-    /** @deprecated use oryx-shadow-flat instead */
-    0: '0 1px 3px',
-    /** @deprecated use oryx-shadow-raised instead */
-    1: '0 4px 8px',
-    /** @deprecated use oryx-shadow-hovering instead */
-    2: '1px 3px 18px',
-    /** @deprecated use oryx-shadow-floating instead */
-    3: '-2px 2px 20px',
-  },
   'transition-time': '0.3s',
   transition: {
     time: {

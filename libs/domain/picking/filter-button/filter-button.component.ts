@@ -1,6 +1,6 @@
 import { resolve } from '@spryker-oryx/di';
 import {
-  defaultSortingQualifier,
+  defaultQualifier,
   PickingListQualifierSortBy,
   PickingListService,
   SortableQualifier,
@@ -19,7 +19,7 @@ export class PickingFilterButtonComponent extends I18nMixin(LitElement) {
   @query('input') protected input?: HTMLInputElement;
 
   protected $selectedFilters = signal(
-    this.pickingListService.getSortingQualifier().pipe(
+    this.pickingListService.getQualifier().pipe(
       map(this.hasSelectedFilter),
       tap((hasSelected) => {
         if (this.input) {
@@ -56,8 +56,8 @@ export class PickingFilterButtonComponent extends I18nMixin(LitElement) {
     selectedFilters: SortableQualifier<PickingListQualifierSortBy>
   ): boolean {
     return (
-      selectedFilters.sortBy !== defaultSortingQualifier.sortBy ||
-      selectedFilters.sortDesc !== defaultSortingQualifier.sortDesc
+      selectedFilters.sortBy !== defaultQualifier.sortBy ||
+      selectedFilters.sortDesc !== defaultQualifier.sortDesc
     );
   }
 }

@@ -28,7 +28,8 @@ export enum PickingListQualifierSortBy {
   OrderSize = 'orderSize',
 }
 
-export const defaultSortingQualifier = {
+export const defaultQualifier = {
+  status: PickingListStatus.ReadyForPicking,
   sortBy: PickingListQualifierSortBy.DeliveryDate,
   sortDesc: false,
 };

@@ -29,11 +29,11 @@
   [[plugins.inputs.audits]]
     path = "category/4"
 
-[[plugins]]
-  package = "/../../tools/netlify-plugins/cypress-tests-runner"
+# [[plugins]]
+#  package = "/../../tools/netlify-plugins/cypress-tests-runner"
 
-    [plugins.inputs]
-      nxRunCommand = "storefront-e2e:e2e:headless-ci-smoke"
+#     [plugins.inputs]
+#       nxRunCommand = "storefront-e2e:e2e:headless-ci-smoke"
 
 [[redirects]]
   from = "/"

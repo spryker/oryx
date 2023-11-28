@@ -1,5 +1,4 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { i18n } from '@spryker-oryx/utilities';
 
 export const fulfillmentLoginPage: ExperienceComponent = {
   id: 'fulfillment-login-page',
@@ -25,16 +24,14 @@ export const fulfillmentLoginPage: ExperienceComponent = {
     {
       type: 'oryx-content-image',
       content: { data: { graphic: 'logo' } },
-      options: { rules: [{ height: '82px', align: 'start' }] },
+      options: { rules: [{ height: '82px', align: 'center' }] },
     },
     {
       type: 'oryx-content-text',
       content: {
-        data: {
-          text: `<h3>${i18n('login.welcome')}</h3>`,
-        },
+        data: { text: `<h3>Welcome! Please log in to start picking.</h3>` },
       },
-      options: { rules: [{ padding: '0 0 20px' }] },
+      options: { rules: [{ padding: '0 0 20px', align: 'center' }] },
     },
     {
       type: 'oryx-auth-login',

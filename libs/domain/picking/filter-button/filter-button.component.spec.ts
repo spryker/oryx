@@ -2,7 +2,7 @@ import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   PickingListService,
-  defaultSortingQualifier,
+  defaultQualifier,
 } from '@spryker-oryx/picking/services';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -12,7 +12,7 @@ import { PickingFilterButtonComponent } from './filter-button.component';
 import { pickingFilterButtonComponent } from './filter-button.def';
 
 class MockPickingListService implements Partial<PickingListService> {
-  getSortingQualifier = vi.fn().mockReturnValue(of(defaultSortingQualifier));
+  getQualifier = vi.fn().mockReturnValue(of(defaultQualifier));
 }
 
 describe('PickingFilterButtonComponent', () => {
@@ -56,9 +56,9 @@ describe('PickingFilterButtonComponent', () => {
   describe('when selected sort by method is not default', () => {
     beforeEach(async () => {
       vi.useFakeTimers();
-      service.getSortingQualifier = vi.fn().mockReturnValue(
+      service.getQualifier = vi.fn().mockReturnValue(
         of({
-          ...defaultSortingQualifier,
+          ...defaultQualifier,
           sortBy: 'test',
         })
       );
@@ -79,9 +79,9 @@ describe('PickingFilterButtonComponent', () => {
 
   describe('when selected sorting order is not default', () => {
     beforeEach(async () => {
-      service.getSortingQualifier = vi.fn().mockReturnValue(
+      service.getQualifier = vi.fn().mockReturnValue(
         of({
-          ...defaultSortingQualifier,
+          ...defaultQualifier,
           sortDesc: true,
         })
       );

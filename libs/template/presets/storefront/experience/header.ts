@@ -205,12 +205,15 @@ export const mainHeader = (): ExperienceComponent[] => {
 };
 
 export const categoryNavigation = (
-  categories: (string | number)[] = []
+  exclude: string | (string | number)[]
 ): ExperienceComponent[] => {
-  const categoryLinks = categories.map((id) => ({
-    type: 'oryx-content-link',
-    options: { id, type: 'category' },
-  }));
+  const categoryLinks =
+    featureVersion >= '1.4'
+      ? [{ type: 'oryx-product-category-list', options: { exclude } }]
+      : ((exclude as string[]) ?? []).map((id) => ({
+          type: 'oryx-content-link',
+          options: { id, type: 'category' },
+        }));
   return [
     {
       type: 'oryx-composition',
@@ -251,7 +254,9 @@ export const HeaderTemplate: ExperienceComponent = {
     ...topHeader(),
     ...mainHeader(),
     ...(featureVersion >= '1.3'
-      ? categoryNavigation(['2', '5', '9', '11'])
+      ? categoryNavigation(
+          featureVersion >= '1.4' ? '15,16' : ['2', '5', '9', '11']
+        )
       : []),
   ],
 };

@@ -12,14 +12,6 @@ export const tokens: ThemeToken = {
       focus: '0 0 3px var(--oryx-color-focus)',
     },
   },
-  elevation: {
-    color: 'rgb(23 11 11 / 15%)',
-    'color-2': 'rgb(0 0 0 / 10%)',
-    0: '0 1px 3px',
-    1: '0 4px 12px',
-    2: '0 4px 8px',
-    3: '-2px 2px 20px',
-  },
   'transition-time': '0.3s',
   transition: {
     time: {
