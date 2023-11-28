@@ -1,6 +1,6 @@
 import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { catchError, map, Observable, of, switchMap, take } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, take } from 'rxjs';
 import { AuthTokenData, AuthTokenService } from './auth-token.service';
 
 /** deprecated since 1.4, replaced by GuestIdentityInterceptor */
@@ -31,7 +31,7 @@ export class AnonTokenInterceptor implements HttpInterceptor {
     }
 
     const newReq = req.clone();
-    newReq.headers.set(this.headerName, token.token);
+    newReq.headers.set(this.headerName, token.token!);
 
     return newReq;
   }
