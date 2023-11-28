@@ -23,6 +23,21 @@ const products: Product[] = [
     title: 'Acer TravelMate P258-M',
     originalPrice: '264.32',
   },
+  // product with discount
+  {
+    id: '095_24235707',
+    title: 'TomTom Golf',
+    originalPrice: '180.00',
+    currentPrice: '179.94',
+    currentPriceWith10pDiscount: '161.95',
+    previewImageURL: '/img/norm/medium/24235707-6105.jpg',
+  },
+  {
+    id: '115_27295368',
+    title: 'DELL OptiPlex 3020',
+    originalPrice: '345.00',
+    netModePrice: '310.50',
+  },
 ];
 
 const productsWithCoupons: Product[] = [
