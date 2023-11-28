@@ -1,6 +1,6 @@
 import { HttpHandlerFn, HttpInterceptor } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { catchError, map, Observable, of, switchMap, take } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, take } from 'rxjs';
 import { AuthTokenData, AuthTokenService } from './auth-token.service';
 
 export class AuthTokenInterceptor implements HttpInterceptor {
