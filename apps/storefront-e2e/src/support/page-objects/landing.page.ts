@@ -9,6 +9,7 @@ export class LandingPage extends AbstractSFPage {
 
   waitForLoaded(): void {
     cy.wait('@searchQuery');
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(250);
   }
 
