@@ -86,7 +86,7 @@ const aboutUs = {
   content: {
     data: {
       text: `<b>About us</b><br/>
-        <a href="/about/company">Company</a><br/>
+        <a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>
         <a href="/">Our brands</a><br/>
