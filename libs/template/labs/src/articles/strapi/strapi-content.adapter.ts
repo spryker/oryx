@@ -27,7 +27,6 @@ export interface TypeData {
 }
 
 export class DefaultStrapiContentAdapter implements ContentAdapter {
-  protected defaultType?: string;
   constructor(
     protected token = inject(StrapiToken),
     protected config = inject(ContentConfig),
@@ -42,6 +41,9 @@ export class DefaultStrapiContentAdapter implements ContentAdapter {
       {}
     ).strapi.defaultType;
   }
+
+  protected defaultType?: string;
+  protected isPreview = false;
 
   /**
    * @deprecated Since version 1.1. Will be removed.
@@ -63,41 +65,54 @@ export class DefaultStrapiContentAdapter implements ContentAdapter {
     return combineLatest([this.getType(qualifier), this.locale.get()]).pipe(
       switchMap(([{ type, attributes, pluralType }, locale]) => {
         const query = qualifier.query ? `_q=${qualifier.query}` : '';
+        const preview = this.isPreview ? 'publicationState=preview' : '';
 
         return combineLatest([
-          this.search(`${pluralType}?${query}&locale=${locale}`),
+          this.search(`${pluralType}?${query}&locale=${locale}&${preview}`),
           of({ type, attributes }),
         ] as const);
       }),
       switchMap(([{ data }, { type: contentType, attributes }]) => {
         return from(data).pipe(
           switchMap((record) =>
-            combineLatest(
-              Object.entries<StrapiCmsModel.TypeAttributes>(attributes).map(
-                ([key, { type }]) =>
-                  this.transformer.transform(
-                    { type, key, value: record.attributes[key] },
-                    StrapiFieldNormalizer
-                  )
-              )
-            ).pipe(
-              map((fields) => ({
-                id: String(record.id),
-                type: contentType,
-                fields: fields.reduce(
-                  (acc, { key, value }) => ({
-                    ...acc,
-                    [key === 'identifier' ? 'id' : key]: value,
-                  }),
-                  {} as Content['fields']
-                ),
-              }))
-            )
+            this.parseEntry(record, contentType, attributes)
           ),
           reduce((a, c) => [...a, c], [] as Content[])
         );
       })
     );
+  }
+
+  protected parseEntry(
+    record: StrapiCmsModel.Entry,
+    type: string,
+    attributes: Record<string, StrapiCmsModel.TypeAttributes>
+  ): Observable<Content> {
+    return combineLatest(
+      Object.entries<StrapiCmsModel.TypeAttributes>(attributes).map(
+        ([key, { type }]) =>
+          this.transformer.transform(
+            { type, key, value: record.attributes[key] },
+            StrapiFieldNormalizer
+          )
+      )
+    ).pipe(
+      map((fields) => ({
+        id: String(record.id),
+        type,
+        fields: fields.reduce(
+          (acc, { key, value }) => ({
+            ...acc,
+            [key === 'identifier' ? 'id' : key]: value,
+          }),
+          {} as Content['fields']
+        ),
+      }))
+    );
+  }
+
+  protected getCmsLocales(): Observable<StrapiCmsModel.Locale[]> {
+    return this.search('i18n/locales');
   }
 
   protected getType(qualifier: ContentQualifier): Observable<TypeData> {

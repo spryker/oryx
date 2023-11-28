@@ -11,6 +11,15 @@ export module StrapiCmsModel {
     };
   }
 
+  export interface Locale {
+    id: number;
+    name: string;
+    code: string;
+    isDefault: boolean;
+    createdAt: string;
+    updatedAt: string;
+  }
+
   export interface TypeAttributes {
     pluginOptions: {
       i18n: { localized: boolean };
