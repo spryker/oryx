@@ -28,7 +28,7 @@ export class SapiIdentityService implements IdentityService {
   protected generateGuest$ = new BehaviorSubject<boolean>(false);
 
   protected identity$ = this.authService.getToken().pipe(
-    featureVersion >= '1.3'
+    featureVersion >= '1.4'
       ? switchMap((token) => this.getUserIdFromToken(token))
       : map((token) => this.getFromToken(token)),
     tap(() => this.clearAnonymousId()),

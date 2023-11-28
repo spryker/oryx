@@ -43,7 +43,7 @@ export class AnonAuthTokenService implements AuthTokenService {
       .get<string>(this.ANONYMOUS_USER_IDENTIFIER, StorageType.Session)
       .pipe(
         switchMap((userId) => {
-          return featureVersion >= '1.3'
+          return featureVersion >= '1.4'
             ? of(userId)
             : userId
             ? of(userId)
