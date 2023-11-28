@@ -15,7 +15,7 @@ export class LandingPage extends AbstractSFPage {
   getHeroBanner = () => cy.get('oryx-content-image');
   getProductCards = () => {
     return cy.get('oryx-product-card');
-  }
+  };
   getProductCardPrices = () =>
     this.getProductCards()
       .find('oryx-product-price')
