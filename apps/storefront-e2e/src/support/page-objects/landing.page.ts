@@ -3,12 +3,19 @@ import { AbstractSFPage } from './abstract.page';
 export class LandingPage extends AbstractSFPage {
   url = '/';
 
+  beforeVisit(): void {
+    cy.intercept(`/catalog-search?*`).as('searchQuery');
+  }
+
   waitForLoaded(): void {
-    // no need to wait for anything (previously we waited for youtube video)
+    cy.wait('@searchQuery');
+    cy.wait(250);
   }
 
   getHeroBanner = () => cy.get('oryx-content-image');
-  getProductCards = () => cy.get('oryx-product-card');
+  getProductCards = () => {
+    return cy.get('oryx-product-card');
+  }
   getProductCardPrices = () =>
     this.getProductCards()
       .find('oryx-product-price')
