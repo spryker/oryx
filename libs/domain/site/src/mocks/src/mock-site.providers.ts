@@ -11,10 +11,12 @@ import {
   CurrencyService,
   DefaultCountryService,
   DefaultCurrencyService,
+  DefaultGenderService,
   DefaultLinkService,
   DefaultNotificationService,
   DefaultPricingService,
   DefaultSalutationService,
+  GenderService,
   LinkService,
   NotificationService,
   PricingService,
@@ -38,6 +40,10 @@ export const mockSiteProviders: Provider[] = [
   {
     provide: SalutationService,
     useClass: DefaultSalutationService,
+  },
+  {
+    provide: GenderService,
+    useClass: DefaultGenderService,
   },
   {
     provide: StoreService,

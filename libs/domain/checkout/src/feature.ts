@@ -1,6 +1,6 @@
 import { AppFeature } from '@spryker-oryx/core';
+import { checkoutProviders } from './checkout.providers';
 import * as components from './components';
-import { checkoutProviders } from './services';
 
 export const checkoutComponents = Object.values(components);
 

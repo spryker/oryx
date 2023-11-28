@@ -1,4 +1,6 @@
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
+import { pageNavigationItemComponent } from '@spryker-oryx/ui';
+import { PageNavigationItemComponent } from '@spryker-oryx/ui/page-navigation-item';
 import {
   a11yConfig,
   queryAssignedElements,
@@ -6,10 +8,6 @@ import {
   useComponent,
 } from '@spryker-oryx/utilities';
 import { TemplateResult } from 'lit';
-import {
-  PageNavigationItemComponent,
-  pageNavigationItemComponent,
-} from '../../page-navigation-item';
 import { pageNavigationComponent } from './component';
 import { PageNavigationComponent } from './page-navigation.component';
 

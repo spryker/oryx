@@ -1,29 +1,32 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { PickingListError, PickingListService } from '@spryker-oryx/picking';
+import { pickingInProgressModalComponent } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+import { PickingInProgressModalComponent } from '@spryker-oryx/picking/picking-in-progress';
+import {
+  PickingListError,
+  PickingListService,
+} from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
-import { modalComponent } from '@spryker-oryx/ui/modal';
+import { modalComponent } from '@spryker-oryx/ui';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of, throwError } from 'rxjs';
-import { PickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.component';
-import { pickingInProgressModalComponent } from '../picking-in-progress/picking-in-progress.def';
-import { CustomerNoteComponent } from './customer-note.component';
-import { customerNoteComponent } from './customer-note.def';
+import { PickingCustomerNoteComponent } from './customer-note.component';
+import { pickingCustomerNoteComponent } from './customer-note.def';
 
 class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
 class MockPickingListService implements Partial<PickingListService> {
-  get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
+  getList = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   startPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
-describe('CustomerNoteComponent', () => {
-  let element: CustomerNoteComponent;
+describe('PickingCustomerNoteComponent', () => {
+  let element: PickingCustomerNoteComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
 
@@ -35,7 +38,7 @@ describe('CustomerNoteComponent', () => {
 
   beforeAll(async () => {
     await useComponent([
-      customerNoteComponent,
+      pickingCustomerNoteComponent,
       pickingInProgressModalComponent,
       modalComponent,
     ]);
@@ -60,8 +63,11 @@ describe('CustomerNoteComponent', () => {
     routerService = testInjector.inject(
       RouterService
     ) as unknown as MockRouterService;
+
     element = await fixture(
-      html`<oryx-customer-note pickingListId="id"></oryx-customer-note>`
+      html`<oryx-picking-customer-note
+        pickingListId="id"
+      ></oryx-picking-customer-note>`
     );
   });
 
@@ -83,7 +89,9 @@ describe('CustomerNoteComponent', () => {
 
   describe('when picking is proceed', () => {
     beforeEach(() => {
-      element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
+      element.renderRoot
+        .querySelectorAll<HTMLElement>('oryx-button')?.[1]
+        ?.click();
     });
 
     it('should start picking with current picking list', () => {
@@ -108,10 +116,14 @@ describe('CustomerNoteComponent', () => {
         );
 
         element = await fixture(
-          html`<oryx-customer-note pickingListId="id"></oryx-customer-note>`
+          html`<oryx-picking-customer-note
+            pickingListId="id"
+          ></oryx-picking-customer-note>`
         );
 
-        element.renderRoot.querySelector<HTMLElement>('oryx-button')?.click();
+        element.renderRoot
+          .querySelectorAll<HTMLElement>('oryx-button')[1]
+          ?.click();
       });
 
       it('should not navigate route', () => {

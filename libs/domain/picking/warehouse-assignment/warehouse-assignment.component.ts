@@ -1,7 +1,7 @@
 import { AppRef } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
-import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
+import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonSize } from '@spryker-oryx/ui/button';
 import { i18n, signal, signalAware } from '@spryker-oryx/utilities';
@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs';
 import { styles } from './warehouse-assignment.styles';
 
 @signalAware()
-export class WarehouseAssignmentComponent extends LitElement {
+export class PickingWarehouseAssignmentComponent extends LitElement {
   static styles = styles;
 
   protected warehouseUserAssignmentsService = resolve(
@@ -32,7 +32,6 @@ export class WarehouseAssignmentComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-header></oryx-header>
       ${when(
         this.$locations() === null || this.$locations()?.length === 1,
         () => this.renderLoading(),
@@ -52,7 +51,7 @@ export class WarehouseAssignmentComponent extends LitElement {
       .pipe(
         switchMap(() => {
           this.routerService.navigate('/');
-          return this.injectorDataPlugin.refreshData(this.injector);
+          return this.injectorDataPlugin.syncData(this.injector);
         })
       )
       .subscribe();
@@ -63,8 +62,8 @@ export class WarehouseAssignmentComponent extends LitElement {
       <div class="fallback">
         <oryx-heading as="h2">
           <h1>
-            ${i18n('picking.you-are-not-assigned-to-any-locations')}.
-            ${i18n('picking.please-reach-out-to-your-manager')}
+            ${i18n('picking.location.unassigned')}.
+            ${i18n('picking.location.help')}
           </h1>
         </oryx-heading>
 
@@ -77,7 +76,7 @@ export class WarehouseAssignmentComponent extends LitElement {
     return html`
       <div class="warehouses-list">
         <oryx-heading as="h4">
-          <h1>${i18n('picking.select-your-location-to-get-started')}</h1>
+          <h1>${i18n('picking.location.select')}</h1>
         </oryx-heading>
         ${repeat(
           this.$locations() || [],
@@ -89,7 +88,7 @@ export class WarehouseAssignmentComponent extends LitElement {
 
             <oryx-button
               .size=${ButtonSize.Sm}
-              .text=${i18n('picking.select')}
+              .text=${i18n('select')}
               @click=${() => this.selectWarehouse(item.id)}
             ></oryx-button>
             <hr />
@@ -107,7 +106,7 @@ export class WarehouseAssignmentComponent extends LitElement {
 
     return html`
       <div class="loading">
-        <span>${i18n('picking.loading-locations')}</span>
+        <span>${i18n('picking.location.loading')}</span>
         <oryx-spinner></oryx-spinner>
       </div>
     `;

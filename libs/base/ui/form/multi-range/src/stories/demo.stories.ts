@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 import { MultiRangeProperties } from '../multi-range.model';
 
@@ -22,8 +22,8 @@ const Template: Story<MultiRangeProperties> = ({
     <oryx-multi-range
       .min="${min}"
       .max="${max}"
-      .minValue="${minValue}"
       .maxValue="${maxValue}"
+      .minValue="${minValue}"
       .step="${step}"
       ?disabled="${disabled}"
     >

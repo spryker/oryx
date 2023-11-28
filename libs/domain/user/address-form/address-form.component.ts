@@ -1,9 +1,5 @@
 import { resolve } from '@spryker-oryx/di';
-import {
-  CompositionLayout,
-  ContentMixin,
-  defaultOptions,
-} from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import {
   FormFieldDefinition,
   FormFieldType,
@@ -76,10 +72,7 @@ export class UserAddressFormComponent
         @change=${this.onChange}
         style="--oryx-grid-item-size: var(--oryx-form-grid-size)"
       >
-        <oryx-layout
-          .layout=${CompositionLayout.Grid}
-          style="--column-gap: 20px;--row-gap: 20px;"
-        >
+        <oryx-layout layout="grid" style="--column-gap: 20px;--row-gap: 20px;">
           ${this.renderCountrySelector()}
           ${this.fieldRenderer.buildForm(
             this.getFormFields(),

@@ -1,5 +1,5 @@
+import { QuantityInputAttributes } from '@spryker-oryx/ui/quantity-input';
 import { componentDef } from '@spryker-oryx/utilities';
-import { QuantityInputAttributes } from './quantity-input.model';
 
 declare global {
   interface FeatureOptions {
@@ -7,6 +7,7 @@ declare global {
   }
 }
 
+/** @deprecated since 1.3. Use oryx-quantity-input from @spryker-oryx/ui/quantity-input*/
 export const quantityInputComponent = componentDef({
   name: 'oryx-cart-quantity-input',
   impl: () =>

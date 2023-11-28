@@ -2,25 +2,25 @@ import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import {
   PickingListService,
-  defaultSortingQualifier,
-} from '@spryker-oryx/picking';
+  defaultQualifier,
+} from '@spryker-oryx/picking/services';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { FilterButtonComponent } from './filter-button.component';
-import { filterButtonComponent } from './filter-button.def';
+import { PickingFilterButtonComponent } from './filter-button.component';
+import { pickingFilterButtonComponent } from './filter-button.def';
 
 class MockPickingListService implements Partial<PickingListService> {
-  getSortingQualifier = vi.fn().mockReturnValue(of(defaultSortingQualifier));
+  getQualifier = vi.fn().mockReturnValue(of(defaultQualifier));
 }
 
-describe('FilterButtonComponent', () => {
-  let element: FilterButtonComponent;
+describe('PickingFilterButtonComponent', () => {
+  let element: PickingFilterButtonComponent;
   let service: MockPickingListService;
 
   beforeAll(async () => {
-    await useComponent(filterButtonComponent);
+    await useComponent(pickingFilterButtonComponent);
   });
 
   beforeEach(async () => {
@@ -56,9 +56,9 @@ describe('FilterButtonComponent', () => {
   describe('when selected sort by method is not default', () => {
     beforeEach(async () => {
       vi.useFakeTimers();
-      service.getSortingQualifier = vi.fn().mockReturnValue(
+      service.getQualifier = vi.fn().mockReturnValue(
         of({
-          ...defaultSortingQualifier,
+          ...defaultQualifier,
           sortBy: 'test',
         })
       );
@@ -79,9 +79,9 @@ describe('FilterButtonComponent', () => {
 
   describe('when selected sorting order is not default', () => {
     beforeEach(async () => {
-      service.getSortingQualifier = vi.fn().mockReturnValue(
+      service.getQualifier = vi.fn().mockReturnValue(
         of({
-          ...defaultSortingQualifier,
+          ...defaultQualifier,
           sortDesc: true,
         })
       );

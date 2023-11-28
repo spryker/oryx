@@ -23,7 +23,7 @@ import { styles } from './add.styles';
 @defaultOptions({
   enableLabel: true,
 })
-@hydrate({ event: ['mouseover', 'focusin'] })
+@hydrate()
 export class CartAddComponent extends ProductMixin(
   CartComponentMixin(ContentMixin<CartAddOptions>(LitElement))
 ) {
@@ -65,6 +65,7 @@ export class CartAddComponent extends ProductMixin(
       ?disabled=${this.isInvalid || !this.$hasStock()}
       @click=${this.onSubmit}
       @mouseup=${this.onMouseUp}
+      hydration-events="click"
     ></oryx-button>`;
   }
 
@@ -96,11 +97,10 @@ export class CartAddComponent extends ProductMixin(
     if (availability?.isNeverOutOfStock) return Infinity;
     if (availability?.quantity)
       return (
-        availability?.quantity -
+        availability.quantity -
         this.$entries()
           .filter((entry) => entry.sku === sku)
-          .map((entry) => entry.quantity)
-          .reduce((a: number, b) => a + b, 0)
+          .reduce((a, { quantity }) => a + Number(quantity), 0)
       );
     return 0;
   });

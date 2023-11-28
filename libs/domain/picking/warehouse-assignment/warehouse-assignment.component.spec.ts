@@ -1,21 +1,19 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { App, AppRef } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  WarehouseUserAssignmentsService,
-  warehouseAssignmentComponent,
-} from '@spryker-oryx/picking';
+import { pickingWarehouseAssignmentComponent } from '@spryker-oryx/picking';
 import { mockWarehouseUserAssignments } from '@spryker-oryx/picking/mocks';
+import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonComponent } from '@spryker-oryx/ui/button';
 import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of, switchMap } from 'rxjs';
 import { beforeEach, vi } from 'vitest';
-import { WarehouseAssignmentComponent } from './warehouse-assignment.component';
+import { PickingWarehouseAssignmentComponent } from './warehouse-assignment.component';
 
 const mockOfflineDataPlugin = {
-  refreshData: vi.fn().mockReturnValue(
+  syncData: vi.fn().mockReturnValue(
     of(undefined).pipe(
       switchMap(async () => {
         await nextTick(2);
@@ -42,14 +40,14 @@ class MockRouterService implements Partial<RouterService> {
   navigate = vi.fn();
 }
 
-describe('WarehouseAssignmentComponent', () => {
-  let el: WarehouseAssignmentComponent;
+describe('PickingWarehouseAssignmentComponent', () => {
+  let el: PickingWarehouseAssignmentComponent;
 
   let service: MockWarehouseUserAssignmentsService;
   let routerService: RouterService;
 
   beforeAll(async () => {
-    await useComponent(warehouseAssignmentComponent);
+    await useComponent(pickingWarehouseAssignmentComponent);
   });
 
   beforeEach(async () => {
@@ -85,7 +83,7 @@ describe('WarehouseAssignmentComponent', () => {
     beforeEach(async () => {
       service.getList.mockReturnValue(of(mockWarehouseUserAssignments));
       el = await fixture(
-        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+        html`<oryx-picking-warehouse-assignment></oryx-picking-warehouse-assignment>`
       );
     });
 
@@ -97,10 +95,6 @@ describe('WarehouseAssignmentComponent', () => {
           mockWarehouseUserAssignments[index].warehouse.name
         );
       });
-    });
-
-    it('should render header', () => {
-      expect(el).toContainElement('oryx-header');
     });
 
     mockWarehouseUserAssignments.forEach((item, index) => {
@@ -140,7 +134,7 @@ describe('WarehouseAssignmentComponent', () => {
         of(mockWarehouseUserAssignments.slice(0, 1))
       );
       el = await fixture(
-        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+        html`<oryx-picking-warehouse-assignment></oryx-picking-warehouse-assignment>`
       );
     });
 
@@ -164,7 +158,7 @@ describe('WarehouseAssignmentComponent', () => {
         of(mockWarehouseUserAssignments.slice(0, 0))
       );
       el = await fixture(
-        html`<oryx-warehouse-assignment></oryx-warehouse-assignment>`
+        html`<oryx-picking-warehouse-assignment></oryx-picking-warehouse-assignment>`
       );
     });
 

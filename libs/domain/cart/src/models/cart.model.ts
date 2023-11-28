@@ -23,11 +23,12 @@ export interface Cart extends CartId {
   currency?: string;
   store?: string;
   products?: CartEntry[];
+  version?: string;
 }
 
 export interface CartEntry {
   sku: string;
-  quantity: number;
+  quantity: number | string;
   /**
    * The groupKey is used to identify and group together items that are
    * the same product but with different options.

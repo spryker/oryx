@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2023-11-22)
+
+
+### Bug Fixes
+
+* fixed animation for vertical dropdown ([#934](https://github.com/spryker/oryx/issues/934)) ([942485a](https://github.com/spryker/oryx/commit/942485a21a7b4b0f88a0d14581f6c949d7cbe5c1))
+* modal bleed and width ([#899](https://github.com/spryker/oryx/issues/899)) ([24c1c23](https://github.com/spryker/oryx/commit/24c1c23c17791987391b20d902547563cd665ea3))
+* icons are rendered outside the clickable area of a link ([#888](https://github.com/spryker/oryx/issues/888)) ([867f387](https://github.com/spryker/oryx/commit/867f3870e38e3a10f80d67a8430f57be4157eff4))
+
+
+
+# 1.2.0 (2023-11-09)
+
+
+### Bug Fixes
+
+* modal maximum width to depend on container width ([#870](https://github.com/spryker/oryx/issues/870)) ([5c6a63d](https://github.com/spryker/oryx/commit/5c6a63d7af39dcb47178f0ccfe2990b1564fbaea))
+* searchbox positioning depends on container but not viewport width ([#871](https://github.com/spryker/oryx/issues/871)) ([0aa44c2](https://github.com/spryker/oryx/commit/0aa44c234211f80b3aec2d2fe779999461adfe99))
+
+
+
+
+
+# 1.1.0 (2023-09-22)
+
+
+### Bug Fixes
+
+* button states styles ([#771](https://github.com/spryker/oryx/issues/771)) ([7ffd7eb](https://github.com/spryker/oryx/commit/7ffd7ebb417ef59c87cc4e6ee9f4ed642501d96c))
+* modal's height in safari ([#738](https://github.com/spryker/oryx/issues/738)) ([4360576](https://github.com/spryker/oryx/commit/4360576d9b24ed53c95b9e26883f4191446d43b3))
+* modal's margins and scrolling behaviour  ([#736](https://github.com/spryker/oryx/issues/736)) ([506c84a](https://github.com/spryker/oryx/commit/506c84a41f07bcc56aca72adad9ce9c661e8acd6))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 

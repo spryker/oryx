@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2023-11-22)
+
+
+### Features
+
+* favicon dark mode ([#929](https://github.com/spryker/oryx/issues/929)) ([09ba468](https://github.com/spryker/oryx/commit/09ba4688b30d65568b29dccb4552e5e4043d40e1))
+* fulfillment boilerplate html cleanup ([#916](https://github.com/spryker/oryx/issues/916)) ([ed1ebd4](https://github.com/spryker/oryx/commit/ed1ebd4c11b6ca69b39f42f26383456bd4664a45))
+
+
+
+
+
+# 1.2.0 (2023-11-09)
+
+
+### Bug Fixes
+
+* additional white space at the end of product list on the home page ([#865](https://github.com/spryker/oryx/issues/865)) ([bb629ac](https://github.com/spryker/oryx/commit/bb629ac38da37d0117d39a1edf4dcc68a2c36aa4))
+
+
+
+
+
+# 1.1.0 (2023-09-22)
+
+
+### Features
+
+* b2b-storefront preset ([#703](https://github.com/spryker/oryx/issues/703)) ([b62f662](https://github.com/spryker/oryx/commit/b62f6625f5293ec8887a585f901794ca5514f3a9))
+
+
+### Bug Fixes
+
+* make form second address required ([#733](https://github.com/spryker/oryx/issues/733)) ([1402521](https://github.com/spryker/oryx/commit/140252117f7a04b2c0157443709149ba5562ef3d))
+
+
+
+
+
 ## 1.0.2 (2023-09-13)
 
 

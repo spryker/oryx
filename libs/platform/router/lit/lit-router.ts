@@ -17,9 +17,12 @@ import {
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { html, isServer, TemplateResult } from 'lit';
 import {
+  asyncScheduler,
+  from,
   isObservable,
   lastValueFrom,
   Observable,
+  observeOn,
   Subscription,
   tap,
 } from 'rxjs';
@@ -37,6 +40,9 @@ export interface BaseRouteConfig {
     | Observable<boolean | string>
     | boolean
     | string;
+  afterEnter?: (params: {
+    [key: string]: string | undefined;
+  }) => Promise<void | string> | Observable<void | string>;
   leave?: (params: {
     [key: string]: string | undefined;
   }) => Promise<boolean> | Observable<boolean> | boolean;
@@ -95,6 +101,11 @@ const getPattern = (route: RouteConfig) => {
   }
   return pattern;
 };
+
+interface ParsedPathname {
+  params: Record<string, string | undefined>;
+  route: RouteConfig;
+}
 
 /**
  * A reactive controller that performs location-based routing using a
@@ -188,7 +199,7 @@ export class LitRouter implements ReactiveController {
       .sort((a) =>
         (a as PathRouteConfig).path === '/*' ||
         (a as PathRouteConfig).path === '/:page'
-          ? 0
+          ? 1
           : -1
       );
 
@@ -205,14 +216,8 @@ export class LitRouter implements ReactiveController {
         if ((route as URLPatternRouteConfig).pattern) {
           const oldPattern = (route as URLPatternRouteConfig).pattern;
           const pattern = new URLPattern({
-            protocol: oldPattern.protocol,
-            username: oldPattern.username,
-            password: oldPattern.password,
-            hostname: oldPattern.hostname,
-            port: oldPattern.port,
+            ...oldPattern,
             pathname: baseRoute + oldPattern.pathname,
-            search: oldPattern.search,
-            hash: oldPattern.hash,
           });
 
           return { ...route, pattern };
@@ -304,14 +309,8 @@ export class LitRouter implements ReactiveController {
       // Simulate a tail group with the whole pathname
       this._currentParams = { 0: tailGroup };
     } else {
-      const route = this._getRoute(pathname);
+      const { route, params } = this.parsePathname(pathname);
 
-      if (route === undefined) {
-        throw new Error(`No route found for ${pathname}`);
-      }
-      const pattern = getPattern(route);
-      const result = pattern.exec({ pathname });
-      const params = result?.pathname.groups ?? {};
       tailGroup = getTailGroup(params);
       const timestamp =
         globalThis.history?.state?.timestamp ?? new Date().getTime();
@@ -376,6 +375,17 @@ export class LitRouter implements ReactiveController {
         }
       }
 
+      if (route.afterEnter) {
+        const enterFn = route.afterEnter(params);
+        (isObservable(enterFn) ? enterFn : from(enterFn))
+          .pipe(observeOn(asyncScheduler))
+          .subscribe((path: string | void) => {
+            if (typeof path === 'string') {
+              this.routerService.navigate(path);
+            }
+          });
+      }
+
       this._currentRoute = route;
       this._currentParams = params;
       this._currentPathname =
@@ -400,6 +410,10 @@ export class LitRouter implements ReactiveController {
    * The result of calling the current route's render() callback.
    */
   outlet(): TemplateResult {
+    if (!this._currentRoute && window?.location.pathname !== '/') {
+      this.parsePathname(window?.location.pathname, true);
+    }
+
     const path = isRouterPath(this._currentRoute)
       ? this._currentParams.page
         ? `/${this._currentParams.page}`
@@ -421,6 +435,27 @@ export class LitRouter implements ReactiveController {
         decodeURIComponent(globalThis.location?.search)
       ).entries()
     );
+  }
+
+  protected parsePathname(path: string, force = false): ParsedPathname {
+    const pathname =
+      path?.endsWith('/') && path?.length > 1 ? path.slice(0, -1) : path;
+    const route = this._getRoute(pathname);
+
+    if (route === undefined) {
+      throw new Error(`No route found for ${pathname}`);
+    }
+
+    const params = getPattern(route).exec({ pathname })?.pathname.groups ?? {};
+
+    if (force) {
+      this._currentRoute = route;
+      this._currentParams = params;
+      this._currentPathname = pathname;
+      this.routerService.acceptParams(params);
+    }
+
+    return { route, params };
   }
 
   /**

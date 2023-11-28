@@ -1,15 +1,15 @@
 import { inject } from '@spryker-oryx/di';
 import { IndexedDbService } from '@spryker-oryx/indexed-db';
-import { SyncSchedulerService } from '@spryker-oryx/offline';
+import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import {
   PickingListAdapter,
   PickingListQualifier,
   PickingListQualifierSortBy,
   PickingListStatus,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/services';
 import { intersectArrays } from '@spryker-oryx/utilities';
-import { Collection, liveQuery, Table } from 'dexie';
-import { combineLatestWith, map, Observable, switchMap } from 'rxjs';
+import { Collection, Table, liveQuery } from 'dexie';
+import { Observable, combineLatestWith, map, switchMap } from 'rxjs';
 import {
   MappedQualifier,
   PickingListEntity,
@@ -204,6 +204,7 @@ export class PickingListOfflineAdapter implements PickingListAdapter {
               pickingList.id,
               {
                 localStatus: PickingListStatus.PickingFinished,
+                items: pickingList.items,
               }
             );
 

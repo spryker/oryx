@@ -1,16 +1,45 @@
 import { ssrAwaiter } from '@spryker-oryx/core/utilities';
-import { inject } from '@spryker-oryx/di';
-import { Breakpoint, sizes } from '@spryker-oryx/utilities';
-import { merge, Observable, of, reduce } from 'rxjs';
+import { INJECTOR, inject } from '@spryker-oryx/di';
+import { LayoutProperties } from '@spryker-oryx/experience/layout';
+import { Breakpoint, featureVersion, sizes } from '@spryker-oryx/utilities';
+import { Observable, map, merge, of, reduce } from 'rxjs';
 import { CompositionLayout } from '../../models';
-import { LayoutStyles, ResponsiveLayoutInfo } from './layout.model';
-import { LayoutService } from './layout.service';
+import { LayoutBuilder } from './layout.builder';
+import {
+  LayoutStyles,
+  ResponsiveLayout,
+  ResponsiveLayoutInfo,
+} from './layout.model';
+import {
+  LayoutIncomingConfig,
+  LayoutService,
+  LayoutStyleConfig,
+} from './layout.service';
+import {
+  LayoutPlugin,
+  LayoutPluginRender,
+  LayoutPluginType,
+  LayoutPropertyPlugin,
+} from './plugins';
 import { ScreenService } from './screen.service';
 
-export class DefaultLayoutService implements LayoutService {
-  constructor(protected screenService = inject(ScreenService)) {}
+interface ResolveLayoutParams {
+  token: string;
+  data: ResponsiveLayout;
+  options: LayoutProperties;
+}
 
-  getStyles(layoutInfo: ResponsiveLayoutInfo): Observable<string> {
+export class DefaultLayoutService implements LayoutService {
+  constructor(
+    protected screenService = inject(ScreenService),
+    protected injector = inject(INJECTOR),
+    protected layoutBuilder = inject(LayoutBuilder)
+  ) {}
+
+  getStyles(
+    layoutInfo: ResponsiveLayoutInfo,
+    layoutOptions: LayoutProperties
+  ): Observable<string> {
     const observables: Observable<string>[] = [];
 
     const keys = Object.keys(layoutInfo);
@@ -18,11 +47,12 @@ export class DefaultLayoutService implements LayoutService {
     if (keys.length > 0) observables.push(this.resolveCommonStyles());
 
     keys.forEach((key) => {
-      const styles = this.resolveStyles(
-        key,
-        layoutInfo[key].included,
-        layoutInfo[key].excluded
-      );
+      const styles = this.resolveStyles({
+        token: key,
+        data: layoutInfo[key],
+        options: layoutOptions,
+      });
+
       if (styles) {
         observables.push(styles);
       }
@@ -33,16 +63,62 @@ export class DefaultLayoutService implements LayoutService {
       : of('');
   }
 
+  getStylesFromOptions(data: LayoutStyleConfig): Observable<string> {
+    const { activeHostOptions, id, rules, composition, screen } = data;
+
+    if (composition) {
+      return this.layoutBuilder.getCompositionStyles({
+        composition,
+        activeHostOptions,
+        screen,
+      });
+    }
+
+    return this.layoutBuilder.getStylesFromOptions({
+      rules,
+      id,
+      activeHostOptions,
+      screen,
+    });
+  }
+
+  getRender(
+    config: LayoutIncomingConfig
+  ): Observable<LayoutPluginRender | undefined> {
+    const { token, type, data } = config;
+    return this.getPlugin(token, type)?.getRender?.(data) ?? of(undefined);
+  }
+
   protected resolveCommonStyles(): Observable<string> {
     return ssrAwaiter(
-      import('./styles/base.styles').then((m) => m.styles?.toString() ?? '')
+      import('./plugins/base.styles').then((m) => m.styles?.toString() ?? '')
     );
   }
 
-  // TODO: consider breaking up styles in plugins
-  // this allows to add more layouts going forwards without breaking changes,
-  // as well as customers can add layouts
   protected resolveStyles(
+    params: ResolveLayoutParams
+  ): Observable<string> | void {
+    const {
+      token,
+      data: { included, excluded, type },
+      options,
+    } = params;
+
+    if (featureVersion >= '1.2') {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.getPlugin(token, type!)
+        ?.getStyles?.({ options })
+        .pipe(
+          map((styles) =>
+            this.resolveStylesForBreakpoint(styles, included, excluded)
+          )
+        );
+    }
+
+    return this.legacyResolveStyles(token, included, excluded);
+  }
+
+  private legacyResolveStyles(
     layout: string,
     included: Breakpoint[] = [],
     excluded: Breakpoint[] = []
@@ -50,94 +126,106 @@ export class DefaultLayoutService implements LayoutService {
     switch (layout) {
       case 'bleed':
         return ssrAwaiter(
-          import('./styles/bleed.styles').then((m) =>
+          import('./plugins/properties/bleed/bleed.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case 'sticky':
         return ssrAwaiter(
-          import('./styles/sticky.styles').then((m) =>
+          import('./plugins/properties/sticky/sticky.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case 'overlap':
         return ssrAwaiter(
-          import('./styles/overlap.styles').then((m) =>
+          import('./plugins/properties/overlap/overlap.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case 'divider':
         return ssrAwaiter(
-          import('./styles/divider.styles').then((m) =>
+          import('./plugins/properties/divider/divider.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Column:
         return ssrAwaiter(
-          import('./styles/column-layout.styles').then((m) =>
+          import('./plugins/types/column/column-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Grid:
         return ssrAwaiter(
-          import('./styles/grid-layout.styles').then((m) =>
+          import('./plugins/types/grid/grid-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Carousel:
         return ssrAwaiter(
-          import('./styles/carousel-layout.styles').then((m) =>
+          import('./plugins/types/carousel/carousel-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Flex:
         return ssrAwaiter(
-          import('./styles/flex-layout.styles').then((m) =>
+          import('./plugins/types/flex/flex-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Split:
         return ssrAwaiter(
-          import('./styles/split-layout.styles').then((m) =>
+          import('./deprecated-split-styles/split-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.SplitMain:
         return ssrAwaiter(
-          import('./styles/split-main.styles').then((m) =>
+          import('./deprecated-split-styles/split-main.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.SplitAside:
         return ssrAwaiter(
-          import('./styles/split-aside.styles').then((m) =>
+          import('./deprecated-split-styles/split-aside.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
 
       case CompositionLayout.Text:
         return ssrAwaiter(
-          import('./styles/text-layout.styles').then((m) =>
+          import('./plugins/types/text/text-layout.styles').then((m) =>
             this.resolveStylesForBreakpoint(m.styles, included, excluded)
           )
         );
     }
   }
 
+  protected getPlugin(
+    token: string,
+    type: LayoutPluginType
+  ): LayoutPlugin | null {
+    return this.injector.inject<LayoutPlugin | null>(
+      `${
+        type === LayoutPluginType.Layout ? LayoutPlugin : LayoutPropertyPlugin
+      }${token}`,
+      null
+    );
+  }
+
   protected resolveStylesForBreakpoint(
     style: LayoutStyles,
-    included: Breakpoint[],
-    excluded: Breakpoint[]
+    included: Breakpoint[] = [],
+    excluded: Breakpoint[] = []
   ): string {
     let result = '';
     if (style.styles) {

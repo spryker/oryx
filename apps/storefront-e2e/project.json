@@ -10,7 +10,10 @@
         "browser": "chrome",
         "cypressConfig": "apps/storefront-e2e/cypress.config.js",
         "watch": true,
-        "testingType": "e2e"
+        "testingType": "e2e",
+        "env": {
+          "grepTags": "-b2b"
+        }
       },
       "configurations": {
         "headless": {
@@ -22,7 +25,10 @@
           "record": true,
           "parallel": true,
           "tag": "regression",
-          "group": "sf-regression"
+          "group": "sf-regression",
+          "env": {
+            "grepTags": "-b2b"
+          }
         },
         "headless-ci-visual-regression": {
           "cypressConfig": "apps/storefront-e2e/cypress.ci.config.js",
@@ -38,7 +44,10 @@
           "watch": false,
           "record": true,
           "tag": "release",
-          "group": "sf-release"
+          "group": "sf-release",
+          "env": {
+            "grepTags": "-b2b"
+          }
         },
         "smoke": {
           "browser": "electron",

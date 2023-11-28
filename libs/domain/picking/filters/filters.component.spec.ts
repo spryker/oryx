@@ -3,32 +3,32 @@ import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { FormRenderer } from '@spryker-oryx/form';
 import {
   PickingListService,
-  defaultSortingQualifier,
-} from '@spryker-oryx/picking';
+  defaultQualifier,
+} from '@spryker-oryx/picking/services';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
 import { SpyInstance } from 'vitest';
-import { FiltersComponent } from './filters.component';
-import { filtersComponent } from './filters.def';
+import { PickingFiltersComponent } from './filters.component';
+import { pickingFiltersComponent } from './filters.def';
 import { getFilterFields } from './filters.model';
 
 class MockPickingListService implements Partial<PickingListService> {
-  getSortingQualifier = vi.fn().mockReturnValue(of(defaultSortingQualifier));
-  setSortingQualifier = vi.fn();
+  getQualifier = vi.fn().mockReturnValue(of(defaultQualifier));
+  setQualifier = vi.fn();
 }
 
 class MockFormRenderer implements Partial<FormRenderer> {
   buildForm = vi.fn().mockReturnValue(html``);
 }
 
-describe('FiltersComponent', () => {
-  let element: FiltersComponent;
+describe('PickingFiltersComponent', () => {
+  let element: PickingFiltersComponent;
   let service: MockPickingListService;
   let renderer: MockFormRenderer;
 
   beforeAll(async () => {
-    await useComponent(filtersComponent);
+    await useComponent(pickingFiltersComponent);
   });
 
   beforeEach(async () => {
@@ -70,9 +70,9 @@ describe('FiltersComponent', () => {
 
   describe('when qualifier changes', () => {
     beforeEach(async () => {
-      service.getSortingQualifier = vi.fn().mockReturnValue(
+      service.getQualifier = vi.fn().mockReturnValue(
         of({
-          ...defaultSortingQualifier,
+          ...defaultQualifier,
           sortDesc: false,
         })
       );
@@ -131,9 +131,7 @@ describe('FiltersComponent', () => {
       });
 
       it('should set default qualifiers', () => {
-        expect(service.setSortingQualifier).toHaveBeenCalledWith(
-          defaultSortingQualifier
-        );
+        expect(service.setQualifier).toHaveBeenCalledWith(defaultQualifier);
       });
 
       it('should close the modal', () => {
@@ -169,7 +167,7 @@ describe('FiltersComponent', () => {
       });
 
       it('should update the qualifier', () => {
-        expect(service.setSortingQualifier).toHaveBeenCalledWith({
+        expect(service.setQualifier).toHaveBeenCalledWith({
           sortBy,
           sortDesc: true,
         });
@@ -208,7 +206,7 @@ describe('FiltersComponent', () => {
       });
 
       it('should update the qualifier', () => {
-        expect(service.setSortingQualifier).toHaveBeenCalledWith({
+        expect(service.setQualifier).toHaveBeenCalledWith({
           sortBy,
           sortDesc: true,
         });

@@ -1,11 +1,11 @@
 import { resolve } from '@spryker-oryx/di';
 import { FormRenderer } from '@spryker-oryx/form';
 import {
-  defaultSortingQualifier,
+  defaultQualifier,
   PickingListQualifierSortBy,
   PickingListService,
   SortableQualifier,
-} from '@spryker-oryx/picking';
+} from '@spryker-oryx/picking/services';
 import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { I18nMixin, signal } from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
@@ -14,7 +14,7 @@ import { map } from 'rxjs';
 import { getFilterFields } from './filters.model';
 import { filtersComponentStyles } from './filters.styles';
 
-export class FiltersComponent extends I18nMixin(LitElement) {
+export class PickingFiltersComponent extends I18nMixin(LitElement) {
   static styles = filtersComponentStyles;
 
   @property({ type: Boolean, reflect: true }) open = false;
@@ -26,8 +26,8 @@ export class FiltersComponent extends I18nMixin(LitElement) {
   protected pickingListService = resolve(PickingListService);
 
   protected $selectedSortingValue = signal(
-    this.pickingListService.getSortingQualifier().pipe(map(this.formatValue)),
-    { initialValue: this.formatValue(defaultSortingQualifier) }
+    this.pickingListService.getQualifier().pipe(map(this.formatValue)),
+    { initialValue: this.formatValue(defaultQualifier) }
   );
 
   protected formatValue(
@@ -44,7 +44,7 @@ export class FiltersComponent extends I18nMixin(LitElement) {
     );
     const [sortBy, sort] = (_sortBy as string).split('.');
 
-    this.pickingListService.setSortingQualifier({
+    this.pickingListService.setQualifier({
       sortBy: sortBy as PickingListQualifierSortBy,
       sortDesc: sort !== 'asc',
     });
@@ -53,7 +53,7 @@ export class FiltersComponent extends I18nMixin(LitElement) {
   }
 
   protected onReset(): void {
-    this.pickingListService.setSortingQualifier(defaultSortingQualifier);
+    this.pickingListService.setQualifier(defaultQualifier);
 
     this.onClose();
   }

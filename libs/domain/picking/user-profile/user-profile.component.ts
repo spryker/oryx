@@ -1,8 +1,13 @@
-import { AuthService } from '@spryker-oryx/auth';
+import { AuthService, IdentityService } from '@spryker-oryx/auth';
 import { AppRef, StorageService } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
-import { SyncSchedulerService } from '@spryker-oryx/offline';
+import { NetworkStateService } from '@spryker-oryx/offline';
+import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
+import {
+  WarehouseUserAssignment,
+  warehouseUserAssignmentStorageKey,
+} from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { CLOSE_EVENT } from '@spryker-oryx/ui/modal';
@@ -17,19 +22,17 @@ import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { tap } from 'rxjs';
-import {
-  WarehouseUserAssignment,
-  warehouseUserAssignmentStorageKey,
-} from '../src/models/warehouse-user-assignment';
 import { userProfileComponentStyles } from './user-profile.styles';
 
 @signalAware()
-export class UserProfileComponent extends I18nMixin(LitElement) {
+export class PickingUserProfileComponent extends I18nMixin(LitElement) {
   static styles = userProfileComponentStyles;
 
   protected routerService = resolve(RouterService);
   protected authService = resolve(AuthService);
   protected storageService = resolve(StorageService);
+  protected identityService = resolve(IdentityService);
+  protected networkStateService = resolve(NetworkStateService);
 
   protected injector = resolve(INJECTOR);
   protected injectorDataPlugin =
@@ -55,6 +58,9 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
       "user.profile.you-can't-log-out-because-of-a-pending-synchronization"
     )
   );
+  protected $isOnline = signal(this.networkStateService.online());
+
+  protected $identity = signal(this.identityService.get());
 
   protected override render(): TemplateResult {
     return html`
@@ -70,7 +76,10 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
         )}
         <dl>
           <dt class="info-label">${this.i18n('user.profile.employee-id')}</dt>
-          <dd class="info-value">admin@spryker.com</dd>
+          <dd class="info-value">
+            ${this.$identity().userId ??
+            this.i18n('user.profile.unknown-user-id')}
+          </dd>
         </dl>
       </div>
 
@@ -103,13 +112,14 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
           () =>
             html`
               <oryx-button
-                class="receive-data"
+                class="sync-data"
                 .type=${ButtonType.Outline}
                 .color=${ButtonColor.Neutral}
-                .text=${this.i18n('user.profile.receive-data')}
+                .text=${this.i18n('user.profile.sync-data')}
                 block
                 ?loading=${this.loading}
-                @click=${this.onReceiveData}
+                ?disabled=${!this.$isOnline()}
+                @click=${this.onSyncData}
               ></oryx-button>
             `
         )}
@@ -119,11 +129,11 @@ export class UserProfileComponent extends I18nMixin(LitElement) {
     `;
   }
 
-  protected onReceiveData(): void {
+  protected onSyncData(): void {
     this.loading = true;
 
     this.injectorDataPlugin
-      .refreshData(this.injector)
+      .syncData(this.injector)
       .pipe(tap(() => (this.loading = false)))
       .subscribe(() => {
         this.dispatchEvent(

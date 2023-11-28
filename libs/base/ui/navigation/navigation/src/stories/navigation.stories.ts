@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../.constants';
 
 export default {
@@ -44,7 +44,12 @@ const Template: Story<unknown> = (): TemplateResult => {
             </svg>
           </oryx-icon>
 
-          test
+          Experience builder
+        </oryx-navigation-item>
+
+        <oryx-navigation-item divider>
+          <oryx-icon slot="icon" type="settings"> </oryx-icon>
+          Settings
         </oryx-navigation-item>
       </oryx-navigation>
     </div>

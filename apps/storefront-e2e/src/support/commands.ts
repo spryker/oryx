@@ -9,7 +9,7 @@ export {};
 declare global {
   namespace Cypress {
     interface Chainable {
-      hydrateElemenet(assetPath: string, triggerHydrationFn): Chainable<void>;
+      hydrateElement(assetPath: string, triggerHydrationFn): Chainable<void>;
       checkCurrencyFormatting(locale: string): void;
       takeScreenshot(name: string, options?: object): Chainable<void>;
     }
@@ -17,7 +17,7 @@ declare global {
 }
 
 Cypress.Commands.add(
-  'hydrateElemenet',
+  'hydrateElement',
   (assetPath: string, triggerHydrationFn) => {
     if (isSSREnabled()) {
       cy.intercept(assetPath).as(`${assetPath}Request`);

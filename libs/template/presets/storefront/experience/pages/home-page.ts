@@ -1,4 +1,5 @@
 import { ExperienceComponent, StyleRuleSet } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 const brand = (name: string, rules?: StyleRuleSet[]) => ({
   type: 'oryx-content-image',
@@ -18,6 +19,7 @@ export const homePage: ExperienceComponent = {
     description: 'Home Page Description',
   },
   components: [
+    featureVersion >= '1.2' ? { ref: 'header' } : {},
     {
       type: 'oryx-composition',
       id: 'home-hero',
@@ -38,6 +40,7 @@ export const homePage: ExperienceComponent = {
             rules: [
               {
                 width: '100%',
+                height: 'inherit',
                 style: 'position:absolute;left:0',
               },
             ],
@@ -51,7 +54,6 @@ export const homePage: ExperienceComponent = {
               <span class="subtitle">CANON EOS R7 System camera</span>
               <h1 style="margin:20px 0;">Discover everything</h1>
               <div class="h3" style="margin-bottom:20px">EOS R7 wows with its ability to track fast-moving subjects with its Deep-learning Dual Pixel CMOS AF II focus system.</div>
-
               <oryx-button  href="/category/12">Shop now</oryx-button>
 
             `,
@@ -74,9 +76,15 @@ export const homePage: ExperienceComponent = {
         rules: [
           {
             height: '550px',
-            layout: 'split',
+            layout:
+              featureVersion >= '1.2'
+                ? {
+                    type: 'split',
+                    bleed: true,
+                  }
+                : 'split',
             align: 'end',
-            bleed: true,
+            ...(featureVersion >= '1.2' ? {} : { bleed: true }),
           },
         ],
       },
@@ -90,7 +98,7 @@ export const homePage: ExperienceComponent = {
             padding: '30px 0 5px',
             align: 'stretch',
           },
-          { query: { breakpoint: 'sm' }, padding: '20px' },
+          { query: { breakpoint: 'sm' }, padding: '20px 0' },
         ],
         category: '10',
         sort: 'rating',
@@ -137,5 +145,10 @@ export const homePage: ExperienceComponent = {
         brand('Acer'),
       ],
     },
+    featureVersion >= '1.2'
+      ? {
+          ref: 'footer',
+        }
+      : {},
   ],
 };

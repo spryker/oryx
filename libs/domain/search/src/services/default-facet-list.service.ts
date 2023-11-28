@@ -16,7 +16,9 @@ export class DefaultFacetListService implements FacetListService {
       map(
         (facets) =>
           facets?.find(
-            (facet) => facet.name === name || facet.parameter === parameter
+            (facet) =>
+              (name && facet.name === name) ||
+              (parameter && facet.parameter === parameter)
           ) ?? ({} as Facet)
       )
     );

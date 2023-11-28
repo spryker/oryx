@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.2.0 (2023-11-09)
+
+
+### Features
+
+* facet rating component ([#830](https://github.com/spryker/oryx/issues/830)) ([adb1a61](https://github.com/spryker/oryx/commit/adb1a613df099c332ac585150898c84468ff2913))
+* price facet component ([#849](https://github.com/spryker/oryx/issues/849)) ([9c14c1f](https://github.com/spryker/oryx/commit/9c14c1ff5a045813eb400b906d83e9b492a93c15))
+* range facet component ([#847](https://github.com/spryker/oryx/issues/847)) ([dd6ca19](https://github.com/spryker/oryx/commit/dd6ca19237cea8f96747c5cf75aea52931cd0b9f))
+
+
+
+
+
+# 1.1.0 (2023-09-22)
+
+
+### Bug Fixes
+
+* facets and browser history ([#770](https://github.com/spryker/oryx/issues/770)) ([b3ba474](https://github.com/spryker/oryx/commit/b3ba474cd44e2df7909e09281010087bcca50a9a))
+* source for the query that is using for search ([#773](https://github.com/spryker/oryx/issues/773)) ([cd0ddbf](https://github.com/spryker/oryx/commit/cd0ddbfa3ce0dc282100f2c5e6d37adcf947d2f2))
+
+
+
+
+
 ## 1.0.2 (2023-09-13)
 
 

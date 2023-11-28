@@ -3,12 +3,7 @@ import { css } from 'lit';
 export const styles = css`
   :host {
     display: block;
-    min-height: 100vh;
     background: var(--oryx-color-neutral-3);
-  }
-
-  oryx-header {
-    box-shadow: var(--oryx-elevation-2) var(--oryx-elevation-color-2);
   }
 
   .warehouses-list {

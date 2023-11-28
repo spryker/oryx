@@ -18,14 +18,14 @@ const cart = {
   'cart.entry.<quantity>-items': 'x {quantity}',
   'cart.entry.confirm-remove-<sku>': 'Do you want to remove "{sku}"?',
   'cart.confirm-removed': 'Item is successfully removed',
-  'login.welcome-please-log-in-to-start-picking':
-    'Welcome! Please log in to start picking.',
   'oauth.logging-you-in': 'Logging you in...',
 };
 
 const checkout = {
   'checkout.guest.continue-without-account':
     'You can checkout without creating an account. You will have a chance to create an account later.',
+  'checkout.totals.<count>-items':
+    'Products ({count, plural, one {one item} other {{count} items}})',
 };
 
 const order = {
@@ -35,7 +35,7 @@ const order = {
 
 const user = {
   'user.address.remove-info':
-    'Removing this address will not remove any pending orders being dispatched to this address',
+    'Removing this address will not remove any pending orders being dispatched to this` address',
 };
 
 const picking = {
@@ -43,6 +43,33 @@ const picking = {
     'Of {count, plural, one {{count} item} other {{count} items}}',
   'picking.filter.<count>-open-pick-lists':
     '{count} Open Pick {count, plural, one {List} other {Lists}}',
+  'picking.select-your-location': 'Select your location to get started',
+  'picking.discard.pick-list': 'Discard pick list?',
+  'picking.discard.stop-picking': 'Stop picking and discard pick list?',
+  'picking.discard.warning': 'The pick list will be lost!',
+  'picking.processed.success': 'Great job!',
+  'picking.processed.all': 'All items are processed!',
+  'picking.location.loading': 'Loading locations',
+  'picking.location.unassigned': 'You are not assigned to any locations',
+  'picking.location.help': 'Please reach out to your manager',
+  'picking.location.select': 'Select your location',
+};
+
+const ui = {
+  'ui.password.at-least-<count>-characters':
+    'At least {count, plural, one {{count} character} other {{count} characters}}',
+  'ui.password.at-most-<count>-characters':
+    'At most {count, plural, one {{count} character} other {{count} characters}}',
+  'ui.password.at-least-<count>-uppercase-letters':
+    'At least {count, plural, one {{count} uppercase letter} other {{count} uppercase letters}}',
+  'ui.password.at-least-<count>-numbers':
+    'At least {count, plural, one {{count} number} other {{count} numbers}}',
+  'ui.password.at-least-<count>-special-chars':
+    'At least {count, plural, one {{count} special character} other {{count} special characters}} (e.g. *$%)',
+};
+
+const search = {
+  'search.facet.rating.up': '& up',
 };
 
 export default {
@@ -52,4 +79,6 @@ export default {
   ...order,
   ...user,
   ...picking,
+  ...ui,
+  ...search,
 };

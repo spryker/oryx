@@ -136,7 +136,6 @@ export class SiteNavigationItemComponent extends ContentMixin<SiteNavigationItem
         enableCloseButtonInHeader
         enableCloseByEscape
         enableCloseByBackdrop
-        fullscreen
         heading=${ifDefined(this.$options().label)}
       >
         ${this.renderComposition()}
