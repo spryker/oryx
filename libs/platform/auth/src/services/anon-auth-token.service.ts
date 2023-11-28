@@ -1,6 +1,5 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { featureVersion } from '@spryker-oryx/utilities';
 import {
   Observable,
   catchError,
@@ -43,11 +42,7 @@ export class AnonAuthTokenService implements AuthTokenService {
       .get<string>(this.ANONYMOUS_USER_IDENTIFIER, StorageType.Session)
       .pipe(
         switchMap((userId) => {
-          return featureVersion >= '1.4'
-            ? of(userId)
-            : userId
-            ? of(userId)
-            : this.createAnonymousId();
+          return userId ? of(userId) : this.createAnonymousId();
         }),
         map((userId) => ({ type: 'anon', token: userId }))
       );
