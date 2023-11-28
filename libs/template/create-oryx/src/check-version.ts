@@ -1,5 +1,32 @@
-import latestVersion from 'latest-version';
+import * as https from 'https';
 import pkg from '../package.json';
+
+function latestVersion(packageName: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const url = `https://registry.npmjs.org/${packageName}`;
+
+    https
+      .get(url, (res) => {
+        let rawData = '';
+
+        res.on('data', (chunk) => {
+          rawData += chunk;
+        });
+        res.on('end', () => {
+          try {
+            const parsedData = JSON.parse(rawData);
+            resolve(parsedData['dist-tags'].latest);
+          } catch (e: any) {
+            reject(e.message);
+          }
+        });
+      })
+      .on('error', (e) => {
+        console.log('error');
+        reject(e.message);
+      });
+  });
+}
 
 export async function checkLatestVersion(): Promise<void> {
   const currentVersion = pkg.version;

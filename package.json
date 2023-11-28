@@ -175,7 +175,6 @@
     "http-proxy-middleware": "^2.0.6",
     "json-server": "^0.17.3",
     "jsonapi-serializer": "~3.6.7",
-    "latest-version": "^7.0.0",
     "lit": "^2.7.4",
     "marked": "^5.1.0",
     "oauth4webapi": "^2.1.0",

@@ -7,8 +7,7 @@
   "description": "Create Spryker Oryx Apps",
   "bin": "./bin/main.cjs",
   "devDependencies": {
-    "@spryker-oryx/cli": "*",
-    "latest-version": "^7.0.0"
+    "@spryker-oryx/cli": "*"
   },
   "publishConfig": {
     "access": "public"

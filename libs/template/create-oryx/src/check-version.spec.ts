@@ -1,9 +1,10 @@
-import latestVersion from 'latest-version';
+import * as https from 'https';
+import { Readable } from 'stream';
 import { Mock } from 'vitest';
 import { checkLatestVersion } from './check-version';
 
-vi.mock('latest-version', () => ({
-  default: vi.fn(),
+vi.mock('https', () => ({
+  get: vi.fn(),
 }));
 vi.mock('../package.json', () => ({
   default: {
@@ -13,19 +14,35 @@ vi.mock('../package.json', () => ({
 }));
 
 describe('checkLatestVersion', () => {
-  let consoleWarnMock: any;
+  let consoleWarnMock: Mock;
 
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    consoleWarnMock = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    consoleWarnMock = vi
+      .spyOn(console, 'warn')
+      .mockImplementation(() => {}) as Mock;
   });
 
   afterEach(() => {
     consoleWarnMock.mockRestore();
+    vi.restoreAllMocks();
   });
 
+  function mockHttpResponse(body: any, error: any = null) {
+    (https.get as Mock).mockImplementation((url, callback) => {
+      callback(Readable.from([JSON.stringify(body)]));
+      return {
+        on: (event: any, handler: any) => {
+          if (event === 'error' && error) {
+            handler(error);
+          }
+        },
+      };
+    });
+  }
+
   it('does not warn if current version is the latest', async () => {
-    (latestVersion as Mock).mockResolvedValue('1.0.0');
+    mockHttpResponse({ 'dist-tags': { latest: '1.0.0' } });
 
     await checkLatestVersion();
 
@@ -33,7 +50,7 @@ describe('checkLatestVersion', () => {
   });
 
   it('warns if a newer version is available', async () => {
-    (latestVersion as Mock).mockResolvedValue('1.1.0');
+    mockHttpResponse({ 'dist-tags': { latest: '1.1.0' } });
 
     await checkLatestVersion();
 
@@ -43,9 +60,9 @@ describe('checkLatestVersion', () => {
   });
 
   it('handles errors gracefully', async () => {
-    (latestVersion as Mock).mockRejectedValue(new Error('Network error'));
+    mockHttpResponse({}, new Error('Network error'));
 
-    await expect(checkLatestVersion()).resolves.toBeUndefined();
+    expect(await checkLatestVersion()).toBeUndefined();
     expect(consoleWarnMock).not.toHaveBeenCalled();
   });
 });
