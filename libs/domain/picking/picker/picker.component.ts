@@ -1,7 +1,7 @@
 import { resolve } from '@spryker-oryx/di';
 import {
   PartialPicking,
-  PickingHeaderService,
+  PickingGuardService,
   PickingListMixin,
   PickingTab,
   ProductItemPickedEvent,
@@ -24,7 +24,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { catchError, of, tap } from 'rxjs';
+import { catchError, of, take, tap } from 'rxjs';
 import { pickingComponentStyles } from './picker.styles';
 
 export class PickingPickerComponent extends I18nMixin(
@@ -33,7 +33,7 @@ export class PickingPickerComponent extends I18nMixin(
   static styles = pickingComponentStyles;
 
   protected routerService = resolve(RouterService);
-  protected pickingHeaderService = resolve(PickingHeaderService);
+  protected pickingGuardService = resolve(PickingGuardService);
 
   @state()
   protected partialPicking: PartialPicking | null = null;
@@ -161,15 +161,11 @@ export class PickingPickerComponent extends I18nMixin(
     this.pickingListService
       .finishPicking(this.$pickingList())
       .pipe(
+        take(1),
+        catchError(() => of(null)),
         tap(() => {
+          this.pickingGuardService.allow();
           this.routerService.navigate(`/`);
-          this.pickingHeaderService.discard();
-        }),
-        catchError(() => {
-          this.routerService.navigate(`/`);
-          this.pickingHeaderService.discard();
-
-          return of(null);
         })
       )
       .subscribe();
@@ -179,9 +175,6 @@ export class PickingPickerComponent extends I18nMixin(
     const tabs = this.buildTabs();
 
     return html`
-      <oryx-picking-picker-header
-        pickingListId="${this.pickingListId}"
-      ></oryx-picking-picker-header>
       <oryx-tabs
         appearance="${TabsAppearance.Secondary}"
         sticky
@@ -252,9 +245,9 @@ export class PickingPickerComponent extends I18nMixin(
       <section>
         <oryx-image resource="picking-items-processed"></oryx-image>
         <oryx-heading>
-          <h1>${this.i18n(`picking.great-job`)}!</h1>
+          <h1>${this.i18n(`picking.processed.success`)}</h1>
         </oryx-heading>
-        <span>${this.i18n(`picking.all-items-are-processed`)}!</span>
+        <span>${this.i18n(`picking.processed.all`)}</span>
       </section>
       ${this.renderFinishButton()}
     `;

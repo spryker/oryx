@@ -97,10 +97,6 @@ describe('PickingWarehouseAssignmentComponent', () => {
       });
     });
 
-    it('should render header', () => {
-      expect(el).toContainElement('oryx-picking-header');
-    });
-
     mockWarehouseUserAssignments.forEach((item, index) => {
       it(`should render button (${index}) of each location`, () => {
         const buttons =
