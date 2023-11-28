@@ -6,7 +6,7 @@ export interface AuthTokenService {
 
 export interface AuthTokenData {
   token: string | null;
-  type: string;
+  type?: string;
 }
 
 export const AuthTokenService = 'oryx.AuthTokenService';

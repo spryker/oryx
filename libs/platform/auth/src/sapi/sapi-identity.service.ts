@@ -1,5 +1,6 @@
 import {
   AuthIdentity,
+  AuthService,
   AuthTokenData,
   AuthTokenService,
   IdentityOptions,
@@ -27,12 +28,16 @@ export class SapiIdentityService implements IdentityService {
 
   protected generateGuest$ = new BehaviorSubject<boolean>(false);
 
-  protected identity$ = this.authService.getToken().pipe(
-    featureVersion >= '1.4'
-      ? switchMap((token) => this.getUserIdFromToken(token))
-      : map((token) => this.getFromToken(token)),
-    tap(() => this.clearAnonymousId()),
-    catchError(() => this.guestIdentity$),
+  protected identity$ = this.authService.isAuthenticated().pipe(
+    switchMap(() =>
+      this.authTokenService.getToken().pipe(
+        featureVersion >= '1.4'
+          ? switchMap((token) => this.getUserIdFromToken(token))
+          : map((token) => this.getFromToken(token)),
+        tap(() => this.clearAnonymousId()),
+        catchError(() => this.guestIdentity$)
+      )
+    ),
     shareReplay(1)
   );
 
@@ -54,7 +59,8 @@ export class SapiIdentityService implements IdentityService {
     );
 
   constructor(
-    protected readonly authService = inject(AuthTokenService),
+    protected readonly authService = inject(AuthService),
+    protected readonly authTokenService = inject(AuthTokenService),
     protected readonly storage = inject(StorageService)
   ) {}
 
