@@ -4,15 +4,6 @@ declare global {
   }
 }
 
-/**
- * @deprecated since 1.4 will be removed. Use ContentFields interface instead.
- */
-export const enum ContentFields {
-  Article = 'article',
-  Faq = 'faq',
-  Component = 'component',
-}
-
 // Object is workaround for autocomplete. Typescript incorrect parse metadata when define union and strict type.
 // Opened issue https://github.com/Microsoft/TypeScript/issues/29729
 // eslint-disable-next-line @typescript-eslint/ban-types
