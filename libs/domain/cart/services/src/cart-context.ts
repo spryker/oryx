@@ -20,7 +20,10 @@ export function cartContextFallbackFactory(
     .currentParams()
     .pipe(
       switchMap((params) =>
-        context.deserialize(CartContext.CartID, (params?.cartId as string) ?? '')
+        context.deserialize(
+          CartContext.CartID,
+          (params?.cartId as string) ?? ''
+        )
       )
     );
 }
@@ -35,7 +38,7 @@ export class ProductContextSerializer
   }
 
   deserialize(cartId: string): Observable<CartQualifier | undefined> {
-    return of(cartId ? { cartId }: undefined);
+    return of(cartId ? { cartId } : undefined);
   }
 }
 

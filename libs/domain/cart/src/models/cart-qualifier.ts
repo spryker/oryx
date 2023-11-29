@@ -15,7 +15,12 @@ export interface UpdateCartEntryQualifier extends CartEntryQualifier {
   quantity: number;
 }
 
+export interface CreateCartQualifier {
+  name?: string;
+}
+
 export interface UpdateCartQualifier extends CartEntryQualifier {
   priceMode?: string;
   version?: string;
+  isDefault?: true;
 }

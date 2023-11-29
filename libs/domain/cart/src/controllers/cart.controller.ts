@@ -1,4 +1,6 @@
 import { CartService } from '@spryker-oryx/cart';
+import { CartContext } from '@spryker-oryx/cart/services';
+import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import { PricingService } from '@spryker-oryx/site';
 import { ObserveController } from '@spryker-oryx/utilities';
@@ -13,8 +15,6 @@ import {
   FormattedCartTotals,
   FormattedDiscount,
 } from '../models';
-import { ContextController } from '@spryker-oryx/core';
-import { CartContext } from '@spryker-oryx/cart/services';
 
 export class CartController {
   protected observe: ObserveController<LitElement & CartComponentAttributes>;
@@ -27,15 +27,14 @@ export class CartController {
   }
 
   protected get cartQualifier(): Observable<CartQualifier | undefined> {
-    return this.observe
-      .get('cartId')
-      .pipe(
-        switchMap((cartId) => cartId ? 
-          of(cartId): 
-          this.contextController.get<string>(CartContext.CartID)
-        ),
-        map((cartId) => cartId ? { cartId } : undefined),
-      );
+    return this.observe.get('cartId').pipe(
+      switchMap((cartId) =>
+        cartId
+          ? of(cartId)
+          : this.contextController.get<string>(CartContext.CartID)
+      ),
+      map((cartId) => (cartId ? { cartId } : undefined))
+    );
   }
 
   isEmpty(): Observable<boolean> {

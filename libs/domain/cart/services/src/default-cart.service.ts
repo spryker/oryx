@@ -105,6 +105,13 @@ export class DefaultCartService implements CartService {
     },
   });
 
+  protected deleteCartCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: UpdateCartQualifier) => {
+      return this.adapter.delete(qualifier);
+    },
+  });
+
   protected updateAfterModification$ = createEffect<Cart>([
     CartModificationSuccess,
     ({ event }) => {
@@ -210,6 +217,10 @@ export class DefaultCartService implements CartService {
     );
   }
 
+  getCarts(): Observable<Cart[] | undefined> {
+    return this.cartsQuery$.get();
+  }
+
   getEntries(data?: CartQualifier): Observable<CartEntry[]> {
     return this.getCart(data).pipe(map((cart) => cart?.products ?? []));
   }
@@ -253,6 +264,14 @@ export class DefaultCartService implements CartService {
 
   updateCart(qualifier: UpdateCartQualifier): Observable<unknown> {
     return this.executeWithOptionalCart(qualifier, this.updateCartCommand$);
+  }
+
+  setActiveCart(qualifier: UpdateCartQualifier): Observable<unknown> {
+    return this.updateCart({ ...qualifier, isDefault: true });
+  }
+
+  deleteCart(qualifier: UpdateCartQualifier): Observable<unknown> {
+    return this.deleteCartCommand$.execute(qualifier);
   }
 
   isBusy({ groupKey }: CartEntryQualifier = {}): Observable<boolean> {
