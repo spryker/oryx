@@ -38,6 +38,12 @@ export class ContentTextComponent extends TextMixin(
   });
 
   protected override render(): TemplateResult | void {
-    return html`${this.$text()}`;
+    if (featureVersion >= '1.4') {
+      return html`${this.$text()}`;
+    } else {
+      const text = this.$content()?.text;
+      if (!text) return;
+      return html`<oryx-text .content=${text}></oryx-text>`;
+    }
   }
 }
