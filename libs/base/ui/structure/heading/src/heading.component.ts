@@ -1,18 +1,13 @@
-import { featureVersion, ssrShim } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult, isServer } from 'lit';
-import { property, query } from 'lit/decorators.js';
+import { Size, featureVersion, ssrShim } from '@spryker-oryx/utilities';
+import { LitElement, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
 import { html } from 'lit/static-html.js';
 import { HeadingAttributes, HeadingTag } from './heading.model';
 import { headingStyles } from './heading.styles';
-import { TypographyController } from './typography.controller';
 
 @ssrShim('style')
 export class HeadingComponent extends LitElement implements HeadingAttributes {
   static styles = headingStyles;
-
-  protected typographyController = new TypographyController(this);
-
-  @query('*') protected content?: HTMLElement;
 
   @property({ reflect: true }) tag?: HeadingTag;
   @property({ reflect: true }) typography?: HeadingTag;
@@ -36,26 +31,17 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
 
   private _maxLines?: number;
   @property() set maxLines(value: number) {
-    console.log('maxLines', value);
     this._maxLines = value;
     if (featureVersion < '1.4' && value > 0) {
       this.style.setProperty('--max-lines', String(value));
     }
   }
-
   get maxLines(): number | undefined {
     return this._maxLines;
   }
 
-  protected willUpdate(): void {
-    // workaround for SSR, since willUpdate is not available on controller lifecycle
-    if (isServer) {
-      this.typographyController.hostUpdate();
-    }
-  }
-
   protected override render(): TemplateResult {
-    return this.renderTag(html`<slot></slot>`);
+    return this.renderTag(html`<slot .style=${this.getSlotStyle()}></slot>`);
   }
 
   protected renderTag(template: TemplateResult): TemplateResult {
@@ -86,5 +72,30 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
       default:
         return html`${template}`;
     }
+  }
+
+  protected getSlotStyle(): string | undefined {
+    if (featureVersion < '1.4') return;
+
+    let result = '';
+    if (featureVersion >= '1.4' && this.maxLines) {
+      result = `--max-lines:${this.maxLines};`;
+    }
+    const tag = this.typography ?? this.as ?? this.tag;
+
+    if (tag) result += this.getHeadingStyle(tag as HeadingTag);
+    if (this.lg) result += this.getHeadingStyle(this.lg, Size.Lg);
+    if (this.md) result += this.getHeadingStyle(this.md, Size.Md);
+    if (this.sm) result += this.getHeadingStyle(this.sm, Size.Sm);
+    return result;
+  }
+
+  protected getHeadingStyle(tag: HeadingTag, size?: Size): string {
+    const screen = size ? `-${size}` : '';
+    return `
+      --_f${screen}: var(--oryx-typography-${tag}-size);
+      --_w${screen}: var(--oryx-typography-${tag}-weight);
+      --_l${screen}: var(--oryx-typography-${tag}-line);
+    `;
   }
 }

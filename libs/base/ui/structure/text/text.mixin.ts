@@ -49,7 +49,6 @@ export const TextMixin = <T extends Type<LitElement>>(
       convertTypography(text: string): string {
         return text
           ?.replace(headingRegex, (_, tag, attributes, content) => {
-            console.log(attributes);
             return `<oryx-heading tag="${tag}" ${attributes}>${content}</oryx-heading>`;
           })
           .replace(
@@ -59,11 +58,11 @@ export const TextMixin = <T extends Type<LitElement>>(
                 attrBefore || attrAfter
                   ? ` ${attrBefore ?? ''} ${attrAfter ?? ''}`
                   : '';
-              const cls2 = cls.replace(tag, '').trim().length
+              const classNames = cls.replace(tag, '').trim().length
                 ? `class="${cls.replace(tag, '')}"`
                 : ``;
-              console.log(attributes);
-              return `<oryx-heading typography="${tag}" ${cls2} ${attributes}>${content}</oryx-heading>`;
+
+              return `<oryx-heading typography="${tag}" ${classNames} ${attributes}>${content}</oryx-heading>`;
             }
           );
       },

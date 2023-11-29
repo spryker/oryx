@@ -28,7 +28,7 @@ export function productAttributeNormalizer(
 
   return {
     sku,
-    name,
+    name: `${name} ${name} ${name} ${name} ${name} ${name} ${name} `,
     description,
     averageRating: averageRating ? Number(averageRating) : 0,
     reviewCount,

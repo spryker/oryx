@@ -28,6 +28,7 @@ export class TypographyController implements ReactiveController {
     //   this.host.querySelector<HTMLElement>('*') ??
     //   this.host.shadowRoot?.querySelector<HTMLElement>('*');
 
+    // TODO: make it work without access to query selector
     const tag = this.host.typography ?? this.host.as ?? this.host.tag;
 
     // element?.tagName.toLowerCase();
@@ -35,9 +36,11 @@ export class TypographyController implements ReactiveController {
     if (this.host.lg) this.applyStyle(this.host.lg, Size.Lg);
     if (this.host.md) this.applyStyle(this.host.md, Size.Md);
     if (this.host.sm) this.applyStyle(this.host.sm, Size.Sm);
-    console.log('maxLines', tag, this.host.maxLines);
-    // if (this.host.maxLines)
+
+    // if (this.host.maxLines) {
+    //   console.log('maxLines', tag, this.host.maxLines);
     //   this.host.style.setProperty('--max-lines', String(this.host.maxLines));
+    // }
   }
 
   protected applyStyle(tag: string, size?: Size): void {
