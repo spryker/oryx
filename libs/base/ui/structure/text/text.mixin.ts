@@ -4,6 +4,13 @@ import { DirectiveResult } from 'lit/directive.js';
 import { UnsafeHTMLDirective, unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { convertButtons, convertHeadings, convertLinks } from './text.util';
 
+/**
+ * Converts text to HTML and applies the following transformations:
+ * - Headings (e.g. h1, h2, small, caption, strong)
+ * - Links
+ * - Buttons
+ * ```
+ */
 export declare class TextMixinInterface {
   protected convertText(
     raw: string
@@ -28,7 +35,7 @@ export const TextMixin = <T extends Type<LitElement>>(
       return unsafeHTML(text);
     }
 
-    // hide private mixin methods from public API
+    // Do not leak methods into public API as they can conflict with other mixins
     protected [TextMixinInternals] = {
       convertLinks,
       convertButtons,
