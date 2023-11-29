@@ -6,18 +6,23 @@ import {
   CartEntry,
   CartEntryQualifier,
   CartQualifier,
+  CreateCartQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '../models';
 
 export interface CartService {
   getCart(data?: CartQualifier): Observable<Cart | undefined>;
+  getCarts(): Observable<Cart[] | undefined>;
   getCartState(data?: CartQualifier): Observable<QueryState<Cart>>;
   getEntries(data?: CartQualifier): Observable<CartEntry[]>;
   addEntry(data: AddCartEntryQualifier): Observable<unknown>;
   updateEntry(data: UpdateCartEntryQualifier): Observable<unknown>;
   deleteEntry(data: CartEntryQualifier): Observable<unknown>;
   updateCart(data: UpdateCartQualifier): Observable<unknown>;
+  setActiveCart(data: UpdateCartQualifier): Observable<unknown>;
+  createCart(data: CreateCartQualifier): Observable<unknown>;
+  deleteCart(data: CartQualifier): Observable<unknown>;
 
   /**
    * Get busy state for either cart or individual entry by groupKey

@@ -9,6 +9,7 @@ import {
   CartNormalizer,
   CartQualifier,
   CartsNormalizer,
+  CreateCartQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
@@ -104,11 +105,25 @@ export class DefaultCartAdapter implements CartAdapter {
           },
         };
 
+        const options = {
+          headers: { 'If-Match': '*' },
+        };
+
         return this.http
-          .patch<ApiCartModel.Response>(url, body)
+          .patch<ApiCartModel.Response>(url, body, options)
           .pipe(this.transformer.do(CartNormalizer));
       })
     );
+  }
+
+  delete(data: CartQualifier): Observable<Cart> {
+    if (!data.cartId) return throwError(() => new Error('Cart ID is required'));
+
+    return this.http
+      .delete<ApiCartModel.Response>(
+        `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}/${data.cartId}`
+      )
+      .pipe(this.transformer.do(CartNormalizer));
   }
 
   addEntry(data: AddCartEntryQualifier): Observable<Cart> {
@@ -149,6 +164,34 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
+  create(qualifier?: CreateCartQualifier): Observable<Cart> {
+    return combineLatest([
+      this.store.get(),
+      this.currency.get(),
+      this.priceMode.get(),
+      this.generateCartName(qualifier),
+    ]).pipe(
+      take(1),
+      switchMap(([store, currency, priceMode, name]) =>
+        this.http.post<ApiCartModel.Response>(
+          `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}`,
+          {
+            data: {
+              type: 'carts',
+              attributes: {
+                name,
+                priceMode,
+                currency,
+                store: store?.id,
+              },
+            },
+          }
+        )
+      ),
+      this.transformer.do(CartNormalizer)
+    );
+  }
+
   protected createCartIfNeeded(
     identity: AuthIdentity,
     cartId: string | undefined
@@ -158,31 +201,7 @@ export class DefaultCartAdapter implements CartAdapter {
     }
 
     // if we are a registered user and we do not have a cartId, we need to create a cart first
-    return combineLatest([
-      this.store.get(),
-      this.currency.get(),
-      this.priceMode.get(),
-    ]).pipe(
-      take(1),
-      switchMap(([store, currency, priceMode]) =>
-        this.http.post<ApiCartModel.Response>(
-          `${this.SCOS_BASE_URL}/${ApiCartModel.UrlParts.Carts}`,
-          {
-            data: {
-              type: 'carts',
-              attributes: {
-                name: 'My Cart',
-                priceMode,
-                currency,
-                store: store?.id,
-              },
-            },
-          }
-        )
-      ),
-      this.transformer.do(CartNormalizer),
-      map((result) => [identity, result.id])
-    );
+    return this.create().pipe(map(({ id }) => [identity, id]));
   }
 
   updateEntry(data: UpdateCartEntryQualifier): Observable<Cart> {
@@ -231,11 +250,18 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
-  protected generateUrl(path: string, isAnonymous: boolean): string {
+  protected generateUrl(path: string, isAnonymous?: boolean): string {
     const includes = isAnonymous
       ? [ApiCartModel.Includes.GuestCartItems]
       : [ApiCartModel.Includes.Items];
 
     return `${this.SCOS_BASE_URL}/${path}${`?include=${includes.join(',')}`}`;
+  }
+
+  //TODO: adjust setting of the cart name for multi vs single cart
+  protected generateCartName(
+    qualifier?: CreateCartQualifier
+  ): Observable<string | void> {
+    return of(qualifier?.name ?? 'My cart');
   }
 }
