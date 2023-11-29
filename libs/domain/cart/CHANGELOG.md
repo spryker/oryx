@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2023-11-22)
+
+
+### Bug Fixes
+
+* guest cart failover for backend not supporting guest carts ([#900](https://github.com/spryker/oryx/issues/900)) ([3d7a3e3](https://github.com/spryker/oryx/commit/3d7a3e325e2442b6792d77cb762a256d98843830))
+
+
+
+
+
 # 1.2.0 (2023-11-09)
 
 
