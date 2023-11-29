@@ -18,12 +18,13 @@ import {
 
 export class CartController {
   protected observe: ObserveController<LitElement & CartComponentAttributes>;
+  protected contextController: ContextController;
   protected cartService = resolve(CartService);
   protected pricingService = resolve(PricingService);
-  protected contextController = new ContextController(this.host);
 
   constructor(protected host: LitElement & CartComponentAttributes) {
     this.observe = new ObserveController(host);
+    this.contextController = new ContextController(host);
   }
 
   protected get cartQualifier(): Observable<CartQualifier | undefined> {
