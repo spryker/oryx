@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2023-11-22)
+
+
+### Features
+
+* header category navigation ([#882](https://github.com/spryker/oryx/issues/882)) ([acccb22](https://github.com/spryker/oryx/commit/acccb22783ff3fbf69f4b15c0b77e12220dd0197))
+
+
+### Bug Fixes
+
+* carousel navigation is missing mutation observer ([#897](https://github.com/spryker/oryx/issues/897)) ([48716a2](https://github.com/spryker/oryx/commit/48716a21cade5fb0a492a2eddd4f2ecab65b921e))
+* dynamic arrow navigation behavior ([#896](https://github.com/spryker/oryx/issues/896)) ([3c1a393](https://github.com/spryker/oryx/commit/3c1a393bc2e62a54f48da4717e09b49e59a6804a))
+* top header layout is broken on medium screens ([#889](https://github.com/spryker/oryx/issues/889)) ([4846ca8](https://github.com/spryker/oryx/commit/4846ca8bdf33d3e66397dd4a620a01906e33bd2c))
+
+
+
+
+
 # 1.2.0 (2023-11-09)
 
 

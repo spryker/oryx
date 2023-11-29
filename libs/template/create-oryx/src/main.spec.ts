@@ -1,3 +1,7 @@
+vi.mock('./check-version', () => ({
+  checkLatestVersion: vi.fn().mockResolvedValue(undefined),
+}));
+
 const mockCliBuilder = {
   create: vi.fn(),
 };

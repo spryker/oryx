@@ -13,7 +13,9 @@ export const HeaderTemplate: ExperienceComponent = {
     ...topHeader({ priceModeSelector: true }),
     ...mainHeader(),
     ...(featureVersion >= '1.3'
-      ? categoryNavigation(['2', '11', '23', '31'])
+      ? categoryNavigation(
+          featureVersion >= '1.4' ? '35,38' : ['2', '11', '23', '31']
+        )
       : []),
   ],
 };
