@@ -15,6 +15,7 @@ import {
   CartQuery,
   CartService,
   CartsUpdated,
+  CreateCartQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
@@ -102,6 +103,13 @@ export class DefaultCartService implements CartService {
     ...this.cartCommandBase,
     action: (qualifier: UpdateCartQualifier) => {
       return this.adapter.update(qualifier);
+    },
+  });
+
+  protected createCartCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: CreateCartQualifier) => {
+      return this.adapter.create(qualifier);
     },
   });
 
@@ -270,7 +278,11 @@ export class DefaultCartService implements CartService {
     return this.updateCart({ ...qualifier, isDefault: true });
   }
 
-  deleteCart(qualifier: UpdateCartQualifier): Observable<unknown> {
+  createCart(qualifier: CreateCartQualifier): Observable<unknown> {
+    return this.createCartCommand$.execute(qualifier);
+  }
+
+  deleteCart(qualifier: CartQualifier): Observable<unknown> {
     return this.deleteCartCommand$.execute(qualifier);
   }
 
