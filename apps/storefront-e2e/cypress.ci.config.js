@@ -4,5 +4,5 @@ const config = require('./cypress.config');
 module.exports = defineConfig({
   ...config,
   projectId: 'eothcy',
-  retries: 3,
+  retries: 2,
 });
