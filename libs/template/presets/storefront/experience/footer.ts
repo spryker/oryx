@@ -1,27 +1,22 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { featureVersion, i18n } from '@spryker-oryx/utilities';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 const image = (graphic: string) => ({
   type: 'oryx-content-image',
   content: { data: { graphic, alt: graphic } },
 });
 
-const heading = (token: string, rule = {}) => ({
+const heading = (content: string, rule = {}) => ({
   type: 'oryx-content-text',
-  content: {
-    data: {
-      text: `${text(token)}`,
-    },
-  },
+  content: { data: { text: text(content) } },
   options: { rules: [rule] },
 });
 
-const text = (token: string): string => {
-  const text = i18n(token);
-  return `${
-    featureVersion <= '1.4' ? `<b>${text}</b>` : `<strong>${text}</strong>`
-  }`;
+const text = (text: string): string => {
+  return featureVersion >= '1.4'
+    ? `<strong>${text}</strong>`
+    : `<b>${text}</b>`;
 };
 
 const link = (text: string, url = '/', icon?: string) => ({
@@ -68,7 +63,7 @@ const customerSupport = {
   id: 'customer-support',
   content: {
     data: {
-      text: `${text('footer.customer-support')}<br/>
+      text: `${text('Customer Support')}<br/>
         <a href="/contact">Contact us</a><br/>
         <a href="/">Help center</a><br/>
         <a href="/">Payment</a><br/>
@@ -84,7 +79,7 @@ const promises: ExperienceComponent = {
   id: 'corporate-promises',
   options: { rules: [{ layout: 'list', gap: '0' }] },
   components: [
-    heading('footer.our-promises'),
+    heading('Our promises'),
     link('Free delivery', '/', IconTypes.Carrier),
     link('100-day return policy', '/', IconTypes.Parcel),
     link('Click & Collect', '/', 'storefront'),
@@ -96,7 +91,7 @@ const aboutUs = {
   id: 'corporate-info',
   content: {
     data: {
-      text: `${text('footer.corporate-info')}<br/>
+      text: `${text('About us')}<br/>
         <a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>
@@ -127,7 +122,7 @@ const paymentLinks: ExperienceComponent = {
   id: 'payment',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
-    heading('footer.safe-payment-methods'),
+    heading('Save Payment methods'),
     {
       type: 'oryx-composition',
       id: 'payment-links',
@@ -161,7 +156,7 @@ const shippingLinks: ExperienceComponent = {
   id: 'shipping',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
-    heading('footer.shipping-partners'),
+    heading('Shipping partners'),
     {
       type: 'oryx-composition',
       id: 'shipping-links',
@@ -189,7 +184,7 @@ const mobileAppsLinks: ExperienceComponent = {
   id: 'apps',
   options: { rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }] },
   components: [
-    heading('footer.spryker-apps'),
+    heading('Spryker apps'),
     {
       type: 'oryx-composition',
       id: 'app-links',
@@ -208,7 +203,7 @@ const socialLinks: ExperienceComponent = {
     rules: [{ layout: 'list', gridColumn: 4, colSpan: 2 }],
   },
   components: [
-    heading('footer.you-can-also-find-us-on'),
+    heading('You can also find us on'),
     {
       type: 'oryx-composition',
       id: 'social-links',
