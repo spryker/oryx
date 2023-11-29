@@ -20,9 +20,9 @@ export const typographyTokens: ThemeToken = {
 };
 
 const smallStrongTypographyToken: ThemeToken =
-  featureVersion <= '1.4'
-    ? { bold: { size: '1.1428571429rem', line: '1em', weight: '600' } }
-    : { strong: { size: '1.1428571429rem', weight: '600', line: '1em' } };
+  featureVersion >= '1.4'
+    ? { strong: { size: '1.1428571429rem', weight: '600', line: '1em' } }
+    : { bold: { size: '1.1428571429rem', line: '1em', weight: '600' } };
 
 export const typographySmallTokens: ThemeToken = {
   typography: {

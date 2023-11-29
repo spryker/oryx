@@ -5,6 +5,7 @@ export interface HeadingAttributes {
    * Indicates the heading tag that will be generated.
    */
   tag?: HeadingTag;
+
   /**
    * The given typography might be different from the element tag, such as using a `h1` tag.
    * Using a different typography than the tag allows to keep screen readers happy, while still
@@ -13,18 +14,22 @@ export interface HeadingAttributes {
    * A screen specific typography can be set using the `lg`, `md`, and `sm` attributes.
    */
   typography?: HeadingTag;
+
   /**
    * Set the typography for large screens.
    */
   lg?: HeadingTag;
+
   /**
    * Set the typography for medium screens.
    */
   md?: HeadingTag;
+
   /**
    * Set the typography for small screens.
    */
   sm?: HeadingTag;
+
   /**
    * Indicate the max number of lines that are used for the title.
    *

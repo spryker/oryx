@@ -15,6 +15,7 @@ export class TextComponent
   @property() content?: string;
 
   protected override render(): TemplateResult | void {
+    if (!this.content) return;
     if (featureVersion >= '1.4') {
       return html`${this.$text()}`;
     }

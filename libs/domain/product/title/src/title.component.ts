@@ -4,17 +4,25 @@ import { ProductContext, ProductMixin } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { LinkType } from '@spryker-oryx/ui/link';
-import { computed, hydrate, ssrShim } from '@spryker-oryx/utilities';
+import {
+  computed,
+  featureVersion,
+  hydrate,
+  ssrShim,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { html } from 'lit/static-html.js';
 import { ProductTitleOptions } from './title.model';
+import { styles } from './title.styles';
 
 @ssrShim('style')
 @hydrate({ context: ProductContext.SKU })
 export class ProductTitleComponent extends ProductMixin(
   ContentMixin<ProductTitleOptions>(LitElement)
 ) {
+  static styles = featureVersion >= '1.4' ? undefined : styles;
+
   protected semanticLinkService = resolve(LinkService);
 
   protected $link = computed(() => {

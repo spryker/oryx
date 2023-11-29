@@ -12,7 +12,7 @@ export const styles = css`
     background-color: var(--oryx-color-neutral-1);
     min-height: 100vh;
     box-sizing: border-box;
-    ${unsafeCSS(featureVersion >= '1.3' ? 'text-wrap: balance;' : '')}
+    ${unsafeCSS(featureVersion >= '1.4' ? '' : 'text-wrap: balance;')}
   }
 
   ::placeholder {

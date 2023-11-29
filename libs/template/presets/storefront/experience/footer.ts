@@ -122,7 +122,7 @@ const paymentLinks: ExperienceComponent = {
   id: 'payment',
   options: { rules: [{ layout: 'list', colSpan: 2 }] },
   components: [
-    heading('Save Payment methods'),
+    heading('Safe Payment methods'),
     {
       type: 'oryx-composition',
       id: 'payment-links',
