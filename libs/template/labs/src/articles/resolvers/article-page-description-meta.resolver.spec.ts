@@ -1,4 +1,4 @@
-import { ContentFields, ContentService } from '@spryker-oryx/content';
+import { ContentService } from '@spryker-oryx/content';
 import { ContextService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
@@ -54,16 +54,10 @@ describe('ArticlePageDescriptionMetaResolver', () => {
     it('should return proper value if article exist', () => {
       const callback = vi.fn();
       mockContextService.get.mockReturnValueOnce(of('id'));
-      mockContextService.get.mockReturnValue(of(ContentFields.Article));
-      mockRouterService.currentRoute.mockReturnValue(
-        of(`/${ContentFields.Article}/saf`)
-      );
+      mockContextService.get.mockReturnValue(of('article'));
+      mockRouterService.currentRoute.mockReturnValue(of(`/article/saf`));
       service.getScore().subscribe(callback);
-      expect(callback).toHaveBeenCalledWith([
-        'id',
-        ContentFields.Article,
-        true,
-      ]);
+      expect(callback).toHaveBeenCalledWith(['id', 'article', true]);
     });
 
     it('should return proper value if article is not exist', () => {
