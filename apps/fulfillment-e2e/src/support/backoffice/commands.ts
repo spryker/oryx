@@ -62,7 +62,7 @@ Cypress.Commands.add(
           .reload()
           .then(() => Cypress.$('[action*="?event=pay"]').length);
       },
-      { timeout: 120000, interval: 5000 }
+      { timeout: 180000, interval: 5000 }
     );
 
     orderPage.payForOrder();

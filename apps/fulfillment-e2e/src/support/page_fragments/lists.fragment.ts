@@ -25,4 +25,8 @@ export class ListsFragment {
     return this.getPickingListsItems().contains('.identifier', orderId);
   };
   pickingInProgressModal = new PickingInProgressModalFragment();
+
+  startPickingByEq = (eq: number) => {
+    this.getStartPickingButtons().eq(eq).click();
+  };
 }

@@ -17,4 +17,9 @@ export class ProductCardFragment {
 
     this.getDoneBtn().click();
   };
+
+  pickOneItem = () => {
+    this.getIncreaseBtn().click({ force: true });
+    this.getDoneBtn().click();
+  };
 }

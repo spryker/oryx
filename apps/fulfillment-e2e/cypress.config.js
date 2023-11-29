@@ -14,6 +14,7 @@ module.exports = defineConfig({
   pageLoadTimeout: 180000,
   viewportWidth: 414,
   viewportHeight: 844,
+  redirectionLimit: 100,
   e2e: {
     baseUrl: 'http://localhost:4200',
     specPattern: './src/integration/*.cy.{js,jsx,ts,tsx}',

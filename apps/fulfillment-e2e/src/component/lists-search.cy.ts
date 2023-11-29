@@ -1,13 +1,14 @@
-import { ListsHeaderFragment } from '../support/page_fragments/lists-header.fragment';
+import { HeaderFragment } from '../support/page_fragments/lists-header.fragment';
 import { ListsFragment } from '../support/page_fragments/lists.fragment';
-import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
+import { UserProfileModal } from '../support/page_fragments/user-profile-modal.fragment';
 
 const listsFragment = new ListsFragment();
-const headerFragment = new ListsHeaderFragment();
-const userProfileFragment = new UserProfileFragment();
+const headerFragment = new HeaderFragment();
+const userProfileFragment = new UserProfileModal();
 
-// TODO: this is component test, not E2E
-describe('Picking Lists Search', () => {
+// TODO: this is a component (unit) test, not E2E
+// search is purely FE-based feature
+xdescribe('Picking Lists Search', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();

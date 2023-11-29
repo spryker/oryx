@@ -5,9 +5,9 @@ import './backoffice/commands';
 import { CheckoutApi } from './glue-api/checkout.api';
 import { GuestCartsItemsApi } from './glue-api/guest-carts-items.api';
 import { GuestCartsApi } from './glue-api/guest-carts.api';
-import { ListsHeaderFragment } from './page_fragments/lists-header.fragment';
+import { HeaderFragment } from './page_fragments/lists-header.fragment';
 import { ListsFragment } from './page_fragments/lists.fragment';
-import { UserProfileFragment } from './page_fragments/user-profile-modal.fragment';
+import { UserProfileModal } from './page_fragments/user-profile-modal.fragment';
 import { LoginPage } from './page_objects/login.page';
 import { PickingListPage } from './page_objects/picking-list.page';
 import { WarehouseSelectionPage } from './page_objects/warehouse-selection.page';
@@ -22,9 +22,9 @@ declare global {
       mockPickingInProgress(): void;
       mockSyncPending(): void;
       receiveData(): Chainable<any>;
-      createPicking(): Chainable<string>;
+      createPicking(numberOfItems?: number): Chainable<string>;
       cleanupPickings(): void;
-      glueApiCreateOrder(): Chainable<string>;
+      glueApiCreateOrder(numberOfItems?: number): Chainable<string>;
       waitForPickingToAppear(orderId: string): Chainable<string>;
     }
   }
@@ -50,12 +50,12 @@ Cypress.Commands.add('login', (user = defaultUser) => {
   pickListsPage.waitForLoaded();
 });
 
-Cypress.Commands.add('createPicking', () => {
+Cypress.Commands.add('createPicking', (numberOfItems = 1) => {
   // initializes FA as a base domain
   cy.visit('/');
 
   return cy
-    .glueApiCreateOrder()
+    .glueApiCreateOrder(numberOfItems)
     .then((orderId) => cy.backofficeMakeOrderReadyForPicking(orderId));
 });
 
@@ -74,20 +74,20 @@ Cypress.Commands.add('cleanupPickings', () => {
 });
 
 Cypress.Commands.add('receiveData', () => {
-  const header = new ListsHeaderFragment();
-  const profile = new UserProfileFragment();
+  const header = new HeaderFragment();
+  const profile = new UserProfileModal();
 
   cy.intercept('GET', '**/picking-lists?include*').as('picking-lists-update');
 
-  header.getUserIcon().click();
-  profile.getReceiveDataButton().click();
+  header.getUserIcon().should('be.visible').click();
+  profile.getReceiveDataButton().should('be.visible').click();
 
   cy.wait('@picking-lists-update');
 
   return cy.wrap(null);
 });
 
-Cypress.Commands.add('glueApiCreateOrder', () => {
+Cypress.Commands.add('glueApiCreateOrder', (numberOfItems = 1) => {
   const customerUniqueId = Math.random();
   const guestCartsApi = new GuestCartsApi();
   const guestCartsItemsApi = new GuestCartsItemsApi();
@@ -102,7 +102,7 @@ Cypress.Commands.add('glueApiCreateOrder', () => {
       // add product that is always available in the stock
       // 086_30521602 adjusted manually in backoffice, we have to
       // find another product to use here later
-      .postGuestCartsItems('086_30521602', 1)
+      .postGuestCartsItems('086_30521602', numberOfItems)
       .then(() => guestCartsApi.getGuestCarts())
       .then((res) => res.body.data[0].id)
       .then((idCart) => checkoutApi.checkout(idCart))
@@ -235,7 +235,7 @@ function clearIndexedDb(win, dbName) {
 
 function mockSyncPending(win) {
   return new Promise<void>((resolve, reject) => {
-    const request = win.indexedDB.open('fulfillment-app-db');
+    const request = win.indexedDB.open(indexedDBName);
 
     request.onsuccess = function () {
       const db = request.result;

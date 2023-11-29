@@ -1,8 +1,8 @@
-import { ListsHeaderFragment } from '../support/page_fragments/lists-header.fragment';
+import { HeaderFragment } from '../support/page_fragments/lists-header.fragment';
 import { ListsFragment } from '../support/page_fragments/lists.fragment';
 
 const listsFragment = new ListsFragment();
-const headerFragment = new ListsHeaderFragment();
+const headerFragment = new HeaderFragment();
 
 describe('Picking Lists', () => {
   beforeEach(() => {

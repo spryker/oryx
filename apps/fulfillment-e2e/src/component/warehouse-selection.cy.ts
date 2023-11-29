@@ -3,7 +3,8 @@ import { WarehouseSelectionPage } from '../support/page_objects/warehouse-select
 
 let whSelectionPage: WarehouseSelectionPage;
 
-describe('Warehouse selection suite', () => {
+// TODO: this is not E2E, these are component tests
+xdescribe('Warehouse selection suite', () => {
   beforeEach(() => {
     whSelectionPage = new WarehouseSelectionPage();
 
@@ -12,6 +13,8 @@ describe('Warehouse selection suite', () => {
     whSelectionPage.visit();
   });
 
+  // this check is covered already in Auth flows, we don't need to have it in E2Es
+  // but we can have it in component tests
   it('should navigate to picking lists after warehouse selection', () => {
     verifyWarehouseListVisibility();
 

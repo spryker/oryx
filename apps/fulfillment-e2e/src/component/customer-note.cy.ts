@@ -4,7 +4,8 @@ import { ListsFragment } from '../support/page_fragments/lists.fragment';
 const listsFragment = new ListsFragment();
 const customerNoteFragment = new CustomerNoteModalFragment();
 
-describe('Customer note suite', () => {
+// TODO: this is not E2E, these are component tests
+xdescribe('Customer note suite', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();

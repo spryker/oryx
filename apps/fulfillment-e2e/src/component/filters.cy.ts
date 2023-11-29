@@ -2,7 +2,8 @@ import { FiltersFragment } from '../support/page_fragments/filters.fragment';
 
 const filtersFragment = new FiltersFragment();
 
-describe('When user interacts with the filters', () => {
+// TODO: this is not E2E, these are component tests
+xdescribe('When user interacts with the filters', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();

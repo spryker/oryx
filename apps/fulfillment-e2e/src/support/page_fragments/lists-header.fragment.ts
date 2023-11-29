@@ -1,4 +1,6 @@
-export class ListsHeaderFragment {
+import { UserProfileModal } from './user-profile-modal.fragment';
+
+export class HeaderFragment {
   getWrapper = () => cy.get('oryx-picking-lists-header');
   getSearch = () => this.getWrapper().find('oryx-search');
   getHeadline = () => this.getWrapper().find('oryx-heading');
@@ -8,6 +10,9 @@ export class ListsHeaderFragment {
   getSearchClearButton = () => this.getSearch().find('.clear-button');
   getUserIcon = () => this.getWrapper().find('oryx-site-navigation-item');
   getTitle = () => this.getWrapper().find('oryx-heading');
+  getUserProfileModal = () => new UserProfileModal();
+
+  openUserProfileModal = () => this.getUserIcon().click();
 
   openSearch = () => this.getSearch().click();
 }

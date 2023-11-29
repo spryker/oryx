@@ -14,6 +14,10 @@ export class PickingPage extends AFAPage {
     }
   }
 
+  waitForLoaded = () => {
+    this.getProducts().should('have.length.gt', 0);
+  };
+
   pickerFragment = new PickerFragment();
   productFragment = new ProductFragment();
 
@@ -46,6 +50,14 @@ export class PickingPage extends AFAPage {
       const product = new ProductCardFragment(el);
 
       product.pickAllItems();
+    });
+  };
+
+  pickSomeProducts = () => {
+    this.getProducts().each((el) => {
+      const product = new ProductCardFragment(el);
+
+      product.pickOneItem();
     });
   };
 

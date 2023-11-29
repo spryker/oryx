@@ -1,17 +1,11 @@
-export class UserProfileFragment {
+export class UserProfileModal {
   getWrapper = () => cy.get('oryx-site-navigation-item[uid="user-profile"]');
 
   getNotification = () => this.getWrapper().find('oryx-notification');
   getLogOutButton = () => this.getWrapper().find('.logout-button');
-  getReceiveDataButton = () => this.getWrapper().find('oryx-button').eq(1);
+  getReceiveDataButton = () => this.getWrapper().find('.receive-data');
   getCloseButton = () =>
     cy.get('oryx-site-navigation-item').find('dialog oryx-button');
 
-  openUserMenu = () => {
-    this.getWrapper().click();
-  };
-
-  logout = () => {
-    this.getLogOutButton().click();
-  };
+  logout = () => this.getLogOutButton().click();
 }

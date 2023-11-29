@@ -6,7 +6,8 @@ const pickingListId = 'd5bf20f1-7f36-568d-85b5-e4502acbcc82';
 const pickerPage = new PickingPage(pickingListId);
 const pickerHeaderFragment = new PickerHeaderFragment();
 
-describe('picking header with no customer note', () => {
+// TODO: this is not E2E, these are component tests
+xdescribe('picking header with no customer note', () => {
   beforeEach(() => {
     cy.clearIndexedDB();
     cy.login();

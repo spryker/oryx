@@ -9,6 +9,7 @@ const customerNoteFragment = new CustomerNoteFragment();
 const pickerHeaderFragment = new PickerHeaderFragment();
 const discardModalFragment = new DiscardModalFragment();
 
+// TODO: this is not E2E, these are component tests
 describe('Start picking a picklist with customer note', () => {
   beforeEach(() => {
     cy.clearIndexedDB();

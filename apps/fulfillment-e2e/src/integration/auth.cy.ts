@@ -1,5 +1,5 @@
 import { defaultUser } from '../support/commands';
-import { UserProfileFragment } from '../support/page_fragments/user-profile-modal.fragment';
+import { HeaderFragment } from '../support/page_fragments/lists-header.fragment';
 import { LoadingPage } from '../support/page_objects/loading.page';
 import { LoginPage } from '../support/page_objects/login.page';
 import { PickingListPage } from '../support/page_objects/picking-list.page';
@@ -7,7 +7,7 @@ import { WarehouseSelectionPage } from '../support/page_objects/warehouse-select
 
 const loginPage = new LoginPage();
 const oauthPage = new LoadingPage();
-const userProfileFragment = new UserProfileFragment();
+const header = new HeaderFragment();
 
 describe('Login Suite', () => {
   beforeEach(() => {
@@ -30,8 +30,8 @@ describe('Login Suite', () => {
     pickingListPage.waitForLoaded();
 
     // logout
-    userProfileFragment.openUserMenu();
-    userProfileFragment.logout();
+    header.openUserProfileModal();
+    header.getUserProfileModal().logout();
     verifyLoginPageRedirect();
   });
 
