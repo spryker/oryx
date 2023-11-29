@@ -3,7 +3,7 @@ import { css } from 'lit';
 
 export const headingStyles = css`
   :host {
-    display: inline-block;
+    display: block;
     text-wrap: balance;
   }
 
@@ -26,10 +26,6 @@ export const headingStyles = css`
     -webkit-box-orient: vertical;
     -webkit-line-clamp: var(--max-lines);
     overflow: hidden;
-  }
-
-  caption {
-    display: inline;
   }
 
   :host(:is([typography='subtitle'], [tag='subtitle'])) {

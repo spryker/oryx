@@ -4,7 +4,7 @@ export interface HeadingAttributes {
   /**
    * Indicates the heading tag that will be generated.
    */
-  tag?: HeadingTag | HeadingTag;
+  tag?: HeadingTag;
   /**
    * The given typography might be different from the element tag, such as using a `h1` tag.
    * Using a different typography than the tag allows to keep screen readers happy, while still
@@ -37,7 +37,7 @@ export interface HeadingAttributes {
    * @deprecated use `typography` instead. The `hide` and `show` values are no longer supported
    * going forward, elements can be hidden using the `HeadingTag.None` value.
    */
-  as?: HeadingTag | 'hide' | 'show';
+  as?: HeadingTag | 'hide';
 
   /**
    * @deprecated use `lg` instead. The `hide` and `show` values are no longer supported

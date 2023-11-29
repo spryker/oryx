@@ -4,10 +4,11 @@ import { property } from 'lit/decorators.js';
 import { html } from 'lit/static-html.js';
 import { HeadingAttributes, HeadingTag } from './heading.model';
 import { headingStyles } from './heading.styles';
+import { headlineStyles } from './styles';
 
 @ssrShim('style')
 export class HeadingComponent extends LitElement implements HeadingAttributes {
-  static styles = headingStyles;
+  static styles = featureVersion >= '1.4' ? headingStyles : headlineStyles;
 
   @property({ reflect: true }) tag?: HeadingTag;
   @property({ reflect: true }) typography?: HeadingTag;
@@ -15,15 +16,17 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
   @property() md?: HeadingTag;
   @property() sm?: HeadingTag;
 
-  @property({ reflect: true }) as?: HeadingTag | 'hide' | 'show';
+  @property({ reflect: true }) as?: HeadingTag | 'hide';
   @property({ reflect: true, attribute: 'as-lg' }) asLg?:
     | HeadingTag
     | 'hide'
     | 'show';
+
   @property({ reflect: true, attribute: 'as-md' }) asMd?:
     | HeadingTag
     | 'hide'
     | 'show';
+
   @property({ reflect: true, attribute: 'as-sm' }) asSm?:
     | HeadingTag
     | 'hide'
@@ -41,9 +44,14 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
   }
 
   protected override render(): TemplateResult {
-    return this.renderTag(html`<slot .style=${this.getSlotStyle()}></slot>`);
+    return this.renderTag(
+      html`<slot .style=${this.getTypographyStyles()}></slot>`
+    );
   }
 
+  /**
+   * Generates the heading element based on the tag property.
+   */
   protected renderTag(template: TemplateResult): TemplateResult {
     switch (this.tag) {
       case HeadingTag.H1:
@@ -66,15 +74,17 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
           ${template}
         </caption>`;
       case HeadingTag.Small:
-        return html`<small class="caption">${template}</small>`;
+        return html`<small>${template}</small>`;
       case HeadingTag.Subtitle:
-        return html`${template}`;
       default:
         return html`${template}`;
     }
   }
 
-  protected getSlotStyle(): string | undefined {
+  /**
+   * Returns the (responsive) typography styles based on the provided attributes.
+   */
+  protected getTypographyStyles(): string | undefined {
     if (featureVersion < '1.4') return;
 
     let result = '';
@@ -83,14 +93,14 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
     }
     const tag = this.typography ?? this.as ?? this.tag;
 
-    if (tag) result += this.getHeadingStyle(tag as HeadingTag);
-    if (this.lg) result += this.getHeadingStyle(this.lg, Size.Lg);
-    if (this.md) result += this.getHeadingStyle(this.md, Size.Md);
-    if (this.sm) result += this.getHeadingStyle(this.sm, Size.Sm);
+    if (tag) result += this.getTypographyStyle(tag as HeadingTag);
+    if (this.lg) result += this.getTypographyStyle(this.lg, Size.Lg);
+    if (this.md) result += this.getTypographyStyle(this.md, Size.Md);
+    if (this.sm) result += this.getTypographyStyle(this.sm, Size.Sm);
     return result;
   }
 
-  protected getHeadingStyle(tag: HeadingTag, size?: Size): string {
+  protected getTypographyStyle(tag: HeadingTag, size?: Size): string {
     const screen = size ? `-${size}` : '';
     return `
       --_f${screen}: var(--oryx-typography-${tag}-size);
