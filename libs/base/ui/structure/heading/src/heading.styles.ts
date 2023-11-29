@@ -3,23 +3,18 @@ import { css } from 'lit';
 
 export const headingStyles = css`
   :host {
-    display: block;
     text-wrap: balance;
+    display: inline-block;
   }
 
-  :host > *:not(:is(slot, style)),
-  ::slotted(*) {
-    all: unset;
-  }
-
-  slot {
+  :host > * {
     font-size: var(--_s-r, var(--_s));
     font-weight: var(--_w-r, var(--_w));
     line-height: var(--_l-r, var(--_l));
     margin: 0;
   }
 
-  slot[style*='--max-lines'] {
+  :host[style*='--max-lines'] {
     /* stylelint-disable-next-line */
     display: -webkit-inline-box;
     text-align: start;
@@ -30,6 +25,10 @@ export const headingStyles = css`
 
   :host(:is([typography='subtitle'], [tag='subtitle'])) {
     text-transform: uppercase;
+  }
+
+  caption {
+    display: inline;
   }
 `;
 
@@ -46,7 +45,7 @@ export const headingScreenStyles = screenCss({
     }
   `,
   md: css`
-    slot {
+    :host {
       --_s-r: var(--_s-md);
       --_w-r: var(--w-md);
       --_l-r: var(--_l-md);

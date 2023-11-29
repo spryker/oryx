@@ -1,14 +1,17 @@
-import { Size, featureVersion, ssrShim } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult } from 'lit';
+import { featureVersion, ssrShim } from '@spryker-oryx/utilities';
+import { LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { html } from 'lit/static-html.js';
 import { HeadingAttributes, HeadingTag } from './heading.model';
 import { headingStyles } from './heading.styles';
 import { headlineStyles } from './styles';
+import { TypographyController } from './typography.controller';
 
 @ssrShim('style')
 export class HeadingComponent extends LitElement implements HeadingAttributes {
   static styles = featureVersion >= '1.4' ? headingStyles : headlineStyles;
+
+  protected typographyController = new TypographyController(this);
 
   @property({ reflect: true }) tag?: HeadingTag;
   @property({ reflect: true }) typography?: HeadingTag;
@@ -32,21 +35,19 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
     | 'hide'
     | 'show';
 
-  private _maxLines?: number;
-  @property() set maxLines(value: number) {
-    this._maxLines = value;
-    if (featureVersion < '1.4' && value > 0) {
-      this.style.setProperty('--max-lines', String(value));
-    }
-  }
-  get maxLines(): number | undefined {
-    return this._maxLines;
-  }
+  @property() maxLines?: number | undefined;
 
   protected override render(): TemplateResult {
-    return this.renderTag(
-      html`<slot .style=${this.getTypographyStyles()}></slot>`
-    );
+    return this.renderTag(html`<slot></slot>`);
+  }
+
+  protected willUpdate(
+    properties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+  ): void {
+    super.willUpdate(properties);
+    // as long as the controller does not support willUpdate on SSR, we need to
+    // call this manually.
+    this.typographyController.hostUpdate();
   }
 
   /**
@@ -84,33 +85,5 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
       default:
         return html`${template}`;
     }
-  }
-
-  /**
-   * Returns the (responsive) typography styles based on the provided attributes.
-   */
-  protected getTypographyStyles(): string | undefined {
-    if (featureVersion < '1.4') return;
-
-    let result = '';
-    if (featureVersion >= '1.4' && this.maxLines) {
-      result = `--max-lines:${this.maxLines};`;
-    }
-    const tag = this.typography ?? this.as ?? this.tag;
-
-    if (tag) result += this.getTypographyStyle(tag as HeadingTag);
-    if (this.lg) result += this.getTypographyStyle(this.lg, Size.Lg);
-    if (this.md) result += this.getTypographyStyle(this.md, Size.Md);
-    if (this.sm) result += this.getTypographyStyle(this.sm, Size.Sm);
-    return result;
-  }
-
-  protected getTypographyStyle(tag: HeadingTag, size?: Size): string {
-    const screen = size ? `-${size}` : '';
-    return `
-      --_s${screen}: var(--oryx-typography-${tag}-size);
-      --_w${screen}: var(--oryx-typography-${tag}-weight);
-      --_l${screen}: var(--oryx-typography-${tag}-line);
-    `;
   }
 }
