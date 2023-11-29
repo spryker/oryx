@@ -109,7 +109,7 @@ export class SapiAuthFeature extends OauthFeature implements AppFeature {
 
 export interface SapiAuthFeatureConfig extends OauthFeatureConfig {
   skipRoutes?: boolean;
-  /** deprecated since 1.4 */
+  /** deprecated since 1.4, replaced by guestIdentityInterceptor */
   anonTokenInterceptor?: AnonTokenInterceptorConfig;
   guestIdentityInterceptor?: GuestIdentityInterceptorConfig;
 }
