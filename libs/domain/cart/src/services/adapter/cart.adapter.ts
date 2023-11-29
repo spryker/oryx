@@ -17,7 +17,7 @@ export interface CartAdapter {
   deleteEntry: (data: CartEntryQualifier) => Observable<unknown>;
   updateEntry: (data: UpdateCartEntryQualifier) => Observable<Cart>;
   update: (data: UpdateCartQualifier) => Observable<Cart>;
-  create: (data: CreateCartQualifier) => Observable<Cart>;
+  create: (data?: CreateCartQualifier) => Observable<Cart>;
   delete: (data: CartQualifier) => Observable<Cart>;
 }
 

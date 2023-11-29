@@ -30,9 +30,7 @@ export function cartContextFallbackFactory(
 
 export const CartContextSerializerToken = `${ContextSerializer}${CartContext.CartID}`;
 
-export class ProductContextSerializer
-  implements ContextSerializer<CartQualifier>
-{
+export class CartContextSerializer implements ContextSerializer<CartQualifier> {
   serialize(value: CartQualifier): Observable<string> {
     return of(value?.cartId ?? '');
   }
@@ -49,6 +47,6 @@ export const cartContextProviders: Provider[] = [
   },
   {
     provide: CartContextSerializerToken,
-    useClass: ProductContextSerializer,
+    useClass: CartContextSerializer,
   },
 ];
