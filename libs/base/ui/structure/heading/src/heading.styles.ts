@@ -13,7 +13,7 @@ export const headingStyles = css`
   }
 
   slot {
-    font-size: var(--_f-r, var(--_f));
+    font-size: var(--_s-r, var(--_s));
     font-weight: var(--_w-r, var(--_w));
     line-height: var(--_l-r, var(--_l));
     margin: 0;
@@ -40,21 +40,21 @@ export const headingStyles = css`
 export const headingScreenStyles = screenCss({
   lg: css`
     :host {
-      --_f-r: var(--_f-lg);
+      --_s-r: var(--_s-lg);
       --_w-r: var(--w-lg);
       --_l-r: var(--_l-lg);
     }
   `,
   md: css`
     slot {
-      --_f-r: var(--_f-md);
+      --_s-r: var(--_s-md);
       --_w-r: var(--w-md);
       --_l-r: var(--_l-md);
     }
   `,
   sm: css`
     :host {
-      --_f-r: var(--_f-sm);
+      --_s-r: var(--_s-sm);
       --_w-r: var(--w-sm);
       --_l-r: var(--_l-sm);
     }

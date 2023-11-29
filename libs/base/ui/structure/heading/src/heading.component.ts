@@ -108,7 +108,7 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
   protected getTypographyStyle(tag: HeadingTag, size?: Size): string {
     const screen = size ? `-${size}` : '';
     return `
-      --_f${screen}: var(--oryx-typography-${tag}-size);
+      --_s${screen}: var(--oryx-typography-${tag}-size);
       --_w${screen}: var(--oryx-typography-${tag}-weight);
       --_l${screen}: var(--oryx-typography-${tag}-line);
     `;
