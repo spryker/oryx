@@ -2,7 +2,11 @@ import { featureVersion, ssrShim } from '@spryker-oryx/utilities';
 import { LitElement, PropertyValueMap, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { html } from 'lit/static-html.js';
-import { HeadingAttributes, HeadingTag } from './heading.model';
+import {
+  HeadingAttributes,
+  HeadingTag,
+  HeadingVisibility,
+} from './heading.model';
 import { headingStyles } from './heading.styles';
 import { headlineStyles } from './styles';
 import { TypographyController } from './typography.controller';
@@ -14,16 +18,22 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
   protected typographyController = new TypographyController(this);
 
   @property() tag?: HeadingTag;
-  @property() typography?: HeadingTag;
-  @property() lg?: HeadingTag;
-  @property() md?: HeadingTag;
-  @property() sm?: HeadingTag;
+  @property() typography?: HeadingTag | HeadingVisibility;
+  @property() lg?: HeadingTag | HeadingVisibility;
+  @property() md?: HeadingTag | HeadingVisibility;
+  @property() sm?: HeadingTag | HeadingVisibility;
   @property() maxLines?: number;
 
   @property({ reflect: true }) as?: HeadingTag;
-  @property({ reflect: true, attribute: 'as-lg' }) asLg?: HeadingTag;
-  @property({ reflect: true, attribute: 'as-md' }) asMd?: HeadingTag;
-  @property({ reflect: true, attribute: 'as-sm' }) asSm?: HeadingTag;
+  @property({ reflect: true, attribute: 'as-lg' }) asLg?:
+    | HeadingTag
+    | HeadingVisibility;
+  @property({ reflect: true, attribute: 'as-md' }) asMd?:
+    | HeadingTag
+    | HeadingVisibility;
+  @property({ reflect: true, attribute: 'as-sm' }) asSm?:
+    | HeadingTag
+    | HeadingVisibility;
 
   protected override render(): TemplateResult {
     return this.renderTag(html`<slot></slot>`);
@@ -33,8 +43,8 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
     properties: PropertyValueMap<any> | Map<PropertyKey, unknown>
   ): void {
     super.willUpdate(properties);
-    // as long as the controller does not support willUpdate on SSR, we need to
-    // call this manually.
+    // as long as the controller does not support willUpdate on SSR,
+    // we need to call this manually.
     this.typographyController.hostUpdate();
   }
 

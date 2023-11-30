@@ -13,22 +13,22 @@ export interface HeadingAttributes {
    *
    * A screen specific typography can be set using the `lg`, `md`, and `sm` attributes.
    */
-  typography?: HeadingTag;
+  typography?: HeadingTag | HeadingVisibility;
 
   /**
    * Set the typography for large screens.
    */
-  lg?: HeadingTag;
+  lg?: HeadingTag | HeadingVisibility;
 
   /**
    * Set the typography for medium screens.
    */
-  md?: HeadingTag;
+  md?: HeadingTag | HeadingVisibility;
 
   /**
    * Set the typography for small screens.
    */
-  sm?: HeadingTag;
+  sm?: HeadingTag | HeadingVisibility;
 
   /**
    * Indicate the max number of lines that are used for the title.
@@ -42,25 +42,25 @@ export interface HeadingAttributes {
    * @deprecated use `typography` instead. The `hide` and `show` values are no longer supported
    * going forward, elements can be hidden using the `HeadingTag.None` value.
    */
-  as?: HeadingTag | 'hide';
+  as?: HeadingTag | HeadingVisibility;
 
   /**
    * @deprecated use `lg` instead. The `hide` and `show` values are no longer supported
    * going forward, elements can be hidden using the `HeadingTag.None` value.
    */
-  asLg?: HeadingTag | 'hide' | 'show';
+  asLg?: HeadingTag | HeadingVisibility;
 
   /**
    * @deprecated use `md` instead. The `hide` and `show` values are no longer supported
    * going forward, elements can be hidden using the `HeadingTag.None` value.
    */
-  asMd?: HeadingTag | 'hide' | 'show';
+  asMd?: HeadingTag | HeadingVisibility;
 
   /**
    * @deprecated use `sm` instead. The `hide` and `show` values are no longer supported
    * going forward, elements can be hidden using the `HeadingTag.None` value.
    */
-  asSm?: HeadingTag | 'hide' | 'show';
+  asSm?: HeadingTag | HeadingVisibility;
 }
 
 /**
@@ -80,7 +80,9 @@ export const enum HeadingTag {
   Small = 'small',
   Bold = 'bold',
   Strong = 'strong',
+}
 
+export const enum HeadingVisibility {
   /**
    * Hides the heading.
    */

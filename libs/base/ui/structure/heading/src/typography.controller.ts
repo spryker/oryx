@@ -1,6 +1,10 @@
 import { Size } from '@spryker-oryx/utilities';
 import { LitElement, ReactiveController } from 'lit';
-import { HeadingAttributes, HeadingTag } from './heading.model';
+import {
+  HeadingAttributes,
+  HeadingTag,
+  HeadingVisibility,
+} from './heading.model';
 
 export class TypographyController implements ReactiveController {
   hostConnected?(): void;
@@ -20,14 +24,17 @@ export class TypographyController implements ReactiveController {
   protected setStyles(): void {
     const tag = this.host.typography ?? this.host.as ?? this.host.tag;
     this.setStyle(tag as HeadingTag);
-    this.setStyle(this.host.lg, Size.Lg);
-    this.setStyle(this.host.md, Size.Md);
-    this.setStyle(this.host.sm, Size.Sm);
-
-    this.setStyleProperty('--max-lines', undefined, String(this.host.maxLines));
+    const globalNone =
+      this.host.typography === HeadingVisibility.None ||
+      this.host.typography === HeadingVisibility.Hide
+        ? HeadingVisibility.None
+        : undefined;
+    this.setStyle(this.host.lg ?? globalNone, Size.Lg);
+    this.setStyle(this.host.md ?? globalNone, Size.Md);
+    this.setStyle(this.host.sm ?? globalNone, Size.Sm);
   }
 
-  protected setStyle(tag?: HeadingTag, size?: Size): void {
+  protected setStyle(tag?: HeadingTag | HeadingVisibility, size?: Size): void {
     if (!tag) return;
 
     this.setStyleProperty('--_s', size, `var(--oryx-typography-${tag}-size)`);
@@ -35,23 +42,29 @@ export class TypographyController implements ReactiveController {
     this.setStyleProperty('--_l', size, `var(--oryx-typography-${tag}-line)`);
 
     this.setStyleProperty(
-      '--_d',
-      size,
-      tag === HeadingTag.None || tag === HeadingTag.Hide ? `none` : undefined
-    );
-
-    this.setStyleProperty(
       '--_t',
       size,
       tag === HeadingTag.Subtitle ? `uppercase` : undefined
     );
+
+    if (size) {
+      this.setStyleProperty(
+        '--_d',
+        size,
+        tag === HeadingVisibility.None ? `none` : undefined
+      );
+    }
   }
 
-  protected setStyleProperty(name: string, size?: Size, value?: string): void {
+  protected setStyleProperty(
+    name: string,
+    size?: Size,
+    value?: string | number
+  ): void {
     const screen = size ? `-${size}` : '';
 
-    if (value) {
-      this.host.style.setProperty(`${name}${screen}`, value);
+    if (value !== undefined) {
+      this.host.style.setProperty(`${name}${screen}`, String(value));
     } else {
       // remove in case of dynamic change (won't work at the server)
       this.host.style.removeProperty?.(`${name}${screen}`);
