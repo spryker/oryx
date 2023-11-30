@@ -66,13 +66,13 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     // Adds references to the components
     for (const record of records) {
       if (record.ref && this.records[record.ref]) {
+        if (record.id) continue;
+
         Object.assign(
           record,
           JSON.parse(JSON.stringify(this.records[record.ref]))
         );
-        delete record.ref;
       }
-
       records.push(...(record.components ?? []));
     }
 
