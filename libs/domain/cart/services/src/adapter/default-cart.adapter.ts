@@ -46,6 +46,8 @@ export class DefaultCartAdapter implements CartAdapter {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
+        if (!identity.isAuthenticated && !identity.userId) return of([]);
+
         const url = this.generateUrl(
           identity.isAuthenticated
             ? `${ApiCartModel.UrlParts.Customers}/${identity.userId}/${ApiCartModel.UrlParts.Carts}`
@@ -132,7 +134,7 @@ export class DefaultCartAdapter implements CartAdapter {
       quantity: data.quantity,
     };
 
-    return this.identity.get().pipe(
+    return this.identity.get({ requireGuest: true }).pipe(
       take(1),
       switchMap((identity) => this.createCartIfNeeded(identity, data.cartId)),
       switchMap(([identity, cartId]) => {

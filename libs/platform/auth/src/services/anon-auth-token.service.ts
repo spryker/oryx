@@ -1,9 +1,9 @@
 import { StorageService, StorageType } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import {
+  Observable,
   catchError,
   map,
-  Observable,
   of,
   shareReplay,
   switchMap,
@@ -13,6 +13,11 @@ import { AuthTokenData, AuthTokenService } from './auth-token.service';
 import { AuthService } from './auth.service';
 import { generateID } from './utils';
 
+/**
+ * deprecated since 1.4.
+ * AnonAuthTokenService is phasing out for a new guest user handling approach.
+ * Check SapiIdentityService for related functionalities.
+ */
 export class AnonAuthTokenService implements AuthTokenService {
   protected ANONYMOUS_USER_IDENTIFIER = 'oryx.anonymous-user';
 

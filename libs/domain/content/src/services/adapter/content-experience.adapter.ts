@@ -5,7 +5,6 @@ import {
   ExperienceQualifier,
 } from '@spryker-oryx/experience';
 import { Observable, map } from 'rxjs';
-import { ContentFields } from '../../models';
 import { ContentService } from '../content.service';
 
 export interface ContentComponent {
@@ -33,8 +32,8 @@ export class ContentExperienceAdapter implements ExperienceAdapter {
   getAll(): Observable<Component[] | null> {
     return this.content
       .getAll<ContentComponent>({
-        type: ContentFields.Component,
-        entities: [ContentFields.Component],
+        type: 'component',
+        entities: ['component'],
       })
       .pipe(
         map(
