@@ -22,6 +22,22 @@ export module ApiCartModel {
     currency?: string;
     store?: string;
     version?: string;
+    /**
+     * Coupons are called `Vouchers` in SCOS. In Oryx, however, we tend to stick to industry names.
+     */
+    vouchers?: Coupon[];
+  }
+
+  export interface Coupon {
+    id: string;
+    code: string;
+    amount: number;
+    discountPromotionAbstractSku?: string;
+    discountPromotionQuantity?: number;
+    discountType: string;
+    displayName: string;
+    expirationDateTime: Date;
+    isExclusive: boolean;
   }
 
   export interface Totals {
@@ -76,6 +92,7 @@ export module ApiCartModel {
     Items = 'items',
     GuestCartItems = 'guest-cart-items',
     ProductOptions = 'product-options',
+    Coupons = 'vouchers',
   }
 
   export enum UrlParts {
@@ -84,6 +101,7 @@ export module ApiCartModel {
     Items = 'items',
     GuestCarts = 'guest-carts',
     GuestCartItems = 'guest-cart-items',
+    Coupons = 'vouchers',
   }
 
   export type ResponseIncludes =
