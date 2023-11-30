@@ -6,7 +6,7 @@ describe('ssrStyleShim', () => {
 
   beforeEach(() => {
     class MockElement {
-      map = {};
+      map: Record<string, any> = {};
       hasAttribute = vi.fn((a) => this.map[a] === undefined);
       setAttribute = vi.fn((a, v) => (this.map[a] = v));
       getAttribute = vi.fn((a) => this.map[a]);
