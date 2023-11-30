@@ -24,40 +24,37 @@ export class TypographyController implements ReactiveController {
     this.setStyle(this.host.md, Size.Md);
     this.setStyle(this.host.sm, Size.Sm);
 
-    if (this.host.maxLines) {
-      this.host.style.setProperty('--max-lines', String(this.host.maxLines));
-    } else {
-      // ssrShim does not support setting a property to undefined, so we need to
-      // set an artificial value for now.
-      this.host.style.setProperty('--max-lines', '0');
-    }
+    this.setStyleProperty('--max-lines', undefined, String(this.host.maxLines));
   }
 
   protected setStyle(tag?: HeadingTag, size?: Size): void {
     if (!tag) return;
+
+    this.setStyleProperty('--_s', size, `var(--oryx-typography-${tag}-size)`);
+    this.setStyleProperty('--_w', size, `var(--oryx-typography-${tag}-weight)`);
+    this.setStyleProperty('--_l', size, `var(--oryx-typography-${tag}-line)`);
+
+    this.setStyleProperty(
+      '--_d',
+      size,
+      tag === HeadingTag.None || tag === HeadingTag.Hide ? `none` : undefined
+    );
+
+    this.setStyleProperty(
+      '--_t',
+      size,
+      tag === HeadingTag.Subtitle ? `uppercase` : undefined
+    );
+  }
+
+  protected setStyleProperty(name: string, size?: Size, value?: string): void {
     const screen = size ? `-${size}` : '';
 
-    if (tag === HeadingTag.None || tag === HeadingTag.Hide) {
-      this.host.style.setProperty(`--_d${screen}`, `none`);
-      return;
+    if (value) {
+      this.host.style.setProperty(`${name}${screen}`, value);
+    } else {
+      // remove in case of dynamic change (won't work at the server)
+      this.host.style.removeProperty?.(`${name}${screen}`);
     }
-
-    if (tag === HeadingTag.Subtitle) {
-      this.host.style.setProperty(`--_t${screen}`, `uppercase`);
-      return;
-    }
-
-    this.host.style.setProperty(
-      `--_s${screen}`,
-      `var(--oryx-typography-${tag}-size)`
-    );
-    this.host.style.setProperty(
-      `--_w${screen}`,
-      `var(--oryx-typography-${tag}-weight)`
-    );
-    this.host.style.setProperty(
-      `--_l${screen}`,
-      `var(--oryx-typography-${tag}-line)`
-    );
   }
 }

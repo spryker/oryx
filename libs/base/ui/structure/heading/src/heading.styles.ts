@@ -16,7 +16,7 @@ import { css } from 'lit';
  */
 export const headingStyles = css`
   :host {
-    display: var(--_d-r, var(--_d, inline-block));
+    display: var(--_display, var(--_clamp, block));
     text-wrap: balance;
   }
 
@@ -29,7 +29,7 @@ export const headingStyles = css`
   }
 
   :host([style*='--max-lines']) {
-    --_d: -webkit-inline-box;
+    --_clamp: -webkit-inline-box;
 
     -webkit-box-orient: vertical;
     -webkit-line-clamp: var(--max-lines);
@@ -47,7 +47,7 @@ export const headingScreenStyles = screenCss({
       --_s-r: var(--_s-lg);
       --_w-r: var(--w-lg);
       --_l-r: var(--_l-lg);
-      --_d-r: var(--_d-lg);
+      --_display: var(--_d-lg);
       --_t-r: var(--_t-lg);
     }
   `,
@@ -56,7 +56,7 @@ export const headingScreenStyles = screenCss({
       --_s-r: var(--_s-md);
       --_w-r: var(--w-md);
       --_l-r: var(--_l-md);
-      --_d-r: var(--_d-md);
+      --_display: var(--_d-md);
       --_t-r: var(--_t-md);
     }
   `,
@@ -65,7 +65,7 @@ export const headingScreenStyles = screenCss({
       --_s-r: var(--_s-sm);
       --_w-r: var(--w-sm);
       --_l-r: var(--_l-sm);
-      --_d-r: var(--_d-sm);
+      --_display: var(--_d-sm);
       --_t-r: var(--_t-sm);
     }
   `,
