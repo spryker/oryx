@@ -1,12 +1,13 @@
 import {
-  authLoginComponent,
   CodeGrantAuthLoginStrategy,
   CodeGrantAuthLoginStrategyConfig,
   IdentityService,
-  loginLinkComponent,
-  miniLoginComponent,
   OauthFeature,
   OauthFeatureConfig,
+  authLoginComponent,
+  loginLinkComponent,
+  loginNavigationComponent,
+  logoutLinkComponent,
   oauthHandlerComponent,
 } from '@spryker-oryx/auth';
 import { AuthLoginStrategy } from '@spryker-oryx/auth/login';
@@ -100,8 +101,9 @@ export interface BapiAuthFeatureConfig extends OauthFeatureConfig {
 export class BapiAuthComponentsFeature implements AppFeature {
   components: ComponentsInfo = [
     authLoginComponent,
+    loginNavigationComponent,
     loginLinkComponent,
-    miniLoginComponent,
+    logoutLinkComponent,
     oauthHandlerComponent,
   ];
 }

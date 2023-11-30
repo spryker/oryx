@@ -48,6 +48,13 @@ export const layoutPluginsProviders: Provider[] = [
   {
     provide: LayoutStylesPlugin,
     asyncClass: () =>
+      import('./styles/divider/divider-style.plugin').then(
+        (m) => m.DividerStylePlugin
+      ),
+  },
+  {
+    provide: LayoutStylesPlugin,
+    asyncClass: () =>
       import('./styles/transform/transform-style.plugin').then(
         (m) => m.TransformStylePlugin
       ),

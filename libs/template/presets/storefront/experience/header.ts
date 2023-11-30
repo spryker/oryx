@@ -1,4 +1,5 @@
 import { ExperienceComponent, ShadowElevation } from '@spryker-oryx/experience';
+import { RouteType } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size, featureVersion } from '@spryker-oryx/utilities';
 
@@ -137,46 +138,93 @@ export const mainHeader = (): ExperienceComponent[] => {
                 ],
               },
             },
+
             // {
             //   type: 'oryx-auth-mini-login',
+            //   id: 'mini-login', // not working. The navigation plugin cannot access the composition
             //   components: [
             //     {
             //       type: 'oryx-content-link',
-            //       options: { id: '5', type: 'category' },
+            //       options: { type: RouteType.Login },
+            //       content: { data: { text: 'Login' } },
+            //     },
+            //     {
+            //       type: 'oryx-content-link',
+            //       options: { type: RouteType.MyAccount },
+            //       content: { data: { text: 'My account' } },
             //     },
             //   ],
             //   options: {
-            //     rules: [{ layout: 'navigation', navigationType: 'dropdown' }],
+            //     rules: [
+            //       {
+            //         layout: { type: 'navigation', navigationType: 'dropdown' },
+            //       },
+            //     ],
             //   },
             // },
+
+            {
+              type: 'oryx-composition',
+              options: { rules: [{ layout: 'navigation' }] },
+              components: [
+                {
+                  type: 'oryx-auth-login-navigation',
+                  components: [
+                    {
+                      type: 'oryx-content-link',
+                      options: {
+                        type: RouteType.MyAccount,
+                        icon: IconTypes.User,
+                      },
+                      content: { data: { text: 'Overview' } },
+                    },
+                    {
+                      type: 'oryx-content-link',
+                      options: {
+                        type: RouteType.AccountProfile,
+                        icon: 'badge',
+                      },
+                      content: { data: { text: 'Profile' } },
+                    },
+                    {
+                      type: 'oryx-content-link',
+                      options: {
+                        // type: RouteType.OrderHistory,
+                        url: '/my-account/orders',
+                        icon: IconTypes.History,
+                      },
+                      content: { data: { text: 'Order History' } },
+                    },
+                    {
+                      type: 'oryx-auth-logout-link',
+                      options: { rules: [{ divider: true }] },
+                    },
+                  ],
+                  options: {
+                    rules: [{ layout: { navigationType: 'dropdown' } }],
+                  },
+                },
+                {
+                  type: 'oryx-site-navigation-item',
+                  options: {
+                    label: 'cart',
+                    badge: 'CART.SUMMARY',
+                    icon: IconTypes.Cart,
+                    url: { type: 'cart' },
+                  },
+                },
+              ],
+            },
             // {
             //   type: 'oryx-site-navigation-item',
             //   options: {
-            //     label: 'login',
+            //     contentBehavior: 'dropdown',
+            //     label: 'USER.NAME',
             //     icon: IconTypes.User,
-            //     url: { type: 'login' },
-            //     rules: [{ hideByRule: 'USER.AUTHENTICATED' }],
+            //     rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
             //   },
+            //   components: [{ type: 'oryx-auth-login-link' }],
             // },
-            {
-              type: 'oryx-site-navigation-item',
-              options: {
-                contentBehavior: 'dropdown',
-                label: 'USER.NAME',
-                icon: IconTypes.User,
-                rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
-              },
-              components: [{ type: 'oryx-auth-login-link' }],
-            },
-            {
-              type: 'oryx-site-navigation-item',
-              options: {
-                label: 'cart',
-                badge: 'CART.SUMMARY',
-                icon: IconTypes.Cart,
-                url: { type: 'cart' },
-              },
-            },
           ],
           options: {
             rules: [

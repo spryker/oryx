@@ -1,4 +1,5 @@
 export * from '../login-link/login-link.def';
+export * from '../login-navigation/login-navigation.def';
 export * from '../login/login.def';
-export * from '../mini-login/mini-login.def';
+export * from '../logout-link/logout-link.def';
 export * from '../oauth-handler/oauth-handler.def';

@@ -1,10 +1,10 @@
 import { AppFeature } from '@spryker-oryx/core';
+import { myAccountFeature } from './account';
 import { articleProviders } from './articles';
 import { bazaarVoiceComponentMapping } from './bazaarvoice';
 import { cloudinaryImageConverter } from './cloudinary';
 import * as components from './components';
 import { i18nLabsProviders, labsI18nFeature } from './i18n';
-import { myAccountFeature } from './my-account';
 export * from './components';
 export { labsI18nFeature } from './i18n';
 

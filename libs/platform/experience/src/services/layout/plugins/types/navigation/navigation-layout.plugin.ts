@@ -42,15 +42,18 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
   getRender(
     data: LayoutPluginRenderParams
   ): Observable<LayoutPluginRender | undefined> {
-    const isDropdown = data.experience?.options?.rules?.find(
-      (rule) => (rule.layout as Layouts)?.navigationType === 'dropdown'
-    );
+    const isDropdown =
+      data.options.navigationType === 'dropdown' ||
+      data.experience?.options?.rules?.find(
+        (rule) => (rule.layout as Layouts)?.navigationType === 'dropdown'
+      );
+    // console.log('nav layout', data, isDropdown);
     if (isDropdown) {
       return of({
-        wrapper: html`<oryx-dropdown vertical-align position="end">
+        wrapper: html`<oryx-dropdown vertical-align position="start">
           <span slot="trigger">${data.template}</span>
           <oryx-composition
-            .uid=${data.experience?.id}
+            .uid=${data.experience?.id ?? 'mini-login'}
             close-popover
             .options=${{ rules: [{ layout: { type: 'list' }, gap: '0px' }] }}
           ></oryx-composition>
