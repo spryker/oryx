@@ -6,7 +6,6 @@ import { EditTarget } from '@spryker-oryx/user/address-list-item';
 interface Page {
   type: string;
   route: RouteType;
-  path: string;
   icon: IconTypes | string;
   component?: ExperienceComponent;
 }
@@ -14,35 +13,30 @@ interface Page {
 export const overviewPage: Page = {
   type: 'overview',
   route: RouteType.AccountOverviewPage, // tmp
-  path: '/my-account/overview',
   icon: IconTypes.User,
 };
 
 export const profilePage: Page = {
   type: 'profile',
   route: RouteType.AccountProfilePage, // tmp
-  path: '/my-account/profile',
   icon: 'badge',
 };
 
 export const ordersPage: Page = {
   type: 'orders',
   route: RouteType.AccountOrdersPage, // tmp
-  path: '/my-account/orders',
   icon: IconTypes.History,
 };
 
 export const consentPage: Page = {
   type: 'consent',
   route: RouteType.AccountConsentPage, // tmp
-  path: '/my-account/consent',
   icon: 'shield_locked',
 };
 
 export const addressesPage: Page = {
   type: 'addresses',
   route: RouteType.AccountAddressesPage, // tmp
-  path: '/my-account/addresses',
   icon: IconTypes.Location,
   component: {
     type: 'oryx-user-address-list',
@@ -54,10 +48,41 @@ export const addressesPage: Page = {
   },
 };
 
+export const cartsPage: Page = {
+  type: 'carts',
+  route: RouteType.AccountCartsPage, // tmp
+  icon: IconTypes.Cart,
+};
+
+export const wishListsPage: Page = {
+  type: 'wishlists',
+  route: RouteType.AccountWishListsPage, // tmp
+  icon: IconTypes.Wishlist,
+};
+
+//     {
+//       type: 'oryx-content-link',
+//       content: { data: { text: i18n('my-account.navigation.carts') } },
+//       options: {
+//         url: '/my-account/wishlist',
+//         icon: IconTypes.Cart,
+//       },
+//     },
+//     {
+//       type: 'oryx-content-link',
+//       content: { data: { text: i18n('my-account.navigation.wishlist') } },
+//       options: {
+//         url: '/my-account/wishlist',
+//         icon: IconTypes.Wishlist,
+//       },
+//     },
+
 export const pages: Page[] = [
   overviewPage,
   profilePage,
   ordersPage,
   consentPage,
   addressesPage,
+  cartsPage,
+  wishListsPage,
 ];

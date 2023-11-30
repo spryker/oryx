@@ -49,6 +49,8 @@ export const enum RouteType {
   AccountOrdersPage = 'account-orders',
   AccountConsentPage = 'account-consent',
   AccountAddressesPage = 'account-addresses',
+  AccountCartsPage = 'account-carts',
+  AccountWishListsPage = 'account-wishlists',
   /** @deprecated */
   OrderHistory = 'my-account/order-history',
   NotFound = 'not-found',
