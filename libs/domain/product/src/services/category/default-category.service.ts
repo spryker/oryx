@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable, map, of, switchMap } from 'rxjs';
 import { ProductCategory, ProductCategoryQualifier } from '../../models';
 import { ProductCategoryAdapter } from './adapter/product-category.adapter';
 import { ProductCategoryService } from './category.service';
-import { CategoryQuery } from './state';
+import {CategoryListQuery, CategoryQuery} from './state';
 
 export class DefaultProductCategoryService implements ProductCategoryService {
   protected categoryQuery = injectQuery<
@@ -13,29 +13,7 @@ export class DefaultProductCategoryService implements ProductCategoryService {
     ProductCategoryQualifier
   >(CategoryQuery);
 
-  constructor(protected adapter = inject(ProductCategoryAdapter)) {}
-
-  protected categories = new Map<string, BehaviorSubject<ProductCategory>>();
-
-  protected listQuery$ = createQuery({
-    loader: () => this.adapter.getTree(),
-    onLoad: [
-      ({ data: categories }) => {
-        categories?.forEach((category) => {
-          this.categoryQuery.set({
-            data: category,
-            qualifier: { id: category.id },
-          });
-        });
-      },
-    ],
-    refreshOn: [LocaleChanged],
-  });
-
-  /**
-   * @deprecated since 1.4 use listQuery$ instead
-   */
-  protected treeQuery$ = this.listQuery$;
+  protected listQuery$ = injectQuery<ProductCategory[], ProductCategoryQualifier>(CategoryListQuery);
 
   get(
     qualifier: ProductCategoryQualifier | string
