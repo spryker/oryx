@@ -32,6 +32,7 @@ export const headingStyles = css`
   }
 
   :host([style*='--max-lines']) {
+    /* stylelint-disable-next-line */
     --_clamp: -webkit-inline-box;
 
     -webkit-box-orient: vertical;

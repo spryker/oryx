@@ -5,7 +5,12 @@ import { ButtonType } from '@spryker-oryx/ui/button';
 import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Address } from '@spryker-oryx/user';
-import { computed, hydrate, I18nMixin } from '@spryker-oryx/utilities';
+import {
+  computed,
+  featureVersion,
+  hydrate,
+  I18nMixin,
+} from '@spryker-oryx/utilities';
 import { html, LitElement, TemplateResult } from 'lit';
 import { orderSummaryStyles } from './summary.styles';
 
@@ -23,11 +28,25 @@ export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
   protected override render(): TemplateResult | void {
     if (!this.$order()) return;
 
-    return html` <oryx-heading .as=${HeadingTag.H3}>
-        <h2>${this.i18n('order.summary.order-details')}</h2>
-      </oryx-heading>
-      ${this.renderDetails()}
+    return html`${this.__renderHeading()}${this.renderDetails()}
       <section>${this.renderBilling()} ${this.renderShipping()}</section>`;
+  }
+
+  // temporary implementation for backwards compatibility
+  private __renderHeading(): TemplateResult {
+    const text = this.i18n('order.summary.order-details');
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading
+        .tag=${HeadingTag.H2}
+        .typography=${HeadingTag.H3}
+      >
+        ${text}
+      </oryx-heading>`;
+    } else {
+      return html`<oryx-heading .as=${HeadingTag.H3}>
+        <h2>${text}</h2>
+      </oryx-heading>`;
+    }
   }
 
   protected renderDetails(): TemplateResult {

@@ -2,7 +2,8 @@ import { ThemeToken } from '@spryker-oryx/experience';
 
 export const typographyTokens: ThemeToken = {
   typography: {
-    body: { font: '"Montserrat", sans-serif', weight: '500' },
+    body: { font: '"Montserrat", sans-serif', weight: '500', line: '22px' },
+    strong: { size: '1rem', weight: '500', line: '22px' },
     subtitle: { size: '1rem', line: '1.5714285714em', weight: '500' },
     'subtitle-small': {
       size: '0.8571428571rem',

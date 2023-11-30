@@ -4,6 +4,7 @@ import { featureVersion } from '@spryker-oryx/utilities';
 export const typographyTokens: ThemeToken = {
   typography: {
     body: { font: `'Montserrat', sans-serif`, weight: '500', line: '22px' },
+    strong: { size: '1rem', weight: '500', line: '22px' },
     subtitle: {
       size: '0.8571428571rem',
       line: '1.3333333333em',

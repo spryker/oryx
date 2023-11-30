@@ -32,6 +32,8 @@ export class TypographyController implements ReactiveController {
     this.setStyle(this.host.lg ?? globalNone, Size.Lg);
     this.setStyle(this.host.md ?? globalNone, Size.Md);
     this.setStyle(this.host.sm ?? globalNone, Size.Sm);
+
+    this.setStyleProperty('--max-lines', undefined, this.host.maxLines);
   }
 
   protected setStyle(tag?: HeadingTag | HeadingVisibility, size?: Size): void {
@@ -56,6 +58,12 @@ export class TypographyController implements ReactiveController {
     }
   }
 
+  /**
+   * Adds the property to the styles for the given screen size. When there is no
+   * value available, the property is removed, to ensure it works dynamically.
+   * Removing properties wont work at the server, which is fine, as it is supposed
+   * to be dynamic, at runtime only.
+   */
   protected setStyleProperty(
     name: string,
     size?: Size,
@@ -66,7 +74,6 @@ export class TypographyController implements ReactiveController {
     if (value !== undefined) {
       this.host.style.setProperty(`${name}${screen}`, String(value));
     } else {
-      // remove in case of dynamic change (won't work at the server)
       this.host.style.removeProperty?.(`${name}${screen}`);
     }
   }

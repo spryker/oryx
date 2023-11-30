@@ -54,12 +54,6 @@ export class ProductTitleComponent extends ProductMixin(
     >`;
   }
 
-  protected renderLink(title?: TemplateResult | string): TemplateResult;
-  /**
-   * @deprecated Use the version of renderLink that accepts the 'name' argument.
-   */
-  protected renderLink(): TemplateResult;
-
   protected renderLink(template?: TemplateResult | string): TemplateResult {
     const target =
       this.$options().linkType === LinkType.ExternalLink ? '_blank' : undefined;
