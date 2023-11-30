@@ -67,7 +67,7 @@ export const categoryQueries = [
   provideQuery(CategoryQuery, (adapter = inject(ProductCategoryAdapter)) => ({
     loader: (qualifier: ProductCategoryQualifier) => adapter.get(qualifier),
   })),
-  provideQuery(
+  provideQuery<ProductCategory[], ProductCategoryQualifier>(
     CategoryListQuery,
     (
       adapter = inject(ProductCategoryAdapter),
@@ -75,10 +75,10 @@ export const categoryQueries = [
         CategoryQuery
       )
     ) => ({
-      loader: () => adapter.getTree(),
+      loader: (qualifier: ProductCategoryQualifier) => adapter.getTree(),
       onLoad: [
         ({ data: categories }) => {
-          (categories as any[])?.forEach((category: any) => {
+          (categories)?.forEach((category: ProductCategory) => {
             categoryQuery.set({
               data: category,
               qualifier: { id: category.id },

@@ -26,7 +26,7 @@ export class DefaultProductCategoryService implements ProductCategoryService {
   getList(
     qualifier?: ProductCategoryQualifier
   ): Observable<ProductCategory[] | undefined> {
-    return this.listQuery$.get();
+    return this.listQuery$.get(qualifier);
   }
 
   getTrail(
