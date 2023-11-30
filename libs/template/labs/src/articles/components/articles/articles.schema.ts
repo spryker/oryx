@@ -3,7 +3,7 @@ import { IconTypes } from '@spryker-oryx/ui/icon';
 import { ArticlesComponent } from './articles.component';
 
 export const articlesSchema: ContentComponentSchema<ArticlesComponent> = {
-  name: 'Article',
+  name: 'Articles',
   group: 'Content',
   icon: IconTypes.Description,
 };

@@ -98,7 +98,12 @@ export class DefaultStoryblokContentAdapter implements ContentAdapter {
             ).pipe(map((data) => data.component.schema));
         }
 
-        return combineLatest([of(entities), forkJoin(types$)]);
+        return combineLatest([
+          of(entities),
+          stories.stories.length
+            ? forkJoin(types$)
+            : of({} as Record<string, StoryblokCmsModel.Schema>),
+        ]);
       }),
       switchMap(([entities, types]) => {
         return from(entities).pipe(
