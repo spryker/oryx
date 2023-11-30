@@ -17,9 +17,9 @@ export const convertButtons = (raw: string): string => {
 };
 
 const headingRegex =
-  /<(h[1-6]|small|caption|strong)(.*?)>(.*?)<\/(h[1-6]|small|caption|strong)>/gis;
+  /<(h[1-6]|small|strong)(.*?)>(.*?)<\/(h[1-6]|small|strong)>/gis;
 const subtitleRegex =
-  /<(span|div)\s+([^>]*)class="([^"]*\b(subtitle|h[1-6])\b[^"]*)"([^>]*)>(.*?)<\/(span|div)>/gis;
+  /<(span|div)\s+([^>]*)class="([^"]*\b(subtitle|caption|h[1-6])\b[^"]*)"([^>]*)>(.*?)<\/(span|div)>/gis;
 
 /**
  * Converts all heading tags in the given string to oryx-link design system components. All

@@ -89,10 +89,7 @@ export const productPage: ExperienceComponent = {
                   options: {
                     tag: 'h1',
                     ...(featureVersion >= '1.4'
-                      ? {
-                          tag: HeadingTag.H1,
-                          typography: HeadingTag.H3,
-                        }
+                      ? { tag: HeadingTag.H1, typography: HeadingTag.H3 }
                       : {}),
                   },
                 },

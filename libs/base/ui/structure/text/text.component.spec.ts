@@ -77,14 +77,14 @@ describe('TextComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-text
-            .content=${'foo <small>small</small> bar <caption>cap</caption> baz <span class="subtitle">subtitle</span> qux  '}
+            .content=${'foo <small>small</small> bar <span class="caption">cap</span> baz <span class="subtitle">subtitle</span> qux  '}
           ></oryx-text>`
         );
       });
 
       it('should render oryx-heading components', () => {
         expect(element).toContainElement(`oryx-heading[tag='small']`);
-        expect(element).toContainElement(`oryx-heading[tag='caption']`);
+        expect(element).toContainElement(`oryx-heading[typography='caption']`);
         expect(element).toContainElement(`oryx-heading[typography='subtitle']`);
       });
     });

@@ -36,6 +36,17 @@ export class TypographyController implements ReactiveController {
   protected setStyle(tag?: HeadingTag, size?: Size): void {
     if (!tag) return;
     const screen = size ? `-${size}` : '';
+
+    if (tag === HeadingTag.None || tag === HeadingTag.Hide) {
+      this.host.style.setProperty(`--_d${screen}`, `none`);
+      return;
+    }
+
+    if (tag === HeadingTag.Subtitle) {
+      this.host.style.setProperty(`--_t${screen}`, `uppercase`);
+      return;
+    }
+
     this.host.style.setProperty(
       `--_s${screen}`,
       `var(--oryx-typography-${tag}-size)`

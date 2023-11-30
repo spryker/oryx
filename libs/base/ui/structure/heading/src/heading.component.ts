@@ -13,29 +13,17 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
 
   protected typographyController = new TypographyController(this);
 
-  @property({ reflect: true }) tag?: HeadingTag;
-  @property({ reflect: true }) typography?: HeadingTag;
+  @property() tag?: HeadingTag;
+  @property() typography?: HeadingTag;
   @property() lg?: HeadingTag;
   @property() md?: HeadingTag;
   @property() sm?: HeadingTag;
+  @property() maxLines?: number;
 
-  @property({ reflect: true }) as?: HeadingTag | 'hide';
-  @property({ reflect: true, attribute: 'as-lg' }) asLg?:
-    | HeadingTag
-    | 'hide'
-    | 'show';
-
-  @property({ reflect: true, attribute: 'as-md' }) asMd?:
-    | HeadingTag
-    | 'hide'
-    | 'show';
-
-  @property({ reflect: true, attribute: 'as-sm' }) asSm?:
-    | HeadingTag
-    | 'hide'
-    | 'show';
-
-  @property() maxLines?: number | undefined;
+  @property({ reflect: true }) as?: HeadingTag;
+  @property({ reflect: true, attribute: 'as-lg' }) asLg?: HeadingTag;
+  @property({ reflect: true, attribute: 'as-md' }) asMd?: HeadingTag;
+  @property({ reflect: true, attribute: 'as-sm' }) asSm?: HeadingTag;
 
   protected override render(): TemplateResult {
     return this.renderTag(html`<slot></slot>`);
@@ -75,11 +63,7 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
       case HeadingTag.Strong:
         return html`<strong>${template}</strong>`;
       case HeadingTag.Caption:
-        return featureVersion >= '1.4'
-          ? html`<caption>
-              ${template}
-            </caption>`
-          : html`<span class="caption">${template}</span>`;
+        return html`<span class="caption">${template}</span>`;
       case HeadingTag.Small:
         return html`<small>${template}</small>`;
       default:

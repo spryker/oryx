@@ -80,4 +80,17 @@ export const enum HeadingTag {
   Small = 'small',
   Bold = 'bold',
   Strong = 'strong',
+
+  /**
+   * Hides the heading.
+   */
+  None = 'none',
+  /**
+   * @deprecated use `HeadingTag.None` instead
+   */
+  Hide = 'hide',
+  /**
+   * @deprecated never used and no longer supported
+   */
+  Show = 'show',
 }
