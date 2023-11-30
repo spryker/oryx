@@ -6,7 +6,6 @@ import {
   OauthFeatureConfig,
   authLoginComponent,
   loginLinkComponent,
-  loginNavigationComponent,
   logoutLinkComponent,
   oauthHandlerComponent,
 } from '@spryker-oryx/auth';
@@ -101,7 +100,6 @@ export interface BapiAuthFeatureConfig extends OauthFeatureConfig {
 export class BapiAuthComponentsFeature implements AppFeature {
   components: ComponentsInfo = [
     authLoginComponent,
-    loginNavigationComponent,
     loginLinkComponent,
     logoutLinkComponent,
     oauthHandlerComponent,

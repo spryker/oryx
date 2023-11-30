@@ -11,7 +11,6 @@ import {
   PasswordGrantAuthLoginStrategyConfig,
   authLoginComponent,
   loginLinkComponent,
-  loginNavigationComponent,
   logoutLinkComponent,
 } from '@spryker-oryx/auth';
 import { AuthLoginStrategy } from '@spryker-oryx/auth/login';
@@ -119,7 +118,6 @@ export interface SapiAuthFeatureConfig extends OauthFeatureConfig {
 export class SapiAuthComponentsFeature implements AppFeature {
   components: ComponentsInfo = [
     authLoginComponent,
-    loginNavigationComponent,
     loginLinkComponent,
     logoutLinkComponent,
   ];

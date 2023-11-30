@@ -168,7 +168,7 @@ export const mainHeader = (): ExperienceComponent[] => {
               options: { rules: [{ layout: 'navigation' }] },
               components: [
                 {
-                  type: 'oryx-auth-login-navigation',
+                  type: 'oryx-user-navigation-trigger',
                   components: [
                     {
                       type: 'oryx-content-link',
