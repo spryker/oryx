@@ -7,9 +7,11 @@ export const styles = css`
     gap: 20px;
     margin: 20px 0;
   }
+
   oryx-input {
     grid-column: 1 / span 2;
   }
+
   oryx-button {
     grid-column: 1;
     margin-block-start: 20px;
