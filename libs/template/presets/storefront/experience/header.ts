@@ -83,6 +83,47 @@ export const topHeader = (options?: {
   ];
 };
 
+export const UserHeaderNavigation = {
+  id: 'user-header-navigation',
+  type: 'oryx-user-navigation-trigger',
+  components: [
+    {
+      type: 'oryx-content-link',
+      options: {
+        type: RouteType.AccountOverviewPage,
+        id: 'overview',
+        icon: IconTypes.User,
+      },
+      content: { data: { text: 'Overview' } },
+    },
+    {
+      type: 'oryx-content-link',
+      options: {
+        type: RouteType.AccountProfilePage,
+        id: 'profile',
+        icon: 'badge',
+      },
+      content: { data: { text: 'Profile' } },
+    },
+    {
+      type: 'oryx-content-link',
+      options: {
+        type: RouteType.AccountOrdersPage,
+        id: 'orders',
+        icon: IconTypes.History,
+      },
+      content: { data: { text: 'Order History' } },
+    },
+    {
+      type: 'oryx-auth-logout-link',
+      options: { rules: [{ divider: true }] },
+    },
+  ],
+  options: {
+    rules: [{ layout: { navigationType: 'dropdown' } }],
+  },
+};
+
 export const mainHeader = (): ExperienceComponent[] => {
   return [
     {
@@ -138,74 +179,11 @@ export const mainHeader = (): ExperienceComponent[] => {
                 ],
               },
             },
-
-            // {
-            //   type: 'oryx-auth-mini-login',
-            //   id: 'mini-login', // not working. The navigation plugin cannot access the composition
-            //   components: [
-            //     {
-            //       type: 'oryx-content-link',
-            //       options: { type: RouteType.Login },
-            //       content: { data: { text: 'Login' } },
-            //     },
-            //     {
-            //       type: 'oryx-content-link',
-            //       options: { type: RouteType.MyAccount },
-            //       content: { data: { text: 'My account' } },
-            //     },
-            //   ],
-            //   options: {
-            //     rules: [
-            //       {
-            //         layout: { type: 'navigation', navigationType: 'dropdown' },
-            //       },
-            //     ],
-            //   },
-            // },
-
             {
               type: 'oryx-composition',
               options: { rules: [{ layout: 'navigation' }] },
               components: [
-                {
-                  type: 'oryx-user-navigation-trigger',
-                  components: [
-                    {
-                      type: 'oryx-content-link',
-                      options: {
-                        type: RouteType.AccountOverviewPage,
-                        id: 'overview',
-                        icon: IconTypes.User,
-                      },
-                      content: { data: { text: 'Overview' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: {
-                        type: RouteType.AccountProfilePage,
-                        id: 'profile',
-                        icon: 'badge',
-                      },
-                      content: { data: { text: 'Profile' } },
-                    },
-                    {
-                      type: 'oryx-content-link',
-                      options: {
-                        type: RouteType.AccountOrdersPage,
-                        id: 'orders',
-                        icon: IconTypes.History,
-                      },
-                      content: { data: { text: 'Order History' } },
-                    },
-                    {
-                      type: 'oryx-auth-logout-link',
-                      options: { rules: [{ divider: true }] },
-                    },
-                  ],
-                  options: {
-                    rules: [{ layout: { navigationType: 'dropdown' } }],
-                  },
-                },
+                { ref: 'user-header-navigation' },
                 {
                   type: 'oryx-site-navigation-item',
                   options: {

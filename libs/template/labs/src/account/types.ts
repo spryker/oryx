@@ -39,12 +39,28 @@ export const addressesPage: Page = {
   route: RouteType.AccountAddressesPage, // tmp
   icon: IconTypes.Location,
   component: {
-    type: 'oryx-user-address-list',
+    type: 'oryx-composition',
     options: {
-      editable: true,
-      removable: true,
-      editTarget: EditTarget.Link,
+      rules: [
+        {
+          layout: { type: 'list' },
+        },
+      ],
     },
+    components: [
+      {
+        type: 'oryx-user-address-list',
+        options: {
+          editable: true,
+          removable: true,
+          editTarget: EditTarget.Link,
+        },
+      },
+      {
+        type: 'oryx-user-address-add-button',
+        options: { target: 'link' },
+      },
+    ],
   },
 };
 
@@ -59,23 +75,6 @@ export const wishListsPage: Page = {
   route: RouteType.AccountWishListsPage, // tmp
   icon: IconTypes.Wishlist,
 };
-
-//     {
-//       type: 'oryx-content-link',
-//       content: { data: { text: i18n('my-account.navigation.carts') } },
-//       options: {
-//         url: '/my-account/wishlist',
-//         icon: IconTypes.Cart,
-//       },
-//     },
-//     {
-//       type: 'oryx-content-link',
-//       content: { data: { text: i18n('my-account.navigation.wishlist') } },
-//       options: {
-//         url: '/my-account/wishlist',
-//         icon: IconTypes.Wishlist,
-//       },
-//     },
 
 export const pages: Page[] = [
   overviewPage,
