@@ -92,7 +92,6 @@ export const productPage: ExperienceComponent = {
                       ? {
                           tag: HeadingTag.H1,
                           typography: HeadingTag.H3,
-                          maxLines: 2,
                         }
                       : {}),
                   },
