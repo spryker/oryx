@@ -1,10 +1,11 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { provideExperienceData } from '@spryker-oryx/experience';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import { myAccountNavigation } from './account-navigation.ref.js';
+import { accountNavigation } from './account-navigation.ref.js';
 import { accountRoutes } from './account-routes';
-import { accountProfilePage, myAccountPage } from './account.page.js';
+import { accountPages } from './account.page.js';
 
+console.log(accountPages);
 /**
  * Initial landing page for My Account. we keep it in labs for now
  * as it's not yet production ready. Once the first my account pages are
@@ -13,10 +14,6 @@ import { accountProfilePage, myAccountPage } from './account.page.js';
 export const myAccountFeature: AppFeature = {
   providers: [
     ...provideLitRoutes({ routes: accountRoutes }),
-    provideExperienceData([
-      myAccountNavigation,
-      myAccountPage,
-      accountProfilePage,
-    ]),
+    provideExperienceData([accountNavigation, ...accountPages]),
   ],
 };

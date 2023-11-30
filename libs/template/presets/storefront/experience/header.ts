@@ -173,7 +173,8 @@ export const mainHeader = (): ExperienceComponent[] => {
                     {
                       type: 'oryx-content-link',
                       options: {
-                        type: RouteType.MyAccount,
+                        type: RouteType.AccountOverviewPage,
+                        id: 'overview',
                         icon: IconTypes.User,
                       },
                       content: { data: { text: 'Overview' } },
@@ -181,7 +182,8 @@ export const mainHeader = (): ExperienceComponent[] => {
                     {
                       type: 'oryx-content-link',
                       options: {
-                        type: RouteType.AccountProfile,
+                        type: RouteType.AccountProfilePage,
+                        id: 'profile',
                         icon: 'badge',
                       },
                       content: { data: { text: 'Profile' } },
@@ -189,8 +191,8 @@ export const mainHeader = (): ExperienceComponent[] => {
                     {
                       type: 'oryx-content-link',
                       options: {
-                        // type: RouteType.OrderHistory,
-                        url: '/my-account/orders',
+                        type: RouteType.AccountOrdersPage,
+                        id: 'orders',
                         icon: IconTypes.History,
                       },
                       content: { data: { text: 'Order History' } },

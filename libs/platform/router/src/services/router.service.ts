@@ -42,8 +42,14 @@ export const enum RouteType {
   Order = 'order',
   Cart = 'cart',
   Login = 'login',
+  /** @deprecated */
   MyAccount = 'my-account',
-  AccountProfile = 'my-account/profile',
+  AccountOverviewPage = 'account-overview',
+  AccountProfilePage = 'account-profile',
+  AccountOrdersPage = 'account-orders',
+  AccountConsentPage = 'account-consent',
+  AccountAddressesPage = 'account-addresses',
+  /** @deprecated */
   OrderHistory = 'my-account/order-history',
   NotFound = 'not-found',
   AddressList = 'address-list',
