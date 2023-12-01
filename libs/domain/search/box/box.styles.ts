@@ -41,7 +41,7 @@ export const searchBoxStyles = css`
   }
 
   h5 {
-    ${headingUtil(HeadingTag.Subtitle, '0 6px')}
+    ${headingUtil(HeadingTag.Subtitle, { margin: '0 0 6px' })}
 
     text-transform: uppercase;
     display: flex;

@@ -3,7 +3,7 @@ import { css } from 'lit';
 
 export const totalStyles = css`
   h2 {
-    ${headingUtil(HeadingTag.H3, '0 var(--oryx-space-4)')};
+    ${headingUtil(HeadingTag.H3, { margin: '0 0 var(--oryx-space-4)' })};
 
     display: var(--oryx-screen-small-hide, block);
   }

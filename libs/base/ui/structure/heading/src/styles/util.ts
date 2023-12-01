@@ -1,5 +1,5 @@
 import { CSSResult, unsafeCSS } from 'lit';
-import { HeadingTag } from '../heading.model';
+import { HeadingTag } from '../heading.model.js';
 
 /**
  * Heading utility function to generate heading styles base on the
@@ -12,11 +12,9 @@ import { HeadingTag } from '../heading.model';
  */
 export const headingUtil = (
   tag: HeadingTag,
-  options?: { marginBlock?: string }
+  options: { margin?: string } = { margin: '0' }
 ): CSSResult => {
-  const margin = options?.marginBlock
-    ? `margin-block: ${options.marginBlock}`
-    : 'margin-block: 0';
+  const margin = !options?.margin ? `` : `margin: ${options.margin}`;
 
   return unsafeCSS(`
     font-size: var(--oryx-typography-${tag}-size);

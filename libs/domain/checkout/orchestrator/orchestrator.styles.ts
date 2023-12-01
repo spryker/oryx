@@ -15,7 +15,7 @@ export const checkoutOrchestratorStyles = css`
   }
 
   h2 {
-    ${headingUtil(HeadingTag.H5, '0 12px')};
+    ${headingUtil(HeadingTag.H5, { margin: '0 0 12px' })};
 
     display: flex;
     align-items: center;
