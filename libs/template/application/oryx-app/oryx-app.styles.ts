@@ -1,7 +1,19 @@
-import { css } from 'lit';
+import { featureVersion } from '@spryker-oryx/utilities';
+import { css, unsafeCSS } from 'lit';
 
 export const styles = css`
   :host {
+    ${unsafeCSS(
+      featureVersion >= '1.4'
+        ? `
+        --_container-width: min(
+          var(--oryx-container-width),
+          calc(100vw - (2 * var(--oryx-container-bleed, 0px)))
+        );
+    `
+        : ''
+    )}
+
     display: block;
     font-family: var(--oryx-typography-body-font);
     font-weight: var(--oryx-typography-body-weight);
