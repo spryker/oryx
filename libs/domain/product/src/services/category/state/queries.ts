@@ -78,7 +78,7 @@ export const categoryQueries = [
       loader: (qualifier: ProductCategoryQualifier) => adapter.getTree(),
       onLoad: [
         ({ data: categories }) => {
-          (categories)?.forEach((category: ProductCategory) => {
+          categories?.forEach((category: ProductCategory) => {
             categoryQuery.set({
               data: category,
               qualifier: { id: category.id },
