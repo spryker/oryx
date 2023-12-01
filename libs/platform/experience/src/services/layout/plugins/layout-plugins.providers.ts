@@ -5,6 +5,7 @@ import {
   DividerLayoutPluginToken,
   OverlapLayoutPluginToken,
   StickyLayoutPluginToken,
+  TransitionLayoutPluginToken,
 } from './properties';
 import {
   CarouselLayoutPluginToken,
@@ -127,6 +128,13 @@ export const layoutPluginsProviders: Provider[] = [
     asyncClass: () =>
       import('./properties/overlap/overlap-layout.plugin').then(
         (m) => m.OverlapLayoutPlugin
+      ),
+  },
+  {
+    provide: TransitionLayoutPluginToken,
+    asyncClass: () =>
+      import('./properties/transition/transition.plugin').then(
+        (m) => m.TransitionLayoutPlugin
       ),
   },
 ];
