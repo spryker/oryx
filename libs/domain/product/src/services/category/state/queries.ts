@@ -63,31 +63,39 @@ export function excludeCategoryTransform(
   return filteredByParent.filter((category) => !excludes.includes(category.id));
 }
 
-export const categoryQueries = [
-  provideQuery(CategoryQuery, (adapter = inject(ProductCategoryAdapter)) => ({
+export const categoryQuery = provideQuery(
+  CategoryQuery,
+  (adapter = inject(ProductCategoryAdapter)) => ({
     loader: (qualifier: ProductCategoryQualifier) => adapter.get(qualifier),
-  })),
-  provideQuery<ProductCategory[], ProductCategoryQualifier>(
-    CategoryListQuery,
-    (
-      adapter = inject(ProductCategoryAdapter),
-      categoryQuery = injectQuery<ProductCategory, ProductCategoryQualifier>(
-        CategoryQuery
-      )
-    ) => ({
-      loader: (qualifier: ProductCategoryQualifier) => adapter.getTree(),
-      onLoad: [
-        ({ data: categories }) => {
-          categories?.forEach((category: ProductCategory) => {
-            categoryQuery.set({
-              data: category,
-              qualifier: { id: category.id },
-            });
+  })
+);
+
+export const categoryListQuery = provideQuery<
+  ProductCategory[],
+  ProductCategoryQualifier
+>(
+  CategoryListQuery,
+  (
+    adapter = inject(ProductCategoryAdapter),
+    categoryQuery = injectQuery<ProductCategory, ProductCategoryQualifier>(
+      CategoryQuery
+    )
+  ) => ({
+    loader: (qualifier: ProductCategoryQualifier) => adapter.getTree(),
+    onLoad: [
+      ({ data: categories }) => {
+        categories?.forEach((category: ProductCategory) => {
+          categoryQuery.set({
+            data: category,
+            qualifier: { id: category.id },
           });
-        },
-      ],
-      refreshOn: [LocaleChanged],
-      postTransforms: [excludeCategoryTransform],
-    })
-  ),
-];
+        });
+      },
+    ],
+    refreshOn: [LocaleChanged],
+    cacheKey: ({ exclude, ...rest }) => rest, // ignore exclude for caching
+    postTransforms: [excludeCategoryTransform],
+  })
+);
+
+export const categoryQueries = [categoryQuery, categoryListQuery];
