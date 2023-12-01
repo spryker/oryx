@@ -110,7 +110,10 @@ export const homePage: ExperienceComponent = {
       options: {
         rules: [
           {
-            layout: 'grid',
+            layout: {
+              type: 'grid',
+              transition: true,
+            },
             padding: '60px 0',
             gap: '30px 0px',
             columnCount: 6,
