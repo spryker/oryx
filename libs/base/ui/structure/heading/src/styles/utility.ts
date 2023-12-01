@@ -7,14 +7,21 @@ import { HeadingTag } from '../heading.model';
  * but can be overridden by passing a string.
  *
  * ```ts
- * headingUtil(HeadingTag.H1, '0 8px');
+ * headingUtil(HeadingTag.H1, { margin: { block:'0 8px'}});
  * ```
  */
-export const headingUtil = (tag: HeadingTag, marginBlock = '0'): CSSResult => {
+export const headingUtil = (
+  tag: HeadingTag,
+  options?: { marginBlock?: string }
+): CSSResult => {
+  const margin = options?.marginBlock
+    ? `margin-block: ${options.marginBlock}`
+    : 'margin-block: 0';
+
   return unsafeCSS(`
     font-size: var(--oryx-typography-${tag}-size);
     font-weight: var(--oryx-typography-${tag}-weight);
     line-height: var(--oryx-typography-${tag}-line);
-    margin-block: ${marginBlock};
+    ${margin}
   `);
 };
