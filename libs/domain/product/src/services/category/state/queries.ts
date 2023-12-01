@@ -5,7 +5,7 @@ import { ProductCategory, ProductCategoryQualifier } from '../../../models';
 import { ProductCategoryAdapter } from '../adapter';
 
 export const CategoryQuery = 'oryx.categoryQuery';
-export const CategoryListQuery = 'oryx.categorylistQuery';
+export const CategoryListQuery = 'oryx.categoryListQuery';
 
 function getExcludes(
   categories: string[],
