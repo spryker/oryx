@@ -3,9 +3,8 @@ import { css } from 'lit';
 
 export const totalStyles = css`
   h2 {
-    ${headingUtil(HeadingTag.H3)};
+    ${headingUtil(HeadingTag.H3, '0 var(--oryx-space-4)')};
 
-    margin-block-end: var(--oryx-space-4);
     display: var(--oryx-screen-small-hide, block);
   }
 

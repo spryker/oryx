@@ -41,13 +41,12 @@ export const searchBoxStyles = css`
   }
 
   h5 {
-    ${headingUtil(HeadingTag.Subtitle)}
+    ${headingUtil(HeadingTag.Subtitle, '0 6px')}
 
     text-transform: uppercase;
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-block-end: 6px;
   }
 
   h5:not(:first-child) {

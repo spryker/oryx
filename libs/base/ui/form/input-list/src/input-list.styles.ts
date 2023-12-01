@@ -41,9 +41,7 @@ export const styles = css`
 export const screenStyles = screenCss({
   sm: css`
     legend {
-      ${headingUtil(HeadingTag.Subtitle)}
-
-      margin-block-end: 20px;
+      ${headingUtil(HeadingTag.Subtitle, '0 20px')}
     }
 
     .content {

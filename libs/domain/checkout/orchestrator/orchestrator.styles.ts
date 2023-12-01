@@ -15,11 +15,10 @@ export const checkoutOrchestratorStyles = css`
   }
 
   h2 {
-    ${headingUtil(HeadingTag.H5)};
+    ${headingUtil(HeadingTag.H5, '0 12px')};
 
     display: flex;
     align-items: center;
-    margin-block-end: 12px;
     justify-content: space-between;
   }
 `;
