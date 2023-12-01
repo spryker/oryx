@@ -31,9 +31,9 @@ export const headingStyles = css`
     margin: 0;
   }
 
-  :host([style*='--max-lines']) * {
+  :host([style*='--max-lines']) > * {
     /* stylelint-disable-next-line */
-    display: -webkit-inline-box;
+    display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: var(--max-lines);
     overflow: hidden;
