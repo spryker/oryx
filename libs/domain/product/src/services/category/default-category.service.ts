@@ -14,6 +14,7 @@ export class DefaultProductCategoryService implements ProductCategoryService {
     ProductCategory[],
     ProductCategoryQualifier
   >(CategoryListQuery);
+
   protected treeQuery$ = this.listQuery$;
 
   get(
