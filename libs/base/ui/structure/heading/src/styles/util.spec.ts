@@ -23,6 +23,10 @@ describe('headingUtil', () => {
           `line-height: var(--oryx-typography-${tag}-line)`
         );
       });
+
+      it('should end with semi-column', () => {
+        expect(style.cssText.trim().endsWith(';')).to.eq(true);
+      });
     });
 
     describe('when margin is not provided', () => {

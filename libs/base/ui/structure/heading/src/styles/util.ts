@@ -14,7 +14,7 @@ export const headingUtil = (
   tag: HeadingTag,
   options: { margin?: string } = { margin: '0' }
 ): CSSResult => {
-  const margin = !options?.margin ? `` : `margin: ${options.margin}`;
+  const margin = !options?.margin ? `` : `margin: ${options.margin};`;
 
   return unsafeCSS(`
     font-size: var(--oryx-typography-${tag}-size);
