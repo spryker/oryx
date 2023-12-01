@@ -61,22 +61,19 @@ describe('ContentTextComponent', () => {
   });
 
   describe('when content is provided', () => {
-    describe('featureVersion = 1.0', () => {
-      beforeEach(async () => {
-        mockFeatureVersion('1.0');
-        element = await fixture(
-          html`<oryx-content-text
-            .content=${{ text: '<p>content</p>' } as ContentTextContent}
-          ></oryx-content-text>`
-        );
-      });
-
-      it('should render the text component', () => {
-        expect(element).toContainElement('oryx-text');
-      });
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-content-text
+          .content=${{ text: '<p>content</p>' } as ContentTextContent}
+        ></oryx-content-text>`
+      );
     });
 
-    describe('featureVersion >= 1.4', () => {
+    it('should render the text component', () => {
+      expect(element).toContainElement('oryx-text');
+    });
+
+    describe('and featureVersion >= 1.4', () => {
       beforeEach(async () => {
         mockFeatureVersion('1.4');
         element = await fixture(

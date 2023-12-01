@@ -69,12 +69,12 @@ export class TypographyController implements ReactiveController {
     size?: Size,
     value?: string | number
   ): void {
-    const screen = size ? `-${size}` : '';
+    const propName = `${name}${size ? `-${size}` : ''}`;
 
     if (value !== undefined) {
-      this.host.style.setProperty(`${name}${screen}`, String(value));
+      this.host.style.setProperty(propName, String(value));
     } else {
-      this.host.style.removeProperty?.(`${name}${screen}`);
+      this.host.style.removeProperty(propName);
     }
   }
 }

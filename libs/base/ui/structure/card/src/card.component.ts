@@ -14,9 +14,7 @@ export class CardComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <slot name="heading"
-        >${this.__renderHeading()} ${this.__renderHeading()}
-      </slot>
+      <slot name="heading">${this.__renderHeading()}</slot>
       <slot part="body"></slot>
       <slot name="footer"></slot>
     `;

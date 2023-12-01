@@ -1,5 +1,5 @@
 import { featureVersion, ssrShim } from '@spryker-oryx/utilities';
-import { LitElement, PropertyValueMap, TemplateResult } from 'lit';
+import { LitElement, PropertyValueMap, TemplateResult, isServer } from 'lit';
 import { property } from 'lit/decorators.js';
 import { html } from 'lit/static-html.js';
 import {
@@ -45,7 +45,9 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
     super.willUpdate(properties);
     // as long as the controller does not support willUpdate on SSR,
     // we need to call this manually.
-    this.typographyController.hostUpdate();
+    if (isServer) {
+      this.typographyController.hostUpdate();
+    }
   }
 
   /**

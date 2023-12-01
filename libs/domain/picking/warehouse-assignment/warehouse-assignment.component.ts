@@ -75,17 +75,19 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
 
   // temporary implementation for backwards compatibility
   private __renderFallbackHeading(): TemplateResult {
+    const text = html`${i18n('picking.location.unassigned')}.
+    ${i18n('picking.location.help')}`;
     if (featureVersion >= '1.4') {
-      return html`<oryx-heading .tag=${HeadingTag.H1}>
-        ${i18n('picking.location.unassigned')}. ${i18n('picking.location.help')}
+      return html`<oryx-heading
+        .tag=${HeadingTag.H1}
+        .typography=${HeadingTag.H2}
+      >
+        ${text}
       </oryx-heading>`;
     } else {
-      return html`oryx-heading as="h2">
-      <h1>
-        ${i18n('picking.location.unassigned')}.
-        ${i18n('picking.location.help')}
-      </h1>
-    </oryx-heading>`;
+      return html`<oryx-heading as="h2">
+        <h1>${text}</h1>
+      </oryx-heading>`;
     }
   }
 
