@@ -19,7 +19,7 @@ import { css } from 'lit';
  */
 export const headingStyles = css`
   :host {
-    display: var(--_d-r, var(--_d, var(--_clamp, block)));
+    display: var(--_d-r, var(--_d, block));
     text-wrap: balance;
   }
 
@@ -31,10 +31,9 @@ export const headingStyles = css`
     margin: 0;
   }
 
-  :host([style*='--max-lines']) {
+  :host([style*='--max-lines']) * {
     /* stylelint-disable-next-line */
-    --_clamp: -webkit-inline-box;
-
+    display: -webkit-inline-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: var(--max-lines);
     overflow: hidden;

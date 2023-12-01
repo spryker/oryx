@@ -71,11 +71,13 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
         return featureVersion >= '1.4'
           ? html`${template}`
           : html`<b class="subtitle">${template}</b>`;
+      case HeadingTag.Caption:
+        return featureVersion >= '1.4'
+          ? html`${template}`
+          : html`<span class="caption">${template}</span>`;
       case HeadingTag.Bold:
       case HeadingTag.Strong:
         return html`<strong>${template}</strong>`;
-      case HeadingTag.Caption:
-        return html`<span class="caption">${template}</span>`;
       case HeadingTag.Small:
         return html`<small>${template}</small>`;
       default:
