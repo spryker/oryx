@@ -7,9 +7,7 @@ const deprecatedHeadingStyles = css`
   }
 
   h1 {
-    ${headingUtil(HeadingTag.H3)}
-
-    margin-block-end: 20px;
+    ${headingUtil(HeadingTag.H3, { margin: '0 0 20px' })}
   }
 `;
 
