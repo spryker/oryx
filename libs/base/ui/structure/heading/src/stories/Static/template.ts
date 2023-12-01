@@ -13,7 +13,7 @@ export const Template: Story = (): TemplateResult => {
       ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) => {
         return [3, 2, 1].map((line) => {
           return html`<oryx-heading .maxLines=${line} .tag=${tag}>
-            ${lengthyText}
+            ${tag} ${lengthyText}
           </oryx-heading>`;
         });
       })}
