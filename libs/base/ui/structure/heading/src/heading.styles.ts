@@ -21,13 +21,14 @@ export const headingStyles = css`
   :host {
     display: var(--_d-r, var(--_d, block));
     text-wrap: balance;
-  }
-
-  :host > * {
     font-size: var(--_s-r, var(--_s));
     font-weight: var(--_w-r, var(--_w));
     line-height: var(--_l-r, var(--_l));
     text-transform: var(--_t-r, var(--_t));
+  }
+
+  :host > * {
+    font: inherit;
     margin: 0;
   }
 
