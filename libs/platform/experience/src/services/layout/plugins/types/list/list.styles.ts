@@ -7,5 +7,10 @@ export const styles: LayoutStyles = {
       display: flex;
       flex-direction: column;
     }
+
+    *,
+    ::slotted(*) {
+      box-sizing: border-box;
+    }
   `,
 };
