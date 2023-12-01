@@ -75,19 +75,14 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
 
   // temporary implementation for backwards compatibility
   private __renderFallbackHeading(): TemplateResult {
-    const text = html`${i18n('picking.location.unassigned')}.
-    ${i18n('picking.location.help')}`;
+    const text = html`<h1>
+      ${i18n('picking.location.unassigned')}. ${i18n('picking.location.help')}
+      <h1></h1>
+    </h1>`;
     if (featureVersion >= '1.4') {
-      return html`<oryx-heading
-        .tag=${HeadingTag.H1}
-        .typography=${HeadingTag.H2}
-      >
-        ${text}
-      </oryx-heading>`;
+      return html`${text}`;
     } else {
-      return html`<oryx-heading as="h2">
-        <h1>${text}</h1>
-      </oryx-heading>`;
+      return html`<oryx-heading as="h2"> ${text} </oryx-heading>`;
     }
   }
 
@@ -100,7 +95,6 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
           (item) => item.id,
           (item) => html`
             ${this.__renderListItemHeading(item.warehouse.name)}
-
             <oryx-button
               .size=${ButtonSize.Sm}
               .text=${i18n('select')}
@@ -133,7 +127,7 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
   // temporary implementation for backwards compatibility
   private __renderListItemHeading(text: string): TemplateResult {
     if (featureVersion >= '1.4') {
-      return html`<oryx-heading .tag=${HeadingTag.H3}>${text}</oryx-heading>`;
+      return html`<h3>${text}</h3>`;
     } else {
       return html`<oryx-heading>
         <h3>${text}</h3>

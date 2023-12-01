@@ -1,5 +1,5 @@
-import { screenCss } from '@spryker-oryx/utilities';
-import { css } from 'lit';
+import { featureVersion, screenCss } from '@spryker-oryx/utilities';
+import { css, unsafeCSS } from 'lit';
 
 export const orderSummaryStyles = css`
   :host {
@@ -17,9 +17,9 @@ export const orderSummaryStyles = css`
     gap: 8px 6px;
   }
 
-  h2 {
-    margin-block-end: 32px;
-  }
+  ${featureVersion >= '1.4'
+    ? unsafeCSS('oryx-heading {margin-block-end: 32px;}')
+    : unsafeCSS('h2 {margin-block-end: 32px;}')}
 
   section {
     gap: 8px;

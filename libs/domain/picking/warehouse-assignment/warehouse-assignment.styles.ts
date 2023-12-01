@@ -1,3 +1,4 @@
+import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
 export const styles = css`
@@ -11,6 +12,8 @@ export const styles = css`
   }
 
   .warehouses-list h1 {
+    ${headingUtil(HeadingTag.H2)}
+
     font-weight: 600;
     line-height: 24px;
     padding-block-end: 34px;
