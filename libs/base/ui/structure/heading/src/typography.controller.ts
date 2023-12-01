@@ -55,6 +55,10 @@ export class TypographyController implements ReactiveController {
         size,
         tag === HeadingVisibility.None ? `none` : undefined
       );
+    } else {
+      if (this.isInlineStyle(tag)) {
+        this.setStyleProperty('--_d', undefined, 'inline-block');
+      }
     }
   }
 
@@ -76,5 +80,11 @@ export class TypographyController implements ReactiveController {
     } else {
       this.host.style.removeProperty(propName);
     }
+  }
+
+  protected isInlineStyle(tag?: HeadingTag | HeadingVisibility): boolean {
+    return [HeadingTag.Strong, HeadingTag.Bold, HeadingTag.Small].includes(
+      tag as HeadingTag
+    );
   }
 }

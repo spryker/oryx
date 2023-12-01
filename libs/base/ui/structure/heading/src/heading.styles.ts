@@ -19,7 +19,7 @@ import { css } from 'lit';
  */
 export const headingStyles = css`
   :host {
-    display: var(--_d-r, var(--_clamp, block));
+    display: var(--_d-r, var(--_d, var(--_clamp, block)));
     text-wrap: balance;
   }
 
