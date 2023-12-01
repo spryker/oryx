@@ -81,7 +81,10 @@ export const cartPage: ExperienceComponent = {
           options: {
             rules: [
               {
-                layout: { sticky: true },
+                layout:
+                  featureVersion >= '1.4'
+                    ? { type: 'list', sticky: true }
+                    : { sticky: true },
                 top: '108px',
                 ...(featureVersion >= '1.2' ? {} : { sticky: true }),
               },

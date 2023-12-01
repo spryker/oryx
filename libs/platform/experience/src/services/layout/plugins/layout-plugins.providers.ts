@@ -11,6 +11,7 @@ import {
   ColumnLayoutPluginToken,
   FlexLayoutPluginToken,
   GridLayoutPluginToken,
+  ListLayoutPluginToken,
   NavigationLayoutPluginToken,
   SplitLayoutPluginToken,
   TextLayoutPluginToken,
@@ -56,6 +57,11 @@ export const layoutPluginsProviders: Provider[] = [
     provide: GridLayoutPluginToken,
     asyncClass: () =>
       import('./types/grid/grid-layout.plugin').then((m) => m.GridLayoutPlugin),
+  },
+  {
+    provide: ListLayoutPluginToken,
+    asyncClass: () =>
+      import('./types/list/list.plugin').then((m) => m.ListLayoutPlugin),
   },
   {
     provide: CarouselLayoutPluginToken,
