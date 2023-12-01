@@ -61,7 +61,9 @@ describe('TextComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-text
-            .content=${'<h1 style="margin:10px" class="foo-bar" foo="bar">This is the content</h1><p>with a <a href="/link">link</a></p><p>and a <button>but</button>'}
+            .content=${`
+              <h1 style="margin:10px" class="foo-bar" foo="bar">This is the content</h1><p>with a 
+              <a href="/link">link</a></p><p>and a <button>but</button>`}
           ></oryx-text>`
         );
       });
@@ -77,7 +79,11 @@ describe('TextComponent', () => {
       beforeEach(async () => {
         element = await fixture(
           html`<oryx-text
-            .content=${'foo <small>small</small> bar <span class="caption">cap</span> baz <span class="subtitle">subtitle</span> qux  '}
+            .content=${`foo <small>small</small> bar <span class="caption">cap</span> 
+            baz <span class="subtitle">subtitle</span> qux  
+            baz <b>b</b> qux  
+            baz <strong>b</strong> qux  
+            `}
           ></oryx-text>`
         );
       });
@@ -86,6 +92,7 @@ describe('TextComponent', () => {
         expect(element).toContainElement(`oryx-heading[tag='small']`);
         expect(element).toContainElement(`oryx-heading[typography='caption']`);
         expect(element).toContainElement(`oryx-heading[typography='subtitle']`);
+        expect(element).toContainElement(`oryx-heading[tag='strong']`);
       });
     });
 
