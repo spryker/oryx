@@ -15,6 +15,6 @@ export const headingUtil = (tag: HeadingTag, marginBlock = '0'): CSSResult => {
     font-size: var(--oryx-typography-${tag}-size);
     font-weight: var(--oryx-typography-${tag}-weight);
     line-height: var(--oryx-typography-${tag}-line);
-    margin: ${marginBlock};
+    margin-block: ${marginBlock};
   `);
 };
