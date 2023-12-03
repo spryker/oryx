@@ -18,8 +18,10 @@ export const orderSummaryStyles = css`
   }
 
   ${featureVersion >= '1.4'
-    ? unsafeCSS('oryx-heading {margin-block-end: 32px;}')
-    : unsafeCSS('h2 {margin-block-end: 32px;}')}
+    ? unsafeCSS(
+        'oryx-heading[title] {margin-block-end: 32px;}oryx-heading:not([title]) {margin-block-end: 4px;}'
+      )
+    : unsafeCSS('h2 {margin-block-end: 32px; h3 {margin-block-end: 4px;}}')}
 
   section {
     gap: 8px;
@@ -39,10 +41,6 @@ export const orderSummaryStyles = css`
 
   .title {
     font-weight: 600;
-  }
-
-  h3 {
-    margin-block-end: 4px;
   }
 
   hr,

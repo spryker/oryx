@@ -37,6 +37,7 @@ export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
     const text = this.i18n('order.summary.order-details');
     if (featureVersion >= '1.4') {
       return html`<oryx-heading
+        title
         .tag=${HeadingTag.H2}
         .typography=${HeadingTag.H3}
       >
@@ -71,9 +72,7 @@ export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
 
   protected renderBilling(): TemplateResult {
     return html`
-      <oryx-heading .as=${HeadingTag.H6}>
-        <h3>${this.i18n('order.summary.billing-details')}</h3>
-      </oryx-heading>
+      ${this.__renderBillingHeading()}
       ${this.renderDetail(
         'order.summary.billing-address',
         this.$order()?.billingAddress,
@@ -93,11 +92,26 @@ export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
     `;
   }
 
+  // temporary implementation for backwards compatibility
+  private __renderBillingHeading(): TemplateResult {
+    const text = this.i18n('order.summary.billing-details');
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading
+        .tag=${HeadingTag.H3}
+        .typography=${HeadingTag.H6}
+      >
+        ${text}
+      </oryx-heading>`;
+    } else {
+      return html`<oryx-heading .as=${HeadingTag.H6}>
+        <h3>${text}</h3>
+      </oryx-heading>`;
+    }
+  }
+
   protected renderShipping(): TemplateResult {
     return html`
-      <oryx-heading .as=${HeadingTag.H6}>
-        <h3>${this.i18n('order.summary.shipping-details')}</h3>
-      </oryx-heading>
+      ${this.__renderShippingHeading()}
       ${this.renderDetail(
         'order.summary.delivery-address',
         this.$order()?.shippingAddress,
@@ -115,6 +129,23 @@ export class OrderSummaryComponent extends I18nMixin(OrderMixin(LitElement)) {
       )}
       <hr />
     `;
+  }
+
+  // temporary implementation for backwards compatibility
+  private __renderShippingHeading(): TemplateResult {
+    const text = this.i18n('order.summary.shipping-details');
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading
+        .tag=${HeadingTag.H3}
+        .typography=${HeadingTag.H6}
+      >
+        ${text}
+      </oryx-heading>`;
+    } else {
+      return html` <oryx-heading .as=${HeadingTag.H6}>
+        <h3>${text}</h3>
+      </oryx-heading>`;
+    }
   }
 
   protected renderDetail(

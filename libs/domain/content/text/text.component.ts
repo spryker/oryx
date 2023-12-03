@@ -26,6 +26,7 @@ export class ContentTextComponent extends TextMixin(
   @elementEffect()
   protected installFonts = (): void => {
     const text = this.$content()?.text;
+    console.log(text);
     if (text && this.$options().autoInstallFont) {
       this.fontService.install(text);
     }
