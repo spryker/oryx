@@ -57,7 +57,12 @@ export const categoryPage: ExperienceComponent = {
           id: 'category-product-listing',
           name: 'Product listing',
           options: {
-            rules: [{ layout: 'list', gap: '20px' }],
+            rules: [
+              {
+                layout: featureVersion >= '1.4' ? { type: 'list' } : 'flex',
+                gap: '20px',
+              },
+            ],
           },
           components: [
             {

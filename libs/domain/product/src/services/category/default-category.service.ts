@@ -1,11 +1,8 @@
-import { createQuery, injectQuery } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
-import { LocaleChanged } from '@spryker-oryx/i18n';
-import { BehaviorSubject, Observable, map, of, switchMap } from 'rxjs';
+import { injectQuery } from '@spryker-oryx/core';
+import { Observable, map, of, switchMap } from 'rxjs';
 import { ProductCategory, ProductCategoryQualifier } from '../../models';
-import { ProductCategoryAdapter } from './adapter/product-category.adapter';
 import { ProductCategoryService } from './category.service';
-import { CategoryQuery } from './state';
+import { CategoryListQuery, CategoryQuery } from './state';
 
 export class DefaultProductCategoryService implements ProductCategoryService {
   protected categoryQuery = injectQuery<
@@ -13,24 +10,10 @@ export class DefaultProductCategoryService implements ProductCategoryService {
     ProductCategoryQualifier
   >(CategoryQuery);
 
-  constructor(protected adapter = inject(ProductCategoryAdapter)) {}
-
-  protected categories = new Map<string, BehaviorSubject<ProductCategory>>();
-
-  protected listQuery$ = createQuery({
-    loader: () => this.adapter.getTree(),
-    onLoad: [
-      ({ data: categories }) => {
-        categories?.forEach((category) => {
-          this.categoryQuery.set({
-            data: category,
-            qualifier: { id: category.id },
-          });
-        });
-      },
-    ],
-    refreshOn: [LocaleChanged],
-  });
+  protected listQuery$ = injectQuery<
+    ProductCategory[],
+    ProductCategoryQualifier
+  >(CategoryListQuery);
 
   /**
    * @deprecated since 1.4 use listQuery$ instead
@@ -44,23 +27,10 @@ export class DefaultProductCategoryService implements ProductCategoryService {
     return this.categoryQuery.get(qualifier) as Observable<ProductCategory>;
   }
 
-  getList(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]> {
-    const list = this.listQuery$.get() as Observable<ProductCategory[]>;
-    return list.pipe(
-      map((items: ProductCategory[]) => {
-        const excludes = this.getExcludes(
-          items.map((c) => c.id),
-          qualifier?.exclude
-        );
-        return items
-          .filter((category) => {
-            return !qualifier?.parent
-              ? !category.parent
-              : category.parent === qualifier?.parent;
-          })
-          .filter((category) => !excludes.includes(category.id));
-      })
-    );
+  getList(
+    qualifier?: ProductCategoryQualifier
+  ): Observable<ProductCategory[] | undefined> {
+    return this.listQuery$.get(qualifier);
   }
 
   getTrail(
@@ -82,43 +52,6 @@ export class DefaultProductCategoryService implements ProductCategoryService {
   }
 
   getTree(): Observable<ProductCategory[]> {
-    return this.listQuery$.get() as Observable<ProductCategory[]>;
-  }
-
-  protected getExcludes(
-    categories: string[],
-    exclude?: string | string[]
-  ): string[] {
-    if (!exclude) return [];
-    let excludedIds: string[] = [];
-
-    // Convert both string and array notations to array of strings
-    const excludeIds = Array.isArray(exclude)
-      ? exclude.map(String)
-      : exclude.split(',').map((id) => id.trim());
-
-    // Handle range notations like >5, <4, 4..11
-    excludedIds = categories.filter((categoryId) => {
-      return excludeIds.some((excludedId) => {
-        if (excludedId.includes('..')) {
-          const [start, end] = excludedId
-            .split('..')
-            .map((num) => parseInt(num, 10));
-          const num = parseInt(categoryId, 10);
-          return num >= start && num <= end;
-        } else if (excludedId.startsWith('>')) {
-          const threshold = parseInt(excludedId.slice(1), 10);
-          return parseInt(categoryId, 10) > threshold;
-        } else if (excludedId.startsWith('<')) {
-          const threshold = parseInt(excludedId.slice(1), 10);
-          return parseInt(categoryId, 10) < threshold;
-        } else {
-          // Regular ID match
-          return categoryId === excludedId;
-        }
-      });
-    });
-
-    return excludedIds;
+    return this.treeQuery$.get() as Observable<ProductCategory[]>;
   }
 }

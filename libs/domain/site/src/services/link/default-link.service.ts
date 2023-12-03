@@ -52,11 +52,9 @@ export class DefaultLinkService implements LinkService {
 
         const currentUrl = `${this.baseRoute}${currentRoute}`;
 
-        if (exactMatch) {
-          return of(currentUrl === url);
-        } else {
-          return of(currentUrl.startsWith(url));
-        }
+        return of(
+          currentUrl === url || exactMatch || currentUrl.startsWith(`${url}/`)
+        );
       })
     );
   }
