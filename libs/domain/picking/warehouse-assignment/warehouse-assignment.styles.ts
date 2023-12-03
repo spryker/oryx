@@ -1,5 +1,6 @@
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
-import { css } from 'lit';
+import { featureVersion } from '@spryker-oryx/utilities';
+import { css, unsafeCSS } from 'lit';
 
 export const styles = css`
   :host {
@@ -11,18 +12,39 @@ export const styles = css`
     padding: 25px 30px;
   }
 
-  .warehouses-list h1 {
-    ${headingUtil(HeadingTag.H2)}
+  ${featureVersion >= '1.4'
+    ? unsafeCSS(`
+    .warehouses-list oryx-heading:first-child {   
+      margin-block-end: 34px;
+    }
 
-    font-weight: 600;
-    line-height: 24px;
-    padding-block-end: 34px;
-  }
+    .warehouses-list oryx-heading:not(:first-child) {  
+      font-weight: 500;
+      line-height: 24px;
+    }
 
-  .warehouses-list h3 {
-    font-weight: 500;
-    line-height: 24px;
-  }
+    .fallback oryx-heading {
+      width: 268px;
+    }
+  `)
+    : unsafeCSS(`
+    .warehouses-list h1 {
+      ${headingUtil(HeadingTag.H2)}
+
+      font-weight: 600;
+      line-height: 24px;
+      padding-block-end: 34px;
+    }
+
+    .warehouses-list h3 {
+      font-weight: 500;
+      line-height: 24px;
+    }
+    
+    .fallback h1 {
+      width: 268px;
+    }
+  `)}
 
   .warehouses-list oryx-button {
     margin-block-start: 16px;
@@ -46,10 +68,6 @@ export const styles = css`
     align-items: center;
     justify-content: center;
     text-align: center;
-  }
-
-  .fallback h1 {
-    width: 268px;
   }
 
   .fallback oryx-image {
