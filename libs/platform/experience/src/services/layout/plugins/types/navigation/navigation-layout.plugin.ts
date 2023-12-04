@@ -51,8 +51,8 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
           <span slot="trigger">${data.template}</span>
           <oryx-composition
             .uid=${data.experience?.id}
+            .options=${data.experience?.options}
             close-popover
-            .options=${{ rules: [{ layout: { type: 'list' }, gap: '0px' }] }}
           ></oryx-composition>
         </oryx-dropdown>`,
       });

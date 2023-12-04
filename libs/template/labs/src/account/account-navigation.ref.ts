@@ -9,27 +9,21 @@ export const accountNavigation: ExperienceComponent = {
   options: {
     rules: [
       {
-        layout: {
-          type: 'navigation',
-          vertical: true,
-        },
+        layout: { type: 'navigation', vertical: true },
         gap: '0px',
       },
     ],
   },
 
+  // render all pages from pages config
   components: pages.map((page) => ({
     type: 'oryx-content-link',
     content: { data: { text: page.type } },
-    options: {
-      id: page.type,
-      type: page.route,
-      icon: page.icon,
-    },
+    options: { id: page.type, type: page.route, icon: page.icon },
   })),
 };
 
-export const UserHeaderNavigation = {
+export const userHeaderNavigation = {
   id: 'user-header-navigation',
   type: 'oryx-user-navigation-control',
   components: [
@@ -65,7 +59,5 @@ export const UserHeaderNavigation = {
       options: { rules: [{ divider: true }] },
     },
   ],
-  options: {
-    rules: [{ layout: { navigationType: 'dropdown' } }],
-  },
+  options: { rules: [{ layout: { navigationType: 'dropdown' } }] },
 };

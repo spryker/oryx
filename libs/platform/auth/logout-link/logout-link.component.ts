@@ -4,23 +4,15 @@ import { ContentMixin } from '@spryker-oryx/experience';
 import { RouterService } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { hydrate, signal } from '@spryker-oryx/utilities';
-import { LitElement, TemplateResult, css, html } from 'lit';
+import { LitElement, TemplateResult, html } from 'lit';
 import { LogoutLinkOptions } from './logout-link.model';
+import { logoutStyles } from './logout-link.styles';
 
 @hydrate({ event: 'window:load' })
 export class LogoutLinkComponent extends ContentMixin<LogoutLinkOptions>(
   LitElement
 ) {
-  static styles = css`
-    :host {
-      display: contents;
-      cursor: pointer;
-      /* display: flex;
-      justify-items: stretch; */
-      /* flex-wrap: wrap; */
-      /* align-self: inherit; */
-    }
-  `;
+  static styles = logoutStyles;
 
   protected authService = resolve(AuthService);
   protected routerService = resolve(RouterService);

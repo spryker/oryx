@@ -4,11 +4,11 @@ import { provideLitRoutes } from '@spryker-oryx/router/lit';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size } from '@spryker-oryx/utilities';
 import {
-  UserHeaderNavigation,
   accountNavigation,
+  userHeaderNavigation,
 } from './account-navigation.ref.js';
 import { accountRoutes } from './account-routes';
-import { accountPages } from './account.page.js';
+import { accountPages } from './account.page';
 
 /**
  * Initial landing page for My Account. we keep it in labs for now
@@ -21,13 +21,12 @@ export const accountFeature: AppFeature = {
     provideExperienceData([
       accountNavigation,
       ...accountPages,
-      UserHeaderNavigation,
       {
         merge: {
           selector: 'header-actions',
         },
         components: [
-          { ref: 'user-header-navigation' },
+          userHeaderNavigation,
           {
             type: 'oryx-site-navigation-item',
             options: {
