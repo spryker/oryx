@@ -20,9 +20,6 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
           ? m.verticalStyles
           : m.horizontalStyles;
 
-        // const navigationType =
-        //   options.navigationType === 'flyout' ? m.flyoutStyles : css``;
-
         // TODO: only load dropdown styles if one of the components requires dropdown
         const dropdownStyles = m.dropdownStyles;
 
@@ -47,13 +44,13 @@ export class NavigationLayoutPlugin implements LayoutPlugin {
       data.experience?.options?.rules?.find(
         (rule) => (rule.layout as Layouts)?.navigationType === 'dropdown'
       );
-    // console.log('nav layout', data, isDropdown);
+
     if (isDropdown) {
       return of({
         wrapper: html`<oryx-dropdown vertical-align position="start">
           <span slot="trigger">${data.template}</span>
           <oryx-composition
-            .uid=${data.experience?.id ?? 'mini-login'}
+            .uid=${data.experience?.id}
             close-popover
             .options=${{ rules: [{ layout: { type: 'list' }, gap: '0px' }] }}
           ></oryx-composition>

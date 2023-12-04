@@ -5,7 +5,7 @@ export const NavigationLayoutPluginToken = `${LayoutPlugin}navigation`;
 declare global {
   export interface Layouts {
     navigation: undefined;
-    navigationType?: 'flyout' | 'dropdown';
+    navigationType?: 'dropdown';
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -13,5 +13,6 @@ declare global {
 }
 
 export interface NavigationLayoutProperties {
-  navigationType?: 'flyout' | 'dropdown';
+  // we'll be able to add 'flyout', 'sidenav', etc.
+  navigationType?: 'dropdown';
 }

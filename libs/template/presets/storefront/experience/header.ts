@@ -1,5 +1,4 @@
 import { ExperienceComponent, ShadowElevation } from '@spryker-oryx/experience';
-import { RouteType } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Size, featureVersion } from '@spryker-oryx/utilities';
 
@@ -83,47 +82,6 @@ export const topHeader = (options?: {
   ];
 };
 
-export const UserHeaderNavigation = {
-  id: 'user-header-navigation',
-  type: 'oryx-user-navigation-control',
-  components: [
-    {
-      type: 'oryx-content-link',
-      options: {
-        type: RouteType.AccountOverviewPage,
-        id: 'overview',
-        icon: IconTypes.User,
-      },
-      content: { data: { text: 'Overview' } },
-    },
-    {
-      type: 'oryx-content-link',
-      options: {
-        type: RouteType.AccountProfilePage,
-        id: 'profile',
-        icon: 'badge',
-      },
-      content: { data: { text: 'Profile' } },
-    },
-    {
-      type: 'oryx-content-link',
-      options: {
-        type: RouteType.AccountOrdersPage,
-        id: 'orders',
-        icon: IconTypes.History,
-      },
-      content: { data: { text: 'Order History' } },
-    },
-    {
-      type: 'oryx-auth-logout-link',
-      options: { rules: [{ divider: true }] },
-    },
-  ],
-  options: {
-    rules: [{ layout: { navigationType: 'dropdown' } }],
-  },
-};
-
 export const mainHeader = (): ExperienceComponent[] => {
   return [
     {
@@ -180,31 +138,33 @@ export const mainHeader = (): ExperienceComponent[] => {
               },
             },
             {
-              type: 'oryx-composition',
-              options: { rules: [{ layout: 'navigation' }] },
-              components: [
-                { ref: 'user-header-navigation' },
-                {
-                  type: 'oryx-site-navigation-item',
-                  options: {
-                    label: 'cart',
-                    badge: 'CART.SUMMARY',
-                    icon: IconTypes.Cart,
-                    url: { type: 'cart' },
-                  },
-                },
-              ],
+              type: 'oryx-site-navigation-item',
+              options: {
+                label: 'login',
+                icon: IconTypes.User,
+                url: { type: 'login' },
+                rules: [{ hideByRule: 'USER.AUTHENTICATED' }],
+              },
             },
-            // {
-            //   type: 'oryx-site-navigation-item',
-            //   options: {
-            //     contentBehavior: 'dropdown',
-            //     label: 'USER.NAME',
-            //     icon: IconTypes.User,
-            //     rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
-            //   },
-            //   components: [{ type: 'oryx-auth-login-link' }],
-            // },
+            {
+              type: 'oryx-site-navigation-item',
+              options: {
+                contentBehavior: 'dropdown',
+                label: 'USER.NAME',
+                icon: IconTypes.User,
+                rules: [{ hideByRule: 'USER.!AUTHENTICATED' }],
+              },
+              components: [{ type: 'oryx-auth-login-link' }],
+            },
+            {
+              type: 'oryx-site-navigation-item',
+              options: {
+                label: 'cart',
+                badge: 'CART.SUMMARY',
+                icon: IconTypes.Cart,
+                url: { type: 'cart' },
+              },
+            },
           ],
           options: {
             rules: [

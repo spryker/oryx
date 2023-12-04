@@ -1,5 +1,5 @@
 import { AppFeature } from '@spryker-oryx/core';
-import { myAccountFeature } from './account';
+import { accountFeature } from './account';
 import { articleProviders } from './articles';
 import { bazaarVoiceComponentMapping } from './bazaarvoice';
 import { cloudinaryImageConverter } from './cloudinary';
@@ -18,7 +18,7 @@ export const labsComponents = Object.values(components);
  */
 export const labsFeatures: AppFeature[] = [
   labsI18nFeature,
-  myAccountFeature,
+  accountFeature,
   {
     components: labsComponents,
     providers: [

@@ -42,7 +42,6 @@ export const enum RouteType {
   Order = 'order',
   Cart = 'cart',
   Login = 'login',
-  /** @deprecated */
   MyAccount = 'my-account',
   AccountOverviewPage = 'account-overview',
   AccountProfilePage = 'account-profile',
@@ -51,7 +50,6 @@ export const enum RouteType {
   AccountAddressesPage = 'account-addresses',
   AccountCartsPage = 'account-carts',
   AccountWishListsPage = 'account-wishlists',
-  /** @deprecated */
   OrderHistory = 'my-account/order-history',
   NotFound = 'not-found',
   AddressList = 'address-list',

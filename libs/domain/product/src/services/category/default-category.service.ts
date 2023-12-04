@@ -47,7 +47,6 @@ export class DefaultProductCategoryService implements ProductCategoryService {
           : of([category])
       ),
       map((trail) => trail.sort((a, b) => (a.id === b.parent ? -1 : 1)))
-      // tap(console.log)
     );
   }
 

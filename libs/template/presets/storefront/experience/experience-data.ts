@@ -2,7 +2,7 @@ import { AppFeature } from '@spryker-oryx/core';
 import { provideExperienceData } from '@spryker-oryx/experience';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { FooterTemplate } from './footer';
-import { HeaderTemplate, UserHeaderNavigation } from './header';
+import { HeaderTemplate } from './header';
 import {
   addressBookPage,
   cartPage,
@@ -23,7 +23,6 @@ export const StaticExperienceFeature: AppFeature = {
   providers: [
     provideExperienceData([
       HeaderTemplate,
-      UserHeaderNavigation,
       FooterTemplate,
       cartPage,
       categoryPage,

@@ -1,4 +1,6 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { RouteType } from '@spryker-oryx/router';
+import { IconTypes } from '@spryker-oryx/ui/icon';
 import { pages } from './types';
 
 export const accountNavigation: ExperienceComponent = {
@@ -26,6 +28,47 @@ export const accountNavigation: ExperienceComponent = {
       icon: page.icon,
     },
   })),
+};
+
+export const UserHeaderNavigation = {
+  id: 'user-header-navigation',
+  type: 'oryx-user-navigation-control',
+  components: [
+    {
+      type: 'oryx-content-link',
+      options: {
+        type: RouteType.AccountOverviewPage,
+        id: 'overview',
+        icon: IconTypes.User,
+      },
+      content: { data: { text: 'Overview' } },
+    },
+    {
+      type: 'oryx-content-link',
+      options: {
+        type: RouteType.AccountProfilePage,
+        id: 'profile',
+        icon: 'badge',
+      },
+      content: { data: { text: 'Profile' } },
+    },
+    {
+      type: 'oryx-content-link',
+      options: {
+        type: RouteType.AccountOrdersPage,
+        id: 'orders',
+        icon: IconTypes.History,
+      },
+      content: { data: { text: 'Order History' } },
+    },
+    {
+      type: 'oryx-auth-logout-link',
+      options: { rules: [{ divider: true }] },
+    },
+  ],
+  options: {
+    rules: [{ layout: { navigationType: 'dropdown' } }],
+  },
 };
 
 // export const myAccountNavigation: ExperienceComponent = {

@@ -27,8 +27,6 @@ export class UserNavigationControlComponent extends ContentMixin(LitElement) {
       ? this.$user()?.firstName ?? ''
       : this.i18n('auth.login');
 
-    console.log(this.$isAuthenticated(), this.$user()?.firstName);
-
     return html`
       <oryx-site-navigation-button
         .type=${ButtonType.Text}

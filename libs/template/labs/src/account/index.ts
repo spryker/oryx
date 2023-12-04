@@ -1,7 +1,12 @@
 import { AppFeature } from '@spryker-oryx/core';
 import { provideExperienceData } from '@spryker-oryx/experience';
 import { provideLitRoutes } from '@spryker-oryx/router/lit';
-import { accountNavigation } from './account-navigation.ref.js';
+import { IconTypes } from '@spryker-oryx/ui/icon';
+import { Size } from '@spryker-oryx/utilities';
+import {
+  UserHeaderNavigation,
+  accountNavigation,
+} from './account-navigation.ref.js';
 import { accountRoutes } from './account-routes';
 import { accountPages } from './account.page.js';
 
@@ -10,9 +15,40 @@ import { accountPages } from './account.page.js';
  * as it's not yet production ready. Once the first my account pages are
  * added, we'll release it as a feature in the presets package.
  */
-export const myAccountFeature: AppFeature = {
+export const accountFeature: AppFeature = {
   providers: [
     ...provideLitRoutes({ routes: accountRoutes }),
-    provideExperienceData([accountNavigation, ...accountPages]),
+    provideExperienceData([
+      accountNavigation,
+      ...accountPages,
+      UserHeaderNavigation,
+      {
+        merge: {
+          selector: 'header-actions',
+        },
+        components: [
+          { ref: 'user-header-navigation' },
+          {
+            type: 'oryx-site-navigation-item',
+            options: {
+              label: 'cart',
+              badge: 'CART.SUMMARY',
+              icon: IconTypes.Cart,
+              url: { type: 'cart' },
+            },
+          },
+        ],
+        options: {
+          rules: [
+            { colSpan: 3, layout: 'navigation', justify: 'end' },
+            {
+              query: { breakpoint: Size.Md },
+              colSpan: 2,
+            },
+            { query: { breakpoint: Size.Sm }, colSpan: 2 },
+          ],
+        },
+      },
+    ]),
   ],
 };

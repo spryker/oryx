@@ -22,8 +22,8 @@ export const dropdownBaseStyles = css`
       var(--oryx-popover-maxwidth)
     );
 
-    /* z-index: 100; */
-    /* overflow: auto; */
+    z-index: 100;
+    overflow: auto;
     max-height: min(
       calc(
         var(--_available-popover-height, ${unsafecss(POPOVER_HEIGHT)}px) +
