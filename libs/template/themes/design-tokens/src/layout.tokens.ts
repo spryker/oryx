@@ -1,4 +1,5 @@
 import { ThemeToken } from '@spryker-oryx/experience';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const layoutTokens: ThemeToken = {
   container: { width: '1340px', bleed: '50px' },
@@ -15,7 +16,7 @@ export const layoutTokens: ThemeToken = {
     split: { equal: '6', aside: '3', main: '8' },
   },
   row: { gap: '20px' },
-  divider: { width: '1px' },
+  ...(featureVersion >= '1.4' ? { divider: { width: '1px' } } : {}),
 };
 
 export const layoutMdTokens: ThemeToken = {
