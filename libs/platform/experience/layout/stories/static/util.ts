@@ -65,7 +65,7 @@ export const generateNestedLayout = (
     <li>⚠️ The border breaks the flow of <i>nested</i> layouts.</li>
   </ul>
 
-  <oryx-layout layout=${layout} style="align-items: center">
+  <oryx-layout layout=${layout} style="--align: center">
     <div style="height: 300px">1 (height: 300px)</div>
     <oryx-layout
       layout="grid"

@@ -32,6 +32,13 @@ const cart = {
   'oauth.logging-you-in': 'Logging you in...',
 };
 
+const coupon = {
+  'coupon.have-a-coupon': 'Have a coupon?',
+  'coupon.insert': 'Please insert a coupon code',
+  'coupon.invalid': 'Coupon code can not be added',
+  'coupon.(valid-till-<date>)': '(valid till {date})',
+};
+
 const checkout = {
   'checkout.guest.continue-without-account':
     'You can checkout without creating an account. You will have a chance to create an account later.',
@@ -87,6 +94,7 @@ export default {
   ...product,
   ...cart,
   ...carts,
+  ...coupon,
   ...checkout,
   ...order,
   ...user,
