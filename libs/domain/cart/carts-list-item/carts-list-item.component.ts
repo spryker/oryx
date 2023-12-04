@@ -67,7 +67,7 @@ export class CartsListItemComponent extends CartComponentMixin(I18nMixin(LitElem
 
         <div class="meta">
           ${when(
-            cart.isDefault,
+            !cart.isDefault,
             () =>
               html`<oryx-button 
                 type="outline" 
