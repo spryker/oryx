@@ -44,8 +44,9 @@ const legalLinks: ExperienceComponent = {
                 divider: true,
               }
             : 'flex',
-        gap: '0 20px',
-        padding: '20px 0 0',
+        ...(featureVersion >= '1.4'
+          ? { gap: '40px 20px' }
+          : { gap: '0 20px', padding: '20px 0 0' }),
         ...(featureVersion >= '1.2' ? {} : { divider: true }),
       },
     ],
@@ -279,12 +280,7 @@ export const FooterTemplate: ExperienceComponent = {
       {
         layout:
           featureVersion >= '1.2'
-            ? {
-                type: 'flex',
-                divider: true,
-                bleed: true,
-                sticky: true,
-              }
+            ? { type: 'flex', bleed: true, sticky: true }
             : 'flex',
         top: '100%',
         background: 'var(--oryx-color-neutral-3)',
