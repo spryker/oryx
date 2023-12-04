@@ -1,42 +1,41 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { RouteType } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { EditTarget } from '@spryker-oryx/user/address-list-item';
 
 interface Page {
   type: string;
-  route: RouteType;
+  route: string; // tmp
   icon: IconTypes | string;
   component?: ExperienceComponent;
 }
 
 export const overviewPage: Page = {
   type: 'overview',
-  route: RouteType.AccountOverviewPage, // tmp
+  route: 'account-overview',
   icon: IconTypes.User,
 };
 
 export const profilePage: Page = {
   type: 'profile',
-  route: RouteType.AccountProfilePage, // tmp
+  route: 'account-profile',
   icon: 'badge',
 };
 
 export const ordersPage: Page = {
   type: 'orders',
-  route: RouteType.AccountOrdersPage, // tmp
+  route: 'account-orders',
   icon: IconTypes.History,
 };
 
 export const consentPage: Page = {
   type: 'consent',
-  route: RouteType.AccountConsentPage, // tmp
+  route: 'account-consent',
   icon: 'shield_locked',
 };
 
 export const addressesPage: Page = {
   type: 'addresses',
-  route: RouteType.AccountAddressesPage, // tmp
+  route: 'account-addresses',
   icon: IconTypes.Location,
   component: {
     type: 'oryx-composition',
@@ -66,13 +65,13 @@ export const addressesPage: Page = {
 
 export const cartsPage: Page = {
   type: 'carts',
-  route: RouteType.AccountCartsPage, // tmp
+  route: 'account-carts',
   icon: IconTypes.Cart,
 };
 
 export const wishListsPage: Page = {
   type: 'wishlists',
-  route: RouteType.AccountWishListsPage, // tmp
+  route: 'account-wishlists',
   icon: IconTypes.Wishlist,
 };
 

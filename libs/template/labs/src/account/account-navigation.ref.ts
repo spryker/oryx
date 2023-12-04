@@ -1,5 +1,4 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { RouteType } from '@spryker-oryx/router';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { pages } from './types';
 
@@ -37,7 +36,7 @@ export const UserHeaderNavigation = {
     {
       type: 'oryx-content-link',
       options: {
-        type: RouteType.AccountOverviewPage,
+        type: 'account-overview',
         id: 'overview',
         icon: IconTypes.User,
       },
@@ -46,7 +45,7 @@ export const UserHeaderNavigation = {
     {
       type: 'oryx-content-link',
       options: {
-        type: RouteType.AccountProfilePage,
+        type: 'account-profile',
         id: 'profile',
         icon: 'badge',
       },
@@ -55,7 +54,7 @@ export const UserHeaderNavigation = {
     {
       type: 'oryx-content-link',
       options: {
-        type: RouteType.AccountOrdersPage,
+        type: 'account-orders',
         id: 'orders',
         icon: IconTypes.History,
       },
@@ -70,80 +69,3 @@ export const UserHeaderNavigation = {
     rules: [{ layout: { navigationType: 'dropdown' } }],
   },
 };
-
-// export const myAccountNavigation: ExperienceComponent = {
-//   type: 'oryx-composition',
-//   id: 'myAccountNavigation',
-//   components: [
-//     {
-//       type: 'oryx-content-link',
-//       content: { data: { text: i18n('my-account.navigation.overview') } },
-//       options: {
-//         type: RouteType.AccountOverviewPage,
-//         id: 'overview',
-//         icon: IconTypes.User,
-//       },
-//     },
-//     {
-//       type: 'oryx-content-link',
-//       content: { data: { text: i18n('my-account.navigation.profile') } },
-//       options: {
-//         type: RouteType.AccountProfilePage,
-//         id: 'profile',
-//         icon: 'badge',
-//       },
-//     },
-//     {
-//       type: 'oryx-content-link',
-//       content: { data: { text: i18n('my-account.navigation.consent') } },
-//       options: {
-//         url: '/my-account/consent',
-//         icon: 'shield_locked',
-//       },
-//     },
-//     {
-//       type: 'oryx-content-link',
-//       content: { data: { text: i18n('my-account.navigation.addresses') } },
-//       options: {
-//         url: '/my-account/addresses',
-//         icon: IconTypes.Location,
-//       },
-//     },
-//     {
-//       type: 'oryx-content-link',
-//       content: { data: { text: i18n('my-account.navigation.order-history') } },
-//       options: {
-//         type: RouteType.AccountOrdersPage,
-//         id: 'orders',
-//         icon: IconTypes.History,
-//       },
-//     },
-//     {
-//       type: 'oryx-content-link',
-//       content: { data: { text: i18n('my-account.navigation.carts') } },
-//       options: {
-//         url: '/my-account/wishlist',
-//         icon: IconTypes.Cart,
-//       },
-//     },
-//     {
-//       type: 'oryx-content-link',
-//       content: { data: { text: i18n('my-account.navigation.wishlist') } },
-//       options: {
-//         url: '/my-account/wishlist',
-//         icon: IconTypes.Wishlist,
-//       },
-//     },
-//   ],
-//   options: {
-//     rules: [
-//       {
-//         layout: {
-//           type: 'navigation',
-//           vertical: true,
-//         },
-//         gap: '0px',
-//       },
-//     ],
-//   },
-// };
