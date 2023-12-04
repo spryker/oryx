@@ -5,8 +5,8 @@ import {
   Cart,
   CartEntryQualifier,
   CartQualifier,
-  CreateCartQualifier,
   CouponQualifier,
+  CreateCartQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '../../models';

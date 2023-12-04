@@ -15,9 +15,9 @@ import {
   CartQuery,
   CartService,
   CartsUpdated,
-  CreateCartQualifier,
   Coupon,
   CouponQualifier,
+  CreateCartQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';

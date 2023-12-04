@@ -9,8 +9,8 @@ import {
   CartNormalizer,
   CartQualifier,
   CartsNormalizer,
-  CreateCartQualifier,
   CouponQualifier,
+  CreateCartQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
@@ -128,7 +128,7 @@ export class DefaultCartAdapter implements CartAdapter {
       )
       .pipe(this.transformer.do(CartNormalizer));
   }
-  
+
   addCoupon(data: CouponQualifier): Observable<Cart> {
     return this.identity.get().pipe(
       take(1),
