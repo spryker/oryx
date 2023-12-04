@@ -29,7 +29,7 @@ export const cartsPage: ExperienceComponent = {
     },
     {
       type: 'oryx-composition',
-      components: [{ type: 'oryx-carts-list' }],
+      components: [{ type: 'oryx-cart-list' }],
       options: { rules: [{ layout: 'list' }] },
     },
   ],

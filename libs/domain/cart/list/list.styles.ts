@@ -1,7 +1,7 @@
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
-export const cartsListStyles = css`
+export const cartListStyles = css`
   :host {
     display: grid;
     gap: 10px;

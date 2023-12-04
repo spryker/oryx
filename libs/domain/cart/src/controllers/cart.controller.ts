@@ -32,10 +32,9 @@ export class CartController {
     return this.observe.get('cartId').pipe(
       switchMap((cartId) =>
         cartId
-          ? of(cartId)
-          : this.contextController.get<string>(CartContext.CartID)
+          ? of({cartId})
+          : this.contextController.get<CartQualifier>(CartContext.CartID)
       ),
-      map((cartId) => (cartId ? { cartId } : undefined))
     );
   }
 

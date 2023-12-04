@@ -2,15 +2,21 @@ import { CartComponentMixin, CartService, PriceMode } from '@spryker-oryx/cart';
 import { I18nMixin, Size } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { when } from 'lit/directives/when.js';
-import { cartsListItemStyles } from './carts-list-item.styles';
+import { cartListItemStyles } from './list-item.styles';
 import { resolve } from '@spryker-oryx/di';
+import { CartListItemProperties } from './list-item.model';
+import { property } from 'lit/decorators.js';
 
 const size = Size.Md;
 
-export class CartsListItemComponent extends CartComponentMixin(I18nMixin(LitElement)) {
-  static styles = cartsListItemStyles;
+export class CartListItemComponent 
+  extends CartComponentMixin(I18nMixin(LitElement))
+ implements CartListItemProperties {
+  static styles = cartListItemStyles;
 
   protected cartService = resolve(CartService);
+
+  @property({ type: Boolean, reflect: true }) open?: boolean;
 
   protected setDefault(): void {
     this.cartService.setDefaultCart({cartId: this.$cart()!.id}).subscribe();
@@ -22,14 +28,18 @@ export class CartsListItemComponent extends CartComponentMixin(I18nMixin(LitElem
     if (!cart) return;
 
     const totalQuantity = this.$totalQuantity() ?? 0;
+    //TODO: use link service or content link
+    const url = `/my-account/carts/${cart.id}`;
 
     return html`
-      <oryx-collapsible>
+      <oryx-collapsible ?open=${this.open}>
         <oryx-link slot="heading">
-          ${cart.name}
-          ${this.i18n('carts.cart.totals.<count>-items', {
-            count: totalQuantity,
-          })}
+          <a href=${url}>
+            ${cart.name}
+            ${this.i18n('cart.cart.totals.<count>-items', {
+              count: totalQuantity,
+            })}
+          </a>
         </oryx-link>
         ${when(
           cart.isDefault,
@@ -48,15 +58,15 @@ export class CartsListItemComponent extends CartComponentMixin(I18nMixin(LitElem
         <span slot="heading">(
           ${this.i18n(
             cart.priceMode === PriceMode.GrossMode
-              ? 'carts.mode.gross'
-              : 'carts.mode.net'
+              ? 'cart.mode.gross'
+              : 'cart.mode.net'
           )}
         )</span>
         
         ${when(
           !totalQuantity,
           () =>
-            html`<p>${this.i18n('carts.list.no-cart-entries')}</p>`,
+            html`<p>${this.i18n('cart.list.no-cart-entries')}</p>`,
           () => html`
             <oryx-cart-entries
               .cartId=${cart.id}
@@ -74,7 +84,7 @@ export class CartsListItemComponent extends CartComponentMixin(I18nMixin(LitElem
                 .size=${size}
                 @click=${this.setDefault}
               >
-                ${this.i18n('carts.make-default')}
+                ${this.i18n('cart.make-default')}
               </oryx-button>`
           )}
 

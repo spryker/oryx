@@ -1,7 +1,7 @@
 import { HeadingTag, headingUtil } from '@spryker-oryx/ui/heading';
 import { css } from 'lit';
 
-export const cartsListItemStyles = css`
+export const cartListItemStyles = css`
   oryx-site-price {
     ${headingUtil(HeadingTag.H6)}
 
