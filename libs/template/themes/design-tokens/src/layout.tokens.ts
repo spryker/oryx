@@ -16,7 +16,7 @@ export const layoutTokens: ThemeToken = {
     split: { equal: '6', aside: '3', main: '8' },
   },
   row: { gap: '20px' },
-  ...(featureVersion >= '1.4' ? { divider: { width: '1px' } } : {}),
+  ...(featureVersion >= '1.4' ? {} : { divider: { width: '1px' } }),
 };
 
 export const layoutMdTokens: ThemeToken = {

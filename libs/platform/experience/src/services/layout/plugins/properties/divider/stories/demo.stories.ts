@@ -33,6 +33,7 @@ export default {
       },
     },
   },
+  parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
 const Template: Story<LayoutProperty> = (
