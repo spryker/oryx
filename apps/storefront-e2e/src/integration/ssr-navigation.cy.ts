@@ -55,7 +55,7 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       contactPage.getHeading().should('be.visible');
       verifyFooter(false);
 
-      cy.takeScreenshot('Contact page');
+      cy.takeScreenshot('Contact Us page');
     });
 
     it('should render Login page', () => {
@@ -112,7 +112,7 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       categoryPage.getProductCards().should('have.length.greaterThan', 1);
       verifyFooter();
 
-      cy.takeScreenshot('Checkout page');
+      cy.takeScreenshot('Category page');
     });
 
     it('should render Checkout page', () => {
@@ -130,7 +130,7 @@ describe('SSR suite', { tags: ['smoke', 'visual-regression'] }, () => {
       checkoutPage.getPlaceOrderBtn().should('be.visible');
       verifyFooter();
 
-      cy.takeScreenshot('Category page');
+      cy.takeScreenshot('Checkout page');
     });
   }
 });
