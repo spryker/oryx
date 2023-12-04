@@ -7,11 +7,17 @@ const image = (graphic: string) => ({
   content: { data: { graphic, alt: graphic } },
 });
 
-const heading = (text: string, rule = {}) => ({
+const heading = (content: string, rule = {}) => ({
   type: 'oryx-content-text',
-  content: { data: { text: `<b>${text}</b>` } },
+  content: { data: { text: text(content) } },
   options: { rules: [rule] },
 });
+
+const text = (text: string): string => {
+  return featureVersion >= '1.4'
+    ? `<strong>${text}</strong>`
+    : `<b>${text}</b>`;
+};
 
 const link = (text: string, url = '/', icon?: string) => ({
   type: 'oryx-content-link',
@@ -58,7 +64,7 @@ const customerSupport = {
   id: 'customer-support',
   content: {
     data: {
-      text: `<b>Customer Support</b><br/>
+      text: `${text('Customer Support')}<br/>
         <a href="/contact">Contact us</a><br/>
         <a href="/">Help center</a><br/>
         <a href="/">Payment</a><br/>
@@ -86,7 +92,7 @@ const aboutUs = {
   id: 'corporate-info',
   content: {
     data: {
-      text: `<b>About us</b><br/>
+      text: `${text('About us')}<br/>
         <a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>
