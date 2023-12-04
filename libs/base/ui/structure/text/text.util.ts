@@ -41,15 +41,8 @@ export const convertHeadings = (raw: string): string => {
     .replace(
       subtitleRegex,
       (_, el, attrBefore, cls, tag, attrAfter, content) => {
-        const attributes =
-          attrBefore || attrAfter
-            ? ` ${attrBefore ?? ''} ${attrAfter ?? ''}`
-            : '';
-        const classNames = cls.replace(tag, '').trim().length
-          ? `class="${cls.replace(tag, '')}"`
-          : ``;
-
-        return `<oryx-heading typography="${tag}" ${classNames} ${attributes}>${content}</oryx-heading>`;
+        const attributes = ` ${attrBefore ?? ''} ${attrAfter ?? ''}`.trim();
+        return `<oryx-heading typography="${tag}" ${cls} ${attributes}>${content}</oryx-heading>`;
       }
     );
 };
