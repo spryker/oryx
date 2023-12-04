@@ -55,7 +55,7 @@ export const enum RouteType {
   OrderHistory = 'my-account/order-history',
   NotFound = 'not-found',
   AddressList = 'address-list',
-  AddressBookCreate = 'address-book-create',
+  AddressBookCreate = 'my-account/addresses/create',
   AddressBookEdit = 'address-book-edit',
 }
 

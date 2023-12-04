@@ -22,8 +22,7 @@ const accountPage = (
         options: {
           rules: [
             {
-              layout: { type: 'split', columnWidthType: 'aside' },
-              padding: '30px 0 0',
+              layout: { type: 'list' },
             },
           ],
         },
@@ -39,10 +38,24 @@ const accountPage = (
               ],
             },
           },
-          { ref: 'accountNavigation' },
-          component,
+          {
+            type: 'oryx-composition',
+            components: [{ ref: 'accountNavigation' }, component],
+            options: {
+              rules: [
+                {
+                  layout: {
+                    type: 'split',
+                    columnWidthType: 'aside',
+                    divider: true,
+                  },
+                },
+              ],
+            },
+          },
         ],
       },
+      { ref: 'footer' },
     ],
   };
 };

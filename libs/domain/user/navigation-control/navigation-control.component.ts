@@ -10,7 +10,7 @@ import { hydrate, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 
 @hydrate()
-export class UserNavigationTriggerComponent extends ContentMixin(LitElement) {
+export class UserNavigationControlComponent extends ContentMixin(LitElement) {
   protected authService = resolve(AuthService);
   protected userService = resolve(UserService);
   protected routerService = resolve(RouterService);

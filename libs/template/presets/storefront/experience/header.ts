@@ -85,7 +85,7 @@ export const topHeader = (options?: {
 
 export const UserHeaderNavigation = {
   id: 'user-header-navigation',
-  type: 'oryx-user-navigation-trigger',
+  type: 'oryx-user-navigation-control',
   components: [
     {
       type: 'oryx-content-link',
