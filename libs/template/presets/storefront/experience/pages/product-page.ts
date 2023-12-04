@@ -71,10 +71,10 @@ export const productPage: ExperienceComponent = {
               options: {
                 rules: [
                   {
-                    layout: {
-                      vertical: true,
-                      sticky: true,
-                    },
+                    layout:
+                      featureVersion >= '1.4'
+                        ? { type: 'list', sticky: true }
+                        : { vertical: true, sticky: true },
                     top: '108px',
                     ...(featureVersion >= '1.2'
                       ? {}

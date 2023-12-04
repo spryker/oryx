@@ -7,7 +7,9 @@ export interface ProductCategoryService {
    */
   get(id: string): Observable<ProductCategory>;
   get(qualifier: ProductCategoryQualifier): Observable<ProductCategory>;
-  getList(qualifier?: ProductCategoryQualifier): Observable<ProductCategory[]>;
+  getList(
+    qualifier?: ProductCategoryQualifier
+  ): Observable<ProductCategory[] | undefined>;
 
   /**
    * @deprecated since 1.4 use getList(qualifier: ProductCategoryQualifier) instead
