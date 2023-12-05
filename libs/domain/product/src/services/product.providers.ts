@@ -70,8 +70,10 @@ import {
   ProductListService,
 } from './list';
 import { productListIncludes } from './list/adapter/product-list-includes';
-import { ProductContextFallback } from './product-context';
-import { productContextProviders } from './product-context';
+import {
+  ProductContextFallback,
+  productContextProviders,
+} from './product-context';
 import { ProductService } from './product.service';
 import {
   DefaultProductRelationsListAdapter,
