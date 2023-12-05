@@ -1,6 +1,6 @@
 export interface CartListItemProperties {
-    /**
-     * Open the collapsible
-     */
-    open?: boolean;
+  /**
+   * Open the collapsible
+   */
+  open?: boolean;
 }

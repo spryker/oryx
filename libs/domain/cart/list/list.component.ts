@@ -1,10 +1,11 @@
 import { CartService } from '@spryker-oryx/cart';
 import { resolve } from '@spryker-oryx/di';
 import { ContentMixin } from '@spryker-oryx/experience';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { cartListStyles } from './list.styles';
 import { repeat } from 'lit/directives/repeat.js';
+import { cartListStyles } from './list.styles';
 
 export class CartListComponent extends ContentMixin(LitElement) {
   static styles = cartListStyles;
@@ -16,12 +17,13 @@ export class CartListComponent extends ContentMixin(LitElement) {
 
     return html`
       <section>
-        <h1>
-          ${this.i18n(
-            'cart.totals.<count>-items',
-            { count: carts?.length ?? 0 }
-          )}
-        </h1>
+        <oryx-heading tag=${HeadingTag.H1} typography=${HeadingTag.H3}>
+          ${this.i18n('cart.totals.<count>-items', {
+            count: carts?.length ?? 0,
+          })}
+        </oryx-heading>
+
+        <!-- TODO: replace hardcoded url with final one -->
         <oryx-button type="text" href="/create-cart">
           ${this.i18n('cart.create-cart')}
         </oryx-button>
@@ -30,8 +32,9 @@ export class CartListComponent extends ContentMixin(LitElement) {
 
       ${repeat(
         carts ?? [],
-        ({id}) => id,
-        ({id}) => html`<oryx-cart-list-item .cartId=${id}></oryx-cart-list-item>`
+        ({ id }) => id,
+        ({ id }) =>
+          html`<oryx-cart-list-item cartId=${id}></oryx-cart-list-item>`
       )}
     `;
   }

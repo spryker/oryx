@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../.constants';
 
 export default {
@@ -7,9 +7,7 @@ export default {
 } as Meta;
 
 const Template: Story = (): TemplateResult => {
-  return html`
-    <oryx-cart-list></oryx-cart-list>
-  `;
+  return html` <oryx-cart-list></oryx-cart-list> `;
 };
 
 export const Demo = Template.bind({});

@@ -1,17 +1,18 @@
 import { CartComponentMixin, CartService, PriceMode } from '@spryker-oryx/cart';
+import { resolve } from '@spryker-oryx/di';
 import { I18nMixin, Size } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
-import { when } from 'lit/directives/when.js';
-import { cartListItemStyles } from './list-item.styles';
-import { resolve } from '@spryker-oryx/di';
-import { CartListItemProperties } from './list-item.model';
 import { property } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
+import { CartListItemProperties } from './list-item.model';
+import { cartListItemStyles } from './list-item.styles';
 
 const size = Size.Md;
 
-export class CartListItemComponent 
+export class CartListItemComponent
   extends CartComponentMixin(I18nMixin(LitElement))
- implements CartListItemProperties {
+  implements CartListItemProperties
+{
   static styles = cartListItemStyles;
 
   protected cartService = resolve(CartService);
@@ -19,7 +20,7 @@ export class CartListItemComponent
   @property({ type: Boolean, reflect: true }) open?: boolean;
 
   protected setDefault(): void {
-    this.cartService.setDefaultCart({cartId: this.$cart()!.id}).subscribe();
+    this.cartService.setDefaultCart({ cartId: this.$cart()!.id }).subscribe();
   }
 
   protected override render(): TemplateResult | void {
@@ -55,23 +56,21 @@ export class CartListItemComponent
           .currency=${cart.currency}
         ></oryx-site-price>
 
-        <span slot="heading">(
+        <span slot="heading"
+          >(
           ${this.i18n(
             cart.priceMode === PriceMode.GrossMode
               ? 'cart.mode.gross'
               : 'cart.mode.net'
           )}
-        )</span>
-        
+          )</span
+        >
+
         ${when(
           !totalQuantity,
-          () =>
-            html`<p>${this.i18n('cart.list.no-cart-entries')}</p>`,
+          () => html`<p>${this.i18n('cart.list.no-cart-entries')}</p>`,
           () => html`
-            <oryx-cart-entries
-              .cartId=${cart.id}
-              .options=${{ readonly: false }}
-            ></oryx-cart-entries>
+            <oryx-cart-entries cartId=${cart.id}></oryx-cart-entries>
           `
         )}
 
@@ -79,9 +78,9 @@ export class CartListItemComponent
           ${when(
             !cart.isDefault,
             () =>
-              html`<oryx-button 
-                type="outline" 
-                .size=${size}
+              html`<oryx-button
+                type="outline"
+                size=${size}
                 @click=${this.setDefault}
               >
                 ${this.i18n('cart.make-default')}
@@ -89,11 +88,7 @@ export class CartListItemComponent
           )}
 
           <div class="actions">
-            <oryx-button
-              icon="edit"
-              type="icon"
-              .size=${size}
-            ></oryx-button>
+            <oryx-button icon="edit" type="icon" .size=${size}></oryx-button>
             <oryx-button
               icon="content_copy"
               type="icon"
@@ -106,22 +101,14 @@ export class CartListItemComponent
               .size=${size}
               ?disabled=${!totalQuantity}
             ></oryx-button>
-            <oryx-button
-              icon="share"
-              type="icon"
-              .size=${size}
-            ></oryx-button>
+            <oryx-button icon="share" type="icon" .size=${size}></oryx-button>
             <oryx-button
               icon="download"
               type="icon"
               .size=${size}
               ?disabled=${!totalQuantity}
             ></oryx-button>
-            <oryx-button
-              icon="delete"
-              type="icon"
-              .size=${size}
-            ></oryx-button>
+            <oryx-button icon="delete" type="icon" .size=${size}></oryx-button>
           </div>
         </div>
       </oryx-collapsible>

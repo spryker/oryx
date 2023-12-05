@@ -217,9 +217,6 @@ export class DefaultCartService implements CartService {
       return this.cartQuery$.get(qualifier);
     }
 
-    console.log(qualifier);
-    
-
     return this.activeCartId$.pipe(
       switchMap((id) =>
         id ? this.cartQuery$.get({ cartId: id! }) : of(undefined)
