@@ -1,5 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { Size, featureVersion } from '@spryker-oryx/utilities';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const searchPage: ExperienceComponent = {
   id: 'search-page',
@@ -22,12 +22,7 @@ export const searchPage: ExperienceComponent = {
               {
                 type: 'oryx-site-breadcrumb',
                 options: {
-                  rules: [
-                    {
-                      colSpan: 2,
-                    },
-                    { query: { breakpoint: Size.Sm }, hide: true },
-                  ],
+                  rules: [{ colSpan: 2 }],
                 },
               },
             ]
@@ -63,7 +58,9 @@ export const searchPage: ExperienceComponent = {
             rules: [
               {
                 layout:
-                  featureVersion >= '1.2'
+                  featureVersion >= '1.4'
+                    ? { type: 'list' }
+                    : featureVersion >= '1.2'
                     ? {
                         type: 'flex',
                         vertical: true,

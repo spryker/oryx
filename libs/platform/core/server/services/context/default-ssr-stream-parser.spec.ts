@@ -26,27 +26,21 @@ describe('DefaultSSRStreamParserService', () => {
         </test>
     `;
     parser.fillStream(aTemplate);
-    expect(parser.getStreamStack()).toEqual([
-      { test: '"4"' },
-      { inner: '"1"' },
-    ]);
+    expect(parser.getStreamStack()).toEqual([{ test: '4' }, { inner: '1' }]);
     parser.fillStream(bTemplate);
     expect(parser.getStreamStack()).toEqual([
-      { test: '"4"' },
-      { inner: '"1"' },
-      { test: '"5"' },
+      { test: '4' },
+      { inner: '1' },
+      { test: '5' },
     ]);
     parser.fillStream(cTemplate);
     expect(parser.getStreamStack()).toEqual([
-      { test: '"4"' },
-      { inner: '"1"' },
-      { test: '"5"' },
+      { test: '4' },
+      { inner: '1' },
+      { test: '5' },
     ]);
     parser.fillStream(dTemplate);
-    expect(parser.getStreamStack()).toEqual([
-      { test: '"4"' },
-      { inner: '"1"' },
-    ]);
+    expect(parser.getStreamStack()).toEqual([{ test: '4' }, { inner: '1' }]);
     parser.fillStream(eTemplate);
     expect(parser.getStreamStack()).toEqual([]);
   });

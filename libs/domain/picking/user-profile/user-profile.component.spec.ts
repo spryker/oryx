@@ -1,8 +1,9 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { AuthService } from '@spryker-oryx/auth';
+import { AuthService, IdentityService } from '@spryker-oryx/auth';
 import { App, AppRef, StorageService } from '@spryker-oryx/core';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import { SyncSchedulerService } from '@spryker-oryx/offline';
+import { NetworkStateService } from '@spryker-oryx/offline';
+import { SyncSchedulerService } from '@spryker-oryx/offline/sync';
 import { RouterService } from '@spryker-oryx/router';
 import { i18n, nextTick, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
@@ -11,7 +12,7 @@ import { PickingUserProfileComponent } from './user-profile.component';
 import { pickingUserProfileComponent } from './user-profile.def';
 
 const mockOfflineDataPlugin = {
-  refreshData: vi.fn().mockReturnValue(
+  syncData: vi.fn().mockReturnValue(
     of(undefined).pipe(
       switchMap(async () => {
         await nextTick(2);
@@ -30,7 +31,7 @@ class MockSyncSchedulerService implements Partial<SyncSchedulerService> {
 }
 
 class MockRouterService implements Partial<RouterService> {
-  route = vi.fn().mockReturnValue(of('/'));
+  route = vi.fn().mockReturnValue(of(''));
   navigate = vi.fn();
 }
 
@@ -42,12 +43,21 @@ class MockStorageService implements Partial<StorageService> {
   get = vi.fn().mockReturnValue(of(undefined));
 }
 
+class MockNetworkStateService implements Partial<NetworkStateService> {
+  online = vi.fn().mockReturnValue(of(true));
+}
+
+class MockIdentityService implements IdentityService {
+  get = vi.fn().mockReturnValue(of({}));
+}
+
 describe('PickingUserProfileComponent', () => {
   let element: PickingUserProfileComponent;
   let routerService: MockRouterService;
   let syncSchedulerService: MockSyncSchedulerService;
   let authService: MockAuthService;
   let storageService: MockStorageService;
+  let networkService: MockNetworkStateService;
 
   beforeAll(async () => {
     await useComponent(pickingUserProfileComponent);
@@ -76,21 +86,24 @@ describe('PickingUserProfileComponent', () => {
           provide: StorageService,
           useClass: MockStorageService,
         },
+        {
+          provide: NetworkStateService,
+          useClass: MockNetworkStateService,
+        },
+        {
+          provide: IdentityService,
+          useClass: MockIdentityService,
+        },
       ],
     });
 
-    routerService = testInjector.inject(
-      RouterService
-    ) as unknown as MockRouterService;
-    syncSchedulerService = testInjector.inject(
-      SyncSchedulerService
-    ) as unknown as MockSyncSchedulerService;
-    authService = testInjector.inject(
-      AuthService
-    ) as unknown as MockAuthService;
-    storageService = testInjector.inject(
-      StorageService
-    ) as unknown as MockStorageService;
+    routerService = testInjector.inject<MockRouterService>(RouterService);
+    syncSchedulerService =
+      testInjector.inject<MockSyncSchedulerService>(SyncSchedulerService);
+    authService = testInjector.inject<MockAuthService>(AuthService);
+    storageService = testInjector.inject<MockStorageService>(StorageService);
+    networkService =
+      testInjector.inject<MockNetworkStateService>(NetworkStateService);
 
     element = await fixture(
       html`<oryx-picking-user-profile></oryx-picking-user-profile>`
@@ -130,7 +143,7 @@ describe('PickingUserProfileComponent', () => {
       syncSchedulerService.hasPending.mockReturnValue(of(true));
 
       element = await fixture(
-        '<oryx-picking-user-profile></oryx-picking-user-profile>'
+        html`<oryx-picking-user-profile></oryx-picking-user-profile>`
       );
     });
 
@@ -204,31 +217,39 @@ describe('PickingUserProfileComponent', () => {
   });
 
   describe('when user is on the main page', () => {
-    it('should render receive data button', () => {
-      expect(element).toContainElement('.receive-data');
+    beforeEach(async () => {
+      routerService.route = vi.fn().mockReturnValue(of('/'));
+
+      element = await fixture(
+        html`<oryx-picking-user-profile></oryx-picking-user-profile>`
+      );
+    });
+
+    it('should render not disabled sync data button', () => {
+      expect(element).toContainElement('.sync-data:not([disabled])');
     });
 
     describe('and the receive data button is clicked', () => {
       beforeEach(() => {
-        element.renderRoot.querySelector<HTMLElement>('.receive-data')?.click();
+        element.renderRoot.querySelector<HTMLElement>('.sync-data')?.click();
       });
 
       it('should call offline data plugin', () => {
-        expect(mockOfflineDataPlugin.refreshData).toHaveBeenCalled();
+        expect(mockOfflineDataPlugin.syncData).toHaveBeenCalled();
       });
 
       it('should render loading indicator', async () => {
-        const button = element.renderRoot.querySelector('.receive-data');
-        expect(button).toHaveProperty('text', 'Receive data');
+        const button = element.renderRoot.querySelector('.sync-data');
+        expect(button).toHaveProperty('text', 'Sync data');
         expect(button?.hasAttribute('loading')).toBe(true);
       });
 
       describe('and receive data completes', () => {
         beforeEach(async () => {
-          mockOfflineDataPlugin.refreshData.mockReturnValue(of(undefined));
+          mockOfflineDataPlugin.syncData.mockReturnValue(of(undefined));
 
           element = await fixture(
-            `<oryx-picking-user-profile></oryx-picking-user-profile>`
+            html`<oryx-picking-user-profile></oryx-picking-user-profile>`
           );
           element.renderRoot
             .querySelector<HTMLElement>('oryx-button.received-data')
@@ -236,10 +257,24 @@ describe('PickingUserProfileComponent', () => {
         });
 
         it('should not show loading indicator', () => {
-          const button = element.renderRoot.querySelector('.receive-data');
-          expect(button).toHaveProperty('text', 'Receive data');
+          const button = element.renderRoot.querySelector('.sync-data');
+          expect(button).toHaveProperty('text', 'Sync data');
           expect(button?.hasAttribute('loading')).toBe(false);
         });
+      });
+    });
+
+    describe('and network is in offline state', () => {
+      beforeEach(async () => {
+        networkService.online = vi.fn().mockReturnValue(of(false));
+
+        element = await fixture(
+          html`<oryx-picking-user-profile></oryx-picking-user-profile>`
+        );
+      });
+
+      it('should disable sync data button', () => {
+        expect(element).toContainElement('.sync-data[disabled]');
       });
     });
   });
@@ -249,7 +284,7 @@ describe('PickingUserProfileComponent', () => {
       routerService.route.mockReturnValue('/picking/');
 
       element = await fixture(
-        `<oryx-picking-user-profile></oryx-picking-user-profile>`
+        html`<oryx-picking-user-profile></oryx-picking-user-profile>`
       );
     });
 
@@ -278,7 +313,7 @@ describe('PickingUserProfileComponent', () => {
         .mockReturnValue(of({ warehouse: { name: mockWarehouseName } }));
 
       element = await fixture(
-        `<oryx-picking-user-profile></oryx-picking-user-profile>`
+        html`<oryx-picking-user-profile></oryx-picking-user-profile>`
       );
     });
 

@@ -1,5 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
-import { Size, featureVersion } from '@spryker-oryx/utilities';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const categoryPage: ExperienceComponent = {
   id: 'category-page',
@@ -24,12 +24,7 @@ export const categoryPage: ExperienceComponent = {
               {
                 type: 'oryx-site-breadcrumb',
                 options: {
-                  rules: [
-                    {
-                      colSpan: 2,
-                    },
-                    { query: { breakpoint: Size.Sm }, hide: true },
-                  ],
+                  rules: [{ colSpan: 2 }],
                 },
               },
             ]
@@ -62,7 +57,12 @@ export const categoryPage: ExperienceComponent = {
           id: 'category-product-listing',
           name: 'Product listing',
           options: {
-            rules: [{ layout: 'list', gap: '20px' }],
+            rules: [
+              {
+                layout: featureVersion >= '1.4' ? { type: 'list' } : 'flex',
+                gap: '20px',
+              },
+            ],
           },
           components: [
             {

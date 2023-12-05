@@ -7,15 +7,16 @@ import { version } from './package.json';
 const skipSw = !!process.env.NO_SW;
 
 export default defineConfig({
-  root: '.',
+  root: './src',
   envPrefix: 'ORYX_',
+
   build: {
-    outDir: '../../dist/apps/fulfillment',
+    outDir: '../dist',
     emptyOutDir: true,
     sourcemap: true,
   },
   define: {
-    'import.meta.env.ORYX_FULFILLMENT_APP_VERSION': JSON.stringify(version),
+    'import.meta.env.ORYX_APP_VERSION': JSON.stringify(version),
     __ORYX_FEATURE_VERSION__: `"${process.env.ORYX_FEATURE_VERSION ?? ''}"`,
   },
 
@@ -30,7 +31,7 @@ export default defineConfig({
       registerType: 'prompt',
       injectRegister: 'auto',
       strategies: 'injectManifest',
-      srcDir: 'dev-dist/sw',
+      srcDir: '../dev-dist/sw',
       filename: 'app.js',
       manifest: {
         name: 'Fulfillment App',
@@ -66,12 +67,42 @@ export default defineConfig({
         navigateFallback: '/index.html',
         clientsClaim: true,
         cleanupOutdatedCaches: true,
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
       },
       injectManifest: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,ttf,otf}'],
       },
     }),
-    tsconfigPaths({ root: '../../' }),
+    tsconfigPaths({ root: '../../../' }),
     checker({
       typescript: {
         tsconfigPath: 'tsconfig.app.json',

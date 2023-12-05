@@ -1,10 +1,16 @@
 import { AppRef } from '@spryker-oryx/core';
 import { INJECTOR, resolve } from '@spryker-oryx/di';
-import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking';
 import { OfflineDataPlugin } from '@spryker-oryx/picking/offline';
+import { WarehouseUserAssignmentsService } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonSize } from '@spryker-oryx/ui/button';
-import { i18n, signal, signalAware } from '@spryker-oryx/utilities';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
+import {
+  featureVersion,
+  i18n,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
@@ -32,7 +38,6 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <oryx-picking-header></oryx-picking-header>
       ${when(
         this.$locations() === null || this.$locations()?.length === 1,
         () => this.renderLoading(),
@@ -52,7 +57,7 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
       .pipe(
         switchMap(() => {
           this.routerService.navigate('/');
-          return this.injectorDataPlugin.refreshData(this.injector);
+          return this.injectorDataPlugin.syncData(this.injector);
         })
       )
       .subscribe();
@@ -61,35 +66,40 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
   protected renderFallback(): TemplateResult {
     return html`
       <div class="fallback">
-        <oryx-heading as="h2">
-          <h1>
-            ${i18n('picking.you-are-not-assigned-to-any-locations')}.
-            ${i18n('picking.please-reach-out-to-your-manager')}
-          </h1>
-        </oryx-heading>
+        ${this.__renderFallbackHeading()}
 
         <oryx-image resource="no-orders"></oryx-image>
       </div>
     `;
   }
 
+  // temporary implementation for backwards compatibility
+  private __renderFallbackHeading(): TemplateResult {
+    const text = html`${i18n('picking.location.unassigned')}.
+    ${i18n('picking.location.help')}`;
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading
+        .tag=${HeadingTag.H1}
+        .typography=${HeadingTag.H2}
+        >${text}</oryx-heading
+      >`;
+    } else {
+      return html`<oryx-heading as="h2"><h1>${text}</h1></oryx-heading>`;
+    }
+  }
+
   protected renderList(): TemplateResult {
     return html`
       <div class="warehouses-list">
-        <oryx-heading as="h4">
-          <h1>${i18n('picking.select-your-location-to-get-started')}</h1>
-        </oryx-heading>
+        ${this.__renderListHeading()}
         ${repeat(
           this.$locations() || [],
           (item) => item.id,
           (item) => html`
-            <oryx-heading>
-              <h3>${item.warehouse.name}</h3>
-            </oryx-heading>
-
+            ${this.__renderListItemHeading(item.warehouse.name)}
             <oryx-button
               .size=${ButtonSize.Sm}
-              .text=${i18n('picking.select')}
+              .text=${i18n('select')}
               @click=${() => this.selectWarehouse(item.id)}
             ></oryx-button>
             <hr />
@@ -97,6 +107,35 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
         )}
       </div>
     `;
+  }
+
+  // temporary implementation for backwards compatibility
+  private __renderListHeading(): TemplateResult {
+    const text = i18n('picking.location.select');
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading
+        title
+        .tag=${HeadingTag.H1}
+        .typography=${HeadingTag.H4}
+      >
+        ${text}
+      </oryx-heading>`;
+    } else {
+      return html` <oryx-heading as="h4">
+        <h1>${text}</h1>
+      </oryx-heading>`;
+    }
+  }
+
+  // temporary implementation for backwards compatibility
+  private __renderListItemHeading(text: string): TemplateResult {
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading .tag=${HeadingTag.H3}>${text}</oryx-heading>`;
+    } else {
+      return html`<oryx-heading>
+        <h3>${text}</h3>
+      </oryx-heading>`;
+    }
   }
 
   protected renderLoading(): TemplateResult {
@@ -107,7 +146,7 @@ export class PickingWarehouseAssignmentComponent extends LitElement {
 
     return html`
       <div class="loading">
-        <span>${i18n('picking.loading-locations')}</span>
+        <span>${i18n('picking.location.loading')}</span>
         <oryx-spinner></oryx-spinner>
       </div>
     `;

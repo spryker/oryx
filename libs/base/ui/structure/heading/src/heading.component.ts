@@ -1,47 +1,57 @@
-import { hydrate, ssrShim } from '@spryker-oryx/utilities';
-import { html, LitElement, TemplateResult } from 'lit';
+import { featureVersion, ssrShim } from '@spryker-oryx/utilities';
+import { LitElement, PropertyValueMap, TemplateResult, isServer } from 'lit';
 import { property } from 'lit/decorators.js';
-import { HeadingAttributes, HeadingTag } from './heading.model';
-import { headlineStyles } from './styles/base.styles';
+import { html } from 'lit/static-html.js';
+import {
+  HeadingAttributes,
+  HeadingTag,
+  HeadingVisibility,
+} from './heading.model';
+import { headingStyles } from './heading.styles';
+import { headlineStyles } from './styles';
+import { TypographyController } from './typography.controller';
 
 @ssrShim('style')
-@hydrate()
 export class HeadingComponent extends LitElement implements HeadingAttributes {
-  static styles = headlineStyles;
+  static styles = featureVersion >= '1.4' ? headingStyles : headlineStyles;
 
-  @property({ reflect: true }) tag?: HeadingTag;
-  @property({ reflect: true }) as?: HeadingTag | 'hide';
+  protected typographyController = new TypographyController(this);
 
+  @property() tag?: HeadingTag;
+  @property() typography?: HeadingTag | HeadingVisibility;
+  @property() lg?: HeadingTag | HeadingVisibility;
+  @property() md?: HeadingTag | HeadingVisibility;
+  @property() sm?: HeadingTag | HeadingVisibility;
+  @property() maxLines?: number;
+
+  @property({ reflect: true }) as?: HeadingTag;
   @property({ reflect: true, attribute: 'as-lg' }) asLg?:
     | HeadingTag
-    | 'hide'
-    | 'show';
-
+    | HeadingVisibility;
   @property({ reflect: true, attribute: 'as-md' }) asMd?:
     | HeadingTag
-    | 'hide'
-    | 'show';
-
+    | HeadingVisibility;
   @property({ reflect: true, attribute: 'as-sm' }) asSm?:
     | HeadingTag
-    | 'hide'
-    | 'show';
+    | HeadingVisibility;
 
-  @property() set maxLines(value: number) {
-    if (value > 0) {
-      this.style.setProperty('--max-lines', String(value));
+  protected override render(): TemplateResult {
+    return this.renderTag(html`<slot></slot>`);
+  }
+
+  protected willUpdate(
+    properties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+  ): void {
+    super.willUpdate(properties);
+    // as long as the controller does not support willUpdate on SSR,
+    // we need to call this manually.
+    if (isServer) {
+      this.typographyController.hostUpdate();
     }
   }
 
-  protected override render(): TemplateResult {
-    return html`${this.renderTag(html`<slot></slot>`)}`;
-  }
-
   /**
-   * Generates the TAG (h1 - h6 and subtitle) based on the tag.
-   *
-   * We'd prefer using the `unsafeStatic` directive, however, there's an SSR related
-   * issue that blocks us from using this: https://github.com/lit/lit/issues/2246.
+   * Generates the heading element based on the tag property.
    */
   protected renderTag(template: TemplateResult): TemplateResult {
     switch (this.tag) {
@@ -58,9 +68,18 @@ export class HeadingComponent extends LitElement implements HeadingAttributes {
       case HeadingTag.H6:
         return html`<h6>${template}</h6>`;
       case HeadingTag.Subtitle:
-        return html`<b class="subtitle">${template}</b>`;
+        return featureVersion >= '1.4'
+          ? html`${template}`
+          : html`<b class="subtitle">${template}</b>`;
       case HeadingTag.Caption:
-        return html`<span class="caption">${template}</span>`;
+        return featureVersion >= '1.4'
+          ? html`${template}`
+          : html`<span class="caption">${template}</span>`;
+      case HeadingTag.Bold:
+      case HeadingTag.Strong:
+        return html`<strong>${template}</strong>`;
+      case HeadingTag.Small:
+        return html`<small>${template}</small>`;
       default:
         return html`${template}`;
     }

@@ -6,6 +6,7 @@ export function cartAttributesNormalizer(data: DeserializedCart): Cart {
   const guestItemsKey = camelize(ApiCartModel.Includes.GuestCartItems);
   const itemsKey = camelize(ApiCartModel.Includes.Items);
   const products = data[itemsKey] ?? data[guestItemsKey];
+  const coupons = data[camelize(ApiCartModel.Includes.Coupons)];
 
   delete data[itemsKey];
   delete data[guestItemsKey];
@@ -20,5 +21,6 @@ export function cartAttributesNormalizer(data: DeserializedCart): Cart {
   return {
     ...data,
     products,
+    coupons,
   };
 }

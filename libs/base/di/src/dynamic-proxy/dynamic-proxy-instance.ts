@@ -1,12 +1,4 @@
-import {
-  defer,
-  EMPTY,
-  from,
-  map,
-  Observable,
-  shareReplay,
-  switchMap,
-} from 'rxjs';
+import { defer, EMPTY, from, Observable, shareReplay, switchMap } from 'rxjs';
 import { setCurrentInjector } from '../inject';
 import { Injector } from '../injector';
 import { Type } from '../models/type';
@@ -40,14 +32,13 @@ const createProxyHandler = <T>(
           }
 
           const result = instance$.pipe(
-            map((instance) => {
+            switchMap((instance) => {
               const result: any = (instance as any)[propKey]?.(...methodArgs);
 
               if (result instanceof Observable) {
                 return result;
               } else return EMPTY;
             }),
-            switchMap((result) => result),
             shareReplay()
           );
 
