@@ -6,6 +6,7 @@ export const cartsPage: ExperienceComponent = {
   type: 'Page',
   meta: {
     title: 'Carts',
+    // TODO: replace with final url
     route: '/carts',
     description: 'Carts Page',
   },
