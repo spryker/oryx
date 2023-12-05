@@ -24,6 +24,5 @@ export function provideIncludes(
       useExisting: includesTokenFactory(existing),
     });
   }
-  console.log('providers', providers);
   return providers;
 }
