@@ -32,7 +32,7 @@ export const headingStyles = css`
     margin: 0;
   }
 
-  :host([style*='--max-lines']) > * {
+  :host([style*='--max-lines']) > *:not(style) {
     /* stylelint-disable-next-line */
     display: -webkit-box;
     -webkit-box-orient: vertical;
