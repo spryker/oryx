@@ -17,6 +17,7 @@ import {
   HttpService,
 } from './http';
 import { DefaultHydrationService, HydrationService } from './hydration';
+import { DefaultIncludesService, IncludesService } from './includes';
 import {
   DefaultPageMetaResolverService,
   DefaultPageMetaService,
@@ -107,6 +108,10 @@ export const coreProviders: Provider[] = [
   {
     provide: AppInitializer,
     useExisting: PageMetaResolverService,
+  },
+  {
+    provide: IncludesService,
+    useClass: DefaultIncludesService,
   },
   CoreResourceResolver,
 ];
