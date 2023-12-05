@@ -8,6 +8,8 @@ export interface ProductAdapter {
 
 export const ProductAdapter = 'oryx.ProductAdapter';
 
+export const ProductIncludes = 'product';
+
 declare global {
   interface InjectionTokensContractMap {
     [ProductAdapter]: ProductAdapter;
