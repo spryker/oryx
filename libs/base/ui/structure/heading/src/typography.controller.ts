@@ -46,9 +46,7 @@ export class TypographyController implements ReactiveController {
    * Sets the font properties for the heading, based on the provided tag and size.
    */
   protected setFont(tag?: HeadingTag | HeadingVisibility, size?: Size): void {
-    if (!tag) {
-      return;
-    }
+    if (!tag) return;
 
     this.setStyleProperty('--_s', size, `var(--oryx-typography-${tag}-size)`);
     this.setStyleProperty('--_w', size, `var(--oryx-typography-${tag}-weight)`);
@@ -63,7 +61,7 @@ export class TypographyController implements ReactiveController {
     tag?: HeadingTag | HeadingVisibility,
     size?: Size
   ): void {
-    if ((!tag && !size) || (!size && this.isInlineStyle(tag))) {
+    if (!size && (!tag || this.isInlineStyle(tag))) {
       this.setStyleProperty('--_d', undefined, 'inline-block');
     } else {
       this.setStyleProperty(
