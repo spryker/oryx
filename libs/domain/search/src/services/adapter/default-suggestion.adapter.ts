@@ -4,7 +4,7 @@ import {
   JsonAPITransformerService,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { ApiProductModel, ProductIncludes } from '@spryker-oryx/product';
+import { ApiProductModel, ProductListIncludes } from '@spryker-oryx/product';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, of, switchMap } from 'rxjs';
 import {
@@ -45,7 +45,7 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
     ) {
       if (featureVersion >= '1.4') {
         const includes$ = entities?.includes(SuggestionField.Products)
-          ? this.includes.get({ entity: ProductIncludes })
+          ? this.includes.get({ entity: ProductListIncludes })
           : of('');
 
         return includes$.pipe(
