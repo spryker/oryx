@@ -1,5 +1,5 @@
-import { screenCss } from '@spryker-oryx/utilities';
-import { css } from 'lit';
+import { featureVersion, screenCss } from '@spryker-oryx/utilities';
+import { css, unsafeCSS } from 'lit';
 
 export const orderSummaryStyles = css`
   :host {
@@ -17,9 +17,11 @@ export const orderSummaryStyles = css`
     gap: 8px 6px;
   }
 
-  h2 {
-    margin-block-end: 32px;
-  }
+  ${featureVersion >= '1.4'
+    ? unsafeCSS(
+        'oryx-heading[title] {margin-block-end: 32px;}oryx-heading:not([title]) {margin-block-end: 4px;}'
+      )
+    : unsafeCSS('h2 {margin-block-end: 32px; h3 {margin-block-end: 4px;}}')}
 
   section {
     gap: 8px;
@@ -39,10 +41,6 @@ export const orderSummaryStyles = css`
 
   .title {
     font-weight: 600;
-  }
-
-  h3 {
-    margin-block-end: 4px;
   }
 
   hr,
