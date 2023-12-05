@@ -1,7 +1,7 @@
-import { IncludeDefinition, IncludesToken } from '@spryker-oryx/core';
 import { Provider } from '@spryker-oryx/di';
+import { IncludeDefinition, IncludesToken } from './includes-service';
 
-export const includesTokenFactory = (entity: string) =>
+export const includesTokenFactory = (entity: string): string =>
   `${IncludesToken}${entity}*`;
 
 export function provideIncludes(

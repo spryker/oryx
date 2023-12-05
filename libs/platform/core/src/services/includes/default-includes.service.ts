@@ -23,7 +23,6 @@ export class DefaultIncludesService implements IncludesService {
     for (const include of config) {
       if (typeof include === 'string') {
         includes.add(include);
-      } else if ('ref' in include) {
       } else if (include.include) {
         includes.add(include.include);
 
