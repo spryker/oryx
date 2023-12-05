@@ -55,9 +55,7 @@ export class TypographyController implements ReactiveController {
 
   /**
    * Sets the display property for the heading, based on the provided tag and size.
-   * When no tag is provided, the default display is `inline`.
-   * When no size is provided, the default display is `inline-block`.
-   *
+   * When there's no tag or the tag is an inline tag, the display property is set to inline-block.
    */
   protected setDisplay(
     tag?: HeadingTag | HeadingVisibility,
