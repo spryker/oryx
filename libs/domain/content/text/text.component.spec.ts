@@ -72,6 +72,23 @@ describe('ContentTextComponent', () => {
     it('should render the text component', () => {
       expect(element).toContainElement('oryx-text');
     });
+
+    describe('and featureVersion >= 1.4', () => {
+      beforeEach(async () => {
+        mockFeatureVersion('1.4');
+        element = await fixture(
+          html`<oryx-content-text
+            .content=${{
+              text: '<p><h1>content</h1></p>',
+            } as ContentTextContent}
+          ></oryx-content-text>`
+        );
+      });
+
+      it('should not longer render the text component in version 1.4', () => {
+        expect(element).not.toContainElement('oryx-text');
+      });
+    });
   });
 
   describe('when autoInstallFont option is false ', () => {

@@ -1,5 +1,8 @@
 import { css } from 'lit';
 
+/**
+ * @deprecated since 1.4 styles are provided by <oryx-heading> going forward
+ */
 export const contentTextStyles = css`
   :host {
     font-size: var(--oryx-typography-size);
