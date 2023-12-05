@@ -102,7 +102,7 @@ export class TypographyController implements ReactiveController {
     if (value !== undefined) {
       this.host.style.setProperty(propName, String(value));
     } else {
-      this.host.style.removeProperty(propName);
+      this.host.style.removeProperty?.(propName);
     }
   }
 
