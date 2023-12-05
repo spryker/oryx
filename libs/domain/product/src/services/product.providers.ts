@@ -24,6 +24,7 @@ import {
   mediaNormalizer,
   mediaSetNormalizer,
   priceNormalizer,
+  productIncludes,
   productListNormalizer,
   productNormalizer,
 } from './adapter';
@@ -68,6 +69,7 @@ import {
   ProductListPageService,
   ProductListService,
 } from './list';
+import { productListIncludes } from './list/adapter/product-list-includes';
 import { ProductContextFallback } from './product-context';
 import { ProductService } from './product.service';
 import {
@@ -175,6 +177,8 @@ export const productProviders: Provider[] = [
   ...productQueries,
   ...productEffects,
   ...categoryEffects,
+  ...productIncludes,
+  ...productListIncludes,
   ProductContextFallback,
   {
     provide: PageMetaResolver,
