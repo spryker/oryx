@@ -37,28 +37,50 @@ export class TypographyController implements ReactiveController {
   }
 
   protected setStyle(tag?: HeadingTag | HeadingVisibility, size?: Size): void {
+    this.setFont(tag, size);
+    this.setDisplay(tag, size);
+    this.setTransform(tag, size);
+  }
+
+  /**
+   * Sets the font properties for the heading, based on the provided tag and size.
+   */
+  protected setFont(tag?: HeadingTag | HeadingVisibility, size?: Size): void {
     if (!tag) return;
 
     this.setStyleProperty('--_s', size, `var(--oryx-typography-${tag}-size)`);
     this.setStyleProperty('--_w', size, `var(--oryx-typography-${tag}-weight)`);
     this.setStyleProperty('--_l', size, `var(--oryx-typography-${tag}-line)`);
+  }
 
-    this.setStyleProperty(
-      '--_t',
-      size,
-      tag === HeadingTag.Subtitle ? `uppercase` : undefined
-    );
-
-    if (size) {
+  /**
+   * Sets the display property for the heading, based on the provided tag and size.
+   * When there's no tag or the tag is an inline tag, the display property is set to inline-block.
+   */
+  protected setDisplay(
+    tag?: HeadingTag | HeadingVisibility,
+    size?: Size
+  ): void {
+    if (!size && (!tag || this.isInlineStyle(tag))) {
+      this.setStyleProperty('--_d', undefined, 'inline-block');
+    } else {
       this.setStyleProperty(
         '--_d',
         size,
         tag === HeadingVisibility.None ? `none` : undefined
       );
-    } else {
-      if (this.isInlineStyle(tag)) {
-        this.setStyleProperty('--_d', undefined, 'inline-block');
-      }
+    }
+  }
+
+  /**
+   * Sets the text-transform property for the heading, based on the provided tag and size.
+   */
+  protected setTransform(
+    tag?: HeadingTag | HeadingVisibility,
+    size?: Size
+  ): void {
+    if (tag === HeadingTag.Subtitle) {
+      this.setStyleProperty('--_t', size, `uppercase`);
     }
   }
 
@@ -78,7 +100,7 @@ export class TypographyController implements ReactiveController {
     if (value !== undefined) {
       this.host.style.setProperty(propName, String(value));
     } else {
-      this.host.style.removeProperty(propName);
+      this.host.style.removeProperty?.(propName);
     }
   }
 
