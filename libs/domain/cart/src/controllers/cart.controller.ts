@@ -10,6 +10,7 @@ import {
   CartEntry,
   CartQualifier,
   CartTotalCalculations,
+  Coupon,
   FormattedCartTotals,
   FormattedDiscount,
 } from '../models';
@@ -50,6 +51,12 @@ export class CartController {
   getEntries(): Observable<CartEntry[]> {
     return this.cartQualifier.pipe(
       switchMap((qualifier) => this.cartService.getEntries(qualifier))
+    );
+  }
+
+  getCoupons(): Observable<Coupon[]> {
+    return this.cartQualifier.pipe(
+      switchMap((qualifier) => this.cartService.getCoupons(qualifier))
     );
   }
 

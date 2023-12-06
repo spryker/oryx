@@ -1,7 +1,7 @@
 import { DesignToken } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
 import { color } from '../color.tokens';
-import { commonTokensSmall } from '../common-tokens';
+import { commonTokens, commonTokensSmall } from '../common-tokens';
 import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
 
 import { iconTokens } from './icon.token';
@@ -15,6 +15,7 @@ import {
 export const storefrontTokens: DesignToken[] = [
   {
     color,
+    ...commonTokens,
     ...tokens,
     ...typographyTokens,
     ...iconTokens,

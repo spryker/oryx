@@ -3,10 +3,6 @@ import { QueryEventHandler } from './query-event';
 
 export type QueryTrigger = string | Observable<any>;
 
-export type QueryQualifierEnhancer<Qualifier> = (
-  partialQualifier: Partial<Qualifier>
-) => Qualifier /*| Observable<Qualifier>*/;
-
 export type QueryTransformer<ValueType, Qualifier> = (
   data: ValueType,
   qualifier: Qualifier
@@ -31,14 +27,6 @@ export interface QueryOptions<
    * If not provided, the default behavior would be using the qualifier itself.
    */
   cacheKey?: (qualifier: Qualifier) => string | Partial<Qualifier>;
-
-  /**
-   * TODO
-   * Automatically completes a qualifier if some of its fields are missing.
-   * This is especially useful when only a subset of the qualifier is provided and
-   * the rest can be inferred or fetched from elsewhere.
-   */
-  // qualifierEnhancers?: QueryQualifierEnhancer<Qualifier>[];
 
   /**
    * Transforms the data returned by the loader based on the qualifier or the model itself.

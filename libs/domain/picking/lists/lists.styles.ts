@@ -5,19 +5,13 @@ export const pickingListsComponentStyles = css`
     display: flex;
     flex-direction: column;
     gap: 20px;
-    min-height: 100vh;
+    padding-block-start: 20px;
     background-color: var(--oryx-color-neutral-3);
   }
 
   section {
     display: grid;
     gap: 25px;
-  }
-
-  oryx-picking-lists-header {
-    position: sticky;
-    inset-block-start: 0;
-    z-index: 1;
   }
 
   .no-items-fallback {

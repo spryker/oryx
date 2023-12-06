@@ -40,6 +40,19 @@ const products: Product[] = [
   },
 ];
 
+const productsWithCoupons: Product[] = [
+  {
+    id: '012_25904598',
+    title: 'Canon IXUS 165',
+    originalPrice: '366.00',
+  },
+  {
+    id: '029_26976109',
+    title: 'Sony Cyber-shot DSC-WX500',
+    originalPrice: '410.24',
+  },
+];
+
 export class ProductStorage {
   static getByEq(eq: number): Product {
     if (eq >= products.length) {
@@ -47,5 +60,13 @@ export class ProductStorage {
     }
 
     return products[eq];
+  }
+
+  static getProductWithCouponByEq(eq: number): Product {
+    if (eq >= productsWithCoupons.length) {
+      throw new Error(`Product with eq = ${eq} does not exist.`);
+    }
+
+    return productsWithCoupons[eq];
   }
 }

@@ -2,9 +2,11 @@ import { toCSS, toJSON } from 'css-convert-json';
 import { LitElement } from 'lit';
 import { Type } from '../misc';
 
+const stylesProp = Symbol('stylesProperty');
+const customStylesProp = Symbol('customStylesProperty');
+
 //all properties and methods re-defining should be conditional
 //due to testing environment is also a server environment
-
 export const ssrStyleShim = (litClass: Type<LitElement>): void => {
   if (!Reflect.has(litClass.prototype, 'toggleAttribute')) {
     litClass.prototype.toggleAttribute = function (
@@ -21,28 +23,27 @@ export const ssrStyleShim = (litClass: Type<LitElement>): void => {
   }
 
   if (!Reflect.has(litClass.prototype, 'style')) {
-    Object.defineProperty(litClass.prototype, '_styles', {
-      value: {},
-      writable: true,
-    });
-
     Object.defineProperty(litClass.prototype, 'style', {
       get() {
+        if (!this[stylesProp]) {
+          this[stylesProp] = {};
+        }
+        if (!this[customStylesProp]) {
+          this[customStylesProp] = toJSON(
+            this.getAttribute('style')
+          ).attributes;
+        }
+
         return {
-          ...this._styles,
-          ...this._customStyles,
+          ...this[stylesProp],
+          ...this[customStylesProp],
           setProperty: function (this: any, property: string, value: string) {
-            if (!this._customStyles) {
-              this._customStyles = toJSON(
-                this.getAttribute('style')
-              ).attributes;
-            }
-            this._styles[property] = value;
+            this[stylesProp][property] = value;
             this.setAttribute(
               'style',
               toCSS({
                 children: {},
-                attributes: { ...this._styles, ...this._customStyles },
+                attributes: { ...this[stylesProp], ...this[customStylesProp] },
               }) ?? ''
             );
           }.bind(this),

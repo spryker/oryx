@@ -17,12 +17,21 @@ export class CanvasStylePlugin implements LayoutPlugin {
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties> {
     const { styles } = data;
+    const properties: any = {};
 
-    return of({
-      border: styles.border,
-      'border-radius': styles.radius,
-      background: styles.background,
-      '--oryx-fill': styles.fill,
-    });
+    if (styles.shadow) {
+      properties[
+        'box-shadow'
+      ] = `var(--oryx-shadow-${styles.shadow}) var(--oryx-shadow-color)`;
+      properties['z-index'] = 'var(--oryx-z-index, 1)';
+      properties['isolation'] = 'isolate';
+    }
+
+    if (styles.background) properties['background'] = styles.background;
+    if (styles.radius) properties['border-radius'] = styles.radius;
+    if (styles.border) properties['border'] = styles.border;
+    if (styles.fill) properties['--oryx-fill'] = styles.fill;
+
+    return of(properties);
   }
 }

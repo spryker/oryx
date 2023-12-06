@@ -1,7 +1,9 @@
 import { ContentMixin } from '@spryker-oryx/experience';
 import { HTMLTemplateResult, LitElement, TemplateResult, html } from 'lit';
 
+import { ContextService } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
+import { ProductContext } from '@spryker-oryx/product';
 import { RouteType } from '@spryker-oryx/router';
 import { LinkService } from '@spryker-oryx/site';
 import { computed, effect, signal } from '@spryker-oryx/utilities';
@@ -15,6 +17,8 @@ export class ProductOffersComponent extends ProductMixin(
   ContentMixin(LitElement)
 ) {
   static styles = productOffersStyles;
+
+  protected contextService = resolve(ContextService);
 
   protected override render(): TemplateResult | void {
     if (!this.$product()?.offers?.length) return;
@@ -65,21 +69,26 @@ export class ProductOffersComponent extends ProductMixin(
   });
 
   protected renderOffer(offer: ProductOffer): HTMLTemplateResult | void {
-    const sku2 = `${this.$product()?.sku}${offer ? `,${offer.id}` : ''}`;
     const sku = this.$product()?.sku;
 
     if (!sku) return;
 
+    const qualifier = { sku, offer: offer.id };
+
     const $link = signal(
       this.linkService.get({
         type: RouteType.Product,
-        qualifier: { sku, offer: offer.id },
+        qualifier,
       })
+    );
+
+    const productContext = signal(
+      this.contextService.serialize(ProductContext.SKU, qualifier)
     );
 
     return html`
       <a href=${$link()} tabindex="-1">
-        <oryx-radio data-sku=${sku2}>
+        <oryx-radio data-sku=${productContext}>
           <input
             type="radio"
             name="offer"
