@@ -62,9 +62,8 @@ export class CarouselNavigationComponent
     this.mutationObserver?.disconnect();
     this.intersectionObserver?.disconnect();
     this.resizeObserver?.disconnect();
-    if (this.hostElement && this.scrollListener) {
-      this.hostElement.removeEventListener('scroll', this.scrollListener);
-      this.hostElement.removeEventListener('scrollend', this.scrollListener);
+    if (this.scrollListener) {
+      this.hostElement?.removeEventListener('scroll', this.scrollListener);
     }
     super.disconnectedCallback();
   }
@@ -142,7 +141,6 @@ export class CarouselNavigationComponent
       true
     );
     this.hostElement.addEventListener('scroll', this.scrollListener);
-    this.hostElement.addEventListener('scrollend', this.scrollListener);
   }
 
   protected buildNavigation(): void {
