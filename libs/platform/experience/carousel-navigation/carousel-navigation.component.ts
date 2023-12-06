@@ -148,12 +148,6 @@ export class CarouselNavigationComponent
   protected buildNavigation(): void {
     this.style.setProperty('--width', `${this.hostElement.clientWidth}px`);
     this.style.setProperty('--height', `${this.hostElement.clientHeight}px`);
-    if (this.showIndicators)
-      this.hostElement.style.setProperty(
-        'margin-block-end',
-        'var(--indicator-area-height, 50px)'
-      );
-
     const items = this.resolveItems();
     if (
       items.length !== this.items.length ||
