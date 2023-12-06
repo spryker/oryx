@@ -243,6 +243,7 @@ export class CarouselNavigationComponent
       ) {
         opacity = 1;
       }
+      indicator.checked = opacity === 1;
       indicator.style.setProperty('--opacity', `${opacity}`);
     });
   }
