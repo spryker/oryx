@@ -1,7 +1,7 @@
 import { featureVersion } from '@spryker-oryx/utilities';
 
 const darkMode =
-  featureVersion >= '1.3'
+  featureVersion >= '1.4'
     ? `<style>@media (prefers-color-scheme: dark) { g { fill: var(--fill, white); }}</style>`
     : '';
 
@@ -30,7 +30,7 @@ const wordmark = `
 
 export const logo = `
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109 42" role="img" aria-labelledby="svg-title">
-    ${darkMode}  
+    ${darkMode}
     <title id="svg-title">Spryker logo</title>
     ${symbol}
     ${wordmark}
