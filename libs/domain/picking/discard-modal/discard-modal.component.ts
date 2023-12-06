@@ -2,8 +2,9 @@ import { resolve } from '@spryker-oryx/di';
 import { PickingGuardService } from '@spryker-oryx/picking';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nMixin, signal } from '@spryker-oryx/utilities';
+import { I18nMixin, featureVersion, signal } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { discardModalStyles } from './discard-modal.styles';
@@ -35,11 +36,7 @@ export class PickingDiscardModalComponent extends I18nMixin(LitElement) {
         footerButtonFullWidth
         minimal
       >
-        <oryx-heading slot="heading">
-          <h2>${this.i18n('picking.discard.pick-list')}</h2>
-        </oryx-heading>
-
-        ${this.i18n('picking.discard.stop-picking')}
+        ${this.__renderHeading()}${this.i18n('picking.discard.stop-picking')}
         <span class="additional-text"
           >${this.i18n('picking.discard.warning')}</span
         >
@@ -64,6 +61,20 @@ export class PickingDiscardModalComponent extends I18nMixin(LitElement) {
         </oryx-button>
       </oryx-modal>
     `;
+  }
+
+  // temporary implementation for backwards compatibility
+  private __renderHeading(): TemplateResult {
+    const text = this.i18n('picking.discard.pick-list');
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading slot="heading" .tag=${HeadingTag.H2}>
+        ${text}
+      </oryx-heading>`;
+    } else {
+      return html`<oryx-heading slot="heading">
+        <h2>${text}</h2>
+      </oryx-heading>`;
+    }
   }
 
   protected onBack(): void {
