@@ -2,6 +2,7 @@ import { ContextController } from '@spryker-oryx/core';
 import { resolve } from '@spryker-oryx/di';
 import {
   computed,
+  featureVersion,
   Signal,
   signal,
   signalAware,
@@ -9,7 +10,7 @@ import {
   Type,
 } from '@spryker-oryx/utilities';
 import { LitElement } from 'lit';
-import { of } from 'rxjs';
+import { map, of } from 'rxjs';
 import type { Product, ProductQualifier } from '../models';
 import { ProductComponentProperties } from '../models';
 import { ProductContext, ProductService } from '../services';
@@ -19,7 +20,7 @@ export declare class ProductMixinInterface
 {
   sku?: string;
   protected $product: Signal<Product | null>;
-  protected $productQualifier: Signal<ProductQualifier | null>;
+  protected $productQualifier: Signal<ProductQualifier | undefined>;
 }
 
 export const ProductMixin = <
@@ -35,26 +36,17 @@ export const ProductMixin = <
 
     protected contextController = new ContextController(this);
 
-    protected $productContext = signal(
-      this.contextController.get<string>(ProductContext.SKU)
-    );
-
-    protected $productQualifier: Signal<ProductQualifier | null> = computed(
-      () => {
-        const sku_context = (this.sku ?? this.$productContext() ?? '')?.split(
-          ','
-        );
-        return sku_context
-          ? {
-              sku: sku_context[0],
-              ...(sku_context[1] ? { offer: sku_context[1] } : {}),
-            }
-          : null;
-      }
+    protected $productQualifier: Signal<ProductQualifier | undefined> = signal(
+      this.contextController.get<ProductQualifier>(ProductContext.SKU).pipe(
+        // TODO: deprecated since 1.3, mapping won't be needed as context will always return qualifier in 1.3+
+        map((sku) =>
+          featureVersion >= '1.3' ? sku : ({ sku } as ProductQualifier)
+        )
+      )
     );
 
     protected $product = computed(() => {
-      const qualifier = this.$productQualifier();
+      const qualifier = this.sku ? { sku: this.sku } : this.$productQualifier();
       return qualifier ? this.productService?.get(qualifier) : of(null);
     });
   }

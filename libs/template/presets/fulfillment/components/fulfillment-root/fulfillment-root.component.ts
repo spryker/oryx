@@ -3,6 +3,9 @@ import { LitElement, PropertyValueMap } from 'lit';
 import { property } from 'lit/decorators.js';
 import { styles } from './fulfillment-root.styles';
 
+/**
+ * @deprecated Since version 1.2. Use <oryx-app> instead.
+ */
 export class FulfillmentRootComponent extends LitElement {
   static styles = styles;
 

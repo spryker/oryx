@@ -17,9 +17,12 @@ export const fontawesomeIcons: IconMapper = {
     [IconTypes.Desktop]: '&#xf390;',
     [IconTypes.Mobile]: '&#xf3cd;',
     [IconTypes.Tablet]: '&#xf3fa;',
+    [IconTypes.Backward]: '&#xf053;',
     [IconTypes.Forward]: '&#xf054;',
-    [IconTypes.ArrowDownward]: '&#xe4b8;',
-    [IconTypes.ArrowUpward]: '&#xe4c2;',
+    [IconTypes.ArrowBackward]: '&#xf060;',
+    [IconTypes.ArrowForward]: '&#xf061;',
+    [IconTypes.ArrowDownward]: '&#xf063;',
+    [IconTypes.ArrowUpward]: '&#xf062;',
     [IconTypes.ArrowOutward]: '&#xf337;',
     [IconTypes.Copy]: '&#xf0c5;',
     [IconTypes.Create]: '&#xf0fe;',
@@ -46,6 +49,8 @@ export const fontawesomeIcons: IconMapper = {
     [IconTypes.Card]: '&#xf249;',
     [IconTypes.Input]: '&#xf2f6;',
     [IconTypes.Parcel]: '&#xf466;',
+    [IconTypes.History]: '&#xf1da',
+    [IconTypes.Home]: '&#xf015',
   },
 };
 

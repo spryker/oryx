@@ -5,6 +5,7 @@ import {
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { ProductContext } from '../product-context';
 import { ProductService } from '../product.service';
@@ -27,16 +28,15 @@ export class ProductPageTitleMetaResolver implements PageMetaResolver {
 
   resolve(): Observable<ElementResolver> {
     return this.context.get(null, ProductContext.SKU).pipe(
-      switchMap((sku) => {
-        if (!sku) {
+      switchMap((qualifier) => {
+        if (!qualifier) {
           return of({});
         }
 
         return this.productService
-          .get({
-            sku: (sku as string)?.split(',')[0],
-            offer: (sku as string)?.split(',')[1],
-          })
+          .get(
+            featureVersion >= '1.3' ? qualifier : { sku: qualifier as string }
+          )
           .pipe(
             map((product) => (product?.name ? { title: product.name } : {}))
           );

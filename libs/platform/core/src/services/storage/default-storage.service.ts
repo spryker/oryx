@@ -1,5 +1,5 @@
 import { inject, INJECTOR } from '@spryker-oryx/di';
-import { toObservable } from '@spryker-oryx/utilities';
+import { subscribeReplay, toObservable } from '@spryker-oryx/utilities';
 import { isObservable, map, Observable, of } from 'rxjs';
 import { IndexedDBStorageService } from './indexed-db-storage.service';
 import { StorageType } from './model';
@@ -38,19 +38,21 @@ export class DefaultStorageService implements StorageService {
   }
 
   set(key: string, value: unknown, type?: StorageType): Observable<void> {
-    return toObservable(
-      this.getStorage(type).setItem(key, JSON.stringify(value))
+    return subscribeReplay(
+      toObservable(this.getStorage(type).setItem(key, JSON.stringify(value)))
     ) as Observable<void>;
   }
 
   remove(key: string, type?: StorageType): Observable<void> {
-    return toObservable(
-      this.getStorage(type).removeItem(key)
+    return subscribeReplay(
+      toObservable(this.getStorage(type).removeItem(key))
     ) as Observable<void>;
   }
 
   clear(type?: StorageType): Observable<void> {
-    return toObservable(this.getStorage(type).clear()) as Observable<void>;
+    return subscribeReplay(
+      toObservable(this.getStorage(type).clear())
+    ) as Observable<void>;
   }
 
   protected getStorage(

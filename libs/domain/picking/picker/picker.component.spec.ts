@@ -1,13 +1,11 @@
 import { fixture } from '@open-wc/testing-helpers';
 import { createInjector, destroyInjector } from '@spryker-oryx/di';
-import {
-  PickingHeaderService,
-  PickingListService,
-} from '@spryker-oryx/picking';
+import { PickingGuardService } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+import { PickingListService } from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
+import { tabsComponent } from '@spryker-oryx/ui';
 import { TabComponent } from '@spryker-oryx/ui/tab';
-import { tabsComponent } from '@spryker-oryx/ui/tabs';
 import { i18n, useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
@@ -16,13 +14,13 @@ import { PickingPickerComponent } from './picker.component';
 import { pickingPickerComponent } from './picker.def';
 
 class MockPickingListService implements Partial<PickingListService> {
-  get = vi.fn().mockReturnValue(of([mockPickingListData[0]]));
+  getList = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   finishPicking = vi.fn().mockReturnValue(of(mockPickingListData[0]));
   getUpcomingPickingListId = vi.fn().mockReturnValue(of(null));
 }
 
-class MockPickingHeaderService implements Partial<PickingHeaderService> {
-  discard = vi.fn();
+class MockPickingGuardService implements Partial<PickingGuardService> {
+  allow = vi.fn();
 }
 
 class MockRouterService implements Partial<RouterService> {
@@ -35,7 +33,7 @@ describe('PickingPickerComponent', () => {
   let element: PickingPickerComponent;
   let service: MockPickingListService;
   let routerService: MockRouterService;
-  let pickingHeaderService: MockPickingHeaderService;
+  let guardService: MockPickingGuardService;
 
   const getTabs = () =>
     element.renderRoot.querySelectorAll<TabComponent>('oryx-tab');
@@ -68,23 +66,16 @@ describe('PickingPickerComponent', () => {
           useClass: MockRouterService,
         },
         {
-          provide: PickingHeaderService,
-          useClass: MockPickingHeaderService,
+          provide: PickingGuardService,
+          useClass: MockPickingGuardService,
         },
       ],
     });
 
-    service = testInjector.inject(
-      PickingListService
-    ) as unknown as MockPickingListService;
-
-    routerService = testInjector.inject(
-      RouterService
-    ) as unknown as MockRouterService;
-
-    pickingHeaderService = testInjector.inject(
-      PickingHeaderService
-    ) as unknown as MockPickingHeaderService;
+    service = testInjector.inject<MockPickingListService>(PickingListService);
+    routerService = testInjector.inject<MockRouterService>(RouterService);
+    guardService =
+      testInjector.inject<MockPickingGuardService>(PickingGuardService);
 
     element = await fixture(
       html`<oryx-picking-picker pickingListId="id"></oryx-picking-picker>`
@@ -127,7 +118,7 @@ describe('PickingPickerComponent', () => {
 
   describe('when there is no picking lists', () => {
     beforeEach(async () => {
-      service.get = vi.fn().mockReturnValue(of([]));
+      service.getList = vi.fn().mockReturnValue(of(null));
 
       element = await fixture(
         html`<oryx-picking-picker pickingListId="id"></oryx-picking-picker>`
@@ -157,7 +148,7 @@ describe('PickingPickerComponent', () => {
 
   describe('when all items are already picked', () => {
     beforeEach(async () => {
-      service.get = vi.fn().mockReturnValue(of([mockPickingListData[1]]));
+      service.getList = vi.fn().mockReturnValue(of(mockPickingListData[1]));
       service.finishPicking = vi
         .fn()
         .mockReturnValue(of(mockPickingListData[1]));
@@ -178,12 +169,12 @@ describe('PickingPickerComponent', () => {
     it('should render success message on "Not Picked" and "NotFound" tabs', () => {
       onTabs([getTabs()[0], getTabs()[2]], (tabContent) => {
         expect(tabContent?.querySelector('section h1')?.textContent).toContain(
-          i18n('picking.great-job')
+          i18n('picking.success')
         );
 
         expect(
           tabContent?.querySelector('section span')?.textContent
-        ).toContain(i18n('picking.all-items-are-processed'));
+        ).toContain(i18n('picking.processed.all'));
       });
     });
 
@@ -224,7 +215,7 @@ describe('PickingPickerComponent', () => {
         ],
       };
 
-      service.get = vi.fn().mockReturnValue(of([partiallyPickedPickingList]));
+      service.getList = vi.fn().mockReturnValue(of(partiallyPickedPickingList));
       service.finishPicking = vi
         .fn()
         .mockReturnValue(of(partiallyPickedPickingList));
@@ -245,12 +236,12 @@ describe('PickingPickerComponent', () => {
     it('should render success message on "Not Picked" tab', () => {
       onTabs([getTabs()[0]], (tabContent) => {
         expect(tabContent?.querySelector('section h1')?.textContent).toContain(
-          i18n('picking.great-job')
+          i18n('picking.processed.success')
         );
 
         expect(
           tabContent?.querySelector('section span')?.textContent
-        ).toContain(i18n('picking.all-items-are-processed'));
+        ).toContain(i18n('picking.processed.all'));
       });
     });
 
@@ -275,7 +266,7 @@ describe('PickingPickerComponent', () => {
 
       expect(service.finishPicking).toHaveBeenCalled();
       expect(routerService.navigate).toHaveBeenCalledWith(`/`);
-      expect(pickingHeaderService.discard).toHaveBeenCalled();
+      expect(guardService.allow).toHaveBeenCalled();
     });
   });
 });

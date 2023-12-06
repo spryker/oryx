@@ -1,5 +1,9 @@
 import { css } from 'lit';
 
+/**
+ * @deprecated since 1.4, use headingStyles instead. The name is changed, but more importantly
+ * the styles rules have been heavily refactored.
+ */
 export const headlineStyles = css`
   :host {
     --h1s: var(--oryx-typography-h1-size);

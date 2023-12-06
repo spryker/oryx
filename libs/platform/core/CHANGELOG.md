@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.2.0 (2023-11-09)
+
+
+### Features
+
+* query postTransform and cacheKey ([#875](https://github.com/spryker/oryx/issues/875)) ([d8f906c](https://github.com/spryker/oryx/commit/d8f906cd94fb56a4dc9f760cb31616ae53b7c19d))
+
+
+### Bug Fixes
+
+* add `as` attribute for preload links ([#825](https://github.com/spryker/oryx/issues/825)) ([4eeba05](https://github.com/spryker/oryx/commit/4eeba057aed62df32ec82e4a326f6f57022d7eda))
+
+
+
+
+
 # 1.0.0 (2023-07-31)
 
 

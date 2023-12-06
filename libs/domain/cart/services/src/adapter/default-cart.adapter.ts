@@ -9,6 +9,7 @@ import {
   CartNormalizer,
   CartQualifier,
   CartsNormalizer,
+  CouponQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
@@ -21,6 +22,7 @@ import {
 } from '@spryker-oryx/site';
 import {
   Observable,
+  catchError,
   combineLatest,
   map,
   of,
@@ -44,6 +46,8 @@ export class DefaultCartAdapter implements CartAdapter {
     return this.identity.get().pipe(
       take(1),
       switchMap((identity) => {
+        if (!identity.isAuthenticated && !identity.userId) return of([]);
+
         const url = this.generateUrl(
           identity.isAuthenticated
             ? `${ApiCartModel.UrlParts.Customers}/${identity.userId}/${ApiCartModel.UrlParts.Carts}`
@@ -51,9 +55,10 @@ export class DefaultCartAdapter implements CartAdapter {
           !identity.isAuthenticated
         );
 
-        return this.http
-          .get<ApiCartModel.ResponseList>(url)
-          .pipe(this.transformer.do(CartsNormalizer));
+        return this.http.get<ApiCartModel.ResponseList>(url).pipe(
+          this.transformer.do(CartsNormalizer),
+          catchError(() => of([]))
+        );
       })
     );
   }
@@ -109,6 +114,34 @@ export class DefaultCartAdapter implements CartAdapter {
     );
   }
 
+  addCoupon(data: CouponQualifier): Observable<Cart> {
+    return this.identity.get().pipe(
+      take(1),
+      switchMap((identity) => this.createCartIfNeeded(identity, data.cartId)),
+      switchMap(([identity]) => {
+        const url = this.generateUrl(
+          identity.isAuthenticated
+            ? `${ApiCartModel.UrlParts.Carts}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}`
+            : `${ApiCartModel.UrlParts.GuestCarts}/${data.cartId}/${ApiCartModel.UrlParts.Coupons}`,
+          !identity.isAuthenticated
+        );
+
+        const body = {
+          data: {
+            type: ApiCartModel.UrlParts.Coupons,
+            attributes: {
+              code: data.code,
+            },
+          },
+        };
+
+        return this.http
+          .post<ApiCartModel.Response>(url, body)
+          .pipe(this.transformer.do(CartNormalizer));
+      })
+    );
+  }
+
   addEntry(data: AddCartEntryQualifier): Observable<Cart> {
     const attributes = {
       sku: data.sku,
@@ -116,7 +149,7 @@ export class DefaultCartAdapter implements CartAdapter {
       productOfferReference: data.offer,
     };
 
-    return this.identity.get().pipe(
+    return this.identity.get({ requireGuest: true }).pipe(
       take(1),
       switchMap((identity) => this.createCartIfNeeded(identity, data.cartId)),
       switchMap(([identity, cartId]) => {
@@ -232,8 +265,8 @@ export class DefaultCartAdapter implements CartAdapter {
 
   protected generateUrl(path: string, isAnonymous: boolean): string {
     const includes = isAnonymous
-      ? [ApiCartModel.Includes.GuestCartItems]
-      : [ApiCartModel.Includes.Items];
+      ? [ApiCartModel.Includes.GuestCartItems, ApiCartModel.Includes.Coupons]
+      : [ApiCartModel.Includes.Items, ApiCartModel.Includes.Coupons];
 
     return `${this.SCOS_BASE_URL}/${path}${`?include=${includes.join(',')}`}`;
   }

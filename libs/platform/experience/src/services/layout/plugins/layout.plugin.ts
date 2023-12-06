@@ -51,6 +51,7 @@ export const enum LayoutPluginType {
 export interface LayoutPluginRender {
   pre?: TemplateResult;
   post?: TemplateResult;
+  wrapper?: TemplateResult;
 }
 
 export type LayoutPluginImplementation = Record<
@@ -78,8 +79,9 @@ export interface LayoutPluginOptionsParams {
 
 export interface LayoutPluginRenderParams extends LayoutPluginOptionsParams {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  element?: LitElement & Record<string, any>;
+  element?: LitElement;
   experience?: Component;
+  template?: TemplateResult;
 }
 
 export interface LayoutStyleParameters extends Omit<StyleProperties, 'layout'> {
@@ -97,6 +99,13 @@ export interface LayoutPlugin {
   getStyleProperties?(
     data: LayoutPluginPropertiesParams
   ): Observable<LayoutStyleProperties>;
+  /**
+   * Retrieves the default layout styles options. These default properties
+   * are redefined by the layout options, which can be set in the experience
+   * data options or directly when using a layout component.
+   *
+   * @returns Observable containing the default LayoutStylesOptions
+   */
   getDefaultProperties?(): Observable<LayoutStylesOptions>;
   /**
    * Returns object with pre and post render templates.

@@ -6,6 +6,7 @@ import type {
   Cart,
   CartComponentAttributes,
   CartEntry,
+  Coupon,
   FormattedCartTotals,
 } from '../models';
 
@@ -21,6 +22,7 @@ export declare class CartMixinInterface implements CartComponentAttributes {
   protected $entries: Signal<CartEntry[]>;
   protected $totals: Signal<FormattedCartTotals | null>;
   protected $totalQuantity: Signal<number>;
+  protected $coupons: Signal<Coupon[]>;
 }
 
 export const CartComponentMixin = <
@@ -57,6 +59,10 @@ export const CartComponentMixin = <
 
     protected $totalQuantity = signal(this.cartController.getTotalQuantity(), {
       initialValue: null,
+    });
+
+    protected $coupons = signal(this.cartController.getCoupons(), {
+      initialValue: [],
     });
   }
   return CartMixinClass as unknown as Type<CartMixinInterface> & T;
