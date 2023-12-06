@@ -1,8 +1,34 @@
+export type HeadingDirectiveOptions = HeadingAttributes;
+
 export interface HeadingAttributes {
   /**
    * Indicates the heading tag that will be generated.
    */
   tag?: HeadingTag;
+
+  /**
+   * The given typography might be different from the element tag, such as using a `h1` tag.
+   * Using a different typography than the tag allows to keep screen readers happy, while still
+   * allowing to style the heading as needed for the visual experience.
+   *
+   * A screen specific typography can be set using the `lg`, `md`, and `sm` attributes.
+   */
+  typography?: HeadingTag | HeadingVisibility;
+
+  /**
+   * Set the typography for large screens.
+   */
+  lg?: HeadingTag | HeadingVisibility;
+
+  /**
+   * Set the typography for medium screens.
+   */
+  md?: HeadingTag | HeadingVisibility;
+
+  /**
+   * Set the typography for small screens.
+   */
+  sm?: HeadingTag | HeadingVisibility;
 
   /**
    * Indicate the max number of lines that are used for the title.
@@ -13,63 +39,28 @@ export interface HeadingAttributes {
   maxLines?: number;
 
   /**
-   * Screen readers require to have a strict structure of the DOM, so that users who depend on a
-   * readable structure can understand the structure of the page. For users who have visual sight,
-   * the UI offers more layout and styling capabilities to express the structure of the content. UI
-   * designer therefore might ignore the formal structural elements and style the headings depending
-   * on the layout.
-   *
-   * To overcome this problem, the component allows to _mimic_ a certain style for a semantic element.
-   *
-   * The following example renders visually as an h3, while the semantic element is an `h1`.
-   * ```html
-   * <oryx-heading as="h3">
-   *   <h1>Heading text</h1>
-   * </oryx-heading>
-   * ```
-   *
-   * The `as` attribute also supports to completely hide the heading, using the `hide` value.
-   *
-   * The `as` attribute can be used in combination with screen specific `as` attribute, to mimic or hide
-   * the heading on certain screens only.
+   * @deprecated use `typography` instead. The `hide` and `show` values are no longer supported
+   * going forward, elements can be hidden using the `HeadingTag.None` value.
    */
-  as?: HeadingTag | 'hide';
+  as?: HeadingTag | HeadingVisibility;
 
   /**
-   * Similar to the generic _as_ behavior you can mimic a certain style for large screen size.
-   *
-   * This can be used as an attribute (dash-case):
-   * ```html
-   * <oryx-heading as-lg="h3">
-   *   <h1>Heading text</h1>
-   * </oryx-heading>
-   * ```
+   * @deprecated use `lg` instead. The `hide` and `show` values are no longer supported
+   * going forward, elements can be hidden using the `HeadingTag.None` value.
    */
-  asLg?: HeadingTag | 'hide' | 'show';
+  asLg?: HeadingTag | HeadingVisibility;
 
   /**
-   * Similar to the generic _as_ behavior you can mimic a certain style for medium screen size.
-   *
-   * This can be used as an attribute (dash-case):
-   * ```html
-   * <oryx-heading as-md="h3">
-   *   <h1>Heading text</h1>
-   * </oryx-heading>
-   * ```
+   * @deprecated use `md` instead. The `hide` and `show` values are no longer supported
+   * going forward, elements can be hidden using the `HeadingTag.None` value.
    */
-  asMd?: HeadingTag | 'hide' | 'show';
+  asMd?: HeadingTag | HeadingVisibility;
 
   /**
-   * Similar to the generic _appearance_ behavior you can mimic a certain style for small screen size.
-   *
-   * This can be used as an attribute (dash-case):
-   * ```html
-   * <oryx-heading as-sm="h3">
-   *   <h1>Heading text</h1>
-   * </oryx-heading>
-   * ```
+   * @deprecated use `sm` instead. The `hide` and `show` values are no longer supported
+   * going forward, elements can be hidden using the `HeadingTag.None` value.
    */
-  asSm?: HeadingTag | 'hide' | 'show';
+  asSm?: HeadingTag | HeadingVisibility;
 }
 
 /**
@@ -88,4 +79,20 @@ export const enum HeadingTag {
   SubtitleSmall = 'subtitle-small',
   Small = 'small',
   Bold = 'bold',
+  Strong = 'strong',
+}
+
+export const enum HeadingVisibility {
+  /**
+   * Hides the heading.
+   */
+  None = 'none',
+  /**
+   * @deprecated use `HeadingTag.None` instead
+   */
+  Hide = 'hide',
+  /**
+   * @deprecated never used and no longer supported
+   */
+  Show = 'show',
 }

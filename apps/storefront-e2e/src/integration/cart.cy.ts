@@ -9,7 +9,7 @@ const checkoutPage = new CheckoutPage();
 let api: GlueAPI;
 
 const coupon = [
-  { code: '12345wu2ca', expiredDate: '11/30/2023' },
+  { code: '12345wu2ca', expiredDate: '11/30/2025' },
   { code: 'sprykerze4t', expiredDate: '12/31/2037' },
 ];
 

@@ -150,7 +150,10 @@ export class ProductCardComponent extends ProductMixin(
   protected renderTitle(): TemplateResult | void {
     if (this.$options().enableTitle) {
       return html`<oryx-product-title
-        .options="${{ tag: HeadingTag.Caption } as ProductTitleOptions}"
+        .options="${{
+          tag: HeadingTag.Caption,
+          maxLines: featureVersion >= '1.4' ? 2 : undefined,
+        } as ProductTitleOptions}"
       ></oryx-product-title>`;
     }
   }
