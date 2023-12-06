@@ -1,6 +1,6 @@
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { storybookPrefix } from '../../../../../../.constants';
 
 export default {
@@ -11,9 +11,7 @@ const Template: Story<unknown> = (): TemplateResult => {
   return html`
     <oryx-card type="secondary">
       <oryx-icon .type=${IconTypes.Rocket} slot="heading"></oryx-icon>
-      <oryx-heading slot="heading">
-        <h5>header</h5>
-      </oryx-heading>
+      <oryx-heading slot="heading" tag="h5">header</oryx-heading>
       <div>content slot</div>
       <div slot="footer">footer slot</div>
     </oryx-card>

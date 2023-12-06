@@ -1,10 +1,13 @@
-export const enum ContentFields {
-  Article = 'article',
-  Faq = 'faq',
-  Component = 'component',
+declare global {
+  interface ContentFields {
+    component: undefined;
+  }
 }
 
-export type ContentEntity = ContentFields | string;
+// Object is workaround for autocomplete. Typescript incorrect parse metadata when define union and strict type.
+// Opened issue https://github.com/Microsoft/TypeScript/issues/29729
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type ContentEntity = keyof ContentFields | (string & {});
 
 export interface ContentQualifier {
   type?: string;

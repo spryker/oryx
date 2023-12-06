@@ -1,4 +1,4 @@
-import { componentDef } from '@spryker-oryx/utilities';
+import { componentDef, featureVersion } from '@spryker-oryx/utilities';
 
 export const headingComponent = componentDef({
   name: 'oryx-heading',
@@ -6,7 +6,11 @@ export const headingComponent = componentDef({
   stylesheets: [
     {
       rules: () =>
-        import('./styles/screen.styles').then((m) => m.headlineScreenStyles),
+        featureVersion >= '1.4'
+          ? import('./heading.styles').then((m) => m.headingScreenStyles)
+          : import('./styles/screen.styles').then(
+              (m) => m.headlineScreenStyles
+            ),
     },
   ],
 });

@@ -220,6 +220,10 @@ const largeScreen = css`
   }
 `;
 
+/**
+ * @deprecated since 1.4, use headingScreenStyles instead. The name is changed, but more importantly
+ * the styles rules have been heavily refactored.
+ */
 export const headlineScreenStyles = screenCss({
   sm: smallScreen,
   md: mediumScreen,

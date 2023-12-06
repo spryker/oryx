@@ -183,9 +183,20 @@ describe('DefaultLinkService', () => {
       });
     });
 
-    describe('when the current route starts with the provided URL', () => {
+    describe('when the current route overlaps another URL', () => {
       beforeEach(() => {
         mockRouterService.currentRoute.mockReturnValue(of('/about-us'));
+        service.isCurrent('/about').subscribe(callback);
+      });
+
+      it('should resolve to false', () => {
+        expect(callback).toHaveBeenCalledWith(false);
+      });
+    });
+
+    describe('when the current route starts with the provided URL', () => {
+      beforeEach(() => {
+        mockRouterService.currentRoute.mockReturnValue(of('/about/us'));
         service.isCurrent('/about').subscribe(callback);
       });
 

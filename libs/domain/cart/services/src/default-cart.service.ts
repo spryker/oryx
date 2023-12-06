@@ -15,6 +15,8 @@ import {
   CartQuery,
   CartService,
   CartsUpdated,
+  Coupon,
+  CouponQualifier,
   UpdateCartEntryQualifier,
   UpdateCartQualifier,
 } from '@spryker-oryx/cart';
@@ -80,6 +82,13 @@ export class DefaultCartService implements CartService {
     ...this.cartCommandBase,
     action: (qualifier: AddCartEntryQualifier) => {
       return this.adapter.addEntry(qualifier);
+    },
+  });
+
+  protected addCouponCommand$ = createCommand({
+    ...this.cartCommandBase,
+    action: (qualifier: CouponQualifier) => {
+      return this.adapter.addCoupon(qualifier);
     },
   });
 
@@ -214,6 +223,10 @@ export class DefaultCartService implements CartService {
     return this.getCart(data).pipe(map((cart) => cart?.products ?? []));
   }
 
+  getCoupons(data?: CartQualifier): Observable<Coupon[]> {
+    return this.getCart(data).pipe(map((cart) => cart?.coupons ?? []));
+  }
+
   isEmpty(data?: CartQualifier): Observable<boolean> {
     return this.getEntries(data).pipe(map((entries) => !entries?.length));
   }
@@ -241,6 +254,10 @@ export class DefaultCartService implements CartService {
 
   addEntry(qualifier: AddCartEntryQualifier): Observable<unknown> {
     return this.executeWithOptionalCart(qualifier, this.addEntryCommand$);
+  }
+
+  addCoupon(qualifier: CouponQualifier): Observable<unknown> {
+    return this.executeWithOptionalCart(qualifier, this.addCouponCommand$);
   }
 
   deleteEntry(qualifier: CartEntryQualifier): Observable<unknown> {
