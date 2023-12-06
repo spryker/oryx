@@ -3,14 +3,14 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
-    display: grid;
     position: absolute;
-    width: var(--width);
-    height: calc(var(--height) + var(--indicator-area-height, 50px));
+    display: grid;
     grid-template-rows: 1fr var(--indicator-area-height, 50px);
     grid-template-columns: auto 1fr auto;
-    padding-inline: 8px;
     align-items: center;
+    padding-inline: 8px;
+    width: var(--width);
+    height: calc(var(--height) + var(--indicator-area-height, 50px));
   }
 
   :host([indicatorsAlignment='center']) {
@@ -25,7 +25,7 @@ const styles = css`
     justify-items: end;
   }
 
-  oryx-button:nth-child(2) {
+  oryx-button:nth-of-type(2) {
     grid-area: 1 / 3;
   }
 
