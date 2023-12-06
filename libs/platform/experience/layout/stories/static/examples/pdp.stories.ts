@@ -15,7 +15,11 @@ const Template: Story = (): TemplateResult => {
     <oryx-layout class="page">
       ${generateHeader()}
 
-      <oryx-layout layout="split-main">
+      <oryx-layout
+        .options=${{
+          rules: [{ layout: { type: 'split', columnWidthType: 'main' } }],
+        }}
+      >
         <oryx-layout layout="list">
           <oryx-layout
             layout="carousel"

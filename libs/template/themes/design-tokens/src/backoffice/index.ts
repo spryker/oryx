@@ -1,6 +1,10 @@
 import { DesignToken } from '@spryker-oryx/experience';
 import { Size } from '@spryker-oryx/utilities';
 import { color } from '../color.tokens';
+import { commonTokens, commonTokensSmall } from '../common-tokens';
+import { layoutSmTokens, layoutTokens } from '../layout.tokens';
+import { buttonTokens } from './button.token';
+import { layoutMdTokens } from './layout.tokens';
 import { tokens } from './other.tokens';
 import {
   typographyMediumAndLargerTokens,
@@ -8,14 +12,11 @@ import {
   typographyTokens,
 } from './typography.tokens';
 
-import { commonTokensSmall } from '../common-tokens';
-import { layoutMdTokens, layoutSmTokens, layoutTokens } from '../layout.tokens';
-import { buttonTokens } from './button.token';
-
 export const backofficeTokens: DesignToken[] = [
   ...buttonTokens,
   {
     color,
+    ...commonTokens,
     ...tokens,
     ...typographyTokens,
     ...layoutTokens,

@@ -34,4 +34,8 @@ export interface SearchFacetValueNavigationComponentAttributes {
    * Show the clear button at the facet's header
    */
   enableClear?: boolean;
+  /**
+   * Indicates that facet has dirty values in comparison with initial ones.
+   */
+  dirty?: boolean;
 }

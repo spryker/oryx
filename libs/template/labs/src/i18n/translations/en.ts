@@ -18,9 +18,14 @@ const cart = {
   'cart.entry.<quantity>-items': 'x {quantity}',
   'cart.entry.confirm-remove-<sku>': 'Do you want to remove "{sku}"?',
   'cart.confirm-removed': 'Item is successfully removed',
-  'login.welcome-please-log-in-to-start-picking':
-    'Welcome! Please log in to start picking.',
   'oauth.logging-you-in': 'Logging you in...',
+};
+
+const coupon = {
+  'coupon.have-a-coupon': 'Have a coupon?',
+  'coupon.insert': 'Please insert a coupon code',
+  'coupon.invalid': 'Coupon code can not be added',
+  'coupon.(valid-till-<date>)': '(valid till {date})',
 };
 
 const checkout = {
@@ -45,6 +50,16 @@ const picking = {
     'Of {count, plural, one {{count} item} other {{count} items}}',
   'picking.filter.<count>-open-pick-lists':
     '{count} Open Pick {count, plural, one {List} other {Lists}}',
+  'picking.select-your-location': 'Select your location to get started',
+  'picking.discard.pick-list': 'Discard pick list?',
+  'picking.discard.stop-picking': 'Stop picking and discard pick list?',
+  'picking.discard.warning': 'The pick list will be lost!',
+  'picking.processed.success': 'Great job!',
+  'picking.processed.all': 'All items are processed!',
+  'picking.location.loading': 'Loading locations',
+  'picking.location.unassigned': 'You are not assigned to any locations',
+  'picking.location.help': 'Please reach out to your manager',
+  'picking.location.select': 'Select your location',
 };
 
 const ui = {
@@ -60,12 +75,18 @@ const ui = {
     'At least {count, plural, one {{count} special character} other {{count} special characters}} (e.g. *$%)',
 };
 
+const search = {
+  'search.facet.rating.up': '& up',
+};
+
 export default {
   ...product,
   ...cart,
+  ...coupon,
   ...checkout,
   ...order,
   ...user,
   ...picking,
   ...ui,
+  ...search,
 };

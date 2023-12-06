@@ -1,6 +1,6 @@
 import { ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nMixin } from '@spryker-oryx/utilities';
+import { I18nMixin, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -23,12 +23,23 @@ export class CollapsibleComponent
 
   @query('details') protected details?: HTMLDetailsElement;
 
+  /**
+   * Indicates that the collapsible was opened by a user. We need this info since
+   * we need to scroll the collapsible into the view port whenever it is opened by
+   * the user. We do not like to do this when it's (initially) rendered `open`.
+   */
+  protected isManuallyOpened = false;
+
   protected override render(): TemplateResult {
     const nonTabbable =
       this.nonTabbable || this.appearance === CollapsibleAppearance.Inline;
 
     return html`
-      <details ?open=${this.open} @toggle=${this.onToggle}>
+      <details
+        ?open=${this.open}
+        @click=${this.onClick}
+        @toggle=${this.onToggle}
+      >
         <summary
           part="heading"
           tabindex=${ifDefined(nonTabbable ? -1 : undefined)}
@@ -44,6 +55,16 @@ export class CollapsibleComponent
 
   protected onToggle(): void {
     this.open = this.details?.open;
+    if (featureVersion >= '1.2') {
+      if (this.isManuallyOpened && this.open) {
+        this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      this.isManuallyOpened = false;
+    }
+  }
+
+  protected onClick(): void {
+    this.isManuallyOpened = true;
   }
 
   protected renderToggleControl(): TemplateResult {

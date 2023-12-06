@@ -5,4 +5,9 @@ export const siteBreadcrumbComponent = componentDef({
   impl: () =>
     import('./breadcrumb.component').then((m) => m.SiteBreadcrumbComponent),
   schema: import('./breadcrumb.schema').then((m) => m.siteBreadcrumbSchema),
+  stylesheets: [
+    {
+      rules: () => import('./breadcrumb.styles').then((m) => m.screenStyles),
+    },
+  ],
 });

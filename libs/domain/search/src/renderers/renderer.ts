@@ -1,5 +1,5 @@
 import { Facet } from '@spryker-oryx/product';
-import { SelectFacetEventDetail } from '@spryker-oryx/search/facet';
+import { SelectFacetEventDetail } from '@spryker-oryx/search';
 import { TemplateResult } from 'lit';
 
 export const FacetValueRenderer = 'oryx.FacetValueRenderer*';
@@ -7,6 +7,8 @@ export const FacetValueRenderer = 'oryx.FacetValueRenderer*';
 export enum FacetParams {
   Default = 'default',
   Color = 'color',
+  Price = 'price',
+  Rating = 'rating',
 }
 
 export interface FacetMappingOptions {

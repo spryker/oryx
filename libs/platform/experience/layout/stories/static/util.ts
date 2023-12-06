@@ -1,5 +1,5 @@
+import { LayoutTypes } from '@spryker-oryx/experience';
 import { html, TemplateResult } from 'lit';
-import { CompositionLayout } from '../../../src/models';
 
 export const generateLayoutItems = (
   length = 1,
@@ -19,7 +19,7 @@ export const generateLayoutItems = (
 };
 
 export const generateNestedLayout = (
-  layout: CompositionLayout
+  layout: LayoutTypes
 ): TemplateResult => html`
   <h1>Nested layout</h1>
 
@@ -65,7 +65,7 @@ export const generateNestedLayout = (
     <li>⚠️ The border breaks the flow of <i>nested</i> layouts.</li>
   </ul>
 
-  <oryx-layout layout=${layout} style="align-items: center">
+  <oryx-layout layout=${layout} style="--align: center">
     <div style="height: 300px">1 (height: 300px)</div>
     <oryx-layout
       layout="grid"
@@ -162,7 +162,7 @@ export const generateNestedLayout = (
 
     <oryx-layout layout=${layout}>
       <div>1</div>
-      <oryx-layout layout="flex">
+      <oryx-layout .options=${{ rules: [{ layout: { type: 'flex' } }] }}>
         ${generateLayoutItems(3, 1, 'N', true)}
       </oryx-layout>
       ${generateLayoutItems(10, 5)}
@@ -174,7 +174,9 @@ export const generateNestedLayout = (
     </ul>
     <oryx-layout layout=${layout}>
       <div>1</div>
-      <oryx-layout layout="flex" .options=${{ rules: [{ colSpan: 2 }] }}>
+      <oryx-layout  .options=${{
+        rules: [{ layout: { type: 'flex' }, colSpan: 2 }],
+      }}>
         <div style="background:var(--oryx-color-secondary-9);">
           N1 - lengthy content
         </div>

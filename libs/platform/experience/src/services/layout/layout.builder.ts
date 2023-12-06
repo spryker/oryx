@@ -1,3 +1,5 @@
+import { LayoutProperties } from '@spryker-oryx/experience/layout';
+import { Observable } from 'rxjs';
 import {
   Component,
   CompositionProperties,
@@ -6,6 +8,20 @@ import {
 } from '../../models';
 
 export const LayoutBuilder = 'oryx.LayoutBuilder';
+
+interface HostStylesParams {
+  activeHostOptions?: LayoutProperties;
+  screen?: string;
+}
+
+export interface StylesFromOptionsParams extends HostStylesParams {
+  rules?: StyleRuleSet[];
+  id?: string;
+}
+
+export interface CompositionStylesParams extends HostStylesParams {
+  composition: Component[];
+}
 
 export interface LayoutBuilder {
   /**
@@ -27,19 +43,33 @@ export interface LayoutBuilder {
    *
    * The concatenated styles can be used inside a `<style>` tag.
    */
-  collectStyles(components: Component[]): string;
-
-  createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string;
+  getCompositionStyles(data: CompositionStylesParams): Observable<string>;
+  getStylesFromOptions(params: StylesFromOptionsParams): Observable<string>;
+  getActiveLayoutRules(
+    rules?: StyleRuleSet[],
+    screen?: string
+  ): Observable<LayoutProperties>;
 
   /**
    * Generates an list of layout values that is driven by layout properties on the
    * composition.
+   *
+   * @deprecated since 1.2. Will be deleted.
    */
   getLayoutMarkers(data?: CompositionProperties): string | undefined;
-
+  /**
+   * @deprecated since 1.2. Will be deleted, use `getCompositionStyles` instead.
+   */
+  collectStyles(components: Component[]): string;
+  /**
+   * @deprecated since 1.2. Will be deleted, use `getStyles` instead.
+   */
+  createStylesFromOptions(rules?: StyleRuleSet[], id?: string): string;
   /**
    * Generates an inline style, driven by the style properties
    * from the data.
+   *
+   * @deprecated since 1.2. Will be deleted.
    */
   getLayoutStyles(data?: StyleProperties): string | undefined;
 }

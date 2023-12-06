@@ -1,8 +1,8 @@
 import { fixture } from '@open-wc/testing-helpers';
-import { QuantityInputComponent } from '@spryker-oryx/cart/quantity-input';
-import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking';
 import { mockPickingListData } from '@spryker-oryx/picking/mocks';
+import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking/services';
 import { ImageComponent } from '@spryker-oryx/ui/image';
+import { QuantityInputComponent } from '@spryker-oryx/ui/quantity-input';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { PickingProductCardComponent } from './product-card.component';
@@ -58,7 +58,7 @@ describe('PickingProductCardComponent', () => {
       expect(
         (
           element.shadowRoot?.querySelector(
-            'oryx-cart-quantity-input'
+            'oryx-quantity-input'
           ) as QuantityInputComponent
         ).max
       ).toBe(productItem.quantity);
@@ -66,7 +66,7 @@ describe('PickingProductCardComponent', () => {
       expect(
         (
           element.shadowRoot?.querySelector(
-            'oryx-cart-quantity-input'
+            'oryx-quantity-input'
           ) as QuantityInputComponent
         ).value
       ).toBe(productItem.numberOfPicked);
@@ -80,7 +80,7 @@ describe('PickingProductCardComponent', () => {
       describe('and when an update is dispatched with an invalid quantity', () => {
         beforeEach(() => {
           const input = element.shadowRoot?.querySelector(
-            'oryx-cart-quantity-input'
+            'oryx-quantity-input'
           );
           input?.dispatchEvent(
             new CustomEvent<unknown>('update', {
@@ -152,7 +152,7 @@ describe('PickingProductCardComponent', () => {
       });
 
       it('should not render form quantity input', () => {
-        expect(element).not.toContainElement('oryx-cart-quantity-input');
+        expect(element).not.toContainElement('oryx-quantity-input');
       });
     });
   });
@@ -170,7 +170,7 @@ describe('PickingProductCardComponent', () => {
     });
 
     it('should not render quantity input', () => {
-      expect(element).not.toContainElement('oryx-cart-quantity-input');
+      expect(element).not.toContainElement('oryx-quantity-input');
     });
 
     it('should render summary info', () => {
@@ -206,7 +206,7 @@ describe('PickingProductCardComponent', () => {
     });
 
     it('should not render quantity input', () => {
-      expect(element).not.toContainElement('oryx-cart-quantity-input');
+      expect(element).not.toContainElement('oryx-quantity-input');
     });
 
     it('should render summary info', () => {

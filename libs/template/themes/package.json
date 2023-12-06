@@ -1,6 +1,6 @@
 {
   "name": "@spryker-oryx/themes",
-  "version": "1.1.0",
+  "version": "1.3.1",
   "author": "Spryker Systems GmbH",
   "license": "See license in LICENSE",
   "description": "Themes for Oryx applications",
@@ -14,9 +14,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@spryker-oryx/experience": "1.1.0",
-    "@spryker-oryx/resources": "1.1.0",
-    "@spryker-oryx/ui": "1.1.0",
-    "@spryker-oryx/utilities": "1.1.0"
+    "@spryker-oryx/experience": "1.3.1",
+    "@spryker-oryx/resources": "1.3.1",
+    "@spryker-oryx/ui": "1.3.1",
+    "@spryker-oryx/utilities": "1.3.1"
   }
 }

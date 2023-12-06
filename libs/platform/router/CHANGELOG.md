@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2023-11-22)
+
+
+### Bug Fixes
+
+* trailing slash routes to 404 ([#923](https://github.com/spryker/oryx/issues/923)) ([fe84de8](https://github.com/spryker/oryx/commit/fe84de834740ae45448492f1345a3977f2d91e48))
+
+
+
+
+
 # 1.1.0 (2023-09-22)
 
 

@@ -1,3 +1,4 @@
+import { ssrAwaiter } from '@spryker-oryx/core/utilities';
 import { INJECTOR, inject } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { Observable, map, switchMap } from 'rxjs';
@@ -26,13 +27,14 @@ export class DefaultBreadcrumbService implements BreadcrumbService {
   get(): Observable<BreadcrumbItem[]> {
     return this.routerService.current().pipe(
       switchMap((route) => {
-        return this.injector
-          .inject<BreadcrumbResolver>(
-            this.getResolverKey(route.type),
-            this.injector.inject(this.getResolverKey())
-          )
-          .resolve()
-          .pipe(map((breadcrumb) => [this.homeBreadcrumb, ...breadcrumb]));
+        const resolver = this.injector.inject<BreadcrumbResolver>(
+          this.getResolverKey(route.type),
+          this.injector.inject(this.getResolverKey())
+        );
+
+        return ssrAwaiter(resolver.resolve()).pipe(
+          map((breadcrumb) => [this.homeBreadcrumb, ...breadcrumb])
+        );
       })
     );
   }

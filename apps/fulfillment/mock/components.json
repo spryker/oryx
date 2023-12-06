@@ -1,6 +1,0 @@
-{
-  "user-profile": {
-    "type": "Component",
-    "components": [{ "type": "oryx-picking-user-profile" }]
-  }
-}

@@ -16,8 +16,14 @@ const Template: Story = (): TemplateResult => {
       ${generateHeader()}
 
       <oryx-layout
-        layout="split-column"
-        .options=${{ rules: [{ top: 90, splitColumnFactor: 2 / 3 }] }}
+        .options=${{
+          rules: [
+            {
+              layout: { type: 'split', columnWidthType: 'main' },
+              top: 90,
+            },
+          ],
+        }}
       >
         <oryx-layout layout="list">
           ${generateLayoutItems(20, 1, 'Cart item')}

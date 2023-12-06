@@ -25,7 +25,7 @@ export class ProductDetailsPage extends AbstractSFPage {
   }
 
   waitForLoaded(): void {
-    this.getQuantityComponent().getInput().should('be.visible');
+    this.getQuantityComponent().getInput().should('exist');
     cy.wait('@productRequest');
   }
 
@@ -67,7 +67,7 @@ export class ProductDetailsPage extends AbstractSFPage {
   addItemsToTheCart = (numberOfItems = 1, isHydrated = false) => {
     if (numberOfItems === 1) {
       if (!isHydrated) {
-        cy.hydrateElemenet('/assets/cart-add-*.js', () => {
+        cy.hydrateElement('/assets/cart-add-*.js', () => {
           this.getAddToCartBtn().click();
         });
       }

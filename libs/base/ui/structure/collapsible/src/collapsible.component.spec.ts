@@ -12,14 +12,56 @@ describe('CollapsibleComponent', () => {
     await useComponent(collapsibleComponent);
   });
 
-  describe('When the open property is provided', () => {
-    beforeEach(async () => {
-      element = await fixture(html`<oryx-collapsible open></oryx-collapsible>`);
+  describe('when the version >= 1.2', () => {
+    beforeEach(() => {
+      mockFeatureVersion('1.2');
     });
 
-    it('should have an open attribute on the details element', () => {
-      const details = element.renderRoot?.querySelector('details');
-      expect(details?.hasAttribute('open')).toBe(true);
+    describe('when the open property is provided', () => {
+      beforeEach(async () => {
+        element = await fixture(
+          html`<oryx-collapsible open></oryx-collapsible>`
+        );
+        element.scrollIntoView = vi.fn();
+      });
+
+      it('should have an open attribute on the details element', () => {
+        expect(element).toContainElement('details[open]');
+      });
+
+      it('should not scroll the element into the view port', () => {
+        expect(element.scrollIntoView).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when the open property is not provided', () => {
+      beforeEach(async () => {
+        element = await fixture(html`<oryx-collapsible></oryx-collapsible>`);
+        element.scrollIntoView = vi.fn();
+      });
+
+      it('should not have an open attribute on the details element', () => {
+        expect(element).not.toContainElement('details[open]');
+      });
+
+      describe('and when the element is clicked', () => {
+        beforeEach(async () => {
+          const details = element.renderRoot.querySelector('details');
+          if (details) {
+            details.click();
+            details.open = true;
+            details.dispatchEvent(new Event('toggle'));
+          }
+        });
+
+        it('should have an open attribute on the details element', () => {
+          expect(element).toContainElement('details[open]');
+        });
+
+        it('should scroll the element into the view port', () => {
+          expect(element.scrollIntoView).toHaveBeenCalled();
+        });
+      });
     });
   });
 

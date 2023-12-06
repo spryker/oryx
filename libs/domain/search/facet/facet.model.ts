@@ -1,16 +1,4 @@
-import { Facet, FacetValue } from '@spryker-oryx/product';
-
 export const FACET_SELECT_EVENT = 'oryx.select';
-
-export interface SelectFacetEventDetail {
-  name: string;
-  value?: Pick<FacetValue, 'value' | 'selected'>;
-}
-
-export interface SingleMultiFacet extends Omit<Facet, 'values'> {
-  values: FacetValue[];
-  filteredValueLength?: number;
-}
 
 export interface SearchFacetComponentAttributes {
   /**
@@ -47,6 +35,15 @@ export interface SearchFacetComponentAttributes {
    * Show or hide clear action.
    *
    * @default false
+   */
+  disableClear?: boolean;
+
+  /**
+   * Show or hide clear action.
+   *
+   * @default true
+   *
+   * @deprecated Since version 1.2. Use disableClear instead.
    */
   enableClear?: boolean;
 }

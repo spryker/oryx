@@ -1,28 +1,31 @@
 import { resolve } from '@spryker-oryx/di';
 import {
-  ItemsFilters,
   PartialPicking,
-  PickingHeaderService,
-  PickingListItem,
+  PickingGuardService,
   PickingListMixin,
-  PickingListStatus,
   PickingTab,
   ProductItemPickedEvent,
 } from '@spryker-oryx/picking';
 import { PickingProductCardComponent } from '@spryker-oryx/picking/product-card';
+import {
+  ItemsFilters,
+  PickingListItem,
+  PickingListStatus,
+} from '@spryker-oryx/picking/services';
 import { RouterService } from '@spryker-oryx/router';
 import { ButtonColor, ButtonType } from '@spryker-oryx/ui/button';
 import { ChipComponent } from '@spryker-oryx/ui/chip';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { TabComponent } from '@spryker-oryx/ui/tab';
 import { TabsAppearance } from '@spryker-oryx/ui/tabs';
-import { I18nMixin, computed } from '@spryker-oryx/utilities';
+import { I18nMixin, computed, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { Ref, createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
-import { catchError, of, tap } from 'rxjs';
+import { catchError, of, take, tap } from 'rxjs';
 import { pickingComponentStyles } from './picker.styles';
 
 export class PickingPickerComponent extends I18nMixin(
@@ -31,7 +34,7 @@ export class PickingPickerComponent extends I18nMixin(
   static styles = pickingComponentStyles;
 
   protected routerService = resolve(RouterService);
-  protected pickingHeaderService = resolve(PickingHeaderService);
+  protected pickingGuardService = resolve(PickingGuardService);
 
   @state()
   protected partialPicking: PartialPicking | null = null;
@@ -159,15 +162,11 @@ export class PickingPickerComponent extends I18nMixin(
     this.pickingListService
       .finishPicking(this.$pickingList())
       .pipe(
+        take(1),
+        catchError(() => of(null)),
         tap(() => {
+          this.pickingGuardService.allow();
           this.routerService.navigate(`/`);
-          this.pickingHeaderService.discard();
-        }),
-        catchError(() => {
-          this.routerService.navigate(`/`);
-          this.pickingHeaderService.discard();
-
-          return of(null);
         })
       )
       .subscribe();
@@ -177,9 +176,6 @@ export class PickingPickerComponent extends I18nMixin(
     const tabs = this.buildTabs();
 
     return html`
-      <oryx-picking-picker-header
-        pickingListId="${this.pickingListId}"
-      ></oryx-picking-picker-header>
       <oryx-tabs
         appearance="${TabsAppearance.Secondary}"
         sticky
@@ -249,24 +245,44 @@ export class PickingPickerComponent extends I18nMixin(
     return html`
       <section>
         <oryx-image resource="picking-items-processed"></oryx-image>
-        <oryx-heading>
-          <h1>${this.i18n(`picking.great-job`)}!</h1>
-        </oryx-heading>
-        <span>${this.i18n(`picking.all-items-are-processed`)}!</span>
+        ${this.__renderFinishPickingHeading()}
+        <span>${this.i18n(`picking.processed.all`)}</span>
       </section>
       ${this.renderFinishButton()}
     `;
   }
 
+  // temporary implementation for backwards compatibility
+  private __renderFinishPickingHeading(): TemplateResult {
+    const text = this.i18n('picking.processed.success');
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading .tag=${HeadingTag.H1}> ${text} </oryx-heading>`;
+    } else {
+      return html` <oryx-heading>
+        <h1>${text}</h1>
+      </oryx-heading>`;
+    }
+  }
+
   protected renderNoItemsFallback(): TemplateResult {
     return html`
       <section>
-        <oryx-heading>
-          <h2>${this.i18n(`picking.no-items`)}!</h2>
-        </oryx-heading>
+        ${this.__renderNoItemsHeading()}
         <oryx-image resource="no-orders"></oryx-image>
       </section>
     `;
+  }
+
+  // temporary implementation for backwards compatibility
+  private __renderNoItemsHeading(): TemplateResult {
+    const text = this.i18n('picking.no-items');
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading .tag=${HeadingTag.H2}> ${text} </oryx-heading>`;
+    } else {
+      return html` <oryx-heading>
+        <h2>${text}</h2>
+      </oryx-heading>`;
+    }
   }
 
   protected renderFallback(): TemplateResult {

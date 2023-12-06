@@ -1,7 +1,8 @@
 import { isFirefox } from '@spryker-oryx/ui';
 import { ButtonColor, ButtonSize, ButtonType } from '@spryker-oryx/ui/button';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
-import { I18nMixin } from '@spryker-oryx/utilities';
+import { I18nMixin, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -157,17 +158,13 @@ export class ModalComponent
                 .type=${ButtonType.Icon}
                 .size=${ButtonSize.Md}
                 .color=${ButtonColor.Neutral}
-                .icon=${IconTypes.ArrowBack}
+                .icon=${IconTypes.ArrowBackward}
                 .label=${this.i18n('modal.back')}
               ></oryx-button>
             </slot>
           `
         )}
-        <slot name="heading">
-          <oryx-heading>
-            <h5>${this.heading}</h5>
-          </oryx-heading>
-        </slot>
+        <slot name="heading">${this.__renderHeading()}</slot>
 
         ${when(
           this.enableCloseButtonInHeader,
@@ -189,6 +186,17 @@ export class ModalComponent
         )}
       </header>
     `;
+  }
+
+  // temporary implementation for backwards compatibility
+  private __renderHeading(): TemplateResult {
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading .tag=${HeadingTag.H5}
+        >${this.heading}</oryx-heading
+      >`;
+    } else {
+      return html`<oryx-heading><h5>${this.heading}</h5></oryx-heading>`;
+    }
   }
 
   protected renderBody(): TemplateResult {
