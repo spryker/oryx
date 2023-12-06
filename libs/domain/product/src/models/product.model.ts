@@ -42,7 +42,7 @@ export interface Product {
   mediaSet?: ProductMediaSet[];
   labels?: ProductLabel[];
   availability?: ProductAvailability;
-  offers: ProductOffer[];
+  offers?: ProductOffer[];
   merchantId?: string;
 }
 

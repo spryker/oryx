@@ -1,9 +1,8 @@
 import { ContentComponentSchema } from '@spryker-oryx/experience';
-import { ProductSoldByComponent } from './sold-by.component';
+import { MerchantSoldByComponent } from './sold-by.component';
 
-export const productSoldBySchema: ContentComponentSchema<ProductSoldByComponent> =
+export const merchantSoldBySchema: ContentComponentSchema<MerchantSoldByComponent> =
   {
     name: 'Sold by',
     group: 'Product',
-    options: {},
   };

@@ -44,7 +44,7 @@ export const MerchantMixin = <
     );
 
     protected $merchant = computed(() => {
-      const id = this.merchant ?? this.$merchantContext();
+      const id = (this.merchant as string) ?? this.$merchantContext();
       return id
         ? this[MerchantMixinInternals].merchantService?.get({
             id,
@@ -53,7 +53,7 @@ export const MerchantMixin = <
     });
 
     protected $merchantMinimal = computed(() => {
-      const id = this.merchant ?? this.$merchantContext();
+      const id = (this.merchant as string) ?? this.$merchantContext();
       return id
         ? this[MerchantMixinInternals].merchantService?.get({
             id,

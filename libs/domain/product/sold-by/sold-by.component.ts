@@ -1,37 +1,39 @@
-import { resolve } from '@spryker-oryx/di';
-import { ContentMixin } from '@spryker-oryx/experience';
+import { ContentMixin, defaultOptions } from '@spryker-oryx/experience';
 import { RouteType } from '@spryker-oryx/router';
-import { LinkService } from '@spryker-oryx/site';
-import { computed } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { MerchantMixin } from '../src/merchant/mixins';
-import { merchantSoldByStyles } from './sold-by.styles';
+import { MerchantLinkOptions } from './sold-by.model';
 
-export class ProductSoldByComponent extends MerchantMixin(
-  ContentMixin(LitElement)
+@defaultOptions({ prefix: 'Sold by: ' })
+export class MerchantSoldByComponent extends MerchantMixin(
+  ContentMixin<MerchantLinkOptions>(LitElement)
 ) {
-  static styles = merchantSoldByStyles;
-
-  protected linkService = resolve(LinkService);
-
-  // we can consider switching to content link component instead
-  protected $link = computed(() =>
-    this.linkService.get({
-      type: RouteType.Merchant,
-      id: this.$merchantMinimal()?.id,
-    })
-  );
-
   protected override render(): TemplateResult | void {
     const merchant = this.$merchantMinimal();
 
     if (!merchant) return;
 
-    return html`
-      <span part="prefix">${this.i18n('merchant.sold-by')}</span>
-      <oryx-link
-        ><a href=${this.$link()}>${merchant.name}</a><oryx-link> </oryx-link
-      ></oryx-link>
-    `;
+    return html`${this.renderPrefix()}${this.renderLink()}`;
+  }
+
+  protected renderLink(): TemplateResult | void {
+    const merchant = this.$merchantMinimal();
+
+    if (!merchant) return;
+
+    const options = {
+      type: RouteType.Merchant,
+      id: merchant?.id,
+    };
+
+    return html`<oryx-content-link .options=${options}>
+      ${merchant.name}
+    </oryx-content-link>`;
+  }
+
+  protected renderPrefix(): TemplateResult | void {
+    const { prefix } = this.$options();
+    if (!prefix) return;
+    return html`<span part="prefix">${prefix}</span>`;
   }
 }
