@@ -36,20 +36,16 @@ export class CarouselNavigationComponent
   @property({ reflect: true }) indicatorsAlignment?: CarouselIndicatorAlignment;
   @property({ reflect: true }) scrollBehavior?: CarouselScrollBehavior;
 
-  protected mutationObserver?: MutationObserver;
-  protected resizeObserver?: ResizeObserver;
-  protected intersectionObserver?: IntersectionObserver;
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  protected throttledScrollListener: () => void = () => {};
-
-  protected intersectionThrottleTime = 75;
-  protected scrollThrottleTime = 50;
-  protected isIntersected = false;
-
   @state() protected items: HTMLElement[] = [];
   @state() protected slides: number[] = [];
-
   @queryAll('input') protected indicatorElements?: NodeListOf<HTMLInputElement>;
+
+  protected throttleTime = 50;
+  protected mutationObserver?: MutationObserver;
+  protected resizeObserver?: ResizeObserver;
+  protected isIntersected = false;
+  protected intersectionObserver?: IntersectionObserver;
+  protected scrollListener?: () => void;
 
   /**
    * @override Initialize the intersection observer. The intersection observer is
@@ -66,15 +62,9 @@ export class CarouselNavigationComponent
     this.mutationObserver?.disconnect();
     this.intersectionObserver?.disconnect();
     this.resizeObserver?.disconnect();
-    if (this.hostElement) {
-      this.hostElement.removeEventListener(
-        'scroll',
-        this.throttledScrollListener
-      );
-      this.hostElement.removeEventListener(
-        'scrollend',
-        this.throttledScrollListener
-      );
+    if (this.hostElement && this.scrollListener) {
+      this.hostElement.removeEventListener('scroll', this.scrollListener);
+      this.hostElement.removeEventListener('scrollend', this.scrollListener);
     }
     super.disconnectedCallback();
   }
@@ -96,7 +86,7 @@ export class CarouselNavigationComponent
             this.intersectionObserver!.disconnect();
           }
         });
-      }, this.intersectionThrottleTime),
+      }, this.throttleTime),
       { root: null, rootMargin: '0px', threshold: 1.0 }
     );
     this.intersectionObserver.observe(this.hostElement);
@@ -110,7 +100,7 @@ export class CarouselNavigationComponent
           this.initializeScrollListener();
           this.initializeResizeObserver();
         }
-      }, 50)
+      }, this.throttleTime)
     );
     const shadowRoot = this.getRootNode();
     if (shadowRoot instanceof ShadowRoot) {
@@ -131,25 +121,19 @@ export class CarouselNavigationComponent
       throttle((entries: ResizeObserverEntry[]) => {
         window.requestAnimationFrame((): void | undefined => {
           if (!Array.isArray(entries) || !entries.length) return;
-          setTimeout(
-            () => this.buildNavigation(),
-            this.intersectionThrottleTime
-          );
+          setTimeout(() => this.buildNavigation(), this.throttleTime);
         });
-      }, this.intersectionThrottleTime)
+      }, this.throttleTime)
     );
     this.resizeObserver.observe(this.hostElement);
   }
 
   protected initializeScrollListener(): void {
-    this.throttledScrollListener = throttle(() => {
+    this.scrollListener = throttle(() => {
       this.updateState();
-    }, this.scrollThrottleTime);
-    this.hostElement.addEventListener('scroll', this.throttledScrollListener);
-    this.hostElement.addEventListener(
-      'scrollend',
-      this.throttledScrollListener
-    );
+    }, this.throttleTime);
+    this.hostElement.addEventListener('scroll', this.scrollListener);
+    this.hostElement.addEventListener('scrollend', this.scrollListener);
   }
 
   protected buildNavigation(): void {
@@ -198,18 +182,20 @@ export class CarouselNavigationComponent
     if (!this.items.length || !this.showArrows) return;
 
     this.setScrollSnap();
+
+    const hostScroll = getScrollDimensions(this.hostElement, this.isVertical);
+    const hostDimensions = getDimensions(this.hostElement, this.isVertical);
+    const itemDimensions = getDimensions(this.items?.[0], this.isVertical);
+
     this.toggleAttribute(
       'has-previous',
-      getScrollDimensions(this.hostElement, this.isVertical).position >
-        getDimensions(this.items?.[0], this.isVertical).size
+      hostScroll.position > itemDimensions.size
     );
 
     this.toggleAttribute(
       'has-next',
-      getScrollDimensions(this.hostElement, this.isVertical).position +
-        this.hostElement.getBoundingClientRect().width <=
-        getScrollDimensions(this.hostElement, this.isVertical).size -
-          getDimensions(this.items?.[0], this.isVertical).size
+      hostScroll.position + hostDimensions.size <=
+        hostScroll.size - itemDimensions.size
     );
   }
 
