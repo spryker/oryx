@@ -1,5 +1,5 @@
 export interface ProductQualifier {
   sku?: string;
-  /** @deprecated since 1.3 */
+  /** @deprecated since 1.4 */
   include?: string[];
 }
