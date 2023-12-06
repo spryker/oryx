@@ -1,10 +1,10 @@
 import { provideIncludes } from '@spryker-oryx/core';
-import { ProductIncludes } from '@spryker-oryx/product';
+import { ProductResource } from '@spryker-oryx/product';
 import { ApiProductModel } from '../../../models';
-import { ProductListIncludes } from './product-list.adapter';
+import { ProductListResource } from './product-list.adapter';
 
 export const productListIncludes = provideIncludes(
-  ProductListIncludes,
+  ProductListResource,
   [ApiProductModel.Includes.ConcreteProducts],
-  ProductIncludes
+  ProductResource
 );

@@ -14,7 +14,7 @@ import {
 import { ProductListNormalizer } from '../../adapter';
 import {
   ProductListAdapter,
-  ProductListIncludes,
+  ProductListResource,
 } from './product-list.adapter';
 
 export class DefaultProductListAdapter implements ProductListAdapter {
@@ -64,7 +64,7 @@ export class DefaultProductListAdapter implements ProductListAdapter {
 
   get(qualifier: ProductListQualifier): Observable<ProductList> {
     if (featureVersion >= '1.4') {
-      return this.includes.get({ resource: ProductListIncludes }).pipe(
+      return this.includes.get({ resource: ProductListResource }).pipe(
         switchMap((includes) =>
           this.http.get<ApiProductModel.Response>(
             `${this.SCOS_BASE_URL}/${this.queryEndpoint}?${this.getKey(
