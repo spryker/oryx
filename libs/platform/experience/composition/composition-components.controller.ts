@@ -8,12 +8,10 @@ import {
   StyleRuleSet,
 } from '@spryker-oryx/experience';
 import { ObserveController, Size } from '@spryker-oryx/utilities';
-import { LitElement, ReactiveController } from 'lit';
+import { LitElement } from 'lit';
 import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
 
-export class CompositionComponentsController implements ReactiveController {
-  hostConnected?(): void;
-
+export class CompositionComponentsController {
   protected observe: ObserveController<LitElement & ContentComponentProperties>;
   protected tokenResolver = resolve(TokenResolver);
   protected experienceService = resolve(ExperienceService);
@@ -28,11 +26,11 @@ export class CompositionComponentsController implements ReactiveController {
       this.components(),
       this.screenService.getScreenSize(),
     ]).pipe(
-      switchMap(([components, breakpoint]) =>
-        components
+      switchMap(([components, breakpoint]) => {
+        return components
           ? this.filterHiddenComponents(components, breakpoint)
-          : of([])
-      )
+          : of([]);
+      })
     );
   }
 
@@ -46,17 +44,55 @@ export class CompositionComponentsController implements ReactiveController {
   }
 
   protected components(): Observable<Component[] | null> {
-    return this.observe
-      .get('uid')
-      .pipe(
-        switchMap((uid) =>
-          uid
-            ? this.experienceService
-                .getComponent({ uid })
-                .pipe(map((component) => component.components ?? null))
-            : of(null)
-        )
-      );
+    return this.observe.get('uid').pipe(
+      switchMap((uid) =>
+        uid
+          ? this.experienceService.getComponent({ uid }).pipe(
+              switchMap((component) => {
+                const components = component?.components;
+
+                if (!components) {
+                  return of(null);
+                }
+
+                const stack: Record<string, boolean> = {};
+
+                const refs = components.reduce((acc, component) => {
+                  const { ref } = component;
+
+                  if (ref && !stack[ref]) {
+                    acc.push(
+                      this.experienceService
+                        .getComponent({
+                          uid: ref,
+                        })
+                        .pipe(map((value) => ({ [ref]: value })))
+                    );
+                    stack[ref] = true;
+                  }
+
+                  return acc;
+                }, [] as Observable<Record<string, Component>>[]);
+
+                return !refs.length
+                  ? of(components)
+                  : combineLatest(refs).pipe(
+                      map((refs) => {
+                        const stack = refs.reduce(
+                          (acc, value) => ({ ...acc, ...value }),
+                          {}
+                        );
+
+                        return components.map((component) =>
+                          component.ref ? stack[component.ref] : component
+                        );
+                      })
+                    );
+              })
+            )
+          : of(null)
+      )
+    );
   }
 
   protected filterHiddenComponents(

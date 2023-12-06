@@ -46,8 +46,8 @@ export class DefaultExperienceDataService implements ExperienceDataService {
 
   protected initialize(): void {
     const copy: ExperienceComponent[] = JSON.parse(
-      JSON.stringify(this.experienceData)
-    ).flat();
+      JSON.stringify(this.experienceData.flat())
+    );
 
     // Divide strategies and templates
     for (const record of copy) {
@@ -64,17 +64,17 @@ export class DefaultExperienceDataService implements ExperienceDataService {
     const records = [...this.strategies, ...Object.values(this.records)];
 
     // Adds references to the components
-    for (const record of records) {
-      if (record.ref && this.records[record.ref]) {
-        if (record.id) continue;
+    // for (const record of records) {
+    //   if (record.ref && this.records[record.ref]) {
+    //     if (record.id) continue;
 
-        Object.assign(
-          record,
-          JSON.parse(JSON.stringify(this.records[record.ref]))
-        );
-      }
-      records.push(...(record.components ?? []));
-    }
+    //     Object.assign(
+    //       record,
+    //       JSON.parse(JSON.stringify(this.records[record.ref]))
+    //     );
+    //   }
+    //   records.push(...(record.components ?? []));
+    // }
 
     this.processMerging();
   }

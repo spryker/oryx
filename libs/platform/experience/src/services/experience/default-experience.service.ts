@@ -104,14 +104,22 @@ export class DefaultExperienceService implements ExperienceService {
   }
 
   protected reloadComponent(uid: string): void {
+    /**
+     * @deprecated Since version 1.4. Use provided `ExperienceAdapter.get` method.
+     */
     const componentsUrl = `${
       this.contentBackendUrl
     }/components/${encodeURIComponent(uid)}`;
 
-    this.http
-      .get<Component>(componentsUrl)
+    const adapter = this.experienceAdapter
+      ? this.experienceAdapter
+          .get({ id: uid })
+          .pipe(map((result) => result ?? ({} as Component)))
+      : this.http.get<Component>(componentsUrl);
+
+    adapter
       .pipe(
-        tap((component) => {
+        tap((component: Component) => {
           this.dataComponent[uid].next(component);
           this.experienceDataService.registerComponent(component, (c) =>
             this.processData(c)
