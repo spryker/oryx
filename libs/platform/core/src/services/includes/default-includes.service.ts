@@ -8,9 +8,16 @@ import {
 import { includesTokenFactory } from './provide-includes';
 
 export class DefaultIncludesService implements IncludesService {
+  protected cache = new Map<string, string>();
+
   constructor(protected injector = inject(INJECTOR)) {}
 
   get(qualifier: IncludesQualifier): Observable<string> {
+    const cacheKey = this.createCacheKey(qualifier);
+    if (this.cache.has(cacheKey)) {
+      return of(this.cache.get(cacheKey)!);
+    }
+
     const config: IncludeDefinition[] = [
       ...this.injector.inject(includesTokenFactory(qualifier.resource), []),
       ...(qualifier.includes ?? []),
@@ -18,22 +25,21 @@ export class DefaultIncludesService implements IncludesService {
 
     if (!config.length) return of('');
 
-    const includes = new Set<string>();
+    const includesSet = new Set<string>();
     const fieldsMap: Record<string, Set<string>> = {};
 
     for (const include of config) {
       if (typeof include === 'string') {
-        includes.add(include);
+        includesSet.add(include);
       } else if (include.include) {
-        includes.add(include.include);
+        includesSet.add(include.include);
 
         if (!fieldsMap[include.include]) {
           fieldsMap[include.include] = new Set<string>(include.fields);
         } else {
-          fieldsMap[include.include] = new Set<string>([
-            ...fieldsMap[include.include],
-            ...include.fields,
-          ]);
+          fieldsMap[include.include].forEach((field) =>
+            fieldsMap[include.include].add(field)
+          );
         }
       }
     }
@@ -43,9 +49,14 @@ export class DefaultIncludesService implements IncludesService {
     );
 
     const result =
-      `include=${Array.from(includes).join(',')}` +
+      `include=${Array.from(includesSet).join(',')}` +
       (fields.length ? `${fields.join()}` : '');
 
+    this.cache.set(cacheKey, result);
     return of(result);
+  }
+
+  protected createCacheKey(qualifier: IncludesQualifier): string {
+    return `${qualifier.resource}:${(qualifier.includes ?? []).join(',')}`;
   }
 }

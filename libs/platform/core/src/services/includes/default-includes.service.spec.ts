@@ -20,6 +20,10 @@ describe('DefaultIncludesService', () => {
           'test3Include',
         ]),
         ...provideIncludes('testReuseResource', ['newInclude'], 'testResource'),
+        ...provideIncludes('testFieldResource', [
+          'normalInclude',
+          { include: 'fieldInclude', fields: ['field1', 'field2'] },
+        ]),
       ],
     });
 
@@ -66,14 +70,28 @@ describe('DefaultIncludesService', () => {
       expect(result).toEqual('');
     });
 
-    it('should include additional includes specified in the qualifier', async () => {
-      const resource = 'testResource';
-      const additionalIncludes = ['extraInclude1', 'extraInclude2'];
-      const expectedResult = 'include=testInclude,extraInclude1,extraInclude2';
+    it('should include additional includes specified in the qualifier and handle duplicates', async () => {
+      const resource = 'testMultipleResource';
+      const additionalIncludes = [
+        'extraInclude1',
+        'extraInclude2',
+        'test3Include',
+      ];
+      const expectedResult =
+        'include=test2Include,test3Include,extraInclude1,extraInclude2';
 
       const result = await firstValueFrom(
         service.get({ resource, includes: additionalIncludes })
       );
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should handle includes with fields correctly', async () => {
+      const resource = 'testFieldResource';
+      const expectedResult =
+        'include=normalInclude,fieldInclude&fields[fieldInclude]=field1,field2';
+
+      const result = await firstValueFrom(service.get({ resource }));
       expect(result).toEqual(expectedResult);
     });
   });
