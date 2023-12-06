@@ -2,13 +2,11 @@ import { css } from 'lit';
 
 export const carouselNavigationStyles = css`
   :host {
-    display: contents;
+    display: grid;
     pointer-events: all;
-    display: block;
     position: absolute;
     width: var(--width);
     height: calc(var(--height) + var(--indicator-area-height, 50px));
-    display: grid;
   }
 
   .indicators,
