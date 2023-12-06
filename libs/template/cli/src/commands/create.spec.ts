@@ -220,7 +220,7 @@ describe('CreateCliCommand', () => {
       vi.spyOn(fs, 'existsSync').mockImplementation((path: PathLike) => {
         if (
           path === '/mock-cwd/mock-name' ||
-          path === '/mock-root/../../repo/latest' ||
+          path === '/mock-root/../../template/latest' ||
           path === '/mock-root/../../template-latest.zip'
         ) {
           return false;
@@ -238,7 +238,7 @@ describe('CreateCliCommand', () => {
         expect.stringContaining('Installing application...')
       );
       expect(nodeUtilService.downloadFile).toHaveBeenCalledWith(
-        'https://github.com/spryker/composable-frontend/archive/refs/heads/master.zip',
+        'https://github.com/spryker/oryx-starter/archive/refs/heads/master.zip',
         '/mock-root/../../template-latest.zip'
       );
       expect(spinnerMock.stop).toHaveBeenCalledWith(
@@ -250,75 +250,10 @@ describe('CreateCliCommand', () => {
       );
       expect(nodeUtilService.extractZip).toHaveBeenCalledWith(
         '/mock-root/../../template-latest.zip',
-        '/mock-root/../../repo/latest'
+        '/mock-root/../../template/latest'
       );
       expect(spinnerMock.stop).toHaveBeenCalledWith(
         expect.stringContaining('Application installed')
-      );
-    });
-
-    it('should skip downloading latest template if already downloaded', async () => {
-      vi.spyOn(fs, 'existsSync').mockImplementation((path: PathLike) => {
-        if (
-          path === '/mock-cwd/mock-name' ||
-          path === '/mock-root/../../repo/latest'
-        ) {
-          return false;
-        }
-        return true;
-      });
-
-      const { command, nodeUtilService, spinnerMock } = setup();
-
-      await expect(
-        command.createApp({ name: 'mock-name' })
-      ).resolves.toBeUndefined();
-
-      expect(spinnerMock.start).not.toHaveBeenCalledWith(
-        expect.stringContaining('Downloading latest template')
-      );
-      expect(nodeUtilService.downloadFile).not.toHaveBeenCalled();
-      expect(spinnerMock.stop).not.toHaveBeenCalledWith(
-        expect.stringContaining('Template downloaded')
-      );
-
-      expect(spinnerMock.start).toHaveBeenCalledWith(
-        expect.stringContaining('Installing application...')
-      );
-      expect(nodeUtilService.extractZip).toHaveBeenCalled();
-      expect(spinnerMock.stop).toHaveBeenCalledWith(
-        expect.stringContaining('Application installed')
-      );
-    });
-
-    it('should skip downloading and extracting latest template if already extracted', async () => {
-      vi.spyOn(fs, 'existsSync').mockImplementation((path: PathLike) => {
-        if (path === '/mock-cwd/mock-name') {
-          return false;
-        }
-        return true;
-      });
-
-      const { command, nodeUtilService, spinnerMock } = setup();
-
-      await expect(
-        command.createApp({ name: 'mock-name' })
-      ).resolves.toBeUndefined();
-
-      expect(spinnerMock.start).not.toHaveBeenCalledWith(
-        expect.stringContaining('Downloading latest template')
-      );
-      expect(nodeUtilService.downloadFile).not.toHaveBeenCalled();
-      expect(spinnerMock.stop).not.toHaveBeenCalledWith(
-        expect.stringContaining('Template downloaded')
-      );
-
-      expect(spinnerMock.start).not.toHaveBeenCalledWith(
-        expect.stringContaining('"Installing application...')
-      );
-      expect(nodeUtilService.extractZip).not.toHaveBeenCalled();
-      expect(spinnerMock.stop).not.toHaveBeenCalledWith(
-        expect.stringContaining('Template extracted')
       );
     });
 
@@ -333,7 +268,7 @@ describe('CreateCliCommand', () => {
         expect.stringContaining('Installing dependencies...')
       );
       expect(nodeUtilService.copyFolder).toHaveBeenCalledWith(
-        '/mock-root/../../repo/latest/composable-frontend-master',
+        '/mock-root/../../template/latest/oryx-starter-master',
         '/mock-cwd/mock-name'
       );
       expect(spinnerMock.stop).toHaveBeenLastCalledWith(

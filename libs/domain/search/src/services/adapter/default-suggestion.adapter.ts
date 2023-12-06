@@ -1,7 +1,12 @@
-import { HttpService, JsonAPITransformerService } from '@spryker-oryx/core';
+import {
+  HttpService,
+  JsonApiIncludeService,
+  JsonAPITransformerService,
+} from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
-import { ApiProductModel } from '@spryker-oryx/product';
-import { Observable, of } from 'rxjs';
+import { ApiProductModel, ProductListResource } from '@spryker-oryx/product';
+import { featureVersion } from '@spryker-oryx/utilities';
+import { Observable, of, switchMap } from 'rxjs';
 import {
   ApiSuggestionModel,
   Suggestion,
@@ -16,7 +21,8 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
   constructor(
     protected http = inject(HttpService),
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
-    protected transformer = inject(JsonAPITransformerService)
+    protected transformer = inject(JsonAPITransformerService),
+    protected includeService = inject(JsonApiIncludeService)
   ) {}
 
   /**
@@ -37,8 +43,21 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
         ].includes(entity as SuggestionField)
       )
     ) {
-      const include =
-        entities?.includes(SuggestionField.Products) || !entities?.length
+      if (featureVersion >= '1.4') {
+        const includes$ = entities?.includes(SuggestionField.Products)
+          ? this.includeService.get({ resource: ProductListResource })
+          : of('');
+
+        return includes$.pipe(
+          switchMap((includes) =>
+            this.http.get(
+              `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&${includes}`
+            )
+          ),
+          this.transformer.do(SuggestionNormalizer)
+        );
+      } else {
+        const include = entities?.includes(SuggestionField.Products)
           ? [
               ApiProductModel.Includes.AbstractProducts,
               ApiProductModel.Includes.CategoryNodes,
@@ -54,11 +73,12 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
             ].join(',')
           : '';
 
-      return this.http
-        .get<ApiSuggestionModel.Response>(
-          `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&include=${include}`
-        )
-        .pipe(this.transformer.do(SuggestionNormalizer));
+        return this.http
+          .get<ApiSuggestionModel.Response>(
+            `${this.SCOS_BASE_URL}/${this.queryEndpoint}?q=${query}&include=${include}`
+          )
+          .pipe(this.transformer.do(SuggestionNormalizer));
+      }
     }
 
     return of({});

@@ -3,8 +3,14 @@ import { AbstractSFPage } from './abstract.page';
 export class LandingPage extends AbstractSFPage {
   url = '/';
 
+  beforeVisit(): void {
+    cy.intercept(`/catalog-search?*`).as('searchQuery');
+  }
+
   waitForLoaded(): void {
-    // no need to wait for anything (previously we waited for youtube video)
+    cy.wait('@searchQuery');
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(250);
   }
 
   getHeroBanner = () => cy.get('oryx-content-image');

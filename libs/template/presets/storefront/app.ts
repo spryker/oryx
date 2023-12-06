@@ -1,4 +1,7 @@
-import { applicationFeature } from '@spryker-oryx/application';
+import {
+  ThemeMetaInitializer,
+  applicationFeature,
+} from '@spryker-oryx/application';
 import { SapiAuthComponentsFeature, SapiAuthFeature } from '@spryker-oryx/auth';
 import { cartFeature } from '@spryker-oryx/cart';
 import { checkoutFeature } from '@spryker-oryx/checkout';
@@ -25,9 +28,11 @@ import { searchFeature, searchPreviewProviders } from '@spryker-oryx/search';
 import { siteFeature } from '@spryker-oryx/site';
 import { uiFeature } from '@spryker-oryx/ui';
 import { userFeature } from '@spryker-oryx/user';
+import { featureVersion } from '@spryker-oryx/utilities';
 import { isServer } from 'lit';
 import 'urlpattern-polyfill';
 import { StaticExperienceFeature } from './experience';
+import { StorefrontMetaInitializer } from './meta.initializer';
 
 const isPreview = new URLSearchParams(
   new URL(globalThis.location?.href).search
@@ -60,6 +65,16 @@ export const storefrontFeatures: AppFeature[] = [
   userFeature,
   isServer ? { providers: coreServerProviders } : {},
   isPreview ? { providers: searchPreviewProviders } : {},
+  featureVersion >= '1.3'
+    ? {
+        providers: [
+          {
+            provide: ThemeMetaInitializer,
+            useClass: StorefrontMetaInitializer,
+          },
+        ],
+      }
+    : [],
   {
     resources: storefrontResources,
   },

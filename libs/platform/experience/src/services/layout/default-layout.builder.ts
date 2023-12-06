@@ -84,7 +84,10 @@ export class DefaultLayoutBuilder implements LayoutBuilder {
               )
             )
           ),
-          reduce((acc, curr) => `${acc}${curr}`, '')
+          reduce(
+            (acc, curr) => (acc.includes(curr) ? acc : `${acc}${curr}`),
+            ''
+          )
         )
       )
     );

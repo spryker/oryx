@@ -17,8 +17,8 @@ import {
 import { LitElement, TemplateResult, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { when } from 'lit/directives/when.js';
-import { Observable, ReplaySubject, of, switchMap } from 'rxjs';
-import { LayoutController } from '../controllers/layout.controller';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { LayoutController, LayoutControllerRender } from '../controllers';
 import {
   CompositionLayout,
   CompositionProperties,
@@ -35,7 +35,6 @@ import {
 import { ContentMixin } from './content.mixin';
 
 interface LayoutMixinRender {
-  element?: LitElement;
   inlineStyles?: string;
   template: TemplateResult;
 }
@@ -77,7 +76,9 @@ export declare class LayoutMixinInterface {
     layoutService: LayoutService;
     screenService: ScreenService;
   };
-  protected attributeFilter: string[];
+  protected getLayoutPluginsRender(
+    data: LayoutControllerRender
+  ): Observable<LayoutPluginRender>;
   protected $screen: ConnectableSignal<Size>;
 }
 
@@ -95,7 +96,6 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
   class LayoutMixinClass extends ContentMixin<LayoutContentOptions>(
     superClass
   ) {
-    @signalProperty() attributeFilter: (keyof LayoutProperties)[] = [];
     @signalProperty() layout?: CompositionLayout | LayoutTypes;
     @signalProperty({ type: Object, reflect: true, attribute: 'layout-xs' })
     layoutXs?: LayoutProperties;
@@ -138,6 +138,11 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
       this.observe();
     });
 
+    layoutAttributes$ = new BehaviorSubject<(keyof LayoutProperties)[]>([]);
+    attributeFilter = computed(() => this.layoutAttributes$, {
+      equal: (a, b) => JSON.stringify(a) === JSON.stringify(b),
+    });
+
     protected observe(layoutSpecificAttrs = []): void {
       const exception = [
         'layout-xs',
@@ -156,7 +161,7 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         layoutSpecificAttrs
       ) as (keyof LayoutProperties)[];
 
-      this.attributeFilter = attributeFilter;
+      this.layoutAttributes$.next(attributeFilter);
       this.observer.observe(this, {
         attributes: true,
         attributeFilter,
@@ -166,7 +171,8 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
     protected layoutStyles = computed(() =>
       this[LayoutMixinInternals].layoutController.getStyles(
         featureVersion >= '1.2'
-          ? this.attributeFilter
+          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.attributeFilter()!
           : ['layout', ...layoutKeys],
         this.$options().rules,
         this.$screen()
@@ -179,44 +185,35 @@ export const LayoutMixin = <T extends Type<LitElement & LayoutAttributes>>(
         of(undefined)
     );
 
-    protected element$ = new ReplaySubject<LitElement>(1);
-
-    protected getElementLayoutRender(
-      place: keyof LayoutPluginRender
-    ): Observable<TemplateResult> {
-      return this.element$.pipe(
-        switchMap((element) =>
-          this[LayoutMixinInternals].layoutController.getRender({
-            place,
-            data: {
-              element,
-              options: this.$options() as CompositionProperties,
-            },
-            attrs: this.attributeFilter,
-            screen: this.$screen(),
-          })
-        )
-      );
+    protected getLayoutPluginsRender(
+      data?: LayoutControllerRender
+    ): Observable<LayoutPluginRender> {
+      return this[LayoutMixinInternals].layoutController.getRender({
+        data: {
+          ...data,
+          options: this.$options() as CompositionProperties,
+        },
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        attrs: this.attributeFilter()!,
+        screen: this.$screen(),
+      });
     }
 
-    protected $preLayoutRenderElement = computed(() =>
-      this.getElementLayoutRender('pre')
-    );
-    protected $postLayoutRenderElement = computed(() =>
-      this.getElementLayoutRender('post')
+    protected $layoutRenderElement = computed(() =>
+      this.getLayoutPluginsRender()
     );
 
     protected renderLayout(props: LayoutMixinRender): TemplateResult {
-      const { inlineStyles = '', element, template } = props;
+      const { inlineStyles = '', template } = props;
 
-      this.element$.next(element ?? this);
       const layoutStyles = this.layoutStyles() ?? '';
       const styles = inlineStyles + layoutStyles;
+      const layoutTemplate = this.$layoutRenderElement();
 
       return html`
-        ${this.$preLayoutRenderElement()} ${template}
+        ${layoutTemplate?.pre} ${template}
         ${when(styles, () => unsafeHTML(`<style>${styles}</style>`))}
-        ${this.$postLayoutRenderElement()}
+        ${layoutTemplate?.post}
       `;
     }
 

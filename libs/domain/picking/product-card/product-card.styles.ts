@@ -42,8 +42,8 @@ export const pickingProductCardComponentStyles = css`
     opacity: 0.4;
   }
 
-  oryx-cart-quantity-input {
-    --oryx-cart-quantity-input-width: 102px;
+  oryx-quantity-input {
+    --oryx-quantity-input-width: 102px;
   }
 
   .summary-info {

@@ -1,12 +1,18 @@
 import { AppInitializer, PageMetaService } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
+import { featureVersion } from '@spryker-oryx/utilities';
 
 export const ThemeMetaInitializer = `${AppInitializer}ThemeMeta`;
 
+/**
+ * @deprecated meta tags are now added by the StorefrontMetaInitializer, provided in the
+ * presets package.
+ */
 export class DefaultThemeMetaInitializer implements AppInitializer {
   constructor(protected metaService = inject(PageMetaService, null)) {}
 
   initialize(): void {
+    if (featureVersion >= '1.3') return;
     this.metaService?.add([
       {
         name: 'link',

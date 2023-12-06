@@ -1,55 +1,56 @@
-import { createQuery, injectQuery } from '@spryker-oryx/core';
-import { inject } from '@spryker-oryx/di';
-import { LocaleChanged } from '@spryker-oryx/i18n';
-import { BehaviorSubject, Observable, map, of, switchMap } from 'rxjs';
-import { CategoryQualifier, ProductCategory } from '../../models';
-import { ProductCategoryAdapter } from './adapter/product-category.adapter';
+import { injectQuery } from '@spryker-oryx/core';
+import { Observable, map, of, switchMap } from 'rxjs';
+import { ProductCategory, ProductCategoryQualifier } from '../../models';
 import { ProductCategoryService } from './category.service';
-import { CategoryQuery } from './state';
+import { CategoryListQuery, CategoryQuery } from './state';
 
 export class DefaultProductCategoryService implements ProductCategoryService {
-  constructor(
-    protected categoryQuery$ = injectQuery<ProductCategory, CategoryQualifier>(
-      CategoryQuery
-    ),
-    protected adapter = inject(ProductCategoryAdapter)
-  ) {}
+  protected categoryQuery = injectQuery<
+    ProductCategory,
+    ProductCategoryQualifier
+  >(CategoryQuery);
 
-  protected categories = new Map<string, BehaviorSubject<ProductCategory>>();
+  protected listQuery$ = injectQuery<
+    ProductCategory[],
+    ProductCategoryQualifier
+  >(CategoryListQuery);
 
-  protected treeQuery$ = createQuery({
-    loader: () => this.adapter.getTree(),
-    onLoad: [
-      ({ data: categories }) => {
-        categories?.forEach((category) => {
-          this.categoryQuery$.set({
-            data: category,
-            qualifier: { id: category.id },
-          });
-        });
-      },
-    ],
-    refreshOn: [LocaleChanged],
-  });
+  /**
+   * @deprecated since 1.4 use listQuery$ instead
+   */
+  protected treeQuery$ = this.listQuery$;
 
-  get(id: string): Observable<ProductCategory> {
-    return this.categoryQuery$.get({ id }) as Observable<ProductCategory>;
+  get(
+    qualifier: ProductCategoryQualifier | string
+  ): Observable<ProductCategory> {
+    if (typeof qualifier === 'string') return this.get({ id: qualifier });
+    return this.categoryQuery.get(qualifier) as Observable<ProductCategory>;
   }
 
-  getTree(): Observable<ProductCategory[]> {
-    return this.treeQuery$.get() as Observable<ProductCategory[]>;
+  getList(
+    qualifier?: ProductCategoryQualifier
+  ): Observable<ProductCategory[] | undefined> {
+    return this.listQuery$.get(qualifier);
   }
 
-  getTrail(categoryId: string): Observable<ProductCategory[]> {
-    return this.get(categoryId).pipe(
+  getTrail(
+    qualifier: ProductCategoryQualifier | string
+  ): Observable<ProductCategory[]> {
+    if (typeof qualifier === 'string') return this.getTrail({ id: qualifier });
+
+    return this.get(qualifier).pipe(
       switchMap((category) =>
         category.parent
-          ? this.getTrail(category.parent).pipe(
+          ? this.getTrail({ ...qualifier, id: category.parent }).pipe(
               map((trail) => [...trail, category])
             )
           : of([category])
       ),
       map((trail) => trail.sort((a, b) => (a.id === b.parent ? -1 : 1)))
     );
+  }
+
+  getTree(): Observable<ProductCategory[]> {
+    return this.treeQuery$.get() as Observable<ProductCategory[]>;
   }
 }

@@ -7,11 +7,17 @@ const image = (graphic: string) => ({
   content: { data: { graphic, alt: graphic } },
 });
 
-const heading = (text: string, rule = {}) => ({
+const heading = (content: string, rule = {}) => ({
   type: 'oryx-content-text',
-  content: { data: { text: `<b>${text}</b>` } },
+  content: { data: { text: text(content) } },
   options: { rules: [rule] },
 });
+
+const text = (text: string): string => {
+  return featureVersion >= '1.4'
+    ? `<strong>${text}</strong>`
+    : `<b>${text}</b>`;
+};
 
 const link = (text: string, url = '/', icon?: string) => ({
   type: 'oryx-content-link',
@@ -44,8 +50,9 @@ const legalLinks: ExperienceComponent = {
                 divider: true,
               }
             : 'flex',
-        gap: '0 20px',
-        padding: '20px 0 0',
+        ...(featureVersion >= '1.4'
+          ? { gap: '40px 20px' }
+          : { gap: '0 20px', padding: '20px 0 0' }),
         ...(featureVersion >= '1.2' ? {} : { divider: true }),
       },
     ],
@@ -57,7 +64,7 @@ const customerSupport = {
   id: 'customer-support',
   content: {
     data: {
-      text: `<b>Customer Support</b><br/>
+      text: `${text('Customer Support')}<br/>
         <a href="/contact">Contact us</a><br/>
         <a href="/">Help center</a><br/>
         <a href="/">Payment</a><br/>
@@ -85,7 +92,7 @@ const aboutUs = {
   id: 'corporate-info',
   content: {
     data: {
-      text: `<b>About us</b><br/>
+      text: `${text('About us')}<br/>
         <a href="/">Company</a><br/>
         <a href="/">Jobs & Career</a><br/>
         <a href="/">Our stores</a><br/>
@@ -240,9 +247,8 @@ const siteLinks: ExperienceComponent = {
 };
 
 export const FooterTemplate: ExperienceComponent = {
+  type: 'oryx-composition',
   id: 'footer',
-  type: 'Page',
-  meta: { title: 'Footer', route: '/_footer' },
   components: [
     {
       type: 'oryx-composition',
@@ -280,12 +286,7 @@ export const FooterTemplate: ExperienceComponent = {
       {
         layout:
           featureVersion >= '1.2'
-            ? {
-                type: 'flex',
-                divider: true,
-                bleed: true,
-                sticky: true,
-              }
+            ? { type: 'flex', bleed: true, sticky: true }
             : 'flex',
         top: '100%',
         background: 'var(--oryx-color-neutral-3)',

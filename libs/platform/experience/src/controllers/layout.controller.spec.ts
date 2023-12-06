@@ -367,8 +367,9 @@ describe('LayoutController', () => {
 
     describe('getRender', () => {
       const mockData = {
-        element: 'element',
+        element: expect.anything(),
         experience: 'experience',
+        template: undefined,
       } as unknown as Omit<LayoutPluginRenderParams, 'options'>;
 
       beforeEach(() => {
@@ -377,7 +378,7 @@ describe('LayoutController', () => {
             rule: 'a',
           })
         );
-        mockLayoutService.getRender.mockReturnValue(of());
+        mockLayoutService.getRender.mockReturnValue(of({}));
       });
 
       describe('when there are layout component properties provided', () => {
@@ -392,7 +393,6 @@ describe('LayoutController', () => {
           })
             .getRender({
               attrs: ['layout-bleed', 'layout-sticky'],
-              place: 'pre',
               screen: Size.Md,
               data: mockData,
             })
@@ -435,7 +435,6 @@ describe('LayoutController', () => {
           setupController({})
             .getRender({
               attrs: ['layout-bleed', 'layout-sticky'],
-              place: 'pre',
               screen: Size.Md,
               data: {
                 ...mockData,
@@ -498,7 +497,6 @@ describe('LayoutController', () => {
           })
             .getRender({
               attrs: ['layout-bleed', 'layout-sticky'],
-              place: 'pre',
               screen: Size.Md,
               data: {
                 ...mockData,

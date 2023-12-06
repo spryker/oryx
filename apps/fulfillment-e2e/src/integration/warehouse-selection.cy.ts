@@ -31,7 +31,7 @@ describe('Warehouse selection', () => {
     warehouseSelectionListFragment.getWrapper().should('be.visible');
     warehouseSelectionListFragment
       .getTitle()
-      .should('contain.text', 'Select your location to get started');
+      .should('contain.text', 'Select your location');
     warehouseSelectionListFragment.getWarehouseNames().should('have.length', 3);
     warehouseSelectionListFragment
       .getWarehouseSelectionButtons()

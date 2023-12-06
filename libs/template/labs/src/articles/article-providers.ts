@@ -7,7 +7,7 @@ import {
   ArticleIdContextFallback,
   ArticleTypeContextFallback,
 } from './article-context';
-import * as articles from './article-page';
+import { experienceArticlePages } from './article-page';
 import { articleRoutes } from './article-routes';
 import { ContentSuggestionAdapter } from './content-suggestion.adapter';
 import { contentfulProviders } from './contentful';
@@ -16,13 +16,15 @@ import {
   ArticlePageTitleMetaResolver,
 } from './resolvers';
 import { storyblokProviders } from './storyblok';
+import { strapiProviders } from './strapi';
 
 export const articleProviders: Provider[] = [
   ArticleIdContextFallback,
   ArticleTypeContextFallback,
   ...contentfulProviders,
   ...storyblokProviders,
-  provideExperienceData(Object.values(articles)),
+  ...strapiProviders,
+  provideExperienceData(experienceArticlePages),
   ...provideLitRoutes({ routes: articleRoutes }),
   {
     provide: PageMetaResolver,

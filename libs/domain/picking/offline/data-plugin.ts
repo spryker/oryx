@@ -60,18 +60,10 @@ export class OfflineDataPlugin implements AppPlugin {
     this.subscription?.unsubscribe();
   }
 
-  refreshData(injector: Injector): Observable<void> {
+  syncData(injector: Injector): Observable<void> {
     this.refreshing$.next(true);
-    return this.clearDb(injector).pipe(
-      switchMap(() => this.populateDb(injector)),
-      tap({
-        next: () => {
-          this.refreshing$.next(false);
-        },
-        error: () => {
-          this.refreshing$.next(false);
-        },
-      })
+    return this.populateData(injector).pipe(
+      tap(() => this.refreshing$.next(false))
     );
   }
 
@@ -131,6 +123,12 @@ export class OfflineDataPlugin implements AppPlugin {
           );
         }
       )
+    );
+  }
+
+  protected populateData(injector: Injector): Observable<void> {
+    return this.clearDb(injector).pipe(
+      switchMap(() => this.populateDb(injector))
     );
   }
 }
