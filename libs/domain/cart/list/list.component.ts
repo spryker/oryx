@@ -17,7 +17,7 @@ export class CartListComponent extends ContentMixin(LitElement) {
 
     return html`
       <section>
-        <oryx-heading tag=${HeadingTag.H1} typography=${HeadingTag.H3}>
+        <oryx-heading .tag=${HeadingTag.H1} .typography=${HeadingTag.H3}>
           ${this.i18n('cart.totals.<count>-items', {
             count: carts?.length ?? 0,
           })}

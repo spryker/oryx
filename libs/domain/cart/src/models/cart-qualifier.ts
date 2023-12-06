@@ -27,5 +27,5 @@ export interface UpdateCartQualifier extends CartEntryQualifier {
   name?: string;
   priceMode?: string;
   version?: string;
-  isDefault?: true;
+  isDefault?: boolean;
 }

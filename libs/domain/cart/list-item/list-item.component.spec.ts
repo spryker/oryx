@@ -22,7 +22,7 @@ const emptyCart = {
 
 class MockCartService implements Partial<CartService> {
   getCart = vi.fn().mockReturnValue(of(cart));
-  setDefaultCart = vi.fn().mockReturnValue(of());
+  updateCart = vi.fn().mockReturnValue(of());
 }
 
 class mockPricingService {
@@ -111,8 +111,11 @@ describe('CartListItemComponent', () => {
         ?.dispatchEvent(new Event('click'));
     });
 
-    it('should call setDefaultCart method of the service with given cartId', () => {
-      expect(service.setDefaultCart).toHaveBeenCalledWith({ cartId });
+    it('should call updateCart method of the service with given cartId', () => {
+      expect(service.updateCart).toHaveBeenCalledWith({
+        cartId,
+        isDefault: true,
+      });
     });
   });
 
@@ -125,9 +128,7 @@ describe('CartListItemComponent', () => {
     });
 
     it('should render the chip with default label', () => {
-      const chip = element.renderRoot.querySelector(
-        'oryx-chip[appearance="success"]'
-      );
+      const chip = element.renderRoot.querySelector('oryx-chip');
       expect(chip?.textContent).toContain(i18n('default'));
     });
 

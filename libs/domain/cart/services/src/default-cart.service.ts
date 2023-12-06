@@ -291,10 +291,6 @@ export class DefaultCartService implements CartService {
     return this.executeWithOptionalCart(qualifier, this.updateCartCommand$);
   }
 
-  setDefaultCart(qualifier: UpdateCartQualifier): Observable<unknown> {
-    return this.updateCart({ ...qualifier, isDefault: true });
-  }
-
   createCart(qualifier: CreateCartQualifier): Observable<unknown> {
     return this.createCartCommand$.execute(qualifier);
   }
