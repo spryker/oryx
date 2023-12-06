@@ -42,7 +42,7 @@ export class CarouselNavigationComponent
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected throttledScrollListener: () => void = () => {};
 
-  protected intersectionThrottleTime = 150;
+  protected intersectionThrottleTime = 75;
   protected scrollThrottleTime = 50;
   protected isIntersected = false;
 
@@ -105,7 +105,11 @@ export class CarouselNavigationComponent
   protected initializeMutationObserver(): void {
     this.mutationObserver = new MutationObserver(() =>
       setTimeout(() => {
-        if (this.isIntersected) this.buildNavigation();
+        if (this.isIntersected) {
+          this.buildNavigation();
+          this.initializeScrollListener();
+          this.initializeResizeObserver();
+        }
       }, 50)
     );
     const shadowRoot = this.getRootNode();
@@ -123,13 +127,16 @@ export class CarouselNavigationComponent
    */
   protected initializeResizeObserver(): void {
     if (this.resizeObserver) return;
-    const throttleTime = this.hostElement.clientWidth
-      ? this.intersectionThrottleTime
-      : 0;
     this.resizeObserver = new ResizeObserver(
-      throttle(() => {
-        this.buildNavigation();
-      }, throttleTime)
+      throttle((entries: ResizeObserverEntry[]) => {
+        window.requestAnimationFrame((): void | undefined => {
+          if (!Array.isArray(entries) || !entries.length) return;
+          setTimeout(
+            () => this.buildNavigation(),
+            this.intersectionThrottleTime
+          );
+        });
+      }, this.intersectionThrottleTime)
     );
     this.resizeObserver.observe(this.hostElement);
   }
@@ -146,8 +153,15 @@ export class CarouselNavigationComponent
   }
 
   protected buildNavigation(): void {
-    this.style.setProperty('--width', `${this.hostElement.clientWidth}px`);
-    this.style.setProperty('--height', `${this.hostElement.clientHeight}px`);
+    this.style.setProperty(
+      '--width',
+      `${getDimensions(this.hostElement, false).size}px`
+    );
+    this.style.setProperty(
+      '--height',
+      `${getDimensions(this.hostElement, true).size}px`
+    );
+
     const items = this.resolveItems();
     if (
       items.length !== this.items.length ||
@@ -155,7 +169,7 @@ export class CarouselNavigationComponent
     ) {
       this.items = items;
       this.setScrollSnap();
-      if (this.showIndicators) this.setSlides();
+      this.setSlides();
     }
   }
 
@@ -193,7 +207,7 @@ export class CarouselNavigationComponent
     this.toggleAttribute(
       'has-next',
       getScrollDimensions(this.hostElement, this.isVertical).position +
-        this.hostElement.getBoundingClientRect().width <
+        this.hostElement.getBoundingClientRect().width <=
         getScrollDimensions(this.hostElement, this.isVertical).size -
           getDimensions(this.items?.[0], this.isVertical).size
     );
@@ -305,7 +319,7 @@ export class CarouselNavigationComponent
                   value=${slide}
                   type="radio"
                   name="indicators"
-                  @focusin=${this.handleIndicatorClick}
+                  @focusin=${this.handleIndicator}
                 />`
             )}
           </div>
@@ -343,6 +357,7 @@ export class CarouselNavigationComponent
               );
             });
     }
+
     this.scrollElementToIndex(index);
   }
 
@@ -371,9 +386,17 @@ export class CarouselNavigationComponent
   }
 
   /**
-   * Handles the click on an indicator.
+   *
+   * @param @deprecated use handleIndicator instead
    */
   protected handleIndicatorClick(e: Event): void {
+    this.handleIndicator(e);
+  }
+
+  /**
+   * Handles the click on an indicator.
+   */
+  protected handleIndicator(e: Event): void {
     const target = e.target as HTMLInputElement;
     this.scrollElementToIndex(parseInt(target.value));
   }
