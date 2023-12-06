@@ -1,9 +1,5 @@
-import {
-  ContextFallback,
-  ContextSerializer,
-  ContextService,
-} from '@spryker-oryx/core';
-import { Provider, inject } from '@spryker-oryx/di';
+import { ContextFallback } from '@spryker-oryx/core';
+import { inject, Provider } from '@spryker-oryx/di';
 import { RouterService } from '@spryker-oryx/router';
 import { featureVersion } from '@spryker-oryx/utilities';
 import { Observable, of, switchMap } from 'rxjs';
@@ -32,15 +28,17 @@ export class ProductContextSerializer
   implements ContextSerializer<ProductQualifier>
 {
   serialize(value: ProductQualifier): Observable<string> {
-    return value?.sku ? of(value.sku) : of('');
+    return value?.sku
+      ? of(`${value.sku}${value.offer ? `,${value.offer}` : ''}`)
+      : of('');
   }
 
   deserialize(value: string): Observable<ProductQualifier | undefined> {
-    return value
-      ? of({
-          sku: value,
-        })
-      : of(undefined);
+    const parts = value.split(',');
+    return of({
+      sku: parts[0],
+      ...(parts[1] ? { offer: parts[1] } : {}),
+    });
   }
 }
 
