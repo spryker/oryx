@@ -40,7 +40,7 @@ export class CarouselNavigationComponent
   @state() protected slides: number[] = [];
   @queryAll('input') protected indicatorElements?: NodeListOf<HTMLInputElement>;
 
-  protected throttleTime = 50;
+  protected throttleTime = 150;
   protected mutationObserver?: MutationObserver;
   protected resizeObserver?: ResizeObserver;
   protected isIntersected = false;
@@ -75,33 +75,34 @@ export class CarouselNavigationComponent
    */
   protected initializeIntersectionObserver(): void {
     this.intersectionObserver = new IntersectionObserver(
-      throttle((entries: IntersectionObserverEntry[]) => {
-        return entries.forEach(() => {
-          this.isIntersected = true;
-          if (this.resolveItems().length) {
-            this.buildNavigation();
-            this.initializeScrollListener();
-            this.initializeResizeObserver();
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this.intersectionObserver!.disconnect();
-          }
-        });
-      }, this.throttleTime),
+      throttle(
+        (entries: IntersectionObserverEntry[]) => {
+          return entries.forEach(() => {
+            this.isIntersected = true;
+            if (this.resolveItems().length) {
+              this.buildNavigation();
+              this.initializeScrollListener();
+              this.initializeResizeObserver();
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              this.intersectionObserver!.disconnect();
+            }
+          });
+        },
+        this.throttleTime,
+        true
+      ),
       { root: null, rootMargin: '0px', threshold: 1.0 }
     );
     this.intersectionObserver.observe(this.hostElement);
   }
 
   protected initializeMutationObserver(): void {
-    this.mutationObserver = new MutationObserver(() =>
-      setTimeout(() => {
-        if (this.isIntersected) {
-          this.buildNavigation();
-          this.initializeScrollListener();
-          this.initializeResizeObserver();
-        }
-      }, this.throttleTime)
-    );
+    this.mutationObserver = new MutationObserver(() => {
+      if (!this.isIntersected) return;
+      this.buildNavigation();
+      this.initializeScrollListener();
+      this.initializeResizeObserver();
+    });
     const shadowRoot = this.getRootNode();
     if (shadowRoot instanceof ShadowRoot) {
       this.mutationObserver.observe(shadowRoot, {
@@ -118,20 +119,28 @@ export class CarouselNavigationComponent
   protected initializeResizeObserver(): void {
     if (this.resizeObserver) return;
     this.resizeObserver = new ResizeObserver(
-      throttle((entries: ResizeObserverEntry[]) => {
-        window.requestAnimationFrame((): void | undefined => {
-          if (!Array.isArray(entries) || !entries.length) return;
-          setTimeout(() => this.buildNavigation(), this.throttleTime);
-        });
-      }, this.throttleTime)
+      throttle(
+        (entries: ResizeObserverEntry[]) => {
+          window.requestAnimationFrame((): void => {
+            if (!Array.isArray(entries) || !entries.length) return;
+            this.buildNavigation();
+          });
+        },
+        this.throttleTime,
+        true
+      )
     );
     this.resizeObserver.observe(this.hostElement);
   }
 
   protected initializeScrollListener(): void {
-    this.scrollListener = throttle(() => {
-      this.updateState();
-    }, this.throttleTime);
+    this.scrollListener = throttle(
+      () => {
+        this.updateState();
+      },
+      this.throttleTime,
+      true
+    );
     this.hostElement.addEventListener('scroll', this.scrollListener);
     this.hostElement.addEventListener('scrollend', this.scrollListener);
   }
