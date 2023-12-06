@@ -312,15 +312,10 @@ export class CarouselNavigationComponent
       ${when(
         this.showIndicators,
         () => html`
-          <div class="indicators">
+          <div class="indicators" @input=${this.handleIndicator}>
             ${this.slides.map(
               (slide) =>
-                html`<input
-                  value=${slide}
-                  type="radio"
-                  name="indicators"
-                  @focusin=${this.handleIndicator}
-                />`
+                html`<input value=${slide} type="radio" name="indicators" />`
             )}
           </div>
         `
