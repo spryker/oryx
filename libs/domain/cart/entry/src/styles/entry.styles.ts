@@ -135,12 +135,12 @@ export const cartEntryStyles = css`
     line-height: var(--oryx-typography-small-line);
   }
 
-  oryx-merchant-sold-by {
+  oryx-merchant-title {
     ${headingUtil(HeadingTag.Small)}
   }
 
   oryx-product-id::part(prefix),
-  oryx-merchant-sold-by::part(prefix) {
+  oryx-merchant-title::part(prefix) {
     color: var(--oryx-color-neutral-9);
   }
 

@@ -1,4 +1,5 @@
 import { ExperienceComponent } from '@spryker-oryx/experience';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { Size } from '@spryker-oryx/utilities';
 
 export const merchantPage: ExperienceComponent = {
@@ -47,7 +48,14 @@ export const merchantPage: ExperienceComponent = {
         {
           type: 'oryx-composition',
           components: [
-            { type: 'oryx-merchant-title' },
+            {
+              type: 'oryx-merchant-title',
+              options: {
+                rules: [{ typography: HeadingTag.H1 }],
+                prefix: null,
+                link: false,
+              },
+            },
             { type: 'oryx-merchant-legal' },
             { type: 'oryx-merchant-description' },
           ],

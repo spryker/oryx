@@ -5,20 +5,20 @@ import { RouteType } from '@spryker-oryx/router';
 import { useComponent } from '@spryker-oryx/utilities';
 import { html } from 'lit';
 import { of } from 'rxjs';
-import { MerchantService } from '../src/merchant';
-import { MerchantSoldByComponent } from './sold-by.component';
-import { merchantSoldByComponent } from './sold-by.def';
+import { MerchantService } from '../../src/merchant';
+import { MerchantTitleComponent } from './title.component';
+import { merchantTitleComponent } from './title.def';
 
 class MockMerchantService implements Partial<MerchantService> {
   get = vi.fn();
 }
 
-describe('MerchantSoldByComponent', () => {
-  let element: MerchantSoldByComponent;
+describe('MerchantTitleComponent', () => {
+  let element: MerchantTitleComponent;
   let merchantService: MockMerchantService;
 
   beforeAll(async () => {
-    await useComponent(merchantSoldByComponent);
+    await useComponent(merchantTitleComponent);
   });
 
   beforeEach(async () => {
@@ -49,13 +49,12 @@ describe('MerchantSoldByComponent', () => {
       );
 
       element = await fixture(
-        html`<oryx-merchant-sold-by merchant="123"></oryx-merchant-sold-by>`
+        html`<oryx-merchant-title merchant="123"></oryx-merchant-title>`
       );
     });
 
-    it('should render the default prefix', () => {
-      const el = element.shadowRoot?.querySelector('span');
-      expect(el?.textContent).toContain('Sold by:');
+    it('should not render a prefix by default', () => {
+      expect(element).not.toContainElement('span[part="prefix"]');
     });
 
     it('should render merchant link options', () => {
@@ -68,6 +67,18 @@ describe('MerchantSoldByComponent', () => {
     });
   });
 
+  describe('when no merchant is resolved ', () => {
+    beforeEach(async () => {
+      element = await fixture(
+        html`<oryx-merchant-title merchant="123"></oryx-merchant-title>`
+      );
+    });
+
+    it('should not render any elements', () => {
+      expect(element).not.toContainElement('*');
+    });
+  });
+
   describe('when a custom prefix is provided ', () => {
     beforeEach(async () => {
       merchantService.get.mockReturnValue(
@@ -75,10 +86,10 @@ describe('MerchantSoldByComponent', () => {
       );
 
       element = await fixture(
-        html`<oryx-merchant-sold-by
+        html`<oryx-merchant-title
           merchant="123"
           .options=${{ prefix: 'abc-' }}
-        ></oryx-merchant-sold-by>`
+        ></oryx-merchant-title>`
       );
     });
 
@@ -88,22 +99,41 @@ describe('MerchantSoldByComponent', () => {
     });
   });
 
-  describe('when no merchant is resolved ', () => {
+  describe('when link is false ', () => {
     beforeEach(async () => {
-      element = await fixture(
-        html`<oryx-merchant-sold-by
-          merchant="123"
-          .options=${{ prefix: 'abc-' }}
-        ></oryx-merchant-sold-by>`
+      merchantService.get.mockReturnValue(
+        of({ id: '123', name: 'Merchant name' })
       );
-    });
 
-    it('should not render the custom prefix', () => {
-      expect(element).not.toContainElement('span[part="prefix"]');
+      element = await fixture(
+        html`<oryx-merchant-title
+          merchant="123"
+          .options=${{ link: false }}
+        ></oryx-merchant-title>`
+      );
     });
 
     it('should not render a content link component', () => {
       expect(element).not.toContainElement('oryx-content-link');
+    });
+  });
+
+  describe('when link is true ', () => {
+    beforeEach(async () => {
+      merchantService.get.mockReturnValue(
+        of({ id: '123', name: 'Merchant name' })
+      );
+
+      element = await fixture(
+        html`<oryx-merchant-title
+          merchant="123"
+          .options=${{ link: true }}
+        ></oryx-merchant-title>`
+      );
+    });
+
+    it('should not render a content link component', () => {
+      expect(element).toContainElement('oryx-content-link');
     });
   });
 });

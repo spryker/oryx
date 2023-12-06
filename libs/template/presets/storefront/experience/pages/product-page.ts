@@ -98,8 +98,11 @@ export const productPage: ExperienceComponent = {
                   options: { rules: [{ width: '70px' }] },
                 },
                 {
-                  type: 'oryx-merchant-sold-by',
-                  options: { rules: [{ typography: HeadingTag.Small }] },
+                  type: 'oryx-merchant-title',
+                  options: {
+                    rules: [{ typography: HeadingTag.Small }],
+                    prefix: 'Sold by:',
+                  },
                 },
                 { type: 'oryx-product-average-rating' },
                 { type: 'oryx-product-id' },

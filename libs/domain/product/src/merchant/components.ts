@@ -1,1 +1,2 @@
-export * from '../../sold-by/sold-by.def';
+export * from '../../merchant/components';
+export * from '../../offers/offers.def';

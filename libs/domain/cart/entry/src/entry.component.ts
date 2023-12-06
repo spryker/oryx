@@ -89,7 +89,9 @@ export class CartEntryComponent
     if (this.entry?.sku) {
       this.contextController.provide(
         ProductContext.SKU,
-        featureVersion >= '1.3' ? { sku: this.entry.sku, offer: this.entry.productOfferReference } : this.sku
+        featureVersion >= '1.3'
+          ? { sku: this.entry.sku, offer: this.entry.productOfferReference }
+          : this.sku
       );
     }
   };
@@ -137,9 +139,10 @@ export class CartEntryComponent
         this.$options()?.enableItemId,
         () => html`<oryx-product-id></oryx-product-id>`
       )}
-      <oryx-merchant-sold-by
+      <oryx-merchant-title
         .merchant=${this.entry?.merchantReference}
-      ></oryx-merchant-sold-by>
+        .options=${{ prefix: this.i18n('cart.entry.sold-by') }}
+      ></oryx-merchant-title>
     </section>`;
   }
 
