@@ -1,6 +1,6 @@
 import {
   HttpService,
-  IncludesService,
+  JsonApiIncludeService,
   JsonAPITransformerService,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
@@ -22,7 +22,7 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
     protected http = inject(HttpService),
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
     protected transformer = inject(JsonAPITransformerService),
-    protected includes = inject(IncludesService)
+    protected includeService = inject(JsonApiIncludeService)
   ) {}
 
   /**
@@ -45,7 +45,7 @@ export class DefaultSuggestionAdapter implements SuggestionAdapter {
     ) {
       if (featureVersion >= '1.4') {
         const includes$ = entities?.includes(SuggestionField.Products)
-          ? this.includes.get({ resource: ProductListResource })
+          ? this.includeService.get({ resource: ProductListResource })
           : of('');
 
         return includes$.pipe(

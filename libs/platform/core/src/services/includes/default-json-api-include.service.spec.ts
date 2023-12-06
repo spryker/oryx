@@ -1,18 +1,18 @@
 import { createInjector, destroyInjector, getInjector } from '@spryker-oryx/di';
 import { firstValueFrom } from 'rxjs';
-import { DefaultIncludesService } from './default-includes.service';
-import { IncludesService } from './includes-service';
+import { DefaultJsonApiIncludeService } from './default-json-api-include.service';
+import { JsonApiIncludeService } from './json-api-include.service';
 import { provideIncludes } from './provide-includes';
 
 describe('DefaultIncludesService', () => {
-  let service: IncludesService;
+  let service: JsonApiIncludeService;
 
   beforeEach(() => {
     createInjector({
       providers: [
         {
-          provide: IncludesService,
-          useClass: DefaultIncludesService,
+          provide: JsonApiIncludeService,
+          useClass: DefaultJsonApiIncludeService,
         },
         ...provideIncludes('testResource', ['testInclude']),
         ...provideIncludes('testMultipleResource', [
@@ -27,7 +27,7 @@ describe('DefaultIncludesService', () => {
       ],
     });
 
-    service = getInjector().inject(IncludesService);
+    service = getInjector().inject(JsonApiIncludeService);
   });
 
   afterEach(() => {
@@ -36,7 +36,7 @@ describe('DefaultIncludesService', () => {
   });
 
   it('should be provided', () => {
-    expect(service).toBeInstanceOf(DefaultIncludesService);
+    expect(service).toBeInstanceOf(DefaultJsonApiIncludeService);
   });
 
   describe('get', () => {

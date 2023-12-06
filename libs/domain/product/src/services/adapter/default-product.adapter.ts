@@ -1,6 +1,6 @@
 import {
   HttpService,
-  IncludesService,
+  JsonApiIncludeService,
   JsonAPITransformerService,
 } from '@spryker-oryx/core';
 import { inject } from '@spryker-oryx/di';
@@ -17,7 +17,7 @@ export class DefaultProductAdapter implements ProductAdapter {
     protected http = inject(HttpService),
     protected SCOS_BASE_URL = inject('SCOS_BASE_URL'),
     protected transformer = inject(JsonAPITransformerService),
-    protected includes = inject(IncludesService)
+    protected includeService = inject(JsonApiIncludeService)
   ) {}
 
   getKey(qualifier: ProductQualifier): string {
@@ -26,7 +26,7 @@ export class DefaultProductAdapter implements ProductAdapter {
 
   get({ sku, include }: ProductQualifier): Observable<Product> {
     if (featureVersion >= '1.4') {
-      return this.includes.get({ resource: ProductResource }).pipe(
+      return this.includeService.get({ resource: ProductResource }).pipe(
         switchMap((includes) =>
           this.http.get(
             `${this.SCOS_BASE_URL}/${this.productEndpoint}/${sku}${

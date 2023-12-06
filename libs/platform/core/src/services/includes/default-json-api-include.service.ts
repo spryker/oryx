@@ -3,11 +3,11 @@ import { Observable, of } from 'rxjs';
 import {
   IncludeDefinition,
   IncludesQualifier,
-  IncludesService,
-} from './includes-service';
+  JsonApiIncludeService,
+} from './json-api-include.service';
 import { includesTokenFactory } from './provide-includes';
 
-export class DefaultIncludesService implements IncludesService {
+export class DefaultJsonApiIncludeService implements JsonApiIncludeService {
   protected cache = new Map<string, string>();
 
   constructor(protected injector = inject(INJECTOR)) {}

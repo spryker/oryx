@@ -17,7 +17,10 @@ import {
   HttpService,
 } from './http';
 import { DefaultHydrationService, HydrationService } from './hydration';
-import { DefaultIncludesService, IncludesService } from './includes';
+import {
+  DefaultJsonApiIncludeService,
+  JsonApiIncludeService,
+} from './includes';
 import {
   DefaultPageMetaResolverService,
   DefaultPageMetaService,
@@ -110,8 +113,8 @@ export const coreProviders: Provider[] = [
     useExisting: PageMetaResolverService,
   },
   {
-    provide: IncludesService,
-    useClass: DefaultIncludesService,
+    provide: JsonApiIncludeService,
+    useClass: DefaultJsonApiIncludeService,
   },
   CoreResourceResolver,
 ];
