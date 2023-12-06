@@ -12,7 +12,10 @@ import {
   ProductListQualifier,
 } from '../../../models';
 import { ProductListNormalizer } from '../../adapter';
-import { ProductListAdapter } from './product-list.adapter';
+import {
+  ProductListAdapter,
+  ProductListIncludes,
+} from './product-list.adapter';
 
 export class DefaultProductListAdapter implements ProductListAdapter {
   protected queryEndpoint = 'catalog-search';
@@ -61,7 +64,7 @@ export class DefaultProductListAdapter implements ProductListAdapter {
 
   get(qualifier: ProductListQualifier): Observable<ProductList> {
     if (featureVersion >= '1.4') {
-      return this.includes.get({ entity: 'product-list' }).pipe(
+      return this.includes.get({ resource: ProductListIncludes }).pipe(
         switchMap((includes) =>
           this.http.get<ApiProductModel.Response>(
             `${this.SCOS_BASE_URL}/${this.queryEndpoint}?${this.getKey(

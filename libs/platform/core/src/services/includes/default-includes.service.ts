@@ -10,10 +10,11 @@ import { includesTokenFactory } from './provide-includes';
 export class DefaultIncludesService implements IncludesService {
   constructor(protected injector = inject(INJECTOR)) {}
 
-  get({ entity }: IncludesQualifier): Observable<string> {
-    const config: IncludeDefinition[] = this.injector
-      .inject(includesTokenFactory(entity), [])
-      .flat(2);
+  get(qualifier: IncludesQualifier): Observable<string> {
+    const config: IncludeDefinition[] = [
+      ...this.injector.inject(includesTokenFactory(qualifier.resource), []),
+      ...(qualifier.includes ?? []),
+    ].flat(Infinity);
 
     if (!config.length) return of('');
 

@@ -7,7 +7,7 @@ export const IncludesService = 'oryx.includesService';
 export const IncludesToken = 'oryx.includes-';
 
 export interface IncludesQualifier {
-  entity: string;
+  resource: string;
   includes?: IncludeDefinition[];
 }
 

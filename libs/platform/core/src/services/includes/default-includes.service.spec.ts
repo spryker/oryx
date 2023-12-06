@@ -14,12 +14,12 @@ describe('DefaultIncludesService', () => {
           provide: IncludesService,
           useClass: DefaultIncludesService,
         },
-        ...provideIncludes('testEntity', ['testInclude']),
-        ...provideIncludes('testMultipleEntity', [
+        ...provideIncludes('testResource', ['testInclude']),
+        ...provideIncludes('testMultipleResource', [
           'test2Include',
           'test3Include',
         ]),
-        ...provideIncludes('testReuseEntity', ['newInclude'], 'testEntity'),
+        ...provideIncludes('testReuseResource', ['newInclude'], 'testResource'),
       ],
     });
 
@@ -36,34 +36,45 @@ describe('DefaultIncludesService', () => {
   });
 
   describe('get', () => {
-    it('should return correct include string for a given entity', async () => {
-      const entity = 'testEntity';
+    it('should return correct include string for a given resource', async () => {
+      const resource = 'testResource';
       const expectedResult = 'include=testInclude';
 
-      const result = await firstValueFrom(service.get({ entity }));
+      const result = await firstValueFrom(service.get({ resource }));
       expect(result).toEqual(expectedResult);
     });
 
     it('should return correct include string for multiple includes', async () => {
-      const entity = 'testMultipleEntity';
+      const resource = 'testMultipleResource';
       const expectedResult = 'include=test2Include,test3Include';
 
-      const result = await firstValueFrom(service.get({ entity }));
+      const result = await firstValueFrom(service.get({ resource }));
       expect(result).toEqual(expectedResult);
     });
 
-    it('should handle entity reuse correctly', async () => {
-      const entity = 'testReuseEntity';
+    it('should handle resource reuse correctly', async () => {
+      const resource = 'testReuseResource';
       const expectedResult = 'include=newInclude,testInclude';
 
-      const result = await firstValueFrom(service.get({ entity }));
+      const result = await firstValueFrom(service.get({ resource }));
       expect(result).toEqual(expectedResult);
     });
 
     it('should return empty string if no configuration is found', async () => {
-      const entity = 'unknownEntity';
-      const result = await firstValueFrom(service.get({ entity }));
+      const resource = 'unknownResource';
+      const result = await firstValueFrom(service.get({ resource }));
       expect(result).toEqual('');
+    });
+
+    it('should include additional includes specified in the qualifier', async () => {
+      const resource = 'testResource';
+      const additionalIncludes = ['extraInclude1', 'extraInclude2'];
+      const expectedResult = 'include=testInclude,extraInclude1,extraInclude2';
+
+      const result = await firstValueFrom(
+        service.get({ resource, includes: additionalIncludes })
+      );
+      expect(result).toEqual(expectedResult);
     });
   });
 });
