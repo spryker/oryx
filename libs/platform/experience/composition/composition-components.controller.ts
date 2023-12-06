@@ -8,10 +8,12 @@ import {
   StyleRuleSet,
 } from '@spryker-oryx/experience';
 import { ObserveController, Size } from '@spryker-oryx/utilities';
-import { LitElement } from 'lit';
+import { LitElement, ReactiveController } from 'lit';
 import { Observable, combineLatest, map, of, startWith, switchMap } from 'rxjs';
 
-export class CompositionComponentsController {
+export class CompositionComponentsController implements ReactiveController {
+  hostConnected?(): void;
+
   protected observe: ObserveController<LitElement & ContentComponentProperties>;
   protected tokenResolver = resolve(TokenResolver);
   protected experienceService = resolve(ExperienceService);
@@ -26,11 +28,11 @@ export class CompositionComponentsController {
       this.components(),
       this.screenService.getScreenSize(),
     ]).pipe(
-      switchMap(([components, breakpoint]) => {
-        return components
+      switchMap(([components, breakpoint]) =>
+        components
           ? this.filterHiddenComponents(components, breakpoint)
-          : of([]);
-      })
+          : of([])
+      )
     );
   }
 
@@ -56,7 +58,6 @@ export class CompositionComponentsController {
                 }
 
                 const stack: Record<string, boolean> = {};
-
                 const refs = components.reduce((acc, component) => {
                   const { ref } = component;
 
