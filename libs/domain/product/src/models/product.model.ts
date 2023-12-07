@@ -1,5 +1,4 @@
 import { Size } from '@spryker-oryx/utilities';
-import { Merchant } from '../merchant/merchant.model';
 
 /**
  * Interface for pagination information.
@@ -42,7 +41,8 @@ export interface Product {
   mediaSet?: ProductMediaSet[];
   labels?: ProductLabel[];
   availability?: ProductAvailability;
-  offers?: ProductOffer[];
+  offers: ProductOffer[];
+  // TODO: Fix by augmentation
   merchantId?: string;
 }
 
@@ -50,7 +50,8 @@ export interface ProductOffer {
   id: string;
   isDefault?: boolean;
   price: ProductPrices;
-  merchant: Merchant;
+  // TODO: Fix by augmentation
+  merchant: any;
   availability?: ProductAvailability;
 }
 
