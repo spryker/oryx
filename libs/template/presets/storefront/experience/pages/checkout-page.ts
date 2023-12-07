@@ -114,7 +114,10 @@ export const checkoutPage: ExperienceComponent = {
             rules: [
               { hideByRule: 'CART.EMPTY' },
               {
-                layout: { sticky: true },
+                layout: {
+                  ...(featureVersion >= '1.4' ? { type: 'list' } : {}),
+                  sticky: true,
+                },
                 top: '108px',
                 ...(featureVersion >= '1.2' ? {} : { sticky: true }),
               },

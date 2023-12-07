@@ -7,7 +7,14 @@ import {
 } from '@spryker-oryx/picking/offline';
 import { PickingInProgressModalComponent } from '@spryker-oryx/picking/picking-in-progress';
 import { PickingListService } from '@spryker-oryx/picking/services';
-import { I18nMixin, i18n, signal, signalAware } from '@spryker-oryx/utilities';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
+import {
+  I18nMixin,
+  featureVersion,
+  i18n,
+  signal,
+  signalAware,
+} from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -68,18 +75,7 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
               () => this.renderSearchFallback(),
               () => html`
                 <section>
-                  ${when(
-                    this.$isActiveSearch(),
-                    () => html`
-                      <oryx-heading slot="heading">
-                        <h4>
-                          ${this.i18n(
-                            'picking-lists.search-results-for-picking'
-                          )}
-                        </h4>
-                      </oryx-heading>
-                    `
-                  )}
+                  ${when(this.$isActiveSearch(), () => this.__renderHeading())}
                   ${repeat(
                     this.$pickingLists(),
                     (pl) => pl.id,
@@ -99,6 +95,18 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
     )}`;
   }
 
+  // temporary implementation for backwards compatibility
+  private __renderHeading(): TemplateResult {
+    const text = this.i18n('picking-lists.search-results-for-picking');
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading .tag=${HeadingTag.H4}> ${text} </oryx-heading>`;
+    } else {
+      return html`<oryx-heading slot="heading">
+        <h4>${text}</h4>
+      </oryx-heading>`;
+    }
+  }
+
   protected renderResultsFallback(): TemplateResult {
     const fallbackType = !this.$isActiveSearch()
       ? FallbackType.noResults
@@ -108,7 +116,9 @@ export class PickingListsComponent extends I18nMixin(LitElement) {
 
     return html`
       <div class="no-items-fallback">
-        <oryx-heading as="h4"> ${fallbackTitle} </oryx-heading>
+        <oryx-heading .typography=${HeadingTag.H4}>
+          ${fallbackTitle}
+        </oryx-heading>
         <oryx-image resource="${fallbackType}"></oryx-image>
       </div>
     `;

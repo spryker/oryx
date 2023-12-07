@@ -58,7 +58,9 @@ export const searchPage: ExperienceComponent = {
             rules: [
               {
                 layout:
-                  featureVersion >= '1.2'
+                  featureVersion >= '1.4'
+                    ? { type: 'list' }
+                    : featureVersion >= '1.2'
                     ? {
                         type: 'flex',
                         vertical: true,

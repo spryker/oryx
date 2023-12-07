@@ -4,7 +4,7 @@ import {
   DefaultProductCategoryService,
   ProductCategoryAdapter,
   ProductCategoryService,
-  categoryQuery,
+  categoryQueries,
 } from '@spryker-oryx/product';
 import { Observable, of, switchMap, take } from 'rxjs';
 import { SpyInstance } from 'vitest';
@@ -37,7 +37,7 @@ describe('DefaultProductCategoryService', () => {
           provide: ProductCategoryAdapter,
           useClass: MockProductCategoryAdapter,
         },
-        categoryQuery,
+        ...categoryQueries,
         {
           provide: ProductCategoryService,
           useClass: DefaultProductCategoryService,

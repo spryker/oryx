@@ -1,16 +1,30 @@
 import { Meta, Story } from '@storybook/web-components';
-import { html, TemplateResult } from 'lit';
+import { TemplateResult, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storybookPrefix } from '../../../../.constants';
-import { HeadingAttributes } from '../heading.model';
+import {
+  HeadingAttributes,
+  HeadingTag,
+  HeadingVisibility,
+} from '../heading.model';
 
-const tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'caption', 'subtitle'];
+const tags = [
+  HeadingTag.H1,
+  HeadingTag.H2,
+  HeadingTag.H3,
+  HeadingTag.H4,
+  HeadingTag.H5,
+  HeadingTag.H6,
+  HeadingTag.Caption,
+  HeadingTag.Subtitle,
+  HeadingTag.Small,
+  HeadingTag.Strong,
+  HeadingVisibility.None,
+];
 
 export default {
   title: `${storybookPrefix}/Structure/Heading`,
-  args: {
-    tag: 'h1',
-  },
+  args: { tag: 'h1' },
   argTypes: {
     tag: {
       control: { type: 'select' },
@@ -19,28 +33,24 @@ export default {
     maxLines: {
       control: { type: 'number' },
     },
-    as: {
+    typography: {
       control: { type: 'select' },
       options: tags,
     },
-    asLg: {
+    lg: {
       control: { type: 'select' },
       options: tags,
     },
-    asMd: {
+    md: {
       control: { type: 'select' },
       options: tags,
     },
-    asSm: {
+    sm: {
       control: { type: 'select' },
       options: tags,
     },
   },
-  parameters: {
-    chromatic: {
-      disableSnapshot: true,
-    },
-  },
+  parameters: { chromatic: { disableSnapshot: true } },
 } as Meta;
 
 const Template: Story<HeadingAttributes> = (
@@ -48,10 +58,10 @@ const Template: Story<HeadingAttributes> = (
 ): TemplateResult => {
   return html`<oryx-heading
     tag=${ifDefined(props.tag)}
-    as=${ifDefined(props.as)}
-    as-lg=${ifDefined(props.asLg)}
-    as-md=${ifDefined(props.asMd)}
-    as-sm=${ifDefined(props.asSm)}
+    typography=${ifDefined(props.typography)}
+    lg=${ifDefined(props.lg)}
+    md=${ifDefined(props.md)}
+    sm=${ifDefined(props.sm)}
     maxLines=${ifDefined(props.maxLines)}
   >
     Grumpy wizards make toxic brew. Grumpy wizards make toxic brew. Grumpy

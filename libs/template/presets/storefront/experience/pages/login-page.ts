@@ -14,11 +14,7 @@ export const loginPage: ExperienceComponent = {
   ...(featureVersion >= '1.1'
     ? {
         components: [
-          featureVersion >= '1.2'
-            ? {
-                ref: 'header',
-              }
-            : {},
+          featureVersion >= '1.2' ? { ref: 'header' } : {},
           {
             type: 'oryx-composition',
             options: {

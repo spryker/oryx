@@ -5,9 +5,10 @@ import {
 } from '@spryker-oryx/picking';
 import { ItemsFilters, PickingListItem } from '@spryker-oryx/picking/services';
 import { ButtonSize } from '@spryker-oryx/ui/button';
+import { HeadingTag } from '@spryker-oryx/ui/heading';
 import { IconTypes } from '@spryker-oryx/ui/icon';
 import { QuantityInputComponent } from '@spryker-oryx/ui/quantity-input';
-import { I18nMixin } from '@spryker-oryx/utilities';
+import { I18nMixin, featureVersion } from '@spryker-oryx/utilities';
 import { LitElement, TemplateResult, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -116,9 +117,7 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
         <oryx-heading slot="heading">
           ${this.productItem.orderItem.name}
         </oryx-heading>
-        <oryx-heading>
-          <h6>${this.productItem.orderItem.sku}</h6>
-        </oryx-heading>
+        ${this.__renderHeading()}
 
         <oryx-image
           .src="${this.productItem.product.image}"
@@ -135,6 +134,18 @@ export class PickingProductCardComponent extends I18nMixin(LitElement) {
         )}
       </oryx-card>
     `;
+  }
+
+  // temporary implementation for backwards compatibility
+  private __renderHeading(): TemplateResult {
+    const text = this.productItem?.orderItem.sku;
+    if (featureVersion >= '1.4') {
+      return html`<oryx-heading .tag=${HeadingTag.H6}> ${text} </oryx-heading>`;
+    } else {
+      return html`<oryx-heading>
+        <h6>${text}</h6>
+      </oryx-heading>`;
+    }
   }
 
   protected renderEditStatus(): TemplateResult {

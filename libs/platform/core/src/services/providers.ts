@@ -18,6 +18,10 @@ import {
 } from './http';
 import { DefaultHydrationService, HydrationService } from './hydration';
 import {
+  DefaultJsonApiIncludeService,
+  JsonApiIncludeService,
+} from './includes';
+import {
   DefaultPageMetaResolverService,
   DefaultPageMetaService,
   PageMetaResolverService,
@@ -107,6 +111,10 @@ export const coreProviders: Provider[] = [
   {
     provide: AppInitializer,
     useExisting: PageMetaResolverService,
+  },
+  {
+    provide: JsonApiIncludeService,
+    useClass: DefaultJsonApiIncludeService,
   },
   CoreResourceResolver,
 ];
