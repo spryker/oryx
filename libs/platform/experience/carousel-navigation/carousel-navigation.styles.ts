@@ -3,6 +3,8 @@ import { css } from 'lit';
 
 const styles = css`
   :host {
+    --align: start;
+
     position: absolute;
     display: grid;
     align-items: center;
@@ -62,7 +64,14 @@ const styles = css`
   oryx-button {
     z-index: 1;
     transition: opacity 0.3s;
-    margin: 8px;
+  }
+
+  :host(:not([vertical])) oryx-button {
+    margin-inline: 8px;
+  }
+
+  :host([vertical]) oryx-button {
+    margin-block: 8px;
   }
 
   :host(:not([has-previous])) oryx-button.previous,
