@@ -5,12 +5,24 @@ const styles = css`
   :host {
     position: absolute;
     display: grid;
-    grid-template-rows: 1fr var(--indicator-area-height, 50px);
-    grid-template-columns: auto 1fr auto;
     align-items: center;
-    padding-inline: 8px;
+    pointer-events: none;
     width: var(--width);
     height: calc(var(--height) + var(--indicator-area-height, 50px));
+  }
+
+  * {
+    pointer-events: all;
+  }
+
+  :host(:not([vertical])) {
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr var(--indicator-area-height, 50px);
+  }
+
+  :host([vertical]) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto var(--indicator-area-height, 50px);
   }
 
   :host([indicatorsAlignment='center']) {
@@ -25,13 +37,24 @@ const styles = css`
     justify-items: end;
   }
 
-  oryx-button:nth-of-type(2) {
+  :host(:not([vertical])) oryx-button:nth-of-type(2) {
     grid-area: 1 / 3;
   }
 
-  .indicators {
+  :host([vertical]) oryx-button:nth-of-type(2) {
+    grid-row: 3;
+  }
+
+  :host([vertical]) .indicators {
+    grid-row: 4;
+  }
+
+  :host(:not([vertical])) .indicators {
     grid-row: 2;
     grid-column: 1 / span 3;
+  }
+
+  .indicators {
     display: flex;
     gap: 8px;
   }
@@ -39,6 +62,7 @@ const styles = css`
   oryx-button {
     z-index: 1;
     transition: opacity 0.3s;
+    margin: 8px;
   }
 
   :host(:not([has-previous])) oryx-button.previous,

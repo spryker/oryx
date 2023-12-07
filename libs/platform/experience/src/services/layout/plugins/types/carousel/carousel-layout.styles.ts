@@ -38,7 +38,6 @@ const v1_2_styles = css`
     overscroll-behavior-x: contain;
     scroll-snap-type: both mandatory;
     grid-auto-columns: var(--_item-size);
-    isolation: isolate;
     scrollbar-width: none;
   }
 
